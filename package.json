@@ -1,0 +1,16 @@
+{
+  "name": "epotek",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "bcrypt": "^0.8.7",
+    "meteor-node-stubs": "~0.2.0"
+  },
+  "version": "1.0.0",
+  "description": "e-Potek main",
+  "main": "index.js",
+  "author": "florianbienefelt",
+  "license": "ISC"
+}

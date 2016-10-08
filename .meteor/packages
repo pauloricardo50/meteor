@@ -1,0 +1,48 @@
+# Meteor packages used by this project, one per line.
+# Check this file (and the other files in this directory) into your repository.
+#
+# 'meteor add' and 'meteor remove' will edit this file for you,
+# but you can also edit it by hand.
+
+meteor-base@1.0.4               # Packages every Meteor app needs to have
+mobile-experience@1.0.4         # Packages for a great mobile UX
+mongo@1.1.12_1                  # The database Meteor supports right now
+reactive-var@1.0.10             # Reactive variable for tracker
+tracker@1.1.0                   # Meteor's client-side reactive programming library
+
+standard-minifier-css@1.2.0_1   # CSS minifier run for production mode
+standard-minifier-js@1.2.0_1    # JS minifier run for production mode
+es5-shim@4.6.14_1               # ECMAScript 5 compatibility for older browsers.
+ecmascript@0.5.8_1              # Enable ECMAScript2015+ syntax in app code
+shell-server@0.2.1              # Server-side component of the `meteor shell` command
+
+# Meteor Extra
+
+# Data
+mdg:validated-method            # MDG written server-side validation before storing
+check                           # variable type verification for server side validation
+session                         # Lets you use Session variables
+# edgee:slingshot               # File upload manager
+
+# Routing
+kadira:flow-router              # Router
+
+# Internationalization
+tap:i18n                        # Handles internationalization in Meteor
+tap:i18n-ui                     # Automatically generates a language dropdown based on available language files
+
+# User Accounts
+accounts-password               # Basic accounts package from Meteor
+useraccounts:core               # Lets you generate useraccount login/signup templates
+useraccounts:unstyled           # Styling of the core package
+
+# UI tricks
+momentjs:moment                 # Handles date and time values and internationalize them
+fastclick                       # Removes the 300ms tap delay on touch screens
+#themeteorchef:bert             # Add cool notifications at the top of the screen
+
+# dev
+meteortoys:allthings            # Most awesome dev tools, shows you Session and mongoDB data
+
+# Production
+spiderable                      # Lets webcrawlers crawl your website to index it, ex: Google
