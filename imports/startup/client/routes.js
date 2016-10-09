@@ -1,10 +1,144 @@
+import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-// import React from 'react';
+import { Accounts } from 'meteor/accounts-base';
+
+import React from 'react';
 import { mount } from 'react-mounter';
 
+// import { AdminLayout } from '/imports/ui/layouts/AdminLayout.jsx';
+import { HomeLayout } from '/imports/ui/layouts/HomeLayout.jsx';
+// import { UserLayout } from '/imports/ui/layouts/UserLayout.jsx';
+
+// import '/imports/ui/pages.js';
+
+import HomePage from '/imports/ui/containers/public/HomePageContainer.jsx';
+
+
+// This is recommended to be done in the template files
+// Automatically redirect a user who logged in to his page
+if (Meteor.isClient) {
+  Accounts.onLogin(() => {
+    FlowRouter.go('Main');
+  });
+
+  // Automatically redirect a user who logged out to the home page
+  Accounts.onLogout(() => {
+    FlowRouter.go('Home');
+  });
+}
+
+
+// Public Routes
 FlowRouter.route('/', {
+  name: 'Home',
   action() {
-    mount(
-    );
+    mount(HomePage);
   },
 });
+
+// FlowRouter.route('/start', {
+//   name: 'Start',
+//   action() {
+//     mount(HomeLayout, {
+//       content: <StartPage />,
+//     });
+//   },
+// });
+//
+//
+// // User Routes
+// FlowRouter.route('/main', {
+//   name: 'Main',
+//   action() {
+//     mount(UserLayout, {
+//       content: <MainPage />,
+//     });
+//   },
+// });
+//
+//
+// FlowRouter.route('/profile', {
+//   name: 'Profile',
+//   action() {
+//     mount(UserLayout, {
+//       content: <ProfilePage />,
+//     });
+//   },
+// });
+//
+//
+// FlowRouter.route('/:id/todo', {
+//   name: 'Todo',
+//   action(params) {
+//     mount(UserLayout, {
+//       content: <TodoPage request={params.id} />,
+//     });
+//   },
+// });
+//
+// FlowRouter.route('/:id/todo/do', {
+//   name: 'Do',
+//   action(params) {
+//     mount(UserLayout, {
+//       content: <DoPage request={params.id} />,
+//     });
+//   },
+// });
+//
+//
+// // Admin routes
+// const adminRoutes = FlowRouter.group({
+//   prefix: '/admin',
+//   name: 'Admin',
+// });
+//
+//
+// adminRoutes.route('/requests', {
+//   name: 'AdminRequests',
+//   action() {
+//     mount(AdminLayout, {
+//       content: <AdminRequestsPage />,
+//     });
+//   },
+// });
+//
+//
+// adminRoutes.route('/requests/:id', {
+//   name: 'AdminSingleRequest',
+//   action() {
+//     mount(AdminLayout, {
+//       content: <AdminSingleRequestPage />,
+//     });
+//   },
+// });
+//
+//
+// adminRoutes.route('/users', {
+//   name: 'AdminUsers',
+//   action() {
+//     mount(AdminLayout, {
+//       content: <AdminUsersPage />,
+//     });
+//   },
+// });
+//
+//
+// adminRoutes.route('/users/:id', {
+//   name: 'AdminSingleRequest',
+//   action() {
+//     mount(AdminLayout, {
+//       content: <AdminSingleUserPage />,
+//     });
+//   },
+// });
+//
+//
+// // Partner routes
+// FlowRouter.route('/requests/:id/partnerform', {
+//   name: 'partnerForm',
+//   action() {
+//     mount(AdminLayout, {
+//       content: <PartnerFormPage />,
+//     });
+//   },
+// });

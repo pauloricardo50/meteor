@@ -19,14 +19,18 @@ Template['override-atInput'].replaces('atInput');
 Template['override-atPwdLink'].replaces('atPwdLink');
 Template['overrideatPwdFormBtn'].replaces('atPwdFormBtn');
 
-Template.overrideatPwdFormBtn.events({
-    'click .submit': function() {
-        console.log("submitted");
-
-        $('#loginModal').delay(1000).fadeOut(450);
-
-        setTimeout(function(){
-            $('#loginModal').modal("hide");
-        }, 1500);
-    }
-})
+// Template
+//   .overrideatPwdFormBtn
+//   .events({
+//     'click .submit': function() {
+//       console.log("submitted");
+//
+//       $('#loginModal')
+//         .delay(1000)
+//         .fadeOut(450);
+//
+//       setTimeout(function() {
+//         $('#loginModal').modal("hide");
+//       }, 1500);
+//     }
+//   })

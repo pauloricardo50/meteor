@@ -4,20 +4,12 @@
 
 <template name="override-atForm">
     {{#unless hide}}
-    <div class="at-form">
-        <div class="modal-header">
-            {{#if showTitle}} {{> atTitle}} {{/if}}
-        </div>
-        <div class="modal-body text-center">
+        <div class="at-form text-center">
             {{#if showOauthServices}} {{> atOauth}} {{/if}} {{#if showServicesSeparator}} {{> atSep}} {{/if}} {{#if showError}} {{> atError}} {{/if}} {{#if showResult}} {{> atResult}} {{/if}} {{#if showMessage}} {{> atMessage}} {{/if}} {{#if showPwdForm}} {{> atPwdForm}}
             {{/if}} {{#if showTermsLink}} {{> atTermsLink}} {{/if}} {{#if showSignInLink}} {{> atSigninLink}} {{/if}} {{#if showSignUpLink}} {{> atSignupLink}} {{/if}} {{#if showResendVerificationEmailLink}} {{> atResendVerificationEmailLink}} {{/if}}
         </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-    </div>
-    {{/unless}}
 
+    {{/unless}}
 </template>
 
 <template name="override-atTitle">
@@ -187,13 +179,13 @@
     </button>
 
 
-    <script>
+    <!-- <script>
         // Remove the modal backdrop properly
         $('.submit').click(function() {
             $('modalId').modal('hide');
             $('body').removeClass('modal-open');
             $('.modal-backdrop').remove();
         });
-    </script>
+    </script> -->
 
 </template>
