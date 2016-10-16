@@ -1,4 +1,5 @@
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 
 import AccountsModalContainer from '../accounts/AccountsModalContainer.jsx';
 
@@ -22,16 +23,20 @@ export default class Header extends React.Component {
       backgrounds = ('url(/img/appartement@2x.jpg)', 'url(/img/mer@2x.jpg)', 'url(/img/alpes@2x.jpg)');
     }
 
-    setInterval(() => {
-      this.setState({
-        image1: (this.state.image1 + 1) % 3,
-        image2: (this.state.image2 + 1) % 3,
-        image3: (this.state.image3 + 1) % 3,
-      });
-      this.nextBackground();
-    }, 1000);
+    // this.bgImageInterval = Meteor.setInterval(() => {
+    //   this.setState({
+    //     image1: (this.state.image1 + 1) % 3,
+    //     image2: (this.state.image2 + 1) % 3,
+    //     image3: (this.state.image3 + 1) % 3,
+    //   });
+    //   this.nextBackground();
+    // }, 1000);
 
     // document.getElementsByClassName('.header-image-0').css('background-image', backgrounds[0]);
+  }
+
+  componentWillUnmount() {
+    // clearInterval(this.bgImageInterval);
   }
 
   nextBackground() {
@@ -57,21 +62,14 @@ export default class Header extends React.Component {
   }
 
   render() {
-    let style1 = {
-      backgroundImage: 'url(/img/appartement.jpg)'
-    };
-    let style2 = {};
-    let style3 = {};
     return (
-      <header className="header-image-0" style={style1}>
-        <AccountsModalContainer />
-        <div className="header" id="top">
+      <header className="home-header">
+        {/* <AccountsModalContainer /> */}
           <div className="text-vertical-center">
-            <h3 id="titleText">Votre Propriété Financée - Simplement.</h3>
+            <h3>La façon la plus simple d'obtenir la meilleure hypothèque.</h3>
             <br />
-            <a href="/start" className="btn btn-success" type="button" id="home-button">Commencer</a>
+            <a href="/start" className="btn btn-success" type="button">Commencer</a>
           </div>
-        </div>
       </header>
     );
   }

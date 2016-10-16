@@ -6,26 +6,33 @@ import React from 'react';
 import { mount } from 'react-mounter';
 
 // import { AdminLayout } from '/imports/ui/layouts/AdminLayout.jsx';
-import { HomeLayout } from '/imports/ui/layouts/HomeLayout.jsx';
-// import { UserLayout } from '/imports/ui/layouts/UserLayout.jsx';
+import HomeLayout from '/imports/ui/layouts/HomeLayout.jsx';
+import UserLayout from '/imports/ui/layouts/UserLayout.jsx';
 
 // import '/imports/ui/pages.js';
 
 import HomePage from '/imports/ui/containers/public/HomePageContainer.jsx';
+import MainPage from '/imports/ui/containers/user/MainPageContainer.jsx';
+import TodoPage from '/imports/ui/containers/user/TodoPageContainer.jsx';
+import DoPage from '/imports/ui/containers/user/DoPageContainer.jsx';
+
+// Extra components
+import RequestProgressBar from '/imports/ui/components/general/RequestProgressBar.jsx';
+
 
 
 // This is recommended to be done in the template files
 // Automatically redirect a user who logged in to his page
-if (Meteor.isClient) {
-  Accounts.onLogin(() => {
-    FlowRouter.go('Main');
-  });
-
-  // Automatically redirect a user who logged out to the home page
-  Accounts.onLogout(() => {
-    FlowRouter.go('Home');
-  });
-}
+// if (Meteor.isClient) {
+//   Accounts.onLogin(() => {
+//     FlowRouter.go('Main');
+//   });
+//
+//   // Automatically redirect a user who logged out to the home page
+//   Accounts.onLogout(() => {
+//     FlowRouter.go('Home');
+//   });
+// }
 
 
 // Public Routes
@@ -46,15 +53,15 @@ FlowRouter.route('/', {
 // });
 //
 //
-// // User Routes
-// FlowRouter.route('/main', {
-//   name: 'Main',
-//   action() {
-//     mount(UserLayout, {
-//       content: <MainPage />,
-//     });
-//   },
-// });
+// User Routes
+FlowRouter.route('/main', {
+  name: 'Main',
+  action() {
+    mount(UserLayout, {
+      content: <MainPage />,
+    });
+  },
+});
 //
 //
 // FlowRouter.route('/profile', {
@@ -67,23 +74,24 @@ FlowRouter.route('/', {
 // });
 //
 //
-// FlowRouter.route('/:id/todo', {
-//   name: 'Todo',
-//   action(params) {
-//     mount(UserLayout, {
-//       content: <TodoPage request={params.id} />,
-//     });
-//   },
-// });
-//
-// FlowRouter.route('/:id/todo/do', {
-//   name: 'Do',
-//   action(params) {
-//     mount(UserLayout, {
-//       content: <DoPage request={params.id} />,
-//     });
-//   },
-// });
+FlowRouter.route('/:id/todo', {
+  name: 'Todo',
+  action() {
+    mount(UserLayout, {
+      content: <TodoPage />,
+      extraContent: <RequestProgressBar />,
+    });
+  },
+});
+
+FlowRouter.route('/:id/todo/:cardId', {
+  name: 'Do',
+  action() {
+    mount(UserLayout, {
+      content: <DoPage />,
+    });
+  },
+});
 //
 //
 // // Admin routes
