@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import { Accounts } from 'meteor/accounts-base';
+// import { Accounts } from 'meteor/accounts-base';
 
 import React from 'react';
 import { mount } from 'react-mounter';
@@ -12,6 +12,7 @@ import UserLayout from '/imports/ui/layouts/UserLayout.jsx';
 // import '/imports/ui/pages.js';
 
 import HomePage from '/imports/ui/containers/public/HomePageContainer.jsx';
+import LoginPage from '/imports/ui/pages/public/LoginPage.jsx';
 import MainPage from '/imports/ui/containers/user/MainPageContainer.jsx';
 import ProfilePage from '/imports/ui/containers/user/ProfilePageContainer.jsx';
 import TodoPage from '/imports/ui/containers/user/TodoPageContainer.jsx';
@@ -23,16 +24,16 @@ import RequestProgressBar from '/imports/ui/components/general/RequestProgressBa
 
 // This is recommended to be done in the template files
 // Automatically redirect a user who logged in to his page
-// if (Meteor.isClient) {
-//   Accounts.onLogin(() => {
-//     FlowRouter.go('Main');
-//   });
-//
-//   // Automatically redirect a user who logged out to the home page
-//   Accounts.onLogout(() => {
-//     FlowRouter.go('Home');
-//   });
-// }
+if (Meteor.isClient) {
+  Accounts.onLogin(() => {
+    FlowRouter.go('Main');
+  });
+
+  // Automatically redirect a user who logged out to the home page
+  Accounts.onLogout(() => {
+    FlowRouter.go('Home');
+  });
+}
 
 
 // Public Routes
@@ -40,6 +41,13 @@ FlowRouter.route('/', {
   name: 'Home',
   action() {
     mount(HomePage);
+  },
+});
+
+FlowRouter.route('/login', {
+  name: 'Login',
+  action() {
+    mount(LoginPage);
   },
 });
 

@@ -2,69 +2,89 @@ import React from 'react';
 
 import Panel from 'react-bootstrap/lib/Panel';
 
-import TextInput from '../forms/TextInput.jsx';
-import TextInputMoney from '../forms/TextInputMoney.jsx';
-import RadioInput from '../forms/RadioInput.jsx';
+import AutoForm from './AutoForm.jsx'
 
-
-const form = [
+const formArray = [
   {
-    label: 'Type de Demande',
-    type: 'dropdown',
+    type: 'ConditionalInput',
+    conditionalTrueValue: 'deux',
+    inputs: [
+      {
+        type: 'RadioInput',
+        label: 'Un ou deux emprunteurs?',
+        values: ['Un', 'deux'],
+        default: 0,
+      }, {
+        type: 'TextInputNumber',
+        label: 'Âge de votre conjoint?',
+        placeholder: '30',
+        id: 'age2',
+      },
+    ],
   }, {
-    label: '1 ou 2 emprunteurs',
-    type: 'dropdown',
+    type: 'TextInputNumber',
+    label: 'Votre âge?',
+    placeholder: '30',
+    id: 'age1',
   }, {
-    label: 'Age(s)',
-    type: 'number',
+    type: 'RadioInput',
+    label: 'Type de Résidence?',
+    values: ['Principale', 'Secondaire'],
+    default: 0,
   }, {
-    label: 'Résidence',
-    type: 'dropdown',
+    type: 'TextInputMoney',
+    label: 'Votre Salaire?',
+    placeholder: '80\'000',
+    id: 'salary',
   }, {
-    label: 'Salaire',
-    type: 'money',
+    type: 'ConditionalInput',
+    conditionalTrueValue: 'Oui',
+    inputs: [
+      {
+        type: 'RadioInput',
+        label: 'Touchez-vous un Bonus?',
+        values: ['Oui', 'Non'],
+        default: 1,
+      }, {
+        type: 'TextInputMoney',
+        label: 'Combien?',
+        placeholder: '10\'000',
+        id: 'bonus',
+      },
+    ],
   }, {
-    label: 'Bonus',
-    type: 'money',
+    type: 'TextInputMoney',
+    label: 'Combien voulez-vous mettre de fonds propres?',
+    placeholder: '100\'000',
+    id: 'fortune',
   }, {
-    label: 'Fonds Propres',
-    type: 'money',
+    type: 'TextInputMoney',
+    label: 'Dont combien de votre LPP?',
+    placeholder: '40\'000',
+    id: 'insuranceFortune',
   }, {
-    label: 'LPP',
-    type: 'money',
-  }, {
-    label: 'Valeur de la Propriété',
-    type: 'money',
+    type: 'TextInputMoney',
+    label: 'Et finalement combien vaut la propriété?',
+    placeholder: '500\'000',
+    id: 'propertyValue',
   },
 ];
 
 
 export default class InitialForm extends React.Component {
+
+  onSubmit(event) {
+    event.preventDefault();
+  }
+
   render() {
     return (
       <Panel>
-        <form className="col-sm-10 col-sm-offset-1">
-
-          <TextInput
-            label="Votre Banque"
-            placeholder="UBS SA"
-            id="bank"
-          />
-
-          <TextInputMoney
-            label="Salaire"
-            placeholder="100'000"
-            id="salary"
-          />
-
-          <RadioInput
-            label="Est-ce correct?"
-            value1="Oui"
-            value2="Non"
-            onChange={() => (console.log("he"))}
-          />
-
-        </form>
+        <AutoForm
+          inputs={formArray}
+          formClasses="col-sm-10 col-sm-offset-1"
+          onSubmit={this.onSubmit}
+        />
       </Panel>
     );
   }

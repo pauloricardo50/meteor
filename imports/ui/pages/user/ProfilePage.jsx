@@ -1,5 +1,5 @@
 import React from 'react';
-import { AccountsTemplates } from 'meteor/useraccounts:core';
+// import { AccountsTemplates } from 'meteor/useraccounts:core';
 
 import Panel from 'react-bootstrap/lib/Panel';
 

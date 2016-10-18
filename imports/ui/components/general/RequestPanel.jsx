@@ -11,7 +11,7 @@ export default class RequestPanel extends React.Component {
 
   render() {
     return (
-      <Panel onClick={this.routeTodo.bind(this)} title="This is a title!">
+      <Panel onClick={this.routeTodo.bind(this)}>
         Hi!
       </Panel>
     );

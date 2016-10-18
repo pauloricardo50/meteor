@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { AccountsTemplates } from 'meteor/useraccounts:core';
+// import { AccountsTemplates } from 'meteor/useraccounts:core';
 
 
 import NavItem from 'react-bootstrap/lib/NavItem';

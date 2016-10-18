@@ -1,5 +1,5 @@
 import React from 'react';
-import { AccountsTemplates } from 'meteor/useraccounts:core';
+// import { AccountsTemplates } from 'meteor/useraccounts:core';
 
 
 import Blaze from 'meteor/gadicc:blaze-react-component';

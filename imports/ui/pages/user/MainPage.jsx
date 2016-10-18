@@ -20,7 +20,7 @@ export default class MainPage extends React.Component {
   }
 
   render() {
-    if (!this.props.creditRequests) {
+    if (this.props.creditRequests.length === 0) {
       return (
         <div>
           <h4>T'as l'air bien seul ici, fais une nouvelle requete!</h4>

@@ -35,15 +35,13 @@ fortawesome:fontawesome
 
 # User Accounts
 accounts-password               # Basic accounts package from Meteor
-useraccounts:core               # Lets you generate useraccount login/signup templates
-useraccounts:unstyled           # Styling of the core package
-accounts-ui                     # Basic accounts UI automatic
+std:accounts-ui                 # React account component
+std:accounts-basic
 
 # UI tricks
 momentjs:moment                 # Handles date and time values and internationalize them
 fastclick                       # Removes the 300ms tap delay on touch screens
 kadira:dochead                  # Set custom page titles easily
-#themeteorchef:bert             # Add cool notifications at the top of the screen
 
 # dev
 meteortoys:allthings            # Most awesome dev tools, shows you Session and mongoDB data

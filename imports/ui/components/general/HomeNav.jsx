@@ -27,12 +27,12 @@ export default class HomeNav extends React.Component {
         </div>
         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           {this.props.currentUser ? <ul className="nav navbar-nav navbar-left">
-            <li href="/main"><p>Mon Compte</p></li>
+            <li><a href="/main">Mon Compte</a></li>
           </ul> : ''}
           <ul className="nav navbar-nav navbar-right">
             {/* <li><Blaze template="loginButtons" /></li> */}
-            <li><a href="#">A propos</a></li>
-            <li><AccountsModalContainer /></li>
+            <li><a href="/">A propos</a></li>
+            <li><a href="/login">Login</a></li>
             {/* <NavItem><AccountsUI /></NavItem> */}
           </ul>
         </div>

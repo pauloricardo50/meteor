@@ -1,15 +1,15 @@
 import React from 'react';
 
-export default class TextInputMoney extends React.Component {
+export default class TextInputNumber extends React.Component {
 
   constructor(props) {
     super(props);
-    this.formatToMoney = this.formatToMoney.bind(this);
+    this.formatToNumber = this.formatToNumber.bind(this);
   }
 
 // Prevents people from entering characters other than numbers, and formats value with apostrophes
-  formatToMoney() {
-    this.input.value = this.input.value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+  formatToNumber() {
+    this.input.value = this.input.value.replace(/\D/g, '');
   }
 
   render() {
@@ -29,7 +29,7 @@ export default class TextInputMoney extends React.Component {
             value={this.props.currentValue}
             placeholder={this.props.placeholder}
             onChange={() => {
-              this.formatToMoney();
+              this.formatToNumber();
               (typeof this.props.onChange === 'function') ? this.props.onChange : () => { return undefined; };
             }}
           />
@@ -39,7 +39,7 @@ export default class TextInputMoney extends React.Component {
   }
 }
 
-TextInputMoney.propTypes = {
+TextInputNumber.propTypes = {
   id: React.PropTypes.string.isRequired,
   label: React.PropTypes.string.isRequired,
   placeholder: React.PropTypes.string.isRequired,
