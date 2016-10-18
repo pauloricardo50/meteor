@@ -6,6 +6,9 @@ export default class ProductDescription extends React.Component {
   render() {
     return (
       <section className="container-fluid home-product">
+        <article>
+          <img src="img/house_white.svg" alt="e-Potek" />
+        </article>
         <article className="col-sm-6 col-sm-offset-6 text-center animated fadeIn">
           <span className="fa fa-thumbs-up fa-5x" />
           <h4>Accédez aux meilleures offres du pays</h4>

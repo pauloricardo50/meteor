@@ -1,11 +1,9 @@
+import { Meteor } from 'meteor/meteor';
 import { AccountsTemplates } from 'meteor/useraccounts:core';
 
 // TODO: Internationalize this shit
 // import { TAPi18n } from 'meteor/tap:i18n';
 
-function logoutFunc() {
-    Session.set('nav-toggle', '');
-};
 
 AccountsTemplates.configure({
     // Behavior
@@ -41,7 +39,7 @@ AccountsTemplates.configure({
     redirectTimeout: 4000,
 
     // Hooks
-    onLogoutHook: logoutFunc,
+    // onLogoutHook: logoutFunc,
     // onSubmitHook: mySubmitFunc,
     // preSignUpHook: myPreSubmitFunc,
     // postSignUpHook: postSignUpFunc,

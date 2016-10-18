@@ -23,16 +23,16 @@ import RequestProgressBar from '/imports/ui/components/general/RequestProgressBa
 
 // This is recommended to be done in the template files
 // Automatically redirect a user who logged in to his page
-if (Meteor.isClient) {
-  Accounts.onLogin(() => {
-    FlowRouter.go('Main');
-  });
-
-  // Automatically redirect a user who logged out to the home page
-  Accounts.onLogout(() => {
-    FlowRouter.go('Home');
-  });
-}
+// if (Meteor.isClient) {
+//   Accounts.onLogin(() => {
+//     FlowRouter.go('Main');
+//   });
+//
+//   // Automatically redirect a user who logged out to the home page
+//   Accounts.onLogout(() => {
+//     FlowRouter.go('Home');
+//   });
+// }
 
 
 // Public Routes

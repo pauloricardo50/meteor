@@ -68,7 +68,7 @@ export default class Header extends React.Component {
           <div className="text-vertical-center">
             <h3>La façon la plus simple d'obtenir la meilleure hypothèque.</h3>
             <br />
-            <a href="/start" className="btn btn-success" type="button">Commencer</a>
+            <a href="/start" className="btn btn-primary" type="button">Commencer</a>
           </div>
       </header>
     );

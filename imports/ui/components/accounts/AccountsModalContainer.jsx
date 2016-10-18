@@ -1,5 +1,7 @@
 import React from 'react';
-import {Meteor} from 'meteor/meteor';
+import { Meteor } from 'meteor/meteor';
+import { AccountsTemplates } from 'meteor/useraccounts:core';
+
 
 import NavItem from 'react-bootstrap/lib/NavItem';
 
@@ -17,17 +19,15 @@ export default class AccountsModalContainer extends React.Component {
   }
 
   close() {
-    this.setState({showModal: false});
+    this.setState({ showModal: false });
   }
 
   open() {
-    this.setState({showModal: true});
+    this.setState({ showModal: true });
   }
 
   logout() {
-    Meteor.logout(function() {
-      this.forceUpdate();
-    });
+    AccountsTemplates.logout();
   }
 
   render() {
@@ -37,16 +37,15 @@ export default class AccountsModalContainer extends React.Component {
     }
     console.log("no user ID");
     return (
-      <div>
-        <NavItem onClick={this.open}>
-          <p>Login</p>
-        </NavItem>
+
+      <a onClick={this.open}>
+        <p>Login</p>
         <AccountsModal
           showModal={this.state.showModal}
           open={this.open}
           close={this.close}
         />
-      </div>
+      </a>
     );
   }
 }

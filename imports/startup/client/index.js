@@ -5,17 +5,14 @@ import './routes.js';
 import './useraccounts-configuration.js';
 
 
-
 getUserLanguage = function () {
   // Put here the logic for determining the user language
 
-  return "fr";
+  return 'fr';
 };
 
 if (Meteor.isClient) {
   Meteor.startup(function () {
-    Session.set("showLoadingIndicator", true);
-
     TAPi18n.setLanguage(getUserLanguage())
       .done(function () {
         Session.set("showLoadingIndicator", false);
