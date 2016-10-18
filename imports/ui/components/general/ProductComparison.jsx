@@ -16,7 +16,7 @@ export default class ProductComparison extends React.Component {
                 <h6>Démarche Traditionelle</h6>
                 <p>Passer directement par votre banque personnelle</p>
               </th>
-              <th className="row-3"><img src="img/logo.svg" width="150px" /></th>
+              <th className="row-3"><img src="img/logo_black.svg" width="150px" /></th>
             </tr>
           </thead>
           <tbody>

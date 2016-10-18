@@ -5,6 +5,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { CreditRequests } from '/imports/api/creditrequests/creditrequests.js';
 
 import TodoPage from '/imports/ui/pages/user/TodoPage.jsx';
+import Loading from '/imports/ui/components/general/Loading.jsx';
 
 function composer(props, onData) {
   const requestId = FlowRouter.getParam('id');
@@ -18,4 +19,4 @@ function composer(props, onData) {
   DocHead.setTitle('Ma Demande de Financement - e-Potek');
 }
 
-export default composeWithTracker(composer)(TodoPage);
+export default composeWithTracker(composer, Loading)(TodoPage);

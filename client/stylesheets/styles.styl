@@ -88,6 +88,14 @@ body, html, main
 *:focus
   outline none
 
+.home-nav
+  position: fixed
+  width: 100%
+  z-index: z.nav
+  font-size: 14pt
+  p
+    margin: 0
+
 // .home-nav
 //     margin-bottom 0 !important;
 //     position fixed !important;
@@ -163,9 +171,13 @@ body, html, main
 .home-product
   background-color brand-primary
   color white
-  padding 50px
+  padding: 20px
+  +above($med)
+    padding 50px
   article
-    padding: 60px 100px 60px 100px
+    padding: 30px 50px 30px 50px
+    +above($med)
+      padding: 30px 100px 30px 100px
     background-color brand-primary
   h4
     color #FFF
@@ -186,10 +198,13 @@ body, html, main
       th, td
         border-bottom: 1px solid #ddd;
         font-weight: normal !important;
+    tbody
+      font-size: 12pt
+      tr
+        &:hover
+          background-color: backgroundcolor
     tr
       height: 80px
-      &:hover
-        background-color: backgroundcolor
     th
       height: 80px
       text-align: center !important;
@@ -307,55 +322,63 @@ input, select, textarea
 
 
 .side-nav
-    fixed bottom left
-    height $bottom-nav-height
-    width 100%
-    overflow hidden
-    background black
-    color #FFF
-    z-index: z.nav
-    shadow-level(2)
-    ul
-        margin 0
-        padding 0
-        display flex
-        justify-content space-between
-        list-style none
-    li
-        width 50%
+  fixed bottom left
+  height $bottom-nav-height
+  width 100%
+  overflow hidden
+  background black
+  color #FFF
+  z-index: z.nav
+  shadow-level(2)
+  ul
+    margin 0
+    padding 0
+    display flex
+    justify-content space-between
+    list-style none
+  li
+    width 50%
     a
-        color #FFF
-        text-decoration none
-        padding 15px 15px
-        display block
-        text-align center
-        trans()
-        &:hover, &.active
-            background lightness(black, 30%)
-    i
-        display block
-        font-size 2em
-        margin-bottom 10px
-    +above($med)
-        height 100%
-        z-index: z.nav // FLO, it was z.mid before
-        padding 120px 0
-        fixed top left
-        width $side-nav
-        ul
-            display block
-        li
-            width auto
-        a
-            padding 20px 10px
-            &:hover, &.active
-                border-left 4px solid green
+      color #FFF
+      text-decoration none
+      padding 15px 15px
+      display block
+      text-align center
+      trans()
+      &:hover, &.active
+        background lightness(black, 30%)
+  i
+    display block
+    font-size 2em
+    margin-bottom 10px
+  img
+    position: absolute;
+    width: $side-nav - 20px;
+    top: 40px;
+    left: 10px
     +above($large)
-        width $side-nav-large
-        a
-            padding 20px 20px
-            &:hover, &.active
-                border-left 10px solid green
+      width: $side-nav-large - 20px
+  +above($med)
+    height 100%
+    z-index: z.nav // FLO, it was z.mid before
+    padding 120px 0
+    fixed top left
+    width $side-nav
+    ul
+      display block
+    li
+      width auto
+      a
+        padding 20px 10px
+        &:hover, &.active
+          border-left 4px solid green
+  +above($large)
+    width $side-nav-large
+    li
+      a
+        padding 20px 20px
+        &:hover, &.active
+          border-left 10px solid green
 
 
 // Todo Page
@@ -396,6 +419,9 @@ input, select, textarea
       background-color lightness(gray, 60%)
       cursor not-allowed
 
+
+.input-group-addon
+  color: #999
 
 // Progress Bar
 .header-progressbar
@@ -580,3 +606,120 @@ a.todo-card
 
 #todo-text-top
   color lightness(grey, 80%)
+
+
+
+
+// Loading Animation
+
+.loading-container{
+	text-align: center;
+	background-color: backgroundcolor;
+	overflow: hidden;
+}
+
+
+.loading-box{
+	display: inline-block;
+	height: 200px;
+	width: 100%;
+	float:left;
+	position: relative;
+	transition: all .2s ease;
+}
+
+/* MEDIA QUERIES */
+@media (max-width: 700px){
+	.loading-box{
+		width: 100%;
+	}
+
+	.loading-box:nth-child(2n-1){
+		background-color: inherit;
+	}
+
+	.loading-box:nth-child(4n),.box:nth-child(4n-3) {
+		background-color: rgba(0,0,0,0.05);
+	}
+
+}
+
+@media (max-width: 420px){
+	.loading-box{
+		width: 100%;
+	}
+
+	.loading-box:nth-child(4n),.box:nth-child(4n-3){
+		background-color: inherit;
+	}
+
+	.loading-box:nth-child(2n-1){
+		background-color:rgba(0,0,0,0.05);
+	}
+
+}
+
+
+
+/* -------------- loader2 -------------- */
+
+.loader2{
+	position: relative;
+	width: 5px;
+	height: 5px;
+
+	top: 49%;
+	top: -webkit-calc(50% - 43px);
+	top: calc(50% - 2.5px);
+	left: 49%;
+	left: -webkit-calc(50% - 43px);
+	left: calc(50% - 2.5px);
+
+	background-color: white;
+	border-radius: 50px;
+}
+
+.loader2:before{
+	content: "";
+	position: absolute;
+	top: -38px;
+	border-top: 3px solid brand-primary;
+	border-right: 3px solid brand-primary;
+	border-radius: 0 50px 0px  0;
+	width: 40px;
+	height: 40px;
+	background-color: rgba(255, 255, 255, .8);
+	-webkit-transform-origin:  0% 100%;
+			transform-origin:  0% 100% ;
+	-webkit-animation: loader2 1.5s linear infinite;
+			animation: loader2 1.5s linear infinite;
+}
+
+.loader2:after{
+	content: "";
+	position: absolute;
+	top: 2px;
+	right: 2px;
+	border-bottom: 3px solid brand-primary;
+	border-left: 3px solid brand-primary;
+	border-radius: 0 0px 0px  50px;
+	width: 40px;
+	height: 40px;
+	background-color: rgba(255, 255, 255, .8);
+	-webkit-transform-origin:  100% 0%;
+			transform-origin:  100% 0% ;
+	-webkit-animation: loader2 1.5s linear infinite;
+			animation: loader2 1.5s linear infinite;
+}
+
+
+
+@-webkit-keyframes loader2{
+  0%{-webkit-transform:rotate(0deg);}
+  100%{-webkit-transform:rotate(360deg);}
+}
+
+@keyframes loader2{
+  0%{transform:rotate(0deg);}
+  100%{transform:rotate(360deg);}
+}

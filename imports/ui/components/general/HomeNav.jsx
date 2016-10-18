@@ -1,4 +1,5 @@
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 
 import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
@@ -14,11 +15,14 @@ export default class HomeNav extends React.Component {
       <Navbar className="home-nav">
         <Navbar.Header>
           <Navbar.Brand>
-            <a><img src="img/logo.svg" alt="triangle with all three sides equal" width="150px" /></a>
+            <a><img src="img/logo_black.svg" alt="e-Potek" width="150px" /></a>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
+          {this.props.currentUser ? <Nav pullLeft>
+            <NavItem href="/main"><p>Mon Compte</p></NavItem>
+          </Nav> : ''}
           <Nav pullRight>
             <NavItem><p>A propos</p></NavItem>
             {/* <AccountsModalContainer /> */}

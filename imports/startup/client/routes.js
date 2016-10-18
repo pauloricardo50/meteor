@@ -13,6 +13,7 @@ import UserLayout from '/imports/ui/layouts/UserLayout.jsx';
 
 import HomePage from '/imports/ui/containers/public/HomePageContainer.jsx';
 import MainPage from '/imports/ui/containers/user/MainPageContainer.jsx';
+import ProfilePage from '/imports/ui/containers/user/ProfilePageContainer.jsx';
 import TodoPage from '/imports/ui/containers/user/TodoPageContainer.jsx';
 import DoPage from '/imports/ui/containers/user/DoPageContainer.jsx';
 
@@ -20,19 +21,18 @@ import DoPage from '/imports/ui/containers/user/DoPageContainer.jsx';
 import RequestProgressBar from '/imports/ui/components/general/RequestProgressBar.jsx';
 
 
-
 // This is recommended to be done in the template files
 // Automatically redirect a user who logged in to his page
-// if (Meteor.isClient) {
-//   Accounts.onLogin(() => {
-//     FlowRouter.go('Main');
-//   });
-//
-//   // Automatically redirect a user who logged out to the home page
-//   Accounts.onLogout(() => {
-//     FlowRouter.go('Home');
-//   });
-// }
+if (Meteor.isClient) {
+  Accounts.onLogin(() => {
+    FlowRouter.go('Main');
+  });
+
+  // Automatically redirect a user who logged out to the home page
+  Accounts.onLogout(() => {
+    FlowRouter.go('Home');
+  });
+}
 
 
 // Public Routes
@@ -51,8 +51,8 @@ FlowRouter.route('/', {
 //     });
 //   },
 // });
-//
-//
+
+
 // User Routes
 FlowRouter.route('/main', {
   name: 'Main',
@@ -62,18 +62,16 @@ FlowRouter.route('/main', {
     });
   },
 });
-//
-//
-// FlowRouter.route('/profile', {
-//   name: 'Profile',
-//   action() {
-//     mount(UserLayout, {
-//       content: <ProfilePage />,
-//     });
-//   },
-// });
-//
-//
+
+FlowRouter.route('/profile', {
+  name: 'Profile',
+  action() {
+    mount(UserLayout, {
+      content: <ProfilePage />,
+    });
+  },
+});
+
 FlowRouter.route('/:id/todo', {
   name: 'Todo',
   action() {
@@ -92,8 +90,8 @@ FlowRouter.route('/:id/todo/:cardId', {
     });
   },
 });
-//
-//
+
+
 // // Admin routes
 // const adminRoutes = FlowRouter.group({
 //   prefix: '/admin',

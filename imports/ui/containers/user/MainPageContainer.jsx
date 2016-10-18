@@ -4,6 +4,7 @@ import { DocHead } from 'meteor/kadira:dochead';
 import { CreditRequests } from '/imports/api/creditrequests/creditrequests.js';
 
 import MainPage from '/imports/ui/pages/user/MainPage.jsx';
+import Loading from '/imports/ui/components/general/Loading.jsx';
 
 function composer(props, onData) {
   Meteor.userId();
@@ -15,4 +16,4 @@ function composer(props, onData) {
   DocHead.setTitle('Mes Financements - e-Potek');
 }
 
-export default composeWithTracker(composer)(MainPage);
+export default composeWithTracker(composer, Loading)(MainPage);

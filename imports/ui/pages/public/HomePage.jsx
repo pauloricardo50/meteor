@@ -12,7 +12,7 @@ export default class HomePage extends React.Component {
   render() {
     return (
       <main>
-        <HomeNav />
+        <HomeNav currentUser={this.props.currentUser} />
         <Header />
         <ProductDescription />
         <ProductComparison />

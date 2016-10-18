@@ -43,10 +43,6 @@ const steps = {
 
 export default class TodoPage extends React.Component {
 
-  componentWillMount() {
-    Session.set('view', '');
-  }
-
   render() {
     return (
       <div style={{ height: '100%', width: '100%' }}>

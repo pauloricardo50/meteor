@@ -2,15 +2,19 @@ import React from 'react';
 
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
-import InitialForm from '/imports/ui/components/forms/InitialForm.jsx';
+import InitialForm from '/imports/ui/components/requestSteps/InitialForm.jsx';
 
 export default class DoPage extends React.Component {
 
+  renderCardContent() {
+    switch (FlowRouter.getParam('cardId')) {
+      case '0': return <InitialForm />;
+      default: return '';
+    }
+  }
+
   render() {
     // If the view sessions variable is empty, go back
-    if (!Session.get('view')) {
-      FlowRouter.go(`/${FlowRouter.getParam('id')}/todo`);
-    }
     return (
       <article>
         <div className="form-group">
@@ -22,7 +26,7 @@ export default class DoPage extends React.Component {
             <span className="fa fa-angle-left" /> Retour
           </a>
         </div>
-        {FlowRouter.getParam('cardId') === '0' ? <InitialForm /> : ''}
+        {this.renderCardContent()}
       </article>
     );
   }
