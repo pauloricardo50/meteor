@@ -1,5 +1,5 @@
 import React from 'react';
-// import { AccountsTemplates } from 'meteor/useraccounts:core';
+import { Meteor } from 'meteor/meteor';
 
 import Panel from 'react-bootstrap/lib/Panel';
 
@@ -12,7 +12,7 @@ export default class ProfilePage extends React.Component {
   }
 
   logout() {
-    AccountsTemplates.logout();
+    Meteor.logout();
   }
 
 
@@ -39,3 +39,7 @@ export default class ProfilePage extends React.Component {
     );
   }
 }
+
+ProfilePage.propTypes = {
+  currentUser: React.PropTypes.objectOf(React.PropTypes.any),
+};

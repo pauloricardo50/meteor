@@ -12,10 +12,15 @@ export default class TodoCard extends React.Component {
     super(props);
 
     this.routeDo = this.routeDo.bind(this);
+    this.progressMax = this.progressMax.bind(this);
+  }
+
+  progressMax(event) {
+    this.props.setProgress(this.props.cardId, 100);
+    event.stopPropagation();
   }
 
   routeDo() {
-    Session.set('view', this.props.cardId.toString());
     const requestId = FlowRouter.getParam('id');
     FlowRouter.go(`/${requestId}/todo/${this.props.cardId}`);
   }
@@ -58,7 +63,7 @@ export default class TodoCard extends React.Component {
           <span className="fa fa-clock-o fa-lg" />
           {this.props.right ? '' : (<span>{ this.props.duration }</span>)}
         </div>
-        <h6>{ this.props.title }</h6>
+        <h6>{ this.props.title } <small><a onClick={this.progressMax}>100%</a></small></h6>
         <span className="fa fa-info-circle fa-lg" />
         <hr />
         <div className="bottom text-center" style={gradientStyle}>{ this.props.completionPercentage.toString() }%</div>
@@ -66,3 +71,12 @@ export default class TodoCard extends React.Component {
     );
   }
 }
+
+TodoCard.propTypes = {
+  cardId: React.PropTypes.number.isRequired,
+  title: React.PropTypes.string.isRequired,
+  duration: React.PropTypes.any.isRequired,
+  completionPercentage: React.PropTypes.number.isRequired,
+  right: React.PropTypes.bool.isRequired,
+  setProgress: React.PropTypes.func,
+};

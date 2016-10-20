@@ -40,7 +40,7 @@ Meteor.publish('creditRequests', function () {
   }
 
   return CreditRequests.find({
-    // userId: this.userId,
+    userId: this.userId,
   });
 });
 

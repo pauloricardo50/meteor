@@ -1,0 +1,204 @@
+<template name="startForm">
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1 text-center animated fadeIn">
+            <h5 id="formInfo">Prenons une minute pour nous connaitre un peu plus</h5>
+        </div>
+        <div class="hidden animated fadeIn" id="theForm">
+            <form action="" class="col-sm-10 col-sm-offset-1 text-center natural-language">
+
+                <!-- Choose what form you want -->
+                <div class="form-line" id="line-1">
+                    <span class="form-text">Je veux </span>
+                    <span class="input">
+                    <select class="resizing_select-1" id="form-type">
+                        <option selected disabled="true"> </option>
+                        <option value="new1">connaitre le maximum de financement que je peux recevoir</option>
+                        <option value="new2">savoir si je peux acheter un bien immobilier que j'ai identifié</option>
+                        <option value="old1">obtenir un nouveau financement pour ma propriété</option>
+                        <option value="old2">renouveler un financement existant ou l’augmenter</option>
+                    </select>
+
+                    <select class="hiddenSelect" id="width_tmp_select-1">
+                        <option id="width_tmp_option-1"></option>
+                    </select>
+                </span>
+                    <span class="form-text">.</span>
+                </div>
+
+                <!-- One or two borrowers and age -->
+                <div class="form-line hidden animated fadeInUp" id="line-2">
+                    <span class="form-text">{{#if single}}Je suis {{else}}Nous sommes {{/if}}</span>
+
+                    <span class="input">
+                        <select class="resizing_select-2" id="borrowerCount">
+                            <option selected disabled="true"> </option>
+                            <option value="singleBorrower">un emprunteur</option>
+                            <option value="twoBorrowers">deux emprunteurs</option>
+                        </select>
+
+                        <select class="hiddenSelect" id="width_tmp_select-2">
+                            <option id="width_tmp_option-2"></option>
+                        </select>
+                    </span>
+
+                    <span class="hidden animated fadeInUp" id="line-2-part-2">
+                        <span class="form-text"> de </span>
+                    <span class="input">
+                            <input type="text" pattern="[0-9]*" id="age1">
+                        </span> {{#if single}} {{else}}
+                    <span class="form-text"> et </span>
+                    <span class="input">
+                            <input type="text" pattern="[0-9]*" id="age2">
+                        </span> {{/if}}
+                    <span class="form-text"> ans</span>
+                    </span>
+                </div>
+
+                <!-- Gender if > 50 years old -->
+                <div class="form-line hidden animated fadeInUp" id="gender-line">
+                    <span class="form-text"> et{{#if single}} je suis {{else}} nous sommes {{/if}}</span>
+                    <span class="input">
+                    <select class="resizing_select-3" id="gender1">
+                        <option selected disabled="true"> </option>
+                        <option value="singleBorrower">un homme</option>
+                        <option value="twoBorrowers">une femme</option>
+                    </select>
+
+                    <select class="hiddenSelect" id="width_tmp_select-3">
+                        <option id="width_tmp_option-3"></option>
+                    </select>
+                </span> {{#if single}} {{else}}
+                    <span class="form-text"> et </span>
+                    <span class="input">
+                    <select class="resizing_select-4" id="gender2">
+                        <option selected disabled="true"> </option>
+                        <option value="singleBorrower">un homme</option>
+                        <option value="twoBorrowers">une femme</option>
+                    </select>
+
+                    <select class="hiddenSelect" id="width_tmp_select-4">
+                        <option id="width_tmp_option-4"></option>
+                    </select>
+                </span> {{/if}}
+                    <span class="form-text">.</span>
+                </div>
+
+                <!-- Residence type -->
+                <div class="form-line hidden animated fadeInUp" id="line-3">
+                    <span class="form-text">{{#if new}}Cette propriété sera{{else}}Cette propriété est{{/if}}</span>
+                    <span class="input">
+                    <select class="resizing_select-5" id="propertyType">
+                        <option selected disabled="true"> </option>
+                        <option value="principal">ma résidence principale</option>
+                        <option value="secondary">ma résidence secondaire</option>
+                        <option value="investment">un bien immobilier de rendement</option>
+                    </select>
+
+                    <select class="hiddenSelect" id="width_tmp_select-5">
+                        <option id="width_tmp_option-5"></option>
+                    </select>
+                </span>
+                    <span class="form-text">.</span>
+                </div>
+
+                <!-- salary and bonus if it exists -->
+                <div class="form-line hidden animated fadeInUp" id="line-4">
+                    <span class="form-text">Le total de {{#if single}}mes revenus brut est {{else}}nos revenus bruts sont {{/if}}de CHF </span>
+                    <span class="input">
+                    <input type="text" pattern="[0-9]*" id="salary">
+                </span>
+                    <span class="form-text"> par an </span>
+                    <span class="hidden animated fadeInUp" id="line-4-part-2">
+                    <span class="input">
+                        <select class="resizing_select-6" id="bonusExists">
+                            <option selected disabled="true"> </option>
+                            <option value="false">sans bonus.</option>
+                            <option value="true">avec un bonus de CHF </option>
+                        </select>
+
+                        <select class="hiddenSelect" id="width_tmp_select-6">
+                            <option id="width_tmp_option-6"></option>
+                        </select>
+                    </span>
+                    </span>
+                    {{#if bonusExists}}
+                    <span class="input">
+                    <input type="text" pattern="[0-9]*" id="bonus">
+                </span> {{/if}}
+                </div>
+
+                <!-- other financial charges -->
+                <!-- <div class="form-line hidden animated fadeInUp" id="line-5"></div> -->
+
+                <!-- Custom, depends on form type -->
+                <div class="form-line hidden animated fadeInUp" id="line-6">
+                    {{#if old}}
+                    <span class="form-text">Finalement, j'estime que ma propriété vaut </span>
+                    <span class="input">
+                        <input type="text" pattern="[0-9]*" id="propertyValue">
+                    </span>
+                    <span class="form-text">.</span> {{/if}} {{#if new1}}
+                    <span class="form-text">Les fonds propres que {{#if single}}je veux {{else}}nous voulons {{/if}}utiliser sont de CHF </span>
+                    <span class="input">
+                        <input type="text" pattern="[0-9]*" id="cash">
+                    </span>
+                    <br/>
+                    <span class="hidden animated fadeInUp" id="line-6-part-3">
+                        <span class="form-text"> plus une part de CHF </span>
+                    <span class="input">
+                            <input type="text" pattern="[0-9]*" id="insuranceCash">
+                        </span>
+                    <span class="form-text"> de {{#if single}}ma LPP/3ème pilier.{{else}}nos LPP/3ème piliers.{{/if}}</span>
+                    </span>
+                    {{/if}} {{#if new2}}
+                    <span class="form-text">J’ai trouvé une propriété dont le prix est de CHF </span>
+                    <span class="input">
+                        <input type="text" pattern="[0-9]*" id="propertyValue">
+                    </span>
+                    <br/>
+                    <span class="hidden animated fadeInUp" id="line-6-part-2">
+                        <span class="form-text"> et les fonds propres que {{#if single}}je veux {{else}}nous voulons {{/if}}utiliser sont de CHF </span>
+                    <span class="input">
+                            <input type="text" pattern="[0-9]*" id="cash">
+                        </span>
+                    </span>
+                    <br/>
+                    <span class="hidden animated fadeInUp" id="line-6-part-3">
+                        <span class="form-text"> plus une part de CHF </span>
+                    <span class="input">
+                            <input type="text" pattern="[0-9]*" id="insuranceCash">
+                        </span>
+                    <span class="form-text"> de {{#if single}}ma LPP/3ème pilier.{{else}}nos LPP/3ème piliers.{{/if}}</span>
+                    </span>
+                    {{/if}}
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-line hidden animated fadeInUp" id="line-7"></div>
+
+                <!-- Where form errors appear -->
+                <div class="form-errors">
+                    <ul id="error-list"></ul>
+                </div>
+            </form>
+        </div>
+        <div class="col-xs-12 hidden animated fadeInUp" id="result" style="margin-top: 50px">
+            {{> charts}}
+
+            <!-- <a href="" class="col-xs-4 col-xs-offset-4 text-center animated fadeIn btn btn-primary btn-large">Go</a> -->
+            {{#if currentUser }}
+            <a href="/main" class="col-xs-4 col-xs-offset-4 text-center animated fadeIn btn btn-primary btn-large" id="formValidButton">Continuer</a> {{else}}
+            <a href="/login" class="col-xs-4 col-xs-offset-4 animated fadeIn btn btn-primary btn-large" id="formValidButton">Continuer</a> {{/if}}
+        </div>
+    </div>
+</template>
+
+
+<template name="charts">
+    <div class="col-sm-7" id="barChart">
+        <canvas width="1500" height="750" id="barCanvas"></canvas>
+    </div>
+    <div class="col-sm-5" id="doughnutChart">
+        <canvas width="750" height="750" id="doughnutCanvas"></canvas>
+    </div>
+</template>

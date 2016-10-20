@@ -17,6 +17,7 @@ export default class AutoForm extends React.Component {
             label={singleInput.label}
             placeholder={singleInput.placeholder}
             id={singleInput.id}
+            currentValue={singleInput.currentValue}
             key={index}
           />
         );
@@ -26,6 +27,7 @@ export default class AutoForm extends React.Component {
             label={singleInput.label}
             placeholder={singleInput.placeholder}
             id={singleInput.id}
+            currentValue={singleInput.currentValue}
             key={index}
           />
         );
@@ -35,6 +37,7 @@ export default class AutoForm extends React.Component {
             label={singleInput.label}
             placeholder={singleInput.placeholder}
             id={singleInput.id}
+            currentValue={singleInput.currentValue}
             key={index}
           />
         );
@@ -43,6 +46,8 @@ export default class AutoForm extends React.Component {
           <RadioInput
             label={singleInput.label}
             values={singleInput.values}
+            default={singleInput.default}
+            currentValue={singleInput.currentValue}
             key={index}
           />
         );
@@ -52,6 +57,7 @@ export default class AutoForm extends React.Component {
             label={singleInput.label}
             placeholder={singleInput.placeholder}
             options={singleInput.options}
+            currentValue={singleInput.currentValue}
             key={index}
           />
         );
@@ -59,7 +65,7 @@ export default class AutoForm extends React.Component {
         return (
           <ConditionalInput conditionalTrueValue={singleInput.conditionalTrueValue} key={index}>
             {this.inputSwitch(singleInput.inputs[0])}
-            {this.inputSwitch(singleInput.inputs[1])}
+            {singleInput.inputs.slice(1).map((input, index2) => this.inputSwitch(input, index2))}
           </ConditionalInput>
         );
       default:
@@ -70,7 +76,7 @@ export default class AutoForm extends React.Component {
   render() {
     return (
       <form className={this.props.formClasses} onSubmit={this.props.onSubmit}>
-        {this.props.inputs.map((input, index) => this.inputSwitch(input, index))}
+        {this.props.inputs.map((input, index1) => this.inputSwitch(input, index1))}
         <button className="btn btn-primary" type="submit">Sauver</button>
       </form>
     );

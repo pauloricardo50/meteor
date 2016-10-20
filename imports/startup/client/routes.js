@@ -12,6 +12,7 @@ import UserLayout from '/imports/ui/layouts/UserLayout.jsx';
 // import '/imports/ui/pages.js';
 
 import HomePage from '/imports/ui/containers/public/HomePageContainer.jsx';
+import StartPage from '/imports/ui/pages/public/StartPage.jsx';
 import LoginPage from '/imports/ui/pages/public/LoginPage.jsx';
 import MainPage from '/imports/ui/containers/user/MainPageContainer.jsx';
 import ProfilePage from '/imports/ui/containers/user/ProfilePageContainer.jsx';
@@ -19,7 +20,7 @@ import TodoPage from '/imports/ui/containers/user/TodoPageContainer.jsx';
 import DoPage from '/imports/ui/containers/user/DoPageContainer.jsx';
 
 // Extra components
-import RequestProgressBar from '/imports/ui/components/general/RequestProgressBar.jsx';
+import RequestProgressBar from '/imports/ui/containers/user/RequestProgressBarContainer.jsx';
 
 
 // This is recommended to be done in the template files
@@ -51,14 +52,12 @@ FlowRouter.route('/login', {
   },
 });
 
-// FlowRouter.route('/start', {
-//   name: 'Start',
-//   action() {
-//     mount(HomeLayout, {
-//       content: <StartPage />,
-//     });
-//   },
-// });
+FlowRouter.route('/start', {
+  name: 'Start',
+  action() {
+    mount(StartPage);
+  },
+});
 
 
 // User Routes

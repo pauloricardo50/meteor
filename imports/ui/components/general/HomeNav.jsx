@@ -21,7 +21,7 @@ export default class HomeNav extends React.Component {
             <span className="icon-bar"></span>
             <span className="icon-bar"></span>
           </button>
-          <a className="navbar-brand">
+          <a href="/" className="navbar-brand">
             <img src="img/logo_black.svg" alt="e-Potek" width="150px" />
           </a>
         </div>

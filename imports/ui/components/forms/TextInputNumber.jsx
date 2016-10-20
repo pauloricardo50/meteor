@@ -19,7 +19,6 @@ export default class TextInputNumber extends React.Component {
           {this.props.label}
         </label>
         <div className="input-group">
-          <div className="input-group-addon">CHF</div>
           <input
             ref={(c) => { this.input = c; }}
             type="text"

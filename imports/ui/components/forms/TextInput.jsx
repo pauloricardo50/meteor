@@ -13,4 +13,11 @@ const TextInput = props => (
   </div>
 );
 
+TextInput.propTypes = {
+  id: React.PropTypes.string.isRequired,
+  label: React.PropTypes.string.isRequired,
+  placeholder: React.PropTypes.string.isRequired,
+  currentValue: React.PropTypes.string,
+};
+
 export default TextInput;

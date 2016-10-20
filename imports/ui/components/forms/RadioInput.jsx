@@ -5,9 +5,7 @@ export default class RadioInput extends React.Component {
   constructor(props) {
     super(props);
     // Set initial state to be the 2nd option
-    this.state = {
-      value: this.props.values[this.props.values.default],
-    };
+    this.state = { value: props.values[props.default] };
     this.setValue = this.setValue.bind(this);
   }
 

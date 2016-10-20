@@ -3,12 +3,21 @@ import React from 'react';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import InitialForm from '/imports/ui/components/requestSteps/InitialForm.jsx';
+import FinancialPartners from '/imports/ui/components/requestSteps/FinancialPartners.jsx';
+import TaxUpload from '/imports/ui/components/requestSteps/TaxUpload.jsx';
+import PropertyUpload from '/imports/ui/components/requestSteps/PropertyUpload.jsx';
+import OffersTable from '/imports/ui/components/requestSteps/OffersTable.jsx';
+
 
 export default class DoPage extends React.Component {
 
   renderCardContent() {
     switch (FlowRouter.getParam('cardId')) {
-      case '0': return <InitialForm />;
+      case '0': return <InitialForm creditRequest={this.props.creditRequest} />;
+      case '1': return <FinancialPartners creditRequest={this.props.creditRequest} />;
+      case '2': return <TaxUpload creditRequest={this.props.creditRequest} />;
+      case '3': return <PropertyUpload creditRequest={this.props.creditRequest} />;
+      case '4': return <OffersTable creditRequest={this.props.creditRequest} />;
       default: return '';
     }
   }
@@ -16,7 +25,7 @@ export default class DoPage extends React.Component {
   render() {
     // If the view sessions variable is empty, go back
     return (
-      <article>
+      <section>
         <div className="form-group">
           <a
             href={`/${FlowRouter.getParam('id')}/todo`}
@@ -27,47 +36,11 @@ export default class DoPage extends React.Component {
           </a>
         </div>
         {this.renderCardContent()}
-      </article>
+      </section>
     );
   }
 }
 
-
-const forms = [
-  [
-    {
-      label: 'Type de Demande',
-      type: 'dropdown',
-    }, {
-      label: '1 ou 2 emprunteurs',
-      type: 'dropdown',
-    }, {
-      label: 'Age(s)',
-      type: 'number',
-    }, {
-      label: 'Résidence',
-      type: 'dropdown',
-    }, {
-      label: 'Salaire',
-      type: 'money',
-    }, {
-      label: 'Bonus',
-      type: 'money',
-    }, {
-      label: 'Fonds Propres',
-      type: 'money',
-    }, {
-      label: 'LPP',
-      type: 'money',
-    }, {
-      label: 'Valeur de la Propriété',
-      type: 'money',
-    },
-  ],
-
-  [
-    {
-      label: 'Quelle est votre banque personelle?'
-    },
-  ]
-]
+DoPage.propTypes = {
+  creditRequest: React.PropTypes.objectOf(React.PropTypes.any).isRequired,
+};
