@@ -6,6 +6,7 @@ export default class ProductComparison extends React.Component {
   render() {
     return (
       <section className="text-center home-comparison">
+        <span className="fa fa-line-chart fa-5x" style={{ color: '#dadada' }} />
         <h3>Pourquoi e-Potek?</h3>
         <p className="subtitle">Comment éviter l'age de pierre.</p>
         <table>

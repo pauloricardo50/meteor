@@ -65,10 +65,12 @@ export default class Header extends React.Component {
     return (
       <header className="home-header">
         {/* <AccountsModalContainer /> */}
-          <div className="text-vertical-center">
+          <div className="text-vertical-center text-vertical-center-dev-fix">
             <h3>La façon la plus simple d'obtenir la meilleure hypothèque.</h3>
             <br />
             <a href="/start" className="btn btn-primary" type="button">Commencer</a>
+            <br />
+            <img src="img/multi_house.svg" alt="e-Potek" width="70%" style={{margin: 'auto', display: 'block'}} />
           </div>
       </header>
     );
