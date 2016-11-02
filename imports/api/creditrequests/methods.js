@@ -16,6 +16,7 @@ export const insertRequest = new ValidatedMethod({
     CreditRequests.insert({
       createdAt: new Date(),
       userId: this.userId,
+      active: true,
       step: 0,
     });
   },
@@ -43,6 +44,7 @@ export const insertStarterRequest = new ValidatedMethod({
     CreditRequests.insert({
       createdAt: new Date(),
       userId: this.userId,
+      active: true,
       step: 0,
       salary,
       fortune,

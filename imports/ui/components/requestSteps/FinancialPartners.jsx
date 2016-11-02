@@ -40,11 +40,6 @@ const formArray = [
         label: 'Lequel?',
         placeholder: 'UBS',
         id: 'avoidBank',
-      }, {
-        type: 'TextInput',
-        label: 'Pourquoi?',
-        placeholder: 'Antédédents Problématiques',
-        id: 'avoidBankReason',
       },
     ],
   },
@@ -59,14 +54,14 @@ export default class FinancialPartners extends React.Component {
 
   render() {
     return (
-      <Panel>
+      <div className="mask1">
         <h3>Mes partenaires financiers particuliers</h3>
         <AutoForm
           inputs={formArray}
           formClasses="col-sm-10 col-sm-offset-1"
           onSubmit={this.onSubmit}
         />
-      </Panel>
+      </div>
     );
   }
 }

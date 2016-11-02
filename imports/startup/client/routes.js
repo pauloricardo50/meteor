@@ -14,14 +14,23 @@ import UserLayout from '/imports/ui/layouts/UserLayout.jsx';
 import HomePage from '/imports/ui/containers/public/HomePageContainer.jsx';
 import StartPage from '/imports/ui/pages/public/StartPage.jsx';
 import LoginPage from '/imports/ui/pages/public/LoginPage.jsx';
+import NewPage from '/imports/ui/pages/user/NewPage.jsx';
 import MainPage from '/imports/ui/containers/user/MainPageContainer.jsx';
 import ProfilePage from '/imports/ui/containers/user/ProfilePageContainer.jsx';
 import TodoPage from '/imports/ui/containers/user/TodoPageContainer.jsx';
 import DoPage from '/imports/ui/containers/user/DoPageContainer.jsx';
+import { Step1Page, Step2Page, Step3Page, Step4Page, Step5Page }
+  from '/imports/ui/containers/user/StepPageContainer.jsx';
 
 // Extra components
 import RequestProgressBar from '/imports/ui/containers/user/RequestProgressBarContainer.jsx';
 
+// MUI Theme, replace lightBaseTheme with a custom theme ASAP!
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+const theme = lightBaseTheme;
 
 // This is recommended to be done in the template files
 // Automatically redirect a user who logged in to his page
@@ -65,16 +74,115 @@ FlowRouter.route('/main', {
   name: 'Main',
   action() {
     mount(UserLayout, {
-      content: <MainPage />,
+      content:
+        <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
+          <MainPage />
+        </MuiThemeProvider>,
+      extraContent: <RequestProgressBar />,
     });
   },
 });
+
+FlowRouter.route('/new', {
+  name: 'New',
+  action() {
+    mount(UserLayout, {
+      content:
+        <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
+          <NewPage />
+        </MuiThemeProvider>,
+    });
+  },
+});
+
+FlowRouter.route('/step1', {
+  name: 'Step1',
+  action() {
+    mount(UserLayout, {
+      content:
+        <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
+          <Step1Page />
+        </MuiThemeProvider>,
+      extraContent: <RequestProgressBar />,
+    });
+  },
+});
+
+FlowRouter.route('/step2', {
+  name: 'Step2',
+  action() {
+    mount(UserLayout, {
+      content:
+        <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
+          <Step2Page />
+        </MuiThemeProvider>,
+      extraContent: <RequestProgressBar />,
+    });
+  },
+});
+
+FlowRouter.route('/step3', {
+  name: 'Step3',
+  action() {
+    mount(UserLayout, {
+      content:
+        <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
+          <Step3Page />
+        </MuiThemeProvider>,
+      extraContent: <RequestProgressBar />,
+    });
+  },
+});
+
+FlowRouter.route('/step4', {
+  name: 'Step4',
+  action() {
+    mount(UserLayout, {
+      content:
+        <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
+          <Step4Page />
+        </MuiThemeProvider>,
+      extraContent: <RequestProgressBar />,
+    });
+  },
+});
+
+FlowRouter.route('/step5', {
+  name: 'Step5',
+  action() {
+    mount(UserLayout, {
+      content:
+        <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
+          <Step5Page />
+        </MuiThemeProvider>,
+      extraContent: <RequestProgressBar />,
+    });
+  },
+});
+
+FlowRouter.route('/step1/:cardId', {
+  name: 'Do',
+  action() {
+    mount(UserLayout, {
+      content:
+        <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
+          <DoPage />
+        </MuiThemeProvider>,
+      extraContent: <RequestProgressBar />,
+    });
+  },
+});
+
 
 FlowRouter.route('/profile', {
   name: 'Profile',
   action() {
     mount(UserLayout, {
-      content: <ProfilePage />,
+      content:
+        <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
+          <ProfilePage />
+        </MuiThemeProvider>,
+      extraContent: <RequestProgressBar />,
     });
   },
 });
@@ -89,14 +197,7 @@ FlowRouter.route('/:id/todo', {
   },
 });
 
-FlowRouter.route('/:id/todo/:cardId', {
-  name: 'Do',
-  action() {
-    mount(UserLayout, {
-      content: <DoPage />,
-    });
-  },
-});
+
 
 
 // // Admin routes

@@ -28,12 +28,13 @@ orange = #E8846B
 
 //Custom Colors
 textcolor = #333333
-backgroundcolor = #FAFAFA
-brand-primary = #2196F3;
-brand-success = #4CAF50;
+backgroundcolor = #FCFCFC
+brand-primary = #4A90E2;
+brand-success = #50E3C2;
 brand-info = #9C27B0;
-brand-warning = #ff9800;
-brand-danger = #e51c23;
+brand-warning = #F1C40F;
+brand-danger = #E74C3C;
+brand-black = #0E1C2D
 
 
 z = {
@@ -56,13 +57,9 @@ social = {
   youtube: #bb0000
 }
 
-$side-nav = 120px
-$side-nav-large = 200px
+$side-nav = 250px
+$side-nav-large = 250px
 $bottom-nav-height = 80px
-
-body
-  background-color backgroundcolor
-  color textcolor
 
 
 // General Styling
@@ -213,11 +210,11 @@ footer
 .start-form
   padding-top: 100px;
 
-input, select, textarea
-  color brand-primary !important
-  background-color backgroundcolor
-  height 29px
-  font-size 16px
+// input, select, textarea
+//   color brand-primary !important
+//   background-color backgroundcolor
+//   height 29px
+//   font-size 16px
 
 #formInfo
   padding 50px
@@ -282,78 +279,9 @@ input, select, textarea
 
 // User Pages
 
-.user-layout
-  lost-center 90%
-  padding-top 20px
-  padding-bottom $bottom-nav-height
-  +above($med)
-    lost-center 90%
-    padding-left $side-nav
-    padding-bottom 0
-  +above($large)
-    lost-center 80%
-    margin-top 40px
-    padding-left $side-nav-large
 
 
-.side-nav
-  fixed bottom left
-  height $bottom-nav-height
-  width 100%
-  overflow hidden
-  background textcolor
-  color #FFF
-  z-index: z.nav
-  shadow-level(2)
-  ul
-    margin 0
-    padding 0
-    display flex
-    justify-content space-between
-    list-style none
-  li
-    width 50%
-    a
-      color #FFF
-      text-decoration none
-      padding 15px 15px
-      display block
-      text-align center
-      trans()
-      &:hover, &.active
-        background lightness(black, 30%)
-  i
-    display block
-    font-size 2em
-    margin-bottom 10px
-  img
-    position: absolute;
-    width: $side-nav - 20px;
-    top: 40px;
-    left: 10px
-    +above($large)
-      width: $side-nav-large - 20px
-  +above($med)
-    height 100%
-    z-index: z.nav // FLO, it was z.mid before
-    padding 120px 0
-    fixed top left
-    width $side-nav
-    ul
-      display block
-    li
-      width auto
-      a
-        padding 20px 10px
-        &:hover, &.active
-          border-left 4px solid green
-  +above($large)
-    width $side-nav-large
-    li
-      a
-        padding 20px 20px
-        &:hover, &.active
-          border-left 10px solid green
+
 
 
 // Main Page
@@ -406,59 +334,87 @@ input, select, textarea
 
 // Progress Bar
 .header-progressbar
-  height 100px
+  height 66px
   width 100%
+  background-color: white;
+  box-shadow 0px -1px 9px 0px rgba(0,0,0,0.50)
   position relative;
   top 0
   left 0
   border none
   z-index: z.header;
+  +above($med)
+    position: fixed;
+    margin-left: $side-nav
+    // adjust the width and remove the side nav width, Replace with width! can't use variable
+    /* Firefox */
+    width: -moz-calc(100% - 250px);
+    /* WebKit */
+    width: -webkit-calc(100% - 250px);
+    /* Opera */
+    width: -o-calc(100% - 250px);
+    /* Standard */
+    width: calc(100% - 250px);
+  +above($large)
+    // margin-left $side-nav-large
+
+.header-progress-menu
+  position: absolute;
+  top: 9px
+  right: 9px
 
 .progressbar
   position relative
   width 100%
-  height: 100px;
+  height: 100%;
   z-index: z.header;
-  background: backgroundcolor;
-  box-shadow 0px -1px 9px 0px rgba(0,0,0,0.50)
-  margin 0
+  color: white
+  margin auto
   padding 0
   +above($med)
-    position fixed
-    padding-left $side-nav
+    width: 75%
     padding-bottom 0
-  +above($large)
-    padding-left $side-nav-large
   li
     list-style-type none
     position relative
     float left
-    width 20% // MODIFY THIS To add more steps
+    width 16.666% // MODIFY THIS To add more steps
+    // height: 100%;
     text-align center
     padding 18px
     font-size 12pt
+    border-radius: 5px
+    cursor: pointer
+    &:hover
+      background-color: #EEEEEE
+      &#progressStep6:before
+        background-color: #EEEEEE
+        color: white
     &:before
-      font-family FontAwesome
-      color #D8D8D8
+      color white
       width 30px
       height 30px
       line-height 30px
-      border 2px solid #D8D8D8
       display block
       text-align center
-      margin 0 auto 10px auto
+      margin auto auto auto auto
       border-radius 50%
-      background-color backgroundcolor
+      background-color #D8D8D8
     &#progressStep1:before
-      content "\f007"
+      content "1"
     &#progressStep2:before
-      content "\f00b"
+      content "2"
     &#progressStep3:before
-      content "\f155"
+      content "3"
     &#progressStep4:before
-      content "\f095"
+      content "4"
     &#progressStep5:before
+      content "5"
+    &#progressStep6:before
+      font-family FontAwesome
       content "\f015"
+      background-color: white
+      color: #d8d8d8
       border-radius 0
       border none
       font-size 16pt
@@ -474,16 +430,13 @@ input, select, textarea
     &:first-child:after
       content none
     &.active
-      color blue
       &:before
-        color blue
-        border-color blue
+        background-color blue
     &.done
-      color green
-    &.done:before
-      color green
-      border-color green
-      content "\f00c" !important
+      &:before
+        background-color green
+        font-family FontAwesome
+        content "\f00c" !important
 
 
 // Sets the color of the bar between the steps,
@@ -502,56 +455,31 @@ input, select, textarea
 svg
   z-index -1
 
-a.todo-card
+.todo-card
   position relative
-  min-height 150px
-  background-color white
-  box-shadow 0px 1px 3px 0px rgba(0,0,0,0.50)
-  border-radius 5px
+  min-height 200px
   margin-bottom 50px
+  padding: 20px
   text-decoration none
+  list-style: none;
   cursor pointer
-  // -webkit-transition all 0.6s ease-in-out
-  // transition all 0.6s ease-in-out
+  -webkit-transition all 250ms cubic-bezier(.02, .01, .47, 1)
+  -moz-transition: all 250ms cubic-bezier(.02, .01, .47, 1);
+  transition: all 250ms cubic-bezier(.02, .01, .47, 1)
+  // Prevent weird text color changes during transitions
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   &:hover
-    box-shadow 0px 2px 5px 0px rgba(0,0,0,0.70)
-  &.final
-    margin-bottom 100px
-    +above($med)
-      margin-bottom 200px
-  .duration
-    width 70px
-    height 25px
-    line-height 25px
-    white-space nowrap
-    display none
-    position absolute
-    top -10px
-    color #000000
-    background-color backgroundcolor
-    &.left
-      left -80px
-      text-align right
-    &.right
-      right -80px
-      text-align left
-    +above($med)
-      display inline
-    span
-      padding 2px
-  h6
-    padding-left 30px
-    padding-right 30px
-    padding-top 25px
-    margin-bottom 5px
-    margin-top 0
+    box-shadow: 0px 40px 40px 0px rgba(0,0,0,0.16);
+    transform: translate(0, -10px);
+    transition-delay: 0s !important;
   .fa-info-circle
     position absolute
     top 0
     right 0
-    margin-left 30px
-    margin-right 30px
-    margin-top 25px
+    margin-left 20px
+    margin-right 20px
+    margin-top 20px
     color #9B9B9B
     cursor default
     &:hover
@@ -563,12 +491,12 @@ a.todo-card
     color #444444
     background-color #444444
     margin 0
-    margin-left 30px
+    margin-left 20px
   .bottom
     height 50px
     width 100%
     line-height 50px
-    font-size 12pt
+    font-size 1em
     background blue
     color white
     position absolute
@@ -744,3 +672,24 @@ a.todo-card
   0%{transform:rotate(0deg);}
   100%{transform:rotate(360deg);}
 }
+
+
+.newUserOption
+  padding: 30px
+  height: 350px
+  span
+    width: 100%
+    font-size: 10em
+    text-align: center
+    padding: 20px
+    color: grey
+
+.newPage
+  padding: 30px;
+
+.finance-widget
+  position absolute
+  height: 75%
+  width: 200px
+  bottom: 25px
+  left: 25px;

@@ -1,21 +1,31 @@
 import React from 'react';
 
+import TextField from 'material-ui/TextField';
+
+
 export default class TextInputNumber extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      textValue: this.props.currentValue,
+    };
+
     this.formatToNumber = this.formatToNumber.bind(this);
   }
 
 // Prevents people from entering characters other than numbers, and formats value with apostrophes
-  formatToNumber() {
-    this.input.value = this.input.value.replace(/\D/g, '');
+  formatToNumber(e) {
+    this.setState({
+      textValue: e.target.value.replace(/\D/g, ''),
+    });
   }
 
   render() {
     return (
       <div className="form-group">
-        <label className="control-label" htmlFor={this.props.id}>
+        {/* <label className="control-label" htmlFor={this.props.id}>
           {this.props.label}
         </label>
         <div className="input-group">
@@ -32,7 +42,19 @@ export default class TextInputNumber extends React.Component {
               (typeof this.props.onChange === 'function') ? this.props.onChange : () => { return undefined; };
             }}
           />
-        </div>
+        </div> */}
+        <TextField
+          floatingLabelText={this.props.label}
+          hintText={this.props.placeholder}
+          value={this.state.textValue}
+          type="text"
+          id={this.props.id}
+          onChange={(e) => {
+            this.formatToMoney(e);
+            (typeof this.props.onChange === 'function') ? this.props.onChange : () => { return undefined; };
+          }}
+          fullWidth
+        />
       </div>
     );
   }

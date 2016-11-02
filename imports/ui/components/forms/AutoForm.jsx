@@ -1,5 +1,7 @@
 import React from 'react';
 
+import RaisedButton from 'material-ui/RaisedButton';
+
 import TextInput from '../forms/TextInput.jsx';
 import TextInputNumber from '../forms/TextInputNumber.jsx';
 import TextInputMoney from '../forms/TextInputMoney.jsx';
@@ -77,7 +79,9 @@ export default class AutoForm extends React.Component {
     return (
       <form className={this.props.formClasses} onSubmit={this.props.onSubmit}>
         {this.props.inputs.map((input, index1) => this.inputSwitch(input, index1))}
-        <button className="btn btn-primary" type="submit">Sauver</button>
+        <div className="form-group">
+          <RaisedButton label="Sauver" primary />
+        </div>
       </form>
     );
   }

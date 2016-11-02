@@ -1,11 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 
-import Panel from 'react-bootstrap/lib/Panel';
-
 import AutoForm from '../forms/AutoForm.jsx';
 
-export default class InitialForm extends Component {
 
+export default class InitialForm extends Component {
   onSubmit(event) {
     event.preventDefault();
   }
@@ -90,10 +88,10 @@ export default class InitialForm extends Component {
     ];
 
     return (
-      <Panel>
+      <div className="mask1">
         <h3>Check-up initial</h3>
         <AutoForm inputs={formArray} formClasses="col-sm-10 col-sm-offset-1" onSubmit={this.onSubmit} creditRequest={this.props.creditRequest}/>
-      </Panel>
+      </div>
     );
   }
 }

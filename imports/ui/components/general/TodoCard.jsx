@@ -21,12 +21,11 @@ export default class TodoCard extends React.Component {
   }
 
   routeDo() {
-    const requestId = FlowRouter.getParam('id');
-    FlowRouter.go(`/${requestId}/todo/${this.props.cardId}`);
+    FlowRouter.go(`/step1/${this.props.cardId + 1}`);
   }
 
   render() {
-    let cardClasses = 'todo-card col-sm-7 col-xs-11 ';
+    let cardClasses = 'mask2 col-sm-6 col-xs-11 ';
     let durationClasses = 'duration ';
     if (this.props.right) {
       cardClasses += 'col-sm-offset-2';
@@ -56,18 +55,15 @@ export default class TodoCard extends React.Component {
     };
 
     return (
-      <a onClick={this.routeDo} className={cardClasses}>
-        <div className={durationClasses}>
-          {/* put clock after duration if card is on the right, opposite if card is on the left */}
-          {this.props.right ? (<span>{ this.props.duration }</span>) : ''}
-          <span className="fa fa-clock-o fa-lg" />
-          {this.props.right ? '' : (<span>{ this.props.duration }</span>)}
+      <li onClick={this.routeDo} className="col-sm-6" style={{listStyle: 'none'}}>
+        <div className="mask2 col-sm-12 todo-card">
+          <h4>{ this.props.title }</h4>
+          <span className="fa fa-info-circle fa-lg" />
+          {/* <hr /> */}
+          <p className="secondary"><span className="fa fa-clock-o fa-lg" /> {this.props.duration} <small><a onClick={this.progressMax}>100%</a></small></p>
+          <div className="bottom text-center" style={gradientStyle}>{ this.props.completionPercentage.toString() }%</div>
         </div>
-        <h6>{ this.props.title } <small><a onClick={this.progressMax}>100%</a></small></h6>
-        <span className="fa fa-info-circle fa-lg" />
-        <hr />
-        <div className="bottom text-center" style={gradientStyle}>{ this.props.completionPercentage.toString() }%</div>
-      </a>
+      </li>
     );
   }
 }

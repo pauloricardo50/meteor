@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { CreditRequests } from '../creditrequests.js';
 
-//Publish a specific creditRequest with an ID
+// Publish a specific creditRequest with an ID
 Meteor.publish('creditRequest', (id) => {
   check(id, String);
 
@@ -23,14 +23,20 @@ Meteor.publish('creditRequest', (id) => {
 });
 
 // Publish the currently active creditrequest
-// Meteor.publish('activeCreditRequest', () => {
-//   // find or findOne? Since there should only be one at any time..?
-//   return CreditRequests.findOne({
-//     active: true,
-//   }, {
-//     userId: this.userId,
-//   });
-// });
+Meteor.publish('activeCreditRequest', function () {
+  // find or findOne? Since there should only be one at any time..?
+  const request = CreditRequests.find({
+    active: true,
+  }, {
+    userId: this.userId,
+  });
+
+  if (request) {
+    return request;
+  }
+
+  return this.ready();
+});
 
 // Publish all creditrequests from the current user
 Meteor.publish('creditRequests', function () {

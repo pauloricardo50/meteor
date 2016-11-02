@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
+
 export default class RadioInput extends React.Component {
 
   constructor(props) {
@@ -18,32 +20,52 @@ export default class RadioInput extends React.Component {
 // TODO: Refactor this into a map function which takes the values array
   render() {
     return (
-      <div className="form-group">
-        <label>{this.props.label}</label><br />
-        <div className="radio-inline">
-          <label>
-            <input
-              type="radio"
-              value={this.props.values[0]}
-              onClick={this.setValue}
-              checked={this.state.value === this.props.values[0]}
-              onChange={this.props.onChange}
-            />
-            {this.props.values[0]}
-          </label>
-        </div>
-        <div className="radio-inline">
-          <label>
-            <input
-              type="radio"
-              value={this.props.values[1]}
-              onClick={this.setValue}
-              checked={this.state.value === this.props.values[1]}
-              onChange={this.props.onChange}
-            />
-            {this.props.values[1]}
-          </label>
-        </div>
+      // <div className="form-group">
+      //   <label>{this.props.label}</label><br />
+      //   <div className="radio-inline">
+      //     <label>
+      //       <input
+      //         type="radio"
+      //         value={this.props.values[0]}
+      //         onClick={this.setValue}
+      //         checked={this.state.value === this.props.values[0]}
+      //         onChange={this.props.onChange}
+      //       />
+      //       {this.props.values[0]}
+      //     </label>
+      //   </div>
+      //   <div className="radio-inline">
+      //     <label>
+      //       <input
+      //         type="radio"
+      //         value={this.props.values[1]}
+      //         onClick={this.setValue}
+      //         checked={this.state.value === this.props.values[1]}
+      //         onChange={this.props.onChange}
+      //       />
+      //       {this.props.values[1]}
+      //     </label>
+      //   </div>
+      // </div>
+
+      <div>
+        <label htmlFor={this.props.label}>{this.props.label}</label>
+        <RadioButtonGroup
+          name={this.props.label}
+          defaultSelected={this.props.values[this.props.default]}
+          onChange={this.props.onChange}
+        >
+          <RadioButton
+            label={this.props.values[0]}
+            value={this.props.values[0]}
+            onClick={this.setValue}
+          />
+          <RadioButton
+            label={this.props.values[1]}
+            value={this.props.values[1]}
+            onClick={this.setValue}
+          />
+        </RadioButtonGroup>
       </div>
     );
   }

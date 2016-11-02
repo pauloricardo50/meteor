@@ -7,12 +7,10 @@ import MainPage from '/imports/ui/pages/user/MainPage.jsx';
 import Loading from '/imports/ui/components/general/Loading.jsx';
 
 function composer(props, onData) {
-  Meteor.userId();
-  if (Meteor.subscribe('creditRequests').ready()) {
-    const creditRequests = CreditRequests.find({}).fetch();
-    onData(null, { creditRequests });
+  if (Meteor.subscribe('activeCreditRequest').ready()) {
+    const creditRequest = CreditRequests.find({}).fetch()[0];
+    onData(null, { creditRequest });
   }
-
   DocHead.setTitle('Mes Financements - e-Potek');
 }
 

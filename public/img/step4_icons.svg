@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="539px" height="105px" viewBox="0 0 539 105" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.3 (33839) - http://www.bohemiancoding.com/sketch -->
+    <title>Icons</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Mocks" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="10.-Mon-Projet-4.1" transform="translate(-568.000000, -371.000000)">
+            <g id="Main" transform="translate(382.000000, 180.000000)">
+                <g id="Icons" transform="translate(186.000000, 191.000000)">
+                    <text id="university---FontAwesome" font-family="FontAwesome" font-size="72" font-weight="normal" fill="#BBBBBB">
+                        <tspan x="461" y="94"></tspan>
+                    </text>
+                    <g id="Group" font-family="FontAwesome" fill="#BBBBBB" font-weight="normal">
+                        <text id="folder-open-o---FontAwesome" font-size="72">
+                            <tspan x="20" y="101"></tspan>
+                        </text>
+                        <text id="file-o---FontAwesome" transform="translate(18.390187, 22.418086) rotate(350.000000) translate(-18.390187, -22.418086) " font-size="36">
+                            <tspan x="2.89018737" y="35.4180863"></tspan>
+                        </text>
+                        <text id="file-image-o---FontAwesome" font-size="36">
+                            <tspan x="45" y="31"></tspan>
+                        </text>
+                        <text id="file-text-o---FontAwesome" transform="translate(102.390187, 22.418086) rotate(10.000000) translate(-102.390187, -22.418086) " font-size="36">
+                            <tspan x="86.8901874" y="35.4180863"></tspan>
+                        </text>
+                    </g>
+                    <path d="M182,81 L382,81" id="Arrow" stroke="#D8D8D8" stroke-width="6" stroke-linecap="square" fill="#D8D8D8"></path>
+                    <path id="Arrow-decoration-1" d="M382,81 L371.2,78 L371.2,84 L382,81 Z" stroke="#D8D8D8" stroke-width="6" stroke-linecap="square" fill="#D8D8D8"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
