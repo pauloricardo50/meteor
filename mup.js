@@ -11,7 +11,7 @@ module.exports = {
 
   setupMongo: false,
   setupNode: true,
-  nodeVersion: '0.10.36',
+  nodeVersion: '4.4.7',
   setupPhantom: true,
 
   meteor: {
