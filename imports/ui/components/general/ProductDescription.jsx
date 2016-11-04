@@ -1,31 +1,53 @@
 import React from 'react';
 
-import Col from 'react-bootstrap/lib/Col';
+
+const styles = {
+  image: {
+    width: '100%',
+    paddingTop: 250,
+    paddingBottom: 200,
+  },
+  article: {
+    height: 250,
+    marginBottom: 50,
+  },
+};
+
 
 export default class ProductDescription extends React.Component {
   render() {
     return (
-      <section className="container-fluid home-product">
-        <article>
-          <img src="img/house_white.svg" alt="e-Potek" />
+      <section>
+        <div className="col-xs-12  col-md-6 col-md-offset-3">
+          <img src="img/product_description.svg" alt="Notre produit" style={styles.image} />
+        </div>
+
+        <article
+          className="col-sm-2 col-sm-offset-2 col-xs-8 col-xs-offset-2 mask1"
+          style={styles.article}
+        >
+          <h4>Sans engagement</h4><br />
+          <p>Avancez à votre rhythme, arrêtez quand vous voulez.</p>
         </article>
-        <article className="col-sm-6 col-sm-offset-6 text-center animated fadeIn">
-          <span className="fa fa-thumbs-up fa-5x" />
-          <h4>Accédez aux meilleures offres du pays</h4>
-          <p>Nous allons voir tous les preteurs potentiels pour vous, sans effort.</p>
+
+        <article
+          className="col-sm-2 col-sm-offset-1 col-xs-8 col-xs-offset-2 mask1"
+          style={styles.article}
+        >
+          <h4>Gratuit, pour toujours</h4><br />
+          <p>Tous nos services sont gratuits, sans frais cachés.</p>
+          <br />
+          <a><small>Comment vous faites?</small></a>
         </article>
-        <article className="col-sm-6 text-center animated fadeIn">
-          <span className="fa fa-check-square fa-5x" />
-          <h4>Gardez un oeil sur vos crédits courants</h4>
-          <p>Nous prenons en charge vos financements existants, et vous notifions quand il est
-          temps de les renouveller.</p>
+
+        <article
+          className="col-sm-2 col-sm-offset-1 col-xs-8 col-xs-offset-2 mask1"
+          style={styles.article}
+        >
+          <h4>En toute sécurité</h4><br />
+          <p>Vos données sont en sureté, et vous avez une confidentialité maximale.</p>
         </article>
-        <article className="col-sm-6 col-sm-offset-6 text-center animated fadeIn">
-          <span className="fa fa-thumbs-up fa-5x" />
-          <h4>En toute simplicité - online</h4>
-          <p>Faites toutes les démarches requises à votre rhythme, depuis votre canapé,
-          ou sur votre smartphone.</p>
-        </article>
+
       </section>
     );
   }

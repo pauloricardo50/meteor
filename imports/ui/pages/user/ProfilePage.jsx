@@ -1,33 +1,61 @@
 import React from 'react';
-import { Meteor } from 'meteor/meteor';
 
-import Panel from 'react-bootstrap/lib/Panel';
+import Checkbox from 'material-ui/Checkbox';
+
+
+const style = {
+  h: {
+    display: 'inline-block',
+    marginRight: 5,
+  },
+  content: {
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+};
+
 
 export default class ProfilePage extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this.logout = this.logout.bind(this);
   }
-
-  logout() {
-    Meteor.logout();
-  }
-
 
   render() {
-    const panelFooter = <button onClick={this.logout} className="btn btn-default">Déconnexion</button>;
-
     return (
-      <Panel footer={panelFooter}>
-        <div className="text-center">
-          <span className="fa fa-user fa-5x" />
-        </div>
+      <section className="mask1">
+        <h2>Mon Profil</h2>
         <hr />
 
-        <div className="form-group col-sm-8 col-sm-offset-2">
-          <p>E-mail: {this.props.currentUser.emails[0].address}</p>
+        <div style={style.content}>
+          <div className="form-group">
+            <h4 style={style.h}>Adresse email</h4><a>Changer</a>
+            <p className="secondary">{this.props.currentUser.emails[0].address}</p>
+          </div>
+
+          <div className="form-group">
+            <h4 style={style.h}>Mot de passe</h4><a>Changer</a>
+          </div>
+
+          <div className="form-group">
+            <h4 style={style.h}>Téléphone</h4><a>Changer</a>
+            <p className="secondary">+41 78 709 31 31</p>
+          </div>
+
+          <div className="form-group">
+            <h4 style={style.h}>Langue</h4><a>Changer</a>
+            <p className="secondary">Français</p>
+          </div>
+
+          <div className="form-group">
+            <h4>Recevoir des notifications quand mon dossier avance</h4>
+            <Checkbox
+              label="Par email"
+            />
+            <Checkbox
+              label="Par SMS"
+            />
+          </div>
         </div>
 
 
@@ -35,7 +63,7 @@ export default class ProfilePage extends React.Component {
             <li><a href="/admin/users">{{_ "nav_admin_users"}}</a></li>
             <li><a href="/admin/requests">{{_ "nav_admin_requests"}}</a></li>
         </ul> */}
-      </Panel>
+      </section>
     );
   }
 }

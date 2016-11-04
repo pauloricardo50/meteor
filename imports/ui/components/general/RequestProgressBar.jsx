@@ -9,13 +9,6 @@ import IconButton from 'material-ui/IconButton';
 import Divider from 'material-ui/Divider';
 import ActionSettings from 'material-ui/svg-icons/action/settings';
 
-// MUI Theme, replace lightBaseTheme with a custom theme ASAP!
-import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
-const theme = lightBaseTheme;
-
 
 var injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
@@ -60,18 +53,16 @@ export default class RequestProgressBar extends React.Component {
 
           {/* Large screens only */}
           <div className="header-progress-menu hidden-xs">
-            <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
-              <IconMenu
-                iconButtonElement={<IconButton><ActionSettings color="#333333" hoverColor="#888888" /></IconButton>}
-                anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-                targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-              >
-                <MenuItem primaryText="Mon Profil" href="/profile" />
-                <MenuItem primaryText="Contactez-nous" href="/contact" />
-                <Divider />
-                <MenuItem primaryText="Déconnexion" onClick={() => Meteor.logout()} />
-              </IconMenu>
-            </MuiThemeProvider>
+            <IconMenu
+              iconButtonElement={<IconButton><ActionSettings color="#333333" hoverColor="#888888" /></IconButton>}
+              anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+              targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+            >
+              <MenuItem primaryText="Mon Profil" href="/profile" />
+              <MenuItem primaryText="Contactez-nous" href="/contact" />
+              <Divider />
+              <MenuItem primaryText="Déconnexion" onClick={() => Meteor.logout()} />
+            </IconMenu>
           </div>
 
         </header>

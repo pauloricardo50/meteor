@@ -26,6 +26,13 @@ const options = [
   },
 ];
 
+const styles = {
+  button: {
+    position: 'absolute',
+    bottom: 20,
+  },
+};
+
 
 export default class NewUserOptions extends React.Component {
   constructor(props) {
@@ -41,7 +48,7 @@ export default class NewUserOptions extends React.Component {
             <div className="col-md-12 mask1 newUserOption">
               <span className={option.icon} />
               <h4>{option.title}</h4>
-              <RaisedButton label={option.button} href={option.href} primary />
+              <RaisedButton label={option.button} href={option.href} primary style={styles.button} />
             </div>
           </article>
         ))}

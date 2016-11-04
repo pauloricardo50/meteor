@@ -56,19 +56,21 @@ export default class Step1Page extends React.Component {
           Appuyez sur une carte incomplète pour avancer
         </div>
         <hr id="todo-hr-top" />
-        {todoCards.map((card, index) =>
-          (<TodoCard
-            // creditRequest={this.props.creditRequest}
-            title={card.title}
-            duration={card.duration}
-            // completionPercentage={card.completionPercentage}
-            completionPercentage={this.state.progress[index]}
-            setProgress={this.setProgress}
-            right={card.right}
-            cardId={index}
-            key={index}
-          />)
-        )}
+        <ul>
+          {todoCards.map((card, index) =>
+            (<TodoCard
+              // creditRequest={this.props.creditRequest}
+              title={card.title}
+              duration={card.duration}
+              // completionPercentage={card.completionPercentage}
+              completionPercentage={this.state.progress[index]}
+              setProgress={this.setProgress}
+              right={card.right}
+              cardId={index}
+              key={index}
+            />)
+          )}
+        </ul>
       </div>
     );
   }

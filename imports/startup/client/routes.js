@@ -6,7 +6,7 @@ import React from 'react';
 import { mount } from 'react-mounter';
 
 // import { AdminLayout } from '/imports/ui/layouts/AdminLayout.jsx';
-import HomeLayout from '/imports/ui/layouts/HomeLayout.jsx';
+import PublicLayout from '/imports/ui/layouts/PublicLayout.jsx';
 import UserLayout from '/imports/ui/layouts/UserLayout.jsx';
 
 // import '/imports/ui/pages.js';
@@ -21,16 +21,11 @@ import TodoPage from '/imports/ui/containers/user/TodoPageContainer.jsx';
 import DoPage from '/imports/ui/containers/user/DoPageContainer.jsx';
 import { Step1Page, Step2Page, Step3Page, Step4Page, Step5Page }
   from '/imports/ui/containers/user/StepPageContainer.jsx';
+import ContactPage from '/imports/ui/containers/user/ContactPageContainer.jsx';
+
 
 // Extra components
 import RequestProgressBar from '/imports/ui/containers/user/RequestProgressBarContainer.jsx';
-
-// MUI Theme, replace lightBaseTheme with a custom theme ASAP!
-import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
-const theme = lightBaseTheme;
 
 // This is recommended to be done in the template files
 // Automatically redirect a user who logged in to his page
@@ -50,21 +45,30 @@ if (Meteor.isClient) {
 FlowRouter.route('/', {
   name: 'Home',
   action() {
-    mount(HomePage);
+    mount(PublicLayout, {
+      content:
+        <HomePage />,
+    });
   },
 });
 
 FlowRouter.route('/login', {
   name: 'Login',
   action() {
-    mount(LoginPage);
+    mount(PublicLayout, {
+      content:
+        <LoginPage />,
+    });
   },
 });
 
 FlowRouter.route('/start', {
   name: 'Start',
   action() {
-    mount(StartPage);
+    mount(PublicLayout, {
+      content:
+        <StartPage />,
+    });
   },
 });
 
@@ -75,9 +79,7 @@ FlowRouter.route('/main', {
   action() {
     mount(UserLayout, {
       content:
-        <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
-          <MainPage />
-        </MuiThemeProvider>,
+        <MainPage />,
       extraContent: <RequestProgressBar />,
     });
   },
@@ -88,9 +90,7 @@ FlowRouter.route('/new', {
   action() {
     mount(UserLayout, {
       content:
-        <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
-          <NewPage />
-        </MuiThemeProvider>,
+        <NewPage />,
     });
   },
 });
@@ -100,9 +100,7 @@ FlowRouter.route('/step1', {
   action() {
     mount(UserLayout, {
       content:
-        <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
-          <Step1Page />
-        </MuiThemeProvider>,
+        <Step1Page />,
       extraContent: <RequestProgressBar />,
     });
   },
@@ -113,9 +111,7 @@ FlowRouter.route('/step2', {
   action() {
     mount(UserLayout, {
       content:
-        <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
-          <Step2Page />
-        </MuiThemeProvider>,
+        <Step2Page />,
       extraContent: <RequestProgressBar />,
     });
   },
@@ -126,9 +122,7 @@ FlowRouter.route('/step3', {
   action() {
     mount(UserLayout, {
       content:
-        <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
-          <Step3Page />
-        </MuiThemeProvider>,
+        <Step3Page />,
       extraContent: <RequestProgressBar />,
     });
   },
@@ -139,9 +133,7 @@ FlowRouter.route('/step4', {
   action() {
     mount(UserLayout, {
       content:
-        <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
-          <Step4Page />
-        </MuiThemeProvider>,
+        <Step4Page />,
       extraContent: <RequestProgressBar />,
     });
   },
@@ -152,9 +144,7 @@ FlowRouter.route('/step5', {
   action() {
     mount(UserLayout, {
       content:
-        <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
-          <Step5Page />
-        </MuiThemeProvider>,
+        <Step5Page />,
       extraContent: <RequestProgressBar />,
     });
   },
@@ -165,9 +155,7 @@ FlowRouter.route('/step1/:cardId', {
   action() {
     mount(UserLayout, {
       content:
-        <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
-          <DoPage />
-        </MuiThemeProvider>,
+        <DoPage />,
       extraContent: <RequestProgressBar />,
     });
   },
@@ -179,9 +167,18 @@ FlowRouter.route('/profile', {
   action() {
     mount(UserLayout, {
       content:
-        <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
-          <ProfilePage />
-        </MuiThemeProvider>,
+        <ProfilePage />,
+      extraContent: <RequestProgressBar />,
+    });
+  },
+});
+
+FlowRouter.route('/contact', {
+  name: 'Contact',
+  action() {
+    mount(UserLayout, {
+      content:
+        <ContactPage />,
       extraContent: <RequestProgressBar />,
     });
   },
@@ -196,8 +193,6 @@ FlowRouter.route('/:id/todo', {
     });
   },
 });
-
-
 
 
 // // Admin routes
