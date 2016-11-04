@@ -55,7 +55,7 @@ export default class RequestProgressBar extends React.Component {
           <div className="header-progress-menu hidden-xs">
             <IconMenu
               iconButtonElement={<IconButton><ActionSettings color="#333333" hoverColor="#888888" /></IconButton>}
-              anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
               targetOrigin={{ horizontal: 'right', vertical: 'top' }}
             >
               <MenuItem primaryText="Mon Profil" href="/profile" />

@@ -1,18 +1,30 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-// import Blaze from 'meteor/gadicc:blaze-react-component';
-//
-// import Navbar from 'react-bootstrap/lib/Navbar';
-// import Nav from 'react-bootstrap/lib/Nav';
-// import NavItem from 'react-bootstrap/lib/NavItem';
-//
-// import AccountsModalContainer from '../accounts/AccountsModalContainer.jsx';
-// import AccountsUI from '../accounts/AccountsUI.jsx';
 
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
 
+
+const styles = {
+  navbar: {
+    backgroundColor: '#FFFFFF',
+    color: '#000000',
+    position: 'fixed',
+    boxShadow: '0px 2px 40px 0px rgba(0,0,0,0.08)',
+  },
+  imageDiv: {
+    position: 'absolute',
+    left: 24,
+    padding: 17,
+  },
+  image: {
+    height: 30,
+  },
+  button: {
+    color: '#000000',
+  },
+};
 
 export default class PublicNav extends React.Component {
   constructor(props) {
@@ -34,15 +46,19 @@ export default class PublicNav extends React.Component {
 
   render() {
     if (Meteor.user()) {
-      var button =  <FlatButton label="Logout" onClick={() => Meteor.logout()} />;
+      var button =  <FlatButton style={styles.button} label="Logout" onClick={() => Meteor.logout()} />;
     } else {
-      var button = <FlatButton label="Login" onClick={() => FlowRouter.go('/login')} />;
+      var button = <FlatButton style={styles.button} label="Login" onClick={() => FlowRouter.go('/login')} />;
     }
 
     return (
       <AppBar
         // title=("Title")
-        iconElementLeft={<img src="img/logo_white.svg" alt="e-Potek" width="200px" />}
+        style={styles.navbar}
+        children={
+          <a href="/" style={styles.imageDiv}>
+            <img src="img/logo_black.svg" alt="e-Potek" style={styles.image} />
+          </a>}
         iconElementRight={button}
         // iconClassNameRight="muidocs-icon-navigation-expand-more"
       />

@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 const styles = {
   text: {
-    paddingTop: 100,
+    paddingTop: 250,
   },
   image: {
     position: 'absolute',
