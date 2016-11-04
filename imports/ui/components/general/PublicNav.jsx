@@ -1,5 +1,6 @@
 import React from 'react';
-// import { Meteor } from 'meteor/meteor';
+import { Meteor } from 'meteor/meteor';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 // import Blaze from 'meteor/gadicc:blaze-react-component';
 //
 // import Navbar from 'react-bootstrap/lib/Navbar';
@@ -10,15 +11,39 @@ import React from 'react';
 // import AccountsUI from '../accounts/AccountsUI.jsx';
 
 import AppBar from 'material-ui/AppBar';
-
+import FlatButton from 'material-ui/FlatButton';
 
 
 export default class PublicNav extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.logInOut = this.logInOut.bind(this);
+  }
+
+  logInOut() {
+    if (Meteor.user()) {
+      return (
+        <FlatButton label="Logout" onClick={() => Meteor.logout()} />
+      );
+    }
+    return (
+      <FlatButton label="Login" onClick={() => FlowRouter.go('/login')} />
+    );
+  }
+
   render() {
+    if (Meteor.user()) {
+      var button =  <FlatButton label="Logout" onClick={() => Meteor.logout()} />;
+    } else {
+      var button = <FlatButton label="Login" onClick={() => FlowRouter.go('/login')} />;
+    }
+
     return (
       <AppBar
         // title=("Title")
-        children={<img src="img/logo_white.svg" alt="e-Potek" width="200px" />}
+        iconElementLeft={<img src="img/logo_white.svg" alt="e-Potek" width="200px" />}
+        iconElementRight={button}
         // iconClassNameRight="muidocs-icon-navigation-expand-more"
       />
     );
