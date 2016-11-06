@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { DocHead } from 'meteor/kadira:dochead';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import RaisedButton from 'material-ui/RaisedButton';

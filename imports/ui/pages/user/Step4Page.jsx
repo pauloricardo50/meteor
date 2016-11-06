@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react';
+import { DocHead } from 'meteor/kadira:dochead';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -6,6 +7,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 export default class Step4Page extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    DocHead.setTitle('Étape 4 - e-Potek');
   }
 
   render() {

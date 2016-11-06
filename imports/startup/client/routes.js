@@ -1,31 +1,25 @@
-import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-// import { Accounts } from 'meteor/accounts-base';
 
 import React from 'react';
 import { mount } from 'react-mounter';
 
-// import { AdminLayout } from '/imports/ui/layouts/AdminLayout.jsx';
+// layouts
 import PublicLayout from '/imports/ui/layouts/PublicLayout.jsx';
 import UserLayout from '/imports/ui/layouts/UserLayout.jsx';
 
-// import '/imports/ui/pages.js';
-
+// Pages and top-level components
 import HomePage from '/imports/ui/containers/public/HomePageContainer.jsx';
 import StartPage from '/imports/ui/pages/public/StartPage.jsx';
 import LoginPage from '/imports/ui/pages/public/LoginPage.jsx';
 import NewPage from '/imports/ui/pages/user/NewPage.jsx';
-import MainPage from '/imports/ui/containers/user/MainPageContainer.jsx';
-import ProfilePage from '/imports/ui/containers/user/ProfilePageContainer.jsx';
-import TodoPage from '/imports/ui/containers/user/TodoPageContainer.jsx';
-import DoPage from '/imports/ui/containers/user/DoPageContainer.jsx';
-import { Step1Page, Step2Page, Step3Page, Step4Page, Step5Page }
-  from '/imports/ui/containers/user/StepPageContainer.jsx';
-import ContactPage from '/imports/ui/containers/user/ContactPageContainer.jsx';
 
+import {
+  MainPage, DoPage, FinancePage, ContactPage,
+  Step1Page, Step2Page, Step3Page, Step4Page, Step5Page,
+  RequestProgressBar,
+} from '/imports/ui/containers/user/ActiveRequestContainer.jsx';
 
-// Extra components
-import RequestProgressBar from '/imports/ui/containers/user/RequestProgressBarContainer.jsx';
+import SettingsPage from '/imports/ui/containers/user/SettingsPageContainer.jsx';
 
 
 // Public Routes
@@ -149,12 +143,12 @@ FlowRouter.route('/step1/:cardId', {
 });
 
 
-FlowRouter.route('/profile', {
-  name: 'Profile',
+FlowRouter.route('/settings', {
+  name: 'Settings',
   action() {
     mount(UserLayout, {
       content:
-        <ProfilePage />,
+        <SettingsPage />,
       extraContent: <RequestProgressBar />,
     });
   },
@@ -171,11 +165,12 @@ FlowRouter.route('/contact', {
   },
 });
 
-FlowRouter.route('/:id/todo', {
-  name: 'Todo',
+FlowRouter.route('/finance', {
+  name: 'Finance',
   action() {
     mount(UserLayout, {
-      content: <TodoPage />,
+      content:
+        <FinancePage />,
       extraContent: <RequestProgressBar />,
     });
   },

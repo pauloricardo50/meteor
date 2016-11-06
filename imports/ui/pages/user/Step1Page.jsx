@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { DocHead } from 'meteor/kadira:dochead';
 
 import TodoCard from '/imports/ui/components/general/TodoCard.jsx';
 
@@ -45,6 +46,10 @@ export default class Step1Page extends Component {
       progress: [100, 0, 0, 0],
     };
     this.setProgress = this.setProgress.bind(this);
+  }
+
+  componentDidMount() {
+    DocHead.setTitle('Étape 1 - e-Potek');
   }
 
 // TODO: remove this, progress should come from the database

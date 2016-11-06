@@ -7,6 +7,11 @@ import '/imports/ui/components/blaze/startForm.js';
 
 
 export default class StartPage extends React.Component {
+  componentDidMount() {
+    DocHead.setTitle('e-Potek');
+  }
+
+
   render() {
     return (
       <section id="start-main">

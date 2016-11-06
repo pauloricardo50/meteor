@@ -25,6 +25,11 @@ const styles = {
 };
 
 export default class LoginPage extends React.Component {
+  componentDidMount() {
+    DocHead.setTitle('Login - e-Potek');
+  }
+
+
   render() {
     return (
       <section style={styles.section}>

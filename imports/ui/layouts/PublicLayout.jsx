@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-import PublicNav from '/imports/ui/components/general/PublicNav.jsx';
+import PublicNav from '/imports/ui/containers/public/CurrentUserContainer.jsx';
 
 // MUI Theme, replace lightBaseTheme with a custom theme ASAP!
 import myTheme from '/imports/js/mui_custom.js';
@@ -12,7 +12,7 @@ const theme = myTheme;
 const PublicLayout = props => (
   <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
     <main>
-      <PublicNav />
+      <PublicNav currentUser={props.currentUser} />
       {props.content}
     </main>
   </MuiThemeProvider>
@@ -20,6 +20,7 @@ const PublicLayout = props => (
 
 PublicLayout.propTypes = {
   content: PropTypes.element.isRequired,
+  currentUser: PropTypes.objectOf(PropTypes.any),
 };
 
 

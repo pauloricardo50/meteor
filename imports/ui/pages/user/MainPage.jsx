@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 import { FlowRouter } from 'meteor/kadira:flow-router';
+import { DocHead } from 'meteor/kadira:dochead';
+
 
 import { insertRequest, insertStarterRequest } from '/imports/api/creditrequests/methods.js';
 
@@ -20,6 +22,8 @@ export default class MainPage extends React.Component {
       const realStep = this.props.creditRequest.step + 1;
       FlowRouter.go(`/step${realStep}`);
     }
+
+    DocHead.setTitle('Bienvenue! - e-Potek');
   }
 
   newRequest() {

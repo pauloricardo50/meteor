@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react';
+import { DocHead } from 'meteor/kadira:dochead';
+
 
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
@@ -19,6 +21,10 @@ export default class NewPage extends React.Component {
 
     this.newRequest = this.newRequest.bind(this);
     this.textChange = this.textChange.bind(this);
+  }
+
+  componentDidMount() {
+    DocHead.setTitle('Nouvelle Demande - e-Potek');
   }
 
   newRequest() {

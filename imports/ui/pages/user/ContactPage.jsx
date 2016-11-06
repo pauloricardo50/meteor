@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { DocHead } from 'meteor/kadira:dochead';
 
 
 const style = {
@@ -12,6 +13,10 @@ const style = {
 export default class ContactPage extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    DocHead.setTitle('Nous Contacter - e-Potek');
   }
 
   render() {

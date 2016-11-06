@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 
 import Header from '/imports/ui/components/general/Header.jsx';
 import ProductDescription from '/imports/ui/components/general/ProductDescription.jsx';
@@ -11,7 +11,11 @@ const styles = {
   },
 };
 
-export default class HomePage extends React.Component {
+export default class HomePage extends Component {
+  componentDidMount() {
+    DocHead.setTitle('e-Potek');
+  }
+
   render() {
     return (
       <div>

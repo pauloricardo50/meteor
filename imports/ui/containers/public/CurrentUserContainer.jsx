@@ -1,8 +1,8 @@
 import { composeWithTracker } from 'react-komposer';
 import { Meteor } from 'meteor/meteor';
 
-import ProfilePage from '/imports/ui/pages/user/ProfilePage.jsx';
 import Loading from '/imports/ui/components/general/Loading.jsx';
+import PublicNav from '/imports/ui/components/general/PublicNav.jsx';
 
 function composer(props, onData) {
   if (Meteor.subscribe('currentUser').ready()) {
@@ -12,4 +12,4 @@ function composer(props, onData) {
   }
 }
 
-export default composeWithTracker(composer, Loading)(ProfilePage);
+export default composeWithTracker(composer, Loading)(PublicNav);

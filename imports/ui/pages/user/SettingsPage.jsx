@@ -1,4 +1,5 @@
 import React from 'react';
+import { DocHead } from 'meteor/kadira:dochead';
 
 import Checkbox from 'material-ui/Checkbox';
 
@@ -15,16 +16,20 @@ const style = {
 };
 
 
-export default class ProfilePage extends React.Component {
+export default class SettingsPage extends React.Component {
 
   constructor(props) {
     super(props);
   }
 
+  componentDidMount() {
+    DocHead.setTitle('Réglages - e-Potek');
+  }
+
   render() {
     return (
       <section className="mask1">
-        <h2>Mon Profil</h2>
+        <h2>Réglages</h2>
         <hr />
 
         <div style={style.content}>
@@ -68,6 +73,6 @@ export default class ProfilePage extends React.Component {
   }
 }
 
-ProfilePage.propTypes = {
+SettingsPage.propTypes = {
   currentUser: React.PropTypes.objectOf(React.PropTypes.any),
 };
