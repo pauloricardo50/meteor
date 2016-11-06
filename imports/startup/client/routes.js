@@ -27,19 +27,6 @@ import ContactPage from '/imports/ui/containers/user/ContactPageContainer.jsx';
 // Extra components
 import RequestProgressBar from '/imports/ui/containers/user/RequestProgressBarContainer.jsx';
 
-// This is recommended to be done in the template files
-// Automatically redirect a user who logged in to his page
-if (Meteor.isClient) {
-  Accounts.onLogin(() => {
-    FlowRouter.go('Main');
-  });
-
-  // Automatically redirect a user who logged out to the home page
-  Accounts.onLogout(() => {
-    FlowRouter.go('Home');
-  });
-}
-
 
 // Public Routes
 FlowRouter.route('/', {

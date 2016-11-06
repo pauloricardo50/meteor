@@ -1,7 +1,17 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 import TodoCard from '/imports/ui/components/general/TodoCard.jsx';
 
+
+const styles = {
+  div: {
+    height: '100%',
+    width: '100%',
+  },
+  ul: {
+    padding: 0,
+  },
+};
 
 const todoCards = [
   {
@@ -28,7 +38,7 @@ const todoCards = [
 ];
 
 
-export default class Step1Page extends React.Component {
+export default class Step1Page extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -48,7 +58,7 @@ export default class Step1Page extends React.Component {
 
   render() {
     return (
-      <div style={{ height: '100%', width: '100%' }}>
+      <div style={styles.div}>
         <div
           className="text-center"
           id="todo-text-top"
@@ -56,7 +66,7 @@ export default class Step1Page extends React.Component {
           Appuyez sur une carte incomplète pour avancer
         </div>
         <hr id="todo-hr-top" />
-        <ul>
+        <ul style={styles.ul}>
           {todoCards.map((card, index) =>
             (<TodoCard
               // creditRequest={this.props.creditRequest}

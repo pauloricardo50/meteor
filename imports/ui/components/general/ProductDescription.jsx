@@ -19,7 +19,7 @@ export default class ProductDescription extends React.Component {
     return (
       <section>
         <div className="col-xs-12  col-md-6 col-md-offset-3">
-          <img src="img/product_description.svg" alt="Notre produit" style={styles.image} />
+          <img src="img/product_description.png" alt="Notre produit" style={styles.image} />
         </div>
 
         <article

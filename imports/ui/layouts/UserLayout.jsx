@@ -1,4 +1,6 @@
-import React, {PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import SideNav from '../components/general/SideNav.jsx';
 import BottomNav from '../components/general/BottomNav.jsx';
@@ -13,26 +15,39 @@ const theme = myTheme;
 // TODO: hide navbars if there is currently no active creditRequest
 
 
-const UserLayout = props => (
-  <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
-    <div>
-      {props.extraContent}
+export default class UserLayout extends Component {
 
-      <SideNav />
+  componentDidMount() {
+    // Anyone coming to a userlayout page without being logged in, is taken to the login page.
+    // TODO: add a parameter to the URL to indicate which route this person came from, so that
+    // When he logs in, he's taken to that URL
+    if (!Meteor.userId()) {
+      FlowRouter.go('/login');
+    }
+  }
 
-      <main className="user-layout">
-        {props.content}
-      </main>
+  render() {
+    return (
+      <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
+        <div>
+          {this.props.extraContent}
 
-      <BottomNav />
+          <SideNav />
 
-    </div>
-  </MuiThemeProvider>
-);
+          <main className="user-layout">
+            {this.props.content}
+          </main>
+
+          <BottomNav />
+
+        </div>
+      </MuiThemeProvider>
+    );
+  }
+
+}
 
 UserLayout.propTypes = {
   content: PropTypes.element.isRequired,
   extraContent: PropTypes.element,
 };
-
-export default UserLayout;
