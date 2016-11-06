@@ -19,7 +19,7 @@ export default class MainPage extends React.Component {
   componentWillMount() {
     // if a creditRequest exists, route to the current step
     if (this.props.creditRequest) {
-      const realStep = this.props.creditRequest.step + 1;
+      const realStep = this.props.creditRequest.logic.step + 1;
       FlowRouter.go(`/step${realStep}`);
     }
 

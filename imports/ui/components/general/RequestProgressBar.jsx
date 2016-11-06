@@ -11,9 +11,9 @@ export default class RequestProgressBar extends React.Component {
 
   progressClasses(stepNumber) {
     if (this.props.creditRequest) {
-      if (this.props.creditRequest.step < stepNumber) {
+      if (this.props.creditRequest.logic.step < stepNumber) {
         return 'bold';
-      } else if (this.props.creditRequest.step === stepNumber) {
+      } else if (this.props.creditRequest.logic.step === stepNumber) {
         return 'bold active';
       }
       return 'bold done';

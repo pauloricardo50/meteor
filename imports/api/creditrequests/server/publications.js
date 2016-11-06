@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
-import { CreditRequests } from '../creditrequests.js';
+import CreditRequests from '../creditrequests.js';
 
 // Publish a specific creditRequest with an ID
 Meteor.publish('creditRequest', (id) => {

@@ -30,7 +30,7 @@ export default class NewPage extends React.Component {
   newRequest() {
     // If there is an address, insert a new creditRequest
     if (this.state.textValue !== '') {
-      insertRequest.call({}, (error, result) => {
+      insertRequest.call({ requestName: this.state.textValue }, (error, result) => {
         if (error) {
           // TODO: Remove this console log
           console.log(error);

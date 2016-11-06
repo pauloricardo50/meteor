@@ -2,22 +2,30 @@ import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { check } from 'meteor/check';
 
-import { CreditRequests } from './creditrequests.js';
+import CreditRequests from './creditrequests.js';
 
 export const insertRequest = new ValidatedMethod({
   name: 'creditrequests.insert',
   validate() {},
-  run() {
+  run({ requestName }) {
     // Verify if user is logged in
     if (!this.userId) {
       throw new Meteor.Error('notLoggedIn', 'Must be logged in to create a request');
     }
 
+    const userRequests = CreditRequests.find({ userId: this.userId });
+
+    // Set all existing requests to inactive
+    userRequests.forEach(function (request) {
+      CreditRequests.update(request._id, {
+        $set: { active: false },
+      });
+    });
+
+    // Insert new active request
     CreditRequests.insert({
-      createdAt: new Date(),
-      userId: this.userId,
+      requestName,
       active: true,
-      step: 0,
     });
   },
 });
