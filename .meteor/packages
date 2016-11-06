@@ -24,7 +24,8 @@ gadicc:blaze-react-component    # Allows using blaze templates in react, should 
 aldeed:template-extension       # allows Template.xx.replaces, should be removed at some point
 
 # Data
-aldeed:simple-schema            # Schema Validation package for MongoDB in Meteor
+aldeed:simple-schema            # Easily define schemas for a MongoDB collection
+aldeed:collection2              # Allow validation based on schemas on insert/update/etc..
 mdg:validated-method            # MDG written server-side validation before storing
 check                           # variable type verification for server side validation
 session                         # Lets you use Session variables
@@ -34,8 +35,8 @@ session                         # Lets you use Session variables
 kadira:flow-router              # Router
 
 # Internationalization
-tap:i18n                        # Handles internationalization in Meteor
-tap:i18n-ui                     # Automatically generates a language dropdown based on available language files
+# tap:i18n                        # Handles internationalization in Meteor
+# tap:i18n-ui                     # Automatically generates a language dropdown based on available language files
 
 # Icons
 fortawesome:fontawesome

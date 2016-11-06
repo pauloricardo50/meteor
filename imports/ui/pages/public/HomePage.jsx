@@ -21,7 +21,7 @@ export default class HomePage extends Component {
       <div>
         <Header />
         <ProductDescription />
-        <div className="col-xs-8 col-xs-offset-2" style={styles.spacing} id="start">
+        <div className="col-sm-8 col-sm-offset-2 col-xs-12" style={styles.spacing} id="start">
           <NewUserOptions />
         </div>
         <HomeFooter />
