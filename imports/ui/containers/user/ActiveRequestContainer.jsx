@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { composeWithTracker } from 'react-komposer';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 import CreditRequests from '/imports/api/creditrequests/creditrequests.js';
 
 import Loading from '/imports/ui/components/general/Loading.jsx';
@@ -18,12 +19,19 @@ import _Step4Page from '/imports/ui/pages/user/Step4Page.jsx';
 import _Step5Page from '/imports/ui/pages/user/Step5Page.jsx';
 
 import _RequestProgressBar from '/imports/ui/components/general/RequestProgressBar.jsx';
+import _SideNav from '/imports/ui/components/general/SideNav.jsx';
 
 
 // Container function which reactively send the currently active credit Request as a prop
 function composer(props, onData) {
   if (Meteor.subscribe('activeCreditRequest').ready()) {
     const creditRequest = CreditRequests.find({}).fetch()[0];
+
+    // If there is no creditRequest, go to the new page
+    if (!creditRequest && (FlowRouter.current().path !== '/new')) {
+      FlowRouter.go('/main');
+    }
+
     onData(null, { creditRequest });
   }
 }
@@ -42,3 +50,4 @@ export const Step4Page = composeWithTracker(composer, Loading)(_Step4Page);
 export const Step5Page = composeWithTracker(composer, Loading)(_Step5Page);
 
 export const RequestProgressBar = composeWithTracker(composer, Loading)(_RequestProgressBar);
+export const SideNav = composeWithTracker(composer, Loading)(_SideNav);

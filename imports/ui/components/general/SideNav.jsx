@@ -1,26 +1,42 @@
-import React from 'react';
-
-import { BottomNavigation, BottomNavigationItem } from 'material-ui/BottomNavigation';
+import React, { Component, PropTypes } from 'react';
 
 import FinanceWidget from '/imports/ui/components/general/FinanceWidget.jsx';
 
-const SideNav = () => (
-  <nav className="side-nav hidden-xs">
+export default class SideNav extends Component {
+  render() {
+    // Don't display any content if there is no active CreditRequest
+    let content1;
+    let content2;
+    if (this.props.creditRequest) {
+      content1 = (
+        <a href="/main">
+          <ul>
+            <li><h5 className="active bold"><span className="fa fa-home active" /> {this.props.creditRequest.requestName}</h5></li>
+            <li className="secondary">CHF 1'152'000</li>
+          </ul>
+        </a>
+      );
+      content2 = <FinanceWidget creditRequest={this.props.creditRequest} />;
+    } else {
+      content1 = null;
+      content2 = null;
+    }
 
-    <a href="/">
-      <img src="img/logo_black.svg" alt="e-Potek" width="160px" style={{ paddingLeft: 20, paddingRight: 20 }} />
-    </a>
+    return (
+      <nav className="side-nav hidden-xs">
 
-    <a href="/main">
-      <ul>
-        <li><h5 className="active bold"><span className="fa fa-home active" />  Rue des Alouettes 12</h5></li>
-        <li className="secondary">CHF 1'152'000</li>
-      </ul>
-    </a>
+        <a href="/">
+          <img src="img/logo_black.svg" alt="e-Potek" width="160px" style={{ paddingLeft: 20, paddingRight: 20 }} />
+        </a>
 
-    <FinanceWidget />
+        {content1}
+        {content2}
 
-  </nav>
-);
+      </nav>
+    );
+  }
+}
 
-export default SideNav;
+SideNav.propTypes = {
+  creditRequest: PropTypes.objectOf(PropTypes.any),
+};

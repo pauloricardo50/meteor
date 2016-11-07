@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
-import SideNav from '../components/general/SideNav.jsx';
+import { SideNav } from '../containers/user/ActiveRequestContainer.jsx';
 import { BottomNav } from '../containers/user/CurrentURLContainer.jsx';
 
 // MUI Theme, replace lightBaseTheme with a custom theme ASAP!

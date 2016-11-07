@@ -55,12 +55,18 @@ export default class TodoCard extends React.Component {
     };
 
     return (
-      <li onClick={this.routeDo} className="col-sm-6" style={{listStyle: 'none'}}>
+      <li onClick={this.routeDo} className="col-sm-6" style={{ listStyle: 'none' }}>
         <div className="mask2 col-sm-12 todo-card">
           <h4>{ this.props.title }</h4>
           <span className="fa fa-info-circle fa-lg" />
           {/* <hr /> */}
-          <p className="secondary"><span className="fa fa-clock-o fa-lg" /> {this.props.duration} <small><a onClick={this.progressMax}>100%</a></small></p>
+          <p className="secondary">
+            <span className="fa fa-clock-o fa-lg" />
+            {this.props.duration}
+            <small>
+              <a onClick={this.progressMax}>100%</a>
+            </small>
+          </p>
           <div className="bottom text-center" style={gradientStyle}>{ this.props.completionPercentage.toString() }%</div>
         </div>
       </li>

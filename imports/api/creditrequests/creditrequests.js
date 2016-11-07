@@ -33,6 +33,17 @@ const CreditRequestSchema = new SimpleSchema({
       return new Date();
     },
   },
+  updatedAt: { // Force value to be current date (on server) upon update and don't allow it to be set upon insert
+    type: Date,
+    autoValue() {
+      if (this.isUpdate) {
+        return new Date();
+      }
+      return '';
+    },
+    denyInsert: true,
+    optional: true,
+  },
   active: {
     type: Boolean,
     defaultValue: false,
@@ -42,30 +53,31 @@ const CreditRequestSchema = new SimpleSchema({
   },
   personalInfo: {
     type: PersonalInfoSchema,
-    optional: true,
+    defaultValue: {},
   },
   financialInfo: {
     type: FinancialInfoSchema,
-    optional: true,
+    defaultValue: {},
   },
   propertyInfo: {
     type: PropertyInfoSchema,
-    optional: true,
+    defaultValue: {},
   },
   files: {
     type: [FileSchema],
-    optional: true,
+    defaultValue: [],
   },
   lenderOffers: {
     type: [LenderOfferSchema],
-    optional: true,
+    defaultValue: [],
   },
   logic: {
     type: LogicSchema,
+    defaultValue: {},
   },
   adminInfo: {
     type: AdminInfoSchema,
-    optional: true,
+    defaultValue: {},
   },
 });
 

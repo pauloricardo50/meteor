@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
+import CreditRequests from '/imports/api/creditrequests/creditrequests.js';
 
 import TextField from 'material-ui/TextField';
 
@@ -9,10 +11,11 @@ export default class TextInputNumber extends React.Component {
     super(props);
 
     this.state = {
-      textValue: this.props.currentValue,
+      textValue: this.props.currentValue ? this.props.currentValue : '',
     };
 
     this.formatToNumber = this.formatToNumber.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
   }
 
 // Prevents people from entering characters other than numbers, and formats value with apostrophes
@@ -22,27 +25,31 @@ export default class TextInputNumber extends React.Component {
     });
   }
 
+  handleBlur(event) {
+    this.props.changeSaving(true);
+
+    // Save data to DB
+    const object = {};
+    object[this.props.id] = Number(event.target.value.replace(/\D/g, ''));
+
+    CreditRequests.update(this.props.requestId, {
+      $set: object,
+    }, (error, result) => {
+      this.props.changeSaving(false);
+
+      if (error) {
+        this.props.changeErrors(error.message);
+        throw new Meteor.Error(500, error.message);
+      } else {
+        this.props.changeErrors('');
+        return 'Update Successful';
+      }
+    });
+  }
+
   render() {
     return (
       <div className="form-group">
-        {/* <label className="control-label" htmlFor={this.props.id}>
-          {this.props.label}
-        </label>
-        <div className="input-group">
-          <input
-            ref={(c) => { this.input = c; }}
-            type="text"
-            className="form-control"
-            pattern="[0-9]*"
-            id={this.props.id}
-            value={this.props.currentValue}
-            placeholder={this.props.placeholder}
-            onChange={() => {
-              this.formatToNumber();
-              (typeof this.props.onChange === 'function') ? this.props.onChange : () => { return undefined; };
-            }}
-          />
-        </div> */}
         <TextField
           floatingLabelText={this.props.label}
           hintText={this.props.placeholder}
@@ -50,9 +57,10 @@ export default class TextInputNumber extends React.Component {
           type="text"
           id={this.props.id}
           onChange={(e) => {
-            this.formatToMoney(e);
+            this.formatToNumber(e);
             (typeof this.props.onChange === 'function') ? this.props.onChange : () => { return undefined; };
           }}
+          onBlur={this.handleBlur}
           fullWidth
         />
       </div>
@@ -61,9 +69,15 @@ export default class TextInputNumber extends React.Component {
 }
 
 TextInputNumber.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  label: React.PropTypes.string.isRequired,
-  placeholder: React.PropTypes.string.isRequired,
-  currentValue: React.PropTypes.string,
-  onChange: React.PropTypes.func,
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  currentValue: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  onChange: PropTypes.func,
+  requestId: PropTypes.string.isRequired,
+  changeSaving: PropTypes.func,
+  changeErrors: PropTypes.func,
 };

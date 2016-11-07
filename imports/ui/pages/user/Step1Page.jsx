@@ -43,7 +43,7 @@ export default class Step1Page extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      progress: [100, 0, 0, 0],
+      progress: [0, 0, 0, 0],
     };
     this.setProgress = this.setProgress.bind(this);
   }

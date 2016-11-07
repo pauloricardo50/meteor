@@ -10,6 +10,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 Accounts.ui.config({
   passwordSignupFields: 'EMAIL_ONLY',
   loginPath: '/login',
-  onSignedInHook: () => FlowRouter.go('/main'),
-  onSignedOutHook: () => FlowRouter.go('/'),
+  homeRoutePath: '/',
+  profilePath: '/main',
+  onPostSignUpHook: () => FlowRouter.go('/main'),
 });

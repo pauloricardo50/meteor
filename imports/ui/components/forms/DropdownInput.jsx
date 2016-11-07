@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
+import CreditRequests from '/imports/api/creditrequests/creditrequests.js';
+
 
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';

@@ -7,6 +7,22 @@ export const PersonalInfoSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  twoBuyers: {
+    type: String,
+    defaultValue: 'false',
+  },
+  age1: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 120,
+  },
+  age2: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 120,
+  },
 });
 
 // Financial information about the user, like salary, fortune and insurance
@@ -17,6 +33,51 @@ export const FinancialInfoSchema = new SimpleSchema({
     min: 0,
     max: 10000000,
   },
+  bonusExists: {
+    type: String,
+    defaultValue: 'false',
+  },
+  bonus: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 10000000,
+  },
+  fortune: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 10000000,
+  },
+  insuranceFortune: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 10000000,
+  },
+  personalBank: {
+    type: String,
+    optional: true,
+    max: 200,
+  },
+  corporateBankExists: {
+    type: String,
+    defaultValue: 'false',
+  },
+  corporateBank: {
+    type: String,
+    optional: true,
+    max: 200,
+  },
+  avoidLenderExists: {
+    type: String,
+    defaultValue: 'false',
+  },
+  avoidLender: {
+    type: String,
+    optional: true,
+    max: 1000,
+  },
 });
 
 // Information about the property, like room count, property value and address
@@ -26,6 +87,10 @@ export const PropertyInfoSchema = new SimpleSchema({
     optional: true,
     min: 0,
     max: 100000000,
+  },
+  type: { // primary, secondary or investment
+    type: String,
+    defaultValue: 'primary',
   },
 });
 

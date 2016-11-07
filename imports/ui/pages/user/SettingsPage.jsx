@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { DocHead } from 'meteor/kadira:dochead';
 
 import Checkbox from 'material-ui/Checkbox';
+
+import RequestSelector from '/imports/ui/components/general/RequestSelector.jsx';
 
 
 const style = {
@@ -16,7 +18,7 @@ const style = {
 };
 
 
-export default class SettingsPage extends React.Component {
+export default class SettingsPage extends Component {
 
   constructor(props) {
     super(props);
@@ -61,6 +63,10 @@ export default class SettingsPage extends React.Component {
               label="Par SMS"
             />
           </div>
+
+          <div className="form-group">
+            <RequestSelector creditRequests={this.props.creditRequests} />
+          </div>
         </div>
 
 
@@ -74,5 +80,6 @@ export default class SettingsPage extends React.Component {
 }
 
 SettingsPage.propTypes = {
-  currentUser: React.PropTypes.objectOf(React.PropTypes.any),
+  currentUser: PropTypes.objectOf(PropTypes.any),
+  creditRequests: PropTypes.arrayOf(PropTypes.object),
 };

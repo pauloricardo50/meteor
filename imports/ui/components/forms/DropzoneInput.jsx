@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
+import CreditRequests from '/imports/api/creditrequests/creditrequests.js';
+
 import DropzoneComponent from 'react-dropzone-component';
 
 
@@ -21,11 +24,10 @@ const componentConfig = {
   postUrl: '/uploadHandler',
 };
 const djsConfig = { autoProcessQueue: false }
-const eventHandlers = { addedfile: (file) => console.log(file) }
+const eventHandlers = { addedfile: file => console.log(file) }
 
 
 export default class DropzoneInput extends React.Component {
-
   render() {
     return (
       <DropzoneComponent

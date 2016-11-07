@@ -15,8 +15,12 @@ export const insertRequest = new ValidatedMethod({
 
     const userRequests = CreditRequests.find({ userId: this.userId });
 
+    if (userRequests.length > 3) {
+      throw new Meteor.Error('maxRequests', 'Vous ne pouvez pas avoir plus de 3 requêtes à la fois');
+    }
+
     // Set all existing requests to inactive
-    userRequests.forEach(function (request) {
+    userRequests.forEach((request) => {
       CreditRequests.update(request._id, {
         $set: { active: false },
       });

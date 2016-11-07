@@ -1,33 +1,75 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
+import CreditRequests from '/imports/api/creditrequests/creditrequests.js';
+
 
 import TextField from 'material-ui/TextField';
 
-const TextInput = props => (
-  <div className="form-group">
-    {/* <label htmlFor={props.id}>{props.label}</label>
-    <input
-      id={props.id}
-      value={props.currentValue}
-      type="text"
-      placeholder={props.placeholder}
-      className="form-control"
-    /> */}
-    <TextField
-      floatingLabelText={props.label}
-      hintText={props.placeholder}
-      value={props.currentValue}
-      type="text"
-      id={props.id}
-      fullWidth
-    />
-  </div>
-);
+export default class TextInput extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: this.props.currentValue ? this.props.currentValue : '',
+    };
+
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({
+      value: event.target.value,
+    });
+  }
+
+  handleBlur(event) {
+    this.props.changeSaving(true);
+
+    // Save data to DB
+    const object = {};
+    object[this.props.id] = event.target.value;
+
+    CreditRequests.update(this.props.requestId, {
+      $set: object,
+    }, (error, result) => {
+      this.props.changeSaving(false);
+
+      if (error) {
+        this.props.changeErrors(error.message);
+        throw new Meteor.Error(500, error.message);
+      } else {
+        this.props.changeErrors('');
+        return 'Update Successful';
+      }
+    });
+  }
+
+  render() {
+    return (
+      <div className="form-group">
+        <TextField
+          floatingLabelText={this.props.label}
+          hintText={this.props.placeholder}
+          value={this.state.value}
+          onChange={this.handleChange}
+          onBlur={this.handleBlur}
+          type="text"
+          id={this.props.id}
+          fullWidth
+        />
+      </div>
+    );
+  }
+}
 
 TextInput.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  label: React.PropTypes.string.isRequired,
-  placeholder: React.PropTypes.string.isRequired,
-  currentValue: React.PropTypes.string,
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  currentValue: PropTypes.string,
+  requestId: PropTypes.string.isRequired,
+  changeSaving: PropTypes.func,
+  changeErrors: PropTypes.func,
 };
-
-export default TextInput;
