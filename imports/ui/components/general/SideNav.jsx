@@ -2,6 +2,16 @@ import React, { Component, PropTypes } from 'react';
 
 import FinanceWidget from '/imports/ui/components/general/FinanceWidget.jsx';
 
+const styles = {
+  icon: {
+    paddingRight: 20,
+  },
+  text: {
+    display: 'inline',
+    fontSize: '1em',
+  },
+};
+
 export default class SideNav extends Component {
   constructor(props) {
     super(props);
@@ -48,7 +58,10 @@ export default class SideNav extends Component {
       content1 = (
         <a href="/main">
           <ul>
-            <li><h5 className="active bold"><span className="fa fa-home active" /> {this.state.requestName}</h5></li>
+            <li>
+              <span className="fa fa-home fa-2x active" style={styles.icon} />
+              <h5 className="active bold" style={styles.text}>{this.state.requestName}</h5>
+            </li>
             {this.state.propertyValue ? (<li className="secondary">CHF {this.toMoney(this.state.propertyValue)}</li>) : null}
           </ul>
         </a>

@@ -5,10 +5,6 @@ import TodoCard from '/imports/ui/components/general/TodoCard.jsx';
 
 
 const styles = {
-  div: {
-    height: '100%',
-    width: '100%',
-  },
   ul: {
     padding: 0,
   },
@@ -108,7 +104,7 @@ export default class Step1Page extends Component {
 
   render() {
     return (
-      <div style={styles.div}>
+      <section>
         <div
           className="text-center"
           id="todo-text-top"
@@ -131,7 +127,7 @@ export default class Step1Page extends Component {
             />)
           )}
         </ul>
-      </div>
+      </section>
     );
   }
 }

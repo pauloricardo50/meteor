@@ -9,9 +9,9 @@ import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown.jsx';
 
 const styles = {
   navbar: {
+    position: 'relative',
     backgroundColor: '#FFFFFF',
     color: '#000000',
-    position: 'fixed',
     boxShadow: '0px 2px 40px 0px rgba(0,0,0,0.08)',
   },
   imageDiv: {
@@ -43,15 +43,17 @@ export default class PublicNav extends Component {
     }
 
     return (
-      <AppBar
-        // title=("Title")
-        style={styles.navbar}
-        children={
-          <a href="/" style={styles.imageDiv}>
-            <img src="img/logo_black.svg" alt="e-Potek" style={styles.image} />
-          </a>}
-        iconElementRight={button}
-      />
+      <div className="public-nav">
+        <AppBar
+          // title=("Title")
+          style={styles.navbar}
+          children={
+            <a href="/" style={styles.imageDiv}>
+              <img src="img/logo_black.svg" alt="e-Potek" style={styles.image} />
+            </a>}
+          iconElementRight={button}
+        />
+      </div>
     );
   }
 }

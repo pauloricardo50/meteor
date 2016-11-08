@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { updateSingleValue } from '/imports/api/creditrequests/methods.js';
+import { updateValues } from '/imports/api/creditrequests/methods.js';
 
 import Slider from 'material-ui/Slider';
 
@@ -78,7 +78,7 @@ export default class FinanceWidget extends React.Component {
       this.props.creditRequest.financialInfo.insuranceFortune
     );
 
-    updateSingleValue.call({ object, id });
+    updateValues.call({ object, id });
   }
 
 

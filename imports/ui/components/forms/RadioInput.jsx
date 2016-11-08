@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { updateSingleValue } from '/imports/api/creditrequests/methods.js';
+import { updateValues } from '/imports/api/creditrequests/methods.js';
 
 
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
@@ -28,7 +28,7 @@ export default class RadioInput extends React.Component {
     object[this.props.id] = event.target.value;
     const id = this.props.requestId;
 
-    updateSingleValue.call({
+    updateValues.call({
       object, id,
     }, (error, result) => {
       if (error) {

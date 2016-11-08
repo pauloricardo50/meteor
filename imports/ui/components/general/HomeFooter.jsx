@@ -1,10 +1,10 @@
 import React from 'react';
 
 const styles = {
-  ul: {
-    listStyle: 'none',
+  article: {
     textDecoration: 'none',
     paddingTop: 150,
+    paddingBottom: 50,
   },
   li: {
     display: 'inline-block',
@@ -18,14 +18,14 @@ const styles = {
 export default class HomeFooter extends React.Component {
   render() {
     return (
-      <section className="col-xs-12">
-        <ul style={styles.ul} className="text-center">
-          <li style={styles.li}><a><h4 className="secondary bold">A propos</h4></a></li>
-          <li style={styles.li}><a><h4 className="secondary bold">Carrières</h4></a></li>
-          <li style={styles.li}><a><h4 className="secondary bold">Conditions d'utilisation</h4></a></li>
-        </ul>
+      <section className="col-xs-12 text-center">
+        <article style={styles.article}>
+          <a className="col-md-2 col-md-offset-3"><h4 className="secondary bold">A propos</h4></a>
+          <a className="col-md-2"><h4 className="secondary bold">Carrières</h4></a>
+          <a className="col-md-2"><h4 className="secondary bold">Conditions d'utilisation</h4></a>
+        </article>
         <br />
-        <p className="text-center secondary bold" style={styles.copyright}>e-Potek © 2016</p>
+        <p className="disabled bold" style={styles.copyright}>e-Potek © 2016</p>
       </section>
     );
   }

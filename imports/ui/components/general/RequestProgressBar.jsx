@@ -7,6 +7,21 @@ import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown.jsx';
 export default class RequestProgressBar extends React.Component {
   constructor(props) {
     super(props);
+
+    // Get the 6th char of the URL, which should be a number if it's a step
+    this.state = {
+      activeStep: '',
+    };
+  }
+
+  componentDidMount() {
+    this.setStep(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps) {
+      this.setStep(nextProps);
+    }
   }
 
   progressClasses(stepNumber) {
@@ -19,6 +34,18 @@ export default class RequestProgressBar extends React.Component {
       return 'bold done';
     }
     return 'bold';
+  }
+
+  setStep(propz) {
+    if (propz.currentURL) {
+      const step = propz.currentURL.charAt(5);
+
+      if (!isNaN(step)) {
+        this.setState({ activeStep: step });
+      } else {
+        this.setState({ activeStep: '' });
+      }
+    }
   }
 
   routeToStep(stepNumber) {
@@ -63,4 +90,5 @@ export default class RequestProgressBar extends React.Component {
 
 RequestProgressBar.propTypes = {
   creditRequest: PropTypes.objectOf(PropTypes.any),
+  currentURL: PropTypes.string.isRequired,
 };

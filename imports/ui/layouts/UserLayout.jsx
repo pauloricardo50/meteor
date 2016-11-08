@@ -35,7 +35,9 @@ export default class UserLayout extends Component {
           <SideNav />
 
           <main className="user-layout">
-            {this.props.content}
+            <div className="user-layout-center">
+              {this.props.content}
+            </div>
           </main>
 
           <BottomNav />

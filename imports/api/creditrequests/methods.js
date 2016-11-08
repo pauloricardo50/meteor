@@ -88,8 +88,8 @@ export const incrementStep = new ValidatedMethod({
   },
 });
 
-export const updateSingleValue = new ValidatedMethod({
-  name: 'creditRequests.updateSingleValue',
+export const updateValues = new ValidatedMethod({
+  name: 'creditRequests.updateValues',
   validate: null,
   run({ object, id }) {
     if (!this.userId) {

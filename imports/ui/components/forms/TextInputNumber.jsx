@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { updateSingleValue } from '/imports/api/creditrequests/methods.js';
+import { updateValues } from '/imports/api/creditrequests/methods.js';
 
 import TextField from 'material-ui/TextField';
 
@@ -40,7 +40,7 @@ export default class TextInputNumber extends React.Component {
     object[this.props.id] = Number(event.target.value.replace(/\D/g, ''));
     const id = this.props.requestId;
 
-    updateSingleValue.call({
+    updateValues.call({
       object, id,
     }, (error, result) => {
       this.props.changeSaving(false);

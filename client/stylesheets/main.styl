@@ -75,6 +75,10 @@ h1, h2, h3, h4, h5, h6
   font-family: 'Source Sans Pro', sans-serif !important;
   font-weight: 400 !important;
 
+div#react-root
+  [data-reactroot]
+    height: 100%;
+
 
 .active
   color: brand-primary
@@ -111,6 +115,17 @@ $bottom-nav-height = 80px
 body
   background-color backgroundcolor
   color black
+
+a
+  cursor: pointer;
+
+.public-nav
+  position relative;
+  width: 100%
+  z-index: z.nav;
+  boxShadow: 0px 2px 40px 0px rgba(0,0,0,0.08);
+  +above($med)
+    position: fixed;
 
 
 .side-nav
@@ -181,12 +196,23 @@ body
   lost-center 90%
   padding-top 20px
   padding-bottom $bottom-nav-height
+  display: table;
   +above($med)
     padding-top: 86px // To offset the fixed progress bar header, height + 20 px
     lost-center 90%
     padding-left $side-nav
     padding-bottom 0
   +above($large)
-    lost-center 80%
+    lost-center 90%
     // margin-top 40px
     padding-left $side-nav-large
+
+.user-layout-center
+  display: table-cell;
+  vertical-align: middle;
+  padding-bottom: 50px;
+
+
+.full-screen
+  width: 100%;
+  min-height: 100%;

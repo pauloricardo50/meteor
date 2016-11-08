@@ -29,6 +29,7 @@ export default class Step3Page extends React.Component {
     super(props);
     this.state = {
       progress: [0, 0, 0, 0],
+      arrayLength: todoCards.length,
     };
     this.setProgress = this.setProgress.bind(this);
   }
@@ -48,7 +49,7 @@ export default class Step3Page extends React.Component {
 
   render() {
     return (
-      <div style={{ height: '100%', width: '100%' }}>
+      <section>
         <div
           className="text-center"
           id="todo-text-top"
@@ -67,12 +68,14 @@ export default class Step3Page extends React.Component {
             right={card.right}
             cardId={index}
             key={index}
+            center={index === (this.state.arrayLength - 1)} // If this is the last card
           />)
         )}
-      </div>
+      </section>
     );
   }
 }
 
 Step3Page.propTypes = {
+  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

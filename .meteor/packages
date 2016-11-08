@@ -47,7 +47,6 @@ std:accounts-ui                 # React account component
 std:accounts-basic
 
 # UI tricks
-#momentjs:moment                # Handles date and time values and internationalize them
 fastclick                       # Removes the 300ms tap delay on touch screens
 kadira:dochead                  # Set custom page titles easily
 

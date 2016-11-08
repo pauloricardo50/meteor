@@ -52,8 +52,16 @@ export default class TodoCard extends Component {
       filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr="' + successColor + '", endColorstr="' + oldColor + '",GradientType=1 )' // IE6-9
     };
 
+    // If the amount of cards is odd, center a card with the center prop
+    let bootstrapClasses;
+    if (this.props.center) {
+      bootstrapClasses = 'col-md-6 col-md-offset-3';
+    } else {
+      bootstrapClasses = 'col-md-6';
+    }
+
     return (
-      <li onClick={this.routeDo} className="col-sm-6" style={{ listStyle: 'none' }}>
+      <li onClick={this.routeDo} className={bootstrapClasses} style={{ listStyle: 'none' }}>
         <div className="mask2 col-sm-12 todo-card">
           <h4>{ this.props.title }</h4>
           <span className="fa fa-info-circle fa-lg" />
@@ -79,4 +87,5 @@ TodoCard.propTypes = {
   completionPercentage: PropTypes.number.isRequired,
   right: PropTypes.bool.isRequired,
   setProgress: PropTypes.func,
+  center: PropTypes.bool,
 };

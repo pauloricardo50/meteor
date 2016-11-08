@@ -120,6 +120,18 @@ export const LogicSchema = new SimpleSchema({
     min: 0,
     max: 6,
   },
+  auctionStarted: {
+    type: Boolean,
+    defaultValue: false,
+  },
+  auctionStartTime: {
+    type: Date,
+    optional: true,
+  },
+  auctionEndTime: {
+    type: Date,
+    optional: true,
+  },
 });
 
 // Data added by e-Potek employees to this request, including customer support interactions

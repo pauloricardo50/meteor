@@ -17,8 +17,10 @@ import NewPage from '/imports/ui/pages/user/NewPage.jsx';
 import {
   MainPage, DoPage, FinancePage, ContactPage,
   Step1Page, Step2Page, Step3Page, Step4Page, Step5Page,
-  RequestProgressBar,
+  // RequestProgressBar,
 } from '/imports/ui/containers/user/ActiveRequestContainer.jsx';
+
+import { RequestProgressBar } from '/imports/ui/containers/user/CurrentURLContainer.jsx';
 
 import SettingsPage from '/imports/ui/containers/user/SettingsPageContainer.jsx';
 

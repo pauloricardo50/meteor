@@ -47,4 +47,5 @@ export default class Step4Page extends React.Component {
 }
 
 Step4Page.propTypes = {
+  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };
