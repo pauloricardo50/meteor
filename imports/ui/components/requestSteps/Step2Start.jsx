@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 import { updateValues } from '/imports/api/creditrequests/methods.js';
 import moment from 'moment';
 import CountUp from 'react-countup';
@@ -13,10 +14,8 @@ const styles = {
     textAlign: 'justify',
     padding: 20,
   },
-  countUp: {
-    fontSize: '8em',
-    paddingTop: 50,
-    paddingBottom: 50,
+  a: {
+    marginBottom: 50,
   },
 };
 
@@ -50,7 +49,7 @@ export default class Step2Start extends Component {
     return (
       <section className="mask1">
         <h1>Appel d'offres anonyme</h1>
-        <div className="text-center" style={styles.countUp}>
+        <div className="text-center giant" style={styles.countUp}>
           <CountUp
             className="custom-count"
             start={0}
@@ -63,6 +62,8 @@ export default class Step2Start extends Component {
             suffix=" Prêteurs"
           />
         </div>
+        <a className="bold secondary active text-center col-xs-12" style={styles.a}>Voir la liste</a>
+        <br />
         <p
           className="col-sm-6 col-sm-offset-3"
           style={styles.text}
@@ -75,7 +76,7 @@ export default class Step2Start extends Component {
             <RaisedButton label="Envoyer" primary onClick={this.startAuction} />
           </div>
           <div className="form-group text-center">
-            <RaisedButton label="Pas maintenant" />
+            <RaisedButton label="Pas maintenant" onClick={() => FlowRouter.go('/step1')} />
           </div>
         </div>
       </section>

@@ -63,7 +63,7 @@ export default class Step2Auction extends Component {
     return (
       <section className="animated fadeIn mask1">
         <h1>Appel d'offres en cours..</h1>
-        <div className="giant-timer text-center">{this.state.remainingTime}</div>
+        <div className="giant text-center">{this.state.remainingTime}</div>
         <p className="disabled text-center" style={styles.p}>Vous recevrez une notification lorsque ce sera terminé</p>
 
         <LenderOffersTable lenderOffers={this.props.creditRequest.lenderOffers} />

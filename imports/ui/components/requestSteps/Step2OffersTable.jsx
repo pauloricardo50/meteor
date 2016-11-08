@@ -3,7 +3,7 @@ import React from 'react';
 import Panel from 'react-bootstrap/lib/Panel';
 import Col from 'react-bootstrap/lib/Col';
 
-const OffersTable = () => (
+const Step2OffersTable = () => (
   <Panel>
     <h3>Les résultats sont arrivés</h3>
     <h6>
@@ -86,4 +86,4 @@ const OffersTable = () => (
   </Panel>
 );
 
-export default OffersTable;
+export default Step2OffersTable;

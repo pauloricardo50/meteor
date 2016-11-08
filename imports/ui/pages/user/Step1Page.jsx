@@ -14,23 +14,15 @@ const todoCards = [
   {
     title: 'Check-up initial',
     duration: '5 min',
-    completionPercentage: 80,
-    right: true,
   }, {
     title: 'Mes Partenaires Financiers Particuliers',
     duration: '20 sec',
-    completionPercentage: 0,
-    right: true,
   }, {
     title: 'Ma déclaration d\'impôts',
     duration: '5 sec',
-    completionPercentage: 0,
-    right: true,
   }, {
     title: 'Évaluer mon bien immobilier',
     duration: '2 min',
-    completionPercentage: 0,
-    right: true,
   },
 ];
 
@@ -115,14 +107,11 @@ export default class Step1Page extends Component {
         <ul style={styles.ul}>
           {todoCards.map((card, index) =>
             (<TodoCard
-              // creditRequest={this.props.creditRequest}
               title={card.title}
               duration={card.duration}
-              // completionPercentage={card.completionPercentage}
               completionPercentage={this.state.progress[index]}
               setProgress={this.setProgress}
-              right={card.right}
-              cardId={index}
+              cardId={`1-${index + 1}`}
               key={index}
             />)
           )}

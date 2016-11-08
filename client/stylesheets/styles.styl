@@ -263,17 +263,13 @@ body, html, main
     position relative
     float left
     width 16.666% // MODIFY THIS To add more steps
-    // height: 100%;
-    text-align center
     padding 18px
     font-size 12pt
-    border-radius: 5px
     cursor: pointer
     &:hover
-      background-color: #EEEEEE
-      &#progressStep6:before
-        background-color: #EEEEEE
-        color: white
+      -webkit-box-shadow: inset 0px -5px 0px alpha(brand-primary, 0.3);
+      -moz-box-shadow: inset 0px -5px 0px alpha(brand-primary, 0.3);
+      box-shadow: inset 0px -5px 0px alpha(brand-primary, 0.3);
     &:before
       color white
       width 30px
@@ -321,6 +317,10 @@ body, html, main
         background-color green
         font-family FontAwesome
         content "\f00c" !important
+    &.current
+      -webkit-box-shadow: inset 0px -5px 0px brand-primary;
+      -moz-box-shadow: inset 0px -5px 0px brand-primary;
+      box-shadow: inset 0px -5px 0px brand-primary;
 
 
 // Sets the color of the bar between the steps,
@@ -586,9 +586,11 @@ svg
     height: -moz-calc(100% - 150px);
     height: calc(100% - 150px);
 
-.giant-timer
-  font-size: 8em;
-  padding: 50px 0 0 0;
+.giant
+  font-size: 5em
+  padding-top: 50px;
+  +above($med)
+    font-size: 8em;
 
 .lender-offers-table
   width: 100%;

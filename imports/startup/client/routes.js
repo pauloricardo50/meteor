@@ -15,8 +15,8 @@ import LoginPage from '/imports/ui/pages/public/LoginPage.jsx';
 import NewPage from '/imports/ui/pages/user/NewPage.jsx';
 
 import {
-  MainPage, DoPage, FinancePage, ContactPage,
-  Step1Page, Step2Page, Step3Page, Step4Page, Step5Page,
+  MainPage, TodoCardPage, FinancePage, ContactPage,
+  Step1Page, Step2Page, Step3Page, Step4Page, Step5Page, Step6Page
   // RequestProgressBar,
 } from '/imports/ui/containers/user/ActiveRequestContainer.jsx';
 
@@ -35,7 +35,7 @@ if (Meteor.isClient) {
 
 // Public Routes
 FlowRouter.route('/', {
-  name: 'Home',
+  name: 'home',
   action() {
     mount(PublicLayout, {
       content:
@@ -45,7 +45,7 @@ FlowRouter.route('/', {
 });
 
 FlowRouter.route('/login', {
-  name: 'Login',
+  name: 'login',
   action() {
     mount(PublicLayout, {
       content:
@@ -55,7 +55,7 @@ FlowRouter.route('/login', {
 });
 
 FlowRouter.route('/start', {
-  name: 'Start',
+  name: 'start',
   action() {
     mount(PublicLayout, {
       content:
@@ -67,7 +67,7 @@ FlowRouter.route('/start', {
 
 // User Routes
 FlowRouter.route('/main', {
-  name: 'Main',
+  name: 'main',
   action() {
     mount(UserLayout, {
       content:
@@ -78,7 +78,7 @@ FlowRouter.route('/main', {
 });
 
 FlowRouter.route('/new', {
-  name: 'New',
+  name: 'new',
   action() {
     mount(UserLayout, {
       content:
@@ -88,7 +88,7 @@ FlowRouter.route('/new', {
 });
 
 FlowRouter.route('/step1', {
-  name: 'Step1',
+  name: 'step1',
   action() {
     mount(UserLayout, {
       content:
@@ -99,7 +99,7 @@ FlowRouter.route('/step1', {
 });
 
 FlowRouter.route('/step2', {
-  name: 'Step2',
+  name: 'step2',
   action() {
     mount(UserLayout, {
       content:
@@ -110,7 +110,7 @@ FlowRouter.route('/step2', {
 });
 
 FlowRouter.route('/step3', {
-  name: 'Step3',
+  name: 'step3',
   action() {
     mount(UserLayout, {
       content:
@@ -121,7 +121,7 @@ FlowRouter.route('/step3', {
 });
 
 FlowRouter.route('/step4', {
-  name: 'Step4',
+  name: 'step4',
   action() {
     mount(UserLayout, {
       content:
@@ -132,7 +132,7 @@ FlowRouter.route('/step4', {
 });
 
 FlowRouter.route('/step5', {
-  name: 'Step5',
+  name: 'step5',
   action() {
     mount(UserLayout, {
       content:
@@ -142,12 +142,45 @@ FlowRouter.route('/step5', {
   },
 });
 
-FlowRouter.route('/step1/:cardId', {
-  name: 'Do',
+FlowRouter.route('/step6', {
+  name: 'step6',
   action() {
     mount(UserLayout, {
       content:
-        <DoPage />,
+        <Step6Page />,
+      extraContent: <RequestProgressBar />,
+    });
+  },
+});
+
+FlowRouter.route('/step1/:cardId', {
+  name: 'todoCard1',
+  action() {
+    mount(UserLayout, {
+      content:
+        <TodoCardPage />,
+      extraContent: <RequestProgressBar />,
+    });
+  },
+});
+
+FlowRouter.route('/step3/:cardId', {
+  name: 'todoCard2',
+  action() {
+    mount(UserLayout, {
+      content:
+        <TodoCardPage />,
+      extraContent: <RequestProgressBar />,
+    });
+  },
+});
+
+FlowRouter.route('/step5/:cardId', {
+  name: 'todoCard3',
+  action() {
+    mount(UserLayout, {
+      content:
+        <TodoCardPage />,
       extraContent: <RequestProgressBar />,
     });
   },
@@ -166,7 +199,7 @@ FlowRouter.route('/settings', {
 });
 
 FlowRouter.route('/contact', {
-  name: 'Contact',
+  name: 'contact',
   action() {
     mount(UserLayout, {
       content:
@@ -177,7 +210,7 @@ FlowRouter.route('/contact', {
 });
 
 FlowRouter.route('/finance', {
-  name: 'Finance',
+  name: 'finance',
   action() {
     mount(UserLayout, {
       content:

@@ -6,7 +6,7 @@ import AutoForm from '../forms/AutoForm.jsx';
 
 var savingTimeout;
 
-export default class FinancialPartners extends Component {
+export default class Step1Financial extends Component {
   constructor(props) {
     super(props);
 
@@ -122,6 +122,6 @@ export default class FinancialPartners extends Component {
   }
 }
 
-FinancialPartners.propTypes = {
+Step1Financial.propTypes = {
   creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

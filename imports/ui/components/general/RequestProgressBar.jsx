@@ -24,29 +24,36 @@ export default class RequestProgressBar extends React.Component {
     }
   }
 
-  progressClasses(stepNumber) {
-    if (this.props.creditRequest) {
-      if (this.props.creditRequest.logic.step < stepNumber) {
-        return 'bold';
-      } else if (this.props.creditRequest.logic.step === stepNumber) {
-        return 'bold active';
-      }
-      return 'bold done';
-    }
-    return 'bold';
-  }
-
   setStep(propz) {
     if (propz.currentURL) {
       const step = propz.currentURL.charAt(5);
 
       if (!isNaN(step)) {
-        this.setState({ activeStep: step });
+        this.setState({ activeStep: step - 1 });
       } else {
         this.setState({ activeStep: '' });
       }
     }
   }
+
+
+  progressClasses(stepNumber) {
+    let classes = this.activeClass(stepNumber);
+    if (this.props.creditRequest) {
+      if (this.props.creditRequest.logic.step < stepNumber) {
+        return classes.concat('bold');
+      } else if (this.props.creditRequest.logic.step === stepNumber) {
+        return classes.concat('bold active');
+      }
+      return classes.concat('bold done');
+    }
+    return classes.concat('bold');
+  }
+
+  activeClass(stepNumber) {
+    return (stepNumber === this.state.activeStep) ? 'current ' : '';
+  }
+
 
   routeToStep(stepNumber) {
     // TODO: Add logic to prevent people from going to a specified step if it hasn't been unlocked
@@ -64,7 +71,7 @@ export default class RequestProgressBar extends React.Component {
             <li className={this.progressClasses(2)} id="progressStep3" onClick={() => this.routeToStep(3)}></li>
             <li className={this.progressClasses(3)} id="progressStep4" onClick={() => this.routeToStep(4)}></li>
             <li className={this.progressClasses(4)} id="progressStep5" onClick={() => this.routeToStep(5)}></li>
-            <li className={this.progressClasses(5)} id="progressStep6"></li>
+            <li className={this.progressClasses(5)} id="progressStep6" onClick={() => this.routeToStep(6)}></li>
           </ul>
 
           {/* Large screens only */}

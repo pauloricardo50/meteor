@@ -11,6 +11,10 @@ const styles = {
   clock: {
     paddingRight: 10,
   },
+  title: {
+    display: 'inline-block',
+    paddingRight: 10,
+  },
 };
 
 
@@ -29,7 +33,8 @@ export default class TodoCard extends Component {
   // }
 
   routeDo() {
-    FlowRouter.go(`/step1/${this.props.cardId + 1}`);
+    const route = FlowRouter.getRouteName();
+    FlowRouter.go(`/${route}/${this.props.cardId}`);
   }
 
   render() {
@@ -63,7 +68,8 @@ export default class TodoCard extends Component {
     return (
       <li onClick={this.routeDo} className={bootstrapClasses} style={{ listStyle: 'none' }}>
         <div className="mask2 col-sm-12 todo-card">
-          <h4>{ this.props.title }</h4>
+          <h4 style={styles.title}>{this.props.title}</h4>
+          {this.props.completionPercentage === 100 ? <span className="fa fa-check secondary" /> : null}
           <span className="fa fa-info-circle fa-lg" />
           {/* <hr /> */}
           <p className="secondary">
@@ -73,7 +79,7 @@ export default class TodoCard extends Component {
               <a onClick={this.progressMax}>100%</a>
             </small> */}
           </p>
-          <div className="bottom text-center" style={gradientStyle}>{ this.props.completionPercentage.toString() }%</div>
+          <div className="bottom text-center" style={gradientStyle}>{this.props.completionPercentage.toString()}%</div>
         </div>
       </li>
     );
@@ -81,11 +87,10 @@ export default class TodoCard extends Component {
 }
 
 TodoCard.propTypes = {
-  cardId: PropTypes.number.isRequired,
+  cardId: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   duration: PropTypes.any.isRequired,
   completionPercentage: PropTypes.number.isRequired,
-  right: PropTypes.bool.isRequired,
   setProgress: PropTypes.func,
   center: PropTypes.bool,
 };
