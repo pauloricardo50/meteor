@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-import CreditRequests from '/imports/api/creditrequests/creditrequests.js';
+import { updateSingleValue } from '/imports/api/creditrequests/methods.js';
 
 
 import TextField from 'material-ui/TextField';
@@ -18,6 +18,13 @@ export default class TextInput extends Component {
     this.handleBlur = this.handleBlur.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    // Only update if the value is new
+    if (nextProps.currentValue !== this.state.value) {
+      this.setState({ value: nextProps.currentValue });
+    }
+  }
+
   handleChange(event) {
     this.setState({
       value: event.target.value,
@@ -30,9 +37,10 @@ export default class TextInput extends Component {
     // Save data to DB
     const object = {};
     object[this.props.id] = event.target.value;
+    const id = this.props.requestId;
 
-    CreditRequests.update(this.props.requestId, {
-      $set: object,
+    updateSingleValue.call({
+      object, id,
     }, (error, result) => {
       this.props.changeSaving(false);
 

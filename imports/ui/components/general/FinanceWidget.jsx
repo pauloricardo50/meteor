@@ -1,16 +1,9 @@
 import React, { PropTypes } from 'react';
+import { updateSingleValue } from '/imports/api/creditrequests/methods.js';
 
 import Slider from 'material-ui/Slider';
 
 const styles = {
-  mask: {
-    position: 'relative',
-    height: '95%',
-    top: 50,
-    width: 200,
-    bottom: 25,
-    left: 25,
-  },
   smallH_1: {
     display: 'inline-block',
     float: 'left',
@@ -24,15 +17,14 @@ const styles = {
     // width: '40%',
   },
   slider: {
-    position: 'absolute',
-    bottom: 44,
-    left: 20,
-    height: '60%',
+    position: 'relative',
+    height: '100%',
   },
   sliderValues: {
     position: 'absolute',
     bottom: 20,
     right: 20,
+    textAlign: 'right',
   },
 };
 
@@ -40,50 +32,106 @@ const styles = {
 export default class FinanceWidget extends React.Component {
   constructor(props) {
     super(props);
+    this.propertyValue = this.props.creditRequest.propertyInfo.value;
+    this.fortune = this.props.creditRequest.financialInfo.fortune +
+      this.props.creditRequest.financialInfo.insuranceFortune;
 
     this.state = {
-      sliderValue: 800000,
+      propertyValue: '',
+      sliderValue: '',
     };
+    if (this.propertyValue && this.fortune) {
+      this.state = {
+        propertyValue: this.propertyValue,
+        sliderValue: this.propertyValue - this.fortune,
+      };
+    }
 
     this.setSlider = this.setSlider.bind(this);
+    this.onDragStop = this.onDragStop.bind(this);
   }
+
+
+  componentWillReceiveProps(nextProps) {
+    const newPropertyValue = nextProps.creditRequest.propertyInfo.value
+    const newFortune = nextProps.creditRequest.financialInfo.fortune +
+      nextProps.creditRequest.financialInfo.insuranceFortune;
+    // Only update if the value is new
+    if (newPropertyValue && newFortune) {
+      if ((newPropertyValue !== this.state.propertyValue) || (newFortune !== this.fortune)) {
+        this.setState({
+          propertyValue: newPropertyValue,
+          sliderValue: newPropertyValue - newFortune,
+        });
+      }
+    }
+  }
+
+
+  onDragStop() {
+    const object = {};
+    const id = this.props.creditRequest._id;
+    // Only change fortune when changing the slider, let insuranceFortune the same
+    object['financialInfo.fortune'] = Number(
+      this.state.propertyValue -
+      this.state.sliderValue -
+      this.props.creditRequest.financialInfo.insuranceFortune
+    );
+
+    updateSingleValue.call({ object, id });
+  }
+
 
   setSlider(event, value) {
     this.setState({ sliderValue: value });
   }
 
+
+  toMoney(value) {
+    return String(value).replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+  }
+
+
   render() {
+    // If property value and fortune hasn't been specified, don't show anything
+    if (!this.state.propertyValue || !this.state.sliderValue) {
+      return null;
+    }
     return (
-      <article className="mask1 finance-widget" style={styles.mask}>
-        <h3>CHF 1'209'600</h3>
+      <article className="animated fadeIn mask1 finance-widget">
+        <h3>CHF {this.toMoney(this.state.propertyValue * 1.05)}</h3>
         <hr />
         <h5 className="secondary" style={styles.smallH_1}>Propriété</h5>
-        <h5 className="secondary" style={styles.smallH_2}>CHF 1'152'000</h5>
+        <h5 className="secondary" style={styles.smallH_2}>CHF {this.toMoney(this.state.propertyValue)}</h5>
         <br />
         <h5 className="secondary" style={styles.smallH_1}>Notaire ~5%</h5>
-        <h5 className="secondary" style={styles.smallH_2}>CHF 57'600</h5>
+        <h5 className="secondary" style={styles.smallH_2}>CHF {this.toMoney(this.state.propertyValue * 0.05)}</h5>
 
-        <Slider
-          style={styles.slider}
-          axis="y"
-          min={0}
-          max={1209600}
-          step={10000}
-          value={this.state.sliderValue}
-          onChange={this.setSlider}
-        />
+        <div className="slider-div">
+          <Slider
+            style={styles.slider}
+            // className="slider"
+            axis="y"
+            min={0}
+            max={this.state.propertyValue}
+            step={10000}
+            value={this.state.sliderValue}
+            onChange={this.setSlider}
+            onDragStop={this.onDragStop}
+          />
 
-        <div style={styles.sliderValues}>
-          <h4>Cash</h4>
-          <p>{1209600 - this.state.sliderValue}</p>
-          <h4>Prêt</h4>
-          <p>{this.state.sliderValue}</p>
+          <div style={styles.sliderValues}>
+            <h4>Fortune</h4>
+            <p>CHF {this.toMoney(this.state.propertyValue - this.state.sliderValue)}</p>
+            <h4>Prêt</h4>
+            <p>CHF {this.toMoney(this.state.sliderValue)}</p>
+          </div>
         </div>
-
       </article>
     );
   }
 }
 
 FinanceWidget.propTypes = {
+  creditRequest: PropTypes.objectOf(PropTypes.any),
 };

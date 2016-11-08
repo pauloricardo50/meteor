@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-import CreditRequests from '/imports/api/creditrequests/creditrequests.js';
+import { updateSingleValue } from '/imports/api/creditrequests/methods.js';
 
 
 import TextField from 'material-ui/TextField';
@@ -10,17 +10,28 @@ export default class TextInputMoney extends React.Component {
     super(props);
 
     this.state = {
-      textValue: this.props.currentValue ? String(this.props.currentValue).replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, "'") : '',
+      value: this.props.currentValue ? String(this.props.currentValue).replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, "'") : '',
     };
 
     this.formatToMoney = this.formatToMoney.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
   }
 
-// Prevents people from entering characters other than numbers, and formats value with apostrophes
-  formatToMoney(e) {
+  componentWillReceiveProps(nextProps) {
+    // Only update if the value is new
+    if (nextProps.currentValue !== this.state.value) {
+      this.setState({ value: nextProps.currentValue });
+    }
+  }
+
+  // Prevents people from entering characters other than numbers, and formats value with apostrophes
+  formatToMoney(value) {
+    return String(value).replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+  }
+
+  handleChange(event) {
     this.setState({
-      textValue: e.target.value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, "'"),
+      value: event.target.value.replace(/\D/g, ''),
     });
   }
 
@@ -31,9 +42,10 @@ export default class TextInputMoney extends React.Component {
     const object = {};
     // Clean value and convert to Number
     object[this.props.id] = Number(event.target.value.replace(/\D/g, ''));
+    const id = this.props.requestId;
 
-    CreditRequests.update(this.props.requestId, {
-      $set: object,
+    updateSingleValue.call({
+      object, id,
     }, (error, result) => {
       this.props.changeSaving(false);
 
@@ -53,11 +65,11 @@ export default class TextInputMoney extends React.Component {
         <TextField
           floatingLabelText={this.props.label}
           hintText={this.props.placeholder}
-          value={this.state.textValue}
+          value={this.formatToMoney(this.state.value)}
           type="text"
           id={this.props.id}
           onChange={(e) => {
-            this.formatToMoney(e);
+            this.handleChange(e);
             (typeof this.props.onChange === 'function') ? this.props.onChange : () => { return undefined; };
           }}
           onBlur={this.handleBlur}

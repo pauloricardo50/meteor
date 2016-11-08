@@ -14,9 +14,8 @@ Meteor.publish('creditRequest', (id) => {
   // }
 
   return CreditRequests.find({
-    _id: id,
-  }, {
     userId: this.userId,
+    _id: id,
   });
 
   // Throw unauthorized error
@@ -26,9 +25,8 @@ Meteor.publish('creditRequest', (id) => {
 Meteor.publish('activeCreditRequest', function () {
   // find or findOne? Since there should only be one at any time..?
   const request = CreditRequests.find({
-    active: true,
-  }, {
     userId: this.userId,
+    active: true,
   });
 
   if (request) {

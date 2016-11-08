@@ -39,7 +39,7 @@ const CreditRequestSchema = new SimpleSchema({
       if (this.isUpdate) {
         return new Date();
       }
-      return '';
+      return undefined;
     },
     denyInsert: true,
     optional: true,
@@ -50,6 +50,10 @@ const CreditRequestSchema = new SimpleSchema({
   },
   requestName: {
     type: String,
+  },
+  type: { // acquisition, refinancing
+    type: String,
+    defaultValue: 'acquisition',
   },
   personalInfo: {
     type: PersonalInfoSchema,

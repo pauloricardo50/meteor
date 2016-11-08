@@ -22,10 +22,15 @@ export default class InitialForm extends Component {
   }
 
 
+  componentWillUnmount() {
+    Meteor.clearTimeout(savingTimeout);
+  }
+
+
   changeSaving(value) {
     // If the value is false, wait for half a second before changing state,
     // so that the saving appears smoothly to the user
-    clearTimeout(savingTimeout);
+    Meteor.clearTimeout(savingTimeout);
     var that = this;
     savingTimeout = Meteor.setTimeout(function () {
       that.setState({

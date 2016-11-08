@@ -45,18 +45,21 @@ export default class RequestSelector extends Component {
   }
 
   render() {
-    return (
-      <SelectField
-        floatingLabelText="Requête Active"
-        value={this.state.value}
-        onChange={this.handleChange}
-      >
-        {this.props.creditRequests.map((creditRequest, index) =>
-          <MenuItem value={index} key={index} primaryText={creditRequest.requestName} />
-        )}
-        <MenuItem value="new" primaryText="Nouvelle Requête" />
-      </SelectField>
-    );
+    if (this.props.creditRequests.length) {
+      return (
+        <SelectField
+          floatingLabelText="Requête Active"
+          value={this.state.value}
+          onChange={this.handleChange}
+        >
+          {this.props.creditRequests.map((creditRequest, index) =>
+            <MenuItem value={index} key={index} primaryText={creditRequest.requestName} />
+          )}
+          <MenuItem value="new" primaryText="Nouvelle Requête" />
+        </SelectField>
+      );
+    }
+    return null;
   }
 }
 

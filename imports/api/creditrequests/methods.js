@@ -87,3 +87,17 @@ export const incrementStep = new ValidatedMethod({
     });
   },
 });
+
+export const updateSingleValue = new ValidatedMethod({
+  name: 'creditRequests.updateSingleValue',
+  validate: null,
+  run({ object, id }) {
+    if (!this.userId) {
+      throw new Meteor.Error('notLoggedIn', 'Must be logged in to update a request');
+    }
+
+    CreditRequests.update(id, {
+      $set: object,
+    });
+  },
+});

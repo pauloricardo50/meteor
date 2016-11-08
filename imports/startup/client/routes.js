@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import React from 'react';
@@ -20,6 +21,14 @@ import {
 } from '/imports/ui/containers/user/ActiveRequestContainer.jsx';
 
 import SettingsPage from '/imports/ui/containers/user/SettingsPageContainer.jsx';
+
+
+// Automatically route someone who logs out to the homepage
+if (Meteor.isClient) {
+  Accounts.onLogout(function () {
+    FlowRouter.go('/');
+  });
+}
 
 
 // Public Routes

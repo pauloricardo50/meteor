@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-import CreditRequests from '/imports/api/creditrequests/creditrequests.js';
+import { updateSingleValue } from '/imports/api/creditrequests/methods.js';
 
 import TextField from 'material-ui/TextField';
 
@@ -11,17 +11,24 @@ export default class TextInputNumber extends React.Component {
     super(props);
 
     this.state = {
-      textValue: this.props.currentValue ? this.props.currentValue : '',
+      value: this.props.currentValue ? this.props.currentValue : '',
     };
 
     this.formatToNumber = this.formatToNumber.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    // Only update if the value is new
+    if (nextProps.currentValue !== this.state.value) {
+      this.setState({ value: nextProps.currentValue });
+    }
+  }
+
 // Prevents people from entering characters other than numbers, and formats value with apostrophes
   formatToNumber(e) {
     this.setState({
-      textValue: e.target.value.replace(/\D/g, ''),
+      value: e.target.value.replace(/\D/g, ''),
     });
   }
 
@@ -31,9 +38,10 @@ export default class TextInputNumber extends React.Component {
     // Save data to DB
     const object = {};
     object[this.props.id] = Number(event.target.value.replace(/\D/g, ''));
+    const id = this.props.requestId;
 
-    CreditRequests.update(this.props.requestId, {
-      $set: object,
+    updateSingleValue.call({
+      object, id,
     }, (error, result) => {
       this.props.changeSaving(false);
 
@@ -53,7 +61,7 @@ export default class TextInputNumber extends React.Component {
         <TextField
           floatingLabelText={this.props.label}
           hintText={this.props.placeholder}
-          value={this.state.textValue}
+          value={this.state.value}
           type="text"
           id={this.props.id}
           onChange={(e) => {

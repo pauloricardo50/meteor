@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, PropTypes} from 'react';
 
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
@@ -6,35 +6,33 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 const normalColor = '#4A90E2';
 const successColor = '#50E3C2';
 
-export default class TodoCard extends React.Component {
+
+const styles = {
+  clock: {
+    paddingRight: 10,
+  },
+};
+
+
+export default class TodoCard extends Component {
 
   constructor(props) {
     super(props);
 
     this.routeDo = this.routeDo.bind(this);
-    this.progressMax = this.progressMax.bind(this);
+    // this.progressMax = this.progressMax.bind(this);
   }
 
-  progressMax(event) {
-    this.props.setProgress(this.props.cardId, 100);
-    event.stopPropagation();
-  }
+  // progressMax(event) {
+  //   this.props.setProgress(this.props.cardId, 100);
+  //   event.stopPropagation();
+  // }
 
   routeDo() {
     FlowRouter.go(`/step1/${this.props.cardId + 1}`);
   }
 
   render() {
-    let cardClasses = 'mask2 col-sm-6 col-xs-11 ';
-    let durationClasses = 'duration ';
-    if (this.props.right) {
-      cardClasses += 'col-sm-offset-2';
-      durationClasses += 'left';
-    } else {
-      cardClasses += 'col-sm-offset-3 col-xs-offset-1';
-      durationClasses += 'right';
-    }
-
     const percent = this.props.completionPercentage;
     const percent2 = percent + 20;
 
@@ -61,11 +59,11 @@ export default class TodoCard extends React.Component {
           <span className="fa fa-info-circle fa-lg" />
           {/* <hr /> */}
           <p className="secondary">
-            <span className="fa fa-clock-o fa-lg" />
+            <span className="fa fa-clock-o fa-lg" style={styles.clock} />
             {this.props.duration}
-            <small>
+            {/* <small>
               <a onClick={this.progressMax}>100%</a>
-            </small>
+            </small> */}
           </p>
           <div className="bottom text-center" style={gradientStyle}>{ this.props.completionPercentage.toString() }%</div>
         </div>
@@ -75,10 +73,10 @@ export default class TodoCard extends React.Component {
 }
 
 TodoCard.propTypes = {
-  cardId: React.PropTypes.number.isRequired,
-  title: React.PropTypes.string.isRequired,
-  duration: React.PropTypes.any.isRequired,
-  completionPercentage: React.PropTypes.number.isRequired,
-  right: React.PropTypes.bool.isRequired,
-  setProgress: React.PropTypes.func,
+  cardId: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  duration: PropTypes.any.isRequired,
+  completionPercentage: PropTypes.number.isRequired,
+  right: PropTypes.bool.isRequired,
+  setProgress: PropTypes.func,
 };

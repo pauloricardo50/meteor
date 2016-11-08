@@ -48,7 +48,16 @@ export default class RequestProgressBar extends React.Component {
         </header>
       );
     }
-    return null;
+    return (
+      <header className="header-progressbar">
+
+        {/* Large screens only */}
+        <div className="header-progress-menu hidden-xs">
+          <TopNavDropdown public={false} />
+        </div>
+
+      </header>
+    );
   }
 }
 
