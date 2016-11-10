@@ -22,7 +22,14 @@ export default class UserLayout extends Component {
     // TODO: add a parameter to the URL to indicate which route this person came from, so that
     // When he logs in, he's taken to that URL
     if (!Meteor.userId()) {
-      FlowRouter.go('/login');
+      const route = FlowRouter.getRouteName();
+
+      const pathDef = '/login';
+      const params = {};
+      const queryParams = { route };
+      const path = FlowRouter.path(pathDef, params, queryParams);
+
+      FlowRouter.go(path);
     }
   }
 

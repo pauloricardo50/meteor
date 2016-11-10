@@ -10,7 +10,7 @@ import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown.jsx';
 const styles = {
   navbar: {
     position: 'relative',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
     color: '#000000',
     boxShadow: '0px 2px 40px 0px rgba(0,0,0,0.08)',
   },
@@ -39,7 +39,7 @@ export default class PublicNav extends Component {
         <TopNavDropdown public />
       );
     } else {
-      button = <FlatButton style={styles.button} label="Login" onClick={() => FlowRouter.go('/login')} />;
+      button = <FlatButton style={styles.button} label="Continuer" onClick={() => FlowRouter.go('/login')} />;
     }
 
     return (

@@ -1,23 +1,36 @@
-import React from 'react';
-import Blaze from 'meteor/gadicc:blaze-react-component';
+import React, { Component } from 'react';
+import { DocHead } from 'meteor/kadira:dochead';
 
 
+const styles = {
+  section: {
+    display: 'table',
+    height: '100%',
+    width: '100%',
+  },
+  article: {
+    display: 'table-cell',
+    verticalAlign: 'middle',
+  },
+};
 
-import '/imports/ui/components/blaze/startForm.js';
 
-
-export default class StartPage extends React.Component {
+export default class StartPage extends Component {
   componentDidMount() {
     DocHead.setTitle('e-Potek');
+
+    this.state = {
+      step: 0,
+    };
   }
 
 
   render() {
     return (
-      <section id="start-main">
-        <div className="start-form">
-          <Blaze template="startForm" />
-        </div>
+      <section style={styles.section}>
+        <article style={styles.article}>
+          <h1>Hello!!!! What the fuck??</h1>
+        </article>
       </section>
     );
   }
