@@ -95,20 +95,64 @@ export const PropertyInfoSchema = new SimpleSchema({
 });
 
 // Name and URL of a single file uploaded by the user
-export const FileSchema = new SimpleSchema({
-  name: {
-    type: String,
-  },
+const SingleFileSchema = new SimpleSchema({
   url: {
     type: String,
-    regEx: SimpleSchema.RegEx.Url,
+  // regEx: SimpleSchema.RegEx.Url, TODO put this back when upload works
   },
 });
+
+// Name and URL of a single file uploaded by the user
+export const FileSchema = new SimpleSchema({
+  taxes: {
+    type: SingleFileSchema,
+    optional: true,
+  },
+  housePicture: {
+    type: SingleFileSchema,
+    optional: true,
+  },
+});
+
 
 // Contains all fields submitted by an individual lender
 export const LenderOfferSchema = new SimpleSchema({
   lender: {
     type: String,
+  },
+  maxAmount: {
+    type: Number,
+    min: 0,
+    max: 100000000,
+  },
+  amortizing: {
+    type: Number,
+  },
+  interestLibor: {
+    type: Number,
+    min: 0,
+    max: 100,
+  },
+  interest2: {
+    type: Number,
+    min: 0,
+    max: 100,
+  },
+  interest5: {
+    type: Number,
+    min: 0,
+    max: 100,
+  },
+  interest10: {
+    type: Number,
+    min: 0,
+    max: 100,
+  },
+  conditions: {
+    type: String,
+  },
+  expertise: {
+    type: Boolean,
   },
 });
 
@@ -118,7 +162,7 @@ export const LogicSchema = new SimpleSchema({
     type: Number,
     defaultValue: 0,
     min: 0,
-    max: 6,
+    max: 5,
   },
   auctionStarted: {
     type: Boolean,

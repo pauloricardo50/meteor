@@ -30,7 +30,7 @@ export default class SettingsPage extends Component {
 
   render() {
     return (
-      <section className="mask1">
+      <section className="mask1 animated fadeIn">
         <h2>Réglages</h2>
         <hr />
 

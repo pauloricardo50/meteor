@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
-import Panel from 'react-bootstrap/lib/Panel';
 
 import DropzoneInput from '../forms/DropzoneInput.jsx';
 
-const Step1PropertyUpload = () => (
+const Step1PropertyUpload = props => (
   <div className="mask1">
     <h3>Évaluer mon bien immobilier </h3>
     <h6>Uploadez les documents suivants pour permettre d'évaluer votre bien immmobilier:</h6>
@@ -14,8 +13,12 @@ const Step1PropertyUpload = () => (
       <li>Photos intérieures</li>
       <li>Etc.</li>
     </ol>
-    <DropzoneInput />
+    <DropzoneInput fileName="housePicture" requestId={props.creditRequest._id} />
   </div>
 );
+
+Step1PropertyUpload.propTypes = {
+  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+};
 
 export default Step1PropertyUpload;

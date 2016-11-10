@@ -68,8 +68,8 @@ const CreditRequestSchema = new SimpleSchema({
     defaultValue: {},
   },
   files: {
-    type: [FileSchema],
-    defaultValue: [],
+    type: FileSchema,
+    defaultValue: {},
   },
   lenderOffers: {
     type: [LenderOfferSchema],

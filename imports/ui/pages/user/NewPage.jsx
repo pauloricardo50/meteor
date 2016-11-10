@@ -1,13 +1,20 @@
 import React, { PropTypes } from 'react';
 import { DocHead } from 'meteor/kadira:dochead';
-
-
 import { FlowRouter } from 'meteor/kadira:flow-router';
-
 import { insertRequest } from '/imports/api/creditrequests/methods.js';
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+
+
+const styles = {
+  firstButton: {
+    float: 'left',
+  },
+  secondButton: {
+    float: 'right',
+  },
+};
 
 
 export default class NewPage extends React.Component {
@@ -56,23 +63,25 @@ export default class NewPage extends React.Component {
 
   render() {
     return (
-      <section className="mask1 newPage">
+      <section className="mask1 animated fadeIn newPage col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
         <h2>Bienvenue</h2>
         <p>
           Entrez la rue où se trouve votre future propriété,
            ce sera le titre de votre projet hypothécaire.
         </p>
-        <TextField
-          hintText="Rue du Pré 2"
-          floatingLabelText="Adresse"
-          value={this.state.textValue}
-          onChange={this.textChange}
-          errorText={this.state.errorText}
-        />
+        <div className="text-center">
+          <TextField
+            hintText="Rue du Pré 2"
+            floatingLabelText="Adresse"
+            value={this.state.textValue}
+            onChange={this.textChange}
+            errorText={this.state.errorText}
+          />
+        </div>
         <br />
         <br />
-        <RaisedButton label="Annuler" href="/main" />
-        <RaisedButton label="Continuer" onClick={this.newRequest} primary />
+        <RaisedButton label="Annuler" href="/main" style={styles.firstButton} />
+        <RaisedButton label="Continuer" onClick={this.newRequest} primary style={styles.secondButton} />
       </section>
     );
   }

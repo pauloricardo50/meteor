@@ -5,7 +5,7 @@ import { updateValues } from '/imports/api/creditrequests/methods.js';
 
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 
-export default class RadioInput extends React.Component {
+export default class RadioInput extends Component {
 
   constructor(props) {
     super(props);

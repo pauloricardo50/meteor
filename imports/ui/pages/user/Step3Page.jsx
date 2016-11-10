@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { DocHead } from 'meteor/kadira:dochead';
 
-import TodoCard from '/imports/ui/components/general/TodoCard.jsx';
+import TodoCardArray from '/imports/ui/components/general/TodoCardArray.jsx';
 
 
 const todoCards = [
@@ -34,25 +34,10 @@ export default class Step3Page extends React.Component {
 
   render() {
     return (
-      <section>
-        <div
-          className="text-center"
-          id="todo-text-top"
-        >
-          Appuyez sur une carte incomplète pour avancer
-        </div>
-        <hr id="todo-hr-top" />
-        {todoCards.map((card, index) =>
-          (<TodoCard
-            title={card.title}
-            duration={card.duration}
-            completionPercentage={this.state.progress[index]}
-            cardId={`3-${index + 1}`}
-            key={index}
-            center={index === (this.state.arrayLength - 1)} // If this is the last card
-          />)
-        )}
-      </section>
+      <TodoCardArray
+        cards={todoCards}
+        progress={this.state.progress}
+      />
     );
   }
 }

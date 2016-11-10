@@ -11,6 +11,34 @@ const styles = {
   },
 };
 
+const lenderOffers = [
+  {
+    lender: 'Banque 1',
+    maxAmount: 'CHF 675\'000',
+    amortizing: '1%',
+    interest10: '0.89%',
+    expertise: 'Non',
+  }, {
+    lender: 'Banque 2',
+    maxAmount: 'CHF 687\'000',
+    amortizing: '1%',
+    interest10: '0.99%',
+    expertise: 'Oui',
+  }, {
+    lender: 'Banque 3',
+    maxAmount: 'CHF 641\'000',
+    amortizing: '1%',
+    interest10: '0.85%',
+    expertise: 'Non',
+  }, {
+    lender: 'Assurance 1',
+    maxAmount: 'CHF 701\'000',
+    amortizing: '1%',
+    interest10: '0.91%',
+    expertise: 'Non',
+  },
+];
+
 export default class Step2AuctionResults extends Component {
   constructor(props) {
     super(props);
@@ -22,14 +50,15 @@ export default class Step2AuctionResults extends Component {
 
   render() {
     return (
-      <section className="animated fadeIn mask1">
+      <section className="mask1 animated fadeIn">
         <h1>Les résultats sont arrivés!</h1>
 
         <div style={styles.button} className="text-center">
           <RaisedButton label="Choisir ma stratégie de taux" primary onClick={this.handleClick} />
         </div>
 
-        <LenderOffersTable lenderOffers={this.props.creditRequest.lenderOffers} />
+        {/* Replace with this.props.creditRequest.lenderOffers */}
+        <LenderOffersTable lenderOffers={lenderOffers} />
 
       </section>
     );

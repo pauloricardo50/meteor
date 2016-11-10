@@ -6,8 +6,10 @@ const styles = {
   },
 };
 
-const Step6Page = props =>
-  <span className="fa fa-home fa-5x animated pulse infinite active text-center" style={styles.home} />;
+const Step6Page = () =>
+  <div className="animated fadeIn">
+    <span className="fa fa-home fa-5x animated pulse infinite active text-center" style={styles.home} />
+  </div>;
 
 
 Step6Page.propTypes = {

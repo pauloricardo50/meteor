@@ -21,7 +21,7 @@ export default class ContactPage extends React.Component {
 
   render() {
     return (
-      <section className="mask1">
+      <section className="mask1 animated fadeIn">
         <h2>Contact</h2>
         <hr />
 

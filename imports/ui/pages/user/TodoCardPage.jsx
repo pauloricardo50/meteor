@@ -47,7 +47,7 @@ export default class TodoCardPage extends React.Component {
   render() {
     // If the view sessions variable is empty, go back
     return (
-      <section>
+      <section className="animated fadeIn">
         <div className="form-group">
           {/* <a
             href={'/step1'}
@@ -70,5 +70,5 @@ export default class TodoCardPage extends React.Component {
 }
 
 TodoCardPage.propTypes = {
-  creditRequest: React.PropTypes.objectOf(React.PropTypes.any).isRequired,
+  creditRequest: React.PropTypes.objectOf(React.PropTypes.any),
 };

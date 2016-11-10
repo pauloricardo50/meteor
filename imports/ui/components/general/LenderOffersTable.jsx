@@ -27,12 +27,12 @@ export default class LenderOffersTable extends Component {
         </thead>
         <tbody>
           {this.props.lenderOffers.map((lenderOffer, index) => (
-            <tr>
-              <th>1</th>
-              <th>2</th>
-              <th>3</th>
-              <th>4</th>
-              <th>5</th>
+            <tr key={index}>
+              <td className="left">{lenderOffer.lender}</td>
+              <td className="right">{lenderOffer.maxAmount}</td>
+              <td className="right">{lenderOffer.interest10}</td>
+              <td className="right">{lenderOffer.amortizing}</td>
+              <td className="left">{lenderOffer.expertise.toString()}</td>
             </tr>
           ))}
         </tbody>

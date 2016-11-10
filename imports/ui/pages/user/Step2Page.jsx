@@ -34,7 +34,7 @@ export default class Step2Page extends Component {
   }
 
   render() {
-    if (this.props.creditRequest.logic.auctionEndTime <= this.state.currentTime) {
+    if (this.props.creditRequest.logic.auctionEndTime <= this.state.currentTime.setSeconds(this.state.currentTime.getSeconds() + 1)) {
       // After the auction
       return <Step2AuctionResults creditRequest={this.props.creditRequest} />;
     } else if (this.props.creditRequest.logic.auctionStarted) {

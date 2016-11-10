@@ -1,14 +1,10 @@
 import React, { Component, PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
 import { DocHead } from 'meteor/kadira:dochead';
+import { updateValues } from '/imports/api/creditrequests/methods.js';
 
-import TodoCard from '/imports/ui/components/general/TodoCard.jsx';
+import TodoCardArray from '/imports/ui/components/general/TodoCardArray.jsx';
 
-
-const styles = {
-  ul: {
-    padding: 0,
-  },
-};
 
 const todoCards = [
   {
@@ -33,8 +29,6 @@ export default class Step1Page extends Component {
     this.state = {
       progress: this.getPercentages(),
     };
-
-    this.setProgress = this.setProgress.bind(this);
   }
 
   componentDidMount() {
@@ -69,21 +63,44 @@ export default class Step1Page extends Component {
     if (r.financialInfo.avoidLenderExists === 'false') { length2 -= 1; } // Don't count avoided lender
 
 
+    if (r.files.taxes) {
+      if (r.files.taxes.url) { part3 = 100; }
+
+    }
+    if (r.files.housePicture) {
+      if (r.files.housePicture.url) { part4 = 100; }
+
+    }
+    // if (r.files.taxes.url) { part3 = 100; }
+    // if (r.files.housePicture.url) { part4 = 100; }
+
+
     // Filter out values
     part1 = Math.round((part1Values.filter(this.filterFunc).length / length1) * 100);
     part2 = Math.round((part2Values.filter(this.filterFunc).length / length2) * 100);
 
+    if (part1 === 100 && part2 === 100 && part3 === 100 && part4 === 100) {
+      this.setStepTo2();
+    }
 
     return [part1, part2, part3, part4];
   }
 
 
-// TODO: remove this, progress should come from the database
-  setProgress(i, newPercent) {
-    this.setState({
-      progress: this.state.progress.map(
-        (currentPercent, index3) => ((index3 === i) ? newPercent : currentPercent)
-      ),
+  setStepTo2() {
+    const id = this.props.creditRequest._id;
+    const object = {};
+    object['logic.step'] = 1;
+
+    updateValues.call({
+      object, id,
+    }, (error, result) => {
+      if (error) {
+        console.log(error.message);
+        throw new Meteor.Error(500, error.message);
+      } else {
+        return 'Step Increment Successful';
+      }
     });
   }
 
@@ -96,27 +113,28 @@ export default class Step1Page extends Component {
 
   render() {
     return (
-      <section>
-        <div
-          className="text-center"
-          id="todo-text-top"
-        >
-          Appuyez sur une carte incomplète pour avancer
-        </div>
-        <hr id="todo-hr-top" />
-        <ul style={styles.ul}>
-          {todoCards.map((card, index) =>
-            (<TodoCard
-              title={card.title}
-              duration={card.duration}
-              completionPercentage={this.state.progress[index]}
-              setProgress={this.setProgress}
-              cardId={`1-${index + 1}`}
-              key={index}
-            />)
-          )}
-        </ul>
-      </section>
+        // {/* <div
+        //   className="text-center"
+        //   id="todo-text-top"
+        // >
+        //   Appuyez sur une carte incomplète pour avancer
+        // </div>
+        // <hr id="todo-hr-top" />
+        // <ul style={styles.ul}>
+        //   {todoCards.map((card, index) =>
+        //     (<TodoCard
+        //       title={card.title}
+        //       duration={card.duration}
+        //       completionPercentage={this.state.progress[index]}
+        //       cardId={`1-${index + 1}`}
+        //       key={index}
+        //     />)
+        //   )}
+        // </ul> */}
+      <TodoCardArray
+        cards={todoCards}
+        progress={this.state.progress}
+      />
     );
   }
 }

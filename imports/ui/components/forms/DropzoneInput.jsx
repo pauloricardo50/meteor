@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-import CreditRequests from '/imports/api/creditrequests/creditrequests.js';
+import { updateValues } from '/imports/api/creditrequests/methods.js';
 
 import DropzoneComponent from 'react-dropzone-component';
 
@@ -23,12 +23,44 @@ const componentConfig = {
   showFiletypeIcon: true,
   postUrl: '/uploadHandler',
 };
-const djsConfig = { autoProcessQueue: false }
-const eventHandlers = { addedfile: file => console.log(file) }
+const djsConfig = { autoProcessQueue: true };
 
 
-export default class DropzoneInput extends React.Component {
+export default class DropzoneInput extends Component {
+  constructor(props) {
+    super(props);
+
+    this.handleDrop = this.handleDrop.bind(this);
+  }
+
+
+  handleDrop(file) {
+    const id = this.props.requestId;
+    const object = {};
+    object[`files.${this.props.fileName}`] = {
+      url: file.name, // TODO: Put real URL here when it works
+    };
+
+    console.log(object);
+
+    updateValues.call({
+      object, id,
+    }, (error, result) => {
+      if (error) {
+        console.log(error.message);
+        throw new Meteor.Error(500, error.message);
+      } else {
+        return 'File Upload Successful';
+      }
+    });
+  }
+
+
   render() {
+    const eventHandlers = {
+      addedfile: file => this.handleDrop(file),
+    };
+
     return (
       <DropzoneComponent
         config={componentConfig}
@@ -38,3 +70,8 @@ export default class DropzoneInput extends React.Component {
     );
   }
 }
+
+DropzoneInput.propTypes = {
+  fileName: PropTypes.string.isRequired,
+  requestId: PropTypes.string.isRequired,
+};
