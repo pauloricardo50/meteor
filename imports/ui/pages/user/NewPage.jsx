@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { DocHead } from 'meteor/kadira:dochead';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { insertRequest } from '/imports/api/creditrequests/methods.js';
@@ -17,7 +17,7 @@ const styles = {
 };
 
 
-export default class NewPage extends React.Component {
+export default class NewPage extends Component {
   constructor(props) {
     super(props);
 
@@ -34,7 +34,9 @@ export default class NewPage extends React.Component {
     DocHead.setTitle('Nouvelle Demande - e-Potek');
   }
 
-  newRequest() {
+  newRequest(event) {
+    event.preventDefault();
+
     // If there is an address, insert a new creditRequest
     if (this.state.textValue !== '') {
       insertRequest.call({ requestName: this.state.textValue }, (error, result) => {
@@ -69,19 +71,22 @@ export default class NewPage extends React.Component {
           Entrez la rue où se trouve votre future propriété,
            ce sera le titre de votre projet hypothécaire.
         </p>
-        <div className="text-center">
-          <TextField
-            hintText="Rue du Pré 2"
-            floatingLabelText="Adresse"
-            value={this.state.textValue}
-            onChange={this.textChange}
-            errorText={this.state.errorText}
-          />
-        </div>
-        <br />
-        <br />
-        <RaisedButton label="Annuler" href="/main" style={styles.firstButton} />
-        <RaisedButton label="Continuer" onClick={this.newRequest} primary style={styles.secondButton} />
+        <form onSubmit={this.newRequest}>
+          <div className="text-center">
+            <TextField
+              hintText="Rue du Pré 2"
+              floatingLabelText="Adresse du bien immobilier"
+              value={this.state.textValue}
+              onChange={this.textChange}
+              errorText={this.state.errorText}
+              autoFocus
+            />
+          </div>
+          <br />
+          <br />
+          <RaisedButton label="Annuler" href="/main" style={styles.firstButton} />
+          <RaisedButton label="Continuer" primary style={styles.secondButton} type="submit" />
+        </form>
       </section>
     );
   }

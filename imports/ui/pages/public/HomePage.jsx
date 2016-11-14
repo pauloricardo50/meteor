@@ -1,15 +1,19 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import { DocHead } from 'meteor/kadira:dochead';
 
-import Header from '/imports/ui/components/general/Header.jsx';
-import ProductDescription from '/imports/ui/components/general/ProductDescription.jsx';
+
+import HomeHeader from '/imports/ui/components/general/HomeHeader.jsx';
+import HomeProductDescription from '/imports/ui/components/general/HomeProductDescription.jsx';
 import NewUserOptions from '/imports/ui/components/general/NewUserOptions.jsx';
 import HomeFooter from '/imports/ui/components/general/HomeFooter.jsx';
+
 
 const styles = {
   spacing: {
     paddingTop: 200,
   },
 };
+
 
 export default class HomePage extends Component {
   componentDidMount() {
@@ -19,8 +23,8 @@ export default class HomePage extends Component {
   render() {
     return (
       <div>
-        <Header />
-        <ProductDescription />
+        <HomeHeader />
+        <HomeProductDescription />
         <div className="col-sm-8 col-sm-offset-2 col-xs-12" style={styles.spacing} id="start">
           <NewUserOptions />
         </div>

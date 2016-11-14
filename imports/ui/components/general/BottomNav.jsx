@@ -5,6 +5,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { BottomNavigation, BottomNavigationItem } from 'material-ui/BottomNavigation';
 import Paper from 'material-ui/Paper';
 
+// Icons
 import Home from 'material-ui/svg-icons/action/home';
 import AttachMoney from 'material-ui/svg-icons/editor/attach-money';
 import ActionSettings from 'material-ui/svg-icons/action/settings';
@@ -18,7 +19,7 @@ const styles = {
   },
 };
 
-class BottomNav extends Component {
+export default class BottomNav extends Component {
   constructor(props) {
     super(props);
   }
@@ -58,7 +59,6 @@ class BottomNav extends Component {
   }
 }
 
-export default BottomNav;
 
 BottomNav.propTypes = {
   currentURL: PropTypes.string,

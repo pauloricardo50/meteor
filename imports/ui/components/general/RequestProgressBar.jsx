@@ -38,16 +38,22 @@ export default class RequestProgressBar extends React.Component {
 
 
   progressClasses(stepNumber) {
-    let classes = this.activeClass(stepNumber);
+    const classes = this.activeClass(stepNumber);
+
+    // During the first step, do not show the progress bar
+    if (this.props.creditRequest.logic.step === 0) {
+      return classes.concat('hidden');
+    }
+
     if (this.props.creditRequest) {
       if (this.props.creditRequest.logic.step < stepNumber) {
-        return classes.concat('bold');
+        return classes.concat('hidden');
       } else if (this.props.creditRequest.logic.step === stepNumber) {
         return classes.concat('bold active');
       }
       return classes.concat('bold done');
     }
-    return classes.concat('bold');
+    return classes.concat('hidden');
   }
 
   activeClass(stepNumber) {

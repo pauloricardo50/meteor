@@ -10,9 +10,7 @@ const styles = {
 
 const TodoCardArray = props => (
   <section className="animated fadeIn">
-    <div className="text-center" id="todo-text-top" >
-      Appuyez sur une carte incomplète pour avancer
-    </div>
+    <p className="text-center secondary" >Appuyez sur une carte incomplète pour avancer</p>
 
     <hr id="todo-hr-top" />
 

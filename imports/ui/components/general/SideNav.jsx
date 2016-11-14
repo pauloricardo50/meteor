@@ -4,11 +4,19 @@ import FinanceWidget from '/imports/ui/components/general/FinanceWidget.jsx';
 
 const styles = {
   icon: {
-    paddingRight: 20,
+    paddingRight: 10,
   },
   text: {
     display: 'inline',
     fontSize: '1em',
+  },
+  main: {
+    padding: 30,
+  },
+  logo: {
+    // width: 160,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 };
 
@@ -56,14 +64,9 @@ export default class SideNav extends Component {
     let content2;
     if (this.props.creditRequest) {
       content1 = (
-        <a href="/main">
-          <ul>
-            <li>
-              <span className="fa fa-home fa-2x active" style={styles.icon} />
-              <h5 className="active bold" style={styles.text}>{this.state.requestName}</h5>
-            </li>
-            {this.state.propertyValue ? (<li className="secondary">CHF {this.toMoney(this.state.propertyValue)}</li>) : null}
-          </ul>
+        <a href="/main" style={styles.main}>
+          <span className="fa fa-home fa-2x active" style={styles.icon} />
+          <h5 className="active bold" style={styles.text}>{this.state.requestName}</h5>
         </a>
       );
       content2 = <FinanceWidget creditRequest={this.props.creditRequest} />;
@@ -80,7 +83,7 @@ export default class SideNav extends Component {
       <nav className="side-nav hidden-xs">
 
         <a href="/">
-          <img src="img/logo_black.svg" alt="e-Potek" width="160px" style={{ paddingLeft: 20, paddingRight: 20 }} />
+          <img src="img/logo_black.svg" alt="e-Potek" width="160px" style={styles.logo} />
         </a>
 
         {content1}

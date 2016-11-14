@@ -1,5 +1,6 @@
 import React from 'react';
 import { Accounts } from 'meteor/std:accounts-ui';
+import { DocHead } from 'meteor/kadira:dochead';
 
 const styles = {
   section: {

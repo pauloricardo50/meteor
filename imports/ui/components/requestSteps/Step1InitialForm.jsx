@@ -86,7 +86,7 @@ export default class Step1InitialForm extends Component {
         currentValue: this.props.creditRequest.propertyInfo.type,
       }, {
         type: 'TextInputMoney',
-        label: 'Votre Salaire?',
+        label: 'Votre Salaire annuel?',
         placeholder: '30\'000',
         id: 'financialInfo.salary',
         currentValue: this.props.creditRequest.financialInfo.salary,
