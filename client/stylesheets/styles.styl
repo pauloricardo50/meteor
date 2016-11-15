@@ -607,3 +607,30 @@ svg
     text-align: right;
   .left
     text-align: left;
+
+
+
+.NLForm
+  article
+    display: block;
+    h1
+      margin-top: 0px;
+    // overflow: auto;
+
+.startLine
+  -webkit-transform-origin: left center;
+  transform-origin: left center;
+  transition: all 0.3s ease;
+  opacity: 0.4;
+  transform: scale(0.75);
+  -webkit-transform: scale(0.75);
+  margin-top: 0px;
+  margin-bottom: 0px;
+  &:hover
+    opacity: 0.8;
+  &.active
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    margin-top: 10px;
+    margin-bottom: 10px;

@@ -1,4 +1,4 @@
-export default function maxPropertyValue(salary = 0, cash = 0, lpp = 0, age = 50, gender = 'female') {
+export function maxPropertyValue(salary = 0, cash = 0, lpp = 0, age = 50, gender = 'female') {
   // Emprunter maximum 80% de la valeur de la propriété
   let maxBorrow = 0.8;
 
@@ -59,4 +59,13 @@ export default function maxPropertyValue(salary = 0, cash = 0, lpp = 0, age = 50
 
   // Round value down to nearest 1000
   return Math.floor(maxValue / 1000) * 1000;
+}
+
+
+export function toMoney(value) {
+  return String(value).replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+}
+
+export function toNumber(value) {
+  return String(value).replace(/\D/g, '');
 }
