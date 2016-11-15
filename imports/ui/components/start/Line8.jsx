@@ -1,71 +1,74 @@
 import React, { Component, PropTypes } from 'react';
-import { Meteor } from 'meteor/meteor';
-
-import TextField from 'material-ui/TextField';
 
 
-import { toMoney } from '/imports/js/finance-math.js';
-
+import RaisedButton from 'material-ui/RaisedButton';
+import Line8Help from './Line8Help.jsx';
 
 const styles = {
-  textField: {
-    width: 100,
-    fontSize: 'inherit',
+  button: {
+    marginRight: 8,
+    marginBottom: 8,
+  },
+  extra: {
+    marginBottom: 20,
   },
 };
 
-var timer;
 
 export default class Line8 extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      fortune: '',
+      text: '',
     };
 
-    this.handleChange = this.handleChange.bind(this);
+    this.changeState = this.changeState.bind(this);
   }
 
+  changeState(e, maxCash) {
+    this.props.completeStep(e, true);
 
-  // If salary was completed, ask for a bonus
-  setCompleted() {
-    const s = this.state;
-    if (s.fortune) {
-      this.props.completeStep(null, true);
+    if (maxCash) {
+      this.setState({
+        text: 'un max de fonds propres',
+      });
+    } else {
+      this.setState({
+        text: 'un max de 2ème pilier',
+      });
     }
   }
-
-
-  handleChange(event) {
-    Meteor.clearTimeout(timer);
-
-    this.setState({
-      fortune: toMoney(event.target.value),
-    }, function () {
-      // Use a quick timeout to allow user to type in more stuff before going to next step
-      const that = this;
-      timer = Meteor.setTimeout(function () {
-        that.setCompleted();
-      }, 400);
-    });
-  }
-
 
   render() {
     return (
       <article onClick={this.props.setStep}>
+
         <h1 className={this.props.classes.text}>
-          {this.props.twoBuyers ? 'et nous avons ' : 'et j\'ai '}
-          à disposition une fortune de CHF
-          <TextField
-            style={styles.textField}
-            name="fortune"
-            value={this.state.fortune}
-            onChange={this.handleChange}
-          />
-          &nbsp;ainsi que mon 2ème pilier
+          {this.props.twoBuyers ? 'Nous voulons utiliser ' : 'Je veux utiliser '}
+          {this.state.text}
         </h1>
+
+        {this.props.step === 7 ?
+          <div className={this.props.classes.extra} style={styles.extra}>
+            <RaisedButton
+              label="Un max de fonds propres"
+              style={styles.button}
+              primary={!this.state.text}
+              onClick={e => this.changeState(e, true)}
+            />
+            <RaisedButton
+              label="Un max de 2ème pilier"
+              style={styles.button}
+              primary={!this.state.text}
+              onClick={e => this.changeState(e, false)}
+            />
+            <br />
+            <Line8Help />
+          </div>
+          : ''
+        }
+
       </article>
     );
   }
@@ -77,5 +80,4 @@ Line8.propTypes = {
   twoBuyers: PropTypes.bool.isRequired,
   setStep: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
-  propertyValue: PropTypes.number.isRequired,
 };

@@ -81,6 +81,7 @@ export default class Line2 extends Component {
             name="age1"
             value={this.state.age1}
             onChange={this.handleChange1}
+            pattern="[0-9]*"
             autoFocus
           />
           {this.props.twoBuyers ? ' et ' : ''}
@@ -90,6 +91,7 @@ export default class Line2 extends Component {
               name="age2"
               value={this.state.age2}
               onChange={this.handleChange2}
+              pattern="[0-9]*"
               ref={(c) => { this.age2 = c; }}
             /> :
             null

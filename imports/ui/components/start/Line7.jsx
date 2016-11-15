@@ -64,6 +64,16 @@ export default class Line7 extends Component {
 
 
   render() {
+    const postValue = (
+      <span className="animated fadeInRight">
+        {this.props.twoBuyers ? ', nous devons ' : ', je dois '}
+        {this.props.propertyKnown ?
+          `donc mettre au minimum CHF
+          ${toMoney(Math.round(this.props.propertyValue * 0.2))} en fonds propres` : ''
+        }
+      </span>);
+
+
     return (
       <article onClick={this.props.setStep}>
         <h1 className={this.props.classes.text}>
@@ -76,13 +86,10 @@ export default class Line7 extends Component {
               name="propertyValue"
               value={this.state.propertyValue}
               onChange={this.handleChange}
+              pattern="[0-9]*"
             /> : ''
           }
-          {this.props.twoBuyers ? ', nous devons ' : ', je dois '}
-          {this.props.propertyKnown ?
-            `donc mettre au moins CHF
-            ${toMoney(Math.round(this.props.propertyValue * 0.2))} en fonds propres` : ''
-          }
+          {this.state.propertyValue ? postValue : null }
         </h1>
 
         {this.props.step === 6 ?
@@ -91,7 +98,7 @@ export default class Line7 extends Component {
               <RaisedButton
                 label="Je ne sais pas encore"
                 style={styles.button}
-                primary
+                primary={!this.state.propertyValue}
                 onClick={e => this.handleClick(e, false)}
               /> :
               <RaisedButton

@@ -31,7 +31,7 @@ export default class Line6 extends Component {
 
     this.state = {
       bonusExists: false,
-      text: '',
+      bonusSelected: false,
       bonus: '',
     };
 
@@ -39,16 +39,6 @@ export default class Line6 extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  changeState(event, i) {
-    switch (i) {
-      case 1:
-        this.setState({ text: 'sans bonus.', bonusExists: false });
-        this.props.completeStep(event, true);
-        break;
-      case 2: this.setState({ text: 'avec un bonus annuel moyen de CHF ', bonusExists: true }); break;
-      default: break;
-    }
-  }
 
   handleChange(event) {
     Meteor.clearTimeout(timer);
@@ -64,6 +54,7 @@ export default class Line6 extends Component {
     });
   }
 
+
   setCompleted() {
     const s = this.state;
     if (s.bonus) {
@@ -71,39 +62,81 @@ export default class Line6 extends Component {
     }
   }
 
+
+  changeState(event, i) {
+    switch (i) {
+      case 1:
+        this.setState({
+          bonusExists: false,
+          bonusSelected: true,
+        });
+        this.props.completeStep(event, true);
+        break;
+      case 2:
+        this.setState({
+          bonusExists: true,
+          bonusSelected: true,
+        });
+        break;
+      default: break;
+    }
+  }
+
+
   render() {
+
+    // The text to show once a bonus option has been selected, based on 1) it exists 2) twoBuyers
+    const textAfterSelected = (
+      this.state.bonusExists ?
+      (this.props.twoBuyers ? 'gagnons' : 'gagne') + ' un bonus annuel moyen de CHF '
+      :
+      (this.props.twoBuyers ? 'ne gagnons pas de bonus.' : 'ne gagne pas de bonus.')
+    );
+
     return (
       <article onClick={this.props.setStep}>
 
         <h1 className={this.props.classes.text}>
-          {this.state.text ? this.state.text : '...'}
+          {/* This text is always shown */}
+          {this.props.twoBuyers ? 'et nous ' : 'et je '}
+
+          {/* The text constant after the user has chosen an answer */}
+          {this.state.bonusSelected ? textAfterSelected : ''}
           {this.state.bonusExists ?
             <TextField
               style={styles.textField}
               name="bonus"
               value={this.state.bonus}
               onChange={this.handleChange}
+              pattern="[0-9]*"
               autoFocus
             />
             : ''
           }
+          {/* Final dot to the sentence */}
           {this.state.bonusExists ? '.' : ''}
-          {this.state.bonusExists ? <span className="fa fa-info" /> : ''}
         </h1>
 
+        {/* Display buttons if this is the active step */}
         {this.props.step === 5 ?
           <div className={this.props.classes.extra} style={styles.extra}>
-            <RaisedButton
-              label="sans bonus"
-              style={styles.button}
-              primary
-              onClick={e => this.changeState(e, 1)}
-            />
-            <RaisedButton
-              label="avec bonus"
-              primary
-              onClick={e => this.changeState(e, 2)}
-            />
+            {(this.state.bonusExists || !this.state.bonusSelected) ?
+              <RaisedButton
+                label={this.props.twoBuyers ? 'Ne gagnons pas de bonus' : 'Ne gagne pas de bonus'}
+                style={styles.button}
+                primary={!this.state.bonusSelected}
+                onClick={e => this.changeState(e, 1)}
+              /> :
+              null
+            }
+            {!this.state.bonusExists ?
+              <RaisedButton
+                label={this.props.twoBuyers ? 'Gagnons un bonus' : 'Gagne un bonus'}
+                primary={!this.state.bonusSelected}
+                onClick={e => this.changeState(e, 2)}
+              /> :
+              null
+            }
           </div>
           : ''
         }

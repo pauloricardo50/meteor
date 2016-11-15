@@ -38,12 +38,12 @@ export default class BottomNav extends Component {
         <Paper zDepth={1}>
           <BottomNavigation selectedIndex={currentIndex}>
             <BottomNavigationItem
-              label="Mon Projet"
+              label="Projet"
               icon={<Home />}
               onTouchTap={() => FlowRouter.go('/main')}
             />
             <BottomNavigationItem
-              label="Mon Financement"
+              label="Financement"
               icon={<AttachMoney />}
               onTouchTap={() => FlowRouter.go('/finance')}
             />

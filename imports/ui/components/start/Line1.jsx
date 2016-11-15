@@ -31,7 +31,7 @@ export default class Line1 extends Component {
 
     if (twoBuyers) {
       this.setState({
-        value: 'deux emprunteurs',
+        value: 'un couple',
       });
     } else {
       this.setState({
@@ -54,13 +54,13 @@ export default class Line1 extends Component {
             <RaisedButton
               label="Un emprunteur"
               style={styles.button}
-              primary
-              onClick={(e) => this.changeState(e, false)}
+              primary={!this.state.value}
+              onClick={e => this.changeState(e, false)}
             />
             <RaisedButton
-              label="Deux emprunteurs"
-              primary
-              onClick={(e) => this.changeState(e, true)}
+              label="Un couple"
+              primary={!this.state.value}
+              onClick={e => this.changeState(e, true)}
             />
           </div>
           : ''

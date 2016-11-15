@@ -21,6 +21,7 @@ const styles = {
   },
   image: {
     height: 30,
+    maxWidth: '50%',
   },
   button: {
     color: '#000000',

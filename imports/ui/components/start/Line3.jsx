@@ -6,10 +6,21 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 const styles = {
   button: {
-    marginRight: 10,
+    marginRight: 8,
+    marginBottom: 8,
+  },
+  button2: {
+    marginRight: 24,
+    marginBottom: 8,
   },
   extra: {
-    marginBottom: 20,
+    marginBottom: 16,
+  },
+  hr: {
+    width: '10%',
+    marginLeft: 0,
+    marginTop: 0,
+    marginBottom: 8, // add 8 to compensate for the button bottom margin
   },
 };
 
@@ -19,8 +30,8 @@ export default class Line3 extends Component {
     super(props);
 
     this.state = {
-      value1: '',
-      value2: '',
+      gender1: '',
+      gender2: '',
     };
 
     this.changeState = this.changeState.bind(this);
@@ -36,10 +47,10 @@ export default class Line3 extends Component {
 
   changeState(i) {
     switch (i) {
-      case 1: this.setState({ value1: 'une femme' }, function () { this.setCompleted(); }.bind(this)); break;
-      case 2: this.setState({ value1: 'un homme' }, function () { this.setCompleted(); }.bind(this)); break;
-      case 3: this.setState({ value2: 'une femme' }, function () { this.setCompleted(); }.bind(this)); break;
-      case 4: this.setState({ value2: 'un homme' }, function () { this.setCompleted(); }.bind(this)); break;
+      case 1: this.setState({ gender1: 'une femme' }, function () { this.setCompleted(); }.bind(this)); break;
+      case 2: this.setState({ gender1: 'un homme' }, function () { this.setCompleted(); }.bind(this)); break;
+      case 3: this.setState({ gender2: 'une femme' }, function () { this.setCompleted(); }.bind(this)); break;
+      case 4: this.setState({ gender2: 'un homme' }, function () { this.setCompleted(); }.bind(this)); break;
       default: break;
     }
   }
@@ -49,10 +60,10 @@ export default class Line3 extends Component {
 
     // If all required values are set, go to next step
     if (this.props.twoBuyers) {
-      if (s.value1 && s.value2) {
+      if (s.gender1 && s.gender2) {
         this.props.completeStep(null, true);
       }
-    } else if (s.value1) {
+    } else if (s.gender1) {
       this.props.completeStep(null, true);
     }
   }
@@ -64,9 +75,9 @@ export default class Line3 extends Component {
 
           <h1 className={this.props.classes.text}>
             {this.props.twoBuyers ? 'Nous sommes ' : 'Je suis '}
-            {this.state.value1 ? this.state.value1 : '...'}
+            {this.state.gender1 ? this.state.gender1 : '..'}
             {this.props.twoBuyers ? ' et ' : '.'}
-            {this.props.twoBuyers ? (this.state.value2 ? this.state.value2 : '...') : ''}
+            {this.props.twoBuyers ? (this.state.gender2 ? this.state.gender2 : '..') : ''}
             {this.props.twoBuyers ? ' respectivement.' : ''}
           </h1>
 
@@ -75,26 +86,32 @@ export default class Line3 extends Component {
               <RaisedButton
                 label="une femme"
                 style={styles.button}
-                primary
+                primary={!this.state.gender1}
                 onClick={() => this.changeState(1)}
               />
               <RaisedButton
                 label="un homme"
-                style={styles.button}
-                primary
+                style={styles.button2}
+                primary={!this.state.gender1}
                 onClick={() => this.changeState(2)}
               />
-              <RaisedButton
-                label="une femme"
-                style={styles.button}
-                primary
-                onClick={() => this.changeState(3)}
-              />
-              <RaisedButton
-                label="un homme"
-                primary
-                onClick={() => this.changeState(4)}
-              />
+              {this.props.twoBuyers ?
+                <span>
+                  <hr style={styles.hr} />
+                  <RaisedButton
+                    label="une femme"
+                    style={styles.button}
+                    primary={!this.state.gender2}
+                    onClick={() => this.changeState(3)}
+                  />
+                  <RaisedButton
+                    label="un homme"
+                    primary={!this.state.gender2}
+                    onClick={() => this.changeState(4)}
+                  />
+                </span>
+                : null
+              }
             </div>
             : ''
           }

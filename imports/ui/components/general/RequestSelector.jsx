@@ -5,6 +5,13 @@ import CreditRequests from '/imports/api/creditrequests/creditrequests.js';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
+
+const styles = {
+  field: {
+    width: 'unset',
+  },
+};
+
 export default class RequestSelector extends Component {
   constructor(props) {
     super(props);
@@ -51,6 +58,7 @@ export default class RequestSelector extends Component {
           floatingLabelText="Requête Active"
           value={this.state.value}
           onChange={this.handleChange}
+          style={styles.field}
         >
           {this.props.creditRequests.map((creditRequest, index) =>
             <MenuItem value={index} key={index} primaryText={creditRequest.requestName} />

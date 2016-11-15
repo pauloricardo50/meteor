@@ -61,6 +61,7 @@ export default class Line5 extends Component {
             name="salary"
             value={this.state.salary}
             onChange={this.handleChange}
+            pattern="[0-9]*"
             autoFocus
           />
           &nbsp;par an
