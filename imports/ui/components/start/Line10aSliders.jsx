@@ -10,6 +10,7 @@ const styles = {
   h1: {
     verticalAlign: 'top',
     display: 'inline-block',
+    marginBottom: 0,
   },
   TextField: {
     fontSize: 'inherit',
@@ -73,7 +74,7 @@ export default class Line10aSliders extends Component {
     return (
       <span>
 
-        <div className="col-xs-12">
+        <div className="col-sm-12">
           <h1 style={styles.h1} className="col-sm-4 col-xs-12">
             <TextField
               name="fortune"
@@ -97,7 +98,7 @@ export default class Line10aSliders extends Component {
           </span>
         </div>
 
-        <div className="col-xs-12">
+        <div className="col-sm-12">
           <h1 style={styles.h1} className="col-sm-4 col-xs-12">
             <TextField
               name="insuranceFortune"

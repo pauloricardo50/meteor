@@ -11,10 +11,12 @@ const theme = myTheme;
 
 const PublicLayout = props => (
   <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
-    <main>
+    <div>
       <PublicNav currentUser={props.currentUser} />
-      {props.content}
-    </main>
+      <main className="public-layout">
+        {props.content}
+      </main>
+    </div>
   </MuiThemeProvider>
 );
 

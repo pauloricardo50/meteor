@@ -29,6 +29,5 @@ module.exports = {
     },
 
     dockerImage: 'abernix/meteord:base',
-    deployCheckWaitTime: 60,
   },
 };

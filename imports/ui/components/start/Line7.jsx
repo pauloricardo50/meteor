@@ -58,7 +58,7 @@ export default class Line7 extends Component {
 
 
   handleClick(event, value) {
-    this.props.setPropertyKnown(value);
+    this.props.setPropertyKnown(value, !value);
     // If the user clicks on the set True value, do not automatically go to the next step,
     // as he has to enter a property value (though this should never happen the first time due to
     // the default value for propertyKnown)

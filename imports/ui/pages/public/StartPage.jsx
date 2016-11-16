@@ -22,6 +22,7 @@ const styles = {
     display: 'table',
     height: '100%',
     width: '100%',
+    paddingBottom: 100,
   },
   div: {
     display: 'table-cell',
@@ -82,7 +83,7 @@ export default class StartPage extends Component {
   }
 
   // Change the propertyKnown state
-  setPropertyKnown(value) {
+  setPropertyKnown(value, alsoStep) {
     const oldState = this.state.propertyKnown;
 
     this.setState({ propertyKnown: value },
@@ -91,6 +92,11 @@ export default class StartPage extends Component {
         // therefore reset maxStep to 8
         if (oldState !== value) {
           this.setState({ maxStep: 7 });
+          if (alsoStep) {
+            // When the user chooses that the propertyValue is not known after having filled
+            // some fields beyond step 6 in path a), set step to 7
+            this.setState({ step: 7 });
+          }
         }
       }
     );
@@ -143,8 +149,8 @@ export default class StartPage extends Component {
 
   classes(i) {
     const classes = {
-      text: 'col-sm-8 col-sm-offset-2 startLine',
-      extra: 'col-sm-8 col-sm-offset-2 animated fadeIn',
+      text: 'col-sm-10 col-sm-offset-1 startLine',
+      extra: 'col-sm-10 col-sm-offset-1 animated fadeIn',
     };
 
     if (i === this.state.step) {
@@ -180,7 +186,7 @@ export default class StartPage extends Component {
               completeStep={(event, alsoStep) => this.completeStep(index, event, alsoStep)}
               setTwoBuyers={value => this.setTwoBuyers(value)}
               setGenderRequired={value => this.setGenderRequired(value)}
-              setPropertyKnown={value => this.setPropertyKnown(value)}
+              setPropertyKnown={(value, alsoStep) => this.setPropertyKnown(value, alsoStep)}
               setPropertyValue={value => this.setPropertyValue(value)}
               maxCash={this.state.maxCash}
               setMaxCash={value => this.setMaxCash(value)}
