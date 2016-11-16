@@ -6,10 +6,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 const styles = {
   button: {
-    marginRight: 10,
+    marginRight: 8,
+    marginBottom: 8,
   },
   extra: {
-    marginBottom: 20,
+    marginBottom: 16,
   },
 };
 
@@ -61,6 +62,7 @@ export default class Line4 extends Component {
             />
             <RaisedButton
               label="Un investissement"
+              style={styles.button}
               primary={!this.state.text}
               onClick={e => this.changeState(e, 3)}
             />

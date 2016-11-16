@@ -50,12 +50,16 @@ export default class Line2 extends Component {
     if (this.props.twoBuyers) {
       if (a1.length >= 2 && a2.length >= 2) {
         this.props.completeStep(null, true);
+        // Remove focus form the the textfield after 2 characters are entered
+        this.age2.blur();
       } else if (a1.length >= 2 && a2.length === 0) {
         // If only the first one has been completed, set focus to the second input
         this.age2.focus();
       }
     } else if (a1.length >= 2) {
       this.props.completeStep(null, true);
+      // Remove focus form the the textfield after 2 characters are entered
+      this.age1.blur();
     }
   }
 
@@ -83,6 +87,7 @@ export default class Line2 extends Component {
             onChange={this.handleChange1}
             pattern="[0-9]*"
             autoFocus
+            ref={(c) => { this.age1 = c; }}
           />
           {this.props.twoBuyers ? ' et ' : ''}
           {this.props.twoBuyers ?

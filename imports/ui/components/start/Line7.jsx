@@ -33,7 +33,7 @@ export default class Line7 extends Component {
   setCompleted() {
     const s = this.state;
     if (s.propertyValue) {
-      this.props.completeStep(null, false);
+      this.props.completeStep(null, true);
     }
   }
 
@@ -66,10 +66,14 @@ export default class Line7 extends Component {
   render() {
     const postValue = (
       <span className="animated fadeInRight">
-        {this.props.twoBuyers ? ', nous devons ' : ', je dois '}
+        {this.props.propertyKnown ?
+          (this.props.twoBuyers ? ', nous devons ' : ', je dois ')
+          : ''
+        }
         {this.props.propertyKnown ?
           `donc mettre au minimum CHF
-          ${toMoney(Math.round(this.props.propertyValue * 0.2))} en fonds propres` : ''
+          ${toMoney(Math.round(this.props.propertyValue * 0.2))} en fonds propres.`
+          : ''
         }
       </span>);
 
@@ -87,7 +91,8 @@ export default class Line7 extends Component {
               value={this.state.propertyValue}
               onChange={this.handleChange}
               pattern="[0-9]*"
-            /> : ''
+            />
+            : ''
           }
           {this.state.propertyValue ? postValue : null }
         </h1>
@@ -100,7 +105,8 @@ export default class Line7 extends Component {
                 style={styles.button}
                 primary={!this.state.propertyValue}
                 onClick={e => this.handleClick(e, false)}
-              /> :
+              />
+              :
               <RaisedButton
                 label="En fait, je sais"
                 style={styles.button}

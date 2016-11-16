@@ -10,6 +10,7 @@ import Line5 from '/imports/ui/components/start/Line5.jsx';
 import Line6 from '/imports/ui/components/start/Line6.jsx';
 import Line7 from '/imports/ui/components/start/Line7.jsx';
 import Line8 from '/imports/ui/components/start/Line8.jsx';
+import Line9 from '/imports/ui/components/start/Line9.jsx';
 
 
 const styles = {
@@ -38,6 +39,7 @@ export default class StartPage extends Component {
       Line6,
       Line7,
       Line8,
+      Line9,
     ];
 
     this.state = {
@@ -48,6 +50,7 @@ export default class StartPage extends Component {
       genderRequired: false,
       propertyKnown: true,
       propertyValue: 0,
+      maxCash: true,
     };
 
     this.classes = this.classes.bind(this);
@@ -100,6 +103,13 @@ export default class StartPage extends Component {
   }
 
 
+  setMaxCash(value) {
+    this.setState({
+      maxCash: value,
+    });
+  }
+
+
   // Called when a step was finished,
   completeStep(i, event, alsoSetStep) {
     // Prevent the call of setStep() when this is called, only call it if an event is passed
@@ -147,6 +157,8 @@ export default class StartPage extends Component {
               setGenderRequired={value => this.setGenderRequired(value)}
               setPropertyKnown={value => this.setPropertyKnown(value)}
               setPropertyValue={value => this.setPropertyValue(value)}
+              maxCash={this.state.maxCash}
+              setMaxCash={value => this.setMaxCash(value)}
               key={index}
             />
           )}

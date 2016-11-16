@@ -27,6 +27,7 @@ export default class Line8 extends Component {
   }
 
   changeState(e, maxCash) {
+    this.props.setMaxCash(maxCash);
     this.props.completeStep(e, true);
 
     if (maxCash) {
@@ -63,6 +64,12 @@ export default class Line8 extends Component {
               primary={!this.state.text}
               onClick={e => this.changeState(e, false)}
             />
+            <RaisedButton
+              label="Je ne sais pas"
+              style={styles.button}
+              primary={!this.state.text}
+              onClick={e => this.changeState(e, true)}
+            />
             <br />
             <Line8Help />
           </div>
@@ -80,4 +87,6 @@ Line8.propTypes = {
   twoBuyers: PropTypes.bool.isRequired,
   setStep: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
+  maxCash: PropTypes.bool.isRequired,
+  setMaxCash: PropTypes.func.isRequired,
 };
