@@ -119,7 +119,13 @@ export default class StartPage extends Component {
       event.stopPropagation();
     }
 
-    if (this.state.maxStep <= i) {
+    const finalA = 10;
+    const finalB = 8;
+    const max = this.state.maxStep;
+    const finished = this.state.propertyKnown ? max === finalA : max === finalB;
+
+
+    if (max <= i) {
       this.setState({ maxStep: i + 1 },
         function () {
           // Make sure step is never higher than maxStep, and verify the step is higher than before
@@ -128,6 +134,9 @@ export default class StartPage extends Component {
           }
         }
       );
+    } else if (finished && alsoSetStep) {
+      // If the form is finished, always set the last step to be active
+      this.setState({ step: max });
     }
   }
 

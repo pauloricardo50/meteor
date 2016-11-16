@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 // import { TAPi18n } from 'meteor/tap:i18n';
-import injectTapEventPlugin from 'react-tap-event-plugin';
+// import injectTapEventPlugin from 'react-tap-event-plugin';
 
 
 import './routes.js';
@@ -26,4 +26,4 @@ if (Meteor.isClient) {
   });
 }
 
-injectTapEventPlugin();
+// injectTapEventPlugin();
