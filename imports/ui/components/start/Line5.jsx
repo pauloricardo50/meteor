@@ -3,12 +3,14 @@ import { Meteor } from 'meteor/meteor';
 
 import TextField from 'material-ui/TextField';
 
-import { toMoney } from '/imports/js/finance-math.js';
+import { toMoney, toNumber } from '/imports/js/finance-math.js';
 
 const styles = {
   textField: {
-    width: 100,
+    width: 150,
     fontSize: 'inherit',
+    marginLeft: 8,
+    marginRight: 8,
   },
 };
 
@@ -38,7 +40,7 @@ export default class Line5 extends Component {
     Meteor.clearTimeout(timer);
 
     this.setState({
-      salary: toMoney(event.target.value),
+      salary: toNumber(event.target.value),
     }, function () {
       // Use a quick timeout to allow user to type in more stuff before going to next step
       const that = this;
@@ -55,16 +57,16 @@ export default class Line5 extends Component {
         <h1 className={this.props.classes.text}>
           Le total de
           {this.props.twoBuyers ? ' nos ' : ' mes '}
-          revenus brut est de CHF&nbsp;
+          revenus brut est de
           <TextField
             style={styles.textField}
             name="salary"
-            value={this.state.salary}
+            value={`CHF ${toMoney(this.state.salary)}`}
             onChange={this.handleChange}
             pattern="[0-9]*"
             autoFocus
           />
-          &nbsp;par an
+          par an
         </h1>
       </article>
     );

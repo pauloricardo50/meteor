@@ -30,47 +30,46 @@ const styles = {
   },
 };
 
-export default class Line9Sliders extends Component {
+export default class Line10aSliders extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      lotsOfCash: false, // Allow rich users to slide higher than the default max values
-      lotsOfInsurance: false,
-    };
 
     this.changeFortune = this.changeFortune.bind(this);
     this.changeInsuranceFortune = this.changeInsuranceFortune.bind(this);
     this.sliderChangeFortune = this.sliderChangeFortune.bind(this);
     this.sliderChangeInsuranceFortune = this.sliderChangeInsuranceFortune.bind(this);
+
+    this.fortuneDragStop = this.fortuneDragStop.bind(this);
   }
 
   changeFortune(event, value) {
-    const isPercent = false;
     const isSlider = false;
-    this.props.changeFortune(toNumber(value), isPercent, isSlider);
+    this.props.changeFortune(toNumber(value), isSlider);
   }
 
   changeInsuranceFortune(event, value) {
-    const isPercent = false;
     const isSlider = false;
-    this.props.changeInsuranceFortune(toNumber(value), isPercent, isSlider);
+    this.props.changeInsuranceFortune(toNumber(value), isSlider);
   }
 
   sliderChangeFortune(event, value) {
-    const isPercent = true;
     const isSlider = true;
-    this.props.changeFortune(value, isPercent, isSlider);
+    this.props.changeFortune(value, isSlider);
   }
 
   sliderChangeInsuranceFortune(event, value) {
-    const isPercent = true;
     const isSlider = true;
-    this.props.changeInsuranceFortune(value, isPercent, isSlider);
+    this.props.changeInsuranceFortune(value, isSlider);
+  }
+
+
+  fortuneDragStop() {
+    this.slider1.value = 0;
   }
 
 
   render() {
+
     return (
       <span>
 
@@ -86,18 +85,15 @@ export default class Line9Sliders extends Component {
           </h1>
           <span style={styles.sliderSpan} className="col-sm-8 col-xs-12">
             <Slider
-              value={this.props.fortune / this.props.propertyValue > 0.1 ?
-                this.props.fortune / this.props.propertyValue
-                : 0.1
-              }
+              value={this.props.fortune / this.props.propertyValue}
               onChange={this.sliderChangeFortune}
               min={0}
-              max={this.state.lotsOfCash ? 0.5 : 0.3}
+              max={this.props.maxDebt ? 0.2 : 0.4}
               step={0.01}
-              onDragStop={() => ''}
+              ref={(c) => { this.slider1 = c; }}
             />
             <h4 className="secondary" style={styles.label1}>0%</h4>
-            <h4 className="secondary" style={styles.label2}>{this.state.lotsOfCash ? '50%' : '30%'}</h4>
+            <h4 className="secondary" style={styles.label2}>{this.props.maxDebt ? '20%' : '40%'}</h4>
           </span>
         </div>
 
@@ -116,11 +112,11 @@ export default class Line9Sliders extends Component {
               value={this.props.insuranceFortune / this.props.propertyValue}
               onChange={this.sliderChangeInsuranceFortune}
               min={0}
-              max={this.state.lotsOfInsurance ? 0.5 : 0.2}
+              max={this.props.maxDebt ? 0.1 : 0.4}
               step={0.01}
             />
             <h4 className="secondary" style={styles.label1}>0%</h4>
-            <h4 className="secondary" style={styles.label2}>{this.state.lotsOfCash ? '50%' : '20%'}</h4>
+            <h4 className="secondary" style={styles.label2}>{this.props.maxDebt ? '10%' : '40%'}</h4>
           </span>
         </div>
       </span>
@@ -128,10 +124,11 @@ export default class Line9Sliders extends Component {
   }
 }
 
-Line9Sliders.propTypes = {
+Line10aSliders.propTypes = {
   fortune: PropTypes.number.isRequired,
   insuranceFortune: PropTypes.number.isRequired,
   propertyValue: PropTypes.number.isRequired,
+  maxDebt: PropTypes.bool.isRequired,
   changeFortune: PropTypes.func.isRequired,
   changeInsuranceFortune: PropTypes.func.isRequired,
 };

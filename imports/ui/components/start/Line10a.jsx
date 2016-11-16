@@ -4,11 +4,11 @@ import { Meteor } from 'meteor/meteor';
 import RaisedButton from 'material-ui/RaisedButton';
 
 
-import Line9Sliders from './Line9Sliders.jsx';
+import Line10aSliders from './Line10aSliders.jsx';
 
 var timer;
 
-export default class Line9 extends Component {
+export default class Line10a extends Component {
   constructor(props) {
     super(props);
 
@@ -26,9 +26,34 @@ export default class Line9 extends Component {
     }
   }
 
-  changeFortune(value, isPercent, isSlider) {
+  componentWillReceiveProps(nextProps) {
+    const oldMaxCash = this.props.maxCash;
+
+    if (oldMaxCash !== nextProps.maxCash) {
+      if (nextProps.maxCash) {
+        this.setState({
+          fortune: Math.round(nextProps.propertyValue * 0.2),
+          insuranceFortune: 0,
+        });
+      } else {
+        this.setState({
+          fortune: Math.round(nextProps.propertyValue * 0.1),
+          insuranceFortune: Math.round(nextProps.propertyValue * 0.1),
+        });
+      }
+    }
+  }
+
+  changeFortune(value, isSlider) {
+    const newFortune = (isSlider ? Math.round(value * this.props.propertyValue) : value);
+
+    if (isSlider && newFortune < 0.1 * this.props.propertyValue) {
+      // If it is a slider, and the newFortune is below 10%, do not even update
+      return;
+    }
+
     this.setState({
-      fortune: (isPercent ? Math.round(value * this.props.propertyValue) : value),
+      fortune: newFortune,
     },
       function () {
         this.adjustValues(true, isSlider);
@@ -36,9 +61,9 @@ export default class Line9 extends Component {
     );
   }
 
-  changeInsuranceFortune(value, isPercent, isSlider) {
+  changeInsuranceFortune(value, isSlider) {
     this.setState({
-      insuranceFortune: (isPercent ? Math.round(value * this.props.propertyValue) : value),
+      insuranceFortune: (isSlider ? Math.round(value * this.props.propertyValue) : value),
     },
       function () {
         this.adjustValues(false, isSlider);
@@ -79,24 +104,32 @@ export default class Line9 extends Component {
       } else {
         that.setState({ fortune: Math.round((0.2 * p) - i) });
       }
+    } else if (this.props.maxDebt) {
+      // If the user wants maximum Debt, always keep both combined at 20%
+      if (isFortune) {
+        that.setState({ insuranceFortune: Math.round((0.2 * p) - f) });
+      } else {
+        that.setState({ fortune: Math.round((0.2 * p) - i) });
+      }
     }
   }
 
   render() {
     return (
       <article onClick={this.props.setStep} className={this.props.classes.text}>
-        <Line9Sliders
+        <Line10aSliders
           fortune={this.state.fortune}
           insuranceFortune={this.state.insuranceFortune}
+          maxDebt={this.props.maxDebt}
           propertyValue={this.props.propertyValue}
           changeFortune={
-            (value, isPercent, isSlider) => this.changeFortune(value, isPercent, isSlider)
+            (value, isSlider) => this.changeFortune(value, isSlider)
           }
           changeInsuranceFortune={
-            (value, isPercent, isSlider) => this.changeInsuranceFortune(value, isPercent, isSlider)
+            (value, isSlider) => this.changeInsuranceFortune(value, isSlider)
           }
         />
-        {this.props.step === 8 ?
+        {this.props.step === 9 ?
           <div className="text-center col-xs-12">
             <RaisedButton
               label="Je suis satisfait"
@@ -111,11 +144,12 @@ export default class Line9 extends Component {
   }
 }
 
-Line9.propTypes = {
+Line10a.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
   maxCash: PropTypes.bool.isRequired,
+  maxDebt: PropTypes.bool.isRequired,
   propertyValue: PropTypes.number.isRequired,
   completeStep: PropTypes.func.isRequired,
 };

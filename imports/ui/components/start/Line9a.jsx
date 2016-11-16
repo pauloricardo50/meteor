@@ -2,11 +2,12 @@ import React, { Component, PropTypes } from 'react';
 
 
 import RaisedButton from 'material-ui/RaisedButton';
-
+import Line9aHelp from './Line9aHelp.jsx';
 
 const styles = {
   button: {
-    marginRight: 10,
+    marginRight: 8,
+    marginBottom: 8,
   },
   extra: {
     marginBottom: 20,
@@ -14,28 +15,28 @@ const styles = {
 };
 
 
-export default class Line1 extends Component {
+export default class Line9a extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      value: '',
+      text: '',
     };
 
     this.changeState = this.changeState.bind(this);
   }
 
-  changeState(e, twoBuyers) {
-    this.props.setTwoBuyers(twoBuyers);
+  changeState(e, maxDebt) {
+    this.props.setMaxDebt(maxDebt);
     this.props.completeStep(e, true);
 
-    if (twoBuyers) {
+    if (maxDebt) {
       this.setState({
-        value: 'un couple',
+        text: 'le plus possible.',
       });
     } else {
       this.setState({
-        value: 'un emprunteur',
+        text: 'le moins possible.',
       });
     }
   }
@@ -45,23 +46,26 @@ export default class Line1 extends Component {
       <article onClick={this.props.setStep}>
 
         <h1 className={this.props.classes.text}>
-          {this.props.twoBuyers ? 'Nous sommes ' : 'Je suis '}
-          {this.state.value}
+          {this.props.twoBuyers ? 'et emprunter ' : 'et emprunter '}
+          {this.state.text}
         </h1>
 
-        {this.props.step === 0 ?
+        {this.props.step === 8 ?
           <div className={this.props.classes.extra} style={styles.extra}>
             <RaisedButton
-              label="Un emprunteur"
+              label="Le plus possible (80%)"
               style={styles.button}
-              primary={!this.state.value}
-              onClick={e => this.changeState(e, false)}
-            />
-            <RaisedButton
-              label="Un couple"
-              primary={!this.state.value}
+              primary={!this.state.text}
               onClick={e => this.changeState(e, true)}
             />
+            <RaisedButton
+              label="Le moins possible (<65%)"
+              style={styles.button}
+              primary={!this.state.text}
+              onClick={e => this.changeState(e, false)}
+            />
+            <br />
+            <Line9aHelp />
           </div>
           : ''
         }
@@ -71,11 +75,12 @@ export default class Line1 extends Component {
   }
 }
 
-Line1.propTypes = {
+Line9a.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
   step: PropTypes.number.isRequired,
   twoBuyers: PropTypes.bool.isRequired,
   setStep: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
-  setTwoBuyers: PropTypes.func.isRequired,
+  maxDebt: PropTypes.bool.isRequired,
+  setMaxDebt: PropTypes.func.isRequired,
 };

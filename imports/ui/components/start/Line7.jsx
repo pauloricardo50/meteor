@@ -10,8 +10,10 @@ import { toMoney, toNumber } from '/imports/js/finance-math.js';
 
 const styles = {
   textField: {
-    width: 110,
+    width: 160,
     fontSize: 'inherit',
+    marginLeft: 8,
+    marginRight: 8,
   },
 };
 
@@ -23,6 +25,7 @@ export default class Line7 extends Component {
 
     this.state = {
       propertyValue: '',
+      hasChosen: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -43,7 +46,7 @@ export default class Line7 extends Component {
     this.props.setPropertyValue(Number(toNumber(event.target.value)));
 
     this.setState({
-      propertyValue: toMoney(event.target.value),
+      propertyValue: toNumber(event.target.value),
     }, function () {
       // Use a quick timeout to allow user to type in more stuff before going to next step
       const that = this;
@@ -82,15 +85,16 @@ export default class Line7 extends Component {
       <article onClick={this.props.setStep}>
         <h1 className={this.props.classes.text}>
           {this.props.propertyKnown ?
-            'La propriété vaut CHF ' : 'Je ne connais pas encore la valeur de la propriété'
+            'La propriété vaut' : 'Je ne connais pas encore la valeur de la propriété'
           }
           {this.props.propertyKnown ?
             <TextField
               style={styles.textField}
               name="propertyValue"
-              value={this.state.propertyValue}
+              value={`CHF ${toMoney(this.state.propertyValue)}`}
               onChange={this.handleChange}
               pattern="[0-9]*"
+              autoFocus={!this.props.bonusExists}
             />
             : ''
           }
@@ -126,6 +130,7 @@ Line7.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
   step: PropTypes.number.isRequired,
   twoBuyers: PropTypes.bool.isRequired,
+  bonusExists: PropTypes.bool.isRequired,
   propertyKnown: PropTypes.bool.isRequired,
   propertyValue: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,

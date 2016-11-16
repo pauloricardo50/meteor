@@ -1,7 +1,6 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
 
 
 const styles = {
@@ -10,7 +9,7 @@ const styles = {
   },
 };
 
-export default class Line8Help extends React.Component {
+export default class Line8aHelp extends React.Component {
   constructor(props) {
     super(props);
 
@@ -43,7 +42,7 @@ export default class Line8Help extends React.Component {
       <span>
         <a onTouchTap={this.handleOpen} style={styles.help}>Comment choisir?</a>
         <Dialog
-          title="2ème pilier ou fonds propres?"
+          title="2ème pilier ou fortune?"
           actions={actions}
           modal={false}
           open={this.state.open}

@@ -4,9 +4,10 @@ import { Meteor } from 'meteor/meteor';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import Popover from 'react-bootstrap/lib/Popover';
+import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 
-
-import { toMoney } from '/imports/js/finance-math.js';
+import { toMoney, toNumber } from '/imports/js/finance-math.js';
 
 
 const styles = {
@@ -17,8 +18,10 @@ const styles = {
     marginBottom: 20,
   },
   textField: {
-    width: 100,
+    width: 150,
     fontSize: 'inherit',
+    marginLeft: 8,
+    marginRight: 8,
   },
 };
 
@@ -44,7 +47,7 @@ export default class Line6 extends Component {
     Meteor.clearTimeout(timer);
 
     this.setState({
-      bonus: toMoney(event.target.value),
+      bonus: toNumber(event.target.value),
     }, function () {
       // Use a quick timeout to allow user to type in more stuff before going to next step
       const that = this;
@@ -58,7 +61,7 @@ export default class Line6 extends Component {
   setCompleted() {
     const s = this.state;
     if (s.bonus) {
-      this.props.completeStep(null, false);
+      this.props.completeStep(null, true);
     }
   }
 
@@ -66,17 +69,13 @@ export default class Line6 extends Component {
   changeState(event, i) {
     switch (i) {
       case 1:
-        this.setState({
-          bonusExists: false,
-          bonusSelected: true,
-        });
+        this.props.setBonusExists(false);
+        this.setState({ bonusSelected: true });
         this.props.completeStep(event, true);
         break;
       case 2:
-        this.setState({
-          bonusExists: true,
-          bonusSelected: true,
-        });
+        this.props.setBonusExists(true);
+        this.setState({ bonusSelected: true });
         break;
       default: break;
     }
@@ -84,11 +83,18 @@ export default class Line6 extends Component {
 
 
   render() {
+    // Popover when the textfield is selected
+    const popoverTop = (
+      <Popover id="popover-positioned-top" title="Popover top">
+        <strong>Holy guacamole!</strong> Check this info.
+      </Popover>
+    );
+
 
     // The text to show once a bonus option has been selected, based on 1) it exists 2) twoBuyers
     const textAfterSelected = (
-      this.state.bonusExists ?
-      (this.props.twoBuyers ? 'gagnons' : 'gagne') + ' un bonus annuel moyen de CHF '
+      this.props.bonusExists ?
+      (this.props.twoBuyers ? 'gagnons' : 'gagne') + ' un bonus annuel moyen de'
       :
       (this.props.twoBuyers ? 'ne gagnons pas de bonus.' : 'ne gagne pas de bonus.')
     );
@@ -102,25 +108,25 @@ export default class Line6 extends Component {
 
           {/* The text constant after the user has chosen an answer */}
           {this.state.bonusSelected ? textAfterSelected : ''}
-          {this.state.bonusExists ?
-            <TextField
-              style={styles.textField}
-              name="bonus"
-              value={this.state.bonus}
-              onChange={this.handleChange}
-              pattern="[0-9]*"
-              autoFocus
-            />
+          {this.props.bonusExists ?
+            <OverlayTrigger trigger="focus" placement="top" overlay={popoverTop}>
+              <TextField
+                style={styles.textField}
+                name="bonus"
+                value={`CHF ${toMoney(this.state.bonus)}`}
+                onChange={this.handleChange}
+                pattern="[0-9]*"
+                autoFocus
+              />
+            </OverlayTrigger>
             : ''
           }
-          {/* Final dot to the sentence */}
-          {this.state.bonusExists ? '.' : ''}
         </h1>
 
         {/* Display buttons if this is the active step */}
         {this.props.step === 5 ?
           <div className={this.props.classes.extra} style={styles.extra}>
-            {(this.state.bonusExists || !this.state.bonusSelected) ?
+            {(this.props.bonusExists || !this.state.bonusSelected) ?
               <RaisedButton
                 label={this.props.twoBuyers ? 'Ne gagnons pas de bonus' : 'Ne gagne pas de bonus'}
                 style={styles.button}
@@ -129,7 +135,7 @@ export default class Line6 extends Component {
               /> :
               null
             }
-            {!this.state.bonusExists ?
+            {!this.props.bonusExists ?
               <RaisedButton
                 label={this.props.twoBuyers ? 'Gagnons un bonus' : 'Gagne un bonus'}
                 primary={!this.state.bonusSelected}
@@ -151,4 +157,6 @@ Line6.propTypes = {
   twoBuyers: PropTypes.bool.isRequired,
   setStep: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
+  bonusExists: PropTypes.bool.isRequired,
+  setBonusExists: PropTypes.func.isRequired,
 };

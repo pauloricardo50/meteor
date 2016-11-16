@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 
 import RaisedButton from 'material-ui/RaisedButton';
-import Line8Help from './Line8Help.jsx';
+import Line8aHelp from './Line8aHelp.jsx';
 
 const styles = {
   button: {
@@ -15,7 +15,7 @@ const styles = {
 };
 
 
-export default class Line8 extends Component {
+export default class Line8a extends Component {
   constructor(props) {
     super(props);
 
@@ -53,7 +53,7 @@ export default class Line8 extends Component {
         {this.props.step === 7 ?
           <div className={this.props.classes.extra} style={styles.extra}>
             <RaisedButton
-              label="Un max de fonds propres"
+              label="Un max de fortune"
               style={styles.button}
               primary={!this.state.text}
               onClick={e => this.changeState(e, true)}
@@ -67,11 +67,10 @@ export default class Line8 extends Component {
             <RaisedButton
               label="Je ne sais pas"
               style={styles.button}
-              primary={!this.state.text}
               onClick={e => this.changeState(e, true)}
             />
             <br />
-            <Line8Help />
+            <Line8aHelp />
           </div>
           : ''
         }
@@ -81,7 +80,7 @@ export default class Line8 extends Component {
   }
 }
 
-Line8.propTypes = {
+Line8a.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
   step: PropTypes.number.isRequired,
   twoBuyers: PropTypes.bool.isRequired,

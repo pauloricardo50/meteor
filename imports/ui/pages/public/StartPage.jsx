@@ -9,8 +9,12 @@ import Line4 from '/imports/ui/components/start/Line4.jsx';
 import Line5 from '/imports/ui/components/start/Line5.jsx';
 import Line6 from '/imports/ui/components/start/Line6.jsx';
 import Line7 from '/imports/ui/components/start/Line7.jsx';
-import Line8 from '/imports/ui/components/start/Line8.jsx';
-import Line9 from '/imports/ui/components/start/Line9.jsx';
+import Line8a from '/imports/ui/components/start/Line8a.jsx';
+import Line8b from '/imports/ui/components/start/Line8b.jsx';
+import Line9a from '/imports/ui/components/start/Line9a.jsx';
+import Line9b from '/imports/ui/components/start/Line9b.jsx';
+import Line10a from '/imports/ui/components/start/Line10a.jsx';
+import Line11a from '/imports/ui/components/start/Line11a.jsx';
 
 
 const styles = {
@@ -30,33 +34,23 @@ export default class StartPage extends Component {
   constructor(props) {
     super(props);
 
-    const lines = [
-      Line1,
-      Line2,
-      Line3,
-      Line4,
-      Line5,
-      Line6,
-      Line7,
-      Line8,
-      Line9,
-    ];
 
     this.state = {
-      lines,
       step: 0,
       maxStep: 0,
       twoBuyers: false,
       genderRequired: false,
+      bonusExists: false,
       propertyKnown: true,
       propertyValue: 0,
       maxCash: true,
+      maxDebt: true,
     };
 
     this.classes = this.classes.bind(this);
     this.setStep = this.setStep.bind(this);
     this.completeStep = this.completeStep.bind(this);
-    this.setBuyers = this.setBuyers.bind(this);
+    this.setTwoBuyers = this.setTwoBuyers.bind(this);
   }
 
 
@@ -65,48 +59,56 @@ export default class StartPage extends Component {
   }
 
 
-  // Called when the user clicks on an available line
+  // Called when the user clicks on an available line, always cap this value at the current maxStep
   setStep(i) {
-    this.setState({
-      step: i,
-    });
+    this.setState({ step: i });
   }
 
+
   // Change the twoBuyers state
-  setBuyers(value) {
-    this.setState({
-      twoBuyers: value,
-    });
+  setTwoBuyers(value) {
+    this.setState({ twoBuyers: value });
   }
 
 
   // Change the genderRequired state
   setGenderRequired(value) {
-    this.setState({
-      genderRequired: value,
-    });
+    this.setState({ genderRequired: value });
+  }
+
+  // Change the genderRequired state
+  setBonusExists(value) {
+    this.setState({ bonusExists: value });
   }
 
   // Change the propertyKnown state
   setPropertyKnown(value) {
-    this.setState({
-      propertyKnown: value,
-    });
+    const oldState = this.state.propertyKnown;
+
+    this.setState({ propertyKnown: value },
+      function () {
+        // If this value is different from before, the user switches from branch a) to b),
+        // therefore reset maxStep to 8
+        if (oldState !== value) {
+          this.setState({ maxStep: 7 });
+        }
+      }
+    );
   }
 
 
   // Change the propertyKnown state
   setPropertyValue(value) {
-    this.setState({
-      propertyValue: value,
-    });
+    this.setState({ propertyValue: value });
   }
 
 
   setMaxCash(value) {
-    this.setState({
-      maxCash: value,
-    });
+    this.setState({ maxCash: value });
+  }
+
+  setMaxDebt(value) {
+    this.setState({ maxDebt: value });
   }
 
 
@@ -118,10 +120,14 @@ export default class StartPage extends Component {
     }
 
     if (this.state.maxStep <= i) {
-      this.setState({ maxStep: i + 1 });
-      if (alsoSetStep) {
-        this.setState({ step: i + 1 });
-      }
+      this.setState({ maxStep: i + 1 },
+        function () {
+          // Make sure step is never higher than maxStep, and verify the step is higher than before
+          if (alsoSetStep && (i + 1 <= this.state.maxStep) && i + 1 > this.state.step) {
+            this.setState({ step: i + 1 });
+          }
+        }
+      );
     }
   }
 
@@ -140,25 +146,37 @@ export default class StartPage extends Component {
 
 
   render() {
+    let lines;
+    if (this.state.propertyKnown) {
+      lines = [Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8a, Line9a, Line10a, Line11a];
+    } else {
+      lines = [Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8b, Line9b];
+    }
+
+
     return (
       <section style={styles.section} className="NLForm">
         <div style={styles.div}>
-          {this.state.lines.slice(0, this.state.maxStep + 1).map((ComponentX, index) =>
+          {lines.slice(0, this.state.maxStep + 1).map((ComponentX, index) =>
             <ComponentX
               classes={this.classes(index)}
               step={this.state.step}
               twoBuyers={this.state.twoBuyers}
               genderRequired={this.state.genderRequired}
+              bonusExists={this.state.bonusExists}
+              setBonusExists={value => this.setBonusExists(value)}
               propertyKnown={this.state.propertyKnown}
               propertyValue={this.state.propertyValue}
               setStep={() => this.setStep(index)}
               completeStep={(event, alsoStep) => this.completeStep(index, event, alsoStep)}
-              setBuyers={value => this.setBuyers(value)}
+              setTwoBuyers={value => this.setTwoBuyers(value)}
               setGenderRequired={value => this.setGenderRequired(value)}
               setPropertyKnown={value => this.setPropertyKnown(value)}
               setPropertyValue={value => this.setPropertyValue(value)}
               maxCash={this.state.maxCash}
               setMaxCash={value => this.setMaxCash(value)}
+              maxDebt={this.state.maxDebt}
+              setMaxDebt={value => this.setMaxDebt(value)}
               key={index}
             />
           )}

@@ -38,9 +38,11 @@ export default class Line3 extends Component {
   }
 
   componentDidMount() {
+    // If this line is not required, immediately jump to step 3
     if (!this.props.genderRequired) {
-      this.props.setStep(3);
+      //
       this.props.completeStep(null, true);
+      this.props.setStep(3);
     }
   }
 
