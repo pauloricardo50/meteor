@@ -3,8 +3,12 @@ import React, { Component, PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
 const styles = {
+  header: {
+    position: 'relative',
+    height: '80%',
+  },
   text: {
-    paddingTop: 250,
+    paddingTop: 100,
   },
   image: {
     position: 'absolute',
@@ -13,13 +17,22 @@ const styles = {
     display: 'block',
     width: '70%',
   },
+  arrowDown: {
+    position: 'absolute',
+    left: '50%',
+    bottom: -100,
+  },
+  arrowDownAdjustment: {
+    position: 'relative',
+    left: '-50%',
+  },
 };
 
 export default class Header extends Component {
 
   render() {
     return (
-      <header className="home-header">
+      <header className="home-header" style={styles.header}>
         {/* <AccountsModalContainer /> */}
         <div className="col-sm-8 col-sm-offset-2" style={styles.text}>
           <h1 className="secondary">La meilleure hypothèque, Simplement.</h1>
@@ -28,9 +41,11 @@ export default class Header extends Component {
             financement idéal pour votre future propriété.
           </h4>
           <br />
-          <RaisedButton label="Commencer" href="#start" primary />
+          <RaisedButton label="Testez votre éligibilité" href="/start" primary />
+          <div style={styles.arrowDown}>
+            <span className="fa fa-angle-down fa-3x" style={styles.arrowDownAdjustment}/>
+          </div>
         </div>
-        {/* <img src="img/multi_house.svg" alt="e-Potek" style={styles.image} className="hidden-xs" /> */}
       </header>
     );
   }

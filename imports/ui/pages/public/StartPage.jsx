@@ -35,10 +35,11 @@ export default class StartPage extends Component {
   constructor(props) {
     super(props);
 
-
     this.state = {
       step: 0,
       maxStep: 0,
+      isValid: false,
+      isFinished: false,
 
       twoBuyers: false,
       age1: '',
@@ -61,17 +62,15 @@ export default class StartPage extends Component {
     this.setStep = this.setStep.bind(this);
     this.setStateValue = this.setStateValue.bind(this);
     this.completeStep = this.completeStep.bind(this);
+    this.setPropertyKnown = this.setPropertyKnown.bind(this);
     this.classes = this.classes.bind(this);
   }
-
 
   componentWillMount() {
     DocHead.setTitle('e-Potek');
   }
 
-
   setStep(i) { this.setState({ step: i }); }
-
 
   setStateValue(name, value, callback) {
     const object = {};
@@ -84,12 +83,11 @@ export default class StartPage extends Component {
     });
   }
 
-
   setPropertyKnown(value, alsoStep) {
     const oldState = this.state.propertyKnown;
 
     this.setState({ propertyKnown: value },
-      function () {
+      () => {
         // If this value is different from before, the user switches from branch a) to b),
         // therefore reset maxStep to 8, and cancel fortune and insuranceFortune
         if (oldState !== value) {
@@ -108,7 +106,6 @@ export default class StartPage extends Component {
     );
   }
 
-
   // Called when a step was finished
   completeStep(i, event, alsoSetStep) {
     // Prevent the call of setStep() when this is called, only call it if an event is passed
@@ -123,7 +120,7 @@ export default class StartPage extends Component {
 
     if (max <= i) {
       this.setState({ maxStep: i + 1 },
-        function () {
+        () => {
           // Make sure step is never higher than maxStep, and verify the step is higher than before
           if (alsoSetStep && (i + 1 <= this.state.maxStep) && i + 1 > this.state.step) {
             this.setState({ step: i + 1 });
@@ -135,7 +132,6 @@ export default class StartPage extends Component {
       this.setState({ step: max });
     }
   }
-
 
   classes(i) {
     const classes = {
@@ -149,7 +145,6 @@ export default class StartPage extends Component {
     return classes;
   }
 
-
   render() {
     let lines;
     if (this.state.propertyKnown) {
@@ -157,7 +152,6 @@ export default class StartPage extends Component {
     } else {
       lines = [Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8b, Line9b];
     }
-
 
     return (
       <section style={styles.section} className="NLForm">
@@ -168,6 +162,7 @@ export default class StartPage extends Component {
               setStateValue={this.setStateValue}
               setStep={() => this.setStep(index)}
               completeStep={(event, alsoStep) => this.completeStep(index, event, alsoStep)}
+              setPropertyKnown={this.setPropertyKnown}
               classes={this.classes(index)}
               key={index}
             />

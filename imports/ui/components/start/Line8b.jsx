@@ -20,11 +20,6 @@ export default class Line8b extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      fortune: '',
-      insuranceFortune: '',
-    };
-
     this.handleFortuneChange = this.handleFortuneChange.bind(this);
     this.handleInsuranceFortuneChange = this.handleInsuranceFortuneChange.bind(this);
   }
@@ -43,7 +38,7 @@ export default class Line8b extends Component {
 
 
   setCompleted() {
-    if (this.state.insuranceFortune) {
+    if (this.props.insuranceFortune) {
       this.props.completeStep(null, true);
     }
   }
@@ -90,7 +85,7 @@ export default class Line8b extends Component {
             de fortune personelle
           </span>
           {/* Once some bit of fortune has been entered, show the rest of the sentence */}
-          {this.state.fortune &&
+          {this.props.fortune &&
             <span>
               &nbsp;et
               <TextField

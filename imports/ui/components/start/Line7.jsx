@@ -69,7 +69,7 @@ export default class Line7 extends Component {
 
 
   handleClick(event, value) {
-    this.props.setStateValue('propertyKnown', value, true);
+    this.props.setPropertyKnown(value, true);
     this.props.completeStep(event, true);
   }
 
@@ -103,7 +103,7 @@ export default class Line7 extends Component {
               autoFocus={!this.props.bonusExists}
             />
           }
-          {this.state.propertyValue ? postValue : null }
+          {this.props.propertyValue && postValue}
         </h1>
 
         {this.props.step === 6 &&
@@ -140,5 +140,6 @@ Line7.propTypes = {
   twoBuyers: PropTypes.bool.isRequired,
   bonusExists: PropTypes.bool.isRequired,
   propertyKnown: PropTypes.bool.isRequired,
+  setPropertyKnown: PropTypes.func.isRequired,
   propertyValue: PropTypes.string.isRequired,
 };
