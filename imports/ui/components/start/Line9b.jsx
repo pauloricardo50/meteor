@@ -9,6 +9,12 @@ export default class Line9b extends Component {
     super(props);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+
+    // Component should always update because it depends on all values together
+    return true;
+  }
+
   render() {
     return (
       <article onClick={this.props.setStep}>

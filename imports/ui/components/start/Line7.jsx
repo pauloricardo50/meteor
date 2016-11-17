@@ -31,6 +31,19 @@ export default class Line7 extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const p = this.props;
+    const n = nextProps;
+
+    return (
+      p.classes !== n.classes ||
+      p.twoBuyers !== n.twoBuyers ||
+      p.bonusExists !== n.bonusExists ||
+      p.propertyKnown !== n.propertyKnown ||
+      p.propertyValue !== n.propertyValue
+    );
+  }
+
 
   setCompleted() {
     if (this.props.propertyValue) {

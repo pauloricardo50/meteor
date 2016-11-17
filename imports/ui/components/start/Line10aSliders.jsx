@@ -45,6 +45,19 @@ export default class Line10aSliders extends Component {
     this.sliderChangeInsuranceFortune = this.sliderChangeInsuranceFortune.bind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const p = this.props;
+    const n = nextProps;
+
+    return (
+      p.maxCash !== n.maxCash ||
+      p.maxDebt !== n.maxDebt ||
+      p.propertyValue !== n.propertyValue ||
+      p.fortune !== n.fortune ||
+      p.insuranceFortune !== n.insuranceFortune
+    );
+  }
+
   changeFortune(event, value) {
     const isSlider = false;
     this.props.changeFortune(String(toNumber(value)), isSlider);

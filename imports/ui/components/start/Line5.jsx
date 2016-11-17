@@ -23,6 +23,17 @@ export default class Line5 extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const p = this.props;
+    const n = nextProps;
+
+    return (
+      p.classes !== n.classes ||
+      p.twoBuyers !== n.twoBuyers ||
+      p.salary !== n.salary
+    );
+  }
+
 
   setCompleted() {
     if (this.props.salary) {

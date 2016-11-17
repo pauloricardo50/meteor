@@ -29,6 +29,18 @@ export default class Line8b extends Component {
     this.handleInsuranceFortuneChange = this.handleInsuranceFortuneChange.bind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const p = this.props;
+    const n = nextProps;
+
+    return (
+      p.classes !== n.classes ||
+      p.twoBuyers !== n.twoBuyers ||
+      p.fortune !== n.fortune ||
+      p.insuranceFortune !== n.insuranceFortune
+    );
+  }
+
 
   setCompleted() {
     if (this.state.insuranceFortune) {

@@ -41,6 +41,18 @@ export default class Line6 extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const p = this.props;
+    const n = nextProps;
+
+    return (
+      p.classes !== n.classes ||
+      p.twoBuyers !== n.twoBuyers ||
+      p.bonus !== n.bonus ||
+      p.bonusExists !== n.bonusExists
+    );
+  }
+
 
   handleChange(event) {
     Meteor.clearTimeout(timer);

@@ -26,6 +26,16 @@ export default class Line1 extends Component {
     this.changeState = this.changeState.bind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const p = this.props;
+    const n = nextProps;
+
+    return (
+      p.classes !== n.classes ||
+      p.twoBuyers !== n.twoBuyers
+    );
+  }
+
   changeState(e, twoBuyers) {
     this.props.setStateValue('twoBuyers', twoBuyers);
     this.props.completeStep(e, true);

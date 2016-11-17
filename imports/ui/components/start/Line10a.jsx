@@ -20,6 +20,21 @@ export default class Line10a extends Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const p = this.props;
+    const n = nextProps;
+
+    return (
+      p.classes !== n.classes ||
+      p.twoBuyers !== n.twoBuyers ||
+      p.maxCash !== n.maxCash ||
+      p.maxDebt !== n.maxDebt ||
+      p.propertyValue !== n.propertyValue ||
+      p.fortune !== n.fortune ||
+      p.insuranceFortune !== n.insuranceFortune
+    );
+  }
+
   componentWillReceiveProps(nextProps) {
     const oldMaxCash = this.props.maxCash;
 

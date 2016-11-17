@@ -40,12 +40,33 @@ export default class Line3 extends Component {
   componentDidMount() {
     // If this line is not required, immediately jump to step 3
     if (!this.props.genderRequired) {
-      //
       this.props.completeStep(null, true);
       this.props.setStep(3);
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const p = this.props;
+    const n = nextProps;
+
+    return (
+      p.classes !== n.classes ||
+      p.twoBuyers !== n.twoBuyers ||
+      p.genderRequired !== n.genderRequired ||
+      p.gender1 !== n.gender1 ||
+      p.gender2 !== n.gender2
+    );
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.genderRequired !== nextProps.genderRequired) {
+      // If age is modified, make sure this step is cancelled/activated
+      if (!nextProps.genderRequired) {
+        nextProps.completeStep(null, true);
+        nextProps.setStep(3);
+      }
+    }
+  }
 
   changeState(i) {
     switch (i) {

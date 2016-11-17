@@ -21,6 +21,18 @@ export default class Line2 extends Component {
     this.handleChange2 = this.handleChange2.bind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const p = this.props;
+    const n = nextProps;
+
+    return (
+      p.classes !== n.classes ||
+      p.twoBuyers !== n.twoBuyers ||
+      p.age1 !== n.age1 ||
+      p.age2 !== n.age2
+    );
+  }
+
 
   setCompleted() {
     // For code readability

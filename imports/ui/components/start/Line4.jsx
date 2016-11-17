@@ -26,6 +26,18 @@ export default class Line4 extends Component {
     this.changeState = this.changeState.bind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const p = this.props;
+    const n = nextProps;
+
+    return (
+      p.classes !== n.classes ||
+      p.twoBuyers !== n.twoBuyers ||
+      p.propertyType !== n.propertyType
+    );
+  }
+
+
   changeState(event, i) {
     this.props.completeStep(event, true);
 
@@ -89,4 +101,6 @@ Line4.propTypes = {
   setStateValue: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
+
+  propertyType: PropTypes.string.isRequired,
 };

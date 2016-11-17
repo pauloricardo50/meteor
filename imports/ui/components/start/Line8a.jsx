@@ -26,6 +26,17 @@ export default class Line8a extends Component {
     this.changeState = this.changeState.bind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const p = this.props;
+    const n = nextProps;
+
+    return (
+      p.classes !== n.classes ||
+      p.twoBuyers !== n.twoBuyers ||
+      p.maxCash !== n.maxCash
+    );
+  }
+
   changeState(e, maxCash) {
     this.props.setStateValue('maxCash', maxCash);
     this.props.completeStep(e, true);
