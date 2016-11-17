@@ -7,6 +7,10 @@ import { toMoney, toNumber } from '/imports/js/finance-math.js';
 
 
 const styles = {
+  span: {
+    display: 'inline-block',
+    width: '100%',
+  },
   h1: {
     verticalAlign: 'top',
     display: 'inline-block',
@@ -72,7 +76,7 @@ export default class Line10aSliders extends Component {
   render() {
 
     return (
-      <span>
+      <span style={styles.span}>
 
         <div className="col-sm-12">
           <h1 style={styles.h1} className="col-sm-4 col-xs-12">
