@@ -10,7 +10,7 @@ const styles = {
     marginBottom: 8,
   },
   extra: {
-    marginBottom: 20,
+    marginBottom: 16,
   },
 };
 
@@ -50,7 +50,7 @@ export default class Line8a extends Component {
           {this.state.text}
         </h1>
 
-        {this.props.step === 7 ?
+        {this.props.step === 7 &&
           <div className={this.props.classes.extra} style={styles.extra}>
             <RaisedButton
               label="Un max de fortune"
@@ -72,7 +72,6 @@ export default class Line8a extends Component {
             <br />
             <Line8aHelp />
           </div>
-          : ''
         }
 
       </article>

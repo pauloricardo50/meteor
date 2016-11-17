@@ -66,8 +66,8 @@ export default class Line8b extends Component {
         <h1 className={this.props.classes.text}>
 
           <span>
-            {this.props.twoBuyers ? 'Nous avons ' : 'J\'ai '}
-            à disposition&nbsp;
+            {this.props.twoBuyers ? 'mais nous avons ' : 'mais j\'ai '}
+            à disposition
             <TextField
               style={styles.textField}
               name="fortune"
@@ -76,12 +76,12 @@ export default class Line8b extends Component {
               pattern="[0-9]*"
               autoFocus
             />
-            &nbsp;de fortune personelle
+            de fortune personelle
           </span>
           {/* Once some bit of fortune has been entered, show the rest of the sentence */}
-          {this.state.fortune ?
+          {this.state.fortune &&
             <span>
-              &nbsp;et
+              et
               <TextField
                 style={styles.textField}
                 name="insuranceFortune"
@@ -91,7 +91,6 @@ export default class Line8b extends Component {
               />
               de 2ème pilier.
             </span>
-            : null
           }
         </h1>
       </article>

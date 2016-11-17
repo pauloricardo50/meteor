@@ -615,7 +615,11 @@ svg
     display: block;
     h1
       margin-top: 0px;
-    // overflow: auto;
+      font-size: 24px;
+      +above($small)
+        font-size: 30px;
+      +above($med)
+        font-size: 36px; // The default value
 
 .startLine
   -webkit-transform-origin: left center;

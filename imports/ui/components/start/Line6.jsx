@@ -12,10 +12,11 @@ import { toMoney, toNumber } from '/imports/js/finance-math.js';
 
 const styles = {
   button: {
-    marginRight: 10,
+    marginRight: 8,
+    marginBottom: 8,
   },
   extra: {
-    marginBottom: 20,
+    marginBottom: 16,
   },
   textField: {
     width: 150,

@@ -101,7 +101,7 @@ export default class Line7 extends Component {
           {this.state.propertyValue ? postValue : null }
         </h1>
 
-        {this.props.step === 6 ?
+        {this.props.step === 6 &&
           <div className={this.props.classes.extra} style={styles.extra}>
             {this.props.propertyKnown ?
               <RaisedButton
@@ -119,7 +119,6 @@ export default class Line7 extends Component {
               />
             }
           </div>
-          : ''
         }
       </article>
     );

@@ -6,10 +6,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 const styles = {
   button: {
-    marginRight: 10,
+    marginRight: 8,
+    marginBottom: 8,
   },
   extra: {
-    marginBottom: 20,
+    marginBottom: 16,
   },
 };
 

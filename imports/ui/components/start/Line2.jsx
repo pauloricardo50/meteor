@@ -7,6 +7,8 @@ const styles = {
   textField: {
     width: 30,
     fontSize: 'inherit',
+    marginLeft: 8,
+    marginRight: 8,
   },
 };
 
@@ -79,7 +81,7 @@ export default class Line2 extends Component {
     return (
       <article onClick={this.props.setStep}>
         <h1 className={this.props.classes.text}>
-          {this.props.twoBuyers ? 'et nous avons ' : 'et j\'ai '}
+          {this.props.twoBuyers ? 'et nous avons' : 'et j\'ai'}
           <TextField
             style={styles.textField}
             name="age1"
@@ -89,7 +91,7 @@ export default class Line2 extends Component {
             autoFocus
             ref={(c) => { this.age1 = c; }}
           />
-          {this.props.twoBuyers ? ' et ' : ''}
+          {this.props.twoBuyers ? 'et' : ''}
           {this.props.twoBuyers ?
             <TextField
               style={styles.textField}
@@ -101,7 +103,7 @@ export default class Line2 extends Component {
             /> :
             null
           }
-          &nbsp;ans.
+          ans.
         </h1>
       </article>
     );

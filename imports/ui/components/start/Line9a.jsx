@@ -10,7 +10,7 @@ const styles = {
     marginBottom: 8,
   },
   extra: {
-    marginBottom: 20,
+    marginBottom: 16,
   },
 };
 
