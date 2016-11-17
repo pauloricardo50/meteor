@@ -9,20 +9,14 @@ import Line10aSliders from './Line10aSliders.jsx';
 var timer;
 
 export default class Line10a extends Component {
-  constructor(props) {
-    super(props);
-
+  componentDidMount() {
     // Set the initial fortune values based on the choice in line 8, sum of both has to be 20%
     if (this.props.maxCash) {
-      this.state = {
-        fortune: Math.round(this.props.propertyValue * 0.2),
-        insuranceFortune: 0,
-      };
+      this.props.setStateValue('fortune', String(Math.round(this.props.propertyValue * 0.2)));
+      this.props.setStateValue('insuranceFortune', '0');
     } else {
-      this.state = {
-        fortune: Math.round(this.props.propertyValue * 0.1),
-        insuranceFortune: Math.round(this.props.propertyValue * 0.1),
-      };
+      this.props.setStateValue('fortune', String(Math.round(this.props.propertyValue * 0.1)));
+      this.props.setStateValue('insuranceFortune', String(Math.round(this.props.propertyValue * 0.1)));
     }
   }
 
@@ -31,15 +25,11 @@ export default class Line10a extends Component {
 
     if (oldMaxCash !== nextProps.maxCash) {
       if (nextProps.maxCash) {
-        this.setState({
-          fortune: Math.round(nextProps.propertyValue * 0.2),
-          insuranceFortune: 0,
-        });
+        this.props.setStateValue('fortune', String(Math.round(nextProps.propertyValue * 0.2)));
+        this.props.setStateValue('insuranceFortune', '0');
       } else {
-        this.setState({
-          fortune: Math.round(nextProps.propertyValue * 0.1),
-          insuranceFortune: Math.round(nextProps.propertyValue * 0.1),
-        });
+        this.props.setStateValue('fortune', String(Math.round(nextProps.propertyValue * 0.1)));
+        this.props.setStateValue('insuranceFortune', String(Math.round(nextProps.propertyValue * 0.1)));
       }
     }
   }
@@ -52,64 +42,58 @@ export default class Line10a extends Component {
       return;
     }
 
-    this.setState({
-      fortune: newFortune,
-    },
-      function () {
-        this.adjustValues(true, isSlider);
-      }.bind(this)
+    this.props.setStateValue(
+      'fortune',
+      String(newFortune),
+      () => this.adjustValues(true, isSlider)
     );
   }
 
   changeInsuranceFortune(value, isSlider) {
-    this.setState({
-      insuranceFortune: (isSlider ? Math.round(value * this.props.propertyValue) : value),
-    },
-      function () {
-        this.adjustValues(false, isSlider);
-      }.bind(this)
+    this.props.setStateValue(
+      'insuranceFortune',
+      String(isSlider ? Math.round(value * this.props.propertyValue) : value),
+      () => this.adjustValues(false, isSlider)
     );
   }
 
   adjustValues(isFortune, isSlider) {
-    const that = this;
     if (isSlider) {
-      that.adjustValuesFunc(isFortune, that);
+      this.adjustValuesFunc(isFortune);
     } else {
       Meteor.clearTimeout(timer);
 
       // If this isn't a slider, wait for 500ms before auto adjusting the other value
-      timer = Meteor.setTimeout(function () {
-        that.adjustValuesFunc(isFortune, that);
+      timer = Meteor.setTimeout(() => {
+        this.adjustValuesFunc(isFortune);
       }, 500);
     }
   }
 
-  adjustValuesFunc(isFortune, that) {
-    const f = that.state.fortune;
-    const i = that.state.insuranceFortune;
-    const p = that.props.propertyValue;
+  adjustValuesFunc(isFortune) {
+    const f = this.props.fortune;
+    const i = this.props.insuranceFortune;
+    const p = this.props.propertyValue;
 
     // Make sure fortune is always at least 10%, and set insurance to 10% as well
     if (f < 0.1 * p) {
-      that.setState({
-        fortune: Math.round(0.1 * p),
-        insuranceFortune: Math.round(0.1 * p),
-      });
+      this.props.setStateValue('fortune', String(Math.round(0.1 * p)));
+      this.props.setStateValue('insuranceFortune', String(Math.round(0.1 * p)));
+
     } else if (f + i < 0.2 * p) {
       // If both fortunes combined aren't at least 20% of the propertyValue
       // Set the other value to be the rest
       if (isFortune) {
-        that.setState({ insuranceFortune: Math.round((0.2 * p) - f) });
+        this.props.setStateValue('insuranceFortune', String(Math.round((0.2 * p) - f)));
       } else {
-        that.setState({ fortune: Math.round((0.2 * p) - i) });
+        this.props.setStateValue('fortune', String(Math.round((0.2 * p) - i)));
       }
     } else if (this.props.maxDebt) {
       // If the user wants maximum Debt, always keep both combined at 20%
       if (isFortune) {
-        that.setState({ insuranceFortune: Math.round((0.2 * p) - f) });
+        this.props.setStateValue('insuranceFortune', String(Math.round((0.2 * p) - f)));
       } else {
-        that.setState({ fortune: Math.round((0.2 * p) - i) });
+        this.props.setStateValue('fortune', String(Math.round((0.2 * p) - i)));
       }
     }
   }
@@ -118,8 +102,8 @@ export default class Line10a extends Component {
     return (
       <article onClick={this.props.setStep} className={this.props.classes.text}>
         <Line10aSliders
-          fortune={this.state.fortune}
-          insuranceFortune={this.state.insuranceFortune}
+          fortune={this.props.fortune}
+          insuranceFortune={this.props.insuranceFortune}
           maxDebt={this.props.maxDebt}
           propertyValue={this.props.propertyValue}
           changeFortune={
@@ -145,11 +129,15 @@ export default class Line10a extends Component {
 }
 
 Line10a.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
+  setStateValue: PropTypes.func.isRequired,
+  completeStep: PropTypes.func.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+
   maxCash: PropTypes.bool.isRequired,
   maxDebt: PropTypes.bool.isRequired,
-  propertyValue: PropTypes.number.isRequired,
-  completeStep: PropTypes.func.isRequired,
+  propertyValue: PropTypes.string.isRequired,
+  fortune: PropTypes.string.isRequired,
+  insuranceFortune: PropTypes.string.isRequired,
 };

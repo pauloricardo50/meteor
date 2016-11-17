@@ -27,17 +27,13 @@ export default class Line8a extends Component {
   }
 
   changeState(e, maxCash) {
-    this.props.setMaxCash(maxCash);
+    this.props.setStateValue('maxCash', maxCash);
     this.props.completeStep(e, true);
 
     if (maxCash) {
-      this.setState({
-        text: 'un max de fonds propres',
-      });
+      this.setState({ text: 'un max de fonds propres' });
     } else {
-      this.setState({
-        text: 'un max de 2ème pilier',
-      });
+      this.setState({ text: 'un max de 2ème pilier' });
     }
   }
 
@@ -80,11 +76,11 @@ export default class Line8a extends Component {
 }
 
 Line8a.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   step: PropTypes.number.isRequired,
-  twoBuyers: PropTypes.bool.isRequired,
   setStep: PropTypes.func.isRequired,
+  setStateValue: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
-  maxCash: PropTypes.bool.isRequired,
-  setMaxCash: PropTypes.func.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+
+  twoBuyers: PropTypes.bool.isRequired,
 };

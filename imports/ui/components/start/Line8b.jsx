@@ -40,23 +40,22 @@ export default class Line8b extends Component {
   handleFortuneChange(event) {
     Meteor.clearTimeout(timer);
 
-    this.setState({
-      fortune: toNumber(event.target.value),
-    });
+    this.props.setStateValue('fortune', String(toNumber(event.target.value)));
   }
 
   handleInsuranceFortuneChange(event) {
     Meteor.clearTimeout(timer);
 
-    this.setState({
-      insuranceFortune: toNumber(event.target.value),
-    }, function () {
-      // Use a quick timeout to allow user to type in more stuff before going to next step
-      const that = this;
-      timer = Meteor.setTimeout(function () {
-        that.setCompleted();
-      }, 400);
-    });
+    this.props.setStateValue(
+      'insuranceFortune',
+      String(toNumber(event.target.value)),
+      () => {
+        // Use a quick timeout to allow user to type in more stuff before going to next step
+        timer = Meteor.setTimeout(() => {
+          this.setCompleted();
+        }, 400);
+      }
+    );
   }
 
 
@@ -71,7 +70,7 @@ export default class Line8b extends Component {
             <TextField
               style={styles.textField}
               name="fortune"
-              value={`CHF ${toMoney(this.state.fortune)}`}
+              value={`CHF ${toMoney(this.props.fortune)}`}
               onChange={this.handleFortuneChange}
               pattern="[0-9]*"
               autoFocus
@@ -81,11 +80,11 @@ export default class Line8b extends Component {
           {/* Once some bit of fortune has been entered, show the rest of the sentence */}
           {this.state.fortune &&
             <span>
-              et
+              &nbsp;et
               <TextField
                 style={styles.textField}
                 name="insuranceFortune"
-                value={`CHF ${toMoney(this.state.insuranceFortune)}`}
+                value={`CHF ${toMoney(this.props.insuranceFortune)}`}
                 onChange={this.handleInsuranceFortuneChange}
                 pattern="[0-9]*"
               />
@@ -99,9 +98,13 @@ export default class Line8b extends Component {
 }
 
 Line8b.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   step: PropTypes.number.isRequired,
-  twoBuyers: PropTypes.bool.isRequired,
   setStep: PropTypes.func.isRequired,
+  setStateValue: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+
+  twoBuyers: PropTypes.bool.isRequired,
+  fortune: PropTypes.string.isRequired,
+  insuranceFortune: PropTypes.string.isRequired,
 };

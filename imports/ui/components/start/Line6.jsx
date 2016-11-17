@@ -34,9 +34,7 @@ export default class Line6 extends Component {
     super(props);
 
     this.state = {
-      bonusExists: false,
       bonusSelected: false,
-      bonus: '',
     };
 
     this.changeState = this.changeState.bind(this);
@@ -47,21 +45,21 @@ export default class Line6 extends Component {
   handleChange(event) {
     Meteor.clearTimeout(timer);
 
-    this.setState({
-      bonus: toNumber(event.target.value),
-    }, function () {
-      // Use a quick timeout to allow user to type in more stuff before going to next step
-      const that = this;
-      timer = Meteor.setTimeout(function () {
-        that.setCompleted();
-      }, 400);
-    });
+    this.props.setStateValue(
+      'bonus',
+      String(toNumber(event.target.value)),
+      () => {
+        // Use a quick timeout to allow user to type in more stuff before going to next step
+        timer = Meteor.setTimeout(() => {
+          this.setCompleted();
+        }, 400);
+      }
+    );
   }
 
 
   setCompleted() {
-    const s = this.state;
-    if (s.bonus) {
+    if (this.props.bonus) {
       this.props.completeStep(null, true);
     }
   }
@@ -70,12 +68,12 @@ export default class Line6 extends Component {
   changeState(event, i) {
     switch (i) {
       case 1:
-        this.props.setBonusExists(false);
+        this.props.setStateValue('bonusExists', false);
         this.setState({ bonusSelected: true });
         this.props.completeStep(event, true);
         break;
       case 2:
-        this.props.setBonusExists(true);
+        this.props.setStateValue('bonusExists', true);
         this.setState({ bonusSelected: true });
         break;
       default: break;
@@ -84,13 +82,6 @@ export default class Line6 extends Component {
 
 
   render() {
-    // Popover when the textfield is selected
-    const popoverTop = (
-      <Popover id="popover-positioned-top" title="Popover top">
-        <strong>Holy guacamole!</strong> Check this info.
-      </Popover>
-    );
-
 
     // The text to show once a bonus option has been selected, based on 1) it exists 2) twoBuyers
     const textAfterSelected = (
@@ -109,43 +100,37 @@ export default class Line6 extends Component {
 
           {/* The text constant after the user has chosen an answer */}
           {this.state.bonusSelected ? textAfterSelected : ''}
-          {this.props.bonusExists ?
-            <OverlayTrigger trigger="focus" placement="top" overlay={popoverTop}>
-              <TextField
-                style={styles.textField}
-                name="bonus"
-                value={`CHF ${toMoney(this.state.bonus)}`}
-                onChange={this.handleChange}
-                pattern="[0-9]*"
-                autoFocus
-              />
-            </OverlayTrigger>
-            : ''
+          {this.props.bonusExists &&
+            <TextField
+              style={styles.textField}
+              name="bonus"
+              value={`CHF ${toMoney(this.props.bonus)}`}
+              onChange={this.handleChange}
+              pattern="[0-9]*"
+              autoFocus
+            />
           }
         </h1>
 
         {/* Display buttons if this is the active step */}
-        {this.props.step === 5 ?
+        {this.props.step === 5 &&
           <div className={this.props.classes.extra} style={styles.extra}>
-            {(this.props.bonusExists || !this.state.bonusSelected) ?
+            {(this.props.bonusExists || !this.state.bonusSelected) &&
               <RaisedButton
                 label={this.props.twoBuyers ? 'Ne gagnons pas de bonus' : 'Ne gagne pas de bonus'}
                 style={styles.button}
                 primary={!this.state.bonusSelected}
                 onClick={e => this.changeState(e, 1)}
-              /> :
-              null
+              />
             }
-            {!this.props.bonusExists ?
+            {!this.props.bonusExists &&
               <RaisedButton
                 label={this.props.twoBuyers ? 'Gagnons un bonus' : 'Gagne un bonus'}
                 primary={!this.state.bonusSelected}
                 onClick={e => this.changeState(e, 2)}
-              /> :
-              null
+              />
             }
           </div>
-          : ''
         }
       </article>
     );
@@ -153,11 +138,13 @@ export default class Line6 extends Component {
 }
 
 Line6.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   step: PropTypes.number.isRequired,
-  twoBuyers: PropTypes.bool.isRequired,
   setStep: PropTypes.func.isRequired,
+  setStateValue: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+
+  twoBuyers: PropTypes.bool.isRequired,
   bonusExists: PropTypes.bool.isRequired,
-  setBonusExists: PropTypes.func.isRequired,
+  bonus: PropTypes.string.isRequired,
 };

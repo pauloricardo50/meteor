@@ -20,23 +20,23 @@ export default class Line1 extends Component {
     super(props);
 
     this.state = {
-      value: '',
+      text: '',
     };
 
     this.changeState = this.changeState.bind(this);
   }
 
   changeState(e, twoBuyers) {
-    this.props.setTwoBuyers(twoBuyers);
+    this.props.setStateValue('twoBuyers', twoBuyers);
     this.props.completeStep(e, true);
 
     if (twoBuyers) {
       this.setState({
-        value: 'un couple',
+        text: 'un couple',
       });
     } else {
       this.setState({
-        value: 'un emprunteur',
+        text: 'un couple emprunteur',
       });
     }
   }
@@ -47,24 +47,23 @@ export default class Line1 extends Component {
 
         <h1 className={this.props.classes.text}>
           {this.props.twoBuyers ? 'Nous sommes ' : 'Je suis '}
-          {this.state.value}
+          {this.state.text}
         </h1>
 
-        {this.props.step === 0 ?
+        {this.props.step === 0 &&
           <div className={this.props.classes.extra} style={styles.extra}>
             <RaisedButton
               label="Un emprunteur"
               style={styles.button}
-              primary={!this.state.value}
+              primary={!this.state.text}
               onClick={e => this.changeState(e, false)}
             />
             <RaisedButton
-              label="Un couple"
-              primary={!this.state.value}
+              label="Un couple emprunteur"
+              primary={!this.state.text}
               onClick={e => this.changeState(e, true)}
             />
           </div>
-          : ''
         }
 
       </article>
@@ -73,10 +72,11 @@ export default class Line1 extends Component {
 }
 
 Line1.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   step: PropTypes.number.isRequired,
-  twoBuyers: PropTypes.bool.isRequired,
   setStep: PropTypes.func.isRequired,
+  setStateValue: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
-  setTwoBuyers: PropTypes.func.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+
+  twoBuyers: PropTypes.bool.isRequired,
 };

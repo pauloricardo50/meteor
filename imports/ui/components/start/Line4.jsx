@@ -30,9 +30,18 @@ export default class Line4 extends Component {
     this.props.completeStep(event, true);
 
     switch (i) {
-      case 1: this.setState({ text: ' une résidence principale.' }); break;
-      case 2: this.setState({ text: ' une résidence secondaire.' }); break;
-      case 3: this.setState({ text: ' un investissement.' }); break;
+      case 1:
+        this.props.setStateValue('propertyType', 'primary');
+        this.setState({ text: ' une résidence principale.' });
+        break;
+      case 2:
+        this.props.setStateValue('propertyType', 'secondary');
+        this.setState({ text: ' une résidence secondaire.' });
+        break;
+      case 3:
+        this.props.setStateValue('propertyType', 'investment');
+        this.setState({ text: ' un investissement.' });
+        break;
       default: break;
     }
   }
@@ -46,7 +55,7 @@ export default class Line4 extends Component {
           {this.state.text}
         </h1>
 
-        {this.props.step === 3 ?
+        {this.props.step === 3 &&
           <div className={this.props.classes.extra} style={styles.extra}>
             <RaisedButton
               label="Une résidence principale"
@@ -67,7 +76,6 @@ export default class Line4 extends Component {
               onClick={e => this.changeState(e, 3)}
             />
           </div>
-          : ''
         }
 
       </article>
@@ -76,9 +84,9 @@ export default class Line4 extends Component {
 }
 
 Line4.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   step: PropTypes.number.isRequired,
-  twoBuyers: PropTypes.bool.isRequired,
   setStep: PropTypes.func.isRequired,
+  setStateValue: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };

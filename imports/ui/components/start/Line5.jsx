@@ -20,17 +20,12 @@ export default class Line5 extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      salary: '',
-    };
-
     this.handleChange = this.handleChange.bind(this);
   }
 
 
   setCompleted() {
-    const s = this.state;
-    if (s.salary) {
+    if (this.props.salary) {
       this.props.completeStep(null, true);
     }
   }
@@ -39,15 +34,16 @@ export default class Line5 extends Component {
   handleChange(event) {
     Meteor.clearTimeout(timer);
 
-    this.setState({
-      salary: toNumber(event.target.value),
-    }, function () {
-      // Use a quick timeout to allow user to type in more stuff before going to next step
-      const that = this;
-      timer = Meteor.setTimeout(function () {
-        that.setCompleted();
-      }, 400);
-    });
+    this.props.setStateValue(
+      'salary',
+      String(toNumber(event.target.value)),
+      () => {
+        // Use a quick timeout to allow user to type in more stuff before going to next step
+        timer = Meteor.setTimeout(() => {
+          this.setCompleted();
+        }, 400);
+      }
+    );
   }
 
 
@@ -61,7 +57,7 @@ export default class Line5 extends Component {
           <TextField
             style={styles.textField}
             name="salary"
-            value={`CHF ${toMoney(this.state.salary)}`}
+            value={`CHF ${toMoney(this.props.salary)}`}
             onChange={this.handleChange}
             pattern="[0-9]*"
             autoFocus
@@ -74,9 +70,12 @@ export default class Line5 extends Component {
 }
 
 Line5.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   step: PropTypes.number.isRequired,
-  twoBuyers: PropTypes.bool.isRequired,
   setStep: PropTypes.func.isRequired,
+  setStateValue: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+
+  twoBuyers: PropTypes.bool.isRequired,
+  salary: PropTypes.string.isRequired,
 };

@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 
 import TextField from 'material-ui/TextField';
 
+
 const styles = {
   textField: {
     width: 30,
@@ -16,38 +17,15 @@ export default class Line2 extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      age1: '',
-      age2: '',
-    };
-
     this.handleChange1 = this.handleChange1.bind(this);
     this.handleChange2 = this.handleChange2.bind(this);
   }
 
 
-  handleChange1(event) {
-    this.setState({
-      age1: event.target.value.substring(0, 2), // Allow only 2 characters
-    }, function () {
-      this.setGender();
-      this.setCompleted();
-    }.bind(this));
-  }
-
-  handleChange2(event) {
-    this.setState({
-      age2: event.target.value.substring(0, 2), // Allow only 2 characters
-    }, function () {
-      this.setGender();
-      this.setCompleted();
-    }.bind(this));
-  }
-
   setCompleted() {
     // For code readability
-    const a1 = this.state.age1;
-    const a2 = this.state.age2;
+    const a1 = this.props.age1;
+    const a2 = this.props.age2;
 
     if (this.props.twoBuyers) {
       if (a1.length >= 2 && a2.length >= 2) {
@@ -67,15 +45,37 @@ export default class Line2 extends Component {
 
   setGender() {
     // For code readability
-    const a1 = Number(this.state.age1);
-    const a2 = Number(this.state.age2);
+    const a1 = this.props.age1;
+    const a2 = this.props.age2;
 
     if (a1 >= 51 || a2 >= 51) {
-      this.props.setGenderRequired(true);
+      this.props.setStateValue('genderRequired', true);
     } else {
-      this.props.setGenderRequired(false);
+      this.props.setStateValue('genderRequired', false);
     }
   }
+
+  handleChange1(event) {
+    this.props.setStateValue(
+      'age1',
+      event.target.value.substring(0, 2),
+      () => {
+        this.setCompleted();
+        this.setGender();
+      }
+    );
+  }
+  handleChange2(event) {
+    this.props.setStateValue(
+      'age2',
+      event.target.value.substring(0, 2),
+      () => {
+        this.setCompleted();
+        this.setGender();
+      }
+    );
+  }
+
 
   render() {
     return (
@@ -85,7 +85,7 @@ export default class Line2 extends Component {
           <TextField
             style={styles.textField}
             name="age1"
-            value={this.state.age1}
+            value={this.props.age1}
             onChange={this.handleChange1}
             pattern="[0-9]*"
             autoFocus
@@ -96,7 +96,7 @@ export default class Line2 extends Component {
             <TextField
               style={styles.textField}
               name="age2"
-              value={this.state.age2}
+              value={this.props.age2}
               onChange={this.handleChange2}
               pattern="[0-9]*"
               ref={(c) => { this.age2 = c; }}
@@ -111,10 +111,13 @@ export default class Line2 extends Component {
 }
 
 Line2.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   step: PropTypes.number.isRequired,
-  twoBuyers: PropTypes.bool.isRequired,
   setStep: PropTypes.func.isRequired,
+  setStateValue: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
-  setGenderRequired: PropTypes.func.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+
+  twoBuyers: PropTypes.bool.isRequired,
+  age1: PropTypes.string.isRequired,
+  age2: PropTypes.string.isRequired,
 };

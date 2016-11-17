@@ -43,18 +43,16 @@ export default class Line10aSliders extends Component {
     this.changeInsuranceFortune = this.changeInsuranceFortune.bind(this);
     this.sliderChangeFortune = this.sliderChangeFortune.bind(this);
     this.sliderChangeInsuranceFortune = this.sliderChangeInsuranceFortune.bind(this);
-
-    this.fortuneDragStop = this.fortuneDragStop.bind(this);
   }
 
   changeFortune(event, value) {
     const isSlider = false;
-    this.props.changeFortune(toNumber(value), isSlider);
+    this.props.changeFortune(String(toNumber(value)), isSlider);
   }
 
   changeInsuranceFortune(event, value) {
     const isSlider = false;
-    this.props.changeInsuranceFortune(toNumber(value), isSlider);
+    this.props.changeInsuranceFortune(String(toNumber(value)), isSlider);
   }
 
   sliderChangeFortune(event, value) {
@@ -65,11 +63,6 @@ export default class Line10aSliders extends Component {
   sliderChangeInsuranceFortune(event, value) {
     const isSlider = true;
     this.props.changeInsuranceFortune(value, isSlider);
-  }
-
-
-  fortuneDragStop() {
-    this.slider1.value = 0;
   }
 
 
@@ -90,7 +83,7 @@ export default class Line10aSliders extends Component {
           </h1>
           <span style={styles.sliderSpan} className="col-sm-8 col-xs-12">
             <Slider
-              value={this.props.fortune / this.props.propertyValue}
+              value={toNumber(this.props.fortune) / toNumber(this.props.propertyValue)}
               onChange={this.sliderChangeFortune}
               min={0}
               max={this.props.maxDebt ? 0.2 : 0.4}
@@ -114,7 +107,7 @@ export default class Line10aSliders extends Component {
           </h1>
           <span style={styles.sliderSpan} className="col-sm-8 col-xs-12">
             <Slider
-              value={this.props.insuranceFortune / this.props.propertyValue}
+              value={toNumber(this.props.insuranceFortune) / toNumber(this.props.propertyValue)}
               onChange={this.sliderChangeInsuranceFortune}
               min={0}
               max={this.props.maxDebt ? 0.1 : 0.4}
@@ -130,9 +123,9 @@ export default class Line10aSliders extends Component {
 }
 
 Line10aSliders.propTypes = {
-  fortune: PropTypes.number.isRequired,
-  insuranceFortune: PropTypes.number.isRequired,
-  propertyValue: PropTypes.number.isRequired,
+  fortune: PropTypes.string.isRequired,
+  insuranceFortune: PropTypes.string.isRequired,
+  propertyValue: PropTypes.string.isRequired,
   maxDebt: PropTypes.bool.isRequired,
   changeFortune: PropTypes.func.isRequired,
   changeInsuranceFortune: PropTypes.func.isRequired,

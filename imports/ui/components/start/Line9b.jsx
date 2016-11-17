@@ -21,9 +21,8 @@ export default class Line9b extends Component {
 }
 
 Line9b.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   step: PropTypes.number.isRequired,
-  twoBuyers: PropTypes.bool.isRequired,
   setStep: PropTypes.func.isRequired,
-  completeStep: PropTypes.func.isRequired,
+  setStateValue: PropTypes.func.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };

@@ -192,7 +192,10 @@ a
     width $side-nav-large
 
 .public-layout
+  height: 100%; // fallback
+  height: calc(100% - 86px); // to offset the not-fixed top nav
   +above($med)
+    height: 100%;
     padding-top: 86px;
 
 .user-layout

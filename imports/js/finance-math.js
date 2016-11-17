@@ -67,5 +67,5 @@ export function toMoney(value) {
 }
 
 export function toNumber(value) {
-  return String(value).replace(/\D/g, '');
+  return Number(String(value).replace(/\D/g, ''));
 }

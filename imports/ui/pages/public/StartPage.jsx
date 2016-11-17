@@ -39,19 +39,29 @@ export default class StartPage extends Component {
     this.state = {
       step: 0,
       maxStep: 0,
+
       twoBuyers: false,
+      age1: '',
+      age2: '',
       genderRequired: false,
+      gender1: '',
+      gender2: '',
+      propertyType: '',
+      salary: '',
       bonusExists: false,
+      bonus: '',
       propertyKnown: true,
-      propertyValue: 0,
+      propertyValue: '',
       maxCash: true,
       maxDebt: true,
+      fortune: '',
+      insuranceFortune: '',
     };
 
-    this.classes = this.classes.bind(this);
     this.setStep = this.setStep.bind(this);
+    this.setStateValue = this.setStateValue.bind(this);
     this.completeStep = this.completeStep.bind(this);
-    this.setTwoBuyers = this.setTwoBuyers.bind(this);
+    this.classes = this.classes.bind(this);
   }
 
 
@@ -60,38 +70,34 @@ export default class StartPage extends Component {
   }
 
 
-  // Called when the user clicks on an available line, always cap this value at the current maxStep
-  setStep(i) {
-    this.setState({ step: i });
+  setStep(i) { this.setState({ step: i }); }
+
+
+  setStateValue(name, value, callback) {
+    const object = {};
+    object[name] = value;
+
+    this.setState(object, () => {
+      if (typeof callback === 'function') {
+        callback();
+      }
+    });
   }
 
 
-  // Change the twoBuyers state
-  setTwoBuyers(value) {
-    this.setState({ twoBuyers: value });
-  }
-
-
-  // Change the genderRequired state
-  setGenderRequired(value) {
-    this.setState({ genderRequired: value });
-  }
-
-  // Change the genderRequired state
-  setBonusExists(value) {
-    this.setState({ bonusExists: value });
-  }
-
-  // Change the propertyKnown state
   setPropertyKnown(value, alsoStep) {
     const oldState = this.state.propertyKnown;
 
     this.setState({ propertyKnown: value },
       function () {
         // If this value is different from before, the user switches from branch a) to b),
-        // therefore reset maxStep to 8
+        // therefore reset maxStep to 8, and cancel fortune and insuranceFortune
         if (oldState !== value) {
-          this.setState({ maxStep: 7 });
+          this.setState({
+            maxStep: 7,
+            fortune: '',
+            insuranceFortune: '',
+          });
           if (alsoStep) {
             // When the user chooses that the propertyValue is not known after having filled
             // some fields beyond step 6 in path a), set step to 7
@@ -103,22 +109,7 @@ export default class StartPage extends Component {
   }
 
 
-  // Change the propertyKnown state
-  setPropertyValue(value) {
-    this.setState({ propertyValue: value });
-  }
-
-
-  setMaxCash(value) {
-    this.setState({ maxCash: value });
-  }
-
-  setMaxDebt(value) {
-    this.setState({ maxDebt: value });
-  }
-
-
-  // Called when a step was finished,
+  // Called when a step was finished
   completeStep(i, event, alsoSetStep) {
     // Prevent the call of setStep() when this is called, only call it if an event is passed
     if (event) {
@@ -129,7 +120,6 @@ export default class StartPage extends Component {
     const finalB = 8;
     const max = this.state.maxStep;
     const finished = this.state.propertyKnown ? max === finalA : max === finalB;
-
 
     if (max <= i) {
       this.setState({ maxStep: i + 1 },
@@ -174,24 +164,11 @@ export default class StartPage extends Component {
         <div style={styles.div}>
           {lines.slice(0, this.state.maxStep + 1).map((ComponentX, index) =>
             <ComponentX
-              classes={this.classes(index)}
-              step={this.state.step}
-              twoBuyers={this.state.twoBuyers}
-              genderRequired={this.state.genderRequired}
-              bonusExists={this.state.bonusExists}
-              setBonusExists={value => this.setBonusExists(value)}
-              propertyKnown={this.state.propertyKnown}
-              propertyValue={this.state.propertyValue}
+              {...this.state}
+              setStateValue={this.setStateValue}
               setStep={() => this.setStep(index)}
               completeStep={(event, alsoStep) => this.completeStep(index, event, alsoStep)}
-              setTwoBuyers={value => this.setTwoBuyers(value)}
-              setGenderRequired={value => this.setGenderRequired(value)}
-              setPropertyKnown={(value, alsoStep) => this.setPropertyKnown(value, alsoStep)}
-              setPropertyValue={value => this.setPropertyValue(value)}
-              maxCash={this.state.maxCash}
-              setMaxCash={value => this.setMaxCash(value)}
-              maxDebt={this.state.maxDebt}
-              setMaxDebt={value => this.setMaxDebt(value)}
+              classes={this.classes(index)}
               key={index}
             />
           )}

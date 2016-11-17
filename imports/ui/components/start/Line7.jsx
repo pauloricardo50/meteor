@@ -24,7 +24,6 @@ export default class Line7 extends Component {
     super(props);
 
     this.state = {
-      propertyValue: '',
       hasChosen: false,
     };
 
@@ -34,8 +33,7 @@ export default class Line7 extends Component {
 
 
   setCompleted() {
-    const s = this.state;
-    if (s.propertyValue) {
+    if (this.props.propertyValue) {
       this.props.completeStep(null, true);
     }
   }
@@ -43,40 +41,35 @@ export default class Line7 extends Component {
 
   handleChange(event) {
     Meteor.clearTimeout(timer);
-    this.props.setPropertyValue(Number(toNumber(event.target.value)));
 
-    this.setState({
-      propertyValue: toNumber(event.target.value),
-    }, function () {
-      // Use a quick timeout to allow user to type in more stuff before going to next step
-      const that = this;
-      timer = Meteor.setTimeout(function () {
-        that.setCompleted();
-      }, 400);
-    });
+    this.props.setStateValue(
+      'propertyValue',
+      String(toNumber(event.target.value)),
+      () => {
+        // Use a quick timeout to allow user to type in more stuff before going to next step
+        timer = Meteor.setTimeout(() => {
+          this.setCompleted();
+        }, 400);
+      }
+    );
   }
 
 
   handleClick(event, value) {
-    this.props.setPropertyKnown(value, !value);
-    // If the user clicks on the set True value, do not automatically go to the next step,
-    // as he has to enter a property value (though this should never happen the first time due to
-    // the default value for propertyKnown)
-    this.props.completeStep(event, !value);
+    this.props.setStateValue('propertyKnown', value, true);
+    this.props.completeStep(event, true);
   }
 
 
   render() {
     const postValue = (
       <span className="animated fadeInRight">
-        {this.props.propertyKnown ?
+        {this.props.propertyKnown &&
           (this.props.twoBuyers ? ', nous devons ' : ', je dois ')
-          : ''
         }
-        {this.props.propertyKnown ?
+        {this.props.propertyKnown &&
           `donc mettre au minimum CHF
           ${toMoney(Math.round(this.props.propertyValue * 0.2))} en fonds propres.`
-          : ''
         }
       </span>);
 
@@ -85,18 +78,17 @@ export default class Line7 extends Component {
       <article onClick={this.props.setStep}>
         <h1 className={this.props.classes.text}>
           {this.props.propertyKnown ?
-            'La propriété vaut' : 'Je ne connais pas encore la valeur de la propriété'
+            'J\'aimerais acheter une propriété qui vaut' : 'Je ne connais pas encore la valeur de la propriété'
           }
-          {this.props.propertyKnown ?
+          {this.props.propertyKnown &&
             <TextField
               style={styles.textField}
               name="propertyValue"
-              value={`CHF ${toMoney(this.state.propertyValue)}`}
+              value={`CHF ${toMoney(this.props.propertyValue)}`}
               onChange={this.handleChange}
               pattern="[0-9]*"
               autoFocus={!this.props.bonusExists}
             />
-            : ''
           }
           {this.state.propertyValue ? postValue : null }
         </h1>
@@ -111,12 +103,12 @@ export default class Line7 extends Component {
                 onClick={e => this.handleClick(e, false)}
               />
               :
-              <RaisedButton
-                label="En fait, je sais"
-                style={styles.button}
-                primary
-                onClick={e => this.handleClick(e, true)}
-              />
+                <RaisedButton
+                  label="En fait, je sais"
+                  style={styles.button}
+                  primary
+                  onClick={e => this.handleClick(e, true)}
+                />
             }
           </div>
         }
@@ -126,14 +118,14 @@ export default class Line7 extends Component {
 }
 
 Line7.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   step: PropTypes.number.isRequired,
+  setStep: PropTypes.func.isRequired,
+  setStateValue: PropTypes.func.isRequired,
+  completeStep: PropTypes.func.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+
   twoBuyers: PropTypes.bool.isRequired,
   bonusExists: PropTypes.bool.isRequired,
   propertyKnown: PropTypes.bool.isRequired,
-  propertyValue: PropTypes.number.isRequired,
-  setStep: PropTypes.func.isRequired,
-  completeStep: PropTypes.func.isRequired,
-  setPropertyKnown: PropTypes.func.isRequired,
-  setPropertyValue: PropTypes.func.isRequired,
+  propertyValue: PropTypes.string.isRequired,
 };

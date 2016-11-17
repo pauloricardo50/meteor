@@ -30,8 +30,8 @@ export default class Line3 extends Component {
     super(props);
 
     this.state = {
-      gender1: '',
-      gender2: '',
+      gender1Text: '',
+      gender2Text: '',
     };
 
     this.changeState = this.changeState.bind(this);
@@ -49,24 +49,36 @@ export default class Line3 extends Component {
 
   changeState(i) {
     switch (i) {
-      case 1: this.setState({ gender1: 'une femme' }, function () { this.setCompleted(); }.bind(this)); break;
-      case 2: this.setState({ gender1: 'un homme' }, function () { this.setCompleted(); }.bind(this)); break;
-      case 3: this.setState({ gender2: 'une femme' }, function () { this.setCompleted(); }.bind(this)); break;
-      case 4: this.setState({ gender2: 'un homme' }, function () { this.setCompleted(); }.bind(this)); break;
+      case 1:
+        this.props.setStateValue('gender1', 'f', () => this.setCompleted());
+        this.setState({ gender1Text: 'une femme' });
+        break;
+      case 2:
+        this.props.setStateValue('gender1', 'm', () => this.setCompleted());
+        this.setState({ gender1Text: 'un homme' });
+        break;
+      case 3:
+        this.props.setStateValue('gender2', 'f', () => this.setCompleted());
+        this.setState({ gender2Text: 'une femme' });
+        break;
+      case 4:
+        this.props.setStateValue('gender2', 'm', () => this.setCompleted());
+        this.setState({ gender2Text: 'un homme' });
+        break;
       default: break;
     }
   }
 
   setCompleted() {
-    const s = this.state;
+    const p = this.props;
 
     // If all required values are set, go to next step
-    if (this.props.twoBuyers) {
-      if (s.gender1 && s.gender2) {
-        this.props.completeStep(null, true);
+    if (p.twoBuyers) {
+      if (p.gender1 && p.gender2) {
+        p.completeStep(null, true);
       }
-    } else if (s.gender1) {
-      this.props.completeStep(null, true);
+    } else if (p.gender1) {
+      p.completeStep(null, true);
     }
   }
 
@@ -77,45 +89,43 @@ export default class Line3 extends Component {
 
           <h1 className={this.props.classes.text}>
             {this.props.twoBuyers ? 'Nous sommes ' : 'Je suis '}
-            {this.state.gender1 ? this.state.gender1 : '..'}
+            {this.props.gender1 ? this.state.gender1Text : '..'}
             {this.props.twoBuyers ? ' et ' : '.'}
-            {this.props.twoBuyers ? (this.state.gender2 ? this.state.gender2 : '..') : ''}
+            {this.props.twoBuyers && (this.props.gender2 ? this.state.gender2Text : '..')}
             {this.props.twoBuyers ? ' respectivement.' : ''}
           </h1>
 
-          {this.props.step === 2 ?
+          {this.props.step === 2 &&
             <div className={this.props.classes.extra} style={styles.extra}>
               <RaisedButton
                 label="une femme"
                 style={styles.button}
-                primary={!this.state.gender1}
+                primary={!this.props.gender1}
                 onClick={() => this.changeState(1)}
               />
               <RaisedButton
                 label="un homme"
                 style={styles.button2}
-                primary={!this.state.gender1}
+                primary={!this.props.gender1}
                 onClick={() => this.changeState(2)}
               />
-              {this.props.twoBuyers ?
+              {this.props.twoBuyers &&
                 <span>
                   <hr style={styles.hr} />
                   <RaisedButton
                     label="une femme"
                     style={styles.button}
-                    primary={!this.state.gender2}
+                    primary={!this.props.gender2}
                     onClick={() => this.changeState(3)}
                   />
                   <RaisedButton
                     label="un homme"
-                    primary={!this.state.gender2}
+                    primary={!this.props.gender2}
                     onClick={() => this.changeState(4)}
                   />
                 </span>
-                : null
               }
             </div>
-            : ''
           }
 
         </article>
@@ -127,10 +137,14 @@ export default class Line3 extends Component {
 }
 
 Line3.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   step: PropTypes.number.isRequired,
+  setStep: PropTypes.func.isRequired,
+  setStateValue: PropTypes.func.isRequired,
+  completeStep: PropTypes.func.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+
   twoBuyers: PropTypes.bool.isRequired,
   genderRequired: PropTypes.bool.isRequired,
-  setStep: PropTypes.func.isRequired,
-  completeStep: PropTypes.func.isRequired,
+  gender1: PropTypes.string.isRequired,
+  gender2: PropTypes.string.isRequired,
 };

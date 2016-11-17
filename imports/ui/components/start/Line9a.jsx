@@ -27,7 +27,7 @@ export default class Line9a extends Component {
   }
 
   changeState(e, maxDebt) {
-    this.props.setMaxDebt(maxDebt);
+    this.props.setStateValue('maxDebt', maxDebt);
     this.props.completeStep(e, true);
 
     if (maxDebt) {
@@ -76,11 +76,12 @@ export default class Line9a extends Component {
 }
 
 Line9a.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   step: PropTypes.number.isRequired,
-  twoBuyers: PropTypes.bool.isRequired,
   setStep: PropTypes.func.isRequired,
+  setStateValue: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+
+  twoBuyers: PropTypes.bool.isRequired,
   maxDebt: PropTypes.bool.isRequired,
-  setMaxDebt: PropTypes.func.isRequired,
 };
