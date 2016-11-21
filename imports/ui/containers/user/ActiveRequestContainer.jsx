@@ -31,7 +31,7 @@ function composer(props, onData) {
     const path = FlowRouter.current().path;
 
     // If there is no creditRequest, go to the main page, except for new, settings and contact page
-    if (!creditRequest && ((path !== '/new') && (path !== '/settings') && (path !== '/contact'))) {
+    if (!creditRequest && ((path.substring(0, 4) !== '/new') && (path !== '/settings') && (path !== '/contact'))) {
       FlowRouter.go('/main');
     }
 

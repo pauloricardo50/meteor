@@ -117,6 +117,7 @@ export default class Line10a extends Component {
     return (
       <article onClick={this.props.setStep} className={this.props.classes.text}>
         <Line10aSliders
+          twoBuyers={this.props.twoBuyers}
           fortune={this.props.fortune}
           insuranceFortune={this.props.insuranceFortune}
           maxDebt={this.props.maxDebt}
@@ -128,7 +129,7 @@ export default class Line10a extends Component {
             (value, isSlider) => this.changeInsuranceFortune(value, isSlider)
           }
         />
-        {this.props.step === 9 ?
+        {this.props.step === 9 &&
           <div className="text-center col-xs-12">
             <RaisedButton
               label="Je suis satisfait"
@@ -136,7 +137,6 @@ export default class Line10a extends Component {
               primary
             />
           </div>
-          : null
         }
       </article>
     );
@@ -150,6 +150,7 @@ Line10a.propTypes = {
   completeStep: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 
+  twoBuyers: PropTypes.bool.isRequired,
   maxCash: PropTypes.bool.isRequired,
   maxDebt: PropTypes.bool.isRequired,
   propertyValue: PropTypes.string.isRequired,

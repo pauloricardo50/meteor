@@ -36,8 +36,8 @@ export default class StartPage extends Component {
     super(props);
 
     this.state = {
-      step: 0,
-      maxStep: 0,
+      step: 10,
+      maxStep: 10,
       isValid: false,
       isFinished: false,
 
@@ -52,7 +52,7 @@ export default class StartPage extends Component {
       bonusExists: false,
       bonus: '',
       propertyKnown: true,
-      propertyValue: '',
+      propertyValue: 1000000,
       maxCash: true,
       maxDebt: true,
       fortune: '',

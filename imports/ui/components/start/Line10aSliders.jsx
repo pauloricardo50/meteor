@@ -83,7 +83,12 @@ export default class Line10aSliders extends Component {
 
     return (
       <span style={styles.span}>
-
+        <h1 className="col-xs-12">
+          {this.props.twoBuyers ?
+            'Nos fonds propres seront répartis ainsi:' :
+            'Mes fonds propres seront répartis ainsi:'
+          }
+        </h1>
         <div className="col-sm-12">
           <h1 style={styles.h1} className="col-sm-4 col-xs-12">
             <TextField
@@ -136,6 +141,7 @@ export default class Line10aSliders extends Component {
 }
 
 Line10aSliders.propTypes = {
+  twoBuyers: PropTypes.bool.isRequired,
   fortune: PropTypes.string.isRequired,
   insuranceFortune: PropTypes.string.isRequired,
   propertyValue: PropTypes.string.isRequired,

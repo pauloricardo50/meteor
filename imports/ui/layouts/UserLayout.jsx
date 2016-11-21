@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
+import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import { SideNav } from '../containers/user/ActiveRequestContainer.jsx';
@@ -17,41 +18,56 @@ const theme = myTheme;
 
 export default class UserLayout extends Component {
 
-  componentDidMount() {
-    // Anyone coming to a userlayout page without being logged in, is taken to the login page.
-    // TODO: add a parameter to the URL to indicate which route this person came from, so that
-    // When he logs in, he's taken to that URL
-    if (!Meteor.userId()) {
-      const route = FlowRouter.getRouteName();
+  // componentDidMount() {
+  //   // Anyone coming to a userlayout page without being logged in, is taken to the login page.
+  //   // TODO: add a parameter to the URL to indicate which route this person came from, so that
+  //   // When he logs in, he's taken to that URL
+  //   if (!Meteor.userId()) {
+  //     // const route = FlowRouter.getRouteName();
+  //     //
+  //     // const current = FlowRouter.current();
+  //     //
+  //     // const pathDef = '/login';
+  //     // const params = { nextPath: current.route.pathDef };
+  //     // const queryParams = current.queryParams
+  //     // const path = FlowRouter.path(pathDef, params, queryParams);
+  //     //
+  //     // console.log(path);
+  //     //
+  //     Session.set('postLoginPath', FlowRouter.current().path)
+  //     FlowRouter.go('/login');
+  //   }
+  // }
 
-      const pathDef = '/login';
-      const params = {};
-      const queryParams = { route };
-      const path = FlowRouter.path(pathDef, params, queryParams);
-
-      FlowRouter.go(path);
-    }
+  routeToLogin() {
+    Session.set('postLoginPath', FlowRouter.current().path)
+    FlowRouter.go('/login');
   }
 
   render() {
-    return (
-      <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
-        <div>
-          {this.props.extraContent}
+    if (Meteor.userId()) {
+      return (
+        <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
+          <div>
+            {this.props.extraContent}
 
-          <SideNav />
+            <SideNav />
 
-          <main className="user-layout">
-            <div className="user-layout-center">
-              {this.props.content}
-            </div>
-          </main>
+            <main className="user-layout">
+              <div className="user-layout-center">
+                {this.props.content}
+              </div>
+            </main>
 
-          <BottomNav />
+            <BottomNav />
 
-        </div>
-      </MuiThemeProvider>
-    );
+          </div>
+        </MuiThemeProvider>
+      );
+    } else {
+      this.routeToLogin();
+      return null;
+    }
   }
 
 }
