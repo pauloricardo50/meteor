@@ -21,7 +21,6 @@ import _Step6Page from '/imports/ui/pages/user/Step6Page.jsx';
 
 
 import _RequestProgressBar from '/imports/ui/components/general/RequestProgressBar.jsx';
-import _SideNav from '/imports/ui/components/general/SideNav.jsx';
 
 
 // Container function which reactively send the currently active credit Request as a prop
@@ -54,4 +53,3 @@ export const Step5Page = composeWithTracker(composer, Loading)(_Step5Page);
 export const Step6Page = composeWithTracker(composer, Loading)(_Step6Page);
 
 export const RequestProgressBar = composeWithTracker(composer, Loading)(_RequestProgressBar);
-export const SideNav = composeWithTracker(composer, Loading)(_SideNav);

@@ -25,24 +25,36 @@ export default class Line11a extends Component {
 
     // Makes the Countup not always start from 0
     this.state = {
+      countedOnce: false,
       previousCountup: 0,
       nextCountup: 0,
     };
 
     this.handleContinue = this.handleContinue.bind(this);
+    this.counterCallback = this.counterCallback.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      previousCountup:
-        Number(this.props.propertyValue) -
-        Number(this.props.fortune) -
-        Number(this.props.insuranceFortune),
-      nextCountup:
-        Number(nextProps.propertyValue) -
-        Number(nextProps.fortune) -
-        Number(nextProps.insuranceFortune),
-    });
+    // If the counter has gone up once, make it only count from the changed values
+    if (this.state.countedOnce) {
+      this.setState({
+        previousCountup:
+          Number(this.props.propertyValue) -
+          Number(this.props.fortune) -
+          Number(this.props.insuranceFortune),
+        nextCountup:
+          Number(nextProps.propertyValue) -
+          Number(nextProps.fortune) -
+          Number(nextProps.insuranceFortune),
+      });
+    } else {
+      this.setState({
+        nextCountup:
+          Number(nextProps.propertyValue) -
+          Number(nextProps.fortune) -
+          Number(nextProps.insuranceFortune),
+      });
+    }
   }
 
   handleContinue() {
@@ -72,10 +84,13 @@ export default class Line11a extends Component {
       };
 
       const path = FlowRouter.path(pathDef, params, queryParams);
-      console.log(path);
 
       FlowRouter.go(path);
     }
+  }
+
+  counterCallback() {
+    this.setState({ countedOnce: true });
   }
 
   render() {
@@ -96,7 +111,7 @@ export default class Line11a extends Component {
             <CountUp
               className="custom-count"
               start={0}
-              end={this.props.propertyValue}
+              end={Number(this.props.propertyValue)}
               duration={2}
               useEasing
               separator="'"
@@ -115,8 +130,8 @@ export default class Line11a extends Component {
             <br />
             <CountUp
               className="custom-count"
-              start={this.state.previousCountup}
-              end={this.state.nextCountup}
+              start={Number(this.state.previousCountup)}
+              end={Number(this.state.nextCountup)}
               duration={2}
               useEasing
               separator="'"
@@ -124,13 +139,13 @@ export default class Line11a extends Component {
               decimal="."
               prefix="CHF "
               suffix=""
+              callback={this.counterCallback}
             />
           </h1>
         </div>
         <div className="col-xs-12 text-center form-group" style={styles.finalButtons}>
           <RaisedButton
             label="Commencer la demande de prêt"
-            className="animated pulse infinite"
             style={styles.button}
             onClick={this.handleContinue}
             primary

@@ -17,7 +17,9 @@ function postLoginRoute() {
   //
   // console.log(path);
 
+  // Get path from Session, and set it to an empty string afterwards
   const postLoginPath = Session.get('postLoginPath');
+  Session.set('postLoginPath', '');
 
   // If the user tried to acces a user-route and wasn't logged in, route him to that one on login
   if (postLoginPath) {

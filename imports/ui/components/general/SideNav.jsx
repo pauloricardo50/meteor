@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import FinanceWidget from '/imports/ui/components/general/FinanceWidget.jsx';
 
@@ -53,6 +54,14 @@ export default class SideNav extends Component {
     }
   }
 
+  shouldComponentUpdate(nextProps) {
+    if (this.props.currentURL !== nextProps.currentURL) {
+      return true;
+    }
+    return true;
+  }
+
+
   toMoney(value) {
     return String(value).replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, "'");
   }
@@ -71,11 +80,14 @@ export default class SideNav extends Component {
       );
       content2 = <FinanceWidget creditRequest={this.props.creditRequest} />;
     } else {
+      // If the user is not on the main page, show a link to it
       content1 = (
+        this.props.currentURL !== '/main' ?
         <a href="/main">
           <h3 className="bold active start-nav text-center">Commencer</h3>
-        </a>
-      );
+        </a> :
+        null
+        );
       content2 = null;
     }
 
@@ -96,4 +108,5 @@ export default class SideNav extends Component {
 
 SideNav.propTypes = {
   creditRequest: PropTypes.objectOf(PropTypes.any),
+  currentURL: PropTypes.string.isRequired,
 };

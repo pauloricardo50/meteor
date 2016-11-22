@@ -79,11 +79,16 @@ export default class Step1Page extends Component {
     part1 = Math.round((part1Values.filter(this.filterFunc).length / length1) * 100);
     part2 = Math.round((part2Values.filter(this.filterFunc).length / length2) * 100);
 
-    if (part1 === 100 && part2 === 100 && part3 === 100 && part4 === 100) {
+    if (part1 >= 100 && part2 >= 100 && part3 >= 100 && part4 >= 100) {
       this.setStepTo2();
     }
 
-    return [part1, part2, part3, part4];
+    return [
+      Math.min(part1, 100),
+      Math.min(part2, 100),
+      Math.min(part3, 100),
+      Math.min(part4, 100),
+    ];
   }
 
 
@@ -105,32 +110,14 @@ export default class Step1Page extends Component {
   }
 
 
-  // Only return true for values which aren't equal to 0, or an empty string
+  // Only return true for values which aren't equal an empty string
   filterFunc(value) {
-    return value !== 0 && value !== '' && value !== undefined && value !== null;
+    return value !== '' && value !== undefined && value !== null;
   }
 
 
   render() {
     return (
-        // {/* <div
-        //   className="text-center"
-        //   id="todo-text-top"
-        // >
-        //   Appuyez sur une carte incomplète pour avancer
-        // </div>
-        // <hr id="todo-hr-top" />
-        // <ul style={styles.ul}>
-        //   {todoCards.map((card, index) =>
-        //     (<TodoCard
-        //       title={card.title}
-        //       duration={card.duration}
-        //       completionPercentage={this.state.progress[index]}
-        //       cardId={`1-${index + 1}`}
-        //       key={index}
-        //     />)
-        //   )}
-        // </ul> */}
       <TodoCardArray
         cards={todoCards}
         progress={this.state.progress}

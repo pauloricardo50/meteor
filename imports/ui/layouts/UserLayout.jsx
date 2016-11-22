@@ -3,8 +3,8 @@ import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
-import { SideNav } from '../containers/user/ActiveRequestContainer.jsx';
-import { BottomNav } from '../containers/user/CurrentURLContainer.jsx';
+import { SideNav, BottomNav } from '../containers/user/CurrentURLContainer.jsx';
+// import { BottomNav } from '../containers/user/CurrentURLContainer.jsx';
 
 // MUI Theme, replace lightBaseTheme with a custom theme ASAP!
 import getMuiTheme from 'material-ui/styles/getMuiTheme';

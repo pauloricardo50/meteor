@@ -7,7 +7,7 @@ import CreditRequests from './creditrequests.js';
 export const insertRequest = new ValidatedMethod({
   name: 'creditrequests.insert',
   validate() {},
-  run({ requestName }) {
+  run({ object }) {
     // Verify if user is logged in
     if (!this.userId) {
       throw new Meteor.Error('notLoggedIn', 'Must be logged in to create a request');
@@ -26,11 +26,14 @@ export const insertRequest = new ValidatedMethod({
       });
     });
 
+    console.log(object);
+
     // Insert new active request
-    CreditRequests.insert({
-      requestName,
-      active: true,
-    });
+    // CreditRequests.insert({
+    //   ...object,
+    //   active: true,
+    // });
+    CreditRequests.insert(object);
   },
 });
 

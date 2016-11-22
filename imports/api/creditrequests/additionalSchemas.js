@@ -10,6 +10,7 @@ export const PersonalInfoSchema = new SimpleSchema({
   twoBuyers: {
     type: String,
     defaultValue: 'false',
+    optional: true,
   },
   age1: {
     type: Number,
@@ -22,6 +23,19 @@ export const PersonalInfoSchema = new SimpleSchema({
     optional: true,
     min: 0,
     max: 120,
+  },
+  genderRequired: {
+    type: String,
+    defaultValue: 'false',
+    optional: true,
+  },
+  gender1: {
+    type: String,
+    optional: true,
+  },
+  gender2: {
+    type: String,
+    optional: true,
   },
 });
 
@@ -36,6 +50,7 @@ export const FinancialInfoSchema = new SimpleSchema({
   bonusExists: {
     type: String,
     defaultValue: 'false',
+    optional: true,
   },
   bonus: {
     type: Number,
@@ -78,6 +93,16 @@ export const FinancialInfoSchema = new SimpleSchema({
     optional: true,
     max: 1000,
   },
+  maxCash: {
+    type: String,
+    defaultValue: 'true',
+    optional: true,
+  },
+  maxDebt: {
+    type: String,
+    defaultValue: 'true',
+    optional: true,
+  },
 });
 
 // Information about the property, like room count, property value and address
@@ -91,6 +116,7 @@ export const PropertyInfoSchema = new SimpleSchema({
   type: { // primary, secondary or investment
     type: String,
     defaultValue: 'primary',
+    optional: true,
   },
 });
 
