@@ -79,7 +79,16 @@ export default class TodoCard extends Component {
               <a onClick={this.progressMax}>100%</a>
             </small> */}
           </p>
-          <div className="bottom text-center" style={gradientStyle}>{this.props.completionPercentage.toString()}%</div>
+          <div
+            className="bottom text-center"
+            style={gradientStyle}
+          >
+            {
+              this.props.completionPercentage === 100 ?
+                'Terminé' :
+                this.props.completionPercentage.toString() + '%'
+            }
+          </div>
         </div>
       </li>
     );
