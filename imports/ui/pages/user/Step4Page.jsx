@@ -16,7 +16,7 @@ export default class Step4Page extends React.Component {
   render() {
     return (
       <section className="mask1 animated fadeIn">
-        <h1>Enfin, le contrat</h1>
+        <h1>4ème Étape <small>Enfin, le contrat</small></h1>
         <img
           src="img/step4_icons.svg"
           alt="Votre dossier => Banque"

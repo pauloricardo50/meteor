@@ -118,10 +118,13 @@ export default class Step1Page extends Component {
 
   render() {
     return (
-      <TodoCardArray
-        cards={todoCards}
-        progress={this.state.progress}
-      />
+      <div>
+        <h1 className="stepTitle">1ère Étape <small>Préparez-vous pour les enchères</small></h1>
+        <TodoCardArray
+          cards={todoCards}
+          progress={this.state.progress}
+        />
+      </div>
     );
   }
 }

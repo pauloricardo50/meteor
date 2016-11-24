@@ -34,10 +34,13 @@ export default class Step3Page extends React.Component {
 
   render() {
     return (
-      <TodoCardArray
-        cards={todoCards}
-        progress={this.state.progress}
-      />
+      <div>
+        <h1 className="stepTitle">3ème Étape <small>Montez votre dossier complet</small></h1>
+        <TodoCardArray
+          cards={todoCards}
+          progress={this.state.progress}
+        />
+      </div>
     );
   }
 }

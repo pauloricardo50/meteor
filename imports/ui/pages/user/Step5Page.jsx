@@ -41,10 +41,13 @@ export default class Step5Page extends React.Component {
 
   render() {
     return (
-      <TodoCardArray
-        cards={todoCards}
-        progress={this.state.progress}
-      />
+      <div>
+        <h1 className="stepTitle">5ème Étape <small>Dernières démarches administratives</small></h1>
+        <TodoCardArray
+          cards={todoCards}
+          progress={this.state.progress}
+        />
+      </div>
     );
   }
 }

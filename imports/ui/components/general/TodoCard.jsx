@@ -69,7 +69,9 @@ export default class TodoCard extends Component {
       <li onClick={this.routeDo} className={bootstrapClasses} style={{ listStyle: 'none' }}>
         <div className="mask2 col-sm-12 todo-card">
           <h4 style={styles.title}>{this.props.title}</h4>
-          {this.props.completionPercentage === 100 ? <span className="fa fa-check secondary" /> : null}
+          {this.props.completionPercentage === 100 &&
+            <span style={{ color: successColor }} className="fa fa-check secondary" />
+          }
           <span className="fa fa-info-circle fa-lg" />
           {/* <hr /> */}
           <p className="secondary">

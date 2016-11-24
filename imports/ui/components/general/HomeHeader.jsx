@@ -26,6 +26,9 @@ const styles = {
     position: 'relative',
     left: '-50%',
   },
+  h1: {
+    fontSize: '4em',
+  },
 };
 
 export default class Header extends Component {
@@ -35,7 +38,7 @@ export default class Header extends Component {
       <header className="home-header" style={styles.header}>
         {/* <AccountsModalContainer /> */}
         <div className="col-sm-8 col-sm-offset-2" style={styles.text}>
-          <h1 className="secondary">La meilleure hypothèque, Simplement.</h1>
+          <h1 className="secondary" style={styles.h1}>La meilleure hypothèque, Simplement.</h1>
           <h4 className="secondary">
             Mettez tous les prêteurs en compétition et trouvez le
             financement idéal pour votre future propriété.

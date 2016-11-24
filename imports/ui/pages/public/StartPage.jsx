@@ -38,7 +38,7 @@ export default class StartPage extends Component {
     this.state = {
       step: 0,
       maxStep: 0,
-      isValid: false,
+      isValid: [],
       isFinished: false,
 
       twoBuyers: false,

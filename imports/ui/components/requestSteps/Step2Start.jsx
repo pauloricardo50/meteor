@@ -31,7 +31,7 @@ export default class Step2Start extends Component {
     const object = {};
     object['logic.auctionStarted'] = true;
     object['logic.auctionStartTime'] = moment().toDate();
-    object['logic.auctionEndTime'] = moment().add(1, 'm').toDate(); // TODO: Change this to 2 business days?
+    object['logic.auctionEndTime'] = moment().add(30, 's').toDate(); // TODO: Change this to 2 business days?
     const id = this.props.requestId;
 
     updateValues.call({
@@ -48,17 +48,17 @@ export default class Step2Start extends Component {
   render() {
     return (
       <section className="mask1 animated fadeIn">
-        <h1>Appel d'offres anonyme</h1>
+        <h1>2ème Étape <small>Commencez les enchères</small></h1>
         <div className="text-center giant" style={styles.countUp}>
           <CountUp
             className="custom-count"
             start={0}
-            end={80}
+            end={20}
             duration={3.5}
             useEasing
             separator=" "
             decimal=","
-            prefix="à "
+            prefix=""
             suffix=" Prêteurs"
           />
         </div>
