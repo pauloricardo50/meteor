@@ -15,14 +15,14 @@ export const PersonalInfoSchema = new SimpleSchema({
   age1: {
     type: Number,
     optional: true,
-    min: 0,
-    max: 120,
+    min: 18,
+    max: 99,
   },
   age2: {
     type: Number,
     optional: true,
-    min: 0,
-    max: 120,
+    min: 18,
+    max: 99,
   },
   genderRequired: {
     type: String,
@@ -45,7 +45,7 @@ export const FinancialInfoSchema = new SimpleSchema({
     type: Number,
     optional: true,
     min: 0,
-    max: 10000000,
+    max: 100000000,
   },
   bonusExists: {
     type: String,
@@ -56,19 +56,19 @@ export const FinancialInfoSchema = new SimpleSchema({
     type: Number,
     optional: true,
     min: 0,
-    max: 10000000,
+    max: 100000000,
   },
   fortune: {
     type: Number,
     optional: true,
     min: 0,
-    max: 10000000,
+    max: 100000000,
   },
   insuranceFortune: {
     type: Number,
     optional: true,
     min: 0,
-    max: 10000000,
+    max: 100000000,
   },
   personalBank: {
     type: String,

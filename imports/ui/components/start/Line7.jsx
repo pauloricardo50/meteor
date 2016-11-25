@@ -6,6 +6,7 @@ import TextField from 'material-ui/TextField';
 
 
 import { toMoney, toNumber } from '/imports/js/finance-math.js';
+import { moneyValidation } from '/imports/js/validation.js';
 
 
 const styles = {
@@ -25,6 +26,7 @@ export default class Line7 extends Component {
 
     this.state = {
       hasChosen: false,
+      error: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -60,9 +62,11 @@ export default class Line7 extends Component {
       String(toNumber(event.target.value)),
       () => {
         // Use a quick timeout to allow user to type in more stuff before going to next step
-        timer = Meteor.setTimeout(() => {
-          this.setCompleted();
-        }, 400);
+        if (this.validate()) {
+          timer = Meteor.setTimeout(() => {
+            this.setCompleted();
+          }, this.props.timeout);
+        }
       }
     );
   }
@@ -71,6 +75,24 @@ export default class Line7 extends Component {
   handleClick(event, value) {
     this.props.setPropertyKnown(value, true);
     this.props.completeStep(event, true);
+  }
+
+
+  validate() {
+    const errors = moneyValidation(this.props.propertyValue);
+
+    this.setState({
+      error: errors[0],
+    }, () => {
+      // If an error exists, set valid to false
+      if (this.state.error) {
+        this.props.setValid(false);
+      } else {
+        this.props.setValid(true);
+      }
+    });
+    // Will happen before the setState has finished, return true if there is no error
+    return !errors[0];
   }
 
 
@@ -101,10 +123,12 @@ export default class Line7 extends Component {
               onChange={this.handleChange}
               pattern="[0-9]*"
               autoFocus={!this.props.bonusExists}
+              errorText={this.state.error ? ' ' : ''}
             />
           }
           {this.props.propertyValue && postValue}
         </h1>
+        <h4 className={this.props.classes.errorText}>{this.state.error}</h4>
 
         {this.props.step === 6 &&
           <div className={this.props.classes.extra} style={styles.extra}>
@@ -134,6 +158,7 @@ Line7.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
   setStateValue: PropTypes.func.isRequired,
+  setValid: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 
@@ -142,4 +167,5 @@ Line7.propTypes = {
   propertyKnown: PropTypes.bool.isRequired,
   setPropertyKnown: PropTypes.func.isRequired,
   propertyValue: PropTypes.string.isRequired,
+  timeout: PropTypes.number.isRequired,
 };

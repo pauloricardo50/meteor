@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 
-
 import TextField from 'material-ui/TextField';
 
+import { ageValidation } from '/imports/js/validation.js';
 
 const styles = {
   textField: {
@@ -17,9 +17,16 @@ export default class Line2 extends Component {
   constructor(props) {
     super(props);
 
-    this.handleChange1 = this.handleChange1.bind(this);
-    this.handleChange2 = this.handleChange2.bind(this);
+    this.state = {
+      error: '',
+      error1: '',
+      error2: '',
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.validate = this.validate.bind(this);
   }
+
 
   shouldComponentUpdate(nextProps, nextState) {
     const p = this.props;
@@ -55,6 +62,7 @@ export default class Line2 extends Component {
     }
   }
 
+
   setGender() {
     // For code readability
     const a1 = this.props.age1;
@@ -67,25 +75,43 @@ export default class Line2 extends Component {
     }
   }
 
-  handleChange1(event) {
+
+  handleChange(event, inputNb) {
+    const name = `age${inputNb}`;
     this.props.setStateValue(
-      'age1',
+      name,
       event.target.value.substring(0, 2),
       () => {
-        this.setCompleted();
-        this.setGender();
+        if (this.validate(this.props[name], inputNb)) {
+          this.setCompleted();
+          this.setGender();
+        }
       }
     );
   }
-  handleChange2(event) {
-    this.props.setStateValue(
-      'age2',
-      event.target.value.substring(0, 2),
-      () => {
-        this.setCompleted();
-        this.setGender();
+
+
+  validate(value, inputNb) {
+    const errors = ageValidation(value);
+    const key = `error${inputNb}`;
+    const object = {};
+
+    // Set an empty space as error to make the input red
+    object[key] = errors[0] ? ' ' : '';
+    // Set the text value to the error text
+    object['error'] = errors[0];
+
+    this.setState(object, () => {
+      const s = this.state;
+      // If any error exists, set valid to false
+      if (s.error || s.error1 || s.error2) {
+        this.props.setValid(false);
+      } else {
+        this.props.setValid(true);
       }
-    );
+    });
+    // Will happen before the setState has finished, return true if there is no error
+    return !errors[0];
   }
 
 
@@ -98,10 +124,11 @@ export default class Line2 extends Component {
             style={styles.textField}
             name="age1"
             value={this.props.age1}
-            onChange={this.handleChange1}
+            onChange={e => this.handleChange(e, 1)}
             pattern="[0-9]*"
             autoFocus
             ref={(c) => { this.age1 = c; }}
+            errorText={this.state.error1}
           />
           {this.props.twoBuyers ? 'et' : ''}
           {this.props.twoBuyers ?
@@ -109,14 +136,16 @@ export default class Line2 extends Component {
               style={styles.textField}
               name="age2"
               value={this.props.age2}
-              onChange={this.handleChange2}
+              onChange={e => this.handleChange(e, 2)}
               pattern="[0-9]*"
               ref={(c) => { this.age2 = c; }}
+              errorText={this.state.error2}
             /> :
             null
           }
           ans.
         </h1>
+        <h4 className={this.props.classes.errorText}>{this.state.error}</h4>
       </article>
     );
   }
@@ -126,6 +155,7 @@ Line2.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
   setStateValue: PropTypes.func.isRequired,
+  setValid: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 

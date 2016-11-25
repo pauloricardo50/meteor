@@ -4,10 +4,9 @@ import { Meteor } from 'meteor/meteor';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import Popover from 'react-bootstrap/lib/Popover';
-import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 
 import { toMoney, toNumber } from '/imports/js/finance-math.js';
+import { moneyValidation } from '/imports/js/validation.js';
 
 
 const styles = {
@@ -35,6 +34,7 @@ export default class Line6 extends Component {
 
     this.state = {
       bonusSelected: false,
+      error: '',
     };
 
     this.changeState = this.changeState.bind(this);
@@ -62,9 +62,11 @@ export default class Line6 extends Component {
       String(toNumber(event.target.value)),
       () => {
         // Use a quick timeout to allow user to type in more stuff before going to next step
-        timer = Meteor.setTimeout(() => {
-          this.setCompleted();
-        }, 400);
+        if (this.validate()) {
+          timer = Meteor.setTimeout(() => {
+            this.setCompleted();
+          }, this.props.timeout);
+        }
       }
     );
   }
@@ -90,6 +92,23 @@ export default class Line6 extends Component {
         break;
       default: break;
     }
+  }
+
+  validate() {
+    const errors = moneyValidation(this.props.bonus);
+
+    this.setState({
+      error: errors[0],
+    }, () => {
+      // If an error exists, set valid to false
+      if (this.state.error) {
+        this.props.setValid(false);
+      } else {
+        this.props.setValid(true);
+      }
+    });
+    // Will happen before the setState has finished, return true if there is no error
+    return !errors[0];
   }
 
 
@@ -120,9 +139,12 @@ export default class Line6 extends Component {
               onChange={this.handleChange}
               pattern="[0-9]*"
               autoFocus
+              errorText={this.state.error ? ' ' : ''}
             />
           }
         </h1>
+        <h4 className={this.props.classes.errorText}>{this.state.error}</h4>
+
 
         {/* Display buttons if this is the active step */}
         {this.props.step === 5 &&
@@ -153,10 +175,12 @@ Line6.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
   setStateValue: PropTypes.func.isRequired,
+  setValid: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 
   twoBuyers: PropTypes.bool.isRequired,
   bonusExists: PropTypes.bool.isRequired,
   bonus: PropTypes.string.isRequired,
+  timeout: PropTypes.number.isRequired,
 };

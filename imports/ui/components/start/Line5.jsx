@@ -4,6 +4,8 @@ import { Meteor } from 'meteor/meteor';
 import TextField from 'material-ui/TextField';
 
 import { toMoney, toNumber } from '/imports/js/finance-math.js';
+import { moneyValidation } from '/imports/js/validation.js';
+
 
 const styles = {
   textField: {
@@ -19,6 +21,10 @@ var timer;
 export default class Line5 extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      error: '',
+    };
 
     this.handleChange = this.handleChange.bind(this);
   }
@@ -50,11 +56,30 @@ export default class Line5 extends Component {
       String(toNumber(event.target.value)),
       () => {
         // Use a quick timeout to allow user to type in more stuff before going to next step
-        timer = Meteor.setTimeout(() => {
-          this.setCompleted();
-        }, 400);
+        if (this.validate()) {
+          timer = Meteor.setTimeout(() => {
+            this.setCompleted();
+          }, this.props.timeout);
+        }
       }
     );
+  }
+
+  validate() {
+    const errors = moneyValidation(this.props.salary);
+
+    this.setState({
+      error: errors[0],
+    }, () => {
+      // If an error exists, set valid to false
+      if (this.state.error) {
+        this.props.setValid(false);
+      } else {
+        this.props.setValid(true);
+      }
+    });
+    // Will happen before the setState has finished, return true if there is no error
+    return !errors[0];
   }
 
 
@@ -71,10 +96,12 @@ export default class Line5 extends Component {
             value={`CHF ${toMoney(this.props.salary)}`}
             onChange={this.handleChange}
             pattern="[0-9]*"
+            errorText={this.state.error ? ' ' : ''}
             autoFocus
           />
           par an
         </h1>
+        <h4 className={this.props.classes.errorText}>{this.state.error}</h4>
       </article>
     );
   }
@@ -84,9 +111,11 @@ Line5.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
   setStateValue: PropTypes.func.isRequired,
+  setValid: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 
   twoBuyers: PropTypes.bool.isRequired,
   salary: PropTypes.string.isRequired,
+  timeout: PropTypes.number.isRequired,
 };

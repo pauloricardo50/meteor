@@ -1,22 +1,15 @@
-export function maxPropertyValue(salary = 0, cash = 0, lpp = 0, age = 50, gender = 'female') {
-  // Emprunter maximum 80% de la valeur de la propriété
-  let maxBorrow = 0.8;
-
-  // Interet théorique sur l'emprunt
-  const interest = 0.05;
-
-  // Amortissement annuel de l'emprunt si le client a moins de 50 ans
-  let amortization = 0.0125;
-
-  // Entretien de la propriété: 1% de la valeur totale de la propriété
-  const maintenance = 0.01;
+export function maxPropertyValue(salary = 0, cash = 0, lpp = 0, age = 50, gender = 'f') {
+  let maxBorrow = 0.8; // Emprunter maximum 80% de la valeur de la propriété
+  const interest = 0.05; // Interet théorique sur l'emprunt
+  let amortization = 0.0125; // Amortissement annuel de l'emprunt si le client a moins de 50 ans
+  const maintenance = 0.01; // Entretien de la propriété: 1% de la valeur totale de la propriété
 
 
   let retirement;
   // Age de la retraite
-  if (gender === 'female') {
+  if (gender === 'f') {
     retirement = 64;
-  } else if (gender === 'male') {
+  } else if (gender === 'm') {
     retirement = 65;
   } else {
     // Could use "return;" here, but I'm nice
@@ -62,9 +55,22 @@ export function maxPropertyValue(salary = 0, cash = 0, lpp = 0, age = 50, gender
 }
 
 
+
+export function fortuneRequired(age1, age2, gender1, gender2, type, salary, bonus, propertyValue) {
+  const interest = 0.05; // Interet théorique sur l'emprunt
+  let amortization = 0.0125; // Amortissement annuel de l'emprunt si le client a moins de 50 ans
+  const maintenance = 0.01; // Entretien de la propriété: 1% de la valeur totale de la propriété
+
+
+  const maxBorrow = ((salary / 3) - (propertyValue * maintenance)) / (interest + amortization);
+}
+
+
 export function toMoney(value) {
   return String(value).replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, "'");
 }
+
+
 
 export function toNumber(value) {
   return Number(String(value).replace(/\D/g, ''));

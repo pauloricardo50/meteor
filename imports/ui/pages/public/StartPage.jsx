@@ -38,8 +38,9 @@ export default class StartPage extends Component {
     this.state = {
       step: 0,
       maxStep: 0,
-      isValid: [],
+      isValid: [true, true, true, true, true, true, true, true, true, true, true, true], // 12x
       isFinished: false,
+      timeout: 400,
 
       twoBuyers: false,
       age1: '',
@@ -61,13 +62,15 @@ export default class StartPage extends Component {
 
     this.setStep = this.setStep.bind(this);
     this.setStateValue = this.setStateValue.bind(this);
+    this.setValid = this.setValid.bind(this);
     this.completeStep = this.completeStep.bind(this);
     this.setPropertyKnown = this.setPropertyKnown.bind(this);
     this.classes = this.classes.bind(this);
+    this.isFormValid = this.isFormValid.bind(this);
   }
 
   componentWillMount() {
-    DocHead.setTitle('e-Potek');
+    DocHead.setTitle('Passez Le Test | e-Potek');
   }
 
   setStep(i) { this.setState({ step: i }); }
@@ -106,6 +109,15 @@ export default class StartPage extends Component {
     );
   }
 
+  setValid(step, value) {
+    const array = this.state.isValid;
+    array[step] = value;
+
+    this.setState({
+      isValid: array,
+    });
+  }
+
   // Called when a step was finished
   completeStep(i, event, alsoSetStep) {
     // Prevent the call of setStep() when this is called, only call it if an event is passed
@@ -121,7 +133,7 @@ export default class StartPage extends Component {
     if (max <= i) {
       this.setState({ maxStep: i + 1 },
         () => {
-          // Make sure step is never higher than maxStep, and verify the step is higher than before
+          // Make sure step is never higher than maxStep, and verify step is higher than before
           if (alsoSetStep && (i + 1 <= this.state.maxStep) && i + 1 > this.state.step) {
             this.setState({ step: i + 1 });
           }
@@ -136,13 +148,19 @@ export default class StartPage extends Component {
   classes(i) {
     const classes = {
       text: 'col-sm-10 col-sm-offset-1 startLine',
+      errorText: 'col-sm-10 col-sm-offset-1 startLine errorText',
       extra: 'col-sm-10 col-sm-offset-1 animated fadeIn',
     };
 
     if (i === this.state.step) {
       classes.text = classes.text.concat(' active');
+      classes.errorText = classes.errorText.concat(' active');
     }
     return classes;
+  }
+
+  isFormValid() {
+    return this.state.isValid.every(bool => bool);
   }
 
   render() {
@@ -161,6 +179,7 @@ export default class StartPage extends Component {
               {...this.state}
               setStateValue={this.setStateValue}
               setStep={() => this.setStep(index)}
+              setValid={value => this.setValid(index, value)}
               completeStep={(event, alsoStep) => this.completeStep(index, event, alsoStep)}
               setPropertyKnown={this.setPropertyKnown}
               classes={this.classes(index)}
