@@ -57,11 +57,12 @@ export function maxPropertyValue(salary = 0, cash = 0, lpp = 0, age = 50, gender
 
 
 export function fortuneRequired(age1, age2, gender1, gender2, type, salary, bonus, propertyValue) {
-  const interest = 0.05; // Interet théorique sur l'emprunt
+  const interest = 0.05; // Interet théorique sur l'emprunt: 5%
   let amortization = 0.0125; // Amortissement annuel de l'emprunt si le client a moins de 50 ans
   const maintenance = 0.01; // Entretien de la propriété: 1% de la valeur totale de la propriété
 
 
+  // The maximum amount someone can borrow given his salary and the house he wants to buy
   const maxBorrow = ((salary / 3) - (propertyValue * maintenance)) / (interest + amortization);
 }
 
