@@ -93,8 +93,6 @@ export default class NewPage extends Component {
         },
       };
 
-      // console.log(object);
-
 
       insertRequest.call({ object }, (error, result) => {
         if (error) {
@@ -110,16 +108,6 @@ export default class NewPage extends Component {
     }
   }
 
-  // createRequest() {
-  //   insertRequest.call({ requestName: this.state.textValue }, (error, result) => {
-  //     if (error) {
-  //       // TODO: Remove this console log
-  //       console.log(error);
-  //       return;
-  //     }
-  //     FlowRouter.go('/main');
-  //   });
-  // }
 
   textChange(e) {
     // Set textValue and remove errorText message if there was one
@@ -130,6 +118,7 @@ export default class NewPage extends Component {
       }
     }
   }
+
 
   render() {
     return (
