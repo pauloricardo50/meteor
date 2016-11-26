@@ -170,5 +170,5 @@ Line11a.propTypes = {
   fortune: PropTypes.string.isRequired,
   insuranceFortune: PropTypes.string.isRequired,
   isFinished: PropTypes.bool.isRequired,
-  isValid: PropTypes.bool.isRequired,
+  isValid: PropTypes.arrayOf(PropTypes.bool).isRequired,
 };

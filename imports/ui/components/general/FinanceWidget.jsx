@@ -121,7 +121,7 @@ export default class FinanceWidget extends React.Component {
           />
 
           <div style={styles.sliderValues}>
-            <h4>Fortune</h4>
+            <h4>Fonds Propres</h4>
             <p>CHF {this.toMoney(this.state.propertyValue - this.state.sliderValue)}</p>
             <h4>Prêt</h4>
             <p>CHF {this.toMoney(this.state.sliderValue)}</p>

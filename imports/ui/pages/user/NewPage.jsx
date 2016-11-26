@@ -73,10 +73,10 @@ export default class NewPage extends Component {
         personalInfo: {
           twoBuyers: q.twoBuyers,
           age1: Number(q.age1),
-          age2: Number(q.age2),
+          age2: (q.age2 ? Number(q.age2) : null),
           genderRequired: String(q.genderRequired),
           gender1: q.gender1,
-          gender2: q.gender1,
+          gender2: (q.gender2 ? q.gender2 : null),
         },
         financialInfo: {
           salary: Number(q.salary),
