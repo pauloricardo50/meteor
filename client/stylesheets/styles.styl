@@ -549,12 +549,18 @@ svg
   margin-bottom: 0px;
   &:hover
     opacity: 0.8;
+    -webkit-transform: scale(0.85);
+    transform: scale(0.85);
+    margin-top: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
   &.active
     opacity: 1;
     -webkit-transform: scale(1);
     transform: scale(1);
     margin-top: 10px;
     margin-bottom: 10px;
+    cursor: default;
   &.errorText
     color: red;
     margin-top -10px;

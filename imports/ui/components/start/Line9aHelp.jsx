@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import FontIcon from 'material-ui/FontIcon';
 
 
 const styles = {
@@ -9,7 +11,7 @@ const styles = {
   },
 };
 
-export default class Line9aHelp extends React.Component {
+export default class Line9aHelp extends Component {
   constructor(props) {
     super(props);
 
@@ -40,7 +42,13 @@ export default class Line9aHelp extends React.Component {
 
     return (
       <span>
-        <a onTouchTap={this.handleOpen} style={styles.help}>Comment choisir?</a>
+        <FlatButton
+          onTouchTap={this.handleOpen}
+          style={this.props.buttonStyle}
+          label="Aidez-moi à choisir"
+          primary
+          icon={<FontIcon className="fa fa-question" />}
+        />
         <Dialog
           title="L'endettement, bien ou mauvais?"
           actions={actions}
@@ -61,3 +69,7 @@ export default class Line9aHelp extends React.Component {
     );
   }
 }
+
+Line9aHelp.propTypes = {
+  buttonStyle: PropTypes.objectOf(PropTypes.any).isRequired,
+};

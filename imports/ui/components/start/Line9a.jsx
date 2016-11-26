@@ -75,8 +75,7 @@ export default class Line9a extends Component {
               primary={!this.state.text}
               onClick={e => this.changeState(e, false)}
             />
-            <br />
-            <Line9aHelp />
+            <Line9aHelp buttonStyle={styles.button} />
           </div>
           : ''
         }

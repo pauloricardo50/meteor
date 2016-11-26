@@ -71,13 +71,7 @@ export default class Line8a extends Component {
               primary={!this.state.text}
               onClick={e => this.changeState(e, false)}
             />
-            <RaisedButton
-              label="Je ne sais pas"
-              style={styles.button}
-              onClick={e => this.changeState(e, true)}
-            />
-            <br />
-            <Line8aHelp />
+            <Line8aHelp buttonStyle={styles.button} />
           </div>
         }
 
