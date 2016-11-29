@@ -22,12 +22,6 @@ export default class AutoForm extends Component {
       case 'TextInput':
         return (
           <TextInput
-            // label={singleInput.label}
-            // placeholder={singleInput.placeholder}
-            // id={singleInput.id}
-            // currentValue={singleInput.currentValue}
-            // key={index}
-            // requestId={this.props.creditRequest._id}
             {...singleInput}
             {...extraValues}
             key={index}

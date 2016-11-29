@@ -42,7 +42,7 @@ export default class Line8a extends Component {
     this.props.completeStep(e, true);
 
     if (maxCash) {
-      this.setState({ text: 'un max de fonds propres' });
+      this.setState({ text: 'un max de fortune' });
     } else {
       this.setState({ text: 'un max de 2ème pilier' });
     }

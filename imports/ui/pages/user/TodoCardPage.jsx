@@ -3,14 +3,14 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import Step1InitialForm from '/imports/ui/components/requestSteps/Step1InitialForm.jsx';
-import Step1Financial from '/imports/ui/components/requestSteps/Step1Financial.jsx';
-import Step1TaxUpload from '/imports/ui/components/requestSteps/Step1TaxUpload.jsx';
-import Step1PropertyUpload from '/imports/ui/components/requestSteps/Step1PropertyUpload.jsx';
+import Step1InitialForm from '/imports/ui/components/steps/Step1InitialForm.jsx';
+import Step1Financial from '/imports/ui/components/steps/Step1Financial.jsx';
+import Step1TaxUpload from '/imports/ui/components/steps/Step1TaxUpload.jsx';
+import Step1PropertyUpload from '/imports/ui/components/steps/Step1PropertyUpload.jsx';
 
-import Step3FinancialForm from '/imports/ui/components/requestSteps/Step3FinancialForm.jsx';
-import Step3PersonalForm from '/imports/ui/components/requestSteps/Step3PersonalForm.jsx';
-import Step3PropertyForm from '/imports/ui/components/requestSteps/Step3PropertyForm.jsx';
+import Step3FinancialForm from '/imports/ui/components/steps/Step3FinancialForm.jsx';
+import Step3PersonalForm from '/imports/ui/components/steps/Step3PersonalForm.jsx';
+import Step3PropertyForm from '/imports/ui/components/steps/Step3PropertyForm.jsx';
 
 
 export default class TodoCardPage extends React.Component {

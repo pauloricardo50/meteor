@@ -103,6 +103,38 @@ export const FinancialInfoSchema = new SimpleSchema({
     defaultValue: 'true',
     optional: true,
   },
+  currentRentExists: {
+    type: String,
+    defaultValue: 'false',
+    optional: true,
+  },
+  currentRent: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100000000,
+  },
+  realEstateFortune: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100000000,
+  },
+  totalCashFortune: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100000000,
+  },
+  otherFortuneExists: {
+    type: String,
+    defaultValue: 'false',
+    optional: true,
+  },
+  otherFortune: {
+    type: [otherFortuneSchema],
+    defaultValue: [{}],
+  },
 });
 
 // Information about the property, like room count, property value and address
@@ -128,8 +160,12 @@ const SingleFileSchema = new SimpleSchema({
   },
 });
 
-// Name and URL of a single file uploaded by the user
+// List of all files
 export const FileSchema = new SimpleSchema({
+  willUploadTaxes: {
+    type: Boolean,
+    defaultValue: true,
+  },
   taxes: {
     type: SingleFileSchema,
     optional: true,
@@ -209,5 +245,20 @@ export const AdminInfoSchema = new SimpleSchema({
   notes: {
     type: String,
     optional: true,
+  },
+});
+
+export const otherFortuneSchema = new SimpleSchema({
+  value: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100000000,
+    defaultValue: 0,
+  },
+  description: {
+    type: String,
+    optional: true,
+    defaultValue: '',
   },
 });

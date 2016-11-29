@@ -4,7 +4,9 @@ import { DocHead } from 'meteor/kadira:dochead';
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
 
+import { updateValues } from '/imports/api/creditrequests/methods.js';
 import DropzoneInput from '/imports/ui/components/forms/DropzoneInput.jsx';
+import Step1TaxesForm from '/imports/ui/components/steps/Step1TaxesForm.jsx';
 
 
 const styles = {
@@ -12,10 +14,10 @@ const styles = {
     marginBottom: 40,
   },
   p: {
-    padding: 20,
+    padding: 40,
   },
   checkbox: {
-    marginBottom: 20,
+    marginBottom: 40,
   },
   button: {
     float: 'right',
@@ -26,12 +28,8 @@ export default class Step1Page extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      isReady: false,
-      willUploadTaxes: true,
-    };
-
     this.handleCheck = this.handleCheck.bind(this);
+    this.isReady = this.isReady.bind(this);
   }
 
   componentDidMount() {
@@ -39,7 +37,31 @@ export default class Step1Page extends Component {
   }
 
   handleCheck(event, isInputChecked) {
-    this.setState({ willUploadTaxes: !isInputChecked });
+    console.log(event);
+    console.log(isInputChecked);
+    // Save data to DB
+
+    const object = {};
+    object['files.willUploadTaxes'] = isInputChecked;
+    const id = this.props.creditRequest._id;
+
+    updateValues.call({
+      object, id,
+    }, (error, result) => {
+      if (error) {
+        alert(error.message);
+        throw new Meteor.Error(500, error.message);
+      } else {
+        return 'Update Successful';
+      }
+    });
+  }
+
+  isReady() {
+    let projectReady = false;
+    let taxesReady = false;
+
+    return projectReady && taxesReady;
   }
 
   render() {
@@ -52,6 +74,10 @@ export default class Step1Page extends Component {
 
         <article className="mask2" style={styles.mask}>
           <h3>Validez votre bien immobilier</h3>
+          <p style={styles.p}>
+            Nous voulons vérifier la légitimité de chaque dossier et donner une information claire
+            aux banques concernant l'état de votre dossier.
+          </p>
           <DropzoneInput
             fileName="housePicture"
             requestId={this.props.creditRequest._id}
@@ -71,6 +97,7 @@ export default class Step1Page extends Component {
 
           <div className="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 secondary">
             <Checkbox
+              checked={this.props.creditRequest.files.willUploadTaxes}
               label="J'uploaderai ma déclaration d'impôts plus tard"
               style={styles.checkbox}
               onCheck={this.handleCheck}
@@ -78,18 +105,20 @@ export default class Step1Page extends Component {
           </div>
 
           <div className="col-xs-12">
-            {this.state.willUploadTaxes &&
-              <DropzoneInput
-                fileName="taxes"
-                requestId={this.props.creditRequest._id}
-              />
+            {
+              this.props.creditRequest.files.willUploadTaxes ?
+                <DropzoneInput
+                  fileName="taxes"
+                  requestId={this.props.creditRequest._id}
+                /> :
+                  <Step1TaxesForm creditRequest={this.props.creditRequest} />
             }
           </div>
         </article>
 
         <RaisedButton
           label="Continuer"
-          disabled={!this.state.isReady}
+          disabled={!this.isReady()}
           primary
           style={styles.button}
         />

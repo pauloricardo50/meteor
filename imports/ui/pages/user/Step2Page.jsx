@@ -3,9 +3,9 @@ import { Meteor } from 'meteor/meteor';
 import { DocHead } from 'meteor/kadira:dochead';
 
 
-import Step2Start from '/imports/ui/components/requestSteps/Step2Start.jsx';
-import Step2Auction from '/imports/ui/components/requestSteps/Step2Auction.jsx';
-import Step2AuctionResults from '/imports/ui/components/requestSteps/Step2AuctionResults.jsx';
+import Step2Start from '/imports/ui/components/steps/Step2Start.jsx';
+import Step2Auction from '/imports/ui/components/steps/Step2Auction.jsx';
+import Step2AuctionResults from '/imports/ui/components/steps/Step2AuctionResults.jsx';
 
 var time;
 
