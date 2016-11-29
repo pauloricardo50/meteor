@@ -61,7 +61,7 @@ export default class Line9a extends Component {
           {this.state.text}
         </h1>
 
-        {this.props.step === 8 ?
+        {this.props.step === this.props.index ?
           <div className={this.props.classes.extra} style={styles.extra}>
             <RaisedButton
               label="Le plus possible (80%)"
@@ -91,6 +91,7 @@ Line9a.propTypes = {
   setStateValue: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  index: PropTypes.number.isRequired,
 
   twoBuyers: PropTypes.bool.isRequired,
   maxDebt: PropTypes.bool.isRequired,

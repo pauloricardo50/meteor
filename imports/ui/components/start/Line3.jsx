@@ -116,7 +116,7 @@ export default class Line3 extends Component {
             {this.props.twoBuyers ? ' respectivement.' : ''}
           </h1>
 
-          {this.props.step === 2 &&
+          {this.props.step === this.props.index &&
             <div className={this.props.classes.extra} style={styles.extra}>
               <RaisedButton
                 label="une femme"
@@ -163,6 +163,7 @@ Line3.propTypes = {
   setStateValue: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  index: PropTypes.number.isRequired,
 
   twoBuyers: PropTypes.bool.isRequired,
   genderRequired: PropTypes.bool.isRequired,

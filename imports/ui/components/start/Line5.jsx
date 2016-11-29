@@ -99,7 +99,7 @@ export default class Line5 extends Component {
             errorText={this.state.error ? ' ' : ''}
             autoFocus
           />
-          par an
+          par an,
         </h1>
         <h4 className={this.props.classes.errorText}>{this.state.error}</h4>
       </article>

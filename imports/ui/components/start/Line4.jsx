@@ -33,7 +33,8 @@ export default class Line4 extends Component {
     return (
       p.classes !== n.classes ||
       p.twoBuyers !== n.twoBuyers ||
-      p.propertyType !== n.propertyType
+      p.propertyType !== n.propertyType ||
+      p.isNewPurchase !== n.isNewPurchase
     );
   }
 
@@ -63,11 +64,13 @@ export default class Line4 extends Component {
       <article onClick={this.props.setStep}>
 
         <h1 className={this.props.classes.text}>
-          Cette propriété sera
+          et la propriété
+          {this.props.isNewPurchase ? ' sera ' : ' est '}
+          utilisée comme
           {this.state.text}
         </h1>
 
-        {this.props.step === 3 &&
+        {this.props.step === this.props.index &&
           <div className={this.props.classes.extra} style={styles.extra}>
             <RaisedButton
               label="Une résidence principale"
@@ -101,6 +104,8 @@ Line4.propTypes = {
   setStateValue: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  index: PropTypes.number.isRequired,
 
   propertyType: PropTypes.string.isRequired,
+  isNewPurchase: PropTypes.bool.isRequired,
 };

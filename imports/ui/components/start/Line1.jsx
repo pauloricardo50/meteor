@@ -42,11 +42,11 @@ export default class Line1 extends Component {
 
     if (twoBuyers) {
       this.setState({
-        text: 'un couple emprunteur',
+        text: 'un couple emprunteur,',
       });
     } else {
       this.setState({
-        text: 'un-e emprunteur-se',
+        text: 'un-e emprunteur-se,',
       });
     }
   }
@@ -60,7 +60,7 @@ export default class Line1 extends Component {
           {this.state.text}
         </h1>
 
-        {this.props.step === 0 &&
+        {this.props.step === this.props.index &&
           <div className={this.props.classes.extra} style={styles.extra}>
             <RaisedButton
               label="Un-e emprunteur-se"
@@ -87,6 +87,7 @@ Line1.propTypes = {
   setStateValue: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  index: PropTypes.number.isRequired,
 
   twoBuyers: PropTypes.bool.isRequired,
 };

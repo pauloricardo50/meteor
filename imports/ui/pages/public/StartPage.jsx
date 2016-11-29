@@ -5,6 +5,8 @@ import { DocHead } from 'meteor/kadira:dochead';
 import Line1 from '/imports/ui/components/start/Line1.jsx';
 import Line2 from '/imports/ui/components/start/Line2.jsx';
 import Line3 from '/imports/ui/components/start/Line3.jsx';
+import Line4_1 from '/imports/ui/components/start/Line4_1.jsx';
+
 import Line4 from '/imports/ui/components/start/Line4.jsx';
 import Line5 from '/imports/ui/components/start/Line5.jsx';
 import Line6 from '/imports/ui/components/start/Line6.jsx';
@@ -48,6 +50,7 @@ export default class StartPage extends Component {
       genderRequired: false,
       gender1: '',
       gender2: '',
+      isNewPurchase: true,
       propertyType: '',
       salary: '',
       bonusExists: false,
@@ -95,14 +98,14 @@ export default class StartPage extends Component {
         // therefore reset maxStep to 8, and cancel fortune and insuranceFortune
         if (oldState !== value) {
           this.setState({
-            maxStep: 7,
+            maxStep: 8,
             fortune: '',
             insuranceFortune: '',
           });
           if (alsoStep) {
             // When the user chooses that the propertyValue is not known after having filled
             // some fields beyond step 6 in path a), set step to 7
-            this.setState({ step: 7 });
+            this.setState({ step: 8 });
           }
         }
       }
@@ -125,8 +128,8 @@ export default class StartPage extends Component {
       event.stopPropagation();
     }
 
-    const finalA = 10;
-    const finalB = 8;
+    const finalA = 11;
+    const finalB = 9;
     const max = this.state.maxStep;
     const finished = this.state.propertyKnown ? max === finalA : max === finalB;
 
@@ -166,9 +169,9 @@ export default class StartPage extends Component {
   render() {
     let lines;
     if (this.state.propertyKnown) {
-      lines = [Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8a, Line9a, Line10a, Line11a];
+      lines = [Line1, Line2, Line3, Line4_1, Line4, Line5, Line6, Line7, Line8a, Line9a, Line10a, Line11a];
     } else {
-      lines = [Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8b, Line9b];
+      lines = [Line1, Line2, Line3, Line4_1, Line4, Line5, Line6, Line7, Line8b, Line9b];
     }
 
     return (
@@ -183,6 +186,7 @@ export default class StartPage extends Component {
               completeStep={(event, alsoStep) => this.completeStep(index, event, alsoStep)}
               setPropertyKnown={this.setPropertyKnown}
               classes={this.classes(index)}
+              index={index}
               key={index}
             />
           )}

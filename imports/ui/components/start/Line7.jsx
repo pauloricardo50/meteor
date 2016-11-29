@@ -130,7 +130,7 @@ export default class Line7 extends Component {
         </h1>
         <h4 className={this.props.classes.errorText}>{this.state.error}</h4>
 
-        {this.props.step === 6 &&
+        {this.props.step === this.props.index &&
           <div className={this.props.classes.extra} style={styles.extra}>
             {this.props.propertyKnown ?
               <RaisedButton
@@ -161,6 +161,7 @@ Line7.propTypes = {
   setValid: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  index: PropTypes.number.isRequired,
 
   twoBuyers: PropTypes.bool.isRequired,
   bonusExists: PropTypes.bool.isRequired,

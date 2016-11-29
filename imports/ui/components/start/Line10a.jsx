@@ -129,7 +129,7 @@ export default class Line10a extends Component {
             (value, isSlider) => this.changeInsuranceFortune(value, isSlider)
           }
         />
-        {this.props.step === 9 &&
+        {this.props.step === this.props.index &&
           <div className="text-center col-xs-12">
             <RaisedButton
               label="Je suis satisfait"
@@ -149,6 +149,7 @@ Line10a.propTypes = {
   setStateValue: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  index: PropTypes.number.isRequired,
 
   twoBuyers: PropTypes.bool.isRequired,
   maxCash: PropTypes.bool.isRequired,

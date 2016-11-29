@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 
 import RaisedButton from 'material-ui/RaisedButton';
-import Line8aHelp from './Line8aHelp.jsx';
+
 
 const styles = {
   button: {
@@ -15,7 +15,7 @@ const styles = {
 };
 
 
-export default class Line8a extends Component {
+export default class Line4_1 extends Component {
   constructor(props) {
     super(props);
 
@@ -33,18 +33,24 @@ export default class Line8a extends Component {
     return (
       p.classes !== n.classes ||
       p.twoBuyers !== n.twoBuyers ||
-      p.maxCash !== n.maxCash
+      p.isNewPurchase !== n.isNewPurchase
     );
   }
 
-  changeState(e, maxCash) {
-    this.props.setStateValue('maxCash', maxCash);
-    this.props.completeStep(e, true);
 
-    if (maxCash) {
-      this.setState({ text: 'un max de fortune' });
-    } else {
-      this.setState({ text: 'un max de 2ème pilier' });
+  changeState(event, i) {
+    this.props.completeStep(event, true);
+
+    switch (i) {
+      case 1:
+        this.props.setStateValue('isNewPurchase', true);
+        this.setState({ text: ' une nouvelle acquisition,' });
+        break;
+      case 2:
+        this.props.setStateValue('isNewPurchase', false);
+        this.setState({ text: ' un refinancement,' });
+        break;
+      default: break;
     }
   }
 
@@ -53,25 +59,24 @@ export default class Line8a extends Component {
       <article onClick={this.props.setStep}>
 
         <h1 className={this.props.classes.text}>
-          {this.props.twoBuyers ? 'Nous voulons utiliser ' : 'Je veux utiliser '}
+          Ce projet sera
           {this.state.text}
         </h1>
 
         {this.props.step === this.props.index &&
           <div className={this.props.classes.extra} style={styles.extra}>
             <RaisedButton
-              label="Un max de fortune"
+              label="Une nouvelle acquisition"
               style={styles.button}
               primary={!this.state.text}
-              onClick={e => this.changeState(e, true)}
+              onClick={e => this.changeState(e, 1)}
             />
             <RaisedButton
-              label="Un max de 2ème pilier"
+              label="Un refinancement"
               style={styles.button}
               primary={!this.state.text}
-              onClick={e => this.changeState(e, false)}
+              onClick={e => this.changeState(e, 2)}
             />
-            <Line8aHelp buttonStyle={styles.button} />
           </div>
         }
 
@@ -80,13 +85,13 @@ export default class Line8a extends Component {
   }
 }
 
-Line8a.propTypes = {
+Line4_1.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
   setStateValue: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
-  index: PropTypes.number.isRequired,
 
-  twoBuyers: PropTypes.bool.isRequired,
+  propertyType: PropTypes.string.isRequired,
+  isNewPurchase: PropTypes.bool.isRequired,
 };

@@ -147,7 +147,7 @@ export default class Line6 extends Component {
 
 
         {/* Display buttons if this is the active step */}
-        {this.props.step === 5 &&
+        {this.props.step === this.props.index &&
           <div className={this.props.classes.extra} style={styles.extra}>
             {(this.props.bonusExists || !this.state.bonusSelected) &&
               <RaisedButton
@@ -178,6 +178,7 @@ Line6.propTypes = {
   setValid: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  index: PropTypes.number.isRequired,
 
   twoBuyers: PropTypes.bool.isRequired,
   bonusExists: PropTypes.bool.isRequired,

@@ -145,6 +145,11 @@ export const PropertyInfoSchema = new SimpleSchema({
     min: 0,
     max: 100000000,
   },
+  isNewPurchase: {
+    type: String,
+    optional: true,
+    defaultValue: 'true',
+  },
   type: { // primary, secondary or investment
     type: String,
     defaultValue: 'primary',
