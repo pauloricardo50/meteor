@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { toMoney, toNumber } from '/imports/js/finance-math.js';
+import { toMoney, toNumber, maxPropertyValue } from '/imports/js/finance-math.js';
 
 
 const styles = {
@@ -16,6 +16,11 @@ const styles = {
 export default class Line9b extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      maxProperty: 0,
+      maxBorrow: 0,
+    };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -24,11 +29,32 @@ export default class Line9b extends Component {
     return true;
   }
 
+  componentWillReceiveProps(nextProps) {
+    const [maxProperty, maxBorrow] = maxPropertyValue(
+      Number(nextProps.age1),
+      Number(nextProps.age2),
+      nextProps.gender1,
+      nextProps.gender2,
+      Number(nextProps.salary) + Number(nextProps.bonus),
+      Number(nextProps.fortune),
+      Number(nextProps.insuranceFortune),
+    );
+
+    this.setState({
+      maxProperty,
+      maxBorrow: maxBorrow * maxProperty,
+    });
+  }
+
   render() {
     return (
       <article onClick={this.props.setStep}>
         <h1 className={this.props.classes.text}>
-          Vous pouvez emprunter au maximum CHF 400'000 et donc acheter une propriété de CHF 500'000.
+          Vous pouvez emprunter au maximum CHF&nbsp;
+          {toMoney(this.state.maxBorrow)}
+          &nbsp;et donc acheter une propriété de CHF&nbsp;
+          {toMoney(this.state.maxProperty)}
+          .
         </h1>
         <div className="col-xs-12 text-center" style={styles.buttons}>
           <RaisedButton label="Chercher une propriété à ce prix" primary />

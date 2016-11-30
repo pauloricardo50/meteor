@@ -2,9 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 
 import TextField from 'material-ui/TextField';
+import MaskedInput from 'react-text-mask';
 
-import { toMoney, toNumber } from '/imports/js/finance-math.js';
+import { toNumber } from '/imports/js/finance-math.js';
 import { moneyValidation } from '/imports/js/validation.js';
+import { swissFrancMask } from '/imports/js/textMasks.js';
 
 
 const styles = {
@@ -93,12 +95,18 @@ export default class Line5 extends Component {
           <TextField
             style={styles.textField}
             name="salary"
-            value={`CHF ${toMoney(this.props.salary)}`}
+            value={this.props.salary}
             onChange={this.handleChange}
             pattern="[0-9]*"
             errorText={this.state.error ? ' ' : ''}
-            autoFocus
-          />
+          >
+            <MaskedInput
+              mask={swissFrancMask}
+              guide
+              placeholder="CHF"
+              autoFocus
+            />
+          </TextField>
           par an,
         </h1>
         <h4 className={this.props.classes.errorText}>{this.state.error}</h4>

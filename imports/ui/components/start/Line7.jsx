@@ -3,10 +3,11 @@ import { Meteor } from 'meteor/meteor';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import MaskedInput from 'react-text-mask';
 
-
-import { toMoney, toNumber } from '/imports/js/finance-math.js';
+import { toMoney, toNumber, minimumFortuneRequired } from '/imports/js/finance-math.js';
 import { moneyValidation } from '/imports/js/validation.js';
+import { swissFrancMask } from '/imports/js/textMasks.js';
 
 
 const styles = {
@@ -104,7 +105,17 @@ export default class Line7 extends Component {
         }
         {this.props.propertyKnown &&
           `donc mettre au minimum CHF
-          ${toMoney(Math.round(this.props.propertyValue * 0.2))} en fonds propres.`
+          ${toMoney(
+            minimumFortuneRequired(
+              Number(this.props.age1),
+              Number(this.props.age2),
+              this.props.gender1,
+              this.props.gender2,
+              this.props.propertyType,
+              Number(this.props.salary) + Number(this.props.bonus),
+              Number(this.props.propertyValue),
+            )
+          )} en fonds propres.`
         }
       </span>);
 
@@ -119,12 +130,18 @@ export default class Line7 extends Component {
             <TextField
               style={styles.textField}
               name="propertyValue"
-              value={`CHF ${toMoney(this.props.propertyValue)}`}
+              value={this.props.propertyValue}
               onChange={this.handleChange}
               pattern="[0-9]*"
-              autoFocus={!this.props.bonusExists}
               errorText={this.state.error ? ' ' : ''}
-            />
+            >
+              <MaskedInput
+                mask={swissFrancMask}
+                guide
+                placeholder="CHF"
+                autoFocus={!this.props.bonusExists}
+              />
+            </TextField>
           }
           {this.props.propertyValue && postValue}
         </h1>
@@ -169,4 +186,12 @@ Line7.propTypes = {
   setPropertyKnown: PropTypes.func.isRequired,
   propertyValue: PropTypes.string.isRequired,
   timeout: PropTypes.number.isRequired,
+
+  age1: PropTypes.string.isRequired,
+  age2: PropTypes.string.isRequired,
+  gender1: PropTypes.string.isRequired,
+  gender2: PropTypes.string.isRequired,
+  propertyType: PropTypes.string.isRequired,
+  salary: PropTypes.string.isRequired,
+  bonus: PropTypes.string.isRequired,
 };

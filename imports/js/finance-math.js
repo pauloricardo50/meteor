@@ -1,52 +1,4 @@
-// export function maxPropertyValue(salary = 0, fortune = 0, insuranceFortune = 0, age = 18, gender = 'f') {
-//   let maxBorrow = 0.8; // Emprunter maximum 80% de la valeur de la propriété
-//   const interest = 0.05; // Interet théorique sur l'emprunt
-//   let amortization = 0.0125; // Amortissement annuel de l'emprunt si le client a moins de 50 ans
-//   const maintenance = 0.01; // Entretien de la propriété: 1% de la valeur totale de la propriété
-//   const notaryFee = 0.05; // Frais de notaire: 5%
-//
-//
-//   // Get retirement age
-//   const retirement = (gender === 'f' ? 64 : 65);
-//
-//
-//   const limitingValues = [];
-//
-//   if (age >= 51 && age < retirement) {
-//     amortization = 0.15 / (retirement - age);
-//   } else if (age >= retirement) {
-//     maxBorrow = 0.65;
-//   }
-//
-//   const salaryLimitedValue = (salary / 3) / ((maxBorrow * (interest + amortization)) + maintenance);
-//   limitingValues.push(salaryLimitedValue);
-//
-//   // TODO: Quel est le ratio requis si l'emprunt est de moins de 80% ?
-//   if (insuranceFortune === 0) {
-//     // Si pas de LPP, le cash doit valoir 25% de la propriété
-//     const cashLimitedValue1 = fortune / (1 - (maxBorrow + notaryFee));
-//     limitingValues.push(cashLimitedValue1);
-//   } else if (insuranceFortune > 0) {
-//     // Si il existe une LPP, le cash doit etre au minimum 15% de la propriété, lpp 10%
-//     const cashLimitedValue2 = fortune / (1 - 0.15);
-//     limitingValues.push(cashLimitedValue2);
-//     if (insuranceFortune < cashLimitedValue2 * 0.1) {
-//       // Si la LPP n'est pas suffisante, la propriété est limitée par la LPP
-//       const lppLimitedValue = insuranceFortune / (1 - 0.10);
-//       limitingValues.push(lppLimitedValue);
-//     }
-//   }
-//
-//   // Return the smallest value of the 5
-//   const maxValue = Math.min(...limitingValues);
-//
-//   // Round value down to nearest 1000
-//   return Math.floor(maxValue / 1000) * 1000;
-// }
-
-
-// Returns the minimum amount of combined fortune you have to provide to buy a certain property
-export function minimumFortuneRequired(age1, age2, gender1, gender2, type, revenue, propertyValue) {
+function getYearsToRetirement(age1, age2, gender1, gender2) {
   // Determine retirement age depending on the gender of the borrowers
   const retirement1 = (gender1 === 'f' ? 64 : 65);
   let retirement2 = null;
@@ -69,25 +21,91 @@ export function minimumFortuneRequired(age1, age2, gender1, gender2, type, reven
     yearsToRetirement = toRetirement1;
   }
 
+  return yearsToRetirement;
+}
+
+
+// Returns the maximum amount someone can buy a property for, given 80% debt,
+// except if they are retired, in which case it is 65%
+export function maxPropertyValue(age1, age2, gender1, gender2, revenue, fortune, insuranceFortune) {
+  let maxBorrow = 0.8; // Emprunter maximum 80% de la valeur de la propriété
+  const interest = 0.05; // Interet théorique sur l'emprunt
+  let amortization = 0.01; // Amortissement annuel de l'emprunt si le client a moins de 50 ans
+  const maintenance = 0.01; // Entretien de la propriété: 1% de la valeur totale de la propriété
+  const notaryFee = 0.05; // Frais de notaire: 5%
+
+  // Get the minimum amount of years to retirement
+  const yearsToRetirement = getYearsToRetirement(age1, age2, gender1, gender2);
+
+  // Figure out how much they can borrow
+  if (yearsToRetirement <= 0) {
+    maxBorrow = 0.65;
+  } else if (yearsToRetirement < 15) {
+    // If they're between 50 and retirement, adjust amortization to be the 15% divided by the amount
+    // of years left
+    amortization = 0.15 / yearsToRetirement;
+  }
+
+
+  const limitingValues = [];
+
+  const salaryLimitedValue = (revenue / 3) / ((maxBorrow * (interest + amortization)) + maintenance);
+  limitingValues.push(salaryLimitedValue);
+
+  // TODO: Quel est le ratio requis si l'emprunt est de moins de 80% ?
+  if (insuranceFortune === 0) {
+    // Si pas de LPP, le cash doit valoir 25% de la propriété
+    const cashLimitedValue1 = fortune / (1 - (maxBorrow + notaryFee));
+    limitingValues.push(cashLimitedValue1);
+  } else if (insuranceFortune > 0) {
+    // Si il existe une LPP, le cash doit etre au minimum 15% de la propriété, lpp 10%
+    const cashLimitedValue2 = fortune / (0.15);
+    limitingValues.push(cashLimitedValue2);
+    if (insuranceFortune < cashLimitedValue2 * 0.1) {
+      // Si la LPP n'est pas suffisante, la propriété est limitée par la LPP
+      const insuranceLimitedValue = insuranceFortune / (0.1);
+      limitingValues.push(insuranceLimitedValue);
+    }
+  }
+
+  console.log(limitingValues);
+  // Return the smallest value of the 5
+  const maxValue = Math.min(...limitingValues);
+
+  // Round value down to nearest 1000
+  return [Math.floor(maxValue / 1000) * 1000, maxBorrow];
+}
+
+
+// Returns the minimum amount of combined fortune you have to provide to buy a certain property
+export function minimumFortuneRequired(age1, age2, gender1, gender2, type, revenue, propertyValue) {
+  // Get the minimum amount of years to retirement
+  const yearsToRetirement = getYearsToRetirement(age1, age2, gender1, gender2);
+
   // A secondary residence can only have a loan up to 70%, primary and investment allow 80%
   let maxLoan = (type === 'secondary' ? 70 : 80);
   // If the person is already over 65, only allow a loan up to 65%
   maxLoan = (yearsToRetirement <= 0 ? 65 : maxLoan);
 
   // The array which will store all valid loan values from 0% to 80%
-  const loanValues = [];
+  const fortuneValues = [];
 
   // Try all values from a 0% to 80% loan, 1 percent at a time
   // TODO: Get a more precise value, and optimize this shit
   let l = 0;
   for (l = 0; l <= maxLoan; l += 1) {
     if (isLoanValid(l / 100, revenue, propertyValue, yearsToRetirement)) {
-      loanValues.push((l / 100) * propertyValue);
+      // Push this value to the array, substract from propertyValue to get the fortune required
+      const fortuneValue = propertyValue * (1 - (l / 100));
+      // Round it to the upper thousand
+      fortuneValues.push(
+        Math.ceil(fortuneValue / 1000) * 1000
+      );
     }
   }
 
   // Return the biggest amount you can borrow
-  return Math.max(...loanValues);
+  return Math.min(...fortuneValues);
 }
 
 

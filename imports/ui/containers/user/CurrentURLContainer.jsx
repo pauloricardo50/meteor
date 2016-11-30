@@ -9,6 +9,7 @@ import _RequestProgressBar from '/imports/ui/components/general/RequestProgressB
 import _SideNav from '/imports/ui/components/general/SideNav.jsx';
 
 import Loading from '/imports/ui/components/general/Loading.jsx';
+import LoadingNone from '/imports/ui/components/general/LoadingNone.jsx';
 
 function composer1(props, onData) {
   FlowRouter.watchPathChange();
@@ -23,9 +24,10 @@ function composer2(props, onData) {
   }
 }
 
-const container1 = composeWithTracker(composer1, Loading)(_RequestProgressBar);
-const container2 = composeWithTracker(composer1, Loading)(_SideNav);
-export const RequestProgressBar = composeWithTracker(composer2, Loading)(container1);
-export const SideNav = composeWithTracker(composer2, Loading)(container2);
+const container1 = composeWithTracker(composer1, LoadingNone)(_RequestProgressBar);
+const container2 = composeWithTracker(composer1, LoadingNone)(_SideNav);
 
-export const BottomNav = composeWithTracker(composer1, Loading)(_BottomNav);
+export const RequestProgressBar = composeWithTracker(composer2, LoadingNone)(container1);
+export const SideNav = composeWithTracker(composer2, LoadingNone)(container2);
+
+export const BottomNav = composeWithTracker(composer1, LoadingNone)(_BottomNav);

@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { DocHead } from 'meteor/kadira:dochead';
+import { Meteor } from 'meteor/meteor';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
@@ -37,12 +38,9 @@ export default class Step1Page extends Component {
   }
 
   handleCheck(event, isInputChecked) {
-    console.log(event);
-    console.log(isInputChecked);
     // Save data to DB
-
     const object = {};
-    object['files.willUploadTaxes'] = isInputChecked;
+    object['files.willUploadTaxes'] = !isInputChecked;
     const id = this.props.creditRequest._id;
 
     updateValues.call({
@@ -60,6 +58,18 @@ export default class Step1Page extends Component {
   isReady() {
     let projectReady = false;
     let taxesReady = false;
+    // For readability
+    const r = this.props.creditRequest;
+
+    if (r.files.willUploadTaxes) {
+      if (r.files.taxes) {
+        if (r.files.taxes.url) {
+          taxesReady = true;
+        }
+      }
+    } else {
+
+    }
 
     return projectReady && taxesReady;
   }
@@ -97,7 +107,7 @@ export default class Step1Page extends Component {
 
           <div className="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 secondary">
             <Checkbox
-              checked={this.props.creditRequest.files.willUploadTaxes}
+              checked={!this.props.creditRequest.files.willUploadTaxes}
               label="J'uploaderai ma déclaration d'impôts plus tard"
               style={styles.checkbox}
               onCheck={this.handleCheck}
@@ -121,6 +131,7 @@ export default class Step1Page extends Component {
           disabled={!this.isReady()}
           primary
           style={styles.button}
+          href="/step2"
         />
 
       </section>
