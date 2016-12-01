@@ -97,12 +97,12 @@ export default class Step1Page extends Component {
         <article className="mask2" style={styles.mask}>
           <h3>Votre déclaration d'impôts</h3>
           <p style={styles.p}>
-            Pour permettre au établissements financiers de vous faire une offre très précise,
+            Pour permettre aux établissements financiers de vous faire une offre très précise,
             nous pouvons leur faire savoir que vous nous avez déjà confié votre
             déclaration d'impôts, sans la leur montrer.
             <br />
-            Certains établissements refuseront de faire une offre, car ils considèreront que votre
-            dossier n'est pas assez sérieux.
+            Sans cela, certains établissements refuseront de faire une offre,
+            car ils considèreront que votre dossier n'est pas assez sérieux.
           </p>
 
           <div className="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 secondary">

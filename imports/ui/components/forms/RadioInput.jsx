@@ -5,6 +5,14 @@ import { updateValues } from '/imports/api/creditrequests/methods.js';
 
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 
+const styles = {
+  RadioButton: {
+    // Required or else the buttons disappear behind the background color..
+    // File an issue with material-ui?
+    zIndex: 0,
+  },
+};
+
 export default class RadioInput extends Component {
 
   constructor(props) {
@@ -58,6 +66,7 @@ export default class RadioInput extends Component {
               value={value}
               onClick={this.setValue}
               key={index}
+              style={styles.RadioButton}
             />)
           )}
         </RadioButtonGroup>

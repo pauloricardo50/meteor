@@ -42,7 +42,7 @@ export default class StartPage extends Component {
       maxStep: 0,
       isValid: [true, true, true, true, true, true, true, true, true, true, true, true], // 12x
       isFinished: false,
-      timeout: 800,
+      timeout: 2000,
 
       twoBuyers: false,
       age1: '',
