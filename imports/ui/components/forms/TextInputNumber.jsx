@@ -78,15 +78,15 @@ export default class TextInputNumber extends React.Component {
 }
 
 TextInputNumber.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   label: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
   currentValue: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string,
   ]),
   onChange: PropTypes.func,
-  requestId: PropTypes.string.isRequired,
+  requestId: PropTypes.string,
   changeSaving: PropTypes.func,
   changeErrors: PropTypes.func,
 };
