@@ -153,17 +153,6 @@ FlowRouter.route('/step6', {
   },
 });
 
-FlowRouter.route('/step1/:cardId', {
-  name: 'todoCard1',
-  action() {
-    mount(UserLayout, {
-      content:
-        <TodoCardPage />,
-      extraContent: <RequestProgressBar />,
-    });
-  },
-});
-
 FlowRouter.route('/step3/:cardId', {
   name: 'todoCard2',
   action() {

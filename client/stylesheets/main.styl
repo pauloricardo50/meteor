@@ -251,3 +251,9 @@ a
 // Against BootStrap styling
 label
   font-weight: normal;
+
+
+// Weird fix for safari, because of Material-UI textfield and react-text-mask placeholder misalignment
+::-webkit-input-placeholder {
+  line-height: normal;
+}

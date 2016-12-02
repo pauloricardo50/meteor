@@ -4,6 +4,9 @@ import { updateValues } from '/imports/api/creditrequests/methods.js';
 
 
 import TextField from 'material-ui/TextField';
+import MaskedInput from 'react-text-mask';
+
+import { swissFrancMask } from '/imports/js/textMasks.js';
 
 export default class TextInputMoney extends React.Component {
   constructor(props) {
@@ -13,7 +16,6 @@ export default class TextInputMoney extends React.Component {
       value: this.props.currentValue ? String(this.props.currentValue).replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, "'") : '',
     };
 
-    this.formatToMoney = this.formatToMoney.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
   }
 
@@ -24,10 +26,6 @@ export default class TextInputMoney extends React.Component {
     }
   }
 
-  // Prevents people from entering characters other than numbers, and formats value with apostrophes
-  formatToMoney(value) {
-    return String(value).replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, "'");
-  }
 
   handleChange(event) {
     this.setState({
@@ -65,7 +63,7 @@ export default class TextInputMoney extends React.Component {
         <TextField
           floatingLabelText={this.props.label}
           hintText={this.props.placeholder}
-          value={this.formatToMoney(this.state.value)}
+          value={this.state.value}
           type="text"
           id={this.props.id}
           onChange={(e) => {
@@ -74,7 +72,13 @@ export default class TextInputMoney extends React.Component {
           }}
           onBlur={this.handleBlur}
           fullWidth
-        />
+        >
+          <MaskedInput
+            mask={swissFrancMask}
+            guide
+            pattern="[0-9]*"
+          />
+        </TextField>
       </div>
     );
   }

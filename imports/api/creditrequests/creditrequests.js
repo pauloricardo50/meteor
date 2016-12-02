@@ -2,7 +2,7 @@ import { Mongo } from 'meteor/mongo';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import {
   PersonalInfoSchema, FinancialInfoSchema, PropertyInfoSchema, FileSchema,
-  LenderOfferSchema, LogicSchema, AdminInfoSchema,
+  PartnerOfferSchema, LogicSchema, AdminInfoSchema,
 } from './additionalSchemas.js';
 
 const CreditRequests = new Mongo.Collection('creditRequests');
@@ -33,7 +33,8 @@ const CreditRequestSchema = new SimpleSchema({
       return new Date();
     },
   },
-  updatedAt: { // Force value to be current date (on server) upon update and don't allow it to be set upon insert
+  // Force value to be current date (on server) upon update and don't allow it to be set upon insert
+  updatedAt: {
     type: Date,
     autoValue() {
       if (this.isUpdate) {
@@ -72,7 +73,7 @@ const CreditRequestSchema = new SimpleSchema({
     defaultValue: {},
   },
   lenderOffers: {
-    type: [LenderOfferSchema],
+    type: [PartnerOfferSchema],
     defaultValue: [],
   },
   logic: {

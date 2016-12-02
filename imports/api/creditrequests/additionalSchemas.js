@@ -182,9 +182,9 @@ export const FileSchema = new SimpleSchema({
 });
 
 
-// Contains all fields submitted by an individual lender
-export const LenderOfferSchema = new SimpleSchema({
-  lender: {
+// Contains all fields submitted by an individual lender/partner
+export const PartnerOfferSchema = new SimpleSchema({
+  name: {
     type: String,
   },
   maxAmount: {

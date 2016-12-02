@@ -139,7 +139,6 @@ export default class Line6 extends Component {
               name="bonus"
               value={this.props.bonus}
               onChange={this.handleChange}
-              pattern="[0-9]*"
               errorText={this.state.error ? ' ' : ''}
             >
               <MaskedInput
@@ -147,6 +146,7 @@ export default class Line6 extends Component {
                 guide
                 placeholder="CHF"
                 autoFocus
+                pattern="[0-9]*"
               />
             </TextField>
           }

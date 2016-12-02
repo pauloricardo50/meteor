@@ -2,8 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 
 import TextField from 'material-ui/TextField';
+import MaskedInput from 'react-text-mask';
 
 import { toMoney, toNumber } from '/imports/js/finance-math.js';
+import { swissFrancMask } from '/imports/js/textMasks.js';
 
 const styles = {
   textField: {
@@ -47,7 +49,7 @@ export default class Line8b extends Component {
   handleFortuneChange(event) {
     Meteor.clearTimeout(timer);
 
-    this.props.setStateValue('fortune', String(toNumber(event.target.value)));
+    this.props.setStateValue('fortune', String(event.target.value));
   }
 
   handleInsuranceFortuneChange(event) {
@@ -77,11 +79,17 @@ export default class Line8b extends Component {
             <TextField
               style={styles.textField}
               name="fortune"
-              value={`CHF ${toMoney(this.props.fortune)}`}
+              value={this.props.fortune}
               onChange={this.handleFortuneChange}
-              pattern="[0-9]*"
-              autoFocus
-            />
+            >
+              <MaskedInput
+                mask={swissFrancMask}
+                guide
+                placeholder="CHF"
+                pattern="[0-9]*"
+                autoFocus
+              />
+            </TextField>
             de fortune personelle
           </span>
           {/* Once some bit of fortune has been entered, show the rest of the sentence */}
@@ -91,10 +99,16 @@ export default class Line8b extends Component {
               <TextField
                 style={styles.textField}
                 name="insuranceFortune"
-                value={`CHF ${toMoney(this.props.insuranceFortune)}`}
+                value={this.props.insuranceFortune}
                 onChange={this.handleInsuranceFortuneChange}
-                pattern="[0-9]*"
-              />
+              >
+                <MaskedInput
+                  mask={swissFrancMask}
+                  guide
+                  placeholder="CHF"
+                  pattern="[0-9]*"
+                />
+              </TextField>
               de 2ème pilier.
             </span>
           }

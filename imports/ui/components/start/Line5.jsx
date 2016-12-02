@@ -97,7 +97,6 @@ export default class Line5 extends Component {
             name="salary"
             value={this.props.salary}
             onChange={this.handleChange}
-            pattern="[0-9]*"
             errorText={this.state.error ? ' ' : ''}
           >
             <MaskedInput
@@ -105,6 +104,7 @@ export default class Line5 extends Component {
               guide
               placeholder="CHF"
               autoFocus
+              pattern="[0-9]*"
             />
           </TextField>
           par an,

@@ -6,10 +6,15 @@ import { updateValues } from '/imports/api/creditrequests/methods.js';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 
 const styles = {
+  RadioButtonGroup: {
+    display: 'flex',
+  },
   RadioButton: {
     // Required or else the buttons disappear behind the background color..
     // File an issue with material-ui?
     zIndex: 0,
+    width: 'auto',
+    paddingLeft: '20',
   },
 };
 
@@ -59,6 +64,7 @@ export default class RadioInput extends Component {
           name={this.props.label}
           defaultSelected={this.props.currentValue}
           onChange={this.props.onConditionalChange}
+          style={styles.RadioButtonGroup}
         >
           {this.props.values.map((value, index) =>
             (<RadioButton

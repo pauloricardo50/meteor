@@ -70,6 +70,7 @@ export default class TextInputNumber extends React.Component {
           }}
           onBlur={this.handleBlur}
           fullWidth
+          pattern="[0-9]*"
         />
       </div>
     );
