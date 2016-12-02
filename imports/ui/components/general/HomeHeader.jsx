@@ -3,31 +3,16 @@ import React, { Component, PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
 const styles = {
-  header: {
-    position: 'relative',
-    height: '80%',
+  style: {
+    height: 50,
   },
-  text: {
-    paddingTop: 100,
+  button: {
+    height: 50,
   },
-  image: {
-    position: 'absolute',
-    right: 0,
-    top: 150,
-    display: 'block',
-    width: '70%',
-  },
-  arrowDown: {
-    position: 'absolute',
-    left: '50%',
-    bottom: -100,
-  },
-  arrowDownAdjustment: {
-    position: 'relative',
-    left: '-50%',
-  },
-  h1: {
-    fontSize: '4em',
+  label: {
+    fontSize: '1.2em',
+    // padding: '40px',
+    height: 50,
   },
 };
 
@@ -35,19 +20,28 @@ export default class Header extends Component {
 
   render() {
     return (
-      <header className="home-header" style={styles.header}>
-        {/* <AccountsModalContainer /> */}
-        <div className="col-sm-8 col-sm-offset-2" style={styles.text}>
-          <h1 className="secondary" style={styles.h1}>La meilleure hypothèque, Simplement.</h1>
-          <h4 className="secondary">
-            Mettez tous les prêteurs en compétition et trouvez le
-            financement idéal pour votre future propriété.
-          </h4>
-          <br />
-          <RaisedButton label="Testez votre éligibilité" href="/start" primary />
-          <div style={styles.arrowDown}>
-            <span className="fa fa-angle-down fa-3x" style={styles.arrowDownAdjustment}/>
-          </div>
+      <header className="home-header">
+        <div className="table-cell">
+          <article className="col-sm-8 col-sm-offset-2">
+            <h1 className="secondary">La meilleure hypothèque, Simplement.</h1>
+            <h4 className="secondary">
+              Mettez tous les prêteurs en compétition et trouvez le
+              financement idéal pour votre future propriété.
+            </h4>
+            <br />
+            <RaisedButton
+              label="Testez votre éligibilité"
+              href="/start"
+              primary
+              style={styles.style}
+              buttonStyle={styles.button}
+              labelStyle={styles.label}
+              overlayStyle={styles.button}
+            />
+          </article>
+        </div>
+        <div className="arrow">
+          <span className="arrow-adjust fa fa-angle-down fa-3x" />
         </div>
       </header>
     );

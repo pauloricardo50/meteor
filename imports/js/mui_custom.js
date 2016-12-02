@@ -23,4 +23,16 @@ export default {
     clockCircleColor: (0, ColorManipulator.fade)(Colors.darkBlack, 0.07),
     shadowColor: Colors.fullBlack,
   },
+  raisedButton: {
+    // color: palette.alternateTextColor,
+    // textColor: palette.textColor,
+    // primaryColor: palette.primary1Color,
+    // primaryTextColor: palette.alternateTextColor,
+    // secondaryColor: palette.accent1Color,
+    // secondaryTextColor: palette.alternateTextColor,
+    // disabledColor: darken(palette.alternateTextColor, 0.1),
+    // disabledTextColor: fade(palette.textColor, 0.3),
+    // fontSize: typography.fontStyleButtonFontSize,
+    // fontWeight: typography.fontWeightMedium,
+  },
 };

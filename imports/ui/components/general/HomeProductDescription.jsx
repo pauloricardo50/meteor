@@ -4,7 +4,7 @@ import React from 'react';
 const styles = {
   image: {
     width: '100%',
-    paddingTop: 250,
+    paddingTop: 50,
     paddingBottom: 200,
   },
   article: {

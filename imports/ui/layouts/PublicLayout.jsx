@@ -7,10 +7,9 @@ import myTheme from '/imports/js/mui_custom.js';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-const theme = myTheme;
 
 const PublicLayout = props => (
-  <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
+  <MuiThemeProvider muiTheme={getMuiTheme(myTheme)}>
     <div>
       <PublicNav currentUser={props.currentUser} />
       <main className="public-layout">

@@ -12,6 +12,9 @@ const styles = {
   spacing: {
     paddingTop: 200,
   },
+  div: {
+    height: '100%',
+  },
 };
 
 
@@ -22,7 +25,7 @@ export default class HomePage extends Component {
 
   render() {
     return (
-      <div>
+      <div style={styles.div}>
         <HomeHeader />
         <HomeProductDescription />
         <div className="col-sm-8 col-sm-offset-2 col-xs-12" style={styles.spacing} id="start">

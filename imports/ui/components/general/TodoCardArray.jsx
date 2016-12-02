@@ -6,13 +6,16 @@ const styles = {
   ul: {
     padding: 0,
   },
+  hr: {
+    marginTop: 0,
+  },
 };
 
 const TodoCardArray = props => (
   <section className="animated fadeIn">
     <p className="text-center secondary" >Appuyez sur une carte incomplète pour avancer</p>
 
-    <hr id="todo-hr-top" />
+    <hr style={styles.hr} />
 
     <ul style={styles.ul}>
       {props.cards.map((card, index) => (

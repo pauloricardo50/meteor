@@ -62,63 +62,6 @@ $side-nav-large = 250px
 $bottom-nav-height = 80px
 
 
-
-
-// User Pages
-
-
-
-
-
-
-// Main Page
-.request-panel
-  &:hover
-    cursor: pointer;
-    box-shadow 0px 2px 5px 0px rgba(0,0,0,0.70)
-
-// Todo Page
-.todo-section
-  width 100%
-  height 80px
-  // line-height 50px
-  padding 20px
-  display table
-  border-radius 10px
-  color white
-  .todo-text
-    display table-cell
-    text-align center
-    vertical-align middle
-    h4
-      color white
-
-
-.todo-section
-  &.unfinished
-    background-color blue
-    &:hover
-      background-color lightness(blue, 20%)
-      cursor pointer
-  &.no-action
-    background-color lightness(blue, 60%)
-    &:hover
-      background-color lightness(blue, 60%)
-  &.finished
-    background-color lightness(green, 60%)
-    &:hover
-      background-color lightness(green, 40%)
-      cursor pointer
-  &.unavailable
-    background-color lightness(gray, 60%)
-    &:hover
-      background-color lightness(gray, 60%)
-      cursor not-allowed
-
-
-.input-group-addon
-  color: #999
-
 // Progress Bar
 .header-progressbar
   height 66px
@@ -145,10 +88,12 @@ $bottom-nav-height = 80px
   +above($large)
     // margin-left $side-nav-large
 
+
 .header-progress-menu
   position: absolute;
   top: 9px
   right: 9px
+
 
 .progressbar
   position relative
@@ -297,13 +242,12 @@ svg
   border-color blue
   border-style dashed
   color blue
+  &:hover
+    border-style: solid;
 
-#todo-hr-top
-  margin-top 0px
 
-
+// TODO: Remove this, it was for the early version with a blur and blue "Choose" text
 // Partners Offers results
-
 .offers-card
   background-color white
   box-shadow 0px 1px 3px 0px rgba(0,0,0,0.50)
@@ -345,7 +289,6 @@ svg
 
 
 // Loading Animation
-
 .loading-container{
 	text-align: center;
 	overflow: hidden;
@@ -564,3 +507,33 @@ svg
 
 .stepTitle
   padding-bottom: 20px;
+
+
+.home-header
+  position: relative
+  height: 100%
+  width: 100%
+  display: table;
+  .table-cell
+    display: table-cell;
+    vertical-align: middle;
+  h1
+    margin-top: 0px;
+    font-size: 3em
+    +above($med)
+      font-size: 4em
+  article
+    display: inline-block;
+  .arrow
+    position: absolute;
+    left: 50%;
+    bottom: 0px;
+    +above($med)
+      bottom: 50px;
+  .arrow-adjust
+    position: relative;
+    left: -50%;
+
+// test
+[primary]
+  color: #4fff00
