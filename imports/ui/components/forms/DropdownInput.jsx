@@ -2,26 +2,17 @@ import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import CreditRequests from '/imports/api/creditrequests/creditrequests.js';
 
-
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormControl from 'react-bootstrap/lib/FormControl';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 
 
 const DropdownInput = props => (
-  <FormGroup controlId="formControlsSelect">
-    <ControlLabel>{props.label}</ControlLabel>
-    <FormControl componentClass="select" placeholder={props.placeholder}>
-      {props.options.map(option =>
-        <option value={option.label}>{option.label}</option>
-      )}
-    </FormControl>
-  </FormGroup>
+  null
 );
 
 DropdownInput.propTypes = {
   label: React.PropTypes.string.isRequired,
-  placeholder: React.PropTypes.string.isRequired,
+  placeholder: React.PropTypes.string,
   options: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
 };
 

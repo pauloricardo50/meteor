@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { DocHead } from 'meteor/kadira:dochead';
 
+import FinanceStrategyPicker from '/imports/ui/components/general/FinanceStrategyPicker.jsx';
 
 const styles = {
   temporary: {
@@ -21,6 +22,8 @@ export default class FinancePage extends Component {
     return (
       <section className="mask1 animated fadeIn" style={styles.temporary}>
         <h1>Mon Financement</h1>
+
+        <FinanceStrategyPicker creditRequest={this.props.creditRequest} />
       </section>
     );
   }
