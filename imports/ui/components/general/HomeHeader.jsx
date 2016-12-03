@@ -13,6 +13,7 @@ const styles = {
     fontSize: '1.2em',
     // padding: '40px',
     height: 50,
+    display: 'inline-block',
   },
 };
 
@@ -30,6 +31,7 @@ export default class Header extends Component {
             </h4>
             <br />
             <RaisedButton
+              // className="primary-mui"
               label="Testez votre éligibilité"
               href="/start"
               primary
