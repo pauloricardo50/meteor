@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import {
-  PersonalInfoSchema, FinancialInfoSchema, PropertyInfoSchema, FileSchema,
+  LoanInfoSchema, PersonalInfoSchema, FinancialInfoSchema, PropertyInfoSchema, FileSchema,
   PartnerOfferSchema, LogicSchema, AdminInfoSchema,
 } from './additionalSchemas.js';
 
@@ -21,20 +21,19 @@ CreditRequests.allow({
 
 
 const CreditRequestSchema = new SimpleSchema({
-  userId: {
+  userId: { // The user ID of the creator
     type: String,
     autoValue() {
       return this.userId;
     },
   },
-  createdAt: {
+  createdAt: { // Date at which the request was created
     type: Date,
     autoValue() {
       return new Date();
     },
   },
-  // Force value to be current date (on server) upon update and don't allow it to be set upon insert
-  updatedAt: {
+  updatedAt: { // Force value to be current date (on server) upon update and don't allow it to be set upon insert
     type: Date,
     autoValue() {
       if (this.isUpdate) {
@@ -45,42 +44,46 @@ const CreditRequestSchema = new SimpleSchema({
     denyInsert: true,
     optional: true,
   },
-  active: {
+  active: { // Whether this is the request currently being worked on by the user
     type: Boolean,
     defaultValue: false,
   },
-  requestName: {
+  requestName: { // To identify a loan internally
     type: String,
   },
   type: { // acquisition, refinancing
     type: String,
     defaultValue: 'acquisition',
   },
-  personalInfo: {
+  loanInfo: { // Contains all info about the actual loan
+    type: LoanInfoSchema,
+    defaultValue: {},
+  },
+  personalInfo: { // Personal information, ex: address, age, etc.
     type: PersonalInfoSchema,
     defaultValue: {},
   },
-  financialInfo: {
+  financialInfo: { // Financial info, ex: salary, fortune, expenses, etc.
     type: FinancialInfoSchema,
     defaultValue: {},
   },
-  propertyInfo: {
+  propertyInfo: { // Property info, ex: size, value, nb of rooms, etc.
     type: PropertyInfoSchema,
     defaultValue: {},
   },
-  files: {
+  files: { // All files submitted by the user
     type: FileSchema,
     defaultValue: {},
   },
-  lenderOffers: {
+  lenderOffers: { // All the offers from banks and insurances
     type: [PartnerOfferSchema],
     defaultValue: [],
   },
-  logic: {
+  logic: { // Internal logic of the app
     type: LogicSchema,
     defaultValue: {},
   },
-  adminInfo: {
+  adminInfo: { // Interactions, notes, between e-Potek and the user
     type: AdminInfoSchema,
     defaultValue: {},
   },

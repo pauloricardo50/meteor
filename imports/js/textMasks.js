@@ -5,3 +5,10 @@ export const swissFrancMask = createNumberMask({
   includeThousandsSeparator: true,
   thousandsSeparatorSymbol: '\'',
 });
+
+export const percentMask = createNumberMask({
+  prefix: '',
+  suffix: '%',
+  includeThousandsSeparator: true,
+  thousandsSeparatorSymbol: '\'',
+});

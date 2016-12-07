@@ -267,3 +267,37 @@ export const otherFortuneSchema = new SimpleSchema({
     defaultValue: '',
   },
 });
+
+export const LoanInfoSchema = new SimpleSchema({
+  lender: {
+    type: String,
+    optional: true,
+  },
+  amount: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100000000,
+  },
+  tranches: {
+    type: [Object],
+    minCount: 1,
+    defaultValue: [
+      {
+        type: 'libor',
+        percent: 1,
+      },
+    ],
+  },
+  'tranches.$.type': { // libor, floating, 1y, 2y, 5y, 10y
+    type: String,
+    optional: true,
+  },
+  'tranches.$.percent': {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100,
+    decimal: true,
+  },
+});

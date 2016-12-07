@@ -26,49 +26,10 @@ export const insertRequest = new ValidatedMethod({
       });
     });
 
-    console.log(object);
-
-    // Insert new active request
-    // CreditRequests.insert({
-    //   ...object,
-    //   active: true,
-    // });
     CreditRequests.insert(object);
   },
 });
 
-export const insertStarterRequest = new ValidatedMethod({
-  name: 'creditrequests.insertStarter',
-  validate({ salary, fortune, insuranceFortune, propertyValue, age, gender }) {
-    check(salary, Number);
-    check(fortune, Number);
-    check(insuranceFortune, Number);
-    check(propertyValue, Number);
-    check(age, Number);
-    if (gender !== undefined) {
-      check(gender, String);
-    }
-  },
-  run({ salary, fortune, insuranceFortune, propertyValue, age, gender }) {
-    // Verify if user is logged in
-    if (!this.userId) {
-      throw new Meteor.Error('notLoggedIn',
-      'Must be logged in to create a request');
-    }
-
-    CreditRequests.insert({
-      createdAt: new Date(),
-      userId: this.userId,
-      active: true,
-      step: 0,
-      salary,
-      fortune,
-      insuranceFortune,
-      propertyValue,
-      age,
-      gender });
-  },
-});
 
 export const incrementStep = new ValidatedMethod({
   name: 'creditrequests.incrementStep',
@@ -91,6 +52,8 @@ export const incrementStep = new ValidatedMethod({
   },
 });
 
+
+// Lets you set an entire object in the document
 export const updateValues = new ValidatedMethod({
   name: 'creditRequests.updateValues',
   validate: null,
@@ -101,6 +64,38 @@ export const updateValues = new ValidatedMethod({
 
     CreditRequests.update(id, {
       $set: object,
+    });
+  },
+});
+
+
+// Lets you push a value to an array
+export const pushValue = new ValidatedMethod({
+  name: 'creditRequests.pushValue',
+  validate: null,
+  run({ object, id }) {
+    if (!this.userId) {
+      throw new Meteor.Error('notLoggedIn', 'Must be logged in to update a request');
+    }
+
+    CreditRequests.update(id, {
+      $push: object,
+    });
+  },
+});
+
+
+// Lets you pull a value from an array
+export const pullValue = new ValidatedMethod({
+  name: 'creditRequests.pullValue',
+  validate: null,
+  run({ value, id }) {
+    if (!this.userId) {
+      throw new Meteor.Error('notLoggedIn', 'Must be logged in to update a request');
+    }
+
+    CreditRequests.update(id, {
+      $pull: value,
     });
   },
 });
