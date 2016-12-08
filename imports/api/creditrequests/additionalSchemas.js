@@ -243,6 +243,10 @@ export const LogicSchema = new SimpleSchema({
     type: Date,
     optional: true,
   },
+  hasChosenStrategyOnce: {
+    type: Boolean,
+    defaultValue: false,
+  },
 });
 
 // Data added by e-Potek employees to this request, including customer support interactions

@@ -1,4 +1,4 @@
-function getYearsToRetirement(age1, age2, gender1, gender2) {
+export function getYearsToRetirement(age1, age2, gender1, gender2) {
   // Determine retirement age depending on the gender of the borrowers
   const retirement1 = (gender1 === 'f' ? 64 : 65);
   let retirement2 = null;
@@ -89,23 +89,28 @@ export function minimumFortuneRequired(age1, age2, gender1, gender2, type, reven
 
   // The array which will store all valid loan values from 0% to 80%
   const fortuneValues = [];
+  // And corresponding amortization
+  const amortizationValues = [];
 
   // Try all values from a 0% to 80% loan, 1 percent at a time
   // TODO: Get a more precise value, and optimize this shit
   let l = 0;
   for (l = 0; l <= maxLoan; l += 1) {
-    if (isLoanValid(l / 100, revenue, propertyValue, yearsToRetirement)) {
+    const [isValid, amortization] = isLoanValid(l / 100, revenue, propertyValue, yearsToRetirement)
+    if (isValid) {
       // Push this value to the array, substract from propertyValue to get the fortune required
       const fortuneValue = propertyValue * (1 - (l / 100));
       // Round it to the upper thousand
-      fortuneValues.push(
-        Math.ceil(fortuneValue / 1000) * 1000
-      );
+      fortuneValues.push(Math.ceil(fortuneValue / 1000) * 1000);
+      amortizationValues.push(amortization);
     }
   }
 
   // Return the biggest amount you can borrow
-  return Math.min(...fortuneValues);
+  return [
+    Math.min(...fortuneValues),
+    amortizationValues[fortuneValues.indexOf(Math.min(...fortuneValues))],
+  ];
 }
 
 
@@ -120,7 +125,7 @@ function isLoanValid(loanPercent, revenue, propertyValue, yearsToRetirement) {
   if (loanPercent > 0.65) {
     // The loan has to be below 65% before 15 years or before retirement, whichever comes first
     const remainingYears = Math.min(yearsToRetirement, 15);
-    const amountToAmortize = (0.65 - loanPercent) * propertyValue;
+    const amountToAmortize = (loanPercent - 0.65) * propertyValue;
 
     // Make sure we don't create a black hole, or use negative values by error
     if (remainingYears > 0) {
@@ -137,7 +142,7 @@ function isLoanValid(loanPercent, revenue, propertyValue, yearsToRetirement) {
   const yearlyCosts = maintenanceCosts + (loan * interest) + yearlyAmortization;
 
   // Return a boolean indicating whether this amount can be borrowed or not
-  return (revenue / 3) >= yearlyCosts;
+  return [(revenue / 3) >= yearlyCosts, yearlyAmortization];
 }
 
 

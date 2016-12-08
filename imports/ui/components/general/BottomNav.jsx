@@ -43,7 +43,7 @@ export default class BottomNav extends Component {
               onTouchTap={() => FlowRouter.go('/main')}
             />
             <BottomNavigationItem
-              label="Financement"
+              label="Finances"
               icon={<AttachMoney />}
               onTouchTap={() => FlowRouter.go('/finance')}
             />

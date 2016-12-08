@@ -114,7 +114,7 @@ export default class Line7 extends Component {
               this.props.propertyType,
               Number(this.props.salary) + Number(this.props.bonus),
               Number(this.props.propertyValue),
-            )
+            )[0]
           )} en fonds propres.`
         }
       </span>);

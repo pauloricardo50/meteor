@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import FinanceWidget from '/imports/ui/components/general/FinanceWidget.jsx';
+import SideChart from '/imports/ui/components/charts/SideChart.jsx';
 
 const styles = {
   icon: {
@@ -78,7 +79,11 @@ export default class SideNav extends Component {
           <h5 className="active bold" style={styles.text}>{this.state.requestName}</h5>
         </a>
       );
-      content2 = <FinanceWidget creditRequest={this.props.creditRequest} />;
+
+      // content2 = <FinanceWidget creditRequest={this.props.creditRequest} />;
+      content2 = this.props.currentURL !== '/finance' &&
+        <SideChart creditRequest={this.props.creditRequest} />;
+
     } else {
       // If the user is not on the main page, show a link to it
       content1 = (

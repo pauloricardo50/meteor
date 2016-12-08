@@ -5,6 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 const styles = {
   style: {
     height: 50,
+    marginRight: 8,
   },
   button: {
     height: 50,
@@ -31,10 +32,17 @@ export default class Header extends Component {
             </h4>
             <br />
             <RaisedButton
-              // className="primary-mui"
               label="Testez votre éligibilité"
               href="/start"
               primary
+              style={styles.style}
+              buttonStyle={styles.button}
+              labelStyle={styles.label}
+              overlayStyle={styles.button}
+            />
+            <RaisedButton
+              label="Se Connecter"
+              href="/login"
               style={styles.style}
               buttonStyle={styles.button}
               labelStyle={styles.label}
