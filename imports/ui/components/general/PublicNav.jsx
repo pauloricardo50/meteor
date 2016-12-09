@@ -40,7 +40,8 @@ export default class PublicNav extends Component {
         <TopNavDropdown public />
       );
     } else {
-      button = <FlatButton style={styles.button} label="Continuer" onClick={() => FlowRouter.go('/login')} />;
+      // button = <FlatButton style={styles.button} label="Continuer" onClick={() => FlowRouter.go('/login')} />;
+      button = null;
     }
 
     return (
@@ -53,6 +54,7 @@ export default class PublicNav extends Component {
               <img src="img/logo_black.svg" alt="e-Potek" style={styles.image} />
             </a>}
           iconElementRight={button}
+          iconStyleLeft={{ display: 'none' }}
         />
       </div>
     );
