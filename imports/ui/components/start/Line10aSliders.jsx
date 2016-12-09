@@ -113,28 +113,30 @@ export default class Line10aSliders extends Component {
           </span>
         </div>
 
-        <div className="col-sm-12">
-          <h1 style={styles.h1} className="col-sm-4 col-xs-12">
-            <TextField
-              name="insuranceFortune"
-              floatingLabelText="2ème Pilier"
-              value={`CHF ${toMoney(this.props.insuranceFortune)}`}
-              style={styles.TextField}
-              onChange={this.changeInsuranceFortune}
-            />
-          </h1>
-          <span style={styles.sliderSpan} className="col-sm-8 col-xs-12">
-            <Slider
-              value={toNumber(this.props.insuranceFortune) / toNumber(this.props.propertyValue)}
-              onChange={this.sliderChangeInsuranceFortune}
-              min={0}
-              max={this.props.maxDebt ? 0.1 : 0.4}
-              step={0.01}
-            />
-            <h4 className="secondary" style={styles.label1}>0%</h4>
-            <h4 className="secondary" style={styles.label2}>{this.props.maxDebt ? '10%' : '40%'}</h4>
-          </span>
-        </div>
+        {this.props.propertyType === 'primary' &&
+          <div className="col-sm-12">
+            <h1 style={styles.h1} className="col-sm-4 col-xs-12">
+              <TextField
+                name="insuranceFortune"
+                floatingLabelText="2ème Pilier"
+                value={`CHF ${toMoney(this.props.insuranceFortune)}`}
+                style={styles.TextField}
+                onChange={this.changeInsuranceFortune}
+              />
+            </h1>
+            <span style={styles.sliderSpan} className="col-sm-8 col-xs-12">
+              <Slider
+                value={toNumber(this.props.insuranceFortune) / toNumber(this.props.propertyValue)}
+                onChange={this.sliderChangeInsuranceFortune}
+                min={0}
+                max={this.props.maxDebt ? 0.1 : 0.4}
+                step={0.01}
+              />
+              <h4 className="secondary" style={styles.label1}>0%</h4>
+              <h4 className="secondary" style={styles.label2}>{this.props.maxDebt ? '10%' : '40%'}</h4>
+            </span>
+          </div>
+        }
       </span>
     );
   }
@@ -148,4 +150,5 @@ Line10aSliders.propTypes = {
   maxDebt: PropTypes.bool.isRequired,
   changeFortune: PropTypes.func.isRequired,
   changeInsuranceFortune: PropTypes.func.isRequired,
+  propertyType: PropTypes.string.isRequired,
 };

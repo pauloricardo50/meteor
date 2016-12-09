@@ -98,28 +98,6 @@ export default class Line7 extends Component {
 
 
   render() {
-    const postValue = (
-      <span className="animated fadeInRight">
-        {this.props.propertyKnown &&
-          (this.props.twoBuyers ? ', nous devons ' : ', je dois ')
-        }
-        {this.props.propertyKnown &&
-          `donc mettre au minimum CHF
-          ${toMoney(
-            minimumFortuneRequired(
-              Number(this.props.age1),
-              Number(this.props.age2),
-              this.props.gender1,
-              this.props.gender2,
-              this.props.propertyType,
-              Number(this.props.salary) + Number(this.props.bonus),
-              Number(this.props.propertyValue),
-            )[0]
-          )} en fonds propres.`
-        }
-      </span>);
-
-
     return (
       <article onClick={this.props.setStep}>
         <h1 className={this.props.classes.text}>
@@ -143,7 +121,7 @@ export default class Line7 extends Component {
               />
             </TextField>
           }
-          {this.props.propertyValue && postValue}
+          {this.props.propertyKnown && ','}
         </h1>
         <h4 className={this.props.classes.errorText}>{this.state.error}</h4>
 

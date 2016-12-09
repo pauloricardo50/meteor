@@ -13,6 +13,7 @@ import Line4 from '/imports/ui/components/start/Line4.jsx';
 import Line5 from '/imports/ui/components/start/Line5.jsx';
 import Line6 from '/imports/ui/components/start/Line6.jsx';
 import Line7 from '/imports/ui/components/start/Line7.jsx';
+import Line7_2 from '/imports/ui/components/start/Line7_2.jsx';
 import Line8a from '/imports/ui/components/start/Line8a.jsx';
 import Line8b from '/imports/ui/components/start/Line8b.jsx';
 import Line9a from '/imports/ui/components/start/Line9a.jsx';
@@ -176,7 +177,7 @@ export default class StartPage extends Component {
 
   scroll(step = null) {
     const options = {
-      duration: 300,
+      duration: 500,
       delay: 0,
       smooth: true,
     };
@@ -190,7 +191,7 @@ export default class StartPage extends Component {
   render() {
     let lines;
     if (this.state.propertyKnown) {
-      lines = [Line1, Line2, Line3, Line4_1, Line4, Line5, Line6, Line7, Line8a, Line9a, Line10a, Line11a];
+      lines = [Line1, Line2, Line3, Line4_1, Line4, Line5, Line6, Line7, Line7_2, Line8a, Line9a, Line10a, Line11a];
     } else {
       lines = [Line1, Line2, Line3, Line4_1, Line4, Line5, Line6, Line7, Line8b, Line9b];
     }

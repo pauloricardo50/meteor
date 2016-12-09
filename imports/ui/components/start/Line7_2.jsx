@@ -2,9 +2,10 @@ import React, { Component, PropTypes } from 'react';
 
 
 import RaisedButton from 'material-ui/RaisedButton';
-import { minimumFortuneRequired } from '/imports/js/finance-math.js';
+import { minimumFortuneRequired, toMoney } from '/imports/js/finance-math.js';
 
-import Line9aHelp from './Line9aHelp.jsx';
+import Line7aHelp1 from './Line7aHelp1.jsx';
+import Line7aHelp2 from './Line7aHelp2.jsx';
 
 
 const styles = {
@@ -18,11 +19,11 @@ const styles = {
 };
 
 
-export default class Line9a extends Component {
+export default class Line7_2 extends Component {
   constructor(props) {
     super(props);
 
-    const minFortune = minimumFortuneRequired(
+    const minFortune = toMoney(minimumFortuneRequired(
       Number(this.props.age1),
       Number(this.props.age2),
       this.props.gender1,
@@ -30,21 +31,18 @@ export default class Line9a extends Component {
       this.props.propertyType,
       Number(this.props.salary) + Number(this.props.bonus),
       Number(this.props.propertyValue),
-    )[0];
+    )[0]);
 
     this.state = {
-      text: '',
-      maxDebtPercent: Math.round(
-        100 * ((this.props.propertyValue - minFortune) / this.props.propertyValue)
-      ),
+      minFortune,
     };
 
-    this.changeState = this.changeState.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
 
   componentWillReceiveProps(nextProps) {
-    const minFortune = minimumFortuneRequired(
+    const minFortune = toMoney(minimumFortuneRequired(
       Number(nextProps.age1),
       Number(nextProps.age2),
       nextProps.gender1,
@@ -52,12 +50,10 @@ export default class Line9a extends Component {
       nextProps.propertyType,
       Number(nextProps.salary) + Number(nextProps.bonus),
       Number(nextProps.propertyValue),
-    )[0];
+    )[0]);
 
     this.setState({
-      maxDebtPercent: Math.round(
-        100 * ((nextProps.propertyValue - minFortune) / nextProps.propertyValue)
-      ),
+      minFortune,
     });
   }
 
@@ -70,19 +66,8 @@ export default class Line9a extends Component {
     return true;
   }
 
-  changeState(e, maxDebt) {
-    this.props.setStateValue('maxDebt', maxDebt);
+  handleClick(e) {
     this.props.completeStep(e, true, true);
-
-    if (maxDebt) {
-      this.setState({
-        text: 'le plus possible.',
-      });
-    } else {
-      this.setState({
-        text: 'le moins possible.',
-      });
-    }
   }
 
   render() {
@@ -90,31 +75,26 @@ export default class Line9a extends Component {
       <article onClick={this.props.setStep}>
 
         <h1 className={this.props.classes.text}>
-          {/* If this is not a primary residence, the previous line doesn't exist, so start
-          a new sentence instead */}
-          {this.props.propertyType === 'primary' ? 'et emprunter ' :
-            (this.props.twoBuyers ? 'Nous voudrions emprunter ' : 'Je voudrais emprunter ')
+          {this.props.propertyKnown &&
+            (this.props.twoBuyers ? 'nous devons ' : 'je dois ')
           }
-          {this.state.text}
+          {this.props.propertyKnown &&
+            `donc mettre au minimum CHF
+            ${this.state.minFortune} en fonds propres.`
+          }
         </h1>
 
-        {this.props.step === this.props.index ?
+        {this.props.step === this.props.index &&
           <div className={this.props.classes.extra} style={styles.extra}>
             <RaisedButton
-              label={`Le plus possible (${this.state.maxDebtPercent}%)`}
+              label="Ok"
               style={styles.button}
               primary={!this.state.text}
-              onClick={e => this.changeState(e, true)}
+              onClick={this.handleClick}
             />
-            <RaisedButton
-              label="Le moins possible (<65%)"
-              style={styles.button}
-              primary={!this.state.text}
-              onClick={e => this.changeState(e, false)}
-            />
-            <Line9aHelp buttonStyle={styles.button} />
+            <Line7aHelp1 buttonStyle={styles.button} />
+            <Line7aHelp2 buttonStyle={styles.button} />
           </div>
-          : ''
         }
 
       </article>
@@ -122,7 +102,7 @@ export default class Line9a extends Component {
   }
 }
 
-Line9a.propTypes = {
+Line7_2.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
   setStateValue: PropTypes.func.isRequired,
@@ -141,4 +121,5 @@ Line9a.propTypes = {
   salary: PropTypes.string.isRequired,
   bonus: PropTypes.string.isRequired,
   propertyValue: PropTypes.string.isRequired,
+  propertyKnown: PropTypes.bool.isRequired,
 };

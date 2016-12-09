@@ -27,7 +27,7 @@ export default class ProductDescription extends React.Component {
           style={styles.article}
         >
           <h4>Sans engagement</h4><br />
-          <p>Avancez à votre rhythme, arrêtez quand vous voulez.</p>
+          <p>Avancez à votre rythme, arrêtez quand vous voulez.</p>
         </article>
 
         <article
@@ -45,7 +45,7 @@ export default class ProductDescription extends React.Component {
           style={styles.article}
         >
           <h4>En toute sécurité</h4><br />
-          <p>Vos données sont en sureté, et vous avez une confidentialité maximale.</p>
+          <p>Vos données sont en sûreté, et vous avez une confidentialité maximale.</p>
         </article>
 
       </section>

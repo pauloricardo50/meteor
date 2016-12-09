@@ -68,7 +68,6 @@ export function maxPropertyValue(age1, age2, gender1, gender2, revenue, fortune,
     }
   }
 
-  console.log(limitingValues);
   // Return the smallest value of the 5
   const maxValue = Math.min(...limitingValues);
 
@@ -86,6 +85,8 @@ export function minimumFortuneRequired(age1, age2, gender1, gender2, type, reven
   let maxLoan = (type === 'secondary' ? 70 : 80);
   // If the person is already over 65, only allow a loan up to 65%
   maxLoan = (yearsToRetirement <= 0 ? 65 : maxLoan);
+  // If this is an investment, maxLoan is always 80%
+  maxLoan = (type === 'investment' ? 80 : maxLoan);
 
   // The array which will store all valid loan values from 0% to 80%
   const fortuneValues = [];
@@ -96,7 +97,7 @@ export function minimumFortuneRequired(age1, age2, gender1, gender2, type, reven
   // TODO: Get a more precise value, and optimize this shit
   let l = 0;
   for (l = 0; l <= maxLoan; l += 1) {
-    const [isValid, amortization] = isLoanValid(l / 100, revenue, propertyValue, yearsToRetirement)
+    const [isValid, amortization] = isLoanValid(l / 100, revenue, propertyValue, yearsToRetirement, type)
     if (isValid) {
       // Push this value to the array, substract from propertyValue to get the fortune required
       const fortuneValue = propertyValue * (1 - (l / 100));
@@ -115,7 +116,7 @@ export function minimumFortuneRequired(age1, age2, gender1, gender2, type, reven
 
 
 // Given a loan, return a boolean indicating if it is valid or not based on revenue
-function isLoanValid(loanPercent, revenue, propertyValue, yearsToRetirement) {
+function isLoanValid(loanPercent, revenue, propertyValue, yearsToRetirement, type) {
   const maintenance = 0.01; // property maintenance percent: usually 1%
   const interest = 0.05; // Official theoretical interest rate to calculate these things: 5%
 
@@ -124,7 +125,9 @@ function isLoanValid(loanPercent, revenue, propertyValue, yearsToRetirement) {
   let yearlyAmortization = 0;
   if (loanPercent > 0.65) {
     // The loan has to be below 65% before 15 years or before retirement, whichever comes first
-    const remainingYears = Math.min(yearsToRetirement, 15);
+    let remainingYears = Math.min(yearsToRetirement, 15);
+    // If this is an investment, always amortize over 15 years
+    remainingYears = type === 'investment' ? 15 : remainingYears;
     const amountToAmortize = (loanPercent - 0.65) * propertyValue;
 
     // Make sure we don't create a black hole, or use negative values by error

@@ -26,6 +26,14 @@ export default class Line8a extends Component {
     this.changeState = this.changeState.bind(this);
   }
 
+  componentDidMount() {
+    // If this line is not required, immediately jump to step 3
+    if (this.props.propertyType !== 'primary') {
+      this.props.completeStep(null, true);
+      this.props.setStep(this.props.step + 1);
+    }
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     const p = this.props;
     const n = nextProps;
@@ -33,7 +41,8 @@ export default class Line8a extends Component {
     return (
       p.classes !== n.classes ||
       p.twoBuyers !== n.twoBuyers ||
-      p.maxCash !== n.maxCash
+      p.maxCash !== n.maxCash ||
+      p.propertyType !== n.propertyType
     );
   }
 
@@ -49,34 +58,39 @@ export default class Line8a extends Component {
   }
 
   render() {
-    return (
-      <article onClick={this.props.setStep}>
 
-        <h1 className={this.props.classes.text}>
-          {this.props.twoBuyers ? 'Nous voulons utiliser ' : 'Je veux utiliser '}
-          {this.state.text}
-        </h1>
+    if (this.props.propertyType === 'primary') {
+      return (
+        <article onClick={this.props.setStep}>
 
-        {this.props.step === this.props.index &&
-          <div className={this.props.classes.extra} style={styles.extra}>
-            <RaisedButton
-              label="Un max de fortune"
-              style={styles.button}
-              primary={!this.state.text}
-              onClick={e => this.changeState(e, true)}
-            />
-            <RaisedButton
-              label="Un max de 2ème pilier"
-              style={styles.button}
-              primary={!this.state.text}
-              onClick={e => this.changeState(e, false)}
-            />
-            <Line8aHelp buttonStyle={styles.button} />
-          </div>
-        }
+          <h1 className={this.props.classes.text}>
+            {this.props.twoBuyers ? 'Nous voulons utiliser ' : 'Je veux utiliser '}
+            {this.state.text}
+          </h1>
 
-      </article>
-    );
+          {this.props.step === this.props.index &&
+            <div className={this.props.classes.extra} style={styles.extra}>
+              <RaisedButton
+                label="Un max de fortune"
+                style={styles.button}
+                primary={!this.state.text}
+                onClick={e => this.changeState(e, true)}
+              />
+              <RaisedButton
+                label="Un max de 2ème pilier"
+                style={styles.button}
+                primary={!this.state.text}
+                onClick={e => this.changeState(e, false)}
+              />
+              <Line8aHelp buttonStyle={styles.button} />
+            </div>
+          }
+
+        </article>
+      );
+    }
+
+    return null;
   }
 }
 
@@ -89,4 +103,5 @@ Line8a.propTypes = {
   index: PropTypes.number.isRequired,
 
   twoBuyers: PropTypes.bool.isRequired,
+  propertyType: PropTypes.string.isRequired,
 };
