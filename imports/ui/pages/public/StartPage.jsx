@@ -50,7 +50,7 @@ export default class StartPage extends Component {
       genderRequired: false,
       gender1: '',
       gender2: '',
-      isNewPurchase: true,
+      purchaseType: '',
       propertyType: '',
       salary: '',
       bonusExists: false,

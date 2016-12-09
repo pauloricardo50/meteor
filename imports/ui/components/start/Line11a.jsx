@@ -71,7 +71,7 @@ export default class Line11a extends Component {
         genderRequired: p.genderRequired,
         gender1: p.gender1,
         gender2: p.gender2,
-        isNewPurchase: p.isNewPurchase,
+        purchaseType: p.purchaseType,
         propertyType: p.propertyType,
         salary: p.salary,
         bonusExists: p.bonusExists,

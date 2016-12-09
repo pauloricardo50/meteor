@@ -33,7 +33,7 @@ export default class Line4_1 extends Component {
     return (
       p.classes !== n.classes ||
       p.twoBuyers !== n.twoBuyers ||
-      p.isNewPurchase !== n.isNewPurchase
+      p.purchaseType !== n.purchaseType
     );
   }
 
@@ -43,12 +43,16 @@ export default class Line4_1 extends Component {
 
     switch (i) {
       case 1:
-        this.props.setStateValue('isNewPurchase', true);
+        this.props.setStateValue('purchaseType', 'acquisition');
         this.setState({ text: ' une nouvelle acquisition,' });
         break;
       case 2:
-        this.props.setStateValue('isNewPurchase', false);
+        this.props.setStateValue('purchaseType', 'refinancing');
         this.setState({ text: ' un refinancement,' });
+        break;
+      case 3:
+        this.props.setStateValue('purchaseType', 'construction');
+        this.setState({ text: ' une nouvelle construction,' });
         break;
       default: break;
     }
@@ -77,6 +81,12 @@ export default class Line4_1 extends Component {
               primary={!this.state.text}
               onClick={e => this.changeState(e, 2)}
             />
+            <RaisedButton
+              label="Une nouvelle construction"
+              style={styles.button}
+              primary={!this.state.text}
+              onClick={e => this.changeState(e, 3)}
+            />
           </div>
         }
 
@@ -93,5 +103,5 @@ Line4_1.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 
   propertyType: PropTypes.string.isRequired,
-  isNewPurchase: PropTypes.bool.isRequired,
+  purchaseType: PropTypes.bool.isRequired,
 };

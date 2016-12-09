@@ -34,7 +34,7 @@ export default class Line4 extends Component {
       p.classes !== n.classes ||
       p.twoBuyers !== n.twoBuyers ||
       p.propertyType !== n.propertyType ||
-      p.isNewPurchase !== n.isNewPurchase
+      p.purchaseType !== n.purchaseType
     );
   }
 
@@ -65,7 +65,7 @@ export default class Line4 extends Component {
 
         <h1 className={this.props.classes.text}>
           et la propriété
-          {this.props.isNewPurchase ? ' sera ' : ' est '}
+          {this.props.purchaseType ? ' sera ' : ' est '}
           utilisée comme
           {this.state.text}
         </h1>
@@ -107,5 +107,5 @@ Line4.propTypes = {
   index: PropTypes.number.isRequired,
 
   propertyType: PropTypes.string.isRequired,
-  isNewPurchase: PropTypes.bool.isRequired,
+  purchaseType: PropTypes.bool.isRequired,
 };

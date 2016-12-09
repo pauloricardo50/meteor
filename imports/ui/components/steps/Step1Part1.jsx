@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-import DropzoneInput from '/imports/ui/components/forms/DropzoneInput.jsx';
+import Step1InitialForm from '/imports/ui/components/steps/Step1InitialForm.jsx';
 
 const styles = {
   mask: {
@@ -19,15 +19,14 @@ export default class Step1Part1 extends Component {
   render() {
     return (
       <article className="mask2" style={styles.mask}>
-        <h3>Validez votre bien immobilier</h3>
-        <p style={styles.p}>
+        <h3>Mon Projet</h3>
+        {/* <p style={styles.p}>
           Nous voulons vérifier la légitimité de chaque dossier et donner une information claire
           aux banques concernant l'état de votre dossier.
-        </p>
-        <DropzoneInput
-          fileName="housePicture"
-          requestId={this.props.creditRequest._id}
-        />
+        </p> */}
+
+        <p>dropzone contrat de financement/projet d'acte d'achat</p>
+        <Step1InitialForm creditRequest={this.props.creditRequest} />
       </article>
     );
   }

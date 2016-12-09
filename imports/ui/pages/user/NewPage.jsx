@@ -89,6 +89,7 @@ export default class NewPage extends Component {
         },
         propertyInfo: {
           type: q.propertyType,
+          purchaseType: q.purchaseType,
           value: Number(q.propertyValue),
         },
       };

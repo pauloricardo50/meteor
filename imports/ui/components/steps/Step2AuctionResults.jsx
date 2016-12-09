@@ -36,6 +36,18 @@ const lenderOffers = [
     amortizing: '1%',
     interest10: '0.91%',
     expertise: 'Non',
+  }, {
+    lender: 'Banque 4',
+    maxAmount: 'CHF 641\'000',
+    amortizing: '1%',
+    interest10: '0.85%',
+    expertise: 'Non',
+  }, {
+    lender: 'Banque 5',
+    maxAmount: 'CHF 641\'000',
+    amortizing: '1%',
+    interest10: '0.85%',
+    expertise: 'Non',
   },
 ];
 
@@ -44,9 +56,9 @@ export default class Step2AuctionResults extends Component {
     super(props);
   }
 
-  handleClick() {
-    FlowRouter.go('/finance');
-  }
+  // handleClick() {
+  //   FlowRouter.go('/finance');
+  // }
 
   render() {
     return (
@@ -54,7 +66,12 @@ export default class Step2AuctionResults extends Component {
         <h1>Les résultats sont arrivés!</h1>
 
         <div style={styles.button} className="text-center">
-          <RaisedButton label="Choisir ma stratégie de taux" primary onClick={this.handleClick} />
+          <RaisedButton
+            label="Choisir ma stratégie de taux"
+            primary
+            href="/finance/strategy"
+            // onClick={this.handleClick}
+          />
         </div>
 
         {/* Replace with this.props.creditRequest.lenderOffers */}

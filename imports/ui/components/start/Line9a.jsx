@@ -30,7 +30,7 @@ export default class Line9a extends Component {
       this.props.propertyType,
       Number(this.props.salary) + Number(this.props.bonus),
       Number(this.props.propertyValue),
-    );
+    )[0];
 
     this.state = {
       text: '',
@@ -52,7 +52,7 @@ export default class Line9a extends Component {
       nextProps.propertyType,
       Number(nextProps.salary) + Number(nextProps.bonus),
       Number(nextProps.propertyValue),
-    );
+    )[0];
 
     this.setState({
       maxDebtPercent: Math.round(
