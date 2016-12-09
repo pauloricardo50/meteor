@@ -68,7 +68,23 @@ export default class Line3 extends Component {
     }
   }
 
+
+  setCompleted() {
+    const p = this.props;
+
+    // If all required values are set, go to next step
+    if (p.twoBuyers) {
+      if (p.gender1 && p.gender2) {
+        p.completeStep(null, true, true);
+      }
+    } else if (p.gender1) {
+      p.completeStep(null, true, true);
+    }
+  }
+
+
   changeState(i) {
+    // React to a button press, adjust gender accordingly
     switch (i) {
       case 1:
         this.props.setStateValue('gender1', 'f', () => this.setCompleted());
@@ -90,18 +106,6 @@ export default class Line3 extends Component {
     }
   }
 
-  setCompleted() {
-    const p = this.props;
-
-    // If all required values are set, go to next step
-    if (p.twoBuyers) {
-      if (p.gender1 && p.gender2) {
-        p.completeStep(null, true);
-      }
-    } else if (p.gender1) {
-      p.completeStep(null, true);
-    }
-  }
 
   render() {
     if (this.props.genderRequired) {

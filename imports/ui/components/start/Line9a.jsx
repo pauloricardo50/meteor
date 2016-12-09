@@ -72,7 +72,7 @@ export default class Line9a extends Component {
 
   changeState(e, maxDebt) {
     this.props.setStateValue('maxDebt', maxDebt);
-    this.props.completeStep(e, true);
+    this.props.completeStep(e, true, true);
 
     if (maxDebt) {
       this.setState({

@@ -39,7 +39,7 @@ export default class Line8a extends Component {
 
   changeState(e, maxCash) {
     this.props.setStateValue('maxCash', maxCash);
-    this.props.completeStep(e, true);
+    this.props.completeStep(e, true, true);
 
     if (maxCash) {
       this.setState({ text: 'un max de fortune' });

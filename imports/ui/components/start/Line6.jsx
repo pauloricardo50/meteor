@@ -86,7 +86,7 @@ export default class Line6 extends Component {
       case 1:
         this.props.setStateValue('bonusExists', false);
         this.setState({ bonusSelected: true });
-        this.props.completeStep(event, true);
+        this.props.completeStep(event, true, true);
         break;
       case 2:
         this.props.setStateValue('bonusExists', true);

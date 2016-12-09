@@ -40,7 +40,7 @@ export default class Line4 extends Component {
 
 
   changeState(event, i) {
-    this.props.completeStep(event, true);
+    this.props.completeStep(event, true, true);
 
     switch (i) {
       case 1:
@@ -107,5 +107,5 @@ Line4.propTypes = {
   index: PropTypes.number.isRequired,
 
   propertyType: PropTypes.string.isRequired,
-  purchaseType: PropTypes.bool.isRequired,
+  purchaseType: PropTypes.string.isRequired,
 };

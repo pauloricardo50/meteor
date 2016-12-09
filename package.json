@@ -23,6 +23,7 @@
     "react-motion": "^0.4.5",
     "react-mounter": "^1.2.0",
     "react-router": "^2.8.1",
+    "react-scroll": "^1.4.4",
     "react-tap-event-plugin": "^2.0.1",
     "react-text-mask": "^0.19.0",
     "text-mask-addons": "^2.0.0",

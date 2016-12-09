@@ -133,7 +133,7 @@ export default class Line10a extends Component {
           <div className="text-center col-xs-12">
             <RaisedButton
               label="Je suis satisfait"
-              onClick={e => this.props.completeStep(e, true)}
+              onClick={e => this.props.completeStep(e, true, true)}
               primary
             />
           </div>

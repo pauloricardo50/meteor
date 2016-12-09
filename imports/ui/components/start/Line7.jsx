@@ -75,7 +75,7 @@ export default class Line7 extends Component {
 
   handleClick(event, value) {
     this.props.setPropertyKnown(value, true);
-    this.props.completeStep(event, true);
+    this.props.completeStep(event, true, true);
   }
 
 

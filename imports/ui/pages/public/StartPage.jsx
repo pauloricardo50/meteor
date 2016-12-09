@@ -122,7 +122,7 @@ export default class StartPage extends Component {
   }
 
   // Called when a step was finished
-  completeStep(i, event, alsoSetStep) {
+  completeStep(i, event, alsoSetStep, isButton = false) {
     // Prevent the call of setStep() when this is called, only call it if an event is passed
     if (event) {
       event.stopPropagation();
@@ -142,7 +142,7 @@ export default class StartPage extends Component {
           }
         }
       );
-    } else if (finished && alsoSetStep) {
+    } else if ((finished && alsoSetStep) || isButton) {
       // If the form is finished, always set the last step to be active
       this.setState({ step: max });
     }
@@ -183,7 +183,9 @@ export default class StartPage extends Component {
               setStateValue={this.setStateValue}
               setStep={() => this.setStep(index)}
               setValid={value => this.setValid(index, value)}
-              completeStep={(event, alsoStep) => this.completeStep(index, event, alsoStep)}
+              completeStep={(event, alsoStep, isButton) =>
+                this.completeStep(index, event, alsoStep, isButton)
+              }
               setPropertyKnown={this.setPropertyKnown}
               classes={this.classes(index)}
               index={index}

@@ -45,7 +45,7 @@ export default class Line5 extends Component {
 
   setCompleted() {
     if (this.props.salary) {
-      this.props.completeStep(null, true);
+      this.props.completeStep(null, true, true);
     }
   }
 

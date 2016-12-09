@@ -39,7 +39,7 @@ export default class Line4_1 extends Component {
 
 
   changeState(event, i) {
-    this.props.completeStep(event, true);
+    this.props.completeStep(event, true, true);
 
     switch (i) {
       case 1:
@@ -103,5 +103,5 @@ Line4_1.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 
   propertyType: PropTypes.string.isRequired,
-  purchaseType: PropTypes.bool.isRequired,
+  purchaseType: PropTypes.string.isRequired,
 };

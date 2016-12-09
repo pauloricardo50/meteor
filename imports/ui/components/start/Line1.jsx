@@ -38,7 +38,7 @@ export default class Line1 extends Component {
 
   changeState(e, twoBuyers) {
     this.props.setStateValue('twoBuyers', twoBuyers);
-    this.props.completeStep(e, true);
+    this.props.completeStep(e, true, true);
 
     if (twoBuyers) {
       this.setState({
