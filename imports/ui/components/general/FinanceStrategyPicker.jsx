@@ -88,13 +88,15 @@ export default class FinanceStrategyPicker extends Component {
 
     return (
       <article>
-        <h3>Je veux diviser mon prêt en {this.props.creditRequest.loanInfo.tranches.length} tranche(s).</h3>
-        <RaisedButton
-          label="Ajouter une Tranche"
-          onClick={this.addTranch}
-          primary
-          style={styles.button}
-        />
+        <div className="text-center">
+          <h3>Je veux diviser mon prêt en {this.props.creditRequest.loanInfo.tranches.length} tranche(s).</h3>
+          <RaisedButton
+            label="Ajouter une Tranche"
+            onClick={this.addTranch}
+            primary
+            style={styles.button}
+          />
+        </div>
 
         <div className="col-xs-12" style={styles.array}>
           {tranchesArray}

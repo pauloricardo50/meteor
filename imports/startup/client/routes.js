@@ -15,8 +15,8 @@ import LoginPage from '/imports/ui/pages/public/LoginPage.jsx';
 import NewPage from '/imports/ui/pages/user/NewPage.jsx';
 
 import {
-  MainPage, TodoCardPage, FinancePage, ContactPage,
-  Step1Page, Step2Page, Step3Page, Step4Page, Step5Page, Step6Page
+  MainPage, TodoCardPage, FinancePage, StrategyPage, ContactPage,
+  Step1Page, Step2Page, Step3Page, Step4Page, Step5Page, Step6Page,
   // RequestProgressBar,
 } from '/imports/ui/containers/user/ActiveRequestContainer.jsx';
 
@@ -204,6 +204,17 @@ FlowRouter.route('/finance', {
     mount(UserLayout, {
       content:
         <FinancePage />,
+      extraContent: <RequestProgressBar />,
+    });
+  },
+});
+
+FlowRouter.route('/finance/strategy', {
+  name: 'strategy',
+  action() {
+    mount(UserLayout, {
+      content:
+        <StrategyPage />,
       extraContent: <RequestProgressBar />,
     });
   },

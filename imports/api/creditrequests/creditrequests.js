@@ -26,6 +26,9 @@ const CreditRequestSchema = new SimpleSchema({
     autoValue() {
       return this.userId;
     },
+    // Index the database by user, and it can have multiple requests per user, so it's not unique
+    index: true,
+    unique: false,
   },
   createdAt: { // Date at which the request was created
     type: Date,
