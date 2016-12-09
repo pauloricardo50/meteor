@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { DocHead } from 'meteor/kadira:dochead';
 
+import Scroll from 'react-scroll';
+
 
 import Line1 from '/imports/ui/components/start/Line1.jsx';
 import Line2 from '/imports/ui/components/start/Line2.jsx';
@@ -24,7 +26,7 @@ const styles = {
     display: 'table',
     height: '100%',
     width: '100%',
-    paddingBottom: 100,
+    paddingBottom: 50,
   },
   div: {
     display: 'table-cell',
@@ -76,7 +78,10 @@ export default class StartPage extends Component {
     DocHead.setTitle('Passez Le Test | e-Potek');
   }
 
-  setStep(i) { this.setState({ step: i }); }
+  setStep(i) {
+    this.setState({ step: i });
+    this.scroll(i);
+  }
 
   setStateValue(name, value, callback) {
     const object = {};
@@ -106,6 +111,7 @@ export default class StartPage extends Component {
             // When the user chooses that the propertyValue is not known after having filled
             // some fields beyond step 6 in path a), set step to 7
             this.setState({ step: 8 });
+            this.scroll();
           }
         }
       }
@@ -139,12 +145,14 @@ export default class StartPage extends Component {
           // Make sure step is never higher than maxStep, and verify step is higher than before
           if (alsoSetStep && (i + 1 <= this.state.maxStep) && i + 1 > this.state.step) {
             this.setState({ step: i + 1 });
+            this.scroll();
           }
         }
       );
     } else if ((finished && alsoSetStep) || isButton) {
       // If the form is finished, always set the last step to be active
       this.setState({ step: max });
+      this.scroll();
     }
   }
 
@@ -166,6 +174,19 @@ export default class StartPage extends Component {
     return this.state.isValid.every(bool => bool);
   }
 
+  scroll(step = null) {
+    const options = {
+      duration: 300,
+      delay: 0,
+      smooth: true,
+    };
+    if (step) {
+      Scroll.scroller.scrollTo(step.toString(), options);
+    } else {
+      Scroll.animateScroll.scrollToBottom(options);
+    }
+  }
+
   render() {
     let lines;
     if (this.state.propertyKnown) {
@@ -178,19 +199,20 @@ export default class StartPage extends Component {
       <section style={styles.section} className="NLForm">
         <div style={styles.div}>
           {lines.slice(0, this.state.maxStep + 1).map((ComponentX, index) =>
-            <ComponentX
-              {...this.state}
-              setStateValue={this.setStateValue}
-              setStep={() => this.setStep(index)}
-              setValid={value => this.setValid(index, value)}
-              completeStep={(event, alsoStep, isButton) =>
-                this.completeStep(index, event, alsoStep, isButton)
-              }
-              setPropertyKnown={this.setPropertyKnown}
-              classes={this.classes(index)}
-              index={index}
-              key={index}
-            />
+            <Scroll.Element name={index.toString()} key={index}>
+              <ComponentX
+                {...this.state}
+                setStateValue={this.setStateValue}
+                setStep={() => this.setStep(index)}
+                setValid={value => this.setValid(index, value)}
+                completeStep={(event, alsoStep, isButton) =>
+                  this.completeStep(index, event, alsoStep, isButton)
+                }
+                setPropertyKnown={this.setPropertyKnown}
+                classes={this.classes(index)}
+                index={index}
+              />
+            </Scroll.Element>
           )}
         </div>
       </section>
