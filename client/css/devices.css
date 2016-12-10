@@ -296,11 +296,13 @@
 @media (max-width: 900px) {
 	.centerdevices .browseriphone {
 		white-space: nowrap;
-		/*overflow: scroll;*/
+		overflow: scroll;
 		margin-left: -20px;
 		width: calc(100% + 40px;);
 		-webkit-overflow-scrolling: touch;
 		vertical-align: top;
+    /* Florian changed*/
+    padding: 90px 0;
 	}
 	.centerdevices .browseriphone .iphone {
 		display: inline-block;

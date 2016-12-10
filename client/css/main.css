@@ -335,11 +335,12 @@ p.paragraph {
   	margin-top: 30px;
   }
 }.feature1 {
-	padding: 90px 0;
+  /* FLORIAN padding */
+	padding: 90px 0 0 0;
 	border-bottom: 1px solid rgba(0,0,0,.1);
 }
 .feature1	.centerdevices {
-	margin-top: 90px;
+	/*margin-top: 90px; FLORIAN*/
 }.feature2 {
 	border-bottom: 1px solid rgba(0,0,0,.1);
 }
