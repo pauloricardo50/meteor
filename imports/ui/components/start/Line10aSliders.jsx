@@ -43,6 +43,8 @@ export default class Line10aSliders extends Component {
     this.changeInsuranceFortune = this.changeInsuranceFortune.bind(this);
     this.sliderChangeFortune = this.sliderChangeFortune.bind(this);
     this.sliderChangeInsuranceFortune = this.sliderChangeInsuranceFortune.bind(this);
+    this.getMaxFortuneSlider = this.getMaxFortuneSlider.bind(this);
+    this.getMaxInsuranceSlider = this.getMaxInsuranceSlider.bind(this);
   }
 
 
@@ -50,14 +52,7 @@ export default class Line10aSliders extends Component {
     const p = this.props;
     const n = nextProps;
 
-    return (
-      p.maxCash !== n.maxCash ||
-      p.maxDebt !== n.maxDebt ||
-      p.propertyValue !== n.propertyValue ||
-      p.fortune !== n.fortune ||
-      p.insuranceFortune !== n.insuranceFortune ||
-      p.propertyType !== n.propertyType
-    );
+    return true;
   }
 
   changeFortune(event, value) {
@@ -78,6 +73,31 @@ export default class Line10aSliders extends Component {
   sliderChangeInsuranceFortune(event, value) {
     const isSlider = true;
     this.props.changeInsuranceFortune(value, isSlider);
+  }
+
+  getMaxFortuneSlider() {
+    // It should at least go until the minimum amount required
+    let max = this.props.minFortunePercent;
+
+    if (!this.props.maxDebt) {
+      // Add 20% of padding if the customer wants to go in less debt
+      max += 0.2;
+    }
+
+    // Round to upper tenth of a percent
+    return Math.ceil(max * 10) / 10;
+  }
+
+  getMaxInsuranceSlider() {
+    // You need at least 10% of cash, so substract that
+    let max = this.props.minFortunePercent - 0.1;
+
+    if (!this.props.maxDebt) {
+      max += 0.2;
+    }
+
+    // Round to upper tenth of a percent
+    return Math.ceil(max * 10) / 10;
   }
 
 
@@ -106,12 +126,12 @@ export default class Line10aSliders extends Component {
               value={toNumber(this.props.fortune) / toNumber(this.props.propertyValue)}
               onChange={this.sliderChangeFortune}
               min={0}
-              max={this.props.maxDebt ? 0.2 : 0.4}
-              step={0.01}
+              max={this.getMaxFortuneSlider()}
+              step={0.005}
               ref={(c) => { this.slider1 = c; }}
             />
             <h4 className="secondary" style={styles.label1}>0%</h4>
-            <h4 className="secondary" style={styles.label2}>{this.props.maxDebt ? '20%' : '40%'}</h4>
+            <h4 className="secondary" style={styles.label2}>{100 * this.getMaxFortuneSlider()}%</h4>
           </span>
         </div>
 
@@ -131,11 +151,11 @@ export default class Line10aSliders extends Component {
                 value={toNumber(this.props.insuranceFortune) / toNumber(this.props.propertyValue)}
                 onChange={this.sliderChangeInsuranceFortune}
                 min={0}
-                max={this.props.maxDebt ? 0.1 : 0.4}
-                step={0.01}
+                max={this.getMaxInsuranceSlider()}
+                step={0.005}
               />
               <h4 className="secondary" style={styles.label1}>0%</h4>
-              <h4 className="secondary" style={styles.label2}>{this.props.maxDebt ? '10%' : '40%'}</h4>
+              <h4 className="secondary" style={styles.label2}>{100 * this.getMaxInsuranceSlider()}%</h4>
             </span>
           </div>
         }
@@ -153,4 +173,6 @@ Line10aSliders.propTypes = {
   changeFortune: PropTypes.func.isRequired,
   changeInsuranceFortune: PropTypes.func.isRequired,
   propertyType: PropTypes.string.isRequired,
+
+  minFortunePercent: PropTypes.number.isRequired,
 };

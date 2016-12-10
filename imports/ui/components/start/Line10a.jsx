@@ -3,35 +3,80 @@ import { Meteor } from 'meteor/meteor';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
+import { minimumFortuneRequired } from '/imports/js/finance-math.js';
 
 import Line10aSliders from './Line10aSliders.jsx';
 
 var timer;
 
 export default class Line10a extends Component {
+  constructor(props) {
+    super(props);
+
+    const minFortune = minimumFortuneRequired(
+      Number(this.props.age1),
+      Number(this.props.age2),
+      this.props.gender1,
+      this.props.gender2,
+      this.props.propertyType,
+      Number(this.props.salary) + Number(this.props.bonus),
+      Number(this.props.propertyValue),
+    )[0];
+
+    this.state = {
+      minFortunePercent: minFortune / this.props.propertyValue,
+    };
+  }
+
+
   componentDidMount() {
-    // Set the initial fortune values based on the choice in line 8, sum of both has to be 20%
+    // Set the initial fortune values based on the choice in line 8, sum of both has to be minFortune
     if (this.props.maxCash) {
-      this.props.setStateValue('fortune', String(Math.round(this.props.propertyValue * 0.2)));
+      this.props.setStateValue('fortune', String(Math.round(this.props.propertyValue * this.state.minFortunePercent)));
       this.props.setStateValue('insuranceFortune', '0');
     } else {
       this.props.setStateValue('fortune', String(Math.round(this.props.propertyValue * 0.1)));
-      this.props.setStateValue('insuranceFortune', String(Math.round(this.props.propertyValue * 0.1)));
+      this.props.setStateValue('insuranceFortune', String(Math.round(this.props.propertyValue * (this.state.minFortunePercent - 0.1))));
     }
   }
 
 
-  componentWillReceiveProps(nextProps) {
-    const oldMaxCash = this.props.maxCash;
+  componentWillReceiveProps(n) {
+    const p = this.props;
 
-    if (oldMaxCash !== nextProps.maxCash) {
-      if (nextProps.maxCash) {
-        this.props.setStateValue('fortune', String(Math.round(nextProps.propertyValue * 0.2)));
-        this.props.setStateValue('insuranceFortune', '0');
+    if (p.maxCash !== n.maxCash) {
+      if (n.maxCash) {
+        p.setStateValue('fortune', String(Math.round(n.propertyValue * 0.2)));
+        p.setStateValue('insuranceFortune', '0');
       } else {
-        this.props.setStateValue('fortune', String(Math.round(nextProps.propertyValue * 0.1)));
-        this.props.setStateValue('insuranceFortune', String(Math.round(nextProps.propertyValue * 0.1)));
+        p.setStateValue('fortune', String(Math.round(n.propertyValue * 0.1)));
+        p.setStateValue('insuranceFortune', String(Math.round(n.propertyValue * 0.1)));
       }
+    }
+
+    // Make sure we don't calculate this if it's not an update
+    if (
+      p.age1 !== n.age1 ||
+      p.age2 !== n.age2 ||
+      p.gender1 !== n.gender1 ||
+      p.propertyType !== n.propertyType ||
+      p.salary !== n.salary ||
+      p.bonus !== n.bonus ||
+      p.propertyValue !== n.propertyValue
+    ) {
+      const minFortune = minimumFortuneRequired(
+        Number(n.age1),
+        Number(n.age2),
+        n.gender1,
+        n.gender2,
+        n.propertyType,
+        Number(n.salary) + Number(n.bonus),
+        Number(n.propertyValue),
+      )[0];
+
+      this.setState({
+        minFortunePercent: minFortune / n.propertyValue,
+      });
     }
   }
 
@@ -40,16 +85,17 @@ export default class Line10a extends Component {
     const p = this.props;
     const n = nextProps;
 
-    return (
-      p.classes !== n.classes ||
-      p.twoBuyers !== n.twoBuyers ||
-      p.maxCash !== n.maxCash ||
-      p.maxDebt !== n.maxDebt ||
-      p.propertyValue !== n.propertyValue ||
-      p.fortune !== n.fortune ||
-      p.insuranceFortune !== n.insuranceFortune ||
-      p.propertyType !== n.propertyType
-    );
+    return true;
+    // return (
+    //   p.classes !== n.classes ||
+    //   p.twoBuyers !== n.twoBuyers ||
+    //   p.maxCash !== n.maxCash ||
+    //   p.maxDebt !== n.maxDebt ||
+    //   p.propertyValue !== n.propertyValue ||
+    //   p.fortune !== n.fortune ||
+    //   p.insuranceFortune !== n.insuranceFortune ||
+    //   p.propertyType !== n.propertyType
+    // );
   }
 
 
@@ -94,24 +140,26 @@ export default class Line10a extends Component {
     const i = this.props.insuranceFortune;
     const p = this.props.propertyValue;
 
-    // Make sure fortune is always at least 10%, and set insurance to 10% as well
+    const minFortune = this.state.minFortunePercent;
+
+    // Make sure fortune is always at least 10%, and set insurance to the rest
     if (f < 0.1 * p) {
       this.props.setStateValue('fortune', String(Math.round(0.1 * p)));
-      this.props.setStateValue('insuranceFortune', String(Math.round(0.1 * p)));
-    } else if (f + i < 0.2 * p) {
-      // If both fortunes combined aren't at least 20% of the propertyValue
+      this.props.setStateValue('insuranceFortune', String(Math.round((minFortune - 0.1) * p)));
+    } else if (f + i < minFortune * p) {
+      // If both fortunes combined aren't at least what's required
       // Set the other value to be the rest
       if (isFortune) {
-        this.props.setStateValue('insuranceFortune', String(Math.round((0.2 * p) - f)));
+        this.props.setStateValue('insuranceFortune', String(Math.round((minFortune * p) - f)));
       } else {
-        this.props.setStateValue('fortune', String(Math.round((0.2 * p) - i)));
+        this.props.setStateValue('fortune', String(Math.round((minFortune * p) - i)));
       }
     } else if (this.props.maxDebt) {
-      // If the user wants maximum Debt, always keep both combined at 20%
+      // If the user wants maximum Debt, always keep both combined at the minimum
       if (isFortune) {
-        this.props.setStateValue('insuranceFortune', String(Math.round((0.2 * p) - f)));
+        this.props.setStateValue('insuranceFortune', String(Math.round((minFortune * p) - f)));
       } else {
-        this.props.setStateValue('fortune', String(Math.round((0.2 * p) - i)));
+        this.props.setStateValue('fortune', String(Math.round((minFortune * p) - i)));
       }
     }
   }
@@ -126,6 +174,7 @@ export default class Line10a extends Component {
           maxDebt={this.props.maxDebt}
           propertyValue={this.props.propertyValue}
           propertyType={this.props.propertyType}
+          minFortunePercent={this.state.minFortunePercent}
           changeFortune={
             (value, isSlider) => this.changeFortune(value, isSlider)
           }
@@ -162,4 +211,11 @@ Line10a.propTypes = {
   fortune: PropTypes.string.isRequired,
   insuranceFortune: PropTypes.string.isRequired,
   propertyType: PropTypes.string.isRequired,
+
+  age1: PropTypes.string.isRequired,
+  age2: PropTypes.string.isRequired,
+  gender1: PropTypes.string.isRequired,
+  gender2: PropTypes.string.isRequired,
+  salary: PropTypes.string.isRequired,
+  bonus: PropTypes.string.isRequired,
 };
