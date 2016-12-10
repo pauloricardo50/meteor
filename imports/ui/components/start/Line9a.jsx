@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import { minimumFortuneRequired } from '/imports/js/finance-math.js';
 
-import Line9aHelp from './Line9aHelp.jsx';
+import HelpModal from './HelpModal.jsx';
 
 
 const styles = {
@@ -112,7 +112,11 @@ export default class Line9a extends Component {
               primary={!this.state.text}
               onClick={e => this.changeState(e, false)}
             />
-            <Line9aHelp buttonStyle={styles.button} />
+            <HelpModal
+              buttonLabel="Aidez-moi à choisir"
+              title="L'endettement, bien ou mauvais?"
+              content="A toi, Yannis"
+            />
           </div>
           : ''
         }

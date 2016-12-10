@@ -20,20 +20,6 @@ export default class Line10a extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    const p = this.props;
-    const n = nextProps;
-
-    return (
-      p.classes !== n.classes ||
-      p.twoBuyers !== n.twoBuyers ||
-      p.maxCash !== n.maxCash ||
-      p.maxDebt !== n.maxDebt ||
-      p.propertyValue !== n.propertyValue ||
-      p.fortune !== n.fortune ||
-      p.insuranceFortune !== n.insuranceFortune
-    );
-  }
 
   componentWillReceiveProps(nextProps) {
     const oldMaxCash = this.props.maxCash;
@@ -48,6 +34,24 @@ export default class Line10a extends Component {
       }
     }
   }
+
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const p = this.props;
+    const n = nextProps;
+
+    return (
+      p.classes !== n.classes ||
+      p.twoBuyers !== n.twoBuyers ||
+      p.maxCash !== n.maxCash ||
+      p.maxDebt !== n.maxDebt ||
+      p.propertyValue !== n.propertyValue ||
+      p.fortune !== n.fortune ||
+      p.insuranceFortune !== n.insuranceFortune ||
+      p.propertyType !== n.propertyType
+    );
+  }
+
 
   changeFortune(value, isSlider) {
     const newFortune = (isSlider ? Math.round(value * this.props.propertyValue) : value);
@@ -94,7 +98,6 @@ export default class Line10a extends Component {
     if (f < 0.1 * p) {
       this.props.setStateValue('fortune', String(Math.round(0.1 * p)));
       this.props.setStateValue('insuranceFortune', String(Math.round(0.1 * p)));
-
     } else if (f + i < 0.2 * p) {
       // If both fortunes combined aren't at least 20% of the propertyValue
       // Set the other value to be the rest
@@ -122,6 +125,7 @@ export default class Line10a extends Component {
           insuranceFortune={this.props.insuranceFortune}
           maxDebt={this.props.maxDebt}
           propertyValue={this.props.propertyValue}
+          propertyType={this.props.propertyType}
           changeFortune={
             (value, isSlider) => this.changeFortune(value, isSlider)
           }
@@ -157,4 +161,5 @@ Line10a.propTypes = {
   propertyValue: PropTypes.string.isRequired,
   fortune: PropTypes.string.isRequired,
   insuranceFortune: PropTypes.string.isRequired,
+  propertyType: PropTypes.string.isRequired,
 };

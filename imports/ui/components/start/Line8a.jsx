@@ -2,7 +2,9 @@ import React, { Component, PropTypes } from 'react';
 
 
 import RaisedButton from 'material-ui/RaisedButton';
-import Line8aHelp from './Line8aHelp.jsx';
+
+import HelpModal from './HelpModal.jsx';
+
 
 const styles = {
   button: {
@@ -82,7 +84,11 @@ export default class Line8a extends Component {
                 primary={!this.state.text}
                 onClick={e => this.changeState(e, false)}
               />
-              <Line8aHelp buttonStyle={styles.button} />
+              <HelpModal
+                buttonLabel="Aidez-moi à choisir"
+                title="2ème pilier ou fortune?"
+                content="La LPP c'est de la bombe!"
+              />
             </div>
           }
 

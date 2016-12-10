@@ -2,17 +2,18 @@ import React, { Component, PropTypes } from 'react';
 
 
 import Dialog from 'material-ui/Dialog';
+import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 
-
 const styles = {
-  help: {
-    padding: 10,
+  button: {
+    marginRight: 8,
+    marginBottom: 8,
   },
 };
 
-export default class Line7aHelp2 extends Component {
+export default class HelpModal extends Component {
   constructor(props) {
     super(props);
 
@@ -36,34 +37,35 @@ export default class Line7aHelp2 extends Component {
     const actions = [
       <FlatButton
         label="Ok"
-        primary
         onTouchTap={this.handleClose}
+        primary
       />,
     ];
 
     return (
       <span>
-        <FlatButton
+        <RaisedButton
           onTouchTap={this.handleOpen}
-          style={this.props.buttonStyle}
-          label="Je n'ai pas assez"
-          primary
-          icon={<FontIcon className="fa fa-question" />}
+          style={styles.button}
+          label={this.props.buttonLabel}
+          icon={<FontIcon className="fa fa-info" />}
         />
         <Dialog
-          title="Manque de fonds propres"
+          title={this.props.title}
           actions={actions}
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-          e-Potek paie la tournée, pas de problème.
+          {this.props.content}
         </Dialog>
       </span>
     );
   }
 }
 
-Line7aHelp2.propTypes = {
-  buttonStyle: PropTypes.objectOf(PropTypes.any).isRequired,
+HelpModal.propTypes = {
+  buttonLabel: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
 };

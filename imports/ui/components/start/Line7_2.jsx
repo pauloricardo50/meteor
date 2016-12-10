@@ -4,8 +4,8 @@ import React, { Component, PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import { minimumFortuneRequired, toMoney } from '/imports/js/finance-math.js';
 
-import Line7aHelp1 from './Line7aHelp1.jsx';
-import Line7aHelp2 from './Line7aHelp2.jsx';
+
+import HelpModal from './HelpModal.jsx';
 
 
 const styles = {
@@ -92,8 +92,18 @@ export default class Line7_2 extends Component {
               primary={!this.state.text}
               onClick={this.handleClick}
             />
-            <Line7aHelp1 buttonStyle={styles.button} />
-            <Line7aHelp2 buttonStyle={styles.button} />
+
+            <HelpModal
+              buttonLabel="Pourquoi?"
+              title="Méthode de Calcul"
+              content="Je ne suis pas sûr..."
+            />
+            <HelpModal
+              buttonLabel="Je n'ai pas assez"
+              title="Manque de fonds propres"
+              content="e-Potek paie la tournée, pas de problème."
+            />
+
           </div>
         }
 
