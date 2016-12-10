@@ -82,10 +82,11 @@ export default class Line10aSliders extends Component {
     if (!this.props.maxDebt) {
       // Add 20% of padding if the customer wants to go in less debt
       max += 0.2;
+      // Return nice rounded value
+      return Math.ceil(max * 10) / 10;
     }
 
-    // Round to upper tenth of a percent
-    return Math.ceil(max * 10) / 10;
+    return max;
   }
 
   getMaxInsuranceSlider() {
@@ -94,10 +95,11 @@ export default class Line10aSliders extends Component {
 
     if (!this.props.maxDebt) {
       max += 0.2;
+      // Return nice rounded value
+      return Math.ceil(max * 10) / 10;
     }
 
-    // Round to upper tenth of a percent
-    return Math.ceil(max * 10) / 10;
+    return max;
   }
 
 
@@ -131,7 +133,7 @@ export default class Line10aSliders extends Component {
               ref={(c) => { this.slider1 = c; }}
             />
             <h4 className="secondary" style={styles.label1}>0%</h4>
-            <h4 className="secondary" style={styles.label2}>{100 * this.getMaxFortuneSlider()}%</h4>
+            <h4 className="secondary" style={styles.label2}>{Math.round(100 * this.getMaxFortuneSlider())}%</h4>
           </span>
         </div>
 
@@ -155,7 +157,7 @@ export default class Line10aSliders extends Component {
                 step={0.005}
               />
               <h4 className="secondary" style={styles.label1}>0%</h4>
-              <h4 className="secondary" style={styles.label2}>{100 * this.getMaxInsuranceSlider()}%</h4>
+              <h4 className="secondary" style={styles.label2}>{Math.round(100 * this.getMaxInsuranceSlider())}%</h4>
             </span>
           </div>
         }

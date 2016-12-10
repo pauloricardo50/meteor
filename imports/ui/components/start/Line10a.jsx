@@ -24,7 +24,7 @@ export default class Line10a extends Component {
     )[0];
 
     this.state = {
-      minFortunePercent: minFortune / this.props.propertyValue,
+      minFortunePercent: Math.ceil(100 * (minFortune / this.props.propertyValue)) / 100,
     };
   }
 
@@ -75,15 +75,14 @@ export default class Line10a extends Component {
       )[0];
 
       this.setState({
-        minFortunePercent: minFortune / n.propertyValue,
+        minFortunePercent: Math.ceil(100 * (minFortune / n.propertyValue)) / 100,
       });
     }
   }
 
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(n, nextState) {
     const p = this.props;
-    const n = nextProps;
 
     return true;
     // return (
