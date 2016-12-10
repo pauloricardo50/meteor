@@ -2,8 +2,10 @@ import React, { Component, PropTypes } from 'react';
 
 import TextField from 'material-ui/TextField';
 import Slider from 'material-ui/Slider';
+import MaskedInput from 'react-text-mask';
 
 import { toMoney, toNumber } from '/imports/js/finance-math.js';
+import { swissFrancMask } from '/imports/js/textMasks.js';
 
 
 const styles = {
@@ -116,12 +118,18 @@ export default class Line10aSliders extends Component {
         <div className="col-sm-12">
           <h1 style={styles.h1} className="col-sm-4 col-xs-12">
             <TextField
+              style={styles.TextField}
               name="fortune"
               floatingLabelText="Fortune"
-              value={`CHF ${toMoney(this.props.fortune)}`}
-              style={styles.TextField}
               onChange={this.changeFortune}
-            />
+            >
+              <MaskedInput
+                value={this.props.fortune}
+                mask={swissFrancMask}
+                guide
+                pattern="[0-9]*"
+              />
+            </TextField>
           </h1>
           <span style={styles.sliderSpan} className="col-sm-8 col-xs-12">
             <Slider
@@ -141,12 +149,18 @@ export default class Line10aSliders extends Component {
           <div className="col-sm-12">
             <h1 style={styles.h1} className="col-sm-4 col-xs-12">
               <TextField
+                style={styles.TextField}
                 name="insuranceFortune"
                 floatingLabelText="2ème Pilier"
-                value={`CHF ${toMoney(this.props.insuranceFortune)}`}
-                style={styles.TextField}
                 onChange={this.changeInsuranceFortune}
-              />
+              >
+                <MaskedInput
+                  value={this.props.insuranceFortune}
+                  mask={swissFrancMask}
+                  guide
+                  pattern="[0-9]*"
+                />
+              </TextField>
             </h1>
             <span style={styles.sliderSpan} className="col-sm-8 col-xs-12">
               <Slider

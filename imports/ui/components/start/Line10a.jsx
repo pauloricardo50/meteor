@@ -127,10 +127,10 @@ export default class Line10a extends Component {
     } else {
       Meteor.clearTimeout(timer);
 
-      // If this isn't a slider, wait for 500ms before auto adjusting the other value
+      // If this isn't a slider, wait for 2 seconds before auto adjusting the other value
       timer = Meteor.setTimeout(() => {
         this.adjustValuesFunc(isFortune);
-      }, 500);
+      }, 2000);
     }
   }
 
