@@ -4,7 +4,7 @@ import Panel from 'react-bootstrap/lib/Panel';
 import Col from 'react-bootstrap/lib/Col';
 
 const Step2OffersTable = () => (
-  <Panel>
+  <section className="mask1">
     <h3>Les résultats sont arrivés</h3>
     <h6>
       Voici les 3 meilleures offres que vous avez reçues
@@ -83,7 +83,7 @@ const Step2OffersTable = () => (
 
     </article>
 
-  </Panel>
+  </section>
 );
 
 export default Step2OffersTable;

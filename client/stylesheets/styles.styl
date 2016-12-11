@@ -467,11 +467,12 @@ svg
     font-size: 8em;
 
 .lender-offers-table
-  width: 100%;
+  width: 180%;
   height: auto;
   display: table;
   margin: 0 auto 40px auto
   max-width: 800px;
+  table-layout: fixed;
   th
     font-weight: 300;
     padding: 10px;
@@ -479,10 +480,12 @@ svg
   td
     padding: 10px;
     padding-top: 20px;
-    font-size: 1.3em;
-  .right
+    font-size: 1.1em;
+    +above($med)
+      font-size: 1.3em;
+  .right-align
     text-align: right;
-  .left
+  .left-align
     text-align: left;
 
 

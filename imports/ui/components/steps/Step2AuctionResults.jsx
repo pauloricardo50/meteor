@@ -7,7 +7,12 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 const styles = {
   button: {
-    padding: 100,
+    paddingTop: 100,
+    paddingBottom: 100,
+  },
+  tableDiv: {
+    overflowX: 'scroll',
+    width: '100%',
   },
 };
 
@@ -56,10 +61,6 @@ export default class Step2AuctionResults extends Component {
     super(props);
   }
 
-  // handleClick() {
-  //   FlowRouter.go('/finance');
-  // }
-
   render() {
     return (
       <section className="mask1 animated fadeIn">
@@ -70,12 +71,13 @@ export default class Step2AuctionResults extends Component {
             label="Choisir ma stratégie de taux"
             primary
             href="/finance/strategy"
-            // onClick={this.handleClick}
           />
         </div>
 
         {/* Replace with this.props.creditRequest.lenderOffers */}
-        <LenderOffersTable lenderOffers={lenderOffers} />
+        <div style={styles.tableDiv}>
+          <LenderOffersTable lenderOffers={lenderOffers} />
+        </div>
 
       </section>
     );

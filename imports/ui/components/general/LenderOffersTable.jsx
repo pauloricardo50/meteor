@@ -18,21 +18,21 @@ export default class LenderOffersTable extends Component {
         </colgroup>
         <thead>
           <tr>
-            <th className="left">Prêteur</th>
-            <th className="right">Montant</th>
-            <th className="right">Taux D'intérêt</th>
-            <th className="right">Amortissement</th>
-            <th className="left">Expertise Requise?</th>
+            <th className="left-align">Prêteur</th>
+            <th className="right-align">Montant</th>
+            <th className="right-align">Taux D'intérêt</th>
+            <th className="right-align">Amortissement</th>
+            <th className="left-align">Expertise Requise?</th>
           </tr>
         </thead>
         <tbody>
           {this.props.lenderOffers.map((lenderOffer, index) => (
             <tr key={index}>
-              <td className="left">{lenderOffer.lender}</td>
-              <td className="right">{lenderOffer.maxAmount}</td>
-              <td className="right">{lenderOffer.interest10}</td>
-              <td className="right">{lenderOffer.amortizing}</td>
-              <td className="left">{lenderOffer.expertise.toString()}</td>
+              <td className="left-align">{lenderOffer.lender}</td>
+              <td className="right-align">{lenderOffer.maxAmount}</td>
+              <td className="right-align">{lenderOffer.interest10}</td>
+              <td className="right-align">{lenderOffer.amortizing}</td>
+              <td className="left-align">{lenderOffer.expertise.toString()}</td>
             </tr>
           ))}
         </tbody>

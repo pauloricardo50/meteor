@@ -50,13 +50,13 @@ export default class StrategyPage extends Component {
         <section className="mask1" style={styles.section}>
           <h1 style={styles.title}>Choisir ma Stratégie de Taux</h1>
 
-          <article className="col-sm-6 text-center" style={styles.article}>
+          <article className="col-xs-6 text-center" style={styles.article}>
             <div className="mask2 hover-rise" style={styles.choice}>
               <span className="fa fa-magic fa-5x" style={styles.icon} />
               <h4>Mode Automatique</h4>
             </div>
           </article>
-          <article className="col-sm-6 text-center" style={styles.article}>
+          <article className="col-xs-6 text-center" style={styles.article}>
             <div className="mask2 hover-rise" style={styles.choice}>
               <span className="fa fa-sliders fa-5x" style={styles.icon} />
               <h4>Mode Manuel</h4>
@@ -72,4 +72,5 @@ export default class StrategyPage extends Component {
 }
 
 StrategyPage.propTypes = {
+  creditRequest: React.PropTypes.objectOf(React.PropTypes.any),
 };
