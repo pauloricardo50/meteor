@@ -63,7 +63,7 @@ export default class Line3 extends Component {
       // If age is modified, make sure this step is cancelled/activated
       if (!nextProps.genderRequired) {
         nextProps.completeStep(null, true);
-        nextProps.setStep(3);
+        nextProps.setStep(this.props.index + 1);
       }
     }
   }

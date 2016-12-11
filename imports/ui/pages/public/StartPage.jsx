@@ -21,6 +21,9 @@ import Line9b from '/imports/ui/components/start/Line9b.jsx';
 import Line10a from '/imports/ui/components/start/Line10a.jsx';
 import Line11a from '/imports/ui/components/start/Line11a.jsx';
 
+import EmailLine from '/imports/ui/components/start/EmailLine.jsx';
+import PasswordLine from '/imports/ui/components/start/PasswordLine.jsx';
+
 
 const styles = {
   section: {
@@ -64,6 +67,11 @@ export default class StartPage extends Component {
       maxDebt: true,
       fortune: '',
       insuranceFortune: '',
+
+      email: '',
+      password: '',
+      login: false,
+      createAccount: false,
     };
 
     this.setStep = this.setStep.bind(this);
@@ -135,7 +143,7 @@ export default class StartPage extends Component {
       event.stopPropagation();
     }
 
-    const finalA = 11;
+    const finalA = 13;
     const finalB = 9;
     const max = this.state.maxStep;
     const finished = this.state.propertyKnown ? max === finalA : max === finalB;
@@ -172,6 +180,7 @@ export default class StartPage extends Component {
   }
 
   isFormValid() {
+    // Checks if all values are in the array are valid
     return this.state.isValid.every(bool => bool);
   }
 
@@ -191,7 +200,9 @@ export default class StartPage extends Component {
   render() {
     let lines;
     if (this.state.propertyKnown) {
-      lines = [Line1, Line2, Line3, Line4_1, Line4, Line5, Line6, Line7, Line7_2, Line8a, Line9a, Line10a, Line11a];
+      lines = [Line1, Line2, Line3, Line4_1, Line4, Line5, Line6, Line7, Line7_2, Line8a, Line9a,
+        Line10a, Line11a, EmailLine, PasswordLine,
+      ];
     } else {
       lines = [Line1, Line2, Line3, Line4_1, Line4, Line5, Line6, Line7, Line8b, Line9b];
     }

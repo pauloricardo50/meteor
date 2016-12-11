@@ -17,6 +17,13 @@ const styles = {
     marginLeft: 8,
     marginRight: 8,
   },
+  button: {
+    marginRight: 8,
+    marginBottom: 8,
+  },
+  extra: {
+    marginBottom: 16,
+  },
 };
 
 var timer;

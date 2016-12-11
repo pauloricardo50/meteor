@@ -1,10 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import CountUp from 'react-countup';
-import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { toMoney, toNumber } from '/imports/js/finance-math.js';
 
 const styles = {
   topH1: {
@@ -30,7 +28,7 @@ export default class Line11a extends Component {
       nextCountup: 0,
     };
 
-    this.handleContinue = this.handleContinue.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.counterCallback = this.counterCallback.bind(this);
   }
 
@@ -57,38 +55,10 @@ export default class Line11a extends Component {
     }
   }
 
-  handleContinue() {
-    // If the form is good, prepare path and route to it
-    //if (this.props.isValid && this.props.isFinished) {
-    if (true) {
-      const p = this.props;
-      const pathDef = '/new';
-      const params = {};
-      const queryParams = {
-        twoBuyers: p.twoBuyers,
-        age1: p.age1,
-        age2: p.age2,
-        genderRequired: p.genderRequired,
-        gender1: p.gender1,
-        gender2: p.gender2,
-        purchaseType: p.purchaseType,
-        propertyType: p.propertyType,
-        salary: p.salary,
-        bonusExists: p.bonusExists,
-        bonus: p.bonus,
-        propertyKnown: p.propertyKnown,
-        propertyValue: p.propertyValue,
-        maxCash: p.maxCash,
-        maxDebt: p.maxDebt,
-        fortune: p.fortune,
-        insuranceFortune: p.insuranceFortune,
-      };
-
-      const path = FlowRouter.path(pathDef, params, queryParams);
-
-      FlowRouter.go(path);
-    }
+  handleClick(e) {
+    this.props.completeStep(e, true, true);
   }
+
 
   counterCallback() {
     this.setState({ countedOnce: true });
@@ -96,7 +66,7 @@ export default class Line11a extends Component {
 
   render() {
     return (
-      <article onClick={this.props.setStep} className="col-xs-10 col-xs-offset-1 mask1">
+      <article onClick={this.props.setStep} className={this.props.classes.text += ' mask1'}>
         {/* <h1 className={this.props.classes.text}>
           En développement: Ici il y aura de gros graphiques avec un recapitulatif.
         </h1> */}
@@ -146,13 +116,11 @@ export default class Line11a extends Component {
         </div>
         <div className="col-xs-12 text-center form-group" style={styles.finalButtons}>
           <RaisedButton
-            label="Commencer la demande de prêt"
+            label="Continuer"
             style={styles.button}
-            onClick={this.handleContinue}
+            onClick={this.handleClick}
             primary
           />
-          <br />
-          <RaisedButton href="/" label="Retour sur la Home Page" />
         </div>
 
       </article>

@@ -1,4 +1,6 @@
 import { Meteor } from 'meteor/meteor';
+import { check } from 'meteor/check';
+import { Accounts } from 'meteor/accounts-base';
 
 Meteor.methods({
     toggleAdmin(id) {
@@ -20,5 +22,12 @@ Meteor.methods({
         // } else {
         //     Roles.addUsersToRoles(id, 'admin');
         // }
-    }
+    },
+});
+
+Meteor.methods({
+  doesUserExist(email) {
+    check(email, String);
+    return Accounts.findUserByEmail(email) != null;
+  },
 });

@@ -222,7 +222,7 @@ module.exports = function(props) {
               "Une idée géniale, qui révolutionne le prêt hypothécaire"
             </h4>
             <p className="paragraph">
-              Johann Scheider-Ammann - CEO @ Switzerland
+              Johann Schneider-Ammann - CEO @ Switzerland
             </p>
           </div>
         </div>

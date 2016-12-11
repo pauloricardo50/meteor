@@ -44,7 +44,7 @@ export const emailValidation = (value) => {
 
   if (is.not.email(value)) {
     isValid = false;
-    errors.push();
+    errors.push('Cette adresse email n\'est pas valide');
   }
 
   return [isValid, errors];

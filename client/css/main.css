@@ -339,6 +339,14 @@ p.paragraph {
 	padding: 90px 0 0 0;
 	border-bottom: 1px solid rgba(0,0,0,.1);
 }
+
+@media (min-width: 900px) {
+  .feature1 {
+    padding-bottom: 90px;
+  }
+}
+
+
 .feature1	.centerdevices {
 	/*margin-top: 90px; FLORIAN*/
 }.feature2 {

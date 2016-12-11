@@ -48,6 +48,16 @@ export default class Line8a extends Component {
     );
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.propertyType !== nextProps.propertyType) {
+      // If age is modified, make sure this step is cancelled/activated
+      if (nextProps.propertyType !== 'primary') {
+        nextProps.completeStep(null, true);
+        nextProps.setStep(this.props.index + 1);
+      }
+    }
+  }
+
   changeState(e, maxCash) {
     this.props.setStateValue('maxCash', maxCash);
     this.props.completeStep(e, true, true);
