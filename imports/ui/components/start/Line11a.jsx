@@ -5,6 +5,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 
 const styles = {
+  article: {
+    color: 'unset',
+  },
   topH1: {
     paddingTop: 50,
     paddingBottom: 50,
@@ -66,7 +69,7 @@ export default class Line11a extends Component {
 
   render() {
     return (
-      <article onClick={this.props.setStep} className={this.props.classes.text += ' mask1'}>
+      <article onClick={this.props.setStep} className={this.props.classes.text += ' mask1'} style={styles.article}>
         {/* <h1 className={this.props.classes.text}>
           En développement: Ici il y aura de gros graphiques avec un recapitulatif.
         </h1> */}
