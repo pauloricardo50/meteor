@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
+import { FlowRouter } from 'meteor/kadira:flow-router';
+import { updateValues } from '/imports/api/creditrequests/methods.js';
 
 import RaisedButton from 'material-ui/RaisedButton';
-
 
 import FinanceStrategyPicker from '/imports/ui/components/general/FinanceStrategyPicker.jsx';
 
@@ -9,6 +11,10 @@ import FinanceStrategyPicker from '/imports/ui/components/general/FinanceStrateg
 const styles = {
   backButton: {
     marginBottom: 32,
+  },
+  okButton: {
+    marginTop: 32,
+    float: 'right',
   },
   section: {
     // paddingBottom: 40,
@@ -37,6 +43,26 @@ const styles = {
 export default class StrategyPage extends Component {
   constructor(props) {
     super(props);
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    const object = {};
+    object['logic.step'] = 2;
+    const id = this.props.creditRequest._id;
+
+    updateValues.call({
+      object, id,
+    }, (error, result) => {
+      if (error) {
+        throw new Meteor.Error(500, error.message);
+      } else {
+        // Head to step 2
+        FlowRouter.go('/step3');
+        return 'Update Successful';
+      }
+    });
   }
 
   render() {
@@ -66,6 +92,12 @@ export default class StrategyPage extends Component {
           <FinanceStrategyPicker creditRequest={this.props.creditRequest} style={styles.picker} />
 
         </section>
+        <RaisedButton
+          style={styles.okButton}
+          label="Ok"
+          primary
+          onClick={this.handleClick}
+        />
       </div>
     );
   }

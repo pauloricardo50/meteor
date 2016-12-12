@@ -30,7 +30,7 @@ export default class RequestSelector extends Component {
 
   handleChange(event, index, value) {
     if (value === 'new') {
-      FlowRouter.go('/new');
+      FlowRouter.go('/start');
     } else {
       // Update the database to set the active request
       this.props.creditRequests.forEach((request, index2) => {

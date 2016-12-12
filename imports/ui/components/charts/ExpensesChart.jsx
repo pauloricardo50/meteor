@@ -32,13 +32,13 @@ export default class ExpensesChart extends Component {
     const options = {
       chart: {
         type: 'pie',
-        // margin: [0, 0, 0, 0],
-        // spacing: [0, 0, 0, 0],
       },
       title: {
         text: `CHF ${
           toMoney(
-            Math.round(this.getInterests() + this.getAmortization() + ((r.propertyInfo.value * 0.01) / 12))
+            Math.round(
+              this.getInterests() + this.getAmortization() + ((r.propertyInfo.value * 0.01) / 12)
+            )
           )
         }<br>par mois`,
         align: 'center',
@@ -146,7 +146,7 @@ export default class ExpensesChart extends Component {
 
 
     if (r.logic.hasChosenStrategyOnce) {
-      // return real interest rate
+      // TODO: return real interest rate
     }
 
     return (loan * 0.015) / 12;

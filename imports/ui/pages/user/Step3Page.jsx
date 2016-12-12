@@ -1,7 +1,13 @@
 import React, { PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
 import { DocHead } from 'meteor/kadira:dochead';
+import { FlowRouter } from 'meteor/kadira:flow-router';
+
+
+import RaisedButton from 'material-ui/RaisedButton';
 
 import TodoCardArray from '/imports/ui/components/general/TodoCardArray.jsx';
+import { updateValues } from '/imports/api/creditrequests/methods.js';
 
 
 const todoCards = [
@@ -18,6 +24,12 @@ const todoCards = [
 ];
 
 
+const styles = {
+  continueButton: {
+    float: 'right',
+  },
+};
+
 export default class Step3Page extends React.Component {
   constructor(props) {
     super(props);
@@ -25,10 +37,30 @@ export default class Step3Page extends React.Component {
       progress: [0, 0, 0],
       arrayLength: todoCards.length,
     };
+
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
     DocHead.setTitle('Étape 3 - e-Potek');
+  }
+
+  handleClick() {
+    const object = {};
+    object['logic.step'] = 3;
+    const id = this.props.creditRequest._id;
+
+    updateValues.call({
+      object, id,
+    }, (error, result) => {
+      if (error) {
+        throw new Meteor.Error(500, error.message);
+      } else {
+        // Head to step 2
+        FlowRouter.go('/step4');
+        return 'Update Successful';
+      }
+    });
   }
 
 
@@ -40,6 +72,14 @@ export default class Step3Page extends React.Component {
           cards={todoCards}
           progress={this.state.progress}
         />
+        <div className="col-xs-12">
+          <RaisedButton
+            label="Continuer"
+            style={styles.continueButton}
+            primary
+            onClick={this.handleClick}
+          />
+        </div>
       </div>
     );
   }

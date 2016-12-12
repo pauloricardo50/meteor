@@ -27,11 +27,16 @@ export default class BottomNav extends Component {
 
   render() {
     let currentIndex;
-    switch (this.props.currentURL) {
-      case '/finance': currentIndex = 1; break;
-      case '/settings': currentIndex = 2; break;
-      default: currentIndex = 0;
+    const url = this.props.currentURL;
+
+    if (url.substring(0, 8) === '/finance') {
+      currentIndex = 1;
+    } else if (url.substring(0, 9) === '/settings') {
+      currentIndex = 2;
+    } else {
+      currentIndex = 0;
     }
+
 
     return (
       <nav className="hidden-sm hidden-md hidden-lg" style={styles.nav}>

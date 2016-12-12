@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { DocHead } from 'meteor/kadira:dochead';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
 import Step1Part1 from '/imports/ui/components/steps/Step1Part1.jsx';
 import Step1Part2 from '/imports/ui/components/steps/Step1Part2.jsx';
+import { updateValues } from '/imports/api/creditrequests/methods.js';
 
 
 const styles = {
@@ -18,6 +20,7 @@ export default class Step1Page extends Component {
     super(props);
 
     this.isReady = this.isReady.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -41,12 +44,35 @@ export default class Step1Page extends Component {
 
     }
 
-    return projectReady && taxesReady;
+    // TODO
+    // return projectReady && taxesReady;
+    return true;
+  }
+
+  handleClick() {
+    if (this.isReady()) {
+
+      const object = {};
+      object['logic.step'] = 1;
+      const id = this.props.creditRequest._id;
+
+      updateValues.call({
+        object, id,
+      }, (error, result) => {
+        if (error) {
+          throw new Meteor.Error(500, error.message);
+        } else {
+          // Head to step 2
+          FlowRouter.go('/step2');
+          return 'Update Successful';
+        }
+      });
+    }
   }
 
   render() {
     return (
-      <section>
+      <section className="animated fadeIn">
 
         <h1 className="stepTitle">
           1ère Étape
@@ -61,7 +87,7 @@ export default class Step1Page extends Component {
           disabled={!this.isReady()}
           primary
           style={styles.button}
-          href="/step2"
+          onClick={this.handleClick}
         />
 
       </section>
