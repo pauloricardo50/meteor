@@ -1,12 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import { DocHead } from 'meteor/kadira:dochead';
+import { Meteor } from 'meteor/meteor';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import Checkbox from 'material-ui/Checkbox';
+import RaisedButton from 'material-ui/RaisedButton';
+
 
 import RequestSelector from '/imports/ui/components/general/RequestSelector.jsx';
 
 
 const styles = {
+  section: {
+    position: 'relative',
+  },
   h: {
     display: 'inline-block',
     marginRight: 5,
@@ -14,6 +21,11 @@ const styles = {
   div: {
     paddingLeft: 20,
     paddingRight: 20,
+  },
+  mobileLogoutButton: {
+    position: 'absolute',
+    top: 40,
+    right: 20,
   },
 };
 
@@ -30,8 +42,14 @@ export default class SettingsPage extends Component {
 
   render() {
     return (
-      <section className="mask1 animated fadeIn" >
+      <section className="mask1 animated fadeIn" style={styles.section}>
         <h2>Réglages</h2>
+        <span className="hidden-sm hidden-md hidden-lg" style={styles.mobileLogoutButton}>
+          <RaisedButton
+            label="Déconnexion"
+            onClick={() => Meteor.logout(() => FlowRouter.go('/'))}
+          />
+        </span>
         <hr />
 
         <div style={styles.div}>

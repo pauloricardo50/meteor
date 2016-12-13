@@ -228,7 +228,9 @@ a
   padding-top 20px
   padding-bottom $bottom-nav-height
   display: table;
+  height: calc(100% - 66px); // To offset top bar on mobile
   +above($med)
+    height: 100%;
     padding-top: 86px // To offset the fixed progress bar header, height + 20 px
     lost-center 90%
     padding-left $side-nav
@@ -241,7 +243,8 @@ a
 .user-layout-center
   display: table-cell;
   vertical-align: middle;
-  padding-bottom: 50px;
+  +above($med)
+    padding-bottom: 50px;
 
 
 .full-screen

@@ -37,7 +37,8 @@ const styles = {
     verticalAlign: 'middle',
   },
   scrollElement: {
-    overflow: 'auto',
+    // Required to make them properly scale with child elements
+    overflow: 'visible',
   },
 };
 
