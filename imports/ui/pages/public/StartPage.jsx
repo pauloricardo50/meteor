@@ -36,6 +36,9 @@ const styles = {
     display: 'table-cell',
     verticalAlign: 'middle',
   },
+  scrollElement: {
+    overflow: 'auto',
+  },
 };
 
 
@@ -90,6 +93,7 @@ export default class StartPage extends Component {
   setStep(i) {
     this.setState({ step: i });
     this.scroll(i);
+    console.log('setStep: ' + i);
   }
 
   setStateValue(name, value, callback) {
@@ -189,9 +193,11 @@ export default class StartPage extends Component {
       duration: 500,
       delay: 0,
       smooth: true,
+      offset: -100,
     };
     if (step) {
-      Scroll.scroller.scrollTo(step.toString(), options);
+      console.log(step.toString());
+      Scroll.scroller.scrollTo('scroll' + step.toString(), options);
     } else {
       Scroll.animateScroll.scrollToBottom(options);
     }
@@ -211,7 +217,7 @@ export default class StartPage extends Component {
       <section style={styles.section} className="NLForm">
         <div style={styles.div}>
           {lines.slice(0, this.state.maxStep + 1).map((ComponentX, index) =>
-            <Scroll.Element name={index.toString()} key={index}>
+            <Scroll.Element name={'scroll' + index} key={index} style={styles.scrollElement}>
               <ComponentX
                 {...this.state}
                 setStateValue={this.setStateValue}
