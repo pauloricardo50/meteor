@@ -5,17 +5,17 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 
 const styles = {
-  mask: {
-    paddingLeft: 0,
-    paddingRight: 0,
-  },
-  container: {
+  sideNavContainer: {
     position: 'relative',
-    height: 'calc(100% - 50px)',
+    height: 'calc(100% - 35px)',
     width: '100%',
   },
-  button: {
+  financePageContainer: {
     position: 'relative',
+    height: 250,
+    width: '100%',
+    marginTop: 20,
+    marginBottom: 50,
   },
 };
 
@@ -27,7 +27,7 @@ const colors = {
   loan: '#3498db',
 };
 
-export default class SideChart extends Component {
+export default class ProjectChart extends Component {
   constructor(props) {
     super(props);
   }
@@ -37,7 +37,7 @@ export default class SideChart extends Component {
 
     const options = {
       chart: {
-        type: 'column',
+        type: (this.props.horizontal ? 'bar' : 'column'),
         polar: false,
         width: null,
         height: null,
@@ -57,7 +57,7 @@ export default class SideChart extends Component {
         },
       },
       title: {
-        text: 'Mon Projet',
+        text: (this.props.horizontal ? '' : 'Mon Projet'),
       },
       yAxis: [
         {
@@ -135,7 +135,7 @@ export default class SideChart extends Component {
         thousandsSep: '\'',
       },
     });
-    this.chart = new Highcharts.Chart('sideChart', options);
+    this.chart = new Highcharts.Chart('projectChart', options);
   }
 
   componentWillUnmount() {
@@ -143,22 +143,14 @@ export default class SideChart extends Component {
   }
 
   render() {
-    return (
-      <article className="mask1 finance-widget" style={styles.mask}>
-        <div id="sideChart" style={styles.container} />
-        <div className="text-center">
-          <RaisedButton
-            href="/finance"
-            label="Modifier"
-            primary
-            style={styles.button}
-          />
-        </div>
-      </article>
-    );
+    return (<div
+      id="projectChart"
+      style={(this.props.horizontal ? styles.financePageContainer : styles.sideNavContainer)}
+    />);
   }
 }
 
-SideChart.propTypes = {
+ProjectChart.propTypes = {
   creditRequest: PropTypes.objectOf(PropTypes.any),
+  horizontal: PropTypes.bool.isRequired,
 };

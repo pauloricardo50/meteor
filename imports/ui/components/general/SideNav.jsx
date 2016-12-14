@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { FlowRouter } from 'meteor/kadira:flow-router';
+
+import RaisedButton from 'material-ui/RaisedButton';
 
 import FinanceWidget from '/imports/ui/components/general/FinanceWidget.jsx';
-import SideChart from '/imports/ui/components/charts/SideChart.jsx';
+import ProjectChart from '/imports/ui/components/charts/ProjectChart.jsx';
 
 const styles = {
   icon: {
@@ -19,6 +20,10 @@ const styles = {
     // width: 160,
     paddingLeft: 20,
     paddingRight: 20,
+  },
+  chartMask: {
+    paddingLeft: 0,
+    paddingRight: 0,
   },
 };
 
@@ -82,7 +87,17 @@ export default class SideNav extends Component {
 
       // content2 = <FinanceWidget creditRequest={this.props.creditRequest} />;
       content2 = this.props.currentURL !== '/finance' &&
-        <SideChart creditRequest={this.props.creditRequest} />;
+        (<article className="mask1 finance-widget" style={styles.chartMask}>
+          <ProjectChart creditRequest={this.props.creditRequest} horizontal={false} />
+          <div className="text-center">
+            <RaisedButton
+              href="/finance"
+              label="Modifier"
+              primary
+              style={styles.button}
+            />
+          </div>
+        </article>);
 
     } else {
       // If the user is not on the main page, show a link to it

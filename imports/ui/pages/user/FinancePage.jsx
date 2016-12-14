@@ -5,6 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 
 import PropertyChart from '/imports/ui/components/charts/PropertyChart.jsx';
+import ProjectChart from '/imports/ui/components/charts/ProjectChart.jsx';
 import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
 
 const styles = {
@@ -42,7 +43,8 @@ export default class FinancePage extends Component {
 
         <article>
           <h3 className="text-center">Mon Projet</h3>
-          <PropertyChart creditRequest={this.props.creditRequest} />
+          {/* <PropertyChart creditRequest={this.props.creditRequest} /> */}
+          <ProjectChart creditRequest={this.props.creditRequest} horizontal />
         </article>
 
         <article>

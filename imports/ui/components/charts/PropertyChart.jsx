@@ -33,14 +33,16 @@ export default class PropertyChart extends Component {
 
     const options = {
       chart: {
-        type: 'column',
+        // 'column' or 'bar'
+        type: 'bar',
         style: {
           fontFamily: 'Source Sans Pro, sans-serif',
           fontSize: '16px',
         },
       },
       plotOptions: {
-        column: {
+        // column or series
+        series: {
           stacking: 'normal',
           dataLabels: {
             enabled: true,
@@ -82,6 +84,14 @@ export default class PropertyChart extends Component {
       },
       series: [
         {
+          name: 'Retrait 2ème Pilier',
+          data: [[0, (r.financialInfo.insuranceFortune * 0.1)]],
+          color: colors.frais2,
+        }, {
+          name: 'Frais de Notaire',
+          data: [[0, (r.propertyInfo.value * 0.05)]],
+          color: colors.frais1,
+        }, {
           name: 'Propriété',
           data: [[0, r.propertyInfo.value]],
           color: colors.property,
