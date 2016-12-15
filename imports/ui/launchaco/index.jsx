@@ -73,13 +73,13 @@ module.exports = function(props) {
       </div> --> */}
       <div className="container-sml text-center">
         <div className="col-12">
-          <h1 className="heading">
+          <h1 className="heading animated fadeInDown">
             La meilleure hypothèque, Simplement.
           </h1>
         </div>
       </div>
       <div className="container-lrg flex">
-        <div className="col-6 centervertical">
+        <div className="col-6 centervertical animated fadeInLeft">
           <h2 className="paragraph bold">
             Mettez tous les prêteurs en compétition et trouvez le meilleur financement du pays pour votre future propriété
           </h2>
@@ -109,7 +109,7 @@ module.exports = function(props) {
             />
           </div>
         </div>
-        <div className="col-6 sidedevices">
+        <div className="col-6 sidedevices animated fadeInRight">
           {/* <div className="computeriphone">
             <div className="computer">
               <div className="mask">
@@ -137,7 +137,7 @@ module.exports = function(props) {
         </div>
       </div>
     </header>
-    <div className="feature3">
+    <div className="feature3 animated fadeInUp">
       <div className="container-lrg flex">
         <div className="col-4">
           <b className="emoji">
@@ -192,7 +192,7 @@ module.exports = function(props) {
               <img className="mask-img" src="img/mobileapp.svg" />
             </div>
           </div>
-          <div className="browser">
+          <div className="browser animated fadeInRight">
             <div className="mask">
               <img className="mask-img" src="img/webapp.svg" />
             </div>

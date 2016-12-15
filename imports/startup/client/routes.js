@@ -7,23 +7,25 @@ import { mount } from 'react-mounter';
 // layouts
 import PublicLayout from '/imports/ui/layouts/PublicLayout.jsx';
 import UserLayout from '/imports/ui/layouts/UserLayout.jsx';
+import PartnerLayout from '/imports/ui/layouts/PartnerLayout.jsx';
 
-// Pages and top-level components
+// Public Pages
 import HomePage from '/imports/ui/containers/public/HomePageContainer.jsx';
 import StartPage from '/imports/ui/pages/public/StartPage.jsx';
 import LoginPage from '/imports/ui/pages/public/LoginPage.jsx';
-import NewPage from '/imports/ui/pages/user/NewPage.jsx';
 
+// User Pages and components
 import {
   MainPage, TodoCardPage, FinancePage, StrategyPage, ContactPage,
   Step1Page, Step2Page, Step3Page, Step4Page, Step5Page, Step6Page,
   // RequestProgressBar,
 } from '/imports/ui/containers/user/ActiveRequestContainer.jsx';
-
+import NewPage from '/imports/ui/pages/user/NewPage.jsx';
 import { RequestProgressBar } from '/imports/ui/containers/user/CurrentURLContainer.jsx';
-
 import SettingsPage from '/imports/ui/containers/user/SettingsPageContainer.jsx';
 
+// Partner Pages
+import { PartnerHomePage } from '/imports/ui/containers/partner/PartnerRequestsContainer.jsx';
 
 // Automatically route someone who logs out to the homepage
 if (Meteor.isClient) {
@@ -267,13 +269,19 @@ FlowRouter.route('/finance/strategy', {
 //   },
 // });
 //
-//
-// // Partner routes
-// FlowRouter.route('/requests/:id/partnerform', {
-//   name: 'partnerForm',
-//   action() {
-//     mount(AdminLayout, {
-//       content: <PartnerFormPage />,
-//     });
-//   },
-// });
+
+// Partner routes
+const partnerRoutes = FlowRouter.group({
+  prefix: '/partner',
+  name: 'partner',
+});
+
+partnerRoutes.route('/', {
+  name: 'partnerHome',
+  action() {
+    mount(PartnerLayout, {
+      content:
+        <PartnerHomePage />,
+    });
+  },
+});

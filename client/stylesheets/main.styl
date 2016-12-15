@@ -240,7 +240,14 @@ a
     // margin-top 40px
     padding-left $side-nav-large
 
-.user-layout-center
+.partner-layout
+  display: table;
+  height: calc(100% - 66px); // To offset top bar on mobile
+  padding: 0 20px;
+  +above($med)
+    height: 100%;
+
+.user-layout-center, .partner-layout-center
   display: table-cell;
   vertical-align: middle;
   +above($med)
