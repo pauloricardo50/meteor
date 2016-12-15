@@ -62,7 +62,7 @@
 .sidedevices .iphoneipad .iphone:after {
 	top: initial;
 	bottom: 14px;
-	left: calc(50% - 22px);;
+	left: calc(50% - 22px);
 }
 .sidedevices .iphoneipad .iphone:before {
 	content: "";
@@ -84,6 +84,8 @@
 		margin: 0 0 0 -20px;
 		z-index: 99;
 		-webkit-overflow-scrolling: touch;
+    /* FLORIAN */
+    padding-bottom: 90px;
 	}
 	.sidedevices .iphoneipad .iphone,
 	.sidedevices .iphoneipad .ipad {
@@ -157,7 +159,7 @@
 	letter-spacing: -1px;
 	border-radius: 10px;
 	color: rgba(0,0,0,.05);
-	background: -webkit-linear-gradient(left, rgba(255,99,91,1) 0%,rgba(255,99,91,1) 35%,rgba(255,99,91,1) 35%,rgba(255,195,48,1) 35%,rgba(255,195,48,1) 66%,rgba(41,207,66,1) 66%,rgba(41,207,66,1) 100%);
+	background: -webkit-linear-gradient(left, rgba(255,99,91,1) 0%,rgba(255,99,91,1) 45%,rgba(255,99,91,1) 45%,rgba(255,195,48,1) 45%,rgba(255,195,48,1) 70%,rgba(41,207,66,1) 70%,rgba(41,207,66,1) 100%);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	font-size: 26px;
@@ -225,6 +227,8 @@
 		width: calc(100% + 40px;);
 		-webkit-overflow-scrolling: touch;
 		vertical-align: top;
+    /* Florian changed*/
+    padding: 90px 0;
 	}
 	.centerdevices .browseriphone .iphone {
 		display: inline-block;

@@ -154,7 +154,9 @@ p.paragraph {
 .sidedevices {
   position: relative;
 }.header {
-	padding: 20px 0 90px 0;
+  /* FLORIAN */
+	/*padding: 20px 0 90px 0;*/
+  padding-top: 20px;
 	overflow: hidden;
 }
 .header .heading {
