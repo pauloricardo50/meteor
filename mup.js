@@ -27,7 +27,11 @@ module.exports = {
       ROOT_URL: 'http://e-potek.ch',
       MONGO_URL: 'mongodb://admin1:password@gcp-europe-west1-cpu.0.dblayer.com:15119/e-potek-test?ssl=true',
     },
-
     dockerImage: 'abernix/meteord:base',
+    ssl: { // Not working so far
+      crt: './bundle.crt',
+      key: './privatekey.key',
+      port: 443,
+    },
   },
 };
