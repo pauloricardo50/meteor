@@ -110,7 +110,7 @@ module.exports = function(props) {
           </div>
         </div>
         <div className="col-6 sidedevices">
-          <div className="computeriphone">
+          {/* <div className="computeriphone">
             <div className="computer">
               <div className="mask">
                 <img className="mask-img" src="img/webapp.svg" />
@@ -119,6 +119,18 @@ module.exports = function(props) {
             <div className="iphone">
               <div className="mask">
                 <img className="mask-img" src="img/mobileapp.svg" />
+              </div>
+            </div>
+          </div> */}
+          <div className="iphoneipad">
+            <div className="iphone">
+              <div className="mask">
+                <img className="mask-img" src="img/mobileapp.svg" />
+              </div>
+            </div>
+            <div className="ipad">
+              <div className="mask">
+                <img className="mask-img" src="img/tabletapp.svg" />
               </div>
             </div>
           </div>
@@ -169,7 +181,7 @@ module.exports = function(props) {
             Avancez sur votre projet à tout instant
           </h3>
           <p className="paragraph">
-            Optimisé pour tablette, smartphone et ordinateur, avancez dans votre demande où que vous soyez, avec un confort maximal.
+            Optimisé pour tablette, smartphone et ordinateur, avancez dans votre demande de prêt où que vous soyez, avec un confort maximal.
           </p>
         </div>
       </div>
