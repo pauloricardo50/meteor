@@ -8,7 +8,7 @@ export default class LenderOffersTable extends Component {
 
   render() {
     return (
-      <table className="lender-offers-table">
+      <table className="minimal-table">
         <colgroup>
           <col span="1" style={{ width: '21%' }} />
           <col span="1" style={{ width: '21%' }} />

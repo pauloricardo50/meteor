@@ -10,7 +10,7 @@ import UserLayout from '/imports/ui/layouts/UserLayout.jsx';
 import PartnerLayout from '/imports/ui/layouts/PartnerLayout.jsx';
 
 // Public Pages
-import HomePage from '/imports/ui/containers/public/HomePageContainer.jsx';
+import HomePage from '/imports/ui/containers/public/HomePageContainer.js';
 import StartPage from '/imports/ui/pages/public/StartPage.jsx';
 import LoginPage from '/imports/ui/pages/public/LoginPage.jsx';
 
@@ -19,13 +19,15 @@ import {
   MainPage, TodoCardPage, FinancePage, StrategyPage, ContactPage,
   Step1Page, Step2Page, Step3Page, Step4Page, Step5Page, Step6Page,
   // RequestProgressBar,
-} from '/imports/ui/containers/user/ActiveRequestContainer.jsx';
+} from '/imports/ui/containers/user/ActiveRequestContainer.js';
 import NewPage from '/imports/ui/pages/user/NewPage.jsx';
-import { RequestProgressBar } from '/imports/ui/containers/user/CurrentURLContainer.jsx';
-import SettingsPage from '/imports/ui/containers/user/SettingsPageContainer.jsx';
+import { RequestProgressBar } from '/imports/ui/containers/user/CurrentURLContainer.js';
+import SettingsPage from '/imports/ui/containers/user/SettingsPageContainer.js';
 
 // Partner Pages
-import { PartnerHomePage } from '/imports/ui/containers/partner/PartnerRequestsContainer.jsx';
+import { PartnerHomePage } from '/imports/ui/containers/partner/PartnerRequestsContainer.js';
+import { PartnerRequestPage } from '/imports/ui/containers/partner/PartnerSingleRequestContainer.js';
+
 
 // Automatically route someone who logs out to the homepage
 if (Meteor.isClient) {
@@ -282,6 +284,16 @@ partnerRoutes.route('/', {
     mount(PartnerLayout, {
       content:
         <PartnerHomePage />,
+    });
+  },
+});
+
+partnerRoutes.route('/:requestId', {
+  name: 'partnerRequestPage',
+  action() {
+    mount(PartnerLayout, {
+      content:
+        <PartnerRequestPage />,
     });
   },
 });

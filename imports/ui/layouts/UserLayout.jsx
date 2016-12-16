@@ -3,8 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
-import { SideNav, BottomNav } from '../containers/user/CurrentURLContainer.jsx';
-// import { BottomNav } from '../containers/user/CurrentURLContainer.jsx';
+import { SideNav, BottomNav } from '../containers/user/CurrentURLContainer.js';
 
 // MUI Theme, replace lightBaseTheme with a custom theme ASAP!
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -13,8 +12,8 @@ import myTheme from '/imports/js/mui_custom.js';
 
 const theme = myTheme;
 
-// TODO: hide navbars if there is currently no active creditRequest
 
+// TODO: hide navbars if there is currently no active creditRequest
 
 export default class UserLayout extends Component {
 

@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
-import PublicNav from '/imports/ui/containers/public/CurrentUserContainer.jsx';
+import PublicNav from '/imports/ui/containers/public/CurrentUserContainer.js';
 
 
 // MUI Theme, replace lightBaseTheme with a custom theme ASAP!
