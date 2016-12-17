@@ -19,6 +19,7 @@ export default class AuctionTableLine extends Component {
     };
 
     this.handleClick = this.handleClick.bind(this);
+    this.setRemainingTime = this.setRemainingTime.bind(this);
   }
 
   componentDidMount() {
@@ -26,13 +27,11 @@ export default class AuctionTableLine extends Component {
     this.setRemainingTime();
 
     // Repeat every second
-    time = Meteor.setInterval(() => {
-      this.setRemainingTime();
-    }, 1000);
+    this.interval = Meteor.setInterval(this.setRemainingTime, 1000);
   }
 
   componentWillUnmount() {
-    Meteor.clearInterval(time);
+    Meteor.clearInterval(this.interval);
   }
 
   setRemainingTime() {

@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import CreditRequests from '../creditrequests.js';
 
+
 // Publish a specific creditRequest with an ID
 Meteor.publish('creditRequest', (id) => {
   check(id, String);
@@ -21,6 +22,7 @@ Meteor.publish('creditRequest', (id) => {
   // Throw unauthorized error
 });
 
+
 // Publish the currently active creditrequest
 Meteor.publish('activeCreditRequest', function () {
   // find or findOne? Since there should only be one at any time..?
@@ -36,6 +38,7 @@ Meteor.publish('activeCreditRequest', function () {
   return this.ready();
 });
 
+
 // Publish all creditrequests from the current user
 Meteor.publish('creditRequests', function () {
   // Verify if user is logged In
@@ -48,6 +51,7 @@ Meteor.publish('creditRequests', function () {
   });
 });
 
+
 // Publish all creditrequests in the database for admins
 // Meteor.publish('allCreditRequests', () => {
 //   // Verify if user is logged In
@@ -58,19 +62,50 @@ Meteor.publish('creditRequests', function () {
 //   return [];
 // });
 
+
+const partnerVisibleFields = { // TODO: Complete this
+  requestName: 1,
+  type: 1,
+
+  'personalInfo.twoBuyers': 1,
+  'personalInfo.age1': 1,
+  'personalInfo.age2': 1,
+  'personalInfo.gender1': 1,
+  'personalInfo.gender2': 1,
+
+  financialInfo: 1,
+
+  propertyInfo: 1,
+
+  'files.willUploadTaxes': 1,
+
+  'logic.auctionStarted': 1,
+  'logic.auctionStartTime': 1,
+  'logic.auctionEndTime': 1,
+};
+
+
+// Publish all creditrequests this partner has access to
+Meteor.publish('partnerRequests', function () {
+  // TODO Verify if this partner is allowed to see this credit request
+
+  return CreditRequests.find({
+    // TODO add logic to filter requests
+  }, {
+    fields: partnerVisibleFields,
+  });
+});
+
+
 // Publish the creditrequest with a specific ID, and only show the fields for an anonymous offer
-Meteor.publish('partnerCreditRequest', (id) => {
+Meteor.publish('partnerSingleCreditRequest', function (id) {
   check(id, String);
 
-  // TODO Verify something? or public?
+  // TODO Verify if this partner is allowed to see this credit request
 
   return CreditRequests.find({
     _id: id,
   }, {
-    fields: {
-      salary: 1,
-      fortune: 1,
-      // add more!
-    },
+    fields: partnerVisibleFields,
   });
 });

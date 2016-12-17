@@ -139,13 +139,13 @@ export const FinancialInfoSchema = new SimpleSchema({
 
 // Information about the property, like room count, property value and address
 export const PropertyInfoSchema = new SimpleSchema({
-  value: {
+  value: { // Cost of the property
     type: Number,
     optional: true,
     min: 0,
     max: 100000000,
   },
-  purchaseType: {
+  purchaseType: { // acquisition, refinancing, construction
     type: String,
     optional: true,
     defaultValue: '',
@@ -155,17 +155,17 @@ export const PropertyInfoSchema = new SimpleSchema({
     defaultValue: 'primary',
     optional: true,
   },
-  style: {
+  style: { // villa, flat,
     type: String,
     defaultValue: '',
     optional: true,
   },
-  surface: {
+  surface: { // inside
     type: Number,
     defaultValue: undefined,
     optional: true,
   },
-  surfaceTotal: {
+  surfaceTotal: { // inside and outside
     type: Number,
     defaultValue: undefined,
     optional: true,
