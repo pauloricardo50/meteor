@@ -20,10 +20,8 @@ const TodoCardArray = props => (
     <ul style={styles.ul}>
       {props.cards.map((card, index) => (
         <TodoCard
-          title={card.title}
-          duration={card.duration}
+          {...card}
           completionPercentage={props.progress[index]}
-          cardId={`1-${index + 1}`}
           key={index}
           // If the array length is odd (% 2), return true when this is the last card
           center={props.cards.length % 2 ? (index === (props.cards.length - 1)) : false}

@@ -18,6 +18,7 @@ const styles = {
   },
   logo: {
     // width: 160,
+    maxHeight: 25,
     paddingLeft: 20,
     paddingRight: 20,
   },
@@ -115,7 +116,7 @@ export default class SideNav extends Component {
       <nav className="side-nav hidden-xs">
 
         <a href="/">
-          <img src="img/logo_black.svg" alt="e-Potek" width="160px" style={styles.logo} />
+          <img src="img/logo_black.svg" alt="e-Potek"  style={styles.logo} />
         </a>
 
         {content1}

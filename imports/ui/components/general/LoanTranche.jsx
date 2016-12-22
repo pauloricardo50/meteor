@@ -108,7 +108,7 @@ export default class LoanTranche extends Component {
   render() {
     return (
       <div style={styles.line} className="col-xs-12 mask2">
-        <h3 className="col-xs-12" style={styles.h3}>
+        <h4 className="col-xs-12" style={styles.h3}>
           Tranche
           <span>
             <DropDownMenu
@@ -122,7 +122,7 @@ export default class LoanTranche extends Component {
               ))}
             </DropDownMenu>
           </span>
-        </h3>
+        </h4>
 
         {this.props.trancheArray.length > 1 &&
           <a className="fa fa-times" style={styles.close} onClick={this.removeTranche} />

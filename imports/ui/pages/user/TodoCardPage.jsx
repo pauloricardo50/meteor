@@ -7,6 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Step3FinancialForm from '/imports/ui/components/steps/Step3FinancialForm.jsx';
 import Step3PersonalForm from '/imports/ui/components/steps/Step3PersonalForm.jsx';
 import Step3PropertyForm from '/imports/ui/components/steps/Step3PropertyForm.jsx';
+import Step3FileUpload from '/imports/ui/components/steps/Step3FileUpload.jsx';
 
 
 export default class TodoCardPage extends React.Component {
@@ -18,19 +19,16 @@ export default class TodoCardPage extends React.Component {
 
   renderCardContent() {
     switch (FlowRouter.getParam('cardId')) {
-      case '1-1': return <Step1InitialForm creditRequest={this.props.creditRequest} />;
-      case '1-2': return <Step1Financial creditRequest={this.props.creditRequest} />;
-      case '1-3': return <Step1TaxUpload creditRequest={this.props.creditRequest} />;
-      case '1-4': return <Step1PropertyUpload creditRequest={this.props.creditRequest} />;
-      case '3-1': return <Step3PropertyForm creditRequest={this.props.creditRequest} />;
-      case '3-2': return <Step3PersonalForm creditRequest={this.props.creditRequest} />;
-      case '3-3': return <Step3FinancialForm creditRequest={this.props.creditRequest} />;
+      case 'property': return <Step3PropertyForm creditRequest={this.props.creditRequest} />;
+      case 'perso': return <Step3PersonalForm creditRequest={this.props.creditRequest} />;
+      case 'finance': return <Step3FinancialForm creditRequest={this.props.creditRequest} />;
+      case 'files': return <Step3FileUpload creditRequest={this.props.creditRequest} />;
       default: return '';
     }
   }
 
   handleClick() {
-    const stepNb = FlowRouter.getParam('cardId').charAt(0);
+    const stepNb = FlowRouter.current().path.charAt(5);
     if (stepNb === '1') {
       FlowRouter.go('/step1');
     } else if (stepNb === '3') {

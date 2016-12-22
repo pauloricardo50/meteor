@@ -147,7 +147,7 @@ module.exports = function(props) {
             Montez votre dossier hypothécaire en ligne
           </h3>
           <p className="paragraph">
-            Tout est simple, et automatique. Vous avez tout de même un problème? appelez nos experts ou venez nous voir.
+            Tout est simple, et sans paperasse. Vous avez tout de même un problème? appelez nos experts ou venez nous voir.
           </p>
         </div>
         <div className="col-4">

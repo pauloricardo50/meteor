@@ -29,7 +29,7 @@ aldeed:collection2              # Allow validation based on schemas on insert/up
 mdg:validated-method            # MDG written server-side validation before storing
 check@1.2.4                           # variable type verification for server side validation
 session@1.1.7                         # Lets you use Session variables
-# edgee:slingshot               # File upload manager
+edgee:slingshot               # File upload manager
 
 # Routing
 kadira:flow-router              # Router

@@ -30,13 +30,14 @@ deps@1.0.12
 diff-sequence@1.0.7
 ecmascript@0.6.1
 ecmascript-runtime@0.3.15
+edgee:slingshot@0.7.1
 ejson@1.0.13
 email@1.1.18
 es5-shim@4.6.15
 fastclick@1.0.13
 force-ssl@1.0.13
 fortawesome:fontawesome@4.7.0
-fourseven:scss@3.10.1
+fourseven:scss@3.13.0
 gadicc:blaze-react-component@1.4.0
 geojson-utils@1.0.10
 hot-code-push@1.0.4
@@ -106,7 +107,7 @@ srp@1.0.10
 standard-minifier-css@1.3.2
 standard-minifier-js@1.2.1
 std:accounts-basic@1.1.12
-std:accounts-ui@1.2.9
+std:accounts-ui@1.2.11
 stolinski:stylus-multi@1.4.3
 templating@1.2.15
 templating-compiler@1.2.15

@@ -38,7 +38,7 @@ export default class Step4Page extends React.Component {
             <RaisedButton label="Envoyer mon dossier" primary />
           </div>
           <div className="form-group text-center">
-            <RaisedButton label="Pas encore" />
+            <RaisedButton label="Pas encore" href="/step3" />
           </div>
         </div>
       </section>

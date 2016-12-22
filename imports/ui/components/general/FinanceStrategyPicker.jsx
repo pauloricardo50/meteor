@@ -3,9 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import { pushValue } from '/imports/api/creditrequests/methods.js';
 
 import RaisedButton from 'material-ui/RaisedButton';
-import Slider from 'rc-slider';
-
-require('rc-slider/assets/index.css');
 
 import LoanTranche from './LoanTranche.jsx';
 
@@ -100,15 +97,6 @@ export default class FinanceStrategyPicker extends Component {
 
         <div className="col-xs-12" style={styles.array}>
           {tranchesArray}
-        </div>
-
-        <div className="col-xs-12">
-          <Slider
-            range={3}
-            allowCross={false}
-            pushable={5}
-            defaultValue={[0, 25, 50, 75]}
-          />
         </div>
 
       </article>

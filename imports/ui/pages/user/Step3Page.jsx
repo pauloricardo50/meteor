@@ -14,12 +14,19 @@ const todoCards = [
   {
     title: 'Mon bien immobilier',
     duration: '15 min',
+    href: 'property',
   }, {
     title: 'Mes informations personelles',
     duration: '12 min',
+    href: 'perso',
   }, {
     title: 'Mes informations économiques',
     duration: '10 min',
+    href: 'finance',
+  }, {
+    title: 'Mes documents à uploader',
+    duration: '30 min',
+    href: 'files',
   },
 ];
 
@@ -34,7 +41,7 @@ export default class Step3Page extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      progress: [0, 0, 0],
+      progress: [0, 0, 0, 0],
       arrayLength: todoCards.length,
     };
 

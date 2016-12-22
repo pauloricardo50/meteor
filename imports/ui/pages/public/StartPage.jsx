@@ -94,7 +94,6 @@ export default class StartPage extends Component {
   setStep(i) {
     this.setState({ step: i });
     this.scroll(i);
-    console.log('setStep: ' + i);
   }
 
   setStateValue(name, value, callback) {
@@ -197,7 +196,6 @@ export default class StartPage extends Component {
       offset: -100,
     };
     if (step) {
-      console.log(step.toString());
       Scroll.scroller.scrollTo('scroll' + step.toString(), options);
     } else {
       Scroll.animateScroll.scrollToBottom(options);
