@@ -1,7 +1,9 @@
-import { composeWithTracker } from 'react-komposer';
+import { compose } from 'react-komposer';
 import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import CreditRequests from '/imports/api/creditrequests/creditrequests.js';
+
+import composeWithTracker from '../composeWithTracker';
 
 
 import _BottomNav from '/imports/ui/components/general/BottomNav.jsx';

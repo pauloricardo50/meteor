@@ -1,5 +1,8 @@
-import { composeWithTracker } from 'react-komposer';
+import { compose } from 'react-komposer';
 import { Meteor } from 'meteor/meteor';
+
+import composeWithTracker from '../composeWithTracker';
+
 
 import StartPage from '/imports/ui/pages/public/StartPage.jsx';
 import Loading from '/imports/ui/components/general/Loading.jsx';

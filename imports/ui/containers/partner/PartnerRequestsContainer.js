@@ -1,6 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import { composeWithTracker } from 'react-komposer';
+import { compose } from 'react-komposer';
 import CreditRequests from '/imports/api/creditrequests/creditrequests.js';
+
+import composeWithTracker from '../composeWithTracker';
+
 
 import Loading from '/imports/ui/components/general/Loading.jsx';
 
