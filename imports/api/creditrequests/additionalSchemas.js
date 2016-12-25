@@ -304,7 +304,7 @@ export const LoanInfoSchema = new SimpleSchema({
     defaultValue: [
       {
         type: 'libor',
-        percent: 1,
+        value: 100000,
       },
     ],
   },
@@ -312,11 +312,10 @@ export const LoanInfoSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  'tranches.$.percent': {
+  'tranches.$.value': {
     type: Number,
     optional: true,
     min: 0,
-    max: 100,
-    decimal: true,
+    max: 100000000,
   },
 });

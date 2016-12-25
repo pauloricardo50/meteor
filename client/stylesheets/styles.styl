@@ -542,3 +542,23 @@ svg
   .arrow-adjust
     position: relative;
     left: -50%;
+
+
+.trancheBar
+  position: relative;
+  height: 40px;
+  width: 100%;
+  .bar
+    transition: width 0.3s ease;
+    height: 100%;
+    background-color: lightness(brand-primary, 70%);
+    &.main
+      background-color: lightness(brand-primary, 80%)
+  .money
+    position: absolute;
+    line-height: 40px;
+    top: 0;
+    left: 50%;
+    .center-adjust
+      position: relative;
+      left: -50%;

@@ -12,13 +12,6 @@ const styles = {
   backButton: {
     marginBottom: 32,
   },
-  okButton: {
-    marginTop: 32,
-    float: 'right',
-  },
-  section: {
-    // paddingBottom: 40,
-  },
   title: {
     paddingBottom: 40,
   },
@@ -92,12 +85,6 @@ export default class StrategyPage extends Component {
           <FinanceStrategyPicker creditRequest={this.props.creditRequest} style={styles.picker} />
 
         </section>
-        <RaisedButton
-          style={styles.okButton}
-          label="Ok"
-          primary
-          onClick={this.handleClick}
-        />
       </div>
     );
   }

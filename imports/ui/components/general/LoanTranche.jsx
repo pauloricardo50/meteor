@@ -7,28 +7,43 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import MaskedInput from 'react-text-mask';
+import RaisedButton from 'material-ui/RaisedButton';
+import FontIcon from 'material-ui/FontIcon';
 
 import { percentMask } from '/imports/js/textMasks.js';
-import { toNumber } from '/imports/js/finance-math.js';
+import { toMoney, toNumber } from '/imports/js/finance-math.js';
 
 
 const styles = {
-  line: {
+  mainDiv: {
     position: 'relative',
-    marginTop: 20,
-    // paddingBottom: 20,
   },
-  h3: {
+  h4: {
     marginTop: 0,
-  },
-  close: {
-    position: 'absolute',
-    top: 20,
-    right: 20,
+    display: 'inline-block',
   },
   dropDown: {
     zIndex: 0,
     fontSize: 'inherit',
+    marginLeft: -15,
+  },
+  buttons: {
+    display: 'inline-block',
+  },
+  deleteButton: {
+    position: 'absolute',
+    right: 0,
+    top: 12,
+    width: 60,
+    minWidth: 'unset',
+  },
+  button: {
+    marginRight: 16,
+    width: 60,
+    minWidth: 'unset',
+  },
+  buttonStyle: {
+    width: 60,
   },
 };
 
@@ -48,67 +63,18 @@ export default class LoanTranche extends Component {
   constructor(props) {
     super(props);
 
-    this.handleType = this.handleType.bind(this);
-    this.handlePercent = this.handlePercent.bind(this);
     this.removeTranche = this.removeTranche.bind(this);
   }
 
-  handleType(event, index, value) {
-    const id = this.props.requestId;
-    const object = {};
-    object[`loanInfo.tranches.${this.props.index}.type`] = value;
-
-    updateValues.call({
-      object, id,
-    }, (error, result) => {
-      if (error) {
-        throw new Meteor.Error(500, error.message);
-      } else {
-        return 'Update Successful';
-      }
-    });
-  }
-
-  handlePercent(event) {
-    const id = this.props.requestId;
-    const object = {};
-    object[`loanInfo.tranches.${this.props.index}.percent`] = toNumber(event.target.value);
-
-    console.log(event.target.value);
-
-    updateValues.call({
-      object, id,
-    }, (error, result) => {
-      if (error) {
-        throw new Meteor.Error(500, error.message);
-      } else {
-        return 'Update Successful';
-      }
-    });
-  }
 
   removeTranche() {
-    const id = this.props.requestId;
-    const value = {
-      'loanInfo.tranches': { type: this.props.tranche.type }
-    };
-
-    pullValue.call({
-      value, id,
-    }, (error, result) => {
-      if (error) {
-        throw new Meteor.Error(500, error.message);
-      } else {
-        return 'Pull Successful';
-      }
-    });
   }
 
 
   render() {
     return (
-      <div style={styles.line} className="col-xs-12 mask2">
-        <h4 className="col-xs-12" style={styles.h3}>
+      <div style={styles.mainDiv}>
+        <h4 style={styles.h4}>
           Tranche
           <span>
             <DropDownMenu
@@ -124,25 +90,44 @@ export default class LoanTranche extends Component {
           </span>
         </h4>
 
-        {this.props.trancheArray.length > 1 &&
-          <a className="fa fa-times" style={styles.close} onClick={this.removeTranche} />
-        }
+        <div style={styles.buttons}>
+          <RaisedButton
+            label="-"
+            onClick={this.props.decrementTranche}
+            style={styles.button}
+            buttonStyle={styles.buttonStyle}
+            disabled={this.props.tranche.value <= 100000}
+          />
+          <RaisedButton
+            label="+"
+            primary
+            onClick={this.props.incrementTranche}
+            style={styles.button}
+            buttonStyle={styles.buttonStyle}
+            disabled={!this.props.moneyLeft}
+          />
+        </div>
 
-        <span className="col-xs-6">
-          <TextField
-            name="percent"
-            label="Pourcent"
-          >
-            <MaskedInput
-              onChange={this.handlePercent}
-              value={this.props.tranche.percent}
-              mask={percentMask}
-              guide
-              placeholder="%"
-              pattern="[0-9]*"
-            />
-          </TextField>
-        </span>
+        <RaisedButton
+          icon={<span className="fa fa-times" />}
+          style={styles.deleteButton}
+          buttonStyle={styles.buttonStyle}
+          onClick={this.props.removeTranche}
+        />
+
+        <br />
+
+        <div className="trancheBar">
+          <div className="bar" style={{
+            width: `${100 * (this.props.tranche.value / this.props.totalValue)}%`
+          }}
+          />
+          <div className="money">
+            <h4 className="center-adjust">
+              CHF {toMoney(this.props.tranche.value)}
+            </h4>
+          </div>
+        </div>
 
       </div>
     );
@@ -152,7 +137,10 @@ export default class LoanTranche extends Component {
 LoanTranche.propTypes = {
   index: PropTypes.number.isRequired,
   tranche: PropTypes.objectOf(PropTypes.any).isRequired,
-  trancheArray: PropTypes.arrayOf(PropTypes.object).isRequired,
-  requestId: PropTypes.string.isRequired,
+  totalValue: PropTypes.number.isRequired,
+  moneyLeft: PropTypes.number.isRequired,
   getRemainingTypes: PropTypes.func.isRequired,
+  removeTranche: PropTypes.func.isRequired,
+  incrementTranche: PropTypes.func.isRequired,
+  decrementTranche: PropTypes.func.isRequired,
 };
