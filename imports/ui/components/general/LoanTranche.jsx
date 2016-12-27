@@ -75,7 +75,6 @@ export default class LoanTranche extends Component {
     return (
       <div style={styles.mainDiv}>
         <h4 style={styles.h4}>
-          Tranche
           <span>
             <DropDownMenu
               value={this.props.tranche.type}
