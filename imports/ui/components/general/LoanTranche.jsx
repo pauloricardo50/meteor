@@ -38,7 +38,6 @@ const styles = {
     minWidth: 'unset',
   },
   button: {
-    marginRight: 16,
     width: 60,
     minWidth: 'unset',
   },
@@ -76,6 +75,7 @@ export default class LoanTranche extends Component {
       <div style={styles.mainDiv}>
         <h4 style={styles.h4}>
           <span>
+          Tranche
             <DropDownMenu
               value={this.props.tranche.type}
               onChange={this.changeType}
@@ -89,7 +89,7 @@ export default class LoanTranche extends Component {
           </span>
         </h4>
 
-        <div style={styles.buttons}>
+        {/* <div style={styles.buttons}>
           <RaisedButton
             label="-"
             onClick={this.props.decrementTranche}
@@ -105,7 +105,7 @@ export default class LoanTranche extends Component {
             buttonStyle={styles.buttonStyle}
             disabled={!this.props.moneyLeft}
           />
-        </div>
+        </div> */}
 
         <RaisedButton
           icon={<span className="fa fa-times" />}
@@ -123,7 +123,24 @@ export default class LoanTranche extends Component {
           />
           <div className="money">
             <h4 className="center-adjust">
-              CHF {toMoney(this.props.tranche.value)}
+              <RaisedButton
+                label="-"
+                onClick={this.props.decrementTranche}
+                style={styles.button}
+                buttonStyle={styles.buttonStyle}
+                disabled={this.props.tranche.value <= 100000}
+              />
+              <span className="text-span">
+                CHF {toMoney(this.props.tranche.value)}
+              </span>
+              <RaisedButton
+                label="+"
+                primary
+                onClick={this.props.incrementTranche}
+                style={styles.button}
+                buttonStyle={styles.buttonStyle}
+                disabled={!this.props.moneyLeft}
+              />
             </h4>
           </div>
         </div>

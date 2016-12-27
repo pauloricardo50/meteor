@@ -546,7 +546,7 @@ svg
 
 .trancheBar
   position: relative;
-  height: 40px;
+  height: 50px;
   width: 100%;
   .bar
     transition: width 0.3s ease;
@@ -556,9 +556,16 @@ svg
       background-color: lightness(brand-primary, 80%)
   .money
     position: absolute;
-    line-height: 40px;
     top: 0;
     left: 50%;
     .center-adjust
+      margin-top: 0;
+      margin-bottom: 0;
       position: relative;
       left: -50%;
+      height: 50px;
+      white-space: nowrap;
+      .text-span
+        line-height: 50px;
+        margin-left: 8px;
+        margin-right: 8px;

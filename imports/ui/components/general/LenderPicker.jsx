@@ -1,12 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 
-import RaisedButton from 'material-ui/RaisedButton';
-
 
 import LenderTable1 from '/imports/ui/components/general/LenderTable1.jsx'
 import LenderTable2 from '/imports/ui/components/general/LenderTable2.jsx'
 
 const styles = {
+  article: {
+    overflow: 'scroll',
+  },
 };
 
 export default class LenderPicker extends Component {
@@ -50,7 +51,7 @@ export default class LenderPicker extends Component {
 
   render() {
     return (
-      <article className="col-xs-12">
+      <article className="col-xs-12" style={styles.article}>
         <h3>Prêteurs recommandés</h3>
 
         <h4 className="text-center">Sans Conditions</h4>

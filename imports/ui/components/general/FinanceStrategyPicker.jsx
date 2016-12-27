@@ -193,7 +193,9 @@ export default class FinanceStrategyPicker extends Component {
           />
           <div className="money">
             <h4 className="center-adjust">
-              CHF {toMoney(this.getMoneyLeft())}
+              <span className="text-span">
+                CHF {toMoney(this.getMoneyLeft())}
+              </span>
             </h4>
           </div>
         </div>
