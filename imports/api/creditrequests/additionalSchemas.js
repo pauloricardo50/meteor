@@ -202,6 +202,23 @@ export const PartnerOfferSchema = new SimpleSchema({
   name: {
     type: String,
   },
+  standard: {
+    type: singleOffer,
+    defaultValue: {},
+  },
+  withConditions: {
+    type: singleOffer,
+    defaultValue: {},
+  },
+  conditions: {
+    type: String,
+  },
+  expertise: {
+    type: Boolean,
+  },
+});
+
+export const singleOffer = new SimpleSchema({
   maxAmount: {
     type: Number,
     min: 0,
@@ -211,6 +228,16 @@ export const PartnerOfferSchema = new SimpleSchema({
     type: Number,
   },
   interestLibor: {
+    type: Number,
+    min: 0,
+    max: 100,
+  },
+  interestFloating: {
+    type: Number,
+    min: 0,
+    max: 100,
+  },
+  interest1: {
     type: Number,
     min: 0,
     max: 100,
@@ -225,16 +252,20 @@ export const PartnerOfferSchema = new SimpleSchema({
     min: 0,
     max: 100,
   },
+  interest7: {
+    type: Number,
+    min: 0,
+    max: 100,
+  },
   interest10: {
     type: Number,
     min: 0,
     max: 100,
   },
-  conditions: {
-    type: String,
-  },
-  expertise: {
-    type: Boolean,
+  interest15: {
+    type: Number,
+    min: 0,
+    max: 100,
   },
 });
 
@@ -303,7 +334,7 @@ export const LoanInfoSchema = new SimpleSchema({
     minCount: 1,
     defaultValue: [
       {
-        type: 'libor',
+        type: 'interestLibor',
         value: 100000,
       },
     ],

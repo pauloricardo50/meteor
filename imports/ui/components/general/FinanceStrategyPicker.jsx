@@ -57,13 +57,14 @@ export default class FinanceStrategyPicker extends Component {
 
   getRemainingTypes(ignoredValue) {
     const initialChoices = [
-      'libor',
-      'floating',
-      '1y',
-      '2y',
-      '5y',
-      '7y',
-      '10y',
+      'interestLibor',
+      'interestFloating',
+      'interest1',
+      'interest2',
+      'interest5',
+      'interest7',
+      'interest10',
+      'interest15',
     ];
 
     // Filter out existing values, for each remove the string if there is a match
@@ -97,9 +98,7 @@ export default class FinanceStrategyPicker extends Component {
     const tranches = this.state.tranches;
     tranches.splice(i, 1);
 
-    this.setState({
-      tranches,
-    });
+    this.setState({ tranches });
   }
 
   incrementTranche(event, i) {
@@ -111,9 +110,7 @@ export default class FinanceStrategyPicker extends Component {
       tranches[i].value += this.getMoneyLeft();
     }
 
-    this.setState({
-      tranches,
-    });
+    this.setState({ tranches });
   }
 
   decrementTranche(event, i) {
@@ -127,9 +124,14 @@ export default class FinanceStrategyPicker extends Component {
       tranches[i].value = 100000;
     }
 
-    this.setState({
-      tranches,
-    });
+    this.setState({ tranches });
+
+  }
+
+  changeTrancheType(i, newType) {
+    const tranches = [...this.state.tranches];
+    tranches[i].type = newType;
+    this.setState({ tranches });
   }
 
   save() {
@@ -164,6 +166,7 @@ export default class FinanceStrategyPicker extends Component {
           removeTranche={e => this.removeTranche(e, index)}
           incrementTranche={e => this.incrementTranche(e, index)}
           decrementTranche={e => this.decrementTranche(e, index)}
+          changeTrancheType={value => this.changeTrancheType(index, value)}
         />,
       );
     });

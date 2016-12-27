@@ -49,13 +49,14 @@ const styles = {
 
 
 const types = {
-  libor: 'Libor',
-  floating: 'Flottant',
-  '1y': 'Fixé 1 an',
-  '2y': 'Fixé 2 ans',
-  '5y': 'Fixé 5 ans',
-  '7y': 'Fixé 7 ans',
-  '10y': 'Fixé 10 ans',
+  interestLibor: 'Libor',
+  interestFloating: 'Flottant',
+  interest1: 'Fixé 1 an',
+  interest2: 'Fixé 2 ans',
+  interest5: 'Fixé 5 ans',
+  interest7: 'Fixé 7 ans',
+  interest10: 'Fixé 10 ans',
+  interest15: 'Fixé 15 ans',
 };
 
 
@@ -63,13 +64,12 @@ export default class LoanTranche extends Component {
   constructor(props) {
     super(props);
 
-    this.removeTranche = this.removeTranche.bind(this);
+    this.changeType = this.changeType.bind(this);
   }
 
-
-  removeTranche() {
+  changeType(event, index, value) {
+    this.props.changeTrancheType(value);
   }
-
 
   render() {
     return (
@@ -79,7 +79,7 @@ export default class LoanTranche extends Component {
           <span>
             <DropDownMenu
               value={this.props.tranche.type}
-              onChange={this.handleType}
+              onChange={this.changeType}
               autoWidth={false}
               style={styles.dropDown}
             >
@@ -143,4 +143,5 @@ LoanTranche.propTypes = {
   removeTranche: PropTypes.func.isRequired,
   incrementTranche: PropTypes.func.isRequired,
   decrementTranche: PropTypes.func.isRequired,
+  changeTrancheType: PropTypes.func.isRequired,
 };

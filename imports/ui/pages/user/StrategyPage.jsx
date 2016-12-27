@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import { updateValues } from '/imports/api/creditrequests/methods.js';
+import { updateValues } from '/imports/api/creditrequests/methods';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
 import FinanceStrategyPicker from '/imports/ui/components/general/FinanceStrategyPicker.jsx';
+import LenderPicker from '/imports/ui/components/general/LenderPicker.jsx';
 
 
 const styles = {
@@ -31,6 +32,12 @@ const styles = {
     marginTop: 40,
     display: 'inline-block',
   },
+  hr: {
+    display: 'inline-block',
+    width: '100%',
+    marginTop: 40,
+    marginBottom: 40,
+  },
 };
 
 export default class StrategyPage extends Component {
@@ -41,9 +48,9 @@ export default class StrategyPage extends Component {
   }
 
   handleClick() {
+    const id = this.props.creditRequest._id;
     const object = {};
     object['logic.step'] = 2;
-    const id = this.props.creditRequest._id;
 
     updateValues.call({
       object, id,
@@ -83,6 +90,8 @@ export default class StrategyPage extends Component {
           </article>
 
           <FinanceStrategyPicker creditRequest={this.props.creditRequest} style={styles.picker} />
+          <hr style={styles.hr} />
+          <LenderPicker creditRequest={this.props.creditRequest} />
 
         </section>
       </div>
