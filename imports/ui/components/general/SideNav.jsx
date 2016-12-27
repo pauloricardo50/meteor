@@ -116,7 +116,7 @@ export default class SideNav extends Component {
       <nav className="side-nav hidden-xs">
 
         <a href="/">
-          <img src="img/logo_black.svg" alt="e-Potek"  style={styles.logo} />
+          <img src="/img/logo_black.svg" alt="e-Potek"  style={styles.logo} />
         </a>
 
         {content1}

@@ -17,6 +17,7 @@ import { toMoney, toNumber } from '/imports/js/finance-math.js';
 const styles = {
   mainDiv: {
     position: 'relative',
+    marginBottom: 20,
   },
   h4: {
     marginTop: 0,
@@ -26,6 +27,7 @@ const styles = {
     zIndex: 0,
     fontSize: 'inherit',
     marginLeft: -15,
+    display: 'inline-block',
   },
   buttons: {
     display: 'inline-block',
@@ -75,37 +77,20 @@ export default class LoanTranche extends Component {
       <div style={styles.mainDiv}>
         <h4 style={styles.h4}>
           <span>
-          Tranche
-            <DropDownMenu
-              value={this.props.tranche.type}
-              onChange={this.changeType}
-              autoWidth={false}
-              style={styles.dropDown}
-            >
-              {this.props.getRemainingTypes(this.props.tranche.type).map((type, index) => (
-                <MenuItem value={type} primaryText={types[type]} key={index} />
-              ))}
-            </DropDownMenu>
+            Tranche
           </span>
+          <DropDownMenu
+            value={this.props.tranche.type}
+            onChange={this.changeType}
+            autoWidth={false}
+            style={styles.dropDown}
+          >
+            {this.props.getRemainingTypes(this.props.tranche.type).map((type, index) => (
+              <MenuItem value={type} primaryText={types[type]} key={index} />
+            ))}
+          </DropDownMenu>
         </h4>
 
-        {/* <div style={styles.buttons}>
-          <RaisedButton
-            label="-"
-            onClick={this.props.decrementTranche}
-            style={styles.button}
-            buttonStyle={styles.buttonStyle}
-            disabled={this.props.tranche.value <= 100000}
-          />
-          <RaisedButton
-            label="+"
-            primary
-            onClick={this.props.incrementTranche}
-            style={styles.button}
-            buttonStyle={styles.buttonStyle}
-            disabled={!this.props.moneyLeft}
-          />
-        </div> */}
 
         <RaisedButton
           icon={<span className="fa fa-times" />}
