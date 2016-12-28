@@ -81,6 +81,15 @@
           "functions": false,
           "classes": true
         }
+      ],
+      "import/extensions": 0,
+      "no-extraneous-dependencies": [
+        "error",
+        {
+          "devDependencies": false,
+          "optionalDependencies": false,
+          "peerDependencies": false
+        }
       ]
     }
   }

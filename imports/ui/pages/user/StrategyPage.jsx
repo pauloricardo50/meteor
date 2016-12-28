@@ -38,6 +38,10 @@ const styles = {
     marginTop: 40,
     marginBottom: 40,
   },
+  okButton: {
+    marginTop: 32,
+    float: 'right',
+  },
 };
 
 export default class StrategyPage extends Component {
@@ -48,21 +52,25 @@ export default class StrategyPage extends Component {
   }
 
   handleClick() {
-    const id = this.props.creditRequest._id;
-    const object = {};
-    object['logic.step'] = 2;
+    if (this.props.creditRequest.logic.step < 2) {
+      const id = this.props.creditRequest._id;
+      const object = {};
+      object['logic.step'] = 2;
 
-    updateValues.call({
-      object, id,
-    }, (error, result) => {
-      if (error) {
-        throw new Meteor.Error(500, error.message);
-      } else {
-        // Head to step 2
-        FlowRouter.go('/step3');
-        return 'Update Successful';
-      }
-    });
+      updateValues.call({
+        object, id,
+      }, (error, result) => {
+        if (error) {
+          throw new Meteor.Error(500, error.message);
+        } else {
+          // Head to step 2
+          FlowRouter.go('/step3');
+          return 'Update Successful';
+        }
+      });
+    } else {
+      FlowRouter.go('/main');
+    }
   }
 
   render() {
@@ -94,6 +102,12 @@ export default class StrategyPage extends Component {
           <LenderPicker creditRequest={this.props.creditRequest} />
 
         </section>
+        <RaisedButton
+          style={styles.okButton}
+          label="Ok"
+          primary
+          onClick={this.handleClick}
+        />
       </div>
     );
   }

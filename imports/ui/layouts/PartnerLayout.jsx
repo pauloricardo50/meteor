@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
+import { Roles } from 'meteor/alanning:roles';
 
 import PublicNav from '/imports/ui/containers/public/CurrentUserContainer.js';
 
@@ -20,7 +21,9 @@ export default class PartnerLayout extends Component {
   }
 
   render() {
-    if (Meteor.userId()) {
+    if (Meteor.userId() &&
+      (Roles.userIsInRole(Meteor.userId(), 'admin') || Roles.userIsInRole(Meteor.userId(), 'partner'))
+    ) {
       return (
         <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
           <div>
@@ -33,6 +36,8 @@ export default class PartnerLayout extends Component {
           </div>
         </MuiThemeProvider>
       );
+    } else if (Roles.userIsInRole(Meteor.userId(), 'user')) {
+      FlowRouter.go('/');
     } else {
       this.routeToLogin();
       return null;

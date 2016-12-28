@@ -1,12 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-// import { AccountsTemplates } from 'meteor/useraccounts:core';
-// import { Roles } from 'meteor/alanning:roles';
+import { Roles } from 'meteor/alanning:roles';
+import { Accounts } from 'meteor/accounts-base';
 
-// TODO Replace Roles package
-// function postSignUpFunc(userId) {
-//     // Roles.addUsersToRoles(userId, 'normal-user');
-// };
-//
-// AccountsTemplates.configure({
-//     postSignUpHook: postSignUpFunc
-// });
+Accounts.onCreateUser(function (options, user) {
+  const newUser = user;
+  newUser.roles = 'user';
+  return newUser;
+});

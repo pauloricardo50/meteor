@@ -17,27 +17,6 @@ const theme = myTheme;
 
 export default class UserLayout extends Component {
 
-  // componentDidMount() {
-  //   // Anyone coming to a userlayout page without being logged in, is taken to the login page.
-  //   // TODO: add a parameter to the URL to indicate which route this person came from, so that
-  //   // When he logs in, he's taken to that URL
-  //   if (!Meteor.userId()) {
-  //     // const route = FlowRouter.getRouteName();
-  //     //
-  //     // const current = FlowRouter.current();
-  //     //
-  //     // const pathDef = '/login';
-  //     // const params = { nextPath: current.route.pathDef };
-  //     // const queryParams = current.queryParams
-  //     // const path = FlowRouter.path(pathDef, params, queryParams);
-  //     //
-  //     // console.log(path);
-  //     //
-  //     Session.set('postLoginPath', FlowRouter.current().path)
-  //     FlowRouter.go('/login');
-  //   }
-  // }
-
   routeToLogin() {
     Session.set('postLoginPath', FlowRouter.current().path)
     FlowRouter.go('/login');

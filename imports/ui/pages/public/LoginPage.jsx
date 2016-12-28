@@ -8,7 +8,7 @@ const styles = {
     display: 'table',
     position: 'absolute',
     width: '100%',
-    height: '100%',
+    height: 'calc(100% - 64px)',
     backgroundPosition: '50% 50%',
     backgroundAttachment: 'scroll',
     backgroundRepeat: 'no-repeat no-repeat',
@@ -22,6 +22,8 @@ const styles = {
     margin: 'auto',
     display: 'block',
     maxWidth: 500,
+    paddingLeft: 16,
+    paddingRight: 16,
   },
 };
 

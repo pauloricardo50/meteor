@@ -29,7 +29,7 @@ export default class FinanceStrategyPicker extends Component {
     this.state = {
       totalLeft: this.props.creditRequest.propertyInfo.value,
       tranches: this.props.creditRequest.loanInfo.tranches ?
-        [...this.props.creditRequest.loanInfo.tranches] : [],
+        JSON.parse(JSON.stringify(this.props.creditRequest.loanInfo.tranches)) : [],
     };
 
     this.addTranche = this.addTranche.bind(this);
@@ -86,7 +86,7 @@ export default class FinanceStrategyPicker extends Component {
     let propertyValue = this.props.creditRequest.propertyInfo.value;
 
     // Substract the values of each tranche
-    [...this.state.tranches].forEach((tranche) => {
+    this.state.tranches.forEach((tranche) => {
       propertyValue -= tranche.value;
     });
 
@@ -102,7 +102,7 @@ export default class FinanceStrategyPicker extends Component {
   }
 
   incrementTranche(event, i) {
-    const tranches = [...this.state.tranches];
+    const tranches = this.state.tranches;
 
     if (this.getMoneyLeft() > 10000) {
       tranches[i].value += 10000;
@@ -129,7 +129,7 @@ export default class FinanceStrategyPicker extends Component {
   }
 
   changeTrancheType(i, newType) {
-    const tranches = [...this.state.tranches];
+    const tranches = this.state.tranches;
     tranches[i].type = newType;
     this.setState({ tranches });
   }
@@ -154,7 +154,7 @@ export default class FinanceStrategyPicker extends Component {
   render() {
     const tranchesArray = [];
 
-    [...this.state.tranches].forEach((tranche, index, trancheArray) => {
+    this.state.tranches.forEach((tranche, index, trancheArray) => {
       tranchesArray.push(
         <LoanTranche
           key={index}
@@ -170,7 +170,6 @@ export default class FinanceStrategyPicker extends Component {
         />,
       );
     });
-
 
     return (
       <article>

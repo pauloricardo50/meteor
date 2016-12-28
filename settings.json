@@ -1,16 +1,21 @@
 {
-    "public": {
-        "analyticsSettings": {
-            "Google Analytics": {
-                "trackingId": "UA-84358947-1"
-            }
-        }
-    },
-    "private": {
-
-    },
-    "kadira": {
-        "appId": "ezda4FKFStEq2udsb",
-        "appSecret": "cbacc7e2-7048-4396-95bb-b26c70c332e7"
+  "public": {
+      "analyticsSettings": {
+          "Google Analytics": {
+              "trackingId": "UA-84358947-1"
+          }
+      }
+  },
+  "private": {
+    "s3": {
+      "key": "AKIAJTU477K5SZQIDI3A",
+      "secret": "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",
+      "bucket": "e-potek-files",
+      "region": "eu-central-1"
     }
+  },
+  "kadira": {
+      "appId": "ezda4FKFStEq2udsb",
+      "appSecret": "cbacc7e2-7048-4396-95bb-b26c70c332e7"
+  }
 }

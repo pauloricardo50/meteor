@@ -226,51 +226,60 @@ FlowRouter.route('/finance/strategy', {
 
 
 // // Admin routes
-// const adminRoutes = FlowRouter.group({
-//   prefix: '/admin',
-//   name: 'Admin',
-// });
-//
-//
-// adminRoutes.route('/requests', {
-//   name: 'AdminRequests',
-//   action() {
-//     mount(AdminLayout, {
-//       content: <AdminRequestsPage />,
-//     });
-//   },
-// });
-//
-//
-// adminRoutes.route('/requests/:id', {
-//   name: 'AdminSingleRequest',
-//   action() {
-//     mount(AdminLayout, {
-//       content: <AdminSingleRequestPage />,
-//     });
-//   },
-// });
-//
-//
-// adminRoutes.route('/users', {
-//   name: 'AdminUsers',
-//   action() {
-//     mount(AdminLayout, {
-//       content: <AdminUsersPage />,
-//     });
-//   },
-// });
-//
-//
-// adminRoutes.route('/users/:id', {
-//   name: 'AdminSingleRequest',
-//   action() {
-//     mount(AdminLayout, {
-//       content: <AdminSingleUserPage />,
-//     });
-//   },
-// });
-//
+const adminRoutes = FlowRouter.group({
+  prefix: '/admin',
+  name: 'Admin',
+});
+
+adminRoutes.route('/', {
+  name: 'AdminHome',
+  action() {
+    mount(AdminLayout, {
+      content: <AdminHomePage />,
+    });
+  },
+});
+
+
+adminRoutes.route('/requests', {
+  name: 'AdminRequests',
+  action() {
+    mount(AdminLayout, {
+      content: <AdminRequestsPage />,
+    });
+  },
+});
+
+
+adminRoutes.route('/requests/:id', {
+  name: 'AdminSingleRequest',
+  action() {
+    mount(AdminLayout, {
+      content: <AdminSingleRequestPage />,
+    });
+  },
+});
+
+
+adminRoutes.route('/users', {
+  name: 'AdminUsers',
+  action() {
+    mount(AdminLayout, {
+      content: <AdminUsersPage />,
+    });
+  },
+});
+
+
+adminRoutes.route('/users/:id', {
+  name: 'AdminSingleRequest',
+  action() {
+    mount(AdminLayout, {
+      content: <AdminSingleUserPage />,
+    });
+  },
+});
+
 
 // Partner routes
 const partnerRoutes = FlowRouter.group({

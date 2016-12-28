@@ -18,54 +18,39 @@ import DropzoneComponent from 'react-dropzone-component';
 //   },
 // };
 
-const componentConfig = {
-  iconFiletypes: ['.jpg', '.png', '.gif'],
-  showFiletypeIcon: true,
-  postUrl: '/uploadHandler',
-};
-const djsConfig = { autoProcessQueue: true };
-
 
 export default class DropzoneInput extends Component {
   constructor(props) {
     super(props);
 
-    this.handleDrop = this.handleDrop.bind(this);
-  }
-
-
-  handleDrop(file) {
-    const id = this.props.requestId;
-    const object = {};
-    object[`files.${this.props.fileName}`] = {
-      url: file.name, // TODO: Put real URL here when it works
+    this.componentConfig = {
+      iconFiletypes: ['.jpg', '.png', '.gif'],
+      showFiletypeIcon: true,
+      postUrl: '/uploadHandler',
     };
 
-    console.log(object);
+    this.djsConfig = {
+      // Automatically starts processing files, else you have to callmyDropZone.processQueue()
+      autoProcessQueue: true,
+      dictDefaultMessage: 'Déposez un fichier ici ou cliquez pour uploader',
+      maxFilesize: 50, // MB
+      clickable: true, // Lets you click the dropzone
+      acceptedFiles: 'image/*,application/pdf',
+      renameFileName: this.props.fileRename,
+    };
 
-    updateValues.call({
-      object, id,
-    }, (error, result) => {
-      if (error) {
-        console.log(error.message);
-        throw new Meteor.Error(500, error.message);
-      } else {
-        return 'File Upload Successful';
-      }
-    });
+    this.eventHandlers = {
+      // addedfile: file => handleFileUpload(file),
+    };
   }
 
 
   render() {
-    const eventHandlers = {
-      addedfile: file => this.handleDrop(file),
-    };
-
     return (
       <DropzoneComponent
-        config={componentConfig}
-        eventHandlers={eventHandlers}
-        djsConfig={djsConfig}
+        config={this.componentConfig}
+        eventHandlers={this.eventHandlers}
+        djsConfig={this.djsConfig}
       />
     );
   }
