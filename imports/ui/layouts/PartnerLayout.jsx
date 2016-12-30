@@ -28,15 +28,15 @@ export default class PartnerLayout extends Component {
         <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
           <div>
             <PublicNav currentUser={this.props.currentUser} />
-            <main className="partner-layout">
-              <div className="partner-layout-center">
+            <main className="default-layout">
+              <div className="default-layout-center">
                 {this.props.content}
               </div>
             </main>
           </div>
         </MuiThemeProvider>
       );
-    } else if (Roles.userIsInRole(Meteor.userId(), 'user')) {
+    } else if (Meteor.userId()) {
       FlowRouter.go('/');
     } else {
       this.routeToLogin();

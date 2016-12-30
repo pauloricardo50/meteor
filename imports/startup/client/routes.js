@@ -4,30 +4,40 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import React from 'react';
 import { mount } from 'react-mounter';
 
+
 // layouts
 import PublicLayout from '/imports/ui/layouts/PublicLayout.jsx';
 import UserLayout from '/imports/ui/layouts/UserLayout.jsx';
 import PartnerLayout from '/imports/ui/layouts/PartnerLayout.jsx';
+// import AdminLayout from '/imports/ui/layouts/AdminLayout.jsx';
+import {AdminLayout} from '/imports/ui/containers/public/CurrentUserContainer';
+
 
 // Public Pages
 import HomePage from '/imports/ui/containers/public/HomePageContainer.js';
 import StartPage from '/imports/ui/pages/public/StartPage.jsx';
 import LoginPage from '/imports/ui/pages/public/LoginPage.jsx';
 
+
 // User Pages and components
 import {
   MainPage, TodoCardPage, FinancePage, StrategyPage, ContactPage,
   Step1Page, Step2Page, Step3Page, Step4Page, Step5Page, Step6Page,
-  // RequestProgressBar,
 } from '/imports/ui/containers/user/ActiveRequestContainer.js';
 import NewPage from '/imports/ui/pages/user/NewPage.jsx';
 import { RequestProgressBar } from '/imports/ui/containers/user/CurrentURLContainer.js';
 import SettingsPage from '/imports/ui/containers/user/SettingsPageContainer.js';
 
+
 // Partner Pages
 import { PartnerHomePage } from '/imports/ui/containers/partner/PartnerRequestsContainer.js';
 import { PartnerRequestPage } from '/imports/ui/containers/partner/PartnerSingleRequestContainer.js';
 
+
+// Admin Pages
+import { AdminHomePage } from '/imports/ui/containers/admin/AllCollectionsContainer';
+import { AdminUsersPage } from '/imports/ui/containers/admin/AllUsersContainer';
+import { AdminRequestsPage } from '/imports/ui/containers/admin/AllRequestsContainer';
 
 // Automatically route someone who logs out to the homepage
 if (Meteor.isClient) {
@@ -249,18 +259,18 @@ adminRoutes.route('/requests', {
     });
   },
 });
-
-
-adminRoutes.route('/requests/:id', {
-  name: 'AdminSingleRequest',
-  action() {
-    mount(AdminLayout, {
-      content: <AdminSingleRequestPage />,
-    });
-  },
-});
-
-
+//
+//
+// adminRoutes.route('/requests/:id', {
+//   name: 'AdminSingleRequest',
+//   action() {
+//     mount(AdminLayout, {
+//       content: <AdminSingleRequestPage />,
+//     });
+//   },
+// });
+//
+//
 adminRoutes.route('/users', {
   name: 'AdminUsers',
   action() {
@@ -269,16 +279,16 @@ adminRoutes.route('/users', {
     });
   },
 });
-
-
-adminRoutes.route('/users/:id', {
-  name: 'AdminSingleRequest',
-  action() {
-    mount(AdminLayout, {
-      content: <AdminSingleUserPage />,
-    });
-  },
-});
+//
+//
+// adminRoutes.route('/users/:id', {
+//   name: 'AdminSingleRequest',
+//   action() {
+//     mount(AdminLayout, {
+//       content: <AdminSingleUserPage />,
+//     });
+//   },
+// });
 
 
 // Partner routes

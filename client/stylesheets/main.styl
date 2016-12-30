@@ -154,10 +154,10 @@ a
 
 
 .side-nav
-  fixed bottom left
-  height $bottom-nav-height
-  width 100%
-  overflow hidden
+  // fixed bottom left
+  // height $bottom-nav-height
+  // width 100%
+  // overflow hidden
   background-color white
   color black
   box-shadow: 0px -2px 40px 0px rgba(0,0,0,0.08);
@@ -240,14 +240,14 @@ a
     // margin-top 40px
     padding-left $side-nav-large
 
-.partner-layout
+.default-layout
   display: table;
   height: calc(100% - 66px); // To offset top bar on mobile
   padding: 0 20px;
   +above($med)
     height: 100%;
 
-.user-layout-center, .partner-layout-center
+.user-layout-center, .default-layout-center
   display: table-cell;
   vertical-align: middle;
   +above($med)

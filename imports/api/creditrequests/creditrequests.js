@@ -33,7 +33,9 @@ const CreditRequestSchema = new SimpleSchema({
   createdAt: { // Date at which the request was created
     type: Date,
     autoValue() {
-      return new Date();
+      if (this.isInsert) {
+        return new Date();
+      }
     },
   },
   updatedAt: { // Force value to be current date (on server) upon update and don't allow it to be set upon insert

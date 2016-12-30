@@ -1,18 +1,19 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import CreditRequests from '../creditrequests.js';
+import { Roles } from 'meteor/alanning:roles';
 
 
 // Publish a specific creditRequest with an ID
-Meteor.publish('creditRequest', (id) => {
+Meteor.publish('creditRequest', function (id) {
   check(id, String);
 
 
-  // if (Roles.userIsInRole(this.userId, 'admin')) {
-  //   return CreditRequests.find({
-  //     _id: id,
-  //   });
-  // }
+  if (Roles.userIsInRole(this.userId, 'admin')) {
+    return CreditRequests.find({
+      _id: id,
+    });
+  }
 
   return CreditRequests.find({
     userId: this.userId,
@@ -53,14 +54,15 @@ Meteor.publish('creditRequests', function () {
 
 
 // Publish all creditrequests in the database for admins
-// Meteor.publish('allCreditRequests', () => {
-//   // Verify if user is logged In
-//   if (Roles.userIsInRole(this.userId, 'admin')) {
-//     // Return all users
-//     return CreditRequests.find();
-//   }
-//   return [];
-// });
+Meteor.publish('allCreditRequests', function () {
+  // Verify if user is logged In
+  if (Roles.userIsInRole(this.userId, 'admin')) {
+    // Return all users
+    return CreditRequests.find();
+  }
+
+  return this.ready();
+});
 
 
 const partnerVisibleFields = { // TODO: Complete this
@@ -101,11 +103,13 @@ Meteor.publish('partnerRequests', function () {
 Meteor.publish('partnerSingleCreditRequest', function (id) {
   check(id, String);
 
-  // TODO Verify if this partner is allowed to see this credit request
-
-  return CreditRequests.find({
-    _id: id,
-  }, {
-    fields: partnerVisibleFields,
-  });
+  // Verify if this is a partner account
+  if (Roles.userIsInRole(this.userId, 'partner')) {
+    // TODO Make sure this partner is allowed to see this request by checking the bank name
+    return CreditRequests.find({
+      _id: id,
+    }, {
+      fields: partnerVisibleFields,
+    });
+  }
 });

@@ -28,14 +28,6 @@ function postLoginRoute() {
   }
 }
 
-// function postSignUpFunc() {
-//
-//   Roles.addUsersToRoles(Meteor.userId(), 'user');
-//
-//   postLoginRoute();
-// }
-
-
 Accounts.ui.config({
   passwordSignupFields: 'EMAIL_ONLY',
   loginPath: '/login',
