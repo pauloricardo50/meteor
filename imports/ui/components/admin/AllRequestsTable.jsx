@@ -30,11 +30,11 @@ export default class AllRequestsTable extends Component {
       const row = {
         id: index + 1,
         name: request.requestName,
-        createdAt: moment(request.createdAt).format('D MMM YY à HH:mm:ss'),
+        createdAt: request.createdAt,
         step: request.logic.step + 1,
-        value: `CHF ${toMoney(request.propertyInfo.value)}`,
-        fortune: `CHF ${toMoney(request.financialInfo.fortune + request.financialInfo.insuranceFortune)}`,
-        salary: `CHF ${toMoney(request.financialInfo.salary)}`,
+        value: request.propertyInfo.value,
+        fortune: request.financialInfo.fortune + request.financialInfo.insuranceFortune,
+        salary: request.financialInfo.salary,
         quality: 'Très Bon',
       };
       array.push(row);
@@ -92,7 +92,7 @@ export default class AllRequestsTable extends Component {
       <Table
         rowHeight={50}
         rowsCount={sortedDataList.getSize()}
-        width={700}
+        width={820}
         height={500}
         headerHeight={50}
       >
@@ -103,11 +103,11 @@ export default class AllRequestsTable extends Component {
               onSortChange={this.onSortChange}
               sortDir={colSortDirs.id}
             >
-              id
+              #
             </SortHeaderCell>
           }
           cell={<TextCell data={sortedDataList} />}
-          width={100}
+          width={40}
         />
         <Column
           columnKey="name"
@@ -132,7 +132,7 @@ export default class AllRequestsTable extends Component {
               Créé le
             </SortHeaderCell>
           }
-          cell={<TextCell data={sortedDataList} />}
+          cell={<DateCell data={sortedDataList} />}
           width={170}
         />
         <Column
@@ -158,7 +158,7 @@ export default class AllRequestsTable extends Component {
               Montant
             </SortHeaderCell>
           }
-          cell={<TextCell data={sortedDataList} />}
+          cell={<MoneyCell data={sortedDataList} />}
           width={100}
         />
         <Column
@@ -171,7 +171,7 @@ export default class AllRequestsTable extends Component {
               Fonds Propres
             </SortHeaderCell>
           }
-          cell={<TextCell data={sortedDataList} />}
+          cell={<MoneyCell data={sortedDataList} />}
           width={100}
         />
         <Column
@@ -184,7 +184,7 @@ export default class AllRequestsTable extends Component {
               Revenus
             </SortHeaderCell>
           }
-          cell={<TextCell data={sortedDataList} />}
+          cell={<MoneyCell data={sortedDataList} />}
           width={100}
         />
         <Column
@@ -260,5 +260,18 @@ class SortHeaderCell extends React.Component {
 const TextCell = ({ rowIndex, data, columnKey }) => (
   <Cell>
     {data._data[data._indexMap[rowIndex]][columnKey]}
+  </Cell>
+);
+
+const MoneyCell = ({ rowIndex, data, columnKey }) => (
+  <Cell>
+    {`CHF ${toMoney(data._data[data._indexMap[rowIndex]][columnKey])}`}
+  </Cell>
+);
+
+// To allow sorting by date, but still show a nice date
+const DateCell = ({ rowIndex, data, columnKey }) => (
+  <Cell>
+    {moment(data._data[data._indexMap[rowIndex]][columnKey]).format('D MMM YY à HH:mm:ss')}
   </Cell>
 );

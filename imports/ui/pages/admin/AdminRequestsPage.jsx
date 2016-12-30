@@ -3,6 +3,13 @@ import React, { Component, PropTypes } from 'react';
 import AllRequestsTable from '/imports/ui/components/admin/AllRequestsTable.jsx';
 
 
+const styles = {
+  table: {
+    margin: 'auto',
+    width: 820, // Change this with the Table component
+  },
+};
+
 export default class AdminRequestsPage extends Component {
   constructor(props) {
     super(props);
@@ -13,7 +20,9 @@ export default class AdminRequestsPage extends Component {
       <section className="mask1">
         <h1>Demandes de Prêt</h1>
 
-        <AllRequestsTable creditRequests={this.props.creditRequests} />
+        <div style={styles.table}>
+          <AllRequestsTable creditRequests={this.props.creditRequests} />
+        </div>
       </section>
     );
   }
