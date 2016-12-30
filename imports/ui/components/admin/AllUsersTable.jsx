@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 
 
 import { Table, Column, Cell } from 'fixed-data-table';
@@ -16,9 +17,18 @@ export default class AllUsersTable extends Component {
         user.emails[0].address.toString(),
         moment(user.createdAt).format('D MMM YY à HH:mm:ss'),
         user.roles ? user.roles.toString() : '',
+        user._id,
       ];
       this.rows.push(row);
     });
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(e, rowIndex) {
+    const id = this.rows[rowIndex][4];
+
+    FlowRouter.go(`/admin/users/${id}`);
   }
 
   render() {
@@ -29,6 +39,7 @@ export default class AllUsersTable extends Component {
         width={510}
         height={500}
         headerHeight={50}
+        onRowClick={this.handleClick}
       >
         <Column
           header={<Cell>#</Cell>}

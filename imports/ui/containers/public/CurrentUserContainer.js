@@ -4,7 +4,6 @@ import { Meteor } from 'meteor/meteor';
 import composeWithTracker from '../composeWithTracker';
 
 import _PublicNav from '/imports/ui/components/general/PublicNav.jsx';
-import _AdminNav from '/imports/ui/components/admin/AdminNav.jsx';
 import LoadingNone from '/imports/ui/components/general/LoadingNone.jsx';
 
 import _AdminLayout from '/imports/ui/layouts/AdminLayout.jsx';
@@ -18,6 +17,5 @@ function composer(props, onData) {
 
 // No loading component
 export const PublicNav = composeWithTracker(composer)(_PublicNav);
-export const AdminNav = composeWithTracker(composer)(_AdminNav);
 
 export const AdminLayout = composeWithTracker(composer)(_AdminLayout);

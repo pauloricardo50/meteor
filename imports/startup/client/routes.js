@@ -39,6 +39,7 @@ import { AdminHomePage } from '/imports/ui/containers/admin/AllCollectionsContai
 import { AdminUsersPage } from '/imports/ui/containers/admin/AllUsersContainer';
 import { AdminRequestsPage } from '/imports/ui/containers/admin/AllRequestsContainer';
 import { AdminSingleRequestPage } from '/imports/ui/containers/admin/SingleRequestContainer';
+import { AdminSingleUserPage } from '/imports/ui/containers/admin/SingleUserContainer'
 
 // Automatically route someone who logs out to the homepage
 if (Meteor.isClient) {
@@ -280,16 +281,16 @@ adminRoutes.route('/users', {
     });
   },
 });
-//
-//
-// adminRoutes.route('/users/:id', {
-//   name: 'AdminSingleRequest',
-//   action() {
-//     mount(AdminLayout, {
-//       content: <AdminSingleUserPage />,
-//     });
-//   },
-// });
+
+
+adminRoutes.route('/users/:id', {
+  name: 'AdminSingleRequest',
+  action() {
+    mount(AdminLayout, {
+      content: <AdminSingleUserPage />,
+    });
+  },
+});
 
 
 // Partner routes
