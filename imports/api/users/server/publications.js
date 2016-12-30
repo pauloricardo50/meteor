@@ -21,3 +21,13 @@ Meteor.publish('currentUser', function () {
   // Return an empy cursor if not logged in
   return this.ready();
 });
+
+Meteor.publish('user', function (id) {
+  if (Roles.userIsInRole(this.userId, 'admin')) {
+    return Meteor.users.find({
+      _id: id,
+    });
+  }
+  // Return an empy cursor if not logged in
+  return this.ready();
+});

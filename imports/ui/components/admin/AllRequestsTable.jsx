@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-
+import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import { Table, Column, Cell } from 'fixed-data-table';
 import moment from 'moment';
@@ -28,6 +28,7 @@ export default class AllRequestsTable extends Component {
 
     this.props.creditRequests.forEach((request, index) => {
       const row = {
+        requestId: request._id,
         id: index + 1,
         name: request.requestName,
         createdAt: request.createdAt,
@@ -55,6 +56,7 @@ export default class AllRequestsTable extends Component {
     };
 
     this.onSortChange = this.onSortChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
 
@@ -86,6 +88,13 @@ export default class AllRequestsTable extends Component {
     });
   }
 
+  handleClick(e, rowIndex) {
+    const id = this.state.sortedDataList._data[
+      this.state.sortedDataList._indexMap[rowIndex]].requestId;
+
+    FlowRouter.go(`/admin/requests/${id}`)
+  }
+
   render() {
     var { sortedDataList, colSortDirs } = this.state;
     return (
@@ -95,6 +104,7 @@ export default class AllRequestsTable extends Component {
         width={820}
         height={500}
         headerHeight={50}
+        onRowClick={this.handleClick}
       >
         <Column
           columnKey="id"

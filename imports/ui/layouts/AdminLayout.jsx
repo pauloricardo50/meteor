@@ -6,8 +6,6 @@ import { Roles } from 'meteor/alanning:roles';
 
 import { AdminNav } from '/imports/ui/containers/public/CurrentUserContainer.js';
 
-import { toggleAdmin } from '/imports/api/users/methods';
-
 
 // MUI Theme, replace lightBaseTheme with a custom theme ASAP!
 import getMuiTheme from 'material-ui/styles/getMuiTheme';

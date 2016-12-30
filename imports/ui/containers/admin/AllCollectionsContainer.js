@@ -16,18 +16,18 @@ import AdminHomePage1 from '/imports/ui/pages/admin/AdminHomePage.jsx';
 // Container function which reactively send the currently active credit Request as a prop
 function composer1(props, onData) {
   if (Meteor.subscribe('allCreditRequests').ready()) {
-    const creditRequest = CreditRequests.find({}).fetch();
+    const creditRequests = CreditRequests.find({}).fetch();
 
-    onData(null, { creditRequest });
+    onData(null, { creditRequests });
   }
 }
 
 function composer2(props, onData) {
   if (Meteor.subscribe('allUsers').ready()) {
-    const creditRequest = Meteor.users.find({}).fetch();
+    const users = Meteor.users.find({}).fetch();
 
 
-    onData(null, { creditRequest });
+    onData(null, { users });
   }
 }
 
