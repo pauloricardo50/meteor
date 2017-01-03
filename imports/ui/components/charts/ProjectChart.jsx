@@ -33,11 +33,11 @@ export default class ProjectChart extends Component {
   }
 
   componentDidMount() {
-    const r = this.props.creditRequest;
+    const p = this.props;
 
     const options = {
       chart: {
-        type: (this.props.horizontal ? 'bar' : 'column'),
+        type: (p.horizontal ? 'bar' : 'column'),
         polar: false,
         width: null,
         height: null,
@@ -57,11 +57,11 @@ export default class ProjectChart extends Component {
         },
       },
       title: {
-        text: (this.props.horizontal ? '' : 'Mon Projet'),
+        text: (p.horizontal ? '' : 'Mon Projet'),
       },
       yAxis: [
         {
-          tickInterval: (r.propertyInfo.value > 2000000 ? 200000 : 100000),
+          tickInterval: (p.propertyValue > 2000000 ? 200000 : 100000),
           title: {
             text: 'Montant [CHF]',
           },
@@ -69,15 +69,15 @@ export default class ProjectChart extends Component {
       ],
       xAxis: [
         {
-          categories: [r.requestName],
+          categories: [p.requestName],
         },
       ],
       series: [
         {
           data: [
             [
-              r.requestName,
-              r.propertyInfo.value * 0.05,
+              p.requestName,
+              p.propertyValue * 0.05,
             ],
           ],
           name: 'Frais de Notaire',
@@ -85,8 +85,8 @@ export default class ProjectChart extends Component {
         }, {
           data: [
             [
-              r.requestName,
-              r.financialInfo.insuranceFortune * 0.1,
+              p.requestName,
+              p.insuranceFortune * 0.1,
             ],
           ],
           name: 'Retrait 2ème Pilier',
@@ -94,8 +94,8 @@ export default class ProjectChart extends Component {
         }, {
           data: [
             [
-              r.requestName,
-              r.financialInfo.fortune,
+              p.requestName,
+              p.fortune,
             ],
           ],
           name: 'Fortune',
@@ -103,8 +103,8 @@ export default class ProjectChart extends Component {
         }, {
           data: [
             [
-              r.requestName,
-              r.financialInfo.insuranceFortune,
+              p.requestName,
+              p.insuranceFortune,
             ],
           ],
           name: '2ème Pilier',
@@ -112,10 +112,10 @@ export default class ProjectChart extends Component {
         }, {
           data: [
             [
-              r.requestName,
-              r.propertyInfo.value -
-              r.financialInfo.fortune -
-              r.financialInfo.insuranceFortune,
+              p.requestName,
+              p.propertyValue -
+              p.fortune -
+              p.insuranceFortune,
             ],
           ],
           name: 'Emprunt',
@@ -135,7 +135,9 @@ export default class ProjectChart extends Component {
         thousandsSep: '\'',
       },
     });
-    this.chart = new Highcharts.Chart('projectChart', options);
+
+    const div = this.props.divName ? this.props.divName : 'projectChart';
+    this.chart = new Highcharts.Chart(div, options);
   }
 
   componentWillUnmount() {
@@ -144,13 +146,17 @@ export default class ProjectChart extends Component {
 
   render() {
     return (<div
-      id="projectChart"
+      id={this.props.divName ? this.props.divName : 'projectChart'}
       style={(this.props.horizontal ? styles.financePageContainer : styles.sideNavContainer)}
     />);
   }
 }
 
 ProjectChart.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any),
   horizontal: PropTypes.bool.isRequired,
+  requestName: PropTypes.string.isRequired,
+  propertyValue: PropTypes.number.isRequired,
+  fortune: PropTypes.number.isRequired,
+  insuranceFortune: PropTypes.number,
+  divName: PropTypes.string,
 };

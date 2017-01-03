@@ -4,20 +4,25 @@ import CountUp from 'react-countup';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
+import ProjectChart from '/imports/ui/components/charts/ProjectChart.jsx';
 
 const styles = {
   article: {
     color: 'unset',
   },
   topH1: {
-    paddingTop: 50,
-    paddingBottom: 50,
+    paddingTop: 25,
+    paddingBottom: 25,
   },
   finalButtons: {
-    marginTop: 100,
+    marginTop: 50,
   },
   button: {
     marginBottom: 16,
+  },
+  mobileChart: {
+    width: '75%',
+    margin: 'auto',
   },
 };
 
@@ -108,13 +113,30 @@ export default class Line11a extends Component {
   render() {
     return (
       <article onClick={this.props.setStep} className={this.props.classes.text += ' mask1'} style={styles.article}>
-        {/* <h1 className={this.props.classes.text}>
-          En développement: Ici il y aura de gros graphiques avec un recapitulatif.
-        </h1> */}
         <h1 className="col-xs-12 text-center" style={styles.topH1}>
           Tout est bon, ça va être une magnifique affaire!
         </h1>
-        <div className="col-sm-4 col-sm-offset-1 col-xs-6 text-center">
+        <div className="hidden-sm hidden-md hidden-lg" style={styles.mobileChart}>
+          <ProjectChart
+            horizontal={false}
+            requestName="Votre Nouveau Projet"
+            propertyValue={Number(this.props.propertyValue)}
+            fortune={Number(this.props.fortune)}
+            insuranceFortune={Number(this.props.insuranceFortune)}
+            divName="mobileChart"
+          />
+        </div>
+        <div className="hidden-xs">
+          <ProjectChart
+            horizontal
+            requestName="Votre Nouveau Projet"
+            propertyValue={Number(this.props.propertyValue)}
+            fortune={Number(this.props.fortune)}
+            insuranceFortune={Number(this.props.insuranceFortune)}
+            divName="regularChart"
+          />
+        </div>
+        {/* <div className="col-sm-4 col-sm-offset-1 col-xs-6 text-center">
           <span className="fa fa-home fa-3x" />
           <br />
           <h1>
@@ -154,7 +176,7 @@ export default class Line11a extends Component {
               callback={this.counterCallback}
             />
           </h1>
-        </div>
+        </div> */}
         <div className="col-xs-12 text-center form-group" style={styles.finalButtons}>
           <RaisedButton
             label="Continuer"

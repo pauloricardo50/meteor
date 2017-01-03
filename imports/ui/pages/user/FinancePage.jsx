@@ -44,7 +44,13 @@ export default class FinancePage extends Component {
         <article>
           <h3 className="text-center">Mon Projet</h3>
           {/* <PropertyChart creditRequest={this.props.creditRequest} /> */}
-          <ProjectChart creditRequest={this.props.creditRequest} horizontal />
+          <ProjectChart
+            horizontal
+            requestName={this.props.creditRequest.requestName}
+            propertyValue={this.props.creditRequest.propertyInfo.value}
+            fortune={this.props.creditRequest.financialInfo.fortune}
+            insuranceFortune={this.props.creditRequest.financialInfo.insuranceFortune}
+          />
         </article>
 
         <article>

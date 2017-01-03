@@ -86,10 +86,16 @@ export default class SideNav extends Component {
         </a>
       );
 
-      // content2 = <FinanceWidget creditRequest={this.props.creditRequest} />;
+
       content2 = this.props.currentURL !== '/finance' &&
         (<article className="mask1 finance-widget" style={styles.chartMask}>
-          <ProjectChart creditRequest={this.props.creditRequest} horizontal={false} />
+          <ProjectChart
+            horizontal={false}
+            requestName={this.props.creditRequest.requestName}
+            propertyValue={this.props.creditRequest.propertyInfo.value}
+            fortune={this.props.creditRequest.financialInfo.fortune}
+            insuranceFortune={this.props.creditRequest.financialInfo.insuranceFortune}
+          />
           <div className="text-center">
             <RaisedButton
               href="/finance"
