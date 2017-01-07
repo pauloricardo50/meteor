@@ -2,8 +2,6 @@ import React, { Component, PropTypes } from 'react';
 
 
 import TextInput from '../forms/TextInput.jsx';
-import TextInputNumber from '../forms/TextInputNumber.jsx';
-import TextInputMoney from '../forms/TextInputMoney.jsx';
 import RadioInput from '../forms/RadioInput.jsx';
 import DropdownInput from '../forms/DropdownInput.jsx';
 import ConditionalInput from '../forms/ConditionalInput.jsx';
@@ -24,6 +22,11 @@ export default class AutoForm extends Component {
       changeSaving: this.props.changeSaving,
       changeErrors: this.props.changeErrors,
     };
+
+    // Prevent undefined showCondition to trigger as well
+    if (singleInput.showCondition === false) {
+      return null;
+    }
 
     switch (singleInput.type) {
       case 'TextInput':

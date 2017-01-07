@@ -61,14 +61,14 @@ export default class Step1InitialForm extends Component {
         currentValue: this.props.creditRequest.propertyInfo.style,
       }, {
         type: 'TextInputNumber',
-        label: 'Surface du Terrain [m2]',
+        label: <span>Surface du terrain en m<sup>2</sup></span>,
         placeholder: '200',
         id: 'propertyInfo.surfaceTotal',
         currentValue: this.props.creditRequest.propertyInfo.surfaceTotal,
-
+        showCondition: (this.props.creditRequest.propertyInfo.style === 'villa'),
       }, {
         type: 'TextInputNumber',
-        label: 'Surface Habitable [m2]',
+        label: <span>Surface habitable en m<sup>2</sup></span>,
         placeholder: '120',
         id: 'propertyInfo.surface',
         currentValue: this.props.creditRequest.propertyInfo.surface,

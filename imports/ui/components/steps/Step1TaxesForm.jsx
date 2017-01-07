@@ -62,7 +62,7 @@ export default class Step1TaxesForm extends Component {
             currentValue: this.props.creditRequest.financialInfo.currentRentExists,
           }, {
             type: 'TextInputMoney',
-            label: 'Quel est votre loyer annuel?',
+            label: 'Loyer mensuel',
             placeholder: 'CHF 6\'000',
             id: 'financialInfo.currentRent',
             currentValue: this.props.creditRequest.financialInfo.currentRent,
@@ -70,16 +70,17 @@ export default class Step1TaxesForm extends Component {
         ],
       }, {
         type: 'TextInputMoney',
-        label: 'Quelle est la valeur de vos biens immobiliers existants ?',
+        label: 'Valeur de vos biens immobiliers existants',
         placeholder: 'CHF 100\'000',
         id: 'financialInfo.realEstateFortune',
         currentValue: this.props.creditRequest.financialInfo.realEstateFortune,
       }, {
         type: 'TextInputMoney',
-        label: 'Quelle est votre fortune totale en cash et titres, y compris ce que vous allez allouer à ce projet ?',
+        label: 'Fortune totale en cash et titres',
         placeholder: 'CHF 10\'000',
         id: 'financialInfo.totalCashFortune',
         currentValue: this.props.creditRequest.financialInfo.totalCashFortune,
+        info: 'Y compris ce que vous allez allouer à ce projet'
       }, {
         type: 'ConditionalInput',
         conditionalTrueValue: 'true',

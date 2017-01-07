@@ -87,7 +87,7 @@
       ],
       "import/extensions": 0,
       "no-extraneous-dependencies": [
-        "error",
+        "off",
         {
           "devDependencies": false,
           "optionalDependencies": false,
