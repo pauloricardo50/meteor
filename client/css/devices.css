@@ -136,6 +136,7 @@
 	width: 100%;
 	overflow: hidden;
 	background: white;
+
 }
 .centerdevices .browseriphone .mask-img {
 	width: 100%;
@@ -219,12 +220,19 @@
 		margin-left: 100px;
 	}
 }
+@media (min-width: 900px) {
+  .centerdevices .browseriphone {
+    padding: 90px 0;
+    overflow: scroll;
+  }
+}
+
 @media (max-width: 900px) {
 	.centerdevices .browseriphone {
 		white-space: nowrap;
 		overflow: scroll;
 		margin-left: -20px;
-		width: calc(100% + 40px;);
+		width: calc(100% + 40px);
 		-webkit-overflow-scrolling: touch;
 		vertical-align: top;
     /* Florian changed*/

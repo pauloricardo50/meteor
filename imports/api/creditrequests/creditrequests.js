@@ -3,6 +3,7 @@ import { Mongo } from 'meteor/mongo';
 
 import SimpleSchema from 'simpl-schema';
 
+
 import {
   LoanInfoSchema, PersonalInfoSchema, FinancialInfoSchema, PropertyInfoSchema, FileSchema,
   PartnerOfferSchema, LogicSchema, AdminInfoSchema,
@@ -23,7 +24,7 @@ CreditRequests.allow({
 });
 
 
-const CreditRequestSchema = new SimpleSchema({
+export const CreditRequestSchema = new SimpleSchema({
   userId: { // The user ID of the creator
     type: String,
     autoValue() {
@@ -79,14 +80,15 @@ const CreditRequestSchema = new SimpleSchema({
     type: FileSchema,
     defaultValue: {},
   },
-  // lenderOffers: { // All the offers from banks and insurances
-  //   type: Array,
-  //   defaultValue: [],
-  // },
-  'lenderOffers.$': { // All the offers from banks and insurances
-    type: PartnerOfferSchema,
+  lenderOffers: { // All the offers from banks and insurances
+    type: Array,
+    defaultValue: [],
     optional: true,
   },
+  // 'lenderOffers.$': { // All the offers from banks and insurances
+  //   type: PartnerOfferSchema,
+  //   optional: true,
+  // },
   logic: { // Internal logic of the app
     type: LogicSchema,
     defaultValue: {},

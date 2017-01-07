@@ -1,12 +1,82 @@
 import 'babel-polyfill';
 import SimpleSchema from 'simpl-schema';
 
-// Personal information about the user, like address, age, family
-export const PersonalInfoSchema = new SimpleSchema({
+
+// Schema to store information about each borrower
+const borrowerSchema = new SimpleSchema({
+  gender: {
+    type: String,
+    optional: true,
+    // defaultValue: 'f',
+  },
   firstName: {
     type: String,
     optional: true,
   },
+  lastName: {
+    type: String,
+    optional: true,
+  },
+  address: {
+    type: String,
+    optional: true,
+  },
+  zipCode: {
+    type: Number,
+    min: 1000,
+    max: 9999,
+    optional: true,
+  },
+  city: {
+    type: String,
+    optional: true,
+  },
+  citizenships: {
+    type: String,
+    optional: true,
+  },
+  residencyPermit: {
+    type: String,
+    optional: true,
+  },
+  birthDate: {
+    type: Date,
+    optional: true,
+  },
+  birthPlace: {
+    type: String,
+    optional: true,
+  },
+  civilStatus: { // 'married', 'pacsed', 'single', 'divorced'
+    type: String,
+    optional: true,
+    // defaultValue: 'single',
+  },
+  company: {
+    type: String,
+    optional: true,
+  },
+  grossIncome: {
+    type: Number,
+    min: 0,
+    max: 100000000,
+    optional: true,
+  },
+  otherIncome: {
+    type: Number,
+    min: 0,
+    max: 100000000,
+    optional: true,
+  },
+  // otherIncomeDescription: {
+  //   type: String,
+  //   optional: true,
+  // },
+});
+
+
+// Personal information about the user, like address, age, family
+export const PersonalInfoSchema = new SimpleSchema({
   twoBuyers: {
     type: String,
     defaultValue: 'false',
@@ -29,15 +99,36 @@ export const PersonalInfoSchema = new SimpleSchema({
     defaultValue: 'false',
     optional: true,
   },
-  gender1: {
+  borrowers: {
+    type: Array,
+    defaultValue: [],
+    optional: true,
+  },
+  'borrowers.$': {
+    type: borrowerSchema,
+    optional: true,
+  },
+  currentOwner: { // '0', '1', 'both', 'other'
+    type: String,
+    optional: true,
+    defaultValue: '0',
+  },
+  futureOwner: { // '0', '1', 'both', 'other'
+    type: String,
+    optional: true,
+    defaultValue: '0',
+  },
+  otherOwner: {
     type: String,
     optional: true,
   },
-  gender2: {
-    type: String,
+  sameAddress: {
+    type: Boolean,
     optional: true,
+    defaultValue: false,
   },
 });
+
 
 // Financial information about the user, like salary, fortune and insurance
 export const FinancialInfoSchema = new SimpleSchema({
@@ -193,8 +284,8 @@ export const PropertyInfoSchema = new SimpleSchema({
   },
   zipCode: {
     type: Number,
-    min: 4,
-    max: 4,
+    min: 1000,
+    max: 9999,
     optional: true,
   },
   city: {

@@ -5,7 +5,7 @@ import TextInput from '../forms/TextInput.jsx';
 import RadioInput from '../forms/RadioInput.jsx';
 import DropdownInput from '../forms/DropdownInput.jsx';
 import ConditionalInput from '../forms/ConditionalInput.jsx';
-
+import DateInput from '../forms/DateInput.jsx';
 
 const styles = {
   subtitle: {
@@ -88,9 +88,17 @@ export default class AutoForm extends Component {
             {singleInput.inputs.slice(1).map((input, index2) => this.inputSwitch(input, index2))}
           </ConditionalInput>
         );
-      case 'subtitle':
+      case 'Subtitle':
         return (
           <h3 style={styles.subtitle} key={index}>{singleInput.text}</h3>
+        );
+      case 'DateInput':
+        return (
+          <DateInput
+            {...singleInput}
+            {...extraValues}
+            key={index}
+          />
         );
       default:
         return '';

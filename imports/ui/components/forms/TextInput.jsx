@@ -46,16 +46,22 @@ export default class TextInput extends Component {
   }
 
   handleChange(event) {
+    Meteor.clearTimeout(timer);
     this.setState({
       value: event.target.value,
+    }, () => {
+      timer = Meteor.setTimeout(this.saveValue, 400);
     });
-
-    Meteor.clearTimeout(timer);
-    timer = Meteor.setTimeout(this.saveValue, 400);
   }
 
   handleBlur() {
-    this.saveValue();
+    if (this.state.value !== this.props.currentValue) {
+      this.saveValue();
+    }
+  }
+
+  componentWillUnmount() {
+    Meteor.clearTimeout(timer);
   }
 
   saveValue() {
@@ -63,7 +69,13 @@ export default class TextInput extends Component {
 
     // Save data to DB
     const object = {};
-    object[this.props.id] = this.state.value;
+
+    if (this.props.money || this.props.number) {
+      // Make sure we store a number if this is supposed to be one
+      object[this.props.id] = Number(this.state.value);
+    } else {
+      object[this.props.id] = this.state.value;
+    }
     const id = this.props.requestId;
 
     updateValues.call({

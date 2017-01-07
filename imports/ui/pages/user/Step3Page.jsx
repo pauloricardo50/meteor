@@ -10,27 +10,6 @@ import TodoCardArray from '/imports/ui/components/general/TodoCardArray.jsx';
 import { updateValues } from '/imports/api/creditrequests/methods.js';
 
 
-const todoCards = [
-  {
-    title: 'Mon bien immobilier',
-    duration: '15 min',
-    href: 'property',
-  }, {
-    title: 'Mes informations personelles',
-    duration: '12 min',
-    href: 'perso',
-  }, {
-    title: 'Mes informations économiques',
-    duration: '10 min',
-    href: 'finance',
-  }, {
-    title: 'Mes documents à uploader',
-    duration: '30 min',
-    href: 'files',
-  },
-];
-
-
 const styles = {
   continueButton: {
     float: 'right',
@@ -40,9 +19,38 @@ const styles = {
 export default class Step3Page extends React.Component {
   constructor(props) {
     super(props);
+
+    this.todoCards = [
+      {
+        title: (this.props.creditRequest.personalInfo.twoBuyers === 'true' ?
+          'Notre bien immobilier' : 'Mon bien immobilier'
+        ),
+        duration: '15 min',
+        href: 'property',
+      }, {
+        title: (this.props.creditRequest.personalInfo.twoBuyers === 'true' ?
+          'Nos informations personelles' : 'Mes informations personelles'
+        ),
+        duration: '12 min',
+        href: 'perso',
+      }, {
+        title: (this.props.creditRequest.personalInfo.twoBuyers === 'true' ?
+          'Nos informations économiques' : 'Mes informations économiques'
+        ),
+        duration: '10 min',
+        href: 'finance',
+      }, {
+        title: (this.props.creditRequest.personalInfo.twoBuyers === 'true' ?
+          'Nos documents à uploader' : 'Mes documents à uploader'
+        ),
+        duration: '30 min',
+        href: 'files',
+      },
+    ];
+
     this.state = {
       progress: [0, 0, 0, 0],
-      arrayLength: todoCards.length,
+      arrayLength: this.todoCards.length,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -76,7 +84,7 @@ export default class Step3Page extends React.Component {
       <div>
         <h1 className="stepTitle">3ème Étape <small>Montez votre dossier complet</small></h1>
         <TodoCardArray
-          cards={todoCards}
+          cards={this.todoCards}
           progress={this.state.progress}
         />
         <div className="col-xs-12">

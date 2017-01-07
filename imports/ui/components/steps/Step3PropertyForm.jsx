@@ -15,27 +15,25 @@ export default class Step3PropertyForm extends Component {
       saving: false,
       saved: false,
       errors: '',
-      savingTimeout: null,
     };
 
     const r = this.props.creditRequest;
     this.formArray = [
       {
-        type: 'subtitle',
+        type: 'Subtitle',
         text: 'Adresse du bien immobilier',
       }, {
-        type: 'TextInputLarge',
+        type: 'TextInput',
         label: 'Adresse',
         placeholder: 'Rue des Champs 7',
         id: 'requestName',
         currentValue: r.requestName,
-        rows: 2,
       }, {
         type: 'TextInputNumber',
         label: 'Code Postal',
         placeholder: '1200',
-        id: 'propertyInfo.zipcode',
-        currentValue: r.propertyInfo.zipcode,
+        id: 'propertyInfo.zipCode',
+        currentValue: r.propertyInfo.zipCode,
       }, {
         type: 'TextInput',
         label: 'Localité',
@@ -43,7 +41,7 @@ export default class Step3PropertyForm extends Component {
         id: 'propertyInfo.city',
         currentValue: r.propertyInfo.city,
       }, {
-        type: 'subtitle',
+        type: 'Subtitle',
         text: 'Détails du bien',
       }, {
         type: 'TextInputNumber',
@@ -159,7 +157,11 @@ export default class Step3PropertyForm extends Component {
   render() {
     return (
       <section className="mask1">
-        <h1>Mon bien immobilier</h1>
+        <h1>{this.props.creditRequest.personalInfo.twoBuyers === 'true' ?
+          'Notre bien immobilier'
+          :
+            'Mon bien immobilier'
+        }</h1>
 
         {/* Show "Currently Saving" when saving,
           and show "Saved" if currently saving has already appeared once */}
@@ -167,7 +169,7 @@ export default class Step3PropertyForm extends Component {
           <p className="secondary bold">Sauvegarde en cours...</p> :
           (this.state.saved && <p>Sauvegardé</p>)
         }
-        {<h5>{this.state.errors}</h5>}
+        <h5>{this.state.errors}</h5>
         <AutoForm
           inputs={this.formArray}
           formClasses="col-sm-10 col-sm-offset-1"

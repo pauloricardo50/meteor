@@ -2,7 +2,9 @@ import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { check } from 'meteor/check';
 
-import CreditRequests from './creditrequests.js';
+import SimpleSchema from 'simpl-schema';
+
+import CreditRequests, { CreditRequestSchema } from './creditrequests.js';
 
 export const insertRequest = new ValidatedMethod({
   name: 'creditrequests.insert',
@@ -70,32 +72,32 @@ export const updateValues = new ValidatedMethod({
 
 
 // Lets you push a value to an array
-export const pushValue = new ValidatedMethod({
-  name: 'creditRequests.pushValue',
-  validate: null,
-  run({ object, id }) {
-    if (!this.userId) {
-      throw new Meteor.Error('notLoggedIn', 'Must be logged in to update a request');
-    }
-
-    CreditRequests.update(id, {
-      $push: object,
-    });
-  },
-});
+// export const pushValue = new ValidatedMethod({
+//   name: 'creditRequests.pushValue',
+//   validate: null,
+//   run({ object, id }) {
+//     if (!this.userId) {
+//       throw new Meteor.Error('notLoggedIn', 'Must be logged in to update a request');
+//     }
+//
+//     CreditRequests.update(id, {
+//       $push: object,
+//     });
+//   },
+// });
 
 
 // Lets you pull a value from an array
-export const pullValue = new ValidatedMethod({
-  name: 'creditRequests.pullValue',
-  validate: null,
-  run({ value, id }) {
-    if (!this.userId) {
-      throw new Meteor.Error('notLoggedIn', 'Must be logged in to update a request');
-    }
-
-    CreditRequests.update(id, {
-      $pull: value,
-    });
-  },
-});
+// export const pullValue = new ValidatedMethod({
+//   name: 'creditRequests.pullValue',
+//   validate: null,
+//   run({ value, id }) {
+//     if (!this.userId) {
+//       throw new Meteor.Error('notLoggedIn', 'Must be logged in to update a request');
+//     }
+//
+//     CreditRequests.update(id, {
+//       $pull: value,
+//     });
+//   },
+// });

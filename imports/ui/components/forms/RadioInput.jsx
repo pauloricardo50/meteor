@@ -16,29 +16,39 @@ const styles = {
     width: 'auto',
     paddingLeft: '20',
   },
+  div: {
+    marginTop: 10,
+    marginBottom: 0,
+  },
 };
 
 export default class RadioInput extends Component {
-
   constructor(props) {
     super(props);
-    // Set initial state to be the 2nd option
-    this.state = { value: this.props.currentValue };
+    // Set initial state to be the 1st option
+    if (this.props.currentValue) {
+      this.state = { value: this.props.currentValue };
+    } else {
+      this.state = { value: this.props.values[0] };
+    }
 
     this.setValue = this.setValue.bind(this);
+    this.saveValue = this.saveValue.bind(this);
   }
+
 
   setValue(event) {
     // Change radio button group state to appropriate value
     this.setState({
       value: event.target.value,
-    });
-
+    }, this.saveValue(event.target.value));
     this.props.changeSaving(true);
+  }
 
+  saveValue(value) {
     // Save data to DB
     const object = {};
-    object[this.props.id] = event.target.value;
+    object[this.props.id] = value || this.state.value;
     const id = this.props.requestId;
 
     updateValues.call({
@@ -58,11 +68,11 @@ export default class RadioInput extends Component {
 
   render() {
     return (
-      <div>
+      <div style={styles.div}>
         <label htmlFor={this.props.label}>{this.props.label}</label>
         <RadioButtonGroup
           name={this.props.label}
-          defaultSelected={this.props.currentValue}
+          defaultSelected={this.state.value}
           onChange={this.props.onConditionalChange}
           style={styles.RadioButtonGroup}
         >
@@ -73,7 +83,7 @@ export default class RadioInput extends Component {
               onClick={this.setValue}
               key={index}
               style={styles.RadioButton}
-            />)
+            />),
           )}
         </RadioButtonGroup>
       </div>
@@ -91,7 +101,7 @@ RadioInput.propTypes = {
   currentValue: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.string,
-  ]).isRequired,
+  ]),
   changeSaving: PropTypes.func,
   changeErrors: PropTypes.func,
 };
