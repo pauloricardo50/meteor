@@ -1,5 +1,8 @@
+import 'babel-polyfill';
 import { Mongo } from 'meteor/mongo';
-import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+
+import SimpleSchema from 'simpl-schema';
+
 import {
   LoanInfoSchema, PersonalInfoSchema, FinancialInfoSchema, PropertyInfoSchema, FileSchema,
   PartnerOfferSchema, LogicSchema, AdminInfoSchema,
@@ -26,9 +29,6 @@ const CreditRequestSchema = new SimpleSchema({
     autoValue() {
       return this.userId;
     },
-    // Index the database by user, and it can have multiple requests per user, so it's not unique
-    index: true,
-    unique: false,
   },
   createdAt: { // Date at which the request was created
     type: Date,
@@ -46,7 +46,6 @@ const CreditRequestSchema = new SimpleSchema({
       }
       return undefined;
     },
-    denyInsert: true,
     optional: true,
   },
   active: { // Whether this is the request currently being worked on by the user
@@ -80,9 +79,13 @@ const CreditRequestSchema = new SimpleSchema({
     type: FileSchema,
     defaultValue: {},
   },
-  lenderOffers: { // All the offers from banks and insurances
-    type: [PartnerOfferSchema],
-    defaultValue: [],
+  // lenderOffers: { // All the offers from banks and insurances
+  //   type: Array,
+  //   defaultValue: [],
+  // },
+  'lenderOffers.$': { // All the offers from banks and insurances
+    type: PartnerOfferSchema,
+    optional: true,
   },
   logic: { // Internal logic of the app
     type: LogicSchema,

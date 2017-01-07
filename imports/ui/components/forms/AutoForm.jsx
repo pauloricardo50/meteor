@@ -9,6 +9,13 @@ import DropdownInput from '../forms/DropdownInput.jsx';
 import ConditionalInput from '../forms/ConditionalInput.jsx';
 
 
+const styles = {
+  subtitle: {
+    marginTop: 40,
+  },
+};
+
+
 export default class AutoForm extends Component {
 
   inputSwitch(singleInput, index) {
@@ -22,6 +29,16 @@ export default class AutoForm extends Component {
       case 'TextInput':
         return (
           <TextInput
+            multiLine={false}
+            {...singleInput}
+            {...extraValues}
+            key={index}
+          />
+        );
+      case 'TextInputLarge':
+        return (
+          <TextInput
+            multiLine
             {...singleInput}
             {...extraValues}
             key={index}
@@ -29,7 +46,8 @@ export default class AutoForm extends Component {
         );
       case 'TextInputNumber':
         return (
-          <TextInputNumber
+          <TextInput
+            number
             {...singleInput}
             {...extraValues}
             key={index}
@@ -37,7 +55,8 @@ export default class AutoForm extends Component {
         );
       case 'TextInputMoney':
         return (
-          <TextInputMoney
+          <TextInput
+            money
             {...singleInput}
             {...extraValues}
             key={index}
@@ -65,6 +84,10 @@ export default class AutoForm extends Component {
             {this.inputSwitch(singleInput.inputs[0])}
             {singleInput.inputs.slice(1).map((input, index2) => this.inputSwitch(input, index2))}
           </ConditionalInput>
+        );
+      case 'subtitle':
+        return (
+          <h3 style={styles.subtitle} key={index}>{singleInput.text}</h3>
         );
       default:
         return '';

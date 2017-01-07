@@ -39,6 +39,8 @@ const styles = {
   scrollElement: {
     // Required to make them properly scale with child elements
     overflow: 'visible',
+    display: 'inline-block',
+    width: '100%',
   },
 };
 
@@ -188,14 +190,14 @@ export default class StartPage extends Component {
     return this.state.isValid.every(bool => bool);
   }
 
-  scroll(step = null) {
+  scroll(step = -1) {
     const options = {
       duration: 500,
       delay: 0,
       smooth: true,
       offset: -100,
     };
-    if (step) {
+    if (step >= 0) {
       Scroll.scroller.scrollTo('scroll' + step.toString(), options);
     } else {
       Scroll.animateScroll.scrollToBottom(options);

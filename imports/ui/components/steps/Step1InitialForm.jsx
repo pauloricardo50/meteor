@@ -70,7 +70,7 @@ export default class Step1InitialForm extends Component {
         type: 'TextInputNumber',
         label: 'Surface Habitable [m2]',
         placeholder: '120',
-        id: 'propertyInfo.totalSurface',
+        id: 'propertyInfo.surface',
         currentValue: this.props.creditRequest.propertyInfo.surface,
       },
     ];

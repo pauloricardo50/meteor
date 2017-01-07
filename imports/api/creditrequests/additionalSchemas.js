@@ -1,5 +1,5 @@
-import { SimpleSchema } from 'meteor/aldeed:simple-schema';
-
+import 'babel-polyfill';
+import SimpleSchema from 'simpl-schema';
 
 // Personal information about the user, like address, age, family
 export const PersonalInfoSchema = new SimpleSchema({
@@ -131,10 +131,23 @@ export const FinancialInfoSchema = new SimpleSchema({
     defaultValue: 'false',
     optional: true,
   },
-  otherFortune: {
-    type: [otherFortuneSchema],
-    defaultValue: [{}],
-  },
+  // otherFortune: {
+  //   type: Array,
+  //   defaultValue: [],
+  // },
+  // 'otherFortune.$': Object,
+  // 'otherFortune.$.value': {
+  //   type: Number,
+  //   optional: true,
+  //   min: 1000000,
+  //   max: 100000000,
+  //   defaultValue: 0,
+  // },
+  // 'otherFortune.$.description': {
+  //   type: String,
+  //   optional: true,
+  //   defaultValue: '',
+  // },
 });
 
 // Information about the property, like room count, property value and address
@@ -170,6 +183,80 @@ export const PropertyInfoSchema = new SimpleSchema({
     defaultValue: undefined,
     optional: true,
   },
+  address1: {
+    type: String,
+    optional: true,
+  },
+  address2: {
+    type: String,
+    optional: true,
+  },
+  zipCode: {
+    type: Number,
+    min: 4,
+    max: 4,
+    optional: true,
+  },
+  city: {
+    type: String,
+    optional: true,
+  },
+  roomCount: {
+    type: Number,
+    min: 0,
+    max: 100,
+    optional: true,
+  },
+  bathroomCount: {
+    type: Number,
+    min: 0,
+    max: 100,
+    optional: true,
+  },
+  toiletCount: {
+    type: Number,
+    min: 0,
+    max: 100,
+    optional: true,
+  },
+  volume: {
+    type: Number,
+    min: 0,
+    max: 5000,
+    optional: true,
+  },
+  insideParking: {
+    type: Number,
+    min: 0,
+    max: 100,
+    optional: true,
+  },
+  outsideParkingCovered: {
+    type: Number,
+    min: 0,
+    max: 100,
+    optional: true,
+  },
+  outsideParkingNotCovered: {
+    type: Number,
+    min: 0,
+    max: 100,
+    optional: true,
+  },
+  parkingBoxes: {
+    type: Number,
+    min: 0,
+    max: 100,
+    optional: true,
+  },
+  minergie: {
+    type: String,
+    defaultValue: 'false',
+  },
+  otherInfo: {
+    type: String,
+    optional: true,
+  },
 });
 
 // Name and URL of a single file uploaded by the user
@@ -193,28 +280,6 @@ export const FileSchema = new SimpleSchema({
   housePicture: {
     type: SingleFileSchema,
     optional: true,
-  },
-});
-
-
-// Contains all fields submitted by an individual lender/partner
-export const PartnerOfferSchema = new SimpleSchema({
-  name: {
-    type: String,
-  },
-  standard: {
-    type: singleOffer,
-    defaultValue: {},
-  },
-  withConditions: {
-    type: singleOffer,
-    defaultValue: {},
-  },
-  conditions: {
-    type: String,
-  },
-  expertise: {
-    type: Boolean,
   },
 });
 
@@ -269,6 +334,31 @@ export const singleOffer = new SimpleSchema({
   },
 });
 
+
+// Contains all fields submitted by an individual lender/partner
+export const PartnerOfferSchema = new SimpleSchema({
+  name: {
+    type: String,
+  },
+  standard: {
+    type: singleOffer,
+    blackbox: true,
+    defaultValue: {},
+  },
+  withConditions: {
+    type: singleOffer,
+    blackbox: true,
+    defaultValue: {},
+  },
+  conditions: {
+    type: String,
+  },
+  expertise: {
+    type: Boolean,
+  },
+});
+
+
 // All logic fields required by the app to trigger the right things at the right time
 export const LogicSchema = new SimpleSchema({
   step: {
@@ -303,20 +393,6 @@ export const AdminInfoSchema = new SimpleSchema({
   },
 });
 
-export const otherFortuneSchema = new SimpleSchema({
-  value: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-    defaultValue: 0,
-  },
-  description: {
-    type: String,
-    optional: true,
-    defaultValue: '',
-  },
-});
 
 export const LoanInfoSchema = new SimpleSchema({
   lender: {
@@ -330,7 +406,7 @@ export const LoanInfoSchema = new SimpleSchema({
     max: 100000000,
   },
   tranches: {
-    type: [Object],
+    type: Array,
     minCount: 1,
     defaultValue: [
       {
@@ -339,6 +415,7 @@ export const LoanInfoSchema = new SimpleSchema({
       },
     ],
   },
+  'tranches.$': Object,
   'tranches.$.type': { // libor, floating, 1y, 2y, 5y, 10y
     type: String,
     optional: true,

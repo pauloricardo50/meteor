@@ -91,19 +91,19 @@ export default class Step1TaxesForm extends Component {
             values: ['true', 'false'],
             id: 'financialInfo.otherFortuneExists',
             currentValue: this.props.creditRequest.financialInfo.otherFortuneExists,
-          }, {
-            type: 'TextInputMoney',
-            label: 'Combien ?',
-            placeholder: 'CHF 1\'000',
-            id: 'financialInfo.otherFortune.$.value',
-            currentValue: this.props.creditRequest.financialInfo.otherFortune[0].value,
-          }, {
-            type: 'TextInput',
-            label: 'Donnez une courte description',
-            placeholder: 'Yannis?',
-            id: 'financialInfo.otherFortune.$.description',
-            currentValue: this.props.creditRequest.financialInfo.otherFortune[0].description,
-          },
+          }, // {
+          //   type: 'TextInputMoney',
+          //   label: 'Combien ?',
+          //   placeholder: 'CHF 1\'000',
+          //   id: 'financialInfo.otherFortune.$.value',
+          //   currentValue: this.props.creditRequest.financialInfo.otherFortune[0].value,
+          // }, {
+          //   type: 'TextInput',
+          //   label: 'Donnez une courte description',
+          //   placeholder: 'Yannis?',
+          //   id: 'financialInfo.otherFortune.$.description',
+          //   currentValue: this.props.creditRequest.financialInfo.otherFortune[0].description,
+          // },
         ],
       },
     ];

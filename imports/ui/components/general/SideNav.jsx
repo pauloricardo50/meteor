@@ -7,14 +7,14 @@ import ProjectChart from '/imports/ui/components/charts/ProjectChart.jsx';
 
 const styles = {
   icon: {
-    paddingRight: 10,
+    padding: 20,
   },
   text: {
     display: 'inline',
     fontSize: '1em',
   },
-  main: {
-    padding: 30,
+  link: {
+    display: 'block',
   },
   logo: {
     // width: 160,
@@ -80,7 +80,7 @@ export default class SideNav extends Component {
     let content2;
     if (this.props.creditRequest) {
       content1 = (
-        <a href="/main" style={styles.main}>
+        <a href="/main" style={styles.link}>
           <span className="fa fa-home fa-2x active" style={styles.icon} />
           <h5 className="active bold" style={styles.text}>{this.state.requestName}</h5>
         </a>
@@ -122,7 +122,7 @@ export default class SideNav extends Component {
       <nav className="side-nav hidden-xs">
 
         <a href="/">
-          <img src="/img/logo_black.svg" alt="e-Potek"  style={styles.logo} />
+          <img src="/img/logo_black.svg" alt="e-Potek" style={styles.logo} />
         </a>
 
         {content1}

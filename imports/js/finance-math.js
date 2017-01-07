@@ -149,11 +149,14 @@ function isLoanValid(loanPercent, revenue, propertyValue, yearsToRetirement, typ
 }
 
 
+// Adds thousands markers every 3 digits (and removes non-digit characters)
 export function toMoney(value) {
   return String(value).replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, "'");
 }
 
 
+// Replaces any nondigit character by an empty character, to prevent the use of non-digits
+// Only do this if the value actually exists
 export function toNumber(value) {
-  return Number(String(value).replace(/\D/g, ''));
+  return value ? Number(String(value).replace(/\D/g, '')) : value;
 }

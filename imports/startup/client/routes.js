@@ -10,7 +10,7 @@ import PublicLayout from '/imports/ui/layouts/PublicLayout.jsx';
 import UserLayout from '/imports/ui/layouts/UserLayout.jsx';
 import PartnerLayout from '/imports/ui/layouts/PartnerLayout.jsx';
 // import AdminLayout from '/imports/ui/layouts/AdminLayout.jsx';
-import {AdminLayout} from '/imports/ui/containers/public/CurrentUserContainer';
+import { AdminLayout } from '/imports/ui/containers/public/CurrentUserContainer';
 
 
 // Public Pages

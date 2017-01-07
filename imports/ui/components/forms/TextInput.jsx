@@ -4,39 +4,66 @@ import { updateValues } from '/imports/api/creditrequests/methods.js';
 
 
 import TextField from 'material-ui/TextField';
+import MaskedInput from 'react-text-mask';
+
+import { swissFrancMask } from '/imports/js/textMasks.js';
+import { toNumber, toMoney } from '/imports/js/finance-math';
+
+
+var timer;
+const styles = {
+  div: {
+    position: 'relative',
+  },
+  icon: {
+    position: 'absolute',
+    top: '60%',
+    right: -20,
+  },
+};
+
 
 export default class TextInput extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      value: this.props.currentValue ? this.props.currentValue : '',
-    };
+    if (this.props.currentValue) {
+      this.state = {
+        value: this.props.currentValue,
+        errorText: '',
+      };
+    } else {
+      this.state = {
+        value: '',
+        errorText: '',
+      };
+    }
 
 
     this.handleChange = this.handleChange.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // Only update if the value is new
-    if (nextProps.currentValue !== this.state.value) {
-      this.setState({ value: nextProps.currentValue });
-    }
+    this.saveValue = this.saveValue.bind(this);
   }
 
   handleChange(event) {
     this.setState({
       value: event.target.value,
     });
+
+    Meteor.clearTimeout(timer);
+    timer = Meteor.setTimeout(this.saveValue, 400);
   }
 
-  handleBlur(event) {
+  handleBlur() {
+    this.saveValue();
+  }
+
+  saveValue() {
     this.props.changeSaving(true);
 
     // Save data to DB
     const object = {};
-    object[this.props.id] = event.target.value;
+    object[this.props.id] = this.state.value;
     const id = this.props.requestId;
 
     updateValues.call({
@@ -46,9 +73,11 @@ export default class TextInput extends Component {
 
       if (error) {
         this.props.changeErrors(error.message);
+        this.setState({ errorText: error.message });
         throw new Meteor.Error(500, error.message);
       } else {
         this.props.changeErrors('');
+        this.setState({ errorText: '' });
         return 'Update Successful';
       }
     });
@@ -56,17 +85,30 @@ export default class TextInput extends Component {
 
   render() {
     return (
-      <div className="form-group">
+      <div style={styles.div}>
         <TextField
           floatingLabelText={this.props.label}
           hintText={this.props.placeholder}
-          value={this.state.value}
+          value={this.props.number ? toNumber(this.state.value) : this.state.value}
           onChange={this.handleChange}
           onBlur={this.handleBlur}
           type="text"
           id={this.props.id}
           fullWidth
-        />
+          multiLine={this.props.multiLine}
+          rows={this.props.rows}
+          pattern={this.props.number && '[0-9]*'}
+          errorText={this.state.errorText}
+        >
+          {this.props.money &&
+            <MaskedInput
+              mask={swissFrancMask}
+              guide
+              pattern="[0-9]*"
+            />
+          }
+        </TextField>
+        {/* <span className="fa fa-info" style={styles.icon}/> */}
       </div>
     );
   }
@@ -74,10 +116,22 @@ export default class TextInput extends Component {
 
 TextInput.propTypes = {
   id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.string,
+  ]).isRequired,
   placeholder: PropTypes.string.isRequired,
-  currentValue: PropTypes.string,
+  currentValue: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
+  multiLine: PropTypes.bool,
+  rows: PropTypes.number,
   requestId: PropTypes.string.isRequired,
   changeSaving: PropTypes.func,
   changeErrors: PropTypes.func,
+  onChange: PropTypes.func,
+
+  number: PropTypes.bool,
+  money: PropTypes.bool,
 };

@@ -7,6 +7,7 @@ import TextField from 'material-ui/TextField';
 import MaskedInput from 'react-text-mask';
 
 import { swissFrancMask } from '/imports/js/textMasks.js';
+import { toNumber, toMoney } from '/imports/js/finance-math';
 
 export default class TextInputMoney extends React.Component {
   constructor(props) {

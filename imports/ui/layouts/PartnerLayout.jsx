@@ -4,7 +4,7 @@ import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Roles } from 'meteor/alanning:roles';
 
-import PublicNav from '/imports/ui/containers/public/CurrentUserContainer.js';
+import { PublicNav } from '/imports/ui/containers/public/CurrentUserContainer.js';
 
 
 // MUI Theme, replace lightBaseTheme with a custom theme ASAP!

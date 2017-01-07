@@ -32,8 +32,6 @@ zetoff:accounts-material-ui
 
 
 # Data
-aldeed:simple-schema            # Easily define schemas for a MongoDB collection
-aldeed:collection2              # Allow validation based on schemas on insert/update/etc..
 mdg:validated-method            # MDG written server-side validation before storing
 check@1.2.4                           # variable type verification for server side validation
 session@1.1.7                         # Lets you use Session variables
@@ -59,3 +57,4 @@ kadira:dochead                  # Set custom page titles easily
 # Production
 spiderable@1.0.14-release-testing.0                      # Lets webcrawlers crawl your website to index it, ex: Google
 force-ssl                       # Automatically route users to https
+aldeed:collection2-core@2.0.0
