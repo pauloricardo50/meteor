@@ -53,5 +53,5 @@ export default class Step5Page extends React.Component {
 }
 
 Step5Page.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

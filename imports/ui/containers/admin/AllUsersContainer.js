@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { compose } from 'react-komposer';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import CreditRequests from '/imports/api/creditrequests/creditrequests.js';
+import LoanRequests from '/imports/api/loanrequests/loanrequests.js';
 
 import composeWithTracker from '../composeWithTracker';
 
@@ -13,7 +13,7 @@ import Loading from '/imports/ui/components/general/Loading.jsx';
 import _AdminUsersPage from '/imports/ui/pages/admin/AdminUsersPage.jsx';
 
 
-// Container function which reactively send the currently active credit Request as a prop
+// Container function which reactively send the currently active loan Request as a prop
 function composer(props, onData) {
   if (Meteor.subscribe('allUsers').ready()) {
     const users = Meteor.users.find({}).fetch();

@@ -21,7 +21,7 @@ export default class AdminRequestsPage extends Component {
         <h1>Demandes de Prêt</h1>
 
         <div style={styles.table}>
-          <AllRequestsTable creditRequests={this.props.creditRequests} />
+          <AllRequestsTable loanRequests={this.props.loanRequests} />
         </div>
       </section>
     );
@@ -29,5 +29,5 @@ export default class AdminRequestsPage extends Component {
 }
 
 AdminRequestsPage.propTypes = {
-  creditRequests: PropTypes.arrayOf(PropTypes.any),
+  loanRequests: PropTypes.arrayOf(PropTypes.any),
 };

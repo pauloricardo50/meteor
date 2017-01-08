@@ -18,7 +18,7 @@ export default class LenderPicker extends Component {
   }
 
   getOffers(withConditions) {
-    const r = this.props.creditRequest;
+    const r = this.props.loanRequest;
     const offers = [];
     for (var i = 0; i < r.lenderOffers.length; i++) {
       if (withConditions) {
@@ -37,7 +37,7 @@ export default class LenderPicker extends Component {
     const offers = this.getOffers(withConditions);
     // Will contain the monthly payment value for each offer
     const paymentsArray = [];
-    const tranches = this.props.creditRequest.loanInfo.tranches;
+    const tranches = this.props.loanRequest.loanInfo.tranches;
 
     offers.forEach((offer) => {
       // Will contain the monthly payment for each tranche of this offer
@@ -56,12 +56,12 @@ export default class LenderPicker extends Component {
 
         <h4 className="text-center">Sans Conditions</h4>
         <LenderTable1
-          creditRequest={this.props.creditRequest}
+          loanRequest={this.props.loanRequest}
           lenderOffers={this.getBestOffers(false)}
         />
         <h4 className="text-center">Avec Conditions</h4>
         <LenderTable2
-          creditRequest={this.props.creditRequest}
+          loanRequest={this.props.loanRequest}
           lenderOffers={this.getBestOffers(true)}
         />
 
@@ -71,5 +71,5 @@ export default class LenderPicker extends Component {
 }
 
 LenderPicker.propTypes = {
-  creditRequest: React.PropTypes.objectOf(React.PropTypes.any),
+  loanRequest: React.PropTypes.objectOf(React.PropTypes.any),
 };

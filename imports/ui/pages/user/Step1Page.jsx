@@ -6,7 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import Step1Part1 from '/imports/ui/components/steps/Step1Part1.jsx';
 import Step1Part2 from '/imports/ui/components/steps/Step1Part2.jsx';
-import { updateValues } from '/imports/api/creditrequests/methods.js';
+import { updateValues } from '/imports/api/loanrequests/methods.js';
 
 
 const styles = {
@@ -32,7 +32,7 @@ export default class Step1Page extends Component {
     let projectReady = false;
     let taxesReady = false;
     // For readability
-    const r = this.props.creditRequest;
+    const r = this.props.loanRequest;
 
     if (r.files.willUploadTaxes) {
       if (r.files.taxes) {
@@ -54,7 +54,7 @@ export default class Step1Page extends Component {
 
       const object = {};
       object['logic.step'] = 1;
-      const id = this.props.creditRequest._id;
+      const id = this.props.loanRequest._id;
 
       updateValues.call({
         object, id,
@@ -79,8 +79,8 @@ export default class Step1Page extends Component {
           <small> Encore quelques informations avant qu'on se mette au travail</small>
         </h1>
 
-        <Step1Part1 creditRequest={this.props.creditRequest} />
-        <Step1Part2 creditRequest={this.props.creditRequest} />
+        <Step1Part1 loanRequest={this.props.loanRequest} />
+        <Step1Part2 loanRequest={this.props.loanRequest} />
 
         <RaisedButton
           label="Continuer"
@@ -97,5 +97,5 @@ export default class Step1Page extends Component {
 
 
 Step1Page.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

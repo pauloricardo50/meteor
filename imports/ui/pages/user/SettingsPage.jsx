@@ -87,7 +87,7 @@ export default class SettingsPage extends Component {
           </div>
 
           <div className="form-group">
-            <RequestSelector creditRequests={this.props.creditRequests} />
+            <RequestSelector loanRequests={this.props.loanRequests} />
           </div>
         </div>
 
@@ -103,5 +103,5 @@ export default class SettingsPage extends Component {
 
 SettingsPage.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any),
-  creditRequests: PropTypes.arrayOf(PropTypes.object),
+  loanRequests: PropTypes.arrayOf(PropTypes.object),
 };

@@ -70,7 +70,7 @@ export default class PartnerOfferForm extends Component {
 
           <TextField
             floatingLabelText="Prêt Maximal"
-            hintText={`CHF ${toMoney(Math.round(this.props.creditRequest.propertyInfo.value * 0.8))}`}
+            hintText={`CHF ${toMoney(Math.round(this.props.loanRequest.propertyInfo.value * 0.8))}`}
             type="text"
           >
             <MaskedInput
@@ -150,5 +150,5 @@ export default class PartnerOfferForm extends Component {
 }
 
 PartnerOfferForm.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

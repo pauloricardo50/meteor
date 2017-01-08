@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { updateValues } from '/imports/api/creditrequests/methods';
+import { updateValues } from '/imports/api/loanrequests/methods';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -27,9 +27,9 @@ export default class FinanceStrategyPicker extends Component {
     super(props);
 
     this.state = {
-      totalLeft: this.props.creditRequest.propertyInfo.value,
-      tranches: this.props.creditRequest.loanInfo.tranches ?
-        JSON.parse(JSON.stringify(this.props.creditRequest.loanInfo.tranches)) : [],
+      totalLeft: this.props.loanRequest.propertyInfo.value,
+      tranches: this.props.loanRequest.loanInfo.tranches ?
+        JSON.parse(JSON.stringify(this.props.loanRequest.loanInfo.tranches)) : [],
     };
 
     this.addTranche = this.addTranche.bind(this);
@@ -83,7 +83,7 @@ export default class FinanceStrategyPicker extends Component {
 
 
   getMoneyLeft() {
-    let propertyValue = this.props.creditRequest.propertyInfo.value;
+    let propertyValue = this.props.loanRequest.propertyInfo.value;
 
     // Substract the values of each tranche
     this.state.tranches.forEach((tranche) => {
@@ -135,7 +135,7 @@ export default class FinanceStrategyPicker extends Component {
   }
 
   save() {
-    const id = this.props.creditRequest._id;
+    const id = this.props.loanRequest._id;
     const object = {};
     object['loanInfo.tranches'] = this.state.tranches;
 
@@ -160,7 +160,7 @@ export default class FinanceStrategyPicker extends Component {
           key={index}
           index={index}
           tranche={tranche}
-          totalValue={this.props.creditRequest.propertyInfo.value}
+          totalValue={this.props.loanRequest.propertyInfo.value}
           moneyLeft={this.getMoneyLeft()}
           getRemainingTypes={this.getRemainingTypes}
           removeTranche={e => this.removeTranche(e, index)}
@@ -187,7 +187,7 @@ export default class FinanceStrategyPicker extends Component {
         <h4>Argent restant à distribuer</h4>
         <div className="trancheBar">
           <div className="bar main" style={{
-            width: `${100 * (this.getMoneyLeft() / this.props.creditRequest.propertyInfo.value)}%`
+            width: `${100 * (this.getMoneyLeft() / this.props.loanRequest.propertyInfo.value)}%`
           }}
           />
           <div className="money">
@@ -209,7 +209,7 @@ export default class FinanceStrategyPicker extends Component {
           primary
           style={styles.saveButton}
           disabled={(JSON.stringify(this.state.tranches) ===
-            JSON.stringify(this.props.creditRequest.loanInfo.tranches,
+            JSON.stringify(this.props.loanRequest.loanInfo.tranches,
           )) ||
           (this.state.tranches.length === 0)
           }
@@ -221,5 +221,5 @@ export default class FinanceStrategyPicker extends Component {
 }
 
 FinanceStrategyPicker.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

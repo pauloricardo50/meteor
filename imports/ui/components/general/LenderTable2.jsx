@@ -48,6 +48,6 @@ export default class LenderTable2 extends React.Component {
 }
 
 LenderTable2.propTypes = {
-  creditRequest: React.PropTypes.objectOf(React.PropTypes.any),
+  loanRequest: React.PropTypes.objectOf(React.PropTypes.any),
   lenderOffers: React.PropTypes.objectOf(React.PropTypes.any),
 };

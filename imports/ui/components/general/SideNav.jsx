@@ -36,16 +36,16 @@ export default class SideNav extends Component {
       requestName: '',
       propertyValue: '',
     };
-    if (this.props.creditRequest) {
+    if (this.props.loanRequest) {
       this.state = {
-        requestName: this.props.creditRequest.requestName,
-        propertyValue: this.props.creditRequest.propertyInfo.value,
+        requestName: this.props.loanRequest.requestName,
+        propertyValue: this.props.loanRequest.propertyInfo.value,
       };
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const r = nextProps.creditRequest;
+    const r = nextProps.loanRequest;
     // Only update if the value exists and is new
     if (r) {
       if (r.requestName) {
@@ -75,10 +75,10 @@ export default class SideNav extends Component {
 
 
   render() {
-    // Don't display any content if there is no active CreditRequest
+    // Don't display any content if there is no active LoanRequest
     let content1;
     let content2;
-    if (this.props.creditRequest) {
+    if (this.props.loanRequest) {
       content1 = (
         <a href="/main" style={styles.link}>
           <span className="fa fa-home fa-2x active" style={styles.icon} />
@@ -91,10 +91,10 @@ export default class SideNav extends Component {
         (<article className="mask1 finance-widget" style={styles.chartMask}>
           <ProjectChart
             horizontal={false}
-            requestName={this.props.creditRequest.requestName}
-            propertyValue={this.props.creditRequest.propertyInfo.value}
-            fortune={this.props.creditRequest.financialInfo.fortune}
-            insuranceFortune={this.props.creditRequest.financialInfo.insuranceFortune}
+            requestName={this.props.loanRequest.requestName}
+            propertyValue={this.props.loanRequest.propertyInfo.value}
+            fortune={this.props.loanRequest.financialInfo.fortune}
+            insuranceFortune={this.props.loanRequest.financialInfo.insuranceFortune}
           />
           <div className="text-center">
             <RaisedButton
@@ -134,6 +134,6 @@ export default class SideNav extends Component {
 }
 
 SideNav.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any),
+  loanRequest: PropTypes.objectOf(PropTypes.any),
   currentURL: PropTypes.string.isRequired,
 };

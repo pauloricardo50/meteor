@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import Checkbox from 'material-ui/Checkbox';
 
 
-import { updateValues } from '/imports/api/creditrequests/methods.js';
+import { updateValues } from '/imports/api/loanrequests/methods.js';
 import DropzoneInput from '/imports/ui/components/forms/DropzoneInput.jsx';
 import Step1TaxesForm from '/imports/ui/components/steps/Step1TaxesForm.jsx';
 
@@ -33,7 +33,7 @@ export default class Step1Part2 extends Component {
     // Save data to DB
     const object = {};
     object['files.willUploadTaxes'] = !isInputChecked;
-    const id = this.props.creditRequest._id;
+    const id = this.props.loanRequest._id;
 
     updateValues.call({
       object, id,
@@ -62,7 +62,7 @@ export default class Step1Part2 extends Component {
 
         <div className="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 secondary">
           <Checkbox
-            checked={!this.props.creditRequest.files.willUploadTaxes}
+            checked={!this.props.loanRequest.files.willUploadTaxes}
             label="J'uploaderai ma déclaration d'impôts plus tard"
             style={styles.checkbox}
             onCheck={this.handleCheck}
@@ -71,12 +71,12 @@ export default class Step1Part2 extends Component {
 
         <div className="col-xs-12">
           {
-            this.props.creditRequest.files.willUploadTaxes ?
+            this.props.loanRequest.files.willUploadTaxes ?
               <DropzoneInput
                 fileName="taxes"
-                requestId={this.props.creditRequest._id}
+                requestId={this.props.loanRequest._id}
               /> :
-                <Step1TaxesForm creditRequest={this.props.creditRequest} />
+                <Step1TaxesForm loanRequest={this.props.loanRequest} />
           }
         </div>
       </article>
@@ -85,5 +85,5 @@ export default class Step1Part2 extends Component {
 }
 
 Step1Part2.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

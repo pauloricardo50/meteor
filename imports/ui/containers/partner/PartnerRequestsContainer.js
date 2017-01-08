@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { compose } from 'react-komposer';
-import CreditRequests from '/imports/api/creditrequests/creditrequests.js';
+import LoanRequests from '/imports/api/loanrequests/loanrequests.js';
 
 import composeWithTracker from '../composeWithTracker';
 
@@ -12,12 +12,12 @@ import Loading from '/imports/ui/components/general/Loading.jsx';
 import _PartnerHomePage from '/imports/ui/pages/partner/PartnerHomePage.jsx';
 
 
-// Container function which reactively send the currently active credit Request as a prop
+// Container function which reactively send the currently active loan Request as a prop
 function composer(props, onData) {
   if (Meteor.subscribe('partnerRequests').ready()) {
-    const creditRequest = CreditRequests.find({}).fetch();
+    const loanRequest = LoanRequests.find({}).fetch();
 
-    onData(null, { creditRequest });
+    onData(null, { loanRequest });
   }
 }
 

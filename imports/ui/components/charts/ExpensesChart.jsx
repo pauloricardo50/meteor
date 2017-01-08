@@ -27,7 +27,7 @@ export default class ExpensesChart extends Component {
   }
 
   componentDidMount() {
-    const r = this.props.creditRequest;
+    const r = this.props.loanRequest;
 
     const options = {
       chart: {
@@ -91,7 +91,7 @@ export default class ExpensesChart extends Component {
           ],
         },
       ],
-      credits: {
+      loans: {
         enabled: false,
       },
     };
@@ -110,7 +110,7 @@ export default class ExpensesChart extends Component {
 
 
   getAmortization() {
-    const r = this.props.creditRequest;
+    const r = this.props.loanRequest;
     const loan = r.propertyInfo.value -
       r.financialInfo.fortune -
       r.financialInfo.insuranceFortune;
@@ -139,7 +139,7 @@ export default class ExpensesChart extends Component {
   }
 
   getInterests() {
-    const r = this.props.creditRequest;
+    const r = this.props.loanRequest;
     const loan = r.propertyInfo.value -
       r.financialInfo.fortune -
       r.financialInfo.insuranceFortune;
@@ -158,5 +158,5 @@ export default class ExpensesChart extends Component {
 }
 
 ExpensesChart.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any),
+  loanRequest: PropTypes.objectOf(PropTypes.any),
 };

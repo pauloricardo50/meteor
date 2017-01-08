@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { updateValues } from '/imports/api/creditrequests/methods.js';
+import { updateValues } from '/imports/api/loanrequests/methods.js';
 
 import Slider from 'material-ui/Slider';
 
@@ -32,9 +32,9 @@ const styles = {
 export default class FinanceWidget extends React.Component {
   constructor(props) {
     super(props);
-    this.propertyValue = this.props.creditRequest.propertyInfo.value;
-    this.fortune = this.props.creditRequest.financialInfo.fortune +
-      this.props.creditRequest.financialInfo.insuranceFortune;
+    this.propertyValue = this.props.loanRequest.propertyInfo.value;
+    this.fortune = this.props.loanRequest.financialInfo.fortune +
+      this.props.loanRequest.financialInfo.insuranceFortune;
 
     this.state = {
       propertyValue: '',
@@ -53,9 +53,9 @@ export default class FinanceWidget extends React.Component {
 
 
   componentWillReceiveProps(nextProps) {
-    const newPropertyValue = nextProps.creditRequest.propertyInfo.value
-    const newFortune = nextProps.creditRequest.financialInfo.fortune +
-      nextProps.creditRequest.financialInfo.insuranceFortune;
+    const newPropertyValue = nextProps.loanRequest.propertyInfo.value
+    const newFortune = nextProps.loanRequest.financialInfo.fortune +
+      nextProps.loanRequest.financialInfo.insuranceFortune;
     // Only update if the value is new
     if (newPropertyValue && newFortune) {
       if ((newPropertyValue !== this.state.propertyValue) || (newFortune !== this.fortune)) {
@@ -70,12 +70,12 @@ export default class FinanceWidget extends React.Component {
 
   onDragStop() {
     const object = {};
-    const id = this.props.creditRequest._id;
+    const id = this.props.loanRequest._id;
     // Only change fortune when changing the slider, let insuranceFortune the same
     object['financialInfo.fortune'] = Number(
       this.state.propertyValue -
       this.state.sliderValue -
-      this.props.creditRequest.financialInfo.insuranceFortune
+      this.props.loanRequest.financialInfo.insuranceFortune
     );
 
     updateValues.call({ object, id });
@@ -133,5 +133,5 @@ export default class FinanceWidget extends React.Component {
 }
 
 FinanceWidget.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any),
+  loanRequest: PropTypes.objectOf(PropTypes.any),
 };

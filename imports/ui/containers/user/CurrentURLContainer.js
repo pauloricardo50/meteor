@@ -1,7 +1,7 @@
 import { compose } from 'react-komposer';
 import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import CreditRequests from '/imports/api/creditrequests/creditrequests.js';
+import LoanRequests from '/imports/api/loanrequests/loanrequests.js';
 
 import composeWithTracker from '../composeWithTracker';
 
@@ -21,9 +21,9 @@ function composer1(props, onData) {
 }
 
 function composer2(props, onData) {
-  if (Meteor.subscribe('activeCreditRequest').ready()) {
-    const creditRequest = CreditRequests.find({}).fetch()[0];
-    onData(null, { creditRequest });
+  if (Meteor.subscribe('activeLoanRequest').ready()) {
+    const loanRequest = LoanRequests.find({}).fetch()[0];
+    onData(null, { loanRequest });
   }
 }
 

@@ -9,10 +9,10 @@ import {
   PartnerOfferSchema, LogicSchema, AdminInfoSchema,
 } from './additionalSchemas.js';
 
-const CreditRequests = new Mongo.Collection('creditRequests');
+const LoanRequests = new Mongo.Collection('loanRequests');
 
 
-CreditRequests.allow({
+LoanRequests.allow({
   insert(userId, doc) {
     // This is true if someone is logged in
     return !!userId;
@@ -24,7 +24,7 @@ CreditRequests.allow({
 });
 
 
-export const CreditRequestSchema = new SimpleSchema({
+export const LoanRequestSchema = new SimpleSchema({
   userId: { // The user ID of the creator
     type: String,
     autoValue() {
@@ -101,5 +101,5 @@ export const CreditRequestSchema = new SimpleSchema({
 
 
 // Finally, attach schema to the Mongo collection and export
-CreditRequests.attachSchema(CreditRequestSchema);
-export default CreditRequests;
+LoanRequests.attachSchema(LoanRequestSchema);
+export default LoanRequests;

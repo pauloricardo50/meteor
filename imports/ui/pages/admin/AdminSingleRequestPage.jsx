@@ -12,8 +12,8 @@ export default class AdminSingleRequestPage extends React.Component {
     return (
       <section className="mask1">
         <h1>
-          {this.props.creditRequest.requestName} - CHF&nbsp;
-          {toMoney(this.props.creditRequest.propertyInfo.value)}
+          {this.props.loanRequest.requestName} - CHF&nbsp;
+          {toMoney(this.props.loanRequest.propertyInfo.value)}
         </h1>
       </section>
     );
@@ -21,6 +21,6 @@ export default class AdminSingleRequestPage extends React.Component {
 }
 
 AdminSingleRequestPage.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   user: PropTypes.objectOf(PropTypes.any).isRequired,
 };

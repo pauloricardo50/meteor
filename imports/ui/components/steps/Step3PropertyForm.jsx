@@ -17,7 +17,7 @@ export default class Step3PropertyForm extends Component {
       errors: '',
     };
 
-    const r = this.props.creditRequest;
+    const r = this.props.loanRequest;
     this.formArray = [
       {
         type: 'Subtitle',
@@ -157,7 +157,7 @@ export default class Step3PropertyForm extends Component {
   render() {
     return (
       <section className="mask1">
-        <h1>{this.props.creditRequest.personalInfo.twoBuyers === 'true' ?
+        <h1>{this.props.loanRequest.personalInfo.twoBuyers === 'true' ?
           'Notre bien immobilier'
           :
             'Mon bien immobilier'
@@ -173,7 +173,7 @@ export default class Step3PropertyForm extends Component {
         <AutoForm
           inputs={this.formArray}
           formClasses="col-sm-10 col-sm-offset-1"
-          creditRequest={this.props.creditRequest}
+          loanRequest={this.props.loanRequest}
           changeSaving={this.changeSaving}
           changeErrors={this.changeErrors}
         />
@@ -183,5 +183,5 @@ export default class Step3PropertyForm extends Component {
 }
 
 Step3PropertyForm.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

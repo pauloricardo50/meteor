@@ -125,7 +125,7 @@ export default class ProjectChart extends Component {
       legend: {
         enabled: false,
       },
-      credits: {
+      loans: {
         enabled: false,
       },
     };

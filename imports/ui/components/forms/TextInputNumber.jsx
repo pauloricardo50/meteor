@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { updateValues } from '/imports/api/creditrequests/methods.js';
+import { updateValues } from '/imports/api/loanrequests/methods.js';
 
 import TextField from 'material-ui/TextField';
 

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import { updateValues } from '/imports/api/creditrequests/methods';
+import { updateValues } from '/imports/api/loanrequests/methods';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -52,8 +52,8 @@ export default class StrategyPage extends Component {
   }
 
   handleClick() {
-    if (this.props.creditRequest.logic.step < 2) {
-      const id = this.props.creditRequest._id;
+    if (this.props.loanRequest.logic.step < 2) {
+      const id = this.props.loanRequest._id;
       const object = {};
       object['logic.step'] = 2;
 
@@ -97,9 +97,9 @@ export default class StrategyPage extends Component {
             </div>
           </article>
 
-          <FinanceStrategyPicker creditRequest={this.props.creditRequest} style={styles.picker} />
+          <FinanceStrategyPicker loanRequest={this.props.loanRequest} style={styles.picker} />
           <hr style={styles.hr} />
-          <LenderPicker creditRequest={this.props.creditRequest} />
+          <LenderPicker loanRequest={this.props.loanRequest} />
 
         </section>
         <RaisedButton
@@ -114,5 +114,5 @@ export default class StrategyPage extends Component {
 }
 
 StrategyPage.propTypes = {
-  creditRequest: React.PropTypes.objectOf(React.PropTypes.any),
+  loanRequest: React.PropTypes.objectOf(React.PropTypes.any),
 };

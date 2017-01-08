@@ -1,6 +1,6 @@
 import { compose } from 'react-komposer';
 import { Meteor } from 'meteor/meteor';
-import CreditRequests from '/imports/api/creditrequests/creditrequests.js';
+import LoanRequests from '/imports/api/loanrequests/loanrequests.js';
 
 
 import composeWithTracker from '../composeWithTracker';
@@ -11,15 +11,15 @@ import Loading from '/imports/ui/components/general/Loading.jsx';
 
 function composer(props, onData) {
   if (Meteor.subscribe('currentUser').ready()) {
-    if (Meteor.subscribe('creditRequests').ready()) {
-      // Get this user's credit requests
-      const creditRequests = CreditRequests.find().fetch();
+    if (Meteor.subscribe('loanRequests').ready()) {
+      // Get this user's loan requests
+      const loanRequests = LoanRequests.find().fetch();
 
       // Get the first element of this array which has only one element
       const currentUser = Meteor.users.find().fetch()[0];
 
       // Send data to the page
-      onData(null, { currentUser, creditRequests });
+      onData(null, { currentUser, loanRequests });
     }
   }
 }

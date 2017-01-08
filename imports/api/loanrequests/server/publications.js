@@ -1,21 +1,21 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
-import CreditRequests from '../creditrequests.js';
+import LoanRequests from '../loanrequests.js';
 import { Roles } from 'meteor/alanning:roles';
 
 
-// Publish a specific creditRequest with an ID
-Meteor.publish('creditRequest', function (id) {
+// Publish a specific loanRequest with an ID
+Meteor.publish('loanRequest', function (id) {
   check(id, String);
 
 
   if (Roles.userIsInRole(this.userId, 'admin')) {
-    return CreditRequests.find({
+    return LoanRequests.find({
       _id: id,
     });
   }
 
-  return CreditRequests.find({
+  return LoanRequests.find({
     userId: this.userId,
     _id: id,
   });
@@ -24,10 +24,10 @@ Meteor.publish('creditRequest', function (id) {
 });
 
 
-// Publish the currently active creditrequest
-Meteor.publish('activeCreditRequest', function () {
+// Publish the currently active loanrequest
+Meteor.publish('activeLoanRequest', function () {
   // find or findOne? Since there should only be one at any time..?
-  const request = CreditRequests.find({
+  const request = LoanRequests.find({
     userId: this.userId,
     active: true,
   });
@@ -40,25 +40,25 @@ Meteor.publish('activeCreditRequest', function () {
 });
 
 
-// Publish all creditrequests from the current user
-Meteor.publish('creditRequests', function () {
+// Publish all loanrequests from the current user
+Meteor.publish('loanRequests', function () {
   // Verify if user is logged In
   if (!this.userId) {
     console.log('auth error');
   }
 
-  return CreditRequests.find({
+  return LoanRequests.find({
     userId: this.userId,
   });
 });
 
 
-// Publish all creditrequests in the database for admins
-Meteor.publish('allCreditRequests', function () {
+// Publish all loanrequests in the database for admins
+Meteor.publish('allLoanRequests', function () {
   // Verify if user is logged In
   if (Roles.userIsInRole(this.userId, 'admin')) {
     // Return all users
-    return CreditRequests.find();
+    return LoanRequests.find();
   }
 
   return this.ready();
@@ -87,11 +87,11 @@ const partnerVisibleFields = { // TODO: Complete this
 };
 
 
-// Publish all creditrequests this partner has access to
+// Publish all loanrequests this partner has access to
 Meteor.publish('partnerRequests', function () {
-  // TODO Verify if this partner is allowed to see this credit request
+  // TODO Verify if this partner is allowed to see this loan request
 
-  return CreditRequests.find({
+  return LoanRequests.find({
     // TODO add logic to filter requests
   }, {
     fields: partnerVisibleFields,
@@ -99,14 +99,14 @@ Meteor.publish('partnerRequests', function () {
 });
 
 
-// Publish the creditrequest with a specific ID, and only show the fields for an anonymous offer
-Meteor.publish('partnerSingleCreditRequest', function (id) {
+// Publish the loanrequest with a specific ID, and only show the fields for an anonymous offer
+Meteor.publish('partnerSingleLoanRequest', function (id) {
   check(id, String);
 
   // Verify if this is a partner account
   if (Roles.userIsInRole(this.userId, 'partner')) {
     // TODO Make sure this partner is allowed to see this request by checking the bank name
-    return CreditRequests.find({
+    return LoanRequests.find({
       _id: id,
     }, {
       fields: partnerVisibleFields,

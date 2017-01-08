@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { updateValues, pullValue } from '/imports/api/creditrequests/methods.js';
+import { updateValues, pullValue } from '/imports/api/loanrequests/methods.js';
 
 
 import DropDownMenu from 'material-ui/DropDownMenu';

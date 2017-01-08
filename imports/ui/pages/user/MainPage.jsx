@@ -3,7 +3,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { DocHead } from 'meteor/kadira:dochead';
 
 
-import { insertRequest, insertStarterRequest } from '/imports/api/creditrequests/methods.js';
+import { insertRequest, insertStarterRequest } from '/imports/api/loanrequests/methods.js';
 
 import NewUserOptions from '/imports/ui/components/general/NewUserOptions.jsx';
 
@@ -17,9 +17,9 @@ export default class MainPage extends React.Component {
   }
 
   componentWillMount() {
-    // if a creditRequest exists, route to the current step
-    if (this.props.creditRequest) {
-      const realStep = this.props.creditRequest.logic.step + 1;
+    // if a loanRequest exists, route to the current step
+    if (this.props.loanRequest) {
+      const realStep = this.props.loanRequest.logic.step + 1;
       FlowRouter.go(`/step${realStep}`);
     }
 
@@ -66,7 +66,7 @@ export default class MainPage extends React.Component {
           <button className="btn btn-success btn-large" onClick={this.newStarterRequest}>Continuer</button>
         </div>
       );
-    } else if (!this.props.creditRequest) {
+    } else if (!this.props.loanRequest) {
       return (
         <NewUserOptions />
       );
@@ -76,5 +76,5 @@ export default class MainPage extends React.Component {
 }
 
 MainPage.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any),
+  loanRequest: PropTypes.objectOf(PropTypes.any),
 };

@@ -29,7 +29,7 @@ export default class PropertyChart extends Component {
   }
 
   componentDidMount() {
-    const r = this.props.creditRequest;
+    const r = this.props.loanRequest;
 
     const options = {
       chart: {
@@ -79,7 +79,7 @@ export default class PropertyChart extends Component {
       legend: {
         enabled: false,
       },
-      credits: {
+      loans: {
         enabled: false,
       },
       series: [
@@ -151,5 +151,5 @@ export default class PropertyChart extends Component {
 }
 
 PropertyChart.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any),
+  loanRequest: PropTypes.objectOf(PropTypes.any),
 };

@@ -6,9 +6,9 @@ export const partnerList = {
       'GE',
     ],
   },
-  creditAgricole: {
+  loanAgricole: {
     name: 'Crédit Agricole Financements Suisse',
-    logo: 'creditAgricole_logo.png',
+    logo: 'loanAgricole_logo.png',
     cantons: [
       'GE',
     ],

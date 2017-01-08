@@ -17,6 +17,6 @@ export default class AdminSingleUserPage extends React.Component {
 }
 
 AdminSingleUserPage.propTypes = {
-  creditRequests: PropTypes.arrayOf(PropTypes.any).isRequired,
+  loanRequests: PropTypes.arrayOf(PropTypes.any).isRequired,
   user: PropTypes.objectOf(PropTypes.any).isRequired,
 };

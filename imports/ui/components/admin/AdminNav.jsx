@@ -45,6 +45,6 @@ export default class AdminNav extends Component {
 }
 
 AdminNav.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any),
+  loanRequest: PropTypes.objectOf(PropTypes.any),
   currentURL: PropTypes.string.isRequired,
 };

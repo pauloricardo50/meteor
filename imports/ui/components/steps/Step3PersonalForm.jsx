@@ -39,13 +39,13 @@ export default class Step3PersonalForm extends Component {
         radioLabels: ['1', '2'],
         values: ['false', 'true'],
         id: 'personalInfo.twoBuyers',
-        currentValue: this.props.creditRequest.personalInfo.twoBuyers,
+        currentValue: this.props.loanRequest.personalInfo.twoBuyers,
       },
     ];
   }
 
   getBorrowerFormArray(index) {
-    const rp = this.props.creditRequest.personalInfo;
+    const rp = this.props.loanRequest.personalInfo;
 
     return [
       {
@@ -147,7 +147,7 @@ export default class Step3PersonalForm extends Component {
   }
 
   getFinalFormArray() {
-    const r = this.props.creditRequest;
+    const r = this.props.loanRequest;
 
     return [
       {
@@ -209,7 +209,7 @@ export default class Step3PersonalForm extends Component {
 
   setFormArray() {
     const newArray = this.getInitialFormArray();
-    const r = this.props.creditRequest;
+    const r = this.props.loanRequest;
     if (r.personalInfo.twoBuyers === 'true') {
       newArray.push(...this.getBorrowerFormArray(0));
       newArray.push({
@@ -258,7 +258,7 @@ export default class Step3PersonalForm extends Component {
 
     return (
       <section className="mask1">
-        <h1>{this.props.creditRequest.personalInfo.twoBuyers === 'true' ?
+        <h1>{this.props.loanRequest.personalInfo.twoBuyers === 'true' ?
           'Nos informations personelles'
           :
             'Mes informations personelles'
@@ -274,7 +274,7 @@ export default class Step3PersonalForm extends Component {
         <AutoForm
           inputs={newFormArray}
           formClasses="col-sm-10 col-sm-offset-1"
-          creditRequest={this.props.creditRequest}
+          loanRequest={this.props.loanRequest}
           changeSaving={this.changeSaving}
           changeErrors={this.changeErrors}
         />
@@ -284,5 +284,5 @@ export default class Step3PersonalForm extends Component {
 }
 
 Step3PersonalForm.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

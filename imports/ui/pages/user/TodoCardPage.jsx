@@ -24,10 +24,10 @@ export default class TodoCardPage extends React.Component {
 
   renderCardContent() {
     switch (FlowRouter.getParam('cardId')) {
-      case 'property': return <Step3PropertyForm creditRequest={this.props.creditRequest} />;
-      case 'perso': return <Step3PersonalForm creditRequest={this.props.creditRequest} />;
-      case 'finance': return <Step3FinancialForm creditRequest={this.props.creditRequest} />;
-      case 'files': return <Step3FileUpload creditRequest={this.props.creditRequest} />;
+      case 'property': return <Step3PropertyForm loanRequest={this.props.loanRequest} />;
+      case 'perso': return <Step3PersonalForm loanRequest={this.props.loanRequest} />;
+      case 'finance': return <Step3FinancialForm loanRequest={this.props.loanRequest} />;
+      case 'files': return <Step3FileUpload loanRequest={this.props.loanRequest} />;
       default: return '';
     }
   }
@@ -85,5 +85,5 @@ export default class TodoCardPage extends React.Component {
 }
 
 TodoCardPage.propTypes = {
-  creditRequest: React.PropTypes.objectOf(React.PropTypes.any),
+  loanRequest: React.PropTypes.objectOf(React.PropTypes.any),
 };

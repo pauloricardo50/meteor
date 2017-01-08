@@ -4,10 +4,10 @@ import { check } from 'meteor/check';
 
 import SimpleSchema from 'simpl-schema';
 
-import CreditRequests, { CreditRequestSchema } from './creditrequests.js';
+import LoanRequests, { LoanRequestSchema } from './loanrequests.js';
 
 export const insertRequest = new ValidatedMethod({
-  name: 'creditrequests.insert',
+  name: 'loanrequests.insert',
   validate() {},
   run({ object }) {
     // Verify if user is logged in
@@ -15,7 +15,7 @@ export const insertRequest = new ValidatedMethod({
       throw new Meteor.Error('notLoggedIn', 'Must be logged in to create a request');
     }
 
-    const userRequests = CreditRequests.find({ userId: this.userId });
+    const userRequests = LoanRequests.find({ userId: this.userId });
 
     if (userRequests.length > 3) {
       throw new Meteor.Error('maxRequests', 'Vous ne pouvez pas avoir plus de 3 requêtes à la fois');
@@ -23,18 +23,18 @@ export const insertRequest = new ValidatedMethod({
 
     // Set all existing requests to inactive
     userRequests.forEach((request) => {
-      CreditRequests.update(request._id, {
+      LoanRequests.update(request._id, {
         $set: { active: false },
       });
     });
 
-    CreditRequests.insert(object);
+    LoanRequests.insert(object);
   },
 });
 
 
 export const incrementStep = new ValidatedMethod({
-  name: 'creditrequests.incrementStep',
+  name: 'loanrequests.incrementStep',
   validate({ id }) {
     check(id, String);
 
@@ -48,7 +48,7 @@ export const incrementStep = new ValidatedMethod({
 
     // TODO: Prevent increment if the current step is already at max step (5)
 
-    CreditRequests.update(id, {
+    LoanRequests.update(id, {
       $inc: { step: 1 },
     });
   },
@@ -57,14 +57,14 @@ export const incrementStep = new ValidatedMethod({
 
 // Lets you set an entire object in the document
 export const updateValues = new ValidatedMethod({
-  name: 'creditRequests.updateValues',
+  name: 'loanRequests.updateValues',
   validate: null,
   run({ object, id }) {
     if (!this.userId) {
       throw new Meteor.Error('notLoggedIn', 'Must be logged in to update a request');
     }
 
-    CreditRequests.update(id, {
+    LoanRequests.update(id, {
       $set: object,
     });
   },
@@ -73,14 +73,14 @@ export const updateValues = new ValidatedMethod({
 
 // Lets you push a value to an array
 // export const pushValue = new ValidatedMethod({
-//   name: 'creditRequests.pushValue',
+//   name: 'loanRequests.pushValue',
 //   validate: null,
 //   run({ object, id }) {
 //     if (!this.userId) {
 //       throw new Meteor.Error('notLoggedIn', 'Must be logged in to update a request');
 //     }
 //
-//     CreditRequests.update(id, {
+//     LoanRequests.update(id, {
 //       $push: object,
 //     });
 //   },
@@ -89,14 +89,14 @@ export const updateValues = new ValidatedMethod({
 
 // Lets you pull a value from an array
 // export const pullValue = new ValidatedMethod({
-//   name: 'creditRequests.pullValue',
+//   name: 'loanRequests.pullValue',
 //   validate: null,
 //   run({ value, id }) {
 //     if (!this.userId) {
 //       throw new Meteor.Error('notLoggedIn', 'Must be logged in to update a request');
 //     }
 //
-//     CreditRequests.update(id, {
+//     LoanRequests.update(id, {
 //       $pull: value,
 //     });
 //   },

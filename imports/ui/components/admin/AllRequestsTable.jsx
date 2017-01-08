@@ -26,7 +26,7 @@ export default class AllRequestsTable extends Component {
 
     const array = [];
 
-    this.props.creditRequests.forEach((request, index) => {
+    this.props.loanRequests.forEach((request, index) => {
       const row = {
         requestId: request._id,
         id: index + 1,
@@ -217,7 +217,7 @@ export default class AllRequestsTable extends Component {
 
 
 AllRequestsTable.propTypes = {
-  creditRequests: PropTypes.arrayOf(PropTypes.any),
+  loanRequests: PropTypes.arrayOf(PropTypes.any),
 };
 
 

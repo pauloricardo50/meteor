@@ -13,7 +13,7 @@ import myTheme from '/imports/js/mui_custom.js';
 const theme = myTheme;
 
 
-// TODO: hide navbars if there is currently no active creditRequest
+// TODO: hide navbars if there is currently no active loanRequest
 
 export default class UserLayout extends Component {
 

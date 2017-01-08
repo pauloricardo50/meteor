@@ -41,14 +41,14 @@ export default class RequestProgressBar extends React.Component {
     const classes = this.activeClass(stepNumber);
 
     // During the first step, do not show the progress bar
-    if (this.props.creditRequest.logic.step === 0) {
+    if (this.props.loanRequest.logic.step === 0) {
       return classes.concat('hidden');
     }
 
-    if (this.props.creditRequest) {
-      if (this.props.creditRequest.logic.step < stepNumber) {
+    if (this.props.loanRequest) {
+      if (this.props.loanRequest.logic.step < stepNumber) {
         return classes.concat('hidden');
-      } else if (this.props.creditRequest.logic.step === stepNumber) {
+      } else if (this.props.loanRequest.logic.step === stepNumber) {
         return classes.concat('bold active');
       }
       return classes.concat('bold done');
@@ -68,7 +68,7 @@ export default class RequestProgressBar extends React.Component {
 
   render() {
     // If the user hasn't created any request, render nothing
-    if (this.props.creditRequest) {
+    if (this.props.loanRequest) {
       return (
         <header className="header-progressbar">
           <ul className="progressbar">
@@ -102,6 +102,6 @@ export default class RequestProgressBar extends React.Component {
 }
 
 RequestProgressBar.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any),
+  loanRequest: PropTypes.objectOf(PropTypes.any),
   currentURL: PropTypes.string.isRequired,
 };

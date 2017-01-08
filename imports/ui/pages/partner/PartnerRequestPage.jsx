@@ -23,11 +23,11 @@ export default class PartnerRequestPage extends Component {
   }
 
   render() {
-    if (this.props.creditRequest) {
+    if (this.props.loanRequest) {
       return (
         <section className="mask1" style={styles.section}>
-          <RequestDetails creditRequest={this.props.creditRequest} />
-          <PartnerOfferForm creditRequest={this.props.creditRequest} />
+          <RequestDetails loanRequest={this.props.loanRequest} />
+          <PartnerOfferForm loanRequest={this.props.loanRequest} />
         </section>
       );
     }
@@ -49,5 +49,5 @@ export default class PartnerRequestPage extends Component {
 }
 
 PartnerRequestPage.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

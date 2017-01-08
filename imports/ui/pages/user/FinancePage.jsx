@@ -43,20 +43,20 @@ export default class FinancePage extends Component {
 
         <article>
           <h3 className="text-center">Mon Projet</h3>
-          {/* <PropertyChart creditRequest={this.props.creditRequest} /> */}
+          {/* <PropertyChart loanRequest={this.props.loanRequest} /> */}
           <ProjectChart
             horizontal
-            requestName={this.props.creditRequest.requestName}
-            propertyValue={this.props.creditRequest.propertyInfo.value}
-            fortune={this.props.creditRequest.financialInfo.fortune}
-            insuranceFortune={this.props.creditRequest.financialInfo.insuranceFortune}
+            requestName={this.props.loanRequest.requestName}
+            propertyValue={this.props.loanRequest.propertyInfo.value}
+            fortune={this.props.loanRequest.financialInfo.fortune}
+            insuranceFortune={this.props.loanRequest.financialInfo.insuranceFortune}
           />
         </article>
 
         <article>
           <h3 className="text-center">Coût Mensuel Estimé*</h3>
           <p className="text-center">*Taux d'intérêt fictif de 1.5%</p>
-          <ExpensesChart creditRequest={this.props.creditRequest} />
+          <ExpensesChart loanRequest={this.props.loanRequest} />
         </article>
 
         <article style={styles.modify} className="col-xs-12">
@@ -82,5 +82,5 @@ export default class FinancePage extends Component {
 }
 
 FinancePage.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

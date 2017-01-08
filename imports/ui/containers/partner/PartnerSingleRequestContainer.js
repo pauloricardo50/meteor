@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { compose } from 'react-komposer';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import CreditRequests from '/imports/api/creditrequests/creditrequests.js';
+import LoanRequests from '/imports/api/loanrequests/loanrequests.js';
 
 import composeWithTracker from '../composeWithTracker';
 
@@ -13,15 +13,15 @@ import Loading from '/imports/ui/components/general/Loading.jsx';
 import _PartnerRequestPage from '/imports/ui/pages/partner/PartnerRequestPage.jsx';
 
 
-// Container function which reactively send the currently active credit Request as a prop
+// Container function which reactively send the currently active loan Request as a prop
 function composer(props, onData) {
   const id = FlowRouter.getParam('requestId');
 
-  if (Meteor.subscribe('partnerSingleCreditRequest', id).ready()) {
-    const creditRequest = CreditRequests.find({}).fetch()[0];
+  if (Meteor.subscribe('partnerSingleLoanRequest', id).ready()) {
+    const loanRequest = LoanRequests.find({}).fetch()[0];
 
 
-    onData(null, { creditRequest });
+    onData(null, { loanRequest });
   }
 }
 

@@ -59,13 +59,13 @@ export default class Step1TaxesForm extends Component {
             radioLabels: ['Oui', 'Non'],
             values: ['true', 'false'],
             id: 'financialInfo.currentRentExists',
-            currentValue: this.props.creditRequest.financialInfo.currentRentExists,
+            currentValue: this.props.loanRequest.financialInfo.currentRentExists,
           }, {
             type: 'TextInputMoney',
             label: 'Loyer mensuel',
             placeholder: 'CHF 6\'000',
             id: 'financialInfo.currentRent',
-            currentValue: this.props.creditRequest.financialInfo.currentRent,
+            currentValue: this.props.loanRequest.financialInfo.currentRent,
           },
         ],
       }, {
@@ -73,13 +73,13 @@ export default class Step1TaxesForm extends Component {
         label: 'Valeur de vos biens immobiliers existants',
         placeholder: 'CHF 100\'000',
         id: 'financialInfo.realEstateFortune',
-        currentValue: this.props.creditRequest.financialInfo.realEstateFortune,
+        currentValue: this.props.loanRequest.financialInfo.realEstateFortune,
       }, {
         type: 'TextInputMoney',
         label: 'Fortune totale en cash et titres',
         placeholder: 'CHF 10\'000',
         id: 'financialInfo.totalCashFortune',
-        currentValue: this.props.creditRequest.financialInfo.totalCashFortune,
+        currentValue: this.props.loanRequest.financialInfo.totalCashFortune,
         info: 'Y compris ce que vous allez allouer à ce projet'
       }, {
         type: 'ConditionalInput',
@@ -91,19 +91,19 @@ export default class Step1TaxesForm extends Component {
             radioLabels: ['Oui', 'Non'],
             values: ['true', 'false'],
             id: 'financialInfo.otherFortuneExists',
-            currentValue: this.props.creditRequest.financialInfo.otherFortuneExists,
+            currentValue: this.props.loanRequest.financialInfo.otherFortuneExists,
           }, // {
           //   type: 'TextInputMoney',
           //   label: 'Combien ?',
           //   placeholder: 'CHF 1\'000',
           //   id: 'financialInfo.otherFortune.$.value',
-          //   currentValue: this.props.creditRequest.financialInfo.otherFortune[0].value,
+          //   currentValue: this.props.loanRequest.financialInfo.otherFortune[0].value,
           // }, {
           //   type: 'TextInput',
           //   label: 'Donnez une courte description',
           //   placeholder: 'Yannis?',
           //   id: 'financialInfo.otherFortune.$.description',
-          //   currentValue: this.props.creditRequest.financialInfo.otherFortune[0].description,
+          //   currentValue: this.props.loanRequest.financialInfo.otherFortune[0].description,
           // },
         ],
       },
@@ -121,7 +121,7 @@ export default class Step1TaxesForm extends Component {
           inputs={formArray}
           formClasses="col-sm-10 col-sm-offset-1"
           onSubmit={this.onSubmit}
-          creditRequest={this.props.creditRequest}
+          loanRequest={this.props.loanRequest}
           changeSaving={this.changeSaving}
           changeErrors={this.changeErrors}
         />
@@ -131,5 +131,5 @@ export default class Step1TaxesForm extends Component {
 }
 
 Step1TaxesForm.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

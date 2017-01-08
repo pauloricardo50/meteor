@@ -34,18 +34,18 @@ export default class Step2Page extends Component {
   }
 
   render() {
-    if (this.props.creditRequest.logic.auctionEndTime <= this.state.currentTime.setSeconds(this.state.currentTime.getSeconds() + 1)) {
+    if (this.props.loanRequest.logic.auctionEndTime <= this.state.currentTime.setSeconds(this.state.currentTime.getSeconds() + 1)) {
       // After the auction
-      return <Step2AuctionResults creditRequest={this.props.creditRequest} />;
-    } else if (this.props.creditRequest.logic.auctionStarted) {
+      return <Step2AuctionResults loanRequest={this.props.loanRequest} />;
+    } else if (this.props.loanRequest.logic.auctionStarted) {
       // During the auction
-      return <Step2Auction creditRequest={this.props.creditRequest} />;
+      return <Step2Auction loanRequest={this.props.loanRequest} />;
     }
     // Before the auction, lets the user start it
-    return <Step2Start requestId={this.props.creditRequest._id} />;
+    return <Step2Start requestId={this.props.loanRequest._id} />;
   }
 }
 
 Step2Page.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

@@ -56,7 +56,7 @@ export default class Step1Financial extends Component {
         label: 'Quelle est votre banque personelle ?',
         placeholder: 'UBS',
         id: 'financialInfo.personalBank',
-        currentValue: this.props.creditRequest.financialInfo.personalBank,
+        currentValue: this.props.loanRequest.financialInfo.personalBank,
       }, {
         type: 'ConditionalInput',
         conditionalTrueValue: 'true',
@@ -67,13 +67,13 @@ export default class Step1Financial extends Component {
             radioLabels: ['Oui', 'Non'],
             values: ['true', 'false'],
             id: 'financialInfo.corporateBankExists',
-            currentValue: this.props.creditRequest.financialInfo.corporateBankExists,
+            currentValue: this.props.loanRequest.financialInfo.corporateBankExists,
           }, {
             type: 'TextInput',
             label: 'Laquelle?',
             placeholder: 'UBS',
             id: 'financialInfo.corporateBank',
-            currentValue: this.props.creditRequest.financialInfo.corporateBank,
+            currentValue: this.props.loanRequest.financialInfo.corporateBank,
           },
         ],
       }, {
@@ -86,13 +86,13 @@ export default class Step1Financial extends Component {
             radioLabels: ['Oui', 'Non'],
             values: ['true', 'false'],
             id: 'financialInfo.avoidLenderExists',
-            currentValue: this.props.creditRequest.financialInfo.avoidLenderExists,
+            currentValue: this.props.loanRequest.financialInfo.avoidLenderExists,
           }, {
             type: 'TextInput',
             label: 'Lequel?',
             placeholder: 'UBS',
             id: 'financialInfo.avoidLender',
-            currentValue: this.props.creditRequest.financialInfo.avoidLender,
+            currentValue: this.props.loanRequest.financialInfo.avoidLender,
           },
         ],
       },
@@ -113,7 +113,7 @@ export default class Step1Financial extends Component {
           inputs={formArray}
           formClasses="col-sm-10 col-sm-offset-1"
           onSubmit={this.onSubmit}
-          creditRequest={this.props.creditRequest}
+          loanRequest={this.props.loanRequest}
           changeSaving={this.changeSaving}
           changeErrors={this.changeErrors}
         />
@@ -123,5 +123,5 @@ export default class Step1Financial extends Component {
 }
 
 Step1Financial.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

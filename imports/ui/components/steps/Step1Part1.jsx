@@ -26,12 +26,12 @@ export default class Step1Part1 extends Component {
         </p> */}
 
         <p>dropzone contrat de financement/projet d'acte d'achat</p>
-        <Step1InitialForm creditRequest={this.props.creditRequest} />
+        <Step1InitialForm loanRequest={this.props.loanRequest} />
       </article>
     );
   }
 }
 
 Step1Part1.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

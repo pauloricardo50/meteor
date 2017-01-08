@@ -58,20 +58,20 @@ export default class Step1InitialForm extends Component {
         radioLabels: ['Villa', 'Appartement'],
         values: ['villa', 'flat'],
         id: 'propertyInfo.style',
-        currentValue: this.props.creditRequest.propertyInfo.style,
+        currentValue: this.props.loanRequest.propertyInfo.style,
       }, {
         type: 'TextInputNumber',
         label: <span>Surface du terrain en m<sup>2</sup></span>,
         placeholder: '200',
         id: 'propertyInfo.surfaceTotal',
-        currentValue: this.props.creditRequest.propertyInfo.surfaceTotal,
-        showCondition: (this.props.creditRequest.propertyInfo.style === 'villa'),
+        currentValue: this.props.loanRequest.propertyInfo.surfaceTotal,
+        showCondition: (this.props.loanRequest.propertyInfo.style === 'villa'),
       }, {
         type: 'TextInputNumber',
         label: <span>Surface habitable en m<sup>2</sup></span>,
         placeholder: '120',
         id: 'propertyInfo.surface',
-        currentValue: this.props.creditRequest.propertyInfo.surface,
+        currentValue: this.props.loanRequest.propertyInfo.surface,
       },
     ];
 
@@ -87,7 +87,7 @@ export default class Step1InitialForm extends Component {
         <AutoForm
           inputs={formArray}
           formClasses="col-sm-10 col-sm-offset-1"
-          creditRequest={this.props.creditRequest}
+          loanRequest={this.props.loanRequest}
           changeSaving={this.changeSaving}
           changeErrors={this.changeErrors}
         />
@@ -97,7 +97,7 @@ export default class Step1InitialForm extends Component {
 }
 
 Step1InitialForm.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 
@@ -118,13 +118,13 @@ Step1InitialForm.propTypes = {
 //         radioLabels: ['Un', 'deux'],
 //         values: ['false', 'true'],
 //         id: 'personalInfo.twoBuyers',
-//         currentValue: this.props.creditRequest.personalInfo.twoBuyers,
+//         currentValue: this.props.loanRequest.personalInfo.twoBuyers,
 //       }, {
 //         type: 'TextInputNumber',
 //         label: 'Âge de votre conjoint?',
 //         placeholder: '30',
 //         id: 'personalInfo.age2',
-//         currentValue: this.props.creditRequest.personalInfo.age2,
+//         currentValue: this.props.loanRequest.personalInfo.age2,
 //       },
 //     ],
 //   }, {
@@ -132,20 +132,20 @@ Step1InitialForm.propTypes = {
 //     label: 'Votre âge?',
 //     placeholder: '30',
 //     id: 'personalInfo.age1',
-//     currentValue: this.props.creditRequest.personalInfo.age1,
+//     currentValue: this.props.loanRequest.personalInfo.age1,
 //   }, {
 //     type: 'RadioInput',
 //     label: 'Type de Résidence?',
 //     radioLabels: ['Principale', 'Secondaire', 'Investissement'],
 //     values: ['primary', 'secondary', 'investment'],
 //     id: 'propertyInfo.type',
-//     currentValue: this.props.creditRequest.propertyInfo.type,
+//     currentValue: this.props.loanRequest.propertyInfo.type,
 //   }, {
 //     type: 'TextInputMoney',
 //     label: 'Votre Salaire annuel?',
 //     placeholder: '30\'000',
 //     id: 'financialInfo.salary',
-//     currentValue: this.props.creditRequest.financialInfo.salary,
+//     currentValue: this.props.loanRequest.financialInfo.salary,
 //   }, {
 //     type: 'ConditionalInput',
 //     conditionalTrueValue: 'true',
@@ -156,7 +156,7 @@ Step1InitialForm.propTypes = {
 //         radioLabels: ['Oui', 'Non'],
 //         values: ['true', 'false'],
 //         id: 'financialInfo.bonusExists',
-//         currentValue: this.props.creditRequest.financialInfo.bonusExists,
+//         currentValue: this.props.loanRequest.financialInfo.bonusExists,
 //       }, {
 //         type: 'TextInputMoney',
 //         label: 'Combien?',
@@ -169,18 +169,18 @@ Step1InitialForm.propTypes = {
 //     label: 'Combien voulez-vous mettre de fonds propres?',
 //     placeholder: '100\'000',
 //     id: 'financialInfo.fortune',
-//     currentValue: this.props.creditRequest.financialInfo.fortune,
+//     currentValue: this.props.loanRequest.financialInfo.fortune,
 //   }, {
 //     type: 'TextInputMoney',
 //     label: 'Dont combien de votre LPP?',
 //     placeholder: '20\'000',
 //     id: 'financialInfo.insuranceFortune',
-//     currentValue: this.props.creditRequest.financialInfo.insuranceFortune,
+//     currentValue: this.props.loanRequest.financialInfo.insuranceFortune,
 //   }, {
 //     type: 'TextInputMoney',
 //     label: 'Et finalement combien vaut la propriété?',
 //     placeholder: '500\'000',
 //     id: 'propertyInfo.value',
-//     currentValue: this.props.creditRequest.propertyInfo.value,
+//     currentValue: this.props.loanRequest.propertyInfo.value,
 //   },
 // ];

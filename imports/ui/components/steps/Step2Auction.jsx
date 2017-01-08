@@ -36,7 +36,7 @@ export default class Step2Auction extends Component {
   }
 
   setTime(that) {
-    const endDate = moment(that.props.creditRequest.logic.auctionEndTime);
+    const endDate = moment(that.props.loanRequest.logic.auctionEndTime);
     // Get the time difference between the end and current time with moment()
     const difference = moment.duration(endDate.diff(moment()), 'milliseconds');
     // Get the minutes and seconds to display using moment-duration-format,
@@ -56,7 +56,7 @@ export default class Step2Auction extends Component {
   }
 
   endDate() {
-    return moment(this.props.creditRequest.logic.auctionStartTime).add(2, 'days');
+    return moment(this.props.loanRequest.logic.auctionStartTime).add(2, 'days');
   }
 
   render() {
@@ -66,7 +66,7 @@ export default class Step2Auction extends Component {
         <div className="giant text-center">{this.state.remainingTime}</div>
         <p className="disabled text-center" style={styles.p}>Vous recevrez une notification lorsque ce sera terminé</p>
 
-        <LenderOffersTable lenderOffers={this.props.creditRequest.lenderOffers} />
+        <LenderOffersTable lenderOffers={this.props.loanRequest.lenderOffers} />
         {this.lenderOffers ? null : (
           <div>
             <p className="secondary bold text-center animated pulse infinite">Bataille des prêteurs en cours</p>
@@ -79,5 +79,5 @@ export default class Step2Auction extends Component {
 }
 
 Step2Auction.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

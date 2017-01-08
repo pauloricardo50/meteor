@@ -23,5 +23,5 @@ export default class RequestDetails extends Component {
 }
 
 RequestDetails.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

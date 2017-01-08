@@ -74,7 +74,7 @@ export default class Step2AuctionResults extends Component {
           />
         </div>
 
-        {/* Replace with this.props.creditRequest.lenderOffers */}
+        {/* Replace with this.props.loanRequest.lenderOffers */}
         <div style={styles.tableDiv}>
           <LenderOffersTable lenderOffers={lenderOffers} />
         </div>
@@ -85,5 +85,5 @@ export default class Step2AuctionResults extends Component {
 }
 
 Step2AuctionResults.propTypes = {
-  creditRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };
