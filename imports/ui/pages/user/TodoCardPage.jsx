@@ -9,6 +9,11 @@ import Step3PersonalForm from '/imports/ui/components/steps/Step3PersonalForm.js
 import Step3PropertyForm from '/imports/ui/components/steps/Step3PropertyForm.jsx';
 import Step3FileUpload from '/imports/ui/components/steps/Step3FileUpload.jsx';
 
+const styles = {
+  okButton: {
+    marginTop: 15,
+  },
+};
 
 export default class TodoCardPage extends React.Component {
   constructor(props) {
@@ -56,8 +61,24 @@ export default class TodoCardPage extends React.Component {
             onClick={this.handleClick}
             className="animated slideInLeft"
           />
+          <span className="pull-right">
+            <RaisedButton
+              label="Ok"
+              onClick={this.handleClick}
+              className="animated slideInRight"
+              primary
+            />
+          </span>
         </div>
         {this.renderCardContent()}
+        <div className="form-group pull-right" style={styles.okButton}>
+          <RaisedButton
+            label="Ok"
+            onClick={this.handleClick}
+            className="animated slideInRight"
+            primary
+          />
+        </div>
       </section>
     );
   }

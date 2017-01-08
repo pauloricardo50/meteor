@@ -82,13 +82,13 @@ export const CreditRequestSchema = new SimpleSchema({
   },
   lenderOffers: { // All the offers from banks and insurances
     type: Array,
-    defaultValue: [],
+    defaultValue: [{}, {}],
     optional: true,
   },
-  // 'lenderOffers.$': { // All the offers from banks and insurances
-  //   type: PartnerOfferSchema,
-  //   optional: true,
-  // },
+  'lenderOffers.$': { // All the offers from banks and insurances
+    type: PartnerOfferSchema,
+    optional: true,
+  },
   logic: { // Internal logic of the app
     type: LogicSchema,
     defaultValue: {},

@@ -434,12 +434,12 @@ export const PartnerOfferSchema = new SimpleSchema({
   standard: {
     type: singleOffer,
     blackbox: true,
-    defaultValue: {},
+    // defaultValue: {},
   },
   withConditions: {
     type: singleOffer,
     blackbox: true,
-    defaultValue: {},
+    // defaultValue: {},
   },
   conditions: {
     type: String,

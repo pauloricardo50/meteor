@@ -24,7 +24,7 @@ export default class TextInput extends Component {
       };
     } else {
       this.state = {
-        value: this.props.maxDate,
+        value: undefined,
         errorText: '',
       };
     }

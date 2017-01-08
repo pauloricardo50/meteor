@@ -270,7 +270,7 @@ export default class Step3PersonalForm extends Component {
           <p className="secondary bold">Sauvegarde en cours...</p> :
           (this.state.saved && <p>Sauvegardé</p>)
         }
-        <h5>{this.state.errors}</h5>
+        {/* <h5>{this.state.errors}</h5> */}
         <AutoForm
           inputs={newFormArray}
           formClasses="col-sm-10 col-sm-offset-1"

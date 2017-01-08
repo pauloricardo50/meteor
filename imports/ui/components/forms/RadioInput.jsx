@@ -8,6 +8,7 @@ import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 const styles = {
   RadioButtonGroup: {
     display: 'flex',
+    flexWrap: 'wrap',
   },
   RadioButton: {
     // Required or else the buttons disappear behind the background color..
