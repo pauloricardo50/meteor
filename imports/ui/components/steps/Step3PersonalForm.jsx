@@ -88,44 +88,47 @@ export default class Step3PersonalForm extends Component {
         currentValue: r.borrowers[index].citizenships,
       }, {
         type: 'TextInput',
-        label: 'Permis d\'établissement (si pas Suisse)',
+        label: 'Permis de séjour',
         placeholder: 'Permis C',
         id: `borrowers.${index}.residencyPermit`,
         currentValue: r.borrowers[index].residencyPermit,
+        info: 'Si vous n\'êtes pas Suisse',
       }, {
         type: 'DateInput',
         label: 'Date de Naissance',
         id: `borrowers.${index}.birthDate`,
         currentValue: r.borrowers[index].birthDate,
         maxDate: (function () {
-          const maxDate = new Date();
-          maxDate.setFullYear(maxDate.getFullYear() - 18);
-          maxDate.setHours(0, 0, 0, 0);
-          return maxDate;
+          const maxDate = moment().utc();
+          maxDate.subtract(18, 'years');
+          // maxDate.startOf('day');
+          return maxDate.toDate();
         }()),
       }, {
         type: 'TextInput',
-        label: 'Lieu de Naissane, Pays de Naissance',
-        placeholder: 'Berne, Suisse',
+        label: 'Lieu de Naissance',
+        placeholder: 'Lausanne, Suisse',
         id: `borrowers.${index}.birthPlace`,
         currentValue: r.borrowers[index].birthPlace,
       }, {
         type: 'RadioInput',
         label: 'État civil',
-        radioLabels: ['Marié', 'Pacsé', 'Célibataire', 'Divorcé'],
+        radioLabels: r.borrowers[index].gender === 'f' ?
+          ['Mariée', 'Pacsée', 'Célibataire', 'Divorcée'] :
+          ['Marié', 'Pacsé', 'Célibataire', 'Divorcé'],
         values: ['married', 'pacsed', 'single', 'divorced'],
         id: `borrowers.${index}.civilStatus`,
         currentValue: r.borrowers[index].civilStatus,
       }, {
         type: 'TextInput',
         label: 'Employeur',
-        placeholder: 'e-Potek',
+        placeholder: 'Google',
         id: `borrowers.${index}.company`,
         currentValue: r.borrowers[index].company,
       }, {
         type: 'TextInputMoney',
         label: 'Revenus bruts annuels',
-        placeholder: '',
+        placeholder: 'CHF 50\'000',
         id: `borrowers.${index}.grossIncome`,
         currentValue: r.borrowers[index].grossIncome,
       },
@@ -163,7 +166,7 @@ export default class Step3PersonalForm extends Component {
             currentValue: r.general.currentOwner,
           }, {
             type: 'TextInput',
-            label: 'Qui?',
+            label: 'Autre propriétaire',
             placeholder: '',
             id: 'general.otherOwner',
             currentValue: r.general.otherOwner,
@@ -189,7 +192,7 @@ export default class Step3PersonalForm extends Component {
             currentValue: r.general.futureOwner,
           }, {
             type: 'TextInput',
-            label: 'Qui?',
+            label: 'Autre propriétaire',
             placeholder: '',
             id: 'general.otherOwner',
             currentValue: r.general.otherOwner,
@@ -237,15 +240,34 @@ export default class Step3PersonalForm extends Component {
           <p className="secondary bold">Sauvegarde en cours...</p> :
           (this.state.saved && <p>Sauvegardé</p>)
         }
+
         <BorrowerCountSwitch loanRequest={this.props.loanRequest} />
-        <div style={{ width: '100%', height: 600}}></div>
-        {/* <AutoForm
-          inputs={newFormArray}
+
+        <AutoForm
+          inputs={this.getBorrowerFormArray(0)}
+          formClasses={this.props.loanRequest.borrowers.length > 1 ? 'col-sm-5'
+          : 'col-sm-10 col-sm-offset-1'}
+          loanRequest={this.props.loanRequest}
+          changeSaving={this.changeSaving}
+          changeErrors={this.changeErrors}
+        />
+        {this.props.loanRequest.borrowers.length > 1 &&
+          <AutoForm
+            inputs={this.getBorrowerFormArray(1)}
+            formClasses="col-sm-offset-2 col-sm-5"
+            loanRequest={this.props.loanRequest}
+            changeSaving={this.changeSaving}
+            changeErrors={this.changeErrors}
+          />
+        }
+
+        <AutoForm
+          inputs={this.getFinalFormArray()}
           formClasses="col-sm-10 col-sm-offset-1"
           loanRequest={this.props.loanRequest}
           changeSaving={this.changeSaving}
           changeErrors={this.changeErrors}
-        /> */}
+        />
       </section>
     );
   }

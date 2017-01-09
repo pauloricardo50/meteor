@@ -134,7 +134,7 @@ export const BorrowerSchema = new SimpleSchema({
     optional: true,
   },
   birthDate: {
-    type: Date,
+    type: String,
     optional: true,
   },
   birthPlace: {
@@ -225,25 +225,25 @@ export const BorrowerSchema = new SimpleSchema({
     max: 100000000,
   },
   'otherFortune.$.description': String,
-  lppInsurance: {
+  insuranceLpp: {
     type: Number,
     optional: true,
     min: 0,
     max: 100000000,
   },
-  '3aInsurance': {
+  insurance3A: {
     type: Number,
     optional: true,
     min: 0,
     max: 100000000,
   },
-  '3bInsurance': {
+  insurance3B: {
     type: Number,
     optional: true,
     min: 0,
     max: 100000000,
   },
-  pureRiskInsurance: {
+  insurancePureRisk: {
     type: Number,
     optional: true,
     min: 0,

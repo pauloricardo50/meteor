@@ -4,7 +4,6 @@ import { updateValues } from '/imports/api/loanrequests/methods.js';
 
 
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
-import Dialog from 'material-ui/Dialog';
 
 const styles = {
   RadioButtonGroup: {
@@ -17,6 +16,9 @@ const styles = {
     zIndex: 0,
     width: 'auto',
     paddingLeft: '20',
+  },
+  RadioButtonLabel: {
+    whiteSpace: 'nowrap',
   },
   div: {
     marginTop: 10,
@@ -94,18 +96,10 @@ export default class RadioInput extends Component {
               onClick={this.setValue}
               key={index}
               style={styles.RadioButton}
+              labelStyle={styles.RadioButtonLabel}
             />),
           )}
         </RadioButtonGroup>
-        <Dialog
-          title={this.props.title}
-          actions={actions}
-          modal={false}
-          open={this.state.modalIsOpen}
-          onRequestClose={this.handleClose}
-        >
-          {this.props.content}
-        </Dialog>
       </div>
     );
   }

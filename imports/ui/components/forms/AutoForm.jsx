@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
 
 
 import TextInput from '../forms/TextInput.jsx';
@@ -102,7 +103,7 @@ export default class AutoForm extends Component {
           />
         );
       default:
-        return '';
+        throw new Error('Not a valid AutoForm type');
     }
   }
 

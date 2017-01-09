@@ -20,6 +20,9 @@ const styles = {
     width: 'auto',
     paddingLeft: '20',
   },
+  RadioButtonLabel: {
+    whiteSpace: 'nowrap',
+  },
   div: {
     marginTop: 10,
     marginBottom: 0,
@@ -136,12 +139,14 @@ export default class BorrowerCountSwitch extends Component {
             value={1}
             onClick={this.setRadioButton}
             style={styles.RadioButton}
+            labelStyle={styles.RadioButtonLabel}
           />
           <RadioButton
             label="Deux Emprunteurs"
             value={2}
             onClick={this.setRadioButton}
             style={styles.RadioButton}
+            labelStyle={styles.RadioButtonLabel}
           />
         </RadioButtonGroup>
         <Dialog

@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
+import moment from 'moment';
 import { updateValues } from '/imports/api/loanrequests/methods.js';
 
+
 import DatePicker from 'material-ui/DatePicker';
+import areIntlLocalesSupported from 'intl-locales-supported';
 
 
 const styles = {
@@ -11,15 +14,24 @@ const styles = {
     marginTop: 10,
     marginBottom: 0,
   },
+  DatePickerField: {
+    width: '100%',
+    // fontWeight: 'normal',
+  },
+  label: {
+    fontSize: 12,
+    marginBottom: 0,
+    color: 'rgba(0, 0, 0, 0.298039)',
+  },
 };
 
-export default class TextInput extends Component {
+export default class DateInput extends Component {
   constructor(props) {
     super(props);
 
     if (this.props.currentValue) {
       this.state = {
-        value: this.props.currentValue,
+        value: moment(this.props.currentValue).toDate(), // TODO: verify this works in all timezones
         errorText: '',
       };
     } else {
@@ -29,6 +41,7 @@ export default class TextInput extends Component {
       };
     }
 
+    this.setDateFormat();
 
     this.handleChange = this.handleChange.bind(this);
     this.saveValue = this.saveValue.bind(this);
@@ -37,17 +50,19 @@ export default class TextInput extends Component {
   handleChange(event, date) {
     this.setState({
       value: date,
-    });
-
-    this.saveValue();
+    }, this.saveValue);
   }
 
   saveValue() {
     this.props.changeSaving(true);
 
+    // Remove time from date
+    // TODO: verify this works in all timezones
+    const dateWithoutTime = moment(this.state.value).format('YYYY-MM-DD');
+
     // Save data to DB
     const object = {};
-    object[this.props.id] = this.state.value;
+    object[this.props.id] = dateWithoutTime;
     const id = this.props.requestId;
 
     updateValues.call({
@@ -67,34 +82,49 @@ export default class TextInput extends Component {
     });
   }
 
+  setDateFormat() {
+    this.DateTimeFormat = undefined;
+    /**
+     * Use the native Intl.DateTimeFormat if available, or a polyfill if not.
+     */
+    if (areIntlLocalesSupported(['fr'])) {
+      this.DateTimeFormat = global.Intl.DateTimeFormat;
+    } else {
+      const IntlPolyfill = require('intl');
+      this.DateTimeFormat = IntlPolyfill.DateTimeFormat;
+      require('intl/locale-data/jsonp/fr');
+    }
+  }
+
   render() {
     return (
-      <div style={styles.div}>
-        <label htmlFor={this.props.label}>{this.props.label}</label>
+      <div style={styles.div} className="datepicker">
+        <label htmlFor={this.props.label} style={styles.label}>{this.props.label}</label>
         <DatePicker
           name={this.props.label}
-          hintText="Cliquez pour choisir une date"
+          hintText="Choisir une date.."
           value={this.state.value}
           onChange={this.handleChange}
           id={this.props.id}
           errorText={this.state.errorText}
           maxDate={this.props.maxDate}
+          textFieldStyle={styles.DatePickerField}
+          locale="fr"
+          DateTimeFormat={this.DateTimeFormat}
+          cancelLabel="Annuler"
         />
       </div>
     );
   }
 }
 
-TextInput.propTypes = {
+DateInput.propTypes = {
   label: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
-  currentValue: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]),
+  currentValue: PropTypes.string,
   requestId: PropTypes.string.isRequired,
   changeSaving: PropTypes.func,
   changeErrors: PropTypes.func,
 
-  maxDate: PropTypes.object,
+  maxDate: PropTypes.objectOf(PropTypes.any),
 };
