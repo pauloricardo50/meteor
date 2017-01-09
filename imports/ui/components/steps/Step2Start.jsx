@@ -31,7 +31,7 @@ export default class Step2Start extends Component {
     const object = {};
     object['logic.auctionStarted'] = true;
     object['logic.auctionStartTime'] = moment().toDate();
-    object['logic.auctionEndTime'] = moment().add(30, 's').toDate(); // TODO: Change this to 2 business days?
+    object['logic.auctionEndTime'] = moment().add(30, 'm').toDate(); // TODO: Change this to 2 business days?
     const id = this.props.requestId;
 
     updateValues.call({

@@ -27,7 +27,7 @@ export default class RadioInput extends Component {
   constructor(props) {
     super(props);
     // Set initial state to be the 1st option
-    if (this.props.currentValue) {
+    if (this.props.currentValue !== undefined) {
       this.state = { value: this.props.currentValue };
     } else {
       this.state = { value: this.props.values[0] };

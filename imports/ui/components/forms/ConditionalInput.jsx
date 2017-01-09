@@ -16,12 +16,20 @@ export default class ConditionalInput extends Component {
   }
 
   onConditionalChange(event) {
-    // If the event's value matches the one that is correct, change state to true
-    // Convert to string to allow booleans and strings to be used as the conditionalTrueValue
-    this.setConditional(event.target.value);
+    // Make sure boolean values are treated as booleans
+    const value = event.target.value;
+    let safeValue = value;
+    if (value === 'true') {
+      safeValue = true;
+    } else if (value === 'false') {
+      safeValue = false;
+    }
+
+    this.setConditional(safeValue);
   }
 
   setConditional(value) {
+    // If the event's value matches the one that is correct, change state to true
     if (value === this.props.conditionalTrueValue) {
       this.setState({
         conditional: true,

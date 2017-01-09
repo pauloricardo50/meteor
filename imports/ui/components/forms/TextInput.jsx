@@ -64,6 +64,7 @@ export default class TextInput extends Component {
     Meteor.clearTimeout(timer);
   }
 
+
   saveValue() {
     this.props.changeSaving(true);
 
@@ -114,6 +115,7 @@ export default class TextInput extends Component {
         >
           {this.props.money &&
             <MaskedInput
+              value={this.state.value}
               mask={swissFrancMask}
               guide
               pattern="[0-9]*"

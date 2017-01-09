@@ -13,6 +13,9 @@ const styles = {
   p: {
     paddingBottom: 150,
   },
+  tableDiv: {
+    overflow: 'scroll',
+  },
 };
 
 export default class Step2Auction extends Component {
@@ -65,8 +68,9 @@ export default class Step2Auction extends Component {
         <h1>Appel d'offres en cours..</h1>
         <div className="giant text-center">{this.state.remainingTime}</div>
         <p className="disabled text-center" style={styles.p}>Vous recevrez une notification lorsque ce sera terminé</p>
-
-        <LenderOffersTable partnerOffers={this.props.loanRequest.partnerOffers} />
+        <div style={styles.tableDiv}>
+          <LenderOffersTable partnerOffers={this.props.loanRequest.partnerOffers} />
+        </div>
         {this.partnerOffers ? null : (
           <div>
             <p className="secondary bold text-center animated pulse infinite">Bataille des prêteurs en cours</p>

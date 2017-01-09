@@ -51,19 +51,19 @@ export default class Step1TaxesForm extends Component {
     const formArray = [
       {
         type: 'ConditionalInput',
-        conditionalTrueValue: 'true',
+        conditionalTrueValue: true,
         inputs: [
           {
             type: 'RadioInput',
             label: 'Êtes-vous actuellement locataire ?',
             radioLabels: ['Oui', 'Non'],
-            values: ['true', 'false'],
+            values: [true, false],
             id: 'borrowers.0.currentRentExists',
             currentValue: this.props.loanRequest.borrowers[0].currentRentExists,
           }, {
             type: 'TextInputMoney',
             label: 'Loyer mensuel',
-            placeholder: 'CHF 6\'000',
+            placeholder: 'CHF 1\'500',
             id: 'borrowers.0.currentRent',
             currentValue: this.props.loanRequest.borrowers[0].currentRent,
           },
