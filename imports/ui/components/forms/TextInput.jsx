@@ -72,7 +72,7 @@ export default class TextInput extends Component {
 
     if (this.props.money || this.props.number) {
       // Make sure we store a number if this is supposed to be one
-      object[this.props.id] = Number(this.state.value);
+      object[this.props.id] = toNumber(this.state.value);
     } else {
       object[this.props.id] = this.state.value;
     }

@@ -143,7 +143,7 @@ export const BorrowerSchema = new SimpleSchema({
   },
   civilStatus: { // 'married', 'pacsed', 'single', 'divorced'
     type: String,
-    optional: true,
+    defaultValue: 'single',
   },
   company: {
     type: String,
@@ -266,7 +266,7 @@ export const PropertySchema = new SimpleSchema({
   style: { // villa, flat,
     type: String,
     optional: true,
-    defaultValue: '',
+    defaultValue: 'flat',
   },
   address1: {
     type: String,
