@@ -61,11 +61,10 @@ export default class TodoCardPage extends React.Component {
             onClick={this.handleClick}
             className="animated slideInLeft"
           />
-          <span className="pull-right">
+          <span className="pull-right" style={styles.okSpan}>
             <RaisedButton
               label="Ok"
               onClick={this.handleClick}
-              className="animated slideInRight"
               primary
             />
           </span>
@@ -75,7 +74,6 @@ export default class TodoCardPage extends React.Component {
           <RaisedButton
             label="Ok"
             onClick={this.handleClick}
-            className="animated slideInRight"
             primary
           />
         </div>

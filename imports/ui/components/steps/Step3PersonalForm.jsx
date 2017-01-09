@@ -154,8 +154,8 @@ export default class Step3PersonalForm extends Component {
             type: 'RadioInput',
             label: 'Qui est le propriétaire actuel?',
             radioLabels: [
-              r.borrowers[0].firstName ? r.borrowers[0].firstName : 'Emprunteur 1',
-              r.borrowers[1].firstName ? r.borrowers[1].firstName : 'Emprunteur 2',
+              r.borrowers[0].firstName || 'Emprunteur 1',
+              (r.borrowers[1] && r.borrowers[1].firstName) || 'Emprunteur 2',
               'Les Deux',
               'Autre',
             ],
@@ -180,8 +180,8 @@ export default class Step3PersonalForm extends Component {
             type: 'RadioInput',
             label: 'Qui sera le propriétaire du bien immobilier?',
             radioLabels: [
-              r.borrowers[0].firstName ? r.borrowers[0].firstName : 'Emprunteur 1',
-              r.borrowers[1].firstName ? r.borrowers[1].firstName : 'Emprunteur 2',
+              r.borrowers[0].firstName || 'Emprunteur 1',
+              (r.borrowers[1] && r.borrowers[1].firstName) || 'Emprunteur 2',
               'Les Deux',
               'Autre',
             ],

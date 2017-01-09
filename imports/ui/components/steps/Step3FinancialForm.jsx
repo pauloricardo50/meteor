@@ -19,6 +19,7 @@ export default class Step3FinancialForm extends Component {
 
     this.changeSaving = this.changeSaving.bind(this);
     this.changeErrors = this.changeErrors.bind(this);
+    this.getFinanceFormArray = this.getFinanceFormArray.bind(this);
   }
 
   componentWillUnmount() {
@@ -66,6 +67,7 @@ export default class Step3FinancialForm extends Component {
   }
 
   render() {
+    this.formArray = this.getFinanceFormArray();
     return (
       <section className="mask1">
         <h1>{this.props.loanRequest.borrowers.length > 1 ?
