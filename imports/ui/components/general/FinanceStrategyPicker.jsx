@@ -27,9 +27,9 @@ export default class FinanceStrategyPicker extends Component {
     super(props);
 
     this.state = {
-      totalLeft: this.props.loanRequest.propertyInfo.value,
-      tranches: this.props.loanRequest.loanInfo.tranches ?
-        JSON.parse(JSON.stringify(this.props.loanRequest.loanInfo.tranches)) : [],
+      totalLeft: this.props.loanRequest.property.value,
+      tranches: this.props.loanRequest.general.loanTranches ?
+        JSON.parse(JSON.stringify(this.props.loanRequest.general.loanTranches)) : [],
     };
 
     this.addTranche = this.addTranche.bind(this);
@@ -83,7 +83,7 @@ export default class FinanceStrategyPicker extends Component {
 
 
   getMoneyLeft() {
-    let propertyValue = this.props.loanRequest.propertyInfo.value;
+    let propertyValue = this.props.loanRequest.property.value;
 
     // Substract the values of each tranche
     this.state.tranches.forEach((tranche) => {
@@ -160,7 +160,7 @@ export default class FinanceStrategyPicker extends Component {
           key={index}
           index={index}
           tranche={tranche}
-          totalValue={this.props.loanRequest.propertyInfo.value}
+          totalValue={this.props.loanRequest.property.value}
           moneyLeft={this.getMoneyLeft()}
           getRemainingTypes={this.getRemainingTypes}
           removeTranche={e => this.removeTranche(e, index)}
@@ -187,7 +187,7 @@ export default class FinanceStrategyPicker extends Component {
         <h4>Argent restant à distribuer</h4>
         <div className="trancheBar">
           <div className="bar main" style={{
-            width: `${100 * (this.getMoneyLeft() / this.props.loanRequest.propertyInfo.value)}%`
+            width: `${100 * (this.getMoneyLeft() / this.props.loanRequest.property.value)}%`
           }}
           />
           <div className="money">
@@ -209,7 +209,7 @@ export default class FinanceStrategyPicker extends Component {
           primary
           style={styles.saveButton}
           disabled={(JSON.stringify(this.state.tranches) ===
-            JSON.stringify(this.props.loanRequest.loanInfo.tranches,
+            JSON.stringify(this.props.loanRequest.general.loanTranches,
           )) ||
           (this.state.tranches.length === 0)
           }

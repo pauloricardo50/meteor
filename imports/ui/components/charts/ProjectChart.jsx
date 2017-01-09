@@ -69,14 +69,14 @@ export default class ProjectChart extends Component {
       ],
       xAxis: [
         {
-          categories: [p.requestName],
+          categories: [p.name],
         },
       ],
       series: [
         {
           data: [
             [
-              p.requestName,
+              p.name,
               p.propertyValue * 0.05,
             ],
           ],
@@ -85,7 +85,7 @@ export default class ProjectChart extends Component {
         }, {
           data: [
             [
-              p.requestName,
+              p.name,
               p.insuranceFortune * 0.1,
             ],
           ],
@@ -94,8 +94,8 @@ export default class ProjectChart extends Component {
         }, {
           data: [
             [
-              p.requestName,
-              p.fortune,
+              p.name,
+              p.fortuneUsed,
             ],
           ],
           name: 'Fortune',
@@ -103,8 +103,8 @@ export default class ProjectChart extends Component {
         }, {
           data: [
             [
-              p.requestName,
-              p.insuranceFortune,
+              p.name,
+              p.insuranceFortuneUsed,
             ],
           ],
           name: '2ème Pilier',
@@ -112,10 +112,10 @@ export default class ProjectChart extends Component {
         }, {
           data: [
             [
-              p.requestName,
+              p.name,
               p.propertyValue -
-              p.fortune -
-              p.insuranceFortune,
+              p.fortuneUsed -
+              p.insuranceFortuneUsed,
             ],
           ],
           name: 'Emprunt',
@@ -154,9 +154,9 @@ export default class ProjectChart extends Component {
 
 ProjectChart.propTypes = {
   horizontal: PropTypes.bool.isRequired,
-  requestName: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   propertyValue: PropTypes.number.isRequired,
-  fortune: PropTypes.number.isRequired,
-  insuranceFortune: PropTypes.number,
+  fortuneUsed: PropTypes.number.isRequired,
+  insuranceFortuneUsed: PropTypes.number,
   divName: PropTypes.string,
 };

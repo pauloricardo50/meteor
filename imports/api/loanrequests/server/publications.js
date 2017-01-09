@@ -66,21 +66,20 @@ Meteor.publish('allLoanRequests', function () {
 
 
 const partnerVisibleFields = { // TODO: Complete this
-  requestName: 1,
-  type: 1,
+  'general.purchaseType': 1,
+  'general.usageType': 1,
+  'general.fortuneUsed': 1,
+  'general.insuranceFortuneUsed': 1,
+  'general.incomeUsed': 1,
 
-  'personalInfo.twoBuyers': 1,
-  'personalInfo.age1': 1,
-  'personalInfo.age2': 1,
-  'personalInfo.gender1': 1,
-  'personalInfo.gender2': 1,
+  // 'borrowers.$.age': 1,
+  // 'borrowers.$.gender': 1,
 
-  financialInfo: 1,
+  // financialInfo: 1,
 
-  propertyInfo: 1,
+  property: 1,
 
-  'files.willUploadTaxes': 1,
-
+  'logic.uploadTaxesLater': 1,
   'logic.auctionStarted': 1,
   'logic.auctionStartTime': 1,
   'logic.auctionEndTime': 1,

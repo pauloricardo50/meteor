@@ -1,9 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-
 import Checkbox from 'material-ui/Checkbox';
-
-
 import { updateValues } from '/imports/api/loanrequests/methods.js';
 import DropzoneInput from '/imports/ui/components/forms/DropzoneInput.jsx';
 import Step1TaxesForm from '/imports/ui/components/steps/Step1TaxesForm.jsx';
@@ -32,7 +29,7 @@ export default class Step1Part2 extends Component {
   handleCheck(event, isInputChecked) {
     // Save data to DB
     const object = {};
-    object['files.willUploadTaxes'] = !isInputChecked;
+    object['logic.uploadTaxesLater'] = !isInputChecked;
     const id = this.props.loanRequest._id;
 
     updateValues.call({
@@ -62,7 +59,7 @@ export default class Step1Part2 extends Component {
 
         <div className="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 secondary">
           <Checkbox
-            checked={!this.props.loanRequest.files.willUploadTaxes}
+            checked={!this.props.loanRequest.logic.uploadTaxesLater}
             label="J'uploaderai ma déclaration d'impôts plus tard"
             style={styles.checkbox}
             onCheck={this.handleCheck}
@@ -71,7 +68,7 @@ export default class Step1Part2 extends Component {
 
         <div className="col-xs-12">
           {
-            this.props.loanRequest.files.willUploadTaxes ?
+            this.props.loanRequest.logic.uploadTaxesLater ?
               <DropzoneInput
                 fileName="taxes"
                 requestId={this.props.loanRequest._id}

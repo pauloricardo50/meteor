@@ -32,9 +32,9 @@ const styles = {
 export default class FinanceWidget extends React.Component {
   constructor(props) {
     super(props);
-    this.propertyValue = this.props.loanRequest.propertyInfo.value;
-    this.fortune = this.props.loanRequest.financialInfo.fortune +
-      this.props.loanRequest.financialInfo.insuranceFortune;
+    this.propertyValue = this.props.loanRequest.property.value;
+    this.fortune = this.props.loanRequest.general.fortuneUsed +
+      this.props.loanRequest.general.insuranceFortuneUsed;
 
     this.state = {
       propertyValue: '',
@@ -53,9 +53,9 @@ export default class FinanceWidget extends React.Component {
 
 
   componentWillReceiveProps(nextProps) {
-    const newPropertyValue = nextProps.loanRequest.propertyInfo.value
-    const newFortune = nextProps.loanRequest.financialInfo.fortune +
-      nextProps.loanRequest.financialInfo.insuranceFortune;
+    const newPropertyValue = nextProps.loanRequest.property.value
+    const newFortune = nextProps.loanRequest.general.fortuneUsed +
+      nextProps.loanRequest.general.insuranceFortuneUsed;
     // Only update if the value is new
     if (newPropertyValue && newFortune) {
       if ((newPropertyValue !== this.state.propertyValue) || (newFortune !== this.fortune)) {
@@ -72,10 +72,10 @@ export default class FinanceWidget extends React.Component {
     const object = {};
     const id = this.props.loanRequest._id;
     // Only change fortune when changing the slider, let insuranceFortune the same
-    object['financialInfo.fortune'] = Number(
+    object['general.fortuneUsed'] = Number(
       this.state.propertyValue -
       this.state.sliderValue -
-      this.props.loanRequest.financialInfo.insuranceFortune
+      this.props.loanRequest.general.insuranceFortuneUsed
     );
 
     updateValues.call({ object, id });

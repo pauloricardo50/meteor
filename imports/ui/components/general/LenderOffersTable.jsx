@@ -26,7 +26,7 @@ export default class LenderOffersTable extends Component {
           </tr>
         </thead>
         <tbody>
-          {this.props.lenderOffers.map((lenderOffer, index) => (
+          {this.props.partnerOffers.map((lenderOffer, index) => (
             <tr key={index}>
               <td className="left-align">{lenderOffer.lender}</td>
               <td className="right-align">{lenderOffer.maxAmount}</td>
@@ -42,5 +42,5 @@ export default class LenderOffersTable extends Component {
 }
 
 LenderOffersTable.propTypes = {
-  lenderOffers: PropTypes.arrayOf(PropTypes.object),
+  partnerOffers: PropTypes.arrayOf(PropTypes.object),
 };

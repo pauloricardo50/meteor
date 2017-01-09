@@ -37,7 +37,7 @@ export default class ExpensesChart extends Component {
         text: `CHF ${
           toMoney(
             Math.round(
-              this.getInterests() + this.getAmortization() + ((r.propertyInfo.value * 0.01) / 12)
+              this.getInterests() + this.getAmortization() + ((r.property.value * 0.01) / 12)
             )
           )
         }<br>par mois`,
@@ -85,7 +85,7 @@ export default class ExpensesChart extends Component {
               color: colors.amortization,
             }, {
               name: 'Entretien',
-              y: (r.propertyInfo.value * 0.01) / 12,
+              y: (r.property.value * 0.01) / 12,
               color: colors.maintenance,
             },
           ],
@@ -111,22 +111,22 @@ export default class ExpensesChart extends Component {
 
   getAmortization() {
     const r = this.props.loanRequest;
-    const loan = r.propertyInfo.value -
-      r.financialInfo.fortune -
-      r.financialInfo.insuranceFortune;
+    const loan = r.property.value -
+      r.general.fortuneUsed -
+      r.general.insuranceFortuneUsed;
     const yearsToRetirement = getYearsToRetirement(
-      Number(r.personalInfo.age1),
-      Number(r.personalInfo.age2),
-      r.personalInfo.borrowers[0].gender,
-      r.personalInfo.borrowers[1].gender,
+      Number(r.borrowers[0].age),
+      Number(r.borrowers[1].age),
+      r.borrowers[0].gender,
+      r.borrowers[1].gender,
     );
-    const loanPercent = loan / r.propertyInfo.value;
+    const loanPercent = loan / r.property.value;
 
     let yearlyAmortization = 0;
     if (loanPercent > 0.65) {
       // The loan has to be below 65% before 15 years or before retirement, whichever comes first
       const remainingYears = Math.min(yearsToRetirement, 15);
-      const amountToAmortize = (loanPercent - 0.65) * r.propertyInfo.value;
+      const amountToAmortize = (loanPercent - 0.65) * r.property.value;
 
       // Make sure we don't create a black hole, or use negative values by error
       if (remainingYears > 0) {
@@ -140,12 +140,12 @@ export default class ExpensesChart extends Component {
 
   getInterests() {
     const r = this.props.loanRequest;
-    const loan = r.propertyInfo.value -
-      r.financialInfo.fortune -
-      r.financialInfo.insuranceFortune;
+    const loan = r.property.value -
+      r.general.fortuneUsed -
+      r.general.insuranceFortuneUsed;
 
 
-    if (r.logic.hasChosenStrategyOnce) {
+    if (r.logic.hasChosenStrategy) {
       // TODO: return real interest rate
     }
 

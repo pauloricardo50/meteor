@@ -16,7 +16,7 @@ const styles = {
   },
 };
 
-const lenderOffers = [
+const partnerOffers = [
   {
     lender: 'Banque 1',
     maxAmount: 'CHF 675\'000',
@@ -74,9 +74,9 @@ export default class Step2AuctionResults extends Component {
           />
         </div>
 
-        {/* Replace with this.props.loanRequest.lenderOffers */}
+        {/* Replace with this.props.loanRequest.partnerOffers */}
         <div style={styles.tableDiv}>
-          <LenderOffersTable lenderOffers={lenderOffers} />
+          <LenderOffersTable partnerOffers={partnerOffers} />
         </div>
 
       </section>

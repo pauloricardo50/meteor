@@ -38,25 +38,22 @@ export default class SideNav extends Component {
     };
     if (this.props.loanRequest) {
       this.state = {
-        requestName: this.props.loanRequest.requestName,
-        propertyValue: this.props.loanRequest.propertyInfo.value,
+        requestName: this.props.loanRequest.property.address1,
+        propertyValue: this.props.loanRequest.property.value,
       };
     }
   }
 
   componentWillReceiveProps(nextProps) {
     const r = nextProps.loanRequest;
+    const requestName = r.property.address1;
     // Only update if the value exists and is new
-    if (r) {
-      if (r.requestName) {
-        if (r.requestName !== this.state.requestName) {
-          this.setState({ requestName: r.requestName });
-        }
-      }
-      if (r.propertyInfo && r.propertyInfo.value) {
-        if (r.propertyInfo.value !== this.state.propertyValue) {
-          this.setState({ propertyValue: r.propertyInfo.value });
-        }
+    if ((r && requestName) && (requestName !== this.state.requestName)) {
+      this.setState({ requestName: requestName });
+    }
+    if (r.property && r.property.value) {
+      if (r.property.value !== this.state.propertyValue) {
+        this.setState({ propertyValue: r.property.value });
       }
     }
   }
@@ -91,10 +88,10 @@ export default class SideNav extends Component {
         (<article className="mask1 finance-widget" style={styles.chartMask}>
           <ProjectChart
             horizontal={false}
-            requestName={this.props.loanRequest.requestName}
-            propertyValue={this.props.loanRequest.propertyInfo.value}
-            fortune={this.props.loanRequest.financialInfo.fortune}
-            insuranceFortune={this.props.loanRequest.financialInfo.insuranceFortune}
+            requestName={this.props.loanRequest.property.address1}
+            propertyValue={this.props.loanRequest.property.value}
+            fortune={this.props.loanRequest.general.fortuneUsed}
+            insuranceFortune={this.props.loanRequest.general.insuranceFortuneUsed}
           />
           <div className="text-center">
             <RaisedButton

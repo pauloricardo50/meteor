@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-
 import Step1InitialForm from '/imports/ui/components/steps/Step1InitialForm.jsx';
+
 
 const styles = {
   mask: {
@@ -10,6 +10,7 @@ const styles = {
     padding: 40,
   },
 };
+
 
 export default class Step1Part1 extends Component {
   constructor(props) {

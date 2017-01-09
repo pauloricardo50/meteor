@@ -66,8 +66,8 @@ export default class Step2Auction extends Component {
         <div className="giant text-center">{this.state.remainingTime}</div>
         <p className="disabled text-center" style={styles.p}>Vous recevrez une notification lorsque ce sera terminé</p>
 
-        <LenderOffersTable lenderOffers={this.props.loanRequest.lenderOffers} />
-        {this.lenderOffers ? null : (
+        <LenderOffersTable partnerOffers={this.props.loanRequest.partnerOffers} />
+        {this.partnerOffers ? null : (
           <div>
             <p className="secondary bold text-center animated pulse infinite">Bataille des prêteurs en cours</p>
             <Loading />

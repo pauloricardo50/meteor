@@ -59,7 +59,7 @@ export default class PropertyChart extends Component {
       },
       yAxis: [
         {
-          tickInterval: (r.propertyInfo.value > 2000000 ? 400000 : 200000),
+          tickInterval: (r.property.value > 2000000 ? 400000 : 200000),
           title: {
             text: 'Montant [CHF]',
           },
@@ -74,7 +74,7 @@ export default class PropertyChart extends Component {
         },
       ],
       xAxis: {
-        categories: [r.requestName, 'Propriété', 'Fonds Propres', 'A Payer Cash'],
+        categories: [r.property.address1, 'Propriété', 'Fonds Propres', 'A Payer Cash'],
       },
       legend: {
         enabled: false,
@@ -85,47 +85,47 @@ export default class PropertyChart extends Component {
       series: [
         {
           name: 'Retrait 2ème Pilier',
-          data: [[0, (r.financialInfo.insuranceFortune * 0.1)]],
+          data: [[0, (r.general.insuranceFortuneUsed * 0.1)]],
           color: colors.frais2,
         }, {
           name: 'Frais de Notaire',
-          data: [[0, (r.propertyInfo.value * 0.05)]],
+          data: [[0, (r.property.value * 0.05)]],
           color: colors.frais1,
         }, {
           name: 'Propriété',
-          data: [[0, r.propertyInfo.value]],
+          data: [[0, r.property.value]],
           color: colors.property,
         }, {
           name: 'Prêt',
           data: [[1,
-            r.propertyInfo.value -
-            r.financialInfo.fortune -
-            r.financialInfo.insuranceFortune,
+            r.property.value -
+            r.general.fortuneUsed -
+            r.general.insuranceFortuneUsed,
           ]],
           color: colors.loan,
         }, {
           name: 'Fonds Propres',
-          data: [[1, r.financialInfo.fortune + r.financialInfo.insuranceFortune]],
+          data: [[1, r.general.fortuneUsed + r.general.insuranceFortuneUsed]],
           color: colors.fortuneTotal,
         }, {
           name: '2ème Pilier',
-          data: [[2, r.financialInfo.insuranceFortune]],
+          data: [[2, r.general.insuranceFortuneUsed]],
           color: colors.insuranceFortune,
         }, {
           name: 'Fortune',
-          data: [[2, r.financialInfo.fortune]],
+          data: [[2, r.general.fortuneUsed]],
           color: colors.fortune,
         }, {
           name: 'Retrait 2ème Pilier',
-          data: [[3, (r.financialInfo.insuranceFortune * 0.1)]],
+          data: [[3, (r.general.insuranceFortuneUsed * 0.1)]],
           color: colors.frais2,
         }, {
           name: 'Frais de Notaire',
-          data: [[3, (r.propertyInfo.value * 0.05)]],
+          data: [[3, (r.property.value * 0.05)]],
           color: colors.frais1,
         }, {
           name: 'Fortune',
-          data: [[3, r.financialInfo.fortune]],
+          data: [[3, r.general.fortuneUsed]],
           color: colors.fortune,
         },
       ],

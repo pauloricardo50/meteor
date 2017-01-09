@@ -12,8 +12,8 @@ export default class AdminSingleRequestPage extends React.Component {
     return (
       <section className="mask1">
         <h1>
-          {this.props.loanRequest.requestName} - CHF&nbsp;
-          {toMoney(this.props.loanRequest.propertyInfo.value)}
+          {this.props.loanRequest.property.address1} - CHF&nbsp;
+          {toMoney(this.props.loanRequest.property.value)}
         </h1>
       </section>
     );

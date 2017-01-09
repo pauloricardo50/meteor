@@ -69,35 +69,37 @@ export default class NewPage extends Component {
     if (q) {
       const object = {
         active: true,
-        requestName: this.state.textValue,
-        personalInfo: {
-          twoBuyers: q.twoBuyers,
-          age1: Number(q.age1),
-          age2: (q.age2 ? Number(q.age2) : undefined),
-          genderRequired: String(q.genderRequired),
-          borrowers: [
-            {
-              gender: q.gender1,
-            }, {
-              gender: (q.gender2 ? q.gender2 : undefined),
-            },
-          ],
-        },
-        financialInfo: {
-          salary: Number(q.salary),
-          bonusExists: String(q.bonusExists),
-          bonus: Number(q.bonus),
+        general: {
+          purchaseType: q.purchaseType,
+          usageType: q.propertyType,
+          genderRequired: q.genderRequired === 'true',
+          incomeUsed: Number(q.salary),
+          fortuneUsed: Number(q.fortune),
+          insuranceFortuneUsed: Number(q.insuranceFortune),
           maxCash: String(q.maxCash),
           maxDebt: String(q.maxDebt),
-          fortune: Number(q.fortune),
-          insuranceFortune: Number(q.insuranceFortune),
         },
-        propertyInfo: {
-          type: q.propertyType,
-          purchaseType: q.purchaseType,
+        borrowers: [
+          {
+            age: Number(q.age1),
+            gender: q.gender1,
+            bonusExists: String(q.bonusExists),
+            bonus: Number(q.bonus),
+            salary: Number(q.salary),
+          },
+        ],
+        property: {
+          address1: this.state.textValue,
           value: Number(q.propertyValue),
         },
       };
+
+      if (q.twoBuyers === 'true') {
+        object.borrowers.push({
+          age: q.age2 ? Number(q.age2) : undefined,
+          gender: q.gender2 ? q.gender2 : undefined,
+        });
+      }
 
 
       insertRequest.call({ object }, (error, result) => {

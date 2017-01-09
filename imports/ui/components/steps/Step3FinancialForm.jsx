@@ -36,8 +36,8 @@ export default class Step3FinancialForm extends Component {
         type: 'TextInput',
         label: 'Adresse',
         placeholder: 'Rue des Champs 7',
-        id: 'requestName',
-        currentValue: r.requestName,
+        id: 'property.address1',
+        currentValue: r.property.address1,
       },
     ];
   }
@@ -68,7 +68,7 @@ export default class Step3FinancialForm extends Component {
   render() {
     return (
       <section className="mask1">
-        <h1>{this.props.loanRequest.personalInfo.twoBuyers === 'true' ?
+        <h1>{this.props.loanRequest.borrowers.length > 1 ?
           'Nos informations économiques'
           :
             'Mes informations économiques'

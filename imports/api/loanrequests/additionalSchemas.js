@@ -2,12 +2,109 @@ import 'babel-polyfill';
 import SimpleSchema from 'simpl-schema';
 
 
+export const GeneralSchema = new SimpleSchema({
+  purchaseType: { // acquisition, refinancing, construction
+    type: String,
+    optional: true,
+    defaultValue: '',
+  },
+  usageType: { // primary, secondary or investment
+    type: String,
+    optional: true,
+    defaultValue: 'primary',
+  },
+  genderRequired: Boolean,
+  fortuneUsed: {
+    type: Number,
+    min: 0,
+    max: 100000000,
+  },
+  insuranceFortuneUsed: {
+    type: Number,
+    min: 0,
+    max: 100000000,
+  },
+  incomeUsed: {
+    type: Number,
+    min: 0,
+    max: 100000000,
+    // autoValue: function () {
+    //   return 0;
+    // },
+  },
+  maxCash: {
+    type: String,
+    optional: true,
+    defaultValue: 'true',
+  },
+  maxDebt: {
+    type: String,
+    optional: true,
+    defaultValue: 'true',
+  },
+  partnersToAvoid: {
+    type: Array,
+    optional: true,
+  },
+  'partnersToAvoid.$': String,
+  selectedPartner: {
+    type: String,
+    optional: true,
+  },
+  loanTranches: {
+    type: Array,
+    minCount: 1,
+    defaultValue: [
+      {
+        type: 'interestLibor',
+        value: 100000,
+      },
+    ],
+  },
+  'loanTranches.$': Object,
+  'loanTranches.$.type': { // libor, floating, 1y, 2y, 5y, 10y
+    type: String,
+    optional: true,
+  },
+  'loanTranches.$.value': {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100000000,
+  },
+  currentOwner: { // '0', '1', 'both', 'other'
+    type: String,
+    optional: true,
+    defaultValue: '0',
+  },
+  futureOwner: { // '0', '1', 'both', 'other'
+    type: String,
+    optional: true,
+    defaultValue: '0',
+  },
+  otherOwner: {
+    type: String,
+    optional: true,
+  },
+  borrowersHaveSameAddress: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false,
+  },
+});
+
+
 // Schema to store information about each borrower
-const borrowerSchema = new SimpleSchema({
+export const BorrowerSchema = new SimpleSchema({
   gender: {
     type: String,
     optional: true,
-    // defaultValue: 'f',
+  },
+  age: {
+    type: Number,
+    optional: true,
+    min: 18,
+    max: 99,
   },
   firstName: {
     type: String,
@@ -17,15 +114,19 @@ const borrowerSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  address: {
+  address1: {
+    type: String,
+    optional: true,
+  },
+  address2: {
     type: String,
     optional: true,
   },
   zipCode: {
     type: Number,
+    optional: true,
     min: 1000,
     max: 9999,
-    optional: true,
   },
   city: {
     type: String,
@@ -50,7 +151,6 @@ const borrowerSchema = new SimpleSchema({
   civilStatus: { // 'married', 'pacsed', 'single', 'divorced'
     type: String,
     optional: true,
-    // defaultValue: 'single',
   },
   company: {
     type: String,
@@ -58,90 +158,14 @@ const borrowerSchema = new SimpleSchema({
   },
   grossIncome: {
     type: Number,
-    min: 0,
-    max: 100000000,
-    optional: true,
-  },
-  otherIncome: {
-    type: Number,
-    min: 0,
-    max: 100000000,
-    optional: true,
-  },
-  // otherIncomeDescription: {
-  //   type: String,
-  //   optional: true,
-  // },
-});
-
-
-// Personal information about the user, like address, age, family
-export const PersonalInfoSchema = new SimpleSchema({
-  twoBuyers: {
-    type: String,
-    defaultValue: 'false',
-    optional: true,
-  },
-  age1: {
-    type: Number,
-    optional: true,
-    min: 18,
-    max: 99,
-  },
-  age2: {
-    type: Number,
-    optional: true,
-    min: 18,
-    max: 99,
-  },
-  genderRequired: {
-    type: String,
-    defaultValue: 'false',
-    optional: true,
-  },
-  borrowers: {
-    type: Array,
-    defaultValue: [],
-    optional: true,
-  },
-  'borrowers.$': {
-    type: borrowerSchema,
-    optional: true,
-  },
-  currentOwner: { // '0', '1', 'both', 'other'
-    type: String,
-    optional: true,
-    defaultValue: '0',
-  },
-  futureOwner: { // '0', '1', 'both', 'other'
-    type: String,
-    optional: true,
-    defaultValue: '0',
-  },
-  otherOwner: {
-    type: String,
-    optional: true,
-  },
-  sameAddress: {
-    type: Boolean,
-    optional: true,
-    defaultValue: false,
-  },
-});
-
-
-// Financial information about the user, like salary, fortune and insurance
-export const FinancialInfoSchema = new SimpleSchema({
-  salary: {
-    type: Number,
     optional: true,
     min: 0,
     max: 100000000,
   },
   bonusExists: {
     type: String,
-    defaultValue: 'false',
     optional: true,
+    defaultValue: 'false',
   },
   bonus: {
     type: Number,
@@ -149,22 +173,19 @@ export const FinancialInfoSchema = new SimpleSchema({
     min: 0,
     max: 100000000,
   },
-  fortune: {
-    type: Number,
+  otherIncome: {
+    type: Array,
     optional: true,
+  },
+  'otherIncome.$.amount': {
+    type: Number,
     min: 0,
     max: 100000000,
   },
-  insuranceFortune: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
+  'otherIncome.$.description': String,
   personalBank: {
     type: String,
     optional: true,
-    max: 200,
   },
   corporateBankExists: {
     type: String,
@@ -173,33 +194,13 @@ export const FinancialInfoSchema = new SimpleSchema({
   corporateBank: {
     type: String,
     optional: true,
-    max: 200,
-  },
-  avoidLenderExists: {
-    type: String,
-    defaultValue: 'false',
-  },
-  avoidLender: {
-    type: String,
-    optional: true,
-    max: 1000,
-  },
-  maxCash: {
-    type: String,
-    defaultValue: 'true',
-    optional: true,
-  },
-  maxDebt: {
-    type: String,
-    defaultValue: 'true',
-    optional: true,
   },
   currentRentExists: {
     type: String,
     defaultValue: 'false',
     optional: true,
   },
-  currentRent: {
+  currentRent: { // Monthly
     type: Number,
     optional: true,
     min: 0,
@@ -211,72 +212,73 @@ export const FinancialInfoSchema = new SimpleSchema({
     min: 0,
     max: 100000000,
   },
-  totalCashFortune: {
+  cashAndSecurities: {
     type: Number,
     optional: true,
     min: 0,
     max: 100000000,
   },
-  otherFortuneExists: {
-    type: String,
-    defaultValue: 'false',
+  existingDebt: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100000000,
+  },
+  otherFortune: {
+    type: Array,
     optional: true,
   },
-  // otherFortune: {
-  //   type: Array,
-  //   defaultValue: [],
-  // },
-  // 'otherFortune.$': Object,
-  // 'otherFortune.$.value': {
-  //   type: Number,
-  //   optional: true,
-  //   min: 1000000,
-  //   max: 100000000,
-  //   defaultValue: 0,
-  // },
-  // 'otherFortune.$.description': {
-  //   type: String,
-  //   optional: true,
-  //   defaultValue: '',
-  // },
+  'otherFortune.$.amount': {
+    type: Number,
+    min: 0,
+    max: 100000000,
+  },
+  'otherFortune.$.description': String,
+  lppInsurance: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100000000,
+  },
+  '3aInsurance': {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100000000,
+  },
+  '3bInsurance': {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100000000,
+  },
+  pureRiskInsurance: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100000000,
+  },
+  files: { // TODO
+    type: Object,
+    optional: true,
+  },
 });
 
-// Information about the property, like room count, property value and address
-export const PropertyInfoSchema = new SimpleSchema({
+
+export const PropertySchema = new SimpleSchema({
   value: { // Cost of the property
     type: Number,
     optional: true,
     min: 0,
     max: 100000000,
   },
-  purchaseType: { // acquisition, refinancing, construction
-    type: String,
-    optional: true,
-    defaultValue: '',
-  },
-  type: { // primary, secondary or investment
-    type: String,
-    defaultValue: 'primary',
-    optional: true,
-  },
   style: { // villa, flat,
     type: String,
     defaultValue: '',
     optional: true,
   },
-  surface: { // inside
-    type: Number,
-    defaultValue: undefined,
-    optional: true,
-  },
-  surfaceTotal: { // inside and outside
-    type: Number,
-    defaultValue: undefined,
-    optional: true,
-  },
   address1: {
     type: String,
-    optional: true,
   },
   address2: {
     type: String,
@@ -284,97 +286,96 @@ export const PropertyInfoSchema = new SimpleSchema({
   },
   zipCode: {
     type: Number,
+    optional: true,
     min: 1000,
     max: 9999,
-    optional: true,
   },
   city: {
     type: String,
     optional: true,
   },
+  insideArea: { // inside
+    type: Number,
+    defaultValue: undefined,
+    optional: true,
+  },
+  landArea: { // land area
+    type: Number,
+    defaultValue: undefined,
+    optional: true,
+  },
   roomCount: {
     type: Number,
+    optional: true,
     min: 0,
     max: 100,
-    optional: true,
   },
   bathroomCount: {
     type: Number,
+    optional: true,
     min: 0,
     max: 100,
-    optional: true,
   },
   toiletCount: {
     type: Number,
+    optional: true,
     min: 0,
     max: 100,
-    optional: true,
   },
   volume: {
     type: Number,
+    optional: true,
     min: 0,
     max: 5000,
-    optional: true,
   },
-  insideParking: {
+  parking: {
+    type: Object,
+    defaultValue: {},
+  },
+  'parking.inside': {
     type: Number,
+    optional: true,
     min: 0,
     max: 100,
-    optional: true,
   },
-  outsideParkingCovered: {
+  'parking.box': {
     type: Number,
+    optional: true,
     min: 0,
     max: 100,
-    optional: true,
   },
-  outsideParkingNotCovered: {
+  'parking.outsideCovered': {
     type: Number,
+    optional: true,
     min: 0,
     max: 100,
-    optional: true,
   },
-  parkingBoxes: {
+  'parking.outsideNotCovered': {
     type: Number,
+    optional: true,
     min: 0,
     max: 100,
-    optional: true,
   },
   minergie: {
     type: String,
     defaultValue: 'false',
   },
-  otherInfo: {
+  other: {
     type: String,
     optional: true,
   },
-});
-
-// Name and URL of a single file uploaded by the user
-const SingleFileSchema = new SimpleSchema({
-  url: {
-    type: String,
-  // regEx: SimpleSchema.RegEx.Url, TODO put this back when upload works
-  },
-});
-
-// List of all files
-export const FileSchema = new SimpleSchema({
-  willUploadTaxes: {
-    type: Boolean,
-    defaultValue: true,
-  },
-  taxes: {
-    type: SingleFileSchema,
+  pictures: {
+    type: Array,
     optional: true,
   },
-  housePicture: {
-    type: SingleFileSchema,
+  files: {
+    type: Array,
     optional: true,
   },
 });
 
-export const singleOffer = new SimpleSchema({
+
+const singleOffer = new SimpleSchema({
   maxAmount: {
     type: Number,
     min: 0,
@@ -431,20 +432,16 @@ export const PartnerOfferSchema = new SimpleSchema({
   name: {
     type: String,
   },
-  standard: {
+  standardOffer: {
     type: singleOffer,
-    blackbox: true,
-    // defaultValue: {},
   },
-  withConditions: {
+  conditionsOffer: {
     type: singleOffer,
-    blackbox: true,
-    // defaultValue: {},
   },
   conditions: {
     type: String,
   },
-  expertise: {
+  expertiseRequired: {
     type: Boolean,
   },
 });
@@ -458,6 +455,10 @@ export const LogicSchema = new SimpleSchema({
     min: 0,
     max: 5,
   },
+  uploadTaxesLater: {
+    type: Boolean,
+    defaultValue: true,
+  },
   auctionStarted: {
     type: Boolean,
     defaultValue: false,
@@ -470,51 +471,8 @@ export const LogicSchema = new SimpleSchema({
     type: Date,
     optional: true,
   },
-  hasChosenStrategyOnce: {
+  hasChosenStrategy: {
     type: Boolean,
     defaultValue: false,
-  },
-});
-
-// Data added by e-Potek employees to this request, including customer support interactions
-export const AdminInfoSchema = new SimpleSchema({
-  notes: {
-    type: String,
-    optional: true,
-  },
-});
-
-
-export const LoanInfoSchema = new SimpleSchema({
-  lender: {
-    type: String,
-    optional: true,
-  },
-  amount: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  tranches: {
-    type: Array,
-    minCount: 1,
-    defaultValue: [
-      {
-        type: 'interestLibor',
-        value: 100000,
-      },
-    ],
-  },
-  'tranches.$': Object,
-  'tranches.$.type': { // libor, floating, 1y, 2y, 5y, 10y
-    type: String,
-    optional: true,
-  },
-  'tranches.$.value': {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
   },
 });

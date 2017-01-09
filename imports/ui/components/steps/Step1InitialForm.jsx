@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-
 import AutoForm from '../forms/AutoForm.jsx';
 
 
@@ -57,21 +56,21 @@ export default class Step1InitialForm extends Component {
         label: 'Style de Propriété?',
         radioLabels: ['Villa', 'Appartement'],
         values: ['villa', 'flat'],
-        id: 'propertyInfo.style',
-        currentValue: this.props.loanRequest.propertyInfo.style,
+        id: 'property.style',
+        currentValue: this.props.loanRequest.property.style,
       }, {
         type: 'TextInputNumber',
         label: <span>Surface du terrain en m<sup>2</sup></span>,
         placeholder: '200',
-        id: 'propertyInfo.surfaceTotal',
-        currentValue: this.props.loanRequest.propertyInfo.surfaceTotal,
-        showCondition: (this.props.loanRequest.propertyInfo.style === 'villa'),
+        id: 'property.landArea',
+        currentValue: this.props.loanRequest.property.landArea,
+        showCondition: (this.props.loanRequest.property.style === 'villa'),
       }, {
         type: 'TextInputNumber',
         label: <span>Surface habitable en m<sup>2</sup></span>,
         placeholder: '120',
-        id: 'propertyInfo.surface',
-        currentValue: this.props.loanRequest.propertyInfo.surface,
+        id: 'property.insideArea',
+        currentValue: this.props.loanRequest.property.insideArea,
       },
     ];
 
@@ -99,88 +98,3 @@ export default class Step1InitialForm extends Component {
 Step1InitialForm.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };
-
-
-
-
-
-
-
-
-// const formArray = [
-//   {
-//     type: 'ConditionalInput',
-//     conditionalTrueValue: 'true',
-//     inputs: [
-//       {
-//         type: 'RadioInput',
-//         label: 'Un ou deux emprunteurs?',
-//         radioLabels: ['Un', 'deux'],
-//         values: ['false', 'true'],
-//         id: 'personalInfo.twoBuyers',
-//         currentValue: this.props.loanRequest.personalInfo.twoBuyers,
-//       }, {
-//         type: 'TextInputNumber',
-//         label: 'Âge de votre conjoint?',
-//         placeholder: '30',
-//         id: 'personalInfo.age2',
-//         currentValue: this.props.loanRequest.personalInfo.age2,
-//       },
-//     ],
-//   }, {
-//     type: 'TextInputNumber',
-//     label: 'Votre âge?',
-//     placeholder: '30',
-//     id: 'personalInfo.age1',
-//     currentValue: this.props.loanRequest.personalInfo.age1,
-//   }, {
-//     type: 'RadioInput',
-//     label: 'Type de Résidence?',
-//     radioLabels: ['Principale', 'Secondaire', 'Investissement'],
-//     values: ['primary', 'secondary', 'investment'],
-//     id: 'propertyInfo.type',
-//     currentValue: this.props.loanRequest.propertyInfo.type,
-//   }, {
-//     type: 'TextInputMoney',
-//     label: 'Votre Salaire annuel?',
-//     placeholder: '30\'000',
-//     id: 'financialInfo.salary',
-//     currentValue: this.props.loanRequest.financialInfo.salary,
-//   }, {
-//     type: 'ConditionalInput',
-//     conditionalTrueValue: 'true',
-//     inputs: [
-//       {
-//         type: 'RadioInput',
-//         label: 'Touchez-vous un Bonus?',
-//         radioLabels: ['Oui', 'Non'],
-//         values: ['true', 'false'],
-//         id: 'financialInfo.bonusExists',
-//         currentValue: this.props.loanRequest.financialInfo.bonusExists,
-//       }, {
-//         type: 'TextInputMoney',
-//         label: 'Combien?',
-//         placeholder: '30\'000',
-//         id: 'financialInfo.bonus',
-//       },
-//     ],
-//   }, {
-//     type: 'TextInputMoney',
-//     label: 'Combien voulez-vous mettre de fonds propres?',
-//     placeholder: '100\'000',
-//     id: 'financialInfo.fortune',
-//     currentValue: this.props.loanRequest.financialInfo.fortune,
-//   }, {
-//     type: 'TextInputMoney',
-//     label: 'Dont combien de votre LPP?',
-//     placeholder: '20\'000',
-//     id: 'financialInfo.insuranceFortune',
-//     currentValue: this.props.loanRequest.financialInfo.insuranceFortune,
-//   }, {
-//     type: 'TextInputMoney',
-//     label: 'Et finalement combien vaut la propriété?',
-//     placeholder: '500\'000',
-//     id: 'propertyInfo.value',
-//     currentValue: this.props.loanRequest.propertyInfo.value,
-//   },
-// ];

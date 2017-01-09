@@ -20,13 +20,13 @@ export default class LenderPicker extends Component {
   getOffers(withConditions) {
     const r = this.props.loanRequest;
     const offers = [];
-    for (var i = 0; i < r.lenderOffers.length; i++) {
+    for (var i = 0; i < r.partnerOffers.length; i++) {
       if (withConditions) {
-        offers.push(r.lenderOffers[i].standard);
+        offers.push(r.partnerOffers[i].standardOffer);
       } else {
-        const offer = r.lenderOffers[i].withConditions;
+        const offer = r.partnerOffers[i].conditionsOffer;
         // Add the condition to this object to make it easier to handle
-        offer.push(r.lenderOffers[i].conditions);
+        offer.push(r.partnerOffers[i].conditions);
         offers.push(offer);
       }
     }
@@ -37,7 +37,7 @@ export default class LenderPicker extends Component {
     const offers = this.getOffers(withConditions);
     // Will contain the monthly payment value for each offer
     const paymentsArray = [];
-    const tranches = this.props.loanRequest.loanInfo.tranches;
+    const tranches = this.props.loanRequest.general.loanTranches;
 
     offers.forEach((offer) => {
       // Will contain the monthly payment for each tranche of this offer
@@ -57,12 +57,12 @@ export default class LenderPicker extends Component {
         <h4 className="text-center">Sans Conditions</h4>
         <LenderTable1
           loanRequest={this.props.loanRequest}
-          lenderOffers={this.getBestOffers(false)}
+          partnerOffers={this.getBestOffers(false)}
         />
         <h4 className="text-center">Avec Conditions</h4>
         <LenderTable2
           loanRequest={this.props.loanRequest}
-          lenderOffers={this.getBestOffers(true)}
+          partnerOffers={this.getBestOffers(true)}
         />
 
       </article>

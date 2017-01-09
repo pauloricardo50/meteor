@@ -28,7 +28,7 @@ export default class LenderTable2 extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {this.props.lenderOffers && this.props.lenderOffers.map((offer, index) => (
+          {this.props.partnerOffers && this.props.partnerOffers.map((offer, index) => (
             <tr>
               <td className="left-align">{index + 1}</td>
               <td className="left-align">{`CHF ${toMoney(offer.maxValue)}`}</td>
@@ -49,5 +49,5 @@ export default class LenderTable2 extends React.Component {
 
 LenderTable2.propTypes = {
   loanRequest: React.PropTypes.objectOf(React.PropTypes.any),
-  lenderOffers: React.PropTypes.objectOf(React.PropTypes.any),
+  partnerOffers: React.PropTypes.objectOf(React.PropTypes.any),
 };

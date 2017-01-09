@@ -61,7 +61,7 @@ export default class RequestSelector extends Component {
           style={styles.field}
         >
           {this.props.loanRequests.map((loanRequest, index) =>
-            <MenuItem value={index} key={index} primaryText={loanRequest.requestName} />
+            <MenuItem value={index} key={index} primaryText={loanRequest.property.address1} />
           )}
           <MenuItem value="new" primaryText="Nouvelle Requête" />
         </SelectField>

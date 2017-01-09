@@ -58,41 +58,42 @@ export default class Step1TaxesForm extends Component {
             label: 'Êtes-vous actuellement locataire ?',
             radioLabels: ['Oui', 'Non'],
             values: ['true', 'false'],
-            id: 'financialInfo.currentRentExists',
-            currentValue: this.props.loanRequest.financialInfo.currentRentExists,
+            id: 'borrowers.0.currentRentExists',
+            currentValue: this.props.loanRequest.borrowers[0].currentRentExists,
           }, {
             type: 'TextInputMoney',
             label: 'Loyer mensuel',
             placeholder: 'CHF 6\'000',
-            id: 'financialInfo.currentRent',
-            currentValue: this.props.loanRequest.financialInfo.currentRent,
+            id: 'borrowers.0.currentRent',
+            currentValue: this.props.loanRequest.borrowers[0].currentRent,
           },
         ],
       }, {
         type: 'TextInputMoney',
         label: 'Valeur de vos biens immobiliers existants',
         placeholder: 'CHF 100\'000',
-        id: 'financialInfo.realEstateFortune',
-        currentValue: this.props.loanRequest.financialInfo.realEstateFortune,
+        id: 'borrowers.0.realEstateFortune',
+        currentValue: this.props.loanRequest.borrowers[0].realEstateFortune,
       }, {
         type: 'TextInputMoney',
         label: 'Fortune totale en cash et titres',
         placeholder: 'CHF 10\'000',
-        id: 'financialInfo.totalCashFortune',
-        currentValue: this.props.loanRequest.financialInfo.totalCashFortune,
-        info: 'Y compris ce que vous allez allouer à ce projet'
-      }, {
-        type: 'ConditionalInput',
-        conditionalTrueValue: 'true',
-        inputs: [
-          {
-            type: 'RadioInput',
-            label: 'Avez-vous un autre élément de fortune pas mentionné jusqu\'ici ?',
-            radioLabels: ['Oui', 'Non'],
-            values: ['true', 'false'],
-            id: 'financialInfo.otherFortuneExists',
-            currentValue: this.props.loanRequest.financialInfo.otherFortuneExists,
-          }, // {
+        id: 'borrowers.0.cashAndSecurities',
+        currentValue: this.props.loanRequest.borrowers[0].cashAndSecurities,
+        info: 'Y compris ce que vous allez allouer à ce projet',
+      },
+      // {
+      //   type: 'ConditionalInput',
+      //   conditionalTrueValue: 'true',
+      //   inputs: [
+      //     {
+      //       type: 'RadioInput',
+      //       label: 'Avez-vous un autre élément de fortune pas mentionné jusqu\'ici ?',
+      //       radioLabels: ['Oui', 'Non'],
+      //       values: ['true', 'false'],
+      //       id: 'borrowers.0.otherFortuneExists',
+      //       currentValue: this.props.loanRequest.financialInfo.otherFortuneExists,
+      //     }, {
           //   type: 'TextInputMoney',
           //   label: 'Combien ?',
           //   placeholder: 'CHF 1\'000',
@@ -105,8 +106,7 @@ export default class Step1TaxesForm extends Component {
           //   id: 'financialInfo.otherFortune.$.description',
           //   currentValue: this.props.loanRequest.financialInfo.otherFortune[0].description,
           // },
-        ],
-      },
+        // ],
     ];
 
 

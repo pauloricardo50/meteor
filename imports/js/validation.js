@@ -38,6 +38,7 @@ export const moneyValidation = (value) => {
   return errors;
 };
 
+
 export const emailValidation = (value) => {
   let isValid = true;
   let errors = [];
@@ -49,6 +50,7 @@ export const emailValidation = (value) => {
 
   return [isValid, errors];
 };
+
 
 export const ageValidation = (value) => {
   const errors = [];

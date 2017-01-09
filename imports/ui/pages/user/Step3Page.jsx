@@ -22,25 +22,25 @@ export default class Step3Page extends React.Component {
 
     this.todoCards = [
       {
-        title: (this.props.loanRequest.personalInfo.twoBuyers === 'true' ?
+        title: (this.props.loanRequest.borrowers.length > 1 ?
           'Notre bien immobilier' : 'Mon bien immobilier'
         ),
         duration: '15 min',
         href: 'property',
       }, {
-        title: (this.props.loanRequest.personalInfo.twoBuyers === 'true' ?
+        title: (this.props.loanRequest.borrowers.length > 1 ?
           'Nos informations personelles' : 'Mes informations personelles'
         ),
         duration: '12 min',
         href: 'perso',
       }, {
-        title: (this.props.loanRequest.personalInfo.twoBuyers === 'true' ?
+        title: (this.props.loanRequest.borrowers.length > 1 ?
           'Nos informations économiques' : 'Mes informations économiques'
         ),
         duration: '10 min',
         href: 'finance',
       }, {
-        title: (this.props.loanRequest.personalInfo.twoBuyers === 'true' ?
+        title: (this.props.loanRequest.borrowers.length > 1 ?
           'Nos documents à uploader' : 'Mes documents à uploader'
         ),
         duration: '30 min',

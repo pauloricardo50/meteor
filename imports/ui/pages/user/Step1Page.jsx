@@ -31,21 +31,9 @@ export default class Step1Page extends Component {
   isReady() {
     let projectReady = false;
     let taxesReady = false;
-    // For readability
-    const r = this.props.loanRequest;
 
-    if (r.files.willUploadTaxes) {
-      if (r.files.taxes) {
-        if (r.files.taxes.url) {
-          taxesReady = true;
-        }
-      }
-    } else {
+    // TODO define when step1 is done
 
-    }
-
-    // TODO
-    // return projectReady && taxesReady;
     return true;
   }
 

@@ -33,9 +33,9 @@ export default class AllRequestsTable extends Component {
         name: request.requestName,
         createdAt: request.createdAt,
         step: request.logic.step + 1,
-        value: request.propertyInfo.value,
-        fortune: request.financialInfo.fortune + request.financialInfo.insuranceFortune,
-        salary: request.financialInfo.salary,
+        value: request.property.value,
+        fortune: request.general.fortuneUsed + request.general.insuranceFortuneUsed,
+        income: request.general.incomeUsed,
         quality: 'Très Bon',
       };
       array.push(row);
@@ -189,7 +189,7 @@ export default class AllRequestsTable extends Component {
           header={
             <SortHeaderCell
               onSortChange={this.onSortChange}
-              sortDir={colSortDirs.salary}
+              sortDir={colSortDirs.income}
             >
               Revenus
             </SortHeaderCell>

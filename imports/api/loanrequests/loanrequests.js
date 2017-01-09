@@ -1,13 +1,10 @@
 import 'babel-polyfill';
 import { Mongo } from 'meteor/mongo';
-
 import SimpleSchema from 'simpl-schema';
-
-
 import {
-  LoanInfoSchema, PersonalInfoSchema, FinancialInfoSchema, PropertyInfoSchema, FileSchema,
-  PartnerOfferSchema, LogicSchema, AdminInfoSchema,
+  GeneralSchema, BorrowerSchema, PropertySchema, PartnerOfferSchema, LogicSchema,
 } from './additionalSchemas.js';
+
 
 const LoanRequests = new Mongo.Collection('loanRequests');
 
@@ -19,19 +16,21 @@ LoanRequests.allow({
   },
   update(userId, doc) {
     // This is true if someone is logged in
+    // TODO Only allow the user who created the loanrequest to update it
     return !!userId;
   },
 });
 
 
+// Documentation is in the google drive dev/MongoDB Schemas
 export const LoanRequestSchema = new SimpleSchema({
-  userId: { // The user ID of the creator
+  userId: {
     type: String,
     autoValue() {
       return this.userId;
     },
   },
-  createdAt: { // Date at which the request was created
+  createdAt: {
     type: Date,
     autoValue() {
       if (this.isInsert) {
@@ -39,63 +38,46 @@ export const LoanRequestSchema = new SimpleSchema({
       }
     },
   },
-  updatedAt: { // Force value to be current date (on server) upon update and don't allow it to be set upon insert
+  updatedAt: { // TODO, prevent admin changes to update this, only update it when the user is active
     type: Date,
+    optional: true,
     autoValue() {
       if (this.isUpdate) {
         return new Date();
       }
       return undefined;
     },
-    optional: true,
   },
-  active: { // Whether this is the request currently being worked on by the user
+  active: {
     type: Boolean,
     defaultValue: false,
   },
-  requestName: { // To identify a loan internally
-    type: String,
-  },
-  type: { // acquisition, refinancing
-    type: String,
-    defaultValue: 'acquisition',
-  },
-  loanInfo: { // Contains all info about the actual loan
-    type: LoanInfoSchema,
+  general: {
+    type: GeneralSchema,
     defaultValue: {},
   },
-  personalInfo: { // Personal information, ex: address, age, etc.
-    type: PersonalInfoSchema,
-    defaultValue: {},
-  },
-  financialInfo: { // Financial info, ex: salary, fortune, expenses, etc.
-    type: FinancialInfoSchema,
-    defaultValue: {},
-  },
-  propertyInfo: { // Property info, ex: size, value, nb of rooms, etc.
-    type: PropertyInfoSchema,
-    defaultValue: {},
-  },
-  files: { // All files submitted by the user
-    type: FileSchema,
-    defaultValue: {},
-  },
-  lenderOffers: { // All the offers from banks and insurances
+  borrowers: {
     type: Array,
-    defaultValue: [{}, {}],
-    optional: true,
+    defaultValue: [{}],
   },
-  'lenderOffers.$': { // All the offers from banks and insurances
+  'borrowers.$': BorrowerSchema,
+  property: {
+    type: PropertySchema,
+  },
+  partnerOffers: {
+    type: Array,
+    defaultValue: [],
+  },
+  'partnerOffers.$': {
     type: PartnerOfferSchema,
-    optional: true,
   },
-  logic: { // Internal logic of the app
+  logic: {
     type: LogicSchema,
     defaultValue: {},
   },
-  adminInfo: { // Interactions, notes, between e-Potek and the user
-    type: AdminInfoSchema,
-    defaultValue: {},
+  admin: { // TODO
+    type: Object,
+    optional: true,
   },
 });
 

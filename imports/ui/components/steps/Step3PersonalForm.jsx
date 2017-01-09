@@ -21,7 +21,6 @@ export default class Step3PersonalForm extends Component {
 
     this.changeSaving = this.changeSaving.bind(this);
     this.changeErrors = this.changeErrors.bind(this);
-    this.getInitialFormArray = this.getInitialFormArray.bind(this);
     this.getBorrowerFormArray = this.getBorrowerFormArray.bind(this);
     this.getFinalFormArray = this.getFinalFormArray.bind(this);
     this.setFormArray = this.setFormArray.bind(this);
@@ -31,21 +30,8 @@ export default class Step3PersonalForm extends Component {
     Meteor.clearTimeout(savingTimeout);
   }
 
-  getInitialFormArray() {
-    return [
-      {
-        type: 'RadioInput',
-        label: 'Nb. d\'emprunteurs',
-        radioLabels: ['1', '2'],
-        values: ['false', 'true'],
-        id: 'personalInfo.twoBuyers',
-        currentValue: this.props.loanRequest.personalInfo.twoBuyers,
-      },
-    ];
-  }
-
   getBorrowerFormArray(index) {
-    const rp = this.props.loanRequest.personalInfo;
+    const r = this.props.loanRequest;
 
     return [
       {
@@ -53,58 +39,65 @@ export default class Step3PersonalForm extends Component {
         label: 'Genre',
         radioLabels: ['Monsieur', 'Madame'],
         values: ['m', 'f'],
-        id: `personalInfo.borrowers.${index}.gender`,
-        currentValue: rp.borrowers[index].gender,
+        id: `borrowers.${index}.gender`,
+        currentValue: r.borrowers[index].gender,
       }, {
         type: 'TextInput',
         label: 'Prénom',
         placeholder: '',
-        id: `personalInfo.borrowers.${index}.firstName`,
-        currentValue: rp.borrowers[index].firstName,
+        id: `borrowers.${index}.firstName`,
+        currentValue: r.borrowers[index].firstName,
       }, {
         type: 'TextInput',
         label: 'Nom',
         placeholder: '',
-        id: `personalInfo.borrowers.${index}.lastName`,
-        currentValue: rp.borrowers[index].lastName,
+        id: `borrowers.${index}.lastName`,
+        currentValue: r.borrowers[index].lastName,
       }, {
         type: 'TextInput',
         label: 'Adresse',
         placeholder: 'Rue du Parc 1',
-        id: `personalInfo.borrowers.${index}.address`,
-        currentValue: rp.borrowers[index].address,
-        showCondition: (index === 1) && rp.sameAddress,
+        id: `borrowers.${index}.address1`,
+        currentValue: r.borrowers[index].address1,
+        showCondition: (index === 1) && r.general.borrowersHaveSameAddress,
+      }, {
+        type: 'TextInput',
+        label: 'Adresse',
+        placeholder: 'Rue du Parc 1',
+        id: `borrowers.${index}.address2`,
+        currentValue: r.borrowers[index].address2,
+        showCondition: (index === 1) && r.general.borrowersHaveSameAddress,
       }, {
         type: 'TextInputNumber',
         label: 'Code Postal',
         placeholder: '1200',
-        id: `personalInfo.borrowers.${index}.zipCode`,
-        currentValue: rp.borrowers[index].zipCode,
-        showCondition: (index === 1) && rp.sameAddress,
+        id: `borrowers.${index}.zipCode`,
+        currentValue: r.borrowers[index].zipCode,
+        showCondition: (index === 1) && r.general.borrowersHaveSameAddress,
       }, {
         type: 'TextInput',
         label: 'Localité',
         placeholder: 'Genève',
-        id: `personalInfo.borrowers.${index}.city`,
-        currentValue: rp.borrowers[index].city,
-        showCondition: (index === 1) && rp.sameAddress,
+        id: `borrowers.${index}.city`,
+        currentValue: r.borrowers[index].city,
+        showCondition: (index === 1) && r.general.borrowersHaveSameAddress,
       }, {
         type: 'TextInput',
         label: 'Nationalité(s)',
         placeholder: 'Suisse, Français',
-        id: `personalInfo.borrowers.${index}.citizenships`,
-        currentValue: rp.borrowers[index].citizenships,
+        id: `borrowers.${index}.citizenships`,
+        currentValue: r.borrowers[index].citizenships,
       }, {
         type: 'TextInput',
         label: 'Permis d\'établissement (si pas Suisse)',
         placeholder: 'Permis C',
-        id: `personalInfo.borrowers.${index}.residencyPermit`,
-        currentValue: rp.borrowers[index].residencyPermit,
+        id: `borrowers.${index}.residencyPermit`,
+        currentValue: r.borrowers[index].residencyPermit,
       }, {
         type: 'DateInput',
         label: 'Date de Naissance',
-        id: `personalInfo.borrowers.${index}.birthDate`,
-        currentValue: rp.borrowers[index].birthDate,
+        id: `borrowers.${index}.birthDate`,
+        currentValue: r.borrowers[index].birthDate,
         maxDate: (function () {
           const maxDate = new Date();
           maxDate.setFullYear(maxDate.getFullYear() - 18);
@@ -115,34 +108,35 @@ export default class Step3PersonalForm extends Component {
         type: 'TextInput',
         label: 'Lieu de Naissane, Pays de Naissance',
         placeholder: 'Berne, Suisse',
-        id: `personalInfo.borrowers.${index}.birthPlace`,
-        currentValue: rp.borrowers[index].birthPlace,
+        id: `borrowers.${index}.birthPlace`,
+        currentValue: r.borrowers[index].birthPlace,
       }, {
         type: 'RadioInput',
         label: 'État civil',
         radioLabels: ['Marié', 'Pacsé', 'Célibataire', 'Divorcé'],
         values: ['married', 'pacsed', 'single', 'divorced'],
-        id: `personalInfo.borrowers.${index}.civilStatus`,
-        currentValue: rp.borrowers[index].civilStatus,
+        id: `borrowers.${index}.civilStatus`,
+        currentValue: r.borrowers[index].civilStatus,
       }, {
         type: 'TextInput',
         label: 'Employeur',
         placeholder: 'e-Potek',
-        id: `personalInfo.borrowers.${index}.company`,
-        currentValue: rp.borrowers[index].company,
+        id: `borrowers.${index}.company`,
+        currentValue: r.borrowers[index].company,
       }, {
         type: 'TextInputMoney',
         label: 'Revenus bruts annuels',
         placeholder: '',
-        id: `personalInfo.borrowers.${index}.grossIncome`,
-        currentValue: rp.borrowers[index].grossIncome,
-      }, {
-        type: 'TextInputMoney',
-        label: 'Autres revenus',
-        placeholder: '',
-        id: `personalInfo.borrowers.${index}.otherIncome`,
-        currentValue: rp.borrowers[index].otherIncome,
+        id: `borrowers.${index}.grossIncome`,
+        currentValue: r.borrowers[index].grossIncome,
       },
+      // {
+      //   type: 'TextInputMoney',
+      //   label: 'Autres revenus',
+      //   placeholder: '',
+      //   id: `personalInfo.borrowers.${index}.otherIncome`,
+      //   currentValue: rp.borrowers[index].otherIncome,
+      // },
     ];
   }
 
@@ -153,53 +147,53 @@ export default class Step3PersonalForm extends Component {
       {
         type: 'ConditionalInput',
         conditionalTrueValue: 'other',
-        showCondition: (r.personalInfo.twoBuyers === 'true') &&
-          (r.propertyInfo.purchaseType === 'refinancing'),
+        showCondition: (r.borrowers.length > 1) &&
+          (r.general.purchaseType === 'refinancing'),
         inputs: [
           {
             type: 'RadioInput',
             label: 'Qui est le propriétaire actuel?',
             radioLabels: [
-              r.personalInfo.borrowers[0].firstName ? r.personalInfo.borrowers[0].firstName : 'Emprunteur 1',
-              r.personalInfo.borrowers[1].firstName ? r.personalInfo.borrowers[1].firstName : 'Emprunteur 2',
+              r.borrowers[0].firstName ? r.borrowers[0].firstName : 'Emprunteur 1',
+              r.borrowers[1].firstName ? r.borrowers[1].firstName : 'Emprunteur 2',
               'Les Deux',
               'Autre',
             ],
             values: ['0', '1', 'both', 'other'],
-            id: 'personalInfo.currentOwner',
-            currentValue: r.personalInfo.currentOwner,
+            id: 'general.currentOwner',
+            currentValue: r.general.currentOwner,
           }, {
             type: 'TextInput',
             label: 'Qui?',
             placeholder: '',
-            id: 'personalInfo.otherOwner',
-            currentValue: r.personalInfo.otherOwner,
+            id: 'general.otherOwner',
+            currentValue: r.general.otherOwner,
           },
         ],
       }, {
         type: 'ConditionalInput',
         conditionalTrueValue: 'other',
-        showCondition: (r.personalInfo.twoBuyers === 'true') &&
-          (r.propertyInfo.purchaseType !== 'refinancing'),
+        showCondition: (r.borrowers.length > 1) &&
+          (r.general.purchaseType !== 'refinancing'),
         inputs: [
           {
             type: 'RadioInput',
             label: 'Qui sera le propriétaire du bien immobilier?',
             radioLabels: [
-              r.personalInfo.borrowers[0].firstName ? r.personalInfo.borrowers[0].firstName : 'Emprunteur 1',
-              r.personalInfo.borrowers[1].firstName ? r.personalInfo.borrowers[1].firstName : 'Emprunteur 2',
+              r.borrowers[0].firstName ? r.borrowers[0].firstName : 'Emprunteur 1',
+              r.borrowers[1].firstName ? r.borrowers[1].firstName : 'Emprunteur 2',
               'Les Deux',
               'Autre',
             ],
             values: ['0', '1', 'both', 'other'],
-            id: 'personalInfo.futureOwner',
-            currentValue: r.personalInfo.futureOwner,
+            id: 'general.futureOwner',
+            currentValue: r.general.futureOwner,
           }, {
             type: 'TextInput',
             label: 'Qui?',
             placeholder: '',
-            id: 'personalInfo.otherOwner',
-            currentValue: r.personalInfo.otherOwner,
+            id: 'general.otherOwner',
+            currentValue: r.general.otherOwner,
           },
         ],
       },
@@ -208,17 +202,17 @@ export default class Step3PersonalForm extends Component {
 
 
   setFormArray() {
-    const newArray = this.getInitialFormArray();
+    const newArray = [];
     const r = this.props.loanRequest;
-    if (r.personalInfo.twoBuyers === 'true') {
+    if (r.borrowers.length > 1) {
       newArray.push(...this.getBorrowerFormArray(0));
       newArray.push({
         type: 'RadioInput',
         label: 'Habitez-vous à la même adresse?',
         radioLabels: ['Oui', 'Non'],
         values: [true, false],
-        id: 'personalInfo.sameAddress',
-        currentValue: r.personalInfo.sameAddress,
+        id: 'general.borrowersHaveSameAddress',
+        currentValue: r.general.borrowersHaveSameAddress,
       });
       newArray.push(...this.getBorrowerFormArray(1));
     } else {
@@ -258,7 +252,7 @@ export default class Step3PersonalForm extends Component {
 
     return (
       <section className="mask1">
-        <h1>{this.props.loanRequest.personalInfo.twoBuyers === 'true' ?
+        <h1>{this.props.loanRequest.borrowers.length > 1 ?
           'Nos informations personelles'
           :
             'Mes informations personelles'
