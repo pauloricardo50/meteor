@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import { updateValues } from '/imports/api/loanrequests/methods.js';
-import moment from 'moment';
+import { startAuction } from '/imports/api/loanrequests/methods.js';
 import CountUp from 'react-countup';
 
 
@@ -28,16 +27,11 @@ export default class Step2Start extends Component {
   }
 
   startAuction() {
-    const object = {};
-    object['logic.auctionStarted'] = true;
-    object['logic.auctionStartTime'] = moment().toDate();
-    object['logic.auctionEndTime'] = moment().add(30, 'm').toDate(); // TODO: Change this to 2 business days?
     const id = this.props.requestId;
 
-    updateValues.call({
-      object, id,
-    }, (error, result) => {
+    startAuction.call({ id }, (error, result) => {
       if (error) {
+        console.log(error.message);
         throw new Meteor.Error('startAuctionFailed', 'Couldn\'t start the auction');
       } else {
         return 'Auction started Successful';

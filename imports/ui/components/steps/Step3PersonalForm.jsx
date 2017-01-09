@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-
 import moment from 'moment';
 
-import AutoForm from '../forms/AutoForm.jsx';
 
+import AutoForm from '../forms/AutoForm.jsx';
+import BorrowerCountSwitch from '/imports/ui/components/general/BorrowerCountSwitch.jsx';
 
 var savingTimeout;
 
@@ -23,7 +23,6 @@ export default class Step3PersonalForm extends Component {
     this.changeErrors = this.changeErrors.bind(this);
     this.getBorrowerFormArray = this.getBorrowerFormArray.bind(this);
     this.getFinalFormArray = this.getFinalFormArray.bind(this);
-    this.setFormArray = this.setFormArray.bind(this);
   }
 
   componentWillUnmount() {
@@ -201,30 +200,6 @@ export default class Step3PersonalForm extends Component {
   }
 
 
-  setFormArray() {
-    const newArray = [];
-    const r = this.props.loanRequest;
-    if (r.borrowers.length > 1) {
-      newArray.push(...this.getBorrowerFormArray(0));
-      newArray.push({
-        type: 'RadioInput',
-        label: 'Habitez-vous à la même adresse?',
-        radioLabels: ['Oui', 'Non'],
-        values: [true, false],
-        id: 'general.borrowersHaveSameAddress',
-        currentValue: r.general.borrowersHaveSameAddress,
-      });
-      newArray.push(...this.getBorrowerFormArray(1));
-    } else {
-      newArray.push(...this.getBorrowerFormArray(0));
-    }
-
-    newArray.push(...this.getFinalFormArray());
-
-    return newArray;
-  }
-
-
   changeSaving(value) {
     // If the value is false, wait for half a second before changing state,
     // so that the saving appears smoothly to the user
@@ -248,8 +223,6 @@ export default class Step3PersonalForm extends Component {
   }
 
   render() {
-    const newFormArray = this.setFormArray();
-
     return (
       <section className="mask1">
         <h1>{this.props.loanRequest.borrowers.length > 1 ?
@@ -264,14 +237,15 @@ export default class Step3PersonalForm extends Component {
           <p className="secondary bold">Sauvegarde en cours...</p> :
           (this.state.saved && <p>Sauvegardé</p>)
         }
-        {/* <h5>{this.state.errors}</h5> */}
-        <AutoForm
+        <BorrowerCountSwitch loanRequest={this.props.loanRequest} />
+        <div style={{ width: '100%', height: 600}}></div>
+        {/* <AutoForm
           inputs={newFormArray}
           formClasses="col-sm-10 col-sm-offset-1"
           loanRequest={this.props.loanRequest}
           changeSaving={this.changeSaving}
           changeErrors={this.changeErrors}
-        />
+        /> */}
       </section>
     );
   }

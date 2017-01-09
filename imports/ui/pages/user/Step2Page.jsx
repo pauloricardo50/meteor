@@ -22,6 +22,9 @@ export default class Step2Page extends Component {
     DocHead.setTitle('Étape 2 - e-Potek');
 
     const that = this;
+
+    // TODO: Make sure this works in different time zones, currently it probably doesn't
+    // Except if timezones are properly accounted for -> to test!
     time = Meteor.setInterval(function () {
       that.setState({
         currentTime: new Date(),

@@ -4,6 +4,7 @@ import LoanRequests from '/imports/api/loanrequests/loanrequests.js';
 
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import Divider from 'material-ui/Divider';
 
 
 const styles = {
@@ -63,7 +64,13 @@ export default class RequestSelector extends Component {
           {this.props.loanRequests.map((loanRequest, index) =>
             <MenuItem value={index} key={index} primaryText={loanRequest.property.address1} />
           )}
+
+          <Divider />
+
+          {/* Don't allow more than 3 requests at a time */}
+          {this.props.loanRequests.length >= 3 ? null :
           <MenuItem value="new" primaryText="Nouvelle Requête" />
+          }
         </SelectField>
       );
     }

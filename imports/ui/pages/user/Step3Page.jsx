@@ -20,29 +20,30 @@ export default class Step3Page extends React.Component {
   constructor(props) {
     super(props);
 
+    const titles = this.props.loanRequest.borrowers.length > 1 ? [
+      'Nos informations personelles', 'Notre bien immobilier',
+      'Nos informations économiques', 'Nos documents à uploader',
+    ] :
+    [
+      'Mes informations personelles', 'Mon bien immobilier',
+      'Mes informations économiques', 'Mes documents à uploader',
+    ];
+
     this.todoCards = [
       {
-        title: (this.props.loanRequest.borrowers.length > 1 ?
-          'Notre bien immobilier' : 'Mon bien immobilier'
-        ),
-        duration: '15 min',
-        href: 'property',
-      }, {
-        title: (this.props.loanRequest.borrowers.length > 1 ?
-          'Nos informations personelles' : 'Mes informations personelles'
-        ),
+        title: titles[0],
         duration: '12 min',
         href: 'perso',
       }, {
-        title: (this.props.loanRequest.borrowers.length > 1 ?
-          'Nos informations économiques' : 'Mes informations économiques'
-        ),
+        title: titles[1],
+        duration: '15 min',
+        href: 'property',
+      }, {
+        title: titles[2],
         duration: '10 min',
         href: 'finance',
       }, {
-        title: (this.props.loanRequest.borrowers.length > 1 ?
-          'Nos documents à uploader' : 'Mes documents à uploader'
-        ),
+        title: titles[3],
         duration: '30 min',
         href: 'files',
       },

@@ -4,6 +4,7 @@ import { updateValues } from '/imports/api/loanrequests/methods.js';
 
 
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
+import Dialog from 'material-ui/Dialog';
 
 const styles = {
   RadioButtonGroup: {
@@ -96,6 +97,15 @@ export default class RadioInput extends Component {
             />),
           )}
         </RadioButtonGroup>
+        <Dialog
+          title={this.props.title}
+          actions={actions}
+          modal={false}
+          open={this.state.modalIsOpen}
+          onRequestClose={this.handleClose}
+        >
+          {this.props.content}
+        </Dialog>
       </div>
     );
   }

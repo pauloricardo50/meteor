@@ -53,7 +53,7 @@ export default class HelpModal extends Component {
         <Dialog
           title={this.props.title}
           actions={actions}
-          modal={false}
+          modal // force the user to click one of the actions
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
