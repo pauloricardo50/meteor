@@ -30,8 +30,9 @@ export default class AllRequestsTable extends Component {
       const row = {
         requestId: request._id,
         id: index + 1,
-        name: request.requestName,
+        name: request.property.address1,
         createdAt: request.createdAt,
+        updatedAt: request.updatedAt,
         step: request.logic.step + 1,
         value: request.property.value,
         fortune: request.general.fortuneUsed + request.general.insuranceFortuneUsed,
@@ -101,7 +102,7 @@ export default class AllRequestsTable extends Component {
       <Table
         rowHeight={50}
         rowsCount={sortedDataList.getSize()}
-        width={820}
+        width={990}
         height={500}
         headerHeight={50}
         onRowClick={this.handleClick}
@@ -140,6 +141,19 @@ export default class AllRequestsTable extends Component {
               sortDir={colSortDirs.createdAt}
             >
               Créé le
+            </SortHeaderCell>
+          }
+          cell={<DateCell data={sortedDataList} />}
+          width={170}
+        />
+        <Column
+          columnKey="updatedAt"
+          header={
+            <SortHeaderCell
+              onSortChange={this.onSortChange}
+              sortDir={colSortDirs.updatedAt}
+            >
+              Mis à jour le
             </SortHeaderCell>
           }
           cell={<DateCell data={sortedDataList} />}
@@ -185,7 +199,7 @@ export default class AllRequestsTable extends Component {
           width={100}
         />
         <Column
-          columnKey="salary"
+          columnKey="income"
           header={
             <SortHeaderCell
               onSortChange={this.onSortChange}

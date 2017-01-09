@@ -15,6 +15,10 @@ export default class AdminSingleRequestPage extends React.Component {
           {this.props.loanRequest.property.address1} - CHF&nbsp;
           {toMoney(this.props.loanRequest.property.value)}
         </h1>
+
+        <pre>
+          {JSON.stringify(this.props.loanRequest, null, 2)}
+        </pre>
       </section>
     );
   }

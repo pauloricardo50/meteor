@@ -6,7 +6,7 @@ import AllRequestsTable from '/imports/ui/components/admin/AllRequestsTable.jsx'
 const styles = {
   table: {
     margin: 'auto',
-    width: 820, // Change this with the Table component
+    width: 990, // Change this with the Table component
   },
 };
 
