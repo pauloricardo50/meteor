@@ -46,10 +46,10 @@ export default class FinancePage extends Component {
           {/* <PropertyChart loanRequest={this.props.loanRequest} /> */}
           <ProjectChart
             horizontal
-            requestName={this.props.loanRequest.property.address1}
+            name={this.props.loanRequest.property.address1}
             propertyValue={this.props.loanRequest.property.value}
-            fortune={this.props.loanRequest.general.fortuneUsed}
-            insuranceFortune={this.props.loanRequest.general.insuranceFortuneUsed}
+            fortuneUsed={this.props.loanRequest.general.fortuneUsed}
+            insuranceFortuneUsed={this.props.loanRequest.general.insuranceFortuneUsed}
           />
         </article>
 

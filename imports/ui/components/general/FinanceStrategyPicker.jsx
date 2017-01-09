@@ -137,7 +137,7 @@ export default class FinanceStrategyPicker extends Component {
   save() {
     const id = this.props.loanRequest._id;
     const object = {};
-    object['loanInfo.tranches'] = this.state.tranches;
+    object['general.loanTranches'] = this.state.tranches;
 
     updateValues.call({
       object, id,

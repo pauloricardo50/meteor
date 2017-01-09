@@ -91,7 +91,7 @@ export default class ExpensesChart extends Component {
           ],
         },
       ],
-      loans: {
+      credits: {
         enabled: false,
       },
     };

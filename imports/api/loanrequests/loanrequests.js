@@ -58,9 +58,10 @@ export const LoanRequestSchema = new SimpleSchema({
   },
   borrowers: {
     type: Array,
-    defaultValue: [{}],
   },
-  'borrowers.$': BorrowerSchema,
+  'borrowers.$': {
+    type: BorrowerSchema,
+  },
   property: {
     type: PropertySchema,
   },

@@ -76,14 +76,14 @@ export default class NewPage extends Component {
           incomeUsed: Number(q.salary),
           fortuneUsed: Number(q.fortune),
           insuranceFortuneUsed: Number(q.insuranceFortune),
-          maxCash: String(q.maxCash),
-          maxDebt: String(q.maxDebt),
+          maxCash: String(q.maxCash) === 'true',
+          maxDebt: String(q.maxDebt) === 'true',
         },
         borrowers: [
           {
             age: Number(q.age1),
             gender: q.gender1,
-            bonusExists: String(q.bonusExists),
+            bonusExists: String(q.bonusExists) === 'true',
             bonus: Number(q.bonus),
             salary: Number(q.salary),
           },

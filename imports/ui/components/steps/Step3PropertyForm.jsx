@@ -24,13 +24,13 @@ export default class Step3PropertyForm extends Component {
         text: 'Adresse du bien immobilier',
       }, {
         type: 'TextInput',
-        label: 'Adresse',
+        label: 'Adresse 1',
         placeholder: 'Rue des Champs 7',
         id: 'property.address1',
         currentValue: r.property.address1,
       }, {
         type: 'TextInput',
-        label: 'Adresse',
+        label: 'Adresse 2',
         placeholder: '',
         id: 'property.address2',
         currentValue: r.property.address2,
@@ -116,7 +116,7 @@ export default class Step3PropertyForm extends Component {
         type: 'RadioInput',
         label: 'Est-ce une construction Minergie?',
         radioLabels: ['Oui', 'Non'],
-        values: ['true', 'false'],
+        values: [true, false],
         id: 'property.minergie',
         currentValue: r.property.minergie,
       }, {

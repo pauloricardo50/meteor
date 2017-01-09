@@ -55,14 +55,14 @@ export default class Step3PersonalForm extends Component {
         currentValue: r.borrowers[index].lastName,
       }, {
         type: 'TextInput',
-        label: 'Adresse',
+        label: 'Adresse 1',
         placeholder: 'Rue du Parc 1',
         id: `borrowers.${index}.address1`,
         currentValue: r.borrowers[index].address1,
         showCondition: (index === 1) && r.general.borrowersHaveSameAddress,
       }, {
         type: 'TextInput',
-        label: 'Adresse',
+        label: 'Adresse 2',
         placeholder: 'Rue du Parc 1',
         id: `borrowers.${index}.address2`,
         currentValue: r.borrowers[index].address2,

@@ -30,12 +30,86 @@ const colors = {
 export default class ProjectChart extends Component {
   constructor(props) {
     super(props);
+
+    this.getOptions = this.getOptions.bind(this);
   }
 
   componentDidMount() {
-    const p = this.props;
+    const options = this.getOptions(this.props);
 
-    const options = {
+    Highcharts.setOptions({
+      lang: {
+        thousandsSep: '\'',
+      },
+    });
+
+    this.div = this.props.divName ? this.props.divName : 'projectChart';
+    this.chart = new Highcharts.Chart(this.div, options);
+  }
+
+
+  componentWillReceiveProps(n) {
+    const p = this.props;
+    if (
+      n.propertyValue !== p.propertyValue ||
+      n.fortuneUsed !== p.fortuneUsed ||
+      n.insuranceFortuneUsed !== p.insuranceFortuneUsed
+    ) {
+      this.chart.series[0].update({
+        data: [
+          [
+            n.name,
+            n.propertyValue * 0.05,
+          ],
+        ],
+      });
+      this.chart.series[1].update({
+        data: [
+          [
+            n.name,
+            n.insuranceFortuneUsed * 0.1,
+          ],
+        ],
+      });
+      this.chart.series[2].update({
+        data: [
+          [
+            n.name,
+            n.fortuneUsed,
+          ],
+        ],
+      });
+      this.chart.series[3].update({
+        data: [
+          [
+            n.name,
+            n.insuranceFortuneUsed,
+          ],
+        ],
+      });
+      this.chart.series[4].update({
+        data: [
+          [
+            n.name,
+            n.propertyValue -
+            n.fortuneUsed -
+            n.insuranceFortuneUsed,
+          ],
+        ],
+      });
+
+      this.chart.redraw();
+    }
+  }
+
+
+  componentWillUnmount() {
+    this.chart.destroy();
+  }
+
+
+  getOptions(p) {
+    return {
       chart: {
         type: (p.horizontal ? 'bar' : 'column'),
         polar: false,
@@ -86,7 +160,7 @@ export default class ProjectChart extends Component {
           data: [
             [
               p.name,
-              p.insuranceFortune * 0.1,
+              p.insuranceFortuneUsed * 0.1,
             ],
           ],
           name: 'Retrait 2ème Pilier',
@@ -108,7 +182,7 @@ export default class ProjectChart extends Component {
             ],
           ],
           name: '2ème Pilier',
-          color: colors.insuranceFortune,
+          color: colors.insuranceFortuneUsed,
         }, {
           data: [
             [
@@ -125,24 +199,12 @@ export default class ProjectChart extends Component {
       legend: {
         enabled: false,
       },
-      loans: {
+      credits: {
         enabled: false,
       },
     };
-
-    Highcharts.setOptions({
-      lang: {
-        thousandsSep: '\'',
-      },
-    });
-
-    const div = this.props.divName ? this.props.divName : 'projectChart';
-    this.chart = new Highcharts.Chart(div, options);
   }
 
-  componentWillUnmount() {
-    this.chart.destroy();
-  }
 
   render() {
     return (<div

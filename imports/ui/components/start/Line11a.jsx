@@ -119,20 +119,20 @@ export default class Line11a extends Component {
         <div className="hidden-sm hidden-md hidden-lg" style={styles.mobileChart}>
           <ProjectChart
             horizontal={false}
-            requestName="Votre Nouveau Projet"
+            name="Votre Nouveau Projet"
             propertyValue={Number(this.props.propertyValue)}
-            fortune={Number(this.props.fortune)}
-            insuranceFortune={Number(this.props.insuranceFortune)}
+            fortuneUsed={Number(this.props.fortune)}
+            insuranceFortuneUsed={Number(this.props.insuranceFortune)}
             divName="mobileChart"
           />
         </div>
         <div className="hidden-xs">
           <ProjectChart
             horizontal
-            requestName="Votre Nouveau Projet"
+            name="Votre Nouveau Projet"
             propertyValue={Number(this.props.propertyValue)}
-            fortune={Number(this.props.fortune)}
-            insuranceFortune={Number(this.props.insuranceFortune)}
+            fortuneUsed={Number(this.props.fortune)}
+            insuranceFortuneUsed={Number(this.props.insuranceFortune)}
             divName="regularChart"
           />
         </div>

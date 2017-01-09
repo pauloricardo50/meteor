@@ -47,9 +47,18 @@ export default class RadioInput extends Component {
   }
 
   saveValue(value) {
+    // For radiobuttons, check if I actually want to pass a boolean instead of a String
+    // event.target.value is always a String
+    let safeValue = value;
+    if (value === 'true') {
+      safeValue = true;
+    } else if (value === 'false') {
+      safeValue = false;
+    }
+
     // Save data to DB
     const object = {};
-    object[this.props.id] = value || this.state.value;
+    object[this.props.id] = safeValue;
     const id = this.props.requestId;
 
     updateValues.call({

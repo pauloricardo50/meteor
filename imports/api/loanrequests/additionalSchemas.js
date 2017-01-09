@@ -5,12 +5,10 @@ import SimpleSchema from 'simpl-schema';
 export const GeneralSchema = new SimpleSchema({
   purchaseType: { // acquisition, refinancing, construction
     type: String,
-    optional: true,
     defaultValue: '',
   },
   usageType: { // primary, secondary or investment
     type: String,
-    optional: true,
     defaultValue: 'primary',
   },
   genderRequired: Boolean,
@@ -33,14 +31,12 @@ export const GeneralSchema = new SimpleSchema({
     // },
   },
   maxCash: {
-    type: String,
-    optional: true,
-    defaultValue: 'true',
+    type: Boolean,
+    defaultValue: true,
   },
   maxDebt: {
-    type: String,
-    optional: true,
-    defaultValue: 'true',
+    type: Boolean,
+    defaultValue: true,
   },
   partnersToAvoid: {
     type: Array,
@@ -74,12 +70,10 @@ export const GeneralSchema = new SimpleSchema({
   },
   currentOwner: { // '0', '1', 'both', 'other'
     type: String,
-    optional: true,
     defaultValue: '0',
   },
   futureOwner: { // '0', '1', 'both', 'other'
     type: String,
-    optional: true,
     defaultValue: '0',
   },
   otherOwner: {
@@ -88,7 +82,6 @@ export const GeneralSchema = new SimpleSchema({
   },
   borrowersHaveSameAddress: {
     type: Boolean,
-    optional: true,
     defaultValue: false,
   },
 });
@@ -163,9 +156,8 @@ export const BorrowerSchema = new SimpleSchema({
     max: 100000000,
   },
   bonusExists: {
-    type: String,
-    optional: true,
-    defaultValue: 'false',
+    type: Boolean,
+    defaultValue: false,
   },
   bonus: {
     type: Number,
@@ -188,17 +180,16 @@ export const BorrowerSchema = new SimpleSchema({
     optional: true,
   },
   corporateBankExists: {
-    type: String,
-    defaultValue: 'false',
+    type: Boolean,
+    defaultValue: false,
   },
   corporateBank: {
-    type: String,
+    type: Boolean,
     optional: true,
   },
   currentRentExists: {
-    type: String,
-    defaultValue: 'false',
-    optional: true,
+    type: Boolean,
+    defaultValue: false,
   },
   currentRent: { // Monthly
     type: Number,
@@ -274,8 +265,8 @@ export const PropertySchema = new SimpleSchema({
   },
   style: { // villa, flat,
     type: String,
-    defaultValue: '',
     optional: true,
+    defaultValue: '',
   },
   address1: {
     type: String,
@@ -296,12 +287,10 @@ export const PropertySchema = new SimpleSchema({
   },
   insideArea: { // inside
     type: Number,
-    defaultValue: undefined,
     optional: true,
   },
   landArea: { // land area
     type: Number,
-    defaultValue: undefined,
     optional: true,
   },
   roomCount: {
@@ -357,8 +346,8 @@ export const PropertySchema = new SimpleSchema({
     max: 100,
   },
   minergie: {
-    type: String,
-    defaultValue: 'false',
+    type: Boolean,
+    defaultValue: false,
   },
   other: {
     type: String,

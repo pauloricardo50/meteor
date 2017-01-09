@@ -46,12 +46,15 @@ export default class SideNav extends Component {
 
   componentWillReceiveProps(nextProps) {
     const r = nextProps.loanRequest;
-    const requestName = r.property.address1;
+    let requestName = '';
+    if (r && r.property) {
+      requestName = r.property.address1;
+    }
     // Only update if the value exists and is new
     if ((r && requestName) && (requestName !== this.state.requestName)) {
-      this.setState({ requestName: requestName });
+      this.setState({ requestName });
     }
-    if (r.property && r.property.value) {
+    if ((r && r.property) && r.property.value) {
       if (r.property.value !== this.state.propertyValue) {
         this.setState({ propertyValue: r.property.value });
       }
@@ -88,10 +91,10 @@ export default class SideNav extends Component {
         (<article className="mask1 finance-widget" style={styles.chartMask}>
           <ProjectChart
             horizontal={false}
-            requestName={this.props.loanRequest.property.address1}
+            name={this.props.loanRequest.property.address1}
             propertyValue={this.props.loanRequest.property.value}
-            fortune={this.props.loanRequest.general.fortuneUsed}
-            insuranceFortune={this.props.loanRequest.general.insuranceFortuneUsed}
+            fortuneUsed={this.props.loanRequest.general.fortuneUsed}
+            insuranceFortuneUsed={this.props.loanRequest.general.insuranceFortuneUsed}
           />
           <div className="text-center">
             <RaisedButton

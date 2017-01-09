@@ -79,7 +79,7 @@ export default class PropertyChart extends Component {
       legend: {
         enabled: false,
       },
-      loans: {
+      credits: {
         enabled: false,
       },
       series: [
