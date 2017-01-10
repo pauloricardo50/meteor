@@ -116,9 +116,9 @@ export default class ExpensesChart extends Component {
       r.general.insuranceFortuneUsed;
     const yearsToRetirement = getYearsToRetirement(
       Number(r.borrowers[0].age),
-      Number(r.borrowers[1].age),
+      r.borrowers[1] && r.borrowers[1].age ? Number(r.borrowers[1].age) : 0,
       r.borrowers[0].gender,
-      r.borrowers[1].gender,
+      r.borrowers[1] && r.borrowers[1].gender,
     );
     const loanPercent = loan / r.property.value;
 
