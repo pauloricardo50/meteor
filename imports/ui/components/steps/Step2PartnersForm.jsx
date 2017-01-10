@@ -68,13 +68,11 @@ export default class Step2PartnersForm extends Component {
 
   render() {
     return (
-      <article>
-        <AutoForm
-          inputs={this.getFormArray()}
-          formClasses="col-sm-offset-3 col-sm-6"
-          loanRequest={this.props.loanRequest}
-        />
-      </article>
+      <AutoForm
+        inputs={this.getFormArray()}
+        formClasses="col-sm-offset-3 col-sm-6"
+        loanRequest={this.props.loanRequest}
+      />
     );
   }
 }

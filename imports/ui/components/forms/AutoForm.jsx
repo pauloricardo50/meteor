@@ -21,8 +21,6 @@ export default class AutoForm extends Component {
   inputSwitch(singleInput, index) {
     const extraValues = {
       requestId: this.props.loanRequest._id,
-      changeSaving: this.props.changeSaving || (() => true),
-      changeErrors: this.props.changeErrors || (() => true),
     };
 
     // Prevent undefined showCondition to trigger as well
@@ -120,6 +118,4 @@ AutoForm.propTypes = {
   inputs: PropTypes.arrayOf(React.PropTypes.object).isRequired,
   formClasses: PropTypes.string,
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
-  changeSaving: PropTypes.func,
-  changeErrors: PropTypes.func,
 };
