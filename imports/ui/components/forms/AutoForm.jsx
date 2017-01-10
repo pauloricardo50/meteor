@@ -92,6 +92,10 @@ export default class AutoForm extends Component {
         return (
           <h3 style={styles.subtitle} key={index}>{singleInput.text}</h3>
         );
+      case 'Space':
+        return (
+          <div style={{ width: '100%', height: singleInput.height }} key={index}>{singleInput.text}</div>
+        );
       case 'DateInput':
         return (
           <DateInput

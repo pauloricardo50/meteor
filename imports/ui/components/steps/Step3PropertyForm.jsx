@@ -65,7 +65,7 @@ export default class Step3PropertyForm extends Component {
         placeholder: '1',
         id: 'property.bathroomCount',
         currentValue: r.property.bathroomCount,
-        info: 'Salles de bains ou salles d’eau (respectivement avec baignoire ou douche)',
+        info: <span>Salles de bains ou salles d’eau<br />(respectivement avec baignoire ou douche)</span>,
       }, {
         type: 'TextInputNumber',
         label: 'Nb. de WC',

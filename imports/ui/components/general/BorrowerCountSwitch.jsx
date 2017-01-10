@@ -127,7 +127,7 @@ export default class BorrowerCountSwitch extends Component {
 
     return (
       <div style={styles.div}>
-        <label htmlFor="BorrowerCountSwitch">Combien de prêteurs êtes vous?</label>
+        <label htmlFor="BorrowerCountSwitch">Combien d&apos;emprunteurs êtes vous?</label>
         <RadioButtonGroup
           name="BorrowerCountSwitch"
           defaultSelected={this.state.value}

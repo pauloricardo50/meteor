@@ -9,16 +9,24 @@ import MaskedInput from 'react-text-mask';
 import { swissFrancMask } from '/imports/js/textMasks.js';
 import { toNumber, toMoney } from '/imports/js/finance-math';
 import SavingIcon from './SavingIcon.jsx';
+import InfoIcon from './InfoIcon.jsx';
+
 
 var timer;
 const styles = {
   div: {
     position: 'relative',
   },
-  icon: {
+  infoIcon: {
     position: 'absolute',
-    bottom: 10,
-    right: -30,
+    bottom: 5,
+    left: -40,
+    padding: 10,
+  },
+  savingIcon: {
+    position: 'absolute',
+    bottom: 15,
+    right: -25,
   },
 };
 
@@ -117,6 +125,8 @@ export default class TextInput extends Component {
           rows={this.props.rows}
           pattern={this.props.number && '[0-9]*'}
           errorText={this.state.errorText}
+          autoComplete={this.props.autocomplete || ''}
+          disabled={this.props.disabled}
         >
           {this.props.money &&
             <MaskedInput
@@ -128,12 +138,16 @@ export default class TextInput extends Component {
           }
         </TextField>
         {this.props.info &&
-          null // TODO add an info icon that display the this.props.info string if it exists
+          <InfoIcon
+            id={this.props.id}
+            info={this.props.info}
+            style={styles.infoIcon}
+          />
         }
         <SavingIcon
           saving={this.state.saving}
           errorExists={this.state.errorText !== ''}
-          style={styles.icon}
+          style={styles.savingIcon}
         />
       </div>
     );
@@ -151,10 +165,16 @@ TextInput.propTypes = {
     PropTypes.number,
     PropTypes.string,
   ]),
+  autocomplete: PropTypes.string,
   multiLine: PropTypes.bool,
   rows: PropTypes.number,
   requestId: PropTypes.string.isRequired,
-  info: PropTypes.string,
+  info: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+    PropTypes.array,
+  ]),
+  disabled: PropTypes.bool,
 
   number: PropTypes.bool,
   money: PropTypes.bool,

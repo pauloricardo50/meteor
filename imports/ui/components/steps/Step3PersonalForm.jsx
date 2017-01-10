@@ -39,42 +39,48 @@ export default class Step3PersonalForm extends Component {
         type: 'TextInput',
         label: 'Prénom',
         placeholder: '',
+        autocomplete: 'given-name',
         id: `borrowers.${index}.firstName`,
         currentValue: r.borrowers[index].firstName,
       }, {
         type: 'TextInput',
         label: 'Nom',
         placeholder: '',
+        autocomplete: 'family-name',
         id: `borrowers.${index}.lastName`,
         currentValue: r.borrowers[index].lastName,
       }, {
         type: 'TextInput',
         label: 'Adresse 1',
         placeholder: 'Rue du Parc 1',
+        autocomplete: 'address-line1',
         id: `borrowers.${index}.address1`,
         currentValue: r.borrowers[index].address1,
-        showCondition: (index === 1) && r.general.borrowersHaveSameAddress,
+        showCondition: (index === 0) || (index === 1 && !r.general.borrowersHaveSameAddress),
       }, {
         type: 'TextInput',
         label: 'Adresse 2',
         placeholder: 'Rue du Parc 1',
+        autocomplete: 'address-line2',
         id: `borrowers.${index}.address2`,
         currentValue: r.borrowers[index].address2,
-        showCondition: (index === 1) && r.general.borrowersHaveSameAddress,
+        showCondition: (index === 0) || (index === 1 && !r.general.borrowersHaveSameAddress),
       }, {
         type: 'TextInputNumber',
         label: 'Code Postal',
         placeholder: '1200',
+        autocomplete: 'postal-code',
         id: `borrowers.${index}.zipCode`,
         currentValue: r.borrowers[index].zipCode,
-        showCondition: (index === 1) && r.general.borrowersHaveSameAddress,
+        showCondition: (index === 0) || (index === 1 && !r.general.borrowersHaveSameAddress),
       }, {
         type: 'TextInput',
         label: 'Localité',
         placeholder: 'Genève',
+        autocomplete: 'address-level2',
         id: `borrowers.${index}.city`,
         currentValue: r.borrowers[index].city,
-        showCondition: (index === 1) && r.general.borrowersHaveSameAddress,
+        showCondition: (index === 0) || (index === 1 && !r.general.borrowersHaveSameAddress),
       }, {
         type: 'TextInput',
         label: 'Nationalité(s)',
@@ -118,6 +124,7 @@ export default class Step3PersonalForm extends Component {
         type: 'TextInput',
         label: 'Employeur',
         placeholder: 'Google',
+        autocomplete: 'organization',
         id: `borrowers.${index}.company`,
         currentValue: r.borrowers[index].company,
       },
@@ -129,6 +136,9 @@ export default class Step3PersonalForm extends Component {
 
     return [
       {
+        type: 'Space',
+        height: 40,
+      }, {
         type: 'ConditionalInput',
         conditionalTrueValue: 'other',
         showCondition: (r.borrowers.length > 1) &&
@@ -214,7 +224,7 @@ export default class Step3PersonalForm extends Component {
 
         <AutoForm
           inputs={this.getFinalFormArray()}
-          formClasses="col-sm-10 col-sm-offset-1"
+          formClasses="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3"
           loanRequest={this.props.loanRequest}
         />
       </section>
