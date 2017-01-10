@@ -9,20 +9,17 @@ import { Roles } from 'meteor/alanning:roles';
 // import { TAPi18n } from 'meteor/tap:i18n';
 
 function postLoginRoute() {
-  // Route admins and partners to their respective dashboards
-  if (Roles.userIsInRole(Meteor.user(), 'admin')) {
-    FlowRouter.go('/admin');
-  } else if (Roles.userIsInRole(Meteor.user(), 'partner')) {
-    FlowRouter.go('/partner');
-  }
-
-  // Get path from Session, and set it to an empty string afterwards
+  // Get postLoginPath from Session, and set it to an empty string afterwards
   const postLoginPath = Session.get('postLoginPath');
   Session.set('postLoginPath', '');
 
-  // If the user tried to acces a user-route and wasn't logged in, route him to that one on login
+  // Route everyone to their respective homes, except if there is a postLoginPath
   if (postLoginPath) {
     FlowRouter.go(postLoginPath);
+  } else if (Roles.userIsInRole(Meteor.user(), 'admin')) {
+    FlowRouter.go('/admin');
+  } else if (Roles.userIsInRole(Meteor.user(), 'partner')) {
+    FlowRouter.go('/partner');
   } else {
     FlowRouter.go('/main');
   }

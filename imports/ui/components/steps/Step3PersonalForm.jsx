@@ -25,6 +25,10 @@ export default class Step3PersonalForm extends Component {
 
     return [
       {
+        type: 'Subtitle',
+        text: r.borrowers[index].firstName || `Emprunteur ${index + 1}`,
+        showCondition: r.borrowers.length > 1,
+      }, {
         type: 'RadioInput',
         label: 'Genre',
         radioLabels: ['Monsieur', 'Madame'],
@@ -116,20 +120,7 @@ export default class Step3PersonalForm extends Component {
         placeholder: 'Google',
         id: `borrowers.${index}.company`,
         currentValue: r.borrowers[index].company,
-      }, {
-        type: 'TextInputMoney',
-        label: 'Revenus bruts annuels',
-        placeholder: 'CHF 50\'000',
-        id: `borrowers.${index}.grossIncome`,
-        currentValue: r.borrowers[index].grossIncome,
       },
-      // {
-      //   type: 'TextInputMoney',
-      //   label: 'Autres revenus',
-      //   placeholder: '',
-      //   id: `personalInfo.borrowers.${index}.otherIncome`,
-      //   currentValue: rp.borrowers[index].otherIncome,
-      // },
     ];
   }
 
@@ -203,7 +194,9 @@ export default class Step3PersonalForm extends Component {
             'Mes informations personelles'
         }</h1>
 
-        <BorrowerCountSwitch loanRequest={this.props.loanRequest} />
+        <div className="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+          <BorrowerCountSwitch loanRequest={this.props.loanRequest} />
+        </div>
 
         <AutoForm
           inputs={this.getBorrowerFormArray(0)}

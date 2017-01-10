@@ -22,6 +22,7 @@ export default class Step3FinancialForm extends Component {
   constructor(props) {
     super(props);
 
+    this.getIncomeFormArray = this.getIncomeFormArray.bind(this);
     this.getFortuneFormArray = this.getFortuneFormArray.bind(this);
     this.getInsuranceFormArray = this.getInsuranceFormArray.bind(this);
   }
@@ -30,14 +31,36 @@ export default class Step3FinancialForm extends Component {
     Meteor.clearTimeout(savingTimeout);
   }
 
-  getFortuneFormArray(index) {
+  getIncomeFormArray(index) {
     const r = this.props.loanRequest;
 
     return [
       {
         type: 'Subtitle',
         text: r.borrowers[index].firstName || `Emprunteur ${index + 1}`,
+        showCondition: r.borrowers.length > 1,
       }, {
+        type: 'TextInputMoney',
+        label: 'Revenus bruts annuels',
+        placeholder: 'CHF 50\'000',
+        id: `borrowers.${index}.grossIncome`,
+        currentValue: r.borrowers[index].grossIncome,
+      },
+      // {
+      //   type: 'TextInputMoney',
+      //   label: 'Autres revenus',
+      //   placeholder: '',
+      //   id: `personalInfo.borrowers.${index}.otherIncome`,
+      //   currentValue: rp.borrowers[index].otherIncome,
+      // },
+    ];
+  }
+
+  getFortuneFormArray(index) {
+    const r = this.props.loanRequest;
+
+    return [
+      {
         type: 'TextInputMoney',
         label: 'Biens immobiliers existants',
         placeholder: 'CHF 500\'000',
@@ -116,6 +139,22 @@ export default class Step3FinancialForm extends Component {
             Entrez les informations séparément pour chaque emprunteur, ou ensemble,
             nous les ajouterons dans tous les cas.
           </p>
+        }
+
+        <h2 style={styles.subtitle} className="col-xs-12">Revenus</h2>
+
+        <AutoForm
+          inputs={this.getIncomeFormArray(0)}
+          formClasses={this.props.loanRequest.borrowers.length > 1 ? 'col-sm-5'
+          : 'col-sm-10 col-sm-offset-1'}
+          loanRequest={this.props.loanRequest}
+        />
+        {this.props.loanRequest.borrowers.length > 1 &&
+          <AutoForm
+            inputs={this.getIncomeFormArray(1)}
+            formClasses="col-sm-offset-2 col-sm-5"
+            loanRequest={this.props.loanRequest}
+          />
         }
 
         <h2 style={styles.subtitle} className="col-xs-12">Fortune</h2>

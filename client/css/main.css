@@ -1,14 +1,11 @@
-/*neutral*/
-* {
-	font-family: 'karla', sans-serif;
-}.footer,
+.footer,
 .header {
 	background: #4A90E2;
 	color: white;
 }
 .ctas-button {
 	color: #4A90E2;
-}@import url('https://fonts.googleapis.com/css?family=Karla:400,700');
+}
 *,
 *:before,
 *:after {

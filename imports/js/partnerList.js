@@ -6,9 +6,9 @@ export const partnerList = {
       'GE',
     ],
   },
-  loanAgricole: {
+  creditAgricole: {
     name: 'Crédit Agricole Financements Suisse',
-    logo: 'loanAgricole_logo.png',
+    logo: 'creditAgricole_logo.png',
     cantons: [
       'GE',
     ],
@@ -104,4 +104,24 @@ export const partnerList = {
       'GE',
     ],
   },
+};
+
+
+// Given the canton of the borrower and the partners he wants to avoid, return a list of all the
+// lenders we will potentially contact
+export const getPartnerList = (canton, partnersToAvoid) => {
+  const filteredList = partnerList.filter(
+    partner => partner.cantons.includes(canton),
+  );
+
+  if (partnersToAvoid.length > 0) {
+    partnersToAvoid.forEach((partner) => {
+      if (filteredList[partner]) {
+        delete filteredList[partner];
+      }
+    });
+  }
+
+
+  return filteredList;
 };

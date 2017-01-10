@@ -46,7 +46,6 @@ export default class RadioInput extends Component {
     this.setState({
       value: event.target.value,
     }, this.saveValue(event.target.value));
-    this.props.changeSaving(true);
   }
 
   saveValue(value) {
@@ -68,11 +67,8 @@ export default class RadioInput extends Component {
       object, id,
     }, (error, result) => {
       if (error) {
-        this.props.changeErrors(error.message);
         throw new Meteor.Error(500, error.message);
       } else {
-        this.props.changeSaving(false);
-        this.props.changeErrors('');
         return 'Update Successful';
       }
     });
@@ -116,6 +112,4 @@ RadioInput.propTypes = {
     PropTypes.bool,
     PropTypes.string,
   ]),
-  changeSaving: PropTypes.func,
-  changeErrors: PropTypes.func,
 };

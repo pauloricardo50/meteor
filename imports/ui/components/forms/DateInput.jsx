@@ -54,8 +54,6 @@ export default class DateInput extends Component {
   }
 
   saveValue() {
-    this.props.changeSaving(true);
-
     // Remove time from date
     // TODO: verify this works in all timezones
     const dateWithoutTime = moment(this.state.value).format('YYYY-MM-DD');
@@ -68,14 +66,10 @@ export default class DateInput extends Component {
     updateValues.call({
       object, id,
     }, (error, result) => {
-      this.props.changeSaving(false);
-
       if (error) {
-        this.props.changeErrors(error.message);
         this.setState({ errorText: error.message });
         throw new Meteor.Error(500, error.message);
       } else {
-        this.props.changeErrors('');
         this.setState({ errorText: '' });
         return 'Update Successful';
       }
@@ -123,8 +117,6 @@ DateInput.propTypes = {
   id: PropTypes.string.isRequired,
   currentValue: PropTypes.string,
   requestId: PropTypes.string.isRequired,
-  changeSaving: PropTypes.func,
-  changeErrors: PropTypes.func,
 
   maxDate: PropTypes.objectOf(PropTypes.any),
 };
