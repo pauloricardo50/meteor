@@ -36,6 +36,9 @@ mdg:validated-method            # MDG written server-side validation before stor
 check@1.2.4                           # variable type verification for server side validation
 session@1.1.7                         # Lets you use Session variables
 ostrio:files
+aldeed:collection2-core@2.0.0
+aldeed:schema-index
+
 
 # Routing
 kadira:flow-router              # Router
@@ -57,4 +60,3 @@ kadira:dochead                  # Set custom page titles easily
 # Production
 spiderable@1.0.14-release-testing.0                      # Lets webcrawlers crawl your website to index it, ex: Google
 force-ssl                       # Automatically route users to https
-aldeed:collection2-core@2.0.0

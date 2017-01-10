@@ -38,9 +38,13 @@ export const GeneralSchema = new SimpleSchema({
     type: Boolean,
     defaultValue: true,
   },
+  partnersToAvoidExists: {
+    type: Boolean,
+    defaultValue: false,
+  },
   partnersToAvoid: {
     type: Array,
-    optional: true,
+    defaultValue: [],
   },
   'partnersToAvoid.$': String,
   selectedPartner: {

@@ -26,6 +26,7 @@ LoanRequests.allow({
 export const LoanRequestSchema = new SimpleSchema({
   userId: {
     type: String,
+    index: true,
     autoValue() {
       return this.userId;
     },

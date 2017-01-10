@@ -25,7 +25,7 @@ export default class AdminLayout extends Component {
 
             <AdminNav />
 
-            <main className="user-layout">
+            <main className="user-layout admin">
               <div className="user-layout-center">
                 {this.props.content}
               </div>

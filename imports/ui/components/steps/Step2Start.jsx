@@ -8,6 +8,9 @@ import CountUp from 'react-countup';
 import RaisedButton from 'material-ui/RaisedButton';
 
 
+import Step2PartnersForm from './Step2PartnersForm.jsx';
+
+
 const styles = {
   text: {
     textAlign: 'justify',
@@ -15,6 +18,11 @@ const styles = {
   },
   a: {
     marginBottom: 50,
+  },
+  formDiv: {
+    marginBottom: 40,
+    width: '100%',
+    display: 'inline-block',
   },
 };
 
@@ -27,7 +35,7 @@ export default class Step2Start extends Component {
   }
 
   startAuction() {
-    const id = this.props.requestId;
+    const id = this.props.loanRequest._id;
 
     startAuction.call({ id }, (error, result) => {
       if (error) {
@@ -57,17 +65,14 @@ export default class Step2Start extends Component {
           />
         </div>
         <a className="bold secondary active text-center col-xs-12" style={styles.a}>Voir la liste</a>
-        <br />
-        <p
-          className="col-sm-6 col-sm-offset-3"
-          style={styles.text}
-        >
-          Lorsque vous estimez que vos informations sont correctes
-          et que vous ne voulez plus les modifier, appuyez sur envoyer.
-        </p>
+
+        <div style={styles.formDiv}>
+          <Step2PartnersForm loanRequest={this.props.loanRequest} />
+        </div>
+
         <div className="col-xs-12">
           <div className="form-group text-center">
-            <RaisedButton label="Envoyer" primary onClick={this.startAuction} />
+            <RaisedButton label="Commencer" primary onClick={this.startAuction} />
           </div>
           <div className="form-group text-center">
             <RaisedButton label="Pas maintenant" onClick={() => FlowRouter.go('/step1')} />
@@ -80,5 +85,5 @@ export default class Step2Start extends Component {
 
 
 Step2Start.propTypes = {
-  requestId: PropTypes.string.isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

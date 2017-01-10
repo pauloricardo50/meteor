@@ -45,7 +45,7 @@ export default class Step2Page extends Component {
       return <Step2Auction loanRequest={this.props.loanRequest} />;
     }
     // Before the auction, lets the user start it
-    return <Step2Start requestId={this.props.loanRequest._id} />;
+    return <Step2Start loanRequest={this.props.loanRequest} />;
   }
 }
 

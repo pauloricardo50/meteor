@@ -8,7 +8,7 @@ import MaskedInput from 'react-text-mask';
 
 import { swissFrancMask } from '/imports/js/textMasks.js';
 import { toNumber, toMoney } from '/imports/js/finance-math';
-
+import SavingIcon from './SavingIcon.jsx';
 
 var timer;
 const styles = {
@@ -17,8 +17,8 @@ const styles = {
   },
   icon: {
     position: 'absolute',
-    top: '60%',
-    right: -20,
+    bottom: 10,
+    right: -30,
   },
 };
 
@@ -27,17 +27,11 @@ export default class TextInput extends Component {
   constructor(props) {
     super(props);
 
-    if (this.props.currentValue) {
-      this.state = {
-        value: this.props.currentValue,
-        errorText: '',
-      };
-    } else {
-      this.state = {
-        value: '',
-        errorText: '',
-      };
-    }
+    this.state = {
+      value: this.props.currentValue || '',
+      errorText: '',
+      saving: false,
+    };
 
 
     this.handleChange = this.handleChange.bind(this);
@@ -46,17 +40,28 @@ export default class TextInput extends Component {
   }
 
   handleChange(event) {
+    // Make sure value is a number if this is a number or money input
+    const safeValue = this.props.number || this.props.money ?
+      Number(event.target.value) :
+      event.target.value;
+
     Meteor.clearTimeout(timer);
     this.setState({
-      value: event.target.value,
+      value: safeValue,
     }, () => {
-      timer = Meteor.setTimeout(this.saveValue, 400);
+      timer = Meteor.setTimeout(() => {
+        this.setState({
+          saving: true,
+        }, this.saveValue);
+      }, 500);
     });
   }
 
   handleBlur() {
     if (this.state.value !== this.props.currentValue) {
-      this.saveValue();
+      this.setState({ saving: true },
+        this.saveValue(),
+      );
     }
   }
 
@@ -66,8 +71,6 @@ export default class TextInput extends Component {
 
 
   saveValue() {
-    this.props.changeSaving(true);
-
     // Save data to DB
     const object = {};
 
@@ -82,14 +85,11 @@ export default class TextInput extends Component {
     updateValues.call({
       object, id,
     }, (error, result) => {
-      this.props.changeSaving(false);
-
+      this.setState({ saving: false });
       if (error) {
-        this.props.changeErrors(error.message);
         this.setState({ errorText: error.message });
         throw new Meteor.Error(500, error.message);
       } else {
-        this.props.changeErrors('');
         this.setState({ errorText: '' });
         return 'Update Successful';
       }
@@ -122,7 +122,14 @@ export default class TextInput extends Component {
             />
           }
         </TextField>
-        {/* <span className="fa fa-info" style={styles.icon}/> */}
+        {this.props.info &&
+          null // TODO add an info icon that display the this.props.info string if it exists
+        }
+        <SavingIcon
+          saving={this.state.saving}
+          errorExists={this.state.errorText !== ''}
+          style={styles.icon}
+        />
       </div>
     );
   }
@@ -142,9 +149,7 @@ TextInput.propTypes = {
   multiLine: PropTypes.bool,
   rows: PropTypes.number,
   requestId: PropTypes.string.isRequired,
-  changeSaving: PropTypes.func,
-  changeErrors: PropTypes.func,
-  onChange: PropTypes.func,
+  info: PropTypes.string,
 
   number: PropTypes.bool,
   money: PropTypes.bool,

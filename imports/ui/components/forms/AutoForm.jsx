@@ -21,8 +21,8 @@ export default class AutoForm extends Component {
   inputSwitch(singleInput, index) {
     const extraValues = {
       requestId: this.props.loanRequest._id,
-      changeSaving: this.props.changeSaving,
-      changeErrors: this.props.changeErrors,
+      changeSaving: this.props.changeSaving || (() => true),
+      changeErrors: this.props.changeErrors || (() => true),
     };
 
     // Prevent undefined showCondition to trigger as well
