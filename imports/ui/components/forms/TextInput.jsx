@@ -33,6 +33,8 @@ export default class TextInput extends Component {
       saving: false,
     };
 
+    // TODO: change saving only when something has successfully saved, not before
+
 
     this.handleChange = this.handleChange.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
@@ -42,7 +44,7 @@ export default class TextInput extends Component {
   handleChange(event) {
     // Make sure value is a number if this is a number or money input
     const safeValue = this.props.number || this.props.money ?
-      Number(event.target.value) :
+      toNumber(event.target.value) :
       event.target.value;
 
     Meteor.clearTimeout(timer);
@@ -50,18 +52,18 @@ export default class TextInput extends Component {
       value: safeValue,
     }, () => {
       timer = Meteor.setTimeout(() => {
-        this.setState({
-          saving: true,
-        }, this.saveValue);
+        this.saveValue();
       }, 500);
     });
   }
 
   handleBlur() {
-    if (this.state.value !== this.props.currentValue) {
-      this.setState({ saving: true },
-        this.saveValue(),
-      );
+    // If the value has changed, save it
+    // state is initialized as '', but currentValue is initially undefined, so check that too
+    if (this.state.value !== this.props.currentValue &&
+      !(this.state.value === '' && this.props.currentValue === undefined)
+    ) {
+      this.saveValue();
     }
   }
 
@@ -90,7 +92,10 @@ export default class TextInput extends Component {
         this.setState({ errorText: error.message });
         throw new Meteor.Error(500, error.message);
       } else {
-        this.setState({ errorText: '' });
+        // on success, set saving briefly to true, before setting it to false again to trigger icon
+        this.setState({ errorText: '', saving: true },
+          this.setState({ saving: false }),
+        );
         return 'Update Successful';
       }
     });
