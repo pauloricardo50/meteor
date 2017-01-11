@@ -36,7 +36,7 @@ function composer(props, onData) {
     // If there is no loanRequest, go to the main page, except for new, settings and contact page
     if (!loanRequest && ((path.substring(0, 4) !== '/new') && (path !== '/settings') && (path !== '/contact'))) {
       FlowRouter.go('/main');
-      return;
+      onData(null, null);
     }
     onData(null, { loanRequest });
   } else {

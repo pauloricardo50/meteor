@@ -5,6 +5,8 @@ import LenderOffersTable from '/imports/ui/components/general/LenderOffersTable.
 
 import RaisedButton from 'material-ui/RaisedButton';
 
+import { toMoney } from '/imports/js/finance-math';
+
 const styles = {
   button: {
     paddingTop: 100,
@@ -16,45 +18,6 @@ const styles = {
   },
 };
 
-const partnerOffers = [
-  {
-    lender: 'Banque 1',
-    maxAmount: 'CHF 675\'000',
-    amortizing: '1%',
-    interest10: '0.89%',
-    expertise: 'Non',
-  }, {
-    lender: 'Banque 2',
-    maxAmount: 'CHF 687\'000',
-    amortizing: '1%',
-    interest10: '0.99%',
-    expertise: 'Oui',
-  }, {
-    lender: 'Banque 3',
-    maxAmount: 'CHF 641\'000',
-    amortizing: '1%',
-    interest10: '0.85%',
-    expertise: 'Non',
-  }, {
-    lender: 'Assurance 1',
-    maxAmount: 'CHF 701\'000',
-    amortizing: '1%',
-    interest10: '0.91%',
-    expertise: 'Non',
-  }, {
-    lender: 'Banque 4',
-    maxAmount: 'CHF 641\'000',
-    amortizing: '1%',
-    interest10: '0.85%',
-    expertise: 'Non',
-  }, {
-    lender: 'Banque 5',
-    maxAmount: 'CHF 641\'000',
-    amortizing: '1%',
-    interest10: '0.85%',
-    expertise: 'Non',
-  },
-];
 
 export default class Step2AuctionResults extends Component {
   constructor(props) {
@@ -62,6 +25,46 @@ export default class Step2AuctionResults extends Component {
   }
 
   render() {
+    const partnerOffers = [
+      {
+        lender: 'Banque 1',
+        maxAmount: toMoney(this.props.loanRequest.property.value * 0.8),
+        amortizing: '1%',
+        interest10: '0.89%',
+        expertise: 'Non',
+      }, {
+        lender: 'Banque 2',
+        maxAmount: toMoney(this.props.loanRequest.property.value * 0.68),
+        amortizing: '1%',
+        interest10: '0.99%',
+        expertise: 'Oui',
+      }, {
+        lender: 'Banque 3',
+        maxAmount: toMoney(this.props.loanRequest.property.value * 0.73),
+        amortizing: '1%',
+        interest10: '0.85%',
+        expertise: 'Non',
+      }, {
+        lender: 'Assurance 1',
+        maxAmount: toMoney(this.props.loanRequest.property.value * 0.72),
+        amortizing: '1%',
+        interest10: '0.91%',
+        expertise: 'Non',
+      }, {
+        lender: 'Banque 4',
+        maxAmount: toMoney(this.props.loanRequest.property.value * 0.79),
+        amortizing: '1%',
+        interest10: '0.85%',
+        expertise: 'Non',
+      }, {
+        lender: 'Banque 5',
+        maxAmount: toMoney(this.props.loanRequest.property.value * 0.78),
+        amortizing: '1%',
+        interest10: '0.85%',
+        expertise: 'Non',
+      },
+    ];
+
     return (
       <section className="mask1 animated fadeIn">
         <h1>Les résultats sont arrivés!</h1>

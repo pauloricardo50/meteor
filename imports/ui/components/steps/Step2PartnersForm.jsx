@@ -2,6 +2,9 @@ import React, { Component, PropTypes } from 'react';
 
 import AutoForm from '../forms/AutoForm.jsx';
 
+import { getAllPartners } from '/imports/js/partnerList';
+import getCantons from '/imports/js/cantons';
+
 
 export default class Step2PartnersForm extends Component {
   constructor(props) {
@@ -15,8 +18,15 @@ export default class Step2PartnersForm extends Component {
 
     return [
       {
-        type: 'Subtitle',
+        type: 'h2',
         text: 'Mes partenaires financiers particuliers',
+      }, {
+        type: 'SelectFieldInput',
+        label: 'Canton où vous résidez',
+        options: getCantons(),
+        id: 'general.canton',
+        currentValue: r.general.canton,
+        info: 'Le canton où nous contacterons les prêteurs',
       }, {
         type: 'TextInput',
         label: 'Banque personelle',
@@ -55,10 +65,10 @@ export default class Step2PartnersForm extends Component {
             id: 'general.partnersToAvoidExists',
             currentValue: r.general.partnersToAvoidExists,
           }, {
-            type: 'TextInput',
+            type: 'SelectFieldInput',
             label: 'Lequel?',
-            placeholder: 'UBS',
             id: 'general.partnersToAvoid.0',
+            options: getAllPartners(),
             currentValue: r.general.partnersToAvoid[0],
           },
         ],

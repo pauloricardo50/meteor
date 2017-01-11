@@ -24,9 +24,9 @@ function composer2(props, onData) {
   if (Meteor.subscribe('activeLoanRequest').ready()) {
     const loanRequest = LoanRequests.find({}).fetch()[0];
 
-    if (!loanRequest) {
-      return;
-    }
+    // if (!loanRequest) {
+    //   return;
+    // }
 
     onData(null, { loanRequest });
   }

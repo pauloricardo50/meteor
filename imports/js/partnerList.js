@@ -1,110 +1,111 @@
-export const partnerList = {
-  banqueDuLeman: {
+export const partnerList = [
+  {
+    key: 'banqueDuLeman',
     name: 'Banque du Léman',
     logo: 'banqueDuLeman_logo.png',
     cantons: [
       'GE',
     ],
-  },
-  creditAgricole: {
+  }, {
+    key: 'creditAgricole',
     name: 'Crédit Agricole Financements Suisse',
     logo: 'creditAgricole_logo.png',
     cantons: [
       'GE',
     ],
-  },
-  KFH: {
+  }, {
+    key: 'KFH',
     name: 'Kreditanstalt für Hypotheken',
     logo: 'KFH_logo.png',
     cantons: [
       'GE',
     ],
-  },
-  allianz: {
+  }, {
+    key: 'allianz',
     name: 'Allianz Suisse',
     logo: 'allianz_logo.png',
     cantons: [
       'GE', 'VD',
     ],
-  },
-  postFinance: {
+  }, {
+    key: 'postFinance',
     name: 'PostFinance',
     logo: 'postFinance_logo.png',
     cantons: [
       'GE', 'VD',
     ],
-  },
-  banqueMigros: {
+  }, {
+    key: 'banqueMigros',
     name: 'Banque Migros',
     logo: 'banqueMigros_logo.png',
     cantons: [
       'GE', 'VD',
     ],
-  },
-  vaudoiseAssurances: {
+  }, {
+    key: 'vaudoiseAssurances',
     name: 'Vaudoise Assurances',
     logo: 'vaudoiseAssurances_logo.png',
     cantons: [
       'GE', 'VD',
     ],
-  },
-  banqueWir: {
+  }, {
+    key: 'banqueWir',
     name: 'Banque Wir',
     logo: 'banqueWir_logo.png',
     cantons: [
       'GE',
     ],
-  },
-  raiffeisen: {
+  }, {
+    key: 'raiffeisen',
     name: 'Raiffeisen',
     logo: 'raiffeisen_logo.png',
     cantons: [
       'GE', 'VD',
     ],
-  },
-  valiant: {
+  }, {
+    key: 'valiant',
     name: 'Valiant',
     logo: 'valiant_logo.png',
     cantons: [
       'GE',
     ],
-  },
-  swisslife: {
+  }, {
+    key: 'swisslife',
     name: 'Swisslife',
     logo: 'swisslife_logo.png',
     cantons: [
       'GE', 'VD',
     ],
-  },
-  banqueCoop: {
+  }, {
+    key: 'banqueCoop',
     name: 'Banque Coop',
     logo: 'banqueCoop_logo.png',
     cantons: [
       'GE', 'VD',
     ],
-  },
-  baloiseAssurances: {
+  }, {
+    key: 'baloiseAssurances',
     name: 'Bâloise Assurances',
     logo: 'baloiseAssurances_logo.png',
     cantons: [
       'GE', 'VD',
     ],
-  },
-  helvetia: {
+  }, {
+    key: 'helvetia',
     name: 'Helvetia Assurance',
     logo: 'helvetia_logo.png',
     cantons: [
       'GE',
     ],
-  },
-  zurichSuisse: {
+  }, {
+    key: 'zurichSuisse',
     name: 'Zurich Suisse',
     logo: 'zurichSuisse_logo.png',
     cantons: [
       'GE',
     ],
   },
-};
+];
 
 
 // Given the canton of the borrower and the partners he wants to avoid, return a list of all the
@@ -115,9 +116,9 @@ export const getPartnerList = (canton, partnersToAvoid) => {
   );
 
   if (partnersToAvoid.length > 0) {
-    partnersToAvoid.forEach((partner) => {
-      if (filteredList[partner]) {
-        delete filteredList[partner];
+    partnersToAvoid.forEach((partnerToAvoid, index) => {
+      if (filteredList[index].key === partnerToAvoid) {
+        delete filteredList[index];
       }
     });
   }

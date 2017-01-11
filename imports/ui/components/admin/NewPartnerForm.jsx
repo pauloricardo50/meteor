@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
@@ -10,6 +12,7 @@ import { getAllPartners } from '/imports/js/partnerList';
 import getCantons from '/imports/js/cantons';
 import MaskedInput from 'react-text-mask';
 import emailMask from 'text-mask-addons/dist/emailMask.js';
+import { createPartner } from '/imports/api/users/methods';
 
 
 const styles = {
@@ -30,8 +33,8 @@ export default class NewPartnerForm extends Component {
 
     this.state = {
       email: '',
-      partnerSelect: null,
-      cantonSelect: null,
+      partner: null,
+      canton: null,
       errorText: '',
     };
 
@@ -44,13 +47,31 @@ export default class NewPartnerForm extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    if (!this.state.email || !this.state.partnerSelect || !this.state.cantonSelect) {
+    if (!this.state.email || !this.state.partner || !this.state.canton) {
       this.setState({ errorText: 'Tous les champs sont requis' });
       return;
     }
     this.setState({ errorText: '' });
 
-    console.log('submit!');
+    const options = {
+      email: this.state.email,
+      profile: {
+        organization: this.state.partner,
+        cantons: [this.state.canton],
+      },
+      password: 'asdfghj',
+    };
+
+
+    createPartner.call({ options },
+      (error, result) => {
+        console.log('result: ' + result);
+        if (error) {
+          throw new Meteor.Error(400, error.message);
+        }
+        // Route to admin on success
+        FlowRouter.go('/admin');
+      });
   }
 
   handleEmailChange(event) {
@@ -58,11 +79,11 @@ export default class NewPartnerForm extends Component {
   }
 
   handleSelectChange1(event, index, value) {
-    this.setState({ partnerSelect: value });
+    this.setState({ partner: value });
   }
 
   handleSelectChange2(event, index, value) {
-    this.setState({ cantonSelect: value });
+    this.setState({ canton: value });
   }
 
   render() {
@@ -89,18 +110,18 @@ export default class NewPartnerForm extends Component {
           <SelectField
             floatingLabelText="Banque"
             hintText="Choisis une Banque"
-            value={this.state.partnerSelect}
+            value={this.state.partner}
             onChange={this.handleSelectChange1}
-            errorText={!this.state.partnerSelect && this.state.errorText}
+            errorText={!this.state.partner && this.state.errorText}
             fullWidth
             maxHeight={200}
             required
           >
             <MenuItem value={null} primaryText="" />
-            {Object.keys(getAllPartners()).map((partnerKey, index) =>
+            {getAllPartners().map((partner, index) =>
               (<MenuItem
-                value={partnerKey}
-                primaryText={getAllPartners()[partnerKey].name}
+                value={partner.key}
+                primaryText={partner.name}
                 key={index}
               />),
             )}
@@ -109,9 +130,9 @@ export default class NewPartnerForm extends Component {
           <SelectField
             floatingLabelText="Canton"
             hintText="Choisis un Canton"
-            value={this.state.cantonSelect}
+            value={this.state.canton}
             onChange={this.handleSelectChange2}
-            errorText={!this.state.cantonSelect && this.state.errorText}
+            errorText={!this.state.canton && this.state.errorText}
             fullWidth
             maxHeight={200}
             required

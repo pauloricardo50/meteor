@@ -51,6 +51,12 @@ export const GeneralSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  canton: {
+    type: String,
+    optional: true,
+    min: 2,
+    max: 2,
+  },
   loanTranches: {
     type: Array,
     minCount: 1,
@@ -189,7 +195,7 @@ export const BorrowerSchema = new SimpleSchema({
     defaultValue: false,
   },
   corporateBank: {
-    type: Boolean,
+    type: String,
     optional: true,
   },
   currentRentExists: {

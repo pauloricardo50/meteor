@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 
 import TextInput from '../forms/TextInput.jsx';
 import RadioInput from '../forms/RadioInput.jsx';
-import DropdownInput from '../forms/DropdownInput.jsx';
+import SelectFieldInput from '../forms/SelectFieldInput.jsx';
 import ConditionalInput from '../forms/ConditionalInput.jsx';
 import DateInput from '../forms/DateInput.jsx';
 
@@ -73,9 +73,9 @@ export default class AutoForm extends Component {
             key={index}
           />
         );
-      case 'DropdownInput':
+      case 'SelectFieldInput':
         return (
-          <DropdownInput
+          <SelectFieldInput
             {...singleInput}
             {...extraValues}
             key={index}

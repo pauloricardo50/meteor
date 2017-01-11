@@ -75,8 +75,11 @@ const partnerVisibleFields = { // TODO: Complete this
   // 'borrowers.$.age': 1,
   // 'borrowers.$.gender': 1,
 
-  // financialInfo: 1,
-
+  // 'borrowers.0.age': 1,
+  // 'borrowers.$': 1,
+  // borrowers: {
+  //   $elemMatch: { age: 1 },
+  // },
   property: 1,
 
   'logic.uploadTaxesLater': 1,
@@ -87,11 +90,39 @@ const partnerVisibleFields = { // TODO: Complete this
 
 
 // Publish all loanrequests this partner has access to
-Meteor.publish('partnerRequests', function () {
-  // TODO Verify if this partner is allowed to see this loan request
+Meteor.publish('partnerRequestsAuction', function () {
+  const user = Meteor.users.findOne(this.userId);
+  const cantons = user.profile.cantons;
+  const organization = user.profile.organization;
 
+  // Show requests where the canton matches this partner's cantons
+  // and the auction has started
+  // and the auctionEndTime is greater than this date
+  // and this partner's organization is not in the partnersToAvoid
+  return LoanRequests.find(
+    { $and: [
+      { 'general.canton': { $in: cantons } },
+      { 'logic.auctionStarted': true },
+      { 'logic.auctionEndTime': { $gt: new Date() } },
+      { $or: [
+        { 'general.partnersToAvoidExists': false },
+        { 'general.partnersToAvoid.0': { $ne: organization } },
+      ] },
+    ] },
+    {
+      fields: partnerVisibleFields,
+    },
+  );
+});
+
+// Publish all loanrequests this partner has access to
+Meteor.publish('partnerRequestsCompleted', function () {
+  // Get the current partner user
+  const user = Meteor.users.findOne(this.userId);
+
+  // Return the requests where this partner has been selected
   return LoanRequests.find({
-    // TODO add logic to filter requests
+    'general.selectedPartner': user.profile.organization,
   }, {
     fields: partnerVisibleFields,
   });

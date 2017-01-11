@@ -12,13 +12,25 @@ import Loading from '/imports/ui/components/general/Loading.jsx';
 import _PartnerHomePage from '/imports/ui/pages/partner/PartnerHomePage.jsx';
 
 
-function composer(props, onData) {
-  if (Meteor.subscribe('partnerRequests').ready()) {
+function composer1(props, onData) {
+  if (Meteor.subscribe('partnerRequestsAuction').ready()) {
     const loanRequests = LoanRequests.find({}).fetch();
 
-    if (!loanRequests) {
-      return;
-    }
+    // if (!loanRequests) {
+    //   return;
+    // }
+
+    onData(null, { loanRequests });
+  }
+}
+
+function composer2(props, onData) {
+  if (Meteor.subscribe('partnerRequestsCompleted').ready()) {
+    const loanRequests = LoanRequests.find({}).fetch();
+
+    // if (!loanRequests) {
+    //   return;
+    // }
 
     onData(null, { loanRequests });
   }
@@ -26,4 +38,6 @@ function composer(props, onData) {
 
 
 // export all the pages with their realname for comfort
-export const PartnerHomePage = composeWithTracker(composer, Loading)(_PartnerHomePage);
+const PartnerHomePage1 = composeWithTracker(composer1, Loading)(_PartnerHomePage);
+
+export const PartnerHomePage = composeWithTracker(composer2, Loading)(PartnerHomePage1);

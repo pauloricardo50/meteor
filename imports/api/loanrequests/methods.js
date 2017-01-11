@@ -96,10 +96,11 @@ export const startAuction = new ValidatedMethod({
     const object = {};
     object['logic.auctionStarted'] = true;
     object['logic.auctionStartTime'] = moment().toDate();
+    object['general.a']
 
 
     // TODO: Changer cet assignment de 60 secondes pour getAuctionEndTime(moment())
-    object['logic.auctionEndTime'] = moment().add(60, 's').toDate();
+    object['logic.auctionEndTime'] = moment().add(30, 'm').toDate();
     console.log('Temps de fin réel: ' + getAuctionEndTime(moment()));
 
     LoanRequests.update(id, {

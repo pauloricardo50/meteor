@@ -5,6 +5,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Roles } from 'meteor/alanning:roles';
 
 import { PublicNav } from '/imports/ui/containers/public/CurrentUserContainer.js';
+import RaisedButton from 'material-ui/RaisedButton';
 
 
 // MUI Theme, replace lightBaseTheme with a custom theme ASAP!
@@ -37,13 +38,23 @@ export default class PartnerLayout extends Component {
         </MuiThemeProvider>
       );
     } else if (Meteor.userId()) {
-      FlowRouter.go('/');
+      return (
+        <div className="text-center">
+          <h1>On dirait qu&apos;il y a eu une erreur!</h1>
+          <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
+            <RaisedButton
+              label="Retour"
+              href="/"
+              primary
+            />
+          </MuiThemeProvider>
+        </div>
+      );
     } else {
       this.routeToLogin();
       return null;
     }
   }
-
 }
 
 PartnerLayout.propTypes = {

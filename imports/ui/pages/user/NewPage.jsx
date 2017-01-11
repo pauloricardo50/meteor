@@ -110,7 +110,6 @@ export default class NewPage extends Component {
         }
         FlowRouter.go('/main');
       });
-
     } else {
       this.setState({ errorText: 'Pas de query Params! Allez à www.e-potek.ch/start' });
     }
