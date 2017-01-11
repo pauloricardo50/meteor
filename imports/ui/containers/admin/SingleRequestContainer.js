@@ -20,6 +20,10 @@ function composer1(props, onData) {
   if (Meteor.subscribe('loanRequest', requestId).ready()) {
     const loanRequest = LoanRequests.find({}).fetch()[0];
 
+    if (!loanRequest) {
+      return;
+    }
+
     onData(null, { loanRequest });
   }
 }

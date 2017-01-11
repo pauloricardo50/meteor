@@ -80,7 +80,7 @@ export default class SideNav extends Component {
     let content2;
     if (this.props.loanRequest) {
       content1 = (
-        <a href="/main" style={styles.link}>
+        <a href="/main" style={styles.link} className="side-nav-link">
           <span className="fa fa-home fa-2x active" style={styles.icon} />
           <h5 className="active bold" style={styles.text}>{this.state.requestName}</h5>
         </a>
@@ -110,8 +110,8 @@ export default class SideNav extends Component {
       // If the user is not on the main page, show a link to it
       content1 = (
         this.props.currentURL !== '/main' ?
-        <a href="/main">
-          <h3 className="bold active start-nav text-center">Commencer</h3>
+        <a href="/main" className="side-nav-link">
+          <h3 className="bold active text-center">Commencer</h3>
         </a> :
         null
         );

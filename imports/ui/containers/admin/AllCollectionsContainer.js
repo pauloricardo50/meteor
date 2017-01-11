@@ -27,6 +27,7 @@ function composer2(props, onData) {
     const users = Meteor.users.find({}).fetch();
 
 
+
     onData(null, { users });
   }
 }

@@ -43,13 +43,13 @@ export default class Step1TaxesForm extends Component {
         ],
       }, {
         type: 'TextInputMoney',
-        label: 'Valeur de vos biens immobiliers existants',
+        label: 'Biens immobiliers existants',
         placeholder: 'CHF 100\'000',
         id: 'borrowers.0.realEstateFortune',
         currentValue: this.props.loanRequest.borrowers[0].realEstateFortune,
       }, {
         type: 'TextInputMoney',
-        label: 'Fortune totale en cash et titres',
+        label: 'Cash et titres',
         placeholder: 'CHF 10\'000',
         id: 'borrowers.0.cashAndSecurities',
         currentValue: this.props.loanRequest.borrowers[0].cashAndSecurities,
@@ -81,7 +81,6 @@ export default class Step1TaxesForm extends Component {
           // },
         // ],
     ];
-
   }
 
 

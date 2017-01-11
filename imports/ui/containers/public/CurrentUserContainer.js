@@ -11,6 +11,11 @@ import _AdminLayout from '/imports/ui/layouts/AdminLayout.jsx';
 function composer(props, onData) {
   if (Meteor.subscribe('currentUser').ready()) {
     const currentUser = Meteor.users.find().fetch()[0];
+
+    if (!currentUser) {
+      return;
+    }
+
     onData(null, { currentUser });
   }
 }

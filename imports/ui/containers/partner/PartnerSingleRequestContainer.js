@@ -13,13 +13,15 @@ import Loading from '/imports/ui/components/general/Loading.jsx';
 import _PartnerRequestPage from '/imports/ui/pages/partner/PartnerRequestPage.jsx';
 
 
-// Container function which reactively send the currently active loan Request as a prop
 function composer(props, onData) {
   const id = FlowRouter.getParam('requestId');
 
   if (Meteor.subscribe('partnerSingleLoanRequest', id).ready()) {
     const loanRequest = LoanRequests.find({}).fetch()[0];
 
+    if (!loanRequest) {
+      return;
+    }
 
     onData(null, { loanRequest });
   }

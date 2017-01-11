@@ -21,6 +21,10 @@ function composer1(props, onData) {
     // User 0 is the current logged in user, hence [1]
     const user = Meteor.users.find({}).fetch()[1];
 
+    if (!user) {
+      return;
+    }
+
     onData(null, { user });
   }
 }

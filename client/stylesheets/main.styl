@@ -168,9 +168,10 @@ a
     display flex
     justify-content space-between
     list-style none
-  .start-nav
+  .side-nav-link
     &:hover
-      color: black
+      opacity: 0.5;
+      transition: opacity 0.1s ease;
   li
     width 33%
     a
@@ -215,6 +216,8 @@ a
       width auto
   +above($large)
     width $side-nav-large
+
+
 
 .public-layout
   height: 100%; // fallback

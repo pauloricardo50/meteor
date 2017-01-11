@@ -62,4 +62,5 @@ export default class PartnerHomePage extends Component {
 }
 
 PartnerHomePage.propTypes = {
+  loanRequests: PropTypes.arrayOf(PropTypes.object),
 };
