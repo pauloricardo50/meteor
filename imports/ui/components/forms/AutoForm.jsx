@@ -88,9 +88,13 @@ export default class AutoForm extends Component {
             {singleInput.inputs.slice(1).map((input, index2) => this.inputSwitch(input, index2))}
           </ConditionalInput>
         );
-      case 'Subtitle':
+      case 'h3':
         return (
           <h3 style={styles.subtitle} key={index}>{singleInput.text}</h3>
+        );
+      case 'h2':
+        return (
+          <h2 style={styles.subtitle} key={index}>{singleInput.text}</h2>
         );
       case 'Space':
         return (

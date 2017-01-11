@@ -23,7 +23,7 @@ export default class Step3PropertyForm extends Component {
 
     return [
       {
-        type: 'Subtitle',
+        type: 'h3',
         text: 'Adresse du bien immobilier',
       }, {
         type: 'TextInput',
@@ -50,7 +50,7 @@ export default class Step3PropertyForm extends Component {
         id: 'property.city',
         currentValue: r.property.city,
       }, {
-        type: 'Subtitle',
+        type: 'h3',
         text: 'Détails du bien',
       }, {
         type: 'TextInputNumber',

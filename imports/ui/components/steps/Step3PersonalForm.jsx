@@ -25,7 +25,7 @@ export default class Step3PersonalForm extends Component {
 
     return [
       {
-        type: 'Subtitle',
+        type: 'h2',
         text: r.borrowers[index].firstName || `Emprunteur ${index + 1}`,
         showCondition: r.borrowers.length > 1,
       }, {

@@ -25,6 +25,7 @@ export default class Step3FinancialForm extends Component {
     this.getIncomeFormArray = this.getIncomeFormArray.bind(this);
     this.getFortuneFormArray = this.getFortuneFormArray.bind(this);
     this.getInsuranceFormArray = this.getInsuranceFormArray.bind(this);
+    this.getFormArray = this.getFormArray.bind(this);
   }
 
   componentWillUnmount() {
@@ -36,9 +37,13 @@ export default class Step3FinancialForm extends Component {
 
     return [
       {
-        type: 'Subtitle',
+        type: 'h2',
         text: r.borrowers[index].firstName || `Emprunteur ${index + 1}`,
         showCondition: r.borrowers.length > 1,
+      }, {
+        type: 'h3',
+        text: 'Revenus',
+        // showCondition: index === 0,
       }, {
         type: 'TextInputMoney',
         label: 'Revenus bruts annuels',
@@ -61,6 +66,10 @@ export default class Step3FinancialForm extends Component {
 
     return [
       {
+        type: 'h3',
+        text: 'Fortune',
+        // showCondition: index === 0,
+      }, {
         type: 'TextInputMoney',
         label: 'Biens immobiliers existants',
         placeholder: 'CHF 500\'000',
@@ -94,6 +103,10 @@ export default class Step3FinancialForm extends Component {
 
     return [
       {
+        type: 'h3',
+        text: 'Assurances',
+        // showCondition: index === 0,
+      }, {
         type: 'TextInputMoney',
         label: 'LPP / 2ème Pilier',
         placeholder: 'CHF 100\'000',
@@ -122,16 +135,26 @@ export default class Step3FinancialForm extends Component {
   }
 
 
+  getFormArray(index) {
+    const array = this.getIncomeFormArray(index);
+    array.push(...this.getFortuneFormArray(index));
+    array.push(...this.getInsuranceFormArray(index));
+    return array;
+  }
+
+
   render() {
+    const twoBorrowers = this.props.loanRequest.borrowers.length > 1;
+
     return (
       <section className="mask1">
-        <h1>{this.props.loanRequest.borrowers.length > 1 ?
+        <h1>{twoBorrowers ?
           'Nos informations économiques'
           :
             'Mes informations économiques'
         }</h1>
 
-        {this.props.loanRequest.borrowers.length > 1 &&
+        {twoBorrowers &&
           <p
             className="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4"
             style={styles.p}
@@ -141,49 +164,15 @@ export default class Step3FinancialForm extends Component {
           </p>
         }
 
-        <h2 style={styles.subtitle} className="col-xs-12">Revenus</h2>
-
         <AutoForm
-          inputs={this.getIncomeFormArray(0)}
-          formClasses={this.props.loanRequest.borrowers.length > 1 ? 'col-sm-5'
+          inputs={this.getFormArray(0)}
+          formClasses={twoBorrowers ? 'col-sm-5'
           : 'col-sm-10 col-sm-offset-1'}
           loanRequest={this.props.loanRequest}
         />
-        {this.props.loanRequest.borrowers.length > 1 &&
+        {twoBorrowers &&
           <AutoForm
-            inputs={this.getIncomeFormArray(1)}
-            formClasses="col-sm-offset-2 col-sm-5"
-            loanRequest={this.props.loanRequest}
-          />
-        }
-
-        <h2 style={styles.subtitle} className="col-xs-12">Fortune</h2>
-
-        <AutoForm
-          inputs={this.getFortuneFormArray(0)}
-          formClasses={this.props.loanRequest.borrowers.length > 1 ? 'col-sm-5'
-          : 'col-sm-10 col-sm-offset-1'}
-          loanRequest={this.props.loanRequest}
-        />
-        {this.props.loanRequest.borrowers.length > 1 &&
-          <AutoForm
-            inputs={this.getFortuneFormArray(1)}
-            formClasses="col-sm-offset-2 col-sm-5"
-            loanRequest={this.props.loanRequest}
-          />
-        }
-
-        <h2 style={styles.subtitle} className="col-xs-12">Assurances</h2>
-
-        <AutoForm
-          inputs={this.getInsuranceFormArray(0)}
-          formClasses={this.props.loanRequest.borrowers.length > 1 ? 'col-sm-5'
-          : 'col-sm-10 col-sm-offset-1'}
-          loanRequest={this.props.loanRequest}
-        />
-        {this.props.loanRequest.borrowers.length > 1 &&
-          <AutoForm
-            inputs={this.getInsuranceFormArray(1)}
+            inputs={this.getFormArray(1)}
             formClasses="col-sm-offset-2 col-sm-5"
             loanRequest={this.props.loanRequest}
           />
