@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
+import NewPartnerForm from '/imports/ui/components/admin/NewPartnerForm.jsx';
+
 export default class AdminActionsPage extends Component {
   constructor(props) {
     super(props);
@@ -8,14 +10,25 @@ export default class AdminActionsPage extends Component {
 
   render() {
     const action = FlowRouter.getParam('action');
+    let content;
 
     switch (action) {
       case 'client':
-        return null;
-      case 'newPartnerAccount':
-        return null;
-      default: return null;
+        content = null;
+        break;
+      case 'newpartner':
+        content = <NewPartnerForm />;
+        break;
+      default:
+        content = null;
+        break;
     }
+
+    return (
+      <section className="mask1">
+        {content}
+      </section>
+    );
   }
 }
 

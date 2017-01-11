@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import Popover from 'material-ui/Popover';
@@ -20,11 +21,11 @@ export default class AdminActionsDropdown extends Component {
 
   handleClick(e, text) {
     switch (text) {
-      case 'client':
-        console.log('clientss');
-        break;
+      // case 'client':
+      //   console.log('clients');
+      //   break;
       case 'newPartnerAccount':
-        console.log('new');
+        FlowRouter.go('/admin/actions/newpartner');
         break;
       default: break;
     }
@@ -68,7 +69,7 @@ export default class AdminActionsDropdown extends Component {
           onRequestClose={this.handleCloseMenu}
         >
           <Menu>
-            <MenuItem primaryText="Intéraction Client" onClick={e => this.handleClick(e, 'client')} />
+            {/* <MenuItem primaryText="Intéraction Client" onClick={e => this.handleClick(e, 'client')} /> */}
             <MenuItem primaryText="Créer compte partenaire" onClick={e => this.handleClick(e, 'newPartnerAccount')} />
           </Menu>
         </Popover>

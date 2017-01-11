@@ -125,3 +125,6 @@ export const getPartnerList = (canton, partnersToAvoid) => {
 
   return filteredList;
 };
+
+
+export const getAllPartners = () => partnerList;

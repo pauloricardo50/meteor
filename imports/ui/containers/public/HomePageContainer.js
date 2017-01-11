@@ -12,9 +12,6 @@ function composer(props, onData) {
     // Get the first element of this array which has only one element
     const currentUser = Meteor.users.find().fetch()[0];
 
-    if (!currentUser) {
-      return;
-    }
 
     onData(null, { currentUser });
   }

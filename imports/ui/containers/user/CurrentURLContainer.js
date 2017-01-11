@@ -34,10 +34,10 @@ function composer2(props, onData) {
 
 const container1 = composeWithTracker(composer1, LoadingNone)(_RequestProgressBar);
 const container2 = composeWithTracker(composer1, LoadingNone)(_SideNav);
-export const container3 = composeWithTracker(composer1)(_AdminNav);
+export const AdminNav = composeWithTracker(composer1)(_AdminNav);
 
 export const RequestProgressBar = composeWithTracker(composer2, LoadingNone)(container1);
 export const SideNav = composeWithTracker(composer2, LoadingNone)(container2);
-export const AdminNav = composeWithTracker(composer2, LoadingNone)(container3);
+// export const AdminNav = composeWithTracker(composer2, LoadingNone)(container3);
 
 export const BottomNav = composeWithTracker(composer1, LoadingNone)(_BottomNav);
