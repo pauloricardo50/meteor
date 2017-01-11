@@ -25,8 +25,12 @@ const styles = {
   },
   savingIcon: {
     position: 'absolute',
-    bottom: 15,
+    top: 30,
     right: -25,
+  },
+  infoStyle: {
+    color: '#4A90E2',
+    borderColor: '#4A90E2',
   },
 };
 
@@ -39,6 +43,7 @@ export default class TextInput extends Component {
       value: this.props.currentValue || '',
       errorText: '',
       saving: false,
+      showInfo: false,
     };
 
     // TODO: change saving only when something has successfully saved, not before
@@ -46,6 +51,7 @@ export default class TextInput extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
     this.saveValue = this.saveValue.bind(this);
   }
 
@@ -65,7 +71,16 @@ export default class TextInput extends Component {
     });
   }
 
+  handleFocus() {
+    this.setState({
+      showInfo: true,
+    });
+  }
+
   handleBlur() {
+    this.setState({
+      showInfo: false,
+    });
     // If the value has changed, save it
     // state is initialized as '', but currentValue is initially undefined, so check that too
     if (this.state.value !== this.props.currentValue &&
@@ -118,13 +133,17 @@ export default class TextInput extends Component {
           value={this.props.number ? toNumber(this.state.value) : this.state.value}
           onChange={this.handleChange}
           onBlur={this.handleBlur}
+          onFocus={this.handleFocus}
           type="text"
           id={this.props.id}
           fullWidth
           multiLine={this.props.multiLine}
           rows={this.props.rows}
           pattern={this.props.number && '[0-9]*'}
-          errorText={this.state.errorText}
+          errorText={this.state.errorText || (this.state.showInfo && this.props.info)}
+          errorStyle={this.state.errorText ? {} : styles.infoStyle}
+          underlineFocusStyle={this.state.errorText ? {} : styles.infoStyle}
+          floatingLabelShrinkStyle={this.state.showInfo && !this.state.errorText ? styles.infoStyle : {}}
           autoComplete={this.props.autocomplete || ''}
           disabled={this.props.disabled}
         >
@@ -137,13 +156,13 @@ export default class TextInput extends Component {
             />
           }
         </TextField>
-        {this.props.info &&
+        {/* {this.props.info &&
           <InfoIcon
             id={this.props.id}
             info={this.props.info}
             style={styles.infoIcon}
           />
-        }
+        } */}
         <SavingIcon
           saving={this.state.saving}
           errorExists={this.state.errorText !== ''}
