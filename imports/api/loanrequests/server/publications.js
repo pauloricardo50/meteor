@@ -122,7 +122,7 @@ Meteor.publish('partnerRequestsCompleted', function () {
 
   // Return the requests where this partner has been selected
   return LoanRequests.find({
-    'general.selectedPartner': user.profile.organization,
+    'general.selectedPartner': user.profile && user.profile.organization,
   }, {
     fields: partnerVisibleFields,
   });

@@ -5,7 +5,7 @@ import MaskedInput from 'react-text-mask';
 import RaisedButton from 'material-ui/RaisedButton';
 
 
-import { toMoney, toNumber } from '/imports/js/finance-math.js';
+import { toMoney, toNumber, toDecimalNumber } from '/imports/js/finance-math.js';
 import { swissFrancMask, percentMask } from '/imports/js/textMasks.js';
 
 
@@ -58,6 +58,7 @@ export default class PartnerOfferForm extends Component {
     }
 
     console.log('submitting');
+    console.log(event);
     // TODO
   }
 
@@ -71,12 +72,12 @@ export default class PartnerOfferForm extends Component {
           <TextField
             floatingLabelText="Prêt Maximal"
             hintText={`CHF ${toMoney(Math.round(this.props.loanRequest.property.value * 0.8))}`}
-            type="text"
+            type="number"
           >
             <MaskedInput
               mask={swissFrancMask}
               guide
-              pattern="[0-9]*"
+              pattern="\d+(\.\d*)?"
             />
           </TextField>
 
@@ -94,7 +95,7 @@ export default class PartnerOfferForm extends Component {
                 <MaskedInput
                   mask={percentMask}
                   guide
-                  pattern="[0-9]*"
+                  pattern="\d+(\.\d*)?"
                 />
               </TextField>
             </div>
@@ -124,7 +125,7 @@ export default class PartnerOfferForm extends Component {
                 <MaskedInput
                   mask={percentMask}
                   guide
-                  pattern="[0-9]*"
+                  pattern="\d+(\.\d*)?"
                 />
               </TextField>
             </div>

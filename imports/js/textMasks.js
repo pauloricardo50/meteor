@@ -11,4 +11,6 @@ export const percentMask = createNumberMask({
   suffix: '%',
   includeThousandsSeparator: true,
   thousandsSeparatorSymbol: '\'',
+  allowDecimal: true,
+  decimalSymbol: ',',
 });
