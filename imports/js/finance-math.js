@@ -164,5 +164,8 @@ export function toNumber(value) {
 // Replaces any nondigit character by an empty character, to prevent the use of non-digits
 // Only do this if the value actually exists
 export function toDecimalNumber(value) {
-  return value ? Number(String(value).replace(/\D/g, '')) : value;
+  // Remove unwanted characters, except digits, dots and commas
+  const newValue = value ? String(value).replace(/[^\d.,]/g, '') : value;
+  // replace commas with dots
+  return value ? Number(newValue.replace(',', '.')) : value;
 }

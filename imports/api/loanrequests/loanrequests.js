@@ -28,7 +28,9 @@ export const LoanRequestSchema = new SimpleSchema({
     type: String,
     index: true,
     autoValue() {
-      return this.userId;
+      if (this.isInsert) {
+        return this.userId;
+      }
     },
   },
   createdAt: {

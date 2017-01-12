@@ -19,9 +19,9 @@ function composer(props, onData) {
   if (Meteor.subscribe('partnerSingleLoanRequest', id).ready()) {
     const loanRequest = LoanRequests.find({}).fetch()[0];
 
-    if (!loanRequest) {
-      return;
-    }
+    // if (!loanRequest) {
+    //   return;
+    // }
 
     onData(null, { loanRequest });
   }

@@ -179,3 +179,39 @@ export const popValue = new ValidatedMethod({
     });
   },
 });
+
+
+// Lets a partner add an offer to a loanRequest
+export const addPartnerOffer = new ValidatedMethod({
+  name: 'loanRequests.addPartnerOffer',
+  validate({ id, object }) {
+    check(id, String);
+    // TODO
+  },
+  run({ id, object }) {
+    console.log(object);
+    if (!this.userId) {
+      throw new Meteor.Error('notLoggedIn', 'Must be logged in to update a request');
+    }
+    const request = LoanRequests.findOne({ _id: id });
+    // TODO: make sure this partner is allowed to participate
+
+    const user = Meteor.user()
+
+    const finalObject = object;
+    console.log(finalObject);
+    // Securely add partner's organization to this object
+    finalObject['partnerOffers'].name = user.profile && user.profile.organization;
+    // If partner accounts can have multiple addresses, update this logic
+    if (user.emails.length !== 1) {
+      throw new Meteor.Error('emailError', 'There isn\'t a regular amount of emails on this user');
+    }
+    finalObject['partnerOffers'].email = user.emails[0].address;
+
+    console.log(finalObject);
+
+    LoanRequests.update(id, {
+      $push: finalObject,
+    });
+  },
+});

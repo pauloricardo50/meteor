@@ -388,41 +388,49 @@ const singleOffer = new SimpleSchema({
     type: Number,
     min: 0,
     max: 100,
+    optional: true,
   },
   interestFloating: {
     type: Number,
     min: 0,
     max: 100,
+    optional: true,
   },
   interest1: {
     type: Number,
     min: 0,
     max: 100,
+    optional: true,
   },
   interest2: {
     type: Number,
     min: 0,
     max: 100,
+    optional: true,
   },
   interest5: {
     type: Number,
     min: 0,
     max: 100,
+    optional: true,
   },
   interest7: {
     type: Number,
     min: 0,
     max: 100,
+    optional: true,
   },
   interest10: {
     type: Number,
     min: 0,
     max: 100,
+    optional: true,
   },
   interest15: {
     type: Number,
     min: 0,
     max: 100,
+    optional: true,
   },
 });
 
@@ -432,17 +440,24 @@ export const PartnerOfferSchema = new SimpleSchema({
   name: {
     type: String,
   },
+  email: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Email,
+  },
   standardOffer: {
     type: singleOffer,
   },
   conditionsOffer: {
     type: singleOffer,
+    optional: true,
   },
   conditions: {
     type: String,
+    optional: true,
   },
   expertiseRequired: {
     type: Boolean,
+    optional: true,
   },
 });
 

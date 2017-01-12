@@ -65,67 +65,86 @@ Meteor.publish('allLoanRequests', function () {
 });
 
 
-const partnerVisibleFields = { // TODO: Complete this
+// The fields visible to partners
+const partnerVisibleFields = organization => ({
+  // TODO: Complete this
   'general.purchaseType': 1,
   'general.usageType': 1,
   'general.fortuneUsed': 1,
   'general.insuranceFortuneUsed': 1,
   'general.incomeUsed': 1,
 
-  // 'borrowers.$.age': 1,
-  // 'borrowers.$.gender': 1,
+  'borrowers.age': 1,
+  'borrowers.gender': 1,
+  'borrowers.birthDate': 1,
+  'borrowers.grossIncome': 1,
+  'borrowers.bonusExists': 1,
+  'borrowers.bonus': 1,
+  'borrowers.otherIncome': 1,
+  'borrowers.currentRentExists': 1,
+  'borrowers.currentRent': 1,
+  'borrowers.realEstateFortune': 1,
+  'borrowers.cashAndSecurities': 1,
+  'borrowers.existingDebt': 1,
+  'borrowers.otherFortune': 1,
+  'borrowers.insuranceLpp': 1,
+  'borrowers.insurance3A': 1,
+  'borrowers.insurance3B': 1,
+  'borrowers.insurancePureRisk': 1,
 
-  // 'borrowers.0.age': 1,
-  // 'borrowers.$': 1,
-  // borrowers: {
-  //   $elemMatch: { age: 1 },
-  // },
   property: 1,
 
+  // partnerOffers: {
+  //   $elemMatch: { $eq: { name: organization } },
+  // },
+
+  'logic.step': 1,
   'logic.uploadTaxesLater': 1,
   'logic.auctionStarted': 1,
   'logic.auctionStartTime': 1,
   'logic.auctionEndTime': 1,
-};
+});
 
 
 // Publish all loanrequests this partner has access to
 Meteor.publish('partnerRequestsAuction', function () {
-  const user = Meteor.users.findOne(this.userId);
-  const cantons = user.profile.cantons;
-  const organization = user.profile.organization;
+  if (Roles.userIsInRole(this.userId, 'partner')) {
+    const user = Meteor.users.findOne(this.userId);
 
-  // Show requests where the canton matches this partner's cantons
-  // and the auction has started
-  // and the auctionEndTime is greater than this date
-  // and this partner's organization is not in the partnersToAvoid
-  return LoanRequests.find(
-    { $and: [
-      { 'general.canton': { $in: cantons } },
-      { 'logic.auctionStarted': true },
-      { 'logic.auctionEndTime': { $gt: new Date() } },
-      { $or: [
-        { 'general.partnersToAvoidExists': false },
-        { 'general.partnersToAvoid.0': { $ne: organization } },
+    // Show requests where the canton matches this partner's cantons
+    // and the auction has started
+    // and the auctionEndTime is greater than this date
+    // and this partner's organization is not in the partnersToAvoid
+    return LoanRequests.find({
+      $and: [
+        { 'general.canton': { $in: user.profile.cantons } },
+        { 'logic.auctionStarted': true },
+        { 'logic.auctionEndTime': { $gt: new Date() } },
+        { $or: [
+          { 'general.partnersToAvoidExists': false },
+          { 'general.partnersToAvoid.0': { $ne: user.profile.organization } },
+        ] },
       ] },
-    ] },
-    {
-      fields: partnerVisibleFields,
-    },
-  );
+      {
+        fields: partnerVisibleFields(user.profile.organization),
+      },
+    );
+  }
 });
 
 // Publish all loanrequests this partner has access to
 Meteor.publish('partnerRequestsCompleted', function () {
-  // Get the current partner user
-  const user = Meteor.users.findOne(this.userId);
+  if (Roles.userIsInRole(this.userId, 'partner')) {
+    // Get the current partner user
+    const user = Meteor.users.findOne(this.userId);
 
-  // Return the requests where this partner has been selected
-  return LoanRequests.find({
-    'general.selectedPartner': user.profile && user.profile.organization,
-  }, {
-    fields: partnerVisibleFields,
-  });
+    // Return the requests where this partner has been selected
+    return LoanRequests.find({
+      'general.selectedPartner': user.profile.organization,
+    }, {
+      fields: partnerVisibleFields(user.profile.organization),
+    });
+  }
 });
 
 
@@ -135,11 +154,20 @@ Meteor.publish('partnerSingleLoanRequest', function (id) {
 
   // Verify if this is a partner account
   if (Roles.userIsInRole(this.userId, 'partner')) {
-    // TODO Make sure this partner is allowed to see this request by checking the bank name
+    const user = Meteor.users.findOne(this.userId);
+
     return LoanRequests.find({
-      _id: id,
-    }, {
-      fields: partnerVisibleFields,
-    });
+      $and: [
+        { _id: id },
+        { 'general.canton': { $in: user.profile.cantons } },
+        { 'logic.auctionStarted': true },
+        { 'logic.auctionEndTime': { $gt: new Date() } },
+        { $or: [
+          { 'general.partnersToAvoidExists': false },
+          { 'general.partnersToAvoid.0': { $ne: user.profile.organization } },
+        ] },
+      ] }, {
+        fields: partnerVisibleFields(user.profile.organization),
+      });
   }
 });

@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import TextField from 'material-ui/TextField';
 import MaskedInput from 'react-text-mask';
@@ -7,6 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import { toMoney, toNumber, toDecimalNumber } from '/imports/js/finance-math.js';
 import { swissFrancMask, percentMask } from '/imports/js/textMasks.js';
+import { addPartnerOffer } from '/imports/api/loanrequests/methods';
 
 
 const styles = {
@@ -27,25 +30,30 @@ const styles = {
 };
 
 
-const standardArray = [
-  {
-    label: 'Libor',
-  },
-  {
-    label: 'Fixe 5 ans',
-  },
-  {
-    label: 'Fixe 10 ans',
-  },
-  {
-    label: 'Fixe 15 ans',
-  },
-];
-
-
 export default class PartnerOfferForm extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      maxAmount: '',
+      amortizing: '',
+      libor_0: '',
+      interest5_0: '',
+      interest10_0: '',
+      interest15_0: '',
+      conditions: '',
+      libor_1: '',
+      interest5_1: '',
+      interest10_1: '',
+      interest15_1: '',
+    };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event, newValue, name) {
+    this.setState({ [name]: newValue });
   }
 
   handleSubmit(event) {
@@ -57,15 +65,70 @@ export default class PartnerOfferForm extends Component {
       return false;
     }
 
-    console.log('submitting');
-    console.log(event);
-    // TODO
+    const id = FlowRouter.getParam('requestId');
+    const object = {
+      'partnerOffers': {
+        standardOffer: {
+          maxAmount: toNumber(this.state.maxAmount),
+          amortizing: toDecimalNumber(this.state.amortizing),
+          interestLibor: toDecimalNumber(this.state.libor_0),
+          interest5: toDecimalNumber(this.state.interest5_0),
+          interest10: toDecimalNumber(this.state.interest10_0),
+          interest15: toDecimalNumber(this.state.interest15_0),
+        },
+        conditionsOffer: {
+          maxAmount: toNumber(this.state.maxAmount),
+          amortizing: toDecimalNumber(this.state.amortizing),
+          interestLibor: toDecimalNumber(this.state.libor_1),
+          interest5: toDecimalNumber(this.state.interest5_1),
+          interest10: toDecimalNumber(this.state.interest10_1),
+          interest15: toDecimalNumber(this.state.interest15_1),
+        },
+        conditions: this.state.conditions,
+        expertiseRequired: false, // TODO
+      },
+    };
+
+    console.log(object);
+    console.log(id);
+
+    addPartnerOffer.call({
+      id, object
+    }, (error, result) => {
+        if (error) {
+          console.log(error.message);
+          throw new Meteor.Error(500, error.message);
+        }
+
+        FlowRouter.go('/partner');
+    });
+  }
+
+  getFormArray(index) {
+    return [
+      {
+        label: 'Libor',
+        name: `libor_${index}`,
+      },
+      {
+        label: 'Fixe 5 ans',
+        name: `interest5_${index}`,
+      },
+      {
+        label: 'Fixe 10 ans',
+        name: `interest10_${index}`,
+      },
+      {
+        label: 'Fixe 15 ans',
+        name: `interest15_${index}`,
+      },
+    ];
   }
 
   render() {
     return (
       <article className="col-xs-12" style={styles.article}>
-        <h1>Faire une Offre</h1>
+        <h1 className="col-xs-12">Faire une Offre</h1>
         <form onSubmit={this.handleSubmit}>
 
 
@@ -73,6 +136,9 @@ export default class PartnerOfferForm extends Component {
             floatingLabelText="Prêt Maximal"
             hintText={`CHF ${toMoney(Math.round(this.props.loanRequest.property.value * 0.8))}`}
             type="number"
+            onChange={(e, n) => this.handleChange(e, n, 'maxAmount')}
+            value={this.state.maxAmount}
+            className="col-xs-12"
           >
             <MaskedInput
               mask={swissFrancMask}
@@ -81,16 +147,35 @@ export default class PartnerOfferForm extends Component {
             />
           </TextField>
 
+          <br />
+
+          <TextField
+            floatingLabelText="Amortissement"
+            hintText={'1%'}
+            type="text"
+            onChange={(e, n) => this.handleChange(e, n, 'amortizing')}
+            value={this.state.amortizing}
+            className="col-xs-12"
+          >
+            <MaskedInput
+              mask={percentMask}
+              guide
+              pattern="\d+(\.\d*)?"
+            />
+          </TextField>
+
 
           <h4 className="text-center col-xs-12" style={styles.h4}>Taux Standard</h4>
 
-          {standardArray.map((field, index) => (
+          {this.getFormArray(0).map((field, index) => (
             <div className="col-xs-6 col-md-3" key={index}>
               <TextField
                 floatingLabelText={field.label}
                 hintText={'1%'}
                 type="text"
                 fullWidth
+                onChange={(e, n) => this.handleChange(e, n, field.name)}
+                value={this.state[field.name]}
               >
                 <MaskedInput
                   mask={percentMask}
@@ -101,7 +186,7 @@ export default class PartnerOfferForm extends Component {
             </div>
           ))}
 
-          <h4 className="text-center col-xs-12" style={styles.h4}>Taux d'intérêt préférentiels</h4>
+          <h4 className="text-center col-xs-12" style={styles.h4}>Taux d&apos;intérêt préférentiels</h4>
 
           <div className="col-xs-10 col-xs-offset-1">
             <TextField
@@ -111,16 +196,20 @@ export default class PartnerOfferForm extends Component {
               multiLine
               fullWidth
               rows={3}
+              onChange={(e, n) => this.handleChange(e, n, 'conditions')}
+              value={this.state.conditions}
             />
           </div>
 
-          {standardArray.map((field, index) => (
+          {this.getFormArray(1).map((field, index) => (
             <div className="col-xs-6 col-md-3" key={index}>
               <TextField
                 floatingLabelText={field.label}
                 hintText={'1%'}
                 type="text"
                 fullWidth
+                onChange={(e, n) => this.handleChange(e, n, field.name)}
+                value={this.state[field.name]}
               >
                 <MaskedInput
                   mask={percentMask}
