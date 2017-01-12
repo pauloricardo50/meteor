@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
-import LenderOffersTable from '/imports/ui/components/general/LenderOffersTable.jsx';
+import PartnerOffersTable from '/imports/ui/components/general/PartnerOffersTable.jsx';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -27,41 +27,47 @@ export default class Step2AuctionResults extends Component {
   render() {
     const partnerOffers = [
       {
-        lender: 'Banque 1',
-        maxAmount: toMoney(this.props.loanRequest.property.value * 0.8),
-        amortizing: '1%',
-        interest10: '0.89%',
-        expertise: 'Non',
+        standardOffer: {
+          maxAmount: toMoney(this.props.loanRequest.property.value * 0.8),
+          amortizing: '1',
+          interest10: '0.89',
+        },
+        expertiseRequired: false,
       }, {
-        lender: 'Banque 2',
-        maxAmount: toMoney(this.props.loanRequest.property.value * 0.68),
-        amortizing: '1%',
-        interest10: '0.99%',
-        expertise: 'Oui',
+        standardOffer: {
+          maxAmount: toMoney(this.props.loanRequest.property.value * 0.68),
+          amortizing: '1',
+          interest10: '0.99',
+        },
+        expertiseRequired: true,
       }, {
-        lender: 'Banque 3',
-        maxAmount: toMoney(this.props.loanRequest.property.value * 0.73),
-        amortizing: '1%',
-        interest10: '0.85%',
-        expertise: 'Non',
+        standardOffer: {
+          maxAmount: toMoney(this.props.loanRequest.property.value * 0.73),
+          amortizing: '1',
+          interest10: '0.85',
+        },
+        expertiseRequired: true,
       }, {
-        lender: 'Assurance 1',
-        maxAmount: toMoney(this.props.loanRequest.property.value * 0.72),
-        amortizing: '1%',
-        interest10: '0.91%',
-        expertise: 'Non',
+        standardOffer: {
+          maxAmount: toMoney(this.props.loanRequest.property.value * 0.72),
+          amortizing: '1',
+          interest10: '0.91',
+        },
+        expertiseRequired: false,
       }, {
-        lender: 'Banque 4',
-        maxAmount: toMoney(this.props.loanRequest.property.value * 0.79),
-        amortizing: '1%',
-        interest10: '0.85%',
-        expertise: 'Non',
+        standardOffer: {
+          maxAmount: toMoney(this.props.loanRequest.property.value * 0.79),
+          amortizing: '1',
+          interest10: '0.85',
+        },
+        expertiseRequired: false,
       }, {
-        lender: 'Banque 5',
-        maxAmount: toMoney(this.props.loanRequest.property.value * 0.78),
-        amortizing: '1%',
-        interest10: '0.85%',
-        expertise: 'Non',
+        standardOffer: {
+          maxAmount: toMoney(this.props.loanRequest.property.value * 0.78),
+          amortizing: '1',
+          interest10: '0.85',
+        },
+        expertiseRequired: true,
       },
     ];
 
@@ -77,9 +83,13 @@ export default class Step2AuctionResults extends Component {
           />
         </div>
 
-        {/* Replace with this.props.loanRequest.partnerOffers */}
         <div style={styles.tableDiv}>
-          <LenderOffersTable partnerOffers={partnerOffers} />
+          <PartnerOffersTable
+            partnerOffers={this.props.loanRequest.partnerOffers.length > 0 ?
+              this.props.loanRequest.partnerOffers :
+              partnerOffers
+            }
+          />
         </div>
 
       </section>

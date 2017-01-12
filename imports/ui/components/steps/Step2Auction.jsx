@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
-import LenderOffersTable from '/imports/ui/components/general/LenderOffersTable.jsx';
+import PartnerOffersTable from '/imports/ui/components/general/PartnerOffersTable.jsx';
 import Loading from '/imports/ui/components/general/Loading.jsx';
 
 require('moment-duration-format');
@@ -69,7 +69,7 @@ export default class Step2Auction extends Component {
         <div className="giant text-center">{this.state.remainingTime}</div>
         <p className="disabled text-center" style={styles.p}>Vous recevrez une notification lorsque ce sera terminé</p>
         <div style={styles.tableDiv}>
-          <LenderOffersTable partnerOffers={this.props.loanRequest.partnerOffers} />
+          <PartnerOffersTable partnerOffers={this.props.loanRequest.partnerOffers} />
         </div>
         {this.partnerOffers ? null : (
           <div>
