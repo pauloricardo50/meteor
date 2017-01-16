@@ -110,7 +110,7 @@ export default class PartnerHomePage extends Component {
         {this.getCurrentAuctions().length ?
           <CurrentAuctionsTable currentAuctions={this.getCurrentAuctions()} /> :
           (<div className="text-center col-xs-12" style={styles.noAuctionDiv}>
-            <h2>Pas d&apos;enchères en ce moment!</h2>
+            <h2>Pas d&apos;enchères en ce moment</h2>
           </div>)
         }
 

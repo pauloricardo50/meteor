@@ -9,8 +9,8 @@ import { toMoney } from '/imports/js/finance-math';
 
 const styles = {
   button: {
-    paddingTop: 100,
-    paddingBottom: 100,
+    paddingTop: 40,
+    paddingBottom: 60,
   },
   tableDiv: {
     overflowX: 'scroll',

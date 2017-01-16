@@ -1,7 +1,8 @@
-import './loanrequests/server/publications.js';
-import './loanrequests/methods.js';
+import './loanrequests/server/publications';
+import './loanrequests/methods';
 
-import './users/methods.js';
-import './users/server/publications.js';
+import './offers/server/publications';
+import './offers/methods';
 
-// Ignored ./loanrequests/loanrequests.js because it is imported individually in each file.
+import './users/server/publications';
+import './users/methods';

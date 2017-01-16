@@ -149,6 +149,57 @@ function isLoanValid(loanPercent, revenue, propertyValue, yearsToRetirement, typ
 }
 
 
+// get yearly amortization for a loan request
+export const getAmortization = function (loanRequest) {
+  const r = loanRequest;
+  const loan = r.property.value -
+    r.general.fortuneUsed -
+    r.general.insuranceFortuneUsed;
+  const yearsToRetirement = getYearsToRetirement(
+    Number(r.borrowers[0].age),
+    r.borrowers[1] && r.borrowers[1].age ? Number(r.borrowers[1].age) : 0,
+    r.borrowers[0].gender,
+    r.borrowers[1] && r.borrowers[1].gender,
+  );
+  const loanPercent = loan / r.property.value;
+
+  let yearlyAmortization = 0;
+  if (loanPercent > 0.65) {
+    // The loan has to be below 65% before 15 years or before retirement, whichever comes first
+    const remainingYears = Math.min(yearsToRetirement, 15);
+    const amountToAmortize = (loanPercent - 0.65) * r.property.value;
+
+    // Make sure we don't create a black hole, or use negative values by error
+    if (remainingYears > 0) {
+      // Amortization is the amount to amortize divided by the amount of years before the deadline
+      yearlyAmortization = amountToAmortize / remainingYears;
+    }
+  }
+
+  return yearlyAmortization / 12;
+}
+
+
+// get interest to pay for a loanrequest
+export const getInterests = function (loanRequest) {
+  const r = loanRequest;
+  const loan = r.property.value -
+    r.general.fortuneUsed -
+    r.general.insuranceFortuneUsed;
+
+
+  if (r.logic.hasChosenStrategy) {
+    // TODO: return real interest rate
+  }
+
+  return (loan * 0.015) / 12;
+}
+
+
+
+
+
+
 // Adds thousands markers every 3 digits (and removes non-digit characters)
 export function toMoney(value) {
   return String(value).replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, "'");

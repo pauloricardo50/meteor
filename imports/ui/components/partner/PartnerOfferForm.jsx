@@ -89,20 +89,18 @@ export default class PartnerOfferForm extends Component {
       },
     };
 
-    console.log(object);
-    console.log(id);
-
     addPartnerOffer.call({
-      id, object
+      id, object,
     }, (error, result) => {
-        if (error) {
-          console.log(error.message);
-          throw new Meteor.Error(500, error.message);
-        }
+      if (error) {
+        console.log(error.message);
+        throw new Meteor.Error(500, error.message);
+      }
 
-        FlowRouter.go('/partner');
+      FlowRouter.go('/partner');
     });
   }
+
 
   getFormArray(index) {
     return [
@@ -125,6 +123,7 @@ export default class PartnerOfferForm extends Component {
     ];
   }
 
+
   render() {
     return (
       <article className="col-xs-12" style={styles.article}>
@@ -132,37 +131,38 @@ export default class PartnerOfferForm extends Component {
         <form onSubmit={this.handleSubmit}>
 
 
-          <TextField
-            floatingLabelText="Prêt Maximal"
-            hintText={`CHF ${toMoney(Math.round(this.props.loanRequest.property.value * 0.8))}`}
-            type="number"
-            onChange={(e, n) => this.handleChange(e, n, 'maxAmount')}
-            value={this.state.maxAmount}
-            className="col-xs-12"
-          >
-            <MaskedInput
-              mask={swissFrancMask}
-              guide
-              pattern="\d+(\.\d*)?"
-            />
-          </TextField>
+          <div className="col-xs-12">
+            <TextField
+              floatingLabelText="Prêt Maximal"
+              hintText={`CHF ${toMoney(Math.round(this.props.loanRequest.property.value * 0.8))}`}
+              type="number"
+              onChange={(e, n) => this.handleChange(e, n, 'maxAmount')}
+              value={this.state.maxAmount}
+            >
+              <MaskedInput
+                mask={swissFrancMask}
+                guide
+                pattern="\d+(\.\d*)?"
+              />
+            </TextField>
+          </div>
 
-          <br />
 
-          <TextField
-            floatingLabelText="Amortissement"
-            hintText={'1%'}
-            type="text"
-            onChange={(e, n) => this.handleChange(e, n, 'amortizing')}
-            value={this.state.amortizing}
-            className="col-xs-12"
-          >
-            <MaskedInput
-              mask={percentMask}
-              guide
-              pattern="\d+(\.\d*)?"
-            />
-          </TextField>
+          <div className="col-xs-12">
+            <TextField
+              floatingLabelText="Amortissement"
+              hintText={'1%'}
+              type="text"
+              onChange={(e, n) => this.handleChange(e, n, 'amortizing')}
+              value={this.state.amortizing}
+            >
+              <MaskedInput
+                mask={percentMask}
+                guide
+                pattern="\d+(\.\d*)?"
+              />
+            </TextField>
+          </div>
 
 
           <h4 className="text-center col-xs-12" style={styles.h4}>Taux Standard</h4>

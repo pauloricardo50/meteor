@@ -30,9 +30,9 @@ export default class PartnerOffersTable extends Component {
           <tr>
             <th className="left-align"></th>
             <th className="right-align">Montant</th>
-            <th className="right-align">Taux D&apos;intérêt</th>
+            <th className="right-align">Taux d&apos;intérêt</th>
             <th className="right-align">Amortissement</th>
-            <th className="right-align">Expertise Requise?</th>
+            <th className="right-align">Expertise requise?</th>
           </tr>
         </thead>
         <tbody>

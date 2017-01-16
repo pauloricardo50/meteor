@@ -18,6 +18,7 @@ Schema.UserProfile = new SimpleSchema({
   organization: {
     type: String,
     optional: true,
+    denyUpdate: true,
   },
   cantons: {
     type: Array,

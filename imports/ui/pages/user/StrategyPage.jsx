@@ -49,6 +49,7 @@ export default class StrategyPage extends Component {
     super(props);
 
     this.handleClick = this.handleClick.bind(this);
+    this.strategyChosen = this.strategyChosen.bind(this);
   }
 
   handleClick() {
@@ -71,6 +72,14 @@ export default class StrategyPage extends Component {
     } else {
       FlowRouter.go('/main');
     }
+  }
+
+  strategyChosen() {
+    const tranches = this.props.loanRequest.general.loanTranches;
+    const propertyValue = this.props.loanRequest.property.value;
+    const trancheSum = tranches.reduce((total, tranche) => total + tranche.value, 0);
+
+    return propertyValue === trancheSum;
   }
 
   render() {
@@ -98,8 +107,9 @@ export default class StrategyPage extends Component {
           </article>
 
           <FinanceStrategyPicker loanRequest={this.props.loanRequest} style={styles.picker} />
-          <hr style={styles.hr} />
-          <LenderPicker loanRequest={this.props.loanRequest} />
+
+          {this.strategyChosen() && <hr style={styles.hr} />}
+          {this.strategyChosen() && <LenderPicker loanRequest={this.props.loanRequest} />}
 
         </section>
         <RaisedButton

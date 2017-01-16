@@ -92,7 +92,7 @@ export const GeneralSchema = new SimpleSchema({
   },
   borrowersHaveSameAddress: {
     type: Boolean,
-    defaultValue: false,
+    defaultValue: true,
   },
 });
 

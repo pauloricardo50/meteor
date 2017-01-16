@@ -15,15 +15,14 @@ LoanRequests.allow({
     return !!userId;
   },
   update(userId, doc) {
-    // This is true if someone is logged in
-    // TODO Only allow the user who created the loanrequest to update it
-    return !!userId;
+    // This is true if someone is logged in and the user is the same as the one who created it
+    return !!userId && (userId === doc.userId);
   },
 });
 
 
 // Documentation is in the google drive dev/MongoDB Schemas
-export const LoanRequestSchema = new SimpleSchema({
+const LoanRequestSchema = new SimpleSchema({
   userId: {
     type: String,
     index: true,
@@ -41,11 +40,11 @@ export const LoanRequestSchema = new SimpleSchema({
       }
     },
   },
-  updatedAt: { // TODO, prevent admin changes to update this, only update it when the user is active
+  updatedAt: {
     type: Date,
     optional: true,
     autoValue() {
-      if (this.isUpdate) {
+      if (this.isUpdate && (this.userId === this.fied('userId').value)) {
         return new Date();
       }
       return undefined;

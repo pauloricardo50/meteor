@@ -3,19 +3,12 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { check } from 'meteor/check';
 import moment from 'moment';
 
-import SimpleSchema from 'simpl-schema';
-
-import LoanRequests, { LoanRequestSchema } from './loanrequests.js';
+import LoanRequests from './loanrequests.js';
 
 export const insertRequest = new ValidatedMethod({
   name: 'loanrequests.insert',
   validate() {},
   run({ object }) {
-    // Verify if user is logged in
-    if (!this.userId) {
-      throw new Meteor.Error('notLoggedIn', 'Must be logged in to create a request');
-    }
-
     const userRequests = LoanRequests.find({ userId: this.userId });
 
     if (userRequests.length > 3) {
@@ -40,10 +33,6 @@ export const incrementStep = new ValidatedMethod({
     check(id, String);
   },
   run({ id }) {
-    // Verify if user is logged in
-    if (!this.userId) {
-      throw new Meteor.Error('notLoggedIn', 'Must be logged in to increment step');
-    }
     const request = LoanRequests.findOne({ _id: id });
     if (request.userId !== this.userId) {
       throw new Meteor.Error('notOwnerOfRequest', 'You\'re not allowed to edit this request');
@@ -64,14 +53,6 @@ export const updateValues = new ValidatedMethod({
     check(id, String);
   },
   run({ object, id }) {
-    if (!this.userId) {
-      throw new Meteor.Error('notLoggedIn', 'Must be logged in to update a request');
-    }
-    const request = LoanRequests.findOne({ _id: id });
-    if (request.userId !== this.userId) {
-      throw new Meteor.Error('notOwnerOfRequest', 'You\'re not allowed to access this request');
-    }
-
     LoanRequests.update(id, {
       $set: object,
     });
@@ -84,15 +65,6 @@ export const startAuction = new ValidatedMethod({
     check(id, String);
   },
   run({ id }) {
-    if (!this.userId) {
-      throw new Meteor.Error('notLoggedIn', 'Must be logged in to update a request');
-    }
-
-    const request = LoanRequests.findOne({ _id: id });
-    if (request.userId !== this.userId) {
-      throw new Meteor.Error('notOwnerOfRequest', 'You\'re not allowed to access this request');
-    }
-
     const object = {};
     object['logic.auctionStarted'] = true;
     object['logic.auctionStartTime'] = moment().toDate();
@@ -100,7 +72,7 @@ export const startAuction = new ValidatedMethod({
 
 
     // TODO: Changer cet assignment de 60 secondes pour getAuctionEndTime(moment())
-    object['logic.auctionEndTime'] = moment().add(30, 'm').toDate();
+    object['logic.auctionEndTime'] = moment().add(30, 's').toDate();
     console.log('Temps de fin réel: ' + getAuctionEndTime(moment()));
 
     LoanRequests.update(id, {
@@ -144,17 +116,7 @@ export const pushValue = new ValidatedMethod({
     check(id, String);
   },
   run({ object, id }) {
-    if (!this.userId) {
-      throw new Meteor.Error('notLoggedIn', 'Must be logged in to update a request');
-    }
-    const request = LoanRequests.findOne({ _id: id });
-    if (request.userId !== this.userId) {
-      throw new Meteor.Error('notOwnerOfRequest', 'You\'re not allowed to access this request');
-    }
-
-    LoanRequests.update(id, {
-      $push: object,
-    });
+    LoanRequests.update(id, { $push: object });
   },
 });
 
@@ -166,17 +128,7 @@ export const popValue = new ValidatedMethod({
     check(id, String);
   },
   run({ value, id }) {
-    if (!this.userId) {
-      throw new Meteor.Error('notLoggedIn', 'Must be logged in to update a request');
-    }
-    const request = LoanRequests.findOne({ _id: id });
-    if (request.userId !== this.userId) {
-      throw new Meteor.Error('notOwnerOfRequest', 'You\'re not allowed to access this request');
-    }
-
-    LoanRequests.update(id, {
-      $pop: value,
-    });
+    LoanRequests.update(id, { $pop: value });
   },
 });
 
@@ -189,17 +141,12 @@ export const addPartnerOffer = new ValidatedMethod({
     // TODO
   },
   run({ id, object }) {
-    console.log(object);
-    if (!this.userId) {
-      throw new Meteor.Error('notLoggedIn', 'Must be logged in to update a request');
-    }
     const request = LoanRequests.findOne({ _id: id });
     // TODO: make sure this partner is allowed to participate
 
     const user = Meteor.user()
 
     const finalObject = object;
-    console.log(finalObject);
     // Securely add partner's organization to this object
     finalObject['partnerOffers'].name = user.profile && user.profile.organization;
     // If partner accounts can have multiple addresses, update this logic
@@ -208,10 +155,6 @@ export const addPartnerOffer = new ValidatedMethod({
     }
     finalObject['partnerOffers'].email = user.emails[0].address;
 
-    console.log(finalObject);
-
-    LoanRequests.update(id, {
-      $push: finalObject,
-    });
+    LoanRequests.update(id, { $push: finalObject });
   },
 });
