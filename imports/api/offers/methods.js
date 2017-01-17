@@ -9,6 +9,7 @@ export const insertOffer = new ValidatedMethod({
   name: 'offers.insert',
   validate: null,
   run({ object }) {
+    const newObject = object;
     // Make sure there isn't already an offer for this request
     const user = Meteor.user();
     const offers = Offers.find({
@@ -16,11 +17,15 @@ export const insertOffer = new ValidatedMethod({
       organization: user.profile.organization,
     });
 
+    newObject.organization = user.profile.organization;
+    newObject.email = user.emails[0].address;
+    newObject.canton = user.profile.cantons[0];
+
     if (offers.length > 0) {
       throw new Meteor.Error('noTwoOffers', 'Your organization has already made an offer on this request');
     }
 
-    Offers.insert(object);
+    Offers.insert(newObject);
   },
 });
 

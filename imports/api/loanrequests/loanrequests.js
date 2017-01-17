@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import {
-  GeneralSchema, BorrowerSchema, PropertySchema, PartnerOfferSchema, LogicSchema,
+  GeneralSchema, BorrowerSchema, PropertySchema, LogicSchema,
 } from './additionalSchemas.js';
 
 
@@ -44,7 +44,7 @@ const LoanRequestSchema = new SimpleSchema({
     type: Date,
     optional: true,
     autoValue() {
-      if (this.isUpdate && (this.userId === this.fied('userId').value)) {
+      if (this.isUpdate && (this.userId === this.field('userId').value)) {
         return new Date();
       }
       return undefined;
@@ -66,13 +66,6 @@ const LoanRequestSchema = new SimpleSchema({
   },
   property: {
     type: PropertySchema,
-  },
-  partnerOffers: {
-    type: Array,
-    defaultValue: [],
-  },
-  'partnerOffers.$': {
-    type: PartnerOfferSchema,
   },
   logic: {
     type: LogicSchema,

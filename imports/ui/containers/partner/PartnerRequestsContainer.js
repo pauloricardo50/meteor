@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { compose } from 'react-komposer';
 import LoanRequests from '/imports/api/loanrequests/loanrequests.js';
+import Offers from '/imports/api/offers/offers.js';
 
 import composeWithTracker from '../composeWithTracker';
 
@@ -16,10 +17,6 @@ function composer1(props, onData) {
   if (Meteor.subscribe('partnerRequestsAuction').ready()) {
     const loanRequests = LoanRequests.find({}).fetch();
 
-    // if (!loanRequests) {
-    //   return;
-    // }
-
     onData(null, { loanRequests });
   }
 }
@@ -28,16 +25,20 @@ function composer2(props, onData) {
   if (Meteor.subscribe('partnerRequestsCompleted').ready()) {
     const loanRequests = LoanRequests.find({}).fetch();
 
-    // if (!loanRequests) {
-    //   return;
-    // }
-
     onData(null, { loanRequests });
+  }
+}
+
+function composer3(props, onData) {
+  if (Meteor.subscribe('offers').ready()) {
+    const offers = Offers.find({}).fetch();
+
+    onData(null, { offers });
   }
 }
 
 
 // export all the pages with their realname for comfort
 const PartnerHomePage1 = composeWithTracker(composer1, Loading)(_PartnerHomePage);
-
-export const PartnerHomePage = composeWithTracker(composer2, Loading)(PartnerHomePage1);
+const PartnerHomePage2 = composeWithTracker(composer2, Loading)(PartnerHomePage1);
+export const PartnerHomePage = composeWithTracker(composer3, Loading)(PartnerHomePage2);

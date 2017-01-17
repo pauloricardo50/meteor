@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import { toMoney, toNumber, toDecimalNumber } from '/imports/js/finance-math.js';
 import { swissFrancMask, percentMask } from '/imports/js/textMasks.js';
-import { addPartnerOffer } from '/imports/api/loanrequests/methods';
+import { insertOffer, updateOffer } from '/imports/api/offers/methods';
 
 
 const styles = {
@@ -67,33 +67,31 @@ export default class PartnerOfferForm extends Component {
 
     const id = FlowRouter.getParam('requestId');
     const object = {
-      'partnerOffers': {
-        standardOffer: {
-          maxAmount: toNumber(this.state.maxAmount),
-          amortizing: toDecimalNumber(this.state.amortizing),
-          interestLibor: toDecimalNumber(this.state.libor_0),
-          interest5: toDecimalNumber(this.state.interest5_0),
-          interest10: toDecimalNumber(this.state.interest10_0),
-          interest15: toDecimalNumber(this.state.interest15_0),
-        },
-        conditionsOffer: {
-          maxAmount: toNumber(this.state.maxAmount),
-          amortizing: toDecimalNumber(this.state.amortizing),
-          interestLibor: toDecimalNumber(this.state.libor_1),
-          interest5: toDecimalNumber(this.state.interest5_1),
-          interest10: toDecimalNumber(this.state.interest10_1),
-          interest15: toDecimalNumber(this.state.interest15_1),
-        },
-        conditions: this.state.conditions,
-        expertiseRequired: false, // TODO
+      requestId: id,
+      standardOffer: {
+        maxAmount: toNumber(this.state.maxAmount),
+        amortizing: toDecimalNumber(this.state.amortizing),
+        interestLibor: toDecimalNumber(this.state.libor_0),
+        interest5: toDecimalNumber(this.state.interest5_0),
+        interest10: toDecimalNumber(this.state.interest10_0),
+        interest15: toDecimalNumber(this.state.interest15_0),
       },
+      conditionsOffer: {
+        maxAmount: toNumber(this.state.maxAmount),
+        amortizing: toDecimalNumber(this.state.amortizing),
+        interestLibor: toDecimalNumber(this.state.libor_1),
+        interest5: toDecimalNumber(this.state.interest5_1),
+        interest10: toDecimalNumber(this.state.interest10_1),
+        interest15: toDecimalNumber(this.state.interest15_1),
+      },
+      conditions: this.state.conditions,
+      expertiseRequired: false, // TODO
     };
 
-    addPartnerOffer.call({
-      id, object,
+    insertOffer.call({
+      object,
     }, (error, result) => {
       if (error) {
-        console.log(error.message);
         throw new Meteor.Error(500, error.message);
       }
 

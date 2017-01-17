@@ -11,70 +11,11 @@ Offers.allow({
     return !!userId;
   },
   update(userId, doc) {
-    // This is true if someone is logged in
+    // This is true if someone is logged in and ownership is correctß
     return !!userId && (userId === doc.userId);
   },
 });
 
-
-export const OfferSchema = new SimpleSchema({
-  userId: {
-    type: String,
-    index: true,
-    autoValue() {
-      if (this.isInsert) {
-        return this.userId;
-      }
-    },
-  },
-  createdAt: {
-    type: Date,
-    autoValue() {
-      if (this.isInsert) {
-        return new Date();
-      }
-    },
-  },
-  updatedAt: {
-    type: Date,
-    optional: true,
-    autoValue() {
-      if (this.isUpdate) {
-        return new Date();
-      }
-      return undefined;
-    },
-  },
-  organization: {
-    type: String,
-    autoValue() {
-      if (this.isInsert) {
-        return Meteor.user().profile.organisation;
-      }
-    }
-  },
-  canton: {
-    type: String,
-    min: 2,
-    max: 2,
-  },
-  requestId: {
-    type: String,
-    index: true,
-  },
-  standardOffer: {
-    type: singleOffer,
-    optional: true,
-  },
-  conditionsOffer: {
-    type: singleOffer,
-    optional: true,
-  },
-  conditions: {
-    type: String,
-    optional: true,
-  }
-});
 
 const singleOffer = new SimpleSchema({
   maxAmount: {
@@ -133,6 +74,67 @@ const singleOffer = new SimpleSchema({
     max: 100,
     optional: true,
   },
+});
+
+
+export const OfferSchema = new SimpleSchema({
+  userId: {
+    type: String,
+    index: true,
+    autoValue() {
+      if (this.isInsert) {
+        return this.userId;
+      }
+    },
+  },
+  createdAt: {
+    type: Date,
+    autoValue() {
+      if (this.isInsert) {
+        return new Date();
+      }
+    },
+  },
+  updatedAt: {
+    type: Date,
+    optional: true,
+    autoValue() {
+      if (this.isUpdate) {
+        return new Date();
+      }
+      return undefined;
+    },
+  },
+  organization: {
+    type: String,
+    autoValue() {
+      if (this.isInsert) {
+        return Meteor.user().profile.organisation;
+      }
+    },
+  },
+  canton: {
+    type: String,
+    min: 2,
+    max: 2,
+  },
+  requestId: {
+    type: String,
+    index: true,
+  },
+  standardOffer: {
+    type: singleOffer,
+    optional: true,
+  },
+  conditionsOffer: {
+    type: singleOffer,
+    optional: true,
+  },
+  conditions: {
+    type: String,
+    optional: true,
+  },
+  expertiseRequired: Boolean,
 });
 
 

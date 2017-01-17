@@ -67,7 +67,7 @@ export default class TextInput extends Component {
     }, () => {
       timer = Meteor.setTimeout(() => {
         this.saveValue();
-      }, 500);
+      }, 1000);
     });
   }
 

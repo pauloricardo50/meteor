@@ -33,11 +33,6 @@ export const incrementStep = new ValidatedMethod({
     check(id, String);
   },
   run({ id }) {
-    const request = LoanRequests.findOne({ _id: id });
-    if (request.userId !== this.userId) {
-      throw new Meteor.Error('notOwnerOfRequest', 'You\'re not allowed to edit this request');
-    }
-
     // TODO: Prevent increment if the current step is already at max step (5)
     LoanRequests.update(id, {
       $inc: { step: 1 },

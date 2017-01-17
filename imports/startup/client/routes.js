@@ -18,6 +18,8 @@ import HomePage from '/imports/ui/containers/public/HomePageContainer.js';
 import StartPage from '/imports/ui/pages/public/StartPage.jsx';
 import LoginPage from '/imports/ui/pages/public/LoginPage.jsx';
 
+import DemoPage from '/imports/ui/pages/public/DemoPage.jsx';
+
 
 // User Pages and components
 import {
@@ -77,6 +79,16 @@ FlowRouter.route('/start', {
     mount(PublicLayout, {
       content:
         <StartPage />,
+    });
+  },
+});
+
+FlowRouter.route('/demo', {
+  name: 'demo',
+  action() {
+    mount(PublicLayout, {
+      content:
+        <DemoPage />,
     });
   },
 });
