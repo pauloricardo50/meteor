@@ -71,6 +71,7 @@ export default class Step2AuctionResults extends Component {
       },
     ];
 
+
     return (
       <section className="mask1 animated fadeIn">
         <h1>Les résultats sont arrivés!</h1>
@@ -85,8 +86,8 @@ export default class Step2AuctionResults extends Component {
 
         <div style={styles.tableDiv}>
           <PartnerOffersTable
-            partnerOffers={this.props.loanRequest.partnerOffers.length > 0 ?
-              this.props.loanRequest.partnerOffers :
+            offers={this.props.offers && this.props.offers.length > 0 ?
+              this.props.offers :
               partnerOffers
             }
           />
@@ -99,4 +100,5 @@ export default class Step2AuctionResults extends Component {
 
 Step2AuctionResults.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  offers: PropTypes.arrayOf(PropTypes.any),
 };

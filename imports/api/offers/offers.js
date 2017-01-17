@@ -122,6 +122,7 @@ export const OfferSchema = new SimpleSchema({
     type: String,
     index: true,
   },
+  auctionEndTime: Date,
   standardOffer: {
     type: singleOffer,
     optional: true,

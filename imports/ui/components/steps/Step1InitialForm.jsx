@@ -15,7 +15,7 @@ export default class Step1InitialForm extends Component {
     const formArray = [
       {
         type: 'RadioInput',
-        label: 'Style de Propriété?',
+        label: 'Style de Propriété',
         radioLabels: ['Villa', 'Appartement'],
         values: ['villa', 'flat'],
         id: 'property.style',

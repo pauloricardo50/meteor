@@ -104,19 +104,22 @@ export default class SideNav extends Component {
               style={styles.button}
             />
           </div>
-        </article>);
-
+        </article>
+      );
     } else {
       // If the user is not on the main page, show a link to it
       content1 = (
         this.props.currentURL !== '/main' ?
-        <a href="/main" className="side-nav-link">
+        (<a href="/main" className="side-nav-link">
           <h3 className="bold active text-center">Commencer</h3>
-        </a> :
+        </a>) :
         null
         );
       content2 = null;
     }
+
+    // Show an empty sidenav when the user is on the new page
+    const isNew = this.props.currentURL.substring(0, 4) === '/new';
 
     return (
       <nav className="side-nav hidden-xs">
@@ -125,8 +128,8 @@ export default class SideNav extends Component {
           <img src="/img/logo_black.svg" alt="e-Potek" style={styles.logo} />
         </a>
 
-        {content1}
-        {content2}
+        {!isNew && content1}
+        {!isNew && content2}
 
       </nav>
     );

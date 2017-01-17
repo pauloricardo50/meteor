@@ -23,12 +23,13 @@ import DemoPage from '/imports/ui/pages/public/DemoPage.jsx';
 
 // User Pages and components
 import {
-  MainPage, TodoCardPage, FinancePage, StrategyPage, ContactPage,
-  Step1Page, Step2Page, Step3Page, Step4Page, Step5Page, Step6Page,
+  MainPage, TodoCardPage, FinancePage, ContactPage,
+  Step1Page, Step3Page, Step4Page, Step5Page, Step6Page,
 } from '/imports/ui/containers/user/ActiveRequestContainer.js';
 import NewPage from '/imports/ui/pages/user/NewPage.jsx';
 import { RequestProgressBar } from '/imports/ui/containers/user/CurrentURLContainer.js';
 import SettingsPage from '/imports/ui/containers/user/SettingsPageContainer.js';
+import { Step2Page, StrategyPage } from '/imports/ui/containers/user/RequestAndOffersContainer.js';
 
 
 // Partner Pages

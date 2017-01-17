@@ -24,7 +24,7 @@ export default class CurrentAuctionsTable extends Component {
     if (this.props.currentAuctions && this.props.currentAuctions.length > 0) {
       return (
         <article style={styles.article}>
-          <h1 className="text-center">Enchères en cours</h1>
+          <h1 className="text-center">Dossiers ouverts aux offres</h1>
 
           <table className="minimal-table">
             <colgroup>
@@ -43,7 +43,12 @@ export default class CurrentAuctionsTable extends Component {
             </thead>
             <tbody>
               {this.props.currentAuctions.map((auction, index) => (
-                <AuctionTableLine auction={auction} key={index} index={index} />
+                <AuctionTableLine
+                  auction={auction}
+                  key={index}
+                  index={index}
+                  offers={this.props.offers}
+                />
               ))}
             </tbody>
           </table>
@@ -61,4 +66,5 @@ export default class CurrentAuctionsTable extends Component {
 
 CurrentAuctionsTable.propTypes = {
   currentAuctions: PropTypes.arrayOf(PropTypes.any),
+  offers: PropTypes.arrayOf(PropTypes.object),
 };

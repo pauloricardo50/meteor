@@ -30,10 +30,18 @@ function composer2(props, onData) {
 }
 
 function composer3(props, onData) {
-  if (Meteor.subscribe('offers').ready()) {
-    const offers = Offers.find({}).fetch();
+  if (Meteor.subscribe('partnerOffers').ready()) {
+    // TODO make sure this works in any time zone
+    const currentOffers = Offers.find({
+      auctionEndTime: { $gte: new Date() },
+    }).fetch();
 
-    onData(null, { offers });
+    // auction end time is less than current time
+    const oldOffers = Offers.find({
+      auctionEndTime: { $lt: new Date() },
+    }).fetch();
+
+    onData(null, { currentOffers, oldOffers });
   }
 }
 

@@ -39,10 +39,18 @@ export default class Step2Page extends Component {
   render() {
     if (this.props.loanRequest.logic.auctionEndTime <= this.state.currentTime.setSeconds(this.state.currentTime.getSeconds() + 1)) {
       // After the auction
-      return <Step2AuctionResults loanRequest={this.props.loanRequest} />;
+      Meteor.clearInterval(time);
+
+      return (<Step2AuctionResults
+        loanRequest={this.props.loanRequest}
+        offers={this.props.offers}
+      />);
     } else if (this.props.loanRequest.logic.auctionStarted) {
       // During the auction
-      return <Step2Auction loanRequest={this.props.loanRequest} />;
+      return (<Step2Auction
+        loanRequest={this.props.loanRequest}
+        offers={this.props.offers}
+      />);
     }
     // Before the auction, lets the user start it
     return <Step2Start loanRequest={this.props.loanRequest} />;
@@ -51,4 +59,5 @@ export default class Step2Page extends Component {
 
 Step2Page.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  offers: PropTypes.arrayOf(PropTypes.any),
 };

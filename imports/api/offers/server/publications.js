@@ -5,18 +5,27 @@ import LoanRequests from '../../loanrequests/loanrequests';
 import { Roles } from 'meteor/alanning:roles';
 
 
-// Publish a specific loanRequest with an ID
-Meteor.publish('offers', function () {
+// Get all offers for the currently active request
+Meteor.publish('activeOffers', function () {
+  const activeRequest = LoanRequests.findOne({
+    userId: this.userId,
+    active: true,
+  });
+
+  return Offers.find({
+    requestId: activeRequest._id,
+  });
+});
+
+
+// Get all offers the partner has made
+Meteor.publish('partnerOffers', function () {
   const user = Meteor.users.findOne({ _id: this.userId });
 
   if (Roles.userIsInRole(this.userId, 'partner')) {
     return Offers.find({
       organization: user.profile && user.profile.organization,
+      // auctionEndTime: { $lt: new Date() },
     });
   }
 });
-
-
-// Meteor.publish('requestOffers', function () {
-//   // publish all offers for this request
-// });

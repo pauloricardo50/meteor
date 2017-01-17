@@ -129,7 +129,7 @@ export default class StartPage extends Component {
             this.scroll();
           }
         }
-      }
+      },
     );
   }
 
@@ -162,7 +162,7 @@ export default class StartPage extends Component {
             this.setState({ step: i + 1 });
             this.scroll();
           }
-        }
+        },
       );
     } else if ((finished && alsoSetStep) || isButton) {
       // If the form is finished, always set the last step to be active
@@ -218,7 +218,11 @@ export default class StartPage extends Component {
       <section style={styles.section} className="NLForm">
         <div style={styles.div}>
           {lines.slice(0, this.state.maxStep + 1).map((ComponentX, index) =>
-            <Scroll.Element name={'scroll' + index} key={index} style={styles.scrollElement}>
+            <Scroll.Element
+              name={'scroll' + index}
+              key={index}
+              style={styles.scrollElement}
+            >
               <ComponentX
                 {...this.state}
                 setStateValue={this.setStateValue}
@@ -231,7 +235,7 @@ export default class StartPage extends Component {
                 classes={this.classes(index)}
                 index={index}
               />
-            </Scroll.Element>
+            </Scroll.Element>,
           )}
         </div>
       </section>

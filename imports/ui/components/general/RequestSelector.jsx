@@ -37,31 +37,33 @@ export default class RequestSelector extends Component {
       FlowRouter.go('/start');
     } else {
       // Update the database to set the active request
-      this.props.loanRequests.forEach((request, index2) => {
+      this.props.loanRequests.forEach((request, index2, array) => {
         if (index2 === value) {
           // If selected value is iterated over in the forEach loop, set to active
-          this.updateValue({ active: true }, request._id);
+          this.updateValue({ active: true }, request._id, index2 + 1 === array.length);
         } else {
           // Else, set active to false
-          this.updateValue({ active: false }, request._id);
+          this.updateValue({ active: false }, request._id, index2 + 1 === array.length);
         }
       });
     }
 
     // Finally, update the SelectField
     this.setState({ value });
-
-    // Refresh the page so that all subscriptions and active components are properly updated
-    location.reload();
   }
 
-  updateValue(object, id) {
+  updateValue(object, id, lastCall) {
     updateValues.call({
       object, id,
     }, (error, result) => {
       if (error) {
         throw new Meteor.Error(500, error.message);
       } else {
+        if (lastCall) {
+          // Refresh the page so that all subscriptions and active components are properly updated
+          // Only do this on the last call of this function
+          location.reload()
+        }
         return 'Update Successful';
       }
     });
@@ -80,14 +82,11 @@ export default class RequestSelector extends Component {
             <MenuItem value={index} key={index} primaryText={loanRequest.property.address1} />,
           )}
 
-
           {/* Don't allow more than 3 requests at a time */}
-          {this.props.loanRequests.length >= 3 ? null :
-          <span>
-            <Divider />
-            <MenuItem value="new" primaryText="Nouvelle Requête" />
-          </span>
-          }
+          {this.props.loanRequests.length <= 3 && <Divider />}
+          {this.props.loanRequests.length <= 3 &&
+            <MenuItem value="new" primaryText="Nouvelle Requête" />}
+
         </SelectField>
       );
     }

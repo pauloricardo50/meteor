@@ -108,13 +108,22 @@ export default class PartnerHomePage extends Component {
         {/* <PartnerStats /> */}
 
         {this.getCurrentAuctions().length ?
-          <CurrentAuctionsTable currentAuctions={this.getCurrentAuctions()} /> :
+          <CurrentAuctionsTable
+            currentAuctions={this.getCurrentAuctions()}
+            offers={this.props.currentOffers}
+          /> :
           (<div className="text-center col-xs-12" style={styles.noAuctionDiv}>
-            <h2>Pas d&apos;enchères en ce moment</h2>
+            <h2>Aucune offre à faire en ce moment.</h2>
           </div>)
         }
 
-        <PastOffersTable />
+        <div className="col-xs-12">
+          <hr className="col-xs-4 col-xs-offset-4" />
+        </div>
+
+        <PastOffersTable
+          offers={this.props.oldOffers}
+        />
 
       </section>
     );
@@ -123,4 +132,6 @@ export default class PartnerHomePage extends Component {
 
 PartnerHomePage.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.object),
+  currentOffers: PropTypes.arrayOf(PropTypes.object),
+  oldOffers: PropTypes.arrayOf(PropTypes.object),
 };

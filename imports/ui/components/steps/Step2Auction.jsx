@@ -65,11 +65,11 @@ export default class Step2Auction extends Component {
   render() {
     return (
       <section className="mask1 animated fadeIn">
-        <h1>Appel d'offres en cours..</h1>
+        <h1>Appel d&apos;offres en cours..</h1>
         <div className="giant text-center">{this.state.remainingTime}</div>
         <p className="disabled text-center" style={styles.p}>Vous recevrez une notification lorsque ce sera terminé</p>
         <div style={styles.tableDiv}>
-          <PartnerOffersTable partnerOffers={this.props.loanRequest.partnerOffers} />
+          <PartnerOffersTable offers={this.props.offers} />
         </div>
         {this.partnerOffers ? null : (
           <div>
@@ -84,4 +84,5 @@ export default class Step2Auction extends Component {
 
 Step2Auction.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  offers: PropTypes.arrayOf(PropTypes.any),
 };
