@@ -18,7 +18,7 @@ export default class Step4Page extends React.Component {
       <section className="mask1 animated fadeIn">
         <h1>4ème Étape <small>Enfin, le contrat</small></h1>
         <img
-          src="img/step4_icons.svg"
+          src="/img/step4_icons.svg"
           alt="Votre dossier => Banque"
           style={{
             width: '100%',

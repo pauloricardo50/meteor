@@ -113,24 +113,24 @@ module.exports = function(props) {
           {/* <div className="computeriphone">
             <div className="computer">
               <div className="mask">
-                <img className="mask-img" src="img/webapp.svg" />
+                <img className="mask-img" src="/img/webapp.svg" />
               </div>
             </div>
             <div className="iphone">
               <div className="mask">
-                <img className="mask-img" src="img/mobileapp.svg" />
+                <img className="mask-img" src="/img/mobileapp.svg" />
               </div>
             </div>
           </div> */}
           <div className="iphoneipad">
             <div className="iphone">
               <div className="mask">
-                <img className="mask-img" src="img/mobileapp.svg" />
+                <img className="mask-img" src="/img/mobileapp.svg" />
               </div>
             </div>
             <div className="ipad">
               <div className="mask">
-                <img className="mask-img" src="img/tabletapp.svg" />
+                <img className="mask-img" src="/img/tabletapp.svg" />
               </div>
             </div>
           </div>
@@ -189,12 +189,12 @@ module.exports = function(props) {
         <div className="browseriphone">
           <div className="iphone">
             <div className="mask">
-              <img className="mask-img" src="img/mobileapp.svg" />
+              <img className="mask-img" src="/img/mobileapp.svg" />
             </div>
           </div>
           <div className="browser animated fadeInRight">
             <div className="mask">
-              <img className="mask-img" src="img/webapp.svg" />
+              <img className="mask-img" src="/img/webapp.svg" />
             </div>
           </div>
         </div>

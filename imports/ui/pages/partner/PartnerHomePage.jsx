@@ -95,7 +95,7 @@ export default class PartnerHomePage extends Component {
   }
 
   getPartnerLogo() {
-    return 'partners/UBS_logo.png';
+    return '/partners/UBS_logo.png';
   }
 
   render() {

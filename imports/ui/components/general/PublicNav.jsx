@@ -47,15 +47,14 @@ export default class PublicNav extends Component {
     return (
       <div className="public-nav">
         <AppBar
-          // title=("Title")
           style={styles.navbar}
-          children={
-            <a href="/" style={styles.imageDiv}>
-              <img src="img/logo_black.svg" alt="e-Potek" style={styles.image} />
-            </a>}
           iconElementRight={button}
           iconStyleLeft={{ display: 'none' }}
-        />
+        >
+          <a href="/" style={styles.imageDiv}>
+            <img src="/img/logo_black.svg" alt="e-Potek" style={styles.image} />
+          </a>
+        </AppBar>
       </div>
     );
   }
