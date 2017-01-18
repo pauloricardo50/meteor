@@ -46,6 +46,7 @@ kadira:flow-router              # Router
 # Internationalization
 # tap:i18n                        # Handles internationalization in Meteor
 # tap:i18n-ui                     # Automatically generates a language dropdown based on available language files
+softwarerero:accounts-t9n
 
 # Icons
 fortawesome:fontawesome

@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 // import { TAPi18n } from 'meteor/tap:i18n';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import { T9n } from 'meteor/softwarerero:accounts-t9n';
 
 
 import './routes.js';
@@ -15,6 +16,8 @@ import '../useraccounts-configuration.js';
 
 if (Meteor.isClient) {
   Meteor.startup(function () {
+    // For the meteor accounts package, translates the login page
+    T9n.setLanguage('fr');
     // TAPi18n.setLanguage(getUserLanguage())
     //   .done(function () {
     //     Session.set("showLoadingIndicator", false);

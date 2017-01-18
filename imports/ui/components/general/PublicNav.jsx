@@ -2,7 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import AppBar from 'material-ui/AppBar';
-import FlatButton from 'material-ui/FlatButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
+import Person from 'material-ui/svg-icons/social/person';
+
 
 import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown.jsx';
 
@@ -28,38 +32,24 @@ const styles = {
   },
 };
 
-export default class PublicNav extends Component {
-  constructor(props) {
-    super(props);
-  }
 
-  render() {
-    let button;
-    if (this.props.currentUser) {
-      button = (
-        <TopNavDropdown public />
-      );
-    } else {
-      // button = <FlatButton style={styles.button} label="Continuer" onClick={() => FlowRouter.go('/login')} />;
-      button = null;
-    }
+const PublicNav = props => (
+  <div className="public-nav">
+    <AppBar
+      style={styles.navbar}
+      iconElementRight={<TopNavDropdown public currentUser={props.currentUser} />}
+      iconStyleLeft={{ display: 'none' }}
+    >
+      <a href="/" style={styles.imageDiv}>
+        <img src="/img/logo_black.svg" alt="e-Potek" style={styles.image} />
+      </a>
+    </AppBar>
+  </div>
+);
 
-    return (
-      <div className="public-nav">
-        <AppBar
-          style={styles.navbar}
-          iconElementRight={button}
-          iconStyleLeft={{ display: 'none' }}
-        >
-          <a href="/" style={styles.imageDiv}>
-            <img src="/img/logo_black.svg" alt="e-Potek" style={styles.image} />
-          </a>
-        </AppBar>
-      </div>
-    );
-  }
-}
 
 PublicNav.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any),
 };
+
+export default PublicNav;

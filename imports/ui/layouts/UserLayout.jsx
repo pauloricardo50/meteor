@@ -24,9 +24,10 @@ export default class UserLayout extends Component {
   }
 
   render() {
-    if (Roles.userIsInRole(Meteor.userId(), 'admin') || Roles.userIsInRole(Meteor.userId(), 'partner')) {
+    if (Roles.userIsInRole(this.props.currentUser, 'admin') ||
+      Roles.userIsInRole(this.props.currentUser, 'partner')) {
       return null;
-    } else if (Meteor.userId()) {
+    } else if (this.props.currentUser) {
       return (
         <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
           <div>
@@ -45,15 +46,15 @@ export default class UserLayout extends Component {
           </div>
         </MuiThemeProvider>
       );
-    } else {
+    } else if (!this.props.currentUser) {
       this.routeToLogin();
       return null;
     }
   }
-
 }
 
 UserLayout.propTypes = {
   content: PropTypes.element.isRequired,
   extraContent: PropTypes.element,
+  currentUser: PropTypes.objectOf(PropTypes.any),
 };

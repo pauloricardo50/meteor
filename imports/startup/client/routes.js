@@ -7,10 +7,7 @@ import { mount } from 'react-mounter';
 
 // layouts
 import PublicLayout from '/imports/ui/layouts/PublicLayout.jsx';
-import UserLayout from '/imports/ui/layouts/UserLayout.jsx';
-import { PartnerLayout } from '/imports/ui/containers/public/CurrentUserContainer';
-// import AdminLayout from '/imports/ui/layouts/AdminLayout.jsx';
-import { AdminLayout } from '/imports/ui/containers/public/CurrentUserContainer';
+import { UserLayout, AdminLayout, PartnerLayout } from '/imports/ui/containers/public/CurrentUserContainer';
 
 
 // Public Pages

@@ -300,7 +300,7 @@ module.exports = function(props) {
           <br />
           <div>
             <span>
-              © 2016 e-Potek
+              © 2016-2017 e-Potek
             </span>
           </div>
         </div>

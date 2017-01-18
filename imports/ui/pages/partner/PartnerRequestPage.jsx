@@ -25,10 +25,20 @@ export default class PartnerRequestPage extends Component {
   render() {
     if (this.props.loanRequest) {
       return (
-        <section className="mask1" style={styles.section}>
-          <RequestDetails loanRequest={this.props.loanRequest} />
-          <PartnerOfferForm loanRequest={this.props.loanRequest} />
-        </section>
+        <div>
+          <div className="form-group">
+            <RaisedButton
+              icon={<span className="fa fa-angle-left" />}
+              label="Retour"
+              href="/partner"
+              className="animated slideInLeft"
+            />
+          </div>
+          <section className="mask1" style={styles.section}>
+            <RequestDetails loanRequest={this.props.loanRequest} />
+            <PartnerOfferForm loanRequest={this.props.loanRequest} />
+          </section>
+        </div>
       );
     }
 

@@ -10,4 +10,8 @@ const Loading = () => (
   </div>
 );
 
-export default Loading;
+const options = {
+  loadingHandler: Loading,
+};
+
+export default options;

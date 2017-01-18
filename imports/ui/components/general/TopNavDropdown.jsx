@@ -14,28 +14,45 @@ import Person from 'material-ui/svg-icons/social/person';
 // an admin link for admins,
 // a partner link for partners,
 // a home, settings, and contact link for regular users
-const TopNavDropdown = () => (
-  <IconMenu
-    iconButtonElement={<IconButton><Person color="#333333" hoverColor="#888888" /></IconButton>}
-    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-    targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-  >
-    {Roles.userIsInRole(Meteor.userId(), 'admin') ?
-      <MenuItem primaryText="Admin Home" href="/admin" />
-    :
-      (Roles.userIsInRole(Meteor.userId(), 'partner') ?
-        <MenuItem primaryText="Partner Home" href="/partner" />
+const TopNavDropdown = props => (
+  (props.currentUser || props.public === false ?
+    <IconMenu
+      iconButtonElement={<IconButton><Person color="#333333" hoverColor="#888888" /></IconButton>}
+      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+    >
+      {Roles.userIsInRole(Meteor.userId(), 'admin') ?
+        <MenuItem primaryText="Admin Home" href="/admin" />
       :
-        <span>
-          <MenuItem primaryText="Home" href="/main" />
-          <MenuItem primaryText="Réglages" href="/settings" />
-          <MenuItem primaryText="Contactez-nous" href="/contact" />
-        </span>
-    )}
+        (Roles.userIsInRole(Meteor.userId(), 'partner') ?
+          <MenuItem primaryText="Partner Home" href="/partner" />
+        :
+          <span>
+            <MenuItem primaryText="Home" href="/main" />
+            <MenuItem primaryText="Réglages" href="/settings" />
+            <MenuItem primaryText="Contactez-nous" href="/contact" />
+          </span>
+      )}
 
-    <Divider />
-    <MenuItem primaryText="Déconnexion" onClick={() => Meteor.logout(() => FlowRouter.go('/'))} />
-  </IconMenu>
+      <Divider />
+      <MenuItem primaryText="Déconnexion" onClick={() => Meteor.logout(() => FlowRouter.go('/'))} />
+    </IconMenu>
+
+  :
+
+    <IconMenu
+      iconButtonElement={<IconButton><Person color="#333333" hoverColor="#888888" /></IconButton>}
+      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+    >
+      <MenuItem primaryText="Connexion" href="/login" />
+    </IconMenu>
+  )
 );
+
+TopNavDropdown.propTypes = {
+  currentUser: PropTypes.objectOf(PropTypes.any),
+  public: PropTypes.bool,
+};
 
 export default TopNavDropdown;

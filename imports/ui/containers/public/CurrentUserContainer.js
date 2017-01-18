@@ -9,11 +9,8 @@ import Loading from '/imports/ui/components/general/Loading.jsx';
 
 import _AdminLayout from '/imports/ui/layouts/AdminLayout.jsx';
 import _PartnerLayout from '/imports/ui/layouts/PartnerLayout.jsx';
+import _UserLayout from '/imports/ui/layouts/UserLayout.jsx';
 
-
-const options = {
-  loadingHandler: Loading,
-};
 
 function composer(props, onData) {
   if (Meteor.subscribe('currentUser').ready()) {
@@ -26,5 +23,6 @@ function composer(props, onData) {
 // No loading component
 export const PublicNav = composeWithTracker(composer)(_PublicNav);
 
-export const AdminLayout = composeWithTracker(composer, options)(_AdminLayout);
-export const PartnerLayout = composeWithTracker(composer, options)(_PartnerLayout);
+export const AdminLayout = composeWithTracker(composer, Loading)(_AdminLayout);
+export const PartnerLayout = composeWithTracker(composer, Loading)(_PartnerLayout);
+export const UserLayout = composeWithTracker(composer, Loading)(_UserLayout);

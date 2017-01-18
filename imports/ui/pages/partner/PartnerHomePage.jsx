@@ -8,34 +8,30 @@ import CurrentAuctionsTable from '/imports/ui/components/partner/CurrentAuctions
 import PastOffersTable from '/imports/ui/components/partner/PastOffersTable.jsx';
 
 
-const dummyAuctions = [
-  {
-    auctionEndTime: moment(new Date()).add(1, 'hours'),
-    value: 789000,
-    type: 'Acquisition',
-    _id: 123,
-  }, {
-    auctionEndTime: moment(new Date()).add(13, 'hours'),
-    value: 1012000,
-    type: 'Refinancement',
-    _id: 234,
-  }, {
-    auctionEndTime: moment(new Date()).add(1, 'days'),
-    value: 564000,
-    type: 'Acquisition',
-    _id: 234,
-  },
-];
+// const dummyAuctions = [
+//   {
+//     auctionEndTime: moment(new Date()).add(1, 'hours'),
+//     value: 789000,
+//     type: 'Acquisition',
+//     _id: 123,
+//   }, {
+//     auctionEndTime: moment(new Date()).add(13, 'hours'),
+//     value: 1012000,
+//     type: 'Refinancement',
+//     _id: 234,
+//   }, {
+//     auctionEndTime: moment(new Date()).add(1, 'days'),
+//     value: 564000,
+//     type: 'Acquisition',
+//     _id: 234,
+//   },
+// ];
 
 
 const styles = {
   section: {
     maxWidth: 1200,
     margin: 'auto',
-  },
-  logo: {
-    width: '50%',
-    maxWidth: 400,
   },
   noAuctionDiv: {
     display: 'block',
@@ -101,8 +97,9 @@ export default class PartnerHomePage extends Component {
   render() {
     return (
       <section className="mask1" style={styles.section}>
-        <div className="text-center">
-          <img src={this.getPartnerLogo()} alt="Logo Partenaire" style={styles.logo} />
+        <div className="partner-logos">
+          <img src={this.getPartnerLogo()} alt="Logo Partenaire" className="partner" />
+          <img src="/img/logo_black.svg" alt="Logo e-Potek" className="epotek" />
         </div>
 
         {/* <PartnerStats /> */}

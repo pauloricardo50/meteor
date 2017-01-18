@@ -19,9 +19,9 @@ function getTrackerLoader(loaderFunc) {
   };
 }
 
-function composeWithTracker(loadFunc) {
+function composeWithTracker(loadFunc, options) {
   return function (component) {
-    return compose(getTrackerLoader(loadFunc))(component);
+    return compose(getTrackerLoader(loadFunc), options)(component);
   };
 }
 
