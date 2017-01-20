@@ -25,7 +25,7 @@ const styles = {
 };
 
 
-export default class Line3 extends Component {
+export default class GenderLine extends Component {
   constructor(props) {
     super(props);
 
@@ -162,7 +162,7 @@ export default class Line3 extends Component {
   }
 }
 
-Line3.propTypes = {
+GenderLine.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
   setStateValue: PropTypes.func.isRequired,

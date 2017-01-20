@@ -54,7 +54,7 @@ export default class EmailLine extends Component {
   }
 
 
-  handleChange(event) {
+  handleChange(event, noTimeout) {
     const email = event.target.value;
     Meteor.clearTimeout(timer);
     this.setState({ content: '' });
@@ -81,7 +81,7 @@ export default class EmailLine extends Component {
             });
           }
         });
-      }, 400);
+      }, noTimeout ? 0 : 400);
     }
   }
 
@@ -135,7 +135,8 @@ export default class EmailLine extends Component {
               style={styles.textField}
               name="email"
               value={this.props.email}
-              onChange={this.handleChange}
+              onChange={e => this.handleChange(e, false)}
+              onBlur={e => this.handleChange(e, true)}
             >
               <MaskedInput
                 mask={emailMask}

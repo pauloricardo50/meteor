@@ -13,7 +13,7 @@ const styles = {
 };
 
 
-export default class Line9b extends Component {
+export default class NoPropertyLine2 extends Component {
   constructor(props) {
     super(props);
 
@@ -64,7 +64,7 @@ export default class Line9b extends Component {
   }
 }
 
-Line9b.propTypes = {
+NoPropertyLine2.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
   setStateValue: PropTypes.func.isRequired,

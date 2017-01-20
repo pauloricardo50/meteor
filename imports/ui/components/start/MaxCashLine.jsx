@@ -17,7 +17,7 @@ const styles = {
 };
 
 
-export default class Line8a extends Component {
+export default class MaxCashLine extends Component {
   constructor(props) {
     super(props);
 
@@ -112,7 +112,7 @@ export default class Line8a extends Component {
   }
 }
 
-Line8a.propTypes = {
+MaxCashLine.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
   setStateValue: PropTypes.func.isRequired,

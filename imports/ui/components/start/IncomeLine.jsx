@@ -20,7 +20,7 @@ const styles = {
 
 var timer;
 
-export default class Line5 extends Component {
+export default class IncomeLine extends Component {
   constructor(props) {
     super(props);
 
@@ -50,7 +50,7 @@ export default class Line5 extends Component {
   }
 
 
-  handleChange(event) {
+  handleChange(event, noTimeout) {
     Meteor.clearTimeout(timer);
 
     this.props.setStateValue(
@@ -61,11 +61,12 @@ export default class Line5 extends Component {
         if (this.validate()) {
           timer = Meteor.setTimeout(() => {
             this.setCompleted();
-          }, this.props.timeout);
+          }, noTimeout ? 0 : this.props.timeout);
         }
-      }
+      },
     );
   }
+
 
   validate() {
     const errors = moneyValidation(this.props.salary);
@@ -97,8 +98,10 @@ export default class Line5 extends Component {
               style={styles.textField}
               name="salary"
               value={this.props.salary}
-              onChange={this.handleChange}
+              onChange={e => this.handleChange(e, false)}
+              onBlur={e => this.handleChange(e, true)}
               errorText={this.state.error ? ' ' : ''}
+              ref={(c) => { this.value = c; }}
             >
               <MaskedInput
                 mask={swissFrancMask}
@@ -117,7 +120,7 @@ export default class Line5 extends Component {
   }
 }
 
-Line5.propTypes = {
+IncomeLine.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
   setStateValue: PropTypes.func.isRequired,

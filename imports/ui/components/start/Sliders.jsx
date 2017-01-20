@@ -37,7 +37,7 @@ const styles = {
   },
 };
 
-export default class Line10aSliders extends Component {
+export default class Sliders extends Component {
   constructor(props) {
     super(props);
 
@@ -106,7 +106,6 @@ export default class Line10aSliders extends Component {
 
 
   render() {
-
     return (
       <span style={styles.span}>
         <h1 className="col-xs-12">
@@ -180,7 +179,7 @@ export default class Line10aSliders extends Component {
   }
 }
 
-Line10aSliders.propTypes = {
+Sliders.propTypes = {
   twoBuyers: PropTypes.bool.isRequired,
   fortune: PropTypes.string.isRequired,
   insuranceFortune: PropTypes.string.isRequired,

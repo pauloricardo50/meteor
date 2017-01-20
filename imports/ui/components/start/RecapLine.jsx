@@ -27,7 +27,7 @@ const styles = {
   },
 };
 
-export default class Line11a extends Component {
+export default class RecapLine extends Component {
   constructor(props) {
     super(props);
 
@@ -192,7 +192,7 @@ export default class Line11a extends Component {
   }
 }
 
-Line11a.propTypes = {
+RecapLine.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
   setStateValue: PropTypes.func.isRequired,

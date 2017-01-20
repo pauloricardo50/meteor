@@ -5,11 +5,12 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import { minimumFortuneRequired } from '/imports/js/finance-math.js';
 
-import Line10aSliders from './Line10aSliders.jsx';
+import Sliders from './Sliders.jsx';
+
 
 var timer;
 
-export default class Line10a extends Component {
+export default class SliderLine extends Component {
   constructor(props) {
     super(props);
 
@@ -23,26 +24,38 @@ export default class Line10a extends Component {
       Number(this.props.propertyValue),
     )[0];
 
-    this.state = {
-      minFortunePercent: Math.ceil(100 * (minFortune / this.props.propertyValue)) / 100,
-    };
-  }
-
-
-  componentDidMount() {
-    // Set the initial fortune values based on the choice in line 8, sum of both has to be minFortune
-    if (this.props.maxCash) {
-      this.props.setStateValue('fortune', String(Math.round(this.props.propertyValue * this.state.minFortunePercent)));
-      this.props.setStateValue('insuranceFortune', '0');
+    if (this.props.propertyValue !== 0) {
+      this.state = {
+        minFortunePercent: Math.ceil(100 * (minFortune / this.props.propertyValue)) / 100,
+      };
     } else {
-      this.props.setStateValue('fortune', String(Math.round(this.props.propertyValue * 0.1)));
-      this.props.setStateValue('insuranceFortune', String(Math.round(this.props.propertyValue * (this.state.minFortunePercent - 0.1))));
+      // default fallback if the property value is zero
+      this.state = {
+        minFortunePercent: 0.2,
+      };
     }
   }
 
 
-  componentWillReceiveProps(n) {
+  componentDidMount(props) {
+    // Set the initial fortune values based on the choice in line 8, sum of both has to be minFortune
+    this.initialize(this.props, this.state);
+  }
+
+  initialize(props, state) {
+    if (props.maxCash) {
+      props.setStateValue('fortune', String(Math.round(props.propertyValue * state.minFortunePercent)));
+      props.setStateValue('insuranceFortune', '0');
+    } else {
+      props.setStateValue('fortune', String(Math.round(props.propertyValue * 0.1)));
+      props.setStateValue('insuranceFortune', String(Math.round(props.propertyValue * (state.minFortunePercent - 0.1))));
+    }
+  }
+
+
+  componentWillReceiveProps(nextProps, nextState) {
     const p = this.props;
+    const n = nextProps;
 
     if (p.maxCash !== n.maxCash) {
       if (n.maxCash) {
@@ -74,9 +87,15 @@ export default class Line10a extends Component {
         Number(n.propertyValue),
       )[0];
 
-      this.setState({
-        minFortunePercent: Math.ceil(100 * (minFortune / n.propertyValue)) / 100,
-      });
+      if (n.propertyValue !== 0 && minFortune) {
+        this.setState({
+          minFortunePercent: Math.ceil(100 * (minFortune / n.propertyValue)) / 100,
+        },
+          this.initialize(nextProps, this.state),
+        );
+      } else {
+        this.initialize(nextProps, this.state);
+      }
     }
   }
 
@@ -166,7 +185,7 @@ export default class Line10a extends Component {
   render() {
     return (
       <article onClick={this.props.setStep} className={this.props.classes.text}>
-        <Line10aSliders
+        <Sliders
           twoBuyers={this.props.twoBuyers}
           fortune={this.props.fortune}
           insuranceFortune={this.props.insuranceFortune}
@@ -174,12 +193,8 @@ export default class Line10a extends Component {
           propertyValue={this.props.propertyValue}
           propertyType={this.props.propertyType}
           minFortunePercent={this.state.minFortunePercent}
-          changeFortune={
-            (value, isSlider) => this.changeFortune(value, isSlider)
-          }
-          changeInsuranceFortune={
-            (value, isSlider) => this.changeInsuranceFortune(value, isSlider)
-          }
+          changeFortune={(value, isSlider) => this.changeFortune(value, isSlider)}
+          changeInsuranceFortune={(value, isSlider) => this.changeInsuranceFortune(value, isSlider)}
         />
         {this.props.step === this.props.index &&
           <div className="text-center col-xs-12">
@@ -195,7 +210,7 @@ export default class Line10a extends Component {
   }
 }
 
-Line10a.propTypes = {
+SliderLine.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
   setStateValue: PropTypes.func.isRequired,

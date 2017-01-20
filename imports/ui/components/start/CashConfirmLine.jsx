@@ -19,7 +19,7 @@ const styles = {
 };
 
 
-export default class Line7_2 extends Component {
+export default class CashConfirmLine extends Component {
   constructor(props) {
     super(props);
 
@@ -115,7 +115,7 @@ export default class Line7_2 extends Component {
   }
 }
 
-Line7_2.propTypes = {
+CashConfirmLine.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
   setStateValue: PropTypes.func.isRequired,

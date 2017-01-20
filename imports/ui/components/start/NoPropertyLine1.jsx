@@ -18,7 +18,7 @@ const styles = {
 
 var timer;
 
-export default class Line8b extends Component {
+export default class NoPropertyLine1 extends Component {
   constructor(props) {
     super(props);
 
@@ -52,7 +52,7 @@ export default class Line8b extends Component {
     this.props.setStateValue('fortune', String(event.target.value));
   }
 
-  handleInsuranceFortuneChange(event) {
+  handleInsuranceFortuneChange(event, timeout) {
     Meteor.clearTimeout(timer);
 
     this.props.setStateValue(
@@ -62,8 +62,8 @@ export default class Line8b extends Component {
         // Use a quick timeout to allow user to type in more stuff before going to next step
         timer = Meteor.setTimeout(() => {
           this.setCompleted();
-        }, 400);
-      }
+        }, timeout || this.props.timeout);
+      },
     );
   }
 
@@ -103,6 +103,7 @@ export default class Line8b extends Component {
                 name="insuranceFortune"
                 value={this.props.insuranceFortune}
                 onChange={this.handleInsuranceFortuneChange}
+                onBlur={e => this.handleInsuranceFortuneChange(e, 0)}
               >
                 <MaskedInput
                   mask={swissFrancMask}
@@ -120,7 +121,7 @@ export default class Line8b extends Component {
   }
 }
 
-Line8b.propTypes = {
+NoPropertyLine1.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
   setStateValue: PropTypes.func.isRequired,
@@ -130,4 +131,5 @@ Line8b.propTypes = {
   twoBuyers: PropTypes.bool.isRequired,
   fortune: PropTypes.string.isRequired,
   insuranceFortune: PropTypes.string.isRequired,
+  timeout: PropTypes.number.isRequired,
 };

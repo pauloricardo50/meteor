@@ -4,22 +4,22 @@ import { DocHead } from 'meteor/kadira:dochead';
 import Scroll from 'react-scroll';
 
 
-import Line1 from '/imports/ui/components/start/Line1.jsx';
-import Line2 from '/imports/ui/components/start/Line2.jsx';
-import Line3 from '/imports/ui/components/start/Line3.jsx';
-import Line4_1 from '/imports/ui/components/start/Line4_1.jsx';
+import BorrowerCountLine from '/imports/ui/components/start/BorrowerCountLine.jsx';
+import AgeLine from '/imports/ui/components/start/AgeLine.jsx';
+import GenderLine from '/imports/ui/components/start/GenderLine.jsx';
+import PurchaseTypeLine from '/imports/ui/components/start/PurchaseTypeLine.jsx';
 
-import Line4 from '/imports/ui/components/start/Line4.jsx';
-import Line5 from '/imports/ui/components/start/Line5.jsx';
-import Line6 from '/imports/ui/components/start/Line6.jsx';
-import Line7 from '/imports/ui/components/start/Line7.jsx';
-import Line7_2 from '/imports/ui/components/start/Line7_2.jsx';
-import Line8a from '/imports/ui/components/start/Line8a.jsx';
-import Line8b from '/imports/ui/components/start/Line8b.jsx';
-import Line9a from '/imports/ui/components/start/Line9a.jsx';
-import Line9b from '/imports/ui/components/start/Line9b.jsx';
-import Line10a from '/imports/ui/components/start/Line10a.jsx';
-import Line11a from '/imports/ui/components/start/Line11a.jsx';
+import Line4 from '/imports/ui/components/start/UsageTypeLine.jsx';
+import Line5 from '/imports/ui/components/start/IncomeLine.jsx';
+import BonusLine from '/imports/ui/components/start/BonusLine.jsx';
+import PropertyValueLine from '/imports/ui/components/start/PropertyValueLine.jsx';
+import CashConfirmLine from '/imports/ui/components/start/CashConfirmLine.jsx';
+import MaxCashLine from '/imports/ui/components/start/MaxCashLine.jsx';
+import NoPropertyLine1 from '/imports/ui/components/start/NoPropertyLine1.jsx';
+import MaxDebtLine from '/imports/ui/components/start/MaxDebtLine.jsx';
+import NoPropertyLine2 from '/imports/ui/components/start/NoPropertyLine2.jsx';
+import SliderLine from '/imports/ui/components/start/SliderLine.jsx';
+import RecapLine from '/imports/ui/components/start/RecapLine.jsx';
 
 import EmailLine from '/imports/ui/components/start/EmailLine.jsx';
 import PasswordLine from '/imports/ui/components/start/PasswordLine.jsx';
@@ -198,7 +198,7 @@ export default class StartPage extends Component {
       offset: -100,
     };
     if (step >= 0) {
-      Scroll.scroller.scrollTo('scroll' + step.toString(), options);
+      Scroll.scroller.scrollTo(`scroll${step}`, options);
     } else {
       Scroll.animateScroll.scrollToBottom(options);
     }
@@ -207,11 +207,14 @@ export default class StartPage extends Component {
   render() {
     let lines;
     if (this.state.propertyKnown) {
-      lines = [Line1, Line2, Line3, Line4_1, Line4, Line5, Line6, Line7, Line7_2, Line8a, Line9a,
-        Line10a, Line11a, EmailLine, PasswordLine,
+      lines = [BorrowerCountLine, AgeLine, GenderLine, PurchaseTypeLine, Line4, Line5, BonusLine,
+        PropertyValueLine, CashConfirmLine, MaxCashLine, MaxDebtLine, SliderLine, RecapLine,
+        EmailLine, PasswordLine,
       ];
     } else {
-      lines = [Line1, Line2, Line3, Line4_1, Line4, Line5, Line6, Line7, Line8b, Line9b];
+      lines = [BorrowerCountLine, AgeLine, GenderLine, PurchaseTypeLine, Line4, Line5, BonusLine,
+        PropertyValueLine, NoPropertyLine1, NoPropertyLine2,
+      ];
     }
 
     return (
@@ -219,7 +222,7 @@ export default class StartPage extends Component {
         <div style={styles.div}>
           {lines.slice(0, this.state.maxStep + 1).map((ComponentX, index) =>
             <Scroll.Element
-              name={'scroll' + index}
+              name={`scroll${index}`}
               key={index}
               style={styles.scrollElement}
             >

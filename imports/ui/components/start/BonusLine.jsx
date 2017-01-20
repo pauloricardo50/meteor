@@ -30,7 +30,7 @@ const styles = {
 var timer;
 
 
-export default class Line6 extends Component {
+export default class BonusLine extends Component {
   constructor(props) {
     super(props);
 
@@ -56,7 +56,7 @@ export default class Line6 extends Component {
   }
 
 
-  handleChange(event) {
+  handleChange(event, noTimeout) {
     Meteor.clearTimeout(timer);
 
     this.props.setStateValue(
@@ -67,9 +67,9 @@ export default class Line6 extends Component {
         if (this.validate()) {
           timer = Meteor.setTimeout(() => {
             this.setCompleted();
-          }, this.props.timeout);
+          }, noTimeout ? 0 : this.props.timeout);
         }
-      }
+      },
     );
   }
 
@@ -141,7 +141,8 @@ export default class Line6 extends Component {
                 style={styles.textField}
                 name="bonus"
                 value={this.props.bonus}
-                onChange={this.handleChange}
+                onChange={e => this.handleChange(e, false)}
+                onBlur={e => this.handleChange(e, true)}
                 errorText={this.state.error ? ' ' : ''}
               >
                 <MaskedInput
@@ -183,7 +184,7 @@ export default class Line6 extends Component {
   }
 }
 
-Line6.propTypes = {
+BonusLine.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
   setStateValue: PropTypes.func.isRequired,

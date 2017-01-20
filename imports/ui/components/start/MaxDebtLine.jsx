@@ -18,7 +18,7 @@ const styles = {
 };
 
 
-export default class Line9a extends Component {
+export default class MaxDebtLine extends Component {
   constructor(props) {
     super(props);
 
@@ -128,7 +128,7 @@ export default class Line9a extends Component {
   }
 }
 
-Line9a.propTypes = {
+MaxDebtLine.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
   setStateValue: PropTypes.func.isRequired,

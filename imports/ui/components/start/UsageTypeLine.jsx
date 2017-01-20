@@ -15,7 +15,7 @@ const styles = {
 };
 
 
-export default class Line4_1 extends Component {
+export default class UsageTypeLine extends Component {
   constructor(props) {
     super(props);
 
@@ -33,6 +33,7 @@ export default class Line4_1 extends Component {
     return (
       p.classes !== n.classes ||
       p.twoBuyers !== n.twoBuyers ||
+      p.propertyType !== n.propertyType ||
       p.purchaseType !== n.purchaseType
     );
   }
@@ -43,16 +44,16 @@ export default class Line4_1 extends Component {
 
     switch (i) {
       case 1:
-        this.props.setStateValue('purchaseType', 'acquisition');
-        this.setState({ text: ' une nouvelle acquisition,' });
+        this.props.setStateValue('propertyType', 'primary');
+        this.setState({ text: ' une résidence principale.' });
         break;
       case 2:
-        this.props.setStateValue('purchaseType', 'refinancing');
-        this.setState({ text: ' un refinancement,' });
+        this.props.setStateValue('propertyType', 'secondary');
+        this.setState({ text: ' une résidence secondaire.' });
         break;
       case 3:
-        this.props.setStateValue('purchaseType', 'construction');
-        this.setState({ text: ' une nouvelle construction,' });
+        this.props.setStateValue('propertyType', 'investment');
+        this.setState({ text: ' un investissement.' });
         break;
       default: break;
     }
@@ -63,26 +64,28 @@ export default class Line4_1 extends Component {
       <article onClick={this.props.setStep}>
 
         <h1 className={this.props.classes.text}>
-          Ce projet sera
+          et la propriété
+          {this.props.purchaseType ? ' sera ' : ' est '}
+          utilisée comme
           <span className="value">{this.state.text}</span>
         </h1>
 
         {this.props.step === this.props.index &&
           <div className={this.props.classes.extra} style={styles.extra}>
             <RaisedButton
-              label="Une nouvelle acquisition"
+              label="Une résidence principale"
               style={styles.button}
               primary={!this.state.text}
               onClick={e => this.changeState(e, 1)}
             />
             <RaisedButton
-              label="Un refinancement"
+              label="Une résidence Secondaire"
               style={styles.button}
               primary={!this.state.text}
               onClick={e => this.changeState(e, 2)}
             />
             <RaisedButton
-              label="Une nouvelle construction"
+              label="Un investissement"
               style={styles.button}
               primary={!this.state.text}
               onClick={e => this.changeState(e, 3)}
@@ -95,12 +98,13 @@ export default class Line4_1 extends Component {
   }
 }
 
-Line4_1.propTypes = {
+UsageTypeLine.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
   setStateValue: PropTypes.func.isRequired,
   completeStep: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  index: PropTypes.number.isRequired,
 
   propertyType: PropTypes.string.isRequired,
   purchaseType: PropTypes.string.isRequired,

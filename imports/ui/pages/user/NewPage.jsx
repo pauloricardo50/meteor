@@ -37,7 +37,6 @@ export default class NewPage extends Component {
       };
     }
 
-
     this.newRequest = this.newRequest.bind(this);
     this.textChange = this.textChange.bind(this);
   }
@@ -58,7 +57,7 @@ export default class NewPage extends Component {
       if (this.state.textValue) {
         this.createStartedRequest();
       } else {
-        this.setState({ errorText: 'Sans adresse, ça va être compliqué..' });
+        this.setState({ errorText: 'Sans nom, ça va être compliqué..' });
       }
     }
   }

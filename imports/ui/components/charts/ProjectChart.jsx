@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
 import Highcharts from 'highcharts';
-import RaisedButton from 'material-ui/RaisedButton';
 
 
 const styles = {
