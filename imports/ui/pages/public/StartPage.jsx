@@ -20,6 +20,8 @@ import MaxDebtLine from '/imports/ui/components/start/MaxDebtLine.jsx';
 import NoPropertyLine2 from '/imports/ui/components/start/NoPropertyLine2.jsx';
 import SliderLine from '/imports/ui/components/start/SliderLine.jsx';
 import RecapLine from '/imports/ui/components/start/RecapLine.jsx';
+import RecapLine2 from '/imports/ui/components/start/RecapLine2.jsx';
+
 
 import EmailLine from '/imports/ui/components/start/EmailLine.jsx';
 import PasswordLine from '/imports/ui/components/start/PasswordLine.jsx';
@@ -41,6 +43,9 @@ const styles = {
     overflow: 'visible',
     display: 'inline-block',
     width: '100%',
+  },
+  noGender: {
+    display: 'none',
   },
 };
 
@@ -208,7 +213,7 @@ export default class StartPage extends Component {
     let lines;
     if (this.state.propertyKnown) {
       lines = [BorrowerCountLine, AgeLine, GenderLine, PurchaseTypeLine, Line4, Line5, BonusLine,
-        PropertyValueLine, CashConfirmLine, MaxCashLine, MaxDebtLine, SliderLine, RecapLine,
+        PropertyValueLine, CashConfirmLine, RecapLine2,
         EmailLine, PasswordLine,
       ];
     } else {
@@ -224,7 +229,14 @@ export default class StartPage extends Component {
             <Scroll.Element
               name={`scroll${index}`}
               key={index}
-              style={styles.scrollElement}
+              style={
+                index !== 2 ?
+                  styles.scrollElement :
+                  (this.state.genderRequired ?
+                    styles.scrollElement :
+                      styles.noGender
+                  )
+               }
             >
               <ComponentX
                 {...this.state}

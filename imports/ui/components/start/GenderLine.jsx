@@ -158,7 +158,7 @@ export default class GenderLine extends Component {
       );
     }
     // If gender is not required, return null
-    return null;
+    return <div style={{display: 'none'}}></div>;
   }
 }
 

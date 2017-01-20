@@ -7,10 +7,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { toMoney } from '/imports/js/finance-math';
 
 const styles = {
-  section: {
-    display: 'inline-block',
-    width: '100%',
-  },
   mainSlider: {
     width: '80%',
   },
@@ -30,7 +26,7 @@ export default class FortuneSliders extends Component {
     this.state = {
       fortune: 1,
       insuranceFortune: 0,
-      propertyValue: 1000000,
+      propertyValue: 1000000
     };
 
     this.handleChange1 = this.handleChange1.bind(this);
@@ -61,7 +57,7 @@ export default class FortuneSliders extends Component {
     const fortuneRatio = cashRatio - insuranceRatio;
 
     return (
-      <section style={styles.section}>
+      <section>
         <h1>Propriété de CHF {toMoney(this.state.propertyValue)}</h1>
         <div className="property-value">
           <h2 className="loan text-center" style={{ width: `${this.state.fortune * 80}%` }} >
