@@ -79,8 +79,11 @@ export default class Line7_2 extends Component {
             (this.props.twoBuyers ? 'nous devons ' : 'je dois ')
           }
           {this.props.propertyKnown &&
-            `donc mettre au moins CHF
-            ${this.state.minFortune} en fonds propres.`
+            <span>
+              donc mettre au moins&nbsp;
+              <span className="value">CHF {this.state.minFortune}</span>
+              &nbsp;en fonds propres.
+            </span>
           }
         </h1>
 

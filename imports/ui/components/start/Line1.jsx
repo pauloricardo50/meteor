@@ -15,7 +15,7 @@ const styles = {
 };
 
 
-export default class Line1 extends Component {
+export default class BorrowerCountLine extends Component {
   constructor(props) {
     super(props);
 
@@ -46,7 +46,7 @@ export default class Line1 extends Component {
       });
     } else {
       this.setState({
-        text: 'un-e emprunteur-se,',
+        text: 'un emprunteur,',
       });
     }
   }
@@ -57,13 +57,13 @@ export default class Line1 extends Component {
 
         <h1 className={this.props.classes.text}>
           {this.props.twoBuyers ? 'Nous sommes ' : 'Je suis '}
-          {this.state.text}
+          <span className="value">{this.state.text}</span>
         </h1>
 
         {this.props.step === this.props.index &&
           <div className={this.props.classes.extra} style={styles.extra}>
             <RaisedButton
-              label="Un-e emprunteur-se"
+              label="Un emprunteur"
               style={styles.button}
               primary={!this.state.text}
               onClick={e => this.changeState(e, false)}
@@ -81,7 +81,7 @@ export default class Line1 extends Component {
   }
 }
 
-Line1.propTypes = {
+BorrowerCountLine.propTypes = {
   step: PropTypes.number.isRequired,
   setStep: PropTypes.func.isRequired,
   setStateValue: PropTypes.func.isRequired,

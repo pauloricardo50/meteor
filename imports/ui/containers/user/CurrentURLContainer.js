@@ -24,20 +24,25 @@ function composer2(props, onData) {
   if (Meteor.subscribe('activeLoanRequest').ready()) {
     const loanRequest = LoanRequests.find({}).fetch()[0];
 
-    // if (!loanRequest) {
-    //   return;
-    // }
-
     onData(null, { loanRequest });
   }
 }
 
-const container1 = composeWithTracker(composer1, LoadingNone)(_RequestProgressBar);
-const container2 = composeWithTracker(composer1, LoadingNone)(_SideNav);
+function composer3(props, onData) {
+  if (Meteor.subscribe('currentUser').ready()) {
+    const currentUser = Meteor.users.find().fetch()[0];
+
+    onData(null, { currentUser });
+  }
+}
+
+const RequestProgressBar1 = composeWithTracker(composer1, LoadingNone)(_RequestProgressBar);
+const RequestProgressBar2 = composeWithTracker(composer2, LoadingNone)(RequestProgressBar1);
+export const RequestProgressBar = composeWithTracker(composer3, LoadingNone)(RequestProgressBar2);
+
+const SideNav1 = composeWithTracker(composer1, LoadingNone)(_SideNav);
 export const AdminNav = composeWithTracker(composer1)(_AdminNav);
 
-export const RequestProgressBar = composeWithTracker(composer2, LoadingNone)(container1);
-export const SideNav = composeWithTracker(composer2, LoadingNone)(container2);
-// export const AdminNav = composeWithTracker(composer2, LoadingNone)(container3);
+export const SideNav = composeWithTracker(composer2, LoadingNone)(SideNav1);
 
 export const BottomNav = composeWithTracker(composer1, LoadingNone)(_BottomNav);

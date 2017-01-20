@@ -67,7 +67,7 @@ export default class Line4 extends Component {
           et la propriété
           {this.props.purchaseType ? ' sera ' : ' est '}
           utilisée comme
-          {this.state.text}
+          <span className="value">{this.state.text}</span>
         </h1>
 
         {this.props.step === this.props.index &&

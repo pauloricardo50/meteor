@@ -72,7 +72,7 @@ export default class Step2Start extends Component {
 
         <div className="col-xs-12">
           <div className="form-group text-center">
-            <RaisedButton label="Commencer" primary onClick={this.startAuction} />
+            <RaisedButton label="Commencer les enchères" primary onClick={this.startAuction} />
           </div>
           <div className="form-group text-center">
             <RaisedButton label="Pas maintenant" onClick={() => FlowRouter.go('/step1')} />

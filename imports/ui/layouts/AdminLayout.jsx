@@ -5,6 +5,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Roles } from 'meteor/alanning:roles';
 
 import { AdminNav } from '/imports/ui/containers/user/CurrentURLContainer.js';
+import Unauthorized from '/imports/ui/components/general/Unauthorized.jsx';
 
 
 // MUI Theme, replace lightBaseTheme with a custom theme ASAP!
@@ -17,7 +18,7 @@ const theme = myTheme;
 
 export default class AdminLayout extends Component {
   render() {
-    if (Meteor.userId() && Roles.userIsInRole(Meteor.userId(), 'admin')) {
+    if (this.props.currentUser && Roles.userIsInRole(this.props.currentUser, 'admin')) {
       return (
         <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
           <div>
@@ -35,8 +36,13 @@ export default class AdminLayout extends Component {
         </MuiThemeProvider>
       );
     } else {
-      FlowRouter.go('/');
-      return null;
+      return (
+        <Unauthorized
+          message="Connectez-vous d'abord!"
+          label="Login"
+          href="/login"
+        />
+      );
     }
   }
 }
@@ -44,4 +50,5 @@ export default class AdminLayout extends Component {
 AdminLayout.propTypes = {
   content: PropTypes.element.isRequired,
   extraContent: PropTypes.element,
+  currentUser: PropTypes.objectOf(PropTypes.any),
 };

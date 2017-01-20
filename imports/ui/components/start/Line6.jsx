@@ -121,7 +121,9 @@ export default class Line6 extends Component {
       this.props.bonusExists ?
       (this.props.twoBuyers ? 'gagnons' : 'gagne') + ' un bonus annuel moyen de'
       :
-      (this.props.twoBuyers ? 'ne gagnons pas de bonus.' : 'ne gagne pas de bonus.')
+      (<span className="value">
+        {this.props.twoBuyers ? 'ne gagnons pas de bonus.' : 'ne gagne pas de bonus.'}
+      </span>)
     );
 
     return (
@@ -134,21 +136,23 @@ export default class Line6 extends Component {
           {/* The text constant after the user has chosen an answer */}
           {this.state.bonusSelected ? textAfterSelected : ''}
           {this.props.bonusExists &&
-            <TextField
-              style={styles.textField}
-              name="bonus"
-              value={this.props.bonus}
-              onChange={this.handleChange}
-              errorText={this.state.error ? ' ' : ''}
-            >
-              <MaskedInput
-                mask={swissFrancMask}
-                guide
-                placeholder="CHF"
-                autoFocus
-                pattern="[0-9]*"
-              />
-            </TextField>
+            <span className="value">
+              <TextField
+                style={styles.textField}
+                name="bonus"
+                value={this.props.bonus}
+                onChange={this.handleChange}
+                errorText={this.state.error ? ' ' : ''}
+              >
+                <MaskedInput
+                  mask={swissFrancMask}
+                  guide
+                  placeholder="CHF"
+                  autoFocus
+                  pattern="[0-9]*"
+                />
+              </TextField>
+            </span>
           }
         </h1>
         <h4 className={this.props.classes.errorText}>{this.state.error}</h4>

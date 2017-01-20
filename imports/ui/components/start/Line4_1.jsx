@@ -64,7 +64,7 @@ export default class Line4_1 extends Component {
 
         <h1 className={this.props.classes.text}>
           Ce projet sera
-          {this.state.text}
+          <span className="value">{this.state.text}</span>
         </h1>
 
         {this.props.step === this.props.index &&

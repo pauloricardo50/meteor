@@ -15,8 +15,8 @@ import Person from 'material-ui/svg-icons/social/person';
 // a partner link for partners,
 // a home, settings, and contact link for regular users
 const TopNavDropdown = props => (
-  (props.currentUser || props.public === false ?
-    <IconMenu
+  props.currentUser ?
+    (<IconMenu
       iconButtonElement={<IconButton><Person color="#333333" hoverColor="#888888" /></IconButton>}
       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       targetOrigin={{ horizontal: 'right', vertical: 'top' }}
@@ -37,17 +37,8 @@ const TopNavDropdown = props => (
       <Divider />
       <MenuItem primaryText="Déconnexion" onClick={() => Meteor.logout(() => FlowRouter.go('/'))} />
     </IconMenu>
-
-  :
-
-    <IconMenu
-      iconButtonElement={<IconButton><Person color="#333333" hoverColor="#888888" /></IconButton>}
-      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-      targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-    >
-      <MenuItem primaryText="Connexion" href="/login" />
-    </IconMenu>
-  )
+  ) :
+  null
 );
 
 TopNavDropdown.propTypes = {

@@ -156,7 +156,7 @@ export default class BorrowerCountSwitch extends Component {
           open={this.state.modalIsOpen}
         >
           Si vous passez de deux emprunteurs à un emprunteur, toutes les données que vous avez
-          entrées pour cet emprunteur seront effacées.
+          entrées pour le 2ème emprunteur seront effacées.
         </Dialog>
       </div>
     );

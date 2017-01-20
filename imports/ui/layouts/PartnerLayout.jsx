@@ -5,7 +5,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Roles } from 'meteor/alanning:roles';
 
 import { PublicNav } from '/imports/ui/containers/public/CurrentUserContainer.js';
-import RaisedButton from 'material-ui/RaisedButton';
+import Unauthorized from '/imports/ui/components/general/Unauthorized.jsx';
 
 
 // MUI Theme, replace lightBaseTheme with a custom theme ASAP!
@@ -16,14 +16,10 @@ import myTheme from '/imports/js/mui_custom.js';
 const theme = myTheme;
 
 export default class PartnerLayout extends Component {
-  routeToLogin() {
-    Session.set('postLoginPath', FlowRouter.current().path)
-    FlowRouter.go('/login');
-  }
-
   render() {
-    if (Meteor.userId() &&
-      (Roles.userIsInRole(Meteor.userId(), 'admin') || Roles.userIsInRole(Meteor.userId(), 'partner'))
+    if (this.props.currentUser &&
+      (Roles.userIsInRole(this.props.currentUser, 'admin') ||
+      Roles.userIsInRole(this.props.currentUser, 'partner'))
     ) {
       return (
         <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
@@ -37,22 +33,21 @@ export default class PartnerLayout extends Component {
           </div>
         </MuiThemeProvider>
       );
-    } else if (Meteor.userId()) {
+    } else if (this.props.currentUser) {
       return (
-        <div className="text-center">
-          <h1>On dirait qu&apos;il y a eu une erreur!</h1>
-          <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
-            <RaisedButton
-              label="Retour"
-              href="/"
-              primary
-            />
-          </MuiThemeProvider>
-        </div>
+        <Unauthorized
+          message="Oops, on dirait que vous vous êtes égaré."
+        />
       );
     } else {
-      this.routeToLogin();
-      return null;
+      Session.set('postLoginPath', FlowRouter.current().path)
+      return (
+        <Unauthorized
+          message="Connectez-vous d'abord!"
+          label="Login"
+          href="/login"
+        />
+      );
     }
   }
 }

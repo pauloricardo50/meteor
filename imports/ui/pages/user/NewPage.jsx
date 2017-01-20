@@ -130,11 +130,8 @@ export default class NewPage extends Component {
   render() {
     return (
       <section className="mask1 animated fadeIn newPage col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-        <h2>Bienvenue, continuons!</h2>
-        <p>
-          Entrez la rue où se trouve votre future propriété,
-          ce sera le titre de votre projet hypothécaire.
-        </p>
+        <h2>Donnez un nom à ce projet!</h2>
+        <h4>Entrez le nom de la rue et le numéro.</h4>
         <form onSubmit={this.newRequest}>
           <div className="text-center">
             <TextField

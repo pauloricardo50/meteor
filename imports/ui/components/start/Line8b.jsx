@@ -76,20 +76,22 @@ export default class Line8b extends Component {
           <span>
             {this.props.twoBuyers ? 'mais nous avons ' : 'mais j\'ai '}
             à disposition
-            <TextField
-              style={styles.textField}
-              name="fortune"
-              value={this.props.fortune}
-              onChange={this.handleFortuneChange}
-            >
-              <MaskedInput
-                mask={swissFrancMask}
-                guide
-                placeholder="CHF"
-                pattern="[0-9]*"
-                autoFocus
-              />
-            </TextField>
+            <span className="value">
+              <TextField
+                style={styles.textField}
+                name="fortune"
+                value={this.props.fortune}
+                onChange={this.handleFortuneChange}
+              >
+                <MaskedInput
+                  mask={swissFrancMask}
+                  guide
+                  placeholder="CHF"
+                  pattern="[0-9]*"
+                  autoFocus
+                />
+              </TextField>
+            </span>
             de fortune personelle
           </span>
           {/* Once some bit of fortune has been entered, show the rest of the sentence */}

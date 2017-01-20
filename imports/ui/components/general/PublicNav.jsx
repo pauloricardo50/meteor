@@ -1,11 +1,7 @@
-import React, { Component, PropTypes } from 'react';
-import { FlowRouter } from 'meteor/kadira:flow-router';
+import React, { PropTypes } from 'react';
 
 import AppBar from 'material-ui/AppBar';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import IconButton from 'material-ui/IconButton';
-import Person from 'material-ui/svg-icons/social/person';
+import FlatButton from 'material-ui/FlatButton';
 
 
 import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown.jsx';
@@ -37,7 +33,10 @@ const PublicNav = props => (
   <div className="public-nav">
     <AppBar
       style={styles.navbar}
-      iconElementRight={<TopNavDropdown public currentUser={props.currentUser} />}
+      iconElementRight={props.currentUser ?
+        <TopNavDropdown public currentUser={props.currentUser} /> :
+        <FlatButton label="Connexion" href="/login" secondary labelStyle={{ color: '#4A90E2' }} />
+      }
       iconStyleLeft={{ display: 'none' }}
     >
       <a href="/" style={styles.imageDiv}>

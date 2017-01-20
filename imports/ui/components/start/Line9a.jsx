@@ -95,7 +95,9 @@ export default class Line9a extends Component {
           {this.props.propertyType === 'primary' ? 'et emprunter ' :
             (this.props.twoBuyers ? 'Nous voudrions emprunter ' : 'Je voudrais emprunter ')
           }
-          {this.state.text}
+          <span className="value">
+            {this.state.text}
+          </span>
         </h1>
 
         {this.props.step === this.props.index ?

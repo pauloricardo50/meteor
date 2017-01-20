@@ -114,9 +114,10 @@ export default class Line3 extends Component {
 
           <h1 className={this.props.classes.text}>
             {this.props.twoBuyers ? 'Nous sommes ' : 'Je suis '}
-            {this.props.gender1 ? this.state.gender1Text : '..'}
+            {this.props.gender1 ? <span className="value">{this.state.gender1Text}</span> : '..'}
             {this.props.twoBuyers ? ' et ' : '.'}
-            {this.props.twoBuyers && (this.props.gender2 ? this.state.gender2Text : '..')}
+            {this.props.twoBuyers && (this.props.gender2 ?
+              <span className="value">{this.state.gender2Text}</span> : '..')}
             {this.props.twoBuyers ? ' respectivement.' : ''}
           </h1>
 

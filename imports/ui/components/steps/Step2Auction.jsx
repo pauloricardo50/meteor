@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
 import PartnerOffersTable from '/imports/ui/components/general/PartnerOffersTable.jsx';
-import Loading from '/imports/ui/components/general/Loading.jsx';
+import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
 
 require('moment-duration-format');
 
@@ -74,7 +74,7 @@ export default class Step2Auction extends Component {
         {this.partnerOffers ? null : (
           <div>
             <p className="secondary bold text-center animated pulse infinite">Bataille des prêteurs en cours</p>
-            <Loading />
+            <LoadingComponent />
           </div>
         )}
       </section>

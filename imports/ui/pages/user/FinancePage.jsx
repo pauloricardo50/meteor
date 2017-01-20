@@ -38,45 +38,55 @@ export default class FinancePage extends Component {
 
   render() {
     return (
-      <section className="mask1 animated fadeIn" style={styles.section}>
-        <h1 style={styles.h1}>Finances</h1>
-
-        <article>
-          <h3 className="text-center">Mon Projet</h3>
-          {/* <PropertyChart loanRequest={this.props.loanRequest} /> */}
-          <ProjectChart
-            horizontal
-            name={this.props.loanRequest.property.address1}
-            propertyValue={this.props.loanRequest.property.value}
-            fortuneUsed={this.props.loanRequest.general.fortuneUsed}
-            insuranceFortuneUsed={this.props.loanRequest.general.insuranceFortuneUsed}
+      <div>
+        <div className="form-group">
+          <RaisedButton
+            icon={<span className="fa fa-angle-left" />}
+            label="Retour"
+            className="animated slideInLeft"
+            href="/main"
           />
-        </article>
+        </div>
+        <section className="mask1 animated fadeIn" style={styles.section}>
+          <h1 style={styles.h1}>Finances</h1>
 
-        <article>
-          <h3 className="text-center">Coût Mensuel Estimé*</h3>
-          <p className="text-center">*Taux d'intérêt fictif de 1.5%</p>
-          <ExpensesChart loanRequest={this.props.loanRequest} />
-        </article>
-
-        <article style={styles.modify} className="col-xs-12">
-          <h3 className="text-center" style={styles.h3}>Modifier</h3>
-          <div className="col-xs-6 text-center">
-            <RaisedButton
-              label="Modifier Fonds Propres"
-              primary
+          <article>
+            <h3 className="text-center">Mon Projet</h3>
+            {/* <PropertyChart loanRequest={this.props.loanRequest} /> */}
+            <ProjectChart
+              horizontal
+              name={this.props.loanRequest.property.address1}
+              propertyValue={this.props.loanRequest.property.value}
+              fortuneUsed={this.props.loanRequest.general.fortuneUsed}
+              insuranceFortuneUsed={this.props.loanRequest.general.insuranceFortuneUsed}
             />
-          </div>
-          <div className="col-xs-6 text-center">
-            <RaisedButton
-              href="/finance/strategy"
-              label="Choisir Stratégie de Taux"
-              primary
-            />
-          </div>
-        </article>
+          </article>
 
-      </section>
+          <article>
+            <h3 className="text-center">Coût Mensuel Estimé*</h3>
+            <p className="text-center">*Taux d'intérêt fictif de 1.5%</p>
+            <ExpensesChart loanRequest={this.props.loanRequest} />
+          </article>
+
+          <article style={styles.modify} className="col-xs-12">
+            <h3 className="text-center" style={styles.h3}>Modifier</h3>
+            <div className="col-xs-6 text-center">
+              <RaisedButton
+                label="Modifier Fonds Propres"
+                primary
+              />
+            </div>
+            <div className="col-xs-6 text-center">
+              <RaisedButton
+                href="/finance/strategy"
+                label="Choisir Stratégie de Taux"
+                primary
+              />
+            </div>
+          </article>
+
+        </section>
+      </div>
     );
   }
 }

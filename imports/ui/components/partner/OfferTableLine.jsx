@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
 
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 
 import { toMoney } from '/imports/js/finance-math.js';
 import Countdown from '/imports/ui/components/general/Countdown.jsx';
@@ -30,7 +30,7 @@ export default class OfferTableLine extends Component {
         <td className="left-align">hehe</td>
         <td className="right-align">haha</td>
         <td className="right-align">
-          <RaisedButton
+          <FlatButton
             label="Voir l'offre"
             onClick={this.handleClick}
           />

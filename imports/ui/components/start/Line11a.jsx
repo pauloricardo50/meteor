@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 import CountUp from 'react-countup';
 
 import RaisedButton from 'material-ui/RaisedButton';
@@ -119,7 +120,7 @@ export default class Line11a extends Component {
         <div className="hidden-sm hidden-md hidden-lg" style={styles.mobileChart}>
           <ProjectChart
             horizontal={false}
-            name="Votre Nouveau Projet"
+            name="Votre Projet"
             propertyValue={Number(this.props.propertyValue)}
             fortuneUsed={Number(this.props.fortune)}
             insuranceFortuneUsed={Number(this.props.insuranceFortune)}
@@ -129,7 +130,7 @@ export default class Line11a extends Component {
         <div className="hidden-xs">
           <ProjectChart
             horizontal
-            name="Votre Nouveau Projet"
+            name="Votre Projet"
             propertyValue={Number(this.props.propertyValue)}
             fortuneUsed={Number(this.props.fortune)}
             insuranceFortuneUsed={Number(this.props.insuranceFortune)}

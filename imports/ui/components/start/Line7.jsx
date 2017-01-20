@@ -109,24 +109,26 @@ export default class Line7 extends Component {
       <article onClick={this.props.setStep}>
         <h1 className={this.props.classes.text}>
           {this.props.propertyKnown ?
-            'J\'aimerais acheter une propriété qui vaut' : 'Je ne connais pas encore la valeur de la propriété'
+            'J\'aimerais acheter une propriété d\'une valeur de' : 'Je ne connais pas encore la valeur de la propriété'
           }
           {this.props.propertyKnown &&
-            <TextField
-              style={styles.textField}
-              name="propertyValue"
-              value={this.props.propertyValue}
-              onChange={this.handleChange}
-              errorText={this.state.error ? ' ' : ''}
-            >
-              <MaskedInput
-                mask={swissFrancMask}
-                guide
-                placeholder="CHF"
-                autoFocus={!this.props.bonusExists}
-                pattern="[0-9]*"
-              />
-            </TextField>
+            <span className="value">
+              <TextField
+                style={styles.textField}
+                name="propertyValue"
+                value={this.props.propertyValue}
+                onChange={this.handleChange}
+                errorText={this.state.error ? ' ' : ''}
+              >
+                <MaskedInput
+                  mask={swissFrancMask}
+                  guide
+                  placeholder="CHF"
+                  autoFocus={!this.props.bonusExists}
+                  pattern="[0-9]*"
+                />
+              </TextField>
+            </span>
           }
           {this.props.propertyKnown && ','}
         </h1>

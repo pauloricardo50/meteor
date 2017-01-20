@@ -130,18 +130,20 @@ export default class EmailLine extends Component {
             ' est'
           }
           &nbsp;
-          <TextField
-            style={styles.textField}
-            name="email"
-            value={this.props.email}
-            onChange={this.handleChange}
-          >
-            <MaskedInput
-              mask={emailMask}
-              guide
-              autoFocus
-            />
-          </TextField>
+          <span className="value">
+            <TextField
+              style={styles.textField}
+              name="email"
+              value={this.props.email}
+              onChange={this.handleChange}
+            >
+              <MaskedInput
+                mask={emailMask}
+                guide
+                autoFocus
+              />
+            </TextField>
+          </span>
 
           {this.state.content}
         </h1>

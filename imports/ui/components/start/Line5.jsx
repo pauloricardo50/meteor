@@ -92,21 +92,23 @@ export default class Line5 extends Component {
           Le total de
           {this.props.twoBuyers ? ' nos ' : ' mes '}
           revenus brut est de
-          <TextField
-            style={styles.textField}
-            name="salary"
-            value={this.props.salary}
-            onChange={this.handleChange}
-            errorText={this.state.error ? ' ' : ''}
-          >
-            <MaskedInput
-              mask={swissFrancMask}
-              guide
-              placeholder="CHF"
-              autoFocus
-              pattern="[0-9]*"
-            />
-          </TextField>
+          <span className="value">
+            <TextField
+              style={styles.textField}
+              name="salary"
+              value={this.props.salary}
+              onChange={this.handleChange}
+              errorText={this.state.error ? ' ' : ''}
+            >
+              <MaskedInput
+                mask={swissFrancMask}
+                guide
+                placeholder="CHF"
+                autoFocus
+                pattern="[0-9]*"
+              />
+            </TextField>
+          </span>
           par an,
         </h1>
         <h4 className={this.props.classes.errorText}>{this.state.error}</h4>

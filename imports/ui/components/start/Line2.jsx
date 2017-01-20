@@ -120,27 +120,31 @@ export default class Line2 extends Component {
       <article onClick={this.props.setStep}>
         <h1 className={this.props.classes.text}>
           {this.props.twoBuyers ? 'et nous avons' : 'et j\'ai'}
-          <TextField
-            style={styles.textField}
-            name="age1"
-            value={this.props.age1}
-            onChange={e => this.handleChange(e, 1)}
-            pattern="[0-9]*"
-            autoFocus
-            ref={(c) => { this.age1 = c; }}
-            errorText={this.state.error1}
-          />
-          {this.props.twoBuyers ? 'et' : ''}
-          {this.props.twoBuyers ?
+          <span className="value">
             <TextField
               style={styles.textField}
-              name="age2"
-              value={this.props.age2}
-              onChange={e => this.handleChange(e, 2)}
+              name="age1"
+              value={this.props.age1}
+              onChange={e => this.handleChange(e, 1)}
               pattern="[0-9]*"
-              ref={(c) => { this.age2 = c; }}
-              errorText={this.state.error2}
-            /> :
+              autoFocus
+              ref={(c) => { this.age1 = c; }}
+              errorText={this.state.error1}
+            />
+          </span>
+          {this.props.twoBuyers ? 'et' : ''}
+          {this.props.twoBuyers ?
+            <span className="value">
+              <TextField
+                style={styles.textField}
+                name="age2"
+                value={this.props.age2}
+                onChange={e => this.handleChange(e, 2)}
+                pattern="[0-9]*"
+                ref={(c) => { this.age2 = c; }}
+                errorText={this.state.error2}
+              />
+            </span> :
             null
           }
           ans.

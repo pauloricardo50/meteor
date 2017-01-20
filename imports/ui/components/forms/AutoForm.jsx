@@ -17,7 +17,6 @@ const styles = {
 
 
 export default class AutoForm extends Component {
-
   inputSwitch(singleInput, index) {
     const extraValues = {
       requestId: this.props.loanRequest._id,
@@ -113,9 +112,13 @@ export default class AutoForm extends Component {
     }
   }
 
+  handleSubmit(event) {
+    event.preventDefault();
+  }
+
   render() {
     return (
-      <form className={this.props.formClasses}>
+      <form className={this.props.formClasses} onSubmit={this.handleSubmit}>
         {this.props.inputs.map((input, index1) => this.inputSwitch(input, index1))}
       </form>
     );

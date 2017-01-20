@@ -5,6 +5,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Roles } from 'meteor/alanning:roles';
 
 import { SideNav, BottomNav } from '../containers/user/CurrentURLContainer.js';
+import Unauthorized from '/imports/ui/components/general/Unauthorized.jsx';
 
 // MUI Theme, replace lightBaseTheme with a custom theme ASAP!
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -17,16 +18,10 @@ const theme = myTheme;
 // TODO: hide navbars if there is currently no active loanRequest
 
 export default class UserLayout extends Component {
-
-  routeToLogin() {
-    Session.set('postLoginPath', FlowRouter.current().path)
-    FlowRouter.go('/login');
-  }
-
   render() {
     if (Roles.userIsInRole(this.props.currentUser, 'admin') ||
       Roles.userIsInRole(this.props.currentUser, 'partner')) {
-      return null;
+      return <Unauthorized message="Pas de partenaires ou admins ici." />;
     } else if (this.props.currentUser) {
       return (
         <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
@@ -47,8 +42,14 @@ export default class UserLayout extends Component {
         </MuiThemeProvider>
       );
     } else if (!this.props.currentUser) {
-      this.routeToLogin();
-      return null;
+      Session.set('postLoginPath', FlowRouter.current().path);
+      return (
+        <Unauthorized
+          message="Il faut être connecté pour accéder à votre compte."
+          href="/login"
+          label="Login"
+        />
+      );
     }
   }
 }

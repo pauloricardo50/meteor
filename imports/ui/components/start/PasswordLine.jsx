@@ -107,14 +107,16 @@ export default class PasswordLine extends Component {
     let content2 = null;
     let button = null;
     const textfield = (
-      <TextField
-        style={styles.textField}
-        name="email"
-        value={this.props.password}
-        onChange={this.handleChange}
-        type="password"
-        autoFocus
-      />
+      <span className="value">
+        <TextField
+          style={styles.textField}
+          name="email"
+          value={this.props.password}
+          onChange={this.handleChange}
+          type="password"
+          autoFocus
+        />
+      </span>
     );
 
 

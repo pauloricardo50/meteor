@@ -98,15 +98,6 @@ module.exports = function(props) {
               labelStyle={styles.label}
               overlayStyle={styles.button}
             />
-            <RaisedButton
-              label="Se Connecter"
-              href="/login"
-              style={styles.style}
-              buttonStyle={styles.button}
-              labelStyle={styles.label}
-              overlayStyle={styles.button}
-              primary
-            />
           </div>
         </div>
         <div className="col-6 sidedevices animated fadeInRight">
@@ -262,15 +253,6 @@ module.exports = function(props) {
               buttonStyle={styles.button}
               labelStyle={styles.label}
               overlayStyle={styles.button}
-            />
-            <RaisedButton
-              label="Se Connecter"
-              href="/login"
-              style={styles.style}
-              buttonStyle={styles.button}
-              labelStyle={styles.label}
-              overlayStyle={styles.button}
-              primary
             />
           </div>
         </div>

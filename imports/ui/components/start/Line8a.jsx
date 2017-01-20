@@ -77,7 +77,9 @@ export default class Line8a extends Component {
 
           <h1 className={this.props.classes.text}>
             {this.props.twoBuyers ? 'Nous voulons utiliser ' : 'Je veux utiliser '}
-            {this.state.text}
+            <span className="value">
+              {this.state.text}
+            </span>
           </h1>
 
           {this.props.step === this.props.index &&

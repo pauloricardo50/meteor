@@ -110,7 +110,7 @@ export default class PartnerHomePage extends Component {
             offers={this.props.currentOffers}
           /> :
           (<div className="text-center col-xs-12" style={styles.noAuctionDiv}>
-            <h2>Aucune offre à faire en ce moment.</h2>
+            <h2>Aucune nouvelle offre à faire en ce moment.</h2>
           </div>)
         }
 
