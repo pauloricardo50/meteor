@@ -54,7 +54,6 @@ fortawesome:fontawesome
 
 
 # UI tricks
-fastclick@1.0.13                       # Removes the 300ms tap delay on touch screens
 kadira:dochead                  # Set custom page titles easily
 
 

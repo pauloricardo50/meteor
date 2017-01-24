@@ -1,31 +1,36 @@
-import React, {PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 
 import Slider from 'material-ui/Slider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import { toMoney } from '/imports/js/finance-math';
 
 const styles = {
   section: {
-    marginTop: 40,
+    display: 'inline-block',
+    width: '100%',
   },
   mainSlider: {
     width: '80%',
   },
-  sliderStyle: {
-    // height: 20,
-    // color: '#50E3C2',
-    // backgroundColor: '#50E3C2',
-  },
 };
 
-export default class FortuneSliders extends React.Component {
+const muiTheme = getMuiTheme({
+  slider: {
+    // trackColor: '#50E3C2',
+    selectionColor: '#50E3C2',
+  },
+});
+
+export default class FortuneSliders extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      value1: 1,
-      value2: 0,
-      propertyValue: 1000000
+      fortune: 1,
+      insuranceFortune: 0,
+      propertyValue: 1000000,
     };
 
     this.handleChange1 = this.handleChange1.bind(this);
@@ -34,33 +39,42 @@ export default class FortuneSliders extends React.Component {
   }
 
   handleChange1(event, value) {
-    this.setState({ value1: value });
+    this.setState({ fortune: value });
   }
   handleChange2(event, value) {
-    this.setState({ value2: value });
+    this.setState({ insuranceFortune: value });
   }
 
   getWidth() {
-    const value = this.state.value1;
+    const value = this.state.fortune;
     let baseWidth = 20;
 
     baseWidth += (1 - value) * 80;
 
-    return baseWidth;
+    return baseWidth - 10;
   }
 
   render() {
-    const cash = this.state.propertyValue * (1 - (this.state.value1 * 0.8));
+    const cashRatio = 1 - (this.state.fortune * 0.8);
+    const insuranceRatio = this.state.insuranceFortune ?
+      this.state.insuranceFortune * (cashRatio - 0.1) : 0;
+    const fortuneRatio = cashRatio - insuranceRatio;
 
     return (
-      <section className="col-xs-12 col-sm-8 col-sm-offset-2 mask1" style={styles.section}>
+      <section style={styles.section}>
         <h1>Propriété de CHF {toMoney(this.state.propertyValue)}</h1>
         <div className="property-value">
-          <div className="loan" style={{ width: `${this.state.value1 * 80}%` }} />
+          <h2 className="loan text-center" style={{ width: `${this.state.fortune * 80}%` }} >
+            CHF 100&apos;000
+          </h2>
 
-          <div className="insurance" style={{ width: `${
-            (this.state.value1 * 80) + ((1 - (this.state.value1 * 0.8)) * this.state.value2 * 100)
-          }%` }} />
+          <div
+            className="insurance"
+            style={{ width: `${
+              (this.state.fortune * 80) +
+              ((0.9 - (this.state.fortune * 0.8)) * this.state.insuranceFortune * 100)
+            }%` }}
+          />
 
           <div className="vertical-line" />
 
@@ -76,24 +90,26 @@ export default class FortuneSliders extends React.Component {
           </div>
 
           <div className="slider2" style={{ width: `${this.getWidth()}%` }}>
-            <Slider
-              min={0}
-              max={1}
-              onChange={this.handleChange2}
-              ref={(c) => { this.slider2 = c; }}
-              sliderStyle={styles.sliderStyle}
-            />
+            <MuiThemeProvider muiTheme={muiTheme}>
+              <Slider
+                min={0}
+                max={1}
+                onChange={this.handleChange2}
+                ref={(c) => { this.slider2 = c; }}
+                sliderStyle={styles.sliderStyle}
+              />
+            </MuiThemeProvider>
           </div>
         </div>
         <div className="col-xs-12 values">
           <p>Emprunt</p>
-          <h2>CHF {toMoney(Math.round(this.state.value1 * this.state.propertyValue * 0.8))}</h2>
+          <h2>CHF {toMoney(Math.round(this.state.propertyValue * (1 - cashRatio)))}</h2>
           <p>Cash</p>
-          <h2>CHF {toMoney(Math.round(cash * (1 - this.state.value2)))}</h2>
+          <h2>CHF {toMoney(Math.round(this.state.propertyValue * fortuneRatio))}</h2>
           <p>2ème pilier</p>
-          <h2>CHF {toMoney(Math.round(cash * this.state.value2))}</h2>
+          <h2>CHF {toMoney(Math.round(this.state.propertyValue * insuranceRatio))}</h2>
           <p>Prêteurs</p>
-          <h2>{this.state.value1 > 0.7 / 0.8 ? '10' : '20'}</h2>
+          <h2>{this.state.fortune > 0.7 / 0.8 ? '10' : '20'}</h2>
         </div>
       </section>
     );

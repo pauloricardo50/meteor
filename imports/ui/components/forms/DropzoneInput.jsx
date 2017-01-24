@@ -26,7 +26,7 @@ export default class DropzoneInput extends Component {
     this.componentConfig = {
       iconFiletypes: ['.jpg', '.png', '.gif'],
       showFiletypeIcon: true,
-      postUrl: '/uploadHandler',
+      postUrl: 'no-url',
     };
 
     this.djsConfig = {
@@ -57,6 +57,6 @@ export default class DropzoneInput extends Component {
 }
 
 DropzoneInput.propTypes = {
-  fileName: PropTypes.string.isRequired,
+  fileRename: PropTypes.string.isRequired,
   requestId: PropTypes.string.isRequired,
 };
