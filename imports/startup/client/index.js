@@ -4,9 +4,9 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import { T9n } from 'meteor/softwarerero:accounts-t9n';
 
 
-import './routes.js';
-import '../useraccounts-configuration.js';
-
+import './routes';
+import '../useraccounts-configuration';
+import '../meteor-slingshot';
 
 // getUserLanguage = function () {
 //   // Put here the logic for determining the user language

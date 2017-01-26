@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
+import { Slingshot } from 'meteor/edgee:slingshot';
 import { updateValues } from '/imports/api/loanrequests/methods.js';
 
 import DropzoneComponent from 'react-dropzone-component';
@@ -10,23 +11,44 @@ export default class DropzoneInput extends Component {
     super(props);
 
     this.componentConfig = {
-      iconFiletypes: ['.jpg', '.png', '.gif', '.pdf'],
+      iconFiletypes: ['.jpg', '.png', '.pdf'],
       showFiletypeIcon: true,
-      postUrl: 'no-url',
+      postUrl: '/', // Modified later
     };
 
     this.djsConfig = {
       // Automatically starts processing files, else you have to callmyDropZone.processQueue()
+      method: 'put',
       autoProcessQueue: true,
-      dictDefaultMessage: 'Déposez un fichier ici ou cliquez pour uploader',
-      maxFilesize: 50, // MB
+      dictDefaultMessage: 'Déposez un fichier ici ou cliquez pour en choisir un',
+      maxFilesize: 100, // MB
       clickable: true, // Lets you click the dropzone
       acceptedFiles: 'image/*,application/pdf',
-      renameFileName: this.props.fileRename,
+      renameFileName: this.props.fileRename || 'myFile',
+      parallelUploads: 1,
+      uploadMultiple: false,
+      accept(file, done) {
+        const upload = new Slingshot.Upload('myFileUploads');
+        const options = this.options;
+
+        upload.file = file;
+        upload.request((error, instructions) => {
+          if (error) {
+            done(error.message);
+          } else {
+            options.url = instructions.upload + '/' + instructions.postData[0].value;
+            file.postData = instructions.postData;
+            done();
+          }
+        });
+      },
     };
 
     this.eventHandlers = {
-      // addedfile: file => handleFileUpload(file),
+      success: (file, response) => {
+        console.log(response);
+        console.log(file);
+      },
     };
   }
 

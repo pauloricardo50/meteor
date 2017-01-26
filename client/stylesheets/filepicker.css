@@ -35,7 +35,7 @@ div.filepicker {
 
     content: '';
 
-    border: solid 2px #7F7F7F;
+    border: solid 1px #C7C7C7;
     border-radius: 2px;
 }
 .filepicker-file-icon::after
@@ -55,7 +55,7 @@ div.filepicker {
     letter-spacing: 1px;
     text-transform: uppercase;
 
-    color: rgba(36, 43, 48, 1.0);
+    color: white;
     background-color: #4A90E2;
     border-radius: 2px;
 }
