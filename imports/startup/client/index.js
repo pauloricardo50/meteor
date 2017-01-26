@@ -29,4 +29,6 @@ if (Meteor.isClient) {
   });
 }
 
-// injectTapEventPlugin();
+// Very important for all advanced tap/react/buttons/material-ui to work.
+// Might not be required in future react versions
+injectTapEventPlugin();

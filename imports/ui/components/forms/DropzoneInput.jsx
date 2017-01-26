@@ -5,26 +5,12 @@ import { updateValues } from '/imports/api/loanrequests/methods.js';
 import DropzoneComponent from 'react-dropzone-component';
 
 
-// const options = {
-//   paramName: 'file', // The name that will be used to transfer the file
-//   maxFilesize: 2, // MB
-//   dictDefaultMessage: 'Déposez un fichier ici ou cliquez pour uploader',
-//   accept(file, done) {
-//     if (file.name === 'justinbieber.jpg') {
-//       done('We won\'t accept that!');
-//     } else {
-//       done();
-//     }
-//   },
-// };
-
-
 export default class DropzoneInput extends Component {
   constructor(props) {
     super(props);
 
     this.componentConfig = {
-      iconFiletypes: ['.jpg', '.png', '.gif'],
+      iconFiletypes: ['.jpg', '.png', '.gif', '.pdf'],
       showFiletypeIcon: true,
       postUrl: 'no-url',
     };

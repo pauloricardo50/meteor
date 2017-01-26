@@ -20,8 +20,8 @@ shell-server@0.2.1            # Server-side component of the `meteor shell` comm
 # dev, place this on top to allow meteor toys to work
 meteortoys:allthings            # Most awesome dev tools, shows you Session and mongoDB data
 stolinski:stylus-multi          # CSS PreCompiler for Stylus
-gadicc:blaze-react-component    # Allows using blaze templates in react, should be removed at some point
-aldeed:template-extension       # allows Template.xx.replaces, should be removed at some point
+# gadicc:blaze-react-component    # Allows using blaze templates in react, should be removed at some point
+# aldeed:template-extension       # allows Template.xx.replaces, should be removed at some point
 
 # User Accounts
 accounts-password@1.3.3               # Basic accounts package from Meteor
@@ -35,9 +35,9 @@ zetoff:accounts-material-ui
 mdg:validated-method            # MDG written server-side validation before storing
 check@1.2.4                           # variable type verification for server side validation
 session@1.1.7                         # Lets you use Session variables
-ostrio:files
 aldeed:collection2-core@2.0.0
 aldeed:schema-index
+edgee:slingshot
 
 
 # Routing
@@ -50,7 +50,6 @@ softwarerero:accounts-t9n
 
 # Icons
 fortawesome:fontawesome
-
 
 
 # UI tricks

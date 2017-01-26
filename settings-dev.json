@@ -1,0 +1,10 @@
+{
+  "AWSAccessKeyId": "AKIAJTU477K5SZQIDI3A",
+  "AWSSecretAccessKey": "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",
+  "AWSRegion": "eu-central-1",
+  "S3Bucket": "e-potek-dev",
+  "kadira": {
+      "appId": "ezda4FKFStEq2udsb",
+      "appSecret": "cbacc7e2-7048-4396-95bb-b26c70c332e7"
+  }
+}
