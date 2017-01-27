@@ -7,6 +7,7 @@ import RadioInput from '../forms/RadioInput.jsx';
 import SelectFieldInput from '../forms/SelectFieldInput.jsx';
 import ConditionalInput from '../forms/ConditionalInput.jsx';
 import DateInput from '../forms/DateInput.jsx';
+import DropzoneInput from '../forms/DropzoneInput.jsx';
 
 
 const styles = {
@@ -102,6 +103,14 @@ export default class AutoForm extends Component {
       case 'DateInput':
         return (
           <DateInput
+            {...singleInput}
+            {...extraValues}
+            key={index}
+          />
+        );
+      case 'DropzoneInput':
+        return (
+          <DropzoneInput
             {...singleInput}
             {...extraValues}
             key={index}

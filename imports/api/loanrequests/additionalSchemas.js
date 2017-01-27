@@ -1,6 +1,7 @@
 import 'babel-polyfill';
 import SimpleSchema from 'simpl-schema';
 
+import { GeneralFilesSchema, BorrowerFilesSchema, PropertyFilesSchema } from './FileSchemas';
 
 export const GeneralSchema = new SimpleSchema({
   purchaseType: { // acquisition, refinancing, construction
@@ -93,6 +94,10 @@ export const GeneralSchema = new SimpleSchema({
   borrowersHaveSameAddress: {
     type: Boolean,
     defaultValue: true,
+  },
+  files: {
+    type: GeneralFilesSchema,
+    defaultValue: {},
   },
 });
 
@@ -260,9 +265,9 @@ export const BorrowerSchema = new SimpleSchema({
     min: 0,
     max: 100000000,
   },
-  files: { // TODO
-    type: Object,
-    optional: true,
+  files: {
+    type: BorrowerFilesSchema,
+    defaultValue: {},
   },
 });
 

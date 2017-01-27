@@ -9,13 +9,13 @@ Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
   authorize() { // Don't use arrow function, this is the current object here
     // Deny uploads if user is not logged in.
     if (!this.userId) {
-      throw new Meteor.Error('Login Required', 'Please login before posting files');
+      throw new Meteor.Error('Login Required', 'Please login before uploading files');
     }
 
     return true;
   },
 
-  key(file) {
+  key(file, props) {
     // Store file into a directory by the user's username.
     const request = LoanRequests.findOne({
       userId: this.userId,
@@ -25,6 +25,6 @@ Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
       throw new Meteor.Error('Loan Request Not Found', 'No active request could be found for this user');
     }
 
-    return `${request._id}/${file.name}`;
+    return `${request._id}/${props.folderName}/${file.name}`;
   },
 });
