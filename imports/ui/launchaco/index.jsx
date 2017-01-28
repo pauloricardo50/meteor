@@ -74,14 +74,15 @@ module.exports = function(props) {
       <div className="container-sml text-center">
         <div className="col-12">
           <h1 className="heading animated fadeInDown">
-            La meilleure hypothèque, Simplement.
+            La meilleure hypothèque, tout simplement.
           </h1>
+
         </div>
       </div>
       <div className="container-lrg flex">
         <div className="col-6 centervertical animated fadeInLeft">
           <h2 className="paragraph bold">
-            Mettez tous les prêteurs en compétition et trouvez le meilleur financement du pays pour votre future propriété
+            Mettez votre prêt hypothécaire aux enchères.
           </h2>
           <div className="ctas">
             {/* <a className="ctas-button" href="/start">
@@ -132,21 +133,21 @@ module.exports = function(props) {
       <div className="container-lrg flex">
         <div className="col-4">
           <b className="emoji">
-            🖥
+            <span className="fa fa-calculator" />
           </b>
           <h3 className="subheading">
-            Montez votre dossier hypothécaire en ligne
+            1. Testez votre éligibilité
           </h3>
           <p className="paragraph">
-            Tout est simple, et sans paperasse. Vous avez tout de même un problème? appelez nos experts ou venez nous voir.
+            Identifiez le montant que vous pouvez emprunter en quelques clics.
           </p>
         </div>
         <div className="col-4">
           <b className="emoji">
-            ⚔
+            <span className="fa fa-gavel" />
           </b>
           <h3 className="subheading">
-            Mettez les prêteurs en compétition
+            2. Mise aux enchères
           </h3>
           <p className="paragraph">
             Nous vous mettons en contact avec tous les prêteurs et les laisseront se battre pour vous faire la meilleure offre, comme ça devrait l'être.
@@ -157,7 +158,7 @@ module.exports = function(props) {
             💸
           </b>
           <h3 className="subheading">
-            Choisissez la meilleure offre du pays
+            3. Choisissez la meilleure offre du pays
           </h3>
           <p className="paragraph">
             Vous êtes unique, et chaque projet est différent, nous utilisons des algorithmes puissants pour vous aider à trouver la meilleure stratégie pour votre futur.

@@ -312,7 +312,7 @@ p.paragraph {
 }
 .feature3 .emoji {
 	font-size: 55px;
-	color: black
+	color: rgba(0, 0, 0, 0.3);
 }
 @media (max-width: 750px) {
   .feature3 .emoji {
