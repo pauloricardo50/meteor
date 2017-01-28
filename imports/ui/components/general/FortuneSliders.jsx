@@ -30,7 +30,7 @@ export default class FortuneSliders extends Component {
     this.state = {
       fortune: 1,
       insuranceFortune: 0,
-      propertyValue: 1000000,
+      propertyValue: 1000000
     };
 
     this.handleChange1 = this.handleChange1.bind(this);

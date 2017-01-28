@@ -13,6 +13,8 @@ import { UserLayout, AdminLayout, PartnerLayout } from '/imports/ui/containers/p
 // Public Pages
 import HomePage from '/imports/ui/containers/public/HomePageContainer.js';
 import StartPage from '/imports/ui/pages/public/StartPage.jsx';
+import StartPage2 from '/imports/ui/pages/public/StartPage2.jsx';
+
 import LoginPage from '/imports/ui/pages/public/LoginPage.jsx';
 
 import DemoPage from '/imports/ui/pages/public/DemoPage.jsx';
@@ -77,6 +79,16 @@ FlowRouter.route('/start', {
     mount(PublicLayout, {
       content:
         <StartPage />,
+    });
+  },
+});
+
+FlowRouter.route('/start2', {
+  name: 'start',
+  action() {
+    mount(PublicLayout, {
+      content:
+        <StartPage2 />,
     });
   },
 });

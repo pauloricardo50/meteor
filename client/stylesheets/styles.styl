@@ -498,25 +498,43 @@ svg
     -webkit-transform: scale(0.75);
     margin-top: 0px;
     margin-bottom: 0px;
+    height: 50px;
+    line-height: 50px;
     &:hover
       opacity: 0.8;
       -webkit-transform: scale(0.85);
       transform: scale(0.85);
       cursor: pointer;
     &.active
+      height: unset;
       opacity: 1;
       -webkit-transform: scale(1);
       transform: scale(1);
       margin-top: 10px;
       margin-bottom: 10px;
-      cursor: default;
+      cursor: auto;
     &.errorText
+      height: unset;
       color: red;
       margin-top -10px;
     .value
       color: brand-primary !important;
       input
         color: brand-primary !important;
+  .RecapLine
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    cursor: auto;
+    line-height: unset;
+    opacity: 1;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    height: 500px;
+    &:hover
+      -webkit-transform: scale(1);
+      transform: scale(1);
+      cursor: auto;
+      opacity: 1;
 
 .stepTitle
   padding-bottom: 20px;
@@ -651,19 +669,28 @@ $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
 .property-value
   height: 40px;
   width: 100%;
+  border-radius: 5px 0px 5px 0px;
   background-color: lightness(brand-primary, 90%);
   position: relative;
   z-index: 0;
   .loan
     height: 40px;
+    border-radius: 5px 0 0 0;
     background-color: brand-primary;
+    border-right: solid 1px white;
     position: absolute;
     top: 0;
     left: 0;
     z-index: 2;
+    margin: 0;
+    color: white;
+    line-height: 40px;
+    overflow: hidden;
   .insurance
     height: 40px;
+    border-radius: 5px 0px 5px 0px;
     background-color: brand-success;
+    border-right: solid 1px white;
     position: absolute;
     top: 0;
     left: 0;
@@ -689,7 +716,7 @@ $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
         margin-bottom: 0 !important;
   .slider2
     position: absolute;
-    right: 0;
+    right: 10%;
     top: -8px;
     z-index: 10;
     margin: 0;
@@ -708,12 +735,14 @@ $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
 .property-value2
   height: 400px;
   width: 40px;
+  border-radius: 5px;
   background-color: lightness(brand-primary, 90%);
   position: relative;
   z-index: 0;
   margin: auto;
   .loan2
     width: 40px;
+    border-radius: 5px;
     background-color: brand-primary;
     position: absolute;
     bottom: 0;
@@ -721,6 +750,7 @@ $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
     z-index: 2;
   .insurance2
     width: 40px;
+    border-radius: 5px;
     background-color: brand-success;
     position: absolute;
     bottom: 0;
