@@ -99,8 +99,7 @@ export default class StartPage extends Component {
   }
 
   setStep(i) {
-    this.setState({ step: i });
-    this.scroll(i);
+    this.setState({ step: i }, this.scroll(i));
   }
 
   setStateValue(name, value, callback) {
