@@ -212,7 +212,8 @@ export default class StartPage extends Component {
     let lines;
     if (this.state.propertyKnown) {
       lines = [BorrowerCountLine, AgeLine, GenderLine, PurchaseTypeLine, Line4, Line5, BonusLine,
-        PropertyValueLine, CashConfirmLine, RecapLine2,
+        // PropertyValueLine, CashConfirmLine, RecapLine2,
+        PropertyValueLine, CashConfirmLine, MaxCashLine, MaxDebtLine, SliderLine, RecapLine,
         EmailLine, PasswordLine,
       ];
     } else {

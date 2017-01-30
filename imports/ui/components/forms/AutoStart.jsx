@@ -9,8 +9,8 @@ const styles = {
     marginRight: 8,
     marginLeft: 8,
   },
-  buttonLabel: {
-    marginBottom: 16,
+  buttonsLabel: {
+    marginBottom: 0,
   },
 };
 
@@ -36,7 +36,8 @@ export default class AutoStart extends Component {
       case 'buttons':
         return (
           <div className="animated fadeIn" key={index}>
-            <label htmlFor="" style={styles.buttonLabel}>{input.label}</label>
+            <h3 style={styles.buttonsLabel}>{input.label}</h3>
+            <br />
             {input.answers.map((answer, index2) => (
               <RaisedButton
                 label={answer}

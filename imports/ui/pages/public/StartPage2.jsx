@@ -3,6 +3,10 @@ import React, { Component, PropTypes } from 'react';
 import AutoStart from '/imports/ui/components/forms/AutoStart.jsx';
 
 const styles = {
+  div: {
+    marginTop: 40,
+    marginBottom: 40,
+  },
   buttons: {
     marginLeft: 8,
     marginRight: 8,
@@ -114,23 +118,27 @@ export default class StartPage2 extends Component {
       {
         id: 'borrowerCount',
         type: 'textInput',
-        label: 'Combien d\'emprunteurs?',
+        label: 'Nombre d\'emprunteurs',
         show: () => s.usageType === 'primary' || s.usageType === 'secondary' || s.currentRent,
       }, {
         id: 'oldestBorrower',
         type: 'textInput',
-        label: 'L\'emprunteur le plus agé a',
+        label: 'Age de l\'emprunteur le plus agé',
         show: () => !!s.borrowerCount,
       },
     ];
 
     const array4 = [
       {
-        id: 'yearlyIncome'
-      }
+        id: 'yearlyIncome',
+        type: 'buttons',
+        label: 'Merci beaucoup! Demo terminée.',
+        answers: [],
+        show: () => !!s.oldestBorrower,
+      },
     ];
 
-    return array1.concat(array2, array3);
+    return array1.concat(array2, array3, array4);
   }
 
   getBorrowerFormArray(nb) {
@@ -142,11 +150,13 @@ export default class StartPage2 extends Component {
 
   render() {
     return (
-      <AutoStart
-        formArray={this.getFormArray()}
-        changeState={this.changeState}
-        formState={this.state}
-      />
+      <div className="col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-3" style={styles.div}>
+        <AutoStart
+          formArray={this.getFormArray()}
+          changeState={this.changeState}
+          formState={this.state}
+        />
+      </div>
     );
   }
 }
