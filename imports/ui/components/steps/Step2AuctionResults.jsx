@@ -28,42 +28,42 @@ export default class Step2AuctionResults extends Component {
     const partnerOffers = [
       {
         standardOffer: {
-          maxAmount: toMoney(this.props.loanRequest.property.value * 0.8),
+          maxAmount: this.props.loanRequest.property.value * 0.8,
           amortizing: '1',
           interest10: '0.89',
         },
         expertiseRequired: false,
       }, {
         standardOffer: {
-          maxAmount: toMoney(this.props.loanRequest.property.value * 0.68),
+          maxAmount: this.props.loanRequest.property.value * 0.68,
           amortizing: '1',
           interest10: '0.99',
         },
         expertiseRequired: true,
       }, {
         standardOffer: {
-          maxAmount: toMoney(this.props.loanRequest.property.value * 0.73),
+          maxAmount: this.props.loanRequest.property.value * 0.73,
           amortizing: '1',
           interest10: '0.85',
         },
         expertiseRequired: true,
       }, {
         standardOffer: {
-          maxAmount: toMoney(this.props.loanRequest.property.value * 0.72),
+          maxAmount: this.props.loanRequest.property.value * 0.72,
           amortizing: '1',
           interest10: '0.91',
         },
         expertiseRequired: false,
       }, {
         standardOffer: {
-          maxAmount: toMoney(this.props.loanRequest.property.value * 0.79),
+          maxAmount: this.props.loanRequest.property.value * 0.79,
           amortizing: '1',
           interest10: '0.85',
         },
         expertiseRequired: false,
       }, {
         standardOffer: {
-          maxAmount: toMoney(this.props.loanRequest.property.value * 0.78),
+          maxAmount: this.props.loanRequest.property.value * 0.78,
           amortizing: '1',
           interest10: '0.85',
         },
