@@ -10,6 +10,8 @@ import ProjectChart from '/imports/ui/components/charts/ProjectChart.jsx';
 const styles = {
   article: {
     color: 'unset',
+    height: 'unset',
+    lineHeight: 'unset',
   },
   topH1: {
     paddingTop: 25,

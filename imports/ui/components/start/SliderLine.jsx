@@ -10,6 +10,13 @@ import Sliders from './Sliders.jsx';
 
 var timer;
 
+const styles = {
+  article: {
+    height: 'unset',
+    lineHeight: 'unset',
+  },
+};
+
 export default class SliderLine extends Component {
   constructor(props) {
     super(props);
@@ -184,7 +191,7 @@ export default class SliderLine extends Component {
 
   render() {
     return (
-      <article onClick={this.props.setStep} className={this.props.classes.text}>
+      <article onClick={this.props.setStep} className={this.props.classes.text} style={styles.article}>
         <Sliders
           twoBuyers={this.props.twoBuyers}
           fortune={this.props.fortune}
