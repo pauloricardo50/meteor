@@ -34,7 +34,7 @@ const PartnerOffersTable = props => (
         offer.standardOffer &&
           <tr key={index}>
             <td className="left-align">{index + 1}</td>
-            <td className="right-align">CHF {Math.round(toMoney(offer.standardOffer.maxAmount))}</td>
+            <td className="right-align">CHF {toMoney(Math.round(offer.standardOffer.maxAmount))}</td>
             <td className="right-align">{offer.standardOffer.interest10}%</td>
             <td className="right-align">{offer.standardOffer.amortizing}%</td>
             <td className="right-align">{offer.expertiseRequired ? 'Oui' : 'Non'}</td>

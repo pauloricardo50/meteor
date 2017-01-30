@@ -5,7 +5,13 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 
 const styles = {
-  button:
+  button: {
+    marginRight: 8,
+    marginLeft: 8,
+  },
+  buttonLabel: {
+    marginBottom: 16,
+  },
 };
 
 
@@ -16,30 +22,34 @@ export default class AutoStart extends Component {
     }
 
     switch (input.type) {
+      case 'numberInput':
+      case 'dateInput':
       case 'textInput':
         return (
-          <div>
+          <div className="animated fadeIn" key={index}>
             <TextField
               floatingLabelText={input.label}
               onChange={e => this.props.changeState(input.id, e.target.value)}
-              key={index}
             />
           </div>
         );
       case 'buttons':
         return (
-          <div>
-            <label htmlFor="">{input.label}</label>
-            {input.answers.map((answer, index) => (
+          <div className="animated fadeIn" key={index}>
+            <label htmlFor="" style={styles.buttonLabel}>{input.label}</label>
+            {input.answers.map((answer, index2) => (
               <RaisedButton
                 label={answer}
                 primary
                 onClick={e => this.props.changeState(input.id, answer)}
-                key={index}
+                style={styles.button}
+                disabled={!!this.props.formState[input.id]}
+                key={index2}
               />
             ))}
           </div>
         );
+      default: return null;
     }
   }
 

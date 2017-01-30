@@ -74,7 +74,9 @@ module.exports = function(props) {
       <div className="container-sml text-center">
         <div className="col-12">
           <h1 className="heading animated fadeInDown">
-            La meilleure hypothèque, tout simplement.
+            La meilleure hypothèque
+            <br />
+            Tout simplement
           </h1>
 
         </div>
@@ -131,7 +133,7 @@ module.exports = function(props) {
     </header>
     <div className="feature3 animated fadeInUp">
       <div className="container-lrg flex">
-        <div className="col-4">
+        <div className="col-3">
           <b className="emoji">
             <span className="fa fa-calculator" />
           </b>
@@ -142,26 +144,37 @@ module.exports = function(props) {
             Identifiez le montant que vous pouvez emprunter en quelques clics.
           </p>
         </div>
-        <div className="col-4">
+        <div className="col-3">
           <b className="emoji">
             <span className="fa fa-gavel" />
           </b>
           <h3 className="subheading">
-            2. Mise aux enchères
+            2. Organisez les enchères
           </h3>
           <p className="paragraph">
-            Nous vous mettons en contact avec tous les prêteurs et les laisseront se battre pour vous faire la meilleure offre, comme ça devrait l'être.
+            Obtenez de manière anonyme des offres sur mesure de la part de tous les prêteurs du marché.
           </p>
         </div>
-        <div className="col-4">
+        <div className="col-3">
           <b className="emoji">
-            💸
+            <span className="fa fa-laptop" />
           </b>
           <h3 className="subheading">
-            3. Choisissez la meilleure offre du pays
+            3. Communiquez avec votre prêteur
           </h3>
           <p className="paragraph">
-            Vous êtes unique, et chaque projet est différent, nous utilisons des algorithmes puissants pour vous aider à trouver la meilleure stratégie pour votre futur.
+            La plateforme simple et sécurisée vous permet de communiquer facilement avec votre prêteur.
+          </p>
+        </div>
+        <div className="col-3">
+          <b className="emoji">
+            <span className="fa fa-check" />
+          </b>
+          <h3 className="subheading">
+            4. Obtenez votre prêt
+          </h3>
+          <p className="paragraph">
+            Vous êtes accompagnés dans vos décisions stratégiques par des spécialistes en financement jusqu'à l'obtention de votre prêt.
           </p>
         </div>
       </div>
