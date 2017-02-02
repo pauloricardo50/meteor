@@ -5,7 +5,6 @@ import LoanRequests from '/imports/api/loanrequests/loanrequests';
 import '../meteor-slingshot';
 
 Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
-  acl: 'public-read', // Canned ACL from AWS
   authorize() { // Don't use arrow function, this is the current object here
     // Deny uploads if user is not logged in.
     if (!this.userId) {
@@ -14,7 +13,6 @@ Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
 
     return true;
   },
-
   key(file, props) {
     // Store file into a directory by the user's username.
     const request = LoanRequests.findOne({
@@ -24,6 +22,7 @@ Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
     if (!request) {
       throw new Meteor.Error('Loan Request Not Found', 'No active request could be found for this user');
     }
+
 
     return `${request._id}/${props.folderName}/${file.name}`;
   },

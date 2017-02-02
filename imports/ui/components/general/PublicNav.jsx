@@ -35,7 +35,7 @@ const PublicNav = props => (
       style={styles.navbar}
       iconElementRight={props.currentUser ?
         <TopNavDropdown public currentUser={props.currentUser} /> :
-        <FlatButton label="Connexion" href="/login" secondary labelStyle={{ color: '#4A90E2' }} />
+        <FlatButton label="Login" href="/login" secondary labelStyle={{ color: '#4A90E2' }} />
       }
       iconStyleLeft={{ display: 'none' }}
     >

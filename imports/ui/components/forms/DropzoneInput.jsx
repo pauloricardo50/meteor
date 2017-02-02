@@ -15,11 +15,11 @@ export default class DropzoneInput extends Component {
     this.componentConfig = {
       iconFiletypes: ['.jpg', '.png', '.pdf'],
       showFiletypeIcon: this.props.currentValue && this.props.currentValue.length < 1, // Show if there are no uploaded files
-      postUrl: '/', // Modified later
+      postUrl: 'https://e-potek-dev.s3-eu-central-1.amazonaws.com/', // Modified later
     };
 
     this.djsConfig = {
-      method: 'put',
+      method: 'POST',
       autoProcessQueue: true,
       dictDefaultMessage: this.props.message || 'Déposez un ou plusieurs fichiers ici, ou cliquez pour choisir',
       dictCancelUpload: 'Annuler',
@@ -34,15 +34,15 @@ export default class DropzoneInput extends Component {
       parallelUploads: 1,
       uploadMultiple: false,
       accept(file, done) {
-        that.uploader = new Slingshot.Upload('myFileUploads', that.props);
+        const uploader = new Slingshot.Upload('myFileUploads', that.props);
         const options = this.options;
 
-        that.uploader.file = file;
-        that.uploader.request((error, instructions) => {
+        uploader.file = file;
+        uploader.request((error, instructions) => {
           if (error) {
             done(error.message);
           } else {
-            options.url = instructions.upload + '/' + instructions.postData[0].value;
+            // options.url = instructions.upload + '/' + instructions.postData[0].value;
             file.postData = instructions.postData;
             done();
           }
@@ -57,6 +57,11 @@ export default class DropzoneInput extends Component {
       },
       removedFile: (file) => {
         // TODO: Add logic to remove file from DB and server
+      },
+      sending: function (file, xhr, formData) {
+        file.postData.forEach((field) => {
+          formData.append(field.name, field.value);
+        });
       },
     };
   }

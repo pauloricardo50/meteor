@@ -34,6 +34,12 @@ export default class SelectFieldInput extends React.Component {
     this.saveValue = this.saveValue.bind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    // Prevent weird component rerenders, which break keyboard+mouse use of this component
+    return this.props.currentValue !== nextProps.currentValue ||
+      this.state !== nextState;
+  }
+
   handleChange(event, index, value) {
     this.setState({ value }, () => this.saveValue());
   }
@@ -71,7 +77,6 @@ export default class SelectFieldInput extends React.Component {
           errorText={this.state.errorText}
           fullWidth
           maxHeight={200}
-          required
         >
           <MenuItem value={null} primaryText="" />
           {this.props.options.map((option, index) =>
