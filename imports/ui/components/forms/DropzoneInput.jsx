@@ -29,7 +29,9 @@ export default class DropzoneInput extends Component {
       maxFilesize: 100, // MB
       clickable: true,
       acceptedFiles: 'image/*,application/pdf',
-      renameFileName: 'myNewFile',
+      renameFileName(fileName) {
+        return 'hi' + fileName;
+      },
       // addRemoveLinks: true, // TODO
       parallelUploads: 1,
       uploadMultiple: false,
@@ -67,13 +69,23 @@ export default class DropzoneInput extends Component {
   }
 
   handleSave(file) {
+    let fileNameCount = '00';
+    let fileCount = 0;
+    if (this.props.currentValue) {
+      fileCount = Math.max(...this.props.currentValue.map(f => f.fileCount)) + 1;
+      fileNameCount = fileCount < 10 ? `0${fileCount}` : fileCount;
+    }
+
     const object = {};
     object[this.props.id] = {
-      name: file.name,
+      name: `${fileNameCount}${file.name}`,
       size: file.size,
       type: file.type,
       url: file.xhr.responseURL,
+      fileCount,
     };
+
+    console.log(object);
 
     pushValue.call({
       object,
@@ -101,7 +113,7 @@ export default class DropzoneInput extends Component {
   render() {
     return (
       <div>
-        <h3 htmlFor={this.props.id}>{this.props.label}</h3>
+        <h4 htmlFor={this.props.id}>{this.props.label}</h4>
         <DropzoneComponent
           name={this.props.id}
           config={this.componentConfig}

@@ -23,7 +23,14 @@ Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
       throw new Meteor.Error('Loan Request Not Found', 'No active request could be found for this user');
     }
 
+    // prefix file name with the number of the file
+    let fileCount = '00';
+    if (props.currentValue) {
+      const newCount = Math.max(...props.currentValue.map(f => f.fileCount)) + 1;
+      fileCount = newCount < 10 ? `0${newCount}` : newCount;
+    }
 
-    return `${request._id}/${props.folderName}/${file.name}`;
+
+    return `${request._id}/${props.folderName}/${fileCount}${file.name}`;
   },
 });
