@@ -6,12 +6,8 @@
           }
       }
   },
-  "AWSAccessKeyId": "AKIAJOWMH7E7O6PAKLDQ",
-  "AWSSecretAccessKey": "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",
+  "AWSAccessKeyId": "AKIAJF43A4MFAA2ZGTEA",
+  "AWSSecretAccessKey": "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",
   "AWSRegion": "eu-central-1",
-  "S3Bucket": "e-potek-dev",
-  "kadira": {
-      "appId": "ezda4FKFStEq2udsb",
-      "appSecret": "cbacc7e2-7048-4396-95bb-b26c70c332e7"
-  }
+  "S3Bucket": "e-potek"
 }

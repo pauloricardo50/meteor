@@ -15,7 +15,7 @@ export default class DropzoneInput extends Component {
     this.componentConfig = {
       iconFiletypes: ['.jpg', '.png', '.pdf'],
       showFiletypeIcon: this.props.currentValue && this.props.currentValue.length < 1, // Show if there are no uploaded files
-      postUrl: 'https://e-potek-dev.s3-eu-central-1.amazonaws.com/', // Modified later
+      postUrl: '/', // Modified later
     };
 
     this.djsConfig = {
@@ -35,7 +35,6 @@ export default class DropzoneInput extends Component {
       uploadMultiple: false,
       accept(file, done) {
         const uploader = new Slingshot.Upload('myFileUploads', that.props);
-        const options = this.options;
 
         uploader.file = file;
         uploader.request((error, instructions) => {
@@ -43,6 +42,7 @@ export default class DropzoneInput extends Component {
             done(error.message);
           } else {
             // options.url = instructions.upload + '/' + instructions.postData[0].value;
+            this.options.url = instructions.upload;
             file.postData = instructions.postData;
             done();
           }
@@ -101,7 +101,7 @@ export default class DropzoneInput extends Component {
   render() {
     return (
       <div>
-        <label htmlFor={this.props.id}>{this.props.label}</label>
+        <h3 htmlFor={this.props.id}>{this.props.label}</h3>
         <DropzoneComponent
           name={this.props.id}
           config={this.componentConfig}
