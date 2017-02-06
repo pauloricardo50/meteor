@@ -27,13 +27,13 @@ export default class ContactPage extends React.Component {
 
         <div className="content">
           <div className="form-group">
-            <h4>Par Téléphone</h4>
-            <p>+41 21 210 10 10</p>
+            <h4>Par Téléphone <small>Lu-Ve 8h-19h</small></h4>
+            <a href="tel:+41 78 709 31 31">+41 78 709 31 31</a>
           </div>
 
           <div className="form-group">
             <h4>Par Email</h4>
-            <p>help@e-potek.ch</p>
+            <p>contact@e-potek.ch</p>
           </div>
         </div>
       </section>

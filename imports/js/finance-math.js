@@ -1,4 +1,4 @@
-export function getYearsToRetirement(age1, age2, gender1, gender2) {
+export const getYearsToRetirement = (age1, age2, gender1, gender2) => {
   // Determine retirement age depending on the gender of the borrowers
   const retirement1 = (gender1 === 'f' ? 64 : 65);
   let retirement2 = null;
@@ -22,12 +22,12 @@ export function getYearsToRetirement(age1, age2, gender1, gender2) {
   }
 
   return yearsToRetirement;
-}
+};
 
 
 // Returns the maximum amount someone can buy a property for, given 80% debt,
 // except if they are retired, in which case it is 65%
-export function maxPropertyValue(age1, age2, gender1, gender2, revenue, fortune, insuranceFortune) {
+export const maxPropertyValue = (age1, age2, gender1, gender2, revenue, fortune, insuranceFortune) => {
   let maxBorrow = 0.8; // Emprunter maximum 80% de la valeur de la propriété
   const interest = 0.05; // Interet théorique sur l'emprunt
   let amortization = 0.01; // Amortissement annuel de l'emprunt si le client a moins de 50 ans
@@ -73,11 +73,11 @@ export function maxPropertyValue(age1, age2, gender1, gender2, revenue, fortune,
 
   // Round value down to nearest 1000
   return [Math.floor(maxValue / 1000) * 1000, maxBorrow];
-}
+};
 
 
 // Returns the minimum amount of combined fortune you have to provide to buy a certain property
-export function minimumFortuneRequired(age1, age2, gender1, gender2, type, revenue, propertyValue) {
+export const minimumFortuneRequired = (age1, age2, gender1, gender2, type, revenue, propertyValue) => {
   // Get the minimum amount of years to retirement
   const yearsToRetirement = getYearsToRetirement(age1, age2, gender1, gender2);
 
@@ -113,11 +113,11 @@ export function minimumFortuneRequired(age1, age2, gender1, gender2, type, reven
     Math.min(...fortuneValues),
     amortizationValues[fortuneValues.indexOf(Math.min(...fortuneValues))],
   ];
-}
+};
 
 
 // Given a loan, return a boolean indicating if it is valid or not based on revenue
-function isLoanValid(loanPercent, revenue, propertyValue, yearsToRetirement, type) {
+const isLoanValid = (loanPercent, revenue, propertyValue, yearsToRetirement, type) => {
   const maintenance = 0.01; // property maintenance percent: usually 1%
   const interest = 0.05; // Official theoretical interest rate to calculate these things: 5%
 
@@ -147,11 +147,11 @@ function isLoanValid(loanPercent, revenue, propertyValue, yearsToRetirement, typ
 
   // Return a boolean indicating whether this amount can be borrowed or not
   return [(revenue / 3) >= yearlyCosts, yearlyAmortization];
-}
+};
 
 
 // get yearly amortization for a loan request
-export const getAmortization = function (loanRequest) {
+export const getAmortization = (loanRequest) => {
   const r = loanRequest;
   const loan = r.property.value -
     r.general.fortuneUsed -
@@ -181,17 +181,37 @@ export const getAmortization = function (loanRequest) {
 };
 
 
-// get interest to pay for a loanrequest
-export const getInterests = function (loanRequest) {
+// get interest to pay for a loanrequest every month
+export const getInterests = (loanRequest) => {
   const r = loanRequest;
   const loan = r.property.value -
     r.general.fortuneUsed -
     r.general.insuranceFortuneUsed;
 
-
+  // Use a base interest rate of 1.5%
+  let interests = 0.015;
   if (r.logic.hasChosenStrategy) {
     // TODO: return real interest rate
   }
 
-  return (loan * 0.015) / 12;
+  return (loan * interests) / 12;
+};
+
+// Returns the maintenance to pay every month, i.e. 1% of the property divided by 12 months
+export const getMaintenance = (loanRequest) => {
+  return (loanRequest.property.value * 0.01) / 12;
+};
+
+
+export const getMonthlyPayment = (loanRequest) => {
+  const interests = getInterests(loanRequest);
+  const amortization = getAmortization(loanRequest);
+  const maintenance = getMaintenance(loanRequest);
+
+  return [
+    amortization + interests + maintenance,
+    amortization,
+    interests,
+    maintenance,
+  ];
 };

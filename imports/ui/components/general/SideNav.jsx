@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
-
-import FinanceWidget from '/imports/ui/components/general/FinanceWidget.jsx';
-import ProjectChart from '/imports/ui/components/charts/ProjectChart.jsx';
 import CallSplit from 'material-ui/svg-icons/communication/call-split';
 import Badge from 'material-ui/Badge';
 
+import FinanceWidget from '/imports/ui/components/general/FinanceWidget.jsx';
+import ProjectChart from '/imports/ui/components/charts/ProjectChart.jsx';
+import SideNavFinance from '/imports/ui/components/general/SideNavFinance.jsx';
 
 const styles = {
   icon: {
@@ -108,25 +108,28 @@ export default class SideNav extends Component {
       );
 
 
-      content2 = this.props.currentURL !== '/finance' &&
-        (<article className="mask1 finance-widget" style={styles.chartMask}>
-          <ProjectChart
-            horizontal={false}
-            name={this.props.loanRequest.property.address1}
-            propertyValue={this.props.loanRequest.property.value}
-            fortuneUsed={this.props.loanRequest.general.fortuneUsed}
-            insuranceFortuneUsed={this.props.loanRequest.general.insuranceFortuneUsed}
-          />
-          <div className="text-center">
-            <RaisedButton
-              href="/finance"
-              label="Modifier"
-              primary
-              style={styles.button}
-            />
-          </div>
-        </article>
+      content2 = (
+        <SideNavFinance loanRequest={this.props.loanRequest} />
       );
+      // content2 = this.props.currentURL !== '/finance' &&
+      //   (<article className="mask1 finance-widget" style={styles.chartMask}>
+      //     <ProjectChart
+      //       horizontal={false}
+      //       name={this.props.loanRequest.property.address1}
+      //       propertyValue={this.props.loanRequest.property.value}
+      //       fortuneUsed={this.props.loanRequest.general.fortuneUsed}
+      //       insuranceFortuneUsed={this.props.loanRequest.general.insuranceFortuneUsed}
+      //     />
+      //     <div className="text-center">
+      //       <RaisedButton
+      //         href="/finance"
+      //         label="Modifier"
+      //         primary
+      //         style={styles.button}
+      //       />
+      //     </div>
+      //   </article>
+      // );
     } else {
       // If the user is not on the main page, show a link to it
       content1 = (
@@ -150,7 +153,7 @@ export default class SideNav extends Component {
         </a>
 
         {!isNew && content1}
-        {/* {!isNew && content2} */}
+        {!isNew && content2}
 
       </nav>
     );

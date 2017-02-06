@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import TextField from 'material-ui/TextField';
 import MaskedInput from 'react-text-mask';
 
-import { toNumber } from '/imports/js/finance-math.js';
+import { toNumber } from '/imports/js/conversionFunctions';
 import { moneyValidation } from '/imports/js/validation.js';
 import { swissFrancMask } from '/imports/js/textMasks.js';
 
