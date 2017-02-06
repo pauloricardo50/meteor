@@ -11,7 +11,7 @@ Offers.allow({
     return !!userId;
   },
   update(userId, doc) {
-    // This is true if someone is logged in and ownership is correctß
+    // This is true if someone is logged in and ownership is correct
     return !!userId && (userId === doc.userId);
   },
 });
