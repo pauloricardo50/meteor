@@ -6,7 +6,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { toMoney } from '/imports/js/finance-math.js';
+import { toMoney } from '/imports/js/conversionFunctions';
 import Countdown from '/imports/ui/components/general/Countdown.jsx';
 
 

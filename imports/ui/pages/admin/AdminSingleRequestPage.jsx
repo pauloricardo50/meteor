@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 
-import { toMoney } from '/imports/js/finance-math';
+import { toMoney } from '/imports/js/conversionFunctions';
 
 export default class AdminSingleRequestPage extends React.Component {
   constructor(props) {

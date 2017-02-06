@@ -7,7 +7,7 @@ import TextField from 'material-ui/TextField';
 import MaskedInput from 'react-text-mask';
 
 import { swissFrancMask } from '/imports/js/textMasks.js';
-import { toNumber, toMoney } from '/imports/js/finance-math';
+import { toNumber, toMoney } from '/imports/js/conversionFunctions';
 import SavingIcon from './SavingIcon.jsx';
 import InfoIcon from './InfoIcon.jsx';
 

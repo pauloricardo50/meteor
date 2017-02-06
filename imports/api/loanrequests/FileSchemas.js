@@ -11,6 +11,7 @@ const FileSchema = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Url,
   },
+  key: String,
   fileCount: Number,
 });
 

@@ -13,7 +13,6 @@ import Loading from '/imports/ui/components/general/Loading.jsx';
 import _MainPage from '/imports/ui/pages/user/MainPage.jsx';
 import _TodoCardPage from '/imports/ui/pages/user/TodoCardPage.jsx';
 import _FinancePage from '/imports/ui/pages/user/FinancePage.jsx';
-import _StrategyPage from '/imports/ui/pages/user/StrategyPage.jsx';
 import _ContactPage from '/imports/ui/pages/user/ContactPage.jsx';
 
 import _Step1Page from '/imports/ui/pages/user/Step1Page.jsx';
@@ -49,7 +48,6 @@ function composer(props, onData) {
 export const MainPage = composeWithTracker(composer, Loading)(_MainPage);
 export const TodoCardPage = composeWithTracker(composer, Loading)(_TodoCardPage);
 export const FinancePage = composeWithTracker(composer, Loading)(_FinancePage);
-export const StrategyPage = composeWithTracker(composer, Loading)(_StrategyPage);
 export const ContactPage = composeWithTracker(composer, Loading)(_ContactPage);
 
 export const Step1Page = composeWithTracker(composer, Loading)(_Step1Page);

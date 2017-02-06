@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-import { toMoney } from '/imports/js/finance-math';
+import { toMoney } from '/imports/js/conversionFunctions';
 
 
 const styles = {

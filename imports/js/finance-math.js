@@ -97,7 +97,8 @@ export function minimumFortuneRequired(age1, age2, gender1, gender2, type, reven
   // TODO: Get a more precise value, and optimize this shit
   let l = 0;
   for (l = 0; l <= maxLoan; l += 1) {
-    const [isValid, amortization] = isLoanValid(l / 100, revenue, propertyValue, yearsToRetirement, type)
+    const [isValid, amortization] = isLoanValid(l / 100, revenue, propertyValue, yearsToRetirement, type);
+
     if (isValid) {
       // Push this value to the array, substract from propertyValue to get the fortune required
       const fortuneValue = propertyValue * (1 - (l / 100));
@@ -177,7 +178,7 @@ export const getAmortization = function (loanRequest) {
   }
 
   return yearlyAmortization / 12;
-}
+};
 
 
 // get interest to pay for a loanrequest
@@ -193,30 +194,4 @@ export const getInterests = function (loanRequest) {
   }
 
   return (loan * 0.015) / 12;
-}
-
-
-
-
-
-
-// Adds thousands markers every 3 digits (and removes non-digit characters)
-export function toMoney(value) {
-  return String(value).replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, "'");
-}
-
-
-// Replaces any nondigit character by an empty character, to prevent the use of non-digits
-// Only do this if the value actually exists
-export function toNumber(value) {
-  return value ? Number(String(value).replace(/\D/g, '')) : value;
-}
-
-// Replaces any nondigit character by an empty character, to prevent the use of non-digits
-// Only do this if the value actually exists
-export function toDecimalNumber(value) {
-  // Remove unwanted characters, except digits, dots and commas
-  const newValue = value ? String(value).replace(/[^\d.,]/g, '') : value;
-  // replace commas with dots
-  return value ? Number(newValue.replace(',', '.')) : value;
-}
+};

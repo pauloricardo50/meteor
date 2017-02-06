@@ -1,46 +1,35 @@
 import React, { Component, PropTypes } from 'react';
-import { Meteor } from 'meteor/meteor';
-import { FlowRouter } from 'meteor/kadira:flow-router';
-import { updateValues } from '/imports/api/loanrequests/methods';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import { Tabs, Tab } from 'material-ui/Tabs';
 
-import FinanceStrategyPicker from '/imports/ui/components/general/FinanceStrategyPicker.jsx';
-import LenderPicker from '/imports/ui/components/general/LenderPicker.jsx';
-
+import StrategyCash from '/imports/ui/components/general/StrategyCash.jsx';
+import StrategyLoan from '/imports/ui/components/general/StrategyLoan.jsx';
+import StrategyAmortization from '/imports/ui/components/general/StrategyAmortization.jsx';
 
 const styles = {
-  backButton: {
-    marginBottom: 32,
+  section: {
+    padding: 0,
   },
-  title: {
-    paddingBottom: 40,
+  labelSpan: {
+    wordWrap: 'normal',
+    whiteSpace: 'normal',
+    paddingLeft: 4,
+    paddingRight: 4,
+    width: '100%',
   },
-  article: {
-    marginBottom: 40,
+  labelSpan2: {
+    wordWrap: 'break-word',
+    whiteSpace: 'normal',
+    paddingLeft: 4,
+    paddingRight: 4,
+    width: '100%',
   },
-  choice: {
-    display: 'inline-block',
-    padding: 20,
-    minWidth: 200,
-  },
-  icon: {
+  tabs: {
+    paddingRight: 20,
+    paddingLeft: 20,
     paddingBottom: 20,
-    color: '#D8D8D8',
-  },
-  picker: {
-    marginTop: 40,
-    display: 'inline-block',
-  },
-  hr: {
     display: 'inline-block',
     width: '100%',
-    marginTop: 40,
-    marginBottom: 40,
-  },
-  okButton: {
-    marginTop: 32,
-    float: 'right',
   },
 };
 
@@ -48,81 +37,44 @@ export default class StrategyPage extends Component {
   constructor(props) {
     super(props);
 
-    this.handleClick = this.handleClick.bind(this);
-    this.strategyChosen = this.strategyChosen.bind(this);
+    this.state = { value: 1 };
+
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleClick() {
-    if (this.props.loanRequest.logic.step < 2) {
-      const id = this.props.loanRequest._id;
-      const object = {};
-      object['logic.step'] = 2;
-
-      updateValues.call({
-        object, id,
-      }, (error, result) => {
-        if (error) {
-          throw new Meteor.Error(500, error.message);
-        } else {
-          // Head to step 2
-          FlowRouter.go('/step3');
-          return 'Update Successful';
-        }
-      });
-    } else {
-      FlowRouter.go('/main');
-    }
-  }
-
-  strategyChosen() {
-    const tranches = this.props.loanRequest.general.loanTranches;
-    const propertyValue = this.props.loanRequest.property.value;
-    const trancheSum = tranches.reduce((total, tranche) => total + tranche.value, 0);
-
-    return propertyValue === trancheSum;
+  handleChange(value) {
+    this.setState({ value });
   }
 
   render() {
     return (
-      <div>
-        <RaisedButton
-          style={styles.backButton}
-          label="Retour"
-          href="/finance"
-        />
-        <section className="mask1" style={styles.section}>
-          <h1 style={styles.title}>Choisir ma Stratégie de Taux</h1>
-
-          <article className="col-xs-6 text-center" style={styles.article}>
-            <div className="mask2 hover-rise" style={styles.choice}>
-              <span className="fa fa-magic fa-5x" style={styles.icon} />
-              <h4>Mode Automatique</h4>
+      <section className="mask1 animated fadeIn" style={styles.section}>
+        <Tabs
+          value={this.state.value}
+          onChange={this.handleChange}
+        >
+          <Tab label={<span style={styles.labelSpan}>Fonds Propres</span>} value={1} >
+            <div style={styles.tabs}>
+              <StrategyCash loanRequest={this.props.loanRequest} />
             </div>
-          </article>
-          <article className="col-xs-6 text-center" style={styles.article}>
-            <div className="mask2 hover-rise" style={styles.choice}>
-              <span className="fa fa-sliders fa-5x" style={styles.icon} />
-              <h4>Mode Manuel</h4>
+          </Tab>
+          <Tab label={<span style={styles.labelSpan}>Taux</span>} value={2}>
+            <div style={styles.tabs}>
+              <StrategyLoan loanRequest={this.props.loanRequest} offers={this.props.offers} />
             </div>
-          </article>
-
-          <FinanceStrategyPicker loanRequest={this.props.loanRequest} style={styles.picker} />
-
-          {this.strategyChosen() && <hr style={styles.hr} />}
-          {this.strategyChosen() && <LenderPicker loanRequest={this.props.loanRequest} />}
-
-        </section>
-        <RaisedButton
-          style={styles.okButton}
-          label="Ok"
-          primary
-          onClick={this.handleClick}
-        />
-      </div>
+          </Tab>
+          <Tab label={<span style={styles.labelSpan2}>Amortissement</span>} value={3}>
+            <div style={styles.tabs}>
+              <StrategyAmortization loanRequest={this.props.loanRequest} offers={this.props.offers} />
+            </div>
+          </Tab>
+        </Tabs>
+      </section>
     );
   }
 }
 
 StrategyPage.propTypes = {
   loanRequest: React.PropTypes.objectOf(React.PropTypes.any),
+  offers: PropTypes.arrayOf(PropTypes.any),
 };

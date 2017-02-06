@@ -181,7 +181,7 @@ export default class ProjectChart extends Component {
             ],
           ],
           name: '2ème Pilier',
-          color: colors.insuranceFortuneUsed,
+          color: colors.insuranceFortune,
         }, {
           data: [
             [

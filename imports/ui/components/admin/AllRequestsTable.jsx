@@ -5,7 +5,7 @@ import { Table, Column, Cell } from 'fixed-data-table';
 import moment from 'moment';
 
 
-import { toMoney } from '/imports/js/finance-math';
+import { toMoney } from '/imports/js/conversionFunctions';
 
 
 class DataListWrapper {

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { toMoney } from '/imports/js/finance-math.js';
+import { toMoney } from '/imports/js/conversionFunctions';
 
 
 export default class LenderTable2 extends React.Component {

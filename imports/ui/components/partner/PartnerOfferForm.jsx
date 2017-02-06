@@ -7,7 +7,7 @@ import MaskedInput from 'react-text-mask';
 import RaisedButton from 'material-ui/RaisedButton';
 
 
-import { toMoney, toNumber, toDecimalNumber } from '/imports/js/finance-math.js';
+import { toMoney, toNumber, toDecimalNumber } from '/imports/js/conversionFunctions';
 import { swissFrancMask, percentMask } from '/imports/js/textMasks.js';
 import { insertOffer, updateOffer } from '/imports/api/offers/methods';
 

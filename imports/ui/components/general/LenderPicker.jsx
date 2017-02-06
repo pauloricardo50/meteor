@@ -18,19 +18,23 @@ export default class LenderPicker extends Component {
   }
 
   getOffers(withConditions) {
-    const r = this.props.loanRequest;
-    const offers = [];
-    for (var i = 0; i < r.partnerOffers.length; i++) {
-      if (withConditions) {
-        offers.push(r.partnerOffers[i].standardOffer);
-      } else {
-        const offer = r.partnerOffers[i].conditionsOffer;
-        // Add the condition to this object to make it easier to handle
-        offer.push(r.partnerOffers[i].conditions);
-        offers.push(offer);
+    const o = this.props.offers;
+    const offersArray = [];
+
+    if (o) {
+      for (var i = 0; i < o.length; i++) {
+        if (withConditions) {
+          offersArray.push(o[i].standardOffer);
+        } else {
+          const offer = o[i].conditionsOffer;
+          // Add the condition to this object to make it easier to handle
+          offer.push(o[i].conditions);
+          offersArray.push(offer);
+        }
       }
     }
-    return offers;
+
+    return offersArray;
   }
 
   getBestOffers(withConditions) {
@@ -72,4 +76,5 @@ export default class LenderPicker extends Component {
 
 LenderPicker.propTypes = {
   loanRequest: React.PropTypes.objectOf(React.PropTypes.any),
+  offers: PropTypes.arrayOf(PropTypes.any),
 };

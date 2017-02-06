@@ -4,7 +4,7 @@ import { updateValues } from '/imports/api/loanrequests/methods';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { toMoney, toNumber } from '/imports/js/finance-math';
+import { toMoney, toNumber } from '/imports/js/conversionFunctions';
 
 import LoanTranche from './LoanTranche.jsx';
 

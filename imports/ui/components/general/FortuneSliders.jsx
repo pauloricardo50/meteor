@@ -4,7 +4,7 @@ import Slider from 'material-ui/Slider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import { toMoney } from '/imports/js/finance-math';
+import { toMoney } from '/imports/js/conversionFunctions';
 
 const styles = {
   section: {

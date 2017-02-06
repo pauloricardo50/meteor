@@ -11,7 +11,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 
 import { percentMask } from '/imports/js/textMasks.js';
-import { toMoney, toNumber } from '/imports/js/finance-math.js';
+import { toMoney, toNumber } from '/imports/js/conversionFunctionsß';
 
 
 const styles = {

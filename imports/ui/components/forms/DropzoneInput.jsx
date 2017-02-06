@@ -82,10 +82,9 @@ export default class DropzoneInput extends Component {
       size: file.size,
       type: file.type,
       url: file.xhr.responseURL,
+      key: file.postData[0].value,
       fileCount,
     };
-
-    console.log(object);
 
     pushValue.call({
       object,
@@ -113,7 +112,7 @@ export default class DropzoneInput extends Component {
   render() {
     return (
       <div>
-        <h4 htmlFor={this.props.id}>{this.props.label}</h4>
+        {this.props.label && <h4 htmlFor={this.props.id}>{this.props.label}</h4>}
         <DropzoneComponent
           name={this.props.id}
           config={this.componentConfig}
@@ -127,7 +126,7 @@ export default class DropzoneInput extends Component {
 
 DropzoneInput.propTypes = {
   id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   message: PropTypes.string,
   currentValue: PropTypes.arrayOf(PropTypes.object),
   folderName: PropTypes.string.isRequired,

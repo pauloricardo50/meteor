@@ -122,6 +122,7 @@ FlowRouter.route('/new', {
     mount(UserLayout, {
       content:
         <NewPage />,
+      noNav: true,
     });
   },
 });
@@ -248,13 +249,14 @@ FlowRouter.route('/finance', {
   },
 });
 
-FlowRouter.route('/finance/strategy', {
+FlowRouter.route('/strategy', {
   name: 'strategy',
   action() {
     mount(UserLayout, {
       content:
         <StrategyPage />,
       extraContent: <RequestProgressBar />,
+      top: true,
     });
   },
 });

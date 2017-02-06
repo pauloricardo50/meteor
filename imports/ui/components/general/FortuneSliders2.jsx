@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 
 import Slider from 'material-ui/Slider';
 
-import { toMoney } from '/imports/js/finance-math';
+import { toMoney } from '/imports/js/conversionFunctions';
 
 const styles = {
   section: {

@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 
 
-import { toMoney, getAmortization, getInterests } from '/imports/js/finance-math';
+import { getAmortization, getInterests } from '/imports/js/finance-math';
+import { toMoney } from '/imports/js/conversionFunctions';
 
 const styles = {
   topDiv: {

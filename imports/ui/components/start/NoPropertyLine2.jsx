@@ -3,7 +3,8 @@ import { Meteor } from 'meteor/meteor';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { toMoney, toNumber, maxPropertyValue } from '/imports/js/finance-math.js';
+import { maxPropertyValue } from '/imports/js/finance-math.js';
+import { toMoney } from '/imports/js/conversionFunctions';
 
 
 const styles = {

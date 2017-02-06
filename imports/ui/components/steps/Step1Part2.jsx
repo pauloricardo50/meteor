@@ -70,7 +70,11 @@ export default class Step1Part2 extends Component {
           {
             this.props.loanRequest.logic.uploadTaxesLater ?
               <DropzoneInput
-                fileName="taxes"
+                label=""
+                id="borrowers.0.files.taxes"
+                message="Déposez votre déclaration d'impôts ici"
+                currentValue={this.props.loanRequest.borrowers[0].files.taxes}
+                folderName="taxes"
                 requestId={this.props.loanRequest._id}
               /> :
                 <Step1TaxesForm loanRequest={this.props.loanRequest} />

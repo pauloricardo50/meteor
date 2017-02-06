@@ -5,7 +5,7 @@ import PartnerOffersTable from '/imports/ui/components/general/PartnerOffersTabl
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { toMoney } from '/imports/js/finance-math';
+import { toMoney } from '/imports/js/conversionFunctions';
 
 const styles = {
   button: {

@@ -3,6 +3,8 @@ import { updateValues } from '/imports/api/loanrequests/methods.js';
 
 import Slider from 'material-ui/Slider';
 
+import { toMoney } from '/imports/js/conversionFunctions';
+
 const styles = {
   smallH_1: {
     display: 'inline-block',
@@ -87,11 +89,6 @@ export default class FinanceWidget extends React.Component {
   }
 
 
-  toMoney(value) {
-    return String(value).replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, "'");
-  }
-
-
   render() {
     // If property value and fortune hasn't been specified, don't show anything
     if (!this.state.propertyValue || !this.state.sliderValue) {
@@ -99,13 +96,13 @@ export default class FinanceWidget extends React.Component {
     }
     return (
       <article className="animated fadeIn mask1 finance-widget">
-        <h3>CHF {this.toMoney(this.state.propertyValue * 1.05)}</h3>
+        <h3>CHF {toMoney(this.state.propertyValue * 1.05)}</h3>
         <hr />
         <h5 className="secondary" style={styles.smallH_1}>Propriété</h5>
-        <h5 className="secondary" style={styles.smallH_2}>CHF {this.toMoney(this.state.propertyValue)}</h5>
+        <h5 className="secondary" style={styles.smallH_2}>CHF {toMoney(this.state.propertyValue)}</h5>
         <br />
         <h5 className="secondary" style={styles.smallH_1}>Notaire ~5%</h5>
-        <h5 className="secondary" style={styles.smallH_2}>CHF {this.toMoney(this.state.propertyValue * 0.05)}</h5>
+        <h5 className="secondary" style={styles.smallH_2}>CHF {toMoney(this.state.propertyValue * 0.05)}</h5>
 
         <div className="slider-div">
           <Slider
@@ -122,9 +119,9 @@ export default class FinanceWidget extends React.Component {
 
           <div style={styles.sliderValues}>
             <h4>Fonds Propres</h4>
-            <p>CHF {this.toMoney(this.state.propertyValue - this.state.sliderValue)}</p>
+            <p>CHF {toMoney(this.state.propertyValue - this.state.sliderValue)}</p>
             <h4>Prêt</h4>
-            <p>CHF {this.toMoney(this.state.sliderValue)}</p>
+            <p>CHF {toMoney(this.state.sliderValue)}</p>
           </div>
         </div>
       </article>

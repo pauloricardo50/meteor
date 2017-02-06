@@ -15,7 +15,11 @@ import myTheme from '/imports/js/mui_custom.js';
 const theme = myTheme;
 
 
-// TODO: hide navbars if there is currently no active loanRequest
+const styles = {
+  topLayout: {
+    verticalAlign: 'top',
+  },
+};
 
 export default class UserLayout extends Component {
   render() {
@@ -31,12 +35,12 @@ export default class UserLayout extends Component {
             <SideNav />
 
             <main className="user-layout">
-              <div className="user-layout-center">
+              <div className="user-layout-center" style={this.props.top && styles.topLayout}>
                 {this.props.content}
               </div>
             </main>
 
-            <BottomNav />
+            {!this.props.noNav && <BottomNav />}
 
           </div>
         </MuiThemeProvider>
@@ -58,4 +62,6 @@ UserLayout.propTypes = {
   content: PropTypes.element.isRequired,
   extraContent: PropTypes.element,
   currentUser: PropTypes.objectOf(PropTypes.any),
+  noNav: PropTypes.bool,
+  top: PropTypes.bool,
 };

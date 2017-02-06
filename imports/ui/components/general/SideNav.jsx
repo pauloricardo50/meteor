@@ -4,6 +4,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import FinanceWidget from '/imports/ui/components/general/FinanceWidget.jsx';
 import ProjectChart from '/imports/ui/components/charts/ProjectChart.jsx';
+import CallSplit from 'material-ui/svg-icons/communication/call-split';
+import Badge from 'material-ui/Badge';
+
 
 const styles = {
   icon: {
@@ -69,21 +72,39 @@ export default class SideNav extends Component {
   }
 
 
-  toMoney(value) {
-    return String(value).replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, "'");
-  }
-
-
   render() {
     // Don't display any content if there is no active LoanRequest
     let content1;
     let content2;
     if (this.props.loanRequest) {
       content1 = (
-        <a href="/main" style={styles.link} className="side-nav-link">
-          <span className="fa fa-home fa-2x active" style={styles.icon} />
-          <h5 className="active bold" style={styles.text}>{this.state.requestName}</h5>
-        </a>
+        <ul className="side-nav-list">
+          <li>
+            <a
+              href="/main"
+              className={(this.props.currentURL === '/main' ||
+                this.props.currentURL.substring(0, 5) === '/step') &&
+                'active-link'
+              }
+            >
+              <span className="icon fa fa-home fa-2x" />
+              <h5>{this.state.requestName}</h5>
+            </a>
+          </li>
+          <li>
+            <a href="/strategy" className={this.props.currentURL === '/strategy' && 'active-link'} >
+              <span className="icon" ><CallSplit /></span>
+              <Badge
+                badgeContent="1"
+                primary
+                badgeStyle={{ top: 'calc(50% - 12px)', right: -40 }}
+                style={{ display: 'inline-flex', padding: 0 }}
+              >
+                <h5>Mes Stratégies</h5>
+              </Badge>
+            </a>
+          </li>
+        </ul>
       );
 
 
@@ -129,7 +150,7 @@ export default class SideNav extends Component {
         </a>
 
         {!isNew && content1}
-        {!isNew && content2}
+        {/* {!isNew && content2} */}
 
       </nav>
     );
