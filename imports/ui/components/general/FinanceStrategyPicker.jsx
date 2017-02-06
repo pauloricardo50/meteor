@@ -20,6 +20,10 @@ const styles = {
     marginTop: 32,
     float: 'right',
   },
+  hr: {
+    width: '60%',
+    margin: '40px auto',
+  },
 };
 
 export default class FinanceStrategyPicker extends Component {
@@ -173,22 +177,19 @@ export default class FinanceStrategyPicker extends Component {
 
     return (
       <article>
-        <div className="text-center">
-          <h3>Je veux diviser mon prêt en {this.state.tranches.length} tranche(s).</h3>
-          <RaisedButton
-            label="Ajouter une Tranche"
-            onClick={this.addTranche}
-            primary
-            style={styles.button}
-            disabled={this.getMoneyLeft() < 100000}
-          />
-        </div>
 
-        <h4>Argent restant à distribuer</h4>
+        <h4>
+          Argent restant à distribuer&nbsp;
+          {this.getMoneyLeft() <= 0 &&
+            <span className="fa fa-check success" style={styles.check} />
+          }
+        </h4>
         <div className="trancheBar">
-          <div className="bar main" style={{
-            width: `${100 * (this.getMoneyLeft() / this.props.loanRequest.property.value)}%`
-          }}
+          <div
+            className="bar main"
+            style={{
+              width: `${100 * (this.getMoneyLeft() / this.props.loanRequest.property.value)}%`,
+            }}
           />
           <div className="money">
             <h4 className="center-adjust">
@@ -199,7 +200,18 @@ export default class FinanceStrategyPicker extends Component {
           </div>
         </div>
 
-        <hr />
+        <hr style={styles.hr} />
+
+        <div className="text-center">
+          <h3>Je veux diviser mon prêt en {this.state.tranches.length} tranche(s).</h3>
+          <RaisedButton
+            label="Ajouter une Tranche"
+            onClick={this.addTranche}
+            primary
+            style={styles.button}
+            disabled={this.getMoneyLeft() < 100000}
+          />
+        </div>
 
         {tranchesArray}
 

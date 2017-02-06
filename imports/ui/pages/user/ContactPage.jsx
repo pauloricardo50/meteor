@@ -33,7 +33,7 @@ export default class ContactPage extends React.Component {
 
           <div className="form-group">
             <h4>Par Email</h4>
-            <p>contact@e-potek.ch</p>
+            <a href="mailto:contact@e-potek.ch">contact@e-potek.ch</a>
           </div>
         </div>
       </section>

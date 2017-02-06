@@ -9,6 +9,7 @@ import StrategyAmortization from '/imports/ui/components/general/StrategyAmortiz
 const styles = {
   section: {
     padding: 0,
+    overflow: 'hidden',
   },
   labelSpan: {
     wordWrap: 'normal',

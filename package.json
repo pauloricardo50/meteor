@@ -98,6 +98,7 @@
           "peerDependencies": false
         }
       ],
+      "class-methods-use-this": 0,
       "no-absolute-path": 0
     }
   }

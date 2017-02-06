@@ -29,6 +29,9 @@ const styles = {
     paddingLeft: 0,
     paddingRight: 0,
   },
+  a: {
+    textDecoration: 'none',
+  },
 };
 
 export default class SideNav extends Component {
@@ -86,13 +89,18 @@ export default class SideNav extends Component {
                 this.props.currentURL.substring(0, 5) === '/step') &&
                 'active-link'
               }
+              style={styles.a}
             >
               <span className="icon fa fa-home fa-2x" />
               <h5>{this.state.requestName}</h5>
             </a>
           </li>
           <li>
-            <a href="/strategy" className={this.props.currentURL === '/strategy' && 'active-link'} >
+            <a
+              href="/strategy"
+              className={this.props.currentURL === '/strategy' && 'active-link'}
+              style={styles.a}
+            >
               <span className="icon" ><CallSplit /></span>
               <Badge
                 badgeContent="1"
