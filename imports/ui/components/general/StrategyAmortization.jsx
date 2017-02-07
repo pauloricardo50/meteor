@@ -86,7 +86,7 @@ export default class StrategyAmortization extends Component {
           <li style={styles.title}><h4 className="bold">{choice.title}</h4></li>
 
           {choice.reasons.map((reason, i) =>
-            <li key={i} style={styles.reason}>{reason}</li>,
+            <li className="bold" style={styles.reason} key={i}>{reason}</li>,
           )}
 
           <li style={styles.button}><RaisedButton primary label="Choisir" /></li>

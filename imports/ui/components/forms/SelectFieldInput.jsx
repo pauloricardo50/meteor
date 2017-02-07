@@ -106,5 +106,5 @@ SelectFieldInput.propTypes = {
     PropTypes.string,
   ]),
   requestId: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(React.PropTypes.string).isRequired,
+  options: PropTypes.arrayOf(React.PropTypes.object).isRequired,
 };

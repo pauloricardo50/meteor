@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-
+import { Meteor } from 'meteor/meteor';
 import Highcharts from 'highcharts';
 
 import { getYearsToRetirement } from '/imports/js/finance-math.js';
@@ -7,9 +7,7 @@ import { toMoney } from '/imports/js/conversionFunctions'
 
 const styles = {
   container: {
-    position: 'relative',
-    height: 400,
-    width: '100%',
+
   },
 };
 
@@ -19,15 +17,24 @@ const colors = {
   maintenance: '#3498db',
 };
 
+var timeout;
+
 export default class ExpensesChart extends Component {
   constructor(props) {
     super(props);
 
     this.getAmortization = this.getAmortization.bind(this);
     this.getInterests = this.getInterests.bind(this);
+    this.createChart = this.createChart.bind(this);
+    this.resize = this.resize.bind(this);
   }
 
   componentDidMount() {
+    this.createChart();
+    window.addEventListener('resize', this.resize);
+  }
+
+  createChart() {
     const r = this.props.loanRequest;
 
     const options = {
@@ -58,16 +65,27 @@ export default class ExpensesChart extends Component {
           allowPointSelect: true,
           cursor: 'pointer',
           dataLabels: {
+            overflow: 'none',
+            crop: false,
             enabled: true,
-            format: '<b>{point.name}</b>: CHF {point.y:,.0f}',
+            format: '<b>{point.name}</b><br />CHF {point.y:,.0f}',
             style: {
               color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+              overflow: 'visible',
             },
           },
+          showInLegend: true,
           startAngle: -90,
           endAngle: 90,
           center: ['50%', '75%'],
         },
+      },
+      legend: {
+        align: 'center',
+        verticalAlign: 'top',
+        floating: true,
+        layout: 'horizontal',
+        itemMarginBottom: 8,
       },
       series: [
         {
@@ -102,11 +120,30 @@ export default class ExpensesChart extends Component {
         thousandsSep: '\'',
       },
     });
+
     this.chart = new Highcharts.Chart('expensesChart', options);
   }
 
+
   componentWillUnmount() {
+    window.removeEventListener('resize', this.resize);
     this.chart.destroy();
+  }
+
+  resize() {
+    Meteor.clearTimeout(timeout);
+    if (this.chart) {
+      this.chart.destroy();
+      this.chart = undefined;
+    }
+
+    timeout = Meteor.setTimeout(() => {
+      Meteor.defer(() => this.createChart());
+    }, 200);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return true;
   }
 
 
@@ -154,7 +191,9 @@ export default class ExpensesChart extends Component {
   }
 
   render() {
-    return <div id="expensesChart" style={styles.container} />;
+    return (
+      <div id="expensesChart" style={styles.container} />
+    );
   }
 }
 

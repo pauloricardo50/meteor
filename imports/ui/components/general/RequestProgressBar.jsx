@@ -4,6 +4,24 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown.jsx';
 
 
+const styles = {
+  logoDiv: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    top: 0,
+    left: 0,
+  },
+  logo: {
+    position: 'relative',
+    display: 'block',
+    height: '40%',
+    margin: 'auto',
+    top: '50%',
+    transform: 'translateY(-50%)',
+  },
+};
+
 export default class RequestProgressBar extends React.Component {
   constructor(props) {
     super(props);
@@ -84,6 +102,13 @@ export default class RequestProgressBar extends React.Component {
           <div className="header-progress-menu hidden-xs">
             <TopNavDropdown public={false} currentUser={this.props.currentUser} />
           </div>
+
+          {
+            this.props.loanRequest.logic.step <= 0 &&
+            <div className="hidden-sm hidden-md hidden-lg" style={styles.logoDiv}>
+              <img src="/img/logo_black.svg" alt="e-Potek" style={styles.logo} />
+            </div>
+          }
 
         </header>
       );

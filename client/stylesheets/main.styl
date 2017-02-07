@@ -176,6 +176,7 @@ a
         height: 70px;
         display: flex;
         color: alpha(black, 0.6);
+        font-weight: 400 !important;
         &:hover
           text-decoration: none;
           border-left: solid 5px alpha(brand-primary, 0.3);
@@ -196,8 +197,6 @@ a
           align-items: center;
           font-weight: 400 !important;
           max-width: 150px;
-
-
   img
     position: absolute;
     width: $side-nav - 20px;
@@ -272,3 +271,8 @@ label
   text-decoration: none;
   &:focus, &:active, &:hover, &:visited
     text-decoration: none;
+
+// anti normalize-css() to display chart labels
+svg:not(:root) {
+  overflow: visible !important;
+}

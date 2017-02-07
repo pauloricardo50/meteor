@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { DocHead } from 'meteor/kadira:dochead';
 
 import { Tabs, Tab } from 'material-ui/Tabs';
 
@@ -41,6 +42,10 @@ export default class StrategyPage extends Component {
     this.state = { value: 1 };
 
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentDidMount() {
+    DocHead.setTitle('Stratégies - e-Potek');
   }
 
   handleChange(value) {

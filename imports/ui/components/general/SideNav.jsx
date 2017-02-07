@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import CallSplit from 'material-ui/svg-icons/communication/call-split';
+import AttachMoney from 'material-ui/svg-icons/editor/attach-money';
 import Badge from 'material-ui/Badge';
 
 import FinanceWidget from '/imports/ui/components/general/FinanceWidget.jsx';
@@ -20,7 +21,6 @@ const styles = {
     display: 'block',
   },
   logo: {
-    // width: 160,
     maxHeight: 25,
     paddingLeft: 20,
     paddingRight: 20,
@@ -108,8 +108,19 @@ export default class SideNav extends Component {
                 badgeStyle={{ top: 'calc(50% - 12px)', right: -40 }}
                 style={{ display: 'inline-flex', padding: 0 }}
               >
-                <h5>Mes Stratégies</h5>
+                <h5>Stratégies</h5>
               </Badge>
+            </a>
+            <a
+              href="/finance"
+              className={(this.props.currentURL === '/finance' ||
+                this.props.currentURL === '/finance') &&
+                'active-link'
+              }
+              style={styles.a}
+            >
+              <span className="icon" ><AttachMoney /></span>
+              <h5>Finances</h5>
             </a>
           </li>
         </ul>

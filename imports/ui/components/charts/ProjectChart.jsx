@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-
+import { Meteor } from 'meteor/meteor';
 import Highcharts from 'highcharts';
 
 
@@ -26,24 +26,18 @@ const colors = {
   loan: '#3498db',
 };
 
+var timeout;
+
 export default class ProjectChart extends Component {
   constructor(props) {
     super(props);
 
-    this.getOptions = this.getOptions.bind(this);
+    this.resize = this.resize.bind(this);
   }
 
   componentDidMount() {
-    const options = this.getOptions(this.props);
-
-    Highcharts.setOptions({
-      lang: {
-        thousandsSep: '\'',
-      },
-    });
-
-    this.div = this.props.divName ? this.props.divName : 'projectChart';
-    this.chart = new Highcharts.Chart(this.div, options);
+    this.createChart(this.props);
+    window.addEventListener('resize', this.resize);
   }
 
 
@@ -103,12 +97,25 @@ export default class ProjectChart extends Component {
 
 
   componentWillUnmount() {
+    window.removeEventListener('resize', this.resize);
     this.chart.destroy();
   }
 
+  resize() {
+    Meteor.clearTimeout(timeout);
+    if (this.chart) {
+      this.chart.destroy();
+      this.chart = undefined;
+    }
 
-  getOptions(p) {
-    return {
+    timeout = Meteor.setTimeout(() => {
+      Meteor.defer(() => this.createChart(this.props));
+    }, 200);
+  }
+
+
+  createChart(p) {
+    const options = {
       chart: {
         type: (p.horizontal ? 'bar' : 'column'),
         polar: false,
@@ -143,6 +150,9 @@ export default class ProjectChart extends Component {
       xAxis: [
         {
           categories: [p.name],
+          labels: {
+            enabled: false,
+          },
         },
       ],
       series: [
@@ -202,6 +212,15 @@ export default class ProjectChart extends Component {
         enabled: false,
       },
     };
+
+    Highcharts.setOptions({
+      lang: {
+        thousandsSep: '\'',
+      },
+    });
+
+    this.div = this.props.divName ? this.props.divName : 'projectChart';
+    this.chart = new Highcharts.Chart(this.div, options);
   }
 
 

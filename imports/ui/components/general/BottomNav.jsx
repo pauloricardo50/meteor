@@ -9,6 +9,7 @@ import Paper from 'material-ui/Paper';
 import Home from 'material-ui/svg-icons/action/home';
 import AttachMoney from 'material-ui/svg-icons/editor/attach-money';
 import ActionSettings from 'material-ui/svg-icons/action/settings';
+import CallSplit from 'material-ui/svg-icons/communication/call-split';
 
 
 const styles = {
@@ -29,10 +30,12 @@ export default class BottomNav extends Component {
     let currentIndex;
     const url = this.props.currentURL;
 
-    if (url.substring(0, 8) === '/finance') {
+    if (url.substring(0, 9) === '/strategy') {
       currentIndex = 1;
-    } else if (url.substring(0, 9) === '/settings') {
+    } else if (url.substring(0, 8) === '/finance') {
       currentIndex = 2;
+    } else if (url.substring(0, 9) === '/settings') {
+      currentIndex = 3;
     } else {
       currentIndex = 0;
     }
@@ -46,6 +49,11 @@ export default class BottomNav extends Component {
               label="Projet"
               icon={<Home />}
               onTouchTap={() => FlowRouter.go('/main')}
+            />
+            <BottomNavigationItem
+              label="Stratégies"
+              icon={<CallSplit />}
+              onTouchTap={() => FlowRouter.go('/strategy')}
             />
             <BottomNavigationItem
               label="Finances"

@@ -13,6 +13,7 @@ export default class MainPage extends React.Component {
     if (this.props.loanRequest) {
       const realStep = this.props.loanRequest.logic.step + 1;
       FlowRouter.go(`/step${realStep}`);
+      return;
     }
 
     DocHead.setTitle('Bienvenue! - e-Potek');
