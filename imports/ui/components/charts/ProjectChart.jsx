@@ -20,14 +20,15 @@ const styles = {
 };
 
 const colors = {
-  frais1: '#c0392b',
-  frais2: '#e74c3c',
-  fortune: '#27ae60',
-  insuranceFortune: '#2ecc71',
-  loan: '#3498db',
+  frais1: '#ABCCF2',
+  frais2: '#6888AD',
+  fortune: '#5395E0',
+  insuranceFortune: '#3A72B2',
+  loan: '#287EE0',
 };
 
 var timeout;
+var oldWidth;
 
 export default class ProjectChart extends Component {
   constructor(props) {
@@ -104,15 +105,26 @@ export default class ProjectChart extends Component {
   }
 
   resize() {
-    Meteor.clearTimeout(timeout);
-    if (this.chart) {
-      this.chart.destroy();
-      this.chart = undefined;
+    // Only recreate charts if the width changes, ignore height changes
+    const w = window;
+    const d = document;
+    const documentElement = d.documentElement;
+    const body = d.getElementsByTagName('body')[0];
+    const newWidth = w.innerWidth || documentElement.clientWidth || body.clientWidth;
+
+    if (oldWidth && oldWidth !== newWidth) {
+      Meteor.clearTimeout(timeout);
+      if (this.chart) {
+        this.chart.destroy();
+        this.chart = undefined;
+      }
+
+      timeout = Meteor.setTimeout(() => {
+        Meteor.defer(() => this.createChart(this.props));
+      }, 200);
     }
 
-    timeout = Meteor.setTimeout(() => {
-      Meteor.defer(() => this.createChart(this.props));
-    }, 200);
+    oldWidth = newWidth;
   }
 
 
@@ -130,12 +142,16 @@ export default class ProjectChart extends Component {
         },
       },
       plotOptions: {
+        bar: {
+          borderWidth: 2,
+        },
         series: {
           stacking: 'normal',
           dataLabels: {
             enabled: true,
             style: {
-              fontSize: '1em',
+              fontSize: '0.9em',
+              textOutline: '0.5px grey',
             },
             formatter() {
               if (this.y !== 0) {
@@ -145,6 +161,11 @@ export default class ProjectChart extends Component {
             },
           },
           animation: true,
+        },
+      },
+      tooltip: {
+        formatter() {
+          return `<span style="color:${this.color}">\u25CF</span> ${this.series.name}<br/> <b>CHF ${toMoney(Math.round(this.y))}</b>`;
         },
       },
       title: {

@@ -9,6 +9,12 @@ import ProjectChart from '/imports/ui/components/charts/ProjectChart.jsx';
 import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
 
 const styles = {
+  p: {
+    marginBottom: 0,
+  },
+  article2: {
+    overflowY: 'hidden',
+  },
 };
 
 export default class FinancePage extends Component {
@@ -36,9 +42,9 @@ export default class FinancePage extends Component {
           />
         </article>
 
-        <article>
+        <article style={styles.article2}>
           <h3 className="text-center">Coût Mensuel Estimé*</h3>
-          <p className="text-center">*Taux d&apos;intérêt fictif de 1.5%</p>
+          <p className="text-center" style={styles.p}>*Taux d&apos;intérêt fictif de 1.5%</p>
           <ExpensesChart loanRequest={this.props.loanRequest} />
         </article>
 

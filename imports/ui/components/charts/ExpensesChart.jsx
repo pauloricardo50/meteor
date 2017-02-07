@@ -12,12 +12,13 @@ const styles = {
 };
 
 const colors = {
-  interest: '#2c3e50',
-  amortization: '#f39c12',
-  maintenance: '#3498db',
+  interest: '#56E39F',
+  amortization: '#59C9A5',
+  maintenance: '#5B6C5D',
 };
 
 var timeout;
+var oldWidth;
 
 export default class ExpensesChart extends Component {
   constructor(props) {
@@ -42,11 +43,11 @@ export default class ExpensesChart extends Component {
         type: 'pie',
       },
       title: {
-        text: `CHF ${
+        text: `CHF ~${
           toMoney(
             Math.round(
-              this.getInterests() + this.getAmortization() + ((r.property.value * 0.01) / 12)
-            )
+              this.getInterests() + this.getAmortization() + ((r.property.value * 0.01) / 12),
+            ),
           )
         }<br>par mois`,
         align: 'center',
@@ -57,11 +58,14 @@ export default class ExpensesChart extends Component {
         },
       },
       tooltip: {
-        pointFormat: 'Montant: <b>CHF {point.y:,.0f}</b>',
+        formatter() {
+          return `<span style="color:${this.color}">\u25CF</span> ${this.key}<br /> <b>CHF ${toMoney(Math.round(this.y))}</b>`;
+        },
       },
       plotOptions: {
         pie: {
           size: '100%',
+          borderWidth: 4,
           allowPointSelect: true,
           cursor: 'pointer',
           dataLabels: {
@@ -131,15 +135,26 @@ export default class ExpensesChart extends Component {
   }
 
   resize() {
-    Meteor.clearTimeout(timeout);
-    if (this.chart) {
-      this.chart.destroy();
-      this.chart = undefined;
+    // Only recreate charts if the width changes, ignore height changes
+    const w = window;
+    const d = document;
+    const documentElement = d.documentElement;
+    const body = d.getElementsByTagName('body')[0];
+    const newWidth = w.innerWidth || documentElement.clientWidth || body.clientWidth;
+
+    if (oldWidth && oldWidth !== newWidth) {
+      Meteor.clearTimeout(timeout);
+      if (this.chart) {
+        this.chart.destroy();
+        this.chart = undefined;
+      }
+
+      timeout = Meteor.setTimeout(() => {
+        Meteor.defer(() => this.createChart());
+      }, 200);
     }
 
-    timeout = Meteor.setTimeout(() => {
-      Meteor.defer(() => this.createChart());
-    }, 200);
+    oldWidth = newWidth;
   }
 
   shouldComponentUpdate(nextProps, nextState) {
