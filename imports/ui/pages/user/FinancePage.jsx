@@ -22,37 +22,27 @@ export default class FinancePage extends Component {
 
   render() {
     return (
-      <div>
-        <div className="form-group">
-          <RaisedButton
-            icon={<span className="fa fa-angle-left" />}
-            label="Retour"
-            className="animated slideInLeft"
-            href="/main"
+      <section className="mask1 animated fadeIn">
+        <h1>Finances</h1>
+
+        <article>
+          <h3 className="text-center">Mon Projet</h3>
+          <ProjectChart
+            horizontal
+            name={this.props.loanRequest.property.address1}
+            propertyValue={this.props.loanRequest.property.value}
+            fortuneUsed={this.props.loanRequest.general.fortuneUsed}
+            insuranceFortuneUsed={this.props.loanRequest.general.insuranceFortuneUsed}
           />
-        </div>
-        <section className="mask1 animated fadeIn">
-          <h1>Finances</h1>
+        </article>
 
-          <article>
-            <h3 className="text-center">Mon Projet</h3>
-            <ProjectChart
-              horizontal
-              name={this.props.loanRequest.property.address1}
-              propertyValue={this.props.loanRequest.property.value}
-              fortuneUsed={this.props.loanRequest.general.fortuneUsed}
-              insuranceFortuneUsed={this.props.loanRequest.general.insuranceFortuneUsed}
-            />
-          </article>
+        <article>
+          <h3 className="text-center">Coût Mensuel Estimé*</h3>
+          <p className="text-center">*Taux d&apos;intérêt fictif de 1.5%</p>
+          <ExpensesChart loanRequest={this.props.loanRequest} />
+        </article>
 
-          <article>
-            <h3 className="text-center">Coût Mensuel Estimé*</h3>
-            <p className="text-center">*Taux d&apos;intérêt fictif de 1.5%</p>
-            <ExpensesChart loanRequest={this.props.loanRequest} />
-          </article>
-
-        </section>
-      </div>
+      </section>
     );
   }
 }

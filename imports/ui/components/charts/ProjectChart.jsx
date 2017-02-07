@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import Highcharts from 'highcharts';
 
+import { toMoney } from '/imports/js/conversionFunctions';
 
 const styles = {
   sideNavContainer: {
@@ -33,6 +34,7 @@ export default class ProjectChart extends Component {
     super(props);
 
     this.resize = this.resize.bind(this);
+    this.createChart = this.createChart.bind(this);
   }
 
   componentDidMount() {
@@ -132,6 +134,15 @@ export default class ProjectChart extends Component {
           stacking: 'normal',
           dataLabels: {
             enabled: true,
+            style: {
+              fontSize: '1em',
+            },
+            formatter() {
+              if (this.y !== 0) {
+                return `CHF ${toMoney(this.y)}`;
+              }
+              return null;
+            },
           },
           animation: true,
         },
