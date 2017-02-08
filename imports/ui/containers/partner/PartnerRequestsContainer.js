@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { compose } from 'react-komposer';
-import LoanRequests from '/imports/api/loanrequests/loanrequests.js';
-import Offers from '/imports/api/offers/offers.js';
+import LoanRequests from '/imports/api/loanrequests/loanrequests';
+import Offers from '/imports/api/offers/offers';
 
 import composeWithTracker from '../composeWithTracker';
 

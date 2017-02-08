@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { updateValues } from '/imports/api/loanrequests/methods.js';
+import { updateValues } from '/imports/api/loanrequests/methods';
 
 import Slider from 'material-ui/Slider';
 

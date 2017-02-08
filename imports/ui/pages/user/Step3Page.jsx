@@ -7,7 +7,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import TodoCardArray from '/imports/ui/components/general/TodoCardArray.jsx';
-import { updateValues } from '/imports/api/loanrequests/methods.js';
+import { updateValues } from '/imports/api/loanrequests/methods';
 
 
 const styles = {

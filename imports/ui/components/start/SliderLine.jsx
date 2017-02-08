@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { minimumFortuneRequired } from '/imports/js/finance-math.js';
+import { minimumFortuneRequired } from '/imports/js/finance-math';
 
 import Sliders from './Sliders.jsx';
 

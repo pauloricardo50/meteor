@@ -3,7 +3,7 @@ import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import {
   GeneralSchema, BorrowerSchema, PropertySchema, LogicSchema,
-} from './additionalSchemas.js';
+} from './additionalSchemas';
 
 
 const LoanRequests = new Mongo.Collection('loanRequests');

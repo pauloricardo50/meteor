@@ -11,7 +11,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { getAllPartners } from '/imports/js/partnerList';
 import getCantons from '/imports/js/cantons';
 import MaskedInput from 'react-text-mask';
-import emailMask from 'text-mask-addons/dist/emailMask.js';
+import emailMask from 'text-mask-addons/dist/emailMask';
 import { createPartner } from '/imports/api/users/methods';
 
 

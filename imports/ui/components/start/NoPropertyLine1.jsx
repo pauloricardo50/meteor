@@ -5,7 +5,7 @@ import TextField from 'material-ui/TextField';
 import MaskedInput from 'react-text-mask';
 
 import { toMoney, toNumber } from '/imports/js/conversionFunctions';
-import { swissFrancMask } from '/imports/js/textMasks.js';
+import { swissFrancMask } from '/imports/js/textMasks';
 
 const styles = {
   textField: {

@@ -90,14 +90,8 @@
         }
       ],
       "import/extensions": 0,
-      "no-extraneous-dependencies": [
-        "off",
-        {
-          "devDependencies": false,
-          "optionalDependencies": false,
-          "peerDependencies": false
-        }
-      ],
+      "import/no-extraneous-dependencies": "off",
+      "import/no-absolute-path": "off",
       "class-methods-use-this": 0,
       "no-absolute-path": 0
     }

@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 
-import { PublicNav } from '/imports/ui/containers/public/CurrentUserContainer.js';
+import { PublicNav } from '/imports/ui/containers/public/CurrentUserContainer';
 
 // MUI Theme, replace lightBaseTheme with a custom theme ASAP!
-import myTheme from '/imports/js/mui_custom.js';
+import myTheme from '/imports/js/mui_custom';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 

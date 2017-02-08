@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import Checkbox from 'material-ui/Checkbox';
-import { updateValues } from '/imports/api/loanrequests/methods.js';
+import { updateValues } from '/imports/api/loanrequests/methods';
 import DropzoneInput from '/imports/ui/components/forms/DropzoneInput.jsx';
 import Step1TaxesForm from '/imports/ui/components/steps/Step1TaxesForm.jsx';
 

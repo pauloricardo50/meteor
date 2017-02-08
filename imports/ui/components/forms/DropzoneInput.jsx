@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
-import { pushValue } from '/imports/api/loanrequests/methods.js';
+import { pushValue } from '/imports/api/loanrequests/methods';
 
 import DropzoneComponent from 'react-dropzone-component';
 

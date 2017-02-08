@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
-import Offers from '../offers.js';
+import Offers from '../offers';
 import LoanRequests from '../../loanrequests/loanrequests';
 import { Roles } from 'meteor/alanning:roles';
 

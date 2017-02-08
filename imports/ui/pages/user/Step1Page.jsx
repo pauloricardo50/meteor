@@ -6,7 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import Step1Part1 from '/imports/ui/components/steps/Step1Part1.jsx';
 import Step1Part2 from '/imports/ui/components/steps/Step1Part2.jsx';
-import { updateValues } from '/imports/api/loanrequests/methods.js';
+import { updateValues } from '/imports/api/loanrequests/methods';
 
 
 const styles = {

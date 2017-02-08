@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { DocHead } from 'meteor/kadira:dochead';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import { insertRequest } from '/imports/api/loanrequests/methods.js';
+import { insertRequest } from '/imports/api/loanrequests/methods';
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';

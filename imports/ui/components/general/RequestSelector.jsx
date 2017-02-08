@@ -7,7 +7,7 @@ import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
 
 
-import { updateValues } from '/imports/api/loanrequests/methods.js';
+import { updateValues } from '/imports/api/loanrequests/methods';
 
 
 const styles = {

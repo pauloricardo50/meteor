@@ -5,10 +5,10 @@ import { Accounts } from 'meteor/accounts-password';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import MaskedInput from 'react-text-mask';
-import emailMask from 'text-mask-addons/dist/emailMask.js';
+import emailMask from 'text-mask-addons/dist/emailMask';
 
 
-import { emailValidation } from '/imports/js/validation.js';
+import { emailValidation } from '/imports/js/validation';
 
 const styles = {
   textField: {

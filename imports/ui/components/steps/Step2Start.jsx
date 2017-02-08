@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import { startAuction } from '/imports/api/loanrequests/methods.js';
+import { startAuction } from '/imports/api/loanrequests/methods';
 import CountUp from 'react-countup';
 
 

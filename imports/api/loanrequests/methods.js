@@ -3,7 +3,7 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { check } from 'meteor/check';
 import moment from 'moment';
 
-import LoanRequests from './loanrequests.js';
+import LoanRequests from './loanrequests';
 
 export const insertRequest = new ValidatedMethod({
   name: 'loanrequests.insert',

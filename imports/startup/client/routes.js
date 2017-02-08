@@ -11,7 +11,7 @@ import { UserLayout, AdminLayout, PartnerLayout } from '/imports/ui/containers/p
 
 
 // Public Pages
-import HomePage from '/imports/ui/containers/public/HomePageContainer.js';
+import HomePage from '/imports/ui/containers/public/HomePageContainer';
 import StartPage from '/imports/ui/pages/public/StartPage.jsx';
 import StartPage2 from '/imports/ui/pages/public/StartPage2.jsx';
 
@@ -24,16 +24,16 @@ import DemoPage from '/imports/ui/pages/public/DemoPage.jsx';
 import {
   MainPage, TodoCardPage, FinancePage, ContactPage,
   Step1Page, Step3Page, Step4Page, Step5Page, Step6Page,
-} from '/imports/ui/containers/user/ActiveRequestContainer.js';
+} from '/imports/ui/containers/user/ActiveRequestContainer';
 import NewPage from '/imports/ui/pages/user/NewPage.jsx';
-import { RequestProgressBar } from '/imports/ui/containers/user/CurrentURLContainer.js';
-import SettingsPage from '/imports/ui/containers/user/SettingsPageContainer.js';
-import { Step2Page, StrategyPage } from '/imports/ui/containers/user/RequestAndOffersContainer.js';
+import { RequestProgressBar } from '/imports/ui/containers/user/CurrentURLContainer';
+import SettingsPage from '/imports/ui/containers/user/SettingsPageContainer';
+import { Step2Page, StrategyPage } from '/imports/ui/containers/user/RequestAndOffersContainer';
 
 
 // Partner Pages
-import { PartnerHomePage } from '/imports/ui/containers/partner/PartnerRequestsContainer.js';
-import { PartnerRequestPage } from '/imports/ui/containers/partner/PartnerSingleRequestContainer.js';
+import { PartnerHomePage } from '/imports/ui/containers/partner/PartnerRequestsContainer';
+import { PartnerRequestPage } from '/imports/ui/containers/partner/PartnerSingleRequestContainer';
 
 
 // Admin Pages

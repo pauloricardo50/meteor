@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { compose } from 'react-komposer';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import LoanRequests from '/imports/api/loanrequests/loanrequests.js';
+import LoanRequests from '/imports/api/loanrequests/loanrequests';
 
 import composeWithTracker from '../composeWithTracker';
 

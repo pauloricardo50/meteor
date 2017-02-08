@@ -1,4 +1,4 @@
-import createNumberMask from 'text-mask-addons/dist/createNumberMask.js'
+import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 
 export const swissFrancMask = createNumberMask({
   prefix: 'CHF ',

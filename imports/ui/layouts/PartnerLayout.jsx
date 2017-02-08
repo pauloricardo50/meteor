@@ -4,14 +4,14 @@ import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Roles } from 'meteor/alanning:roles';
 
-import { PublicNav } from '/imports/ui/containers/public/CurrentUserContainer.js';
+import { PublicNav } from '/imports/ui/containers/public/CurrentUserContainer';
 import Unauthorized from '/imports/ui/components/general/Unauthorized.jsx';
 
 
 // MUI Theme, replace lightBaseTheme with a custom theme ASAP!
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import myTheme from '/imports/js/mui_custom.js';
+import myTheme from '/imports/js/mui_custom';
 
 const theme = myTheme;
 

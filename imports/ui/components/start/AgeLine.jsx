@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 import TextField from 'material-ui/TextField';
 
-import { ageValidation } from '/imports/js/validation.js';
+import { ageValidation } from '/imports/js/validation';
 
 const styles = {
   textField: {

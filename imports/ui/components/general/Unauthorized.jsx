@@ -5,7 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 // MUI Theme, replace lightBaseTheme with a custom theme ASAP!
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import myTheme from '/imports/js/mui_custom.js';
+import myTheme from '/imports/js/mui_custom';
 
 const theme = myTheme;
 

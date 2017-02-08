@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { updateValues } from '/imports/api/loanrequests/methods.js';
+import { updateValues } from '/imports/api/loanrequests/methods';
 
 
 import TextField from 'material-ui/TextField';
 import MaskedInput from 'react-text-mask';
 
-import { swissFrancMask } from '/imports/js/textMasks.js';
+import { swissFrancMask } from '/imports/js/textMasks';
 import { toNumber, toMoney } from '/imports/js/conversionFunctions';
 import SavingIcon from './SavingIcon.jsx';
 import InfoIcon from './InfoIcon.jsx';

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 
 import RaisedButton from 'material-ui/RaisedButton';
-import { minimumFortuneRequired } from '/imports/js/finance-math.js';
+import { minimumFortuneRequired } from '/imports/js/finance-math';
 import { toMoney } from '/imports/js/conversionFunctions';
 
 

@@ -20,8 +20,6 @@ shell-server@0.2.1            # Server-side component of the `meteor shell` comm
 # dev, place this on top to allow meteor toys to work
 meteortoys:allthings            # Most awesome dev tools, shows you Session and mongoDB data
 stolinski:stylus-multi          # CSS PreCompiler for Stylus
-# gadicc:blaze-react-component    # Allows using blaze templates in react, should be removed at some point
-# aldeed:template-extension       # allows Template.xx.replaces, should be removed at some point
 
 # User Accounts
 accounts-password@1.3.3               # Basic accounts package from Meteor
@@ -43,10 +41,12 @@ edgee:slingshot
 # Routing
 kadira:flow-router              # Router
 
+
 # Internationalization
 # tap:i18n                        # Handles internationalization in Meteor
 # tap:i18n-ui                     # Automatically generates a language dropdown based on available language files
 softwarerero:accounts-t9n
+
 
 # Icons
 fortawesome:fontawesome
@@ -59,4 +59,4 @@ kadira:dochead                  # Set custom page titles easily
 # Production
 spiderable@1.0.14-release-testing.0                      # Lets webcrawlers crawl your website to index it, ex: Google
 force-ssl                       # Automatically route users to https
-okgrow:analytics
+okgrow:analytics    # Analytics package (e-potek uses only GA)

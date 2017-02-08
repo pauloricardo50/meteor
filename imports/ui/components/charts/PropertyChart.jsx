@@ -24,10 +24,6 @@ const colors = {
 };
 
 export default class PropertyChart extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     const r = this.props.loanRequest;
 

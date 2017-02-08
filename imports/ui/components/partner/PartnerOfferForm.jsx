@@ -8,7 +8,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 
 import { toMoney, toNumber, toDecimalNumber } from '/imports/js/conversionFunctions';
-import { swissFrancMask, percentMask } from '/imports/js/textMasks.js';
+import { swissFrancMask, percentMask } from '/imports/js/textMasks';
 import { insertOffer, updateOffer } from '/imports/api/offers/methods';
 
 
