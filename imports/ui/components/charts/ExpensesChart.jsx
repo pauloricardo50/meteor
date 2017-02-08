@@ -66,7 +66,7 @@ export default class ExpensesChart extends Component {
         pie: {
           size: '100%',
           borderWidth: 4,
-          allowPointSelect: true,
+          allowPointSelect: false,
           cursor: 'pointer',
           dataLabels: {
             overflow: 'none',
@@ -86,7 +86,7 @@ export default class ExpensesChart extends Component {
       },
       legend: {
         align: 'center',
-        verticalAlign: 'top',
+        verticalAlign: 'bottom',
         floating: true,
         layout: 'horizontal',
         itemMarginBottom: 8,

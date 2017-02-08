@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import CallSplit from 'material-ui/svg-icons/communication/call-split';
-import AttachMoney from 'material-ui/svg-icons/editor/attach-money';
+import PieChart from 'material-ui/svg-icons/editor/pie-chart';
 import Badge from 'material-ui/Badge';
 
 import FinanceWidget from '/imports/ui/components/general/FinanceWidget.jsx';
@@ -119,7 +119,7 @@ export default class SideNav extends Component {
               }
               style={styles.a}
             >
-              <span className="icon" ><AttachMoney /></span>
+              <span className="icon fa fa-pie-chart fa-2x" ></span>
               <h5>Finances</h5>
             </a>
           </li>

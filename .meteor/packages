@@ -59,3 +59,4 @@ kadira:dochead                  # Set custom page titles easily
 # Production
 spiderable@1.0.14-release-testing.0                      # Lets webcrawlers crawl your website to index it, ex: Google
 force-ssl                       # Automatically route users to https
+okgrow:analytics

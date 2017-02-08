@@ -7,7 +7,7 @@ import Paper from 'material-ui/Paper';
 
 // Icons
 import Home from 'material-ui/svg-icons/action/home';
-import AttachMoney from 'material-ui/svg-icons/editor/attach-money';
+import PieChart from 'material-ui/svg-icons/editor/pie-chart';
 import ActionSettings from 'material-ui/svg-icons/action/settings';
 import CallSplit from 'material-ui/svg-icons/communication/call-split';
 
@@ -57,7 +57,7 @@ export default class BottomNav extends Component {
             />
             <BottomNavigationItem
               label="Finances"
-              icon={<AttachMoney />}
+              icon={<PieChart />}
               onTouchTap={() => FlowRouter.go('/finance')}
             />
             <BottomNavigationItem
