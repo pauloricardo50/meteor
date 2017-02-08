@@ -76,6 +76,7 @@ module.exports = function(props) {
           <h1 className="heading animated fadeInDown">
             La meilleure hypothèque
             <br />
+            <hr />
             Tout simplement
           </h1>
 
@@ -83,9 +84,9 @@ module.exports = function(props) {
       </div>
       <div className="container-lrg flex">
         <div className="col-6 centervertical animated fadeInLeft">
-          <h2 className="paragraph bold">
+          <h3 className="description">
             Mettez votre prêt hypothécaire aux enchères.
-          </h2>
+          </h3>
           <div className="ctas">
             {/* <a className="ctas-button" href="/start">
               Testez votre Éligibilité
@@ -133,7 +134,7 @@ module.exports = function(props) {
     </header>
     <div className="feature3 animated fadeInUp">
       <div className="container-lrg flex">
-        <div className="col-3">
+        <div className="col-12">
           <b className="emoji">
             <span className="fa fa-calculator" />
           </b>
@@ -144,7 +145,7 @@ module.exports = function(props) {
             Identifiez le montant que vous pouvez emprunter en quelques clics.
           </p>
         </div>
-        <div className="col-3">
+        <div className="col-12">
           <b className="emoji">
             <span className="fa fa-gavel" />
           </b>
@@ -152,10 +153,10 @@ module.exports = function(props) {
             2. Organisez les enchères
           </h3>
           <p className="paragraph">
-            Obtenez de manière anonyme des offres sur mesure de la part de tous les prêteurs du marché.
+            Obtenez de manière anonyme des offres sur mesure de la part des prêteurs du marché.
           </p>
         </div>
-        <div className="col-3">
+        <div className="col-12">
           <b className="emoji">
             <span className="fa fa-laptop" />
           </b>
@@ -166,7 +167,7 @@ module.exports = function(props) {
             La plateforme simple et sécurisée vous permet de communiquer facilement avec votre prêteur.
           </p>
         </div>
-        <div className="col-3">
+        <div className="col-12">
           <b className="emoji">
             <span className="fa fa-check" />
           </b>
@@ -246,58 +247,60 @@ module.exports = function(props) {
       </div>
     </div>
     <div className="footer">
-      <div className="container-lrg center">
-        <div className="col-7">
-          <h5 className="heading">
-            La meilleure hypothèque, Simplement.
-          </h5>
-        </div>
-        <div className="col-5">
-          <div className="ctas text-right">
-            {/* <a className="ctas-button" href="/start">
-              Testez votre Éligibilité
-            </a>
-            <a className="ctas-button-2" href="/login">
-              Se Connecter
-            </a> */}
-            <RaisedButton
-              label="Testez votre éligibilité"
-              href="/start"
-              style={styles.style}
-              buttonStyle={styles.button}
-              labelStyle={styles.label}
-              overlayStyle={styles.button}
-            />
+      <div className="content">
+        <div className="container-lrg center">
+          <div className="col-7">
+            <h5 className="heading">
+              La meilleure hypothèque, Simplement.
+            </h5>
+          </div>
+          <div className="col-5">
+            <div className="ctas text-right">
+              {/* <a className="ctas-button" href="/start">
+                Testez votre Éligibilité
+              </a>
+              <a className="ctas-button-2" href="/login">
+                Se Connecter
+              </a> */}
+              <RaisedButton
+                label="Testez votre éligibilité"
+                href="/start"
+                style={styles.style}
+                buttonStyle={styles.button}
+                labelStyle={styles.label}
+                overlayStyle={styles.button}
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div className="container-sml footer-nav text-center">
-        <div className="col-12">
-          <div>
-            <a className="nav-link">
-              A Propos
-            </a>
-            <a className="nav-link">
-              Contact
-            </a>
-            <a className="nav-link">
-              Carrières
-            </a>
-            <a className="nav-link">
-              Conditions
-            </a>
-            {/* <a className="nav-link">
-              TOS
-            </a>
-            <a className="nav-link">
-              Privacy
-            </a> */}
-          </div>
-          <br />
-          <div>
-            <span>
-              © 2016-2017 e-Potek
-            </span>
+        <div className="container-sml footer-nav text-center">
+          <div className="col-12">
+            <div>
+              <a className="nav-link">
+                A Propos
+              </a>
+              <a className="nav-link">
+                Contact
+              </a>
+              <a className="nav-link">
+                Carrières
+              </a>
+              <a className="nav-link">
+                Conditions
+              </a>
+              {/* <a className="nav-link">
+                TOS
+              </a>
+              <a className="nav-link">
+                Privacy
+              </a> */}
+            </div>
+            <br />
+            <div>
+              <span>
+                © 2016-2017 e-Potek
+              </span>
+            </div>
           </div>
         </div>
       </div>
