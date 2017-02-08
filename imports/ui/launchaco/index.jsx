@@ -75,7 +75,6 @@ module.exports = function(props) {
         <div className="col-12">
           <h1 className="heading animated fadeInDown">
             La meilleure hypothèque
-            <br />
             <hr />
             Tout simplement
           </h1>
@@ -251,7 +250,9 @@ module.exports = function(props) {
         <div className="container-lrg center">
           <div className="col-7">
             <h5 className="heading">
-              La meilleure hypothèque, Simplement.
+              La meilleure hypothèque
+              <hr />
+              Tout simplement
             </h5>
           </div>
           <div className="col-5">
