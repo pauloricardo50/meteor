@@ -1,4 +1,8 @@
 {
+  "public": {
+      "analyticsSettings": {
+      }
+  },
   "AWSAccessKeyId": "AKIAJF43A4MFAA2ZGTEA",
   "AWSSecretAccessKey": "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",
   "AWSRegion": "eu-central-1",

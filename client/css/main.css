@@ -1,6 +1,9 @@
 .footer,
 .header {
-	background: #4A90E2;
+  background: #4A90E2; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #002A7C, #4A90E2); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #002A7C, #4A90E2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 	color: white;
 }
 .ctas-button {
@@ -219,6 +222,8 @@ p.paragraph {
 	}
 }.socialproof {
 	padding: 90px 0;
+  background: #F6F9FC;
+  color: rgb(107, 124, 147);
 }.ctas-button,
 .ctas-button-2 {
 	display: inline-block;
@@ -309,6 +314,8 @@ p.paragraph {
 }.feature3 {
 	padding: 90px 0;
 	border-bottom: 1px solid rgba(0,0,0,.1);
+  background: white;
+  color: rgb(107, 124, 147);
 }
 .feature3 .emoji {
 	font-size: 55px;
@@ -341,6 +348,8 @@ p.paragraph {
   /* FLORIAN padding */
 	padding: 90px 0 0 0;
 	border-bottom: 1px solid rgba(0,0,0,.1);
+  background: #F6F9FC;
+  color: rgb(107, 124, 147);
 }
 
 @media (min-width: 900px) {
@@ -355,6 +364,8 @@ p.paragraph {
 	/*margin-top: 90px; FLORIAN*/
 }.feature2 {
 	border-bottom: 1px solid rgba(0,0,0,.1);
+  background: white;
+  color: rgb(107, 124, 147);
 }
 .feature2	.col-6:nth-of-type(2n - 1) {
 	padding: 90px 90px 90px 20px;
