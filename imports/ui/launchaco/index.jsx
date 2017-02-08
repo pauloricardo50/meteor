@@ -74,9 +74,9 @@ module.exports = function(props) {
       <div className="container-sml text-center">
         <div className="col-12">
           <h1 className="heading animated fadeInDown">
-            La meilleure hypothèque
+            <span>La meilleure hypothèque</span>
             <hr />
-            Tout simplement
+            <span>Tout simplement</span>
           </h1>
 
         </div>
@@ -250,9 +250,9 @@ module.exports = function(props) {
         <div className="container-lrg center">
           <div className="col-7">
             <h5 className="heading">
-              La meilleure hypothèque
+              <span>La meilleure hypothèque</span>
               <hr />
-              Tout simplement
+              <span>Tout simplement</span>
             </h5>
           </div>
           <div className="col-5">

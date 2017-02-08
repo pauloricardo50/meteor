@@ -237,7 +237,7 @@ p.paragraph {
   color: white; /* old IE */
   background-color: white; /* Modern Browsers */
   width: 20%;
-  margin: 10px 0 10px 0;
+  margin: 15px 0 5px 0;
 }
 
 .header .sidedevices {
