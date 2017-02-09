@@ -1,14 +1,22 @@
-import React, {PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 import { DocHead } from 'meteor/kadira:dochead';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
 
-export default class Step4Page extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+const styles = {
+  img: {
+    width: '100%',
+    padding: 40,
+  },
+  h4: {
+    lineHeight: '1.5em',
+    textAlign: 'justify',
+    padding: 20,
+  },
+};
 
+export default class Step4Page extends Component {
   componentDidMount() {
     DocHead.setTitle('Étape 4 - e-Potek');
   }
@@ -21,20 +29,20 @@ export default class Step4Page extends React.Component {
         <section className="mask1 animated fadeIn">
           <img
             src="/img/step4_icons.svg"
-            alt="Votre dossier => Banque"
-            style={{
-              width: '100%',
-              padding: 40,
-            }}
+            alt="Envoyez votre dossier à la banque"
+            style={styles.img}
           />
-          <p
+          <h4
             className="col-sm-6 col-sm-offset-3"
-            style={{ textAlign: 'justify', padding: 20 }}
+            style={styles.h4}
           >
             Vous y êtes presque! Si vous estimez que vos informations sont correctes,
-            envoyez votre dossier à la banque. Vous recevrez un contrat dans environ 7
+            envoyez votre dossier à la banque.
+            <br /><br />
+            Vous recevrez un contrat dans environ 7
             jours ouvrables, que vous pourrez étudier en toute tranquilité.
-          </p><br />
+          </h4>
+          <br />
           <div className="col-xs-12">
             <div className="form-group text-center">
               <RaisedButton label="Envoyer mon dossier" primary />

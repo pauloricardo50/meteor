@@ -69,22 +69,24 @@ export default class BorrowerCountSwitch extends Component {
 
 
   deleteBorrower() {
-    this.handleClose();
-    this.setState({ value: 1 });
-    const value = {
-      borrowers: 1,
-    };
-    const id = this.props.loanRequest._id;
+    if (this.props.loanRequest.borrowers.length > 1) {
+      this.handleClose();
+      this.setState({ value: 1 });
+      const value = {
+        borrowers: 1,
+      };
+      const id = this.props.loanRequest._id;
 
-    popValue.call({
-      value, id
-    }, (error, result) => {
-      if (error) {
-        throw new Meteor.Error(500, error.message);
-      } else {
-        return 'Update Successful';
-      }
-    });
+      popValue.call({
+        value, id
+      }, (error, result) => {
+        if (error) {
+          throw new Meteor.Error(500, error.message);
+        } else {
+          return 'Update Successful';
+        }
+      });
+    }
   }
 
 
@@ -95,6 +97,7 @@ export default class BorrowerCountSwitch extends Component {
         bonusExists: false,
         corporateBankExists: false,
         currentRentExists: false,
+        files: [],
       },
     };
     const id = this.props.loanRequest._id;

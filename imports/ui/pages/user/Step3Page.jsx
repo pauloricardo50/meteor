@@ -33,7 +33,7 @@ export default class Step3Page extends React.Component {
       {
         title: titles[0],
         duration: '12 min',
-        href: 'perso',
+        href: 'personal',
       }, {
         title: titles[1],
         duration: '15 min',

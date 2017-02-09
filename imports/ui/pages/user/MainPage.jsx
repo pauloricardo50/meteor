@@ -8,7 +8,7 @@ import NewUserOptions from '/imports/ui/components/general/NewUserOptions.jsx';
 
 
 export default class MainPage extends React.Component {
-  componentWillMount() {
+  componentDidMount() {
     // if a loanRequest exists, route to the current step
     if (this.props.loanRequest) {
       const realStep = this.props.loanRequest.logic.step + 1;

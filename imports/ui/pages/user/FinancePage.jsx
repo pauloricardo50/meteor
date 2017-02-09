@@ -4,9 +4,9 @@ import { DocHead } from 'meteor/kadira:dochead';
 import RaisedButton from 'material-ui/RaisedButton';
 
 
-import PropertyChart from '/imports/ui/components/charts/PropertyChart.jsx';
 import ProjectChart from '/imports/ui/components/charts/ProjectChart.jsx';
 import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
+import FinanceFAQ from '/imports/ui/components/general/FinanceFAQ.jsx';
 
 const styles = {
   p: {
@@ -23,7 +23,7 @@ export default class FinancePage extends Component {
   }
 
   componentDidMount() {
-    DocHead.setTitle('Mon Financement - e-Potek');
+    DocHead.setTitle('Finances - e-Potek');
   }
 
   render() {
@@ -47,6 +47,8 @@ export default class FinancePage extends Component {
           <p className="text-center" style={styles.p}>*Taux d&apos;intérêt fictif de 1.5%</p>
           <ExpensesChart loanRequest={this.props.loanRequest} />
         </article>
+
+        <FinanceFAQ />
 
       </section>
     );

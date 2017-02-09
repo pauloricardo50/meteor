@@ -22,15 +22,6 @@ export default class TodoCardPage extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  renderCardContent() {
-    switch (FlowRouter.getParam('cardId')) {
-      case 'property': return <Step3PropertyForm loanRequest={this.props.loanRequest} />;
-      case 'perso': return <Step3PersonalForm loanRequest={this.props.loanRequest} />;
-      case 'finance': return <Step3FinancialForm loanRequest={this.props.loanRequest} />;
-      case 'files': return <Step3FileUpload loanRequest={this.props.loanRequest} />;
-      default: return '';
-    }
-  }
 
   handleClick() {
     const stepNb = FlowRouter.current().path.charAt(5);
@@ -43,18 +34,22 @@ export default class TodoCardPage extends React.Component {
     }
   }
 
+
+  renderCardContent() {
+    switch (FlowRouter.getParam('cardId')) {
+      case 'personal': return <Step3PersonalForm loanRequest={this.props.loanRequest} />;
+      case 'property': return <Step3PropertyForm loanRequest={this.props.loanRequest} />;
+      case 'finance': return <Step3FinancialForm loanRequest={this.props.loanRequest} />;
+      case 'files': return <Step3FileUpload loanRequest={this.props.loanRequest} />;
+      default: return '';
+    }
+  }
+
+
   render() {
-    // If the view sessions variable is empty, go back
     return (
       <section className="animated fadeIn">
         <div className="form-group">
-          {/* <a
-            href={'/step1'}
-            className="btn btn-default animated slideInLeft"
-            id="back"
-          >
-            <span className="fa fa-angle-left" /> Retour
-          </a> */}
           <RaisedButton
             icon={<span className="fa fa-angle-left" />}
             label="Retour"

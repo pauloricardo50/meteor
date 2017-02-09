@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
+import { updateValues } from '/imports/api/loanrequests/methods';
 
 import PartnerOffersTable from '/imports/ui/components/general/PartnerOffersTable.jsx';
 
 import RaisedButton from 'material-ui/RaisedButton';
-
-import { toMoney } from '/imports/js/conversionFunctions';
 
 const styles = {
   button: {
@@ -22,10 +22,33 @@ const styles = {
 export default class Step2AuctionResults extends Component {
   constructor(props) {
     super(props);
+
+    this.getFakeOffers = this.getFakeOffers.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  render() {
-    const partnerOffers = [
+
+  handleClick() {
+    // Go to step 3
+    const object = {};
+    object['logic.step'] = 2;
+    const id = this.props.loanRequest._id;
+
+    updateValues.call({
+      object, id,
+    }, (error, result) => {
+      if (error) {
+        throw new Meteor.Error(500, error.message);
+      } else {
+        FlowRouter.go('/step3');
+        return 'Update Successful';
+      }
+    });
+  }
+
+
+  getFakeOffers() {
+    return [
       {
         standardOffer: {
           maxAmount: this.props.loanRequest.property.value * 0.8,
@@ -70,17 +93,18 @@ export default class Step2AuctionResults extends Component {
         expertiseRequired: true,
       },
     ];
+  }
 
-
+  render() {
     return (
       <section className="mask1 animated fadeIn">
         <h1>Les résultats sont arrivés!</h1>
 
         <div style={styles.button} className="text-center">
           <RaisedButton
-            label="Choisir ma stratégie de taux"
+            label="Continuer"
             primary
-            href="/finance/strategy"
+            onClick={this.handleClick}
           />
         </div>
 
@@ -88,7 +112,7 @@ export default class Step2AuctionResults extends Component {
           <PartnerOffersTable
             offers={this.props.offers && this.props.offers.length > 0 ?
               this.props.offers :
-              partnerOffers
+              this.getFakeOffers()
             }
           />
         </div>

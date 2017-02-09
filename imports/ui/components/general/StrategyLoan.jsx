@@ -1,7 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { Meteor } from 'meteor/meteor';
-import { FlowRouter } from 'meteor/kadira:flow-router';
-import { updateValues } from '/imports/api/loanrequests/methods';
 
 import RaisedButton from 'material-ui/RaisedButton';
 

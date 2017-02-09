@@ -9,7 +9,7 @@ export const getYearsToRetirement = (age1, age2, gender1, gender2) => {
   // Substract age to determine remaining time to retirement for both borrowers
   const toRetirement1 = retirement1 - age1;
   let toRetirement2;
-  if (retirement2) {
+  if (retirement2 && age2) {
     toRetirement2 = retirement2 - age2;
   }
 
