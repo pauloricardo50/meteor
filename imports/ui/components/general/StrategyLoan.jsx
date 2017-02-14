@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
+import StrategyChoices from './StrategyChoices.jsx';
 import FinanceStrategyPicker from '/imports/ui/components/general/FinanceStrategyPicker.jsx';
 import LenderPicker from '/imports/ui/components/general/LenderPicker.jsx';
 
@@ -71,6 +72,37 @@ export default class StrategyPage extends Component {
     return propertyValue === trancheSum;
   }
 
+  getChoices() {
+    return [
+      {
+        id: 'fixed',
+        title: 'Le Fixé',
+        reasons: [
+          'Dormez serein',
+          'Profitez des taux historiquement bas',
+          <span>&nbsp;</span>,
+        ],
+        isBest: true,
+      }, {
+        id: 'fixedLibor',
+        title: 'Le Fixé Risqué',
+        reasons: [
+          'Jouez le Libor',
+          'Risque faible',
+          'Vérifiez votre capacité d\'épargne au préalable',
+        ],
+      }, {
+        id: 'manual',
+        title: 'Mode Manuel',
+        reasons: [
+          'Fixez chaque tranche vous-même',
+          'Choisissez la durée',
+          'À vos risques et périls',
+        ],
+      },
+    ];
+  }
+
   render() {
     return (
       <section>
@@ -94,11 +126,21 @@ export default class StrategyPage extends Component {
           </div>
         </span>
 
+        <StrategyChoices
+          currentValue={this.props.loanRequest.logic.loanStrategyPreset}
+          valueId="logic.loanStrategyPreset"
+          requestId={this.props.loanRequest._id}
+          choices={this.getChoices()}
+          load
+        />
 
-        <FinanceStrategyPicker loanRequest={this.props.loanRequest} style={styles.picker} />
+        <FinanceStrategyPicker
+          loanRequest={this.props.loanRequest}
+          style={styles.picker}
+        />
 
-        {this.strategyChosen() && <hr style={styles.hr} />}
-        {this.strategyChosen() && <LenderPicker loanRequest={this.props.loanRequest} />}
+        {/* {this.strategyChosen() && <hr style={styles.hr} />}
+        {this.strategyChosen() && <LenderPicker loanRequest={this.props.loanRequest} />} */}
 
       </section>
     );

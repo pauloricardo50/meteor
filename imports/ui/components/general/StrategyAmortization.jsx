@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
+import StrategyChoices from './StrategyChoices.jsx';
 
 const styles = {
   topText: {
@@ -17,41 +18,13 @@ const styles = {
     marginTop: 40,
     marginBottom: 40,
   },
-  choiceDiv: {
-    display: 'inline-block',
-    width: '100%',
-    marginBottom: 40,
-  },
-  choice: {
-    position: 'relative',
-    padding: 0,
-    marginBottom: 32,
-  },
-  list: {
-    listStyle: 'none',
-    margin: 0,
-    padding: 0,
-  },
-  title: {
-    padding: '20px 10px',
-    borderBottom: '1px solid #eee',
-    backgroundColor: '#4A90E2',
-    color: 'white',
-  },
-  reason: {
-    padding: 20,
-    borderBottom: '1px solid #eee',
-  },
-  button: {
-    padding: 20,
-    borderBottom: 'none',
-  },
 };
 
 export default class StrategyAmortization extends Component {
   getChoices() {
     return [
       {
+        id: 'direct',
         title: 'Amortissement Direct',
         reasons: [
           'Paiements diminuent avec les années',
@@ -59,41 +32,16 @@ export default class StrategyAmortization extends Component {
           <span>&nbsp;</span>,
         ],
       }, {
+        id: 'indirect',
         title: 'Amortissement Indirect',
         reasons: [
           'Paiements ne changent pas avec les années',
           'Charge fiscale minimale',
           'Établissement d\'un 3e pilier',
         ],
+        isBest: true,
       },
     ];
-  }
-
-
-  renderChoice(choice, index) {
-    return (
-      <article
-        // className="col-sm-6 col-md-4 col-md-offset-2 mask2"
-        className={
-          index === 0 ? 'col-xs-8 col-xs-offset-2 col-sm-5 col-sm-offset-0 col-md-4 col-md-offset-1 mask2 text-center' :
-            'col-xs-8 col-xs-offset-2 col-sm-5 col-sm-offset-2 col-md-4 col-md-offset-2 mask2 text-center'
-        }
-        style={styles.choice}
-        key={index}
-      >
-        <ul style={styles.list}>
-
-          <li style={styles.title}><h4 className="bold">{choice.title}</h4></li>
-
-          {choice.reasons.map((reason, i) =>
-            <li className="bold" style={styles.reason} key={i}>{reason}</li>,
-          )}
-
-          <li style={styles.button}><RaisedButton primary label="Choisir" /></li>
-
-        </ul>
-      </article>
-    );
   }
 
 
@@ -116,9 +64,12 @@ export default class StrategyAmortization extends Component {
           </span>
         </div>
 
-        <div style={styles.choiceDiv}>
-          {this.getChoices().map((choice, index) => (this.renderChoice(choice, index)))}
-        </div>
+        <StrategyChoices
+          currentValue={this.props.loanRequest.logic.amortizingStrategyPreset}
+          valueId="logic.amortizingStrategyPreset"
+          choices={this.getChoices()}
+          requestId={this.props.loanRequest._id}
+        />
 
       </section>
     );
@@ -126,4 +77,5 @@ export default class StrategyAmortization extends Component {
 }
 
 StrategyAmortization.propTypes = {
+  loanRequest: PropTypes.objectOf(PropTypes.any),
 };

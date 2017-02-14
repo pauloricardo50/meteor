@@ -849,3 +849,66 @@ $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
     transform: translateY(-30px);
     +above($small)
       transform: unset;
+
+
+div.strategy-choices
+  width: 100%;
+  margin-bottom: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  // align-items: center;
+  padding: 10px 0;
+  span.loading
+    width: 100%;
+  article
+    transition: box-shadow 0.4s ease-in-out;
+    position: relative;
+    padding: 0;
+    width: 250px;
+    height: 370px;
+    margin: 0 4px 32px 4px;
+    overflow: visible;
+    border-radius: 5px;
+    &.chosen
+      border: solid 2px brand-primary;
+      border-top: none;
+      box-shadow: 0px 20px 20px 0px rgba(0,0,0,0.2);
+    ul
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: block;
+      li:first-child
+        padding: 20px 10px;
+        border-bottom: 1px solid #eee;
+        background-color: brand-primary
+        color: white;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+      li.reason
+        padding: 20px;
+        border-bottom: 1px solid #eee;
+    div.recommended
+      transition-delay: 1s;
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      div
+        position: relative;
+        color: white;
+        background-color: brand-success;
+        height: 30px;
+        width: 160px;
+        line-height: 30px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        left: -50%;
+    div.button
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      display: inline-block;
+      padding: 20px;
+      width: 100%;
+      height: 80px;

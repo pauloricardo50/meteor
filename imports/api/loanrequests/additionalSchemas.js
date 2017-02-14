@@ -404,6 +404,14 @@ export const LogicSchema = new SimpleSchema({
     type: Date,
     optional: true,
   },
+  loanStrategyPreset: {
+    type: String,
+    defaultValue: '',
+  },
+  amortizingStrategyPreset: {
+    type: String,
+    defaultValue: '',
+  },
   hasChosenStrategy: {
     type: Boolean,
     defaultValue: false,

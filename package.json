@@ -7,6 +7,7 @@
   "dependencies": {
     "babel-polyfill": "^6.20.0",
     "babel-runtime": "^6.18.0",
+    "classnames": "^2.2.5",
     "fixed-data-table": "^0.6.3",
     "highcharts": "^5.0.6",
     "indexof": "0.0.1",
@@ -51,6 +52,9 @@
   },
   "eslintConfig": {
     "parser": "babel-eslint",
+    "env": {
+      "browser": true
+    },
     "parserOptions": {
       "allowImportExportEverywhere": true
     },
