@@ -8,7 +8,6 @@ import classNames from 'classnames';
 
 import { LoadingComponent } from './Loading.jsx';
 
-var timeout;
 
 export default class StrategyChoices extends Component {
   constructor(props) {
@@ -35,7 +34,12 @@ export default class StrategyChoices extends Component {
     // If the selected choice is clicked again, set the value to ''
     object[this.props.valueId] = this.props.currentValue === choiceId ? '' : choiceId;
 
-    cleanMethod('update', id, object);
+    cleanMethod('update', id, object,
+      (error) => {
+        if (!error) {
+          this.props.handleChoose(choiceId);
+        }
+      });
   }
 
 
@@ -106,7 +110,7 @@ StrategyChoices.propTypes = {
     PropTypes.any,
   ]),
   valueId: PropTypes.string.isRequired,
-  onChoose: PropTypes.func,
+  handleChoose: PropTypes.func,
 };
 
 StrategyChoices.defaultProps = {

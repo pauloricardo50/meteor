@@ -49,6 +49,14 @@ export default class FinanceStrategyPicker extends Component {
     this.save = this.save.bind(this);
   }
 
+  componentWillReceiveProps(n) {
+    if (n.loanRequest.general.loanTranches != this.state.tranches) {
+      this.setState({
+        tranches: n.loanRequest.general.loanTranches,
+      });
+    }
+  }
+
   addTranche() {
     const object = {
       type: this.getRemainingTypes()[0],
@@ -211,6 +219,10 @@ export default class FinanceStrategyPicker extends Component {
               />
             </div>
           </div>
+        }
+
+        {!this.props.manual &&
+          <div className="text-center"><h2>Votre Structure de financement</h2></div>
         }
 
         {tranchesArray}

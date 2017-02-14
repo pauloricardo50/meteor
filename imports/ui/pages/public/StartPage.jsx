@@ -196,10 +196,9 @@ export default class StartPage extends Component {
 
   scroll(step = -1) {
     const options = {
-      duration: 500,
+      duration: 200,
       delay: 0,
       smooth: true,
-      offset: -100,
     };
     if (step >= 0) {
       Scroll.scroller.scrollTo(`scroll${step}`, options);

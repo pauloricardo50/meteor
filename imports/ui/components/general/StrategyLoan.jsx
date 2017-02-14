@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import cleanMethod from '/imports/api/cleanMethods';
 
 import RaisedButton from 'material-ui/RaisedButton';
+import Scroll from 'react-scroll';
 
 import StrategyChoices from './StrategyChoices.jsx';
 import FinanceStrategyPicker from '/imports/ui/components/general/FinanceStrategyPicker.jsx';
@@ -62,6 +63,7 @@ export default class StrategyPage extends Component {
     super(props);
 
     this.strategyChosen = this.strategyChosen.bind(this);
+    this.handleChoose = this.handleChoose.bind(this);
   }
 
 
@@ -73,13 +75,22 @@ export default class StrategyPage extends Component {
     return propertyValue === trancheSum;
   }
 
-  handleChoose(id) {
-    // const object = {};
-    // const id = this.props.loanRequest._id;
-    // // Only change fortune when changing the slider, let insuranceFortune the same
-    // object[this.props.valueId] = choiceId;
-    //
-    // cleanMethod('update', id, object);
+  handleChoose(choiceId) {
+    if (choiceId !== '') {
+      // scroll to the strategyChosen
+      Scroll.scroller.scrollTo('myStrategy', {
+        duration: 1500,
+        delay: 100,
+        smooth: true,
+      });
+
+      if (choiceId !== 'manual') {
+        const id = this.props.loanRequest._id;
+        const object = { 'general.loanTranches': this.getStructure(choiceId) };
+
+        cleanMethod('update', id, object);
+      }
+    }
   }
 
   getChoices() {
@@ -111,6 +122,32 @@ export default class StrategyPage extends Component {
         ],
       },
     ];
+  }
+
+
+  getStructure(choiceId) {
+    const r = this.props.loanRequest;
+    const borrow = r.property.value - r.general.fortuneUsed - r.general.insuranceFortuneUsed;
+    if (choiceId === 'fixed') {
+      return [
+        {
+          type: 'interest10',
+          value: borrow,
+        },
+      ];
+    } else if (choiceId === 'fixedLibor') {
+      return [
+        {
+          type: 'interest10',
+          value: borrow * 0.8,
+        }, {
+          type: 'interestLibor',
+          value: borrow * 0.2,
+        },
+      ];
+    }
+
+    return false;
   }
 
   render() {
@@ -146,11 +183,13 @@ export default class StrategyPage extends Component {
         />
 
         {this.props.loanRequest.logic.loanStrategyPreset &&
-          <FinanceStrategyPicker
-            loanRequest={this.props.loanRequest}
-            style={styles.picker}
-            manual={this.props.loanRequest.logic.loanStrategyPreset === 'manual'}
-          />
+          <Scroll.Element name="myStrategy">
+            <FinanceStrategyPicker
+              loanRequest={this.props.loanRequest}
+              style={styles.picker}
+              manual={this.props.loanRequest.logic.loanStrategyPreset === 'manual'}
+            />
+          </Scroll.Element>
         }
 
 
