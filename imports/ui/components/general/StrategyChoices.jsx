@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { updateValues } from '/imports/api/loanrequests/methods';
+import { updateValuesClean } from '/imports/api/loanrequests/methodsClean';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import classNames from 'classnames';
@@ -24,10 +24,10 @@ export default class StrategyChoices extends Component {
   handleClick(choiceId) {
     const object = {};
     const id = this.props.requestId;
-    // Only change fortune when changing the slider, let insuranceFortune the same
-    object[this.props.valueId] = choiceId;
+    // If the selected choice is clicked again, set the value to ''
+    object[this.props.valueId] = this.props.currentValue === choiceId ? [1, 2] : choiceId;
 
-    updateValues.call({ object, id });
+    updateValuesClean(id, object);
   }
 
 
@@ -42,8 +42,8 @@ export default class StrategyChoices extends Component {
 
     return (
       <article className={articleClasses} key={index} >
-        {choice.isBest &&
-          <div className="recommended">
+        {(choice.isBest && !this.props.currentValue) &&
+          <div className="recommended animated fadeIn">
             <div className="bold">
               Recommandé pour vous
             </div>
@@ -65,7 +65,7 @@ export default class StrategyChoices extends Component {
         <div className="button">
           <RaisedButton
             primary={!this.props.currentValue}
-            label="Choisir"
+            label={chosen ? 'Annuler' : 'Choisir'}
             onClick={() => this.handleClick(choice.id)}
           />
         </div>
@@ -98,6 +98,7 @@ StrategyChoices.propTypes = {
     PropTypes.any,
   ]),
   valueId: PropTypes.string.isRequired,
+  onChoose: PropTypes.func,
 };
 
 StrategyChoices.defaultProps = {

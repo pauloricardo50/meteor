@@ -48,6 +48,7 @@ export const updateValues = new ValidatedMethod({
     check(id, String);
   },
   run({ object, id }) {
+    console.log('server: ' + JSON.stringify(object));
     LoanRequests.update(id, {
       $set: object,
     });

@@ -23,6 +23,8 @@ const styles = {
     marginTop: 0,
     display: 'inline-block',
   },
+  automaticH4: {
+  },
   dropDown: {
     zIndex: 0,
     fontSize: 'inherit',
@@ -75,57 +77,70 @@ export default class LoanTranche extends Component {
   render() {
     return (
       <div style={styles.mainDiv}>
-        <h4 style={styles.h4}>
-          <span>
-            Tranche
-          </span>
-          <DropDownMenu
-            value={this.props.tranche.type}
-            onChange={this.changeType}
-            autoWidth={false}
-            style={styles.dropDown}
-          >
-            {this.props.getRemainingTypes(this.props.tranche.type).map((type, index) => (
-              <MenuItem value={type} primaryText={types[type]} key={index} />
-            ))}
-          </DropDownMenu>
-        </h4>
+        {this.props.manual ? (
+          <div>
+            <h4 style={styles.h4}>
+              <span>
+                Tranche
+              </span>
+              <DropDownMenu
+                value={this.props.tranche.type}
+                onChange={this.changeType}
+                autoWidth={false}
+                style={styles.dropDown}
+              >
+                {this.props.getRemainingTypes(this.props.tranche.type).map((type, index) => (
+                  <MenuItem value={type} primaryText={types[type]} key={index} />
+                ))}
+              </DropDownMenu>
+            </h4>
+            <br />
+          </div>
+          ) :
+          <h4 style={styles.automaticH4}>Tranche {types[this.props.tranche.type]}</h4>
+        }
 
 
-        <RaisedButton
-          icon={<span className="fa fa-times" />}
-          style={styles.deleteButton}
-          buttonStyle={styles.buttonStyle}
-          onClick={this.props.removeTranche}
-        />
-
-        <br />
+        {this.props.manual &&
+          <RaisedButton
+            icon={<span className="fa fa-times" />}
+            style={styles.deleteButton}
+            buttonStyle={styles.buttonStyle}
+            onClick={this.props.removeTranche}
+          />
+        }
 
         <div className="trancheBar">
-          <div className="bar" style={{
-            width: `${100 * (this.props.tranche.value / this.props.totalValue)}%`
-          }}
+          <div
+            className="bar"
+            style={{ width: `${100 * (this.props.tranche.value / this.props.totalValue)}%` }}
           />
           <div className="money">
             <h4 className="center-adjust">
-              <RaisedButton
-                label="-"
-                onClick={this.props.decrementTranche}
-                style={styles.button}
-                buttonStyle={styles.buttonStyle}
-                disabled={this.props.tranche.value <= 100000}
-              />
+              {this.props.manual &&
+                <RaisedButton
+                  label="-"
+                  onClick={this.props.decrementTranche}
+                  style={styles.button}
+                  buttonStyle={styles.buttonStyle}
+                  disabled={this.props.tranche.value <= 100000}
+                />
+              }
+
               <span className="text-span">
                 CHF {toMoney(this.props.tranche.value)}
               </span>
-              <RaisedButton
-                label="+"
-                primary
-                onClick={this.props.incrementTranche}
-                style={styles.button}
-                buttonStyle={styles.buttonStyle}
-                disabled={!this.props.moneyLeft}
-              />
+
+              {this.props.manual &&
+                <RaisedButton
+                  label="+"
+                  primary
+                  onClick={this.props.incrementTranche}
+                  style={styles.button}
+                  buttonStyle={styles.buttonStyle}
+                  disabled={!this.props.moneyLeft}
+                />
+              }
             </h4>
           </div>
         </div>
@@ -145,4 +160,5 @@ LoanTranche.propTypes = {
   incrementTranche: PropTypes.func.isRequired,
   decrementTranche: PropTypes.func.isRequired,
   changeTrancheType: PropTypes.func.isRequired,
+  manual: PropTypes.bool,
 };

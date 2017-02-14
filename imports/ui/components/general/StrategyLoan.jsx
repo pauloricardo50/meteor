@@ -72,6 +72,20 @@ export default class StrategyPage extends Component {
     return propertyValue === trancheSum;
   }
 
+  handleChoose(id) {
+    // const object = {};
+    // const id = this.props.loanRequest._id;
+    // // Only change fortune when changing the slider, let insuranceFortune the same
+    // object[this.props.valueId] = choiceId;
+    //
+    // updateValues.call({ object, id },
+    // (error) => {
+    //   if (error) {
+    //     throw
+    //   }
+    // });
+  }
+
   getChoices() {
     return [
       {
@@ -132,12 +146,17 @@ export default class StrategyPage extends Component {
           requestId={this.props.loanRequest._id}
           choices={this.getChoices()}
           load
+          handleChoose={this.handleChoose}
         />
 
-        <FinanceStrategyPicker
-          loanRequest={this.props.loanRequest}
-          style={styles.picker}
-        />
+        {this.props.loanRequest.logic.loanStrategyPreset &&
+          <FinanceStrategyPicker
+            loanRequest={this.props.loanRequest}
+            style={styles.picker}
+            manual={this.props.loanRequest.logic.loanStrategyPreset === 'manual'}
+          />
+        }
+
 
         {/* {this.strategyChosen() && <hr style={styles.hr} />}
         {this.strategyChosen() && <LenderPicker loanRequest={this.props.loanRequest} />} */}

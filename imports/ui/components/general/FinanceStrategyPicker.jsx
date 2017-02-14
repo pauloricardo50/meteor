@@ -4,7 +4,7 @@ import { updateValues } from '/imports/api/loanrequests/methods';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { toMoney, toNumber } from '/imports/js/conversionFunctions';
+import { toMoney } from '/imports/js/conversionFunctions';
 
 import LoanTranche from './LoanTranche.jsx';
 
@@ -30,8 +30,12 @@ export default class FinanceStrategyPicker extends Component {
   constructor(props) {
     super(props);
 
+    this.borrowAmount = this.props.loanRequest.property.value -
+      this.props.loanRequest.general.fortuneUsed -
+      this.props.loanRequest.general.insuranceFortuneUsed;
+
     this.state = {
-      totalLeft: this.props.loanRequest.property.value,
+      totalLeft: this.borrowAmount,
       tranches: this.props.loanRequest.general.loanTranches ?
         JSON.parse(JSON.stringify(this.props.loanRequest.general.loanTranches)) : [],
     };
@@ -87,14 +91,14 @@ export default class FinanceStrategyPicker extends Component {
 
 
   getMoneyLeft() {
-    let propertyValue = this.props.loanRequest.property.value;
+    let borrowAmount = this.borrowAmount;
 
     // Substract the values of each tranche
     this.state.tranches.forEach((tranche) => {
-      propertyValue -= tranche.value;
+      borrowAmount -= tranche.value;
     });
 
-    return propertyValue;
+    return borrowAmount;
   }
 
 
@@ -129,7 +133,6 @@ export default class FinanceStrategyPicker extends Component {
     }
 
     this.setState({ tranches });
-
   }
 
   changeTrancheType(i, newType) {
@@ -158,19 +161,20 @@ export default class FinanceStrategyPicker extends Component {
   render() {
     const tranchesArray = [];
 
-    this.state.tranches.forEach((tranche, index, trancheArray) => {
+    this.state.tranches.forEach((tranche, index) => {
       tranchesArray.push(
         <LoanTranche
           key={index}
           index={index}
           tranche={tranche}
-          totalValue={this.props.loanRequest.property.value}
+          totalValue={this.borrowAmount}
           moneyLeft={this.getMoneyLeft()}
           getRemainingTypes={this.getRemainingTypes}
           removeTranche={e => this.removeTranche(e, index)}
           incrementTranche={e => this.incrementTranche(e, index)}
           decrementTranche={e => this.decrementTranche(e, index)}
           changeTrancheType={value => this.changeTrancheType(index, value)}
+          manual={this.props.manual}
         />,
       );
     });
@@ -178,54 +182,60 @@ export default class FinanceStrategyPicker extends Component {
     return (
       <article>
 
-        <h4>
-          Argent restant à distribuer&nbsp;
-          {this.getMoneyLeft() <= 0 &&
-            <span className="fa fa-check success" style={styles.check} />
-          }
-        </h4>
-        <div className="trancheBar">
-          <div
-            className="bar main"
-            style={{
-              width: `${100 * (this.getMoneyLeft() / this.props.loanRequest.property.value)}%`,
-            }}
-          />
-          <div className="money">
-            <h4 className="center-adjust">
-              <span className="text-span">
-                CHF {toMoney(this.getMoneyLeft())}
-              </span>
+        {this.props.manual &&
+          <div>
+            <h4>
+              Argent restant à distribuer&nbsp;
+              {this.getMoneyLeft() <= 0 &&
+                <span className="fa fa-check success" style={styles.check} />
+              }
             </h4>
+            <div className="trancheBar">
+              <div
+                className="bar main"
+                style={{
+                  width: `${100 * (this.getMoneyLeft() / this.borrowAmount)}%`,
+                }}
+              />
+              <div className="money">
+                <h4 className="center-adjust">
+                  <span className="text-span">
+                    CHF {toMoney(this.getMoneyLeft())}
+                  </span>
+                </h4>
+              </div>
+            </div>
+
+            <hr style={styles.hr} />
+
+            <div className="text-center">
+              <h3>Je veux diviser mon prêt en {this.state.tranches.length} tranche(s).</h3>
+              <RaisedButton
+                label="Ajouter une Tranche"
+                onClick={this.addTranche}
+                primary
+                style={styles.button}
+                disabled={this.getMoneyLeft() < 100000}
+              />
+            </div>
           </div>
-        </div>
-
-        <hr style={styles.hr} />
-
-        <div className="text-center">
-          <h3>Je veux diviser mon prêt en {this.state.tranches.length} tranche(s).</h3>
-          <RaisedButton
-            label="Ajouter une Tranche"
-            onClick={this.addTranche}
-            primary
-            style={styles.button}
-            disabled={this.getMoneyLeft() < 100000}
-          />
-        </div>
+        }
 
         {tranchesArray}
 
-        <RaisedButton
-          label="Sauvegarder"
-          onClick={this.save}
-          primary
-          style={styles.saveButton}
-          disabled={(JSON.stringify(this.state.tranches) ===
-            JSON.stringify(this.props.loanRequest.general.loanTranches,
-          )) ||
-          (this.state.tranches.length === 0)
-          }
-        />
+        {this.props.manual &&
+          <RaisedButton
+            label="Sauvegarder"
+            onClick={this.save}
+            primary
+            style={styles.saveButton}
+            disabled={(JSON.stringify(this.state.tranches) ===
+              JSON.stringify(this.props.loanRequest.general.loanTranches,
+            )) ||
+            (this.state.tranches.length === 0)
+            }
+          />
+        }
 
       </article>
     );
@@ -234,4 +244,9 @@ export default class FinanceStrategyPicker extends Component {
 
 FinanceStrategyPicker.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  manual: PropTypes.bool,
+};
+
+FinanceStrategyPicker.defaultProps = {
+  manual: false,
 };
