@@ -1,12 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { updateValuesClean } from '/imports/api/loanrequests/methodsClean';
+import cleanMethod from '/imports/api/cleanMethods';
+// cleanMethod('update', id, object);
 
 import RaisedButton from 'material-ui/RaisedButton';
 import classNames from 'classnames';
 
 import { LoadingComponent } from './Loading.jsx';
 
+var timeout;
 
 export default class StrategyChoices extends Component {
   constructor(props) {
@@ -16,18 +18,24 @@ export default class StrategyChoices extends Component {
       showChoices: false,
     };
 
-    Meteor.setTimeout(() => {
+    this.timeout = Meteor.setTimeout(() => {
       this.setState({ showChoices: true });
     }, (this.props.load ? 2500 : 0));
+  }
+
+  componentWillUnmount() {
+    if (this.timeout) {
+      Meteor.clearTimeout(this.timeout);
+    }
   }
 
   handleClick(choiceId) {
     const object = {};
     const id = this.props.requestId;
     // If the selected choice is clicked again, set the value to ''
-    object[this.props.valueId] = this.props.currentValue === choiceId ? [1, 2] : choiceId;
+    object[this.props.valueId] = this.props.currentValue === choiceId ? '' : choiceId;
 
-    updateValuesClean(id, object);
+    cleanMethod('update', id, object);
   }
 
 

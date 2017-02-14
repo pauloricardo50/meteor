@@ -27,20 +27,6 @@ export const insertRequest = new ValidatedMethod({
 });
 
 
-export const incrementStep = new ValidatedMethod({
-  name: 'loanrequests.incrementStep',
-  validate({ id }) {
-    check(id, String);
-  },
-  run({ id }) {
-    // TODO: Prevent increment if the current step is already at max step (5)
-    LoanRequests.update(id, {
-      $inc: { step: 1 },
-    });
-  },
-});
-
-
 // Lets you set an entire object in the document
 export const updateValues = new ValidatedMethod({
   name: 'loanRequests.updateValues',
@@ -48,7 +34,6 @@ export const updateValues = new ValidatedMethod({
     check(id, String);
   },
   run({ object, id }) {
-    console.log('server: ' + JSON.stringify(object));
     LoanRequests.update(id, {
       $set: object,
     });
@@ -120,37 +105,10 @@ export const pushValue = new ValidatedMethod({
 // Lets you pop a value from the end of an array
 export const popValue = new ValidatedMethod({
   name: 'loanRequests.popValue',
-  validate({ value, id }) {
+  validate({ object, id }) {
     check(id, String);
   },
-  run({ value, id }) {
-    LoanRequests.update(id, { $pop: value });
-  },
-});
-
-
-// Lets a partner add an offer to a loanRequest
-export const addPartnerOffer = new ValidatedMethod({
-  name: 'loanRequests.addPartnerOffer',
-  validate({ id, object }) {
-    check(id, String);
-    // TODO
-  },
-  run({ id, object }) {
-    const request = LoanRequests.findOne({ _id: id });
-    // TODO: make sure this partner is allowed to participate
-
-    const user = Meteor.user()
-
-    const finalObject = object;
-    // Securely add partner's organization to this object
-    finalObject['partnerOffers'].name = user.profile && user.profile.organization;
-    // If partner accounts can have multiple addresses, update this logic
-    if (user.emails.length !== 1) {
-      throw new Meteor.Error('emailError', 'There isn\'t a regular amount of emails on this user');
-    }
-    finalObject['partnerOffers'].email = user.emails[0].address;
-
-    LoanRequests.update(id, { $push: finalObject });
+  run({ object, id }) {
+    LoanRequests.update(id, { $pop: object });
   },
 });

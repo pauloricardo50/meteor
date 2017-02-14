@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import { toMoney, toNumber, toDecimalNumber } from '/imports/js/conversionFunctions';
 import { swissFrancMask, percentMask } from '/imports/js/textMasks';
-import { insertOffer, updateOffer } from '/imports/api/offers/methods';
+import cleanMethod from '/imports/api/cleanMethods';
 
 
 const styles = {
@@ -88,15 +88,12 @@ export default class PartnerOfferForm extends Component {
       expertiseRequired: false, // TODO
     };
 
-    insertOffer.call({
-      object,
-    }, (error, result) => {
-      if (error) {
-        throw new Meteor.Error(500, error.message);
-      }
-
-      FlowRouter.go('/partner');
-    });
+    cleanMethod('insertOffer', id, object,
+      (error) => {
+        if (!error) {
+          FlowRouter.go('/partner');
+        }
+      });
   }
 
 

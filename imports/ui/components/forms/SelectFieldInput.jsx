@@ -6,7 +6,7 @@ import MenuItem from 'material-ui/MenuItem';
 
 
 import SavingIcon from './SavingIcon.jsx';
-import { updateValues } from '/imports/api/loanrequests/methods';
+import cleanMethod from '/imports/api/cleanMethods';
 
 
 const styles = {
@@ -50,21 +50,17 @@ export default class SelectFieldInput extends React.Component {
     object[this.props.id] = this.state.value;
     const id = this.props.requestId;
 
-    updateValues.call({
-      object, id,
-    }, (error, result) => {
-      this.setState({ saving: false });
-      if (error) {
-        this.setState({ errorText: error.message });
-        throw new Meteor.Error(500, error.message);
-      } else {
-        // on success, set saving briefly to true, before setting it to false again to trigger icon
-        this.setState({ errorText: '', saving: true },
-          this.setState({ saving: false }),
-        );
-        return 'Update Successful';
-      }
-    });
+    cleanMethod('update', id, object,
+      (error) => {
+        this.setState({ saving: false });
+
+        if (!error) {
+          // on success, set saving briefly to true, before setting it to false again to trigger icon
+          this.setState({ errorText: '', saving: true },
+            this.setState({ saving: false }),
+          );
+        }
+      });
   }
 
   render() {

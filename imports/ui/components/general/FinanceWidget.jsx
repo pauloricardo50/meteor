@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { updateValues } from '/imports/api/loanrequests/methods';
+import cleanMethod from '/imports/api/cleanMethods';
 
 import Slider from 'material-ui/Slider';
 
@@ -80,7 +80,7 @@ export default class FinanceWidget extends React.Component {
       this.props.loanRequest.general.insuranceFortuneUsed
     );
 
-    updateValues.call({ object, id });
+    cleanMethod('update', id, object);
   }
 
 

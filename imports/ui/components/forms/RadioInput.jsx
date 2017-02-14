@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { updateValues } from '/imports/api/loanrequests/methods';
+import cleanMethod from '/imports/api/cleanMethods';
 
 
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
@@ -63,15 +63,7 @@ export default class RadioInput extends Component {
     object[this.props.id] = safeValue;
     const id = this.props.requestId;
 
-    updateValues.call({
-      object, id,
-    }, (error, result) => {
-      if (error) {
-        throw new Meteor.Error(500, error.message);
-      } else {
-        return 'Update Successful';
-      }
-    });
+    cleanMethod('update', id, object);
   }
 
 

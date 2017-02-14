@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { updateValues } from '/imports/api/loanrequests/methods';
+import cleanMethod from '/imports/api/cleanMethods';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -146,15 +146,7 @@ export default class FinanceStrategyPicker extends Component {
     const object = {};
     object['general.loanTranches'] = this.state.tranches;
 
-    updateValues.call({
-      object, id,
-    }, (error, result) => {
-      if (error) {
-        throw new Meteor.Error(500, error.message);
-      } else {
-        return 'Update Successful';
-      }
-    });
+    cleanMethod('update', id, object);
   }
 
 

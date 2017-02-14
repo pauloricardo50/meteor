@@ -1,17 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import { Meteor } from 'meteor/meteor';
-import { updateValues, pullValue } from '/imports/api/loanrequests/methods';
-
 
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-import TextField from 'material-ui/TextField';
-import MaskedInput from 'react-text-mask';
 import RaisedButton from 'material-ui/RaisedButton';
-import FontIcon from 'material-ui/FontIcon';
 
-import { percentMask } from '/imports/js/textMasks';
-import { toMoney, toNumber } from '/imports/js/conversionFunctions';
+import { toMoney } from '/imports/js/conversionFunctions';
 
 
 const styles = {

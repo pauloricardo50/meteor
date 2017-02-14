@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import { updateValues } from '/imports/api/loanrequests/methods';
+import cleanMethod from '/imports/api/cleanMethods';
 
 import PartnerOffersTable from '/imports/ui/components/general/PartnerOffersTable.jsx';
 
@@ -34,14 +34,10 @@ export default class Step2AuctionResults extends Component {
     object['logic.step'] = 2;
     const id = this.props.loanRequest._id;
 
-    updateValues.call({
-      object, id,
-    }, (error, result) => {
-      if (error) {
-        throw new Meteor.Error(500, error.message);
-      } else {
+    cleanMethod('update', id, object,
+    (error) => {
+      if (!error) {
         FlowRouter.go('/step3');
-        return 'Update Successful';
       }
     });
   }

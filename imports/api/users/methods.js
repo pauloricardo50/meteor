@@ -27,7 +27,11 @@ Meteor.methods({
 Meteor.methods({
   doesUserExist(email) {
     check(email, String);
-    return Accounts.findUserByEmail(email) != null;
+    if (Meteor.isServer) {
+      return Accounts.findUserByEmail(email) != null;
+    }
+
+    return undefined;
   },
 });
 

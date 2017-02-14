@@ -7,7 +7,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import TodoCardArray from '/imports/ui/components/general/TodoCardArray.jsx';
-import { updateValues } from '/imports/api/loanrequests/methods';
+import cleanMethod from '/imports/api/cleanMethods';
 
 
 const styles = {
@@ -66,17 +66,13 @@ export default class Step3Page extends React.Component {
     object['logic.step'] = 3;
     const id = this.props.loanRequest._id;
 
-    updateValues.call({
-      object, id,
-    }, (error, result) => {
-      if (error) {
-        throw new Meteor.Error(500, error.message);
-      } else {
-        // Head to step 2
-        FlowRouter.go('/step4');
-        return 'Update Successful';
-      }
-    });
+    cleanMethod('update', id, object,
+      (error) => {
+        if (!error) {
+          // Head to step 4
+          FlowRouter.go('/step4');
+        }
+      });
   }
 
 

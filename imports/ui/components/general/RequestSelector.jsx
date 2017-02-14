@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import SelectField from 'material-ui/SelectField';
@@ -7,7 +6,7 @@ import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
 
 
-import { updateValues } from '/imports/api/loanrequests/methods';
+import cleanMethod from '/imports/api/cleanMethods';
 
 
 const styles = {
@@ -53,18 +52,12 @@ export default class RequestSelector extends Component {
   }
 
   updateValue(object, id, lastCall) {
-    updateValues.call({
-      object, id,
-    }, (error, result) => {
-      if (error) {
-        throw new Meteor.Error(500, error.message);
-      } else {
-        if (lastCall) {
-          // Refresh the page so that all subscriptions and active components are properly updated
-          // Only do this on the last call of this function
-          location.reload()
-        }
-        return 'Update Successful';
+    cleanMethod('update', id, object,
+    (error) => {
+      if (!error && lastCall) {
+        // Refresh the page so that all subscriptions and active components are properly updated
+        // Only do this on the last call of this function
+        location.reload();
       }
     });
   }

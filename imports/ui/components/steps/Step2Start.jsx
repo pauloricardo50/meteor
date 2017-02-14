@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import { startAuction } from '/imports/api/loanrequests/methods';
+import cleanMethod from '/imports/api/cleanMethods';
 import CountUp from 'react-countup';
 
 
@@ -35,16 +35,7 @@ export default class Step2Start extends Component {
   }
 
   startAuction() {
-    const id = this.props.loanRequest._id;
-
-    startAuction.call({ id }, (error, result) => {
-      if (error) {
-        console.log(error.message);
-        throw new Meteor.Error('startAuctionFailed', 'Couldn\'t start the auction');
-      } else {
-        return 'Auction started Successful';
-      }
-    });
+    cleanMethod('startAuction', this.props.loanRequest._id);
   }
 
   render() {

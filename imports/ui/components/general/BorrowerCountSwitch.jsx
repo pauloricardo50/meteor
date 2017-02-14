@@ -5,7 +5,7 @@ import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
-import { pushValue, popValue } from '/imports/api/loanrequests/methods';
+import cleanMethod from '/imports/api/cleanMethods';
 
 
 const styles = {
@@ -72,20 +72,10 @@ export default class BorrowerCountSwitch extends Component {
     if (this.props.loanRequest.borrowers.length > 1) {
       this.handleClose();
       this.setState({ value: 1 });
-      const value = {
-        borrowers: 1,
-      };
+      const object = { borrowers: 1 };
       const id = this.props.loanRequest._id;
 
-      popValue.call({
-        value, id
-      }, (error, result) => {
-        if (error) {
-          throw new Meteor.Error(500, error.message);
-        } else {
-          return 'Update Successful';
-        }
-      });
+      cleanMethod('pop', id, object);
     }
   }
 
@@ -102,15 +92,7 @@ export default class BorrowerCountSwitch extends Component {
     };
     const id = this.props.loanRequest._id;
 
-    pushValue.call({
-      object, id
-    }, (error, result) => {
-      if (error) {
-        throw new Meteor.Error(500, error.message);
-      } else {
-        return 'Update Successful';
-      }
-    });
+    cleanMethod('push', id, object);
   }
 
 

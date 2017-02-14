@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { Slingshot } from 'meteor/edgee:slingshot';
-import { pushValue } from '/imports/api/loanrequests/methods';
+import { Slingshot } from 'meteor/edgee:slingshot';
+import cleanMethod from '/imports/api/cleanMethods';
 
 import DropzoneComponent from 'react-dropzone-component';
 
@@ -86,16 +86,7 @@ export default class DropzoneInput extends Component {
       fileCount,
     };
 
-    pushValue.call({
-      object,
-      id: this.props.requestId,
-    }, (err, res) => {
-      if (err) {
-        throw new Meteor.Error('pushValueError', err.message);
-      } else {
-        return 'yay!';
-      }
-    });
+    cleanMethod('push', this.props.requestId, object);
   }
 
   getUploadedFiles(myDropzone) {

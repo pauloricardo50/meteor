@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
-import { updateValues } from '/imports/api/loanrequests/methods';
+import cleanMethod from '/imports/api/cleanMethods';
 import is from 'is_js';
 
 
@@ -64,17 +64,7 @@ export default class DateInput extends Component {
     object[this.props.id] = dateWithoutTime;
     const id = this.props.requestId;
 
-    updateValues.call({
-      object, id,
-    }, (error, result) => {
-      if (error) {
-        this.setState({ errorText: error.message });
-        throw new Meteor.Error(500, error.message);
-      } else {
-        this.setState({ errorText: '' });
-        return 'Update Successful';
-      }
-    });
+    cleanMethod('update', id, object);
   }
 
   setDateFormat() {

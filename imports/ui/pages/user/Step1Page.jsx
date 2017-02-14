@@ -6,7 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import Step1Part1 from '/imports/ui/components/steps/Step1Part1.jsx';
 import Step1Part2 from '/imports/ui/components/steps/Step1Part2.jsx';
-import { updateValues } from '/imports/api/loanrequests/methods';
+import cleanMethod from '/imports/api/cleanMethods';
 
 
 const styles = {
@@ -44,17 +44,13 @@ export default class Step1Page extends Component {
       object['logic.step'] = 1;
       const id = this.props.loanRequest._id;
 
-      updateValues.call({
-        object, id,
-      }, (error, result) => {
-        if (error) {
-          throw new Meteor.Error(500, error.message);
-        } else {
-          // Head to step 2
-          FlowRouter.go('/step2');
-          return 'Update Successful';
-        }
-      });
+      cleanMethod('update', id, object,
+        (error) => {
+          if (!error) {
+            // Head to step 2
+            FlowRouter.go('/step2');
+          }
+        });
     }
   }
 

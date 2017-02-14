@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
+
 import Checkbox from 'material-ui/Checkbox';
-import { updateValues } from '/imports/api/loanrequests/methods';
+
+import cleanMethod from '/imports/api/cleanMethods';
 import DropzoneInput from '/imports/ui/components/forms/DropzoneInput.jsx';
 import Step1TaxesForm from '/imports/ui/components/steps/Step1TaxesForm.jsx';
 
@@ -32,16 +34,7 @@ export default class Step1Part2 extends Component {
     object['logic.uploadTaxesLater'] = !isInputChecked;
     const id = this.props.loanRequest._id;
 
-    updateValues.call({
-      object, id,
-    }, (error, result) => {
-      if (error) {
-        alert(error.message);
-        throw new Meteor.Error(500, error.message);
-      } else {
-        return 'Update Successful';
-      }
-    });
+    cleanMethod('update', id, object);
   }
 
   render() {

@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import cleanMethod from '/imports/api/cleanMethods';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -78,12 +79,7 @@ export default class StrategyPage extends Component {
     // // Only change fortune when changing the slider, let insuranceFortune the same
     // object[this.props.valueId] = choiceId;
     //
-    // updateValues.call({ object, id },
-    // (error) => {
-    //   if (error) {
-    //     throw
-    //   }
-    // });
+    // cleanMethod('update', id, object);
   }
 
   getChoices() {

@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { DocHead } from 'meteor/kadira:dochead';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import { insertRequest } from '/imports/api/loanrequests/methods';
+import { Bert } from 'meteor/themeteorchef:bert';
+import cleanMethod from '/imports/api/cleanMethods';
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -101,14 +102,18 @@ export default class NewPage extends Component {
       }
 
 
-      insertRequest.call({ object }, (error, result) => {
-        if (error) {
-          // TODO: Remove this console log
-          console.log(error);
-          return;
-        }
-        FlowRouter.go('/main');
-      });
+      cleanMethod('insert', '', object,
+        (error) => {
+          if (!error) {
+            FlowRouter.go('/main');
+            Bert.alert({
+              title: 'Bienvenue!',
+              message: `<h4>C'est parti pour ${this.state.textValue}</h4>`,
+              type: 'success',
+              style: 'growl-top-right',
+            });
+          }
+        });
     } else {
       this.setState({ errorText: 'Pas de query Params! Allez à www.e-potek.ch/start' });
     }
