@@ -11,7 +11,7 @@ import { swissFrancMask } from '/imports/js/textMasks';
 
 const styles = {
   textField: {
-    width: 150,
+    width: 185,
     fontSize: 'inherit',
     marginLeft: 8,
     marginRight: 8,

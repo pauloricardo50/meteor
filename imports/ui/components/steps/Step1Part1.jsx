@@ -20,7 +20,7 @@ export default class Step1Part1 extends Component {
   render() {
     return (
       <article className="mask2" style={styles.mask}>
-        <h3>Mon Projet</h3>
+        <h2>Mon Projet</h2>
 
         <Step1InitialForm loanRequest={this.props.loanRequest} />
       </article>

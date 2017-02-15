@@ -12,9 +12,6 @@ const styles = {
   mask: {
     marginBottom: 40,
   },
-  p: {
-    padding: 40,
-  },
   checkbox: {
     marginBottom: 40,
   },
@@ -40,15 +37,17 @@ export default class Step1Part2 extends Component {
   render() {
     return (
       <article className="mask2" style={styles.mask}>
-        <h3>Votre déclaration d'impôts</h3>
-        <p style={styles.p}>
-          Pour permettre aux établissements financiers de vous faire une offre très précise,
-          nous pouvons leur faire savoir que vous nous avez déjà confié votre
-          déclaration d'impôts, sans la leur montrer.
-          <br />
-          Sans cela, certains établissements refuseront de faire une offre,
-          car ils considèreront que votre dossier n'est pas assez sérieux.
-        </p>
+        <h2>Votre déclaration d&apos;impôts</h2>
+        <div className="description">
+          <p>
+            Pour permettre aux prêteurs de vous faire une offre très précise,
+            nous pouvons leur faire savoir que vous nous avez déjà confié votre
+            déclaration d&apos;impôts, sans la leur montrer.
+            <br /><br />
+            Sans cela, certains refuseront de faire une offre,
+            car ils considèreront que votre dossier n&apos;est pas assez sérieux.
+          </p>
+        </div>
 
         <div className="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 secondary">
           <Checkbox

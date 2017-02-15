@@ -40,8 +40,8 @@ export default class Step2Start extends Component {
 
   render() {
     return (
-      <section className="mask1 animated fadeIn">
-        <h1>2ème Étape <small>Commencez les enchères</small></h1>
+      <section className="mask1">
+        <h2>Derniers réglages avant de commencer</h2>
         <div className="text-center giant" style={styles.countUp}>
           <CountUp
             className="custom-count"

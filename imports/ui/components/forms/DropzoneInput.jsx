@@ -103,7 +103,7 @@ export default class DropzoneInput extends Component {
   render() {
     return (
       <div>
-        {this.props.label && <h4 htmlFor={this.props.id}>{this.props.label}</h4>}
+        {this.props.label && <h3 htmlFor={this.props.id}>{this.props.label}</h3>}
         <DropzoneComponent
           name={this.props.id}
           config={this.componentConfig}

@@ -20,6 +20,8 @@ shell-server@0.2.1            # Server-side component of the `meteor shell` comm
 # dev, place this on top to allow meteor toys to work
 meteortoys:allthings            # Most awesome dev tools, shows you Session and mongoDB data
 stolinski:stylus-multi          # CSS PreCompiler for Stylus
+kadira:flow-router              # Router
+
 
 # User Accounts
 accounts-password@1.3.3               # Basic accounts package from Meteor
@@ -27,7 +29,7 @@ alanning:roles                  # Easy role management
 std:accounts-ui                 # React account component
 # std:accounts-basic
 zetoff:accounts-material-ui
-
+email
 
 # Data
 mdg:validated-method            # MDG written server-side validation before storing
@@ -38,23 +40,16 @@ aldeed:schema-index
 edgee:slingshot
 
 
-# Routing
-kadira:flow-router              # Router
-
-
 # Internationalization
 # tap:i18n                        # Handles internationalization in Meteor
 # tap:i18n-ui                     # Automatically generates a language dropdown based on available language files
 softwarerero:accounts-t9n
 
 
-# Icons
-fortawesome:fontawesome
-
-
 # UI tricks
 kadira:dochead                  # Set custom page titles easily
 themeteorchef:bert
+fortawesome:fontawesome
 
 
 # Production

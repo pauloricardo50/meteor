@@ -32,7 +32,7 @@ export default class FinancePage extends Component {
         <h1>Finances</h1>
 
         <article>
-          <h3 className="text-center">Mon Projet</h3>
+          <h2 className="text-center">Mon Projet</h2>
           <ProjectChart
             horizontal
             name={this.props.loanRequest.property.address1}
@@ -43,12 +43,12 @@ export default class FinancePage extends Component {
         </article>
 
         <article style={styles.article2}>
-          <h3 className="text-center">Coût Mensuel Estimé*</h3>
+          <h2 className="text-center">Coût Mensuel Estimé*</h2>
           <p className="text-center" style={styles.p}>*Taux d&apos;intérêt fictif de 1.5%</p>
           <ExpensesChart loanRequest={this.props.loanRequest} />
         </article>
 
-        <FinanceFAQ />
+        {/* <FinanceFAQ /> */}
 
       </section>
     );

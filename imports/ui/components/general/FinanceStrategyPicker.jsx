@@ -135,6 +135,13 @@ export default class FinanceStrategyPicker extends Component {
     if (tranches[i].value > 110000) {
       // Remove 10'000, or the remaining value until the next 10'000
       tranches[i].value -= (tranches[i].value % 10000 === 0 ? 10000 : tranches[i].value % 10000);
+    } else if (tranches[i].type === 'interestLibor') {
+      // If this is the libor tranche, reduce it until it's 10'000, below that, set it to 0
+      if (tranches[i].value > 10000) {
+        tranches[i].value -= (tranches[i].value % 10000 === 0 ? 10000 : tranches[i].value % 10000);
+      } else {
+        tranches[i].value = 0;
+      }
     } else {
       // Set it to 100'000 straight
       tranches[i].value = 100000;

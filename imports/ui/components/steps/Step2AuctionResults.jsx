@@ -8,13 +8,29 @@ import PartnerOffersTable from '/imports/ui/components/general/PartnerOffersTabl
 import RaisedButton from 'material-ui/RaisedButton';
 
 const styles = {
-  button: {
-    paddingTop: 40,
-    paddingBottom: 60,
+  section: {
+    marginBottom: 40,
+  },
+  p: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: 40,
+    marginBottom: 40,
+  },
+  description: {
+    maxWidth: 500,
+    textAlign: 'justify-left',
+    lineHeight: '1.5em',
+  },
+  lenderButton: {
+    margin: '50px 0',
   },
   tableDiv: {
     overflowX: 'scroll',
     width: '100%',
+  },
+  continueButton: {
+    float: 'right',
   },
 };
 
@@ -24,11 +40,11 @@ export default class Step2AuctionResults extends Component {
     super(props);
 
     this.getFakeOffers = this.getFakeOffers.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleContinue = this.handleContinue.bind(this);
   }
 
 
-  handleClick() {
+  handleContinue() {
     // Go to step 3
     const object = {};
     object['logic.step'] = 2;
@@ -93,27 +109,46 @@ export default class Step2AuctionResults extends Component {
 
   render() {
     return (
-      <section className="mask1 animated fadeIn">
-        <h1>Les résultats sont arrivés!</h1>
+      <div>
+        <section className="mask1" style={styles.section}>
+          <h2>Vos résultats sont arrivés</h2>
 
-        <div style={styles.button} className="text-center">
-          <RaisedButton
-            label="Continuer"
-            primary
-            onClick={this.handleClick}
-          />
-        </div>
+          <p style={styles.p}>
+            <span style={styles.description}>
+              Voici les offres que vous ont fait les prêteurs, les taux qu&apos;ils vous proposent
+              fluctueront encore avec le marché, mais ne devraient pas varier de plus de 0.05%
+              si vous concluez votre prêt dans le mois qui suit.
+              <br /><br />
+              Vous pouvez dès à présent choisir le prêteur que vous voulez et avoir une estimation
+              très précise de ce que ce prêt va vous coûter.
+            </span>
+          </p>
 
-        <div style={styles.tableDiv}>
-          <PartnerOffersTable
-            offers={this.props.offers && this.props.offers.length > 0 ?
-              this.props.offers :
-              this.getFakeOffers()
-            }
-          />
-        </div>
+          <div style={styles.lenderButton} className="text-center">
+            <RaisedButton
+              label="Choisir mon prêteur"
+              primary
+              onClick={() => FlowRouter.go('/strategy?tab=2')}
+            />
+          </div>
 
-      </section>
+          <div style={styles.tableDiv}>
+            <PartnerOffersTable
+              offers={this.props.offers && this.props.offers.length > 0 ?
+                this.props.offers :
+                this.getFakeOffers()
+              }
+            />
+          </div>
+        </section>
+
+        <RaisedButton
+          label="Continuer"
+          primary
+          onClick={this.handleContinue}
+          style={styles.continueButton}
+        />
+      </div>
     );
   }
 }

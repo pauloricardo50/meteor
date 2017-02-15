@@ -20,7 +20,7 @@ const styles = {
   },
   TextField: {
     fontSize: 'inherit',
-    width: 160,
+    width: 185,
   },
   sliderSpan: {
     position: 'relative',

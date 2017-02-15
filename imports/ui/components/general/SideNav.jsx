@@ -75,6 +75,22 @@ export default class SideNav extends Component {
   }
 
 
+  getStrategyNotification() {
+    const r = this.props.loanRequest
+    let value = 0;
+    if (r.logic.step > 1) {
+      if (!r.logic.loanStrategyPreset) {
+        value += 1;
+      }
+      if (!r.logic.amortizingStrategyPreset) {
+        value += 1;
+      }
+    }
+
+    return value;
+  }
+
+
   render() {
     // Don't display any content if there is no active LoanRequest
     let content1;
@@ -102,14 +118,17 @@ export default class SideNav extends Component {
               style={styles.a}
             >
               <span className="icon" ><CallSplit /></span>
-              <Badge
-                badgeContent="1"
-                primary
-                badgeStyle={{ top: 'calc(50% - 12px)', right: -40 }}
-                style={{ display: 'inline-flex', padding: 0 }}
-              >
+              {this.getStrategyNotification() ?
+                <Badge
+                  badgeContent={this.getStrategyNotification()}
+                  primary
+                  badgeStyle={{ top: 'calc(50% - 12px)', right: -40 }}
+                  style={{ display: 'inline-flex', padding: 0 }}
+                >
+                  <h5>Stratégies</h5>
+                </Badge> :
                 <h5>Stratégies</h5>
-              </Badge>
+              }
             </a>
             <a
               href="/finance"

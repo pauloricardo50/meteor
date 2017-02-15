@@ -116,7 +116,11 @@ export default class LoanTranche extends Component {
                   onClick={this.props.decrementTranche}
                   style={styles.button}
                   buttonStyle={styles.buttonStyle}
-                  disabled={this.props.tranche.value <= 100000}
+                  disabled={ // disable it if tranche is lower than 100000, or if it's 0 if libor
+                    this.props.tranche.type === 'interestLibor' ?
+                    this.props.tranche.value <= 0 :
+                    this.props.tranche.value <= 100000
+                  }
                 />
               }
 

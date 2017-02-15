@@ -18,7 +18,7 @@ export default class Step2PartnersForm extends Component {
 
     return [
       {
-        type: 'h2',
+        type: 'h3',
         text: 'Mes partenaires financiers particuliers',
       }, {
         type: 'SelectFieldInput',

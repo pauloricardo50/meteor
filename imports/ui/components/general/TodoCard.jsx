@@ -14,6 +14,7 @@ const styles = {
   title: {
     display: 'inline-block',
     paddingRight: 10,
+    marginTop: 0,
   },
 };
 
@@ -63,7 +64,7 @@ export default class TodoCard extends Component {
     return (
       <li onClick={this.routeDo} className={bootstrapClasses} style={{ listStyle: 'none' }}>
         <div className="mask2 col-sm-12 todo-card hover-rise">
-          <h4 style={styles.title}>{this.props.title}</h4>
+          <h2 style={styles.title}>{this.props.title}</h2>
           {this.props.completionPercentage === 100 &&
             <span style={{ color: successColor }} className="fa fa-check secondary" />
           }
@@ -79,7 +80,7 @@ export default class TodoCard extends Component {
             {
               this.props.completionPercentage === 100 ?
                 'Terminé' :
-                this.props.completionPercentage.toString() + '%'
+                this.props.completionPercentage.toString() + '% Terminé'
             }
           </div>
         </div>

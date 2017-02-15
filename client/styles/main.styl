@@ -57,23 +57,63 @@ social = {
   youtube: #bb0000
 }
 
+
+$side-nav = 250px
+$bottom-nav-height = 76px
+
+
 /* Typography */
 body
-  /*font-family: AvantGardeGothicITCW01Bk !important;*/
+  background-color backgroundcolor
+  color #444;
+  font-size: 16px !important;
   font-family: 'Source Sans Pro', sans-serif !important;
   font-weight: 300 !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+body, html, main, #react-root
+  width 100%
+  height 100%
+
 h1, h2, h3, h4, h5, h6
-  /*font-family: AvantGardeGothicITCW01Bd !important;*/
+  color : #222;
   font-family: 'Source Sans Pro', sans-serif !important;
   font-weight: 300 !important;
 
-.bold
-  /*font-family: AvantGardeGothicITCW01Bd !important;*/
-  font-family: 'Source Sans Pro', sans-serif !important;
-  font-weight: 400 !important;
+h1
+  font-size: 2em;
+  // margin: 0.67em 0;
+
+h2
+  font-size: 1.5em;
+  // margin: 0.83em 0;
+
+h3
+  font-size: 1.17em;
+  // margin: 1em 0;
+
+h4
+  font-size: 1em;
+  // margin: 1.33em 0;
+
+h5
+  font-size: 0.83em;
+  // margin: 1.67em 0;
+
+h6
+  font-size: 0.75em;
+  // margin: 2.33em 0;
+
+p
+  line-height: 1.5em;
+
+a
+  cursor: pointer;
+
+// Against BootStrap styling
+label
+  font-weight: normal;
 
 div#react-root
   [data-reactroot]
@@ -88,18 +128,16 @@ input[type=number]-webkit-outer-spin-button
 input[type=number]
   -moz-appearancetextfield
 
-body, html, main
-  width 100%
-  height 100%
 
-#react-root
-  height 100%
 
 *:focus
   outline none
 
 .clear
   clear both
+
+.bold
+  font-weight: 400 !important;
 
 .active
   color: brand-primary
@@ -113,12 +151,14 @@ body, html, main
 .success
   color: brand-success;
 
+
 .mask1
   box-shadow: 0px 2px 40px 0px rgba(0,0,0,0.08);
   border-radius: 5px;
   padding: 20px;
   overflow: auto;
   background-color: white;
+
 
 .mask2
   box-shadow: 0px 20px 20px 0px rgba(0,0,0,0.08);
@@ -135,16 +175,6 @@ body, html, main
   overflow: auto;
   background-color: white;
 
-$side-nav = 250px
-$side-nav-large = 250px
-$bottom-nav-height = 80px
-
-body
-  background-color backgroundcolor
-  color black
-
-a
-  cursor: pointer;
 
 .public-nav
   position relative;
@@ -179,11 +209,11 @@ a
         font-weight: 400 !important;
         &:hover
           text-decoration: none;
-          border-left: solid 5px alpha(brand-primary, 0.3);
+          border-left: solid 3px alpha(brand-primary, 0.3);
           transition: all 0.1s ease;
           color: alpha(black, 0.8);
         &.active-link
-          border-left: solid 5px brand-primary;
+          border-left: solid 3px brand-primary;
           color: alpha(black, 1.0);
         .icon
           display: inline-flex;
@@ -202,9 +232,6 @@ a
     width: $side-nav - 20px;
     top: 40px;
     left: 10px
-    +above($large)
-      width: $side-nav-large - 20px
-
 
 
 
@@ -216,7 +243,7 @@ a
     padding-top: 64px;
 
 .user-layout
-  lost-center: 95%;
+  padding: 0 20px;
   padding-top 20px
   padding-bottom $bottom-nav-height
   display: table;
@@ -224,13 +251,8 @@ a
   +above($med)
     height: 100%;
     padding-top: 86px // To offset the fixed progress bar header, height + 20 px
-    lost-center 95%
-    padding-left $side-nav
+    padding-left 270px; // side-nav width + 20px
     padding-bottom 0
-  +above($large)
-    lost-center 95%
-    // margin-top 40px
-    padding-left $side-nav-large
   &.admin
     padding-top: 20px; // no fixed top bar
 
@@ -246,16 +268,12 @@ a
   display: table-cell;
   vertical-align: middle;
   +above($med)
-    padding-bottom: 50px;
+    padding-bottom: 20px;
 
 
 .full-screen
   width: 100%;
   min-height: 100%;
-
-// Against BootStrap styling
-label
-  font-weight: normal;
 
 
 // Weird fix for safari, because of Material-UI textfield and react-text-mask placeholder misalignment

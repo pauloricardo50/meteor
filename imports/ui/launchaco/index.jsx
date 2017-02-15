@@ -83,9 +83,9 @@ module.exports = function(props) {
       </div>
       <div className="container-lrg flex">
         <div className="col-6 centervertical animated fadeInLeft">
-          <h3 className="description">
+          <h2 className="description">
             Mettez votre prêt hypothécaire aux enchères.
-          </h3>
+          </h2>
           <div className="ctas">
             {/* <a className="ctas-button" href="/start">
               Testez votre Éligibilité

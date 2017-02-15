@@ -111,23 +111,26 @@ $bottom-nav-height = 80px
     position relative
     float left
     width 16.666% // MODIFY THIS To add more steps
-    padding 18px 0;
+    padding 19px 0;
     font-size 12pt
     cursor: pointer
     &:hover
-      -webkit-box-shadow: inset 0px -5px 0px alpha(brand-primary, 0.3);
-      -moz-box-shadow: inset 0px -5px 0px alpha(brand-primary, 0.3);
-      box-shadow: inset 0px -5px 0px alpha(brand-primary, 0.3);
+      -webkit-box-shadow: inset 0px -2px 0px alpha(brand-primary, 0.3);
+      -moz-box-shadow: inset 0px -2px 0px alpha(brand-primary, 0.3);
+      box-shadow: inset 0px -2px 0px alpha(brand-primary, 0.3);
     &:before
       color white
-      width 30px
-      height 30px
-      line-height 30px
+      width 24px
+      height 24px
+      line-height 24px
       display block
       text-align center
       margin auto auto auto auto
       border-radius 50%
-      background-color #D8D8D8
+      border: 2px solid brand-primary;
+      background-color white
+      box-sizing: content-box;
+      // font-weight: bold;
     &#progressStep1:before
       content "1"
     &#progressStep2:before
@@ -144,14 +147,13 @@ $bottom-nav-height = 80px
       background-color: white
       color: #d8d8d8
       border-radius 0
-      border none
       font-size 16pt
     &:after
       content ''
       position absolute
       width 100%
       height 3px
-      background #D8D8D8
+      background white
       top 31px // 15px + padding
       z-index -1
       left -50%
@@ -159,16 +161,18 @@ $bottom-nav-height = 80px
       content none
     &.active
       &:before
-        background-color blue
+        color: brand-primary;
     &.done
       &:before
-        background-color green
+        font-weight: normal;
+        border-color: brand-success;
+        color: brand-success;
         font-family FontAwesome
         content "\f00c" !important
     &.current
-      -webkit-box-shadow: inset 0px -5px 0px brand-primary;
-      -moz-box-shadow: inset 0px -5px 0px brand-primary;
-      box-shadow: inset 0px -5px 0px brand-primary;
+      -webkit-box-shadow: inset 0px -2px 0px brand-primary;
+      -moz-box-shadow: inset 0px -2px 0px brand-primary;
+      box-shadow: inset 0px -2px 0px brand-primary;
 
 
 // Sets the color of the bar between the steps,
@@ -912,3 +916,13 @@ div.strategy-choices
       padding: 20px;
       width: 100%;
       height: 80px;
+
+.description
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  p
+    max-width: 500px;
+    text-align: justify-left;

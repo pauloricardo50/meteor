@@ -5,13 +5,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import StrategyChoices from './StrategyChoices.jsx';
 
 const styles = {
-  topText: {
-    display: 'inline-block',
-    padding: '40px 20px',
-  },
-  description: {
-    lineHeight: '1.5em',
-  },
   callButton: {
     display: 'block',
     width: '100%',
@@ -50,19 +43,17 @@ export default class StrategyAmortization extends Component {
       <section>
         <h1>Ma Stratégie d&apos;Amortissement</h1>
 
-        <div
-          className="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3"
-          style={styles.topText}
-        >
-          <h4 style={styles.description}>
+        <div className="description">
+          <p>
             Choisir comment amortir son bien immobilier peut avoir des conséquences très
             importantes pour votre futur. N&apos;hésitez pas à nous appeler pour prendre cette
             décision en toute confiance.
-          </h4>
-          <span className="text-center" style={styles.callButton}>
-            <RaisedButton primary label="Appeler un expert" />
-          </span>
+          </p>
         </div>
+
+        <span className="text-center" style={styles.callButton}>
+          <RaisedButton primary label="Appeler un expert" />
+        </span>
 
         <StrategyChoices
           currentValue={this.props.loanRequest.logic.amortizingStrategyPreset}

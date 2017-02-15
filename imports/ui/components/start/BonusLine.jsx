@@ -20,7 +20,7 @@ const styles = {
     marginBottom: 16,
   },
   textField: {
-    width: 150,
+    width: 185,
     fontSize: 'inherit',
     marginLeft: 8,
     marginRight: 8,

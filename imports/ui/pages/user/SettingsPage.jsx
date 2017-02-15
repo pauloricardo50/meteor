@@ -77,13 +77,8 @@ export default class SettingsPage extends Component {
 
           <div className="form-group">
             <h4>Recevoir des notifications quand mon dossier avance</h4>
-            <br />
-            <Checkbox
-              label="Par email"
-            />
-            <Checkbox
-              label="Par SMS"
-            />
+            <Checkbox label="Par email" />
+            <Checkbox label="Par SMS" />
           </div>
 
           <div className="form-group">

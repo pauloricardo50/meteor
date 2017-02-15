@@ -36,7 +36,7 @@ export default class StrategyChoices extends Component {
 
     cleanMethod('update', id, object,
       (error) => {
-        if (!error) {
+        if (!error && typeof this.props.handleChoose === 'function') {
           this.props.handleChoose(choiceId);
         }
       });

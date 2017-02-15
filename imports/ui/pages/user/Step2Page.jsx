@@ -36,24 +36,37 @@ export default class Step2Page extends Component {
     Meteor.clearInterval(time);
   }
 
-  render() {
+  getContent() {
     if (this.props.loanRequest.logic.auctionEndTime <= this.state.currentTime.setSeconds(this.state.currentTime.getSeconds() + 1)) {
       // After the auction
       Meteor.clearInterval(time);
 
-      return (<Step2AuctionResults
-        loanRequest={this.props.loanRequest}
-        offers={this.props.offers}
-      />);
+      return (
+        <Step2AuctionResults
+          loanRequest={this.props.loanRequest}
+          offers={this.props.offers}
+        />
+      );
     } else if (this.props.loanRequest.logic.auctionStarted) {
       // During the auction
-      return (<Step2Auction
-        loanRequest={this.props.loanRequest}
-        offers={this.props.offers}
-      />);
+      return (
+        <Step2Auction
+          loanRequest={this.props.loanRequest}
+          offers={this.props.offers}
+        />
+      );
     }
     // Before the auction, lets the user start it
     return <Step2Start loanRequest={this.props.loanRequest} />;
+  }
+
+  render() {
+    return (
+      <div className="animated fadeIn">
+        <h1>2ème Étape <small>Les enchères</small></h1>
+        {this.getContent()}
+      </div>
+    );
   }
 }
 

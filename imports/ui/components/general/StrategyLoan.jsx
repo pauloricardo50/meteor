@@ -10,17 +10,6 @@ import LenderPicker from '/imports/ui/components/general/LenderPicker.jsx';
 
 
 const styles = {
-  topSpan: {
-    width: '100%',
-    display: 'inline-block',
-  },
-  topText: {
-    display: 'inline-block',
-    padding: '40px 20px',
-  },
-  description: {
-    lineHeight: '1.5em',
-  },
   callButton: {
     display: 'block',
     width: '100%',
@@ -155,22 +144,19 @@ export default class StrategyPage extends Component {
       <section>
         <h1>Ma Stratégie de Taux</h1>
 
-        <span style={styles.topSpan}>
-          <div
-            className="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3"
-            style={styles.topText}
-          >
-            <h4 style={styles.description}>
-              Il n&apos;y a pas une seule stratégie parfaite pour structurer votre prêt, cependant,
-              nous pouvons vous aiguiller dans la bonne direction grâce à notre expertise.
-              <br />
-              <br />
-              Sinon, utilisez notre outil interactif ci-dessous.
-            </h4>
-            <span className="text-center" style={styles.callButton}>
-              <RaisedButton primary label="Appeler un expert" />
-            </span>
-          </div>
+        <div className="description">
+          <p>
+            Il n&apos;y a pas une seule stratégie parfaite pour structurer votre prêt, cependant,
+            nous pouvons vous aiguiller dans la bonne direction grâce à notre expertise.
+            <br />
+            <br />
+            Sinon, utilisez notre outil interactif ci-dessous.
+          </p>
+
+        </div>
+
+        <span className="text-center" style={styles.callButton}>
+          <RaisedButton primary label="Appeler un expert" />
         </span>
 
         <StrategyChoices
