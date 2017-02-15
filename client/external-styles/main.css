@@ -8,8 +8,8 @@
   color: white !important;
 }
 
-h1, h2, h5 {
-  color: white !important;
+.header h1, .header h2, .footer h5 {
+  color: white;
 }
 
 a:hover {
