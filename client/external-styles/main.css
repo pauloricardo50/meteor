@@ -5,7 +5,11 @@
   /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to left, #50E3C2, #4A90E2);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  color: white;
+  color: white !important;
+}
+
+h1, h2, h5 {
+  color: white !important;
 }
 
 a:hover {
@@ -254,7 +258,7 @@ p.paragraph {
     margin-top: 60px;
     margin-bottom: 20px;
   }
-  .header .paragraph, .description {
+  .header .paragraph, .desc {
     margin-top: 30px;
     text-align: center;
   }
@@ -305,7 +309,7 @@ p.paragraph {
 .socialproof {
   padding: 90px 0;
   background: #F6F9FC;
-  color: rgb(107, 124, 147);
+  color: rgb(107, 124, 147) !important;
 }
 
 .ctas-button, .ctas-button-2 {
@@ -408,13 +412,13 @@ p.paragraph {
   padding: 90px 0;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
   background: white;
-  color: rgb(107, 124, 147);
+  color: rgb(107, 124, 147) !important;
 }
 
 .feature3 .emoji {
   font-size: 55px;
   color: rgba(0, 0, 0, 0.3);
-  color: rgb(107, 124, 147);
+  color: rgb(107, 124, 147) !important;
 }
 
 @media (max-width: 750px) {
@@ -448,7 +452,7 @@ p.paragraph {
   padding: 90px 0 0 0;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
   background: #F6F9FC;
-  color: rgb(107, 124, 147);
+  color: rgb(107, 124, 147) !important;
 }
 
 @media (min-width: 900px) {
@@ -465,7 +469,7 @@ p.paragraph {
 .feature2 {
   border-bottom: 1px solid rgba(0, 0, 0, .1);
   background: white;
-  color: rgb(107, 124, 147);
+  color: rgb(107, 124, 147) !important;
 }
 
 .feature2 .col-6:nth-of-type(2n - 1) {
