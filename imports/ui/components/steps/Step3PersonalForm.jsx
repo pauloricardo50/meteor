@@ -8,6 +8,13 @@ import BorrowerCountSwitch from '/imports/ui/components/general/BorrowerCountSwi
 
 var savingTimeout;
 
+const styles = {
+  switchDiv: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+};
+
 export default class Step3PersonalForm extends Component {
   constructor(props) {
     super(props);
@@ -204,7 +211,7 @@ export default class Step3PersonalForm extends Component {
             'Mes informations personelles'
         }</h1>
 
-        <div className="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+        <div style={styles.switchDiv}>
           <BorrowerCountSwitch loanRequest={this.props.loanRequest} />
         </div>
 

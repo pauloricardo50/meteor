@@ -158,6 +158,9 @@ input[type=number]
   padding: 20px;
   overflow: auto;
   background-color: white;
+  h1:first-child, h2:first-child
+    padding-left: 20px;
+    padding-bottom: 20px;
 
 
 .mask2
@@ -215,11 +218,15 @@ input[type=number]
         &.active-link
           border-left: solid 3px brand-primary;
           color: alpha(black, 1.0);
+          h5
+            color: brand-primary
         .icon
           display: inline-flex;
           align-items: center;
-          padding: 0 30px;
+          padding: 0;
           color: inherit !important;
+          width: 90px;
+          justify-content: center;
           svg
             color: inherit !important;
         h5
@@ -253,6 +260,8 @@ input[type=number]
     padding-top: 86px // To offset the fixed progress bar header, height + 20 px
     padding-left 270px; // side-nav width + 20px
     padding-bottom 0
+  +above($wide)
+    padding: 116px 50px 30px 300px;
   &.admin
     padding-top: 20px; // no fixed top bar
 

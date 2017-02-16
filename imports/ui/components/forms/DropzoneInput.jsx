@@ -14,7 +14,7 @@ export default class DropzoneInput extends Component {
 
     this.componentConfig = {
       iconFiletypes: ['.jpg', '.png', '.pdf'],
-      showFiletypeIcon: this.props.currentValue && this.props.currentValue.length < 1, // Show if there are no uploaded files
+      showFiletypeIcon: !this.props.currentValue || (this.props.currentValue && this.props.currentValue.length < 1), // Show if there are no uploaded files
       postUrl: '/', // Modified later
     };
 

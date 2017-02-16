@@ -27,11 +27,6 @@ export const GeneralFilesSchema = new SimpleSchema({
 
 
 export const BorrowerFilesSchema = new SimpleSchema({
-  taxes: { // Declaration d'impots
-    type: Array,
-    optional: true,
-    maxCount: 100,
-  },
   'taxes.$': FileSchema,
   identity: { // ID document(s), passport, id, etc.
     type: Array,
@@ -52,6 +47,11 @@ export const BorrowerFilesSchema = new SimpleSchema({
   },
   'lastSalaries.$': FileSchema,
   debtCollectionExtract: { // Extrait de l'office des poursuites
+    type: Array,
+    optional: true,
+    maxCount: 100,
+  },
+  taxes: { // Declaration d'impots
     type: Array,
     optional: true,
     maxCount: 100,

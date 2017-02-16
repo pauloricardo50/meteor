@@ -9,6 +9,11 @@ import cleanMethod from '/imports/api/cleanMethods';
 
 
 const styles = {
+  div: {
+    maxWidth: 350,
+    marginTop: 10,
+    marginBottom: 0,
+  },
   RadioButtonGroup: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -22,10 +27,6 @@ const styles = {
   },
   RadioButtonLabel: {
     whiteSpace: 'nowrap',
-  },
-  div: {
-    marginTop: 10,
-    marginBottom: 0,
   },
 };
 
