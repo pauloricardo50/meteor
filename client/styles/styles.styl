@@ -931,7 +931,9 @@ div.strategy-choices
     text-align: justify-left;
 
 .dropzoneArrayItem
-  width: 80%;
+  width: 100%;
+  +above($med)
+    width: 80%;
   max-width: 600px;
   padding: 0 !important;
   display: block;
@@ -952,6 +954,7 @@ div.strategy-choices
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-shrink: 0;
     .left
       span
         border-radius: 50%;
