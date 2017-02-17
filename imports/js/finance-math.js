@@ -215,3 +215,10 @@ export const getMonthlyPayment = (loanRequest) => {
     maintenance,
   ];
 };
+
+
+export const getRatio = (loanRequest) => {
+  const monthlyPayment = getMonthlyPayment(loanRequest)[0];
+
+  return monthlyPayment / (loanRequest.general.incomeUsed / 12);
+};

@@ -50,24 +50,21 @@ export default class FinanceStrategyPicker extends Component {
   }
 
   componentWillReceiveProps(n) {
-    if (n.loanRequest.general.loanTranches != this.state.tranches) {
-      this.setState({
-        tranches: n.loanRequest.general.loanTranches,
-      });
-    }
+    // if (n.loanRequest.general.loanTranches != this.state.tranches) {
+    //   this.setState({
+    //     tranches: n.loanRequest.general.loanTranches,
+    //   });
+    // }
   }
 
   addTranche() {
-    const object = {
+    const newTranche = {
       type: this.getRemainingTypes()[0],
       value: this.getMoneyLeft() > 100000 ? 100000 : this.getMoneyLeft(),
     };
 
-    const nextTranches = this.state.tranches;
-    nextTranches.push(object);
-
     this.setState({
-      tranches: nextTranches,
+      tranches: this.state.tranches.concat([newTranche]),
     });
   }
 
@@ -240,10 +237,9 @@ export default class FinanceStrategyPicker extends Component {
             onClick={this.save}
             primary
             style={styles.saveButton}
-            disabled={(JSON.stringify(this.state.tranches) ===
-              JSON.stringify(this.props.loanRequest.general.loanTranches,
-            )) ||
-            (this.state.tranches.length === 0)
+            disabled={
+              JSON.stringify(this.state.tranches) ===
+              JSON.stringify(this.props.loanRequest.general.loanTranches)
             }
           />
         }

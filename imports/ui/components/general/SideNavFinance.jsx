@@ -48,7 +48,7 @@ export default class SideNavFinance extends Component {
         <h4 className="secondary" style={styles.title}>Coût estimé</h4>
         <h3 style={styles.value}>
           CHF ~{toMoney(Math.round(getMonthlyPayment(this.props.loanRequest)[0]))}
-          &nbsp;<small>/mois</small>
+          <small>/mois</small>
         </h3>
       </a>
     );

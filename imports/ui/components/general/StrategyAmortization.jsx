@@ -41,7 +41,7 @@ export default class StrategyAmortization extends Component {
   render() {
     return (
       <section>
-        <h1>Ma Stratégie d&apos;Amortissement</h1>
+        <h2>Ma Stratégie d&apos;Amortissement</h2>
 
         <div className="description">
           <p>

@@ -67,7 +67,7 @@ export default class TextInput extends Component {
     }, () => {
       timer = Meteor.setTimeout(() => {
         this.saveValue();
-      }, 1000);
+      }, 1000000);
     });
   }
 
@@ -141,6 +141,8 @@ export default class TextInput extends Component {
           floatingLabelShrinkStyle={this.state.showInfo && !this.state.errorText ? styles.infoStyle : {}}
           autoComplete={this.props.autocomplete || ''}
           disabled={this.props.disabled}
+          style={this.props.style}
+          inputStyle={this.props.inputStyle}
         >
           {this.props.money &&
             <MaskedInput
@@ -192,4 +194,6 @@ TextInput.propTypes = {
 
   number: PropTypes.bool,
   money: PropTypes.bool,
+  style: PropTypes.objectOf(PropTypes.any),
+  inputStyle: PropTypes.objectOf(PropTypes.any),
 };

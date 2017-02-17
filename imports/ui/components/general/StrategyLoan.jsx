@@ -142,7 +142,7 @@ export default class StrategyPage extends Component {
   render() {
     return (
       <section>
-        <h1>Ma Stratégie de Taux</h1>
+        <h2>Ma Stratégie de Taux</h2>
 
         <div className="description">
           <p>
