@@ -14,7 +14,7 @@ const styles = {
     display: 'block',
     width: '100%',
     marginTop: 40,
-    marginBottom: 40,
+    marginBottom: 80,
   },
   backButton: {
     marginBottom: 32,

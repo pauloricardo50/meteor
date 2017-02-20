@@ -42,7 +42,7 @@ export default class Step5Page extends React.Component {
   render() {
     return (
       <div>
-        <h1 className="stepTitle">5ème Étape <small>Dernières démarches administratives</small></h1>
+        <h1>5ème Étape <small>Dernières démarches administratives</small></h1>
         <TodoCardArray
           cards={todoCards}
           progress={this.state.progress}

@@ -16,6 +16,11 @@ const styles = {
   tableDiv: {
     overflow: 'scroll',
   },
+  timer: {
+    display: 'inline-block',
+    width: '100%',
+    margin: '20px 0',
+  },
 };
 
 export default class Step2Auction extends Component {
@@ -66,7 +71,9 @@ export default class Step2Auction extends Component {
     return (
       <section className="mask1">
         <h2>Appel d&apos;offres en cours..</h2>
-        <div className="giant text-center">{this.state.remainingTime}</div>
+        <div className="text-center" style={styles.timer}>
+          <h1 className="display4">{this.state.remainingTime}</h1>
+        </div>
         <p className="disabled text-center" style={styles.p}>Vous recevrez une notification lorsque ce sera terminé</p>
         <div style={styles.tableDiv}>
           <PartnerOffersTable offers={this.props.offers} />

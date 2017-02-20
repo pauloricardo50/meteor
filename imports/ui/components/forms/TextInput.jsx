@@ -57,17 +57,15 @@ export default class TextInput extends Component {
 
   handleChange(event) {
     // Make sure value is a number if this is a number or money input
-    const safeValue = this.props.number || this.props.money ?
-      toNumber(event.target.value) :
-      event.target.value;
+    const safeValue = this.props.number || this.props.money
+      ? toNumber(event.target.value)
+      : event.target.value;
 
-    Meteor.clearTimeout(timer);
     this.setState({
       value: safeValue,
     }, () => {
-      timer = Meteor.setTimeout(() => {
-        this.saveValue();
-      }, 1000000);
+      // do not show saving icon when changing text, only show it on blur
+      this.saveValue(false);
     });
   }
 
@@ -83,11 +81,7 @@ export default class TextInput extends Component {
     });
     // If the value has changed, save it
     // state is initialized as '', but currentValue is initially undefined, so check that too
-    if (this.state.value !== this.props.currentValue &&
-      !(this.state.value === '' && this.props.currentValue === undefined)
-    ) {
-      this.saveValue();
-    }
+    this.saveValue();
   }
 
   componentWillUnmount() {
@@ -95,7 +89,7 @@ export default class TextInput extends Component {
   }
 
 
-  saveValue() {
+  saveValue(showSaving = true) {
     // Save data to DB
     const object = {};
 
@@ -112,7 +106,7 @@ export default class TextInput extends Component {
         this.setState({ saving: false });
         if (!error) {
           // on success, set saving briefly to true, before setting it to false again to trigger icon
-          this.setState({ errorText: '', saving: true },
+          this.setState({ errorText: '', saving: showSaving },
             this.setState({ saving: false }),
           );
         }
@@ -121,7 +115,7 @@ export default class TextInput extends Component {
 
   render() {
     return (
-      <div style={styles.div}>
+      <div style={{ ...styles.div, ...this.props.style }}>
         <TextField
           floatingLabelText={this.props.label}
           hintText={this.props.placeholder}

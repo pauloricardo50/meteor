@@ -10,7 +10,8 @@ import cleanMethod from '/imports/api/cleanMethods';
 
 const styles = {
   div: {
-    maxWidth: 350,
+    width: '100%',
+    maxWidth: 400,
     marginTop: 10,
     marginBottom: 0,
   },

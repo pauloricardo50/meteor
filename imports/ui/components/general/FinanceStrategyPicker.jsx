@@ -50,11 +50,12 @@ export default class FinanceStrategyPicker extends Component {
   }
 
   componentWillReceiveProps(n) {
-    // if (n.loanRequest.general.loanTranches != this.state.tranches) {
-    //   this.setState({
-    //     tranches: n.loanRequest.general.loanTranches,
-    //   });
-    // }
+    // If the user chooses a predefined strategy, update the entire component
+    if (JSON.stringify(n.loanRequest.general.loanTranches) !== JSON.stringify(this.state.tranches)) {
+      this.setState({
+        tranches: n.loanRequest.general.loanTranches,
+      });
+    }
   }
 
   addTranche() {

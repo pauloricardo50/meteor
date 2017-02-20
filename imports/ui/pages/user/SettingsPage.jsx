@@ -43,7 +43,7 @@ export default class SettingsPage extends Component {
   render() {
     return (
       <section className="mask1 animated fadeIn" style={styles.section}>
-        <h2>Réglages</h2>
+        <h1>Réglages</h1>
         <span className="hidden-sm hidden-md hidden-lg" style={styles.mobileLogoutButton}>
           <RaisedButton
             label="Déconnexion"

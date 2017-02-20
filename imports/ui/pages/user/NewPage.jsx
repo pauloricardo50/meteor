@@ -108,9 +108,10 @@ export default class NewPage extends Component {
             FlowRouter.go('/main');
             Bert.alert({
               title: 'Bienvenue!',
-              message: `<h3>C'est parti pour ${this.state.textValue}</h3>`,
+              message: `<h4 class="bert">C'est parti pour ${this.state.textValue}</h4>`,
               type: 'success',
               style: 'growl-top-right',
+              hideDelay: 5000,
             });
           }
         });

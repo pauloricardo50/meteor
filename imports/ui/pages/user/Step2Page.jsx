@@ -62,9 +62,11 @@ export default class Step2Page extends Component {
 
   render() {
     return (
-      <div className="animated fadeIn">
+      <div>
         <h1>2ème Étape <small>Les enchères</small></h1>
-        {this.getContent()}
+        <div className="animated fadeIn">
+          {this.getContent()}
+        </div>
       </div>
     );
   }

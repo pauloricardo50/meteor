@@ -65,7 +65,7 @@ export default class SelectFieldInput extends React.Component {
 
   render() {
     return (
-      <div style={styles.div}>
+      <div style={{ ...styles.div, ...this.props.style }}>
         <SelectField
           floatingLabelText={this.props.label}
           value={this.state.value}
@@ -73,6 +73,7 @@ export default class SelectFieldInput extends React.Component {
           errorText={this.state.errorText}
           fullWidth
           maxHeight={200}
+          style={this.props.style}
         >
           <MenuItem value={null} primaryText="" />
           {this.props.options.map((option, index) =>

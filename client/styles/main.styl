@@ -85,6 +85,8 @@ h1, h2, h3, h4, h5, h6
 
 h1
   font-size: 2em;
+  &.fixed-size
+    font-size: 2em !important;
   +above($med)
     font-size: 2.5em;
   +above($wide)
@@ -100,6 +102,8 @@ h1
 
 h2
   font-size: 1.625em;
+  &.fixed-size
+    font-size: 1.625em !important;
   +above($med)
     font-size: 2em;
   +above($wide)
@@ -107,6 +111,8 @@ h2
 
 h3
   font-size: 1.375em;
+  &.fixed-size
+    font-size: 1.375em !important;
   +above($med)
     font-size: 1.5em;
   +above($wide)
@@ -181,6 +187,20 @@ input[type=number]
     padding-bottom: 20px;
     +above($med)
       padding-left: 20px;
+  .primary-top
+    display: inline-block;
+    width: calc(100% + 40px);
+    min-height: 300px;
+    color: white;
+    background-color: brand-primary;
+    // padding: 0;
+    padding: 20px;
+    margin: 0;
+    margin-left: -20px;
+    margin-top: -20px;
+    margin-bottom: 50px;
+    h1, h2, h3, h4, p, div
+      color: white;
 
 
 .mask2

@@ -69,7 +69,7 @@ export default class RadioInput extends Component {
 
   render() {
     return (
-      <div style={styles.div}>
+      <div style={{ ...styles.div, ...this.props.style }}>
         <label htmlFor={this.props.label}>{this.props.label}</label>
         <RadioButtonGroup
           name={this.props.label}

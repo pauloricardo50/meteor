@@ -54,7 +54,7 @@ export default class DropzoneArrayItem extends React.Component {
           <div className="right">
             <IconButton
               style={this.getStyles().caret}
-              onClick={this.props.handleClick}
+              onTouchTap={this.props.handleClick}
             >
               <ArrowDown color="#d8d8d8" hoverColor="#a8a8a8" />
             </IconButton>

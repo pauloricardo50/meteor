@@ -83,7 +83,7 @@ export default class DateInput extends Component {
 
   render() {
     return (
-      <div style={styles.div} className="datepicker">
+      <div style={{ ...styles.div, ...this.props.style }} className="datepicker">
         <label htmlFor={this.props.label} style={styles.label}>{this.props.label}</label>
         <DatePicker
           name={this.props.label}

@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
+
+
 import AutoForm from '../forms/AutoForm.jsx';
 
 
@@ -8,6 +10,7 @@ export default class Step1InitialForm extends Component {
     super(props);
 
     this.getFormArray = this.getFormArray.bind(this);
+    this.getArray = this.getArray.bind(this);
   }
 
 
@@ -16,11 +19,14 @@ export default class Step1InitialForm extends Component {
     return [
       {
         type: 'DropzoneInput',
-        label: 'Mon contrat d\'acte d\'achat',
-        id: 'general.files.buyersContract',
-        message: '',
-        currentValue: r.general.files.buyersContract,
-        folderName: 'buyersContract',
+        array: [
+          {
+            title: 'Acte d\'achat',
+            folderName: 'buyersContract',
+            currentValue: this.props.loanRequest.general.files.buyersContract,
+            id: 'general.files.buyersContract',
+          },
+        ],
       }, {
         type: 'RadioInput',
         label: 'Style de Propriété',
@@ -41,6 +47,49 @@ export default class Step1InitialForm extends Component {
         placeholder: '120',
         id: 'property.insideArea',
         currentValue: r.property.insideArea,
+      }, {
+        type: 'ConditionalInput',
+        conditionalTrueValue: true,
+        inputs: [
+          {
+            type: 'RadioInput',
+            label: 'Êtes-vous actuellement locataire ?',
+            radioLabels: ['Oui', 'Non'],
+            values: [true, false],
+            id: 'borrowers.0.currentRentExists',
+            currentValue: this.props.loanRequest.borrowers[0].currentRentExists,
+          }, {
+            type: 'TextInputMoney',
+            label: 'Loyer mensuel',
+            placeholder: 'CHF 1\'500',
+            id: 'borrowers.0.currentRent',
+            currentValue: this.props.loanRequest.borrowers[0].currentRent,
+          },
+        ],
+      }, {
+        type: 'TextInputMoney',
+        label: 'Biens immobiliers existants',
+        placeholder: 'CHF 100\'000',
+        id: 'borrowers.0.realEstateFortune',
+        currentValue: this.props.loanRequest.borrowers[0].realEstateFortune,
+      }, {
+        type: 'TextInputMoney',
+        label: 'Cash et titres',
+        placeholder: 'CHF 10\'000',
+        id: 'borrowers.0.cashAndSecurities',
+        currentValue: this.props.loanRequest.borrowers[0].cashAndSecurities,
+        info: 'Y compris ce que vous allez allouer à ce projet',
+      },
+    ];
+  }
+
+  getArray() {
+    return [
+      {
+        title: 'Acte d\'achat',
+        folderName: 'buyersContract',
+        currentValue: this.props.loanRequest.general.files.buyersContract,
+        id: 'general.files.buyersContract',
       },
     ];
   }
@@ -48,13 +97,10 @@ export default class Step1InitialForm extends Component {
 
   render() {
     return (
-      <div>
-        <AutoForm
-          inputs={this.getFormArray()}
-          formClasses="col-sm-10 col-sm-offset-1"
-          loanRequest={this.props.loanRequest}
-        />
-      </div>
+      <AutoForm
+        inputs={this.getFormArray()}
+        loanRequest={this.props.loanRequest}
+      />
     );
   }
 }

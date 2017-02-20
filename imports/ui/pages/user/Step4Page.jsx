@@ -24,7 +24,7 @@ export default class Step4Page extends Component {
   render() {
     return (
       <div>
-        <h1>4ème Étape <small>Enfin, le contrat</small></h1>
+        <h1>4ème Étape <small>Le contrat</small></h1>
 
         <section className="mask1 animated fadeIn">
           <img

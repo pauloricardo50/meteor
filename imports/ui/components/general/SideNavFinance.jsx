@@ -38,7 +38,7 @@ export default class SideNavFinance extends Component {
     return (
       <a className="mask1 text-center hover-rise" style={styles.main} href="/finance">
         <h4 className="secondary" style={styles.title}>Votre emprunt</h4>
-        <h3 style={styles.value}>
+        <h3 style={styles.value} className="fixed-size">
           CHF {toMoney(Math.round(
             this.props.loanRequest.property.value -
             this.props.loanRequest.general.fortuneUsed -
@@ -46,7 +46,7 @@ export default class SideNavFinance extends Component {
           ))}
         </h3>
         <h4 className="secondary" style={styles.title}>Coût estimé</h4>
-        <h3 style={styles.value}>
+        <h3 style={styles.value} className="fixed-size">
           CHF ~{toMoney(Math.round(getMonthlyPayment(this.props.loanRequest)[0]))}
           <small>/mois</small>
         </h3>

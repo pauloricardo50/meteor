@@ -24,6 +24,11 @@ const styles = {
     width: '100%',
     display: 'inline-block',
   },
+  countUp: {
+    display: 'inline-block',
+    width: '100%',
+    margin: '20px 0',
+  },
 };
 
 
@@ -42,7 +47,7 @@ export default class Step2Start extends Component {
     return (
       <section className="mask1">
         <h2>Derniers réglages avant de commencer</h2>
-        <div className="text-center giant" style={styles.countUp}>
+        <h1 className="text-center display4" style={styles.countUp}>
           <CountUp
             className="custom-count"
             start={0}
@@ -54,7 +59,7 @@ export default class Step2Start extends Component {
             prefix=""
             suffix=" Prêteurs"
           />
-        </div>
+        </h1>
         <a className="bold secondary active text-center col-xs-12" style={styles.a}>Voir la liste</a>
 
         <div style={styles.formDiv}>

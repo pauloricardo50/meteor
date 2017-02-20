@@ -218,20 +218,21 @@ export default class Step3PersonalForm extends Component {
         <AutoForm
           inputs={this.getBorrowerFormArray(0)}
           formClasses={this.props.loanRequest.borrowers.length > 1 ? 'col-sm-5'
-          : 'col-sm-10 col-sm-offset-1'}
+          : ''}
+          fullWidth={this.props.loanRequest.borrowers.length > 1}
           loanRequest={this.props.loanRequest}
         />
         {this.props.loanRequest.borrowers.length > 1 &&
           <AutoForm
             inputs={this.getBorrowerFormArray(1)}
             formClasses="col-sm-offset-2 col-sm-5"
+            fullWidth={true}
             loanRequest={this.props.loanRequest}
           />
         }
 
         <AutoForm
           inputs={this.getFinalFormArray()}
-          formClasses="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3"
           loanRequest={this.props.loanRequest}
         />
       </section>

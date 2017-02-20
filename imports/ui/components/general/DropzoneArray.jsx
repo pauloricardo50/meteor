@@ -33,7 +33,7 @@ export default class DropzoneArray extends React.Component {
 
   render() {
     return (
-      <div style={styles.div}>
+      <div style={{ ...styles.div, ...this.props.style }}>
         {this.props.array.map((dropzoneItem, i) => (
           <DropzoneArrayItem
             key={i}

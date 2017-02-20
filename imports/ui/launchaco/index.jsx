@@ -179,7 +179,7 @@ module.exports = function(props) {
         </div>
       </div>
     </div>
-    <div className="feature1">
+    {/* <div className="feature1">
       <div className="container-sml">
         <div className="col-12 text-center">
           <h3 className="heading">
@@ -204,7 +204,7 @@ module.exports = function(props) {
           </div>
         </div>
       </div>
-    </div>
+    </div> */}
     <div className="feature2">
       <div className="container-lrg flex">
         <div className="col-6">
@@ -231,7 +231,7 @@ module.exports = function(props) {
         </div>
       </div>
     </div>
-    <div className="socialproof">
+    {/* <div className="socialproof">
       <div className="container-sml">
         <div className="flex text-center">
           <div className="col-12">
@@ -244,7 +244,7 @@ module.exports = function(props) {
           </div>
         </div>
       </div>
-    </div>
+    </div> */}
     <div className="footer">
       <div className="content">
         <div className="container-lrg center">

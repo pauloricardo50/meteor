@@ -64,9 +64,9 @@ export default class StrategyChoices extends Component {
 
         <ul>
           <li className="title">
-            <h3 className="bold">
+            <h4 className="bold fixed-size">
               {choice.title}&nbsp;{chosen && <span className="fa fa-check" />}
-            </h3>
+            </h4>
           </li>
 
           {choice.reasons.map((reason, i) =>

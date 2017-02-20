@@ -43,7 +43,7 @@ export default class ConditionalInput extends Component {
 
   render() {
     return (
-      <div className="form-group">
+      <div className="form-group" style={this.props.style}>
         {React.cloneElement(
           // The conditional input
           this.props.children[0],

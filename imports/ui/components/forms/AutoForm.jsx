@@ -8,11 +8,30 @@ import SelectFieldInput from '../forms/SelectFieldInput.jsx';
 import ConditionalInput from '../forms/ConditionalInput.jsx';
 import DateInput from '../forms/DateInput.jsx';
 import DropzoneInput from '../forms/DropzoneInput.jsx';
+import DropzoneArray from '../general/DropzoneArray.jsx';
 
 
 const styles = {
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   subtitle: {
     marginTop: 40,
+  },
+  smallWidth: {
+    width: '100%',
+    maxWidth: 400,
+  },
+  mediumWidth: {
+    width: '100%',
+    maxWidth: 600,
+  },
+  fullWidth: {
+    width: '100%',
   },
 };
 
@@ -21,6 +40,7 @@ export default class AutoForm extends Component {
   inputSwitch(singleInput, index) {
     const extraValues = {
       requestId: this.props.loanRequest._id,
+      key: index,
     };
 
     // Prevent undefined showCondition to trigger as well
@@ -35,7 +55,7 @@ export default class AutoForm extends Component {
             multiLine={false}
             {...singleInput}
             {...extraValues}
-            key={index}
+            style={this.props.fullWidth ? styles.fullWidth : styles.smallWidth}
           />
         );
       case 'TextInputLarge':
@@ -44,7 +64,7 @@ export default class AutoForm extends Component {
             multiLine
             {...singleInput}
             {...extraValues}
-            key={index}
+            style={styles.mediumWidth}
           />
         );
       case 'TextInputNumber':
@@ -53,7 +73,7 @@ export default class AutoForm extends Component {
             number
             {...singleInput}
             {...extraValues}
-            key={index}
+            style={this.props.fullWidth ? styles.fullWidth : styles.smallWidth}
           />
         );
       case 'TextInputMoney':
@@ -62,7 +82,7 @@ export default class AutoForm extends Component {
             money
             {...singleInput}
             {...extraValues}
-            key={index}
+            style={this.props.fullWidth ? styles.fullWidth : styles.smallWidth}
           />
         );
       case 'RadioInput':
@@ -70,7 +90,7 @@ export default class AutoForm extends Component {
           <RadioInput
             {...singleInput}
             {...extraValues}
-            key={index}
+            style={this.props.fullWidth ? styles.fullWidth : styles.smallWidth}
           />
         );
       case 'SelectFieldInput':
@@ -78,12 +98,16 @@ export default class AutoForm extends Component {
           <SelectFieldInput
             {...singleInput}
             {...extraValues}
-            key={index}
+            style={this.props.fullWidth ? styles.fullWidth : styles.smallWidth}
           />
         );
       case 'ConditionalInput':
         return (
-          <ConditionalInput conditionalTrueValue={singleInput.conditionalTrueValue} key={index}>
+          <ConditionalInput
+            conditionalTrueValue={singleInput.conditionalTrueValue}
+            key={index}
+            style={this.props.fullWidth ? styles.fullWidth : styles.smallWidth}
+          >
             {this.inputSwitch(singleInput.inputs[0])}
             {singleInput.inputs.slice(1).map((input, index2) => this.inputSwitch(input, index2))}
           </ConditionalInput>
@@ -106,14 +130,21 @@ export default class AutoForm extends Component {
             {...singleInput}
             {...extraValues}
             key={index}
+            style={this.props.fullWidth ? styles.fullWidth : styles.smallWidth}
           />
         );
       case 'DropzoneInput':
         return (
-          <DropzoneInput
+          // <DropzoneInput
+          //   {...singleInput}
+          //   {...extraValues}
+          //   key={index}
+          // />
+          <DropzoneArray
             {...singleInput}
             {...extraValues}
             key={index}
+            style={this.props.fullWidth ? styles.fullWidth : styles.mediumWidth}
           />
         );
       default:
@@ -127,15 +158,23 @@ export default class AutoForm extends Component {
 
   render() {
     return (
-      <form className={this.props.formClasses} onSubmit={this.handleSubmit}>
-        {this.props.inputs.map((input, index1) => this.inputSwitch(input, index1))}
-      </form>
+      <div className={this.props.formClasses}>
+        <form style={styles.form} onSubmit={this.handleSubmit}>
+          {this.props.inputs.map((input, index1) => this.inputSwitch(input, index1))}
+        </form>
+      </div>
     );
   }
 }
+
+AutoForm.defaultProps = {
+  formClasses: '',
+  fullWidth: false,
+};
 
 AutoForm.propTypes = {
   inputs: PropTypes.arrayOf(React.PropTypes.object).isRequired,
   formClasses: PropTypes.string,
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  fullWidth: PropTypes.bool,
 };

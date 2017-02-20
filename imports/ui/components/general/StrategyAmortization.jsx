@@ -9,7 +9,7 @@ const styles = {
     display: 'block',
     width: '100%',
     marginTop: 40,
-    marginBottom: 40,
+    marginBottom: 80,
   },
 };
 
@@ -51,9 +51,9 @@ export default class StrategyAmortization extends Component {
           </p>
         </div>
 
-        <span className="text-center" style={styles.callButton}>
+        <div className="text-center" style={styles.callButton}>
           <RaisedButton primary label="Appeler un expert" />
-        </span>
+        </div>
 
         <StrategyChoices
           currentValue={this.props.loanRequest.logic.amortizingStrategyPreset}
