@@ -277,24 +277,18 @@ module.exports = function(props) {
         <div className="container-sml footer-nav text-center">
           <div className="col-12">
             <div>
-              <a className="nav-link">
+              <a className="nav-link" href="/about">
                 A Propos
               </a>
-              <a className="nav-link">
+              <a className="nav-link" href="mailto:contact@e-potek.ch?subject=J'adore%20e-Potek">
                 Contact
               </a>
-              <a className="nav-link">
+              <a className="nav-link" href="/careers">
                 Carrières
               </a>
-              <a className="nav-link">
+              <a className="nav-link" href="/tos">
                 Conditions
               </a>
-              {/* <a className="nav-link">
-                TOS
-              </a>
-              <a className="nav-link">
-                Privacy
-              </a> */}
             </div>
             <br />
             <div>

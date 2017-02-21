@@ -18,6 +18,9 @@ import StartPage2 from '/imports/ui/pages/public/StartPage2.jsx';
 import LoginPage from '/imports/ui/pages/public/LoginPage.jsx';
 
 import DemoPage from '/imports/ui/pages/public/DemoPage.jsx';
+import AboutPage from '/imports/ui/pages/public/AboutPage.jsx';
+import CareersPage from '/imports/ui/pages/public/CareersPage.jsx';
+import TosPage from '/imports/ui/pages/public/TosPage.jsx';
 
 
 // User Pages and components
@@ -59,6 +62,36 @@ FlowRouter.route('/', {
     mount(PublicLayout, {
       content:
         <HomePage />,
+    });
+  },
+});
+
+FlowRouter.route('/about', {
+  name: 'home',
+  action() {
+    mount(PublicLayout, {
+      content:
+        <AboutPage />,
+    });
+  },
+});
+
+FlowRouter.route('/careers', {
+  name: 'careers',
+  action() {
+    mount(PublicLayout, {
+      content:
+        <CareersPage />,
+    });
+  },
+});
+
+FlowRouter.route('/tos', {
+  name: 'tos',
+  action() {
+    mount(PublicLayout, {
+      content:
+        <TosPage />,
     });
   },
 });
