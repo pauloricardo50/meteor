@@ -1058,3 +1058,44 @@ div.strategy-choices
           font-size: 4em;
   div:last-child
     border-right: none;
+
+.strategy-page
+  a
+    width: 100%;
+    height: 150px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    margin-bottom: 40px;
+    overflow: hidden;
+    +above($small)
+      height: 120px;
+    div.description
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: flex-start;
+      padding: 8px 20px;
+      flex-grow: 1;
+      height: 100%;
+      p
+        color: #444;
+        margin: 0;
+      h3
+        margin: 0;
+        width: 100%;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #ccc
+    div.arrow
+      width: 50px;
+      height: 100%;
+      flex-grow: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #ccc;
+      +above($med)
+        width: 120px;
+        border-left: 1px solid #ccc

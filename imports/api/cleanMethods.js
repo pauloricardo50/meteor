@@ -21,7 +21,7 @@ const methodCallback = (error, result, callback) => {
   }
 
   if (error) {
-    Bert.defaults.hideDelay = 10000;
+    Bert.defaults.hideDelay = 5000;
     Bert.alert({
       title: 'Misère, une erreur!',
       message: `<h3 class="bert">${error.message}</h3>`,

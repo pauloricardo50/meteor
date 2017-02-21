@@ -31,7 +31,7 @@ import {
 import NewPage from '/imports/ui/pages/user/NewPage.jsx';
 import { RequestProgressBar } from '/imports/ui/containers/user/CurrentURLContainer';
 import SettingsPage from '/imports/ui/containers/user/SettingsPageContainer';
-import { Step2Page, StrategyPage } from '/imports/ui/containers/user/RequestAndOffersContainer';
+import { Step2Page, StrategyPage, StrategySinglePage } from '/imports/ui/containers/user/RequestAndOffersContainer';
 
 
 // Partner Pages
@@ -289,7 +289,17 @@ FlowRouter.route('/strategy', {
       content:
         <StrategyPage />,
       extraContent: <RequestProgressBar />,
-      top: true,
+    });
+  },
+});
+
+FlowRouter.route('/strategy/:id', {
+  name: 'strategysingle',
+  action() {
+    mount(UserLayout, {
+      content:
+        <StrategySinglePage />,
+      extraContent: <RequestProgressBar />,
     });
   },
 });

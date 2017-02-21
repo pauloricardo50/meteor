@@ -1,6 +1,6 @@
-// Adds thousands markers every 3 digits (and removes non-digit characters)
+// Rounds the value, adds thousands markers every 3 digits (and removes non-digit characters)
 export function toMoney(value) {
-  return String(value).replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+  return String(Math.round(toNumber(value))).replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, "'");
 }
 
 
