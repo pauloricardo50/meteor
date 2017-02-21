@@ -10,7 +10,6 @@ export default class Step1InitialForm extends Component {
     super(props);
 
     this.getFormArray = this.getFormArray.bind(this);
-    this.getArray = this.getArray.bind(this);
   }
 
 
@@ -80,17 +79,22 @@ export default class Step1InitialForm extends Component {
         currentValue: this.props.loanRequest.borrowers[0].cashAndSecurities,
         info: 'Y compris ce que vous allez allouer à ce projet',
       },
-    ];
-  }
-
-  getArray() {
-    return [
-      {
-        title: 'Acte d\'achat',
-        folderName: 'buyersContract',
-        currentValue: this.props.loanRequest.general.files.buyersContract,
-        id: 'general.files.buyersContract',
-      },
+      // {
+      //   type: 'ArrayInput',
+      //   currentValue: this.props.loanRequest.borrowers[0].otherIncome,
+      //   id: `borrowers.0.otherIncome`,
+      //   components: [
+      //     {
+      //       type: 'TextInput',
+      //       id: 'value',
+      //       label: 'Autre revenu',
+      //     }, {
+      //       type: 'TextInput',
+      //       id: 'description',
+      //       label: 'Description',
+      //     },
+      //   ],
+      // },
     ];
   }
 

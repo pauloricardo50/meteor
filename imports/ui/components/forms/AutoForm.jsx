@@ -2,13 +2,14 @@ import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 
 
-import TextInput from '../forms/TextInput.jsx';
-import RadioInput from '../forms/RadioInput.jsx';
-import SelectFieldInput from '../forms/SelectFieldInput.jsx';
-import ConditionalInput from '../forms/ConditionalInput.jsx';
-import DateInput from '../forms/DateInput.jsx';
-import DropzoneInput from '../forms/DropzoneInput.jsx';
+import TextInput from './TextInput.jsx';
+import RadioInput from './RadioInput.jsx';
+import SelectFieldInput from './SelectFieldInput.jsx';
+import ConditionalInput from './ConditionalInput.jsx';
+import DateInput from './DateInput.jsx';
+import DropzoneInput from './DropzoneInput.jsx';
 import DropzoneArray from '../general/DropzoneArray.jsx';
+import ArrayInput from './ArrayInput.jsx';
 
 
 const styles = {
@@ -141,6 +142,15 @@ export default class AutoForm extends Component {
           //   key={index}
           // />
           <DropzoneArray
+            {...singleInput}
+            {...extraValues}
+            key={index}
+            style={this.props.fullWidth ? styles.fullWidth : styles.mediumWidth}
+          />
+        );
+      case 'ArrayInput':
+        return (
+          <ArrayInput
             {...singleInput}
             {...extraValues}
             key={index}

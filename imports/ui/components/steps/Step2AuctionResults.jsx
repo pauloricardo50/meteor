@@ -60,45 +60,48 @@ export default class Step2AuctionResults extends Component {
 
 
   getFakeOffers() {
+    const loanWanted = this.props.loanRequest.property.value -
+      this.props.loanRequest.general.fortuneUsed -
+      this.props.loanRequest.general.insuranceFortuneUsed;
     return [
       {
         standardOffer: {
-          maxAmount: this.props.loanRequest.property.value * 0.8,
+          maxAmount: loanWanted * 1,
           amortizing: '1',
           interest10: '0.89',
         },
         expertiseRequired: false,
       }, {
         standardOffer: {
-          maxAmount: this.props.loanRequest.property.value * 0.68,
+          maxAmount: loanWanted * 0.98,
           amortizing: '1',
           interest10: '0.99',
         },
         expertiseRequired: true,
       }, {
         standardOffer: {
-          maxAmount: this.props.loanRequest.property.value * 0.73,
+          maxAmount: loanWanted * 1,
           amortizing: '1',
           interest10: '0.85',
         },
         expertiseRequired: true,
       }, {
         standardOffer: {
-          maxAmount: this.props.loanRequest.property.value * 0.72,
+          maxAmount: loanWanted * 1,
           amortizing: '1',
           interest10: '0.91',
         },
         expertiseRequired: false,
       }, {
         standardOffer: {
-          maxAmount: this.props.loanRequest.property.value * 0.79,
+          maxAmount: loanWanted * 0.96,
           amortizing: '1',
           interest10: '0.85',
         },
         expertiseRequired: false,
       }, {
         standardOffer: {
-          maxAmount: this.props.loanRequest.property.value * 0.78,
+          maxAmount: loanWanted * 1,
           amortizing: '1',
           interest10: '0.85',
         },

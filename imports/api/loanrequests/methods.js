@@ -112,3 +112,16 @@ export const popValue = new ValidatedMethod({
     LoanRequests.update(id, { $pop: object });
   },
 });
+
+
+// if (Meteor.isServer) {
+//   import { rateLimit } from '/imports/js/server/rate-limit.js';
+//
+//   rateLimit({
+//     methods: [
+//       updateValues,
+//     ],
+//     limit: 2,
+//     timeRange: 1000,
+//   });
+// }

@@ -185,7 +185,7 @@ export const BorrowerSchema = new SimpleSchema({
     type: Array,
     optional: true,
   },
-  'otherIncome.$.amount': {
+  'otherIncome.$.value': {
     type: Number,
     min: 0,
     max: 100000000,

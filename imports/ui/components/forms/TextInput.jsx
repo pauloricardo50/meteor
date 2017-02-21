@@ -10,9 +10,9 @@ import { swissFrancMask } from '/imports/js/textMasks';
 import { toNumber, toMoney } from '/imports/js/conversionFunctions';
 import SavingIcon from './SavingIcon.jsx';
 import InfoIcon from './InfoIcon.jsx';
+import constants from '/imports/js/constants';
 
 
-var timer;
 const styles = {
   div: {
     position: 'relative',
@@ -25,7 +25,7 @@ const styles = {
   },
   savingIcon: {
     position: 'absolute',
-    top: 30,
+    bottom: 10,
     right: -25,
   },
   infoStyle: {
@@ -85,7 +85,7 @@ export default class TextInput extends Component {
   }
 
   componentWillUnmount() {
-    Meteor.clearTimeout(timer);
+    Meteor.clearTimeout(this.timeout);
   }
 
 
@@ -101,16 +101,19 @@ export default class TextInput extends Component {
     }
     const id = this.props.requestId;
 
-    cleanMethod('update', id, object,
-      (error) => {
-        this.setState({ saving: false });
-        if (!error) {
-          // on success, set saving briefly to true, before setting it to false again to trigger icon
-          this.setState({ errorText: '', saving: showSaving },
-            this.setState({ saving: false }),
-          );
-        }
-      });
+    Meteor.clearTimeout(this.timeout);
+    this.timeout = Meteor.setTimeout(() => {
+      cleanMethod('update', id, object,
+        (error) => {
+          this.setState({ saving: false });
+          if (!error) {
+            // on success, set saving briefly to true, before setting it to false again to trigger icon
+            this.setState({ errorText: '', saving: showSaving },
+              this.setState({ saving: false }),
+            );
+          }
+        });
+    }, constants.cpsLimit);
   }
 
   render() {

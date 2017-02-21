@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 
 
-import Ratio from './Ratio.jsx';
 import StrategyCashTable from './StrategyCashTable.jsx';
+import StrategyCashMetrics from './StrategyCashMetrics.jsx';
 
 const styles = {
   ratioDiv: {
@@ -21,9 +21,7 @@ export default class StrategyCash extends Component {
       <section>
         <h2>Ma Stratégie de Fonds Propres</h2>
 
-        <div className="text-center" style={styles.ratioDiv}>
-          <Ratio loanRequest={this.props.loanRequest} />
-        </div>
+        <StrategyCashMetrics loanRequest={this.props.loanRequest} />
 
         <StrategyCashTable loanRequest={this.props.loanRequest} />
 

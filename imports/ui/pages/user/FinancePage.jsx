@@ -7,6 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import ProjectChart from '/imports/ui/components/charts/ProjectChart.jsx';
 import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
 import FinanceFAQ from '/imports/ui/components/general/FinanceFAQ.jsx';
+import Ratio from '/imports/ui/components/general/Ratio.jsx';
 
 const styles = {
   p: {

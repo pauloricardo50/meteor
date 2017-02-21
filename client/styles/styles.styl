@@ -948,12 +948,15 @@ div.strategy-choices
     display: flex;
     .left, .right
       height: 80px;
-      width: 80px;
+      width: 50px;
       border-right: solid 1px grey;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-shrink: 0;
+      +above($xsmall)
+        width: 80px;
+
     .left
       span
         border-radius: 50%;
@@ -1001,6 +1004,10 @@ div.strategy-choices
         height: 40px;
         margin-bottom: 30px;
         margin-top: 10px;
+        width: calc(100% + 30px);
+        margin-left: -15px;
+        h3
+          padding: 0 15px;
       h3
         display: inline-flex;
         margin: 0;
@@ -1022,3 +1029,32 @@ div.strategy-choices
 
 .bert
   color: white !important;
+
+.metrics
+  display: flex;
+  margin: 50px 0;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-wrap: wrap;
+  .metric
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    margin: auto 0;
+    border-right: 1px solid #ccc
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 180px;
+    div
+      h1, h4
+        margin: 0;
+      h1
+        font-size: 3em;
+        +above($med)
+          font-size: 4em;
+  div:last-child
+    border-right: none;
