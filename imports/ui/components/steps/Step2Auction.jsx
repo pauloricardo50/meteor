@@ -72,7 +72,7 @@ export default class Step2Auction extends Component {
       <section className="mask1">
         <h2>Appel d&apos;offres en cours..</h2>
         <div className="text-center" style={styles.timer}>
-          <h1 className="display4">{this.state.remainingTime}</h1>
+          <h1 className="display3">{this.state.remainingTime}</h1>
         </div>
         <p className="disabled text-center" style={styles.p}>Vous recevrez une notification lorsque ce sera terminé</p>
         <div style={styles.tableDiv}>
