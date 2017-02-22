@@ -117,7 +117,7 @@ export default class AgeLine extends Component {
 
   render() {
     return (
-      <article onClick={this.props.setStep}>
+      <article onTouchTap={this.props.setStep}>
         <h1 className={this.props.classes.text}>
           {this.props.twoBuyers ? 'et nous avons' : 'et j\'ai'}
           <span className="value">

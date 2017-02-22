@@ -73,7 +73,7 @@ export default class MaxCashLine extends Component {
 
     if (this.props.propertyType === 'primary') {
       return (
-        <article onClick={this.props.setStep}>
+        <article onTouchTap={this.props.setStep}>
 
           <h1 className={this.props.classes.text}>
             {this.props.twoBuyers ? 'Nous voulons utiliser ' : 'Je veux utiliser '}
@@ -88,13 +88,13 @@ export default class MaxCashLine extends Component {
                 label="Un max de fortune"
                 style={styles.button}
                 primary={!this.state.text}
-                onClick={e => this.changeState(e, true)}
+                onTouchTap={e => this.changeState(e, true)}
               />
               <RaisedButton
                 label="Un max de 2ème pilier"
                 style={styles.button}
                 primary={!this.state.text}
-                onClick={e => this.changeState(e, false)}
+                onTouchTap={e => this.changeState(e, false)}
               />
               <HelpModal
                 buttonLabel="Aidez-moi à choisir"

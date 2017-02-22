@@ -99,7 +99,7 @@ export default class LoanTranche extends Component {
             icon={<span className="fa fa-times" />}
             style={styles.deleteButton}
             buttonStyle={styles.buttonStyle}
-            onClick={this.props.removeTranche}
+            onTouchTap={this.props.removeTranche}
           />
         }
 
@@ -113,7 +113,7 @@ export default class LoanTranche extends Component {
               {this.props.manual &&
                 <RaisedButton
                   label="-"
-                  onClick={this.props.decrementTranche}
+                  onTouchTap={this.props.decrementTranche}
                   style={styles.button}
                   buttonStyle={styles.buttonStyle}
                   disabled={ // disable it if tranche is lower than 100000, or if it's 0 if libor
@@ -132,7 +132,7 @@ export default class LoanTranche extends Component {
                 <RaisedButton
                   label="+"
                   primary
-                  onClick={this.props.incrementTranche}
+                  onTouchTap={this.props.incrementTranche}
                   style={styles.button}
                   buttonStyle={styles.buttonStyle}
                   disabled={!this.props.moneyLeft}

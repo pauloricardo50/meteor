@@ -45,12 +45,12 @@ export default class AuctionTableLine extends Component {
           {this.offerExists() ?
             <RaisedButton
               label="Modifier mon offre"
-              onClick={this.handleClick}
+              onTouchTap={this.handleClick}
             /> :
               <RaisedButton
                 label="Faire une offre"
                 primary
-                onClick={this.handleClick}
+                onTouchTap={this.handleClick}
               />
           }
         </td>

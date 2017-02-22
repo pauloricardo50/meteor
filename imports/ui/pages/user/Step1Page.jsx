@@ -90,7 +90,7 @@ export default class Step1Page extends Component {
           disabled={!this.isReady()}
           primary
           style={styles.button}
-          onClick={this.handleClick}
+          onTouchTap={this.handleClick}
         />
 
       </div>

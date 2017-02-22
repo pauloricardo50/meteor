@@ -127,7 +127,7 @@ export default class BonusLine extends Component {
     );
 
     return (
-      <article onClick={this.props.setStep}>
+      <article onTouchTap={this.props.setStep}>
 
         <h1 className={this.props.classes.text}>
           {/* This text is always shown */}
@@ -167,14 +167,14 @@ export default class BonusLine extends Component {
                 label={this.props.twoBuyers ? 'Ne gagnons pas de bonus' : 'Ne gagne pas de bonus'}
                 style={styles.button}
                 primary={!this.state.bonusSelected}
-                onClick={e => this.changeState(e, 1)}
+                onTouchTap={e => this.changeState(e, 1)}
               />
             }
             {!this.props.bonusExists &&
               <RaisedButton
                 label={this.props.twoBuyers ? 'Gagnons un bonus' : 'Gagne un bonus'}
                 primary={!this.state.bonusSelected}
-                onClick={e => this.changeState(e, 2)}
+                onTouchTap={e => this.changeState(e, 2)}
               />
             }
           </div>

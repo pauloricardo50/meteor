@@ -38,7 +38,7 @@ export default class AdminNoteForm extends Component {
           <RaisedButton
             label="Ajouter"
             primary
-            onClick={this.handleSubmit}
+            onTouchTap={this.handleSubmit}
             type="submit"
           />
         </div>

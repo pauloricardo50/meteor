@@ -89,7 +89,7 @@ export default class Step3Page extends React.Component {
             label="Continuer"
             style={styles.continueButton}
             primary
-            onClick={this.handleClick}
+            onTouchTap={this.handleClick}
           />
         </div>
       </div>

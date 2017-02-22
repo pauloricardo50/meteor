@@ -47,7 +47,7 @@ export default class SettingsPage extends Component {
         <span className="hidden-sm hidden-md hidden-lg" style={styles.mobileLogoutButton}>
           <RaisedButton
             label="Déconnexion"
-            onClick={() => Meteor.logout(() => FlowRouter.go('/'))}
+            onTouchTap={() => Meteor.logout(() => FlowRouter.go('/'))}
           />
         </span>
         <hr />

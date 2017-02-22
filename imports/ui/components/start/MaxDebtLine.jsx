@@ -87,7 +87,7 @@ export default class MaxDebtLine extends Component {
 
   render() {
     return (
-      <article onClick={this.props.setStep}>
+      <article onTouchTap={this.props.setStep}>
 
         <h1 className={this.props.classes.text}>
           {/* If this is not a primary residence, the previous line doesn't exist, so start
@@ -106,13 +106,13 @@ export default class MaxDebtLine extends Component {
               label={`Le plus possible (${this.state.maxDebtPercent}%)`}
               style={styles.button}
               primary={!this.state.text}
-              onClick={e => this.changeState(e, true)}
+              onTouchTap={e => this.changeState(e, true)}
             />
             <RaisedButton
               label="Le moins possible (<65%)"
               style={styles.button}
               primary={!this.state.text}
-              onClick={e => this.changeState(e, false)}
+              onTouchTap={e => this.changeState(e, false)}
             />
             <HelpModal
               buttonLabel="Aidez-moi à choisir"

@@ -53,13 +53,13 @@ export default class TodoCardPage extends React.Component {
           <RaisedButton
             icon={<span className="fa fa-angle-left" />}
             label="Retour"
-            onClick={this.handleClick}
+            onTouchTap={this.handleClick}
             className="animated slideInLeft"
           />
           <span className="pull-right" style={styles.okSpan}>
             <RaisedButton
               label="Ok"
-              onClick={this.handleClick}
+              onTouchTap={this.handleClick}
               primary
             />
           </span>
@@ -68,7 +68,7 @@ export default class TodoCardPage extends React.Component {
         <div className="form-group pull-right" style={styles.okButton}>
           <RaisedButton
             label="Ok"
-            onClick={this.handleClick}
+            onTouchTap={this.handleClick}
             primary
           />
         </div>

@@ -35,7 +35,7 @@ const TopNavDropdown = props => (
       )}
 
       <Divider />
-      <MenuItem primaryText="Déconnexion" onClick={() => Meteor.logout(() => FlowRouter.go('/'))} />
+      <MenuItem primaryText="Déconnexion" onTouchTap={() => Meteor.logout(() => FlowRouter.go('/'))} />
     </IconMenu>
   ) :
   null

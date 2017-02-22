@@ -42,7 +42,7 @@ export default class AutoStart extends Component {
               <RaisedButton
                 label={answer}
                 primary
-                onClick={e => this.props.changeState(input.id, answer)}
+                onTouchTap={e => this.props.changeState(input.id, answer)}
                 style={styles.button}
                 disabled={!!this.props.formState[input.id]}
                 key={index2}

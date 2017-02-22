@@ -106,7 +106,7 @@ export default class PropertyValueLine extends Component {
 
   render() {
     return (
-      <article onClick={this.props.setStep}>
+      <article onTouchTap={this.props.setStep}>
         <h1 className={this.props.classes.text}>
           {this.props.propertyKnown ?
             'J\'aimerais acheter une propriété d\'une valeur de' : 'Je ne connais pas encore la valeur de la propriété'
@@ -142,14 +142,14 @@ export default class PropertyValueLine extends Component {
                 label="Je ne sais pas encore"
                 style={styles.button}
                 primary={!this.state.propertyValue}
-                onClick={e => this.handleClick(e, false)}
+                onTouchTap={e => this.handleClick(e, false)}
               />
               :
                 <RaisedButton
                   label="En fait, je sais"
                   style={styles.button}
                   primary
-                  onClick={e => this.handleClick(e, true)}
+                  onTouchTap={e => this.handleClick(e, true)}
                 />
             }
           </div>

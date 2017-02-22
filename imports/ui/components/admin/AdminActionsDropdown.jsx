@@ -69,8 +69,8 @@ export default class AdminActionsDropdown extends Component {
           onRequestClose={this.handleCloseMenu}
         >
           <Menu>
-            {/* <MenuItem primaryText="Intéraction Client" onClick={e => this.handleClick(e, 'client')} /> */}
-            <MenuItem primaryText="Créer compte partenaire" onClick={e => this.handleClick(e, 'newPartnerAccount')} />
+            {/* <MenuItem primaryText="Intéraction Client" onTouchTap={e => this.handleClick(e, 'client')} /> */}
+            <MenuItem primaryText="Créer compte partenaire" onTouchTap={e => this.handleClick(e, 'newPartnerAccount')} />
           </Menu>
         </Popover>
       </div>

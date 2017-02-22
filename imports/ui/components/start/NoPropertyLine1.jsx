@@ -70,7 +70,7 @@ export default class NoPropertyLine1 extends Component {
 
   render() {
     return (
-      <article onClick={this.props.setStep}>
+      <article onTouchTap={this.props.setStep}>
         <h1 className={this.props.classes.text}>
 
           <span>

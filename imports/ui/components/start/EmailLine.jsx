@@ -100,7 +100,7 @@ export default class EmailLine extends Component {
           label="Se Connecter"
           style={styles.button}
           primary
-          onClick={e => this.handleClick(e, true, false)}
+          onTouchTap={e => this.handleClick(e, true, false)}
         />
       );
     } else {
@@ -110,12 +110,12 @@ export default class EmailLine extends Component {
             label="Créer un compte"
             style={styles.button}
             primary
-            onClick={e => this.handleClick(e, false, true)}
+            onTouchTap={e => this.handleClick(e, false, true)}
           />
           <RaisedButton
             label="M'envoyer un Récapitulatif"
             style={styles.button}
-            onClick={e => this.handleClick(e, false, false)}
+            onTouchTap={e => this.handleClick(e, false, false)}
           />
         </span>
       );
@@ -123,7 +123,7 @@ export default class EmailLine extends Component {
 
 
     return (
-      <article onClick={this.props.setStep}>
+      <article onTouchTap={this.props.setStep}>
         <h1 className={this.props.classes.text}>
           Mon adresse e-mail
           {!this.state.content &&

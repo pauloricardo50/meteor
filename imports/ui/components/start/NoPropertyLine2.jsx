@@ -49,7 +49,7 @@ export default class NoPropertyLine2 extends Component {
 
   render() {
     return (
-      <article onClick={this.props.setStep}>
+      <article onTouchTap={this.props.setStep}>
         <h1 className={this.props.classes.text}>
           Vous pouvez emprunter au maximum CHF&nbsp;
           {toMoney(this.state.maxBorrow)}

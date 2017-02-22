@@ -217,7 +217,7 @@ export default class FinanceStrategyPicker extends Component {
               <h3>Je veux diviser mon prêt en {this.state.tranches.length} tranche(s).</h3>
               <RaisedButton
                 label="Ajouter une Tranche"
-                onClick={this.addTranche}
+                onTouchTap={this.addTranche}
                 primary
                 style={styles.button}
                 disabled={this.getMoneyLeft() < 100000}
@@ -235,7 +235,7 @@ export default class FinanceStrategyPicker extends Component {
         {this.props.manual &&
           <RaisedButton
             label="Sauvegarder"
-            onClick={this.save}
+            onTouchTap={this.save}
             primary
             style={styles.saveButton}
             disabled={

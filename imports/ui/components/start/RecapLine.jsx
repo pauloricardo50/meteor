@@ -115,7 +115,7 @@ export default class RecapLine extends Component {
 
   render() {
     return (
-      <article onClick={this.props.setStep} className={this.props.classes.text += ' mask1'} style={styles.article}>
+      <article onTouchTap={this.props.setStep} className={this.props.classes.text += ' mask1'} style={styles.article}>
         <h1 className="col-xs-12 text-center" style={styles.topH1}>
           Tout est bon, ça va être une magnifique affaire!
         </h1>
@@ -184,7 +184,7 @@ export default class RecapLine extends Component {
           <RaisedButton
             label="Continuer"
             style={styles.button}
-            onClick={this.handleClick}
+            onTouchTap={this.handleClick}
             primary
           />
         </div>

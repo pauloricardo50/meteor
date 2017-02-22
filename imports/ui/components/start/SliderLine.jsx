@@ -191,7 +191,7 @@ export default class SliderLine extends Component {
 
   render() {
     return (
-      <article onClick={this.props.setStep} className={this.props.classes.text} style={styles.article}>
+      <article onTouchTap={this.props.setStep} className={this.props.classes.text} style={styles.article}>
         <Sliders
           twoBuyers={this.props.twoBuyers}
           fortune={this.props.fortune}
@@ -207,7 +207,7 @@ export default class SliderLine extends Component {
           <div className="text-center col-xs-12">
             <RaisedButton
               label="Je suis satisfait"
-              onClick={e => this.props.completeStep(e, true, true)}
+              onTouchTap={e => this.props.completeStep(e, true, true)}
               primary
             />
           </div>

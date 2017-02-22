@@ -22,7 +22,7 @@ export default class PurchaseTypeLine extends Component {
 
   render() {
     return (
-      <article onClick={this.props.setStep}>
+      <article onTouchTap={this.props.setStep}>
         <h1 className={this.props.classes.text}>
           Je recherche un prêt hypothécaire pour
           <span className="value">{this.state.text}</span>
@@ -34,19 +34,19 @@ export default class PurchaseTypeLine extends Component {
               label="Une nouvelle acquisition"
               style={this.props.styles.buttons}
               primary={!this.state.text}
-              onClick={e => this.changeState(e, 'acquisition')}
+              onTouchTap={e => this.changeState(e, 'acquisition')}
             />
             <RaisedButton
               label="Un refinancement"
               style={this.props.styles.buttons}
               primary={!this.state.text}
-              onClick={e => this.changeState(e, 'refinancing')}
+              onTouchTap={e => this.changeState(e, 'refinancing')}
             />
             <RaisedButton
               label="Obtenir des liquidités"
               style={this.props.styles.buttons}
               primary={!this.state.text}
-              onClick={e => this.changeState(e, 'liquidity')}
+              onTouchTap={e => this.changeState(e, 'liquidity')}
             />
           </div>
         }

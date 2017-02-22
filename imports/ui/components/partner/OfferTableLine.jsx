@@ -32,7 +32,7 @@ export default class OfferTableLine extends Component {
         <td className="right-align">
           <FlatButton
             label="Voir l'offre"
-            onClick={this.handleClick}
+            onTouchTap={this.handleClick}
           />
         </td>
       </tr>

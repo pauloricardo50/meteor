@@ -62,7 +62,7 @@ export default class TodoCard extends Component {
     }
 
     return (
-      <li onClick={this.routeDo} className={bootstrapClasses} style={{ listStyle: 'none' }}>
+      <li onTouchTap={this.routeDo} className={bootstrapClasses} style={{ listStyle: 'none' }}>
         <div className="mask2 col-sm-12 todo-card hover-rise">
           <h3 style={styles.title}>{this.props.title}</h3>
           {this.props.completionPercentage === 100 &&

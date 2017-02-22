@@ -144,7 +144,7 @@ export default class Step2AuctionResults extends Component {
         <RaisedButton
           label="Continuer"
           primary
-          onClick={this.handleContinue}
+          onTouchTap={this.handleContinue}
           style={styles.continueButton}
         />
       </div>

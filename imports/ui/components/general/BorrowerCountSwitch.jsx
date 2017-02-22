@@ -124,14 +124,14 @@ export default class BorrowerCountSwitch extends Component {
           <RadioButton
             label="Un Emprunteur"
             value={1}
-            onClick={this.setRadioButton}
+            onTouchTap={this.setRadioButton}
             style={styles.RadioButton}
             labelStyle={styles.RadioButtonLabel}
           />
           <RadioButton
             label="Deux Emprunteurs"
             value={2}
-            onClick={this.setRadioButton}
+            onTouchTap={this.setRadioButton}
             style={styles.RadioButton}
             labelStyle={styles.RadioButtonLabel}
           />

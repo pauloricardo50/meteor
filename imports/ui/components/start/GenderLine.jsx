@@ -110,7 +110,7 @@ export default class GenderLine extends Component {
   render() {
     if (this.props.genderRequired) {
       return (
-        <article onClick={this.props.setStep}>
+        <article onTouchTap={this.props.setStep}>
 
           <h1 className={this.props.classes.text}>
             {this.props.twoBuyers ? 'Nous sommes ' : 'Je suis '}
@@ -127,13 +127,13 @@ export default class GenderLine extends Component {
                 label="une femme"
                 style={styles.button}
                 primary={!this.props.gender1}
-                onClick={() => this.changeState(1)}
+                onTouchTap={() => this.changeState(1)}
               />
               <RaisedButton
                 label="un homme"
                 style={styles.button2}
                 primary={!this.props.gender1}
-                onClick={() => this.changeState(2)}
+                onTouchTap={() => this.changeState(2)}
               />
               {this.props.twoBuyers &&
                 <span>
@@ -142,12 +142,12 @@ export default class GenderLine extends Component {
                     label="une femme"
                     style={styles.button}
                     primary={!this.props.gender2}
-                    onClick={() => this.changeState(3)}
+                    onTouchTap={() => this.changeState(3)}
                   />
                   <RaisedButton
                     label="un homme"
                     primary={!this.props.gender2}
-                    onClick={() => this.changeState(4)}
+                    onTouchTap={() => this.changeState(4)}
                   />
                 </span>
               }

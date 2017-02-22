@@ -73,7 +73,7 @@ export default class CashConfirmLine extends Component {
 
   render() {
     return (
-      <article onClick={this.props.setStep}>
+      <article onTouchTap={this.props.setStep}>
 
         <h1 className={this.props.classes.text}>
           {this.props.propertyKnown &&
@@ -94,7 +94,7 @@ export default class CashConfirmLine extends Component {
               label="Ok"
               style={styles.button}
               primary={!this.state.text}
-              onClick={this.handleClick}
+              onTouchTap={this.handleClick}
             />
 
             <HelpModal

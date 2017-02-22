@@ -49,7 +49,7 @@ export default class StrategyCash extends Component {
           <RaisedButton
             label="Valider"
             primary={!this.props.loanRequest.logic.hasValidatedCashStrategy}
-            onClick={this.handleClick}
+            onTouchTap={this.handleClick}
           />
         </div>
 

@@ -53,7 +53,7 @@ export default class BorrowerCountLine extends Component {
 
   render() {
     return (
-      <article onClick={this.props.setStep}>
+      <article onTouchTap={this.props.setStep}>
 
         <h1 className={this.props.classes.text}>
           {this.props.twoBuyers ? 'Nous sommes ' : 'Je suis '}
@@ -66,12 +66,12 @@ export default class BorrowerCountLine extends Component {
               label="Un emprunteur"
               style={styles.button}
               primary={!this.state.text}
-              onClick={e => this.changeState(e, false)}
+              onTouchTap={e => this.changeState(e, false)}
             />
             <RaisedButton
               label="Un couple emprunteur"
               primary={!this.state.text}
-              onClick={e => this.changeState(e, true)}
+              onTouchTap={e => this.changeState(e, true)}
             />
           </div>
         }

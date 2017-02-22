@@ -273,7 +273,7 @@ class SortHeaderCell extends React.Component {
     const { sortDir, children } = this.props;
     return (
       <Cell>
-        <a onClick={this.onSortChange}>
+        <a onTouchTap={this.onSortChange}>
           {children} {sortDir ? (sortDir === SortTypes.DESC ? '↓' : '↑') : ''}
         </a>
       </Cell>

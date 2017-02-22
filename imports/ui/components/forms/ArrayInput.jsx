@@ -83,11 +83,11 @@ export default class ArrayInput extends React.Component {
         <div className="text-center">
           <RaisedButton
             label="-"
-            onClick={this.removeValue}
+            onTouchTap={this.removeValue}
             style={styles.button}
             disabled={this.state.count <= 1}
           />
-          <RaisedButton label="+" onClick={this.addValue} primary />
+          <RaisedButton label="+" onTouchTap={this.addValue} primary />
         </div>
       </div>
     );

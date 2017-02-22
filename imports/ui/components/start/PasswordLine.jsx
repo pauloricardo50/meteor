@@ -127,7 +127,7 @@ export default class PasswordLine extends Component {
         <RaisedButton
           label="Connexion"
           primary
-          onClick={this.handleLogin}
+          onTouchTap={this.handleLogin}
         />
       );
     } else if (this.props.createAccount) {
@@ -137,7 +137,7 @@ export default class PasswordLine extends Component {
         <RaisedButton
           label="Créer"
           primary
-          onClick={this.handleCreate}
+          onTouchTap={this.handleCreate}
         />
       );
     } else {
@@ -155,7 +155,7 @@ export default class PasswordLine extends Component {
 
 
     return (
-      <article onClick={this.props.setStep}>
+      <article onTouchTap={this.props.setStep}>
 
         <h1 className={this.props.classes.text}>{content1}{content2}.</h1>
 

@@ -88,7 +88,7 @@ export default class IncomeLine extends Component {
 
   render() {
     return (
-      <article onClick={this.props.setStep}>
+      <article onTouchTap={this.props.setStep}>
         <h1 className={this.props.classes.text}>
           Le total de
           {this.props.twoBuyers ? ' nos ' : ' mes '}

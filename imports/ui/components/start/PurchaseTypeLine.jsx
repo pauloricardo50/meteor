@@ -60,7 +60,7 @@ export default class PurchaseTypeLine extends Component {
 
   render() {
     return (
-      <article onClick={this.props.setStep}>
+      <article onTouchTap={this.props.setStep}>
 
         <h1 className={this.props.classes.text}>
           Ce projet sera
@@ -73,19 +73,19 @@ export default class PurchaseTypeLine extends Component {
               label="Une nouvelle acquisition"
               style={styles.button}
               primary={!this.state.text}
-              onClick={e => this.changeState(e, 1)}
+              onTouchTap={e => this.changeState(e, 1)}
             />
             <RaisedButton
               label="Un refinancement"
               style={styles.button}
               primary={!this.state.text}
-              onClick={e => this.changeState(e, 2)}
+              onTouchTap={e => this.changeState(e, 2)}
             />
             <RaisedButton
               label="Une nouvelle construction"
               style={styles.button}
               primary={!this.state.text}
-              onClick={e => this.changeState(e, 3)}
+              onTouchTap={e => this.changeState(e, 3)}
             />
           </div>
         }

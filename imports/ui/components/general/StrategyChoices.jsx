@@ -78,7 +78,7 @@ export default class StrategyChoices extends Component {
           <RaisedButton
             primary={!this.props.currentValue}
             label={chosen ? 'Annuler' : 'Choisir'}
-            onClick={() => this.handleClick(choice.id)}
+            onTouchTap={() => this.handleClick(choice.id)}
           />
         </div>
       </article>

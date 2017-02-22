@@ -95,12 +95,12 @@ export default class RequestProgressBar extends React.Component {
       return (
         <header className="header-progressbar">
           <ul className="progressbar">
-            <li className={this.progressClasses(0)} id="progressStep1" onClick={() => this.routeToStep(1)} />
-            <li className={this.progressClasses(1)} id="progressStep2" onClick={() => this.routeToStep(2)} />
-            <li className={this.progressClasses(2)} id="progressStep3" onClick={() => this.routeToStep(3)} />
-            <li className={this.progressClasses(3)} id="progressStep4" onClick={() => this.routeToStep(4)} />
-            <li className={this.progressClasses(4)} id="progressStep5" onClick={() => this.routeToStep(5)} />
-            <li className={this.progressClasses(5)} id="progressStep6" onClick={() => this.routeToStep(6)} />
+            <li className={this.progressClasses(0)} id="progressStep1" onTouchTap={() => this.routeToStep(1)} />
+            <li className={this.progressClasses(1)} id="progressStep2" onTouchTap={() => this.routeToStep(2)} />
+            <li className={this.progressClasses(2)} id="progressStep3" onTouchTap={() => this.routeToStep(3)} />
+            <li className={this.progressClasses(3)} id="progressStep4" onTouchTap={() => this.routeToStep(4)} />
+            <li className={this.progressClasses(4)} id="progressStep5" onTouchTap={() => this.routeToStep(5)} />
+            <li className={this.progressClasses(5)} id="progressStep6" onTouchTap={() => this.routeToStep(6)} />
           </ul>
 
           {/* Large screens only */}

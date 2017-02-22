@@ -61,7 +61,7 @@ export default class UsageTypeLine extends Component {
 
   render() {
     return (
-      <article onClick={this.props.setStep}>
+      <article onTouchTap={this.props.setStep}>
 
         <h1 className={this.props.classes.text}>
           et la propriété
@@ -76,19 +76,19 @@ export default class UsageTypeLine extends Component {
               label="Une résidence principale"
               style={styles.button}
               primary={!this.state.text}
-              onClick={e => this.changeState(e, 1)}
+              onTouchTap={e => this.changeState(e, 1)}
             />
             <RaisedButton
               label="Une résidence Secondaire"
               style={styles.button}
               primary={!this.state.text}
-              onClick={e => this.changeState(e, 2)}
+              onTouchTap={e => this.changeState(e, 2)}
             />
             <RaisedButton
               label="Un investissement"
               style={styles.button}
               primary={!this.state.text}
-              onClick={e => this.changeState(e, 3)}
+              onTouchTap={e => this.changeState(e, 3)}
             />
           </div>
         }
