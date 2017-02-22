@@ -108,12 +108,12 @@ export default class RequestProgressBar extends React.Component {
             <TopNavDropdown public={false} currentUser={this.props.currentUser} />
           </div>
 
-          {
+          {/* {
             this.props.loanRequest.logic.step <= 0 &&
             <div className="hidden-sm hidden-md hidden-lg" style={styles.logoDiv}>
               <img src="/img/logo_black.svg" alt="e-Potek" style={styles.logo} />
             </div>
-          }
+          } */}
 
         </header>
       );

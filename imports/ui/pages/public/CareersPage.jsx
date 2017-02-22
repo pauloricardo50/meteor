@@ -31,11 +31,11 @@ export default class CareersPage extends Component {
 
           <div className="description" style={styles.description}>
             <p>
-              Nous n&apos;avons pas de positions explicitement ouvertes en ce moment. Cependant,
+              Nous ne cherchons pas activement de nouveaux candidats en ce moment. Cependant,
               nous sommes toujours ouverts aux candidatures spontanées, écris-nous à
               &nbsp;
-              <a href="mailto:jobs@e-potek?subject=Je%20veux%20révolutionner%20la%20finance">
-                jobs@e.potek.ch
+              <a href="mailto:jobs@e-potek.ch?subject=Je%20veux%20révolutionner%20la%20finance">
+                jobs@e-potek.ch
               </a>
               .
             </p>
