@@ -11,7 +11,6 @@ export default class Step3FileUpload extends Component {
       active: -1,
     };
 
-    this.handleClick = this.handleClick.bind(this);
     this.getArrray = this.getArray.bind(this);
   }
 
@@ -26,44 +25,37 @@ export default class Step3FileUpload extends Component {
         id: 'general.files.buyersContract',
       },
       {
-        title: 'Identité',
-        files: 21,
-        done: false,
+        title: 'Pièce d\'identité',
+        folderName: 'identity',
+        currentValue: r.borrowers[0].files.identity,
+        id: 'borrowers.0.files.identity',
       },
       {
-        title: 'Plans',
+        title: 'Plans (dev)',
         files: 0,
         done: false,
       },
       {
-        title: 'Fiches de salaire',
+        title: 'Fiches de salaire (dev)',
         files: 3,
         done: false,
       },
       {
-        title: 'Extrait de l\'office des poursuites',
+        title: 'Extrait de l\'office des poursuites (dev)',
         files: 1,
         done: false,
       },
       {
-        title: 'Fiches de salaire',
+        title: 'Fiches de salaire (dev)',
         files: 1,
         done: false,
       },
       {
-        title: 'Copie d\'acte d\'achat',
+        title: 'Copie d\'acte d\'achat (dev)',
         files: 2,
         done: false,
       },
     ];
-  }
-
-  handleClick(i) {
-    if (this.state.active === i) {
-      this.setState({ active: -1 });
-    } else {
-      this.setState({ active: i });
-    }
   }
 
 
