@@ -13,6 +13,9 @@ const styles = {
   backButton: {
     marginBottom: 20,
   },
+  bottomButton: {
+    marginTop: 20,
+  },
 };
 
 const StrategySinglePage = (props) => {
@@ -27,16 +30,34 @@ const StrategySinglePage = (props) => {
   }
   return (
     <div>
-      <div className="animated fadeInLeft">
-        <RaisedButton
-          label="retour"
-          href="/strategy"
-          style={styles.backButton}
-        />
+      <div>
+        <span className="animated fadeInLeft">
+          <RaisedButton
+            label="retour"
+            href="/strategy"
+            style={styles.backButton}
+          />
+        </span>
+        <span className="pull-right">
+          <RaisedButton
+            label="Ok"
+            href="/strategy"
+            style={styles.backButton}
+            primary
+          />
+        </span>
       </div>
       <section className="mask1 animated fadeIn">
         <Comp loanRequest={props.loanRequest} />
       </section>
+      <span className="pull-right">
+        <RaisedButton
+          label="Ok"
+          href="/strategy"
+          style={styles.bottomButton}
+          primary
+        />
+      </span>
     </div>
   );
 };

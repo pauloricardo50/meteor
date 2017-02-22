@@ -46,7 +46,7 @@ export default class Step1Page extends Component {
   }
 
   handleClick() {
-    if (this.isReady()) {
+    if (this.isReady() && this.props.loanRequest.logic.step < 1) {
 
       const object = {};
       object['logic.step'] = 1;
@@ -59,6 +59,8 @@ export default class Step1Page extends Component {
             FlowRouter.go('/step2');
           }
         });
+    } else {
+      FlowRouter.go('/step2');
     }
   }
 

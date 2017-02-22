@@ -45,17 +45,21 @@ export default class Step2AuctionResults extends Component {
 
 
   handleContinue() {
-    // Go to step 3
-    const object = {};
-    object['logic.step'] = 2;
-    const id = this.props.loanRequest._id;
+    if (this.props.loanRequest.logic.step < 2) {
+      // Go to step 3
+      const object = {};
+      object['logic.step'] = 2;
+      const id = this.props.loanRequest._id;
 
-    cleanMethod('update', id, object,
-    (error) => {
-      if (!error) {
-        FlowRouter.go('/step3');
-      }
-    });
+      cleanMethod('update', id, object,
+      (error) => {
+        if (!error) {
+          FlowRouter.go('/step3');
+        }
+      });
+    } else {
+      FlowRouter.go('/step3');
+    }
   }
 
 
@@ -125,14 +129,6 @@ export default class Step2AuctionResults extends Component {
               Vous pouvez dès à présent choisir le prêteur que vous voulez et avoir une estimation
               très précise de ce que ce prêt va vous coûter.
             </p>
-          </div>
-
-          <div style={styles.lenderButton} className="text-center">
-            <RaisedButton
-              label="Choisir mon prêteur"
-              primary
-              onClick={() => FlowRouter.go('/strategy?tab=2')}
-            />
           </div>
 
           <div style={styles.tableDiv}>

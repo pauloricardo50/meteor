@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import Highcharts from 'highcharts';
 
-import { getYearsToRetirement } from '/imports/js/finance-math';
+import { getInterests, getAmortization } from '/imports/js/finance-math';
 import { toMoney } from '/imports/js/conversionFunctions';
 
 const styles = {
@@ -24,8 +24,11 @@ export default class ExpensesChart extends Component {
   constructor(props) {
     super(props);
 
-    this.getAmortization = this.getAmortization.bind(this);
-    this.getInterests = this.getInterests.bind(this);
+    this.state = {
+      interests: getInterests(this.props.loanRequest),
+      amortization: getAmortization(this.props.loanRequest),
+    };
+
     this.createChart = this.createChart.bind(this);
     this.resize = this.resize.bind(this);
   }
@@ -46,13 +49,12 @@ export default class ExpensesChart extends Component {
         text: `CHF ~${
           toMoney(
             Math.round(
-              this.getInterests() + this.getAmortization() + ((r.property.value * 0.01) / 12),
+              this.state.interests + this.state.amortization + ((r.property.value * 0.01) / 12),
             ),
           )
         }<br>par mois`,
-        align: 'center',
         verticalAlign: 'middle',
-        y: 60,
+        floating: true,
         style: {
           fontSize: '14px',
         },
@@ -79,17 +81,14 @@ export default class ExpensesChart extends Component {
             },
           },
           showInLegend: true,
-          startAngle: -90,
-          endAngle: 90,
-          center: ['50%', '75%'],
         },
       },
       legend: {
         align: 'center',
         verticalAlign: 'bottom',
-        floating: true,
+        // floating: true,
         layout: 'horizontal',
-        itemMarginBottom: 8,
+        // itemMarginBottom: 8,
       },
       series: [
         {
@@ -100,11 +99,11 @@ export default class ExpensesChart extends Component {
           data: [
             {
               name: 'Intérêts',
-              y: this.getInterests(),
+              y: this.state.interests,
               color: colors.interest,
             }, {
               name: 'Amortissement',
-              y: this.getAmortization(),
+              y: this.state.amortization,
               color: colors.amortization,
             }, {
               name: 'Entretien',
@@ -157,53 +156,6 @@ export default class ExpensesChart extends Component {
     oldWidth = newWidth;
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
-  }
-
-
-  getAmortization() {
-    const r = this.props.loanRequest;
-    const loan = r.property.value -
-      r.general.fortuneUsed -
-      r.general.insuranceFortuneUsed;
-    const yearsToRetirement = getYearsToRetirement(
-      Number(r.borrowers[0].age),
-      r.borrowers[1] && r.borrowers[1].age ? Number(r.borrowers[1].age) : 0,
-      r.borrowers[0].gender,
-      r.borrowers[1] && r.borrowers[1].gender,
-    );
-    const loanPercent = loan / r.property.value;
-
-    let yearlyAmortization = 0;
-    if (loanPercent > 0.65) {
-      // The loan has to be below 65% before 15 years or before retirement, whichever comes first
-      const remainingYears = Math.min(yearsToRetirement, 15);
-      const amountToAmortize = (loanPercent - 0.65) * r.property.value;
-
-      // Make sure we don't create a black hole, or use negative values by error
-      if (remainingYears > 0) {
-        // Amortization is the amount to amortize divided by the amount of years before the deadline
-        yearlyAmortization = amountToAmortize / remainingYears;
-      }
-    }
-
-    return yearlyAmortization / 12;
-  }
-
-  getInterests() {
-    const r = this.props.loanRequest;
-    const loan = r.property.value -
-      r.general.fortuneUsed -
-      r.general.insuranceFortuneUsed;
-
-
-    if (r.logic.hasChosenStrategy) {
-      // TODO: return real interest rate
-    }
-
-    return (loan * 0.015) / 12;
-  }
 
   render() {
     return (

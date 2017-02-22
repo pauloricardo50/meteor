@@ -144,6 +144,7 @@ export default class ProjectChart extends Component {
       plotOptions: {
         bar: {
           borderWidth: 2,
+          // showInLegend: true,
         },
         series: {
           stacking: 'normal',
@@ -162,6 +163,9 @@ export default class ProjectChart extends Component {
           },
           animation: true,
         },
+      },
+      legend: {
+        reversed: true,
       },
       tooltip: {
         formatter() {
@@ -237,9 +241,6 @@ export default class ProjectChart extends Component {
           color: colors.loan,
         },
       ],
-      legend: {
-        enabled: false,
-      },
       credits: {
         enabled: false,
       },

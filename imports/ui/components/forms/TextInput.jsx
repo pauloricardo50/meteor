@@ -40,7 +40,7 @@ export default class TextInput extends Component {
     super(props);
 
     this.state = {
-      value: this.props.currentValue || '',
+      value: this.props.currentValue === 0 ? 0 : this.props.currentValue || '',
       errorText: '',
       saving: false,
       showInfo: false,

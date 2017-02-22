@@ -34,7 +34,11 @@ export default class DropzoneArrayItem extends React.Component {
   render() {
     return (
       <article style={this.getStyles().article} className="mask1 dropzoneArrayItem">
-        <div style={this.getStyles().topDiv} className="top">
+        <div
+          style={this.getStyles().topDiv}
+          className="top"
+          onTouchTap={this.props.handleClick}
+        >
           <div className="left">
             {this.props.currentValue && this.props.currentValue.length > 0 ?
               <span className="fa fa-check" style={this.getStyles().icon} /> :
@@ -54,7 +58,6 @@ export default class DropzoneArrayItem extends React.Component {
           <div className="right">
             <IconButton
               style={this.getStyles().caret}
-              onTouchTap={this.props.handleClick}
             >
               <ArrowDown color="#d8d8d8" hoverColor="#a8a8a8" />
             </IconButton>

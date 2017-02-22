@@ -78,6 +78,10 @@ export default class SideNav extends Component {
   getStrategyNotification() {
     const r = this.props.loanRequest
     let value = 0;
+
+    if (!r.logic.hasValidatedCashStrategy) {
+      value += 1;
+    }
     if (r.logic.step > 1) {
       if (!r.logic.loanStrategyPreset) {
         value += 1;
@@ -114,7 +118,7 @@ export default class SideNav extends Component {
           <li>
             <a
               href="/strategy"
-              className={this.props.currentURL === '/strategy' && 'active-link'}
+              className={this.props.currentURL.substring(0, 9) === '/strategy' && 'active-link'}
               style={styles.a}
             >
               <span className="icon" ><CallSplit /></span>

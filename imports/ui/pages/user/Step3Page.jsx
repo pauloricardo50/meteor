@@ -32,19 +32,19 @@ export default class Step3Page extends React.Component {
     this.todoCards = [
       {
         title: titles[0],
-        duration: '1 min',
+        duration: '~2 min',
         href: 'personal',
       }, {
         title: titles[1],
-        duration: '2 min',
+        duration: '~2 min',
         href: 'property',
       }, {
         title: titles[2],
-        duration: '5 min',
+        duration: '~5 min',
         href: 'finance',
       }, {
         title: titles[3],
-        duration: '10 min',
+        duration: '~10 min',
         href: 'files',
       },
     ];

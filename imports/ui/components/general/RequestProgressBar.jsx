@@ -60,18 +60,21 @@ export default class RequestProgressBar extends React.Component {
 
     // During the first step, do not show the progress bar
     if (this.props.loanRequest.logic.step === 0) {
-      return classes.concat('hidden');
+      // return classes.concat('hidden');
     }
 
     if (this.props.loanRequest) {
       if (this.props.loanRequest.logic.step < stepNumber) {
-        return classes.concat('hidden');
+        // return classes.concat('hidden');
+        return classes.concat('bold');
       } else if (this.props.loanRequest.logic.step === stepNumber) {
         return classes.concat('bold active');
+      } else if (this.props.loanRequest.logic.step > stepNumber) {
+        return classes.concat('bold done');
       }
-      return classes.concat('bold done');
     }
-    return classes.concat('hidden');
+
+    // return classes.concat('hidden');
   }
 
   activeClass(stepNumber) {
@@ -80,8 +83,10 @@ export default class RequestProgressBar extends React.Component {
 
 
   routeToStep(stepNumber) {
-    // TODO: Add logic to prevent people from going to a specified step if it hasn't been unlocked
-    FlowRouter.go(`/step${stepNumber}`)
+    // prevent people from going to a specified step if it hasn't been unlocked
+    if (this.props.loanRequest.logic.step >= stepNumber - 1) {
+      FlowRouter.go(`/step${stepNumber}`);
+    }
   }
 
   render() {

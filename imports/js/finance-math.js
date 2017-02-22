@@ -162,6 +162,12 @@ export const getAmortization = (loanRequest) => {
     r.borrowers[0].gender,
     r.borrowers[1] && r.borrowers[1].gender,
   );
+
+  // fallback if the loan is smaller than 0
+  if (loan <= 0) {
+    return 0;
+  }
+
   const loanPercent = loan / r.property.value;
 
   let yearlyAmortization = 0;
@@ -188,8 +194,12 @@ export const getInterests = (loanRequest) => {
     r.general.fortuneUsed -
     r.general.insuranceFortuneUsed;
 
+  if (loan <= 0) {
+    return 0;
+  }
+
   // Use a base interest rate of 1.5%
-  let interests = 0.015;
+  const interests = 0.015;
   if (r.logic.hasChosenStrategy) {
     // TODO: return real interest rate
   }
