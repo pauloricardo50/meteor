@@ -47,7 +47,7 @@ export default class Step2Start extends Component {
     return (
       <section className="mask1">
         <h2>Derniers réglages avant de commencer</h2>
-        <h1 className="text-center display4" style={styles.countUp}>
+        <h1 className="text-center display2" style={styles.countUp}>
           <CountUp
             className="custom-count"
             start={0}
