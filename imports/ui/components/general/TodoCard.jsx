@@ -2,9 +2,10 @@ import React, { Component, PropTypes} from 'react';
 
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
+import colors from '/imports/js/colors';
 
-const normalColor = '#4A90E2';
-const successColor = '#50E3C2';
+const normalColor = colors.primary;
+const successColor = colors.secondary;
 
 
 const styles = {

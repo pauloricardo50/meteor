@@ -8,11 +8,6 @@ const styles = {
   section: {
     marginTop: 40,
   },
-  sliderStyle: {
-    // height: 20,
-    // color: '#50E3C2',
-    // backgroundColor: '#50E3C2',
-  },
 };
 
 export default class FortuneSliders2 extends React.Component {

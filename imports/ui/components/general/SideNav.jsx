@@ -9,6 +9,8 @@ import FinanceWidget from '/imports/ui/components/general/FinanceWidget.jsx';
 import ProjectChart from '/imports/ui/components/charts/ProjectChart.jsx';
 import SideNavFinance from '/imports/ui/components/general/SideNavFinance.jsx';
 
+import { strategiesChosen } from '/imports/js/requestFunctions';
+
 const styles = {
   icon: {
     padding: 20,
@@ -131,7 +133,12 @@ export default class SideNav extends Component {
                 >
                   <h5>Stratégies</h5>
                 </Badge> :
-                <h5>Stratégies</h5>
+                <h5>
+                  Stratégies&nbsp;&nbsp;
+                  {strategiesChosen(this.props.loanRequest) &&
+                    <span className="fa fa-check success" />
+                  }
+                </h5>
               }
             </a>
             <a

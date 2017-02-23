@@ -63,7 +63,7 @@ export default class StrategyChoices extends Component {
         }
 
         <ul>
-          <li className="title">
+          <li className={chosen ? 'title-chosen' : 'title'}>
             <h4 className="bold fixed-size">
               {choice.title}&nbsp;{chosen && <span className="fa fa-check" />}
             </h4>
@@ -89,8 +89,9 @@ export default class StrategyChoices extends Component {
     return (
       <div className="strategy-choices">
 
-        {this.state.showChoices ?
-          this.props.choices.map((choice, index) => (this.renderChoice(choice, index))) :
+        {this.state.showChoices
+          ? this.props.choices.map((choice, index) => (this.renderChoice(choice, index)))
+          :
           <span className="loading">
             <LoadingComponent />
           </span>

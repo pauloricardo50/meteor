@@ -878,7 +878,7 @@ div.strategy-choices
     overflow: visible;
     border-radius: 5px;
     &.chosen
-      border: solid 2px brand-primary;
+      border: solid 2px brand-success;
       border-top: none;
       box-shadow: 0px 20px 20px 0px rgba(0,0,0,0.2);
     ul
@@ -892,6 +892,8 @@ div.strategy-choices
         background-color: brand-primary
         border-top-left-radius: 3px;
         border-top-right-radius: 3px;
+        &.title-chosen
+          background-color: brand-success;
         h4
           color: white;
           margin: 0;
@@ -1105,3 +1107,7 @@ div.strategy-choices
       +above($med)
         width: 120px;
         border-left: 1px solid #ccc
+
+// Fix to remove firefox's annoying red box around invalid inputs
+:invalid
+  box-shadow: none;

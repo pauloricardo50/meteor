@@ -5,6 +5,7 @@ import FlatButton from 'material-ui/FlatButton';
 
 
 import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown.jsx';
+import colors from '/imports/js/colors';
 
 
 const styles = {
@@ -35,7 +36,7 @@ const PublicNav = props => (
       style={styles.navbar}
       iconElementRight={props.currentUser ?
         <TopNavDropdown public currentUser={props.currentUser} /> :
-        <FlatButton label="Login" href="/login" secondary labelStyle={{ color: '#4A90E2' }} />
+        <FlatButton label="Login" href="/login" secondary labelStyle={{ color: colors.primary }} />
       }
       iconStyleLeft={{ display: 'none' }}
     >

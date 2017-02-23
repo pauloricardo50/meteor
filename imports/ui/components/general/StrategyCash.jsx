@@ -36,7 +36,13 @@ export default class StrategyCash extends Component {
   render() {
     return (
       <section>
-        <h2>Ma Stratégie de Fonds Propres</h2>
+        <h2>
+          Ma Stratégie de Fonds Propres
+          &nbsp;
+          {this.props.loanRequest.logic.hasValidatedCashStrategy &&
+            <span className="fa fa-check success" />
+          }
+        </h2>
 
         <div className="description">
           <p>

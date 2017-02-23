@@ -51,6 +51,7 @@ export default class IncomeLine extends Component {
 
 
   handleChange(event, noTimeout) {
+    event.preventDefault();
     Meteor.clearTimeout(timer);
 
     this.props.setStateValue(

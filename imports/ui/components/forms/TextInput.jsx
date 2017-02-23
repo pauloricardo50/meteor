@@ -11,6 +11,7 @@ import { toNumber, toMoney } from '/imports/js/conversionFunctions';
 import SavingIcon from './SavingIcon.jsx';
 import InfoIcon from './InfoIcon.jsx';
 import constants from '/imports/js/constants';
+import colors from '/imports/js/colors';
 
 
 const styles = {
@@ -29,8 +30,8 @@ const styles = {
     right: -25,
   },
   infoStyle: {
-    color: '#4A90E2',
-    borderColor: '#4A90E2',
+    color: colors.primary,
+    borderColor: colors.primary,
   },
 };
 
@@ -111,6 +112,9 @@ export default class TextInput extends Component {
             this.setState({ errorText: '', saving: showSaving },
               this.setState({ saving: false }),
             );
+          } else {
+            // If there was an error, reset value to the backend value
+            this.setState({ value: this.props.currentValue });
           }
         });
     }, constants.cpsLimit);
@@ -140,6 +144,7 @@ export default class TextInput extends Component {
           disabled={this.props.disabled}
           style={this.props.style}
           inputStyle={this.props.inputStyle}
+          noValidate
         >
           {this.props.money &&
             <MaskedInput

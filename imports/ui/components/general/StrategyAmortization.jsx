@@ -4,6 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import StrategyChoices from './StrategyChoices.jsx';
 
+
 const styles = {
   callButton: {
     display: 'block',
@@ -41,7 +42,13 @@ export default class StrategyAmortization extends Component {
   render() {
     return (
       <section>
-        <h2>Ma Stratégie d&apos;Amortissement</h2>
+        <h2>
+          Ma Stratégie d&apos;Amortissement
+          &nbsp;
+          {this.props.loanRequest.logic.amortizingStrategyPreset &&
+            <span className="fa fa-check success" />
+          }
+        </h2>
 
         <div className="description">
           <p>

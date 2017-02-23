@@ -5,6 +5,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import { toMoney } from '/imports/js/conversionFunctions';
+import colors from '/imports/js/colors';
 
 const styles = {
   section: {
@@ -18,8 +19,8 @@ const styles = {
 
 const muiTheme = getMuiTheme({
   slider: {
-    // trackColor: '#50E3C2',
-    selectionColor: '#50E3C2',
+    // trackColor: colors.secondary,
+    selectionColor: colors.secondary,
   },
 });
 

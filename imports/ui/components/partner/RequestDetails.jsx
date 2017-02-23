@@ -3,12 +3,13 @@ import React, { Component, PropTypes } from 'react';
 
 import { getAmortization, getInterests } from '/imports/js/finance-math';
 import { toMoney } from '/imports/js/conversionFunctions';
+import colors from '/imports/js/colors';
 
 const styles = {
   topDiv: {
     width: 'calc(100% + 40px)',
     height: 300,
-    backgroundColor: '#4A90E2',
+    backgroundColor: colors.primary,
     color: 'white',
     display: 'table',
     marginLeft: -20,

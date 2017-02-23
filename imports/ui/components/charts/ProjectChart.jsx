@@ -104,6 +104,7 @@ export default class ProjectChart extends Component {
     this.chart.destroy();
   }
 
+
   resize() {
     // Only recreate charts if the width changes, ignore height changes
     const w = window;

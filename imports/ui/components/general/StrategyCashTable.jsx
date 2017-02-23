@@ -50,7 +50,7 @@ export default class StrategyCashTable extends Component {
         className: 'secondary',
         value: `~CHF ${toMoney(r.property.value * fees)}`,
       }, {
-        title: 'Retrait LPP',
+        title: 'Frais retrait LPP',
         className: 'secondary',
         value: `~CHF ${toMoney(r.general.insuranceFortuneUsed * insuranceUseTax)}`,
         hide: r.general.insuranceFortuneUsed <= 0,

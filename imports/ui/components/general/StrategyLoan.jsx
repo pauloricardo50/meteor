@@ -7,6 +7,7 @@ import Scroll from 'react-scroll';
 import StrategyChoices from './StrategyChoices.jsx';
 import FinanceStrategyPicker from '/imports/ui/components/general/FinanceStrategyPicker.jsx';
 import LenderPicker from '/imports/ui/components/general/LenderPicker.jsx';
+import { loanStrategySuccess } from '/imports/js/requestFunctions';
 
 
 const styles = {
@@ -86,7 +87,7 @@ export default class StrategyPage extends Component {
     return [
       {
         id: 'fixed',
-        title: 'Le Fixé',
+        title: '100% Fixé',
         reasons: [
           'Dormez serein',
           'Profitez des taux historiquement bas',
@@ -95,7 +96,7 @@ export default class StrategyPage extends Component {
         isBest: true,
       }, {
         id: 'fixedLibor',
-        title: 'Le Fixé Risqué',
+        title: '20% Libor',
         reasons: [
           'Jouez le Libor',
           'Risque faible',
@@ -142,7 +143,13 @@ export default class StrategyPage extends Component {
   render() {
     return (
       <section>
-        <h2>Ma Stratégie de Taux</h2>
+        <h2>
+          Ma Stratégie de Taux
+          &nbsp;
+          {loanStrategySuccess(this.props.loanRequest) &&
+            <span className="fa fa-check success" />
+          }
+        </h2>
 
         <div className="description">
           <p>

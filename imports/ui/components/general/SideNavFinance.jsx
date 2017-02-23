@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 
 import { toMoney } from '/imports/js/conversionFunctions';
 import { getMonthlyPayment } from '/imports/js/finance-math';
+import { getLoanValue } from '/imports/js/requestFunctions';
 
 const styles = {
   main: {
@@ -39,11 +40,7 @@ export default class SideNavFinance extends Component {
       <a className="mask1 text-center hover-rise" style={styles.main} href="/finance">
         <h4 className="secondary" style={styles.title}>Votre emprunt</h4>
         <h3 style={styles.value} className="fixed-size">
-          CHF {toMoney(Math.round(
-            this.props.loanRequest.property.value -
-            this.props.loanRequest.general.fortuneUsed -
-            this.props.loanRequest.general.insuranceFortuneUsed,
-          ))}
+          CHF {toMoney(Math.round(getLoanValue(this.props.loanRequest)))}
         </h3>
         <h4 className="secondary" style={styles.title}>Coût estimé</h4>
         <h3 style={styles.value} className="fixed-size">

@@ -4,6 +4,7 @@ import IconButton from 'material-ui/IconButton';
 import ArrowDown from 'material-ui/svg-icons/navigation/arrow-drop-down-circle';
 
 import DropzoneInput from '../forms/DropzoneInput.jsx';
+import colors from '/imports/js/colors';
 
 export default class DropzoneArrayItem extends React.Component {
   constructor(props) {
@@ -22,8 +23,8 @@ export default class DropzoneArrayItem extends React.Component {
         borderBottom: this.props.active ? 'solid 1px #ddd' : '',
       },
       icon: {
-        color: this.props.currentValue && this.props.currentValue.length > 0 ? '#50E3C2' : '',
-        borderColor: this.props.currentValue && this.props.currentValue.length > 0 ? '#50E3C2' : '',
+        color: this.props.currentValue && this.props.currentValue.length > 0 ? colors.secondary : '',
+        borderColor: this.props.currentValue && this.props.currentValue.length > 0 ? colors.secondary : '',
       },
       caret: {
         transform: this.props.active ? 'rotate(180deg)' : '',
