@@ -42,12 +42,14 @@ const LoanRequestSchema = new SimpleSchema({
   },
   updatedAt: {
     type: Date,
-    optional: true,
     autoValue() {
-      if (this.isUpdate && (this.userId === this.field('userId').value)) {
+      // Verify the update is from the user owning this doc, ignoring admin/partner updates
+      const doc = LoanRequests.findOne({ _id: this.docId }, { fields: { userId: 1 } });
+      if (this.isUpdate && (this.userId === doc.userId)) {
+        return new Date();
+      } else if (this.isInsert) {
         return new Date();
       }
-      return undefined;
     },
   },
   active: {

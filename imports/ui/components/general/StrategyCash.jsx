@@ -3,7 +3,7 @@ import cleanMethod from '/imports/api/cleanMethods';
 
 
 import StrategyCashTable from './StrategyCashTable.jsx';
-import StrategyCashMetrics from './StrategyCashMetrics.jsx';
+import MetricsTriple from './MetricsTriple.jsx';
 
 
 import RaisedButton from 'material-ui/RaisedButton';

@@ -17,7 +17,7 @@ const styles = {
   },
 };
 
-const AdminNav = () => (
+const AdminNav = ({ currentURL }) => (
   <nav className="side-nav">
 
     <a href="/">
@@ -28,20 +28,35 @@ const AdminNav = () => (
       <AdminActionsDropdown />
     </div>
 
-    <a href="/admin" className="admin-nav-link">
-      <span className="fa fa-home fa-2x" />
-      Home
-    </a>
-
-    <a href="/admin/users" className="admin-nav-link">
-      <span className="fa fa-users fa-2x" />
-      Utilisateurs
-    </a>
-
-    <a href="/admin/requests" className="admin-nav-link">
-      <span className="fa fa-files-o fa-2x" />
-      Demandes de Prêt
-    </a>
+    <ul className="side-nav-list">
+      <li>
+        <a
+          href="/admin"
+          className={currentURL === '/admin' && 'active-link'}
+        >
+          <span className="icon fa fa-home fa-2x" />
+          <h5>Home</h5>
+        </a>
+      </li>
+      <li>
+        <a
+          href="/admin/users"
+          className={currentURL === '/admin/users' && 'active-link'}
+        >
+          <span className="icon fa fa-users fa-2x" />
+          <h5>Utilisateurs</h5>
+        </a>
+      </li>
+      <li>
+        <a
+          href="/admin/requests"
+          className={currentURL === '/admin/requests' && 'active-link'}
+        >
+          <span className="icon fa fa-files-o fa-2x" />
+          <h5>Demandes de Prêt</h5>
+        </a>
+      </li>
+    </ul>
 
   </nav>
 );

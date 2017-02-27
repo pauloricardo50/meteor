@@ -294,8 +294,13 @@ const MoneyCell = ({ rowIndex, data, columnKey }) => (
 );
 
 // To allow sorting by date, but still show a nice date
-const DateCell = ({ rowIndex, data, columnKey }) => (
-  <Cell>
-    {moment(data._data[data._indexMap[rowIndex]][columnKey]).format('D MMM YY à HH:mm:ss')}
-  </Cell>
-);
+const DateCell = ({ rowIndex, data, columnKey }) => {
+  return (
+    <Cell>
+      {data._data[data._indexMap[rowIndex]][columnKey] !== undefined
+        ? moment(data._data[data._indexMap[rowIndex]][columnKey]).format('D MMM YY à HH:mm:ss')
+        : '-'
+      }
+    </Cell>
+  );
+};

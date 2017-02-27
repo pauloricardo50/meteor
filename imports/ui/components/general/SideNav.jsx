@@ -31,9 +31,6 @@ const styles = {
     paddingLeft: 0,
     paddingRight: 0,
   },
-  a: {
-    textDecoration: 'none',
-  },
 };
 
 export default class SideNav extends Component {
@@ -111,7 +108,6 @@ export default class SideNav extends Component {
                 this.props.currentURL.substring(0, 5) === '/step') &&
                 'active-link'
               }
-              style={styles.a}
             >
               <span className="icon fa fa-home fa-2x" />
               <h5>{this.state.requestName}</h5>
@@ -121,7 +117,6 @@ export default class SideNav extends Component {
             <a
               href="/strategy"
               className={this.props.currentURL.substring(0, 9) === '/strategy' && 'active-link'}
-              style={styles.a}
             >
               <span className="icon" ><CallSplit /></span>
               {this.getStrategyNotification() ?
@@ -141,15 +136,13 @@ export default class SideNav extends Component {
                 </h5>
               }
             </a>
+          </li>
+          <li>
             <a
               href="/finance"
-              className={(this.props.currentURL === '/finance' ||
-                this.props.currentURL === '/finance') &&
-                'active-link'
-              }
-              style={styles.a}
+              className={this.props.currentURL === '/finance' && 'active-link'}
             >
-              <span className="icon fa fa-pie-chart fa-2x" ></span>
+              <span className="icon fa fa-pie-chart fa-2x" />
               <h5>Finances</h5>
             </a>
           </li>

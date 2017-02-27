@@ -253,14 +253,14 @@ export default class ProjectChart extends Component {
       },
     });
 
-    this.div = this.props.divName ? this.props.divName : 'projectChart';
+    this.div = this.props.divName || 'projectChart';
     this.chart = new Highcharts.Chart(this.div, options);
   }
 
 
   render() {
     return (<div
-      id={this.props.divName ? this.props.divName : 'projectChart'}
+      id={this.props.divName || 'projectChart'}
       style={(this.props.horizontal ? styles.financePageContainer : styles.sideNavContainer)}
     />);
   }

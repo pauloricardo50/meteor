@@ -29,3 +29,30 @@ Meteor.publish('partnerOffers', function () {
     });
   }
 });
+
+
+// Publish all offers in the database for admins
+Meteor.publish('allOffers', function () {
+  // Verify if user is logged In
+  if (Roles.userIsInRole(this.userId, 'admin')) {
+    // Return all users
+    return Offers.find();
+  }
+
+  return this.ready();
+});
+
+
+// Publish all offers for a loanRequest for admins
+Meteor.publish('requestOffers', function (requestId) {
+  check(requestId, String);
+  // Verify if user is logged In
+  if (Roles.userIsInRole(this.userId, 'admin')) {
+    // Return all users
+    return Offers.find({
+      requestId,
+    });
+  }
+
+  return this.ready();
+});

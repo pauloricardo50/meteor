@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 
 import { getRatio } from '/imports/js/finance-math';
 import constants from '/imports/js/constants';
@@ -11,6 +11,10 @@ export default class StrategyCashMetrics extends React.Component {
   }
 
   getMetrics() {
+    if (this.props.metrics) {
+      return this.props.metrics;
+    }
+
     const r = this.props.loanRequest;
 
     return [
@@ -43,9 +47,11 @@ export default class StrategyCashMetrics extends React.Component {
               <h4 className="secondary">
                 <span>{metric.name}</span>
                 &nbsp;
-                {metric.isValid
-                  ? <span className="fa fa-check success" />
-                  : <span className="fa fa-times error" />
+                {metric.isValid !== undefined && (
+                  metric.isValid
+                    ? <span className="fa fa-check success" />
+                    : <span className="fa fa-times error" />
+                  )
                 }
               </h4>
 
@@ -54,7 +60,10 @@ export default class StrategyCashMetrics extends React.Component {
               }
 
               <h1>
-                {Math.round(metric.value * 1000) / 10}%
+                {this.props.percent
+                  ? (Math.round(metric.value * 1000) / 10) + '%'
+                  : metric.value
+                }
               </h1>
             </div>
           </div>
@@ -64,6 +73,12 @@ export default class StrategyCashMetrics extends React.Component {
   }
 }
 
+StrategyCashMetrics.defaultProps = {
+  percent: true,
+};
+
 StrategyCashMetrics.propTypes = {
-  loanRequest: React.PropTypes.objectOf(React.PropTypes.any),
+  loanRequest: PropTypes.objectOf(PropTypes.any),
+  metrics: PropTypes.arrayOf(PropTypes.any),
+  percent: PropTypes.bool,
 };
