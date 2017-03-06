@@ -142,14 +142,14 @@ export default class PropertyValueLine extends Component {
                 label="Je ne sais pas encore"
                 style={styles.button}
                 primary={!this.state.propertyValue}
-                onTouchTap={e => this.handleClick(e, false)}
+                // onTouchTap={e => this.handleClick(e, false)}
               />
               :
                 <RaisedButton
                   label="En fait, je sais"
                   style={styles.button}
                   primary
-                  onTouchTap={e => this.handleClick(e, true)}
+                  // onTouchTap={e => this.handleClick(e, true)}
                 />
             }
           </div>
