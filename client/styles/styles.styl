@@ -1146,3 +1146,210 @@ ul.request-map
     width: 100%;
     h2
       border-bottom: solid 1px #ccc;
+
+.startArticle
+  display: inline-block;
+  width: 100%;
+
+
+.startForm
+  .scroll
+    .startArticle
+      transform-origin: left center;
+      transition: all 0.3s ease;
+      transform: scale(0.8);
+      opacity: 0.8;
+      .inputHider
+        display: none;
+      &:hover
+        cursor: pointer;
+        transform: scale(0.9);
+        opacity: 0.9;
+        &:before
+          content: 'Modifier';
+          position: absolute;
+          left: 0;
+          top: 0;
+          opacity: 1;
+          color: brand-primary;
+      h1.array-input
+        display: flex;
+        margin-top: 0;
+        span
+          display: flex;
+      label.array-input
+        width: 190px;
+        margin: 16px 0 0 8px;
+    &:last-child
+      .startArticle
+        cursor: default;
+        transform: scale(1);
+        opacity: 1;
+        .inputHider
+          display: inline-block;
+    &:last-child:hover:before
+      .startArticle
+        content: '';
+        &.no-scale
+          transform: scale(1) !important;
+    .activeLine
+      opacity: 1 !important;
+      transform: scale(1) !important;
+      cursor: default !important;
+      &:hover:before
+        content: '';
+  .recap
+    transition: all 0.3s ease;
+    display: none;
+    +above($med)
+      display: flex;
+    flex-direction: column;
+    width: 200px;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    margin: 0 auto;
+    div
+      display: flex;
+      flex-direction: column;
+      h5, h4
+        margin 0;
+      h4
+        align-self: flex-end;
+        margin-bottom: 8px;
+  .start-result
+    width: calc(100% - 40px);
+    margin: 20px;
+
+
+
+
+.oscar
+  width: 100%;
+  height: unset !important;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .small-oscar
+    width: calc(100% - 40px);
+    max-width: 1200px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 0 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    hr
+      width: 100%;
+      margin: 0;
+      margin-bottom: 20px;
+    h1
+      margin 20px 0;
+      padding: 0 !important;
+    .content
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      +above($med)
+        flex-direction: row;
+        justify-content: space-around;
+      .separator
+        display: none;
+        +above($med)
+          display: initial;
+          width: 1%
+          max-width: 1px;
+          background-color: #eee;
+          height: 200px;
+      .sliders
+        width: 100%;
+        +above($med)
+          width: 49%;
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    .validator
+      min-height: 140px;
+      width: 100%;
+      +above($med)
+        width: 50%;
+      max-width: 400px;
+      margin-bottom 20px;
+      display: flex;
+      justify-content: center;
+      align-items:stretch;
+      h4
+        margin: auto;
+      .result
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        div
+          h3, h4
+            margin: 0;
+          h3
+            opacity: 0.8;
+            transition: color 0.2s ease;
+          margin: 0;
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+    .oscar-line
+      position: relative;
+      display: inline-block;
+      width: 80%;
+      margin: 0 auto;
+      &.property
+        width: 100%;
+      margin-bottom: 20px;
+      +above($med)
+        margin-bottom: 40px;
+      label
+        font-size: 16px;
+        margin: 0;
+      .text-div
+        overflow: visible;
+        display: flex;
+        .input
+          font-size: 30px !important;
+          line-height: 25px !important;
+          height: 50px !important;
+          width: 200px !important;
+          +above($med)
+            font-size: 40px !important;
+            line-height: 36px !important;
+            height: 60px !important;
+            width: 230px !important;
+        .auto
+          transition: color 350ms ease;
+          margin: auto 0;
+          margin-left: 16px;
+          text-decoration: line-through;
+          color: light-grey;
+          opacity: 0.4;
+          &.true
+            text-decoration: none;
+            color: brand-primary;
+            opacity: 0.8;
+      .slider > div
+        margin: 0 !important;
+        margin-top: 8px !important;
+      .sliderMaxButton
+        display: none;
+        +above($med)
+          display: inline;
+          position: absolute;
+          right: -40px;
+          bottom: -7px;
+  .button
+    margin: 40px 0;

@@ -10,8 +10,8 @@ export function toMoney(value) {
 // Replaces any nondigit character by an empty character, to prevent the use of non-digits
 // Only do this if the value actually exists
 export function toNumber(value) {
-  if (value === 0) {
-    return 0;
+  if (typeof value === 'number') {
+    return value;
   }
   return value ? Number(String(value).replace(/\D/g, '')) : value;
 }
