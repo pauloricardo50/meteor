@@ -1,6 +1,7 @@
 import React from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
+import HomeDev from '/imports/ui/components/general/HomeDev.jsx';
 
 
 const styles = {
@@ -87,15 +88,23 @@ module.exports = function(props) {
             Mettez votre prêt hypothécaire aux enchères.
           </h2>
           <div className="ctas">
-            {/* <a className="ctas-button" href="/start">
-              Testez votre Éligibilité
-            </a>
-            <a className="ctas-button-2" href="/login">
-              Se Connecter
-            </a> */}
             <RaisedButton
-              label="Testez votre éligibilité"
-              href="/start"
+              label="Prenez le test"
+              href="/start1"
+              style={styles.style}
+              buttonStyle={styles.button}
+              labelStyle={styles.label}
+              overlayStyle={styles.button}
+            />
+            <RaisedButton
+              label="Faire une acquisition"
+              href="/start1"
+              style={styles.style}
+              buttonStyle={styles.button}
+              labelStyle={styles.label}
+              overlayStyle={styles.button}
+            />
+            <HomeDev
               style={styles.style}
               buttonStyle={styles.button}
               labelStyle={styles.label}
