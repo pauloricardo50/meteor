@@ -19,7 +19,7 @@ export default class StartResult extends React.Component {
       <article className="mask1 start-result">
         <h1>Résultat: <span className="success">Excellent</span></h1>
 
-        {/* <div className="content">
+        <div className="content">
           <StartRecap
             income={this.props.income}
             fortune={this.props.fortune}
@@ -31,7 +31,7 @@ export default class StartResult extends React.Component {
             amortizing={loan * constants.amortizing}
             maintenance={this.props.property * constants.maintenanceReal}
           />
-        </div> */}
+        </div>
 
         <div className="button">
           <RaisedButton

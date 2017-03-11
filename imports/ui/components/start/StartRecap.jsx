@@ -11,14 +11,14 @@ const isReady = (income, fortune, property) => (
 
 
 const getMonthly = (income, fortune, property) => (Math.max(
-  ((property * constants.amortizing) +
-  ((property - fortune) * constants.loanCost)) / 12,
+  ((property * constants.maintenance) +
+  ((property - fortune) * constants.loanCost())) / 12,
   0,
 ));
 
 const getMonthlyReal = (income, fortune, property) => (Math.max(
-  ((property * constants.amortizing) +
-  ((property - fortune) * constants.loanCostReal)) / 12,
+  ((property * constants.maintenanceReal) +
+  ((property - fortune) * constants.loanCostReal())) / 12,
   0,
 ));
 
@@ -38,9 +38,9 @@ const getLenderCount = (borrow, ratio) => {
 
 
 const getArray = (income, fortune, property) => {
-  const minIncome = Math.round(property * constants.propertyToIncome());
   const borrow = Math.max((property - fortune) / property, 0);
-  const ratio = minIncome / income / 3;
+  const ratio = getMonthly(income, fortune, property) / (income / 12);
+
 
   return [
     {
@@ -147,7 +147,7 @@ const getArray = (income, fortune, property) => {
       ),
     },
   ];
-}
+};
 
 
 const getResult = (income, fortune, property) => (

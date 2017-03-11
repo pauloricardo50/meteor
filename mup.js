@@ -4,21 +4,14 @@ module.exports = {
       host: '46.101.148.135',
       username: 'root',
       pem: '/Users/Florian/.ssh/id_rsa',
-      // password:
-      // or leave blank for authenticate from ssh-agent
+      // password: // leave blank for authenticate from ssh-agent
     },
   },
-
-  setupMongo: false,
-  setupNode: true,
-  nodeVersion: '4.4.7',
-  setupPhantom: true,
-
   meteor: {
     name: 'e-potek',
     path: '.',
     servers: {
-      one: { },
+      one: {},
     },
     buildOptions: {
       serverOnly: true,
@@ -27,11 +20,14 @@ module.exports = {
       ROOT_URL: 'https://www.e-potek.ch',
       MONGO_URL: 'mongodb://admin1:password@gcp-europe-west1-cpu.0.dblayer.com:15119/e-potek-test?ssl=true',
     },
-    dockerImage: 'abernix/meteord:base',
-    ssl: { // Not working so far
+    docker: {
+      image: 'abernix/meteord:base',
+    },
+    ssl: {
       crt: './bundle.crt',
       key: './privatekey.key',
       port: 443,
     },
+    enableUploadProgressBar: true,
   },
 };

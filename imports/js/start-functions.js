@@ -20,8 +20,8 @@ const setDefaultMinValues = (s, o) => {
 
 export const changeProperty = (state, o, property) => {
   if (state.fortune.auto && state.income.auto) {
-    o.fortune.minValue = Math.round(property * 0.2);
-    o.income.minValue = Math.round(3 * property * (constants.maintenance + (0.8 * constants.loanCost)));
+    o.fortune.minValue = property * 0.2;
+    o.income.minValue = 3 * property * (constants.maintenance + (0.8 * constants.loanCost()));
   } else if (state.fortune.auto) {
 
   } else if (state.income.auto) {
@@ -35,12 +35,12 @@ export const changeProperty = (state, o, property) => {
 
 export const changeFortune = (state, o, fortune) => {
   if (state.property.auto && state.income.auto) {
-    o.property.minValue = Math.round(fortune / 0.2);
-    o.income.minValue = Math.round((fortune / 0.2) * constants.propertyToIncome());
+    o.property.minValue = fortune / 0.2;
+    o.income.minValue = (fortune / 0.2) * constants.propertyToIncome();
   } else if (state.property.auto) {
     o.property.minValue = Math.min(
-      Math.round(fortune / 0.2),
-      Math.round(state.income.value / constants.propertyToIncome()),
+      fortune / 0.2,
+      state.income.value / constants.propertyToIncome(),
     );
   }
 
@@ -52,12 +52,12 @@ export const changeFortune = (state, o, fortune) => {
 
 export const changeIncome = (state, o, income) => {
   if (state.property.auto && state.fortune.auto) {
-    o.property.minValue = Math.round(income / constants.propertyToIncome());
+    o.property.minValue = income / constants.propertyToIncome();
     o.fortune.minValue = o.property.minValue * 0.2;
   } else if (state.property.auto) {
     o.property.minValue = Math.min(
-      Math.round(state.fortune.value / 0.2),
-      Math.round(income / constants.propertyToIncome()),
+      state.fortune.value / 0.2,
+      income / constants.propertyToIncome(),
     );
   }
 

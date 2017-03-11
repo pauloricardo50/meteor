@@ -38,7 +38,7 @@ const StartLine = props => (
             hintText="CHF"
           >
             <MaskedInput
-              value={(props.auto ? Math.round(value.x / 1000) * 1000 : props.value) || ''}
+              value={(props.auto ? Math.round(value.x) : props.value) || ''}
               mask={swissFrancMask}
               guide
               pattern="[0-9]*"

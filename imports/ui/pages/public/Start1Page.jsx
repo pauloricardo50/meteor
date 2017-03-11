@@ -152,13 +152,13 @@ export default class Start1Page extends Component {
 
   isValid() {
     const s = this.state;
-    const minIncome = Math.round(s.property.value * constants.propertyToIncome());
+    const minIncome = s.property.value * constants.propertyToIncome();
     const borrow = Math.max((s.property.value - s.fortune.value) / s.property.value, 0);
     const ratio = minIncome / s.income.value / 3;
 
     return (
-      Math.round(borrow * 1000) / 1000 <= 0.8 &&
-      Math.round(ratio * 1000) / 1000 <= 1 / 3
+      borrow <= 0.8 &&
+      ratio <= 1 / 3
     );
   }
 
