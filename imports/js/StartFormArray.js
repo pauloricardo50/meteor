@@ -1,53 +1,24 @@
 import { toMoney } from './conversionFunctions';
 
+const multipleTrue = (id, state) => {
+  if (state.borrowerCount > 1) {
+    if (state[`${id}1`] !== undefined && state[`${id}1`] !== undefined) {
+      return true;
+    }
+  } else {
+    if (state[`${id}1`] !== undefined) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 const getInitialArray = state => [
-  {
-    id: 'purchaseType',
-    type: 'buttons',
-    text1: 'Je voudrais un prêt pour',
-    buttons: [
-      {
-        id: 'acquisition',
-        label: 'une nouvelle acquisition',
-      }, {
-        id: 'refinancing',
-        label: 'un refinancement',
-      }, {
-        id: 'liquidity',
-        label: 'des liquidités',
-      },
-    ],
-  },
-  {
-    condition: state.purchaseType === 'refinancing' || state.purchaseType === 'liquidity',
-    hide: state.purchaseType === 'acquisition',
-    id: 'dev',
-    type: 'textInput',
-    text1: 'Nous allons ouvrir e-Potek aux refinancements et liquidités tout bientôt, entrez votre adresse e-mail si vous voulez être tenu au courant:',
-    final: true,
-  },
 ];
 
 
 const getAcquisitionArray = state => [
-  {
-    condition: state.purchaseType === 'acquisition',
-    id: 'knowsProperty',
-    type: 'buttons',
-    text1: 'Où en êtes vous?',
-    question: true,
-    buttons: [
-      {
-        id: true,
-        label: 'J\'ai identifé le bien',
-      },
-      {
-        id: false,
-        label: 'Je veux savoir combien emprunter',
-      },
-    ],
-  },
   {
     condition: state.knowsProperty === true,
     id: 'propertyValue',
@@ -57,16 +28,9 @@ const getAcquisitionArray = state => [
   },
   {
     condition: state.knowsProperty === true && state.propertyValue !== undefined,
-    id: 'propertyWork',
-    type: 'textInput',
-    text1: 'Je veux faire des travaux supplémentaires valant',
-    money: true,
-  },
-  {
-    condition: state.knowsProperty === true && state.propertyWork !== undefined,
     id: 'notaryFeesAgreed',
     type: 'buttons',
-    text1: `J'aurai donc des frais de notaire supplémentaires de CHF ${toMoney(0.05 * (state.propertyValue + state.propertyWork))}.`,
+    text1: `A ce prix je dois rajouter les frais de notaire de CHF ${toMoney(0.05 * state.propertyValue)}.`,
     question: true,
     buttons: [
       {
@@ -76,7 +40,45 @@ const getAcquisitionArray = state => [
     ],
   },
   {
-    condition: state.knowsProperty === false || state.notaryFeesAgreed,
+    condition: state.knowsProperty === true && state.notaryFeesAgreed !== undefined,
+    id: 'propertyWorkExists',
+    type: 'buttons',
+    question: true,
+    text1: 'Souhaitez-vous rajouter à votre projet des travaux de plus-value?',
+    buttons: [
+      {
+        id: true,
+        label: 'Oui',
+      },
+      {
+        id: false,
+        label: 'Non',
+      },
+    ],
+  },
+  {
+    condition: state.knowsProperty === true && state.propertyWorkExists,
+    id: 'propertyWork',
+    type: 'textInput',
+    text1: 'Les travaux de plus-value sont estimés à',
+    money: true,
+  },
+  {
+    condition: state.knowsProperty === true &&
+      (state.propertyWorkExists === false || state.propertyWork !== undefined),
+    id: 'projectAgreed',
+    type: 'buttons',
+    text1: `Le prix de votre projet sera de CHF ${toMoney((1.05 * state.propertyValue) + (state.propertyWork || 0))}.`,
+    question: true,
+    buttons: [
+      {
+        id: true,
+        label: 'Ok',
+      },
+    ],
+  },
+  {
+    condition: state.knowsProperty === false || state.projectAgreed,
     id: 'usageType',
     type: 'buttons',
     text1: 'Quelle sera le type d\'utilisation de cette propriété?',
@@ -84,15 +86,15 @@ const getAcquisitionArray = state => [
     buttons: [
       {
         id: 'primary',
-        label: 'Résidence Principale',
+        label: 'Ma Résidence Principale',
       },
       {
         id: 'secondary',
-        label: 'Résidence Secondaire',
+        label: 'Ma Résidence Secondaire',
       },
       {
         id: 'investment',
-        label: 'Investissement',
+        label: 'Je veux le louer',
       },
     ],
   },
@@ -142,13 +144,13 @@ const getAcquisitionArray = state => [
     id: 'income',
     type: 'multipleInput',
     firstMultiple: true,
-    text1: 'Combien gagnez vous par an (brut)?',
+    text1: 'Quels sont vos revenus bruts annuels?',
     money: true,
   },
   {
     id: 'bonusExists',
     type: 'buttons',
-    text1: 'Gagnez-vous un bonus?',
+    text1: 'Avez vous touché un bonus lors des 4 dernières années?',
     question: true,
     buttons: [
       {
@@ -186,8 +188,7 @@ const getAcquisitionArray = state => [
     money: true,
   },
   {
-    condition: state.bonusExists === false ||
-      ((state.bonus42 !== undefined && state.borrowerCount > 1) || state.bonus41 !== undefined),
+    condition: state.bonusExists === false || multipleTrue('bonus42', state),
     id: 'otherIncome',
     type: 'buttons',
     text1: 'Avez-vous d\'autres revenus mensuels?',
@@ -210,32 +211,32 @@ const getAcquisitionArray = state => [
     type: 'arrayInput',
     inputs: [
       {
-        id: 'value',
-        type: 'textInput',
-        label: 'Montant mensuel',
-        money: true,
-      }, {
         id: 'description',
         type: 'selectInput',
         label: 'Type de revenu',
         options: [
           {
             id: 'welfareIncome',
-            label: 'Allocation familiale',
+            label: 'Allocations',
           }, {
             id: 'pensionIncome',
-            label: 'Pension alimentaire',
+            label: 'Pensions',
           }, {
             id: 'rentIncome',
-            label: 'Revenu locatif',
+            label: 'Rentes',
           }, {
             id: 'realEstateIncome',
-            label: 'Revenu de fortune immobilière',
+            label: 'Revenus de fortune immobilière',
           }, {
             id: 'other',
-            label: 'Autre',
+            label: 'Revenus de vos titres',
           },
         ],
+      }, {
+        id: 'value',
+        type: 'textInput',
+        label: 'Montant mensuel',
+        money: true,
       },
     ],
   },
@@ -248,24 +249,19 @@ const getAcquisitionArray = state => [
     text1: 'Donnez-nous la liste de vos charges mensuelles',
     inputs: [
       {
-        id: 'value',
-        type: 'textInput',
-        label: 'Montant mensuel',
-        money: true,
-      }, {
         id: 'description',
         type: 'selectInput',
         label: 'Type de charge',
         options: [
           {
             id: 'leasing',
-            label: 'Leasing',
+            label: 'Leasings',
           }, {
             id: 'rent',
-            label: 'Loyer',
+            label: 'Loyers',
           }, {
             id: 'personalLoan',
-            label: 'Crédit personnel',
+            label: 'Crédits personnels',
           }, {
             id: 'mortgageLoan',
             label: 'Prêt immobilier',
@@ -274,22 +270,31 @@ const getAcquisitionArray = state => [
             label: 'Autre',
           },
         ],
+      }, {
+        id: 'value',
+        type: 'textInput',
+        label: 'Montant mensuel',
+        money: true,
       },
     ],
   },
   {
     id: 'fortune',
     type: 'multipleInput',
-    text1: 'A combien se monte votre épargne?',
+    text1: 'Quelle est votre fortune bancaire (cash et titres)?',
+    question: true,
     money: true,
   },
   {
+    condition: state.usageType === 'primary',
     id: 'insurance1',
     type: 'multipleInput',
-    text1: 'Combien avez-vous de LPP?',
+    text1: 'Quels sont les fonds de prévoyance disponibles (2e et 3e pilier)?',
     money: true,
   },
   {
+    condition: ((state.usageType === 'secondary' || state.usageType === 'investment') && multipleTrue('fortune', state)) ||
+      (state.usageType === 'primary' && multipleTrue('insurance1', state)),
     id: 'finalized',
     type: 'buttons',
     text1: 'Vous-êtes arrivé au bout, bien joué!',

@@ -90,7 +90,7 @@ module.exports = function(props) {
           <div className="ctas">
             <RaisedButton
               label="Prenez le test"
-              href="/start1"
+              href="/start1?type=test"
               style={styles.style}
               buttonStyle={styles.button}
               labelStyle={styles.label}
@@ -98,7 +98,7 @@ module.exports = function(props) {
             />
             <RaisedButton
               label="Faire une acquisition"
-              href="/start1"
+              href="/start1?type=acquisition"
               style={styles.style}
               buttonStyle={styles.button}
               labelStyle={styles.label}

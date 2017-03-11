@@ -66,7 +66,3 @@ export default class HomeDev extends React.Component {
     );
   }
 }
-
-HomeDev.propTypes = {
-  buttonLabel: PropTypes.string.isRequired,
-};

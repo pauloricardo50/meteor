@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 import { _ } from 'lodash';
 
 import RaisedButton from 'material-ui/RaisedButton';
@@ -8,8 +9,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { toNumber } from '/imports/js/conversionFunctions';
 import { changeProperty, changeFortune, changeIncome } from '/imports/js/start-functions';
 import constants from '/imports/js/constants';
-import StartLine from '/imports/ui/components/general/StartLine.jsx';
-import StartRecap from '/imports/ui/components/general/StartRecap.jsx';
+import StartLine from '/imports/ui/components/start/StartLine.jsx';
+import StartRecap from '/imports/ui/components/start/StartRecap.jsx';
 
 
 const array = [
@@ -55,8 +56,28 @@ export default class Start1Page extends Component {
       incomeSlider: 500000,
     };
 
+    this.type = FlowRouter.getQueryParam('type');
+
     this.setStateValue = this.setStateValue.bind(this);
     this.setSliderMax = this.setSliderMax.bind(this);
+    this.getUrl = this.getUrl.bind(this);
+  }
+
+  componentDidMount() {
+    Meteor.setTimeout(() => this.setState({
+      income: {
+        value: 350000,
+        minValue: 0,
+        auto: true,
+      },
+    }), 250);
+    Meteor.setTimeout(() => this.setState({
+      income: {
+        value: 0,
+        minValue: 0,
+        auto: true,
+      },
+    }), 500);
   }
 
   setSliderMax(name, value) {
@@ -141,12 +162,28 @@ export default class Start1Page extends Component {
     );
   }
 
+  getUrl() {
+    const pathDef = '/start2';
+    const params = {};
+    const queryParams = {
+      type: this.type || 'test',
+      property: this.state.property.value,
+    };
+
+    return FlowRouter.path(pathDef, params, queryParams);
+  }
+
 
   render() {
     return (
       <section className="oscar">
         <article className="small-oscar mask1">
-          <h1>Identifiez votre capacité d&apos;emprunt</h1>
+          <h1>
+            {this.type === 'acquisition'
+              ? 'Commencez une acquisition'
+              : 'Identifiez votre capacité d\'emprunt'
+            }
+          </h1>
           <hr />
 
           <div className="content">
@@ -165,7 +202,11 @@ export default class Start1Page extends Component {
               )}
             </div>
             <div className="separator" />
-            <StartRecap sliderState={this.state} />
+            <StartRecap
+              income={this.state.income.value}
+              fortune={this.state.fortune.value}
+              property={this.state.property.value}
+            />
           </div>
 
           <div className="button">
@@ -177,7 +218,7 @@ export default class Start1Page extends Component {
                 !this.state.fortune.value
               }
               primary={this.isValid()}
-              href="/start2"
+              href={this.getUrl()}
             />
           </div>
         </article>

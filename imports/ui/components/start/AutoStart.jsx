@@ -141,10 +141,8 @@ export default class AutoStart extends Component {
     this.breakForm = false;
 
     return (
-      <section style={{ width: '100%', display: 'inline-block' }}>
-        <div className="col-sm-10 col-sm-offset-1">
-          {this.props.formArray.map((input, index, array) => this.inputSwitch(input, index, array))}
-        </div>
+      <section>
+        {this.props.formArray.map((input, index, array) => this.inputSwitch(input, index, array))}
       </section>
     );
   }

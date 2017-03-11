@@ -24,10 +24,20 @@ export default class ExpensesChart extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      interests: getInterests(this.props.loanRequest),
-      amortization: getAmortization(this.props.loanRequest),
-    };
+    if (this.props.loanRequest) {
+      this.state = {
+        interests: getInterests(this.props.loanRequest),
+        amortization: getAmortization(this.props.loanRequest),
+        maintenance: (this.props.loanRequest.property.value * 0.01) / 12,
+      };
+    } else {
+      this.state = {
+        interests: props.interests,
+        amortization: props.amortizing,
+        maintenance: props.maintenance,
+      };
+    }
+
 
     this.createChart = this.createChart.bind(this);
     this.resize = this.resize.bind(this);
@@ -39,8 +49,6 @@ export default class ExpensesChart extends Component {
   }
 
   createChart() {
-    const r = this.props.loanRequest;
-
     const options = {
       chart: {
         type: 'pie',
@@ -49,7 +57,7 @@ export default class ExpensesChart extends Component {
         text: `CHF ~${
           toMoney(
             Math.round(
-              this.state.interests + this.state.amortization + ((r.property.value * 0.01) / 12),
+              this.state.interests + this.state.amortization + this.state.maintenance,
             ),
           )
         }<br>par mois`,
@@ -86,9 +94,7 @@ export default class ExpensesChart extends Component {
       legend: {
         align: 'center',
         verticalAlign: 'bottom',
-        // floating: true,
         layout: 'horizontal',
-        // itemMarginBottom: 8,
       },
       series: [
         {
@@ -107,7 +113,7 @@ export default class ExpensesChart extends Component {
               color: colors.amortization,
             }, {
               name: 'Entretien',
-              y: (r.property.value * 0.01) / 12,
+              y: this.state.maintenance,
               color: colors.maintenance,
             },
           ],
@@ -164,6 +170,16 @@ export default class ExpensesChart extends Component {
   }
 }
 
+ExpensesChart.defaultProps = {
+  loanRequest: undefined,
+  interests: 0,
+  amortizing: 0,
+  maintenance: 0,
+};
+
 ExpensesChart.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any),
+  interests: PropTypes.number,
+  amortizing: PropTypes.number,
+  maintenance: PropTypes.number,
 };

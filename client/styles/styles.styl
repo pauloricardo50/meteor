@@ -1147,14 +1147,173 @@ ul.request-map
     h2
       border-bottom: solid 1px #ccc;
 
-.startArticle
-  display: inline-block;
+
+.oscar
   width: 100%;
+  height: unset !important;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .small-oscar
+    width: calc(100% - 40px);
+    max-width: 1200px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 0 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    hr
+      width: 100%;
+      margin: 0;
+      margin-bottom: 20px;
+    h1
+      margin 20px 0;
+      padding: 0 !important;
+    .content
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      +above($med)
+        flex-direction: row;
+        justify-content: space-around;
+      .separator
+        display: none;
+        +above($med)
+          display: initial;
+          width: 1%
+          max-width: 1px;
+          background-color: #eee;
+          height: 200px;
+      .sliders
+        width: 100%;
+        +above($med)
+          width: 49%;
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    .oscar-line
+      position: relative;
+      display: inline-block;
+      width: 80%;
+      margin: 0 auto;
+      &.property
+        width: 100%;
+      margin-bottom: 20px;
+      +above($med)
+        margin-bottom: 40px;
+      label
+        font-size: 16px;
+        margin: 0;
+      .text-div
+        overflow: visible;
+        display: flex;
+        .input
+          font-size: 30px !important;
+          line-height: 25px !important;
+          height: 50px !important;
+          width: 200px !important;
+          +above($med)
+            font-size: 40px !important;
+            line-height: 36px !important;
+            height: 60px !important;
+            width: 230px !important;
+        .auto
+          transition: color 350ms ease;
+          margin: auto 0;
+          margin-left: 16px;
+          text-decoration: line-through;
+          color: light-grey;
+          opacity: 0.4;
+          &.true
+            text-decoration: none;
+            color: brand-primary;
+            opacity: 0.8;
+      .slider > div
+        margin: 0 !important;
+        margin-top: 8px !important;
+      .sliderMaxButton
+        display: none;
+        +above($med)
+          display: inline;
+          position: absolute;
+          right: -40px;
+          bottom: -7px;
+  .button
+    margin: 40px 0;
 
 
-.startForm
+.validator
+  min-height: 140px;
+  width: 100%;
+  +above($med)
+    width: 50%;
+  max-width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items:stretch;
+  h4
+    margin: auto;
+  .result
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    div
+      h3, h4
+        margin: 0;
+      h3
+        opacity: 0.8;
+        transition: color 0.2s ease;
+        font-size: 1.375em !important;
+      margin: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+.start2
+  width: 100%;
+  min-height: 100%;
+  margin: 0 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 50px;
+  justify-content: center;
+  align-items: flex-start;
+  .form
+    width: 100%;
+    +above($med)
+      padding-right: 400px;
+      padding-left: 10%;
+  .start2recap
+    display: none;
+    +above($med)
+      display: flex;
+    position: fixed;
+    width: calc(50%);
+    max-width: 400px;
+    top: 86px;
+    right: 20px;
+    .fixed-wrapper
+      width: 100%;
+      // display: flex;
+      top -50%;
+      .validator
+        width: 100%;
   .scroll
     .startArticle
+      display: inline-block;
+      width: 100%;
       transform-origin: left center;
       transition: all 0.3s ease;
       transform: scale(0.8);
@@ -1219,137 +1378,23 @@ ul.request-map
         margin-bottom: 8px;
   .start-result
     width: calc(100% - 40px);
-    margin: 20px;
-
-
-
-
-.oscar
-  width: 100%;
-  height: unset !important;
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  .small-oscar
-    width: calc(100% - 40px);
-    max-width: 1200px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    padding: 0 8px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    hr
-      width: 100%;
-      margin: 0;
-      margin-bottom: 20px;
-    h1
-      margin 20px 0;
-      padding: 0 !important;
     .content
       width: 100%;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: center;
       align-items: center;
-      +above($med)
+      +above($large)
         flex-direction: row;
         justify-content: space-around;
-      .separator
-        display: none;
-        +above($med)
-          display: initial;
-          width: 1%
-          max-width: 1px;
-          background-color: #eee;
-          height: 200px;
-      .sliders
-        width: 100%;
-        +above($med)
-          width: 49%;
-        max-width: 400px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    .validator
-      min-height: 140px;
-      width: 100%;
-      +above($med)
-        width: 50%;
-      max-width: 400px;
-      margin-bottom 20px;
+
+      #expensesChart
+        z-index: 1;
+      .validator
+        margin-bottom: 40px;
+        +above($large)
+          margin-bottom: 0;
+    .button
       display: flex;
       justify-content: center;
-      align-items:stretch;
-      h4
-        margin: auto;
-      .result
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: flex-start;
-        div
-          h3, h4
-            margin: 0;
-          h3
-            opacity: 0.8;
-            transition: color 0.2s ease;
-          margin: 0;
-          width: 100%;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-    .oscar-line
-      position: relative;
-      display: inline-block;
-      width: 80%;
-      margin: 0 auto;
-      &.property
-        width: 100%;
-      margin-bottom: 20px;
-      +above($med)
-        margin-bottom: 40px;
-      label
-        font-size: 16px;
-        margin: 0;
-      .text-div
-        overflow: visible;
-        display: flex;
-        .input
-          font-size: 30px !important;
-          line-height: 25px !important;
-          height: 50px !important;
-          width: 200px !important;
-          +above($med)
-            font-size: 40px !important;
-            line-height: 36px !important;
-            height: 60px !important;
-            width: 230px !important;
-        .auto
-          transition: color 350ms ease;
-          margin: auto 0;
-          margin-left: 16px;
-          text-decoration: line-through;
-          color: light-grey;
-          opacity: 0.4;
-          &.true
-            text-decoration: none;
-            color: brand-primary;
-            opacity: 0.8;
-      .slider > div
-        margin: 0 !important;
-        margin-top: 8px !important;
-      .sliderMaxButton
-        display: none;
-        +above($med)
-          display: inline;
-          position: absolute;
-          right: -40px;
-          bottom: -7px;
-  .button
-    margin: 40px 0;
+      margin: 40px 0;

@@ -32,7 +32,7 @@ const StartLine = props => (
             id={props.name}
             name={props.name}
             onChange={e => props.setStateValue(props.name, e.target.value)}
-            onFocus={() => props.setStateValue(props.name, 0, true)}
+            // onFocus={() => props.setStateValue(props.name, 0, true)}
             errorStyle={props.minValue <= props.value ? defaultStyle : errorStyle}
             className="input"
             hintText="CHF"
@@ -59,7 +59,7 @@ const StartLine = props => (
         />
         {props.value >= props.sliderMax &&
           <div className="sliderMaxButton animated fadeIn">
-            <AddIcon onClick={props.setSliderMax} />
+            <AddIcon onClick={props.setSliderMax} style={{ cursor: 'pointer' }} />
           </div>
         }
       </article>
