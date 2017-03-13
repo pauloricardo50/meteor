@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Scroll from 'react-scroll';
 import { FlowRouter } from 'meteor/kadira:flow-router';
+import classNames from 'classnames';
 
 
 import AutoStart from '/imports/ui/components/start/AutoStart.jsx';
@@ -45,7 +46,7 @@ export default class Start2Page extends Component {
   }
 
   isFinished() {
-    return this.state.finalized;
+    return this.state.finalized && !this.state.error;
   }
 
   getBonusIncome(arr) {
@@ -152,7 +153,7 @@ export default class Start2Page extends Component {
 
     return (
       <section className="start2">
-        <div className="form">
+        <div className={classNames({ form: true, isFinished: this.isFinished() })}>
           <AutoStart
             formState={s}
             formArray={getFormArray(s, props)}

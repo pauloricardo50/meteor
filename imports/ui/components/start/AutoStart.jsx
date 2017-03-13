@@ -36,6 +36,7 @@ export default class AutoStart extends Component {
       return 'break';
     } else if (prevInput.condition && prevInput.id === 'error') {
       // If the last value is an error and it is showing, break
+      this.error = true;
       return 'break';
     } else if (input.condition === false) {
       // If a condition is specified and false
@@ -139,10 +140,19 @@ export default class AutoStart extends Component {
     }
   }
 
+  componentDidUpdate() {
+    if (this.error && !this.props.formState.error) {
+      this.props.setFormState('error', true);
+    } else if (!this.error && this.props.formState.error) {
+      this.props.setFormState('error', false);
+    }
+  }
+
   render() {
     // Reinitialize the renderedArray
     this.renderedArray = [];
     this.breakForm = false;
+    this.error = false;
 
     return (
       <section>

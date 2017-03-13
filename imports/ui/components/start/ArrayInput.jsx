@@ -50,6 +50,10 @@ export default class ArrayInput extends React.Component {
       this.setState({ count: this.state.count - 1 },
         () => this.props.setFormState(this.props.id, arr),
       );
+    } else {
+      // If only one entry, and the user hits -, delete all values and set the exist Id to false
+      this.props.setFormState(this.props.id, []);
+      this.props.setFormState(this.props.existId, false);
     }
   }
 
@@ -69,12 +73,16 @@ export default class ArrayInput extends React.Component {
   }
 
   getOptions(input, i) {
-    const currentValues = this.props.formState[this.props.id] || [];
-    const thisVal = currentValues && currentValues[i];
-    const arr = currentValues.map(v => v && v.description);
-    const thisOption = input.options.find(o => (o && o.id) === (thisVal && thisVal.description));
+    if (!this.props.allOptions) {
+      const currentValues = this.props.formState[this.props.id] || [];
+      const thisVal = currentValues && currentValues[i];
+      const arr = currentValues.map(v => v && v.description);
+      const thisOption = input.options.find(o => (o && o.id) === (thisVal && thisVal.description));
 
-    return [...input.options.filter(x => arr.indexOf(x.id) < 0), thisOption || {}];
+      return [...input.options.filter(x => arr.indexOf(x.id) < 0), thisOption || {}];
+    }
+
+    return input.options;
   }
 
 
@@ -96,7 +104,7 @@ export default class ArrayInput extends React.Component {
           <h1 className="fixed-size">{this.props.text1}</h1>
         }
 
-        {this.props.inputs.map(input => <label className="array-input">{input.label}</label>)}
+        {this.props.inputs.map(input => <label className="array-input" id={this.props.id}>{input.label}</label>)}
 
         {[...Array(this.state.count)].map((e, i) =>
           <h1 key={i} className="fixed-size array-input">
@@ -139,12 +147,11 @@ export default class ArrayInput extends React.Component {
             primary
             onClick={this.handleAdd}
             style={styles.button}
-            disabled={this.state.count >= optionQty}
+            disabled={!this.props.allOptions && this.state.count >= optionQty}
           />
           <RaisedButton
             label="-"
             onClick={this.handleRemove}
-            disabled={this.state.count <= 1}
             style={styles.button}
           />
         </div>
@@ -155,6 +162,7 @@ export default class ArrayInput extends React.Component {
 
 ArrayInput.defaultProps = {
   text1: '',
+  allOptions: false,
 };
 
 ArrayInput.propTypes = {
@@ -166,4 +174,6 @@ ArrayInput.propTypes = {
   className: PropTypes.string.isRequired,
   setActiveLine: PropTypes.func.isRequired,
   text1: PropTypes.string,
+  existId: PropTypes.string,
+  allOptions: PropTypes.bool,
 };

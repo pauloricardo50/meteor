@@ -15,6 +15,9 @@ const multipleTrue = (id, state, zeroAllowed = false) => {
   return false;
 };
 
+const arrayIsTrue = (a, keys = ['value', 'description']) =>
+  (a && a.length) >= 1 && keys.reduce((tot, key) => tot && a[0][key] !== undefined, true);
+
 const getInitialArray = state => [
 ];
 
@@ -214,6 +217,7 @@ const getAcquisitionArray = (state, props) => [
   {
     condition: state.otherIncome === true,
     id: 'otherIncomeArray',
+    existId: 'otherIncome',
     type: 'arrayInput',
     inputs: [
       {
@@ -247,10 +251,26 @@ const getAcquisitionArray = (state, props) => [
     ],
   },
   {
-    condition: state.otherIncome === false ||
-      ((state.otherIncomeArray && state.otherIncomeArray.length) >= 1 &&
-      (state.otherIncomeArray[0].value !== undefined && state.otherIncomeArray[0].description !== undefined)),
+    condition: state.otherIncome === false || arrayIsTrue(state.otherIncomeArray),
+    id: 'expensesExist',
+    type: 'buttons',
+    text1: 'Avez-vous des charges mensuelles comme des leasings, rentes, pensions, loyers, crédits personnels ou prêts immobiliers?',
+    question: true,
+    buttons: [
+      {
+        id: true,
+        label: 'Oui',
+      },
+      {
+        id: false,
+        label: 'Non',
+      },
+    ],
+  },
+  {
+    condition: state.expensesExist,
     id: 'expensesArray',
+    existId: 'expensesExist',
     type: 'arrayInput',
     text1: 'Donnez-nous la liste de vos charges mensuelles',
     inputs: [
@@ -270,7 +290,7 @@ const getAcquisitionArray = (state, props) => [
             label: 'Crédits personnels',
           }, {
             id: 'mortgageLoan',
-            label: 'Prêt immobilier',
+            label: 'Prêts immobilier',
           }, {
             id: 'pensions',
             label: 'Pensions et Rentes',
@@ -286,8 +306,61 @@ const getAcquisitionArray = (state, props) => [
     ],
   },
   {
-    condition: ((state.expensesArray && state.expensesArray.length) >= 1 &&
-    (state.expensesArray[0].value !== undefined && state.expensesArray[0].description !== undefined)),
+    condition: state.expensesExist === false || arrayIsTrue(state.expensesArray),
+    id: 'realEstateExists',
+    type: 'buttons',
+    text1: 'Êtes-vous propriétaire d\'autres biens immobiliers?',
+    question: true,
+    buttons: [
+      {
+        id: true,
+        label: 'Oui',
+      },
+      {
+        id: false,
+        label: 'Non',
+      },
+    ],
+  },
+  {
+    condition: state.realEstateExists,
+    id: 'realEstateArray',
+    existId: 'realEstateExists',
+    type: 'arrayInput',
+    allOptions: true,
+    inputs: [
+      {
+        id: 'description',
+        type: 'selectInput',
+        label: 'Type de Propriété',
+        options: [
+          {
+            id: 'primary',
+            label: 'Propriété Principale',
+          }, {
+            id: 'secondary',
+            label: 'Propriété Secondaire',
+          }, {
+            id: 'investment',
+            label: 'Bien d\'investissement',
+          },
+        ],
+      }, {
+        id: 'value',
+        type: 'textInput',
+        label: 'Valeur du bien',
+        money: true,
+      }, {
+        id: 'loan',
+        type: 'textInput',
+        label: 'Emprunt actuel',
+        money: true,
+        zeroAllowed: true,
+      },
+    ],
+  },
+  {
+    condition: state.realEstateExists === false || arrayIsTrue(state.realEstateArray, ['description', 'value', 'loan']),
     id: 'fortune',
     type: 'multipleInput',
     text1: 'Quelle est votre fortune bancaire (cash et titres)?',
@@ -351,7 +424,7 @@ const getErrorArray = (state, props) => [
     ],
   },
   {
-    condition: finalCondition(state) && ((props.income && props.monthly / (props.income / 12)) > 0.38),
+    condition: finalCondition(state) && ((props.income && props.monthly / ((props.income - props.expenses) / 12)) > 0.38),
     id: 'error',
     type: 'buttons',
     text1: `Vos revenus disponibles (CHF ${toMoney((props.income - props.expenses) / 12)}/mois) sont insuffisants pour couvrir les coûts mensuels de ce projet (CHF ${toMoney(props.monthly)}) sans représenter plus de 38% de ces revenus, vous pouvez modifier les valeurs en haut.`,

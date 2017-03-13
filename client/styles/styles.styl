@@ -1305,9 +1305,16 @@ ul.request-map
     section
       width: 100%;
       max-width: 700px;
+      +above($wide)
+        max-width: 800px;
       +above($xwide)
         max-width: 1000px;
       margin: 0 auto;
+    &.isFinished
+      padding-right: 0;
+      section
+        max-width: 1000px;
+
   .start2recap
     display: none;
     +above($med)
@@ -1352,8 +1359,18 @@ ul.request-map
         span
           display: flex;
       label.array-input
-        width: 190px;
-        margin: 16px 0 0 8px;
+        margin: 0;
+        margin-top: 16px;
+        &#otherIncomeArray
+          &:first-of-type
+            width: 265px;
+        &#expensesArray
+          &:first-of-type
+            width: 265px;
+        &#realEstateArray
+          width: 205px;
+          &:first-of-type
+            width: 265px;
     &:last-child
       .startArticle
         cursor: default;
