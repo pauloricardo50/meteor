@@ -17,6 +17,8 @@ export default class Input extends Component {
           {this.props.text1}
           &nbsp;
 
+          {this.props.question && <br />}
+
           <span className="active">
             {this.props.text && <StartTextField {...this.props} />}
             {this.props.select && <StartSelectField {...this.props} />}
@@ -36,8 +38,15 @@ Input.propTypes = {
   text2: PropTypes.string,
   className: PropTypes.string.isRequired,
   setActiveLine: PropTypes.func.isRequired,
+  question: PropTypes.bool,
+  text: PropTypes.bool,
+  select: PropTypes.bool,
 };
 
 Input.defaultProps = {
+  text2: undefined,
   money: false,
+  question: false,
+  text: false,
+  select: false,
 };

@@ -32,11 +32,16 @@ export default class StartTextField extends React.Component {
   }
 
   render() {
+    const val = this.props.value || this.props.formState[this.props.id];
+
     return (
       <TextField
         style={this.getStyles()}
         name={this.props.id}
-        value={this.props.value || this.props.formState[this.props.id] || ''}
+        value={this.props.zeroAllowed
+          ? val
+          : val || ''
+        }
         onChange={e => this.handleChange(e, false)}
         onBlur={() => this.props.setActiveLine('')}
         hintText={this.props.placeholder || (this.props.money ? 'CHF' : '')}
@@ -49,7 +54,10 @@ export default class StartTextField extends React.Component {
             guide
             pattern="[0-9]*"
             autoFocus={this.props.autoFocus}
-            value={this.props.value || this.props.formState[this.props.id] || ''}
+            value={this.props.zeroAllowed
+              ? val
+              : val || ''
+            }
           />
         }
       </TextField>
@@ -72,6 +80,7 @@ StartTextField.propTypes = {
   label: PropTypes.string,
   value: PropTypes.any,
   autoFocus: PropTypes.bool,
+  zeroAllowed: PropTypes.bool,
 };
 
 StartTextField.defaultProps = {
@@ -79,4 +88,5 @@ StartTextField.defaultProps = {
   placeholder: '',
   label: undefined,
   autoFocus: false,
+  zeroAllowed: false,
 };

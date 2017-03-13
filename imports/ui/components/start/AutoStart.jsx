@@ -8,7 +8,9 @@ import MultipleInput from './MultipleInput.jsx';
 import ArrayInput from './ArrayInput.jsx';
 
 
-const isFalse = v => v === undefined; // || v === '';
+// Verify if the previous value is false
+const isFalse = (val, zeroAllowed = false) =>
+  (zeroAllowed ? val === undefined : (val === undefined || val === 0));
 
 
 export default class AutoStart extends Component {
@@ -22,16 +24,18 @@ export default class AutoStart extends Component {
 
   verifyConditions(input, index, array) {
     // Get previous input
-    const prevInput = array[index - 1];
-
+    const prevInput = array[index - 1] || {};
 
     if (index === 0) {
       return true;
-    } else if (prevInput && prevInput.final === true) {
+    } else if (prevInput.final === true) {
       // Check if the previous input was a final value, stop form except if it is hidden
       if (prevInput.hide) {
         return true;
       }
+      return 'break';
+    } else if (prevInput.condition && prevInput.id === 'error') {
+      // If the last value is an error and it is showing, break
       return 'break';
     } else if (input.condition === false) {
       // If a condition is specified and false
@@ -42,17 +46,17 @@ export default class AutoStart extends Component {
         this.scroll(input.id);
         return true;
       } else if (this.props.formState.borrowerCount > 1 &&
-        (isFalse(this.props.formState[`${prevInput.id}1`]) ||
-        isFalse(this.props.formState[`${prevInput.id}2`]))
+        (isFalse(this.props.formState[`${prevInput.id}1`], prevInput.zeroAllowed) ||
+        isFalse(this.props.formState[`${prevInput.id}2`], prevInput.zeroAllowed))
       ) {
         return 'break';
-      } else if (isFalse(this.props.formState[`${prevInput.id}1`])) {
+      } else if (isFalse(this.props.formState[`${prevInput.id}1`], prevInput.zeroAllowed)) {
         return 'break';
       }
     } else if (input.condition === undefined) {
       // If no condition is provided, only show this input if previous value is valid
       // TODO verify if it is valid
-      if (isFalse(this.props.formState[prevInput.id])) {
+      if (isFalse(this.props.formState[prevInput.id], prevInput.zeroAllowed)) {
         return 'break';
       }
     }

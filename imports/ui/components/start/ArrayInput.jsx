@@ -67,6 +67,12 @@ export default class ArrayInput extends React.Component {
     );
   }
 
+  getOptions(input) {
+    const val = this.props.formState[this.props.id];
+    const arr = val.map(v => v && v.value);
+    return this.props.options;
+  }
+
 
   render() {
     const inputProps = {
@@ -115,6 +121,7 @@ export default class ArrayInput extends React.Component {
                       this.props.formState[this.props.id][i] &&
                       this.props.formState[this.props.id][i][input.id]
                     }
+                    options={this.getOptions(input)}
                   />
                 }
               </span>,

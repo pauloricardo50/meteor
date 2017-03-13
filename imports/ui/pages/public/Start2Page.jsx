@@ -4,11 +4,12 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 
 
 import AutoStart from '/imports/ui/components/start/AutoStart.jsx';
-import StartRecap from '/imports/ui/components/start/StartRecap.jsx';
+import Start2Recap from '/imports/ui/components/start/Start2Recap.jsx';
 import StartResult from '/imports/ui/components/start//StartResult.jsx';
 
 
 import getFormArray from '/imports/js/StartFormArray';
+import constants from '/imports/js/constants';
 
 
 export default class Start2Page extends Component {
@@ -48,15 +49,10 @@ export default class Start2Page extends Component {
   }
 
   getBonusIncome(arr) {
-    const bestBonuses = arr.filter(b => b !== Math.min(...arr));
-
-    // If the array contains twice the same minimum value, return the sum of 4 values divided by 3
-    if (arr.reduce((tot, val) => (val === Math.min(...arr) ? tot + 1 : tot), 0) > 1) {
-      return 0.5 * arr.reduce((tot, val) => tot + (val / 3), 0);
-    }
-
-    // Return 50% of the average of the best bonuses
-    return 0.5 * bestBonuses.reduce((tot, val) => tot + (val / 3), 0);
+    // Sum all values, remove the lowest one, and return 50% of their average
+    const sum = arr.reduce((tot, val) => tot + val, 0);
+    const bestSum = sum - Math.min(...arr);
+    return 0.5 * (bestSum / 3);
   }
 
   getIncome() {
@@ -77,39 +73,92 @@ export default class Start2Page extends Component {
 
     return [
       s.fortune1, s.fortune2,
-      s.insurance11, s.insurance12,
     ].reduce((tot, val) => ((val > 0) && tot + val) || tot, 0);
+  }
+
+  getInsuranceFortune() {
+    const s = this.state;
+
+    return [
+      s.insurance11, s.insurance12,
+      s.insurance21, s.insurance22,
+    ].reduce((tot, val) => ((val > 0) && tot + val) || tot, 0);
+  }
+
+  getExpenses() {
+    const s = this.state;
+
+    // Expenses is entered in monthly costs, multiply by 12
+    return [
+      ...(s.expensesArray ? s.expensesArray.map(i => i.value * 12) : []),
+    ].reduce((tot, val) => ((val > 0) && tot + val) || tot, 0);
+  }
+
+  getMonthly() {
+    const s = this.state;
+    const propAndWork = s.propertyValue + (s.propertyWorkExists ? s.propertyWork : 0);
+
+    return Math.max(
+      ((propAndWork * constants.maintenance) +
+      ((propAndWork - (s.fortuneUsed || 0)) * constants.loanCost())) / 12,
+
+      ((propAndWork * constants.maintenance) +
+        ((propAndWork * 0.8) * constants.loanCost())) / 12,
+
+      0,
+    );
+  }
+
+  getMonthlyReal() {
+    const s = this.state;
+    const propAndWork = s.propertyValue + (s.propertyWorkExists ? s.propertyWork : 0);
+    return Math.max(
+      ((propAndWork * constants.maintenanceReal) +
+      ((propAndWork - (s.fortuneUsed || 0)) * constants.loanCostReal())) / 12,
+      0,
+    );
   }
 
 
   render() {
+    const props = {
+      income: this.getIncome() || 0,
+      fortune: this.getFortune() || 0,
+      property: this.state.propertyValue || 0,
+      insuranceFortune: this.getInsuranceFortune() || 0,
+      expenses: this.getExpenses() || 0,
+      propertyWork: this.state.propertyWork || 0,
+      fortuneUsed: this.state.fortuneUsed || 0,
+      minFortune: (0.05 * this.state.propertyValue) + (0.2 * (this.state.propertyValue + (this.state.propertyWork || 0))) || 0,
+      fees: this.state.propertyValue * 0.05 || 0,
+      propAndWork: this.state.propertyValue + (this.state.propertyWork || 0),
+      monthly: this.getMonthly() || 0,
+      monthlyReal: this.getMonthlyReal() || 0,
+    };
+
+
     return (
       <section className="start2">
         <div className="form">
           <AutoStart
             formState={this.state}
-            formArray={getFormArray(this.state)}
+            formArray={getFormArray(this.state, props)}
             setFormState={this.setFormState}
             setActiveLine={this.setActiveLine}
           />
         </div>
-        {(!this.isFinished() && this.getIncome() > 0 && this.getFortune() > 0 && this.state.propertyValue) > 0 &&
+        {!this.isFinished() &&
           <div className="start2recap mask1">
             <div className="fixed-wrapper">
-              <StartRecap
-                income={this.getIncome()}
-                fortune={this.getFortune()}
-                property={this.state.propertyValue}
-                noPlaceholder
+              <Start2Recap
+                {...props}
               />
             </div>
           </div>
         }
         {this.isFinished() &&
           <StartResult
-            income={this.getIncome()}
-            fortune={this.getFortune()}
-            property={this.state.propertyValue}
+            {...props}
           />
         }
       </section>

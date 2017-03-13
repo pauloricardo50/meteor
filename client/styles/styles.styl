@@ -1259,6 +1259,10 @@ ul.request-map
   display: flex;
   justify-content: center;
   align-items:stretch;
+  label
+    width: 100%;
+    margin: 0;
+    margin-top: 16px;
   h4
     margin: auto;
   .result
@@ -1378,6 +1382,7 @@ ul.request-map
         margin-bottom: 8px;
   .start-result
     width: calc(100% - 40px);
+    margin-top: 40px;
     .content
       width: 100%;
       display: flex;
@@ -1390,6 +1395,8 @@ ul.request-map
 
       #expensesChart
         z-index: 1;
+        +above($med)
+          margin-bottom: 0;
       .validator
         margin-bottom: 40px;
         +above($large)

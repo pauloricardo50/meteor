@@ -19,6 +19,10 @@ export default class ButtonInput extends Component {
   }
 
   getText() {
+    if (this.props.id === 'error') {
+      return '';
+    }
+
     const currentValue = this.props.formState[this.props.id];
     if (currentValue !== undefined) {
       const currentButton = this.props.buttons.find(button => button.id === currentValue);
@@ -36,7 +40,7 @@ export default class ButtonInput extends Component {
       >
 
         <h1 className="fixed-size">
-          {this.props.text1}
+          <span className={this.props.id === 'error' && 'error'}>{this.props.text1}</span>
           &nbsp;
           {this.props.question && <br />}
           <span className="active">{this.getText()}</span>
@@ -50,7 +54,7 @@ export default class ButtonInput extends Component {
               label={button.label || button.id}
               onClick={e => this.handleClick(e, button.id)}
               style={styles.button}
-              primary
+              primary={!button.noPrimary}
               key={index}
             />
           ))}

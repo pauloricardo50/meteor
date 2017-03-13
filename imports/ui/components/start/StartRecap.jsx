@@ -46,105 +46,74 @@ const getArray = (income, fortune, property) => {
     {
       label: 'Prix d\'achat',
       value: (
-        <h3>
+        <span>
           CHF {toMoney(Math.round(property / 1000) * 1000)}
-        </h3>
+        </span>
       ),
     }, {
       label: 'Frais de notaire',
       value: (
-        <h3>
+        <span>
           CHF {toMoney(Math.round((property * constants.notaryFees) / 1000) * 1000)}
-        </h3>
+        </span>
       ),
     }, {
       label: 'Coût total du projet',
       value: (
-        <h3>
+        <span>
           CHF {toMoney(Math.round((property * (1 + constants.notaryFees)) / 1000) * 1000)}
-        </h3>
+        </span>
       ),
       spacing: true,
     }, {
       label: 'Emprunt',
-      value: (
-        <h3
-          className={Math.round(borrow * 1000) / 1000 <= 0.8
-            ? 'success'
-            : (Math.round(borrow * 1000) / 1000 <= 0.9 ? 'warning' : 'error')
-          }
-        >
-          CHF {toMoney(Math.round((borrow * property) / 1000) * 1000)}
-        </h3>
-      ),
+      value: <span>CHF {toMoney(Math.round((borrow * property) / 1000) * 1000)}</span>,
+      props: {
+        className: Math.round(borrow * 1000) / 1000 <= 0.8
+          ? 'success'
+          : (Math.round(borrow * 1000) / 1000 <= 0.9 ? 'warning' : 'error'),
+      },
     }, {
       label: 'Ratio Emprunt/Prix d\'achat',
-      value: (
-        <h3
-          className={Math.round(borrow * 1000) / 1000 <= 0.8
-            ? 'success'
-            : (Math.round(borrow * 1000) / 1000 <= 0.9 ? 'warning' : 'error')
-          }
-        >
-          {Math.round(borrow * 1000) / 10}%
-        </h3>
-      ),
+      value: `${Math.round(borrow * 1000) / 10}%`,
       spacing: true,
+      props: {
+        className: Math.round(borrow * 1000) / 1000 <= 0.8
+          ? 'success'
+          : (Math.round(borrow * 1000) / 1000 <= 0.9 ? 'warning' : 'error'),
+      },
     }, {
       label: 'Vos revenus mensuels',
-      value: (
-        <h3>
-          {income > 0
-            ? <span>CHF {toMoney(income / 12)} <small>/mois</small></span>
-            : '-'
-          }
-        </h3>
-      ),
+      value: income > 0
+        ? <span>CHF {toMoney(income / 12)} <small>/mois</small></span>
+        : '-',
     }, {
       label: 'Ratio d\'endettement FINMA',
-      value: (
-        <h3
-          className={Math.round(ratio * 1000) / 1000 <= 1 / 3
-            ? 'success'
-            : (Math.round(ratio * 1000) / 1000 <= 0.38 ? 'warning' : 'error')
-          }
-        >
-          {Math.round(ratio * 1000) / 10}%
-        </h3>
-      ),
+      value: `${Math.round(ratio * 1000) / 10}%`,
+      props: {
+        className: Math.round(ratio * 1000) / 1000 <= 1 / 3
+          ? 'success'
+          : (Math.round(ratio * 1000) / 1000 <= 0.38 ? 'warning' : 'error'),
+      },
     }, {
       label: 'Coût officiel FINMA',
-      value: (
-        <h3
-          className={Math.round(ratio * 1000) / 1000 <= 1 / 3
-            ? 'success'
-            : (Math.round(ratio * 1000) / 1000 <= 0.38 ? 'warning' : 'error')
-          }
-        >
-          {Math.round(borrow * 1000) / 1000 <= 0.8 && fortune < property
+      value: Math.round(borrow * 1000) / 1000 <= 0.8 && fortune < property
             ? <span>CHF {toMoney(getMonthly(income, fortune, property))} <small>/mois</small></span>
-            : '-'
-          }
-        </h3>
-      ),
+            : '-',
+      props: {
+        className: Math.round(ratio * 1000) / 1000 <= 1 / 3
+          ? 'success'
+          : (Math.round(ratio * 1000) / 1000 <= 0.38 ? 'warning' : 'error'),
+      },
     }, {
       label: 'Coût réel estimé',
-      value: (
-        <h3>
-          {Math.round(borrow * 1000) / 1000 <= 0.8 && fortune < property
+      value: Math.round(borrow * 1000) / 1000 <= 0.8 && fortune < property
             ? <span>CHF {toMoney(getMonthlyReal(income, fortune, property))} <small>/mois</small></span>
-            : '-'
-          }
-        </h3>
-      ),
+            : '-',
       spacing: true,
     }, {
       label: 'Nb. de prêteurs potentiels',
-      value: (
-        <h3>
-          {getLenderCount(borrow, ratio)}
-        </h3>
-      ),
+      value: getLenderCount(borrow, ratio)
     },
   ];
 };
@@ -155,7 +124,7 @@ const getResult = (income, fortune, property) => (
     {getArray(income, fortune, property).map(item =>
       <div className="fixed-size" style={{ marginBottom: item.spacing && 16 }} key={item.label}>
         <h4 className="secondary">{item.label}</h4>
-        {item.value}
+        <h3 {...item.props}>{item.value}</h3>
       </div>,
     )}
   </div>

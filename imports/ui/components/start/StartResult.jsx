@@ -3,7 +3,7 @@ import React, {PropTypes} from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
-import StartRecap from '/imports/ui/components/start/StartRecap.jsx';
+import Start2Recap from '/imports/ui/components/start/Start2Recap.jsx';
 
 import constants from '/imports/js/constants';
 
@@ -14,22 +14,19 @@ export default class StartResult extends React.Component {
   }
 
   render() {
-    const loan = this.props.property - this.props.fortune;
+    const loan = this.props.property - this.props.fortuneUsed;
     return (
       <article className="mask1 start-result">
         <h1>Résultat: <span className="success">Excellent</span></h1>
 
         <div className="content">
-          <StartRecap
-            income={this.props.income}
-            fortune={this.props.fortune}
-            property={this.props.property}
-            noPlaceholder
+          <Start2Recap
+            {...this.props}
           />
           <ExpensesChart
-            interests={loan * constants.interestsReal}
-            amortizing={loan * constants.amortizing}
-            maintenance={this.props.property * constants.maintenanceReal}
+            interests={(loan * constants.interestsReal) / 12}
+            amortizing={(loan * constants.amortizing) / 12}
+            maintenance={(this.props.property * constants.maintenanceReal) / 12}
           />
         </div>
 
