@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+import Scroll from 'react-scroll';
 import { toMoney } from './conversionFunctions';
 
 const isTrue = (v, zeroAllowed = false) => (zeroAllowed ? v !== undefined : v !== undefined && v !== 0);
@@ -143,7 +145,7 @@ const getAcquisitionArray = (state, props) => [
     id: 'income',
     type: 'multipleInput',
     firstMultiple: true,
-    text1: 'Quels sont vos revenus bruts annuels?',
+    text1: 'Quels est votre salaire brut (annuel)?',
     money: true,
     zeroAllowed: true,
   },
@@ -270,8 +272,8 @@ const getAcquisitionArray = (state, props) => [
             id: 'mortgageLoan',
             label: 'Prêt immobilier',
           }, {
-            id: 'other',
-            label: 'Autre',
+            id: 'pensions',
+            label: 'Pensions et Rentes',
           },
         ],
       }, {
@@ -394,6 +396,14 @@ const getFinalArray = (state, props) => [
       {
         id: true,
         label: 'Afficher les résultats',
+        onClick() {
+          const options = {
+            duration: 350,
+            delay: 0,
+            smooth: true,
+          };
+          Meteor.defer(() => Scroll.scroller.scrollTo('final', options));
+        },
       },
     ],
   },

@@ -96,7 +96,7 @@ const getArray = (income, fortune, property) => {
           : (Math.round(ratio * 1000) / 1000 <= 0.38 ? 'warning' : 'error'),
       },
     }, {
-      label: 'Coût officiel FINMA',
+      label: 'Coût théorique FINMA',
       value: Math.round(borrow * 1000) / 1000 <= 0.8 && fortune < property
             ? <span>CHF {toMoney(getMonthly(income, fortune, property))} <small>/mois</small></span>
             : '-',

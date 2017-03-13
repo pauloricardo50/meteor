@@ -43,7 +43,6 @@ export default class AutoStart extends Component {
     } else if (prevInput.type === 'multipleInput') {
       // If previous input has multiple values, verify both aren't undefined
       if (prevInput.condition === false && !prevInput.normalFlow) {
-        this.scroll(input.id);
         return true;
       } else if (this.props.formState.borrowerCount > 1 &&
         (isFalse(this.props.formState[`${prevInput.id}1`], prevInput.zeroAllowed) ||
@@ -61,7 +60,6 @@ export default class AutoStart extends Component {
       }
     }
 
-    this.scroll(input.id);
     return true;
   }
 
@@ -76,6 +74,7 @@ export default class AutoStart extends Component {
       this.breakForm = true;
     } else if (verified) {
       this.renderedArray.push(input);
+      this.scroll(input.id);
 
       // const prevInput = index > 0 && array[index - 1];
       const prevInput = this.renderedArray.length > 1 &&
@@ -131,6 +130,7 @@ export default class AutoStart extends Component {
         duration: 350,
         delay: 0,
         smooth: true,
+        ignoreCancelEvents: true,
       };
       Meteor.defer(() => Scroll.scroller.scrollTo(id, options));
 

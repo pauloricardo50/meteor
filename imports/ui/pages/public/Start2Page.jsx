@@ -50,9 +50,10 @@ export default class Start2Page extends Component {
 
   getBonusIncome(arr) {
     // Sum all values, remove the lowest one, and return 50% of their average
-    const sum = arr.reduce((tot, val) => tot + val, 0);
-    const bestSum = sum - Math.min(...arr);
-    return 0.5 * (bestSum / 3);
+    const safeArray = arr.map(v => v || 0);
+    const sum = safeArray.reduce((tot, val) => tot + val, 0);
+    const bestSum = sum - Math.min(...safeArray);
+    return 0.5 * (bestSum / 3) || 0;
   }
 
   getIncome() {
@@ -63,7 +64,15 @@ export default class Start2Page extends Component {
       s.propertyRent * 12,
       s.income1, s.income2,
       bonus1, bonus2,
-      ...(s.otherIncomeArray ? s.otherIncomeArray.map(i => i.value * 12) : []),
+      ...(s.otherIncomeArray ? s.otherIncomeArray.map(i => i.value * 12 || 0) : []),
+    ].reduce((tot, val) => ((val > 0) && tot + val) || tot, 0);
+  }
+
+
+  getOtherIncome() {
+    const s = this.state;
+    return [
+      ...(s.otherIncomeArray ? s.otherIncomeArray.map(i => i.value * 12 || 0) : []),
     ].reduce((tot, val) => ((val > 0) && tot + val) || tot, 0);
   }
 
@@ -121,17 +130,21 @@ export default class Start2Page extends Component {
 
 
   render() {
+    const s = this.state;
     const props = {
+      salary: (s.income1 || 0) + (s.income2 || 0),
+      bonus: this.getBonusIncome([s.bonus11, s.bonus21, s.bonus31, s.bonus41]) + this.getBonusIncome([s.bonus12, s.bonus22, s.bonus32, s.bonus42]) || 0,
       income: this.getIncome() || 0,
+      otherIncome: this.getOtherIncome() || 0,
       fortune: this.getFortune() || 0,
-      property: this.state.propertyValue || 0,
+      property: s.propertyValue || 0,
       insuranceFortune: this.getInsuranceFortune() || 0,
       expenses: this.getExpenses() || 0,
-      propertyWork: this.state.propertyWork || 0,
-      fortuneUsed: this.state.fortuneUsed || 0,
-      minFortune: (0.05 * this.state.propertyValue) + (0.2 * (this.state.propertyValue + (this.state.propertyWork || 0))) || 0,
-      fees: this.state.propertyValue * 0.05 || 0,
-      propAndWork: this.state.propertyValue + (this.state.propertyWork || 0),
+      propertyWork: s.propertyWork || 0,
+      fortuneUsed: s.fortuneUsed || 0,
+      minFortune: (0.05 * s.propertyValue) + (0.2 * (s.propertyValue + (s.propertyWork || 0))) || 0,
+      fees: s.propertyValue * 0.05 || 0,
+      propAndWork: s.propertyValue + (s.propertyWork || 0),
       monthly: this.getMonthly() || 0,
       monthlyReal: this.getMonthlyReal() || 0,
     };
@@ -141,8 +154,8 @@ export default class Start2Page extends Component {
       <section className="start2">
         <div className="form">
           <AutoStart
-            formState={this.state}
-            formArray={getFormArray(this.state, props)}
+            formState={s}
+            formArray={getFormArray(s, props)}
             setFormState={this.setFormState}
             setActiveLine={this.setActiveLine}
           />
@@ -157,9 +170,13 @@ export default class Start2Page extends Component {
           </div>
         }
         {this.isFinished() &&
-          <StartResult
-            {...props}
-          />
+          <Scroll.Element
+            name={'final'}
+          >
+            <StartResult
+              {...props}
+            />
+          </Scroll.Element>
         }
       </section>
     );

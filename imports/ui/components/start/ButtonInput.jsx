@@ -52,7 +52,12 @@ export default class ButtonInput extends Component {
           {this.props.buttons.map((button, index) => (
             <RaisedButton
               label={button.label || button.id}
-              onClick={e => this.handleClick(e, button.id)}
+              onClick={(e) => {
+                this.handleClick(e, button.id);
+                if (typeof button.onClick === 'function') {
+                  button.onClick();
+                }
+              }}
               style={styles.button}
               primary={!button.noPrimary}
               key={index}
