@@ -24,8 +24,8 @@ export default class StartSelectField extends React.Component {
         onChange={this.handleChange}
         maxHeight={200}
       >
-        <MenuItem value={null} primaryText="" />
-        {this.props.options.map(option =>
+        {/* <MenuItem value={null} primaryText="" /> */}
+        {this.props.options.map(option => option.id !== undefined &&
           <MenuItem
             value={option.id}
             primaryText={option.label}

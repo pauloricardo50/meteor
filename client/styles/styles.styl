@@ -6,6 +6,7 @@ $small = 480px
 $med = 768px
 $large = 992px
 $wide = 1200px
+$xwide = 1600px;
 
 // Colors
 black = #222
@@ -1285,7 +1286,7 @@ ul.request-map
       align-items: center;
 
 .start2
-  width: 100%;
+  width: calc(100% - 40px);
   min-height: 100%;
   margin: 0 20px;
   position: relative;
@@ -1297,8 +1298,16 @@ ul.request-map
   .form
     width: 100%;
     +above($med)
-      padding-right: 400px;
-      padding-left: 10%;
+      padding-right: 440px;
+      padding-left: 0;
+    +above($large)
+      padding-left: 0;
+    section
+      width: 100%;
+      max-width: 700px;
+      +above($xwide)
+        max-width: 1000px;
+      margin: 0 auto;
   .start2recap
     display: none;
     +above($med)
@@ -1308,9 +1317,10 @@ ul.request-map
     max-width: 400px;
     top: 86px;
     right: 20px;
+    overflow-y: scroll;
+    max-height: calc(100% - 106px);
     .fixed-wrapper
       width: 100%;
-      // display: flex;
       top -50%;
       .validator
         width: 100%;
@@ -1337,6 +1347,7 @@ ul.request-map
           color: brand-primary;
       h1.array-input
         display: flex;
+        flex-wrap: wrap;
         margin-top: 0;
         span
           display: flex;

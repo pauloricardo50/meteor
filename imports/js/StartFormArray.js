@@ -247,7 +247,7 @@ const getAcquisitionArray = (state, props) => [
   {
     condition: state.otherIncome === false ||
       ((state.otherIncomeArray && state.otherIncomeArray.length) >= 1 &&
-      (state.otherIncomeArray[0].value && state.otherIncomeArray[0].description)),
+      (state.otherIncomeArray[0].value !== undefined && state.otherIncomeArray[0].description !== undefined)),
     id: 'expensesArray',
     type: 'arrayInput',
     text1: 'Donnez-nous la liste de vos charges mensuelles',
@@ -284,6 +284,8 @@ const getAcquisitionArray = (state, props) => [
     ],
   },
   {
+    condition: ((state.expensesArray && state.expensesArray.length) >= 1 &&
+    (state.expensesArray[0].value !== undefined && state.expensesArray[0].description !== undefined)),
     id: 'fortune',
     type: 'multipleInput',
     text1: 'Quelle est votre fortune bancaire (cash et titres)?',
@@ -291,7 +293,7 @@ const getAcquisitionArray = (state, props) => [
     money: true,
   },
   {
-    condition: state.usageType === 'primary',
+    condition: state.usageType === 'primary' && multipleTrue('fortune', state),
     id: 'insurance1',
     type: 'multipleInput',
     text1: 'Quels sont les fonds de prévoyance disponibles dans votre 2e pilier?',

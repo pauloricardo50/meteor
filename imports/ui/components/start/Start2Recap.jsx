@@ -125,7 +125,7 @@ const getArray = (props) => {
       },
     }, {
       label: 'Coût officiel FINMA',
-      value: Math.round(borrow * 1000) / 1000 <= 0.8 && p.fortune < p.property
+      value: Math.round(borrow * 1000) / 1000 <= 0.8 && p.fortuneUsed < p.property
             ? <span>CHF {toMoney(props.monthly)} <small>/mois</small></span>
             : '-',
       props: {
@@ -135,7 +135,7 @@ const getArray = (props) => {
       },
     }, {
       label: 'Coût réel estimé',
-      value: Math.round(borrow * 1000) / 1000 <= 0.8 && p.fortune < p.property
+      value: Math.round(borrow * 1000) / 1000 <= 0.8 && p.fortuneUsed < p.property
             ? <span>CHF {toMoney(props.monthlyReal)} <small>/mois</small></span>
             : '-',
       spacing: true,

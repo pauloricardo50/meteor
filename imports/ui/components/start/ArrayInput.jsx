@@ -24,6 +24,7 @@ export default class ArrayInput extends React.Component {
     this.handleAdd = this.handleAdd.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
     this.setArrayFormState = this.setArrayFormState.bind(this);
+    this.getOptions = this.getOptions.bind(this);
   }
 
   handleAdd() {
@@ -67,10 +68,13 @@ export default class ArrayInput extends React.Component {
     );
   }
 
-  getOptions(input) {
-    const val = this.props.formState[this.props.id];
-    const arr = val.map(v => v && v.value);
-    return this.props.options;
+  getOptions(input, i) {
+    const currentValues = this.props.formState[this.props.id] || [];
+    const thisVal = currentValues && currentValues[i];
+    const arr = currentValues.map(v => v && v.description);
+    const thisOption = input.options.find(o => (o && o.id) === (thisVal && thisVal.description));
+
+    return [...input.options.filter(x => arr.indexOf(x.id) < 0), thisOption || {}];
   }
 
 
@@ -81,6 +85,7 @@ export default class ArrayInput extends React.Component {
       // setformState: this.props.setformState,
       setActiveLine: () => null,
     };
+    const optionQty = this.props.inputs.find(i => i.id === 'description').options.length;
 
     return (
       <article
@@ -121,7 +126,7 @@ export default class ArrayInput extends React.Component {
                       this.props.formState[this.props.id][i] &&
                       this.props.formState[this.props.id][i][input.id]
                     }
-                    options={this.getOptions(input)}
+                    options={this.getOptions(input, i)}
                   />
                 }
               </span>,
@@ -134,6 +139,7 @@ export default class ArrayInput extends React.Component {
             primary
             onClick={this.handleAdd}
             style={styles.button}
+            disabled={this.state.count >= optionQty}
           />
           <RaisedButton
             label="-"

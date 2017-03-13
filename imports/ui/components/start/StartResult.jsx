@@ -14,7 +14,7 @@ export default class StartResult extends React.Component {
   }
 
   render() {
-    const loan = this.props.property - this.props.fortuneUsed;
+    const loan = this.props.propAndWork - (this.props.fortuneUsed || 0);
     return (
       <article className="mask1 start-result">
         <h1>Résultat: <span className="success">Excellent</span></h1>
@@ -26,7 +26,7 @@ export default class StartResult extends React.Component {
           <ExpensesChart
             interests={(loan * constants.interestsReal) / 12}
             amortizing={(loan * constants.amortizing) / 12}
-            maintenance={(this.props.property * constants.maintenanceReal) / 12}
+            maintenance={(this.props.propAndWork * constants.maintenanceReal) / 12}
           />
         </div>
 
