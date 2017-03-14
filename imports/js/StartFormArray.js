@@ -31,7 +31,8 @@ const getAcquisitionArray = (state, props) => [
     money: true,
   },
   {
-    condition: state.knowsProperty === true && state.propertyValue !== undefined,
+    // condition: state.knowsProperty === true && state.propertyValue !== undefined,
+    condition: state.knowsProperty,
     id: 'notaryFeesAgreed',
     type: 'buttons',
     text1: `A ce prix s'ajoutent les frais de notaire de CHF ${toMoney(0.05 * state.propertyValue)}.`,
@@ -39,7 +40,7 @@ const getAcquisitionArray = (state, props) => [
     buttons: [
       {
         id: true,
-        label: 'Ok',
+        label: 'Continuer',
       },
     ],
   },
@@ -68,21 +69,20 @@ const getAcquisitionArray = (state, props) => [
     money: true,
   },
   {
-    condition: state.knowsProperty === true &&
-      (state.propertyWorkExists === false || state.propertyWork !== undefined),
+    condition: state.knowsProperty === true && (state.propertyWork !== undefined && state.propertyWork !== 0),
     id: 'projectAgreed',
     type: 'buttons',
-    text1: `Le prix de votre projet sera de CHF ${toMoney((1.05 * state.propertyValue) + (state.propertyWork || 0))}.`,
+    text1: `Le prix de votre projet sera donc de CHF ${toMoney((1.05 * state.propertyValue) + (state.propertyWork || 0))}.`,
     question: true,
     buttons: [
       {
         id: true,
-        label: 'Ok',
+        label: 'Continuer',
       },
     ],
   },
   {
-    condition: state.knowsProperty === false || state.projectAgreed,
+    condition: state.knowsProperty === false || state.projectAgreed || state.propertyWorkExists === false,
     id: 'usageType',
     type: 'buttons',
     text1: 'Quelle sera le type d\'utilisation de cette propriété?',
@@ -133,6 +133,10 @@ const getAcquisitionArray = (state, props) => [
     text1: 'Je suis né en',
     placeholder: '1980',
     number: true,
+    validation: {
+      min: 1900,
+      max: 1999,
+    },
   },
   {
     condition: state.borrowerCount > 1,
@@ -142,6 +146,10 @@ const getAcquisitionArray = (state, props) => [
     text2: 'ans.',
     placeholder: '40',
     number: true,
+    validation: {
+      min: 18,
+      max: 120,
+    },
   },
   {
     condition: state.birthYear || state.oldestAge,
@@ -363,7 +371,7 @@ const getAcquisitionArray = (state, props) => [
     condition: state.realEstateExists === false || arrayIsTrue(state.realEstateArray, ['description', 'value', 'loan']),
     id: 'fortune',
     type: 'multipleInput',
-    text1: 'Quelle est votre fortune bancaire (cash et titres)?',
+    text1: 'Quelle est votre fortune bancaire personnelle (cash et titres)?',
     question: true,
     money: true,
   },
@@ -377,11 +385,27 @@ const getAcquisitionArray = (state, props) => [
   },
   {
     condition: state.usageType === 'primary' && multipleTrue('insurance1', state, true),
+    id: 'insurance2Exists',
+    type: 'buttons',
+    text1: 'Avez-vous un 3e pilier?',
+    question: true,
+    buttons: [
+      {
+        id: true,
+        label: 'Oui',
+      },
+      {
+        id: false,
+        label: 'Non',
+      },
+    ],
+  },
+  {
+    condition: state.usageType === 'primary' && state.insurance2Exists,
     id: 'insurance2',
     type: 'multipleInput',
-    text1: 'Quels sont les fonds de prévoyance disponibles dans votre 3e pilier?',
+    text1: 'Combien vaut votre 3e pilier?',
     money: true,
-    zeroAllowed: true,
   },
 ];
 
@@ -395,7 +419,7 @@ const getCommonArray = state => [
 
 ];
 
-const finalCondition = s => ((s.usageType === 'secondary' || s.usageType === 'investment') && multipleTrue('fortune', s)) || (s.usageType === 'primary' && multipleTrue('insurance2', s, true));
+const finalCondition = s => ((s.usageType === 'secondary' || s.usageType === 'investment') && multipleTrue('fortune', s)) || (s.usageType === 'primary' && (multipleTrue('insurance2', s, true) || s.insurance2Exists === false));
 const getErrorArray = (state, props) => [
   {
     condition: finalCondition(state) && state.usageType === 'primary' && (props.fortune < props.fees + (0.1 * (props.propAndWork)) && (props.insuranceFortune >= 0.1 * props.propAndWork)),

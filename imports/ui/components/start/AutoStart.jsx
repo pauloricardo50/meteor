@@ -10,7 +10,37 @@ import ArrayInput from './ArrayInput.jsx';
 
 // Verify if the previous value is false
 const isFalse = (val, zeroAllowed = false) =>
-  (zeroAllowed ? val === undefined : (val === undefined || val === 0));
+  (zeroAllowed ? (val === undefined || val === '') : (val === undefined || val === 0 || val === ''));
+
+const validationCheck = (v, rules) => (!rules.min || v >= rules.min) && (!rules.max || v <= rules.max);
+
+const arrayIsTrue = (a, keys) =>
+  (a && a.length) >= 1 && keys.reduce((tot, key) => tot && a[0][key] !== undefined, true);
+
+const prevFalse = (prev, s) => {
+  if (prev.type === 'multipleInput') {
+    if (s.borrowerCount > 1 &&
+      (isFalse(s[`${prev.id}1`], prev.zeroAllowed) ||
+      isFalse(s[`${prev.id}2`], prev.zeroAllowed))
+    ) {
+      return true;
+    } else if (isFalse(s[`${prev.id}1`], prev.zeroAllowed)) {
+      return true;
+    }
+  } else if (prev.type === 'buttons' && s[prev.id] === undefined) {
+    // For buttons, only check if they are undefined
+    return true;
+  } else if (prev.type === 'arrayInput' &&
+    !arrayIsTrue(s[prev.id], prev.inputs.map(i => i.id))) {
+    return true;
+  } else if ((prev.validation !== undefined && !validationCheck(s[prev.id], prev.validation)) ||
+    isFalse(s[prev.id], prev.zeroAllowed)
+  ) {
+    return true;
+  }
+
+  return false;
+};
 
 
 export default class AutoStart extends Component {
@@ -21,56 +51,45 @@ export default class AutoStart extends Component {
     this.scrolled = {};
   }
 
+  componentDidUpdate() {
+    // Make sure the whole form stops if an error is displayed
+    if (this.error && !this.props.formState.error) {
+      this.props.setFormState('error', true);
+    } else if (!this.error && this.props.formState.error) {
+      this.props.setFormState('error', false);
+    }
+  }
 
-  verifyConditions(input, index, array) {
+
+  verifyConditions(input) {
     // Get previous input
-    const prevInput = array[index - 1] || {};
+    const prevInput = this.renderedArray[this.renderedArray.length - 1] || {};
 
-    if (index === 0) {
+    if (this.renderedArray.length === 0 && input.condition) {
+      // Always display the first input
       return true;
-    } else if (prevInput.final === true) {
-      // Check if the previous input was a final value, stop form except if it is hidden
-      if (prevInput.hide) {
-        return true;
-      }
+    } else if (prevInput.final || prevInput.type === 'error') {
+      // Break if the previous input is final or an error
       return 'break';
-    } else if (prevInput.condition && prevInput.id === 'error') {
-      // If the last value is an error and it is showing, break
-      this.error = true;
+    } else if (prevFalse(prevInput, this.props.formState)) {
+      // Make sure previous input is valid before continuing
       return 'break';
     } else if (input.condition === false) {
-      // If a condition is specified and false
+      // Skip inputs whose condition is false
       return false;
-    } else if (prevInput.type === 'multipleInput') {
-      // If previous input has multiple values, verify both aren't undefined
-      if (prevInput.condition === false && !prevInput.normalFlow) {
-        return true;
-      } else if (this.props.formState.borrowerCount > 1 &&
-        (isFalse(this.props.formState[`${prevInput.id}1`], prevInput.zeroAllowed) ||
-        isFalse(this.props.formState[`${prevInput.id}2`], prevInput.zeroAllowed))
-      ) {
-        return 'break';
-      } else if (isFalse(this.props.formState[`${prevInput.id}1`], prevInput.zeroAllowed)) {
-        return 'break';
-      }
-    } else if (input.condition === undefined) {
-      // If no condition is provided, only show this input if previous value is valid
-      // TODO verify if it is valid
-      if (isFalse(this.props.formState[prevInput.id], prevInput.zeroAllowed)) {
-        return 'break';
-      }
     }
 
     return true;
   }
 
 
-  inputSwitch(input, index, array) {
+  inputSwitch(input, index) {
+    // Stop iterating over array when form is currently in 'break' mode
     if (this.breakForm) {
       return null;
     }
 
-    const verified = this.verifyConditions(input, index, array);
+    const verified = this.verifyConditions(input);
     if (verified === 'break') {
       this.breakForm = true;
     } else if (verified) {
@@ -140,13 +159,6 @@ export default class AutoStart extends Component {
     }
   }
 
-  componentDidUpdate() {
-    if (this.error && !this.props.formState.error) {
-      this.props.setFormState('error', true);
-    } else if (!this.error && this.props.formState.error) {
-      this.props.setFormState('error', false);
-    }
-  }
 
   render() {
     // Reinitialize the renderedArray

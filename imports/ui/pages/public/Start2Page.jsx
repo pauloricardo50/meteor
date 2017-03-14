@@ -163,11 +163,15 @@ export default class Start2Page extends Component {
         </div>
         {!this.isFinished() &&
           <div className="start2recap mask1">
-            <div className="fixed-wrapper">
-              <Start2Recap
-                {...props}
-              />
-            </div>
+            <h3 className="recap-title bold">
+              {this.type === 'acquisition'
+                ? 'Nouvelle acquisition'
+                : 'Test d\'éligibilité'
+              }
+            </h3>
+            <Start2Recap
+              {...props}
+            />
           </div>
         }
         {this.isFinished() &&

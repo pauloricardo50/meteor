@@ -104,12 +104,11 @@ export default class ArrayInput extends React.Component {
           <h1 className="fixed-size">{this.props.text1}</h1>
         }
 
-        {this.props.inputs.map(input => <label className="array-input" id={this.props.id}>{input.label}</label>)}
-
         {[...Array(this.state.count)].map((e, i) =>
           <h1 key={i} className="fixed-size array-input">
             {this.props.inputs.map((input, j) =>
-              <span key={`${input.id}_${i}${j}`}>
+              <span key={`${input.id}_${i}${j}`} className="array-input-span">
+                {i === 0 && <label id={this.props.id} >{input.label}</label>}
                 {input.type === 'textInput' &&
                   <StartTextField
                     {...input}

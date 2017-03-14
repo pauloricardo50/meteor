@@ -3,6 +3,7 @@ import { Motion, spring, presets } from 'react-motion';
 import classNames from 'classnames';
 
 import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
 import Slider from 'material-ui/Slider';
 import AddIcon from 'material-ui/svg-icons/content/add';
 import MaskedInput from 'react-text-mask';
@@ -44,7 +45,13 @@ const StartLine = props => (
               pattern="[0-9]*"
             />
           </TextField>
-          <span className={classNames({ auto: true, true: props.auto })}>Auto</span>
+          <span className="reset">
+            <FlatButton
+              label="Reset"
+              primary
+              onClick={() => props.setStateValue(props.name, 0, true)}
+            />
+          </span>
         </div>
         <Slider
           value={value.x < 5000
