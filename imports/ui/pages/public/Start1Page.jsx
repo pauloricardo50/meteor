@@ -169,7 +169,7 @@ export default class Start1Page extends Component {
     const params = {};
     const queryParams = {
       type: this.type || 'test',
-      property: Math.round(this.state.property.value),
+      property: this.type !== 'test' ? Math.round(this.state.property.value) : undefined,
     };
 
     return FlowRouter.path(pathDef, params, queryParams);

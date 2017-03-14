@@ -87,7 +87,7 @@ const getArray = (props) => {
       label: 'Le Projet',
     },
     {
-      label: 'Prix d\'achat',
+      label: p.type === 'test' ? 'Prix d\'achat maximal' : 'Prix d\'achat',
       value: `CHF ${toMoney(Math.round(p.property))}`,
     }, {
       label: 'Frais de notaire',

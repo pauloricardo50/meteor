@@ -17,17 +17,19 @@ export default class Start2Page extends Component {
   constructor(props) {
     super(props);
 
-    this.type = FlowRouter.getQueryParam('type');
+    const type = FlowRouter.getQueryParam('type');
 
     this.state = {
+      type,
       purchaseType: 'acquisition',
-      knowsProperty: this.type === 'acquisition',
+      knowsProperty: type === 'acquisition',
       propertyValue: Number(FlowRouter.getQueryParam('property')) || undefined,
     };
 
 
     this.setFormState = this.setFormState.bind(this);
     this.setActiveLine = this.setActiveLine.bind(this);
+    this.calculateProperty = this.calculateProperty.bind(this);
   }
 
   setFormState(id, value, callback) {
@@ -48,7 +50,7 @@ export default class Start2Page extends Component {
   isFinished() {
     const s = this.state;
     const minFortune = (0.05 * s.propertyValue) + (0.2 * (s.propertyValue + (s.propertyWork || 0))) || 0;
-    return s.finalized && !s.error && s.fortuneUsed >= minFortune;
+    return s.finalized && !s.error && (s.fortuneUsed >= minFortune || s.type === 'test');
   }
 
   getBonusIncome(arr) {
@@ -131,26 +133,35 @@ export default class Start2Page extends Component {
     );
   }
 
+  calculateProperty() {
+    return Math.min(
+      this.getIncome() / constants.propertyToIncome(),
+      this.getFortune() / 0.2,
+    );
+  }
+
 
   render() {
     const s = this.state;
+    const property = s.propertyValue || this.calculateProperty() || 0;
     const props = {
+      type: this.state.type,
       salary: (s.income1 || 0) + (s.income2 || 0),
       bonus: this.getBonusIncome([s.bonus11, s.bonus21, s.bonus31, s.bonus41]) + this.getBonusIncome([s.bonus12, s.bonus22, s.bonus32, s.bonus42]) || 0,
       income: this.getIncome() || 0,
       otherIncome: this.getOtherIncome() || 0,
       fortune: this.getFortune() || 0,
-      property: s.propertyValue || 0,
+      property,
       insuranceFortune: this.getInsuranceFortune() || 0,
       expenses: this.getExpenses() || 0,
       propertyWork: s.propertyWork || 0,
       fortuneUsed: s.fortuneUsed || 0,
-      minFortune: (0.05 * s.propertyValue) + (0.2 * (s.propertyValue + (s.propertyWork || 0))) || 0,
-      fees: s.propertyValue * 0.05 || 0,
-      propAndWork: s.propertyValue + (s.propertyWork || 0),
+      minFortune: (0.05 * property) + (0.2 * (property + (s.propertyWork || 0))) || 0,
+      fees: property * 0.05 || 0,
+      propAndWork: property + (s.propertyWork || 0),
       monthly: this.getMonthly() || 0,
       monthlyReal: this.getMonthlyReal() || 0,
-      project: ((1.05 * s.propertyValue) + (s.propertyWork || 0)) || 0,
+      project: ((1.05 * property) + (s.propertyWork || 0)) || 0,
     };
 
 
@@ -169,7 +180,7 @@ export default class Start2Page extends Component {
             <h3 className="recap-title bold">
               {this.type === 'acquisition'
                 ? 'Nouvelle acquisition'
-                : 'Test d\'éligibilité'
+                : 'Potentiel d\'achat'
               }
             </h3>
             <Start2Recap

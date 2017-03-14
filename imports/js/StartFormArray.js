@@ -22,7 +22,7 @@ const getInitialArray = state => [
 
 const getAcquisitionArray = (state, props) => [
   {
-    condition: state.knowsProperty === true,
+    condition: state.knowsProperty,
     id: 'propertyValue',
     type: 'textInput',
     text1: 'Le prix d\'achat de la propriété est de',
@@ -60,7 +60,7 @@ const getAcquisitionArray = (state, props) => [
     deleteId: 'propertyWork',
   },
   {
-    condition: state.propertyWorkExists,
+    condition: state.propertyWorkExists === true,
     id: 'propertyWork',
     type: 'textInput',
     text1: 'Les travaux de plus-value sont estimés à',
@@ -80,7 +80,6 @@ const getAcquisitionArray = (state, props) => [
     ],
   },
   {
-    // condition: state.knowsProperty === false || state.projectAgreed || state.propertyWorkExists === false,
     id: 'usageType',
     type: 'buttons',
     text1: 'Quelle sera le type d\'utilisation de cette propriété?',
@@ -449,6 +448,7 @@ const getErrorArray = (state, props) => [
 
 const getFinalArray = (state, props) => [
   {
+    condition: state.type === 'acquisition',
     id: 'fortuneUsed',
     type: 'textInput',
     text1: `Vous avez CHF ${toMoney(props.fortune + props.insuranceFortune)} de fonds propres au total, combien voulez-vous allouer à ce projet? Vous devez mettre au minimum ${state.propertyWorkExists ? 'les frais de notaire ainsi que 20% du prix d\'achat + les travaux' : '25% du projet'}, soit CHF ${toMoney(props.minFortune)}.`,
@@ -458,7 +458,7 @@ const getFinalArray = (state, props) => [
 
 // If the user wants to borrow less than CHF 100000
   {
-    condition: state.fortuneUsed && (props.propAndWork) - state.fortuneUsed <= 100000,
+    condition: state.type === 'acquisition' && state.fortuneUsed && (props.propAndWork) - state.fortuneUsed <= 100000,
     id: 'error',
     type: 'buttons',
     text1: 'Vous utilisez trop de fonds propres, nous ne pouvons malheureusement pas vous aider pour un emprunt de moins de CHF 100\'000.',
@@ -466,7 +466,7 @@ const getFinalArray = (state, props) => [
     ],
   },
   {
-    condition: state.fortuneUsed >= props.minFortune,
+    condition: state.type === 'test' || state.fortuneUsed >= props.minFortune,
     id: 'finalized',
     type: 'buttons',
     text1: 'Vous-êtes arrivé au bout, bien joué!',

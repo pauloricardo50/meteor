@@ -69,8 +69,7 @@ export default class AutoStart extends Component {
     const prevInput = this.renderedArray[this.renderedArray.length - 1] || {};
 
     if (this.renderedArray.length === 0) {
-      // Always display the first input
-      return input.condition;
+      return !input.hasOwnProperty('condition') || input.condition;
     } else if (prevInput.final) {
       // Break if the previous input is final
       return 'break';
