@@ -13,6 +13,12 @@ const styles = {
 export default class ButtonInput extends Component {
   handleClick(event, value) {
     event.stopPropagation();
+
+    // If this button triggers a field to appear, make sure to delete its value if the user hits no
+    if (value === false && this.props.deleteId) {
+      this.props.setFormState(this.props.deleteId, undefined);
+    }
+
     this.props.setFormState(this.props.id, value,
       () => this.props.setActiveLine(''),
     );
@@ -80,4 +86,5 @@ ButtonInput.propTypes = {
   formState: PropTypes.objectOf(PropTypes.any),
   className: PropTypes.string.isRequired,
   setActiveLine: PropTypes.func.isRequired,
+  deleteId: PropTypes.string,
 };

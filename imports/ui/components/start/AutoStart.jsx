@@ -12,7 +12,8 @@ import ArrayInput from './ArrayInput.jsx';
 const isFalse = (val, zeroAllowed = false) =>
   (zeroAllowed ? (val === undefined || val === '') : (val === undefined || val === 0 || val === ''));
 
-const validationCheck = (v, rules) => (!rules.min || v >= rules.min) && (!rules.max || v <= rules.max);
+const validationCheck = (v, rules) =>
+  (!rules.min || v >= rules.min) && (!rules.max || v <= rules.max);
 
 const arrayIsTrue = (a, keys) =>
   (a && a.length) >= 1 && keys.reduce((tot, key) => tot && a[0][key] !== undefined, true);
@@ -55,6 +56,8 @@ export default class AutoStart extends Component {
     // Make sure the whole form stops if an error is displayed
     if (this.error && !this.props.formState.error) {
       this.props.setFormState('error', true);
+      // Stop scrolling for ever if there is an error, to allow user to correct his inputs
+      this.props.setFormState('stopScroll', true);
     } else if (!this.error && this.props.formState.error) {
       this.props.setFormState('error', false);
     }
@@ -68,8 +71,12 @@ export default class AutoStart extends Component {
     if (this.renderedArray.length === 0 && input.condition) {
       // Always display the first input
       return true;
-    } else if (prevInput.final || prevInput.type === 'error') {
-      // Break if the previous input is final or an error
+    } else if (prevInput.final) {
+      // Break if the previous input is final
+      return 'break';
+    } else if (prevInput.id === 'error') {
+      // If an error ever appears, start error mode (prevent any further rendering)
+      this.error = true;
       return 'break';
     } else if (prevFalse(prevInput, this.props.formState)) {
       // Make sure previous input is valid before continuing
@@ -145,7 +152,7 @@ export default class AutoStart extends Component {
   }
 
   scroll(id) {
-    if (!this.scrolled[id]) {
+    if (!this.props.formState.stopScroll && !this.scrolled[id]) {
       const options = {
         duration: 350,
         delay: 0,
