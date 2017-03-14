@@ -46,7 +46,9 @@ export default class Start2Page extends Component {
   }
 
   isFinished() {
-    return this.state.finalized && !this.state.error;
+    const s = this.state;
+    const minFortune = (0.05 * s.propertyValue) + (0.2 * (s.propertyValue + (s.propertyWork || 0))) || 0;
+    return s.finalized && !s.error && s.fortuneUsed >= minFortune;
   }
 
   getBonusIncome(arr) {
@@ -148,6 +150,7 @@ export default class Start2Page extends Component {
       propAndWork: s.propertyValue + (s.propertyWork || 0),
       monthly: this.getMonthly() || 0,
       monthlyReal: this.getMonthlyReal() || 0,
+      project: ((1.05 * s.propertyValue) + (s.propertyWork || 0)) || 0,
     };
 
 
