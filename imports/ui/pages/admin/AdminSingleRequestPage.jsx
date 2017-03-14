@@ -76,7 +76,7 @@ export default class AdminSingleRequestPage extends Component {
       <div>
         <RaisedButton
           label="Retour"
-          onClick={() => Session.get('lastRoute') && FlowRouter.go(Session.get('lastRoute'))}
+          onTouchTap={() => Session.get('lastRoute') && FlowRouter.go(Session.get('lastRoute'))}
           style={styles.returnButton}
           disabled={!Session.get('lastRoute')}
         />
@@ -92,7 +92,7 @@ export default class AdminSingleRequestPage extends Component {
                 <div key={action.name} className="form-group">
                   <RaisedButton
                     label={action.name}
-                    onClick={action.handleClick}
+                    onTouchTap={action.handleClick}
                     primary
                   />
                 </div>,

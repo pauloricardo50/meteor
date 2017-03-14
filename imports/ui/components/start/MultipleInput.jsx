@@ -43,7 +43,7 @@ export default class MultipleInput extends Component {
     return (
       <article
         className={this.props.className.concat(multiple ? ' no-scale' : '')}
-        onClick={() => this.props.setActiveLine(this.props.id)}
+        onTouchTap={() => this.props.setActiveLine(this.props.id)}
       >
 
         {(multiple && this.props.firstMultiple) &&
@@ -57,21 +57,25 @@ export default class MultipleInput extends Component {
         <TitleTag style={styles.h1} className="fixed-size">{this.props.text1}</TitleTag>
 
         <h1 className={classes1} style={styles.textFieldH1}>
-          <StartTextField
-            {...this.props}
-            width={multiple ? '100%' : this.props.width}
-            id={`${this.props.id}1`}
-          />
+          <span className="active">
+            <StartTextField
+              {...this.props}
+              width={multiple ? '100%' : this.props.width}
+              id={`${this.props.id}1`}
+            />
+          </span>
         </h1>
 
         {multiple &&
           <h1 className={classes2} style={styles.textFieldH1}>
-            <StartTextField
-              {...this.props}
-              width="100%"
-              id={`${this.props.id}2`}
-              autoFocus={false}
-            />
+            <span className="active">
+              <StartTextField
+                {...this.props}
+                width="100%"
+                id={`${this.props.id}2`}
+                autoFocus={false}
+              />
+            </span>
           </h1>
         }
 

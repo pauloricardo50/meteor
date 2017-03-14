@@ -10,7 +10,7 @@ export default class Input extends Component {
     return (
       <article
         className={this.props.className}
-        onClick={() => this.props.setActiveLine(this.props.id)}
+        onTouchTap={() => this.props.setActiveLine(this.props.id)}
       >
 
         <h1 className="fixed-size">

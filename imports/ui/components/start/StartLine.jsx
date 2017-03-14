@@ -47,7 +47,7 @@ const StartLine = props => (
           </TextField>
           <span className={classNames({ reset: true, off: props.value === 0 })}>
             <CloseIcon
-              onClick={() => props.setStateValue(props.name, 0, true)}
+              onTouchTap={() => props.setStateValue(props.name, 0, true)}
               disabled={props.value === 0}
             />
           </span>
@@ -65,7 +65,7 @@ const StartLine = props => (
         />
         {props.value >= props.sliderMax &&
           <div className="sliderMaxButton animated fadeIn">
-            <AddIcon onClick={props.setSliderMax} style={{ cursor: 'pointer' }} />
+            <AddIcon onTouchTap={props.setSliderMax} style={{ cursor: 'pointer' }} />
           </div>
         }
       </article>

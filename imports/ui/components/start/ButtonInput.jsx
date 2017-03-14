@@ -42,7 +42,7 @@ export default class ButtonInput extends Component {
     return (
       <article
         className={this.props.className}
-        onClick={() => this.props.setActiveLine(this.props.id)}
+        onTouchTap={() => this.props.setActiveLine(this.props.id)}
       >
 
         <h1 className="fixed-size">
@@ -58,7 +58,7 @@ export default class ButtonInput extends Component {
           {this.props.buttons.map((button, index) => (
             <RaisedButton
               label={button.label || button.id}
-              onClick={(e) => {
+              onTouchTap={(e) => {
                 this.handleClick(e, button.id);
                 if (typeof button.onClick === 'function') {
                   button.onClick();
