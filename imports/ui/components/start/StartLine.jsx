@@ -6,6 +6,7 @@ import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import Slider from 'material-ui/Slider';
 import AddIcon from 'material-ui/svg-icons/content/add';
+import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import MaskedInput from 'react-text-mask';
 
 import { swissFrancMask } from '/imports/js/textMasks';
@@ -44,10 +45,8 @@ const StartLine = props => (
               pattern="[0-9]*"
             />
           </TextField>
-          <span className="reset">
-            <FlatButton
-              label="Reset"
-              primary
+          <span className={classNames({ reset: true, off: props.value === 0 })}>
+            <CloseIcon
               onClick={() => props.setStateValue(props.name, 0, true)}
               disabled={props.value === 0}
             />

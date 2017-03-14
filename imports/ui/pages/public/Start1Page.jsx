@@ -12,6 +12,7 @@ import constants from '/imports/js/constants';
 import StartLine from '/imports/ui/components/start/StartLine.jsx';
 import StartRecap from '/imports/ui/components/start/StartRecap.jsx';
 import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
+import Accordion from '/imports/ui/components/general/Accordion.jsx';
 
 
 const array = [
@@ -215,15 +216,17 @@ export default class Start1Page extends Component {
             />
           </div>
 
-          {(property && fortune && income && fortune < property) &&
-            <div className="chart">
+
+          <div className="chart">
+            <Accordion isActive={property && fortune && income && fortune < property}>
               <ExpensesChart
-                interests={(loan * constants.interestsReal) / 12}
-                amortizing={(loan * constants.amortizing) / 12}
-                maintenance={(property * constants.maintenanceReal) / 12}
+                interests={(loan * constants.interestsReal) / 12 || undefined}
+                amortizing={(loan * constants.amortizing) / 12 || 0}
+                maintenance={(property * constants.maintenanceReal) / 12 || 0}
               />
-            </div>
-          }
+            </Accordion>
+          </div>
+
 
           <div className="button">
             <RaisedButton

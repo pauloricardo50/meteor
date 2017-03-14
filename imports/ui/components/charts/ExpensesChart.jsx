@@ -62,36 +62,42 @@ export default class ExpensesChart extends Component {
       n.loanRequest !== p.loanRequest
     ) {
       const update = () => {
-        this.chart.series[0].update({
-          data: [
+        this.chart.update({
+          title: {
+            text: `CHF ~${
+              toMoney(
+                Math.round(
+                  this.state.interests + this.state.amortization + this.state.maintenance,
+                ),
+              )
+            }<br>par mois`,
+          },
+          plotOptions: {
+            pie: {
+              dataLabels: {
+                enabled: this.state.interests && this.state.amortization && this.state.maintenance,
+              },
+            },
+          },
+          series: [
             {
-              name: 'Intérêts',
-              y: this.state.interests,
-              color: colors.interest,
-            }, {
-              name: 'Amortissement',
-              y: this.state.amortization,
-              color: colors.amortization,
-            }, {
-              name: 'Entretien',
-              y: this.state.maintenance,
-              color: colors.maintenance,
+              data: [
+                {
+                  name: 'Intérêts',
+                  y: this.state.interests,
+                  color: colors.interest,
+                }, {
+                  name: 'Amortissement',
+                  y: this.state.amortization,
+                  color: colors.amortization,
+                }, {
+                  name: 'Entretien',
+                  y: this.state.maintenance,
+                  color: colors.maintenance,
+                },
+              ],
             },
           ],
-        });
-        this.chart.title.update({
-          text: `CHF ~${
-            toMoney(
-              Math.round(
-                this.state.interests + this.state.amortization + this.state.maintenance,
-              ),
-            )
-          }<br>par mois`,
-          verticalAlign: 'middle',
-          floating: true,
-          style: {
-            fontSize: '14px',
-          },
         });
       };
 
@@ -159,6 +165,9 @@ export default class ExpensesChart extends Component {
         align: 'center',
         verticalAlign: 'bottom',
         layout: 'horizontal',
+        itemStyle: {
+          width: 90,
+        },
       },
       series: [
         {

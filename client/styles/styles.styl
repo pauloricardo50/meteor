@@ -857,6 +857,7 @@ $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
       +above($wide)
         font-size: 14px !important
   .highcharts-legend
+    display: initial;
     +above($med)
       display: none;
   .highcharts-title
@@ -1162,7 +1163,9 @@ ul.request-map
   justify-content: center;
   align-items: center;
   .small-oscar
-    width: calc(100% - 40px);
+    width: calc(100% - 20px);
+    +above($med)
+      width: calc(100% - 40px);
     max-width: 1200px;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -1234,6 +1237,17 @@ ul.request-map
           margin-left: 8px;
           display: flex;
           align-self: center;
+          z-index: 1;
+          cursor: pointer;
+          svg
+            color: alpha(#222, 0.7) !important;
+          &:hover
+            svg
+              color: alpha(#222, 0.9) !important;
+          &.off
+            cursor: default;
+            svg
+              color: alpha(#222, 0.4) !important;
       .slider > div
         margin: 0 !important;
         margin-top: 8px !important;
@@ -1294,6 +1308,12 @@ ul.request-map
   padding-bottom: 50px;
   justify-content: center;
   align-items: flex-start;
+  h1.fixed-size
+    font-size: 1.4em !important;
+    +above($small)
+      font-size: 1.6em !important;
+    +above($med)
+      font-size: 2em !important;
   .form
     width: 100%;
     +above($med)
