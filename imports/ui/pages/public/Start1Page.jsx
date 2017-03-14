@@ -11,6 +11,7 @@ import { changeProperty, changeFortune, changeIncome } from '/imports/js/start-f
 import constants from '/imports/js/constants';
 import StartLine from '/imports/ui/components/start/StartLine.jsx';
 import StartRecap from '/imports/ui/components/start/StartRecap.jsx';
+import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
 
 
 const array = [
@@ -175,6 +176,11 @@ export default class Start1Page extends Component {
 
 
   render() {
+    const property = this.state.property.value;
+    const income = this.state.income.value;
+    const fortune = this.state.fortune.value;
+    const loan = property - fortune;
+
     return (
       <section className="oscar">
         <article className="small-oscar mask1">
@@ -203,19 +209,29 @@ export default class Start1Page extends Component {
             </div>
             <div className="separator" />
             <StartRecap
-              income={this.state.income.value}
-              fortune={this.state.fortune.value}
-              property={this.state.property.value}
+              income={income}
+              fortune={fortune}
+              property={property}
             />
           </div>
+
+          {(property && fortune && income && fortune < property) &&
+            <div className="chart">
+              <ExpensesChart
+                interests={(loan * constants.interestsReal) / 12}
+                amortizing={(loan * constants.amortizing) / 12}
+                maintenance={(property * constants.maintenanceReal) / 12}
+              />
+            </div>
+          }
 
           <div className="button">
             <RaisedButton
               label="Passer au check-up complet"
               disabled={
-                !this.state.property.value ||
-                !this.state.income.value ||
-                !this.state.fortune.value
+                !property ||
+                !income ||
+                !fortune
               }
               primary={this.isValid()}
               href={this.getUrl()}

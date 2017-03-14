@@ -48,6 +48,70 @@ export default class ExpensesChart extends Component {
     window.addEventListener('resize', this.resize);
   }
 
+  componentWillReceiveProps(n) {
+    const p = this.props;
+
+    this.setState({
+
+    });
+
+    if (
+      n.interests !== p.interests ||
+      n.amortization !== p.amortization ||
+      n.maintenance !== p.maintenance ||
+      n.loanRequest !== p.loanRequest
+    ) {
+      const update = () => {
+        this.chart.series[0].update({
+          data: [
+            {
+              name: 'Intérêts',
+              y: this.state.interests,
+              color: colors.interest,
+            }, {
+              name: 'Amortissement',
+              y: this.state.amortization,
+              color: colors.amortization,
+            }, {
+              name: 'Entretien',
+              y: this.state.maintenance,
+              color: colors.maintenance,
+            },
+          ],
+        });
+        this.chart.title.update({
+          text: `CHF ~${
+            toMoney(
+              Math.round(
+                this.state.interests + this.state.amortization + this.state.maintenance,
+              ),
+            )
+          }<br>par mois`,
+          verticalAlign: 'middle',
+          floating: true,
+          style: {
+            fontSize: '14px',
+          },
+        });
+      };
+
+
+      if (this.props.loanRequest) {
+        this.setState({
+          interests: getInterests(n.loanRequest),
+          amortization: getAmortization(n.loanRequest),
+          maintenance: (n.loanRequest.property.value * 0.01) / 12,
+        }, () => update());
+      } else {
+        this.setState({
+          interests: n.interests,
+          amortization: n.amortizing,
+          maintenance: n.maintenance,
+        }, () => update());
+      }
+    }
+  }
+
   createChart() {
     const options = {
       chart: {

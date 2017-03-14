@@ -44,51 +44,44 @@ const getArray = (income, fortune, property) => {
 
   return [
     {
+      title: true,
+      label: 'Votre Projet',
+    }, {
       label: 'Prix d\'achat',
-      value: (
-        <span>
-          CHF {toMoney(Math.round(property / 1000) * 1000)}
-        </span>
-      ),
+      value: `CHF ${toMoney(Math.round(property / 1000) * 1000)}`,
     }, {
       label: 'Frais de notaire',
-      value: (
-        <span>
-          CHF {toMoney(Math.round((property * constants.notaryFees) / 1000) * 1000)}
-        </span>
-      ),
+      value: `CHF ${toMoney(Math.round((property * constants.notaryFees) / 1000) * 1000)}`,
     }, {
       label: 'Coût total du projet',
-      value: (
-        <span>
-          CHF {toMoney(Math.round((property * (1 + constants.notaryFees)) / 1000) * 1000)}
-        </span>
-      ),
+      value: `CHF ${toMoney(Math.round((property * (1 + constants.notaryFees)) / 1000) * 1000)}`,
       spacing: true,
     }, {
       label: 'Emprunt',
-      value: <span>CHF {toMoney(Math.round((borrow * property) / 1000) * 1000)}</span>,
+      value: `CHF ${toMoney(Math.round((borrow * property) / 1000) * 1000)}`,
       props: {
         className: Math.round(borrow * 1000) / 1000 <= 0.8
           ? 'success'
           : (Math.round(borrow * 1000) / 1000 <= 0.9 ? 'warning' : 'error'),
       },
     }, {
-      label: 'Ratio Emprunt/Prix d\'achat',
-      value: `${Math.round(borrow * 1000) / 10}%`,
-      spacing: true,
-      props: {
-        className: Math.round(borrow * 1000) / 1000 <= 0.8
-          ? 'success'
-          : (Math.round(borrow * 1000) / 1000 <= 0.9 ? 'warning' : 'error'),
-      },
-    }, {
-      label: 'Vos revenus mensuels',
-      value: income > 0
-        ? <span>CHF {toMoney(income / 12)} <small>/mois</small></span>
+      label: 'Coût réel estimé',
+      value: Math.round(borrow * 1000) / 1000 <= 0.8 && fortune < property
+        ? <span>CHF {toMoney(getMonthlyReal(income, fortune, property))} <small>/mois</small></span>
         : '-',
     }, {
-      label: 'Ratio d\'endettement FINMA',
+      title: true,
+      label: 'Calculs FINMA'
+    }, {
+      label: 'Emprunt/Prix d\'achat',
+      value: `${Math.round(borrow * 1000) / 10}%`,
+      props: {
+        className: Math.round(borrow * 1000) / 1000 <= 0.8
+          ? 'success'
+          : (Math.round(borrow * 1000) / 1000 <= 0.9 ? 'warning' : 'error'),
+      },
+    }, {
+      label: 'Charges/Revenus',
       value: `${Math.round(ratio * 1000) / 10}%`,
       props: {
         className: Math.round(ratio * 1000) / 1000 <= 1 / 3
@@ -96,24 +89,12 @@ const getArray = (income, fortune, property) => {
           : (Math.round(ratio * 1000) / 1000 <= 0.38 ? 'warning' : 'error'),
       },
     }, {
-      label: 'Coût théorique FINMA',
-      value: Math.round(borrow * 1000) / 1000 <= 0.8 && fortune < property
-            ? <span>CHF {toMoney(getMonthly(income, fortune, property))} <small>/mois</small></span>
-            : '-',
-      props: {
-        className: Math.round(ratio * 1000) / 1000 <= 1 / 3
-          ? 'success'
-          : (Math.round(ratio * 1000) / 1000 <= 0.38 ? 'warning' : 'error'),
-      },
-    }, {
-      label: 'Coût réel estimé',
-      value: Math.round(borrow * 1000) / 1000 <= 0.8 && fortune < property
-            ? <span>CHF {toMoney(getMonthlyReal(income, fortune, property))} <small>/mois</small></span>
-            : '-',
-      spacing: true,
+      title: true,
+      label: 'e-Potek',
     }, {
       label: 'Nb. de prêteurs potentiels',
-      value: getLenderCount(borrow, ratio)
+      value: getLenderCount(borrow, ratio),
+      spacing: true,
     },
   ];
 };
@@ -121,12 +102,15 @@ const getArray = (income, fortune, property) => {
 
 const getResult = (income, fortune, property) => (
   <div className="result animated fadeIn">
-    {getArray(income, fortune, property).map(item =>
-      <div className="fixed-size" style={{ marginBottom: item.spacing && 16 }} key={item.label}>
-        <h4 className="secondary">{item.label}</h4>
-        <h3 {...item.props}>{item.value}</h3>
-      </div>,
-    )}
+    {getArray(income, fortune, property).map(item => !item.hide && (item.title
+      ? <label className="text-center" {...item.props} key={item.label}>{item.label}</label>
+      : (
+        <div className="fixed-size" style={{ marginBottom: item.spacing && 16 }} key={item.label}>
+          <h4 className="secondary">{item.label}</h4>
+          <h3 {...item.props}>{item.value}</h3>
+        </div>
+      )
+    ))}
   </div>
 );
 

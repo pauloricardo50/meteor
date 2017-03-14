@@ -26,7 +26,7 @@ const getLenderCount = (borrow, ratio) => {
 
 const getArray = (props) => {
   const p = props;
-  let borrow = Math.max((p.project - p.fortuneUsed) / p.project, 0) || 0;
+  let borrow = Math.max((p.propAndWork - p.fortuneUsed - (0.05 * p.property)) / p.propAndWork, 0) || 0;
   borrow = borrow === 1 ? 0 : borrow;
   const ratio = (p.income - p.expenses) && props.monthly / ((p.income - p.expenses) / 12);
 
@@ -108,7 +108,7 @@ const getArray = (props) => {
       hide: !p.fortuneUsed,
     }, {
       label: 'Emprunt',
-      value: `CHF ${p.fortuneUsed ? toMoney(Math.round(borrow * p.project)) : 0}`,
+      value: `CHF ${p.fortuneUsed ? toMoney(Math.round(p.project - p.fortuneUsed)) : 0}`,
       props: {
         className: borrow <= 0.8
           ? 'success'
@@ -117,7 +117,7 @@ const getArray = (props) => {
       hide: !p.fortuneUsed,
     }, {
       label: 'Coût mensuel estimé',
-      value: `CHF ${p.fortuneUsed ? toMoney(Math.round(p.monthlyReal)) : 0} /mois`,
+      value: <span>CHF {p.fortuneUsed ? toMoney(Math.round(p.monthlyReal)) : 0} <small>/mois</small></span>,
       hide: !p.fortuneUsed,
     }, {
       title: true,
@@ -141,6 +141,12 @@ const getArray = (props) => {
           : (Math.round(ratio * 1000) / 1000 <= 0.38 ? 'warning' : 'error'),
       },
       hide: !(borrow || ratio),
+    }, {
+      title: true,
+      label: 'e-Potek',
+    }, {
+      label: 'Nb. de prêteurs potentiels',
+      value: getLenderCount(borrow, ratio),
       spacing: true,
     },
   ];

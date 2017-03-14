@@ -33,7 +33,6 @@ const StartLine = props => (
             id={props.name}
             name={props.name}
             onChange={e => props.setStateValue(props.name, e.target.value)}
-            // onFocus={() => props.setStateValue(props.name, 0, true)}
             errorStyle={props.minValue <= props.value ? defaultStyle : errorStyle}
             className="input"
             hintText="CHF"
@@ -50,6 +49,7 @@ const StartLine = props => (
               label="Reset"
               primary
               onClick={() => props.setStateValue(props.name, 0, true)}
+              disabled={props.value === 0}
             />
           </span>
         </div>
