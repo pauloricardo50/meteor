@@ -5,10 +5,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Scroll from 'react-scroll';
 
 import StrategyChoices from './StrategyChoices.jsx';
-import FinanceStrategyPicker from '/imports/ui/components/general/FinanceStrategyPicker.jsx';
+import FinanceStrategyPicker
+  from '/imports/ui/components/general/FinanceStrategyPicker.jsx';
 import LenderPicker from '/imports/ui/components/general/LenderPicker.jsx';
-import { loanStrategySuccess } from '/imports/js/requestFunctions';
-
+import { loanStrategySuccess } from '/imports/js/requestFunctions';
 
 const styles = {
   callButton: {
@@ -56,11 +56,13 @@ export default class StrategyPage extends Component {
     this.handleChoose = this.handleChoose.bind(this);
   }
 
-
   strategyChosen() {
     const tranches = this.props.loanRequest.general.loanTranches;
     const propertyValue = this.props.loanRequest.property.value;
-    const trancheSum = tranches.reduce((total, tranche) => total + tranche.value, 0);
+    const trancheSum = tranches.reduce(
+      (total, tranche) => total + tranche.value,
+      0,
+    );
 
     return propertyValue === trancheSum;
   }
@@ -94,15 +96,17 @@ export default class StrategyPage extends Component {
           <span>&nbsp;</span>,
         ],
         isBest: true,
-      }, {
+      },
+      {
         id: 'fixedLibor',
         title: '20% Libor',
         reasons: [
           'Jouez le Libor',
           'Risque faible',
-          'Vérifiez votre capacité d\'épargne au préalable',
+          "Vérifiez votre capacité d'épargne au préalable",
         ],
-      }, {
+      },
+      {
         id: 'manual',
         title: 'Mode Manuel',
         reasons: [
@@ -114,10 +118,11 @@ export default class StrategyPage extends Component {
     ];
   }
 
-
   getStructure(choiceId) {
     const r = this.props.loanRequest;
-    const borrow = r.property.value - r.general.fortuneUsed - r.general.insuranceFortuneUsed;
+    const borrow = r.property.value -
+      r.general.fortuneUsed -
+      r.general.insuranceFortuneUsed;
     if (choiceId === 'fixed') {
       return [
         {
@@ -130,7 +135,8 @@ export default class StrategyPage extends Component {
         {
           type: 'interest10',
           value: borrow * 0.8,
-        }, {
+        },
+        {
           type: 'interestLibor',
           value: borrow * 0.2,
         },
@@ -147,13 +153,12 @@ export default class StrategyPage extends Component {
           Ma Stratégie de Taux
           &nbsp;
           {loanStrategySuccess(this.props.loanRequest) &&
-            <span className="fa fa-check success" />
-          }
+            <span className="fa fa-check success" />}
         </h2>
 
         <div className="description">
           <p>
-            Il n&apos;y a pas une seule stratégie parfaite pour structurer votre prêt, cependant,
+            Il n'y a pas une seule stratégie parfaite pour structurer votre prêt, cependant,
             nous pouvons vous aiguiller dans la bonne direction grâce à notre expertise.
             <br />
             <br />
@@ -180,11 +185,11 @@ export default class StrategyPage extends Component {
             <FinanceStrategyPicker
               loanRequest={this.props.loanRequest}
               style={styles.picker}
-              manual={this.props.loanRequest.logic.loanStrategyPreset === 'manual'}
+              manual={
+                this.props.loanRequest.logic.loanStrategyPreset === 'manual'
+              }
             />
-          </Scroll.Element>
-        }
-
+          </Scroll.Element>}
 
         {/* {this.strategyChosen() && <hr style={styles.hr} />}
         {this.strategyChosen() && <LenderPicker loanRequest={this.props.loanRequest} />} */}

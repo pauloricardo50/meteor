@@ -1,4 +1,4 @@
-import React, { Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
@@ -6,7 +6,6 @@ import colors from '/imports/js/colors';
 
 const normalColor = colors.primary;
 const successColor = colors.secondary;
-
 
 const styles = {
   clock: {
@@ -19,15 +18,12 @@ const styles = {
   },
 };
 
-
 export default class TodoCard extends Component {
-
   constructor(props) {
     super(props);
 
     this.routeDo = this.routeDo.bind(this);
   }
-
 
   routeDo() {
     const route = FlowRouter.getRouteName();
@@ -51,7 +47,7 @@ export default class TodoCard extends Component {
       background: `-moz-linear-gradient(left, ${successColor} ${percent}%, ${normalColor} ${percent2}%)`, // FF3.6-15
       background: `-webkit-linear-gradient(left, ${successColor} ${percent}%, ${normalColor} ${percent2}%)`, // Chrome10-25,Safari5.1-6
       background: `linear-gradient(to right, ${successColor} ${percent}%, ${normalColor} ${percent2}%)`, // Modern browsers
-      filter: `progid:DXImageTransform.Microsoft.gradient( startColorstr="${successColor}", endColorstr="${oldColor}",GradientType=1 )` // IE6-9
+      filter: `progid:DXImageTransform.Microsoft.gradient( startColorstr="${successColor}", endColorstr="${oldColor}",GradientType=1 )`, // IE6-9
     };
 
     // If the amount of cards is odd, center a card with the center prop
@@ -63,26 +59,27 @@ export default class TodoCard extends Component {
     }
 
     return (
-      <li onTouchTap={this.routeDo} className={bootstrapClasses} style={{ listStyle: 'none' }}>
+      <li
+        onTouchTap={this.routeDo}
+        className={bootstrapClasses}
+        style={{ listStyle: 'none' }}
+      >
         <div className="mask2 col-sm-12 todo-card hover-rise">
           <h3 style={styles.title}>{this.props.title}</h3>
           {this.props.completionPercentage === 100 &&
-            <span style={{ color: successColor }} className="fa fa-check secondary" />
-          }
+            <span
+              style={{ color: successColor }}
+              className="fa fa-check secondary"
+            />}
           <span className="fa fa-info-circle fa-lg" />
           <p className="secondary">
             <span className="fa fa-clock-o fa-lg" style={styles.clock} />
             {this.props.duration}
           </p>
-          <div
-            className="bottom text-center"
-            style={gradientStyle}
-          >
-            {
-              this.props.completionPercentage === 100 ?
-                'Terminé' :
-                this.props.completionPercentage.toString() + '% Terminé'
-            }
+          <div className="bottom text-center" style={gradientStyle}>
+            {this.props.completionPercentage === 100
+              ? 'Terminé'
+              : this.props.completionPercentage.toString() + '% Terminé'}
           </div>
         </div>
       </li>

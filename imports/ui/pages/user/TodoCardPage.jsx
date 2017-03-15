@@ -3,10 +3,12 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-
-import Step3FinancialForm from '/imports/ui/components/steps/Step3FinancialForm.jsx';
-import Step3PersonalForm from '/imports/ui/components/steps/Step3PersonalForm.jsx';
-import Step3PropertyForm from '/imports/ui/components/steps/Step3PropertyForm.jsx';
+import Step3FinancialForm
+  from '/imports/ui/components/steps/Step3FinancialForm.jsx';
+import Step3PersonalForm
+  from '/imports/ui/components/steps/Step3PersonalForm.jsx';
+import Step3PropertyForm
+  from '/imports/ui/components/steps/Step3PropertyForm.jsx';
 import Step3FileUpload from '/imports/ui/components/steps/Step3FileUpload.jsx';
 
 const styles = {
@@ -22,7 +24,6 @@ export default class TodoCardPage extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-
   handleClick() {
     const stepNb = FlowRouter.current().path.charAt(5);
     if (stepNb === '1') {
@@ -34,17 +35,20 @@ export default class TodoCardPage extends React.Component {
     }
   }
 
-
   renderCardContent() {
     switch (FlowRouter.getParam('cardId')) {
-      case 'personal': return <Step3PersonalForm loanRequest={this.props.loanRequest} />;
-      case 'property': return <Step3PropertyForm loanRequest={this.props.loanRequest} />;
-      case 'finance': return <Step3FinancialForm loanRequest={this.props.loanRequest} />;
-      case 'files': return <Step3FileUpload loanRequest={this.props.loanRequest} />;
-      default: return '';
+      case 'personal':
+        return <Step3PersonalForm loanRequest={this.props.loanRequest} />;
+      case 'property':
+        return <Step3PropertyForm loanRequest={this.props.loanRequest} />;
+      case 'finance':
+        return <Step3FinancialForm loanRequest={this.props.loanRequest} />;
+      case 'files':
+        return <Step3FileUpload loanRequest={this.props.loanRequest} />;
+      default:
+        return '';
     }
   }
-
 
   render() {
     return (
@@ -57,20 +61,12 @@ export default class TodoCardPage extends React.Component {
             className="animated slideInLeft"
           />
           <span className="pull-right" style={styles.okSpan}>
-            <RaisedButton
-              label="Ok"
-              onTouchTap={this.handleClick}
-              primary
-            />
+            <RaisedButton label="Ok" onTouchTap={this.handleClick} primary />
           </span>
         </div>
         {this.renderCardContent()}
         <div className="form-group pull-right" style={styles.okButton}>
-          <RaisedButton
-            label="Ok"
-            onTouchTap={this.handleClick}
-            primary
-          />
+          <RaisedButton label="Ok" onTouchTap={this.handleClick} primary />
         </div>
       </section>
     );

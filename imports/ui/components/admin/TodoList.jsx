@@ -10,14 +10,20 @@ export default class TodoList extends Component {
   getReviewRequests() {
     const now = new Date();
     return this.props.loanRequests.filter(
-      r => r.logic.auctionStarted && !r.logic.auctionVerified && (r.logic.auctionEndTime >= now),
+      r =>
+        r.logic.auctionStarted &&
+        !r.logic.auctionVerified &&
+        r.logic.auctionEndTime >= now,
     );
   }
 
   getAuctionRequests() {
     const now = new Date();
     return this.props.loanRequests.filter(
-      r => r.logic.auctionStarted && r.logic.auctionVerified && (r.logic.auctionEndTime >= now),
+      r =>
+        r.logic.auctionStarted &&
+        r.logic.auctionVerified &&
+        r.logic.auctionEndTime >= now,
     );
   }
 
@@ -27,11 +33,7 @@ export default class TodoList extends Component {
         <h2>Actions à prendre</h2>
 
         {this.getReviewRequests().map(request => (
-          <TodoItem
-            request={request}
-            key={request._id}
-            verify
-          />
+          <TodoItem request={request} key={request._id} verify />
         ))}
 
         {this.getAuctionRequests().map(request => (
@@ -39,7 +41,9 @@ export default class TodoList extends Component {
             request={request}
             key={request._id}
             action="Ajouter une offre"
-            offers={this.props.recentOffers.filter(offer => offer.requestId === request._id)}
+            offers={this.props.recentOffers.filter(
+              offer => offer.requestId === request._id,
+            )}
             auction
           />
         ))}

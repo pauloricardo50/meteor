@@ -12,11 +12,14 @@ export const insertRequest = new ValidatedMethod({
     const userRequests = LoanRequests.find({ userId: this.userId });
 
     if (userRequests.length > 3) {
-      throw new Meteor.Error('maxRequests', 'Vous ne pouvez pas avoir plus de 3 requêtes à la fois');
+      throw new Meteor.Error(
+        'maxRequests',
+        'Vous ne pouvez pas avoir plus de 3 requêtes à la fois',
+      );
     }
 
     // Set all existing requests to inactive
-    userRequests.forEach((request) => {
+    userRequests.forEach(request => {
       LoanRequests.update(request._id, {
         $set: { active: false },
       });
@@ -25,7 +28,6 @@ export const insertRequest = new ValidatedMethod({
     LoanRequests.insert(object);
   },
 });
-
 
 // Lets you set an entire object in the document
 export const updateValues = new ValidatedMethod({
@@ -49,8 +51,7 @@ export const startAuction = new ValidatedMethod({
     const object = {};
     object['logic.auctionStarted'] = true;
     object['logic.auctionStartTime'] = moment().toDate();
-    object['general.a']
-
+    object['general.a'];
 
     // TODO: Changer cet assignment de 60 secondes pour getAuctionEndTime(moment())
     object['logic.auctionEndTime'] = moment().add(30, 's').toDate();
@@ -62,9 +63,8 @@ export const startAuction = new ValidatedMethod({
   },
 });
 
-
 // Gives the end tim of an auction, given the start time
-const getAuctionEndTime = function (startTime) {
+const getAuctionEndTime = function(startTime) {
   const endTime = startTime;
 
   // If the start time is between midnight and 7:00, set endtime to be tomorrow night
@@ -89,7 +89,6 @@ const getAuctionEndTime = function (startTime) {
   return endTime.toDate();
 };
 
-
 // Lets you push a value to an array
 export const pushValue = new ValidatedMethod({
   name: 'loanRequests.pushValue',
@@ -101,7 +100,6 @@ export const pushValue = new ValidatedMethod({
   },
 });
 
-
 // Lets you pop a value from the end of an array
 export const popValue = new ValidatedMethod({
   name: 'loanRequests.popValue',
@@ -112,7 +110,6 @@ export const popValue = new ValidatedMethod({
     LoanRequests.update(id, { $pop: object });
   },
 });
-
 
 // if (Meteor.isServer) {
 //   import { rateLimit } from '/imports/js/server/rate-limit.js';

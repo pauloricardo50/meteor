@@ -12,10 +12,16 @@ const fetchMethodNames = methods => _.pluck(methods, 'name');
 
 const assignLimits = ({ methods, limit, timeRange }) => {
   const methodNames = fetchMethodNames(methods);
-  DDPRateLimiter.addRule({
-    type: 'method',
-    name(name) { return _.contains(methodNames, name); },
-  }, limit, timeRange);
+  DDPRateLimiter.addRule(
+    {
+      type: 'method',
+      name(name) {
+        return _.contains(methodNames, name);
+      },
+    },
+    limit,
+    timeRange,
+  );
 };
 
 export const rateLimit = options => assignLimits(options);

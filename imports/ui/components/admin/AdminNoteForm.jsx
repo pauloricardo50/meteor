@@ -3,7 +3,6 @@ import React, { Component, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
-
 const styles = {
   buttonDiv: {
     marginTop: 15,
@@ -47,5 +46,4 @@ export default class AdminNoteForm extends Component {
   }
 }
 
-AdminNoteForm.propTypes = {
-};
+AdminNoteForm.propTypes = {};

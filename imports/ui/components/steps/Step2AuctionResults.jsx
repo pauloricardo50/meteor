@@ -3,7 +3,8 @@ import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import PartnerOffersTable from '/imports/ui/components/general/PartnerOffersTable.jsx';
+import PartnerOffersTable
+  from '/imports/ui/components/general/PartnerOffersTable.jsx';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -34,7 +35,6 @@ const styles = {
   },
 };
 
-
 export default class Step2AuctionResults extends Component {
   constructor(props) {
     super(props);
@@ -43,7 +43,6 @@ export default class Step2AuctionResults extends Component {
     this.handleContinue = this.handleContinue.bind(this);
   }
 
-
   handleContinue() {
     if (this.props.loanRequest.logic.step < 2) {
       // Go to step 3
@@ -51,8 +50,7 @@ export default class Step2AuctionResults extends Component {
       object['logic.step'] = 2;
       const id = this.props.loanRequest._id;
 
-      cleanMethod('update', id, object,
-      (error) => {
+      cleanMethod('update', id, object, error => {
         if (!error) {
           FlowRouter.go('/step3');
         }
@@ -61,7 +59,6 @@ export default class Step2AuctionResults extends Component {
       FlowRouter.go('/step3');
     }
   }
-
 
   getFakeOffers() {
     const loanWanted = this.props.loanRequest.property.value -
@@ -75,35 +72,40 @@ export default class Step2AuctionResults extends Component {
           interest10: '0.89',
         },
         expertiseRequired: false,
-      }, {
+      },
+      {
         standardOffer: {
           maxAmount: loanWanted * 0.98,
           amortizing: '1',
           interest10: '0.99',
         },
         expertiseRequired: true,
-      }, {
+      },
+      {
         standardOffer: {
           maxAmount: loanWanted * 1,
           amortizing: '1',
           interest10: '0.85',
         },
         expertiseRequired: true,
-      }, {
+      },
+      {
         standardOffer: {
           maxAmount: loanWanted * 1,
           amortizing: '1',
           interest10: '0.91',
         },
         expertiseRequired: false,
-      }, {
+      },
+      {
         standardOffer: {
           maxAmount: loanWanted * 0.96,
           amortizing: '1',
           interest10: '0.85',
         },
         expertiseRequired: false,
-      }, {
+      },
+      {
         standardOffer: {
           maxAmount: loanWanted * 1,
           amortizing: '1',
@@ -122,7 +124,7 @@ export default class Step2AuctionResults extends Component {
 
           <div className="description">
             <p>
-              Voici les offres que vous ont fait les prêteurs, les taux qu&apos;ils vous proposent
+              Voici les offres que vous ont fait les prêteurs, les taux qu'ils vous proposent
               fluctueront encore avec le marché, mais ne devraient pas varier de plus de 0.05%
               si vous concluez votre prêt dans le mois qui suit.
               <br /><br />
@@ -133,9 +135,10 @@ export default class Step2AuctionResults extends Component {
 
           <div style={styles.tableDiv}>
             <PartnerOffersTable
-              offers={this.props.offers && this.props.offers.length > 0 ?
-                this.props.offers :
-                this.getFakeOffers()
+              offers={
+                this.props.offers && this.props.offers.length > 0
+                  ? this.props.offers
+                  : this.getFakeOffers()
               }
             />
           </div>

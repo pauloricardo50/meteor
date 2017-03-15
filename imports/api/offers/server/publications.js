@@ -4,9 +4,8 @@ import Offers from '../offers';
 import LoanRequests from '../../loanrequests/loanrequests';
 import { Roles } from 'meteor/alanning:roles';
 
-
 // Get all offers for the currently active request
-Meteor.publish('activeOffers', function () {
+Meteor.publish('activeOffers', function() {
   const activeRequest = LoanRequests.findOne({
     userId: this.userId,
     active: true,
@@ -17,9 +16,8 @@ Meteor.publish('activeOffers', function () {
   });
 });
 
-
 // Get all offers the partner has made
-Meteor.publish('partnerOffers', function () {
+Meteor.publish('partnerOffers', function() {
   const user = Meteor.users.findOne({ _id: this.userId });
 
   if (Roles.userIsInRole(this.userId, 'partner')) {
@@ -30,9 +28,8 @@ Meteor.publish('partnerOffers', function () {
   }
 });
 
-
 // Publish all offers in the database for admins
-Meteor.publish('allOffers', function () {
+Meteor.publish('allOffers', function() {
   // Verify if user is logged In
   if (Roles.userIsInRole(this.userId, 'admin')) {
     // Return all users
@@ -42,9 +39,8 @@ Meteor.publish('allOffers', function () {
   return this.ready();
 });
 
-
 // Publish all offers for a loanRequest for admins
-Meteor.publish('requestOffers', function (requestId) {
+Meteor.publish('requestOffers', function(requestId) {
   check(requestId, String);
   // Verify if user is logged In
   if (Roles.userIsInRole(this.userId, 'admin')) {

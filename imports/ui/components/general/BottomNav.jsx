@@ -2,7 +2,10 @@ import React, { Component, PropTypes } from 'react';
 
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
-import { BottomNavigation, BottomNavigationItem } from 'material-ui/BottomNavigation';
+import {
+  BottomNavigation,
+  BottomNavigationItem,
+} from 'material-ui/BottomNavigation';
 import Paper from 'material-ui/Paper';
 
 // Icons
@@ -10,7 +13,6 @@ import Home from 'material-ui/svg-icons/action/home';
 import PieChart from 'material-ui/svg-icons/editor/pie-chart';
 import ActionSettings from 'material-ui/svg-icons/action/settings';
 import CallSplit from 'material-ui/svg-icons/communication/call-split';
-
 
 const styles = {
   nav: {
@@ -25,7 +27,6 @@ export default class BottomNav extends Component {
     super(props);
   }
 
-
   render() {
     let currentIndex;
     const url = this.props.currentURL;
@@ -39,7 +40,6 @@ export default class BottomNav extends Component {
     } else {
       currentIndex = 0;
     }
-
 
     return (
       <nav className="hidden-sm hidden-md hidden-lg" style={styles.nav}>
@@ -71,7 +71,6 @@ export default class BottomNav extends Component {
     );
   }
 }
-
 
 BottomNav.propTypes = {
   currentURL: PropTypes.string,

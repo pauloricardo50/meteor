@@ -12,16 +12,12 @@ const styles = {
 
 const NewUserOptions = () => (
   <section className="text-center new-user">
-    <h1>Ça à l&apos;air bien vide!</h1>
+    <h1>Ça à l'air bien vide!</h1>
     <h3 style={styles.h3}>
       Vous pourrez monter votre dossier, lancer les enchères,
       et conclure votre demande de prêt depuis ici.
     </h3>
-    <RaisedButton
-      label="Testez votre éligibilité"
-      primary
-      href="/start"
-    />
+    <RaisedButton label="Testez votre éligibilité" primary href="/start" />
   </section>
 );
 

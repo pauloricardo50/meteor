@@ -422,7 +422,7 @@ const getAcquisitionArray = (state, props) => [
 const getErrorArray = (state, props) => [
   {
     condition: state.usageType === 'primary' &&
-      (props.fortune < props.fees + (0.1 * props.propAndWork) &&
+      (props.fortune < props.fees + 0.1 * props.propAndWork &&
         props.insuranceFortune >= 0.1 * props.propAndWork),
     id: 'error',
     type: 'buttons',

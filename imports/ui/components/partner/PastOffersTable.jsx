@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 
-
 import OfferTableLine from '/imports/ui/components/partner/OfferTableLine.jsx';
 
 const styles = {
@@ -13,7 +12,6 @@ const styles = {
 export default class PastOffersTable extends React.Component {
   constructor(props) {
     super(props);
-
   }
 
   render() {
@@ -38,11 +36,7 @@ export default class PastOffersTable extends React.Component {
           </thead>
           <tbody>
             {this.props.offers.map((offer, index) => (
-              <OfferTableLine
-                offer={offer}
-                key={index}
-                index={index}
-              />
+              <OfferTableLine offer={offer} key={index} index={index} />
             ))}
           </tbody>
         </table>

@@ -1,4 +1,4 @@
-import { Meteor } from 'meteor/meteor';
+import { Meteor } from 'meteor/meteor';
 
 import '/imports/api/api';
 import '../useraccounts-configuration';

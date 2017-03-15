@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 
 import AllUsersTable from '/imports/ui/components/admin/AllUsersTable.jsx';
 
-
 const styles = {
   table: {
     margin: 'auto',

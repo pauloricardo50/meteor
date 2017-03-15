@@ -4,9 +4,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Table, Column, Cell } from 'fixed-data-table';
 import moment from 'moment';
 
-
 import { toMoney } from '/imports/js/conversionFunctions';
-
 
 class DataListWrapper {
   constructor(indexMap, data) {
@@ -18,7 +16,6 @@ class DataListWrapper {
     return this._indexMap.length;
   }
 }
-
 
 export default class AllRequestsTable extends Component {
   constructor(props) {
@@ -35,7 +32,8 @@ export default class AllRequestsTable extends Component {
         updatedAt: request.updatedAt,
         step: request.logic.step + 1,
         value: request.property.value,
-        fortune: request.general.fortuneUsed + request.general.insuranceFortuneUsed,
+        fortune: request.general.fortuneUsed +
+          request.general.insuranceFortuneUsed,
         income: request.general.incomeUsed,
         quality: 'Très Bon',
       };
@@ -60,7 +58,6 @@ export default class AllRequestsTable extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-
   onSortChange(columnKey, sortDir) {
     const sortIndexes = this._defaultSortIndexes.slice();
     sortIndexes.sort((indexA, indexB) => {
@@ -80,7 +77,6 @@ export default class AllRequestsTable extends Component {
       return sortVal;
     });
 
-
     this.setState({
       sortedDataList: new DataListWrapper(sortIndexes, this._dataList._data),
       colSortDirs: {
@@ -91,9 +87,10 @@ export default class AllRequestsTable extends Component {
 
   handleClick(e, rowIndex) {
     const id = this.state.sortedDataList._data[
-      this.state.sortedDataList._indexMap[rowIndex]].requestId;
+      this.state.sortedDataList._indexMap[rowIndex]
+    ].requestId;
 
-    FlowRouter.go(`/admin/requests/${id}`)
+    FlowRouter.go(`/admin/requests/${id}`);
   }
 
   render() {
@@ -229,22 +226,18 @@ export default class AllRequestsTable extends Component {
   }
 }
 
-
 AllRequestsTable.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.any),
 };
-
 
 const SortTypes = {
   ASC: 'ASC',
   DESC: 'DESC',
 };
 
-
 function reverseSortDirection(sortDir) {
   return sortDir === SortTypes.DESC ? SortTypes.ASC : SortTypes.DESC;
 }
-
 
 // Table Cells
 class SortHeaderCell extends React.Component {
@@ -254,27 +247,25 @@ class SortHeaderCell extends React.Component {
     this.onSortChange = this.onSortChange.bind(this);
   }
 
-
   onSortChange(e) {
     e.preventDefault();
 
     if (this.props.onSortChange) {
       this.props.onSortChange(
         this.props.columnKey,
-        this.props.sortDir ?
-          reverseSortDirection(this.props.sortDir) :
-          SortTypes.DESC
+        this.props.sortDir
+          ? reverseSortDirection(this.props.sortDir)
+          : SortTypes.DESC,
       );
     }
   }
-
 
   render() {
     const { sortDir, children } = this.props;
     return (
       <Cell>
         <a onTouchTap={this.onSortChange}>
-          {children} {sortDir ? (sortDir === SortTypes.DESC ? '↓' : '↑') : ''}
+          {children} {sortDir ? sortDir === SortTypes.DESC ? '↓' : '↑' : ''}
         </a>
       </Cell>
     );
@@ -298,9 +289,10 @@ const DateCell = ({ rowIndex, data, columnKey }) => {
   return (
     <Cell>
       {data._data[data._indexMap[rowIndex]][columnKey] !== undefined
-        ? moment(data._data[data._indexMap[rowIndex]][columnKey]).format('D MMM YY à HH:mm:ss')
-        : '-'
-      }
+        ? moment(data._data[data._indexMap[rowIndex]][columnKey]).format(
+            'D MMM YY à HH:mm:ss',
+          )
+        : '-'}
     </Cell>
   );
 };

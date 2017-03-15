@@ -6,7 +6,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import NewUserOptions from '/imports/ui/components/general/NewUserOptions.jsx';
 
-
 export default class MainPage extends React.Component {
   componentDidMount() {
     // if a loanRequest exists, route to the current step
@@ -19,20 +18,14 @@ export default class MainPage extends React.Component {
     DocHead.setTitle('Bienvenue! - e-Potek');
   }
 
-
   render() {
     if (!this.props.loanRequest) {
-      return (
-        <NewUserOptions />
-      );
+      return <NewUserOptions />;
     }
     return (
       <div className="text-center">
         <h1>Oops il y a eu une erreur</h1>
-        <RaisedButton
-          label="Retour"
-          href="/"
-        />
+        <RaisedButton label="Retour" href="/" />
       </div>
     );
   }

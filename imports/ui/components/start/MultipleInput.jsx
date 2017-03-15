@@ -46,15 +46,17 @@ export default class MultipleInput extends Component {
         onTouchTap={() => this.props.setActiveLine(this.props.id)}
       >
 
-        {(multiple && this.props.firstMultiple) &&
+        {multiple &&
+          this.props.firstMultiple &&
           <h1 style={styles.borrowerH1} className="fixed-size">
             <span className="col-xs-5">Emprunteur 1</span>
             <span className="col-xs-5 col-xs-offset-2">Emprunteur 2</span>
             <span className="col-xs-12"><hr style={styles.hr} /></span>
-          </h1>
-        }
+          </h1>}
 
-        <TitleTag style={styles.h1} className="fixed-size">{this.props.text1}</TitleTag>
+        <TitleTag style={styles.h1} className="fixed-size">
+          {this.props.text1}
+        </TitleTag>
 
         <h1 className={classes1} style={styles.textFieldH1}>
           <span className="active">
@@ -76,8 +78,7 @@ export default class MultipleInput extends Component {
                 autoFocus={false}
               />
             </span>
-          </h1>
-        }
+          </h1>}
 
       </article>
     );
@@ -87,10 +88,7 @@ export default class MultipleInput extends Component {
 MultipleInput.propTypes = {
   id: PropTypes.string.isRequired,
   text1: PropTypes.string.isRequired,
-  width: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]),
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   formState: PropTypes.objectOf(PropTypes.any),
   firstMultiple: PropTypes.bool,
   className: PropTypes.string.isRequired,

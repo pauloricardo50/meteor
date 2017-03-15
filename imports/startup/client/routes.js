@@ -3,11 +3,13 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import React from 'react';
 import { mount } from 'react-mounter';
 
-
 // layouts
 import PublicLayout from '/imports/ui/layouts/PublicLayout.jsx';
-import { UserLayout, AdminLayout, PartnerLayout } from '/imports/ui/containers/public/CurrentUserContainer';
-
+import {
+  UserLayout,
+  AdminLayout,
+  PartnerLayout,
+} from '/imports/ui/containers/public/CurrentUserContainer';
 
 // Public Pages
 import HomePage from '/imports/ui/containers/public/HomePageContainer';
@@ -21,43 +23,67 @@ import AboutPage from '/imports/ui/pages/public/AboutPage.jsx';
 import CareersPage from '/imports/ui/pages/public/CareersPage.jsx';
 import TosPage from '/imports/ui/pages/public/TosPage.jsx';
 
-
 // User Pages and components
 import {
-  MainPage, TodoCardPage, FinancePage, ContactPage,
-  Step1Page, Step3Page, Step4Page, Step5Page, Step6Page,
+  MainPage,
+  TodoCardPage,
+  FinancePage,
+  ContactPage,
+  Step1Page,
+  Step3Page,
+  Step4Page,
+  Step5Page,
+  Step6Page,
 } from '/imports/ui/containers/user/ActiveRequestContainer';
 import NewPage from '/imports/ui/pages/user/NewPage.jsx';
-import { RequestProgressBar } from '/imports/ui/containers/user/CurrentURLContainer';
+import {
+  RequestProgressBar,
+} from '/imports/ui/containers/user/CurrentURLContainer';
 import SettingsPage from '/imports/ui/containers/user/SettingsPageContainer';
-import { Step2Page, StrategyPage, StrategySinglePage } from '/imports/ui/containers/user/RequestAndOffersContainer';
-
+import {
+  Step2Page,
+  StrategyPage,
+  StrategySinglePage,
+} from '/imports/ui/containers/user/RequestAndOffersContainer';
 
 // Partner Pages
-import { PartnerHomePage } from '/imports/ui/containers/partner/PartnerRequestsContainer';
-import { PartnerRequestPage } from '/imports/ui/containers/partner/PartnerSingleRequestContainer';
-
+import {
+  PartnerHomePage,
+} from '/imports/ui/containers/partner/PartnerRequestsContainer';
+import {
+  PartnerRequestPage,
+} from '/imports/ui/containers/partner/PartnerSingleRequestContainer';
 
 // Admin Pages
-import { AdminHomePage } from '/imports/ui/containers/admin/AllCollectionsContainer';
+import {
+  AdminHomePage,
+} from '/imports/ui/containers/admin/AllCollectionsContainer';
 import { AdminUsersPage } from '/imports/ui/containers/admin/AllUsersContainer';
-import { AdminRequestsPage } from '/imports/ui/containers/admin/AllRequestsContainer';
-import { AdminSingleRequestPage, AdminOfferPage } from '/imports/ui/containers/admin/SingleRequestContainer';
-import { AdminSingleUserPage } from '/imports/ui/containers/admin/SingleUserContainer';
+import {
+  AdminRequestsPage,
+} from '/imports/ui/containers/admin/AllRequestsContainer';
+import {
+  AdminSingleRequestPage,
+  AdminOfferPage,
+} from '/imports/ui/containers/admin/SingleRequestContainer';
+import {
+  AdminSingleUserPage,
+} from '/imports/ui/containers/admin/SingleUserContainer';
 import AdminActionsPage from '/imports/ui/pages/admin/AdminActionsPage.jsx';
 
 // Automatically route someone who logs out to the homepage
 if (Meteor.isClient) {
-  Accounts.onLogout(function () {
+  Accounts.onLogout(function() {
     FlowRouter.go('/');
   });
 }
 
-
-FlowRouter.triggers.exit((context) => {
-  Session.set('lastRoute', { name: context.route.name, params: context.params });
+FlowRouter.triggers.exit(context => {
+  Session.set('lastRoute', {
+    name: context.route.name,
+    params: context.params,
+  });
 });
-
 
 // Public Routes
 FlowRouter.route('/', {
@@ -131,7 +157,6 @@ FlowRouter.route('/demo', {
     });
   },
 });
-
 
 // User Routes
 FlowRouter.route('/main', {
@@ -234,7 +259,6 @@ FlowRouter.route('/step5/:cardId', {
   },
 });
 
-
 FlowRouter.route('/settings', {
   name: 'Settings',
   action() {
@@ -285,7 +309,6 @@ FlowRouter.route('/strategy/:id', {
   },
 });
 
-
 // // Admin routes
 const adminRoutes = FlowRouter.group({
   prefix: '/admin',
@@ -301,7 +324,6 @@ adminRoutes.route('/', {
   },
 });
 
-
 adminRoutes.route('/requests', {
   name: 'AdminRequests',
   action() {
@@ -310,7 +332,6 @@ adminRoutes.route('/requests', {
     });
   },
 });
-
 
 adminRoutes.route('/requests/:id', {
   name: 'AdminSingleRequest',
@@ -321,7 +342,6 @@ adminRoutes.route('/requests/:id', {
   },
 });
 
-
 adminRoutes.route('/requests/:id/offers/:offerId', {
   name: 'AdminSingleRequest',
   action() {
@@ -330,7 +350,6 @@ adminRoutes.route('/requests/:id/offers/:offerId', {
     });
   },
 });
-
 
 adminRoutes.route('/users', {
   name: 'AdminUsers',
@@ -341,7 +360,6 @@ adminRoutes.route('/users', {
   },
 });
 
-
 adminRoutes.route('/users/:id', {
   name: 'AdminSingleRequest',
   action() {
@@ -351,7 +369,6 @@ adminRoutes.route('/users/:id', {
   },
 });
 
-
 adminRoutes.route('/actions/:action', {
   name: 'AdminSingleRequest',
   action() {
@@ -360,7 +377,6 @@ adminRoutes.route('/actions/:action', {
     });
   },
 });
-
 
 // Partner routes
 const partnerRoutes = FlowRouter.group({

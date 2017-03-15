@@ -15,9 +15,9 @@ const FileSchema = new SimpleSchema({
   fileCount: Number,
 });
 
-
 export const GeneralFilesSchema = new SimpleSchema({
-  buyersContract: { // Declaration d'impots
+  buyersContract: {
+    // Declaration d'impots
     type: Array,
     optional: true,
     maxCount: 100,
@@ -25,39 +25,44 @@ export const GeneralFilesSchema = new SimpleSchema({
   'buyersContract.$': FileSchema,
 });
 
-
 export const BorrowerFilesSchema = new SimpleSchema({
   'taxes.$': FileSchema,
-  identity: { // ID document(s), passport, id, etc.
+  identity: {
+    // ID document(s), passport, id, etc.
     type: Array,
     optional: true,
     maxCount: 100,
   },
   'identity.$': FileSchema,
-  salaryCertificate: { // Yearly salary certificate of last year
+  salaryCertificate: {
+    // Yearly salary certificate of last year
     type: Array,
     optional: true,
     maxCount: 100,
   },
   'salaryCertificate.$': FileSchema,
-  lastSalaries: { // Fiches de salaire, last 3 are required
+  lastSalaries: {
+    // Fiches de salaire, last 3 are required
     type: Array,
     optional: true,
     maxCount: 100,
   },
   'lastSalaries.$': FileSchema,
-  debtCollectionExtract: { // Extrait de l'office des poursuites
+  debtCollectionExtract: {
+    // Extrait de l'office des poursuites
     type: Array,
     optional: true,
     maxCount: 100,
   },
-  taxes: { // Declaration d'impots
+  taxes: {
+    // Declaration d'impots
     type: Array,
     optional: true,
     maxCount: 100,
   },
   'debtCollectionExtract.$': FileSchema,
-  pensionFundCertificate: { // Certificat de la caisse de pension
+  pensionFundCertificate: {
+    // Certificat de la caisse de pension
     type: Array,
     optional: true,
     maxCount: 100,
@@ -89,6 +94,4 @@ export const BorrowerFilesSchema = new SimpleSchema({
   'policy3B.$': FileSchema,
 });
 
-export const PropertyFileSchema = new SimpleSchema({
-
-});
+export const PropertyFileSchema = new SimpleSchema({});

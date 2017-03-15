@@ -20,7 +20,7 @@ function getTrackerLoader(loaderFunc) {
 }
 
 function composeWithTracker(loadFunc, options) {
-  return function (component) {
+  return function(component) {
     return compose(getTrackerLoader(loadFunc), options)(component);
   };
 }

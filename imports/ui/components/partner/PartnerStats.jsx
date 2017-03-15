@@ -60,5 +60,4 @@ export default class PartnerStats extends Component {
   }
 }
 
-PartnerStats.propTypes = {
-};
+PartnerStats.propTypes = {};

@@ -34,7 +34,7 @@ export default class AboutPage extends Component {
               e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève.
               Expansion prévue prochainement.
               <br /><br />
-              L&apos;équipe derrière e-Potek est composée d&apos;entrepreneurs vétérans avec une
+              L'équipe derrière e-Potek est composée d'entrepreneurs vétérans avec une
               expérience cumulée de plus de 30 ans dans la finance et les
               prêts hypothécaires en Suisse.
             </p>
@@ -45,5 +45,4 @@ export default class AboutPage extends Component {
   }
 }
 
-AboutPage.propTypes = {
-};
+AboutPage.propTypes = {};

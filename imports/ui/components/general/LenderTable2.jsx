@@ -4,7 +4,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import { toMoney } from '/imports/js/conversionFunctions';
 
-
 export default class LenderTable2 extends React.Component {
   constructor(props) {
     super(props);
@@ -28,19 +27,21 @@ export default class LenderTable2 extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {this.props.partnerOffers && this.props.partnerOffers.map((offer, index) => (
-            <tr>
-              <td className="left-align">{index + 1}</td>
-              <td className="left-align">{`CHF ${toMoney(offer.maxValue)}`}</td>
-              <td className="right-align">{`CHF ${this.calculatePayment(offer)}`}</td>
-              <td className="right-align">
-                <RaisedButton
-                  label="Condition"
-                  primary
-                />
-              </td>
-            </tr>
-          ))}
+          {this.props.partnerOffers &&
+            this.props.partnerOffers.map((offer, index) => (
+              <tr>
+                <td className="left-align">{index + 1}</td>
+                <td className="left-align">
+                  {`CHF ${toMoney(offer.maxValue)}`}
+                </td>
+                <td className="right-align">
+                  {`CHF ${this.calculatePayment(offer)}`}
+                </td>
+                <td className="right-align">
+                  <RaisedButton label="Condition" primary />
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     );

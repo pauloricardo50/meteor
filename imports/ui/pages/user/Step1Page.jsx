@@ -4,12 +4,12 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import Step1InitialForm from '/imports/ui/components/steps/Step1InitialForm.jsx';
+import Step1InitialForm
+  from '/imports/ui/components/steps/Step1InitialForm.jsx';
 import TextInput from '/imports/ui/components/forms/TextInput.jsx';
 
 import cleanMethod from '/imports/api/cleanMethods';
 import { toMoney } from '/imports/js/conversionFunctions';
-
 
 const styles = {
   mainDiv: {
@@ -35,7 +35,6 @@ export default class Step1Page extends Component {
     DocHead.setTitle('Étape 1 - e-Potek');
   }
 
-
   isReady() {
     let projectReady = false;
     let taxesReady = false;
@@ -47,18 +46,16 @@ export default class Step1Page extends Component {
 
   handleClick() {
     if (this.isReady() && this.props.loanRequest.logic.step < 1) {
-
       const object = {};
       object['logic.step'] = 1;
       const id = this.props.loanRequest._id;
 
-      cleanMethod('update', id, object,
-        (error) => {
-          if (!error) {
-            // Head to step 2
-            FlowRouter.go('/step2');
-          }
-        });
+      cleanMethod('update', id, object, error => {
+        if (!error) {
+          // Head to step 2
+          FlowRouter.go('/step2');
+        }
+      });
     } else {
       FlowRouter.go('/step2');
     }
@@ -70,7 +67,9 @@ export default class Step1Page extends Component {
 
         <h1 className="stepTitle">
           1ère Étape
-          <small> Encore quelques informations avant qu&apos;on se mette au travail</small>
+          <small>
+            {' '}Encore quelques informations avant qu'on se mette au travail
+          </small>
         </h1>
 
         <section className="mask1 animated fadeIn" style={styles.mainDiv}>
@@ -97,7 +96,6 @@ export default class Step1Page extends Component {
     );
   }
 }
-
 
 Step1Page.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,

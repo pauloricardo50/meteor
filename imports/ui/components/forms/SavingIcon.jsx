@@ -17,22 +17,27 @@ export default class SavingIcon extends Component {
   componentWillReceiveProps(nextProps) {
     // If saving changed from false to true, show icon for 3 seconds
     if (this.props.saving === false && nextProps.saving === true) {
-      this.setState({
-        fade: false,
-        showIcon: true,
-      },
+      this.setState(
+        {
+          fade: false,
+          showIcon: true,
+        },
         () => {
           // Start fading out after 2 seconds
-          timer1 = Meteor.setTimeout(() => {
-            this.setState({ fade: true },
-              () => {
+          timer1 = Meteor.setTimeout(
+            () => {
+              this.setState({ fade: true }, () => {
                 // Remove icon 1 second later (animate.css duration is 1s)
-                timer2 = Meteor.setTimeout(() => {
-                  this.setState({ showIcon: false });
-                }, 1000);
-              },
-            );
-          }, 2000);
+                timer2 = Meteor.setTimeout(
+                  () => {
+                    this.setState({ showIcon: false });
+                  },
+                  1000,
+                );
+              });
+            },
+            2000,
+          );
         },
       );
     }
@@ -47,10 +52,27 @@ export default class SavingIcon extends Component {
     // If showIcon and there is no error
     if (this.state.showIcon && !this.props.errorExists) {
       return (
-        <span style={this.props.style} className={this.state.fade && 'animated zoomOut'}>
-          <svg className="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-            <circle className="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
-            <path className="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+        <span
+          style={this.props.style}
+          className={this.state.fade && 'animated zoomOut'}
+        >
+          <svg
+            className="checkmark"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 52 52"
+          >
+            <circle
+              className="checkmark__circle"
+              cx="26"
+              cy="26"
+              r="25"
+              fill="none"
+            />
+            <path
+              className="checkmark__check"
+              fill="none"
+              d="M14.1 27.2l7.1 7.2 16.7-16.8"
+            />
           </svg>
         </span>
       );

@@ -3,7 +3,6 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import HomeDev from '/imports/ui/components/general/HomeDev.jsx';
 
-
 const styles = {
   style: {
     height: 50,
@@ -21,8 +20,8 @@ const styles = {
   },
 };
 
-
-{/* <RaisedButton
+{
+  /* <RaisedButton
   label="Testez votre éligibilité"
   href="/start"
   style={styles.style}
@@ -38,24 +37,24 @@ const styles = {
   labelStyle={styles.label}
   overlayStyle={styles.button}
   primary
-/> */}
-
+/> */
+}
 
 module.exports = function(props) {
   return (
-
-  // <!-- <head>
-  //   <title>
-  //     Launchaco - Name a Business.
-  //   </title>
-  //   <meta charSet="utf-8">
-  //   <meta name="viewport" content="width=device-width,initial-scale=1">
-  //   <link rel="stylesheet" type="text/css" href="css/main.css">
-  //   <link rel="stylesheet" type="text/css" href="css/devices.css">
-  // </head> -->
-  <template name="launchaco" style={{ display: 'unset' }}>
-    <header className="header">
-      {/* <!-- <div className="container-lrg">
+    // <!-- <head>
+    //   <title>
+    //     Launchaco - Name a Business.
+    //   </title>
+    //   <meta charSet="utf-8">
+    //   <meta name="viewport" content="width=device-width,initial-scale=1">
+    //   <link rel="stylesheet" type="text/css" href="css/main.css">
+    //   <link rel="stylesheet" type="text/css" href="css/devices.css">
+    // </head> -->
+    (
+      <template name="launchaco" style={{ display: 'unset' }}>
+        <header className="header">
+          {/* <!-- <div className="container-lrg">
         <div className="col-12 spread">
           <div>
             <a className="logo">
@@ -72,48 +71,48 @@ module.exports = function(props) {
           </div>
         </div>
       </div> --> */}
-      <div className="container-sml text-center">
-        <div className="col-12">
-          <h1 className="heading animated fadeInDown">
-            <span>La meilleure hypothèque</span>
-            <hr />
-            <span>Tout simplement</span>
-          </h1>
+          <div className="container-sml text-center">
+            <div className="col-12">
+              <h1 className="heading animated fadeInDown">
+                <span>La meilleure hypothèque</span>
+                <hr />
+                <span>Tout simplement</span>
+              </h1>
 
-        </div>
-      </div>
-      <div className="container-lrg flex">
-        <div className="col-6 centervertical animated fadeInLeft">
-          <h2 className="desc">
-            {/* Mettez votre prêt hypothécaire aux enchères. */}
-          </h2>
-          <div className="ctas">
-            <RaisedButton
-              label="Prenez le test"
-              href="/start1?type=test"
-              style={styles.style}
-              buttonStyle={styles.button}
-              labelStyle={styles.label}
-              overlayStyle={styles.button}
-            />
-            <RaisedButton
-              label="Faire une acquisition"
-              href="/start1?type=acquisition"
-              style={styles.style}
-              buttonStyle={styles.button}
-              labelStyle={styles.label}
-              overlayStyle={styles.button}
-            />
-            <HomeDev
-              style={styles.style}
-              buttonStyle={styles.button}
-              labelStyle={styles.label}
-              overlayStyle={styles.button}
-            />
+            </div>
           </div>
-        </div>
-        <div className="col-6 sidedevices animated fadeInRight">
-          {/* <div className="computeriphone">
+          <div className="container-lrg flex">
+            <div className="col-6 centervertical animated fadeInLeft">
+              <h2 className="desc">
+                {/* Mettez votre prêt hypothécaire aux enchères. */}
+              </h2>
+              <div className="ctas">
+                <RaisedButton
+                  label="Prenez le test"
+                  href="/start1?type=test"
+                  style={styles.style}
+                  buttonStyle={styles.button}
+                  labelStyle={styles.label}
+                  overlayStyle={styles.button}
+                />
+                <RaisedButton
+                  label="Faire une acquisition"
+                  href="/start1?type=acquisition"
+                  style={styles.style}
+                  buttonStyle={styles.button}
+                  labelStyle={styles.label}
+                  overlayStyle={styles.button}
+                />
+                <HomeDev
+                  style={styles.style}
+                  buttonStyle={styles.button}
+                  labelStyle={styles.label}
+                  overlayStyle={styles.button}
+                />
+              </div>
+            </div>
+            <div className="col-6 sidedevices animated fadeInRight">
+              {/* <div className="computeriphone">
             <div className="computer">
               <div className="mask">
                 <img className="mask-img" src="/img/webapp.svg" />
@@ -125,70 +124,70 @@ module.exports = function(props) {
               </div>
             </div>
           </div> */}
-          <div className="iphoneipad">
-            <div className="iphone">
-              <div className="mask">
-                <img className="mask-img" src="/img/mobileapp.svg" />
-              </div>
-            </div>
-            <div className="ipad">
-              <div className="mask">
-                <img className="mask-img" src="/img/tabletapp.svg" />
+              <div className="iphoneipad">
+                <div className="iphone">
+                  <div className="mask">
+                    <img className="mask-img" src="/img/mobileapp.svg" />
+                  </div>
+                </div>
+                <div className="ipad">
+                  <div className="mask">
+                    <img className="mask-img" src="/img/tabletapp.svg" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+        </header>
+        <div className="feature3 animated fadeInUp">
+          <div className="container-lrg flex">
+            <div className="col-12">
+              <b className="emoji">
+                <span className="fa fa-calculator" />
+              </b>
+              <h3 className="subheading">
+                1. Testez votre éligibilité
+              </h3>
+              <p className="paragraph">
+                Identifiez le montant que vous pouvez emprunter en quelques clics.
+              </p>
+            </div>
+            <div className="col-12">
+              <b className="emoji">
+                <span className="fa fa-gavel" />
+              </b>
+              <h3 className="subheading">
+                2. Organisez les enchères
+              </h3>
+              <p className="paragraph">
+                Obtenez de manière anonyme des offres sur mesure de la part des prêteurs du marché.
+              </p>
+            </div>
+            <div className="col-12">
+              <b className="emoji">
+                <span className="fa fa-laptop" />
+              </b>
+              <h3 className="subheading">
+                3. Communiquez avec votre prêteur
+              </h3>
+              <p className="paragraph">
+                La plateforme simple et sécurisée vous permet de communiquer facilement avec votre prêteur.
+              </p>
+            </div>
+            <div className="col-12">
+              <b className="emoji">
+                <span className="fa fa-check" />
+              </b>
+              <h3 className="subheading">
+                4. Obtenez votre prêt
+              </h3>
+              <p className="paragraph">
+                Vous êtes accompagnés dans vos décisions stratégiques par des spécialistes en financement jusqu'à l'obtention de votre prêt.
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
-    </header>
-    <div className="feature3 animated fadeInUp">
-      <div className="container-lrg flex">
-        <div className="col-12">
-          <b className="emoji">
-            <span className="fa fa-calculator" />
-          </b>
-          <h3 className="subheading">
-            1. Testez votre éligibilité
-          </h3>
-          <p className="paragraph">
-            Identifiez le montant que vous pouvez emprunter en quelques clics.
-          </p>
-        </div>
-        <div className="col-12">
-          <b className="emoji">
-            <span className="fa fa-gavel" />
-          </b>
-          <h3 className="subheading">
-            2. Organisez les enchères
-          </h3>
-          <p className="paragraph">
-            Obtenez de manière anonyme des offres sur mesure de la part des prêteurs du marché.
-          </p>
-        </div>
-        <div className="col-12">
-          <b className="emoji">
-            <span className="fa fa-laptop" />
-          </b>
-          <h3 className="subheading">
-            3. Communiquez avec votre prêteur
-          </h3>
-          <p className="paragraph">
-            La plateforme simple et sécurisée vous permet de communiquer facilement avec votre prêteur.
-          </p>
-        </div>
-        <div className="col-12">
-          <b className="emoji">
-            <span className="fa fa-check" />
-          </b>
-          <h3 className="subheading">
-            4. Obtenez votre prêt
-          </h3>
-          <p className="paragraph">
-            Vous êtes accompagnés dans vos décisions stratégiques par des spécialistes en financement jusqu'à l'obtention de votre prêt.
-          </p>
-        </div>
-      </div>
-    </div>
-    {/* <div className="feature1">
+        {/* <div className="feature1">
       <div className="container-sml">
         <div className="col-12 text-center">
           <h3 className="heading">
@@ -214,33 +213,33 @@ module.exports = function(props) {
         </div>
       </div>
     </div> */}
-    <div className="feature2">
-      <div className="container-lrg flex">
-        <div className="col-6">
-          <b className="emoji">
-            💵
-          </b>
-          <h3 className="subheading">
-            Sans engagement et entièrement gratuit
-          </h3>
-          <p className="paragraph">
-            Avancez à votre rythme, arrêtez quand vous voulez, tout ça en toute gratuité, pour toujours.
-          </p>
+        <div className="feature2">
+          <div className="container-lrg flex">
+            <div className="col-6">
+              <b className="emoji">
+                💵
+              </b>
+              <h3 className="subheading">
+                Sans engagement et entièrement gratuit
+              </h3>
+              <p className="paragraph">
+                Avancez à votre rythme, arrêtez quand vous voulez, tout ça en toute gratuité, pour toujours.
+              </p>
+            </div>
+            <div className="col-6">
+              <b className="emoji">
+                🔒
+              </b>
+              <h3 className="subheading">
+                En toute sécurité
+              </h3>
+              <p className="paragraph">
+                Vos données sont en sûreté, et vous maintenez une confidentialité maximale auprès de tous les établissements financiers.
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="col-6">
-          <b className="emoji">
-            🔒
-          </b>
-          <h3 className="subheading">
-            En toute sécurité
-          </h3>
-          <p className="paragraph">
-            Vos données sont en sûreté, et vous maintenez une confidentialité maximale auprès de tous les établissements financiers.
-          </p>
-        </div>
-      </div>
-    </div>
-    {/* <div className="socialproof">
+        {/* <div className="socialproof">
       <div className="container-sml">
         <div className="flex text-center">
           <div className="col-12">
@@ -254,62 +253,65 @@ module.exports = function(props) {
         </div>
       </div>
     </div> */}
-    <div className="footer">
-      <div className="content">
-        <div className="container-lrg center">
-          <div className="col-7">
-            <h5 className="heading">
-              <span>La meilleure hypothèque</span>
-              <hr />
-              <span>Tout simplement</span>
-            </h5>
-          </div>
-          <div className="col-5">
-            <div className="ctas text-right">
-              {/* <a className="ctas-button" href="/start">
+        <div className="footer">
+          <div className="content">
+            <div className="container-lrg center">
+              <div className="col-7">
+                <h5 className="heading">
+                  <span>La meilleure hypothèque</span>
+                  <hr />
+                  <span>Tout simplement</span>
+                </h5>
+              </div>
+              <div className="col-5">
+                <div className="ctas text-right">
+                  {/* <a className="ctas-button" href="/start">
                 Testez votre Éligibilité
               </a>
               <a className="ctas-button-2" href="/login">
                 Se Connecter
               </a> */}
-              <RaisedButton
-                label="Testez votre éligibilité"
-                href="/start"
-                style={styles.style}
-                buttonStyle={styles.button}
-                labelStyle={styles.label}
-                overlayStyle={styles.button}
-              />
+                  <RaisedButton
+                    label="Testez votre éligibilité"
+                    href="/start"
+                    style={styles.style}
+                    buttonStyle={styles.button}
+                    labelStyle={styles.label}
+                    overlayStyle={styles.button}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="container-sml footer-nav text-center">
+              <div className="col-12">
+                <div>
+                  <a className="nav-link" href="/about">
+                    A Propos
+                  </a>
+                  <a
+                    className="nav-link"
+                    href="mailto:contact@e-potek.ch?subject=J'adore%20e-Potek"
+                  >
+                    Contact
+                  </a>
+                  <a className="nav-link" href="/careers">
+                    Carrières
+                  </a>
+                  <a className="nav-link" href="/tos">
+                    Conditions
+                  </a>
+                </div>
+                <br />
+                <div>
+                  <span>
+                    © 2016-2017 e-Potek
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="container-sml footer-nav text-center">
-          <div className="col-12">
-            <div>
-              <a className="nav-link" href="/about">
-                A Propos
-              </a>
-              <a className="nav-link" href="mailto:contact@e-potek.ch?subject=J'adore%20e-Potek">
-                Contact
-              </a>
-              <a className="nav-link" href="/careers">
-                Carrières
-              </a>
-              <a className="nav-link" href="/tos">
-                Conditions
-              </a>
-            </div>
-            <br />
-            <div>
-              <span>
-                © 2016-2017 e-Potek
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </template>
-
-);
+      </template>
+    )
+  );
 };

@@ -1,16 +1,16 @@
-import createNumberMask from 'text-mask-addons/dist/createNumberMask'
+import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 
 export const swissFrancMask = createNumberMask({
   prefix: 'CHF ',
   includeThousandsSeparator: true,
-  thousandsSeparatorSymbol: '\'',
+  thousandsSeparatorSymbol: "'",
 });
 
 export const percentMask = createNumberMask({
   prefix: '',
   suffix: '%',
   includeThousandsSeparator: true,
-  thousandsSeparatorSymbol: '\'',
+  thousandsSeparatorSymbol: "'",
   allowDecimal: true,
   decimalSymbol: ',',
 });

@@ -6,7 +6,6 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 
-
 export default class AdminActionsDropdown extends Component {
   constructor(props) {
     super(props);
@@ -27,14 +26,14 @@ export default class AdminActionsDropdown extends Component {
       case 'newPartnerAccount':
         FlowRouter.go('/admin/actions/newpartner');
         break;
-      default: break;
+      default:
+        break;
     }
 
     this.setState({
       isOpen: false,
     });
   }
-
 
   handleOpenMenu(event) {
     event.preventDefault();
@@ -45,13 +44,11 @@ export default class AdminActionsDropdown extends Component {
     });
   }
 
-
   handleCloseMenu() {
     this.setState({
       isOpen: false,
     });
   }
-
 
   render() {
     return (
@@ -70,7 +67,10 @@ export default class AdminActionsDropdown extends Component {
         >
           <Menu>
             {/* <MenuItem primaryText="Intéraction Client" onTouchTap={e => this.handleClick(e, 'client')} /> */}
-            <MenuItem primaryText="Créer compte partenaire" onTouchTap={e => this.handleClick(e, 'newPartnerAccount')} />
+            <MenuItem
+              primaryText="Créer compte partenaire"
+              onTouchTap={e => this.handleClick(e, 'newPartnerAccount')}
+            />
           </Menu>
         </Popover>
       </div>
@@ -78,5 +78,4 @@ export default class AdminActionsDropdown extends Component {
   }
 }
 
-AdminActionsDropdown.propTypes = {
-};
+AdminActionsDropdown.propTypes = {};

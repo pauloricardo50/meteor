@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { DocHead } from 'meteor/kadira:dochead';
 
-
 const Template = require('/imports/ui/launchaco/index.jsx');
-
 
 export default class HomePage extends Component {
   componentDidMount() {
@@ -11,8 +9,6 @@ export default class HomePage extends Component {
   }
 
   render() {
-    return (
-      <Template style={{ display: 'unset !important' }} />
-    );
+    return <Template style={{ display: 'unset !important' }} />;
   }
 }

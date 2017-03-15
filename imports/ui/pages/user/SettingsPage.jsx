@@ -6,9 +6,8 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import Checkbox from 'material-ui/Checkbox';
 import RaisedButton from 'material-ui/RaisedButton';
 
-
-import RequestSelector from '/imports/ui/components/general/RequestSelector.jsx';
-
+import RequestSelector
+  from '/imports/ui/components/general/RequestSelector.jsx';
 
 const styles = {
   section: {
@@ -29,9 +28,7 @@ const styles = {
   },
 };
 
-
 export default class SettingsPage extends Component {
-
   constructor(props) {
     super(props);
   }
@@ -44,7 +41,10 @@ export default class SettingsPage extends Component {
     return (
       <section className="mask1 animated fadeIn" style={styles.section}>
         <h1>Réglages</h1>
-        <span className="hidden-sm hidden-md hidden-lg" style={styles.mobileLogoutButton}>
+        <span
+          className="hidden-sm hidden-md hidden-lg"
+          style={styles.mobileLogoutButton}
+        >
           <RaisedButton
             label="Déconnexion"
             onTouchTap={() => Meteor.logout(() => FlowRouter.go('/'))}
@@ -56,7 +56,9 @@ export default class SettingsPage extends Component {
           <div className="form-group">
             <h4 style={styles.h}>Adresse email</h4><a>Changer</a>
             <br />
-            <p className="secondary">{this.props.currentUser.emails[0].address}</p>
+            <p className="secondary">
+              {this.props.currentUser.emails[0].address}
+            </p>
           </div>
 
           <div className="form-group">
@@ -85,7 +87,6 @@ export default class SettingsPage extends Component {
             <RequestSelector loanRequests={this.props.loanRequests} />
           </div>
         </div>
-
 
         {/* <ul>
             <li><a href="/admin/users">{{_ "nav_admin_users"}}</a></li>

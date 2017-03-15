@@ -4,7 +4,6 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
-
 export default class HomeDev extends React.Component {
   constructor(props) {
     super(props);
@@ -17,7 +16,6 @@ export default class HomeDev extends React.Component {
     this.handleClose = this.handleClose.bind(this);
   }
 
-
   handleOpen() {
     this.setState({ open: true });
   }
@@ -28,20 +26,17 @@ export default class HomeDev extends React.Component {
 
   render() {
     const actions = [
-      <FlatButton
-        label="Annuler"
-        onTouchTap={this.handleClose}
-      />,
-      <FlatButton
-        label="Ok"
-        primary
-        onTouchTap={this.handleClose}
-      />,
+      <FlatButton label="Annuler" onTouchTap={this.handleClose} />,
+      <FlatButton label="Ok" primary onTouchTap={this.handleClose} />,
     ];
 
     return (
       <span>
-        <RaisedButton label="Refinancer un bien" onTouchTap={this.handleOpen} {...this.props} />
+        <RaisedButton
+          label="Refinancer un bien"
+          onTouchTap={this.handleOpen}
+          {...this.props}
+        />
         <Dialog
           title="En Développement"
           actions={actions}

@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -78,7 +78,6 @@ export default class ArrayInput extends React.Component {
         <div>
           {this.getArray()}
         </div>
-
 
         <div className="text-center">
           <RaisedButton

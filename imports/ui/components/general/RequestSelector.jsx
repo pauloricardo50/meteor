@@ -5,9 +5,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
 
-
 import cleanMethod from '/imports/api/cleanMethods';
-
 
 const styles = {
   field: {
@@ -39,10 +37,18 @@ export default class RequestSelector extends Component {
       this.props.loanRequests.forEach((request, index2, array) => {
         if (index2 === value) {
           // If selected value is iterated over in the forEach loop, set to active
-          this.updateValue({ active: true }, request._id, index2 + 1 === array.length);
+          this.updateValue(
+            { active: true },
+            request._id,
+            index2 + 1 === array.length,
+          );
         } else {
           // Else, set active to false
-          this.updateValue({ active: false }, request._id, index2 + 1 === array.length);
+          this.updateValue(
+            { active: false },
+            request._id,
+            index2 + 1 === array.length,
+          );
         }
       });
     }
@@ -52,8 +58,7 @@ export default class RequestSelector extends Component {
   }
 
   updateValue(object, id, lastCall) {
-    cleanMethod('update', id, object,
-    (error) => {
+    cleanMethod('update', id, object, error => {
       if (!error && lastCall) {
         // Refresh the page so that all subscriptions and active components are properly updated
         // Only do this on the last call of this function
@@ -71,9 +76,13 @@ export default class RequestSelector extends Component {
           onChange={this.handleChange}
           style={styles.field}
         >
-          {this.props.loanRequests.map((loanRequest, index) =>
-            <MenuItem value={index} key={index} primaryText={loanRequest.property.address1} />,
-          )}
+          {this.props.loanRequests.map((loanRequest, index) => (
+            <MenuItem
+              value={index}
+              key={index}
+              primaryText={loanRequest.property.address1}
+            />
+          ))}
 
           {/* Don't allow more than 3 requests at a time */}
           {this.props.loanRequests.length <= 3 && <Divider />}

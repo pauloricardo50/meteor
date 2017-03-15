@@ -1,13 +1,12 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import StrategyCash from '/imports/ui/components/general/StrategyCash.jsx';
 import StrategyLoan from '/imports/ui/components/general/StrategyLoan.jsx';
-import StrategyAmortization from '/imports/ui/components/general/StrategyAmortization.jsx';
-
+import StrategyAmortization
+  from '/imports/ui/components/general/StrategyAmortization.jsx';
 
 import RaisedButton from 'material-ui/RaisedButton';
-
 
 const styles = {
   backButton: {
@@ -18,15 +17,22 @@ const styles = {
   },
 };
 
-const StrategySinglePage = (props) => {
+const StrategySinglePage = props => {
   const id = FlowRouter.getParam('id');
   let Comp = 'div';
 
   switch (id) {
-    case 'cash': Comp = StrategyCash; break;
-    case 'loan': Comp = StrategyLoan; break;
-    case 'amortizing': Comp = StrategyAmortization; break;
-    default: break;
+    case 'cash':
+      Comp = StrategyCash;
+      break;
+    case 'loan':
+      Comp = StrategyLoan;
+      break;
+    case 'amortizing':
+      Comp = StrategyAmortization;
+      break;
+    default:
+      break;
   }
   return (
     <div>

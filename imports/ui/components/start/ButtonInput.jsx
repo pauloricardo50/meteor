@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-
 const styles = {
   button: {
     marginRight: 8,
@@ -19,7 +18,9 @@ export default class ButtonInput extends Component {
       this.props.setFormState(this.props.deleteId, undefined);
     }
 
-    this.props.setFormState(this.props.id, value,
+    this.props.setFormState(
+      this.props.id,
+      value,
       () => this.props.setActiveLine(''),
     );
   }
@@ -31,7 +32,9 @@ export default class ButtonInput extends Component {
 
     const currentValue = this.props.formState[this.props.id];
     if (currentValue !== undefined) {
-      const currentButton = this.props.buttons.find(button => button.id === currentValue);
+      const currentButton = this.props.buttons.find(
+        button => button.id === currentValue,
+      );
 
       return currentButton.label || currentButton.id;
     }
@@ -46,7 +49,9 @@ export default class ButtonInput extends Component {
       >
 
         <h1 className="fixed-size">
-          <span className={this.props.id === 'error' && 'error'}>{this.props.text1}</span>
+          <span className={this.props.id === 'error' && 'error'}>
+            {this.props.text1}
+          </span>
           &nbsp;
           {this.props.question && <br />}
           <span className="active">{this.getText()}</span>
@@ -54,11 +59,14 @@ export default class ButtonInput extends Component {
           {this.props.text2 || ''}
         </h1>
 
-        <div style={styles.buttons} className={!this.props.active ? 'inputHider' : 'animated fadeIn'}>
+        <div
+          style={styles.buttons}
+          className={!this.props.active ? 'inputHider' : 'animated fadeIn'}
+        >
           {this.props.buttons.map((button, index) => (
             <RaisedButton
               label={button.label || button.id}
-              onTouchTap={(e) => {
+              onTouchTap={e => {
                 this.handleClick(e, button.id);
                 if (typeof button.onClick === 'function') {
                   button.onClick();

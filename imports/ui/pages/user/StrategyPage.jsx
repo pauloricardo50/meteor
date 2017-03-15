@@ -3,7 +3,6 @@ import { DocHead } from 'meteor/kadira:dochead';
 
 import Badge from 'material-ui/Badge';
 
-
 export default class StrategyPage extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +11,6 @@ export default class StrategyPage extends Component {
   componentDidMount() {
     DocHead.setTitle('Stratégies - e-Potek');
   }
-
 
   getStrategies() {
     const r = this.props.loanRequest;
@@ -23,15 +21,17 @@ export default class StrategyPage extends Component {
         description: 'Ajustez la répartition vos fonds propres pour définir la taille de votre emprunt',
         notification: !r.logic.hasValidatedCashStrategy,
         show: true,
-      }, {
+      },
+      {
         id: 'loan',
         title: 'Stratégie de Taux',
         description: 'Définissez comment répartir votre emprunt et maitrisez le risque que vous prenez',
         notification: !r.logic.loanStrategyPreset && r.logic.step > 1,
         show: r.logic.step > 1,
-      }, {
+      },
+      {
         id: 'amortizing',
-        title: 'Stratégie d\'Amortissement',
+        title: "Stratégie d'Amortissement",
         description: 'Choisissez comment amortir votre emprunt, et optimisez votre situation fiscale',
         notification: !r.logic.amortizingStrategyPreset && r.logic.step > 1,
         show: r.logic.step > 1,
@@ -45,12 +45,15 @@ export default class StrategyPage extends Component {
         {this.getStrategies().map((strat, i) => {
           if (strat.show) {
             return (
-              <a className="mask1 hover-rise" key={i} href={`/strategy/${strat.id}`}>
+              <a
+                className="mask1 hover-rise"
+                key={i}
+                href={`/strategy/${strat.id}`}
+              >
                 <div className="description">
                   <h3 className="fixed-size">
                     {strat.notification
-                      ? (
-                        <Badge
+                      ? <Badge
                           badgeContent={1}
                           primary
                           badgeStyle={{ position: 'absolute', right: -30 }}
@@ -58,9 +61,9 @@ export default class StrategyPage extends Component {
                         >
                           <span>{strat.title}</span>
                         </Badge>
-                      )
-                      : <span>{strat.title} <span className="fa fa-check success" /></span>
-                    }
+                      : <span>
+                          {strat.title} <span className="fa fa-check success" />
+                        </span>}
                   </h3>
                   <p>{strat.description}</p>
                 </div>

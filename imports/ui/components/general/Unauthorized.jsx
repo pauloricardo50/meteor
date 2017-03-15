@@ -9,10 +9,9 @@ import myTheme from '/imports/js/mui_custom';
 
 const theme = myTheme;
 
-
 const Unauthorized = props => (
   <div className="text-center">
-    <h1>{props.message || 'On dirait qu\'il y a eu une erreur'}</h1>
+    <h1>{props.message || "On dirait qu'il y a eu une erreur"}</h1>
 
     <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
       <RaisedButton
@@ -23,7 +22,6 @@ const Unauthorized = props => (
     </MuiThemeProvider>
   </div>
 );
-
 
 Unauthorized.propTypes = {
   message: PropTypes.string,

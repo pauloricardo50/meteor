@@ -2,11 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import moment from 'moment';
 import { Meteor } from 'meteor/meteor';
 
-
 import PartnerStats from '/imports/ui/components/partner/PartnerStats.jsx';
-import CurrentAuctionsTable from '/imports/ui/components/partner/CurrentAuctionsTable.jsx';
-import PastOffersTable from '/imports/ui/components/partner/PastOffersTable.jsx';
-
+import CurrentAuctionsTable
+  from '/imports/ui/components/partner/CurrentAuctionsTable.jsx';
+import PastOffersTable
+  from '/imports/ui/components/partner/PastOffersTable.jsx';
 
 // const dummyAuctions = [
 //   {
@@ -26,7 +26,6 @@ import PastOffersTable from '/imports/ui/components/partner/PastOffersTable.jsx'
 //     _id: 234,
 //   },
 // ];
-
 
 const styles = {
   section: {
@@ -60,9 +59,12 @@ export default class PartnerHomePage extends Component {
   }
 
   componentDidMount() {
-    time = Meteor.setInterval(() => {
-      this.setState({ currentTime: new Date() });
-    }, 1000);
+    time = Meteor.setInterval(
+      () => {
+        this.setState({ currentTime: new Date() });
+      },
+      1000,
+    );
   }
 
   componentWillUnmount() {
@@ -74,7 +76,8 @@ export default class PartnerHomePage extends Component {
     this.props.loanRequests.forEach((request, index) => {
       // TODO replace this if with better logic, maybe server side "auctionHasEnded"
       // TODO get server time for this comparison
-      if (!request.general.selectedPartner &&
+      if (
+        !request.general.selectedPartner &&
         !(request.logic.auctionEndTime <= this.state.currentTime)
       ) {
         const object = {
@@ -98,29 +101,34 @@ export default class PartnerHomePage extends Component {
     return (
       <section className="mask1" style={styles.section}>
         <div className="partner-logos">
-          <img src={this.getPartnerLogo()} alt="Logo Partenaire" className="partner" />
-          <img src="/img/logo_black.svg" alt="Logo e-Potek" className="epotek" />
+          <img
+            src={this.getPartnerLogo()}
+            alt="Logo Partenaire"
+            className="partner"
+          />
+          <img
+            src="/img/logo_black.svg"
+            alt="Logo e-Potek"
+            className="epotek"
+          />
         </div>
 
         {/* <PartnerStats /> */}
 
-        {this.getCurrentAuctions().length ?
-          <CurrentAuctionsTable
-            currentAuctions={this.getCurrentAuctions()}
-            offers={this.props.currentOffers}
-          /> :
-          (<div className="text-center col-xs-12" style={styles.noAuctionDiv}>
-            <h2>Aucune nouvelle offre à faire en ce moment.</h2>
-          </div>)
-        }
+        {this.getCurrentAuctions().length
+          ? <CurrentAuctionsTable
+              currentAuctions={this.getCurrentAuctions()}
+              offers={this.props.currentOffers}
+            />
+          : <div className="text-center col-xs-12" style={styles.noAuctionDiv}>
+              <h2>Aucune nouvelle offre à faire en ce moment.</h2>
+            </div>}
 
         <div className="col-xs-12">
           <hr className="col-xs-4 col-xs-offset-4" />
         </div>
 
-        <PastOffersTable
-          offers={this.props.oldOffers}
-        />
+        <PastOffersTable offers={this.props.oldOffers} />
 
       </section>
     );

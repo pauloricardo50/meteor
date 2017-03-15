@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 
 import Slider from 'material-ui/Slider';
 
@@ -17,7 +17,7 @@ export default class FortuneSliders2 extends React.Component {
     this.state = {
       value1: 1,
       value2: 0,
-      propertyValue: 1000000
+      propertyValue: 1000000,
     };
 
     this.handleChange1 = this.handleChange1.bind(this);
@@ -42,20 +42,26 @@ export default class FortuneSliders2 extends React.Component {
   }
 
   render() {
-    const cash = this.state.propertyValue * (1 - (this.state.value1 * 0.8));
+    const cash = this.state.propertyValue * (1 - this.state.value1 * 0.8);
 
     return (
-      <section className="col-xs-12 col-sm-8 col-sm-offset-2 mask1" style={styles.section}>
+      <section
+        className="col-xs-12 col-sm-8 col-sm-offset-2 mask1"
+        style={styles.section}
+      >
         <h1>Propriété de CHF {toMoney(this.state.propertyValue)}</h1>
         <div className="col-xs-4">
           <div className="property-value2">
-            <div className="loan2" style={{ height: `${this.state.value1 * 80}%` }} />
+            <div
+              className="loan2"
+              style={{ height: `${this.state.value1 * 80}%` }}
+            />
 
             <div
               className="insurance2"
-              style={{ height: `${
-                (this.state.value1 * 80) + ((1 - (this.state.value1 * 0.8)) * this.state.value2 * 100)
-                }%` }}
+              style={{
+                height: `${this.state.value1 * 80 + (1 - this.state.value1 * 0.8) * this.state.value2 * 100}%`,
+              }}
             />
 
             <div className="vertical-line2" />
@@ -67,7 +73,9 @@ export default class FortuneSliders2 extends React.Component {
                 step={0.01}
                 defaultValue={1}
                 onChange={this.handleChange1}
-                ref={(c) => { this.slider1 = c; }}
+                ref={c => {
+                  this.slider1 = c;
+                }}
                 axis="y"
                 style={{ height: '80%', bottom: '0', position: 'absolute' }}
               />
@@ -78,7 +86,9 @@ export default class FortuneSliders2 extends React.Component {
                 min={0}
                 max={1}
                 onChange={this.handleChange2}
-                ref={(c) => { this.slider2 = c; }}
+                ref={c => {
+                  this.slider2 = c;
+                }}
                 sliderStyle={styles.sliderStyle}
                 axis="y"
                 style={{ height: `${this.getHeight()}%` }}
@@ -88,7 +98,13 @@ export default class FortuneSliders2 extends React.Component {
         </div>
         <div className="col-xs-8 values2">
           <p>Emprunt</p>
-          <h2>CHF {toMoney(Math.round(this.state.value1 * this.state.propertyValue * 0.8))}</h2>
+          <h2>
+            CHF
+            {' '}
+            {toMoney(
+              Math.round(this.state.value1 * this.state.propertyValue * 0.8),
+            )}
+          </h2>
           <p>Cash</p>
           <h2>CHF {toMoney(Math.round(cash * (1 - this.state.value2)))}</h2>
           <p>2ème pilier</p>
@@ -101,5 +117,4 @@ export default class FortuneSliders2 extends React.Component {
   }
 }
 
-FortuneSliders2.propTypes = {
-};
+FortuneSliders2.propTypes = {};

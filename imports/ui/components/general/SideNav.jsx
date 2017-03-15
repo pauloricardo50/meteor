@@ -56,10 +56,10 @@ export default class SideNav extends Component {
       requestName = r.property.address1;
     }
     // Only update if the value exists and is new
-    if ((r && requestName) && (requestName !== this.state.requestName)) {
+    if (r && requestName && requestName !== this.state.requestName) {
       this.setState({ requestName });
     }
-    if ((r && r.property) && r.property.value) {
+    if (r && r.property && r.property.value) {
       if (r.property.value !== this.state.propertyValue) {
         this.setState({ propertyValue: r.property.value });
       }
@@ -73,9 +73,8 @@ export default class SideNav extends Component {
     return true;
   }
 
-
   getStrategyNotification() {
-    const r = this.props.loanRequest
+    const r = this.props.loanRequest;
     let value = 0;
 
     if (!r.logic.hasValidatedCashStrategy) {
@@ -93,7 +92,6 @@ export default class SideNav extends Component {
     return value;
   }
 
-
   render() {
     // Don't display any content if there is no active LoanRequest
     let content1;
@@ -104,9 +102,10 @@ export default class SideNav extends Component {
           <li>
             <a
               href="/main"
-              className={(this.props.currentURL === '/main' ||
-                this.props.currentURL.substring(0, 5) === '/step') &&
-                'active-link'
+              className={
+                (this.props.currentURL === '/main' ||
+                  this.props.currentURL.substring(0, 5) === '/step') &&
+                  'active-link'
               }
             >
               <span className="icon fa fa-home fa-2x" />
@@ -116,25 +115,26 @@ export default class SideNav extends Component {
           <li>
             <a
               href="/strategy"
-              className={this.props.currentURL.substring(0, 9) === '/strategy' && 'active-link'}
-            >
-              <span className="icon" ><CallSplit /></span>
-              {this.getStrategyNotification() ?
-                <Badge
-                  badgeContent={this.getStrategyNotification()}
-                  primary
-                  badgeStyle={{ top: 'calc(50% - 12px)', right: -40 }}
-                  style={{ display: 'inline-flex', padding: 0 }}
-                >
-                  <h5>Stratégies</h5>
-                </Badge> :
-                <h5>
-                  Stratégies&nbsp;&nbsp;
-                  {strategiesChosen(this.props.loanRequest) &&
-                    <span className="fa fa-check success" />
-                  }
-                </h5>
+              className={
+                this.props.currentURL.substring(0, 9) === '/strategy' &&
+                  'active-link'
               }
+            >
+              <span className="icon"><CallSplit /></span>
+              {this.getStrategyNotification()
+                ? <Badge
+                    badgeContent={this.getStrategyNotification()}
+                    primary
+                    badgeStyle={{ top: 'calc(50% - 12px)', right: -40 }}
+                    style={{ display: 'inline-flex', padding: 0 }}
+                  >
+                    <h5>Stratégies</h5>
+                  </Badge>
+                : <h5>
+                    Stratégies&nbsp;&nbsp;
+                    {strategiesChosen(this.props.loanRequest) &&
+                      <span className="fa fa-check success" />}
+                  </h5>}
             </a>
           </li>
           <li>
@@ -149,10 +149,7 @@ export default class SideNav extends Component {
         </ul>
       );
 
-
-      content2 = (
-        <SideNavFinance loanRequest={this.props.loanRequest} />
-      );
+      content2 = <SideNavFinance loanRequest={this.props.loanRequest} />;
       // content2 = this.props.currentURL !== '/finance' &&
       //   (<article className="mask1 finance-widget" style={styles.chartMask}>
       //     <ProjectChart
@@ -174,13 +171,11 @@ export default class SideNav extends Component {
       // );
     } else {
       // If the user is not on the main page, show a link to it
-      content1 = (
-        this.props.currentURL !== '/main' ?
-        (<a href="/main" className="side-nav-link">
-          <h3 className="bold active text-center">Commencer</h3>
-        </a>) :
-        null
-        );
+      content1 = this.props.currentURL !== '/main'
+        ? <a href="/main" className="side-nav-link">
+            <h3 className="bold active text-center">Commencer</h3>
+          </a>
+        : null;
       content2 = null;
     }
 

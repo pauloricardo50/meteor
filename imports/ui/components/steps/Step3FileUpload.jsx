@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 
-
 import DropzoneArray from '/imports/ui/components/general/DropzoneArray.jsx';
 
 export default class Step3FileUpload extends Component {
@@ -19,13 +18,13 @@ export default class Step3FileUpload extends Component {
 
     return [
       {
-        title: 'Acte d\'achat',
+        title: "Acte d'achat",
         folderName: 'buyersContract',
         currentValue: r.general.files.buyersContract,
         id: 'general.files.buyersContract',
       },
       {
-        title: 'Pièce d\'identité',
+        title: "Pièce d'identité",
         folderName: 'identity',
         currentValue: r.borrowers[0].files.identity,
         id: 'borrowers.0.files.identity',
@@ -41,7 +40,7 @@ export default class Step3FileUpload extends Component {
         done: false,
       },
       {
-        title: 'Extrait de l\'office des poursuites (dev)',
+        title: "Extrait de l'office des poursuites (dev)",
         files: 1,
         done: false,
       },
@@ -51,13 +50,12 @@ export default class Step3FileUpload extends Component {
         done: false,
       },
       {
-        title: 'Copie d\'acte d\'achat (dev)',
+        title: "Copie d'acte d'achat (dev)",
         files: 2,
         done: false,
       },
     ];
   }
-
 
   render() {
     const twoBorrowers = this.props.loanRequest.borrowers.length > 1;
@@ -66,7 +64,10 @@ export default class Step3FileUpload extends Component {
       <section className="mask1">
         <h1>{twoBorrowers ? 'Nos documents' : 'Mes documents'}</h1>
 
-        <DropzoneArray array={this.getArray()} requestId={this.props.loanRequest._id} />
+        <DropzoneArray
+          array={this.getArray()}
+          requestId={this.props.loanRequest._id}
+        />
 
       </section>
     );

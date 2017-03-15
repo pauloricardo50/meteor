@@ -1,11 +1,10 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 
 import TextField from 'material-ui/TextField';
 import MaskedInput from 'react-text-mask';
 
 import { swissFrancMask } from '/imports/js/textMasks';
 import { toNumber } from '/imports/js/conversionFunctions';
-
 
 export default class StartTextField extends React.Component {
   getStyles() {
@@ -27,7 +26,9 @@ export default class StartTextField extends React.Component {
 
   handleChange(event) {
     // Save a Number if it is money, else the string
-    const value = this.props.money ? toNumber(event.target.value) : event.target.value;
+    const value = this.props.money
+      ? toNumber(event.target.value)
+      : event.target.value;
     this.props.setFormState(this.props.id, value, () => null);
   }
 
@@ -38,10 +39,7 @@ export default class StartTextField extends React.Component {
       <TextField
         style={this.getStyles()}
         name={this.props.id}
-        value={this.props.zeroAllowed
-          ? val
-          : val || ''
-        }
+        value={this.props.zeroAllowed ? val : val || ''}
         onChange={e => this.handleChange(e, false)}
         onBlur={() => this.props.setActiveLine('')}
         hintText={this.props.placeholder || (this.props.money ? 'CHF' : '')}
@@ -54,12 +52,8 @@ export default class StartTextField extends React.Component {
             guide
             pattern="[0-9]*"
             autoFocus={this.props.autoFocus}
-            value={this.props.zeroAllowed
-              ? val
-              : val || ''
-            }
-          />
-        }
+            value={this.props.zeroAllowed ? val : val || ''}
+          />}
       </TextField>
     );
   }
@@ -67,10 +61,7 @@ export default class StartTextField extends React.Component {
 
 StartTextField.propTypes = {
   id: PropTypes.string.isRequired,
-  width: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]),
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   setFormState: PropTypes.func.isRequired,
   setActiveLine: PropTypes.func.isRequired,
   formState: PropTypes.objectOf(PropTypes.any),

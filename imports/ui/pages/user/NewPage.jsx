@@ -7,7 +7,6 @@ import cleanMethod from '/imports/api/cleanMethods';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
-
 const styles = {
   firstButton: {
     float: 'left',
@@ -16,7 +15,6 @@ const styles = {
     float: 'right',
   },
 };
-
 
 export default class NewPage extends Component {
   constructor(props) {
@@ -101,25 +99,24 @@ export default class NewPage extends Component {
         });
       }
 
-
-      cleanMethod('insert', '', object,
-        (error) => {
-          if (!error) {
-            FlowRouter.go('/main');
-            Bert.alert({
-              title: 'Bienvenue!',
-              message: `<h4 class="bert">C'est parti pour ${this.state.textValue}</h4>`,
-              type: 'success',
-              style: 'growl-top-right',
-              hideDelay: 5000,
-            });
-          }
-        });
+      cleanMethod('insert', '', object, error => {
+        if (!error) {
+          FlowRouter.go('/main');
+          Bert.alert({
+            title: 'Bienvenue!',
+            message: `<h4 class="bert">C'est parti pour ${this.state.textValue}</h4>`,
+            type: 'success',
+            style: 'growl-top-right',
+            hideDelay: 5000,
+          });
+        }
+      });
     } else {
-      this.setState({ errorText: 'Pas de query Params! Allez à www.e-potek.ch/start' });
+      this.setState({
+        errorText: 'Pas de query Params! Allez à www.e-potek.ch/start',
+      });
     }
   }
-
 
   textChange(e) {
     // Set textValue and remove errorText message if there was one
@@ -131,10 +128,11 @@ export default class NewPage extends Component {
     }
   }
 
-
   render() {
     return (
-      <section className="mask1 animated fadeIn newPage col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+      <section
+        className="mask1 animated fadeIn newPage col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3"
+      >
         <h2>Donnez un nom à ce projet!</h2>
         <h4>Entrez le nom de la rue et le numéro.</h4>
         <form onSubmit={this.newRequest}>
@@ -150,13 +148,21 @@ export default class NewPage extends Component {
           </div>
           <br />
           <br />
-          <RaisedButton label="Annuler" href="/main" style={styles.firstButton} />
-          <RaisedButton label="Continuer" primary style={styles.secondButton} type="submit" />
+          <RaisedButton
+            label="Annuler"
+            href="/main"
+            style={styles.firstButton}
+          />
+          <RaisedButton
+            label="Continuer"
+            primary
+            style={styles.secondButton}
+            type="submit"
+          />
         </form>
       </section>
     );
   }
 }
 
-NewPage.propTypes = {
-};
+NewPage.propTypes = {};

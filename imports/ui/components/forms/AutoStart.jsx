@@ -3,7 +3,6 @@ import React, { Component, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
-
 const styles = {
   button: {
     marginRight: 8,
@@ -13,7 +12,6 @@ const styles = {
     marginBottom: 0,
   },
 };
-
 
 export default class AutoStart extends Component {
   inputSwitch(input, index) {
@@ -50,18 +48,19 @@ export default class AutoStart extends Component {
             ))}
           </div>
         );
-      default: return null;
+      default:
+        return null;
     }
   }
 
   render() {
     return (
       <form>
-        {this.props.formArray.map((input, index) => this.inputSwitch(input, index))}
+        {this.props.formArray.map((input, index) =>
+          this.inputSwitch(input, index))}
       </form>
     );
   }
 }
 
-AutoStart.propTypes = {
-};
+AutoStart.propTypes = {};

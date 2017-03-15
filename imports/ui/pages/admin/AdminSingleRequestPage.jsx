@@ -56,8 +56,7 @@ export default class AdminSingleRequestPage extends Component {
             <h3>{stringKey}</h3>
             {value > 10000
               ? <p>{`CHF ${toMoney(value)}`}</p>
-              : <p>{`${value}`}</p>
-            }
+              : <p>{`${value}`}</p>}
           </li>
         );
       default:
@@ -70,13 +69,13 @@ export default class AdminSingleRequestPage extends Component {
     }
   }
 
-
   render() {
     return (
       <div>
         <RaisedButton
           label="Retour"
-          onTouchTap={() => Session.get('lastRoute') && FlowRouter.go(Session.get('lastRoute'))}
+          onTouchTap={() =>
+            Session.get('lastRoute') && FlowRouter.go(Session.get('lastRoute'))}
           style={styles.returnButton}
           disabled={!Session.get('lastRoute')}
         />
@@ -88,31 +87,31 @@ export default class AdminSingleRequestPage extends Component {
 
           <div className="text-center" style={styles.actions}>
             {adminActions(this.props.loanRequest).length > 0
-              ? adminActions(this.props.loanRequest).map(action =>
-                <div key={action.name} className="form-group">
-                  <RaisedButton
-                    label={action.name}
-                    onTouchTap={action.handleClick}
-                    primary
-                  />
-                </div>,
-              )
-              : <h2 className="secondary">Aucune action à prendre</h2>
-            }
+              ? adminActions(this.props.loanRequest).map(action => (
+                  <div key={action.name} className="form-group">
+                    <RaisedButton
+                      label={action.name}
+                      onTouchTap={action.handleClick}
+                      primary
+                    />
+                  </div>
+                ))
+              : <h2 className="secondary">Aucune action à prendre</h2>}
           </div>
 
           <ProjectChart
             name={this.props.loanRequest.property.address1}
             propertyValue={this.props.loanRequest.property.value}
             fortuneUsed={this.props.loanRequest.general.fortuneUsed}
-            insuranceFortuneUsed={this.props.loanRequest.general.insuranceFortuneUsed}
+            insuranceFortuneUsed={
+              this.props.loanRequest.general.insuranceFortuneUsed
+            }
             horizontal
           />
 
           <ul className="request-map">
-            {Object.keys(this.props.loanRequest).map(
-              key => this.renderObject(key, this.props.loanRequest)
-            )}
+            {Object.keys(this.props.loanRequest).map(key =>
+              this.renderObject(key, this.props.loanRequest))}
           </ul>
 
         </section>

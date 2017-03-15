@@ -31,7 +31,7 @@ export default class FortuneSliders extends Component {
     this.state = {
       fortune: 1,
       insuranceFortune: 0,
-      propertyValue: 1000000
+      propertyValue: 1000000,
     };
 
     this.handleChange1 = this.handleChange1.bind(this);
@@ -56,25 +56,28 @@ export default class FortuneSliders extends Component {
   }
 
   render() {
-    const cashRatio = 1 - (this.state.fortune * 0.8);
-    const insuranceRatio = this.state.insuranceFortune ?
-      this.state.insuranceFortune * (cashRatio - 0.1) : 0;
+    const cashRatio = 1 - this.state.fortune * 0.8;
+    const insuranceRatio = this.state.insuranceFortune
+      ? this.state.insuranceFortune * (cashRatio - 0.1)
+      : 0;
     const fortuneRatio = cashRatio - insuranceRatio;
 
     return (
       <section style={styles.section}>
         <h1>Propriété de CHF {toMoney(this.state.propertyValue)}</h1>
         <div className="property-value">
-          <h2 className="loan text-center" style={{ width: `${this.state.fortune * 80}%` }} >
-            CHF 100&apos;000
+          <h2
+            className="loan text-center"
+            style={{ width: `${this.state.fortune * 80}%` }}
+          >
+            CHF 100'000
           </h2>
 
           <div
             className="insurance"
-            style={{ width: `${
-              (this.state.fortune * 80) +
-              ((0.9 - (this.state.fortune * 0.8)) * this.state.insuranceFortune * 100)
-            }%` }}
+            style={{
+              width: `${this.state.fortune * 80 + (0.9 - this.state.fortune * 0.8) * this.state.insuranceFortune * 100}%`,
+            }}
           />
 
           <div className="vertical-line" />
@@ -86,7 +89,9 @@ export default class FortuneSliders extends Component {
               step={0.01}
               defaultValue={1}
               onChange={this.handleChange1}
-              ref={(c) => { this.slider1 = c; }}
+              ref={c => {
+                this.slider1 = c;
+              }}
             />
           </div>
 
@@ -96,7 +101,9 @@ export default class FortuneSliders extends Component {
                 min={0}
                 max={1}
                 onChange={this.handleChange2}
-                ref={(c) => { this.slider2 = c; }}
+                ref={c => {
+                  this.slider2 = c;
+                }}
                 sliderStyle={styles.sliderStyle}
               />
             </MuiThemeProvider>
@@ -104,11 +111,19 @@ export default class FortuneSliders extends Component {
         </div>
         <div className="col-xs-12 values">
           <p>Emprunt</p>
-          <h2>CHF {toMoney(Math.round(this.state.propertyValue * (1 - cashRatio)))}</h2>
+          <h2>
+            CHF
+            {' '}
+            {toMoney(Math.round(this.state.propertyValue * (1 - cashRatio)))}
+          </h2>
           <p>Cash</p>
-          <h2>CHF {toMoney(Math.round(this.state.propertyValue * fortuneRatio))}</h2>
+          <h2>
+            CHF {toMoney(Math.round(this.state.propertyValue * fortuneRatio))}
+          </h2>
           <p>2ème pilier</p>
-          <h2>CHF {toMoney(Math.round(this.state.propertyValue * insuranceRatio))}</h2>
+          <h2>
+            CHF {toMoney(Math.round(this.state.propertyValue * insuranceRatio))}
+          </h2>
           <p>Prêteurs</p>
           <h2>{this.state.fortune > 0.7 / 0.8 ? '10' : '20'}</h2>
         </div>
@@ -117,5 +132,4 @@ export default class FortuneSliders extends Component {
   }
 }
 
-FortuneSliders.propTypes = {
-};
+FortuneSliders.propTypes = {};

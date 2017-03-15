@@ -1,9 +1,8 @@
 import { Meteor } from 'meteor/meteor';
-import { Roles } from 'meteor/alanning:roles'
-
+import { Roles } from 'meteor/alanning:roles';
 
 Meteor.publish('allUsers', function() {
-    // Verify if the current user is an admin
+  // Verify if the current user is an admin
   if (Roles.userIsInRole(this.userId, 'admin')) {
     // Return all users
     return Meteor.users.find();
@@ -12,7 +11,7 @@ Meteor.publish('allUsers', function() {
   return this.ready();
 });
 
-Meteor.publish('currentUser', function () {
+Meteor.publish('currentUser', function() {
   if (this.userId) {
     return Meteor.users.find({
       _id: this.userId,
@@ -22,7 +21,7 @@ Meteor.publish('currentUser', function () {
   return this.ready();
 });
 
-Meteor.publish('user', function (id) {
+Meteor.publish('user', function(id) {
   if (Roles.userIsInRole(this.userId, 'admin')) {
     return Meteor.users.find({
       _id: id,

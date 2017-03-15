@@ -1,9 +1,7 @@
-import React, {PropTypes} from 'react';
-
+import React, { PropTypes } from 'react';
 
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-
 
 export default class StartSelectField extends React.Component {
   constructor(props) {
@@ -13,9 +11,12 @@ export default class StartSelectField extends React.Component {
   }
 
   handleChange(event, index, value) {
-    this.props.setFormState(this.props.id, value, () => this.props.setActiveLine(''));
+    this.props.setFormState(
+      this.props.id,
+      value,
+      () => this.props.setActiveLine(''),
+    );
   }
-
 
   render() {
     return (
@@ -25,12 +26,14 @@ export default class StartSelectField extends React.Component {
         maxHeight={200}
       >
         {/* <MenuItem value={null} primaryText="" /> */}
-        {this.props.options.map(option => option.id !== undefined &&
-          <MenuItem
-            value={option.id}
-            primaryText={option.label}
-            key={option.id}
-          />,
+        {this.props.options.map(
+          option =>
+            option.id !== undefined &&
+            <MenuItem
+              value={option.id}
+              primaryText={option.label}
+              key={option.id}
+            />,
         )}
       </SelectField>
     );
@@ -39,10 +42,7 @@ export default class StartSelectField extends React.Component {
 
 StartSelectField.propTypes = {
   id: PropTypes.string.isRequired,
-  width: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]),
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   setFormState: PropTypes.func.isRequired,
   setActiveLine: PropTypes.func.isRequired,
   formState: PropTypes.objectOf(PropTypes.any),

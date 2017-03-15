@@ -12,10 +12,9 @@ Offers.allow({
   },
   update(userId, doc) {
     // This is true if someone is logged in and ownership is correct
-    return !!userId && (userId === doc.userId);
+    return !!userId && userId === doc.userId;
   },
 });
-
 
 const singleOffer = new SimpleSchema({
   maxAmount: {
@@ -75,7 +74,6 @@ const singleOffer = new SimpleSchema({
     optional: true,
   },
 });
-
 
 export const OfferSchema = new SimpleSchema({
   userId: {
@@ -137,7 +135,6 @@ export const OfferSchema = new SimpleSchema({
   },
   expertiseRequired: Boolean,
 });
-
 
 // Attach schema
 Offers.attachSchema(OfferSchema);

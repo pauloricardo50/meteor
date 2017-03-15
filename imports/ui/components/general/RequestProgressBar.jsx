@@ -3,7 +3,6 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown.jsx';
 
-
 const styles = {
   logoDiv: {
     position: 'absolute',
@@ -54,7 +53,6 @@ export default class RequestProgressBar extends React.Component {
     }
   }
 
-
   progressClasses(stepNumber) {
     const classes = this.activeClass(stepNumber);
 
@@ -78,9 +76,8 @@ export default class RequestProgressBar extends React.Component {
   }
 
   activeClass(stepNumber) {
-    return (stepNumber === this.state.activeStep) ? 'current ' : '';
+    return stepNumber === this.state.activeStep ? 'current ' : '';
   }
-
 
   routeToStep(stepNumber) {
     // prevent people from going to a specified step if it hasn't been unlocked
@@ -95,17 +92,44 @@ export default class RequestProgressBar extends React.Component {
       return (
         <header className="header-progressbar">
           <ul className="progressbar">
-            <li className={this.progressClasses(0)} id="progressStep1" onTouchTap={() => this.routeToStep(1)} />
-            <li className={this.progressClasses(1)} id="progressStep2" onTouchTap={() => this.routeToStep(2)} />
-            <li className={this.progressClasses(2)} id="progressStep3" onTouchTap={() => this.routeToStep(3)} />
-            <li className={this.progressClasses(3)} id="progressStep4" onTouchTap={() => this.routeToStep(4)} />
-            <li className={this.progressClasses(4)} id="progressStep5" onTouchTap={() => this.routeToStep(5)} />
-            <li className={this.progressClasses(5)} id="progressStep6" onTouchTap={() => this.routeToStep(6)} />
+            <li
+              className={this.progressClasses(0)}
+              id="progressStep1"
+              onTouchTap={() => this.routeToStep(1)}
+            />
+            <li
+              className={this.progressClasses(1)}
+              id="progressStep2"
+              onTouchTap={() => this.routeToStep(2)}
+            />
+            <li
+              className={this.progressClasses(2)}
+              id="progressStep3"
+              onTouchTap={() => this.routeToStep(3)}
+            />
+            <li
+              className={this.progressClasses(3)}
+              id="progressStep4"
+              onTouchTap={() => this.routeToStep(4)}
+            />
+            <li
+              className={this.progressClasses(4)}
+              id="progressStep5"
+              onTouchTap={() => this.routeToStep(5)}
+            />
+            <li
+              className={this.progressClasses(5)}
+              id="progressStep6"
+              onTouchTap={() => this.routeToStep(6)}
+            />
           </ul>
 
           {/* Large screens only */}
           <div className="header-progress-menu hidden-xs">
-            <TopNavDropdown public={false} currentUser={this.props.currentUser} />
+            <TopNavDropdown
+              public={false}
+              currentUser={this.props.currentUser}
+            />
           </div>
 
           {/* {

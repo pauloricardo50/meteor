@@ -6,9 +6,7 @@ import { getInterests, getAmortization } from '/imports/js/finance-math';
 import { toMoney } from '/imports/js/conversionFunctions';
 
 const styles = {
-  container: {
-
-  },
+  container: {},
 };
 
 const colors = {
@@ -28,7 +26,7 @@ export default class ExpensesChart extends Component {
       this.state = {
         interests: getInterests(this.props.loanRequest),
         amortization: getAmortization(this.props.loanRequest),
-        maintenance: (this.props.loanRequest.property.value * 0.01) / 12,
+        maintenance: this.props.loanRequest.property.value * 0.01 / 12,
       };
     } else {
       this.state = {
@@ -37,7 +35,6 @@ export default class ExpensesChart extends Component {
         maintenance: props.maintenance,
       };
     }
-
 
     this.createChart = this.createChart.bind(this);
     this.resize = this.resize.bind(this);
@@ -51,9 +48,7 @@ export default class ExpensesChart extends Component {
   componentWillReceiveProps(n) {
     const p = this.props;
 
-    this.setState({
-
-    });
+    this.setState({});
 
     if (
       n.interests !== p.interests ||
@@ -64,18 +59,14 @@ export default class ExpensesChart extends Component {
       const update = () => {
         this.chart.update({
           title: {
-            text: `CHF ~${
-              toMoney(
-                Math.round(
-                  this.state.interests + this.state.amortization + this.state.maintenance,
-                ),
-              )
-            }<br>par mois`,
+            text: `CHF ~${toMoney(Math.round(this.state.interests + this.state.amortization + this.state.maintenance))}<br>par mois`,
           },
           plotOptions: {
             pie: {
               dataLabels: {
-                enabled: this.state.interests && this.state.amortization && this.state.maintenance,
+                enabled: this.state.interests &&
+                  this.state.amortization &&
+                  this.state.maintenance,
               },
             },
           },
@@ -86,12 +77,14 @@ export default class ExpensesChart extends Component {
                   name: 'Intérêts',
                   y: this.state.interests,
                   color: colors.interest,
-                }, {
+                },
+                {
                   name: 'Amortissement',
                   y: this.state.amortization,
                   color: colors.amortization,
-                }, {
-                  name: 'Charges d\'Entretien',
+                },
+                {
+                  name: "Charges d'Entretien",
                   y: this.state.maintenance,
                   color: colors.maintenance,
                 },
@@ -101,19 +94,24 @@ export default class ExpensesChart extends Component {
         });
       };
 
-
       if (this.props.loanRequest) {
-        this.setState({
-          interests: getInterests(n.loanRequest),
-          amortization: getAmortization(n.loanRequest),
-          maintenance: (n.loanRequest.property.value * 0.01) / 12,
-        }, () => update());
+        this.setState(
+          {
+            interests: getInterests(n.loanRequest),
+            amortization: getAmortization(n.loanRequest),
+            maintenance: n.loanRequest.property.value * 0.01 / 12,
+          },
+          () => update(),
+        );
       } else {
-        this.setState({
-          interests: n.interests,
-          amortization: n.amortizing,
-          maintenance: n.maintenance,
-        }, () => update());
+        this.setState(
+          {
+            interests: n.interests,
+            amortization: n.amortizing,
+            maintenance: n.maintenance,
+          },
+          () => update(),
+        );
       }
     }
   }
@@ -124,13 +122,7 @@ export default class ExpensesChart extends Component {
         type: 'pie',
       },
       title: {
-        text: `CHF ~${
-          toMoney(
-            Math.round(
-              this.state.interests + this.state.amortization + this.state.maintenance,
-            ),
-          )
-        }<br>par mois`,
+        text: `CHF ~${toMoney(Math.round(this.state.interests + this.state.amortization + this.state.maintenance))}<br>par mois`,
         verticalAlign: 'middle',
         floating: true,
         style: {
@@ -154,7 +146,8 @@ export default class ExpensesChart extends Component {
             enabled: true,
             format: '<b>{point.name}</b><br />CHF {point.y:,.0f}',
             style: {
-              color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+              color: (Highcharts.theme && Highcharts.theme.contrastTextColor) ||
+                'black',
               overflow: 'visible',
             },
           },
@@ -180,12 +173,14 @@ export default class ExpensesChart extends Component {
               name: 'Intérêts',
               y: this.state.interests,
               color: colors.interest,
-            }, {
+            },
+            {
               name: 'Amortissement',
               y: this.state.amortization,
               color: colors.amortization,
-            }, {
-              name: 'Charges d\'Entretien',
+            },
+            {
+              name: "Charges d'Entretien",
               y: this.state.maintenance,
               color: colors.maintenance,
             },
@@ -199,13 +194,12 @@ export default class ExpensesChart extends Component {
 
     Highcharts.setOptions({
       lang: {
-        thousandsSep: '\'',
+        thousandsSep: "'",
       },
     });
 
     this.chart = new Highcharts.Chart('expensesChart', options);
   }
-
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.resize);
@@ -218,7 +212,9 @@ export default class ExpensesChart extends Component {
     const d = document;
     const documentElement = d.documentElement;
     const body = d.getElementsByTagName('body')[0];
-    const newWidth = w.innerWidth || documentElement.clientWidth || body.clientWidth;
+    const newWidth = w.innerWidth ||
+      documentElement.clientWidth ||
+      body.clientWidth;
 
     if (oldWidth && oldWidth !== newWidth) {
       Meteor.clearTimeout(timeout);
@@ -227,19 +223,19 @@ export default class ExpensesChart extends Component {
         this.chart = undefined;
       }
 
-      timeout = Meteor.setTimeout(() => {
-        Meteor.defer(() => this.createChart());
-      }, 200);
+      timeout = Meteor.setTimeout(
+        () => {
+          Meteor.defer(() => this.createChart());
+        },
+        200,
+      );
     }
 
     oldWidth = newWidth;
   }
 
-
   render() {
-    return (
-      <div id="expensesChart" style={styles.container} />
-    );
+    return <div id="expensesChart" style={styles.container} />;
   }
 }
 

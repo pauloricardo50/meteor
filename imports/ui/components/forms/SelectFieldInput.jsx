@@ -4,10 +4,8 @@ import { Meteor } from 'meteor/meteor';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-
 import SavingIcon from './SavingIcon.jsx';
 import cleanMethod from '/imports/api/cleanMethods';
-
 
 const styles = {
   div: {
@@ -50,17 +48,17 @@ export default class SelectFieldInput extends React.Component {
     object[this.props.id] = this.state.value;
     const id = this.props.requestId;
 
-    cleanMethod('update', id, object,
-      (error) => {
-        this.setState({ saving: false });
+    cleanMethod('update', id, object, error => {
+      this.setState({ saving: false });
 
-        if (!error) {
-          // on success, set saving briefly to true, before setting it to false again to trigger icon
-          this.setState({ errorText: '', saving: true },
-            this.setState({ saving: false }),
-          );
-        }
-      });
+      if (!error) {
+        // on success, set saving briefly to true, before setting it to false again to trigger icon
+        this.setState(
+          { errorText: '', saving: true },
+          this.setState({ saving: false }),
+        );
+      }
+    });
   }
 
   render() {
@@ -76,13 +74,13 @@ export default class SelectFieldInput extends React.Component {
           style={this.props.style}
         >
           <MenuItem value={null} primaryText="" />
-          {this.props.options.map((option, index) =>
-            (<MenuItem
+          {this.props.options.map((option, index) => (
+            <MenuItem
               value={option.key}
               primaryText={option.name}
               key={index}
-            />),
-          )}
+            />
+          ))}
         </SelectField>
         <SavingIcon
           saving={this.state.saving}
@@ -94,14 +92,10 @@ export default class SelectFieldInput extends React.Component {
   }
 }
 
-
 SelectFieldInput.propTypes = {
   label: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
-  currentValue: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]),
+  currentValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   requestId: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(React.PropTypes.object).isRequired,
 };

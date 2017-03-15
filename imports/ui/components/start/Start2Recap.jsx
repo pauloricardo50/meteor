@@ -3,11 +3,7 @@ import React, { PropTypes } from 'react';
 import { toMoney } from '/imports/js/conversionFunctions';
 import constants from '/imports/js/constants';
 
-const isReady = (income, fortune, property) => (
-  property &&
-  income &&
-  fortune
-);
+const isReady = (income, fortune, property) => property && income && fortune;
 
 const getLenderCount = (borrow, ratio) => {
   if (ratio > 0.38) {
@@ -23,13 +19,15 @@ const getLenderCount = (borrow, ratio) => {
   return 0;
 };
 
-
-const getArray = (props) => {
+const getArray = props => {
   const p = props;
-  let borrow = Math.max((p.propAndWork - p.fortuneUsed - (0.05 * p.property)) / p.propAndWork, 0) || 0;
+  let borrow = Math.max(
+    (p.propAndWork - p.fortuneUsed - 0.05 * p.property) / p.propAndWork,
+    0,
+  ) || 0;
   borrow = borrow === 1 ? 0 : borrow;
-  const ratio = (p.income - p.expenses) && props.monthly / ((p.income - p.expenses) / 12);
-
+  const ratio = p.income - p.expenses &&
+    props.monthly / ((p.income - p.expenses) / 12);
 
   return [
     {
@@ -69,7 +67,7 @@ const getArray = (props) => {
     {
       label: 'Total des revenus',
       value: `CHF ${toMoney(Math.round(p.income))}`,
-      hide: (!p.bonus && !p.otherIncome),
+      hide: !p.bonus && !p.otherIncome,
       spacing: p.expenses,
     },
     {
@@ -87,64 +85,83 @@ const getArray = (props) => {
       label: 'Le Projet',
     },
     {
-      label: p.type === 'test' ? 'Prix d\'achat maximal' : 'Prix d\'achat',
+      label: p.type === 'test' ? "Prix d'achat maximal" : "Prix d'achat",
       value: `CHF ${toMoney(Math.round(p.property))}`,
-    }, {
+    },
+    {
       label: 'Frais de notaire',
       value: `CHF ${toMoney(Math.round(p.property * constants.notaryFees))}`,
       spacing: !p.propertyWork,
-    }, {
+    },
+    {
       label: 'Travaux de plus-value',
       value: `CHF ${toMoney(Math.round(p.propertyWork))}`,
       hide: !p.propertyWork,
       spacing: true,
-    }, {
+    },
+    {
       label: 'Coût total du projet',
-      value: `CHF ${toMoney(Math.round((p.property * (1 + constants.notaryFees)) + p.propertyWork))}`,
+      value: `CHF ${toMoney(Math.round(p.property * (1 + constants.notaryFees) + p.propertyWork))}`,
       spacing: true,
-    }, {
+    },
+    {
       label: 'Fonds Propres',
       value: `CHF ${toMoney(Math.round(p.fortuneUsed))}`,
       hide: !p.fortuneUsed,
-    }, {
+    },
+    {
       label: 'Emprunt',
       value: `CHF ${p.fortuneUsed ? toMoney(Math.round(p.project - p.fortuneUsed)) : 0}`,
       props: {
         className: borrow <= 0.8
           ? 'success'
-          : (borrow <= 0.9 ? 'warning' : 'error'),
+          : borrow <= 0.9 ? 'warning' : 'error',
       },
       hide: !p.fortuneUsed,
-    }, {
+    },
+    {
       label: 'Coût mensuel estimé',
-      value: <span>CHF {p.fortuneUsed ? toMoney(Math.round(p.monthlyReal)) : 0} <small>/mois</small></span>,
+      value: (
+        <span>
+          CHF
+          {' '}
+          {p.fortuneUsed ? toMoney(Math.round(p.monthlyReal)) : 0}
+          {' '}
+          <small>/mois</small>
+        </span>
+      ),
       hide: !p.fortuneUsed,
-    }, {
+    },
+    {
       title: true,
       label: 'Calculs FINMA',
       hide: !(borrow || ratio),
-    }, {
-      label: 'Ratio Emprunt/Prix d\'achat',
+    },
+    {
+      label: "Ratio Emprunt/Prix d'achat",
       value: `${p.fortuneUsed && Math.round(borrow * 1000) / 10}%`,
       props: {
         className: borrow <= 0.8
           ? 'success'
-          : (borrow <= 0.9 ? 'warning' : 'error'),
+          : borrow <= 0.9 ? 'warning' : 'error',
       },
       hide: !(borrow || ratio),
-    }, {
+    },
+    {
       label: 'Charges/Revenus Disponibles',
       value: `${Math.round(ratio * 1000) / 10}%`,
       props: {
         className: Math.round(ratio * 1000) / 1000 <= 1 / 3
           ? 'success'
-          : (Math.round(ratio * 1000) / 1000 <= 0.38 ? 'warning' : 'error'),
+          : Math.round(ratio * 1000) / 1000 <= 0.38 ? 'warning' : 'error',
       },
       hide: !(borrow || ratio),
-    }, {
+    },
+    {
       title: true,
       label: 'e-Potek',
-    }, {
+    },
+    {
       label: 'Nb. de prêteurs potentiels',
       value: getLenderCount(borrow, ratio),
       spacing: true,
@@ -152,21 +169,25 @@ const getArray = (props) => {
   ];
 };
 
-
 const getResult = props => (
   <div className="result animated fadeIn">
-    {getArray(props).map(item => !item.hide && (item.title
-      ? <label className="text-center" {...item.props} key={item.label}>{item.label}</label>
-      : (
-        <div className="fixed-size" style={{ marginBottom: item.spacing && 16 }} key={item.label}>
-          <h4 className="secondary">{item.label}</h4>
-          <h3 {...item.props}>{item.value}</h3>
-        </div>
-      )
-    ))}
+    {getArray(props).map(
+      item => !item.hide &&
+      (item.title
+        ? <label className="text-center" {...item.props} key={item.label}>
+            {item.label}
+          </label>
+        : <div
+            className="fixed-size"
+            style={{ marginBottom: item.spacing && 16 }}
+            key={item.label}
+          >
+            <h4 className="secondary">{item.label}</h4>
+            <h3 {...item.props}>{item.value}</h3>
+          </div>),
+    )}
   </div>
 );
-
 
 const Start2Recap = props => (
   <article className="validator">

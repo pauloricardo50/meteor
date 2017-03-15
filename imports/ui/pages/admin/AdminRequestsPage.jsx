@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
-import AllRequestsTable from '/imports/ui/components/admin/AllRequestsTable.jsx';
-
+import AllRequestsTable
+  from '/imports/ui/components/admin/AllRequestsTable.jsx';
 
 const styles = {
   table: {

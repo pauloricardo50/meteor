@@ -4,12 +4,9 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import cleanMethod from '/imports/api/cleanMethods';
 import CountUp from 'react-countup';
 
-
 import RaisedButton from 'material-ui/RaisedButton';
 
-
 import Step2PartnersForm from './Step2PartnersForm.jsx';
-
 
 const styles = {
   text: {
@@ -30,7 +27,6 @@ const styles = {
     margin: '20px 0',
   },
 };
-
 
 export default class Step2Start extends Component {
   constructor(props) {
@@ -60,7 +56,12 @@ export default class Step2Start extends Component {
             suffix=" Prêteurs"
           />
         </h1>
-        <a className="bold secondary active text-center col-xs-12" style={styles.a}>Voir la liste</a>
+        <a
+          className="bold secondary active text-center col-xs-12"
+          style={styles.a}
+        >
+          Voir la liste
+        </a>
 
         <div style={styles.formDiv}>
           <Step2PartnersForm loanRequest={this.props.loanRequest} />
@@ -68,17 +69,23 @@ export default class Step2Start extends Component {
 
         <div className="col-xs-12">
           <div className="form-group text-center">
-            <RaisedButton label="Commencer les enchères" primary onTouchTap={this.startAuction} />
+            <RaisedButton
+              label="Commencer les enchères"
+              primary
+              onTouchTap={this.startAuction}
+            />
           </div>
           <div className="form-group text-center">
-            <RaisedButton label="Pas maintenant" onTouchTap={() => FlowRouter.go('/step1')} />
+            <RaisedButton
+              label="Pas maintenant"
+              onTouchTap={() => FlowRouter.go('/step1')}
+            />
           </div>
         </div>
       </section>
     );
   }
 }
-
 
 Step2Start.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,

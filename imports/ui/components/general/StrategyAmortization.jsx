@@ -4,7 +4,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import StrategyChoices from './StrategyChoices.jsx';
 
-
 const styles = {
   callButton: {
     display: 'block',
@@ -25,35 +24,34 @@ export default class StrategyAmortization extends Component {
           'Charge fiscale augmente',
           <span>&nbsp;</span>,
         ],
-      }, {
+      },
+      {
         id: 'indirect',
         title: 'Amortissement Indirect',
         reasons: [
           'Paiements ne changent pas avec les années',
           'Charge fiscale minimale',
-          'Établissement d\'un 3e pilier',
+          "Établissement d'un 3e pilier",
         ],
         isBest: true,
       },
     ];
   }
 
-
   render() {
     return (
       <section>
         <h2>
-          Ma Stratégie d&apos;Amortissement
+          Ma Stratégie d'Amortissement
           &nbsp;
           {this.props.loanRequest.logic.amortizingStrategyPreset &&
-            <span className="fa fa-check success" />
-          }
+            <span className="fa fa-check success" />}
         </h2>
 
         <div className="description">
           <p>
             Choisir comment amortir son bien immobilier peut avoir des conséquences très
-            importantes pour votre futur. N&apos;hésitez pas à nous appeler pour prendre cette
+            importantes pour votre futur. N'hésitez pas à nous appeler pour prendre cette
             décision en toute confiance.
           </p>
         </div>

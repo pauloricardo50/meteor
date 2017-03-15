@@ -6,14 +6,15 @@ const styles = {
   },
 };
 
-const Step6Page = () =>
+const Step6Page = () => (
   <div className="animated fadeIn">
-    <span className="fa fa-home fa-5x animated pulse infinite active text-center" style={styles.home} />
-  </div>;
+    <span
+      className="fa fa-home fa-5x animated pulse infinite active text-center"
+      style={styles.home}
+    />
+  </div>
+);
 
-
-Step6Page.propTypes = {
-};
-
+Step6Page.propTypes = {};
 
 export default Step6Page;

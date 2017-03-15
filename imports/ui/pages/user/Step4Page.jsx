@@ -3,7 +3,6 @@ import { DocHead } from 'meteor/kadira:dochead';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-
 const styles = {
   img: {
     width: '100%',
@@ -32,10 +31,7 @@ export default class Step4Page extends Component {
             alt="Envoyez votre dossier à la banque"
             style={styles.img}
           />
-          <h4
-            className="col-sm-6 col-sm-offset-3"
-            style={styles.h4}
-          >
+          <h4 className="col-sm-6 col-sm-offset-3" style={styles.h4}>
             Vous y êtes presque! Si vous estimez que vos informations sont correctes,
             envoyez votre dossier à la banque.
             <br /><br />

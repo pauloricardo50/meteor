@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 
 export default class ClientInteraction extends React.Component {
   constructor(props) {
@@ -6,9 +6,8 @@ export default class ClientInteraction extends React.Component {
   }
 
   render() {
-    return (<div>MyComponent</div>);
+    return <div>MyComponent</div>;
   }
 }
 
-ClientInteraction.propTypes = {
-};
+ClientInteraction.propTypes = {};

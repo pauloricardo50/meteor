@@ -1,7 +1,6 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 
 import { getRatio } from '/imports/js/finance-math';
-
 
 const styles = {
   titles: {
@@ -34,8 +33,12 @@ export default class Ratio extends React.Component {
     return (
       <div>
         <h4 style={styles.titles} className="secondary">
-          <span>Ratio d&apos;endettement - </span>
-          <span className={ratio >= 0.35 ? 'normal bold error' : 'normal bold success'}>
+          <span>Ratio d'endettement - </span>
+          <span
+            className={
+              ratio >= 0.35 ? 'normal bold error' : 'normal bold success'
+            }
+          >
             {this.getRatioRating(ratio)}
           </span>
         </h4>

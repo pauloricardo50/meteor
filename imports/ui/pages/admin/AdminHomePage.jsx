@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 
-
 import MetricsTriple from '/imports/ui/components/general/MetricsTriple.jsx';
 import TodoList from '/imports/ui/components/admin/TodoList.jsx';
 
@@ -21,12 +20,20 @@ export default class AdminHomePage extends Component {
       {
         name: 'Total Utilisateurs',
         value: this.props.users.length,
-      }, {
+      },
+      {
         name: 'Derniers 7 jours',
-        value: '+' + this.props.users.filter(user => user.createdAt.getTime() >= d1).length,
-      }, {
+        value: '+' +
+          this.props.users.filter(
+            user => user.createdAt.getTime() >= d1,
+          ).length,
+      },
+      {
         name: 'Derniers 30 jours',
-        value: '+' + this.props.users.filter(user => user.createdAt.getTime() >= d2).length,
+        value: '+' +
+          this.props.users.filter(
+            user => user.createdAt.getTime() >= d2,
+          ).length,
       },
     ];
   }
@@ -41,7 +48,9 @@ export default class AdminHomePage extends Component {
 
         <TodoList
           loanRequests={this.props.loanRequests}
-          recentOffers={this.props.offers.filter(offer => offer.auctionEndTime >= now)}
+          recentOffers={this.props.offers.filter(
+            offer => offer.auctionEndTime >= now,
+          )}
         />
 
       </section>

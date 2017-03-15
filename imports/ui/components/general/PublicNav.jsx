@@ -3,10 +3,8 @@ import React, { PropTypes } from 'react';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
 
-
 import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown.jsx';
 import colors from '/imports/js/colors';
-
 
 const styles = {
   navbar: {
@@ -29,14 +27,19 @@ const styles = {
   },
 };
 
-
 const PublicNav = props => (
   <div className="public-nav">
     <AppBar
       style={styles.navbar}
-      iconElementRight={props.currentUser ?
-        <TopNavDropdown public currentUser={props.currentUser} /> :
-        <FlatButton label="Login" href="/login" secondary labelStyle={{ color: colors.primary }} />
+      iconElementRight={
+        props.currentUser
+          ? <TopNavDropdown public currentUser={props.currentUser} />
+          : <FlatButton
+              label="Login"
+              href="/login"
+              secondary
+              labelStyle={{ color: colors.primary }}
+            />
       }
       iconStyleLeft={{ display: 'none' }}
     >
@@ -46,7 +49,6 @@ const PublicNav = props => (
     </AppBar>
   </div>
 );
-
 
 PublicNav.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any),

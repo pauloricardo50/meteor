@@ -24,7 +24,9 @@ const Step2OffersTable = () => (
         <div className="card-body">
           <div className="card-head">
             <h5>Le Moins Cher</h5>
-            <p>Ce pret vous coûtera le moins cher avec son taux d'intérêt bas</p>
+            <p>
+              Ce pret vous coûtera le moins cher avec son taux d'intérêt bas
+            </p>
           </div>
           <hr />
 
@@ -70,7 +72,9 @@ const Step2OffersTable = () => (
         <div className="card-body">
           <div className="card-head">
             <h5>Le Plus Rapide</h5>
-            <p>Ce prêt n'a pas besoin d'expertise, et peut donc être obtenu cette semaine</p>
+            <p>
+              Ce prêt n'a pas besoin d'expertise, et peut donc être obtenu cette semaine
+            </p>
           </div>
           <hr />
 

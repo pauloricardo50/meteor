@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 
 import IconButton from 'material-ui/IconButton';
 import ArrowDown from 'material-ui/svg-icons/navigation/arrow-drop-down-circle';
@@ -23,8 +23,13 @@ export default class DropzoneArrayItem extends React.Component {
         borderBottom: this.props.active ? 'solid 1px #ddd' : '',
       },
       icon: {
-        color: this.props.currentValue && this.props.currentValue.length > 0 ? colors.secondary : '',
-        borderColor: this.props.currentValue && this.props.currentValue.length > 0 ? colors.secondary : '',
+        color: this.props.currentValue && this.props.currentValue.length > 0
+          ? colors.secondary
+          : '',
+        borderColor: this.props.currentValue &&
+          this.props.currentValue.length > 0
+          ? colors.secondary
+          : '',
       },
       caret: {
         transform: this.props.active ? 'rotate(180deg)' : '',
@@ -34,17 +39,19 @@ export default class DropzoneArrayItem extends React.Component {
 
   render() {
     return (
-      <article style={this.getStyles().article} className="mask1 dropzoneArrayItem">
+      <article
+        style={this.getStyles().article}
+        className="mask1 dropzoneArrayItem"
+      >
         <div
           style={this.getStyles().topDiv}
           className="top"
           onTouchTap={this.props.handleClick}
         >
           <div className="left">
-            {this.props.currentValue && this.props.currentValue.length > 0 ?
-              <span className="fa fa-check" style={this.getStyles().icon} /> :
-              <span />
-              }
+            {this.props.currentValue && this.props.currentValue.length > 0
+              ? <span className="fa fa-check" style={this.getStyles().icon} />
+              : <span />}
           </div>
 
           <div className="text">
@@ -52,14 +59,14 @@ export default class DropzoneArrayItem extends React.Component {
             <h5 className="secondary">
               {(this.props.currentValue && this.props.currentValue.length) || 0}
               &nbsp;
-              {(this.props.currentValue && this.props.currentValue.length === 1) ? 'fichier' : 'fichiers'}
+              {this.props.currentValue && this.props.currentValue.length === 1
+                ? 'fichier'
+                : 'fichiers'}
             </h5>
           </div>
 
           <div className="right">
-            <IconButton
-              style={this.getStyles().caret}
-            >
+            <IconButton style={this.getStyles().caret}>
               <ArrowDown color="#d8d8d8" hoverColor="#a8a8a8" />
             </IconButton>
           </div>
@@ -68,8 +75,7 @@ export default class DropzoneArrayItem extends React.Component {
         {this.props.active &&
           <div className="dropzoneDiv">
             <DropzoneInput {...this.props} />
-          </div>
-        }
+          </div>}
       </article>
     );
   }

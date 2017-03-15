@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 
-
 import { toMoney } from '/imports/js/conversionFunctions';
 import { getMonthlyPayment } from '/imports/js/finance-math';
 import { getLoanValue } from '/imports/js/requestFunctions';
@@ -37,14 +36,19 @@ export default class SideNavFinance extends Component {
 
   render() {
     return (
-      <a className="mask1 text-center hover-rise" style={styles.main} href="/finance">
+      <a
+        className="mask1 text-center hover-rise"
+        style={styles.main}
+        href="/finance"
+      >
         <h4 className="secondary" style={styles.title}>Votre emprunt</h4>
         <h3 style={styles.value} className="fixed-size">
           CHF {toMoney(Math.round(getLoanValue(this.props.loanRequest)))}
         </h3>
         <h4 className="secondary" style={styles.title}>Coût estimé</h4>
         <h3 style={styles.value} className="fixed-size">
-          CHF ~{toMoney(Math.round(getMonthlyPayment(this.props.loanRequest)[0]))}
+          CHF ~
+          {toMoney(Math.round(getMonthlyPayment(this.props.loanRequest)[0]))}
           <small>/mois</small>
         </h3>
       </a>

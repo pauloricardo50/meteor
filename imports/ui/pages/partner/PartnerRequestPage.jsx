@@ -2,10 +2,9 @@ import React, { Component, PropTypes } from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-
 import RequestDetails from '/imports/ui/components/partner/RequestDetails.jsx';
-import PartnerOfferForm from '/imports/ui/components/partner/PartnerOfferForm.jsx';
-
+import PartnerOfferForm
+  from '/imports/ui/components/partner/PartnerOfferForm.jsx';
 
 const styles = {
   section: {
@@ -44,15 +43,12 @@ export default class PartnerRequestPage extends Component {
 
     return (
       <div className="text-center">
-        <h1>Il semblerait qu'il y ait eu une erreur.
+        <h1>
+          Il semblerait qu'il y ait eu une erreur.
           <br />
           Soit cette demande de prêt n'existe pas, soit vous n'êtes pas autorisé à la voir.
         </h1>
-        <RaisedButton
-          label="Retour"
-          href="/partner"
-          style={styles.back}
-        />
+        <RaisedButton label="Retour" href="/partner" style={styles.back} />
       </div>
     );
   }

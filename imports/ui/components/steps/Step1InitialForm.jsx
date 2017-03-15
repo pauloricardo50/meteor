@@ -1,9 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 
-
 import AutoForm from '../forms/AutoForm.jsx';
-
 
 export default class Step1InitialForm extends Component {
   constructor(props) {
@@ -12,7 +10,6 @@ export default class Step1InitialForm extends Component {
     this.getFormArray = this.getFormArray.bind(this);
   }
 
-
   getFormArray() {
     const r = this.props.loanRequest;
     return [
@@ -20,33 +17,37 @@ export default class Step1InitialForm extends Component {
         type: 'DropzoneInput',
         array: [
           {
-            title: 'Acte d\'achat',
+            title: "Acte d'achat",
             folderName: 'buyersContract',
             currentValue: this.props.loanRequest.general.files.buyersContract,
             id: 'general.files.buyersContract',
           },
         ],
-      }, {
+      },
+      {
         type: 'RadioInput',
         label: 'Style de Propriété',
         radioLabels: ['Villa', 'Appartement'],
         values: ['villa', 'flat'],
         id: 'property.style',
         currentValue: r.property.style,
-      }, {
+      },
+      {
         type: 'TextInputNumber',
         label: <span>Surface du terrain en m<sup>2</sup></span>,
         placeholder: '200',
         id: 'property.landArea',
         currentValue: r.property.landArea,
         showCondition: r.property.style === 'villa',
-      }, {
+      },
+      {
         type: 'TextInputNumber',
         label: <span>Surface habitable en m<sup>2</sup></span>,
         placeholder: '120',
         id: 'property.insideArea',
         currentValue: r.property.insideArea,
-      }, {
+      },
+      {
         type: 'ConditionalInput',
         conditionalTrueValue: true,
         inputs: [
@@ -57,24 +58,27 @@ export default class Step1InitialForm extends Component {
             values: [true, false],
             id: 'borrowers.0.currentRentExists',
             currentValue: this.props.loanRequest.borrowers[0].currentRentExists,
-          }, {
+          },
+          {
             type: 'TextInputMoney',
             label: 'Loyer mensuel',
-            placeholder: 'CHF 1\'500',
+            placeholder: "CHF 1'500",
             id: 'borrowers.0.currentRent',
             currentValue: this.props.loanRequest.borrowers[0].currentRent,
           },
         ],
-      }, {
+      },
+      {
         type: 'TextInputMoney',
         label: 'Biens immobiliers existants',
-        placeholder: 'CHF 100\'000',
+        placeholder: "CHF 100'000",
         id: 'borrowers.0.realEstateFortune',
         currentValue: this.props.loanRequest.borrowers[0].realEstateFortune,
-      }, {
+      },
+      {
         type: 'TextInputMoney',
         label: 'Cash et titres',
-        placeholder: 'CHF 10\'000',
+        placeholder: "CHF 10'000",
         id: 'borrowers.0.cashAndSecurities',
         currentValue: this.props.loanRequest.borrowers[0].cashAndSecurities,
         info: 'Y compris ce que vous allez allouer à ce projet',
@@ -97,7 +101,6 @@ export default class Step1InitialForm extends Component {
       // },
     ];
   }
-
 
   render() {
     return (

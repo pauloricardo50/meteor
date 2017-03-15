@@ -7,7 +7,6 @@ import myTheme from '/imports/js/mui_custom';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-
 const PublicLayout = props => (
   <MuiThemeProvider muiTheme={getMuiTheme(myTheme)}>
     <div>
@@ -23,6 +22,5 @@ PublicLayout.propTypes = {
   content: PropTypes.element.isRequired,
   currentUser: PropTypes.objectOf(PropTypes.any),
 };
-
 
 export default PublicLayout;

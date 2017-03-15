@@ -3,11 +3,9 @@ import { check } from 'meteor/check';
 import LoanRequests from '../loanrequests';
 import { Roles } from 'meteor/alanning:roles';
 
-
 // Publish a specific loanRequest with an ID
-Meteor.publish('loanRequest', function (id) {
+Meteor.publish('loanRequest', function(id) {
   check(id, String);
-
 
   if (Roles.userIsInRole(this.userId, 'admin')) {
     return LoanRequests.find({
@@ -23,9 +21,8 @@ Meteor.publish('loanRequest', function (id) {
   // Throw unauthorized error
 });
 
-
 // Publish the currently active loanrequest
-Meteor.publish('activeLoanRequest', function () {
+Meteor.publish('activeLoanRequest', function() {
   // find or findOne? Since there should only be one at any time..?
   const request = LoanRequests.find({
     userId: this.userId,
@@ -39,9 +36,8 @@ Meteor.publish('activeLoanRequest', function () {
   return this.ready();
 });
 
-
 // Publish all loanrequests from the current user
-Meteor.publish('loanRequests', function () {
+Meteor.publish('loanRequests', function() {
   // Verify if user is logged In
   if (!this.userId) {
     console.log('auth error');
@@ -52,9 +48,8 @@ Meteor.publish('loanRequests', function () {
   });
 });
 
-
 // Publish all loanrequests in the database for admins
-Meteor.publish('allLoanRequests', function () {
+Meteor.publish('allLoanRequests', function() {
   // Verify if user is logged In
   if (Roles.userIsInRole(this.userId, 'admin')) {
     // Return all users
@@ -63,7 +58,6 @@ Meteor.publish('allLoanRequests', function () {
 
   return this.ready();
 });
-
 
 // The fields visible to partners
 const partnerVisibleFields = organization => ({
@@ -105,9 +99,8 @@ const partnerVisibleFields = organization => ({
   'logic.auctionEndTime': 1,
 });
 
-
 // Publish all loanrequests this partner has access to
-Meteor.publish('partnerRequestsAuction', function () {
+Meteor.publish('partnerRequestsAuction', function() {
   if (Roles.userIsInRole(this.userId, 'partner')) {
     const user = Meteor.users.findOne(this.userId);
 
@@ -115,16 +108,22 @@ Meteor.publish('partnerRequestsAuction', function () {
     // and the auction has started
     // and the auctionEndTime is greater than this date
     // and this partner's organization is not in the partnersToAvoid
-    return LoanRequests.find({
-      $and: [
-        { 'general.canton': { $in: user.profile.cantons } },
-        { 'logic.auctionStarted': true },
-        { 'logic.auctionEndTime': { $gt: new Date() } },
-        { $or: [
-          { 'general.partnersToAvoidExists': false },
-          { 'general.partnersToAvoid.0': { $ne: user.profile.organization } },
-        ] },
-      ] },
+    return LoanRequests.find(
+      {
+        $and: [
+          { 'general.canton': { $in: user.profile.cantons } },
+          { 'logic.auctionStarted': true },
+          { 'logic.auctionEndTime': { $gt: new Date() } },
+          {
+            $or: [
+              { 'general.partnersToAvoidExists': false },
+              {
+                'general.partnersToAvoid.0': { $ne: user.profile.organization },
+              },
+            ],
+          },
+        ],
+      },
       {
         fields: partnerVisibleFields(user.profile.organization),
       },
@@ -133,41 +132,51 @@ Meteor.publish('partnerRequestsAuction', function () {
 });
 
 // Publish all loanrequests this partner has access to
-Meteor.publish('partnerRequestsCompleted', function () {
+Meteor.publish('partnerRequestsCompleted', function() {
   if (Roles.userIsInRole(this.userId, 'partner')) {
     // Get the current partner user
     const user = Meteor.users.findOne(this.userId);
 
     // Return the requests where this partner has been selected
-    return LoanRequests.find({
-      'general.selectedPartner': user.profile.organization,
-    }, {
-      fields: partnerVisibleFields(user.profile.organization),
-    });
+    return LoanRequests.find(
+      {
+        'general.selectedPartner': user.profile.organization,
+      },
+      {
+        fields: partnerVisibleFields(user.profile.organization),
+      },
+    );
   }
 });
 
-
 // Publish the loanrequest with a specific ID, and only show the fields for an anonymous offer
-Meteor.publish('partnerSingleLoanRequest', function (id) {
+Meteor.publish('partnerSingleLoanRequest', function(id) {
   check(id, String);
 
   // Verify if this is a partner account
   if (Roles.userIsInRole(this.userId, 'partner')) {
     const user = Meteor.users.findOne(this.userId);
 
-    return LoanRequests.find({
-      $and: [
-        { _id: id },
-        { 'general.canton': { $in: user.profile.cantons } },
-        { 'logic.auctionStarted': true },
-        { 'logic.auctionEndTime': { $gt: new Date() } },
-        { $or: [
-          { 'general.partnersToAvoidExists': false },
-          { 'general.partnersToAvoid.0': { $ne: user.profile.organization } },
-        ] },
-      ] }, {
+    return LoanRequests.find(
+      {
+        $and: [
+          { _id: id },
+          { 'general.canton': { $in: user.profile.cantons } },
+          { 'logic.auctionStarted': true },
+          { 'logic.auctionEndTime': { $gt: new Date() } },
+          {
+            $or: [
+              { 'general.partnersToAvoidExists': false },
+              {
+                'general.partnersToAvoid.0': { $ne: user.profile.organization },
+              },
+            ],
+          },
+        ],
+      },
+      {
         fields: partnerVisibleFields(user.profile.organization),
-      });
+      },
+    );
   }
 });

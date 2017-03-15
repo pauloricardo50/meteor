@@ -5,15 +5,17 @@ import { _ } from 'lodash';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-
 import { toNumber } from '/imports/js/conversionFunctions';
-import { changeProperty, changeFortune, changeIncome } from '/imports/js/start-functions';
+import {
+  changeProperty,
+  changeFortune,
+  changeIncome,
+} from '/imports/js/start-functions';
 import constants from '/imports/js/constants';
 import StartLine from '/imports/ui/components/start/StartLine.jsx';
 import StartRecap from '/imports/ui/components/start/StartRecap.jsx';
 import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
 import Accordion from '/imports/ui/components/general/Accordion.jsx';
-
 
 const array = [
   {
@@ -27,7 +29,7 @@ const array = [
     sliderIncrement: 1000000,
   },
   {
-    label: 'Prix d\'achat',
+    label: "Prix d'achat",
     name: 'property',
     sliderIncrement: 2000000,
   },
@@ -66,20 +68,26 @@ export default class Start1Page extends Component {
   }
 
   componentDidMount() {
-    Meteor.setTimeout(() => this.setState({
-      income: {
-        value: 350000,
-        minValue: 0,
-        auto: true,
-      },
-    }), 250);
-    Meteor.setTimeout(() => this.setState({
-      income: {
-        value: 0,
-        minValue: 0,
-        auto: true,
-      },
-    }), 500);
+    Meteor.setTimeout(
+      () => this.setState({
+        income: {
+          value: 350000,
+          minValue: 0,
+          auto: true,
+        },
+      }),
+      250,
+    );
+    Meteor.setTimeout(
+      () => this.setState({
+        income: {
+          value: 0,
+          minValue: 0,
+          auto: true,
+        },
+      }),
+      500,
+    );
   }
 
   setSliderMax(name, value) {
@@ -99,7 +107,10 @@ export default class Start1Page extends Component {
     }
 
     // Set the state of the value that is changed, and immediately recommend other minValues
-    this.setState(prev => _.merge({}, prev, object), () => this.recommendValues(name, autoOff));
+    this.setState(
+      prev => _.merge({}, prev, object),
+      () => this.recommendValues(name, autoOff),
+    );
   }
 
   recommendValues(name, autoOff) {
@@ -112,17 +123,25 @@ export default class Start1Page extends Component {
 
     o = (() => {
       switch (name) {
-        case 'property': return changeProperty(this.state, o, value);
-        case 'fortune': return changeFortune(this.state, o, value);
-        case 'income': return changeIncome(this.state, o, value);
-        default: return o;
+        case 'property':
+          return changeProperty(this.state, o, value);
+        case 'fortune':
+          return changeFortune(this.state, o, value);
+        case 'income':
+          return changeIncome(this.state, o, value);
+        default:
+          return o;
       }
     })();
 
     for (const key in o) {
       if (o.hasOwnProperty(key)) {
         // If the minValue was modified, and the property is still on auto mode, also set the value
-        if ((o[key].minValue !== undefined && o[key].minValue !== null) && this.state[key].auto) {
+        if (
+          o[key].minValue !== undefined &&
+          o[key].minValue !== null &&
+          this.state[key].auto
+        ) {
           o[key].value = o[key].minValue;
         }
 
@@ -133,12 +152,15 @@ export default class Start1Page extends Component {
           // If the user sets a slider back to 0, and it had a minValue set to it, move it to the
           // minimum value with a little delay
           if (this.state[name].minValue) {
-            Meteor.setTimeout(() => {
-              const resetO = {};
-              resetO[key] = {};
-              resetO[key].value = this.state[name].minValue;
-              this.setState(prev => _.merge({}, prev, resetO));
-            }, 400);
+            Meteor.setTimeout(
+              () => {
+                const resetO = {};
+                resetO[key] = {};
+                resetO[key].value = this.state[name].minValue;
+                this.setState(prev => _.merge({}, prev, resetO));
+              },
+              400,
+            );
           }
         }
       }
@@ -155,13 +177,13 @@ export default class Start1Page extends Component {
   isValid() {
     const s = this.state;
     const minIncome = s.property.value * constants.propertyToIncome();
-    const borrow = Math.max((s.property.value - s.fortune.value) / s.property.value, 0);
+    const borrow = Math.max(
+      (s.property.value - s.fortune.value) / s.property.value,
+      0,
+    );
     const ratio = minIncome / s.income.value / 3;
 
-    return (
-      borrow <= 0.8 &&
-      ratio <= 1 / 3
-    );
+    return borrow <= 0.8 && ratio <= 1 / 3;
   }
 
   getUrl() {
@@ -169,12 +191,13 @@ export default class Start1Page extends Component {
     const params = {};
     const queryParams = {
       type: this.type || 'test',
-      property: this.type !== 'test' ? Math.round(this.state.property.value) : undefined,
+      property: this.type !== 'test'
+        ? Math.round(this.state.property.value)
+        : undefined,
     };
 
     return FlowRouter.path(pathDef, params, queryParams);
   }
-
 
   render() {
     const property = this.state.property.value;
@@ -188,54 +211,47 @@ export default class Start1Page extends Component {
           <h1>
             {this.type === 'acquisition'
               ? 'Commencez une acquisition'
-              : 'Identifiez votre capacité d\'emprunt'
-            }
+              : "Identifiez votre capacité d'emprunt"}
           </h1>
           <hr />
 
           <div className="content">
             <div className="sliders">
-              {array.map(line =>
+              {array.map(line => (
                 <StartLine
                   key={line.name}
                   {...this.state[line.name]}
                   {...line}
                   sliderMax={this.state[`${line.name}Slider`]}
                   setStateValue={this.setStateValue}
-                  setSliderMax={() => this.setSliderMax(
-                    `${line.name}Slider`, this.state[`${line.name}Slider`] + line.sliderIncrement,
-                  )}
-                />,
-              )}
+                  setSliderMax={() =>
+                    this.setSliderMax(
+                      `${line.name}Slider`,
+                      this.state[`${line.name}Slider`] + line.sliderIncrement,
+                    )}
+                />
+              ))}
             </div>
             <div className="separator" />
-            <StartRecap
-              income={income}
-              fortune={fortune}
-              property={property}
-            />
+            <StartRecap income={income} fortune={fortune} property={property} />
           </div>
 
-
           <div className="chart">
-            <Accordion isActive={property && fortune && income && fortune < property}>
+            <Accordion
+              isActive={property && fortune && income && fortune < property}
+            >
               <ExpensesChart
-                interests={(loan * constants.interestsReal) / 12 || undefined}
-                amortizing={(loan * constants.amortizing) / 12 || 0}
-                maintenance={(property * constants.maintenanceReal) / 12 || 0}
+                interests={loan * constants.interestsReal / 12 || undefined}
+                amortizing={loan * constants.amortizing / 12 || 0}
+                maintenance={property * constants.maintenanceReal / 12 || 0}
               />
             </Accordion>
           </div>
 
-
           <div className="button">
             <RaisedButton
               label="Passer au check-up complet"
-              disabled={
-                !property ||
-                !income ||
-                !fortune
-              }
+              disabled={!property || !income || !fortune}
               primary={this.isValid()}
               href={this.getUrl()}
             />
@@ -246,5 +262,4 @@ export default class Start1Page extends Component {
   }
 }
 
-Start1Page.propTypes = {
-};
+Start1Page.propTypes = {};

@@ -6,7 +6,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import { toMoney } from '/imports/js/conversionFunctions';
 
-
 const styles = {
   mainDiv: {
     position: 'relative',
@@ -16,8 +15,7 @@ const styles = {
     marginTop: 0,
     display: 'inline-block',
   },
-  automaticH4: {
-  },
+  automaticH4: {},
   dropDown: {
     zIndex: 0,
     fontSize: 'inherit',
@@ -43,7 +41,6 @@ const styles = {
   },
 };
 
-
 const types = {
   interestLibor: 'Libor',
   interestFloating: 'Flottant',
@@ -54,7 +51,6 @@ const types = {
   interest10: 'Fixé 10 ans',
   interest15: 'Fixé 15 ans',
 };
-
 
 export default class LoanTranche extends Component {
   constructor(props) {
@@ -70,29 +66,34 @@ export default class LoanTranche extends Component {
   render() {
     return (
       <div style={styles.mainDiv}>
-        {this.props.manual ? (
-          <div>
-            <h4 style={styles.h4}>
-              <span>
-                Tranche
-              </span>
-              <DropDownMenu
-                value={this.props.tranche.type}
-                onChange={this.changeType}
-                autoWidth={false}
-                style={styles.dropDown}
-              >
-                {this.props.getRemainingTypes(this.props.tranche.type).map((type, index) => (
-                  <MenuItem value={type} primaryText={types[type]} key={index} />
-                ))}
-              </DropDownMenu>
-            </h4>
-            <br />
-          </div>
-          ) :
-          <h4 style={styles.automaticH4}>Tranche {types[this.props.tranche.type]}</h4>
-        }
-
+        {this.props.manual
+          ? <div>
+              <h4 style={styles.h4}>
+                <span>
+                  Tranche
+                </span>
+                <DropDownMenu
+                  value={this.props.tranche.type}
+                  onChange={this.changeType}
+                  autoWidth={false}
+                  style={styles.dropDown}
+                >
+                  {this.props
+                    .getRemainingTypes(this.props.tranche.type)
+                    .map((type, index) => (
+                      <MenuItem
+                        value={type}
+                        primaryText={types[type]}
+                        key={index}
+                      />
+                    ))}
+                </DropDownMenu>
+              </h4>
+              <br />
+            </div>
+          : <h4 style={styles.automaticH4}>
+              Tranche {types[this.props.tranche.type]}
+            </h4>}
 
         {this.props.manual &&
           <RaisedButton
@@ -100,13 +101,14 @@ export default class LoanTranche extends Component {
             style={styles.deleteButton}
             buttonStyle={styles.buttonStyle}
             onTouchTap={this.props.removeTranche}
-          />
-        }
+          />}
 
         <div className="trancheBar">
           <div
             className="bar"
-            style={{ width: `${100 * (this.props.tranche.value / this.props.totalValue)}%` }}
+            style={{
+              width: `${100 * (this.props.tranche.value / this.props.totalValue)}%`,
+            }}
           />
           <div className="money">
             <h4 className="center-adjust">
@@ -116,13 +118,13 @@ export default class LoanTranche extends Component {
                   onTouchTap={this.props.decrementTranche}
                   style={styles.button}
                   buttonStyle={styles.buttonStyle}
-                  disabled={ // disable it if tranche is lower than 100000, or if it's 0 if libor
-                    this.props.tranche.type === 'interestLibor' ?
-                    this.props.tranche.value <= 0 :
-                    this.props.tranche.value <= 100000
+                  disabled={
+                    // disable it if tranche is lower than 100000, or if it's 0 if libor
+                    this.props.tranche.type === 'interestLibor'
+                      ? this.props.tranche.value <= 0
+                      : this.props.tranche.value <= 100000
                   }
-                />
-              }
+                />}
 
               <span className="text-span">
                 CHF {toMoney(this.props.tranche.value)}
@@ -136,8 +138,7 @@ export default class LoanTranche extends Component {
                   style={styles.button}
                   buttonStyle={styles.buttonStyle}
                   disabled={!this.props.moneyLeft}
-                />
-              }
+                />}
             </h4>
           </div>
         </div>

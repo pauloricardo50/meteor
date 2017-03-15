@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
-
-import LenderTable1 from '/imports/ui/components/general/LenderTable1.jsx'
-import LenderTable2 from '/imports/ui/components/general/LenderTable2.jsx'
+import LenderTable1 from '/imports/ui/components/general/LenderTable1.jsx';
+import LenderTable2 from '/imports/ui/components/general/LenderTable2.jsx';
 
 const styles = {
   article: {
@@ -43,12 +42,12 @@ export default class LenderPicker extends Component {
     const paymentsArray = [];
     const tranches = this.props.loanRequest.general.loanTranches;
 
-    offers.forEach((offer) => {
+    offers.forEach(offer => {
       // Will contain the monthly payment for each tranche of this offer
       const tranchePayment = [];
-      tranches.forEach((tranche) => {
+      tranches.forEach(tranche => {
         // Push the payment for this tranche to the array
-        tranchePayment.push((tranche.value * offer[`${tranche.type}`]) / 12);
+        tranchePayment.push(tranche.value * offer[`${tranche.type}`] / 12);
       });
     });
   }

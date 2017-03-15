@@ -4,7 +4,7 @@ import constants from './constants';
 const setDefaultMinValues = (s, o) => {
   const isNonAuto = [s.property, s.fortune, s.income].map(i => !i.auto && true);
   const labels = ['property', 'fortune', 'income'];
-  const count = isNonAuto.reduce((tot, val) => (val ? tot + 1 : tot), 0);
+  const count = isNonAuto.reduce((tot, val) => val ? tot + 1 : tot, 0);
 
   if (count === 2) {
     labels.forEach((label, i) => {
@@ -17,13 +17,13 @@ const setDefaultMinValues = (s, o) => {
   return o;
 };
 
-
 export const changeProperty = (state, o, property) => {
   if (state.fortune.auto && state.income.auto) {
     o.fortune.minValue = property * 0.2;
-    o.income.minValue = 3 * property * (constants.maintenance + (0.8 * constants.loanCost()));
+    o.income.minValue = 3 *
+      property *
+      (constants.maintenance + 0.8 * constants.loanCost());
   } else if (state.fortune.auto) {
-
   } else if (state.income.auto) {
   }
 
@@ -32,11 +32,10 @@ export const changeProperty = (state, o, property) => {
   return o;
 };
 
-
 export const changeFortune = (state, o, fortune) => {
   if (state.property.auto && state.income.auto) {
     o.property.minValue = fortune / 0.2;
-    o.income.minValue = (fortune / 0.2) * constants.propertyToIncome();
+    o.income.minValue = fortune / 0.2 * constants.propertyToIncome();
   } else if (state.property.auto) {
     o.property.minValue = Math.min(
       fortune / 0.2,
@@ -48,7 +47,6 @@ export const changeFortune = (state, o, fortune) => {
 
   return o;
 };
-
 
 export const changeIncome = (state, o, income) => {
   if (state.property.auto && state.fortune.auto) {

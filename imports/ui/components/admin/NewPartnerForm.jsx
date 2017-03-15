@@ -7,13 +7,11 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 
-
 import { getAllPartners } from '/imports/js/partnerList';
 import getCantons from '/imports/js/cantons';
 import MaskedInput from 'react-text-mask';
 import emailMask from 'text-mask-addons/dist/emailMask';
 import { createPartner } from '/imports/api/users/methods';
-
 
 const styles = {
   h1: {
@@ -62,16 +60,14 @@ export default class NewPartnerForm extends Component {
       password: 'asdfghj',
     };
 
-
-    createPartner.call({ options },
-      (error, result) => {
-        console.log('result: ' + result);
-        if (error) {
-          throw new Meteor.Error(400, error.message);
-        }
-        // Route to admin on success
-        FlowRouter.go('/admin');
-      });
+    createPartner.call({ options }, (error, result) => {
+      console.log('result: ' + result);
+      if (error) {
+        throw new Meteor.Error(400, error.message);
+      }
+      // Route to admin on success
+      FlowRouter.go('/admin');
+    });
   }
 
   handleEmailChange(event) {
@@ -100,11 +96,7 @@ export default class NewPartnerForm extends Component {
             fullWidth
             required
           >
-            <MaskedInput
-              mask={emailMask}
-              guide
-              autoFocus
-            />
+            <MaskedInput mask={emailMask} guide autoFocus />
           </TextField>
 
           <SelectField
@@ -118,13 +110,13 @@ export default class NewPartnerForm extends Component {
             required
           >
             <MenuItem value={null} primaryText="" />
-            {getAllPartners().map((partner, index) =>
-              (<MenuItem
+            {getAllPartners().map((partner, index) => (
+              <MenuItem
                 value={partner.key}
                 primaryText={partner.name}
                 key={index}
-              />),
-            )}
+              />
+            ))}
           </SelectField>
 
           <SelectField
@@ -138,21 +130,17 @@ export default class NewPartnerForm extends Component {
             required
           >
             <MenuItem value={null} primaryText="" />
-            {getCantons().map((canton, index) =>
-              (<MenuItem
+            {getCantons().map((canton, index) => (
+              <MenuItem
                 value={canton.key}
                 primaryText={canton.name}
                 key={index}
-              />),
-            )}
+              />
+            ))}
           </SelectField>
 
           <div className="pull-right" style={styles.buttonDiv}>
-            <RaisedButton
-              label="Annuler"
-              href="/admin"
-              style={styles.button}
-            />
+            <RaisedButton label="Annuler" href="/admin" style={styles.button} />
             <RaisedButton
               label="Créer"
               primary
@@ -167,5 +155,4 @@ export default class NewPartnerForm extends Component {
   }
 }
 
-NewPartnerForm.propTypes = {
-};
+NewPartnerForm.propTypes = {};

@@ -25,16 +25,26 @@ const errorStyle = {
 };
 
 const StartLine = props => (
-  <Motion defaultStyle={{ x: 0 }} style={{ x: spring(props.value, presets.gentle) }}>
-    {value =>
-      <article className={classNames({ 'oscar-line': true, property: props.name === 'property' })} >
+  <Motion
+    defaultStyle={{ x: 0 }}
+    style={{ x: spring(props.value, presets.gentle) }}
+  >
+    {value => (
+      <article
+        className={classNames({
+          'oscar-line': true,
+          property: props.name === 'property',
+        })}
+      >
         <label htmlFor={props.name}>{props.label}</label>
         <div className="text-div">
           <TextField
             id={props.name}
             name={props.name}
             onChange={e => props.setStateValue(props.name, e.target.value)}
-            errorStyle={props.minValue <= props.value ? defaultStyle : errorStyle}
+            errorStyle={
+              props.minValue <= props.value ? defaultStyle : errorStyle
+            }
             className="input"
             hintText="CHF"
           >
@@ -53,23 +63,29 @@ const StartLine = props => (
           </span>
         </div>
         <Slider
-          value={value.x < 5000
-            ? 0
-            : Math.min(
-                Math.round(props.auto ? value.x : props.value) / props.sliderMax,
-                1,
-          )}
-          onChange={(e, v) => props.setStateValue(props.name, v * props.sliderMax)}
+          value={
+            value.x < 5000
+              ? 0
+              : Math.min(
+                  Math.round(props.auto ? value.x : props.value) /
+                    props.sliderMax,
+                  1,
+                )
+          }
+          onChange={(e, v) =>
+            props.setStateValue(props.name, v * props.sliderMax)}
           step={10000 / props.sliderMax}
           className="slider"
         />
         {props.value >= props.sliderMax &&
           <div className="sliderMaxButton animated fadeIn">
-            <AddIcon onTouchTap={props.setSliderMax} style={{ cursor: 'pointer' }} />
-          </div>
-        }
+            <AddIcon
+              onTouchTap={props.setSliderMax}
+              style={{ cursor: 'pointer' }}
+            />
+          </div>}
       </article>
-    }
+    )}
   </Motion>
 );
 

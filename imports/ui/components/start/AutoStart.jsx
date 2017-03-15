@@ -7,22 +7,25 @@ import Input from './Input.jsx';
 import MultipleInput from './MultipleInput.jsx';
 import ArrayInput from './ArrayInput.jsx';
 
-
 // Verify if the previous value is false
 const isFalse = (val, zeroAllowed = false) =>
-  (zeroAllowed ? (val === undefined || val === '') : (val === undefined || val === 0 || val === ''));
+  zeroAllowed
+    ? val === undefined || val === ''
+    : val === undefined || val === 0 || val === '';
 
 const validationCheck = (v, rules) =>
   (!rules.min || v >= rules.min) && (!rules.max || v <= rules.max);
 
 const arrayIsTrue = (a, keys) =>
-  (a && a.length) >= 1 && keys.reduce((tot, key) => tot && a[0][key] !== undefined, true);
+  (a && a.length) >= 1 &&
+  keys.reduce((tot, key) => tot && a[0][key] !== undefined, true);
 
 const prevFalse = (prev, s) => {
   if (prev.type === 'multipleInput') {
-    if (s.borrowerCount > 1 &&
+    if (
+      s.borrowerCount > 1 &&
       (isFalse(s[`${prev.id}1`], prev.zeroAllowed) ||
-      isFalse(s[`${prev.id}2`], prev.zeroAllowed))
+        isFalse(s[`${prev.id}2`], prev.zeroAllowed))
     ) {
       return true;
     } else if (isFalse(s[`${prev.id}1`], prev.zeroAllowed)) {
@@ -31,10 +34,14 @@ const prevFalse = (prev, s) => {
   } else if (prev.type === 'buttons' && s[prev.id] === undefined) {
     // For buttons, only check if they are undefined
     return true;
-  } else if (prev.type === 'arrayInput' &&
-    !arrayIsTrue(s[prev.id], prev.inputs.map(i => i.id))) {
+  } else if (
+    prev.type === 'arrayInput' &&
+    !arrayIsTrue(s[prev.id], prev.inputs.map(i => i.id))
+  ) {
     return true;
-  } else if ((prev.validation !== undefined && !validationCheck(s[prev.id], prev.validation)) ||
+  } else if (
+    (prev.validation !== undefined &&
+      !validationCheck(s[prev.id], prev.validation)) ||
     isFalse(s[prev.id], prev.zeroAllowed)
   ) {
     return true;
@@ -42,7 +49,6 @@ const prevFalse = (prev, s) => {
 
   return false;
 };
-
 
 export default class AutoStart extends Component {
   constructor(props) {
@@ -62,7 +68,6 @@ export default class AutoStart extends Component {
       this.props.setFormState('error', false);
     }
   }
-
 
   verifyConditions(input) {
     // Get previous input
@@ -87,7 +92,6 @@ export default class AutoStart extends Component {
 
     return true;
   }
-
 
   inputSwitch(input, index) {
     // Stop iterating over array when form is currently in 'break' mode
@@ -120,30 +124,25 @@ export default class AutoStart extends Component {
         autoFocus: prevInput.type === 'buttons',
       };
 
-
       const scrollingInput = () => {
         switch (input.type) {
           case 'buttons':
-            return (<ButtonInput {...inputProps} />);
+            return <ButtonInput {...inputProps} />;
           case 'textInput':
-            return (<Input {...inputProps} text />);
+            return <Input {...inputProps} text />;
           case 'multipleInput':
-            return (<MultipleInput {...inputProps} />);
+            return <MultipleInput {...inputProps} />;
           case 'selectInput':
-            return (<Input {...inputProps} select />);
+            return <Input {...inputProps} select />;
           case 'arrayInput':
-            return (<ArrayInput {...inputProps} />);
+            return <ArrayInput {...inputProps} />;
           default:
             throw new Error('Not a valid AutoForm type');
         }
       };
 
       return (
-        <Scroll.Element
-          name={input.id}
-          key={input.id}
-          className="scroll"
-        >
+        <Scroll.Element name={input.id} key={input.id} className="scroll">
           {scrollingInput()}
         </Scroll.Element>
       );
@@ -165,7 +164,6 @@ export default class AutoStart extends Component {
     }
   }
 
-
   render() {
     // Reinitialize the renderedArray
     this.renderedArray = [];
@@ -174,7 +172,8 @@ export default class AutoStart extends Component {
 
     return (
       <section>
-        {this.props.formArray.map((input, index, array) => this.inputSwitch(input, index, array))}
+        {this.props.formArray.map((input, index, array) =>
+          this.inputSwitch(input, index, array))}
       </section>
     );
   }

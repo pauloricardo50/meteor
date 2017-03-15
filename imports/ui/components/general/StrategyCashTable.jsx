@@ -26,15 +26,15 @@ export default class StrategyCashTable extends Component {
     const insuranceUseTax = 0.1; // TODO Impot sur le retrait du 2e pilier, à modifier
     const fees = 0.05;
     const subTotal = r.general.fortuneUsed +
-      (r.property.value * fees) +
-      (r.general.insuranceFortuneUsed * insuranceUseTax);
+      r.property.value * fees +
+      r.general.insuranceFortuneUsed * insuranceUseTax;
 
     return [
       {
         title: 'Fonds propres - Cash',
         className: 'secondary',
         className2: 'active',
-        value:
+        value: (
           <TextInput
             id={'general.fortuneUsed'}
             currentValue={r.general.fortuneUsed}
@@ -44,26 +44,31 @@ export default class StrategyCashTable extends Component {
             money
             style={styles.textField}
             inputStyle={styles.textFieldInput}
-          />,
-      }, {
+          />
+        ),
+      },
+      {
         title: 'Frais de notaire',
         className: 'secondary',
         value: `~CHF ${toMoney(r.property.value * fees)}`,
-      }, {
+      },
+      {
         title: 'Frais retrait LPP',
         className: 'secondary',
         value: `~CHF ${toMoney(r.general.insuranceFortuneUsed * insuranceUseTax)}`,
         hide: r.general.insuranceFortuneUsed <= 0,
-      }, {
+      },
+      {
         title: 'Sous-total - Cash requis',
         className: 'bold',
         className2: 'bold',
         value: `CHF ${toMoney(subTotal)}`,
-      }, {
+      },
+      {
         title: 'Fonds propres - LPP',
         className: 'secondary',
         className2: 'active',
-        value:
+        value: (
           <TextInput
             id={'general.insuranceFortuneUsed'}
             currentValue={r.general.insuranceFortuneUsed}
@@ -73,8 +78,10 @@ export default class StrategyCashTable extends Component {
             money
             style={styles.textField}
             inputStyle={styles.textFieldInput}
-          />,
-      }, {
+          />
+        ),
+      },
+      {
         title: 'Total',
         className: 'bold',
         className2: 'bold',
@@ -96,7 +103,7 @@ export default class StrategyCashTable extends Component {
                     <span className={item.className2}>{item.value}</span>
                   </h3>
                 </li>
-              )
+              );
             }
           })}
         </ul>

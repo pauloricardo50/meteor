@@ -32,7 +32,6 @@ export default class LoginPage extends React.Component {
     DocHead.setTitle('Login - e-Potek');
   }
 
-
   render() {
     return (
       <section style={styles.section}>

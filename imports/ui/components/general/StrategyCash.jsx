@@ -1,10 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import cleanMethod from '/imports/api/cleanMethods';
 
-
 import StrategyCashTable from './StrategyCashTable.jsx';
 import MetricsTriple from './MetricsTriple.jsx';
-
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -32,7 +30,6 @@ export default class StrategyCash extends Component {
     cleanMethod('update', id, object);
   }
 
-
   render() {
     return (
       <section>
@@ -40,14 +37,13 @@ export default class StrategyCash extends Component {
           Ma Stratégie de Fonds Propres
           &nbsp;
           {this.props.loanRequest.logic.hasValidatedCashStrategy &&
-            <span className="fa fa-check success" />
-          }
+            <span className="fa fa-check success" />}
         </h2>
 
         <div className="description">
           <p>
             Vérifiez vos fonds propres, et lorsque vous êtes satisfait, validez les. Vous ne pourrez
-            plus changer votre choix après l&apos;appel d&apos;offres.
+            plus changer votre choix après l'appel d'offres.
           </p>
         </div>
 

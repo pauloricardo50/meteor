@@ -6,5 +6,6 @@ const config = {
   bucket: 'e-potek-files',
   cloudfront: true,
   computeContentMd5: true,
-  cryptoMd5Method: data => crypto.createHash('md5').update(data).digest('base64'),
+  cryptoMd5Method: data =>
+    crypto.createHash('md5').update(data).digest('base64'),
 };

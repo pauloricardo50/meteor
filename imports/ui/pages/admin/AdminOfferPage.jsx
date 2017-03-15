@@ -4,12 +4,11 @@ import moment from 'moment';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-
 const styles = {
   backButton: {
     marginBottom: 20,
   },
-}
+};
 
 export default class AdminOfferPage extends Component {
   constructor(props) {
@@ -21,7 +20,8 @@ export default class AdminOfferPage extends Component {
       <div>
         <RaisedButton
           label="Retour"
-          onClick={() => Session.get('lastRoute') && FlowRouter.go(Session.get('lastRoute'))}
+          onClick={() =>
+            Session.get('lastRoute') && FlowRouter.go(Session.get('lastRoute'))}
           style={styles.backButton}
           disabled={!Session.get('lastRoute')}
         />

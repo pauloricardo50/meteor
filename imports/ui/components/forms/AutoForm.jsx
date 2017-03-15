@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 
-
 import TextInput from './TextInput.jsx';
 import RadioInput from './RadioInput.jsx';
 import SelectFieldInput from './SelectFieldInput.jsx';
@@ -10,7 +9,6 @@ import DateInput from './DateInput.jsx';
 import DropzoneInput from './DropzoneInput.jsx';
 import DropzoneArray from '../general/DropzoneArray.jsx';
 import ArrayInput from './ArrayInput.jsx';
-
 
 const styles = {
   form: {
@@ -35,7 +33,6 @@ const styles = {
     width: '100%',
   },
 };
-
 
 export default class AutoForm extends Component {
   inputSwitch(singleInput, index) {
@@ -110,20 +107,23 @@ export default class AutoForm extends Component {
             style={this.props.fullWidth ? styles.fullWidth : styles.smallWidth}
           >
             {this.inputSwitch(singleInput.inputs[0])}
-            {singleInput.inputs.slice(1).map((input, index2) => this.inputSwitch(input, index2))}
+            {singleInput.inputs
+              .slice(1)
+              .map((input, index2) => this.inputSwitch(input, index2))}
           </ConditionalInput>
         );
       case 'h3':
-        return (
-          <h3 style={styles.subtitle} key={index}>{singleInput.text}</h3>
-        );
+        return <h3 style={styles.subtitle} key={index}>{singleInput.text}</h3>;
       case 'h2':
-        return (
-          <h2 style={styles.subtitle} key={index}>{singleInput.text}</h2>
-        );
+        return <h2 style={styles.subtitle} key={index}>{singleInput.text}</h2>;
       case 'Space':
         return (
-          <div style={{ width: '100%', height: singleInput.height }} key={index}>{singleInput.text}</div>
+          <div
+            style={{ width: '100%', height: singleInput.height }}
+            key={index}
+          >
+            {singleInput.text}
+          </div>
         );
       case 'DateInput':
         return (
@@ -141,12 +141,16 @@ export default class AutoForm extends Component {
           //   {...extraValues}
           //   key={index}
           // />
-          <DropzoneArray
-            {...singleInput}
-            {...extraValues}
-            key={index}
-            style={this.props.fullWidth ? styles.fullWidth : styles.mediumWidth}
-          />
+          (
+            <DropzoneArray
+              {...singleInput}
+              {...extraValues}
+              key={index}
+              style={
+                this.props.fullWidth ? styles.fullWidth : styles.mediumWidth
+              }
+            />
+          )
         );
       case 'ArrayInput':
         return (
@@ -170,7 +174,8 @@ export default class AutoForm extends Component {
     return (
       <div className={this.props.formClasses}>
         <form style={styles.form} onSubmit={this.handleSubmit}>
-          {this.props.inputs.map((input, index1) => this.inputSwitch(input, index1))}
+          {this.props.inputs.map((input, index1) =>
+            this.inputSwitch(input, index1))}
         </form>
       </div>
     );

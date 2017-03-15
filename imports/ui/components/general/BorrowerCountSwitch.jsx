@@ -7,7 +7,6 @@ import FlatButton from 'material-ui/FlatButton';
 
 import cleanMethod from '/imports/api/cleanMethods';
 
-
 const styles = {
   div: {
     width: '100%',
@@ -31,7 +30,6 @@ const styles = {
   },
 };
 
-
 export default class BorrowerCountSwitch extends Component {
   constructor(props) {
     super(props);
@@ -40,7 +38,6 @@ export default class BorrowerCountSwitch extends Component {
       value: this.props.loanRequest.borrowers.length,
       modalIsOpen: false,
     };
-
 
     this.setRadioButton = this.setRadioButton.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -59,16 +56,18 @@ export default class BorrowerCountSwitch extends Component {
       });
     } else {
       // set state if value goes from 1 to 2 and add a borrower
-      this.setState({
-        value: newValue,
-      }, this.addBorrower());
+      this.setState(
+        {
+          value: newValue,
+        },
+        this.addBorrower(),
+      );
     }
   }
 
   handleClose() {
     this.setState({ modalIsOpen: false });
   }
-
 
   deleteBorrower() {
     if (this.props.loanRequest.borrowers.length > 1) {
@@ -80,7 +79,6 @@ export default class BorrowerCountSwitch extends Component {
       cleanMethod('pop', id, object);
     }
   }
-
 
   addBorrower() {
     const object = {
@@ -97,24 +95,17 @@ export default class BorrowerCountSwitch extends Component {
     cleanMethod('push', id, object);
   }
 
-
   render() {
     const actions = [
-      <FlatButton
-        label="Annuler"
-        onTouchTap={this.handleClose}
-        primary
-      />,
-      <FlatButton
-        label="Supprimer"
-        onTouchTap={this.deleteBorrower}
-        primary
-      />,
+      <FlatButton label="Annuler" onTouchTap={this.handleClose} primary />,
+      <FlatButton label="Supprimer" onTouchTap={this.deleteBorrower} primary />,
     ];
 
     return (
       <div style={styles.div}>
-        <label htmlFor="BorrowerCountSwitch">Combien d&apos;emprunteurs êtes vous?</label>
+        <label htmlFor="BorrowerCountSwitch">
+          Combien d'emprunteurs êtes vous?
+        </label>
         <RadioButtonGroup
           name="BorrowerCountSwitch"
           defaultSelected={this.state.value}

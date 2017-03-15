@@ -32,5 +32,4 @@ export default class AdminActionsPage extends Component {
   }
 }
 
-AdminActionsPage.propTypes = {
-};
+AdminActionsPage.propTypes = {};

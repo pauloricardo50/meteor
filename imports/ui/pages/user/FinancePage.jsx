@@ -3,7 +3,6 @@ import { DocHead } from 'meteor/kadira:dochead';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-
 import ProjectChart from '/imports/ui/components/charts/ProjectChart.jsx';
 import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
 import FinanceFAQ from '/imports/ui/components/general/FinanceFAQ.jsx';
@@ -39,13 +38,17 @@ export default class FinancePage extends Component {
             name={this.props.loanRequest.property.address1}
             propertyValue={this.props.loanRequest.property.value}
             fortuneUsed={this.props.loanRequest.general.fortuneUsed}
-            insuranceFortuneUsed={this.props.loanRequest.general.insuranceFortuneUsed}
+            insuranceFortuneUsed={
+              this.props.loanRequest.general.insuranceFortuneUsed
+            }
           />
         </article>
 
         <article style={styles.article2}>
           <h2 className="text-center">Coût Mensuel Estimé*</h2>
-          <p className="text-center" style={styles.p}>*Taux d&apos;intérêt fictif de 1.5%</p>
+          <p className="text-center" style={styles.p}>
+            *Taux d'intérêt fictif de 1.5%
+          </p>
           <ExpensesChart loanRequest={this.props.loanRequest} />
         </article>
 

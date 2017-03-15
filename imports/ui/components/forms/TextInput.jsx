@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import cleanMethod from '/imports/api/cleanMethods';
 
-
 import TextField from 'material-ui/TextField';
 import MaskedInput from 'react-text-mask';
 
@@ -12,7 +11,6 @@ import SavingIcon from './SavingIcon.jsx';
 import InfoIcon from './InfoIcon.jsx';
 import constants from '/imports/js/constants';
 import colors from '/imports/js/colors';
-
 
 const styles = {
   div: {
@@ -35,7 +33,6 @@ const styles = {
   },
 };
 
-
 export default class TextInput extends Component {
   constructor(props) {
     super(props);
@@ -49,7 +46,6 @@ export default class TextInput extends Component {
 
     // TODO: change saving only when something has successfully saved, not before
 
-
     this.handleChange = this.handleChange.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
@@ -62,12 +58,15 @@ export default class TextInput extends Component {
       ? toNumber(event.target.value)
       : event.target.value;
 
-    this.setState({
-      value: safeValue,
-    }, () => {
-      // do not show saving icon when changing text, only show it on blur
-      this.saveValue(false);
-    });
+    this.setState(
+      {
+        value: safeValue,
+      },
+      () => {
+        // do not show saving icon when changing text, only show it on blur
+        this.saveValue(false);
+      },
+    );
   }
 
   handleFocus() {
@@ -89,7 +88,6 @@ export default class TextInput extends Component {
     Meteor.clearTimeout(this.timeout);
   }
 
-
   saveValue(showSaving = true) {
     // Save data to DB
     const object = {};
@@ -103,13 +101,14 @@ export default class TextInput extends Component {
     const id = this.props.requestId;
 
     Meteor.clearTimeout(this.timeout);
-    this.timeout = Meteor.setTimeout(() => {
-      cleanMethod('update', id, object,
-        (error) => {
+    this.timeout = Meteor.setTimeout(
+      () => {
+        cleanMethod('update', id, object, error => {
           this.setState({ saving: false });
           if (!error) {
             // on success, set saving briefly to true, before setting it to false again to trigger icon
-            this.setState({ errorText: '', saving: showSaving },
+            this.setState(
+              { errorText: '', saving: showSaving },
               this.setState({ saving: false }),
             );
           } else {
@@ -117,7 +116,9 @@ export default class TextInput extends Component {
             this.setState({ value: this.props.currentValue });
           }
         });
-    }, constants.cpsLimit);
+      },
+      constants.cpsLimit,
+    );
   }
 
   render() {
@@ -126,7 +127,9 @@ export default class TextInput extends Component {
         <TextField
           floatingLabelText={this.props.label}
           hintText={this.props.placeholder}
-          value={this.props.number ? toNumber(this.state.value) : this.state.value}
+          value={
+            this.props.number ? toNumber(this.state.value) : this.state.value
+          }
           onChange={this.handleChange}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
@@ -136,10 +139,14 @@ export default class TextInput extends Component {
           multiLine={this.props.multiLine}
           rows={this.props.rows}
           pattern={this.props.number && '[0-9]*'}
-          errorText={this.state.errorText || (this.state.showInfo && this.props.info)}
+          errorText={
+            this.state.errorText || (this.state.showInfo && this.props.info)
+          }
           errorStyle={this.state.errorText ? {} : styles.infoStyle}
           underlineFocusStyle={this.state.errorText ? {} : styles.infoStyle}
-          floatingLabelShrinkStyle={this.state.showInfo && !this.state.errorText ? styles.infoStyle : {}}
+          floatingLabelShrinkStyle={
+            this.state.showInfo && !this.state.errorText ? styles.infoStyle : {}
+          }
           autoComplete={this.props.autocomplete || ''}
           disabled={this.props.disabled}
           style={this.props.style}
@@ -152,8 +159,7 @@ export default class TextInput extends Component {
               mask={swissFrancMask}
               guide
               pattern="[0-9]*"
-            />
-          }
+            />}
         </TextField>
         {/* {this.props.info &&
           <InfoIcon
@@ -174,15 +180,9 @@ export default class TextInput extends Component {
 
 TextInput.propTypes = {
   id: PropTypes.string.isRequired,
-  label: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.string,
-  ]).isRequired,
+  label: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
   placeholder: PropTypes.string.isRequired,
-  currentValue: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]),
+  currentValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   autocomplete: PropTypes.string,
   multiLine: PropTypes.bool,
   rows: PropTypes.number,

@@ -14,7 +14,6 @@ import myTheme from '/imports/js/mui_custom';
 
 const theme = myTheme;
 
-
 const styles = {
   topLayout: {
     verticalAlign: 'top',
@@ -23,8 +22,10 @@ const styles = {
 
 export default class UserLayout extends Component {
   render() {
-    if (Roles.userIsInRole(this.props.currentUser, 'admin') ||
-      Roles.userIsInRole(this.props.currentUser, 'partner')) {
+    if (
+      Roles.userIsInRole(this.props.currentUser, 'admin') ||
+      Roles.userIsInRole(this.props.currentUser, 'partner')
+    ) {
       return <Unauthorized message="Pas de partenaires ou admins ici." />;
     } else if (this.props.currentUser) {
       return (
@@ -35,7 +36,10 @@ export default class UserLayout extends Component {
             <SideNav />
 
             <main className="user-layout">
-              <div className="user-layout-center" style={this.props.top && styles.topLayout}>
+              <div
+                className="user-layout-center"
+                style={this.props.top && styles.topLayout}
+              >
                 {this.props.content}
               </div>
             </main>

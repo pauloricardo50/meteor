@@ -30,7 +30,6 @@ const styles = {
   },
 };
 
-
 export default class FinanceWidget extends React.Component {
   constructor(props) {
     super(props);
@@ -53,14 +52,16 @@ export default class FinanceWidget extends React.Component {
     this.onDragStop = this.onDragStop.bind(this);
   }
 
-
   componentWillReceiveProps(nextProps) {
-    const newPropertyValue = nextProps.loanRequest.property.value
+    const newPropertyValue = nextProps.loanRequest.property.value;
     const newFortune = nextProps.loanRequest.general.fortuneUsed +
       nextProps.loanRequest.general.insuranceFortuneUsed;
     // Only update if the value is new
     if (newPropertyValue && newFortune) {
-      if ((newPropertyValue !== this.state.propertyValue) || (newFortune !== this.fortune)) {
+      if (
+        newPropertyValue !== this.state.propertyValue ||
+        newFortune !== this.fortune
+      ) {
         this.setState({
           propertyValue: newPropertyValue,
           sliderValue: newPropertyValue - newFortune,
@@ -69,25 +70,22 @@ export default class FinanceWidget extends React.Component {
     }
   }
 
-
   onDragStop() {
     const object = {};
     const id = this.props.loanRequest._id;
     // Only change fortune when changing the slider, let insuranceFortune the same
     object['general.fortuneUsed'] = Number(
       this.state.propertyValue -
-      this.state.sliderValue -
-      this.props.loanRequest.general.insuranceFortuneUsed
+        this.state.sliderValue -
+        this.props.loanRequest.general.insuranceFortuneUsed,
     );
 
     cleanMethod('update', id, object);
   }
 
-
   setSlider(event, value) {
     this.setState({ sliderValue: value });
   }
-
 
   render() {
     // If property value and fortune hasn't been specified, don't show anything
@@ -99,10 +97,14 @@ export default class FinanceWidget extends React.Component {
         <h3>CHF {toMoney(this.state.propertyValue * 1.05)}</h3>
         <hr />
         <h5 className="secondary" style={styles.smallH_1}>Propriété</h5>
-        <h5 className="secondary" style={styles.smallH_2}>CHF {toMoney(this.state.propertyValue)}</h5>
+        <h5 className="secondary" style={styles.smallH_2}>
+          CHF {toMoney(this.state.propertyValue)}
+        </h5>
         <br />
         <h5 className="secondary" style={styles.smallH_1}>Notaire ~5%</h5>
-        <h5 className="secondary" style={styles.smallH_2}>CHF {toMoney(this.state.propertyValue * 0.05)}</h5>
+        <h5 className="secondary" style={styles.smallH_2}>
+          CHF {toMoney(this.state.propertyValue * 0.05)}
+        </h5>
 
         <div className="slider-div">
           <Slider
@@ -119,7 +121,9 @@ export default class FinanceWidget extends React.Component {
 
           <div style={styles.sliderValues}>
             <h4>Fonds Propres</h4>
-            <p>CHF {toMoney(this.state.propertyValue - this.state.sliderValue)}</p>
+            <p>
+              CHF {toMoney(this.state.propertyValue - this.state.sliderValue)}
+            </p>
             <h4>Prêt</h4>
             <p>CHF {toMoney(this.state.sliderValue)}</p>
           </div>

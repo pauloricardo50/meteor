@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 
-
 import { getAmortization, getInterests } from '/imports/js/finance-math';
 import { toMoney } from '/imports/js/conversionFunctions';
 import colors from '/imports/js/colors';
@@ -45,7 +44,7 @@ export default class RequestDetails extends Component {
   getRatio() {
     const amortization = getAmortization(this.props.loanRequest);
     const interests = getInterests(this.props.loanRequest);
-    const maintenance = (this.props.loanRequest.property.value * 0.01) / 12;
+    const maintenance = this.props.loanRequest.property.value * 0.01 / 12;
 
     const ratio = (amortization + interests + maintenance) /
       (this.props.loanRequest.general.incomeUsed / 12);
@@ -66,12 +65,17 @@ export default class RequestDetails extends Component {
             <h2>Demande:</h2>
             <h1 className="bold" style={styles.largeH1}>
               CHF {toMoney(loan)}
-            </h1><h3 style={styles.loanPercent}>&nbsp;({Math.round(100 * (loan / r.property.value))}%)</h3>
+            </h1>
+            <h3 style={styles.loanPercent}>
+              &nbsp;({Math.round(100 * (loan / r.property.value))}%)
+            </h3>
             <h4>Propriété: CHF {toMoney(r.property.value)}</h4>
 
           </span>
         </div>
-        <div className="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+        <div
+          className="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3"
+        >
           <h3>Détails du Projet</h3>
 
           <div className="col-xs-12">
@@ -89,7 +93,9 @@ export default class RequestDetails extends Component {
           </div>
           <div className="col-xs-12">
             <h4 className="pull-left">2e pilier</h4>
-            <h4 className="pull-right">CHF {toMoney(r.general.insuranceFortuneUsed)}</h4>
+            <h4 className="pull-right">
+              CHF {toMoney(r.general.insuranceFortuneUsed)}
+            </h4>
           </div>
           <div className="col-xs-12">
             <h4 className="pull-left">Revenus annuels</h4>

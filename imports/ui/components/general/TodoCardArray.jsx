@@ -13,7 +13,9 @@ const styles = {
 
 const TodoCardArray = props => (
   <section className="animated fadeIn">
-    <p className="text-center secondary" >Appuyez sur une carte incomplète pour avancer</p>
+    <p className="text-center secondary">
+      Appuyez sur une carte incomplète pour avancer
+    </p>
 
     <hr style={styles.hr} />
 
@@ -24,7 +26,9 @@ const TodoCardArray = props => (
           completionPercentage={props.progress[index]}
           key={index}
           // If the array length is odd (% 2), return true when this is the last card
-          center={props.cards.length % 2 ? (index === (props.cards.length - 1)) : false}
+          center={
+            props.cards.length % 2 ? index === props.cards.length - 1 : false
+          }
         />
       ))}
     </ul>

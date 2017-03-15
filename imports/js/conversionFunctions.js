@@ -3,9 +3,10 @@ export function toMoney(value) {
   if (value === 0) {
     return 0;
   }
-  return String(Math.round(Number(Math.round(value)))).replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+  return String(Math.round(Number(Math.round(value))))
+    .replace(/\D/g, '')
+    .replace(/\B(?=(\d{3})+(?!\d))/g, "'");
 }
-
 
 // Replaces any nondigit character by an empty character, to prevent the use of non-digits
 // Only do this if the value actually exists

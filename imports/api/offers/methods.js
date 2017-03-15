@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import LoanRequests from '../loanrequests/loanrequests';
 
-
 import Offers from './offers';
 
 // Insert a new offer
@@ -19,7 +18,10 @@ export const insertOffer = new ValidatedMethod({
       organization: user.profile.organization,
     });
     if (offer) {
-      throw new Meteor.Error('noTwoOffers', 'Your organization has already made an offer on this request');
+      throw new Meteor.Error(
+        'noTwoOffers',
+        'Your organization has already made an offer on this request',
+      );
     }
 
     const request = LoanRequests.findOne({ _id: object.requestId });
@@ -29,11 +31,9 @@ export const insertOffer = new ValidatedMethod({
     newObject.canton = user.profile.cantons[0];
     newObject.auctionEndTime = request.logic.auctionEndTime;
 
-
     Offers.insert(newObject);
   },
 });
-
 
 export const updateOffer = new ValidatedMethod({
   name: 'offers.update',

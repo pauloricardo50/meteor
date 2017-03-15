@@ -1,10 +1,8 @@
-import React, {PropTypes} from 'react';
-
+import React, { PropTypes } from 'react';
 
 export default class AdminSingleUserPage extends React.Component {
   constructor(props) {
     super(props);
-
   }
 
   render() {

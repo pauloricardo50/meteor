@@ -6,11 +6,13 @@ import TextField from 'material-ui/TextField';
 import MaskedInput from 'react-text-mask';
 import RaisedButton from 'material-ui/RaisedButton';
 
-
-import { toMoney, toNumber, toDecimalNumber } from '/imports/js/conversionFunctions';
+import {
+  toMoney,
+  toNumber,
+  toDecimalNumber,
+} from '/imports/js/conversionFunctions';
 import { swissFrancMask, percentMask } from '/imports/js/textMasks';
 import cleanMethod from '/imports/api/cleanMethods';
-
 
 const styles = {
   article: {
@@ -28,7 +30,6 @@ const styles = {
     display: 'inline-block',
   },
 };
-
 
 export default class PartnerOfferForm extends Component {
   constructor(props) {
@@ -60,7 +61,7 @@ export default class PartnerOfferForm extends Component {
     event.preventDefault();
 
     // Prevent enter key from submitting form
-    if(event.keyCode === 13) {
+    if (event.keyCode === 13) {
       event.preventDefault();
       return false;
     }
@@ -88,14 +89,12 @@ export default class PartnerOfferForm extends Component {
       expertiseRequired: false, // TODO
     };
 
-    cleanMethod('insertOffer', id, object,
-      (error) => {
-        if (!error) {
-          FlowRouter.go('/partner');
-        }
-      });
+    cleanMethod('insertOffer', id, object, error => {
+      if (!error) {
+        FlowRouter.go('/partner');
+      }
+    });
   }
-
 
   getFormArray(index) {
     return [
@@ -118,30 +117,25 @@ export default class PartnerOfferForm extends Component {
     ];
   }
 
-
   render() {
     return (
       <article className="col-xs-12" style={styles.article}>
         <h1 className="col-xs-12">Faire une Offre</h1>
         <form onSubmit={this.handleSubmit}>
 
-
           <div className="col-xs-12">
             <TextField
               floatingLabelText="Prêt Maximal"
-              hintText={`CHF ${toMoney(Math.round(this.props.loanRequest.property.value * 0.8))}`}
+              hintText={
+                `CHF ${toMoney(Math.round(this.props.loanRequest.property.value * 0.8))}`
+              }
               type="number"
               onChange={(e, n) => this.handleChange(e, n, 'maxAmount')}
               value={this.state.maxAmount}
             >
-              <MaskedInput
-                mask={swissFrancMask}
-                guide
-                pattern="\d+(\.\d*)?"
-              />
+              <MaskedInput mask={swissFrancMask} guide pattern="\d+(\.\d*)?" />
             </TextField>
           </div>
-
 
           <div className="col-xs-12">
             <TextField
@@ -151,16 +145,13 @@ export default class PartnerOfferForm extends Component {
               onChange={(e, n) => this.handleChange(e, n, 'amortizing')}
               value={this.state.amortizing}
             >
-              <MaskedInput
-                mask={percentMask}
-                guide
-                pattern="\d+(\.\d*)?"
-              />
+              <MaskedInput mask={percentMask} guide pattern="\d+(\.\d*)?" />
             </TextField>
           </div>
 
-
-          <h4 className="text-center col-xs-12" style={styles.h4}>Taux Standard</h4>
+          <h4 className="text-center col-xs-12" style={styles.h4}>
+            Taux Standard
+          </h4>
 
           {this.getFormArray(0).map((field, index) => (
             <div className="col-xs-6 col-md-3" key={index}>
@@ -172,16 +163,14 @@ export default class PartnerOfferForm extends Component {
                 onChange={(e, n) => this.handleChange(e, n, field.name)}
                 value={this.state[field.name]}
               >
-                <MaskedInput
-                  mask={percentMask}
-                  guide
-                  pattern="\d+(\.\d*)?"
-                />
+                <MaskedInput mask={percentMask} guide pattern="\d+(\.\d*)?" />
               </TextField>
             </div>
           ))}
 
-          <h4 className="text-center col-xs-12" style={styles.h4}>Taux d&apos;intérêt préférentiels</h4>
+          <h4 className="text-center col-xs-12" style={styles.h4}>
+            Taux d'intérêt préférentiels
+          </h4>
 
           <div className="col-xs-10 col-xs-offset-1">
             <TextField
@@ -206,15 +195,10 @@ export default class PartnerOfferForm extends Component {
                 onChange={(e, n) => this.handleChange(e, n, field.name)}
                 value={this.state[field.name]}
               >
-                <MaskedInput
-                  mask={percentMask}
-                  guide
-                  pattern="\d+(\.\d*)?"
-                />
+                <MaskedInput mask={percentMask} guide pattern="\d+(\.\d*)?" />
               </TextField>
             </div>
           ))}
-
 
           <div className="col-xs-12" style={styles.buttons}>
             <RaisedButton
@@ -222,11 +206,7 @@ export default class PartnerOfferForm extends Component {
               href="/partner"
               style={styles.button}
             />
-            <RaisedButton
-              label="Envoyer"
-              type="submit"
-              primary
-            />
+            <RaisedButton label="Envoyer" type="submit" primary />
           </div>
         </form>
       </article>

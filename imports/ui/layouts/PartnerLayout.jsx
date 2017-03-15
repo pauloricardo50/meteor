@@ -7,7 +7,6 @@ import { Roles } from 'meteor/alanning:roles';
 import { PublicNav } from '/imports/ui/containers/public/CurrentUserContainer';
 import Unauthorized from '/imports/ui/components/general/Unauthorized.jsx';
 
-
 // MUI Theme, replace lightBaseTheme with a custom theme ASAP!
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -17,9 +16,10 @@ const theme = myTheme;
 
 export default class PartnerLayout extends Component {
   render() {
-    if (this.props.currentUser &&
+    if (
+      this.props.currentUser &&
       (Roles.userIsInRole(this.props.currentUser, 'admin') ||
-      Roles.userIsInRole(this.props.currentUser, 'partner'))
+        Roles.userIsInRole(this.props.currentUser, 'partner'))
     ) {
       return (
         <MuiThemeProvider muiTheme={getMuiTheme(theme)}>
@@ -35,12 +35,10 @@ export default class PartnerLayout extends Component {
       );
     } else if (this.props.currentUser) {
       return (
-        <Unauthorized
-          message="Oops, on dirait que vous vous êtes égaré."
-        />
+        <Unauthorized message="Oops, on dirait que vous vous êtes égaré." />
       );
     } else {
-      Session.set('postLoginPath', FlowRouter.current().path)
+      Session.set('postLoginPath', FlowRouter.current().path);
       return (
         <Unauthorized
           message="Connectez-vous d'abord!"

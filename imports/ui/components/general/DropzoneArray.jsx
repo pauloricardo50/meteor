@@ -1,7 +1,6 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 
 import DropzoneArrayItem from './DropzoneArrayItem.jsx';
-
 
 const styles = {
   div: {

@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 
-
 import AdminActionsDropdown from './AdminActionsDropdown.jsx';
 
 const styles = {
@@ -30,10 +29,7 @@ const AdminNav = ({ currentURL }) => (
 
     <ul className="side-nav-list">
       <li>
-        <a
-          href="/admin"
-          className={currentURL === '/admin' && 'active-link'}
-        >
+        <a href="/admin" className={currentURL === '/admin' && 'active-link'}>
           <span className="icon fa fa-home fa-2x" />
           <h5>Home</h5>
         </a>

@@ -1,9 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
-
 import StartTextField from './StartTextField';
 import StartSelectField from './StartSelectField';
-
 
 export default class Input extends Component {
   render() {

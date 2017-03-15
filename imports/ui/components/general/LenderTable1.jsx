@@ -4,9 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import { toMoney } from '/imports/js/conversionFunctions';
 
-
-const styles = {
-};
+const styles = {};
 
 export default class LenderTable1 extends React.Component {
   constructor(props) {
@@ -31,19 +29,21 @@ export default class LenderTable1 extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {this.props.partnerOffers && this.props.partnerOffers.map((offer, index) => (
-            <tr>
-              <td className="left-align">{index + 1}</td>
-              <td className="left-align">{`CHF ${toMoney(offer.maxValue)}`}</td>
-              <td className="right-align">{`CHF ${this.calculatePayment(offer)}`}</td>
-              <td className="right-align">
-                <RaisedButton
-                  label="Choisir"
-                  primary
-                />
-              </td>
-            </tr>
-          ))}
+          {this.props.partnerOffers &&
+            this.props.partnerOffers.map((offer, index) => (
+              <tr>
+                <td className="left-align">{index + 1}</td>
+                <td className="left-align">
+                  {`CHF ${toMoney(offer.maxValue)}`}
+                </td>
+                <td className="right-align">
+                  {`CHF ${this.calculatePayment(offer)}`}
+                </td>
+                <td className="right-align">
+                  <RaisedButton label="Choisir" primary />
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     );

@@ -43,7 +43,6 @@ export default class ProjectChart extends Component {
     window.addEventListener('resize', this.resize);
   }
 
-
   componentWillReceiveProps(n) {
     const p = this.props;
     if (
@@ -52,45 +51,20 @@ export default class ProjectChart extends Component {
       n.insuranceFortuneUsed !== p.insuranceFortuneUsed
     ) {
       this.chart.series[0].update({
-        data: [
-          [
-            n.name,
-            n.propertyValue * 0.05,
-          ],
-        ],
+        data: [[n.name, n.propertyValue * 0.05]],
       });
       this.chart.series[1].update({
-        data: [
-          [
-            n.name,
-            n.insuranceFortuneUsed * 0.1,
-          ],
-        ],
+        data: [[n.name, n.insuranceFortuneUsed * 0.1]],
       });
       this.chart.series[2].update({
-        data: [
-          [
-            n.name,
-            n.fortuneUsed,
-          ],
-        ],
+        data: [[n.name, n.fortuneUsed]],
       });
       this.chart.series[3].update({
-        data: [
-          [
-            n.name,
-            n.insuranceFortuneUsed,
-          ],
-        ],
+        data: [[n.name, n.insuranceFortuneUsed]],
       });
       this.chart.series[4].update({
         data: [
-          [
-            n.name,
-            n.propertyValue -
-            n.fortuneUsed -
-            n.insuranceFortuneUsed,
-          ],
+          [n.name, n.propertyValue - n.fortuneUsed - n.insuranceFortuneUsed],
         ],
       });
 
@@ -98,12 +72,10 @@ export default class ProjectChart extends Component {
     }
   }
 
-
   componentWillUnmount() {
     window.removeEventListener('resize', this.resize);
     this.chart.destroy();
   }
-
 
   resize() {
     // Only recreate charts if the width changes, ignore height changes
@@ -111,7 +83,9 @@ export default class ProjectChart extends Component {
     const d = document;
     const documentElement = d.documentElement;
     const body = d.getElementsByTagName('body')[0];
-    const newWidth = w.innerWidth || documentElement.clientWidth || body.clientWidth;
+    const newWidth = w.innerWidth ||
+      documentElement.clientWidth ||
+      body.clientWidth;
 
     if (oldWidth && oldWidth !== newWidth) {
       Meteor.clearTimeout(timeout);
@@ -120,19 +94,21 @@ export default class ProjectChart extends Component {
         this.chart = undefined;
       }
 
-      timeout = Meteor.setTimeout(() => {
-        Meteor.defer(() => this.createChart(this.props));
-      }, 200);
+      timeout = Meteor.setTimeout(
+        () => {
+          Meteor.defer(() => this.createChart(this.props));
+        },
+        200,
+      );
     }
 
     oldWidth = newWidth;
   }
 
-
   createChart(p) {
     const options = {
       chart: {
-        type: (p.horizontal ? 'bar' : 'column'),
+        type: p.horizontal ? 'bar' : 'column',
         polar: false,
         width: null,
         height: null,
@@ -174,11 +150,11 @@ export default class ProjectChart extends Component {
         },
       },
       title: {
-        text: (p.horizontal ? '' : 'Mon Projet'),
+        text: p.horizontal ? '' : 'Mon Projet',
       },
       yAxis: [
         {
-          tickInterval: (p.propertyValue > 2000000 ? 200000 : 100000),
+          tickInterval: p.propertyValue > 2000000 ? 200000 : 100000,
           title: {
             text: 'Montant [CHF]',
           },
@@ -194,49 +170,28 @@ export default class ProjectChart extends Component {
       ],
       series: [
         {
-          data: [
-            [
-              p.name,
-              p.propertyValue * 0.05,
-            ],
-          ],
+          data: [[p.name, p.propertyValue * 0.05]],
           name: 'Frais de Notaire',
           color: colors.frais2,
-        }, {
-          data: [
-            [
-              p.name,
-              p.insuranceFortuneUsed * 0.1,
-            ],
-          ],
+        },
+        {
+          data: [[p.name, p.insuranceFortuneUsed * 0.1]],
           name: 'Retrait 2ème Pilier',
           color: colors.frais1,
-        }, {
-          data: [
-            [
-              p.name,
-              p.fortuneUsed,
-            ],
-          ],
+        },
+        {
+          data: [[p.name, p.fortuneUsed]],
           name: 'Fortune',
           color: colors.fortune,
-        }, {
-          data: [
-            [
-              p.name,
-              p.insuranceFortuneUsed,
-            ],
-          ],
+        },
+        {
+          data: [[p.name, p.insuranceFortuneUsed]],
           name: '2ème Pilier',
           color: colors.insuranceFortune,
-        }, {
+        },
+        {
           data: [
-            [
-              p.name,
-              p.propertyValue -
-              p.fortuneUsed -
-              p.insuranceFortuneUsed,
-            ],
+            [p.name, p.propertyValue - p.fortuneUsed - p.insuranceFortuneUsed],
           ],
           name: 'Emprunt',
           color: colors.loan,
@@ -249,7 +204,7 @@ export default class ProjectChart extends Component {
 
     Highcharts.setOptions({
       lang: {
-        thousandsSep: '\'',
+        thousandsSep: "'",
       },
     });
 
@@ -257,12 +212,17 @@ export default class ProjectChart extends Component {
     this.chart = new Highcharts.Chart(this.div, options);
   }
 
-
   render() {
-    return (<div
-      id={this.props.divName || 'projectChart'}
-      style={(this.props.horizontal ? styles.financePageContainer : styles.sideNavContainer)}
-    />);
+    return (
+      <div
+        id={this.props.divName || 'projectChart'}
+        style={
+          this.props.horizontal
+            ? styles.financePageContainer
+            : styles.sideNavContainer
+        }
+      />
+    );
   }
 }
 

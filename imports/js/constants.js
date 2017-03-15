@@ -6,11 +6,19 @@ const constants = {
   interestsReal: 0.015,
   maintenance: 0.01,
   maintenanceReal: 0.005,
-  loanCost() { return this.interests + this.amortizing; },
-  loanCostReal() { return this.interestsReal + this.amortizing; },
+  loanCost() {
+    return this.interests + this.amortizing;
+  },
+  loanCostReal() {
+    return this.interestsReal + this.amortizing;
+  },
   notaryFees: 0.05,
-  propertyToIncome() { return 3 * (this.maintenance + (0.8 * this.loanCost())); },
-  propertyToIncomeReal() { return 3 * (this.maintenanceReal + (0.8 * this.loanCostReal())); },
+  propertyToIncome() {
+    return 3 * (this.maintenance + 0.8 * this.loanCost());
+  },
+  propertyToIncomeReal() {
+    return 3 * (this.maintenanceReal + 0.8 * this.loanCostReal());
+  },
 };
 
 export default constants;

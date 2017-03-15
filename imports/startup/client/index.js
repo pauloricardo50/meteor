@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { T9n } from 'meteor/softwarerero:accounts-t9n';
 
-
 import './routes';
 import '../useraccounts-configuration';
 import '../meteor-slingshot';
@@ -15,7 +14,7 @@ import '../meteor-slingshot';
 // };
 
 if (Meteor.isClient) {
-  Meteor.startup(function () {
+  Meteor.startup(function() {
     // For the meteor accounts package, translates the login page
     T9n.setLanguage('fr');
     // TAPi18n.setLanguage(getUserLanguage())

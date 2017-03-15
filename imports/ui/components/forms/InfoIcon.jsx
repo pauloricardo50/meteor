@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-import ReactTooltip from 'react-tooltip'
+import ReactTooltip from 'react-tooltip';
 import isMobile from 'ismobilejs';
 
 const styles = {

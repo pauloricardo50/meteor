@@ -8,7 +8,6 @@ import classNames from 'classnames';
 
 import { LoadingComponent } from './Loading.jsx';
 
-
 export default class StrategyChoices extends Component {
   constructor(props) {
     super(props);
@@ -17,9 +16,12 @@ export default class StrategyChoices extends Component {
       showChoices: false,
     };
 
-    this.timeout = Meteor.setTimeout(() => {
-      this.setState({ showChoices: true });
-    }, (this.props.load ? 2500 : 0));
+    this.timeout = Meteor.setTimeout(
+      () => {
+        this.setState({ showChoices: true });
+      },
+      this.props.load ? 2500 : 0,
+    );
   }
 
   componentWillUnmount() {
@@ -32,16 +34,16 @@ export default class StrategyChoices extends Component {
     const object = {};
     const id = this.props.requestId;
     // If the selected choice is clicked again, set the value to ''
-    object[this.props.valueId] = this.props.currentValue === choiceId ? '' : choiceId;
+    object[this.props.valueId] = this.props.currentValue === choiceId
+      ? ''
+      : choiceId;
 
-    cleanMethod('update', id, object,
-      (error) => {
-        if (!error && typeof this.props.handleChoose === 'function') {
-          this.props.handleChoose(choiceId);
-        }
-      });
+    cleanMethod('update', id, object, error => {
+      if (!error && typeof this.props.handleChoose === 'function') {
+        this.props.handleChoose(choiceId);
+      }
+    });
   }
-
 
   renderChoice(choice, index) {
     const chosen = this.props.currentValue === choice.id;
@@ -53,14 +55,14 @@ export default class StrategyChoices extends Component {
     });
 
     return (
-      <article className={articleClasses} key={index} >
-        {(choice.isBest && !this.props.currentValue) &&
+      <article className={articleClasses} key={index}>
+        {choice.isBest &&
+          !this.props.currentValue &&
           <div className="recommended animated fadeIn">
             <div className="bold">
               Recommandé pour vous
             </div>
-          </div>
-        }
+          </div>}
 
         <ul>
           <li className={chosen ? 'title-chosen' : 'title'}>
@@ -69,9 +71,9 @@ export default class StrategyChoices extends Component {
             </h4>
           </li>
 
-          {choice.reasons.map((reason, i) =>
-            <li className="bold reason" key={i}>{reason}</li>,
-          )}
+          {choice.reasons.map((reason, i) => (
+            <li className="bold reason" key={i}>{reason}</li>
+          ))}
         </ul>
 
         <div className="button">
@@ -90,12 +92,11 @@ export default class StrategyChoices extends Component {
       <div className="strategy-choices">
 
         {this.state.showChoices
-          ? this.props.choices.map((choice, index) => (this.renderChoice(choice, index)))
-          :
-          <span className="loading">
-            <LoadingComponent />
-          </span>
-        }
+          ? this.props.choices.map((choice, index) =>
+              this.renderChoice(choice, index))
+          : <span className="loading">
+              <LoadingComponent />
+            </span>}
 
       </div>
     );
@@ -106,10 +107,7 @@ StrategyChoices.propTypes = {
   choices: PropTypes.arrayOf(PropTypes.object).isRequired,
   load: PropTypes.bool,
   requestId: PropTypes.string.isRequired,
-  currentValue: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.any,
-  ]),
+  currentValue: PropTypes.oneOfType([PropTypes.string, PropTypes.any]),
   valueId: PropTypes.string.isRequired,
   handleChoose: PropTypes.func,
 };

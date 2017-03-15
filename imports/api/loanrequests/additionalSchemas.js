@@ -1,14 +1,20 @@
 import 'babel-polyfill';
 import SimpleSchema from 'simpl-schema';
 
-import { GeneralFilesSchema, BorrowerFilesSchema, PropertyFilesSchema } from './FileSchemas';
+import {
+  GeneralFilesSchema,
+  BorrowerFilesSchema,
+  PropertyFilesSchema,
+} from './FileSchemas';
 
 export const GeneralSchema = new SimpleSchema({
-  purchaseType: { // acquisition, refinancing, construction
+  purchaseType: {
+    // acquisition, refinancing, construction
     type: String,
     defaultValue: '',
   },
-  usageType: { // primary, secondary or investment
+  usageType: {
+    // primary, secondary or investment
     type: String,
     defaultValue: 'primary',
   },
@@ -69,7 +75,8 @@ export const GeneralSchema = new SimpleSchema({
     ],
   },
   'loanTranches.$': Object,
-  'loanTranches.$.type': { // libor, floating, 1y, 2y, 5y, 10y
+  'loanTranches.$.type': {
+    // libor, floating, 1y, 2y, 5y, 10y
     type: String,
     optional: true,
   },
@@ -79,11 +86,13 @@ export const GeneralSchema = new SimpleSchema({
     min: 0,
     max: 100000000,
   },
-  currentOwner: { // '0', '1', 'both', 'other'
+  currentOwner: {
+    // '0', '1', 'both', 'other'
     type: String,
     defaultValue: '0',
   },
-  futureOwner: { // '0', '1', 'both', 'other'
+  futureOwner: {
+    // '0', '1', 'both', 'other'
     type: String,
     defaultValue: '0',
   },
@@ -100,7 +109,6 @@ export const GeneralSchema = new SimpleSchema({
     defaultValue: {},
   },
 });
-
 
 // Schema to store information about each borrower
 export const BorrowerSchema = new SimpleSchema({
@@ -157,7 +165,8 @@ export const BorrowerSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  civilStatus: { // 'married', 'pacsed', 'single', 'divorced'
+  civilStatus: {
+    // 'married', 'pacsed', 'single', 'divorced'
     type: String,
     defaultValue: 'single',
   },
@@ -207,7 +216,8 @@ export const BorrowerSchema = new SimpleSchema({
     type: Boolean,
     defaultValue: false,
   },
-  currentRent: { // Monthly
+  currentRent: {
+    // Monthly
     type: Number,
     optional: true,
     min: 0,
@@ -271,15 +281,16 @@ export const BorrowerSchema = new SimpleSchema({
   },
 });
 
-
 export const PropertySchema = new SimpleSchema({
-  value: { // Cost of the property
+  value: {
+    // Cost of the property
     type: Number,
     optional: true,
     min: 0,
     max: 100000000,
   },
-  style: { // villa, flat,
+  style: {
+    // villa, flat,
     type: String,
     optional: true,
     defaultValue: 'flat',
@@ -301,11 +312,13 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  insideArea: { // inside
+  insideArea: {
+    // inside
     type: Number,
     optional: true,
   },
-  landArea: { // land area
+  landArea: {
+    // land area
     type: Number,
     optional: true,
   },
@@ -378,7 +391,6 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
   },
 });
-
 
 // All logic fields required by the app to trigger the right things at the right time
 export const LogicSchema = new SimpleSchema({

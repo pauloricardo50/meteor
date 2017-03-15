@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import cleanMethod from '/imports/api/cleanMethods';
 
-
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 
 const styles = {
@@ -40,12 +39,14 @@ export default class RadioInput extends Component {
     this.saveValue = this.saveValue.bind(this);
   }
 
-
   setValue(event) {
     // Change radio button group state to appropriate value
-    this.setState({
-      value: event.target.value,
-    }, this.saveValue(event.target.value));
+    this.setState(
+      {
+        value: event.target.value,
+      },
+      this.saveValue(event.target.value),
+    );
   }
 
   saveValue(value) {
@@ -66,7 +67,6 @@ export default class RadioInput extends Component {
     cleanMethod('update', id, object);
   }
 
-
   render() {
     return (
       <div style={{ ...styles.div, ...this.props.style }}>
@@ -77,16 +77,16 @@ export default class RadioInput extends Component {
           onChange={this.props.onConditionalChange}
           style={styles.RadioButtonGroup}
         >
-          {this.props.values.map((value, index) =>
-            (<RadioButton
+          {this.props.values.map((value, index) => (
+            <RadioButton
               label={this.props.radioLabels[index]}
               value={value}
               onTouchTap={this.setValue}
               key={index}
               style={styles.RadioButton}
               labelStyle={styles.RadioButtonLabel}
-            />),
-          )}
+            />
+          ))}
         </RadioButtonGroup>
       </div>
     );
@@ -100,8 +100,5 @@ RadioInput.propTypes = {
   values: PropTypes.arrayOf(PropTypes.any).isRequired,
   onConditionalChange: PropTypes.func,
   requestId: PropTypes.string.isRequired,
-  currentValue: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.string,
-  ]),
+  currentValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
 };

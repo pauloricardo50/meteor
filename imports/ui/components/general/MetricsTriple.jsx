@@ -23,14 +23,17 @@ export default class StrategyCashMetrics extends React.Component {
         value: r.general.fortuneUsed / r.property.value,
         isValid: r.general.fortuneUsed / r.property.value >= 0.1,
         error: 'Cash doit être au moins 10% de la propriété',
-      }, {
+      },
+      {
         name: '% de LPP',
         value: r.general.insuranceFortuneUsed / r.property.value,
-        isValid: (r.general.insuranceFortuneUsed / r.property.value) +
-          (r.general.fortuneUsed / r.property.value) >= 0.2,
+        isValid: r.general.insuranceFortuneUsed / r.property.value +
+          r.general.fortuneUsed / r.property.value >=
+          0.2,
         error: 'Cash et LPP doivent être au moins 20% de la propriété',
-      }, {
-        name: 'Ratio d\'endettement',
+      },
+      {
+        name: "Ratio d'endettement",
         value: getRatio(r),
         isValid: getRatio(r) <= constants.maxRatio,
         error: 'Doit être mois que 35%',
@@ -47,23 +50,18 @@ export default class StrategyCashMetrics extends React.Component {
               <h4 className="secondary">
                 <span>{metric.name}</span>
                 &nbsp;
-                {metric.isValid !== undefined && (
-                  metric.isValid
+                {metric.isValid !== undefined &&
+                  (metric.isValid
                     ? <span className="fa fa-check success" />
-                    : <span className="fa fa-times error" />
-                  )
-                }
+                    : <span className="fa fa-times error" />)}
               </h4>
 
-              {!metric.isValid &&
-                <p className="error">{metric.error}</p>
-              }
+              {!metric.isValid && <p className="error">{metric.error}</p>}
 
               <h1>
                 {this.props.percent
-                  ? (Math.round(metric.value * 1000) / 10) + '%'
-                  : metric.value
-                }
+                  ? Math.round(metric.value * 1000) / 10 + '%'
+                  : metric.value}
               </h1>
             </div>
           </div>

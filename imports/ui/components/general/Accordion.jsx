@@ -29,8 +29,19 @@ export default class Accordion extends Component {
 
   render() {
     return (
-      <div className="Accordion-container" style={this.state.styles} ref={(c) => { this.container = c; }}>
-        <div className="Accordion-content" ref={(c) => { this.content = c; }}>
+      <div
+        className="Accordion-container"
+        style={this.state.styles}
+        ref={c => {
+          this.container = c;
+        }}
+      >
+        <div
+          className="Accordion-content"
+          ref={c => {
+            this.content = c;
+          }}
+        >
           {this.props.children}
         </div>
       </div>

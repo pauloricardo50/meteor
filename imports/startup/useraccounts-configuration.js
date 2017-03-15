@@ -4,7 +4,6 @@ import { Accounts } from 'meteor/std:accounts-ui';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Roles } from 'meteor/alanning:roles';
 
-
 // TODO: Internationalize this shit
 // import { TAPi18n } from 'meteor/tap:i18n';
 

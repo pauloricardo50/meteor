@@ -1,14 +1,12 @@
 import React, { PropTypes } from 'react';
 import { DocHead } from 'meteor/kadira:dochead';
 
-
 const style = {
   content: {
     paddingLeft: 20,
     paddingRight: 20,
   },
 };
-
 
 export default class ContactPage extends React.Component {
   constructor(props) {
@@ -41,5 +39,4 @@ export default class ContactPage extends React.Component {
   }
 }
 
-ContactPage.propTypes = {
-};
+ContactPage.propTypes = {};

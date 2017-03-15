@@ -34,7 +34,9 @@ export default class CareersPage extends Component {
               Nous ne cherchons pas activement de nouveaux candidats en ce moment. Cependant,
               nous sommes toujours ouverts aux candidatures spontanées, écris-nous à
               &nbsp;
-              <a href="mailto:jobs@e-potek.ch?subject=Je%20veux%20révolutionner%20la%20finance">
+              <a
+                href="mailto:jobs@e-potek.ch?subject=Je%20veux%20révolutionner%20la%20finance"
+              >
                 jobs@e-potek.ch
               </a>
               .
@@ -46,5 +48,4 @@ export default class CareersPage extends Component {
   }
 }
 
-CareersPage.propTypes = {
-};
+CareersPage.propTypes = {};
