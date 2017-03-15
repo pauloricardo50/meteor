@@ -1,7 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
-import { insertRequest, updateValues, startAuction,
-  pushValue, popValue } from './loanrequests/methods';
+import {
+  insertRequest,
+  updateValues,
+  startAuction,
+  pushValue,
+  popValue,
+} from './loanrequests/methods';
 import { insertOffer, updateOffer } from './offers/methods';
 
 const methods = {
@@ -41,7 +46,8 @@ const methodCallback = (error, result, callback, showSuccess) => {
 // A wrapper method that displays an error if it occurs
 const cleanMethod = (name, id, object, callback, showSuccess) => {
   if (methods[name]) {
-    methods[name].call({ object, id }, (e, r) => methodCallback(e, r, callback, showSuccess));
+    methods[name].call({ object, id }, (e, r) =>
+      methodCallback(e, r, callback, showSuccess));
   } else {
     throw new Meteor.Error('Not a valid clean method');
   }

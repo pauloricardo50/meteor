@@ -91,7 +91,7 @@ export default class ExpensesChart extends Component {
                   y: this.state.amortization,
                   color: colors.amortization,
                 }, {
-                  name: 'Entretien',
+                  name: 'Charges d\'Entretien',
                   y: this.state.maintenance,
                   color: colors.maintenance,
                 },
@@ -185,7 +185,7 @@ export default class ExpensesChart extends Component {
               y: this.state.amortization,
               color: colors.amortization,
             }, {
-              name: 'Entretien',
+              name: 'Charges d\'Entretien',
               y: this.state.maintenance,
               color: colors.maintenance,
             },

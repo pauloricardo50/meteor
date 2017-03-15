@@ -2,10 +2,14 @@ import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
 import { toMoney } from './conversionFunctions';
 
-const isTrue = (v, zeroAllowed = false) => (zeroAllowed ? v !== undefined : v !== undefined && v !== 0);
+const isTrue = (v, zeroAllowed = false) =>
+  zeroAllowed ? v !== undefined : v !== undefined && v !== 0;
 const multipleTrue = (id, state, zeroAllowed = false) => {
   if (state.borrowerCount > 1) {
-    if (isTrue(state[`${id}1`], zeroAllowed) && isTrue(state[`${id}1`], zeroAllowed)) {
+    if (
+      isTrue(state[`${id}1`], zeroAllowed) &&
+      isTrue(state[`${id}1`], zeroAllowed)
+    ) {
       return true;
     }
   } else if (isTrue(state[`${id}1`], zeroAllowed)) {
@@ -15,17 +19,12 @@ const multipleTrue = (id, state, zeroAllowed = false) => {
   return false;
 };
 
-
-const getInitialArray = state => [
-];
-
-
 const getAcquisitionArray = (state, props) => [
   {
     condition: state.knowsProperty,
     id: 'propertyValue',
     type: 'textInput',
-    text1: 'Le prix d\'achat de la propriété est de',
+    text1: "Le prix d'achat de la propriété est de",
     money: true,
   },
   {
@@ -70,7 +69,7 @@ const getAcquisitionArray = (state, props) => [
     condition: state.propertyWork !== undefined && state.propertyWork !== 0,
     id: 'projectAgreed',
     type: 'buttons',
-    text1: `Le prix de votre projet sera donc de CHF ${toMoney((1.05 * state.propertyValue) + (state.propertyWork || 0))}.`,
+    text1: `Le prix de votre projet sera donc de CHF ${toMoney(1.05 * state.propertyValue + (state.propertyWork || 0))}.`,
     question: true,
     buttons: [
       {
@@ -82,7 +81,7 @@ const getAcquisitionArray = (state, props) => [
   {
     id: 'usageType',
     type: 'buttons',
-    text1: 'Quelle sera le type d\'utilisation de cette propriété?',
+    text1: "Quelle sera le type d'utilisation de cette propriété?",
     question: true,
     buttons: [
       {
@@ -103,13 +102,13 @@ const getAcquisitionArray = (state, props) => [
     condition: state.usageType === 'investment',
     id: 'propertyRent',
     type: 'textInput',
-    text1: 'J\'estime que le loyer mensuel pour cette propriété sera',
+    text1: "J'estime que le loyer mensuel pour cette propriété sera",
     money: true,
   },
   {
     id: 'borrowerCount',
     type: 'buttons',
-    text1: 'Combien d\'emprunteurs êtes vous?',
+    text1: "Combien d'emprunteurs êtes vous?",
     question: true,
     buttons: [
       {
@@ -138,7 +137,7 @@ const getAcquisitionArray = (state, props) => [
     condition: state.borrowerCount > 1,
     id: 'oldestAge',
     type: 'textInput',
-    text1: 'L\'emprunteur le plus agé a',
+    text1: "L'emprunteur le plus agé a",
     text2: 'ans.',
     placeholder: '40',
     number: true,
@@ -151,7 +150,7 @@ const getAcquisitionArray = (state, props) => [
     id: 'income',
     type: 'multipleInput',
     firstMultiple: true,
-    text1: 'Quels est votre salaire brut (annuel)?',
+    text1: 'Quels est votre salaire annuel brut?',
     money: true,
     zeroAllowed: true,
   },
@@ -170,28 +169,32 @@ const getAcquisitionArray = (state, props) => [
         label: 'Non',
       },
     ],
-  }, {
+  },
+  {
     condition: state.bonusExists === true,
     id: 'bonus1',
     type: 'multipleInput',
     text1: 'Bonus 2014',
     money: true,
     zeroAllowed: true,
-  }, {
+  },
+  {
     condition: state.bonusExists === true,
     id: 'bonus2',
     type: 'multipleInput',
     text1: 'Bonus 2015',
     money: true,
     zeroAllowed: true,
-  }, {
+  },
+  {
     condition: state.bonusExists === true,
     id: 'bonus3',
     type: 'multipleInput',
     text1: 'Bonus 2016',
     money: true,
     zeroAllowed: true,
-  }, {
+  },
+  {
     condition: state.bonusExists === true,
     id: 'bonus4',
     type: 'multipleInput',
@@ -202,7 +205,7 @@ const getAcquisitionArray = (state, props) => [
   {
     id: 'otherIncome',
     type: 'buttons',
-    text1: 'Avez-vous d\'autres revenus mensuels?',
+    text1: "Avez-vous d'autres revenus mensuels?",
     question: true,
     deleteId: 'otherIncomeArray',
     buttons: [
@@ -230,21 +233,26 @@ const getAcquisitionArray = (state, props) => [
           {
             id: 'welfareIncome',
             label: 'Allocations',
-          }, {
+          },
+          {
             id: 'pensionIncome',
             label: 'Pensions',
-          }, {
+          },
+          {
             id: 'rentIncome',
             label: 'Rentes',
-          }, {
+          },
+          {
             id: 'realEstateIncome',
             label: 'Revenus de fortune immobilière',
-          }, {
+          },
+          {
             id: 'other',
             label: 'Revenus de vos titres',
           },
         ],
-      }, {
+      },
+      {
         id: 'value',
         type: 'textInput',
         label: 'Montant mensuel',
@@ -255,7 +263,7 @@ const getAcquisitionArray = (state, props) => [
   {
     id: 'expensesExist',
     type: 'buttons',
-    text1: 'Avez-vous des charges mensuelles comme des leasings, rentes, pensions, loyers, crédits personnels ou prêts immobiliers?',
+    text1: 'Avez-vous des charges mensuelles comme des leasings, rentes, pensions, loyers, crédits personnels ou autres prêts immobiliers?',
     question: true,
     deleteId: 'expensesArray',
     buttons: [
@@ -284,21 +292,26 @@ const getAcquisitionArray = (state, props) => [
           {
             id: 'leasing',
             label: 'Leasings',
-          }, {
+          },
+          {
             id: 'rent',
             label: 'Loyers',
-          }, {
+          },
+          {
             id: 'personalLoan',
             label: 'Crédits personnels',
-          }, {
+          },
+          {
             id: 'mortgageLoan',
             label: 'Prêts immobilier',
-          }, {
+          },
+          {
             id: 'pensions',
             label: 'Pensions et Rentes',
           },
         ],
-      }, {
+      },
+      {
         id: 'value',
         type: 'textInput',
         label: 'Montant mensuel',
@@ -310,7 +323,7 @@ const getAcquisitionArray = (state, props) => [
   {
     id: 'realEstateExists',
     type: 'buttons',
-    text1: 'Êtes-vous propriétaire d\'autres biens immobiliers?',
+    text1: "Êtes-vous propriétaire d'autres biens immobiliers?",
     question: true,
     deleteId: 'realEstateArray',
     buttons: [
@@ -339,20 +352,24 @@ const getAcquisitionArray = (state, props) => [
           {
             id: 'primary',
             label: 'Propriété Principale',
-          }, {
+          },
+          {
             id: 'secondary',
             label: 'Propriété Secondaire',
-          }, {
+          },
+          {
             id: 'investment',
-            label: 'Bien d\'investissement',
+            label: "Bien d'investissement",
           },
         ],
-      }, {
+      },
+      {
         id: 'value',
         type: 'textInput',
         label: 'Valeur du bien',
         money: true,
-      }, {
+      },
+      {
         id: 'loan',
         type: 'textInput',
         label: 'Emprunt actuel',
@@ -402,10 +419,11 @@ const getAcquisitionArray = (state, props) => [
   },
 ];
 
-
 const getErrorArray = (state, props) => [
   {
-    condition: state.usageType === 'primary' && (props.fortune < props.fees + (0.1 * (props.propAndWork)) && (props.insuranceFortune >= 0.1 * props.propAndWork)),
+    condition: state.usageType === 'primary' &&
+      (props.fortune < props.fees + (0.1 * props.propAndWork) &&
+        props.insuranceFortune >= 0.1 * props.propAndWork),
     id: 'error',
     type: 'buttons',
     text1: `Vous devez avoir au moins CHF ${toMoney(0.15 * state.propertyValue)} de fortune (sans compter votre prévoyance) pour ce projet, vous pouvez modifier les valeurs en haut.`,
@@ -418,7 +436,7 @@ const getErrorArray = (state, props) => [
     ],
   },
   {
-    condition: (props.fortune + props.insuranceFortune) < props.minFortune,
+    condition: props.fortune + props.insuranceFortune < props.minFortune,
     id: 'error',
     type: 'buttons',
     text1: `Vous devez avoir au moins CHF ${toMoney(props.minFortune)} de fonds propres pour ce projet, vous pouvez modifier les valeurs en haut.`,
@@ -431,7 +449,8 @@ const getErrorArray = (state, props) => [
     ],
   },
   {
-    condition: (props.income && props.monthly / ((props.income - props.expenses) / 12)) > 0.38,
+    condition: (props.income &&
+      props.monthly / ((props.income - props.expenses) / 12)) > 0.38,
     id: 'error',
     type: 'buttons',
     text1: `Vos revenus disponibles (CHF ${toMoney((props.income - props.expenses) / 12)}/mois) sont insuffisants pour couvrir les coûts mensuels de ce projet (CHF ${toMoney(props.monthly)}) sans représenter plus de 38% de ces revenus, vous pouvez modifier les valeurs en haut.`,
@@ -445,25 +464,25 @@ const getErrorArray = (state, props) => [
   },
 ];
 
-
 const getFinalArray = (state, props) => [
   {
     condition: state.type === 'acquisition',
     id: 'fortuneUsed',
     type: 'textInput',
-    text1: `Vous avez CHF ${toMoney(props.fortune + props.insuranceFortune)} de fonds propres au total, combien voulez-vous allouer à ce projet? Vous devez mettre au minimum ${state.propertyWorkExists ? 'les frais de notaire ainsi que 20% du prix d\'achat + les travaux' : '25% du projet'}, soit CHF ${toMoney(props.minFortune)}.`,
+    text1: `Vous avez CHF ${toMoney(props.fortune + props.insuranceFortune)} de fonds propres au total, combien voulez-vous allouer à ce projet? Vous devez mettre au minimum ${state.propertyWorkExists ? "les frais de notaire ainsi que 20% du prix d'achat + les travaux" : '25% du projet'}, soit CHF ${toMoney(props.minFortune)}.`,
     question: true,
     money: true,
   },
 
-// If the user wants to borrow less than CHF 100000
+  // If the user wants to borrow less than CHF 100000
   {
-    condition: state.type === 'acquisition' && state.fortuneUsed && (props.propAndWork) - state.fortuneUsed <= 100000,
+    condition: state.type === 'acquisition' &&
+      state.fortuneUsed &&
+      props.propAndWork - state.fortuneUsed <= 100000,
     id: 'error',
     type: 'buttons',
-    text1: 'Vous utilisez trop de fonds propres, nous ne pouvons malheureusement pas vous aider pour un emprunt de moins de CHF 100\'000.',
-    buttons: [
-    ],
+    text1: "Vous utilisez trop de fonds propres, nous ne pouvons malheureusement pas vous aider pour un emprunt de moins de CHF 100'000.",
+    buttons: [],
   },
   {
     condition: state.type === 'test' || state.fortuneUsed >= props.minFortune,
@@ -488,14 +507,10 @@ const getFinalArray = (state, props) => [
   },
 ];
 
-
-const getFormArray = (state, props) => {
-  return getInitialArray(state, props).concat(
-    getAcquisitionArray(state, props),
+const getFormArray = (state, props) =>
+  getAcquisitionArray(state, props).concat(
     getErrorArray(state, props),
     getFinalArray(state, props),
   );
-};
-
 
 export default getFormArray;

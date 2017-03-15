@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 
 const styles = {
   section: {
@@ -18,27 +18,20 @@ const styles = {
   },
 };
 
-export default class TosPage extends Component {
-  constructor(props) {
-    super(props);
-  }
+const TosPage = () => (
+  <section style={styles.section} className="animated fadeIn">
+    <article style={styles.article}>
+      <h1>Termes et Conditions</h1>
 
-  render() {
-    return (
-      <section style={styles.section} className="animated fadeIn">
-        <article style={styles.article}>
-          <h1>Termes et Conditions</h1>
+      <div className="description" style={styles.description}>
+        <p>
+          &lt;En développement /&gt;
+        </p>
+      </div>
+    </article>
+  </section>
+);
 
-          <div className="description" style={styles.description}>
-            <p>
-              &lt;En développement /&gt;
-            </p>
-          </div>
-        </article>
-      </section>
-    );
-  }
-}
+TosPage.propTypes = {};
 
-TosPage.propTypes = {
-};
+export default TosPage;
