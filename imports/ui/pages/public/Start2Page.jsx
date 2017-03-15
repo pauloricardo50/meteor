@@ -5,7 +5,7 @@ import classNames from 'classnames';
 
 import AutoStart from '/imports/ui/components/start/AutoStart.jsx';
 import Start2Recap from '/imports/ui/components/start/Start2Recap.jsx';
-import StartResult from '/imports/ui/components/start//StartResult.jsx';
+import StartResult from '/imports/ui/components/start/StartResult.jsx';
 
 import getFormArray from '/imports/js/StartFormArray';
 import constants from '/imports/js/constants';
@@ -46,7 +46,8 @@ export default class Start2Page extends Component {
   isFinished() {
     const s = this.state;
     const minFortune = 0.05 * s.propertyValue +
-      0.2 * (s.propertyValue + (s.propertyWork || 0)) || 0;
+      (1 - constants.maxLoan(this.state.usageType)) *
+        (s.propertyValue + (s.propertyWork || 0)) || 0;
     return s.finalized &&
       !s.error &&
       (s.fortuneUsed >= minFortune || s.type === 'test');
@@ -75,27 +76,35 @@ export default class Start2Page extends Component {
       s.bonus42,
     ]);
     return [
-      s.propertyRent * 12,
+      s.propertyRent,
       s.income1,
       s.income2,
       bonus1,
       bonus2,
-      ...(s.otherIncomeArray
-        ? s.otherIncomeArray.map(i => i.value * 12 || 0)
-        : []),
+      ...(s.otherIncomeArray ? s.otherIncomeArray.map(i => i.value || 0) : []),
     ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
   }
 
   getOtherIncome() {
     const s = this.state;
     return [
-      ...(s.otherIncomeArray
-        ? s.otherIncomeArray.map(i => i.value * 12 || 0)
-        : []),
+      ...(s.otherIncomeArray ? s.otherIncomeArray.map(i => i.value || 0) : []),
     ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
   }
 
   getFortune() {
+    const s = this.state;
+
+    return [
+      s.fortune1,
+      s.fortune2,
+      ...(s.realEstateArray
+        ? s.realEstateArray.map(i => i.value - i.loan || 0)
+        : []),
+    ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+  }
+
+  getBankFortune() {
     const s = this.state;
 
     return [s.fortune1, s.fortune2].reduce(
@@ -113,12 +122,21 @@ export default class Start2Page extends Component {
     );
   }
 
+  getRealEstateFortune() {
+    const s = this.state;
+
+    return [
+      ...(s.realEstateArray
+        ? s.realEstateArray.map(i => i.value - i.loan || 0)
+        : []),
+    ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+  }
+
   getExpenses() {
     const s = this.state;
 
-    // Expenses is entered in monthly costs, multiply by 12
     return [
-      ...(s.expensesArray ? s.expensesArray.map(i => i.value * 12) : []),
+      ...(s.expensesArray ? s.expensesArray.map(i => i.value) : []),
     ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
   }
 
@@ -132,7 +150,9 @@ export default class Start2Page extends Component {
         (propAndWork - (s.fortuneUsed || 0)) * constants.loanCost()) /
         12,
       (propAndWork * constants.maintenance +
-        propAndWork * 0.8 * constants.loanCost()) /
+        propAndWork *
+          constants.maxLoan(this.state.usageType) *
+          constants.loanCost()) /
         12,
       0,
     );
@@ -153,7 +173,7 @@ export default class Start2Page extends Component {
   calculateProperty() {
     return Math.min(
       this.getIncome() / constants.propertyToIncome(),
-      this.getFortune() / 0.2,
+      this.getFortune() / (1 - constants.maxLoan(this.state.usageType)),
     );
   }
 
@@ -173,13 +193,18 @@ export default class Start2Page extends Component {
       expenses: this.getExpenses() || 0,
       propertyWork: s.propertyWork || 0,
       fortuneUsed: s.fortuneUsed || 0,
-      minFortune: 0.05 * property + 0.2 * (property + (s.propertyWork || 0)) ||
-        0,
+      minFortune: 0.05 * property +
+        (1 - constants.maxLoan(this.state.usageType)) *
+          (property + (s.propertyWork || 0)) +
+        1 || 0, // add one to make sure percentages work properly
       fees: property * 0.05 || 0,
       propAndWork: property + (s.propertyWork || 0),
       monthly: this.getMonthly() || 0,
       monthlyReal: this.getMonthlyReal() || 0,
       project: 1.05 * property + (s.propertyWork || 0) || 0,
+      realEstate: this.getRealEstateFortune() || 0,
+      bankFortune: this.getBankFortune() || 0,
+      usageType: this.state.usageType,
     };
 
     return (

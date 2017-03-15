@@ -21,13 +21,16 @@ const getLenderCount = (borrow, ratio) => {
 
 const getArray = props => {
   const p = props;
-  let borrow = Math.max(
-    (p.propAndWork - p.fortuneUsed - 0.05 * p.property) / p.propAndWork,
-    0,
-  ) || 0;
-  borrow = borrow === 1 ? 0 : borrow;
+  let borrow = (p.fortuneUsed &&
+    Math.max(
+      (p.propAndWork - (p.fortuneUsed - 0.05 * p.property)) / p.propAndWork,
+      0,
+    )) ||
+    0;
   const ratio = p.income - p.expenses &&
     props.monthly / ((p.income - p.expenses) / 12);
+
+  console.log(borrow, ratio);
 
   return [
     {
@@ -38,6 +41,16 @@ const getArray = props => {
           marginTop: 0,
         },
       },
+    },
+    {
+      label: 'Fortune Bancaire',
+      value: `CHF ${toMoney(Math.round(p.bankFortune))}`,
+      hide: !p.bankFortune || !p.realEstate,
+    },
+    {
+      label: 'Fortune Immobilière',
+      value: `CHF ${toMoney(Math.round(p.realEstate))}`,
+      hide: !p.realEstate,
     },
     {
       label: 'Votre Fortune',
@@ -60,7 +73,7 @@ const getArray = props => {
       hide: !p.bonus,
     },
     {
-      label: 'Autres revenus annuels',
+      label: 'Autres revenus',
       value: `CHF ${toMoney(Math.round(p.otherIncome))}`,
       hide: !p.otherIncome,
     },
@@ -71,7 +84,7 @@ const getArray = props => {
       spacing: p.expenses,
     },
     {
-      label: 'Vos Charges annuelles',
+      label: 'Vos Charges',
       value: `CHF ${toMoney(Math.round(p.expenses))}`,
       hide: !p.expenses,
     },
@@ -100,8 +113,24 @@ const getArray = props => {
       spacing: true,
     },
     {
-      label: 'Coût total du projet',
-      value: `CHF ${toMoney(Math.round(p.property * (1 + constants.notaryFees) + p.propertyWork))}`,
+      label: 'Valeur du bien',
+      value: `CHF ${toMoney(Math.round(p.propAndWork))}`,
+      hide: !p.propertyWork,
+      spacing: true,
+    },
+    {
+      label: <span className="bold">Coût total du projet</span>,
+      value: (
+        <span className="bold">
+          CHF
+          {' '}
+          {toMoney(
+            Math.round(
+              p.property * (1 + constants.notaryFees) + p.propertyWork,
+            ),
+          )}
+        </span>
+      ),
       spacing: true,
     },
     {
@@ -113,9 +142,9 @@ const getArray = props => {
       label: 'Emprunt',
       value: `CHF ${p.fortuneUsed ? toMoney(Math.round(p.project - p.fortuneUsed)) : 0}`,
       props: {
-        className: borrow <= 0.8
+        className: borrow <= constants.maxLoan(p.usageType)
           ? 'success'
-          : borrow <= 0.9 ? 'warning' : 'error',
+          : 'error',
       },
       hide: !p.fortuneUsed,
     },
@@ -138,14 +167,14 @@ const getArray = props => {
       hide: !(borrow || ratio),
     },
     {
-      label: "Ratio Emprunt/Prix d'achat",
+      label: p.propertyWork ? 'Emprunt/Valeur du bien' : "Emprunt/Prix d'achat",
       value: `${p.fortuneUsed && Math.round(borrow * 1000) / 10}%`,
       props: {
-        className: borrow <= 0.8
+        className: borrow <= constants.maxLoan(p.usageType)
           ? 'success'
-          : borrow <= 0.9 ? 'warning' : 'error',
+          : 'error',
       },
-      hide: !(borrow || ratio),
+      hide: !borrow,
     },
     {
       label: 'Charges/Revenus Disponibles',
@@ -155,7 +184,7 @@ const getArray = props => {
           ? 'success'
           : Math.round(ratio * 1000) / 1000 <= 0.38 ? 'warning' : 'error',
       },
-      hide: !(borrow || ratio),
+      hide: !ratio,
     },
     {
       title: true,

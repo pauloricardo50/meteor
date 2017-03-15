@@ -13,11 +13,19 @@ const constants = {
     return this.interestsReal + this.amortizing;
   },
   notaryFees: 0.05,
-  propertyToIncome() {
-    return 3 * (this.maintenance + 0.8 * this.loanCost());
+  propertyToIncome(usageType = 'primary') {
+    return 3 * (this.maintenance + this.maxLoan(usageType) * this.loanCost());
   },
-  propertyToIncomeReal() {
-    return 3 * (this.maintenanceReal + 0.8 * this.loanCostReal());
+  propertyToIncomeReal(usageType = 'primary') {
+    return 3 *
+      (this.maintenanceReal + this.maxLoan(usageType) * this.loanCostReal());
+  },
+  maxLoan(usageType = 'primary') {
+    if (usageType === 'secondary') {
+      return 0.7;
+    }
+
+    return 0.8;
   },
 };
 

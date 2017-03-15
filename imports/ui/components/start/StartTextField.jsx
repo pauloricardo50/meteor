@@ -43,7 +43,11 @@ export default class StartTextField extends React.Component {
         onChange={e => this.handleChange(e, false)}
         onBlur={() => this.props.setActiveLine('')}
         hintText={this.props.placeholder || (this.props.money ? 'CHF' : '')}
-        autoFocus={!this.props.formState.stopScroll && this.props.autoFocus}
+        autoFocus={
+          !this.props.formState.stopScroll &&
+            !this.props.formState.finalized &&
+            this.props.autoFocus
+        }
         pattern={this.props.number && '[0-9]*'}
       >
         {this.props.money &&
@@ -51,7 +55,11 @@ export default class StartTextField extends React.Component {
             mask={swissFrancMask}
             guide
             pattern="[0-9]*"
-            autoFocus={this.props.autoFocus}
+            autoFocus={
+              !this.props.formState.stopScroll &&
+                !this.props.formState.finalized &&
+                this.props.autoFocus
+            }
             value={this.props.zeroAllowed ? val : val || ''}
           />}
       </TextField>

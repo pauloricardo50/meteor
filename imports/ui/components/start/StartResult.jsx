@@ -7,41 +7,42 @@ import Start2Recap from '/imports/ui/components/start/Start2Recap.jsx';
 import constants from '/imports/js/constants';
 import { toMoney } from '/imports/js/conversionFunctions';
 
-export default class StartResult extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+const StartResult = props => {
+  const loan = props.propAndWork - (props.fortuneUsed || 0);
 
-  render() {
-    const loan = this.props.propAndWork - (this.props.fortuneUsed || 0);
-    return (
-      <article className="mask1 start-result">
-        <h1>Résultat: <span className="success">Excellent</span></h1>
+  return (
+    <article className="mask1 start-result">
+      <h1>Résultat: <span className="success">Excellent</span></h1>
 
-        <div className="content">
-          <Start2Recap {...this.props} />
-          <div className="chart">
-            <h3>Votre emprunt: CHF {toMoney(loan)}</h3>
-            <ExpensesChart
-              interests={loan * constants.interestsReal / 12}
-              amortizing={loan * constants.amortizing / 12}
-              maintenance={
-                this.props.propAndWork * constants.maintenanceReal / 12
-              }
-            />
-          </div>
+      <div className="content">
+        <Start2Recap {...props} />
+        <div className="chart">
+          <h3>
+            Votre emprunt: <span className="active">CHF {toMoney(loan)}</span>
+          </h3>
+          <ExpensesChart
+            interests={loan * constants.interestsReal / 12}
+            amortizing={loan * constants.amortizing / 12}
+            maintenance={props.propAndWork * constants.maintenanceReal / 12}
+          />
         </div>
+      </div>
 
-        <div className="button">
-          <RaisedButton label="terminer la demo" href="/" primary />
-        </div>
-      </article>
-    );
-  }
-}
+      <div className="button">
+        <RaisedButton label="terminer la demo" href="/" primary />
+      </div>
+    </article>
+  );
+};
+
+StartResult.defaultProps = {
+  propAndWork: 0,
+  fortuneUsed: 0,
+};
 
 StartResult.propTypes = {
-  income: PropTypes.number,
-  fortune: PropTypes.number,
-  property: PropTypes.number,
+  propAndWork: PropTypes.number,
+  fortuneUsed: PropTypes.number,
 };
+
+export default StartResult;

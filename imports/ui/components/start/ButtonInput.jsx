@@ -53,8 +53,10 @@ export default class ButtonInput extends Component {
             {this.props.text1}
           </span>
           &nbsp;
-          {this.props.question && <br />}
-          <span className="active">{this.getText()}</span>
+          {!this.props.hideResult && this.props.question && <br />}
+
+          {!this.props.hideResult &&
+            <span className="active">{this.getText()}</span>}
           &nbsp;
           {this.props.text2 || ''}
         </h1>
@@ -95,4 +97,5 @@ ButtonInput.propTypes = {
   className: PropTypes.string.isRequired,
   setActiveLine: PropTypes.func.isRequired,
   deleteId: PropTypes.string,
+  hideResult: PropTypes.bool,
 };

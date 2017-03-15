@@ -32,7 +32,7 @@ const getAcquisitionArray = (state, props) => [
     id: 'notaryFeesAgreed',
     type: 'buttons',
     text1: `A ce prix s'ajoutent les frais de notaire de CHF ${toMoney(0.05 * state.propertyValue)}.`,
-    question: true,
+    hideResult: true,
     buttons: [
       {
         id: true,
@@ -70,7 +70,7 @@ const getAcquisitionArray = (state, props) => [
     id: 'projectAgreed',
     type: 'buttons',
     text1: `Le prix de votre projet sera donc de CHF ${toMoney(1.05 * state.propertyValue + (state.propertyWork || 0))}.`,
-    question: true,
+    hideResult: true,
     buttons: [
       {
         id: true,
@@ -81,7 +81,7 @@ const getAcquisitionArray = (state, props) => [
   {
     id: 'usageType',
     type: 'buttons',
-    text1: "Quelle sera le type d'utilisation de cette propriété?",
+    text1: "Quel sera le type d'utilisation de cette propriété?",
     question: true,
     buttons: [
       {
@@ -205,7 +205,7 @@ const getAcquisitionArray = (state, props) => [
   {
     id: 'otherIncome',
     type: 'buttons',
-    text1: "Avez-vous d'autres revenus mensuels?",
+    text1: "Avez-vous d'autres revenus?",
     question: true,
     deleteId: 'otherIncomeArray',
     buttons: [
@@ -255,7 +255,7 @@ const getAcquisitionArray = (state, props) => [
       {
         id: 'value',
         type: 'textInput',
-        label: 'Montant mensuel',
+        label: 'Montant annuel',
         money: true,
       },
     ],
@@ -263,7 +263,7 @@ const getAcquisitionArray = (state, props) => [
   {
     id: 'expensesExist',
     type: 'buttons',
-    text1: 'Avez-vous des charges mensuelles comme des leasings, rentes, pensions, loyers, crédits personnels ou autres prêts immobiliers?',
+    text1: 'Avez-vous des charges comme des leasings, rentes, pensions, loyers, crédits personnels ou autres prêts immobiliers?',
     question: true,
     deleteId: 'expensesArray',
     buttons: [
@@ -282,7 +282,7 @@ const getAcquisitionArray = (state, props) => [
     id: 'expensesArray',
     existId: 'expensesExist',
     type: 'arrayInput',
-    text1: 'Donnez-nous la liste de vos charges mensuelles',
+    text1: 'Donnez-nous la liste de vos charges annuelles',
     inputs: [
       {
         id: 'description',
@@ -314,7 +314,7 @@ const getAcquisitionArray = (state, props) => [
       {
         id: 'value',
         type: 'textInput',
-        label: 'Montant mensuel',
+        label: 'Montant annuel',
         money: true,
         zeroAllowed: true,
       },
@@ -469,7 +469,7 @@ const getFinalArray = (state, props) => [
     condition: state.type === 'acquisition',
     id: 'fortuneUsed',
     type: 'textInput',
-    text1: `Vous avez CHF ${toMoney(props.fortune + props.insuranceFortune)} de fonds propres au total, combien voulez-vous allouer à ce projet? Vous devez mettre au minimum ${state.propertyWorkExists ? "les frais de notaire ainsi que 20% du prix d'achat + les travaux" : '25% du projet'}, soit CHF ${toMoney(props.minFortune)}.`,
+    text1: `Vous avez CHF ${toMoney(props.fortune + props.insuranceFortune)} de fonds propres au total, combien voulez-vous allouer à ce projet? Vous devez mettre au minimum ${state.propertyWorkExists ? `les frais de notaire ainsi que ${state.usageType === 'secondary' ? 30 : 20}% du prix d'achat + les travaux` : `${state.usageType === 'secondary' ? 35 : 25}% du projet`}, soit CHF ${toMoney(props.minFortune)}.`,
     question: true,
     money: true,
   },
@@ -489,7 +489,7 @@ const getFinalArray = (state, props) => [
     id: 'finalized',
     type: 'buttons',
     text1: 'Vous-êtes arrivé au bout, bien joué!',
-    question: true,
+    hideResult: true,
     buttons: [
       {
         id: true,
