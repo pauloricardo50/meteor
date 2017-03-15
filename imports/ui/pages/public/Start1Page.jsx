@@ -26,7 +26,7 @@ const array = [
   {
     label: 'Fonds propres',
     name: 'fortune',
-    sliderIncrement: 1000000,
+    sliderIncrement: 500000,
   },
   {
     label: "Prix d'achat",
@@ -40,7 +40,7 @@ export default class Start1Page extends Component {
     super(props);
 
     this.state = {
-      property: {
+      income: {
         value: 0,
         minValue: 0,
         auto: true,
@@ -50,14 +50,14 @@ export default class Start1Page extends Component {
         minValue: 0,
         auto: true,
       },
-      income: {
+      property: {
         value: 0,
         minValue: 0,
         auto: true,
       },
-      propertySlider: 2000000,
-      fortuneSlider: 1000000,
       incomeSlider: 500000,
+      fortuneSlider: 500000,
+      propertySlider: 2000000,
     };
 
     this.type = FlowRouter.getQueryParam('type');
@@ -68,6 +68,7 @@ export default class Start1Page extends Component {
   }
 
   componentDidMount() {
+    // UX: make user understand he can use the slider, by quickly pushing it up and down
     Meteor.setTimeout(
       () => this.setState({
         income: {
@@ -177,8 +178,9 @@ export default class Start1Page extends Component {
   isValid() {
     const s = this.state;
     const minIncome = s.property.value * constants.propertyToIncome();
+    // Make sure notary fees are paid
     const borrow = Math.max(
-      (s.property.value - s.fortune.value) / s.property.value,
+      (s.property.value * 1.05 - s.fortune.value) / s.property.value,
       0,
     );
     const ratio = minIncome / s.income.value / 3;
@@ -203,7 +205,7 @@ export default class Start1Page extends Component {
     const property = this.state.property.value;
     const income = this.state.income.value;
     const fortune = this.state.fortune.value;
-    const loan = property - fortune;
+    const loan = property * 1.05 - fortune;
 
     return (
       <section className="oscar">

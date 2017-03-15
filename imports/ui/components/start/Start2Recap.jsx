@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import classNames from 'classnames';
 
 import { toMoney } from '/imports/js/conversionFunctions';
 import constants from '/imports/js/constants';
@@ -54,7 +55,15 @@ const getArray = props => {
     },
     {
       label: 'Votre Fortune',
-      value: `CHF ${toMoney(Math.round(p.fortune))}`,
+      value: (
+        <span
+          className={classNames({
+            sum: p.realEstate || (p.realEstate && p.bankFortune),
+          })}
+        >
+          CHF {toMoney(Math.round(p.fortune))}
+        </span>
+      ),
       spacing: !p.insuranceFortune,
     },
     {
@@ -189,11 +198,13 @@ const getArray = props => {
     {
       title: true,
       label: 'e-Potek',
+      hide: true, // TODO remove
     },
     {
       label: 'Nb. de prêteurs potentiels',
       value: getLenderCount(borrow, ratio),
       spacing: true,
+      hide: true, // TODO remove
     },
   ];
 };

@@ -19,7 +19,7 @@ const setDefaultMinValues = (s, o) => {
 
 export const changeProperty = (state, o, property) => {
   if (state.fortune.auto && state.income.auto) {
-    o.fortune.minValue = property * 0.2;
+    o.fortune.minValue = property * (0.2 + 0.05);
     o.income.minValue = 3 *
       property *
       (constants.maintenance + 0.8 * constants.loanCost());
@@ -34,13 +34,10 @@ export const changeProperty = (state, o, property) => {
 
 export const changeFortune = (state, o, fortune) => {
   if (state.property.auto && state.income.auto) {
-    o.property.minValue = fortune / 0.2;
-    o.income.minValue = fortune / 0.2 * constants.propertyToIncome();
+    o.property.minValue = fortune / (0.2 + 0.05);
+    o.income.minValue = fortune / (0.2 + 0.05) * constants.propertyToIncome();
   } else if (state.property.auto) {
-    o.property.minValue = Math.min(
-      fortune / 0.2,
-      state.income.value / constants.propertyToIncome(),
-    );
+    o.property.minValue = constants.maxProperty(state.income.value, fortune);
   }
 
   o = setDefaultMinValues(state, o);
@@ -51,12 +48,9 @@ export const changeFortune = (state, o, fortune) => {
 export const changeIncome = (state, o, income) => {
   if (state.property.auto && state.fortune.auto) {
     o.property.minValue = income / constants.propertyToIncome();
-    o.fortune.minValue = o.property.minValue * 0.2;
+    o.fortune.minValue = o.property.minValue * (0.2 + 0.05);
   } else if (state.property.auto) {
-    o.property.minValue = Math.min(
-      state.fortune.value / 0.2,
-      income / constants.propertyToIncome(),
-    );
+    o.property.minValue = constants.maxProperty(income, state.fortune.value);
   }
 
   o = setDefaultMinValues(state, o);

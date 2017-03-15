@@ -832,7 +832,6 @@ $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
     opacity: 0.5;
 
 #expensesChart
-  // margin: 0;
   margin-bottom: 50px;
   position: relative;
   display: block;
@@ -842,7 +841,6 @@ $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
     height: 300px;
   +above($small)
     height: 400px;
-    // margin: 0 80px -60px 80px;
     z-index: -1;
   .highcharts-container
     overflow: visible !important;
@@ -851,17 +849,19 @@ $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
     +above($med)
       display: inline;
   .highcharts-label
+    overflow: visible;
     text
+      overflow: visible !important;
       +above($large)
         font-size: 12px !important;
       +above($wide)
-        font-size: 14px !important
+        font-size: 14px !important;
   .highcharts-legend
     display: initial;
     +above($med)
       display: none;
   .highcharts-title
-    transform: translateY(-30px);
+    transform: translateY(-35px);
 
 
 div.strategy-choices
@@ -1210,7 +1210,8 @@ ul.request-map
     .oscar-line
       position: relative;
       display: inline-block;
-      width: 80%;
+      // width: 80%;
+      width: 100%;
       margin: 0 auto;
       &.property
         width: 100%;
@@ -1292,6 +1293,9 @@ ul.request-map
         opacity: 0.8;
         transition: color 0.2s ease;
         font-size: 1.375em !important;
+        span.sum
+          margin-top: 16px;
+          border-top: solid 1px #444;
       margin: 0;
       width: 100%;
       display: flex;

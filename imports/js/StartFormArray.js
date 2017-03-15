@@ -389,7 +389,7 @@ const getAcquisitionArray = (state, props) => [
     condition: state.usageType === 'primary',
     id: 'insurance1',
     type: 'multipleInput',
-    text1: 'Quels sont les fonds de prévoyance disponibles dans votre 2e pilier?',
+    text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 2e pilier?',
     money: true,
     zeroAllowed: true,
   },
@@ -414,7 +414,7 @@ const getAcquisitionArray = (state, props) => [
     condition: state.usageType === 'primary' && state.insurance2Exists,
     id: 'insurance2',
     type: 'multipleInput',
-    text1: 'Combien vaut votre 3e pilier?',
+    text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 3e pilier?',
     money: true,
   },
 ];

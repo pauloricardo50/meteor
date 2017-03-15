@@ -141,9 +141,10 @@ export default class ExpensesChart extends Component {
           allowPointSelect: false,
           cursor: 'pointer',
           dataLabels: {
-            overflow: 'none',
+            overflow: 'visible',
             crop: false,
             enabled: true,
+            distance: 10,
             format: '<b>{point.name}</b><br />CHF {point.y:,.0f}',
             style: {
               color: (Highcharts.theme && Highcharts.theme.contrastTextColor) ||

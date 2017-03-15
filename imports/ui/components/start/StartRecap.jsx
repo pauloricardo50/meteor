@@ -36,8 +36,9 @@ const getLenderCount = (borrow, ratio) => {
 };
 
 const getArray = (income, fortune, property) => {
-  const borrow = Math.max((property - fortune) / property, 0);
-  const ratio = getMonthly(income, fortune, property) / (income / 12);
+  const borrow = Math.max((property * 1.05 - fortune) / property, 0);
+  const ratio = getMonthly(income, fortune - property * 0.05, property) /
+    (income / 12);
 
   return [
     {
@@ -51,11 +52,23 @@ const getArray = (income, fortune, property) => {
     {
       label: 'Frais de notaire',
       value: `CHF ${toMoney(Math.round(property * constants.notaryFees / 1000) * 1000)}`,
+      spacing: true,
     },
     {
-      label: 'Coût total du projet',
-      value: `CHF ${toMoney(Math.round(property * (1 + constants.notaryFees) / 1000) * 1000)}`,
+      label: <span className="bold">Coût total du projet</span>,
+      value: (
+        <span className="bold">
+          CHF&nbsp;
+          {toMoney(
+            Math.round(property * (1 + constants.notaryFees) / 1000) * 1000,
+          )}
+        </span>
+      ),
       spacing: true,
+    },
+    {
+      label: 'Fonds propres',
+      value: `CHF ${toMoney(fortune)}`,
     },
     {
       label: 'Emprunt',
@@ -65,6 +78,7 @@ const getArray = (income, fortune, property) => {
           ? 'success'
           : Math.round(borrow * 1000) / 1000 <= 0.9 ? 'warning' : 'error',
       },
+      spacing: true,
     },
     {
       label: 'Coût réel estimé',
@@ -72,7 +86,9 @@ const getArray = (income, fortune, property) => {
         ? <span>
             CHF
             {' '}
-            {toMoney(getMonthlyReal(income, fortune, property))}
+            {toMoney(
+              getMonthlyReal(income, fortune - property * 0.05, property),
+            )}
             {' '}
             <small>/mois</small>
           </span>
@@ -103,11 +119,13 @@ const getArray = (income, fortune, property) => {
     {
       title: true,
       label: 'e-Potek',
+      hide: true, // TODO: Remove
     },
     {
       label: 'Nb. de prêteurs potentiels',
       value: getLenderCount(borrow, ratio),
       spacing: true,
+      hide: true, // TODO: Remove
     },
   ];
 };

@@ -20,6 +20,15 @@ const constants = {
     return 3 *
       (this.maintenanceReal + this.maxLoan(usageType) * this.loanCostReal());
   },
+  maxProperty(income, fortune, usageType = 'primary') {
+    // Fortune should cover 20% and notary fees
+    const fortuneLimited = fortune / (1 - this.maxLoan(usageType) + 0.05);
+    // The arithmetic relation to have the cost of the loan be at exactly 33% of income
+    const incomeLimited = (income + 3 * fortune * this.loanCost()) /
+      (3 * (this.maintenance + 1.05 * this.loanCost()));
+
+    return Math.min(fortuneLimited, incomeLimited);
+  },
   maxLoan(usageType = 'primary') {
     if (usageType === 'secondary') {
       return 0.7;

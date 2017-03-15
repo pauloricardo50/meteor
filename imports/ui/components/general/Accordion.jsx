@@ -20,7 +20,7 @@ export default class Accordion extends Component {
       isActive: nextProps.isActive,
       styles: {
         height: nextProps.isActive ? `${this.content.clientHeight}px` : 0,
-        overflow: nextProps.isActive ? 'none' : 'hidden',
+        overflow: nextProps.isActive ? 'none' : 'visible',
         transition: '500ms ease-in-out',
         opacity: nextProps.isActive ? 1 : 0,
       },
