@@ -31,8 +31,6 @@ const getArray = props => {
   const ratio = p.income - p.expenses &&
     props.monthly / ((p.income - p.expenses) / 12);
 
-  console.log(borrow, ratio);
-
   return [
     {
       title: true,
@@ -52,6 +50,13 @@ const getArray = props => {
       label: 'Fortune Immobilière',
       value: `CHF ${toMoney(Math.round(p.realEstate))}`,
       hide: !p.realEstate,
+      spacing: !p.insuranceFortune,
+    },
+    {
+      label: 'Fortune de Prévoyance',
+      value: `CHF ${toMoney(Math.round(p.insuranceFortune))}`,
+      hide: !p.insuranceFortune,
+      spacing: true,
     },
     {
       label: 'Votre Fortune',
@@ -61,16 +66,14 @@ const getArray = props => {
             sum: p.realEstate || (p.realEstate && p.bankFortune),
           })}
         >
-          CHF {toMoney(Math.round(p.fortune))}
+          CHF {toMoney(Math.round(p.fortune + p.insuranceFortune))}
         </span>
       ),
-      spacing: !p.insuranceFortune,
     },
     {
-      label: 'Votre Prévoyance',
-      value: `CHF ${toMoney(Math.round(p.insuranceFortune))}`,
-      hide: !p.insuranceFortune,
-      spacing: true,
+      title: true,
+      label: 'Revenus',
+      hide: !p.bonus && !p.otherIncome && !p.expenses,
     },
     {
       label: 'Salaire annuel',
@@ -82,36 +85,35 @@ const getArray = props => {
       hide: !p.bonus,
     },
     {
-      label: 'Autres revenus',
+      label: 'Autres Revenus',
       value: `CHF ${toMoney(Math.round(p.otherIncome))}`,
       hide: !p.otherIncome,
     },
     {
-      label: 'Total des revenus',
-      value: `CHF ${toMoney(Math.round(p.income))}`,
-      hide: !p.bonus && !p.otherIncome,
-      spacing: p.expenses,
-    },
-    {
       label: 'Vos Charges',
-      value: `CHF ${toMoney(Math.round(p.expenses))}`,
+      value: `- CHF ${toMoney(Math.round(p.expenses))}`,
       hide: !p.expenses,
     },
     {
-      label: 'Revenus disponibles',
-      value: `CHF ${toMoney(Math.round(p.income - p.expenses))}`,
-      hide: !p.expenses,
+      label: 'Revenus considérés',
+      value: (
+        <span className="sum">
+          CHF {toMoney(Math.round(p.income - p.expenses))}
+        </span>
+      ),
+      hide: !p.bonus && !p.otherIncome && !p.expenses,
+      spacingTop: true,
     },
     {
       title: true,
-      label: 'Le Projet',
+      label: 'Projet',
     },
     {
-      label: p.type === 'test' ? "Prix d'achat maximal" : "Prix d'achat",
+      label: p.type === 'test' ? "Prix d'Achat maximal" : "Prix d'Achat",
       value: `CHF ${toMoney(Math.round(p.property))}`,
     },
     {
-      label: 'Frais de notaire',
+      label: 'Frais de Notaire',
       value: `CHF ${toMoney(Math.round(p.property * constants.notaryFees))}`,
       spacing: !p.propertyWork,
     },
@@ -140,7 +142,7 @@ const getArray = props => {
           )}
         </span>
       ),
-      spacing: true,
+      spacing: p.fortuneUsed,
     },
     {
       label: 'Fonds Propres',
@@ -156,6 +158,7 @@ const getArray = props => {
           : 'error',
       },
       hide: !p.fortuneUsed,
+      spacing: !p.fortuneUsed,
     },
     {
       label: 'Coût mensuel estimé',
@@ -183,7 +186,7 @@ const getArray = props => {
           ? 'success'
           : 'error',
       },
-      hide: !borrow,
+      hide: !p.fortuneUsed,
     },
     {
       label: 'Charges/Revenus Disponibles',
@@ -193,18 +196,16 @@ const getArray = props => {
           ? 'success'
           : Math.round(ratio * 1000) / 1000 <= 0.38 ? 'warning' : 'error',
       },
-      hide: !ratio,
+      hide: !p.fortuneUsed,
     },
     {
       title: true,
       label: 'e-Potek',
-      hide: true, // TODO remove
     },
     {
       label: 'Nb. de prêteurs potentiels',
       value: getLenderCount(borrow, ratio),
       spacing: true,
-      hide: true, // TODO remove
     },
   ];
 };
@@ -219,7 +220,10 @@ const getResult = props => (
           </label>
         : <div
             className="fixed-size"
-            style={{ marginBottom: item.spacing && 16 }}
+            style={{
+              marginBottom: item.spacing && 16,
+              marginTop: item.spacingTop && 16,
+            }}
             key={item.label}
           >
             <h4 className="secondary">{item.label}</h4>

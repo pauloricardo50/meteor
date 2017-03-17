@@ -8,7 +8,7 @@ import constants from '/imports/js/constants';
 import { toMoney } from '/imports/js/conversionFunctions';
 
 const StartResult = props => {
-  const loan = props.propAndWork - (props.fortuneUsed || 0);
+  const loan = props.project - props.fortuneUsed;
 
   return (
     <article className="mask1 start-result">

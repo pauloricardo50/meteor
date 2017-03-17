@@ -149,11 +149,11 @@ export default class Start2Page extends Component {
       (propAndWork * constants.maintenance +
         (propAndWork - (s.fortuneUsed || 0)) * constants.loanCost()) /
         12,
-      (propAndWork * constants.maintenance +
-        propAndWork *
-          constants.maxLoan(this.state.usageType) *
-          constants.loanCost()) /
-        12,
+      // (propAndWork * constants.maintenance +
+      //   propAndWork *
+      //     constants.maxLoan(this.state.usageType) *
+      //     constants.loanCost()) /
+      //   12,
       0,
     );
   }

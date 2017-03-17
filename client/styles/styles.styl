@@ -1359,10 +1359,16 @@ ul.request-map
       width: 400px;
       position: fixed;
       z-index: 1;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
     .validator
       width: 100%;
       overflow-y: scroll;
       margin-top: 60px;
+      max-height: calc(100% - 106px);
+      div.result
+        div
+          flex-shrink: 0;
   .scroll
     .startArticle
       display: inline-block;
