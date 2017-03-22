@@ -28,6 +28,18 @@ const styles = {
 };
 
 export default class MultipleInput extends Component {
+  handleClick() {
+    const multiple = this.props.formState.borrowerCount > 1;
+    this.props.setActiveLine(this.props.id);
+
+    // Don't focus if multiple text fields
+    if (this.props.money && !multiple) {
+      this.firstInput.input.inputElement.focus();
+    } else if (!multiple) {
+      this.firstInput.focus();
+    }
+  }
+
   render() {
     const multiple = this.props.formState.borrowerCount > 1;
     let classes1 = 'fixed-size';
@@ -43,7 +55,7 @@ export default class MultipleInput extends Component {
     return (
       <article
         className={this.props.className.concat(multiple ? ' no-scale' : '')}
-        onTouchTap={() => this.props.setActiveLine(this.props.id)}
+        onTouchTap={this.handleClick.bind(this)}
       >
 
         {multiple &&
@@ -64,6 +76,9 @@ export default class MultipleInput extends Component {
               {...this.props}
               width={multiple ? '100%' : this.props.width}
               id={`${this.props.id}1`}
+              setRef={c => {
+                this.firstInput = c;
+              }}
             />
           </span>
         </h1>
@@ -97,4 +112,6 @@ MultipleInput.propTypes = {
 
 MultipleInput.defaultProps = {
   firstMultiple: false,
+  width: '',
+  formState: {},
 };

@@ -1,14 +1,21 @@
 import React, { Component, PropTypes } from 'react';
 
-import StartTextField from './StartTextField';
-import StartSelectField from './StartSelectField';
+import StartTextField from './StartTextField.jsx';
+import StartSelectField from './StartSelectField.jsx';
 
 export default class Input extends Component {
   render() {
     return (
       <article
         className={this.props.className}
-        onTouchTap={() => this.props.setActiveLine(this.props.id)}
+        onTouchTap={() => {
+          this.props.setActiveLine(this.props.id);
+          if (this.props.money) {
+            this.input.input.inputElement.focus();
+          } else {
+            this.input.focus();
+          }
+        }}
       >
 
         <h1 className="fixed-size">
@@ -18,7 +25,13 @@ export default class Input extends Component {
           {this.props.question && <br />}
 
           <span className="active">
-            {this.props.text && <StartTextField {...this.props} />}
+            {this.props.text &&
+              <StartTextField
+                {...this.props}
+                setRef={c => {
+                  this.input = c;
+                }}
+              />}
             {this.props.select && <StartSelectField {...this.props} />}
           </span>
 

@@ -34,7 +34,7 @@ const getArray = props => {
   return [
     {
       title: true,
-      label: 'Patrimoine',
+      label: 'Projet',
       props: {
         style: {
           marginTop: 0,
@@ -42,42 +42,149 @@ const getArray = props => {
       },
     },
     {
+      label: p.type === 'test' ? "Prix d'Achat maximal" : "Prix d'Achat",
+      value: `CHF ${toMoney(Math.round(p.property))}`,
+    },
+    {
+      label: 'Travaux de plus-value',
+      value: `CHF ${toMoney(Math.round(p.propertyWork))}`,
+      hide: !p.propertyWork,
+      spacing: true,
+    },
+    {
+      label: 'Valeur du bien',
+      value: `CHF ${toMoney(Math.round(p.propAndWork))}`,
+      hide: !p.propertyWork,
+    },
+    {
+      label: 'Frais de Notaire',
+      value: `CHF ${toMoney(Math.round(p.property * constants.notaryFees))}`,
+    },
+    {
+      label: <span className="bold">Coût total du projet</span>,
+      value: (
+        <span className="bold sum">
+          CHF
+          {' '}
+          {toMoney(
+            Math.round(
+              p.property * (1 + constants.notaryFees) + p.propertyWork,
+            ),
+          )}
+        </span>
+      ),
+      spacingTop: true,
+      spacing: p.fortuneUsed,
+    },
+    {
+      label: 'Fonds Propres',
+      value: `CHF ${toMoney(Math.round(p.fortuneUsed))}`,
+      hide: !p.fortuneUsed,
+    },
+    {
+      label: 'Emprunt',
+      value: `CHF ${p.fortuneUsed ? toMoney(Math.round(p.project - p.fortuneUsed)) : 0}`,
+      hide: !p.fortuneUsed,
+      spacing: !p.fortuneUsed,
+    },
+    {
+      label: 'Coût mensuel estimé',
+      value: (
+        <span>
+          CHF
+          {' '}
+          {p.fortuneUsed ? toMoney(Math.round(p.monthlyReal)) : 0}
+          {' '}
+          <small>/mois</small>
+        </span>
+      ),
+      hide: !p.fortuneUsed,
+    },
+    {
+      label: (
+        <span style={{ fontSize: '0.8em' }}>
+          *Utilise un taux d'intérêt moyen de 1.5%
+        </span>
+      ),
+      value: '',
+      hide: !p.fortuneUsed,
+    },
+    {
+      title: true,
+      label: 'Calculs FINMA',
+      hide: !p.fortuneUsed,
+    },
+    {
+      label: p.propertyWork ? 'Emprunt/Valeur du bien' : "Emprunt/Prix d'achat",
+      value: (
+        <span>
+          {p.fortuneUsed && Math.round(borrow * 1000) / 10}%&nbsp;
+          <span
+            className={
+              borrow <= constants.maxLoan(p.usageType)
+                ? 'fa fa-check'
+                : 'fa fa-times'
+            }
+          />
+        </span>
+      ),
+      hide: !p.fortuneUsed,
+    },
+    {
+      label: 'Charges/Revenus Disponibles',
+      value: (
+        <span>
+          {p.fortuneUsed && Math.round(ratio * 1000) / 10}%&nbsp;
+          <span
+            className={
+              ratio <= 1 / 3
+                ? 'fa fa-check'
+                : ratio <= 0.38 ? 'fa fa-exclamation' : 'fa fa-times'
+            }
+          />
+        </span>
+      ),
+      hide: !p.fortuneUsed,
+    },
+    {
+      title: true,
+      label: 'Fortune',
+      hide: !(p.bankFortune || p.realEstate || p.insuranceFortune),
+    },
+    {
       label: 'Fortune Bancaire',
       value: `CHF ${toMoney(Math.round(p.bankFortune))}`,
-      hide: !p.bankFortune || !p.realEstate,
+      hide: !p.bankFortune,
     },
     {
       label: 'Fortune Immobilière',
       value: `CHF ${toMoney(Math.round(p.realEstate))}`,
       hide: !p.realEstate,
-      spacing: !p.insuranceFortune,
     },
     {
       label: 'Fortune de Prévoyance',
       value: `CHF ${toMoney(Math.round(p.insuranceFortune))}`,
       hide: !p.insuranceFortune,
-      spacing: true,
     },
     {
       label: 'Votre Fortune',
       value: (
-        <span
-          className={classNames({
-            sum: p.realEstate || (p.realEstate && p.bankFortune),
-          })}
-        >
+        <span className="sum">
           CHF {toMoney(Math.round(p.fortune + p.insuranceFortune))}
         </span>
       ),
+      spacingTop: true,
+      hide: !p.fortune && !p.insuranceFortune,
     },
     {
       title: true,
       label: 'Revenus',
-      hide: !p.bonus && !p.otherIncome && !p.expenses,
+      hide: !(p.salary || p.bonus || p.otherIncome || p.expenses),
     },
     {
       label: 'Salaire annuel',
       value: `CHF ${toMoney(Math.round(p.salary))}`,
+      hide: !p.salary,
     },
     {
       label: 'Bonus annuel considéré',
@@ -101,102 +208,8 @@ const getArray = props => {
           CHF {toMoney(Math.round(p.income - p.expenses))}
         </span>
       ),
-      hide: !p.bonus && !p.otherIncome && !p.expenses,
+      hide: !(p.salary || p.bonus || p.otherIncome || p.expenses),
       spacingTop: true,
-    },
-    {
-      title: true,
-      label: 'Projet',
-    },
-    {
-      label: p.type === 'test' ? "Prix d'Achat maximal" : "Prix d'Achat",
-      value: `CHF ${toMoney(Math.round(p.property))}`,
-    },
-    {
-      label: 'Frais de Notaire',
-      value: `CHF ${toMoney(Math.round(p.property * constants.notaryFees))}`,
-      spacing: !p.propertyWork,
-    },
-    {
-      label: 'Travaux de plus-value',
-      value: `CHF ${toMoney(Math.round(p.propertyWork))}`,
-      hide: !p.propertyWork,
-      spacing: true,
-    },
-    {
-      label: 'Valeur du bien',
-      value: `CHF ${toMoney(Math.round(p.propAndWork))}`,
-      hide: !p.propertyWork,
-      spacing: true,
-    },
-    {
-      label: <span className="bold">Coût total du projet</span>,
-      value: (
-        <span className="bold">
-          CHF
-          {' '}
-          {toMoney(
-            Math.round(
-              p.property * (1 + constants.notaryFees) + p.propertyWork,
-            ),
-          )}
-        </span>
-      ),
-      spacing: p.fortuneUsed,
-    },
-    {
-      label: 'Fonds Propres',
-      value: `CHF ${toMoney(Math.round(p.fortuneUsed))}`,
-      hide: !p.fortuneUsed,
-    },
-    {
-      label: 'Emprunt',
-      value: `CHF ${p.fortuneUsed ? toMoney(Math.round(p.project - p.fortuneUsed)) : 0}`,
-      props: {
-        className: borrow <= constants.maxLoan(p.usageType)
-          ? 'success'
-          : 'error',
-      },
-      hide: !p.fortuneUsed,
-      spacing: !p.fortuneUsed,
-    },
-    {
-      label: 'Coût mensuel estimé',
-      value: (
-        <span>
-          CHF
-          {' '}
-          {p.fortuneUsed ? toMoney(Math.round(p.monthlyReal)) : 0}
-          {' '}
-          <small>/mois</small>
-        </span>
-      ),
-      hide: !p.fortuneUsed,
-    },
-    {
-      title: true,
-      label: 'Calculs FINMA',
-      hide: !(borrow || ratio),
-    },
-    {
-      label: p.propertyWork ? 'Emprunt/Valeur du bien' : "Emprunt/Prix d'achat",
-      value: `${p.fortuneUsed && Math.round(borrow * 1000) / 10}%`,
-      props: {
-        className: borrow <= constants.maxLoan(p.usageType)
-          ? 'success'
-          : 'error',
-      },
-      hide: !p.fortuneUsed,
-    },
-    {
-      label: 'Charges/Revenus Disponibles',
-      value: `${Math.round(ratio * 1000) / 10}%`,
-      props: {
-        className: Math.round(ratio * 1000) / 1000 <= 1 / 3
-          ? 'success'
-          : Math.round(ratio * 1000) / 1000 <= 0.38 ? 'warning' : 'error',
-      },
-      hide: !p.fortuneUsed,
     },
     {
       title: true,
@@ -213,7 +226,7 @@ const getArray = props => {
 const getResult = props => (
   <div className="result animated fadeIn">
     {getArray(props).map(
-      item => !item.hide &&
+      (item, i) => !item.hide &&
       (item.title
         ? <label className="text-center" {...item.props} key={item.label}>
             {item.label}
@@ -224,7 +237,7 @@ const getResult = props => (
               marginBottom: item.spacing && 16,
               marginTop: item.spacingTop && 16,
             }}
-            key={item.label}
+            key={i}
           >
             <h4 className="secondary">{item.label}</h4>
             <h3 {...item.props}>{item.value}</h3>

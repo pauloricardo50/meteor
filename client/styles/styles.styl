@@ -1192,6 +1192,7 @@ ul.request-map
         justify-content: space-around;
       .recap
         padding: 0 20px;
+        width 100%;
         +above($med)
           width: 50%;
         max-width: 400px;
@@ -1275,12 +1276,10 @@ ul.request-map
 .validator
   min-height: 140px;
   width: 100%;
-  // +above($med)
-  //   width: 50%;
   max-width: 400px;
   display: flex;
   justify-content: center;
-  align-items:stretch;
+  align-items: stretch;
   label
     width: 100%;
     margin: 0;
@@ -1302,12 +1301,22 @@ ul.request-map
         font-size: 1.375em !important;
         span.sum
           margin-top: 16px;
-          border-top: solid 1px #444;
+          border-top: solid 1px grey;
       margin: 0;
       width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+.ux-text
+  display: flex;
+  height: calc(100% - 56px);
+  justify-content: center;
+  align-items: center;
+  h1
+    color: #aaa;
+    padding: 20px;
+
 
 .start2
   width: calc(100% - 40px);
@@ -1369,6 +1378,7 @@ ul.request-map
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
     .validator
+      position: relative;
       width: 100%;
       overflow-y: scroll;
       margin-top: 60px;
@@ -1376,6 +1386,18 @@ ul.request-map
       div.result
         div
           flex-shrink: 0;
+    .shadow-top, .shadow-bottom
+      position: absolute;
+      bottom: 20px;
+      width: calc(100% - 40px);
+      height: 100%;
+      max-height: calc(100% - 100px);
+      box-shadow: 0px 40px 40px -30px white inset;
+      z-index: 1;
+      pointer-events: none;
+    .shadow-bottom
+      box-shadow: 0px -40px 40px -30px white inset;
+
   .scroll
     .startArticle
       display: inline-block;

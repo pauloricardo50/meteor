@@ -69,7 +69,7 @@ const getAcquisitionArray = (state, props) => [
     condition: state.propertyWork !== undefined && state.propertyWork !== 0,
     id: 'projectAgreed',
     type: 'buttons',
-    text1: `Le prix de votre projet sera donc de CHF ${toMoney(1.05 * state.propertyValue + (state.propertyWork || 0))}.`,
+    text1: `Le coût de votre projet sera donc de CHF ${toMoney(1.05 * state.propertyValue + (state.propertyWork || 0))}.`,
     hideResult: true,
     buttons: [
       {
@@ -125,12 +125,14 @@ const getAcquisitionArray = (state, props) => [
     condition: state.borrowerCount === 1,
     id: 'birthYear',
     type: 'textInput',
-    text1: 'Je suis né en',
-    placeholder: '1980',
+    text1: "J'ai",
+    text2: 'ans.',
+    placeholder: '40',
     number: true,
+    width: 50,
     validation: {
-      min: 1900,
-      max: 1999,
+      min: 18,
+      max: 120,
     },
   },
   {
@@ -141,6 +143,7 @@ const getAcquisitionArray = (state, props) => [
     text2: 'ans.',
     placeholder: '40',
     number: true,
+    width: 50,
     validation: {
       min: 18,
       max: 120,
@@ -263,7 +266,7 @@ const getAcquisitionArray = (state, props) => [
   {
     id: 'expensesExist',
     type: 'buttons',
-    text1: 'Avez-vous des charges comme des leasings, rentes, pensions, loyers, crédits personnels ou autres prêts immobiliers?',
+    text1: `Avez-vous des charges comme des leasings, ${state.usageType !== 'primary' ? 'rentes, ' : ''}pensions, loyers, crédits personnels ou autres prêts immobiliers?`,
     question: true,
     deleteId: 'expensesArray',
     buttons: [
@@ -293,10 +296,12 @@ const getAcquisitionArray = (state, props) => [
             id: 'leasing',
             label: 'Leasings',
           },
-          {
-            id: 'rent',
-            label: 'Loyers',
-          },
+          state.usageType !== 'primary'
+            ? {
+                id: 'rent',
+                label: 'Loyers',
+              }
+            : {},
           {
             id: 'personalLoan',
             label: 'Crédits personnels',
@@ -455,7 +460,8 @@ const getFinalArray = (state, props) => [
     condition: state.type === 'acquisition',
     id: 'fortuneUsed',
     type: 'textInput',
-    text1: `Vous avez CHF ${toMoney(props.fortune + props.insuranceFortune)} de fonds propres au total, combien voulez-vous allouer à ce projet? Vous devez mettre au minimum ${state.propertyWorkExists ? `les frais de notaire ainsi que ${state.usageType === 'secondary' ? 30 : 20}% du prix d'achat + les travaux` : `${state.usageType === 'secondary' ? 35 : 25}% du projet`}, soit CHF ${toMoney(props.minFortune)}.`,
+    // text1: `Vous avez CHF ${toMoney(props.fortune + props.insuranceFortune)} de fonds propres au total, combien voulez-vous allouer à ce projet? Vous devez mettre au minimum ${state.propertyWorkExists ? `les frais de notaire ainsi que ${state.usageType === 'secondary' ? 30 : 20}% du prix d'achat + les travaux` : `${state.usageType === 'secondary' ? 35 : 25}% du projet`}, soit CHF ${toMoney(props.minFortune)}.`,
+    text1: `Vous avez CHF ${toMoney(props.fortune + props.insuranceFortune)} de fonds propres au total, combien voulez-vous allouer à ce projet? Au minimum CHF ${toMoney(props.minFortune)}.`,
     question: true,
     money: true,
   },
@@ -507,10 +513,9 @@ const getFinalArray = (state, props) => [
   },
 ];
 
-const getFormArray = (state, props) =>
-  getAcquisitionArray(state, props).concat(
-    getErrorArray(state, props),
-    getFinalArray(state, props),
-  );
+const getFormArray = (state, props) => getAcquisitionArray(state, props).concat(
+  state.type === 'acquisition' ? getErrorArray(state, props) : [], // these errors only for acquisitions
+  getFinalArray(state, props),
+);
 
 export default getFormArray;

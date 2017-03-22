@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
 import classNames from 'classnames';
 import queryString from 'query-string';
@@ -18,6 +19,7 @@ export default class Start2Page extends Component {
     const type = props.match.params.type || 'test';
 
     this.state = {
+      showUX: true,
       type,
       purchaseType: 'acquisition',
       knowsProperty: type === 'acquisition',
@@ -29,6 +31,10 @@ export default class Start2Page extends Component {
     this.setFormState = this.setFormState.bind(this);
     this.setActiveLine = this.setActiveLine.bind(this);
     this.calculateProperty = this.calculateProperty.bind(this);
+  }
+
+  componentDidMount() {
+    Meteor.setTimeout(() => this.setState({ showUX: false }), 3000);
   }
 
   setFormState(id, value, callback) {
@@ -43,7 +49,9 @@ export default class Start2Page extends Component {
   }
 
   setActiveLine(id) {
-    this.setState({ activeLine: id });
+    if (this.state.activeLine !== id) {
+      this.setState({ activeLine: id });
+    }
   }
 
   isFinished() {
@@ -152,11 +160,6 @@ export default class Start2Page extends Component {
       (propAndWork * constants.maintenance +
         (propAndWork - (s.fortuneUsed || 0)) * constants.loanCost()) /
         12,
-      // (propAndWork * constants.maintenance +
-      //   propAndWork *
-      //     constants.maxLoan(this.state.usageType) *
-      //     constants.loanCost()) /
-      //   12,
       0,
     );
   }
@@ -181,6 +184,16 @@ export default class Start2Page extends Component {
   }
 
   render() {
+    if (this.state.showUX) {
+      return (
+        <div className="ux-text">
+          <h1 className="text-center animated fadeIn">
+            Prenez 2 minutes pour nous en dire un peu plus sur vous
+          </h1>
+        </div>
+      );
+    }
+
     const s = this.state;
     const property = s.propertyValue || this.calculateProperty() || 0;
     const props = {
@@ -212,7 +225,7 @@ export default class Start2Page extends Component {
     };
 
     return (
-      <section className="start2">
+      <section className="start2 animated fadeIn">
         <div
           className={classNames({ form: true, isFinished: this.isFinished() })}
         >
@@ -228,11 +241,13 @@ export default class Start2Page extends Component {
             <h3 className="recap-title bold">
               Plan financier
             </h3>
+            <div className="shadow-top" />
+            <div className="shadow-bottom" />
             <Start2Recap {...props} />
           </div>}
         {this.isFinished() &&
           <Scroll.Element name={'final'}>
-            <StartResult {...props} setFormState={this.setFormState} />
+            <StartResult {...this.props} {...props} setFormState={this.setFormState} />
           </Scroll.Element>}
 
         {this.state.done &&

@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "start": "meteor --settings settings-dev.json",
-    "test": "mocha --compilers js:babel-core/register ./tests/*.js"
+    "test": "mocha --compilers js:babel-core/register ./tests/*.js",
+    "deploy": "mup deploy --settings=settings-production.json"
   },
   "version": "1.0.0",
   "description": "e-Potek main",

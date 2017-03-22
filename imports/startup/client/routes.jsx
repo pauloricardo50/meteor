@@ -14,7 +14,7 @@ import { PartnerLayout } from '/imports/ui/containers/PartnerContainers';
 // Public pages
 import HomePage from '/imports/ui/pages/public/HomePage.jsx';
 import Start1Page from '/imports/ui/pages/public/Start1Page.jsx';
-import Start2Page from '/imports/ui/pages/public/Start2Page.jsx';
+import { Start2Page } from '/imports/ui/containers/PublicContainers';
 import LoginPage from '/imports/ui/pages/public/LoginPage.jsx';
 import AboutPage from '/imports/ui/pages/public/AboutPage.jsx';
 import CareersPage from '/imports/ui/pages/public/CareersPage.jsx';

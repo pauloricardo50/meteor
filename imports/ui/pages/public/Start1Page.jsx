@@ -66,6 +66,7 @@ export default class Start1Page extends Component {
     this.setStateValue = this.setStateValue.bind(this);
     this.setSliderMax = this.setSliderMax.bind(this);
     this.getUrl = this.getUrl.bind(this);
+    this.handleReset = this.handleReset.bind(this);
   }
 
   componentDidMount() {
@@ -92,6 +93,26 @@ export default class Start1Page extends Component {
     );
   }
 
+  handleReset() {
+    this.setState({
+      income: {
+        value: 0,
+        minValue: 0,
+        auto: true,
+      },
+      fortune: {
+        value: 0,
+        minValue: 0,
+        auto: true,
+      },
+      property: {
+        value: 0,
+        minValue: 0,
+        auto: true,
+      },
+    });
+  }
+
   setSliderMax(name, value) {
     const object = {};
     object[name] = value;
@@ -99,7 +120,6 @@ export default class Start1Page extends Component {
   }
 
   setStateValue(name, value, autoOff = false) {
-    console.log('hey', name, value);
     const object = {};
     object[name] = {};
     object[name].value = Math.min(Math.round(toNumber(value)), 1000000000); // Max $1B
@@ -187,7 +207,7 @@ export default class Start1Page extends Component {
     );
     const ratio = minIncome / s.income.value / 3;
 
-    return borrow <= 0.8 && ratio <= 1 / 3;
+    return borrow <= 0.8 + 0.001 && ratio <= 1 / 3 + 0.001;
   }
 
   getUrl() {
@@ -215,6 +235,8 @@ export default class Start1Page extends Component {
               : "Identifiez votre capacité d'emprunt"}
           </h1>
           <hr />
+
+          <RaisedButton label="Recommencer" onTouchTap={this.handleReset} />
 
           <div className="content">
             <div className="sliders">

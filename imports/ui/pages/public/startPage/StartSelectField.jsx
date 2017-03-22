@@ -3,49 +3,39 @@ import React, { PropTypes } from 'react';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-export default class StartSelectField extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange(event, index, value) {
-    this.props.setFormState(
-      this.props.id,
-      value,
-      () => this.props.setActiveLine(''),
-    );
-  }
-
-  render() {
-    return (
-      <SelectField
-        value={this.props.value || this.props.formState[this.props.id] || ''}
-        onChange={this.handleChange}
-        maxHeight={200}
-      >
-        {/* <MenuItem value={null} primaryText="" /> */}
-        {this.props.options.map(
-          option =>
-            option.id !== undefined &&
-            <MenuItem
-              value={option.id}
-              primaryText={option.label}
-              key={option.id}
-            />,
-        )}
-      </SelectField>
-    );
-  }
-}
+const StartSelectField = props => (
+  <SelectField
+    value={props.value || props.formState[props.id] || ''}
+    onChange={(e, i, v) =>
+      props.setFormState(props.id, v, () => props.setActiveLine(''))}
+    maxHeight={200}
+    hintText="Choisissez..."
+  >
+    {/* <MenuItem value={null} primaryText="Choisissez..." /> */}
+    {props.options.map(
+      option =>
+        option.id !== undefined &&
+        <MenuItem
+          value={option.id}
+          primaryText={option.label}
+          key={option.id}
+          autoFocus={props.autoFocus}
+        />,
+    )}
+  </SelectField>
+);
 
 StartSelectField.propTypes = {
   id: PropTypes.string.isRequired,
-  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   setFormState: PropTypes.func.isRequired,
-  setActiveLine: PropTypes.func.isRequired,
   formState: PropTypes.objectOf(PropTypes.any),
   options: PropTypes.arrayOf(PropTypes.any).isRequired,
-  label: PropTypes.string,
+  autoFocus: PropTypes.bool,
 };
+
+StartSelectField.defaultProps = {
+  formState: {},
+  autoFocus: false,
+};
+
+export default StartSelectField;

@@ -62,7 +62,7 @@ export default class ExpensesChart extends Component {
       const update = () => {
         this.chart.update({
           title: {
-            text: `CHF ~${toMoney(Math.round(this.state.interests + this.state.amortization + this.state.maintenance))}<br>par mois`,
+            text: `CHF ${toMoney(Math.round(this.state.interests + this.state.amortization + this.state.maintenance))}<br>par mois`,
           },
           plotOptions: {
             pie: {
@@ -125,7 +125,7 @@ export default class ExpensesChart extends Component {
         type: 'pie',
       },
       title: {
-        text: `CHF ~${toMoney(Math.round(this.state.interests + this.state.amortization + this.state.maintenance))}<br>par mois`,
+        text: `CHF ${toMoney(Math.round(this.state.interests + this.state.amortization + this.state.maintenance))}<br>par mois`,
         verticalAlign: 'middle',
         floating: true,
         style: {

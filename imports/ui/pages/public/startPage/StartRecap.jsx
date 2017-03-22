@@ -73,15 +73,10 @@ const getArray = (income, fortune, property) => {
     {
       label: 'Emprunt',
       value: `CHF ${toMoney(Math.round(borrow * property / 1000) * 1000)}`,
-      props: {
-        className: Math.round(borrow * 1000) / 1000 <= 0.8
-          ? 'success'
-          : Math.round(borrow * 1000) / 1000 <= 0.9 ? 'warning' : 'error',
-      },
       spacing: true,
     },
     {
-      label: 'Coût réel estimé',
+      label: 'Coût réel estimé*',
       value: Math.round(borrow * 1000) / 1000 <= 0.8 && fortune < property
         ? <span>
             CHF
@@ -95,26 +90,46 @@ const getArray = (income, fortune, property) => {
         : '-',
     },
     {
+      label: (
+        <span style={{ fontSize: '0.8em' }}>
+          *Utilise un taux d'intérêt moyen de 1.5%
+        </span>
+      ),
+      value: '',
+    },
+    {
       title: true,
       label: 'Calculs FINMA',
     },
     {
       label: "Emprunt/Prix d'achat",
-      value: `${Math.round(borrow * 1000) / 10}%`,
-      props: {
-        className: Math.round(borrow * 1000) / 1000 <= 0.8
-          ? 'success'
-          : Math.round(borrow * 1000) / 1000 <= 0.9 ? 'warning' : 'error',
-      },
+      value: (
+        <span>
+          {Math.round(borrow * 1000) / 10}%&nbsp;
+          <span
+            className={
+              borrow <= 0.8 + 0.001 // for rounding
+                ? 'fa fa-check'
+                : borrow <= 0.9 ? 'fa fa-exclamation' : 'fa fa-times'
+            }
+          />
+        </span>
+      ),
     },
     {
       label: 'Charges/Revenus',
-      value: `${Math.round(ratio * 1000) / 10}%`,
-      props: {
-        className: Math.round(ratio * 1000) / 1000 <= 1 / 3
-          ? 'success'
-          : Math.round(ratio * 1000) / 1000 <= 0.38 ? 'warning' : 'error',
-      },
+      value: (
+        <span>
+          {Math.round(ratio * 1000) / 10}%&nbsp;
+          <span
+            className={
+              ratio <= 1 / 3 + 0.001 // for rounding
+                ? 'fa fa-check'
+                : ratio <= 0.38 ? 'fa fa-exclamation' : 'fa fa-times'
+            }
+          />
+        </span>
+      ),
     },
     {
       title: true,
@@ -133,7 +148,7 @@ const getArray = (income, fortune, property) => {
 const getResult = (income, fortune, property) => (
   <div className="result animated fadeIn">
     {getArray(income, fortune, property).map(
-      item => !item.hide &&
+      (item, i) => !item.hide &&
       (item.title
         ? <label className="text-center" {...item.props} key={item.label}>
             {item.label}
@@ -141,7 +156,7 @@ const getResult = (income, fortune, property) => (
         : <div
             className="fixed-size"
             style={{ marginBottom: item.spacing && 16 }}
-            key={item.label}
+            key={i}
           >
             <h4 className="secondary">{item.label}</h4>
             <h3 {...item.props}>{item.value}</h3>

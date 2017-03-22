@@ -121,7 +121,9 @@ export default class AutoStart extends Component {
         setActiveLine: this.props.setActiveLine,
         active,
         className: active ? 'startArticle activeLine' : 'startArticle',
-        autoFocus: prevInput.type === 'buttons',
+        autoFocus: prevInput.type === 'buttons' &&
+          !this.props.formState.stopScroll &&
+          !this.props.formState.finalized,
       };
 
       const scrollingInput = () => {

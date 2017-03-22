@@ -108,7 +108,9 @@ export default class ArrayInput extends React.Component {
           <h1 key={i} className="fixed-size array-input">
             {this.props.inputs.map((input, j) => (
               <span key={`${input.id}_${i}${j}`} className="array-input-span">
+
                 {i === 0 && <label id={this.props.id}>{input.label}</label>}
+
                 {input.type === 'textInput' &&
                   <StartTextField
                     {...input}
@@ -121,7 +123,9 @@ export default class ArrayInput extends React.Component {
                         this.props.formState[this.props.id][i] &&
                         this.props.formState[this.props.id][i][input.id]
                     }
+                    autoFocus={j === 0 && inputProps.autoFocus}
                   />}
+
                 {input.type === 'selectInput' &&
                   <StartSelectField
                     {...input}
@@ -135,7 +139,9 @@ export default class ArrayInput extends React.Component {
                         this.props.formState[this.props.id][i][input.id]
                     }
                     options={this.getOptions(input, i)}
+                    autoFocus={j === 0 && inputProps.autoFocus}
                   />}
+
               </span>
             ))}
           </h1>
