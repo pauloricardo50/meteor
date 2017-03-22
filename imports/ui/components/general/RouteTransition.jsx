@@ -8,7 +8,7 @@ const willEnter = () => ({
 
 const willLeave = () => ({
   opacity: spring(0),
-  scale: spring(0.98),
+  scale: spring(1),
 });
 
 const getStyles = () => ({
@@ -30,18 +30,20 @@ const RouteTransition = ({ children: child, pathname }) => (
   >
     {interpolated => (
       <div>
-        {interpolated.map(({ key, style, data }) => (
-          <div
-            key={`${key}-transition`}
-            style={{
-              ...styles.wrapper,
-              opacity: style.opacity,
-              transform: `scale(${style.scale})`,
-            }}
-          >
-            {data.child}
-          </div>
-        ))}
+        {interpolated.map(({ key, style, data }) => {
+          return (
+            <div
+              key={`${key}-transition`}
+              style={{
+                opacity: style.opacity,
+                transform: `scale(${style.scale})`,
+              }}
+              className="transition-wrapper"
+            >
+              {data.child}
+            </div>
+          );
+        })}
       </div>
     )}
   </TransitionMotion>

@@ -24,8 +24,10 @@ const styles = {
 };
 
 const ProfilePage = props => (
-  <section className="mask1 animated fadeIn" style={styles.section}>
+  <section className="mask1" style={styles.section}>
     <h1>Mon Profil</h1>
+    <hr />
+
     <span
       className="hidden-sm hidden-md hidden-lg"
       style={styles.mobileLogoutButton}

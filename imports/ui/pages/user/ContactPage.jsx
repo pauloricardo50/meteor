@@ -1,8 +1,8 @@
 import React from 'react';
 
 const ContactPage = () => (
-  <section className="mask1 animated fadeIn">
-    <h2>Contact</h2>
+  <section className="mask1">
+    <h1>Contact</h1>
     <hr />
 
     <div className="content">

@@ -19,7 +19,7 @@ export default class BorrowerOverview extends React.Component {
         {this.props.borrowers.map((borrower, i) => (
           <Link
             to={`/app/borrowers/${borrower._id}`}
-            className="mask1 hover-rise animated fadeIn borrower-recap"
+            className="mask1 hover-rise borrower-recap"
             key={borrower._id}
           >
             <div className="image">

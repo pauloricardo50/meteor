@@ -5,6 +5,11 @@
     "start": "meteor --settings settings-dev.json",
     "test": "mocha --compilers js:babel-core/register ./tests/*.js"
   },
+  "version": "1.0.0",
+  "description": "e-Potek main",
+  "main": "index.js",
+  "author": "florianbienefelt",
+  "license": "ISC",
   "dependencies": {
     "babel-polyfill": "^6.23.0",
     "babel-runtime": "^6.23.0",
@@ -42,11 +47,6 @@
     "uniforms": "^1.15.0",
     "uniforms-material": "^1.15.0"
   },
-  "version": "1.0.0",
-  "description": "e-Potek main",
-  "main": "index.js",
-  "author": "florianbienefelt",
-  "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "babel-eslint": "^7.1.1",

@@ -30,15 +30,15 @@ import {
 
 // Basic container
 export const generalContainer = c =>
-  merge(composeWithTracker(currentUserComposer))(c);
+  merge(composeWithTracker(currentUserComposer, Loading))(c);
 
 // User containers
 export const userContainer = c =>
   merge(
-    composeWithTracker(userRequestsComposer),
-    composeWithTracker(userBorrowersComposer),
-    composeWithTracker(userOffersComposer),
-    composeWithTracker(currentUserComposer),
+    composeWithTracker(userRequestsComposer, Loading),
+    composeWithTracker(userBorrowersComposer, Loading),
+    composeWithTracker(userOffersComposer, Loading),
+    composeWithTracker(currentUserComposer, Loading),
   )(c);
 export const userRequestContainer = c =>
   merge(
@@ -47,8 +47,8 @@ export const userRequestContainer = c =>
   )(c);
 export const userBorrowerContainer = c =>
   merge(
-    composeWithTracker(userBorrowerComposer),
-    composeWithTracker(currentUserComposer),
+    composeWithTracker(userBorrowerComposer, Loading),
+    composeWithTracker(currentUserComposer, Loading),
   )(c);
 
 // Admin containers
@@ -57,7 +57,7 @@ export const adminContainer = c =>
     composeWithTracker(adminRequestsComposer),
     composeWithTracker(adminUsersComposer),
     composeWithTracker(adminOffersComposer),
-    composeWithTracker(currentUserComposer),
+    composeWithTracker(currentUserComposer, Loading),
   )(c);
 export const adminUserContainer = c =>
   merge(
@@ -80,7 +80,7 @@ export const partnerContainer = c =>
   merge(
     composeWithTracker(partnerRequestsComposer),
     composeWithTracker(partnerOffersComposer),
-    composeWithTracker(currentUserComposer),
+    composeWithTracker(currentUserComposer, Loading),
   )(c);
 export const partnerOfferContainer = c =>
   merge(

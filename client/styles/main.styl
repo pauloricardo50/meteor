@@ -194,8 +194,9 @@ input[type=number]
   padding: 20px;
   overflow: auto;
   background-color: white;
-  h1:first-child
-    padding-bottom: 20px;
+  > h1
+    margin: 0;
+    // padding-bottom: 20px;
     +above($med)
       padding-left: 20px;
   .primary-top
@@ -312,27 +313,30 @@ input[type=number]
     padding-top: 64px;
 
 .app-layout
-  padding: 0 20px;
-  padding-top 20px
+  padding: 20px;
   padding-bottom $bottom-nav-height
-  display: table;
-  height: calc(100% - 66px); // To offset top bar on mobile
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  height: auto;
+  min-height: 100%;
   +above($med)
-    height: 100%;
-    padding-top: 86px // To offset the fixed progress bar header, height + 20 px
     padding-left 270px; // side-nav width + 20px
-    padding-bottom 0
+    padding-bottom 20px;
   +above($wide)
-    padding: 116px 50px 30px 300px;
+    padding: 50px 50px 50px 300px;
   &.always-side-nav
     padding-left: 270px; // side bar doesn't disappear
-  .center-wrapper
-    display: table-cell;
-    vertical-align: middle;
+  .wrapper
+    margin: auto 0;
+  .transition-wrapper
+    position: absolute;
+    width: calc(100% - 40px);
+    margin: auto;
     +above($med)
-      padding-bottom: 20px;
-    div > h1:first-child
-      margin-top: 0;
+      width: calc(100% - 250px - 40px);
+    +above($wide)
+      width: calc(100% - 250px - 100px)
 
 
 .full-screen
