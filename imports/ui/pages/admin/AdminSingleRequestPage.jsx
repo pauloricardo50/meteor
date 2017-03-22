@@ -1,15 +1,14 @@
 import React, { Component, PropTypes } from 'react';
-import { FlowRouter } from 'meteor/kadira:flow-router';
 import moment from 'moment';
 import { _ } from 'lodash';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import ProjectChart from '/imports/ui/components/charts/ProjectChart.jsx';
+import ProjectPieChart from '/imports/ui/components/charts/ProjectPieChart.jsx';
 import AdminNewOffer from '/imports/ui/components/admin/AdminNewOffer.jsx';
 
-import { toMoney } from '/imports/js/conversionFunctions';
-import adminActions from '/imports/js/adminActions';
+import { toMoney } from '/imports/js/helpers/conversionFunctions';
+import adminActions from '/imports/js/helpers/adminActions';
 
 const styles = {
   actions: {
@@ -72,13 +71,7 @@ export default class AdminSingleRequestPage extends Component {
   render() {
     return (
       <div>
-        <RaisedButton
-          label="Retour"
-          onTouchTap={() =>
-            Session.get('lastRoute') && FlowRouter.go(Session.get('lastRoute'))}
-          style={styles.returnButton}
-          disabled={!Session.get('lastRoute')}
-        />
+        <RaisedButton label="Retour" />
         <section className="mask1">
           <h1>
             {this.props.loanRequest.property.address1} - CHF&nbsp;
@@ -91,7 +84,7 @@ export default class AdminSingleRequestPage extends Component {
                   <div key={action.name} className="form-group">
                     <RaisedButton
                       label={action.name}
-                      onTouchTap={action.handleClick}
+                      onClick={action.handleClick}
                       primary
                     />
                   </div>
@@ -99,15 +92,7 @@ export default class AdminSingleRequestPage extends Component {
               : <h2 className="secondary">Aucune action à prendre</h2>}
           </div>
 
-          <ProjectChart
-            name={this.props.loanRequest.property.address1}
-            propertyValue={this.props.loanRequest.property.value}
-            fortuneUsed={this.props.loanRequest.general.fortuneUsed}
-            insuranceFortuneUsed={
-              this.props.loanRequest.general.insuranceFortuneUsed
-            }
-            horizontal
-          />
+          <ProjectPieChart loanRequest={this.props.loanRequest} />
 
           <ul className="request-map">
             {Object.keys(this.props.loanRequest).map(key =>

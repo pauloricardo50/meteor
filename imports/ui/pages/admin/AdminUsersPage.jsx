@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
 import AllUsersTable from '/imports/ui/components/admin/AllUsersTable.jsx';
 
@@ -9,24 +9,22 @@ const styles = {
   },
 };
 
-export default class AdminUsersPage extends Component {
-  constructor(props) {
-    super(props);
-  }
+const AdminUsersPage = props => (
+  <section className="mask1">
+    <h1>Utilisateurs</h1>
 
-  render() {
-    return (
-      <section className="mask1">
-        <h1>Utilisateurs</h1>
-
-        <div style={styles.table}>
-          <AllUsersTable users={this.props.users} />
-        </div>
-      </section>
-    );
-  }
-}
+    <div style={styles.table}>
+      <AllUsersTable {...props} />
+    </div>
+  </section>
+);
 
 AdminUsersPage.propTypes = {
   users: PropTypes.arrayOf(PropTypes.any),
 };
+
+AdminUsersPage.defaultProps = {
+  users: [],
+};
+
+export default AdminUsersPage;

@@ -2,8 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import Highcharts from 'highcharts';
 
-import { getInterests, getAmortization } from '/imports/js/finance-math';
-import { toMoney } from '/imports/js/conversionFunctions';
+import {
+  getInterests,
+  getAmortization,
+} from '/imports/js/helpers/finance-math';
+import { toMoney } from '/imports/js/helpers/conversionFunctions';
 
 const styles = {
   container: {},

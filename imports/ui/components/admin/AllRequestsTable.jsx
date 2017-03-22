@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import { Table, Column, Cell } from 'fixed-data-table';
 import moment from 'moment';
 
-import { toMoney } from '/imports/js/conversionFunctions';
+import { toMoney } from '/imports/js/helpers/conversionFunctions';
 
 class DataListWrapper {
   constructor(indexMap, data) {
@@ -90,7 +89,7 @@ export default class AllRequestsTable extends Component {
       this.state.sortedDataList._indexMap[rowIndex]
     ].requestId;
 
-    FlowRouter.go(`/admin/requests/${id}`);
+    this.props.history.push(`/admin/requests/${id}`);
   }
 
   render() {

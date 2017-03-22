@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
 import AllRequestsTable
   from '/imports/ui/components/admin/AllRequestsTable.jsx';
@@ -10,24 +10,22 @@ const styles = {
   },
 };
 
-export default class AdminRequestsPage extends Component {
-  constructor(props) {
-    super(props);
-  }
+const AdminRequestsPage = props => (
+  <section className="mask1">
+    <h1>Demandes de Prêt</h1>
 
-  render() {
-    return (
-      <section className="mask1">
-        <h1>Demandes de Prêt</h1>
-
-        <div style={styles.table}>
-          <AllRequestsTable loanRequests={this.props.loanRequests} />
-        </div>
-      </section>
-    );
-  }
-}
+    <div style={styles.table}>
+      <AllRequestsTable {...props} />
+    </div>
+  </section>
+);
 
 AdminRequestsPage.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.any),
 };
+
+AdminRequestsPage.defaultProps = {
+  loanRequests: [],
+};
+
+export default AdminRequestsPage;

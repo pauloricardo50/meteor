@@ -30,8 +30,8 @@ export const insertRequest = new ValidatedMethod({
 });
 
 // Lets you set an entire object in the document
-export const updateValues = new ValidatedMethod({
-  name: 'loanRequests.updateValues',
+export const updateRequest = new ValidatedMethod({
+  name: 'loanRequests.update',
   validate({ id }) {
     check(id, String);
   },

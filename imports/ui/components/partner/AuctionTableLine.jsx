@@ -1,65 +1,41 @@
-import React, { Component, PropTypes } from 'react';
-import moment from 'moment';
-import { Meteor } from 'meteor/meteor';
-import { FlowRouter } from 'meteor/kadira:flow-router';
+import React, { PropTypes } from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
+import { Link } from 'react-router-dom';
 
-import { toMoney } from '/imports/js/conversionFunctions';
+import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import Countdown from '/imports/ui/components/general/Countdown.jsx';
 
-export default class AuctionTableLine extends Component {
-  constructor(props) {
-    super(props);
+// Looks for an offer if it exists
+const offerExists = props =>
+  props.offers.some(offer => props.auction._id === offer.requestId);
 
-    this.handleClick = this.handleClick.bind(this);
-    this.offerExists = this.offerExists.bind(this);
-  }
-
-  handleClick() {
-    FlowRouter.go(`/partner/${this.props.auction._id}`);
-  }
-
-  offerExists() {
-    let exists = false;
-    this.props.offers.forEach((offer, index) => {
-      if (this.props.auction._id === offer.requestId) {
-        exists = true;
-        return true;
-      }
-    });
-
-    return exists;
-  }
-
-  render() {
-    return (
-      <tr>
-        <td className="left-align">
-          <Countdown endTime={this.props.auction.auctionEndTime} />
-        </td>
-        <td className="left-align">{this.props.auction.type}</td>
-        <td className="right-align">
-          {`CHF ${toMoney(this.props.auction.value)}`}
-        </td>
-        <td className="right-align">
-          {this.offerExists()
-            ? <RaisedButton
-                label="Modifier mon offre"
-                onTouchTap={this.handleClick}
-              />
-            : <RaisedButton
-                label="Faire une offre"
-                primary
-                onTouchTap={this.handleClick}
-              />}
-        </td>
-      </tr>
-    );
-  }
-}
+const AuctionTableLine = props => (
+  <tr>
+    <td className="left-align">
+      <Countdown endTime={props.auction.auctionEndTime} />
+    </td>
+    <td className="left-align">{props.auction.type}</td>
+    <td className="right-align">
+      {`CHF ${toMoney(props.auction.value)}`}
+    </td>
+    <td className="right-align">
+      <RaisedButton
+        label={offerExists(props) ? 'Modifier mon offre' : 'Faire une offre'}
+        primary={!!offerExists(props)}
+        containerElement={<Link to={`/partner/${props.auction._id}`} />}
+      />
+    </td>
+  </tr>
+);
 
 AuctionTableLine.propTypes = {
   auction: PropTypes.objectOf(PropTypes.any).isRequired,
   offers: PropTypes.arrayOf(PropTypes.object),
 };
+
+AuctionTableLine.defaultProps = {
+  offers: [],
+};
+
+export default AuctionTableLine;

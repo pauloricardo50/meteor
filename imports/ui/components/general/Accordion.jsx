@@ -20,7 +20,7 @@ export default class Accordion extends Component {
       isActive: nextProps.isActive,
       styles: {
         height: nextProps.isActive ? `${this.content.clientHeight}px` : 0,
-        overflow: nextProps.isActive ? 'none' : 'visible',
+        overflow: nextProps.isActive ? 'none' : 'hidden',
         transition: '500ms ease-in-out',
         opacity: nextProps.isActive ? 1 : 0,
       },
@@ -50,6 +50,6 @@ export default class Accordion extends Component {
 }
 
 Accordion.propTypes = {
-  isActive: PropTypes.bool.isRequired,
+  isActive: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]).isRequired,
   children: PropTypes.objectOf(PropTypes.any).isRequired,
 };

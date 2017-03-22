@@ -1,19 +1,20 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { FlowRouter } from 'meteor/kadira:flow-router';
 import { _ } from 'lodash';
+import { Link } from 'react-router-dom';
+import queryString from 'query-string';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { toNumber } from '/imports/js/conversionFunctions';
+import { toNumber } from '/imports/js/helpers/conversionFunctions';
 import {
   changeProperty,
   changeFortune,
   changeIncome,
-} from '/imports/js/start-functions';
-import constants from '/imports/js/constants';
-import StartLine from '/imports/ui/components/start/StartLine.jsx';
-import StartRecap from '/imports/ui/components/start/StartRecap.jsx';
+} from '/imports/js/helpers/start-functions';
+import constants from '/imports/js/config/constants';
+import StartLine from './startPage/StartLine.jsx';
+import StartRecap from './startPage/StartRecap.jsx';
 import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
 import Accordion from '/imports/ui/components/general/Accordion.jsx';
 
@@ -60,7 +61,7 @@ export default class Start1Page extends Component {
       propertySlider: 2000000,
     };
 
-    this.type = FlowRouter.getQueryParam('type');
+    this.type = props.match.params.type || 'test';
 
     this.setStateValue = this.setStateValue.bind(this);
     this.setSliderMax = this.setSliderMax.bind(this);
@@ -98,6 +99,7 @@ export default class Start1Page extends Component {
   }
 
   setStateValue(name, value, autoOff = false) {
+    console.log('hey', name, value);
     const object = {};
     object[name] = {};
     object[name].value = Math.min(Math.round(toNumber(value)), 1000000000); // Max $1B
@@ -189,16 +191,13 @@ export default class Start1Page extends Component {
   }
 
   getUrl() {
-    const pathDef = '/start2';
-    const params = {};
-    const queryParams = {
-      type: this.type || 'test',
+    const queryparams = {
       property: this.type !== 'test'
         ? Math.round(this.state.property.value)
-        : undefined,
+        : 0,
     };
 
-    return FlowRouter.path(pathDef, params, queryParams);
+    return `/start2/${this.type}?${queryString.stringify(queryparams)}`;
   }
 
   render() {
@@ -235,7 +234,13 @@ export default class Start1Page extends Component {
               ))}
             </div>
             <div className="separator" />
-            <StartRecap income={income} fortune={fortune} property={property} />
+            <div className="recap">
+              <StartRecap
+                income={income}
+                fortune={fortune}
+                property={property}
+              />
+            </div>
           </div>
 
           <div className="chart">
@@ -255,7 +260,8 @@ export default class Start1Page extends Component {
               label="Passer au check-up complet"
               disabled={!property || !income || !fortune}
               primary={this.isValid()}
-              href={this.getUrl()}
+              containerElement={<Link to={this.getUrl()} />}
+              id="ok"
             />
           </div>
         </article>

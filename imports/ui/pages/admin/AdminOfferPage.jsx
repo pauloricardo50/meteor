@@ -1,6 +1,4 @@
-import React, { Component, PropTypes } from 'react';
-import { FlowRouter } from 'meteor/kadira:flow-router';
-import moment from 'moment';
+import React, { PropTypes } from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -10,28 +8,14 @@ const styles = {
   },
 };
 
-export default class AdminOfferPage extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <div>
-        <RaisedButton
-          label="Retour"
-          onClick={() =>
-            Session.get('lastRoute') && FlowRouter.go(Session.get('lastRoute'))}
-          style={styles.backButton}
-          disabled={!Session.get('lastRoute')}
-        />
-        <section className="mask1">
-          Salut!
-        </section>
-      </div>
-    );
-  }
-}
+const AdminOfferPage = props => (
+  <div>
+    <RaisedButton label="Retour" style={styles.backButton} />
+    <section className="mask1">
+      Salut!
+    </section>
+  </div>
+);
 
 AdminOfferPage.defaultProps = {
   offer: {},
@@ -41,3 +25,5 @@ AdminOfferPage.propTypes = {
   offer: PropTypes.objectOf(PropTypes.any),
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };
+
+export default AdminOfferPage;

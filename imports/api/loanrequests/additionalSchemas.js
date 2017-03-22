@@ -1,11 +1,7 @@
 import 'babel-polyfill';
 import SimpleSchema from 'simpl-schema';
 
-import {
-  GeneralFilesSchema,
-  BorrowerFilesSchema,
-  PropertyFilesSchema,
-} from './FileSchemas';
+import { GeneralFilesSchema, PropertyFilesSchema } from '../FileSchemas';
 
 export const GeneralSchema = new SimpleSchema({
   purchaseType: {
@@ -33,9 +29,6 @@ export const GeneralSchema = new SimpleSchema({
     type: Number,
     min: 0,
     max: 100000000,
-    // autoValue: function () {
-    //   return 0;
-    // },
   },
   maxCash: {
     type: Boolean,
@@ -106,177 +99,6 @@ export const GeneralSchema = new SimpleSchema({
   },
   files: {
     type: GeneralFilesSchema,
-    defaultValue: {},
-  },
-});
-
-// Schema to store information about each borrower
-export const BorrowerSchema = new SimpleSchema({
-  gender: {
-    type: String,
-    optional: true,
-  },
-  age: {
-    type: Number,
-    optional: true,
-    min: 18,
-    max: 99,
-  },
-  firstName: {
-    type: String,
-    optional: true,
-  },
-  lastName: {
-    type: String,
-    optional: true,
-  },
-  address1: {
-    type: String,
-    optional: true,
-  },
-  address2: {
-    type: String,
-    optional: true,
-  },
-  zipCode: {
-    type: Number,
-    optional: true,
-    min: 1000,
-    max: 9999,
-  },
-  city: {
-    type: String,
-    optional: true,
-  },
-  citizenships: {
-    type: String,
-    optional: true,
-  },
-  residencyPermit: {
-    type: String,
-    optional: true,
-  },
-  birthDate: {
-    type: String,
-    optional: true,
-    regEx: '/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/', // YYYY-MM-DD
-  },
-  birthPlace: {
-    type: String,
-    optional: true,
-  },
-  civilStatus: {
-    // 'married', 'pacsed', 'single', 'divorced'
-    type: String,
-    defaultValue: 'single',
-  },
-  company: {
-    type: String,
-    optional: true,
-  },
-  grossIncome: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  bonusExists: {
-    type: Boolean,
-    defaultValue: false,
-  },
-  bonus: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  otherIncome: {
-    type: Array,
-    optional: true,
-  },
-  'otherIncome.$.value': {
-    type: Number,
-    min: 0,
-    max: 100000000,
-  },
-  'otherIncome.$.description': String,
-  personalBank: {
-    type: String,
-    optional: true,
-  },
-  corporateBankExists: {
-    type: Boolean,
-    defaultValue: false,
-  },
-  corporateBank: {
-    type: String,
-    optional: true,
-  },
-  currentRentExists: {
-    type: Boolean,
-    defaultValue: false,
-  },
-  currentRent: {
-    // Monthly
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  realEstateFortune: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  cashAndSecurities: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  existingDebt: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  otherFortune: {
-    type: Array,
-    optional: true,
-  },
-  'otherFortune.$.amount': {
-    type: Number,
-    min: 0,
-    max: 100000000,
-  },
-  'otherFortune.$.description': String,
-  insuranceLpp: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  insurance3A: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  insurance3B: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  insurancePureRisk: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  files: {
-    type: BorrowerFilesSchema,
     defaultValue: {},
   },
 });
@@ -387,8 +209,8 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
   },
   files: {
-    type: Array,
-    optional: true,
+    type: PropertyFilesSchema,
+    defaultValue: {},
   },
 });
 

@@ -47,6 +47,12 @@ export default class TodoList extends Component {
             auction
           />
         ))}
+
+        {!this.getReviewRequests().length &&
+          !this.getAuctionRequests().length &&
+          <h3 className="text-center secondary" style={{ padding: '40px 0' }}>
+            Rien à faire en ce moment
+          </h3>}
       </section>
     );
   }

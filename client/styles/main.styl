@@ -294,6 +294,13 @@ input[type=number]
     width: $side-nav - 20px;
     top: 40px;
     left: 10px
+  .logout
+    position: absolute;
+    bottom: 0;
+    padding: 20px;
+    width: 100%;
+    background-color: white;
+    z-index: 2;
 
 
 
@@ -304,7 +311,7 @@ input[type=number]
     height: 100%;
     padding-top: 64px;
 
-.user-layout
+.app-layout
   padding: 0 20px;
   padding-top 20px
   padding-bottom $bottom-nav-height
@@ -317,25 +324,15 @@ input[type=number]
     padding-bottom 0
   +above($wide)
     padding: 116px 50px 30px 300px;
-  &.admin
-    padding-top: 20px; // no fixed top bar
+  &.always-side-nav
     padding-left: 270px; // side bar doesn't disappear
-
-.default-layout
-  display: table;
-  height: calc(100% - 66px); // To offset top bar on mobile
-  padding: 20px;
-  +above($med)
-    height: 100%;
-    padding-top: 86px;
-
-.user-layout-center, .default-layout-center
-  display: table-cell;
-  vertical-align: middle;
-  +above($med)
-    padding-bottom: 20px;
-  div > h1:first-child
-    margin-top: 0;
+  .center-wrapper
+    display: table-cell;
+    vertical-align: middle;
+    +above($med)
+      padding-bottom: 20px;
+    div > h1:first-child
+      margin-top: 0;
 
 
 .full-screen

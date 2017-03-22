@@ -1,25 +1,20 @@
 import React, { PropTypes } from 'react';
 
-import { PublicNav } from '/imports/ui/containers/public/CurrentUserContainer';
-
-// MUI Theme, replace lightBaseTheme with a custom theme ASAP!
-import myTheme from '/imports/js/mui_custom';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import PublicNav from '/imports/ui/components/general/PublicNav.jsx';
+import RouteTransition
+  from '/imports/ui/components/general/RouteTransition.jsx';
 
 const PublicLayout = props => (
-  <MuiThemeProvider muiTheme={getMuiTheme(myTheme)}>
-    <div>
-      <PublicNav currentUser={props.currentUser} />
-      <main className="public-layout">
-        {props.content}
-      </main>
-    </div>
-  </MuiThemeProvider>
+  <div>
+    <PublicNav {...props} />
+    <main className="public-layout">
+      {React.cloneElement(props.children, { ...props })}
+    </main>
+  </div>
 );
 
 PublicLayout.propTypes = {
-  content: PropTypes.element.isRequired,
+  children: PropTypes.element.isRequired,
   currentUser: PropTypes.objectOf(PropTypes.any),
 };
 

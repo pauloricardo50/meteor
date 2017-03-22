@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react';
+import React, {PropTypes} from 'react';
 import moment from 'moment';
 import { Meteor } from 'meteor/meteor';
+
 
 var time;
 
@@ -46,7 +47,10 @@ export default class Countdown extends React.Component {
 
   render() {
     return (
-      <span style={this.props.style} className={this.props.className}>
+      <span
+        style={this.props.style}
+        className={this.props.className}
+      >
         {this.state.remainingTime}
       </span>
     );
