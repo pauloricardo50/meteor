@@ -3,6 +3,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
+
 const styles = {
   backDrop: {
     backgroundColor: 'transparent',
@@ -22,6 +23,7 @@ export default class AdminNewOffer extends React.Component {
     this.handleClose = this.handleClose.bind(this);
   }
 
+
   handleOpen() {
     this.setState({ open: true });
   }
@@ -32,15 +34,17 @@ export default class AdminNewOffer extends React.Component {
 
   render() {
     const actions = [
-      <FlatButton label="Cancel" primary onTouchTap={this.handleClose} />,
-      (
-        <FlatButton
-          label="Submit"
-          primary
-          keyboardFocused
-          onTouchTap={this.handleClose}
-        />
-      ),
+      <FlatButton
+        label="Cancel"
+        primary
+        onTouchTap={this.handleClose}
+      />,
+      <FlatButton
+        label="Submit"
+        primary
+        keyboardFocused
+        onTouchTap={this.handleClose}
+      />,
     ];
 
     return (

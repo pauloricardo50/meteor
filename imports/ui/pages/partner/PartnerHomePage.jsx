@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import moment from 'moment';
 import { Meteor } from 'meteor/meteor';
 
-import PartnerStats from '/imports/ui/components/partner/PartnerStats.jsx';
 import CurrentAuctionsTable
   from '/imports/ui/components/partner/CurrentAuctionsTable.jsx';
 import PastOffersTable
@@ -112,8 +111,6 @@ export default class PartnerHomePage extends Component {
             className="epotek"
           />
         </div>
-
-        {/* <PartnerStats /> */}
 
         {this.getCurrentAuctions().length
           ? <CurrentAuctionsTable

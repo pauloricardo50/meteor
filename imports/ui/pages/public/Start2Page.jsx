@@ -1,26 +1,29 @@
 import React, { Component, PropTypes } from 'react';
 import Scroll from 'react-scroll';
-import { FlowRouter } from 'meteor/kadira:flow-router';
 import classNames from 'classnames';
+import queryString from 'query-string';
 
-import AutoStart from '/imports/ui/components/start/AutoStart.jsx';
-import Start2Recap from '/imports/ui/components/start/Start2Recap.jsx';
-import StartResult from '/imports/ui/components/start/StartResult.jsx';
+import AutoStart from './startPage/AutoStart.jsx';
+import Start2Recap from './startPage/Start2Recap.jsx';
+import StartResult from './startPage/StartResult.jsx';
+import StartSignUp from './startPage/StartSignUp.jsx';
 
-import getFormArray from '/imports/js/StartFormArray';
-import constants from '/imports/js/constants';
+import getFormArray from '/imports/js/arrays/StartFormArray';
+import constants from '/imports/js/config/constants';
 
 export default class Start2Page extends Component {
   constructor(props) {
     super(props);
 
-    const type = FlowRouter.getQueryParam('type');
+    const type = props.match.params.type || 'test';
 
     this.state = {
       type,
       purchaseType: 'acquisition',
       knowsProperty: type === 'acquisition',
-      propertyValue: Number(FlowRouter.getQueryParam('property')) || undefined,
+      propertyValue: Number(
+        queryString.parse(props.location.search).property,
+      ) || undefined,
     };
 
     this.setFormState = this.setFormState.bind(this);
@@ -181,6 +184,7 @@ export default class Start2Page extends Component {
     const s = this.state;
     const property = s.propertyValue || this.calculateProperty() || 0;
     const props = {
+      formState: s,
       type: this.state.type,
       salary: (s.income1 || 0) + (s.income2 || 0),
       bonus: this.getBonusIncome([s.bonus11, s.bonus21, s.bonus31, s.bonus41]) +
@@ -228,7 +232,12 @@ export default class Start2Page extends Component {
           </div>}
         {this.isFinished() &&
           <Scroll.Element name={'final'}>
-            <StartResult {...props} />
+            <StartResult {...props} setFormState={this.setFormState} />
+          </Scroll.Element>}
+
+        {this.state.done &&
+          <Scroll.Element name={'done'} style={{ width: '100%' }}>
+            <StartSignUp {...props} />
           </Scroll.Element>}
       </section>
     );

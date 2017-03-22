@@ -3,6 +3,7 @@ import moment from 'moment';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
+
 export default class TodoItem extends Component {
   constructor(props) {
     super(props);
@@ -10,30 +11,28 @@ export default class TodoItem extends Component {
 
   render() {
     return (
-      <article className="mask1 admin-todo">
+      <article
+        className="mask1 admin-todo"
+      >
         <div className="text">
           <h3 className="fixed-size">
             {this.props.request.property.address1}
             &nbsp;-&nbsp;
             <small>
               Fin des enchères:&nbsp;
-              {moment(this.props.request.logic.auctionEndTime).format(
-                'D MMM hh:mm:ss',
-              )}
+              {moment(this.props.request.logic.auctionEndTime).format('D MMM hh:mm:ss')}
             </small>
           </h3>
 
           {true &&
             <p>
               {this.props.offers.length} Offres
-            </p>}
+            </p>
+          }
         </div>
 
         <RaisedButton
-          label={
-            (this.props.verify && 'Vérifier') ||
-              (this.props.auction && 'Ajouter une offre')
-          }
+          label={(this.props.verify && 'Vérifier') || (this.props.auction && 'Ajouter une offre')}
           href={`/admin/requests/${this.props.request._id}`}
           primary
         />

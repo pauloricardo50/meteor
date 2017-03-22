@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import { Table, Column, Cell } from 'fixed-data-table';
 import moment from 'moment';
@@ -26,7 +25,7 @@ export default class AllUsersTable extends Component {
   handleClick(e, rowIndex) {
     const id = this.rows[rowIndex][4];
 
-    FlowRouter.go(`/admin/users/${id}`);
+    this.props.history.push(`/admin/users/${id}`);
   }
 
   render() {

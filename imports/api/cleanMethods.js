@@ -2,21 +2,24 @@ import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
 import {
   insertRequest,
-  updateValues,
+  updateRequest,
   startAuction,
   pushValue,
   popValue,
 } from './loanrequests/methods';
 import { insertOffer, updateOffer } from './offers/methods';
+import { insertBorrower, updateBorrower } from './borrowers/methods';
 
 const methods = {
-  insert: insertRequest,
-  update: updateValues,
+  insertRequest,
+  updateRequest,
   startAuction,
   push: pushValue,
   pop: popValue,
   insertOffer,
   updateOffer,
+  insertBorrower,
+  updateBorrower,
 };
 
 // The callback passed to all methods, shows a Bert error when it happens
@@ -44,7 +47,7 @@ const methodCallback = (error, result, callback, showSuccess) => {
 };
 
 // A wrapper method that displays an error if it occurs
-const cleanMethod = (name, id, object, callback, showSuccess) => {
+const cleanMethod = (name, object, id, callback, showSuccess) => {
   if (methods[name]) {
     methods[name].call({ object, id }, (e, r) =>
       methodCallback(e, r, callback, showSuccess));

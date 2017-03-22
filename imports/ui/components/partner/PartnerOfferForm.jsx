@@ -1,17 +1,16 @@
 import React, { Component, PropTypes } from 'react';
-import { Meteor } from 'meteor/meteor';
-import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import TextField from 'material-ui/TextField';
 import MaskedInput from 'react-text-mask';
 import RaisedButton from 'material-ui/RaisedButton';
+import { Link } from 'react-router-dom';
 
 import {
   toMoney,
   toNumber,
   toDecimalNumber,
-} from '/imports/js/conversionFunctions';
-import { swissFrancMask, percentMask } from '/imports/js/textMasks';
+} from '/imports/js/helpers/conversionFunctions';
+import { swissFrancMask, percentMask } from '/imports/js/helpers/textMasks';
 import cleanMethod from '/imports/api/cleanMethods';
 
 const styles = {
@@ -30,6 +29,25 @@ const styles = {
     display: 'inline-block',
   },
 };
+
+const getFormArray = i => [
+  {
+    label: 'Libor',
+    name: `libor_${i}`,
+  },
+  {
+    label: 'Fixe 5 ans',
+    name: `interest5_${i}`,
+  },
+  {
+    label: 'Fixe 10 ans',
+    name: `interest10_${i}`,
+  },
+  {
+    label: 'Fixe 15 ans',
+    name: `interest15_${i}`,
+  },
+];
 
 export default class PartnerOfferForm extends Component {
   constructor(props) {
@@ -66,7 +84,7 @@ export default class PartnerOfferForm extends Component {
       return false;
     }
 
-    const id = FlowRouter.getParam('requestId');
+    const id = this.props.match.params.requestId;
     const object = {
       requestId: id,
       standardOffer: {
@@ -91,30 +109,9 @@ export default class PartnerOfferForm extends Component {
 
     cleanMethod('insertOffer', id, object, error => {
       if (!error) {
-        FlowRouter.go('/partner');
+        this.props.history.push('/partner');
       }
     });
-  }
-
-  getFormArray(index) {
-    return [
-      {
-        label: 'Libor',
-        name: `libor_${index}`,
-      },
-      {
-        label: 'Fixe 5 ans',
-        name: `interest5_${index}`,
-      },
-      {
-        label: 'Fixe 10 ans',
-        name: `interest10_${index}`,
-      },
-      {
-        label: 'Fixe 15 ans',
-        name: `interest15_${index}`,
-      },
-    ];
   }
 
   render() {
@@ -153,7 +150,7 @@ export default class PartnerOfferForm extends Component {
             Taux Standard
           </h4>
 
-          {this.getFormArray(0).map((field, index) => (
+          {getFormArray(0).map((field, index) => (
             <div className="col-xs-6 col-md-3" key={index}>
               <TextField
                 floatingLabelText={field.label}
@@ -185,7 +182,7 @@ export default class PartnerOfferForm extends Component {
             />
           </div>
 
-          {this.getFormArray(1).map((field, index) => (
+          {getFormArray(1).map((field, index) => (
             <div className="col-xs-6 col-md-3" key={index}>
               <TextField
                 floatingLabelText={field.label}
@@ -203,7 +200,7 @@ export default class PartnerOfferForm extends Component {
           <div className="col-xs-12" style={styles.buttons}>
             <RaisedButton
               label="Annuler"
-              href="/partner"
+              containerElement={<Link to="/partner" />}
               style={styles.button}
             />
             <RaisedButton label="Envoyer" type="submit" primary />

@@ -311,7 +311,7 @@ svg
 
 .loading-box{
 	display: inline-block;
-	height: 200px;
+	height: 100%;
 	width: 100%;
 	float:left;
 	position: relative;
@@ -1190,6 +1190,11 @@ ul.request-map
       +above($med)
         flex-direction: row;
         justify-content: space-around;
+      .recap
+        padding: 0 20px;
+        +above($med)
+          width: 50%;
+        max-width: 400px;
       .separator
         display: none;
         +above($med)
@@ -1200,6 +1205,7 @@ ul.request-map
           height: 200px;
       .sliders
         width: 100%;
+        padding: 0 20px;
         +above($med)
           width: 49%;
         max-width: 400px;
@@ -1207,6 +1213,7 @@ ul.request-map
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        // flex-grow: 1;
     .oscar-line
       position: relative;
       display: inline-block;
@@ -1268,8 +1275,8 @@ ul.request-map
 .validator
   min-height: 140px;
   width: 100%;
-  +above($med)
-    width: 50%;
+  // +above($med)
+  //   width: 50%;
   max-width: 400px;
   display: flex;
   justify-content: center;
@@ -1472,3 +1479,70 @@ ul.request-map
       display: flex;
       justify-content: center;
       margin: 40px 0;
+
+
+.borrowers
+  width: 100%;
+  margin: 40px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  .new-borrower
+    transition: all 250ms cubic-bezier(.02, .01, .47, 1);
+    background-color: brand-primary !important;
+    padding: 20px;
+    margin: 16px;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    h1, h4
+      margin: 0;
+      color: white;
+    &:hover
+      background-color: white !important;
+      h1, h4
+        color: brand-primary;
+  .borrower-recap
+    padding: 0;
+    margin: 16px;
+    flex: 0 1 300px;
+    height: 400px;
+    display: inline;
+    flex-direction: column;
+    color: initial;
+    .image
+      background-color: brand-primary;
+      height: 300px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    .text
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      h3, p
+        margin: 0;
+
+.properties
+  width: 100%;
+  margin: 40px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+
+.borrower-form
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  form
+    width: 100%;
+    max-width: 400px;

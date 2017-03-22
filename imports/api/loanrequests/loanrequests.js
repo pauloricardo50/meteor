@@ -3,7 +3,6 @@ import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import {
   GeneralSchema,
-  BorrowerSchema,
   PropertySchema,
   LogicSchema,
 } from './additionalSchemas';
@@ -67,7 +66,7 @@ const LoanRequestSchema = new SimpleSchema({
     type: Array,
   },
   'borrowers.$': {
-    type: BorrowerSchema,
+    type: String,
   },
   property: {
     type: PropertySchema,

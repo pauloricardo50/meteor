@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router-dom';
 
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
 
 import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown.jsx';
-import colors from '/imports/js/colors';
+import colors from '/imports/js/config/colors';
 
 const styles = {
   navbar: {
@@ -33,19 +34,19 @@ const PublicNav = props => (
       style={styles.navbar}
       iconElementRight={
         props.currentUser
-          ? <TopNavDropdown public currentUser={props.currentUser} />
+          ? <TopNavDropdown public {...props} />
           : <FlatButton
               label="Login"
-              href="/login"
+              containerElement={<Link to="/login" />}
               secondary
               labelStyle={{ color: colors.primary }}
             />
       }
       iconStyleLeft={{ display: 'none' }}
     >
-      <a href="/" style={styles.imageDiv}>
+      <Link to="/" style={styles.imageDiv}>
         <img src="/img/logo_black.svg" alt="e-Potek" style={styles.image} />
-      </a>
+      </Link>
     </AppBar>
   </div>
 );

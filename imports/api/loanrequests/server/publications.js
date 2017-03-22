@@ -129,6 +129,8 @@ Meteor.publish('partnerRequestsAuction', function() {
       },
     );
   }
+
+  return this.ready();
 });
 
 // Publish all loanrequests this partner has access to
@@ -147,6 +149,8 @@ Meteor.publish('partnerRequestsCompleted', function() {
       },
     );
   }
+
+  return this.ready();
 });
 
 // Publish the loanrequest with a specific ID, and only show the fields for an anonymous offer
@@ -179,4 +183,6 @@ Meteor.publish('partnerSingleLoanRequest', function(id) {
       },
     );
   }
+
+  return this.ready();
 });

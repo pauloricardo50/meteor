@@ -1,20 +1,17 @@
 import React, { PropTypes } from 'react';
 
-export default class AdminSingleUserPage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <section className="mask1">
-        <h1>{this.props.user.emails[0].address}</h1>
-      </section>
-    );
-  }
-}
+const AdminSingleUserPage = props => {
+  const user = props.users.find(user => user._id === props.match.params.userId);
+  return (
+    <section className="mask1">
+      <h1>{user.emails[0].address}</h1>
+    </section>
+  );
+};
 
 AdminSingleUserPage.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.any).isRequired,
-  user: PropTypes.objectOf(PropTypes.any).isRequired,
+  // user: PropTypes.objectOf(PropTypes.any).isRequired,
 };
+
+export default AdminSingleUserPage;

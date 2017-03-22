@@ -16,6 +16,19 @@ Meteor.publish('activeOffers', function() {
   });
 });
 
+// Get all offers for the currently active request
+Meteor.publish('userOffers', function() {
+  const loanRequests = LoanRequests.find({
+    userId: this.userId,
+  });
+
+  const IDs = loanRequests.map(r => r._id);
+
+  return Offers.find({
+    requestId: { $in: IDs },
+  });
+});
+
 // Get all offers the partner has made
 Meteor.publish('partnerOffers', function() {
   const user = Meteor.users.findOne({ _id: this.userId });
@@ -26,6 +39,8 @@ Meteor.publish('partnerOffers', function() {
       // auctionEndTime: { $lt: new Date() },
     });
   }
+
+  return this.ready();
 });
 
 // Publish all offers in the database for admins
