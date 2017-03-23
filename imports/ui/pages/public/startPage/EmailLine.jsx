@@ -27,7 +27,6 @@ export default class EmailLine extends Component {
     this.timer = null;
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange(event) {
@@ -36,22 +35,24 @@ export default class EmailLine extends Component {
     this.props.setParentState('email', email);
 
     if (emailValidation(email)[0]) {
-      console.log('email is valid');
       this.timer = Meteor.setTimeout(
         () => {
           // Check if the email exists in the database
           Meteor.call('doesUserExist', email, (error, result) => {
-            console.log('doesUserExist', result);
             if (result) {
               // If it exists
               this.setState({
                 emailExists: true,
               });
+              this.props.setParentState('login', true);
+              this.props.setParentState('signUp', false);
             } else {
               // If it doesnt
               this.setState({
                 emailExists: false,
               });
+              this.props.setParentState('login', false);
+              this.props.setParentState('signUp', true);
             }
             this.props.setParentState('showPassword', true);
           });
@@ -63,36 +64,10 @@ export default class EmailLine extends Component {
     }
   }
 
-  handleClick(e, login, signup) {
-    this.props.setParentState('login', login);
-    this.props.setParentState('signUp', signup);
-  }
-
   render() {
-    let buttons = null;
-    if (this.state.emailExists) {
-      buttons = (
-        <RaisedButton
-          label="Se Connecter"
-          style={styles.button}
-          primary
-          onClick={e => this.handleClick(e, true, false)}
-        />
-      );
-    } else {
-      buttons = (
-        <RaisedButton
-          label="Créer un compte"
-          style={styles.button}
-          primary
-          onClick={e => this.handleClick(e, false, true)}
-        />
-      );
-    }
-
     return (
       <div>
-        <h1>
+        <h1 className="email fixed-size">
           <TextField
             style={styles.textField}
             name="email"
@@ -102,8 +77,6 @@ export default class EmailLine extends Component {
             <MaskedInput mask={emailMask} guide autoFocus />
           </TextField>
         </h1>
-
-        {this.state.emailExists !== undefined && buttons}
       </div>
     );
   }

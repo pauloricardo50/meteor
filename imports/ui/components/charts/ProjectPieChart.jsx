@@ -3,7 +3,10 @@ import { Meteor } from 'meteor/meteor';
 import Highcharts from 'highcharts';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
-import { getLoanValue } from '/imports/js/helpers/requestFunctions';
+import {
+  getLoanValue,
+  getProjectValue,
+} from '/imports/js/helpers/requestFunctions';
 import constants from '/imports/js/config/constants';
 import { getWidth } from '/imports/js/helpers/browserFunctions';
 
@@ -42,7 +45,7 @@ export default class ProjectPieChart extends Component {
         text: 'Votre Projet',
       },
       subtitle: {
-        text: `CHF ${toMoney(r.property.value * (1 + constants.notaryFees) + r.general.insuranceFortuneUsed * constants.lppTax)}`,
+        text: `CHF ${toMoney(getProjectValue(r))}`,
       },
       tooltip: {
         formatter() {
@@ -87,8 +90,10 @@ export default class ProjectPieChart extends Component {
               y: r.general.insuranceFortuneUsed || 0,
             },
             {
-              name: 'Fortune',
-              y: r.general.fortuneUsed,
+              name: 'Fortune', // subtract fees from this
+              y: r.general.fortuneUsed -
+                r.property.value * constants.notaryFees -
+                (r.general.insuranceFortuneUsed * constants.lppFees || 0),
             },
             {
               name: 'Frais de Notaire',
@@ -96,7 +101,7 @@ export default class ProjectPieChart extends Component {
             },
             {
               name: 'Frais 2ème Pilier',
-              y: r.general.insuranceFortuneUsed * constants.lppTax || 0,
+              y: r.general.insuranceFortuneUsed * constants.lppFees || 0,
             },
           ],
         },

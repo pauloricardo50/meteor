@@ -62,33 +62,35 @@ export default class NewPage extends Component {
 
   render() {
     return (
-      <section className="mask1 animated fadeIn new-page">
-        <h2>Entrez le nom de la rue et le numéro</h2>
-        <p className="secondary">
-          Ça nous permet de donner un nom à votre projet
-        </p>
-        <form onSubmit={this.handleSubmit}>
-          <div className="text-center">
-            <TextField
-              name="address"
-              hintText="Rue du Pré 2"
-              floatingLabelText="Adresse du bien immobilier"
-              autoFocus
-              value={this.state.value}
-              onChange={this.handleChange}
+      <div className="absolute-wrapper new-page">
+        <section className="mask1 animated fadeIn">
+          <h2>Entrez le nom de la rue et le numéro</h2>
+          <p className="secondary">
+            Ça nous permet de donner un nom à votre projet
+          </p>
+          <form onSubmit={this.handleSubmit}>
+            <div className="text-center">
+              <TextField
+                name="address"
+                hintText="Rue du Pré 2"
+                floatingLabelText="Adresse du bien immobilier"
+                autoFocus
+                value={this.state.value}
+                onChange={this.handleChange}
+              />
+            </div>
+            <br />
+            <br />
+            <RaisedButton
+              label="Continuer"
+              primary
+              style={styles.secondButton}
+              type="submit"
+              disabled={!this.state.value}
             />
-          </div>
-          <br />
-          <br />
-          <RaisedButton
-            label="Continuer"
-            primary
-            style={styles.secondButton}
-            type="submit"
-            disabled={!this.state.value}
-          />
-        </form>
-      </section>
+          </form>
+        </section>
+      </div>
     );
   }
 }

@@ -17,7 +17,7 @@ const userLinks = [
   {
     link: '/app',
     icon: <span className="icon fa fa-home fa-2x" />,
-    label: 'Dashboard',
+    label: 'Tableau de Bord',
   },
   {
     link: '/app/me',
@@ -31,8 +31,12 @@ const userLinks = [
   },
   {
     link: '/app/contact',
-    icon: <span className="icon fa fa-phone fa-2x" />,
-    label: 'Nous Contacter',
+    icon: (
+      <span className="icon">
+        <img src="/img/yannis.jpg" className="photo" />
+      </span>
+    ),
+    label: 'Votre Conseiller',
   },
 ];
 
@@ -88,7 +92,12 @@ const SideNav = props => {
   return (
     <nav className={classes}>
       <Link to="/">
-        <img src="/img/logo_black.svg" alt="e-Potek" style={styles.logo} />
+        <img
+          src="/img/logo_black.svg"
+          alt="e-Potek"
+          style={styles.logo}
+          className="logo"
+        />
       </Link>
 
       <ul className="side-nav-list">

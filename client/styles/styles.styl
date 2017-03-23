@@ -1149,6 +1149,67 @@ ul.request-map
     h2
       border-bottom: solid 1px #ccc;
 
+.dashboard-item
+  transition: all 0.2s ease;
+  margin-bottom: 40px;
+  overflow: visible !important;
+  padding: 0 0 40px 0 !important;
+  max-height: 4000px;
+  &.inactive
+    height: auto;
+    .top .right button
+      transform: rotate(-180deg);
+  .top
+    padding-left: 20px;
+    height: 80px;
+    border-bottom: solid 1px light-grey;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h2
+      margin: 0;
+    .right
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 80px;
+      height: 100%;
+      border-left: solid 1px light-grey;
+  .active-div
+    margin-top: 0px;
+    .charts
+      display: inline-block;
+      width: 100%;
+      #expensesChart
+        .highcharts-data-labels
+          display: none;
+        .highcharts-legend
+          display: initial;
+
+
+.stepper
+  padding: 0 8px;
+  margin: 40px 0;
+  width: 100%;
+  .vertical
+    margin: auto;
+    width: 100%;
+    max-width: 400px;
+  .horizontal
+    margin: 0 auto;
+    width: 100%;
+    max-width: 800px;
+    overflow: hidden;
+  .right-icon
+    border: 1px solid light-grey;
+    border-radius: 50%
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    &.success
+      border: 1px solid brand-success;
+      color: brand-success;
+
 
 .oscar
   width: 100%;
@@ -1215,11 +1276,8 @@ ul.request-map
     .oscar-line
       position: relative;
       display: inline-block;
-      // width: 80%;
       width: 100%;
       margin: 0 auto;
-      &.property
-        width: 100%;
       margin-bottom: 20px;
       +above($med)
         margin-bottom: 40px;
@@ -1293,12 +1351,16 @@ ul.request-map
       h3, h4
         margin: 0;
       h3
+        text-align: right;
         opacity: 0.8;
         transition: color 0.2s ease;
         font-size: 1.375em !important;
         span.sum
           margin-top: 16px;
           border-top: solid 1px grey;
+        .fa
+          width: 21px;
+          text-align: center;
       margin: 0;
       width: 100%;
       display: flex;
@@ -1307,6 +1369,7 @@ ul.request-map
 
 .ux-text
   display: flex;
+  flex-direction: column;
   height: calc(100% - 56px);
   justify-content: center;
   align-items: center;
@@ -1350,7 +1413,6 @@ ul.request-map
       padding-right: 0;
       section
         max-width: 1000px;
-
   .start2recap
     display: none;
     +above($med)
@@ -1378,6 +1440,7 @@ ul.request-map
       position: relative;
       width: 100%;
       overflow-y: scroll;
+      overflow-x: hidden;
       margin-top: 60px;
       max-height: calc(100% - 106px);
       div.result
@@ -1394,7 +1457,6 @@ ul.request-map
       pointer-events: none;
     .shadow-bottom
       box-shadow: 0px -40px 40px -30px white inset;
-
   .scroll
     .startArticle
       display: inline-block;
@@ -1500,9 +1562,12 @@ ul.request-map
       display: flex;
       justify-content: center;
       margin: 40px 0;
+  .email
+    input
+      font-size: inherit !important;
 
 
-.borrowers
+.borrowers, .requests
   width: 100%;
   margin: 40px 0;
   display: flex;
@@ -1510,7 +1575,7 @@ ul.request-map
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
-  .borrower-recap
+  .borrower-recap, .request-recap
     padding: 0;
     margin: 16px;
     flex: 0 1 300px;
@@ -1544,6 +1609,7 @@ ul.request-map
   justify-content: center;
   align-items: center;
   text-align: center;
+  margin: 40px 0;
   h1, h4
     margin: 0;
     color: white;
@@ -1552,8 +1618,6 @@ ul.request-map
     h1, h4
       color: brand-primary;
 
-.new-request
-  margin: 40px auto;
 
 .properties
   width: 100%;
@@ -1571,7 +1635,3 @@ ul.request-map
   form
     width: 100%;
     max-width: 400px;
-
-.new-page
-  width: 100%;
-  max-width: 600px;

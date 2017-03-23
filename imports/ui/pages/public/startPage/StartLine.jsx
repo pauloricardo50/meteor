@@ -17,12 +17,7 @@ export default class StartLine extends Component {
         style={{ x: spring(this.props.value, presets.gentle) }}
       >
         {value => (
-          <article
-            className={classNames({
-              'oscar-line': true,
-              property: this.props.name === 'property',
-            })}
-          >
+          <article className="oscar-line">
             <label htmlFor={this.props.name}>{this.props.label}</label>
             <Start1Text {...this.props} motionValue={value.x} />
             <Start1Slider {...this.props} motionValue={value.x} />

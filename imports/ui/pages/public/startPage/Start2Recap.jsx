@@ -103,7 +103,7 @@ const getArray = props => {
     {
       label: (
         <span style={{ fontSize: '0.8em' }}>
-          *Utilise un taux d'intérêt moyen de 1.5%
+          *Taux indicatif de 1.5%
         </span>
       ),
       value: '',
@@ -122,8 +122,8 @@ const getArray = props => {
           <span
             className={
               borrow <= constants.maxLoan(p.usageType)
-                ? 'fa fa-check'
-                : 'fa fa-times'
+                ? 'fa fa-check success'
+                : 'fa fa-times error'
             }
           />
         </span>
@@ -138,8 +138,10 @@ const getArray = props => {
           <span
             className={
               ratio <= 1 / 3
-                ? 'fa fa-check'
-                : ratio <= 0.38 ? 'fa fa-exclamation' : 'fa fa-times'
+                ? 'fa fa-check success'
+                : ratio <= 0.38
+                    ? 'fa fa-exclamation warning'
+                    : 'fa fa-times error'
             }
           />
         </span>
@@ -157,8 +159,13 @@ const getArray = props => {
       hide: !p.bankFortune,
     },
     {
-      label: 'Fortune Immobilière',
-      value: `CHF ${toMoney(Math.round(p.realEstate))}`,
+      label: 'Biens Immobiliers',
+      value: `CHF ${toMoney(Math.round(p.realEstateValue))}`,
+      hide: !p.realEstate,
+    },
+    {
+      label: 'Emprunts Actuels',
+      value: `- CHF ${toMoney(Math.round(p.realEstateDebt))}`,
       hide: !p.realEstate,
     },
     {
@@ -167,7 +174,7 @@ const getArray = props => {
       hide: !p.insuranceFortune,
     },
     {
-      label: 'Votre Fortune',
+      label: 'Fortune Nette',
       value: (
         <span className="sum">
           CHF {toMoney(Math.round(p.fortune + p.insuranceFortune))}
@@ -197,7 +204,7 @@ const getArray = props => {
       hide: !p.otherIncome,
     },
     {
-      label: 'Vos Charges',
+      label: 'Charges',
       value: `- CHF ${toMoney(Math.round(p.expenses))}`,
       hide: !p.expenses,
     },
@@ -223,32 +230,28 @@ const getArray = props => {
   ];
 };
 
-const getResult = props => (
-  <div className="result animated fadeIn">
-    {getArray(props).map(
-      (item, i) => !item.hide &&
-      (item.title
-        ? <label className="text-center" {...item.props} key={item.label}>
-            {item.label}
-          </label>
-        : <div
-            className="fixed-size"
-            style={{
-              marginBottom: item.spacing && 16,
-              marginTop: item.spacingTop && 16,
-            }}
-            key={i}
-          >
-            <h4 className="secondary">{item.label}</h4>
-            <h3 {...item.props}>{item.value}</h3>
-          </div>),
-    )}
-  </div>
-);
-
 const Start2Recap = props => (
   <article className="validator">
-    {getResult(props)}
+    <div className="result animated fadeIn">
+      {getArray(props).map(
+        (item, i) => !item.hide &&
+        (item.title
+          ? <label className="text-center" {...item.props} key={item.label}>
+              {item.label}
+            </label>
+          : <div
+              className="fixed-size"
+              style={{
+                marginBottom: item.spacing && 16,
+                marginTop: item.spacingTop && 16,
+              }}
+              key={i}
+            >
+              <h4 className="secondary">{item.label}</h4>
+              <h3 {...item.props}>{item.value}</h3>
+            </div>),
+      )}
+    </div>
   </article>
 );
 

@@ -36,6 +36,7 @@ export default class PasswordLine extends Component {
     this.handleLogin = this.handleLogin.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleSuccess = this.handleSuccess.bind(this);
   }
 
   handleChange(event) {
@@ -105,9 +106,9 @@ export default class PasswordLine extends Component {
     return (
       <div>
 
-        <h1>{content}</h1>
+        <h1 className="fixed-size">{content}</h1>
 
-        <h4>{this.state.error}</h4>
+        <h4 className="fixed-size">{this.state.error}</h4>
 
         {this.state.passwordIsValid && button}
 

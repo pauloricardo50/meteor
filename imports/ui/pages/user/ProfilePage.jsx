@@ -54,7 +54,7 @@ const ProfilePage = props => (
       <div className="form-group">
         <h4 style={styles.h}>Téléphone</h4><a>Changer</a>
         <br />
-        <p className="secondary">+41 78 709 31 31</p>
+        <p className="secondary">+41 78 000 00 00</p>
       </div>
 
       <div className="form-group">
@@ -65,8 +65,8 @@ const ProfilePage = props => (
 
       <div className="form-group">
         <h4>Recevoir des notifications quand mon dossier avance</h4>
-        <Checkbox label="Par email" />
-        <Checkbox label="Par SMS" />
+        <Checkbox label="Par email" style={{ zIndex: 1 }} />
+        <Checkbox label="Par SMS" style={{ zIndex: 1 }} />
       </div>
     </div>
 

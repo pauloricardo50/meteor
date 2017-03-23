@@ -23,24 +23,24 @@ const getArray = (income, fortune, property, borrow, ratio) => {
   const isReady = !!(income && fortune && property);
   const incomeIcon = classnames({
     fa: true,
-    'fa-check': ratio <= 1 / 3 + 0.001,
-    'fa-exclamation': ratio <= 0.38 && ratio > 1 / 3 + 0.001,
-    'fa-times': ratio > 0.38,
+    'fa-check success': ratio <= 1 / 3 + 0.001,
+    'fa-exclamation warning': ratio <= 0.38 && ratio > 1 / 3 + 0.001,
+    'fa-times error': ratio > 0.38,
   });
   const fortuneIcon = classnames({
     fa: true,
-    'fa-check': borrow <= 0.8 + 0.001,
-    'fa-exclamation': borrow <= 0.9 && borrow > 0.8 + 0.001,
-    'fa-times': borrow > 0.9,
+    'fa-check success': borrow <= 0.8 + 0.001,
+    'fa-exclamation warning': borrow <= 0.9 && borrow > 0.8 + 0.001,
+    'fa-times error': borrow > 0.9,
   });
   const isFalse = borrow > 0.9 || ratio > 0.38;
   const propertyIcon = classnames({
     fa: true,
-    'fa-check': borrow <= 0.8 + 0.001 && ratio <= 1 / 3 + 0.001,
-    'fa-exclamation': !isFalse &&
+    'fa-check success': borrow <= 0.8 + 0.001 && ratio <= 1 / 3 + 0.001,
+    'fa-exclamation warning': !isFalse &&
       ((borrow <= 0.9 && borrow > 0.8 + 0.001) ||
         (ratio <= 0.38 && ratio > 1 / 3 + 0.001)),
-    'fa-times': isFalse,
+    'fa-times error': isFalse,
   });
   return [
     {

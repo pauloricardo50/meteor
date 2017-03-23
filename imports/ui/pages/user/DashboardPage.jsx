@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router-dom';
+import queryString from 'query-string';
 
 import NewUserOptions from '/imports/ui/components/general/NewUserOptions.jsx';
 import DashboardItem from './dashboardPage/DashboardItem.jsx';
+import NewRequestModal from './dashboardPage/NewRequestModal.jsx';
 
 export default class DashboardPage extends Component {
   constructor(props) {
@@ -37,6 +38,9 @@ export default class DashboardPage extends Component {
     const sortedRequests = this.props.loanRequests.sort(
       (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
     );
+    const newRequestId = queryString.parse(
+      this.props.location.search,
+    ).newrequest;
 
     if (this.props.loanRequests.length <= 0) {
       return <NewUserOptions />;
@@ -44,7 +48,7 @@ export default class DashboardPage extends Component {
 
     return (
       <section>
-        <h1>Votre Dashboard e-Potek</h1>
+        <h1>Tableau de Bord</h1>
 
         {sortedRequests.map((request, i) => (
           <DashboardItem
@@ -62,6 +66,16 @@ export default class DashboardPage extends Component {
             <h1>+</h1><h4 className="bold">Nouvelle demande</h4>
           </a>
         </div> */}
+
+        {!!(newRequestId &&
+          !sortedRequests.find(
+            r => r._id === newRequestId,
+          ).property.address1) &&
+          <NewRequestModal
+            open
+            requestId={newRequestId}
+            history={this.props.history}
+          />}
       </section>
     );
   }

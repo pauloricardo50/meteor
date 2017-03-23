@@ -39,13 +39,13 @@ export default class StartSignUp extends Component {
         <EmailLine {...this.state} setParentState={this.setParentState} />
 
         {this.state.showPassword &&
-          (this.state.login || this.state.signUp) &&
           <div className="animated fadeIn" style={styles.passwordDiv}>
             <h2>
               {this.state.login && 'Entrez votre mot de passe'}
               {this.state.signUp && 'Entrez votre nouveau mot de passe'}
             </h2>
             <PasswordLine
+              history={this.props.history}
               {...this.state}
               formState={this.props.formState}
               setParentState={this.setParentState}

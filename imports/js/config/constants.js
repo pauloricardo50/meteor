@@ -6,13 +6,15 @@ const constants = {
   interestsReal: 0.015,
   maintenance: 0.01,
   maintenanceReal: 0.005,
+  notaryFees: 0.05,
+  lppFees: 0.1,
   loanCost() {
     return this.interests + this.amortizing;
   },
   loanCostReal() {
     return this.interestsReal + this.amortizing;
   },
-  notaryFees: 0.05,
+
   propertyToIncome(usageType = 'primary') {
     return 3 * (this.maintenance + this.maxLoan(usageType) * this.loanCost());
   },

@@ -13,7 +13,10 @@ import stepValidation from '/imports/js/helpers/stepValidation';
 
 const styles = {
   stepContent: {
+    margin: '0 auto',
     marginTop: 16,
+    width: '100%',
+    maxWidth: 400,
   },
   stepActions: {
     margin: '16px 0',

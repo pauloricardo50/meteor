@@ -100,6 +100,7 @@ export const saveStartForm = (f, history) => {
       purchaseType: f.purchaseType,
       oldestAge: multiple ? f.oldestAge : f.age,
       fortuneUsed: f.fortuneUsed,
+      insuranceFortuneUsed: 0, // TODO
     },
     property: {
       usageType: f.usageType,
@@ -114,12 +115,11 @@ export const saveStartForm = (f, history) => {
     if (id2) {
       loanRequest.borrowers.push(id2);
     }
-
     cleanMethod(
       'insertRequest',
       loanRequest,
       undefined,
-      (err, requestId) => history.push(`/app/new/${requestId}`),
+      (err, requestId) => history.push(`/app?newrequest=${requestId}`),
     );
   };
 

@@ -1,3 +1,5 @@
+import constants from '../config/constants';
+
 export const getYearsToRetirement = (age1, age2, gender1, gender2) => {
   // Determine retirement age depending on the gender of the borrowers
   const retirement1 = gender1 === 'f' ? 64 : 65;
@@ -179,7 +181,7 @@ export const getAmortization = (loanRequest, borrowers) => {
   const r = loanRequest;
   const loan = r.property.value -
     r.general.fortuneUsed -
-    r.general.insuranceFortuneUsed;
+    (r.general.insuranceFortuneUsed || 0);
   const yearsToRetirement = getYearsToRetirement(
     Number(borrowers[0].age),
     borrowers[1] && borrowers[1].age ? Number(borrowers[1].age) : 0,
@@ -191,6 +193,9 @@ export const getAmortization = (loanRequest, borrowers) => {
   if (loan <= 0) {
     return 0;
   }
+
+  console.log(loan);
+  console.log(yearsToRetirement);
 
   const loanPercent = loan / r.property.value;
 
@@ -215,7 +220,7 @@ export const getInterests = loanRequest => {
   const r = loanRequest;
   const loan = r.property.value -
     r.general.fortuneUsed -
-    r.general.insuranceFortuneUsed;
+    (r.general.insuranceFortuneUsed || 0);
 
   if (loan <= 0) {
     return 0;

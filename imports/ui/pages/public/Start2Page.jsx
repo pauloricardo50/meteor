@@ -4,6 +4,8 @@ import Scroll from 'react-scroll';
 import classNames from 'classnames';
 import queryString from 'query-string';
 
+import RaisedButton from 'material-ui/RaisedButton';
+
 import AutoStart from './startPage/AutoStart.jsx';
 import Start2Recap from './startPage/Start2Recap.jsx';
 import StartResult from './startPage/StartResult.jsx';
@@ -31,10 +33,6 @@ export default class Start2Page extends Component {
     this.setFormState = this.setFormState.bind(this);
     this.setActiveLine = this.setActiveLine.bind(this);
     this.calculateProperty = this.calculateProperty.bind(this);
-  }
-
-  componentDidMount() {
-    Meteor.setTimeout(() => this.setState({ showUX: false }), 3000);
   }
 
   setFormState(id, value, callback) {
@@ -136,11 +134,36 @@ export default class Start2Page extends Component {
   getRealEstateFortune() {
     const s = this.state;
 
-    return [
-      ...(s.realEstateArray
-        ? s.realEstateArray.map(i => i.value - i.loan || 0)
-        : []),
-    ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+    if (s.realEstateExists) {
+      return [
+        ...(s.realEstateArray
+          ? s.realEstateArray.map(i => i.value - i.loan || 0)
+          : []),
+      ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+    }
+    return 0;
+  }
+
+  getRealEstateValue() {
+    const s = this.state;
+
+    if (s.realEstateExists) {
+      return [
+        ...(s.realEstateArray ? s.realEstateArray.map(i => i.value || 0) : []),
+      ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+    }
+    return 0;
+  }
+
+  getRealEstateDebt() {
+    const s = this.state;
+
+    if (s.realEstateExists) {
+      return [
+        ...(s.realEstateArray ? s.realEstateArray.map(i => i.loan || 0) : []),
+      ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+    }
+    return 0;
   }
 
   getExpenses() {
@@ -188,10 +211,18 @@ export default class Start2Page extends Component {
   render() {
     if (this.state.showUX) {
       return (
-        <div className="ux-text">
-          <h1 className="text-center animated fadeIn">
+        <div className="ux-text animated fadeIn text-center">
+          <h1>
             Prenez 2 minutes pour nous en dire un peu plus sur vous
           </h1>
+          <div>
+            <RaisedButton
+              label="Avec Plaisir"
+              primary
+              onClick={() =>
+                Meteor.setTimeout(() => this.setState({ showUX: false }), 400)}
+            />
+          </div>
         </div>
       );
     }
@@ -222,6 +253,8 @@ export default class Start2Page extends Component {
       monthlyReal: this.getMonthlyReal() || 0,
       project: 1.05 * property + (s.propertyWork || 0) || 0,
       realEstate: this.getRealEstateFortune() || 0,
+      realEstateValue: this.getRealEstateValue() || 0,
+      realEstateDebt: this.getRealEstateDebt() || 0,
       bankFortune: this.getBankFortune() || 0,
       usageType: this.state.usageType,
     };
@@ -250,7 +283,8 @@ export default class Start2Page extends Component {
         {this.isFinished() &&
           <Scroll.Element name={'final'}>
             <StartResult
-              {...this.props}
+              history={this.props.history}
+              currentUser={this.props.currentUser}
               {...props}
               setFormState={this.setFormState}
             />
@@ -258,11 +292,18 @@ export default class Start2Page extends Component {
 
         {this.state.done &&
           <Scroll.Element name={'done'} style={{ width: '100%' }}>
-            <StartSignUp {...props} />
+            <StartSignUp {...props} history={this.props.history} />
           </Scroll.Element>}
       </section>
     );
   }
 }
 
-Start2Page.propTypes = {};
+Start2Page.propTypes = {
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+  currentUser: PropTypes.objectOf(PropTypes.any),
+};
+
+Start2Page.defaultProps = {
+  currentUser: undefined,
+};

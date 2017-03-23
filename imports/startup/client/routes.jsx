@@ -63,11 +63,7 @@ const UserRoutes = props => (
     type="user"
     render={layoutProps => (
       <Switch>
-        <Route
-          exact
-          path="/app"
-          render={() => <DashBoardPage {...layoutProps} />}
-        />
+
         <Route
           exact
           path="/app/new/:requestId"
@@ -86,6 +82,7 @@ const UserRoutes = props => (
           render={() => <ContactPage {...layoutProps} />}
         />
         <Route path="/app/borrowers/:borrowerId" component={BorrowerPage} />
+        <Route path="/app" render={() => <DashBoardPage {...layoutProps} />} />
       </Switch>
     )}
   />

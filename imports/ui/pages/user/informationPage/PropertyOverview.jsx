@@ -10,9 +10,25 @@ export default class PropertyOverview extends React.Component {
   render() {
     return (
       <article>
-        {this.props.loanRequests.map(request => (
-          <div className="mask1">hi!</div>
-        ))}
+        <div className="requests">
+          {this.props.loanRequests.map(request => (
+            <div
+              // to={`/app/borrowers/${borrower._id}`}
+              className="mask1 animated fadeIn hover-rise request-recap"
+              key={request._id}
+            >
+              <div className="image">
+                <span className="fa fa-home fa-5x" />
+              </div>
+              <div className="text">
+                <h3>{request.property.address1 || 'Sans Titre'}</h3>
+                <p className="secondary">
+                  Progrès: 0%
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
       </article>
     );
   }

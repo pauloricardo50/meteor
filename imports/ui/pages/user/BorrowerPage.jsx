@@ -26,7 +26,7 @@ export default class BorrowerPage extends React.Component {
           <h1>{this.props.borrower.firstName || 'Informations personelles'}</h1>
 
           <article className="borrower-form">
-            <AutoForm
+            {/* <AutoForm
               schema={bridge}
               model={this.props.borrower}
               autosave
@@ -35,7 +35,7 @@ export default class BorrowerPage extends React.Component {
               onSubmit={() => console.log('submitting')}
               // onSubmitSuccess={() => alert('Promise resolved!')}
               // onSubmitFailure={() => alert('Promise rejected!')}
-            />
+            /> */}
           </article>
         </section>
       </div>

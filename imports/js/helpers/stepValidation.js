@@ -1,8 +1,7 @@
-const validateStep1 = () => true;
-const validateStep2 = () => true;
-const validateStep3 = () => true;
-const validateStep4 = () => true;
-
+const validateStep1 = () => false;
+const validateStep2 = () => false;
+const validateStep3 = () => false;
+const validateStep4 = () => false;
 
 const validationArray = [
   validateStep1,
@@ -11,8 +10,7 @@ const validationArray = [
   validateStep4,
 ];
 
-
-const stepValidation = (i) => {
+const stepValidation = i => {
   let valid = false;
   validationArray.forEach((validate, index) => {
     // While the currentstep is smaller or equal than the validation function, validate.

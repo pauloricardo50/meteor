@@ -81,7 +81,7 @@ const getArray = ({ income, fortune, property, borrow, ratio }) => {
     {
       label: (
         <span style={{ fontSize: '0.8em' }}>
-          *Utilise un taux d'intérêt moyen de 1.5%
+          *Taux indicatif de 1.5%
         </span>
       ),
       value: '',
@@ -98,8 +98,10 @@ const getArray = ({ income, fortune, property, borrow, ratio }) => {
           <span
             className={
               borrow <= 0.8 + 0.001 // for rounding
-                ? 'fa fa-check'
-                : borrow <= 0.9 ? 'fa fa-exclamation' : 'fa fa-times'
+                ? 'fa fa-check success'
+                : borrow <= 0.9
+                    ? 'fa fa-exclamation warning'
+                    : 'fa fa-times error'
             }
           />
         </span>
@@ -113,8 +115,10 @@ const getArray = ({ income, fortune, property, borrow, ratio }) => {
           <span
             className={
               ratio <= 1 / 3 + 0.001 // for rounding
-                ? 'fa fa-check'
-                : ratio <= 0.38 ? 'fa fa-exclamation' : 'fa fa-times'
+                ? 'fa fa-check success'
+                : ratio <= 0.38
+                    ? 'fa fa-exclamation warning'
+                    : 'fa fa-times error'
             }
           />
         </span>
