@@ -59,7 +59,7 @@ export const changeIncome = (state, o, income) => {
   return o;
 };
 
-export const saveStartForm = (f, callback) => {
+export const saveStartForm = (f, history) => {
   const multiple = f.borrowerCount > 1;
   const borrowerOne = {
     age: f.age,

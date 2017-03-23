@@ -3,7 +3,8 @@ import React, { PropTypes } from 'react';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
 
-const isReady = (income, fortune, property) => property && income && fortune;
+const isReady = ({ income, fortune, property }) =>
+  property && income && fortune;
 
 const getMonthly = (income, fortune, property) =>
   Math.max(
@@ -35,11 +36,7 @@ const getLenderCount = (borrow, ratio) => {
   return 0;
 };
 
-const getArray = (income, fortune, property) => {
-  const borrow = Math.max((property * 1.05 - fortune) / property, 0);
-  const ratio = getMonthly(income, fortune - property * 0.05, property) /
-    (income / 12);
-
+const getArray = ({ income, fortune, property, borrow, ratio }) => {
   return [
     {
       title: true,
@@ -145,9 +142,9 @@ const getArray = (income, fortune, property) => {
   ];
 };
 
-const getResult = (income, fortune, property) => (
+const getResult = props => (
   <div className="result animated fadeIn">
-    {getArray(income, fortune, property).map(
+    {getArray(props).map(
       (item, i) => !item.hide &&
       (item.title
         ? <label className="text-center" {...item.props} key={item.label}>
@@ -165,11 +162,11 @@ const getResult = (income, fortune, property) => (
   </div>
 );
 
-const StartRecap = ({ income, fortune, property, noPlaceholder }) => (
+const StartRecap = props => (
   <article className="validator">
-    {isReady(income, fortune, property)
-      ? getResult(income, fortune, property)
-      : !noPlaceholder &&
+    {isReady(props)
+      ? getResult(props)
+      : !props.noPlaceholder &&
           <h4 className="secondary text-center">
             Amusez-vous avec les valeurs
           </h4>}
@@ -181,6 +178,8 @@ StartRecap.propTypes = {
   fortune: PropTypes.number,
   property: PropTypes.number,
   noPlaceholder: PropTypes.bool,
+  borrow: PropTypes.number,
+  ratio: PropTypes.number,
 };
 
 export default StartRecap;

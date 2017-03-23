@@ -12,7 +12,7 @@ import { saveStartForm } from '/imports/js/helpers/startFunctions';
 
 const handleClick = ({ formState, setFormState, currentUser, history }) => {
   if (currentUser) {
-    saveStartForm(formState);
+    saveStartForm(formState, history);
     return;
   }
   setFormState('done', true, () => {

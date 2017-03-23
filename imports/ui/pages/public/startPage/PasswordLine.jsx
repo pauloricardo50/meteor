@@ -71,7 +71,7 @@ export default class PasswordLine extends Component {
   }
 
   handleSuccess() {
-    saveStartForm(this.props.formState);
+    saveStartForm(this.props.formState, this.props.history);
   }
 
   render() {

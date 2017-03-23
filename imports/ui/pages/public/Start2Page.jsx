@@ -166,11 +166,13 @@ export default class Start2Page extends Component {
 
   getMonthlyReal() {
     const s = this.state;
+    const project = 1.05 * s.propertyValue +
+      (s.propertyWorkExists ? s.propertyWork : 0);
     const propAndWork = s.propertyValue +
       (s.propertyWorkExists ? s.propertyWork : 0);
     return Math.max(
       (propAndWork * constants.maintenanceReal +
-        (propAndWork - (s.fortuneUsed || 0)) * constants.loanCostReal()) /
+        (project - (s.fortuneUsed || 0)) * constants.loanCostReal()) /
         12,
       0,
     );
@@ -247,7 +249,11 @@ export default class Start2Page extends Component {
           </div>}
         {this.isFinished() &&
           <Scroll.Element name={'final'}>
-            <StartResult {...this.props} {...props} setFormState={this.setFormState} />
+            <StartResult
+              {...this.props}
+              {...props}
+              setFormState={this.setFormState}
+            />
           </Scroll.Element>}
 
         {this.state.done &&

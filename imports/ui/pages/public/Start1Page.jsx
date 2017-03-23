@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { _ } from 'lodash';
 import { Link } from 'react-router-dom';
 import queryString from 'query-string';
+import classnames from 'classnames';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -18,23 +19,65 @@ import StartRecap from './startPage/StartRecap.jsx';
 import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
 import Accordion from '/imports/ui/components/general/Accordion.jsx';
 
-const array = [
-  {
-    label: 'Revenus annuels bruts',
-    name: 'income',
-    sliderIncrement: 500000,
-  },
-  {
-    label: 'Fonds propres',
-    name: 'fortune',
-    sliderIncrement: 500000,
-  },
-  {
-    label: "Prix d'achat",
-    name: 'property',
-    sliderIncrement: 2000000,
-  },
-];
+const getArray = (income, fortune, property, borrow, ratio) => {
+  const isReady = !!(income && fortune && property);
+  const incomeIcon = classnames({
+    fa: true,
+    'fa-check': ratio <= 1 / 3 + 0.001,
+    'fa-exclamation': ratio <= 0.38 && ratio > 1 / 3 + 0.001,
+    'fa-times': ratio > 0.38,
+  });
+  const fortuneIcon = classnames({
+    fa: true,
+    'fa-check': borrow <= 0.8 + 0.001,
+    'fa-exclamation': borrow <= 0.9 && borrow > 0.8 + 0.001,
+    'fa-times': borrow > 0.9,
+  });
+  const isFalse = borrow > 0.9 || ratio > 0.38;
+  const propertyIcon = classnames({
+    fa: true,
+    'fa-check': borrow <= 0.8 + 0.001 && ratio <= 1 / 3 + 0.001,
+    'fa-exclamation': !isFalse &&
+      ((borrow <= 0.9 && borrow > 0.8 + 0.001) ||
+        (ratio <= 0.38 && ratio > 1 / 3 + 0.001)),
+    'fa-times': isFalse,
+  });
+  return [
+    {
+      label: (
+        <span>
+          Revenus annuels bruts
+          {' '}
+          {isReady && <span className={incomeIcon} />}
+        </span>
+      ),
+      name: 'income',
+      sliderIncrement: 500000,
+    },
+    {
+      label: (
+        <span>
+          Fonds Propres
+          {' '}
+          {isReady && <span className={fortuneIcon} />}
+        </span>
+      ),
+      name: 'fortune',
+      sliderIncrement: 500000,
+    },
+    {
+      label: (
+        <span>
+          Prix d'Achat
+          {' '}
+          {isReady && <span className={propertyIcon} />}
+        </span>
+      ),
+      name: 'property',
+      sliderIncrement: 2000000,
+    },
+  ];
+};
 
 export default class Start1Page extends Component {
   constructor(props) {
@@ -220,11 +263,23 @@ export default class Start1Page extends Component {
     return `/start2/${this.type}?${queryString.stringify(queryparams)}`;
   }
 
+  getMonthly(income, fortune, property) {
+    return Math.max(
+      (property * constants.maintenance +
+        (property - fortune) * constants.loanCost()) /
+        12,
+      0,
+    );
+  }
+
   render() {
     const property = this.state.property.value;
     const income = this.state.income.value;
     const fortune = this.state.fortune.value;
     const loan = property * 1.05 - fortune;
+    const borrow = Math.max((property * 1.05 - fortune) / property, 0);
+    const ratio = this.getMonthly(income, fortune - property * 0.05, property) /
+      (income / 12);
 
     return (
       <section className="oscar">
@@ -236,11 +291,9 @@ export default class Start1Page extends Component {
           </h1>
           <hr />
 
-          <RaisedButton label="Recommencer" onTouchTap={this.handleReset} />
-
           <div className="content">
             <div className="sliders">
-              {array.map(line => (
+              {getArray(income, fortune, property, borrow, ratio).map(line => (
                 <StartLine
                   key={line.name}
                   {...this.state[line.name]}
@@ -254,6 +307,11 @@ export default class Start1Page extends Component {
                     )}
                 />
               ))}
+              <RaisedButton
+                label="Recommencer"
+                onTouchTap={this.handleReset}
+                className="reset-button"
+              />
             </div>
             <div className="separator" />
             <div className="recap">
@@ -261,6 +319,8 @@ export default class Start1Page extends Component {
                 income={income}
                 fortune={fortune}
                 property={property}
+                ratio={ratio}
+                borrow={borrow}
               />
             </div>
           </div>
