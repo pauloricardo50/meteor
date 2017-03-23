@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 import classNames from 'classnames';
 
@@ -20,48 +20,56 @@ const errorStyle = {
   bottom: -8,
 };
 
-let input;
-
-const Start1Text = props => (
-  <div className="text-div">
-    <TextField
-      id={props.name}
-      name={props.name}
-      onChange={e => props.setStateValue(props.name, e.target.value)}
-      errorStyle={props.minValue <= props.value ? defaultStyle : errorStyle}
-      className="input"
-      hintText="CHF"
-      ref={c => {
-        input = c;
-      }}
-      type="text"
-    >
-      <MaskedInput
-        type="text"
-        value={(props.auto ? Math.round(props.motionValue) : props.value) || ''}
-        mask={swissFrancMask}
-        guide
-        pattern="[0-9]*"
-      />
-    </TextField>
-    <span
-      className={classNames({
-        reset: true,
-        off: props.value === 0,
-      })}
-    >
-      <CloseIcon
-        onTouchTap={() => {
-          props.setStateValue(props.name, 0, true);
-          if (input) {
-            input.input.inputElement.focus();
+// Use class to allow refs and focus to work
+export default class Start1Text extends Component {
+  render() {
+    return (
+      <div className="text-div">
+        <TextField
+          id={this.props.name}
+          name={this.props.name}
+          onChange={e =>
+            this.props.setStateValue(this.props.name, e.target.value)}
+          errorStyle={
+            this.props.minValue <= this.props.value ? defaultStyle : errorStyle
           }
-        }}
-        disabled={props.value === 0}
-      />
-    </span>
-  </div>
-);
+          className="input"
+          hintText="CHF"
+          ref={c => {
+            this.input = c;
+          }}
+          type="text"
+        >
+          <MaskedInput
+            type="text"
+            value={
+              (this.props.auto
+                ? Math.round(this.props.motionValue)
+                : this.props.value) || ''
+            }
+            mask={swissFrancMask}
+            guide
+            pattern="[0-9]*"
+          />
+        </TextField>
+        <span
+          className={classNames({
+            reset: true,
+            off: this.props.value === 0,
+          })}
+        >
+          <CloseIcon
+            onTouchTap={() => {
+              this.props.setStateValue(this.props.name, 0, true);
+              this.input.input.inputElement.focus();
+            }}
+            disabled={this.props.value === 0}
+          />
+        </span>
+      </div>
+    );
+  }
+}
 
 Start1Text.propTypes = {
   value: PropTypes.number.isRequired,
@@ -71,5 +79,3 @@ Start1Text.propTypes = {
   minValue: PropTypes.number.isRequired,
   auto: PropTypes.bool.isRequired,
 };
-
-export default Start1Text;

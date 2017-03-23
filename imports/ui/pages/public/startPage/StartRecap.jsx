@@ -6,14 +6,6 @@ import constants from '/imports/js/config/constants';
 const isReady = ({ income, fortune, property }) =>
   property && income && fortune;
 
-const getMonthly = (income, fortune, property) =>
-  Math.max(
-    (property * constants.maintenance +
-      (property - fortune) * constants.loanCost()) /
-      12,
-    0,
-  );
-
 const getMonthlyReal = (income, fortune, property) =>
   Math.max(
     (property * constants.maintenanceReal +
