@@ -69,10 +69,10 @@ export const BorrowerSchema = new SimpleSchema({
     optional: true,
   },
   age: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 18,
-    max: 99,
+    max: 120,
   },
   address1: {
     type: String,
@@ -89,6 +89,10 @@ export const BorrowerSchema = new SimpleSchema({
     max: 9999,
   },
   city: {
+    type: String,
+    optional: true,
+  },
+  sameAddress: {
     type: String,
     optional: true,
   },
@@ -118,7 +122,7 @@ export const BorrowerSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  grossIncome: {
+  salary: {
     type: Number,
     optional: true,
     min: 0,
@@ -128,22 +132,71 @@ export const BorrowerSchema = new SimpleSchema({
     type: Boolean,
     defaultValue: false,
   },
-  bonus: {
+  'bonus.2014': {
     type: Number,
+    min: 0,
+    max: 100000000,
     optional: true,
+  },
+  'bonus.2015': {
+    type: Number,
+    min: 0,
+    max: 100000000,
+    optional: true,
+  },
+  'bonus.2016': {
+    type: Number,
+    min: 0,
+    max: 100000000,
+    optional: true,
+  },
+  'bonus.2017': {
+    type: Number,
+    min: 0,
+    max: 100000000,
+    optional: true,
+  },
+  otherIncome: {
+    type: Array,
+    optional: true,
+  },
+  'otherIncome.$.value': {
+    type: Number,
     min: 0,
     max: 100000000,
   },
-  // otherIncome: {
-  //   type: Array,
-  //   optional: true,
-  // },
-  // 'otherIncome.$.value': {
-  //   type: Number,
-  //   min: 0,
-  //   max: 100000000,
-  // },
-  // 'otherIncome.$.description': String,
+  'otherIncome.$.description': String,
+  expenses: {
+    type: Array,
+    optional: true,
+  },
+  'expenses.$.value': {
+    type: Number,
+    min: 0,
+    max: 100000000,
+  },
+  'expenses.$.description': String,
+  bankFortune: {
+    type: Number,
+    min: 0,
+    max: 100000000,
+    optional: true,
+  },
+  realEstate: {
+    type: Array,
+    optional: true,
+  },
+  'realEstate.$.value': {
+    type: Number,
+    min: 0,
+    max: 100000000,
+  },
+  'realEstate.$.loan': {
+    type: Number,
+    min: 0,
+    max: 100000000,
+  },
+  'realEstate.$.description': String,
   personalBank: {
     type: String,
     optional: true,
@@ -157,65 +210,13 @@ export const BorrowerSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  currentRentExists: {
-    type: Boolean,
-    defaultValue: false,
-    uniforms: () => null,
-  },
-  currentRent: {
-    // Monthly
+  insuranceSecondPillar: {
     type: Number,
     optional: true,
     min: 0,
     max: 100000000,
   },
-  realEstateFortune: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  cashAndSecurities: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  existingDebt: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  // otherFortune: {
-  //   type: Array,
-  //   optional: true,
-  // },
-  // 'otherFortune.$.amount': {
-  //   type: Number,
-  //   min: 0,
-  //   max: 100000000,
-  // },
-  // 'otherFortune.$.description': String,
-  insuranceLpp: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  insurance3A: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  insurance3B: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  insurancePureRisk: {
+  insuranceThirdPillar: {
     type: Number,
     optional: true,
     min: 0,
@@ -226,7 +227,6 @@ export const BorrowerSchema = new SimpleSchema({
     defaultValue: {},
     uniforms: () => null,
   },
-
   // business logic and admin
   logic: {
     type: Object,

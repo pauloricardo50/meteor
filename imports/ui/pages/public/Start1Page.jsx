@@ -11,7 +11,7 @@ import {
   changeProperty,
   changeFortune,
   changeIncome,
-} from '/imports/js/helpers/start-functions';
+} from '/imports/js/helpers/startFunctions';
 import constants from '/imports/js/config/constants';
 import StartLine from './startPage/StartLine.jsx';
 import StartRecap from './startPage/StartRecap.jsx';

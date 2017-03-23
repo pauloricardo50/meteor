@@ -18,14 +18,7 @@ export const insertRequest = new ValidatedMethod({
       );
     }
 
-    // Set all existing requests to inactive
-    userRequests.forEach(request => {
-      LoanRequests.update(request._id, {
-        $set: { active: false },
-      });
-    });
-
-    LoanRequests.insert(object);
+    return LoanRequests.insert(object);
   },
 });
 
@@ -36,7 +29,7 @@ export const updateRequest = new ValidatedMethod({
     check(id, String);
   },
   run({ object, id }) {
-    LoanRequests.update(id, {
+    return LoanRequests.update(id, {
       $set: object,
     });
   },

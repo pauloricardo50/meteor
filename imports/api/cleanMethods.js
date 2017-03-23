@@ -23,9 +23,10 @@ const methods = {
 };
 
 // The callback passed to all methods, shows a Bert error when it happens
-const methodCallback = (error, result, callback, showSuccess) => {
+const methodCallback = (error, result, callback, bertObject) => {
+  let callbackResult;
   if (typeof callback === 'function') {
-    callback(error, result);
+    callbackResult = callback(error, result);
   }
 
   if (error) {
@@ -36,21 +37,23 @@ const methodCallback = (error, result, callback, showSuccess) => {
       type: 'danger',
       style: 'fixed-top',
     });
-  } else if (showSuccess) {
+  } else if (bertObject) {
     Bert.alert({
-      title: 'Action réussie',
-      message: '<h3 class="bert">Bien joué!</h3>',
+      title: bertObject.title || "C'est réussi",
+      message: bertObject.message || '<h3 class="bert">Bien joué!</h3>',
       type: 'success',
-      style: 'fixed-top',
+      style: 'growl-top-right',
     });
   }
+
+  return callbackResult || result;
 };
 
 // A wrapper method that displays an error if it occurs
-const cleanMethod = (name, object, id, callback, showSuccess) => {
+const cleanMethod = (name, object, id, callback, bertObject) => {
   if (methods[name]) {
-    methods[name].call({ object, id }, (e, r) =>
-      methodCallback(e, r, callback, showSuccess));
+    return methods[name].call({ object, id }, (e, r) =>
+      methodCallback(e, r, callback, bertObject));
   } else {
     throw new Meteor.Error('Not a valid clean method');
   }

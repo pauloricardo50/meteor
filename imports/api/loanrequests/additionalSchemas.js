@@ -7,14 +7,8 @@ export const GeneralSchema = new SimpleSchema({
   purchaseType: {
     // acquisition, refinancing, construction
     type: String,
-    defaultValue: '',
+    defaultValue: 'acquisition',
   },
-  usageType: {
-    // primary, secondary or investment
-    type: String,
-    defaultValue: 'primary',
-  },
-  genderRequired: Boolean,
   fortuneUsed: {
     type: Number,
     min: 0,
@@ -24,19 +18,13 @@ export const GeneralSchema = new SimpleSchema({
     type: Number,
     min: 0,
     max: 100000000,
+    optional: true,
   },
-  incomeUsed: {
-    type: Number,
-    min: 0,
-    max: 100000000,
-  },
-  maxCash: {
-    type: Boolean,
-    defaultValue: true,
-  },
-  maxDebt: {
-    type: Boolean,
-    defaultValue: true,
+  oldestAge: {
+    type: SimpleSchema.Integer,
+    optional: true,
+    min: 18,
+    max: 120,
   },
   partnersToAvoidExists: {
     type: Boolean,
@@ -93,10 +81,6 @@ export const GeneralSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  borrowersHaveSameAddress: {
-    type: Boolean,
-    defaultValue: true,
-  },
   files: {
     type: GeneralFilesSchema,
     defaultValue: {},
@@ -111,6 +95,25 @@ export const PropertySchema = new SimpleSchema({
     min: 0,
     max: 100000000,
   },
+  propertyWork: {
+    // Additional work on property
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100000000,
+  },
+  investmentRent: {
+    // Rent of property if investment
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100000000,
+  },
+  usageType: {
+    // primary, secondary or investment
+    type: String,
+    defaultValue: 'primary',
+  },
   style: {
     // villa, flat,
     type: String,
@@ -119,6 +122,7 @@ export const PropertySchema = new SimpleSchema({
   },
   address1: {
     type: String,
+    optional: true,
   },
   address2: {
     type: String,
@@ -221,10 +225,6 @@ export const LogicSchema = new SimpleSchema({
     defaultValue: 0,
     min: 0,
     max: 5,
-  },
-  uploadTaxesLater: {
-    type: Boolean,
-    defaultValue: true,
   },
   auctionStarted: {
     type: Boolean,

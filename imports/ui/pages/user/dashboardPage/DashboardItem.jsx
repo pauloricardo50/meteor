@@ -18,7 +18,7 @@ const DashboardItem = props => {
   return (
     <article className={classes}>
       <div className="top">
-        <h2>{props.loanRequest.property.address1}</h2>
+        <h2>{props.loanRequest.property.address1 || 'Votre projet'}</h2>
         {props.multiple &&
           <div className="right">
             <IconButton onClick={props.handleClick}>
@@ -35,10 +35,16 @@ const DashboardItem = props => {
         <div className="active-div">
           <div className="charts">
             <div className="col-xs-12 col-md-6">
-              <ProjectPieChart loanRequest={props.loanRequest} />
+              <ProjectPieChart
+                loanRequest={props.loanRequest}
+                borrowers={props.borrowers}
+              />
             </div>
             <div className="col-xs-12 col-md-6">
-              <ExpensesChart loanRequest={props.loanRequest} />
+              <ExpensesChart
+                loanRequest={props.loanRequest}
+                borrowers={props.borrowers}
+              />
             </div>
           </div>
         </div>}
@@ -54,6 +60,7 @@ DashboardItem.defaultProps = {
 
 DashboardItem.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   multiple: PropTypes.bool,
   active: PropTypes.bool,
   handleClick: PropTypes.func.isRequired,

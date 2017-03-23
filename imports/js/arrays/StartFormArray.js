@@ -123,7 +123,7 @@ const getAcquisitionArray = (state, props) => [
   },
   {
     condition: state.borrowerCount === 1,
-    id: 'birthYear',
+    id: 'age',
     type: 'textInput',
     text1: "J'ai",
     text2: 'ans.',

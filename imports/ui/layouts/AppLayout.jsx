@@ -68,7 +68,8 @@ const AppLayout = props => {
   }
   return (
     <div>
-      <SideNav {...props} />
+      {props.location.pathname.substring(5, 8) !== 'new' &&
+        <SideNav {...props} />}
 
       <main className={classes}>
         {/* <RouteTransition pathname={props.history.location.pathname}> */}

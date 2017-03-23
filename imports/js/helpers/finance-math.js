@@ -175,16 +175,16 @@ const isLoanValid = (
 };
 
 // get yearly amortization for a loan request
-export const getAmortization = loanRequest => {
+export const getAmortization = (loanRequest, borrowers) => {
   const r = loanRequest;
   const loan = r.property.value -
     r.general.fortuneUsed -
     r.general.insuranceFortuneUsed;
   const yearsToRetirement = getYearsToRetirement(
-    Number(r.borrowers[0].age),
-    r.borrowers[1] && r.borrowers[1].age ? Number(r.borrowers[1].age) : 0,
-    r.borrowers[0].gender,
-    r.borrowers[1] && r.borrowers[1].gender,
+    Number(borrowers[0].age),
+    borrowers[1] && borrowers[1].age ? Number(borrowers[1].age) : 0,
+    borrowers[0].gender,
+    borrowers[1] && borrowers[1].gender,
   );
 
   // fallback if the loan is smaller than 0

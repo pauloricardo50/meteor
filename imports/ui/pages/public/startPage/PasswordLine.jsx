@@ -5,6 +5,8 @@ import { Accounts } from 'meteor/accounts-base';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
+import { saveStartForm } from '/imports/js/helpers/startFunctions';
+
 const styles = {
   textField: {
     fontSize: 'inherit',
@@ -16,7 +18,6 @@ const styles = {
 };
 
 const getUserObject = props => {
-  console.log(props.formState);
   return {
     email: props.email,
     password: props.password,
@@ -49,7 +50,9 @@ export default class PasswordLine extends Component {
         if (error) {
           this.setState(error.message);
         } else {
-          this.handleSuccess();
+          // this.handleSuccess();
+          // TODO
+          console.log('handle login!');
         }
       },
     );
@@ -68,33 +71,7 @@ export default class PasswordLine extends Component {
   }
 
   handleSuccess() {
-    console.log('account was created!');
-    // If the form is good, prepare path and route to it
-    //if (this.props.isValid && this.props.isFinished) {
-    if (true) {
-      // const p = this.props;
-      // const pathDef = '/new';
-      // const params = {};
-      // const queryParams = {
-      //   twoBuyers: p.twoBuyers,
-      //   age1: p.age1,
-      //   age2: p.age2,
-      //   genderRequired: p.genderRequired,
-      //   gender1: p.gender1,
-      //   gender2: p.gender2,
-      //   purchaseType: p.purchaseType,
-      //   propertyType: p.propertyType,
-      //   salary: p.salary,
-      //   bonusExists: p.bonusExists,
-      //   bonus: p.bonus,
-      //   propertyKnown: p.propertyKnown,
-      //   propertyValue: p.propertyValue,
-      //   maxCash: p.maxCash,
-      //   maxDebt: p.maxDebt,
-      //   fortune: p.fortune,
-      //   insuranceFortune: p.insuranceFortune,
-      // };
-    }
+    saveStartForm(this.props.formState);
   }
 
   render() {
@@ -140,6 +117,7 @@ export default class PasswordLine extends Component {
 }
 
 PasswordLine.propTypes = {
+  formState: PropTypes.objectOf(PropTypes.any).isRequired,
   setParentState: PropTypes.func.isRequired,
   email: PropTypes.string,
   password: PropTypes.string,

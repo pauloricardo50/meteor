@@ -26,6 +26,7 @@ import InformationPage from '/imports/ui/pages/user/InformationPage.jsx';
 import ProfilePage from '/imports/ui/pages/user/ProfilePage.jsx';
 import { BorrowerPage } from '/imports/ui/containers/UserContainers';
 import ContactPage from '/imports/ui/pages/user/ContactPage.jsx';
+import NewPage from '/imports/ui/pages/user/NewPage.jsx';
 
 // Admin pages
 import AdminHomePage from '/imports/ui/pages/admin/AdminHomePage.jsx';
@@ -66,6 +67,11 @@ const UserRoutes = props => (
           exact
           path="/app"
           render={() => <DashBoardPage {...layoutProps} />}
+        />
+        <Route
+          exact
+          path="/app/new/:requestId"
+          render={routeProps => <NewPage {...layoutProps} {...routeProps} />}
         />
         <Route
           path="/app/me"

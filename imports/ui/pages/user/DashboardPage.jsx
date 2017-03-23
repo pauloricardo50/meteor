@@ -11,6 +11,9 @@ export default class DashboardPage extends Component {
     this.state = {
       active: 0,
     };
+
+    this.handleClick = this.handleClick.bind(this);
+    this.handleNew = this.handleNew.bind(this);
   }
 
   handleClick(i) {
@@ -18,6 +21,15 @@ export default class DashboardPage extends Component {
       this.setState({ active: -1 });
     } else {
       this.setState({ active: i });
+    }
+  }
+
+  handleNew() {
+    if (this.props.borrowers.length > 0) {
+      // TODO, add a new request page for logged in users
+      console.log('En développement');
+    } else {
+      this.props.history.push('/');
     }
   }
 
@@ -37,6 +49,7 @@ export default class DashboardPage extends Component {
         {sortedRequests.map((request, i) => (
           <DashboardItem
             loanRequest={request}
+            borrowers={this.props.borrowers}
             key={request._id}
             handleClick={() => this.handleClick(i)}
             active={this.state.active === i}
@@ -44,9 +57,11 @@ export default class DashboardPage extends Component {
           />
         ))}
 
-        <Link className="mask2 add-request" to="/start">
-          <h1>+</h1><h4>Nouvelle demande</h4>
-        </Link>
+        {/* <div className="text-center">
+          <a className="mask2 new-request" onClick={this.handleNew}>
+            <h1>+</h1><h4 className="bold">Nouvelle demande</h4>
+          </a>
+        </div> */}
       </section>
     );
   }
@@ -54,8 +69,10 @@ export default class DashboardPage extends Component {
 
 DashboardPage.defaultProps = {
   loanRequests: [],
+  borrowers: [],
 };
 
 DashboardPage.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.object),
+  borrowers: PropTypes.arrayOf(PropTypes.object),
 };

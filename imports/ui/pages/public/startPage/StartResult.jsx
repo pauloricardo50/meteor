@@ -8,11 +8,12 @@ import Start2Recap from './Start2Recap.jsx';
 
 import constants from '/imports/js/config/constants';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
+import { saveStartForm } from '/imports/js/helpers/startFunctions';
 
-const handleClick = ({ setFormState, currentUser, history }) => {
+const handleClick = ({ formState, setFormState, currentUser, history }) => {
   if (currentUser) {
-    // TODO insert request and borrowers into DB
-    history.push('/app');
+    saveStartForm(formState);
+    return;
   }
   setFormState('done', true, () => {
     const options = {

@@ -28,7 +28,10 @@ export default class ExpensesChart extends Component {
     if (this.props.loanRequest) {
       this.state = {
         interests: getInterests(this.props.loanRequest),
-        amortization: getAmortization(this.props.loanRequest),
+        amortization: getAmortization(
+          this.props.loanRequest,
+          this.props.borrowers,
+        ),
         maintenance: this.props.loanRequest.property.value * 0.01 / 12,
       };
     } else {
@@ -101,7 +104,7 @@ export default class ExpensesChart extends Component {
         this.setState(
           {
             interests: getInterests(n.loanRequest),
-            amortization: getAmortization(n.loanRequest),
+            amortization: getAmortization(n.loanRequest, n.borrowers),
             maintenance: n.loanRequest.property.value * 0.01 / 12,
           },
           () => update(),

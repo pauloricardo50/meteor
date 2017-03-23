@@ -54,10 +54,6 @@ const LoanRequestSchema = new SimpleSchema({
       }
     },
   },
-  active: {
-    type: Boolean,
-    defaultValue: false,
-  },
   general: {
     type: GeneralSchema,
     defaultValue: {},

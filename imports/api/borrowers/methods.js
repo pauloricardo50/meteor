@@ -8,7 +8,7 @@ export const insertBorrower = new ValidatedMethod({
   name: 'borrowers.insert',
   validate() {},
   run({ object }) {
-    Borrowers.insert(object);
+    return Borrowers.insert(object);
   },
 });
 
@@ -19,6 +19,6 @@ export const updateBorrower = new ValidatedMethod({
     check(id, String);
   },
   run({ object, id }) {
-    Borrowers.update(id, { $set: object });
+    return Borrowers.update(id, { $set: object });
   },
 });
