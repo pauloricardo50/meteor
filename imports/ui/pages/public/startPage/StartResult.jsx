@@ -47,7 +47,13 @@ const StartResult = props => {
         </div>
       </div>
 
-      <div className="button">
+      <div className="buttons">
+        <RaisedButton
+          label="Modifier"
+          onTouchTap={() =>
+            Scroll.animateScroll.scrollToTop({ smooth: true, duration: 1000 })}
+          style={{ marginRight: 8 }}
+        />
         <RaisedButton
           label="Continuer"
           onTouchTap={() => handleClick(props)}
@@ -61,10 +67,12 @@ const StartResult = props => {
 StartResult.defaultProps = {
   propAndWork: 0,
   fortuneUsed: 0,
+  project: 0,
 };
 
 StartResult.propTypes = {
   propAndWork: PropTypes.number,
+  project: PropTypes.number,
   fortuneUsed: PropTypes.number,
 };
 

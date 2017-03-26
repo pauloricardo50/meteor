@@ -8,7 +8,7 @@ export default class Accordion extends Component {
       isActive: this.props.isActive,
       styles: {
         height: 0,
-        overflow: 'visible',
+        overflow: 'hidden',
         transition: '500ms cubic-bezier(.02, .01, .47, 1)',
         opacity: 0,
       },
@@ -28,7 +28,7 @@ export default class Accordion extends Component {
       isActive: nextProps.isActive,
       styles: {
         height: nextProps.isActive ? `${this.content.clientHeight}px` : 0,
-        overflow: nextProps.isActive ? 'none' : 'unset',
+        overflow: nextProps.isActive ? 'none' : 'hidden',
         transition: '500ms cubic-bezier(.02, .01, .47, 1)',
         opacity: nextProps.isActive ? 1 : 0,
       },
