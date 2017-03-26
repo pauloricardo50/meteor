@@ -459,11 +459,13 @@ const getFinalArray = (state, props) => [
   {
     condition: state.type === 'acquisition',
     id: 'fortuneUsed',
-    type: 'textInput',
+    type: 'sliderInput',
     // text1: `Vous avez CHF ${toMoney(props.fortune + props.insuranceFortune)} de fonds propres au total, combien voulez-vous allouer à ce projet? Vous devez mettre au minimum ${state.propertyWorkExists ? `les frais de notaire ainsi que ${state.usageType === 'secondary' ? 30 : 20}% du prix d'achat + les travaux` : `${state.usageType === 'secondary' ? 35 : 25}% du projet`}, soit CHF ${toMoney(props.minFortune)}.`,
     text1: `Vous avez CHF ${toMoney(props.fortune + props.insuranceFortune)} de fonds propres au total, combien voulez-vous allouer à ce projet? Au minimum CHF ${toMoney(props.minFortune)}.`,
     question: true,
     money: true,
+    sliderMin: props.minFortune,
+    sliderMax: props.fortune + props.insuranceFortune,
   },
   {
     condition: (props.income &&

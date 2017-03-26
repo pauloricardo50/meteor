@@ -7,7 +7,7 @@ import classnames from 'classnames';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { toNumber } from '/imports/js/helpers/conversionFunctions';
+import { toNumber, toMoney } from '/imports/js/helpers/conversionFunctions';
 import {
   changeProperty,
   changeFortune,
@@ -19,7 +19,7 @@ import StartRecap from './startPage/StartRecap.jsx';
 import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
 import Accordion from '/imports/ui/components/general/Accordion.jsx';
 
-const getArray = (income, fortune, property, borrow, ratio) => {
+const getArray = (income, fortune, property, borrow, ratio, propertyAuto) => {
   const isReady = !!(income && fortune && property);
   const incomeIcon = classnames({
     fa: true,
@@ -68,7 +68,7 @@ const getArray = (income, fortune, property, borrow, ratio) => {
     {
       label: (
         <span>
-          Prix d'Achat
+          {propertyAuto ? "Prix d'Achat Maximal" : "Prix d'Achat"}
           {' '}
           {isReady && <span className={propertyIcon} />}
         </span>
@@ -293,7 +293,14 @@ export default class Start1Page extends Component {
 
           <div className="content">
             <div className="sliders">
-              {getArray(income, fortune, property, borrow, ratio).map(line => (
+              {getArray(
+                income,
+                fortune,
+                property,
+                borrow,
+                ratio,
+                this.state.property.auto,
+              ).map(line => (
                 <StartLine
                   key={line.name}
                   {...this.state[line.name]}
@@ -325,10 +332,17 @@ export default class Start1Page extends Component {
             </div>
           </div>
 
-          <div className="chart">
+          <div className="chart text-center">
             <Accordion
               isActive={property && fortune && income && fortune < property}
             >
+              <h3>
+                Votre emprunt:
+                {' '}
+                <span className="active">
+                  CHF {toMoney(Math.round(loan / 1000) * 1000)}
+                </span>
+              </h3>
               <ExpensesChart
                 interests={loan * constants.interestsReal / 12 || undefined}
                 amortizing={loan * constants.amortizing / 12 || 0}

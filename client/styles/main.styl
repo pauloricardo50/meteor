@@ -366,3 +366,8 @@ input[type=number]
 svg:not(:root) {
   overflow: visible !important;
 }
+
+
+// Fix to remove firefox's annoying red box around invalid inputs
+:invalid
+  box-shadow: none;

@@ -8,11 +8,19 @@ export default class Accordion extends Component {
       isActive: this.props.isActive,
       styles: {
         height: 0,
-        overflow: 'hidden',
-        transition: '500ms ease-in-out',
+        overflow: 'visible',
+        transition: '500ms cubic-bezier(.02, .01, .47, 1)',
         opacity: 0,
       },
+      windowHeight: window.innerHeight,
+      windowWidth: window.innerWidth,
     };
+
+    this.handleResize = this.handleResize.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -20,18 +28,34 @@ export default class Accordion extends Component {
       isActive: nextProps.isActive,
       styles: {
         height: nextProps.isActive ? `${this.content.clientHeight}px` : 0,
-        overflow: nextProps.isActive ? 'none' : 'hidden',
-        transition: '500ms ease-in-out',
+        overflow: nextProps.isActive ? 'none' : 'unset',
+        transition: '500ms cubic-bezier(.02, .01, .47, 1)',
         opacity: nextProps.isActive ? 1 : 0,
       },
     });
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  }
+
+  handleResize() {
+    this.setState({
+      windowHeight: window.innerHeight,
+      windowWidth: window.innerWidth,
+    });
+  }
+
   render() {
+    // Deep copy state
+    let adjustedStyles = JSON.parse(JSON.stringify(this.state.styles));
+    if (this.state.styles.height !== 0) {
+      adjustedStyles.height = `${this.content.clientHeight}px`;
+    }
     return (
       <div
         className="Accordion-container"
-        style={this.state.styles}
+        style={adjustedStyles}
         ref={c => {
           this.container = c;
         }}
@@ -51,5 +75,5 @@ export default class Accordion extends Component {
 
 Accordion.propTypes = {
   isActive: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]).isRequired,
-  children: PropTypes.objectOf(PropTypes.any).isRequired,
+  children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
 };

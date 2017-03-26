@@ -136,6 +136,8 @@ export default class AutoStart extends Component {
             return <MultipleInput {...inputProps} />;
           case 'selectInput':
             return <Input {...inputProps} select />;
+          case 'sliderInput':
+            return <Input {...inputProps} slider />;
           case 'arrayInput':
             return <ArrayInput {...inputProps} />;
           default:

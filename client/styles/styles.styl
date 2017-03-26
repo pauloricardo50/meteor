@@ -62,177 +62,172 @@ $side-nav = 250px
 $side-nav-large = 250px
 $bottom-nav-height = 80px
 
-
-// Progress Bar
-.header-progressbar
-  height 66px
-  width 100%
-  background-color: white;
-  box-shadow: 0px 2px 40px 0px rgba(0,0,0,0.08);
-  position relative;
-  top 0
-  left 0
-  border none
-  z-index: z.header;
-  +above($med)
-    position: fixed;
-    margin-left: $side-nav
-    // adjust the width and remove the side nav width, Replace with width! can't use variable
-    /* Firefox */
-    width: -moz-calc(100% - 250px);
-    /* WebKit */
-    width: -webkit-calc(100% - 250px);
-    /* Opera */
-    width: -o-calc(100% - 250px);
-    /* Standard */
-    width: calc(100% - 250px);
-  +above($large)
-    // margin-left $side-nav-large
+$bezier = cubic-bezier(.02, .01, .47, 1);
 
 
-.header-progress-menu
-  position: absolute;
-  top: 9px
-  right: 9px
+// // Progress Bar
+// .header-progressbar
+//   height 66px
+//   width 100%
+//   background-color: white;
+//   box-shadow: 0px 2px 40px 0px rgba(0,0,0,0.08);
+//   position relative;
+//   top 0
+//   left 0
+//   border none
+//   z-index: z.header;
+//   +above($med)
+//     position: fixed;
+//     margin-left: $side-nav
+//     // adjust the width and remove the side nav width, Replace with width! can't use variable
+//     width: calc(100% - 250px);
+//   +above($large)
+//     // margin-left $side-nav-large
 
 
-.progressbar
-  position relative
-  width 100%
-  height: 100%;
-  z-index: z.header;
-  color: white
-  margin auto
-  padding 0
-  +above($med)
-    width: 75%
-    padding-bottom 0
-  li
-    list-style-type none
-    position relative
-    float left
-    width 16.666% // MODIFY THIS To add more steps
-    padding 19px 0;
-    font-size 12pt;
-    cursor: default;
-    &:hover
-      &.active, &.done
-        -webkit-box-shadow: inset 0px -2px 0px alpha(brand-primary, 0.3);
-        -moz-box-shadow: inset 0px -2px 0px alpha(brand-primary, 0.3);
-        box-shadow: inset 0px -2px 0px alpha(brand-primary, 0.3);
-    &:before
-      color white
-      width 24px
-      height 24px
-      line-height 24px
-      display block
-      text-align center
-      margin auto auto auto auto
-      border-radius 50%
-      border: 2px solid #d8d8d8;
-      background-color white
-      color: #d8d8d8;
-      box-sizing: content-box;
-    &#progressStep1:before
-      content "1"
-    &#progressStep2:before
-      content "2"
-    &#progressStep3:before
-      content "3"
-    &#progressStep4:before
-      content "4"
-    &#progressStep5:before
-      content "5"
-    &#progressStep6:before
-      border: none;
-      font-family FontAwesome
-      content "\f015"
-      background-color: white
-      color: #d8d8d8
-      font-size 16pt
-    &:after
-      content ''
-      position absolute
-      width 100%
-      height 3px
-      background #d8d8d8
-      top 31px // 15px + padding
-      z-index -1
-      left -50%
-    &:first-child:after
-      content none
-    &.active
-      cursor: pointer;
-      &:before
-        color: brand-primary;
-        border-color: brand-primary;
-    &.done
-      cursor: pointer;
-      &:before
-        font-weight: normal;
-        border-color: brand-success;
-        color: brand-success;
-        font-family FontAwesome
-        content "\f00c" !important
-    &.current
-      -webkit-box-shadow: inset 0px -2px 0px brand-primary;
-      -moz-box-shadow: inset 0px -2px 0px brand-primary;
-      box-shadow: inset 0px -2px 0px brand-primary;
+// .header-progress-menu
+//   position: absolute;
+//   top: 9px
+//   right: 9px
 
 
-// Sets the color of the bar between the steps,
-// twice the d8d8d8 color so that the gradient ends at 2/3rds of the length
-.progressbar li.active + li:after
-  background blue /* For browsers that do not support gradients */
-  background -webkit-linear-gradient(left, blue , #D8D8D8, #D8D8D8) /* For Safari 5.1 to 6.0 */
-  background -o-linear-gradient(right, blue, #D8D8D8, #D8D8D8) /* For Opera 11.1 to 12.0 */
-  background -moz-linear-gradient(right, blue, #D8D8D8, #D8D8D8) /* For Firefox 3.6 to 15 */
-  background linear-gradient(to right, blue , #D8D8D8, #D8D8D8) /* Standard syntax */
+// .progressbar
+//   position relative
+//   width 100%
+//   height: 100%;
+//   z-index: z.header;
+//   color: white
+//   margin auto
+//   padding 0
+//   +above($med)
+//     width: 75%
+//     padding-bottom 0
+//   li
+//     list-style-type none
+//     position relative
+//     float left
+//     width 16.666% // MODIFY THIS To add more steps
+//     padding 19px 0;
+//     font-size 12pt;
+//     cursor: default;
+//     &:hover
+//       &.active, &.done
+//         -webkit-box-shadow: inset 0px -2px 0px alpha(brand-primary, 0.3);
+//         -moz-box-shadow: inset 0px -2px 0px alpha(brand-primary, 0.3);
+//         box-shadow: inset 0px -2px 0px alpha(brand-primary, 0.3);
+//     &:before
+//       color white
+//       width 24px
+//       height 24px
+//       line-height 24px
+//       display block
+//       text-align center
+//       margin auto auto auto auto
+//       border-radius 50%
+//       border: 2px solid #d8d8d8;
+//       background-color white
+//       color: #d8d8d8;
+//       box-sizing: content-box;
+//     &#progressStep1:before
+//       content "1"
+//     &#progressStep2:before
+//       content "2"
+//     &#progressStep3:before
+//       content "3"
+//     &#progressStep4:before
+//       content "4"
+//     &#progressStep5:before
+//       content "5"
+//     &#progressStep6:before
+//       border: none;
+//       font-family FontAwesome
+//       content "\f015"
+//       background-color: white
+//       color: #d8d8d8
+//       font-size 16pt
+//     &:after
+//       content ''
+//       position absolute
+//       width 100%
+//       height 3px
+//       background #d8d8d8
+//       top 31px // 15px + padding
+//       z-index -1
+//       left -50%
+//     &:first-child:after
+//       content none
+//     &.active
+//       cursor: pointer;
+//       &:before
+//         color: brand-primary;
+//         border-color: brand-primary;
+//     &.done
+//       cursor: pointer;
+//       &:before
+//         font-weight: normal;
+//         border-color: brand-success;
+//         color: brand-success;
+//         font-family FontAwesome
+//         content "\f00c" !important
+//     &.current
+//       -webkit-box-shadow: inset 0px -2px 0px brand-primary;
+//       -moz-box-shadow: inset 0px -2px 0px brand-primary;
+//       box-shadow: inset 0px -2px 0px brand-primary;
+//
+//
+// // Sets the color of the bar between the steps,
+// // twice the d8d8d8 color so that the gradient ends at 2/3rds of the length
+// .progressbar li.active + li:after
+//   background blue /* For browsers that do not support gradients */
+//   background -webkit-linear-gradient(left, blue , #D8D8D8, #D8D8D8) /* For Safari 5.1 to 6.0 */
+//   background -o-linear-gradient(right, blue, #D8D8D8, #D8D8D8) /* For Opera 11.1 to 12.0 */
+//   background -moz-linear-gradient(right, blue, #D8D8D8, #D8D8D8) /* For Firefox 3.6 to 15 */
+//   background linear-gradient(to right, blue , #D8D8D8, #D8D8D8) /* Standard syntax */
+//
+// .progressbar li.done + li:after
+//   background-color green
+//
+//
+// svg
+//   z-index -1
 
-.progressbar li.done + li:after
-  background-color green
-
-
-svg
-  z-index -1
-
-.todo-card
-  position relative
-  min-height 200px
-  margin-bottom 40px
-  padding: 20px
-  .fa-info-circle
-    position absolute
-    top 0
-    right 0
-    margin-left 20px
-    margin-right 20px
-    margin-top 20px
-    color #9B9B9B
-    cursor default
-    &:hover
-      color lightness(#9B9B9B, 40%)
-  hr
-    width 20px
-    height 2px
-    border none
-    color #444444
-    background-color #444444
-    margin 0
-    margin-left 20px
-  .bottom
-    height 50px
-    width 100%
-    line-height 50px
-    font-size 1.2em
-    font-weight: 400;
-    background blue
-    color white
-    position absolute
-    bottom 0
-    left 0
-    border-bottom-left-radius 5px
-    border-bottom-right-radius 5px
+// .todo-card
+//   position relative
+//   min-height 200px
+//   margin-bottom 40px
+//   padding: 20px
+//   .fa-info-circle
+//     position absolute
+//     top 0
+//     right 0
+//     margin-left 20px
+//     margin-right 20px
+//     margin-top 20px
+//     color #9B9B9B
+//     cursor default
+//     &:hover
+//       color lightness(#9B9B9B, 40%)
+//   hr
+//     width 20px
+//     height 2px
+//     border none
+//     color #444444
+//     background-color #444444
+//     margin 0
+//     margin-left 20px
+//   .bottom
+//     height 50px
+//     width 100%
+//     line-height 50px
+//     font-size 1.2em
+//     font-weight: 400;
+//     background blue
+//     color white
+//     position absolute
+//     bottom 0
+//     left 0
+//     border-bottom-left-radius 5px
+//     border-bottom-right-radius 5px
 
 
 .hover-rise
@@ -259,47 +254,6 @@ svg
     border-style: solid;
   .filepicker-file-icon
     pointer-events: none;
-
-// TODO: Remove this, it was for the early version with a blur and blue "Choose" text
-// Partners Offers results
-.offers-card
-  background-color white
-  box-shadow 0px 1px 3px 0px rgba(0,0,0,0.50)
-  border-radius 5px
-  padding: 10px
-  min-height: 310px
-  position: relative
-  transition: all .3s ease;
-  .card-head
-    height: 110px
-  .card-choose
-    transition: all .3s ease;
-    position: absolute
-    opacity: 0;
-    width: 100%
-    left: 0
-    text-align: center;
-    top: 40%
-    h4
-      color: brand-primary
-  &:hover
-    transition: all .3s ease;
-    box-shadow 0px 2px 5px 0px rgba(0,0,0,0.70)
-    cursor: pointer;
-    .card-body
-      transition: all .3s ease;
-      opacity: 0.2
-      -webkit-filter: blur(5px);
-      -moz-filter: blur(5px);
-      -o-filter: blur(5px);
-      -ms-filter: blur(5px);
-      filter: blur(5px);
-    .card-choose
-      transition: all .3s ease;
-      opacity: 1
-      // display: block;
-
-
 
 
 // Loading Animation
@@ -415,49 +369,47 @@ svg
 }
 
 
-.newUserOption
-  display: block;
-  padding: 30px
-  height: 300px
-  overflow: auto;
-  cursor pointer
-  -webkit-transition all 250ms cubic-bezier(.02, .01, .47, 1)
-  -moz-transition: all 250ms cubic-bezier(.02, .01, .47, 1);
-  transition: all 250ms cubic-bezier(.02, .01, .47, 1)
-  span
-    width: 100%
-    font-size: 10em
-    text-align: center
-    padding: 20px
-    color: grey
-  h4
-    padding-top: 20px;
-  &:hover
-    box-shadow: 0px 40px 40px 0px rgba(0,0,0,0.16);
-    transform: translate(0, -10px);
-    transition-delay: 0s !important;
-    text-decoration: none;
+// .newUserOption
+//   display: block;
+//   padding: 30px
+//   height: 300px
+//   overflow: auto;
+//   cursor pointer
+//   -webkit-transition all 250ms cubic-bezier(.02, .01, .47, 1)
+//   -moz-transition: all 250ms cubic-bezier(.02, .01, .47, 1);
+//   transition: all 250ms cubic-bezier(.02, .01, .47, 1)
+//   span
+//     width: 100%
+//     font-size: 10em
+//     text-align: center
+//     padding: 20px
+//     color: grey
+//   h4
+//     padding-top: 20px;
+//   &:hover
+//     box-shadow: 0px 40px 40px 0px rgba(0,0,0,0.16);
+//     transform: translate(0, -10px);
+//     transition-delay: 0s !important;
+//     text-decoration: none;
 
-.finance-widget
-  position: relative
-  height: 95%
-  min-height: 350px;
-  top: 50px
-  width: 200px
-  bottom: 25px
-  left: 25px
-  .slider-div
-    position: relative
-    top: 20px
-    height: -webkit-calc(100% - 150px);
-    height: -moz-calc(100% - 150px);
-    height: calc(100% - 150px);
+// .finance-widget
+//   position: relative
+//   height: 95%
+//   min-height: 350px;
+//   top: 50px
+//   width: 200px
+//   bottom: 25px
+//   left: 25px
+//   .slider-div
+//     position: relative
+//     top: 20px
+//     height: calc(100% - 150px);
 
-.giant
-  font-size: 5em
-  padding-top: 50px;
-  +above($med)
-    font-size: 8em;
+// .giant
+//   font-size: 5em
+//   padding-top: 50px;
+//   +above($med)
+//     font-size: 8em;
 
 .minimal-table
   width: 180%;
@@ -483,98 +435,96 @@ svg
 
 
 
-.NLForm
-  article
-    display: block;
-    h1
-      margin-top: 0px;
-      font-size: 1.6em;
-      +above($small)
-        font-size: 1.8em;
-      +above($med)
-        font-size: 2em; // The default value
+// .NLForm
+//   article
+//     display: block;
+//     h1
+//       margin-top: 0px;
+//       font-size: 1.6em;
+//       +above($small)
+//         font-size: 1.8em;
+//       +above($med)
+//         font-size: 2em; // The default value
 
-.NLForm
-  .startLine
-    -webkit-transform-origin: left center;
-    transform-origin: left center;
-    transition: all 0.3s ease;
-    opacity: 0.75;
-    transform: scale(0.85);
-    -webkit-transform: scale(0.85);
-    margin-top: 0px;
-    margin-bottom: 0px;
-    // height: 50px;
-    line-height: 50px;
-    &:hover
-      opacity: 0.85;
-      -webkit-transform: scale(1);
-      transform: scale(1);
-      cursor: pointer;
-    &.active
-      height: unset;
-      opacity: 1;
-      -webkit-transform: scale(1);
-      transform: scale(1);
-      margin-top: 10px;
-      margin-bottom: 10px;
-      cursor: auto;
-    &.errorText
-      height: unset;
-      color: red;
-      margin-top -10px;
-    .value
-      color: brand-primary !important;
-      input
-        color: brand-primary !important;
-  .RecapLine
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    cursor: auto;
-    line-height: unset;
-    opacity: 1;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    height: 500px;
-    &:hover
-      -webkit-transform: scale(1);
-      transform: scale(1);
-      cursor: auto;
-      opacity: 1;
+// .NLForm
+//   .startLine
+//     -webkit-transform-origin: left center;
+//     transform-origin: left center;
+//     transition: all 0.3s ease;
+//     opacity: 0.75;
+//     transform: scale(0.85);
+//     -webkit-transform: scale(0.85);
+//     margin-top: 0px;
+//     margin-bottom: 0px;
+//     // height: 50px;
+//     line-height: 50px;
+//     &:hover
+//       opacity: 0.85;
+//       -webkit-transform: scale(1);
+//       transform: scale(1);
+//       cursor: pointer;
+//     &.active
+//       height: unset;
+//       opacity: 1;
+//       -webkit-transform: scale(1);
+//       transform: scale(1);
+//       margin-top: 10px;
+//       margin-bottom: 10px;
+//       cursor: auto;
+//     &.errorText
+//       height: unset;
+//       color: red;
+//       margin-top -10px;
+//     .value
+//       color: brand-primary !important;
+//       input
+//         color: brand-primary !important;
+//   .RecapLine
+//     -webkit-transform: scale(1);
+//     transform: scale(1);
+//     cursor: auto;
+//     line-height: unset;
+//     opacity: 1;
+//     margin-top: 40px;
+//     margin-bottom: 40px;
+//     height: 500px;
+//     &:hover
+//       -webkit-transform: scale(1);
+//       transform: scale(1);
+//       cursor: auto;
+//       opacity: 1;
 
 
-.home-header
-  position: relative
-  height: 100%
-  width: 100%
-  display: table;
-  .table-cell
-    display: table-cell;
-    vertical-align: middle;
-  h1
-    margin-top: 0px;
-    font-size: 3em
-    +above($med)
-      font-size: 4em
-  article
-    display: inline-block;
-  .arrow
-    position: absolute;
-    left: 50%;
-    bottom: 0px;
-    +above($med)
-      bottom: 50px;
-  .arrow-adjust
-    position: relative;
-    left: -50%;
+// .home-header
+//   position: relative
+//   height: 100%
+//   width: 100%
+//   display: table;
+//   .table-cell
+//     display: table-cell;
+//     vertical-align: middle;
+//   h1
+//     margin-top: 0px;
+//     font-size: 3em
+//     +above($med)
+//       font-size: 4em
+//   article
+//     display: inline-block;
+//   .arrow
+//     position: absolute;
+//     left: 50%;
+//     bottom: 0px;
+//     +above($med)
+//       bottom: 50px;
+//   .arrow-adjust
+//     position: relative;
+//     left: -50%;
 
 
 .trancheBar
   position: relative;
   height: 50px;
   width: 100%;
-  // border: solid 1px grey;
-  // border-bottom: solid 1px grey;
   background-color: backgroundcolor;
   border-radius: 5px;
   .bar
@@ -600,11 +550,11 @@ svg
         margin-left: 8px;
         margin-right: 8px;
 
-.admin-nav-link
-  display: block;
-  padding: 0 20px 0 20px;
-  span
-    padding: 20px;
+// .admin-nav-link
+//   display: block;
+//   padding: 0 20px 0 20px;
+//   span
+//     padding: 20px;
 
 
 // Animated checkmark SVG
@@ -668,133 +618,133 @@ $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
   opacity: 0.85 !important;
 
 
-// Horizontal style
-.property-value
-  height: 40px;
-  width: 100%;
-  border-radius: 5px 0px 5px 0px;
-  background-color: lightness(brand-primary, 90%);
-  position: relative;
-  z-index: 0;
-  .loan
-    height: 40px;
-    border-radius: 5px 0 0 0;
-    background-color: brand-primary;
-    border-right: solid 1px white;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 2;
-    margin: 0;
-    color: white;
-    line-height: 40px;
-    overflow: hidden;
-  .insurance
-    height: 40px;
-    border-radius: 5px 0px 5px 0px;
-    background-color: brand-success;
-    border-right: solid 1px white;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-  .vertical-line
-    height: 60px;
-    position: absolute;
-    width: 70%;
-    border-right: 1px dashed rgba(0, 0, 0, 0.5);
-    top: -10px;
-    left: 0;
-    z-index: 3;
-  .slider1
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    z-index: 10;
-    div
-      margin-top: 0;
-      margin-bottom: 0;
-      div
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-  .slider2
-    position: absolute;
-    right: 10%;
-    top: -8px;
-    z-index: 10;
-    margin: 0;
-    div
-      margin-top: 0;
-      margin-bottom: 0;
-      div
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-
-.values
-  margin-top: 40px;
-
-
-// Vertical style
-.property-value2
-  height: 400px;
-  width: 40px;
-  border-radius: 5px;
-  background-color: lightness(brand-primary, 90%);
-  position: relative;
-  z-index: 0;
-  margin: auto;
-  .loan2
-    width: 40px;
-    border-radius: 5px;
-    background-color: brand-primary;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    z-index: 2;
-  .insurance2
-    width: 40px;
-    border-radius: 5px;
-    background-color: brand-success;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    z-index: 1;
-  .vertical-line2
-    height: 70%;
-    width: 140%;
-    position: absolute;
-    border-top: 1px dashed rgba(0, 0, 0, 0.5);
-    bottom: 0;
-    left: -20%;
-    z-index: 3;
-  .slider1_2
-    position: absolute;
-    height: 100%;
-    bottom: 0;
-    left: -8px;
-    z-index: 10;
-    div
-      margin-top: 0;
-      margin-bottom: 0;
-      div
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-  .slider2_2
-    position: absolute;
-    height: 100%;
-    right: -8px;
-    top: 0;
-    z-index: 10;
-    margin: 0;
-    div
-      margin-top: 0;
-      margin-bottom: 0;
-      div
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-
-.values2
-  position: relative;
+// // Horizontal style
+// .property-value
+//   height: 40px;
+//   width: 100%;
+//   border-radius: 5px 0px 5px 0px;
+//   background-color: lightness(brand-primary, 90%);
+//   position: relative;
+//   z-index: 0;
+//   .loan
+//     height: 40px;
+//     border-radius: 5px 0 0 0;
+//     background-color: brand-primary;
+//     border-right: solid 1px white;
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     z-index: 2;
+//     margin: 0;
+//     color: white;
+//     line-height: 40px;
+//     overflow: hidden;
+//   .insurance
+//     height: 40px;
+//     border-radius: 5px 0px 5px 0px;
+//     background-color: brand-success;
+//     border-right: solid 1px white;
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     z-index: 1;
+//   .vertical-line
+//     height: 60px;
+//     position: absolute;
+//     width: 70%;
+//     border-right: 1px dashed rgba(0, 0, 0, 0.5);
+//     top: -10px;
+//     left: 0;
+//     z-index: 3;
+//   .slider1
+//     position: absolute;
+//     bottom: -10px;
+//     left: 0;
+//     z-index: 10;
+//     div
+//       margin-top: 0;
+//       margin-bottom: 0;
+//       div
+//         margin-top: 0 !important;
+//         margin-bottom: 0 !important;
+//   .slider2
+//     position: absolute;
+//     right: 10%;
+//     top: -8px;
+//     z-index: 10;
+//     margin: 0;
+//     div
+//       margin-top: 0;
+//       margin-bottom: 0;
+//       div
+//         margin-top: 0 !important;
+//         margin-bottom: 0 !important;
+//
+// .values
+//   margin-top: 40px;
+//
+//
+// // Vertical style
+// .property-value2
+//   height: 400px;
+//   width: 40px;
+//   border-radius: 5px;
+//   background-color: lightness(brand-primary, 90%);
+//   position: relative;
+//   z-index: 0;
+//   margin: auto;
+//   .loan2
+//     width: 40px;
+//     border-radius: 5px;
+//     background-color: brand-primary;
+//     position: absolute;
+//     bottom: 0;
+//     left: 0;
+//     z-index: 2;
+//   .insurance2
+//     width: 40px;
+//     border-radius: 5px;
+//     background-color: brand-success;
+//     position: absolute;
+//     bottom: 0;
+//     left: 0;
+//     z-index: 1;
+//   .vertical-line2
+//     height: 70%;
+//     width: 140%;
+//     position: absolute;
+//     border-top: 1px dashed rgba(0, 0, 0, 0.5);
+//     bottom: 0;
+//     left: -20%;
+//     z-index: 3;
+//   .slider1_2
+//     position: absolute;
+//     height: 100%;
+//     bottom: 0;
+//     left: -8px;
+//     z-index: 10;
+//     div
+//       margin-top: 0;
+//       margin-bottom: 0;
+//       div
+//         margin-top: 0 !important;
+//         margin-bottom: 0 !important;
+//   .slider2_2
+//     position: absolute;
+//     height: 100%;
+//     right: -8px;
+//     top: 0;
+//     z-index: 10;
+//     margin: 0;
+//     div
+//       margin-top: 0;
+//       margin-bottom: 0;
+//       div
+//         margin-top: 0 !important;
+//         margin-bottom: 0 !important;
+//
+// .values2
+//   position: relative;
 
 
 .partner-logos
@@ -823,9 +773,9 @@ $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
   background: linear-gradient(to bottom, lightness(brand-primary, 80%), brand-primary) !important;
 
 
-.new-user
-  h1, h3
-    opacity: 0.5;
+// .new-user
+//   h1, h3
+//     opacity: 0.5;
 
 #expensesChart
   margin-bottom: 50px;
@@ -840,6 +790,9 @@ $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
     // z-index: -1;
   .highcharts-container
     overflow: visible !important;
+    // max-width: 100%;
+    .highcharts-root
+      // max-width: 100%;
   .highcharts-data-labels
     display: none;
     +above($med)
@@ -857,7 +810,11 @@ $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
     +above($med)
       display: none;
   .highcharts-title
-    transform: translateY(-35px);
+    transform: translateY(-45px);
+    +above($xsmall)
+      transform: translateY(-40px);
+    +above($small)
+      transform: translateY(-35px);
 
 
 div.strategy-choices
@@ -866,7 +823,6 @@ div.strategy-choices
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  // align-items: center;
   padding: 10px 0;
   span.loading
     width: 100%;
@@ -966,7 +922,6 @@ div.strategy-choices
       flex-shrink: 0;
       +above($xsmall)
         width: 80px;
-
     .left
       span
         border-radius: 50%;
@@ -1110,9 +1065,6 @@ div.strategy-choices
         width: 120px;
         border-left: 1px solid #ccc
 
-// Fix to remove firefox's annoying red box around invalid inputs
-:invalid
-  box-shadow: none;
 
 .admin-todo
   text-decoration: none;
@@ -1324,6 +1276,8 @@ ul.request-map
           bottom: -7px;
   .chart
     z-index: 1;
+    width: 100%;
+    // max-width: 100%;
   .button
     margin: 40px 0;
 
@@ -1600,7 +1554,7 @@ ul.request-map
         margin: 0;
 
 .new-borrower, .new-request
-  transition: all 250ms cubic-bezier(.02, .01, .47, 1);
+  transition: all 250ms $bezier;
   background-color: brand-primary !important;
   padding: 20px;
   margin: 16px;

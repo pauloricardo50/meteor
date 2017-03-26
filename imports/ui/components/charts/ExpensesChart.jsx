@@ -21,6 +21,49 @@ const colors = {
 var timeout;
 var oldWidth;
 
+const update = that => {
+  const total = that.state.interests +
+    that.state.amortization +
+    that.state.maintenance;
+  that.chart.update({
+    title: {
+      text: `CHF ${toMoney(Math.round(total))}<br>par mois`,
+    },
+    tooltip: {
+      formatter() {
+        return `<span style="color:${this.color}">\u25CF</span> ${this.key}<br /> <b>CHF ${toMoney(Math.round(this.y))}</b><br />${Math.round(1000 * this.y / total) / 10}%`;
+      },
+    },
+    plotOptions: {
+      pie: {
+        dataLabels: {
+          enabled: that.state.interests &&
+            that.state.amortization &&
+            that.state.maintenance,
+        },
+      },
+    },
+    series: [
+      {
+        data: [
+          {
+            name: 'Intérêts',
+            y: that.state.interests,
+          },
+          {
+            name: 'Amortissement',
+            y: that.state.amortization,
+          },
+          {
+            name: "Charges d'Entretien",
+            y: that.state.maintenance,
+          },
+        ],
+      },
+    ],
+  });
+};
+
 export default class ExpensesChart extends Component {
   constructor(props) {
     super(props);
@@ -62,41 +105,6 @@ export default class ExpensesChart extends Component {
       n.maintenance !== p.maintenance ||
       n.loanRequest !== p.loanRequest
     ) {
-      const update = () => {
-        this.chart.update({
-          title: {
-            text: `CHF ${toMoney(Math.round(this.state.interests + this.state.amortization + this.state.maintenance))}<br>par mois`,
-          },
-          plotOptions: {
-            pie: {
-              dataLabels: {
-                enabled: this.state.interests &&
-                  this.state.amortization &&
-                  this.state.maintenance,
-              },
-            },
-          },
-          series: [
-            {
-              data: [
-                {
-                  name: 'Intérêts',
-                  y: this.state.interests,
-                },
-                {
-                  name: 'Amortissement',
-                  y: this.state.amortization,
-                },
-                {
-                  name: "Charges d'Entretien",
-                  y: this.state.maintenance,
-                },
-              ],
-            },
-          ],
-        });
-      };
-
       if (this.props.loanRequest) {
         this.setState(
           {
@@ -104,7 +112,7 @@ export default class ExpensesChart extends Component {
             amortization: getAmortization(n.loanRequest, n.borrowers),
             maintenance: n.loanRequest.property.value * 0.01 / 12,
           },
-          () => update(),
+          () => update(this),
         );
       } else {
         this.setState(
@@ -113,19 +121,22 @@ export default class ExpensesChart extends Component {
             amortization: n.amortizing,
             maintenance: n.maintenance,
           },
-          () => update(),
+          () => update(this),
         );
       }
     }
   }
 
   createChart() {
+    const total = this.state.interests +
+      this.state.amortization +
+      this.state.maintenance;
     const options = {
       chart: {
         type: 'pie',
       },
       title: {
-        text: `CHF ${toMoney(Math.round(this.state.interests + this.state.amortization + this.state.maintenance))}<br>par mois`,
+        text: `CHF ${toMoney(Math.round(total))}<br>par mois`,
         verticalAlign: 'middle',
         floating: true,
         style: {
@@ -134,7 +145,7 @@ export default class ExpensesChart extends Component {
       },
       tooltip: {
         formatter() {
-          return `<span style="color:${this.color}">\u25CF</span> ${this.key}<br /> <b>CHF ${toMoney(Math.round(this.y))}</b>`;
+          return `<span style="color:${this.color}">\u25CF</span> ${this.key}<br /> <b>CHF ${toMoney(Math.round(this.y))}</b><br />${Math.round(1000 * this.y / total) / 10}%`;
         },
       },
       plotOptions: {
