@@ -23,6 +23,7 @@ export default class StartSlider extends React.Component {
         value={val}
         onChange={(e, v) => this.props.setFormState(this.props.id, v)}
         onDragStart={() => this.props.setActiveLine(this.props.id)}
+        style={{ padding: '0 40px' }}
       />
     );
   }

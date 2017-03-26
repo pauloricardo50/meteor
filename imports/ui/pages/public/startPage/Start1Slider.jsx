@@ -4,19 +4,20 @@ import Slider from 'material-ui/Slider';
 import AddIcon from 'material-ui/svg-icons/content/add';
 
 const Start1Slider = props => (
-  <div>
+  <div className="sliderDiv">
     <Slider
+      min={0}
+      max={props.sliderMax}
+      step={10000}
       value={
         props.motionValue < 5000
           ? 0
           : Math.min(
-              Math.round(props.auto ? props.motionValue : props.value) /
-                props.sliderMax,
-              1,
+              Math.round(props.auto ? props.motionValue : props.value),
+              props.sliderMax,
             )
       }
-      onChange={(e, v) => props.setStateValue(props.name, v * props.sliderMax)}
-      step={10000 / props.sliderMax}
+      onChange={(e, v) => props.setStateValue(props.name, v)}
       className="slider"
     />
     {props.value >= props.sliderMax &&

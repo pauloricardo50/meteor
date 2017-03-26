@@ -37,4 +37,10 @@ export default {
     // fontSize: typography.fontStyleButtonFontSize,
     // fontWeight: typography.fontWeightMedium,
   },
+  slider: {
+    trackSize: 2,
+    handleSize: 20,
+    handleSizeDisabled: 15,
+    handleSizeActive: 30,
+  },
 };

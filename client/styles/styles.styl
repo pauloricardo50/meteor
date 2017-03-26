@@ -812,7 +812,7 @@ $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
   .highcharts-title
     transform: translateY(-45px);
     +above($xsmall)
-      transform: translateY(-40px);
+      transform: translateY(-100px);
     +above($small)
       transform: translateY(-35px);
 
@@ -1215,7 +1215,7 @@ ul.request-map
           height: 200px;
       .sliders
         width: 100%;
-        padding: 0 20px;
+        padding: 0 10px;
         +above($med)
           width: 49%;
         max-width: 400px;
@@ -1225,6 +1225,8 @@ ul.request-map
         align-items: center;
         .reset-button
           margin-bottom: 20px;
+        .slider
+          padding: 0 30px;
     .oscar-line
       position: relative;
       display: inline-block;
@@ -1267,13 +1269,16 @@ ul.request-map
       .slider > div
         margin: 0 !important;
         margin-top: 8px !important;
+      .sliderDiv
+        position: relative;
       .sliderMaxButton
-        display: none;
-        +above($med)
-          display: inline;
-          position: absolute;
-          right: -40px;
-          bottom: -7px;
+        height: 30px;
+        display: inline;
+        position: absolute;
+        right: -10px;
+        top: 0px;
+        svg
+          height: 30px !important;
   .chart
     z-index: 1;
     width: 100%;
