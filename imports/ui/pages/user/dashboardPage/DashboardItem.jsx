@@ -18,7 +18,7 @@ const DashboardItem = props => {
   return (
     <article className={classes}>
       <div className="top">
-        <h2>{props.loanRequest.property.address1 || 'Projet Sans Titre'}</h2>
+        <h2>{props.loanRequest.name || 'Projet Sans Titre'}</h2>
         {props.multiple &&
           <div className="right">
             <IconButton onClick={props.handleClick}>

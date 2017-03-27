@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Accounts } from 'meteor/std:accounts-ui';
-import { DocHead } from 'meteor/kadira:dochead';
 
 const styles = {
   section: {
@@ -27,20 +26,21 @@ const styles = {
   },
 };
 
-export default class LoginPage extends React.Component {
-  componentDidMount() {
-    DocHead.setTitle('Login - e-Potek');
-  }
+const LoginPage = props => (
+  <section style={styles.section}>
+    <div style={styles.div1}>
+      <div style={styles.div2}>
+        <Accounts.ui.LoginForm
+          onSignedInHook={() => props.history.push('/app')}
+          onPostSignUpHook={() => props.history.push('/app')}
+        />
+      </div>
+    </div>
+  </section>
+);
 
-  render() {
-    return (
-      <section style={styles.section}>
-        <div style={styles.div1}>
-          <div style={styles.div2}>
-            <Accounts.ui.LoginForm />
-          </div>
-        </div>
-      </section>
-    );
-  }
-}
+LoginPage.propTypes = {
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+};
+
+export default LoginPage;

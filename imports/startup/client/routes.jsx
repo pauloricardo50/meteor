@@ -24,7 +24,11 @@ import TosPage from '/imports/ui/pages/public/TosPage.jsx';
 import DashBoardPage from '/imports/ui/pages/user/DashboardPage.jsx';
 import InformationPage from '/imports/ui/pages/user/InformationPage.jsx';
 import ProfilePage from '/imports/ui/pages/user/ProfilePage.jsx';
-import { BorrowerPage } from '/imports/ui/containers/UserContainers';
+import {
+  BorrowerPage,
+  RequestPage,
+  PropertyPage,
+} from '/imports/ui/containers/UserContainers';
 import ContactPage from '/imports/ui/pages/user/ContactPage.jsx';
 import NewPage from '/imports/ui/pages/user/NewPage.jsx';
 
@@ -82,6 +86,12 @@ const UserRoutes = props => (
           render={() => <ContactPage {...layoutProps} />}
         />
         <Route path="/app/borrowers/:borrowerId" component={BorrowerPage} />
+        <Route path="/app/requests/:requestId" component={RequestPage} />
+        <Route
+          path="/app/requests/:requestId/property"
+          component={PropertyPage}
+        />
+
         <Route path="/app" render={() => <DashBoardPage {...layoutProps} />} />
       </Switch>
     )}

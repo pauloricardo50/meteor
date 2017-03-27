@@ -88,7 +88,7 @@ const getArray = props => {
       spacing: !p.fortuneUsed,
     },
     {
-      label: 'Coût mensuel estimé',
+      label: 'Coût réel estimé*',
       value: (
         <span>
           CHF

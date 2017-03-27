@@ -30,9 +30,9 @@ export function userOffersComposer(props, onData) {
 
 // Get a specific request for this user
 export function userRequestComposer(props, onData) {
-  const requestId = props.params.id;
+  const requestId = props.match.params.requestId;
   if (Meteor.subscribe('loanRequest', requestId).ready()) {
-    const loanRequest = LoanRequests.findOne({}).fetch();
+    const loanRequest = LoanRequests.findOne({});
     onData(null, { loanRequest });
   }
 }

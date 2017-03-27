@@ -4,5 +4,5 @@ Accounts.ui.config({
   passwordSignupFields: 'EMAIL_ONLY',
   loginPath: '/login',
   homeRoutePath: '/',
-  profilePath: '/main',
+  profilePath: '/app',
 });

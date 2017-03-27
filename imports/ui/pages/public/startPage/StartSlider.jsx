@@ -20,7 +20,10 @@ export default class StartSlider extends React.Component {
         max={this.props.sliderMax}
         step={(this.props.sliderMax - this.props.sliderMin) / 100}
         name={this.props.id}
-        value={val}
+        value={Math.min(
+          Math.max(val, this.props.sliderMin),
+          this.props.sliderMax,
+        )}
         onChange={(e, v) => this.props.setFormState(this.props.id, v)}
         onDragStart={() => this.props.setActiveLine(this.props.id)}
         style={{ padding: '0 40px' }}

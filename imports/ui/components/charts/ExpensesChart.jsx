@@ -27,7 +27,7 @@ const update = that => {
     that.state.maintenance;
   that.chart.update({
     title: {
-      text: `CHF ${toMoney(Math.round(total))}<br>par mois`,
+      text: `CHF ${toMoney(Math.round(total))}<br>par mois*`,
     },
     tooltip: {
       formatter() {
@@ -136,7 +136,7 @@ export default class ExpensesChart extends Component {
         type: 'pie',
       },
       title: {
-        text: `CHF ${toMoney(Math.round(total))}<br>par mois`,
+        text: `CHF ${toMoney(Math.round(total))}<br>par mois*`,
         verticalAlign: 'middle',
         floating: true,
         style: {
