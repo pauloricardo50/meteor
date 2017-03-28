@@ -1,6 +1,4 @@
-import React, { Component, PropTypes } from 'react';
-import { Meteor } from 'meteor/meteor';
-
+import React, { PropTypes } from 'react';
 
 import TextInput from './TextInput.jsx';
 import RadioInput from './RadioInput.jsx';
@@ -10,7 +8,6 @@ import DateInput from './DateInput.jsx';
 import DropzoneInput from './DropzoneInput.jsx';
 import DropzoneArray from '../general/DropzoneArray.jsx';
 import ArrayInput from './ArrayInput.jsx';
-
 
 const styles = {
   form: {
@@ -36,155 +33,99 @@ const styles = {
   },
 };
 
+const inputSwitch = (singleInput, index, parentProps) => {
+  const props = {
+    ...singleInput,
+    ...parentProps,
+    key: index,
+    style: parentProps.fullWidth ? styles.fullWidth : styles.smallWidth,
+  };
 
-export default class AutoForm extends Component {
-  inputSwitch(singleInput, index) {
-    const extraValues = {
-      requestId: this.props.loanRequest._id,
-      key: index,
-    };
-
-    // Prevent undefined showCondition to trigger as well
-    if (singleInput.showCondition === false) {
-      return null;
-    }
-
-    switch (singleInput.type) {
-      case 'TextInput':
-        return (
-          <TextInput
-            multiLine={false}
-            {...singleInput}
-            {...extraValues}
-            style={this.props.fullWidth ? styles.fullWidth : styles.smallWidth}
-          />
-        );
-      case 'TextInputLarge':
-        return (
-          <TextInput
-            multiLine
-            {...singleInput}
-            {...extraValues}
-            style={styles.mediumWidth}
-          />
-        );
-      case 'TextInputNumber':
-        return (
-          <TextInput
-            number
-            {...singleInput}
-            {...extraValues}
-            style={this.props.fullWidth ? styles.fullWidth : styles.smallWidth}
-          />
-        );
-      case 'TextInputMoney':
-        return (
-          <TextInput
-            money
-            {...singleInput}
-            {...extraValues}
-            style={this.props.fullWidth ? styles.fullWidth : styles.smallWidth}
-          />
-        );
-      case 'RadioInput':
-        return (
-          <RadioInput
-            {...singleInput}
-            {...extraValues}
-            style={this.props.fullWidth ? styles.fullWidth : styles.smallWidth}
-          />
-        );
-      case 'SelectFieldInput':
-        return (
-          <SelectFieldInput
-            {...singleInput}
-            {...extraValues}
-            style={this.props.fullWidth ? styles.fullWidth : styles.smallWidth}
-          />
-        );
-      case 'ConditionalInput':
-        return (
-          <ConditionalInput
-            conditionalTrueValue={singleInput.conditionalTrueValue}
-            key={index}
-            style={this.props.fullWidth ? styles.fullWidth : styles.smallWidth}
-          >
-            {this.inputSwitch(singleInput.inputs[0])}
-            {singleInput.inputs.slice(1).map((input, index2) => this.inputSwitch(input, index2))}
-          </ConditionalInput>
-        );
-      case 'h3':
-        return (
-          <h3 style={styles.subtitle} key={index}>{singleInput.text}</h3>
-        );
-      case 'h2':
-        return (
-          <h2 style={styles.subtitle} key={index}>{singleInput.text}</h2>
-        );
-      case 'Space':
-        return (
-          <div style={{ width: '100%', height: singleInput.height }} key={index}>{singleInput.text}</div>
-        );
-      case 'DateInput':
-        return (
-          <DateInput
-            {...singleInput}
-            {...extraValues}
-            key={index}
-            style={this.props.fullWidth ? styles.fullWidth : styles.smallWidth}
-          />
-        );
-      case 'DropzoneInput':
-        return (
-          // <DropzoneInput
-          //   {...singleInput}
-          //   {...extraValues}
-          //   key={index}
-          // />
-          <DropzoneArray
-            {...singleInput}
-            {...extraValues}
-            key={index}
-            style={this.props.fullWidth ? styles.fullWidth : styles.mediumWidth}
-          />
-        );
-      case 'ArrayInput':
-        return (
-          <ArrayInput
-            {...singleInput}
-            {...extraValues}
-            key={index}
-            style={this.props.fullWidth ? styles.fullWidth : styles.mediumWidth}
-          />
-        );
-      default:
-        throw new Error('Not a valid AutoForm type');
-    }
+  // Prevent undefined showCondition to trigger as well
+  if (singleInput.showCondition === false) {
+    return null;
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
+  switch (singleInput.type) {
+    case 'TextInput':
+      return <TextInput multiLine={false} {...props} />;
+    case 'TextInputLarge':
+      return <TextInput multiLine {...props} style={styles.mediumWidth} />;
+    case 'TextInputNumber':
+      return <TextInput number {...props} />;
+    case 'TextInputMoney':
+      return <TextInput money {...props} />;
+    case 'RadioInput':
+      return <RadioInput {...props} />;
+    case 'SelectFieldInput':
+      return <SelectFieldInput {...props} />;
+    case 'ConditionalInput':
+      return (
+        <ConditionalInput
+          conditionalTrueValue={singleInput.conditionalTrueValue}
+          key={index}
+        >
+          {inputSwitch(singleInput.inputs[0], 0, parentProps)}
+          {singleInput.inputs
+            .slice(1)
+            .map((input, i) => inputSwitch(input, i, parentProps))}
+        </ConditionalInput>
+      );
+    case 'h3':
+      return <h3 style={styles.subtitle} key={index}>{singleInput.text}</h3>;
+    case 'h2':
+      return <h2 style={styles.subtitle} key={index}>{singleInput.text}</h2>;
+    case 'Space':
+      return (
+        <div style={{ width: '100%', height: singleInput.height }} key={index}>
+          {singleInput.text}
+        </div>
+      );
+    case 'DateInput':
+      return <DateInput {...props} />;
+    case 'DropzoneInput':
+      return (
+        // <DropzoneInput
+        //   {...singleInput}
+        //   {...extraValues}
+        //   key={index}
+        // />
+        <DropzoneArray {...props} />
+      );
+    case 'ArrayInput':
+      return <ArrayInput {...props} />;
+    default:
+      throw new Error('Not a valid AutoForm type');
   }
-
-  render() {
-    return (
-      <div className={this.props.formClasses}>
-        <form style={styles.form} onSubmit={this.handleSubmit}>
-          {this.props.inputs.map((input, index1) => this.inputSwitch(input, index1))}
-        </form>
-      </div>
-    );
-  }
-}
-
-AutoForm.defaultProps = {
-  formClasses: '',
-  fullWidth: false,
 };
+
+const AutoForm = props => (
+  <div className={props.formClasses}>
+    <form style={styles.form} onSubmit={e => e.preventDefault()}>
+      {props.inputs.map((input, i) => inputSwitch(input, i, props))}
+    </form>
+  </div>
+);
 
 AutoForm.propTypes = {
   inputs: PropTypes.arrayOf(React.PropTypes.object).isRequired,
   formClasses: PropTypes.string,
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any),
+  borrowers: PropTypes.arrayOf(PropTypes.object),
   fullWidth: PropTypes.bool,
+  documentId: PropTypes.string.isRequired,
+  updateFunc: PropTypes.string,
+  pushFunc: PropTypes.string,
+  popFunc: PropTypes.string,
 };
+
+AutoForm.defaultProps = {
+  loanRequest: {},
+  borrowers: [],
+  fullWidth: false,
+  updateFunc: 'updateRequest',
+  pushFunc: 'pushRequestValue',
+  popFunc: 'popRequestValue',
+};
+
+export default AutoForm;

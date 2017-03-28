@@ -13,6 +13,7 @@ Borrowers.allow({
   },
   update(userId, doc) {
     // This is true if someone is logged in and the user is the same as the one who created it
+    console.log(doc);
     return !!userId && userId === doc.userId;
   },
 });

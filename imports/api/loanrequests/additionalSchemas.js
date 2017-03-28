@@ -242,7 +242,7 @@ export const LogicSchema = new SimpleSchema({
     type: Boolean,
     defaultValue: false,
   },
-  hasValidatedCashStrategy: {
+  hasValidatedStructure: {
     type: Boolean,
     defaultValue: false,
     optional: true,

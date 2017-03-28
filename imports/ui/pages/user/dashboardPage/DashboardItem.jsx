@@ -28,7 +28,10 @@ const DashboardItem = props => {
       </div>
 
       <div className="stepper">
-        <RequestStepper loanRequest={props.loanRequest} />
+        <RequestStepper
+          loanRequest={props.loanRequest}
+          borrowers={props.borrowers}
+        />
       </div>
 
       {(!props.multiple || props.active) &&

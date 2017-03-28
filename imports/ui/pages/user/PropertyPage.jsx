@@ -1,168 +1,66 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
-export default class PropertyPage extends Component {
-  constructor(props) {
-    super(props);
+import RaisedButton from 'material-ui/RaisedButton';
+import { Link } from 'react-router-dom';
 
-    this.getFormArray = this.getFormArray.bind(this);
-  }
+import AutoForm from '/imports/ui/components/autoform/AutoForm.jsx';
+import PropertyFormArray from '/imports/js/arrays/PropertyFormArray';
 
-  componentWillUnmount() {
-    Meteor.clearTimeout(savingTimeout);
-  }
+const styles = {
+  div: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  topButton: {
+    marginBottom: 20,
+    alignSelf: 'flex-end',
+  },
+  bottomButton: {
+    marginTop: 20,
+    alignSelf: 'flex-end',
+  },
+};
 
-  getFormArray() {
-    const r = this.props.loanRequest;
+const PropertyPage = props => (
+  <div style={styles.div}>
+    <RaisedButton
+      label="Ok"
+      containerElement={<Link to="/app" />}
+      primary
+      style={styles.topButton}
+    />
 
-    return [
-      {
-        type: 'h3',
-        text: 'Adresse du bien immobilier',
-      },
-      {
-        type: 'TextInput',
-        label: 'Adresse 1',
-        placeholder: 'Rue des Champs 7',
-        id: 'property.address1',
-        currentValue: r.property.address1,
-      },
-      {
-        type: 'TextInput',
-        label: 'Adresse 2',
-        placeholder: '',
-        id: 'property.address2',
-        currentValue: r.property.address2,
-      },
-      {
-        type: 'TextInputNumber',
-        label: 'Code Postal',
-        placeholder: '1200',
-        id: 'property.zipCode',
-        currentValue: r.property.zipCode,
-      },
-      {
-        type: 'TextInput',
-        label: 'Localité',
-        placeholder: 'Genève',
-        id: 'property.city',
-        currentValue: r.property.city,
-      },
-      {
-        type: 'h3',
-        text: 'Détails du bien',
-      },
-      {
-        type: 'TextInputNumber',
-        label: 'Nb. de chambres',
-        placeholder: '3.5',
-        id: 'property.roomCount',
-        currentValue: r.property.roomCount,
-        info: 'Chambres à coucher',
-      },
-      {
-        type: 'TextInputNumber',
-        label: 'Nb. de salles de bain',
-        placeholder: '1',
-        id: 'property.bathroomCount',
-        currentValue: r.property.bathroomCount,
-        info: 'Salles de bains ou salles d’eau (respectivement avec baignoire ou douche)',
-      },
-      {
-        type: 'TextInputNumber',
-        label: 'Nb. de WC',
-        placeholder: '1',
-        id: 'property.toiletCount',
-        currentValue: r.property.toiletCount,
-      },
-      {
-        type: 'TextInputNumber',
-        label: <span>Surface du terrain en m<sup>2</sup></span>,
-        placeholder: '250',
-        id: 'property.landArea',
-        currentValue: r.property.landArea,
-        showCondition: r.property.style === 'villa',
-      },
-      {
-        type: 'TextInputNumber',
-        label: <span>Surface habitable en m<sup>2</sup></span>,
-        placeholder: '150',
-        id: 'property.insideArea',
-        currentValue: r.property.insideArea,
-      },
-      {
-        type: 'TextInputNumber',
-        label: <span>Volume/Cubage en m<sup>3</sup></span>,
-        placeholder: '1000',
-        id: 'property.volume',
-        currentValue: r.property.volume,
-      },
-      {
-        type: 'TextInputNumber',
-        label: 'Places de parc intérieur',
-        placeholder: '1',
-        id: 'property.parking.inside',
-        currentValue: r.property.parking.inside,
-      },
-      {
-        type: 'TextInputNumber',
-        label: 'Box de parking',
-        placeholder: '1',
-        id: 'property.parking.box',
-        currentValue: r.property.parking.box,
-      },
-      {
-        type: 'TextInputNumber',
-        label: 'Places de parc extérieur couvertes',
-        placeholder: '1',
-        id: 'property.parking.outsideCovered',
-        currentValue: r.property.parking.outsideCovered,
-      },
-      {
-        type: 'TextInputNumber',
-        label: 'Places de parc extérieur non-couvertes',
-        placeholder: '1',
-        id: 'property.parking.outsideNotCovered',
-        currentValue: r.property.parking.outsideNotCovered,
-      },
-      {
-        type: 'RadioInput',
-        label: 'Est-ce une construction Minergie?',
-        radioLabels: ['Oui', 'Non'],
-        values: [true, false],
-        id: 'property.minergie',
-        currentValue: r.property.minergie,
-      },
-      {
-        type: 'TextInputLarge',
-        label: 'Autres informations',
-        placeholder: 'Aménagements extérieurs, piscine, jardins, cabanons, annexes, sous-sols utiles,...',
-        id: 'property.other',
-        currentValue: r.property.other,
-        rows: 3,
-      },
-    ];
-  }
+    <section className="mask1">
+      <h1>
+        {props.borrowers.length > 1
+          ? 'Notre bien immobilier'
+          : 'Mon bien immobilier'}
+      </h1>
 
-  render() {
-    return (
-      <section className="mask1">
-        <h1>
-          {this.props.borrowers.length > 1
-            ? 'Notre bien immobilier'
-            : 'Mon bien immobilier'}
-        </h1>
+      <AutoForm
+        inputs={PropertyFormArray(props)}
+        formClasses="col-sm-10 col-sm-offset-1"
+        loanRequest={props.loanRequest}
+        borrowers={props.borrowers}
+        documentId={props.loanRequest._id}
+        updateFunc="updateRequest"
+        pushFunc="pushRequestValue"
+        popFunc="popRequestValue"
+      />
+    </section>
 
-        <AutoForm
-          inputs={this.getFormArray()}
-          formClasses="col-sm-10 col-sm-offset-1"
-          loanRequest={this.props.loanRequest}
-        />
-      </section>
-    );
-  }
-}
+    <RaisedButton
+      label="Ok"
+      containerElement={<Link to="/app" />}
+      primary
+      style={styles.bottomButton}
+    />
+  </div>
+);
 
 PropertyPage.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
+
+export default PropertyPage;

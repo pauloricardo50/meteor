@@ -27,14 +27,14 @@ const getMetrics = props => {
     },
     {
       name: "Ratio d'endettement",
-      value: getRatio(r),
-      isValid: getRatio(r) <= constants.maxRatio,
+      value: getRatio(r, props.borrowers),
+      isValid: getRatio(r, props.borrowers) <= constants.maxRatio,
       error: 'Doit être mois que 35%',
     },
   ];
 };
 
-const StrategyCashMetrics = props => (
+const MetricsTriple = props => (
   <div className="metrics">
     {getMetrics(props).map((metric, i) => (
       <div className="metric" key={i}>
@@ -61,16 +61,16 @@ const StrategyCashMetrics = props => (
   </div>
 );
 
-StrategyCashMetrics.defaultProps = {
+MetricsTriple.defaultProps = {
   loanRequest: {},
   metrics: [],
   percent: true,
 };
 
-StrategyCashMetrics.propTypes = {
+MetricsTriple.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any),
   metrics: PropTypes.arrayOf(PropTypes.any),
   percent: PropTypes.bool,
 };
 
-export default StrategyCashMetrics;
+export default MetricsTriple;

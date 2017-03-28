@@ -4,8 +4,8 @@ import {
   insertRequest,
   updateRequest,
   startAuction,
-  pushValue,
-  popValue,
+  pushRequestValue,
+  popRequestValue,
 } from './loanrequests/methods';
 import { insertOffer, updateOffer } from './offers/methods';
 import { insertBorrower, updateBorrower } from './borrowers/methods';
@@ -14,8 +14,8 @@ const methods = {
   insertRequest,
   updateRequest,
   startAuction,
-  push: pushValue,
-  pop: popValue,
+  pushRequestValue,
+  popRequestValue,
   insertOffer,
   updateOffer,
   insertBorrower,
@@ -37,6 +37,7 @@ const methodCallback = (error, result, callback, bertObject) => {
       type: 'danger',
       style: 'fixed-top',
     });
+    console.log(error);
   } else if (bertObject) {
     Bert.alert({
       title: bertObject.title || "C'est réussi",

@@ -1,13 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 import cleanMethod from '/imports/api/cleanMethods';
-import is from 'is_js';
-
 
 import DatePicker from 'material-ui/DatePicker';
 import areIntlLocalesSupported from 'intl-locales-supported';
-
 
 const styles = {
   div: {
@@ -49,9 +45,12 @@ export default class DateInput extends Component {
   }
 
   handleChange(event, date) {
-    this.setState({
-      value: date,
-    }, this.saveValue);
+    this.setState(
+      {
+        value: date,
+      },
+      this.saveValue,
+    );
   }
 
   saveValue() {
@@ -62,9 +61,8 @@ export default class DateInput extends Component {
     // Save data to DB
     const object = {};
     object[this.props.id] = dateWithoutTime;
-    const id = this.props.requestId;
 
-    cleanMethod('update', id, object);
+    cleanMethod(this.props.updateFunc, object, this.props.documentId);
   }
 
   setDateFormat() {
@@ -83,8 +81,13 @@ export default class DateInput extends Component {
 
   render() {
     return (
-      <div style={{ ...styles.div, ...this.props.style }} className="datepicker">
-        <label htmlFor={this.props.label} style={styles.label}>{this.props.label}</label>
+      <div
+        style={{ ...styles.div, ...this.props.style }}
+        className="datepicker"
+      >
+        <label htmlFor={this.props.label} style={styles.label}>
+          {this.props.label}
+        </label>
         <DatePicker
           name={this.props.label}
           hintText="Choisir une date.."

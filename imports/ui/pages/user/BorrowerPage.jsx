@@ -1,48 +1,68 @@
 import React, { PropTypes } from 'react';
 
-import { BorrowerSchema } from '/imports/api/borrowers/borrowers';
-import SimpleSchema2Bridge from 'uniforms/SimpleSchema2Bridge';
-
 import RaisedButton from 'material-ui/RaisedButton';
 import { Link } from 'react-router-dom';
-import AutoForm from 'uniforms-material/AutoForm';
 
-export default class BorrowerPage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+import AutoForm from '/imports/ui/components/autoform/AutoForm.jsx';
+import getBorrowerFormArray from '/imports/js/arrays/BorrowerFormArray';
 
-  render() {
-    const bridge = new SimpleSchema2Bridge(BorrowerSchema);
+const styles = {
+  div: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  topButton: {
+    marginBottom: 20,
+    alignSelf: 'flex-end',
+  },
+  bottomButton: {
+    marginTop: 20,
+    alignSelf: 'flex-end',
+  },
+};
 
-    return (
-      <div>
-        <RaisedButton
-          label="Retour"
-          containerElement={<Link to="/app/me" />}
-          style={{ marginBottom: 20 }}
+const BorrowerPage = props => {
+  const borrowerId = props.match.params.borrowerId;
+  const borrower = props.borrowers.find(b => b._id === borrowerId);
+  return (
+    <div style={styles.div}>
+      <RaisedButton
+        label="Ok"
+        containerElement={<Link to="/app" />}
+        primary
+        style={styles.topButton}
+      />
+
+      <section className="mask1">
+        <h1>
+          {borrower.firstName || "Fiche d'Emprunteur"}
+        </h1>
+
+        <AutoForm
+          inputs={getBorrowerFormArray(props, borrowerId)}
+          formClasses="col-sm-10 col-sm-offset-1"
+          // loanRequest={props.loanRequest}
+          borrowers={props.borrowers}
+          documentId={borrowerId}
+          updateFunc="updateBorrower"
+          pushFunc="pushBorrowerValue"
+          popFunc="popBorrowerValue"
         />
-        <section className="mask1">
-          <h1>{this.props.borrower.firstName || 'Informations personelles'}</h1>
+      </section>
 
-          <article className="borrower-form">
-            {/* <AutoForm
-              schema={bridge}
-              model={this.props.borrower}
-              autosave
-              autosaveDelay={500}
-              submitField={() => null}
-              onSubmit={() => console.log('submitting')}
-              // onSubmitSuccess={() => alert('Promise resolved!')}
-              // onSubmitFailure={() => alert('Promise rejected!')}
-            /> */}
-          </article>
-        </section>
-      </div>
-    );
-  }
-}
+      <RaisedButton
+        label="Ok"
+        containerElement={<Link to="/app" />}
+        primary
+        style={styles.bottomButton}
+      />
+    </div>
+  );
+};
 
 BorrowerPage.propTypes = {
-  borrower: PropTypes.objectOf(PropTypes.any).isRequired,
+  // loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
+
+export default BorrowerPage;

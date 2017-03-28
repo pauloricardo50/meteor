@@ -12,7 +12,7 @@ export function userRequestsComposer(props, onData) {
   }
 }
 
-// Get all requests for this user
+// Get all borrowers for this user
 export function userBorrowersComposer(props, onData) {
   if (Meteor.subscribe('borrowers').ready()) {
     const borrowers = Borrowers.find({}).fetch();
@@ -31,10 +31,11 @@ export function userOffersComposer(props, onData) {
 // Get a specific request for this user
 export function userRequestComposer(props, onData) {
   const requestId = props.match.params.requestId;
-  if (Meteor.subscribe('loanRequest', requestId).ready()) {
-    const loanRequest = LoanRequests.findOne({});
-    onData(null, { loanRequest });
-  }
+  const loanRequest = LoanRequests.find({ _id: requestId }).fetch()[0];
+  const borrowers = Borrowers.find({
+    _id: { $in: loanRequest.borrowers },
+  }).fetch();
+  onData(null, { loanRequest, borrowers });
 }
 
 // Get a specific borrower for this user

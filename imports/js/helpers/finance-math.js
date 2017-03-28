@@ -194,9 +194,6 @@ export const getAmortization = (loanRequest, borrowers) => {
     return 0;
   }
 
-  console.log(loan);
-  console.log(yearsToRetirement);
-
   const loanPercent = loan / r.property.value;
 
   let yearlyAmortization = 0;
@@ -240,9 +237,9 @@ export const getMaintenance = loanRequest => {
   return loanRequest.property.value * 0.01 / 12;
 };
 
-export const getMonthlyPayment = loanRequest => {
+export const getMonthlyPayment = (loanRequest, borrowers) => {
   const interests = getInterests(loanRequest);
-  const amortization = getAmortization(loanRequest);
+  const amortization = getAmortization(loanRequest, borrowers);
   const maintenance = getMaintenance(loanRequest);
 
   return [
@@ -253,8 +250,45 @@ export const getMonthlyPayment = loanRequest => {
   ];
 };
 
-export const getRatio = loanRequest => {
-  const monthlyPayment = getMonthlyPayment(loanRequest)[0];
+const getBonusIncome = borrower => {
+  if (borrower.bonus) {
+    const arr = Object.values(borrower.bonus);
+    // Sum all values, remove the lowest one, and return 50% of their average
+    const safeArray = arr.map(v => v || 0);
+    const sum = safeArray.reduce((tot, val) => tot + val, 0);
+    const bestSum = sum - Math.min(...safeArray);
+    return 0.5 * (bestSum / 3) || 0;
+  }
 
-  return monthlyPayment / (loanRequest.general.incomeUsed / 12);
+  return 0;
+};
+
+const getOtherIncome = borrower =>
+  [
+    ...(borrower.otherIncome ? borrower.otherIncome.map(i => i.value) : []),
+  ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+
+const getExpenses = borrower =>
+  [...(borrower.expenses ? borrower.expenses.map(i => i.value) : [])].reduce(
+    (tot, val) => (val > 0 && tot + val) || tot,
+    0,
+  );
+
+const getBorrowerIncome = borrowers => {
+  let sum = 0;
+
+  borrowers.forEach(borrower => {
+    sum += borrower.salary;
+    sum += getBonusIncome(borrower);
+    sum += getOtherIncome(borrower);
+    sum -= getExpenses(borrower);
+  });
+
+  return Math.max(sum, 0);
+};
+
+export const getRatio = (loanRequest, borrowers) => {
+  const monthlyPayment = getMonthlyPayment(loanRequest, borrowers)[0];
+
+  return monthlyPayment / (getBorrowerIncome(borrowers) / 12);
 };

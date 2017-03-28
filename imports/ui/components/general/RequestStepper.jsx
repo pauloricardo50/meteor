@@ -3,12 +3,13 @@ import cleanMethod from '/imports/api/cleanMethods';
 
 import { List, ListItem } from 'material-ui/List';
 import RaisedButton from 'material-ui/RaisedButton';
+import { Link } from 'react-router-dom';
 
 import StepperVertical from './StepperVertical.jsx';
 import StepperHorizontal from './StepperHorizontal.jsx';
 
 import { getWidth } from '/imports/js/helpers/browserFunctions';
-import steps from '/imports/js/arrays/steps';
+import getSteps from '/imports/js/arrays/steps';
 import stepValidation from '/imports/js/helpers/stepValidation';
 
 const styles = {
@@ -80,9 +81,10 @@ export default class RequestStepper extends Component {
                     : <span className="right-icon pending" />
                 }
                 secondaryText={
-                  (item.percent && `${item.percent * 100}%`) || '0%'
+                  (item.percent !== undefined && `${item.percent * 100}%`) || ''
                 }
                 href={item.href}
+                containerElement={item.link && <Link to={item.link} />}
               />
             ))}
           </List>}
@@ -94,7 +96,9 @@ export default class RequestStepper extends Component {
     const currentStep = this.props.loanRequest.logic.step;
 
     // For the last step, do not show a continue button
-    if (step.nb === steps.length) {
+    if (
+      step.nb === getSteps(this.props.loanRequest, this.props.borrowers).length
+    ) {
       return null;
     }
 
@@ -136,7 +140,7 @@ export default class RequestStepper extends Component {
 
   render() {
     const props = {
-      steps,
+      steps: getSteps(this.props.loanRequest, this.props.borrowers),
       setStep: this.setStep,
       currentStep: this.props.loanRequest.logic.step,
       activeStep: this.state.activeStep,
@@ -155,4 +159,5 @@ export default class RequestStepper extends Component {
 
 RequestStepper.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
