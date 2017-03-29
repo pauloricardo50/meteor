@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
+import CountUp from 'react-countup';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
@@ -32,6 +33,20 @@ const StartResult = props => {
   return (
     <article className="mask1 start-result">
       <h1>Résultat: <span className="success">Excellent</span></h1>
+
+      <h1 className="text-center display2" style={{ margin: '40px 0' }}>
+        <CountUp
+          className="custom-count"
+          start={0}
+          end={20}
+          duration={3.5}
+          useEasing
+          separator=" "
+          decimal=","
+          prefix=""
+          suffix=" Prêteurs"
+        />
+      </h1>
 
       <div className="content">
         <Start2Recap {...props} />
