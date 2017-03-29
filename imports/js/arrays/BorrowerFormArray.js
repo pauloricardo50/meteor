@@ -1,6 +1,6 @@
 import React from 'react';
 
-const getBorrowerFormArray = (props, id) => {
+export const getBorrowerInfoArray = (props, id) => {
   const b = props.borrowers.find(borr => borr._id === id);
   const multiple = props.borrowers.length > 1;
   // If this is the first borrower in the array of borrowers, don't ask for same address
@@ -124,7 +124,117 @@ const getBorrowerFormArray = (props, id) => {
       id: 'company',
       currentValue: b.company,
     },
+    {
+      type: 'TextInput',
+      label: 'Votre Banque Personelle',
+      placeholder: 'UBS SA',
+      id: 'personalBank',
+      currentValue: b.personalBank,
+    },
   ];
 };
 
-export default getBorrowerFormArray;
+export const getBorrowerFinanceArray = (props, id) => {
+  const b = props.borrowers.find(borr => borr._id === id);
+  const multiple = props.borrowers.length > 1;
+  // If this is the first borrower in the array of borrowers, don't ask for same address
+  const isFirst = props.borrowers[0]._id === id;
+
+  if (!b) {
+    return [];
+  }
+
+  const incomeArray = [
+    {
+      type: 'h3',
+      text: 'Revenus',
+    },
+    {
+      type: 'TextInputMoney',
+      label: 'Revenus bruts annuels',
+      placeholder: "CHF 50'000",
+      id: 'salary',
+      currentValue: b.salary,
+    },
+    // {
+    //   type: 'TextInputMoney',
+    //   label: 'Autres revenus',
+    //   placeholder: '',
+    //   id: `personalInfo.borrowers.${index}.otherIncome`,
+    //   currentValue: rp.borrowers[index].otherIncome,
+    // },
+  ];
+
+  const fortuneArray = [
+    {
+      type: 'h3',
+      text: 'Fortune',
+    },
+    // {
+    //   type: 'TextInputMoney',
+    //   label: 'Biens immobiliers existants',
+    //   placeholder: "CHF 500'000",
+    //   id: `borrowers.${index}.realEstateFortune`,
+    //   currentValue: r.borrowers[index].realEstateFortune,
+    // },
+    // {
+    //   type: 'TextInputMoney',
+    //   label: 'Cash et titres',
+    //   placeholder: "CHF 100'000",
+    //   id: `borrowers.${index}.cashAndSecurities`,
+    //   currentValue: r.borrowers[index].cashAndSecurities,
+    // },
+    // {
+    //   type: 'TextInputMoney',
+    //   label: 'Dette existante',
+    //   placeholder: "CHF 20'000",
+    //   id: `borrowers.${index}.existingDebt`,
+    //   currentValue: r.borrowers[index].existingDebt,
+    // },
+    // {
+    //   type: 'Autre fortune',
+    //   label: 'Cash et titres',
+    //   placeholder: 'CHF 100\'000',
+    //   id: `borrowers.${index}.otherFortune`,
+    //   currentValue: r.borrowers[index].otherFortune,
+    // },
+  ];
+
+  const insuranceArray = [
+    {
+      type: 'h3',
+      text: 'Assurances',
+      // showCondition: index === 0,
+    },
+    {
+      type: 'TextInputMoney',
+      label: 'LPP / 2ème Pilier',
+      placeholder: "CHF 100'000",
+      id: 'insuranceLpp',
+      currentValue: b.insuranceLpp,
+    },
+    {
+      type: 'TextInputMoney',
+      label: 'Assurance 3A',
+      placeholder: "CHF 100'000",
+      id: 'insurance3A',
+      currentValue: b.Insurance3A,
+    },
+    {
+      type: 'TextInputMoney',
+      label: 'Assurance 3B',
+      placeholder: "CHF 100'000",
+      id: 'insurance3B',
+      currentValue: b.insurance3B,
+    },
+    {
+      type: 'TextInputMoney',
+      label: 'Risque Pure',
+      placeholder: "CHF 100'000",
+      id: 'insurancePureRisk',
+      currentValue: b.insurancePureRisk,
+    },
+  ];
+
+  return incomeArray.concat([...fortuneArray, ...insuranceArray]);
+};

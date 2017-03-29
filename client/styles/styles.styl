@@ -17,9 +17,7 @@ dark-purp = #373142
 red = #E54B4B
 teal = #82D8D8
 dark-teal = #66A6A6
-// green = #CBE56C
-green = #50E3C2
-blue = #4A90E2
+green = #CBE56C
 bright-blue = #0082C8
 maroon = #6A2140
 light-red = #CA5765
@@ -28,14 +26,14 @@ orange = #E8846B
 
 
 //Custom Colors
-textcolor = #333333
+textcolor = #333333;
 backgroundcolor = #FCFCFC
-brand-primary = #4A90E2;
-brand-success = #50E3C2;
-brand-info = #9C27B0;
-brand-warning = #F1C40F;
-brand-danger = #E74C3C;
-brand-black = #0E1C2D
+brand-primary = #4990E2;
+brand-success = #6ED2B1;
+brand-warning = #F3AF50;
+brand-danger = #B73E25;
+brand-black = #051C2C;
+brand-grey = #637E94;
 
 
 z = {
@@ -248,9 +246,9 @@ $bezier = cubic-bezier(.02, .01, .47, 1);
       transition-delay: 0s !important;
 
 .dropzone
-  border-color blue
+  border-color brand-primary
   border-style dashed
-  color blue
+  color brand-primary
   &:hover
     border-style: solid;
   .filepicker-file-icon
@@ -1596,3 +1594,44 @@ ul.request-map
   form
     width: 100%;
     max-width: 400px;
+
+.borrower-page
+  header
+    .fa
+      padding: 20px;
+    h1
+      margin: 0;
+    h3
+      margin-top: 0;
+  .borrower-links
+    display: flex;
+    width: 100%;
+    max-width: 500px;
+    justify-content: center;
+    margin: 40px auto;
+    a
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      flex-basis: 120px;
+      flex-grow: 1;
+      color: grey;
+      border-right: 1px solid light-grey;
+      h4
+        color: grey;
+      &:hover
+        color: brand-primary;
+        h4
+          color: brand-primary;
+      &:last-child
+        border-right: none;
+
+.borrower-finance-page
+  .conditions
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    margin-top: 40px;

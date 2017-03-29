@@ -1,9 +1,9 @@
 .footer, .header {
-  background: #4A90E2;
-  /* fallback for old browsers #3CE2B4, #B0F6FF,#50E3C2  */
-  background: -webkit-linear-gradient(to left, #50E3C2, #4A90E2);
+  background: #4990E2;
+  /* fallback for old browsers #3CE2B4, #B0F6FF,#6ED2B1  */
+  background: -webkit-linear-gradient(to left, #6ED2B1, #4990E2);
   /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to left, #50E3C2, #4A90E2);
+  background: linear-gradient(to left, #6ED2B1, #4990E2);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   color: white !important;
 }
@@ -17,7 +17,7 @@ a:hover {
 }
 
 .ctas-button {
-  color: #4A90E2;
+  color: #4990E2;
 }
 
 *, *:before, *:after {

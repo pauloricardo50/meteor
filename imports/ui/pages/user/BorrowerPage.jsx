@@ -13,49 +13,50 @@ const styles = {
   },
   topButton: {
     marginBottom: 20,
-    alignSelf: 'flex-end',
+    alignSelf: 'flex-start',
   },
-  bottomButton: {
-    marginTop: 20,
-    alignSelf: 'flex-end',
+  link: {
+    margin: '20px 8px',
   },
 };
 
 const BorrowerPage = props => {
   const borrowerId = props.match.params.borrowerId;
   const borrower = props.borrowers.find(b => b._id === borrowerId);
+
   return (
     <div style={styles.div}>
       <RaisedButton
-        label="Ok"
-        containerElement={<Link to="/app" />}
-        primary
+        label="Retour"
+        containerElement={<Link to="/app/me" />}
         style={styles.topButton}
       />
 
-      <section className="mask1">
-        <h1>
-          {borrower.firstName || "Fiche d'Emprunteur"}
-        </h1>
+      <section className="mask1 borrower-page">
+        <header className="text-center">
+          <span className="fa fa-user-circle-o fa-5x" />
+          <h1>
+            {borrower.firstName || "Fiche d'Emprunteur"}
+          </h1>
+          <h3 className="secondary">{`${borrower.age} ans` || ''}</h3>
+        </header>
 
-        <AutoForm
-          inputs={getBorrowerFormArray(props, borrowerId)}
-          formClasses="col-sm-10 col-sm-offset-1"
-          // loanRequest={props.loanRequest}
-          borrowers={props.borrowers}
-          documentId={borrowerId}
-          updateFunc="updateBorrower"
-          pushFunc="pushBorrowerValue"
-          popFunc="popBorrowerValue"
-        />
+        <article className="borrower-links text-center">
+          <Link to={`${props.location.pathname}/info`}>
+            <span className="fa fa-user" />
+            <h4>Perso</h4>
+          </Link>
+          <Link to={`${props.location.pathname}/finance`}>
+            <span className="fa fa-money" />
+            <h4>Finances</h4>
+          </Link>
+          {/* <Link to={`${props.location.pathname}/documents`}> */}
+          <Link to={props.location.pathname}>
+            <span className="fa fa-files-o" />
+            <h4>Documents</h4>
+          </Link>
+        </article>
       </section>
-
-      <RaisedButton
-        label="Ok"
-        containerElement={<Link to="/app" />}
-        primary
-        style={styles.bottomButton}
-      />
     </div>
   );
 };

@@ -76,12 +76,14 @@ export default class RequestStepper extends Component {
                 key={item.title}
                 primaryText={item.title}
                 rightIcon={
-                  item.isDone
+                  item.isDone()
                     ? <span className="fa fa-check right-icon success" />
                     : <span className="right-icon pending" />
                 }
                 secondaryText={
-                  (item.percent !== undefined && `${item.percent * 100}%`) || ''
+                  (item.percent !== undefined &&
+                    `${Math.round(item.percent() * 1000) / 10}%`) ||
+                    ''
                 }
                 href={item.href}
                 containerElement={item.link && <Link to={item.link} />}

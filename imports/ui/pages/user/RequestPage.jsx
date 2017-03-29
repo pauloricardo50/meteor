@@ -14,7 +14,7 @@ const handleClick = props => {
   const id = props.loanRequest._id;
   const object = { 'logic.hasValidatedStructure': true };
 
-  cleanMethod('updateRequest', id, object);
+  cleanMethod('updateRequest', object, id);
 };
 
 const RequestPage = props => (

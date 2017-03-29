@@ -102,17 +102,17 @@ export const PropertySchema = new SimpleSchema({
     min: 0,
     max: 100000000,
   },
+  usageType: {
+    // primary, secondary or investment
+    type: String,
+    defaultValue: 'primary',
+  },
   investmentRent: {
     // Rent of property if investment
     type: Number,
     optional: true,
     min: 0,
     max: 100000000,
-  },
-  usageType: {
-    // primary, secondary or investment
-    type: String,
-    defaultValue: 'primary',
   },
   style: {
     // villa, flat,

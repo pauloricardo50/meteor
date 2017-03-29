@@ -28,7 +28,6 @@ export const BorrowerSchema = new SimpleSchema({
         return this.userId;
       }
     },
-    uniforms: () => null,
   },
   createdAt: {
     type: Date,
@@ -37,7 +36,6 @@ export const BorrowerSchema = new SimpleSchema({
         return new Date();
       }
     },
-    uniforms: () => null,
   },
   updatedAt: {
     type: Date,
@@ -53,7 +51,6 @@ export const BorrowerSchema = new SimpleSchema({
         return new Date();
       }
     },
-    uniforms: () => null,
   },
 
   // Personal Information
@@ -205,7 +202,6 @@ export const BorrowerSchema = new SimpleSchema({
   corporateBankExists: {
     type: Boolean,
     defaultValue: false,
-    uniforms: () => null,
   },
   corporateBank: {
     type: String,
@@ -226,20 +222,26 @@ export const BorrowerSchema = new SimpleSchema({
   files: {
     type: BorrowerFilesSchema,
     defaultValue: {},
-    uniforms: () => null,
   },
   // business logic and admin
   logic: {
     type: Object,
     defaultValue: {},
+  },
+  'logic.financeEthics': {
+    type: Boolean,
+    defaultValue: false,
     optional: true,
-    uniforms: () => null,
+  },
+  'logic.hasValidatedFinances': {
+    type: Boolean,
+    defaultValue: false,
+    optional: true,
   },
   admin: {
     // TODO
     type: Object,
     optional: true,
-    uniforms: () => null,
   },
 });
 
