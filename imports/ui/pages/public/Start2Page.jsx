@@ -208,6 +208,33 @@ export default class Start2Page extends Component {
     );
   }
 
+  getLenderCount(borrow, ratio) {
+    if (ratio > 0.38) {
+      return 0;
+    } else if (ratio > 1 / 3) {
+      return 4;
+    } else if (borrow <= 0.65) {
+      return 30;
+    } else if (borrow > 0.65 && borrow <= 0.9) {
+      return 20;
+    }
+
+    return 0;
+  }
+
+  getRatio(income, expenses, monthly) {
+    return income - expenses && monthly / ((income - expenses) / 12);
+  }
+
+  getBorrow(fortuneUsed, propAndWork, propertyValue) {
+    return (fortuneUsed &&
+      Math.max(
+        (propAndWork - (fortuneUsed - 0.05 * propertyValue)) / propAndWork,
+        0,
+      )) ||
+      0;
+  }
+
   render() {
     if (this.state.showUX) {
       return (
@@ -259,11 +286,18 @@ export default class Start2Page extends Component {
       usageType: this.state.usageType,
     };
 
+    props.ratio = this.getRatio(props.income, props.expenses, props.monthly);
+    props.borrow = this.getBorrow(
+      props.fortuneUsed,
+      props.propAndWork,
+      props.property,
+    );
+    props.lenderCount = this.getLenderCount(props.borrow, props.ratio);
+
     return (
       <section className="start2 animated fadeIn">
         <div
-          className={classNames({ form: true, isFinished: this.isFinished() })}
-        >
+          className={classNames({ form: true, isFinished: this.isFinished() })}>
           <AutoStart
             formState={s}
             formArray={getFormArray(s, props)}

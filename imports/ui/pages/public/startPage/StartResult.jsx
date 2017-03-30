@@ -38,7 +38,7 @@ const StartResult = props => {
         <CountUp
           className="custom-count"
           start={0}
-          end={20}
+          end={props.lenderCount}
           duration={3.5}
           useEasing
           separator=" "

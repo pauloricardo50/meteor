@@ -6,30 +6,8 @@ import constants from '/imports/js/config/constants';
 
 const isReady = (income, fortune, property) => property && income && fortune;
 
-const getLenderCount = (borrow, ratio) => {
-  if (ratio > 0.38) {
-    return 0;
-  } else if (ratio > 1 / 3) {
-    return 4;
-  } else if (borrow <= 0.65) {
-    return 30;
-  } else if (borrow > 0.65 && borrow <= 0.9) {
-    return 20;
-  }
-
-  return 0;
-};
-
 const getArray = props => {
   const p = props;
-  let borrow = (p.fortuneUsed &&
-    Math.max(
-      (p.propAndWork - (p.fortuneUsed - 0.05 * p.property)) / p.propAndWork,
-      0,
-    )) ||
-    0;
-  const ratio = p.income - p.expenses &&
-    props.monthly / ((p.income - p.expenses) / 12);
 
   return [
     {
@@ -118,10 +96,10 @@ const getArray = props => {
       label: p.propertyWork ? 'Emprunt/Valeur du bien' : "Emprunt/Prix d'achat",
       value: (
         <span>
-          {p.fortuneUsed && Math.round(borrow * 1000) / 10}%&nbsp;
+          {p.fortuneUsed && Math.round(p.borrow * 1000) / 10}%&nbsp;
           <span
             className={
-              borrow <= constants.maxLoan(p.usageType)
+              p.borrow <= constants.maxLoan(p.usageType)
                 ? 'fa fa-check success'
                 : 'fa fa-times error'
             }
@@ -134,12 +112,12 @@ const getArray = props => {
       label: 'Charges/Revenus Disponibles',
       value: (
         <span>
-          {p.fortuneUsed && Math.round(ratio * 1000) / 10}%&nbsp;
+          {p.fortuneUsed && Math.round(p.ratio * 1000) / 10}%&nbsp;
           <span
             className={
-              ratio <= 1 / 3
+              p.ratio <= 1 / 3
                 ? 'fa fa-check success'
-                : ratio <= 0.38
+                : p.ratio <= 0.38
                     ? 'fa fa-exclamation warning'
                     : 'fa fa-times error'
             }
@@ -224,7 +202,7 @@ const getArray = props => {
     },
     {
       label: 'Nb. de prêteurs potentiels',
-      value: getLenderCount(borrow, ratio),
+      value: p.lenderCount,
       spacing: true,
     },
   ];
@@ -234,22 +212,22 @@ const Start2Recap = props => (
   <article className="validator">
     <div className="result animated fadeIn">
       {getArray(props).map(
-        (item, i) => !item.hide &&
-        (item.title
-          ? <label className="text-center" {...item.props} key={item.label}>
-              {item.label}
-            </label>
-          : <div
-              className="fixed-size"
-              style={{
-                marginBottom: item.spacing && 16,
-                marginTop: item.spacingTop && 16,
-              }}
-              key={i}
-            >
-              <h4 className="secondary">{item.label}</h4>
-              <h3 {...item.props}>{item.value}</h3>
-            </div>),
+        (item, i) =>
+          !item.hide &&
+          (item.title
+            ? <label className="text-center" {...item.props} key={item.label}>
+                {item.label}
+              </label>
+            : <div
+                className="fixed-size"
+                style={{
+                  marginBottom: item.spacing && 16,
+                  marginTop: item.spacingTop && 16,
+                }}
+                key={i}>
+                <h4 className="secondary">{item.label}</h4>
+                <h3 {...item.props}>{item.value}</h3>
+              </div>),
       )}
     </div>
   </article>
