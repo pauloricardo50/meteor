@@ -30,7 +30,7 @@ export default class DashboardPage extends Component {
       // TODO, add a new request page for logged in users
       console.log('En développement');
     } else {
-      this.props.history.push('/');
+      this.props.history.push('/home');
     }
   }
 

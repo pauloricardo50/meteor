@@ -100,7 +100,7 @@ export default class PasswordLine extends Component {
         <RaisedButton label="Créer" primary onClick={this.handleCreate} />
       );
     } else {
-      button = <RaisedButton label="Excellent!" primary href="/" />;
+      button = <RaisedButton label="Excellent!" primary href="/home" />;
     }
 
     return (

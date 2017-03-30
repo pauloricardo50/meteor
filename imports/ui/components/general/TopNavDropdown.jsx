@@ -67,7 +67,7 @@ const TopNavDropdown = props => (
     <Divider />
     <MenuItem
       primaryText="Déconnexion"
-      onTouchTap={() => Meteor.logout(() => props.history.push('/'))}
+      onTouchTap={() => Meteor.logout(() => props.history.push('/home'))}
     />
   </IconMenu>
 );

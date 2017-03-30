@@ -12,6 +12,7 @@ import { AdminLayout } from '/imports/ui/containers/AdminContainers';
 import { PartnerLayout } from '/imports/ui/containers/PartnerContainers';
 
 // Public pages
+import PasswordPage from '/imports/ui/pages/public/PasswordPage.jsx';
 import HomePage from '/imports/ui/pages/public/HomePage.jsx';
 import Start1Page from '/imports/ui/pages/public/Start1Page.jsx';
 import { Start2Page } from '/imports/ui/containers/PublicContainers';
@@ -54,7 +55,7 @@ import PartnerRequestPage
 const PublicRoutes = props => (
   <PublicLayout {...props}>
     <Switch>
-      <Route exact path="/" component={HomePage} />
+      <Route path="/home" component={HomePage} />
       <Route path="/login" component={LoginPage} />
       <Route path="/start1/:type" component={Start1Page} />
       <Route path="/start2/:type" component={Start2Page} />
@@ -191,6 +192,7 @@ const RenderRoutes = () => (
         <Route path="/app" render={props => <UserRoutes {...props} />} />
         <Route path="/admin" render={props => <AdminRoutes {...props} />} />
         <Route path="/partner" render={props => <PartnerRoutes {...props} />} />
+        <Route exact path="/" component={PasswordPage} />
         <Route path="/" render={props => <PublicRoutes {...props} />} />
       </Switch>
     </Router>

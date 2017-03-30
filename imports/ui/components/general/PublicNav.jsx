@@ -44,7 +44,7 @@ const PublicNav = props => (
       }
       iconStyleLeft={{ display: 'none' }}
     >
-      <Link to="/" style={styles.imageDiv}>
+      <Link to="/home" style={styles.imageDiv}>
         <img src="/img/logo_black.svg" alt="e-Potek" style={styles.image} />
       </Link>
     </AppBar>

@@ -34,7 +34,7 @@ const ProfilePage = props => (
     >
       <RaisedButton
         label="Déconnexion"
-        onTouchTap={() => Meteor.logout(() => props.history.push('/'))}
+        onTouchTap={() => Meteor.logout(() => props.history.push('/home'))}
       />
     </span>
 
