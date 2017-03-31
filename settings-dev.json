@@ -6,5 +6,6 @@
   "AWSAccessKeyId": "AKIAJF43A4MFAA2ZGTEA",
   "AWSSecretAccessKey": "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",
   "AWSRegion": "eu-central-1",
-  "S3Bucket": "e-potek-dev"
+  "S3Bucket": "e-potek-dev",
+  "mailchimp": "42e9f66147485839267ee803bd5cff45-us15"
 }
