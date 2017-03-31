@@ -46,6 +46,11 @@ const inputSwitch = (singleInput, index, parentProps) => {
     return null;
   }
 
+  if (singleInput.required !== false) {
+    // Add a required star to every label, except if it isn't required
+    props.label = `${singleInput.label} *`;
+  }
+
   switch (singleInput.type) {
     case 'TextInput':
       return <TextInput multiLine={false} {...props} />;

@@ -6,6 +6,7 @@ import {
   startAuction,
   pushRequestValue,
   popRequestValue,
+  incrementStep,
 } from './loanrequests/methods';
 import { insertOffer, updateOffer } from './offers/methods';
 import { insertBorrower, updateBorrower } from './borrowers/methods';
@@ -20,6 +21,7 @@ const methods = {
   updateOffer,
   insertBorrower,
   updateBorrower,
+  incrementStep,
 };
 
 // The callback passed to all methods, shows a Bert error when it happens

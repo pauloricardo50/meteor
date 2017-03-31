@@ -98,9 +98,7 @@ export default class RequestStepper extends Component {
     const currentStep = this.props.loanRequest.logic.step;
 
     // For the last step, do not show a continue button
-    if (
-      step.nb === getSteps(this.props.loanRequest, this.props.borrowers).length
-    ) {
+    if (step === 3) {
       return null;
     }
 
@@ -129,8 +127,8 @@ export default class RequestStepper extends Component {
     if (currentStep === step && currentStep < 3) {
       cleanMethod(
         'incrementStep',
-        this.props.loanRequest._id,
         null,
+        this.props.loanRequest._id,
         error => !error && this.setState({ activeStep: step + 1 }),
         true,
       );

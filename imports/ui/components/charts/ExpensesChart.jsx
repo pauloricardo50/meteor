@@ -7,15 +7,16 @@ import {
   getAmortization,
 } from '/imports/js/helpers/finance-math';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
+import colors from '/imports/js/config/colors';
 
 const styles = {
   container: {},
 };
 
-const colors = {
-  interest: '#56E39F',
-  amortization: '#59C9A5',
-  maintenance: '#5B6C5D',
+const chartColors = {
+  interest: colors.charts[1],
+  amortization: colors.charts[3],
+  maintenance: colors.charts[5],
 };
 
 var timeout;
@@ -199,14 +200,19 @@ export default class ExpensesChart extends Component {
           ],
         },
       ],
+      colors: [
+        chartColors.interest,
+        chartColors.amortization,
+        chartColors.maintenance,
+      ],
+      lang: {
+        thousandsSep: "'",
+        decimalPoint: ',',
+      },
       credits: {
         enabled: false,
       },
     };
-
-    Highcharts.setOptions({
-      colors: [colors.interest, colors.amortization, colors.maintenance],
-    });
 
     Highcharts.getOptions().colors = Highcharts.map(
       Highcharts.getOptions().colors,

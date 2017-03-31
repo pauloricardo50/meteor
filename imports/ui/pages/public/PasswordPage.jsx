@@ -15,6 +15,7 @@ const PasswordPage = props => (
       href="http://eepurl.com/cI56Sn"
       primary
       label="M'avertir du lancement"
+      keyboardFocused
     />
     <BetaAccess {...props} />
   </main>

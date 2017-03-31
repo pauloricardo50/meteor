@@ -1,7 +1,7 @@
-const validateStep1 = () => false;
-const validateStep2 = () => false;
-const validateStep3 = () => false;
-const validateStep4 = () => false;
+const validateStep1 = () => true;
+const validateStep2 = () => true;
+const validateStep3 = () => true;
+const validateStep4 = () => true;
 
 const validationArray = [
   validateStep1,

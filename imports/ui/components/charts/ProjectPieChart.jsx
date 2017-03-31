@@ -9,13 +9,14 @@ import {
 } from '/imports/js/helpers/requestFunctions';
 import constants from '/imports/js/config/constants';
 import { getWidth } from '/imports/js/helpers/browserFunctions';
+import colors from '/imports/js/config/colors';
 
-const colors = {
-  frais1: '#ABCCF2',
-  frais2: '#6888AD',
-  fortune: '#5395E0',
-  insuranceFortune: '#3A72B2',
-  loan: '#287EE0',
+const chartColors = {
+  frais1: colors.charts[0],
+  frais2: colors.charts[1],
+  fortune: colors.charts[2],
+  insuranceFortune: colors.charts[3],
+  loan: colors.charts[5],
 };
 
 var timeout;
@@ -36,6 +37,7 @@ export default class ProjectPieChart extends Component {
 
   createChart() {
     const r = this.props.loanRequest;
+    const total = getProjectValue(r);
 
     const options = {
       chart: {
@@ -45,11 +47,11 @@ export default class ProjectPieChart extends Component {
         text: 'Votre Projet',
       },
       subtitle: {
-        text: `CHF ${toMoney(getProjectValue(r))}`,
+        text: `CHF ${toMoney(total)}`,
       },
       tooltip: {
         formatter() {
-          return `<span style="color:${this.color}">\u25CF</span> ${this.key}<br /> <b>CHF ${toMoney(Math.round(this.y))}</b>`;
+          return `<span style="color:${this.color}">\u25CF</span> ${this.key}<br /> <b>CHF ${toMoney(Math.round(this.y))}</b><br />${Math.round(1000 * this.y / total) / 10}%`;
         },
       },
       plotOptions: {
@@ -106,23 +108,23 @@ export default class ProjectPieChart extends Component {
           ],
         },
       ],
+      colors: [
+        chartColors.loan,
+        chartColors.insuranceFortune,
+        chartColors.fortune,
+        chartColors.frais1,
+        chartColors.frais2,
+      ],
+      lang: {
+        thousandsSep: "'",
+        decimalPoint: ',',
+      },
       credits: {
         enabled: false,
       },
-      lang: {
-        thousandsSep: "'",
-      },
     };
 
-    Highcharts.setOptions({
-      colors: [
-        colors.loan,
-        colors.insuranceFortune,
-        colors.fortune,
-        colors.frais1,
-        colors.frais2,
-      ],
-    });
+    Highcharts.setOptions({});
 
     Highcharts.getOptions().colors = Highcharts.map(
       Highcharts.getOptions().colors,

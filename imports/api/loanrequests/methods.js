@@ -4,6 +4,7 @@ import { check } from 'meteor/check';
 import moment from 'moment';
 
 import LoanRequests from './loanrequests';
+import stepValidation from '/imports/js/helpers/stepValidation';
 
 export const insertRequest = new ValidatedMethod({
   name: 'loanrequests.insert',
@@ -32,6 +33,24 @@ export const updateRequest = new ValidatedMethod({
     return LoanRequests.update(id, {
       $set: object,
     });
+  },
+});
+
+// Increments the step of the request, if conditions are true
+export const incrementStep = new ValidatedMethod({
+  name: 'loanRequests.incrementStep',
+  validate({ id }) {
+    check(id, String);
+  },
+  run({ id }) {
+    const loanRequest = LoanRequests.findOne({ _id: id });
+    const currentStep = loanRequest.logic.step;
+
+    if (stepValidation(currentStep)) {
+      LoanRequests.update(id, {
+        $set: { 'logic.step': currentStep + 1 },
+      });
+    }
   },
 });
 

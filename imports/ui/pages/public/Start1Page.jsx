@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import queryString from 'query-string';
 import classnames from 'classnames';
 
+import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import { toNumber, toMoney } from '/imports/js/helpers/conversionFunctions';
@@ -314,7 +315,7 @@ export default class Start1Page extends Component {
                     )}
                 />
               ))}
-              <RaisedButton
+              <FlatButton
                 label="Recommencer"
                 onTouchTap={this.handleReset}
                 className="reset-button"
@@ -358,6 +359,8 @@ export default class Start1Page extends Component {
               primary={this.isValid()}
               containerElement={<Link to={this.getUrl()} />}
               id="ok"
+              style={{ height: 'unset' }}
+              overlayStyle={{ padding: 20 }}
             />
           </div>
         </article>

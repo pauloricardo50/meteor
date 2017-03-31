@@ -56,13 +56,13 @@ export default class NewRequestModal extends Component {
 
     return (
       <Dialog
-        title="Entrez le nom de la rue et le numéro"
+        title="Donnez un nom à votre Projet"
         actions={button}
         modal
         open={this.state.open}
       >
         <p className="secondary">
-          Ça nous permet de donner un nom à votre projet
+          Ça nous permettra de l'identifier
         </p>
 
         <form onSubmit={this.handleSubmit}>
@@ -70,7 +70,7 @@ export default class NewRequestModal extends Component {
             <TextField
               name="address"
               hintText="Rue du Pré 2"
-              floatingLabelText="Adresse du bien immobilier"
+              floatingLabelText="Nom du projet"
               autoFocus
               value={this.state.value}
               onChange={this.handleChange}

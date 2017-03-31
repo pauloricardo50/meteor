@@ -39,7 +39,7 @@ const StartResult = props => {
           className="custom-count"
           start={0}
           end={props.lenderCount}
-          duration={3.5}
+          duration={5}
           useEasing
           separator=" "
           decimal=","

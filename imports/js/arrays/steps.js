@@ -2,7 +2,7 @@ import React from 'react';
 
 const getSteps = (loanRequest, borrowers) => {
   const multiple = borrowers && borrowers.length > 1;
-  return [
+  const steps = [
     // Step 1
     {
       nb: 1,
@@ -99,6 +99,8 @@ const getSteps = (loanRequest, borrowers) => {
       description: 'Félicitations, vous êtes arrivé au bout, profitez de votre nouvelle propriété comme il se doit.',
     },
   ];
+
+  return steps.slice(0, loanRequest.logic.step + 1);
 };
 
 export default getSteps;
