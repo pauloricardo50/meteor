@@ -30,18 +30,19 @@ const PropertyPage = props => (
       style={styles.topButton}
     />
 
-    <section className="mask1">
+    <section className="mask1 property-page">
       <h1>
         {props.borrowers.length > 1
           ? 'Notre bien immobilier'
           : 'Mon bien immobilier'}
       </h1>
 
+      <div className="description">
+        <p>Les champs marqués avec un * sont obligatoires.</p>
+      </div>
+
       <AutoForm
         inputs={PropertyFormArray(props)}
-        formClasses="col-sm-10 col-sm-offset-1"
-        loanRequest={props.loanRequest}
-        borrowers={props.borrowers}
         documentId={props.loanRequest._id}
         updateFunc="updateRequest"
         pushFunc="pushRequestValue"

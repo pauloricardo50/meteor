@@ -4,7 +4,8 @@ import Scroll from 'react-scroll';
 import CountUp from 'react-countup';
 
 import RaisedButton from 'material-ui/RaisedButton';
-import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
+import ExpensesChartInterests
+  from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
 import Start2Recap from './Start2Recap.jsx';
 
 import constants from '/imports/js/config/constants';
@@ -54,8 +55,8 @@ const StartResult = props => {
           <h3>
             Votre emprunt: <span className="active">CHF {toMoney(loan)}</span>
           </h3>
-          <ExpensesChart
-            interests={loan * constants.interestsReal / 12}
+          <ExpensesChartInterests
+            loan={loan}
             amortizing={loan * constants.amortizing / 12}
             maintenance={props.propAndWork * constants.maintenanceReal / 12}
           />

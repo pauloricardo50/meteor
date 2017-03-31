@@ -38,10 +38,13 @@ const BorrowerInfoPage = props => {
           {borrower.firstName || "Fiche d'Emprunteur"}
         </h1>
 
+        <div className="description">
+          <p>Les champs marqués avec un * sont obligatoires.</p>
+        </div>
+
         <AutoForm
           inputs={getBorrowerInfoArray(props, borrowerId)}
-          formClasses="col-sm-10 col-sm-offset-1"
-          // loanRequest={props.loanRequest}
+          formClasses="user-form"
           borrowers={props.borrowers}
           documentId={borrowerId}
           updateFunc="updateBorrower"

@@ -104,7 +104,8 @@ export default class ExpensesChart extends Component {
       n.interests !== p.interests ||
       n.amortization !== p.amortization ||
       n.maintenance !== p.maintenance ||
-      n.loanRequest !== p.loanRequest
+      n.loanRequest !== p.loanRequest ||
+      n.interestRate !== p.interestRate
     ) {
       if (this.props.loanRequest) {
         this.setState(
@@ -207,7 +208,6 @@ export default class ExpensesChart extends Component {
       ],
       lang: {
         thousandsSep: "'",
-        decimalPoint: ',',
       },
       credits: {
         enabled: false,
@@ -277,6 +277,7 @@ ExpensesChart.defaultProps = {
   interests: 0,
   amortizing: 0,
   maintenance: 0,
+  interestRate: 0.015,
 };
 
 ExpensesChart.propTypes = {
@@ -284,4 +285,5 @@ ExpensesChart.propTypes = {
   interests: PropTypes.number,
   amortizing: PropTypes.number,
   maintenance: PropTypes.number,
+  interestRate: PropTypes.number,
 };

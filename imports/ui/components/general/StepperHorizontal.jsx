@@ -1,9 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
-
 import { Step, Stepper, StepButton } from 'material-ui/Stepper';
 import ExpandTransition from 'material-ui/internal/ExpandTransition';
-
 
 export default class StepperHorizontal extends Component {
   constructor(props) {
@@ -16,37 +14,29 @@ export default class StepperHorizontal extends Component {
     this.handleNext = this.handleNext.bind(this);
   }
 
-
   setStep(i) {
     if (i !== this.props.activeStep) {
       if (!this.state.loading) {
         this.dummyAsync(() => {
-          this.setState({ loading: false }, () =>
-            this.props.setStep(i),
-          );
+          this.setState({ loading: false }, () => this.props.setStep(i));
         });
       }
     }
   }
 
-
   handleNext(step, callback) {
     if (!this.state.loading) {
       this.dummyAsync(() => {
-        this.setState({ loading: false }, () =>
-          callback(),
-        );
+        this.setState({ loading: false }, () => callback());
       });
     }
   }
-
 
   dummyAsync(callback) {
     this.setState({ loading: true }, () => {
       this.asyncTimer = setTimeout(callback, 350);
     });
   }
-
 
   render() {
     return (
@@ -56,7 +46,7 @@ export default class StepperHorizontal extends Component {
           orientation="horizontal"
           linear={false}
         >
-          {this.props.steps.map((step, i) =>
+          {this.props.steps.map((step, i) => (
             <Step
               key={step.nb}
               disabled={this.props.currentStep < i}
@@ -65,13 +55,16 @@ export default class StepperHorizontal extends Component {
               <StepButton onTouchTap={() => this.setStep(i)}>
                 {step.title}
               </StepButton>
-            </Step>,
-          )}
+            </Step>
+          ))}
         </Stepper>
         <ExpandTransition loading={this.state.loading} open>
           <div style={{ margin: '0 16px', overflow: 'hidden' }}>
             {this.props.renderStep(this.props.steps[this.props.activeStep])}
-            {this.props.renderStepActions(this.props.activeStep, this.handleNext)}
+            {this.props.renderStepActions(
+              this.props.activeStep,
+              this.handleNext,
+            )}
           </div>
         </ExpandTransition>
       </div>

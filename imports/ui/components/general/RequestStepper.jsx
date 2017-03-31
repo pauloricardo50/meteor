@@ -85,8 +85,8 @@ export default class RequestStepper extends Component {
                     `${Math.round(item.percent() * 1000) / 10}%`) ||
                     ''
                 }
-                href={item.href}
                 containerElement={item.link && <Link to={item.link} />}
+                style={{ fontSize: 18 }}
               />
             ))}
           </List>}

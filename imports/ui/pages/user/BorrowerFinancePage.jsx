@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
@@ -17,11 +18,14 @@ const styles = {
   },
   topButton: {
     marginBottom: 20,
-    alignSelf: 'flex-end',
+    alignSelf: 'flex-start',
   },
   bottomButton: {
     marginTop: 20,
     alignSelf: 'flex-end',
+  },
+  checkbox: {
+    textAlign: 'unset',
   },
 };
 
@@ -33,12 +37,13 @@ const handleCheck = (event, isInputChecked, id) => {
   cleanMethod('updateBorrower', object, id);
 };
 
-const handleClick = (event, id) => {
+const handleClick = (event, id, props) => {
   // Save data to DB
   const object = {};
   object['logic.hasValidatedFinances'] = true;
 
-  cleanMethod('updateBorrower', object, id);
+  cleanMethod('updateBorrower', object, id, () =>
+    Meteor.setTimeout(() => props.history.push('/app'), 300));
 };
 
 const BorrowerFinancePage = props => {
@@ -47,9 +52,8 @@ const BorrowerFinancePage = props => {
   return (
     <div style={styles.div}>
       <RaisedButton
-        label="Ok"
-        containerElement={<Link to={`/app/borrowers/${borrowerId}`} />}
-        primary
+        label="Retour"
+        containerElement={<Link to={'/app'} />}
         style={styles.topButton}
       />
 
@@ -58,10 +62,12 @@ const BorrowerFinancePage = props => {
           {borrower.firstName || "Fiche d'Emprunteur"}
         </h1>
 
+        <div className="description">
+          <p>Les champs marqués avec un * sont obligatoires.</p>
+        </div>
+
         <AutoForm
           inputs={getBorrowerFinanceArray(props, borrowerId)}
-          formClasses="col-sm-10 col-sm-offset-1"
-          // loanRequest={props.loanRequest}
           borrowers={props.borrowers}
           documentId={borrowerId}
           updateFunc="updateBorrower"
@@ -70,12 +76,14 @@ const BorrowerFinancePage = props => {
         />
 
         <div className="conditions">
-          <Checkbox
-            checked={borrower.logic.financeEthics}
-            label="Les informations entrées ci-dessus sont exhaustives et correctes"
-            style={styles.checkbox}
-            onCheck={(e, isChecked) => handleCheck(e, isChecked, borrowerId)}
-          />
+          <span>
+            <Checkbox
+              checked={borrower.logic.financeEthics}
+              label="Les informations entrées ci-dessus sont exhaustives et correctes"
+              style={styles.checkbox}
+              onCheck={(e, isChecked) => handleCheck(e, isChecked, borrowerId)}
+            />
+          </span>
           <RaisedButton
             label="Valider mes finances"
             onTouchTap={e => handleClick(e, borrowerId)}
@@ -85,13 +93,6 @@ const BorrowerFinancePage = props => {
           />
         </div>
       </section>
-
-      <RaisedButton
-        label="Ok"
-        containerElement={<Link to={`/app/borrowers/${borrowerId}`} />}
-        primary
-        style={styles.bottomButton}
-      />
     </div>
   );
 };

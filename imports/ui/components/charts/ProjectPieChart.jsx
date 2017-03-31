@@ -117,7 +117,6 @@ export default class ProjectPieChart extends Component {
       ],
       lang: {
         thousandsSep: "'",
-        decimalPoint: ',',
       },
       credits: {
         enabled: false,

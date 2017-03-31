@@ -18,6 +18,9 @@ import constants from '/imports/js/config/constants';
 import StartLine from './startPage/StartLine.jsx';
 import StartRecap from './startPage/StartRecap.jsx';
 import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
+import ExpensesChartInterests
+  from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
+
 import Accordion from '/imports/ui/components/general/Accordion.jsx';
 
 const getArray = (income, fortune, property, borrow, ratio, propertyAuto) => {
@@ -344,8 +347,13 @@ export default class Start1Page extends Component {
                   CHF {toMoney(Math.round(loan / 1000) * 1000)}
                 </span>
               </h3>
-              <ExpensesChart
+              {/* <ExpensesChart
                 interests={loan * constants.interestsReal / 12 || undefined}
+                amortizing={loan * constants.amortizing / 12 || 0}
+                maintenance={property * constants.maintenanceReal / 12 || 0}
+              /> */}
+              <ExpensesChartInterests
+                loan={loan || undefined}
                 amortizing={loan * constants.amortizing / 12 || 0}
                 maintenance={property * constants.maintenanceReal / 12 || 0}
               />

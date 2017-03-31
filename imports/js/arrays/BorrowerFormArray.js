@@ -61,6 +61,7 @@ export const getBorrowerInfoArray = (props, id) => {
       id: 'address2',
       currentValue: b.address2,
       disabled: b.sameAddress,
+      required: false,
     },
     {
       type: 'TextInputNumber',
@@ -92,6 +93,7 @@ export const getBorrowerInfoArray = (props, id) => {
       id: 'residencyPermit',
       currentValue: b.residencyPermit,
       info: "Si vous n'êtes pas Suisse",
+      required: false,
     },
     {
       type: 'TextInputNumber',
