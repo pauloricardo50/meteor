@@ -34,6 +34,7 @@ export default class ExpensesChartInterests extends React.Component {
           value={this.state.selectValue}
           onChange={this.handleChange}
           style={{ textAlign: 'left' }}
+          autoWidth
         >
           <MenuItem value={0} primaryText="Libor moyen: 1.00%" />
           <MenuItem value={1} primaryText="5 ans moyen: 1.00%" />

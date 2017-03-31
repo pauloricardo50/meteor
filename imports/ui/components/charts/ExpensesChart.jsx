@@ -50,14 +50,17 @@ const update = that => {
           {
             name: 'Intérêts',
             y: that.state.interests,
+            id: 'interests',
           },
           {
             name: 'Amortissement',
             y: that.state.amortization,
+            id: 'amortization',
           },
           {
             name: "Charges d'Entretien",
             y: that.state.maintenance,
+            id: 'maintenance',
           },
         ],
       },
@@ -136,6 +139,9 @@ export default class ExpensesChart extends Component {
     const options = {
       chart: {
         type: 'pie',
+        animation: {
+          duration: 400,
+        },
       },
       title: {
         text: `CHF ${toMoney(Math.round(total))}<br>par mois*`,
@@ -189,14 +195,17 @@ export default class ExpensesChart extends Component {
             {
               name: 'Intérêts',
               y: this.state.interests,
+              id: 'interests',
             },
             {
               name: 'Amortissement',
               y: this.state.amortization,
+              id: 'amortization',
             },
             {
               name: "Charges d'Entretien",
               y: this.state.maintenance,
+              id: 'maintenance',
             },
           ],
         },

@@ -1,3 +1,4 @@
+import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
 import { toMoney } from '../helpers/conversionFunctions';
@@ -31,7 +32,16 @@ const getAcquisitionArray = (state, props) => [
     condition: state.knowsProperty,
     id: 'notaryFeesAgreed',
     type: 'buttons',
-    text1: `A ce prix s'ajoutent les frais de notaire de CHF ${toMoney(0.05 * state.propertyValue)}.`,
+    text1: (
+      <span>
+        A ce prix s'ajoutent les frais de notaire de
+        {' '}
+        <span className="active">
+          CHF {toMoney(0.05 * state.propertyValue)}
+        </span>
+        .
+      </span>
+    ),
     hideResult: true,
     buttons: [
       {
@@ -69,7 +79,16 @@ const getAcquisitionArray = (state, props) => [
     condition: state.propertyWork !== undefined && state.propertyWork !== 0,
     id: 'projectAgreed',
     type: 'buttons',
-    text1: `Le coût de votre projet sera donc de CHF ${toMoney(1.05 * state.propertyValue + (state.propertyWork || 0))}.`,
+    text1: (
+      <span>
+        Le coût de votre projet sera donc de
+        {' '}
+        <span className="active">
+          CHF {toMoney(1.05 * state.propertyValue + (state.propertyWork || 0))}
+        </span>
+        .
+      </span>
+    ),
     hideResult: true,
     buttons: [
       {
@@ -153,7 +172,11 @@ const getAcquisitionArray = (state, props) => [
     id: 'income',
     type: 'multipleInput',
     firstMultiple: true,
-    text1: 'Quels est votre salaire annuel brut?',
+    text1: (
+      <span>
+        Quels est votre salaire <span className="bold">annuel</span> brut?
+      </span>
+    ),
     money: true,
     zeroAllowed: true,
   },
@@ -285,7 +308,13 @@ const getAcquisitionArray = (state, props) => [
     id: 'expensesArray',
     existId: 'expensesExist',
     type: 'arrayInput',
-    text1: 'Donnez-nous la liste de vos charges annuelles',
+    text1: (
+      <span>
+        Donnez-nous la liste de vos charges
+        {' '}
+        <span className="bold">annuelles</span>
+      </span>
+    ),
     inputs: [
       {
         id: 'description',
@@ -431,7 +460,15 @@ const getErrorArray = (state, props) => [
         props.insuranceFortune >= 0.1 * props.propAndWork),
     id: 'error',
     type: 'buttons',
-    text1: `Vous devez avoir au moins CHF ${toMoney(0.15 * state.propertyValue)} de fortune (sans compter votre prévoyance) pour ce projet, vous pouvez modifier les valeurs en haut.`,
+    text1: (
+      <span>
+        Vous devez avoir au moins
+        {' '}
+        <span className="body">CHF {toMoney(0.15 * state.propertyValue)}</span>
+        {' '}
+        de fortune (sans compter votre prévoyance) pour ce projet, vous pouvez modifier les valeurs en haut.
+      </span>
+    ),
     buttons: [
       {
         id: false,
@@ -444,7 +481,15 @@ const getErrorArray = (state, props) => [
     condition: props.fortune + props.insuranceFortune < props.minFortune,
     id: 'error',
     type: 'buttons',
-    text1: `Vous devez avoir au moins CHF ${toMoney(props.minFortune)} de fonds propres pour ce projet, vous pouvez modifier les valeurs en haut.`,
+    text1: (
+      <span>
+        Vous devez avoir au moins
+        {' '}
+        <span className="body">CHF {toMoney(props.minFortune)}</span>
+        {' '}
+        de fonds propres pour ce projet, vous pouvez modifier les valeurs en haut.
+      </span>
+    ),
     buttons: [
       {
         id: false,
@@ -461,7 +506,20 @@ const getFinalArray = (state, props) => [
     id: 'fortuneUsed',
     type: 'sliderInput',
     // text1: `Vous avez CHF ${toMoney(props.fortune + props.insuranceFortune)} de fonds propres au total, combien voulez-vous allouer à ce projet? Vous devez mettre au minimum ${state.propertyWorkExists ? `les frais de notaire ainsi que ${state.usageType === 'secondary' ? 30 : 20}% du prix d'achat + les travaux` : `${state.usageType === 'secondary' ? 35 : 25}% du projet`}, soit CHF ${toMoney(props.minFortune)}.`,
-    text1: `Vous avez CHF ${toMoney(props.fortune + props.insuranceFortune)} de fonds propres au total, combien voulez-vous allouer à ce projet? Au minimum CHF ${toMoney(props.minFortune)}.`,
+    text1: (
+      <span>
+        Vous avez
+        {' '}
+        <span className="active">
+          CHF {toMoney(props.fortune + props.insuranceFortune)}
+        </span>
+        {' '}
+        de fonds propres au total, combien voulez-vous allouer à ce projet? Au minimum
+        {' '}
+        <span className="active">CHF {toMoney(props.minFortune)}</span>
+        .
+      </span>
+    ),
     question: true,
     money: true,
     sliderMin: props.minFortune,
@@ -472,7 +530,17 @@ const getFinalArray = (state, props) => [
       props.monthly / ((props.income - props.expenses) / 12)) > 0.38,
     id: 'error',
     type: 'buttons',
-    text1: `Vos revenus disponibles (CHF ${toMoney((props.income - props.expenses) / 12)}/mois) sont insuffisants pour couvrir les coûts mensuels de ce projet (CHF ${toMoney(props.monthly)}) sans représenter plus de 38% de ces revenus, vous pouvez modifier les valeurs en haut.`,
+    text1: (
+      <span>
+        Vos revenus disponibles (
+        <span className="body">
+          CHF {toMoney((props.income - props.expenses) / 12)}
+        </span>
+        /mois) sont insuffisants pour couvrir les coûts mensuels de ce projet (
+        <span className="body">CHF {toMoney(props.monthly)}</span>
+        ) sans représenter plus de 38% de ces revenus, vous pouvez modifier les valeurs en haut.
+      </span>
+    ),
     buttons: [
       {
         id: false,
@@ -496,7 +564,7 @@ const getFinalArray = (state, props) => [
     condition: state.type === 'test' || state.fortuneUsed >= props.minFortune,
     id: 'finalized',
     type: 'buttons',
-    text1: 'Vous-êtes arrivé au bout, bien joué!',
+    text1: 'Vous-êtes arrivé au bout, formidable!',
     hideResult: true,
     buttons: [
       {

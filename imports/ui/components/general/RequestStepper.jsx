@@ -82,7 +82,7 @@ export default class RequestStepper extends Component {
                 }
                 secondaryText={
                   (item.percent !== undefined &&
-                    `${Math.round(item.percent() * 1000) / 10}%`) ||
+                    `Progrès: ${Math.round(item.percent() * 1000) / 10}%`) ||
                     ''
                 }
                 containerElement={item.link && <Link to={item.link} />}
