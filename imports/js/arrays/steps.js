@@ -7,6 +7,7 @@ const getSteps = (loanRequest, borrowers) => {
     {
       nb: 1,
       title: 'Préparez votre dossier',
+      subtitle: '15 minutes',
       items: [
         {
           title: 'Passez le test',
@@ -56,6 +57,7 @@ const getSteps = (loanRequest, borrowers) => {
     {
       nb: 2,
       title: 'Prenez les grandes décisions',
+      subtitle: loanRequest.logic.step < 1 ? 'Dans 3 jours' : '30 minutes',
       items: [
         {
           title: 'Validez vos fonds propres',
@@ -80,6 +82,7 @@ const getSteps = (loanRequest, borrowers) => {
     {
       nb: 3,
       title: 'Finalisez votre demande',
+      subtitle: loanRequest.logic.step < 2 ? 'Dans 4 jours' : '45 minutes',
       items: [
         {
           title: 'Uploadez les documents nécessaires',

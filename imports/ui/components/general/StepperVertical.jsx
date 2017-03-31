@@ -1,11 +1,6 @@
 import React, { PropTypes } from 'react';
 
-import {
-  Step,
-  Stepper,
-  StepButton,
-  StepContent,
-} from 'material-ui/Stepper';
+import { Step, Stepper, StepButton, StepContent } from 'material-ui/Stepper';
 
 const StepperVertical = props => (
   <div className="vertical">
@@ -14,25 +9,37 @@ const StepperVertical = props => (
       orientation={'vertical'}
       linear={false}
     >
-      {props.steps.map((step, i) =>
+      {props.steps.map((step, i) => (
         <Step
           key={step.nb}
           disabled={props.currentStep < i}
           completed={props.currentStep > i}
         >
           <StepButton onTouchTap={() => props.setStep(i)}>
-            {step.title}
+            <span
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                height: step.subtitle && '36px',
+                lineHeight: step.subtitle && '18px',
+              }}
+            >
+              {step.title}
+              {step.subtitle && <br />}
+              {step.subtitle &&
+                <span className="secondary">{step.subtitle}</span>}
+            </span>
           </StepButton>
           <StepContent>
             {props.renderStep(step)}
             {props.renderStepActions(i)}
           </StepContent>
-        </Step>,
-      )}
+        </Step>
+      ))}
     </Stepper>
   </div>
 );
-
 
 StepperVertical.propTypes = {
   currentStep: PropTypes.number.isRequired,

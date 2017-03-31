@@ -53,7 +53,20 @@ export default class StepperHorizontal extends Component {
               completed={this.props.currentStep > i}
             >
               <StepButton onTouchTap={() => this.setStep(i)}>
-                {step.title}
+                <span
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    height: step.subtitle && '36px',
+                    lineHeight: step.subtitle && '18px',
+                  }}
+                >
+                  {step.title}
+                  {step.subtitle && <br />}
+                  {step.subtitle &&
+                    <span className="secondary">{step.subtitle}</span>}
+                </span>
               </StepButton>
             </Step>
           ))}

@@ -77,7 +77,10 @@ export default class RequestStepper extends Component {
                 primaryText={item.title}
                 rightIcon={
                   item.isDone()
-                    ? <span className="fa fa-check right-icon success" />
+                    ? <span
+                        className="fa fa-check right-icon success"
+                        style={{ fontSize: 16 }}
+                      />
                     : <span className="right-icon pending" />
                 }
                 secondaryText={
