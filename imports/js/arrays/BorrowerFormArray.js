@@ -1,10 +1,10 @@
 import React from 'react';
 
-export const getBorrowerInfoArray = (props, id) => {
-  const b = props.borrowers.find(borr => borr._id === id);
-  const multiple = props.borrowers.length > 1;
+export const getBorrowerInfoArray = (borrowers, id) => {
+  const b = borrowers.find(borr => borr._id === id);
+  const multiple = borrowers.length > 1;
   // If this is the first borrower in the array of borrowers, don't ask for same address
-  const isFirst = props.borrowers[0]._id === id;
+  const isFirst = borrowers[0]._id === id;
 
   if (!b) {
     return [];
@@ -39,7 +39,7 @@ export const getBorrowerInfoArray = (props, id) => {
     },
     {
       type: 'RadioInput',
-      label: `Utiliser la même adresse que ${props.borrowers[0].firstName || 'Emprunteur 1'}?`,
+      label: `Utiliser la même adresse que ${borrowers[0].firstName || 'Emprunteur 1'}?`,
       radioLabels: ['Oui', 'Non'],
       values: [true, false],
       id: 'sameAddress',

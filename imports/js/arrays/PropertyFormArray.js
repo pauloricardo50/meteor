@@ -1,8 +1,7 @@
 import React from 'react';
 
-const getPropertyArray = props => {
-  const r = props.loanRequest;
-  const borrowers = props.borrowers;
+const getPropertyArray = (loanRequest, borrowers) => {
+  const r = loanRequest;
 
   return [
     {
@@ -86,6 +85,7 @@ const getPropertyArray = props => {
       placeholder: '',
       id: 'property.address2',
       currentValue: r.property.address2,
+      required: false,
     },
     {
       type: 'TextInputNumber',
@@ -114,7 +114,7 @@ const getPropertyArray = props => {
     },
     {
       type: 'TextInputNumber',
-      label: 'Année de construction',
+      label: 'Année de rénovation',
       placeholder: '2010',
       id: 'property.renovationYear',
       currentValue: r.property.renovationYear,

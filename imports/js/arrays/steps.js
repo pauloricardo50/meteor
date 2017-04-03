@@ -1,5 +1,8 @@
 import React from 'react';
 
+import getPropertyArray from './PropertyFormArray';
+import { getBorrowerInfoArray } from './BorrowerFormArray';
+
 const getSteps = (loanRequest, borrowers) => {
   const multiple = borrowers && borrowers.length > 1;
   const steps = [
@@ -35,7 +38,7 @@ const getSteps = (loanRequest, borrowers) => {
         {
           title: 'Décrivez-nous votre propriété',
           link: `/app/requests/${loanRequest._id}/property`,
-          percent: () => propertyPercent(loanRequest),
+          percent: () => propertyPercent(loanRequest, borrowers),
           isDone() {
             return this.percent() >= 1;
           },
@@ -111,43 +114,35 @@ export default getSteps;
 const personalInfoPercent = borrowers => {
   let a = [];
   borrowers.forEach(b => {
-    a.push(b.firstName);
-    a.push(b.lastName);
-    a.push(b.gender);
-    a.push(b.age);
-    if (!b.sameAddress) {
-      a.push(b.address1);
-      a.push(b.zipCode);
-      a.push(b.city);
-    }
-    a.push(b.citizenships);
-    a.push(b.birthPlace);
-    a.push(b.civilStatus);
-    a.push(b.company);
-    a.push(b.personalBank);
+    const formArray = getBorrowerInfoArray(borrowers, b._id);
+    formArray.forEach(i => {
+      if (
+        (i.showCondition === undefined || i.showCondition === true) &&
+        i.required !== false &&
+        i.type !== 'h3'
+      ) {
+        a.push(i.currentValue);
+      }
+    });
   });
 
   return getPercent(a);
 };
 
-const propertyPercent = loanRequest => {
+const propertyPercent = (loanRequest, borrowers) => {
   const p = loanRequest.property;
   let a = [];
-  a.push(p.value);
-  a.push(p.propertyWork);
-  a.push(p.usageType);
-  if (p.usageType === 'investment') {
-    a.push(p.investmentRent);
-  }
-  a.push(p.style);
-  if (p.style === 'villa') {
-  } else if (p.style === 'flat') {
-  }
-  a.push(p.address1);
-  a.push(p.zipCode);
-  a.push(p.city);
-  a.push(p.insideArea);
-  a.push(p.landArea);
+  const formArray = getPropertyArray(loanRequest, borrowers);
+
+  formArray.forEach(i => {
+    if (
+      (i.showCondition === undefined || i.showCondition === true) &&
+      i.required !== false &&
+      i.type !== 'h3'
+    ) {
+      a.push(i.currentValue);
+    }
+  });
 
   return getPercent(a);
 };
