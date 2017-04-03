@@ -31,7 +31,7 @@ export default class RadioInput extends Component {
     if (this.props.currentValue !== undefined) {
       this.state = { value: this.props.currentValue };
     } else {
-      this.state = { value: this.props.values[0] };
+      this.state = { value: this.props.options[0].id };
     }
 
     this.setValue = this.setValue.bind(this);
@@ -75,10 +75,10 @@ export default class RadioInput extends Component {
           onChange={this.props.onConditionalChange}
           style={styles.RadioButtonGroup}
         >
-          {this.props.values.map((value, index) => (
+          {this.props.options.map((option, index) => (
             <RadioButton
-              label={this.props.radioLabels[index]}
-              value={value}
+              label={option.label}
+              value={option.id}
               onTouchTap={this.setValue}
               key={index}
               style={styles.RadioButton}
@@ -94,8 +94,7 @@ export default class RadioInput extends Component {
 RadioInput.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  radioLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
-  values: PropTypes.arrayOf(PropTypes.any).isRequired,
+  options: PropTypes.arrayOf(PropTypes.object).isRequired,
   onConditionalChange: PropTypes.func,
   currentValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   documentId: PropTypes.string.isRequired,

@@ -104,7 +104,7 @@ const getAuctionEndTime = function(startTime) {
 // Lets you push a value to an array
 export const pushRequestValue = new ValidatedMethod({
   name: 'loanRequests.pushValue',
-  validate({ object, id }) {
+  validate({ id }) {
     check(id, String);
   },
   run({ object, id }) {
@@ -115,7 +115,7 @@ export const pushRequestValue = new ValidatedMethod({
 // Lets you pop a value from the end of an array
 export const popRequestValue = new ValidatedMethod({
   name: 'loanRequests.popValue',
-  validate({ object, id }) {
+  validate({ id }) {
     check(id, String);
   },
   run({ object, id }) {

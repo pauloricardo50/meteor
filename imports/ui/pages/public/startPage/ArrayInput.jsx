@@ -178,7 +178,7 @@ ArrayInput.propTypes = {
   id: PropTypes.string.isRequired,
   className: PropTypes.string.isRequired,
   setActiveLine: PropTypes.func.isRequired,
-  text1: PropTypes.string,
+  text1: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   existId: PropTypes.string,
   allOptions: PropTypes.bool,
 };

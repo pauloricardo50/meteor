@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
+import cleanMethod from '/imports/api/cleanMethods';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -9,16 +10,6 @@ import ConditionalInput from './ConditionalInput.jsx';
 import DateInput from './DateInput.jsx';
 import DropzoneInput from './DropzoneInput.jsx';
 import DropzoneArray from '../general/DropzoneArray.jsx';
-
-const components = {
-  TextInput,
-  RadioInput,
-  SelectFieldInput,
-  ConditionalInput,
-  DateInput,
-  DropzoneInput,
-  DropzoneArray,
-};
 
 const styles = {
   button: {
@@ -31,7 +22,7 @@ export default class ArrayInput extends React.Component {
     super(props);
 
     this.state = {
-      count: (this.props.currentValue && this.props.currentValue.length) || 1,
+      count: this.props.currentValue.length,
     };
 
     this.removeValue = this.removeValue.bind(this);
@@ -40,9 +31,21 @@ export default class ArrayInput extends React.Component {
   }
 
   removeValue() {
-    // Only remove a  value if there's more than 1 left
-    if (this.state.count > 1) {
-      this.setState({ count: this.state.count - 1 });
+    // Only remove a value if there's more than 1 left
+    if (this.state.count > 0) {
+      const object = {};
+      object[`${this.props.id}`] = 1;
+
+      console.log(object);
+      console.log(this.props.popFunc);
+      console.log(this.props.documentId);
+
+      cleanMethod(
+        this.props.popFunc,
+        object,
+        this.props.documentId,
+        () => this.setState({ count: this.state.count - 1 }),
+      );
     }
   }
 
@@ -55,17 +58,27 @@ export default class ArrayInput extends React.Component {
 
     for (var i = 0; i < this.state.count; i++) {
       // If there are multiple components per array item
-      this.props.components.forEach((comp, i) => {
-        const Tag = components[comp.type];
+      array.push(
+        <div className="mask1" style={{ marginBottom: 16 }} key={i}>
+          {this.props.inputs.map(input => {
+            const props = {
+              ...this.props,
+              ...input,
+              id: `${this.props.id}.${i}.${input.id}`,
+              currentValue: this.props.currentValue &&
+                this.props.currentValue[i] &&
+                this.props.currentValue[i][input.id],
+              key: input.id,
+            };
 
-        // array.push(
-        //   <Tag>
-        //     {...comp}
-        //     id={`${this.props.id}.${i}.${comp.id}`}
-        //     currentValue={''}
-        //   </Tag>
-        // );
-      });
+            if (input.type === 'textInput') {
+              return <TextInput {...props} />;
+            } else if (input.type === 'selectInput') {
+              return <SelectFieldInput {...props} />;
+            }
+          })}
+        </div>,
+      );
     }
 
     return array;
@@ -73,19 +86,17 @@ export default class ArrayInput extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{ ...this.props.style, marginTop: 24 }}>
+        <label htmlFor="">{this.props.label}</label>
 
-        <div>
-          {this.getArray()}
-        </div>
-
+        {this.getArray()}
 
         <div className="text-center">
           <RaisedButton
             label="-"
             onTouchTap={this.removeValue}
             style={styles.button}
-            disabled={this.state.count <= 1}
+            disabled={this.state.count <= 0}
           />
           <RaisedButton label="+" onTouchTap={this.addValue} primary />
         </div>
@@ -95,7 +106,14 @@ export default class ArrayInput extends React.Component {
 }
 
 ArrayInput.propTypes = {
-  components: PropTypes.arrayOf(PropTypes.object).isRequired,
+  inputs: PropTypes.arrayOf(PropTypes.object).isRequired,
   currentValue: PropTypes.arrayOf(PropTypes.any),
   id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  popFunc: PropTypes.string.isRequired,
+  documentId: PropTypes.string.isRequired,
+};
+
+ArrayInput.defaultProps = {
+  currentValue: [],
 };

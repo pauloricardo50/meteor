@@ -8,6 +8,8 @@ export const insertBorrower = new ValidatedMethod({
   name: 'borrowers.insert',
   validate() {},
   run({ object }) {
+    console.log('server', object);
+
     return Borrowers.insert(object);
   },
 });
@@ -20,5 +22,32 @@ export const updateBorrower = new ValidatedMethod({
   },
   run({ object, id }) {
     return Borrowers.update(id, { $set: object });
+  },
+});
+
+// Lets you push a value to an array
+export const pushBorrowerValue = new ValidatedMethod({
+  name: 'borrowers.pushValue',
+  validate({ id }) {
+    check(id, String);
+  },
+  run({ object, id }) {
+    Borrowers.update(id, { $push: object });
+  },
+});
+
+// Lets you pop a value from the end of an array
+export const popBorrowerValue = new ValidatedMethod({
+  name: 'borrowers.popValue',
+  validate({ id }) {
+    check(id, String);
+  },
+  run({ object, id }) {
+    const result = Borrowers.update(
+      id,
+      { $pop: object },
+      { getAutoValues: false },
+    );
+    console.log(result);
   },
 });

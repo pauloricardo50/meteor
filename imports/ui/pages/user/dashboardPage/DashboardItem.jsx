@@ -9,6 +9,8 @@ import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
 import IconButton from 'material-ui/IconButton';
 import ArrowDown from 'material-ui/svg-icons/navigation/arrow-drop-down-circle';
 
+import OverviewItems from './OverviewItems.jsx';
+
 const DashboardItem = props => {
   const classes = classNames({
     'mask1 dashboard-item': true,
@@ -27,6 +29,11 @@ const DashboardItem = props => {
           </div>}
       </div>
 
+      <OverviewItems
+        borrowers={props.borrowers}
+        loanRequest={props.loanRequest}
+      />
+
       <div className="stepper">
         <RequestStepper
           loanRequest={props.loanRequest}
@@ -34,7 +41,7 @@ const DashboardItem = props => {
         />
       </div>
 
-      {(!props.multiple || props.active) &&
+      {/* {(!props.multiple || props.active) &&
         <div className="active-div">
           <div className="charts">
             <div className="col-xs-12 col-md-6">
@@ -50,7 +57,7 @@ const DashboardItem = props => {
               />
             </div>
           </div>
-        </div>}
+        </div>} */}
 
     </article>
   );

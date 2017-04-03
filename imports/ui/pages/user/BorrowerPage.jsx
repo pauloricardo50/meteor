@@ -28,7 +28,7 @@ const BorrowerPage = props => {
     <div style={styles.div}>
       <RaisedButton
         label="Retour"
-        containerElement={<Link to="/app/me" />}
+        containerElement={<Link to="/app" />}
         style={styles.topButton}
       />
 

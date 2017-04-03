@@ -21,11 +21,6 @@ const userLinks = [
     label: 'Tableau de Bord',
   },
   {
-    link: '/app/me',
-    icon: <span className="icon fa fa-id-card fa-2x" />,
-    label: 'Mes Informations',
-  },
-  {
     link: '/app/profile',
     icon: <span className="icon fa fa-user-circle fa-2x" />,
     label: 'Mon Profil',

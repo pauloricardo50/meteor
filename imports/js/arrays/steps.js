@@ -27,9 +27,7 @@ const getSteps = (loanRequest, borrowers) => {
         },
         {
           title: 'Dites-nous en un peu plus sur vous',
-          link: multiple
-            ? '/app/me'
-            : `/app/borrowers/${borrowers[0]._id}/info`,
+          link: `/app/borrowers/${borrowers[0]._id}/info`,
           percent: () => personalInfoPercent(borrowers),
           isDone() {
             return this.percent() >= 1;

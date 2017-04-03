@@ -88,7 +88,7 @@ export default class ButtonInput extends Component {
 
 ButtonInput.propTypes = {
   id: PropTypes.string.isRequired,
-  text1: PropTypes.string.isRequired,
+  text1: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   text2: PropTypes.string,
   question: PropTypes.bool,
   buttons: PropTypes.arrayOf(PropTypes.object).isRequired,

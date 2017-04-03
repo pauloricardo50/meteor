@@ -66,10 +66,10 @@ export const saveStartForm = (f, history) => {
     salary: f.income1,
     bonusExists: f.bonusExists,
     bonus: {
-      2014: f.bonus11,
-      2015: f.bonus21,
-      2016: f.bonus31,
-      2017: f.bonus41,
+      bonus2014: f.bonus11,
+      bonus2015: f.bonus21,
+      bonus2016: f.bonus31,
+      bonus2017: f.bonus41,
     },
     otherIncome: f.otherIncomeArray || [],
     expenses: f.expensesArray || [],
@@ -84,10 +84,10 @@ export const saveStartForm = (f, history) => {
       salary: f.income2,
       bonusExists: f.bonusExists,
       bonus: {
-        2014: f.bonus12,
-        2015: f.bonus22,
-        2016: f.bonus32,
-        2017: f.bonus42,
+        bonus2014: f.bonus12,
+        bonus2015: f.bonus22,
+        bonus2016: f.bonus32,
+        bonus2017: f.bonus42,
       },
       bankFortune: f.fortune2,
       insuranceSecondPillar: f.insurance12,
@@ -109,6 +109,8 @@ export const saveStartForm = (f, history) => {
       investmentRent: f.propertyRent,
     },
   };
+
+  console.log('client', borrowerOne);
 
   const insertRequest = (id1, id2 = false) => {
     loanRequest.borrowers = [id1];

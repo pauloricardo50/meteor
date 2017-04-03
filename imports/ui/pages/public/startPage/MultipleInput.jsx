@@ -102,7 +102,7 @@ export default class MultipleInput extends Component {
 
 MultipleInput.propTypes = {
   id: PropTypes.string.isRequired,
-  text1: PropTypes.string.isRequired,
+  text1: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   formState: PropTypes.objectOf(PropTypes.any),
   firstMultiple: PropTypes.bool,

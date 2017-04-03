@@ -130,25 +130,28 @@ export const BorrowerSchema = new SimpleSchema({
     type: Boolean,
     defaultValue: false,
   },
-  'bonus.2014': {
+  bonus: Object,
+  'bonus.bonus2014': {
+    // oldest
     type: Number,
     min: 0,
     max: 100000000,
     optional: true,
   },
-  'bonus.2015': {
+  'bonus.bonus2015': {
     type: Number,
     min: 0,
     max: 100000000,
     optional: true,
   },
-  'bonus.2016': {
+  'bonus.bonus2016': {
     type: Number,
     min: 0,
     max: 100000000,
     optional: true,
   },
-  'bonus.2017': {
+  'bonus.bonus2017': {
+    // most recent
     type: Number,
     min: 0,
     max: 100000000,
@@ -158,6 +161,7 @@ export const BorrowerSchema = new SimpleSchema({
     type: Array,
     optional: true,
   },
+  'otherIncome.$': Object,
   'otherIncome.$.value': {
     type: Number,
     min: 0,
@@ -168,6 +172,7 @@ export const BorrowerSchema = new SimpleSchema({
     type: Array,
     optional: true,
   },
+  'expenses.$': Object,
   'expenses.$.value': {
     type: Number,
     min: 0,
@@ -184,6 +189,7 @@ export const BorrowerSchema = new SimpleSchema({
     type: Array,
     optional: true,
   },
+  'realEstate.$': Object,
   'realEstate.$.value': {
     type: Number,
     min: 0,

@@ -35,8 +35,8 @@ const styles = {
 
 const inputSwitch = (singleInput, index, parentProps) => {
   const props = {
-    ...singleInput,
     ...parentProps,
+    ...singleInput,
     key: index,
     style: parentProps.fullWidth ? styles.fullWidth : styles.smallWidth,
   };
@@ -52,23 +52,20 @@ const inputSwitch = (singleInput, index, parentProps) => {
   }
 
   switch (singleInput.type) {
-    case 'TextInput':
+    case 'textInput':
       return <TextInput multiLine={false} {...props} />;
-    case 'TextInputLarge':
+    case 'textInputLarge':
       return <TextInput multiLine {...props} style={styles.mediumWidth} />;
-    case 'TextInputNumber':
-      return <TextInput number {...props} />;
-    case 'TextInputMoney':
-      return <TextInput money {...props} />;
-    case 'RadioInput':
+    case 'radioInput':
       return <RadioInput {...props} />;
-    case 'SelectFieldInput':
+    case 'selectFieldInput':
       return <SelectFieldInput {...props} />;
-    case 'ConditionalInput':
+    case 'conditionalInput':
       return (
         <ConditionalInput
           conditionalTrueValue={singleInput.conditionalTrueValue}
           key={index}
+          style={props.style}
         >
           {inputSwitch(singleInput.inputs[0], 0, parentProps)}
           {singleInput.inputs
@@ -80,15 +77,15 @@ const inputSwitch = (singleInput, index, parentProps) => {
       return <h3 style={styles.subtitle} key={index}>{singleInput.text}</h3>;
     case 'h2':
       return <h2 style={styles.subtitle} key={index}>{singleInput.text}</h2>;
-    case 'Space':
+    case 'space':
       return (
         <div style={{ width: '100%', height: singleInput.height }} key={index}>
           {singleInput.text}
         </div>
       );
-    case 'DateInput':
+    case 'dateInput':
       return <DateInput {...props} />;
-    case 'DropzoneInput':
+    case 'dropzoneInput':
       return (
         // <DropzoneInput
         //   {...singleInput}
@@ -97,9 +94,10 @@ const inputSwitch = (singleInput, index, parentProps) => {
         // />
         <DropzoneArray {...props} />
       );
-    case 'ArrayInput':
+    case 'arrayInput':
       return <ArrayInput {...props} />;
     default:
+      console.log(singleInput.type);
       throw new Error('Not a valid AutoForm type');
   }
 };

@@ -71,12 +71,12 @@ export default class SelectFieldInput extends Component {
           maxHeight={200}
           style={this.props.style}
         >
-          <MenuItem value={null} primaryText="" />
+          <MenuItem value={null} primaryText="" key={0} />
           {this.props.options.map((option, index) => (
             <MenuItem
-              value={option.key}
-              primaryText={option.name}
-              key={index}
+              value={option.id}
+              primaryText={option.label}
+              key={option.id}
             />
           ))}
         </SelectField>

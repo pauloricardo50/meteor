@@ -98,9 +98,9 @@ export const PropertySchema = new SimpleSchema({
   propertyWork: {
     // Additional work on property
     type: Number,
-    optional: true,
     min: 0,
     max: 100000000,
+    optional: true,
   },
   usageType: {
     // primary, secondary or investment

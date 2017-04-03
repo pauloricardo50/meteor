@@ -23,7 +23,6 @@ import TosPage from '/imports/ui/pages/public/TosPage.jsx';
 
 // User pages
 import DashBoardPage from '/imports/ui/pages/user/DashboardPage.jsx';
-import InformationPage from '/imports/ui/pages/user/InformationPage.jsx';
 import ProfilePage from '/imports/ui/pages/user/ProfilePage.jsx';
 import {
   RequestPage,
@@ -77,10 +76,6 @@ const UserRoutes = props => (
           exact
           path="/app/new/:requestId"
           render={routeProps => <NewPage {...layoutProps} {...routeProps} />}
-        />
-        <Route
-          path="/app/me"
-          render={() => <InformationPage {...layoutProps} />}
         />
         <Route
           path="/app/profile"

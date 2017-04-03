@@ -60,7 +60,7 @@ export default class Input extends Component {
 
 Input.propTypes = {
   id: PropTypes.string.isRequired,
-  text1: PropTypes.string.isRequired,
+  text1: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   text2: PropTypes.string,
   className: PropTypes.string.isRequired,
   setActiveLine: PropTypes.func.isRequired,
