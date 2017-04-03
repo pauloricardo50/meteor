@@ -138,15 +138,37 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  insideArea: {
-    // inside
+  constructionYear: {
     type: Number,
+    min: 0,
+    max: 2030,
     optional: true,
   },
-  landArea: {
-    // land area
+  renovationYear: {
+    type: Number,
+    min: 0,
+    max: 2030,
+    optional: true,
+  },
+  insideArea: {
     type: Number,
     optional: true,
+    min: 0,
+  },
+  landArea: {
+    type: Number,
+    optional: true,
+    min: 0,
+  },
+  balconyArea: {
+    type: Number,
+    optional: true,
+    min: 0,
+  },
+  terraceArea: {
+    type: Number,
+    optional: true,
+    min: 0,
   },
   roomCount: {
     type: Number,
@@ -171,6 +193,10 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
     min: 0,
     max: 5000,
+  },
+  volumeNorm: {
+    type: String,
+    defaultValue: 'SIA',
   },
   parking: {
     type: Object,
@@ -203,6 +229,46 @@ export const PropertySchema = new SimpleSchema({
   minergie: {
     type: Boolean,
     defaultValue: false,
+  },
+  isCoproperty: {
+    type: Boolean,
+    defaultValue: false,
+  },
+  copropertyPercentage: {
+    type: Number,
+    min: 0,
+    max: 1,
+    optional: true,
+  },
+  cityPlacementQuality: {
+    type: Number,
+    min: 0,
+    max: 5,
+    optional: true,
+  },
+  buildingPlacementQuality: {
+    type: Number,
+    min: 0,
+    max: 5,
+    optional: true,
+  },
+  buildingQuality: {
+    type: Number,
+    min: 0,
+    max: 5,
+    optional: true,
+  },
+  flatQuality: {
+    type: Number,
+    min: 0,
+    max: 5,
+    optional: true,
+  },
+  materialsQuality: {
+    type: Number,
+    min: 0,
+    max: 5,
+    optional: true,
   },
   other: {
     type: String,

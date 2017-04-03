@@ -14,3 +14,10 @@ export const percentMask = createNumberMask({
   allowDecimal: true,
   decimalSymbol: ',',
 });
+
+export const decimalMask = createNumberMask({
+  prefix: '',
+  allowDecimal: true,
+  decimalLimit: 3,
+  requireDecimal: true,
+});

@@ -7,8 +7,11 @@ import MaskedInput from 'react-text-mask';
 
 import constants from '/imports/js/config/constants';
 import colors from '/imports/js/config/colors';
-import { swissFrancMask } from '/imports/js/helpers/textMasks';
-import { toNumber } from '/imports/js/helpers/conversionFunctions';
+import { swissFrancMask, decimalMask } from '/imports/js/helpers/textMasks';
+import {
+  toNumber,
+  toDecimalNumber,
+} from '/imports/js/helpers/conversionFunctions';
 import SavingIcon from './SavingIcon.jsx';
 import InfoIcon from './InfoIcon.jsx';
 
@@ -38,11 +41,22 @@ export default class TextInput extends Component {
     super(props);
 
     this.state = {
-      value: this.props.currentValue === 0 ? 0 : this.props.currentValue || '',
+      value: props.currentValue === 0 ? 0 : props.currentValue || '',
       errorText: '',
       saving: false,
       showInfo: false,
     };
+
+    if (props.number) {
+      if (props.decimal) {
+        this.formatter = toDecimalNumber;
+        console.log(props.id);
+      } else {
+        this.formatter = toNumber;
+      }
+    } else {
+      this.formatter = v => v;
+    }
 
     // TODO: change saving only when something has successfully saved, not before
 
@@ -94,7 +108,7 @@ export default class TextInput extends Component {
 
     if (this.props.money || this.props.number) {
       // Make sure we store a number if this is supposed to be one
-      object[this.props.id] = toNumber(this.state.value);
+      object[this.props.id] = this.formatter(this.state.value);
     } else {
       object[this.props.id] = this.state.value;
     }
@@ -132,7 +146,9 @@ export default class TextInput extends Component {
           floatingLabelText={this.props.label}
           hintText={this.props.placeholder}
           value={
-            this.props.number ? toNumber(this.state.value) : this.state.value
+            this.props.number
+              ? this.formatter(this.state.value)
+              : this.state.value
           }
           onChange={this.handleChange}
           onBlur={this.handleBlur}
@@ -157,10 +173,10 @@ export default class TextInput extends Component {
           inputStyle={this.props.inputStyle}
           noValidate
         >
-          {this.props.money &&
+          {(this.props.money || this.props.decimal) &&
             <MaskedInput
               value={this.state.value}
-              mask={swissFrancMask}
+              mask={this.props.money ? swissFrancMask : decimalMask}
               guide
               pattern="[0-9]*"
             />}
@@ -199,6 +215,7 @@ TextInput.propTypes = {
   ]),
   disabled: PropTypes.bool,
   number: PropTypes.bool,
+  decimal: PropTypes.bool,
   money: PropTypes.bool,
   style: PropTypes.objectOf(PropTypes.any),
   inputStyle: PropTypes.objectOf(PropTypes.any),
@@ -212,6 +229,7 @@ TextInput.defaultProps = {
   info: '',
   disabled: false,
   number: false,
+  decimal: false,
   money: false,
   style: undefined,
   inputStyle: undefined,
