@@ -59,6 +59,159 @@ export const changeIncome = (state, o, income) => {
   return o;
 };
 
+//
+// The following functions are used in Start 2 Form
+//
+
+export const isFinished = (state, minFortune) =>
+  state.finalized &&
+  !state.error &&
+  (state.fortuneUsed + state.insuranceFortuneUsed >= minFortune ||
+    state.type === 'test');
+
+export const getBonusIncome = arr => {
+  // Sum all values, remove the lowest one, and return 50% of their average
+  const safeArray = arr.map(v => v || 0);
+  const sum = safeArray.reduce((tot, val) => tot + val, 0);
+  const bestSum = sum - Math.min(...safeArray);
+  return 0.5 * (bestSum / 3) || 0;
+};
+
+export const getIncome = state => {
+  const s = state;
+  const bonus1 = getBonusIncome([s.bonus11, s.bonus21, s.bonus31, s.bonus41]);
+  const bonus2 = getBonusIncome([s.bonus12, s.bonus22, s.bonus32, s.bonus42]);
+  return [
+    s.propertyRent,
+    s.income1,
+    s.income2,
+    bonus1,
+    bonus2,
+    ...(s.otherIncomeArray ? s.otherIncomeArray.map(i => i.value || 0) : []),
+  ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+};
+
+export const getOtherIncome = state =>
+  [
+    ...(state.otherIncomeArray
+      ? state.otherIncomeArray.map(i => i.value || 0)
+      : []),
+  ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+
+export const getFortune = state =>
+  [
+    state.fortune1,
+    state.fortune2,
+    ...(state.realEstateArray
+      ? state.realEstateArray.map(i => i.value - i.loan || 0)
+      : []),
+  ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+
+export const getBankFortune = state => {
+  const s = state;
+
+  return [s.fortune1, s.fortune2].reduce(
+    (tot, val) => (val > 0 && tot + val) || tot,
+    0,
+  );
+};
+
+export const getInsuranceFortune = state =>
+  [
+    state.insurance11,
+    state.insurance12,
+    state.insurance21,
+    state.insurance22,
+  ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+
+export const getRealEstateFortune = state =>
+  state.realEstateExists
+    ? [
+        ...(state.realEstateArray
+          ? state.realEstateArray.map(i => i.value - i.loan || 0)
+          : []),
+      ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0)
+    : 0;
+
+export const getRealEstateValue = state =>
+  state.realEstateExists
+    ? [
+        ...(state.realEstateArray
+          ? state.realEstateArray.map(i => i.value || 0)
+          : []),
+      ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0)
+    : 0;
+
+export const getRealEstateDebt = state =>
+  state.realEstateExists
+    ? [
+        ...(state.realEstateArray
+          ? state.realEstateArray.map(i => i.loan || 0)
+          : []),
+      ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0)
+    : 0;
+
+export const getExpenses = state =>
+  [
+    ...(state.expensesArray ? state.expensesArray.map(i => i.value) : []),
+  ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+
+export const getMonthly = state => {
+  const s = state;
+  const propAndWork = s.propertyValue +
+    (s.propertyWorkExists ? s.propertyWork : 0);
+
+  return Math.max(
+    (propAndWork * constants.maintenance +
+      (propAndWork - (s.fortuneUsed || 0)) * constants.loanCost()) /
+      12,
+    0,
+  );
+};
+
+export const getMonthlyReal = state => {
+  const s = state;
+  const project = 1.05 * s.propertyValue +
+    (s.propertyWorkExists ? s.propertyWork : 0);
+  const propAndWork = s.propertyValue +
+    (s.propertyWorkExists ? s.propertyWork : 0);
+  return Math.max(
+    (propAndWork * constants.maintenanceReal +
+      (project - (s.fortuneUsed || 0)) * constants.loanCostReal()) /
+      12,
+    0,
+  );
+};
+
+export const calculateProperty = state =>
+  Math.min(
+    getIncome() / constants.propertyToIncome(),
+    getFortune() / (1 - constants.maxLoan(state.usageType)),
+  );
+
+export const getLenderCount = (borrow, ratio) => {
+  if (ratio > 0.38) {
+    return 0;
+  } else if (ratio > 1 / 3) {
+    return 4;
+  } else if (borrow <= 0.65) {
+    return 30;
+  } else if (borrow > 0.65 && borrow <= 0.9) {
+    return 20;
+  }
+
+  return 0;
+};
+
+export const getRatio = (income, expenses, monthly) =>
+  income - expenses && monthly / ((income - expenses) / 12);
+
+export const getBorrow = (totalFortune, propAndWork, propertyValue, fees) =>
+  (totalFortune &&
+    Math.max((propAndWork - (totalFortune - fees)) / propAndWork, 0)) ||
+  0;
+
+// The final function that inserts the documents once the form is finished
 export const saveStartForm = (f, history) => {
   const multiple = f.borrowerCount > 1;
   const borrowerOne = {

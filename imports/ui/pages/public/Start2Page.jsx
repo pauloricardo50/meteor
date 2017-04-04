@@ -6,13 +6,32 @@ import queryString from 'query-string';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
+import getFormArray from '/imports/js/arrays/StartFormArray';
+import constants from '/imports/js/config/constants';
+import {
+  isFinished,
+  getBonusIncome,
+  getIncome,
+  getOtherIncome,
+  getFortune,
+  getBankFortune,
+  getInsuranceFortune,
+  getRealEstateFortune,
+  getRealEstateValue,
+  getRealEstateDebt,
+  getExpenses,
+  getMonthly,
+  getMonthlyReal,
+  calculateProperty,
+  getLenderCount,
+  getRatio,
+  getBorrow,
+} from '/imports/js/helpers/startFunctions';
+
 import AutoStart from './startPage/AutoStart.jsx';
 import Start2Recap from './startPage/Start2Recap.jsx';
 import StartResult from './startPage/StartResult.jsx';
 import StartSignUp from './startPage/StartSignUp.jsx';
-
-import getFormArray from '/imports/js/arrays/StartFormArray';
-import constants from '/imports/js/config/constants';
 
 export default class Start2Page extends Component {
   constructor(props) {
@@ -32,7 +51,6 @@ export default class Start2Page extends Component {
 
     this.setFormState = this.setFormState.bind(this);
     this.setActiveLine = this.setActiveLine.bind(this);
-    this.calculateProperty = this.calculateProperty.bind(this);
   }
 
   setFormState(id, value, callback) {
@@ -50,189 +68,6 @@ export default class Start2Page extends Component {
     if (this.state.activeLine !== id) {
       this.setState({ activeLine: id });
     }
-  }
-
-  isFinished() {
-    const s = this.state;
-    const minFortune = 0.05 * s.propertyValue +
-      (1 - constants.maxLoan(this.state.usageType)) *
-        (s.propertyValue + (s.propertyWork || 0)) || 0;
-    return s.finalized &&
-      !s.error &&
-      (s.fortuneUsed >= minFortune || s.type === 'test');
-  }
-
-  getBonusIncome(arr) {
-    // Sum all values, remove the lowest one, and return 50% of their average
-    const safeArray = arr.map(v => v || 0);
-    const sum = safeArray.reduce((tot, val) => tot + val, 0);
-    const bestSum = sum - Math.min(...safeArray);
-    return 0.5 * (bestSum / 3) || 0;
-  }
-
-  getIncome() {
-    const s = this.state;
-    const bonus1 = this.getBonusIncome([
-      s.bonus11,
-      s.bonus21,
-      s.bonus31,
-      s.bonus41,
-    ]);
-    const bonus2 = this.getBonusIncome([
-      s.bonus12,
-      s.bonus22,
-      s.bonus32,
-      s.bonus42,
-    ]);
-    return [
-      s.propertyRent,
-      s.income1,
-      s.income2,
-      bonus1,
-      bonus2,
-      ...(s.otherIncomeArray ? s.otherIncomeArray.map(i => i.value || 0) : []),
-    ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
-  }
-
-  getOtherIncome() {
-    const s = this.state;
-    return [
-      ...(s.otherIncomeArray ? s.otherIncomeArray.map(i => i.value || 0) : []),
-    ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
-  }
-
-  getFortune() {
-    const s = this.state;
-
-    return [
-      s.fortune1,
-      s.fortune2,
-      ...(s.realEstateArray
-        ? s.realEstateArray.map(i => i.value - i.loan || 0)
-        : []),
-    ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
-  }
-
-  getBankFortune() {
-    const s = this.state;
-
-    return [s.fortune1, s.fortune2].reduce(
-      (tot, val) => (val > 0 && tot + val) || tot,
-      0,
-    );
-  }
-
-  getInsuranceFortune() {
-    const s = this.state;
-
-    return [s.insurance11, s.insurance12, s.insurance21, s.insurance22].reduce(
-      (tot, val) => (val > 0 && tot + val) || tot,
-      0,
-    );
-  }
-
-  getRealEstateFortune() {
-    const s = this.state;
-
-    if (s.realEstateExists) {
-      return [
-        ...(s.realEstateArray
-          ? s.realEstateArray.map(i => i.value - i.loan || 0)
-          : []),
-      ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
-    }
-    return 0;
-  }
-
-  getRealEstateValue() {
-    const s = this.state;
-
-    if (s.realEstateExists) {
-      return [
-        ...(s.realEstateArray ? s.realEstateArray.map(i => i.value || 0) : []),
-      ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
-    }
-    return 0;
-  }
-
-  getRealEstateDebt() {
-    const s = this.state;
-
-    if (s.realEstateExists) {
-      return [
-        ...(s.realEstateArray ? s.realEstateArray.map(i => i.loan || 0) : []),
-      ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
-    }
-    return 0;
-  }
-
-  getExpenses() {
-    const s = this.state;
-
-    return [
-      ...(s.expensesArray ? s.expensesArray.map(i => i.value) : []),
-    ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
-  }
-
-  getMonthly() {
-    const s = this.state;
-    const propAndWork = s.propertyValue +
-      (s.propertyWorkExists ? s.propertyWork : 0);
-
-    return Math.max(
-      (propAndWork * constants.maintenance +
-        (propAndWork - (s.fortuneUsed || 0)) * constants.loanCost()) /
-        12,
-      0,
-    );
-  }
-
-  getMonthlyReal() {
-    const s = this.state;
-    const project = 1.05 * s.propertyValue +
-      (s.propertyWorkExists ? s.propertyWork : 0);
-    const propAndWork = s.propertyValue +
-      (s.propertyWorkExists ? s.propertyWork : 0);
-    return Math.max(
-      (propAndWork * constants.maintenanceReal +
-        (project - (s.fortuneUsed || 0)) * constants.loanCostReal()) /
-        12,
-      0,
-    );
-  }
-
-  calculateProperty() {
-    return Math.min(
-      this.getIncome() / constants.propertyToIncome(),
-      this.getFortune() / (1 - constants.maxLoan(this.state.usageType)),
-    );
-  }
-
-  getLenderCount(borrow, ratio) {
-    if (ratio > 0.38) {
-      return 0;
-    } else if (ratio > 1 / 3) {
-      return 4;
-    } else if (borrow <= 0.65) {
-      return 30;
-    } else if (borrow > 0.65 && borrow <= 0.9) {
-      return 20;
-    }
-
-    return 0;
-  }
-
-  getRatio(income, expenses, monthly) {
-    return income - expenses && monthly / ((income - expenses) / 12);
-  }
-
-  getBorrow(fortuneUsed, propAndWork, propertyValue) {
-    return (fortuneUsed &&
-      Math.max(
-        (propAndWork - (fortuneUsed - 0.05 * propertyValue)) / propAndWork,
-        0,
-      )) ||
-      0;
   }
 
   render() {
@@ -255,57 +90,68 @@ export default class Start2Page extends Component {
     }
 
     const s = this.state;
-    const property = s.propertyValue || this.calculateProperty() || 0;
+    const property = s.propertyValue || calculateProperty(s) || 0;
+    const fees = 0.05 * property;
+    const lppFees = s.insuranceFortuneUsed * constants.lppFees || 0;
     const props = {
       formState: s,
       type: this.state.type,
       salary: (s.income1 || 0) + (s.income2 || 0),
-      bonus: this.getBonusIncome([s.bonus11, s.bonus21, s.bonus31, s.bonus41]) +
-        this.getBonusIncome([s.bonus12, s.bonus22, s.bonus32, s.bonus42]) || 0,
-      income: this.getIncome() || 0,
-      otherIncome: this.getOtherIncome() || 0,
-      fortune: this.getFortune() || 0,
+      bonus: getBonusIncome([s.bonus11, s.bonus21, s.bonus31, s.bonus41]) +
+        getBonusIncome([s.bonus12, s.bonus22, s.bonus32, s.bonus42]) || 0,
+      income: getIncome(s) || 0,
+      otherIncome: getOtherIncome(s) || 0,
+      fortune: getFortune(s) || 0,
       property,
-      insuranceFortune: this.getInsuranceFortune() || 0,
-      expenses: this.getExpenses() || 0,
+      insuranceFortune: getInsuranceFortune(s) || 0,
+      expenses: getExpenses(s) || 0,
       propertyWork: s.propertyWork || 0,
       fortuneUsed: s.fortuneUsed || 0,
-      minFortune: 0.05 * property +
+      insuranceFortuneUsed: s.insuranceFortuneUsed || 0,
+      minFortune: fees +
+        lppFees +
         (1 - constants.maxLoan(this.state.usageType)) *
-          (property + (s.propertyWork || 0)) +
-        1 || 0, // add one to make sure percentages work properly
-      fees: property * 0.05 || 0,
+          (property + (s.propertyWork || 0)) || 0,
+      minCash: fees + lppFees + 0.1 * (property + (s.propertyWork || 0)) || 0,
+      fees: fees || 0,
+      lppFees: s.insuranceFortuneUsed * constants.lppFees || 0,
       propAndWork: property + (s.propertyWork || 0),
-      monthly: this.getMonthly() || 0,
-      monthlyReal: this.getMonthlyReal() || 0,
-      project: 1.05 * property + (s.propertyWork || 0) || 0,
-      realEstate: this.getRealEstateFortune() || 0,
-      realEstateValue: this.getRealEstateValue() || 0,
-      realEstateDebt: this.getRealEstateDebt() || 0,
-      bankFortune: this.getBankFortune() || 0,
+      monthly: getMonthly(s) || 0,
+      monthlyReal: getMonthlyReal(s) || 0,
+      project: fees + property + (s.propertyWork || 0) + lppFees || 0,
+      realEstate: getRealEstateFortune(s) || 0,
+      realEstateValue: getRealEstateValue(s) || 0,
+      realEstateDebt: getRealEstateDebt(s) || 0,
+      bankFortune: getBankFortune(s) || 0,
       usageType: this.state.usageType,
     };
 
-    props.ratio = this.getRatio(props.income, props.expenses, props.monthly);
-    props.borrow = this.getBorrow(
-      props.fortuneUsed,
+    const finished = isFinished(s, props.minFortune);
+
+    props.ratio = getRatio(props.income, props.expenses, props.monthly);
+    props.borrow = getBorrow(
+      props.fortuneUsed + props.insuranceFortuneUsed,
       props.propAndWork,
       props.property,
+      props.fees + props.lppFees,
     );
-    props.lenderCount = this.getLenderCount(props.borrow, props.ratio);
+    props.lenderCount = getLenderCount(props.borrow, props.ratio);
 
     return (
       <section className="start2 animated fadeIn">
-        <div
-          className={classNames({ form: true, isFinished: this.isFinished() })}>
+        <div className={classNames({ form: true, isFinished: finished })}>
           <AutoStart
-            formState={s}
+            formState={{
+              ...s,
+              minFortune: props.minFortune,
+              fortune: props.fortune,
+            }}
             formArray={getFormArray(s, props)}
             setFormState={this.setFormState}
             setActiveLine={this.setActiveLine}
           />
         </div>
-        {!this.isFinished() &&
+        {!finished &&
           <div className="start2recap mask1">
             <h3 className="recap-title bold">
               Plan financier
@@ -314,7 +160,7 @@ export default class Start2Page extends Component {
             <div className="shadow-bottom" />
             <Start2Recap {...props} />
           </div>}
-        {this.isFinished() &&
+        {finished &&
           <Scroll.Element name={'final'}>
             <StartResult
               history={this.props.history}
@@ -326,7 +172,7 @@ export default class Start2Page extends Component {
 
         {this.state.done &&
           <Scroll.Element name={'done'} style={{ width: '100%' }}>
-            <StartSignUp {...props} history={this.props.history} />
+            <StartSignUp formState={s} history={this.props.history} />
           </Scroll.Element>}
       </section>
     );

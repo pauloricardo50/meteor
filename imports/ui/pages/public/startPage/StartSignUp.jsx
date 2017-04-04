@@ -57,4 +57,7 @@ export default class StartSignUp extends Component {
   }
 }
 
-StartSignUp.propTypes = {};
+StartSignUp.propTypes = {
+  formState: PropTypes.objectOf(PropTypes.any).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+};

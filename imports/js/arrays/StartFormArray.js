@@ -1,24 +1,11 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
+
+import FortuneSliders
+  from '/imports/ui/pages/public/startPage/FortuneSliders.jsx';
+
 import { toMoney } from '../helpers/conversionFunctions';
-
-const isTrue = (v, zeroAllowed = false) =>
-  zeroAllowed ? v !== undefined : v !== undefined && v !== 0;
-const multipleTrue = (id, state, zeroAllowed = false) => {
-  if (state.borrowerCount > 1) {
-    if (
-      isTrue(state[`${id}1`], zeroAllowed) &&
-      isTrue(state[`${id}1`], zeroAllowed)
-    ) {
-      return true;
-    }
-  } else if (isTrue(state[`${id}1`], zeroAllowed)) {
-    return true;
-  }
-
-  return false;
-};
 
 const getAcquisitionArray = (state, props) => [
   {
@@ -174,7 +161,7 @@ const getAcquisitionArray = (state, props) => [
     firstMultiple: true,
     text1: (
       <span>
-        Quels est votre salaire <span className="bold">annuel</span> brut?
+        Quel est votre salaire <span className="bold">annuel</span> brut?
       </span>
     ),
     money: true,
@@ -502,10 +489,35 @@ const getErrorArray = (state, props) => [
 
 const getFinalArray = (state, props) => [
   {
-    condition: state.type === 'acquisition',
+    condition: state.type === 'acquisition' && state.usageType !== 'primary',
     id: 'fortuneUsed',
     type: 'sliderInput',
-    // text1: `Vous avez CHF ${toMoney(props.fortune + props.insuranceFortune)} de fonds propres au total, combien voulez-vous allouer à ce projet? Vous devez mettre au minimum ${state.propertyWorkExists ? `les frais de notaire ainsi que ${state.usageType === 'secondary' ? 30 : 20}% du prix d'achat + les travaux` : `${state.usageType === 'secondary' ? 35 : 25}% du projet`}, soit CHF ${toMoney(props.minFortune)}.`,
+    text1: (
+      <span>
+        Vous avez
+        {' '}
+        <span className="active">
+          CHF {toMoney(props.fortune)}
+        </span>
+        {' '}
+        de fonds propres au total, combien voulez-vous allouer à ce projet? Au minimum
+        {' '}
+        <span className="active">CHF {toMoney(props.minFortune)}</span>
+        .
+      </span>
+    ),
+    question: true,
+    money: true,
+    sliderMin: props.minFortune,
+    sliderMax: props.fortune + props.insuranceFortune,
+  },
+  {
+    condition: state.type === 'acquisition' && state.usageType === 'primary',
+    type: 'custom',
+    component: FortuneSliders,
+    validation: () =>
+      state.fortuneUsed + state.insuranceFortuneUsed + 1 >= props.minFortune &&
+      state.fortuneUsed + 1 >= props.minCash,
     text1: (
       <span>
         Vous avez
@@ -520,10 +532,21 @@ const getFinalArray = (state, props) => [
         .
       </span>
     ),
-    question: true,
-    money: true,
-    sliderMin: props.minFortune,
-    sliderMax: props.fortune + props.insuranceFortune,
+    sliders: [
+      {
+        id: 'fortuneUsed',
+        // If there isn't enough cash, automatically assume that insuranceFortune will be used
+        sliderMin: props.fortune < props.minFortune
+          ? props.minCash
+          : state.useInsurance ? props.minCash : props.minFortune,
+        sliderMax: props.fortune,
+      },
+      {
+        id: 'insuranceFortuneUsed',
+        sliderMin: 0,
+        sliderMax: props.insuranceFortune,
+      },
+    ],
   },
   {
     condition: (props.income &&
@@ -554,14 +577,16 @@ const getFinalArray = (state, props) => [
   {
     condition: state.type === 'acquisition' &&
       state.fortuneUsed &&
-      props.propAndWork - state.fortuneUsed <= 100000,
+      props.propAndWork - (state.fortuneUsed + state.insuranceFortuneUsed) <=
+        100000,
     id: 'error',
     type: 'buttons',
     text1: "Vous utilisez trop de fonds propres, nous ne pouvons malheureusement pas vous aider pour un emprunt de moins de CHF 100'000.",
     buttons: [],
   },
   {
-    condition: state.type === 'test' || state.fortuneUsed >= props.minFortune,
+    condition: state.type === 'test' ||
+      state.fortuneUsed + state.insuranceFortuneUsed + 1 >= props.minFortune,
     id: 'finalized',
     type: 'buttons',
     text1: 'Vous-êtes arrivé au bout, formidable!',

@@ -9,7 +9,7 @@ export default class StartSlider extends React.Component {
     const value = this.props.money
       ? toNumber(event.target.value)
       : event.target.value;
-    this.props.setFormState(this.props.id, value, () => null);
+    this.props.setFormState(this.props.id, value);
   }
 
   render() {
@@ -26,6 +26,7 @@ export default class StartSlider extends React.Component {
         )}
         onChange={(e, v) => this.props.setFormState(this.props.id, v)}
         onDragStart={() => this.props.setActiveLine(this.props.id)}
+        sliderStyle={{ ...this.props.style }}
         style={{ padding: '0 40px' }}
       />
     );
@@ -36,11 +37,19 @@ StartSlider.propTypes = {
   id: PropTypes.string.isRequired,
   setFormState: PropTypes.func.isRequired,
   formState: PropTypes.objectOf(PropTypes.any),
+  style: PropTypes.objectOf(PropTypes.any),
   money: PropTypes.bool,
-  value: PropTypes.any,
+  value: PropTypes.number,
   sliderMax: PropTypes.number.isRequired,
   sliderMin: PropTypes.number.isRequired,
   setActiveLine: PropTypes.func.isRequired,
+  handleChange: PropTypes.func,
 };
 
-StartSlider.defaultProps = {};
+StartSlider.defaultProps = {
+  formState: {},
+  style: {},
+  money: false,
+  value: 0,
+  handleChange: () => null,
+};

@@ -39,6 +39,11 @@ const getArray = props => {
       value: `CHF ${toMoney(Math.round(p.property * constants.notaryFees))}`,
     },
     {
+      label: 'Frais retrait 2e Pilier',
+      value: `CHF ${toMoney(Math.round(p.lppFees))}`,
+      hide: !p.insuranceFortuneUsed,
+    },
+    {
       label: <span className="bold">Coût total du projet</span>,
       value: (
         <span className="bold sum">
@@ -46,7 +51,9 @@ const getArray = props => {
           {' '}
           {toMoney(
             Math.round(
-              p.property * (1 + constants.notaryFees) + p.propertyWork,
+              p.property * (1 + constants.notaryFees) +
+                p.propertyWork +
+                p.lppFees,
             ),
           )}
         </span>
@@ -56,12 +63,12 @@ const getArray = props => {
     },
     {
       label: 'Fonds Propres',
-      value: `CHF ${toMoney(Math.round(p.fortuneUsed))}`,
+      value: `CHF ${toMoney(Math.round(p.fortuneUsed + p.insuranceFortuneUsed))}`,
       hide: !p.fortuneUsed,
     },
     {
       label: 'Emprunt',
-      value: `CHF ${p.fortuneUsed ? toMoney(Math.round(p.project - p.fortuneUsed)) : 0}`,
+      value: `CHF ${toMoney(Math.round(p.project - (p.fortuneUsed + p.insuranceFortuneUsed)))}`,
       hide: !p.fortuneUsed,
       spacing: !p.fortuneUsed,
     },
@@ -69,11 +76,7 @@ const getArray = props => {
       label: 'Coût réel estimé*',
       value: (
         <span>
-          CHF
-          {' '}
-          {p.fortuneUsed ? toMoney(Math.round(p.monthlyReal)) : 0}
-          {' '}
-          <small>/mois</small>
+          CHF {toMoney(Math.round(p.monthlyReal))} <small>/mois</small>
         </span>
       ),
       hide: !p.fortuneUsed,
@@ -96,7 +99,8 @@ const getArray = props => {
       label: p.propertyWork ? 'Emprunt/Valeur du bien' : "Emprunt/Prix d'achat",
       value: (
         <span>
-          {p.fortuneUsed && Math.round(p.borrow * 1000) / 10}%&nbsp;
+          {Math.round(p.borrow * 1000) / 10}%
+          {' '}
           <span
             className={
               p.borrow <= constants.maxLoan(p.usageType)
@@ -112,7 +116,8 @@ const getArray = props => {
       label: 'Charges/Revenus Disponibles',
       value: (
         <span>
-          {p.fortuneUsed && Math.round(p.ratio * 1000) / 10}%&nbsp;
+          {Math.round(p.ratio * 1000) / 10}%
+          {' '}
           <span
             className={
               p.ratio <= 1 / 3
@@ -212,22 +217,22 @@ const Start2Recap = props => (
   <article className="validator">
     <div className="result animated fadeIn">
       {getArray(props).map(
-        (item, i) =>
-          !item.hide &&
-          (item.title
-            ? <label className="text-center" {...item.props} key={item.label}>
-                {item.label}
-              </label>
-            : <div
-                className="fixed-size"
-                style={{
-                  marginBottom: item.spacing && 16,
-                  marginTop: item.spacingTop && 16,
-                }}
-                key={i}>
-                <h4 className="secondary">{item.label}</h4>
-                <h3 {...item.props}>{item.value}</h3>
-              </div>),
+        (item, i) => !item.hide &&
+        (item.title
+          ? <label className="text-center" {...item.props} key={item.label}>
+              {item.label}
+            </label>
+          : <div
+              className="fixed-size"
+              style={{
+                marginBottom: item.spacing && 16,
+                marginTop: item.spacingTop && 16,
+              }}
+              key={i}
+            >
+              <h4 className="secondary">{item.label}</h4>
+              <h3 {...item.props}>{item.value}</h3>
+            </div>),
       )}
     </div>
   </article>

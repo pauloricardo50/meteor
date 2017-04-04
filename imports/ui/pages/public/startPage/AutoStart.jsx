@@ -20,34 +20,36 @@ const arrayIsTrue = (a, keys) =>
   (a && a.length) >= 1 &&
   keys.reduce((tot, key) => tot && a[0][key] !== undefined, true);
 
-const prevFalse = (prev, s) => {
+const prevTrue = (prev, s) => {
   if (prev.type === 'multipleInput') {
     if (
       s.borrowerCount > 1 &&
       (isFalse(s[`${prev.id}1`], prev.zeroAllowed) ||
         isFalse(s[`${prev.id}2`], prev.zeroAllowed))
     ) {
-      return true;
+      return false;
     } else if (isFalse(s[`${prev.id}1`], prev.zeroAllowed)) {
-      return true;
+      return false;
     }
   } else if (prev.type === 'buttons' && s[prev.id] === undefined) {
     // For buttons, only check if they are undefined
-    return true;
+    return false;
   } else if (
     prev.type === 'arrayInput' &&
     !arrayIsTrue(s[prev.id], prev.inputs.map(i => i.id))
   ) {
-    return true;
+    return false;
+  } else if (prev.type === 'custom') {
+    return prev.validation();
   } else if (
     (prev.validation !== undefined &&
       !validationCheck(s[prev.id], prev.validation)) ||
     isFalse(s[prev.id], prev.zeroAllowed)
   ) {
-    return true;
+    return false;
   }
 
-  return false;
+  return true;
 };
 
 export default class AutoStart extends Component {
@@ -82,7 +84,7 @@ export default class AutoStart extends Component {
       // If an error ever appears, start error mode (prevent any further rendering)
       this.error = true;
       return 'break';
-    } else if (prevFalse(prevInput, this.props.formState)) {
+    } else if (!prevTrue(prevInput, this.props.formState)) {
       // Make sure previous input is valid before continuing
       return 'break';
     } else if (input.condition === false) {
@@ -100,6 +102,10 @@ export default class AutoStart extends Component {
     }
 
     const verified = this.verifyConditions(input);
+
+    if (input.id === 'finalized') {
+      console.log('fin', verified);
+    }
     if (verified === 'break') {
       this.breakForm = true;
     } else if (verified) {
@@ -140,6 +146,10 @@ export default class AutoStart extends Component {
             return <Input {...inputProps} slider />;
           case 'arrayInput':
             return <ArrayInput {...inputProps} />;
+          case 'custom': {
+            const Tag = input.component;
+            return <Tag {...inputProps} />;
+          }
           default:
             throw new Error('Not a valid AutoForm type');
         }
