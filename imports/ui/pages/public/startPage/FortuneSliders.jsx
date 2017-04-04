@@ -36,6 +36,8 @@ export default class FortuneSliders extends React.Component {
         this.props.formState.minFortune - Math.round(fortune),
       );
       this.props.setFormState('fortuneUsed', Math.round(fortune));
+    } else {
+      this.props.setFormState('fortuneUsed', Math.round(fortune));
     }
   }
 
@@ -45,6 +47,11 @@ export default class FortuneSliders extends React.Component {
         'fortuneUsed',
         this.props.formState.minFortune - Math.round(insuranceFortune),
       );
+      this.props.setFormState(
+        'insuranceFortuneUsed',
+        Math.round(insuranceFortune),
+      );
+    } else {
       this.props.setFormState(
         'insuranceFortuneUsed',
         Math.round(insuranceFortune),
