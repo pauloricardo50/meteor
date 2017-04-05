@@ -53,15 +53,25 @@ export default class Start2Page extends Component {
     this.setActiveLine = this.setActiveLine.bind(this);
   }
 
-  setFormState(id, value, callback) {
-    const object = {};
-    object[id] = value;
+  setFormState(id, value, callback, obj) {
+    // If a whole object is given, set that object to state
+    if (obj) {
+      this.setState(obj, () => {
+        if (typeof callback === 'function') {
+          callback();
+        }
+      });
+    } else {
+      // Else, simple set one value to state
+      const object = {};
+      object[id] = value;
 
-    this.setState(object, () => {
-      if (typeof callback === 'function') {
-        callback();
-      }
-    });
+      this.setState(object, () => {
+        if (typeof callback === 'function') {
+          callback();
+        }
+      });
+    }
   }
 
   setActiveLine(id) {
@@ -91,43 +101,42 @@ export default class Start2Page extends Component {
 
     const s = this.state;
     const property = s.propertyValue || calculateProperty(s) || 0;
-    const fees = 0.05 * property;
+    const fees = property * constants.notaryFees;
     const lppFees = s.insuranceFortuneUsed * constants.lppFees || 0;
     const props = {
       formState: s,
-      type: this.state.type,
+      type: s.type,
+      usageType: s.usageType,
+      property,
+      propertyWork: s.propertyWork || 0,
+      propAndWork: property + (s.propertyWork || 0),
       salary: (s.income1 || 0) + (s.income2 || 0),
       bonus: getBonusIncome([s.bonus11, s.bonus21, s.bonus31, s.bonus41]) +
         getBonusIncome([s.bonus12, s.bonus22, s.bonus32, s.bonus42]) || 0,
       income: getIncome(s) || 0,
       otherIncome: getOtherIncome(s) || 0,
       fortune: getFortune(s) || 0,
-      property,
       insuranceFortune: getInsuranceFortune(s) || 0,
       expenses: getExpenses(s) || 0,
-      propertyWork: s.propertyWork || 0,
       fortuneUsed: s.fortuneUsed || 0,
       insuranceFortuneUsed: s.insuranceFortuneUsed || 0,
       minFortune: fees +
         lppFees +
-        (1 - constants.maxLoan(this.state.usageType)) *
+        (1 - constants.maxLoan(s.usageType)) *
           (property + (s.propertyWork || 0)) || 0,
       minCash: fees + lppFees + 0.1 * (property + (s.propertyWork || 0)) || 0,
       fees: fees || 0,
       lppFees: s.insuranceFortuneUsed * constants.lppFees || 0,
-      propAndWork: property + (s.propertyWork || 0),
+      project: fees + property + (s.propertyWork || 0) + lppFees || 0,
       monthly: getMonthly(s) || 0,
       monthlyReal: getMonthlyReal(s) || 0,
-      project: fees + property + (s.propertyWork || 0) + lppFees || 0,
       realEstate: getRealEstateFortune(s) || 0,
       realEstateValue: getRealEstateValue(s) || 0,
       realEstateDebt: getRealEstateDebt(s) || 0,
       bankFortune: getBankFortune(s) || 0,
-      usageType: this.state.usageType,
     };
-
-    const finished = isFinished(s, props.minFortune);
-
+    props.fortuneNeeded = props.project - s.loanWanted;
+    props.totalFortune = props.fortune + props.insuranceFortune;
     props.ratio = getRatio(props.income, props.expenses, props.monthly);
     props.borrow = getBorrow(
       props.fortuneUsed + props.insuranceFortuneUsed,
@@ -137,17 +146,14 @@ export default class Start2Page extends Component {
     );
     props.lenderCount = getLenderCount(props.borrow, props.ratio);
 
+    const finished = isFinished(s, props.minFortune);
+
     return (
       <section className="start2 animated fadeIn">
         <div className={classNames({ form: true, isFinished: finished })}>
           <AutoStart
-            formState={{
-              ...s,
-              minFortune: props.minFortune,
-              minCash: props.minCash,
-              fortune: props.fortune,
-            }}
-            formArray={getFormArray(s, props)}
+            formState={s}
+            formArray={getFormArray(s, props, this.setFormState)}
             setFormState={this.setFormState}
             setActiveLine={this.setActiveLine}
           />
@@ -155,7 +161,7 @@ export default class Start2Page extends Component {
         {!finished &&
           <div className="start2recap mask1">
             <h3 className="recap-title bold">
-              Plan financier
+              Votre Plan Financier
             </h3>
             <div className="shadow-top" />
             <div className="shadow-bottom" />

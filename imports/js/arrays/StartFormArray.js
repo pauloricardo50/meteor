@@ -451,7 +451,9 @@ const getErrorArray = (state, props) => [
       <span>
         Vous devez avoir au moins
         {' '}
-        <span className="body">CHF {toMoney(0.15 * state.propertyValue)}</span>
+        <span className="body">
+          CHF {toMoney(0.1 * state.propertyValue + props.fees)}
+        </span>
         {' '}
         de fortune (sans compter votre prévoyance) pour ce projet, vous pouvez modifier les valeurs en haut.
       </span>
@@ -487,64 +489,172 @@ const getErrorArray = (state, props) => [
   },
 ];
 
-const getFinalArray = (state, props) => [
+const getFinalArray = (state, props, setFormState) => [
   {
-    condition: state.type === 'acquisition' && state.usageType !== 'primary',
-    id: 'fortuneUsed',
+    condition: state.type === 'acquisition',
+    id: 'loanWanted',
     type: 'sliderInput',
     text1: (
       <span>
         Vous avez
         {' '}
         <span className="active">
-          CHF {toMoney(props.fortune)}
+          CHF {toMoney(props.totalFortune)}
         </span>
         {' '}
-        de fonds propres au total, combien voulez-vous allouer à ce projet? Au minimum
-        {' '}
-        <span className="active">CHF {toMoney(props.minFortune)}</span>
-        .
+        de fonds propres disponibles au total, combien voulez-vous emprunter?
       </span>
     ),
-    question: true,
     money: true,
-    sliderMin: props.minFortune,
-    sliderMax: props.fortune + props.insuranceFortune,
+    question: true,
+    sliderMin: 0,
+    sliderMax: state.usageType === 'secondary'
+      ? 0.7 * props.propAndWork
+      : 0.8 * props.propAndWork,
+    step: 10000,
+    onDragStart() {
+      // Make sure we reset the next sliders if this is modified afterwards
+      if (state.fortuneUsed) {
+        setFormState('fortuneUsed', undefined);
+      }
+      if (state.insuranceFortuneUsed) {
+        setFormState('insuranceFortuneUsed', undefined);
+      }
+    },
+    validation: {
+      min: Math.max(
+        100000,
+        props.project - (props.fortune + props.insuranceFortune),
+      ),
+      max: state.usageType === 'secondary'
+        ? 0.7 * props.propAndWork
+        : 0.8 * props.propAndWork,
+    },
   },
   {
-    condition: state.type === 'acquisition' && state.usageType === 'primary',
+    condition: state.type === 'acquisition' && state.usageType !== 'primary',
+    id: 'fortuneRequiredAgreed',
+    type: 'buttons',
+    text1: (
+      <span>
+        Vous devez donc mettre
+        {' '}
+        <span className="active">
+          CHF {toMoney(props.project - state.loanWanted)}
+        </span>
+        {' '}
+        de fonds propres.
+      </span>
+    ),
+    hideResult: true,
+    buttons: [
+      {
+        id: true,
+        label: 'Continuer',
+        onClick() {
+          setFormState('fortuneUsed', props.fortuneNeeded);
+        },
+      },
+    ],
+  },
+  {
+    condition: state.type === 'acquisition' &&
+      state.usageType === 'primary' &&
+      props.fortune >= props.fortuneNeeded,
+    type: 'buttons',
+    id: 'useInsurance',
+    text1: 'Voulez-vous utiliser votre fortune de prévoyance sur ce projet ?',
+    buttons: [
+      {
+        id: true,
+        label: 'Oui',
+        onClick() {
+          // fortuneUsed value is undefined at this point, however,
+          // if the user changes his mind, set it back to undefined if it was previously set
+          setFormState('fortuneUsed', undefined);
+        },
+      },
+      {
+        id: false,
+        label: 'Non',
+        onClick() {
+          setFormState('fortuneUsed', props.fortuneNeeded);
+        },
+      },
+      {
+        id: undefined,
+        label: 'Pourquoi?',
+        noPrimary: true,
+      },
+    ],
+    question: true,
+  },
+  {
+    condition: state.type === 'acquisition' &&
+      state.usageType === 'primary' &&
+      props.fortune < props.fortuneNeeded,
+    type: 'buttons',
+    id: 'useInsurance',
+    text1: 'Vous devrez utiliser votre fortune de prévoyance pour ce projet',
+    buttons: [
+      {
+        id: true,
+        label: 'Ok',
+      },
+      {
+        id: undefined,
+        label: 'Pourquoi?',
+        noPrimary: true,
+      },
+      {
+        id: undefined,
+        label: 'Conditions',
+        noPrimary: true,
+      },
+    ],
+    question: true,
+  },
+  {
+    condition: state.type === 'acquisition' &&
+      state.usageType === 'primary' &&
+      state.useInsurance === true,
     type: 'custom',
     component: FortuneSliders,
+    id: 'fortuneSliders',
     validation: () =>
       state.fortuneUsed + (state.insuranceFortuneUsed || 0) >=
         props.minFortune && state.fortuneUsed >= props.minCash,
     text1: (
       <span>
-        Vous avez
+        Vous devez donc mettre
         {' '}
         <span className="active">
-          CHF {toMoney(props.fortune + props.insuranceFortune)}
+          CHF {toMoney(props.project - state.loanWanted)}
         </span>
         {' '}
-        de fonds propres au total, combien voulez-vous allouer à ce projet? Au minimum
-        {' '}
-        <span className="active">CHF {toMoney(props.minFortune)}</span>
-        .
+        de fonds propres, comment voulez-vous les répartir?
       </span>
     ),
     sliders: [
       {
         id: 'fortuneUsed',
-        // If there isn't enough cash, automatically assume that insuranceFortune will be used
-        sliderMin: props.fortune < props.minFortune
-          ? props.minCash
-          : state.useInsurance ? props.minCash : props.minFortune,
-        sliderMax: props.fortune,
+        sliderMin: Math.max(
+          props.fortuneNeeded - props.insuranceFortune,
+          props.minCash,
+        ),
+        sliderMax: props.fortune >= props.fortuneNeeded
+          ? props.fortuneNeeded
+          : props.fortune,
       },
       {
         id: 'insuranceFortuneUsed',
-        sliderMin: 0,
-        sliderMax: props.insuranceFortune,
+        sliderMin: props.fortune >= props.fortuneNeeded
+          ? 0
+          : props.fortuneNeeded - props.fortune,
+        sliderMax: Math.min(
+          props.insuranceFortune,
+          props.fortuneNeeded - props.minCash,
+        ),
       },
     ],
   },
@@ -572,19 +682,6 @@ const getFinalArray = (state, props) => [
       },
     ],
   },
-
-  // If the user wants to borrow less than CHF 100000
-  {
-    condition: state.type === 'acquisition' &&
-      state.fortuneUsed &&
-      props.propAndWork -
-        (state.fortuneUsed + (state.insuranceFortuneUsed || 0)) <=
-        100000,
-    id: 'error',
-    type: 'buttons',
-    text1: "Vous utilisez trop de fonds propres, nous ne pouvons malheureusement pas vous aider pour un emprunt de moins de CHF 100'000.",
-    buttons: [],
-  },
   {
     condition: state.type === 'test' ||
       state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= props.minFortune,
@@ -609,9 +706,12 @@ const getFinalArray = (state, props) => [
   },
 ];
 
-const getFormArray = (state, props) => getAcquisitionArray(state, props).concat(
+const getFormArray = (state, props, setFormState) => getAcquisitionArray(
+  state,
+  props,
+).concat(
   state.type === 'acquisition' ? getErrorArray(state, props) : [], // these errors only for acquisitions
-  getFinalArray(state, props),
+  getFinalArray(state, props, setFormState),
 );
 
 export default getFormArray;

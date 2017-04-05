@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
+import classnames from 'classnames';
 
 import ButtonInput from './ButtonInput.jsx';
 import Input from './Input.jsx';
@@ -103,9 +104,6 @@ export default class AutoStart extends Component {
 
     const verified = this.verifyConditions(input);
 
-    if (input.id === 'finalized') {
-      console.log('fin', verified);
-    }
     if (verified === 'break') {
       this.breakForm = true;
     } else if (verified) {
@@ -126,7 +124,11 @@ export default class AutoStart extends Component {
         setFormState: this.props.setFormState,
         setActiveLine: this.props.setActiveLine,
         active,
-        className: active ? 'startArticle activeLine' : 'startArticle',
+        className: classnames({
+          startArticle: true,
+          activeLine: active,
+          last: input.id === 'finalized',
+        }),
         autoFocus: prevInput.type === 'buttons' &&
           !this.props.formState.stopScroll &&
           !this.props.formState.finalized,

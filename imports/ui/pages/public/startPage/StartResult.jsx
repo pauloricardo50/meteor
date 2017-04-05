@@ -49,6 +49,16 @@ const StartResult = props => {
         />
       </h1>
 
+      <div className="description">
+        <p>
+          Vous êtes éligible pour e-Potek. Continuez en bas pour vous créer un compte et nous mettrons
+          {' '}
+          {props.lenderCount}
+          {' '}
+          prêteurs en compétition pour votre dossier.
+        </p>
+      </div>
+
       <div className="content">
         <Start2Recap {...props} />
         <div className="chart">
@@ -84,12 +94,14 @@ StartResult.defaultProps = {
   propAndWork: 0,
   fortuneUsed: 0,
   project: 0,
+  lenderCount: 0,
 };
 
 StartResult.propTypes = {
   propAndWork: PropTypes.number,
   project: PropTypes.number,
   fortuneUsed: PropTypes.number,
+  lenderCount: PropTypes.number,
 };
 
 export default StartResult;

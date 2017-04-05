@@ -1,10 +1,9 @@
 import React, { PropTypes } from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
-import Lock from 'material-ui/svg-icons/action/lock';
-import LockOpen from 'material-ui/svg-icons/action/lock-open';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
+import { getProject } from '/imports/js/helpers/startFunctions';
 
 import StartSlider from './StartSlider.jsx';
 
@@ -17,60 +16,68 @@ const styles = {
   },
 };
 
+// Make sure the value never exceeds the sliders' max or min
+const valueInRange = (value, min, max) => {
+  if (value >= min && value <= max) {
+    return value;
+  } else if (value < min) {
+    return min;
+  } else if (value > max) {
+    return max;
+  }
+
+  return value;
+};
+
 export default class FortuneSliders extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      locked: false,
-    };
 
     this.handleChangeFortune = this.handleChangeFortune.bind(this);
     this.handleChangeInsurance = this.handleChangeInsurance.bind(this);
   }
 
-  handleChangeFortune(e, fortune) {
-    if (this.state.locked) {
-      this.props.setFormState(
-        'insuranceFortuneUsed',
-        this.props.formState.minFortune - Math.round(fortune),
-      );
-      this.props.setFormState('fortuneUsed', Math.round(fortune));
-    } else {
-      this.props.setFormState('fortuneUsed', Math.round(fortune));
+  getFortuneNeeded(insuranceFortuneUsed) {
+    // Make sure we're properly calculating the fortune needed, which should
+    // include any new insuranceFortuneUsed and the taxes that it adds to the project value
+    if (insuranceFortuneUsed) {
+      return getProject({ ...this.props.formState, insuranceFortuneUsed }) -
+        this.props.formState.loanWanted;
     }
+    return getProject(this.props.formState) - this.props.formState.loanWanted;
   }
 
-  handleChangeInsurance(e, insuranceFortune) {
-    if (this.state.locked) {
-      this.props.setFormState(
-        'fortuneUsed',
-        // Make sure cash is not reduced below minimum cash, and not above total fortune
-        Math.min(
-          Math.max(
-            this.props.formState.minFortune - Math.round(insuranceFortune),
-            this.props.formState.minCash,
-          ),
-          this.props.formState.fortune,
-        ),
-      );
-      this.props.setFormState(
-        'insuranceFortuneUsed',
-        Math.round(insuranceFortune),
-      );
-    } else {
-      this.props.setFormState(
-        'insuranceFortuneUsed',
-        Math.round(insuranceFortune),
-      );
-    }
+  handleChangeFortune(e, fortuneUsed) {
+    const object = {
+      insuranceFortuneUsed: valueInRange(
+        this.getFortuneNeeded() - fortuneUsed,
+        this.props.sliders[1].sliderMin,
+        this.props.sliders[1].sliderMax,
+      ),
+      fortuneUsed,
+    };
+
+    this.props.setFormState(false, false, false, object);
+  }
+
+  handleChangeInsurance(e, insuranceFortuneUsed) {
+    const object = {
+      fortuneUsed: valueInRange(
+        this.getFortuneNeeded(insuranceFortuneUsed) - insuranceFortuneUsed,
+        this.props.sliders[0].sliderMin,
+        this.props.sliders[0].sliderMax,
+      ),
+      insuranceFortuneUsed,
+    };
+
+    this.props.setFormState(false, false, false, object);
   }
 
   render() {
     const hasToUseLpp = this.props.formState.fortune <
       this.props.formState.minFortune;
     return (
-      <div className="fortune-sliders" key={this.props.key}>
+      <div className="fortune-sliders" key={this.props.index}>
 
         <h1 className="fixed-size">
           {this.props.text1}
@@ -108,22 +115,6 @@ export default class FortuneSliders extends React.Component {
               setFormState={this.handleChangeInsurance}
               style={styles.sliders}
             />
-            <div className="locked-toggle">
-              <div className="wrapper">
-                <RaisedButton
-                  label=""
-                  onTouchTap={() =>
-                    this.setState({ locked: !this.state.locked })}
-                  icon={
-                    this.state.locked
-                      ? <Lock color="#d8d8d8" />
-                      : <LockOpen color="#d8d8d8" />
-                  }
-                  style={{ minWidth: 'unset' }}
-                  overlayStyle={{ padding: '0 8px' }}
-                />
-              </div>
-            </div>
           </div>}
         {!this.props.formState.useInsurance &&
           <div className="text-center animated fadeIn">
@@ -136,10 +127,7 @@ export default class FortuneSliders extends React.Component {
             <RaisedButton
               label="Utiliser"
               style={{ marginRight: 8 }}
-              onTouchTap={() => {
-                this.props.setFormState('useInsurance', true);
-                this.setState({ locked: true });
-              }}
+              onTouchTap={() => this.props.setFormState('useInsurance', true)}
               primary
             />
             <RaisedButton label="Pourquoi?" />
@@ -154,5 +142,5 @@ FortuneSliders.propTypes = {
   setFormState: PropTypes.func.isRequired,
   sliders: PropTypes.arrayOf(PropTypes.object).isRequired,
   text1: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
-  key: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired,
 };

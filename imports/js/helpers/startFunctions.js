@@ -66,8 +66,17 @@ export const changeIncome = (state, o, income) => {
 export const isFinished = (state, minFortune) =>
   state.finalized &&
   !state.error &&
-  (state.fortuneUsed + state.insuranceFortuneUsed >= minFortune ||
+  (state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= minFortune ||
     state.type === 'test');
+
+export const getProject = state => {
+  const property = state.propertyValue || calculateProperty(state) || 0;
+  const project = property +
+    (state.propertyWork || 0) +
+    property * constants.notaryFees +
+    (state.insuranceFortuneUsed * constants.lppFees || 0);
+  return project || 0;
+};
 
 export const getBonusIncome = arr => {
   // Sum all values, remove the lowest one, and return 50% of their average
