@@ -144,6 +144,7 @@ export default class Start2Page extends Component {
             formState={{
               ...s,
               minFortune: props.minFortune,
+              minCash: props.minCash,
               fortune: props.fortune,
             }}
             formArray={getFormArray(s, props)}

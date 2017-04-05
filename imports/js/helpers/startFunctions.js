@@ -253,7 +253,7 @@ export const saveStartForm = (f, history) => {
       purchaseType: f.purchaseType,
       oldestAge: multiple ? f.oldestAge : f.age,
       fortuneUsed: f.fortuneUsed,
-      insuranceFortuneUsed: 0, // TODO
+      insuranceFortuneUsed: f.insuranceFortuneUsed,
     },
     property: {
       usageType: f.usageType,

@@ -516,8 +516,8 @@ const getFinalArray = (state, props) => [
     type: 'custom',
     component: FortuneSliders,
     validation: () =>
-      state.fortuneUsed + state.insuranceFortuneUsed + 1 >= props.minFortune &&
-      state.fortuneUsed + 1 >= props.minCash,
+      state.fortuneUsed + (state.insuranceFortuneUsed || 0) >=
+        props.minFortune && state.fortuneUsed >= props.minCash,
     text1: (
       <span>
         Vous avez
@@ -577,7 +577,8 @@ const getFinalArray = (state, props) => [
   {
     condition: state.type === 'acquisition' &&
       state.fortuneUsed &&
-      props.propAndWork - (state.fortuneUsed + state.insuranceFortuneUsed) <=
+      props.propAndWork -
+        (state.fortuneUsed + (state.insuranceFortuneUsed || 0)) <=
         100000,
     id: 'error',
     type: 'buttons',
@@ -586,7 +587,7 @@ const getFinalArray = (state, props) => [
   },
   {
     condition: state.type === 'test' ||
-      state.fortuneUsed + state.insuranceFortuneUsed + 1 >= props.minFortune,
+      state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= props.minFortune,
     id: 'finalized',
     type: 'buttons',
     text1: 'Vous-êtes arrivé au bout, formidable!',

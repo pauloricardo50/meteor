@@ -45,7 +45,14 @@ export default class FortuneSliders extends React.Component {
     if (this.state.locked) {
       this.props.setFormState(
         'fortuneUsed',
-        this.props.formState.minFortune - Math.round(insuranceFortune),
+        // Make sure cash is not reduced below minimum cash, and not above total fortune
+        Math.min(
+          Math.max(
+            this.props.formState.minFortune - Math.round(insuranceFortune),
+            this.props.formState.minCash,
+          ),
+          this.props.formState.fortune,
+        ),
       );
       this.props.setFormState(
         'insuranceFortuneUsed',

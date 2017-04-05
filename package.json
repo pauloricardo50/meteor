@@ -23,6 +23,7 @@
     "is_js": "^0.9.0",
     "ismobilejs": "^0.4.0",
     "lodash": "^4.17.4",
+    "lumber-cli": "^1.2.8",
     "mailchimp-api-v3": "^1.7.0",
     "material-ui": "^0.17.0",
     "meteor-node-stubs": "~0.2.5",
