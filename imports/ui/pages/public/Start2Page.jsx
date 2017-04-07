@@ -114,10 +114,10 @@ export default class Start2Page extends Component {
       bonus: getBonusIncome([s.bonus11, s.bonus21, s.bonus31, s.bonus41]) +
         getBonusIncome([s.bonus12, s.bonus22, s.bonus32, s.bonus42]) || 0,
       income: getIncome(s) || 0,
-      otherIncome: getOtherIncome(s) || 0,
+      otherIncome: getOtherIncome(s.otherIncomeArray) || 0,
       fortune: getFortune(s) || 0,
       insuranceFortune: getInsuranceFortune(s) || 0,
-      expenses: getExpenses(s) || 0,
+      expenses: getExpenses(s.expensesArray) || 0,
       fortuneUsed: s.fortuneUsed || 0,
       insuranceFortuneUsed: s.insuranceFortuneUsed || 0,
       minFortune: fees +
@@ -130,9 +130,9 @@ export default class Start2Page extends Component {
       project: fees + property + (s.propertyWork || 0) + lppFees || 0,
       monthly: getMonthly(s) || 0,
       monthlyReal: getMonthlyReal(s) || 0,
-      realEstate: getRealEstateFortune(s) || 0,
-      realEstateValue: getRealEstateValue(s) || 0,
-      realEstateDebt: getRealEstateDebt(s) || 0,
+      realEstate: getRealEstateFortune(s.realEstateArray) || 0,
+      realEstateValue: getRealEstateValue(s.realEstateArray) || 0,
+      realEstateDebt: getRealEstateDebt(s.realEstateArray) || 0,
       bankFortune: getBankFortune(s) || 0,
     };
     props.fortuneNeeded = props.project - s.loanWanted;

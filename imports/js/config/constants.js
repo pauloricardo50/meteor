@@ -22,14 +22,17 @@ const constants = {
     return 3 *
       (this.maintenanceReal + this.maxLoan(usageType) * this.loanCostReal());
   },
-  maxProperty(income, fortune, usageType = 'primary') {
+  maxProperty(income, fortune, insuranceFortune = 0, usageType = 'primary') {
     // Fortune should cover 20% and notary fees
-    const fortuneLimited = fortune / (1 - this.maxLoan(usageType) + 0.05);
+    let fortuneLimited = fortune / (1 - this.maxLoan(usageType) + 0.05);
+    if (usageType === 'primary') {
+      fortuneLimited = calculatePrimaryProperty(fortune, insuranceFortune);
+    }
     // The arithmetic relation to have the cost of the loan be at exactly 33% of income
     const incomeLimited = (income + 3 * fortune * this.loanCost()) /
       (3 * (this.maintenance + 1.05 * this.loanCost()));
 
-    return Math.min(fortuneLimited, incomeLimited);
+    return Math.round(Math.min(fortuneLimited, incomeLimited));
   },
   maxLoan(usageType = 'primary') {
     if (usageType === 'secondary') {
@@ -38,6 +41,27 @@ const constants = {
 
     return 0.8;
   },
+};
+
+export const calculatePrimaryProperty = (fortune, insuranceFortune) => {
+  if (fortune <= 0 || insuranceFortune < 0) {
+    return 0;
+  }
+
+  const lppFees = insuranceFortune * constants.lppFees;
+  const notaryFees = constants.notaryFees;
+
+  // Make sure cash can pay for lppFees, and fortune can cover notaryfees
+  const totalFortuneLimitedValue = (fortune - lppFees + insuranceFortune) /
+    (0.2 + notaryFees);
+
+  // Make sure cash can pay for lppfees and notaryfees
+  const cashLimitedValue = (fortune - lppFees) / (0.1 + notaryFees);
+
+  return Math.max(
+    Math.round(Math.min(cashLimitedValue, totalFortuneLimitedValue)),
+    0,
+  );
 };
 
 export default constants;

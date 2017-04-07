@@ -26,6 +26,8 @@ export function toDecimalNumber(value) {
   // Remove unwanted characters, except digits, dots and commas
   const newValue = value ? String(value).replace(/[^\d.,]/g, '') : value;
   // replace commas with dots
-  const commaReplaced = value ? Number(newValue.replace(',', '.')) : value;
+  const commaReplaced = newValue
+    ? Number(newValue.replace(',', '.'))
+    : newValue;
   return commaReplaced;
 }

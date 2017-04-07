@@ -78,7 +78,7 @@ export const getProject = state => {
   return project || 0;
 };
 
-export const getBonusIncome = arr => {
+export const getBonusIncome = (arr = []) => {
   // Sum all values, remove the lowest one, and return 50% of their average
   const safeArray = arr.map(v => v || 0);
   const sum = safeArray.reduce((tot, val) => tot + val, 0);
@@ -96,25 +96,21 @@ export const getIncome = state => {
     s.income2,
     bonus1,
     bonus2,
-    ...(s.otherIncomeArray ? s.otherIncomeArray.map(i => i.value || 0) : []),
+    getOtherIncome(s.otherIncomeArray),
   ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
 };
 
-export const getOtherIncome = state =>
-  [
-    ...(state.otherIncomeArray
-      ? state.otherIncomeArray.map(i => i.value || 0)
-      : []),
-  ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+export const getOtherIncome = (array = []) =>
+  [...array.map(i => i.value || 0)].reduce(
+    (tot, val) => (val > 0 && tot + val) || tot,
+    0,
+  );
 
 export const getFortune = state =>
-  [
-    state.fortune1,
-    state.fortune2,
-    ...(state.realEstateArray
-      ? state.realEstateArray.map(i => i.value - i.loan || 0)
-      : []),
-  ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+  [state.fortune1, state.fortune2].reduce(
+    (tot, val) => (val > 0 && tot + val) || tot,
+    0,
+  );
 
 export const getBankFortune = state => {
   const s = state;
@@ -133,37 +129,29 @@ export const getInsuranceFortune = state =>
     state.insurance22,
   ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
 
-export const getRealEstateFortune = state =>
-  state.realEstateExists
-    ? [
-        ...(state.realEstateArray
-          ? state.realEstateArray.map(i => i.value - i.loan || 0)
-          : []),
-      ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0)
-    : 0;
+export const getRealEstateFortune = (array = []) =>
+  [...array.map(i => i.value - i.loan || 0)].reduce(
+    (tot, val) => (val > 0 && tot + val) || tot,
+    0,
+  );
 
-export const getRealEstateValue = state =>
-  state.realEstateExists
-    ? [
-        ...(state.realEstateArray
-          ? state.realEstateArray.map(i => i.value || 0)
-          : []),
-      ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0)
-    : 0;
+export const getRealEstateValue = (array = []) =>
+  [...array.map(i => i.value || 0)].reduce(
+    (tot, val) => (val > 0 && tot + val) || tot,
+    0,
+  );
 
-export const getRealEstateDebt = state =>
-  state.realEstateExists
-    ? [
-        ...(state.realEstateArray
-          ? state.realEstateArray.map(i => i.loan || 0)
-          : []),
-      ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0)
-    : 0;
+export const getRealEstateDebt = (array = []) =>
+  [...array.map(i => i.loan || 0)].reduce(
+    (tot, val) => (val > 0 && tot + val) || tot,
+    0,
+  );
 
-export const getExpenses = state =>
-  [
-    ...(state.expensesArray ? state.expensesArray.map(i => i.value) : []),
-  ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+export const getExpenses = (array = []) =>
+  [...array.map(i => i.value)].reduce(
+    (tot, val) => (val > 0 && tot + val) || tot,
+    0,
+  );
 
 export const getMonthly = state => {
   const s = state;
@@ -192,48 +180,13 @@ export const getMonthlyReal = state => {
   );
 };
 
-export const calculatePrimaryProperty = (fortune, insuranceFortune) => {
-  if (fortune <= 0 || insuranceFortune < 0) {
-    return 0;
-  }
-
-  const lppFees = insuranceFortune * constants.lppFees;
-  const notaryFees = constants.notaryFees;
-
-  // Make sure cash can pay for lppFees, and fortune can cover notaryfees
-  const totalFortuneLimitedValue = (fortune - lppFees + insuranceFortune) /
-    (0.2 + notaryFees);
-
-  // Make sure cash can pay for lppfees and notaryfees
-  const cashLimitedValue = (fortune - lppFees) / (0.1 + notaryFees);
-
-  return Math.max(
-    Math.round(Math.min(cashLimitedValue, totalFortuneLimitedValue)),
-    0,
-  );
-};
-
 export const calculateProperty = (
   fortune,
   insuranceFortune,
   income,
   usageType,
 ) => {
-  const notaryFees = constants.notaryFees;
-
-  // Make sure income can pay for the loan
-  const incomeLimitedValue = income /
-    (constants.propertyToIncome() + notaryFees);
-
-  // Make sure there is enough fortune to meet basic ratio of 0.8 or 0.7
-  let fortuneLimitedValue = fortune /
-    (1 - constants.maxLoan(usageType) + notaryFees);
-
-  // For primary properties, include insuranceFortune in the calculations,
-  if (usageType === 'primary') {
-    fortuneLimitedValue = calculatePrimaryProperty(fortune, insuranceFortune);
-  }
-  return Math.round(Math.min(incomeLimitedValue, fortuneLimitedValue));
+  return constants.maxProperty(income, fortune, insuranceFortune, usageType);
 };
 
 export const getLenderCount = (borrow, ratio) => {
@@ -309,8 +262,6 @@ export const saveStartForm = (f, history) => {
       investmentRent: f.propertyRent,
     },
   };
-
-  console.log('client', borrowerOne);
 
   const insertRequest = (id1, id2 = false) => {
     loanRequest.borrowers = [id1];

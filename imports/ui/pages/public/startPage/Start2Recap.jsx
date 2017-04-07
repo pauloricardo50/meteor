@@ -141,30 +141,45 @@ const getArray = props => {
       value: `CHF ${toMoney(Math.round(p.bankFortune))}`,
       hide: !p.bankFortune,
     },
-    {
-      label: 'Biens Immobiliers',
-      value: `CHF ${toMoney(Math.round(p.realEstateValue))}`,
-      hide: !p.realEstate,
-    },
-    {
-      label: 'Emprunts Actuels',
-      value: `- CHF ${toMoney(Math.round(p.realEstateDebt))}`,
-      hide: !p.realEstate,
-    },
+
     {
       label: 'Fortune de Prévoyance',
       value: `CHF ${toMoney(Math.round(p.insuranceFortune))}`,
       hide: !p.insuranceFortune,
     },
     {
-      label: 'Fortune Nette',
+      label: 'Fonds Propres Dispo.',
       value: (
         <span className="sum">
           CHF {toMoney(Math.round(p.fortune + p.insuranceFortune))}
         </span>
       ),
+      hide: !p.insuranceFortune,
       spacingTop: true,
-      hide: !p.fortune && !p.insuranceFortune,
+    },
+    {
+      label: 'Biens Immobiliers',
+      value: `CHF ${toMoney(Math.round(p.realEstateValue))}`,
+      hide: !p.realEstate,
+      spacingTop: true,
+    },
+    {
+      label: 'Emprunts Actuels',
+      value: `- CHF ${toMoney(Math.round(p.realEstateDebt))}`,
+      hide: !p.realEstate,
+    },
+
+    {
+      label: 'Fortune Nette',
+      value: (
+        <span className="sum">
+          CHF
+          {' '}
+          {toMoney(Math.round(p.fortune + p.insuranceFortune + p.realEstate))}
+        </span>
+      ),
+      spacingTop: true,
+      hide: !p.realEstate,
     },
     {
       title: true,

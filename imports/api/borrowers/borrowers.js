@@ -2,7 +2,6 @@ import 'babel-polyfill';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { BorrowerFilesSchema } from '../FileSchemas';
-import uniforms from 'uniforms';
 
 const Borrowers = new Mongo.Collection('borrowers');
 
