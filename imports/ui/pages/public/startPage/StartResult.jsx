@@ -29,7 +29,12 @@ const handleClick = ({ formState, setFormState, currentUser, history }) => {
 };
 
 const StartResult = props => {
-  const loan = props.project - props.fortuneUsed;
+  let loan = 0;
+  if (props.fortuneUsed) {
+    loan = props.project - props.fortuneUsed;
+  } else {
+    loan = props.property * constants.maxLoan(props.usageType);
+  }
 
   return (
     <article className="mask1 start-result">
@@ -50,20 +55,31 @@ const StartResult = props => {
       </h1>
 
       <div className="description">
-        <p>
-          Vous êtes éligible pour e-Potek. Continuez en bas pour vous créer un compte et nous mettrons
-          {' '}
-          {props.lenderCount}
-          {' '}
-          prêteurs en compétition pour votre dossier.
-        </p>
+        {props.type === 'acquisition' &&
+          <p>
+            Vous êtes éligible pour e-Potek. Continuez en bas pour vous créer un compte et nous mettrons
+            {' '}
+            {props.lenderCount}
+            {' '}
+            prêteurs en compétition pour votre dossier.
+          </p>}
+        {props.type === 'test' &&
+          <p>
+            Vous pouvez acquérir un bien immobilier d'une valeur maximale de CHF
+            {' '}
+            {toMoney(props.property)}
+            . Cliquez sur continuer pour affiner vos informations et avoir une estimation précise d'emprunt et de ce que ça va vous coûter.
+          </p>}
       </div>
 
       <div className="content">
         <Start2Recap {...props} />
         <div className="chart">
           <h3>
-            Votre emprunt: <span className="active">CHF {toMoney(loan)}</span>
+            {props.type === 'acquisition' && 'Votre emprunt:'}
+            {props.type === 'test' && 'Emprunt maximal:'}
+            {' '}
+            <span className="active">CHF {toMoney(loan)}</span>
           </h3>
           <ExpensesChartInterests
             loan={loan}
@@ -73,19 +89,45 @@ const StartResult = props => {
         </div>
       </div>
 
-      <div className="buttons">
-        <RaisedButton
-          label="Modifier"
-          onTouchTap={() =>
-            Scroll.animateScroll.scrollToTop({ smooth: true, duration: 1000 })}
-          style={{ marginRight: 8 }}
-        />
-        <RaisedButton
-          label="Continuer"
-          onTouchTap={() => handleClick(props)}
-          primary
-        />
-      </div>
+      {props.type !== 'test' &&
+        <div className="buttons">
+          <RaisedButton
+            label="Modifier"
+            onTouchTap={() => Scroll.animateScroll.scrollToTop({
+              smooth: true,
+              duration: 1000,
+            })}
+            style={{ marginRight: 8 }}
+          />
+          <RaisedButton
+            label="Continuer"
+            onTouchTap={() => handleClick(props)}
+            primary
+          />
+        </div>}
+
+      {props.type === 'test' &&
+        <div className="buttons">
+          <RaisedButton
+            label="Modifier"
+            onTouchTap={() => Scroll.animateScroll.scrollToTop({
+              smooth: true,
+              duration: 1000,
+            })}
+            style={{ marginRight: 8 }}
+          />
+          <RaisedButton
+            label="Continuer"
+            onTouchTap={() => {
+              props.setFormState('type', 'acquisition');
+              props.setFormState('finalized', undefined);
+              props.setFormState('knowsProperty', true);
+              props.setFormState('propertyValue', props.property);
+            }}
+            primary
+          />
+        </div>}
+
     </article>
   );
 };
@@ -102,6 +144,7 @@ StartResult.propTypes = {
   project: PropTypes.number,
   fortuneUsed: PropTypes.number,
   lenderCount: PropTypes.number,
+  setFormState: PropTypes.func.isRequired,
 };
 
 export default StartResult;

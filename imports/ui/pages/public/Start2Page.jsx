@@ -100,7 +100,7 @@ export default class Start2Page extends Component {
     }
 
     const s = this.state;
-    const property = s.propertyValue || calculateProperty(s) || 0;
+    const property = s.propertyValue || 0;
     const fees = property * constants.notaryFees;
     const lppFees = s.insuranceFortuneUsed * constants.lppFees || 0;
     const props = {
@@ -145,6 +145,15 @@ export default class Start2Page extends Component {
       props.fees + props.lppFees,
     );
     props.lenderCount = getLenderCount(props.borrow, props.ratio);
+
+    if (!props.property) {
+      props.property = calculateProperty(
+        props.fortune,
+        props.insuranceFortune,
+        props.income,
+        props.usageType,
+      );
+    }
 
     const finished = isFinished(s, props.minFortune);
 

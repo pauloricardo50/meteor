@@ -20,7 +20,7 @@ shell-server@0.2.3            # Server-side component of the `meteor shell` comm
 # dev, place this on top to allow meteor toys to work
 meteortoys:allthings            # Most awesome dev tools, shows you Session and mongoDB data
 stolinski:stylus-multi          # CSS PreCompiler for Stylus
-# kadira:flow-router              # Router
+practicalmeteor:mocha
 
 
 # User Accounts

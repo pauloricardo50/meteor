@@ -1,5 +1,5 @@
-import constants from '../config/constants';
 import cleanMethod from '/imports/api/cleanMethods';
+import constants from '../config/constants';
 
 // if 2 values are not in auto mode, set both of their minValues to 0
 const setDefaultMinValues = (s, o) => {
@@ -192,11 +192,49 @@ export const getMonthlyReal = state => {
   );
 };
 
-export const calculateProperty = state =>
-  Math.min(
-    getIncome() / constants.propertyToIncome(),
-    getFortune() / (1 - constants.maxLoan(state.usageType)),
+export const calculatePrimaryProperty = (fortune, insuranceFortune) => {
+  if (fortune <= 0 || insuranceFortune < 0) {
+    return 0;
+  }
+
+  const lppFees = insuranceFortune * constants.lppFees;
+  const notaryFees = constants.notaryFees;
+
+  // Make sure cash can pay for lppFees, and fortune can cover notaryfees
+  const totalFortuneLimitedValue = (fortune - lppFees + insuranceFortune) /
+    (0.2 + notaryFees);
+
+  // Make sure cash can pay for lppfees and notaryfees
+  const cashLimitedValue = (fortune - lppFees) / (0.1 + notaryFees);
+
+  return Math.max(
+    Math.round(Math.min(cashLimitedValue, totalFortuneLimitedValue)),
+    0,
   );
+};
+
+export const calculateProperty = (
+  fortune,
+  insuranceFortune,
+  income,
+  usageType,
+) => {
+  const notaryFees = constants.notaryFees;
+
+  // Make sure income can pay for the loan
+  const incomeLimitedValue = income /
+    (constants.propertyToIncome() + notaryFees);
+
+  // Make sure there is enough fortune to meet basic ratio of 0.8 or 0.7
+  let fortuneLimitedValue = fortune /
+    (1 - constants.maxLoan(usageType) + notaryFees);
+
+  // For primary properties, include insuranceFortune in the calculations,
+  if (usageType === 'primary') {
+    fortuneLimitedValue = calculatePrimaryProperty(fortune, insuranceFortune);
+  }
+  return Math.round(Math.min(incomeLimitedValue, fortuneLimitedValue));
+};
 
 export const getLenderCount = (borrow, ratio) => {
   if (ratio > 0.38) {
