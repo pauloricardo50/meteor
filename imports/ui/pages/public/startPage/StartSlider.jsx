@@ -1,57 +1,55 @@
 import React, { PropTypes } from 'react';
 
 import Slider from 'material-ui/Slider';
-import { toNumber } from '/imports/js/helpers/conversionFunctions';
 
-export default class StartSlider extends React.Component {
-  handleChange(event) {
-    // Save a Number if it is money, else the string
-    const value = this.props.money
-      ? toNumber(event.target.value)
-      : event.target.value;
-    this.props.setFormState(this.props.id, value);
-  }
-
-  render() {
-    const val = this.props.value || this.props.formState[this.props.id];
-    return (
+const StartSlider = props => {
+  const val = props.value || props.formState[props.id];
+  return (
+    <span style={{ display: 'block', position: 'relative' }}>
       <Slider
-        min={this.props.sliderMin}
-        max={this.props.sliderMax}
+        min={props.sliderMin}
+        max={props.sliderMax}
         step={
-          this.props.step || (this.props.sliderMax - this.props.sliderMin) / 100
+          props.step ||
+            Math.max(Math.round((props.sliderMax - props.sliderMin) / 100), 1)
         }
-        name={this.props.id}
-        value={Math.min(
-          Math.max(val, this.props.sliderMin),
-          this.props.sliderMax,
-        )}
-        onChange={(e, v) => this.props.setFormState(this.props.id, v)}
+        name={props.id}
+        value={Math.min(Math.max(val, props.sliderMin), props.sliderMax)}
+        onChange={(e, v) => props.setFormState(props.id, Math.round(v))}
         onDragStart={() => {
-          this.props.setActiveLine(this.props.id);
-          if (this.props.onDragStart) {
-            this.props.onDragStart();
+          props.setActiveLine(props.id);
+          if (props.onDragStart) {
+            props.onDragStart();
           }
         }}
-        sliderStyle={{ ...this.props.style }}
+        sliderStyle={{ ...props.style }}
         style={{ padding: '0 40px' }}
       />
-    );
-  }
-}
+      {props.sliderLabels &&
+        <div className="slider-labels">
+          <h6 className="secondary fixed-size left">
+            {props.sliderLabels[0]}
+          </h6>
+          <h6 className="secondary fixed-size right">
+            {props.sliderLabels[1]}
+          </h6>
+        </div>}
+    </span>
+  );
+};
 
 StartSlider.propTypes = {
   id: PropTypes.string.isRequired,
   setFormState: PropTypes.func.isRequired,
   formState: PropTypes.objectOf(PropTypes.any),
   style: PropTypes.objectOf(PropTypes.any),
-  money: PropTypes.bool,
   value: PropTypes.number,
   sliderMax: PropTypes.number.isRequired,
   sliderMin: PropTypes.number.isRequired,
   setActiveLine: PropTypes.func.isRequired,
   step: PropTypes.number,
   onDragStart: PropTypes.func,
+  sliderLabels: PropTypes.arrayOf(PropTypes.string),
 };
 
 StartSlider.defaultProps = {
@@ -61,4 +59,7 @@ StartSlider.defaultProps = {
   value: 0,
   step: 0,
   onDragStart: undefined,
+  sliderLabels: undefined,
 };
+
+export default StartSlider;

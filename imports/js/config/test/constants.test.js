@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { describe, it } from 'meteor/practicalmeteor:mocha';
 
-import constants, { calculatePrimaryProperty } from './constants';
+import constants, { calculatePrimaryProperty } from '../constants';
 
 describe('Constants', () => {
   describe('Calculate primary property value', () => {

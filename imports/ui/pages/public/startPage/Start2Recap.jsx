@@ -4,8 +4,6 @@ import classNames from 'classnames';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
 
-const isReady = (income, fortune, property) => property && income && fortune;
-
 const getArray = props => {
   const p = props;
 
@@ -73,7 +71,7 @@ const getArray = props => {
       spacing: !p.fortuneUsed,
     },
     {
-      label: 'Coût réel estimé*',
+      label: 'Charges estimées*',
       value: (
         <span>
           CHF {toMoney(Math.round(p.monthlyReal))} <small>/mois</small>
@@ -113,7 +111,7 @@ const getArray = props => {
       hide: !p.fortuneUsed,
     },
     {
-      label: 'Charges/Revenus Disponibles',
+      label: 'Charges/Revenus',
       value: (
         <span>
           {Math.round(p.ratio * 1000) / 10}%
@@ -134,12 +132,12 @@ const getArray = props => {
     {
       title: true,
       label: 'Fortune',
-      hide: !(p.bankFortune || p.realEstate || p.insuranceFortune),
+      hide: !(p.realEstate || p.insuranceFortune),
     },
     {
       label: 'Fortune Bancaire',
-      value: `CHF ${toMoney(Math.round(p.bankFortune))}`,
-      hide: !p.bankFortune,
+      value: `CHF ${toMoney(Math.round(p.fortune))}`,
+      hide: !p.fortune,
     },
 
     {
@@ -255,22 +253,29 @@ const Start2Recap = props => (
 
 Start2Recap.defaultProps = {
   income: 0,
+  otherIncome: 0,
   fortune: 0,
+  insuranceFortune: 0,
   property: 0,
   expenses: 0,
-  insuranceFortune: 0,
   propertyWork: 0,
   fortuneUsed: 0,
+  insuranceFortuneUsed: 0,
+  realEstate: 0,
 };
 
 Start2Recap.propTypes = {
   income: PropTypes.number,
+  otherIncome: PropTypes.number,
   fortune: PropTypes.number,
+  insuranceFortune: PropTypes.number,
   property: PropTypes.number,
   expenses: PropTypes.number,
   insuranceFortune: PropTypes.number,
   propertyWork: PropTypes.number,
   fortuneUsed: PropTypes.number,
+  insuranceFortuneUsed: PropTypes.number,
+  realEstate: PropTypes.number,
 };
 
 export default Start2Recap;

@@ -12,7 +12,7 @@ import {
   getExpenses,
   getBorrowerIncome,
   getRatio,
-} from './finance-math';
+} from '../finance-math';
 
 describe('Finance Math', () => {
   describe('Calculate Years to Retirement', () => {

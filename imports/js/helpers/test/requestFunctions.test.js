@@ -5,7 +5,7 @@ import {
   getProjectValue,
   getLoanValue,
   loanStrategySuccess,
-} from './requestFunctions';
+} from '../requestFunctions';
 
 describe('Request functions', () => {
   describe('Get project value', () => {

@@ -133,7 +133,6 @@ export default class Start2Page extends Component {
       realEstate: getRealEstateFortune(s.realEstateArray) || 0,
       realEstateValue: getRealEstateValue(s.realEstateArray) || 0,
       realEstateDebt: getRealEstateDebt(s.realEstateArray) || 0,
-      bankFortune: getBankFortune(s) || 0,
     };
     props.fortuneNeeded = props.project - s.loanWanted;
     props.totalFortune = props.fortune + props.insuranceFortune;

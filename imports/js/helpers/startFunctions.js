@@ -79,6 +79,10 @@ export const getProject = state => {
 };
 
 export const getBonusIncome = (arr = []) => {
+  if (arr.length > 4) {
+    // Ignore any value beyond the first 4
+    arr = arr.slice(0, 4);
+  }
   // Sum all values, remove the lowest one, and return 50% of their average
   const safeArray = arr.map(v => v || 0);
   const sum = safeArray.reduce((tot, val) => tot + val, 0);
@@ -111,15 +115,6 @@ export const getFortune = state =>
     (tot, val) => (val > 0 && tot + val) || tot,
     0,
   );
-
-export const getBankFortune = state => {
-  const s = state;
-
-  return [s.fortune1, s.fortune2].reduce(
-    (tot, val) => (val > 0 && tot + val) || tot,
-    0,
-  );
-};
 
 export const getInsuranceFortune = state =>
   [
@@ -155,26 +150,28 @@ export const getExpenses = (array = []) =>
 
 export const getMonthly = state => {
   const s = state;
+  const project = getProject(state);
   const propAndWork = s.propertyValue +
     (s.propertyWorkExists ? s.propertyWork : 0);
 
-  return Math.max(
-    (propAndWork * constants.maintenance +
-      (propAndWork - (s.fortuneUsed || 0)) * constants.loanCost()) /
-      12,
-    0,
-  );
+  const maintenance = propAndWork * constants.maintenance;
+  const interestsAndAmortizing = (project -
+    (s.fortuneUsed || 0) -
+    (s.insuranceFortuneUsed || 0)) *
+    constants.loanCost();
+  const cost = (maintenance + interestsAndAmortizing) / 12;
+
+  return Math.max(cost, 0);
 };
 
 export const getMonthlyReal = state => {
   const s = state;
-  const project = 1.05 * s.propertyValue +
-    (s.propertyWorkExists ? s.propertyWork : 0);
-  const propAndWork = s.propertyValue +
-    (s.propertyWorkExists ? s.propertyWork : 0);
+  const project = getProject(state);
+  const propAndWork = s.propertyValue + (s.propertyWork || 0);
   return Math.max(
     (propAndWork * constants.maintenanceReal +
-      (project - (s.fortuneUsed || 0)) * constants.loanCostReal()) /
+      (project - (s.fortuneUsed || 0) - (s.insuranceFortuneUsed || 0)) *
+        constants.loanCostReal()) /
       12,
     0,
   );
@@ -204,10 +201,11 @@ export const getLenderCount = (borrow, ratio) => {
 };
 
 export const getRatio = (income, expenses, monthly) =>
-  income - expenses && monthly / ((income - expenses) / 12);
+  income - expenses !== 0 && monthly / ((income - expenses) / 12);
 
 export const getBorrow = (totalFortune, propAndWork, propertyValue, fees) =>
   (totalFortune &&
+    propAndWork !== 0 &&
     Math.max((propAndWork - (totalFortune - fees)) / propAndWork, 0)) ||
   0;
 

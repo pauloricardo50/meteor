@@ -511,6 +511,7 @@ const getFinalArray = (state, props, setFormState) => [
     sliderMax: state.usageType === 'secondary'
       ? 0.7 * props.propAndWork
       : 0.8 * props.propAndWork,
+    sliderLabels: ['0%', state.usageType === 'secondary' ? '70%' : '80%'],
     step: 10000,
     onDragStart() {
       // Make sure we reset the next sliders if this is modified afterwards
@@ -532,12 +533,14 @@ const getFinalArray = (state, props, setFormState) => [
     },
   },
   {
-    condition: state.type === 'acquisition' && state.usageType !== 'primary',
+    condition: state.type === 'acquisition' &&
+      (state.usageType !== 'primary' ||
+        (state.usageType === 'primary' && props.insuranceFortune <= 0)),
     id: 'fortuneRequiredAgreed',
     type: 'buttons',
     text1: (
       <span>
-        Vous devez donc mettre
+        Vous devrez donc mettre
         {' '}
         <span className="active">
           CHF {toMoney(props.project - state.loanWanted)}
@@ -560,7 +563,8 @@ const getFinalArray = (state, props, setFormState) => [
   {
     condition: state.type === 'acquisition' &&
       state.usageType === 'primary' &&
-      props.fortune >= props.fortuneNeeded,
+      props.fortune >= props.fortuneNeeded &&
+      props.insuranceFortune > 0,
     type: 'buttons',
     id: 'useInsurance',
     text1: 'Voulez-vous utiliser votre fortune de prévoyance sur ce projet ?',
