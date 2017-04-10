@@ -150,12 +150,12 @@ export const getExpenses = (array = []) =>
 
 export const getMonthly = state => {
   const s = state;
-  const project = getProject(state);
+  const projectValue = getProject(state);
   const propAndWork = s.propertyValue +
     (s.propertyWorkExists ? s.propertyWork : 0);
 
   const maintenance = propAndWork * constants.maintenance;
-  const interestsAndAmortizing = (project -
+  const interestsAndAmortizing = (projectValue -
     (s.fortuneUsed || 0) -
     (s.insuranceFortuneUsed || 0)) *
     constants.loanCost();
@@ -166,11 +166,11 @@ export const getMonthly = state => {
 
 export const getMonthlyReal = state => {
   const s = state;
-  const project = getProject(state);
+  const projectValue = getProject(state);
   const propAndWork = s.propertyValue + (s.propertyWork || 0);
   return Math.max(
     (propAndWork * constants.maintenanceReal +
-      (project - (s.fortuneUsed || 0) - (s.insuranceFortuneUsed || 0)) *
+      (projectValue - (s.fortuneUsed || 0) - (s.insuranceFortuneUsed || 0)) *
         constants.loanCostReal()) /
       12,
     0,

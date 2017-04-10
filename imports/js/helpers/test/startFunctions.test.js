@@ -1,7 +1,12 @@
 import { expect } from 'chai';
 import { describe, it } from 'meteor/practicalmeteor:mocha';
 
-import { getBonusIncome, getMonthly, getMonthlyReal } from '../startFunctions';
+import {
+  getBonusIncome,
+  getMonthly,
+  getMonthlyReal,
+  getRatio,
+} from '../startFunctions';
 import constants from '../../config/constants';
 
 describe('Start Functions', () => {
@@ -37,5 +42,33 @@ describe('Start Functions', () => {
 
   describe('Get Monthly Cost Real', () => {
     it();
+  });
+
+  describe('Get Ratio', () => {
+    it('Should return 0.38 for an income limited project', () => {
+      const income = 200000;
+      const state = {
+        fortuneUsed: 500000,
+        insuranceFortuneUsed: 200000,
+        propertyValue: 1583179,
+      };
+      const monthly = getMonthly(state);
+
+      expect(getRatio(income, 0, monthly)).to.be.at
+        .most(constants.maxRatio)
+        .and.to.be.at.least(constants.maxRatio - 0.1);
+    });
+
+    it('Should return 0.38 for an edge case where the ratio goes above 0.38', () => {
+      const income = 200000;
+      const state = {
+        fortuneUsed: 390000,
+        insuranceFortuneUsed: 0,
+        propertyValue: 1344154,
+      };
+      const monthly = getMonthly(state);
+
+      expect(getRatio(income, 0, monthly)).to.be.at.most(constants.maxRatio);
+    });
   });
 });

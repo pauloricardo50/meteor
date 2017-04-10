@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
 
 export default class HomeDev extends React.Component {
   constructor(props) {
@@ -26,7 +25,6 @@ export default class HomeDev extends React.Component {
 
   render() {
     const actions = [
-      <FlatButton label="Annuler" onTouchTap={this.handleClose} />,
       <FlatButton label="Ok" primary onTouchTap={this.handleClose} />,
     ];
 
@@ -45,15 +43,13 @@ export default class HomeDev extends React.Component {
           onRequestClose={this.handleClose}
         >
           <span>
-            Nous allons bientôt ouvrir e-Potek aux refinancements,
-            si vous voulez être tenu au courant, entrez votre e-mail ci-dessous.
+            Nous allons bientôt ouvrir e-Potek aux refinancements !
           </span>
-          <div className="text-center">
-            <TextField
-              name="email"
-              hintText="jean@mail.com"
-              floatingLabelText="E-Mail"
-              autoFocus
+          <div className="text-center" style={{ marginTop: 20 }}>
+            <RaisedButton
+              label="M'avertir par e-mail"
+              primary
+              href="http://eepurl.com/cKvR45"
             />
           </div>
         </Dialog>

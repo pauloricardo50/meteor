@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { describe, it } from 'meteor/practicalmeteor:mocha';
 
 import constants, { calculatePrimaryProperty } from '../constants';
+import { getRatio, getMonthly } from '../../helpers/startFunctions';
 
 describe('Constants', () => {
   describe('Calculate primary property value', () => {
@@ -44,10 +45,36 @@ describe('Constants', () => {
       );
     });
 
-    it("Should return 1'309'223 with 500k fortune, 0 insurance fortune, 200k income", () => {
+    it("Should return 1'434'819 with 500k fortune, 0 insurance fortune, 200k income", () => {
       expect(constants.maxProperty(200000, 500000, 0, 'primary')).to.equal(
-        1309223,
+        1434819,
       );
+    });
+
+    it("Should return 1'583'179 with 500k fortune, 200k insurance fortune, 200k income", () => {
+      expect(constants.maxProperty(200000, 500000, 200000, 'primary')).to.equal(
+        1583179,
+      );
+    });
+
+    it('Should always have a ratio below the maximum ratio', () => {
+      const income = Math.random() * 100000 + 100000;
+      const fortune = Math.random() * 200000 + 300000;
+      const insuranceFortune = Math.random() * 100000 + 100000;
+      const property = constants.maxProperty(
+        income,
+        fortune,
+        insuranceFortune,
+        'primary',
+      );
+      const state = {
+        fortuneUsed: fortune,
+        insuranceFortuneUsed: insuranceFortune,
+        propertyValue: property,
+      };
+      const monthly = getMonthly(state);
+
+      expect(getRatio(income, 0, monthly)).to.be.at.most(constants.maxRatio);
     });
   });
 });

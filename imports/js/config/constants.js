@@ -1,5 +1,4 @@
 const constants = {
-  maxRatio: 0.35,
   cpsLimit: 300, // Average characters typed per second
   amortizing: 0.01125,
   interests: 0.05,
@@ -8,6 +7,7 @@ const constants = {
   maintenanceReal: 0.005,
   notaryFees: 0.05,
   lppFees: 0.1,
+  maxRatio: 0.38,
   loanCost() {
     return this.interests + this.amortizing;
   },
@@ -28,10 +28,20 @@ const constants = {
     if (usageType === 'primary') {
       fortuneLimited = calculatePrimaryProperty(fortune, insuranceFortune);
     }
-    // The arithmetic relation to have the cost of the loan be at exactly 33% of income
-    const incomeLimited = (income + 3 * fortune * this.loanCost()) /
-      (3 * (this.maintenance + 1.05 * this.loanCost()));
 
+    // The arithmetic relation to have the cost of the loan be at exactly the max ratio of income
+    // Derive it like this:
+    // maxRatio * salary >= property * maintenance + loan * loanCost
+    // loan = (property + notaryFees + lppFees) - totalFortune
+    // Extract property from this relation
+    let incomeLimited = (this.maxRatio * income +
+      (fortune + insuranceFortune * (1 - this.lppFees)) * this.loanCost()) /
+      (this.maintenance + (1 + this.notaryFees) * this.loanCost());
+
+    // Because of the ratios, round this value down
+    incomeLimited = Math.floor(incomeLimited);
+
+    // Use floor to make sure the ratios are respected and avoid edge cases
     return Math.round(Math.min(fortuneLimited, incomeLimited));
   },
   maxLoan(usageType = 'primary') {
