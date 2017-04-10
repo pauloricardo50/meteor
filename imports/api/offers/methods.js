@@ -42,3 +42,11 @@ export const updateOffer = new ValidatedMethod({
     Offers.update(object);
   },
 });
+
+export const insertFakeOffer = new ValidatedMethod({
+  name: 'offers.insertFake',
+  validate: null,
+  run({ object }) {
+    Offers.insert(object);
+  },
+});

@@ -8,7 +8,7 @@ export const getProjectValue = loanRequest => {
   let value = loanRequest.property.value * (1 + constants.notaryFees) +
     (loanRequest.property.propertyWork || 0);
 
-  if (loanRequest.general.usageType === 'primary') {
+  if (loanRequest.property.usageType === 'primary') {
     value += (loanRequest.general.insuranceFortuneUsed || 0) *
       constants.lppFees;
   }
@@ -19,7 +19,7 @@ export const getProjectValue = loanRequest => {
 export const getLoanValue = loanRequest => {
   let value = getProjectValue(loanRequest) - loanRequest.general.fortuneUsed;
 
-  if (loanRequest.general.usageType === 'primary') {
+  if (loanRequest.property.usageType === 'primary') {
     value -= loanRequest.general.insuranceFortuneUsed || 0;
   }
 

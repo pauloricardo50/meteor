@@ -31,12 +31,6 @@ const singleOffer = new SimpleSchema({
     max: 100,
     optional: true,
   },
-  interestFloating: {
-    type: Number,
-    min: 0,
-    max: 100,
-    optional: true,
-  },
   interest1: {
     type: Number,
     min: 0,
@@ -55,19 +49,7 @@ const singleOffer = new SimpleSchema({
     max: 100,
     optional: true,
   },
-  interest7: {
-    type: Number,
-    min: 0,
-    max: 100,
-    optional: true,
-  },
   interest10: {
-    type: Number,
-    min: 0,
-    max: 100,
-    optional: true,
-  },
-  interest15: {
     type: Number,
     min: 0,
     max: 100,
@@ -76,6 +58,10 @@ const singleOffer = new SimpleSchema({
 });
 
 export const OfferSchema = new SimpleSchema({
+  requestId: {
+    type: String,
+    index: true,
+  },
   userId: {
     type: String,
     index: true,
@@ -106,7 +92,7 @@ export const OfferSchema = new SimpleSchema({
   organization: {
     type: String,
     autoValue() {
-      if (this.isInsert) {
+      if (this.isInsert && !this.isSet) {
         return Meteor.user().profile.organisation;
       }
     },
@@ -115,10 +101,6 @@ export const OfferSchema = new SimpleSchema({
     type: String,
     min: 2,
     max: 2,
-  },
-  requestId: {
-    type: String,
-    index: true,
   },
   auctionEndTime: Date,
   standardOffer: {

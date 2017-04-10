@@ -20,8 +20,12 @@ describe('Request functions', () => {
 
     it('Should return 1.27M with 1M property, 200k property work, and 200k insuranceFortuneUsed and a primary residence', () => {
       const request = {
-        general: { insuranceFortuneUsed: 200000, usageType: 'primary' },
-        property: { value: 1000000, propertyWork: 200000 },
+        general: { insuranceFortuneUsed: 200000 },
+        property: {
+          value: 1000000,
+          propertyWork: 200000,
+          usageType: 'primary',
+        },
       };
 
       expect(getProjectValue(request)).to.equal(1270000);
@@ -85,12 +89,23 @@ describe('Request functions', () => {
         general: {
           fortuneUsed: 270000,
           insuranceFortuneUsed: 200000,
-          usageType: 'primary',
         },
-        property: { value: 1000000 },
+        property: { value: 1000000, usageType: 'primary' },
       };
 
       expect(getLoanValue(loanRequest)).to.equal(600000);
+    });
+
+    it("Should return 700'000 with 1M property, 260k fortune, 100k insurance fortune", () => {
+      const loanRequest = {
+        general: {
+          fortuneUsed: 260000,
+          insuranceFortuneUsed: 100000,
+        },
+        property: { value: 1000000, usageType: 'primary' },
+      };
+
+      expect(getLoanValue(loanRequest)).to.equal(700000);
     });
   });
 

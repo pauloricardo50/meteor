@@ -24,6 +24,16 @@ const getRedirect = props => {
       } else if (isPartner) {
         return '/isPartner';
       }
+      // If there is no active request, force route to dashboard, except if
+      // user is on dashboard, profile, or contact page
+      if (
+        props.loanRequests.length < 1 &&
+        (props.history.location.pathname !== '/app' &&
+          props.history.location.pathname !== '/app/profile' &&
+          props.history.location.pathname !== '/app/contact')
+      ) {
+        return '/app';
+      }
       break;
     }
     case 'admin': {

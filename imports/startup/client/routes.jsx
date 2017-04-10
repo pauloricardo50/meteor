@@ -28,6 +28,7 @@ import {
   RequestPage,
   PropertyPage,
   AuctionPage,
+  LenderPickerPage,
 } from '/imports/ui/containers/UserContainers';
 import BorrowerPage from '/imports/ui/pages/user/BorrowerPage.jsx';
 import BorrowerInfoPage from '/imports/ui/pages/user/BorrowerInfoPage.jsx';
@@ -110,6 +111,10 @@ const UserRoutes = props => (
         <Route
           path="/app/requests/:requestId/auction"
           component={AuctionPage}
+        />
+        <Route
+          path="/app/requests/:requestId/lenderpicker"
+          component={LenderPickerPage}
         />
         <Route path="/app/requests/:requestId" component={RequestPage} />
 

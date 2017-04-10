@@ -61,19 +61,8 @@ const getSteps = (loanRequest, borrowers) => {
       subtitle: loanRequest.logic.step < 1 ? 'Dans 3 jours' : '30 minutes',
       items: [
         {
-          title: 'Validez vos fonds propres',
-          isDone: () => false,
-        },
-        {
-          title: 'Choisissez votre stratégie de taux',
-          isDone: () => false,
-        },
-        {
           title: 'Choisissez votre prêteur',
-          isDone: () => false,
-        },
-        {
-          title: "Choisissez votre stratégie d'amortissement",
+          link: `/app/requests/${loanRequest._id}/lenderpicker`,
           isDone: () => false,
         },
       ],

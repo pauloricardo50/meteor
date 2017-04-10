@@ -35,7 +35,8 @@ export function userRequestComposer(props, onData) {
   const borrowers = Borrowers.find({
     _id: { $in: loanRequest.borrowers },
   }).fetch();
-  onData(null, { loanRequest, borrowers });
+  const offers = Offers.find({ requestId }).fetch();
+  onData(null, { loanRequest, borrowers, offers });
 }
 
 // Get a specific borrower for this user

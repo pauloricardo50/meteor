@@ -97,9 +97,12 @@ export const getMonthlyPayment = (loanRequest, borrowers) => {
   ];
 };
 
-const getBonusIncome = borrower => {
+export const getBonusIncome = borrower => {
   if (borrower.bonus) {
     const arr = Object.values(borrower.bonus);
+    if (arr.length < 1) {
+      return 0;
+    }
     // Sum all values, remove the lowest one, and return 50% of their average
     const safeArray = arr.map(v => v || 0);
     const sum = safeArray.reduce((tot, val) => tot + val, 0);

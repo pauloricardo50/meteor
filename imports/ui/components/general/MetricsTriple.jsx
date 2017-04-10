@@ -29,7 +29,7 @@ const getMetrics = props => {
       name: "Ratio d'endettement",
       value: getRatio(r, props.borrowers),
       isValid: getRatio(r, props.borrowers) <= constants.maxRatio,
-      error: 'Doit être mois que 35%',
+      error: 'Doit être moins que 38%',
     },
   ];
 };

@@ -64,4 +64,10 @@ describe('Finance Math', () => {
       // expect(getAmortization(request, borrowers)).to.equal(1000);
     });
   });
+
+  describe('Get Bonus Income', () => {
+    it('Should return 0 for an empty object', () => {
+      expect(getBonusIncome({ bonus: {} })).to.equal(0);
+    });
+  });
 });
