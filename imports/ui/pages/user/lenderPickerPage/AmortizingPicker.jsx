@@ -53,7 +53,8 @@ export default class StrategyAmortization extends Component {
         <StrategyChoices
           currentValue={this.props.formState.amortizing}
           choices={this.getChoices()}
-          handleChoose={id => this.props.setFormState('amortizing', id)}
+          handleChoose={id =>
+            this.props.setFormState('amortizing', id, this.props.scroll(2))}
         />
 
       </article>
@@ -64,4 +65,5 @@ export default class StrategyAmortization extends Component {
 StrategyAmortization.propTypes = {
   formState: PropTypes.objectOf(PropTypes.any).isRequired,
   setFormState: PropTypes.func.isRequired,
+  scroll: PropTypes.func.isRequired,
 };

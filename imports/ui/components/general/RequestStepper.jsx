@@ -78,7 +78,7 @@ export default class RequestStepper extends Component {
                 rightIcon={
                   item.isDone()
                     ? <span
-                        className="fa fa-check right-icon success"
+                        className="fa fa-check right-icon success animated rotateIn"
                         style={{ fontSize: 16 }}
                       />
                     : <span className="right-icon pending" />

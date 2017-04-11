@@ -218,7 +218,11 @@ const getAcquisitionArray = (state, props) => [
   {
     id: 'otherIncome',
     type: 'buttons',
-    text1: "Avez-vous d'autres revenus?",
+    text1: (
+      <span>
+        Avez-vous d'autres revenus <span className="bold">annuels</span>?
+      </span>
+    ),
     question: true,
     deleteId: 'otherIncomeArray',
     buttons: [

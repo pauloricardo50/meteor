@@ -50,132 +50,124 @@ const styles = {
   },
 };
 
-export default class LoanStrategyPicker extends Component {
-  constructor(props) {
-    super(props);
-
-    this.strategyChosen = this.strategyChosen.bind(this);
-    this.handleChoose;
+const handleChoose = (id, props) => {
+  props.setFormState('loanStrategyPreset', id);
+  if (id !== 'manual') {
+    props.setFormState('loanTranches', getStructure(id, props));
   }
 
-  handleChoose(id) {
-    this.props.setFormState('loanStrategyPreset', id);
-    if (id !== 'manual') {
-      this.props.setFormState('loanTranches', this.getStructure(id));
-    }
-  }
+  props.scroll('myStrategy');
+};
 
-  strategyChosen() {
-    const tranches = this.props.formState.loanTranches;
-    const propertyValue = this.props.loanRequest.property.value;
-    const trancheSum = tranches.reduce(
-      (total, tranche) => total + tranche.value,
-      0,
-    );
+const getChoices = () => [
+  {
+    id: 'fixed',
+    title: '100% Fixé',
+    reasons: [
+      'Dormez serein',
+      'Profitez des taux historiquement bas',
+      <span>&nbsp;</span>,
+    ],
+    isBest: true,
+  },
+  {
+    id: 'fixedLibor',
+    title: '20% Libor',
+    reasons: [
+      'Jouez le Libor',
+      'Risque faible',
+      "Vérifiez votre capacité d'épargne au préalable",
+    ],
+  },
+  {
+    id: 'manual',
+    title: 'Mode Manuel',
+    reasons: [
+      'Fixez chaque tranche vous-même',
+      'Choisissez la durée',
+      'À vos risques et périls',
+    ],
+  },
+];
 
-    return propertyValue === trancheSum;
-  }
-
-  getChoices() {
+const getStructure = (choiceId, props) => {
+  const r = props.loanRequest;
+  const loan = getLoanValue(r);
+  if (choiceId === 'fixed') {
     return [
       {
-        id: 'fixed',
-        title: '100% Fixé',
-        reasons: [
-          'Dormez serein',
-          'Profitez des taux historiquement bas',
-          <span>&nbsp;</span>,
-        ],
-        isBest: true,
+        type: 'interest10',
+        value: loan,
+      },
+    ];
+  } else if (choiceId === 'fixedLibor') {
+    return [
+      {
+        type: 'interest10',
+        value: Math.round(loan * 0.8),
       },
       {
-        id: 'fixedLibor',
-        title: '20% Libor',
-        reasons: [
-          'Jouez le Libor',
-          'Risque faible',
-          "Vérifiez votre capacité d'épargne au préalable",
-        ],
-      },
-      {
-        id: 'manual',
-        title: 'Mode Manuel',
-        reasons: [
-          'Fixez chaque tranche vous-même',
-          'Choisissez la durée',
-          'À vos risques et périls',
-        ],
+        type: 'interestLibor',
+        value: Math.round(loan * 0.2),
       },
     ];
   }
 
-  getStructure(choiceId) {
-    const r = this.props.loanRequest;
-    const loan = getLoanValue(r);
-    if (choiceId === 'fixed') {
-      return [
-        {
-          type: 'interest10',
-          value: loan,
-        },
-      ];
-    } else if (choiceId === 'fixedLibor') {
-      return [
-        {
-          type: 'interest10',
-          value: Math.round(loan * 0.8),
-        },
-        {
-          type: 'interestLibor',
-          value: Math.round(loan * 0.2),
-        },
-      ];
-    }
+  return false;
+};
 
-    return false;
-  }
+const LoanStrategyPicker = props => (
+  <article>
+    <h2>3. Choisissez votre stratégie de taux</h2>
 
-  render() {
-    return (
-      <section>
-        <h2>3. Choisissez votre stratégie de taux</h2>
+    <div className="description">
+      <p>
+        Il n'y a pas une seule stratégie parfaite pour structurer votre prêt, cependant,
+        nous pouvons vous aiguiller dans la bonne direction grâce à notre expertise.
+        <br />
+        <br />
+        Sinon, utilisez notre outil interactif ci-dessous.
+      </p>
+    </div>
 
-        <div className="description">
-          <p>
-            Il n'y a pas une seule stratégie parfaite pour structurer votre prêt, cependant,
-            nous pouvons vous aiguiller dans la bonne direction grâce à notre expertise.
-            <br />
-            <br />
-            Sinon, utilisez notre outil interactif ci-dessous.
-          </p>
+    <StrategyChoices
+      currentValue={props.formState.loanStrategyPreset}
+      choices={getChoices()}
+      handleChoose={id => handleChoose(id, props)}
+    />
+
+    {props.formState.loanStrategyPreset &&
+      <div>
+        <Scroll.Element name="myStrategy">
+          <FinanceStrategyPicker
+            loanTranches={props.formState.loanTranches}
+            setFormState={props.setFormState}
+            loanRequest={props.loanRequest}
+            style={styles.picker}
+            manual={props.formState.loanStrategyPreset === 'manual'}
+          />
+        </Scroll.Element>
+        <div className="text-center" style={{ margin: '20px 0' }}>
+          <RaisedButton
+            label="Continuer"
+            primary={!props.formState.loanStrategyValidated}
+            onTouchTap={() =>
+              props.setFormState(
+                'loanStrategyValidated',
+                true,
+                props.scroll(3),
+              )}
+          />
         </div>
+      </div>}
 
-        <StrategyChoices
-          currentValue={this.props.formState.loanStrategyPreset}
-          choices={this.getChoices()}
-          handleChoose={id => this.handleChoose(id)}
-        />
-
-        {this.props.formState.loanStrategyPreset &&
-          <Scroll.Element name="myStrategy">
-            <FinanceStrategyPicker
-              loanTranches={this.props.formState.loanTranches}
-              setFormState={this.props.setFormState}
-              loanRequest={this.props.loanRequest}
-              style={styles.picker}
-              manual={this.props.formState.loanStrategyPreset === 'manual'}
-            />
-          </Scroll.Element>}
-
-        {/* {this.strategyChosen() && <hr style={styles.hr} />}
-        {this.strategyChosen() && <LenderPicker loanRequest={this.props.loanRequest} />} */}
-
-      </section>
-    );
-  }
-}
+  </article>
+);
 
 LoanStrategyPicker.propTypes = {
-  formState: React.PropTypes.objectOf(React.PropTypes.any).isRequired,
-  setFormState: React.PropTypes.func.isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  formState: PropTypes.objectOf(PropTypes.any).isRequired,
+  setFormState: PropTypes.func.isRequired,
 };
+
+export default LoanStrategyPicker;

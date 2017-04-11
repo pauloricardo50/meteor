@@ -19,8 +19,8 @@ const getMetrics = props => {
     },
     {
       name: '% de LPP',
-      value: r.general.insuranceFortuneUsed / r.property.value,
-      isValid: r.general.insuranceFortuneUsed / r.property.value +
+      value: (r.general.insuranceFortuneUsed || 0) / r.property.value,
+      isValid: (r.general.insuranceFortuneUsed || 0) / r.property.value +
         r.general.fortuneUsed / r.property.value >=
         0.2,
       error: 'Cash et LPP doivent être au moins 20% de la propriété',

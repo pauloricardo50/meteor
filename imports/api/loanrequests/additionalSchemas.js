@@ -323,4 +323,8 @@ export const LogicSchema = new SimpleSchema({
     defaultValue: '',
     optional: true,
   },
+  hasChosenLender: {
+    type: Boolean,
+    defaultValue: false,
+  },
 });

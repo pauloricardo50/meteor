@@ -93,12 +93,13 @@ const getSteps = (loanRequest, borrowers) => {
     },
   ];
 
-  return steps.slice(0, loanRequest.logic.step + 1);
+  // return steps.slice(0, loanRequest.logic.step + 1); // If you want to hide steps that aren't available
+  return steps;
 };
 
 export default getSteps;
 
-const personalInfoPercent = borrowers => {
+export const personalInfoPercent = borrowers => {
   let a = [];
   borrowers.forEach(b => {
     const formArray = getBorrowerInfoArray(borrowers, b._id);
@@ -116,7 +117,7 @@ const personalInfoPercent = borrowers => {
   return getPercent(a);
 };
 
-const propertyPercent = (loanRequest, borrowers) => {
+export const propertyPercent = (loanRequest, borrowers) => {
   const p = loanRequest.property;
   let a = [];
   const formArray = getPropertyArray(loanRequest, borrowers);

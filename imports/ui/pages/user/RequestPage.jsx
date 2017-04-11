@@ -1,7 +1,9 @@
 import React, { PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
 import cleanMethod from '/imports/api/cleanMethods';
 
 import RaisedButton from 'material-ui/RaisedButton';
+import CheckIcon from 'material-ui/svg-icons/navigation/check';
 import { Link } from 'react-router-dom';
 
 import ProjectPieChart from '/imports/ui/components/charts/ProjectPieChart.jsx';
@@ -15,7 +17,8 @@ const handleClick = props => {
   const id = props.loanRequest._id;
   const object = { 'logic.hasValidatedStructure': true };
 
-  cleanMethod('updateRequest', object, id);
+  cleanMethod('updateRequest', object, id, () =>
+    Meteor.setTimeout(() => props.history.push('/app'), 300));
 };
 
 const styles = {
@@ -69,6 +72,9 @@ const RequestPage = props => (
           label="Valider"
           primary={!props.loanRequest.logic.hasValidatedStructure}
           onTouchTap={() => handleClick(props)}
+          icon={
+            !!props.loanRequest.logic.hasValidatedStructure && <CheckIcon />
+          }
         />
       </div>
     </section>

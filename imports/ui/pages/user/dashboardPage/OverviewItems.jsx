@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
-
 import { Link } from 'react-router-dom';
+
+import { personalInfoPercent, propertyPercent } from '/imports/js/arrays/steps';
 
 const BorrowerOverview = props => (
   <article className="overview-items">
@@ -18,7 +19,7 @@ const BorrowerOverview = props => (
             {borrower.firstName || `Emprunteur ${i + 1}`}
           </h3>
           <p className="secondary">
-            Progrès: 0%
+            Progrès: {Math.round(personalInfoPercent([borrower]) * 1000) / 10}%
           </p>
         </div>
       </Link>
@@ -33,7 +34,14 @@ const BorrowerOverview = props => (
       <div className="text">
         <h3 className="fixed-size">{props.loanRequest.name || 'Sans Titre'}</h3>
         <p className="secondary">
-          Progrès: 0%
+          Progrès:
+          {' '}
+          {
+            Math.round(
+              propertyPercent(props.loanRequest, props.borrowers) * 1000,
+            ) / 10
+          }
+          %
         </p>
       </div>
     </Link>

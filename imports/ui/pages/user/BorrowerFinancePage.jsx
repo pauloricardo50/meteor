@@ -86,7 +86,7 @@ const BorrowerFinancePage = props => {
           </span>
           <RaisedButton
             label="Valider mes finances"
-            onTouchTap={e => handleClick(e, borrowerId)}
+            onTouchTap={e => handleClick(e, borrowerId, props)}
             primary={!borrower.logic.hasValidatedFinances}
             disabled={!borrower.logic.financeEthics}
             icon={!!borrower.logic.hasValidatedFinances && <CheckIcon />}

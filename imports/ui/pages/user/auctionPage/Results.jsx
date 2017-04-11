@@ -2,8 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 import OffersTable from '/imports/ui/components/general/OffersTable.jsx';
 import FakeOfferAdder from '/imports/ui/components/general/FakeOfferAdder.jsx';
-
-import Toggle from 'material-ui/Toggle';
+import OfferToggle from '/imports/ui/components/general/OfferToggle.jsx';
 
 const styles = {
   section: {
@@ -115,26 +114,10 @@ export default class Results extends Component {
 
         <FakeOfferAdder loanRequest={this.props.loanRequest} />
 
-        <div
-          style={{
-            display: 'flex',
-            width: '100%',
-            justifyContent: 'center',
-            margin: '20px 0',
-          }}
-        >
-          <span className={!this.state.showSpecial && 'active'}>
-            Offres standard
-          </span>
-          <Toggle
-            toggled={this.state.showSpecial}
-            style={{ margin: '0 16px', width: 'unset' }}
-            onToggle={(e, c) => this.setState({ showSpecial: c })}
-          />
-          <span className={this.state.showSpecial && 'active'}>
-            Offres avec conditions
-          </span>
-        </div>
+        <OfferToggle
+          value={this.state.showSpecial}
+          handleToggle={(e, c) => this.setState({ showSpecial: c })}
+        />
 
         <div style={styles.tableDiv}>
           <OffersTable
