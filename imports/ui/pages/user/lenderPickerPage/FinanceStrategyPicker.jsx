@@ -24,15 +24,6 @@ const styles = {
   },
 };
 
-const addTranche = props => {
-  const newTranche = {
-    type: getRemainingTypes(props)[0],
-    value: getMoneyLeft(props) > 100000 ? 100000 : getMoneyLeft(props),
-  };
-
-  props.setFormState('loanTranches', [...props.loanTranches, [newTranche]]);
-};
-
 const getRemainingTypes = (props, ignoredValue) => {
   const initialChoices = [
     'interestLibor',
@@ -68,13 +59,22 @@ const getMoneyLeft = props => {
   return loan;
 };
 
+const addTranche = props => {
+  const newTranche = {
+    type: getRemainingTypes(props)[0],
+    value: getMoneyLeft(props) > 100000 ? 100000 : getMoneyLeft(props),
+  };
+
+  props.setFormState('loanTranches', [...props.loanTranches, newTranche]);
+};
+
 const removeTranche = (props, event, i) => {
-  const tranches = props.loanTranches.splice(i, 1);
+  const tranches = [...props.loanTranches].splice(i, 1);
   props.setFormState('loanTranches', tranches);
 };
 
 const incrementTranche = (props, event, i) => {
-  const tranches = props.loanTranches;
+  const tranches = [...props.loanTranches];
   const moneyLeft = getMoneyLeft(props);
 
   if (moneyLeft > 10000) {
@@ -83,11 +83,11 @@ const incrementTranche = (props, event, i) => {
     tranches[i].value += moneyLeft;
   }
 
-  this.props.setFormState('loanTranches', tranches);
+  props.setFormState('loanTranches', tranches);
 };
 
 const decrementTranche = (props, event, i) => {
-  const tranches = props.loanTranches;
+  const tranches = [...props.loanTranches];
 
   if (tranches[i].value > 110000) {
     // Remove 10'000, or the remaining value until the next 10'000
@@ -112,7 +112,7 @@ const decrementTranche = (props, event, i) => {
 };
 
 const changeTrancheType = (props, i, newType) => {
-  const tranches = props.loanTranches;
+  const tranches = [...props.loanTranches];
   tranches[i].type = newType;
   props.setFormState('loanTranches', tranches);
 };

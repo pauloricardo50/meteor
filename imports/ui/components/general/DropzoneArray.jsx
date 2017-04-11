@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 import DropzoneArrayItem from './DropzoneArrayItem.jsx';
 
@@ -11,7 +11,7 @@ const styles = {
   },
 };
 
-export default class DropzoneArray extends React.Component {
+export default class DropzoneArray extends Component {
   constructor(props) {
     super(props);
 
@@ -32,14 +32,14 @@ export default class DropzoneArray extends React.Component {
 
   render() {
     return (
-      <div style={{ ...styles.div, ...this.props.style }}>
+      <div style={styles.div}>
         {this.props.array.map((dropzoneItem, i) => (
           <DropzoneArrayItem
+            {...this.props}
             key={i}
             {...dropzoneItem}
             handleClick={() => this.handleClick(i)}
             active={this.state.active === i}
-            requestId={this.props.requestId}
           />
         ))}
       </div>

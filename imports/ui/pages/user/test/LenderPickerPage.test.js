@@ -78,7 +78,7 @@ if (Meteor.isClient) {
     });
 
     it('Renders the LenderTable if the user has properly chosen his loan Strategy', () => {
-      props.loanRequest.logic.hasChosenLender = true;
+      props.loanRequest.logic.lender = 'someId';
       props.loanRequest.logic.amortizingStrategyPreset = 'indirect';
       props.loanRequest.logic.loanStrategyPreset = 'fixed';
       props.loanRequest.general.loanTranches = [

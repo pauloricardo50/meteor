@@ -5,9 +5,12 @@ import { toMoney } from '/imports/js/helpers/conversionFunctions';
 const round = v => Math.round(v * 10000) / 100;
 
 const OffersTable = props => {
-  const offers = props.offers.map(
-    o => props.showSpecial ? o.conditionsOffer : o.standardOffer,
-  );
+  let offers = [
+    ...props.offers.map(
+      o => props.showSpecial ? o.conditionsOffer : o.standardOffer,
+    ),
+  ];
+  offers.sort((a, b) => a.interestLibor - b.interestLibor);
   return (
     <table className="minimal-table">
       <colgroup>
@@ -22,14 +25,14 @@ const OffersTable = props => {
       </colgroup>
       <thead>
         <tr>
-          <th className="left-align" />
-          <th className="right-align">Montant</th>
-          <th className="right-align">Taux Libor</th>
-          <th className="right-align">Taux 2 ans</th>
-          <th className="right-align">Taux 5 ans</th>
-          <th className="right-align">Taux 10 ans</th>
-          <th className="right-align">Amortissement</th>
-          <th className="right-align">Expertise requise?</th>
+          <th className="l" />
+          <th className="r">Montant</th>
+          <th className="r">Taux Libor</th>
+          <th className="r">Taux 2 ans</th>
+          <th className="r">Taux 5 ans</th>
+          <th className="r">Taux 10 ans</th>
+          <th className="r">Amortissement</th>
+          <th className="r">Expertise requise?</th>
         </tr>
       </thead>
       <tbody>
@@ -38,18 +41,18 @@ const OffersTable = props => {
             (offer, index) =>
               offer &&
               <tr key={index}>
-                <td className="left-align">{index + 1}</td>
-                <td className="right-align">
+                <td className="l">{index + 1}</td>
+                <td className="r">
                   CHF {toMoney(Math.round(offer.maxAmount))}
                 </td>
-                <td className="right-align">
+                <td className="r">
                   {round(offer.interestLibor)}%
                 </td>
-                <td className="right-align">{round(offer.interest2)}%</td>
-                <td className="right-align">{round(offer.interest5)}%</td>
-                <td className="right-align">{round(offer.interest10)}%</td>
-                <td className="right-align">{round(offer.amortizing)}%</td>
-                <td className="right-align">
+                <td className="r">{round(offer.interest2)}%</td>
+                <td className="r">{round(offer.interest5)}%</td>
+                <td className="r">{round(offer.interest10)}%</td>
+                <td className="r">{round(offer.amortizing)}%</td>
+                <td className="r">
                   {offer.expertiseRequired ? 'Oui' : 'Non'}
                 </td>
               </tr>,

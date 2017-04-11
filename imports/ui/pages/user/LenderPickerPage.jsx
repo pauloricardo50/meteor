@@ -12,6 +12,14 @@ import AmortizingPicker from './lenderPickerPage/AmortizingPicker.jsx';
 import LoanStrategyPicker from './lenderPickerPage/LoanStrategyPicker.jsx';
 import LenderTable from './lenderPickerPage/LenderTable.jsx';
 
+const handleSubmit = () => {
+  const object = {};
+};
+
+const getLoan = (props, state) => {
+  return getLoanValue(props.loanRequest);
+};
+
 export default class LenderPickerPage extends React.Component {
   constructor(props) {
     super(props);
@@ -19,7 +27,8 @@ export default class LenderPickerPage extends React.Component {
     const r = this.props.loanRequest;
 
     this.state = {
-      validatedFortune: r.logic.hasChosenLender,
+      validatedFortune: r.logic.lender,
+      chosenLender: r.logic.lender,
       fortuneUsed: r.general.fortuneUsed,
       insuranceFortuneUsed: r.general.insuranceFortuneUsed,
       partnerFilter: 'monthly',
@@ -54,10 +63,6 @@ export default class LenderPickerPage extends React.Component {
     }
   }
 
-  handleSubmit() {
-    const object = {};
-  }
-
   getSteps() {
     const props = {
       formState: this.state,
@@ -65,6 +70,7 @@ export default class LenderPickerPage extends React.Component {
       loanRequest: this.props.loanRequest,
       borrowers: this.props.borrowers,
       offers: this.props.offers,
+      loanValue: getLoan(this.props, this.state),
       scroll: i => {
         const options = {
           duration: 350,
@@ -93,10 +99,13 @@ export default class LenderPickerPage extends React.Component {
   render() {
     return (
       <section className="mask1 partner-picker">
-        <h1 className="text-center">Choisissez votre prêteur</h1>
+        <h1 className="text-center" style={{ marginBottom: 50 }}>
+          Choisissez votre prêteur
+        </h1>
 
         {this.getSteps().map((step, i) => (
           <Scroll.Element name={`${i}`} key={i}>
+            {i > 0 && <hr />}
             {step}
           </Scroll.Element>
         ))}

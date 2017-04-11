@@ -209,20 +209,36 @@ $bezier = cubic-bezier(.02, .01, .47, 1);
   max-width: 1000px;
   min-width: 600px;
   table-layout: fixed;
+  transition: all 0.3s $bezier;
+  tr
+    transition: all 0.3s $bezier;
   th
     font-weight: 300;
     padding: 10px;
     border-bottom:  solid 1px grey;
   td
-    padding: 10px;
-    padding-top: 20px;
+    height: 60px;
+    padding: 0 10px;
+    vertical-align: middle;
+    // padding-top: 20px;
     font-size: 1.1em;
     +above($med)
-      font-size: 1.3em;
-  .right-align
+      font-size: 1.2em;
+  .r
     text-align: right;
-  .left-align
+  .l
     text-align: left;
+  .c
+    text-align: center;
+  tr:hover
+    background-color: light-grey;
+    cursor: pointer;
+  tr.chosen
+    background-color: brand-primary;
+    color: white;
+    h3
+      color: white;
+
 
 .trancheBar
   position: relative;
@@ -886,6 +902,14 @@ ul.request-map
         .fa
           width: 21px;
           text-align: center;
+      &:hover
+        transition: all 0.2s $bezier;
+        transform: scale(1.03);
+        color: black;
+        opacity: 1;
+        h3, h4
+          color: inherit;
+          opacity: inherit;
       margin: 0;
       width: 100%;
       display: flex;
@@ -1196,7 +1220,7 @@ ul.request-map
       color: grey;
       border-right: 1px solid light-grey;
       h4
-        color: grey;
+        color: inherit;
       &:hover
         color: brand-primary;
         h4

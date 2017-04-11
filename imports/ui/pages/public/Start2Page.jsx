@@ -28,8 +28,8 @@ import {
   getBorrow,
 } from '/imports/js/helpers/startFunctions';
 
+import Recap from '/imports/ui/components/general/Recap.jsx';
 import AutoStart from './startPage/AutoStart.jsx';
-import Start2Recap from './startPage/Start2Recap.jsx';
 import StartResult from './startPage/StartResult.jsx';
 import StartSignUp from './startPage/StartSignUp.jsx';
 
@@ -173,7 +173,7 @@ export default class Start2Page extends Component {
             </h3>
             <div className="shadow-top" />
             <div className="shadow-bottom" />
-            <Start2Recap {...props} />
+            <Recap {...props} arrayName="start2" />
           </div>}
         {finished &&
           <Scroll.Element name={'final'}>

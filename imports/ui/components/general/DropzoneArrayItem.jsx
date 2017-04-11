@@ -69,9 +69,15 @@ const DropzoneArrayItem = props => {
 };
 
 DropzoneArrayItem.propTypes = {
+  title: PropTypes.string.isRequired,
   active: PropTypes.bool,
   handleClick: PropTypes.func.isRequired,
   currentValue: PropTypes.arrayOf(PropTypes.object),
+};
+
+DropzoneArrayItem.defaultProps = {
+  active: false,
+  currentValue: undefined,
 };
 
 export default DropzoneArrayItem;

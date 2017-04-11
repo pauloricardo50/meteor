@@ -10,13 +10,24 @@ const addFakeOffer = request => {
   insertFakeOffer.call({ object });
 };
 
+const addLotsOfFakeOffers = request => {
+  for (var i = 0; i < 20; i++) {
+    addFakeOffer(request);
+  }
+};
+
 const FakeOfferAdder = props => {
   return (
     <div className="text-center" style={{ marginBottom: 40 }}>
       <RaisedButton
+        label="Ajouter 20 offres imaginaires"
+        onTouchTap={() => addLotsOfFakeOffers(props.loanRequest)}
+        style={{ margin: 8 }}
+      />
+      <RaisedButton
         label="Ajouter offre imaginaire"
-        primary
         onTouchTap={() => addFakeOffer(props.loanRequest)}
+        style={{ margin: 8 }}
       />
     </div>
   );

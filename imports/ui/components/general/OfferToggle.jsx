@@ -21,7 +21,7 @@ const OfferToggle = props => {
         onToggle={props.handleToggle}
       />
       <span className={props.value && 'active'}>
-        Offres avec conditions
+        Offres avec contrepartie
       </span>
     </div>
   );

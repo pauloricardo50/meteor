@@ -33,7 +33,7 @@ const StepperVertical = props => (
           </StepButton>
           <StepContent>
             {props.renderStep(step)}
-            {props.renderStepActions(i)}
+            {props.renderStepActions(step)}
           </StepContent>
         </Step>
       ))}

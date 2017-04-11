@@ -13,7 +13,7 @@ export const getProjectValue = loanRequest => {
       constants.lppFees;
   }
 
-  return Math.max(0, value);
+  return Math.max(0, Math.round(value));
 };
 
 export const getLoanValue = loanRequest => {
@@ -24,7 +24,7 @@ export const getLoanValue = loanRequest => {
   }
 
   // Check negative values
-  return Math.max(0, value);
+  return Math.max(0, Math.round(value));
 };
 
 export const loanStrategySuccess = (loanTranches = [], loanValue) => {
@@ -84,3 +84,12 @@ export const getMonthlyWithOffer = (
     ? Math.round((maintenance + loan * amortizing + interests) / 12)
     : 0;
 };
+
+export const getPropAndWork = loanRequest =>
+  loanRequest.property.value + (loanRequest.property.propertyWork || 0);
+
+export const getTotalUsed = loanRequest =>
+  Math.round(
+    loanRequest.general.fortuneUsed +
+      (loanRequest.general.insuranceFortuneUsed || 0),
+  );

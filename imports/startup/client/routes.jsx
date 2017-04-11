@@ -31,9 +31,6 @@ import {
   LenderPickerPage,
 } from '/imports/ui/containers/UserContainers';
 import BorrowerPage from '/imports/ui/pages/user/BorrowerPage.jsx';
-import BorrowerInfoPage from '/imports/ui/pages/user/BorrowerInfoPage.jsx';
-import BorrowerFinancePage
-  from '/imports/ui/pages/user/BorrowerFinancePage.jsx';
 import ContactPage from '/imports/ui/pages/user/ContactPage.jsx';
 import NewPage from '/imports/ui/pages/user/NewPage.jsx';
 
@@ -85,18 +82,6 @@ const UserRoutes = props => (
         <Route
           path="/app/contact"
           render={() => <ContactPage {...layoutProps} />}
-        />
-        <Route
-          path="/app/borrowers/:borrowerId/info"
-          render={routeProps => (
-            <BorrowerInfoPage {...layoutProps} {...routeProps} />
-          )}
-        />
-        <Route
-          path="/app/borrowers/:borrowerId/finance"
-          render={routeProps => (
-            <BorrowerFinancePage {...layoutProps} {...routeProps} />
-          )}
         />
         <Route
           path="/app/borrowers/:borrowerId"

@@ -1,11 +1,21 @@
 import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
 import LoanRequests from '/imports/api/loanrequests/loanrequests';
+import Borrowers from '/imports/api/borrowers/borrowers';
 
 import '../meteor-slingshot';
 
+const getFileCount = props => {
+  let fileCount = '00';
+  if (props.currentValue) {
+    const newCount = Math.max(...props.currentValue.map(f => f.fileCount)) + 1;
+    fileCount = newCount < 10 ? `0${newCount}` : newCount;
+  }
+  return fileCount;
+};
+
 Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
-  authorize() {
+  authorize(file, props) {
     // Don't use arrow function, this is the current object here
     // Deny uploads if user is not logged in.
     if (!this.userId) {
@@ -15,29 +25,26 @@ Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
       );
     }
 
+    // Make sure this user is the owner of the document
+    if (props.collection === 'borrowers') {
+      const doc = Borrowers.findOne({ _id: props.documentId });
+      console.log(props.documentId);
+      console.log(doc);
+      if (doc.userId !== this.userId) {
+        throw new Meteor.Error('Invalid user', "You're not allowed to do this");
+      }
+    } else if (props.collection === 'loanRequests') {
+      const doc = LoanRequests.findOne({ _id: props.documentId });
+      if (doc.userId !== this.userId) {
+        throw new Meteor.Error('Invalid user', "You're not allowed to do this");
+      }
+    } else {
+      throw new Meteor.Error('Invalid collection', "Collection doesn't exist");
+    }
+
     return true;
   },
   key(file, props) {
-    // Store file into a directory by the user's username.
-    const request = LoanRequests.findOne({
-      userId: this.userId,
-      active: true,
-    });
-    if (!request) {
-      throw new Meteor.Error(
-        'Loan Request Not Found',
-        'No active request could be found for this user',
-      );
-    }
-
-    // prefix file name with the number of the file
-    let fileCount = '00';
-    if (props.currentValue) {
-      const newCount = Math.max(...props.currentValue.map(f => f.fileCount)) +
-        1;
-      fileCount = newCount < 10 ? `0${newCount}` : newCount;
-    }
-
-    return `${request._id}/${props.folderName}/${fileCount}${file.name}`;
+    return `${props.documentId}/${props.folderName}/${getFileCount(props)}${file.name}`;
   },
 });

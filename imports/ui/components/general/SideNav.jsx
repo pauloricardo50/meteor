@@ -27,11 +27,7 @@ const userLinks = [
   },
   {
     link: '/app/contact',
-    icon: (
-      <span className="icon">
-        <img src="/img/yannis.jpg" className="photo" />
-      </span>
-    ),
+    icon: <span className="icon fa fa-phone-square fa-2x" />,
     label: 'Votre Conseiller',
   },
 ];

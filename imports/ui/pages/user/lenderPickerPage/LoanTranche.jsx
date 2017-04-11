@@ -13,6 +13,11 @@ const styles = {
   },
   h4: {
     marginTop: 0,
+    display: 'flex',
+  },
+  trancheSpan: {
+    height: 48,
+    lineHeight: '56px',
     display: 'inline-block',
   },
   automaticH4: {},
@@ -67,7 +72,7 @@ export default class LoanTranche extends Component {
         {this.props.manual
           ? <div>
               <h4 style={styles.h4}>
-                <span>
+                <span style={styles.trancheSpan}>
                   Tranche
                 </span>
                 <DropDownMenu

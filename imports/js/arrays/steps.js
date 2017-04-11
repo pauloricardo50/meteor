@@ -17,21 +17,21 @@ const getSteps = (loanRequest, borrowers) => {
           isDone: () => true,
         },
         {
+          title: 'Dites-nous en un peu plus sur vous',
+          link: `/app/borrowers/${borrowers[0]._id}?tab=personal`,
+          percent: () => personalInfoPercent(borrowers),
+          isDone() {
+            return this.percent() >= 1;
+          },
+        },
+        {
           title: 'Vérifiez vos finances',
-          link: `/app/borrowers/${borrowers[0]._id}/finance`,
+          link: `/app/borrowers/${borrowers[0]._id}?tab=finance`,
           isDone: () =>
             borrowers.reduce(
               (res, b) => res && b.logic.hasValidatedFinances,
               true,
             ),
-        },
-        {
-          title: 'Dites-nous en un peu plus sur vous',
-          link: `/app/borrowers/${borrowers[0]._id}/info`,
-          percent: () => personalInfoPercent(borrowers),
-          isDone() {
-            return this.percent() >= 1;
-          },
         },
         {
           title: 'Décrivez-nous votre propriété',
@@ -63,7 +63,7 @@ const getSteps = (loanRequest, borrowers) => {
         {
           title: 'Choisissez votre prêteur',
           link: `/app/requests/${loanRequest._id}/lenderpicker`,
-          isDone: () => false,
+          isDone: () => !!loanRequest.logic.lender,
         },
       ],
     },

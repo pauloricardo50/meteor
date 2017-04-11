@@ -3,6 +3,8 @@ import React, { PropTypes } from 'react';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
 
+import Recap from '/imports/ui/components/general/Recap.jsx';
+
 const isReady = ({ income, fortune, property }) =>
   property && income && fortune;
 
@@ -138,30 +140,10 @@ const getArray = ({ income, fortune, property, borrow, ratio }) => {
   ];
 };
 
-const getResult = props => (
-  <div className="result animated fadeIn">
-    {getArray(props).map(
-      (item, i) => !item.hide &&
-      (item.title
-        ? <label className="text-center" {...item.props} key={item.label}>
-            {item.label}
-          </label>
-        : <div
-            className="fixed-size"
-            style={{ marginBottom: item.spacing && 16 }}
-            key={i}
-          >
-            <h4 className="secondary">{item.label}</h4>
-            <h3 {...item.props}>{item.value}</h3>
-          </div>),
-    )}
-  </div>
-);
-
 const StartRecap = props => (
   <article className="validator">
     {isReady(props)
-      ? getResult(props)
+      ? <Recap array={getArray(props)} />
       : !props.noPlaceholder &&
           <h4 className="secondary text-center">
             Amusez-vous avec les valeurs

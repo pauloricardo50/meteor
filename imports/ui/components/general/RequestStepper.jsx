@@ -10,7 +10,6 @@ import StepperHorizontal from './StepperHorizontal.jsx';
 
 import { getWidth } from '/imports/js/helpers/browserFunctions';
 import getSteps from '/imports/js/arrays/steps';
-import stepValidation from '/imports/js/helpers/stepValidation';
 
 const styles = {
   stepContent: {
@@ -42,6 +41,8 @@ export default class RequestStepper extends Component {
 
   componentDidMount() {
     window.addEventListener('resize', this.resize);
+
+    this.focused.applyFocusState('keyboard-focused');
   }
 
   componentWillUnmount() {
@@ -70,15 +71,21 @@ export default class RequestStepper extends Component {
         {step.description && <p>{step.description}</p>}
         {step.items &&
           step.items.length > 0 &&
-          <List>
+          <List id="list">
             {step.items.map(item => (
               <ListItem
                 key={item.title}
                 primaryText={item.title}
+                ref={r => {
+                  // Get the first list item that isn't done, set ref, and focus in componentDidMount
+                  if (!this.focused && !item.isDone()) {
+                    this.focused = r;
+                  }
+                }}
                 rightIcon={
                   item.isDone()
                     ? <span
-                        className="fa fa-check right-icon success animated rotateIn"
+                        className="fa fa-check right-icon success animated bounceInDown"
                         style={{ fontSize: 16 }}
                       />
                     : <span className="right-icon pending" />
@@ -99,23 +106,31 @@ export default class RequestStepper extends Component {
 
   renderStepActions(step, handleNextChild) {
     const currentStep = this.props.loanRequest.logic.step;
+    const i = step.nb;
 
     // For the last step, do not show a continue button
-    if (step === 3) {
+    if (i === 4) {
       return null;
     }
+
+    // loop over each step item and make sure they are all done
+    const stepIsDone = step.items.reduce(
+      (tot, item) => tot && (item.isDone() && tot),
+      true,
+    );
 
     return (
       <div style={styles.stepActions} className="text-center">
         <RaisedButton
           label="Continuer"
-          primary={currentStep === step}
-          disabled={currentStep < step || !stepValidation(step)}
+          primary={currentStep === i}
+          disabled={currentStep < i || !stepIsDone}
+          keyboardFocused={stepIsDone && currentStep === i}
           onTouchTap={() => {
             if (typeof handleNextChild === 'function') {
-              handleNextChild(step, () => this.handleNext(step));
+              handleNextChild(i, () => this.handleNext(i));
             } else {
-              this.handleNext(step);
+              this.handleNext(i);
             }
           }}
         />

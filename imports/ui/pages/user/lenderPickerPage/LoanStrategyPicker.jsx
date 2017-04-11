@@ -151,6 +151,12 @@ const LoanStrategyPicker = props => (
           <RaisedButton
             label="Continuer"
             primary={!props.formState.loanStrategyValidated}
+            disabled={
+              !loanStrategySuccess(
+                props.formState.loanTranches,
+                props.loanValue,
+              )
+            }
             onTouchTap={() =>
               props.setFormState(
                 'loanStrategyValidated',
@@ -168,6 +174,8 @@ LoanStrategyPicker.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   formState: PropTypes.objectOf(PropTypes.any).isRequired,
   setFormState: PropTypes.func.isRequired,
+  scroll: PropTypes.func.isRequired,
+  loanValue: PropTypes.number.isRequired,
 };
 
 export default LoanStrategyPicker;

@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-import { getRatio } from '/imports/js/helpers/finance-math';
+import { getIncomeRatio } from '/imports/js/helpers/finance-math';
 import constants from '/imports/js/config/constants';
 
 const getMetrics = props => {
@@ -27,8 +27,8 @@ const getMetrics = props => {
     },
     {
       name: "Ratio d'endettement",
-      value: getRatio(r, props.borrowers),
-      isValid: getRatio(r, props.borrowers) <= constants.maxRatio,
+      value: getIncomeRatio(r, props.borrowers),
+      isValid: getIncomeRatio(r, props.borrowers) <= constants.maxRatio,
       error: 'Doit être moins que 38%',
     },
   ];

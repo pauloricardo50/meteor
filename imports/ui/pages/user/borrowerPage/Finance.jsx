@@ -5,8 +5,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
 
-import { Link } from 'react-router-dom';
-
 import AutoForm from '/imports/ui/components/autoform/AutoForm.jsx';
 import { getBorrowerFinanceArray } from '/imports/js/arrays/BorrowerFormArray';
 import cleanMethod from '/imports/api/cleanMethods';
@@ -50,50 +48,46 @@ const BorrowerFinancePage = props => {
   const borrowerId = props.match.params.borrowerId;
   const borrower = props.borrowers.find(b => b._id === borrowerId);
   return (
-    <div style={styles.div}>
-      <RaisedButton
-        label="Retour"
-        containerElement={<Link to={'/app'} />}
-        style={styles.topButton}
+    <section className="borrower-finance-page animated fadeIn">
+      <hr />
+      <h2 className="text-center">
+        Mes Finances
+        <br />
+        {borrower.logic.hasValidatedFinances &&
+          <small><span className="fa fa-check" /> Validées</small>}
+      </h2>
+
+      <div className="description">
+        <p>Les champs marqués avec un * sont obligatoires.</p>
+      </div>
+
+      <AutoForm
+        inputs={getBorrowerFinanceArray(props.borrowers, borrowerId)}
+        borrowers={props.borrowers}
+        documentId={borrowerId}
+        updateFunc="updateBorrower"
+        pushFunc="pushBorrowerValue"
+        popFunc="popBorrowerValue"
       />
 
-      <section className="mask1 borrower-finance-page">
-        <h1>
-          {borrower.firstName || "Fiche d'Emprunteur"}
-        </h1>
-
-        <div className="description">
-          <p>Les champs marqués avec un * sont obligatoires.</p>
-        </div>
-
-        <AutoForm
-          inputs={getBorrowerFinanceArray(props.borrowers, borrowerId)}
-          borrowers={props.borrowers}
-          documentId={borrowerId}
-          updateFunc="updateBorrower"
-          pushFunc="pushBorrowerValue"
-          popFunc="popBorrowerValue"
-        />
-
-        <div className="conditions">
-          <span>
-            <Checkbox
-              checked={borrower.logic.financeEthics}
-              label="Les informations entrées ci-dessus sont exhaustives et correctes"
-              style={styles.checkbox}
-              onCheck={(e, isChecked) => handleCheck(e, isChecked, borrowerId)}
-            />
-          </span>
-          <RaisedButton
-            label="Valider mes finances"
-            onTouchTap={e => handleClick(e, borrowerId, props)}
-            primary={!borrower.logic.hasValidatedFinances}
-            disabled={!borrower.logic.financeEthics}
-            icon={!!borrower.logic.hasValidatedFinances && <CheckIcon />}
+      <div className="conditions">
+        <span>
+          <Checkbox
+            checked={borrower.logic.financeEthics}
+            label="Les informations entrées ci-dessus sont exhaustives et correctes"
+            style={styles.checkbox}
+            onCheck={(e, isChecked) => handleCheck(e, isChecked, borrowerId)}
           />
-        </div>
-      </section>
-    </div>
+        </span>
+        <RaisedButton
+          label="Valider mes finances"
+          onTouchTap={e => handleClick(e, borrowerId, props)}
+          primary={!borrower.logic.hasValidatedFinances}
+          disabled={!borrower.logic.financeEthics}
+          icon={!!borrower.logic.hasValidatedFinances && <CheckIcon />}
+        />
+      </div>
+    </section>
   );
 };
 

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { personalInfoPercent, propertyPercent } from '/imports/js/arrays/steps';
 
-const BorrowerOverview = props => (
+const OverviewItems = props => (
   <article className="overview-items">
     {props.borrowers.map((borrower, i) => (
       <Link
@@ -36,11 +36,9 @@ const BorrowerOverview = props => (
         <p className="secondary">
           Progrès:
           {' '}
-          {
-            Math.round(
-              propertyPercent(props.loanRequest, props.borrowers) * 1000,
-            ) / 10
-          }
+          {Math.round(
+            propertyPercent(props.loanRequest, props.borrowers) * 1000,
+          ) / 10}
           %
         </p>
       </div>
@@ -48,14 +46,9 @@ const BorrowerOverview = props => (
   </article>
 );
 
-BorrowerOverview.propTypes = {
-  loanRequest: PropTypes.arrayOf(PropTypes.any),
-  borrowers: PropTypes.arrayOf(PropTypes.any),
+OverviewItems.propTypes = {
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  borrowers: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
-BorrowerOverview.defaultProps = {
-  borrowers: [],
-  loanRequest: [],
-};
-
-export default BorrowerOverview;
+export default OverviewItems;

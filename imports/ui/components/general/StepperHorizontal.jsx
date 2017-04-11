@@ -75,7 +75,7 @@ export default class StepperHorizontal extends Component {
           <div style={{ margin: '0 16px', overflow: 'hidden' }}>
             {this.props.renderStep(this.props.steps[this.props.activeStep])}
             {this.props.renderStepActions(
-              this.props.activeStep,
+              this.props.steps[this.props.activeStep],
               this.handleNext,
             )}
           </div>

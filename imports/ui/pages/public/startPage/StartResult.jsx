@@ -6,7 +6,7 @@ import CountUp from 'react-countup';
 import RaisedButton from 'material-ui/RaisedButton';
 import ExpensesChartInterests
   from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
-import Start2Recap from './Start2Recap.jsx';
+import Recap from '/imports/ui/components/general/Recap.jsx';
 
 import constants from '/imports/js/config/constants';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
@@ -73,7 +73,7 @@ const StartResult = props => {
       </div>
 
       <div className="content">
-        <Start2Recap {...props} />
+        <Recap {...props} arrayName="start2" />
         <div className="chart">
           <h3>
             {props.type === 'acquisition' && 'Votre emprunt:'}
@@ -93,10 +93,11 @@ const StartResult = props => {
         <div className="buttons">
           <RaisedButton
             label="Modifier"
-            onTouchTap={() => Scroll.animateScroll.scrollToTop({
-              smooth: true,
-              duration: 1000,
-            })}
+            onTouchTap={() =>
+              Scroll.animateScroll.scrollToTop({
+                smooth: true,
+                duration: 1000,
+              })}
             style={{ marginRight: 8 }}
           />
           <RaisedButton
@@ -110,10 +111,11 @@ const StartResult = props => {
         <div className="buttons">
           <RaisedButton
             label="Modifier"
-            onTouchTap={() => Scroll.animateScroll.scrollToTop({
-              smooth: true,
-              duration: 1000,
-            })}
+            onTouchTap={() =>
+              Scroll.animateScroll.scrollToTop({
+                smooth: true,
+                duration: 1000,
+              })}
             style={{ marginRight: 8 }}
           />
           <RaisedButton

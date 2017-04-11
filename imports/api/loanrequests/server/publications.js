@@ -21,21 +21,6 @@ Meteor.publish('loanRequest', function(id) {
   // Throw unauthorized error
 });
 
-// Publish the currently active loanrequest
-Meteor.publish('activeLoanRequest', function() {
-  // find or findOne? Since there should only be one at any time..?
-  const request = LoanRequests.find({
-    userId: this.userId,
-    active: true,
-  });
-
-  if (request) {
-    return request;
-  }
-
-  return this.ready();
-});
-
 // Publish all loanrequests from the current user
 Meteor.publish('loanRequests', function() {
   // Verify if user is logged In

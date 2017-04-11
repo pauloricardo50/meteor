@@ -13,6 +13,13 @@ const ContactPage = () => (
     <h1>Contactez Votre Conseiller</h1>
     <hr />
 
+    <div className="text-center">
+      <img
+        src="/img/yannis.jpg"
+        style={{ width: 150, height: 150, borderRadius: '50%' }}
+      />
+    </div>
+
     <div className="description">
       <p>
         <span className="active">Yannis</span>

@@ -5,6 +5,8 @@ import RequestStepper from '/imports/ui/components/general/RequestStepper.jsx';
 
 import ProjectPieChart from '/imports/ui/components/charts/ProjectPieChart.jsx';
 import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
+import MetricsTriple from '/imports/ui/components/general/MetricsTriple.jsx';
+import Recap from '/imports/ui/components/general/Recap';
 
 import IconButton from 'material-ui/IconButton';
 import ArrowDown from 'material-ui/svg-icons/navigation/arrow-drop-down-circle';
@@ -41,23 +43,42 @@ const DashboardItem = props => {
         />
       </div>
 
-      {/* {(!props.multiple || props.active) &&
-        <div className="active-div">
-          <div className="charts">
-            <div className="col-xs-12 col-md-6">
-              <ProjectPieChart
-                loanRequest={props.loanRequest}
-                borrowers={props.borrowers}
-              />
-            </div>
-            <div className="col-xs-12 col-md-6">
-              <ExpensesChart
-                loanRequest={props.loanRequest}
-                borrowers={props.borrowers}
-              />
-            </div>
-          </div>
-        </div>} */}
+      <hr style={{ width: '50%', margin: '80px auto' }} />
+
+      <div className="charts">
+        <div className="col-xs-12 col-md-6">
+          <ProjectPieChart
+            loanRequest={props.loanRequest}
+            borrowers={props.borrowers}
+          />
+        </div>
+        <div className="col-xs-12 col-md-6">
+          <ExpensesChart
+            loanRequest={props.loanRequest}
+            borrowers={props.borrowers}
+          />
+        </div>
+      </div>
+
+      <MetricsTriple
+        loanRequest={props.loanRequest}
+        borrowers={props.borrowers}
+      />
+
+      <h2 className="text-center">Plan Financier</h2>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Recap
+          loanRequest={props.loanRequest}
+          borrowers={props.borrowers}
+          arrayName="dashboard"
+        />
+      </div>
 
     </article>
   );
