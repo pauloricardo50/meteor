@@ -40,7 +40,21 @@ if (Meteor.isClient) {
           property: { value: 1000000 },
         },
         borrowers: [{ logic: {} }],
-        offers: [],
+        offers: [
+          {
+            standardOffer: {
+              maxAmount: 800000,
+              amortizing: 0.01,
+              interestLibor: 0.01,
+            },
+            conditionsOffer: {
+              maxAmount: 800000,
+              amortizing: 0.008,
+              interestLibor: 0.008,
+            },
+            conditions: 'Conditions',
+          },
+        ],
       };
       mountedLenderPickerPage = undefined;
     });

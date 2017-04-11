@@ -2,20 +2,14 @@ import React, { PropTypes } from 'react';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 
-const styles = {
-  // table: {
-  //   width: '100%',
-  //   minWidth: 320,
-  //   maxWidth: 600,
-  // },
-};
+const round = v => Math.round(v * 10000) / 100;
 
 const OffersTable = props => {
   const offers = props.offers.map(
     o => props.showSpecial ? o.conditionsOffer : o.standardOffer,
   );
   return (
-    <table className="minimal-table" style={styles.table}>
+    <table className="minimal-table">
       <colgroup>
         <col span="1" style={{ width: '5%' }} />
         <col span="1" style={{ width: '20%' }} />
@@ -41,23 +35,24 @@ const OffersTable = props => {
       <tbody>
         {offers &&
           offers.map(
-            (offer, index) => offer &&
-            <tr key={index}>
-              <td className="left-align">{index + 1}</td>
-              <td className="right-align">
-                CHF {toMoney(Math.round(offer.maxAmount))}
-              </td>
-              <td className="right-align">
-                {offer.interestLibor}%
-              </td>
-              <td className="right-align">{offer.interest2}%</td>
-              <td className="right-align">{offer.interest5}%</td>
-              <td className="right-align">{offer.interest10}%</td>
-              <td className="right-align">{offer.amortizing}%</td>
-              <td className="right-align">
-                {offer.expertiseRequired ? 'Oui' : 'Non'}
-              </td>
-            </tr>,
+            (offer, index) =>
+              offer &&
+              <tr key={index}>
+                <td className="left-align">{index + 1}</td>
+                <td className="right-align">
+                  CHF {toMoney(Math.round(offer.maxAmount))}
+                </td>
+                <td className="right-align">
+                  {round(offer.interestLibor)}%
+                </td>
+                <td className="right-align">{round(offer.interest2)}%</td>
+                <td className="right-align">{round(offer.interest5)}%</td>
+                <td className="right-align">{round(offer.interest10)}%</td>
+                <td className="right-align">{round(offer.amortizing)}%</td>
+                <td className="right-align">
+                  {offer.expertiseRequired ? 'Oui' : 'Non'}
+                </td>
+              </tr>,
           )}
       </tbody>
     </table>

@@ -11,13 +11,13 @@ const getRandomCondition = () => {
   return conditions[Math.floor(Math.random() * conditions.length)];
 };
 
-const round = v => Math.round(v * 100) / 100;
+const round = v => Math.round(v * 10000) / 10000;
 
 const rand = (min, max) => round(Math.random() * (max - min) + min);
 
 export const getRandomOffer = request => {
-  const rate1 = rand(0.8, 1);
-  const rate2 = rand(0.5, 0.75);
+  const rate1 = rand(0.008, 0.01);
+  const rate2 = rand(0.005, 0.0075);
 
   const loanWanted = getLoanValue(request);
 
@@ -28,21 +28,21 @@ export const getRandomOffer = request => {
     auctionEndTime: new Date(),
     standardOffer: {
       maxAmount: loanWanted,
-      amortizing: 1,
+      amortizing: 0.01,
       interestLibor: rate1,
-      interest1: round(rate1 + rand(0.08, 0.12)),
-      interest2: round(rate1 + rand(0.16, 0.24)),
-      interest5: round(rate1 + rand(0.4, 0.6)),
-      interest10: round(rate1 + rand(0.8, 1)),
+      interest1: round(rate1 + rand(0.0008, 0.0012)),
+      interest2: round(rate1 + rand(0.0016, 0.0024)),
+      interest5: round(rate1 + rand(0.004, 0.006)),
+      interest10: round(rate1 + rand(0.008, 0.01)),
     },
     conditionsOffer: {
       maxAmount: loanWanted,
-      amortizing: 1,
+      amortizing: 0.01,
       interestLibor: rate2,
-      interest1: round(rate2 + rand(0.08, 0.12)),
-      interest2: round(rate2 + rand(0.16, 0.24)),
-      interest5: round(rate2 + rand(0.4, 0.6)),
-      interest10: round(rate2 + rand(0.8, 1)),
+      interest1: round(rate2 + rand(0.0008, 0.0012)),
+      interest2: round(rate2 + rand(0.0016, 0.0024)),
+      interest5: round(rate2 + rand(0.004, 0.006)),
+      interest10: round(rate2 + rand(0.008, 0.01)),
     },
     conditions: getRandomCondition(),
     expertiseRequired: true,
