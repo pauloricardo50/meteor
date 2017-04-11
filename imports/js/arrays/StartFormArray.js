@@ -500,21 +500,26 @@ const getFinalArray = (state, props, setFormState) => [
     type: 'sliderInput',
     text1: (
       <span>
-        Vous avez
+        Combien voulez-vous emprunter ? Minimum
         {' '}
         <span className="active">
-          CHF {toMoney(props.totalFortune)}
+          CHF
+          {' '}
+          {toMoney(
+            Math.max(
+              100000,
+              props.project - (props.fortune + props.insuranceFortune),
+            ),
+          )}
         </span>
-        {' '}
-        de fonds propres disponibles au total, combien voulez-vous emprunter?
       </span>
     ),
     money: true,
     question: true,
     sliderMin: 0,
     sliderMax: state.usageType === 'secondary'
-      ? 0.7 * props.propAndWork
-      : 0.8 * props.propAndWork,
+      ? Math.floor(0.7 * props.propAndWork)
+      : Math.floor(0.8 * props.propAndWork),
     sliderLabels: ['0%', state.usageType === 'secondary' ? '70%' : '80%'],
     step: 10000,
     onDragStart() {
@@ -532,8 +537,8 @@ const getFinalArray = (state, props, setFormState) => [
         props.project - (props.fortune + props.insuranceFortune),
       ),
       max: state.usageType === 'secondary'
-        ? 0.7 * props.propAndWork
-        : 0.8 * props.propAndWork,
+        ? Math.ceil(0.7 * props.propAndWork)
+        : Math.ceil(0.8 * props.propAndWork),
     },
   },
   {
@@ -714,12 +719,10 @@ const getFinalArray = (state, props, setFormState) => [
   },
 ];
 
-const getFormArray = (state, props, setFormState) => getAcquisitionArray(
-  state,
-  props,
-).concat(
-  state.type === 'acquisition' ? getErrorArray(state, props) : [], // these errors only for acquisitions
-  getFinalArray(state, props, setFormState),
-);
+const getFormArray = (state, props, setFormState) =>
+  getAcquisitionArray(state, props).concat(
+    state.type === 'acquisition' ? getErrorArray(state, props) : [], // these errors only for acquisitions
+    getFinalArray(state, props, setFormState),
+  );
 
 export default getFormArray;

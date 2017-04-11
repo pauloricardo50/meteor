@@ -173,7 +173,7 @@ export default class Start2Page extends Component {
             </h3>
             <div className="shadow-top" />
             <div className="shadow-bottom" />
-            <Recap {...props} arrayName="start2" />
+            <Recap {...props} arrayName="start2" noScale />
           </div>}
         {finished &&
           <Scroll.Element name={'final'}>

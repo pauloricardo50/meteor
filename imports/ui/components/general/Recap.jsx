@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
+import classnames from 'classnames';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
@@ -462,7 +463,10 @@ const Recap = props => {
           } else {
             return (
               <div
-                className="fixed-size"
+                className={classnames({
+                  'fixed-size': true,
+                  'no-scale': props.noScale,
+                })}
                 style={{
                   marginBottom: item.spacing && 16,
                   marginTop: item.spacingTop && 16,
@@ -484,12 +488,14 @@ Recap.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any),
   borrowers: PropTypes.arrayOf(PropTypes.object),
   array: PropTypes.arrayOf(PropTypes.object),
+  noScale: PropTypes.bool,
 };
 
 Recap.defaultProps = {
   loanRequest: {},
   borrowers: {},
   array: undefined,
+  noScale: false,
 };
 
 export default Recap;
