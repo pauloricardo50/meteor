@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import { expect } from 'chai';
 import { describe, it, beforeEach } from 'meteor/practicalmeteor:mocha';
 
@@ -13,10 +13,7 @@ import AmortizingPicker from '../lenderPickerPage/AmortizingPicker.jsx';
 import LoanStrategyPicker from '../lenderPickerPage/LoanStrategyPicker.jsx';
 import LenderTable from '../lenderPickerPage/LenderTable.jsx';
 
-import {
-  getLoanValue,
-  loanStrategySuccess,
-} from '/imports/js/helpers/requestFunctions';
+import { getLoanValue } from '/imports/js/helpers/requestFunctions';
 
 if (Meteor.isClient) {
   describe('<LenderPickerPage />', () => {

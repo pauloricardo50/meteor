@@ -239,8 +239,9 @@ export default class ExpensesChart extends Component {
         };
       },
     );
-
-    this.chart = new Highcharts.Chart('expensesChart', options);
+    if (document.getElementById('expensesChart')) {
+      this.chart = new Highcharts.Chart('expensesChart', options);
+    }
   }
 
   componentWillUnmount() {
