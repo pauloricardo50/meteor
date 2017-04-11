@@ -90,7 +90,7 @@ export default class LenderPickerPage extends React.Component {
       array.push(<LoanStrategyPicker {...props} />);
     }
     if (this.state.loanStrategyValidated) {
-      array.push(<LenderTable {...props} />);
+      array.push(<LenderTable {...props} history={this.props.history} />);
     }
 
     return array;

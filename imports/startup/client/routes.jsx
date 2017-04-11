@@ -25,10 +25,10 @@ import TosPage from '/imports/ui/pages/public/TosPage.jsx';
 import DashBoardPage from '/imports/ui/pages/user/DashboardPage.jsx';
 import ProfilePage from '/imports/ui/pages/user/ProfilePage.jsx';
 import {
-  RequestPage,
   PropertyPage,
   AuctionPage,
   LenderPickerPage,
+  StructurePage,
 } from '/imports/ui/containers/UserContainers';
 import BorrowerPage from '/imports/ui/pages/user/BorrowerPage.jsx';
 import ContactPage from '/imports/ui/pages/user/ContactPage.jsx';
@@ -98,10 +98,13 @@ const UserRoutes = props => (
           component={AuctionPage}
         />
         <Route
+          path="/app/requests/:requestId/structure"
+          component={StructurePage}
+        />
+        <Route
           path="/app/requests/:requestId/lenderpicker"
           component={LenderPickerPage}
         />
-        <Route path="/app/requests/:requestId" component={RequestPage} />
 
         <Route path="/app" render={() => <DashBoardPage {...layoutProps} />} />
       </Switch>

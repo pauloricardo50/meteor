@@ -31,39 +31,24 @@ const DashboardItem = props => {
           </div>}
       </div>
 
-      <OverviewItems
-        borrowers={props.borrowers}
-        loanRequest={props.loanRequest}
-      />
+      <OverviewItems {...props} />
 
       <div className="stepper">
-        <RequestStepper
-          loanRequest={props.loanRequest}
-          borrowers={props.borrowers}
-        />
+        <RequestStepper {...props} />
       </div>
 
       <hr style={{ width: '50%', margin: '80px auto' }} />
 
       <div className="charts">
         <div className="col-xs-12 col-md-6">
-          <ProjectPieChart
-            loanRequest={props.loanRequest}
-            borrowers={props.borrowers}
-          />
+          <ProjectPieChart {...props} />
         </div>
         <div className="col-xs-12 col-md-6">
-          <ExpensesChart
-            loanRequest={props.loanRequest}
-            borrowers={props.borrowers}
-          />
+          <ExpensesChart {...props} />
         </div>
       </div>
 
-      <MetricsTriple
-        loanRequest={props.loanRequest}
-        borrowers={props.borrowers}
-      />
+      <MetricsTriple {...props} />
 
       <h2 className="text-center">Plan Financier</h2>
       <div
@@ -73,11 +58,7 @@ const DashboardItem = props => {
           alignItems: 'center',
         }}
       >
-        <Recap
-          loanRequest={props.loanRequest}
-          borrowers={props.borrowers}
-          arrayName="dashboard"
-        />
+        <Recap {...props} arrayName="dashboard" />
       </div>
 
     </article>

@@ -1,5 +1,7 @@
 import constants from '../config/constants';
 
+import { getIncomeRatio, getBorrowRatio } from './finance-math';
+
 export const getProjectValue = loanRequest => {
   if (loanRequest.property.value <= 0) {
     return 0;
@@ -93,3 +95,19 @@ export const getTotalUsed = loanRequest =>
     loanRequest.general.fortuneUsed +
       (loanRequest.general.insuranceFortuneUsed || 0),
   );
+
+export const getLenderCount = (loanRequest, borrowers) => {
+  const incomeRatio = getIncomeRatio(loanRequest, borrowers);
+  const borrowRatio = getBorrowRatio(loanRequest, borrowers);
+  if (incomeRatio > 0.38) {
+    return 0;
+  } else if (incomeRatio > 1 / 3) {
+    return 4;
+  } else if (borrowRatio <= 0.65) {
+    return 30;
+  } else if (borrowRatio > 0.65 && borrowRatio <= 0.9) {
+    return 20;
+  }
+
+  return 0;
+};

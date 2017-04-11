@@ -25,7 +25,7 @@ const OverviewItems = props => (
       </Link>
     ))}
     <Link
-      to={`/app/requests/${props.loanRequest._id}`}
+      to={`/app/requests/${props.loanRequest._id}/property`}
       className="mask1 animated fadeIn hover-rise request-recap"
     >
       <div className="image">

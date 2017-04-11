@@ -42,7 +42,9 @@ export default class RequestStepper extends Component {
   componentDidMount() {
     window.addEventListener('resize', this.resize);
 
-    this.focused.applyFocusState('keyboard-focused');
+    if (this.focused) {
+      this.focused.applyFocusState('keyboard-focused');
+    }
   }
 
   componentWillUnmount() {
@@ -95,7 +97,8 @@ export default class RequestStepper extends Component {
                     `Progrès: ${Math.round(item.percent() * 1000) / 10}%`) ||
                     ''
                 }
-                containerElement={item.link && <Link to={item.link} />}
+                onTouchTap={() =>
+                  item.link && this.props.history.push(item.link)}
                 style={{ fontSize: 18 }}
               />
             ))}
@@ -106,7 +109,7 @@ export default class RequestStepper extends Component {
 
   renderStepActions(step, handleNextChild) {
     const currentStep = this.props.loanRequest.logic.step;
-    const i = step.nb;
+    const i = step.nb - 1;
 
     // For the last step, do not show a continue button
     if (i === 4) {
@@ -178,4 +181,5 @@ export default class RequestStepper extends Component {
 RequestStepper.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };

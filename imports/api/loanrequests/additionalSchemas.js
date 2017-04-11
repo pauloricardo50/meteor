@@ -202,25 +202,19 @@ export const PropertySchema = new SimpleSchema({
     type: Object,
     defaultValue: {},
   },
-  'parking.inside': {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100,
-  },
   'parking.box': {
     type: Number,
     optional: true,
     min: 0,
     max: 100,
   },
-  'parking.outsideCovered': {
+  'parking.inside': {
     type: Number,
     optional: true,
     min: 0,
     max: 100,
   },
-  'parking.outsideNotCovered': {
+  'parking.outside': {
     type: Number,
     optional: true,
     min: 0,

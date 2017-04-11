@@ -3,6 +3,7 @@ import cleanMethod from '/imports/api/cleanMethods';
 import CountUp from 'react-countup';
 
 import RaisedButton from 'material-ui/RaisedButton';
+import { getLenderCount } from '/imports/js/helpers/requestFunctions';
 
 const styles = {
   text: {
@@ -31,7 +32,7 @@ const Start = props => (
       <CountUp
         className="custom-count"
         start={0}
-        end={20}
+        end={getLenderCount(props.loanRequest, props.borrowers)}
         duration={3.5}
         useEasing
         separator=" "
@@ -69,6 +70,8 @@ const Start = props => (
 
 Start.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+
 };
 
 export default Start;

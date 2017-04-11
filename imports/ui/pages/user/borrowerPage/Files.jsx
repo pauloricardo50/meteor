@@ -29,7 +29,7 @@ export default class Files extends Component {
         id: 'files.identity',
       },
       {
-        title: 'Fiches de salaire (dev)',
+        title: "Déclaration d'impôts (dev)",
         files: 3,
         done: false,
       },

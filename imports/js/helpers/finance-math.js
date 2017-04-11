@@ -1,5 +1,5 @@
 import constants from '../config/constants';
-import { getLoanValue } from './requestFunctions';
+import { getLoanValue, getPropAndWork } from './requestFunctions';
 
 // Determine retirement age depending on the gender of the borrowers
 // Return a positive value only, negative values rounded to 0
@@ -30,8 +30,8 @@ export const getYearsToRetirement = (age1, age2, gender1, gender2) => {
 
 // get monthly amortization for a loan request
 export const getAmortization = (loanRequest, borrowers) => {
-  const r = loanRequest;
   const loan = getLoanValue(loanRequest);
+  const propAndWork = getPropAndWork(loanRequest);
   const yearsToRetirement = getYearsToRetirement(
     Number(borrowers[0].age),
     borrowers[1] && borrowers[1].age ? Number(borrowers[1].age) : 0,
@@ -44,19 +44,21 @@ export const getAmortization = (loanRequest, borrowers) => {
     return 0;
   }
 
-  const loanPercent = loan / r.property.value;
+  const loanPercent = loan / propAndWork;
 
   let yearlyAmortization = 0;
   if (loanPercent > 0.65) {
     // The loan has to be below 65% before 15 years or before retirement, whichever comes first
     const remainingYears = Math.min(yearsToRetirement, 15);
-    const amountToAmortize = (loanPercent - 0.65) * r.property.value;
+    const amountToAmortize = (loanPercent - 0.65) * propAndWork;
 
     // Make sure we don't create a black hole, or use negative values by error
     if (remainingYears > 0) {
       // Amortization is the amount to amortize divided by the amount of years before the deadline
       yearlyAmortization = amountToAmortize / remainingYears;
     }
+  } else {
+    yearlyAmortization = propAndWork * constants.amortizing;
   }
 
   return yearlyAmortization / 12;

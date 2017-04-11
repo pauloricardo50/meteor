@@ -8,8 +8,6 @@ export const insertBorrower = new ValidatedMethod({
   name: 'borrowers.insert',
   validate() {},
   run({ object }) {
-    console.log('server', object);
-
     return Borrowers.insert(object);
   },
 });
@@ -43,11 +41,6 @@ export const popBorrowerValue = new ValidatedMethod({
     check(id, String);
   },
   run({ object, id }) {
-    const result = Borrowers.update(
-      id,
-      { $pop: object },
-      { getAutoValues: false },
-    );
-    console.log(result);
+    Borrowers.update(id, { $pop: object }, { getAutoValues: false });
   },
 });

@@ -87,7 +87,9 @@ export default class Auction extends Component {
           <p className="secondary bold text-center animated pulse infinite">
             Bataille des prêteurs en cours
           </p>
-          <LoadingComponent />
+          <div style={{ height: 150 }}>
+            <LoadingComponent />
+          </div>
         </div>
       </section>
     );

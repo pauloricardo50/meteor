@@ -43,7 +43,7 @@ const getSteps = (loanRequest, borrowers) => {
         },
         {
           title: 'Vérifiez la structure de votre projet',
-          link: `/app/requests/${loanRequest._id}`,
+          link: `/app/requests/${loanRequest._id}/structure`,
           isDone: () => loanRequest.logic.hasValidatedStructure,
         },
         {
@@ -76,6 +76,7 @@ const getSteps = (loanRequest, borrowers) => {
       items: [
         {
           title: 'Uploadez les documents nécessaires',
+          link: `/app/borrowers/${borrowers[0]._id}?tab=files`,
           isDone: () => false,
         },
       ],

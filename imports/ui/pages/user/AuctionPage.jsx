@@ -57,7 +57,12 @@ export default class AuctionPage extends Component {
       );
     }
     // Before the auction, lets the user start it
-    return <Start loanRequest={this.props.loanRequest} />;
+    return (
+      <Start
+        loanRequest={this.props.loanRequest}
+        borrowers={this.props.borrowers}
+      />
+    );
   }
 
   render() {
@@ -67,6 +72,7 @@ export default class AuctionPage extends Component {
 
 AuctionPage.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   offers: PropTypes.arrayOf(PropTypes.any),
 };
 

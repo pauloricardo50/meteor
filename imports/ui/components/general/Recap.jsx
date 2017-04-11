@@ -10,6 +10,7 @@ import {
   getProjectValue,
   getTotalUsed,
   getLoanValue,
+  getLenderCount,
 } from '/imports/js/helpers/requestFunctions';
 
 import {
@@ -48,6 +49,7 @@ const getDashboardArray = props => {
   const fortune = getFortune(b);
   const insuranceFortune = getInsuranceFortune(b);
   const totalFortune = getTotalFortune(b);
+  const lenderCount = getLenderCount(r, b);
 
   return [
     {
@@ -205,7 +207,7 @@ const getDashboardArray = props => {
     },
     {
       label: 'Nb. de prêteurs potentiels',
-      value: 20,
+      value: lenderCount,
       spacing: true,
     },
   ];

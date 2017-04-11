@@ -16,8 +16,8 @@ const round = v => Math.round(v * 10000) / 10000;
 const rand = (min, max) => round(Math.random() * (max - min) + min);
 
 export const getRandomOffer = request => {
-  const rate1 = rand(0.008, 0.01);
-  const rate2 = rand(0.005, 0.0075);
+  const rate1 = rand(0.007, 0.012);
+  const rate2 = rand(0.005, 0.009);
 
   const loanWanted = getLoanValue(request);
 

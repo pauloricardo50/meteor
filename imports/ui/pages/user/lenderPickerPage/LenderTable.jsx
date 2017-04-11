@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -67,7 +68,8 @@ const handleSave = props => {
   object['logic.loanStrategyPreset'] = props.formState.loanStrategyPreset;
   object['general.loanTranches'] = props.formState.loanTranches;
 
-  cleanMethod('updateRequest', object, props.loanRequest._id);
+  cleanMethod('updateRequest', object, props.loanRequest._id, () =>
+    Meteor.setTimeout(() => props.history.push('/app'), 300));
 };
 
 const LenderTable = props => {
@@ -110,7 +112,7 @@ const LenderTable = props => {
         <thead>
           <tr>
             <th className="l" />
-            <th className="r">Montant</th>
+            <th className="r">Montant prêté</th>
             <th className="r">Coût mensuel</th>
             <th className="l">Conditions</th>
             {!props.formState.standard && <th className="c">Contrepartie</th>}
@@ -147,9 +149,7 @@ const LenderTable = props => {
                   </td>
                   {!props.formState.standard &&
                     <td className="c">
-                      {offer.counterpart
-                        ? <RaisedButton label="Voir contreparties" />
-                        : ''}
+                      <RaisedButton label="Afficher" disabled />
                     </td>}
                 </tr>,
             )}

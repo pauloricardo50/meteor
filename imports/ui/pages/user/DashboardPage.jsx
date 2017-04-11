@@ -52,6 +52,7 @@ export default class DashboardPage extends Component {
 
         {sortedRequests.map((request, i) => (
           <DashboardItem
+            {...this.props}
             loanRequest={request}
             borrowers={this.props.borrowers}
             key={request._id}

@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 
 import AutoForm from '/imports/ui/components/autoform/AutoForm.jsx';
+import FakeBorrowerCompleter
+  from '/imports/ui/components/general/FakeBorrowerCompleter.jsx';
 import { getBorrowerInfoArray } from '/imports/js/arrays/BorrowerFormArray';
 import { personalInfoPercent } from '/imports/js/arrays/steps';
 
@@ -29,6 +31,8 @@ const BorrowerInfoPage = props => {
         pushFunc="pushBorrowerValue"
         popFunc="popBorrowerValue"
       />
+
+      <FakeBorrowerCompleter borrower={borrower} />
     </section>
   );
 };

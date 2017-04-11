@@ -96,7 +96,11 @@ RadioInput.propTypes = {
   label: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
   onConditionalChange: PropTypes.func,
-  currentValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+  currentValue: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   documentId: PropTypes.string.isRequired,
   updateFunc: PropTypes.string.isRequired,
 };
