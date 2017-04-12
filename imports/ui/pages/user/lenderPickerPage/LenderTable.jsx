@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 
 import RaisedButton from 'material-ui/RaisedButton';
+import CheckIcon from 'material-ui/svg-icons/navigation/check';
 
 import { getMonthlyWithOffer } from '/imports/js/helpers/requestFunctions';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
@@ -47,15 +48,10 @@ const getOffers = props => {
 };
 
 const handleChoose = (id, props) => {
-  const object = {};
-  if (props.formState.chosenOffer === id) {
-    props.setFormState('chosenOffer', '');
-    object['logic.lender'] = '';
-    cleanMethod('updateRequest', object, props.loanRequest._id);
+  if (props.formState.chosenLender === id) {
+    props.setFormState('chosenLender', '');
   } else {
-    props.setFormState('chosenOffer', id);
-    object['logic.lender'] = id;
-    cleanMethod('updateRequest', object, props.loanRequest._id);
+    props.setFormState('chosenLender', id);
   }
 };
 
@@ -67,6 +63,7 @@ const handleSave = props => {
   object['logic.amortizingStrategyPreset'] = props.formState.amortizing;
   object['logic.loanStrategyPreset'] = props.formState.loanStrategyPreset;
   object['general.loanTranches'] = props.formState.loanTranches;
+  object['logic.lender'] = props.formState.chosenLender;
 
   cleanMethod('updateRequest', object, props.loanRequest._id, () =>
     Meteor.setTimeout(() => props.history.push('/app'), 300));
@@ -74,6 +71,8 @@ const handleSave = props => {
 
 const LenderTable = props => {
   const offers = getOffers(props);
+  const saved = props.loanRequest.logic.lender === props.formState.chosenLender;
+  console.log(saved);
   return (
     <article>
       <h2 className="text-c">Les meilleurs prêteurs</h2>
@@ -86,12 +85,13 @@ const LenderTable = props => {
       {props.loanRequest.logic.lender &&
         <div className="text-center" style={{ margin: '40px 0' }}>
           <RaisedButton
-            label="Sauvegarder"
-            keyboardFocused
-            primary
+            label={saved ? 'Sauvegardé' : 'Sauvegarder'}
+            keyboardFocused={!saved}
+            primary={!saved}
             onTouchTap={() => handleSave(props)}
             style={{ height: 'unset' }}
             overlayStyle={{ padding: 20 }}
+            icon={saved && <CheckIcon />}
           />
         </div>}
 
@@ -102,7 +102,7 @@ const LenderTable = props => {
 
       <table className="minimal-table">
         <colgroup>
-          <col span="1" style={{ width: '5%' }} />
+          <col span="1" style={{ width: '8%' }} />
           <col span="1" style={{ width: '15%' }} />
           <col span="1" style={{ width: '25%' }} />
           <col span="1" style={{ width: '25%' }} />
@@ -127,13 +127,13 @@ const LenderTable = props => {
                   key={index}
                   onTouchTap={() => handleChoose(offer.id, props)}
                   className={
-                    offer.id === props.formState.chosenOffer && 'chosen'
+                    offer.id === props.formState.chosenLender && 'chosen'
                   }
                 >
                   <td className="l">
                     {index + 1}
                     {' '}
-                    {offer.id === props.formState.chosenOffer &&
+                    {offer.id === props.formState.chosenLender &&
                       <span className="fa fa-check" />}
                   </td>
                   <td className="r">
@@ -145,7 +145,7 @@ const LenderTable = props => {
                     </h3>
                   </td>
                   <td className="l">
-                    {offer.conditions || 'Sans Conditions'}
+                    {offer.conditions || ''}
                   </td>
                   {!props.formState.standard &&
                     <td className="c">

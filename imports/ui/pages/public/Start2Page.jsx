@@ -124,7 +124,6 @@ export default class Start2Page extends Component {
         lppFees +
         (1 - constants.maxLoan(s.usageType)) *
           (property + (s.propertyWork || 0)) || 0,
-      minCash: fees + lppFees + 0.1 * (property + (s.propertyWork || 0)) || 0,
       fees: fees || 0,
       lppFees: s.insuranceFortuneUsed * constants.lppFees || 0,
       project: fees + property + (s.propertyWork || 0) + lppFees || 0,
@@ -134,6 +133,9 @@ export default class Start2Page extends Component {
       realEstateValue: getRealEstateValue(s.realEstateArray) || 0,
       realEstateDebt: getRealEstateDebt(s.realEstateArray) || 0,
     };
+    props.minCash = fees +
+      0.1 * props.propAndWork +
+      0.1 * props.propAndWork * constants.lppFees;
     props.fortuneNeeded = props.project - s.loanWanted;
     props.totalFortune = props.fortune + props.insuranceFortune;
     props.ratio = getRatio(props.income, props.expenses, props.monthly);
@@ -144,6 +146,14 @@ export default class Start2Page extends Component {
       props.fees + props.lppFees,
     );
     props.lenderCount = getLenderCount(props.borrow, props.ratio);
+
+    // if you want to have a minimum loan, you use all your fortune, hence, you'll have to pay maximum lppFees
+    // Round up to make sure the project works
+    props.minLoan = Math.ceil(
+      props.propAndWork -
+        (props.fortune + props.insuranceFortune * (1 - constants.lppFees)) +
+        fees,
+    );
 
     if (!props.property) {
       props.property = calculateProperty(

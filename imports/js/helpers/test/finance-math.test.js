@@ -67,7 +67,7 @@ describe('Finance Math', () => {
 
   describe('Get Bonus Income', () => {
     it('Should return 0 for an empty object', () => {
-      expect(getBonusIncome({ bonus: {} })).to.equal(0);
+      expect(getBonusIncome([{ bonus: {} }])).to.equal(0);
     });
   });
 });

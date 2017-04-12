@@ -1,6 +1,7 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
+import constants from '/imports/js/config/constants';
 
 import FortuneSliders
   from '/imports/ui/pages/public/startPage/FortuneSliders.jsx';
@@ -447,7 +448,7 @@ const getAcquisitionArray = (state, props) => [
 const getErrorArray = (state, props) => [
   {
     condition: state.usageType === 'primary' &&
-      (props.fortune < props.fees + 0.1 * props.propAndWork &&
+      (props.fortune < props.minCash &&
         props.insuranceFortune >= 0.1 * props.propAndWork),
     id: 'error',
     type: 'buttons',
@@ -456,7 +457,9 @@ const getErrorArray = (state, props) => [
         Vous devez avoir au moins
         {' '}
         <span className="body">
-          CHF {toMoney(0.1 * state.propertyValue + props.fees)}
+          CHF
+          {' '}
+          {toMoney(props.minCash)}
         </span>
         {' '}
         de fortune (sans compter votre prévoyance) pour ce projet, vous pouvez modifier les valeurs en haut.
@@ -505,12 +508,7 @@ const getFinalArray = (state, props, setFormState) => [
         <span className="active">
           CHF
           {' '}
-          {toMoney(
-            Math.max(
-              100000,
-              props.project - (props.fortune + props.insuranceFortune),
-            ),
-          )}
+          {toMoney(Math.max(100000, props.minLoan))}
         </span>
       </span>
     ),
@@ -532,10 +530,7 @@ const getFinalArray = (state, props, setFormState) => [
       }
     },
     validation: {
-      min: Math.max(
-        100000,
-        props.project - (props.fortune + props.insuranceFortune),
-      ),
+      min: Math.max(100000, props.minLoan),
       max: state.usageType === 'secondary'
         ? Math.ceil(0.7 * props.propAndWork)
         : Math.ceil(0.8 * props.propAndWork),
