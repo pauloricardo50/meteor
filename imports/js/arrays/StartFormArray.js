@@ -157,6 +157,28 @@ const getAcquisitionArray = (state, props) => [
     },
   },
   {
+    id: 'initialIncome',
+    type: 'buttons',
+    text1: (
+      <span>
+        Vous avez indiqué que vos revenus sont de
+        {' '}
+        <span className="active">
+          CHF {toMoney(state.initialIncome)}
+        </span>
+        {' '}
+        par an, vous pouvez les détailler maintenant.
+      </span>
+    ),
+    hideResult: true,
+    buttons: [
+      {
+        id: state.initialIncome,
+        label: 'Ok',
+      },
+    ],
+  },
+  {
     id: 'income',
     type: 'multipleInput',
     firstMultiple: true,
@@ -281,7 +303,18 @@ const getAcquisitionArray = (state, props) => [
   {
     id: 'expensesExist',
     type: 'buttons',
-    text1: `Avez-vous des charges comme des leasings, ${state.usageType !== 'primary' ? 'rentes, ' : ''}pensions, loyers, crédits personnels ou autres prêts immobiliers?`,
+    text1: (
+      <span>
+        Avez-vous des charges
+        {' '}
+        <span className="bold">annuelles</span>
+        {' '}
+        comme des leasings,
+        {' '}
+        {state.usageType !== 'primary' ? 'rentes, ' : ''}
+        pensions, loyers, crédits personnels ou autres prêts immobiliers?
+      </span>
+    ),
     question: true,
     deleteId: 'expensesArray',
     buttons: [
@@ -347,6 +380,67 @@ const getAcquisitionArray = (state, props) => [
     ],
   },
   {
+    id: 'initialFortune',
+    type: 'buttons',
+    text1: (
+      <span>
+        Vous avez indiqué que votre fortune est de
+        {' '}
+        <span className="active">
+          CHF {toMoney(state.initialFortune)}
+        </span>
+        {' '}
+        par an, vous pouvez la détailler maintenant.
+      </span>
+    ),
+    hideResult: true,
+    buttons: [
+      {
+        id: state.initialFortune,
+        label: 'Ok',
+      },
+    ],
+  },
+  {
+    id: 'fortune',
+    type: 'multipleInput',
+    text1: 'Quelle est votre fortune bancaire personnelle (cash et titres)?',
+    question: true,
+    money: true,
+  },
+  {
+    condition: state.usageType === 'primary',
+    id: 'insurance1',
+    type: 'multipleInput',
+    text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 2e pilier?',
+    money: true,
+    zeroAllowed: true,
+  },
+  {
+    condition: state.usageType === 'primary',
+    id: 'insurance2Exists',
+    type: 'buttons',
+    text1: 'Avez-vous un 3e pilier?',
+    question: true,
+    buttons: [
+      {
+        id: true,
+        label: 'Oui',
+      },
+      {
+        id: false,
+        label: 'Non',
+      },
+    ],
+  },
+  {
+    condition: state.usageType === 'primary' && state.insurance2Exists,
+    id: 'insurance2',
+    type: 'multipleInput',
+    text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 3e pilier?',
+    money: true,
+  },
+  {
     id: 'realEstateExists',
     type: 'buttons',
     text1: "Êtes-vous propriétaire d'autres biens immobiliers?",
@@ -403,45 +497,6 @@ const getAcquisitionArray = (state, props) => [
         zeroAllowed: true,
       },
     ],
-  },
-  {
-    id: 'fortune',
-    type: 'multipleInput',
-    text1: 'Quelle est votre fortune bancaire personnelle (cash et titres)?',
-    question: true,
-    money: true,
-  },
-  {
-    condition: state.usageType === 'primary',
-    id: 'insurance1',
-    type: 'multipleInput',
-    text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 2e pilier?',
-    money: true,
-    zeroAllowed: true,
-  },
-  {
-    condition: state.usageType === 'primary',
-    id: 'insurance2Exists',
-    type: 'buttons',
-    text1: 'Avez-vous un 3e pilier?',
-    question: true,
-    buttons: [
-      {
-        id: true,
-        label: 'Oui',
-      },
-      {
-        id: false,
-        label: 'Non',
-      },
-    ],
-  },
-  {
-    condition: state.usageType === 'primary' && state.insurance2Exists,
-    id: 'insurance2',
-    type: 'multipleInput',
-    text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 3e pilier?',
-    money: true,
   },
 ];
 

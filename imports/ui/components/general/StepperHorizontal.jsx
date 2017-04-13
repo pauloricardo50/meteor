@@ -40,7 +40,7 @@ export default class StepperHorizontal extends Component {
 
   render() {
     return (
-      <div className="horizontal">
+      <div className="horizontal mask1">
         <Stepper
           activeStep={this.props.activeStep}
           orientation="horizontal"

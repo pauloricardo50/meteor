@@ -5,6 +5,11 @@ import { List, ListItem } from 'material-ui/List';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Link } from 'react-router-dom';
 
+import myTheme from '/imports/js/config/mui_custom';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import colors from '/imports/js/config/colors';
+
 import StepperVertical from './StepperVertical.jsx';
 import StepperHorizontal from './StepperHorizontal.jsx';
 
@@ -76,6 +81,7 @@ export default class RequestStepper extends Component {
           <List id="list">
             {step.items.map(item => (
               <ListItem
+                hoverColor="#f8f8f8"
                 key={item.title}
                 primaryText={item.title}
                 ref={r => {
@@ -117,10 +123,9 @@ export default class RequestStepper extends Component {
     }
 
     // loop over each step item and make sure they are all done
-    const stepIsDone = step.items.reduce(
-      (tot, item) => tot && (item.isDone() && tot),
-      true,
-    );
+    const stepIsDone = step.items
+      ? step.items.reduce((tot, item) => tot && (item.isDone() && tot), true)
+      : true;
 
     return (
       <div style={styles.stepActions} className="text-center">
@@ -170,11 +175,20 @@ export default class RequestStepper extends Component {
       handleNext: this.handleNext,
     };
 
-    if (this.state.largeWidth) {
-      return <StepperHorizontal {...props} />;
-    }
+    const customTheme = {
+      ...myTheme,
+      ripple: {
+        color: colors.primary,
+      },
+    };
 
-    return <StepperVertical {...props} />;
+    return (
+      <MuiThemeProvider muiTheme={getMuiTheme(customTheme)}>
+        {this.state.largeWidth
+          ? <StepperHorizontal {...props} />
+          : <StepperVertical {...props} />}
+      </MuiThemeProvider>
+    );
   }
 }
 

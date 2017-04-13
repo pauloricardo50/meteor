@@ -8,6 +8,7 @@ import CheckIcon from 'material-ui/svg-icons/navigation/check';
 import AutoForm from '/imports/ui/components/autoform/AutoForm.jsx';
 import { getBorrowerFinanceArray } from '/imports/js/arrays/BorrowerFormArray';
 import cleanMethod from '/imports/api/cleanMethods';
+import Recap from '/imports/ui/components/general/Recap';
 
 const styles = {
   div: {
@@ -56,6 +57,16 @@ const BorrowerFinancePage = props => {
         {borrower.logic.hasValidatedFinances &&
           <small><span className="fa fa-check" /> Validées</small>}
       </h2>
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Recap arrayName="borrower" borrower={borrower} />
+      </div>
 
       <div className="description">
         <p>Les champs marqués avec un * sont obligatoires.</p>

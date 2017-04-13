@@ -7,6 +7,7 @@ import classnames from 'classnames';
 
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import LoopIcon from 'material-ui/svg-icons/av/loop';
 
 import { toNumber, toMoney } from '/imports/js/helpers/conversionFunctions';
 import {
@@ -119,23 +120,25 @@ export default class Start1Page extends Component {
   componentDidMount() {
     // UX: make user understand he can use the slider, by quickly pushing it up and down
     Meteor.setTimeout(
-      () => this.setState({
-        income: {
-          value: 350000,
-          minValue: 0,
-          auto: true,
-        },
-      }),
+      () =>
+        this.setState({
+          income: {
+            value: 350000,
+            minValue: 0,
+            auto: true,
+          },
+        }),
       250,
     );
     Meteor.setTimeout(
-      () => this.setState({
-        income: {
-          value: 0,
-          minValue: 0,
-          auto: true,
-        },
-      }),
+      () =>
+        this.setState({
+          income: {
+            value: 0,
+            minValue: 0,
+            auto: true,
+          },
+        }),
       500,
     );
   }
@@ -262,6 +265,8 @@ export default class Start1Page extends Component {
       property: this.type !== 'test'
         ? Math.round(this.state.property.value)
         : 0,
+      income: Math.round(this.state.income.value),
+      fortune: Math.round(this.state.fortune.value),
     };
 
     return `/start2/${this.type}?${queryString.stringify(queryparams)}`;
@@ -322,6 +327,7 @@ export default class Start1Page extends Component {
                 label="Recommencer"
                 onTouchTap={this.handleReset}
                 className="reset-button"
+                icon={<LoopIcon />}
               />
             </div>
             <div className="separator" />

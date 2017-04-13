@@ -35,10 +35,11 @@ const getDashboardArray = props => {
   const b = props.borrowers;
 
   const incomeRatio = getIncomeRatio(r, b);
+  const borrowRatio = getBorrowRatio(r, b);
   const loan = getLoanValue(r);
   const project = getProjectValue(r);
   const propAndWork = getPropAndWork(r);
-  const borrowRatio = getBorrowRatio(r, b);
+  const monthly = getMonthlyPayment(r, b)[0];
   const expenses = getExpenses(b);
   const bonusIncome = getBonusIncome(b);
   const otherIncome = getOtherIncome(b);
@@ -109,7 +110,7 @@ const getDashboardArray = props => {
       label: 'Charges estimées*',
       value: (
         <span>
-          CHF {toMoney(getMonthlyPayment(r, b))} <small>/mois</small>
+          CHF {toMoney(monthly)} <small>/mois</small>
         </span>
       ),
     },
@@ -148,7 +149,7 @@ const getDashboardArray = props => {
     },
     {
       label: 'Biens Immobiliers',
-      value: `CHF ${toMoney(realEstateDebt)}`,
+      value: `CHF ${toMoney(realEstateValue)}`,
       hide: !realEstateFortune,
       spacingTop: true,
     },
@@ -174,11 +175,11 @@ const getDashboardArray = props => {
       label: 'Revenus',
     },
     {
-      label: 'Salaire annuel',
+      label: 'Salaire',
       value: `CHF ${toMoney(getBorrowerSalary(b))}`,
     },
     {
-      label: 'Bonus annuel considéré',
+      label: 'Bonus considéré',
       value: `CHF ${toMoney(bonusIncome)}`,
       hide: !bonusIncome,
     },
@@ -394,12 +395,12 @@ const getStart2Array = props => {
       hide: !(p.salary || p.bonus || p.otherIncome || p.expenses),
     },
     {
-      label: 'Salaire annuel',
+      label: 'Salaire',
       value: `CHF ${toMoney(Math.round(p.salary))}`,
       hide: !p.salary,
     },
     {
-      label: 'Bonus annuel considéré',
+      label: 'Bonus considéré',
       value: `CHF ${toMoney(Math.round(p.bonus))}`,
       hide: !p.bonus,
     },
@@ -435,6 +436,103 @@ const getStart2Array = props => {
   ];
 };
 
+const getBorrowerArray = props => {
+  const b = [props.borrower];
+
+  const expenses = getExpenses(b);
+  const bonusIncome = getBonusIncome(b);
+  const otherIncome = getOtherIncome(b);
+  const realEstateFortune = getRealEstateFortune(b);
+  const realEstateValue = getRealEstateValue(b);
+  const realEstateDebt = getRealEstateDebt(b);
+  const fortune = getFortune(b);
+  const insuranceFortune = getInsuranceFortune(b);
+  const totalFortune = getTotalFortune(b);
+
+  return [
+    {
+      title: true,
+      label: 'Fortune',
+      hide: !(realEstateFortune || insuranceFortune),
+    },
+    {
+      label: 'Fortune Bancaire',
+      value: `CHF ${toMoney(fortune)}`,
+    },
+
+    {
+      label: 'Fortune de Prévoyance',
+      value: `CHF ${toMoney(insuranceFortune)}`,
+      hide: !insuranceFortune,
+    },
+    {
+      label: 'Fonds Propres Dispo.',
+      value: (
+        <span className="sum">
+          CHF {toMoney(totalFortune)}
+        </span>
+      ),
+      hide: !realEstateFortune,
+      spacingTop: true,
+    },
+    {
+      label: 'Biens Immobiliers',
+      value: `CHF ${toMoney(realEstateValue)}`,
+      hide: !realEstateFortune,
+      spacingTop: true,
+    },
+    {
+      label: 'Emprunts Actuels',
+      value: `- CHF ${toMoney(realEstateDebt)}`,
+      hide: !realEstateFortune,
+    },
+    {
+      label: 'Fortune Nette',
+      value: (
+        <span className="sum">
+          CHF
+          {' '}
+          {toMoney(totalFortune + realEstateFortune)}
+        </span>
+      ),
+      spacingTop: true,
+      hide: !realEstateFortune,
+    },
+    {
+      title: true,
+      label: 'Revenus',
+    },
+    {
+      label: 'Salaire',
+      value: `CHF ${toMoney(getBorrowerSalary(b))}`,
+    },
+    {
+      label: 'Bonus considéré',
+      value: `CHF ${toMoney(bonusIncome)}`,
+      hide: !bonusIncome,
+    },
+    {
+      label: 'Autres Revenus',
+      value: `CHF ${toMoney(otherIncome)}`,
+      hide: !otherIncome,
+    },
+    {
+      label: 'Charges',
+      value: `- CHF ${toMoney(expenses)}`,
+      hide: !expenses,
+    },
+    {
+      label: 'Revenus considérés',
+      value: (
+        <span className="sum">
+          CHF {toMoney(getBorrowerIncome(b))}
+        </span>
+      ),
+      spacingTop: true,
+    },
+  ];
+};
+
 const arraySwitch = props => {
   switch (props.arrayName) {
     case 'start1':
@@ -443,6 +541,8 @@ const arraySwitch = props => {
       return getStart2Array(props);
     case 'dashboard':
       return getDashboardArray(props);
+    case 'borrower':
+      return getBorrowerArray(props);
     default:
       throw new Meteor.Error('Not a valid recap array');
   }

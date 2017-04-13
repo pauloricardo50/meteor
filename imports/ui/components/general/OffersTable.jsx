@@ -10,7 +10,7 @@ const OffersTable = props => {
       o => props.showSpecial ? o.conditionsOffer : o.standardOffer,
     ),
   ];
-  offers.sort((a, b) => a.interestLibor - b.interestLibor);
+  offers.sort((a, b) => a.interest10 - b.interest10);
   return (
     <table className="minimal-table">
       <colgroup>

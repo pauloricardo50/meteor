@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import { Step, Stepper, StepButton, StepContent } from 'material-ui/Stepper';
 
 const StepperVertical = props => (
-  <div className="vertical">
+  <div className="vertical mask1">
     <Stepper
       activeStep={props.activeStep}
       orientation={'vertical'}

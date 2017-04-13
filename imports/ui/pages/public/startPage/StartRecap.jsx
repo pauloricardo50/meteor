@@ -4,6 +4,7 @@ import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
 
 import Recap from '/imports/ui/components/general/Recap.jsx';
+import Tooltip from '/imports/ui/components/general/Tooltip.jsx';
 
 const isReady = ({ income, fortune, property }) =>
   property && income && fortune;
@@ -41,7 +42,7 @@ const getArray = ({ income, fortune, property, borrow, ratio }) => {
       value: `CHF ${toMoney(Math.round(property / 1000) * 1000)}`,
     },
     {
-      label: 'Frais de notaire',
+      label: <Tooltip id="notaryFees">Frais de notaire</Tooltip>,
       value: `CHF ${toMoney(Math.round(property * constants.notaryFees / 1000) * 1000)}`,
       spacing: true,
     },
@@ -90,10 +91,10 @@ const getArray = ({ income, fortune, property, borrow, ratio }) => {
     },
     {
       title: true,
-      label: 'Calculs FINMA',
+      label: <span>Calculs <Tooltip id="finma">FINMA</Tooltip></span>,
     },
     {
-      label: "Emprunt/Prix d'achat",
+      label: <Tooltip id="borrowRatio">Emprunt/Prix d'achat</Tooltip>,
       value: (
         <span>
           {Math.round(borrow * 1000) / 10}%&nbsp;
@@ -110,7 +111,7 @@ const getArray = ({ income, fortune, property, borrow, ratio }) => {
       ),
     },
     {
-      label: 'Charges/Revenus',
+      label: <Tooltip id="incomeRatio">Charges/Revenus</Tooltip>,
       value: (
         <span>
           {Math.round(ratio * 1000) / 10}%&nbsp;

@@ -31,13 +31,13 @@ const DashboardItem = props => {
           </div>}
       </div>
 
-      <OverviewItems {...props} />
+      {/* <OverviewItems {...props} /> */}
 
       <div className="stepper">
         <RequestStepper {...props} />
       </div>
 
-      <hr style={{ width: '50%', margin: '80px auto' }} />
+      <hr style={{ width: '50%', margin: '50px auto' }} />
 
       <div className="charts">
         <div className="col-xs-12 col-md-6">

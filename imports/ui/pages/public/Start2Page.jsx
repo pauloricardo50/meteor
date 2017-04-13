@@ -38,15 +38,16 @@ export default class Start2Page extends Component {
     super(props);
 
     const type = props.match.params.type || 'test';
+    const params = queryString.parse(props.location.search);
 
     this.state = {
       showUX: true,
       type,
       purchaseType: 'acquisition',
       knowsProperty: type === 'acquisition',
-      propertyValue: Number(
-        queryString.parse(props.location.search).property,
-      ) || undefined,
+      propertyValue: Number(params.property) || undefined,
+      initialIncome: Number(params.income) || undefined,
+      initialFortune: Number(params.fortune) || undefined,
     };
 
     this.setFormState = this.setFormState.bind(this);

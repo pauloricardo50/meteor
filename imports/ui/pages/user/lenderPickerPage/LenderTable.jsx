@@ -72,7 +72,7 @@ const handleSave = props => {
 const LenderTable = props => {
   const offers = getOffers(props);
   const saved = props.loanRequest.logic.lender === props.formState.chosenLender;
-  console.log(saved);
+
   return (
     <article>
       <h2 className="text-c">Les meilleurs prêteurs</h2>
@@ -82,7 +82,7 @@ const LenderTable = props => {
         </p>
       </div>
 
-      {props.loanRequest.logic.lender &&
+      {props.formState.chosenLender &&
         <div className="text-center" style={{ margin: '40px 0' }}>
           <RaisedButton
             label={saved ? 'Sauvegardé' : 'Sauvegarder'}

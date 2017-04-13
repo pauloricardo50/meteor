@@ -44,7 +44,7 @@ export default class ProjectPieChart extends Component {
         type: 'pie',
       },
       title: {
-        text: 'Votre Projet',
+        text: 'Mon Projet',
       },
       subtitle: {
         text: `CHF ${toMoney(total)}`,
@@ -81,7 +81,7 @@ export default class ProjectPieChart extends Component {
       series: [
         {
           type: 'pie',
-          name: 'Votre Projet',
+          name: 'Mon Projet',
           data: [
             {
               name: 'Emprunt',

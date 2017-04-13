@@ -17,7 +17,7 @@ const getSteps = (loanRequest, borrowers) => {
           isDone: () => true,
         },
         {
-          title: 'Dites-nous en un peu plus sur vous',
+          title: 'Dites en plus sur vous',
           link: `/app/borrowers/${borrowers[0]._id}?tab=personal`,
           percent: () => personalInfoPercent(borrowers),
           isDone() {
@@ -34,7 +34,7 @@ const getSteps = (loanRequest, borrowers) => {
             ),
         },
         {
-          title: 'Décrivez-nous votre propriété',
+          title: 'Décrivez votre propriété',
           link: `/app/requests/${loanRequest._id}/property`,
           percent: () => propertyPercent(loanRequest, borrowers),
           isDone() {
