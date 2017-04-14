@@ -2,17 +2,26 @@ import React, { PropTypes } from 'react';
 
 import Toggle from 'material-ui/Toggle';
 
+const styles = {
+  div: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'center',
+    margin: '20px 0',
+  },
+  span: {
+    cursor: 'pointer',
+  },
+};
+
 const OfferToggle = props => {
   return (
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'center',
-        margin: '20px 0',
-      }}
-    >
-      <span className={!props.value && 'active'}>
+    <div style={styles.div}>
+      <span
+        className={!props.value && 'active'}
+        onTouchTap={() => props.handleToggle(null, false)}
+        style={styles.span}
+      >
         Offres standard
       </span>
       <Toggle
@@ -20,13 +29,20 @@ const OfferToggle = props => {
         style={{ margin: '0 16px', width: 'unset' }}
         onToggle={props.handleToggle}
       />
-      <span className={props.value && 'active'}>
+      <span
+        className={props.value && 'active'}
+        onTouchTap={() => props.handleToggle(null, true)}
+        style={styles.span}
+      >
         Offres avec contrepartie
       </span>
     </div>
   );
 };
 
-OfferToggle.propTypes = {};
+OfferToggle.propTypes = {
+  value: PropTypes.bool.isRequired,
+  handleToggle: PropTypes.func.isRequired,
+};
 
 export default OfferToggle;

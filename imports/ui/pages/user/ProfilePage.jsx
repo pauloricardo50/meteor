@@ -18,7 +18,7 @@ const styles = {
   },
   mobileLogoutButton: {
     position: 'absolute',
-    top: 40,
+    top: 20,
     right: 20,
   },
 };
