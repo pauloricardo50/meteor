@@ -36,16 +36,8 @@ export default class ArrayInput extends React.Component {
       const object = {};
       object[`${this.props.id}`] = 1;
 
-      console.log(object);
-      console.log(this.props.popFunc);
-      console.log(this.props.documentId);
-
-      cleanMethod(
-        this.props.popFunc,
-        object,
-        this.props.documentId,
-        () => this.setState({ count: this.state.count - 1 }),
-      );
+      cleanMethod(this.props.popFunc, object, this.props.documentId, () =>
+        this.setState({ count: this.state.count - 1 }));
     }
   }
 
@@ -92,13 +84,17 @@ export default class ArrayInput extends React.Component {
         {this.getArray()}
 
         <div className="text-center">
-          <RaisedButton
-            label="-"
-            onTouchTap={this.removeValue}
-            style={styles.button}
-            disabled={this.state.count <= 0}
-          />
-          <RaisedButton label="+" onTouchTap={this.addValue} primary />
+          {this.state.count <= 0 &&
+            <RaisedButton label="Ajouter" onTouchTap={this.addValue} />}
+          {this.state.count > 0 &&
+            <RaisedButton
+              label="-"
+              onTouchTap={this.removeValue}
+              style={styles.button}
+              disabled={this.state.count <= 0}
+            />}
+          {this.state.count > 0 &&
+            <RaisedButton label="+" onTouchTap={this.addValue} primary />}
         </div>
       </div>
     );

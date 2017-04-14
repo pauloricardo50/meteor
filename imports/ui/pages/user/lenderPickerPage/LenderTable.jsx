@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 
 import RaisedButton from 'material-ui/RaisedButton';
@@ -69,95 +69,124 @@ const handleSave = props => {
     Meteor.setTimeout(() => props.history.push('/app'), 300));
 };
 
-const LenderTable = props => {
-  const offers = getOffers(props);
-  const saved = props.loanRequest.logic.lender === props.formState.chosenLender;
+export default class LenderTable extends Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <article>
-      <h2 className="text-c">Les meilleurs prêteurs</h2>
-      <div className="description">
-        <p>
-          Voici les offres que vous avez reçues, vous pouvez modifier les valeurs en haut pour changer les résultats.
-        </p>
-      </div>
+    this.state = {
+      showFullTable: false,
+    };
 
-      {props.formState.chosenLender &&
-        <div className="text-center" style={{ margin: '40px 0' }}>
+    this.handleToggleTable = this.handleToggleTable.bind(this);
+  }
+
+  handleToggleTable() {
+    this.setState(prevState => ({
+      showFullTable: !prevState.showFullTable,
+    }));
+  }
+
+  render() {
+    const offers = this.state.showFullTable
+      ? getOffers(this.props)
+      : getOffers(this.props).slice(0, 5);
+    const saved = this.props.loanRequest.logic.lender ===
+      this.props.formState.chosenLender;
+
+    return (
+      <article>
+        <h2 className="text-c">Les meilleurs prêteurs</h2>
+        <div className="description">
+          <p>
+            Voici les offres que vous avez reçues, vous pouvez modifier les valeurs en haut pour changer les résultats.
+          </p>
+        </div>
+
+        {this.props.formState.chosenLender &&
+          <div className="text-center" style={{ margin: '40px 0' }}>
+            <RaisedButton
+              label={saved ? 'Sauvegardé' : 'Sauvegarder'}
+              keyboardFocused={!saved}
+              primary={!saved}
+              onTouchTap={() => handleSave(this.props)}
+              style={{ height: 'unset' }}
+              overlayStyle={{ padding: 20 }}
+              icon={saved && <CheckIcon />}
+            />
+          </div>}
+
+        <OfferToggle
+          value={!this.props.formState.standard}
+          handleToggle={(e, c) => this.props.setFormState('standard', !c)}
+        />
+
+        <table className="minimal-table">
+          <colgroup>
+            <col span="1" style={{ width: '8%' }} />
+            <col span="1" style={{ width: '15%' }} />
+            <col span="1" style={{ width: '25%' }} />
+            <col span="1" style={{ width: '25%' }} />
+            {!this.props.formState.standard &&
+              <col span="1" style={{ width: '20%' }} />}
+          </colgroup>
+          <thead>
+            <tr>
+              <th className="l" />
+              <th className="r">Montant prêté</th>
+              <th className="r">Coût mensuel</th>
+              <th className="l">Conditions</th>
+              {!this.props.formState.standard &&
+                <th className="c">Contrepartie</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {offers &&
+              offers.map(
+                (offer, index) =>
+                  offer &&
+                  <tr
+                    key={index}
+                    onTouchTap={() => handleChoose(offer.id, this.props)}
+                    className={
+                      offer.id === this.props.formState.chosenLender && 'chosen'
+                    }
+                  >
+                    <td className="l">
+                      {index + 1}
+                      {' '}
+                      {offer.id === this.props.formState.chosenLender &&
+                        <span className="fa fa-check" />}
+                    </td>
+                    <td className="r">
+                      CHF {toMoney(Math.round(offer.maxAmount))}
+                    </td>
+                    <td className="r">
+                      <h3 className="fixed-size" style={{ margin: 0 }}>
+                        CHF {toMoney(offer.monthly)} <small>/mois</small>
+                      </h3>
+                    </td>
+                    <td className="l">
+                      {offer.conditions || ''}
+                    </td>
+                    {!this.props.formState.standard &&
+                      <td className="c">
+                        <RaisedButton label="Afficher" disabled />
+                      </td>}
+                  </tr>,
+              )}
+          </tbody>
+        </table>
+
+        <div className="text-center" style={{ marginBottom: 20 }}>
           <RaisedButton
-            label={saved ? 'Sauvegardé' : 'Sauvegarder'}
-            keyboardFocused={!saved}
-            primary={!saved}
-            onTouchTap={() => handleSave(props)}
-            style={{ height: 'unset' }}
-            overlayStyle={{ padding: 20 }}
-            icon={saved && <CheckIcon />}
+            label={this.state.showFullTable ? 'Masquer' : 'Afficher tout'}
+            onTouchTap={this.handleToggleTable}
           />
-        </div>}
-
-      <OfferToggle
-        value={!props.formState.standard}
-        handleToggle={(e, c) => props.setFormState('standard', !c)}
-      />
-
-      <table className="minimal-table">
-        <colgroup>
-          <col span="1" style={{ width: '8%' }} />
-          <col span="1" style={{ width: '15%' }} />
-          <col span="1" style={{ width: '25%' }} />
-          <col span="1" style={{ width: '25%' }} />
-          {!props.formState.standard &&
-            <col span="1" style={{ width: '20%' }} />}
-        </colgroup>
-        <thead>
-          <tr>
-            <th className="l" />
-            <th className="r">Montant prêté</th>
-            <th className="r">Coût mensuel</th>
-            <th className="l">Conditions</th>
-            {!props.formState.standard && <th className="c">Contrepartie</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {offers &&
-            offers.map(
-              (offer, index) =>
-                offer &&
-                <tr
-                  key={index}
-                  onTouchTap={() => handleChoose(offer.id, props)}
-                  className={
-                    offer.id === props.formState.chosenLender && 'chosen'
-                  }
-                >
-                  <td className="l">
-                    {index + 1}
-                    {' '}
-                    {offer.id === props.formState.chosenLender &&
-                      <span className="fa fa-check" />}
-                  </td>
-                  <td className="r">
-                    CHF {toMoney(Math.round(offer.maxAmount))}
-                  </td>
-                  <td className="r">
-                    <h3 className="fixed-size" style={{ margin: 0 }}>
-                      CHF {toMoney(offer.monthly)} <small>/mois</small>
-                    </h3>
-                  </td>
-                  <td className="l">
-                    {offer.conditions || ''}
-                  </td>
-                  {!props.formState.standard &&
-                    <td className="c">
-                      <RaisedButton label="Afficher" disabled />
-                    </td>}
-                </tr>,
-            )}
-        </tbody>
-      </table>
-    </article>
-  );
-};
+        </div>
+      </article>
+    );
+  }
+}
 
 LenderTable.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -165,5 +194,3 @@ LenderTable.propTypes = {
   formState: PropTypes.objectOf(PropTypes.any).isRequired,
   setFormState: PropTypes.func.isRequired,
 };
-
-export default LenderTable;

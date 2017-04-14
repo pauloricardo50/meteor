@@ -6,6 +6,7 @@ import OfferToggle from '/imports/ui/components/general/OfferToggle.jsx';
 
 import { Link } from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
+import CountUp from 'react-countup';
 
 const styles = {
   section: {
@@ -31,6 +32,11 @@ const styles = {
   },
   continueButton: {
     float: 'right',
+  },
+  countUp: {
+    display: 'inline-block',
+    width: '100%',
+    marginTop: 40,
   },
 };
 
@@ -103,6 +109,20 @@ export default class Results extends Component {
     return (
       <section className="mask1" style={styles.section}>
         <h1>Résultats des enchères</h1>
+
+        <h1 className="text-center display2" style={styles.countUp}>
+          <CountUp
+            className="custom-count"
+            start={0}
+            end={this.props.offers.length}
+            duration={3.5}
+            useEasing
+            separator=" "
+            decimal=","
+            prefix=""
+            suffix=" Offres reçues"
+          />
+        </h1>
 
         <div className="description">
           <p>

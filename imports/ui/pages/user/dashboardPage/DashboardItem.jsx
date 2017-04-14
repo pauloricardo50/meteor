@@ -56,6 +56,7 @@ const DashboardItem = props => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          margin: '0 20px',
         }}
       >
         <Recap {...props} arrayName="dashboard" />

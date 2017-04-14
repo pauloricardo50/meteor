@@ -287,8 +287,12 @@ const getAcquisitionArray = (state, props) => [
             label: 'Revenus de fortune immobilière',
           },
           {
-            id: 'other',
+            id: 'investmentIncome',
             label: 'Revenus de vos titres',
+          },
+          {
+            id: 'other',
+            label: 'Autre activité',
           },
         ],
       },

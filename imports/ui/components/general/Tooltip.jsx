@@ -8,6 +8,7 @@ import tooltips from '/imports/js/arrays/tooltips';
 const styles = {
   span: {
     borderBottom: 'dashed 1px #aaaaaa',
+    cursor: 'pointer',
   },
   tooltip: {
     textAlign: 'center',
@@ -15,8 +16,8 @@ const styles = {
   text: {
     textAlign: 'center',
     display: 'block',
-    width: 'min-content',
-    // maxWidth: 120,
+    // width: 'min-content',
+    maxWidth: 120,
   },
 };
 
@@ -55,7 +56,7 @@ Tooltip.propTypes = {
 
 Tooltip.defaultProps = {
   placement: 'bottom',
-  trigger: ['click', 'hover', 'focus'],
+  trigger: ['click'], // Can be 'click', 'hover' and/or 'focus'
 };
 
 export default Tooltip;

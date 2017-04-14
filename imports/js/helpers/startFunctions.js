@@ -39,6 +39,7 @@ export const changeFortune = (state, o, fortune) => {
     o.income.minValue = fortune / (0.2 + 0.05) * constants.propertyToIncome();
   } else if (state.property.auto) {
     o.property.minValue = constants.maxProperty(state.income.value, fortune);
+  } else if (state.income.auto) {
   }
 
   o = setDefaultMinValues(state, o);
@@ -52,6 +53,7 @@ export const changeIncome = (state, o, income) => {
     o.fortune.minValue = o.property.minValue * (0.2 + 0.05);
   } else if (state.property.auto) {
     o.property.minValue = constants.maxProperty(income, state.fortune.value);
+  } else if (state.fortune.auto) {
   }
 
   o = setDefaultMinValues(state, o);
@@ -266,24 +268,16 @@ export const saveStartForm = (f, history) => {
     if (id2) {
       loanRequest.borrowers.push(id2);
     }
-    cleanMethod(
-      'insertRequest',
-      loanRequest,
-      undefined,
-      (err, requestId) => history.push(`/app?newrequest=${requestId}`),
-    );
+    cleanMethod('insertRequest', loanRequest, undefined, (err, requestId) =>
+      history.push(`/app?newrequest=${requestId}`));
   };
 
   // Insert each document
   cleanMethod('insertBorrower', borrowerOne, undefined, (err1, result1) => {
     if (multiple) {
       borrowerTwo.sameAddress = result1;
-      cleanMethod(
-        'insertBorrower',
-        borrowerTwo,
-        undefined,
-        (err2, result2) => insertRequest(result1, result2),
-      );
+      cleanMethod('insertBorrower', borrowerTwo, undefined, (err2, result2) =>
+        insertRequest(result1, result2));
     } else {
       insertRequest(result1);
     }

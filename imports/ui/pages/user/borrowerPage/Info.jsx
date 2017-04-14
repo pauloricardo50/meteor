@@ -9,14 +9,17 @@ import { personalInfoPercent } from '/imports/js/arrays/steps';
 const BorrowerInfoPage = props => {
   const borrowerId = props.match.params.borrowerId;
   const borrower = props.borrowers.find(b => b._id === borrowerId);
+  const percent = personalInfoPercent([borrower]);
   return (
     <section className="animated fadeIn">
       <hr />
       <h2 className="text-center">
         Mes Informations Personelles
         <br />
-        <small>
-          Progrès: {Math.round(personalInfoPercent([borrower]) * 1000) / 10}%
+        <small className={percent >= 1 && 'success'}>
+          Progrès: {Math.round(percent * 1000) / 10}%
+          {' '}
+          {percent >= 1 && <span className="fa fa-check" />}
         </small>
       </h2>
       <div className="description">

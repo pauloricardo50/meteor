@@ -101,6 +101,29 @@ const getDashboardArray = props => {
     {
       label: 'Fonds Propres',
       value: `CHF ${toMoney(getTotalUsed(r))}`,
+      hide: r.general.insuranceFortuneUsed,
+    },
+    {
+      label: 'Fonds Propres - Épargne',
+      value: `CHF ${toMoney(r.general.fortuneUsed)}`,
+      hide: !r.general.insuranceFortuneUsed,
+    },
+    {
+      label: 'Fonds Propres - LPP',
+      value: `CHF ${toMoney(r.general.insuranceFortuneUsed)}`,
+      hide: !r.general.insuranceFortuneUsed,
+    },
+    {
+      label: 'Fonds Propres - Total',
+      value: (
+        <span className=" sum">
+          CHF
+          {' '}
+          {toMoney(getTotalUsed(r))}
+        </span>
+      ),
+      spacingTop: true,
+      hide: !r.general.insuranceFortuneUsed,
     },
     {
       label: 'Emprunt',
@@ -271,8 +294,30 @@ const getStart2Array = props => {
     },
     {
       label: 'Fonds Propres',
-      value: `CHF ${toMoney(Math.round(p.fortuneUsed + p.insuranceFortuneUsed))}`,
-      hide: !p.fortuneUsed,
+      value: `CHF ${toMoney(Math.round(p.fortuneUsed))}`,
+      hide: !p.fortuneUsed || p.insuranceFortuneUsed,
+    },
+    {
+      label: 'Fonds Propres - Épargne',
+      value: `CHF ${toMoney(p.fortuneUsed)}`,
+      hide: !p.fortuneUsed || !p.insuranceFortuneUsed,
+    },
+    {
+      label: 'Fonds Propres - LPP',
+      value: `CHF ${toMoney(p.insuranceFortuneUsed)}`,
+      hide: !p.fortuneUsed || !p.insuranceFortuneUsed,
+    },
+    {
+      label: 'Fonds Propres - Total',
+      value: (
+        <span className=" sum">
+          CHF
+          {' '}
+          {toMoney(Math.round(p.fortuneUsed + p.insuranceFortuneUsed))}
+        </span>
+      ),
+      spacingTop: true,
+      hide: !p.fortuneUsed || !p.insuranceFortuneUsed,
     },
     {
       label: 'Emprunt',

@@ -63,6 +63,7 @@ const BorrowerFinancePage = props => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          margin: '0 20px',
         }}
       >
         <Recap arrayName="borrower" borrower={borrower} />
