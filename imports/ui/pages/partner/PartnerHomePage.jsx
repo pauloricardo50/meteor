@@ -54,8 +54,6 @@ export default class PartnerHomePage extends Component {
     this.state = {
       currentTime: undefined,
     };
-
-    this.getCurrentAuctions = this.getCurrentAuctions.bind(this);
   }
 
   componentDidMount() {
@@ -71,7 +69,7 @@ export default class PartnerHomePage extends Component {
     Meteor.clearInterval(time);
   }
 
-  getCurrentAuctions() {
+  getCurrentAuctions = () => {
     const auctions = [];
     this.props.loanRequests.forEach((request, index) => {
       // TODO replace this if with better logic, maybe server side "auctionHasEnded"
@@ -91,7 +89,7 @@ export default class PartnerHomePage extends Component {
     });
 
     return auctions;
-  }
+  };
 
   getPartnerLogo() {
     return '/partners/UBS_logo.png';

@@ -67,16 +67,13 @@ export default class PartnerOfferForm extends Component {
       interest10_1: '',
       interest15_1: '',
     };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(event, newValue, name) {
+  handleChange = (event, newValue, name) => {
     this.setState({ [name]: newValue });
-  }
+  };
 
-  handleSubmit(event) {
+  handleSubmit = event => {
     event.preventDefault();
 
     // Prevent enter key from submitting form
@@ -113,7 +110,7 @@ export default class PartnerOfferForm extends Component {
         this.props.history.push('/partner');
       }
     });
-  }
+  };
 
   render() {
     return (

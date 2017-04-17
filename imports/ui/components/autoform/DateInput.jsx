@@ -40,30 +40,6 @@ export default class DateInput extends Component {
     }
 
     this.setDateFormat();
-
-    this.handleChange = this.handleChange.bind(this);
-    this.saveValue = this.saveValue.bind(this);
-  }
-
-  handleChange(event, date) {
-    this.setState(
-      {
-        value: date,
-      },
-      this.saveValue,
-    );
-  }
-
-  saveValue() {
-    // Remove time from date
-    // TODO: verify this works in all timezones
-    const dateWithoutTime = moment(this.state.value).format('YYYY-MM-DD');
-
-    // Save data to DB
-    const object = {};
-    object[this.props.id] = dateWithoutTime;
-
-    cleanMethod(this.props.updateFunc, object, this.props.documentId);
   }
 
   setDateFormat() {
@@ -79,6 +55,27 @@ export default class DateInput extends Component {
       require('intl/locale-data/jsonp/fr');
     }
   }
+
+  handleChange = (event, date) => {
+    this.setState(
+      {
+        value: date,
+      },
+      this.saveValue,
+    );
+  };
+
+  saveValue = () => {
+    // Remove time from date
+    // TODO: verify this works in all timezones
+    const dateWithoutTime = moment(this.state.value).format('YYYY-MM-DD');
+
+    // Save data to DB
+    const object = {};
+    object[this.props.id] = dateWithoutTime;
+
+    cleanMethod(this.props.updateFunc, object, this.props.documentId);
+  };
 
   render() {
     return (

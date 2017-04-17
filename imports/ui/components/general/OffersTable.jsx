@@ -14,15 +14,13 @@ export default class OffersTable extends Component {
     this.state = {
       showFullTable: false,
     };
-
-    this.handleToggleTable = this.handleToggleTable.bind(this);
   }
 
-  handleToggleTable() {
+  handleToggleTable = () => {
     this.setState(prevState => ({
       showFullTable: !prevState.showFullTable,
     }));
-  }
+  };
 
   render() {
     let offers = [

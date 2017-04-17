@@ -50,12 +50,15 @@ export default class Start2Page extends Component {
       initialIncome: Number(params.income) || undefined,
       initialFortune: Number(params.fortune) || undefined,
     };
-
-    this.setFormState = this.setFormState.bind(this);
-    this.setActiveLine = this.setActiveLine.bind(this);
   }
 
-  setFormState(id, value, callback, obj) {
+  setActiveLine = id => {
+    if (this.state.activeLine !== id) {
+      this.setState({ activeLine: id });
+    }
+  };
+
+  setFormState = (id, value, callback, obj) => {
     // If a whole object is given, set that object to state
     if (obj) {
       this.setState(obj, () => {
@@ -74,13 +77,7 @@ export default class Start2Page extends Component {
         }
       });
     }
-  }
-
-  setActiveLine(id) {
-    if (this.state.activeLine !== id) {
-      this.setState({ activeLine: id });
-    }
-  }
+  };
 
   render() {
     if (this.state.showUX) {

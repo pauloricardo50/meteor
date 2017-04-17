@@ -57,15 +57,9 @@ const types = {
 };
 
 export default class LoanTranche extends Component {
-  constructor(props) {
-    super(props);
-
-    this.changeType = this.changeType.bind(this);
-  }
-
-  changeType(event, index, value) {
+  changeType = (event, index, value) => {
     this.props.changeTrancheType(value);
-  }
+  };
 
   render() {
     return (

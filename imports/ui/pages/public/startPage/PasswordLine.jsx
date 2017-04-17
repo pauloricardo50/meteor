@@ -33,18 +33,25 @@ export default class PasswordLine extends Component {
       error: '',
       passwordIsValid: true,
     };
-
-    this.handleLogin = this.handleLogin.bind(this);
-    this.handleCreate = this.handleCreate.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSuccess = this.handleSuccess.bind(this);
   }
 
-  handleChange(event) {
+  handleChange = event => {
     this.props.setParentState('password', event.target.value);
-  }
+  };
 
-  handleLogin() {
+  handleCreate = () => {
+    const user = getUserObject(this.props);
+
+    Accounts.createUser(user, (error, result) => {
+      if (error) {
+        this.setState(error.message);
+      } else {
+        this.handleSuccess();
+      }
+    });
+  };
+
+  handleLogin = () => {
     Meteor.loginWithPassword(
       this.props.email,
       this.props.password,
@@ -58,23 +65,11 @@ export default class PasswordLine extends Component {
         }
       },
     );
-  }
+  };
 
-  handleCreate() {
-    const user = getUserObject(this.props);
-
-    Accounts.createUser(user, (error, result) => {
-      if (error) {
-        this.setState(error.message);
-      } else {
-        this.handleSuccess();
-      }
-    });
-  }
-
-  handleSuccess() {
+  handleSuccess = () => {
     saveStartForm(this.props.formState, this.props.history);
-  }
+  };
 
   render() {
     let content = null;

@@ -38,12 +38,6 @@ export default class RequestStepper extends Component {
       activeStep: this.props.loanRequest.logic.step,
       largeWidth: getWidth() >= 992,
     };
-
-    this.handleNext = this.handleNext.bind(this);
-    this.setStep = this.setStep.bind(this);
-    this.renderStep = this.renderStep.bind(this);
-    this.renderStepActions = this.renderStepActions.bind(this);
-    this.resize = this.resize.bind(this);
   }
 
   componentDidMount() {
@@ -58,23 +52,41 @@ export default class RequestStepper extends Component {
     });
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.resize);
-  }
-
-  resize() {
-    this.setState({ largeWidth: getWidth() >= 992 });
-  }
-
   shouldComponentUpdate(nProps, nState) {
     return true;
   }
 
-  setStep(i) {
-    this.setState({ activeStep: i });
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resize);
   }
 
-  renderStep(step) {
+  setStep = i => {
+    this.setState({ activeStep: i });
+  };
+
+  handleNext = step => {
+    const currentStep = this.props.loanRequest.logic.step;
+
+    // Only increase DB step if it is possible
+    if (currentStep === step && currentStep < 3) {
+      cleanMethod(
+        'incrementStep',
+        null,
+        this.props.loanRequest._id,
+        error => !error && this.setState({ activeStep: step + 1 }),
+        true,
+      );
+    } else {
+      // Else simply jump to the required step
+      this.setState({ activeStep: step + 1 });
+    }
+  };
+
+  resize = () => {
+    this.setState({ largeWidth: getWidth() >= 992 });
+  };
+
+  renderStep = step => {
     if (!step) {
       return null;
     }
@@ -123,9 +135,9 @@ export default class RequestStepper extends Component {
           </List>}
       </div>
     );
-  }
+  };
 
-  renderStepActions(step, handleNextChild) {
+  renderStepActions = (step, handleNextChild) => {
     const currentStep = this.props.loanRequest.logic.step;
     const i = step.nb - 1;
 
@@ -156,25 +168,7 @@ export default class RequestStepper extends Component {
         />
       </div>
     );
-  }
-
-  handleNext(step) {
-    const currentStep = this.props.loanRequest.logic.step;
-
-    // Only increase DB step if it is possible
-    if (currentStep === step && currentStep < 3) {
-      cleanMethod(
-        'incrementStep',
-        null,
-        this.props.loanRequest._id,
-        error => !error && this.setState({ activeStep: step + 1 }),
-        true,
-      );
-    } else {
-      // Else simply jump to the required step
-      this.setState({ activeStep: step + 1 });
-    }
-  }
+  };
 
   render() {
     const props = {

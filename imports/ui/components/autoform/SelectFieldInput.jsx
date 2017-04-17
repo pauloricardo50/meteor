@@ -27,9 +27,6 @@ export default class SelectFieldInput extends Component {
       errorText: '',
       saving: false,
     };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.saveValue = this.saveValue.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -38,11 +35,11 @@ export default class SelectFieldInput extends Component {
       this.state !== nextState;
   }
 
-  handleChange(event, index, value) {
+  handleChange = (event, index, value) => {
     this.setState({ value }, () => this.saveValue());
-  }
+  };
 
-  saveValue() {
+  saveValue = () => {
     const object = {};
 
     object[this.props.id] = this.state.value;
@@ -58,7 +55,7 @@ export default class SelectFieldInput extends Component {
         );
       }
     });
-  }
+  };
 
   render() {
     return (

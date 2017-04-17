@@ -53,12 +53,9 @@ export default class AllRequestsTable extends Component {
       sortedDataList: this._dataList,
       colSortDirs: {},
     };
-
-    this.onSortChange = this.onSortChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
   }
 
-  onSortChange(columnKey, sortDir) {
+  onSortChange = (columnKey, sortDir) => {
     const sortIndexes = this._defaultSortIndexes.slice();
     sortIndexes.sort((indexA, indexB) => {
       const valueA = this._dataList._data[indexA][columnKey];
@@ -83,15 +80,15 @@ export default class AllRequestsTable extends Component {
         [columnKey]: sortDir,
       },
     });
-  }
+  };
 
-  handleClick(e, rowIndex) {
+  handleClick = (e, rowIndex) => {
     const id = this.state.sortedDataList._data[
       this.state.sortedDataList._indexMap[rowIndex]
     ].requestId;
 
     this.props.history.push(`/admin/requests/${id}`);
-  }
+  };
 
   render() {
     var { sortedDataList, colSortDirs } = this.state;
@@ -247,7 +244,7 @@ class SortHeaderCell extends React.Component {
     this.onSortChange = this.onSortChange.bind(this);
   }
 
-  onSortChange(e) {
+  onSortChange = e => {
     e.preventDefault();
 
     if (this.props.onSortChange) {
@@ -258,7 +255,7 @@ class SortHeaderCell extends React.Component {
           : SortTypes.DESC,
       );
     }
-  }
+  };
 
   render() {
     const { sortDir, children } = this.props;

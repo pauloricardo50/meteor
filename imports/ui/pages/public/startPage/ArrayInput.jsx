@@ -21,55 +21,9 @@ export default class ArrayInput extends React.Component {
     this.state = {
       count: 1,
     };
-
-    this.handleAdd = this.handleAdd.bind(this);
-    this.handleRemove = this.handleRemove.bind(this);
-    this.setArrayFormState = this.setArrayFormState.bind(this);
-    this.getOptions = this.getOptions.bind(this);
   }
 
-  handleAdd() {
-    this.setState({ count: this.state.count + 1 }, () => {
-      // Push an empty object to array
-      const arr = (this.props.formState[this.props.id] &&
-        this.props.formState[this.props.id].slice(0)) || [];
-      const object = {};
-      object[this.props.id] = arr.push({});
-
-      this.props.setFormState(this.props.id, arr);
-    });
-  }
-
-  handleRemove() {
-    if (this.state.count > 1) {
-      // Also remove the last values from array
-      const arr = this.props.formState[this.props.id].slice(0);
-      const object = {};
-      object[this.props.id] = arr.pop();
-
-      this.setState(
-        { count: this.state.count - 1 },
-        () => this.props.setFormState(this.props.id, arr),
-      );
-    } else {
-      // If only one entry, and the user hits -, delete all values and set the exist Id to false
-      this.props.setFormState(this.props.id, []);
-      this.props.setFormState(this.props.existId, false);
-    }
-  }
-
-  setArrayFormState(id, value, callback, i) {
-    // Copy current array or initialize it
-    const arr = (this.props.formState[this.props.id] &&
-      this.props.formState[this.props.id].slice(0)) || [{}];
-    // Don't do anything or append new value
-    arr[i] = (arr && arr[i]) || {};
-    arr[i][id] = value;
-
-    this.props.setFormState(this.props.id, arr);
-  }
-
-  getOptions(input, i) {
+  getOptions = (input, i) => {
     if (!this.props.allOptions) {
       const currentValues = this.props.formState[this.props.id] || [];
       const thisVal = currentValues && currentValues[i];
@@ -85,7 +39,48 @@ export default class ArrayInput extends React.Component {
     }
 
     return input.options;
-  }
+  };
+
+  setArrayFormState = (id, value, callback, i) => {
+    // Copy current array or initialize it
+    const arr = (this.props.formState[this.props.id] &&
+      this.props.formState[this.props.id].slice(0)) || [{}];
+    // Don't do anything or append new value
+    arr[i] = (arr && arr[i]) || {};
+    arr[i][id] = value;
+
+    this.props.setFormState(this.props.id, arr);
+  };
+
+  handleAdd = () => {
+    this.setState({ count: this.state.count + 1 }, () => {
+      // Push an empty object to array
+      const arr = (this.props.formState[this.props.id] &&
+        this.props.formState[this.props.id].slice(0)) || [];
+      const object = {};
+      object[this.props.id] = arr.push({});
+
+      this.props.setFormState(this.props.id, arr);
+    });
+  };
+
+  handleRemove = () => {
+    if (this.state.count > 1) {
+      // Also remove the last values from array
+      const arr = this.props.formState[this.props.id].slice(0);
+      const object = {};
+      object[this.props.id] = arr.pop();
+
+      this.setState(
+        { count: this.state.count - 1 },
+        () => this.props.setFormState(this.props.id, arr),
+      );
+    } else {
+      // If only one entry, and the user hits -, delete all values and set the exist Id to false
+      this.props.setFormState(this.props.id, []);
+      this.props.setFormState(this.props.existId, false);
+    }
+  };
 
   render() {
     const inputProps = {

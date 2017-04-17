@@ -16,8 +16,6 @@ export default class Accordion extends Component {
       windowHeight: window.innerHeight,
       windowWidth: window.innerWidth,
     };
-
-    this.handleResize = this.handleResize.bind(this);
   }
 
   componentDidMount() {
@@ -40,12 +38,12 @@ export default class Accordion extends Component {
     window.removeEventListener('resize', this.handleResize);
   }
 
-  handleResize() {
+  handleResize = () => {
     this.setState({
       windowHeight: window.innerHeight,
       windowWidth: window.innerWidth,
     });
-  }
+  };
 
   render() {
     // Deep copy state

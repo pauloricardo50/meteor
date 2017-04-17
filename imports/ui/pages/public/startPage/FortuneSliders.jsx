@@ -31,13 +31,6 @@ const valueInRange = (value, min, max) => {
 };
 
 export default class FortuneSliders extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.handleChangeFortune = this.handleChangeFortune.bind(this);
-    this.handleChangeInsurance = this.handleChangeInsurance.bind(this);
-  }
-
   getFortuneNeeded(insuranceFortuneUsed) {
     // Make sure we're properly calculating the fortune needed, which should
     // include any new insuranceFortuneUsed and the taxes that it adds to the project value
@@ -48,7 +41,7 @@ export default class FortuneSliders extends React.Component {
     return getProject(this.props.formState) - this.props.formState.loanWanted;
   }
 
-  handleChangeFortune(e, fortuneUsed) {
+  handleChangeFortune = (e, fortuneUsed) => {
     const object = {
       insuranceFortuneUsed: valueInRange(
         this.getFortuneNeeded() - fortuneUsed,
@@ -59,9 +52,9 @@ export default class FortuneSliders extends React.Component {
     };
 
     this.props.setFormState(false, false, false, object);
-  }
+  };
 
-  handleChangeInsurance(e, insuranceFortuneUsed) {
+  handleChangeInsurance = (e, insuranceFortuneUsed) => {
     const object = {
       fortuneUsed: valueInRange(
         this.getFortuneNeeded(insuranceFortuneUsed) - insuranceFortuneUsed,
@@ -72,7 +65,7 @@ export default class FortuneSliders extends React.Component {
     };
 
     this.props.setFormState(false, false, false, object);
-  }
+  };
 
   render() {
     const hasToUseLpp = this.props.formState.fortune <

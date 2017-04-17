@@ -34,12 +34,9 @@ export default class RadioInput extends Component {
     } else {
       this.state = { value: this.props.options[0].id };
     }
-
-    this.setValue = this.setValue.bind(this);
-    this.saveValue = this.saveValue.bind(this);
   }
 
-  setValue(event) {
+  setValue = event => {
     // Change radio button group state to appropriate value
     this.setState(
       {
@@ -47,9 +44,9 @@ export default class RadioInput extends Component {
       },
       this.saveValue(event.target.value),
     );
-  }
+  };
 
-  saveValue(value) {
+  saveValue = value => {
     // For radiobuttons, check if I actually want to pass a boolean instead of a String
     // event.target.value is always a String
     let safeValue = value;
@@ -64,7 +61,7 @@ export default class RadioInput extends Component {
     object[this.props.id] = safeValue;
 
     cleanMethod(this.props.updateFunc, object, this.props.documentId);
-  }
+  };
 
   render() {
     return (

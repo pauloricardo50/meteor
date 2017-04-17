@@ -21,9 +21,6 @@ export default class NewPage extends Component {
     this.state = {
       value: '',
     };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -39,11 +36,11 @@ export default class NewPage extends Component {
     }
   }
 
-  handleChange(event) {
+  handleChange = event => {
     this.setState({ value: event.target.value });
-  }
+  };
 
-  handleSubmit(event) {
+  handleSubmit = event => {
     event.preventDefault();
 
     const object = {};
@@ -59,7 +56,7 @@ export default class NewPage extends Component {
         message: `<h4 class="bert">C'est parti pour ${this.state.value}</h4>`,
       },
     );
-  }
+  };
 
   render() {
     return (

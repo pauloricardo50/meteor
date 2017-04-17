@@ -19,15 +19,13 @@ export default class AllUsersTable extends Component {
       ];
       this.rows.push(row);
     });
-
-    this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(e, rowIndex) {
+  handleClick = (e, rowIndex) => {
     const id = this.rows[rowIndex][4];
 
     this.props.history.push(`/admin/users/${id}`);
-  }
+  };
 
   render() {
     return (

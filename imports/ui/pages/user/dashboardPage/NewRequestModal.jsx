@@ -14,12 +14,13 @@ export default class NewRequestModal extends Component {
       open: this.props.open,
       value: '',
     };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit(event) {
+  handleChange = event => {
+    this.setState({ value: event.target.value });
+  };
+
+  handleSubmit = event => {
     event.preventDefault();
 
     const object = {
@@ -39,11 +40,7 @@ export default class NewRequestModal extends Component {
         message: `<h4 class="bert">C'est parti pour ${this.state.value}</h4>`,
       },
     );
-  }
-
-  handleChange(event) {
-    this.setState({ value: event.target.value });
-  }
+  };
 
   render() {
     const button = (

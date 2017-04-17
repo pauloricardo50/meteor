@@ -89,9 +89,6 @@ export default class ExpensesChart extends Component {
         maintenance: props.maintenance,
       };
     }
-
-    this.createChart = this.createChart.bind(this);
-    this.resize = this.resize.bind(this);
   }
 
   componentDidMount() {
@@ -133,7 +130,12 @@ export default class ExpensesChart extends Component {
     }
   }
 
-  createChart() {
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resize);
+    this.chart.destroy();
+  }
+
+  createChart = () => {
     const total = this.state.interests +
       this.state.amortization +
       this.state.maintenance;
@@ -243,14 +245,9 @@ export default class ExpensesChart extends Component {
     if (document.getElementById('expensesChart')) {
       this.chart = new Highcharts.Chart('expensesChart', options);
     }
-  }
+  };
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.resize);
-    this.chart.destroy();
-  }
-
-  resize() {
+  resize = () => {
     // Only recreate charts if the width changes, ignore height changes
     const w = window;
     const d = document;
@@ -276,7 +273,7 @@ export default class ExpensesChart extends Component {
     }
 
     oldWidth = newWidth;
-  }
+  };
 
   render() {
     return <div id="expensesChart" style={styles.container} />;

@@ -25,28 +25,9 @@ export default class ArrayInput extends React.Component {
     this.state = {
       count: this.props.currentValue.length,
     };
-
-    this.removeValue = this.removeValue.bind(this);
-    this.addValue = this.addValue.bind(this);
-    this.getArray = this.getArray.bind(this);
   }
 
-  removeValue() {
-    // Only remove a value if there's more than 1 left
-    if (this.state.count > 0) {
-      const object = {};
-      object[`${this.props.id}`] = 1;
-
-      cleanMethod(this.props.popFunc, object, this.props.documentId, () =>
-        this.setState({ count: this.state.count - 1 }));
-    }
-  }
-
-  addValue() {
-    this.setState({ count: this.state.count + 1 });
-  }
-
-  getArray() {
+  getArray = () => {
     const array = [];
 
     for (var i = 0; i < this.state.count; i++) {
@@ -75,7 +56,22 @@ export default class ArrayInput extends React.Component {
     }
 
     return array;
-  }
+  };
+
+  addValue = () => {
+    this.setState({ count: this.state.count + 1 });
+  };
+
+  removeValue = () => {
+    // Only remove a value if there's more than 1 left
+    if (this.state.count > 0) {
+      const object = {};
+      object[`${this.props.id}`] = 1;
+
+      cleanMethod(this.props.popFunc, object, this.props.documentId, () =>
+        this.setState({ count: this.state.count - 1 }));
+    }
+  };
 
   render() {
     return (

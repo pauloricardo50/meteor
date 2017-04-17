@@ -8,22 +8,22 @@ export default class TodoList extends Component {
     super(props);
   }
 
-  getReviewRequests() {
-    const now = new Date();
-    return this.props.loanRequests.filter(
-      r =>
-        r.logic.auctionStarted &&
-        !r.logic.auctionVerified &&
-        r.logic.auctionEndTime >= now,
-    );
-  }
-
   getAuctionRequests() {
     const now = new Date();
     return this.props.loanRequests.filter(
       r =>
         r.logic.auctionStarted &&
         r.logic.auctionVerified &&
+        r.logic.auctionEndTime >= now,
+    );
+  }
+
+  getReviewRequests() {
+    const now = new Date();
+    return this.props.loanRequests.filter(
+      r =>
+        r.logic.auctionStarted &&
+        !r.logic.auctionVerified &&
         r.logic.auctionEndTime >= now,
     );
   }

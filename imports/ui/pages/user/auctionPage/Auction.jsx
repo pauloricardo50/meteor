@@ -45,6 +45,10 @@ export default class Auction extends Component {
     );
   }
 
+  componentWillUnmount() {
+    Meteor.clearInterval(time);
+  }
+
   setTime(that) {
     const endDate = moment(that.props.loanRequest.logic.auctionEndTime);
     // Get the time difference between the end and current time with moment()
@@ -59,10 +63,6 @@ export default class Auction extends Component {
     that.setState({
       remainingTime: `${hours}${minSec}`,
     });
-  }
-
-  componentWillUnmount() {
-    Meteor.clearInterval(time);
   }
 
   render() {

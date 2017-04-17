@@ -12,21 +12,17 @@ export default class BetaAccess extends React.Component {
       open: false,
       error: '',
     };
-
-    this.handleOpen = this.handleOpen.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleOpen() {
-    this.setState({ open: true });
-  }
-
-  handleClose() {
+  handleClose = () => {
     this.setState({ open: false });
-  }
+  };
 
-  handleSubmit(e) {
+  handleOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleSubmit = e => {
     e.preventDefault();
 
     // If you read this, write to me at florian@e-potek.ch, we're hiring curious people!
@@ -35,7 +31,7 @@ export default class BetaAccess extends React.Component {
     } else {
       this.setState({ error: 'Nope' });
     }
-  }
+  };
 
   render() {
     const actions = [

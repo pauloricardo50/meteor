@@ -111,11 +111,6 @@ export default class Start1Page extends Component {
     };
 
     this.type = props.match.params.type || 'test';
-
-    this.setStateValue = this.setStateValue.bind(this);
-    this.setSliderMax = this.setSliderMax.bind(this);
-    this.getUrl = this.getUrl.bind(this);
-    this.handleReset = this.handleReset.bind(this);
   }
 
   componentDidMount() {
@@ -144,7 +139,51 @@ export default class Start1Page extends Component {
     );
   }
 
-  handleReset() {
+  getMonthly(income, fortune, property) {
+    return Math.max(
+      (property * constants.maintenance +
+        (property - fortune) * constants.loanCost()) /
+        12,
+      0,
+    );
+  }
+
+  getUrl = () => {
+    const queryparams = {
+      property: this.type !== 'test'
+        ? Math.round(this.state.property.value)
+        : 0,
+      income: Math.round(this.state.income.value),
+      fortune: Math.round(this.state.fortune.value),
+    };
+
+    return `/start2/${this.type}?${queryString.stringify(queryparams)}`;
+  };
+
+  setSliderMax = (name, value) => {
+    const object = {};
+    object[name] = value;
+    this.setState(object);
+  };
+
+  setStateValue = (name, value, autoOff = false) => {
+    const object = {};
+    object[name] = {};
+    object[name].value = Math.min(Math.round(toNumber(value)), 1000000000); // Max $1B
+    object[name].auto = false;
+
+    if (this.timeout) {
+      Meteor.clearTimeout(this.timeout);
+    }
+
+    // Set the state of the value that is changed, and immediately recommend other minValues
+    this.setState(
+      prev => _.merge({}, prev, object),
+      () => this.recommendValues(name, autoOff),
+    );
+  };
+
+  handleReset = () => {
     this.setState({
       income: {
         value: 0,
@@ -162,29 +201,19 @@ export default class Start1Page extends Component {
         auto: true,
       },
     });
-  }
+  };
 
-  setSliderMax(name, value) {
-    const object = {};
-    object[name] = value;
-    this.setState(object);
-  }
-
-  setStateValue(name, value, autoOff = false) {
-    const object = {};
-    object[name] = {};
-    object[name].value = Math.min(Math.round(toNumber(value)), 1000000000); // Max $1B
-    object[name].auto = false;
-
-    if (this.timeout) {
-      Meteor.clearTimeout(this.timeout);
-    }
-
-    // Set the state of the value that is changed, and immediately recommend other minValues
-    this.setState(
-      prev => _.merge({}, prev, object),
-      () => this.recommendValues(name, autoOff),
+  isValid() {
+    const s = this.state;
+    const minIncome = s.property.value * constants.propertyToIncome();
+    // Make sure notary fees are paid
+    const borrow = Math.max(
+      (s.property.value * 1.05 - s.fortune.value) / s.property.value,
+      0,
     );
+    const ratio = minIncome / s.income.value / 3;
+
+    return borrow <= 0.8 + 0.001 && ratio <= 1 / 3 + 0.001;
   }
 
   recommendValues(name, autoOff) {
@@ -246,40 +275,6 @@ export default class Start1Page extends Component {
     }
 
     this.setState(prev => _.merge({}, prev, o));
-  }
-
-  isValid() {
-    const s = this.state;
-    const minIncome = s.property.value * constants.propertyToIncome();
-    // Make sure notary fees are paid
-    const borrow = Math.max(
-      (s.property.value * 1.05 - s.fortune.value) / s.property.value,
-      0,
-    );
-    const ratio = minIncome / s.income.value / 3;
-
-    return borrow <= 0.8 + 0.001 && ratio <= 1 / 3 + 0.001;
-  }
-
-  getUrl() {
-    const queryparams = {
-      property: this.type !== 'test'
-        ? Math.round(this.state.property.value)
-        : 0,
-      income: Math.round(this.state.income.value),
-      fortune: Math.round(this.state.fortune.value),
-    };
-
-    return `/start2/${this.type}?${queryString.stringify(queryparams)}`;
-  }
-
-  getMonthly(income, fortune, property) {
-    return Math.max(
-      (property * constants.maintenance +
-        (property - fortune) * constants.loanCost()) /
-        12,
-      0,
-    );
   }
 
   render() {

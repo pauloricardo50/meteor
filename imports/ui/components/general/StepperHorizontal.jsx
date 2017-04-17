@@ -11,8 +11,6 @@ export default class StepperHorizontal extends Component {
     this.state = {
       loading: false,
     };
-
-    this.handleNext = this.handleNext.bind(this);
   }
 
   setStep(i) {
@@ -25,19 +23,19 @@ export default class StepperHorizontal extends Component {
     }
   }
 
-  handleNext(step, callback) {
-    if (!this.state.loading) {
-      this.dummyAsync(() => {
-        this.setState({ loading: false }, () => callback());
-      });
-    }
-  }
-
   dummyAsync(callback) {
     this.setState({ loading: true }, () => {
       this.asyncTimer = setTimeout(callback, 350);
     });
   }
+
+  handleNext = (step, callback) => {
+    if (!this.state.loading) {
+      this.dummyAsync(() => {
+        this.setState({ loading: false }, () => callback());
+      });
+    }
+  };
 
   render() {
     return (

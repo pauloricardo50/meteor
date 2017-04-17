@@ -7,8 +7,6 @@ export default class ConditionalInput extends Component {
     this.state = {
       conditional: false,
     };
-
-    this.onConditionalChange = this.onConditionalChange.bind(this);
   }
 
   // Set the state of the conditional on load
@@ -16,7 +14,7 @@ export default class ConditionalInput extends Component {
     this.setConditional(this.props.children[0].props.currentValue);
   }
 
-  onConditionalChange(event) {
+  onConditionalChange = event => {
     // Make sure boolean values are treated as booleans
     const value = event.target.value;
     let safeValue = value;
@@ -27,7 +25,7 @@ export default class ConditionalInput extends Component {
     }
 
     this.setConditional(safeValue);
-  }
+  };
 
   setConditional(value) {
     // If the event's value matches the one that is correct, change state to true

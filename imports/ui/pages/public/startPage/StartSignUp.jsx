@@ -23,15 +23,13 @@ export default class StartSignUp extends Component {
     super(props);
 
     this.state = {};
-
-    this.setParentState = this.setParentState.bind(this);
   }
 
-  setParentState(key, value) {
+  setParentState = (key, value) => {
     const object = {};
     object[key] = value;
     this.setState(object);
-  }
+  };
 
   render() {
     return (

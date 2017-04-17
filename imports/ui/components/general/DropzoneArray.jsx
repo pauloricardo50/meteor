@@ -19,17 +19,15 @@ export default class DropzoneArray extends Component {
     this.state = {
       active: -1,
     };
-
-    this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(i) {
+  handleClick = i => {
     if (this.state.active === i) {
       this.setState({ active: -1 });
     } else {
       this.setState({ active: i });
     }
-  }
+  };
 
   render() {
     return (

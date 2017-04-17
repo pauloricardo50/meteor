@@ -11,21 +11,6 @@ const styles = {
 };
 
 export default class ButtonInput extends Component {
-  handleClick(event, value) {
-    event.stopPropagation();
-
-    // If this button triggers a field to appear, make sure to delete its value if the user hits no
-    if (value === false && this.props.deleteId) {
-      this.props.setFormState(this.props.deleteId, undefined);
-    }
-
-    this.props.setFormState(
-      this.props.id,
-      value,
-      () => this.props.setActiveLine(''),
-    );
-  }
-
   getText() {
     if (this.props.id === 'error') {
       return '';
@@ -40,6 +25,21 @@ export default class ButtonInput extends Component {
       return currentButton.label || currentButton.id;
     }
     return '...';
+  }
+
+  handleClick(event, value) {
+    event.stopPropagation();
+
+    // If this button triggers a field to appear, make sure to delete its value if the user hits no
+    if (value === false && this.props.deleteId) {
+      this.props.setFormState(this.props.deleteId, undefined);
+    }
+
+    this.props.setFormState(
+      this.props.id,
+      value,
+      () => this.props.setActiveLine(''),
+    );
   }
 
   render() {

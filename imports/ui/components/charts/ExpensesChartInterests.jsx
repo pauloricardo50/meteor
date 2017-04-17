@@ -15,13 +15,11 @@ export default class ExpensesChartInterests extends React.Component {
     this.state = {
       selectValue: 2,
     };
-
-    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(event, index, selectValue) {
+  handleChange = (event, index, selectValue) => {
     this.setState({ selectValue });
-  }
+  };
 
   render() {
     return (

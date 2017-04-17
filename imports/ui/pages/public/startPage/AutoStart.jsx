@@ -73,30 +73,6 @@ export default class AutoStart extends Component {
     }
   }
 
-  verifyConditions(input) {
-    // Get previous input
-    const prevInput = this.renderedArray[this.renderedArray.length - 1] || {};
-
-    if (this.renderedArray.length === 0) {
-      return !input.hasOwnProperty('condition') || input.condition;
-    } else if (prevInput.final) {
-      // Break if the previous input is final
-      return 'break';
-    } else if (prevInput.id === 'error') {
-      // If an error ever appears, start error mode (prevent any further rendering)
-      this.error = true;
-      return 'break';
-    } else if (!prevTrue(prevInput, this.props.formState)) {
-      // Make sure previous input is valid before continuing
-      return 'break';
-    } else if (input.condition === false) {
-      // Skip inputs whose condition is false
-      return false;
-    }
-
-    return true;
-  }
-
   inputSwitch(input, index) {
     // Stop iterating over array when form is currently in 'break' mode
     if (this.breakForm) {
@@ -179,6 +155,30 @@ export default class AutoStart extends Component {
       // create a list of scrolled values, if it has already been scrolled once, do not do it again
       this.scrolled[id] = true;
     }
+  }
+
+  verifyConditions(input) {
+    // Get previous input
+    const prevInput = this.renderedArray[this.renderedArray.length - 1] || {};
+
+    if (this.renderedArray.length === 0) {
+      return !input.hasOwnProperty('condition') || input.condition;
+    } else if (prevInput.final) {
+      // Break if the previous input is final
+      return 'break';
+    } else if (prevInput.id === 'error') {
+      // If an error ever appears, start error mode (prevent any further rendering)
+      this.error = true;
+      return 'break';
+    } else if (!prevTrue(prevInput, this.props.formState)) {
+      // Make sure previous input is valid before continuing
+      return 'break';
+    } else if (input.condition === false) {
+      // Skip inputs whose condition is false
+      return false;
+    }
+
+    return true;
   }
 
   render() {

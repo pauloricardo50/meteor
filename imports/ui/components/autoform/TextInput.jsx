@@ -58,20 +58,22 @@ export default class TextInput extends Component {
     } else {
       this.formatter = v => v;
     }
-
-    // TODO: change saving only when something has successfully saved, not before
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleBlur = this.handleBlur.bind(this);
-    this.handleFocus = this.handleFocus.bind(this);
-    this.saveValue = this.saveValue.bind(this);
   }
 
   componentWillUnmount() {
     Meteor.clearTimeout(this.timeout);
   }
 
-  handleChange(event) {
+  handleBlur = () => {
+    this.setState({
+      showInfo: false,
+    });
+    // If the value has changed, save it
+    // state is initialized as '', but currentValue is initially undefined, so check that too
+    this.saveValue();
+  };
+
+  handleChange = event => {
     // Make sure value is a number if this is a number or money input
     const safeValue = this.props.number || this.props.money
       ? toNumber(event.target.value)
@@ -86,24 +88,15 @@ export default class TextInput extends Component {
         this.saveValue(false);
       },
     );
-  }
+  };
 
-  handleFocus() {
+  handleFocus = () => {
     this.setState({
       showInfo: true,
     });
-  }
+  };
 
-  handleBlur() {
-    this.setState({
-      showInfo: false,
-    });
-    // If the value has changed, save it
-    // state is initialized as '', but currentValue is initially undefined, so check that too
-    this.saveValue();
-  }
-
-  saveValue(showSaving = true) {
+  saveValue = (showSaving = true) => {
     // Save data to DB
     const object = {};
 
@@ -138,7 +131,7 @@ export default class TextInput extends Component {
       },
       constants.cpsLimit,
     );
-  }
+  };
 
   render() {
     return (

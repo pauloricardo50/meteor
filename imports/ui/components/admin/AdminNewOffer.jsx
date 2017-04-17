@@ -18,19 +18,16 @@ export default class AdminNewOffer extends React.Component {
     this.state = {
       open: false,
     };
-
-    this.handleOpen = this.handleOpen.bind(this);
-    this.handleClose = this.handleClose.bind(this);
   }
 
 
-  handleOpen() {
-    this.setState({ open: true });
-  }
-
-  handleClose() {
+  handleClose = () => {
     this.setState({ open: false });
-  }
+  };
+
+  handleOpen = () => {
+    this.setState({ open: true });
+  };
 
   render() {
     const actions = [

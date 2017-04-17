@@ -6,13 +6,7 @@ import MetricsTriple from '/imports/ui/components/general/MetricsTriple.jsx';
 import TodoList from '/imports/ui/components/admin/TodoList.jsx';
 
 export default class AdminHomePage extends Component {
-  constructor(props) {
-    super(props);
-
-    this.getUserMetrics = this.getUserMetrics.bind(this);
-  }
-
-  getUserMetrics() {
+  getUserMetrics = () => {
     const d1 = new Date();
     const d2 = new Date();
     d1.setDate(d1.getDate() - 7);
@@ -30,7 +24,7 @@ export default class AdminHomePage extends Component {
         value: '+' + this.props.users.filter(user => user.createdAt.getTime() >= d2).length,
       },
     ];
-  }
+  };
 
   render() {
     const now = new Date();

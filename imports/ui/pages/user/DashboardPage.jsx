@@ -13,27 +13,24 @@ export default class DashboardPage extends Component {
     this.state = {
       active: 0,
     };
-
-    this.handleClick = this.handleClick.bind(this);
-    this.handleNew = this.handleNew.bind(this);
   }
 
-  handleClick(i) {
+  handleClick = i => {
     if (this.state.active === i) {
       this.setState({ active: -1 });
     } else {
       this.setState({ active: i });
     }
-  }
+  };
 
-  handleNew() {
+  handleNew = () => {
     if (this.props.borrowers.length > 0) {
       // TODO, add a new request page for logged in users
       console.log('En développement');
     } else {
       this.props.history.push('/home');
     }
-  }
+  };
 
   render() {
     const sortedRequests = this.props.loanRequests.sort(

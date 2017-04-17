@@ -13,8 +13,6 @@ export default class Countdown extends React.Component {
     this.state = {
       remainingTime: '',
     };
-
-    this.setRemainingTime = this.setRemainingTime.bind(this);
   }
 
   componentDidMount() {
@@ -29,7 +27,7 @@ export default class Countdown extends React.Component {
     Meteor.clearInterval(this.interval);
   }
 
-  setRemainingTime() {
+  setRemainingTime = () => {
     const endDate = moment(this.props.endTime);
     // Get the time difference between the end and current time with moment()
     const difference = moment.duration(endDate.diff(moment()), 'milliseconds');
@@ -44,7 +42,7 @@ export default class Countdown extends React.Component {
     this.setState({
       remainingTime: `${hours}${minSec}`,
     });
-  }
+  };
 
   render() {
     return (

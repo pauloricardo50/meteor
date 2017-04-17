@@ -26,11 +26,9 @@ export default class EmailLine extends Component {
 
     this.state = {};
     this.timer = null;
-
-    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(event) {
+  handleChange = event => {
     const email = event.target.value;
     Meteor.clearTimeout(this.timer);
     this.props.setParentState('email', email);
@@ -63,7 +61,7 @@ export default class EmailLine extends Component {
     } else {
       this.props.setParentState('showPassword', false);
     }
-  }
+  };
 
   render() {
     return (

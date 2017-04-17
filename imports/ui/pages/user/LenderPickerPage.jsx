@@ -39,29 +39,6 @@ export default class LenderPickerPage extends React.Component {
       loanStrategyValidated: r.logic.loanStrategyPreset &&
         loanStrategySuccess(r.general.loanTranches, getLoanValue(r)),
     };
-
-    this.setFormState = this.setFormState.bind(this);
-  }
-
-  setFormState(id, value, callback, obj) {
-    // If a whole object is given, set that object to state
-    if (obj) {
-      this.setState(obj, () => {
-        if (typeof callback === 'function') {
-          callback();
-        }
-      });
-    } else {
-      // Else, simple set one value to state
-      const object = {};
-      object[id] = value;
-
-      this.setState(object, () => {
-        if (typeof callback === 'function') {
-          callback();
-        }
-      });
-    }
   }
 
   getSteps() {
@@ -96,6 +73,27 @@ export default class LenderPickerPage extends React.Component {
 
     return array;
   }
+
+  setFormState = (id, value, callback, obj) => {
+    // If a whole object is given, set that object to state
+    if (obj) {
+      this.setState(obj, () => {
+        if (typeof callback === 'function') {
+          callback();
+        }
+      });
+    } else {
+      // Else, simple set one value to state
+      const object = {};
+      object[id] = value;
+
+      this.setState(object, () => {
+        if (typeof callback === 'function') {
+          callback();
+        }
+      });
+    }
+  };
 
   render() {
     return (
