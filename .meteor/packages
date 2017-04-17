@@ -22,6 +22,7 @@ meteortoys:allthings            # Most awesome dev tools, shows you Session and
 stolinski:stylus-multi          # CSS PreCompiler for Stylus
 practicalmeteor:mocha
 practicalmeteor:mocha-console-runner
+dispatch:mocha
 
 
 # User Accounts
