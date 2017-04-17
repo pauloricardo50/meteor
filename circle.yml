@@ -6,7 +6,11 @@ dependencies:
   override:
     - curl https://install.meteor.com | /bin/sh
     - npm install
+  cache-directories:
+    - "node_modules"
 test:
+  pre:
+    - npm install -g spacejam
   override:
     - spacejam test --driver-package=practicalmeteor:mocha-console-runner
 checkout:
