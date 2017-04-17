@@ -1,10 +1,19 @@
 machine:
+  timezone: Europe/Zurich
   node:
     version: 0.10.43
 dependencies:
   override:
     - curl https://install.meteor.com | /bin/sh
     - npm install
+test:
+  override:
+    - spacejam test --driver-package=practicalmeteor:mocha-console-runner
 checkout:
   post:
     - git submodule update --init
+deployment:
+  production:
+    branch: master
+    commands:
+      - npm run deploy
