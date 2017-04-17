@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 
+import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
+
 import Start from './auctionPage/Start.jsx';
 import Auction from './auctionPage/Auction.jsx';
 import Results from './auctionPage/Results.jsx';
@@ -11,18 +13,24 @@ export default class AuctionPage extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      currentTime: new Date(),
-    };
+    this.state = {};
   }
 
   componentDidMount() {
-    // TODO: Make sure this works in different time zones, currently it probably doesn't
-    // Except if timezones are properly accounted for -> to test!
+    // Call it once initially
+    Meteor.call('getServerTime', (e, res) => {
+      this.setState({
+        currentTime: res,
+      });
+    });
+
     time = Meteor.setInterval(
       () => {
-        this.setState({
-          currentTime: new Date(),
+        // Call it again every second
+        Meteor.call('getServerTime', (e, res) => {
+          this.setState({
+            currentTime: res,
+          });
         });
       },
       1000,
@@ -34,11 +42,15 @@ export default class AuctionPage extends Component {
   }
 
   getContent() {
+    if (!this.state.currentTime) {
+      return <div style={{ height: 150 }}><LoadingComponent /></div>;
+    }
+
     if (
       this.props.loanRequest.logic.auctionEndTime <=
       this.state.currentTime.setSeconds(this.state.currentTime.getSeconds() + 1)
     ) {
-      // After the auction
+      // After the auction, clear interval
       Meteor.clearInterval(time);
 
       return (

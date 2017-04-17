@@ -286,6 +286,14 @@ export const LogicSchema = new SimpleSchema({
     min: 0,
     max: 5,
   },
+  adminValidated: {
+    type: Boolean,
+    defaultValue: false,
+  },
+  expertiseValid: {
+    type: Boolean,
+    defaultValue: false,
+  },
   auctionStarted: {
     type: Boolean,
     defaultValue: false,

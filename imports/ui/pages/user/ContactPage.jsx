@@ -30,7 +30,7 @@ const ContactPage = () => (
 
     <div className="content" style={styles.content}>
       <div className="form-group">
-        <h4>Par Téléphone <small>Lu-Ve 8h-19h</small></h4>
+        <h4>Par Téléphone <small>Lu-Ve 8:00-19:00</small></h4>
         <a href="tel:+41 78 709 31 31">+41 22 346 73 73</a>
       </div>
 

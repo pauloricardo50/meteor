@@ -177,12 +177,13 @@ export default class LenderTable extends Component {
           </tbody>
         </table>
 
-        <div className="text-center" style={{ marginBottom: 20 }}>
-          <RaisedButton
-            label={this.state.showFullTable ? 'Masquer' : 'Afficher tout'}
-            onTouchTap={this.handleToggleTable}
-          />
-        </div>
+        {offers.length > 5 &&
+          <div className="text-center" style={{ marginBottom: 20 }}>
+            <RaisedButton
+              label={this.state.showFullTable ? 'Masquer' : 'Afficher tout'}
+              onTouchTap={this.handleToggleTable}
+            />
+          </div>}
       </article>
     );
   }

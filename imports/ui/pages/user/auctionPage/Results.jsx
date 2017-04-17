@@ -107,7 +107,7 @@ export default class Results extends Component {
 
   render() {
     return (
-      <section className="mask1" style={styles.section}>
+      <section className="mask1 animated fadeIn" style={styles.section}>
         <h1>Résultats des enchères</h1>
 
         <h1 className="text-center display2" style={styles.countUp}>

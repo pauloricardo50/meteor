@@ -1,10 +1,11 @@
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 
+import { getFileArray } from '/imports/ui/pages/user/borrowerPage/Files.jsx';
 import getPropertyArray from './PropertyFormArray';
 import { getBorrowerInfoArray } from './BorrowerFormArray';
 
-const getSteps = (loanRequest, borrowers) => {
-  const multiple = borrowers && borrowers.length > 1;
+const getSteps = ({ loanRequest, borrowers, serverTime }) => {
   const steps = [
     // Step 1
     {
@@ -42,6 +43,35 @@ const getSteps = (loanRequest, borrowers) => {
           },
         },
         {
+          title: 'Uploadez les documents nécessaires',
+          link: `/app/borrowers/${borrowers[0]._id}?tab=files`,
+          percent: () => filesPercent(borrowers),
+          isDone() {
+            return this.percent() >= 1;
+          },
+        },
+        {
+          title: "Vérification d'e-Potek",
+          link: `/app/requests/${loanRequest._id}/verification`,
+          isDone: () =>
+            loanRequest.logic.adminValidated &&
+            borrowers.reduce((res, b) => res && b.logic.adminValidated, true),
+        },
+        {
+          title: "Faites l'expertise",
+          link: `/app/requests/${loanRequest._id}/expertise`,
+          isDone: () => loanRequest.logic.expertiseValid,
+        },
+      ],
+    },
+
+    // Step 2
+    {
+      nb: 2,
+      title: 'Les enchères',
+      subtitle: loanRequest.logic.step < 1 ? 'Dans 3 jours' : '30 minutes',
+      items: [
+        {
           title: 'Vérifiez la structure de votre projet',
           link: `/app/requests/${loanRequest._id}/structure`,
           isDone: () => loanRequest.logic.hasValidatedStructure,
@@ -51,18 +81,11 @@ const getSteps = (loanRequest, borrowers) => {
           link: `/app/requests/${loanRequest._id}/auction`,
           isDone: () => loanRequest.logic.auctionStarted,
         },
-      ],
-    },
-
-    // Step 2
-    {
-      nb: 2,
-      title: 'Prenez les grandes décisions',
-      subtitle: loanRequest.logic.step < 1 ? 'Dans 3 jours' : '30 minutes',
-      items: [
         {
           title: 'Choisissez votre prêteur',
           link: `/app/requests/${loanRequest._id}/lenderpicker`,
+          disabled: !serverTime ||
+            !loanRequest.logic.auctionEndTime > serverTime, // TODO: make this work
           isDone: () => !!loanRequest.logic.lender,
         },
       ],
@@ -75,8 +98,8 @@ const getSteps = (loanRequest, borrowers) => {
       subtitle: loanRequest.logic.step < 2 ? 'Dans 4 jours' : '45 minutes',
       items: [
         {
-          title: 'Uploadez les documents nécessaires',
-          link: `/app/borrowers/${borrowers[0]._id}?tab=files`,
+          title: 'Dernières démarches',
+          link: `/app/requests/${loanRequest._id}/finalsteps`,
           isDone: () => false,
         },
       ],
@@ -94,14 +117,30 @@ const getSteps = (loanRequest, borrowers) => {
     },
   ];
 
+  // Make sure these indices correspond
+  // Verify all 4 items before item 5 are done
+  steps[0].items[5].disabled = !steps[0].items
+    .slice(0, 5)
+    .reduce((res, i) => res && i.isDone(), true);
+
+  steps[0].items[6].disabled = !steps[0].items[5].isDone();
+
   // return steps.slice(0, loanRequest.logic.step + 1); // If you want to hide steps that aren't available
   return steps;
 };
 
 export default getSteps;
 
+const getPercent = array => {
+  const percent = array.reduce(
+    (tot, val) => val !== undefined ? tot + 1 : tot,
+    0,
+  ) / array.length;
+  return isFinite(percent) ? percent : 0;
+};
+
 export const personalInfoPercent = borrowers => {
-  let a = [];
+  const a = [];
   borrowers.forEach(b => {
     const formArray = getBorrowerInfoArray(borrowers, b._id);
     formArray.forEach(i => {
@@ -119,8 +158,7 @@ export const personalInfoPercent = borrowers => {
 };
 
 export const propertyPercent = (loanRequest, borrowers) => {
-  const p = loanRequest.property;
-  let a = [];
+  const a = [];
   const formArray = getPropertyArray(loanRequest, borrowers);
 
   formArray.forEach(i => {
@@ -136,10 +174,14 @@ export const propertyPercent = (loanRequest, borrowers) => {
   return getPercent(a);
 };
 
-const getPercent = array => {
-  const percent = array.reduce(
-    (tot, val) => val !== undefined ? tot + 1 : tot,
-    0,
-  ) / array.length;
-  return isFinite(percent) ? percent : 0;
+export const filesPercent = borrowers => {
+  const a = [];
+  borrowers.forEach(b => {
+    const fileArray = getFileArray(b);
+
+    // TODO: loop over each file, not just the first one
+    a.push(fileArray[0].currentValue);
+  });
+
+  return getPercent(a);
 };

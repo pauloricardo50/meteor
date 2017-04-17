@@ -321,9 +321,9 @@ const getStart2Array = props => {
     },
     {
       label: 'Emprunt',
-      value: `CHF ${toMoney(Math.round(p.project - (p.fortuneUsed + p.insuranceFortuneUsed)))}`,
-      hide: !p.fortuneUsed,
-      spacing: !p.fortuneUsed,
+      value: `CHF ${toMoney(Math.round(p.loanWanted))}`,
+      hide: !p.loanWanted,
+      spacing: !p.loanWanted,
     },
     {
       label: 'Charges estimées*',
@@ -356,7 +356,7 @@ const getStart2Array = props => {
           {' '}
           <span
             className={
-              p.borrow <= constants.maxLoan(p.usageType)
+              p.borrow <= constants.maxLoan(p.usageType) + 0.001 // add 0.1% to avoid rounding errors
                 ? 'fa fa-check success'
                 : 'fa fa-times error'
             }

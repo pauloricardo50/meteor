@@ -30,8 +30,6 @@ export default class Auction extends Component {
     this.state = {
       remainingTime: '00:00:00',
     };
-
-    this.endDate = this.endDate.bind(this);
   }
 
   componentDidMount() {
@@ -64,10 +62,6 @@ export default class Auction extends Component {
 
   componentWillUnmount() {
     Meteor.clearInterval(time);
-  }
-
-  endDate() {
-    return moment(this.props.loanRequest.logic.auctionStartTime).add(2, 'days');
   }
 
   render() {

@@ -33,6 +33,9 @@ import {
 import BorrowerPage from '/imports/ui/pages/user/BorrowerPage.jsx';
 import ContactPage from '/imports/ui/pages/user/ContactPage.jsx';
 import NewPage from '/imports/ui/pages/user/NewPage.jsx';
+import FinalStepsPage from '/imports/ui/pages/user/FinalStepsPage.jsx';
+import VerificationPage from '/imports/ui/pages/user/VerificationPage.jsx';
+import ExpertisePage from '/imports/ui/pages/user/ExpertisePage.jsx';
 
 // Admin pages
 import AdminHomePage from '/imports/ui/pages/admin/AdminHomePage.jsx';
@@ -94,6 +97,14 @@ const UserRoutes = props => (
           component={PropertyPage}
         />
         <Route
+          path="/app/requests/:requestId/verification"
+          component={VerificationPage}
+        />
+        <Route
+          path="/app/requests/:requestId/expertise"
+          component={ExpertisePage}
+        />
+        <Route
           path="/app/requests/:requestId/auction"
           component={AuctionPage}
         />
@@ -105,7 +116,10 @@ const UserRoutes = props => (
           path="/app/requests/:requestId/lenderpicker"
           component={LenderPickerPage}
         />
-
+        <Route
+          path="/app/requests/:requestId/finalsteps"
+          component={FinalStepsPage}
+        />
         <Route path="/app" render={() => <DashBoardPage {...layoutProps} />} />
       </Switch>
     )}

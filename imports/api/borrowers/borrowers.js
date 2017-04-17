@@ -17,6 +17,23 @@ Borrowers.allow({
   },
 });
 
+const LogicSchema = new SimpleSchema({
+  financeEthics: {
+    type: Boolean,
+    defaultValue: false,
+    optional: true,
+  },
+  hasValidatedFinances: {
+    type: Boolean,
+    defaultValue: false,
+    optional: true,
+  },
+  adminValidated: {
+    type: Boolean,
+    defaultValue: false,
+  },
+});
+
 // Documentation is in the google drive dev/MongoDB Schemas
 export const BorrowerSchema = new SimpleSchema({
   userId: {
@@ -230,18 +247,8 @@ export const BorrowerSchema = new SimpleSchema({
   },
   // business logic and admin
   logic: {
-    type: Object,
+    type: LogicSchema,
     defaultValue: {},
-  },
-  'logic.financeEthics': {
-    type: Boolean,
-    defaultValue: false,
-    optional: true,
-  },
-  'logic.hasValidatedFinances': {
-    type: Boolean,
-    defaultValue: false,
-    optional: true,
   },
   admin: {
     // TODO

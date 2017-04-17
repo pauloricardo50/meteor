@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
 import cleanMethod from '/imports/api/cleanMethods';
 
 import { List, ListItem } from 'material-ui/List';
@@ -50,6 +51,10 @@ export default class RequestStepper extends Component {
     if (this.focused) {
       this.focused.applyFocusState('keyboard-focused');
     }
+
+    Meteor.call('getServerTime', (e, res) => {
+      this.setState({ serverTime: res });
+    });
   }
 
   componentWillUnmount() {
@@ -105,7 +110,13 @@ export default class RequestStepper extends Component {
                 }
                 onTouchTap={() =>
                   item.link && this.props.history.push(item.link)}
-                style={{ fontSize: 18 }}
+                style={{
+                  fontSize: 18,
+                  cursor: item.disabled
+                    ? 'not-allowed'
+                    : item.link && 'pointer',
+                }}
+                disabled={item.disabled}
               />
             ))}
           </List>}
@@ -166,7 +177,7 @@ export default class RequestStepper extends Component {
 
   render() {
     const props = {
-      steps: getSteps(this.props.loanRequest, this.props.borrowers),
+      steps: getSteps({ ...this.props, serverTime: this.state.serverTime }),
       setStep: this.setStep,
       currentStep: this.props.loanRequest.logic.step,
       activeStep: this.state.activeStep,

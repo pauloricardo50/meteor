@@ -12,35 +12,36 @@ import { propertyPercent } from '/imports/js/arrays/steps';
 
 const styles = {
   div: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: 'inline-block',
+    width: '100%',
+    marginBottom: 20,
   },
   topLeftButton: {
-    marginBottom: 20,
-    alignSelf: 'flex-start',
+    float: 'left',
   },
   topRightButton: {
-    marginBottom: 20,
-    alignSelf: 'flex-end',
+    float: 'right',
   },
 };
 
 const PropertyPage = props => {
   const percent = propertyPercent(props.loanRequest, props.borrowers);
   return (
-    <div style={styles.div}>
-      <RaisedButton
-        label="Retour"
-        containerElement={<Link to="/app" />}
-        style={styles.topLeftButton}
-      />
+    <div>
+      <div style={styles.div}>
+        <RaisedButton
+          label="Retour"
+          containerElement={<Link to="/app" />}
+          style={styles.topLeftButton}
+        />
 
-      <RaisedButton
-        label="Ok"
-        containerElement={<Link to="/app" />}
-        style={styles.topRightButton}
-        primary
-      />
+        <RaisedButton
+          label="Ok"
+          containerElement={<Link to="/app" />}
+          style={styles.topRightButton}
+          primary
+        />
+      </div>
 
       <section className="mask1 property-page">
         <h1 className="text-center">

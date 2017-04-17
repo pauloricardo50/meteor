@@ -243,7 +243,10 @@ const getAcquisitionArray = (state, props) => [
     type: 'buttons',
     text1: (
       <span>
-        Avez-vous d'autres revenus <span className="bold">annuels</span>?
+        Avez-vous d'autres sources de revenus
+        {' '}
+        <span className="bold">annuels</span>
+        ?
       </span>
     ),
     question: true,
@@ -393,8 +396,7 @@ const getAcquisitionArray = (state, props) => [
         <span className="active">
           CHF {toMoney(state.initialFortune)}
         </span>
-        {' '}
-        par an, vous pouvez la détailler maintenant.
+        , vous pouvez la détailler maintenant.
       </span>
     ),
     hideResult: true,

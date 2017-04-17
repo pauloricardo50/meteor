@@ -31,7 +31,7 @@ const handleClick = ({ formState, setFormState, currentUser, history }) => {
 const StartResult = props => {
   let loan = 0;
   if (props.fortuneUsed) {
-    loan = props.project - props.fortuneUsed;
+    loan = props.loanWanted;
   } else {
     loan = props.property * constants.maxLoan(props.usageType);
   }

@@ -2,6 +2,32 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router-dom';
 
 import DropzoneArray from '/imports/ui/components/general/DropzoneArray.jsx';
+import { filesPercent } from '/imports/js/arrays/steps';
+
+export const getFileArray = borrower => [
+  {
+    title: '3 Fiches de salaire',
+    folderName: 'buyersContract',
+    currentValue: borrower.files.lastSalaries,
+    id: 'files.lastSalaries',
+  },
+  {
+    title: "Pièce d'identité",
+    folderName: 'identity',
+    currentValue: borrower.files.identity,
+    id: 'files.identity',
+  },
+  {
+    title: "Déclaration d'impôts (dev)",
+    files: 3,
+    done: false,
+  },
+  {
+    title: "Extrait de l'office des poursuites (dev)",
+    files: 1,
+    done: false,
+  },
+];
 
 export default class Files extends Component {
   constructor(props) {
@@ -10,42 +36,23 @@ export default class Files extends Component {
     this.state = {
       active: -1,
     };
-
-    this.getArrray = this.getArray.bind(this);
-  }
-
-  getArray() {
-    return [
-      {
-        title: '3 Fiches de salaire',
-        folderName: 'buyersContract',
-        currentValue: this.props.borrower.files.lastSalaries,
-        id: 'files.lastSalaries',
-      },
-      {
-        title: "Pièce d'identité",
-        folderName: 'identity',
-        currentValue: this.props.borrower.files.identity,
-        id: 'files.identity',
-      },
-      {
-        title: "Déclaration d'impôts (dev)",
-        files: 3,
-        done: false,
-      },
-      {
-        title: "Extrait de l'office des poursuites (dev)",
-        files: 1,
-        done: false,
-      },
-    ];
   }
 
   render() {
+    const percent = filesPercent([this.props.borrower]);
+
     return (
       <section className="animated fadeIn">
         <hr />
-        <h2 className="text-center">Mes Documents</h2>
+        <h2 className="text-center">
+          Mes Documents
+          <br />
+          <small className={percent >= 1 && 'success'}>
+            Progrès: {Math.round(percent * 1000) / 10}%
+            {' '}
+            {percent >= 1 && <span className="fa fa-check" />}
+          </small>
+        </h2>
 
         <div className="description">
           <p>
@@ -62,7 +69,7 @@ export default class Files extends Component {
         </div>
 
         <DropzoneArray
-          array={this.getArray()}
+          array={getFileArray(this.props.borrower)}
           documentId={this.props.borrower._id}
           pushFunc="pushBorrowerValue"
           collection="borrowers"

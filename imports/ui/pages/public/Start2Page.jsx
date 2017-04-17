@@ -121,18 +121,15 @@ export default class Start2Page extends Component {
       expenses: getExpenses(s.expensesArray) || 0,
       fortuneUsed: s.fortuneUsed || 0,
       insuranceFortuneUsed: s.insuranceFortuneUsed || 0,
-      minFortune: fees +
-        lppFees +
-        (1 - constants.maxLoan(s.usageType)) *
-          (property + (s.propertyWork || 0)) || 0,
-      fees: fees || 0,
-      lppFees: s.insuranceFortuneUsed * constants.lppFees || 0,
+      fees,
+      lppFees,
       project: fees + property + (s.propertyWork || 0) + lppFees || 0,
       monthly: getMonthly(s) || 0,
       monthlyReal: getMonthlyReal(s) || 0,
       realEstate: getRealEstateFortune(s.realEstateArray) || 0,
       realEstateValue: getRealEstateValue(s.realEstateArray) || 0,
       realEstateDebt: getRealEstateDebt(s.realEstateArray) || 0,
+      loanWanted: s.loanWanted,
     };
     props.minCash = fees +
       0.1 * props.propAndWork +
@@ -155,6 +152,16 @@ export default class Start2Page extends Component {
         (props.fortune + props.insuranceFortune * (1 - constants.lppFees)) +
         fees,
     );
+    props.minFortune = fees +
+      (1 - constants.maxLoan(s.usageType)) * props.propAndWork;
+
+    // If there isn't enough cash, add to minfortune the lppFees that will have to be paid, as long as it is below requirement
+    if (props.fortune < props.minFortune) {
+      props.minFortune += Math.min(
+        props.insuranceFortune * constants.lppFees,
+        (props.minFortune - props.fortune) * constants.lppFees,
+      );
+    }
 
     if (!props.property) {
       props.property = calculateProperty(
