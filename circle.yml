@@ -8,11 +8,10 @@ dependencies:
     - curl https://install.meteor.com | /bin/sh
     - npm install
   cache-directories:
-    - "node_modules"
+    - "~/.meteor"
+    - "~/node_modules"
 
 test:
-  pre:
-    - npm install phantomjs-prebuilt
   override:
     - npm run test-CI
 
