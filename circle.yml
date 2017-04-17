@@ -12,13 +12,9 @@ dependencies:
 
 test:
   pre:
-    - npm install -g spacejam
+    - npm install phantomjs-prebuilt
   override:
-    - spacejam test --driver-package=practicalmeteor:mocha-console-runner
-
-checkout:
-  post:
-    - git submodule update --init
+    - npm run test-CI
 
 deployment:
   production:
