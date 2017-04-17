@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { mount } from 'enzyme';
@@ -20,7 +21,7 @@ if (Meteor.isClient) {
           <MemoryRouter><Start1Page {...props} /></MemoryRouter>,
           {
             context: { muiTheme: getMuiTheme(myTheme) },
-            childContextTypes: { muiTheme: React.PropTypes.object },
+            childContextTypes: { muiTheme: PropTypes.object },
           },
         );
       }

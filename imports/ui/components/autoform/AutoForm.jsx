@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 import TextInput from './TextInput.jsx';
 import RadioInput from './RadioInput.jsx';
@@ -111,7 +112,7 @@ const AutoForm = props => (
 );
 
 AutoForm.propTypes = {
-  inputs: PropTypes.arrayOf(React.PropTypes.object).isRequired,
+  inputs: PropTypes.arrayOf(PropTypes.object).isRequired,
   formClasses: PropTypes.string,
   loanRequest: PropTypes.objectOf(PropTypes.any),
   borrowers: PropTypes.arrayOf(PropTypes.object),

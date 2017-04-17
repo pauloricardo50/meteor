@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 import PublicNav from '/imports/ui/components/general/PublicNav.jsx';
 import RouteTransition

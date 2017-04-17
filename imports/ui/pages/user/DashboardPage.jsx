@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
 import NewUserOptions from '/imports/ui/components/general/NewUserOptions.jsx';

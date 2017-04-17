@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 import AuctionTableLine
   from '/imports/ui/components/partner/AuctionTableLine.jsx';

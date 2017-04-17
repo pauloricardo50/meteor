@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -95,7 +96,7 @@ SelectFieldInput.propTypes = {
   id: PropTypes.string.isRequired,
   currentValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   documentId: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(React.PropTypes.object).isRequired,
+  options: PropTypes.arrayOf(PropTypes.object).isRequired,
   updateFunc: PropTypes.string.isRequired,
 };
 

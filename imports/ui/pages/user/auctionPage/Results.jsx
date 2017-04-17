@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 import OffersTable from '/imports/ui/components/general/OffersTable.jsx';
 import FakeOfferAdder from '/imports/ui/components/general/FakeOfferAdder.jsx';

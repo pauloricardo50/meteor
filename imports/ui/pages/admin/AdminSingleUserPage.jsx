@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const AdminSingleUserPage = props => {
   const user = props.users.find(user => user._id === props.match.params.userId);

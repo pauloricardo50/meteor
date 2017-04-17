@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { shallow, mount } from 'enzyme';
@@ -17,7 +18,7 @@ if (Meteor.isClient) {
       };
       const page = mount(<Start loanRequest={request} />, {
         context: { muiTheme: getMuiTheme(myTheme) },
-        childContextTypes: { muiTheme: React.PropTypes.object },
+        childContextTypes: { muiTheme: PropTypes.object },
       });
 
       expect(page.hasClass('mask1')).to.be.true;

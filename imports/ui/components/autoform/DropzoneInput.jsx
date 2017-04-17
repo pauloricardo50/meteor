@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { Slingshot } from 'meteor/edgee:slingshot';
 import cleanMethod from '/imports/api/cleanMethods';
 

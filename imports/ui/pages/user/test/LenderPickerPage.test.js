@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { mount } from 'enzyme';
@@ -23,7 +24,7 @@ if (Meteor.isClient) {
       if (!mountedLenderPickerPage) {
         mountedLenderPickerPage = mount(<LenderPickerPage {...props} />, {
           context: { muiTheme: getMuiTheme(myTheme) },
-          childContextTypes: { muiTheme: React.PropTypes.object },
+          childContextTypes: { muiTheme: PropTypes.object },
         });
       }
       return mountedLenderPickerPage;

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 import Slider from 'material-ui/Slider';
 import RaisedButton from 'material-ui/RaisedButton';

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { Accounts } from 'meteor/std:accounts-ui';
 
 const styles = {

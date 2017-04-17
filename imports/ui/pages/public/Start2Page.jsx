@@ -1,7 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
 import RaisedButton from 'material-ui/RaisedButton';
