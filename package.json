@@ -44,7 +44,7 @@
     "react-router-dom": "^4.0.0",
     "react-scroll": "^1.4.7",
     "react-tap-event-plugin": "^2.0.1",
-    "react-text-mask": "^4.1.0",
+    "react-text-mask": "^5.0.1",
     "react-tooltip": "^3.2.7",
     "simpl-schema": "^0.2.2",
     "text-mask-addons": "^3.2.0",

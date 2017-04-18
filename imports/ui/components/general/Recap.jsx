@@ -635,13 +635,15 @@ const Recap = props => {
 Recap.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any),
   borrowers: PropTypes.arrayOf(PropTypes.object),
+  borrower: PropTypes.objectOf(PropTypes.any),
   array: PropTypes.arrayOf(PropTypes.object),
   noScale: PropTypes.bool,
 };
 
 Recap.defaultProps = {
   loanRequest: {},
-  borrowers: {},
+  borrowers: [{}],
+  borrower: {},
   array: undefined,
   noScale: false,
 };

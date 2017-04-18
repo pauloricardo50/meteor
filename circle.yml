@@ -14,9 +14,10 @@ dependencies:
 test:
   override:
     - yarn run test-CI
+  post:
+    - yarn global add mup
 
 deployment:
-  pre: yarn global add mup
   production:
     branch: master
     commands:

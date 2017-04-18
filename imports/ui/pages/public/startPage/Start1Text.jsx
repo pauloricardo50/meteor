@@ -49,8 +49,9 @@ export default class Start1Text extends Component {
                 : this.props.value) || ''
             }
             mask={swissFrancMask}
-            guide
+            // guide
             pattern="[0-9]*"
+            // showMask
           />
         </TextField>
         <span
