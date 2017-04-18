@@ -134,7 +134,7 @@ const getAcquisitionArray = (state, props) => [
     type: 'textInput',
     text1: "J'ai",
     text2: 'ans.',
-    placeholder: '40',
+    placeholder: '18',
     number: true,
     width: 50,
     validation: {
@@ -148,7 +148,7 @@ const getAcquisitionArray = (state, props) => [
     type: 'textInput',
     text1: "L'emprunteur le plus agé a",
     text2: 'ans.',
-    placeholder: '40',
+    placeholder: '18',
     number: true,
     width: 50,
     validation: {
@@ -410,7 +410,7 @@ const getAcquisitionArray = (state, props) => [
   {
     id: 'fortune',
     type: 'multipleInput',
-    text1: 'Quelle est votre fortune bancaire personnelle (cash et titres)?',
+    text1: 'Quelle est votre épargne bancaire personnelle (cash et titres)?',
     question: true,
     money: true,
   },
@@ -573,6 +573,23 @@ const getFinalArray = (state, props, setFormState) => [
         </span>
       </span>
     ),
+    child1: (
+      <span className="loanWanted-slider">
+        <div>
+          <label htmlFor="">Emprunt</label>
+          <span className="active">
+            CHF {toMoney(state.loanWanted) || 0}
+          </span>
+        </div>
+        <div>
+          <label htmlFor="">Fonds Propres</label>
+          {' '}
+          <span className="active">
+            CHF {toMoney(props.fortuneNeeded)}
+          </span>
+        </div>
+      </span>
+    ),
     money: true,
     question: true,
     sliderMin: 0,
@@ -608,7 +625,7 @@ const getFinalArray = (state, props, setFormState) => [
         Vous devrez donc mettre
         {' '}
         <span className="active">
-          CHF {toMoney(props.project - state.loanWanted)}
+          CHF {toMoney(props.fortuneNeeded)}
         </span>
         {' '}
         de fonds propres.

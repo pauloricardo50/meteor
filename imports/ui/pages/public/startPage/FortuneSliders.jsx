@@ -5,6 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import { getProject } from '/imports/js/helpers/startFunctions';
+import constants from '/imports/js/config/constants';
 
 import StartSlider from './StartSlider.jsx';
 
@@ -31,38 +32,52 @@ const valueInRange = (value, min, max) => {
 };
 
 export default class FortuneSliders extends React.Component {
-  getFortuneNeeded(insuranceFortuneUsed) {
+  getFortuneNeeded(fortuneUsed, insuranceFortuneUsed, formState) {
     // Make sure we're properly calculating the fortune needed, which should
     // include any new insuranceFortuneUsed and the taxes that it adds to the project value
-    if (insuranceFortuneUsed) {
-      return getProject({ ...this.props.formState, insuranceFortuneUsed }) -
-        this.props.formState.loanWanted;
-    }
-    return getProject(this.props.formState) - this.props.formState.loanWanted;
+    let fortuneNeeded = getProject({
+      ...formState,
+      insuranceFortuneUsed,
+      fortuneUsed: fortuneUsed || formState.fortuneUsed,
+    }) - formState.loanWanted;
+
+    // console.log('init', fortuneNeeded, fortuneUsed);
+    //
+    // if (fortuneUsed) {
+    //   // If this is fortuneUsed slider, add the required lppFees
+    //   const lppFees = (fortuneNeeded - fortuneUsed) * constants.lppFees;
+    //   fortuneNeeded += lppFees;
+    //
+    //   console.log('fees', fortuneNeeded, fortuneUsed, lppFees);
+    // }
+
+    return fortuneNeeded;
   }
 
   handleChangeFortune = (e, fortuneUsed) => {
-    const object = {
+    const object = formState => ({
       insuranceFortuneUsed: valueInRange(
-        this.getFortuneNeeded() - fortuneUsed,
+        (this.getFortuneNeeded(fortuneUsed, 0, formState) - fortuneUsed) /
+          (1 - constants.lppFees),
         this.props.sliders[1].sliderMin,
         this.props.sliders[1].sliderMax,
       ),
       fortuneUsed,
-    };
+    });
 
     this.props.setFormState(false, false, false, object);
   };
 
   handleChangeInsurance = (e, insuranceFortuneUsed) => {
-    const object = {
+    const object = formState => ({
       fortuneUsed: valueInRange(
-        this.getFortuneNeeded(insuranceFortuneUsed) - insuranceFortuneUsed,
+        this.getFortuneNeeded(0, insuranceFortuneUsed, formState) -
+          insuranceFortuneUsed,
         this.props.sliders[0].sliderMin,
         this.props.sliders[0].sliderMax,
       ),
       insuranceFortuneUsed,
-    };
+    });
 
     this.props.setFormState(false, false, false, object);
   };
@@ -78,7 +93,7 @@ export default class FortuneSliders extends React.Component {
         </h1>
 
         <h2 className="fixed-size" style={styles.h2}>
-          Fortune:
+          Épargne:
           {' '}
           <span className="active">
             CHF
@@ -99,7 +114,7 @@ export default class FortuneSliders extends React.Component {
         {this.props.formState.useInsurance &&
           <div className="animated fadeIn" style={{ position: 'relative' }}>
             <h2 className="fixed-size" style={styles.h2}>
-              2ème Pilier: <span className="active">
+              LPP: <span className="active">
                 CHF {toMoney(this.props.formState.insuranceFortuneUsed || 0)}
               </span>
             </h2>

@@ -43,11 +43,13 @@ export default class Input extends Component {
 
             {this.props.slider &&
               <span>
-                {this.props.money
-                  ? `CHF ${toMoney(currentValue) || toMoney(this.props.sliderMin)}`
-                  : currentValue}
+                {this.props.child1}
+                {this.props.child1 === null &&
+                  (this.props.money
+                    ? `CHF ${toMoney(currentValue) || toMoney(this.props.sliderMin)}`
+                    : currentValue)}
               </span>}
-            {this.props.slider && <br />}
+            {this.props.slider && this.props.child1 === null && <br />}
             {this.props.slider && <StartSlider {...this.props} />}
           </span>
 
@@ -70,6 +72,7 @@ Input.propTypes = {
   select: PropTypes.bool,
   slider: PropTypes.bool,
   money: PropTypes.bool,
+  child1: PropTypes.element,
 };
 
 Input.defaultProps = {
@@ -79,4 +82,5 @@ Input.defaultProps = {
   text: false,
   select: false,
   slider: false,
+  child1: null,
 };

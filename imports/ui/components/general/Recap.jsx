@@ -152,7 +152,7 @@ const getDashboardArray = props => {
       hide: !(realEstateFortune || insuranceFortune),
     },
     {
-      label: 'Fortune Bancaire',
+      label: 'Épargne Bancaire',
       value: `CHF ${toMoney(fortune)}`,
     },
 
@@ -391,7 +391,7 @@ const getStart2Array = props => {
       hide: !(p.realEstate || p.insuranceFortune),
     },
     {
-      label: 'Fortune Bancaire',
+      label: 'Épargne Bancaire',
       value: `CHF ${toMoney(Math.round(p.fortune))}`,
       hide: !p.fortune,
     },
@@ -511,7 +511,7 @@ const getBorrowerArray = props => {
       hide: !(realEstateFortune || insuranceFortune),
     },
     {
-      label: 'Fortune Bancaire',
+      label: 'Épargne Bancaire',
       value: `CHF ${toMoney(fortune)}`,
     },
 
