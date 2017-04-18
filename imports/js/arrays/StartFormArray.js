@@ -157,7 +157,7 @@ const getAcquisitionArray = (state, props) => [
     },
   },
   {
-    id: 'initialIncome',
+    id: 'initialIncomeAgreed',
     type: 'buttons',
     text1: (
       <span>
@@ -173,7 +173,7 @@ const getAcquisitionArray = (state, props) => [
     hideResult: true,
     buttons: [
       {
-        id: state.initialIncome,
+        id: true,
         label: 'Ok',
       },
     ],
@@ -387,7 +387,7 @@ const getAcquisitionArray = (state, props) => [
     ],
   },
   {
-    id: 'initialFortune',
+    id: 'initialFortuneAgreed',
     type: 'buttons',
     text1: (
       <span>
@@ -402,7 +402,7 @@ const getAcquisitionArray = (state, props) => [
     hideResult: true,
     buttons: [
       {
-        id: state.initialFortune,
+        id: true,
         label: 'Ok',
       },
     ],

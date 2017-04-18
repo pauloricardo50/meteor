@@ -97,7 +97,7 @@ export const getIncome = state => {
   const bonus1 = getBonusIncome([s.bonus11, s.bonus21, s.bonus31, s.bonus41]);
   const bonus2 = getBonusIncome([s.bonus12, s.bonus22, s.bonus32, s.bonus42]);
   return [
-    s.propertyRent,
+    state.usageType === 'investment' ? s.propertyRent * 12 : 0,
     s.income1,
     s.income2,
     bonus1,

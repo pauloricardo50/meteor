@@ -438,7 +438,16 @@ const getStart2Array = props => {
     {
       title: true,
       label: 'Revenus',
-      hide: !(p.salary || p.bonus || p.otherIncome || p.expenses),
+      hide: !(p.salary ||
+        p.bonus ||
+        p.otherIncome ||
+        p.expenses ||
+        p.propertyRent),
+    },
+    {
+      label: 'Loyer perçu',
+      value: `CHF ${toMoney(Math.round(p.propertyRent * 12))}`,
+      hide: p.usageType !== 'investment',
     },
     {
       label: 'Salaire',

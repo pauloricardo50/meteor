@@ -128,6 +128,7 @@ export default class Start2Page extends Component {
       realEstateValue: getRealEstateValue(s.realEstateArray) || 0,
       realEstateDebt: getRealEstateDebt(s.realEstateArray) || 0,
       loanWanted: s.loanWanted,
+      propertyRent: s.propertyRent,
     };
     props.minCash = fees +
       0.1 * props.propAndWork +
