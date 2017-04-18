@@ -15,11 +15,17 @@ if (Meteor.isClient) {
     it('Renders correctly before auction', () => {
       const request = {
         logic: {},
+        property: {},
+        general: {},
       };
-      const page = mount(<Start loanRequest={request} />, {
-        context: { muiTheme: getMuiTheme(myTheme) },
-        childContextTypes: { muiTheme: PropTypes.object },
-      });
+      const borrowers = [{}];
+      const page = mount(
+        <Start loanRequest={request} borrowers={borrowers} />,
+        {
+          context: { muiTheme: getMuiTheme(myTheme) },
+          childContextTypes: { muiTheme: PropTypes.object },
+        },
+      );
 
       expect(page.hasClass('mask1')).to.be.true;
     });

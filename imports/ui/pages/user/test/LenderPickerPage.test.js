@@ -68,7 +68,7 @@ if (Meteor.isClient) {
     });
 
     it('Renders the AmortizingPicker if the user has already chosen a lender', () => {
-      props.loanRequest.logic.hasChosenLender = true;
+      props.loanRequest.logic.lender = 'asd';
       expect(lenderPickerPage().find(AmortizingPicker).length).to.equal(1);
     });
 
