@@ -7,55 +7,57 @@ import StartSlider from './StartSlider.jsx';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 
-const Input = props => {
-  const currentValue = props.formState[props.id];
+export default class Input extends Component {
+  render() {
+    const currentValue = this.props.formState[this.props.id];
 
-  return (
-    <article
-      className={props.className}
-      onTouchTap={() => {
-        props.setActiveLine(props.id);
-        if (props.money && props.text) {
-          this.input.input.inputElement.focus();
-        } else if (props.text) {
-          this.input.focus();
-        }
-      }}
-    >
+    return (
+      <article
+        className={this.props.className}
+        onTouchTap={() => {
+          this.props.setActiveLine(this.props.id);
+          if (this.props.money && this.props.text) {
+            this.input.input.inputElement.focus();
+          } else if (this.props.text) {
+            this.input.focus();
+          }
+        }}
+      >
 
-      <h1 className="fixed-size">
-        {props.text1}
-        &nbsp;
+        <h1 className="fixed-size">
+          {this.props.text1}
+          &nbsp;
 
-        {props.question && <br />}
+          {this.props.question && <br />}
 
-        <span className="active">
-          {props.text &&
-            <StartTextField
-              {...props}
-              setRef={c => {
-                this.input = c;
-              }}
-            />}
+          <span className="active">
+            {this.props.text &&
+              <StartTextField
+                {...this.props}
+                setRef={c => {
+                  this.input = c;
+                }}
+              />}
 
-          {props.select && <StartSelectField {...props} />}
+            {this.props.select && <StartSelectField {...this.props} />}
 
-          {props.slider &&
-            <span>
-              {props.money
-                ? `CHF ${toMoney(currentValue) || toMoney(props.sliderMin)}`
-                : currentValue}
-            </span>}
-          {props.slider && <br />}
-          {props.slider && <StartSlider {...props} />}
-        </span>
+            {this.props.slider &&
+              <span>
+                {this.props.money
+                  ? `CHF ${toMoney(currentValue) || toMoney(this.props.sliderMin)}`
+                  : currentValue}
+              </span>}
+            {this.props.slider && <br />}
+            {this.props.slider && <StartSlider {...this.props} />}
+          </span>
 
-        {props.text2}
-      </h1>
+          {this.props.text2}
+        </h1>
 
-    </article>
-  );
-};
+      </article>
+    );
+  }
+}
 
 Input.propTypes = {
   id: PropTypes.string.isRequired,
@@ -78,5 +80,3 @@ Input.defaultProps = {
   select: false,
   slider: false,
 };
-
-export default Input;
