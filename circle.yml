@@ -16,6 +16,7 @@ test:
     - yarn run test-CI
 
 deployment:
+  pre: yarn global add mup
   production:
     branch: master
     commands:
