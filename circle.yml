@@ -6,17 +6,17 @@ machine:
 dependencies:
   override:
     - curl https://install.meteor.com | /bin/sh
-    - npm install
+    - yarn install
   cache-directories:
     - "~/.meteor"
     - "~/node_modules"
 
 test:
   override:
-    - npm run test-CI
+    - yarn run test-CI
 
 deployment:
   production:
     branch: master
     commands:
-      - npm run deploy
+      - yarn run deploy

@@ -4,7 +4,7 @@
   "scripts": {
     "start": "meteor --settings settings-dev.json",
     "test": "meteor test --driver-package=practicalmeteor:mocha --port 4000",
-    "test-CI": "TEST_BROWSER_DRIVER=phantomjs SERVER_TEST_REPORTER=xunit XUNIT_FILE=$PWD/unit.xml meteor test --once --driver-package dispatch:mocha",
+    "test-CI": "TEST_BROWSER_DRIVER=nightmare SERVER_TEST_REPORTER=xunit XUNIT_FILE=$PWD/unit.xml meteor test --once --driver-package dispatch:mocha",
     "test-CLI": "TEST_BROWSER_DRIVER=nightmare meteor test --once --driver-package dispatch:mocha",
     "deploy": "mup deploy --settings=settings-production.json"
   },
@@ -70,7 +70,9 @@
     "eslint-plugin-react": "^6.10.0",
     "jsdom": "^9.12.0",
     "nightmare": "^2.10.0",
-    "react-addons-test-utils": "^15.5.0",
+    "react-addons-test-utils": "^15.5.1",
+    "react-dom": "^15.5.4",
+    "react-test-renderer": "^15.5.4",
     "spacejam": "^1.6.1"
   }
 }
