@@ -3,7 +3,7 @@ module.exports = {
     one: {
       host: '46.101.148.135',
       username: 'root',
-      pem: '/Users/Florian/.ssh/id_rsa',
+      pem: '~/.ssh/id_epotek-production',
       // password: // leave blank for authenticate from ssh-agent
     },
   },
