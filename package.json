@@ -4,7 +4,7 @@
   "scripts": {
     "start": "meteor --settings settings-dev.json",
     "test": "meteor test --driver-package=practicalmeteor:mocha --port 4000",
-    "test-CI": "TEST_BROWSER_DRIVER=nightmare SERVER_TEST_REPORTER=xunit XUNIT_FILE=$PWD/unit.xml meteor test --once --driver-package dispatch:mocha",
+    "test-CI": "TEST_BROWSER_DRIVER=nightmare SERVER_TEST_REPORTER=xunit XUNIT_FILE=$CIRCLE_TEST_REPORTS/unit.xml meteor test --once --driver-package dispatch:mocha",
     "test-CLI": "TEST_BROWSER_DRIVER=nightmare meteor test --once --driver-package dispatch:mocha",
     "deploy": "mup deploy --settings=settings-production.json"
   },
@@ -36,7 +36,7 @@
     "react": "^15.5.4",
     "react-bootstrap": "^0.30.7",
     "react-countup": "^2.0.3",
-    "react-dom": "^15.4.2",
+    "react-dom": "^15.5.4",
     "react-dropzone-component": "^1.4.1",
     "react-komposer": "^2.0.0",
     "react-motion": "^0.4.7",
@@ -71,7 +71,6 @@
     "jsdom": "^9.12.0",
     "nightmare": "^2.10.0",
     "react-addons-test-utils": "^15.5.1",
-    "react-dom": "^15.5.4",
     "react-test-renderer": "^15.5.4",
     "spacejam": "^1.6.1"
   }
