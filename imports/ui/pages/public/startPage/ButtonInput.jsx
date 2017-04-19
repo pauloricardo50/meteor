@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
+import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
 
 const styles = {
   button: {
@@ -35,11 +36,8 @@ export default class ButtonInput extends Component {
       this.props.setFormState(this.props.deleteId, undefined);
     }
 
-    this.props.setFormState(
-      this.props.id,
-      value,
-      () => this.props.setActiveLine(''),
-    );
+    this.props.setFormState(this.props.id, value, () =>
+      this.props.setActiveLine(''));
   }
 
   render() {
@@ -51,7 +49,7 @@ export default class ButtonInput extends Component {
 
         <h1 className="fixed-size">
           <span className={this.props.id === 'error' && 'error'}>
-            {this.props.text1}
+            <AutoTooltip>{this.props.text1}</AutoTooltip>
           </span>
           &nbsp;
           {!this.props.hideResult && this.props.question && <br />}
@@ -59,7 +57,7 @@ export default class ButtonInput extends Component {
           {!this.props.hideResult &&
             <span className="active">{this.getText()}</span>}
           &nbsp;
-          {this.props.text2 || ''}
+          <AutoTooltip>{this.props.text2}</AutoTooltip>
         </h1>
 
         <div

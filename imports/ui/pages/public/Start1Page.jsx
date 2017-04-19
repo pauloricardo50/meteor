@@ -291,8 +291,8 @@ export default class Start1Page extends Component {
         <article className="small-oscar mask1">
           <h1>
             {this.type === 'acquisition'
-              ? 'Commencez une acquisition'
-              : "Identifiez votre capacité d'emprunt"}
+              ? 'Commencez une Acquisition'
+              : "Identifiez votre Capacité d'Emprunt"}
           </h1>
           <hr />
 

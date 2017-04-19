@@ -1,10 +1,10 @@
+// Write the keys in lowercase
 const tooltips = {
-  test: "Voici de l'aide",
   finma: 'Autorité fédérale de surveillance des marchés financiers',
-  incomeRatio: "Ne doit pas dépasser 33%, exceptions jusqu'à 38%",
-  borrowRatio: 'Ne doit pas dépasser 80% dans la majorité des cas',
-  notaryFees: "Frais obligatoires lorsqu'on conclut un prêt hypothécaire",
-  // notaryFees: "Don't wrap",
+  'charges/revenus': "Ne doit pas dépasser 33%, exceptions jusqu'à 38%",
+  "emprunt/prix d'achat": 'Ne doit pas dépasser 80% dans la majorité des cas',
+  'frais de notaire': "Frais obligatoires lorsqu'on conclut un prêt hypothécaire",
+  'travaux de plus-value': 'Ajoutent de la valeur au bien, sans augmenter les frais de notaire',
 };
 
 export default tooltips;

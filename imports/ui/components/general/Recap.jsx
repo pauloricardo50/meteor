@@ -5,6 +5,7 @@ import classnames from 'classnames';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
+import AutoTooltip from './AutoTooltip.jsx';
 
 import {
   getPropAndWork,
@@ -614,7 +615,7 @@ const Recap = props => {
           } else if (item.title) {
             return (
               <label className="text-center" {...item.props} key={item.label}>
-                {item.label}
+                <AutoTooltip>{item.label}</AutoTooltip>
               </label>
             );
           } else {
@@ -630,7 +631,9 @@ const Recap = props => {
                 }}
                 key={i}
               >
-                <h4 className="secondary">{item.label}</h4>
+                <h4 className="secondary">
+                  <AutoTooltip>{item.label}</AutoTooltip>
+                </h4>
                 <h3 {...item.props}>{item.value}</h3>
               </div>
             );

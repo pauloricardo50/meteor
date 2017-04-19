@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
+import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
 import StartTextField from './StartTextField.jsx';
 import StartSelectField from './StartSelectField.jsx';
 import StartSlider from './StartSlider.jsx';
@@ -25,7 +26,7 @@ export default class Input extends Component {
       >
 
         <h1 className="fixed-size">
-          {this.props.text1}
+          <AutoTooltip>{this.props.text1}</AutoTooltip>
           &nbsp;
 
           {this.props.question && <br />}
@@ -53,7 +54,7 @@ export default class Input extends Component {
             {this.props.slider && <StartSlider {...this.props} />}
           </span>
 
-          {this.props.text2}
+          <AutoTooltip>{this.props.text2}</AutoTooltip>
         </h1>
 
       </article>
