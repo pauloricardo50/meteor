@@ -34,7 +34,7 @@
     "query-string": "^4.3.2",
     "rc-tooltip": "^3.4.3",
     "react": "^15.5.4",
-    "react-bootstrap": "^0.30.7",
+    "react-bootstrap": "^0.30.9",
     "react-countup": "^2.0.3",
     "react-dom": "^15.5.4",
     "react-dropzone-component": "^1.4.1",
