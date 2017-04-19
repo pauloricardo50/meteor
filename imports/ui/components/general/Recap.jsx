@@ -149,6 +149,46 @@ const getDashboardArray = props => {
     },
     {
       title: true,
+      label: 'Calculs FINMA',
+    },
+    {
+      label: r.property.propertyWork
+        ? 'Emprunt/Valeur du bien'
+        : "Emprunt/Prix d'achat",
+      value: (
+        <span>
+          {Math.round(borrowRatio * 1000) / 10}%
+          {' '}
+          <span
+            className={
+              borrowRatio <= constants.maxLoan(r.property.usageType) + 0.001 // add 0.1% to avoid rounding errors
+                ? 'fa fa-check success'
+                : 'fa fa-times error'
+            }
+          />
+        </span>
+      ),
+    },
+    {
+      label: 'Charges/Revenus',
+      value: (
+        <span>
+          {Math.round(incomeRatio * 1000) / 10}%
+          {' '}
+          <span
+            className={
+              incomeRatio <= 1 / 3
+                ? 'fa fa-check success'
+                : incomeRatio <= 0.38
+                    ? 'fa fa-exclamation warning'
+                    : 'fa fa-times error'
+            }
+          />
+        </span>
+      ),
+    },
+    {
+      title: true,
       label: 'Fortune',
       hide: !(realEstateFortune || insuranceFortune),
     },
@@ -632,7 +672,7 @@ const Recap = props => {
                 key={i}
               >
                 <h4 className="secondary">
-                  <AutoTooltip>{item.label}</AutoTooltip>
+                  <AutoTooltip placement="right">{item.label}</AutoTooltip>
                 </h4>
                 <h3 {...item.props}>{item.value}</h3>
               </div>

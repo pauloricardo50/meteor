@@ -290,6 +290,14 @@ export const LogicSchema = new SimpleSchema({
     type: Boolean,
     defaultValue: false,
   },
+  expertiseRequired: {
+    type: Boolean,
+    defaultValue: true,
+  },
+  expertiseDone: {
+    type: Boolean,
+    defaultValue: true,
+  },
   expertiseValid: {
     type: Boolean,
     defaultValue: false,

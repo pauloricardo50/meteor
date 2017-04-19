@@ -44,7 +44,6 @@
         "classes": true
       }
     ],
-    "import/extensions": 0,
     "import/no-extraneous-dependencies": 0,
     "import/no-absolute-path": 0,
     "class-methods-use-this": 0,

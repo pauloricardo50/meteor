@@ -74,6 +74,7 @@ export default class AuctionPage extends Component {
       <Start
         loanRequest={this.props.loanRequest}
         borrowers={this.props.borrowers}
+        history={this.props.history}
       />
     );
   }

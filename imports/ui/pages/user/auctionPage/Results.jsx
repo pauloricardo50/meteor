@@ -127,9 +127,7 @@ export default class Results extends Component {
 
         <div className="description">
           <p>
-            Voici les offres que vous ont fait les prêteurs, les taux qu'ils vous proposent
-            fluctueront encore avec le marché, mais ne devraient pas varier de plus de 0.05%
-            si vous concluez votre prêt dans le mois qui suit.
+            Voici les offres que vous ont fait les prêteurs. Attention, ces taux sont indicatifs, et les meilleurs taux ne sont pas correspondent pas toujours à ce dont vous avez besoin.
             <br /><br />
             Vous pouvez dès à présent choisir le prêteur que vous voulez et avoir une estimation
             très précise de ce que ce prêt va vous coûter.

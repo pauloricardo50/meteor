@@ -3,6 +3,7 @@ import React from 'react';
 
 import { getIncomeRatio } from '/imports/js/helpers/finance-math';
 import constants from '/imports/js/config/constants';
+import AutoTooltip from './AutoTooltip.jsx';
 
 const getMetrics = props => {
   if (props.metrics.length > 0) {
@@ -25,6 +26,8 @@ const getMetrics = props => {
         r.general.fortuneUsed / r.property.value >=
         0.2,
       error: 'Cash et LPP doivent être au moins 20% de la propriété',
+      hide: !r.general.insuranceFortuneUsed ||
+        r.property.usageType !== 'primary',
     },
     {
       name: "Ratio d'endettement",
@@ -37,28 +40,30 @@ const getMetrics = props => {
 
 const MetricsTriple = props => (
   <div className="metrics">
-    {getMetrics(props).map((metric, i) => (
-      <div className="metric" key={i}>
-        <div>
-          <h4 className="secondary">
-            <span>{metric.name}</span>
-            &nbsp;
-            {metric.isValid !== undefined &&
-              (metric.isValid
-                ? <span className="fa fa-check success" />
-                : <span className="fa fa-times error" />)}
-          </h4>
+    {getMetrics(props).map(
+      (metric, i) =>
+        !metric.hide &&
+        <div className="metric" key={i}>
+          <div>
+            <h4 className="secondary">
+              <AutoTooltip placement="top">{metric.name}</AutoTooltip>
+              {' '}
+              {metric.isValid !== undefined &&
+                (metric.isValid
+                  ? <span className="fa fa-check success" />
+                  : <span className="fa fa-times error" />)}
+            </h4>
 
-          {!metric.isValid && <p className="error">{metric.error}</p>}
+            {!metric.isValid && <p className="error">{metric.error}</p>}
 
-          <h1>
-            {props.percent
-              ? Math.round(metric.value * 1000) / 10 + '%'
-              : metric.value}
-          </h1>
-        </div>
-      </div>
-    ))}
+            <h1>
+              {props.percent
+                ? Math.round(metric.value * 1000) / 10 + '%'
+                : metric.value}
+            </h1>
+          </div>
+        </div>,
+    )}
   </div>
 );
 

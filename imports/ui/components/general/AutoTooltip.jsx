@@ -38,7 +38,7 @@ const AutoTooltip = props => {
     <span>
       {reactStringReplace(
         props.children,
-        new RegExp(`(${Object.keys(tooltips).join('|')})`, 'gi'),
+        new RegExp(`(${Object.keys(tooltips(props.list)).join('|')})`, 'gi'),
         (match, i) => (
         // <RcTooltip
         //   placement={props.placement}
@@ -55,10 +55,12 @@ const AutoTooltip = props => {
         //   </span>
         // </RcTooltip>
           <OverlayTrigger
-            placement="bottom"
+            placement={props.placement}
             overlay={
               <Tooltip id="tooltip">
-                <span style={styles.text}>{tooltips[match.toLowerCase()]}</span>
+                <span style={styles.text}>
+                  {tooltips(props.list)[match.toLowerCase()]}
+                </span>
               </Tooltip>
             }
             key={i}
@@ -78,12 +80,14 @@ AutoTooltip.propTypes = {
   placement: PropTypes.string,
   trigger: PropTypes.arrayOf(PropTypes.string),
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
+  list: PropTypes.string,
 };
 
 AutoTooltip.defaultProps = {
   placement: 'bottom',
   trigger: ['click'], // Can be 'click', 'hover' and/or 'focus'
   children: null,
+  list: 'general',
 };
 
 export default AutoTooltip;

@@ -72,7 +72,6 @@ const Start = props => (
 Start.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
-
 };
 
 export default Start;

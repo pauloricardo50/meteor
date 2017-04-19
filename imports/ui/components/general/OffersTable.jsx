@@ -4,8 +4,52 @@ import React, { Component } from 'react';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 
 import RaisedButton from 'material-ui/RaisedButton';
+import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
 
 const round = v => Math.round(v * 10000) / 100;
+
+const columns = [
+  {
+    label: '',
+    align: 'l',
+    width: 5,
+  },
+  {
+    label: 'Montant',
+    align: 'r',
+    width: 20,
+  },
+  {
+    label: 'Taux Libor',
+    align: 'r',
+    width: 12,
+  },
+  {
+    label: 'Taux 2 ans',
+    align: 'r',
+    width: 12,
+  },
+  {
+    label: 'Taux 5 ans',
+    align: 'r',
+    width: 12,
+  },
+  {
+    label: 'Taux 10 ans',
+    align: 'r',
+    width: 12,
+  },
+  {
+    label: 'Amortissement',
+    align: 'r',
+    width: 5,
+  },
+  {
+    label: 'Expertise?',
+    align: 'r',
+    width: 15,
+  },
+];
 
 export default class OffersTable extends Component {
   constructor(props) {
@@ -29,35 +73,27 @@ export default class OffersTable extends Component {
       ),
     ];
     offers.sort((a, b) => a.interest10 - b.interest10);
-    offers = this.state.showFullTable ? offers : offers.slice(0, 5);
+    const shownOffers = this.state.showFullTable ? offers : offers.slice(0, 5);
     return (
       <article>
         <table className="minimal-table">
           <colgroup>
-            <col span="1" style={{ width: '5%' }} />
-            <col span="1" style={{ width: '20%' }} />
-            <col span="1" style={{ width: '12%' }} />
-            <col span="1" style={{ width: '12%' }} />
-            <col span="1" style={{ width: '12%' }} />
-            <col span="1" style={{ width: '12%' }} />
-            <col span="1" style={{ width: '12%' }} />
-            <col span="1" style={{ width: '15%' }} />
+            {columns.map(c => (
+              <col span="1" style={{ width: `${c.width}%` }} />
+            ))}
           </colgroup>
           <thead>
             <tr>
-              <th className="l" />
-              <th className="r">Montant</th>
-              <th className="r">Taux Libor</th>
-              <th className="r">Taux 2 ans</th>
-              <th className="r">Taux 5 ans</th>
-              <th className="r">Taux 10 ans</th>
-              <th className="r">Amortissement</th>
-              <th className="r">Expertise requise?</th>
+              {columns.map(c => (
+                <th className={c.align}>
+                  <AutoTooltip list="table">{c.label}</AutoTooltip>
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
-            {offers &&
-              offers.map(
+            {shownOffers &&
+              shownOffers.map(
                 (offer, index) =>
                   offer &&
                   <tr key={index}>
