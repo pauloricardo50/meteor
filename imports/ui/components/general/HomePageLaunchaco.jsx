@@ -40,7 +40,7 @@ module.exports = () => (
             Mettez votre prêt hypothécaire aux enchères.
           </h2>
           <div className="ctas">
-            <RaisedButton
+            {/* <RaisedButton
               label="Prenez le test"
               style={styles.style}
               buttonStyle={styles.button}
@@ -48,7 +48,7 @@ module.exports = () => (
               overlayStyle={styles.button}
               containerElement={<Link to="/start1/test" />}
               id="test"
-            />
+            /> */}
             <RaisedButton
               label="Faire une acquisition"
               containerElement={<Link to="/start1/acquisition" />}
@@ -221,14 +221,14 @@ module.exports = () => (
           </div>
           <div className="col-5">
             <div className="ctas text-right">
-              <RaisedButton
+              {/* <RaisedButton
                 label="Prenez le test"
                 style={styles.style}
                 buttonStyle={styles.button}
                 labelStyle={styles.label}
                 overlayStyle={styles.button}
                 containerElement={<Link to="/start1/test" />}
-              />
+              /> */}
               <RaisedButton
                 label="Faire une acquisition"
                 containerElement={<Link to="/start1/acquisition" />}
