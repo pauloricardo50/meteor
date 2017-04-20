@@ -69,7 +69,7 @@ const getArray = ({ income, fortune, property, borrow, ratio }) => {
       spacing: true,
     },
     {
-      label: 'Coût réel estimé*',
+      label: 'Charges estimées*',
       value: Math.round(borrow * 1000) / 1000 <= 0.8 && fortune < property
         ? <span>
             CHF

@@ -8,11 +8,22 @@ const generalTooltips = {
   "emprunt/prix d'achat": 'Ne doit pas dépasser 80% dans la majorité des cas',
   'emprunt/Valeur du bien': 'Ne doit pas dépasser 80% dans la majorité des cas',
 
+  'fonds propres': 'Vos économies, prévoyance et dons de tiers que vous allez engager dans le projet',
   'frais de notaire': "Frais obligatoires lorsqu'on conclut un prêt hypothécaire",
   'travaux de plus-value': 'Ajoutent de la valeur au bien, sans augmenter les frais de notaire',
   expertise: 'Vérification de la valeur du bien par rapport à son état et son emplacement',
   'nb. de prêteurs potentiels': 'La quantité de prêteurs e-Potek dont les conditions correspondent à votre dossier',
   'charges estimées': "Avant les enchères d'e-Potek, cette estimation conservative sert d'indication",
+  emprunteurs: 'Les personnes financièrement et légalement bénéficiaires du prêt',
+  "type d'utilisation": "Les résidences principales permettent l'utilisation du 2ème pilier en tant que fonds propres",
+  bonus: 'En développement', // TODO
+
+  '2e pilier': 'Aussi appelé LPP',
+  '2ème pilier': 'Aussi appelé LPP',
+  lpp: 'Aussi appelé 2ème pilier',
+
+  '3e pilier': 'En développement', // TODO
+  '3ème pilier': 'En développement', // TODO
 };
 
 const offerTableTooltips = {

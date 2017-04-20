@@ -5,6 +5,7 @@ import constants from '/imports/js/config/constants';
 
 import FortuneSliders
   from '/imports/ui/pages/public/startPage/FortuneSliders.jsx';
+import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
 
 import { toMoney } from '../helpers/conversionFunctions';
 
@@ -22,7 +23,7 @@ const getAcquisitionArray = (state, props) => [
     type: 'buttons',
     text1: (
       <span>
-        A ce prix s'ajoutent les frais de notaire de
+        <AutoTooltip>A ce prix s'ajoutent les frais de notaire de</AutoTooltip>
         {' '}
         <span className="active">
           CHF {toMoney(0.05 * state.propertyValue)}
@@ -243,9 +244,9 @@ const getAcquisitionArray = (state, props) => [
     type: 'buttons',
     text1: (
       <span>
-        Avez-vous d'autres sources de revenus
+        Avez-vous d'autres sources de
         {' '}
-        <span className="bold">annuels</span>
+        <span className="bold">revenus annuels</span>
         ?
       </span>
     ),
@@ -312,9 +313,9 @@ const getAcquisitionArray = (state, props) => [
     type: 'buttons',
     text1: (
       <span>
-        Avez-vous des charges
+        Avez-vous des
         {' '}
-        <span className="bold">annuelles</span>
+        <span className="bold">charges annuelles</span>
         {' '}
         comme des leasings,
         {' '}
@@ -418,7 +419,7 @@ const getAcquisitionArray = (state, props) => [
     condition: state.usageType === 'primary',
     id: 'insurance1',
     type: 'multipleInput',
-    text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 2e pilier?',
+    text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 2ème pilier?',
     money: true,
     zeroAllowed: true,
   },
@@ -426,7 +427,7 @@ const getAcquisitionArray = (state, props) => [
     condition: state.usageType === 'primary',
     id: 'insurance2Exists',
     type: 'buttons',
-    text1: 'Avez-vous un 3e pilier?',
+    text1: 'Avez-vous un 3ème pilier?',
     question: true,
     buttons: [
       {
@@ -443,7 +444,7 @@ const getAcquisitionArray = (state, props) => [
     condition: state.usageType === 'primary' && state.insurance2Exists,
     id: 'insurance2',
     type: 'multipleInput',
-    text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 3e pilier?',
+    text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 3ème pilier?',
     money: true,
   },
   {
@@ -523,7 +524,9 @@ const getErrorArray = (state, props) => [
           {toMoney(props.minCash)}
         </span>
         {' '}
-        de fortune (sans compter votre prévoyance) pour ce projet, vous pouvez modifier les valeurs en haut.
+        <AutoTooltip>
+          de fortune (sans compter votre prévoyance) pour ce projet, vous pouvez modifier les valeurs en haut.
+        </AutoTooltip>
       </span>
     ),
     buttons: [
@@ -544,7 +547,9 @@ const getErrorArray = (state, props) => [
         {' '}
         <span className="body">CHF {toMoney(props.minFortune)}</span>
         {' '}
-        de fonds propres pour ce projet, vous pouvez modifier les valeurs en haut.
+        <AutoTooltip>
+          de fonds propres pour ce projet, vous pouvez modifier les valeurs en haut.
+        </AutoTooltip>
       </span>
     ),
     buttons: [
@@ -628,7 +633,7 @@ const getFinalArray = (state, props, setFormState) => [
           CHF {toMoney(props.fortuneNeeded)}
         </span>
         {' '}
-        de fonds propres.
+        <AutoTooltip>de fonds propres.</AutoTooltip>
       </span>
     ),
     hideResult: true,
@@ -718,7 +723,9 @@ const getFinalArray = (state, props, setFormState) => [
           CHF {toMoney(props.project - state.loanWanted)}
         </span>
         {' '}
-        de fonds propres, comment voulez-vous les répartir?
+        <AutoTooltip>
+          de fonds propres, comment voulez-vous les répartir?
+        </AutoTooltip>
       </span>
     ),
     sliders: [

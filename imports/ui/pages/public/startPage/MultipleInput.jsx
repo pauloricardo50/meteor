@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
+import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
 import StartTextField from './StartTextField';
 
 const styles = {
@@ -68,7 +69,7 @@ export default class MultipleInput extends Component {
           </h1>}
 
         <TitleTag style={styles.h1} className="fixed-size">
-          {this.props.text1}
+          <AutoTooltip>{this.props.text1}</AutoTooltip>
         </TitleTag>
 
         <h1 className={classes1} style={styles.textFieldH1}>
