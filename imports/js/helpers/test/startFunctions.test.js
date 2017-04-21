@@ -22,8 +22,8 @@ const getRandomInt = (min, max) => {
 
 describe('Start 1 Functions', () => {
   describe('Get Min Income', () => {
-    it('Should return x for 200k fortune and 1000M property', () => {
-      expect(getMinIncome(1000000, 200000)).to.equal(173246);
+    it("Should return 173'247 for 200k fortune and 1000M property", () => {
+      expect(getMinIncome(1000000, 200000)).to.equal(173247);
     });
   });
 
