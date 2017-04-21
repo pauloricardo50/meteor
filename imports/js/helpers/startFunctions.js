@@ -40,14 +40,17 @@ export const getMinFortune = (property, income) => {
   // It has to cover 20% and notaryfees
   const basicValue = property * (0.2 + nF);
 
-  // TODO: Figure out how much fortune you need, cover the case between 80% and 65% with amortization
-  // plus the case below 65% where amortization falls to 0
-  const rank1Fortune = 0;
-  const rank2Fortune = 0;
-  const rankFortune = Math.min(rank1Fortune, rank2Fortune);
+  // When there is very little income, go to rank 1 (basically, amortization = 0)
+  const rank1Fortune = (property * (m + i * (1 + nF)) - mR * income) / i;
 
-  // return property * (1 + nF) - property * (15 * m - 0.65) / (15 * mR * income * (15 * i + 1));
-  return Math.max(rankFortune, basicValue);
+  // For the case that there is a reasonable amount of fortune, go to rank 2
+  // Here amortization is complex and depends on the borrow Ratio
+  const rank2Fortune =
+    (property * (15 * m + nF + 0.35 + 15 * i * (1 + nF)) - mR * 15 * income) / (15 * i + 1);
+
+  const rankFortune = Math.max(rank1Fortune, rank2Fortune);
+
+  return Math.ceil(Math.max(rankFortune, basicValue));
 };
 
 export const changeProperty = (state, o, property) => {
@@ -55,7 +58,7 @@ export const changeProperty = (state, o, property) => {
     o.fortune.minValue = property * (0.2 + 0.05);
     o.income.minValue = 3 * property * (constants.maintenance + 0.8 * constants.loanCost(0.8));
   } else if (state.fortune.auto) {
-    // o.fortune.minValue = getMinFortune(state.property.value, state.income.value);
+    o.fortune.minValue = getMinFortune(state.property.value, state.income.value);
   } else if (state.income.auto) {
     o.income.minValue = getMinIncome(state.property.value, state.fortune.value);
   }
@@ -87,7 +90,7 @@ export const changeIncome = (state, o, income) => {
   } else if (state.property.auto) {
     o.property.minValue = constants.maxProperty(income, state.fortune.value);
   } else if (state.fortune.auto) {
-    // o.fortune.minValue = getMinFortune(state.property.value, state.income.value);
+    o.fortune.minValue = getMinFortune(state.property.value, state.income.value);
   }
 
   o = setDefaultMinValues(state, o);
