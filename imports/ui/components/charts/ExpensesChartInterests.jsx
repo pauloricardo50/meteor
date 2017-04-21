@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Component } from 'react';
 
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -8,7 +8,7 @@ import ExpensesChart from './ExpensesChart.jsx';
 
 const rates = [0.01, 0.01, 0.015, 0.02];
 
-export default class ExpensesChartInterests extends React.Component {
+export default class ExpensesChartInterests extends Component {
   constructor(props) {
     super(props);
 

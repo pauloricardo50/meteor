@@ -7,13 +7,11 @@ import constants from '/imports/js/config/constants';
 import Recap from '/imports/ui/components/general/Recap.jsx';
 import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
 
-const isReady = ({ income, fortune, property }) =>
-  property && income && fortune;
+const isReady = ({ income, fortune, property }) => property && income && fortune;
 
-const getMonthlyReal = (income, fortune, property) =>
+const getMonthlyReal = (income, fortune, property, borrow) =>
   Math.max(
-    (property * constants.maintenanceReal +
-      (property - fortune) * constants.loanCostReal()) /
+    (property * constants.maintenanceReal + (property - fortune) * constants.loanCostReal(borrow)) /
       12,
     0,
   );
@@ -52,9 +50,7 @@ const getArray = ({ income, fortune, property, borrow, ratio }) => {
       value: (
         <span className="bold">
           CHF&nbsp;
-          {toMoney(
-            Math.round(property * (1 + constants.notaryFees) / 1000) * 1000,
-          )}
+          {toMoney(Math.round(property * (1 + constants.notaryFees) / 1000) * 1000)}
         </span>
       ),
       spacing: true,
@@ -74,12 +70,10 @@ const getArray = ({ income, fortune, property, borrow, ratio }) => {
         ? <span>
             CHF
             {' '}
-            {toMoney(
-              getMonthlyReal(income, fortune - property * 0.05, property),
-            )}
-            {' '}
-            <small>/mois</small>
-          </span>
+          {toMoney(getMonthlyReal(income, fortune - property * 0.05, property, borrow))}
+          {' '}
+          <small>/mois</small>
+        </span>
         : '-',
     },
     {
@@ -103,9 +97,7 @@ const getArray = ({ income, fortune, property, borrow, ratio }) => {
             className={
               borrow <= 0.8 + 0.001 // for rounding
                 ? 'fa fa-check success'
-                : borrow <= 0.9
-                    ? 'fa fa-exclamation warning'
-                    : 'fa fa-times error'
+                : borrow <= 0.9 ? 'fa fa-exclamation warning' : 'fa fa-times error'
             }
           />
         </span>
@@ -120,9 +112,7 @@ const getArray = ({ income, fortune, property, borrow, ratio }) => {
             className={
               ratio <= 1 / 3 + 0.001 // for rounding
                 ? 'fa fa-check success'
-                : ratio <= 0.38
-                    ? 'fa fa-exclamation warning'
-                    : 'fa fa-times error'
+                : ratio <= 0.38 ? 'fa fa-exclamation warning' : 'fa fa-times error'
             }
           />
         </span>
@@ -147,7 +137,7 @@ const StartRecap = props => (
     {isReady(props)
       ? <Recap array={getArray(props)} />
       : !props.noPlaceholder &&
-          <h4 className="secondary text-center">
+      <h4 className="secondary text-center">
             Amusez-vous avec les valeurs
           </h4>}
   </article>

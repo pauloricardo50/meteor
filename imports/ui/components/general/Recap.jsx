@@ -84,7 +84,7 @@ const getDashboardArray = props => {
       value: `CHF ${toMoney(Math.round(r.property.value * constants.notaryFees))}`,
     },
     {
-      label: 'Frais retrait 2e Pilier',
+      label: 'Frais retrait LPP',
       value: `CHF ${toMoney(Math.round(r.general.insuranceFortuneUsed * constants.lppFees))}`,
       hide: !r.general.insuranceFortuneUsed,
     },
@@ -312,7 +312,7 @@ const getStart2Array = props => {
       value: `CHF ${toMoney(Math.round(p.property * constants.notaryFees))}`,
     },
     {
-      label: 'Frais retrait 2e Pilier',
+      label: 'Frais retrait LPP',
       value: `CHF ${toMoney(Math.round(p.lppFees))}`,
       hide: !p.insuranceFortuneUsed,
     },

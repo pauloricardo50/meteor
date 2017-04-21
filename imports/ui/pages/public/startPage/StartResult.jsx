@@ -5,8 +5,7 @@ import Scroll from 'react-scroll';
 import CountUp from 'react-countup';
 
 import RaisedButton from 'material-ui/RaisedButton';
-import ExpensesChartInterests
-  from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
+import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
 import Recap from '/imports/ui/components/general/Recap.jsx';
 
 import constants from '/imports/js/config/constants';
@@ -34,7 +33,7 @@ const StartResult = props => {
   if (props.fortuneUsed) {
     loan = props.loanWanted;
   } else {
-    loan = props.property * constants.maxLoan(props.usageType);
+    loan = props.property * constants.maxLoan(props.usageType, props.toRetirement);
   }
 
   return (
@@ -84,7 +83,7 @@ const StartResult = props => {
           </h3>
           <ExpensesChartInterests
             loan={loan}
-            amortizing={loan * constants.amortizing / 12}
+            amortization={loan * constants.getAmortization(props.borrow, props.toRetirement) / 12}
             maintenance={props.propAndWork * constants.maintenanceReal / 12}
           />
         </div>
@@ -101,11 +100,7 @@ const StartResult = props => {
               })}
             style={{ marginRight: 8 }}
           />
-          <RaisedButton
-            label="Continuer"
-            onTouchTap={() => handleClick(props)}
-            primary
-          />
+          <RaisedButton label="Continuer" onTouchTap={() => handleClick(props)} primary />
         </div>}
 
       {props.type === 'test' &&

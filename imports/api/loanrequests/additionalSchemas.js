@@ -26,6 +26,10 @@ export const GeneralSchema = new SimpleSchema({
     min: 18,
     max: 120,
   },
+  oldestGender: {
+    type: String,
+    optional: true,
+  },
   partnersToAvoidExists: {
     type: Boolean,
     defaultValue: false,
@@ -296,7 +300,7 @@ export const LogicSchema = new SimpleSchema({
   },
   expertiseDone: {
     type: Boolean,
-    defaultValue: true,
+    defaultValue: false,
   },
   expertiseValid: {
     type: Boolean,

@@ -1,11 +1,11 @@
 import cleanMethod from '/imports/api/cleanMethods';
-import constants from '../config/constants';
+import constants, { incomeLimitedProperty } from '../config/constants';
 
 // if 2 values are not in auto mode, set both of their minValues to 0
 const setDefaultMinValues = (s, o) => {
   const isNonAuto = [s.property, s.fortune, s.income].map(i => !i.auto && true);
   const labels = ['property', 'fortune', 'income'];
-  const count = isNonAuto.reduce((tot, val) => val ? tot + 1 : tot, 0);
+  const count = isNonAuto.reduce((tot, val) => (val ? tot + 1 : tot), 0);
 
   if (count === 2) {
     labels.forEach((label, i) => {
@@ -18,14 +18,46 @@ const setDefaultMinValues = (s, o) => {
   return o;
 };
 
+export const getMinIncome = (property, fortune) => {
+  const loan = property * (1 + constants.notaryFees) - fortune;
+  const m = constants.maintenance;
+  const i = constants.interests;
+  const mR = constants.maxRatio;
+
+  const withAmortizing = (property * m + loan * (i + (loan - 0.65 * property) / (15 * loan))) / mR;
+
+  const withoutAmortizing = (property * m + loan * i) / mR;
+
+  return Math.ceil(Math.max(withAmortizing, withoutAmortizing) + 1);
+};
+
+export const getMinFortune = (property, income) => {
+  const m = constants.maintenance;
+  const i = constants.interests;
+  const mR = constants.maxRatio;
+  const nF = constants.notaryFees;
+
+  // It has to cover 20% and notaryfees
+  const basicValue = property * (0.2 + nF);
+
+  // TODO: Figure out how much fortune you need, cover the case between 80% and 65% with amortization
+  // plus the case below 65% where amortization falls to 0
+  const rank1Fortune = 0;
+  const rank2Fortune = 0;
+  const rankFortune = Math.min(rank1Fortune, rank2Fortune);
+
+  // return property * (1 + nF) - property * (15 * m - 0.65) / (15 * mR * income * (15 * i + 1));
+  return Math.max(rankFortune, basicValue);
+};
+
 export const changeProperty = (state, o, property) => {
   if (state.fortune.auto && state.income.auto) {
     o.fortune.minValue = property * (0.2 + 0.05);
-    o.income.minValue = 3 *
-      property *
-      (constants.maintenance + 0.8 * constants.loanCost());
+    o.income.minValue = 3 * property * (constants.maintenance + 0.8 * constants.loanCost(0.8));
   } else if (state.fortune.auto) {
+    // o.fortune.minValue = getMinFortune(state.property.value, state.income.value);
   } else if (state.income.auto) {
+    o.income.minValue = getMinIncome(state.property.value, state.fortune.value);
   }
 
   o = setDefaultMinValues(state, o);
@@ -36,10 +68,11 @@ export const changeProperty = (state, o, property) => {
 export const changeFortune = (state, o, fortune) => {
   if (state.property.auto && state.income.auto) {
     o.property.minValue = fortune / (0.2 + 0.05);
-    o.income.minValue = fortune / (0.2 + 0.05) * constants.propertyToIncome();
+    o.income.minValue = fortune / (0.2 + 0.05) * constants.propertyToIncome('primary', 0.8);
   } else if (state.property.auto) {
     o.property.minValue = constants.maxProperty(state.income.value, fortune);
   } else if (state.income.auto) {
+    o.income.minValue = getMinIncome(state.property.value, state.fortune.value);
   }
 
   o = setDefaultMinValues(state, o);
@@ -49,11 +82,12 @@ export const changeFortune = (state, o, fortune) => {
 
 export const changeIncome = (state, o, income) => {
   if (state.property.auto && state.fortune.auto) {
-    o.property.minValue = income / constants.propertyToIncome();
+    o.property.minValue = income / constants.propertyToIncome('primary', 0.8);
     o.fortune.minValue = o.property.minValue * (0.2 + 0.05);
   } else if (state.property.auto) {
     o.property.minValue = constants.maxProperty(income, state.fortune.value);
   } else if (state.fortune.auto) {
+    // o.fortune.minValue = getMinFortune(state.property.value, state.income.value);
   }
 
   o = setDefaultMinValues(state, o);
@@ -68,12 +102,12 @@ export const changeIncome = (state, o, income) => {
 export const isFinished = (state, minFortune) =>
   state.finalized &&
   !state.error &&
-  (state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= minFortune ||
-    state.type === 'test');
+  (state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= minFortune || state.type === 'test');
 
 export const getProject = state => {
   const property = state.propertyValue || calculateProperty(state) || 0;
-  const project = property +
+  const project =
+    property +
     (state.propertyWork || 0) +
     property * constants.notaryFees +
     (state.insuranceFortuneUsed * constants.lppFees || 0);
@@ -107,85 +141,58 @@ export const getIncome = state => {
 };
 
 export const getOtherIncome = (array = []) =>
-  [...array.map(i => i.value || 0)].reduce(
-    (tot, val) => (val > 0 && tot + val) || tot,
-    0,
-  );
+  [...array.map(i => i.value || 0)].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
 
 export const getFortune = state =>
-  [state.fortune1, state.fortune2].reduce(
-    (tot, val) => (val > 0 && tot + val) || tot,
-    0,
-  );
+  [state.fortune1, state.fortune2].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
 
 export const getInsuranceFortune = state =>
-  [
-    state.insurance11,
-    state.insurance12,
-    state.insurance21,
-    state.insurance22,
-  ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+  [state.insurance11, state.insurance12, state.insurance21, state.insurance22].reduce(
+    (tot, val) => (val > 0 && tot + val) || tot,
+    0,
+  );
 
 export const getRealEstateFortune = (array = []) =>
-  [...array.map(i => i.value - i.loan || 0)].reduce(
-    (tot, val) => (val > 0 && tot + val) || tot,
-    0,
-  );
+  [...array.map(i => i.value - i.loan || 0)].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
 
 export const getRealEstateValue = (array = []) =>
-  [...array.map(i => i.value || 0)].reduce(
-    (tot, val) => (val > 0 && tot + val) || tot,
-    0,
-  );
+  [...array.map(i => i.value || 0)].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
 
 export const getRealEstateDebt = (array = []) =>
-  [...array.map(i => i.loan || 0)].reduce(
-    (tot, val) => (val > 0 && tot + val) || tot,
-    0,
-  );
+  [...array.map(i => i.loan || 0)].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
 
 export const getExpenses = (array = []) =>
-  [...array.map(i => i.value)].reduce(
-    (tot, val) => (val > 0 && tot + val) || tot,
-    0,
-  );
+  [...array.map(i => i.value)].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
 
-export const getMonthly = state => {
+export const getMonthly = (state, borrow, toRetirement) => {
   const s = state;
   const projectValue = getProject(state);
-  const propAndWork = s.propertyValue +
-    (s.propertyWorkExists ? s.propertyWork : 0);
+  const propAndWork = s.propertyValue + (s.propertyWorkExists ? s.propertyWork : 0);
 
   const maintenance = propAndWork * constants.maintenance;
-  const interestsAndAmortizing = (projectValue -
-    (s.fortuneUsed || 0) -
-    (s.insuranceFortuneUsed || 0)) *
-    constants.loanCost();
+  const interestsAndAmortizing =
+    (projectValue - (s.fortuneUsed || 0) - (s.insuranceFortuneUsed || 0)) *
+    constants.loanCost(borrow, toRetirement);
   const cost = (maintenance + interestsAndAmortizing) / 12;
 
   return Math.max(cost, 0);
 };
 
-export const getMonthlyReal = state => {
+export const getMonthlyReal = (state, borrow, toRetirement) => {
   const s = state;
   const projectValue = getProject(state);
   const propAndWork = s.propertyValue + (s.propertyWork || 0);
   return Math.max(
     (propAndWork * constants.maintenanceReal +
       (projectValue - (s.fortuneUsed || 0) - (s.insuranceFortuneUsed || 0)) *
-        constants.loanCostReal()) /
+        constants.loanCostReal(borrow, toRetirement)) /
       12,
     0,
   );
 };
 
-export const calculateProperty = (
-  fortune,
-  insuranceFortune,
-  income,
-  usageType,
-) => {
-  return constants.maxProperty(income, fortune, insuranceFortune, usageType);
+export const calculateProperty = (fortune, insuranceFortune, income, usageType, toRetirement) => {
+  return constants.maxProperty(income, fortune, insuranceFortune, usageType, toRetirement);
 };
 
 export const getLenderCount = (borrow, ratio) => {
@@ -205,17 +212,52 @@ export const getLenderCount = (borrow, ratio) => {
 export const getRatio = (income, expenses, monthly) =>
   income - expenses !== 0 && monthly / ((income - expenses) / 12);
 
-export const getBorrow = (totalFortune, propAndWork, propertyValue, fees) =>
+export const getBorrow = (totalFortune, propAndWork, fees) =>
   (totalFortune &&
     propAndWork !== 0 &&
     Math.max((propAndWork - (totalFortune - fees)) / propAndWork, 0)) ||
   0;
+
+export const getRetirement = state => {
+  const multiple = state.borrowerCount > 1;
+
+  const age = multiple ? state.oldestAge : state.age;
+  const gender = multiple ? state.oldestGender : state.gender;
+
+  if (age && gender) {
+    const retirement = gender === 'f' ? 64 : 65;
+
+    return Math.max(retirement - age, 0);
+  }
+
+  return 100;
+};
+
+export const getMaxLoan = (state, income, fortune, insuranceFortune, toRetirement, propAndWork) => {
+  const property = state.propertyValue;
+  const maintenance = property * constants.maintenance;
+  const mR = constants.maxRatio;
+  const i = constants.interests;
+
+  const maxLoan = state.usageType === 'secondary'
+    ? Math.floor(0.7 * propAndWork)
+    : Math.floor(0.8 * propAndWork);
+
+  // Check LaTeX document, equation 15, and solve for the loan
+  const calculatedMaxLoan =
+    (toRetirement * (mR * income - maintenance) + 0.65 * property) / (i * toRetirement + 1);
+
+  // Floor this value to make sure the user can afford it if any rounding happens
+  // If it had to round up, it would be too expensive
+  return Math.floor(Math.min(maxLoan, calculatedMaxLoan));
+};
 
 // The final function that inserts the documents once the form is finished
 export const saveStartForm = (f, history) => {
   const multiple = f.borrowerCount > 1;
   const borrowerOne = {
     age: f.age,
+    gender: f.gender,
     salary: f.income1,
     bonusExists: f.bonusExists,
     bonus: {
@@ -252,6 +294,7 @@ export const saveStartForm = (f, history) => {
     general: {
       purchaseType: f.purchaseType,
       oldestAge: multiple ? f.oldestAge : f.age,
+      oldestGender: multiple ? f.oldestGender : f.gender,
       fortuneUsed: f.fortuneUsed,
       insuranceFortuneUsed: f.insuranceFortuneUsed,
     },
@@ -269,7 +312,8 @@ export const saveStartForm = (f, history) => {
       loanRequest.borrowers.push(id2);
     }
     cleanMethod('insertRequest', loanRequest, undefined, (err, requestId) =>
-      history.push(`/app?newrequest=${requestId}`));
+      history.push(`/app?newrequest=${requestId}`),
+    );
   };
 
   // Insert each document
@@ -277,7 +321,8 @@ export const saveStartForm = (f, history) => {
     if (multiple) {
       borrowerTwo.sameAddress = result1;
       cleanMethod('insertBorrower', borrowerTwo, undefined, (err2, result2) =>
-        insertRequest(result1, result2));
+        insertRequest(result1, result2),
+      );
     } else {
       insertRequest(result1);
     }

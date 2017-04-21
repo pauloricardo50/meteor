@@ -27,6 +27,8 @@ import {
   getLenderCount,
   getRatio,
   getBorrow,
+  getRetirement,
+  getMaxLoan,
 } from '/imports/js/helpers/startFunctions';
 
 import Recap from '/imports/ui/components/general/Recap.jsx';
@@ -90,8 +92,7 @@ export default class Start2Page extends Component {
             <RaisedButton
               label="Avec Plaisir"
               primary
-              onClick={() =>
-                Meteor.setTimeout(() => this.setState({ showUX: false }), 400)}
+              onClick={() => Meteor.setTimeout(() => this.setState({ showUX: false }), 400)}
             />
           </div>
         </div>
@@ -100,8 +101,11 @@ export default class Start2Page extends Component {
 
     const s = this.state;
     const property = s.propertyValue || 0;
-    const fees = property * constants.notaryFees;
-    const lppFees = s.insuranceFortuneUsed * constants.lppFees || 0;
+
+    // Floor the fees to make them forgiving for the user
+    const fees = Math.floor(property * constants.notaryFees);
+    const lppFees = Math.floor(s.insuranceFortuneUsed * constants.lppFees || 0);
+    const toRetirement = getRetirement(s);
     const props = {
       formState: s,
       type: s.type,
@@ -122,37 +126,42 @@ export default class Start2Page extends Component {
       fees,
       lppFees,
       project: fees + property + (s.propertyWork || 0) + lppFees || 0,
-      monthly: getMonthly(s) || 0,
-      monthlyReal: getMonthlyReal(s) || 0,
       realEstate: getRealEstateFortune(s.realEstateArray) || 0,
       realEstateValue: getRealEstateValue(s.realEstateArray) || 0,
       realEstateDebt: getRealEstateDebt(s.realEstateArray) || 0,
       loanWanted: s.loanWanted,
       propertyRent: s.propertyRent,
+      toRetirement,
     };
-    props.minCash = fees +
-      0.1 * props.propAndWork +
-      0.1 * props.propAndWork * constants.lppFees;
+    props.minCash = fees + 0.1 * props.propAndWork + 0.1 * props.propAndWork * constants.lppFees;
     props.fortuneNeeded = props.project - s.loanWanted;
     props.totalFortune = props.fortune + props.insuranceFortune;
-    props.ratio = getRatio(props.income, props.expenses, props.monthly);
     props.borrow = getBorrow(
       props.fortuneUsed + props.insuranceFortuneUsed,
       props.propAndWork,
-      props.property,
       props.fees + props.lppFees,
     );
+    props.monthly = getMonthly(s, props.borrow, toRetirement) || 0;
+    props.monthlyReal = getMonthlyReal(s, props.borrow, toRetirement) || 0;
+    props.ratio = getRatio(props.income, props.expenses, props.monthly);
     props.lenderCount = getLenderCount(props.borrow, props.ratio);
 
     // if you want to have a minimum loan, you use all your fortune, hence, you'll have to pay maximum lppFees
     // Round up to make sure the project works
-    props.minLoan = Math.ceil(
-      props.propAndWork -
-        (props.fortune + props.insuranceFortune * (1 - constants.lppFees)) +
-        fees,
+    props.minLoan = Math.round(
+      props.propAndWork - (props.fortune + props.insuranceFortune * (1 - constants.lppFees)) + fees,
     );
-    props.minFortune = fees +
-      (1 - constants.maxLoan(s.usageType)) * props.propAndWork;
+    // If the income is too low to afford a loan higher than some amount
+    props.maxLoan = getMaxLoan(
+      s,
+      props.income,
+      props.fortune,
+      props.insuranceFortune,
+      toRetirement,
+      props.propAndWork,
+    );
+    props.minFortune =
+      fees + (1 - constants.maxLoan(s.usageType, props.toRetirement)) * props.propAndWork;
 
     // If there isn't enough cash, add to minfortune the lppFees that will have to be paid, as long as it is below requirement
     if (props.fortune < props.minFortune) {
@@ -168,6 +177,7 @@ export default class Start2Page extends Component {
         props.insuranceFortune,
         props.income,
         props.usageType,
+        props.toRetirement,
       );
     }
 

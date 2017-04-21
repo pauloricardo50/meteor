@@ -2,12 +2,37 @@ import { expect } from 'chai';
 import { describe, it } from 'meteor/practicalmeteor:mocha';
 
 import {
+  getMinIncome,
+  getMinFortune,
   getBonusIncome,
   getMonthly,
   getMonthlyReal,
   getRatio,
+  getBorrow,
+  getRetirement,
+  getAmortization,
 } from '../startFunctions';
 import constants from '../../config/constants';
+
+const getRandomInt = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+};
+
+describe('Start 1 Functions', () => {
+  describe('Get Min Income', () => {
+    it('Should return x for 200k fortune and 1000M property', () => {
+      expect(getMinIncome(1000000, 200000)).to.equal(173246);
+    });
+  });
+
+  // describe('Get Min Fortune', () => {
+  //   it("Should return x for 1000M property and 173'246 income", () => {
+  //     expect(getMinFortune(1000000, 173246)).to.equal(200000);
+  //   });
+  // });
+});
 
 describe('Start Functions', () => {
   describe('Get bonus income', () => {
@@ -16,9 +41,7 @@ describe('Start Functions', () => {
     });
 
     it('Should return 250 for 3x 500 and any value below that', () => {
-      expect(getBonusIncome([500, 500, 500, Math.random() * 499])).to.equal(
-        250,
-      );
+      expect(getBonusIncome([500, 500, 500, Math.random() * 499])).to.equal(250);
     });
 
     it('Should ignore any value beyond the 4 first ones', () => {
@@ -52,23 +75,76 @@ describe('Start Functions', () => {
         insuranceFortuneUsed: 200000,
         propertyValue: 1583179,
       };
-      const monthly = getMonthly(state);
+      const totalFortune = state.fortune + state.insuranceFortune;
+      const fees =
+        state.propertyValue * constants.notaryFees + state.insuranceFortune * constants.lppFees;
+      const borrow = getBorrow(totalFortune, state.propertyValue, fees);
+      const monthly = getMonthly(state, borrow);
 
       expect(getRatio(income, 0, monthly)).to.be.at
         .most(constants.maxRatio)
         .and.to.be.at.least(constants.maxRatio - 0.1);
     });
 
-    it('Should return 0.38 for an edge case where the ratio goes above 0.38', () => {
+    it('Should return 0.38 for an edge case where the ratio could go above 0.38', () => {
       const income = 200000;
       const state = {
         fortuneUsed: 390000,
         insuranceFortuneUsed: 0,
         propertyValue: 1344154,
       };
-      const monthly = getMonthly(state);
+      const totalFortune = state.fortune + state.insuranceFortune;
+      const fees =
+        state.propertyValue * constants.notaryFees + state.insuranceFortune * constants.lppFees;
+      const borrow = getBorrow(totalFortune, state.propertyValue, fees);
+      const monthly = getMonthly(state, borrow);
 
       expect(getRatio(income, 0, monthly)).to.be.at.most(constants.maxRatio);
     });
+  });
+
+  describe('Get Retirement', () => {
+    it('Should return 100 for undefined values', () => {
+      const state = {
+        age: undefined,
+        gender: undefined,
+      };
+
+      expect(getRetirement(state)).to.equal(100);
+    });
+
+    it('Should return 10 even without borrowerCount', () => {
+      const state = {
+        age: 55,
+        gender: 'm',
+      };
+
+      expect(getRetirement(state)).to.equal(10);
+    });
+
+    it('Should return 0 for people older than 65', () => {
+      const state = {
+        age: 65 + getRandomInt(0, 100),
+        gender: 'm',
+      };
+
+      expect(getRetirement(state)).to.equal(0);
+    });
+
+    it('Should work for multiple borrowers, and ignore single borrower values', () => {
+      const state = {
+        borrowerCount: 2,
+        oldestAge: 60,
+        oldestGender: 'f',
+        age: 55,
+        gender: 'm',
+      };
+
+      expect(getRetirement(state)).to.equal(4);
+    });
+  });
+
+  describe('Get Max Loan', () => {
+    it('Should return ');
   });
 });

@@ -19,9 +19,7 @@ export default class ButtonInput extends Component {
 
     const currentValue = this.props.formState[this.props.id];
     if (currentValue !== undefined) {
-      const currentButton = this.props.buttons.find(
-        button => button.id === currentValue,
-      );
+      const currentButton = this.props.buttons.find(button => button.id === currentValue);
 
       return currentButton.label || currentButton.id;
     }
@@ -36,8 +34,7 @@ export default class ButtonInput extends Component {
       this.props.setFormState(this.props.deleteId, undefined);
     }
 
-    this.props.setFormState(this.props.id, value, () =>
-      this.props.setActiveLine(''));
+    this.props.setFormState(this.props.id, value, () => this.props.setActiveLine(''));
   }
 
   render() {
@@ -54,8 +51,7 @@ export default class ButtonInput extends Component {
           &nbsp;
           {!this.props.hideResult && this.props.question && <br />}
 
-          {!this.props.hideResult &&
-            <span className="active">{this.getText()}</span>}
+          {!this.props.hideResult && <span className="active">{this.getText()}</span>}
           &nbsp;
           <AutoTooltip>{this.props.text2}</AutoTooltip>
         </h1>
@@ -75,6 +71,7 @@ export default class ButtonInput extends Component {
               }}
               style={styles.button}
               primary={!button.noPrimary}
+              secondary={button.secondary}
               key={index}
             />
           ))}

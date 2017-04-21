@@ -3,10 +3,7 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import Highcharts from 'highcharts';
 
-import {
-  getInterests,
-  getAmortization,
-} from '/imports/js/helpers/finance-math';
+import { getInterests, getAmortization } from '/imports/js/helpers/finance-math';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import colors from '/imports/js/config/colors';
 
@@ -24,9 +21,7 @@ var timeout;
 var oldWidth;
 
 const update = that => {
-  const total = that.state.interests +
-    that.state.amortization +
-    that.state.maintenance;
+  const total = that.state.interests + that.state.amortization + that.state.maintenance;
   that.chart.update({
     title: {
       text: `CHF ${toMoney(Math.round(total))}<br>par mois*`,
@@ -39,9 +34,7 @@ const update = that => {
     plotOptions: {
       pie: {
         dataLabels: {
-          enabled: that.state.interests &&
-            that.state.amortization &&
-            that.state.maintenance,
+          enabled: that.state.interests && that.state.amortization && that.state.maintenance,
         },
       },
     },
@@ -76,16 +69,13 @@ export default class ExpensesChart extends Component {
     if (this.props.loanRequest) {
       this.state = {
         interests: getInterests(this.props.loanRequest),
-        amortization: getAmortization(
-          this.props.loanRequest,
-          this.props.borrowers,
-        ),
+        amortization: getAmortization(this.props.loanRequest, this.props.borrowers),
         maintenance: this.props.loanRequest.property.value * 0.01 / 12,
       };
     } else {
       this.state = {
         interests: props.interests,
-        amortization: props.amortizing,
+        amortization: props.amortization,
         maintenance: props.maintenance,
       };
     }
@@ -121,7 +111,7 @@ export default class ExpensesChart extends Component {
         this.setState(
           {
             interests: n.interests,
-            amortization: n.amortizing,
+            amortization: n.amortization,
             maintenance: n.maintenance,
           },
           () => update(this),
@@ -136,9 +126,7 @@ export default class ExpensesChart extends Component {
   }
 
   createChart = () => {
-    const total = this.state.interests +
-      this.state.amortization +
-      this.state.maintenance;
+    const total = this.state.interests + this.state.amortization + this.state.maintenance;
     const options = {
       chart: {
         type: 'pie',
@@ -172,8 +160,7 @@ export default class ExpensesChart extends Component {
             distance: 10,
             format: '<b>{point.name}</b><br />CHF {point.y:,.0f}',
             style: {
-              color: (Highcharts.theme && Highcharts.theme.contrastTextColor) ||
-                'black',
+              color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
               overflow: 'visible',
             },
           },
@@ -213,11 +200,7 @@ export default class ExpensesChart extends Component {
           ],
         },
       ],
-      colors: [
-        chartColors.interest,
-        chartColors.amortization,
-        chartColors.maintenance,
-      ],
+      colors: [chartColors.interest, chartColors.amortization, chartColors.maintenance],
       lang: {
         thousandsSep: "'",
       },
@@ -226,22 +209,19 @@ export default class ExpensesChart extends Component {
       },
     };
 
-    Highcharts.getOptions().colors = Highcharts.map(
-      Highcharts.getOptions().colors,
-      function(color) {
-        return {
-          radialGradient: {
-            cx: 0.5,
-            cy: 0.3,
-            r: 0.7,
-          },
-          stops: [
-            [0, color],
-            [1, Highcharts.Color(color).brighten(-0.3).get('rgb')], // darken
-          ],
-        };
-      },
-    );
+    Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, color => {
+      return {
+        radialGradient: {
+          cx: 0.5,
+          cy: 0.3,
+          r: 0.7,
+        },
+        stops: [
+          [0, color],
+          [1, Highcharts.Color(color).brighten(-0.3).get('rgb')], // darken
+        ],
+      };
+    });
     if (document.getElementById('expensesChart')) {
       this.chart = new Highcharts.Chart('expensesChart', options);
     }
@@ -253,9 +233,7 @@ export default class ExpensesChart extends Component {
     const d = document;
     const documentElement = d.documentElement;
     const body = d.getElementsByTagName('body')[0];
-    const newWidth = w.innerWidth ||
-      documentElement.clientWidth ||
-      body.clientWidth;
+    const newWidth = w.innerWidth || documentElement.clientWidth || body.clientWidth;
 
     if (oldWidth && oldWidth !== newWidth) {
       Meteor.clearTimeout(timeout);
@@ -264,12 +242,9 @@ export default class ExpensesChart extends Component {
         this.chart = undefined;
       }
 
-      timeout = Meteor.setTimeout(
-        () => {
-          Meteor.defer(() => this.createChart());
-        },
-        200,
-      );
+      timeout = Meteor.setTimeout(() => {
+        Meteor.defer(() => this.createChart());
+      }, 200);
     }
 
     oldWidth = newWidth;
@@ -283,7 +258,7 @@ export default class ExpensesChart extends Component {
 ExpensesChart.defaultProps = {
   loanRequest: undefined,
   interests: 0,
-  amortizing: 0,
+  amortization: 0,
   maintenance: 0,
   interestRate: 0.015,
 };
@@ -291,7 +266,7 @@ ExpensesChart.defaultProps = {
 ExpensesChart.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any),
   interests: PropTypes.number,
-  amortizing: PropTypes.number,
+  amortization: PropTypes.number,
   maintenance: PropTypes.number,
   interestRate: PropTypes.number,
 };

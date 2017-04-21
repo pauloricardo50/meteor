@@ -42,15 +42,14 @@ import AdminHomePage from '/imports/ui/pages/admin/AdminHomePage.jsx';
 import AdminUsersPage from '/imports/ui/pages/admin/AdminUsersPage.jsx';
 import AdminRequestsPage from '/imports/ui/pages/admin/AdminRequestsPage.jsx';
 import AdminOfferPage from '/imports/ui/pages/admin/AdminOfferPage.jsx';
-import AdminSingleRequestPage
-  from '/imports/ui/pages/admin/AdminSingleRequestPage.jsx';
-import AdminSingleUserPage
-  from '/imports/ui/pages/admin/AdminSingleUserPage.jsx';
+import AdminSingleRequestPage from '/imports/ui/pages/admin/AdminSingleRequestPage.jsx';
+import AdminSingleUserPage from '/imports/ui/pages/admin/AdminSingleUserPage.jsx';
 
 // Partner pages
 import PartnerHomePage from '/imports/ui/pages/partner/PartnerHomePage.jsx';
-import PartnerRequestPage
-  from '/imports/ui/pages/partner/PartnerRequestPage.jsx';
+import PartnerRequestPage from '/imports/ui/pages/partner/PartnerRequestPage.jsx';
+
+import TestPage from '/imports/ui/pages/public/TestPage.jsx';
 
 const PublicRoutes = props => (
   <PublicLayout {...props}>
@@ -62,6 +61,7 @@ const PublicRoutes = props => (
       <Route path="/careers" component={CareersPage} />
       <Route path="/about" component={AboutPage} />
       <Route path="/tos" component={TosPage} />
+      <Route path="/test" component={TestPage} />
     </Switch>
   </PublicLayout>
 );
@@ -78,48 +78,19 @@ const UserRoutes = props => (
           path="/app/new/:requestId"
           render={routeProps => <NewPage {...layoutProps} {...routeProps} />}
         />
-        <Route
-          path="/app/profile"
-          render={() => <ProfilePage {...layoutProps} />}
-        />
-        <Route
-          path="/app/contact"
-          render={() => <ContactPage {...layoutProps} />}
-        />
+        <Route path="/app/profile" render={() => <ProfilePage {...layoutProps} />} />
+        <Route path="/app/contact" render={() => <ContactPage {...layoutProps} />} />
         <Route
           path="/app/borrowers/:borrowerId"
-          render={routeProps => (
-            <BorrowerPage {...layoutProps} {...routeProps} />
-          )}
+          render={routeProps => <BorrowerPage {...layoutProps} {...routeProps} />}
         />
-        <Route
-          path="/app/requests/:requestId/property"
-          component={PropertyPage}
-        />
-        <Route
-          path="/app/requests/:requestId/verification"
-          component={VerificationPage}
-        />
-        <Route
-          path="/app/requests/:requestId/expertise"
-          component={ExpertisePage}
-        />
-        <Route
-          path="/app/requests/:requestId/auction"
-          component={AuctionPage}
-        />
-        <Route
-          path="/app/requests/:requestId/structure"
-          component={StructurePage}
-        />
-        <Route
-          path="/app/requests/:requestId/lenderpicker"
-          component={LenderPickerPage}
-        />
-        <Route
-          path="/app/requests/:requestId/finalsteps"
-          component={FinalStepsPage}
-        />
+        <Route path="/app/requests/:requestId/property" component={PropertyPage} />
+        <Route path="/app/requests/:requestId/verification" component={VerificationPage} />
+        <Route path="/app/requests/:requestId/expertise" component={ExpertisePage} />
+        <Route path="/app/requests/:requestId/auction" component={AuctionPage} />
+        <Route path="/app/requests/:requestId/structure" component={StructurePage} />
+        <Route path="/app/requests/:requestId/lenderpicker" component={LenderPickerPage} />
+        <Route path="/app/requests/:requestId/finalsteps" component={FinalStepsPage} />
         <Route path="/app" render={() => <DashBoardPage {...layoutProps} />} />
       </Switch>
     )}
@@ -132,32 +103,16 @@ const AdminRoutes = props => (
     type="admin"
     render={layoutProps => (
       <Switch>
-        <Route
-          exact
-          path="/admin"
-          render={() => <AdminHomePage {...layoutProps} />}
-        />
-        <Route
-          exact
-          path="/admin/users"
-          render={() => <AdminUsersPage {...layoutProps} />}
-        />
-        <Route
-          exact
-          path="/admin/requests"
-          render={() => <AdminRequestsPage {...layoutProps} />}
-        />
+        <Route exact path="/admin" render={() => <AdminHomePage {...layoutProps} />} />
+        <Route exact path="/admin/users" render={() => <AdminUsersPage {...layoutProps} />} />
+        <Route exact path="/admin/requests" render={() => <AdminRequestsPage {...layoutProps} />} />
         <Route
           path="/admin/requests/:requestId"
-          render={routeProps => (
-            <AdminSingleRequestPage {...layoutProps} {...routeProps} />
-          )}
+          render={routeProps => <AdminSingleRequestPage {...layoutProps} {...routeProps} />}
         />
         <Route
           path="/admin/users/:userId"
-          render={routeProps => (
-            <AdminSingleUserPage {...layoutProps} {...routeProps} />
-          )}
+          render={routeProps => <AdminSingleUserPage {...layoutProps} {...routeProps} />}
         />
       </Switch>
     )}
@@ -170,17 +125,11 @@ const PartnerRoutes = props => (
     type="partner"
     render={layoutProps => (
       <Switch>
-        <Route
-          exact
-          path="/partner"
-          render={() => <PartnerHomePage {...layoutProps} />}
-        />
+        <Route exact path="/partner" render={() => <PartnerHomePage {...layoutProps} />} />
         <Route
           exact
           path="/partner/requests/:requestId"
-          render={routeProps => (
-            <PartnerRequestPage {...layoutProps} {...routeProps} />
-          )}
+          render={routeProps => <PartnerRequestPage {...layoutProps} {...routeProps} />}
         />
       </Switch>
     )}

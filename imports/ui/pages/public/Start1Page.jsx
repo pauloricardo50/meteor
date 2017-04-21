@@ -11,17 +11,12 @@ import RaisedButton from 'material-ui/RaisedButton';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
 
 import { toNumber, toMoney } from '/imports/js/helpers/conversionFunctions';
-import {
-  changeProperty,
-  changeFortune,
-  changeIncome,
-} from '/imports/js/helpers/startFunctions';
+import { changeProperty, changeFortune, changeIncome } from '/imports/js/helpers/startFunctions';
 import constants from '/imports/js/config/constants';
 import StartLine from './startPage/StartLine.jsx';
 import StartRecap from './startPage/StartRecap.jsx';
 import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
-import ExpensesChartInterests
-  from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
+import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
 
 import Accordion from '/imports/ui/components/general/Accordion.jsx';
 
@@ -44,8 +39,7 @@ const getArray = (income, fortune, property, borrow, ratio, propertyAuto) => {
     fa: true,
     'fa-check success': borrow <= 0.8 + 0.001 && ratio <= 1 / 3 + 0.001,
     'fa-exclamation warning': !isFalse &&
-      ((borrow <= 0.9 && borrow > 0.8 + 0.001) ||
-        (ratio <= 0.38 && ratio > 1 / 3 + 0.001)),
+      ((borrow <= 0.9 && borrow > 0.8 + 0.001) || (ratio <= 0.38 && ratio > 1 / 3 + 0.001)),
     'fa-times error': isFalse,
   });
   return [
@@ -139,20 +133,16 @@ export default class Start1Page extends Component {
     );
   }
 
-  getMonthly(income, fortune, property) {
+  getMonthly(income, fortune, property, borrow) {
     return Math.max(
-      (property * constants.maintenance +
-        (property - fortune) * constants.loanCost()) /
-        12,
+      (property * constants.maintenance + (property - fortune) * constants.loanCost(borrow)) / 12,
       0,
     );
   }
 
   getUrl = () => {
     const queryparams = {
-      property: this.type !== 'test'
-        ? Math.round(this.state.property.value)
-        : 0,
+      property: this.type !== 'test' ? Math.round(this.state.property.value) : 0,
       income: Math.round(this.state.income.value),
       fortune: Math.round(this.state.fortune.value),
     };
@@ -177,10 +167,7 @@ export default class Start1Page extends Component {
     }
 
     // Set the state of the value that is changed, and immediately recommend other minValues
-    this.setState(
-      prev => _.merge({}, prev, object),
-      () => this.recommendValues(name, autoOff),
-    );
+    this.setState(prev => _.merge({}, prev, object), () => this.recommendValues(name, autoOff));
   };
 
   handleReset = () => {
@@ -207,10 +194,7 @@ export default class Start1Page extends Component {
     const s = this.state;
     const minIncome = s.property.value * constants.propertyToIncome();
     // Make sure notary fees are paid
-    const borrow = Math.max(
-      (s.property.value * 1.05 - s.fortune.value) / s.property.value,
-      0,
-    );
+    const borrow = Math.max((s.property.value * 1.05 - s.fortune.value) / s.property.value, 0);
     const ratio = minIncome / s.income.value / 3;
 
     return borrow <= 0.8 + 0.001 && ratio <= 1 / 3 + 0.001;
@@ -240,11 +224,7 @@ export default class Start1Page extends Component {
     for (const key in o) {
       if (o.hasOwnProperty(key)) {
         // If the minValue was modified, and the property is still on auto mode, also set the value
-        if (
-          o[key].minValue !== undefined &&
-          o[key].minValue !== null &&
-          this.state[key].auto
-        ) {
+        if (o[key].minValue !== undefined && o[key].minValue !== null && this.state[key].auto) {
           o[key].value = o[key].minValue;
         }
 
@@ -255,15 +235,12 @@ export default class Start1Page extends Component {
           // If the user sets a slider back to 0, and it had a minValue set to it, move it to the
           // minimum value with a little delay
           if (this.state[name].minValue) {
-            Meteor.setTimeout(
-              () => {
-                const resetO = {};
-                resetO[key] = {};
-                resetO[key].value = this.state[name].minValue;
-                this.setState(prev => _.merge({}, prev, resetO));
-              },
-              400,
-            );
+            Meteor.setTimeout(() => {
+              const resetO = {};
+              resetO[key] = {};
+              resetO[key].value = this.state[name].minValue;
+              this.setState(prev => _.merge({}, prev, resetO));
+            }, 400);
           }
         }
       }
@@ -283,8 +260,8 @@ export default class Start1Page extends Component {
     const fortune = this.state.fortune.value;
     const loan = property * 1.05 - fortune;
     const borrow = Math.max((property * 1.05 - fortune) / property, 0);
-    const ratio = this.getMonthly(income, fortune - property * 0.05, property) /
-      (income / 12);
+    const ratio =
+      this.getMonthly(income, fortune - property * 0.05, property, borrow) / (income / 12);
 
     return (
       <section className="oscar">
@@ -339,9 +316,7 @@ export default class Start1Page extends Component {
           </div>
 
           <div className="chart text-center">
-            <Accordion
-              isActive={property && fortune && income && fortune < property}
-            >
+            <Accordion isActive={property && fortune && income && fortune < property}>
               <h3>
                 Votre emprunt:
                 {' '}
@@ -349,14 +324,9 @@ export default class Start1Page extends Component {
                   CHF {toMoney(Math.round(loan / 1000) * 1000)}
                 </span>
               </h3>
-              {/* <ExpensesChart
-                interests={loan * constants.interestsReal / 12 || undefined}
-                amortizing={loan * constants.amortizing / 12 || 0}
-                maintenance={property * constants.maintenanceReal / 12 || 0}
-              /> */}
               <ExpensesChartInterests
                 loan={loan || undefined}
-                amortizing={loan * constants.amortizing / 12 || 0}
+                amortization={loan * constants.getAmortization(borrow) / 12 || 0}
                 maintenance={property * constants.maintenanceReal / 12 || 0}
               />
             </Accordion>
