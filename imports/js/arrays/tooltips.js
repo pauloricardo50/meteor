@@ -9,7 +9,8 @@ const generalTooltips = {
   'emprunt/Valeur du bien': 'Ne doit pas dépasser 80% dans la majorité des cas',
 
   'fonds propres': 'Vos économies, prévoyance et dons de tiers que vous allez engager dans le projet',
-  'frais de notaire': "Frais obligatoires lorsqu'on conclut un prêt hypothécaire",
+  'frais de notaire': "Frais obligatoires lorsqu'on conclut un prêt hypothécaire - 5% du prix d'achat.",
+  'frais retrait lpp': 'Lorsque vous retirez votre lpp en avance, vous devez payer des impôts sur ce retrait.',
   'travaux de plus-value': 'Ajoutent de la valeur au bien, sans augmenter les frais de notaire',
   expertise: 'Vérification de la valeur du bien par rapport à son état et son emplacement',
   'nb. de prêteurs potentiels': 'La quantité de prêteurs e-Potek dont les conditions correspondent à votre dossier',
