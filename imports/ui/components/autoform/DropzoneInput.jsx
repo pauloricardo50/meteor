@@ -24,8 +24,6 @@ const handleSave = (props, file) => {
     fileCount,
   };
 
-  console.log('pushing!');
-
   cleanMethod(props.pushFunc, object, props.documentId);
 };
 
@@ -43,8 +41,7 @@ const getUploadedFiles = (props, myDropzone) => {
 
 const componentConfig = props => ({
   iconFiletypes: ['.jpg', '.png', '.pdf'],
-  showFiletypeIcon: !props.currentValue ||
-    (props.currentValue && props.currentValue.length < 1), // Show if there are no uploaded files
+  showFiletypeIcon: !props.currentValue || (props.currentValue && props.currentValue.length < 1), // Show if there are no uploaded files
   postUrl: '/', // Modified later
 });
 
@@ -61,7 +58,7 @@ const djsConfig = props => ({
   acceptedFiles: 'image/*,application/pdf',
   renameFileName(fileName) {
     // not working
-    return 'hi' + fileName;
+    return `hi${fileName}`;
   },
   // addRemoveLinks: true, // TODO
   parallelUploads: 1,
@@ -92,7 +89,7 @@ const eventHandlers = props => ({
   removedFile: file => {
     // TODO: Add logic to remove file from DB and server
   },
-  sending: function(file, xhr, formData) {
+  sending(file, xhr, formData) {
     file.postData.forEach(field => {
       formData.append(field.name, field.value);
     });

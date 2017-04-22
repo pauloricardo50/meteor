@@ -17,7 +17,7 @@ const columns = [
   {
     label: 'Montant',
     align: 'r',
-    width: 20,
+    width: 15,
   },
   {
     label: 'Taux Libor',
@@ -42,7 +42,7 @@ const columns = [
   {
     label: 'Amortissement',
     align: 'r',
-    width: 5,
+    width: 10,
   },
   {
     label: 'Expertise?',
@@ -68,9 +68,7 @@ export default class OffersTable extends Component {
 
   render() {
     let offers = [
-      ...this.props.offers.map(
-        o => this.props.showSpecial ? o.conditionsOffer : o.standardOffer,
-      ),
+      ...this.props.offers.map(o => (this.props.showSpecial ? o.conditionsOffer : o.standardOffer)),
     ];
     offers.sort((a, b) => a.interest10 - b.interest10);
     const shownOffers = this.state.showFullTable ? offers : offers.slice(0, 5);
@@ -78,9 +76,7 @@ export default class OffersTable extends Component {
       <article>
         <table className="minimal-table">
           <colgroup>
-            {columns.map(c => (
-              <col span="1" style={{ width: `${c.width}%` }} />
-            ))}
+            {columns.map(c => <col span="1" style={{ width: `${c.width}%` }} />)}
           </colgroup>
           <thead>
             <tr>

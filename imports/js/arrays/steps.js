@@ -15,11 +15,13 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
       items: [
         {
           title: 'Passez le test',
+          subtitle: '5 min',
           isDone: () => true,
         },
         {
           title: 'Dites en plus sur vous',
           link: `/app/borrowers/${borrowers[0]._id}?tab=personal`,
+          subtitle: '1 min',
           percent: () => personalInfoPercent(borrowers),
           isDone() {
             return this.percent() >= 1;
@@ -28,15 +30,13 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         {
           title: 'Vérifiez vos finances',
           link: `/app/borrowers/${borrowers[0]._id}?tab=finance`,
-          isDone: () =>
-            borrowers.reduce(
-              (res, b) => res && b.logic.hasValidatedFinances,
-              true,
-            ),
+          subtitle: '20 sec',
+          isDone: () => borrowers.reduce((res, b) => res && b.logic.hasValidatedFinances, true),
         },
         {
           title: 'Décrivez votre propriété',
           link: `/app/requests/${loanRequest._id}/property`,
+          subtitle: '4 min',
           percent: () => propertyPercent(loanRequest, borrowers),
           isDone() {
             return this.percent() >= 1;
@@ -45,6 +45,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         {
           title: 'Uploadez les documents nécessaires',
           link: `/app/borrowers/${borrowers[0]._id}?tab=files`,
+          subtitle: '10 min',
           percent: () => filesPercent(borrowers),
           isDone() {
             return this.percent() >= 1;
@@ -52,11 +53,13 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         },
         {
           title: "Vérification d'e-Potek",
+          subtitle: '2h',
           link: `/app/requests/${loanRequest._id}/verification`,
           isDone: () => loanRequest.logic.adminValidated,
         },
         {
           title: "Faites l'expertise",
+          subtitle: '1 min',
           link: `/app/requests/${loanRequest._id}/expertise`,
           isDone: () => loanRequest.logic.expertiseDone,
         },
@@ -72,18 +75,20 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         {
           title: 'Vérifiez la structure de votre projet',
           link: `/app/requests/${loanRequest._id}/structure`,
+          subtitle: '1 min',
           isDone: () => loanRequest.logic.hasValidatedStructure,
         },
         {
           title: 'Envoyez les enchères',
           link: `/app/requests/${loanRequest._id}/auction`,
+          subtitle: '2 jours',
           isDone: () => loanRequest.logic.auctionStarted,
         },
         {
           title: 'Choisissez votre prêteur',
+          subtitle: '5 min',
           link: `/app/requests/${loanRequest._id}/lenderpicker`,
-          disabled: !serverTime ||
-            !loanRequest.logic.auctionEndTime > serverTime, // TODO: make this work
+          disabled: !serverTime || !loanRequest.logic.auctionEndTime > serverTime, // TODO: make this work
           isDone: () => !!loanRequest.logic.lender,
         },
       ],
@@ -98,6 +103,8 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         {
           title: 'Dernières démarches',
           link: `/app/requests/${loanRequest._id}/finalsteps`,
+          subtitle: '45 min',
+          percent: () => 0,
           isDone: () => false,
         },
       ],
@@ -106,11 +113,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
     // Step 4
     {
       nb: 4,
-      title: React.createElement(
-        'span',
-        { className: 'fa fa-home fa-2x' },
-        null,
-      ),
+      title: React.createElement('span', { className: 'fa fa-home fa-2x' }, null),
       description: 'Félicitations, vous êtes arrivé au bout, profitez de votre nouvelle propriété comme il se doit.',
     },
   ];
@@ -130,10 +133,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
 export default getSteps;
 
 const getPercent = array => {
-  const percent = array.reduce(
-    (tot, val) => val !== undefined ? tot + 1 : tot,
-    0,
-  ) / array.length;
+  const percent = array.reduce((tot, val) => (val !== undefined ? tot + 1 : tot), 0) / array.length;
   return isFinite(percent) ? percent : 0;
 };
 

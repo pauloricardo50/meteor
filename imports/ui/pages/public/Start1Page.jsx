@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { _ } from 'lodash';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import classnames from 'classnames';
 
@@ -15,13 +14,11 @@ import { changeProperty, changeFortune, changeIncome } from '/imports/js/helpers
 import constants from '/imports/js/config/constants';
 import StartLine from './startPage/StartLine.jsx';
 import StartRecap from './startPage/StartRecap.jsx';
-import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
 import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
 
 import Accordion from '/imports/ui/components/general/Accordion.jsx';
 
 const getArray = (income, fortune, property, borrow, ratio, propertyAuto) => {
-  const isReady = !!(income && fortune && property);
   const incomeIcon = classnames({
     fa: true,
     'fa-check success': ratio <= 1 / 3 + 0.001,
@@ -44,35 +41,20 @@ const getArray = (income, fortune, property, borrow, ratio, propertyAuto) => {
   });
   return [
     {
-      label: (
-        <span>
-          Revenus annuels bruts
-          {' '}
-          {isReady && <span className={incomeIcon} />}
-        </span>
-      ),
+      labelText: 'Revenus annuels bruts',
+      labelIcon: incomeIcon,
       name: 'income',
       sliderIncrement: 500000,
     },
     {
-      label: (
-        <span>
-          Fonds Propres
-          {' '}
-          {isReady && <span className={fortuneIcon} />}
-        </span>
-      ),
+      labelText: 'Fonds Propres',
+      labelIcon: fortuneIcon,
       name: 'fortune',
       sliderIncrement: 500000,
     },
     {
-      label: (
-        <span>
-          {propertyAuto ? "Prix d'Achat Maximal" : "Prix d'Achat"}
-          {' '}
-          {isReady && <span className={propertyIcon} />}
-        </span>
-      ),
+      labelText: propertyAuto ? "Prix d'Achat Maximal" : "Prix d'Achat",
+      labelIcon: propertyIcon,
       name: 'property',
       sliderIncrement: 2000000,
     },
@@ -85,12 +67,12 @@ export default class Start1Page extends Component {
 
     this.state = {
       income: {
-        value: 0,
+        value: 500000,
         minValue: 0,
         auto: true,
       },
       fortune: {
-        value: 0,
+        value: 500000,
         minValue: 0,
         auto: true,
       },
@@ -108,28 +90,15 @@ export default class Start1Page extends Component {
   }
 
   componentDidMount() {
-    // UX: make user understand he can use the slider, by quickly pushing it up and down
+    // UX: make user understand he can use the slider, by quickly pulling it down
     Meteor.setTimeout(
       () =>
-        this.setState({
-          income: {
-            value: 350000,
-            minValue: 0,
-            auto: true,
-          },
-        }),
+        this.setState(prevState => ({
+          income: { ...prevState.income, value: 0 },
+          fortune: { ...prevState.fortune, value: 0 },
+          property: { ...prevState.property, value: 0 },
+        })),
       250,
-    );
-    Meteor.setTimeout(
-      () =>
-        this.setState({
-          income: {
-            value: 0,
-            minValue: 0,
-            auto: true,
-          },
-        }),
-      500,
     );
   }
 
@@ -262,6 +231,8 @@ export default class Start1Page extends Component {
     const borrow = Math.max((property * 1.05 - fortune) / property, 0);
     const ratio =
       this.getMonthly(income, fortune - property * 0.05, property, borrow) / (income / 12);
+    const isReady = !!(income && fortune && property);
+    const childProps = { income, fortune, property, borrow, ratio };
 
     return (
       <section className="oscar">
@@ -284,6 +255,7 @@ export default class Start1Page extends Component {
                 this.state.property.auto,
               ).map(line => (
                 <StartLine
+                  isReady={isReady}
                   key={line.name}
                   {...this.state[line.name]}
                   {...line}
@@ -305,18 +277,12 @@ export default class Start1Page extends Component {
             </div>
             <div className="separator" />
             <div className="recap">
-              <StartRecap
-                income={income}
-                fortune={fortune}
-                property={property}
-                ratio={ratio}
-                borrow={borrow}
-              />
+              <StartRecap {...childProps} />
             </div>
           </div>
 
           <div className="chart text-center">
-            <Accordion isActive={property && fortune && income && fortune < property}>
+            <Accordion isActive={isReady && fortune < property}>
               <h3>
                 Votre emprunt:
                 {' '}
@@ -335,7 +301,7 @@ export default class Start1Page extends Component {
           <div className="button">
             <RaisedButton
               label="Passer au check-up complet"
-              disabled={!property || !income || !fortune}
+              disabled={!isReady}
               primary={this.isValid()}
               containerElement={<Link to={this.getUrl()} />}
               id="ok"

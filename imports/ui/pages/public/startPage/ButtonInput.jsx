@@ -11,76 +11,72 @@ const styles = {
   },
 };
 
-export default class ButtonInput extends Component {
-  getText() {
-    if (this.props.id === 'error') {
-      return '';
-    }
-
-    const currentValue = this.props.formState[this.props.id];
-    if (currentValue !== undefined) {
-      const currentButton = this.props.buttons.find(button => button.id === currentValue);
-
-      return currentButton.label || currentButton.id;
-    }
-    return '...';
+const getText = props => {
+  if (props.id === 'error') {
+    return '';
   }
 
-  handleClick(event, value) {
-    event.stopPropagation();
+  const currentValue = props.formState[props.id];
+  if (currentValue !== undefined) {
+    const currentButton = props.buttons.find(button => button.id === currentValue);
 
-    // If this button triggers a field to appear, make sure to delete its value if the user hits no
-    if (value === false && this.props.deleteId) {
-      this.props.setFormState(this.props.deleteId, undefined);
-    }
+    return currentButton.label || currentButton.id;
+  }
+  return '...';
+};
 
-    this.props.setFormState(this.props.id, value, () => this.props.setActiveLine(''));
+const handleClick = (props, event, value) => {
+  event.stopPropagation();
+
+  // If this button triggers a field to appear, make sure to delete its value if the user hits no
+  if (value === false && props.deleteId) {
+    props.setFormState(props.deleteId, undefined);
   }
 
-  render() {
-    return (
-      <article
-        className={this.props.className}
-        onTouchTap={() => this.props.setActiveLine(this.props.id)}
-      >
+  props.setFormState(props.id, value, () => props.setActiveLine(''));
+};
 
-        <h1 className="fixed-size">
-          <span className={this.props.id === 'error' && 'error'}>
-            <AutoTooltip>{this.props.text1}</AutoTooltip>
-          </span>
-          &nbsp;
-          {!this.props.hideResult && this.props.question && <br />}
+const ButtonInput = props => {
+  const noModify = props.hideResult;
+  return (
+    <article
+      className={[props.className, noModify ? 'no-modify' : ''].join(' ')}
+      onTouchTap={() => props.setActiveLine(props.id)}
+    >
 
-          {!this.props.hideResult && <span className="active">{this.getText()}</span>}
-          &nbsp;
-          <AutoTooltip>{this.props.text2}</AutoTooltip>
-        </h1>
+      <h1 className="fixed-size">
+        <span className={props.id === 'error' && 'error'}>
+          <AutoTooltip>{props.text1}</AutoTooltip>
+        </span>
+        &nbsp;
+        {!props.hideResult && props.question && <br />}
 
-        <div
-          style={styles.buttons}
-          className={!this.props.active ? 'inputHider' : 'animated fadeIn'}
-        >
-          {this.props.buttons.map((button, index) => (
-            <RaisedButton
-              label={button.label || button.id}
-              onTouchTap={e => {
-                this.handleClick(e, button.id);
-                if (typeof button.onClick === 'function') {
-                  button.onClick();
-                }
-              }}
-              style={styles.button}
-              primary={!button.noPrimary}
-              secondary={button.secondary}
-              key={index}
-            />
-          ))}
-        </div>
+        {!props.hideResult && <span className="active">{getText(props)}</span>}
+        &nbsp;
+        <AutoTooltip>{props.text2}</AutoTooltip>
+      </h1>
 
-      </article>
-    );
-  }
-}
+      <div style={styles.buttons} className={!props.active ? 'inputHider' : 'animated fadeIn'}>
+        {props.buttons.map((button, index) => (
+          <RaisedButton
+            label={button.label || button.id}
+            onTouchTap={e => {
+              handleClick(props, e, button.id);
+              if (typeof button.onClick === 'function') {
+                button.onClick();
+              }
+            }}
+            style={styles.button}
+            primary={!button.noPrimary}
+            secondary={button.secondary}
+            key={index}
+          />
+        ))}
+      </div>
+
+    </article>
+  );
+};
 
 ButtonInput.propTypes = {
   id: PropTypes.string.isRequired,
@@ -95,3 +91,5 @@ ButtonInput.propTypes = {
   deleteId: PropTypes.string,
   hideResult: PropTypes.bool,
 };
+
+export default ButtonInput;

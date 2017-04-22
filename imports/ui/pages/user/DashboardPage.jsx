@@ -15,6 +15,10 @@ export default class DashboardPage extends Component {
     };
   }
 
+  componentDidMount() {
+    window.scroll(0, 0);
+  }
+
   handleClick = i => {
     if (this.state.active === i) {
       this.setState({ active: -1 });
@@ -36,9 +40,7 @@ export default class DashboardPage extends Component {
     const sortedRequests = this.props.loanRequests.sort(
       (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
     );
-    const newRequestId = queryString.parse(
-      this.props.location.search,
-    ).newrequest;
+    const newRequestId = queryString.parse(this.props.location.search).newrequest;
 
     if (this.props.loanRequests.length <= 0) {
       return <NewUserOptions />;
@@ -66,15 +68,8 @@ export default class DashboardPage extends Component {
           </a>
         </div> */}
 
-        {!!(newRequestId &&
-          !sortedRequests.find(
-            r => r._id === newRequestId,
-          ).property.address1) &&
-          <NewRequestModal
-            open
-            requestId={newRequestId}
-            history={this.props.history}
-          />}
+        {!!(newRequestId && !sortedRequests.find(r => r._id === newRequestId).property.address1) &&
+          <NewRequestModal open requestId={newRequestId} history={this.props.history} />}
       </section>
     );
   }

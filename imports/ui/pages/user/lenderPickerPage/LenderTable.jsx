@@ -67,7 +67,8 @@ const handleSave = props => {
   object['logic.lender'] = props.formState.chosenLender;
 
   cleanMethod('updateRequest', object, props.loanRequest._id, () =>
-    Meteor.setTimeout(() => props.history.push('/app'), 300));
+    Meteor.setTimeout(() => props.history.push('/app'), 300),
+  );
 };
 
 export default class LenderTable extends Component {
@@ -89,8 +90,7 @@ export default class LenderTable extends Component {
     const offers = this.state.showFullTable
       ? getOffers(this.props)
       : getOffers(this.props).slice(0, 5);
-    const saved = this.props.loanRequest.logic.lender ===
-      this.props.formState.chosenLender;
+    const saved = this.props.loanRequest.logic.lender === this.props.formState.chosenLender;
 
     return (
       <article>
@@ -125,8 +125,7 @@ export default class LenderTable extends Component {
             <col span="1" style={{ width: '15%' }} />
             <col span="1" style={{ width: '25%' }} />
             <col span="1" style={{ width: '25%' }} />
-            {!this.props.formState.standard &&
-              <col span="1" style={{ width: '20%' }} />}
+            {!this.props.formState.standard && <col span="1" style={{ width: '20%' }} />}
           </colgroup>
           <thead>
             <tr>
@@ -134,8 +133,7 @@ export default class LenderTable extends Component {
               <th className="r">Montant prêté</th>
               <th className="r">Coût mensuel</th>
               <th className="l">Conditions</th>
-              {!this.props.formState.standard &&
-                <th className="c">Contrepartie</th>}
+              {!this.props.formState.standard && <th className="c">Contrepartie</th>}
             </tr>
           </thead>
           <tbody>
@@ -146,9 +144,7 @@ export default class LenderTable extends Component {
                   <tr
                     key={index}
                     onTouchTap={() => handleChoose(offer.id, this.props)}
-                    className={
-                      offer.id === this.props.formState.chosenLender && 'chosen'
-                    }
+                    className={offer.id === this.props.formState.chosenLender ? 'chosen' : 'choose'}
                   >
                     <td className="l">
                       {index + 1}

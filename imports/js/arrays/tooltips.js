@@ -1,5 +1,10 @@
 // Write the keys in lowercase
 const generalTooltips = {
+  'revenus annuels bruts': 'La somme de votre salaire, et toute autre source de revenus',
+  'fonds propres': 'Vos économies, prévoyance et dons de tiers que vous allez engager dans le projet',
+  "prix d'achat maximal": 'La bien le plus cher que vous pouvez acquérir avec les informations données',
+  "prix d'achat": 'La valeur du bien que vus voulez acquérir',
+
   finma: 'Autorité fédérale de surveillance des marchés financiers',
 
   'charges/revenus': "Ne doit pas dépasser 33%, exceptions jusqu'à 38%",
@@ -8,7 +13,6 @@ const generalTooltips = {
   "emprunt/prix d'achat": 'Ne doit pas dépasser 80% dans la majorité des cas',
   'emprunt/Valeur du bien': 'Ne doit pas dépasser 80% dans la majorité des cas',
 
-  'fonds propres': 'Vos économies, prévoyance et dons de tiers que vous allez engager dans le projet',
   'frais de notaire': "Frais obligatoires lorsqu'on conclut un prêt hypothécaire - 5% du prix d'achat.",
   'frais retrait lpp': 'Lorsque vous retirez votre lpp en avance, vous devez payer des impôts sur ce retrait.',
   'travaux de plus-value': 'Ajoutent de la valeur au bien, sans augmenter les frais de notaire',
@@ -37,7 +41,7 @@ const offerTableTooltips = {
   expertise: 'Indique si la banque veut faire une expertise supplémentaire, ajoute environ 2 semaines à la procédure',
 };
 
-const tooltips = list => {
+export const tooltips = list => {
   switch (list) {
     case 'general':
       return generalTooltips;
@@ -48,4 +52,14 @@ const tooltips = list => {
   }
 };
 
-export default tooltips;
+export const tooltipsById = id => {
+  const array = id.split('.');
+
+  if (array.length !== 2) {
+    throw Error('Wrong id given for tooltips, requires 2 strings separated by a .');
+  }
+
+  const list = tooltips(array[0]);
+
+  return list[array[1]];
+};

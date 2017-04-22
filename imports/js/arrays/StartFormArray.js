@@ -611,20 +611,24 @@ const getFinalArray = (state, props, setFormState) => [
     type: 'buttons',
     text1: 'Vous-êtes arrivé au bout, formidable!',
     hideResult: true,
-    buttons: [
-      {
-        id: true,
-        label: 'Afficher les résultats',
-        onClick() {
-          const options = {
-            duration: 350,
-            delay: 0,
-            smooth: true,
-          };
-          Meteor.defer(() => Scroll.scroller.scrollTo('final', options));
+    buttons: !state.hideFinalButton
+      ? [
+        {
+          id: true,
+          label: 'Afficher les résultats',
+          onClick() {
+              // After clicking on this button, hide it
+            setFormState('hideFinalButton', true);
+            const options = {
+              duration: 350,
+              delay: 0,
+              smooth: true,
+            };
+            Meteor.defer(() => Scroll.scroller.scrollTo('final', options));
+          },
         },
-      },
-    ],
+      ]
+      : [],
   },
 ];
 

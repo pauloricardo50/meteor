@@ -30,6 +30,23 @@ const styles = {
   },
 };
 
+const getSecondaryText = item => {
+  let text = null;
+  if (item.subtitle) {
+    text = (
+      <span>
+        <span className="fa fa-clock-o" />
+        {' '}
+        {item.subtitle}
+        {(item.percent !== undefined && ` - Progrès: ${Math.round(item.percent() * 1000) / 10}%`) ||
+          ''}
+      </span>
+    );
+  }
+
+  return text;
+};
+
 export default class RequestStepper extends Component {
   constructor(props) {
     super(props);
@@ -43,17 +60,13 @@ export default class RequestStepper extends Component {
   componentDidMount() {
     window.addEventListener('resize', this.resize);
 
-    if (this.focused) {
-      this.focused.applyFocusState('keyboard-focused');
-    }
+    // if (this.focused) {
+    //   this.focused.applyFocusState('keyboard-focused');
+    // }
 
     Meteor.call('getServerTime', (e, res) => {
       this.setState({ serverTime: res });
     });
-  }
-
-  shouldComponentUpdate(nProps, nState) {
-    return true;
   }
 
   componentWillUnmount() {
@@ -91,6 +104,17 @@ export default class RequestStepper extends Component {
       return null;
     }
 
+    // After a step is rendered, hover any item that isn't done
+    // Meteor.defer creates an async function that does this after the render
+    this.focused = null;
+    Meteor.defer(() => {
+      // Check if the current active element isn't an input, else,
+      // it's probably the initial modal that asks for a project name
+      if (this.focused && document.activeElement.nodeName !== 'INPUT') {
+        this.focused.applyFocusState('keyboard-focused');
+      }
+    });
+
     return (
       <div style={styles.stepContent}>
         {step.description && <p>{step.description}</p>}
@@ -111,23 +135,16 @@ export default class RequestStepper extends Component {
                 rightIcon={
                   item.isDone()
                     ? <span
-                        className="fa fa-check right-icon success animated bounceInDown"
-                        style={{ fontSize: 16 }}
-                      />
+                      className="fa fa-check right-icon success animated bounceInDown"
+                      style={{ fontSize: 16 }}
+                    />
                     : <span className="right-icon pending" />
                 }
-                secondaryText={
-                  (item.percent !== undefined &&
-                    `Progrès: ${Math.round(item.percent() * 1000) / 10}%`) ||
-                    ''
-                }
-                onTouchTap={() =>
-                  item.link && this.props.history.push(item.link)}
+                secondaryText={getSecondaryText(item)}
+                onTouchTap={() => item.link && this.props.history.push(item.link)}
                 style={{
                   fontSize: 18,
-                  cursor: item.disabled
-                    ? 'not-allowed'
-                    : item.link && 'pointer',
+                  cursor: item.disabled ? 'not-allowed' : item.link && 'pointer',
                 }}
                 disabled={item.disabled}
               />
@@ -151,23 +168,26 @@ export default class RequestStepper extends Component {
       ? step.items.reduce((tot, item) => tot && (item.isDone() && tot), true)
       : true;
 
-    return (
-      <div style={styles.stepActions} className="text-center">
-        <RaisedButton
-          label="Continuer"
-          primary={currentStep === i}
-          disabled={currentStep < i || !stepIsDone}
-          keyboardFocused={stepIsDone && currentStep === i}
-          onTouchTap={() => {
-            if (typeof handleNextChild === 'function') {
-              handleNextChild(i, () => this.handleNext(i));
-            } else {
-              this.handleNext(i);
-            }
-          }}
-        />
-      </div>
-    );
+    if (stepIsDone || currentStep > i) {
+      return (
+        <div style={styles.stepActions} className="text-center">
+          <RaisedButton
+            label="Continuer"
+            primary={currentStep === i}
+            keyboardFocused={stepIsDone && currentStep === i}
+            onTouchTap={() => {
+              if (typeof handleNextChild === 'function') {
+                handleNextChild(i, () => this.handleNext(i));
+              } else {
+                this.handleNext(i);
+              }
+            }}
+          />
+        </div>
+      );
+    }
+
+    return null;
   };
 
   render() {
@@ -190,9 +210,7 @@ export default class RequestStepper extends Component {
 
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(customTheme)}>
-        {this.state.largeWidth
-          ? <StepperHorizontal {...props} />
-          : <StepperVertical {...props} />}
+        {this.state.largeWidth ? <StepperHorizontal {...props} /> : <StepperVertical {...props} />}
       </MuiThemeProvider>
     );
   }

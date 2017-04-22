@@ -233,6 +233,8 @@ $bezier = cubic-bezier(.02, .01, .47, 1);
     text-align: center;
   tr:hover
     background-color: light-grey;
+  tr.choose:hover
+    background-color: alpha(brand-primary, 0.5);
     cursor: pointer;
   tr.chosen
     background-color: brand-primary;
@@ -1033,6 +1035,9 @@ ul.request-map
           top: 0;
           opacity: 1;
           color: brand-primary;
+      &.no-modify:hover
+        &:before
+          content: '';
       h1.array-input
         display: flex;
         flex-wrap: wrap;

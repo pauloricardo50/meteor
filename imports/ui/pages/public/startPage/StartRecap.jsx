@@ -3,9 +3,9 @@ import React from 'react';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
+import { getLenderCount } from '/imports/js/helpers/startFunctions';
 
 import Recap from '/imports/ui/components/general/Recap.jsx';
-import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
 
 const isReady = ({ income, fortune, property }) => property && income && fortune;
 
@@ -15,20 +15,6 @@ const getMonthlyReal = (income, fortune, property, borrow) =>
       12,
     0,
   );
-
-const getLenderCount = (borrow, ratio) => {
-  if (ratio > 0.38) {
-    return 0;
-  } else if (ratio > 1 / 3) {
-    return 4;
-  } else if (borrow <= 0.65) {
-    return 30;
-  } else if (borrow > 0.65 && borrow <= 0.9) {
-    return 20;
-  }
-
-  return 0;
-};
 
 const getArray = ({ income, fortune, property, borrow, ratio }) => {
   return [
@@ -121,13 +107,11 @@ const getArray = ({ income, fortune, property, borrow, ratio }) => {
     {
       title: true,
       label: 'e-Potek',
-      hide: true, // TODO: Remove
     },
     {
       label: 'Nb. de prêteurs potentiels',
       value: getLenderCount(borrow, ratio),
       spacing: true,
-      hide: true, // TODO: Remove
     },
   ];
 };

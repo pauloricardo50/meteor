@@ -42,7 +42,8 @@ const styles = {
 };
 
 const getFakeOffers = props => {
-  const loanWanted = props.loanRequest.property.value -
+  const loanWanted =
+    props.loanRequest.property.value -
     props.loanRequest.general.fortuneUsed -
     props.loanRequest.general.insuranceFortuneUsed;
   return [
@@ -127,7 +128,7 @@ export default class Results extends Component {
 
         <div className="description">
           <p>
-            Voici les offres que vous ont fait les prêteurs. Attention, ces taux sont indicatifs, et les meilleurs taux ne sont pas correspondent pas toujours à ce dont vous avez besoin.
+            Voici les offres que vous ont fait les prêteurs. Attention, ces taux sont indicatifs, et les taux les plus bas ne correspondent pas toujours à ce dont vous avez besoin.
             <br /><br />
             Vous pouvez dès à présent choisir le prêteur que vous voulez et avoir une estimation
             très précise de ce que ce prêt va vous coûter.
@@ -135,11 +136,7 @@ export default class Results extends Component {
         </div>
 
         <div className="text-center" style={{ margin: '40px 0' }}>
-          <RaisedButton
-            label="Continuer"
-            primary
-            containerElement={<Link to="/app" />}
-          />
+          <RaisedButton label="Continuer" primary containerElement={<Link to="/app" />} />
         </div>
 
         <FakeOfferAdder loanRequest={this.props.loanRequest} />
@@ -152,11 +149,7 @@ export default class Results extends Component {
         <div style={styles.tableDiv}>
           <OffersTable
             showSpecial={this.state.showSpecial}
-            offers={
-              this.props.offers.length > 0
-                ? this.props.offers
-                : getFakeOffers(this.props)
-            }
+            offers={this.props.offers.length > 0 ? this.props.offers : getFakeOffers(this.props)}
           />
         </div>
       </section>
