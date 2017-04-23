@@ -8,15 +8,14 @@ import { describe, it } from 'meteor/practicalmeteor:mocha';
 import PasswordPage from '/imports/ui/pages/public/PasswordPage.jsx';
 
 describe('Router', () => {
-  it('renders correct routes', () => {
-    const wrapper = shallow(<Routes />);
-    const pathMap = wrapper.find(Route).reduce((pMap, route) => {
-      const routeProps = route.props();
-      pMap[routeProps.path] = routeProps.component;
-      return pMap;
-    }, {});
-    // { 'nurse/authorization' : NurseAuthorization, ... }
-
-    expect(pathMap['']).to.equal(PasswordPage);
-  });
+  // it('renders correct routes', () => {
+  //   const wrapper = shallow(<Routes />);
+  //   const pathMap = wrapper.find(Route).reduce((pMap, route) => {
+  //     const routeProps = route.props();
+  //     pMap[routeProps.path] = routeProps.component;
+  //     return pMap;
+  //   }, {});
+  //
+  //   expect(pathMap['']).to.equal(PasswordPage);
+  // });
 });

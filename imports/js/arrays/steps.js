@@ -161,11 +161,25 @@ export const propertyPercent = (loanRequest, borrowers) => {
     if (
       (i.showCondition === undefined || i.showCondition === true) &&
       i.required !== false &&
+      i.type === 'conditionalInput'
+    ) {
+      if (i.inputs[0].currentValue === i.conditionalTrueValue) {
+        // If the conditional input is triggering the next input, add all values
+        i.inputs.forEach(input => a.push(input.currentValue));
+      } else {
+        // If conditional value is not triggering
+        a.push(i.inputs[0].currentValue);
+      }
+    } else if (
+      (i.showCondition === undefined || i.showCondition === true) &&
+      i.required !== false &&
       i.type !== 'h3'
     ) {
       a.push(i.currentValue);
     }
   });
+
+  console.log(a);
 
   return getPercent(a);
 };
