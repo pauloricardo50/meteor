@@ -6,6 +6,13 @@ import NewUserOptions from '/imports/ui/components/general/NewUserOptions.jsx';
 import DashboardItem from './dashboardPage/DashboardItem.jsx';
 import NewRequestModal from './dashboardPage/NewRequestModal.jsx';
 
+const styles = {
+  hr: {
+    width: '40%',
+    margin: '60px auto',
+  },
+};
+
 export default class DashboardPage extends Component {
   constructor(props) {
     super(props);
@@ -50,23 +57,19 @@ export default class DashboardPage extends Component {
       <section>
         <h1>Tableau de Bord</h1>
 
-        {sortedRequests.map((request, i) => (
-          <DashboardItem
-            {...this.props}
-            loanRequest={request}
-            borrowers={this.props.borrowers}
-            key={request._id}
-            handleClick={() => this.handleClick(i)}
-            active={this.state.active === i}
-            multiple={this.props.loanRequests.length > 1}
-          />
-        ))}
-
-        {/* <div className="text-center">
-          <a className="mask2 new-request" onClick={this.handleNew}>
-            <h1>+</h1><h4 className="bold">Nouvelle demande</h4>
-          </a>
-        </div> */}
+        {sortedRequests
+          .map((request, i) => (
+            <DashboardItem
+              {...this.props}
+              loanRequest={request}
+              borrowers={this.props.borrowers}
+              key={request._id}
+              handleClick={() => this.handleClick(i)}
+              active={this.state.active === i}
+              count={this.props.loanRequests.length}
+            />
+          ))
+          .reduce((prev, curr) => [prev, <hr style={styles.hr} />, curr])}
 
         {!!(newRequestId && !sortedRequests.find(r => r._id === newRequestId).property.address1) &&
           <NewRequestModal open requestId={newRequestId} history={this.props.history} />}

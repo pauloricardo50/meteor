@@ -17,14 +17,14 @@ import OverviewItems from './OverviewItems.jsx';
 const DashboardItem = props => {
   const classes = classNames({
     'mask1 dashboard-item': true,
-    inactive: props.multiple && !props.active,
+    inactive: props.count > 1 && !props.active,
   });
 
   return (
     <article className={classes}>
       <div className="top">
         <h2>{props.loanRequest.name || 'Projet Sans Titre'}</h2>
-        {props.multiple &&
+        {props.count > 1 &&
           <div className="right">
             <IconButton onClick={props.handleClick}>
               <ArrowDown color="#d8d8d8" hoverColor="#a8a8a8" />
@@ -38,44 +38,47 @@ const DashboardItem = props => {
         <RequestStepper {...props} />
       </div>
 
-      <hr style={{ width: '50%', margin: '50px auto' }} />
+      {props.active &&
+        <div>
+          <hr style={{ width: '50%', margin: '50px auto' }} />
 
-      <div className="charts">
-        <div className="col-xs-12 col-md-6">
-          <ProjectPieChart {...props} />
-        </div>
-        <div className="col-xs-12 col-md-6">
-          <ExpensesChart {...props} />
-        </div>
-      </div>
+          <div className="charts">
+            <div className="col-xs-12 col-md-6">
+              <ProjectPieChart {...props} />
+            </div>
+            <div className="col-xs-12 col-md-6">
+              <ExpensesChart {...props} />
+            </div>
+          </div>
 
-      <MetricsTriple {...props} />
+          <MetricsTriple {...props} />
 
-      <h2 className="text-center">Plan Financier</h2>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          margin: '0 20px',
-        }}
-      >
-        <Recap {...props} arrayName="dashboard" />
-      </div>
+          <h2 className="text-center">Plan Financier</h2>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              margin: '0 20px',
+            }}
+          >
+            <Recap {...props} arrayName="dashboard" />
+          </div>
+        </div>}
 
     </article>
   );
 };
 
 DashboardItem.defaultProps = {
-  multiple: false,
+  count: 0,
   active: false,
 };
 
 DashboardItem.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  multiple: PropTypes.bool,
+  count: PropTypes.number,
   active: PropTypes.bool,
   handleClick: PropTypes.func.isRequired,
 };

@@ -35,7 +35,7 @@ const results = {
     description: (
       <span>
         Malheur! Vous avez peut être oublié un élément important pour la valorisation de votre projet.
-        Essayer de négocier avec le vendeur, car le prix ne semble pas correspondre aux standard du marché.
+        Vous devriez essayer de négocier avec le vendeur, car le prix ne semble pas correspondre au standard du marché.
         <br /><br />
         Votre expert e-Potek pourra vous aider à gérer ce genre de discussions et les tourner à votre avantage.
       </span>

@@ -179,8 +179,6 @@ export const propertyPercent = (loanRequest, borrowers) => {
     }
   });
 
-  console.log(a);
-
   return getPercent(a);
 };
 
