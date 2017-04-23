@@ -54,7 +54,7 @@ export const getBorrowerInfoArray = (borrowers, id) => {
       placeholder: 'Rue des Champs 7',
       id: 'address1',
       currentValue: b.address1,
-      disabled: b.sameAddress,
+      disabled: !!b.sameAddress,
     },
     {
       type: 'textInput',
@@ -62,7 +62,7 @@ export const getBorrowerInfoArray = (borrowers, id) => {
       placeholder: '',
       id: 'address2',
       currentValue: b.address2,
-      disabled: b.sameAddress,
+      disabled: !!b.sameAddress,
       required: false,
     },
     {
@@ -72,7 +72,7 @@ export const getBorrowerInfoArray = (borrowers, id) => {
       placeholder: '1200',
       id: 'zipCode',
       currentValue: b.zipCode,
-      disabled: b.sameAddress,
+      disabled: !!b.sameAddress,
     },
     {
       type: 'textInput',
@@ -80,7 +80,7 @@ export const getBorrowerInfoArray = (borrowers, id) => {
       placeholder: 'Genève',
       id: 'city',
       currentValue: b.city,
-      disabled: b.sameAddress,
+      disabled: !!b.sameAddress,
     },
     {
       type: 'textInput',

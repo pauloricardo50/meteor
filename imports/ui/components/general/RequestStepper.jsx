@@ -35,7 +35,7 @@ const getSecondaryText = item => {
   if (item.subtitle) {
     text = (
       <span>
-        <span className="fa fa-clock-o" />
+        <span className="secondary fa fa-clock-o" />
         {' '}
         {item.subtitle}
         {(item.percent !== undefined && ` - Progrès: ${Math.round(item.percent() * 1000) / 10}%`) ||

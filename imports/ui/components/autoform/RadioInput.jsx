@@ -38,12 +38,7 @@ export default class RadioInput extends Component {
 
   setValue = event => {
     // Change radio button group state to appropriate value
-    this.setState(
-      {
-        value: event.target.value,
-      },
-      this.saveValue(event.target.value),
-    );
+    this.setState({ value: event.target.value }, this.saveValue(event.target.value));
   };
 
   saveValue = value => {
@@ -73,12 +68,12 @@ export default class RadioInput extends Component {
           onChange={this.props.onConditionalChange}
           style={styles.RadioButtonGroup}
         >
-          {this.props.options.map((option, index) => (
+          {this.props.options.map(option => (
             <RadioButton
               label={option.label}
               value={option.id}
               onTouchTap={this.setValue}
-              key={index}
+              key={option.id}
               style={styles.RadioButton}
               labelStyle={styles.RadioButtonLabel}
             />
@@ -94,11 +89,7 @@ RadioInput.propTypes = {
   label: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
   onConditionalChange: PropTypes.func,
-  currentValue: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.string,
-    PropTypes.number,
-  ]),
+  currentValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number]),
   documentId: PropTypes.string.isRequired,
   updateFunc: PropTypes.string.isRequired,
 };

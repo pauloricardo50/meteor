@@ -1,5 +1,4 @@
 import React from 'react';
-import { Meteor } from 'meteor/meteor';
 
 import { getFileArray } from '/imports/ui/pages/user/borrowerPage/Files.jsx';
 import getPropertyArray from './PropertyFormArray';
@@ -70,7 +69,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
     {
       nb: 2,
       title: 'Les enchères',
-      subtitle: loanRequest.logic.step < 1 ? 'Dans 3 jours' : '30 minutes',
+      subtitle: loanRequest.logic.step < 1 ? 'Dans 1 jour' : '3 jours',
       items: [
         {
           title: 'Vérifiez la structure de votre projet',
@@ -120,19 +119,18 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
 
   // Make sure these indices correspond
   // Verify all 4 items before item 5 are done
-  steps[0].items[5].disabled = !steps[0].items
-    .slice(0, 5)
-    .reduce((res, i) => res && i.isDone(), true);
+  steps[0].items[5].disabled = !previousDone(steps, 0, 5);
+  steps[0].items[6].disabled = !previousDone(steps, 0, 6);
 
-  steps[0].items[6].disabled = !steps[0].items[5].isDone();
-
-  // return steps.slice(0, loanRequest.logic.step + 1); // If you want to hide steps that aren't available
   return steps;
 };
 
 export default getSteps;
 
-const getPercent = array => {
+export const previousDone = (steps, nb, itemNb) =>
+  steps[nb].items.slice(0, itemNb).reduce((res, i) => res && i.isDone(), true);
+
+export const getPercent = array => {
   const percent = array.reduce((tot, val) => (val !== undefined ? tot + 1 : tot), 0) / array.length;
   return isFinite(percent) ? percent : 0;
 };

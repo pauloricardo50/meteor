@@ -12,4 +12,5 @@ Meteor.startup(() => {
 
 // Very important for all advanced tap/react/buttons/material-ui to work.
 // Might not be required in future react versions
+// Adds the onTouchTap (no delay) prop to all elements which take onClick (delay)
 injectTapEventPlugin();

@@ -8,6 +8,7 @@ import queryString from 'query-string';
 import Info from './borrowerPage/Info.jsx';
 import Finance from './borrowerPage/Finance.jsx';
 import Files from './borrowerPage/Files.jsx';
+import Header from './borrowerPage/Header.jsx';
 
 const styles = {
   div: {
@@ -23,36 +24,17 @@ const styles = {
   },
 };
 
-const Header = ({ borrower }) => (
-  <header className="text-center">
-    <span className="fa fa-user-circle-o fa-5x" />
-    <h1>
-      {borrower.firstName || "Fiche d'Emprunteur"}
-    </h1>
-    <h3 className="secondary">{`${borrower.age} ans` || ''}</h3>
-  </header>
-);
-
 const Links = ({ handleClick, tab }) => (
   <div className="borrower-links text-center">
-    <a
-      onTouchTap={() => handleClick('personal')}
-      className={tab === 'personal' && 'active'}
-    >
+    <a onTouchTap={() => handleClick('personal')} className={tab === 'personal' && 'active'}>
       <span className="fa fa-user" />
       <h4>Perso</h4>
     </a>
-    <a
-      onTouchTap={() => handleClick('finance')}
-      className={tab === 'finance' && 'active'}
-    >
+    <a onTouchTap={() => handleClick('finance')} className={tab === 'finance' && 'active'}>
       <span className="fa fa-money" />
       <h4>Finances</h4>
     </a>
-    <a
-      onTouchTap={() => handleClick('files')}
-      className={tab === 'files' && 'active'}
-    >
+    <a onTouchTap={() => handleClick('files')} className={tab === 'files' && 'active'}>
       <span className="fa fa-files-o" />
       <h4>Documents</h4>
     </a>
@@ -87,6 +69,7 @@ export default class BorrowerPage extends Component {
   render() {
     const borrowerId = this.props.match.params.borrowerId;
     const borrower = this.props.borrowers.find(b => b._id === borrowerId);
+    const index = this.props.borrowers.indexOf(borrower);
 
     return (
       <div style={styles.div}>
@@ -97,12 +80,8 @@ export default class BorrowerPage extends Component {
         />
 
         <section className="mask1 borrower-page">
-          <Header borrower={borrower} />
-          <Links
-            {...this.props}
-            tab={this.state.tab}
-            handleClick={tab => this.setState({ tab })}
-          />
+          <Header borrower={borrower} borrowers={this.props.borrowers} index={index} />
+          <Links {...this.props} tab={this.state.tab} handleClick={tab => this.setState({ tab })} />
 
           {this.getContent()}
         </section>

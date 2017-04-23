@@ -57,10 +57,7 @@ export const BorrowerSchema = new SimpleSchema({
     type: Date,
     autoValue() {
       // Verify the update is from the user owning this doc, ignoring admin/partner updates
-      const doc = Borrowers.findOne(
-        { _id: this.docId },
-        { fields: { userId: 1 } },
-      );
+      const doc = Borrowers.findOne({ _id: this.docId }, { fields: { userId: 1 } });
       if (this.isUpdate && this.userId === doc.userId) {
         return new Date();
       } else if (this.isInsert) {
@@ -107,7 +104,7 @@ export const BorrowerSchema = new SimpleSchema({
     optional: true,
   },
   sameAddress: {
-    type: String,
+    type: Boolean,
     optional: true,
   },
   citizenships: {
@@ -176,6 +173,7 @@ export const BorrowerSchema = new SimpleSchema({
   otherIncome: {
     type: Array,
     optional: true,
+    defaultValue: [],
   },
   'otherIncome.$': Object,
   'otherIncome.$.value': {
@@ -187,6 +185,7 @@ export const BorrowerSchema = new SimpleSchema({
   expenses: {
     type: Array,
     optional: true,
+    defaultValue: [],
   },
   'expenses.$': Object,
   'expenses.$.value': {
@@ -204,6 +203,7 @@ export const BorrowerSchema = new SimpleSchema({
   realEstate: {
     type: Array,
     optional: true,
+    defaultValue: [],
   },
   'realEstate.$': Object,
   'realEstate.$.value': {

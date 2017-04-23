@@ -50,7 +50,10 @@ export const getMinFortune = (property, income) => {
 
   const rankFortune = Math.max(rank1Fortune, rank2Fortune);
 
-  return Math.ceil(Math.max(rankFortune, basicValue));
+  const maxFortune = Math.ceil(Math.max(0, rankFortune, basicValue));
+
+  // Make sure fortune never goes above the property value
+  return Math.min(maxFortune, property);
 };
 
 export const changeProperty = (state, o, property) => {
@@ -290,6 +293,7 @@ export const saveStartForm = (f, history) => {
       bankFortune: f.fortune2,
       insuranceSecondPillar: f.insurance12,
       insuranceThirdPillar: f.insurance22,
+      sameAddress: true,
     };
   }
 

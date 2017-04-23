@@ -43,7 +43,7 @@ export default class Files extends Component {
     const percent = filesPercent([this.props.borrower]);
 
     return (
-      <section className="animated fadeIn">
+      <section className="animated fadeIn" key={this.props.borrower._id}>
         <hr />
         <h2 className="text-center">
           Mes Documents

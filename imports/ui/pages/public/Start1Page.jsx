@@ -236,7 +236,7 @@ export default class Start1Page extends Component {
 
     return (
       <section className="oscar">
-        <article className="small-oscar mask1">
+        <article className="mask1 small-oscar">
           <h1>
             {this.type === 'acquisition'
               ? 'Commencez une Acquisition'

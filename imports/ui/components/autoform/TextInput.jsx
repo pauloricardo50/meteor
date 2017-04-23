@@ -9,12 +9,8 @@ import MaskedInput from 'react-text-mask';
 import constants from '/imports/js/config/constants';
 import colors from '/imports/js/config/colors';
 import { swissFrancMask, decimalMask } from '/imports/js/helpers/textMasks';
-import {
-  toNumber,
-  toDecimalNumber,
-} from '/imports/js/helpers/conversionFunctions';
+import { toNumber, toDecimalNumber } from '/imports/js/helpers/conversionFunctions';
 import SavingIcon from './SavingIcon.jsx';
-import InfoIcon from './InfoIcon.jsx';
 
 const styles = {
   div: {
@@ -108,29 +104,18 @@ export default class TextInput extends Component {
     }
 
     Meteor.clearTimeout(this.timeout);
-    this.timeout = Meteor.setTimeout(
-      () => {
-        cleanMethod(
-          this.props.updateFunc,
-          object,
-          this.props.documentId,
-          error => {
-            this.setState({ saving: false });
-            if (!error) {
-              // on success, set saving briefly to true, before setting it to false again to trigger icon
-              this.setState(
-                { errorText: '', saving: showSaving },
-                this.setState({ saving: false }),
-              );
-            } else {
-              // If there was an error, reset value to the backend value
-              this.setState({ value: this.props.currentValue });
-            }
-          },
-        );
-      },
-      constants.cpsLimit,
-    );
+    this.timeout = Meteor.setTimeout(() => {
+      cleanMethod(this.props.updateFunc, object, this.props.documentId, error => {
+        this.setState({ saving: false });
+        if (!error) {
+          // on success, set saving briefly to true, before setting it to false again to trigger icon
+          this.setState({ errorText: '', saving: showSaving }, this.setState({ saving: false }));
+        } else {
+          // If there was an error, reset value to the backend value
+          this.setState({ value: this.props.currentValue });
+        }
+      });
+    }, constants.cpsLimit);
   };
 
   render() {
@@ -139,11 +124,7 @@ export default class TextInput extends Component {
         <TextField
           floatingLabelText={this.props.label}
           hintText={this.props.placeholder}
-          value={
-            this.props.number
-              ? this.formatter(this.state.value)
-              : this.state.value
-          }
+          value={this.props.number ? this.formatter(this.state.value) : this.state.value}
           onChange={this.handleChange}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
@@ -153,9 +134,7 @@ export default class TextInput extends Component {
           multiLine={this.props.multiLine}
           rows={this.props.rows}
           pattern={this.props.number && '[0-9]*'}
-          errorText={
-            this.state.errorText || (this.state.showInfo && this.props.info)
-          }
+          errorText={this.state.errorText || (this.state.showInfo && this.props.info)}
           errorStyle={this.state.errorText ? {} : styles.infoStyle}
           underlineFocusStyle={this.state.errorText ? {} : styles.infoStyle}
           floatingLabelShrinkStyle={
@@ -175,13 +154,6 @@ export default class TextInput extends Component {
               pattern="[0-9]*"
             />}
         </TextField>
-        {/* {this.props.info &&
-          <InfoIcon
-            id={this.props.id}
-            info={this.props.info}
-            style={styles.infoIcon}
-          />
-        } */}
         <SavingIcon
           saving={this.state.saving}
           errorExists={this.state.errorText !== ''}
@@ -202,11 +174,7 @@ TextInput.propTypes = {
   rows: PropTypes.number,
   documentId: PropTypes.string.isRequired,
   updateFunc: PropTypes.string,
-  info: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.object,
-    PropTypes.array,
-  ]),
+  info: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.array]),
   disabled: PropTypes.bool,
   number: PropTypes.bool,
   decimal: PropTypes.bool,

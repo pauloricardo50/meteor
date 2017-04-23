@@ -33,7 +33,7 @@ const generalTooltips = {
 
 const offerTableTooltips = {
   montant: 'Le montant maximal que la banque peut vous prêter',
-  libor: '"London Interbank Offered Rate", c\'est un type de taux d\'intérêt parmi les plus bas mais le plus volatile',
+  libor: '"London Interbank Offered Rate", c\'est un type de taux d\'intérêt parmi les plus bas mais aussi le plus volatile',
   '2 ans': "Un taux d'intérêt qui arrive à échéance en 2 ans",
   '5 ans': "Un taux d'intérêt qui arrive à échéance en 5 ans",
   '10 ans': "Un taux d'intérêt qui arrive à échéance en 10 ans",

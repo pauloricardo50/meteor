@@ -43,14 +43,15 @@ const handleClick = (event, id, props) => {
   object['logic.hasValidatedFinances'] = true;
 
   cleanMethod('updateBorrower', object, id, () =>
-    Meteor.setTimeout(() => props.history.push('/app'), 300));
+    Meteor.setTimeout(() => props.history.push('/app'), 300),
+  );
 };
 
 const BorrowerFinancePage = props => {
   const borrowerId = props.match.params.borrowerId;
   const borrower = props.borrowers.find(b => b._id === borrowerId);
   return (
-    <section className="borrower-finance-page animated fadeIn">
+    <section className="borrower-finance-page animated fadeIn" key={borrowerId}>
       <hr />
       <h2 className="text-center">
         Mes Finances
