@@ -408,7 +408,7 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
   const insuranceArray = [
     {
       type: 'h3',
-      text: 'Assurances',
+      text: 'Prévoyance',
       // showCondition: index === 0,
     },
     {

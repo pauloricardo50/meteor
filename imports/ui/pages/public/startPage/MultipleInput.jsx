@@ -81,6 +81,7 @@ export default class MultipleInput extends Component {
               setRef={c => {
                 this.firstInput = c;
               }}
+              multiple={multiple}
             />
           </span>
         </h1>

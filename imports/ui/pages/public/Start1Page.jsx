@@ -159,16 +159,6 @@ export default class Start1Page extends Component {
     });
   };
 
-  isValid() {
-    const s = this.state;
-    const minIncome = s.property.value * constants.propertyToIncome();
-    // Make sure notary fees are paid
-    const borrow = Math.max((s.property.value * 1.05 - s.fortune.value) / s.property.value, 0);
-    const ratio = minIncome / s.income.value / 3;
-
-    return borrow <= 0.8 + 0.001 && ratio <= 1 / 3 + 0.001;
-  }
-
   recommendValues(name, autoOff) {
     const value = this.state[name].value;
     let o = {
@@ -228,11 +218,11 @@ export default class Start1Page extends Component {
     const income = this.state.income.value;
     const fortune = this.state.fortune.value;
     const loan = property * 1.05 - fortune;
-    const borrow = Math.max((property * 1.05 - fortune) / property, 0);
-    const ratio =
-      this.getMonthly(income, fortune - property * 0.05, property, borrow) / (income / 12);
+    const borrowRatio = Math.max((property * 1.05 - fortune) / property, 0);
+    const incomeRatio =
+      this.getMonthly(income, fortune - property * 0.05, property, borrowRatio) / (income / 12);
     const isReady = !!(income && fortune && property);
-    const childProps = { income, fortune, property, borrow, ratio };
+    const childProps = { income, fortune, property, borrowRatio, incomeRatio };
 
     return (
       <section className="oscar">
@@ -250,8 +240,8 @@ export default class Start1Page extends Component {
                 income,
                 fortune,
                 property,
-                borrow,
-                ratio,
+                borrowRatio,
+                incomeRatio,
                 this.state.property.auto,
               ).map(line => (
                 <StartLine
@@ -292,7 +282,7 @@ export default class Start1Page extends Component {
               </h3>
               <ExpensesChartInterests
                 loan={loan || undefined}
-                amortization={loan * constants.getAmortization(borrow) / 12 || 0}
+                amortization={loan * constants.getAmortization(borrowRatio) / 12 || 0}
                 maintenance={property * constants.maintenanceReal / 12 || 0}
               />
             </Accordion>
@@ -302,7 +292,7 @@ export default class Start1Page extends Component {
             <RaisedButton
               label="Passer au check-up complet"
               disabled={!isReady}
-              primary={this.isValid()}
+              primary={borrowRatio <= 0.8 + 0.001 && incomeRatio <= constants.maxRatio + 0.001}
               containerElement={<Link to={this.getUrl()} />}
               id="ok"
               style={{ height: 'unset' }}

@@ -5,12 +5,8 @@ import cleanMethod from '/imports/api/cleanMethods';
 import RaisedButton from 'material-ui/RaisedButton';
 import Scroll from 'react-scroll';
 
-import {
-  loanStrategySuccess,
-  getLoanValue,
-} from '/imports/js/helpers/requestFunctions';
-import StrategyChoices
-  from '/imports/ui/components/general/StrategyChoices.jsx';
+import { loanStrategySuccess, getLoanValue } from '/imports/js/helpers/requestFunctions';
+import StrategyChoices from '/imports/ui/components/general/StrategyChoices.jsx';
 import FinanceStrategyPicker from './FinanceStrategyPicker.jsx';
 
 const styles = {
@@ -64,30 +60,18 @@ const getChoices = () => [
   {
     id: 'fixed',
     title: '100% Fixé',
-    reasons: [
-      'Dormez serein',
-      'Profitez des taux historiquement bas',
-      <span>&nbsp;</span>,
-    ],
+    reasons: ['Dormez serein', 'Profitez des taux historiquement bas', <span>&nbsp;</span>],
     isBest: true,
   },
   {
     id: 'fixedLibor',
     title: '20% Libor',
-    reasons: [
-      'Jouez le Libor',
-      'Risque faible',
-      "Vérifiez votre capacité d'épargne au préalable",
-    ],
+    reasons: ['Jouez le Libor', 'Risque faible', "Vérifiez votre capacité d'épargne au préalable"],
   },
   {
     id: 'manual',
     title: 'Mode Manuel',
-    reasons: [
-      'Fixez chaque tranche vous-même',
-      'Choisissez la durée',
-      'À vos risques et périls',
-    ],
+    reasons: ['Fixez chaque tranche vous-même', 'Choisissez la durée', 'À vos risques et périls'],
   },
 ];
 
@@ -119,7 +103,7 @@ const getStructure = (choiceId, props) => {
 
 const LoanStrategyPicker = props => (
   <article>
-    <h2>3. Choisissez votre stratégie de taux</h2>
+    <h2>{props.index}. Choisissez votre stratégie de taux</h2>
 
     <div className="description">
       <p>
@@ -152,18 +136,8 @@ const LoanStrategyPicker = props => (
           <RaisedButton
             label="Continuer"
             primary={!props.formState.loanStrategyValidated}
-            disabled={
-              !loanStrategySuccess(
-                props.formState.loanTranches,
-                props.loanValue,
-              )
-            }
-            onTouchTap={() =>
-              props.setFormState(
-                'loanStrategyValidated',
-                true,
-                props.scroll(3),
-              )}
+            disabled={!loanStrategySuccess(props.formState.loanTranches, props.loanValue)}
+            onTouchTap={() => props.setFormState('loanStrategyValidated', true, props.scroll(3))}
           />
         </div>
       </div>}

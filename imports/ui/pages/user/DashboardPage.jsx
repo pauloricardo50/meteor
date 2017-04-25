@@ -22,10 +22,6 @@ export default class DashboardPage extends Component {
     };
   }
 
-  componentDidMount() {
-    window.scroll(0, 0);
-  }
-
   handleClick = i => {
     if (this.state.active === i) {
       this.setState({ active: -1 });

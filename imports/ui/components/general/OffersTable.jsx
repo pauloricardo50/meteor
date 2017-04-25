@@ -70,6 +70,7 @@ export default class OffersTable extends Component {
     let offers = [
       ...this.props.offers.map(o => (this.props.showSpecial ? o.conditionsOffer : o.standardOffer)),
     ];
+    console.log(offers);
     offers.sort((a, b) => a.interest10 - b.interest10);
     const shownOffers = this.state.showFullTable ? offers : offers.slice(0, 5);
     return (
@@ -103,7 +104,7 @@ export default class OffersTable extends Component {
                     <td className="r">{round(offer.interest2)}%</td>
                     <td className="r">{round(offer.interest5)}%</td>
                     <td className="r">{round(offer.interest10)}%</td>
-                    <td className="r">{round(offer.amortizing)}%</td>
+                    <td className="r">{round(offer.amortization)}%</td>
                     <td className="r">
                       {offer.expertiseRequired ? 'Oui' : 'Non'}
                     </td>

@@ -1,6 +1,6 @@
 const constants = {
   cpsLimit: 300, // Average characters typed per second
-  amortizing: 0.01125,
+  amortization: 0.01125,
   interests: 0.05,
   interestsReal: 0.015,
   maintenance: 0.01,
@@ -8,6 +8,7 @@ const constants = {
   notaryFees: 0.05,
   lppFees: 0.1,
   maxRatio: 0.38,
+  getCurrency: () => 'CHF',
   loanCost(borrowRatio, toRetirement) {
     return this.interests + this.getAmortization(borrowRatio, toRetirement);
   },

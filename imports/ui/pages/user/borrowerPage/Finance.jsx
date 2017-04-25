@@ -10,6 +10,7 @@ import AutoForm from '/imports/ui/components/autoform/AutoForm.jsx';
 import { getBorrowerFinanceArray } from '/imports/js/arrays/BorrowerFormArray';
 import cleanMethod from '/imports/api/cleanMethods';
 import Recap from '/imports/ui/components/general/Recap';
+import constants from '/imports/js/config/constants';
 
 const styles = {
   div: {
@@ -68,6 +69,7 @@ const BorrowerFinancePage = props => {
           margin: '0 20px',
         }}
       >
+        <h3>Récapitulatif (en {constants.getCurrency()})</h3>
         <Recap arrayName="borrower" borrower={borrower} />
       </div>
 

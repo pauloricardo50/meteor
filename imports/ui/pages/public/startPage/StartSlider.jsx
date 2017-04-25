@@ -10,12 +10,13 @@ const StartSlider = props => {
       <Slider
         min={props.sliderMin}
         max={props.sliderMax}
-        step={
-          props.step ||
-            Math.max(Math.round((props.sliderMax - props.sliderMin) / 100), 1)
-        }
+        step={props.step || Math.max(Math.round((props.sliderMax - props.sliderMin) / 100), 1)}
         name={props.id}
-        value={Math.min(Math.max(val, props.sliderMin), props.sliderMax)}
+        value={
+          Math.min(Math.max(val, props.sliderMin), props.sliderMax) ||
+            props.initialValue ||
+            props.sliderMin
+        }
         onChange={(e, v) => props.setFormState(props.id, Math.round(v))}
         onDragStart={() => {
           props.setActiveLine(props.id);
@@ -51,6 +52,7 @@ StartSlider.propTypes = {
   step: PropTypes.number,
   onDragStart: PropTypes.func,
   sliderLabels: PropTypes.arrayOf(PropTypes.string),
+  initialValue: PropTypes.number,
 };
 
 StartSlider.defaultProps = {
@@ -61,6 +63,7 @@ StartSlider.defaultProps = {
   step: 0,
   onDragStart: undefined,
   sliderLabels: undefined,
+  initialValue: 0,
 };
 
 export default StartSlider;

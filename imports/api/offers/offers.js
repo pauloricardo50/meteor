@@ -22,7 +22,7 @@ const singleOffer = new SimpleSchema({
     min: 0,
     max: 100000000,
   },
-  amortizing: {
+  amortization: {
     type: Number,
   },
   interestLibor: {

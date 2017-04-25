@@ -332,7 +332,7 @@ export const LogicSchema = new SimpleSchema({
     defaultValue: '',
     optional: true,
   },
-  amortizingStrategyPreset: {
+  amortizationStrategyPreset: {
     type: String,
     defaultValue: '',
     optional: true,

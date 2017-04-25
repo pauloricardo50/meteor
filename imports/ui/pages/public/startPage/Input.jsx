@@ -38,6 +38,7 @@ export default class Input extends Component {
                 setRef={c => {
                   this.input = c;
                 }}
+                inputRef={this.input}
               />}
 
             {this.props.select && <StartSelectField {...this.props} />}

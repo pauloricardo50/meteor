@@ -131,7 +131,7 @@ describe('Request functions', () => {
       general: { fortuneUsed },
     };
     let tranches = [{ type: 'interestLibor', value: 800000 }];
-    let amortizing = constants.amortizing;
+    let amortization = constants.amortization;
     let interestRates = {
       interestLibor: 0.01,
       interest5: 0.01,
@@ -147,7 +147,7 @@ describe('Request functions', () => {
           insuranceFortuneUsed,
           tranches,
           interestRates,
-          amortizing,
+          amortization,
         ),
       ).to.equal(1833);
     });
@@ -161,7 +161,7 @@ describe('Request functions', () => {
           insuranceFortuneUsed,
           tranches,
           interestRates,
-          amortizing,
+          amortization,
         ),
       ).to.equal(2167);
     });
@@ -178,7 +178,7 @@ describe('Request functions', () => {
           insuranceFortuneUsed,
           tranches,
           interestRates,
-          amortizing,
+          amortization,
         ),
       ).to.equal(2000);
     });
@@ -192,7 +192,7 @@ describe('Request functions', () => {
           insuranceFortuneUsed,
           tranches,
           interestRates,
-          amortizing,
+          amortization,
         ),
       ).to.equal(1948);
     });
@@ -206,7 +206,7 @@ describe('Request functions', () => {
           insuranceFortuneUsed,
           tranches,
           interestRates,
-          amortizing,
+          amortization,
         ),
       ).to.equal(0);
     });

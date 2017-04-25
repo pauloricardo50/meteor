@@ -56,7 +56,7 @@ export default class PartnerOfferForm extends Component {
 
     this.state = {
       maxAmount: '',
-      amortizing: '',
+      amortization: '',
       libor_0: '',
       interest5_0: '',
       interest10_0: '',
@@ -87,7 +87,7 @@ export default class PartnerOfferForm extends Component {
       requestId: id,
       standardOffer: {
         maxAmount: toNumber(this.state.maxAmount),
-        amortizing: toDecimalNumber(this.state.amortizing),
+        amortization: toDecimalNumber(this.state.amortization),
         interestLibor: toDecimalNumber(this.state.libor_0),
         interest5: toDecimalNumber(this.state.interest5_0),
         interest10: toDecimalNumber(this.state.interest10_0),
@@ -95,7 +95,7 @@ export default class PartnerOfferForm extends Component {
       },
       conditionsOffer: {
         maxAmount: toNumber(this.state.maxAmount),
-        amortizing: toDecimalNumber(this.state.amortizing),
+        amortization: toDecimalNumber(this.state.amortization),
         interestLibor: toDecimalNumber(this.state.libor_1),
         interest5: toDecimalNumber(this.state.interest5_1),
         interest10: toDecimalNumber(this.state.interest10_1),
@@ -137,8 +137,8 @@ export default class PartnerOfferForm extends Component {
               floatingLabelText="Amortissement"
               hintText={'1%'}
               type="text"
-              onChange={(e, n) => this.handleChange(e, n, 'amortizing')}
-              value={this.state.amortizing}
+              onChange={(e, n) => this.handleChange(e, n, 'amortization')}
+              value={this.state.amortization}
             >
               <MaskedInput mask={percentMask} guide pattern="\d+(\.\d*)?" />
             </TextField>

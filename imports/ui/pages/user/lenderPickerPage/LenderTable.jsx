@@ -14,13 +14,13 @@ import OfferToggle from '/imports/ui/components/general/OfferToggle.jsx';
 const getOffers = props => {
   const newOffers = props.offers.map(offer => {
     let rates = [];
-    let amortizing = 0;
+    let amortization = 0;
     if (props.formState.standard) {
       rates = offer.standardOffer;
-      amortizing = offer.standardOffer.amortizing;
+      amortization = offer.standardOffer.amortization;
     } else {
       rates = offer.conditionsOffer;
-      amortizing = offer.conditionsOffer.amortizing;
+      amortization = offer.conditionsOffer.amortization;
     }
     const monthly = getMonthlyWithOffer(
       props.loanRequest,
@@ -28,7 +28,7 @@ const getOffers = props => {
       props.formState.insuranceFortuneUsed,
       props.formState.loanTranches,
       rates,
-      amortizing,
+      amortization,
     );
 
     return {
@@ -61,7 +61,7 @@ const handleSave = props => {
 
   object['general.fortuneUsed'] = props.formState.fortuneUsed;
   object['general.insuranceFortuneUsed'] = props.formState.insuranceFortuneUsed;
-  object['logic.amortizingStrategyPreset'] = props.formState.amortizing;
+  object['logic.amortizationStrategyPreset'] = props.formState.amortizationStrategyPreset;
   object['logic.loanStrategyPreset'] = props.formState.loanStrategyPreset;
   object['general.loanTranches'] = props.formState.loanTranches;
   object['logic.lender'] = props.formState.chosenLender;

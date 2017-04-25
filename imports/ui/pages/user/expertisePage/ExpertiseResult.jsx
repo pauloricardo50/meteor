@@ -45,27 +45,6 @@ const results = {
       <RaisedButton label="Retour" style={styles.button} containerElement={<Link to="/app" />} />,
     ],
   },
-  low: {
-    titleIcon: 'fa fa-money',
-    titleText: 'La valeur du bien est en dessous du marché',
-
-    titleClass: 'success',
-    description: (
-      <span>
-        Il semblerait que vous êtes sur une affaire en or, le bien que vous voulez acheter a une valeur plus élevée que ce qu'il vous coûtera.
-        <br /><br />
-        Nous vous recommandons de ne pas en parler avec le vendeur, qui voudra certainement revisiter le prix de la vente.
-      </span>
-    ),
-    actions: [
-      <RaisedButton label="Ajuster ma demande" style={styles.button} />,
-      <RaisedButton
-        label="Continuer quand même"
-        style={styles.button}
-        containerElement={<Link to="/app" />}
-      />,
-    ],
-  },
   normal: {
     titleIcon: 'fa fa-check',
     titleText: 'La valeur du bien est dans la fourchette des prix du marché',

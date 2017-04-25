@@ -58,7 +58,7 @@ export const getAmortization = (loanRequest, borrowers) => {
       yearlyAmortization = amountToAmortize / remainingYears;
     }
   } else {
-    yearlyAmortization = propAndWork * constants.amortizing;
+    yearlyAmortization = propAndWork * constants.amortization;
   }
 
   return yearlyAmortization / 12;

@@ -3,12 +3,10 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
 
-import {
-  getLoanValue,
-  loanStrategySuccess,
-} from '/imports/js/helpers/requestFunctions';
+import { getLoanValue, loanStrategySuccess } from '/imports/js/helpers/requestFunctions';
 
-import FortuneSliders from './lenderPickerPage/FortuneSliders.jsx';
+import LenderPickerStart from './lenderPickerPage/LenderPickerStart.jsx';
+import RankStrategy from './lenderPickerPage/RankStrategy.jsx';
 import AmortizingPicker from './lenderPickerPage/AmortizingPicker.jsx';
 import LoanStrategyPicker from './lenderPickerPage/LoanStrategyPicker.jsx';
 import LenderTable from './lenderPickerPage/LenderTable.jsx';
@@ -21,6 +19,29 @@ const getLoan = (props, state) => {
   return getLoanValue(props.loanRequest);
 };
 
+const getComponents = state => [
+  {
+    component: LenderPickerStart,
+    condition: true,
+  },
+  {
+    component: RankStrategy,
+    condition: false,
+  },
+  {
+    component: AmortizingPicker,
+    condition: state.initialContinue,
+  },
+  {
+    component: LoanStrategyPicker,
+    condition: state.amortizationStrategyPreset,
+  },
+  {
+    component: LenderTable,
+    condition: state.loanStrategyValidated,
+  },
+];
+
 export default class LenderPickerPage extends React.Component {
   constructor(props) {
     super(props);
@@ -28,12 +49,12 @@ export default class LenderPickerPage extends React.Component {
     const r = this.props.loanRequest;
 
     this.state = {
-      validatedFortune: r.logic.lender,
+      initialContinue: r.logic.lender,
       chosenLender: r.logic.lender,
       fortuneUsed: r.general.fortuneUsed,
       insuranceFortuneUsed: r.general.insuranceFortuneUsed,
       partnerFilter: 'monthly',
-      amortizing: r.logic.amortizingStrategyPreset,
+      amortizationStrategyPreset: r.logic.amortizationStrategyPreset,
       loanStrategyPreset: r.logic.loanStrategyPreset,
       loanTranches: r.general.loanTranches || [],
       loanStrategyValidated: r.logic.loanStrategyPreset &&
@@ -59,18 +80,12 @@ export default class LenderPickerPage extends React.Component {
       },
     };
 
-    const array = [<FortuneSliders {...props} />];
-
-    if (this.state.validatedFortune) {
-      array.push(<AmortizingPicker {...props} />);
-    }
-    if (this.state.amortizing) {
-      array.push(<LoanStrategyPicker {...props} />);
-    }
-    if (this.state.loanStrategyValidated) {
-      array.push(<LenderTable {...props} history={this.props.history} />);
-    }
-
+    const array = [];
+    getComponents(this.state).forEach((c, i) => {
+      if (c.condition || this.props.loanRequest.logic.lender) {
+        array.push(<c.component {...props} index={i} />);
+      }
+    });
     return array;
   }
 

@@ -19,7 +19,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         },
         {
           title: 'Dites en plus sur vous',
-          link: `/app/borrowers/${borrowers[0]._id}?tab=personal`,
+          link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}?tab=personal`,
           subtitle: '1 min',
           percent: () => personalInfoPercent(borrowers),
           isDone() {
@@ -28,7 +28,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         },
         {
           title: 'Vérifiez vos finances',
-          link: `/app/borrowers/${borrowers[0]._id}?tab=finance`,
+          link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}?tab=finance`,
           subtitle: '20 sec',
           isDone: () => borrowers.reduce((res, b) => res && b.logic.hasValidatedFinances, true),
         },
@@ -43,7 +43,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         },
         {
           title: 'Uploadez les documents nécessaires',
-          link: `/app/borrowers/${borrowers[0]._id}?tab=files`,
+          link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}?tab=files`,
           subtitle: '10 min',
           percent: () => filesPercent(borrowers),
           isDone() {
@@ -68,7 +68,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
     // Step 2
     {
       nb: 2,
-      title: 'Les enchères',
+      title: 'Trouvez votre prêteur',
       subtitle: loanRequest.logic.step < 1 ? 'Dans 1 jour' : '3 jours',
       items: [
         {

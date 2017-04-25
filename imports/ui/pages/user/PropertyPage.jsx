@@ -6,19 +6,20 @@ import { Link } from 'react-router-dom';
 
 import AutoForm from '/imports/ui/components/autoform/AutoForm.jsx';
 import PropertyFormArray from '/imports/js/arrays/PropertyFormArray';
-import FakePropertyCompleter
-  from '/imports/ui/components/general/FakePropertyCompleter.jsx';
+import FakePropertyCompleter from '/imports/ui/components/general/FakePropertyCompleter.jsx';
 
 import { propertyPercent } from '/imports/js/arrays/steps';
 
 const styles = {
-  div: {
+  topDiv: {
     display: 'inline-block',
     width: '100%',
     marginBottom: 20,
   },
-  topLeftButton: {
-    float: 'left',
+  bottomDiv: {
+    display: 'inline-block',
+    width: '100%',
+    marginTop: 20,
   },
   topRightButton: {
     float: 'right',
@@ -29,13 +30,7 @@ const PropertyPage = props => {
   const percent = propertyPercent(props.loanRequest, props.borrowers);
   return (
     <div>
-      <div style={styles.div}>
-        <RaisedButton
-          label="Retour"
-          containerElement={<Link to="/app" />}
-          style={styles.topLeftButton}
-        />
-
+      <div style={styles.topDiv}>
         <RaisedButton
           label="Ok"
           containerElement={<Link to="/app" />}
@@ -46,9 +41,7 @@ const PropertyPage = props => {
 
       <section className="mask1 property-page">
         <h1 className="text-center">
-          {props.borrowers.length > 1
-            ? 'Notre bien immobilier'
-            : 'Mon bien immobilier'}
+          {props.borrowers.length > 1 ? 'Notre bien immobilier' : 'Mon bien immobilier'}
           <br />
           <small className={percent >= 1 && 'success'}>
             Progrès: {Math.round(percent * 1000) / 10}%
@@ -72,6 +65,15 @@ const PropertyPage = props => {
         {propertyPercent(props.loanRequest, props.borrowers) < 1 &&
           <FakePropertyCompleter loanRequest={props.loanRequest} />}
       </section>
+
+      <div style={styles.bottomDiv}>
+        <RaisedButton
+          label="Ok"
+          containerElement={<Link to="/app" />}
+          style={styles.topRightButton}
+          primary
+        />
+      </div>
     </div>
   );
 };

@@ -815,8 +815,6 @@ ul.request-map
       width: 100%;
       margin: 0 auto;
       margin-bottom: 20px;
-      +above($med)
-        margin-bottom: 40px;
       label
         font-size: 16px;
         margin: 0;
@@ -853,6 +851,7 @@ ul.request-map
         margin-top: 8px !important;
       .sliderDiv
         position: relative;
+        margin-top: -10px;
       .sliderMaxButton
         height: 30px;
         display: inline;
@@ -1014,11 +1013,31 @@ ul.request-map
   .scroll
     .startArticle
       display: inline-block;
+      align-items: center;
       width: 100%;
       transform-origin: left center;
       transition: all 0.3s ease;
       transform: scale(0.8);
       opacity: 0.8;
+      .delete-button
+        display: none;
+        position: absolute;
+        right: -24px;
+        top: 50%;
+        cursor: pointer;
+        svg
+          color: alpha(#222, 0.7) !important;
+        &:hover
+          svg
+            color: alpha(#222, 0.9) !important;
+        &.off
+          cursor: default;
+          svg
+            color: alpha(#222, 0.4) !important;
+        .absolute-wrapper
+          top: 50%;
+          transform: translateY(-50%);
+          position: relative;
       span.active
         input
           color: inherit !important;
@@ -1035,6 +1054,8 @@ ul.request-map
           top: 0;
           opacity: 1;
           color: brand-primary;
+        .delete-button
+          display:block;
       &.no-modify:hover
         &:before
           content: '';
@@ -1137,10 +1158,16 @@ ul.request-map
   .loanWanted-slider
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    margin-bottom: -20px;
     div
       display: flex;
       flex-direction: column;
+      align-items: center;
+      &:first-child
+        margin-right: 8px;
+        padding-right: 8px;
+        border-right: 1px solid light-grey;
       h1
         margin: 0;
       label

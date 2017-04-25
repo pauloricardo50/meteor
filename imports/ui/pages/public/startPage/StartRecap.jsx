@@ -16,26 +16,25 @@ const getMonthlyReal = (income, fortune, property, borrow) =>
     0,
   );
 
-const getArray = ({ income, fortune, property, borrow, ratio }) => {
+const getArray = ({ income, fortune, property, borrowRatio, incomeRatio }) => {
   return [
     {
       title: true,
-      label: 'Votre Projet',
+      label: `Projet (en ${constants.getCurrency()})`,
     },
     {
       label: "Prix d'achat",
-      value: `CHF ${toMoney(Math.round(property / 1000) * 1000)}`,
+      value: toMoney(Math.round(property / 1000) * 1000),
     },
     {
       label: 'Frais de notaire',
-      value: `CHF ${toMoney(Math.round(property * constants.notaryFees / 1000) * 1000)}`,
+      value: toMoney(Math.round(property * constants.notaryFees / 1000) * 1000),
       spacing: true,
     },
     {
       label: <span className="bold">Coût total du projet</span>,
       value: (
         <span className="bold">
-          CHF&nbsp;
           {toMoney(Math.round(property * (1 + constants.notaryFees) / 1000) * 1000)}
         </span>
       ),
@@ -43,20 +42,18 @@ const getArray = ({ income, fortune, property, borrow, ratio }) => {
     },
     {
       label: 'Fonds propres',
-      value: `CHF ${toMoney(fortune)}`,
+      value: toMoney(fortune),
     },
     {
       label: 'Emprunt',
-      value: `CHF ${toMoney(Math.round(borrow * property / 1000) * 1000)}`,
+      value: toMoney(Math.round(borrowRatio * property / 1000) * 1000),
       spacing: true,
     },
     {
       label: 'Charges estimées*',
-      value: Math.round(borrow * 1000) / 1000 <= 0.8 && fortune < property
+      value: Math.round(borrowRatio * 1000) / 1000 <= 0.8 && fortune < property
         ? <span>
-            CHF
-            {' '}
-          {toMoney(getMonthlyReal(income, fortune - property * 0.05, property, borrow))}
+          {toMoney(getMonthlyReal(income, fortune - property * 0.05, property, borrowRatio))}
           {' '}
           <small>/mois</small>
         </span>
@@ -78,12 +75,12 @@ const getArray = ({ income, fortune, property, borrow, ratio }) => {
       label: "Emprunt/Prix d'achat",
       value: (
         <span>
-          {Math.round(borrow * 1000) / 10}%&nbsp;
+          {Math.round(borrowRatio * 1000) / 10}%&nbsp;
           <span
             className={
-              borrow <= 0.8 + 0.001 // for rounding
+              borrowRatio <= 0.8 + 0.001 // for rounding
                 ? 'fa fa-check success'
-                : borrow <= 0.9 ? 'fa fa-exclamation warning' : 'fa fa-times error'
+                : borrowRatio <= 0.9 ? 'fa fa-exclamation warning' : 'fa fa-times error'
             }
           />
         </span>
@@ -93,12 +90,12 @@ const getArray = ({ income, fortune, property, borrow, ratio }) => {
       label: 'Charges/Revenus',
       value: (
         <span>
-          {Math.round(ratio * 1000) / 10}%&nbsp;
+          {Math.round(incomeRatio * 1000) / 10}%&nbsp;
           <span
             className={
-              ratio <= 1 / 3 + 0.001 // for rounding
+              incomeRatio <= 1 / 3 + 0.001 // for rounding
                 ? 'fa fa-check success'
-                : ratio <= 0.38 ? 'fa fa-exclamation warning' : 'fa fa-times error'
+                : incomeRatio <= 0.38 ? 'fa fa-exclamation warning' : 'fa fa-times error'
             }
           />
         </span>
@@ -110,7 +107,7 @@ const getArray = ({ income, fortune, property, borrow, ratio }) => {
     },
     {
       label: 'Nb. de prêteurs potentiels',
-      value: getLenderCount(borrow, ratio),
+      value: getLenderCount(borrowRatio, incomeRatio),
       spacing: true,
     },
   ];

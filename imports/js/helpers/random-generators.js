@@ -36,7 +36,7 @@ export const getRandomOffer = request => {
     auctionEndTime: new Date(),
     standardOffer: {
       maxAmount: loanWanted,
-      amortizing: 0.01,
+      amortization: 0.01,
       interestLibor: rate1,
       interest1: round(rate1 + rand(0.0004, 0.0016)),
       interest2: round(rate1 + rand(0.0016, 0.004)),
@@ -45,7 +45,7 @@ export const getRandomOffer = request => {
     },
     conditionsOffer: {
       maxAmount: loanWanted,
-      amortizing: 0.01,
+      amortization: 0.01,
       interestLibor: rate2,
       interest1: round(rate2 + rand(0.0004, 0.0016)),
       interest2: round(rate2 + rand(0.0016, 0.004)),

@@ -7,12 +7,12 @@ export const getProjectValue = loanRequest => {
     return 0;
   }
 
-  let value = loanRequest.property.value * (1 + constants.notaryFees) +
+  let value =
+    loanRequest.property.value * (1 + constants.notaryFees) +
     (loanRequest.property.propertyWork || 0);
 
   if (loanRequest.property.usageType === 'primary') {
-    value += (loanRequest.general.insuranceFortuneUsed || 0) *
-      constants.lppFees;
+    value += (loanRequest.general.insuranceFortuneUsed || 0) * constants.lppFees;
   }
 
   return Math.max(0, Math.round(value));
@@ -34,10 +34,7 @@ export const loanStrategySuccess = (loanTranches = [], loanValue) => {
     return false;
   }
   // User has to choose a preset
-  const trancheSum = loanTranches.reduce(
-    (tot, tranche) => tranche.value + tot,
-    0,
-  );
+  const trancheSum = loanTranches.reduce((tot, tranche) => tranche.value + tot, 0);
   if (trancheSum === loanValue) {
     // If the sum of all tranches is equal to the loan, success!
     return true;
@@ -47,9 +44,11 @@ export const loanStrategySuccess = (loanTranches = [], loanValue) => {
 };
 
 export const strategiesChosen = loanRequest => {
-  return loanStrategySuccess(loanRequest) &&
-    loanRequest.logic.amortizingStrategyPreset &&
-    loanRequest.logic.hasValidatedCashStrategy;
+  return (
+    loanStrategySuccess(loanRequest) &&
+    loanRequest.logic.amortizationStrategyPreset &&
+    loanRequest.logic.hasValidatedCashStrategy
+  );
 };
 
 export const getMonthlyWithOffer = (
@@ -58,16 +57,15 @@ export const getMonthlyWithOffer = (
   insuranceFortuneUsed,
   tranches,
   interestRates,
-  amortizing,
+  amortization,
 ) => {
   const r = JSON.parse(JSON.stringify(request));
   r.general.fortuneUsed = fortuneUsed || r.general.fortuneUsed;
-  r.general.insuranceFortuneUsed = insuranceFortuneUsed ||
-    r.general.insuranceFortuneUsed;
+  r.general.insuranceFortuneUsed = insuranceFortuneUsed || r.general.insuranceFortuneUsed;
   const loan = getLoanValue(r);
 
-  const maintenance = constants.maintenanceReal *
-    (r.property.value + (r.property.propertyWork || 0));
+  const maintenance =
+    constants.maintenanceReal * (r.property.value + (r.property.propertyWork || 0));
 
   let interests = 0;
   tranches.some(tranche => {
@@ -82,19 +80,14 @@ export const getMonthlyWithOffer = (
     interests += tranche.value * rate;
   });
 
-  return interests >= 0
-    ? Math.round((maintenance + loan * amortizing + interests) / 12)
-    : 0;
+  return interests >= 0 ? Math.round((maintenance + loan * amortization + interests) / 12) : 0;
 };
 
 export const getPropAndWork = loanRequest =>
   loanRequest.property.value + (loanRequest.property.propertyWork || 0);
 
 export const getTotalUsed = loanRequest =>
-  Math.round(
-    loanRequest.general.fortuneUsed +
-      (loanRequest.general.insuranceFortuneUsed || 0),
-  );
+  Math.round(loanRequest.general.fortuneUsed + (loanRequest.general.insuranceFortuneUsed || 0));
 
 export const getLenderCount = (loanRequest, borrowers) => {
   const incomeRatio = getIncomeRatio(loanRequest, borrowers);

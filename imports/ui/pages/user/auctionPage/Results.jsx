@@ -50,7 +50,7 @@ const getFakeOffers = props => {
     {
       standardOffer: {
         maxAmount: loanWanted * 1,
-        amortizing: '1',
+        amortization: '1',
         interest10: '0.89',
       },
       expertiseRequired: false,
@@ -58,7 +58,7 @@ const getFakeOffers = props => {
     {
       standardOffer: {
         maxAmount: loanWanted * 0.98,
-        amortizing: '1',
+        amortization: '1',
         interest10: '0.99',
       },
       expertiseRequired: true,
@@ -66,7 +66,7 @@ const getFakeOffers = props => {
     {
       standardOffer: {
         maxAmount: loanWanted * 1,
-        amortizing: '1',
+        amortization: '1',
         interest10: '0.85',
       },
       expertiseRequired: true,
@@ -74,7 +74,7 @@ const getFakeOffers = props => {
     {
       standardOffer: {
         maxAmount: loanWanted * 1,
-        amortizing: '1',
+        amortization: '1',
         interest10: '0.91',
       },
       expertiseRequired: false,
@@ -82,7 +82,7 @@ const getFakeOffers = props => {
     {
       standardOffer: {
         maxAmount: loanWanted * 0.96,
-        amortizing: '1',
+        amortization: '1',
         interest10: '0.85',
       },
       expertiseRequired: false,
@@ -90,7 +90,7 @@ const getFakeOffers = props => {
     {
       standardOffer: {
         maxAmount: loanWanted * 1,
-        amortizing: '1',
+        amortization: '1',
         interest10: '0.85',
       },
       expertiseRequired: true,
@@ -147,10 +147,7 @@ export default class Results extends Component {
         />
 
         <div style={styles.tableDiv}>
-          <OffersTable
-            showSpecial={this.state.showSpecial}
-            offers={this.props.offers.length > 0 ? this.props.offers : getFakeOffers(this.props)}
-          />
+          <OffersTable showSpecial={this.state.showSpecial} offers={this.props.offers} />
         </div>
       </section>
     );

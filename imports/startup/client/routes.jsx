@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import myTheme from '/imports/js/config/mui_custom';
@@ -25,6 +25,7 @@ import TosPage from '/imports/ui/pages/public/TosPage.jsx';
 import DashBoardPage from '/imports/ui/pages/user/DashboardPage.jsx';
 import ProfilePage from '/imports/ui/pages/user/ProfilePage.jsx';
 import {
+  BorrowerPage,
   PropertyPage,
   AuctionPage,
   LenderPickerPage,
@@ -33,7 +34,6 @@ import {
   ExpertisePage,
   FinalStepsPage,
 } from '/imports/ui/containers/UserContainers';
-import BorrowerPage from '/imports/ui/pages/user/BorrowerPage.jsx';
 import ContactPage from '/imports/ui/pages/user/ContactPage.jsx';
 import NewPage from '/imports/ui/pages/user/NewPage.jsx';
 
@@ -80,10 +80,7 @@ const UserRoutes = props => (
         />
         <Route path="/app/profile" render={() => <ProfilePage {...layoutProps} />} />
         <Route path="/app/contact" render={() => <ContactPage {...layoutProps} />} />
-        <Route
-          path="/app/borrowers/:borrowerId"
-          render={routeProps => <BorrowerPage {...layoutProps} {...routeProps} />}
-        />
+        <Route path="/app/requests/:requestId/borrowers/:borrowerId" component={BorrowerPage} />
         <Route path="/app/requests/:requestId/property" component={PropertyPage} />
         <Route path="/app/requests/:requestId/verification" component={VerificationPage} />
         <Route path="/app/requests/:requestId/expertise" component={ExpertisePage} />
@@ -136,9 +133,25 @@ const PartnerRoutes = props => (
   />
 );
 
+// class ScrollToTop extends Component {
+//   componentDidUpdate(prevProps) {
+//     console.log('update');
+//     console.log(this.props);
+//     if (this.props.location !== prevProps.location) {
+//       window.scrollTo(0, 0);
+//       console.log('scroll');
+//     }
+//   }
+//
+//   render() {
+//     return this.props.children;
+//   }
+// }
+
 const RenderRoutes = () => (
   <MuiThemeProvider muiTheme={getMuiTheme(myTheme)}>
     <Router>
+      {/* <ScrollToTop> */}
       <Switch>
         <Route path="/app" render={props => <UserRoutes {...props} />} />
         <Route path="/admin" render={props => <AdminRoutes {...props} />} />
@@ -146,6 +159,7 @@ const RenderRoutes = () => (
         <Route exact path="/" component={PasswordPage} />
         <Route path="/" render={props => <PublicRoutes {...props} />} />
       </Switch>
+      {/* </ScrollToTop> */}
     </Router>
   </MuiThemeProvider>
 );

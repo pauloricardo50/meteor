@@ -296,12 +296,12 @@ const getAcquisitionArray = (state, props) => [
     type: 'buttons',
     text1: (
       <span>
-        Vous avez indiqué que votre fortune est de
+        Vous avez indiqué que vous vouliez allouer
         {' '}
         <span className="active">
           CHF {toMoney(state.initialFortune)}
         </span>
-        , vous pouvez la détailler maintenant.
+        de fonds propres pour ce projet. Merci de détailler votre fortune maintenant.
       </span>
     ),
     hideResult: true,
@@ -436,14 +436,13 @@ const getFinalArray = (state, props, setFormState) => [
         <div>
           <label htmlFor="">Emprunt</label>
           <span className="active">
-            CHF {toMoney(state.loanWanted) || 0}
+            CHF {toMoney(state.loanWanted || props.maxLoan)}
           </span>
         </div>
         <div>
           <label htmlFor="">Fonds Propres</label>
-          {' '}
-          <span className="active">
-            CHF {toMoney(props.fortuneNeeded)}
+          <span className="body">
+            CHF {toMoney(props.fortuneNeeded || props.project - props.maxLoan)}
           </span>
         </div>
       </span>
@@ -452,6 +451,7 @@ const getFinalArray = (state, props, setFormState) => [
     question: true,
     sliderMin: Math.max(100000, props.minLoan),
     sliderMax: props.maxLoan,
+    initialValue: props.maxLoan,
     sliderLabels: ['Min', 'Max'],
     step: 10000,
     onDragStart() {
@@ -525,12 +525,6 @@ const getFinalArray = (state, props, setFormState) => [
       },
       {
         id: undefined,
-        label: 'Conditions',
-        secondary: true,
-        noPrimary: true,
-      },
-      {
-        id: undefined,
         label: 'Pourquoi?',
         noPrimary: true,
       },
@@ -544,12 +538,31 @@ const getFinalArray = (state, props, setFormState) => [
     type: 'buttons',
     id: 'useInsurance',
     text1: 'Vous devrez utiliser votre fortune de prévoyance pour ce projet',
-    buttons: [
-      { id: true, label: 'Ok' },
-      { id: undefined, label: 'Conditions', secondary: true, noPrimary: true },
-      { id: undefined, label: 'Pourquoi?', noPrimary: true },
-    ],
+    buttons: [{ id: true, label: 'Ok' }, { id: undefined, label: 'Pourquoi?', noPrimary: true }],
     question: true,
+  },
+  {
+    condition: state.useInsurance,
+    type: 'buttons',
+    id: 'insuranceConditions',
+    text1: 'Il y a des conditions pour pouvoir utiliser sa prévoyance, est-ce que vous les passez?',
+    question: true,
+    buttons: [
+      {
+        id: true,
+        label: 'Oui',
+        onClick() {
+          setFormState('cantUseInsurance', false);
+        },
+      },
+      {
+        id: false,
+        label: 'Non',
+        onClick() {
+          setFormState('cantUseInsurance', true);
+        },
+      },
+    ],
   },
   {
     condition: state.type === 'acquisition' &&

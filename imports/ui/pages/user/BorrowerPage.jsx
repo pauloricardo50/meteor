@@ -17,7 +17,11 @@ const styles = {
   },
   topButton: {
     marginBottom: 20,
-    alignSelf: 'flex-start',
+    alignSelf: 'flex-end',
+  },
+  bottomButton: {
+    marginTop: 20,
+    alignSelf: 'flex-end',
   },
   link: {
     margin: '20px 8px',
@@ -74,9 +78,10 @@ export default class BorrowerPage extends Component {
     return (
       <div style={styles.div}>
         <RaisedButton
-          label="Retour"
+          label="Ok"
           containerElement={<Link to="/app" />}
           style={styles.topButton}
+          primary
         />
 
         <section className="mask1 borrower-page">
@@ -85,6 +90,13 @@ export default class BorrowerPage extends Component {
 
           {this.getContent()}
         </section>
+
+        <RaisedButton
+          label="Ok"
+          containerElement={<Link to="/app" />}
+          style={styles.bottomButton}
+          primary
+        />
       </div>
     );
   }

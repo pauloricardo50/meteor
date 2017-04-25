@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import classNames from 'classnames';
+import classnames from 'classnames';
 
 import TextField from 'material-ui/TextField';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
@@ -29,11 +29,8 @@ export default class Start1Text extends Component {
         <TextField
           id={this.props.name}
           name={this.props.name}
-          onChange={e =>
-            this.props.setStateValue(this.props.name, e.target.value)}
-          errorStyle={
-            this.props.minValue <= this.props.value ? defaultStyle : errorStyle
-          }
+          onChange={e => this.props.setStateValue(this.props.name, e.target.value)}
+          errorStyle={this.props.minValue <= this.props.value ? defaultStyle : errorStyle}
           className="input"
           hintText="CHF"
           ref={c => {
@@ -43,11 +40,7 @@ export default class Start1Text extends Component {
         >
           <MaskedInput
             type="text"
-            value={
-              (this.props.auto
-                ? Math.round(this.props.motionValue)
-                : this.props.value) || ''
-            }
+            value={(this.props.auto ? Math.round(this.props.motionValue) : this.props.value) || ''}
             mask={swissFrancMask}
             // guide
             pattern="[0-9]*"
@@ -55,7 +48,7 @@ export default class Start1Text extends Component {
           />
         </TextField>
         <span
-          className={classNames({
+          className={classnames({
             reset: true,
             off: this.props.value === 0,
           })}
