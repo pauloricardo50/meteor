@@ -132,6 +132,8 @@ export default class ExpensesChart extends Component {
         type: 'pie',
         style: { fontFamily: 'Source Sans Pro' },
         animation: { duration: 400 },
+        ...(!this.props.title && { spacingTop: 0 }),
+        ...(!this.props.title && { marginTop: 0 }),
         events: {
           load() {
             that.addTitle(this);
@@ -158,7 +160,7 @@ export default class ExpensesChart extends Component {
             crop: false,
             enabled: true,
             distance: 10,
-            format: '<b>{point.name}</b><br />CHF {point.y:,.0f}',
+            format: '<span class="bold">{point.name}</span><br />CHF {point.y:,.0f}',
             style: {
               color: '#333',
               fontSize: '14px',
@@ -237,7 +239,7 @@ export default class ExpensesChart extends Component {
       )
       .css({
         color: '#333333',
-        fontSize: '18px',
+        fontSize: '16px',
         fontWeight: 400,
       })
       .hide()
@@ -245,6 +247,25 @@ export default class ExpensesChart extends Component {
 
     const bbox = that.title.getBBox();
     that.title.attr({ x: x - bbox.width / 2, y }).show();
+
+    if (this.props.title) {
+      if (this.secondTitle) {
+        this.secondTitle.destroy();
+      }
+
+      this.secondTitle = r
+        .text(this.props.title, 0, 20)
+        .css({
+          color: '#333333',
+          fontSize: '18px',
+          fontWeight: 400,
+        })
+        .add();
+
+      const bbox2 = this.secondTitle.getBBox();
+
+      this.secondTitle.attr({ x: x - bbox2.width / 2 });
+    }
   };
 
   render() {
@@ -270,6 +291,7 @@ ExpensesChart.defaultProps = {
   maintenance: 0,
   interestRate: 0.015,
   showLegend: false,
+  title: undefined,
 };
 
 ExpensesChart.propTypes = {
@@ -279,4 +301,5 @@ ExpensesChart.propTypes = {
   maintenance: PropTypes.number,
   interestRate: PropTypes.number,
   showLegend: PropTypes.bool,
+  title: PropTypes.string,
 };

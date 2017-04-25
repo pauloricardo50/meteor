@@ -45,7 +45,7 @@ const DashboardItem = props => {
               <ProjectPieChart {...props} />
             </div>
             <div className="col-xs-12 col-md-6">
-              <ExpensesChart {...props} showLegend />
+              <ExpensesChart {...props} showLegend title="Coût Mensuel" />
             </div>
           </div>
 
