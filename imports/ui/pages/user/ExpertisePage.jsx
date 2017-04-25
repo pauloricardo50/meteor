@@ -7,7 +7,7 @@ import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
 import ExpertiseResult from './expertisePage/ExpertiseResult.jsx';
 
 const fakeExpertiseResult = {
-  result: Math.random() < 0.5 ? 'low' : 'normal',
+  result: Math.random() < 0.5 ? 'high' : 'normal',
 };
 
 const handleClick = requestId => {
