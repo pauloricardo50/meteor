@@ -49,7 +49,8 @@ if (Meteor.isClient) {
               amortization: 0.008,
               interestLibor: 0.008,
             },
-            conditions: 'Conditions',
+            conditions: ['Conditions'],
+            counterparts: [],
           },
         ],
       };

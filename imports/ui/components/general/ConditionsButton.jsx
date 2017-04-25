@@ -19,9 +19,9 @@ const styles = {
   },
 };
 
-const getList = array => (
+const getList = conditionArray => (
   <ul style={styles.list}>
-    {array
+    {conditionArray
       .map(c => <li style={styles.listItem}><h4 className="fixed-size">{c}</h4></li>)
       .reduce((prev, curr) => [prev, <hr style={styles.hr} />, curr])}
   </ul>
