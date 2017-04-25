@@ -5,6 +5,7 @@ import { toMoney } from '/imports/js/helpers/conversionFunctions';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
+import ConditionsButton from '/imports/ui/components/general/ConditionsButton.jsx';
 
 const round = v => Math.round(v * 10000) / 100;
 
@@ -45,8 +46,8 @@ const columns = [
     width: 10,
   },
   {
-    label: 'Expertise?',
-    align: 'r',
+    label: 'Conditions?',
+    align: 'c',
     width: 15,
   },
 ];
@@ -68,9 +69,21 @@ export default class OffersTable extends Component {
 
   render() {
     let offers = [
-      ...this.props.offers.map(o => (this.props.showSpecial ? o.conditionsOffer : o.standardOffer)),
+      ...this.props.offers.map(
+        o =>
+          (this.props.showSpecial
+            ? {
+              ...o.counterpartOffer,
+              conditions: o.conditions,
+              counterparts: o.counterparts,
+            }
+            : {
+              ...o.standardOffer,
+              conditions: o.conditions,
+              counterparts: [],
+            }),
+      ),
     ];
-    console.log(offers);
     offers.sort((a, b) => a.interest10 - b.interest10);
     const shownOffers = this.state.showFullTable ? offers : offers.slice(0, 5);
     return (
@@ -105,8 +118,13 @@ export default class OffersTable extends Component {
                     <td className="r">{round(offer.interest5)}%</td>
                     <td className="r">{round(offer.interest10)}%</td>
                     <td className="r">{round(offer.amortization)}%</td>
-                    <td className="r">
-                      {offer.expertiseRequired ? 'Oui' : 'Non'}
+                    <td className="c">
+                      {offer.conditions.length > 0 || offer.counterparts.length > 0
+                        ? <ConditionsButton
+                          conditions={offer.conditions}
+                          counterparts={offer.counterparts}
+                        />
+                        : '-'}
                     </td>
                   </tr>,
               )}

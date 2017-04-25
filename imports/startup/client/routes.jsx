@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { withRouter } from 'react-router';
 
 import myTheme from '/imports/js/config/mui_custom';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -133,33 +134,32 @@ const PartnerRoutes = props => (
   />
 );
 
-// class ScrollToTop extends Component {
-//   componentDidUpdate(prevProps) {
-//     console.log('update');
-//     console.log(this.props);
-//     if (this.props.location !== prevProps.location) {
-//       window.scrollTo(0, 0);
-//       console.log('scroll');
-//     }
-//   }
-//
-//   render() {
-//     return this.props.children;
-//   }
-// }
+class ScrollToTop extends Component {
+  componentDidUpdate(prevProps) {
+    if (this.props.location !== prevProps.location) {
+      window.scrollTo(0, 0);
+    }
+  }
+
+  render() {
+    return this.props.children;
+  }
+}
+
+const ScrollToTopWithRouter = withRouter(ScrollToTop);
 
 const RenderRoutes = () => (
   <MuiThemeProvider muiTheme={getMuiTheme(myTheme)}>
     <Router>
-      {/* <ScrollToTop> */}
-      <Switch>
-        <Route path="/app" render={props => <UserRoutes {...props} />} />
-        <Route path="/admin" render={props => <AdminRoutes {...props} />} />
-        <Route path="/partner" render={props => <PartnerRoutes {...props} />} />
-        <Route exact path="/" component={PasswordPage} />
-        <Route path="/" render={props => <PublicRoutes {...props} />} />
-      </Switch>
-      {/* </ScrollToTop> */}
+      <ScrollToTopWithRouter>
+        <Switch>
+          <Route path="/app" render={props => <UserRoutes {...props} />} />
+          <Route path="/admin" render={props => <AdminRoutes {...props} />} />
+          <Route path="/partner" render={props => <PartnerRoutes {...props} />} />
+          <Route exact path="/" component={PasswordPage} />
+          <Route path="/" render={props => <PublicRoutes {...props} />} />
+        </Switch>
+      </ScrollToTopWithRouter>
     </Router>
   </MuiThemeProvider>
 );

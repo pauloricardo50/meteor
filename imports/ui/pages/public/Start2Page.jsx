@@ -184,39 +184,44 @@ export default class Start2Page extends Component {
     const finished = isFinished(s, props.minFortune);
 
     return (
-      <section className="start2 animated fadeIn">
-        <div className={classNames({ form: true, isFinished: finished })}>
-          <AutoStart
-            formState={s}
-            formArray={getFormArray(s, props, this.setFormState)}
-            setFormState={this.setFormState}
-            setActiveLine={this.setActiveLine}
-          />
-        </div>
-        {!finished &&
-          <div className="start2recap mask1">
-            <h3 className="recap-title bold">
-              Votre Plan Financier
-            </h3>
-            <div className="shadow-top" />
-            <div className="shadow-bottom" />
-            <Recap {...props} arrayName="start2" noScale />
-          </div>}
-        {finished &&
-          <Scroll.Element name={'final'}>
-            <StartResult
-              history={this.props.history}
-              currentUser={this.props.currentUser}
-              {...props}
+      <div style={{ all: 'inherit' }}>
+        <section className="start2 animated fadeIn">
+          <div className={classNames({ form: true, isFinished: finished })}>
+            <AutoStart
+              formState={s}
+              formArray={getFormArray(s, props, this.setFormState)}
               setFormState={this.setFormState}
+              setActiveLine={this.setActiveLine}
             />
-          </Scroll.Element>}
+          </div>
+          {!finished &&
+            <div className="start2recap mask1">
+              <h3 className="recap-title bold">
+                Votre Plan Financier
+              </h3>
+              <div className="shadow-top" />
+              <div className="shadow-bottom" />
+              <Recap {...props} arrayName="start2" noScale />
+            </div>}
+          {finished &&
+            <Scroll.Element name={'final'}>
+              <StartResult
+                history={this.props.history}
+                currentUser={this.props.currentUser}
+                {...props}
+                setFormState={this.setFormState}
+              />
+            </Scroll.Element>}
 
-        {this.state.done &&
-          <Scroll.Element name={'done'} style={{ width: '100%' }}>
-            <StartSignUp formState={s} history={this.props.history} />
-          </Scroll.Element>}
-      </section>
+          {this.state.done &&
+            <Scroll.Element name={'done'} style={{ width: '100%' }}>
+              <StartSignUp formState={s} history={this.props.history} />
+            </Scroll.Element>}
+        </section>
+
+        {!finished && <div style={{ height: '30%' }} />}
+
+      </div>
     );
   }
 }

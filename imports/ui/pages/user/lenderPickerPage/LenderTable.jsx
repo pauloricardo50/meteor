@@ -10,6 +10,7 @@ import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import cleanMethod from '/imports/api/cleanMethods';
 
 import OfferToggle from '/imports/ui/components/general/OfferToggle.jsx';
+import ConditionsButton from '/imports/ui/components/general/ConditionsButton.jsx';
 
 const getOffers = props => {
   const newOffers = props.offers.map(offer => {
@@ -19,8 +20,8 @@ const getOffers = props => {
       rates = offer.standardOffer;
       amortization = offer.standardOffer.amortization;
     } else {
-      rates = offer.conditionsOffer;
-      amortization = offer.conditionsOffer.amortization;
+      rates = offer.counterpartOffer;
+      amortization = offer.counterpartOffer.amortization;
     }
     const monthly = getMonthlyWithOffer(
       props.loanRequest,
@@ -35,10 +36,10 @@ const getOffers = props => {
       id: offer._id,
       maxAmount: props.formState.standard
         ? offer.standardOffer.maxAmount
-        : offer.conditionsOffer.maxAmount,
+        : offer.counterpartOffer.maxAmount,
       monthly,
       conditions: offer.conditions,
-      counterpart: offer.counterpart,
+      counterparts: props.formState.standard ? [] : offer.counterparts,
     };
   });
 
@@ -120,20 +121,18 @@ export default class LenderTable extends Component {
         />
 
         <table className="minimal-table">
-          <colgroup>
+          {/* <colgroup>
             <col span="1" style={{ width: '8%' }} />
             <col span="1" style={{ width: '15%' }} />
             <col span="1" style={{ width: '25%' }} />
             <col span="1" style={{ width: '25%' }} />
-            {!this.props.formState.standard && <col span="1" style={{ width: '20%' }} />}
-          </colgroup>
+          </colgroup> */}
           <thead>
             <tr>
               <th className="l" />
               <th className="r">Montant prêté</th>
               <th className="r">Coût mensuel</th>
-              <th className="l">Conditions</th>
-              {!this.props.formState.standard && <th className="c">Contrepartie</th>}
+              <th className="c">Conditions</th>
             </tr>
           </thead>
           <tbody>
@@ -160,13 +159,14 @@ export default class LenderTable extends Component {
                         CHF {toMoney(offer.monthly)} <small>/mois</small>
                       </h3>
                     </td>
-                    <td className="l">
-                      {offer.conditions || ''}
+                    <td className="c">
+                      {offer.conditions.length > 0 || offer.counterparts.length > 0
+                        ? <ConditionsButton
+                          conditions={offer.conditions}
+                          counterparts={offer.counterparts}
+                        />
+                        : '-'}
                     </td>
-                    {!this.props.formState.standard &&
-                      <td className="c">
-                        <RaisedButton label="Afficher" disabled />
-                      </td>}
                   </tr>,
               )}
           </tbody>

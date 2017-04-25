@@ -93,7 +93,7 @@ export default class PartnerOfferForm extends Component {
         interest10: toDecimalNumber(this.state.interest10_0),
         interest15: toDecimalNumber(this.state.interest15_0),
       },
-      conditionsOffer: {
+      counterpartOffer: {
         maxAmount: toNumber(this.state.maxAmount),
         amortization: toDecimalNumber(this.state.amortization),
         interestLibor: toDecimalNumber(this.state.libor_1),

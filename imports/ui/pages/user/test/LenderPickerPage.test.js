@@ -44,7 +44,7 @@ if (Meteor.isClient) {
               amortization: 0.01,
               interestLibor: 0.01,
             },
-            conditionsOffer: {
+            counterpartOffer: {
               maxAmount: 800000,
               amortization: 0.008,
               interestLibor: 0.008,

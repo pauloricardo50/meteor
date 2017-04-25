@@ -288,17 +288,17 @@ export default class Start1Page extends Component {
             </Accordion>
           </div>
 
-          <div className="button">
-            <RaisedButton
-              label="Passer au check-up complet"
-              disabled={!isReady}
-              primary={borrowRatio <= 0.8 + 0.001 && incomeRatio <= constants.maxRatio + 0.001}
-              containerElement={<Link to={this.getUrl()} />}
-              id="ok"
-              style={{ height: 'unset' }}
-              overlayStyle={{ padding: 20 }}
-            />
-          </div>
+          {isReady &&
+            <div className="button animated fadeIn">
+              <RaisedButton
+                label="Passer au check-up complet"
+                primary={borrowRatio <= 0.8 + 0.001 && incomeRatio <= constants.maxRatio + 0.001}
+                containerElement={<Link to={this.getUrl()} />}
+                id="ok"
+                style={{ height: 'unset' }}
+                overlayStyle={{ padding: 20 }}
+              />
+            </div>}
         </article>
       </section>
     );

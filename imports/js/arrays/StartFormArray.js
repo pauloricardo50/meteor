@@ -301,6 +301,7 @@ const getAcquisitionArray = (state, props) => [
         <span className="active">
           CHF {toMoney(state.initialFortune)}
         </span>
+        {' '}
         de fonds propres pour ce projet. Merci de détailler votre fortune maintenant.
       </span>
     ),

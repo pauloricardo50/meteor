@@ -938,7 +938,7 @@ ul.request-map
   position: relative;
   display: flex;
   flex-direction: column;
-  padding-bottom: 50px;
+  padding: 20px 0;
   justify-content: center;
   align-items: flex-start;
   h1.fixed-size
@@ -1304,3 +1304,17 @@ ul.request-map
     margin-bottom: 40px;
   .subscribe
     margin: 40px 0;
+
+
+@keyframes fadeInUpCustom
+  from {
+    opacity: 0;
+    transform: translate3d(0, 50%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+
+.fadeInUpCustom
+  animation: fadeInUpCustom 600ms $bezier;

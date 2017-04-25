@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-password';
+import Scroll from 'react-scroll';
 
-import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import MaskedInput from 'react-text-mask';
-import emailMask from 'text-mask-addons/dist/emailMask.js';
+import emailMask from 'text-mask-addons/dist/emailMask';
 
-import { emailValidation } from '/imports/js/helpers/validation.js';
+import { emailValidation } from '/imports/js/helpers/validation';
 
 const styles = {
   textField: {
@@ -18,6 +17,18 @@ const styles = {
     marginRight: 8,
     marginBottom: 8,
   },
+};
+
+const scroll = () => {
+  Meteor.defer(() => {
+    const options = {
+      duration: 350,
+      delay: 0,
+      smooth: true,
+      ignoreCancelEvents: true,
+    };
+    Scroll.animateScroll.scrollToBottom(options);
+  });
 };
 
 export default class EmailLine extends Component {
@@ -34,32 +45,29 @@ export default class EmailLine extends Component {
     this.props.setParentState('email', email);
 
     if (emailValidation(email)[0]) {
-      this.timer = Meteor.setTimeout(
-        () => {
-          // Check if the email exists in the database
-          Meteor.call('doesUserExist', email, (error, result) => {
-            if (result) {
-              // If it exists
-              this.setState({
-                emailExists: true,
-              });
-              this.props.setParentState('login', true);
-              this.props.setParentState('signUp', false);
-            } else {
-              // If it doesnt
-              this.setState({
-                emailExists: false,
-              });
-              this.props.setParentState('login', false);
-              this.props.setParentState('signUp', true);
-            }
-            this.props.setParentState('showPassword', true);
-          });
-        },
-        400,
-      );
+      this.timer = Meteor.setTimeout(() => {
+        // Check if the email exists in the database
+        Meteor.call('doesUserExist', email, (error, result) => {
+          if (result) {
+            // If it exists
+            this.setState({
+              emailExists: true,
+            });
+            this.props.setParentState('login', true);
+            this.props.setParentState('signUp', false);
+          } else {
+            // If it doesnt
+            this.setState({
+              emailExists: false,
+            });
+            this.props.setParentState('login', false);
+            this.props.setParentState('signUp', true);
+          }
+          this.props.setParentState('showPassword', true, () => scroll());
+        });
+      }, 400);
     } else {
-      this.props.setParentState('showPassword', false);
+      this.props.setParentState('showPassword', false, () => scroll());
     }
   };
 

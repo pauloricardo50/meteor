@@ -135,16 +135,18 @@ export const getPercent = array => {
   return isFinite(percent) ? percent : 0;
 };
 
+const countField = f =>
+  (f.showCondition === undefined || f.showCondition === true) &&
+  f.required !== false &&
+  !f.disabled &&
+  f.type !== 'h3';
+
 export const personalInfoPercent = borrowers => {
   const a = [];
   borrowers.forEach(b => {
     const formArray = getBorrowerInfoArray(borrowers, b._id);
     formArray.forEach(i => {
-      if (
-        (i.showCondition === undefined || i.showCondition === true) &&
-        i.required !== false &&
-        i.type !== 'h3'
-      ) {
+      if (countField(i)) {
         a.push(i.currentValue);
       }
     });
@@ -158,11 +160,7 @@ export const propertyPercent = (loanRequest, borrowers) => {
   const formArray = getPropertyArray(loanRequest, borrowers);
 
   formArray.forEach(i => {
-    if (
-      (i.showCondition === undefined || i.showCondition === true) &&
-      i.required !== false &&
-      i.type === 'conditionalInput'
-    ) {
+    if (countField(i) && i.type === 'conditionalInput') {
       if (i.inputs[0].currentValue === i.conditionalTrueValue) {
         // If the conditional input is triggering the next input, add all values
         i.inputs.forEach(input => a.push(input.currentValue));
@@ -170,11 +168,7 @@ export const propertyPercent = (loanRequest, borrowers) => {
         // If conditional value is not triggering
         a.push(i.inputs[0].currentValue);
       }
-    } else if (
-      (i.showCondition === undefined || i.showCondition === true) &&
-      i.required !== false &&
-      i.type !== 'h3'
-    ) {
+    } else if (countField(i)) {
       a.push(i.currentValue);
     }
   });

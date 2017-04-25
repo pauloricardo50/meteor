@@ -11,23 +11,19 @@ import ArrayInput from './ArrayInput.jsx';
 
 // Verify if the previous value is false
 const isFalse = (val, zeroAllowed = false) =>
-  zeroAllowed
-    ? val === undefined || val === ''
-    : val === undefined || val === 0 || val === '';
+  (zeroAllowed ? val === undefined || val === '' : val === undefined || val === 0 || val === '');
 
 const validationCheck = (v, rules) =>
   (!rules.min || v >= rules.min) && (!rules.max || v <= rules.max);
 
 const arrayIsTrue = (a, keys) =>
-  (a && a.length) >= 1 &&
-  keys.reduce((tot, key) => tot && a[0][key] !== undefined, true);
+  (a && a.length) >= 1 && keys.reduce((tot, key) => tot && a[0][key] !== undefined, true);
 
 const prevTrue = (prev, s) => {
   if (prev.type === 'multipleInput') {
     if (
       s.borrowerCount > 1 &&
-      (isFalse(s[`${prev.id}1`], prev.zeroAllowed) ||
-        isFalse(s[`${prev.id}2`], prev.zeroAllowed))
+      (isFalse(s[`${prev.id}1`], prev.zeroAllowed) || isFalse(s[`${prev.id}2`], prev.zeroAllowed))
     ) {
       return false;
     } else if (isFalse(s[`${prev.id}1`], prev.zeroAllowed)) {
@@ -36,16 +32,12 @@ const prevTrue = (prev, s) => {
   } else if (prev.type === 'buttons' && s[prev.id] === undefined) {
     // For buttons, only check if they are undefined
     return false;
-  } else if (
-    prev.type === 'arrayInput' &&
-    !arrayIsTrue(s[prev.id], prev.inputs.map(i => i.id))
-  ) {
+  } else if (prev.type === 'arrayInput' && !arrayIsTrue(s[prev.id], prev.inputs.map(i => i.id))) {
     return false;
   } else if (prev.type === 'custom') {
     return prev.validation();
   } else if (
-    (prev.validation !== undefined &&
-      !validationCheck(s[prev.id], prev.validation)) ||
+    (prev.validation !== undefined && !validationCheck(s[prev.id], prev.validation)) ||
     isFalse(s[prev.id], prev.zeroAllowed)
   ) {
     return false;
@@ -88,8 +80,8 @@ export default class AutoStart extends Component {
       this.scroll(input.id);
 
       // const prevInput = index > 0 && array[index - 1];
-      const prevInput = this.renderedArray.length > 1 &&
-        this.renderedArray[this.renderedArray.length - 2];
+      const prevInput =
+        this.renderedArray.length > 1 && this.renderedArray[this.renderedArray.length - 2];
 
       const active = this.props.formState.activeLine === input.id;
       // Set props to pass to each input
@@ -135,7 +127,7 @@ export default class AutoStart extends Component {
       };
 
       return (
-        <Scroll.Element name={input.id} key={input.id} className="scroll">
+        <Scroll.Element name={input.id} key={input.id} className="scroll fadeInUpCustom">
           {scrollingInput()}
         </Scroll.Element>
       );
@@ -189,8 +181,7 @@ export default class AutoStart extends Component {
 
     return (
       <section>
-        {this.props.formArray.map((input, index, array) =>
-          this.inputSwitch(input, index, array))}
+        {this.props.formArray.map((input, index, array) => this.inputSwitch(input, index, array))}
       </section>
     );
   }

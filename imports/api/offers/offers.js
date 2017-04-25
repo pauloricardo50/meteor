@@ -107,15 +107,20 @@ export const OfferSchema = new SimpleSchema({
     type: singleOffer,
     optional: true,
   },
-  conditionsOffer: {
+  counterpartOffer: {
     type: singleOffer,
     optional: true,
   },
-  conditions: {
-    type: String,
-    optional: true,
+  counterparts: {
+    type: Array,
+    defaultValue: [],
   },
-  expertiseRequired: Boolean,
+  'counterparts.$': String,
+  conditions: {
+    type: Array,
+    defaultValue: [],
+  },
+  'conditions.$': String,
 });
 
 // Attach schema

@@ -6,7 +6,7 @@ import PasswordLine from './PasswordLine.jsx';
 
 const styles = {
   section: {
-    margin: '50px 0',
+    margin: '50px 0 150px 0',
     width: '100%',
   },
   passwordDiv: {
@@ -25,10 +25,14 @@ export default class StartSignUp extends Component {
     this.state = {};
   }
 
-  setParentState = (key, value) => {
+  setParentState = (key, value, callback) => {
     const object = {};
     object[key] = value;
-    this.setState(object);
+    this.setState(object, () => {
+      if (typeof callback === 'function') {
+        callback();
+      }
+    });
   };
 
   render() {
