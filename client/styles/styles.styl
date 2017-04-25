@@ -363,41 +363,18 @@ $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
   margin-bottom: 50px;
   position: relative;
   display: block;
-  height: 250px;
+  // height: 250px;
   overflow: visible !important;
-  +above($xsmall)
-    height: 300px;
-  +above($small)
-    height: 400px;
-    // z-index: -1;
+  // +above($xsmall)
+  //   height: 300px;
+  // +above($small)
+  //   height: 400px;
   .highcharts-container
     overflow: visible !important;
-    // max-width: 100%;
-    .highcharts-root
-      // max-width: 100%;
-  .highcharts-data-labels
-    display: none;
-    +above($med)
-      display: inline;
   .highcharts-label
     overflow: visible;
     text
       overflow: visible !important;
-      +above($large)
-        font-size: 12px !important;
-      +above($wide)
-        font-size: 14px !important;
-  .highcharts-legend
-    display: initial;
-    +above($med)
-      display: none;
-  .highcharts-title
-    transform: translateY(-45px);
-    +above($xsmall)
-      transform: translateY(-40px);
-    +above($small)
-      transform: translateY(-35px);
-
 
 div.strategy-choices
   width: 100%;
@@ -714,11 +691,6 @@ ul.request-map
     .charts
       display: inline-block;
       width: 100%;
-      #expensesChart
-        .highcharts-data-labels
-          display: none;
-        .highcharts-legend
-          display: initial;
 
 
 .stepper

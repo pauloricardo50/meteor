@@ -184,7 +184,7 @@ export default class Start2Page extends Component {
     const finished = isFinished(s, props.minFortune);
 
     return (
-      <div style={{ all: 'inherit' }}>
+      <div style={{ height: 'inherit', width: 'inherit' }}>
         <section className="start2 animated fadeIn">
           <div className={classNames({ form: true, isFinished: finished })}>
             <AutoStart

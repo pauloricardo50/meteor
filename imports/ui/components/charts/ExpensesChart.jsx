@@ -1,15 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Meteor } from 'meteor/meteor';
-import Highcharts from 'highcharts';
+import ReactHighcharts from 'react-highcharts';
 
 import { getInterests, getAmortization } from '/imports/js/helpers/finance-math';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import colors from '/imports/js/config/colors';
-
-const styles = {
-  container: {},
-};
 
 const chartColors = {
   interest: colors.charts[1],
@@ -17,25 +12,16 @@ const chartColors = {
   maintenance: colors.charts[5],
 };
 
-var timeout;
-var oldWidth;
-
 const update = that => {
   const total = that.state.interests + that.state.amortization + that.state.maintenance;
-  that.chart.update({
+  const showLabels = that.state.interests && that.state.amortization && that.state.maintenance;
+  that.chart.getChart().update({
     title: {
       text: `CHF ${toMoney(Math.round(total))}<br>par mois*`,
     },
     tooltip: {
       formatter() {
         return `<span style="color:${this.color}">\u25CF</span> ${this.key}<br /> <b>CHF ${toMoney(Math.round(this.y))}</b><br />${Math.round(1000 * this.y / total) / 10}%`;
-      },
-    },
-    plotOptions: {
-      pie: {
-        dataLabels: {
-          enabled: that.state.interests && that.state.amortization && that.state.maintenance,
-        },
       },
     },
     series: [
@@ -59,6 +45,29 @@ const update = that => {
         ],
       },
     ],
+    responsive: {
+      rules: [
+        {
+          condition: { maxWidth: 768 },
+          chartOptions: {
+            plotOptions: {
+              pie: { dataLabels: { enabled: false }, showInLegend: true },
+            },
+          },
+        },
+        {
+          condition: { minWidth: 769 },
+          chartOptions: {
+            plotOptions: {
+              pie: {
+                dataLabels: { enabled: that.props.showLegend !== false || showLabels },
+                showInLegend: that.props.showLegend || false,
+              },
+            },
+          },
+        },
+      ],
+    },
   });
 };
 
@@ -79,11 +88,6 @@ export default class ExpensesChart extends Component {
         maintenance: props.maintenance,
       };
     }
-  }
-
-  componentDidMount() {
-    this.createChart();
-    window.addEventListener('resize', this.resize);
   }
 
   componentWillReceiveProps(n) {
@@ -120,32 +124,28 @@ export default class ExpensesChart extends Component {
     }
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.resize);
-    this.chart.destroy();
-  }
-
-  createChart = () => {
+  getConfig = () => {
     const total = this.state.interests + this.state.amortization + this.state.maintenance;
+    const that = this;
     const options = {
       chart: {
         type: 'pie',
-        animation: {
-          duration: 400,
-        },
-      },
-      title: {
-        text: `CHF ${toMoney(Math.round(total))}<br>par mois*`,
-        verticalAlign: 'middle',
-        floating: true,
-        style: {
-          fontSize: '14px',
+        style: { fontFamily: 'Source Sans Pro' },
+        animation: { duration: 400 },
+        events: {
+          load() {
+            that.addTitle(this);
+          },
+          redraw() {
+            that.addTitle(this);
+          },
         },
       },
       tooltip: {
         formatter() {
           return `<span style="color:${this.color}">\u25CF</span> ${this.key}<br /> <b>CHF ${toMoney(Math.round(this.y))}</b><br />${Math.round(1000 * this.y / total) / 10}%`;
         },
+        style: { fontSize: '14px' },
       },
       plotOptions: {
         pie: {
@@ -160,20 +160,20 @@ export default class ExpensesChart extends Component {
             distance: 10,
             format: '<b>{point.name}</b><br />CHF {point.y:,.0f}',
             style: {
-              color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+              color: '#333',
+              fontSize: '14px',
+              fontWeight: 300,
               overflow: 'visible',
             },
           },
-          showInLegend: true,
+          showInLegend: false,
         },
       },
       legend: {
         align: 'center',
         verticalAlign: 'bottom',
         layout: 'horizontal',
-        itemStyle: {
-          width: 90,
-        },
+        itemStyle: { fontSize: '14px', fontWeight: 300, width: 90 },
       },
       series: [
         {
@@ -182,76 +182,84 @@ export default class ExpensesChart extends Component {
           name: 'Dépenses Mensuelles Estimées',
           colorByPoint: true,
           data: [
-            {
-              name: 'Intérêts',
-              y: this.state.interests,
-              id: 'interests',
-            },
-            {
-              name: 'Amortissement',
-              y: this.state.amortization,
-              id: 'amortization',
-            },
-            {
-              name: "Charges d'Entretien",
-              y: this.state.maintenance,
-              id: 'maintenance',
-            },
+            { name: 'Intérêts', y: this.state.interests, id: 'interests' },
+            { name: 'Amortissement', y: this.state.amortization, id: 'amortization' },
+            { name: "Charges d'Entretien", y: this.state.maintenance, id: 'maintenance' },
           ],
         },
       ],
       colors: [chartColors.interest, chartColors.amortization, chartColors.maintenance],
-      lang: {
-        thousandsSep: "'",
-      },
-      credits: {
-        enabled: false,
+      lang: { thousandsSep: "'" },
+      credits: { enabled: false },
+      responsive: {
+        rules: [
+          {
+            condition: { maxWidth: 768 },
+            chartOptions: {
+              plotOptions: {
+                pie: { dataLabels: { enabled: false }, showInLegend: true },
+              },
+            },
+          },
+          {
+            condition: { minWidth: 769 },
+            chartOptions: {
+              plotOptions: {
+                pie: {
+                  dataLabels: { enabled: this.props.showLegend !== false || true },
+                  showInLegend: this.props.showLegend || false,
+                },
+              },
+            },
+          },
+        ],
       },
     };
 
-    Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, color => {
-      return {
-        radialGradient: {
-          cx: 0.5,
-          cy: 0.3,
-          r: 0.7,
-        },
-        stops: [
-          [0, color],
-          [1, Highcharts.Color(color).brighten(-0.3).get('rgb')], // darken
-        ],
-      };
-    });
-    if (document.getElementById('expensesChart')) {
-      this.chart = new Highcharts.Chart('expensesChart', options);
-    }
+    return options;
   };
 
-  resize = () => {
-    // Only recreate charts if the width changes, ignore height changes
-    const w = window;
-    const d = document;
-    const documentElement = d.documentElement;
-    const body = d.getElementsByTagName('body')[0];
-    const newWidth = w.innerWidth || documentElement.clientWidth || body.clientWidth;
+  addTitle = that => {
+    const total = this.state.interests + this.state.amortization + this.state.maintenance;
 
-    if (oldWidth && oldWidth !== newWidth) {
-      Meteor.clearTimeout(timeout);
-      if (this.chart) {
-        this.chart.destroy();
-        this.chart = undefined;
-      }
-
-      timeout = Meteor.setTimeout(() => {
-        Meteor.defer(() => this.createChart());
-      }, 200);
+    if (that.title) {
+      that.title.destroy();
     }
 
-    oldWidth = newWidth;
+    const r = that.renderer;
+    const x = that.series[0].center[0] + that.plotLeft;
+    const y = that.series[0].center[1] + that.plotTop;
+    that.title = r
+      .text(
+        `CHF ${toMoney(Math.round(total))}<br><span style="font-size: 14px;" class="no-bold">par mois*</span>`,
+        0,
+        0,
+      )
+      .css({
+        color: '#333333',
+        fontSize: '18px',
+        fontWeight: 400,
+      })
+      .hide()
+      .add();
+
+    const bbox = that.title.getBBox();
+    that.title.attr({ x: x - bbox.width / 2, y }).show();
   };
 
   render() {
-    return <div id="expensesChart" style={styles.container} />;
+    return (
+      <div id="expensesChart">
+        <ReactHighcharts
+          config={this.getConfig()}
+          ref={c => {
+            this.chart = c;
+          }}
+          neverReflow
+          isPureConfig
+        />
+      </div>
+    );
   }
 }
 
@@ -261,6 +269,7 @@ ExpensesChart.defaultProps = {
   amortization: 0,
   maintenance: 0,
   interestRate: 0.015,
+  showLegend: false,
 };
 
 ExpensesChart.propTypes = {
@@ -269,4 +278,5 @@ ExpensesChart.propTypes = {
   amortization: PropTypes.number,
   maintenance: PropTypes.number,
   interestRate: PropTypes.number,
+  showLegend: PropTypes.bool,
 };

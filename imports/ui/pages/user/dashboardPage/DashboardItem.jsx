@@ -32,8 +32,6 @@ const DashboardItem = props => {
           </div>}
       </div>
 
-      {/* <OverviewItems {...props} /> */}
-
       <div className="stepper">
         <RequestStepper {...props} />
       </div>
@@ -47,7 +45,7 @@ const DashboardItem = props => {
               <ProjectPieChart {...props} />
             </div>
             <div className="col-xs-12 col-md-6">
-              <ExpensesChart {...props} />
+              <ExpensesChart {...props} showLegend />
             </div>
           </div>
 

@@ -13,21 +13,22 @@ export default class StepperHorizontal extends Component {
     };
   }
 
-  setStep(i) {
+  setStep = i => {
     if (i !== this.props.activeStep) {
       if (!this.state.loading) {
         this.dummyAsync(() => {
+          console.log('dummy async');
           this.setState({ loading: false }, () => this.props.setStep(i));
         });
       }
     }
-  }
+  };
 
-  dummyAsync(callback) {
+  dummyAsync = callback => {
     this.setState({ loading: true }, () => {
       this.asyncTimer = setTimeout(callback, 350);
     });
-  }
+  };
 
   handleNext = (step, callback) => {
     if (!this.state.loading) {
@@ -40,11 +41,7 @@ export default class StepperHorizontal extends Component {
   render() {
     return (
       <div className="horizontal mask1">
-        <Stepper
-          activeStep={this.props.activeStep}
-          orientation="horizontal"
-          linear={false}
-        >
+        <Stepper activeStep={this.props.activeStep} orientation="horizontal" linear={false}>
           {this.props.steps.map((step, i) => (
             <Step
               key={step.nb}
@@ -63,8 +60,7 @@ export default class StepperHorizontal extends Component {
                 >
                   {step.title}
                   {step.subtitle && <br />}
-                  {step.subtitle &&
-                    <span className="secondary">{step.subtitle}</span>}
+                  {step.subtitle && <span className="secondary">{step.subtitle}</span>}
                 </span>
               </StepButton>
             </Step>
@@ -73,10 +69,7 @@ export default class StepperHorizontal extends Component {
         <ExpandTransition loading={this.state.loading} open>
           <div style={{ margin: '0 16px', overflow: 'hidden' }}>
             {this.props.renderStep(this.props.steps[this.props.activeStep])}
-            {this.props.renderStepActions(
-              this.props.steps[this.props.activeStep],
-              this.handleNext,
-            )}
+            {this.props.renderStepActions(this.props.steps[this.props.activeStep], this.handleNext)}
           </div>
         </ExpandTransition>
       </div>
