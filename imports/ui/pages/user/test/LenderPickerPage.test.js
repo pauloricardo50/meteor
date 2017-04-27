@@ -70,6 +70,8 @@ if (Meteor.isClient) {
 
     it('Renders the LoanStrategyPicker if the user has already chosen an amortization strategy', () => {
       props.loanRequest.logic.hasChosenLender = true;
+      props.loanRequest.logic.lender = 'someId';
+      props.loanRequest.logic.insuranceUsePreset = 'collateral';
       props.loanRequest.logic.amortizationStrategyPreset = 'indirect';
       expect(lenderPickerPage().find(LoanStrategyPicker).length).to.equal(1);
     });

@@ -33,7 +33,7 @@ Meteor.publish('borrowers', function publish() {
   });
 });
 
-// Publish all loanrequests in the database for admins
+// Publish all borrowers in the database for admins
 Meteor.publish('allBorrowers', function publish() {
   // Verify if user is logged In
   if (Roles.userIsInRole(this.userId, 'admin')) {

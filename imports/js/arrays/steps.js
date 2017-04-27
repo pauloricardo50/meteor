@@ -54,7 +54,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           title: "Vérification d'e-Potek",
           subtitle: '2h',
           link: `/app/requests/${loanRequest._id}/verification`,
-          isDone: () => loanRequest.logic.adminValidated,
+          isDone: () => loanRequest.logic.verification.validated === true,
         },
         {
           title: "Faites l'expertise",

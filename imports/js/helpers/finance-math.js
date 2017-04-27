@@ -91,12 +91,7 @@ export const getMonthlyPayment = (loanRequest, borrowers) => {
   const amortization = getAmortization(loanRequest, borrowers);
   const maintenance = getMaintenance(loanRequest);
 
-  return [
-    amortization + interests + maintenance,
-    amortization,
-    interests,
-    maintenance,
-  ];
+  return [amortization + interests + maintenance, amortization, interests, maintenance];
 };
 
 export const getBonusIncome = borrowers => {
@@ -124,9 +119,10 @@ export const getOtherIncome = borrowers => {
   let sum = 0;
 
   borrowers.forEach(borrower => {
-    sum += [
-      ...(borrower.otherIncome ? borrower.otherIncome.map(i => i.value) : []),
-    ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+    sum += [...(borrower.otherIncome ? borrower.otherIncome.map(i => i.value) : [])].reduce(
+      (tot, val) => (val > 0 && tot + val) || tot,
+      0,
+    );
   });
 
   return Math.max(0, Math.round(sum));
@@ -135,9 +131,10 @@ export const getOtherIncome = borrowers => {
 export const getExpenses = borrowers => {
   let sum = 0;
   borrowers.forEach(borrower => {
-    sum += [
-      ...(borrower.expenses ? borrower.expenses.map(i => i.value) : []),
-    ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+    sum += [...(borrower.expenses ? borrower.expenses.map(i => i.value) : [])].reduce(
+      (tot, val) => (val > 0 && tot + val) || tot,
+      0,
+    );
   });
 
   return Math.max(0, Math.round(sum));
@@ -164,8 +161,7 @@ export const getIncomeRatio = (loanRequest, borrowers) => {
 
 export const getBorrowRatio = (loanRequest, borrowers) => {
   const loan = getLoanValue(loanRequest);
-  const propAndWork = loanRequest.property.value +
-    loanRequest.property.propertyWork;
+  const propAndWork = loanRequest.property.value + loanRequest.property.propertyWork;
 
   return loan / propAndWork;
 };
@@ -241,5 +237,12 @@ export const getRealEstateDebt = borrowers => {
   return Math.max(0, Math.round(sum));
 };
 
-export const getBorrowerSalary = borrowers =>
-  borrowers.reduce((t, b) => t + b.salary, 0);
+export const getBorrowerSalary = borrowers => borrowers.reduce((t, b) => t + b.salary, 0);
+
+export const canAffordRank1 = (loanRequest, borrowers) => {
+  // TODO: make sure it accounts for lppFees as well if needed
+  const propAndWork = getPropAndWork(loanRequest);
+  const totalFortune = getTotalFortune(borrowers);
+
+  return totalFortune >= 0.35 * propAndWork + loanRequest.property.value * constants.notaryFees;
+};

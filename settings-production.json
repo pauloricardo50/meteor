@@ -1,5 +1,6 @@
 {
   "public": {
+    "environment": "production",
       "analyticsSettings": {
           "Google Analytics": {
               "trackingId": "UA-84358947-1"

@@ -53,9 +53,9 @@ export default class ConditionsButton extends React.Component {
         <RaisedButton label="Conditions" onTouchTap={this.handleOpen} {...this.props} />
         <Dialog
           actions={actions}
-          modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
+          autoScrollBodyContent
         >
           <div className="conditions-modal">
             {this.props.conditions.length > 0 &&

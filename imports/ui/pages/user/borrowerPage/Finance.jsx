@@ -2,15 +2,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
-import CheckIcon from 'material-ui/svg-icons/navigation/check';
 
 import AutoForm from '/imports/ui/components/autoform/AutoForm.jsx';
 import { getBorrowerFinanceArray } from '/imports/js/arrays/BorrowerFormArray';
 import cleanMethod from '/imports/api/cleanMethods';
 import Recap from '/imports/ui/components/general/Recap';
 import constants from '/imports/js/config/constants';
+import LoadingButton from '/imports/ui/components/general/LoadingButton.jsx';
 
 const styles = {
   div: {
@@ -95,12 +94,12 @@ const BorrowerFinancePage = props => {
             onCheck={(e, isChecked) => handleCheck(e, isChecked, borrowerId)}
           />
         </span>
-        <RaisedButton
+        <LoadingButton
           label="Valider mes finances"
-          onTouchTap={e => handleClick(e, borrowerId, props)}
-          primary={!borrower.logic.hasValidatedFinances}
+          handleClick={e => handleClick(e, borrowerId, props)}
           disabled={!borrower.logic.financeEthics}
-          icon={!!borrower.logic.hasValidatedFinances && <CheckIcon />}
+          value={borrower.logic.hasValidatedFinances}
+          history={props.history}
         />
       </div>
     </section>

@@ -2,8 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import cleanMethod from '/imports/api/cleanMethods';
-import RaisedButton from 'material-ui/RaisedButton';
-import CheckIcon from 'material-ui/svg-icons/navigation/check';
+import LoadingButton from '/imports/ui/components/general/LoadingButton.jsx';
 
 const handleClick = props => {
   // Save data to DB
@@ -11,7 +10,8 @@ const handleClick = props => {
   object['logic.hasValidatedStructure'] = true;
 
   cleanMethod('updateRequest', object, props.loanRequest._id, () =>
-    Meteor.setTimeout(() => props.history.push('/app'), 300));
+    Meteor.setTimeout(() => props.history.push('/app'), 300),
+  );
 };
 
 const StructurePage = props => {
@@ -23,13 +23,12 @@ const StructurePage = props => {
       </div>
 
       <div className="text-center" style={{ margin: '40px 0' }}>
-        <RaisedButton
+
+        <LoadingButton
           label="Valider la structure"
-          onTouchTap={() => handleClick(props)}
-          primary={!props.loanRequest.logic.hasValidatedStructure}
-          icon={
-            !!props.loanRequest.logic.hasValidatedStructure && <CheckIcon />
-          }
+          handleClick={() => handleClick(props)}
+          value={props.loanRequest.logic.hasValidatedStructure}
+          history={props.history}
         />
       </div>
     </section>

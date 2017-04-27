@@ -8,7 +8,7 @@ import LoanRequests from './loanrequests';
 export const insertRequest = new ValidatedMethod({
   name: 'loanrequests.insert',
   validate() {},
-  run({ object }) {
+  run({ object, userId }) {
     const userRequests = LoanRequests.find({ userId: this.userId });
 
     if (userRequests.length > 3) {
@@ -17,6 +17,9 @@ export const insertRequest = new ValidatedMethod({
         'Vous ne pouvez pas avoir plus de 3 requêtes à la fois',
       );
     }
+
+    // Allow adding a userId for testing purposes
+    object.userId = userId || this.userId;
 
     return LoanRequests.insert(object);
   },
@@ -66,7 +69,7 @@ export const startAuction = new ValidatedMethod({
 
     // TODO: Changer cet assignment de 60 secondes pour getAuctionEndTime(moment())
     object['logic.auctionEndTime'] = moment().add(30, 's').toDate();
-    console.log('Temps de fin réel: ' + getAuctionEndTime(moment()));
+    console.log(`Temps de fin réel: ${getAuctionEndTime(moment())}`);
 
     LoanRequests.update(id, {
       $set: object,
@@ -75,7 +78,7 @@ export const startAuction = new ValidatedMethod({
 });
 
 // Gives the end tim of an auction, given the start time
-const getAuctionEndTime = function(startTime) {
+const getAuctionEndTime = function (startTime) {
   const endTime = startTime;
 
   // If the start time is between midnight and 7:00, set endtime to be tomorrow night

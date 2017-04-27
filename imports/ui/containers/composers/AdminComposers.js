@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import LoanRequests from '/imports/api/loanrequests/loanrequests';
 import Offers from '/imports/api/offers/offers';
+import Borrowers from '/imports/api/borrowers/borrowers';
 
 export function adminRequestsComposer(props, onData) {
   if (Meteor.subscribe('allLoanRequests').ready()) {
@@ -29,7 +30,7 @@ export function adminOffersComposer(props, onData) {
 
 // Get the request specified in the URL, the user and the offers for it
 export function adminRequestComposer(props, onData) {
-  const requestId = props.params.id;
+  const requestId = props.match.params.requestId;
 
   if (Meteor.subscribe('loanRequest', requestId).ready()) {
     const loanRequest = LoanRequests.find({}).fetch()[0];
@@ -37,15 +38,20 @@ export function adminRequestComposer(props, onData) {
       const user = Meteor.users.find({}).fetch()[0];
       if (Meteor.subscribe('requestOffers', requestId).ready()) {
         const offers = Offers.find({}).fetch();
+        if (Meteor.subscribe('allBorrowers').ready()) {
+          const borrowers = Borrowers.find({
+            _id: { $in: loanRequest.borrowers },
+          }).fetch();
 
-        onData(null, { loanRequest, user, offers });
+          onData(null, { loanRequest, borrowers, user, offers });
+        }
       }
     }
   }
 }
 
 export function adminUserComposer(props, onData) {
-  const userId = props.params.userId;
+  const userId = props.match.params.userId;
 
   if (Meteor.subscribe('user', userId).ready()) {
     const user = Meteor.users.findOne({}).fetch();
@@ -55,7 +61,7 @@ export function adminUserComposer(props, onData) {
 }
 
 export function adminOfferComposer(props, onData) {
-  const offerId = props.params.offerId;
+  const offerId = props.match.params.offerId;
 
   if (Meteor.subscribe('offer', offerId).ready()) {
     const offer = Offers.findOne({}).fetch();

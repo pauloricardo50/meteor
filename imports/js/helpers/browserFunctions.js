@@ -1,5 +1,4 @@
 export const getWidth = () => {
-  console.log('getting width');
   const w = window;
   const d = document;
   const documentElement = d.documentElement;

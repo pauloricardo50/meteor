@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
+import Scroll from 'react-scroll';
 
 import NewUserOptions from '/imports/ui/components/general/NewUserOptions.jsx';
 import DashboardItem from './dashboardPage/DashboardItem.jsx';
@@ -55,15 +56,17 @@ export default class DashboardPage extends Component {
 
         {sortedRequests
           .map((request, i) => (
-            <DashboardItem
-              {...this.props}
-              loanRequest={request}
-              borrowers={this.props.borrowers}
-              key={request._id}
-              handleClick={() => this.handleClick(i)}
-              active={this.state.active === i}
-              count={this.props.loanRequests.length}
-            />
+            <Scroll.Element name={request._id} key={request._id}>
+              <DashboardItem
+                {...this.props}
+                loanRequest={request}
+                borrowers={this.props.borrowers}
+                key={request._id}
+                handleClick={() => this.handleClick(i)}
+                active={this.state.active === i}
+                count={this.props.loanRequests.length}
+              />
+            </Scroll.Element>
           ))
           .reduce((prev, curr) => [prev, <hr style={styles.hr} />, curr])}
 

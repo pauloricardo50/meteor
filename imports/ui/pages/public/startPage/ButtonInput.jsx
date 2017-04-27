@@ -65,6 +65,10 @@ const ButtonInput = props => {
               if (typeof button.onClick === 'function') {
                 button.onClick();
               }
+              if (document.activeElement) {
+                // Take focus away, better UX on mobile
+                document.activeElement.blur();
+              }
             }}
             style={styles.button}
             primary={!button.noPrimary}

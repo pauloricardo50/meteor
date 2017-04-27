@@ -1,18 +1,15 @@
 import 'babel-polyfill';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import {
-  GeneralSchema,
-  PropertySchema,
-  LogicSchema,
-} from './additionalSchemas';
+import { Factory } from 'meteor/dburles:factory';
+
+import { GeneralSchema, PropertySchema, LogicSchema } from './additionalSchemas';
 
 const LoanRequests = new Mongo.Collection('loanRequests');
 
 LoanRequests.allow({
   insert(userId, doc) {
-    // This is true if someone is logged in
-    return !!userId;
+    return userId ? true : new Error();
   },
   update(userId, doc) {
     // This is true if someone is logged in and the user is the same as the one who created it
@@ -25,11 +22,6 @@ const LoanRequestSchema = new SimpleSchema({
   userId: {
     type: String,
     index: true,
-    autoValue() {
-      if (this.isInsert) {
-        return this.userId;
-      }
-    },
   },
   createdAt: {
     type: Date,
@@ -43,10 +35,7 @@ const LoanRequestSchema = new SimpleSchema({
     type: Date,
     autoValue() {
       // Verify the update is from the user owning this doc, ignoring admin/partner updates
-      const doc = LoanRequests.findOne(
-        { _id: this.docId },
-        { fields: { userId: 1 } },
-      );
+      const doc = LoanRequests.findOne({ _id: this.docId }, { fields: { userId: 1 } });
       if (this.isUpdate && this.userId === doc.userId) {
         return new Date();
       } else if (this.isInsert) {
@@ -86,3 +75,13 @@ const LoanRequestSchema = new SimpleSchema({
 // Finally, attach schema to the Mongo collection and export
 LoanRequests.attachSchema(LoanRequestSchema);
 export default LoanRequests;
+
+Factory.define('loanRequest', LoanRequests, {
+  userId: () => 'random_id',
+  createdAt: () => new Date(),
+  general: () => ({ fortuneUsed: 250000, partnersToAvoid: ['joe', 'john'] }),
+  borrowers: () => 'exampleId',
+  property: () => ({ value: 1000000 }),
+  logic: () => ({}),
+  admin: () => ({}),
+});

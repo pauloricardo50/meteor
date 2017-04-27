@@ -419,17 +419,17 @@ const getStart2Array = props => {
 
     {
       label: 'Fortune de Prévoyance',
-      value: toMoney(Math.round(p.insuranceFortune)),
-      hide: !p.insuranceFortune,
+      value: toMoney(Math.round(p.insuranceFortuneDisplayed)),
+      hide: !p.insuranceFortuneDisplayed,
     },
     {
       label: 'Fonds Propres Dispo.',
       value: (
         <span className="sum">
-          {toMoney(Math.round(p.fortune + p.insuranceFortune))}
+          {toMoney(Math.round(p.fortune + p.insuranceFortuneDisplayed))}
         </span>
       ),
-      hide: !p.insuranceFortune,
+      hide: !p.insuranceFortuneDisplayed,
       spacingTop: true,
     },
     {
@@ -448,7 +448,7 @@ const getStart2Array = props => {
       label: 'Fortune Nette',
       value: (
         <span className="sum">
-          {toMoney(Math.round(p.fortune + p.insuranceFortune + p.realEstate))}
+          {toMoney(Math.round(p.fortune + p.insuranceFortuneDisplayed + p.realEstate))}
         </span>
       ),
       spacingTop: true,

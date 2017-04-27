@@ -12,7 +12,7 @@ export default class VerificationPage extends Component {
     super(props);
 
     this.state = {
-      verified: this.props.loanRequest.logic.adminValidated,
+      verified: this.props.loanRequest.logic.verification.result === 'valid',
       showLoading: false,
     };
   }
@@ -21,7 +21,8 @@ export default class VerificationPage extends Component {
     this.setState({ showLoading: true }, () =>
       Meteor.setTimeout(() => {
         const object = {};
-        object['logic.adminValidated'] = true;
+        object['logic.verification.requested'] = true;
+        object['logic.verification.validated'] = true;
         cleanMethod(
           'updateRequest',
           object,

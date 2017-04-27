@@ -137,7 +137,8 @@ const LoanStrategyPicker = props => (
             label="Continuer"
             primary={!props.formState.loanStrategyValidated}
             disabled={!loanStrategySuccess(props.formState.loanTranches, props.loanValue)}
-            onTouchTap={() => props.setFormState('loanStrategyValidated', true, props.scroll(3))}
+            onTouchTap={() =>
+              props.setFormState('loanStrategyValidated', true, props.scroll(props.index + 1))}
           />
         </div>
       </div>}

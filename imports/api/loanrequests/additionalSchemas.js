@@ -290,10 +290,23 @@ export const LogicSchema = new SimpleSchema({
     min: 0,
     max: 5,
   },
-  adminValidated: {
-    type: Boolean,
-    defaultValue: false,
+  verification: {
+    type: Object,
+    // defaultValue: {},
   },
+  'verification.requested': {
+    type: Boolean,
+    optional: true,
+  },
+  'verification.validated': {
+    type: Boolean,
+    optional: true,
+  },
+  'verification.comments': {
+    type: Array,
+    defaultValue: [],
+  },
+  'verification.comments.$': String,
   expertiseRequired: {
     type: Boolean,
     defaultValue: true,
@@ -325,6 +338,11 @@ export const LogicSchema = new SimpleSchema({
   hasValidatedStructure: {
     type: Boolean,
     defaultValue: false,
+    optional: true,
+  },
+  insuranceUsePreset: {
+    type: String,
+    defaultValue: '',
     optional: true,
   },
   loanStrategyPreset: {

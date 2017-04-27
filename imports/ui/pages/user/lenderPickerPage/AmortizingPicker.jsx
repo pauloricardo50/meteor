@@ -1,16 +1,7 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 
 import StrategyChoices from '/imports/ui/components/general/StrategyChoices.jsx';
-
-const styles = {
-  callButton: {
-    display: 'block',
-    width: '100%',
-    marginTop: 40,
-    marginBottom: 80,
-  },
-};
 
 const getChoices = () => {
   return [
@@ -52,7 +43,8 @@ const StrategyAmortization = props => {
       <StrategyChoices
         currentValue={props.formState.amortizationStrategyPreset}
         choices={getChoices()}
-        handleChoose={id => props.setFormState('amortizationStrategyPreset', id, props.scroll(2))}
+        handleChoose={id =>
+          props.setFormState('amortizationStrategyPreset', id, props.scroll(props.index + 1))}
       />
 
     </article>

@@ -42,9 +42,11 @@ import NewPage from '/imports/ui/pages/user/NewPage.jsx';
 import AdminHomePage from '/imports/ui/pages/admin/AdminHomePage.jsx';
 import AdminUsersPage from '/imports/ui/pages/admin/AdminUsersPage.jsx';
 import AdminRequestsPage from '/imports/ui/pages/admin/AdminRequestsPage.jsx';
-import AdminOfferPage from '/imports/ui/pages/admin/AdminOfferPage.jsx';
-import AdminSingleRequestPage from '/imports/ui/pages/admin/AdminSingleRequestPage.jsx';
-import AdminSingleUserPage from '/imports/ui/pages/admin/AdminSingleUserPage.jsx';
+import {
+  AdminOfferPage,
+  AdminSingleRequestPage,
+  AdminSingleUserPage,
+} from '/imports/ui/containers/AdminContainers';
 
 // Partner pages
 import PartnerHomePage from '/imports/ui/pages/partner/PartnerHomePage.jsx';
@@ -104,14 +106,8 @@ const AdminRoutes = props => (
         <Route exact path="/admin" render={() => <AdminHomePage {...layoutProps} />} />
         <Route exact path="/admin/users" render={() => <AdminUsersPage {...layoutProps} />} />
         <Route exact path="/admin/requests" render={() => <AdminRequestsPage {...layoutProps} />} />
-        <Route
-          path="/admin/requests/:requestId"
-          render={routeProps => <AdminSingleRequestPage {...layoutProps} {...routeProps} />}
-        />
-        <Route
-          path="/admin/users/:userId"
-          render={routeProps => <AdminSingleUserPage {...layoutProps} {...routeProps} />}
-        />
+        <Route path="/admin/requests/:requestId" component={AdminSingleRequestPage} />
+        <Route path="/admin/users/:userId" component={AdminSingleUserPage} />
       </Switch>
     )}
   />

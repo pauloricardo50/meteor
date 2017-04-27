@@ -30,7 +30,7 @@ export function partnerRequestsComposer(props, onData) {
 }
 
 export function partnerOfferComposer(props, onData) {
-  const offerId = props.params.offerId;
+  const offerId = props.match.params.offerId;
 
   if (Meteor.subscribe('offer', offerId).ready()) {
     const offer = Offers.findOne({}).fetch();
@@ -40,7 +40,7 @@ export function partnerOfferComposer(props, onData) {
 }
 
 export function partnerRequestComposer(props, onData) {
-  const requestId = props.params.requestId;
+  const requestId = props.match.params.requestId;
 
   if (Meteor.subscribe('partnerSingleLoanRequest', requestId).ready()) {
     const loanRequest = LoanRequests.findOne({}).fetch();

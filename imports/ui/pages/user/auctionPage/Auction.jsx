@@ -37,12 +37,9 @@ export default class Auction extends Component {
     const that = this;
     // Call it once before the setInterval so that the timer appears instantly
     this.setTime(that);
-    time = Meteor.setInterval(
-      function() {
-        that.setTime(that);
-      },
-      1000,
-    );
+    time = Meteor.setInterval(() => {
+      that.setTime(that);
+    }, 1000);
   }
 
   componentWillUnmount() {
@@ -67,7 +64,7 @@ export default class Auction extends Component {
 
   render() {
     return (
-      <section className="mask1">
+      <section className="mask1 animated fadeIn">
         <h2>Enchères en cours..</h2>
         <div className="text-center" style={styles.timer}>
           <h1 className="display3">{this.state.remainingTime}</h1>

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import cleanMethod from '/imports/api/cleanMethods';
+import Scroll from 'react-scroll';
 
 import { List, ListItem } from 'material-ui/List';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -86,7 +87,11 @@ export default class RequestStepper extends Component {
         'incrementStep',
         null,
         this.props.loanRequest._id,
-        error => !error && this.setState({ activeStep: step + 1 }),
+        error => {
+          if (!error) {
+            this.setState({ activeStep: step + 1 });
+          }
+        },
         true,
       );
     } else {

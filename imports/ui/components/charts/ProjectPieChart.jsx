@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import ReactHighcharts from 'react-highcharts';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
@@ -8,11 +8,11 @@ import constants from '/imports/js/config/constants';
 import colors from '/imports/js/config/colors';
 
 const chartColors = {
-  frais1: colors.charts[0],
-  frais2: colors.charts[1],
-  fortune: colors.charts[2],
-  insuranceFortune: colors.charts[3],
-  loan: colors.charts[5],
+  notaryFees: colors.charts[5],
+  lppFees: colors.charts[0],
+  fortune: colors.charts[3],
+  insuranceFortune: colors.charts[2],
+  loan: colors.charts[1],
 };
 
 const getConfig = props => {
@@ -91,8 +91,8 @@ const getConfig = props => {
       chartColors.loan,
       chartColors.insuranceFortune,
       chartColors.fortune,
-      chartColors.frais1,
-      chartColors.frais2,
+      chartColors.notaryFees,
+      chartColors.lppFees,
     ],
     lang: { thousandsSep: "'" },
     credits: { enabled: false },

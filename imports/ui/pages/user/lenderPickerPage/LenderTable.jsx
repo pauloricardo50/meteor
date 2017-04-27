@@ -12,6 +12,13 @@ import cleanMethod from '/imports/api/cleanMethods';
 import OfferToggle from '/imports/ui/components/general/OfferToggle.jsx';
 import ConditionsButton from '/imports/ui/components/general/ConditionsButton.jsx';
 
+const styles = {
+  tableDiv: {
+    overflowX: 'scroll',
+    width: '100%',
+  },
+};
+
 const getOffers = props => {
   const newOffers = props.offers.map(offer => {
     let rates = [];
@@ -60,16 +67,13 @@ const handleChoose = (id, props) => {
 const handleSave = props => {
   const object = {};
 
-  object['general.fortuneUsed'] = props.formState.fortuneUsed;
-  object['general.insuranceFortuneUsed'] = props.formState.insuranceFortuneUsed;
+  object['logic.insuranceUsePreset'] = props.formState.insuranceUsePreset;
   object['logic.amortizationStrategyPreset'] = props.formState.amortizationStrategyPreset;
   object['logic.loanStrategyPreset'] = props.formState.loanStrategyPreset;
   object['general.loanTranches'] = props.formState.loanTranches;
   object['logic.lender'] = props.formState.chosenLender;
 
-  cleanMethod('updateRequest', object, props.loanRequest._id, () =>
-    Meteor.setTimeout(() => props.history.push('/app'), 300),
-  );
+  cleanMethod('updateRequest', object, props.loanRequest._id, () => props.history.push('/app'));
 };
 
 export default class LenderTable extends Component {
@@ -88,9 +92,8 @@ export default class LenderTable extends Component {
   };
 
   render() {
-    const offers = this.state.showFullTable
-      ? getOffers(this.props)
-      : getOffers(this.props).slice(0, 5);
+    const offers = getOffers(this.props);
+    const shownOffers = this.state.showFullTable ? offers : offers.slice(0, 5);
     const saved = this.props.loanRequest.logic.lender === this.props.formState.chosenLender;
 
     return (
@@ -120,57 +123,62 @@ export default class LenderTable extends Component {
           handleToggle={(e, c) => this.props.setFormState('standard', !c)}
         />
 
-        <table className="minimal-table">
-          {/* <colgroup>
+        <div style={styles.tableDiv}>
+          <table className="minimal-table">
+            {/* <colgroup>
             <col span="1" style={{ width: '8%' }} />
             <col span="1" style={{ width: '15%' }} />
             <col span="1" style={{ width: '25%' }} />
             <col span="1" style={{ width: '25%' }} />
           </colgroup> */}
-          <thead>
-            <tr>
-              <th className="l" />
-              <th className="r">Montant prêté</th>
-              <th className="r">Coût mensuel</th>
-              <th className="c">Conditions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {offers &&
-              offers.map(
-                (offer, index) =>
-                  offer &&
-                  <tr
-                    key={index}
-                    onTouchTap={() => handleChoose(offer.id, this.props)}
-                    className={offer.id === this.props.formState.chosenLender ? 'chosen' : 'choose'}
-                  >
-                    <td className="l">
-                      {index + 1}
-                      {' '}
-                      {offer.id === this.props.formState.chosenLender &&
-                        <span className="fa fa-check" />}
-                    </td>
-                    <td className="r">
-                      CHF {toMoney(Math.round(offer.maxAmount))}
-                    </td>
-                    <td className="r">
-                      <h3 className="fixed-size" style={{ margin: 0 }}>
-                        CHF {toMoney(offer.monthly)} <small>/mois</small>
-                      </h3>
-                    </td>
-                    <td className="c">
-                      {offer.conditions.length > 0 || offer.counterparts.length > 0
-                        ? <ConditionsButton
-                          conditions={offer.conditions}
-                          counterparts={offer.counterparts}
-                        />
-                        : '-'}
-                    </td>
-                  </tr>,
-              )}
-          </tbody>
-        </table>
+            <thead>
+              <tr>
+                <th className="l" />
+                <th className="r">Montant prêté</th>
+                <th className="r">Coût mensuel</th>
+                <th className="c">Conditions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {shownOffers &&
+                shownOffers.map(
+                  (offer, index) =>
+                    offer &&
+                    <tr
+                      key={offer.id}
+                      onTouchTap={() => handleChoose(offer.id, this.props)}
+                      className={
+                        offer.id === this.props.formState.chosenLender ? 'chosen' : 'choose'
+                      }
+                    >
+                      <td className="l">
+                        {index + 1}
+                        {' '}
+                        {offer.id === this.props.formState.chosenLender &&
+                          <span className="fa fa-check" />}
+                      </td>
+                      <td className="r">
+                        CHF {toMoney(Math.round(offer.maxAmount))}
+                      </td>
+                      <td className="r">
+                        <h3 className="fixed-size" style={{ margin: 0 }}>
+                          CHF {toMoney(offer.monthly)} <small>/mois</small>
+                        </h3>
+                      </td>
+                      <td className="c">
+                        {offer.conditions.length > 0 || offer.counterparts.length > 0
+                          ? <ConditionsButton
+                            key={offer.id}
+                            conditions={offer.conditions}
+                            counterparts={offer.counterparts}
+                          />
+                          : '-'}
+                      </td>
+                    </tr>,
+                )}
+            </tbody>
+          </table>
+        </div>
 
         {offers.length > 5 &&
           <div className="text-center" style={{ marginBottom: 20 }}>
@@ -189,4 +197,5 @@ LenderTable.propTypes = {
   offers: PropTypes.arrayOf(PropTypes.object).isRequired,
   formState: PropTypes.objectOf(PropTypes.any).isRequired,
   setFormState: PropTypes.func.isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };

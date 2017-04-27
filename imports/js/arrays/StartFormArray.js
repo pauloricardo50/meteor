@@ -10,14 +10,14 @@ import { toMoney } from '../helpers/conversionFunctions';
 
 const getAcquisitionArray = (state, props) => [
   {
-    condition: state.knowsProperty,
+    condition: state.knowsProperty === true,
     id: 'propertyValue',
     type: 'textInput',
     text1: "Le prix d'achat de la propriété est de",
     money: true,
   },
   {
-    condition: state.knowsProperty,
+    condition: state.knowsProperty === true,
     id: 'notaryFeesAgreed',
     type: 'buttons',
     text1: (
@@ -34,7 +34,7 @@ const getAcquisitionArray = (state, props) => [
     buttons: [{ id: true, label: 'Continuer' }],
   },
   {
-    condition: state.knowsProperty,
+    condition: state.knowsProperty === true,
     id: 'propertyWorkExists',
     type: 'buttons',
     question: true,
@@ -258,7 +258,7 @@ const getAcquisitionArray = (state, props) => [
     buttons: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
   },
   {
-    condition: state.expensesExist,
+    condition: state.expensesExist === true,
     id: 'expensesArray',
     existId: 'expensesExist',
     type: 'arrayInput',
@@ -332,7 +332,7 @@ const getAcquisitionArray = (state, props) => [
     buttons: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
   },
   {
-    condition: state.usageType === 'primary' && state.insurance2Exists,
+    condition: state.usageType === 'primary' && state.insurance2Exists === true,
     id: 'insurance2',
     type: 'multipleInput',
     text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 3ème pilier?',
@@ -347,7 +347,7 @@ const getAcquisitionArray = (state, props) => [
     buttons: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
   },
   {
-    condition: state.realEstateExists,
+    condition: state.realEstateExists === true,
     id: 'realEstateArray',
     existId: 'realEstateExists',
     type: 'arrayInput',
@@ -522,6 +522,7 @@ const getFinalArray = (state, props, setFormState) => [
         label: 'Non',
         onClick() {
           setFormState('fortuneUsed', props.fortuneNeeded);
+          setFormState('insuranceFortuneUsed', 0);
         },
       },
       {
@@ -543,7 +544,7 @@ const getFinalArray = (state, props, setFormState) => [
     question: true,
   },
   {
-    condition: state.useInsurance,
+    condition: state.useInsurance === true,
     type: 'buttons',
     id: 'insuranceConditions',
     text1: 'Il y a des conditions pour pouvoir utiliser sa prévoyance, est-ce que vous les passez?',
@@ -561,6 +562,7 @@ const getFinalArray = (state, props, setFormState) => [
         label: 'Non',
         onClick() {
           setFormState('cantUseInsurance', true);
+          setFormState('insuranceFortuneUsed', 0);
         },
       },
     ],

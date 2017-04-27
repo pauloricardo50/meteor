@@ -45,6 +45,8 @@ const update = that => {
         ],
       },
     ],
+    // Add the responsive object again to be able to hide datalabels if the values are updated to 0,
+    // which looks horrible on the chart
     responsive: {
       rules: [
         {

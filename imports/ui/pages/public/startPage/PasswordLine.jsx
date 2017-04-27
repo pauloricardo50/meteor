@@ -39,7 +39,9 @@ export default class PasswordLine extends Component {
     this.props.setParentState('password', event.target.value);
   };
 
-  handleCreate = () => {
+  handleCreate = e => {
+    e.preventDefault();
+
     const user = getUserObject(this.props);
 
     Accounts.createUser(user, (error, result) => {
@@ -51,20 +53,18 @@ export default class PasswordLine extends Component {
     });
   };
 
-  handleLogin = () => {
-    Meteor.loginWithPassword(
-      this.props.email,
-      this.props.password,
-      (error, result) => {
-        if (error) {
-          this.setState(error.message);
-        } else {
-          // this.handleSuccess();
-          // TODO
-          console.log('handle login!');
-        }
-      },
-    );
+  handleLogin = e => {
+    e.preventDefault();
+
+    Meteor.loginWithPassword(this.props.email, this.props.password, (error, result) => {
+      if (error) {
+        this.setState(error.message);
+      } else {
+        // this.handleSuccess();
+        // TODO
+        console.log('handle login!');
+      }
+    });
   };
 
   handleSuccess = () => {
@@ -87,27 +87,28 @@ export default class PasswordLine extends Component {
 
     if (this.props.login) {
       content = textfield;
-      button = (
-        <RaisedButton label="Connexion" primary onClick={this.handleLogin} />
-      );
+      button = <RaisedButton label="Connexion" primary onClick={this.handleLogin} type="submit" />;
     } else if (this.props.signUp) {
       content = textfield;
-      button = (
-        <RaisedButton label="Créer" primary onClick={this.handleCreate} />
-      );
+      button = <RaisedButton label="Créer" primary onClick={this.handleCreate} type="submit" />;
     } else {
       button = <RaisedButton label="Excellent!" primary href="/home" />;
     }
 
     return (
       <div>
+        <form action="submit">
+          <h1
+            className="fixed-size"
+            onSubmit={e => (this.props.login ? this.handleLogin(e) : this.handleCreate(e))}
+          >
+            {content}
+          </h1>
 
-        <h1 className="fixed-size">{content}</h1>
+          <h4 className="fixed-size">{this.state.error}</h4>
 
-        <h4 className="fixed-size">{this.state.error}</h4>
-
-        {this.state.passwordIsValid && button}
-
+          {this.state.passwordIsValid && button}
+        </form>
       </div>
     );
   }

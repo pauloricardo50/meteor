@@ -8,6 +8,7 @@ import { getLoanValue, loanStrategySuccess } from '/imports/js/helpers/requestFu
 import LenderPickerStart from './lenderPickerPage/LenderPickerStart.jsx';
 import RankStrategy from './lenderPickerPage/RankStrategy.jsx';
 import AmortizingPicker from './lenderPickerPage/AmortizingPicker.jsx';
+import InsuranceStrategy from './lenderPickerPage/InsuranceStrategy.jsx';
 import LoanStrategyPicker from './lenderPickerPage/LoanStrategyPicker.jsx';
 import LenderTable from './lenderPickerPage/LenderTable.jsx';
 
@@ -19,26 +20,35 @@ const getLoan = (props, state) => {
   return getLoanValue(props.loanRequest);
 };
 
-const getComponents = state => [
+const getComponents = (props, state) => [
   {
     component: LenderPickerStart,
     condition: true,
+    next: state.initialContinue,
   },
   {
     component: RankStrategy,
     condition: false,
+    next: true,
+  },
+  {
+    component: InsuranceStrategy,
+    condition: props.loanRequest.general.insuranceFortuneUsed > 0,
+    next: state.insuranceUsePreset,
   },
   {
     component: AmortizingPicker,
-    condition: state.initialContinue,
+    condition: true,
+    next: state.amortizationStrategyPreset,
   },
   {
     component: LoanStrategyPicker,
-    condition: state.amortizationStrategyPreset,
+    condition: true,
+    next: state.loanStrategyValidated && state.loanStrategyPreset,
   },
   {
     component: LenderTable,
-    condition: state.loanStrategyValidated,
+    condition: true,
   },
 ];
 
@@ -54,6 +64,7 @@ export default class LenderPickerPage extends React.Component {
       fortuneUsed: r.general.fortuneUsed,
       insuranceFortuneUsed: r.general.insuranceFortuneUsed,
       partnerFilter: 'monthly',
+      insuranceUsePreset: r.logic.insuranceUsePreset,
       amortizationStrategyPreset: r.logic.amortizationStrategyPreset,
       loanStrategyPreset: r.logic.loanStrategyPreset,
       loanTranches: r.general.loanTranches || [],
@@ -62,7 +73,7 @@ export default class LenderPickerPage extends React.Component {
     };
   }
 
-  getSteps() {
+  getSteps = () => {
     const props = {
       formState: this.state,
       setFormState: this.setFormState,
@@ -70,6 +81,7 @@ export default class LenderPickerPage extends React.Component {
       borrowers: this.props.borrowers,
       offers: this.props.offers,
       loanValue: getLoan(this.props, this.state),
+      history: this.props.history,
       scroll: i => {
         const options = {
           duration: 350,
@@ -80,14 +92,24 @@ export default class LenderPickerPage extends React.Component {
       },
     };
 
-    const array = [];
-    getComponents(this.state).forEach((c, i) => {
-      if (c.condition || this.props.loanRequest.logic.lender) {
-        array.push(<c.component {...props} index={i} />);
+    const componentsShown = [];
+    getComponents(this.props, this.state).every(c => {
+      const nb = componentsShown.length;
+
+      if (c.condition === false) {
+        // skip
+        return true;
       }
+      componentsShown.push(<c.component {...props} index={nb} />);
+      if (!c.next) {
+        // break
+        return false;
+      }
+
+      return true;
     });
-    return array;
-  }
+    return componentsShown;
+  };
 
   setFormState = (id, value, callback, obj) => {
     // If a whole object is given, set that object to state
