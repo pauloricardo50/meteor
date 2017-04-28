@@ -104,9 +104,7 @@ describe('Request functions', () => {
 
   describe('Loan strategy success', () => {
     it('Should properly verify a loan strategy is complete with one value', () => {
-      expect(
-        loanStrategySuccess([{ type: 'libor', value: 100 }], 100),
-      ).to.be.true;
+      expect(loanStrategySuccess([{ type: 'libor', value: 100 }], 100)).to.be.true;
     });
 
     it('Should properly verify a loan strategy is complete with two values', () => {
@@ -139,7 +137,7 @@ describe('Request functions', () => {
       interest15: 0.02,
     };
 
-    it('Should return 1833 for a basic setup', () => {
+    it('Should return 1917 for a basic setup', () => {
       expect(
         getMonthlyWithOffer(
           request,
@@ -149,10 +147,10 @@ describe('Request functions', () => {
           interestRates,
           amortization,
         ),
-      ).to.equal(1833);
+      ).to.equal(1917);
     });
 
-    it('Should return 2167 for a basic setup', () => {
+    it('Should return 2250 for a basic setup', () => {
       tranches = [{ type: 'interest10', value: 800000 }];
       expect(
         getMonthlyWithOffer(
@@ -163,14 +161,11 @@ describe('Request functions', () => {
           interestRates,
           amortization,
         ),
-      ).to.equal(2167);
+      ).to.equal(2250);
     });
 
-    it('Should return 2000 for a basic setup', () => {
-      tranches = [
-        { type: 'interest10', value: 400000 },
-        { type: 'interestLibor', value: 400000 },
-      ];
+    it('Should return 2083 for a basic setup', () => {
+      tranches = [{ type: 'interest10', value: 400000 }, { type: 'interestLibor', value: 400000 }];
       expect(
         getMonthlyWithOffer(
           request,
@@ -180,10 +175,10 @@ describe('Request functions', () => {
           interestRates,
           amortization,
         ),
-      ).to.equal(2000);
+      ).to.equal(2083);
     });
 
-    it('Should return 1948 for a basic setup', () => {
+    it('Should return 2021 for a basic setup', () => {
       tranches = [{ type: 'interest10', value: 700000 }];
       expect(
         getMonthlyWithOffer(
@@ -194,7 +189,7 @@ describe('Request functions', () => {
           interestRates,
           amortization,
         ),
-      ).to.equal(1948);
+      ).to.equal(2021);
     });
 
     it("Should return 0 if an interest rate isn't specified", () => {

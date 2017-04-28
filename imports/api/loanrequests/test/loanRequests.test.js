@@ -25,7 +25,7 @@ describe('loanRequests', () => {
   });
 
   describe('mutators', function () {
-    it('builds correctly from factory xx', function () {
+    it('builds correctly from factory', function () {
       const request = Factory.create('loanRequest');
 
       assert.typeOf(request, 'object');

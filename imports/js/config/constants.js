@@ -1,6 +1,6 @@
 const constants = {
   cpsLimit: 300, // Average characters typed per second
-  amortization: 0.01125,
+  amortization: 0.0125,
   interests: 0.05,
   interestsReal: 0.015,
   maintenance: 0.01,
