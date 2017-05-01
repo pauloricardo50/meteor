@@ -23,18 +23,7 @@ export default class HomeDev extends React.Component {
   };
 
   render() {
-    const actions = [
-      <FlatButton
-        label="Ok"
-        primary
-        onTouchTap={this.handleClose}
-        style={this.props.style}
-        buttonStyle={this.props.buttonStyle}
-        labelStyle={this.props.labelStyle}
-        overlayStyle={this.props.overlayStyle}
-        id="refinancing"
-      />,
-    ];
+    const actions = [<FlatButton label="Ok" primary onTouchTap={this.handleClose} />];
 
     return (
       <span>
@@ -42,6 +31,11 @@ export default class HomeDev extends React.Component {
           label="Refinancer un bien"
           onTouchTap={this.handleOpen}
           primary={this.props.primary}
+          style={this.props.style}
+          buttonStyle={this.props.buttonStyle}
+          labelStyle={this.props.labelStyle}
+          overlayStyle={this.props.overlayStyle}
+          id="refinancing"
         />
         <Dialog
           title="En Développement"
