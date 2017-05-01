@@ -4,6 +4,20 @@
       "analyticsSettings": {
       }
   },
+  "AWS": {
+    "users": {
+      "accessKeyId": "AKIAJF43A4MFAA2ZGTEA",
+      "secretAccesskey": "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"
+    },
+    "admins": {
+      "accessKeyId": "AKIAIE66YI7GPZKP2L2Q",
+      "secretAccesskey": "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"
+    },
+    "partners": {
+      "accessKeyId": "AKIAIE66YI7GPZKP2L2Q",
+      "secretAccesskey": "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"
+    },
+  },
   "AWSAccessKeyId": "AKIAJF43A4MFAA2ZGTEA",
   "AWSSecretAccessKey": "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",
   "AWSRegion": "eu-central-1",

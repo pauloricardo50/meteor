@@ -6,8 +6,12 @@ export const getWidth = () => {
   return w.innerWidth || documentElement.clientWidth || body.clientWidth;
 };
 
-export const getSubdomain = () => {
+const getSubdomain = () => {
   const fullPath = window.location.host;
   // window.location.host is subdomain.domain.com
   return fullPath.split('.')[0];
+};
+
+export const isDemo = () => {
+  return getSubdomain() === 'demo';
 };

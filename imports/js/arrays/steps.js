@@ -4,6 +4,8 @@ import { getFileArray } from '/imports/ui/pages/user/borrowerPage/Files.jsx';
 import getPropertyArray from './PropertyFormArray';
 import { getBorrowerInfoArray } from './BorrowerFormArray';
 
+import { isDemo } from '/imports/js/helpers/browserFunctions';
+
 const getSteps = ({ loanRequest, borrowers, serverTime }) => {
   const steps = [
     // Step 1
@@ -181,8 +183,11 @@ export const filesPercent = borrowers => {
   borrowers.forEach(b => {
     const fileArray = getFileArray(b);
 
-    // TODO: loop over each file, not just the first one
-    a.push(fileArray[0].currentValue);
+    if (isDemo()) {
+      a.push(fileArray[0].currentValue);
+    } else {
+      fileArray.forEach(f => a.push(f.currentValue));
+    }
   });
 
   return getPercent(a);

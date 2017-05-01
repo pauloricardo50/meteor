@@ -2,14 +2,18 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import AutoForm from '/imports/ui/components/autoform/AutoForm.jsx';
-import FakeBorrowerCompleter from '/imports/ui/components/general/FakeBorrowerCompleter.jsx';
 import { getBorrowerInfoArray } from '/imports/js/arrays/BorrowerFormArray';
 import { personalInfoPercent } from '/imports/js/arrays/steps';
+
+import { isDemo } from '/imports/js/helpers/browserFunctions';
+import FakeBorrowerCompleter from '/imports/ui/components/general/FakeBorrowerCompleter.jsx';
 
 const BorrowerInfoPage = props => {
   const borrowerId = props.match.params.borrowerId;
   const borrower = props.borrowers.find(b => b._id === borrowerId);
   const percent = personalInfoPercent([borrower]);
+
+  console.log(isDemo());
 
   return (
     <section className="animated fadeIn" key={borrowerId}>
@@ -36,7 +40,7 @@ const BorrowerInfoPage = props => {
         popFunc="popBorrowerValue"
       />
 
-      <FakeBorrowerCompleter borrower={borrower} />
+      {isDemo() && <FakeBorrowerCompleter borrower={borrower} />}
     </section>
   );
 };

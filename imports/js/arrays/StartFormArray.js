@@ -565,12 +565,19 @@ const getFinalArray = (state, props, setFormState) => [
           setFormState('insuranceFortuneUsed', 0);
         },
       },
+      {
+        id: undefined,
+        label: 'Conditions',
+        noPrimary: true,
+        secondary: true,
+      },
     ],
   },
   {
     condition: state.type === 'acquisition' &&
       state.usageType === 'primary' &&
-      state.useInsurance === true,
+      state.useInsurance === true &&
+      state.insuranceConditions === true,
     type: 'custom',
     component: FortuneSliders,
     id: 'fortuneSliders',

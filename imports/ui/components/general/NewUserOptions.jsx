@@ -24,12 +24,12 @@ const NewUserOptions = () => (
       Vous pourrez monter votre dossier, lancer les enchères,
       et conclure votre demande de prêt depuis ici.
     </h3>
-    <RaisedButton
+    {/* <RaisedButton
       label="Prenez le test"
       primary
       containerElement={<Link to="/start1/test" />}
       style={styles.button}
-    />
+    /> */}
     <RaisedButton
       label="Faire une acquisition"
       containerElement={<Link to="/start1/acquisition" />}

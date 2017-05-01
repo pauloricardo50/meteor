@@ -6,9 +6,10 @@ import { Link } from 'react-router-dom';
 
 import AutoForm from '/imports/ui/components/autoform/AutoForm.jsx';
 import PropertyFormArray from '/imports/js/arrays/PropertyFormArray';
-import FakePropertyCompleter from '/imports/ui/components/general/FakePropertyCompleter.jsx';
-
 import { propertyPercent } from '/imports/js/arrays/steps';
+
+import { isDemo } from '/imports/js/helpers/browserFunctions';
+import FakePropertyCompleter from '/imports/ui/components/general/FakePropertyCompleter.jsx';
 
 const styles = {
   topDiv: {
@@ -62,8 +63,7 @@ const PropertyPage = props => {
           popFunc="popRequestValue"
         />
 
-        {propertyPercent(props.loanRequest, props.borrowers) < 1 &&
-          <FakePropertyCompleter loanRequest={props.loanRequest} />}
+        {isDemo() && <FakePropertyCompleter loanRequest={props.loanRequest} />}
       </section>
 
       <div style={styles.bottomDiv}>

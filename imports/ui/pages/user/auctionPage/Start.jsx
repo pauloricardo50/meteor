@@ -6,6 +6,8 @@ import CountUp from 'react-countup';
 import RaisedButton from 'material-ui/RaisedButton';
 import { getLenderCount } from '/imports/js/helpers/requestFunctions';
 
+import { isDemo } from '/imports/js/helpers/browserFunctions';
+
 const styles = {
   text: {
     textAlign: 'justify',
@@ -67,7 +69,8 @@ const Start = props => {
           <RaisedButton
             label="Commencer les enchères"
             primary
-            onTouchTap={() => cleanMethod('startAuction', {}, props.loanRequest._id)}
+            onTouchTap={() =>
+              cleanMethod('startAuction', { isDemo: isDemo() }, props.loanRequest._id)}
           />
         </div>
         <div className="form-group text-center">

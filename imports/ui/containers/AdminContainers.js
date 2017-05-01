@@ -1,7 +1,8 @@
 import _AppLayout from '/imports/ui/layouts/AppLayout.jsx';
-import _AdminOfferPage from '/imports/ui/pages/admin/AdminOfferPage.jsx';
-import _AdminSingleRequestPage from '/imports/ui/pages/admin/AdminSingleRequestPage.jsx';
-import _AdminSingleUserPage from '/imports/ui/pages/admin/AdminSingleUserPage.jsx';
+import _OfferPage from '/imports/ui/pages/admin/OfferPage.jsx';
+import _SingleRequestPage from '/imports/ui/pages/admin/SingleRequestPage.jsx';
+import _SingleUserPage from '/imports/ui/pages/admin/SingleUserPage.jsx';
+import _VerifyPage from '/imports/ui/pages/admin/VerifyPage.jsx';
 
 import {
   adminContainer,
@@ -10,7 +11,8 @@ import {
   adminOfferContainer,
 } from './Containers';
 
-export const AdminLayout = adminContainer(_AppLayout);
-export const AdminOfferPage = adminOfferContainer(_AdminOfferPage);
-export const AdminSingleRequestPage = adminRequestContainer(_AdminSingleRequestPage);
-export const AdminSingleUserPage = adminUserContainer(_AdminSingleUserPage);
+export const Layout = adminContainer(_AppLayout);
+export const OfferPage = adminOfferContainer(_OfferPage);
+export const SingleRequestPage = adminRequestContainer(_SingleRequestPage);
+export const SingleUserPage = adminUserContainer(_SingleUserPage);
+export const VerifyPage = adminUserContainer(_VerifyPage);

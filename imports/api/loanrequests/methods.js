@@ -61,28 +61,39 @@ export const startAuction = new ValidatedMethod({
   validate({ id }) {
     check(id, String);
   },
-  run({ id }) {
-    const object = {};
-    object['logic.auctionStarted'] = true;
-    object['logic.auctionStartTime'] = moment().toDate();
-    object['general.a'];
+  run({ object, id }) {
+    const auctionObject = {};
+    auctionObject['logic.auctionStarted'] = true;
+    auctionObject['logic.auctionStartTime'] = moment().toDate();
+    auctionObject['general.a'];
 
-    // TODO: Changer cet assignment de 60 secondes pour getAuctionEndTime(moment())
-    object['logic.auctionEndTime'] = moment().add(30, 's').toDate();
+    // object parameter only contains the isDemo value
+    if (object.isDemo) {
+      auctionObject['logic.auctionEndTime'] = moment().add(30, 's').toDate();
+    } else {
+      auctionObject['logic.auctionEndTime'] = getAuctionEndTime(moment());
+    }
+
     console.log(`Temps de fin réel: ${getAuctionEndTime(moment())}`);
 
     LoanRequests.update(id, {
-      $set: object,
+      $set: auctionObject,
     });
   },
 });
 
-// Gives the end tim of an auction, given the start time
-const getAuctionEndTime = function (startTime) {
+// Gives the end time of an auction, given the start time
+export const getAuctionEndTime = function (startTime) {
   const endTime = startTime;
 
-  // If the start time is between midnight and 7:00, set endtime to be tomorrow night
-  if (startTime.hour() >= 0 && startTime.hour() < 7) {
+  if (startTime.isoWeekday() === 6) {
+    // On saturdays, go to Tuesday
+    endTime.add(3, 'd');
+  } else if (startTime.isoWeekday() === 7) {
+    // On saturdays, go to Tuesday
+    endTime.add(2, 'd');
+  } else if (startTime.hour() >= 0 && startTime.hour() < 7) {
+    // If the start time is between midnight and 7:00, set endtime to be tomorrow night
     endTime.add(1, 'd');
   } else {
     // Else, set endtime in 2 days from now
@@ -99,6 +110,7 @@ const getAuctionEndTime = function (startTime) {
   endTime.hours(23);
   endTime.minutes(59);
   endTime.seconds(59);
+  endTime.milliseconds(0);
 
   return endTime.toDate();
 };

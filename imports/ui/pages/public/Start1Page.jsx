@@ -18,8 +18,6 @@ import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartI
 
 import Accordion from '/imports/ui/components/general/Accordion.jsx';
 
-import { getSubdomain } from '/imports/js/helpers/browserFunctions';
-
 const getArray = (income, fortune, property, borrow, ratio, propertyAuto) => {
   const incomeIcon = classnames({
     fa: true,
@@ -92,7 +90,6 @@ export default class Start1Page extends Component {
   }
 
   componentDidMount() {
-    console.log(getSubdomain());
     // UX: make user understand he can use the slider, by quickly pulling it down
     Meteor.setTimeout(
       () =>

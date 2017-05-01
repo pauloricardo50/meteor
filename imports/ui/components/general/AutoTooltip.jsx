@@ -11,7 +11,7 @@ import { tooltips, tooltipsById } from '/imports/js/arrays/tooltips';
 const styles = {
   span: {
     borderBottom: 'dashed 1px #aaaaaa',
-    cursor: 'pointer',
+    cursor: 'help',
   },
   tooltip: {
     textAlign: 'center',

@@ -7,11 +7,13 @@ import { expect, assert } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import { Random } from 'meteor/random';
+import moment from 'moment';
 import LoanRequests from '../loanrequests';
 import {
   insertRequest,
   updateRequest,
   startAuction,
+  getAuctionEndTime,
   pushRequestValue,
   popRequestValue,
   incrementStep,
@@ -90,6 +92,78 @@ describe('loanRequests', () => {
           expect(modifiedRequest.general.partnersToAvoid.length).to.equal(length - 1);
         });
       });
+    });
+  });
+
+  describe('getAuctionEndTime', () => {
+    let endDate;
+
+    beforeEach(() => {
+      endDate = moment().year(2017).month(0).hours(23).minutes(59).seconds(59).milliseconds(0);
+    });
+
+    it('Should return wednesday night for a monday afternoon', () => {
+      // Jan 2nd 2017, a monday
+      const date = moment().year(2017).month(0).date(2).hours(14);
+      endDate.date(4);
+
+      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+    });
+
+    it('Should return monday night for a thursday afternoon', () => {
+      // Jan 5th 2017, a thursday
+      const date = moment().year(2017).month(0).date(5).hours(14);
+      endDate.date(9);
+
+      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+    });
+
+    it('Should return Tuesday night for a friday afternoon', () => {
+      // Jan 6th 2017, a friday
+      const date = moment().year(2017).month(0).date(6).hours(14);
+      endDate.date(10);
+
+      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+    });
+
+    it('Should return Tuesday night for a monday early morning', () => {
+      // Jan 2nd 2017, a monday
+      const date = moment().year(2017).month(0).date(2).hours(5);
+      endDate.date(3);
+
+      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+    });
+
+    it('Should return Tuesday night for a saturday afternoon', () => {
+      // Jan 7th 2017, a saturday
+      const date = moment().year(2017).month(0).date(7).hours(14);
+      endDate.date(10);
+
+      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+    });
+
+    it('Should return Tuesday night for a saturday early morning', () => {
+      // Jan 7th 2017, a saturday
+      const date = moment().year(2017).month(0).date(7).hours(5);
+      endDate.date(10);
+
+      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+    });
+
+    it('Should return Tuesday night for a sunday afternoon', () => {
+      // Jan 8th 2017, a sunday
+      const date = moment().year(2017).month(0).date(8).hours(14);
+      endDate.date(10);
+
+      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+    });
+
+    it('Should return Tuesday night for a sunday early morning', () => {
+      // Jan 8th 2017, a sunday
+      const date = moment().year(2017).month(0).date(8).hours(5);
+      endDate.date(10);
+
+      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
     });
   });
 });
