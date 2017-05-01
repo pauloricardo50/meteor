@@ -11,6 +11,7 @@ import Recap from '/imports/ui/components/general/Recap';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import adminActions from '/imports/js/helpers/adminActions';
+import { getLoanValue } from '/imports/js/helpers/requestFunctions';
 
 const styles = {
   actions: {
@@ -18,6 +19,12 @@ const styles = {
   },
   returnButton: {
     marginBottom: 20,
+  },
+  recapDiv: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    margin: '0 20px',
   },
 };
 
@@ -74,8 +81,8 @@ const AdminSingleRequestPage = props => {
       />
       <section className="mask1">
         <h1>
-          {props.loanRequest.name} - CHF&nbsp;
-          {toMoney(props.loanRequest.property.value)}
+          {props.loanRequest.name || 'Demande de Prêt'} - CHF&nbsp;
+          {toMoney(getLoanValue(props.loanRequest))}
         </h1>
 
         <div className="text-center" style={styles.actions}>
@@ -90,16 +97,20 @@ const AdminSingleRequestPage = props => {
 
         <ProjectPieChart loanRequest={props.loanRequest} />
 
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            margin: '0 20px',
-          }}
-        >
+        <div style={styles.recapDiv}>
           <Recap {...props} arrayName="dashboard" />
         </div>
+
+        <hr />
+
+        {props.borrowers.map((b, i) => (
+          <div style={styles.recapDiv} key={b._id}>
+            <h2 className="fixed-size">{b.firstName || `Emprunteur ${i + 1}`}</h2>
+            <Recap {...props} arrayName="borrower" borrower={b} />
+          </div>
+        ))}
+
+        <hr />
 
         <ul className="request-map">
           {Object.keys(props.loanRequest).map(key => renderObject(key, props.loanRequest))}

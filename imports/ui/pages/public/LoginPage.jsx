@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/std:accounts-ui';
+import { analytics } from 'meteor/okgrow:analytics';
 
 const styles = {
   section: {
@@ -33,7 +35,14 @@ const LoginPage = props => (
       <div style={styles.div2}>
         <Accounts.ui.LoginForm
           onSignedInHook={() => props.history.push('/app')}
-          onPostSignUpHook={() => props.history.push('/app')}
+          onPostSignUpHook={() => {
+            props.history.push('/app');
+
+            // Create user for analytics
+            analytics.identify(Meteor.userId(), {
+              email: Meteor.user().emails[0].address,
+            });
+          }}
         />
       </div>
     </div>

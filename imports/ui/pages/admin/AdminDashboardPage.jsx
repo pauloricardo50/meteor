@@ -37,6 +37,7 @@ const AdminDashboardPage = props => {
       <TodoList
         loanRequests={props.loanRequests}
         recentOffers={props.offers.filter(offer => offer.auctionEndTime >= now)}
+        history={props.history}
       />
 
     </section>

@@ -11,6 +11,7 @@ const addVerifyingRequest = () => {
     logic: {
       verification: {
         requested: true,
+        requestedTime: new Date(),
       },
     },
     admin: {},

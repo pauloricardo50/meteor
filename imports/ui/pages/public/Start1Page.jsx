@@ -4,6 +4,7 @@ import { _ } from 'lodash';
 import { Link } from 'react-router-dom';
 import queryString from 'query-string';
 import classnames from 'classnames';
+import { analytics } from 'meteor/okgrow:analytics';
 
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -297,6 +298,7 @@ export default class Start1Page extends Component {
                 id="ok"
                 style={{ height: 'unset' }}
                 overlayStyle={{ padding: 20 }}
+                onTouchTap={() => analytics.track('Passed Start 1', { property, income, fortune })}
               />
             </div>}
         </article>

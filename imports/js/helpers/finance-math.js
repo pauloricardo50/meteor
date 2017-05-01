@@ -161,7 +161,7 @@ export const getIncomeRatio = (loanRequest, borrowers) => {
 
 export const getBorrowRatio = (loanRequest, borrowers) => {
   const loan = getLoanValue(loanRequest);
-  const propAndWork = loanRequest.property.value + loanRequest.property.propertyWork;
+  const propAndWork = loanRequest.property.value + (loanRequest.property.propertyWork || 0);
 
   return loan / propAndWork;
 };

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+import { analytics } from 'meteor/okgrow:analytics';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
@@ -69,6 +70,11 @@ export default class PasswordLine extends Component {
 
   handleSuccess = () => {
     saveStartForm(this.props.formState, this.props.history);
+
+    // Create user for analytics
+    analytics.identify(Meteor.userId(), {
+      email: Meteor.user().emails[0].address,
+    });
   };
 
   render() {

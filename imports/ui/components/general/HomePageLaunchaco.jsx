@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import HomeDev from '/imports/ui/components/general/HomeDev.jsx';
+import { analytics } from 'meteor/okgrow:analytics';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -57,7 +58,10 @@ module.exports = () => (
               labelStyle={styles.label}
               overlayStyle={styles.button}
               id="acquisitionButton"
-              onTouchTap={() => mixpanel.track('goToStart1')}
+              onTouchTap={() =>
+                analytics.track('Clicked home page CTA', {
+                  title: 'acquisition',
+                })}
             />
             <HomeDev
               style={styles.style}
@@ -65,7 +69,10 @@ module.exports = () => (
               labelStyle={styles.label}
               overlayStyle={styles.button}
               id="refinancing"
-              onTouchTap={() => mixpanel.track('wantRefinancing')}
+              handleClick={() =>
+                analytics.track('Clicked home page CTA', {
+                  title: 'refinancing',
+                })}
             />
           </div>
         </div>
@@ -238,12 +245,20 @@ module.exports = () => (
                 buttonStyle={styles.button}
                 labelStyle={styles.label}
                 overlayStyle={styles.button}
+                onTouchTap={() =>
+                  analytics.track('Clicked home page CTA', {
+                    title: 'acquisition',
+                  })}
               />
               <HomeDev
                 style={styles.style}
                 buttonStyle={styles.button}
                 labelStyle={styles.label}
                 overlayStyle={styles.button}
+                handleClick={() =>
+                  analytics.track('Clicked home page CTA', {
+                    title: 'refinancing',
+                  })}
               />
             </div>
           </div>

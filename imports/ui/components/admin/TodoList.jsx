@@ -6,7 +6,7 @@ import adminActions from '/imports/js/helpers/adminActions';
 
 const getActions = props => {
   const array = [];
-  props.loanRequest.forEach(r => {
+  props.loanRequests.forEach(r => {
     const actions = adminActions(r, props);
     actions.forEach(a => {
       const object = {
@@ -16,6 +16,8 @@ const getActions = props => {
       array.push(object);
     });
   });
+
+  return array;
 };
 
 const TodoList = props => {
@@ -25,22 +27,13 @@ const TodoList = props => {
       <h2>Actions à prendre</h2>
 
       {actionsArray.map((a, i) => (
-        <TodoItem request={a.request} key={`${a.request._id}${i}`} action={a.action} />
-      ))}
-
-      {/* {this.getReviewRequests().map(request => (
-        <TodoItem request={request} key={request._id} verify />
-      ))}
-
-      {this.getAuctionRequests().map(request => (
         <TodoItem
-          request={request}
-          key={request._id}
-          action="Ajouter une offre"
-          offers={this.props.recentOffers.filter(offer => offer.requestId === request._id)}
-          auction
+          request={a.request}
+          key={`${a.request._id}${i}`}
+          {...a.action}
+          handleClick={() => props.history.push(`/admin/requests/${a.request._id}`)}
         />
-      ))} */}
+      ))}
 
       {actionsArray.length <= 0 &&
         <h3 className="text-center secondary" style={{ padding: '40px 0' }}>

@@ -18,12 +18,22 @@ export default class HomeDev extends React.Component {
   };
 
   handleOpen = () => {
+    this.props.handleClick();
     this.setState({ open: true });
   };
 
   render() {
     const actions = [
-      <FlatButton label="Ok" primary onTouchTap={this.handleClose} />,
+      <FlatButton
+        label="Ok"
+        primary
+        onTouchTap={this.handleClose}
+        style={this.props.style}
+        buttonStyle={this.props.buttonStyle}
+        labelStyle={this.props.labelStyle}
+        overlayStyle={this.props.overlayStyle}
+        id="refinancing"
+      />,
     ];
 
     return (
@@ -31,7 +41,7 @@ export default class HomeDev extends React.Component {
         <RaisedButton
           label="Refinancer un bien"
           onTouchTap={this.handleOpen}
-          {...this.props}
+          primary={this.props.primary}
         />
         <Dialog
           title="En Développement"
@@ -44,14 +54,20 @@ export default class HomeDev extends React.Component {
             Nous allons bientôt ouvrir e-Potek aux refinancements !
           </span>
           <div className="text-center" style={{ marginTop: 20 }}>
-            <RaisedButton
-              label="M'avertir par e-mail"
-              primary
-              href="http://eepurl.com/cKvR45"
-            />
+            <RaisedButton label="M'avertir par e-mail" primary href="http://eepurl.com/cKvR45" />
           </div>
         </Dialog>
       </span>
     );
   }
 }
+
+HomeDev.propTypes = {
+  handleClick: PropTypes.func,
+  primary: PropTypes.bool,
+};
+
+HomeDev.defaultProps = {
+  handleClick: () => null,
+  primary: false,
+};

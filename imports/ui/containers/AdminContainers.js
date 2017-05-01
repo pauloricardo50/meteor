@@ -15,4 +15,4 @@ export const AdminLayout = adminContainer(_AppLayout);
 export const OfferPage = adminOfferContainer(_OfferPage);
 export const SingleRequestPage = adminRequestContainer(_SingleRequestPage);
 export const SingleUserPage = adminUserContainer(_SingleUserPage);
-export const VerifyPage = adminUserContainer(_VerifyPage);
+export const VerifyPage = adminRequestContainer(_VerifyPage);

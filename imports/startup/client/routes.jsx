@@ -108,6 +108,7 @@ const AdminRoutes = props => (
         <Route exact path="/admin" render={() => <AdminDashboardPage {...layoutProps} />} />
         <Route exact path="/admin/users" render={() => <UsersPage {...layoutProps} />} />
         <Route exact path="/admin/requests" render={() => <RequestsPage {...layoutProps} />} />
+        <Route path="/admin/requests/:requestId/verify" component={VerifyPage} />
         <Route path="/admin/requests/:requestId" component={SingleRequestPage} />
         <Route path="/admin/users/:userId" component={SingleUserPage} />
         <Route exact path="/admin/dev" render={() => <AdminDevPage {...layoutProps} />} />
