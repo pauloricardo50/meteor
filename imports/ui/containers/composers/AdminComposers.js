@@ -33,11 +33,11 @@ export function adminRequestComposer(props, onData) {
   const requestId = props.match.params.requestId;
 
   if (Meteor.subscribe('loanRequest', requestId).ready()) {
-    const loanRequest = LoanRequests.find({}).fetch()[0];
+    const loanRequest = LoanRequests.find({ _id: requestId }).fetch()[0];
     if (Meteor.subscribe('user', loanRequest.userId).ready()) {
-      const user = Meteor.users.find({}).fetch()[0];
+      const user = Meteor.users.find({ _id: loanRequest.userId }).fetch()[0];
       if (Meteor.subscribe('requestOffers', requestId).ready()) {
-        const offers = Offers.find({}).fetch();
+        const offers = Offers.find({ _id: { $in: loanRequest.borrowers } }).fetch();
         if (Meteor.subscribe('allBorrowers').ready()) {
           const borrowers = Borrowers.find({
             _id: { $in: loanRequest.borrowers },
@@ -54,7 +54,7 @@ export function adminUserComposer(props, onData) {
   const userId = props.match.params.userId;
 
   if (Meteor.subscribe('user', userId).ready()) {
-    const user = Meteor.users.findOne({}).fetch();
+    const user = Meteor.users.findOne({ _id: userId }); // .fetch();
 
     onData(null, { user });
   }
@@ -64,7 +64,7 @@ export function adminOfferComposer(props, onData) {
   const offerId = props.match.params.offerId;
 
   if (Meteor.subscribe('offer', offerId).ready()) {
-    const offer = Offers.findOne({}).fetch();
+    const offer = Offers.findOne({}); // .fetch();
 
     onData(null, { offer });
   }

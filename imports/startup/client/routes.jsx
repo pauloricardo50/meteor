@@ -48,6 +48,7 @@ import {
   SingleUserPage,
   VerifyPage,
 } from '/imports/ui/containers/AdminContainers';
+import AdminDevPage from '/imports/ui/pages/admin/AdminDevPage.jsx';
 
 // Partner pages
 import PartnerHomePage from '/imports/ui/pages/partner/PartnerHomePage.jsx';
@@ -109,6 +110,7 @@ const AdminRoutes = props => (
         <Route exact path="/admin/requests" render={() => <RequestsPage {...layoutProps} />} />
         <Route path="/admin/requests/:requestId" component={SingleRequestPage} />
         <Route path="/admin/users/:userId" component={SingleUserPage} />
+        <Route exact path="/admin/dev" render={() => <AdminDevPage {...layoutProps} />} />
       </Switch>
     )}
   />

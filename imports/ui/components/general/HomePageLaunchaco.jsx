@@ -57,6 +57,7 @@ module.exports = () => (
               labelStyle={styles.label}
               overlayStyle={styles.button}
               id="acquisitionButton"
+              onTouchTap={() => mixpanel.track('goToStart1')}
             />
             <HomeDev
               style={styles.style}
@@ -64,6 +65,7 @@ module.exports = () => (
               labelStyle={styles.label}
               overlayStyle={styles.button}
               id="refinancing"
+              onTouchTap={() => mixpanel.track('wantRefinancing')}
             />
           </div>
         </div>
@@ -252,10 +254,7 @@ module.exports = () => (
               <Link className="nav-link" to="/about">
                 A Propos
               </Link>
-              <a
-                className="nav-link"
-                href="mailto:contact@e-potek.ch?subject=J'adore%20e-Potek!"
-              >
+              <a className="nav-link" href="mailto:contact@e-potek.ch?subject=J'adore%20e-Potek!">
                 Contact
               </a>
               <Link className="nav-link" to="/careers">

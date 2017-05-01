@@ -64,9 +64,14 @@ const renderObject = (key, obj) => {
 };
 
 const AdminSingleRequestPage = props => {
+  const actions = adminActions(props.loanRequest, props);
   return (
     <div>
-      <RaisedButton label="Retour" style={styles.returnButton} />
+      <RaisedButton
+        label="Retour"
+        style={styles.returnButton}
+        onTouchTap={() => props.history.push('/admin/requests')}
+      />
       <section className="mask1">
         <h1>
           {props.loanRequest.name} - CHF&nbsp;
@@ -74,8 +79,8 @@ const AdminSingleRequestPage = props => {
         </h1>
 
         <div className="text-center" style={styles.actions}>
-          {adminActions(props.loanRequest).length > 0
-            ? adminActions(props.loanRequest).map(action => (
+          {actions.length > 0
+            ? actions.map(action => (
               <div key={action.name} className="form-group">
                 <RaisedButton label={action.name} onClick={action.handleClick} primary />
               </div>

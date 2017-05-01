@@ -49,6 +49,11 @@ const adminLinks = [
     icon: <span className="icon fa fa-files-o fa-2x" />,
     label: 'Demandes de prêt',
   },
+  {
+    link: '/admin/dev',
+    icon: <span className="icon fa fa-code fa-2x" />,
+    label: 'Dev',
+  },
 ];
 
 const partnerLinks = [
@@ -85,12 +90,7 @@ const SideNav = props => {
   return (
     <nav className={classes}>
       <Link to="/home">
-        <img
-          src="/img/logo_black.svg"
-          alt="e-Potek"
-          style={styles.logo}
-          className="logo"
-        />
+        <img src="/img/logo_black.svg" alt="e-Potek" style={styles.logo} className="logo" />
       </Link>
 
       <ul className="side-nav-list">

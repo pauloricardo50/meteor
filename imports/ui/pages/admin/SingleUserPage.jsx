@@ -2,17 +2,22 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const AdminSingleUserPage = props => {
-  const user = props.users.find(user => user._id === props.match.params.userId);
   return (
     <section className="mask1">
-      <h1>{user.emails[0].address}</h1>
+      <h1>{props.user.emails[0].address}</h1>
     </section>
   );
 };
 
 AdminSingleUserPage.propTypes = {
-  loanRequests: PropTypes.arrayOf(PropTypes.any).isRequired,
-  // user: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequests: PropTypes.arrayOf(PropTypes.any),
+  borrowers: PropTypes.arrayOf(PropTypes.any),
+  user: PropTypes.objectOf(PropTypes.any).isRequired,
+};
+
+AdminSingleUserPage.defaultProps = {
+  loanRequest: [],
+  borrowers: [],
 };
 
 export default AdminSingleUserPage;

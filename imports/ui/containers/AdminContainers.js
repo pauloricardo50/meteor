@@ -11,7 +11,7 @@ import {
   adminOfferContainer,
 } from './Containers';
 
-export const Layout = adminContainer(_AppLayout);
+export const AdminLayout = adminContainer(_AppLayout);
 export const OfferPage = adminOfferContainer(_OfferPage);
 export const SingleRequestPage = adminRequestContainer(_SingleRequestPage);
 export const SingleUserPage = adminUserContainer(_SingleUserPage);

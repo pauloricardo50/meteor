@@ -3,8 +3,9 @@ const adminActions = (loanRequest, props) => {
 
   const actions = [
     {
-      name: 'Vérifier',
-      condition: loanRequest.logic.verification.requested,
+      name: 'Vérification demandée',
+      condition: loanRequest.logic.verification &&
+        loanRequest.logic.verification.requested === true,
       handleClick() {
         props.history.push(`/admin/requests/${loanRequest._id}/verify`);
       },
