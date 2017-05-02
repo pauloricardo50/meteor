@@ -35,19 +35,19 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           isDone: () => borrowers.reduce((res, b) => res && b.logic.hasValidatedFinances, true),
         },
         {
-          title: 'Décrivez votre propriété',
-          link: `/app/requests/${loanRequest._id}/property`,
-          subtitle: '4 min',
-          percent: () => propertyPercent(loanRequest, borrowers),
+          title: 'Uploadez les documents nécessaires',
+          link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}?tab=files`,
+          subtitle: '10 min',
+          percent: () => filesPercent(borrowers),
           isDone() {
             return this.percent() >= 1;
           },
         },
         {
-          title: 'Uploadez les documents nécessaires',
-          link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}?tab=files`,
-          subtitle: '10 min',
-          percent: () => filesPercent(borrowers),
+          title: 'Décrivez votre propriété',
+          link: `/app/requests/${loanRequest._id}/property`,
+          subtitle: '4 min',
+          percent: () => propertyPercent(loanRequest, borrowers),
           isDone() {
             return this.percent() >= 1;
           },
@@ -58,12 +58,12 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           link: `/app/requests/${loanRequest._id}/verification`,
           isDone: () => loanRequest.logic.verification.validated === true,
         },
-        {
-          title: "Faites l'expertise",
-          subtitle: '1 min',
-          link: `/app/requests/${loanRequest._id}/expertise`,
-          isDone: () => loanRequest.logic.expertiseDone,
-        },
+        // {
+        //   title: "Faites l'expertise",
+        //   subtitle: '1 min',
+        //   link: `/app/requests/${loanRequest._id}/expertise`,
+        //   isDone: () => loanRequest.logic.expertiseDone,
+        // },
       ],
     },
 
@@ -90,7 +90,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           subtitle: '5 min',
           link: `/app/requests/${loanRequest._id}/lenderpicker`,
           disabled: !serverTime || !loanRequest.logic.auctionEndTime > serverTime, // TODO: make this work
-          isDone: () => !!loanRequest.logic.lender,
+          isDone: () => !!(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
         },
       ],
     },
@@ -121,8 +121,8 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
 
   // Make sure these indices correspond
   // Verify all 4 items before item 5 are done
-  steps[0].items[5].disabled = !previousDone(steps, 0, 5);
-  steps[0].items[6].disabled = !previousDone(steps, 0, 6);
+  steps[0].items[5].disabled = !previousDone(steps, 0, 5); // Vérification e-Potek
+  // steps[0].items[6].disabled = !previousDone(steps, 0, 6); // Expertise
 
   return steps;
 };

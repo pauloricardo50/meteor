@@ -74,6 +74,7 @@ export default class PasswordLine extends Component {
     // Create user for analytics
     analytics.identify(Meteor.userId(), {
       email: Meteor.user().emails[0].address,
+      id: Meteor.userId(),
     });
   };
 

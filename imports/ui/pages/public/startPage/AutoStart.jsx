@@ -79,7 +79,6 @@ export default class AutoStart extends Component {
       this.renderedArray.push(input);
       this.scroll(input.id);
 
-      // const prevInput = index > 0 && array[index - 1];
       const prevInput =
         this.renderedArray.length > 1 && this.renderedArray[this.renderedArray.length - 2];
 
@@ -99,6 +98,7 @@ export default class AutoStart extends Component {
           last: input.id === 'finalized',
         }),
         autoFocus: prevInput.type === 'buttons' &&
+          this.props.formState.lastModified === prevInput.id &&
           !this.props.formState.stopScroll &&
           !this.props.formState.finalized,
       };
@@ -181,7 +181,7 @@ export default class AutoStart extends Component {
 
     return (
       <section>
-        {this.props.formArray.map((input, index, array) => this.inputSwitch(input, index, array))}
+        {this.props.formArray.map((input, index) => this.inputSwitch(input, index))}
       </section>
     );
   }

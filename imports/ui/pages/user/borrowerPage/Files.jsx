@@ -7,17 +7,24 @@ import { filesPercent } from '/imports/js/arrays/steps';
 
 export const getFileArray = borrower => [
   {
+    title: "Pièce d'identité",
+    folderName: 'identity',
+    currentValue: borrower.files.identity,
+    id: 'files.identity',
+  },
+  {
     title: '3 Fiches de salaire',
     folderName: 'buyersContract',
     currentValue: borrower.files.lastSalaries,
     id: 'files.lastSalaries',
   },
   {
-    title: "Pièce d'identité",
-    folderName: 'identity',
-    currentValue: borrower.files.identity,
-    id: 'files.identity',
+    title: 'Dernière déclaration fiscale',
+    folderName: 'taxes',
+    currentValue: borrower.files.taxes,
+    id: 'files.taxes',
   },
+
   {
     title: "Déclaration d'impôts (dev)",
     files: 3,

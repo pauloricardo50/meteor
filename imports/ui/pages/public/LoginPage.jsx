@@ -41,6 +41,7 @@ const LoginPage = props => (
             // Create user for analytics
             analytics.identify(Meteor.userId(), {
               email: Meteor.user().emails[0].address,
+              id: Meteor.userId(),
             });
           }}
         />

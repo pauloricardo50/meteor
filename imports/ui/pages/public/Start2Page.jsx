@@ -61,6 +61,9 @@ export default class Start2Page extends Component {
   };
 
   setFormState = (id, value, callback, obj) => {
+    // Keep track of the last modified value, to prevent autofocus jumps
+    this.setState({ lastModified: id });
+
     // If a whole object is given, set that object to state
     if (obj) {
       this.setState(obj, () => {

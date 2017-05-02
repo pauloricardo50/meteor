@@ -292,7 +292,7 @@ export const LogicSchema = new SimpleSchema({
   },
   verification: {
     type: Object,
-    // defaultValue: {},
+    defaultValue: {},
   },
   'verification.requested': {
     type: Boolean,
@@ -359,8 +359,18 @@ export const LogicSchema = new SimpleSchema({
     defaultValue: '',
     optional: true,
   },
-  lender: {
+  lender: Object,
+  'lender.offerId': {
     type: String,
     optional: true,
   },
+  'lender.contacted': {
+    type: Boolean,
+    defaultValue: false,
+  },
+  'lender.nextSteps': {
+    type: Array,
+    defaultValue: [],
+  },
+  'lender.nextSteps.$': String,
 });

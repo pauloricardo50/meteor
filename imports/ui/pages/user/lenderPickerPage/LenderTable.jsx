@@ -71,7 +71,7 @@ const handleSave = props => {
   object['logic.amortizationStrategyPreset'] = props.formState.amortizationStrategyPreset;
   object['logic.loanStrategyPreset'] = props.formState.loanStrategyPreset;
   object['general.loanTranches'] = props.formState.loanTranches;
-  object['logic.lender'] = props.formState.chosenLender;
+  object['logic.lender.offerId'] = props.formState.chosenLender;
 
   cleanMethod('updateRequest', object, props.loanRequest._id, () => props.history.push('/app'));
 };

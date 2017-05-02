@@ -12,6 +12,8 @@ import LoopIcon from 'material-ui/svg-icons/av/loop';
 
 import { toNumber, toMoney } from '/imports/js/helpers/conversionFunctions';
 import { changeProperty, changeFortune, changeIncome } from '/imports/js/helpers/startFunctions';
+import { storageAvailable } from '/imports/js/helpers/browserFunctions';
+
 import constants from '/imports/js/config/constants';
 import StartLine from './startPage/StartLine.jsx';
 import StartRecap from './startPage/StartRecap.jsx';
@@ -66,41 +68,55 @@ export default class Start1Page extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      income: {
-        value: 500000,
-        minValue: 0,
-        auto: true,
-      },
-      fortune: {
-        value: 500000,
-        minValue: 0,
-        auto: true,
-      },
-      property: {
-        value: 0,
-        minValue: 0,
-        auto: true,
-      },
-      incomeSlider: 500000,
-      fortuneSlider: 500000,
-      propertySlider: 2000000,
-    };
+    // Load previously stored localStorage if it exists
+    if (storageAvailable('localStorage') && localStorage.ePotekSliders) {
+      this.state = JSON.parse(localStorage.ePotekSliders);
+    } else {
+      this.state = {
+        income: {
+          value: 500000,
+          minValue: 0,
+          auto: true,
+        },
+        fortune: {
+          value: 500000,
+          minValue: 0,
+          auto: true,
+        },
+        property: {
+          value: 0,
+          minValue: 0,
+          auto: true,
+        },
+        incomeSlider: 500000,
+        fortuneSlider: 500000,
+        propertySlider: 2000000,
+      };
+    }
 
     this.type = props.match.params.type || 'test';
   }
 
   componentDidMount() {
-    // UX: make user understand he can use the slider, by quickly pulling it down
-    Meteor.setTimeout(
-      () =>
-        this.setState(prevState => ({
-          income: { ...prevState.income, value: 0 },
-          fortune: { ...prevState.fortune, value: 0 },
-          property: { ...prevState.property, value: 0 },
-        })),
-      250,
-    );
+    if (localStorage && !localStorage.ePotekSliders) {
+      // If there isn't a previously stored value
+      // UX: make user understand he can use the slider, by quickly pulling it down
+      Meteor.setTimeout(
+        () =>
+          this.setState(prevState => ({
+            income: { ...prevState.income, value: 0 },
+            fortune: { ...prevState.fortune, value: 0 },
+            property: { ...prevState.property, value: 0 },
+          })),
+        250,
+      );
+    }
+  }
+
+  componentWillUnmount() {
+    if (storageAvailable('localStorage')) {
+      localStorage.ePotekSliders = JSON.stringify(this.state);
+    }
   }
 
   getMonthly(income, fortune, property, borrow) {
