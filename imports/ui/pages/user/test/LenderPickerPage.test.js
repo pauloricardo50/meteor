@@ -64,20 +64,20 @@ if (Meteor.isClient) {
     });
 
     it('Renders the AmortizingPicker if the user has already chosen a lender', () => {
-      props.loanRequest.logic.lender = 'asd';
+      props.loanRequest.logic.lender = { offerId: 'someId' };
       expect(lenderPickerPage().find(AmortizingPicker).length).to.equal(1);
     });
 
     it('Renders the LoanStrategyPicker if the user has already chosen an amortization strategy', () => {
       props.loanRequest.logic.hasChosenLender = true;
-      props.loanRequest.logic.lender = 'someId';
+      props.loanRequest.logic.lender = { offerId: 'someId' };
       props.loanRequest.logic.insuranceUsePreset = 'collateral';
       props.loanRequest.logic.amortizationStrategyPreset = 'indirect';
       expect(lenderPickerPage().find(LoanStrategyPicker).length).to.equal(1);
     });
 
     it('Renders the LenderTable if the user has properly chosen his loan Strategy', () => {
-      props.loanRequest.logic.lender = 'someId';
+      props.loanRequest.logic.lender = { offerId: 'someId' };
       props.loanRequest.logic.amortizationStrategyPreset = 'indirect';
       props.loanRequest.logic.loanStrategyPreset = 'fixed';
       props.loanRequest.general.loanTranches = [

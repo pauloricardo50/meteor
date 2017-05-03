@@ -59,8 +59,8 @@ export default class LenderPickerPage extends React.Component {
     const r = this.props.loanRequest;
 
     this.state = {
-      initialContinue: r.logic.lender.offerId,
-      chosenLender: r.logic.lender.offerId,
+      initialContinue: r.logic.lender && r.logic.lender.offerId,
+      chosenLender: r.logic.lender && r.logic.lender.offerId,
       fortuneUsed: r.general.fortuneUsed,
       insuranceFortuneUsed: r.general.insuranceFortuneUsed,
       partnerFilter: 'monthly',
