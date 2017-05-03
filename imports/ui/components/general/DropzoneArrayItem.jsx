@@ -38,7 +38,12 @@ const DropzoneArrayItem = props => {
 
   return (
     <article style={styles.article} className="mask1 dropzoneArrayItem">
-      <div style={styles.topDiv} className="top" onTouchTap={props.handleClick}>
+      <div
+        style={styles.topDiv}
+        className="top"
+        onTouchTap={props.handleClick}
+        onDragEnter={props.handleMouseEnter}
+      >
         <div className="left">
           {currentValue && currentValue.length > 0
             ? <span className="fa fa-check" style={styles.icon} />
@@ -73,6 +78,7 @@ DropzoneArrayItem.propTypes = {
   title: PropTypes.string.isRequired,
   active: PropTypes.bool,
   handleClick: PropTypes.func.isRequired,
+  handleMouseEnter: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
   filesObject: PropTypes.objectOf(PropTypes.array).isRequired,
   filesObjectSelector: PropTypes.string.isRequired,

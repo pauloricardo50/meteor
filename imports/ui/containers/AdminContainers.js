@@ -3,6 +3,7 @@ import _OfferPage from '/imports/ui/pages/admin/OfferPage.jsx';
 import _SingleRequestPage from '/imports/ui/pages/admin/SingleRequestPage.jsx';
 import _SingleUserPage from '/imports/ui/pages/admin/SingleUserPage.jsx';
 import _VerifyPage from '/imports/ui/pages/admin/VerifyPage.jsx';
+import _ContactLendersPage from '/imports/ui/pages/admin/ContactLendersPage.jsx';
 
 import {
   adminContainer,
@@ -16,3 +17,4 @@ export const OfferPage = adminOfferContainer(_OfferPage);
 export const SingleRequestPage = adminRequestContainer(_SingleRequestPage);
 export const SingleUserPage = adminUserContainer(_SingleUserPage);
 export const VerifyPage = adminRequestContainer(_VerifyPage);
+export const ContactLendersPage = adminRequestContainer(_ContactLendersPage);

@@ -29,6 +29,10 @@ export default class DropzoneArray extends Component {
     }
   };
 
+  handleMouseEnter = i => {
+    this.setState({ active: i });
+  };
+
   render() {
     return (
       <div style={styles.div}>
@@ -40,6 +44,7 @@ export default class DropzoneArray extends Component {
               key={i}
               {...dropzoneItem}
               handleClick={() => this.handleClick(i)}
+              handleMouseEnter={() => this.handleMouseEnter(i)}
               active={this.state.active === i}
             />,
         )}

@@ -40,7 +40,7 @@ const styles = {
 // La banque ne va pas dire non -> envoyer tous les documents
 // Banque revient en 2 jours
 
-export default class ConfirmLenderPage extends Component {
+export default class ContactLendersPage extends Component {
   constructor(props) {
     super(props);
 
@@ -139,6 +139,6 @@ export default class ConfirmLenderPage extends Component {
   }
 }
 
-ConfirmLenderPage.propTypes = {
+ContactLendersPage.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

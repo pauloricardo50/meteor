@@ -48,6 +48,7 @@ import {
   SingleRequestPage,
   SingleUserPage,
   VerifyPage,
+  ContactLendersPage,
 } from '/imports/ui/containers/AdminContainers';
 import AdminDevPage from '/imports/ui/pages/admin/AdminDevPage.jsx';
 
