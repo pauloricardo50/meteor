@@ -57,6 +57,7 @@ softwarerero:accounts-t9n
 kadira:dochead                  # Set custom page titles easily
 themeteorchef:bert
 fortawesome:fontawesome
+meteorhacks:inject-initial
 
 
 # Production

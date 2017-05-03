@@ -8,6 +8,12 @@ import '../meteor-slingshot';
 
 Meteor.startup(() => {
   render(RenderRoutes(), document.getElementById('react-root'));
+
+  // Remove injected loader
+  const loader = document.getElementById('inject-loader-wrapper');
+  if (loader) {
+    loader.parentNode.removeChild(loader);
+  }
 });
 
 // Very important for all advanced tap/react/buttons/material-ui to work.
