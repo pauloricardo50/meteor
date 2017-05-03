@@ -32,15 +32,17 @@ export default class DropzoneArray extends Component {
   render() {
     return (
       <div style={styles.div}>
-        {this.props.array.map((dropzoneItem, i) => (
-          <DropzoneArrayItem
-            {...this.props}
-            key={i}
-            {...dropzoneItem}
-            handleClick={() => this.handleClick(i)}
-            active={this.state.active === i}
-          />
-        ))}
+        {this.props.array.map(
+          (dropzoneItem, i) =>
+            dropzoneItem.condition !== false &&
+            <DropzoneArrayItem
+              {...this.props}
+              key={i}
+              {...dropzoneItem}
+              handleClick={() => this.handleClick(i)}
+              active={this.state.active === i}
+            />,
+        )}
       </div>
     );
   }

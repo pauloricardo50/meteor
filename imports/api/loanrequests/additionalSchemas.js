@@ -364,6 +364,10 @@ export const LogicSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  'lender.chosenTime': {
+    type: Date,
+    optional: true,
+  },
   'lender.contacted': {
     type: Boolean,
     defaultValue: false,

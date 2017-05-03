@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { getFileArray } from '/imports/ui/pages/user/borrowerPage/Files.jsx';
-import getPropertyArray from './PropertyFormArray';
 import { getBorrowerInfoArray } from './BorrowerFormArray';
+import { getBorrowerMandatoryFiles } from '/imports/js/arrays/FileArrays';
+import getPropertyArray from './PropertyFormArray';
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 
@@ -38,7 +38,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           title: 'Uploadez les documents nécessaires',
           link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}?tab=files`,
           subtitle: '10 min',
-          percent: () => filesPercent(borrowers),
+          percent: () => mandatoryFilesPercent(borrowers),
           isDone() {
             return this.percent() >= 1;
           },
@@ -178,15 +178,16 @@ export const propertyPercent = (loanRequest, borrowers) => {
   return getPercent(a);
 };
 
-export const filesPercent = borrowers => {
+export const mandatoryFilesPercent = borrowers => {
   const a = [];
   borrowers.forEach(b => {
-    const fileArray = getFileArray(b);
+    const fileArray = getBorrowerMandatoryFiles(b);
 
     if (isDemo()) {
-      a.push(fileArray[0].currentValue);
+      a.push(b.files[fileArray[0].id]);
     } else {
-      fileArray.forEach(f => a.push(f.currentValue));
+      a.push(b.hasChangedSalary);
+      fileArray.forEach(f => f.condition !== false && a.push(b.files[f.id]));
     }
   });
 

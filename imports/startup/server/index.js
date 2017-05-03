@@ -1,8 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 
+import '/imports/js/server/emails';
 import '/imports/js/server/methods';
 import '/imports/api/api';
-import '../useraccounts-configuration';
+import '../accounts-config';
+import './accounts-server-config';
 import './meteor-slingshot-server';
 
-Meteor.startup(() => {});
+Meteor.startup(() => {
+  // Do something on startup if necessary
+});

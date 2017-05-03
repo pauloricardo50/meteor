@@ -18,10 +18,10 @@ const styles = {
   imageDiv: {
     position: 'absolute',
     left: 24,
-    padding: 17,
+    padding: 8,
   },
   image: {
-    height: 30,
+    height: 48,
     maxWidth: '50%',
   },
   button: {
@@ -37,11 +37,11 @@ const PublicNav = props => (
         props.currentUser
           ? <TopNavDropdown public {...props} />
           : <FlatButton
-              label="Login"
-              containerElement={<Link to="/login" />}
-              secondary
-              labelStyle={{ color: colors.primary }}
-            />
+            label="Login"
+            containerElement={<Link to="/login" />}
+            secondary
+            labelStyle={{ color: colors.primary }}
+          />
       }
       iconStyleLeft={{ display: 'none' }}
     >

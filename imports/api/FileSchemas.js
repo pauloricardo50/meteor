@@ -17,7 +17,6 @@ const FileSchema = new SimpleSchema({
 
 export const GeneralFilesSchema = new SimpleSchema({
   buyersContract: {
-    // Declaration d'impots
     type: Array,
     optional: true,
     maxCount: 100,
@@ -26,6 +25,12 @@ export const GeneralFilesSchema = new SimpleSchema({
 });
 
 export const BorrowerFilesSchema = new SimpleSchema({
+  taxes: {
+    // Declaration d'impots
+    type: Array,
+    optional: true,
+    maxCount: 100,
+  },
   'taxes.$': FileSchema,
   identity: {
     // ID document(s), passport, id, etc.
@@ -34,6 +39,13 @@ export const BorrowerFilesSchema = new SimpleSchema({
     maxCount: 100,
   },
   'identity.$': FileSchema,
+  salaryChange: {
+    // Si changement de salaire depuis la déclaration d'impots
+    type: Array,
+    optional: true,
+    maxCount: 100,
+  },
+  'salaryChange.$': FileSchema,
   salaryCertificate: {
     // Yearly salary certificate of last year
     type: Array,
@@ -50,12 +62,6 @@ export const BorrowerFilesSchema = new SimpleSchema({
   'lastSalaries.$': FileSchema,
   debtCollectionExtract: {
     // Extrait de l'office des poursuites
-    type: Array,
-    optional: true,
-    maxCount: 100,
-  },
-  taxes: {
-    // Declaration d'impots
     type: Array,
     optional: true,
     maxCount: 100,

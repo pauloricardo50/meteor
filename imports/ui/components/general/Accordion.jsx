@@ -5,13 +5,15 @@ export default class Accordion extends Component {
   constructor(props) {
     super(props);
 
+    const active = this.props.isActive;
+
     this.state = {
-      isActive: this.props.isActive,
+      isActive: active,
       styles: {
         height: 0,
-        overflow: 'hidden',
+        overflow: active ? 'unset' : 'hidden',
         transition: '500ms cubic-bezier(.02, .01, .47, 1)',
-        opacity: 0,
+        opacity: active ? 1 : 0,
       },
       windowHeight: window.innerHeight,
       windowWidth: window.innerWidth,
@@ -20,6 +22,12 @@ export default class Accordion extends Component {
 
   componentDidMount() {
     window.addEventListener('resize', this.handleResize);
+
+    if (this.props.isActive && this.content) {
+      this.setState(prevState => ({
+        styles: { ...prevState.styles, height: `${this.content.clientHeight}px` },
+      }));
+    }
   }
 
   componentWillReceiveProps(nextProps) {

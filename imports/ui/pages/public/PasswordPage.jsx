@@ -18,6 +18,7 @@ const PasswordPage = props => (
       keyboardFocused
     />
     <BetaAccess {...props} />
+    <RaisedButton label="Demo" href="https://demo.e-potek.ch" style={{ marginTop: 16 }} />
   </main>
 );
 

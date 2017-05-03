@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import RenderRoutes from './routes.jsx';
-import '../useraccounts-configuration';
+import '../accounts-config';
 import '../meteor-slingshot';
 
 Meteor.startup(() => {

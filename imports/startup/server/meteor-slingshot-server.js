@@ -17,19 +17,16 @@ const getFileCount = props => {
 Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
   authorize(file, props) {
     // Don't use arrow function, this is the current object here
+
     // Deny uploads if user is not logged in.
     if (!this.userId) {
-      throw new Meteor.Error(
-        'Login Required',
-        'Please login before uploading files',
-      );
+      throw new Meteor.Error('Login Required', 'Please login before uploading files');
     }
 
     // Make sure this user is the owner of the document
     if (props.collection === 'borrowers') {
       const doc = Borrowers.findOne({ _id: props.documentId });
-      console.log(props.documentId);
-      console.log(doc);
+
       if (doc.userId !== this.userId) {
         throw new Meteor.Error('Invalid user', "You're not allowed to do this");
       }
@@ -45,6 +42,6 @@ Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
     return true;
   },
   key(file, props) {
-    return `${props.documentId}/${props.folderName}/${getFileCount(props)}${file.name}`;
+    return `${props.documentId}/${props.id}/${getFileCount(props)}${file.name}`;
   },
 });

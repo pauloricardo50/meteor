@@ -241,6 +241,8 @@ export default class Start1Page extends Component {
     const isReady = !!(income && fortune && property);
     const childProps = { income, fortune, property, borrowRatio, incomeRatio };
 
+    console.log(isReady);
+
     return (
       <section className="oscar">
         <article className="mask1 small-oscar">
@@ -250,6 +252,14 @@ export default class Start1Page extends Component {
               : "Identifiez votre Capacité d'Emprunt"}
           </h1>
           <hr />
+
+          <div className="description">
+            <p>
+              Ce calculateur vous permet de rapidement déterminer votre capacité d'achat avant de faire une analyse de votre situation personelle plus détaillée.
+              <br /><br />
+              Entrez des valeurs ou utilisez les jauges, et le reste sera calculé pour vous automatiquement afin de maximiser votre capacité d'achat.
+            </p>
+          </div>
 
           <div className="content">
             <div className="sliders">

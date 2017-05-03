@@ -6,10 +6,16 @@ const getConditions = loanRequest => {
   const l = loanRequest.logic;
   return [
     {
+      // case 0
       condition: l.verification && l.verification.requested === true,
     },
     {
+      // case 1
       condition: l.auctionStarted && l.auctionVerified && l.auctionEndTime >= now,
+    },
+    {
+      // case 2
+      condition: l.lender && l.lender.offerId && !l.lender.contacted,
     },
   ];
 };
@@ -47,13 +53,23 @@ const getActions = (loanRequest, props, i) => {
         subtitle: `${Offers.find({ requestId: loanRequest._id }).count()} Offre(s)`,
         label: 'Ajouter une offre',
       };
+    case 2:
+      return {
+        name: 'Prêteur a été choisi',
+        handleClick() {
+          props.history.push(`/admin/requests/${loanRequest._id}/confirm-lender`);
+        },
+        small: `Date: ${moment(l.lender.chosenTime).format('D MMM H:mm:ss')}`,
+        subtitle: Offers.find({ _id: l.lender.offerId }).organization,
+        label: 'Connecter avec Prêteur',
+      };
     default:
       return null;
   }
 };
 
 const adminActions = (loanRequest, props) => {
-  moment().locale('fr-CH');
+  moment().locale('fr-CH'); // TODO: This doesn't work
 
   const conditions = getConditions(loanRequest);
 

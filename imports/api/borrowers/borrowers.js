@@ -241,6 +241,11 @@ export const BorrowerSchema = new SimpleSchema({
     min: 0,
     max: 100000000,
   },
+  hasChangedSalary: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false,
+  },
   files: {
     type: BorrowerFilesSchema,
     defaultValue: {},

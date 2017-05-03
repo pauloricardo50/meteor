@@ -45,7 +45,7 @@ const AutoTooltip = props => {
         }
         rootClose
       >
-        <span style={styles.span}>
+        <span style={styles.span} tabIndex="0">
           {props.children}
         </span>
       </OverlayTrigger>
@@ -72,7 +72,7 @@ const AutoTooltip = props => {
           key={i}
           rootClose
         >
-          <span style={styles.span}>
+          <span style={styles.span} tabIndex="0">
             {match}
           </span>
         </OverlayTrigger>

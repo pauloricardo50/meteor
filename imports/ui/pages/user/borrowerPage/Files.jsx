@@ -3,39 +3,20 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import DropzoneArray from '/imports/ui/components/general/DropzoneArray.jsx';
-import { filesPercent } from '/imports/js/arrays/steps';
+import { mandatoryFilesPercent } from '/imports/js/arrays/steps';
+import { getBorrowerMandatoryFiles, getBorrowerOptionalFiles } from '/imports/js/arrays/FileArrays';
+import RadioInput from '/imports/ui/components/autoform/RadioInput.jsx';
 
-export const getFileArray = borrower => [
-  {
-    title: "Pièce d'identité",
-    folderName: 'identity',
-    currentValue: borrower.files.identity,
-    id: 'files.identity',
+const styles = {
+  section: {
+    display: 'flex',
+    flexDirection: 'column',
   },
-  {
-    title: '3 Fiches de salaire',
-    folderName: 'buyersContract',
-    currentValue: borrower.files.lastSalaries,
-    id: 'files.lastSalaries',
+  radioDiv: {
+    alignSelf: 'center',
+    margin: '20px 0',
   },
-  {
-    title: 'Dernière déclaration fiscale',
-    folderName: 'taxes',
-    currentValue: borrower.files.taxes,
-    id: 'files.taxes',
-  },
-
-  {
-    title: "Déclaration d'impôts (dev)",
-    files: 3,
-    done: false,
-  },
-  {
-    title: "Extrait de l'office des poursuites (dev)",
-    files: 1,
-    done: false,
-  },
-];
+};
 
 export default class Files extends Component {
   constructor(props) {
@@ -47,10 +28,10 @@ export default class Files extends Component {
   }
 
   render() {
-    const percent = filesPercent([this.props.borrower]);
+    const percent = mandatoryFilesPercent([this.props.borrower]);
 
     return (
-      <section className="animated fadeIn" key={this.props.borrower._id}>
+      <section className="animated fadeIn" key={this.props.borrower._id} style={styles.section}>
         <hr />
         <h2 className="text-center">
           Mes Documents
@@ -76,11 +57,43 @@ export default class Files extends Component {
           </p>
         </div>
 
+        <h3 className="text-center">Documents obligatoires</h3>
+
+        <div style={styles.radioDiv}>
+          <RadioInput
+            id="hasChangedSalary"
+            label="Est-ce que votre salaire est différent de votre dernière déclaration fiscale?"
+            options={[{ id: true, label: 'Oui' }, { id: false, label: 'Non' }]}
+            currentValue={this.props.borrower.hasChangedSalary}
+            documentId={this.props.borrower._id}
+            updateFunc="updateBorrower"
+          />
+        </div>
+
         <DropzoneArray
-          array={getFileArray(this.props.borrower)}
+          array={getBorrowerMandatoryFiles(this.props.borrower)}
           documentId={this.props.borrower._id}
           pushFunc="pushBorrowerValue"
           collection="borrowers"
+          filesObject={this.props.borrower.files}
+          filesObjectSelector="files"
+        />
+
+        <h3 className="text-center">Documents nécéssaires par la suite</h3>
+
+        <div className="description">
+          <p>
+            Nous aurons besoin des documents ci-dessous pour aller au bout de la demande de prêt. Pour l'instant ils ne sont pas nécéssaires.
+          </p>
+        </div>
+
+        <DropzoneArray
+          array={getBorrowerOptionalFiles(this.props.borrower)}
+          documentId={this.props.borrower._id}
+          pushFunc="pushBorrowerValue"
+          collection="borrowers"
+          filesObject={this.props.borrower.files}
+          filesObjectSelector="files"
         />
 
       </section>

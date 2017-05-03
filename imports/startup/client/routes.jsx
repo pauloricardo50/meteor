@@ -21,6 +21,7 @@ import LoginPage from '/imports/ui/pages/public/LoginPage.jsx';
 import AboutPage from '/imports/ui/pages/public/AboutPage.jsx';
 import CareersPage from '/imports/ui/pages/public/CareersPage.jsx';
 import TosPage from '/imports/ui/pages/public/TosPage.jsx';
+import EmailVerificationPage from '/imports/ui/pages/public/EmailVerificationPage.jsx';
 
 // User pages
 import DashBoardPage from '/imports/ui/pages/user/DashboardPage.jsx';
@@ -67,6 +68,7 @@ const PublicRoutes = props => (
       <Route path="/about" component={AboutPage} />
       <Route path="/tos" component={TosPage} />
       <Route path="/test" component={TestPage} />
+      <Route path="/verify-email/:token" component={EmailVerificationPage} />
     </Switch>
   </PublicLayout>
 );

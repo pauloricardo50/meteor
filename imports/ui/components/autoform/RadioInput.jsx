@@ -32,7 +32,8 @@ export default class RadioInput extends Component {
     if (this.props.currentValue !== undefined) {
       this.state = { value: this.props.currentValue };
     } else {
-      this.state = { value: this.props.options[0].id };
+      // this.state = { value: this.props.options[0].id };
+      this.state = { value: undefined };
     }
   }
 
