@@ -409,7 +409,7 @@ const getStart2Array = props => {
     {
       title: true,
       label: 'Fortune',
-      hide: !(p.realEstate || p.insuranceFortune),
+      hide: !(p.fortune || p.realEstate || p.insuranceFortune),
     },
     {
       label: 'Épargne Bancaire',
@@ -523,7 +523,7 @@ const getBorrowerArray = props => {
     {
       title: true,
       label: 'Fortune',
-      hide: !(realEstateFortune || insuranceFortune),
+      hide: !(realEstateFortune && insuranceFortune),
     },
     {
       label: 'Épargne Bancaire',

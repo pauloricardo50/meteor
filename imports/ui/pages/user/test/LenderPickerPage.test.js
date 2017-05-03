@@ -18,15 +18,15 @@ import { getLoanValue } from '/imports/js/helpers/requestFunctions';
 if (Meteor.isClient) {
   describe('<LenderPickerPage />', () => {
     let props;
-    let mountedLenderPickerPage;
-    const lenderPickerPage = () => {
-      if (!mountedLenderPickerPage) {
-        mountedLenderPickerPage = mount(<LenderPickerPage {...props} />, {
+    let mountedComponent;
+    const component = () => {
+      if (!mountedComponent) {
+        mountedComponent = mount(<LenderPickerPage {...props} />, {
           context: { muiTheme: getMuiTheme(myTheme) },
           childContextTypes: { muiTheme: PropTypes.object },
         });
       }
-      return mountedLenderPickerPage;
+      return mountedComponent;
     };
 
     beforeEach(() => {
@@ -54,18 +54,18 @@ if (Meteor.isClient) {
           },
         ],
       };
-      mountedLenderPickerPage = undefined;
+      mountedComponent = undefined;
     });
 
     it('Always renders a section', () => {
-      const sections = lenderPickerPage().find('section');
+      const sections = component().find('section');
 
       expect(sections.length).to.be.at.least(1);
     });
 
     it('Renders the AmortizingPicker if the user has already chosen a lender', () => {
       props.loanRequest.logic.lender = { offerId: 'someId' };
-      expect(lenderPickerPage().find(AmortizingPicker).length).to.equal(1);
+      expect(component().find(AmortizingPicker).length).to.equal(1);
     });
 
     it('Renders the LoanStrategyPicker if the user has already chosen an amortization strategy', () => {
@@ -73,7 +73,7 @@ if (Meteor.isClient) {
       props.loanRequest.logic.lender = { offerId: 'someId' };
       props.loanRequest.logic.insuranceUsePreset = 'collateral';
       props.loanRequest.logic.amortizationStrategyPreset = 'indirect';
-      expect(lenderPickerPage().find(LoanStrategyPicker).length).to.equal(1);
+      expect(component().find(LoanStrategyPicker).length).to.equal(1);
     });
 
     it('Renders the LenderTable if the user has properly chosen his loan Strategy', () => {
@@ -84,7 +84,7 @@ if (Meteor.isClient) {
         { type: 'libor', value: getLoanValue(props.loanRequest) },
       ];
 
-      expect(lenderPickerPage().find(LenderTable).length).to.equal(1);
+      expect(component().find(LenderTable).length).to.equal(1);
     });
   });
 }

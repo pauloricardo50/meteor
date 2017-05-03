@@ -28,14 +28,9 @@ export default class ArrayInput extends React.Component {
       const currentValues = this.props.formState[this.props.id] || [];
       const thisVal = currentValues && currentValues[i];
       const arr = currentValues.map(v => v && v.description);
-      const thisOption = input.options.find(
-        o => (o && o.id) === (thisVal && thisVal.description),
-      );
+      const thisOption = input.options.find(o => (o && o.id) === (thisVal && thisVal.description));
 
-      return [
-        ...input.options.filter(x => arr.indexOf(x.id) < 0),
-        thisOption || {},
-      ];
+      return [...input.options.filter(x => arr.indexOf(x.id) < 0), thisOption || {}];
     }
 
     return input.options;
@@ -71,9 +66,8 @@ export default class ArrayInput extends React.Component {
       const object = {};
       object[this.props.id] = arr.pop();
 
-      this.setState(
-        { count: this.state.count - 1 },
-        () => this.props.setFormState(this.props.id, arr),
+      this.setState({ count: this.state.count - 1 }, () =>
+        this.props.setFormState(this.props.id, arr),
       );
     } else {
       // If only one entry, and the user hits -, delete all values and set the exist Id to false
@@ -89,9 +83,7 @@ export default class ArrayInput extends React.Component {
       // setformState: this.props.setformState,
       setActiveLine: () => null,
     };
-    const optionQty = this.props.inputs.find(
-      i => i.id === 'description',
-    ).options.length;
+    const optionQty = this.props.inputs.find(i => i.id === 'description').options.length;
 
     return (
       <article
@@ -112,14 +104,14 @@ export default class ArrayInput extends React.Component {
                     {...input}
                     {...inputProps}
                     id={input.id}
-                    setFormState={(id, v, cb) =>
-                      this.setArrayFormState(id, v, cb, i)}
+                    setFormState={(id, v, cb) => this.setArrayFormState(id, v, cb, i)}
                     value={
                       this.props.formState[this.props.id] &&
                         this.props.formState[this.props.id][i] &&
                         this.props.formState[this.props.id][i][input.id]
                     }
                     autoFocus={j === 0 && inputProps.autoFocus}
+                    array
                   />}
 
                 {input.type === 'selectInput' &&
@@ -127,8 +119,7 @@ export default class ArrayInput extends React.Component {
                     {...input}
                     {...inputProps}
                     id={input.id}
-                    setFormState={(id, v, cb) =>
-                      this.setArrayFormState(id, v, cb, i)}
+                    setFormState={(id, v, cb) => this.setArrayFormState(id, v, cb, i)}
                     value={
                       this.props.formState[this.props.id] &&
                         this.props.formState[this.props.id][i] &&
@@ -150,11 +141,7 @@ export default class ArrayInput extends React.Component {
             style={styles.button}
             disabled={!this.props.allOptions && this.state.count >= optionQty}
           />
-          <RaisedButton
-            label="-"
-            onTouchTap={this.handleRemove}
-            style={styles.button}
-          />
+          <RaisedButton label="-" onTouchTap={this.handleRemove} style={styles.button} />
         </div>
       </article>
     );

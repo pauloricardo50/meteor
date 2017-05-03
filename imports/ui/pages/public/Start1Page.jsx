@@ -13,13 +13,13 @@ import LoopIcon from 'material-ui/svg-icons/av/loop';
 import { toNumber, toMoney } from '/imports/js/helpers/conversionFunctions';
 import { changeProperty, changeFortune, changeIncome } from '/imports/js/helpers/startFunctions';
 import { storageAvailable } from '/imports/js/helpers/browserFunctions';
-
 import constants from '/imports/js/config/constants';
+
 import StartLine from './startPage/StartLine.jsx';
 import StartRecap from './startPage/StartRecap.jsx';
 import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
-
 import Accordion from '/imports/ui/components/general/Accordion.jsx';
+import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
 
 const getArray = (income, fortune, property, borrow, ratio, propertyAuto) => {
   const incomeIcon = classnames({
@@ -241,8 +241,6 @@ export default class Start1Page extends Component {
     const isReady = !!(income && fortune && property);
     const childProps = { income, fortune, property, borrowRatio, incomeRatio };
 
-    console.log(isReady);
-
     return (
       <section className="oscar">
         <article className="mask1 small-oscar">
@@ -255,9 +253,13 @@ export default class Start1Page extends Component {
 
           <div className="description">
             <p>
-              Ce calculateur vous permet de rapidement déterminer votre capacité d'achat avant de faire une analyse de votre situation personelle plus détaillée.
+              <AutoTooltip>
+                Ce calculateur vous permet de rapidement déterminer votre capacité d'achat avant de faire une analyse de votre situation personelle plus détaillée.
+              </AutoTooltip>
               <br /><br />
-              Entrez des valeurs ou utilisez les jauges, et le reste sera calculé pour vous automatiquement afin de maximiser votre capacité d'achat.
+              <AutoTooltip>
+                Entrez les valeurs que vous connaissez, puis nous calculerons automatiquement le reste pour optimiser votre capacité d'achat, tout en respectant les normes FINMA en vigueur en Suisse.
+              </AutoTooltip>
             </p>
           </div>
 

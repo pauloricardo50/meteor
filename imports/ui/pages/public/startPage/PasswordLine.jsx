@@ -6,6 +6,7 @@ import { analytics } from 'meteor/okgrow:analytics';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import LoopIcon from 'material-ui/svg-icons/av/loop';
 
 import { saveStartForm } from '/imports/js/helpers/startFunctions';
 
@@ -33,6 +34,7 @@ export default class PasswordLine extends Component {
     this.state = {
       error: '',
       passwordIsValid: true,
+      loading: false,
     };
   }
 
@@ -62,7 +64,8 @@ export default class PasswordLine extends Component {
         this.setState(error.message);
       } else {
         // this.handleSuccess();
-        // TODO
+        // TODO this should only be possible if the current logged in user doesn't have borrowers set up
+        // Or simply add new borrowers to the account no matter what
         console.log('handle login!');
       }
     });
@@ -92,12 +95,24 @@ export default class PasswordLine extends Component {
       />
     );
 
-    if (this.props.login) {
+    if (this.props.login || this.props.signUp) {
       content = textfield;
-      button = <RaisedButton label="Connexion" primary onClick={this.handleLogin} type="submit" />;
-    } else if (this.props.signUp) {
-      content = textfield;
-      button = <RaisedButton label="Créer" primary onClick={this.handleCreate} type="submit" />;
+      button = (
+        <RaisedButton
+          label={this.props.login ? 'Connexion' : 'Créer'}
+          primary
+          onTouchTap={() => {
+            this.setState({ loading: true });
+            if (this.props.login) {
+              this.handleLogin();
+            } else {
+              this.handleCreate();
+            }
+          }}
+          type="submit"
+          icon={this.state.loading && <LoopIcon className="fa-spin" />}
+        />
+      );
     } else {
       button = <RaisedButton label="Excellent!" primary href="/home" />;
     }

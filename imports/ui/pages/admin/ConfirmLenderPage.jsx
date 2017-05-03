@@ -30,6 +30,16 @@ const styles = {
 // autres infos?
 // liste des dernieres etapes
 
+// envoyer un PDF aux banques
+// demander une "Date estimée du décaissement" avant les enchères
+
+// 1) email: Mr. a retenu votre offre, documents manquants, conditions nécessaires pour l'offre choisie, piece
+// Stratégie d'amortissement et de taux a été choisie -> c'est la suivante
+// PDF de la structure du prêt, des détails
+// Envoyer une checklist par défaut (conditions, documents, prochaines étapes)
+// La banque ne va pas dire non -> envoyer tous les documents
+// Banque revient en 2 jours
+
 export default class ConfirmLenderPage extends Component {
   constructor(props) {
     super(props);

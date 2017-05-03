@@ -311,6 +311,7 @@ const getAcquisitionArray = (state, props) => [
   {
     id: 'fortune',
     type: 'multipleInput',
+    firstMultiple: true,
     text1: 'Quelle est votre épargne bancaire personnelle (cash et titres)?',
     question: true,
     money: true,

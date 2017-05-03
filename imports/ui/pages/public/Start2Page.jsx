@@ -88,12 +88,13 @@ export default class Start2Page extends Component {
     if (this.state.showUX) {
       return (
         <div className="ux-text animated fadeIn text-center">
-          <h1>
-            Prenez 2 minutes pour nous en dire un peu plus sur vous
-          </h1>
+          <div className="text">
+            <h1>Allons vous obtenir ce prêt hypothécaire</h1>
+            <h2><small>Prenez 2 minutes pour nous en dire un peu plus sur vous</small></h2>
+          </div>
           <div>
             <RaisedButton
-              label="Avec Plaisir"
+              label="C'est parti"
               primary
               onClick={() => Meteor.setTimeout(() => this.setState({ showUX: false }), 400)}
             />
@@ -199,7 +200,7 @@ export default class Start2Page extends Component {
             />
           </div>
           {!finished &&
-            <div className="start2recap mask1">
+            <div className="start2recap mask1 animated fadeInUp">
               <h3 className="recap-title bold">
                 Votre Plan Financier
               </h3>

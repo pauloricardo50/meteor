@@ -16,8 +16,9 @@ const isFalse = (val, zeroAllowed = false) =>
 const validationCheck = (v, rules) =>
   (!rules.min || v >= rules.min) && (!rules.max || v <= rules.max);
 
-const arrayIsTrue = (a, keys) =>
-  (a && a.length) >= 1 && keys.reduce((tot, key) => tot && a[0][key] !== undefined, true);
+export const arrayIsTrue = (arr, keys) =>
+  (arr && arr.length) >= 1 &&
+  arr.every(arrayItem => keys.reduce((tot, key) => tot && arrayItem[key] !== undefined, true));
 
 const prevTrue = (prev, s) => {
   if (prev.type === 'multipleInput') {

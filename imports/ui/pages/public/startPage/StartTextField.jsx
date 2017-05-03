@@ -62,6 +62,7 @@ export default class StartTextField extends React.Component {
 
         {!this.props.text2 &&
           !this.props.multiple &&
+          !this.props.array &&
           <div className={classnames({ 'delete-button': true, off: !val })}>
             <div className="absolute-wrapper">
               <CloseIcon
@@ -97,6 +98,7 @@ StartTextField.propTypes = {
   multiple: PropTypes.bool,
   inputRef: PropTypes.any,
   text2: PropTypes.string,
+  array: PropTypes.bool,
 };
 
 StartTextField.defaultProps = {
@@ -109,4 +111,5 @@ StartTextField.defaultProps = {
   multiple: false,
   inputRef: undefined,
   text2: '',
+  array: false,
 };

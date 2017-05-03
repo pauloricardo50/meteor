@@ -12,6 +12,12 @@ import constants from '/imports/js/config/constants';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import { saveStartForm } from '/imports/js/helpers/startFunctions';
 
+const styles = {
+  h4: {
+    lineHeight: '1.5em',
+  },
+};
+
 const handleClick = ({ formState, setFormState, currentUser, history }) => {
   if (currentUser) {
     saveStartForm(formState, history);
@@ -54,24 +60,6 @@ const StartResult = props => {
         />
       </h1>
 
-      <div className="description">
-        {props.type === 'acquisition' &&
-          <p>
-            Vous êtes éligible pour e-Potek. Continuez en bas pour vous créer un compte et nous mettrons
-            {' '}
-            {props.lenderCount}
-            {' '}
-            prêteurs en compétition pour votre dossier.
-          </p>}
-        {props.type === 'test' &&
-          <p>
-            Vous pouvez acquérir un bien immobilier d'une valeur maximale de CHF
-            {' '}
-            {toMoney(props.property)}
-            . Cliquez sur continuer pour affiner vos informations et avoir une estimation précise d'emprunt et de ce que ça va vous coûter.
-          </p>}
-      </div>
-
       <div className="content">
         <Recap {...props} arrayName="start2" />
         <div className="chart">
@@ -89,6 +77,24 @@ const StartResult = props => {
         </div>
       </div>
 
+      <div className="description">
+        {props.type === 'acquisition' &&
+          <h4 style={styles.h4}>
+            Vous êtes éligible pour e-Potek. Pour continuer votre demande de prêt, créez vous un compte et nous mettrons
+            {' '}
+            {props.lenderCount}
+            {' '}
+            prêteurs en compétition pour votre dossier.
+          </h4>}
+        {props.type === 'test' &&
+          <h4 style={styles.h4}>
+            Vous pouvez acquérir un bien immobilier d'une valeur maximale de CHF
+            {' '}
+            {toMoney(props.property)}
+            . Cliquez sur continuer pour affiner vos informations et avoir une estimation précise d'emprunt et de ce que ça va vous coûter.
+          </h4>}
+      </div>
+
       {props.type !== 'test' &&
         <div className="buttons">
           <RaisedButton
@@ -100,7 +106,11 @@ const StartResult = props => {
               })}
             style={{ marginRight: 8 }}
           />
-          <RaisedButton label="Continuer" onTouchTap={() => handleClick(props)} primary />
+          <RaisedButton
+            label={Meteor.user() ? 'Continuer' : 'Créer un compte'}
+            onTouchTap={() => handleClick(props)}
+            primary
+          />
         </div>}
 
       {props.type === 'test' &&
