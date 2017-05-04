@@ -5,6 +5,12 @@ export const getBorrowerMandatoryFiles = b => [
     help1: 'Carte d’identité ou Passeport',
   },
   {
+    id: 'residencyPermit',
+    label: 'Permis d’établissement',
+    help1: 'Permis d’établissement pour étrangers mentionnant votre résidence fiscale',
+    condition: !b.isSwiss,
+  },
+  {
     id: 'taxes',
     label: 'Dernière déclaration fiscale',
     // condition: true, //TODO: implement married couple logic
@@ -13,6 +19,21 @@ export const getBorrowerMandatoryFiles = b => [
     id: 'salaryChange',
     label: 'Justificatif de nouveau salaire',
     condition: !!b.hasChangedSalary,
+  },
+  {
+    id: 'otherIncome',
+    label: 'Justificatif des autres revenus',
+    condition: b.otherIncome && !!(b.otherIncome.length > 0),
+  },
+  {
+    id: 'ownCompanyFinancialStatements',
+    label: "États financiers de l'employeur",
+    condition: !!b.worksForOwnCompany,
+  },
+  {
+    id: 'divorceJudgment',
+    label: 'Jugement de divorce',
+    condition: !b.civilStatus === 'divorced',
   },
 ];
 

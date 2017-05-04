@@ -123,6 +123,7 @@ export default class TextInput extends Component {
       <div style={{ ...styles.div, ...this.props.style }}>
         <TextField
           floatingLabelText={this.props.label}
+          floatingLabelFixed={this.props.floatingLabelFixed}
           hintText={this.props.placeholder}
           value={this.props.number ? this.formatter(this.state.value) : this.state.value}
           onChange={this.handleChange}
@@ -181,6 +182,7 @@ TextInput.propTypes = {
   money: PropTypes.bool,
   style: PropTypes.objectOf(PropTypes.any),
   inputStyle: PropTypes.objectOf(PropTypes.any),
+  floatingLabelFixed: PropTypes.bool,
 };
 
 TextInput.defaultProps = {
@@ -196,4 +198,5 @@ TextInput.defaultProps = {
   style: undefined,
   inputStyle: undefined,
   updateFunc: 'updateRequest',
+  floatingLabelFixed: true,
 };

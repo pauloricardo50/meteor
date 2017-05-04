@@ -127,6 +127,10 @@ export const BorrowerSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  worksForOwnCompany: {
+    type: Boolean,
+    optional: true,
+  },
   salary: {
     type: Number,
     optional: true,

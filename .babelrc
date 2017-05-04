@@ -1,4 +1,9 @@
 {
   "presets": ["latest","react","es2015","stage-0"],
-  "plugins": ["transform-class-properties"]
+  "plugins": [
+    "transform-class-properties",
+    "transform-react-constant-elements",
+    "transform-react-inline-elements",
+    "transform-react-remove-prop-types"
+  ]
 }

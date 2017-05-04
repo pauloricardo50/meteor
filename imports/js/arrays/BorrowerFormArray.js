@@ -179,6 +179,13 @@ export const getBorrowerInfoArray = (borrowers, id) => {
       required: false,
     },
     {
+      type: 'radioInput',
+      label: 'Êtes-vous employé de votre propre entreprise?',
+      options: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
+      id: 'worksForOwnCompany',
+      currentValue: b.worksForOwnCompany,
+    },
+    {
       type: 'textInput',
       label: 'Votre Banque Personelle',
       placeholder: 'UBS SA',
