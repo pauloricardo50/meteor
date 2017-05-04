@@ -9,8 +9,6 @@ const PasswordPage = props => (
   <main className="password-page animated fadeIn">
     <img src="/img/logo_black.svg" alt="e-Potek" />
 
-    <h3>En Développement</h3>
-
     <RaisedButton
       className="subscribe"
       href="http://eepurl.com/cI56Sn"
