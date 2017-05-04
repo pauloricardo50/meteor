@@ -119,16 +119,12 @@ export default class PasswordLine extends Component {
 
     return (
       <div>
-        <form action="submit">
-          <h1
-            className="fixed-size"
-            onSubmit={e => (this.props.login ? this.handleLogin(e) : this.handleCreate(e))}
-          >
-            {content}
-          </h1>
-
+        <form
+          action="submit"
+          onSubmit={e => (this.props.login ? this.handleLogin(e) : this.handleCreate(e))}
+        >
+          <h1 className="fixed-size">{content}</h1>
           <h4 className="fixed-size">{this.state.error}</h4>
-
           {this.state.passwordIsValid && button}
         </form>
       </div>

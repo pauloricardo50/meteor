@@ -30,35 +30,47 @@ const getFileSchema = arr => {
   return schema;
 };
 
-const requestFileIDs = [
-  'buyersContract',
-  'landRegisterExtract',
+export const requestFileIDs = [
+  // Auction
   'plans',
   'cubage',
-  'fireAndWaterInsurance',
   'pictures',
+
+  // Contract
+  'buyersContract',
+  'landRegisterExtract',
   'marketingBrochure',
   'coownershipAllocationAgreement',
   'coownershipAgreement',
+  'fireAndWaterInsurance',
 ];
 
-const borrowerFileIDs = [
+export const borrowerFileIDs = [
+  // Auction
   'identity',
   'residencyPermit',
   'taxes',
   'salaryCertificate',
-  'variableIncome',
   'salaryChange',
-  'lastSalaries',
-  'ownCompanyFinancialStatements',
+  'bonus',
   'otherIncome',
+  'ownCompanyFinancialStatements',
+  'divorceDecree',
+  'expenses',
+
+  // Contract
+  'nonPursuitExtract',
+  'reimbursementStatement',
+  'lastSalaries',
   'rent',
   'currentMortgages',
-  'reimbursementStatement',
-  'pensionFundCertificate',
-  'fortuneChange',
-  'bankStatements',
-  'nonPursuitExtract',
+  'bankAssetsChange',
+  'pensionFundYearlyStatement',
+  'retirementInsurancePlan',
+  'retirementPlanOther',
+
+  // Closing
+  'retirementWithdrawalStatement',
 ];
 
 export const RequestFilesSchema = new SimpleSchema(getFileSchema(requestFileIDs));
