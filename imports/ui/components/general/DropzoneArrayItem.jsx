@@ -51,7 +51,7 @@ const DropzoneArrayItem = props => {
         </div>
 
         <div className="text">
-          <h3>{props.title}</h3>
+          <h3>{props.label}</h3>
           <h5 className="secondary">
             {(currentValue && currentValue.length) || 0}
             &nbsp;
@@ -75,7 +75,7 @@ const DropzoneArrayItem = props => {
 };
 
 DropzoneArrayItem.propTypes = {
-  title: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   active: PropTypes.bool,
   handleClick: PropTypes.func.isRequired,
   handleMouseEnter: PropTypes.func.isRequired,

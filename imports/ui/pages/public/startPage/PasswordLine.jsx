@@ -101,12 +101,12 @@ export default class PasswordLine extends Component {
         <RaisedButton
           label={this.props.login ? 'Connexion' : 'Créer'}
           primary
-          onTouchTap={() => {
+          onTouchTap={e => {
             this.setState({ loading: true });
             if (this.props.login) {
-              this.handleLogin();
+              this.handleLogin(e);
             } else {
-              this.handleCreate();
+              this.handleCreate(e);
             }
           }}
           type="submit"

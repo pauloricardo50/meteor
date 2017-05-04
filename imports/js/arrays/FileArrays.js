@@ -1,35 +1,37 @@
 export const getBorrowerMandatoryFiles = b => [
   {
-    title: "Document d'identité",
     id: 'identity',
+    label: "Pièce d'identité",
+    help1: 'Carte d’identité ou Passeport',
   },
   {
-    title: 'Dernière déclaration fiscale',
     id: 'taxes',
+    label: 'Dernière déclaration fiscale',
+    // condition: true, //TODO: implement married couple logic
   },
   {
-    title: 'Justificatif de nouveau salaire',
     id: 'salaryChange',
+    label: 'Justificatif de nouveau salaire',
     condition: !!b.hasChangedSalary,
   },
 ];
 
 export const getBorrowerOptionalFiles = b => [
   {
-    title: 'Certificat de salaire',
     id: 'salaryCertificate',
+    label: 'Certificat de salaire',
   },
   {
-    title: '3 Dernières fiches de salaire',
     id: 'lastSalaries',
+    label: '3 Dernières fiches de salaire',
   },
   {
-    title: 'Justificatif(s) des revenus variables/bonus',
     id: 'bonus',
+    label: 'Justificatif(s) des revenus variables/bonus',
     condition: Object.keys(b.bonus).length > 0,
   },
   {
-    title: 'Justificatif(s) des autres revenus',
+    label: 'Justificatif(s) des autres revenus',
     id: 'otherIncome',
     condition: b.otherIncome.length > 0,
   },

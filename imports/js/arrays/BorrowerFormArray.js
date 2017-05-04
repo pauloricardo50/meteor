@@ -83,20 +83,62 @@ export const getBorrowerInfoArray = (borrowers, id) => {
       disabled: !!b.sameAddress,
     },
     {
-      type: 'textInput',
-      label: 'Nationalités',
-      placeholder: 'Suisse, Français',
-      id: 'citizenships',
-      currentValue: b.citizenships,
-    },
-    {
-      type: 'textInput',
-      label: 'Permis de résidence',
-      placeholder: 'Permis C',
-      id: 'residencyPermit',
-      currentValue: b.residencyPermit,
-      info: "Si vous n'êtes pas Suisse",
-      required: false,
+      type: 'conditionalInput',
+      conditionalTrueValue: false,
+      inputs: [
+        {
+          type: 'radioInput',
+          label: 'Avez-vous la nationalité Suisse?',
+          options: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
+          id: 'isSwiss',
+          currentValue: b.isSwiss,
+        },
+        {
+          type: 'selectFieldInput',
+          label: 'Permis de résidence',
+          options: [
+            {
+              id: 'b',
+              label: 'Permis B',
+            },
+            {
+              id: 'c',
+              label: 'Permis C',
+            },
+            {
+              id: 'ci',
+              label: 'Permis Ci',
+            },
+            {
+              id: 'f',
+              label: 'Permis F',
+            },
+            {
+              id: 'g',
+              label: 'Permis G',
+            },
+            {
+              id: 'l',
+              label: 'Permis L',
+            },
+            {
+              id: 'n',
+              label: 'Permis N',
+            },
+            {
+              id: 's',
+              label: 'Permis S',
+            },
+            {
+              id: 'other',
+              label: 'Autre',
+            },
+          ],
+          id: 'residencyPermit',
+          currentValue: b.residencyPermit,
+          required: false,
+        },
+      ],
     },
     {
       type: 'textInput',

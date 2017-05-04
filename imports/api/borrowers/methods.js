@@ -7,7 +7,10 @@ import Borrowers from './borrowers';
 export const insertBorrower = new ValidatedMethod({
   name: 'borrowers.insert',
   validate() {},
-  run({ object }) {
+  run({ object, userId }) {
+    // Allow adding a userId for testing purposes
+    object.userId = userId || this.userId;
+
     return Borrowers.insert(object);
   },
 });

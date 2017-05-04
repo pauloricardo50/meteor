@@ -2,11 +2,9 @@
 /* eslint-disable func-names, prefer-arrow-callback */
 
 import { Meteor } from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-base';
 import { expect, assert } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
-import { Random } from 'meteor/random';
 import moment from 'moment';
 import LoanRequests from '../loanrequests';
 import {
@@ -91,6 +89,14 @@ describe('loanRequests', () => {
 
           expect(modifiedRequest.general.partnersToAvoid.length).to.equal(length - 1);
         });
+      });
+
+      describe('startAuction', () => {
+        it('Should work');
+      });
+
+      describe('incrementStep', () => {
+        it('Should work');
       });
     });
   });

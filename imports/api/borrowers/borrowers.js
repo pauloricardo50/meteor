@@ -2,17 +2,16 @@ import 'babel-polyfill';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { BorrowerFilesSchema } from '../FileSchemas';
+import { Factory } from 'meteor/dburles:factory';
 
 const Borrowers = new Mongo.Collection('borrowers');
 
 Borrowers.allow({
   insert(userId, doc) {
-    // This is true if someone is logged in
-    return !!userId;
+    return userId ? true : new Error();
   },
   update(userId, doc) {
     // This is true if someone is logged in and the user is the same as the one who created it
-    console.log(doc);
     return !!userId && userId === doc.userId;
   },
 });
@@ -39,11 +38,6 @@ export const BorrowerSchema = new SimpleSchema({
   userId: {
     type: String,
     index: true,
-    autoValue() {
-      if (this.isInsert) {
-        return this.userId;
-      }
-    },
   },
   createdAt: {
     type: Date,
@@ -107,8 +101,8 @@ export const BorrowerSchema = new SimpleSchema({
     type: Boolean,
     optional: true,
   },
-  citizenships: {
-    type: String,
+  isSwiss: {
+    type: Boolean,
     optional: true,
   },
   residencyPermit: {
@@ -143,7 +137,10 @@ export const BorrowerSchema = new SimpleSchema({
     type: Boolean,
     defaultValue: false,
   },
-  bonus: Object,
+  bonus: {
+    type: Object,
+    defaultValue: {},
+  },
   'bonus.bonus2014': {
     // oldest
     type: Number,
@@ -264,3 +261,9 @@ export const BorrowerSchema = new SimpleSchema({
 
 Borrowers.attachSchema(BorrowerSchema);
 export default Borrowers;
+
+Factory.define('borrower', Borrowers, {
+  userId: () => 'random_id',
+  createdAt: () => new Date(),
+  expenses: () => [{ description: 'test', value: 1 }],
+});

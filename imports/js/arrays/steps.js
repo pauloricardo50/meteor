@@ -132,8 +132,11 @@ export default getSteps;
 export const previousDone = (steps, nb, itemNb) =>
   steps[nb].items.slice(0, itemNb).reduce((res, i) => res && i.isDone(), true);
 
+// Any value that is undefined or null will be counted as incomplete
 export const getPercent = array => {
-  const percent = array.reduce((tot, val) => (val !== undefined ? tot + 1 : tot), 0) / array.length;
+  const percent =
+    array.reduce((tot, val) => (val !== undefined && val !== null ? tot + 1 : tot), 0) /
+    array.length;
   return isFinite(percent) ? percent : 0;
 };
 
@@ -143,37 +146,50 @@ const countField = f =>
   !f.disabled &&
   f.type !== 'h3';
 
+const getCountedArray = (formArray, arr = []) => {
+  formArray.forEach(i => {
+    if (countField(i) && i.type === 'conditionalInput') {
+      if (i.inputs[0].currentValue === i.conditionalTrueValue) {
+        // If the conditional input is triggering the next input, add all values
+        i.inputs.forEach(input => arr.push(input.currentValue));
+      } else {
+        // If conditional value is not triggering
+        arr.push(i.inputs[0].currentValue);
+      }
+    } else if (countField(i)) {
+      arr.push(i.currentValue);
+    }
+  });
+
+  return arr;
+};
+
 export const personalInfoPercent = borrowers => {
   const a = [];
   borrowers.forEach(b => {
     const formArray = getBorrowerInfoArray(borrowers, b._id);
-    formArray.forEach(i => {
-      if (countField(i)) {
-        a.push(i.currentValue);
-      }
-    });
+    getCountedArray(formArray, a);
+    // formArray.forEach(i => {
+    //   if (countField(i) && i.type === 'conditionalInput') {
+    //     if (i.inputs[0].currentValue === i.conditionalTrueValue) {
+    //       // If the conditional input is triggering the next input, add all values
+    //       i.inputs.forEach(input => a.push(input.currentValue));
+    //     } else {
+    //       // If conditional value is not triggering
+    //       a.push(i.inputs[0].currentValue);
+    //     }
+    //   } else if (countField(i)) {
+    //     a.push(i.currentValue);
+    //   }
+    // });
   });
 
   return getPercent(a);
 };
 
 export const propertyPercent = (loanRequest, borrowers) => {
-  const a = [];
   const formArray = getPropertyArray(loanRequest, borrowers);
-
-  formArray.forEach(i => {
-    if (countField(i) && i.type === 'conditionalInput') {
-      if (i.inputs[0].currentValue === i.conditionalTrueValue) {
-        // If the conditional input is triggering the next input, add all values
-        i.inputs.forEach(input => a.push(input.currentValue));
-      } else {
-        // If conditional value is not triggering
-        a.push(i.inputs[0].currentValue);
-      }
-    } else if (countField(i)) {
-      a.push(i.currentValue);
-    }
-  });
+  const a = getCountedArray(formArray);
 
   return getPercent(a);
 };
