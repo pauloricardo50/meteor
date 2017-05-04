@@ -1,9 +1,16 @@
 {
-  "presets": ["latest","react","es2015","stage-0"],
+  "presets": [
+    "env",
+    "react",
+    "stage-0"
+  ],
   "plugins": [
     "transform-class-properties",
     "transform-react-constant-elements",
     "transform-react-inline-elements",
-    "transform-react-remove-prop-types"
+    "transform-react-remove-prop-types",
+    ["react-intl", {
+      "messagesDir": "./build/messages/"
+    }]
   ]
 }

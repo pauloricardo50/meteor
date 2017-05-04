@@ -95,20 +95,22 @@ export default class PasswordLine extends Component {
       />
     );
 
+    const onSubmit = e => {
+      this.setState({ loading: true });
+      if (this.props.login) {
+        this.handleLogin(e);
+      } else {
+        this.handleCreate(e);
+      }
+    };
+
     if (this.props.login || this.props.signUp) {
       content = textfield;
       button = (
         <RaisedButton
           label={this.props.login ? 'Connexion' : 'Créer'}
           primary
-          onTouchTap={e => {
-            this.setState({ loading: true });
-            if (this.props.login) {
-              this.handleLogin(e);
-            } else {
-              this.handleCreate(e);
-            }
-          }}
+          onTouchTap={onSubmit}
           type="submit"
           icon={this.state.loading && <LoopIcon className="fa-spin" />}
         />
@@ -119,10 +121,7 @@ export default class PasswordLine extends Component {
 
     return (
       <div>
-        <form
-          action="submit"
-          onSubmit={e => (this.props.login ? this.handleLogin(e) : this.handleCreate(e))}
-        >
+        <form action="submit" onSubmit={onSubmit}>
           <h1 className="fixed-size">{content}</h1>
           <h4 className="fixed-size">{this.state.error}</h4>
           {this.state.passwordIsValid && button}

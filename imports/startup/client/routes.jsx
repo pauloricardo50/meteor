@@ -6,6 +6,9 @@ import myTheme from '/imports/js/config/mui_custom';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+import { IntlProvider } from 'react-intl';
+import { getUserLocale, getTranslations, getFormats } from './localization';
+
 // Layouts
 import { PublicLayout } from '/imports/ui/containers/PublicContainers';
 import { UserLayout } from '/imports/ui/containers/UserContainers';
@@ -153,17 +156,25 @@ const ScrollToTopWithRouter = withRouter(ScrollToTop);
 
 const RenderRoutes = () => (
   <MuiThemeProvider muiTheme={getMuiTheme(myTheme)}>
-    <Router>
-      <ScrollToTopWithRouter>
-        <Switch>
-          <Route path="/app" render={props => <UserRoutes {...props} />} />
-          <Route path="/admin" render={props => <AdminRoutes {...props} />} />
-          <Route path="/partner" render={props => <PartnerRoutes {...props} />} />
-          <Route exact path="/" component={PasswordPage} />
-          <Route path="/" render={props => <PublicRoutes {...props} />} />
-        </Switch>
-      </ScrollToTopWithRouter>
-    </Router>
+    <IntlProvider
+      locale={getUserLocale()}
+      messages={getTranslations()}
+      formats={getFormats()}
+      defaultLocale="fr"
+      // key={getUserLocale()} Use this if the app doesn't reload on locale change
+    >
+      <Router>
+        <ScrollToTopWithRouter>
+          <Switch>
+            <Route path="/app" render={props => <UserRoutes {...props} />} />
+            <Route path="/admin" render={props => <AdminRoutes {...props} />} />
+            <Route path="/partner" render={props => <PartnerRoutes {...props} />} />
+            <Route exact path="/" component={PasswordPage} />
+            <Route path="/" render={props => <PublicRoutes {...props} />} />
+          </Switch>
+        </ScrollToTopWithRouter>
+      </Router>
+    </IntlProvider>
   </MuiThemeProvider>
 );
 
