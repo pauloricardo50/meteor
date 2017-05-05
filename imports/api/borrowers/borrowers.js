@@ -1,8 +1,8 @@
 import 'babel-polyfill';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { BorrowerFilesSchema } from '../FileSchemas';
 import { Factory } from 'meteor/dburles:factory';
+import { getFileSchema } from '/imports/js/arrays/files';
 
 const Borrowers = new Mongo.Collection('borrowers');
 
@@ -15,6 +15,8 @@ Borrowers.allow({
     return !!userId && userId === doc.userId;
   },
 });
+
+const BorrowerFilesSchema = new SimpleSchema(getFileSchema('borrower'));
 
 const LogicSchema = new SimpleSchema({
   financeEthics: {
@@ -237,6 +239,12 @@ export const BorrowerSchema = new SimpleSchema({
     max: 100000000,
   },
   insuranceThirdPillar: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100000000,
+  },
+  insurance3B: {
     type: Number,
     optional: true,
     min: 0,

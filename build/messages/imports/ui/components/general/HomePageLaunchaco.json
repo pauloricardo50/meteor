@@ -1,0 +1,12 @@
+[
+  {
+    "id": "HomePage.tagline1",
+    "description": "header tagline #1",
+    "defaultMessage": "La meilleure hypothèque"
+  },
+  {
+    "id": "HomePage.tagline2",
+    "description": "header tagline #2",
+    "defaultMessage": "Tout simplement"
+  }
+]

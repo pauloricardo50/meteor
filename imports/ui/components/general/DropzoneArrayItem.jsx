@@ -68,7 +68,7 @@ const DropzoneArrayItem = props => {
 
       {props.active &&
         <div className="dropzoneDiv">
-          <DropzoneInput {...props} currentValue={currentValue} mongoId={mongoId} />
+          <DropzoneInput {...props} currentValue={currentValue} mongoId={mongoId} label="" />
         </div>}
     </article>
   );

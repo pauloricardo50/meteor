@@ -1,7 +1,8 @@
 import 'babel-polyfill';
 import SimpleSchema from 'simpl-schema';
+import { getFileSchema } from '/imports/js/arrays/files';
 
-import { RequestFilesSchema } from '../FileSchemas';
+const RequestFilesSchema = new SimpleSchema(getFileSchema('request'));
 
 export const GeneralSchema = new SimpleSchema({
   purchaseType: {
@@ -229,6 +230,10 @@ export const PropertySchema = new SimpleSchema({
     defaultValue: false,
   },
   isCoproperty: {
+    type: Boolean,
+    defaultValue: false,
+  },
+  isNew: {
     type: Boolean,
     defaultValue: false,
   },

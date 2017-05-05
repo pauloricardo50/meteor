@@ -60,8 +60,7 @@ const getPropertyArray = (loanRequest, borrowers) => {
     {
       type: 'conditionalInput',
       conditionalTrueValue: 'other',
-      showCondition: borrowers.length > 1 &&
-        r.general.purchaseType === 'refinancing',
+      showCondition: borrowers.length > 1 && r.general.purchaseType === 'refinancing',
       inputs: [
         {
           type: 'radioInput',
@@ -90,8 +89,7 @@ const getPropertyArray = (loanRequest, borrowers) => {
     {
       type: 'conditionalInput',
       conditionalTrueValue: 'other',
-      showCondition: borrowers.length > 1 &&
-        r.general.purchaseType !== 'refinancing',
+      showCondition: borrowers.length > 1 && r.general.purchaseType !== 'refinancing',
       inputs: [
         {
           type: 'radioInput',
@@ -116,6 +114,14 @@ const getPropertyArray = (loanRequest, borrowers) => {
           currentValue: r.general.otherOwner,
         },
       ],
+    },
+    {
+      type: 'radioInput',
+      label: 'Est-ce un bien neuf?',
+      options: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
+      id: 'property.isNew',
+      currentValue: r.property.isNew,
+      showCondition: r.general.purchaseType === 'acquisition',
     },
     {
       type: 'h3',

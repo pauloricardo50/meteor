@@ -7,11 +7,11 @@ import fr from 'react-intl/locale-data/fr';
 
 export const localizationStartup = () => {
   // Add locales used in app here
-  // addLocaleData([...fr]);
+  addLocaleData([...fr]);
 };
 
 export const getUserLocale = () => {
-  // return 'fr';
+  return 'fr';
 };
 
 export const getTranslations = () => ({});

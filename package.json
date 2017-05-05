@@ -6,7 +6,8 @@
     "test": "meteor test --driver-package=practicalmeteor:mocha --port 4000",
     "test-CI": "TEST_BROWSER_DRIVER=nightmare SERVER_TEST_REPORTER=xunit XUNIT_FILE=$CIRCLE_TEST_REPORTS/reports/unit.xml meteor test --once --driver-package dispatch:mocha",
     "test-CLI": "TEST_BROWSER_DRIVER=nightmare meteor test --once --driver-package dispatch:mocha",
-    "deploy": "mup deploy --settings=settings-production.json"
+    "deploy": "mup deploy --settings=settings-production.json",
+    "translate": "babel-node imports/js/helpers/translate.js"
   },
   "version": "1.0.0",
   "description": "e-Potek main",
@@ -57,6 +58,7 @@
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
+    "babel-plugin-react-intl": "^2.3.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.4.0",
     "babel-preset-react": "^6.24.1",

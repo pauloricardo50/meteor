@@ -49,7 +49,7 @@ export default class PasswordLine extends Component {
 
     Accounts.createUser(user, (error, result) => {
       if (error) {
-        this.setState(error.message);
+        this.setState({ error: error.message });
       } else {
         this.handleSuccess();
       }
@@ -61,7 +61,7 @@ export default class PasswordLine extends Component {
 
     Meteor.loginWithPassword(this.props.email, this.props.password, (error, result) => {
       if (error) {
-        this.setState(error.message);
+        this.setState({ error: error.message });
       } else {
         // this.handleSuccess();
         // TODO this should only be possible if the current logged in user doesn't have borrowers set up

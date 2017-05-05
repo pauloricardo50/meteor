@@ -13,8 +13,6 @@ const BorrowerInfoPage = props => {
   const borrower = props.borrowers.find(b => b._id === borrowerId);
   const percent = personalInfoPercent([borrower]);
 
-  console.log(isDemo());
-
   return (
     <section className="animated fadeIn" key={borrowerId}>
       <hr />

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import DropzoneArray from '/imports/ui/components/general/DropzoneArray.jsx';
 import { mandatoryFilesPercent } from '/imports/js/arrays/steps';
-import { getBorrowerMandatoryFiles, getBorrowerOptionalFiles } from '/imports/js/arrays/FileArrays';
+import { borrowerFiles } from '/imports/js/arrays/files';
 import RadioInput from '/imports/ui/components/autoform/RadioInput.jsx';
 
 const styles = {
@@ -57,7 +57,7 @@ export default class Files extends Component {
           </p>
         </div>
 
-        <h3 className="text-center">Documents obligatoires</h3>
+        <h3 className="text-center">Documents de base</h3>
 
         <div style={styles.radioDiv}>
           <RadioInput
@@ -71,24 +71,7 @@ export default class Files extends Component {
         </div>
 
         <DropzoneArray
-          array={getBorrowerMandatoryFiles(this.props.borrower)}
-          documentId={this.props.borrower._id}
-          pushFunc="pushBorrowerValue"
-          collection="borrowers"
-          filesObject={this.props.borrower.files}
-          filesObjectSelector="files"
-        />
-
-        <h3 className="text-center">Documents nécéssaires par la suite</h3>
-
-        <div className="description">
-          <p>
-            Nous aurons besoin des documents ci-dessous pour aller au bout de la demande de prêt. Pour l'instant ils ne sont pas nécéssaires.
-          </p>
-        </div>
-
-        <DropzoneArray
-          array={getBorrowerOptionalFiles(this.props.borrower)}
+          array={borrowerFiles(this.props.borrower).auction}
           documentId={this.props.borrower._id}
           pushFunc="pushBorrowerValue"
           collection="borrowers"
