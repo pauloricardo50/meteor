@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import HomeDev from '/imports/ui/components/general/HomeDev.jsx';
 import { analytics } from 'meteor/okgrow:analytics';
+import { FormattedMessage } from 'react-intl';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -28,9 +29,17 @@ module.exports = () => (
       <div className="container-sml text-center">
         <div className="col-12">
           <h1 className="heading animated fadeInDown">
-            <span>La meilleure hypothèque</span>
+            <FormattedMessage
+              id="HomePage.tagline1"
+              defaultMessage="La meilleure hypothèque"
+              description="header tagline #1"
+            />
             <hr />
-            <span>Tout simplement</span>
+            <FormattedMessage
+              id="HomePage.tagline2"
+              defaultMessage="Tout simplement"
+              description="header tagline #2"
+            />
           </h1>
 
         </div>
