@@ -44,6 +44,8 @@ export const getRandomOffer = request => {
     canton: 'GE',
     requestId: request._id,
     auctionEndTime: new Date(),
+    isSwiss: true,
+    worksForOwnCompany: true,
     standardOffer: {
       maxAmount: loanWanted,
       amortization: 0.01,

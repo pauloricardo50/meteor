@@ -1,12 +1,7 @@
-import PropTypes from 'prop-types';
-import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { mount } from 'enzyme';
 import { expect } from 'chai';
 import { describe, it, beforeEach } from 'meteor/practicalmeteor:mocha';
-
-import myTheme from '/imports/js/config/mui_custom';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import getMountedComponent from '/imports/js/helpers/testHelpers';
 
 import Start2Page from '../Start2Page.jsx';
 import StartResult from '../startPage/StartResult.jsx';
@@ -15,17 +10,7 @@ if (Meteor.isClient) {
   describe('<Start2Page />', () => {
     let props;
     let state;
-    let mountedComponent;
-
-    const component = () => {
-      if (!mountedComponent) {
-        mountedComponent = mount(<Start2Page {...props} />, {
-          context: { muiTheme: getMuiTheme(myTheme) },
-          childContextTypes: { muiTheme: PropTypes.object },
-        });
-      }
-      return mountedComponent;
-    };
+    const component = () => getMountedComponent(Start2Page, props);
 
     beforeEach(() => {
       props = {
@@ -53,6 +38,7 @@ if (Meteor.isClient) {
         initialFortuneAgreed: true,
         initialIncome: 200000,
         initialIncomeAgreed: true,
+        insurance1Exists: false,
         insurance11: 0,
         insurance2Exists: false,
         insuranceFortuneUsed: 0,
@@ -70,7 +56,7 @@ if (Meteor.isClient) {
         useInsurance: false,
       };
 
-      mountedComponent = undefined;
+      getMountedComponent.reset();
     });
 
     it('Always renders a ux-text div', () => {

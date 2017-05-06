@@ -8,12 +8,11 @@ import HomePage from '../HomePage.jsx';
 if (Meteor.isClient) {
   describe('<HomePage />', () => {
     let props;
-    let mountedComponent;
-    const component = () => getMountedComponent(HomePage, props, mountedComponent);
+    const component = () => getMountedComponent(HomePage, props, true);
 
     beforeEach(() => {
       props = { currentUser: undefined };
-      mountedComponent = undefined;
+      getMountedComponent.reset();
     });
 
     it('Always renders a section', () => {

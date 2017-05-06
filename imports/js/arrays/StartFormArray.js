@@ -8,7 +8,7 @@ import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
 
 import { toMoney } from '../helpers/conversionFunctions';
 
-const getAcquisitionArray = (state, props) => [
+const getAcquisitionArray = (state, props, setFormState) => [
   {
     condition: state.knowsProperty === true,
     id: 'propertyValue',
@@ -320,11 +320,28 @@ const getAcquisitionArray = (state, props) => [
   },
   {
     condition: state.usageType === 'primary',
+    id: 'insurance1Exists',
+    type: 'buttons',
+    text1: 'Avez-vous un 2ème pilier?',
+    question: true,
+    buttons: [
+      { id: true, label: 'Oui' },
+      {
+        id: false,
+        label: 'Non',
+        onClick() {
+          setFormState('insurance11', 0);
+          setFormState('insurance12', 0);
+        },
+      },
+    ],
+  },
+  {
+    condition: state.usageType === 'primary' && state.insurance1Exists === true,
     id: 'insurance1',
     type: 'multipleInput',
     text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 2ème pilier?',
     money: true,
-    zeroAllowed: true,
   },
   {
     condition: state.usageType === 'primary',
@@ -332,7 +349,17 @@ const getAcquisitionArray = (state, props) => [
     type: 'buttons',
     text1: 'Avez-vous un 3ème pilier?',
     question: true,
-    buttons: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
+    buttons: [
+      { id: true, label: 'Oui' },
+      {
+        id: false,
+        label: 'Non',
+        onClick() {
+          setFormState('insurance21', 0);
+          setFormState('insurance22', 0);
+        },
+      },
+    ],
   },
   {
     condition: state.usageType === 'primary' && state.insurance2Exists === true,
@@ -659,7 +686,7 @@ const getFinalArray = (state, props, setFormState) => [
 ];
 
 const getFormArray = (state, props, setFormState) =>
-  getAcquisitionArray(state, props).concat(
+  getAcquisitionArray(state, props, setFormState).concat(
     state.type === 'acquisition' ? getErrorArray(state, props) : [], // these errors only for acquisitions
     getFinalArray(state, props, setFormState),
   );

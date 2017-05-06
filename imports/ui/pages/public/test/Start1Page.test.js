@@ -1,36 +1,18 @@
-import PropTypes from 'prop-types';
-import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { mount } from 'enzyme';
 import { expect } from 'chai';
 import { describe, it, beforeEach } from 'meteor/practicalmeteor:mocha';
-import { MemoryRouter } from 'react-router-dom';
-
-import myTheme from '/imports/js/config/mui_custom';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import getMountedComponent from '/imports/js/helpers/testHelpers';
 
 import Start1Page from '../Start1Page.jsx';
 
 if (Meteor.isClient) {
   describe('<Start1Page />', () => {
     let props;
-    let mountedComponent;
-    const component = () => {
-      if (!mountedComponent) {
-        mountedComponent = mount(
-          <MemoryRouter><Start1Page {...props} /></MemoryRouter>,
-          {
-            context: { muiTheme: getMuiTheme(myTheme) },
-            childContextTypes: { muiTheme: PropTypes.object },
-          },
-        );
-      }
-      return mountedComponent;
-    };
+    const component = () => getMountedComponent(Start1Page, props);
 
     beforeEach(() => {
       props = { match: { params: {} } };
-      mountedComponent = undefined;
+      getMountedComponent.reset();
     });
 
     it('Always renders a section', () => {

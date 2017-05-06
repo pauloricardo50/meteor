@@ -46,6 +46,7 @@
     ],
     "import/no-extraneous-dependencies": 0,
     "import/no-absolute-path": 0,
+    "import/extensions": 0,
     "class-methods-use-this": 0,
     "no-absolute-path": 0,
     "arrow-body-style": 0,

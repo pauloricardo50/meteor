@@ -8,6 +8,7 @@ AccountsUI.ui.config({
   loginPath: '/login',
   homeRoutePath: '/',
   profilePath: '/app',
+  minimumPasswordLength: 1,
 });
 
 // Accounts.onCreateUser((options, user) => {
