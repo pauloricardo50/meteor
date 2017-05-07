@@ -5,10 +5,11 @@ import { Redirect } from 'react-router-dom';
 import classnames from 'classnames';
 import { spring } from 'react-motion';
 
+import TopNav from '/imports/ui/components/general/TopNav.jsx';
+import SideNavUser from '/imports/ui/components/general/SideNavUser.jsx';
 import SideNav from '/imports/ui/components/general/SideNav.jsx';
 import BottomNav from '/imports/ui/components/general/BottomNav.jsx';
-import RouteTransition
-  from '/imports/ui/components/general/RouteTransition.jsx';
+import RouteTransition from '/imports/ui/components/general/RouteTransition.jsx';
 
 const getRedirect = props => {
   const isAdmin = Roles.userIsInRole(props.currentUser, 'admin');
@@ -60,14 +61,8 @@ const getRedirect = props => {
   return false;
 };
 
-const myStyles = {
-  wrapper: {
-    position: 'absolute',
-    width: '100%',
-  },
-};
-
 const AppLayout = props => {
+  const isUser = Roles.userIsInRole(props.currentUser, 'user');
   const redirect = getRedirect(props);
   const classes = classnames({
     'app-layout': true,
@@ -79,8 +74,8 @@ const AppLayout = props => {
   }
   return (
     <div>
-      {props.location.pathname.substring(5, 8) !== 'new' &&
-        <SideNav {...props} />}
+      <TopNav {...props} public={false} />
+      {isUser ? <SideNavUser {...props} /> : <SideNav {...props} />}
 
       <main className={classes}>
         {/* <RouteTransition pathname={props.history.location.pathname}> */}

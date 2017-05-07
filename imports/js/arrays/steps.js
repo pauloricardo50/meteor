@@ -19,30 +19,39 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           subtitle: '5 min',
           isDone: () => true,
         },
-        {
-          title: 'Dites en plus sur vous',
-          link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}?tab=personal`,
-          subtitle: '1 min',
-          percent: () => personalInfoPercent(borrowers),
+        ...borrowers.map((b, i) => ({
+          title: `Complétez votre profil ${borrowers.length > 1 ? i + 1 : ''}`,
+          subtitle: '15 min',
+          link: `/app/requests/${loanRequest._id}/borrowers/${b._id}`,
+          percent: () => 1,
           isDone() {
             return this.percent() >= 1;
           },
-        },
-        {
-          title: 'Vérifiez vos finances',
-          link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}?tab=finance`,
-          subtitle: '20 sec',
-          isDone: () => borrowers.reduce((res, b) => res && b.logic.hasValidatedFinances, true),
-        },
-        {
-          title: 'Uploadez les documents nécessaires',
-          link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}?tab=files`,
-          subtitle: '10 min',
-          percent: () => mandatoryFilesPercent(borrowers),
-          isDone() {
-            return this.percent() >= 1;
-          },
-        },
+        })),
+        // {
+        //   title: 'Dites en plus sur vous',
+        //   link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}?tab=personal`,
+        //   subtitle: '1 min',
+        //   percent: () => personalInfoPercent(borrowers),
+        //   isDone() {
+        //     return this.percent() >= 1;
+        //   },
+        // },
+        // {
+        //   title: 'Vérifiez vos finances',
+        //   link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}?tab=finance`,
+        //   subtitle: '20 sec',
+        //   isDone: () => borrowers.reduce((res, b) => res && b.logic.hasValidatedFinances, true),
+        // },
+        // {
+        //   title: 'Uploadez les documents',
+        //   link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}?tab=files`,
+        //   subtitle: '10 min',
+        //   percent: () => mandatoryFilesPercent(borrowers),
+        //   isDone() {
+        //     return this.percent() >= 1;
+        //   },
+        // },
         {
           title: 'Décrivez votre propriété',
           link: `/app/requests/${loanRequest._id}/property`,
@@ -121,7 +130,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
 
   // Make sure these indices correspond
   // Verify all 4 items before item 5 are done
-  steps[0].items[5].disabled = !previousDone(steps, 0, 5); // Vérification e-Potek
+  steps[0].items[3].disabled = !previousDone(steps, 0, 3); // Vérification e-Potek
   // steps[0].items[6].disabled = !previousDone(steps, 0, 6); // Expertise
 
   return steps;

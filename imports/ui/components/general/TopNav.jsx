@@ -11,6 +11,13 @@ import colors from '/imports/js/config/colors';
 const styles = {
   navbar: {
     position: 'relative',
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    color: '#000000',
+    borderBottom: '1px solid #d8d8d8',
+    boxShadow: 'unset',
+  },
+  publicNavbar: {
+    position: 'relative',
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
     color: '#000000',
     boxShadow: '0px 2px 40px 0px rgba(0,0,0,0.08)',
@@ -29,10 +36,10 @@ const styles = {
   },
 };
 
-const PublicNav = props => (
-  <div className="public-nav">
+const TopNav = props => (
+  <div className="public-nav" style={{ zIndex: 20 }}>
     <AppBar
-      style={styles.navbar}
+      style={!props.public ? styles.navbar : styles.publicNavbar}
       iconElementRight={
         props.currentUser
           ? <TopNavDropdown public {...props} />
@@ -52,8 +59,12 @@ const PublicNav = props => (
   </div>
 );
 
-PublicNav.propTypes = {
+TopNav.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any),
 };
 
-export default PublicNav;
+TopNav.defaultProps = {
+  currentUser: undefined,
+};
+
+export default TopNav;

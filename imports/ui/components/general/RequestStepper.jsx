@@ -59,19 +59,9 @@ export default class RequestStepper extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.resize);
-
-    // if (this.focused) {
-    //   this.focused.applyFocusState('keyboard-focused');
-    // }
-
     Meteor.call('getServerTime', (e, res) => {
       this.setState({ serverTime: res });
     });
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.resize);
   }
 
   setStep = i => {
