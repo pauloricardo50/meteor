@@ -6,6 +6,8 @@ import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
 
 import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown.jsx';
+import TopNavDrawer from '/imports/ui/components/general/TopNavDrawer.jsx';
+
 import colors from '/imports/js/config/colors';
 
 const styles = {
@@ -22,37 +24,24 @@ const styles = {
     color: '#000000',
     boxShadow: '0px 2px 40px 0px rgba(0,0,0,0.08)',
   },
-  imageDiv: {
-    position: 'absolute',
-    left: 24,
-    padding: 8,
-  },
-  image: {
-    height: 48,
-    maxWidth: '50%',
-  },
   button: {
     color: '#000000',
   },
 };
 
 const TopNav = props => (
-  <div className="public-nav" style={{ zIndex: 20 }}>
+  <div className="top-nav" style={{ zIndex: 20 }}>
     <AppBar
       style={!props.public ? styles.navbar : styles.publicNavbar}
+      iconElementLeft={!props.public && <TopNavDrawer {...props} />}
       iconElementRight={
         props.currentUser
-          ? <TopNavDropdown public {...props} />
-          : <FlatButton
-            label="Login"
-            containerElement={<Link to="/login" />}
-            secondary
-            labelStyle={{ color: colors.primary }}
-          />
+          ? <TopNavDropdown {...props} />
+          : <FlatButton label="Login" containerElement={<Link to="/login" />} secondary />
       }
-      iconStyleLeft={{ display: 'none' }}
+      // iconClassNameLeft="icon-left"
     >
-      <Link to="/home" style={styles.imageDiv}>
+      <Link to="/home" className="logo">
         <img src="/img/logo_black.svg" alt="e-Potek" style={styles.image} />
       </Link>
     </AppBar>

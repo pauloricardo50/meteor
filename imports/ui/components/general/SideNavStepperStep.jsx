@@ -22,7 +22,8 @@ const SideNavStepperStep = props => {
               to={item.link || props.history.location.pathname}
               key={item.title}
               className="item"
-              activeClassName={item.link !== undefined && 'active'}
+              activeClassName={item.link !== undefined ? 'active' : ''}
+              onTouchTap={item.link ? props.handleClickLink : () => null}
             >
               <div className="icon"><CheckIcon /></div>
               <div className="text">
@@ -40,6 +41,7 @@ SideNavStepperStep.propTypes = {
   step: PropTypes.objectOf(PropTypes.any).isRequired,
   active: PropTypes.bool.isRequired,
   handleClick: PropTypes.func.isRequired,
+  handleClickLink: PropTypes.func.isRequired,
 };
 
 export default SideNavStepperStep;
