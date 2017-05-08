@@ -33,6 +33,7 @@ const RequestSelector = props => (
     >
       {props.loanRequests.map(r => (
         <MenuItem
+          key={r._id}
           value={r._id}
           primaryText={r.name}
           leftIcon={r.property.style === 'villa' ? <HomeIcon /> : <BuildingIcon />}

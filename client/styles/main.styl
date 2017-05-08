@@ -229,13 +229,35 @@ input[type=number]
   background-color: white;
 
 
-.public-nav
+.top-nav
   position relative;
   width: 100%
   z-index: z.nav;
   boxShadow: 0px 2px 40px 0px rgba(0,0,0,0.08);
   +above($med)
     position: fixed;
+  .menu-button
+    display: block;
+    svg
+      color: black;
+    +above($med)
+      display: none;
+  .logo
+    display: flex;
+    position: absolute;
+    width: 100%;
+    top: 8px;
+    left: 0px;
+    +above($med)
+      left: 24px;
+      width: auto;
+    img
+      // position: relative;
+      margin: 0 auto;
+      height: 48px;
+      max-width: 190px;
+      +above($med)
+        margin: 0;
 
 
 .side-nav
@@ -420,6 +442,7 @@ svg:not(:root) {
         padding: 0 16px;
         width: 100%;
         position: relative;
+        transition: height 0.2ms ease;
         &.active
           background-color: grey2;
         &:hover

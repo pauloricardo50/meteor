@@ -13,7 +13,7 @@ const SideNavUser = props => {
     return <nav className="side-nav-user hidden-xs" />;
   }
 
-  // Get the pathname, remove the first leading '/', and split by '/'
+  // Get the pathname, remove the leading '/', and split by '/'
   const splittedUrl = props.location.pathname.substring(1).split('/');
   // If it has enough elements, parse the requestId
   const requestId = splittedUrl.length >= 3 && splittedUrl[1] === 'requests' ? splittedUrl[2] : '';
@@ -21,13 +21,14 @@ const SideNavUser = props => {
   const borrowerIds = currentRequest.borrowers;
 
   return (
-    <nav className="side-nav-user hidden-xs">
+    <nav className="side-nav-user" style={props.style}>
       <RequestSelector {...props} currentValue={requestId} />
       <NavLink
         exact
         to={`/app/requests/${requestId}`}
         activeClassName="active-link"
         className="link"
+        onTouchTap={props.handleClickLink}
       >
         <div className="icon"><DashboardIcon /></div>
         <h5>Tableau de Bord</h5>
@@ -35,6 +36,7 @@ const SideNavUser = props => {
 
       {requestId &&
         <SideNavStepper
+          handleClickLink={props.handleClickLink}
           history={props.history}
           loanRequest={currentRequest}
           borrowers={props.borrowers.filter(b => borrowerIds.indexOf(b._id) > -1)}
@@ -45,10 +47,12 @@ const SideNavUser = props => {
 
 SideNavUser.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.object),
+  handleClickLink: PropTypes.func,
 };
 
 SideNavUser.defaultProps = {
   loanRequests: [],
+  handleClickLink: () => null,
 };
 
 export default SideNavUser;

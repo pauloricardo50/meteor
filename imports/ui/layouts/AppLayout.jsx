@@ -8,7 +8,6 @@ import { spring } from 'react-motion';
 import TopNav from '/imports/ui/components/general/TopNav.jsx';
 import SideNavUser from '/imports/ui/components/general/SideNavUser.jsx';
 import SideNav from '/imports/ui/components/general/SideNav.jsx';
-import BottomNav from '/imports/ui/components/general/BottomNav.jsx';
 import RouteTransition from '/imports/ui/components/general/RouteTransition.jsx';
 
 const getRedirect = props => {
@@ -25,6 +24,9 @@ const getRedirect = props => {
         return '/admin';
       } else if (isPartner) {
         return '/isPartner';
+      }
+      if (props.loanRequests.length >= 1 && props.history.location.pathname === '/app') {
+        return `/app/requests/${props.loanRequests[0]._id}`;
       }
       // If there is no active request, force route to dashboard, except if
       // user is on dashboard, profile, or contact page
@@ -75,7 +77,9 @@ const AppLayout = props => {
   return (
     <div>
       <TopNav {...props} public={false} />
-      {isUser ? <SideNavUser {...props} /> : <SideNav {...props} />}
+      {isUser
+        ? <div className="hidden-xs"><SideNavUser {...props} /></div>
+        : <SideNav {...props} />}
 
       <main className={classes}>
         {/* <RouteTransition pathname={props.history.location.pathname}> */}
@@ -84,8 +88,6 @@ const AppLayout = props => {
         </div>
         {/* </RouteTransition> */}
       </main>
-
-      {!props.noNav && props.type !== 'admin' && <BottomNav {...props} />}
     </div>
   );
 };

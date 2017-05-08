@@ -49,7 +49,7 @@ const getMenuItems = props => {
 const TopNavDropdown = props => (
   <IconMenu
     iconButtonElement={
-      <IconButton>
+      <IconButton tooltip="">
         <Person color="#333333" hoverColor="#888888" />
       </IconButton>
     }
