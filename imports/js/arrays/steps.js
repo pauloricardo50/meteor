@@ -11,7 +11,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
     // Step 1
     {
       nb: 0,
-      title: 'Préparez votre dossier',
+      title: '1. Préparez votre dossier',
       subtitle: '15 minutes',
       items: [
         {
@@ -88,7 +88,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
     // Step 2
     {
       nb: 1,
-      title: 'Trouvez votre prêteur',
+      title: '2. Trouvez votre prêteur',
       subtitle: loanRequest.logic.step < 1 ? 'Dans 1 jour' : '3 jours',
       items: [
         {
@@ -124,7 +124,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
     // Step 3
     {
       nb: 2,
-      title: 'Finalisez votre demande',
+      title: '3. Finalisez votre demande',
       subtitle: loanRequest.logic.step < 2 ? 'Dans 4 jours' : '45 minutes',
       items: [
         {

@@ -452,14 +452,14 @@ svg:not(:root) {
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        padding: 0 16px;
+        padding-left: 16px;
         width: 100%;
         position: relative;
         transition: height 0.2ms ease;
         &.active
-          background-color: grey2;
+          background-color: #f8f9fa;
         &:hover
-          background-color: grey3;
+          background-color: #f9fafb;
         .top
           height: 64px;
           display: flex;
@@ -487,6 +487,7 @@ svg:not(:root) {
           .text
             display: flex;
             flex-direction: column;
+            line-height: 1.2em;
             .title
               color: #222;
             .subtitle
@@ -518,9 +519,12 @@ svg:not(:root) {
             height: 64px;
             width: 100%;
             border-left: 1px solid rgba(0,0,0,0);
+            padding-right: 16px;
             &:hover
-              background-color: grey;
+              background-color: #f4f6f8;
               cursor: pointer;
+            &.disable
+              cursor: default;
             .icon
               width: 48px;
               display flex;
@@ -538,6 +542,7 @@ svg:not(:root) {
               flex-direction: column;
               justify-content: center;
               overflow: hidden;
+              line-height: 1.4em;
               .title
                 font-weight: 400;
                 color: #222;
@@ -548,6 +553,7 @@ svg:not(:root) {
                 color: grey;
             &.active
               border-left: 1px solid brand-primary;
+              background-color: #f1f3f5;
               .title
                 color: brand-primary;
               .available-icon

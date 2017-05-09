@@ -33,13 +33,18 @@ const TopNav = props => (
   <div className="top-nav" style={{ zIndex: 20 }}>
     <AppBar
       style={!props.public ? styles.navbar : styles.publicNavbar}
-      iconElementLeft={!props.public && <TopNavDrawer {...props} />}
+      iconElementLeft={props.currentUser && !props.public ? <TopNavDrawer {...props} /> : undefined}
+      iconStyleLeft={(!props.currentUser || props.public) && { display: 'none' }}
       iconElementRight={
         props.currentUser
           ? <TopNavDropdown {...props} />
-          : <FlatButton label="Login" containerElement={<Link to="/login" />} secondary />
+          : <FlatButton
+            label="Login"
+            containerElement={<Link to="/login" />}
+            secondary
+            labelStyle={{ color: colors.primary }}
+          />
       }
-      // iconClassNameLeft="icon-left"
     >
       <Link to="/home" className="logo">
         <img src="/img/logo_black.svg" alt="e-Potek" style={styles.image} />
@@ -50,10 +55,12 @@ const TopNav = props => (
 
 TopNav.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any),
+  public: PropTypes.bool,
 };
 
 TopNav.defaultProps = {
   currentUser: undefined,
+  public: false,
 };
 
 export default TopNav;

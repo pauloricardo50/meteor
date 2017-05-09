@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
 import LockIcon from 'material-ui/svg-icons/action/lock-outline';
+import classnames from 'classnames';
+
 import colors from '/imports/js/config/colors';
 
 const getStepIcon = ({ step, loanRequest }) => {
@@ -49,7 +51,7 @@ const SideNavStepperStep = props => {
                   : item.link || props.history.location.pathname
               }
               key={item.title}
-              className="item"
+              className={classnames({ item: true, disable: item.disabled || !item.link })}
               activeClassName={item.link !== undefined && !item.disabled ? 'active' : ''}
               onTouchTap={item.link ? props.handleClickLink : () => null}
             >

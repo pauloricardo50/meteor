@@ -6,7 +6,7 @@ import RouteTransition from '/imports/ui/components/general/RouteTransition.jsx'
 
 const PublicLayout = props => (
   <div>
-    <TopNav {...props} />
+    <TopNav {...props} public />
     <main className="public-layout">
       {React.cloneElement(props.children, { ...props })}
     </main>

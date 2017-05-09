@@ -37,11 +37,9 @@ export default class TopNavDrawer extends React.Component {
         >
           <div className="top-bar">
             <IconButton
-              // tooltip="Fermer"
               onTouchTap={() => this.setState({ open: false })}
               style={{ marginTop: 8, marginLeft: 8, zIndex: 100 }}
             >
-
               <CloseIcon color="#333333" hoverColor="#888888" />
             </IconButton>
           </div>
