@@ -36,12 +36,13 @@ const handleCheat = props => {
     civilStatus: 'single',
     company: 'Deloitte',
     personalBank: 'BCGE',
+    isSwiss: true,
+    worksForOwnCompany: false,
   };
 
   const finalObject = MergeRecursive(object, props.borrower);
 
-  cleanMethod('updateBorrower', finalObject, props.borrower._id, () =>
-    location.reload());
+  cleanMethod('updateBorrower', finalObject, props.borrower._id, () => location.reload());
 };
 
 const FakeBorrowerCompleter = props => {

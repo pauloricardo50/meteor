@@ -50,7 +50,12 @@ export default class ConditionsButton extends React.Component {
 
     return (
       <div>
-        <RaisedButton label="Conditions" onTouchTap={this.handleOpen} {...this.props} />
+        <RaisedButton
+          label="Conditions"
+          onTouchTap={this.handleOpen}
+          primary={this.props.primary}
+          onClick={this.props.onClick}
+        />
         <Dialog
           actions={actions}
           open={this.state.open}

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { getBorrowerInfoArray } from './BorrowerFormArray';
-import { getBorrowerMandatoryFiles } from '/imports/js/arrays/FileArrays';
+import { borrowerFiles } from '/imports/js/arrays/files';
 import getPropertyArray from './PropertyFormArray';
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
@@ -10,20 +10,27 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
   const steps = [
     // Step 1
     {
-      nb: 1,
+      nb: 0,
       title: 'Préparez votre dossier',
       subtitle: '15 minutes',
       items: [
         {
+          id: 'test',
           title: 'Passez le test',
           subtitle: '5 min',
           isDone: () => true,
         },
         ...borrowers.map((b, i) => ({
+          id: `profile${i}`,
           title: `Complétez votre profil ${borrowers.length > 1 ? i + 1 : ''}`,
           subtitle: '15 min',
           link: `/app/requests/${loanRequest._id}/borrowers/${b._id}`,
-          percent: () => 1,
+          percent: () => {
+            const personal = personalInfoPercent([b]);
+            const files = auctionFilesPercent([b]);
+            const finance = b.logic.hasValidatedFinances ? 1 : 0;
+            return (personal + files + finance) / 3;
+          },
           isDone() {
             return this.percent() >= 1;
           },
@@ -53,6 +60,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         //   },
         // },
         {
+          id: 'property',
           title: 'Décrivez votre propriété',
           link: `/app/requests/${loanRequest._id}/property`,
           subtitle: '4 min',
@@ -62,6 +70,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           },
         },
         {
+          id: 'verification',
           title: "Vérification d'e-Potek",
           subtitle: '2h',
           link: `/app/requests/${loanRequest._id}/verification`,
@@ -78,27 +87,32 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
 
     // Step 2
     {
-      nb: 2,
+      nb: 1,
       title: 'Trouvez votre prêteur',
       subtitle: loanRequest.logic.step < 1 ? 'Dans 1 jour' : '3 jours',
       items: [
         {
+          id: 'structure',
           title: 'Vérifiez la structure de votre projet',
           link: `/app/requests/${loanRequest._id}/structure`,
           subtitle: '1 min',
           isDone: () => loanRequest.logic.hasValidatedStructure,
         },
         {
+          id: 'auction',
           title: 'Envoyez les enchères',
           link: `/app/requests/${loanRequest._id}/auction`,
           subtitle: '2 jours',
           isDone: () => loanRequest.logic.auctionStarted,
         },
         {
+          id: 'lenderPicker',
           title: 'Choisissez votre prêteur',
           subtitle: '5 min',
           link: `/app/requests/${loanRequest._id}/lenderpicker`,
-          disabled: !serverTime || !loanRequest.logic.auctionEndTime > serverTime, // TODO: make this work
+          disabled: !(serverTime &&
+            loanRequest.logic.auctionEndTime &&
+            loanRequest.logic.auctionEndTime <= serverTime), // TODO: make this work
           isDone: () => !!(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
         },
       ],
@@ -106,14 +120,16 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
 
     // Step 3
     {
-      nb: 3,
+      nb: 2,
       title: 'Finalisez votre demande',
       subtitle: loanRequest.logic.step < 2 ? 'Dans 4 jours' : '45 minutes',
       items: [
         {
+          id: 'finalSteps',
           title: 'Dernières démarches',
           link: `/app/requests/${loanRequest._id}/finalsteps`,
           subtitle: '45 min',
+          disabled: !(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
           percent: () => 0,
           isDone: () => false,
         },
@@ -122,9 +138,10 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
 
     // Step 4
     {
-      nb: 4,
+      nb: 3,
       title: React.createElement('span', { className: 'fa fa-home fa-2x' }, null),
       description: 'Félicitations, vous êtes arrivé au bout, profitez de votre nouvelle propriété comme il se doit.',
+      items: [],
     },
   ];
 
@@ -178,19 +195,6 @@ export const personalInfoPercent = borrowers => {
   borrowers.forEach(b => {
     const formArray = getBorrowerInfoArray(borrowers, b._id);
     getCountedArray(formArray, a);
-    // formArray.forEach(i => {
-    //   if (countField(i) && i.type === 'conditionalInput') {
-    //     if (i.inputs[0].currentValue === i.conditionalTrueValue) {
-    //       // If the conditional input is triggering the next input, add all values
-    //       i.inputs.forEach(input => a.push(input.currentValue));
-    //     } else {
-    //       // If conditional value is not triggering
-    //       a.push(i.inputs[0].currentValue);
-    //     }
-    //   } else if (countField(i)) {
-    //     a.push(i.currentValue);
-    //   }
-    // });
   });
 
   return getPercent(a);
@@ -203,10 +207,10 @@ export const propertyPercent = (loanRequest, borrowers) => {
   return getPercent(a);
 };
 
-export const mandatoryFilesPercent = borrowers => {
+export const auctionFilesPercent = borrowers => {
   const a = [];
   borrowers.forEach(b => {
-    const fileArray = getBorrowerMandatoryFiles(b);
+    const fileArray = borrowerFiles(b).auction;
 
     if (isDemo()) {
       a.push(b.files[fileArray[0].id]);

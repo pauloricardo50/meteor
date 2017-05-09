@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
+import { Session } from 'meteor/session';
 
 import getSteps from '/imports/js/arrays/steps';
 import SideNavStepperStep from './SideNavStepperStep.jsx';
@@ -8,7 +9,7 @@ export default class SideNavStepper extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { active: 0 };
+    this.state = { active: -1 };
   }
 
   componentDidMount() {
@@ -17,9 +18,20 @@ export default class SideNavStepper extends React.Component {
     });
   }
 
-  handleClick = i => {
-    if (this.state.active === i) {
-      this.setState({ active: 0 });
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.location.pathname !== this.props.location.pathname &&
+      Session.get('stepNb') !== undefined
+    ) {
+      // Use defer to allow the other component to update Session before grabbing it here
+      // Otherwise it is always one step behind when the stepNb changes
+      Meteor.defer(() => this.setState({ active: Session.get('stepNb') }));
+    }
+  }
+
+  handleClick = (i, isNavLink = false) => {
+    if (this.state.active === i && !isNavLink) {
+      this.setState({ active: -1 });
     } else {
       this.setState({ active: i });
     }
@@ -31,13 +43,14 @@ export default class SideNavStepper extends React.Component {
       <div className="side-stepper">
         <h5 className="fixed-size top-title">PROGRESSION</h5>
         <ul className="list">
-          {steps.map(s => (
+          {steps.map((s, i) => (
             <SideNavStepperStep
               {...this.props}
-              key={s.nb}
+              key={i}
               step={s}
-              active={this.state.active === s.nb}
-              handleClick={() => this.handleClick(s.nb)}
+              active={this.state.active === i}
+              currentRequestStep={this.props.loanRequest.logic.step === i}
+              handleClick={() => this.handleClick(i)}
             />
           ))}
         </ul>
@@ -46,4 +59,6 @@ export default class SideNavStepper extends React.Component {
   }
 }
 
-SideNavStepper.propTypes = {};
+SideNavStepper.propTypes = {
+  location: PropTypes.objectOf(PropTypes.any).isRequired,
+};

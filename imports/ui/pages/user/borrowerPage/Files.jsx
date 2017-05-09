@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import DropzoneArray from '/imports/ui/components/general/DropzoneArray.jsx';
-import { mandatoryFilesPercent } from '/imports/js/arrays/steps';
+import { auctionFilesPercent } from '/imports/js/arrays/steps';
 import { borrowerFiles } from '/imports/js/arrays/files';
 import RadioInput from '/imports/ui/components/autoform/RadioInput.jsx';
 
@@ -28,7 +28,7 @@ export default class Files extends Component {
   }
 
   render() {
-    const percent = mandatoryFilesPercent([this.props.borrower]);
+    const percent = auctionFilesPercent([this.props.borrower]);
 
     return (
       <section className="animated fadeIn" key={this.props.borrower._id} style={styles.section}>

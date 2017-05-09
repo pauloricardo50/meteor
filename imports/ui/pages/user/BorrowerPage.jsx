@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 
-import RaisedButton from 'material-ui/RaisedButton';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
+import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
 import Info from './borrowerPage/Info.jsx';
 import Finance from './borrowerPage/Finance.jsx';
 import Files from './borrowerPage/Files.jsx';
@@ -76,28 +75,14 @@ export default class BorrowerPage extends Component {
     const index = this.props.borrowers.indexOf(borrower);
 
     return (
-      <div style={styles.div}>
-        <RaisedButton
-          label="Ok"
-          containerElement={<Link to="/app" />}
-          style={styles.topButton}
-          primary
-        />
-
+      <ProcessPage {...this.props} stepNb={0} id={`profile${index}`}>
         <section className="mask1 borrower-page">
           <Header borrower={borrower} borrowers={this.props.borrowers} index={index} />
           <Links {...this.props} tab={this.state.tab} handleClick={tab => this.setState({ tab })} />
 
           {this.getContent()}
         </section>
-
-        <RaisedButton
-          label="Ok"
-          containerElement={<Link to="/app" />}
-          style={styles.bottomButton}
-          primary
-        />
-      </div>
+      </ProcessPage>
     );
   }
 }

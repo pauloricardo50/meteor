@@ -100,7 +100,7 @@ const UserRoutes = props => (
         <Route path="/app/requests/:requestId/structure" component={StructurePage} />
         <Route path="/app/requests/:requestId/lenderpicker" component={LenderPickerPage} />
         <Route path="/app/requests/:requestId/finalsteps" component={FinalStepsPage} />
-        <Route path="/app/requests/:requestId" component={DashboardPage} />
+        <Route path="/app/requests/:requestId" component={DashboardPage} name="asdf" />
         <Route path="/app" render={routeProps => <NewPage {...layoutProps} {...routeProps} />} />
       </Switch>
     )}
