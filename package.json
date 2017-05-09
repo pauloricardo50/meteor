@@ -5,7 +5,7 @@
     "start": "meteor --settings settings-dev.json",
     "test": "meteor test --driver-package=practicalmeteor:mocha --port 4000",
     "test-debug": "meteor test --driver-package=practicalmeteor:mocha --port 5000 --debug-port 5858",
-    "test-CI": "TEST_BROWSER_DRIVER=nightmare SERVER_TEST_REPORTER=xunit XUNIT_FILE=$CIRCLE_TEST_REPORTS/reports/unit.xml meteor test --once --driver-package dispatch:mocha",
+    "test-CI": "NODE_ENV=production TEST_BROWSER_DRIVER=nightmare SERVER_TEST_REPORTER=xunit XUNIT_FILE=$CIRCLE_TEST_REPORTS/reports/unit.xml meteor test --once --driver-package dispatch:mocha",
     "test-CLI": "TEST_BROWSER_DRIVER=nightmare meteor test --once --driver-package dispatch:mocha",
     "deploy": "mup deploy --settings=settings-production.json",
     "translate": "babel-node imports/js/helpers/translate.js"

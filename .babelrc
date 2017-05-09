@@ -5,9 +5,11 @@
     "stage-0"
   ],
   "plugins": [
-    "transform-class-properties",
-    ["react-intl", {
-      "messagesDir": "/Users/Florian/dev/epotek/build/messages"
-    }]
-  ]
+    "transform-class-properties"
+  ],
+  "env": {
+    "development": {
+      "plugins": ["react-intl"]
+    }
+  }
 }

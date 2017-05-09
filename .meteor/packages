@@ -61,6 +61,6 @@ meteorhacks:inject-initial
 
 
 # Production
-spiderable@1.0.14-release-testing.0    # Lets webcrawlers crawl your website to index it, ex: Google
+ongoworks:spiderable    # Lets webcrawlers crawl your website to index it, ex: Google
 force-ssl@1.0.14                       # Automatically route users to https
 okgrow:analytics                       # Analytics package (e-potek uses only GA)
