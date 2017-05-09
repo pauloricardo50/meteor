@@ -3,25 +3,35 @@ import PropTypes from 'prop-types';
 
 import { NavLink } from 'react-router-dom';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
-import LockIcon from 'material-ui/svg-icons/action/lock-open';
+import LockIcon from 'material-ui/svg-icons/action/lock-outline';
+import colors from '/imports/js/config/colors';
 
-// const getIcon = ({ step, loanRequest }) => {
-//   const stepNb = step.nb;
-//   const realStep = loanRequest.logic.step;
-//   if (stepNb < realStep) {
-//     return <CheckIcon />;
-//   } else if (stepNb === realStep) {
-//     return <span className="available-icon" />;
-//   }
-//   return <LockIcon />;
-// };
+const getStepIcon = ({ step, loanRequest }) => {
+  const stepNb = step.nb;
+  const realStep = loanRequest.logic.step;
+  if (stepNb < realStep) {
+    return <div className="icon done"><CheckIcon /></div>;
+  } else if (stepNb === realStep) {
+    return <div className="icon"><span className="available-icon" /></div>;
+  }
+  return <div className="icon"><LockIcon /></div>;
+};
+
+const getItemIcon = item => {
+  if (item.isDone()) {
+    return <div className="icon success"><CheckIcon color={colors.secondary} /></div>;
+  } else if (item.disabled) {
+    return <div className="icon"><LockIcon /></div>;
+  }
+  return <div className="icon"><span className="available-icon" /></div>;
+};
 
 const SideNavStepperStep = props => {
   return (
     <li key={props.step.nb} className="step">
       <div className="absolute-line" />
       <div className="top" onTouchTap={props.handleClick}>
-        {/* <div className="icon">{getIcon(props)}</div> */}
+        {getStepIcon(props)}
         <div className="text">
           <span className={`title ${props.currentRequestStep ? 'bold' : ''}`}>
             {props.step.title}
@@ -33,13 +43,17 @@ const SideNavStepperStep = props => {
         <ul className="step-list">
           {props.step.items.map(item => (
             <NavLink
-              to={item.link || props.history.location.pathname}
+              to={
+                item.disabled
+                  ? props.history.location.pathname
+                  : item.link || props.history.location.pathname
+              }
               key={item.title}
               className="item"
-              activeClassName={item.link !== undefined ? 'active' : ''}
+              activeClassName={item.link !== undefined && !item.disabled ? 'active' : ''}
               onTouchTap={item.link ? props.handleClickLink : () => null}
             >
-              <div className="icon"><CheckIcon /></div>
+              {getItemIcon(item)}
               <div className="text">
                 <span className="title">{item.title}</span>
                 <span className="subtitle">{item.subtitle}</span>

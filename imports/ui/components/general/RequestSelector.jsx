@@ -9,6 +9,7 @@ import HomeIcon from 'material-ui/svg-icons/action/home';
 const styles = {
   div: {
     width: '90%',
+    marginTop: 8,
   },
   dropdown: {
     width: '100%',
