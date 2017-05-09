@@ -360,7 +360,6 @@ $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
 
 
 #expensesChart
-  margin-bottom: 20px;
   position: relative;
   display: block;
   overflow: visible !important;
@@ -1121,6 +1120,7 @@ ul.request-map
           margin-bottom: 30px;
         #expensesChart
           z-index: 1;
+          margin-bottom: 20px;
           +above($med)
             margin-bottom: 0;
         +above($large)
@@ -1308,3 +1308,28 @@ ul.request-map
 
 .fadeInUpCustom
   animation: fadeInUpCustom 600ms $bezier;
+
+.process-page
+  margin: -20px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  .top-bar, .bottom-bar
+    width: 100%;
+    height: 64px;
+    background-color: light-grey;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    .title
+      margin: 0;
+    .buttons
+      display: flex;
+      flex-wrap: nowrap;
+  .top-bar
+    top: 0;
+  .bottom-bar
+    bottom: 0;
+  .children
+    padding: 20px;

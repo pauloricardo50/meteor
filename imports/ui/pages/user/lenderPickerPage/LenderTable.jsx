@@ -73,7 +73,7 @@ const handleSave = props => {
   object['general.loanTranches'] = props.formState.loanTranches;
   object['logic.lender.offerId'] = props.formState.chosenLender;
 
-  cleanMethod('updateRequest', object, props.loanRequest._id, () => props.history.push('/app'));
+  cleanMethod('updateRequest', object, props.loanRequest._id);
 };
 
 export default class LenderTable extends Component {
@@ -94,7 +94,7 @@ export default class LenderTable extends Component {
   render() {
     const offers = getOffers(this.props);
     const shownOffers = this.state.showFullTable ? offers : offers.slice(0, 5);
-    const saved = this.props.loanRequest.logic.lender === this.props.formState.chosenLender;
+    const saved = this.props.loanRequest.logic.lender.offerId === this.props.formState.chosenLender;
 
     return (
       <article>

@@ -25,8 +25,16 @@ const getConfig = props => {
       style: { fontFamily: 'Source Sans Pro' },
       animation: { duration: 400 },
     },
-    title: { text: 'Mon Projet', style: { fontSize: '18px', color: '#333', fontWeight: 400 } },
-    subtitle: { text: `CHF ${toMoney(total)}`, style: { fontSize: '14px' } },
+    title: {
+      text: 'Mon Projet',
+      style: { fontSize: '18px', color: '#222', fontWeight: 400 },
+      align: props.titleAlign,
+    },
+    subtitle: {
+      text: `CHF ${toMoney(total)}`,
+      style: { fontSize: '14px' },
+      align: props.titleAlign,
+    },
     tooltip: {
       formatter() {
         return `<span style="color:${this.color}">\u25CF</span> ${this.key}<br /> <b>CHF ${toMoney(Math.round(this.y))}</b><br />${Math.round(1000 * this.y / total) / 10}%`;
@@ -105,11 +113,13 @@ const ProjectPieChart = props => <ReactHighcharts config={getConfig(props)} />;
 
 ProjectPieChart.defaultProps = {
   divName: 'projectPieChart',
+  titleAlign: 'center',
 };
 
 ProjectPieChart.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   divName: PropTypes.string,
+  titleAlign: PropTypes.string,
 };
 
 export default ProjectPieChart;

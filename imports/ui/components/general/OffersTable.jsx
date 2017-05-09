@@ -71,7 +71,7 @@ export default class OffersTable extends Component {
     let offers = [
       ...this.props.offers.map(
         o =>
-          (this.props.showSpecial
+          this.props.showSpecial
             ? {
               ...o.counterpartOffer,
               conditions: o.conditions,
@@ -81,7 +81,7 @@ export default class OffersTable extends Component {
               ...o.standardOffer,
               conditions: o.conditions,
               counterparts: [],
-            }),
+            },
       ),
     ];
     offers.sort((a, b) => a.interest10 - b.interest10);
@@ -90,12 +90,12 @@ export default class OffersTable extends Component {
       <article>
         <table className="minimal-table">
           <colgroup>
-            {columns.map(c => <col span="1" style={{ width: `${c.width}%` }} />)}
+            {columns.map(c => <col span="1" style={{ width: `${c.width}%` }} key={c.label} />)}
           </colgroup>
           <thead>
             <tr>
               {columns.map(c => (
-                <th className={c.align}>
+                <th className={c.align} key={c.label}>
                   <AutoTooltip list="table">{c.label}</AutoTooltip>
                 </th>
               ))}

@@ -8,23 +8,13 @@ $large = 992px
 $wide = 1200px
 
 // Colors
-black = #222
-grey = #D8D8D8
-light-grey = #EEE
-purp = #524763
-dark-purp = #373142
-red = #E54B4B
-teal = #82D8D8
-dark-teal = #66A6A6
-// green = #CBE56C
-green = #50E3C2
-blue = #4A90E2
-bright-blue = #0082C8
-maroon = #6A2140
-light-red = #CA5765
-pink = #CF256D
-orange = #E8846B
+black = #222;
+grey = #D8D8D8;
+light-grey = #EEE;
 
+grey1 = #d8d8d8;
+grey2 = #eee;
+grey3 = #f8f8f8;
 
 //Custom Colors
 textcolor = #333333;
@@ -59,7 +49,7 @@ social = {
 }
 
 
-$side-nav = 250px
+$side-nav = 300px
 $bottom-nav-height = 76px
 
 
@@ -239,13 +229,36 @@ input[type=number]
   background-color: white;
 
 
-.public-nav
+.top-nav
   position relative;
   width: 100%
   z-index: z.nav;
   boxShadow: 0px 2px 40px 0px rgba(0,0,0,0.08);
   +above($med)
     position: fixed;
+  .menu-button
+    display: block;
+    +above($med)
+      display: none;
+    .top-bar
+      height: 64px;
+      border-bottom: 1px solid #d8d8d8;
+  .logo
+    display: flex;
+    position: absolute;
+    width: 100%;
+    top: 8px;
+    left: 0px;
+    +above($med)
+      left: 24px;
+      width: auto;
+    img
+      // position: relative;
+      margin: 0 auto;
+      height: 48px;
+      max-width: 190px;
+      +above($med)
+        margin: 0;
 
 
 .side-nav
@@ -260,7 +273,7 @@ input[type=number]
     list-style: none;
     text-decoration: none !important;
     width: 100%;
-    color: green;
+    color: brand-success;
     margin: 0;
     padding: 0;
     li
@@ -328,22 +341,21 @@ input[type=number]
   height: auto;
   min-height: 100%;
   +above($med)
-    padding-left 270px; // side-nav width + 20px
+    padding-top: 84px;
+    padding-left 320px; // side-nav width + 20px
     padding-bottom 20px;
-  +above($wide)
-    padding: 50px 50px 50px 300px;
   &.always-side-nav
     padding-left: 270px; // side bar doesn't disappear
   .wrapper
-    margin: auto 0;
+    margin: 0 0;
+    height: 100%;
+    min-height: 100%;
   .transition-wrapper
     position: absolute;
     width: calc(100% - 40px);
     margin: auto;
     +above($med)
       width: calc(100% - 250px - 40px);
-    +above($wide)
-      width: calc(100% - 250px - 100px)
 
 
 .full-screen
@@ -374,3 +386,169 @@ svg:not(:root) {
 // Fix to remove firefox's annoying red box around invalid inputs
 :invalid
   box-shadow: none;
+
+.side-nav-user
+  background-color: white;
+  border-right: 1px solid grey;
+  min-height: calc(100% - 64px);
+  fixed top left;
+  top: 64px;
+  width: $side-nav;
+  z-index: z.nav;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .scrollable
+    width: 100%;
+    height: 100vh;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  .link
+    width: 100%;
+    height: 64px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: alpha(#222, 0.6) !important;
+    font-weight: 400;
+    text-decoration: none;
+    &:hover
+      background-color: light-grey;
+      color: alpha(#222, 0.8) !important;
+    &.active-link
+      background-color: grey3;
+      color: alpha(#222, 1) !important;
+    .icon
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      svg
+        color: inherit !important;
+  .side-stepper
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 16px;
+    .available-icon
+      width: 4px;
+      height: 4px;
+      border-radius: 100%;
+      background-color: white;
+    .top-title
+      padding-left: 16px;
+      margin: 0;
+      font-weight: 400 !important;
+    .list
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      padding: 0;
+      .step
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0 16px;
+        width: 100%;
+        position: relative;
+        transition: height 0.2ms ease;
+        &.active
+          background-color: grey2;
+        &:hover
+          background-color: grey3;
+        .top
+          height: 64px;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          cursor: pointer;
+          width: 100%;
+          .icon
+            width: 32px;
+            height: 32px;
+            margin-right: 8px;
+            background-color: grey;
+            border-radius: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+            color: white;
+            &.done
+              background-color: brand-success;
+            svg
+              color: white !important;
+              width: 20px !important;
+              height: 20px !important;
+          .text
+            display: flex;
+            flex-direction: column;
+            .title
+              color: #222;
+            .subtitle
+              color: grey;
+        .absolute-line
+          position: absolute;
+          left: 32px;
+          opacity: 0.5;
+          height: 100%;
+          border-right: solid 1px grey;
+        &:first-child
+          .absolute-line
+            bottom: 0;
+            height: calc(100% - 32px);
+        &:last-child
+          .absolute-line
+            top: 0;
+            height: calc(100% - 32px);
+        .step-list
+          padding: 0;
+          padding-left: 16px;
+          list-style: none;
+          width: 100%;
+          .item
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            text-decoration: none !important;
+            height: 64px;
+            width: 100%;
+            border-left: 1px solid rgba(0,0,0,0);
+            &:hover
+              background-color: grey;
+              cursor: pointer;
+            .icon
+              width: 48px;
+              display flex;
+              justify-content: center;
+              align-items: center;
+              color: grey;
+              .available-icon
+                background-color: grey;
+              svg
+                color: grey !important;
+                width: 20px !important;
+                height: 20px !important;
+            .text
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              overflow: hidden;
+              .title
+                font-weight: 400;
+                color: #222;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+              .subtitle
+                color: grey;
+            &.active
+              border-left: 1px solid brand-primary;
+              .title
+                color: brand-primary;
+              .available-icon
+                background-color: brand-primary;

@@ -27,9 +27,10 @@ import TosPage from '/imports/ui/pages/public/TosPage.jsx';
 import EmailVerificationPage from '/imports/ui/pages/public/EmailVerificationPage.jsx';
 
 // User pages
-import DashBoardPage from '/imports/ui/pages/user/DashboardPage.jsx';
+// import DashBoardPage from '/imports/ui/pages/user/DashboardPage.jsx';
 import ProfilePage from '/imports/ui/pages/user/ProfilePage.jsx';
 import {
+  DashboardPage,
   BorrowerPage,
   PropertyPage,
   AuctionPage,
@@ -84,11 +85,11 @@ const UserRoutes = props => (
     render={layoutProps => (
       <Switch>
 
-        <Route
+        {/* <Route
           exact
           path="/app/new/:requestId"
           render={routeProps => <NewPage {...layoutProps} {...routeProps} />}
-        />
+        /> */}
         <Route path="/app/profile" render={() => <ProfilePage {...layoutProps} />} />
         <Route path="/app/contact" render={() => <ContactPage {...layoutProps} />} />
         <Route path="/app/requests/:requestId/borrowers/:borrowerId" component={BorrowerPage} />
@@ -99,7 +100,8 @@ const UserRoutes = props => (
         <Route path="/app/requests/:requestId/structure" component={StructurePage} />
         <Route path="/app/requests/:requestId/lenderpicker" component={LenderPickerPage} />
         <Route path="/app/requests/:requestId/finalsteps" component={FinalStepsPage} />
-        <Route path="/app" render={() => <DashBoardPage {...layoutProps} />} />
+        <Route path="/app/requests/:requestId" component={DashboardPage} name="asdf" />
+        <Route path="/app" render={routeProps => <NewPage {...layoutProps} {...routeProps} />} />
       </Switch>
     )}
   />

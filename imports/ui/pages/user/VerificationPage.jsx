@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Meteor } from 'meteor/meteor';
 import cleanMethod from '/imports/api/cleanMethods';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import { Link } from 'react-router-dom';
 import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
 import { isDemo } from '/imports/js/helpers/browserFunctions';
+import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
 
 export default class VerificationPage extends Component {
   constructor(props) {
@@ -33,9 +33,9 @@ export default class VerificationPage extends Component {
           <h1 className="success">
             Votre dossier est valide! <span className="fa fa-check" />
           </h1>
-          <div style={{ marginTop: 40 }}>
-            <RaisedButton label="Continuer" primary containerElement={<Link to="/app" />} />
-          </div>
+          <p className="description">
+            Les informations que vous nous avez confiées nous ont permis de vérifier l'intégrité et la qualité de votre demande de prêt.
+          </p>
         </div>
       );
     } else if (verification.validated === false) {
@@ -80,11 +80,13 @@ export default class VerificationPage extends Component {
     }
 
     return (
-      <section className="mask1">
-        <h1>Faites la vérification</h1>
+      <ProcessPage {...this.props} stepNb={0} id="verification" showBottom={false}>
+        <section className="mask1">
+          <h1>Faites la vérification</h1>
 
-        {content}
-      </section>
+          {content}
+        </section>
+      </ProcessPage>
     );
   }
 }

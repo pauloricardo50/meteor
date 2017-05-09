@@ -13,16 +13,16 @@ import { getLoanValue } from '/imports/js/helpers/requestFunctions';
 if (Meteor.isClient) {
   describe('<LenderPickerPage />', () => {
     let props;
-    const component = () => getMountedComponent(LenderPickerPage, props);
+    const component = () => getMountedComponent(LenderPickerPage, props, true);
 
     beforeEach(() => {
       props = {
         loanRequest: {
-          logic: {},
+          logic: { lender: {} },
           general: { fortuneUsed: 250000 },
           property: { value: 1000000 },
         },
-        borrowers: [{ logic: {} }],
+        borrowers: [{ logic: {}, files: {} }],
         offers: [
           {
             standardOffer: {

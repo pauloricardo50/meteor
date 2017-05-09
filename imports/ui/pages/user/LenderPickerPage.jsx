@@ -5,6 +5,7 @@ import Scroll from 'react-scroll';
 
 import { getLoanValue, loanStrategySuccess } from '/imports/js/helpers/requestFunctions';
 
+import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
 import LenderPickerStart from './lenderPickerPage/LenderPickerStart.jsx';
 import RankStrategy from './lenderPickerPage/RankStrategy.jsx';
 import AmortizingPicker from './lenderPickerPage/AmortizingPicker.jsx';
@@ -134,18 +135,25 @@ export default class LenderPickerPage extends React.Component {
 
   render() {
     return (
-      <section className="mask1 partner-picker">
-        <h1 className="text-center" style={{ marginBottom: 50 }}>
-          Choisissez votre prêteur
-        </h1>
+      <ProcessPage
+        {...this.props}
+        stepNb={1}
+        id="lenderPicker"
+        showBottom={!!this.props.loanRequest.logic.lender.offerId}
+      >
+        <section className="mask1 partner-picker">
+          <h1 className="text-center" style={{ marginBottom: 50 }}>
+            Choisissez votre prêteur
+          </h1>
 
-        {this.getSteps().map((step, i) => (
-          <Scroll.Element name={`${i}`} key={i}>
-            {i > 0 && <hr />}
-            {step}
-          </Scroll.Element>
-        ))}
-      </section>
+          {this.getSteps().map((step, i) => (
+            <Scroll.Element name={`${i}`} key={i}>
+              {i > 0 && <hr />}
+              {step}
+            </Scroll.Element>
+          ))}
+        </section>
+      </ProcessPage>
     );
   }
 }
