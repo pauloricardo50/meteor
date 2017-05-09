@@ -97,6 +97,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           link: `/app/requests/${loanRequest._id}/structure`,
           subtitle: '1 min',
           isDone: () => loanRequest.logic.hasValidatedStructure,
+          disabled: loanRequest.logic.step < 1,
         },
         {
           id: 'auction',
@@ -104,15 +105,17 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           link: `/app/requests/${loanRequest._id}/auction`,
           subtitle: '2 jours',
           isDone: () => loanRequest.logic.auctionStarted,
+          disabled: loanRequest.logic.step < 1,
         },
         {
           id: 'lenderPicker',
           title: 'Choisissez votre prêteur',
           subtitle: '5 min',
           link: `/app/requests/${loanRequest._id}/lenderpicker`,
-          disabled: !(serverTime &&
-            loanRequest.logic.auctionEndTime &&
-            loanRequest.logic.auctionEndTime <= serverTime), // TODO: make this work
+          disabled: loanRequest.logic.step < 1 &&
+            !(serverTime &&
+              loanRequest.logic.auctionEndTime &&
+              loanRequest.logic.auctionEndTime <= serverTime), // TODO: make this work
           isDone: () => !!(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
         },
       ],
@@ -129,7 +132,8 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           title: 'Dernières démarches',
           link: `/app/requests/${loanRequest._id}/finalsteps`,
           subtitle: '45 min',
-          disabled: !(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
+          disabled: loanRequest.logic.step < 2 &&
+            !(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
           percent: () => 0,
           isDone: () => false,
         },

@@ -54,7 +54,7 @@ const BorrowerFinancePage = props => {
         Mes Finances
         <br />
         {borrower.logic.hasValidatedFinances &&
-          <small><span className="fa fa-check" /> Validées</small>}
+          <small className="success">Validées <span className="fa fa-check" /></small>}
       </h2>
 
       <div
