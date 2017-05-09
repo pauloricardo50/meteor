@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Meteor } from 'meteor/meteor';
 
 import Checkbox from 'material-ui/Checkbox';
 
@@ -42,9 +41,7 @@ const handleClick = (event, id, props) => {
   const object = {};
   object['logic.hasValidatedFinances'] = true;
 
-  cleanMethod('updateBorrower', object, id, () =>
-    Meteor.setTimeout(() => props.history.push('/app'), 300),
-  );
+  cleanMethod('updateBorrower', object, id);
 };
 
 const BorrowerFinancePage = props => {
@@ -99,7 +96,6 @@ const BorrowerFinancePage = props => {
           handleClick={e => handleClick(e, borrowerId, props)}
           disabled={!borrower.logic.financeEthics}
           value={borrower.logic.hasValidatedFinances}
-          history={props.history}
         />
       </div>
     </section>

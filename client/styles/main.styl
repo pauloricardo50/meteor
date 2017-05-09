@@ -238,10 +238,11 @@ input[type=number]
     position: fixed;
   .menu-button
     display: block;
-    svg
-      color: black;
     +above($med)
       display: none;
+    .top-bar
+      height: 64px;
+      border-bottom: 1px solid #d8d8d8;
   .logo
     display: flex;
     position: absolute;
@@ -333,7 +334,6 @@ input[type=number]
 
 .app-layout
   padding: 20px;
-  padding-top: 84px;
   padding-bottom $bottom-nav-height
   display: flex;
   flex-direction: column;
@@ -341,23 +341,21 @@ input[type=number]
   height: auto;
   min-height: 100%;
   +above($med)
+    padding-top: 84px;
     padding-left 320px; // side-nav width + 20px
     padding-bottom 20px;
-  +above($wide)
-    padding-left: 350px;
-    padding-right: 50px;
   &.always-side-nav
     padding-left: 270px; // side bar doesn't disappear
   .wrapper
-    margin: auto 0;
+    margin: 0 0;
+    height: 100%;
+    min-height: 100%;
   .transition-wrapper
     position: absolute;
     width: calc(100% - 40px);
     margin: auto;
     +above($med)
       width: calc(100% - 250px - 40px);
-    +above($wide)
-      width: calc(100% - 250px - 100px)
 
 
 .full-screen
@@ -392,13 +390,18 @@ svg:not(:root) {
 .side-nav-user
   background-color: white;
   border-right: 1px solid grey;
-  height: calc(100% - 64px);
-  fixed bottom left;
+  min-height: calc(100% - 64px);
+  fixed top left;
+  top: 64px;
   width: $side-nav;
   z-index: z.nav;
   display: flex;
   flex-direction: column;
   align-items: center;
+  .scrollable
+    width: 100%;
+    height: 100vh;
+    overflow-y: scroll;
   .link
     width: 100%;
     height: 64px;
@@ -407,6 +410,7 @@ svg:not(:root) {
     align-items: center;
     color: alpha(#222, 0.6) !important;
     font-weight: 400;
+    text-decoration: none;
     &:hover
       background-color: light-grey;
       color: alpha(#222, 0.8) !important;
@@ -428,6 +432,7 @@ svg:not(:root) {
     .top-title
       padding-left: 16px;
       margin: 0;
+      font-weight: 400 !important;
     .list
       list-style: none;
       display: flex;
@@ -468,7 +473,6 @@ svg:not(:root) {
             display: flex;
             flex-direction: column;
             .title
-              font-weight: 400;
               color: #222;
             .subtitle
               color: grey;
@@ -521,3 +525,7 @@ svg:not(:root) {
               border-left: 1px solid brand-primary;
               .title
                 color: brand-primary
+  .available-icon
+    width: 2px;
+    height: 2px;
+    border-radius: 100%;

@@ -27,7 +27,7 @@ export default class TopNavDrawer extends React.Component {
     return (
       <div className="menu-button">
         <IconButton tooltip="Menu" onTouchTap={this.handleToggle}>
-          <MenuIcon />
+          <MenuIcon color="#333333" hoverColor="#888888" />
         </IconButton>
         <Drawer
           open={this.state.open}
@@ -35,13 +35,16 @@ export default class TopNavDrawer extends React.Component {
           width={300}
           onRequestChange={open => this.setState({ open })}
         >
-          <IconButton
-            // tooltip="Fermer"
-            onTouchTap={() => this.setState({ open: false })}
-            style={{ marginTop: 8, marginLeft: 8, zIndex: 100 }}
-          >
-            <CloseIcon />
-          </IconButton>
+          <div className="top-bar">
+            <IconButton
+              // tooltip="Fermer"
+              onTouchTap={() => this.setState({ open: false })}
+              style={{ marginTop: 8, marginLeft: 8, zIndex: 100 }}
+            >
+
+              <CloseIcon color="#333333" hoverColor="#888888" />
+            </IconButton>
+          </div>
           <SideNavUser {...this.props} handleClickLink={() => this.handleClickLink()} />
         </Drawer>
       </div>

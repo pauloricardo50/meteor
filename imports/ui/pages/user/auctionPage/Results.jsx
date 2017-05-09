@@ -5,8 +5,6 @@ import OffersTable from '/imports/ui/components/general/OffersTable.jsx';
 import FakeOfferAdder from '/imports/ui/components/general/FakeOfferAdder.jsx';
 import OfferToggle from '/imports/ui/components/general/OfferToggle.jsx';
 
-import { Link } from 'react-router-dom';
-import RaisedButton from 'material-ui/RaisedButton';
 import CountUp from 'react-countup';
 
 const styles = {
@@ -133,10 +131,6 @@ export default class Results extends Component {
             Vous pouvez dès à présent choisir le prêteur que vous voulez et avoir une estimation
             très précise de ce que ce prêt va vous coûter.
           </p>
-        </div>
-
-        <div className="text-center" style={{ margin: '40px 0' }}>
-          <RaisedButton label="Continuer" primary containerElement={<Link to="/app" />} />
         </div>
 
         <FakeOfferAdder loanRequest={this.props.loanRequest} />

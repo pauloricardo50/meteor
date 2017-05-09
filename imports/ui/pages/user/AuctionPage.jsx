@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
 
+import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
 import Start from './auctionPage/Start.jsx';
 import Auction from './auctionPage/Auction.jsx';
 import Results from './auctionPage/Results.jsx';
@@ -21,21 +22,18 @@ export default class AuctionPage extends Component {
     // Call it once initially
     Meteor.call('getServerTime', (e, res) => {
       this.setState({
-        currentTime: res,
+        serverTime: res,
       });
     });
 
-    time = Meteor.setInterval(
-      () => {
-        // Call it again every second
-        Meteor.call('getServerTime', (e, res) => {
-          this.setState({
-            currentTime: res,
-          });
+    time = Meteor.setInterval(() => {
+      // Call it again every second
+      Meteor.call('getServerTime', (e, res) => {
+        this.setState({
+          serverTime: res,
         });
-      },
-      1000,
-    );
+      });
+    }, 1000);
   }
 
   componentWillUnmount() {
@@ -43,31 +41,21 @@ export default class AuctionPage extends Component {
   }
 
   getContent() {
-    if (!this.state.currentTime) {
+    if (!this.state.serverTime) {
       return <div style={{ height: 150 }}><LoadingComponent /></div>;
     }
 
     if (
       this.props.loanRequest.logic.auctionEndTime <=
-      this.state.currentTime.setSeconds(this.state.currentTime.getSeconds() + 1)
+      this.state.serverTime.setSeconds(this.state.serverTime.getSeconds() + 1)
     ) {
       // After the auction, clear interval
       Meteor.clearInterval(time);
 
-      return (
-        <Results
-          loanRequest={this.props.loanRequest}
-          offers={this.props.offers}
-        />
-      );
+      return <Results loanRequest={this.props.loanRequest} offers={this.props.offers} />;
     } else if (this.props.loanRequest.logic.auctionStarted) {
       // During the auction
-      return (
-        <Auction
-          loanRequest={this.props.loanRequest}
-          offers={this.props.offers}
-        />
-      );
+      return <Auction loanRequest={this.props.loanRequest} offers={this.props.offers} />;
     }
     // Before the auction, lets the user start it
     return (
@@ -80,7 +68,17 @@ export default class AuctionPage extends Component {
   }
 
   render() {
-    return this.getContent();
+    return (
+      <ProcessPage
+        {...this.props}
+        stepNb={1}
+        id="auction"
+        serverTime={this.state.serverTime}
+        showBottom={false}
+      >
+        {this.getContent()}
+      </ProcessPage>
+    );
   }
 }
 

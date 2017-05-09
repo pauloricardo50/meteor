@@ -258,7 +258,7 @@ export default class ExpensesChart extends Component {
       this.secondTitle = r
         .text(this.props.title, 0, 20)
         .css({
-          color: '#333333',
+          color: '#222',
           fontSize: '18px',
           fontWeight: 400,
         })
@@ -266,7 +266,11 @@ export default class ExpensesChart extends Component {
 
       const bbox2 = this.secondTitle.getBBox();
 
-      this.secondTitle.attr({ x: x - bbox2.width / 2 });
+      if (this.props.titleAlign === 'left') {
+        this.secondTitle.attr({ x: 10 }); // the default spacing of highchartss
+      } else {
+        this.secondTitle.attr({ x: x - bbox2.width / 2 });
+      }
     }
   };
 

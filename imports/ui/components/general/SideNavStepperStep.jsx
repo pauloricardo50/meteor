@@ -3,15 +3,29 @@ import PropTypes from 'prop-types';
 
 import { NavLink } from 'react-router-dom';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
+import LockIcon from 'material-ui/svg-icons/action/lock-open';
+
+// const getIcon = ({ step, loanRequest }) => {
+//   const stepNb = step.nb;
+//   const realStep = loanRequest.logic.step;
+//   if (stepNb < realStep) {
+//     return <CheckIcon />;
+//   } else if (stepNb === realStep) {
+//     return <span className="available-icon" />;
+//   }
+//   return <LockIcon />;
+// };
 
 const SideNavStepperStep = props => {
   return (
     <li key={props.step.nb} className="step">
       <div className="absolute-line" />
       <div className="top" onTouchTap={props.handleClick}>
-        <div className="icon"><CheckIcon /></div>
+        {/* <div className="icon">{getIcon(props)}</div> */}
         <div className="text">
-          <span className="title">{props.step.title}</span>
+          <span className={`title ${props.currentRequestStep ? 'bold' : ''}`}>
+            {props.step.title}
+          </span>
           <span className="subtitle">{props.step.subtitle}</span>
         </div>
       </div>

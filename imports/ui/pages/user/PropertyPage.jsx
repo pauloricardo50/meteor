@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import RaisedButton from 'material-ui/RaisedButton';
-import { Link } from 'react-router-dom';
-
+import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
 import AutoForm from '/imports/ui/components/autoform/AutoForm.jsx';
 import PropertyFormArray from '/imports/js/arrays/PropertyFormArray';
 import { propertyPercent } from '/imports/js/arrays/steps';
@@ -30,16 +28,7 @@ const styles = {
 const PropertyPage = props => {
   const percent = propertyPercent(props.loanRequest, props.borrowers);
   return (
-    <div>
-      <div style={styles.topDiv}>
-        <RaisedButton
-          label="Ok"
-          containerElement={<Link to="/app" />}
-          style={styles.topRightButton}
-          primary
-        />
-      </div>
-
+    <ProcessPage {...props} stepNb={0} id="property">
       <section className="mask1 property-page">
         <h1 className="text-center">
           {props.borrowers.length > 1 ? 'Notre bien immobilier' : 'Mon bien immobilier'}
@@ -65,16 +54,7 @@ const PropertyPage = props => {
 
         {isDemo() && <FakePropertyCompleter loanRequest={props.loanRequest} />}
       </section>
-
-      <div style={styles.bottomDiv}>
-        <RaisedButton
-          label="Ok"
-          containerElement={<Link to="/app" />}
-          style={styles.topRightButton}
-          primary
-        />
-      </div>
-    </div>
+    </ProcessPage>
   );
 };
 

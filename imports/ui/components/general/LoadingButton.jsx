@@ -5,6 +5,16 @@ import { Meteor } from 'meteor/meteor';
 import RaisedButton from 'material-ui/RaisedButton';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
+import Scroll from 'react-scroll';
+
+const scroll = () => {
+  const options = {
+    duration: 350,
+    delay: 100,
+    smooth: true,
+  };
+  Scroll.animateScroll.scrollToTop(options);
+};
 
 export default class LoadingButton extends Component {
   constructor(props) {
@@ -24,12 +34,15 @@ export default class LoadingButton extends Component {
 
   handleClick = () => {
     if (this.state.isFirstVisit) {
-      this.setState({ loading: true }, () => {
+      this.setState({ loading: true, isFirstVisit: false }, () => {
         this.props.handleClick();
-        this.timer = Meteor.setTimeout(() => this.props.history.push(this.props.link), 3000);
+        Meteor.setTimeout(() => {
+          this.setState({ loading: false });
+          scroll();
+        }, 1500);
       });
     } else {
-      this.props.history.push(this.props.link);
+      scroll();
     }
   };
 
@@ -43,11 +56,12 @@ export default class LoadingButton extends Component {
 
     return (
       <RaisedButton
-        {...this.props}
+        // {...this.props}
         label={this.props.label}
         primary={this.state.isFirstVisit}
         onTouchTap={this.handleClick}
         icon={icon}
+        disabled={this.props.disabled}
       />
     );
   }
@@ -57,10 +71,11 @@ LoadingButton.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.bool.isRequired,
   link: PropTypes.string,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
   handleClick: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
 };
 
 LoadingButton.defaultProps = {
   link: '/app',
+  disabled: false,
 };

@@ -17,30 +17,38 @@ const SideNavUser = props => {
   const splittedUrl = props.location.pathname.substring(1).split('/');
   // If it has enough elements, parse the requestId
   const requestId = splittedUrl.length >= 3 && splittedUrl[1] === 'requests' ? splittedUrl[2] : '';
-  const currentRequest = props.loanRequests.find(r => r._id === requestId);
-  const borrowerIds = currentRequest.borrowers;
+  let currentRequest;
+  let borrowerIds;
+
+  if (requestId) {
+    currentRequest = props.loanRequests.find(r => r._id === requestId);
+    borrowerIds = currentRequest.borrowers;
+  }
 
   return (
     <nav className="side-nav-user" style={props.style}>
-      <RequestSelector {...props} currentValue={requestId} />
-      <NavLink
-        exact
-        to={`/app/requests/${requestId}`}
-        activeClassName="active-link"
-        className="link"
-        onTouchTap={props.handleClickLink}
-      >
-        <div className="icon"><DashboardIcon /></div>
-        <h5>Tableau de Bord</h5>
-      </NavLink>
+      <div className="scrollable">
+        <RequestSelector {...props} currentValue={requestId} />
+        <NavLink
+          exact
+          to={`/app/requests/${requestId}`}
+          activeClassName="active-link"
+          className="link"
+          onTouchTap={props.handleClickLink}
+        >
+          <div className="icon"><DashboardIcon /></div>
+          <h5>Tableau de Bord</h5>
+        </NavLink>
 
-      {requestId &&
-        <SideNavStepper
-          handleClickLink={props.handleClickLink}
-          history={props.history}
-          loanRequest={currentRequest}
-          borrowers={props.borrowers.filter(b => borrowerIds.indexOf(b._id) > -1)}
-        />}
+        {requestId &&
+          <SideNavStepper
+            handleClickLink={props.handleClickLink}
+            history={props.history}
+            location={props.location}
+            loanRequest={currentRequest}
+            borrowers={props.borrowers.filter(b => borrowerIds.indexOf(b._id) > -1)}
+          />}
+      </div>
     </nav>
   );
 };
