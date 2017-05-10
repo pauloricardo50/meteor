@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import fileSaver from 'file-saver';
+import { Meteor } from 'meteor/meteor';
+import { Bert } from 'meteor/themeteorchef:bert';
+import { base64ToBlob } from '/imports/js/helpers/base64-to-blob.js';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -23,10 +27,21 @@ import RaisedButton from 'material-ui/RaisedButton';
 // La banque ne va pas dire non -> envoyer tous les documents
 // Banque revient en 2 jours
 
-const getPDF = (loanRequest, borrowers) => {
-  console.log(loanRequest);
-  console.log(borrowers);
-  return true;
+const downloadPDF = (event, requestId) => {
+  event.preventDefault();
+  const { target } = event;
+  target.innerHTML = '<em>Downloading...</em>';
+  target.classList.add('downloading');
+  Meteor.call('pdf.download', { requestId }, (error, response) => {
+    if (error) {
+      Bert.alert(error.reason, 'danger');
+    } else {
+      const blob = base64ToBlob(response.base64);
+      fileSaver.saveAs(blob, response.fileName);
+      target.innerHTML = 'Download';
+      target.classList.remove('downloading');
+    }
+  });
 };
 
 const getEmail = props => {
@@ -45,7 +60,7 @@ export default class ContactLendersPage extends Component {
           <RaisedButton
             label="Télécharger PDF"
             primary
-            onClick={() => getPDF(this.props.loanRequest, this.props.borrowers)}
+            onClick={e => downloadPDF(e, this.props.loanRequest._id)}
           />
         </div>
 

@@ -51,6 +51,7 @@ export const completeFakeBorrower = {
     {
       value: 433000,
       loan: 240000,
+      description: 'primary',
     },
   ],
   bankFortune: 300000,

@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Meteor } from 'meteor/meteor';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
@@ -168,7 +167,7 @@ export default class LenderTable extends Component {
                       <td className="c">
                         {offer.conditions.length > 0 || offer.counterparts.length > 0
                           ? <ConditionsButton
-                            key={offer.id}
+                            key={`${offer.id}0`} // to prevent weird key mistakes
                             conditions={offer.conditions}
                             counterparts={offer.counterparts}
                           />
