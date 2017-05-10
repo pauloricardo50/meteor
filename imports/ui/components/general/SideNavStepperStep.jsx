@@ -53,12 +53,13 @@ const SideNavStepperStep = props => {
               key={item.title}
               className={classnames({ item: true, disable: item.disabled || !item.link })}
               activeClassName={item.link !== undefined && !item.disabled ? 'active' : ''}
-              onTouchTap={item.link ? props.handleClickLink : () => null}
             >
-              {getItemIcon(item)}
-              <div className="text">
-                <span className="title">{item.title}</span>
-                <span className="subtitle">{item.subtitle}</span>
+              <div className="onclick-wrapper" onTouchTap={item.link ? props.handleClickLink : () => null}>
+                {getItemIcon(item)}
+                <div className="text">
+                  <span className="title">{item.title}</span>
+                  <span className="subtitle">{item.subtitle}</span>
+                </div>
               </div>
             </NavLink>
           ))}

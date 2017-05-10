@@ -34,10 +34,11 @@ const SideNavUser = props => {
           to={`/app/requests/${requestId}`}
           activeClassName="active-link"
           className="link"
-          onTouchTap={props.handleClickLink}
         >
-          <div className="icon"><DashboardIcon /></div>
-          <h5>Tableau de Bord</h5>
+          <div className="onclick-wrapper" onTouchTap={props.handleClickLink}>
+            <div className="icon"><DashboardIcon /></div>
+            <h5>Tableau de Bord</h5>
+          </div>
         </NavLink>
 
         {requestId &&
