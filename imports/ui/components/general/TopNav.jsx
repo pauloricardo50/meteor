@@ -34,7 +34,7 @@ const TopNav = props => (
     <AppBar
       style={!props.public ? styles.navbar : styles.publicNavbar}
       iconElementLeft={props.currentUser && !props.public ? <TopNavDrawer {...props} /> : undefined}
-      iconStyleLeft={(!props.currentUser || props.public) && { display: 'none' }}
+      iconStyleLeft={!props.currentUser || props.public ? { display: 'none' } : {}}
       iconElementRight={
         props.currentUser
           ? <TopNavDropdown {...props} />

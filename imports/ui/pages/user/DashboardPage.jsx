@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Page from '/imports/ui/components/general/Page.jsx';
 import ProjectPieChart from '/imports/ui/components/charts/ProjectPieChart.jsx';
 import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
 import Recap from '/imports/ui/components/general/Recap.jsx';
@@ -8,8 +9,7 @@ import NewRequestModal from './dashboardPage/NewRequestModal.jsx';
 
 const DashboardPage = props => {
   return (
-    <section>
-      <h1>Tableau de Bord</h1>
+    <Page title="Tableau de Bord">
       <div className="container-fluid" style={{ width: '100%', padding: 0 }}>
         <div className="col-md-6 col-lg-4" style={{ marginBottom: 15 }}>
           <div className="mask1">
@@ -45,7 +45,7 @@ const DashboardPage = props => {
 
       {!props.loanRequest.name &&
         <NewRequestModal open requestId={props.loanRequest._id} history={props.history} />}
-    </section>
+    </Page>
   );
 };
 

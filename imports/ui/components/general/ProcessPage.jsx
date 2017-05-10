@@ -47,7 +47,7 @@ export default class ProcessPage extends Component {
     const values = getStepValues(this.props);
     const barProps = { ...this.props, ...values };
     return (
-      <div className="process-page">
+      <div className="page-title">
         <ProcessPageBar {...barProps} className="top-bar" />
         <div className="children">
           {this.props.children}

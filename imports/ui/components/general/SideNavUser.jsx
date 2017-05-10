@@ -37,7 +37,7 @@ const SideNavUser = props => {
         >
           <div className="onclick-wrapper" onTouchTap={props.handleClickLink}>
             <div className="icon"><DashboardIcon /></div>
-            <h5>Tableau de Bord</h5>
+            <h5 className="title">Tableau de Bord</h5>
           </div>
         </NavLink>
 

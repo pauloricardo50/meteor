@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import RaisedButton from 'material-ui/RaisedButton';
+import ArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
+import ArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 import { Link } from 'react-router-dom';
 
+import { DocHead } from 'meteor/kadira:dochead';
 import cleanMethod from '/imports/api/cleanMethods';
+import { getWidth } from '/imports/js/helpers/browserFunctions';
 
 const styles = {
   button: {
+    marginLeft: 8,
+  },
+  smallButton: {
+    minWidth: 'unset',
+    width: 36,
     marginLeft: 8,
   },
 };
@@ -25,35 +34,57 @@ const handleNextStep = ({ currentStep, loanRequest, history, nextLink }) => {
   }
 };
 
-const ProcessPageBar = props => {
-  // index = 1 because the very first step is a fake one (pass the form)
-  const showBackButton = !(props.stepNb === 0 && props.index === 1);
-  const lastPartOfStep = props.index === props.length - 1;
-  return (
-    <div className={props.className}>
-      <h3 className="title fixed-size bold secondary">{props.currentStep.title}</h3>
-      <div className="buttons">
-        {showBackButton &&
+export default class ProcessPageBar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { smallWidth: getWidth() < 768 };
+  }
+
+  componentDidMount() {
+    DocHead.setTitle(`${this.props.currentStep.title} | e-Potek`);
+    window.addEventListener('resize', this.resize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resize);
+  }
+
+  resize = () => {
+    this.setState({ smallWidth: getWidth() < 768 });
+  };
+
+  render() {
+    // index = 1 because the very first step is a fake one (pass the form)
+    const showBackButton = !(this.props.stepNb === 0 && this.props.index === 1);
+    const lastPartOfStep = this.props.index === this.props.length - 1;
+    return (
+      <div className={this.props.className}>
+        <h3 className="title fixed-size bold secondary">{this.props.currentStep.title}</h3>
+        <div className="buttons">
+          {showBackButton &&
+            <RaisedButton
+              icon={this.state.smallWidth ? <ArrowLeft /> : undefined}
+              label={this.state.smallWidth ? '' : 'Précédent'}
+              style={this.state.smallWidth ? styles.smallButton : styles.button}
+              disabled={!this.props.prevLink}
+              containerElement={this.props.prevLink ? <Link to={this.props.prevLink} /> : undefined}
+            />}
           <RaisedButton
-            label="Précédent"
-            style={styles.button}
-            disabled={!props.prevLink}
-            containerElement={props.prevLink ? <Link to={props.prevLink} /> : undefined}
-          />}
-        <RaisedButton
-          label={lastPartOfStep ? 'Prochaine étape' : 'Suivant'}
-          style={styles.button}
-          secondary={props.currentStep.isDone()}
-          disabled={!props.nextLink}
-          containerElement={
-            props.nextLink && !lastPartOfStep ? <Link to={props.nextLink} /> : undefined
-          }
-          onTouchTap={lastPartOfStep ? () => handleNextStep(props) : () => null}
-        />
+            icon={this.state.smallWidth ? <ArrowRight /> : undefined}
+            label={this.state.smallWidth ? '' : lastPartOfStep ? 'Prochaine étape' : 'Suivant'}
+            style={this.state.smallWidth ? styles.smallButton : styles.button}
+            secondary={this.props.currentStep.isDone()}
+            disabled={!this.props.nextLink}
+            containerElement={
+              this.props.nextLink && !lastPartOfStep ? <Link to={this.props.nextLink} /> : undefined
+            }
+            onTouchTap={lastPartOfStep ? () => handleNextStep(this.props) : () => null}
+          />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 ProcessPageBar.propTypes = {
   className: PropTypes.string.isRequired,
@@ -67,5 +98,3 @@ ProcessPageBar.defaultProps = {
   prevLink: undefined,
   nextLink: undefined,
 };
-
-export default ProcessPageBar;

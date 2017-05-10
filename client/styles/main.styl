@@ -334,10 +334,8 @@ input[type=number]
 
 .app-layout
   padding: 20px;
-  padding-bottom $bottom-nav-height
   display: flex;
   flex-direction: column;
-  // overflow-y: scroll;
   height: auto;
   min-height: 100%;
   +above($med)
@@ -402,6 +400,7 @@ svg:not(:root) {
     width: 100%;
     height: calc(100vh - 64px);
     overflow-y: scroll;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -413,15 +412,18 @@ svg:not(:root) {
     justify-content: flex-start;
     align-items: center;
     color: alpha(#222, 0.6) !important;
-    font-weight: 400;
     text-decoration: none;
     flex-shrink: 0;
+    .title
+      font-weight: 400 !important;
     &:hover
       background-color: light-grey;
       color: alpha(#222, 0.8) !important;
     &.active-link
       background-color: grey3;
       color: alpha(#222, 1) !important;
+      .title
+        color: brand-primary;
     .icon
       padding: 0 16px;
       display: flex;
@@ -442,7 +444,7 @@ svg:not(:root) {
       background-color: white;
     .top-title
       padding-left: 16px;
-      margin: 0;
+      margin: 8px 0;
       font-weight: 400 !important;
     .list
       list-style: none;
@@ -459,8 +461,10 @@ svg:not(:root) {
         width: 100%;
         position: relative;
         transition: height 0.2ms ease;
-        &.active
+        &.isActive
           background-color: #f8f9fa;
+          .title
+            color: #222
         &:hover
           background-color: #f9fafb;
         .top
@@ -493,8 +497,10 @@ svg:not(:root) {
             line-height: 1.2em;
             .title
               color: #222;
+              font-weight: 400;
             .subtitle
-              color: grey;
+              color: #818990;
+              font-weight: 400;
         .absolute-line
           position: absolute;
           left: 32px;
@@ -548,12 +554,13 @@ svg:not(:root) {
               line-height: 1.4em;
               .title
                 font-weight: 400;
-                color: #222;
+                color: #31363C;
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
               .subtitle
-                color: grey;
+                color: #818990;
+                font-weight: 400;
             &.active
               border-left: 1px solid brand-primary;
               background-color: #f1f3f5;

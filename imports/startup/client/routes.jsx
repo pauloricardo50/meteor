@@ -28,7 +28,7 @@ import EmailVerificationPage from '/imports/ui/pages/public/EmailVerificationPag
 
 // User pages
 // import DashBoardPage from '/imports/ui/pages/user/DashboardPage.jsx';
-import ProfilePage from '/imports/ui/pages/user/ProfilePage.jsx';
+import AccountPage from '/imports/ui/pages/user/AccountPage.jsx';
 import {
   DashboardPage,
   BorrowerPage,
@@ -90,7 +90,7 @@ const UserRoutes = props => (
           path="/app/new/:requestId"
           render={routeProps => <NewPage {...layoutProps} {...routeProps} />}
         /> */}
-        <Route path="/app/profile" render={() => <ProfilePage {...layoutProps} />} />
+        <Route path="/app/profile" render={() => <AccountPage {...layoutProps} />} />
         <Route path="/app/contact" render={() => <ContactPage {...layoutProps} />} />
         <Route path="/app/requests/:requestId/borrowers/:borrowerId" component={BorrowerPage} />
         <Route path="/app/requests/:requestId/property" component={PropertyPage} />

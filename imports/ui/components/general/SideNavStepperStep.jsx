@@ -30,12 +30,12 @@ const getItemIcon = item => {
 
 const SideNavStepperStep = props => {
   return (
-    <li key={props.step.nb} className="step">
+    <li key={props.step.nb} className={classnames({ step: true, isActive: props.active })}>
       <div className="absolute-line" />
       <div className="top" onTouchTap={props.handleClick}>
         {getStepIcon(props)}
         <div className="text">
-          <span className={`title ${props.currentRequestStep ? 'bold' : ''}`}>
+          <span className={'title'}>
             {props.step.title}
           </span>
           <span className="subtitle">{props.step.subtitle}</span>
@@ -54,7 +54,10 @@ const SideNavStepperStep = props => {
               className={classnames({ item: true, disable: item.disabled || !item.link })}
               activeClassName={item.link !== undefined && !item.disabled ? 'active' : ''}
             >
-              <div className="onclick-wrapper" onTouchTap={item.link ? props.handleClickLink : () => null}>
+              <div
+                className="onclick-wrapper"
+                onTouchTap={item.link ? props.handleClickLink : () => null}
+              >
                 {getItemIcon(item)}
                 <div className="text">
                   <span className="title">{item.title}</span>
