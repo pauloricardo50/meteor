@@ -20,7 +20,7 @@ export default class TopNavDrawer extends React.Component {
     }));
 
   handleClickLink = () => {
-    Meteor.setTimeout(() => this.setState({ open: false }), 200);
+    Meteor.defer(() => this.setState({ open: false }));
   };
 
   render() {

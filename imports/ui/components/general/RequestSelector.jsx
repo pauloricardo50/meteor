@@ -10,6 +10,7 @@ const styles = {
   div: {
     width: '90%',
     marginTop: 8,
+    height: 62,
   },
   dropdown: {
     width: '100%',
