@@ -39,6 +39,7 @@ import {
   VerificationPage,
   ExpertisePage,
   FinalStepsPage,
+  DevPage,
 } from '/imports/ui/containers/UserContainers';
 import ContactPage from '/imports/ui/pages/user/ContactPage.jsx';
 import NewPage from '/imports/ui/pages/user/NewPage.jsx';
@@ -48,6 +49,7 @@ import AdminDashboardPage from '/imports/ui/pages/admin/AdminDashboardPage.jsx';
 import UsersPage from '/imports/ui/pages/admin/UsersPage.jsx';
 import RequestsPage from '/imports/ui/pages/admin/RequestsPage.jsx';
 import {
+  NewOfferPage,
   OfferPage,
   SingleRequestPage,
   SingleUserPage,
@@ -90,6 +92,7 @@ const UserRoutes = props => (
           path="/app/new/:requestId"
           render={routeProps => <NewPage {...layoutProps} {...routeProps} />}
         /> */}
+        <Route path="/app/dev" component={DevPage} />
         <Route path="/app/profile" render={() => <AccountPage {...layoutProps} />} />
         <Route path="/app/contact" render={() => <ContactPage {...layoutProps} />} />
         <Route path="/app/requests/:requestId/borrowers/:borrowerId" component={BorrowerPage} />
@@ -117,6 +120,9 @@ const AdminRoutes = props => (
         <Route exact path="/admin/users" render={() => <UsersPage {...layoutProps} />} />
         <Route exact path="/admin/requests" render={() => <RequestsPage {...layoutProps} />} />
         <Route path="/admin/requests/:requestId/verify" component={VerifyPage} />
+        <Route path="/admin/requests/:requestId/contactlenders" component={ContactLendersPage} />
+        <Route path="/admin/requests/:requestId/offers/new" component={NewOfferPage} />
+        <Route path="/admin/requests/:requestId/offers/:offerId" component={OfferPage} />
         <Route path="/admin/requests/:requestId" component={SingleRequestPage} />
         <Route path="/admin/users/:userId" component={SingleUserPage} />
         <Route exact path="/admin/dev" render={() => <AdminDevPage {...layoutProps} />} />

@@ -72,6 +72,7 @@ const renderObject = (key, obj) => {
 
 const AdminSingleRequestPage = props => {
   const actions = adminActions(props.loanRequest, props);
+  console.log(actions);
   return (
     <div>
       <RaisedButton
@@ -81,15 +82,15 @@ const AdminSingleRequestPage = props => {
       />
       <section className="mask1">
         <h1>
-          {props.loanRequest.name || 'Demande de Prêt'} - CHF&nbsp;
+          {props.loanRequest.name || 'Demande de Prêt'} - Emprunt de CHF&nbsp;
           {toMoney(getLoanValue(props.loanRequest))}
         </h1>
 
         <div className="text-center" style={styles.actions}>
           {actions.length > 0
-            ? actions.map(action => (
-              <div key={action.name} className="form-group">
-                <RaisedButton label={action.name} onClick={action.handleClick} primary />
+            ? actions.map((action, i) => (
+              <div key={i} className="form-group">
+                <RaisedButton label={action.label} onClick={action.handleClick} primary />
               </div>
               ))
             : <h2 className="secondary">Aucune action à prendre</h2>}

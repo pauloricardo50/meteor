@@ -47,3 +47,11 @@ export const popBorrowerValue = new ValidatedMethod({
     Borrowers.update(id, { $pop: object }, { getAutoValues: false });
   },
 });
+
+export const deleteBorrower = new ValidatedMethod({
+  name: 'borrowers.delete',
+  validate() {},
+  run({ id }) {
+    Borrowers.remove(id);
+  },
+});

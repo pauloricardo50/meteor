@@ -4,7 +4,7 @@ import { insertFakeOffer } from '/imports/api/offers/methods';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { getRandomOffer } from '/imports/js/helpers/random-generators';
+import { getRandomOffer } from '/imports/api/offers/fakes';
 
 const addFakeOffer = request => {
   const object = getRandomOffer(request);

@@ -204,11 +204,16 @@ export const getTotalFortune = borrowers => {
 export const getRealEstateFortune = borrowers => {
   let sum = 0;
   borrowers.forEach(borrower => {
-    sum += [...borrower.realEstate.map(i => i.value - i.loan || 0)].reduce(
-      (tot, val) => (val > 0 && tot + val) || tot,
-      0,
-    );
+    sum += [
+      ...borrower.realEstate.map(i => {
+        console.log(i);
+        console.log(i.value - i.loan);
+        return i.value - i.loan || 0;
+      }),
+    ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
   });
+
+  console.log('fortune', sum);
 
   return Math.max(0, Math.round(sum));
 };

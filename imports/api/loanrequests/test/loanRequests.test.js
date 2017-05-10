@@ -15,6 +15,7 @@ import {
   pushRequestValue,
   popRequestValue,
   incrementStep,
+  requestVerification,
 } from '../methods';
 
 describe('loanRequests', () => {
@@ -97,6 +98,17 @@ describe('loanRequests', () => {
 
       describe('incrementStep', () => {
         it('Should work');
+      });
+
+      describe('requestVerification', () => {
+        it('Should set requested to true and add a time', () => {
+          const id = request._id;
+          requestVerification.call({ id });
+          const modifiedRequest = LoanRequests.findOne({ _id: id });
+
+          expect(modifiedRequest.logic.verification.requested).to.be.true;
+          expect(modifiedRequest.logic.verification.requestedTime).to.exist;
+        });
       });
     });
   });

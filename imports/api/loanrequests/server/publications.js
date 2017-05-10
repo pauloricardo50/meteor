@@ -4,7 +4,12 @@ import LoanRequests from '../loanrequests';
 import { Roles } from 'meteor/alanning:roles';
 
 // Publish a specific loanRequest with an ID
-Meteor.publish('loanRequest', function(id) {
+Meteor.publish('loanRequest', function (id) {
+  // Verify if user is logged In
+  if (!this.userId) {
+    return this.ready();
+  }
+
   check(id, String);
 
   if (Roles.userIsInRole(this.userId, 'admin')) {
@@ -22,10 +27,10 @@ Meteor.publish('loanRequest', function(id) {
 });
 
 // Publish all loanrequests from the current user
-Meteor.publish('loanRequests', function() {
+Meteor.publish('loanRequests', function () {
   // Verify if user is logged In
   if (!this.userId) {
-    console.log('auth error');
+    return this.ready();
   }
 
   return LoanRequests.find({
@@ -34,7 +39,7 @@ Meteor.publish('loanRequests', function() {
 });
 
 // Publish all loanrequests in the database for admins
-Meteor.publish('allLoanRequests', function() {
+Meteor.publish('allLoanRequests', function () {
   // Verify if user is logged In
   if (Roles.userIsInRole(this.userId, 'admin')) {
     // Return all users
@@ -85,7 +90,7 @@ const partnerVisibleFields = organization => ({
 });
 
 // Publish all loanrequests this partner has access to
-Meteor.publish('partnerRequestsAuction', function() {
+Meteor.publish('partnerRequestsAuction', function () {
   if (Roles.userIsInRole(this.userId, 'partner')) {
     const user = Meteor.users.findOne(this.userId);
 
@@ -119,7 +124,7 @@ Meteor.publish('partnerRequestsAuction', function() {
 });
 
 // Publish all loanrequests this partner has access to
-Meteor.publish('partnerRequestsCompleted', function() {
+Meteor.publish('partnerRequestsCompleted', function () {
   if (Roles.userIsInRole(this.userId, 'partner')) {
     // Get the current partner user
     const user = Meteor.users.findOne(this.userId);
@@ -139,7 +144,7 @@ Meteor.publish('partnerRequestsCompleted', function() {
 });
 
 // Publish the loanrequest with a specific ID, and only show the fields for an anonymous offer
-Meteor.publish('partnerSingleLoanRequest', function(id) {
+Meteor.publish('partnerSingleLoanRequest', function (id) {
   check(id, String);
 
   // Verify if this is a partner account

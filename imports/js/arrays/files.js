@@ -241,3 +241,12 @@ export const getFileSchema = list => {
 
   return schema;
 };
+
+export const fakeFile = {
+  name: 'fakeFile.pdf',
+  size: 10000,
+  type: 'application/pdf',
+  url: 'https://www.fake-url.com',
+  key: 'asdf/fakeKey/fakeFile.pdf',
+  fileCount: 0,
+};

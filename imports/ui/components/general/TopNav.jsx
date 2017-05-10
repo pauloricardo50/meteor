@@ -7,6 +7,7 @@ import FlatButton from 'material-ui/FlatButton';
 
 import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown.jsx';
 import TopNavDrawer from '/imports/ui/components/general/TopNavDrawer.jsx';
+import { Roles } from 'meteor/alanning:roles';
 
 import colors from '/imports/js/config/colors';
 
@@ -29,29 +30,37 @@ const styles = {
   },
 };
 
-const TopNav = props => (
-  <div className="top-nav" style={{ zIndex: 20 }}>
-    <AppBar
-      style={!props.public ? styles.navbar : styles.publicNavbar}
-      iconElementLeft={props.currentUser && !props.public ? <TopNavDrawer {...props} /> : undefined}
-      iconStyleLeft={!props.currentUser || props.public ? { display: 'none' } : {}}
-      iconElementRight={
-        props.currentUser
-          ? <TopNavDropdown {...props} />
-          : <FlatButton
-            label="Login"
-            containerElement={<Link to="/login" />}
-            secondary
-            labelStyle={{ color: colors.primary }}
-          />
-      }
-    >
-      <Link to="/home" className="logo">
-        <img src="/img/logo_black.svg" alt="e-Potek" style={styles.image} />
-      </Link>
-    </AppBar>
-  </div>
-);
+const TopNav = props => {
+  const isUser = Roles.userIsInRole(props.currentUser, 'user');
+
+  const showDrawer = !!(props.currentUser && !props.public && isUser);
+
+  return (
+    <div className="top-nav" style={{ zIndex: 20 }}>
+      <AppBar
+        style={!props.public ? styles.navbar : styles.publicNavbar}
+        iconElementLeft={showDrawer ? <TopNavDrawer {...props} /> : undefined}
+        iconStyleLeft={!showDrawer ? { display: 'none' } : {}}
+        iconElementRight={
+          props.currentUser
+            ? <TopNavDropdown {...props} />
+            : <FlatButton
+              label="Login"
+              containerElement={<Link to="/login" />}
+              secondary
+              labelStyle={{ color: colors.primary }}
+            />
+        }
+      >
+        <div className="logo">
+          <Link to="/home" className="link">
+            <img src="/img/logo_black.svg" alt="e-Potek" style={styles.image} />
+          </Link>
+        </div>
+      </AppBar>
+    </div>
+  );
+};
 
 TopNav.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any),

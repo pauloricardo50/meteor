@@ -3,6 +3,7 @@ import React from 'react';
 import cleanMethod from '/imports/api/cleanMethods';
 
 import RaisedButton from 'material-ui/RaisedButton';
+import { fakeBorrower } from '/imports/api/borrowers/fakes';
 
 const MergeRecursive = (obj1, obj2) => {
   for (var p in obj2) {
@@ -23,22 +24,7 @@ const MergeRecursive = (obj1, obj2) => {
 };
 
 const handleCheat = props => {
-  const object = {
-    firstName: 'Marie',
-    lastName: 'Rochat',
-    gender: 'f',
-    address1: 'Chemin du Mont 3',
-    zipCode: 1200,
-    city: 'Genève',
-    citizenships: 'Suisse, Français',
-    age: 35,
-    birthPlace: 'Lausanne',
-    civilStatus: 'single',
-    company: 'Deloitte',
-    personalBank: 'BCGE',
-    isSwiss: true,
-    worksForOwnCompany: false,
-  };
+  const object = fakeBorrower;
 
   const finalObject = MergeRecursive(object, props.borrower);
 

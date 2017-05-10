@@ -50,3 +50,11 @@ export const insertFakeOffer = new ValidatedMethod({
     Offers.insert(object);
   },
 });
+
+export const deleteOffer = new ValidatedMethod({
+  name: 'offers.delete',
+  validate() {},
+  run({ id }) {
+    Offers.remove(id);
+  },
+});

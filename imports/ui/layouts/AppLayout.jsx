@@ -13,9 +13,14 @@ import RouteTransition from '/imports/ui/components/general/RouteTransition.jsx'
 const getRedirect = props => {
   const isAdmin = Roles.userIsInRole(props.currentUser, 'admin');
   const isPartner = Roles.userIsInRole(props.currentUser, 'partner');
+  const isDev = Roles.userIsInRole(props.currentUser, 'dev');
 
   if (!props.currentUser) {
     return '/login';
+  }
+
+  if (isDev) {
+    return false;
   }
 
   switch (props.type) {
@@ -64,8 +69,8 @@ const getRedirect = props => {
 };
 
 const AppLayout = props => {
-  const isUser = Roles.userIsInRole(props.currentUser, 'user');
   const redirect = getRedirect(props);
+  const isUser = Roles.userIsInRole(props.currentUser, 'user');
   const classes = classnames({
     'app-layout': true,
     'always-side-nav': props.type === 'admin',

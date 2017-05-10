@@ -336,10 +336,6 @@ export const LogicSchema = new SimpleSchema({
     type: Date,
     optional: true,
   },
-  auctionVerified: {
-    type: Boolean,
-    defaultValue: false,
-  },
   hasValidatedStructure: {
     type: Boolean,
     defaultValue: false,

@@ -11,6 +11,7 @@ import Divider from 'material-ui/Divider';
 import Person from 'material-ui/svg-icons/social/person';
 
 const getMenuItems = props => {
+  const isDev = Roles.userIsInRole(props.currentUser._id, 'dev');
   const isAdmin = Roles.userIsInRole(props.currentUser._id, 'admin');
   const isPartner = Roles.userIsInRole(props.currentUser._id, 'partner');
   return [
@@ -30,7 +31,7 @@ const getMenuItems = props => {
       show: !isAdmin && !isPartner,
     },
     {
-      label: 'Mon Profil',
+      label: 'Mon Compte',
       link: '/app/profile',
       show: !isAdmin && !isPartner,
     },
@@ -38,6 +39,11 @@ const getMenuItems = props => {
       label: 'Contact',
       link: '/app/contact',
       show: !isAdmin && !isPartner,
+    },
+    {
+      label: '< dev />',
+      link: '/app/dev',
+      show: isDev,
     },
   ];
 };

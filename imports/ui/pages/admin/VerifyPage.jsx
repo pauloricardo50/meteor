@@ -26,9 +26,11 @@ export default class VerifyPage extends Component {
 
     this.comments = [];
 
+    const v = this.props.loanRequest.logic.verification;
+
     this.state = {
-      comments: [''],
-      validated: null,
+      comments: v.comments.length ? v.comments : [''],
+      validated: v.validated === undefined ? null : v.validated,
     };
   }
 

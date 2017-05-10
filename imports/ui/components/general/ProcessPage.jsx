@@ -13,14 +13,16 @@ const getStepValues = props => {
   const length = stepItems.length;
   let prevStep;
   let nextStep;
+  let nextLink;
 
   // Get the next step's link
   if (index < length - 1) {
     nextStep = stepItems[index + 1];
+    nextLink = nextStep && !nextStep.disabled && nextStep.link;
   } else {
     nextStep = steps[props.stepNb + 1].items.length > 0 && steps[props.stepNb + 1].items[0];
+    nextLink = nextStep && nextStep.link;
   }
-  const nextLink = nextStep && !nextStep.disabled && nextStep.link;
 
   // Get the previous step's link
   if (index > 0) {
@@ -49,7 +51,7 @@ export default class ProcessPage extends Component {
     return (
       <div className="page-title">
         <ProcessPageBar {...barProps} className="top-bar" />
-        <div className="children">
+        <div className="children animated fadeIn">
           {this.props.children}
         </div>
         {this.props.showBottom && <ProcessPageBar {...barProps} className="bottom-bar" />}

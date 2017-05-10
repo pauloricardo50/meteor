@@ -11,10 +11,14 @@ const getConditions = loanRequest => {
     },
     {
       // case 1
-      condition: l.auctionStarted && l.auctionVerified && l.auctionEndTime >= now,
+      condition: l.auctionStarted && l.auctionEndTime >= now,
     },
     {
       // case 2
+      condition: l.auctionStarted && l.auctionEndTime >= now,
+    },
+    {
+      // case 3
       condition: l.lender && l.lender.offerId && !l.lender.contacted,
     },
   ];
@@ -28,7 +32,6 @@ const getActions = (loanRequest, props, i) => {
       return {
         name: 'Vérification demandée',
         handleClick() {
-          console.log(`${location.origin}/admin/requests/${loanRequest._id}/verify`);
           window.open(
             `${location.origin}/admin/requests/${loanRequest._id}/verify`,
             '_blank',
@@ -37,6 +40,7 @@ const getActions = (loanRequest, props, i) => {
         },
         small: !!l.verification &&
           `Date: ${moment(l.verification.requestedTime).format('D MMM H:mm:ss')}`,
+        subtitle: loanRequest.name,
         label: 'Vérifier',
       };
     case 1:
@@ -50,17 +54,31 @@ const getActions = (loanRequest, props, i) => {
           );
         },
         small: `Fin des enchères: ${moment(l.auctionEndTime).format('D MMM H:mm:ss')}`,
-        subtitle: `${Offers.find({ requestId: loanRequest._id }).count()} Offre(s)`,
+        subtitle: `${loanRequest.name} - ${Offers.find({
+          requestId: loanRequest._id,
+        }).count()} Offre(s)`,
         label: 'Ajouter une offre',
       };
     case 2:
+      return {
+        name: 'Enchères en cours',
+        handleClick() {
+          props.history.push(`/admin/requests/${loanRequest._id}/contactlenders`);
+        },
+        small: `Fin des enchères: ${moment(l.auctionEndTime).format('D MMM H:mm:ss')}`,
+        subtitle: `${loanRequest.name} - ${Offers.find({
+          requestId: loanRequest._id,
+        }).count()} Offre(s)`,
+        label: 'Contacter Prêteurs',
+      };
+    case 3:
       return {
         name: 'Prêteur a été choisi',
         handleClick() {
           props.history.push(`/admin/requests/${loanRequest._id}/confirm-lender`);
         },
         small: `Date: ${moment(l.lender.chosenTime).format('D MMM H:mm:ss')}`,
-        subtitle: Offers.find({ _id: l.lender.offerId }).organization,
+        subtitle: `${loanRequest.name} - ${Offers.find({ _id: l.lender.offerId }).organization}`,
         label: 'Connecter avec Prêteur',
       };
     default:

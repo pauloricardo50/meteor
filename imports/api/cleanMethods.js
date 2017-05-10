@@ -7,6 +7,7 @@ import {
   pushRequestValue,
   popRequestValue,
   incrementStep,
+  requestVerification,
 } from './loanrequests/methods';
 import { insertOffer, updateOffer } from './offers/methods';
 import {
@@ -23,6 +24,7 @@ const methods = {
   popRequestValue,
   startAuction,
   incrementStep,
+  requestVerification,
 
   insertBorrower,
   updateBorrower,
@@ -64,11 +66,9 @@ const methodCallback = (error, result, callback, bertObject) => {
 // A wrapper method that displays an error if it occurs
 const cleanMethod = (name, object, id, callback, bertObject) => {
   if (methods[name]) {
-    return methods[name].call({ object, id }, (e, r) =>
-      methodCallback(e, r, callback, bertObject));
-  } else {
-    throw new Meteor.Error('Not a valid clean method');
+    return methods[name].call({ object, id }, (e, r) => methodCallback(e, r, callback, bertObject));
   }
+  throw new Meteor.Error('Not a valid clean method');
 };
 
 export default cleanMethod;

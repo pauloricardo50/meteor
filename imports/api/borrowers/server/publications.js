@@ -5,6 +5,11 @@ import Borrowers from '../borrowers';
 
 // Publish a specific loanRequest with an ID
 Meteor.publish('borrower', function publish(id) {
+  // Verify if user is logged In
+  if (!this.userId) {
+    return this.ready();
+  }
+
   check(id, String);
 
   if (Roles.userIsInRole(this.userId, 'admin')) {
@@ -17,15 +22,13 @@ Meteor.publish('borrower', function publish(id) {
     userId: this.userId,
     _id: id,
   });
-
-  // Throw unauthorized error
 });
 
 // Publish all borrowers from the current user
 Meteor.publish('borrowers', function publish() {
   // Verify if user is logged In
   if (!this.userId) {
-    return false;
+    return this.ready();
   }
 
   return Borrowers.find({

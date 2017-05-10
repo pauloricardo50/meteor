@@ -148,3 +148,26 @@ export const popRequestValue = new ValidatedMethod({
 //     timeRange: 1000,
 //   });
 // }
+
+export const requestVerification = new ValidatedMethod({
+  name: 'loanRequests.requestVerification',
+  validate({ id }) {
+    check(id, String);
+  },
+  run({ id }) {
+    LoanRequests.update(id, {
+      $set: {
+        'logic.verification.requested': true,
+        'logic.verification.requestedTime': new Date(),
+      },
+    });
+  },
+});
+
+export const deleteRequest = new ValidatedMethod({
+  name: 'loanRequests.delete',
+  validate() {},
+  run({ id }) {
+    LoanRequests.remove(id);
+  },
+});

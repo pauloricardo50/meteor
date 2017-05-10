@@ -14,13 +14,12 @@ export default class VerificationPage extends Component {
   }
 
   handleClick = () => {
-    const object = {};
-    object['logic.verification.requested'] = true;
     if (isDemo()) {
       object['logic.verification.validated'] = true;
+      cleanMethod('updateRequest', object, this.props.loanRequest._id);
+    } else {
+      cleanMethod('requestVerification', null, this.props.loanRequest._id);
     }
-
-    cleanMethod('updateRequest', object, this.props.loanRequest._id);
   };
 
   render() {
@@ -51,13 +50,19 @@ export default class VerificationPage extends Component {
               N'hésitez pas à appeler votre expert en cas de doute.
             </p>
           </div>
-          <ul style={{ margin: '20px 0' }}>
+          <ul style={{ margin: '20px 0' }} className="verification-comment-list">
             {verification.comments.length > 0 &&
-              verification.comments.map((comment, i) => <li key={i}>{comment}</li>)}
+              verification.comments
+                .map((comment, i) => <li key={i}><h3>{i + 1}. {comment}</h3></li>)
+                .reduce((prev, curr) => [prev, <hr />, curr])}
           </ul>
-          <div style={{ marginTop: 40 }}>
-            <RaisedButton label="Re-Vérifier" primary onTouchTap={this.handleClick} />
-          </div>
+          {verification.requested
+            ? <div style={{ height: 150 }} className="animated fadeIn">
+              <LoadingComponent />
+            </div>
+            : <div style={{ marginTop: 40 }}>
+              <RaisedButton label="Re-Vérifier" primary onTouchTap={this.handleClick} />
+            </div>}
         </div>
       );
     } else {

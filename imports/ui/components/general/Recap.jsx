@@ -519,6 +519,10 @@ const getBorrowerArray = props => {
   const insuranceFortune = getInsuranceFortune(b);
   const totalFortune = getTotalFortune(b);
 
+  console.log(realEstateValue);
+  console.log(realEstateDebt);
+  console.log(realEstateFortune);
+
   return [
     {
       title: true,

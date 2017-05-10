@@ -49,9 +49,10 @@ social = {
 }
 
 
-$side-nav = 300px
+$side-nav = 250px
 $bottom-nav-height = 76px
 
+$bezier = cubic-bezier(.02, .01, .47, 1);
 
 /* Typography */
 body
@@ -252,6 +253,8 @@ input[type=number]
     +above($med)
       left: 24px;
       width: auto;
+    .link
+      margin: 0 auto;
     img
       // position: relative;
       margin: 0 auto;
@@ -386,12 +389,13 @@ svg:not(:root) {
   box-shadow: none;
 
 .side-nav-user
+  transition: all 300ms $bezier;
   background-color: white;
   border-right: 1px solid grey;
   min-height: calc(100% - 64px);
   fixed top left;
   top: 64px;
-  width: $side-nav;
+  width: 300px;
   z-index: z.nav;
   display: flex;
   flex-direction: column;
@@ -437,6 +441,7 @@ svg:not(:root) {
     align-items: flex-start;
     width: 100%;
     margin-top: 16px;
+    transition: all 300ms $bezier;
     .available-icon
       width: 4px;
       height: 4px;
@@ -460,7 +465,7 @@ svg:not(:root) {
         padding-left: 16px;
         width: 100%;
         position: relative;
-        transition: height 0.2ms ease;
+        transition: all 300ms $bezier;
         &.isActive
           background-color: #f8f9fa;
           .title
@@ -474,6 +479,7 @@ svg:not(:root) {
           align-items: center;
           cursor: pointer;
           width: 100%;
+          transition: all 300ms $bezier;
           .icon
             width: 32px;
             height: 32px;
@@ -529,6 +535,7 @@ svg:not(:root) {
             width: 100%;
             border-left: 1px solid rgba(0,0,0,0);
             padding-right: 16px;
+            transition: all 300ms $bezier;
             &:hover
               background-color: #f4f6f8;
               cursor: pointer;

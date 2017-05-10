@@ -19,7 +19,7 @@ export default class Page extends Component {
           <h3 className="title fixed-size bold secondary">{this.props.title}</h3>
           {this.props.rightComponent}
         </div>
-        <div className="children">
+        <div className="children animated fadeIn">
           {this.props.children}
         </div>
       </section>
