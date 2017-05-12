@@ -9,7 +9,7 @@ import {
   incrementStep,
   requestVerification,
 } from './loanrequests/methods';
-import { insertOffer, updateOffer } from './offers/methods';
+import { insertOffer, insertAdminOffer, updateOffer } from './offers/methods';
 import {
   insertBorrower,
   updateBorrower,
@@ -32,6 +32,7 @@ const methods = {
   popBorrowerValue,
 
   insertOffer,
+  insertAdminOffer,
   updateOffer,
 };
 

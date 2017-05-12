@@ -104,7 +104,8 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           title: 'Envoyez les enchères',
           link: `/app/requests/${loanRequest._id}/auction`,
           subtitle: '2 jours',
-          isDone: () => loanRequest.logic.auctionStarted,
+          isDone: () =>
+            loanRequest.logic.auctionStarted && loanRequest.logic.auctionEndTime <= serverTime,
           disabled: loanRequest.logic.step < 1,
         },
         {
@@ -115,7 +116,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           disabled: loanRequest.logic.step < 1 &&
             !(serverTime &&
               loanRequest.logic.auctionEndTime &&
-              loanRequest.logic.auctionEndTime <= serverTime), // TODO: make this work
+              loanRequest.logic.auctionEndTime > serverTime),
           isDone: () => !!(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
         },
       ],
@@ -153,6 +154,9 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
   // Verify all 4 items before item 5 are done
   steps[0].items[3].disabled = !previousDone(steps, 0, 3); // Vérification e-Potek
   // steps[0].items[6].disabled = !previousDone(steps, 0, 6); // Expertise
+
+  steps[1].items[1].disabled = !previousDone(steps, 1, 1); // Enchères
+  steps[1].items[2].disabled = !previousDone(steps, 1, 2); // Choix du prêteur
 
   return steps;
 };

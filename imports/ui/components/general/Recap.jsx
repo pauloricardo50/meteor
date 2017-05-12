@@ -40,6 +40,7 @@ const getDashboardArray = props => {
   const borrowRatio = getBorrowRatio(r, b);
   const loan = getLoanValue(r);
   const project = getProjectValue(r);
+  const totalUsed = getTotalUsed(r);
   const propAndWork = getPropAndWork(r);
   const monthly = getMonthlyPayment(r, b)[0];
   const expenses = getExpenses(b);
@@ -100,7 +101,7 @@ const getDashboardArray = props => {
     },
     {
       label: 'Fonds Propres',
-      value: toMoney(getTotalUsed(r)),
+      value: toMoney(totalUsed),
       hide: r.general.insuranceFortuneUsed,
     },
     {
@@ -265,6 +266,47 @@ const getDashboardArray = props => {
       label: 'Nb. de prêteurs potentiels',
       value: lenderCount,
       spacing: true,
+    },
+  ];
+};
+
+const getSmallDashboardArray = props => {
+  const r = props.loanRequest;
+  const b = props.borrowers;
+  const loan = getLoanValue(r);
+  const monthly = getMonthlyPayment(r, b)[0];
+  const totalUsed = getTotalUsed(r);
+  const propAndWork = getPropAndWork(r);
+
+  return [
+    {
+      title: true,
+      label: `Projet (en ${constants.getCurrency()})`,
+      props: {
+        style: {
+          marginTop: 0,
+        },
+      },
+    },
+    {
+      label: 'Emprunt',
+      value: toMoney(loan),
+    },
+    {
+      label: 'Charges estimées*',
+      value: (
+        <span>
+          {toMoney(monthly)} <small>/mois</small>
+        </span>
+      ),
+    },
+    {
+      label: 'Fonds propres investis',
+      value: toMoney(totalUsed),
+    },
+    {
+      label: r.property.value === propAndWork ? "Prix d'Achat" : 'Valeur du bien',
+      value: toMoney(Math.round(propAndWork)),
     },
   ];
 };
@@ -519,10 +561,6 @@ const getBorrowerArray = props => {
   const insuranceFortune = getInsuranceFortune(b);
   const totalFortune = getTotalFortune(b);
 
-  console.log(realEstateValue);
-  console.log(realEstateDebt);
-  console.log(realEstateFortune);
-
   return [
     {
       title: true,
@@ -613,6 +651,8 @@ const arraySwitch = props => {
       return getStart2Array(props);
     case 'dashboard':
       return getDashboardArray(props);
+    case 'dashboard-small':
+      return getSmallDashboardArray(props);
     case 'borrower':
       return getBorrowerArray(props);
     default:

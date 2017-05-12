@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import fileSaver from 'file-saver';
-import { Meteor } from 'meteor/meteor';
-import { Bert } from 'meteor/themeteorchef:bert';
-import { base64ToBlob } from '/imports/js/helpers/base64-to-blob.js';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -26,23 +22,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 // Envoyer une checklist par défaut (conditions, documents, prochaines étapes)
 // La banque ne va pas dire non -> envoyer tous les documents
 // Banque revient en 2 jours
-
-const downloadPDF = (event, requestId) => {
-  event.preventDefault();
-  const { target } = event;
-  target.innerHTML = '<em>Downloading...</em>';
-  target.classList.add('downloading');
-  Meteor.call('pdf.download', { requestId }, (error, response) => {
-    if (error) {
-      Bert.alert(error.reason, 'danger');
-    } else {
-      const blob = base64ToBlob(response.base64);
-      fileSaver.saveAs(blob, response.fileName);
-      target.innerHTML = 'Download';
-      target.classList.remove('downloading');
-    }
-  });
-};
 
 const getEmail = props => {
   const subject = `[e-Potek] ${props.loanRequest.property.address1}`;

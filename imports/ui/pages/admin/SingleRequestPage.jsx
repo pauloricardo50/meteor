@@ -1,13 +1,11 @@
+import React, { Component } from 'react';
+import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
-import React from 'react';
-import moment from 'moment';
-import { _ } from 'lodash';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import ProjectPieChart from '/imports/ui/components/charts/ProjectPieChart.jsx';
-import AdminNewOffer from '/imports/ui/components/admin/AdminNewOffer.jsx';
-import Recap from '/imports/ui/components/general/Recap';
+import RequestTabs from './singleRequestPage/RequestTabs.jsx';
+import StepStatus from './singleRequestPage/StepStatus.jsx';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import adminActions from '/imports/js/helpers/adminActions';
@@ -28,103 +26,58 @@ const styles = {
   },
 };
 
-const renderObject = (key, obj) => {
-  const value = obj[key];
-  const stringKey = _.startCase(key);
+export default class SingleRequestPage extends Component {
+  constructor(props) {
+    super(props);
 
-  switch (typeof value) {
-    case 'object':
-      if (Object.keys(value).length === 0) {
-        return null;
-      } else if (value.getMonth) {
-        return (
-          <li>
-            <h3>{stringKey}</h3>
-            <p>{moment(value).format('D MMM hh:mm:ss')}</p>
-          </li>
-        );
-      }
-
-      return (
-        <div key={key}>
-          <h2>{stringKey}</h2>
-          <ul>
-            {Object.keys(value).map(k => renderObject(k, value))}
-          </ul>
-        </div>
-      );
-    case 'number':
-      return (
-        <li key={key}>
-          <h3>{stringKey}</h3>
-          {value > 10000 ? <p>{`CHF ${toMoney(value)}`}</p> : <p>{`${value}`}</p>}
-        </li>
-      );
-    default:
-      return (
-        <li key={key}>
-          <h3>{stringKey}</h3>
-          <p>{`${value}`}</p>
-        </li>
-      );
+    this.state = {
+      showObject: false,
+      showOffers: false,
+      servertime: undefined,
+    };
   }
-};
 
-const AdminSingleRequestPage = props => {
-  const actions = adminActions(props.loanRequest, props);
-  console.log(actions);
-  return (
-    <div>
-      <RaisedButton
-        label="Retour"
-        style={styles.returnButton}
-        onTouchTap={() => props.history.push('/admin/requests')}
-      />
-      <section className="mask1">
-        <h1>
-          {props.loanRequest.name || 'Demande de Prêt'} - Emprunt de CHF&nbsp;
-          {toMoney(getLoanValue(props.loanRequest))}
-        </h1>
+  componentDidMount() {
+    Meteor.call('getServerTime', (e, res) => {
+      this.setState({ serverTime: res });
+    });
+  }
 
-        <div className="text-center" style={styles.actions}>
-          {actions.length > 0
-            ? actions.map((action, i) => (
-              <div key={i} className="form-group">
-                <RaisedButton label={action.label} onClick={action.handleClick} primary />
-              </div>
-              ))
-            : <h2 className="secondary">Aucune action à prendre</h2>}
-        </div>
+  render() {
+    const actions = adminActions(this.props.loanRequest, this.props);
+    return (
+      <div>
+        <RaisedButton
+          label="Retour"
+          style={styles.returnButton}
+          onTouchTap={() => this.props.history.push('/admin/requests')}
+        />
+        <section className="mask1">
+          <h1>
+            {this.props.loanRequest.name || 'Demande de Prêt'} - Emprunt de CHF&nbsp;
+            {toMoney(getLoanValue(this.props.loanRequest))}
+          </h1>
 
-        <ProjectPieChart loanRequest={props.loanRequest} />
+          <StepStatus {...this.props} serverTime={this.state.serverTime} />
 
-        <div style={styles.recapDiv}>
-          <Recap {...props} arrayName="dashboard" />
-        </div>
-
-        <hr />
-
-        {props.borrowers.map((b, i) => (
-          <div style={styles.recapDiv} key={b._id}>
-            <h2 className="fixed-size">{b.firstName || `Emprunteur ${i + 1}`}</h2>
-            <Recap {...props} arrayName="borrower" borrower={b} />
+          <div className="text-center" style={styles.actions}>
+            {actions.length > 0
+              ? actions.map((action, i) => (
+                <div key={i} className="form-group">
+                  <RaisedButton label={action.label} onClick={action.handleClick} primary />
+                </div>
+                ))
+              : <h2 className="secondary">Aucune action à prendre</h2>}
           </div>
-        ))}
 
-        <hr />
+          <RequestTabs {...this.props} serverTime={this.state.serverTime} />
+        </section>
+      </div>
+    );
+  }
+}
 
-        <ul className="request-map">
-          {Object.keys(props.loanRequest).map(key => renderObject(key, props.loanRequest))}
-        </ul>
-
-      </section>
-    </div>
-  );
-};
-
-AdminSingleRequestPage.propTypes = {
+SingleRequestPage.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
-
-export default AdminSingleRequestPage;

@@ -1,13 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import OfferForm from '/imports/ui/components/general/OfferForm';
 
 const styles = {
   backDrop: {
     backgroundColor: 'transparent',
     display: 'none',
+  },
+  dialog: {
+    width: '100%',
+    maxWidth: '80%',
   },
 };
 
@@ -20,7 +26,6 @@ export default class AdminNewOffer extends React.Component {
     };
   }
 
-
   handleClose = () => {
     this.setState({ open: false });
   };
@@ -31,33 +36,39 @@ export default class AdminNewOffer extends React.Component {
 
   render() {
     const actions = [
-      <FlatButton
-        label="Cancel"
-        primary
-        onTouchTap={this.handleClose}
-      />,
-      <FlatButton
-        label="Submit"
-        primary
-        keyboardFocused
-        onTouchTap={this.handleClose}
-      />,
+      <FlatButton label="Annuler" primary onTouchTap={this.handleClose} />,
+      // <FlatButton label="Ajouter" primary keyboardFocused onTouchTap={this.handleClose} />,
     ];
 
     return (
       <div>
-        <RaisedButton label="Dialog" onTouchTap={this.handleOpen} />
+        <RaisedButton
+          label="Ajouter une offre"
+          onTouchTap={this.handleOpen}
+          primary
+          style={this.props.style}
+        />
         <Dialog
-          title="Dialog With Actions"
+          title="Ajouter une offre"
           actions={actions}
           modal
           open={this.state.open}
           onRequestClose={this.handleClose}
           overlayStyle={styles.backDrop}
+          contentStyle={styles.dialog}
+          autoScrollBodyContent
         >
-          The actions in this window were passed in as an array of React objects.
+          <OfferForm {...this.props} method="insertAdminOffer" callback={this.handleClose} admin />
         </Dialog>
       </div>
     );
   }
 }
+
+AdminNewOffer.propTypes = {
+  style: PropTypes.objectOf(PropTypes.any),
+};
+
+AdminNewOffer.defaultProps = {
+  style: {},
+};

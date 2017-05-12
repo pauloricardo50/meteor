@@ -4,27 +4,15 @@ import PropTypes from 'prop-types';
 import Page from '/imports/ui/components/general/Page.jsx';
 import ProjectPieChart from '/imports/ui/components/charts/ProjectPieChart.jsx';
 import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
-import Recap from '/imports/ui/components/general/Recap.jsx';
 import NewRequestModal from './dashboardPage/NewRequestModal.jsx';
+import DashboardRecap from './dashboardPage/DashboardRecap.jsx';
 
 const DashboardPage = props => {
   return (
     <Page title="Tableau de Bord">
       <div className="container-fluid" style={{ width: '100%', padding: 0 }}>
         <div className="col-md-6 col-lg-4" style={{ marginBottom: 15 }}>
-          <div className="mask1">
-            <h4 className="fixed-size bold">Plan Financier</h4>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                margin: 0,
-              }}
-            >
-              <Recap {...props} arrayName="dashboard" />
-            </div>
-          </div>
+          <DashboardRecap {...props} />
         </div>
 
         <div className="col-md-6 col-lg-8">

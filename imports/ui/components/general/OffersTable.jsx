@@ -86,6 +86,7 @@ export default class OffersTable extends Component {
     ];
     offers.sort((a, b) => a.interest10 - b.interest10);
     const shownOffers = this.state.showFullTable ? offers : offers.slice(0, 5);
+
     return (
       <article>
         <table className="minimal-table">

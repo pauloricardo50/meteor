@@ -9,10 +9,10 @@ export const swissFrancMask = createNumberMask({
 export const percentMask = createNumberMask({
   prefix: '',
   suffix: '%',
-  includeThousandsSeparator: true,
-  thousandsSeparatorSymbol: "'",
   allowDecimal: true,
-  decimalSymbol: ',',
+  // requireDecimal: true,
+  decimalSymbol: '.',
+  allowLeadingZeroes: true,
 });
 
 export const decimalMask = createNumberMask({
@@ -20,4 +20,5 @@ export const decimalMask = createNumberMask({
   allowDecimal: true,
   decimalLimit: 3,
   requireDecimal: true,
+  allowLeadingZeroes: true,
 });

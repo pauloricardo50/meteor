@@ -7,6 +7,11 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import moment from 'moment';
 import LoanRequests from '../loanrequests';
+import { Roles } from 'meteor/alanning:roles';
+import { Accounts } from 'meteor/accounts-base';
+
+import '../../factories.js';
+
 import {
   insertRequest,
   updateRequest,
@@ -16,6 +21,7 @@ import {
   popRequestValue,
   incrementStep,
   requestVerification,
+  deleteRequest,
 } from '../methods';
 
 describe('loanRequests', () => {
@@ -108,6 +114,34 @@ describe('loanRequests', () => {
 
           expect(modifiedRequest.logic.verification.requested).to.be.true;
           expect(modifiedRequest.logic.verification.requestedTime).to.exist;
+        });
+      });
+
+      describe('deleteRequest', () => {
+        if (Meteor.isClient) {
+          it('Should work if user is a developer', () => {
+            const devRequest = Factory.create('loanRequestDev');
+
+            Meteor.userId = () => devRequest.userId;
+
+            const id = devRequest._id;
+            deleteRequest.call({ id });
+            const modifiedRequest = LoanRequests.findOne({ _id: id });
+
+            expect(modifiedRequest).to.not.exist;
+
+            // Reset the userId function to its default value
+            Meteor.userId = () => Accounts.userId;
+          });
+        }
+
+        it("Should throw an error if user isn't a developer", () => {
+          const id = request._id;
+
+          expect(function () {
+            // Wrap it in a function to be able to test if it throws
+            deleteRequest.call({ id });
+          }).to.throw(Error);
         });
       });
     });

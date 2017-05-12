@@ -1,0 +1,42 @@
+import fileSaver from 'file-saver';
+import { Meteor } from 'meteor/meteor';
+import { Bert } from 'meteor/themeteorchef:bert';
+
+const decodeBase64 = string => atob(string);
+
+const getLength = value => value.length;
+
+const buildByteArray = (string, stringLength) => {
+  const buffer = new ArrayBuffer(stringLength);
+  const array = new Uint8Array(buffer);
+  for (let i = 0; i < stringLength; i++) {
+    array[i] = string.charCodeAt(i);
+  }
+  return array;
+};
+
+const createBlob = byteArray => new Blob([byteArray], { type: 'application/pdf' });
+
+const base64ToBlob = base64String => {
+  const decodedString = decodeBase64(base64String);
+  const decodedStringLength = getLength(decodedString);
+  const byteArray = buildByteArray(decodedString, decodedStringLength);
+  return byteArray ? createBlob(byteArray) : null;
+};
+
+export const downloadPDF = (event, requestId) => {
+  event.preventDefault();
+  const { target } = event;
+  target.innerHTML = '<em>Downloading...</em>';
+  target.classList.add('downloading');
+  Meteor.call('pdf.download', { requestId }, (error, response) => {
+    if (error) {
+      Bert.alert(error.reason, 'danger');
+    } else {
+      const blob = base64ToBlob(response.base64);
+      fileSaver.saveAs(blob, response.fileName);
+      target.innerHTML = 'Télécharger PDF';
+      target.classList.remove('downloading');
+    }
+  });
+};

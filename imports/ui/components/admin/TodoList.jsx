@@ -27,12 +27,7 @@ const TodoList = props => {
       <h2>Actions à prendre</h2>
 
       {actionsArray.map((a, i) => (
-        <TodoItem
-          request={a.request}
-          key={`${a.request._id}${i}`}
-          {...a.action}
-          handleClick={() => props.history.push(`/admin/requests/${a.request._id}`)}
-        />
+        <TodoItem request={a.request} key={`${a.request._id}${i}`} {...a.action} />
       ))}
 
       {actionsArray.length <= 0 &&

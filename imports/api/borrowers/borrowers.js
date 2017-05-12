@@ -1,7 +1,6 @@
 import 'babel-polyfill';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { Factory } from 'meteor/dburles:factory';
 import { getFileSchema } from '/imports/js/arrays/files';
 
 const Borrowers = new Mongo.Collection('borrowers');
@@ -273,9 +272,3 @@ export const BorrowerSchema = new SimpleSchema({
 
 Borrowers.attachSchema(BorrowerSchema);
 export default Borrowers;
-
-Factory.define('borrower', Borrowers, {
-  userId: () => 'random_id',
-  createdAt: () => new Date(),
-  expenses: () => [{ description: 'test', value: 1 }],
-});

@@ -39,7 +39,7 @@ const getOffers = props => {
     );
 
     return {
-      id: offer._id,
+      _id: offer._id,
       maxAmount: props.formState.standard
         ? offer.standardOffer.maxAmount
         : offer.counterpartOffer.maxAmount,
@@ -144,16 +144,16 @@ export default class LenderTable extends Component {
                   (offer, index) =>
                     offer &&
                     <tr
-                      key={offer.id}
-                      onTouchTap={() => handleChoose(offer.id, this.props)}
+                      key={offer._id}
+                      onTouchTap={() => handleChoose(offer._id, this.props)}
                       className={
-                        offer.id === this.props.formState.chosenLender ? 'chosen' : 'choose'
+                        offer._id === this.props.formState.chosenLender ? 'chosen' : 'choose'
                       }
                     >
                       <td className="l">
                         {index + 1}
                         {' '}
-                        {offer.id === this.props.formState.chosenLender &&
+                        {offer._id === this.props.formState.chosenLender &&
                           <span className="fa fa-check" />}
                       </td>
                       <td className="r">
@@ -167,7 +167,6 @@ export default class LenderTable extends Component {
                       <td className="c">
                         {offer.conditions.length > 0 || offer.counterparts.length > 0
                           ? <ConditionsButton
-                            key={`${offer.id}0`} // to prevent weird key mistakes
                             conditions={offer.conditions}
                             counterparts={offer.counterparts}
                           />
@@ -196,5 +195,4 @@ LenderTable.propTypes = {
   offers: PropTypes.arrayOf(PropTypes.object).isRequired,
   formState: PropTypes.objectOf(PropTypes.any).isRequired,
   setFormState: PropTypes.func.isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };

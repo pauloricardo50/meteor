@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { check } from 'meteor/check';
 import moment from 'moment';
+import { Roles } from 'meteor/alanning:roles';
 
 import LoanRequests from './loanrequests';
 
@@ -9,7 +10,7 @@ export const insertRequest = new ValidatedMethod({
   name: 'loanrequests.insert',
   validate() {},
   run({ object, userId }) {
-    const userRequests = LoanRequests.find({ userId: this.userId });
+    const userRequests = LoanRequests.find({ userId: Meteor.userId() });
 
     if (userRequests.length > 3) {
       throw new Meteor.Error(
@@ -19,7 +20,7 @@ export const insertRequest = new ValidatedMethod({
     }
 
     // Allow adding a userId for testing purposes
-    object.userId = userId || this.userId;
+    object.userId = userId || Meteor.userId();
 
     return LoanRequests.insert(object);
   },
@@ -50,7 +51,7 @@ export const incrementStep = new ValidatedMethod({
 
     // TODO: make sure step is really done
 
-    LoanRequests.update(id, {
+    return LoanRequests.update(id, {
       $set: { 'logic.step': currentStep + 1 },
     });
   },
@@ -76,7 +77,7 @@ export const startAuction = new ValidatedMethod({
 
     console.log(`Temps de fin réel: ${getAuctionEndTime(moment())}`);
 
-    LoanRequests.update(id, {
+    return LoanRequests.update(id, {
       $set: auctionObject,
     });
   },
@@ -122,7 +123,7 @@ export const pushRequestValue = new ValidatedMethod({
     check(id, String);
   },
   run({ object, id }) {
-    LoanRequests.update(id, { $push: object });
+    return LoanRequests.update(id, { $push: object });
   },
 });
 
@@ -133,7 +134,7 @@ export const popRequestValue = new ValidatedMethod({
     check(id, String);
   },
   run({ object, id }) {
-    LoanRequests.update(id, { $pop: object });
+    return LoanRequests.update(id, { $pop: object });
   },
 });
 
@@ -155,7 +156,7 @@ export const requestVerification = new ValidatedMethod({
     check(id, String);
   },
   run({ id }) {
-    LoanRequests.update(id, {
+    return LoanRequests.update(id, {
       $set: {
         'logic.verification.requested': true,
         'logic.verification.requestedTime': new Date(),
@@ -166,8 +167,51 @@ export const requestVerification = new ValidatedMethod({
 
 export const deleteRequest = new ValidatedMethod({
   name: 'loanRequests.delete',
-  validate() {},
+  validate({ id }) {
+    check(id, String);
+  },
   run({ id }) {
-    LoanRequests.remove(id);
+    if (
+      Roles.userIsInRole(Meteor.userId(), 'dev') ||
+      Roles.userIsInRole(Meteor.userId(), 'admin')
+    ) {
+      return LoanRequests.remove(id);
+    }
+
+    throw new Error('not authorized');
+  },
+});
+
+export const finishAuction = new ValidatedMethod({
+  name: 'loanRequests.finishAuction',
+  validate({ id }) {
+    check(id, String);
+  },
+  run({ id }) {
+    if (Roles.userIsInRole(Meteor.userId(), 'admin')) {
+      return LoanRequests.update(id, { $set: { 'logic.auctionEndTime': new Date() } });
+    }
+
+    throw new Error('not authorized');
+  },
+});
+
+export const cancelAuction = new ValidatedMethod({
+  name: 'loanRequests.cancelAuction',
+  validate({ id }) {
+    check(id, String);
+  },
+  run({ id }) {
+    if (Roles.userIsInRole(Meteor.userId(), 'admin')) {
+      return LoanRequests.update(id, {
+        $set: {
+          'logic.auctionEndTime': undefined,
+          'logic.auctionStarted': false,
+          'logic.auctionStartTime': undefined,
+        },
+      });
+    }
+
+    throw new Error('not authorized');
   },
 });

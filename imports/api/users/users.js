@@ -1,7 +1,6 @@
 import 'babel-polyfill';
 import SimpleSchema from 'simpl-schema';
 import { Meteor } from 'meteor/meteor';
-import { Factory } from 'meteor/dburles:factory';
 
 const FileSchema = new SimpleSchema({
   name: {

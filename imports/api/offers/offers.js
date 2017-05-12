@@ -1,5 +1,4 @@
 import 'babel-polyfill';
-import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
@@ -55,6 +54,12 @@ const singleOffer = new SimpleSchema({
     max: 100,
     optional: true,
   },
+  interest15: {
+    type: Number,
+    min: 0,
+    max: 100,
+    optional: true,
+  },
 });
 
 export const OfferSchema = new SimpleSchema({
@@ -89,14 +94,11 @@ export const OfferSchema = new SimpleSchema({
       return undefined;
     },
   },
-  organization: {
-    type: String,
-    autoValue() {
-      if (this.isInsert && !this.isSet) {
-        return Meteor.user().profile.organisation;
-      }
-    },
+  isAdmin: {
+    type: Boolean,
+    defaultValue: false,
   },
+  organization: String,
   canton: {
     type: String,
     min: 2,
@@ -105,7 +107,6 @@ export const OfferSchema = new SimpleSchema({
   auctionEndTime: Date,
   standardOffer: {
     type: singleOffer,
-    optional: true,
   },
   counterpartOffer: {
     type: singleOffer,
@@ -114,6 +115,7 @@ export const OfferSchema = new SimpleSchema({
   counterparts: {
     type: Array,
     defaultValue: [],
+    optional: true,
   },
   'counterparts.$': String,
   conditions: {

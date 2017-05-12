@@ -8,6 +8,8 @@ import { Factory } from 'meteor/dburles:factory';
 import Borrowers from '../borrowers';
 import { insertBorrower, updateBorrower, pushBorrowerValue, popBorrowerValue } from '../methods';
 
+import '../../factories.js';
+
 describe('borrowers', () => {
   beforeEach(function () {
     if (Meteor.isServer) {

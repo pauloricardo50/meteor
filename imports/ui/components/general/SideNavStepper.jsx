@@ -9,7 +9,7 @@ export default class SideNavStepper extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { active: -1 };
+    this.state = { active: this.props.loanRequest.logic.step };
   }
 
   componentDidMount() {

@@ -1,7 +1,6 @@
 import 'babel-polyfill';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { Factory } from 'meteor/dburles:factory';
 
 import { GeneralSchema, PropertySchema, LogicSchema } from './additionalSchemas';
 
@@ -75,13 +74,3 @@ const LoanRequestSchema = new SimpleSchema({
 // Finally, attach schema to the Mongo collection and export
 LoanRequests.attachSchema(LoanRequestSchema);
 export default LoanRequests;
-
-Factory.define('loanRequest', LoanRequests, {
-  userId: () => 'random_id',
-  createdAt: () => new Date(),
-  general: () => ({ fortuneUsed: 250000, partnersToAvoid: ['joe', 'john'] }),
-  borrowers: () => 'exampleId',
-  property: () => ({ value: 1000000 }),
-  logic: () => ({}),
-  admin: () => ({}),
-});

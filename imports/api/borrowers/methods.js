@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { check } from 'meteor/check';
+import { Roles } from 'meteor/alanning:roles';
 
 import Borrowers from './borrowers';
 
@@ -9,7 +10,7 @@ export const insertBorrower = new ValidatedMethod({
   validate() {},
   run({ object, userId }) {
     // Allow adding a userId for testing purposes
-    object.userId = userId || this.userId;
+    object.userId = userId || Meteor.userId();
 
     return Borrowers.insert(object);
   },
@@ -33,7 +34,7 @@ export const pushBorrowerValue = new ValidatedMethod({
     check(id, String);
   },
   run({ object, id }) {
-    Borrowers.update(id, { $push: object });
+    return Borrowers.update(id, { $push: object });
   },
 });
 
@@ -44,14 +45,20 @@ export const popBorrowerValue = new ValidatedMethod({
     check(id, String);
   },
   run({ object, id }) {
-    Borrowers.update(id, { $pop: object }, { getAutoValues: false });
+    return Borrowers.update(id, { $pop: object }, { getAutoValues: false });
   },
 });
 
 export const deleteBorrower = new ValidatedMethod({
   name: 'borrowers.delete',
-  validate() {},
+  validate({ id }) {
+    check(id, String);
+  },
   run({ id }) {
-    Borrowers.remove(id);
+    if (Roles.userIsInRole(Meteor.userId(), 'dev')) {
+      return Borrowers.remove(id);
+    }
+
+    return false;
   },
 });

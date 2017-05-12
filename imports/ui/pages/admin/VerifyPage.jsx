@@ -58,63 +58,70 @@ export default class VerifyPage extends Component {
     }
 
     return (
-      <div>
-        <section className="mask1">
-          <h1>Vérifier un dossier</h1>
+      <section className="mask1">
+        <h1>Vérifier un dossier</h1>
 
-          <div className="text-center">
-            <DropDownMenu
-              value={this.state.validated}
-              onChange={this.handleChange}
-              autoWidth={false}
-              style={styles.dropdown}
-            >
-              <MenuItem value={null} />
-              <MenuItem value primaryText="Valide" />
-              <MenuItem value={false} primaryText="Pas Valide" />
-            </DropDownMenu>
-          </div>
+        <h3>Fichiers à ouvrir:</h3>
+        <ul>
+          <li>Demande de prêt: <span className="bold">{this.props.loanRequest._id}</span></li>
+          {this.props.borrowers.map((b, i) => (
+            <li key={b._id}>Emprunteur {i + 1}: <span className="bold">{b._id}</span></li>
+          ))}
+        </ul>
 
-          <div>
-            {this.state.comments.map((c, i) => (
-              <TextField
-                value={c}
-                multiLine
-                rows={2}
-                fullWidth
-                floatingLabelText={`Commentaire No.${i + 1}`}
-                onChange={e => this.handleChangeComment(e, i)}
-              />
-            ))}
-            <div className="text-center">
-              <RaisedButton
-                label="+"
-                onTouchTap={() => this.setState(prev => ({ comments: [...prev.comments, ''] }))}
-                primary
-                style={styles.buttons}
-              />
-              <RaisedButton
-                label="-"
-                onTouchTap={() =>
-                  this.setState(prev => ({ comments: [...prev.comments].splice(-1, 1) }))}
-                disabled={this.state.comments.length <= 1}
-                style={styles.buttons}
-              />
-            </div>
-          </div>
-          <div className="text-center" style={styles.finalButton}>
-            <RaisedButton
-              label="Envoyer"
-              primary
-              disabled={
-                !(this.state.validated === true ||
-                  (this.state.validated === false && this.state.comments[0]))
-              }
-              onTouchTap={this.handleSubmit}
-            />
-          </div>
-        </section>
-      </div>
+        <hr />
+
+        <div className="text-center">
+          <h2>Réponse</h2>
+          <DropDownMenu
+            value={this.state.validated}
+            onChange={this.handleChange}
+            autoWidth={false}
+            style={styles.dropdown}
+          >
+            <MenuItem value={null} />
+            <MenuItem value primaryText="Valide" />
+            <MenuItem value={false} primaryText="Pas Valide" />
+          </DropDownMenu>
+        </div>
+
+        {this.state.comments.map((c, i) => (
+          <TextField
+            value={c}
+            multiLine
+            rows={2}
+            fullWidth
+            floatingLabelText={`Commentaire No.${i + 1}`}
+            onChange={e => this.handleChangeComment(e, i)}
+          />
+        ))}
+        <div className="text-center">
+          <RaisedButton
+            label="+"
+            onTouchTap={() => this.setState(prev => ({ comments: [...prev.comments, ''] }))}
+            primary
+            style={styles.buttons}
+          />
+          <RaisedButton
+            label="-"
+            onTouchTap={() =>
+              this.setState(prev => ({ comments: [...prev.comments].splice(-1, 1) }))}
+            disabled={this.state.comments.length <= 1}
+            style={styles.buttons}
+          />
+        </div>
+        <div className="text-center" style={styles.finalButton}>
+          <RaisedButton
+            label="Envoyer"
+            primary
+            disabled={
+              !(this.state.validated === true ||
+                (this.state.validated === false && this.state.comments[0]))
+            }
+            onTouchTap={this.handleSubmit}
+          />
+        </div>
+      </section>
     );
   }
 }

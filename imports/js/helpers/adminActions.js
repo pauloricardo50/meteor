@@ -1,5 +1,6 @@
 import moment from 'moment';
 import Offers from '/imports/api/offers/offers';
+import { downloadPDF } from '/imports/js/helpers/download-pdf';
 
 const getConditions = loanRequest => {
   const now = new Date();
@@ -32,10 +33,11 @@ const getActions = (loanRequest, props, i) => {
       return {
         name: 'Vérification demandée',
         handleClick() {
+          props.history.push(`/admin/requests/${loanRequest._id}`);
           window.open(
             `${location.origin}/admin/requests/${loanRequest._id}/verify`,
             '_blank',
-            'width=500',
+            'width=700, height=500',
           );
         },
         small: !!l.verification &&
@@ -47,11 +49,7 @@ const getActions = (loanRequest, props, i) => {
       return {
         name: 'Enchères en cours',
         handleClick() {
-          window.open(
-            `${location.host}/admin/requests/${loanRequest._id}/offers/new`,
-            '',
-            'width=500',
-          );
+          props.history.push(`/admin/requests/${loanRequest._id}`);
         },
         small: `Fin des enchères: ${moment(l.auctionEndTime).format('D MMM H:mm:ss')}`,
         subtitle: `${loanRequest.name} - ${Offers.find({
@@ -62,14 +60,15 @@ const getActions = (loanRequest, props, i) => {
     case 2:
       return {
         name: 'Enchères en cours',
-        handleClick() {
-          props.history.push(`/admin/requests/${loanRequest._id}/contactlenders`);
+        handleClick(e) {
+          downloadPDF(e, loanRequest._id);
+          // props.history.push(`/admin/requests/${loanRequest._id}/contactlenders`);
         },
         small: `Fin des enchères: ${moment(l.auctionEndTime).format('D MMM H:mm:ss')}`,
         subtitle: `${loanRequest.name} - ${Offers.find({
           requestId: loanRequest._id,
         }).count()} Offre(s)`,
-        label: 'Contacter Prêteurs',
+        label: 'Télécharger PDF',
       };
     case 3:
       return {
