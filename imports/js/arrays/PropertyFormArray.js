@@ -249,7 +249,7 @@ const getPropertyArray = (loanRequest, borrowers) => {
       placeholder: '1',
     },
     {
-      id: 'property.parking.outsideCovered',
+      id: 'property.parking.outside',
       type: 'textInput',
       number: true,
       label: 'Places de parc extérieur couvertes',

@@ -12,16 +12,17 @@ import '../../factories.js';
 
 describe('borrowers', () => {
   beforeEach(function () {
-    if (Meteor.isServer) {
-      resetDatabase();
-    }
+    // if (Meteor.isServer) {
+    resetDatabase();
+    // }
   });
 
   describe('mutators', function () {
     it('builds correctly from factory', function () {
       const borrower = Factory.create('borrower');
 
-      assert.typeOf(borrower, 'object');
+      expect(typeof borrower).to.equal('object');
+      expect(borrower._id).to.exist;
     });
   });
 

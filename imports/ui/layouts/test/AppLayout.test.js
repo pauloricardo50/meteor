@@ -4,23 +4,23 @@ import { describe, it, beforeEach } from 'meteor/practicalmeteor:mocha';
 import getMountedComponent from '/imports/js/helpers/testHelpers';
 import { Factory } from 'meteor/dburles:factory';
 
-import Start from '../auctionPage/Start.jsx';
+import AppLayout from '../AppLayout.jsx';
 
 if (Meteor.isClient) {
-  describe('<AuctionPage />', () => {
+  describe('<AppLayout />', () => {
     let props;
-    const component = () => getMountedComponent(Start, props);
+    const component = () => getMountedComponent(AppLayout, props, true);
 
     beforeEach(() => {
-      props = {
-        loanRequest: Factory.create('loanRequest'),
-        borrowers: [{}],
-      };
+      const user = Factory.create('dev');
+      props = { currentUser: user };
       getMountedComponent.reset();
     });
 
-    it('Renders correctly before auction', () => {
-      expect(component().hasClass('mask1')).to.be.true;
+    it('Renders correctly', () => {
+      const divs = component().find('div');
+
+      expect(divs.length).to.be.at.least(1);
     });
   });
 }

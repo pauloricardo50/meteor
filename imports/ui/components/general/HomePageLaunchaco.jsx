@@ -23,8 +23,8 @@ const styles = {
   },
 };
 
-module.exports = () => (
-  <template name="launchaco" style={{ display: 'unset' }}>
+export default () => (
+  <div name="launchaco" style={{ display: 'unset' }}>
     <header className="header">
       <div className="container-sml text-center">
         <div className="col-12">
@@ -298,5 +298,5 @@ module.exports = () => (
         </div>
       </div>
     </div>
-  </template>
+  </div>
 );

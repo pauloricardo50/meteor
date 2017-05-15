@@ -7,6 +7,10 @@ export default class EmailVerificationPage extends Component {
   componentDidMount() {
     const token = this.props.match.params.token;
 
+    if (!token) {
+      this.props.history.push('/');
+    }
+
     Accounts.verifyEmail(token, error => {
       if (error) {
         this.props.history.push('/');

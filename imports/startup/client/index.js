@@ -17,13 +17,12 @@ Meteor.startup(() => {
 
   localizationStartup();
 
+  // Very important for all advanced tap/react/buttons/material-ui to work.
+  // Might not be required in future react versions
+  // Adds the onTouchTap (no delay) prop to all elements which take onClick (delay)
   // Call this before rendering react
   injectTapEventPlugin();
 
   // Render react-router routes
   render(RenderRoutes(), document.getElementById('react-root'));
 });
-
-// Very important for all advanced tap/react/buttons/material-ui to work.
-// Might not be required in future react versions
-// Adds the onTouchTap (no delay) prop to all elements which take onClick (delay)

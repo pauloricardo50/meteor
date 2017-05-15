@@ -26,16 +26,17 @@ import {
 
 describe('loanRequests', () => {
   beforeEach(function () {
-    if (Meteor.isServer) {
-      resetDatabase();
-    }
+    // if (Meteor.isServer) {
+    resetDatabase();
+    // }
   });
 
   describe('mutators', function () {
     it('builds correctly from factory', function () {
       const request = Factory.create('loanRequest');
 
-      assert.typeOf(request, 'object');
+      expect(typeof request).to.equal('object');
+      expect(request._id).to.exist;
     });
   });
 

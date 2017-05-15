@@ -10,15 +10,15 @@ import { toMoney } from '../helpers/conversionFunctions';
 
 const getAcquisitionArray = (state, props, setFormState) => [
   {
-    condition: state.knowsProperty === true,
     id: 'propertyValue',
+    condition: state.knowsProperty === true,
     type: 'textInput',
     text1: "Le prix d'achat de la propriété est de",
     money: true,
   },
   {
-    condition: state.knowsProperty === true,
     id: 'notaryFeesAgreed',
+    condition: state.knowsProperty === true,
     type: 'buttons',
     text1: (
       <span>
@@ -34,8 +34,8 @@ const getAcquisitionArray = (state, props, setFormState) => [
     buttons: [{ id: true, label: 'Continuer' }],
   },
   {
-    condition: state.knowsProperty === true,
     id: 'propertyWorkExists',
+    condition: state.knowsProperty === true,
     type: 'buttons',
     question: true,
     text1: 'Souhaitez-vous rajouter à votre projet des travaux de plus-value?',
@@ -43,15 +43,15 @@ const getAcquisitionArray = (state, props, setFormState) => [
     deleteId: 'propertyWork',
   },
   {
-    condition: state.propertyWorkExists === true,
     id: 'propertyWork',
+    condition: state.propertyWorkExists === true,
     type: 'textInput',
     text1: 'Les travaux de plus-value sont estimés à',
     money: true,
   },
   {
-    condition: state.propertyWork !== undefined && state.propertyWork !== 0,
     id: 'projectAgreed',
+    condition: state.propertyWork !== undefined && state.propertyWork !== 0,
     type: 'buttons',
     text1: (
       <span>
@@ -78,8 +78,8 @@ const getAcquisitionArray = (state, props, setFormState) => [
     ],
   },
   {
-    condition: state.usageType === 'investment',
     id: 'propertyRent',
+    condition: state.usageType === 'investment',
     type: 'textInput',
     text1: "J'estime que le loyer mensuel pour cette propriété sera",
     money: true,
@@ -92,8 +92,8 @@ const getAcquisitionArray = (state, props, setFormState) => [
     buttons: [{ id: 1, label: 'Un' }, { id: 2, label: 'Deux' }],
   },
   {
-    condition: state.borrowerCount === 1,
     id: 'age',
+    condition: state.borrowerCount === 1,
     type: 'textInput',
     text1: "J'ai",
     text2: 'ans.',
@@ -103,8 +103,8 @@ const getAcquisitionArray = (state, props, setFormState) => [
     validation: { min: 18, max: 120 },
   },
   {
-    condition: state.borrowerCount > 1,
     id: 'oldestAge',
+    condition: state.borrowerCount > 1,
     type: 'textInput',
     text1: "L'emprunteur le plus agé a",
     text2: 'ans.',
@@ -114,16 +114,16 @@ const getAcquisitionArray = (state, props, setFormState) => [
     validation: { min: 18, max: 120 },
   },
   {
-    condition: state.borrowerCount === 1 && state.age >= 50,
     id: 'gender',
+    condition: state.borrowerCount === 1 && state.age >= 50,
     type: 'buttons',
     text1: 'Je suis',
     text2: '.',
     buttons: [{ id: 'f', label: 'une femme' }, { id: 'm', label: 'un homme' }],
   },
   {
-    condition: state.borrowerCount > 1 && state.oldestAge >= 50,
     id: 'oldestGender',
+    condition: state.borrowerCount > 1 && state.oldestAge >= 50,
     type: 'buttons',
     text1: 'Et cette personne est',
     buttons: [{ id: 'f', label: 'une femme' }, { id: 'm', label: 'un homme' }],
@@ -165,32 +165,32 @@ const getAcquisitionArray = (state, props, setFormState) => [
     buttons: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
   },
   {
-    condition: state.bonusExists === true,
     id: 'bonus4',
+    condition: state.bonusExists === true,
     type: 'multipleInput',
     text1: 'Bonus 2017',
     money: true,
     zeroAllowed: true,
   },
   {
-    condition: state.bonusExists === true,
     id: 'bonus3',
+    condition: state.bonusExists === true,
     type: 'multipleInput',
     text1: 'Bonus 2016',
     money: true,
     zeroAllowed: true,
   },
   {
-    condition: state.bonusExists === true,
     id: 'bonus2',
+    condition: state.bonusExists === true,
     type: 'multipleInput',
     text1: 'Bonus 2015',
     money: true,
     zeroAllowed: true,
   },
   {
-    condition: state.bonusExists === true,
     id: 'bonus1',
+    condition: state.bonusExists === true,
     type: 'multipleInput',
     text1: 'Bonus 2014',
     money: true,
@@ -212,8 +212,8 @@ const getAcquisitionArray = (state, props, setFormState) => [
     buttons: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
   },
   {
-    condition: state.otherIncome === true,
     id: 'otherIncomeArray',
+    condition: state.otherIncome === true,
     existId: 'otherIncome',
     type: 'arrayInput',
     inputs: [
@@ -258,8 +258,8 @@ const getAcquisitionArray = (state, props, setFormState) => [
     buttons: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
   },
   {
-    condition: state.expensesExist === true,
     id: 'expensesArray',
+    condition: state.expensesExist === true,
     existId: 'expensesExist',
     type: 'arrayInput',
     text1: (
@@ -319,8 +319,8 @@ const getAcquisitionArray = (state, props, setFormState) => [
     money: true,
   },
   {
-    condition: state.usageType === 'primary',
     id: 'insurance1Exists',
+    condition: state.usageType === 'primary',
     type: 'buttons',
     text1: 'Avez-vous un 2ème pilier?',
     question: true,
@@ -337,15 +337,15 @@ const getAcquisitionArray = (state, props, setFormState) => [
     ],
   },
   {
-    condition: state.usageType === 'primary' && state.insurance1Exists === true,
     id: 'insurance1',
+    condition: state.usageType === 'primary' && state.insurance1Exists === true,
     type: 'multipleInput',
     text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 2ème pilier?',
     money: true,
   },
   {
-    condition: state.usageType === 'primary',
     id: 'insurance2Exists',
+    condition: state.usageType === 'primary',
     type: 'buttons',
     text1: 'Avez-vous un 3ème pilier?',
     question: true,
@@ -362,8 +362,8 @@ const getAcquisitionArray = (state, props, setFormState) => [
     ],
   },
   {
-    condition: state.usageType === 'primary' && state.insurance2Exists === true,
     id: 'insurance2',
+    condition: state.usageType === 'primary' && state.insurance2Exists === true,
     type: 'multipleInput',
     text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 3ème pilier?',
     money: true,
@@ -377,8 +377,8 @@ const getAcquisitionArray = (state, props, setFormState) => [
     buttons: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
   },
   {
-    condition: state.realEstateExists === true,
     id: 'realEstateArray',
+    condition: state.realEstateExists === true,
     existId: 'realEstateExists',
     type: 'arrayInput',
     allOptions: true,
@@ -412,9 +412,9 @@ const getAcquisitionArray = (state, props, setFormState) => [
 
 const getErrorArray = (state, props) => [
   {
+    id: 'error',
     condition: state.usageType === 'primary' &&
       (props.fortune < props.minCash && props.insuranceFortune >= 0.1 * props.propAndWork),
-    id: 'error',
     type: 'buttons',
     text1: (
       <span>
@@ -434,8 +434,8 @@ const getErrorArray = (state, props) => [
     buttons: [{ id: false, label: 'Pourquoi ?', noPrimary: true }],
   },
   {
-    condition: props.fortune + props.insuranceFortune < props.minFortune,
     id: 'error',
+    condition: props.fortune + props.insuranceFortune < props.minFortune,
     type: 'buttons',
     text1: (
       <span>
@@ -454,8 +454,8 @@ const getErrorArray = (state, props) => [
 
 const getFinalArray = (state, props, setFormState) => [
   {
-    condition: state.type === 'acquisition',
     id: 'loanWanted',
+    condition: state.type === 'acquisition',
     type: 'sliderInput',
     text1: (
       <span>
@@ -502,10 +502,10 @@ const getFinalArray = (state, props, setFormState) => [
     },
   },
   {
+    id: 'fortuneRequiredAgreed',
     condition: state.type === 'acquisition' &&
       (state.usageType !== 'primary' ||
         (state.usageType === 'primary' && props.insuranceFortune <= 0)),
-    id: 'fortuneRequiredAgreed',
     type: 'buttons',
     text1: (
       <span>
@@ -530,12 +530,12 @@ const getFinalArray = (state, props, setFormState) => [
     ],
   },
   {
+    id: 'useInsurance',
     condition: state.type === 'acquisition' &&
       state.usageType === 'primary' &&
       props.fortune >= props.fortuneNeeded &&
       props.insuranceFortune > 0,
     type: 'buttons',
-    id: 'useInsurance',
     text1: 'Voulez-vous utiliser votre fortune de prévoyance sur ce projet ?',
     buttons: [
       {
@@ -564,19 +564,19 @@ const getFinalArray = (state, props, setFormState) => [
     question: true,
   },
   {
+    id: 'useInsurance',
     condition: state.type === 'acquisition' &&
       state.usageType === 'primary' &&
       props.fortune < props.fortuneNeeded,
     type: 'buttons',
-    id: 'useInsurance',
     text1: 'Vous devrez utiliser votre fortune de prévoyance pour ce projet',
     buttons: [{ id: true, label: 'Ok' }, { id: undefined, label: 'Pourquoi?', noPrimary: true }],
     question: true,
   },
   {
+    id: 'insuranceConditions',
     condition: state.useInsurance === true,
     type: 'buttons',
-    id: 'insuranceConditions',
     text1: 'Il y a des conditions pour pouvoir utiliser sa prévoyance, est-ce que vous les passez?',
     question: true,
     buttons: [
@@ -604,13 +604,13 @@ const getFinalArray = (state, props, setFormState) => [
     ],
   },
   {
+    id: 'fortuneSliders',
     condition: state.type === 'acquisition' &&
       state.usageType === 'primary' &&
       state.useInsurance === true &&
       state.insuranceConditions === true,
     type: 'custom',
     component: FortuneSliders,
-    id: 'fortuneSliders',
     validation: () =>
       state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= props.minFortune &&
       state.fortuneUsed >= props.minCash,
@@ -641,8 +641,8 @@ const getFinalArray = (state, props, setFormState) => [
     ],
   },
   {
-    condition: (props.income && props.monthly / ((props.income - props.expenses) / 12)) > 0.38,
     id: 'error',
+    condition: (props.income && props.monthly / ((props.income - props.expenses) / 12)) > 0.38,
     type: 'buttons',
     text1: (
       <span>
@@ -658,9 +658,9 @@ const getFinalArray = (state, props, setFormState) => [
     buttons: [{ id: false, label: 'Pourquoi ?', noPrimary: true }],
   },
   {
+    id: 'finalized',
     condition: state.type === 'test' ||
       state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= props.minFortune,
-    id: 'finalized',
     type: 'buttons',
     text1: 'Vous-êtes arrivé au bout, formidable!',
     hideResult: true,
