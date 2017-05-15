@@ -37,14 +37,13 @@ const DashboardPage = props => {
   );
 };
 
-DashboardPage.defaultProps = {
-  loanRequest: undefined,
-  borrowers: [],
+DashboardPage.propTypes = {
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  borrowers: PropTypes.arrayOf(PropTypes.object),
 };
 
-DashboardPage.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any),
-  borrowers: PropTypes.arrayOf(PropTypes.object),
+DashboardPage.defaultProps = {
+  borrowers: [],
 };
 
 export default DashboardPage;

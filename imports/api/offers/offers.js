@@ -70,11 +70,6 @@ export const OfferSchema = new SimpleSchema({
   userId: {
     type: String,
     index: true,
-    autoValue() {
-      if (this.isInsert) {
-        return this.userId;
-      }
-    },
   },
   createdAt: {
     type: Date,

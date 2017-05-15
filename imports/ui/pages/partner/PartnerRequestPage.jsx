@@ -4,8 +4,7 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import RequestDetails from '/imports/ui/components/partner/RequestDetails.jsx';
-import PartnerOfferForm
-  from '/imports/ui/components/partner/PartnerOfferForm.jsx';
+import PartnerOfferForm from '/imports/ui/components/partner/PartnerOfferForm.jsx';
 
 const styles = {
   section: {
@@ -20,7 +19,7 @@ const styles = {
 const PartnerRequestPage = props => {
   if (props.loanRequest) {
     return (
-      <div>
+      <section>
         <div className="form-group">
           <RaisedButton
             icon={<span className="fa fa-angle-left" />}
@@ -29,23 +28,23 @@ const PartnerRequestPage = props => {
             className="animated slideInLeft"
           />
         </div>
-        <section className="mask1" style={styles.section}>
-          <RequestDetails loanRequest={props.loanRequest} />
+        <div className="mask1" style={styles.section}>
+          <RequestDetails {...props} />
           <PartnerOfferForm loanRequest={props.loanRequest} />
-        </section>
-      </div>
+        </div>
+      </section>
     );
   }
 
   return (
-    <div className="text-center">
+    <section className="text-center">
       <h1>
         Il semblerait qu'il y ait eu une erreur.
         <br />
         Soit cette demande de prêt n'existe pas, soit vous n'êtes pas autorisé à la voir.
       </h1>
       <RaisedButton label="Retour" href="/partner" style={styles.back} />
-    </div>
+    </section>
   );
 };
 

@@ -7,7 +7,7 @@ import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
 const FinalStepsPage = props => {
   return (
     <ProcessPage {...props} stepNb={2} id="finalSteps" showBottom={false}>
-      <section className="mask1">
+      <div className="mask1">
         <h1>Dernières Étapes</h1>
         <div className="description">
           <p>
@@ -18,7 +18,7 @@ const FinalStepsPage = props => {
         <div style={{ height: 150 }}>
           <LoadingComponent />
         </div>
-      </section>
+      </div>
     </ProcessPage>
   );
 };

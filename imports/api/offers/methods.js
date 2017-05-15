@@ -9,7 +9,7 @@ import Offers from './offers';
 export const insertOffer = new ValidatedMethod({
   name: 'offers.insert',
   validate: null,
-  run({ object }) {
+  run({ object, userId }) {
     // Make sure there isn't already an offer for this request
     const user = Meteor.user();
     const offer = Offers.findOne({
@@ -25,6 +25,7 @@ export const insertOffer = new ValidatedMethod({
 
     const request = LoanRequests.findOne({ _id: object.requestId });
 
+    object.userId = userId || Meteor.userId();
     object.organization = user.profile.organization;
     object.canton = user.profile.cantons[0];
     object.auctionEndTime = request.logic.auctionEndTime;

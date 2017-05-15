@@ -54,7 +54,11 @@ export default class VerifyPage extends Component {
 
   render() {
     if (this.props.loanRequest.logic.verification.requested !== true) {
-      return <div className="text-center"><h1>Ce client n'a pas demandé de vérification</h1></div>;
+      return (
+        <section className="text-center">
+          <h1>Ce client n'a pas demandé de vérification</h1>
+        </section>
+      );
     }
 
     return (

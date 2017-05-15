@@ -3,21 +3,30 @@ import { Factory } from 'meteor/dburles:factory';
 
 import LoanRequests from './loanrequests/loanrequests';
 import Borrowers from './borrowers/borrowers';
+import Offers from './offers/offers';
+
+const chance = require('chance').Chance();
 
 // Factory users for testing purposes
 Factory.define('user', Meteor.users, {
   roles: () => 'user',
-  email: () => [{ address: 'user@test.com', verified: false }],
+  emails: () => [{ address: chance.email(), verified: false }],
 });
 
 Factory.define('dev', Meteor.users, {
   roles: () => 'dev',
-  email: () => [{ address: 'dev@test.com', verified: false }],
+  emails: () => [{ address: chance.email(), verified: false }],
 });
 
 Factory.define('admin', Meteor.users, {
   roles: () => 'admin',
-  email: () => [{ address: 'admin@test.com', verified: false }],
+  emails: () => [{ address: chance.email(), verified: false }],
+});
+
+Factory.define('partner', Meteor.users, {
+  roles: () => 'partner',
+  emails: () => [{ address: chance.email(), verified: false }],
+  profile: () => ({ organization: 'bankName', cantons: ['GE'] }),
 });
 
 Factory.define('borrower', Borrowers, {
@@ -34,6 +43,7 @@ Factory.define('loanRequest', LoanRequests, {
   property: () => ({ value: 1000000 }),
   logic: () => ({}),
   admin: () => ({}),
+  name: () => 'request name',
 });
 
 Factory.define(
@@ -43,3 +53,21 @@ Factory.define(
     userId: Factory.get('dev'),
   }),
 );
+
+Factory.define('offer', Offers, {
+  userId: Factory.get('partner'),
+  requestId: Factory.get('loanRequest'),
+  createdAt: () => new Date(),
+  organization: 'bankName',
+  canton: 'GE',
+  auctionEndTime: () => new Date(),
+  standardOffer: () => ({
+    maxAmount: 800000,
+    amortization: 0.01,
+    interestLibor: 0.01,
+    interest1: 0.01,
+    interest2: 0.01,
+    interest5: 0.01,
+    interest10: 0.01,
+  }),
+});

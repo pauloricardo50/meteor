@@ -49,7 +49,6 @@ import AdminDashboardPage from '/imports/ui/pages/admin/AdminDashboardPage.jsx';
 import UsersPage from '/imports/ui/pages/admin/UsersPage.jsx';
 import RequestsPage from '/imports/ui/pages/admin/RequestsPage.jsx';
 import {
-  NewOfferPage,
   OfferPage,
   SingleRequestPage,
   SingleUserPage,
@@ -121,7 +120,6 @@ const AdminRoutes = props => (
         <Route exact path="/admin/requests" render={() => <RequestsPage {...layoutProps} />} />
         <Route path="/admin/requests/:requestId/verify" component={VerifyPage} />
         <Route path="/admin/requests/:requestId/contactlenders" component={ContactLendersPage} />
-        <Route path="/admin/requests/:requestId/offers/new" component={NewOfferPage} />
         <Route path="/admin/requests/:requestId/offers/:offerId" component={OfferPage} />
         <Route path="/admin/requests/:requestId" component={SingleRequestPage} />
         <Route path="/admin/users/:userId" component={SingleUserPage} />

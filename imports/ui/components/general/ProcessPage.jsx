@@ -49,13 +49,13 @@ export default class ProcessPage extends Component {
     const values = getStepValues(this.props);
     const barProps = { ...this.props, ...values };
     return (
-      <div className="page-title">
+      <section className="page-title">
         <ProcessPageBar {...barProps} className="top-bar" />
         <div className="children animated fadeIn">
           {this.props.children}
         </div>
         {this.props.showBottom && <ProcessPageBar {...barProps} className="bottom-bar" />}
-      </div>
+      </section>
     );
   }
 }

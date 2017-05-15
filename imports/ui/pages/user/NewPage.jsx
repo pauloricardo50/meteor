@@ -8,7 +8,7 @@ const NewPage = props => {
     props.history.push(`/app/requests/${props.loanRequests[0]._id}`);
   }
 
-  return <NewUserOptions />;
+  return <section><NewUserOptions /></section>;
 };
 
 NewPage.propTypes = {

@@ -3,10 +3,8 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { Meteor } from 'meteor/meteor';
 
-import CurrentAuctionsTable
-  from '/imports/ui/components/partner/CurrentAuctionsTable.jsx';
-import PastOffersTable
-  from '/imports/ui/components/partner/PastOffersTable.jsx';
+import CurrentAuctionsTable from '/imports/ui/components/partner/CurrentAuctionsTable.jsx';
+import PastOffersTable from '/imports/ui/components/partner/PastOffersTable.jsx';
 
 // const dummyAuctions = [
 //   {
@@ -57,12 +55,9 @@ export default class PartnerHomePage extends Component {
   }
 
   componentDidMount() {
-    time = Meteor.setInterval(
-      () => {
-        this.setState({ currentTime: new Date() });
-      },
-      1000,
-    );
+    time = Meteor.setInterval(() => {
+      this.setState({ currentTime: new Date() });
+    }, 1000);
   }
 
   componentWillUnmount() {
@@ -99,26 +94,18 @@ export default class PartnerHomePage extends Component {
     return (
       <section className="mask1" style={styles.section}>
         <div className="partner-logos">
-          <img
-            src={this.getPartnerLogo()}
-            alt="Logo Partenaire"
-            className="partner"
-          />
-          <img
-            src="/img/logo_black.svg"
-            alt="Logo e-Potek"
-            className="epotek"
-          />
+          <img src={this.getPartnerLogo()} alt="Logo Partenaire" className="partner" />
+          <img src="/img/logo_black.svg" alt="Logo e-Potek" className="epotek" />
         </div>
 
         {this.getCurrentAuctions().length
           ? <CurrentAuctionsTable
-              currentAuctions={this.getCurrentAuctions()}
-              offers={this.props.currentOffers}
-            />
+            currentAuctions={this.getCurrentAuctions()}
+            offers={this.props.currentOffers}
+          />
           : <div className="text-center col-xs-12" style={styles.noAuctionDiv}>
-              <h2>Aucune nouvelle offre à faire en ce moment.</h2>
-            </div>}
+            <h2>Aucune nouvelle offre à faire en ce moment.</h2>
+          </div>}
 
         <div className="col-xs-12">
           <hr className="col-xs-4 col-xs-offset-4" />
@@ -135,4 +122,10 @@ PartnerHomePage.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.object),
   currentOffers: PropTypes.arrayOf(PropTypes.object),
   oldOffers: PropTypes.arrayOf(PropTypes.object),
+};
+
+PartnerHomePage.defaultProps = {
+  loanRequests: [],
+  currentOffers: [],
+  oldOffers: [],
 };

@@ -46,13 +46,13 @@ export default class SingleRequestPage extends Component {
   render() {
     const actions = adminActions(this.props.loanRequest, this.props);
     return (
-      <div>
+      <section>
         <RaisedButton
           label="Retour"
           style={styles.returnButton}
           onTouchTap={() => this.props.history.push('/admin/requests')}
         />
-        <section className="mask1">
+        <div className="mask1">
           <h1>
             {this.props.loanRequest.name || 'Demande de Prêt'} - Emprunt de CHF&nbsp;
             {toMoney(getLoanValue(this.props.loanRequest))}
@@ -71,8 +71,8 @@ export default class SingleRequestPage extends Component {
           </div>
 
           <RequestTabs {...this.props} serverTime={this.state.serverTime} />
-        </section>
-      </div>
+        </div>
+      </section>
     );
   }
 }

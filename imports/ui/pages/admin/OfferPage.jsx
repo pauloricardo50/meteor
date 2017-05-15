@@ -10,12 +10,12 @@ const styles = {
 };
 
 const AdminOfferPage = props => (
-  <div>
+  <section>
     <RaisedButton label="Retour" style={styles.backButton} />
-    <section className="mask1">
+    <div className="mask1">
       Salut!
-    </section>
-  </div>
+    </div>
+  </section>
 );
 
 AdminOfferPage.defaultProps = {

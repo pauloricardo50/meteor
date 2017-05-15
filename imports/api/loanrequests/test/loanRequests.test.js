@@ -2,7 +2,7 @@
 /* eslint-disable func-names, prefer-arrow-callback */
 
 import { Meteor } from 'meteor/meteor';
-import { expect, assert } from 'chai';
+import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import moment from 'moment';
@@ -41,6 +41,12 @@ describe('loanRequests', () => {
   });
 
   describe('methods', () => {
+    beforeEach(function () {
+      // if (Meteor.isServer) {
+      resetDatabase();
+      // }
+    });
+
     describe('insertRequest', () => {
       it('Properly inserts a minimal request', () => {
         const object = {
