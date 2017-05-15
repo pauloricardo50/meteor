@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import { _ } from 'lodash';
+
 import TextInput from './TextInput.jsx';
 import RadioInput from './RadioInput.jsx';
 import SelectFieldInput from './SelectFieldInput.jsx';
@@ -40,6 +42,7 @@ const inputSwitch = (singleInput, index, parentProps) => {
     ...singleInput,
     key: index,
     style: parentProps.fullWidth ? styles.fullWidth : styles.smallWidth,
+    currentValue: _.get(parentProps.doc, singleInput.id),
   };
 
   // Prevent undefined showCondition to trigger as well
@@ -69,9 +72,7 @@ const inputSwitch = (singleInput, index, parentProps) => {
           style={props.style}
         >
           {inputSwitch(singleInput.inputs[0], 0, parentProps)}
-          {singleInput.inputs
-            .slice(1)
-            .map((input, i) => inputSwitch(input, i, parentProps))}
+          {singleInput.inputs.slice(1).map((input, i) => inputSwitch(input, i, parentProps))}
         </ConditionalInput>
       );
     case 'h3':
@@ -98,8 +99,7 @@ const inputSwitch = (singleInput, index, parentProps) => {
     case 'arrayInput':
       return <ArrayInput {...props} />;
     default:
-      console.log(singleInput.type);
-      throw new Error('Not a valid AutoForm type');
+      throw new Error(`${singleInput.type} is not a valid AutoForm type`);
   }
 };
 

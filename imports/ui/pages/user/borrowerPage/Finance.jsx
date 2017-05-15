@@ -80,6 +80,7 @@ const BorrowerFinancePage = props => {
         updateFunc="updateBorrower"
         pushFunc="pushBorrowerValue"
         popFunc="popBorrowerValue"
+        doc={borrower}
       />
 
       <div className="conditions">

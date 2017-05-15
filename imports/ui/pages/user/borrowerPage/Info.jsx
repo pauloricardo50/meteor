@@ -36,6 +36,7 @@ const BorrowerInfoPage = props => {
         updateFunc="updateBorrower"
         pushFunc="pushBorrowerValue"
         popFunc="popBorrowerValue"
+        doc={borrower}
       />
 
       {isDemo() && <FakeBorrowerCompleter borrower={borrower} />}

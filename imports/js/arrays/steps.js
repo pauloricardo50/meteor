@@ -1,4 +1,5 @@
 import React from 'react';
+import { _ } from 'lodash';
 
 import { getBorrowerInfoArray } from './BorrowerFormArray';
 import { borrowerFiles } from '/imports/js/arrays/files';
@@ -163,6 +164,9 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
 
 export default getSteps;
 
+// Returns the current value of an autoForm input
+const getCurrentValue = (input, doc) => _.get(doc, input.id);
+
 export const previousDone = (steps, nb, itemNb) =>
   steps[nb].items.slice(0, itemNb).reduce((res, i) => res && i.isDone(), true);
 
@@ -174,24 +178,25 @@ export const getPercent = array => {
   return isFinite(percent) ? percent : 0;
 };
 
-const countField = f =>
+// A boolean to determine if a field in an array should be counted or not
+const shouldCountField = f =>
   (f.showCondition === undefined || f.showCondition === true) &&
   f.required !== false &&
   !f.disabled &&
   f.type !== 'h3';
 
-const getCountedArray = (formArray, arr = []) => {
+const getCountedArray = (formArray, doc, arr = []) => {
   formArray.forEach(i => {
-    if (countField(i) && i.type === 'conditionalInput') {
-      if (i.inputs[0].currentValue === i.conditionalTrueValue) {
+    if (shouldCountField(i) && i.type === 'conditionalInput') {
+      if (getCurrentValue(i.inputs[0], doc) === i.conditionalTrueValue) {
         // If the conditional input is triggering the next input, add all values
-        i.inputs.forEach(input => arr.push(input.currentValue));
+        i.inputs.forEach(input => arr.push(getCurrentValue(input, doc)));
       } else {
         // If conditional value is not triggering
-        arr.push(i.inputs[0].currentValue);
+        arr.push(getCurrentValue(i.inputs[0], doc));
       }
-    } else if (countField(i)) {
-      arr.push(i.currentValue);
+    } else if (shouldCountField(i)) {
+      arr.push(getCurrentValue(i, doc));
     }
   });
 
@@ -202,7 +207,7 @@ export const personalInfoPercent = borrowers => {
   const a = [];
   borrowers.forEach(b => {
     const formArray = getBorrowerInfoArray(borrowers, b._id);
-    getCountedArray(formArray, a);
+    getCountedArray(formArray, b, a);
   });
 
   return getPercent(a);
@@ -210,7 +215,7 @@ export const personalInfoPercent = borrowers => {
 
 export const propertyPercent = (loanRequest, borrowers) => {
   const formArray = getPropertyArray(loanRequest, borrowers);
-  const a = getCountedArray(formArray);
+  const a = getCountedArray(formArray, loanRequest);
 
   return getPercent(a);
 };

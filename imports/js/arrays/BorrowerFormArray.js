@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const getBorrowerInfoArray = (borrowers, id) => {
   const b = borrowers.find(borr => borr._id === id);
   const multiple = borrowers.length > 1;
@@ -12,20 +10,19 @@ export const getBorrowerInfoArray = (borrowers, id) => {
 
   return [
     {
+      id: 'firstName',
       type: 'textInput',
       label: 'Prénom',
       placeholder: 'Jean',
-      id: 'firstName',
-      currentValue: b.firstName,
     },
     {
+      id: 'lastName',
       type: 'textInput',
       label: 'Nom',
       placeholder: 'Ducret',
-      id: 'lastName',
-      currentValue: b.lastName,
     },
     {
+      id: 'gender',
       type: 'radioInput',
       label: 'Genre',
       options: [
@@ -33,53 +30,47 @@ export const getBorrowerInfoArray = (borrowers, id) => {
         { id: 'm', label: 'Homme' },
         { id: 'other', label: 'Autre' },
       ],
-      id: 'gender',
-      currentValue: b.gender,
     },
     {
       type: 'h3',
       text: 'Votre addresse',
     },
     {
+      id: 'sameAddress',
       type: 'radioInput',
       label: `Utiliser la même adresse que ${borrowers[0].firstName || 'Emprunteur 1'}?`,
       options: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
-      id: 'sameAddress',
-      currentValue: b.sameAddress,
       showCondition: multiple && !isFirst,
     },
     {
+      id: 'address1',
       type: 'textInput',
       label: 'Adresse 1',
       placeholder: 'Rue des Champs 7',
-      id: 'address1',
-      currentValue: b.address1,
       disabled: !!b.sameAddress,
     },
     {
+      id: 'address2',
       type: 'textInput',
       label: 'Adresse 2',
       placeholder: '',
-      id: 'address2',
-      currentValue: b.address2,
       disabled: !!b.sameAddress,
       required: false,
     },
     {
+      id: 'zipCode',
       type: 'textInput',
       number: true,
       label: 'Code Postal',
       placeholder: '1200',
-      id: 'zipCode',
-      currentValue: b.zipCode,
       disabled: !!b.sameAddress,
+      saveOnChange: false,
     },
     {
+      id: 'city',
       type: 'textInput',
       label: 'Localité',
       placeholder: 'Genève',
-      id: 'city',
-      currentValue: b.city,
       disabled: !!b.sameAddress,
     },
     {
@@ -87,13 +78,13 @@ export const getBorrowerInfoArray = (borrowers, id) => {
       conditionalTrueValue: false,
       inputs: [
         {
+          id: 'isSwiss',
           type: 'radioInput',
           label: 'Avez-vous la nationalité Suisse?',
           options: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
-          id: 'isSwiss',
-          currentValue: b.isSwiss,
         },
         {
+          id: 'residencyPermit',
           type: 'selectFieldInput',
           label: 'Permis de résidence',
           options: [
@@ -134,28 +125,25 @@ export const getBorrowerInfoArray = (borrowers, id) => {
               label: 'Autre',
             },
           ],
-          id: 'residencyPermit',
-          currentValue: b.residencyPermit,
           required: false,
         },
       ],
     },
     {
+      id: 'age',
       type: 'textInput',
       number: true,
       label: 'Age',
       placeholder: '40',
-      id: 'age',
-      currentValue: b.age,
     },
     {
+      id: 'birthPlace',
       type: 'textInput',
       label: 'Lieu de Naissance',
       placeholder: 'Berne, Suisse',
-      id: 'birthPlace',
-      currentValue: b.birthPlace,
     },
     {
+      id: 'civilStatus',
       type: 'radioInput',
       label: 'État civil',
       options: [
@@ -167,30 +155,25 @@ export const getBorrowerInfoArray = (borrowers, id) => {
         },
         { id: 'divorced', label: b.gender === 'f' ? 'Divorcée' : 'Divorcé' },
       ],
-      id: 'civilStatus',
-      currentValue: b.civilStatus,
     },
     {
+      id: 'company',
       type: 'textInput',
       label: 'Employeur',
       placeholder: 'Google',
-      id: 'company',
-      currentValue: b.company,
       required: false,
     },
     {
+      id: 'worksForOwnCompany',
       type: 'radioInput',
       label: 'Êtes-vous employé de votre propre entreprise?',
       options: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
-      id: 'worksForOwnCompany',
-      currentValue: b.worksForOwnCompany,
     },
     {
+      id: 'personalBank',
       type: 'textInput',
       label: 'Votre Banque Personelle',
       placeholder: 'UBS SA',
-      id: 'personalBank',
-      currentValue: b.personalBank,
     },
   ];
 };
@@ -211,63 +194,56 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
       text: 'Revenus & Charges',
     },
     {
+      id: 'salary',
       type: 'textInput',
       money: true,
       label: 'Revenus bruts annuels',
       placeholder: "CHF 100'000",
-      id: 'salary',
-      currentValue: b.salary,
     },
     {
       type: 'conditionalInput',
       conditionalTrueValue: true,
       inputs: [
         {
+          id: 'bonusExists',
           type: 'radioInput',
           label: 'Avez-vous un bonus ?',
           options: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
-          id: 'bonusExists',
-          currentValue: b.bonusExists,
         },
         {
+          id: 'bonus.bonus2017',
           type: 'textInput',
           money: true,
           label: 'Bonus 2017',
           placeholder: "CHF 10'000",
-          id: 'bonus.bonus2017',
-          currentValue: b.bonus && b.bonus.bonus2017,
         },
         {
+          id: 'bonus.bonus2016',
           type: 'textInput',
           money: true,
           label: 'Bonus 2016',
           placeholder: "CHF 10'000",
-          id: 'bonus.bonus2016',
-          currentValue: b.bonus && b.bonus.bonus2016,
         },
         {
+          id: 'bonus.bonus2015',
           type: 'textInput',
           money: true,
           label: 'Bonus 2015',
           placeholder: "CHF 10'000",
-          id: 'bonus.bonus2015',
-          currentValue: b.bonus && b.bonus.bonus2015,
         },
         {
+          id: 'bonus.bonus2014',
           type: 'textInput',
           money: true,
           label: 'Bonus 2014',
           placeholder: "CHF 10'000",
-          id: 'bonus.bonus2014',
-          currentValue: b.bonus && b.bonus.bonus2014,
         },
       ],
     },
     {
+      id: 'expenses',
       type: 'arrayInput',
       label: 'Charges',
-      id: 'expenses',
-      currentValue: b.expenses,
       required: false,
       inputs: [
         {
@@ -308,10 +284,9 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
       ],
     },
     {
+      id: 'otherIncome',
       type: 'arrayInput',
       label: 'Autres revenus',
-      id: 'otherIncome',
-      currentValue: b.otherIncome,
       required: false,
       inputs: [
         {
@@ -343,9 +318,9 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
           ],
         },
         {
+          id: 'value',
           type: 'textInput',
           money: true,
-          id: 'value',
           label: 'Montant annuel',
           placeholder: "CHF 10'000",
         },
@@ -359,18 +334,16 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
       text: 'Fortune',
     },
     {
+      id: 'bankFortune',
       type: 'textInput',
       money: true,
       label: 'Fortune Bancaire',
       placeholder: "CHF 100'000",
-      id: 'bankFortune',
-      currentValue: b.bankFortune,
     },
     {
       id: 'realEstate',
       type: 'arrayInput',
       label: 'Fortune Immobilière',
-      currentValue: b.realEstate,
       inputs: [
         {
           id: 'description',
@@ -409,10 +382,9 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
       ],
     },
     {
+      id: 'otherFortune',
       type: 'arrayInput',
       label: 'Autre Fortune',
-      id: 'otherFortune',
-      currentValue: b.otherFortune,
       required: false,
       inputs: [
         {
@@ -444,9 +416,9 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
           ],
         },
         {
+          id: 'value',
           type: 'textInput',
           money: true,
-          id: 'value',
           label: 'Valeur',
           placeholder: "CHF 100'000",
         },
@@ -461,39 +433,35 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
       // showCondition: index === 0,
     },
     {
+      id: 'insuranceSecondPillar',
       type: 'textInput',
       money: true,
       label: 'LPP / 2ème Pilier',
       placeholder: "CHF 100'000",
-      id: 'insuranceSecondPillar',
-      currentValue: b.insuranceSecondPillar,
       required: false,
     },
     {
+      id: 'insuranceThirdPillar',
       type: 'textInput',
       money: true,
       label: 'Assurance 3A',
       placeholder: "CHF 100'000",
-      id: 'insuranceThirdPillar',
-      currentValue: b.insuranceThirdPillar,
       required: false,
     },
     {
+      id: 'insurance3B',
       type: 'textInput',
       money: true,
       label: 'Assurance 3B',
       placeholder: "CHF 100'000",
-      id: 'insurance3B',
-      currentValue: b.insurance3B,
       required: false,
     },
     {
+      id: 'insurancePureRisk',
       type: 'textInput',
       money: true,
       label: 'Risque Pure',
       placeholder: "CHF 100'000",
-      id: 'insurancePureRisk',
-      currentValue: b.insurancePureRisk,
       required: false,
     },
   ];

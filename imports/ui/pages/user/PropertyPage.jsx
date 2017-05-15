@@ -50,6 +50,7 @@ const PropertyPage = props => {
           updateFunc="updateRequest"
           pushFunc="pushRequestValue"
           popFunc="popRequestValue"
+          doc={props.loanRequest}
         />
 
         {isDemo() && <FakePropertyCompleter loanRequest={props.loanRequest} />}

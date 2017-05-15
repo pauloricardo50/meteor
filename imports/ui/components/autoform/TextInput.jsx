@@ -47,7 +47,6 @@ export default class TextInput extends Component {
     if (props.number) {
       if (props.decimal) {
         this.formatter = toDecimalNumber;
-        console.log(props.id);
       } else {
         this.formatter = toNumber;
       }
@@ -61,9 +60,7 @@ export default class TextInput extends Component {
   }
 
   handleBlur = () => {
-    this.setState({
-      showInfo: false,
-    });
+    this.setState({ showInfo: false });
     // If the value has changed, save it
     // state is initialized as '', but currentValue is initially undefined, so check that too
     this.saveValue();
@@ -75,21 +72,16 @@ export default class TextInput extends Component {
       ? toNumber(event.target.value)
       : event.target.value;
 
-    this.setState(
-      {
-        value: safeValue,
-      },
-      () => {
-        // do not show saving icon when changing text, only show it on blur
+    this.setState({ value: safeValue }, () => {
+      // do not show saving icon when changing text, only show it on blur
+      if (this.props.saveOnChange) {
         this.saveValue(false);
-      },
-    );
+      }
+    });
   };
 
   handleFocus = () => {
-    this.setState({
-      showInfo: true,
-    });
+    this.setState({ showInfo: true });
   };
 
   saveValue = (showSaving = true) => {
@@ -183,6 +175,7 @@ TextInput.propTypes = {
   style: PropTypes.objectOf(PropTypes.any),
   inputStyle: PropTypes.objectOf(PropTypes.any),
   floatingLabelFixed: PropTypes.bool,
+  saveOnChange: PropTypes.bool,
 };
 
 TextInput.defaultProps = {
@@ -199,4 +192,5 @@ TextInput.defaultProps = {
   inputStyle: undefined,
   updateFunc: 'updateRequest',
   floatingLabelFixed: true,
+  saveOnChange: true,
 };
