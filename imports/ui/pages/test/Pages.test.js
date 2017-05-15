@@ -83,7 +83,9 @@ if (Meteor.isClient) {
             loanRequest: request,
             borrowers: [borrower],
             currentUser: user,
+            offers: [],
             location: {},
+            history: {},
             match: { params: { borrowerId: borrower._id, requestId: request._id } },
           };
           getMountedComponent.reset();

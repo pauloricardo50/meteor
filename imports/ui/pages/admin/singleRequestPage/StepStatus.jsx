@@ -18,7 +18,13 @@ const StepStatus = props => {
       {steps.map((s, i) => (
         <li key={s.title} style={{ display: 'flex', flexDirection: 'column' }}>
           <div>{s.title} {currentStep > i && <CheckIcon />}</div>
-          <ul>{s.items.map(item => <li>{item.title} {item.isDone() && <CheckIcon />}</li>)}</ul>
+          <ul>
+            {s.items.map(item => (
+              <li key={item.id}>
+                {item.title} {item.isDone() && <CheckIcon />}
+              </li>
+            ))}
+          </ul>
         </li>
       ))}
     </ul>

@@ -111,7 +111,7 @@ const RequestDetails = props => {
 
 RequestDetails.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
-  borrowers: PropTypes.objectOf(PropTypes.any).isRequired,
+  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default RequestDetails;

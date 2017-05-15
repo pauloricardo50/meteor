@@ -140,6 +140,7 @@ export default class LenderTable extends Component {
             </thead>
             <tbody>
               {shownOffers &&
+                shownOffers.length > 0 &&
                 shownOffers.map(
                   (offer, index) =>
                     offer &&
