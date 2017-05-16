@@ -25,8 +25,8 @@ module.exports = {
       // image: 'guillim/meteord:node6.9.1V3',
     },
     ssl: {
-      crt: './bundle.crt',
-      key: './privatekey.key',
+      crt: '../../bundle.crt',
+      key: '../../privatekey.key',
       port: 443,
       // upload: false, // Use this for better security, you have to place the bundle.crt and privatekey.key files on the server yourself
     },
