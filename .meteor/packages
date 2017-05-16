@@ -37,6 +37,8 @@ std:accounts-ui                 # React account component
 # std:accounts-basic
 zetoff:accounts-material-ui
 email@1.2.1
+jabbslad:basic-auth             # basic http auth to protect a website
+
 
 # Data
 mdg:validated-method            # MDG written server-side validation before storing
