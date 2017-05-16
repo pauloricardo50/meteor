@@ -88,8 +88,8 @@ export const requestStep3 = {
     ...fakeGeneral,
     loanTranches: [
       {
-        value: 700000,
-        type: '10y',
+        value: 750000,
+        type: 'interest10',
         // TODO add tranches here
       },
     ],

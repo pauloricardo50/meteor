@@ -1,0 +1,22 @@
+{
+  "public": {
+    "environment": "staging",
+    "analyticsSettings": {
+      "Google Analytics": {
+        "trackingId": "UA-84358947-2"
+      },
+      "Mixpanel": {
+        "token": "8fd61d69bbe35690f6c3925e3cb5d21b",
+        "people": true
+      },
+      "Amplitude": {
+        "apiKey": "f4aeda0796f81d6c7ccbdece79b9c8ba"
+      }
+    }
+  },
+  "AWSAccessKeyId": "AKIAJF43A4MFAA2ZGTEA",
+  "AWSSecretAccessKey": "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",
+  "AWSRegion": "eu-central-1",
+  "S3Bucket": "e-potek-staging",
+  "mailchimp": "42e9f66147485839267ee803bd5cff45-us15"
+}

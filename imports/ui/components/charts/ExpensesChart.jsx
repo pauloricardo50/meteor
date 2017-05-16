@@ -38,7 +38,7 @@ const update = that => {
             id: 'amortization',
           },
           {
-            name: "Charges d'Entretien",
+            name: "Frais d'Entretien",
             y: that.state.maintenance,
             id: 'maintenance',
           },
@@ -188,7 +188,7 @@ export default class ExpensesChart extends Component {
           data: [
             { name: 'Intérêts', y: this.state.interests, id: 'interests' },
             { name: 'Amortissement', y: this.state.amortization, id: 'amortization' },
-            { name: "Charges d'Entretien", y: this.state.maintenance, id: 'maintenance' },
+            { name: "Frais d'Entretien", y: this.state.maintenance, id: 'maintenance' },
           ],
         },
       ],

@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
-import cleanMethod from '/imports/api/cleanMethods';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import classNames from 'classnames';
+import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
 
 import { LoadingComponent } from './Loading.jsx';
 
@@ -16,12 +16,9 @@ export default class StrategyChoices extends Component {
       showChoices: false,
     };
 
-    this.timeout = Meteor.setTimeout(
-      () => {
-        this.setState({ showChoices: true });
-      },
-      this.props.load ? 2500 : 0,
-    );
+    this.timeout = Meteor.setTimeout(() => {
+      this.setState({ showChoices: true });
+    }, this.props.load ? 2500 : 0);
   }
 
   componentWillUnmount() {
@@ -52,12 +49,16 @@ export default class StrategyChoices extends Component {
         <ul>
           <li className={chosen ? 'title-chosen' : 'title'}>
             <h4 className="bold fixed-size">
-              {choice.title}&nbsp;{chosen && <span className="fa fa-check" />}
+              <AutoTooltip>{choice.title}</AutoTooltip>
+              {' '}
+              {chosen && <span className="fa fa-check" />}
             </h4>
           </li>
 
           {choice.reasons.map((reason, i) => (
-            <li className="bold reason" key={i}>{reason}</li>
+            <li className="bold reason" key={i}>
+              <AutoTooltip>{reason}</AutoTooltip>
+            </li>
           ))}
         </ul>
 
@@ -66,9 +67,7 @@ export default class StrategyChoices extends Component {
             primary={!this.props.currentValue}
             label={chosen ? 'Annuler' : 'Choisir'}
             onTouchTap={() =>
-              chosen
-                ? this.props.handleChoose('')
-                : this.props.handleChoose(choice.id)}
+              chosen ? this.props.handleChoose('') : this.props.handleChoose(choice.id)}
           />
         </div>
       </article>
@@ -80,11 +79,10 @@ export default class StrategyChoices extends Component {
       <div className="strategy-choices">
 
         {this.state.showChoices
-          ? this.props.choices.map((choice, index) =>
-              this.renderChoice(choice, index))
+          ? this.props.choices.map((choice, index) => this.renderChoice(choice, index))
           : <span className="loading">
-              <LoadingComponent />
-            </span>}
+            <LoadingComponent />
+          </span>}
 
       </div>
     );

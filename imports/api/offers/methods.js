@@ -38,12 +38,15 @@ export const insertAdminOffer = new ValidatedMethod({
   name: 'offers.insertAdmin',
   validate: null,
   run({ object }) {
-    if (!Roles.userIsInRole(Meteor.userId(), 'admin')) {
+    if (
+      !(Roles.userIsInRole(Meteor.userId(), 'admin') || Roles.userIsInRole(Meteor.userId(), 'dev'))
+    ) {
       return false;
     }
 
     const request = LoanRequests.findOne({ _id: object.requestId });
 
+    object.userId = Meteor.userId();
     object.isAdmin = true;
     object.auctionEndTime = request.logic.auctionEndTime; // this doesn't update when the request is ended prematurely by an admin
     object.canton = 'GE';
@@ -64,6 +67,7 @@ export const insertFakeOffer = new ValidatedMethod({
   name: 'offers.insertFake',
   validate: null,
   run({ object }) {
+    object.userId = Meteor.userId();
     return Offers.insert(object);
   },
 });

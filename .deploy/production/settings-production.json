@@ -1,0 +1,22 @@
+{
+  "public": {
+    "environment": "production",
+    "analyticsSettings": {
+      "Google Analytics": {
+        "trackingId": "UA-84358947-1"
+      },
+      "Mixpanel": {
+        "token": "8116491227515ad527768eecaef5d5ce",
+        "people": true
+      },
+      "Amplitude": {
+        "apiKey": "ef6fcdf0d8c4c06bc94a827c71dfec59"
+      }
+    }
+  },
+  "AWSAccessKeyId": "AKIAJF43A4MFAA2ZGTEA",
+  "AWSSecretAccessKey": "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",
+  "AWSRegion": "eu-central-1",
+  "S3Bucket": "e-potek",
+  "mailchimp": "42e9f66147485839267ee803bd5cff45-us15"
+}

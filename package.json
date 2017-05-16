@@ -7,7 +7,8 @@
     "test-debug": "meteor test --driver-package=practicalmeteor:mocha --port 5000 --debug-port 5858",
     "test-CI": "TEST_BROWSER_DRIVER=nightmare SERVER_TEST_REPORTER=xunit XUNIT_FILE=$CIRCLE_TEST_REPORTS/reports/unit.xml meteor test --once --driver-package dispatch:mocha",
     "test-CLI": "TEST_BROWSER_DRIVER=nightmare meteor test --once --driver-package dispatch:mocha",
-    "deploy": "mup deploy --settings=settings-production.json",
+    "deploy:production": "cd .deploy/production && mup deploy --settings=settings-production.json",
+    "deploy:staging": "cd .deploy/staging && mup deploy --settings=settings-staging.json",
     "build-translate": "NODE_ENV=build meteor",
     "translate": "babel-node imports/js/helpers/translate.js"
   },

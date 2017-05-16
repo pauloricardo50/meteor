@@ -113,6 +113,7 @@ export default class PasswordLine extends Component {
           onTouchTap={onSubmit}
           type="submit"
           icon={this.state.loading && <LoopIcon className="fa-spin" />}
+          disabled={!this.props.password}
         />
       );
     } else {

@@ -5,10 +5,11 @@ import { Roles } from 'meteor/alanning:roles';
 
 import { completeFakeBorrower } from '/imports/api/borrowers/fakes';
 import { requestStep1, requestStep2, requestStep3 } from '/imports/api/loanrequests/fakes';
+import { getRandomOffer } from '/imports/api/offers/fakes';
 
-import { deleteRequest } from '/imports/api/loanrequests/methods';
+import { updateRequest, deleteRequest } from '/imports/api/loanrequests/methods';
 import { deleteBorrower } from '/imports/api/borrowers/methods';
-import { deleteOffer } from '/imports/api/offers/methods';
+import { deleteOffer, insertAdminOffer } from '/imports/api/offers/methods';
 
 const addStep1Request = () => {
   cleanMethod('insertBorrower', completeFakeBorrower, null, (err, res) => {
@@ -26,7 +27,30 @@ const addStep2Request = () => {
   });
 };
 
-const addStep3Request = () => {};
+const addStep3Request = () => {
+  cleanMethod('insertBorrower', completeFakeBorrower, null, (err, res) => {
+    const request = requestStep3;
+    request.borrowers = [res];
+    cleanMethod('insertRequest', request, null, (error, result) => {
+      const object = getRandomOffer({ ...request, _id: result }, true);
+      insertAdminOffer.call({ object }, (err2, res2) => {
+        updateRequest.call(
+          {
+            object: {
+              'logic.lender.offerId': res2,
+              'logic.lender.chosenTime': new Date(),
+            },
+            id: result,
+          },
+          () => {
+            // Weird bug with offer publications that forces me to reload TODO: fix it
+            location.reload();
+          },
+        );
+      });
+    });
+  });
+};
 
 const purge = props => {
   props.loanRequests.forEach(r => deleteRequest.call({ id: r._id }));

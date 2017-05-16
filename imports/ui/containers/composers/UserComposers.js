@@ -30,13 +30,19 @@ export function userOffersComposer(props, onData) {
 
 // Get a specific request for this user
 export function userRequestComposer(props, onData) {
-  const requestId = props.match.params.requestId;
-  const loanRequest = LoanRequests.find({ _id: requestId }).fetch()[0];
-  const borrowers = Borrowers.find({
-    _id: { $in: loanRequest.borrowers },
-  }).fetch();
-  const offers = Offers.find({ requestId }).fetch();
-  onData(null, { loanRequest, borrowers, offers });
+  if (
+    Meteor.subscribe('loanRequests').ready() &&
+    Meteor.subscribe('borrowers').ready() &&
+    Meteor.subscribe('userOffers').ready()
+  ) {
+    const requestId = props.match.params.requestId;
+    const loanRequest = LoanRequests.find({ _id: requestId }).fetch()[0];
+    const borrowers = Borrowers.find({
+      _id: { $in: loanRequest.borrowers },
+    }).fetch();
+    const offers = Offers.find({ requestId }).fetch();
+    onData(null, { loanRequest, borrowers, offers });
+  }
 }
 
 // Get a specific borrower for this user

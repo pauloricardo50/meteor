@@ -37,10 +37,11 @@ const InsuranceStrategy = props => {
         <p>
           Vous avez décidé d'utiliser votre prévoyance pour ce projet. Il faut encore décider par quel mécanisme financier vous allez le faire.
           <br /><br />
-          <div className="text-center">
-            <RaisedButton label="En savoir plus" primary />
-          </div>
         </p>
+      </div>
+
+      <div className="text-center" style={{ width: '100%', marginBottom: 40 }}>
+        <RaisedButton label="En savoir plus" primary />
       </div>
 
       <StrategyChoices

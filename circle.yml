@@ -18,7 +18,11 @@ test:
     - yarn global add mup
 
 deployment:
+  staging:
+    branch: staging
+    commands:
+      - yarn run deploy:staging
   production:
     branch: master
     commands:
-      - yarn run deploy
+      - yarn run deploy:production

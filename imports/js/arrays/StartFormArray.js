@@ -278,7 +278,7 @@ const getAcquisitionArray = (state, props, setFormState) => [
           { id: 'leasing', label: 'Leasings' },
           state.usageType !== 'primary'
             ? { id: 'rent', label: 'Loyers' }
-            : { id: 'rent', label: 'Loyers stables' },
+            : { id: 'rent', label: 'Loyers maintenus' },
           { id: 'personalLoan', label: 'Crédits personnels' },
           { id: 'mortgageLoan', label: 'Prêts immobilier' },
           { id: 'pensions', label: 'Pensions et Rentes' },

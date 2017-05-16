@@ -302,7 +302,7 @@ export default class Start1Page extends Component {
 
           <div className="chart text-center">
             <Accordion isActive={isReady && fortune < property}>
-              <h3>
+              <h3 style={{ margin: '40px 0' }}>
                 Votre emprunt:
                 {' '}
                 <span className="active">
@@ -310,6 +310,7 @@ export default class Start1Page extends Component {
                 </span>
               </h3>
               <ExpensesChartInterests
+                title="Charges estimées"
                 loan={loan || undefined}
                 amortization={loan * constants.getAmortization(borrowRatio) / 12 || 0}
                 maintenance={property * constants.maintenanceReal / 12 || 0}

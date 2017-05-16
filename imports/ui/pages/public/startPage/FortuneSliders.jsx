@@ -103,7 +103,7 @@ const FortuneSliders = props => {
       {props.formState.useInsurance &&
         <div className="animated fadeIn" style={{ position: 'relative' }}>
           <h2 className="fixed-size" style={styles.h2}>
-            <label htmlFor="" style={styles.label}>LPP</label>
+            <label htmlFor="" style={styles.label}>Prévoyance</label>
             <span className="active">
               CHF {toMoney(props.formState.insuranceFortuneUsed || 0)}
             </span>
@@ -118,7 +118,7 @@ const FortuneSliders = props => {
       {!props.formState.useInsurance &&
         <div className="text-center animated fadeIn">
           <h2 className="fixed-size">
-            {hasToUseLpp && 'Vous devez utiliser votre 2ème pilier pour ce projet'}
+            {hasToUseLpp && 'Vous devez utiliser votre prévoyance pour ce projet'}
             {!hasToUseLpp && 'Vous êtes éligible pour utiliser votre 2ème pilier'}
           </h2>
           <RaisedButton
