@@ -63,6 +63,7 @@ export default class AuctionPage extends Component {
         loanRequest={this.props.loanRequest}
         borrowers={this.props.borrowers}
         history={this.props.history}
+        serverTime={this.state.serverTime}
       />
     );
   }
@@ -71,7 +72,7 @@ export default class AuctionPage extends Component {
     return (
       <ProcessPage
         {...this.props}
-        stepNb={1}
+        stepNb={2}
         id="auction"
         serverTime={this.state.serverTime}
         showBottom={false}

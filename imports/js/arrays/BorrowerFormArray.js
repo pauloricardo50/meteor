@@ -87,6 +87,7 @@ export const getBorrowerInfoArray = (borrowers, id) => {
           id: 'residencyPermit',
           type: 'selectFieldInput',
           label: 'Permis de résidence',
+          required: false,
           options: [
             {
               id: 'b',
@@ -125,7 +126,6 @@ export const getBorrowerInfoArray = (borrowers, id) => {
               label: 'Autre',
             },
           ],
-          required: false,
         },
       ],
     },

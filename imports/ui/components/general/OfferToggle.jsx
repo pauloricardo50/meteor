@@ -16,6 +16,8 @@ const styles = {
 };
 
 const OfferToggle = props => {
+  const standardCount = props.offers.length;
+  const counterpartCount = props.offers.filter(o => o.counterparts.length > 0).length;
   return (
     <div style={styles.div}>
       <span
@@ -23,7 +25,7 @@ const OfferToggle = props => {
         onTouchTap={() => props.handleToggle(null, false)}
         style={styles.span}
       >
-        Offres standard
+        Offres standard ({standardCount})
       </span>
       <Toggle
         toggled={props.value}
@@ -35,7 +37,7 @@ const OfferToggle = props => {
         onTouchTap={() => props.handleToggle(null, true)}
         style={styles.span}
       >
-        Offres avec contrepartie
+        Offres avec contrepartie ({counterpartCount})
       </span>
     </div>
   );
@@ -44,6 +46,7 @@ const OfferToggle = props => {
 OfferToggle.propTypes = {
   value: PropTypes.bool.isRequired,
   handleToggle: PropTypes.func.isRequired,
+  offers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default OfferToggle;

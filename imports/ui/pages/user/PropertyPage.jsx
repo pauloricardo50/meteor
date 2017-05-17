@@ -28,7 +28,7 @@ const styles = {
 const PropertyPage = props => {
   const percent = propertyPercent(props.loanRequest, props.borrowers);
   return (
-    <ProcessPage {...props} stepNb={0} id="property">
+    <ProcessPage {...props} stepNb={1} id="property">
       <section className="mask1 property-page">
         <h1 className="text-center">
           {props.borrowers.length > 1 ? 'Notre bien immobilier' : 'Mon bien immobilier'}

@@ -71,6 +71,7 @@ export default class LenderPickerPage extends React.Component {
       loanTranches: r.general.loanTranches || [],
       loanStrategyValidated: r.logic.loanStrategyPreset &&
         loanStrategySuccess(r.general.loanTranches, getLoanValue(r)),
+      standard: true,
     };
   }
 
@@ -137,7 +138,7 @@ export default class LenderPickerPage extends React.Component {
     return (
       <ProcessPage
         {...this.props}
-        stepNb={1}
+        stepNb={2}
         id="lenderPicker"
         showBottom={!!this.props.loanRequest.logic.lender.offerId}
       >

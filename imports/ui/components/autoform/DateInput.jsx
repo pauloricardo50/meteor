@@ -23,52 +23,36 @@ const styles = {
   },
 };
 
+const getDateFormat = () => {
+  /**
+   * Use the native Intl.DateTimeFormat if available, or a polyfill if not.
+   */
+  if (areIntlLocalesSupported(['fr'])) {
+    return global.Intl.DateTimeFormat;
+  }
+
+  const IntlPolyfill = require('intl');
+  return IntlPolyfill.DateTimeFormat;
+  require('intl/locale-data/jsonp/fr');
+};
+
 export default class DateInput extends Component {
   constructor(props) {
     super(props);
 
-    if (this.props.currentValue) {
-      this.state = {
-        value: moment(this.props.currentValue).toDate(), // TODO: verify this works in all timezones
-        errorText: '',
-      };
-    } else {
-      this.state = {
-        value: undefined,
-        errorText: '',
-      };
-    }
-
-    this.setDateFormat();
-  }
-
-  setDateFormat() {
-    this.DateTimeFormat = undefined;
-    /**
-     * Use the native Intl.DateTimeFormat if available, or a polyfill if not.
-     */
-    if (areIntlLocalesSupported(['fr'])) {
-      this.DateTimeFormat = global.Intl.DateTimeFormat;
-    } else {
-      const IntlPolyfill = require('intl');
-      this.DateTimeFormat = IntlPolyfill.DateTimeFormat;
-      require('intl/locale-data/jsonp/fr');
-    }
+    this.state = {
+      errorText: '',
+    };
   }
 
   handleChange = (event, date) => {
-    this.setState(
-      {
-        value: date,
-      },
-      this.saveValue,
-    );
+    this.saveValue(date);
   };
 
-  saveValue = () => {
+  saveValue = date => {
     // Remove time from date
     // TODO: verify this works in all timezones
-    const dateWithoutTime = moment(this.state.value).format('YYYY-MM-DD');
+    const dateWithoutTime = moment(date).format('YYYY-MM-DD');
 
     // Save data to DB
     const object = {};
@@ -79,24 +63,22 @@ export default class DateInput extends Component {
 
   render() {
     return (
-      <div
-        style={{ ...styles.div, ...this.props.style }}
-        className="datepicker"
-      >
+      <div style={{ ...styles.div, ...this.props.style }} className="datepicker">
         <label htmlFor={this.props.label} style={styles.label}>
           {this.props.label}
         </label>
         <DatePicker
           name={this.props.label}
-          hintText="Choisir une date.."
-          value={this.state.value}
+          hintText="Choisissez une date"
+          value={this.props.currentValue}
           onChange={this.handleChange}
           id={this.props.id}
           errorText={this.state.errorText}
+          minDate={this.props.minDate}
           maxDate={this.props.maxDate}
           textFieldStyle={styles.DatePickerField}
           locale="fr"
-          DateTimeFormat={this.DateTimeFormat}
+          DateTimeFormat={getDateFormat()}
           cancelLabel="Annuler"
         />
       </div>
@@ -108,7 +90,16 @@ DateInput.propTypes = {
   label: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   currentValue: PropTypes.string,
-  requestId: PropTypes.string.isRequired,
-
   maxDate: PropTypes.objectOf(PropTypes.any),
+  minDate: PropTypes.objectOf(PropTypes.any),
+  documentId: PropTypes.string.isRequired,
+  style: PropTypes.object,
+  updateFunc: PropTypes.string.isRequired,
+};
+
+DateInput.defaultProps = {
+  maxDate: undefined,
+  minDate: undefined,
+  currentValue: '',
+  style: {},
 };

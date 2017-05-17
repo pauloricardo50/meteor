@@ -86,6 +86,10 @@ export const GeneralSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  wantedClosingDate: {
+    type: Date,
+    optional: true,
+  },
   files: {
     type: RequestFilesSchema,
     defaultValue: {},
@@ -287,8 +291,8 @@ export const PropertySchema = new SimpleSchema({
 export const LogicSchema = new SimpleSchema({
   step: {
     type: Number,
-    defaultValue: 0,
-    min: 0,
+    defaultValue: 1,
+    min: 1,
     max: 5,
   },
   verification: {
@@ -334,6 +338,14 @@ export const LogicSchema = new SimpleSchema({
   },
   auctionEndTime: {
     type: Date,
+    optional: true,
+  },
+  auction: {
+    type: Object,
+    defaultValue: {},
+  },
+  'auction.mostImportant': {
+    type: 'string',
     optional: true,
   },
   hasValidatedStructure: {

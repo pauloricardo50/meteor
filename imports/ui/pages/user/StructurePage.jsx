@@ -16,7 +16,7 @@ const handleClick = props => {
 
 const StructurePage = props => {
   return (
-    <ProcessPage {...props} stepNb={1} id="structure" showBottom={false}>
+    <ProcessPage {...props} stepNb={2} id="structure" showBottom={false}>
       <section className="mask1">
         <h1>Structure du Projet <small>En Développement</small></h1>
         <div className="description">

@@ -9,18 +9,19 @@ import { isDemo } from '/imports/js/helpers/browserFunctions';
 
 const getSteps = ({ loanRequest, borrowers, serverTime }) => {
   const steps = [
-    // Step 1
     {
       nb: 0,
+      title: '0. Passez le test',
+      subtitle: '5 min',
+      items: [],
+    },
+
+    // Step 1
+    {
+      nb: 1,
       title: '1. Préparez votre dossier',
       subtitle: '15 minutes',
       items: [
-        {
-          id: 'test',
-          title: 'Passez le test',
-          subtitle: '5 min',
-          isDone: () => true,
-        },
         ...borrowers.map((b, i) => ({
           id: `profile${i}`,
           title: `Complétez votre profil ${borrowers.length > 1 ? i + 1 : ''}`,
@@ -88,9 +89,9 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
 
     // Step 2
     {
-      nb: 1,
+      nb: 2,
       title: '2. Trouvez votre prêteur',
-      subtitle: loanRequest.logic.step < 1 ? 'Dans 1 jour' : '3 jours',
+      subtitle: loanRequest.logic.step < 2 ? 'Dans 1 jour' : '3 jours',
       items: [
         {
           id: 'structure',
@@ -98,7 +99,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           link: `/app/requests/${loanRequest._id}/structure`,
           subtitle: '1 min',
           isDone: () => loanRequest.logic.hasValidatedStructure,
-          disabled: loanRequest.logic.step < 1,
+          disabled: loanRequest.logic.step < 2,
         },
         {
           id: 'auction',
@@ -107,14 +108,14 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           subtitle: '2 jours',
           isDone: () =>
             loanRequest.logic.auctionStarted && loanRequest.logic.auctionEndTime <= serverTime,
-          disabled: loanRequest.logic.step < 1,
+          disabled: loanRequest.logic.step < 2,
         },
         {
           id: 'lenderPicker',
           title: 'Choisissez votre prêteur',
           subtitle: '5 min',
           link: `/app/requests/${loanRequest._id}/lenderpicker`,
-          disabled: loanRequest.logic.step < 1 &&
+          disabled: loanRequest.logic.step < 2 &&
             !(serverTime &&
               loanRequest.logic.auctionEndTime &&
               loanRequest.logic.auctionEndTime > serverTime),
@@ -125,16 +126,16 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
 
     // Step 3
     {
-      nb: 2,
+      nb: 3,
       title: '3. Finalisez votre demande',
-      subtitle: loanRequest.logic.step < 2 ? 'Dans 4 jours' : '45 minutes',
+      subtitle: loanRequest.logic.step < 3 ? 'Dans 4 jours' : '45 minutes',
       items: [
         {
           id: 'finalSteps',
           title: 'Dernières démarches',
           link: `/app/requests/${loanRequest._id}/finalsteps`,
           subtitle: '45 min',
-          disabled: loanRequest.logic.step < 2 &&
+          disabled: loanRequest.logic.step < 3 &&
             !(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
           percent: () => 0,
           isDone: () => false,
@@ -144,20 +145,27 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
 
     // Step 4
     {
-      nb: 3,
-      title: React.createElement('span', { className: 'fa fa-home fa-2x' }, null),
+      nb: 4,
+      title: React.createElement(
+        'span',
+        {
+          className: 'fa fa-home fa-2x',
+          style: { color: '#ADB5BD', paddingLeft: 8 },
+        },
+        null,
+      ),
       description: 'Félicitations, vous êtes arrivé au bout, profitez de votre nouvelle propriété comme il se doit.',
       items: [],
     },
   ];
 
   // Make sure these indices correspond
-  // Verify all 4 items before item 5 are done
-  steps[0].items[3].disabled = !previousDone(steps, 0, 3); // Vérification e-Potek
+  // Verify all 3 items before item 4 are done
+  steps[1].items[2].disabled = !previousDone(steps, 1, 2); // Vérification e-Potek
   // steps[0].items[6].disabled = !previousDone(steps, 0, 6); // Expertise
 
-  steps[1].items[1].disabled = !previousDone(steps, 1, 1); // Enchères
-  steps[1].items[2].disabled = !previousDone(steps, 1, 2); // Choix du prêteur
+  steps[2].items[1].disabled = !previousDone(steps, 2, 1); // Enchères
+  steps[2].items[2].disabled = !previousDone(steps, 2, 2); // Choix du prêteur
 
   return steps;
 };
