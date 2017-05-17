@@ -783,6 +783,7 @@ ul.request-map
     margin-top: 16px;
   h4
     margin: auto;
+    text-align: left;
   .result
     width: 100%;
     display: flex;
@@ -1239,25 +1240,34 @@ ul.request-map
   min-height: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
   .top-bar, .bottom-bar
+    z-index: z.nav;
     width: 100%;
+    +above($med)
+      width: calc(100% - 300px); // Side-nav width, careful, not updated with variable
     height: 64px;
-    background-color: light-grey;
+    position: fixed;
+    background-color: #F1F3F5;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 16px;
+    right: 0;
     .title
       margin: 0;
+      color: #495057;
     .buttons
       display: flex;
       flex-wrap: nowrap;
   .top-bar
-    top: 0;
+    top: 64px;
   .bottom-bar
     bottom: 0;
   .children
     padding: 16px;
+    padding-top: 80px;
+    position: relative;
 
 
 .verification-comment-list

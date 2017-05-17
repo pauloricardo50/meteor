@@ -38,7 +38,8 @@ import {
   StructurePage,
   VerificationPage,
   ExpertisePage,
-  FinalStepsPage,
+  ContractPage,
+  ClosingPage,
   DevPage,
 } from '/imports/ui/containers/UserContainers';
 import ContactPage from '/imports/ui/pages/user/ContactPage.jsx';
@@ -101,7 +102,8 @@ const UserRoutes = props => (
         <Route path="/app/requests/:requestId/auction" component={AuctionPage} />
         <Route path="/app/requests/:requestId/structure" component={StructurePage} />
         <Route path="/app/requests/:requestId/lenderpicker" component={LenderPickerPage} />
-        <Route path="/app/requests/:requestId/finalsteps" component={FinalStepsPage} />
+        <Route path="/app/requests/:requestId/contract" component={ContractPage} />
+        <Route path="/app/requests/:requestId/closing" component={ClosingPage} />
         <Route path="/app/requests/:requestId" component={DashboardPage} name="asdf" />
         <Route path="/app" render={routeProps => <NewPage {...layoutProps} {...routeProps} />} />
       </Switch>

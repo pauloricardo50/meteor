@@ -32,7 +32,10 @@ const SideNavStepperStep = props => {
   return (
     <li key={props.step.nb} className={classnames({ step: true, isActive: props.active })}>
       <div className="absolute-line" />
-      <div className="top" onTouchTap={props.handleClick}>
+      <div
+        className={classnames({ top: true, inactive: props.step.nb === 0 })}
+        onTouchTap={props.handleClick}
+      >
         {getStepIcon(props)}
         <div className="text">
           <span className={'title'}>

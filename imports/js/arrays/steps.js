@@ -128,15 +128,24 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
     {
       nb: 3,
       title: '3. Finalisez votre demande',
-      subtitle: loanRequest.logic.step < 3 ? 'Dans 4 jours' : '45 minutes',
+      subtitle: loanRequest.logic.step < 3 ? 'Dans 4 jours' : '60 minutes',
       items: [
         {
-          id: 'finalSteps',
-          title: 'Dernières démarches',
-          link: `/app/requests/${loanRequest._id}/finalsteps`,
-          subtitle: '45 min',
+          id: 'contract',
+          title: 'Obtenez le contrat',
+          link: `/app/requests/${loanRequest._id}/contract`,
+          subtitle: '30 min',
           disabled: loanRequest.logic.step < 3 &&
             !(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
+          percent: () => 0,
+          isDone: () => false,
+        },
+        {
+          id: 'closing',
+          title: 'Décaissez votre emprunt',
+          link: `/app/requests/${loanRequest._id}/closing`,
+          subtitle: '30 min',
+          disabled: true, // TODO
           percent: () => 0,
           isDone: () => false,
         },
