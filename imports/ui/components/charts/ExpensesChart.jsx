@@ -180,7 +180,7 @@ export default class ExpensesChart extends Component {
       series: [
         {
           type: 'pie',
-          innerSize: '50%',
+          innerSize: '60%',
           name: 'Dépenses Mensuelles Estimées',
           colorByPoint: true,
           data: [
