@@ -11,7 +11,7 @@ import ArrayInput from './ArrayInput.jsx';
 
 // Verify if the previous value is false
 const isFalse = (val, zeroAllowed = false) =>
-  (zeroAllowed ? val === undefined || val === '' : val === undefined || val === 0 || val === '');
+  zeroAllowed ? val === undefined || val === '' : val === undefined || val === 0 || val === '';
 
 const validationCheck = (v, rules) =>
   (!rules.min || v >= rules.min) && (!rules.max || v <= rules.max);

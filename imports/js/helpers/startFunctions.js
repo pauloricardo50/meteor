@@ -319,7 +319,7 @@ export const saveStartForm = (f, history) => {
       loanRequest.borrowers.push(id2);
     }
     cleanMethod('insertRequest', loanRequest, undefined, (err, requestId) =>
-      history.push(`/app/request/${requestId}?newrequest=${requestId}`),
+      history.push(`/app/requests/${requestId}`),
     );
   };
 

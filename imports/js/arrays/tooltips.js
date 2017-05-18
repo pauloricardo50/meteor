@@ -39,6 +39,7 @@ const offerTableTooltips = {
   '10 ans': "Un taux d'intérêt qui arrive à échéance en 10 ans",
   amortissement: "L'amortissement annuel minimum de l'emprunt demandé par la banque",
   expertise: 'Indique si la banque veut faire une expertise supplémentaire, ajoute environ 2 semaines à la procédure',
+  conditions: 'Les conditions que vous devez remplir pour avoir accès à cette offre',
 };
 
 export const tooltips = list => {

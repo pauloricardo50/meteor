@@ -7,7 +7,8 @@ import _LenderPickerPage from '/imports/ui/pages/user/LenderPickerPage.jsx';
 import _StructurePage from '/imports/ui/pages/user/StructurePage.jsx';
 import _VerificationPage from '/imports/ui/pages/user/VerificationPage.jsx';
 import _ExpertisePage from '/imports/ui/pages/user/ExpertisePage.jsx';
-import _FinalStepsPage from '/imports/ui/pages/user/FinalStepsPage.jsx';
+import _ContractPage from '/imports/ui/pages/user/ContractPage.jsx';
+import _ClosingPage from '/imports/ui/pages/user/ClosingPage.jsx';
 import _DevPage from '/imports/ui/pages/user/DevPage.jsx';
 
 import { userContainer, userRequestContainer, userBorrowerContainer } from './Containers';
@@ -21,5 +22,6 @@ export const LenderPickerPage = userRequestContainer(_LenderPickerPage);
 export const StructurePage = userRequestContainer(_StructurePage);
 export const VerificationPage = userRequestContainer(_VerificationPage);
 export const ExpertisePage = userRequestContainer(_ExpertisePage);
-export const FinalStepsPage = userRequestContainer(_FinalStepsPage);
+export const ContractPage = userRequestContainer(_ContractPage);
+export const ClosingPage = userRequestContainer(_ClosingPage);
 export const DevPage = userContainer(_DevPage);

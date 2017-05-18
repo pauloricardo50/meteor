@@ -84,7 +84,8 @@ export const startAuction = new ValidatedMethod({
 });
 
 // Gives the end time of an auction, given the start time
-export const getAuctionEndTime = function (startTime) {
+export const getAuctionEndTime = startTime => {
+  startTime = moment(startTime);
   const endTime = startTime;
 
   if (startTime.isoWeekday() === 6) {

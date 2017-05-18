@@ -101,7 +101,7 @@ export default class Results extends Component {
     super(props);
 
     this.state = {
-      showSpecial: true,
+      showSpecial: false,
     };
   }
 
@@ -138,6 +138,7 @@ export default class Results extends Component {
         <OfferToggle
           value={this.state.showSpecial}
           handleToggle={(e, c) => this.setState({ showSpecial: c })}
+          offers={this.props.offers}
         />
 
         <div style={styles.tableDiv}>

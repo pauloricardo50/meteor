@@ -9,12 +9,9 @@ import { isDemo } from '/imports/js/helpers/browserFunctions';
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
 
 export default class VerificationPage extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   handleClick = () => {
     if (isDemo()) {
+      const object = {};
       object['logic.verification.validated'] = true;
       cleanMethod('updateRequest', object, this.props.loanRequest._id);
     } else {
@@ -85,7 +82,7 @@ export default class VerificationPage extends Component {
     }
 
     return (
-      <ProcessPage {...this.props} stepNb={0} id="verification" showBottom={false}>
+      <ProcessPage {...this.props} stepNb={1} id="verification" showBottom={false}>
         <section className="mask1">
           <h1>Faites la vérification</h1>
 

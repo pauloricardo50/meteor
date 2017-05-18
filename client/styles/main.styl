@@ -11,6 +11,7 @@ $wide = 1200px
 black = #222;
 grey = #D8D8D8;
 light-grey = #EEE;
+border-grey = #DEE2E6;
 
 grey1 = #d8d8d8;
 grey2 = #eee;
@@ -74,6 +75,8 @@ h1, h2, h3, h4, h5, h6
   line-height: 1.1em;
   font-family: 'Source Sans Pro', sans-serif !important;
   font-weight: 300 !important;
+  &.no-margin
+    margin: 0;
 
 h1
   font-size: 2em;
@@ -127,6 +130,9 @@ h5
 h6
   font-size: 0.75em;
 
+hr
+  margin-top: 16px;
+  margin-bottom: 16px;
 
 a
   cursor: pointer;
@@ -187,28 +193,29 @@ input[type=number]
   opacity 0.25
 
 .mask1
-  box-shadow: 0px 2px 40px 0px rgba(0,0,0,0.08);
-  border-radius: 5px;
-  padding: 20px;
+  box-shadow: 0 0 4px 0 rgba(33,37,41,0.16);
+  // box-shadow: 0px 2px 40px 0px rgba(0,0,0,0.08);
+  border-radius: 4px;
+  padding: 16px;
   overflow: auto;
   background-color: white;
   > h1:first-child
     margin: 0;
-    // padding-bottom: 20px;
+    // padding-bottom: 16px;
     +above($med)
-      padding-left: 20px;
+      padding-left: 16px;
   .primary-top
     display: inline-block;
-    width: calc(100% + 40px);
+    width: calc(100% + 32px);
     min-height: 300px;
     color: white;
     background-color: brand-primary;
     // padding: 0;
-    padding: 20px;
+    padding: 16px;
     margin: 0;
-    margin-left: -20px;
-    margin-top: -20px;
-    margin-bottom: 50px;
+    margin-left: -16px;
+    margin-top: -16px;
+    margin-bottom: 48px;
     h1, h2, h3, h4, p, div
       color: white;
       padding: 0;
@@ -216,16 +223,16 @@ input[type=number]
 
 .mask2
   box-shadow: 0px 20px 20px 0px rgba(0,0,0,0.08);
-  border-radius: 5px;
-  padding: 20px
+  border-radius: 4px;
+  padding: 16px
   overflow: auto;
   background-color: white;
 
 
 .mask3
   box-shadow: 0px 40px 40px 0px rgba(0,0,0,0.16);
-  border-radius: 5px;
-  padding: 20px
+  border-radius: 4px;
+  padding: 16px
   overflow: auto;
   background-color: white;
 
@@ -259,7 +266,7 @@ input[type=number]
       // position: relative;
       margin: 0 auto;
       height: 48px;
-      max-width: 190px;
+      max-width: 184px;
       +above($med)
         margin: 0;
 
@@ -268,10 +275,10 @@ input[type=number]
   height 100%
   padding 120px 0
   fixed top left
-  width $side-nav
+  width: $side-nav;
   background-color white
   box-shadow: 0px -2px 40px 0px rgba(0,0,0,0.08);
-  z-index: z.nav
+  z-index: z.nav;
   ul.side-nav-list
     list-style: none;
     text-decoration: none !important;
@@ -280,9 +287,9 @@ input[type=number]
     margin: 0;
     padding: 0;
     li
-      height: 70px;
+      height: 64px;
       a
-        height: 70px;
+        height: 64px;
         display: flex;
         color: alpha(#222, 0.6);
         font-weight: 400 !important;
@@ -302,7 +309,7 @@ input[type=number]
           align-items: center;
           padding: 0;
           color: inherit !important;
-          width: 90px;
+          width: 80px;
           justify-content: center;
           svg
             color: inherit !important;
@@ -310,18 +317,18 @@ input[type=number]
           display: inline-flex;
           align-items: center;
           font-weight: 400 !important;
-          max-width: 150px;
+          max-width: 160px;
           overflow: hidden;
           text-overflow: ellipsis;
   img.logo
     position: absolute;
-    width: $side-nav - 20px;
+    width: $side-nav - 16px;
     top: 40px;
-    left: 10px
+    left: 8px
   .logout
     position: absolute;
     bottom: 0;
-    padding: 20px;
+    padding: 16px;
     width: 100%;
     background-color: white;
     z-index: 2;
@@ -336,27 +343,27 @@ input[type=number]
     padding-top: 64px;
 
 .app-layout
-  padding: 20px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   height: auto;
   min-height: 100%;
   +above($med)
-    padding-top: 84px;
-    padding-left 320px; // side-nav width + 20px
-    padding-bottom 20px;
+    padding-top: 80px;
+    padding-left 316px; // side-nav width + 20px
+    padding-bottom 16px;
   &.always-side-nav
-    padding-left: 270px; // side bar doesn't disappear
+    padding-left: 266px; // side bar doesn't disappear
   .wrapper
     margin: 0 0;
     height: 100%;
     min-height: 100%;
   .transition-wrapper
     position: absolute;
-    width: calc(100% - 40px);
+    width: calc(100% - 32px);
     margin: auto;
     +above($med)
-      width: calc(100% - 250px - 40px);
+      width: calc(100% - 250px - 32px);
 
 
 .full-screen
@@ -415,19 +422,15 @@ svg:not(:root) {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    color: alpha(#222, 0.6) !important;
+    color: #343A40 !important;
     text-decoration: none;
     flex-shrink: 0;
     .title
       font-weight: 400 !important;
     &:hover
-      background-color: light-grey;
-      color: alpha(#222, 0.8) !important;
+      background-color: #F4F6F8;
     &.active-link
-      background-color: grey3;
-      color: alpha(#222, 0.85) !important;
-      .title
-        color: brand-primary;
+      background-color: #F1F3F5;
     .icon
       padding: 0 16px;
       display: flex;
@@ -469,9 +472,11 @@ svg:not(:root) {
         &.isActive
           background-color: #f8f9fa;
           .title
-            color: #222
+            color: #212529
         &:hover
           background-color: #f9fafb;
+        &:first-child
+          cursor: default;
         .top
           height: 64px;
           display: flex;
@@ -480,11 +485,13 @@ svg:not(:root) {
           cursor: pointer;
           width: 100%;
           transition: all 300ms $bezier;
+          &.inactive
+            cursor: default;
           .icon
             width: 32px;
             height: 32px;
             margin-right: 8px;
-            background-color: grey;
+            background-color: #CED4DA;
             border-radius: 100%;
             display: flex;
             align-items: center;
@@ -495,24 +502,24 @@ svg:not(:root) {
               background-color: brand-success;
             svg
               color: white !important;
-              width: 20px !important;
-              height: 20px !important;
+              width: 18px !important;
+              height: 18px !important;
           .text
             display: flex;
             flex-direction: column;
             line-height: 1.2em;
             .title
-              color: #222;
+              color: #343A40;
               font-weight: 400;
             .subtitle
-              color: #818990;
+              color: #868E96;
               font-weight: 400;
         .absolute-line
           position: absolute;
           left: 32px;
           opacity: 0.5;
           height: 100%;
-          border-right: solid 1px grey;
+          border-right: 1px solid #DEE2E6;
         &:first-child
           .absolute-line
             bottom: 0;
@@ -546,9 +553,9 @@ svg:not(:root) {
               display flex;
               justify-content: center;
               align-items: center;
-              color: grey;
+              color: #DEE2E6;
               .available-icon
-                background-color: grey;
+                background-color: #DEE2E6;
               svg
                 color: grey !important;
                 width: 20px !important;
@@ -561,16 +568,16 @@ svg:not(:root) {
               line-height: 1.4em;
               .title
                 font-weight: 400;
-                color: #31363C;
+                color: #343A40;
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
               .subtitle
-                color: #818990;
+                color: #ADB5BD;
                 font-weight: 400;
             &.active
               border-left: 1px solid brand-primary;
-              background-color: #f1f3f5;
+              background-color: #F1F3F5;
               .title
                 color: brand-primary;
               .available-icon

@@ -58,15 +58,16 @@ export default class OffersTab extends Component {
                 <h4 className="fixed-size" style={{ marginTop: 0 }}>Offre Standard</h4>
                 <span>Montant prêté: CHF {toMoney(o.standardOffer.maxAmount)}</span>
                 <span>
-                  Amortissement demandé: {toMoney(o.standardOffer.amortization)}%
+                  Amortissement demandé: {o.standardOffer.amortization * 100}%
                 </span>
                 <ul className="overview">
                   {Object.keys(o.standardOffer).map(
                     key =>
                       key.includes('interest') &&
-                      o.standardOffer[key] &&
+                      !!o.standardOffer[key] &&
                       <li key={key}>
-                        <span>{key}</span><span className="bold">{o.standardOffer[key]}%</span>
+                        <span>{key}</span>
+                        <span className="bold">{o.standardOffer[key] * 100}%</span>
                       </li>,
                   )}
                 </ul>
@@ -76,16 +77,16 @@ export default class OffersTab extends Component {
                     <h4 className="fixed-size" style={{ marginTop: 0 }}>Offre avec contrepartie</h4>
                     <span>Montant prêté: CHF {toMoney(o.counterpartOffer.maxAmount)}</span>
                     <span>
-                      Amortissement demandé: {toMoney(o.counterpartOffer.amortization)}%
+                      Amortissement demandé: {o.counterpartOffer.amortization * 100}%
                     </span>
                     <ul className="overview">
                       {Object.keys(o.counterpartOffer).map(
                         key =>
                           key.includes('interest') &&
-                          o.counterpartOffer[key] &&
+                          !!o.counterpartOffer[key] &&
                           <li key={key}>
                             <span>{key}</span>
-                            <span className="bold">{o.counterpartOffer[key]}%</span>
+                            <span className="bold">{o.counterpartOffer[key] * 100}%</span>
                           </li>,
                       )}
                     </ul>

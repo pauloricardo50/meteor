@@ -6,6 +6,8 @@ import CountUp from 'react-countup';
 import RaisedButton from 'material-ui/RaisedButton';
 import { getLenderCount } from '/imports/js/helpers/requestFunctions';
 
+import AuctionForm from './AuctionForm.jsx';
+
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 
 const styles = {
@@ -32,6 +34,7 @@ const styles = {
 
 const Start = props => {
   const lenderCount = getLenderCount(props.loanRequest, props.borrowers);
+  const r = props.loanRequest;
   return (
     <section className="mask1">
       <h1>Lancez les enchères</h1>
@@ -64,6 +67,10 @@ const Start = props => {
         </p>
       </div>
 
+      <div style={{ marginBottom: 40 }}>
+        <AuctionForm {...props} />
+      </div>
+
       <div className="col-xs-12">
         <div className="form-group text-center">
           <RaisedButton
@@ -71,6 +78,7 @@ const Start = props => {
             primary
             onTouchTap={() =>
               cleanMethod('startAuction', { isDemo: isDemo() }, props.loanRequest._id)}
+            disabled={!(r.logic.auction.mostImportant && r.general.wantedClosingDate)}
           />
         </div>
         <div className="form-group text-center">

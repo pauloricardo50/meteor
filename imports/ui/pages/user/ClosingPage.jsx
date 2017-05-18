@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
 
-const FinalStepsPage = props => {
+const ClosingPage = props => {
   return (
-    <ProcessPage {...props} stepNb={2} id="finalSteps" showBottom={false}>
+    <ProcessPage {...props} stepNb={3} id="closing" showBottom={false}>
       <div className="mask1">
-        <h1>Dernières Étapes</h1>
+        <h1>Décaissez votre prêt</h1>
         <div className="description">
           <p>
-            Nous avons notifié votre prêteur, nous attendons sa réponse pour vous donner les dernières étapes.
+            Plus que quelques étapes administratives pour obtenir votre prêt.
           </p>
         </div>
 
@@ -23,6 +23,6 @@ const FinalStepsPage = props => {
   );
 };
 
-FinalStepsPage.propTypes = {};
+ClosingPage.propTypes = {};
 
-export default FinalStepsPage;
+export default ClosingPage;

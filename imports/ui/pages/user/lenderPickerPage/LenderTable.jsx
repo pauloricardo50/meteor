@@ -19,13 +19,21 @@ const styles = {
 };
 
 const getOffers = props => {
-  const newOffers = props.offers.map(offer => {
+  let newOffers = props.offers.map(offer => {
     let rates = [];
     let amortization = 0;
     if (props.formState.standard) {
       rates = offer.standardOffer;
       amortization = offer.standardOffer.amortization;
     } else {
+      if (offer.counterparts.length <= 0) {
+        // if this offer doesn't have a counterparts offer, return a basic object to be filtered out
+        return {
+          _id: offer._id,
+          conditions: offer.conditions,
+          counterparts: offer.counterparts,
+        };
+      }
       rates = offer.counterpartOffer;
       amortization = offer.counterpartOffer.amortization;
     }
@@ -52,27 +60,32 @@ const getOffers = props => {
   // Sort them by monthly cost
   newOffers.sort((a, b) => a.monthly - b.monthly);
 
+  if (!props.formState.standard) {
+    // If this is for the counterparts offers, filter out those that don't have a counterpart offer
+    newOffers = newOffers.filter(o => o.counterparts.length > 0);
+  }
+
   return newOffers;
 };
 
-const handleChoose = (id, props) => {
-  if (props.formState.chosenLender === id) {
-    props.setFormState('chosenLender', '');
-  } else {
-    props.setFormState('chosenLender', id);
-  }
-};
-
-const handleSave = props => {
+const handleSave = (props, offerId) => {
   const object = {};
 
   object['logic.insuranceUsePreset'] = props.formState.insuranceUsePreset;
   object['logic.amortizationStrategyPreset'] = props.formState.amortizationStrategyPreset;
   object['logic.loanStrategyPreset'] = props.formState.loanStrategyPreset;
   object['general.loanTranches'] = props.formState.loanTranches;
-  object['logic.lender.offerId'] = props.formState.chosenLender;
+  object['logic.lender.offerId'] = offerId;
 
   cleanMethod('updateRequest', object, props.loanRequest._id);
+};
+
+const handleChoose = (id, props) => {
+  if (props.formState.chosenLender === id) {
+    props.setFormState('chosenLender', '', () => handleSave(props, ''));
+  } else {
+    props.setFormState('chosenLender', id, () => handleSave(props, id));
+  }
 };
 
 export default class LenderTable extends Component {
@@ -104,7 +117,7 @@ export default class LenderTable extends Component {
           </p>
         </div>
 
-        {this.props.formState.chosenLender &&
+        {/* {this.props.formState.chosenLender &&
           <div className="text-center" style={{ margin: '40px 0' }}>
             <RaisedButton
               label={saved ? 'Sauvegardé' : 'Sauvegarder'}
@@ -115,11 +128,12 @@ export default class LenderTable extends Component {
               overlayStyle={{ padding: 20 }}
               icon={saved && <CheckIcon />}
             />
-          </div>}
+          </div>} */}
 
         <OfferToggle
           value={!this.props.formState.standard}
           handleToggle={(e, c) => this.props.setFormState('standard', !c)}
+          offers={this.props.offers}
         />
 
         <div style={styles.tableDiv}>

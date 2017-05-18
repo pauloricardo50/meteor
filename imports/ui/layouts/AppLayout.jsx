@@ -9,7 +9,7 @@ import TopNav from '/imports/ui/components/general/TopNav.jsx';
 import SideNavUser from '/imports/ui/components/general/SideNavUser.jsx';
 import SideNav from '/imports/ui/components/general/SideNav.jsx';
 import RouteTransition from '/imports/ui/components/general/RouteTransition.jsx';
-
+import ContactButton from '/imports/ui/components/general/ContactButton.jsx';
 const getRedirect = props => {
   const isAdmin = Roles.userIsInRole(props.currentUser, 'admin');
   const isPartner = Roles.userIsInRole(props.currentUser, 'partner');
@@ -93,6 +93,8 @@ const AppLayout = props => {
         </div>
         {/* </RouteTransition> */}
       </main>
+
+      {props.history.location.pathname.slice(0, 4) === '/app' && <ContactButton />}
     </div>
   );
 };

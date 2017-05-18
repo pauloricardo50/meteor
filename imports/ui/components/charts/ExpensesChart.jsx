@@ -6,10 +6,12 @@ import { getInterests, getAmortization } from '/imports/js/helpers/finance-math'
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import colors from '/imports/js/config/colors';
 
+import { legend } from './chartSettings';
+
 const chartColors = {
-  interest: colors.charts[1],
-  amortization: colors.charts[3],
-  maintenance: colors.charts[5],
+  interest: colors.charts[0],
+  amortization: colors.charts[1],
+  maintenance: colors.charts[2],
 };
 
 const update = that => {
@@ -144,6 +146,7 @@ export default class ExpensesChart extends Component {
             that.addTitle(this);
           },
         },
+        spacingBottom: 0,
       },
       tooltip: {
         formatter() {
@@ -154,7 +157,7 @@ export default class ExpensesChart extends Component {
       plotOptions: {
         pie: {
           size: '100%',
-          borderWidth: 4,
+          borderWidth: 0,
           allowPointSelect: false,
           cursor: 'pointer',
           dataLabels: {
@@ -173,16 +176,11 @@ export default class ExpensesChart extends Component {
           showInLegend: false,
         },
       },
-      legend: {
-        align: 'center',
-        verticalAlign: 'bottom',
-        layout: 'horizontal',
-        itemStyle: { fontSize: '14px', fontWeight: 300, width: 90 },
-      },
+      legend,
       series: [
         {
           type: 'pie',
-          innerSize: '50%',
+          innerSize: '60%',
           name: 'Dépenses Mensuelles Estimées',
           colorByPoint: true,
           data: [

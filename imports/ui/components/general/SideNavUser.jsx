@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import DashboardIcon from 'material-ui/svg-icons/action/dashboard';
+import AssessmentIcon from 'material-ui/svg-icons/action/assessment';
 import { NavLink } from 'react-router-dom';
 
 import RequestSelector from './RequestSelector.jsx';
@@ -36,7 +36,7 @@ const SideNavUser = props => {
           className="link"
         >
           <div className="onclick-wrapper" onTouchTap={props.handleClickLink}>
-            <div className="icon"><DashboardIcon /></div>
+            <div className="icon"><AssessmentIcon color="#ADB5BD" /></div>
             <h5 className="title">Tableau de Bord</h5>
           </div>
         </NavLink>

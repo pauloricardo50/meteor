@@ -24,7 +24,7 @@ export default class DashboardRecap extends React.Component {
     super(props);
 
     this.state = {
-      showDetail: false,
+      showDetail: !this.props.smallWidth,
     };
   }
 
@@ -43,7 +43,7 @@ export default class DashboardRecap extends React.Component {
       );
     } else {
       content = (
-        <div className="text-center">
+        <div style={styles.recap}>
           <Recap {...this.props} arrayName="dashboard-small" />
         </div>
       );
@@ -52,7 +52,7 @@ export default class DashboardRecap extends React.Component {
     return (
       <div className="mask1">
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <h4 className="fixed-size bold">Plan Financier</h4>
+          <h4 className="fixed-size bold" style={{ marginTop: 0 }}>Plan Financier</h4>
           <FlatButton
             label={this.state.showDetail ? 'Général' : 'Détail'}
             onTouchTap={this.handleToggle}
@@ -65,4 +65,6 @@ export default class DashboardRecap extends React.Component {
   }
 }
 
-DashboardRecap.propTypes = {};
+DashboardRecap.propTypes = {
+  smallWidth: PropTypes.bool.isRequired,
+};

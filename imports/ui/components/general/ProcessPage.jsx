@@ -54,7 +54,7 @@ export default class ProcessPage extends Component {
         <div className="children animated fadeIn">
           {this.props.children}
         </div>
-        {this.props.showBottom && <ProcessPageBar {...barProps} className="bottom-bar" />}
+        {/* {this.props.showBottom && <ProcessPageBar {...barProps} className="bottom-bar" />} */}
       </section>
     );
   }

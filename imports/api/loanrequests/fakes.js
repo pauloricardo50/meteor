@@ -43,7 +43,7 @@ export const fakeProperty = {
 export const logic1 = {};
 
 export const logic2 = {
-  step: 1,
+  step: 2,
   verification: {
     requested: false,
     validated: true,
@@ -52,7 +52,7 @@ export const logic2 = {
 };
 
 export const logic3 = {
-  step: 2,
+  step: 3,
   verification: {
     requested: false,
     validated: true,

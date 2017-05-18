@@ -37,7 +37,7 @@ const getActions = (loanRequest, props, i) => {
           window.open(
             `${location.origin}/admin/requests/${loanRequest._id}/verify`,
             '_blank',
-            'width=700, height=500',
+            'width=700, height=700',
           );
         },
         small: !!l.verification &&

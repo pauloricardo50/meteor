@@ -85,14 +85,17 @@ export default class OffersTable extends Component {
       ),
     ];
     offers.sort((a, b) => a.interest10 - b.interest10);
+    if (this.props.showSpecial) {
+      offers = offers.filter(o => o.counterparts.length > 0);
+    }
     const shownOffers = this.state.showFullTable ? offers : offers.slice(0, 5);
 
     return (
       <article>
         <table className="minimal-table">
-          <colgroup>
+          {/* <colgroup>
             {columns.map(c => <col span="1" style={{ width: `${c.width}%` }} key={c.label} />)}
-          </colgroup>
+          </colgroup> */}
           <thead>
             <tr>
               {columns.map(c => (
@@ -146,6 +149,7 @@ export default class OffersTable extends Component {
 
 OffersTable.propTypes = {
   offers: PropTypes.arrayOf(PropTypes.object),
+  showSpecial: PropTypes.bool.isRequired,
 };
 
 OffersTable.defaultProps = {

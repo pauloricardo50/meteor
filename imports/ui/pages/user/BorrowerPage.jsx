@@ -75,7 +75,7 @@ export default class BorrowerPage extends Component {
     const index = this.props.borrowers.indexOf(borrower);
 
     return (
-      <ProcessPage {...this.props} stepNb={0} id={`profile${index}`}>
+      <ProcessPage {...this.props} stepNb={1} id={`profile${index}`}>
         <section className="mask1 borrower-page">
           <Header borrower={borrower} borrowers={this.props.borrowers} index={index} />
           <Links {...this.props} tab={this.state.tab} handleClick={tab => this.setState({ tab })} />

@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Component } from 'react';
 
 import TextField from 'material-ui/TextField';
 import MaskedInput from 'react-text-mask';
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
 
-import { toMoney, toNumber, toDecimalNumber } from '/imports/js/helpers/conversionFunctions';
+import { toMoney, toNumber } from '/imports/js/helpers/conversionFunctions';
 import { swissFrancMask, percentMask } from '/imports/js/helpers/textMasks';
 import cleanMethod from '/imports/api/cleanMethods';
 
@@ -57,7 +57,7 @@ const getFormArray = i => [
   },
 ];
 
-export default class OfferForm extends React.Component {
+export default class OfferForm extends Component {
   constructor(props) {
     super(props);
 
@@ -99,13 +99,13 @@ export default class OfferForm extends React.Component {
       organization: this.state.organization,
       standardOffer: {
         maxAmount: toNumber(this.state.maxAmount),
-        amortization: parseFloat(this.state.amortization),
-        interestLibor: parseFloat(this.state.libor_0),
-        interest1: parseFloat(this.state.interest1_0),
-        interest2: parseFloat(this.state.interest2_0),
-        interest5: parseFloat(this.state.interest5_0),
-        interest10: parseFloat(this.state.interest10_0),
-        interest15: parseFloat(this.state.interest15_0),
+        amortization: parseFloat(this.state.amortization) / 100,
+        interestLibor: parseFloat(this.state.libor_0) / 100,
+        interest1: parseFloat(this.state.interest1_0) / 100,
+        interest2: parseFloat(this.state.interest2_0) / 100,
+        interest5: parseFloat(this.state.interest5_0) / 100,
+        interest10: parseFloat(this.state.interest10_0) / 100,
+        interest15: parseFloat(this.state.interest15_0) / 100,
       },
 
       conditions: [this.state.conditions],
@@ -114,13 +114,13 @@ export default class OfferForm extends React.Component {
     if (this.state.showCounterpart) {
       object.counterpartOffer = {
         maxAmount: toNumber(this.state.maxAmount),
-        amortization: parseFloat(this.state.amortization),
-        interestLibor: parseFloat(this.state.libor_1),
-        interest1: parseFloat(this.state.interest1_1),
-        interest2: parseFloat(this.state.interest2_1),
-        interest5: parseFloat(this.state.interest5_1),
-        interest10: parseFloat(this.state.interest10_1),
-        interest15: parseFloat(this.state.interest15_1),
+        amortization: parseFloat(this.state.amortization) / 100,
+        interestLibor: parseFloat(this.state.libor_1) / 100,
+        interest1: parseFloat(this.state.interest1_1) / 100,
+        interest2: parseFloat(this.state.interest2_1) / 100,
+        interest5: parseFloat(this.state.interest5_1) / 100,
+        interest10: parseFloat(this.state.interest10_1) / 100,
+        interest15: parseFloat(this.state.interest15_1) / 100,
       };
 
       object.counterparts = [this.state.counterparts];
