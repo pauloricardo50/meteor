@@ -23,9 +23,12 @@ const getConfig = props => {
 
   const options = {
     chart: {
-      type: 'pie',
+      type: 'bar',
       style: { fontFamily: 'Source Sans Pro' },
       animation: { duration: 400 },
+      height: 160,
+      spacingTop: 0,
+      spacingBottom: 0,
     },
     title: {
       text: 'Mon Projet',
@@ -44,49 +47,54 @@ const getConfig = props => {
       style: { fontSize: '14px' },
     },
     plotOptions: {
-      pie: {
+      bar: {
         borderWidth: 0,
         allowPointSelect: false,
         cursor: 'pointer',
-        dataLabels: {
-          enabled: false,
-          format: '<b>{point.name}</b><br />CHF {point.y:,.0f}',
-          style: {
-            overflow: 'visible',
-          },
-        },
         showInLegend: true,
+      },
+      series: {
+        pointWidth: 40,
+        stacking: 'percent',
+        animation: true,
       },
     },
     legend,
+    xAxis: {
+      visible: false,
+    },
+    yAxis: {
+      visible: false,
+      reversedStacks: false,
+      // title: { text: '' },
+    },
     series: [
       {
-        type: 'pie',
         name: 'Mon Projet',
+        data: [['Mon Projet', getLoanValue(r)]],
+      },
+      {
+        data: [['2ème Pilier', r.general.insuranceFortuneUsed || 0]],
+        name: '2ème Pilier',
+      },
+      {
         data: [
-          {
-            name: 'Emprunt',
-            y: getLoanValue(r),
-          },
-          {
-            name: '2ème Pilier',
-            y: r.general.insuranceFortuneUsed || 0,
-          },
-          {
-            name: 'Fortune', // subtract fees from this
-            y: r.general.fortuneUsed -
+          [
+            'Épargne', // subtract fees from this
+            r.general.fortuneUsed -
               r.property.value * constants.notaryFees -
               (r.general.insuranceFortuneUsed * constants.lppFees || 0),
-          },
-          {
-            name: 'Frais de Notaire',
-            y: r.property.value * constants.notaryFees,
-          },
-          {
-            name: 'Frais 2ème Pilier',
-            y: r.general.insuranceFortuneUsed * constants.lppFees || 0,
-          },
+          ],
         ],
+        name: 'Épargne',
+      },
+      {
+        data: [['Frais de Notaire', r.property.value * constants.notaryFees]],
+        name: 'Frais de Notaire',
+      },
+      {
+        data: [['Frais 2ème Pilier', r.general.insuranceFortuneUsed * constants.lppFees || 0]],
+        name: 'Frais 2ème Pilier',
       },
     ],
     colors: [
@@ -103,17 +111,17 @@ const getConfig = props => {
   return options;
 };
 
-const ProjectPieChart = props => <ReactHighcharts config={getConfig(props)} />;
+const ProjectBarChart = props => <ReactHighcharts config={getConfig(props)} />;
 
-ProjectPieChart.defaultProps = {
-  divName: 'projectPieChart',
+ProjectBarChart.defaultProps = {
+  divName: 'projectBarChart',
   titleAlign: 'center',
 };
 
-ProjectPieChart.propTypes = {
+ProjectBarChart.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   divName: PropTypes.string,
   titleAlign: PropTypes.string,
 };
 
-export default ProjectPieChart;
+export default ProjectBarChart;
