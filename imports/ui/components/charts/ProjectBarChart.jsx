@@ -70,8 +70,8 @@ const getConfig = props => {
     },
     series: [
       {
-        name: 'Mon Projet',
-        data: [['Mon Projet', getLoanValue(r)]],
+        name: 'Emprunt',
+        data: [['Emprunt', getLoanValue(r)]],
       },
       {
         data: [['2ème Pilier', r.general.insuranceFortuneUsed || 0]],

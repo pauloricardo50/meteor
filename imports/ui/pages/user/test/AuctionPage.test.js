@@ -15,6 +15,7 @@ if (Meteor.isClient) {
       props = {
         loanRequest: Factory.create('loanRequest'),
         borrowers: [{}],
+        serverTime: new Date(),
       };
       getMountedComponent.reset();
     });

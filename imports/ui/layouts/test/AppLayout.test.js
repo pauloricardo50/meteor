@@ -13,7 +13,14 @@ if (Meteor.isClient) {
 
     beforeEach(() => {
       const user = Factory.create('dev');
-      props = { currentUser: user };
+      props = {
+        currentUser: user,
+        history: {
+          location: {
+            pathname: '/app',
+          },
+        },
+      };
       getMountedComponent.reset();
     });
 
