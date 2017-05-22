@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import { Table, Column, Cell } from 'fixed-data-table';
+import { Table, Column, Cell } from 'fixed-data-table-2';
 import moment from 'moment';
 
 export default class AllUsersTable extends Component {

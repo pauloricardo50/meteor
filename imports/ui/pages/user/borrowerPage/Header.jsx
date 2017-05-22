@@ -65,6 +65,10 @@ const Header = ({ borrower, borrowers, index }) => {
   );
 };
 
-Header.propTypes = {};
+Header.propTypes = {
+  borrower: PropTypes.objectOf(PropTypes.any).isRequired,
+  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  index: PropTypes.number.isRequired,
+};
 
 export default Header;

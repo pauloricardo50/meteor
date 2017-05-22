@@ -454,8 +454,35 @@ const getErrorArray = (state, props) => [
 
 const getFinalArray = (state, props, setFormState) => [
   {
-    id: 'loanWanted',
+    id: 'acceptedLoan',
     condition: state.type === 'acquisition',
+    type: 'buttons',
+    text1: (
+      <span>
+        Vous pouvez emprunter <span className="active">CHF {toMoney(props.maxLoan)}</span>.
+      </span>
+    ),
+    hideResult: true,
+    buttons: [
+      {
+        id: true,
+        label: 'Ok',
+        onClick() {
+          setFormState('loanWanted', props.maxLoan);
+        },
+      },
+      {
+        id: false,
+        label: 'Modifier',
+        onClick() {
+          setFormState('loanWanted', undefined);
+        },
+      },
+    ],
+  },
+  {
+    id: 'loanWanted',
+    condition: state.type === 'acquisition' && state.acceptedLoan === false,
     type: 'sliderInput',
     text1: (
       <span>

@@ -38,7 +38,7 @@ import PartnerRequestPage from '../partner/PartnerRequestPage.jsx';
 const pages = {
   AccountPage,
   AuctionPage,
-  BorrowerPage,
+  // BorrowerPage,
   ContactPage,
   DashboardPage,
   ExpertisePage,
@@ -47,7 +47,7 @@ const pages = {
   LenderPickerPage,
   NewPage,
   NewRequestPage,
-  PropertyPage,
+  // PropertyPage,
   StructurePage,
   VerificationPage,
 
@@ -56,7 +56,7 @@ const pages = {
   ContactLendersPage,
   OfferPage,
   RequestsPage,
-  SingleRequestPage,
+  // SingleRequestPage,
   SingleUserPage,
   UsersPage,
   VerifyPage,

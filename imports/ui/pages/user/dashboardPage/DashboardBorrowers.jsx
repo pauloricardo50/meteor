@@ -1,47 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import RaisedButton from 'material-ui/RaisedButton';
 import { Link } from 'react-router-dom';
-
-const styles = {
-  div: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  text: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    flexGrow: 1,
-    // width: '60%',
-  },
-};
 
 const DashboardBorrowers = props => {
   return (
-    <div className="mask1">
+    <div className="mask1 dashboard-borrowers">
       <h4 className="fixed-size bold" style={{ marginTop: 0 }}>Emprunteur</h4>
       {props.borrowers.map(b => (
-        <div style={styles.div}>
-          <span
-            className="fa fa-user-circle-o fa-4x"
-            style={{ color: '#D8D8D8', marginRight: 16 }}
-          />
-          <div style={styles.text}>
+        <Link
+          to={`/app/requests/${props.loanRequest._id}/borrowers/${b._id}`}
+          key={b._id}
+          className="link"
+        >
+          <span className="fa fa-user-circle-o fa-4x" style={{ marginRight: 16 }} />
+          <div className="text">
             <h4 className="fixed-size no-margin" style={{ marginBottom: 8 }}>
               {!!(b.firstName && b.lastName) && `${b.firstName} ${b.lastName}`}
+              {b.age && <small> - {b.age} ans</small>}
             </h4>
             {b.age && <h4 className="fixed-size secondary no-margin">{b.age} ans</h4>}
           </div>
-          <RaisedButton
-            label="Compléter"
-            containerElement={
-              <Link to={`/app/requests/${props.loanRequest._id}/borrowers/${b._id}`} />
-            }
-          />
-        </div>
+        </Link>
       ))}
     </div>
   );

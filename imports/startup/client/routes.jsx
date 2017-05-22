@@ -95,7 +95,10 @@ const UserRoutes = props => (
         <Route path="/app/dev" component={DevPage} />
         <Route path="/app/profile" render={() => <AccountPage {...layoutProps} />} />
         <Route path="/app/contact" render={() => <ContactPage {...layoutProps} />} />
-        <Route path="/app/requests/:requestId/borrowers/:borrowerId" component={BorrowerPage} />
+        <Route
+          path="/app/requests/:requestId/borrowers/:borrowerId/:tab"
+          component={BorrowerPage}
+        />
         <Route path="/app/requests/:requestId/property" component={PropertyPage} />
         <Route path="/app/requests/:requestId/verification" component={VerificationPage} />
         <Route path="/app/requests/:requestId/expertise" component={ExpertisePage} />

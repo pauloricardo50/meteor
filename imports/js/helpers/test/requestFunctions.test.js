@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { describe, it } from 'meteor/practicalmeteor:mocha';
+import { describe, it, beforeEach } from 'meteor/practicalmeteor:mocha';
 
 import constants from '/imports/js/config/constants';
 import {
@@ -122,20 +122,29 @@ describe('Request functions', () => {
   });
 
   describe('Get monthly with offer', () => {
-    let fortuneUsed = 250000;
-    let insuranceFortuneUsed = 0;
-    let request = {
-      property: { value: 1000000 },
-      general: { fortuneUsed },
-    };
-    let tranches = [{ type: 'interestLibor', value: 800000 }];
-    let amortization = constants.amortization;
-    let interestRates = {
-      interestLibor: 0.01,
-      interest5: 0.01,
-      interest10: 0.015,
-      interest15: 0.02,
-    };
+    let fortuneUsed;
+    let insuranceFortuneUsed;
+    let request;
+    let tranches;
+    let amortization;
+    let interestRates;
+
+    beforeEach(() => {
+      fortuneUsed = 250000;
+      insuranceFortuneUsed = 0;
+      request = {
+        property: { value: 1000000 },
+        general: { fortuneUsed },
+      };
+      tranches = [{ type: 'interestLibor', value: 800000 }];
+      amortization = constants.amortization;
+      interestRates = {
+        interestLibor: 0.01,
+        interest5: 0.01,
+        interest10: 0.015,
+        interest15: 0.02,
+      };
+    });
 
     it('Should return 1917 for a basic setup', () => {
       expect(

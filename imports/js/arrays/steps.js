@@ -22,45 +22,48 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
       title: '1. Préparez votre dossier',
       subtitle: '15 minutes',
       items: [
-        ...borrowers.map((b, i) => ({
-          id: `profile${i}`,
-          title: `Complétez votre profil ${borrowers.length > 1 ? i + 1 : ''}`,
-          subtitle: '15 min',
-          link: `/app/requests/${loanRequest._id}/borrowers/${b._id}`,
-          percent: () => {
-            const personal = personalInfoPercent([b]);
-            const files = auctionFilesPercent([b]);
-            const finance = b.logic.hasValidatedFinances ? 1 : 0;
-            return (personal + files + finance) / 3;
-          },
+        // ...borrowers.map((b, i) => ({
+        //   id: `profile${i}`,
+        //   title: `Complétez votre profil ${borrowers.length > 1 ? i + 1 : ''}`,
+        //   subtitle: '15 min',
+        //   link: `/app/requests/${loanRequest._id}/borrowers/${b._id}`,
+        //   percent: () => {
+        //     const personal = personalInfoPercent([b]);
+        //     const files = auctionFilesPercent([b]);
+        //     const finance = b.logic.hasValidatedFinances ? 1 : 0;
+        //     return (personal + files + finance) / 3;
+        //   },
+        //   isDone() {
+        //     return this.percent() >= 1;
+        //   },
+        // })),
+        {
+          id: 'personal',
+          title: 'Dites en plus sur vous',
+          subtitle: '1 min',
+          link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}/personal`,
+          percent: () => personalInfoPercent(borrowers),
           isDone() {
             return this.percent() >= 1;
           },
-        })),
-        // {
-        //   title: 'Dites en plus sur vous',
-        //   link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}?tab=personal`,
-        //   subtitle: '1 min',
-        //   percent: () => personalInfoPercent(borrowers),
-        //   isDone() {
-        //     return this.percent() >= 1;
-        //   },
-        // },
-        // {
-        //   title: 'Vérifiez vos finances',
-        //   link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}?tab=finance`,
-        //   subtitle: '20 sec',
-        //   isDone: () => borrowers.reduce((res, b) => res && b.logic.hasValidatedFinances, true),
-        // },
-        // {
-        //   title: 'Uploadez les documents',
-        //   link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}?tab=files`,
-        //   subtitle: '10 min',
-        //   percent: () => mandatoryFilesPercent(borrowers),
-        //   isDone() {
-        //     return this.percent() >= 1;
-        //   },
-        // },
+        },
+        {
+          id: 'finance',
+          title: 'Vérifiez vos finances',
+          subtitle: '20 sec',
+          link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}/finance`,
+          isDone: () => borrowers.reduce((res, b) => res && b.logic.hasValidatedFinances, true),
+        },
+        {
+          id: 'files',
+          title: 'Uploadez les documents',
+          subtitle: '10 min',
+          link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}/files`,
+          percent: () => auctionFilesPercent(borrowers),
+          isDone() {
+            return this.percent() >= 1;
+          },
+        },
         {
           id: 'property',
           title: 'Décrivez votre propriété',
@@ -170,7 +173,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
 
   // Make sure these indices correspond
   // Verify all 3 items before item 4 are done
-  steps[1].items[2].disabled = !previousDone(steps, 1, 2); // Vérification e-Potek
+  steps[1].items[4].disabled = !previousDone(steps, 1, 4); // Vérification e-Potek
   // steps[0].items[6].disabled = !previousDone(steps, 0, 6); // Expertise
 
   steps[2].items[1].disabled = !previousDone(steps, 2, 1); // Enchères

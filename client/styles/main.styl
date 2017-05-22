@@ -396,6 +396,8 @@ svg:not(:root) {
   box-shadow: none;
 
 .side-nav-user
+  +below($med)
+    display: none;
   transition: all 300ms $bezier;
   background-color: white;
   border-right: 1px solid grey;
