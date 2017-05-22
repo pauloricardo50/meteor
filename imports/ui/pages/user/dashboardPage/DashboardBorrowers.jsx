@@ -9,7 +9,7 @@ const DashboardBorrowers = props => {
       <h4 className="fixed-size bold" style={{ marginTop: 0 }}>Emprunteur</h4>
       {props.borrowers.map(b => (
         <Link
-          to={`/app/requests/${props.loanRequest._id}/borrowers/${b._id}`}
+          to={`/app/requests/${props.loanRequest._id}/borrowers/${b._id}/personal`}
           key={b._id}
           className="link"
         >

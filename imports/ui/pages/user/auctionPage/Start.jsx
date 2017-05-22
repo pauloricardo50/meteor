@@ -7,6 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { getLenderCount } from '/imports/js/helpers/requestFunctions';
 
 import AuctionForm from './AuctionForm.jsx';
+import ConfirmButton from '/imports/ui/components/general/ConfirmButton.jsx';
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 
@@ -73,10 +74,10 @@ const Start = props => {
 
       <div className="col-xs-12">
         <div className="form-group text-center">
-          <RaisedButton
+          <ConfirmButton
             label="Commencer les enchères"
             primary
-            onTouchTap={() =>
+            handleClick={() =>
               cleanMethod('startAuction', { isDemo: isDemo() }, props.loanRequest._id)}
             disabled={!(r.logic.auction.mostImportant && r.general.wantedClosingDate)}
           />

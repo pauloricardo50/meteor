@@ -2,7 +2,7 @@ import React from 'react';
 import { _ } from 'lodash';
 
 import { getBorrowerInfoArray } from './BorrowerFormArray';
-import { borrowerFiles } from '/imports/js/arrays/files';
+import { borrowerFiles, requestFiles } from '/imports/js/arrays/files';
 import getPropertyArray from './PropertyFormArray';
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
@@ -59,17 +59,20 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           title: 'Uploadez les documents',
           subtitle: '10 min',
           link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}/files`,
-          percent: () => auctionFilesPercent(borrowers),
+          percent: () => filesPercent(borrowers, borrowerFiles, 'auction'),
           isDone() {
             return this.percent() >= 1;
           },
         },
         {
           id: 'property',
-          title: 'Décrivez votre propriété',
+          title: 'Détaillez votre propriété',
           link: `/app/requests/${loanRequest._id}/property`,
           subtitle: '4 min',
-          percent: () => propertyPercent(loanRequest, borrowers),
+          percent: () =>
+            (propertyPercent(loanRequest, borrowers) +
+              filesPercent(loanRequest, requestFiles, 'auction')) /
+            2,
           isDone() {
             return this.percent() >= 1;
           },
@@ -252,6 +255,29 @@ export const auctionFilesPercent = borrowers => {
       fileArray.forEach(f => f.condition !== false && a.push(b.files[f.id]));
     }
   });
+
+  return getPercent(a);
+};
+
+export const filesPercent = (doc, fileArrayFunc, step) => {
+  const a = [];
+  const iterate = (files, doc2) => {
+    if (isDemo()) {
+      a.push(doc2.files[files[0].id]);
+    } else {
+      files.forEach(f => f.condition !== false && a.push(doc2.files[f.id]));
+    }
+  };
+
+  if (_.isArray(doc)) {
+    doc.forEach(item => {
+      const fileArray = fileArrayFunc(item)[step];
+      iterate(fileArray, item);
+    });
+  } else {
+    const fileArray = fileArrayFunc(doc)[step];
+    iterate(fileArray, doc);
+  }
 
   return getPercent(a);
 };

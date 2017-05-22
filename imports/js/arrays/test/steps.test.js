@@ -1,7 +1,10 @@
 import { expect } from 'chai';
 import { describe, it } from 'meteor/practicalmeteor:mocha';
+import { Factory } from 'meteor/dburles:factory';
+import { Meteor } from 'meteor/meteor';
 
-import { previousDone } from '../steps';
+import { previousDone, filesPercent } from '../steps';
+import { borrowerFiles } from '/imports/js/arrays/files';
 
 describe('Steps', () => {
   describe('Previous Done', () => {
@@ -23,6 +26,42 @@ describe('Steps', () => {
       ];
 
       expect(previousDone(steps, 0, 4)).to.be.false;
+    });
+  });
+
+  describe('filesPercent', () => {
+    let borrower = {};
+
+    beforeEach(() => {
+      borrower = Factory.tree('borrower');
+      if (Meteor.isServer) {
+        // Required because of the isDemo() dependency of this function
+        global.window = { location: { host: '' } };
+      }
+    });
+
+    it('Returns 0 for an empty borrower', () => {
+      expect(filesPercent(borrower, borrowerFiles, 'auction')).to.equal(0);
+    });
+
+    it('Returns 0.2 with a single file', () => {
+      borrower.files = { identity: {} };
+      expect(filesPercent(borrower, borrowerFiles, 'auction')).to.equal(0.2);
+    });
+
+    it('Returns 0 for two empty borrowers', () => {
+      expect(filesPercent([borrower, borrower], borrowerFiles, 'auction')).to.equal(0);
+    });
+
+    it('Returns 0.1 for one empty borrower and one with a single file', () => {
+      const borrower2 = {
+        ...borrower,
+        files: {
+          identity: {},
+        },
+      };
+
+      expect(filesPercent([borrower, borrower2], borrowerFiles, 'auction')).to.equal(0.1);
     });
   });
 });

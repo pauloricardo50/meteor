@@ -4,7 +4,6 @@ export const fakeGeneral = {
   purchaseType: 'acquisition',
   fortuneUsed: 250000,
   insuranceFortuneUsed: 100000,
-  files: {},
 };
 
 export const fakeProperty = {
@@ -37,7 +36,6 @@ export const fakeProperty = {
   buildingQuality: 1,
   flatQuality: 2,
   materialsQuality: 2,
-  files: {},
 };
 
 export const logic1 = {};
@@ -68,11 +66,18 @@ export const logic3 = {
   lender: {},
 };
 
+export const fakeFiles = {
+  plans: [fakeFile],
+  cubage: [fakeFile],
+  pictures: [fakeFile],
+};
+
 export const requestStep1 = {
   name: 'Rue du Test 42',
   general: fakeGeneral,
   property: fakeProperty,
   logic: logic1,
+  files: fakeFiles,
 };
 
 export const requestStep2 = {
@@ -80,6 +85,7 @@ export const requestStep2 = {
   general: fakeGeneral,
   property: fakeProperty,
   logic: logic2,
+  files: fakeFiles,
 };
 
 export const requestStep3 = {
@@ -96,4 +102,5 @@ export const requestStep3 = {
   },
   property: fakeProperty,
   logic: logic3,
+  files: fakeFiles,
 };

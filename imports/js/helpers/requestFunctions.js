@@ -72,7 +72,7 @@ export const getMonthlyWithOffer = (
 
   let interests = 0;
   tranches.some(tranche => {
-    let rate = interestRates[tranche.type];
+    const rate = interestRates[tranche.type];
 
     // If the lender doesn't have this interest rate, return false
     if (!rate) {
@@ -82,11 +82,6 @@ export const getMonthlyWithOffer = (
 
     interests += tranche.value * rate;
   });
-
-  console.log(maintenance, loan, amortization, interests);
-  console.log(
-    interests >= 0 ? Math.round((maintenance + loan * amortization + interests) / 12) : 0,
-  );
 
   return interests >= 0 ? Math.round((maintenance + loan * amortization + interests) / 12) : 0;
 };

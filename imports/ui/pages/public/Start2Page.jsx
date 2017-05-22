@@ -54,9 +54,15 @@ export default class Start2Page extends Component {
     };
   }
 
-  setActiveLine = id => {
+  setActiveLine = (id, callback) => {
     if (this.state.activeLine !== id) {
-      this.setState({ activeLine: id });
+      this.setState({ activeLine: id }, () => {
+        if (typeof callback === 'function') {
+          callback();
+        }
+      });
+    } else if (typeof callback === 'function') {
+      callback();
     }
   };
 

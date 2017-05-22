@@ -25,7 +25,7 @@ const getText = props => {
   return '...';
 };
 
-const handleClick = (props, event, value) => {
+const handleClick = (props, event, value, callback) => {
   event.stopPropagation();
 
   // If this button triggers a field to appear, make sure to delete its value if the user hits no
@@ -33,7 +33,13 @@ const handleClick = (props, event, value) => {
     props.setFormState(props.deleteId, undefined);
   }
 
-  props.setFormState(props.id, value, () => props.setActiveLine(''));
+  props.setFormState(props.id, value, () =>
+    props.setActiveLine('', () => {
+      if (typeof callback === 'function') {
+        callback(event);
+      }
+    }),
+  );
 };
 
 const ButtonInput = props => {
@@ -61,10 +67,7 @@ const ButtonInput = props => {
           <RaisedButton
             label={button.label || button.id}
             onTouchTap={e => {
-              handleClick(props, e, button.id);
-              if (typeof button.onClick === 'function') {
-                button.onClick();
-              }
+              handleClick(props, e, button.id, button.onClick);
               if (document.activeElement) {
                 // Take focus away, better UX on mobile
                 document.activeElement.blur();
