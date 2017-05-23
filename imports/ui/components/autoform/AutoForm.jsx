@@ -43,7 +43,12 @@ const inputSwitch = (singleInput, index, parentProps) => {
     key: index,
     style: parentProps.fullWidth ? styles.fullWidth : styles.smallWidth,
     currentValue: _.get(parentProps.doc, singleInput.id),
+    disabled: parentProps.disabled,
   };
+
+  if (parentProps.noPlaceholders) {
+    props.placeholder = '';
+  }
 
   // Prevent undefined showCondition to trigger as well
   if (singleInput.showCondition === false) {
@@ -121,6 +126,8 @@ AutoForm.propTypes = {
   updateFunc: PropTypes.string,
   pushFunc: PropTypes.string,
   popFunc: PropTypes.string,
+  disabled: PropTypes.bool,
+  noPlaceholders: PropTypes.bool,
 };
 
 AutoForm.defaultProps = {
@@ -130,6 +137,8 @@ AutoForm.defaultProps = {
   updateFunc: 'updateRequest',
   pushFunc: 'pushRequestValue',
   popFunc: 'popRequestValue',
+  disabled: false,
+  noPlaceholders: false,
 };
 
 export default AutoForm;

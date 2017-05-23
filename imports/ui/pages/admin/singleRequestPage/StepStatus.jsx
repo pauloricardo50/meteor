@@ -3,7 +3,7 @@ import getSteps from '/imports/js/arrays/steps';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
 
 const StepStatus = props => {
-  const steps = getSteps(props).slice(0, -1);
+  const steps = getSteps(props).slice(1, -1);
   const currentStep = props.loanRequest.logic.step;
   return (
     <ul

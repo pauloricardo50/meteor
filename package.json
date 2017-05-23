@@ -9,7 +9,6 @@
     "test-CLI": "TEST_BROWSER_DRIVER=nightmare meteor test --once --driver-package dispatch:mocha",
     "deploy:production": "cd .deploy/production && mup deploy --settings=settings-production.json",
     "deploy:staging": "cd .deploy/staging && mup deploy --settings=settings-staging.json",
-    "build-translate": "NODE_ENV=build meteor",
     "translate": "babel-node imports/js/helpers/translate.js"
   },
   "version": "1.0.0",

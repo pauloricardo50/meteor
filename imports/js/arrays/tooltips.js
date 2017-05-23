@@ -11,7 +11,7 @@ const generalTooltips = {
   "ratio d'endettement": "Ne doit pas dépasser 33%, exceptions jusqu'à 38%",
 
   "emprunt/prix d'achat": 'Ne doit pas dépasser 80% dans la majorité des cas',
-  'emprunt/Valeur du bien': 'Ne doit pas dépasser 80% dans la majorité des cas',
+  'emprunt/valeur du bien': 'Ne doit pas dépasser 80% dans la majorité des cas',
 
   'frais de notaire': "Frais obligatoires lorsqu'on conclut un prêt hypothécaire - 5% du prix d'achat.",
   'frais retrait lpp': 'Lorsque vous retirez votre lpp en avance, vous devez payer des impôts sur ce retrait.',
