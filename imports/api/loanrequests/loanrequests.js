@@ -76,6 +76,11 @@ const LoanRequestSchema = new SimpleSchema({
     type: Object,
     optional: true,
   },
+  adminValidation: {
+    type: Object,
+    defaultValue: {},
+    blackbox: true,
+  },
 });
 
 // Finally, attach schema to the Mongo collection and export

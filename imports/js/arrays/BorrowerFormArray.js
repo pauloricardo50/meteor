@@ -34,13 +34,14 @@ export const getBorrowerInfoArray = (borrowers, id) => {
     {
       type: 'h3',
       text: 'Votre addresse',
+      ignore: true,
     },
     {
       id: 'sameAddress',
       type: 'radioInput',
       label: `Utiliser la même adresse que ${borrowers[0].firstName || 'Emprunteur 1'}?`,
       options: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
-      showCondition: multiple && !isFirst,
+      condition: multiple && !isFirst,
     },
     {
       id: 'address1',
@@ -192,6 +193,7 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
     {
       type: 'h3',
       text: 'Revenus & Charges',
+      ignore: true,
     },
     {
       id: 'salary',
@@ -332,6 +334,7 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
     {
       type: 'h3',
       text: 'Fortune',
+      ignore: true,
     },
     {
       id: 'bankFortune',
@@ -430,7 +433,7 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
     {
       type: 'h3',
       text: 'Prévoyance',
-      // showCondition: index === 0,
+      ignore: true,
     },
     {
       id: 'insuranceSecondPillar',

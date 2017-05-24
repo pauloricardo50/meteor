@@ -56,7 +56,7 @@ const getPropertyArray = (loanRequest, borrowers) => {
     {
       type: 'conditionalInput',
       conditionalTrueValue: 'other',
-      showCondition: borrowers.length > 1 && r.general.purchaseType === 'refinancing',
+      condition: borrowers.length > 1 && r.general.purchaseType === 'refinancing',
       inputs: [
         {
           id: 'general.currentOwner',
@@ -83,7 +83,7 @@ const getPropertyArray = (loanRequest, borrowers) => {
     {
       type: 'conditionalInput',
       conditionalTrueValue: 'other',
-      showCondition: borrowers.length > 1 && r.general.purchaseType !== 'refinancing',
+      condition: borrowers.length > 1 && r.general.purchaseType !== 'refinancing',
       inputs: [
         {
           id: 'general.futureOwner',
@@ -112,11 +112,12 @@ const getPropertyArray = (loanRequest, borrowers) => {
       type: 'radioInput',
       label: 'Est-ce un bien neuf?',
       options: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
-      showCondition: r.general.purchaseType === 'acquisition',
+      condition: r.general.purchaseType === 'acquisition',
     },
     {
       type: 'h3',
       text: 'Adresse du bien immobilier',
+      ignore: true,
     },
     {
       id: 'property.address1',
@@ -148,6 +149,7 @@ const getPropertyArray = (loanRequest, borrowers) => {
     {
       type: 'h3',
       text: 'Détails du bien',
+      ignore: true,
     },
     {
       id: 'property.constructionYear',
@@ -171,7 +173,7 @@ const getPropertyArray = (loanRequest, borrowers) => {
       number: true,
       label: <span>Surface du terrain en m<sup>2</sup> *</span>,
       placeholder: '250',
-      showCondition: r.property.style === 'villa',
+      condition: r.property.style === 'villa',
     },
     {
       id: 'property.insideArea',
@@ -202,14 +204,14 @@ const getPropertyArray = (loanRequest, borrowers) => {
       number: true,
       label: <span>Volume/Cubage en m<sup>3</sup> *</span>,
       placeholder: '1000',
-      showCondition: r.property.style === 'villa',
+      condition: r.property.style === 'villa',
     },
     {
       id: 'property.volumeNorm',
       type: 'textInput',
       label: 'Type de cubage',
       placeholder: 'SIA',
-      showCondition: r.property.style === 'villa',
+      condition: r.property.style === 'villa',
     },
     {
       id: 'property.roomCount',
@@ -252,7 +254,7 @@ const getPropertyArray = (loanRequest, borrowers) => {
       id: 'property.parking.outside',
       type: 'textInput',
       number: true,
-      label: 'Places de parc extérieur couvertes',
+      label: 'Places de parc extérieur',
       placeholder: '1',
     },
     {
@@ -264,7 +266,7 @@ const getPropertyArray = (loanRequest, borrowers) => {
     {
       type: 'conditionalInput',
       conditionalTrueValue: true,
-      showCondition: r.property.style === 'villa',
+      condition: r.property.style === 'villa',
       inputs: [
         {
           id: 'property.isCoproperty',
@@ -288,12 +290,13 @@ const getPropertyArray = (loanRequest, borrowers) => {
       decimal: true,
       label: 'Répartition du bien au sein de la copropriété',
       placeholder: '0.125',
-      showCondition: r.property.style === 'flat',
+      condition: r.property.style === 'flat',
       info: 'Au millième',
     },
     {
       type: 'h3',
       text: 'Qualité et Emplacement',
+      ignore: true,
     },
     {
       id: 'property.cityPlacementQuality',
@@ -316,7 +319,7 @@ const getPropertyArray = (loanRequest, borrowers) => {
         { id: 2, label: 'Bon' },
         { id: 3, label: 'Très Bon' },
       ],
-      showCondition: r.property.style === 'flat',
+      condition: r.property.style === 'flat',
     },
     {
       id: 'property.buildingQuality',
@@ -339,7 +342,7 @@ const getPropertyArray = (loanRequest, borrowers) => {
         { id: 2, label: 'Bon' },
         { id: 3, label: 'Très Bon' },
       ],
-      showCondition: r.property.style === 'flat',
+      condition: r.property.style === 'flat',
     },
     {
       id: 'property.materialsQuality',

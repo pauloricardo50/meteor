@@ -203,7 +203,7 @@ export const getPercent = array => {
 
 // A boolean to determine if a field in an array should be counted or not
 const shouldCountField = f =>
-  (f.showCondition === undefined || f.showCondition === true) &&
+  (f.condition === undefined || f.condition === true) &&
   f.required !== false &&
   !f.disabled &&
   f.type !== 'h3';

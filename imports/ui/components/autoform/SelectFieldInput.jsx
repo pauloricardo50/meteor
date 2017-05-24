@@ -5,6 +5,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
 import SavingIcon from './SavingIcon.jsx';
+import FormValidator from './FormValidator.jsx';
 import cleanMethod from '/imports/api/cleanMethods';
 
 const styles = {
@@ -76,6 +77,7 @@ export default class SelectFieldInput extends Component {
           errorExists={this.state.errorText !== ''}
           style={styles.savingIcon}
         />
+        {!this.props.noValidator && <FormValidator {...this.props} />}
       </div>
     );
   }
