@@ -15,8 +15,18 @@
     "defaultMessage": "Mettez votre prêt hypothécaire aux enchères."
   },
   {
-    "id": "HomePage.CTA1",
+    "id": "HomePage.CTA12",
     "description": "CTA button label 1",
     "defaultMessage": "Faire une acquisition"
+  },
+  {
+    "id": "HomePage.sellingpoint1.title",
+    "description": "Selling point 12",
+    "defaultMessage": "1. Testez votre éligibilité"
+  },
+  {
+    "id": "HomePage.sellingpoint1.text",
+    "description": "Selling point 1 descriptions",
+    "defaultMessage": "Identifiez le montant que vous pouvez emprunter en quelques clics."
   }
 ]
