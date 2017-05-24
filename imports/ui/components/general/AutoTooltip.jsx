@@ -44,6 +44,7 @@ const AutoTooltip = props => {
           </Tooltip>
         }
         rootClose
+        trigger={props.trigger}
       >
         <span style={styles.span} tabIndex="0">
           {props.children}
@@ -71,6 +72,7 @@ const AutoTooltip = props => {
           }
           key={i}
           rootClose
+          trigger={props.trigger}
         >
           <span style={styles.span} tabIndex="0">
             {match}

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import AssessmentIcon from 'material-ui/svg-icons/action/assessment';
 import { NavLink } from 'react-router-dom';
+import classnames from 'classnames';
 
 import RequestSelector from './RequestSelector.jsx';
 import SideNavStepper from './SideNavStepper.jsx';
@@ -26,7 +27,10 @@ const SideNavUser = props => {
   }
 
   return (
-    <nav className="side-nav-user" style={props.style}>
+    <nav
+      className={classnames({ 'side-nav-user': true, 'joyride-side-nav': props.fixed })}
+      style={props.style}
+    >
       <div className="scrollable">
         <RequestSelector {...props} currentValue={requestId} />
         <NavLink
@@ -57,11 +61,13 @@ const SideNavUser = props => {
 SideNavUser.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.object),
   handleClickLink: PropTypes.func,
+  fixed: PropTypes.bool,
 };
 
 SideNavUser.defaultProps = {
   loanRequests: [],
   handleClickLink: () => null,
+  fixed: false,
 };
 
 export default SideNavUser;

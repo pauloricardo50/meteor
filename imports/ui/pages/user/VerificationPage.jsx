@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
+import ConfirmButton from '/imports/ui/components/general/ConfirmButton.jsx';
 
 export default class VerificationPage extends Component {
   handleClick = () => {
@@ -58,7 +59,7 @@ export default class VerificationPage extends Component {
               <LoadingComponent />
             </div>
             : <div style={{ marginTop: 40 }}>
-              <RaisedButton label="Re-Vérifier" primary onTouchTap={this.handleClick} />
+              <ConfirmButton label="Re-Vérifier" primary handleClick={this.handleClick} />
             </div>}
         </div>
       );
@@ -75,7 +76,12 @@ export default class VerificationPage extends Component {
               <LoadingComponent />
             </div>
             : <div className="text-center" style={{ margin: '40px 0' }}>
-              <RaisedButton label="Envoyer mon dossier" primary onTouchTap={this.handleClick} />
+              <ConfirmButton
+                label="Envoyer mon dossier"
+                primary
+                handleClick={this.handleClick}
+                text="Vous ne pourrez plus modifier vos informations et vos documents"
+              />
             </div>}
         </article>
       );

@@ -410,7 +410,7 @@ const getAcquisitionArray = (state, props, setFormState) => [
   },
 ];
 
-const getErrorArray = (state, props) => [
+const getErrorArray = (state, props, setFormState) => [
   {
     id: 'error',
     condition: state.usageType === 'primary' &&
@@ -431,7 +431,30 @@ const getErrorArray = (state, props) => [
         </AutoTooltip>
       </span>
     ),
-    buttons: [{ id: false, label: 'Pourquoi ?', noPrimary: true }],
+    buttons: [
+      {
+        id: false,
+        label: 'Modifier',
+        onClick() {
+          setFormState('activeLine', 'fortune', () => {
+            const options = {
+              duration: 350,
+              delay: 0,
+              smooth: true,
+              offset: -86,
+            };
+            Meteor.defer(() => {
+              Scroll.scroller.scrollTo('fortune', options);
+            });
+          });
+        },
+      },
+      {
+        id: false,
+        label: 'Pourquoi ?',
+        noPrimary: true,
+      },
+    ],
   },
   {
     id: 'error',
@@ -448,14 +471,60 @@ const getErrorArray = (state, props) => [
         </AutoTooltip>
       </span>
     ),
-    buttons: [{ id: false, label: 'Pourquoi ?', noPrimary: true }],
+    buttons: [
+      {
+        id: false,
+        label: 'Modifier',
+        onClick() {
+          setFormState('activeLine', 'fortune', () => {
+            const options = {
+              duration: 350,
+              delay: 0,
+              smooth: true,
+              offset: -86,
+            };
+            Meteor.defer(() => {
+              Scroll.scroller.scrollTo('fortune', options);
+            });
+          });
+        },
+      },
+      { id: false, label: 'Pourquoi ?', noPrimary: true },
+    ],
   },
 ];
 
 const getFinalArray = (state, props, setFormState) => [
   {
-    id: 'loanWanted',
+    id: 'acceptedLoan',
     condition: state.type === 'acquisition',
+    type: 'buttons',
+    text1: (
+      <span>
+        Vous pouvez emprunter <span className="active">CHF {toMoney(props.maxLoan)}</span>.
+      </span>
+    ),
+    hideResult: true,
+    buttons: [
+      {
+        id: true,
+        label: 'Ok',
+        onClick() {
+          setFormState('loanWanted', props.maxLoan);
+        },
+      },
+      {
+        id: false,
+        label: 'Modifier',
+        onClick() {
+          setFormState('loanWanted', undefined);
+        },
+      },
+    ],
+  },
+  {
+    id: 'loanWanted',
+    condition: state.type === 'acquisition' && state.acceptedLoan === false,
     type: 'sliderInput',
     text1: (
       <span>
@@ -655,7 +724,26 @@ const getFinalArray = (state, props, setFormState) => [
         ) sans représenter plus de 38% de ces revenus, vous pouvez modifier les valeurs en haut.
       </span>
     ),
-    buttons: [{ id: false, label: 'Pourquoi ?', noPrimary: true }],
+    buttons: [
+      {
+        id: false,
+        label: 'Modifier',
+        onClick() {
+          setFormState('activeLine', 'fortune', () => {
+            const options = {
+              duration: 350,
+              delay: 0,
+              smooth: true,
+              offset: -86,
+            };
+            Meteor.defer(() => {
+              Scroll.scroller.scrollTo('income', options);
+            });
+          });
+        },
+      },
+      { id: false, label: 'Pourquoi ?', noPrimary: true },
+    ],
   },
   {
     id: 'finalized',
@@ -687,7 +775,7 @@ const getFinalArray = (state, props, setFormState) => [
 
 const getFormArray = (state, props, setFormState) =>
   getAcquisitionArray(state, props, setFormState).concat(
-    state.type === 'acquisition' ? getErrorArray(state, props) : [], // these errors only for acquisitions
+    state.type === 'acquisition' ? getErrorArray(state, props, setFormState) : [], // these errors only for acquisitions
     getFinalArray(state, props, setFormState),
   );
 

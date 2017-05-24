@@ -15,7 +15,7 @@ export default class Page extends Component {
   render() {
     return (
       <section className="page-title">
-        <div className="top-bar">
+        <div className={`top-bar ${this.props.className}`}>
           <h3 className="title fixed-size bold secondary">{this.props.title}</h3>
           {this.props.rightComponent}
         </div>
@@ -30,9 +30,11 @@ export default class Page extends Component {
 Page.propTypes = {
   title: PropTypes.string.isRequired,
   rightComponent: PropTypes.element,
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]).isRequired,
+  className: PropTypes.string,
 };
 
 Page.defaultProps = {
   rightComponent: null,
+  className: '',
 };

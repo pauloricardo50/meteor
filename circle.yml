@@ -6,7 +6,7 @@ machine:
 dependencies:
   override:
     - curl https://install.meteor.com | /bin/sh
-    - yarn install
+    - npm install
   cache-directories:
     - "~/.meteor"
     - "~/node_modules"

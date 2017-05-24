@@ -1,6 +1,8 @@
 import { addLocaleData } from 'react-intl';
 import { T9n } from 'meteor/softwarerero:accounts-t9n';
 
+import messagesFR from '/build/lang/fr.json';
+
 // Import used languages from the package here
 import fr from 'react-intl/locale-data/fr';
 // import en from 'react-intl/locale-data/en';
@@ -10,7 +12,9 @@ export const getUserLocale = () => {
   return 'fr';
 };
 
-export const getTranslations = () => ({});
+export const getTranslations = () => {
+  return messagesFR;
+};
 
 export const getFormats = () => {
   return {

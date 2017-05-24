@@ -54,8 +54,8 @@ export default class ProcessPageBar extends Component {
   };
 
   render() {
-    // index = 1 because the very first step is a fake one (pass the form)
-    const showBackButton = !(this.props.stepNb === 0 && this.props.index === 1);
+    // remove previous button if this is the very first step
+    const showBackButton = !(this.props.stepNb === 1 && this.props.index === 0);
     const lastPartOfStep = this.props.index === this.props.length - 1;
     return (
       <div className={this.props.className}>
@@ -74,7 +74,7 @@ export default class ProcessPageBar extends Component {
             label={this.state.smallWidth ? '' : lastPartOfStep ? 'Prochaine étape' : 'Suivant'}
             style={this.state.smallWidth ? styles.smallButton : styles.button}
             secondary={this.props.currentStep.isDone()}
-            disabled={!this.props.nextLink}
+            disabled={!this.props.nextLink || (lastPartOfStep && !this.props.currentStep.isDone())}
             containerElement={
               this.props.nextLink && !lastPartOfStep ? <Link to={this.props.nextLink} /> : undefined
             }

@@ -5,7 +5,7 @@ import { Session } from 'meteor/session';
 import getSteps from '/imports/js/arrays/steps';
 import ProcessPageBar from './ProcessPageBar.jsx';
 
-const getStepValues = props => {
+export const getStepValues = props => {
   const steps = getSteps(props);
   const stepItems = steps[props.stepNb].items;
   const currentStep = stepItems.find(i => i.id === props.id);

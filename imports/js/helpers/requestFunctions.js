@@ -72,7 +72,7 @@ export const getMonthlyWithOffer = (
 
   let interests = 0;
   tranches.some(tranche => {
-    let rate = interestRates[tranche.type];
+    const rate = interestRates[tranche.type];
 
     // If the lender doesn't have this interest rate, return false
     if (!rate) {

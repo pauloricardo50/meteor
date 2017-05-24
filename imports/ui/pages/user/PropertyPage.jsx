@@ -4,7 +4,9 @@ import React from 'react';
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
 import AutoForm from '/imports/ui/components/autoform/AutoForm.jsx';
 import PropertyFormArray from '/imports/js/arrays/PropertyFormArray';
-import { propertyPercent } from '/imports/js/arrays/steps';
+import { propertyPercent, filesPercent } from '/imports/js/arrays/steps';
+import DropzoneArray from '/imports/ui/components/general/DropzoneArray.jsx';
+import { requestFiles } from '/imports/js/arrays/files';
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 import FakePropertyCompleter from '/imports/ui/components/general/FakePropertyCompleter.jsx';
@@ -26,7 +28,11 @@ const styles = {
 };
 
 const PropertyPage = props => {
-  const percent = propertyPercent(props.loanRequest, props.borrowers);
+  const percent =
+    (propertyPercent(props.loanRequest, props.borrowers) +
+      filesPercent(props.loanRequest, requestFiles, 'auction')) /
+    2;
+
   return (
     <ProcessPage {...props} stepNb={1} id="property">
       <section className="mask1 property-page">
@@ -43,6 +49,15 @@ const PropertyPage = props => {
         <div className="description">
           <p>Les champs marqués avec un * sont obligatoires.</p>
         </div>
+
+        <DropzoneArray
+          array={requestFiles(props.borrower).auction}
+          documentId={props.loanRequest._id}
+          pushFunc="pushRequestValue"
+          collection="loanRequests"
+          filesObject={props.loanRequest.files}
+          filesObjectSelector="files"
+        />
 
         <AutoForm
           inputs={PropertyFormArray(props.loanRequest, props.borrowers)}

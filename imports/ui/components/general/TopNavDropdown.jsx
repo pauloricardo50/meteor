@@ -35,11 +35,11 @@ const getMenuItems = props => {
       link: '/app/profile',
       show: !isAdmin && !isPartner,
     },
-    {
-      label: 'Contact',
-      link: '/app/contact',
-      show: !isAdmin && !isPartner,
-    },
+    // {
+    //   label: 'Contact',
+    //   link: '/app/contact',
+    //   show: !isAdmin && !isPartner,
+    // },
     {
       label: '< dev />',
       link: '/app/dev',

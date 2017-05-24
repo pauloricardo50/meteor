@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import { Table, Column, Cell } from 'fixed-data-table';
+import { Table, Column, Cell } from 'fixed-data-table-2';
 import moment from 'moment';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
@@ -32,8 +32,7 @@ export default class AllRequestsTable extends Component {
         updatedAt: request.updatedAt,
         step: request.logic.step + 1,
         value: request.property.value,
-        fortune: request.general.fortuneUsed +
-          request.general.insuranceFortuneUsed,
+        fortune: request.general.fortuneUsed + request.general.insuranceFortuneUsed,
         income: request.general.incomeUsed,
         quality: 'Très Bon',
       };
@@ -83,9 +82,8 @@ export default class AllRequestsTable extends Component {
   };
 
   handleClick = (e, rowIndex) => {
-    const id = this.state.sortedDataList._data[
-      this.state.sortedDataList._indexMap[rowIndex]
-    ].requestId;
+    const id = this.state.sortedDataList._data[this.state.sortedDataList._indexMap[rowIndex]]
+      .requestId;
 
     this.props.history.push(`/admin/requests/${id}`);
   };
@@ -104,10 +102,7 @@ export default class AllRequestsTable extends Component {
         <Column
           columnKey="id"
           header={
-            <SortHeaderCell
-              onSortChange={this.onSortChange}
-              sortDir={colSortDirs.id}
-            >
+            <SortHeaderCell onSortChange={this.onSortChange} sortDir={colSortDirs.id}>
               #
             </SortHeaderCell>
           }
@@ -117,10 +112,7 @@ export default class AllRequestsTable extends Component {
         <Column
           columnKey="name"
           header={
-            <SortHeaderCell
-              onSortChange={this.onSortChange}
-              sortDir={colSortDirs.name}
-            >
+            <SortHeaderCell onSortChange={this.onSortChange} sortDir={colSortDirs.name}>
               Nom
             </SortHeaderCell>
           }
@@ -130,10 +122,7 @@ export default class AllRequestsTable extends Component {
         <Column
           columnKey="createdAt"
           header={
-            <SortHeaderCell
-              onSortChange={this.onSortChange}
-              sortDir={colSortDirs.createdAt}
-            >
+            <SortHeaderCell onSortChange={this.onSortChange} sortDir={colSortDirs.createdAt}>
               Créé le
             </SortHeaderCell>
           }
@@ -143,10 +132,7 @@ export default class AllRequestsTable extends Component {
         <Column
           columnKey="updatedAt"
           header={
-            <SortHeaderCell
-              onSortChange={this.onSortChange}
-              sortDir={colSortDirs.updatedAt}
-            >
+            <SortHeaderCell onSortChange={this.onSortChange} sortDir={colSortDirs.updatedAt}>
               Mis à jour le
             </SortHeaderCell>
           }
@@ -156,10 +142,7 @@ export default class AllRequestsTable extends Component {
         <Column
           columnKey="step"
           header={
-            <SortHeaderCell
-              onSortChange={this.onSortChange}
-              sortDir={colSortDirs.step}
-            >
+            <SortHeaderCell onSortChange={this.onSortChange} sortDir={colSortDirs.step}>
               Étape
             </SortHeaderCell>
           }
@@ -169,10 +152,7 @@ export default class AllRequestsTable extends Component {
         <Column
           columnKey="value"
           header={
-            <SortHeaderCell
-              onSortChange={this.onSortChange}
-              sortDir={colSortDirs.value}
-            >
+            <SortHeaderCell onSortChange={this.onSortChange} sortDir={colSortDirs.value}>
               Montant
             </SortHeaderCell>
           }
@@ -182,10 +162,7 @@ export default class AllRequestsTable extends Component {
         <Column
           columnKey="fortune"
           header={
-            <SortHeaderCell
-              onSortChange={this.onSortChange}
-              sortDir={colSortDirs.fortune}
-            >
+            <SortHeaderCell onSortChange={this.onSortChange} sortDir={colSortDirs.fortune}>
               Fonds Propres
             </SortHeaderCell>
           }
@@ -195,10 +172,7 @@ export default class AllRequestsTable extends Component {
         <Column
           columnKey="income"
           header={
-            <SortHeaderCell
-              onSortChange={this.onSortChange}
-              sortDir={colSortDirs.income}
-            >
+            <SortHeaderCell onSortChange={this.onSortChange} sortDir={colSortDirs.income}>
               Revenus
             </SortHeaderCell>
           }
@@ -208,10 +182,7 @@ export default class AllRequestsTable extends Component {
         <Column
           columnKey="quality"
           header={
-            <SortHeaderCell
-              onSortChange={this.onSortChange}
-              sortDir={colSortDirs.quality}
-            >
+            <SortHeaderCell onSortChange={this.onSortChange} sortDir={colSortDirs.quality}>
               Qualité
             </SortHeaderCell>
           }
@@ -250,9 +221,7 @@ class SortHeaderCell extends React.Component {
     if (this.props.onSortChange) {
       this.props.onSortChange(
         this.props.columnKey,
-        this.props.sortDir
-          ? reverseSortDirection(this.props.sortDir)
-          : SortTypes.DESC,
+        this.props.sortDir ? reverseSortDirection(this.props.sortDir) : SortTypes.DESC,
       );
     }
   };
@@ -262,7 +231,7 @@ class SortHeaderCell extends React.Component {
     return (
       <Cell>
         <a onTouchTap={this.onSortChange}>
-          {children} {sortDir ? sortDir === SortTypes.DESC ? '↓' : '↑' : ''}
+          {children} {sortDir ? (sortDir === SortTypes.DESC ? '↓' : '↑') : ''}
         </a>
       </Cell>
     );
@@ -286,9 +255,7 @@ const DateCell = ({ rowIndex, data, columnKey }) => {
   return (
     <Cell>
       {data._data[data._indexMap[rowIndex]][columnKey] !== undefined
-        ? moment(data._data[data._indexMap[rowIndex]][columnKey]).format(
-            'D MMM YY à HH:mm:ss',
-          )
+        ? moment(data._data[data._indexMap[rowIndex]][columnKey]).format('D MMM YY à HH:mm:ss')
         : '-'}
     </Cell>
   );

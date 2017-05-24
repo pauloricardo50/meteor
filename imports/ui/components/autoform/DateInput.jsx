@@ -80,6 +80,7 @@ export default class DateInput extends Component {
           locale="fr"
           DateTimeFormat={getDateFormat()}
           cancelLabel="Annuler"
+          disabled={this.props.disabled}
         />
       </div>
     );
@@ -93,8 +94,9 @@ DateInput.propTypes = {
   maxDate: PropTypes.objectOf(PropTypes.any),
   minDate: PropTypes.objectOf(PropTypes.any),
   documentId: PropTypes.string.isRequired,
-  style: PropTypes.object,
+  style: PropTypes.objectOf(PropTypes.any),
   updateFunc: PropTypes.string.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
 DateInput.defaultProps = {

@@ -3,6 +3,9 @@ import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
 import { GeneralSchema, PropertySchema, LogicSchema } from './additionalSchemas';
+import { getFileSchema } from '/imports/js/arrays/files';
+
+const RequestFilesSchema = new SimpleSchema(getFileSchema('request'));
 
 const LoanRequests = new Mongo.Collection('loanRequests');
 
@@ -59,6 +62,10 @@ const LoanRequestSchema = new SimpleSchema({
   },
   property: {
     type: PropertySchema,
+  },
+  files: {
+    type: RequestFilesSchema,
+    defaultValue: {},
   },
   logic: {
     type: LogicSchema,

@@ -1,8 +1,5 @@
 import 'babel-polyfill';
 import SimpleSchema from 'simpl-schema';
-import { getFileSchema } from '/imports/js/arrays/files';
-
-const RequestFilesSchema = new SimpleSchema(getFileSchema('request'));
 
 export const GeneralSchema = new SimpleSchema({
   purchaseType: {
@@ -89,10 +86,6 @@ export const GeneralSchema = new SimpleSchema({
   wantedClosingDate: {
     type: Date,
     optional: true,
-  },
-  files: {
-    type: RequestFilesSchema,
-    defaultValue: {},
   },
 });
 
@@ -386,4 +379,8 @@ export const LogicSchema = new SimpleSchema({
     defaultValue: [],
   },
   'lender.nextSteps.$': String,
+  'lender.contractRequested': {
+    type: Boolean,
+    defaultValue: false,
+  },
 });

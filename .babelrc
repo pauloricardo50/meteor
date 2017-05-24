@@ -4,12 +4,5 @@
     "react",
     "stage-0"
   ],
-  "plugins": [
-    "transform-class-properties"
-  ],
-  "env": {
-    "intl": {
-      "plugins": ["react-intl"]
-    }
-  }
+  "plugins": ["transform-class-properties"]
 }

@@ -6,7 +6,7 @@ import { getInterests, getAmortization } from '/imports/js/helpers/finance-math'
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import colors from '/imports/js/config/colors';
 
-import { legend } from './chartSettings';
+import { legendConfig, adjustLegend } from './chartSettings';
 
 const chartColors = {
   interest: colors.charts[0],
@@ -140,9 +140,11 @@ export default class ExpensesChart extends Component {
         ...(!this.props.title && { marginTop: 0 }),
         events: {
           load() {
+            // adjustLegend(this);
             that.addTitle(this);
           },
           redraw() {
+            // adjustLegend(this);
             that.addTitle(this);
           },
         },
@@ -176,7 +178,10 @@ export default class ExpensesChart extends Component {
           showInLegend: false,
         },
       },
-      legend,
+      legend: {
+        ...legendConfig,
+        // reversed: true,
+      },
       series: [
         {
           type: 'pie',

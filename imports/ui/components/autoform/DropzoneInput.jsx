@@ -6,9 +6,6 @@ import cleanMethod from '/imports/api/cleanMethods';
 import DropzoneComponent from 'react-dropzone-component';
 
 const handleSave = (props, file) => {
-  console.log('hi');
-  console.log(props);
-
   let fileNameCount = '00';
   let fileCount = 0;
   if (props.currentValue) {
@@ -26,8 +23,6 @@ const handleSave = (props, file) => {
     key: file.postData[0].value,
     fileCount,
   };
-
-  console.log(object);
 
   cleanMethod(props.pushFunc, object, props.documentId);
 };
@@ -74,7 +69,6 @@ const djsConfig = props => ({
     uploader.file = file;
     uploader.request((error, instructions) => {
       if (error) {
-        console.log(error);
         done(error.message);
       } else {
         // options.url = instructions.upload + '/' + instructions.postData[0].value;

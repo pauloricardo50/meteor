@@ -33,6 +33,7 @@ Factory.define('borrower', Borrowers, {
   userId: Factory.get('user'),
   createdAt: () => new Date(),
   expenses: () => [{ description: 'test', value: 1 }],
+  files: () => ({}),
 });
 
 Factory.define('loanRequest', LoanRequests, {
@@ -41,6 +42,7 @@ Factory.define('loanRequest', LoanRequests, {
   general: () => ({ fortuneUsed: 250000, partnersToAvoid: ['joe', 'john'] }),
   borrowers: [Factory.get('borrower')],
   property: () => ({ value: 1000000 }),
+  files: () => ({}),
   logic: () => ({}),
   admin: () => ({}),
   name: () => 'request name',

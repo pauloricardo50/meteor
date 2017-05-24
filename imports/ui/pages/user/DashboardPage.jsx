@@ -30,18 +30,18 @@ export default class DashboardPage extends Component {
 
   render() {
     return (
-      <Page title="Tableau de Bord">
+      <Page title="Tableau de Bord" className="joyride-dashboard">
         <div className="container-fluid" style={{ width: '100%', padding: 0 }}>
-          <div className="col-md-6 col-lg-4" style={{ marginBottom: 15 }}>
+          <div className="col-md-6 col-lg-4 joyride-recap" style={{ marginBottom: 15 }}>
             <DashboardRecap {...this.props} smallWidth={this.state.smallWidth} />
           </div>
 
           {/* <div className="col-md-6 col-lg-8"> */}
-          <div className="col-md-6 col-lg-4" style={{ marginBottom: 15 }}>
+          <div className="col-md-6 col-lg-4 joyride-charts" style={{ marginBottom: 15 }}>
             <DashboardCharts {...this.props} />
           </div>
 
-          <div className="col-md-6 col-lg-4" style={{ marginBottom: 15 }}>
+          <div className="col-md-6 col-lg-4 joyride-borrowers" style={{ marginBottom: 15 }}>
             <DashboardBorrowers {...this.props} />
           </div>
         </div>

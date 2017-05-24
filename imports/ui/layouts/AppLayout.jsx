@@ -3,13 +3,13 @@ import React from 'react';
 import { Roles } from 'meteor/alanning:roles';
 import { Redirect } from 'react-router-dom';
 import classnames from 'classnames';
-import { spring } from 'react-motion';
 
 import TopNav from '/imports/ui/components/general/TopNav.jsx';
 import SideNavUser from '/imports/ui/components/general/SideNavUser.jsx';
 import SideNav from '/imports/ui/components/general/SideNav.jsx';
-import RouteTransition from '/imports/ui/components/general/RouteTransition.jsx';
 import ContactButton from '/imports/ui/components/general/ContactButton.jsx';
+import UserJoyride from '/imports/ui/components/general/UserJoyride.jsx';
+
 const getRedirect = props => {
   const isAdmin = Roles.userIsInRole(props.currentUser, 'admin');
   const isPartner = Roles.userIsInRole(props.currentUser, 'partner');
@@ -76,15 +76,18 @@ const AppLayout = props => {
     'always-side-nav': props.type === 'admin',
   });
 
+  const isApp = props.history.location.pathname.slice(0, 4) === '/app';
+
   if (redirect) {
     return <Redirect to={redirect} />;
   }
   return (
     <div>
+      {/* {isApp && <UserJoyride />} */}
+
       <TopNav {...props} public={false} />
-      {isUser
-        ? <div className="hidden-xs"><SideNavUser {...props} /></div>
-        : <SideNav {...props} />}
+
+      {isApp ? <SideNavUser {...props} fixed /> : <SideNav {...props} />}
 
       <main className={classes}>
         {/* <RouteTransition pathname={props.history.location.pathname}> */}
@@ -94,7 +97,7 @@ const AppLayout = props => {
         {/* </RouteTransition> */}
       </main>
 
-      {props.history.location.pathname.slice(0, 4) === '/app' && <ContactButton />}
+      {isApp && <ContactButton />}
     </div>
   );
 };

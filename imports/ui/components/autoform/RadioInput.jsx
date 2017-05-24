@@ -77,6 +77,7 @@ export default class RadioInput extends Component {
               key={option.id}
               style={styles.RadioButton}
               labelStyle={styles.RadioButtonLabel}
+              disabled={this.props.disabled}
             />
           ))}
         </RadioButtonGroup>
@@ -93,6 +94,7 @@ RadioInput.propTypes = {
   currentValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number]),
   documentId: PropTypes.string.isRequired,
   updateFunc: PropTypes.string.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
 RadioInput.defaultProps = {

@@ -3,11 +3,15 @@ import React from 'react';
 import ReactHighcharts from 'react-highcharts';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
-import { getLoanValue, getProjectValue } from '/imports/js/helpers/requestFunctions';
+import {
+  getLoanValue,
+  getProjectValue,
+  getPropAndWork,
+} from '/imports/js/helpers/requestFunctions';
 import constants from '/imports/js/config/constants';
 import colors from '/imports/js/config/colors';
 
-import { legend } from './chartSettings';
+import { legendConfig, adjustLegend } from './chartSettings';
 
 const chartColors = {
   notaryFees: colors.charts[4],
@@ -26,9 +30,19 @@ const getConfig = props => {
       type: 'bar',
       style: { fontFamily: 'Source Sans Pro' },
       animation: { duration: 400 },
-      height: 160,
+      height: 220,
       spacingTop: 0,
       spacingBottom: 0,
+      marginTop: 0,
+      marginBottom: 0,
+      // events: {
+      //   load() {
+      //     adjustLegend(this);
+      //   },
+      //   redraw() {
+      //     adjustLegend(this);
+      //   },
+      // },
     },
     title: {
       text: 'Mon Projet',
@@ -42,7 +56,7 @@ const getConfig = props => {
     },
     tooltip: {
       formatter() {
-        return `<span style="color:${this.color}">\u25CF</span> ${this.key}<br /> <b>CHF ${toMoney(Math.round(this.y))}</b><br />${Math.round(1000 * this.y / total) / 10}%`;
+        return `<span style="color:${this.color}">\u25CF</span> ${this.series.name}<br /> <b>CHF ${toMoney(Math.round(this.y))}</b><br />${Math.round(1000 * this.y / total) / 10}%`;
       },
       style: { fontSize: '14px' },
     },
@@ -59,50 +73,74 @@ const getConfig = props => {
         animation: true,
       },
     },
-    legend,
+    legend: legendConfig,
     xAxis: {
       visible: false,
     },
     yAxis: {
       visible: false,
       reversedStacks: false,
-      // title: { text: '' },
     },
+    // series: [
+    //   {
+    //     name: 'Emprunt',
+    //     data: [['Emprunt', getLoanValue(r)]],
+    //   },
+    //   {
+    //     data: [['2ème Pilier', r.general.insuranceFortuneUsed || 0]],
+    //     name: '2ème Pilier',
+    //   },
+    //   {
+    //     data: [
+    //       [
+    //         'Épargne', // subtract fees from this
+    //         r.general.fortuneUsed -
+    //           r.property.value * constants.notaryFees -
+    //           (r.general.insuranceFortuneUsed * constants.lppFees || 0),
+    //       ],
+    //     ],
+    //     name: 'Épargne',
+    //   },
+    //   {
+    //     data: [['Frais de Notaire', r.property.value * constants.notaryFees]],
+    //     name: 'Frais de Notaire',
+    //   },
+    //   {
+    //     data: [['Frais 2ème Pilier', r.general.insuranceFortuneUsed * constants.lppFees || 0]],
+    //     name: 'Frais 2ème Pilier',
+    //   },
+    // ],
     series: [
       {
-        name: 'Mon Projet',
-        data: [['Mon Projet', getLoanValue(r)]],
+        name: 'Propriété',
+        data: [getPropAndWork(r)],
+        stack: 1,
       },
       {
-        data: [['2ème Pilier', r.general.insuranceFortuneUsed || 0]],
-        name: '2ème Pilier',
-      },
-      {
+        name: 'Frais',
         data: [
-          [
-            'Épargne', // subtract fees from this
-            r.general.fortuneUsed -
-              r.property.value * constants.notaryFees -
-              (r.general.insuranceFortuneUsed * constants.lppFees || 0),
-          ],
+          r.property.value * constants.notaryFees +
+            r.general.insuranceFortuneUsed * constants.lppFees || 0,
         ],
-        name: 'Épargne',
+        stack: 1,
       },
       {
-        data: [['Frais de Notaire', r.property.value * constants.notaryFees]],
-        name: 'Frais de Notaire',
+        name: 'Prêt',
+        data: [getLoanValue(r)],
+        stack: 2,
       },
       {
-        data: [['Frais 2ème Pilier', r.general.insuranceFortuneUsed * constants.lppFees || 0]],
-        name: 'Frais 2ème Pilier',
+        name: 'Fonds Propres',
+        data: [total - getLoanValue(r)],
+        stack: 2,
       },
     ],
     colors: [
       chartColors.loan,
       chartColors.insuranceFortune,
-      chartColors.fortune,
-      chartColors.notaryFees,
       chartColors.lppFees,
+      chartColors.notaryFees,
+      // chartColors.fortune,
     ],
     lang: { thousandsSep: "'" },
     credits: { enabled: false },
