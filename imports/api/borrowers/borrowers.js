@@ -268,6 +268,11 @@ export const BorrowerSchema = new SimpleSchema({
     type: Object,
     optional: true,
   },
+  adminValidation: {
+    type: Object,
+    defaultValue: {},
+    blackbox: true,
+  },
 });
 
 Borrowers.attachSchema(BorrowerSchema);

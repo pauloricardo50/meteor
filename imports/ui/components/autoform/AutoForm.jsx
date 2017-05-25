@@ -50,8 +50,8 @@ const inputSwitch = (singleInput, index, parentProps) => {
     props.placeholder = '';
   }
 
-  // Prevent undefined showCondition to trigger as well
-  if (singleInput.showCondition === false) {
+  // Prevent undefined condition to trigger as well
+  if (singleInput.condition === false) {
     return null;
   }
 

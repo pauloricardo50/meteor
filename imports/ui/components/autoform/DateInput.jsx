@@ -6,11 +6,14 @@ import cleanMethod from '/imports/api/cleanMethods';
 import DatePicker from 'material-ui/DatePicker';
 import areIntlLocalesSupported from 'intl-locales-supported';
 
+import FormValidator from './FormValidator.jsx';
+
 const styles = {
   div: {
     display: 'block',
     marginTop: 10,
     marginBottom: 0,
+    position: 'relative',
   },
   DatePickerField: {
     width: '100%',
@@ -82,6 +85,7 @@ export default class DateInput extends Component {
           cancelLabel="Annuler"
           disabled={this.props.disabled}
         />
+        <FormValidator {...this.props} />
       </div>
     );
   }

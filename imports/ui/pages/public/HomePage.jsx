@@ -27,7 +27,6 @@ const styles = {
 export default class HomePage extends Component {
   componentDidMount() {
     DocHead.setTitle('e-Potek');
-    console.log(process.env);
   }
 
   render() {
@@ -76,7 +75,7 @@ export default class HomePage extends Component {
                     label={
                       <FormattedMessage
                         defaultMessage="Faire une acquisition"
-                        id="HomePage.CTA1"
+                        id="HomePage.CTA12"
                         description="CTA button label 1"
                       />
                     }
@@ -139,10 +138,18 @@ export default class HomePage extends Component {
                   <span className="fa fa-calculator" />
                 </b>
                 <h3 className="subheading">
-                  1. Testez votre éligibilité
+                  <FormattedMessage
+                    defaultMessage="1. Testez votre éligibilité"
+                    id="HomePage.sellingpoint1.title"
+                    description="Selling point 12"
+                  />
                 </h3>
                 <p className="paragraph">
-                  Identifiez le montant que vous pouvez emprunter en quelques clics.
+                  <FormattedMessage
+                    defaultMessage="Identifiez le montant que vous pouvez emprunter en quelques clics."
+                    id="HomePage.sellingpoint1.text"
+                    description="Selling point 1 descriptions"
+                  />
                 </p>
               </div>
               <div className="col-12">

@@ -135,7 +135,7 @@ export default class ExpensesChart extends Component {
       chart: {
         type: 'pie',
         style: { fontFamily: 'Source Sans Pro' },
-        animation: { duration: 400 },
+        // animation: { duration: 400 },
         ...(!this.props.title && { spacingTop: 0 }),
         ...(!this.props.title && { marginTop: 0 }),
         events: {

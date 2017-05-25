@@ -7,7 +7,7 @@ const DashboardBorrowers = props => {
   return (
     <div className="mask1 dashboard-borrowers">
       <h4 className="fixed-size bold" style={{ marginTop: 0 }}>Emprunteur</h4>
-      {props.borrowers.map(b => (
+      {props.borrowers.map((b, i) => (
         <Link
           to={`/app/requests/${props.loanRequest._id}/borrowers/${b._id}/personal`}
           key={b._id}
@@ -16,7 +16,9 @@ const DashboardBorrowers = props => {
           <span className="fa fa-user-circle-o fa-4x" style={{ marginRight: 16 }} />
           <div className="text">
             <h4 className="fixed-size no-margin" style={{ marginBottom: 8 }}>
-              {!!(b.firstName && b.lastName) && `${b.firstName} ${b.lastName}`}
+              {b.firstName && b.lastName
+                ? `${b.firstName} ${b.lastName}`
+                : `Emprunteur ${i + 1}`}
               {b.age && <small> - {b.age} ans</small>}
             </h4>
             {b.age && <h4 className="fixed-size secondary no-margin">{b.age} ans</h4>}

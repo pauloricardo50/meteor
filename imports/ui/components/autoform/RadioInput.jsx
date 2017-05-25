@@ -4,6 +4,8 @@ import cleanMethod from '/imports/api/cleanMethods';
 
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 
+import FormValidator from './FormValidator.jsx';
+
 const styles = {
   RadioButtonGroup: {
     display: 'flex',
@@ -22,6 +24,7 @@ const styles = {
   div: {
     marginTop: 10,
     marginBottom: 0,
+    position: 'relative',
   },
 };
 
@@ -81,6 +84,7 @@ export default class RadioInput extends Component {
             />
           ))}
         </RadioButtonGroup>
+        <FormValidator {...this.props} />
       </div>
     );
   }

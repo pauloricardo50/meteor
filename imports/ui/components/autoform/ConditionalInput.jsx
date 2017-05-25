@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
+import FormValidator from './FormValidator.jsx';
+
 export default class ConditionalInput extends Component {
   constructor(props) {
     super(props);
@@ -41,31 +43,30 @@ export default class ConditionalInput extends Component {
   }
 
   render() {
+    const conditionalChildren = React.Children.toArray(this.props.children).slice(1);
     return (
-      <div className="form-group" style={this.props.style}>
+      <div className="form-group" style={{ ...this.props.style, position: 'relative' }}>
         {React.cloneElement(
           // The conditional input
           this.props.children[0],
-          { onConditionalChange: this.onConditionalChange }
+          { onConditionalChange: this.onConditionalChange, noValidator: true },
         )}
-        {this.state.conditional ?
-          // The hidden elements that will appear if the conditional input is true
-          <div className="animated fadeIn">{this.props.children.slice(1)}</div> :
-          ''
-        }
+        {this.state.conditional
+          ? // The hidden elements that will appear if the conditional input is true
+            <div className="animated fadeIn">
+              {/* Don't show a validator for conditional child elements */}
+              {React.Children.map(conditionalChildren, child =>
+                React.cloneElement(child, { noValidator: true }),
+              )}
+            </div>
+          : ''}
+        <FormValidator {...this.props} id={this.props.children[0].id} />
       </div>
     );
   }
 }
 
-
 ConditionalInput.propTypes = {
-  conditionalTrueValue: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.string,
-  ]).isRequired,
-  children: PropTypes.arrayOf(PropTypes.oneOfType([
-    PropTypes.array,
-    PropTypes.object,
-  ])),
+  conditionalTrueValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]).isRequired,
+  children: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.array, PropTypes.object])),
 };

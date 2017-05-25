@@ -11,6 +11,7 @@ import colors from '/imports/js/config/colors';
 import { swissFrancMask, decimalMask } from '/imports/js/helpers/textMasks';
 import { toNumber, toDecimalNumber } from '/imports/js/helpers/conversionFunctions';
 import SavingIcon from './SavingIcon.jsx';
+import FormValidator from './FormValidator.jsx';
 
 const styles = {
   div: {
@@ -152,6 +153,7 @@ export default class TextInput extends Component {
           errorExists={this.state.errorText !== ''}
           style={styles.savingIcon}
         />
+        {!this.props.noValidator && <FormValidator {...this.props} />}
       </div>
     );
   }
