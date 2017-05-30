@@ -1,0 +1,3 @@
+files:
+  - source: /build/lang/*.json
+    translation: '%original_path%'
