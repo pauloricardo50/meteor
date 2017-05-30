@@ -9,6 +9,7 @@ import { analytics } from 'meteor/okgrow:analytics';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
+import { FormattedMessage } from 'react-intl';
 
 import { toNumber, toMoney } from '/imports/js/helpers/conversionFunctions';
 import { changeProperty, changeFortune, changeIncome } from '/imports/js/helpers/startFunctions';
@@ -253,6 +254,7 @@ export default class Start1Page extends Component {
 
           <div className="description">
             <p>
+              <FormattedMessage id="Start1Page.description1" description="" />
               <AutoTooltip>
                 Ce calculateur vous permet de rapidement déterminer votre capacité d'achat avant de faire une analyse de votre situation personelle plus détaillée.
               </AutoTooltip>
