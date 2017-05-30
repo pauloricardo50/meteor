@@ -5,13 +5,16 @@ import { getFileSchema } from '/imports/js/arrays/files';
 
 const Borrowers = new Mongo.Collection('borrowers');
 
-Borrowers.allow({
-  insert(userId, doc) {
-    return userId ? true : new Error();
+// Prevent all client side modifications of mongoDB
+Borrowers.deny({
+  insert() {
+    return true;
   },
-  update(userId, doc) {
-    // This is true if someone is logged in and the user is the same as the one who created it
-    return !!userId && userId === doc.userId;
+  update() {
+    return true;
+  },
+  remove() {
+    return true;
   },
 });
 

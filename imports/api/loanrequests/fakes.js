@@ -1,9 +1,11 @@
 import { fakeFile } from '/imports/js/arrays/files';
+import moment from 'moment';
 
 export const fakeGeneral = {
   purchaseType: 'acquisition',
   fortuneUsed: 250000,
   insuranceFortuneUsed: 100000,
+  wantedClosingDate: moment().add(15, 'd').toDate(),
 };
 
 export const fakeProperty = {
@@ -70,6 +72,11 @@ export const fakeFiles = {
   plans: [fakeFile],
   cubage: [fakeFile],
   pictures: [fakeFile],
+  buyersContract: [fakeFile],
+  landRegisterExtract: [fakeFile],
+  marketingBrochure: [fakeFile],
+  coownershipAllocationAgreement: [fakeFile],
+  coownershipAgreement: [fakeFile],
 };
 
 export const requestStep1 = {

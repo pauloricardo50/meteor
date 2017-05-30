@@ -64,6 +64,12 @@ export const completeFakeBorrower = {
     bonus: [fakeFile],
     otherIncome: [fakeFile],
     expenses: [fakeFile],
+    nonPursuitExtract: [fakeFile],
+    lastSalaries: [fakeFile],
+    currentMortgages: [fakeFile],
+    bankAssetsChange: [fakeFile],
+    pensionFundYearlyStatement: [fakeFile],
+    retirementInsurancePlan: [fakeFile],
   },
   logic: {
     financeEthics: true,

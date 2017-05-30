@@ -24,7 +24,7 @@ export default class DashboardRecap extends React.Component {
     super(props);
 
     this.state = {
-      showDetail: !this.props.smallWidth,
+      showDetail: !this.props.smallWidth && this.props.loanRequest.logic.step < 3,
     };
   }
 

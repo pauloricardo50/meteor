@@ -383,4 +383,24 @@ export const LogicSchema = new SimpleSchema({
     type: Boolean,
     defaultValue: false,
   },
+  'lender.contractRequestSent': {
+    type: Boolean,
+    defaultValue: false,
+  },
+  'lender.contract': {
+    type: String,
+    defaultValue: '',
+  },
+  finalStepsAdded: {
+    type: Boolean,
+    defaultValue: false,
+  },
+  finalStepsAddedTime: {
+    type: Date,
+    optional: true,
+  },
+  done: {
+    type: Boolean,
+    defaultValue: false,
+  },
 });

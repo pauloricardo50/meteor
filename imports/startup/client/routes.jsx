@@ -46,10 +46,10 @@ import ContactPage from '/imports/ui/pages/user/ContactPage.jsx';
 import NewPage from '/imports/ui/pages/user/NewPage.jsx';
 
 // Admin pages
-import AdminDashboardPage from '/imports/ui/pages/admin/AdminDashboardPage.jsx';
-import UsersPage from '/imports/ui/pages/admin/UsersPage.jsx';
-import RequestsPage from '/imports/ui/pages/admin/RequestsPage.jsx';
 import {
+  AdminDashboardPage,
+  UsersPage,
+  RequestsPage,
   OfferPage,
   SingleRequestPage,
   SingleUserPage,

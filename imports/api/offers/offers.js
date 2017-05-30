@@ -4,14 +4,16 @@ import SimpleSchema from 'simpl-schema';
 
 const Offers = new Mongo.Collection('offers');
 
-Offers.allow({
-  insert(userId, doc) {
-    // This is true if someone is logged in
-    return !!userId;
+// Prevent all client side modifications of mongoDB
+Offers.deny({
+  insert() {
+    return true;
   },
-  update(userId, doc) {
-    // This is true if someone is logged in and ownership is correct
-    return !!userId && userId === doc.userId;
+  update() {
+    return true;
+  },
+  remove() {
+    return true;
   },
 });
 

@@ -9,13 +9,16 @@ const RequestFilesSchema = new SimpleSchema(getFileSchema('request'));
 
 const LoanRequests = new Mongo.Collection('loanRequests');
 
-LoanRequests.allow({
-  insert(userId, doc) {
-    return userId ? true : new Error();
+// Prevent all client side modifications of mongoDB
+LoanRequests.deny({
+  insert() {
+    return true;
   },
-  update(userId, doc) {
-    // This is true if someone is logged in and the user is the same as the one who created it
-    return !!userId && userId === doc.userId;
+  update() {
+    return true;
+  },
+  remove() {
+    return true;
   },
 });
 

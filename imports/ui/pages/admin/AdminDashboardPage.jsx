@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 
 import MetricsTriple from '/imports/ui/components/general/MetricsTriple.jsx';
 import TodoList from '/imports/ui/components/admin/TodoList.jsx';
+import ActionsTable from '/imports/ui/components/admin/ActionsTable.jsx';
 
 const getUserMetrics = props => {
   const d1 = new Date();
@@ -34,7 +35,7 @@ const AdminDashboardPage = props => {
 
       <MetricsTriple metrics={getUserMetrics(props)} percent={false} />
 
-      <TodoList
+      <ActionsTable
         loanRequests={props.loanRequests}
         recentOffers={props.offers.filter(offer => offer.auctionEndTime >= now)}
         history={props.history}

@@ -170,7 +170,7 @@ export const getFortune = borrowers => {
   let sum = 0;
 
   borrowers.forEach(borrower => {
-    sum += borrower.bankFortune;
+    sum += borrower.bankFortune || 0;
   });
 
   return Math.max(0, Math.round(sum));
@@ -191,7 +191,7 @@ export const getTotalFortune = borrowers => {
   let sum = 0;
 
   borrowers.forEach(borrower => {
-    sum += borrower.bankFortune;
+    sum += borrower.bankFortune || 0;
     sum += borrower.insuranceSecondPillar || 0;
     sum += borrower.insuranceThirdPillar || 0;
 
