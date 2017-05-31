@@ -40,7 +40,7 @@ export default class HomeDev extends React.Component {
           id="refinancing"
         />
         <Dialog
-          title={<T id="HomeDev.title" />}
+          title={<h3><T id="HomeDev.title" /></h3>}
           actions={actions}
           modal={false}
           open={this.state.open}

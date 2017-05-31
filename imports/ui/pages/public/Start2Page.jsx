@@ -209,7 +209,7 @@ export default class Start2Page extends Component {
           {!finished &&
             <div className="start2recap mask1 animated fadeInUp">
               <h3 className="recap-title bold">
-                Votre Plan Financier
+                <T id="Start2Page.recapTitle" />
               </h3>
               <div className="shadow-top" />
               <div className="shadow-bottom" />

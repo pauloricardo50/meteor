@@ -1,10 +1,10 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
-import constants from '/imports/js/config/constants';
 
 import FortuneSliders from '/imports/ui/pages/public/startPage/FortuneSliders.jsx';
 import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
+import { IntlNumber } from '/imports/ui/components/general/Translation.jsx';
 
 import { toMoney } from '../helpers/conversionFunctions';
 
@@ -13,23 +13,20 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'propertyValue',
     condition: state.knowsProperty === true,
     type: 'textInput',
-    text1: "Le prix d'achat de la propriété est de",
+    // text1: "Le prix d'achat de la propriété est de",
     money: true,
   },
   {
     id: 'notaryFeesAgreed',
     condition: state.knowsProperty === true,
     type: 'buttons',
-    text1: (
-      <span>
-        <AutoTooltip>A ce prix s'ajoutent les frais de notaire de</AutoTooltip>
-        {' '}
+    values: {
+      value: (
         <span className="active">
-          CHF {toMoney(0.05 * state.propertyValue)}
+          <IntlNumber value={0.05 * state.propertyValue} format="money" />
         </span>
-        .
-      </span>
-    ),
+      ),
+    },
     hideResult: true,
     buttons: [{ id: true, label: 'Continuer' }],
   },

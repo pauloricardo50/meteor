@@ -109,20 +109,20 @@ const getArray = ({ income, fortune, property, borrowRatio, incomeRatio }) => {
   ];
 };
 
-const StartRecap = props => (
+const Start1Recap = props => (
   <article className="validator">
     {isReady(props)
       ? <Recap array={getArray(props)} />
       : !props.noPlaceholder &&
       <div>
         <h4 className="secondary" style={{ textAlign: 'center' }}>
-          <T id="StartRecap.temporaryTitle" />
+          <T id="Start1Recap.temporaryTitle" />
         </h4>
       </div>}
   </article>
 );
 
-StartRecap.propTypes = {
+Start1Recap.propTypes = {
   income: PropTypes.number,
   fortune: PropTypes.number,
   property: PropTypes.number,
@@ -131,4 +131,4 @@ StartRecap.propTypes = {
   ratio: PropTypes.number,
 };
 
-export default StartRecap;
+export default Start1Recap;

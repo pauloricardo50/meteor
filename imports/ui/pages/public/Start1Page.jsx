@@ -18,8 +18,8 @@ import constants from '/imports/js/config/constants';
 import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
 import Accordion from '/imports/ui/components/general/Accordion.jsx';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
-import StartLine from './startPage/StartLine.jsx';
-import StartRecap from './startPage/StartRecap.jsx';
+import Start1Line from './startPage/Start1Line.jsx';
+import Start1Recap from './startPage/Start1Recap.jsx';
 
 const getArray = (income, fortune, property, borrow, ratio) => {
   const incomeIcon = classnames({
@@ -255,6 +255,8 @@ export default class Start1Page extends Component {
             </p>
           </div>
 
+          {/* <T id="test" values={{ value1: 'hello', value2: <span>hello</span> }} /> */}
+
           <div className="content">
             <div className="sliders">
               {getArray(
@@ -265,7 +267,7 @@ export default class Start1Page extends Component {
                 incomeRatio,
                 this.state.property.auto,
               ).map(line => (
-                <StartLine
+                <Start1Line
                   isReady={isReady}
                   key={line.name}
                   {...this.state[line.name]}
@@ -288,7 +290,7 @@ export default class Start1Page extends Component {
             </div>
             <div className="separator" />
             <div className="recap">
-              <StartRecap {...childProps} />
+              <Start1Recap {...childProps} />
             </div>
           </div>
 
@@ -305,7 +307,7 @@ export default class Start1Page extends Component {
                 </span>
               </h3>
               <ExpensesChartInterests
-                title="Start1page.chartTitle"
+                title="Start1Page.chartTitle"
                 loan={loan || undefined}
                 amortization={loan * constants.getAmortization(borrowRatio) / 12 || 0}
                 maintenance={property * constants.maintenanceReal / 12 || 0}

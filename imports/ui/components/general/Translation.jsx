@@ -19,28 +19,43 @@ import AutoTooltip from './AutoTooltip.jsx';
 * @extends Component
 */
 export class T extends Component {
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.id !== this.props.id;
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return nextProps.id !== this.props.id;
+  // }
 
   render() {
+    if (this.props.noTooltips) {
+      return <FormattedMessage {...this.props} />;
+    }
     return (
       <FormattedMessage {...this.props}>
-        {formattedMessage => (
-          <AutoTooltip
-            {...this.props}
-            id={this.props.tooltipId}
-            placement={this.props.tooltipPlacement}
-          >
-            {formattedMessage}
-          </AutoTooltip>
-        )}
+        {formattedMessage => {
+          return (
+            <AutoTooltip
+              {...this.props}
+              id={this.props.tooltipId}
+              placement={this.props.tooltipPlacement}
+            >
+              {formattedMessage}
+            </AutoTooltip>
+          );
+        }}
       </FormattedMessage>
     );
   }
 }
 
-T.propTypes = {};
+T.propTypes = {
+  noTooltips: PropTypes.bool,
+  tooltipId: PropTypes.string,
+  tooltipPlacement: PropTypes.string,
+};
+
+T.defaultProps = {
+  noTooltips: false,
+  tooltipId: undefined,
+  tooltipPlacement: undefined,
+};
 
 export const IntlDate = props => {
   switch (props.type) {

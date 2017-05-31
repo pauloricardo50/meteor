@@ -7,7 +7,7 @@ import Start1Text from './Start1Text.jsx';
 import Start1Slider from './Start1Slider.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
-const StartLine = props => (
+const Start1Line = props => (
   <Motion defaultStyle={{ x: 0 }} style={{ x: spring(props.value, presets.gentle) }}>
     {value => (
       <article className="oscar-line">
@@ -24,7 +24,7 @@ const StartLine = props => (
   </Motion>
 );
 
-StartLine.propTypes = {
+Start1Line.propTypes = {
   value: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
@@ -32,4 +32,4 @@ StartLine.propTypes = {
   isReady: PropTypes.bool.isRequired,
 };
 
-export default StartLine;
+export default Start1Line;
