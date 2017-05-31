@@ -5,20 +5,20 @@ import { toMoney, toNumber, toDecimalNumber } from '../conversionFunctions';
 
 describe('Conversion functions', () => {
   describe('To money', () => {
-    it("Should return '1'000' for 1000", () => {
-      expect(toMoney(1000)).to.equal("1'000");
+    it("Should return '1 000' for 1000", () => {
+      expect(toMoney(1000)).to.equal('1 000');
     });
 
     it('Should return 0 for 0', () => {
       expect(toMoney(0)).to.equal(0);
     });
 
-    it("Should return '100'000' for 100000", () => {
-      expect(toMoney(100000)).to.equal("100'000");
+    it("Should return '100 000' for 100000", () => {
+      expect(toMoney(100000)).to.equal('100 000');
     });
 
-    it("Should return '100'000' for -100000", () => {
-      expect(toMoney(-100000)).to.equal("100'000");
+    it("Should return '100 000' for -100000", () => {
+      expect(toMoney(-100000)).to.equal('100 000');
     });
   });
 
