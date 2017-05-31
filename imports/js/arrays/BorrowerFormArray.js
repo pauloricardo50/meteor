@@ -274,6 +274,10 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
               id: 'pensions',
               label: 'Pensions et Rentes',
             },
+            {
+              id: 'other',
+              label: 'Autre',
+            },
           ],
         },
         {

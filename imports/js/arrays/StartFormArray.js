@@ -1,10 +1,10 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
-import constants from '/imports/js/config/constants';
 
 import FortuneSliders from '/imports/ui/pages/public/startPage/FortuneSliders.jsx';
 import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
+import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
 
 import { toMoney } from '../helpers/conversionFunctions';
 
@@ -13,90 +13,101 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'propertyValue',
     condition: state.knowsProperty === true,
     type: 'textInput',
-    text1: "Le prix d'achat de la propriété est de",
+    // text1: "Le prix d'achat de la propriété est de",
     money: true,
   },
   {
     id: 'notaryFeesAgreed',
     condition: state.knowsProperty === true,
     type: 'buttons',
-    text1: (
-      <span>
-        <AutoTooltip>A ce prix s'ajoutent les frais de notaire de</AutoTooltip>
-        {' '}
+    intlValues: {
+      value: (
         <span className="active">
-          CHF {toMoney(0.05 * state.propertyValue)}
+          <IntlNumber value={0.05 * state.propertyValue} format="money" />
         </span>
-        .
-      </span>
-    ),
+      ),
+    },
     hideResult: true,
-    buttons: [{ id: true, label: 'Continuer' }],
+    buttons: [{ id: true, label: <T id="general.continue" /> }],
   },
   {
     id: 'propertyWorkExists',
     condition: state.knowsProperty === true,
     type: 'buttons',
     question: true,
-    text1: 'Souhaitez-vous rajouter à votre projet des travaux de plus-value?',
-    buttons: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
+    // text1: 'Souhaitez-vous rajouter à votre projet des travaux de plus-value?',
+    buttons: [
+      { id: true, label: <T id="general.yes" /> },
+      { id: false, label: <T id="general.no" /> },
+    ],
     deleteId: 'propertyWork',
   },
   {
     id: 'propertyWork',
     condition: state.propertyWorkExists === true,
     type: 'textInput',
-    text1: 'Les travaux de plus-value sont estimés à',
+    // text1: 'Les travaux de plus-value sont estimés à',
     money: true,
   },
   {
     id: 'projectAgreed',
     condition: state.propertyWork !== undefined && state.propertyWork !== 0,
     type: 'buttons',
-    text1: (
-      <span>
-        Le coût de votre projet sera donc de
-        {' '}
+    // text1: (
+    //   <span>
+    //     Le coût de votre projet sera donc de
+    //     {' '}
+    //     <span className="active">
+    //       CHF {toMoney(1.05 * state.propertyValue + (state.propertyWork || 0))}
+    //     </span>
+    //     .
+    //   </span>
+    // ),
+    intlValues: {
+      value: (
         <span className="active">
-          CHF {toMoney(1.05 * state.propertyValue + (state.propertyWork || 0))}
+          <IntlNumber
+            value={1.05 * state.propertyValue + (state.propertyWork || 0)}
+            format="money"
+          />
         </span>
-        .
-      </span>
-    ),
+      ),
+    },
     hideResult: true,
     buttons: [{ id: true, label: 'Continuer' }],
   },
   {
     id: 'usageType',
     type: 'buttons',
-    text1: "Quel sera le type d'utilisation de cette propriété?",
+    // text1: "Quel sera le type d'utilisation de cette propriété?",
     question: true,
     buttons: [
-      { id: 'primary', label: 'Ma Résidence Principale' },
-      { id: 'secondary', label: 'Ma Résidence Secondaire' },
-      { id: 'investment', label: 'Je veux le louer' },
+      { id: 'primary', label: <T id="Start2Form.usageTypeButtonPrincipal" /> },
+      { id: 'secondary', label: <T id="Start2Form.usageTypeButtonSecondary" /> },
+      { id: 'investment', label: <T id="Start2Form.usageTypeButtonInvestment" /> },
     ],
   },
   {
     id: 'propertyRent',
     condition: state.usageType === 'investment',
     type: 'textInput',
-    text1: "J'estime que le loyer mensuel pour cette propriété sera",
+    // text1: "J'estime que le loyer mensuel pour cette propriété sera",
     money: true,
   },
   {
     id: 'borrowerCount',
     type: 'buttons',
-    text1: "Combien d'emprunteurs êtes vous?",
+    // text1: "Combien d'emprunteurs êtes vous?",
     question: true,
-    buttons: [{ id: 1, label: 'Un' }, { id: 2, label: 'Deux' }],
+    buttons: [{ id: 1, label: <T id="general.one" /> }, { id: 2, label: <T id="general.two" /> }],
   },
   {
     id: 'age',
     condition: state.borrowerCount === 1,
     type: 'textInput',
-    text1: "J'ai",
-    text2: 'ans.',
+    // text1: "J'ai",
+    // text2: 'ans.',
+    text2: true,
     placeholder: '18',
     number: true,
     width: 50,
@@ -106,8 +117,9 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'oldestAge',
     condition: state.borrowerCount > 1,
     type: 'textInput',
-    text1: "L'emprunteur le plus agé a",
-    text2: 'ans.',
+    // text1: "L'emprunteur le plus agé a",
+    // text2: 'ans.',
+    text2: true,
     placeholder: '18',
     number: true,
     width: 50,
@@ -117,31 +129,45 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'gender',
     condition: state.borrowerCount === 1 && state.age >= 50,
     type: 'buttons',
-    text1: 'Je suis',
-    text2: '.',
-    buttons: [{ id: 'f', label: 'une femme' }, { id: 'm', label: 'un homme' }],
+    // text1: 'Je suis',
+    // text2: '.',
+    text2: true,
+    buttons: [
+      { id: 'f', label: <T id="Start2Form.gender.woman" /> },
+      { id: 'm', label: <T id="Start2Form.gender.man" /> },
+    ],
   },
   {
     id: 'oldestGender',
     condition: state.borrowerCount > 1 && state.oldestAge >= 50,
     type: 'buttons',
-    text1: 'Et cette personne est',
-    buttons: [{ id: 'f', label: 'une femme' }, { id: 'm', label: 'un homme' }],
+    // text1: 'Et cette personne est',
+    buttons: [
+      { id: 'f', label: <T id="Start2Form.gender.woman" /> },
+      { id: 'm', label: <T id="Start2Form.gender.man" /> },
+    ],
   },
   {
     id: 'initialIncomeAgreed',
     type: 'buttons',
-    text1: (
-      <span>
-        Vous avez indiqué que vos revenus sont de
-        {' '}
+    // text1: (
+    //   <span>
+    //     Vous avez indiqué que vos revenus sont de
+    //     {' '}
+    //     <span className="active">
+    //       CHF {toMoney(state.initialIncome)}
+    //     </span>
+    //     {' '}
+    //     par an, vous pouvez les détailler maintenant.
+    //   </span>
+    // ),
+    intlValues: {
+      value: (
         <span className="active">
-          CHF {toMoney(state.initialIncome)}
+          <IntlNumber value={state.initialIncome} format="money" />
         </span>
-        {' '}
-        par an, vous pouvez les détailler maintenant.
-      </span>
-    ),
+      ),
+    },
     hideResult: true,
     buttons: [{ id: true, label: 'Ok' }],
   },
@@ -149,26 +175,29 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'income',
     type: 'multipleInput',
     firstMultiple: true,
-    text1: (
-      <span>
-        Quel est votre salaire <span className="bold">annuel</span> brut?
-      </span>
-    ),
+    // text1: (
+    //   <span>
+    //     Quel est votre salaire <span className="bold">annuel</span> brut?
+    //   </span>
+    // ),
     money: true,
     zeroAllowed: true,
   },
   {
     id: 'bonusExists',
     type: 'buttons',
-    text1: 'Avez vous touché un bonus lors des 4 dernières années?',
+    // text1: 'Avez vous touché un bonus lors des 4 dernières années?',
     question: true,
-    buttons: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
+    buttons: [
+      { id: true, label: <T id="general.yes" /> },
+      { id: false, label: <T id="general.no" /> },
+    ],
   },
   {
     id: 'bonus4',
     condition: state.bonusExists === true,
     type: 'multipleInput',
-    text1: 'Bonus 2017',
+    // text1: 'Bonus 2017',
     money: true,
     zeroAllowed: true,
   },
@@ -176,7 +205,7 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'bonus3',
     condition: state.bonusExists === true,
     type: 'multipleInput',
-    text1: 'Bonus 2016',
+    // text1: 'Bonus 2016',
     money: true,
     zeroAllowed: true,
   },
@@ -184,7 +213,7 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'bonus2',
     condition: state.bonusExists === true,
     type: 'multipleInput',
-    text1: 'Bonus 2015',
+    // text1: 'Bonus 2015',
     money: true,
     zeroAllowed: true,
   },
@@ -192,24 +221,27 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'bonus1',
     condition: state.bonusExists === true,
     type: 'multipleInput',
-    text1: 'Bonus 2014',
+    // text1: 'Bonus 2014',
     money: true,
     zeroAllowed: true,
   },
   {
     id: 'otherIncome',
     type: 'buttons',
-    text1: (
-      <span>
-        Avez-vous d'autres sources de
-        {' '}
-        <span className="bold">revenus annuels</span>
-        ?
-      </span>
-    ),
+    // text1: (
+    //   <span>
+    //     Avez-vous d'autres sources de
+    //     {' '}
+    //     <span className="bold">revenus annuels</span>
+    //     ?
+    //   </span>
+    // ),
     question: true,
     deleteId: 'otherIncomeArray',
-    buttons: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
+    buttons: [
+      { id: true, label: <T id="general.yes" /> },
+      { id: false, label: <T id="general.no" /> },
+    ],
   },
   {
     id: 'otherIncomeArray',
@@ -220,20 +252,20 @@ const getAcquisitionArray = (state, props, setFormState) => [
       {
         id: 'description',
         type: 'selectInput',
-        label: 'Type de revenu',
+        label: <T id="Start2Form.otherIncomeArray.title1" />,
         options: [
-          { id: 'welfareIncome', label: 'Allocations' },
-          { id: 'pensionIncome', label: 'Pensions' },
-          { id: 'rentIncome', label: 'Rentes' },
-          { id: 'realEstateIncome', label: 'Revenus de fortune immobilière' },
-          { id: 'investmentIncome', label: 'Revenus de vos titres' },
-          { id: 'other', label: 'Autre activité' },
+          { id: 'welfareIncome', label: <T id="Start2Form.otherIncomeArray.welfare" /> },
+          { id: 'pensionIncome', label: <T id="Start2Form.otherIncomeArray.pension" /> },
+          { id: 'rentIncome', label: <T id="Start2Form.otherIncomeArray.rent" /> },
+          { id: 'realEstateIncome', label: <T id="Start2Form.otherIncomeArray.realEstate" /> },
+          { id: 'investmentIncome', label: <T id="Start2Form.otherIncomeArray.investment" /> },
+          { id: 'other', label: <T id="Start2Form.otherIncomeArray.other" /> },
         ],
       },
       {
         id: 'value',
         type: 'textInput',
-        label: 'Montant annuel',
+        label: <T id="Start2Form.otherIncomeArray.title2" />,
         money: true,
       },
     ],
@@ -241,53 +273,60 @@ const getAcquisitionArray = (state, props, setFormState) => [
   {
     id: 'expensesExist',
     type: 'buttons',
-    text1: (
-      <span>
-        Avez-vous des
-        {' '}
-        <span className="bold">charges annuelles</span>
-        {' '}
-        comme des leasings,
-        {' '}
-        {state.usageType !== 'primary' ? 'rentes, ' : ''}
-        pensions, loyers, crédits personnels ou autres prêts immobiliers?
-      </span>
-    ),
+    // text1: (
+    //   <span>
+    //     Avez-vous des
+    //     {' '}
+    //     <span className="bold">charges annuelles</span>
+    //     {' '}
+    //     comme des leasings,
+    //     {' '}
+    //     {state.usageType !== 'primary' ? 'rentes, ' : ''}
+    //     pensions, loyers, crédits personnels ou autres prêts immobiliers?
+    //   </span>
+    // ),
+    intlValues: {
+      optional: state.usageType !== 'primary' ? 'rentes, ' : '',
+    },
     question: true,
     deleteId: 'expensesArray',
-    buttons: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
+    buttons: [
+      { id: true, label: <T id="general.yes" /> },
+      { id: false, label: <T id="general.no" /> },
+    ],
   },
   {
     id: 'expensesArray',
     condition: state.expensesExist === true,
     existId: 'expensesExist',
     type: 'arrayInput',
-    text1: (
-      <span>
-        Donnez-nous la liste de vos charges
-        {' '}
-        <span className="bold">annuelles</span>
-      </span>
-    ),
+    // text1: (
+    //   <span>
+    //     Donnez-nous la liste de vos charges
+    //     {' '}
+    //     <span className="bold">annuelles</span>
+    //   </span>
+    // ),
     inputs: [
       {
         id: 'description',
         type: 'selectInput',
-        label: 'Type de charge',
+        label: <T id="Start2Form.expensesArray.title1" />,
         options: [
-          { id: 'leasing', label: 'Leasings' },
+          { id: 'leasing', label: <T id="Start2Form.expensesArray.leasing" /> },
           state.usageType !== 'primary'
-            ? { id: 'rent', label: 'Loyers' }
-            : { id: 'rent', label: 'Loyers maintenus' },
-          { id: 'personalLoan', label: 'Crédits personnels' },
-          { id: 'mortgageLoan', label: 'Prêts immobilier' },
-          { id: 'pensions', label: 'Pensions et Rentes' },
+            ? { id: 'rent', label: <T id="Start2Form.expensesArray.rent" /> }
+            : { id: 'rent', label: <T id="Start2Form.expensesArray.maintainedRent" /> },
+          { id: 'personalLoan', label: <T id="Start2Form.expensesArray.personalLoan" /> },
+          { id: 'mortgageLoan', label: <T id="Start2Form.expensesArray.mortgageLoan" /> },
+          { id: 'pensions', label: <T id="Start2Form.expensesArray.pensions" /> },
+          { id: 'other', label: <T id="Start2Form.expensesArray.other" /> },
         ],
       },
       {
         id: 'value',
         type: 'textInput',
-        label: 'Montant annuel',
+        label: <T id="Start2Form.expensesArray.title2" />,
         money: true,
         zeroAllowed: true,
       },

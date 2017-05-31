@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactHighcharts from 'react-highcharts';
+import { injectIntl } from 'react-intl';
 
 import { getInterests, getAmortization } from '/imports/js/helpers/finance-math';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
@@ -17,6 +18,7 @@ const chartColors = {
 const update = that => {
   const total = that.state.interests + that.state.amortization + that.state.maintenance;
   const showLabels = that.state.interests && that.state.amortization && that.state.maintenance;
+  const f = that.props.intl.formatMessage;
   that.chart.getChart().update({
     title: {
       text: `CHF ${toMoney(Math.round(total))}<br>par mois*`,
@@ -30,17 +32,17 @@ const update = that => {
       {
         data: [
           {
-            name: 'Intérêts',
+            name: f({ id: 'general.interests' }),
             y: that.state.interests,
             id: 'interests',
           },
           {
-            name: 'Amortissement',
+            name: f({ id: 'general.amortization' }),
             y: that.state.amortization,
             id: 'amortization',
           },
           {
-            name: "Frais d'Entretien",
+            name: f({ id: 'general.buildingMaintenance' }),
             y: that.state.maintenance,
             id: 'maintenance',
           },
@@ -75,7 +77,7 @@ const update = that => {
   });
 };
 
-export default class ExpensesChart extends Component {
+class ExpensesChart extends Component {
   constructor(props) {
     super(props);
 
@@ -131,6 +133,7 @@ export default class ExpensesChart extends Component {
   getConfig = () => {
     const total = this.state.interests + this.state.amortization + this.state.maintenance;
     const that = this;
+    const f = this.props.intl.formatMessage;
     const options = {
       chart: {
         type: 'pie',
@@ -186,12 +189,23 @@ export default class ExpensesChart extends Component {
         {
           type: 'pie',
           innerSize: '60%',
-          name: 'Dépenses Mensuelles Estimées',
           colorByPoint: true,
           data: [
-            { name: 'Intérêts', y: this.state.interests, id: 'interests' },
-            { name: 'Amortissement', y: this.state.amortization, id: 'amortization' },
-            { name: "Frais d'Entretien", y: this.state.maintenance, id: 'maintenance' },
+            {
+              name: f({ id: 'general.interests' }),
+              y: this.state.interests,
+              id: 'interests',
+            },
+            {
+              name: f({ id: 'general.amortization' }),
+              y: this.state.amortization,
+              id: 'amortization',
+            },
+            {
+              name: f({ id: 'general.buildingMaintenance' }),
+              y: this.state.maintenance,
+              id: 'maintenance',
+            },
           ],
         },
       ],
@@ -228,6 +242,7 @@ export default class ExpensesChart extends Component {
 
   addTitle = that => {
     const total = this.state.interests + this.state.amortization + this.state.maintenance;
+    const f = this.props.intl.formatMessage;
 
     if (that.title) {
       that.title.destroy();
@@ -236,9 +251,10 @@ export default class ExpensesChart extends Component {
     const r = that.renderer;
     const x = that.series[0].center[0] + that.plotLeft;
     const y = that.series[0].center[1] + that.plotTop;
+    const perMonth = f({ id: 'ExpensesChart.perMonth' });
     that.title = r
       .text(
-        `CHF ${toMoney(Math.round(total))}<br><span style="font-size: 14px;" class="no-bold">par mois*</span>`,
+        `CHF ${toMoney(Math.round(total))}<br><span style="font-size: 14px;" class="no-bold">${perMonth}*</span>`,
         0,
         0,
       )
@@ -259,7 +275,7 @@ export default class ExpensesChart extends Component {
       }
 
       this.secondTitle = r
-        .text(this.props.title, 0, 20)
+        .text(f({ id: this.props.title }), 0, 20)
         .css({
           color: '#222',
           fontSize: '18px',
@@ -312,3 +328,5 @@ ExpensesChart.propTypes = {
   showLegend: PropTypes.bool,
   title: PropTypes.string,
 };
+
+export default injectIntl(ExpensesChart);

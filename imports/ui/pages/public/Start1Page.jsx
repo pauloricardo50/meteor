@@ -9,20 +9,19 @@ import { analytics } from 'meteor/okgrow:analytics';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
-import { FormattedMessage } from 'react-intl';
 
-import { toNumber, toMoney } from '/imports/js/helpers/conversionFunctions';
+import { toNumber } from '/imports/js/helpers/conversionFunctions';
 import { changeProperty, changeFortune, changeIncome } from '/imports/js/helpers/startFunctions';
 import { storageAvailable } from '/imports/js/helpers/browserFunctions';
 import constants from '/imports/js/config/constants';
 
-import StartLine from './startPage/StartLine.jsx';
-import StartRecap from './startPage/StartRecap.jsx';
 import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
 import Accordion from '/imports/ui/components/general/Accordion.jsx';
-import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
+import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
+import Start1Line from './startPage/Start1Line.jsx';
+import Start1Recap from './startPage/Start1Recap.jsx';
 
-const getArray = (income, fortune, property, borrow, ratio, propertyAuto) => {
+const getArray = (income, fortune, property, borrow, ratio) => {
   const incomeIcon = classnames({
     fa: true,
     'fa-check success': ratio <= 1 / 3 + 0.001,
@@ -45,19 +44,19 @@ const getArray = (income, fortune, property, borrow, ratio, propertyAuto) => {
   });
   return [
     {
-      labelText: 'Revenus annuels bruts',
+      label: 'Start1Page.incomeLabel',
       labelIcon: incomeIcon,
       name: 'income',
       sliderIncrement: 500000,
     },
     {
-      labelText: 'Fonds Propres',
+      label: 'Start1Page.fortuneLabel',
       labelIcon: fortuneIcon,
       name: 'fortune',
       sliderIncrement: 500000,
     },
     {
-      labelText: propertyAuto ? "Prix d'Achat Maximal" : "Prix d'Achat",
+      label: 'Start1Page.propertyLabel',
       labelIcon: propertyIcon,
       name: 'property',
       sliderIncrement: 2000000,
@@ -245,25 +244,18 @@ export default class Start1Page extends Component {
     return (
       <section className="oscar">
         <article className="mask1 small-oscar">
-          <h1>
-            {this.type === 'acquisition'
-              ? 'Commencez une Acquisition'
-              : "Identifiez votre Capacité d'Emprunt"}
-          </h1>
+          <h1><T id="Start1Page.title" /></h1>
           <hr />
 
           <div className="description">
             <p>
-              <FormattedMessage id="Start1Page.description1" description="" />
-              <AutoTooltip>
-                Ce calculateur vous permet de rapidement déterminer votre capacité d'achat avant de faire une analyse de votre situation personelle plus détaillée.
-              </AutoTooltip>
+              <T id="Start1Page.description1" />
               <br /><br />
-              <AutoTooltip>
-                Entrez les valeurs que vous connaissez, puis nous calculerons automatiquement le reste pour optimiser votre capacité d'achat, tout en respectant les normes FINMA en vigueur en Suisse.
-              </AutoTooltip>
+              <T id="Start1Page.description2" />
             </p>
           </div>
+
+          {/* <T id="test" values={{ value1: 'hello', value2: <span>hello</span> }} /> */}
 
           <div className="content">
             <div className="sliders">
@@ -275,7 +267,7 @@ export default class Start1Page extends Component {
                 incomeRatio,
                 this.state.property.auto,
               ).map(line => (
-                <StartLine
+                <Start1Line
                   isReady={isReady}
                   key={line.name}
                   {...this.state[line.name]}
@@ -290,7 +282,7 @@ export default class Start1Page extends Component {
                 />
               ))}
               <FlatButton
-                label="Recommencer"
+                label="Reset"
                 onTouchTap={this.handleReset}
                 className="reset-button"
                 icon={<LoopIcon />}
@@ -298,21 +290,24 @@ export default class Start1Page extends Component {
             </div>
             <div className="separator" />
             <div className="recap">
-              <StartRecap {...childProps} />
+              <Start1Recap {...childProps} />
             </div>
           </div>
 
           <div className="chart text-center">
             <Accordion isActive={isReady && fortune < property}>
               <h3 style={{ margin: '40px 0' }}>
-                Votre emprunt:
+                <T
+                  id="Start1Page.loanValue"
+                  description="shows the loan value in large afterwards"
+                />
                 {' '}
                 <span className="active">
-                  CHF {toMoney(Math.round(loan / 1000) * 1000)}
+                  <IntlNumber value={Math.round(loan / 1000) * 1000} format="money" />
                 </span>
               </h3>
               <ExpensesChartInterests
-                title="Charges estimées"
+                title="Start1Page.chartTitle"
                 loan={loan || undefined}
                 amortization={loan * constants.getAmortization(borrowRatio) / 12 || 0}
                 maintenance={property * constants.maintenanceReal / 12 || 0}
@@ -323,7 +318,7 @@ export default class Start1Page extends Component {
           {isReady &&
             <div className="button animated fadeIn">
               <RaisedButton
-                label="Passer au check-up complet"
+                label={<T id="Start1Page.CTA" />}
                 primary={borrowRatio <= 0.8 + 0.001 && incomeRatio <= constants.maxRatio + 0.001}
                 containerElement={<Link to={this.getUrl()} />}
                 id="ok"
