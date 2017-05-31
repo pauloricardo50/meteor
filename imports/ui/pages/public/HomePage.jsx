@@ -3,7 +3,7 @@ import { DocHead } from 'meteor/kadira:dochead';
 import { Link } from 'react-router-dom';
 import HomeDev from '/imports/ui/components/general/HomeDev.jsx';
 import { analytics } from 'meteor/okgrow:analytics';
-import { FormattedMessage } from 'react-intl';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -37,17 +37,9 @@ export default class HomePage extends Component {
             <div className="container-sml text-center">
               <div className="col-12">
                 <h1 className="heading animated fadeInDown">
-                  <FormattedMessage
-                    id="HomePage.tagline1"
-                    defaultMessage="La meilleure hypothèque"
-                    description="header tagline #1"
-                  />
+                  <T id="HomePage.tagline1" />
                   <hr />
-                  <FormattedMessage
-                    id="HomePage.tagline3"
-                    defaultMessage="Tout simplement"
-                    description="header tagline #2"
-                  />
+                  <T id="HomePage.tagline2" />
                 </h1>
 
               </div>
@@ -55,11 +47,7 @@ export default class HomePage extends Component {
             <div className="container-lrg flex">
               <div className="col-6 centervertical animated fadeInLeft">
                 <h2 className="desc">
-                  <FormattedMessage
-                    defaultMessage="Mettez votre prêt hypothécaire aux enchères."
-                    id="HomePage.description"
-                    description="Description above the CTAs"
-                  />
+                  <T id="HomePage.description" description="Description above the CTAs" />
                 </h2>
                 <div className="ctas">
                   {/* <RaisedButton
@@ -72,13 +60,7 @@ export default class HomePage extends Component {
                   id="test"
                 /> */}
                   <RaisedButton
-                    label={
-                      <FormattedMessage
-                        defaultMessage="Faire une acquisition"
-                        id="HomePage.CTA12"
-                        description="CTA button label 1"
-                      />
-                    }
+                    label={<T id="HomePage.CTA1" />}
                     containerElement={<Link to="/start1/acquisition" />}
                     style={styles.style}
                     buttonStyle={styles.button}

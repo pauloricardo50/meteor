@@ -22,7 +22,14 @@ export const getFormats = () => {
     number: {
       money: {
         style: 'currency',
-        currency: 'CHF ',
+        currency: 'CHF',
+        maximumFractionDigits: 0,
+        minimumFractionDigits: 0,
+      },
+      percentage: {
+        style: 'percent',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
       },
     },
   };

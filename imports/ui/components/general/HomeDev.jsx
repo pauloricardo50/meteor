@@ -4,6 +4,8 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
+
 export default class HomeDev extends React.Component {
   constructor(props) {
     super(props);
@@ -28,7 +30,7 @@ export default class HomeDev extends React.Component {
     return (
       <span>
         <RaisedButton
-          label="Refinancer un bien"
+          label={<T id="HomePage.CTA2" />}
           onTouchTap={this.handleOpen}
           primary={this.props.primary}
           style={this.props.style}
@@ -38,17 +40,15 @@ export default class HomeDev extends React.Component {
           id="refinancing"
         />
         <Dialog
-          title="En Développement"
+          title={<T id="HomeDev.title" />}
           actions={actions}
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-          <span>
-            Nous allons bientôt ouvrir e-Potek aux refinancements !
-          </span>
+          <T id="HomeDev.description" />
           <div className="text-center" style={{ marginTop: 20 }}>
-            <RaisedButton label="M'avertir par e-mail" primary href="http://eepurl.com/cKvR45" />
+            <RaisedButton label={<T id="HomeDev.CTA" />} primary href="http://eepurl.com/cKvR45" />
           </div>
         </Dialog>
       </span>

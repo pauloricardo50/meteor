@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
 import AutoTooltip from './AutoTooltip.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 import {
   getPropAndWork,
@@ -58,7 +59,7 @@ const getDashboardArray = props => {
   return [
     {
       title: true,
-      label: `Projet (en ${constants.getCurrency()})`,
+      label: 'Recap.title',
       props: {
         style: {
           marginTop: 0,
@@ -66,31 +67,34 @@ const getDashboardArray = props => {
       },
     },
     {
-      label: "Prix d'Achat",
+      label: 'Recap.purchasePrice',
       value: toMoney(Math.round(r.property.value)),
     },
     {
-      label: 'Travaux de plus-value',
+      label: 'Recap.propertyWork',
       value: toMoney(Math.round(r.property.propertyWork)),
       hide: !r.property.propertyWork,
       spacing: true,
     },
     {
-      label: 'Valeur du bien',
+      label: 'Recap.propAndWork',
       value: toMoney(Math.round(propAndWork)),
       hide: !r.property.propertyWork,
     },
     {
-      label: 'Frais de Notaire',
+      label: 'general.notaryFees',
       value: toMoney(Math.round(r.property.value * constants.notaryFees)),
     },
     {
-      label: 'Frais retrait LPP',
+      label: 'general.insuranceFees',
       value: toMoney(Math.round(r.general.insuranceFortuneUsed * constants.lppFees)),
       hide: !r.general.insuranceFortuneUsed,
     },
     {
-      label: <span className="bold">Coût total du projet</span>,
+      label: 'Recap.totalCost',
+      labelStyle: {
+        fontWeight: 400,
+      },
       value: (
         <span className="bold sum">
           {toMoney(project)}
@@ -100,22 +104,22 @@ const getDashboardArray = props => {
       spacing: true,
     },
     {
-      label: 'Fonds Propres',
+      label: 'general.ownFunds',
       value: toMoney(totalUsed),
       hide: r.general.insuranceFortuneUsed,
     },
     {
-      label: 'Fonds Propres - Épargne',
+      label: 'Recap.ownFundsCash',
       value: toMoney(r.general.fortuneUsed),
       hide: !r.general.insuranceFortuneUsed,
     },
     {
-      label: 'Fonds Propres - LPP',
+      label: 'Recap.ownFundsInsurance',
       value: toMoney(r.general.insuranceFortuneUsed),
       hide: !r.general.insuranceFortuneUsed,
     },
     {
-      label: 'Fonds Propres - Total',
+      label: 'Recap.ownFundsTotal',
       value: (
         <span className=" sum">
           {toMoney(getTotalUsed(r))}
@@ -125,11 +129,11 @@ const getDashboardArray = props => {
       hide: !r.general.insuranceFortuneUsed,
     },
     {
-      label: 'Emprunt',
+      label: 'general.mortgageLoan',
       value: toMoney(loan),
     },
     {
-      label: 'Charges estimées*',
+      label: 'Recap.monthlyCost',
       value: (
         <span>
           {toMoney(monthly)} <small>/mois</small>
@@ -137,19 +141,11 @@ const getDashboardArray = props => {
       ),
     },
     {
-      label: (
-        <span style={{ fontSize: '0.8em' }}>
-          *Taux indicatif de 1.5%
-        </span>
-      ),
-      value: '',
-    },
-    {
       title: true,
-      label: 'Calculs FINMA',
+      label: 'Recap.finmaRules',
     },
     {
-      label: r.property.propertyWork ? 'Emprunt/Valeur du bien' : "Emprunt/Prix d'achat",
+      label: r.property.propertyWork ? 'Recap.borrowRatio2' : 'Recap.borrowRatio1',
       value: (
         <span>
           {Math.round(borrowRatio * 1000) / 10}%
@@ -165,7 +161,7 @@ const getDashboardArray = props => {
       ),
     },
     {
-      label: 'Charges/Revenus',
+      label: 'Recap.incomeRatio',
       value: (
         <span>
           {Math.round(incomeRatio * 1000) / 10}%
@@ -182,21 +178,20 @@ const getDashboardArray = props => {
     },
     {
       title: true,
-      label: 'Fortune',
+      label: 'Recap.fortune',
       hide: !(realEstateFortune || insuranceFortune),
     },
     {
-      label: 'Épargne Bancaire',
+      label: 'Recap.bankFortune',
       value: toMoney(fortune),
     },
-
     {
-      label: 'Fortune de Prévoyance',
+      label: 'Recap.insuranceFortune',
       value: toMoney(insuranceFortune),
       hide: !insuranceFortune,
     },
     {
-      label: 'Fonds Propres Dispo.',
+      label: 'Recap.availableFunds',
       value: (
         <span className="sum">
           {toMoney(totalFortune)}
@@ -206,18 +201,18 @@ const getDashboardArray = props => {
       spacingTop: true,
     },
     {
-      label: 'Biens Immobiliers',
+      label: 'Recap.realEstate',
       value: toMoney(realEstateValue),
       hide: !realEstateFortune,
       spacingTop: true,
     },
     {
-      label: 'Emprunts Actuels',
+      label: 'Recap.realEstateLoans',
       value: `- ${toMoney(realEstateDebt)}`,
       hide: !realEstateFortune,
     },
     {
-      label: 'Fortune Nette',
+      label: 'Recap.netFortune',
       value: (
         <span className="sum">
           {toMoney(totalFortune + realEstateFortune)}
@@ -228,29 +223,29 @@ const getDashboardArray = props => {
     },
     {
       title: true,
-      label: 'Revenus',
+      label: 'general.income',
     },
     {
-      label: 'Salaire',
+      label: 'general.salary',
       value: toMoney(getBorrowerSalary(b)),
     },
     {
-      label: 'Bonus considéré',
+      label: 'Recap.consideredBonus',
       value: toMoney(bonusIncome),
       hide: !bonusIncome,
     },
     {
-      label: 'Autres Revenus',
+      label: 'Recap.otherIncome',
       value: toMoney(otherIncome),
       hide: !otherIncome,
     },
     {
-      label: 'Charges',
+      label: 'Recap.expenses',
       value: `- ${toMoney(expenses)}`,
       hide: !expenses,
     },
     {
-      label: 'Revenus considérés',
+      label: 'Recap.consideredIncome',
       value: (
         <span className="sum">
           {toMoney(getBorrowerIncome(b))}
@@ -260,10 +255,10 @@ const getDashboardArray = props => {
     },
     {
       title: true,
-      label: 'e-Potek',
+      label: 'general.lenders',
     },
     {
-      label: 'Nb. de prêteurs potentiels',
+      label: 'Recap.interestedLenders',
       value: lenderCount,
       spacing: true,
     },
@@ -281,7 +276,7 @@ const getSmallDashboardArray = props => {
   return [
     {
       title: true,
-      label: `Projet (en ${constants.getCurrency()})`,
+      label: 'Recap.title',
       props: {
         style: {
           marginTop: 0,
@@ -289,11 +284,11 @@ const getSmallDashboardArray = props => {
       },
     },
     {
-      label: 'Emprunt',
+      label: 'Recap.mortgageLoan',
       value: toMoney(loan),
     },
     {
-      label: 'Charges estimées*',
+      label: 'Recap.monthlyCost',
       value: (
         <span>
           {toMoney(monthly)} <small>/mois</small>
@@ -301,11 +296,11 @@ const getSmallDashboardArray = props => {
       ),
     },
     {
-      label: 'Fonds propres investis',
+      label: 'Recap.ownFundsTotal',
       value: toMoney(totalUsed),
     },
     {
-      label: r.property.value === propAndWork ? "Prix d'Achat" : 'Valeur du bien',
+      label: r.property.value === propAndWork ? 'Recap.purchasePrice' : 'Recap.propAndWork',
       value: toMoney(Math.round(propAndWork)),
     },
   ];
@@ -317,7 +312,7 @@ const getStart2Array = props => {
   return [
     {
       title: true,
-      label: `Projet (en ${constants.getCurrency()})`,
+      label: 'Recap.title',
       props: {
         style: {
           marginTop: 0,
@@ -325,31 +320,34 @@ const getStart2Array = props => {
       },
     },
     {
-      label: p.type === 'test' ? "Prix d'Achat maximal" : "Prix d'Achat",
+      label: p.type === 'test' ? 'Recap.purchasePrice' : 'Recap.maxPurchasePrice',
       value: toMoney(Math.round(p.property)),
     },
     {
-      label: 'Travaux de plus-value',
+      label: 'Recap.propertyWork',
       value: toMoney(Math.round(p.propertyWork)),
       hide: !p.propertyWork,
       spacing: true,
     },
     {
-      label: 'Valeur du bien',
+      label: 'Recap.propAndWork',
       value: toMoney(Math.round(p.propAndWork)),
       hide: !p.propertyWork,
     },
     {
-      label: 'Frais de Notaire',
+      label: 'general.notaryFees',
       value: toMoney(Math.round(p.property * constants.notaryFees)),
     },
     {
-      label: 'Frais retrait LPP',
+      label: 'general.insuranceFees',
       value: toMoney(Math.round(p.lppFees)),
       hide: !p.insuranceFortuneUsed,
     },
     {
-      label: <span className="bold">Coût total du projet</span>,
+      label: 'Recap.totalCost',
+      labelStyle: {
+        fontWeight: 400,
+      },
       value: (
         <span className="bold sum">
           {toMoney(
@@ -361,22 +359,22 @@ const getStart2Array = props => {
       spacing: p.fortuneUsed,
     },
     {
-      label: 'Fonds Propres',
+      label: 'general.ownFunds',
       value: toMoney(Math.round(p.fortuneUsed)),
       hide: !p.fortuneUsed || p.insuranceFortuneUsed,
     },
     {
-      label: 'Fonds Propres - Épargne',
+      label: 'Recap.ownFundsCash',
       value: toMoney(p.fortuneUsed),
       hide: !p.fortuneUsed || !p.insuranceFortuneUsed,
     },
     {
-      label: 'Fonds Propres - LPP',
+      label: 'Recap.ownFundsInsurance',
       value: toMoney(p.insuranceFortuneUsed),
       hide: !p.fortuneUsed || !p.insuranceFortuneUsed,
     },
     {
-      label: 'Fonds Propres - Total',
+      label: 'Recap.ownFundsTotal',
       value: (
         <span className=" sum">
           {toMoney(Math.round(p.fortuneUsed + p.insuranceFortuneUsed))}
@@ -386,13 +384,13 @@ const getStart2Array = props => {
       hide: !p.fortuneUsed || !p.insuranceFortuneUsed,
     },
     {
-      label: 'Emprunt',
+      label: 'general.mortgageLoan',
       value: toMoney(Math.round(p.loanWanted)),
       hide: !p.loanWanted,
       spacing: !p.loanWanted,
     },
     {
-      label: 'Charges estimées*',
+      label: 'Recap.monthlyCost',
       value: (
         <span>
           {toMoney(Math.round(p.monthlyReal))} <small>/mois</small>
@@ -401,21 +399,12 @@ const getStart2Array = props => {
       hide: !p.fortuneUsed,
     },
     {
-      label: (
-        <span style={{ fontSize: '0.8em' }}>
-          *Taux indicatif de 1.5%
-        </span>
-      ),
-      value: '',
-      hide: !p.fortuneUsed,
-    },
-    {
       title: true,
-      label: 'Calculs FINMA',
+      label: 'Recap.finmaRules',
       hide: !p.fortuneUsed,
     },
     {
-      label: p.propertyWork ? 'Emprunt/Valeur du bien' : "Emprunt/Prix d'achat",
+      label: p.propertyWork ? 'Recap.borrowRatio2' : 'Recap.borrowRatio1',
       value: (
         <span>
           {Math.round(p.borrow * 1000) / 10}%
@@ -432,7 +421,7 @@ const getStart2Array = props => {
       hide: !p.fortuneUsed,
     },
     {
-      label: 'Charges/Revenus',
+      label: 'Recap.incomeRatio',
       value: (
         <span>
           {Math.round(p.ratio * 1000) / 10}%
@@ -450,22 +439,22 @@ const getStart2Array = props => {
     },
     {
       title: true,
-      label: 'Fortune',
+      label: 'Recap.fortune',
       hide: !(p.fortune || p.realEstate || p.insuranceFortune),
     },
     {
-      label: 'Épargne Bancaire',
+      label: 'Recap.bankFortune',
       value: toMoney(Math.round(p.fortune)),
       hide: !p.fortune,
     },
 
     {
-      label: 'Fortune de Prévoyance',
+      label: 'Recap.insuranceFortune',
       value: toMoney(Math.round(p.insuranceFortuneDisplayed)),
       hide: !p.insuranceFortuneDisplayed,
     },
     {
-      label: 'Fonds Propres Dispo.',
+      label: 'Recap.availableFunds',
       value: (
         <span className="sum">
           {toMoney(Math.round(p.fortune + p.insuranceFortuneDisplayed))}
@@ -475,19 +464,19 @@ const getStart2Array = props => {
       spacingTop: true,
     },
     {
-      label: 'Biens Immobiliers',
+      label: 'Recap.realEstate',
       value: toMoney(Math.round(p.realEstateValue)),
       hide: !p.realEstate,
       spacingTop: true,
     },
     {
-      label: 'Emprunts Actuels',
+      label: 'Recap.realEstateLoans',
       value: `- ${toMoney(Math.round(p.realEstateDebt))}`,
       hide: !p.realEstate,
     },
 
     {
-      label: 'Fortune Nette',
+      label: 'Recap.netFortune',
       value: (
         <span className="sum">
           {toMoney(Math.round(p.fortune + p.insuranceFortuneDisplayed + p.realEstate))}
@@ -498,36 +487,36 @@ const getStart2Array = props => {
     },
     {
       title: true,
-      label: 'Revenus',
+      label: 'general.income',
       hide: !(p.salary || p.bonus || p.otherIncome || p.expenses || p.propertyRent),
     },
     {
-      label: 'Loyer perçu',
+      label: 'Recap.receivedRent',
       value: toMoney(Math.round(p.propertyRent * 12)),
       hide: p.usageType !== 'investment',
     },
     {
-      label: 'Salaire',
+      label: 'general.salary',
       value: toMoney(Math.round(p.salary)),
       hide: !p.salary,
     },
     {
-      label: 'Bonus considéré',
+      label: 'Recap.consideredBonus',
       value: toMoney(Math.round(p.bonus)),
       hide: !p.bonus,
     },
     {
-      label: 'Autres Revenus',
+      label: 'Recap.otherIncome',
       value: toMoney(Math.round(p.otherIncome)),
       hide: !p.otherIncome,
     },
     {
-      label: 'Charges',
+      label: 'Recap.expenses',
       value: `- ${toMoney(Math.round(p.expenses))}`,
       hide: !p.expenses,
     },
     {
-      label: 'Revenus considérés',
+      label: 'Recap.consideredIncome',
       value: (
         <span className="sum">
           {toMoney(Math.round(p.income - p.expenses))}
@@ -541,7 +530,7 @@ const getStart2Array = props => {
       label: 'e-Potek',
     },
     {
-      label: 'Nb. de prêteurs potentiels',
+      label: 'Recap.interestedLenders',
       value: p.lenderCount,
       spacing: true,
     },
@@ -564,21 +553,21 @@ const getBorrowerArray = props => {
   return [
     {
       title: true,
-      label: 'Fortune',
+      label: 'Recap.fortune',
       hide: !(realEstateFortune && insuranceFortune),
     },
     {
-      label: 'Épargne Bancaire',
+      label: 'Recap.bankFortune',
       value: toMoney(fortune),
     },
 
     {
-      label: 'Fortune de Prévoyance',
+      label: 'Recap.insuranceFortune',
       value: toMoney(insuranceFortune),
       hide: !insuranceFortune,
     },
     {
-      label: 'Fonds Propres Dispo.',
+      label: 'Recap.availableFunds',
       value: (
         <span className="sum">
           {toMoney(totalFortune)}
@@ -588,18 +577,18 @@ const getBorrowerArray = props => {
       spacingTop: true,
     },
     {
-      label: 'Biens Immobiliers',
+      label: 'Recap.realEstate',
       value: toMoney(realEstateValue),
       hide: !realEstateFortune,
       spacingTop: true,
     },
     {
-      label: 'Emprunts Actuels',
+      label: 'Recap.realEstateLoans',
       value: `- ${toMoney(realEstateDebt)}`,
       hide: !realEstateFortune,
     },
     {
-      label: 'Fortune Nette',
+      label: 'Recap.netFortune',
       value: (
         <span className="sum">
           {toMoney(totalFortune + realEstateFortune)}
@@ -610,29 +599,29 @@ const getBorrowerArray = props => {
     },
     {
       title: true,
-      label: 'Revenus',
+      label: 'general.income',
     },
     {
-      label: 'Salaire',
+      label: 'general.salary',
       value: toMoney(getBorrowerSalary(b)),
     },
     {
-      label: 'Bonus considéré',
+      label: 'Recap.consideredBonus',
       value: toMoney(bonusIncome),
       hide: !bonusIncome,
     },
     {
-      label: 'Autres Revenus',
+      label: 'Recap.otherIncome',
       value: toMoney(otherIncome),
       hide: !otherIncome,
     },
     {
-      label: 'Charges',
+      label: 'Recap.expenses',
       value: `- ${toMoney(expenses)}`,
       hide: !expenses,
     },
     {
-      label: 'Revenus considérés',
+      label: 'Recap.consideredIncome',
       value: (
         <span className="sum">
           {toMoney(getBorrowerIncome(b))}
@@ -665,13 +654,18 @@ const Recap = props => {
   return (
     <article className="validator">
       <div className="result animated fadeIn">
-        {array.map((item, i) => {
+        {array.map(item => {
           if (item.hide) {
             return null;
           } else if (item.title) {
             return (
-              <label className="text-center" {...item.props} key={item.label}>
-                <AutoTooltip>{item.label}</AutoTooltip>
+              <label
+                className="text-center"
+                {...item.props}
+                key={item.label}
+                style={item.labelStyle}
+              >
+                <T id={item.label} />
               </label>
             );
           }
@@ -685,10 +679,10 @@ const Recap = props => {
                 marginBottom: item.spacing && 16,
                 marginTop: item.spacingTop && 16,
               }}
-              key={i}
+              key={item.label}
             >
               <h4 className="secondary">
-                <AutoTooltip placement="right">{item.label}</AutoTooltip>
+                <T id={item.label} tooltipPlacement="right" />
               </h4>
               <h3 {...item.props}>{item.value}</h3>
             </div>

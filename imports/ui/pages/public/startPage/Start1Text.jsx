@@ -7,6 +7,7 @@ import TextField from 'material-ui/TextField';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import MaskedInput from 'react-text-mask';
 import { swissFrancMask } from '/imports/js/helpers/textMasks';
+import constants from '/imports/js/config/constants';
 
 const primaryColor = '#4A90E2';
 
@@ -32,7 +33,6 @@ export default class Start1Text extends Component {
           onChange={e => this.props.setStateValue(this.props.name, e.target.value)}
           errorStyle={this.props.minValue <= this.props.value ? defaultStyle : errorStyle}
           className="input"
-          hintText="CHF"
           ref={c => {
             this.input = c;
           }}
@@ -42,9 +42,10 @@ export default class Start1Text extends Component {
             type="text"
             value={(this.props.auto ? Math.round(this.props.motionValue) : this.props.value) || ''}
             mask={swissFrancMask}
-            // guide
+            placeholder={constants.getCurrency()}
+            guide={false}
             pattern="[0-9]*"
-            // showMask
+            showMask={false}
           />
         </TextField>
         <span

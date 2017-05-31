@@ -5,13 +5,15 @@ import { Motion, spring, presets } from 'react-motion';
 import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
 import Start1Text from './Start1Text.jsx';
 import Start1Slider from './Start1Slider.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const StartLine = props => (
   <Motion defaultStyle={{ x: 0 }} style={{ x: spring(props.value, presets.gentle) }}>
     {value => (
       <article className="oscar-line">
-        <label htmlFor={props.name}>
-          <AutoTooltip placement="right">{props.labelText}</AutoTooltip>
+        <label htmlFor="">
+          {/* use props.name as a for tag, not done here to allow tooltips to be clicked*/}
+          <T id={props.label} tooltipPlacement="right" />
           {' '}
           {props.isReady && <span className={props.labelIcon} />}
         </label>
@@ -25,7 +27,7 @@ const StartLine = props => (
 StartLine.propTypes = {
   value: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
-  labelText: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   labelIcon: PropTypes.string.isRequired,
   isReady: PropTypes.bool.isRequired,
 };

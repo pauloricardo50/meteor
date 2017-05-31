@@ -5,8 +5,9 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
 import ExpensesChart from './ExpensesChart.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
-const rates = [0.01, 0.01, 0.015, 0.02];
+const rates = [0.0100, 0.01, 0.015, 0.02];
 
 export default class ExpensesChartInterests extends Component {
   constructor(props) {
@@ -29,20 +30,40 @@ export default class ExpensesChartInterests extends Component {
           interests={this.props.loan * rates[this.state.selectValue] / 12}
         />
         <SelectField
-          floatingLabelText="Taux d'intérêt indicatif"
+          floatingLabelText={<T id="ExpensesChartInterests.selectFieldLabel" />}
           value={this.state.selectValue}
           onChange={this.handleChange}
           style={{ textAlign: 'left' }}
           autoWidth
         >
-          <MenuItem value={0} primaryText="Libor moyen: 1.00%" />
-          <MenuItem value={1} primaryText="5 ans moyen: 1.00%" />
-          <MenuItem value={2} primaryText="10 ans moyen: 1.50%" />
-          <MenuItem value={3} primaryText="15 ans moyen: 2.00%" />
+          <MenuItem
+            value={0}
+            primaryText={<T id="ExpensesChartInterests.libor" values={{ value: rates[0] }} />}
+          />
+          <MenuItem
+            value={1}
+            primaryText={
+              <T id="ExpensesChartInterests.years" values={{ value: rates[1], years: 5 }} />
+            }
+          />
+          <MenuItem
+            value={2}
+            primaryText={
+              <T id="ExpensesChartInterests.years" values={{ value: rates[2], years: 10 }} />
+            }
+          />
+          <MenuItem
+            value={3}
+            primaryText={
+              <T id="ExpensesChartInterests.years" values={{ value: rates[3], years: 15 }} />
+            }
+          />
         </SelectField>
       </div>
     );
   }
 }
 
-ExpensesChartInterests.propTypes = {};
+ExpensesChartInterests.propTypes = {
+  loan: PropTypes.number.isRequired,
+};

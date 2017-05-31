@@ -7,17 +7,17 @@ const generalTooltips = {
 
   finma: 'Autorité fédérale de surveillance des marchés financiers',
 
-  'charges/revenus': "Ne doit pas dépasser 33%, exceptions jusqu'à 38%",
+  'charges / revenus': "Ne doit pas dépasser 33%, exceptions jusqu'à 38%",
   "ratio d'endettement": "Ne doit pas dépasser 33%, exceptions jusqu'à 38%",
 
-  "emprunt/prix d'achat": 'Ne doit pas dépasser 80% dans la majorité des cas',
-  'emprunt/valeur du bien': 'Ne doit pas dépasser 80% dans la majorité des cas',
+  "prêt / prix d'achat": 'Ne doit pas dépasser 80% dans la majorité des cas',
+  'prêt / valeur du bien': 'Ne doit pas dépasser 80% dans la majorité des cas',
 
   'frais de notaire': "Frais obligatoires lorsqu'on conclut un prêt hypothécaire - 5% du prix d'achat.",
   'frais retrait lpp': 'Lorsque vous retirez votre lpp en avance, vous devez payer des impôts sur ce retrait.',
   'travaux de plus-value': 'Ajoutent de la valeur au bien, sans augmenter les frais de notaire',
   expertise: 'Vérification de la valeur du bien par rapport à son état et son emplacement',
-  'nb. de prêteurs potentiels': 'La quantité de prêteurs e-Potek dont les conditions correspondent à votre dossier',
+  'prêteurs intéressés': 'La quantité de prêteurs e-Potek dont les conditions correspondent à votre dossier',
   'charges estimées': "Avant les enchères d'e-Potek, cette estimation conservative sert d'indication",
   emprunteurs: 'Les personnes financièrement et légalement bénéficiaires du prêt',
   "type d'utilisation": "Les résidences principales permettent l'utilisation du 2ème pilier en tant que fonds propres",

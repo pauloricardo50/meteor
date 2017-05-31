@@ -31,6 +31,7 @@ import {
   getMaxLoan,
 } from '/imports/js/helpers/startFunctions';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
 import Recap from '/imports/ui/components/general/Recap.jsx';
 import AutoStart from './startPage/AutoStart.jsx';
 import StartResult from './startPage/StartResult.jsx';
@@ -95,12 +96,12 @@ export default class Start2Page extends Component {
       return (
         <div className="ux-text animated fadeIn text-center">
           <div className="text">
-            <h1>Allons vous obtenir ce prêt hypothécaire</h1>
-            <h2><small>Prenez 2 minutes pour nous en dire un peu plus sur vous</small></h2>
+            <h1><T id="Start2Page.initialText1" /></h1>
+            <h2><small><T id="Start2Page.initialText2" /></small></h2>
           </div>
           <div>
             <RaisedButton
-              label="C'est parti"
+              label={<T id="Start2Page.initialButton" />}
               primary
               onClick={() => Meteor.setTimeout(() => this.setState({ showUX: false }), 400)}
             />
