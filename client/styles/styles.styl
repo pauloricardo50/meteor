@@ -1236,10 +1236,11 @@ ul.request-map
   .top-bar, .bottom-bar
     z-index: z.nav;
     width: 100%;
+    position: relative;
     +above($med)
+      position: fixed;
       width: calc(100% - 300px); // Side-nav width, careful, not updated with variable
     height: 64px;
-    position: fixed;
     background-color: #F1F3F5;
     display: flex;
     align-items: center;
@@ -1253,12 +1254,14 @@ ul.request-map
       display: flex;
       flex-wrap: nowrap;
   .top-bar
-    top: 64px;
+    +above($med)
+      top: 64px;
   .bottom-bar
     bottom: 0;
   .children
     padding: 16px;
-    padding-top: 80px;
+    +above($med)
+      padding-top: 80px;
     position: relative;
 
 

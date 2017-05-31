@@ -28,7 +28,7 @@ const SideNavUser = props => {
 
   return (
     <nav
-      className={classnames({ 'side-nav-user': true, 'joyride-side-nav': props.fixed })}
+      className={classnames({ 'side-nav-user': true, 'joyride-side-nav fixed': props.fixed })}
       style={props.style}
     >
       <div className="scrollable">
