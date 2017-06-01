@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
 
 import FortuneSliders from '/imports/ui/pages/public/startPage/FortuneSliders.jsx';
+import DialogSimple from '/imports/ui/components/general/DialogSimple.jsx';
 import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
 
@@ -311,22 +312,18 @@ const getAcquisitionArray = (state, props, setFormState) => [
       {
         id: 'description',
         type: 'selectInput',
-        label: <T id="Start2Form.expensesArray.title1" />,
         options: [
-          { id: 'leasing', label: <T id="Start2Form.expensesArray.leasing" /> },
-          state.usageType !== 'primary'
-            ? { id: 'rent', label: <T id="Start2Form.expensesArray.rent" /> }
-            : { id: 'rent', label: <T id="Start2Form.expensesArray.maintainedRent" /> },
-          { id: 'personalLoan', label: <T id="Start2Form.expensesArray.personalLoan" /> },
-          { id: 'mortgageLoan', label: <T id="Start2Form.expensesArray.mortgageLoan" /> },
-          { id: 'pensions', label: <T id="Start2Form.expensesArray.pensions" /> },
-          { id: 'other', label: <T id="Start2Form.expensesArray.other" /> },
+          { id: 'leasing' },
+          { id: 'rent' },
+          { id: 'personalLoan' },
+          { id: 'mortgageLoan' },
+          { id: 'pensions' },
+          { id: 'other' },
         ],
       },
       {
         id: 'value',
         type: 'textInput',
-        label: <T id="Start2Form.expensesArray.title2" />,
         money: true,
         zeroAllowed: true,
       },
@@ -435,23 +432,16 @@ const getAcquisitionArray = (state, props, setFormState) => [
       {
         id: 'description',
         type: 'selectInput',
-        label: 'Type de Propriété',
-        options: [
-          { id: 'primary', label: 'Propriété Principale' },
-          { id: 'secondary', label: 'Propriété Secondaire' },
-          { id: 'investment', label: "Bien d'investissement" },
-        ],
+        options: [{ id: 'primary' }, { id: 'secondary' }, { id: 'investment' }],
       },
       {
         id: 'value',
         type: 'textInput',
-        label: 'Valeur du bien',
         money: true,
       },
       {
         id: 'loan',
         type: 'textInput',
-        label: 'Emprunt actuel',
         money: true,
         zeroAllowed: true,
       },
@@ -461,29 +451,37 @@ const getAcquisitionArray = (state, props, setFormState) => [
 
 const getErrorArray = (state, props, setFormState) => [
   {
-    id: 'error',
+    id: 'notEnoughCash',
+    error: true,
     condition: state.usageType === 'primary' &&
       (props.fortune < props.minCash && props.insuranceFortune >= 0.1 * props.propAndWork),
     type: 'buttons',
-    text1: (
-      <span>
-        Vous devez avoir au moins
-        {' '}
+    // text1: (
+    //   <span>
+    //     Vous devez avoir au moins
+    //     {' '}
+    //     <span className="body">
+    //       CHF
+    //       {' '}
+    //       {toMoney(props.minCash)}
+    //     </span>
+    //     {' '}
+    //     <AutoTooltip>
+    //       de fortune (sans compter votre prévoyance) pour ce projet, vous pouvez modifier les valeurs en haut.
+    //     </AutoTooltip>
+    //   </span>
+    // ),
+    intlValues: {
+      value: (
         <span className="body">
-          CHF
-          {' '}
-          {toMoney(props.minCash)}
+          <IntlNumber value={props.minCash} format="money" />
         </span>
-        {' '}
-        <AutoTooltip>
-          de fortune (sans compter votre prévoyance) pour ce projet, vous pouvez modifier les valeurs en haut.
-        </AutoTooltip>
-      </span>
-    ),
+      ),
+    },
     buttons: [
       {
         id: false,
-        label: 'Modifier',
+        label: <T id="general.modify" />,
         onClick() {
           setFormState('activeLine', 'fortune', () => {
             const options = {
@@ -500,30 +498,38 @@ const getErrorArray = (state, props, setFormState) => [
       },
       {
         id: false,
-        label: 'Pourquoi ?',
+        label: <T id="Start2Form.whyButton" />,
         noPrimary: true,
       },
     ],
   },
   {
-    id: 'error',
+    id: 'notEnoughOwnFunds',
+    error: true,
     condition: props.fortune + props.insuranceFortune < props.minFortune,
     type: 'buttons',
-    text1: (
-      <span>
-        Vous devez avoir au moins
-        {' '}
-        <span className="body">CHF {toMoney(props.minFortune)}</span>
-        {' '}
-        <AutoTooltip>
-          de fonds propres pour ce projet, vous pouvez modifier les valeurs en haut.
-        </AutoTooltip>
-      </span>
-    ),
+    // text1: (
+    //   <span>
+    //     Vous devez avoir au moins
+    //     {' '}
+    //     <span className="body">CHF {toMoney(props.minFortune)}</span>
+    //     {' '}
+    //     <AutoTooltip>
+    //       de fonds propres pour ce projet, vous pouvez modifier les valeurs en haut.
+    //     </AutoTooltip>
+    //   </span>
+    // ),
+    intlValues: {
+      value: (
+        <span className="body">
+          <IntlNumber value={props.minFortune} format="money" />
+        </span>
+      ),
+    },
     buttons: [
       {
         id: false,
-        label: 'Modifier',
+        label: <T id="general.modify" />,
         onClick() {
           setFormState('activeLine', 'fortune', () => {
             const options = {
@@ -538,7 +544,7 @@ const getErrorArray = (state, props, setFormState) => [
           });
         },
       },
-      { id: false, label: 'Pourquoi ?', noPrimary: true },
+      { id: false, label: <T id="Start2Form.whyButton" />, noPrimary: true },
     ],
   },
 ];
@@ -548,11 +554,18 @@ const getFinalArray = (state, props, setFormState) => [
     id: 'acceptedLoan',
     condition: state.type === 'acquisition',
     type: 'buttons',
-    text1: (
-      <span>
-        Vous pouvez emprunter <span className="active">CHF {toMoney(props.maxLoan)}</span>.
-      </span>
-    ),
+    // text1: (
+    //   <span>
+    //     Vous pouvez emprunter <span className="active">CHF {toMoney(props.maxLoan)}</span>.
+    //   </span>
+    // ),
+    intlValues: {
+      value: (
+        <span className="active">
+          <IntlNumber value={props.maxLoan} format="money" />
+        </span>
+      ),
+    },
     hideResult: true,
     buttons: [
       {
@@ -564,7 +577,7 @@ const getFinalArray = (state, props, setFormState) => [
       },
       {
         id: false,
-        label: 'Modifier',
+        label: <T id="general.modify" />,
         onClick() {
           setFormState('loanWanted', undefined);
         },
@@ -575,23 +588,26 @@ const getFinalArray = (state, props, setFormState) => [
     id: 'loanWanted',
     condition: state.type === 'acquisition' && state.acceptedLoan === false,
     type: 'sliderInput',
-    text1: (
-      <span>
-        Combien voulez-vous emprunter ?
-      </span>
-    ),
+    // text1: (
+    //   <span>
+    //     Combien voulez-vous emprunter ?
+    //   </span>
+    // ),
     child1: (
       <span className="loanWanted-slider">
         <div>
-          <label htmlFor="">Emprunt</label>
+          <label htmlFor=""><T id="general.mortgageLoan" /></label>
           <span className="active">
-            CHF {toMoney(state.loanWanted || props.maxLoan)}
+            <IntlNumber value={state.loanWanted || props.maxLoan} format="money" />
           </span>
         </div>
         <div>
-          <label htmlFor="">Fonds Propres</label>
+          <label htmlFor=""><T id="general.ownFunds" /></label>
           <span className="body">
-            CHF {toMoney(props.fortuneNeeded || props.project - props.maxLoan)}
+            <IntlNumber
+              value={props.fortuneNeeded || props.project - props.maxLoan}
+              format="money"
+            />
           </span>
         </div>
       </span>
@@ -601,7 +617,10 @@ const getFinalArray = (state, props, setFormState) => [
     sliderMin: Math.max(100000, props.minLoan),
     sliderMax: props.maxLoan,
     initialValue: props.maxLoan,
-    sliderLabels: ['Min', 'Max'],
+    sliderLabels: [
+      <T id="Start2Form.loanWanted.sliderMin" />,
+      <T id="Start2Form.loanWanted.sliderMax" />,
+    ],
     step: 10000,
     onDragStart() {
       // Make sure we reset the next sliders if this is modified afterwards
@@ -625,22 +644,29 @@ const getFinalArray = (state, props, setFormState) => [
       (state.usageType !== 'primary' ||
         (state.usageType === 'primary' && props.insuranceFortune <= 0)),
     type: 'buttons',
-    text1: (
-      <span>
-        Vous devrez donc mettre
-        {' '}
+    // text1: (
+    //   <span>
+    //     Vous devrez donc mettre
+    //     {' '}
+    //     <span className="active">
+    //       CHF {toMoney(props.fortuneNeeded)}
+    //     </span>
+    //     {' '}
+    //     <AutoTooltip>de fonds propres.</AutoTooltip>
+    //   </span>
+    // ),
+    intlValues: {
+      value: (
         <span className="active">
-          CHF {toMoney(props.fortuneNeeded)}
+          <IntlNumber value={props.fortuneNeeded} format="money" />
         </span>
-        {' '}
-        <AutoTooltip>de fonds propres.</AutoTooltip>
-      </span>
-    ),
+      ),
+    },
     hideResult: true,
     buttons: [
       {
         id: true,
-        label: 'Continuer',
+        label: <T id="general.continue" />,
         onClick() {
           setFormState('fortuneUsed', props.fortuneNeeded);
         },
@@ -648,17 +674,17 @@ const getFinalArray = (state, props, setFormState) => [
     ],
   },
   {
-    id: 'useInsurance',
+    id: 'useInsurance1',
     condition: state.type === 'acquisition' &&
       state.usageType === 'primary' &&
       props.fortune >= props.fortuneNeeded &&
       props.insuranceFortune > 0,
     type: 'buttons',
-    text1: 'Voulez-vous utiliser votre fortune de prévoyance sur ce projet ?',
+    // text1: 'Voulez-vous utiliser votre fortune de prévoyance sur ce projet ?',
     buttons: [
       {
         id: true,
-        label: 'Oui',
+        label: <T id="general.yes" />,
         onClick() {
           // fortuneUsed value is undefined at this point, however,
           // if the user changes his mind, set it back to undefined if it was previously set
@@ -667,7 +693,7 @@ const getFinalArray = (state, props, setFormState) => [
       },
       {
         id: false,
-        label: 'Non',
+        label: <T id="general.no" />,
         onClick() {
           setFormState('fortuneUsed', props.fortuneNeeded);
           setFormState('insuranceFortuneUsed', 0);
@@ -675,39 +701,42 @@ const getFinalArray = (state, props, setFormState) => [
       },
       {
         id: undefined,
-        label: 'Pourquoi?',
+        label: <T id="Start2Form.whyButton" />,
         noPrimary: true,
       },
     ],
     question: true,
   },
   {
-    id: 'useInsurance',
+    id: 'useInsurance2',
     condition: state.type === 'acquisition' &&
       state.usageType === 'primary' &&
       props.fortune < props.fortuneNeeded,
     type: 'buttons',
-    text1: 'Vous devrez utiliser votre fortune de prévoyance pour ce projet',
-    buttons: [{ id: true, label: 'Ok' }, { id: undefined, label: 'Pourquoi?', noPrimary: true }],
+    // text1: 'Vous devrez utiliser votre fortune de prévoyance pour ce projet',
+    buttons: [
+      { id: true, label: 'Ok' },
+      { id: undefined, label: <T id="Start2Form.whyButton" />, noPrimary: true },
+    ],
     question: true,
   },
   {
     id: 'insuranceConditions',
-    condition: state.useInsurance === true,
+    condition: state.useInsurance1 === true || state.useInsurance2 === true,
     type: 'buttons',
-    text1: 'Il y a des conditions pour pouvoir utiliser sa prévoyance, est-ce que vous les passez?',
+    // text1: 'Il y a des conditions pour pouvoir utiliser sa prévoyance, est-ce que vous les passez?',
     question: true,
     buttons: [
       {
         id: true,
-        label: 'Oui',
+        label: <T id="general.yes" />,
         onClick() {
           setFormState('cantUseInsurance', false);
         },
       },
       {
         id: false,
-        label: 'Non',
+        label: <T id="general.no" />,
         onClick() {
           setFormState('cantUseInsurance', true);
           setFormState('insuranceFortuneUsed', 0);
@@ -715,9 +744,22 @@ const getFinalArray = (state, props, setFormState) => [
       },
       {
         id: undefined,
-        label: 'Conditions',
-        noPrimary: true,
-        secondary: true,
+        component: (
+          <DialogSimple
+            secondary
+            label={<T id="Start2Form.insuranceConditions.button" />}
+            title={<T id="Start2Form.insuranceConditions.title" />}
+            key={2}
+            rootStyle={{ display: 'inline-block', marginRight: 8, marginBottom: 8 }}
+          >
+            <T id="Start2Form.insuranceConditions.description" />
+            <br /><br />
+            <ul>
+              <li><T id="Start2Form.insuranceConditions.1" /></li>
+              <li><T id="Start2Form.insuranceConditions.2" /></li>
+            </ul>
+          </DialogSimple>
+        ),
       },
     ],
   },
@@ -725,26 +767,33 @@ const getFinalArray = (state, props, setFormState) => [
     id: 'fortuneSliders',
     condition: state.type === 'acquisition' &&
       state.usageType === 'primary' &&
-      state.useInsurance === true &&
+      (state.useInsurance1 === true || state.useInsurance2 === true) &&
       state.insuranceConditions === true,
     type: 'custom',
     component: FortuneSliders,
     validation: () =>
       state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= props.minFortune &&
       state.fortuneUsed >= props.minCash,
-    text1: (
-      <span>
-        Vous devez donc mettre
-        {' '}
+    // text1: (
+    //   <span>
+    //     Vous devez donc mettre
+    //     {' '}
+    //     <span className="active">
+    //       CHF {toMoney(props.project - state.loanWanted)}
+    //     </span>
+    //     {' '}
+    //     <AutoTooltip>
+    //       de fonds propres, comment voulez-vous les répartir?
+    //     </AutoTooltip>
+    //   </span>
+    // ),
+    intlValues: {
+      value: (
         <span className="active">
-          CHF {toMoney(props.project - state.loanWanted)}
+          <IntlNumber value={props.project - state.loanWanted} format="money" />
         </span>
-        {' '}
-        <AutoTooltip>
-          de fonds propres, comment voulez-vous les répartir?
-        </AutoTooltip>
-      </span>
-    ),
+      ),
+    },
     sliders: [
       {
         id: 'fortuneUsed',
@@ -759,24 +808,32 @@ const getFinalArray = (state, props, setFormState) => [
     ],
   },
   {
-    id: 'error',
+    id: 'notEnoughIncome',
+    error: true,
     condition: (props.income && props.monthly / ((props.income - props.expenses) / 12)) > 0.38,
     type: 'buttons',
-    text1: (
-      <span>
-        Vos revenus disponibles (
+    // text1: (
+    //   <span>
+    //     Vos revenus disponibles (
+    //     <span className="body">
+    //       CHF {toMoney((props.income - props.expenses) / 12)}
+    //     </span>
+    //     /mois) sont insuffisants pour couvrir les coûts mensuels de ce projet (
+    //     <span className="body">CHF {toMoney(props.monthly)}</span>
+    //     ) sans représenter plus de 38% de ces revenus, vous pouvez modifier les valeurs en haut.
+    //   </span>
+    // ),
+    intlValues: {
+      value: (
         <span className="body">
-          CHF {toMoney((props.income - props.expenses) / 12)}
+          <IntlNumber value={props.monthly * 12} format="money" />
         </span>
-        /mois) sont insuffisants pour couvrir les coûts mensuels de ce projet (
-        <span className="body">CHF {toMoney(props.monthly)}</span>
-        ) sans représenter plus de 38% de ces revenus, vous pouvez modifier les valeurs en haut.
-      </span>
-    ),
+      ),
+    },
     buttons: [
       {
         id: false,
-        label: 'Modifier',
+        label: <T id="general.modify" />,
         onClick() {
           setFormState('activeLine', 'fortune', () => {
             const options = {
@@ -791,7 +848,7 @@ const getFinalArray = (state, props, setFormState) => [
           });
         },
       },
-      { id: false, label: 'Pourquoi ?', noPrimary: true },
+      { id: false, label: <T id="Start2Form.whyButton" />, noPrimary: true },
     ],
   },
   {
@@ -799,13 +856,13 @@ const getFinalArray = (state, props, setFormState) => [
     condition: state.type === 'test' ||
       state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= props.minFortune,
     type: 'buttons',
-    text1: 'Vous-êtes arrivé au bout, formidable!',
+    // text1: 'Vous-êtes arrivé au bout, formidable!',
     hideResult: true,
     buttons: !state.hideFinalButton
       ? [
         {
           id: true,
-          label: 'Afficher les résultats',
+          label: <T id="Start2Form.finalized.button" />,
           onClick() {
               // After clicking on this button, hide it
             setFormState('hideFinalButton', true);

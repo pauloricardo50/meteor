@@ -169,7 +169,7 @@ export default class AutoStart extends Component {
     } else if (prevInput.final) {
       // Break if the previous input is final
       return 'break';
-    } else if (prevInput.id === 'error') {
+    } else if (prevInput.error === true) {
       // If an error ever appears, start error mode (prevent any further rendering)
       this.error = true;
       return 'break';

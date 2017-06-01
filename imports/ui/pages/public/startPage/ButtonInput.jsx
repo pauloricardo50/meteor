@@ -63,22 +63,25 @@ const ButtonInput = props => {
       </h1>
 
       <div style={styles.buttons} className={!props.active ? 'inputHider' : 'animated fadeIn'}>
-        {props.buttons.map((button, index) => (
-          <RaisedButton
-            label={button.label || button.id}
-            onTouchTap={e => {
-              handleClick(props, e, button.id, button.onClick);
-              if (document.activeElement) {
-                // Take focus away, better UX on mobile
-                document.activeElement.blur();
-              }
-            }}
-            style={styles.button}
-            primary={!button.noPrimary}
-            secondary={button.secondary}
-            key={index}
-          />
-        ))}
+        {props.buttons.map(
+          (button, index) =>
+            button.component
+              ? button.component
+              : <RaisedButton
+                label={button.label || button.id}
+                onTouchTap={e => {
+                  handleClick(props, e, button.id, button.onClick);
+                  if (document.activeElement) {
+                      // Take focus away, better UX on mobile
+                    document.activeElement.blur();
+                  }
+                }}
+                style={styles.button}
+                primary={!button.noPrimary}
+                secondary={button.secondary}
+                key={index}
+              />,
+        )}
       </div>
 
     </article>

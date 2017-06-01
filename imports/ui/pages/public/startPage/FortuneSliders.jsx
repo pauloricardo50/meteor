@@ -6,6 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import { getProject } from '/imports/js/helpers/startFunctions';
 import constants from '/imports/js/config/constants';
+import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
 
 import StartSlider from './StartSlider.jsx';
 
@@ -85,7 +86,7 @@ const FortuneSliders = props => {
       </h1>
 
       <h2 className="fixed-size" style={styles.h2}>
-        <label htmlFor="" style={styles.label}>Épargne</label>
+        <label htmlFor="" style={styles.label}><T id="Start2Form.fortuneSliders.label1" /></label>
         <span className="active">
           CHF
           {' '}
@@ -103,7 +104,9 @@ const FortuneSliders = props => {
       {props.formState.useInsurance &&
         <div className="animated fadeIn" style={{ position: 'relative' }}>
           <h2 className="fixed-size" style={styles.h2}>
-            <label htmlFor="" style={styles.label}>Prévoyance</label>
+            <label htmlFor="" style={styles.label}>
+              <T id="Start2Form.fortuneSliders.label2" />
+            </label>
             <span className="active">
               CHF {toMoney(props.formState.insuranceFortuneUsed || 0)}
             </span>
@@ -118,16 +121,16 @@ const FortuneSliders = props => {
       {!props.formState.useInsurance &&
         <div className="text-center animated fadeIn">
           <h2 className="fixed-size">
-            {hasToUseLpp && 'Vous devez utiliser votre prévoyance pour ce projet'}
-            {!hasToUseLpp && 'Vous êtes éligible pour utiliser votre 2ème pilier'}
+            {hasToUseLpp && <T id="Start2Form.fortuneSliders.hasToUseLpp" />}
+            {!hasToUseLpp && <T id="Start2Form.fortuneSliders.notHasToUseLpp" />}
           </h2>
           <RaisedButton
-            label="Utiliser"
+            label={<T id="Start2Form.fortuneSliders.use" />}
             style={{ marginRight: 8 }}
             onTouchTap={() => props.setFormState('useInsurance', true)}
             primary
           />
-          <RaisedButton label="Pourquoi?" />
+          <RaisedButton label={<T id="Start2Form.whyButton" />} />
         </div>}
     </div>
   );
