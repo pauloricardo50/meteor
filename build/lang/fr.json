@@ -1,12 +1,14 @@
 {
   "CareersPage.title": "Travailler à e-Potek",
   "CareersPage.description": "Nous ne cherchons pas activement de nouveaux candidats en ce moment. Cependant, nous sommes toujours ouverts aux candidatures spontanées, écris-nous à {email}.",
-  "AboutPage.title": "Le prêt hypothécaire de demain",
+  "AboutPage.title": "Le Prêt Hypothécaire de Demain",
   "AboutPage.description1": "e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève. Expansion prévue prochainement.",
   "AboutPage.description2": "L'équipe derrière e-Potek est composée d'entrepreneurs vétérans avec une expérience cumulée de plus de 30 ans dans la finance et les prêts hypothécaires en Suisse.",
 
   "EmailVerification.message": "Email vérifié, Merci!",
   "PasswordPage.button": "M'avertir du lancement",
+  "TosPage.title": "Termes et Conditions",
+  "TosPage.description": "<En Développement />",
 
   "DashboardCharts.expensesTitle": "Coût Mensuel",
   "ExpensesChart.perMonth": "par mois",
