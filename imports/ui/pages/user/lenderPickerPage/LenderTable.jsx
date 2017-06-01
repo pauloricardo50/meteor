@@ -159,7 +159,7 @@ export default class LenderTable extends Component {
                   (offer, index) =>
                     offer &&
                     <tr
-                      key={offer._id}
+                      key={offer._id || index}
                       onTouchTap={() => handleChoose(offer._id, this.props)}
                       className={
                         offer._id === this.props.formState.chosenLender ? 'chosen' : 'choose'

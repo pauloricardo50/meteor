@@ -61,7 +61,7 @@ export default class ProcessPage extends Component {
 }
 
 ProcessPage.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.element,
   stepNb: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -73,4 +73,5 @@ ProcessPage.propTypes = {
 ProcessPage.defaultProps = {
   showBottom: true,
   serverTime: undefined,
+  children: undefined,
 };

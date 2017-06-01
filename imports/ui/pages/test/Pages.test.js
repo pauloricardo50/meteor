@@ -78,6 +78,7 @@ if (Meteor.isClient) {
         const component = () => getMountedComponent(page, props, true);
 
         beforeEach(() => {
+          getMountedComponent.reset();
           const request = Factory.create('loanRequest');
           const borrower = Factory.create('borrower');
           const user = Factory.create('dev');
@@ -90,7 +91,6 @@ if (Meteor.isClient) {
             history: {},
             match: { params: { borrowerId: borrower._id, requestId: request._id } },
           };
-          getMountedComponent.reset();
         });
 
         it('Renders correctly', () => {

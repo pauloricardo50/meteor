@@ -284,7 +284,7 @@ const getSmallDashboardArray = props => {
       },
     },
     {
-      label: 'Recap.mortgageLoan',
+      label: 'general.mortgageLoan',
       value: toMoney(loan),
     },
     {

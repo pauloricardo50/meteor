@@ -1,4 +1,5 @@
 {
+  "DashboardCharts.expensesTitle": "Coût Mensuel",
   "ExpensesChart.perMonth": "par mois",
   "ExpensesChartInterests.libor": "Libor moyen: {value, number, percentage}",
   "ExpensesChartInterests.selectFieldLabel": "Taux d'intérêt indicatif",

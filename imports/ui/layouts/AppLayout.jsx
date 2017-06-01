@@ -30,12 +30,17 @@ const getRedirect = props => {
       } else if (isPartner) {
         return '/isPartner';
       }
-      if (props.loanRequests.length >= 1 && props.history.location.pathname === '/app') {
+      if (
+        props.loanRequests &&
+        props.loanRequests.length >= 1 &&
+        props.history.location.pathname === '/app'
+      ) {
         return `/app/requests/${props.loanRequests[0]._id}`;
       }
       // If there is no active request, force route to dashboard, except if
       // user is on dashboard, profile, or contact page
       if (
+        props.loanRequests &&
         props.loanRequests.length < 1 &&
         (props.history.location.pathname !== '/app' &&
           props.history.location.pathname !== '/app/profile' &&
@@ -107,6 +112,7 @@ AppLayout.defaultProps = {
   render: () => null,
   currentUser: undefined,
   noNav: false,
+  loanRequests: undefined,
 };
 
 AppLayout.propTypes = {
@@ -114,6 +120,8 @@ AppLayout.propTypes = {
   render: PropTypes.func,
   currentUser: PropTypes.objectOf(PropTypes.any),
   noNav: PropTypes.bool,
+  loanRequests: PropTypes.arrayOf(PropTypes.object),
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default AppLayout;

@@ -1,3 +1,5 @@
+// This file is shared between client and server to allow server-side tests to have access to it
+
 import { addLocaleData } from 'react-intl';
 import { T9n } from 'meteor/softwarerero:accounts-t9n';
 import moment from 'moment';

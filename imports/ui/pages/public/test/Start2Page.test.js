@@ -22,6 +22,7 @@ if (Meteor.isClient) {
         location: {
           search: '',
         },
+        history: {},
       };
 
       state = {

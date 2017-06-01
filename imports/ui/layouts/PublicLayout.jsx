@@ -14,12 +14,13 @@ const PublicLayout = props => (
 );
 
 PublicLayout.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.element,
   currentUser: PropTypes.objectOf(PropTypes.any),
 };
 
 PublicLayout.defaultProps = {
   currentUser: undefined,
+  children: null,
 };
 
 export default PublicLayout;

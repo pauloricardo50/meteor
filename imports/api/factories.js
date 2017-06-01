@@ -47,7 +47,7 @@ Factory.define('loanRequest', LoanRequests, {
   borrowers: [Factory.get('borrower')],
   property: () => ({ value: 1000000 }),
   files: () => ({}),
-  logic: () => ({}),
+  logic: () => ({ auction: {}, lender: {}, verification: {} }),
   admin: () => ({}),
   name: () => 'request name',
 });

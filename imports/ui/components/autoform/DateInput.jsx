@@ -94,7 +94,7 @@ export default class DateInput extends Component {
 DateInput.propTypes = {
   label: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
-  currentValue: PropTypes.string,
+  currentValue: PropTypes.object,
   maxDate: PropTypes.objectOf(PropTypes.any),
   minDate: PropTypes.objectOf(PropTypes.any),
   documentId: PropTypes.string.isRequired,
@@ -106,6 +106,6 @@ DateInput.propTypes = {
 DateInput.defaultProps = {
   maxDate: undefined,
   minDate: undefined,
-  currentValue: '',
+  currentValue: undefined,
   style: {},
 };

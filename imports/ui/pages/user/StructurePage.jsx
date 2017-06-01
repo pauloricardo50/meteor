@@ -84,35 +84,37 @@ export default class StructurePage extends Component {
             </p>
           </div>
 
-          {getArray(this.props.borrowers, showInsurance).map(item => (
-            <h1 key={item.id} style={styles.div}>
-              <TextField
-                id={item.id}
-                floatingLabelText={item.labelText}
-                onChange={e => this.handleChange(e.target.value, item.id)}
-              >
-                <MaskedInput
-                  value={inRange(0, item.max, this.state[item.id])}
-                  mask={swissFrancMask}
-                  guide
-                  pattern="[0-9]*"
+          {getArray(this.props.borrowers, showInsurance).map(
+            item =>
+              item.max &&
+              <h1 key={item.id} style={styles.div}>
+                <TextField
+                  id={item.id}
+                  floatingLabelText={item.labelText}
+                  onChange={e => this.handleChange(e.target.value, item.id)}
+                >
+                  <MaskedInput
+                    value={inRange(0, item.max, this.state[item.id])}
+                    mask={swissFrancMask}
+                    guide
+                    pattern="[0-9]*"
+                  />
+                </TextField>
+                <Slider
+                  value={this.state[item.id]}
+                  min={0}
+                  max={item.max}
+                  onChange={(e, v) => this.handleChange(v, item.id)}
+                  style={styles.slider}
                 />
-              </TextField>
-              <Slider
-                value={this.state[item.id]}
-                min={0}
-                max={item.max}
-                onChange={(e, v) => this.handleChange(v, item.id)}
-                style={styles.slider}
-              />
-            </h1>
-          ))}
+              </h1>,
+          )}
 
           <div className="text-center" style={{ margin: '40px 0' }}>
             <LoadingButton
               label="Valider la structure"
               handleClick={() => handleClick(this.props, this.state)}
-              value={this.props.loanRequest.logic.hasValidatedStructure}
+              value={!!this.props.loanRequest.logic.hasValidatedStructure}
             />
           </div>
         </section>

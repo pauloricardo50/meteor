@@ -16,6 +16,7 @@ if (Meteor.isClient) {
     const component = () => getMountedComponent(LenderPickerPage, props, true);
 
     beforeEach(() => {
+      getMountedComponent.reset();
       props = {
         loanRequest: {
           logic: { lender: {} },
@@ -40,7 +41,6 @@ if (Meteor.isClient) {
           },
         ],
       };
-      getMountedComponent.reset();
     });
 
     it('Always renders a section', () => {

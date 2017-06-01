@@ -7,7 +7,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import { IntlProvider } from 'react-intl';
-import { getUserLocale, getTranslations, getFormats } from './localization';
+import { getUserLocale, getTranslations, getFormats } from '../localization';
 
 // Layouts
 import { PublicLayout } from '/imports/ui/containers/PublicContainers';

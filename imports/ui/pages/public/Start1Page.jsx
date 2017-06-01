@@ -308,7 +308,7 @@ export default class Start1Page extends Component {
               </h3>
               <ExpensesChartInterests
                 title="Start1Page.chartTitle"
-                loan={loan || undefined}
+                loan={loan || 0}
                 amortization={loan * constants.getAmortization(borrowRatio) / 12 || 0}
                 maintenance={property * constants.maintenanceReal / 12 || 0}
               />

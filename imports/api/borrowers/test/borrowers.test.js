@@ -50,10 +50,7 @@ describe('borrowers', () => {
         it('Updates a borrower', () => {
           const id = borrower._id;
           const object = { firstName: 'John' };
-          updateBorrower.call({ object, id }, (err, res) => {
-            console.log(err);
-            console.log(res);
-          });
+          updateBorrower.call({ object, id });
           const modifiedBorrower = Borrowers.findOne({ _id: id });
 
           expect(modifiedBorrower.firstName).to.equal('John');
