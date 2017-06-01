@@ -38,14 +38,14 @@ export default class StartSignUp extends Component {
   render() {
     return (
       <section className="text-center" style={styles.section}>
-        <h2>Entrez votre adresse email</h2>
+        <h2><T id="StartSignUp.email" /></h2>
         <EmailLine {...this.state} setParentState={this.setParentState} />
 
         {this.state.showPassword &&
           <div className="animated fadeIn" style={styles.passwordDiv}>
             <h2>
-              {this.state.login && 'Entrez votre mot de passe'}
-              {this.state.signUp && 'Entrez votre nouveau mot de passe'}
+              {this.state.login && <T id="StartSignUp.signedUp" />}
+              {this.state.signUp && <T id="StartSignUp.notSignedUp" />}
             </h2>
             <PasswordLine
               history={this.props.history}
