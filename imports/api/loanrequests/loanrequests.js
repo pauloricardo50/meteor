@@ -11,15 +11,9 @@ const LoanRequests = new Mongo.Collection('loanRequests');
 
 // Prevent all client side modifications of mongoDB
 LoanRequests.deny({
-  insert() {
-    return true;
-  },
-  update() {
-    return true;
-  },
-  remove() {
-    return true;
-  },
+  insert: () => true,
+  update: () => true,
+  remove: () => true,
 });
 
 // Documentation is in the google drive dev/MongoDB Schemas
@@ -41,9 +35,10 @@ const LoanRequestSchema = new SimpleSchema({
     autoValue() {
       // Verify the update is from the user owning this doc, ignoring admin/partner updates
       const doc = LoanRequests.findOne({ _id: this.docId }, { fields: { userId: 1 } });
-      if (this.isUpdate && this.userId === doc.userId) {
+
+      if (this.isInsert) {
         return new Date();
-      } else if (this.isInsert) {
+      } else if (this.isUpdate && doc && this.userId === doc.userId) {
         return new Date();
       }
     },

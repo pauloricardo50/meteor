@@ -6,15 +6,9 @@ const Offers = new Mongo.Collection('offers');
 
 // Prevent all client side modifications of mongoDB
 Offers.deny({
-  insert() {
-    return true;
-  },
-  update() {
-    return true;
-  },
-  remove() {
-    return true;
-  },
+  insert: () => true,
+  update: () => true,
+  remove: () => true,
 });
 
 const singleOffer = new SimpleSchema({
@@ -83,12 +77,10 @@ export const OfferSchema = new SimpleSchema({
   },
   updatedAt: {
     type: Date,
-    optional: true,
     autoValue() {
-      if (this.isUpdate) {
+      if (this.isInsert || this.isUpdate) {
         return new Date();
       }
-      return undefined;
     },
   },
   isAdmin: {

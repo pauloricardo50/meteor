@@ -7,15 +7,9 @@ const Borrowers = new Mongo.Collection('borrowers');
 
 // Prevent all client side modifications of mongoDB
 Borrowers.deny({
-  insert() {
-    return true;
-  },
-  update() {
-    return true;
-  },
-  remove() {
-    return true;
-  },
+  insert: () => true,
+  update: () => true,
+  remove: () => true,
 });
 
 const BorrowerFilesSchema = new SimpleSchema(getFileSchema('borrower'));
@@ -56,9 +50,10 @@ export const BorrowerSchema = new SimpleSchema({
     autoValue() {
       // Verify the update is from the user owning this doc, ignoring admin/partner updates
       const doc = Borrowers.findOne({ _id: this.docId }, { fields: { userId: 1 } });
-      if (this.isUpdate && this.userId === doc.userId) {
+
+      if (this.isInsert) {
         return new Date();
-      } else if (this.isInsert) {
+      } else if (this.isUpdate && doc && this.userId === doc.userId) {
         return new Date();
       }
     },
