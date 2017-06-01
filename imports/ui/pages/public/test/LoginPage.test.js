@@ -12,6 +12,9 @@ if (Meteor.isClient) {
 
     beforeEach(() => {
       getMountedComponent.reset();
+      props = {
+        history: {},
+      };
     });
 
     it('Always renders a section', () => {

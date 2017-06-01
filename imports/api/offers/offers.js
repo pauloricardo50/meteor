@@ -4,15 +4,11 @@ import SimpleSchema from 'simpl-schema';
 
 const Offers = new Mongo.Collection('offers');
 
-Offers.allow({
-  insert(userId, doc) {
-    // This is true if someone is logged in
-    return !!userId;
-  },
-  update(userId, doc) {
-    // This is true if someone is logged in and ownership is correct
-    return !!userId && userId === doc.userId;
-  },
+// Prevent all client side modifications of mongoDB
+Offers.deny({
+  insert: () => true,
+  update: () => true,
+  remove: () => true,
 });
 
 const singleOffer = new SimpleSchema({
@@ -81,12 +77,10 @@ export const OfferSchema = new SimpleSchema({
   },
   updatedAt: {
     type: Date,
-    optional: true,
     autoValue() {
-      if (this.isUpdate) {
+      if (this.isInsert || this.isUpdate) {
         return new Date();
       }
-      return undefined;
     },
   },
   isAdmin: {

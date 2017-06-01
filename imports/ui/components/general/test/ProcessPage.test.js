@@ -13,6 +13,7 @@ if (Meteor.isClient) {
     const component = () => getMountedComponent(ProcessPage, props, true);
 
     beforeEach(() => {
+      getMountedComponent.reset();
       props = {
         loanRequest: Factory.create('loanRequest'),
         borrowers: [{}],
@@ -23,7 +24,6 @@ if (Meteor.isClient) {
         // },
         // history: {},
       };
-      getMountedComponent.reset();
     });
 
     it('Renders correctly before auction', () => {

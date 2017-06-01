@@ -55,14 +55,14 @@ export default class Accordion extends Component {
 
   render() {
     // Deep copy state
-    let adjustedStyles = JSON.parse(JSON.stringify(this.state.styles));
+    const adjustedStyles = JSON.parse(JSON.stringify(this.state.styles));
     if (this.state.styles.height !== 0) {
       adjustedStyles.height = `${this.content.clientHeight}px`;
     }
     return (
       <div
         className="Accordion-container"
-        style={adjustedStyles}
+        style={{ ...adjustedStyles, ...this.props.style }}
         ref={c => {
           this.container = c;
         }}
@@ -83,4 +83,9 @@ export default class Accordion extends Component {
 Accordion.propTypes = {
   isActive: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]).isRequired,
   children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
+  style: PropTypes.objectOf(PropTypes.any),
+};
+
+Accordion.defaultProps = {
+  style: {},
 };

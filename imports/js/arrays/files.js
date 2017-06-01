@@ -104,6 +104,7 @@ export const borrowerFiles = (b = {}) => ({
       help1: 'Relevé au 31/12 de vos compte épargne 3A et/ou comptes libre-passage',
       help2: 'Vous pouvez obtenir les relevés de vos comptes épargne 3A auprès des établissements bancaires dans lesquels vous déposez votre épargne',
       // condition: true, TODO
+      condition: false,
     },
   ],
   closing: [],
@@ -181,15 +182,15 @@ export const requestFiles = (r = {}) => ({
       condition: !!(r.property && r.property.isNew),
     },
   ],
-  closing: [
-    {
-      id: 'retirementWithdrawalStatement',
-      label: 'Attestation LPP - après retrait',
-      help1: 'Certificat émis sur votre demande par votre caisse de pension démontrant votre situation LPP après retrait',
-      help2: 'Vous pouvez obtenir ce document, sur demande, auprès de votre caisse de pension',
-      condition: !!r.logic && r.insuranceUsePreset === 'withdrawal',
-    },
-  ],
+  // closing: [
+  //   {
+  //     id: 'retirementWithdrawalStatement',
+  //     label: 'Attestation LPP - après retrait',
+  //     help1: 'Certificat émis sur votre demande par votre caisse de pension démontrant votre situation LPP après retrait',
+  //     help2: 'Vous pouvez obtenir ce document, sur demande, auprès de votre caisse de pension',
+  //     condition: !!r.logic && r.insuranceUsePreset === 'withdrawal',
+  //   },
+  // ],
 });
 
 const getFileIDs = list => {

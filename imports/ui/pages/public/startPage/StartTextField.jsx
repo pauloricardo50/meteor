@@ -97,7 +97,7 @@ StartTextField.propTypes = {
   setRef: PropTypes.func,
   multiple: PropTypes.bool,
   inputRef: PropTypes.any,
-  text2: PropTypes.string,
+  text2: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   array: PropTypes.bool,
 };
 

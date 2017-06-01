@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import queryString from 'query-string';
 
 import { Tabs, Tab } from 'material-ui/Tabs';
 
@@ -7,10 +8,12 @@ import OffersTab from './OffersTab.jsx';
 import ActionsTab from './ActionsTab.jsx';
 import FormsTab from './FormsTab.jsx';
 
+const tabs = ['overview', 'forms', 'offers', 'actions'];
 
 const RequestTabs = props => {
+  const tab = queryString.parse(props.location.search).tab || tabs[0];
   return (
-    <Tabs>
+    <Tabs initialSelectedIndex={tabs.indexOf(tab)}>
       <Tab label="Overview">
         <OverviewTab {...props} />
       </Tab>

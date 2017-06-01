@@ -31,16 +31,14 @@ const styles = {
 };
 
 const TopNav = props => {
-  const isUser = Roles.userIsInRole(props.currentUser, 'user');
-
-  const showDrawer = !!(props.currentUser && !props.public && isUser);
+  const isApp = props.history && props.history.location.pathname.slice(0, 4) === '/app';
 
   return (
     <div className="top-nav" style={{ zIndex: 20 }}>
       <AppBar
         style={!props.public ? styles.navbar : styles.publicNavbar}
-        iconElementLeft={showDrawer ? <TopNavDrawer {...props} /> : undefined}
-        iconStyleLeft={!showDrawer ? { display: 'none' } : {}}
+        iconElementLeft={isApp ? <TopNavDrawer {...props} /> : undefined}
+        iconStyleLeft={!isApp ? { display: 'none' } : {}}
         iconElementRight={
           props.currentUser
             ? <TopNavDropdown {...props} />

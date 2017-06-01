@@ -6,6 +6,7 @@ import constants from '/imports/js/config/constants';
 import { getLenderCount } from '/imports/js/helpers/startFunctions';
 
 import Recap from '/imports/ui/components/general/Recap.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const isReady = ({ income, fortune, property }) => property && income && fortune;
 
@@ -20,19 +21,22 @@ const getArray = ({ income, fortune, property, borrowRatio, incomeRatio }) => {
   return [
     {
       title: true,
-      label: `Projet (en ${constants.getCurrency()})`,
+      label: 'Recap.title',
     },
     {
-      label: "Prix d'achat",
+      label: 'Recap.purchasePrice',
       value: toMoney(Math.round(property / 1000) * 1000),
     },
     {
-      label: 'Frais de notaire',
+      label: 'general.notaryFees',
       value: toMoney(Math.round(property * constants.notaryFees / 1000) * 1000),
       spacing: true,
     },
     {
-      label: <span className="bold">Coût total du projet</span>,
+      label: 'Recap.totalCost',
+      labelStyle: {
+        fontWeight: 400,
+      },
       value: (
         <span className="bold">
           {toMoney(Math.round(property * (1 + constants.notaryFees) / 1000) * 1000)}
@@ -41,16 +45,16 @@ const getArray = ({ income, fortune, property, borrowRatio, incomeRatio }) => {
       spacing: true,
     },
     {
-      label: 'Fonds propres',
+      label: 'general.ownFunds',
       value: toMoney(fortune),
     },
     {
-      label: 'Emprunt',
+      label: 'general.mortgageLoan',
       value: toMoney(Math.round(borrowRatio * property / 1000) * 1000),
       spacing: true,
     },
     {
-      label: 'Charges estimées*',
+      label: 'Recap.monthlyCost',
       value: Math.round(borrowRatio * 1000) / 1000 <= 0.8 && fortune < property
         ? <span>
           {toMoney(getMonthlyReal(income, fortune - property * 0.05, property, borrowRatio))}
@@ -60,19 +64,11 @@ const getArray = ({ income, fortune, property, borrowRatio, incomeRatio }) => {
         : '-',
     },
     {
-      label: (
-        <span style={{ fontSize: '0.8em' }}>
-          *Taux indicatif de 1.5%
-        </span>
-      ),
-      value: '',
-    },
-    {
       title: true,
-      label: 'Calculs FINMA',
+      label: 'Recap.finmaRules',
     },
     {
-      label: "Emprunt/Prix d'achat",
+      label: 'Recap.borrowRatio',
       value: (
         <span>
           {Math.round(borrowRatio * 1000) / 10}%&nbsp;
@@ -87,7 +83,7 @@ const getArray = ({ income, fortune, property, borrowRatio, incomeRatio }) => {
       ),
     },
     {
-      label: 'Charges/Revenus',
+      label: 'Recap.incomeRatio',
       value: (
         <span>
           {Math.round(incomeRatio * 1000) / 10}%&nbsp;
@@ -103,28 +99,30 @@ const getArray = ({ income, fortune, property, borrowRatio, incomeRatio }) => {
     },
     {
       title: true,
-      label: 'e-Potek',
+      label: 'general.lenders',
     },
     {
-      label: 'Nb. de prêteurs potentiels',
+      label: 'Recap.interestedLenders',
       value: getLenderCount(borrowRatio, incomeRatio),
       spacing: true,
     },
   ];
 };
 
-const StartRecap = props => (
+const Start1Recap = props => (
   <article className="validator">
     {isReady(props)
       ? <Recap array={getArray(props)} />
       : !props.noPlaceholder &&
-      <h4 className="secondary text-center">
-            Amusez-vous avec les valeurs
-          </h4>}
+      <div>
+        <h4 className="secondary" style={{ textAlign: 'center' }}>
+          <T id="Start1Recap.temporaryTitle" />
+        </h4>
+      </div>}
   </article>
 );
 
-StartRecap.propTypes = {
+Start1Recap.propTypes = {
   income: PropTypes.number,
   fortune: PropTypes.number,
   property: PropTypes.number,
@@ -133,4 +131,4 @@ StartRecap.propTypes = {
   ratio: PropTypes.number,
 };
 
-export default StartRecap;
+export default Start1Recap;

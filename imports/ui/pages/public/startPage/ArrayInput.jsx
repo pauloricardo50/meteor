@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { _ } from 'lodash';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
 import StartTextField from './StartTextField';
 import StartSelectField from './StartSelectField';
 
@@ -24,16 +24,24 @@ export default class ArrayInput extends React.Component {
   }
 
   getOptions = (input, i) => {
+    // Give each option the proper label from react-intl
+    const optionsWithLabels = input.options.map(o => ({
+      ...o,
+      label: <T id={`Forms.${this.props.id}.${o.id}`} />,
+    }));
+
     if (!this.props.allOptions) {
       const currentValues = this.props.formState[this.props.id] || [];
       const thisVal = currentValues && currentValues[i];
       const arr = currentValues.map(v => v && v.description);
-      const thisOption = input.options.find(o => (o && o.id) === (thisVal && thisVal.description));
+      const thisOption = optionsWithLabels.find(
+        o => (o && o.id) === (thisVal && thisVal.description),
+      );
 
-      return [...input.options.filter(x => arr.indexOf(x.id) < 0), thisOption || {}];
+      return [...optionsWithLabels.filter(x => arr.indexOf(x.id) < 0), thisOption || {}];
     }
 
-    return input.options;
+    return optionsWithLabels;
   };
 
   setArrayFormState = (id, value, callback, i) => {
@@ -97,7 +105,10 @@ export default class ArrayInput extends React.Component {
             {this.props.inputs.map((input, j) => (
               <span key={`${input.id}_${i}${j}`} className="array-input-span">
 
-                {i === 0 && <label id={this.props.id}>{input.label}</label>}
+                {i === 0 &&
+                  <label id={this.props.id}>
+                    <T id={`Forms.${this.props.id}.${input.id}`} />
+                  </label>}
 
                 {input.type === 'textInput' &&
                   <StartTextField

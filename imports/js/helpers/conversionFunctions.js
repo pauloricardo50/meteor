@@ -5,7 +5,7 @@ export function toMoney(value) {
   }
   return String(Math.round(Number(Math.round(value))))
     .replace(/\D/g, '')
-    .replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
 // Replaces any nondigit character by an empty character, to prevent the use of non-digits
@@ -26,8 +26,6 @@ export function toDecimalNumber(value) {
   // Remove unwanted characters, except digits, dots and commas
   const newValue = value ? String(value).replace(/[^\d.,]/g, '') : value;
   // replace commas with dots
-  const commaReplaced = newValue
-    ? Number(newValue.replace(',', '.'))
-    : newValue;
+  const commaReplaced = newValue ? Number(newValue.replace(',', '.')) : newValue;
   return commaReplaced;
 }

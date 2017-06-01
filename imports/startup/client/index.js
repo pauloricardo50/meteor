@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import '../accounts-config';
 import '../meteor-slingshot';
 
-import { localizationStartup } from './localization';
+import { localizationStartup } from '../localization';
 import RenderRoutes from './routes.jsx';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 
 Meteor.startup(() => {
   // Remove injected loader

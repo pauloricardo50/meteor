@@ -4,6 +4,8 @@ import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
 import classnames from 'classnames';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
+
 import ButtonInput from './ButtonInput.jsx';
 import Input from './Input.jsx';
 import MultipleInput from './MultipleInput.jsx';
@@ -102,6 +104,14 @@ export default class AutoStart extends Component {
           this.props.formState.lastModified === prevInput.id &&
           !this.props.formState.stopScroll &&
           !this.props.formState.finalized,
+        // If text1 is specified, use it, otherwise use the id to get the string
+        // arrayInputs don't have a description, so ignore it and use undefined
+        text1: input.text1 !== undefined || input.type === 'arrayInput'
+          ? input.text1
+          : <T id={`Start2Form.${input.id}`} values={input.intlValues} />,
+        text2: input.text2 === true
+          ? <T id={`Start2Form.${input.id}2`} values={input.intlValues2} />
+          : undefined,
       };
 
       const scrollingInput = () => {
@@ -159,7 +169,7 @@ export default class AutoStart extends Component {
     } else if (prevInput.final) {
       // Break if the previous input is final
       return 'break';
-    } else if (prevInput.id === 'error') {
+    } else if (prevInput.error === true) {
       // If an error ever appears, start error mode (prevent any further rendering)
       this.error = true;
       return 'break';

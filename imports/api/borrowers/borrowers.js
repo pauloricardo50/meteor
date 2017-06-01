@@ -5,14 +5,11 @@ import { getFileSchema } from '/imports/js/arrays/files';
 
 const Borrowers = new Mongo.Collection('borrowers');
 
-Borrowers.allow({
-  insert(userId, doc) {
-    return userId ? true : new Error();
-  },
-  update(userId, doc) {
-    // This is true if someone is logged in and the user is the same as the one who created it
-    return !!userId && userId === doc.userId;
-  },
+// Prevent all client side modifications of mongoDB
+Borrowers.deny({
+  insert: () => true,
+  update: () => true,
+  remove: () => true,
 });
 
 const BorrowerFilesSchema = new SimpleSchema(getFileSchema('borrower'));
@@ -53,9 +50,10 @@ export const BorrowerSchema = new SimpleSchema({
     autoValue() {
       // Verify the update is from the user owning this doc, ignoring admin/partner updates
       const doc = Borrowers.findOne({ _id: this.docId }, { fields: { userId: 1 } });
-      if (this.isUpdate && this.userId === doc.userId) {
+
+      if (this.isInsert) {
         return new Date();
-      } else if (this.isInsert) {
+      } else if (this.isUpdate && doc && this.userId === doc.userId) {
         return new Date();
       }
     },

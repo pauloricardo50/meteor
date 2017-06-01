@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Bert } from 'meteor/themeteorchef:bert';
 import { Accounts } from 'meteor/accounts-password';
+import { injectIntl } from 'react-intl';
 
-export default class EmailVerificationPage extends Component {
+class EmailVerificationPage extends Component {
   componentDidMount() {
     const token = this.props.match.params.token;
 
@@ -17,7 +18,7 @@ export default class EmailVerificationPage extends Component {
         Bert.alert(error.reason, 'danger');
       } else {
         this.props.history.push('/app');
-        Bert.alert('Email vérifié, Merci!', 'success');
+        Bert.alert(this.props.intl.formatMessage({ id: 'EmailVerification.message' }), 'success');
       }
     });
   }
@@ -30,3 +31,5 @@ export default class EmailVerificationPage extends Component {
 EmailVerificationPage.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
+
+export default injectIntl(EmailVerificationPage);

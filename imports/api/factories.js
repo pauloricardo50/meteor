@@ -39,11 +39,15 @@ Factory.define('borrower', Borrowers, {
 Factory.define('loanRequest', LoanRequests, {
   userId: Factory.get('user'),
   createdAt: () => new Date(),
-  general: () => ({ fortuneUsed: 250000, partnersToAvoid: ['joe', 'john'] }),
+  general: () => ({
+    fortuneUsed: 250000,
+    insuranceFortuneUsed: 0,
+    partnersToAvoid: ['joe', 'john'],
+  }),
   borrowers: [Factory.get('borrower')],
   property: () => ({ value: 1000000 }),
   files: () => ({}),
-  logic: () => ({}),
+  logic: () => ({ auction: {}, lender: {}, verification: {} }),
   admin: () => ({}),
   name: () => 'request name',
 });

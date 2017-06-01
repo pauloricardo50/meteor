@@ -7,6 +7,7 @@ import { analytics } from 'meteor/okgrow:analytics';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 import { saveStartForm } from '/imports/js/helpers/startFunctions';
 
@@ -108,7 +109,7 @@ export default class PasswordLine extends Component {
       content = textfield;
       button = (
         <RaisedButton
-          label={this.props.login ? 'Connexion' : 'Créer'}
+          label={this.props.login ? <T id="PasswordLine.login" /> : <T id="PasswordLine.create" />}
           primary
           onTouchTap={onSubmit}
           type="submit"

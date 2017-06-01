@@ -165,6 +165,7 @@ export default class FormsTab extends Component {
 
     this.state = {
       modify: false,
+      value: `request.${props.loanRequest._id}.property`,
     };
   }
 

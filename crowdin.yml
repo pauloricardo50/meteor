@@ -1,0 +1,3 @@
+files:
+  - source: /build/lang/fr.json
+    translation: /build/lang/%two_letters_code%.json

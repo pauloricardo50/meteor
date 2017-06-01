@@ -66,3 +66,4 @@ meteorhacks:inject-initial
 ongoworks:spiderable    # Lets webcrawlers crawl your website to index it, ex: Google
 force-ssl@1.0.14                       # Automatically route users to https
 okgrow:analytics                       # Analytics package (e-potek uses only GA)
+hwillson:stub-collections

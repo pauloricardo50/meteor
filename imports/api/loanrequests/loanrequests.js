@@ -9,14 +9,11 @@ const RequestFilesSchema = new SimpleSchema(getFileSchema('request'));
 
 const LoanRequests = new Mongo.Collection('loanRequests');
 
-LoanRequests.allow({
-  insert(userId, doc) {
-    return userId ? true : new Error();
-  },
-  update(userId, doc) {
-    // This is true if someone is logged in and the user is the same as the one who created it
-    return !!userId && userId === doc.userId;
-  },
+// Prevent all client side modifications of mongoDB
+LoanRequests.deny({
+  insert: () => true,
+  update: () => true,
+  remove: () => true,
 });
 
 // Documentation is in the google drive dev/MongoDB Schemas
@@ -38,9 +35,10 @@ const LoanRequestSchema = new SimpleSchema({
     autoValue() {
       // Verify the update is from the user owning this doc, ignoring admin/partner updates
       const doc = LoanRequests.findOne({ _id: this.docId }, { fields: { userId: 1 } });
-      if (this.isUpdate && this.userId === doc.userId) {
+
+      if (this.isInsert) {
         return new Date();
-      } else if (this.isInsert) {
+      } else if (this.isUpdate && doc && this.userId === doc.userId) {
         return new Date();
       }
     },

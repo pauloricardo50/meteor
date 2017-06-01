@@ -13,10 +13,8 @@ if (Meteor.isClient) {
     const component = () => getMountedComponent(PublicLayout, props, true);
 
     beforeEach(() => {
-      props = {
-        children: <span />,
-      };
       getMountedComponent.reset();
+      props = {};
     });
 
     it('Renders correctly', () => {

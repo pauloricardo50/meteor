@@ -8,18 +8,19 @@ const PublicLayout = props => (
   <div>
     <TopNav {...props} public />
     <main className="public-layout">
-      {React.cloneElement(props.children, { ...props })}
+      {props.children && React.cloneElement(props.children, { ...props })}
     </main>
   </div>
 );
 
 PublicLayout.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.element,
   currentUser: PropTypes.objectOf(PropTypes.any),
 };
 
 PublicLayout.defaultProps = {
   currentUser: undefined,
+  children: undefined,
 };
 
 export default PublicLayout;

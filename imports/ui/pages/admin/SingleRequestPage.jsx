@@ -8,7 +8,7 @@ import RequestTabs from './singleRequestPage/RequestTabs.jsx';
 import StepStatus from './singleRequestPage/StepStatus.jsx';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
-import adminActions from '/imports/js/helpers/adminActions';
+import adminActions from '/imports/js/arrays/adminActions';
 import { getLoanValue } from '/imports/js/helpers/requestFunctions';
 
 const styles = {
@@ -60,7 +60,7 @@ export default class SingleRequestPage extends Component {
 
           <StepStatus {...this.props} serverTime={this.state.serverTime} />
 
-          <div className="text-center" style={styles.actions}>
+          {/* <div className="text-center" style={styles.actions}>
             {actions.length > 0
               ? actions.map((action, i) => (
                 <div key={i} className="form-group">
@@ -68,7 +68,7 @@ export default class SingleRequestPage extends Component {
                 </div>
                 ))
               : <h2 className="secondary">Aucune action à prendre</h2>}
-          </div>
+          </div> */}
 
           <RequestTabs {...this.props} serverTime={this.state.serverTime} />
         </div>

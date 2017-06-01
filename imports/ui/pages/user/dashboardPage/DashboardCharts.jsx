@@ -15,7 +15,7 @@ const DashboardCharts = props => {
   //     </div>
   //     <div className="col-lg-6" style={{ marginBottom: 15 }}>
   //       <div className="mask1">
-  //         <ExpensesChart {...props} showLegend title="Coût Mensuel" titleAlign="left" />
+  //         <ExpensesChart {...props} showLegend title="DashboardCharts.expensesTitle" titleAlign="left" />
   //       </div>
   //     </div>
   //   </div>
@@ -25,7 +25,12 @@ const DashboardCharts = props => {
     <div className="mask1">
       <ProjectBarChart {...props} titleAlign="left" />
       <hr style={{ marginTop: 8, marginBottom: 16 }} />
-      <ExpensesChart {...props} showLegend title="Coût Mensuel" titleAlign="left" />
+      <ExpensesChart
+        {...props}
+        showLegend
+        title="DashboardCharts.expensesTitle"
+        titleAlign="left"
+      />
     </div>
   );
 };

@@ -7,9 +7,9 @@ import CountUp from 'react-countup';
 import RaisedButton from 'material-ui/RaisedButton';
 import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
 import Recap from '/imports/ui/components/general/Recap.jsx';
+import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
 
 import constants from '/imports/js/config/constants';
-import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import { saveStartForm } from '/imports/js/helpers/startFunctions';
 
 const styles = {
@@ -44,7 +44,9 @@ const StartResult = props => {
 
   return (
     <article className="mask1 start-result">
-      <h1>Résultat: <span className="success">Excellent</span></h1>
+      <h1>
+        <T id="StartResult.title" values={{ result: <span className="success">Excellent</span> }} />
+      </h1>
 
       <h1 className="text-center display2" style={{ margin: '40px 0' }}>
         <CountUp
@@ -56,7 +58,7 @@ const StartResult = props => {
           separator=" "
           decimal=","
           prefix=""
-          suffix=" Prêteurs"
+          suffix={<span>{' '}<T id="StartResult.countSuffix" /></span>}
         />
       </h1>
 
@@ -64,10 +66,10 @@ const StartResult = props => {
         <Recap {...props} arrayName="start2" />
         <div className="chart">
           <h3>
-            {props.type === 'acquisition' && 'Votre emprunt:'}
-            {props.type === 'test' && 'Emprunt maximal:'}
+            {props.type === 'acquisition' && <T id="StartResult.loan" />}
+            {props.type === 'test' && <T id="StartResult.maxLoan" />}
             {' '}
-            <span className="active">CHF {toMoney(loan)}</span>
+            <span className="active"><IntlNumber value={loan} format="money" /></span>
           </h3>
           <ExpensesChartInterests
             loan={loan}
@@ -80,25 +82,21 @@ const StartResult = props => {
       <div className="description">
         {props.type === 'acquisition' &&
           <h4 style={styles.h4}>
-            Vous êtes éligible pour e-Potek. Pour continuer votre demande de prêt, créez vous un compte et nous mettrons
-            {' '}
-            {props.lenderCount}
-            {' '}
-            prêteurs en compétition pour votre dossier.
+            <T id="StartResult.description1" values={{ count: props.lenderCount }} />
           </h4>}
         {props.type === 'test' &&
           <h4 style={styles.h4}>
-            Vous pouvez acquérir un bien immobilier d'une valeur maximale de CHF
-            {' '}
-            {toMoney(props.property)}
-            . Cliquez sur continuer pour affiner vos informations et avoir une estimation précise d'emprunt et de ce que ça va vous coûter.
+            <T
+              id="StartResult.description2"
+              values={{ value: <IntlNumber value={props.property} format="money" /> }}
+            />
           </h4>}
       </div>
 
       {props.type !== 'test' &&
         <div className="buttons">
           <RaisedButton
-            label="Modifier"
+            label={<T id="general.modify" />}
             onTouchTap={() =>
               Scroll.animateScroll.scrollToTop({
                 smooth: true,
@@ -107,7 +105,9 @@ const StartResult = props => {
             style={{ marginRight: 8 }}
           />
           <RaisedButton
-            label={Meteor.user() ? 'Continuer' : 'Créer un compte'}
+            label={
+              Meteor.user() ? <T id="general.continue" /> : <T id="StartResult.createAccount" />
+            }
             onTouchTap={() => handleClick(props)}
             primary
           />
@@ -116,7 +116,7 @@ const StartResult = props => {
       {props.type === 'test' &&
         <div className="buttons">
           <RaisedButton
-            label="Modifier"
+            label={<T id="general.modify" />}
             onTouchTap={() =>
               Scroll.animateScroll.scrollToTop({
                 smooth: true,
@@ -125,7 +125,7 @@ const StartResult = props => {
             style={{ marginRight: 8 }}
           />
           <RaisedButton
-            label="Continuer"
+            label={<T id="general.continue" />}
             onTouchTap={() => {
               props.setFormState('type', 'acquisition');
               props.setFormState('finalized', undefined);
@@ -153,6 +153,8 @@ StartResult.propTypes = {
   fortuneUsed: PropTypes.number,
   lenderCount: PropTypes.number,
   setFormState: PropTypes.func.isRequired,
+  property: PropTypes.number.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default StartResult;

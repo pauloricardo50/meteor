@@ -2,7 +2,7 @@
 /* eslint-disable func-names, prefer-arrow-callback */
 
 import { Meteor } from 'meteor/meteor';
-import { expect, assert } from 'chai';
+import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import Borrowers from '../borrowers';
@@ -20,7 +20,6 @@ describe('borrowers', () => {
   describe('mutators', function () {
     it('builds correctly from factory', function () {
       const borrower = Factory.create('borrower');
-
       expect(typeof borrower).to.equal('object');
       expect(borrower._id).to.exist;
     });
@@ -42,6 +41,7 @@ describe('borrowers', () => {
 
     describe('modifiers', () => {
       let borrower;
+
       beforeEach(() => {
         borrower = Factory.create('borrower');
       });

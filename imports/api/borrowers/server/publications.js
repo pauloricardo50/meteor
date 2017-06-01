@@ -46,3 +46,17 @@ Meteor.publish('allBorrowers', function publish() {
 
   return this.ready();
 });
+
+// Publish all borrowers for a loanRequest for admins
+Meteor.publish('requestBorrowers', function (borrowerIds) {
+  check(borrowerIds, [String]);
+  // Verify if user is an admin
+  if (Roles.userIsInRole(this.userId, 'admin')) {
+    // Return all borrowers
+    return Borrowers.find({
+      _id: { $in: borrowerIds },
+    });
+  }
+
+  return this.ready();
+});
