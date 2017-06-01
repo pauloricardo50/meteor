@@ -106,12 +106,11 @@ export default class AutoStart extends Component {
           !this.props.formState.finalized,
         // If text1 is specified, use it, otherwise use the id to get the string
         // arrayInputs don't have a description, so ignore it and use undefined
-        // TODO: remove noTooltip prop when issue #958 of react-intl is fixed
         text1: input.text1 !== undefined || input.type === 'arrayInput'
           ? input.text1
-          : <T id={`Start2Form.${input.id}`} values={input.intlValues} noTooltips />,
+          : <T id={`Start2Form.${input.id}`} values={input.intlValues} />,
         text2: input.text2 === true
-          ? <T id={`Start2Form.${input.id}2`} values={input.intlValues2} noTooltips />
+          ? <T id={`Start2Form.${input.id}2`} values={input.intlValues2} />
           : undefined,
       };
 

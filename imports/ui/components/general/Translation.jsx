@@ -27,19 +27,35 @@ export class T extends Component {
     if (this.props.noTooltips) {
       return <FormattedMessage {...this.props} />;
     }
+
+    // formattedMessage provides an array of values in the children function.
+    // When there is more than a simple string to render, for example a rich
+    // HTML element was added as a values prop, then it returns several values
+    // To avoid unnecessary spans, separate those with a single message
+    // and those, rare, with more.
     return (
       <FormattedMessage {...this.props}>
-        {formattedMessage => {
-          return (
-            <AutoTooltip
+        {(...formattedMessage) =>
+          formattedMessage.length === 1
+            ? <AutoTooltip
               {...this.props}
               id={this.props.tooltipId}
               placement={this.props.tooltipPlacement}
             >
-              {formattedMessage}
+              {formattedMessage[0]}
             </AutoTooltip>
-          );
-        }}
+            : <span>
+              {formattedMessage.map((msg, i) => (
+                <AutoTooltip
+                  {...this.props}
+                  id={this.props.tooltipId}
+                  placement={this.props.tooltipPlacement}
+                  key={i}
+                >
+                  {msg}
+                </AutoTooltip>
+                ))}
+            </span>}
       </FormattedMessage>
     );
   }

@@ -255,7 +255,7 @@ export default class Start1Page extends Component {
             </p>
           </div>
 
-          {/* <T id="test" values={{ value1: 'hello', value2: <span>hello</span> }} /> */}
+          <T id="test" values={{ value1: 'hello', value2: <span>hello</span> }} />
 
           <div className="content">
             <div className="sliders">
