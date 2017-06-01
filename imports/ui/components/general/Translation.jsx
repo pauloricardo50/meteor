@@ -26,6 +26,8 @@ export class T extends Component {
   render() {
     if (this.props.noTooltips) {
       return <FormattedMessage {...this.props} />;
+    } else if (typeof this.props.id !== 'string') {
+      return this.props.id;
     }
 
     // formattedMessage provides an array of values in the children function.
@@ -62,6 +64,7 @@ export class T extends Component {
 }
 
 T.propTypes = {
+  id: PropTypes.string.isRequired,
   noTooltips: PropTypes.bool,
   tooltipId: PropTypes.string,
   tooltipPlacement: PropTypes.string,

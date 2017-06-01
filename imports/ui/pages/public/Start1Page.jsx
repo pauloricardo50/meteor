@@ -1,25 +1,22 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { _ } from 'lodash';
-import { Link } from 'react-router-dom';
 import queryString from 'query-string';
 import classnames from 'classnames';
-import { analytics } from 'meteor/okgrow:analytics';
 
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import LoopIcon from 'material-ui/svg-icons/av/loop';
+import FlatButton from 'material-ui/FlatButton';
+import ArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
+import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
 import { toNumber } from '/imports/js/helpers/conversionFunctions';
 import { changeProperty, changeFortune, changeIncome } from '/imports/js/helpers/startFunctions';
 import { storageAvailable } from '/imports/js/helpers/browserFunctions';
 import constants from '/imports/js/config/constants';
 
-import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
+import Start1Calculator from './startPage/Start1Calculator.jsx';
 import Accordion from '/imports/ui/components/general/Accordion.jsx';
-import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
-import Start1Line from './startPage/Start1Line.jsx';
-import Start1Recap from './startPage/Start1Recap.jsx';
 
 const getArray = (income, fortune, property, borrow, ratio) => {
   const incomeIcon = classnames({
@@ -70,7 +67,11 @@ export default class Start1Page extends Component {
 
     // Load previously stored localStorage if it exists
     if (storageAvailable('localStorage') && localStorage.ePotekSliders) {
-      this.state = JSON.parse(localStorage.ePotekSliders);
+      this.state = {
+        ...JSON.parse(localStorage.ePotekSliders),
+        isFirstVisit: false,
+        showDescription: false,
+      };
     } else {
       this.state = {
         income: {
@@ -91,6 +92,8 @@ export default class Start1Page extends Component {
         incomeSlider: 500000,
         fortuneSlider: 500000,
         propertySlider: 2000000,
+        isFirstVisit: true,
+        showDescription: true,
       };
     }
 
@@ -234,11 +237,9 @@ export default class Start1Page extends Component {
     const property = this.state.property.value;
     const income = this.state.income.value;
     const fortune = this.state.fortune.value;
-    const loan = property * 1.05 - fortune;
     const borrowRatio = Math.max((property * 1.05 - fortune) / property, 0);
     const incomeRatio =
       this.getMonthly(income, fortune - property * 0.05, property, borrowRatio) / (income / 12);
-    const isReady = !!(income && fortune && property);
     const childProps = { income, fortune, property, borrowRatio, incomeRatio };
 
     return (
@@ -247,84 +248,54 @@ export default class Start1Page extends Component {
           <h1><T id="Start1Page.title" /></h1>
           <hr />
 
-          <div className="description">
-            <p>
-              <T id="Start1Page.description1" />
-              <br /><br />
-              <T id="Start1Page.description2" />
-            </p>
-          </div>
-
-          <T id="test" values={{ value1: 'hello', value2: <span>hello</span> }} />
-
-          <div className="content">
-            <div className="sliders">
-              {getArray(
-                income,
-                fortune,
-                property,
-                borrowRatio,
-                incomeRatio,
-                this.state.property.auto,
-              ).map(line => (
-                <Start1Line
-                  isReady={isReady}
-                  key={line.name}
-                  {...this.state[line.name]}
-                  {...line}
-                  sliderMax={this.state[`${line.name}Slider`]}
-                  setStateValue={this.setStateValue}
-                  setSliderMax={() =>
-                    this.setSliderMax(
-                      `${line.name}Slider`,
-                      this.state[`${line.name}Slider`] + line.sliderIncrement,
-                    )}
-                />
-              ))}
-              <FlatButton
-                label="Reset"
-                onTouchTap={this.handleReset}
-                className="reset-button"
-                icon={<LoopIcon />}
-              />
+          <FlatButton
+            icon={
+              this.state.showDescription || this.state.isFirstVisit ? <ArrowUp /> : <ArrowDown />
+            }
+            onTouchTap={() => this.setState(prev => ({ showDescription: !prev.showDescription }))}
+            style={
+              this.state.showDescription
+                ? { minWidth: 'unset', width: 36 }
+                : { marginBottom: 16, minWidth: 'unset', width: 36 }
+            }
+          />
+          <Accordion
+            isActive={this.state.showDescription}
+            style={this.state.showDescription ? { margin: '40px 0' } : {}}
+          >
+            <div className="description" style={{ margin: 0 }}>
+              <p>
+                <T id="Start1Page.description1" />
+                <br /><br />
+                <T id="Start1Page.description2" />
+              </p>
             </div>
-            <div className="separator" />
-            <div className="recap">
-              <Start1Recap {...childProps} />
-            </div>
-          </div>
+          </Accordion>
 
-          <div className="chart text-center">
-            <Accordion isActive={isReady && fortune < property}>
-              <h3 style={{ margin: '40px 0' }}>
-                <T
-                  id="Start1Page.loanValue"
-                  description="shows the loan value in large afterwards"
-                />
-                {' '}
-                <span className="active">
-                  <IntlNumber value={Math.round(loan / 1000) * 1000} format="money" />
-                </span>
-              </h3>
-              <ExpensesChartInterests
-                title="Start1Page.chartTitle"
-                loan={loan || 0}
-                amortization={loan * constants.getAmortization(borrowRatio) / 12 || 0}
-                maintenance={property * constants.maintenanceReal / 12 || 0}
-              />
-            </Accordion>
-          </div>
-
-          {isReady &&
-            <div className="button animated fadeIn">
+          {!this.state.isFirstVisit
+            ? <Start1Calculator
+              {...childProps}
+              inputArray={getArray(
+                  income,
+                  fortune,
+                  property,
+                  borrowRatio,
+                  incomeRatio,
+                  this.state.property.auto,
+                )}
+              setStateValue={this.setStateValue}
+              setSliderMax={this.setSliderMax}
+              parentState={this.state}
+              handleReset={this.handleReset}
+              getUrl={this.getUrl}
+            />
+            : <div className="text-center" style={{ marginBottom: 40 }}>
               <RaisedButton
-                label={<T id="Start1Page.CTA" />}
-                primary={borrowRatio <= 0.8 + 0.001 && incomeRatio <= constants.maxRatio + 0.001}
-                containerElement={<Link to={this.getUrl()} />}
-                id="ok"
+                primary
+                label={<T id="Start1Page.showCalculatorButton" />}
+                onTouchTap={() => this.setState({ isFirstVisit: false, showDescription: false })}
                 style={{ height: 'unset' }}
                 overlayStyle={{ padding: 20 }}
-                onTouchTap={() => analytics.track('Passed Start 1', { property, income, fortune })}
               />
             </div>}
         </article>

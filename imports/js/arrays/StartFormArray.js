@@ -252,20 +252,20 @@ const getAcquisitionArray = (state, props, setFormState) => [
       {
         id: 'description',
         type: 'selectInput',
-        label: <T id="Start2Form.otherIncomeArray.title1" />,
+        // label: <T id="Start2Form.otherIncomeArray.title1" />,
         options: [
-          { id: 'welfareIncome', label: <T id="Start2Form.otherIncomeArray.welfare" /> },
-          { id: 'pensionIncome', label: <T id="Start2Form.otherIncomeArray.pension" /> },
-          { id: 'rentIncome', label: <T id="Start2Form.otherIncomeArray.rent" /> },
-          { id: 'realEstateIncome', label: <T id="Start2Form.otherIncomeArray.realEstate" /> },
-          { id: 'investmentIncome', label: <T id="Start2Form.otherIncomeArray.investment" /> },
-          { id: 'other', label: <T id="Start2Form.otherIncomeArray.other" /> },
+          { id: 'welfareIncome' },
+          { id: 'pensionIncome' },
+          { id: 'rentIncome' },
+          { id: 'realEstateIncome' },
+          { id: 'investmentIncome' },
+          { id: 'other' },
         ],
       },
       {
         id: 'value',
         type: 'textInput',
-        label: <T id="Start2Form.otherIncomeArray.title2" />,
+        // label: <T id="Start2Form.otherIncomeArray.title2" />,
         money: true,
       },
     ],
@@ -335,17 +335,24 @@ const getAcquisitionArray = (state, props, setFormState) => [
   {
     id: 'initialFortuneAgreed',
     type: 'buttons',
-    text1: (
-      <span>
-        Vous avez indiqué que vous vouliez allouer
-        {' '}
+    // text1: (
+    //   <span>
+    //     Vous avez indiqué que vous vouliez allouer
+    //     {' '}
+    //     <span className="active">
+    //       CHF {toMoney(state.initialFortune)}
+    //     </span>
+    //     {' '}
+    //     de fonds propres pour ce projet. Merci de détailler votre fortune maintenant.
+    //   </span>
+    // ),
+    intlValues: {
+      value: (
         <span className="active">
-          CHF {toMoney(state.initialFortune)}
+          <IntlNumber value={state.initialFortune} format="money" />
         </span>
-        {' '}
-        de fonds propres pour ce projet. Merci de détailler votre fortune maintenant.
-      </span>
-    ),
+      ),
+    },
     hideResult: true,
     buttons: [{ id: true, label: 'Ok' }],
   },
@@ -353,7 +360,7 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'fortune',
     type: 'multipleInput',
     firstMultiple: true,
-    text1: 'Quelle est votre épargne bancaire personnelle (cash et titres)?',
+    // text1: 'Quelle est votre épargne bancaire personnelle (cash et titres)?',
     question: true,
     money: true,
   },
@@ -361,13 +368,13 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'insurance1Exists',
     condition: state.usageType === 'primary',
     type: 'buttons',
-    text1: 'Avez-vous un 2ème pilier?',
+    // text1: 'Avez-vous un 2ème pilier?',
     question: true,
     buttons: [
-      { id: true, label: 'Oui' },
+      { id: true, label: <T id="general.yes" /> },
       {
         id: false,
-        label: 'Non',
+        label: <T id="general.no" />,
         onClick() {
           setFormState('insurance11', 0);
           setFormState('insurance12', 0);
@@ -379,20 +386,20 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'insurance1',
     condition: state.usageType === 'primary' && state.insurance1Exists === true,
     type: 'multipleInput',
-    text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 2ème pilier?',
+    // text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 2ème pilier?',
     money: true,
   },
   {
     id: 'insurance2Exists',
     condition: state.usageType === 'primary',
     type: 'buttons',
-    text1: 'Avez-vous un 3ème pilier?',
+    // text1: 'Avez-vous un 3ème pilier?',
     question: true,
     buttons: [
-      { id: true, label: 'Oui' },
+      { id: true, label: <T id="general.yes" /> },
       {
         id: false,
-        label: 'Non',
+        label: <T id="general.no" />,
         onClick() {
           setFormState('insurance21', 0);
           setFormState('insurance22', 0);
@@ -404,16 +411,19 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'insurance2',
     condition: state.usageType === 'primary' && state.insurance2Exists === true,
     type: 'multipleInput',
-    text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 3ème pilier?',
+    // text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 3ème pilier?',
     money: true,
   },
   {
     id: 'realEstateExists',
     type: 'buttons',
-    text1: "Êtes-vous propriétaire d'autres biens immobiliers?",
+    // text1: "Êtes-vous propriétaire d'autres biens immobiliers?",
     question: true,
     deleteId: 'realEstateArray',
-    buttons: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
+    buttons: [
+      { id: true, label: <T id="general.yes" /> },
+      { id: false, label: <T id="general.no" /> },
+    ],
   },
   {
     id: 'realEstateArray',

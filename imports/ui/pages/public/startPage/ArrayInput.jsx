@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { _ } from 'lodash';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
 import StartTextField from './StartTextField';
 import StartSelectField from './StartSelectField';
 
@@ -24,6 +24,9 @@ export default class ArrayInput extends React.Component {
   }
 
   getOptions = (input, i) => {
+    // Give each option the proper label from react-intl
+    input.options.map(o => ({ ...o, label: <T id={`Forms.${this.props.id}.${o.id}`} /> }));
+
     if (!this.props.allOptions) {
       const currentValues = this.props.formState[this.props.id] || [];
       const thisVal = currentValues && currentValues[i];
@@ -97,7 +100,10 @@ export default class ArrayInput extends React.Component {
             {this.props.inputs.map((input, j) => (
               <span key={`${input.id}_${i}${j}`} className="array-input-span">
 
-                {i === 0 && <label id={this.props.id}>{input.label}</label>}
+                {i === 0 &&
+                  <label id={this.props.id}>
+                    <T id={`Forms.${this.props.id}.${input.id}`} />
+                  </label>}
 
                 {input.type === 'textInput' &&
                   <StartTextField
