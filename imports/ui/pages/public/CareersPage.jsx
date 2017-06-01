@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
+
 const styles = {
   section: {
     display: 'table',
@@ -28,19 +30,20 @@ export default class CareersPage extends Component {
     return (
       <section style={styles.section} className="animated fadeIn">
         <article style={styles.article}>
-          <h1>Travailler à e-Potek</h1>
+          <h1><T id="CareersPage.title" /></h1>
 
           <div className="description" style={styles.description}>
             <p>
-              Nous ne cherchons pas activement de nouveaux candidats en ce moment. Cependant,
-              nous sommes toujours ouverts aux candidatures spontanées, écris-nous à
-              &nbsp;
-              <a
-                href="mailto:jobs@e-potek.ch?subject=Je%20veux%20révolutionner%20la%20finance"
-              >
-                jobs@e-potek.ch
-              </a>
-              .
+              <T
+                id="CareersPage.description"
+                values={{
+                  email: (
+                    <a href="mailto:jobs@e-potek.ch?subject=Je%20veux%20révolutionner%20la%20finance">
+                      jobs@e-potek.ch
+                    </a>
+                  ),
+                }}
+              />
             </p>
           </div>
         </article>

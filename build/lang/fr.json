@@ -1,4 +1,13 @@
 {
+  "CareersPage.title": "Travailler à e-Potek",
+  "CareersPage.description": "Nous ne cherchons pas activement de nouveaux candidats en ce moment. Cependant, nous sommes toujours ouverts aux candidatures spontanées, écris-nous à {email}.",
+  "AboutPage.title": "Le prêt hypothécaire de demain",
+  "AboutPage.description1": "e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève. Expansion prévue prochainement.",
+  "AboutPage.description2": "L'équipe derrière e-Potek est composée d'entrepreneurs vétérans avec une expérience cumulée de plus de 30 ans dans la finance et les prêts hypothécaires en Suisse.",
+
+  "EmailVerification.message": "Email vérifié, Merci!",
+  "PasswordPage.button": "M'avertir du lancement",
+
   "DashboardCharts.expensesTitle": "Coût Mensuel",
   "ExpensesChart.perMonth": "par mois",
   "ExpensesChartInterests.libor": "Libor moyen: {value, number, percentage}",
@@ -121,7 +130,6 @@
   "Start2Form.insurance2Exists": "Avez-vous un 3ème pilier?",
   "Start2Form.insurance1": "Quels sont les fonds de prévoyance disponibles au sein de votre 2ème pilier?",
   "Start2Form.insurance2": "Quels sont les fonds de prévoyance disponibles au sein de votre 3ème pilier?",
-  "Start2Form.realEstateExists": "Êtes-vous propriétaire d'autres biens immobiliers?",
   "Start2Form.realEstateExists": "Êtes-vous propriétaire d'autres biens immobiliers?",
   "Start2Form.notEnoughCash": "Vous devez avoir au moins {value} de fortune (sans compter votre prévoyance) pour ce projet.",
   "Start2Form.notEnoughOwnFunds": "Vous devez avoir au moins {value} de fonds propres pour ce projet.",

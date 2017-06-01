@@ -4,6 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import BetaAccess from './passwordPage/BetaAccess.jsx';
 import { isDemo } from '/imports/js/helpers/browserFunctions';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const PasswordPage = props => (
   <main className="password-page animated fadeIn">
@@ -13,7 +14,7 @@ const PasswordPage = props => (
       className="subscribe"
       href="http://eepurl.com/cI56Sn"
       primary
-      label="M'avertir du lancement"
+      label={<T id="PasswordPage.button" />}
       keyboardFocused
     />
     <BetaAccess {...props} />

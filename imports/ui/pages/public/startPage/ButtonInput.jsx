@@ -12,7 +12,7 @@ const styles = {
 };
 
 const getText = props => {
-  if (props.id === 'error') {
+  if (props.error) {
     return '';
   }
 
@@ -51,15 +51,15 @@ const ButtonInput = props => {
     >
 
       <h1 className="fixed-size">
-        <span className={props.id === 'error' && 'error'}>
-          <AutoTooltip>{props.text1}</AutoTooltip>
+        <span className={props.error && 'error'}>
+          {props.text1}
         </span>
         &nbsp;
         {!props.hideResult && props.question && <br />}
 
         {!props.hideResult && <span className="active">{getText(props)}</span>}
         &nbsp;
-        <AutoTooltip>{props.text2}</AutoTooltip>
+        {props.text2}
       </h1>
 
       <div style={styles.buttons} className={!props.active ? 'inputHider' : 'animated fadeIn'}>

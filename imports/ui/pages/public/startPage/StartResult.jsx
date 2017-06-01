@@ -96,7 +96,7 @@ const StartResult = props => {
       {props.type !== 'test' &&
         <div className="buttons">
           <RaisedButton
-            label=<T id="general.modify" />
+            label={<T id="general.modify" />}
             onTouchTap={() =>
               Scroll.animateScroll.scrollToTop({
                 smooth: true,
@@ -116,7 +116,7 @@ const StartResult = props => {
       {props.type === 'test' &&
         <div className="buttons">
           <RaisedButton
-            label=<T id="general.modify" />
+            label={<T id="general.modify" />}
             onTouchTap={() =>
               Scroll.animateScroll.scrollToTop({
                 smooth: true,
@@ -125,7 +125,7 @@ const StartResult = props => {
             style={{ marginRight: 8 }}
           />
           <RaisedButton
-            label=<T id="general.continue" />
+            label={<T id="general.continue" />}
             onTouchTap={() => {
               props.setFormState('type', 'acquisition');
               props.setFormState('finalized', undefined);

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const styles = {
   section: {
@@ -28,16 +29,13 @@ export default class AboutPage extends Component {
     return (
       <section style={styles.section} className="animated fadeIn">
         <article style={styles.article}>
-          <h1>Le prêt hypothécaire de demain</h1>
+          <h1><T id="AboutPage.title" /></h1>
 
           <div className="description" style={styles.description}>
             <p>
-              e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève.
-              Expansion prévue prochainement.
+              <T id="AboutPage.description1" />
               <br /><br />
-              L'équipe derrière e-Potek est composée d'entrepreneurs vétérans avec une
-              expérience cumulée de plus de 30 ans dans la finance et les
-              prêts hypothécaires en Suisse.
+              <T id="AboutPage.description2" />
             </p>
           </div>
         </article>

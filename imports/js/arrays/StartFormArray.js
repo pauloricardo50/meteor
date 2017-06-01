@@ -4,10 +4,9 @@ import Scroll from 'react-scroll';
 
 import FortuneSliders from '/imports/ui/pages/public/startPage/FortuneSliders.jsx';
 import DialogSimple from '/imports/ui/components/general/DialogSimple.jsx';
-import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
 
-import { toMoney } from '../helpers/conversionFunctions';
+import constants from '/imports/js/config/constants';
 
 const getAcquisitionArray = (state, props, setFormState) => [
   {
@@ -826,7 +825,10 @@ const getFinalArray = (state, props, setFormState) => [
     intlValues: {
       value: (
         <span className="body">
-          <IntlNumber value={props.monthly * 12} format="money" />
+          <IntlNumber
+            value={Math.round(props.monthly / constants.maxRatio * 12 / 1000) * 1000}
+            format="money"
+          />
         </span>
       ),
     },
@@ -835,7 +837,7 @@ const getFinalArray = (state, props, setFormState) => [
         id: false,
         label: <T id="general.modify" />,
         onClick() {
-          setFormState('activeLine', 'fortune', () => {
+          setFormState('activeLine', 'income', () => {
             const options = {
               duration: 350,
               delay: 0,
