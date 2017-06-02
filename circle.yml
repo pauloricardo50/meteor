@@ -8,6 +8,7 @@ dependencies:
     - curl https://install.meteor.com | /bin/sh
     - npm install
     - npm install fbjs
+    - meteor remove bundle-visualizer
   cache-directories:
     - "~/.meteor"
     - "~/.npm"

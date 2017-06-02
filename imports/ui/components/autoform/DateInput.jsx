@@ -4,7 +4,6 @@ import moment from 'moment';
 import cleanMethod from '/imports/api/cleanMethods';
 
 import DatePicker from 'material-ui/DatePicker';
-import areIntlLocalesSupported from 'intl-locales-supported';
 
 import FormValidator from './FormValidator.jsx';
 
@@ -24,19 +23,6 @@ const styles = {
     marginBottom: 0,
     color: 'rgba(0, 0, 0, 0.298039)',
   },
-};
-
-const getDateFormat = () => {
-  /**
-   * Use the native Intl.DateTimeFormat if available, or a polyfill if not.
-   */
-  if (areIntlLocalesSupported(['fr'])) {
-    return global.Intl.DateTimeFormat;
-  }
-
-  const IntlPolyfill = require('intl');
-  return IntlPolyfill.DateTimeFormat;
-  require('intl/locale-data/jsonp/fr');
 };
 
 export default class DateInput extends Component {
@@ -81,7 +67,7 @@ export default class DateInput extends Component {
           maxDate={this.props.maxDate}
           textFieldStyle={styles.DatePickerField}
           locale="fr"
-          DateTimeFormat={getDateFormat()}
+          // DateTimeFormat={getDateFormat()}
           cancelLabel="Annuler"
           disabled={this.props.disabled}
         />

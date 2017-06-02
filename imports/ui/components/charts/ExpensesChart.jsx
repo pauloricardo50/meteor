@@ -1,13 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import ReactHighcharts from 'react-highcharts';
 import { injectIntl } from 'react-intl';
+import Loader from '/imports/js/helpers/loader';
 
 import { getInterests, getAmortization } from '/imports/js/helpers/finance-math';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import colors from '/imports/js/config/colors';
 
-import { legendConfig, adjustLegend } from './chartSettings';
+import { legendConfig } from './chartSettings';
+
+const ReactHighcharts = Loader({
+  loader: () => import('react-highcharts'),
+});
 
 const chartColors = {
   interest: colors.charts[0],

@@ -3,13 +3,15 @@
   "private": true,
   "scripts": {
     "start": "meteor --settings settings-dev.json",
+    "production": "meteor run --production --settings settings-dev.json",
     "test": "meteor test --driver-package=practicalmeteor:mocha --port 4000",
     "test-debug": "meteor test --driver-package=practicalmeteor:mocha --port 5000 --debug-port 5858",
     "test-CI": "TEST_BROWSER_DRIVER=nightmare SERVER_TEST_REPORTER=xunit XUNIT_FILE=$CIRCLE_TEST_REPORTS/reports/unit.xml meteor test --once --driver-package dispatch:mocha",
     "test-CLI": "TEST_BROWSER_DRIVER=nightmare meteor test --once --driver-package dispatch:mocha",
     "deploy:production": "cd .deploy/production && mup deploy --settings=settings-production.json",
     "deploy:staging": "cd .deploy/staging && mup deploy --settings=settings-staging.json",
-    "translate": "babel-node imports/js/helpers/translate.js"
+    "translate": "babel-node imports/js/helpers/translate.js",
+    "bundle-check": ""
   },
   "version": "1.0.0",
   "description": "e-Potek main",
@@ -24,8 +26,6 @@
     "fixed-data-table-2": "^0.7.17",
     "html-pdf": "^2.1.0",
     "indexof": "0.0.1",
-    "intl": "^1.2.5",
-    "intl-locales-supported": "^1.0.0",
     "is_js": "^0.9.0",
     "ismobilejs": "^0.4.1",
     "lodash": "^4.17.4",
@@ -47,6 +47,7 @@
     "react-intl": "^2.2.3",
     "react-joyride": "^1.10.1",
     "react-komposer": "^2.0.0",
+    "react-loadable": "^3.3.1",
     "react-motion": "^0.5.0",
     "react-mounter": "^1.2.0",
     "react-router-dom": "^4.1.1",
