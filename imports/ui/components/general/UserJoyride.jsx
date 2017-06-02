@@ -25,7 +25,7 @@ export default class UserJoyride extends Component {
         steps={steps}
         // autoStart
         run={this.state.run} // or some other boolean for when you want to start it
-        debug
+        // debug
         showOverlay
         showSkipButton
         showStepsProgress
