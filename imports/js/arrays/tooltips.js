@@ -4,7 +4,7 @@ const generalTooltips = {
   'fonds propres': 'ownFunds',
   "prix d'achat": 'purchasePrice',
 
-  finma: 'finma',
+  finma: ['finma'],
 
   'charges / revenus': 'incomeRatio',
   "ratio d'endettement": 'incomeRatio',

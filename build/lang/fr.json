@@ -201,6 +201,8 @@
   "general.ownFunds": "Fonds propres",
   "general.salary": "Salaire",
   "general.modify": "Modifier",
+  "general.learnMore": "En savoir plus",
+
 
   "tooltip.yearlyIncome": "La somme de votre salaire, et toute autre source de revenus",
   "tooltip.ownFunds": "Vos économies, prévoyance et dons de tiers que vous allez engager dans le projet",
@@ -228,6 +230,8 @@
   "tooltip.offerTable.amortization": "L'amortissement annuel minimum de l'emprunt demandé par la banque",
   "tooltip.offerTable.expertise": "Indique si la banque veut faire une expertise supplémentaire, ajoute environ 2 semaines à la procédure",
   "tooltip.offerTable.conditions": "Les conditions que vous devez remplir pour avoir accès à cette offre",
+
+  "tooltip2.finma": "La FINMA détermine quelles sont les conditions minimales pour que vous puissiez obtenir un prêt, pour vous protéger d'éventuelles remontées imprévues des taux hypothécaires.{verticalSpace}Les taux sont bas aujourd'hui, mais si vos finances ne sont pas assez solides et que les taux montent, vous pourriez être en grave danger.",
 
   "e-Potek": "e-Potek"
 }

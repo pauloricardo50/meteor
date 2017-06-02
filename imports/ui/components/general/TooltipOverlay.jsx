@@ -36,6 +36,7 @@ export default class TooltipOverlay extends Component {
             trigger={trigger}
             id={id ? tooltipsById(id) : tooltips(list)[match.toLowerCase()]}
             hide={this.state.hide}
+            match={match}
           />
         }
         rootClose
