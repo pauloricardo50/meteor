@@ -10,8 +10,10 @@ dependencies:
     - npm install fbjs
   cache-directories:
     - "~/.meteor"
+    - "~/.npm"
     - "~/node_modules"
     - "/usr/local/bin"
+    - "/bin/sh"
 
 test:
   override:

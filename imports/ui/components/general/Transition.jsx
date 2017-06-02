@@ -3,8 +3,17 @@ import PropTypes from 'prop-types';
 
 import { TransitionMotion, spring } from 'react-motion';
 
-const s1 = value => spring(value, { stiffness: 500, damping: 10 });
+// Stiff spring
+const s1 = value => spring(value, { stiffness: 1000, damping: 10 });
+
+// Softer spring
 const s2 = value => spring(value, { stiffness: 200, damping: 10 });
+
+const styles = {
+  willEnter: { scale: 0.9, opacity: 0.5 },
+  steady: { scale: 1, opacity: 1 },
+  willLeave: { scale: 1.1, opacity: 0 },
+};
 
 export default class Transition extends Component {
   constructor(props) {
@@ -16,9 +25,7 @@ export default class Transition extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      items: [{ key: 'a', scale: 1, opacity: 1 }],
-    });
+    this.setState({ items: [{ key: 'a', ...styles.steady }] });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -27,42 +34,35 @@ export default class Transition extends Component {
     }
   }
 
-  willLeave() {
-    return { scale: s2(1.1), opacity: s2(0) };
-  }
+  // Styles to interpolate from on mount
+  willEnter = () => styles.willEnter;
 
-  willEnter() {
-    return { scale: 0.9, opacity: 0 };
-  }
+  // Styles to interpolate to on dismount
+  willLeave = () => ({ scale: s1(styles.willLeave.scale), opacity: s2(styles.willLeave.opacity) });
 
   render() {
+    const { items } = this.state;
+
     return (
       <TransitionMotion
         willLeave={this.willLeave}
         willEnter={this.willEnter}
-        defaultStyles={this.state.items.map(item => ({
+        styles={items.map(item => ({
           key: item.key,
-          style: { scale: 0.9, opacity: 0 },
-        }))}
-        styles={this.state.items.map(item => ({
-          key: item.key,
-          style: {
-            scale: s1(item.scale),
-            opacity: s2(item.opacity),
-          },
+          style: { scale: s1(item.scale), opacity: s2(item.opacity) },
         }))}
       >
         {interpolatedStyles => (
           <span>
-            {interpolatedStyles.map(config => {
-              return this.props.children(config);
-            })}
+            {interpolatedStyles.map(config => this.props.children(config))}
           </span>
         )}
-
       </TransitionMotion>
     );
   }
 }
 
-Transition.propTypes = {};
+Transition.propTypes = {
+  hide: PropTypes.bool.isRequired,
+  children: PropTypes.func.isRequired,
+};
