@@ -18,7 +18,6 @@ dependencies:
 
 test:
   override:
-    - echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
     - yarn run test-CI
   post:
     - yarn global add mup
