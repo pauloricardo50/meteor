@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Loader from '/imports/js/helpers/loader';
+import Loadable from '/imports/js/helpers/loadable';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import {
@@ -13,7 +13,7 @@ import colors from '/imports/js/config/colors';
 
 import { legendConfig, adjustLegend } from './chartSettings';
 
-const ReactHighcharts = Loader({
+const ReactHighcharts = Loadable({
   loader: () => import('react-highcharts'),
 });
 
@@ -60,7 +60,10 @@ const getConfig = props => {
     },
     tooltip: {
       formatter() {
-        return `<span style="color:${this.color}">\u25CF</span> ${this.series.name}<br /> <b>CHF ${toMoney(Math.round(this.y))}</b><br />${Math.round(1000 * this.y / total) / 10}%`;
+        return `<span style="color:${this.color}">\u25CF</span> ${this.series
+          .name}<br /> <b>CHF ${toMoney(Math.round(this.y))}</b><br />${Math.round(
+          1000 * this.y / total,
+        ) / 10}%`;
       },
       style: { fontSize: '14px' },
     },

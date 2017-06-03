@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Loader from '/imports/js/helpers/loader';
+import Loadable from '/imports/js/helpers/loadable';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import { getLoanValue, getProjectValue } from '/imports/js/helpers/requestFunctions';
@@ -9,7 +9,7 @@ import colors from '/imports/js/config/colors';
 
 import { legend } from './chartSettings';
 
-const ReactHighcharts = Loader({
+const ReactHighcharts = Loadable({
   loader: () => import('react-highcharts'),
 });
 
@@ -43,7 +43,9 @@ const getConfig = props => {
     },
     tooltip: {
       formatter() {
-        return `<span style="color:${this.color}">\u25CF</span> ${this.key}<br /> <b>CHF ${toMoney(Math.round(this.y))}</b><br />${Math.round(1000 * this.y / total) / 10}%`;
+        return `<span style="color:${this.color}">\u25CF</span> ${this.key}<br /> <b>CHF ${toMoney(
+          Math.round(this.y),
+        )}</b><br />${Math.round(1000 * this.y / total) / 10}%`;
       },
       style: { fontSize: '14px' },
     },
@@ -78,9 +80,10 @@ const getConfig = props => {
           },
           {
             name: 'Fortune', // subtract fees from this
-            y: r.general.fortuneUsed -
-              r.property.value * constants.notaryFees -
-              (r.general.insuranceFortuneUsed * constants.lppFees || 0),
+            y:
+              r.general.fortuneUsed -
+                r.property.value * constants.notaryFees -
+                (r.general.insuranceFortuneUsed * constants.lppFees || 0),
           },
           {
             name: 'Frais de Notaire',

@@ -3,12 +3,12 @@
 import { addLocaleData } from 'react-intl';
 import { T9n } from 'meteor/softwarerero:accounts-t9n';
 import moment from 'moment';
-import Loader from '/imports/js/helpers/loader';
+import Loadable from '/imports/js/helpers/loadable';
 
 import messagesFR from '/build/lang/fr.json';
 
 // Import used languages from the package here
-// const fr = Loader({
+// const fr = Loadable({
 //   loader: () => import('react-intl/locale-data/fr'),
 // });
 import fr from 'react-intl/locale-data/fr';
