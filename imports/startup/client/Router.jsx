@@ -8,14 +8,14 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { IntlProvider } from 'react-intl';
 import { getUserLocale, getTranslations, getFormats } from '../localization';
 
-import Loader from '/imports/js/helpers/loader';
+import Loadable from '/imports/js/helpers/loadable';
 import PasswordPage from '/imports/ui/pages/public/PasswordPage.jsx';
 
 import PublicRoutes from './routes/PublicRoutes.jsx';
-// const PublicRoutes = Loader({ loader: () => import('./routes/UserRoutes.jsx') });
-const UserRoutes = Loader({ loader: () => import('./routes/UserRoutes.jsx') });
-const AdminRoutes = Loader({ loader: () => import('./routes/AdminRoutes.jsx') });
-const PartnerRoutes = Loader({ loader: () => import('./routes/PartnerRoutes.jsx') });
+// const PublicRoutes = Loadable({ loader: () => import('./routes/UserRoutes.jsx') });
+const UserRoutes = Loadable({ loader: () => import('./routes/UserRoutes.jsx') });
+const AdminRoutes = Loadable({ loader: () => import('./routes/AdminRoutes.jsx') });
+const PartnerRoutes = Loadable({ loader: () => import('./routes/PartnerRoutes.jsx') });
 
 class ScrollToTop extends Component {
   componentDidUpdate(prevProps) {

@@ -38,7 +38,7 @@ export default class HomePage extends Component {
                 <h1 className="heading animated fadeInDown">
                   <T id="HomePage.tagline1" />
                   <hr />
-                  <T id="HomePage.tagline2" />
+                  <T id="HomePage.tagline3" />
                 </h1>
 
               </div>
@@ -178,9 +178,9 @@ export default class HomePage extends Component {
               <div className="container-lrg center">
                 <div className="col-7">
                   <h5 className="heading">
-                    <span>La meilleure hypothèque</span>
+                    <T id="HomePage.tagline2" />
                     <hr />
-                    <span>Tout simplement</span>
+                    <T id="HomePage.tagline3" />
                   </h5>
                 </div>
                 <div className="col-5">

@@ -10,11 +10,11 @@ import TosPage from '/imports/ui/pages/public/TosPage.jsx';
 import EmailVerificationPage from '/imports/ui/pages/public/EmailVerificationPage.jsx';
 import TestPage from '/imports/ui/pages/public/TestPage.jsx';
 
-import Loader from '/imports/js/helpers/loader';
+import Loadable from '/imports/js/helpers/loadable';
 
-const Start1Page = Loader({ loader: () => import('/imports/ui/pages/public/Start1Page.jsx') });
+const Start1Page = Loadable({ loader: () => import('/imports/ui/pages/public/Start1Page.jsx') });
 
-const PublicRoutes = props => (
+const PublicRoutes = props =>
   <PublicLayout {...props}>
     <Switch>
       <Route path="/home" component={HomePage} />
@@ -27,7 +27,6 @@ const PublicRoutes = props => (
       <Route path="/test" component={TestPage} />
       <Route path="/verify-email/:token" component={EmailVerificationPage} />
     </Switch>
-  </PublicLayout>
-);
+  </PublicLayout>;
 
 export default PublicRoutes;

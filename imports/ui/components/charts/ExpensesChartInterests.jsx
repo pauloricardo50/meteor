@@ -7,7 +7,7 @@ import MenuItem from 'material-ui/MenuItem';
 import ExpensesChart from './ExpensesChart.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
-const rates = [0.0100, 0.01, 0.015, 0.02];
+const rates = [0.01, 0.01, 0.015, 0.02];
 
 export default class ExpensesChartInterests extends Component {
   constructor(props) {

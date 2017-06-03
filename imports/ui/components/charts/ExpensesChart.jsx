@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
-import Loader from '/imports/js/helpers/loader';
 
 import { getInterests, getAmortization } from '/imports/js/helpers/finance-math';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
@@ -9,9 +8,7 @@ import colors from '/imports/js/config/colors';
 
 import { legendConfig } from './chartSettings';
 
-const ReactHighcharts = Loader({
-  loader: () => import('react-highcharts'),
-});
+import ReactHighcharts from 'react-highcharts';
 
 const chartColors = {
   interest: colors.charts[0],
@@ -29,7 +26,9 @@ const update = that => {
     },
     tooltip: {
       formatter() {
-        return `<span style="color:${this.color}">\u25CF</span> ${this.key}<br /> <b>CHF ${toMoney(Math.round(this.y))}</b><br />${Math.round(1000 * this.y / total) / 10}%`;
+        return `<span style="color:${this.color}">\u25CF</span> ${this.key}<br /> <b>CHF ${toMoney(
+          Math.round(this.y),
+        )}</b><br />${Math.round(1000 * this.y / total) / 10}%`;
       },
     },
     series: [
@@ -159,7 +158,10 @@ class ExpensesChart extends Component {
       },
       tooltip: {
         formatter() {
-          return `<span style="color:${this.color}">\u25CF</span> ${this.key}<br /> <b>CHF ${toMoney(Math.round(this.y))}</b><br />${Math.round(1000 * this.y / total) / 10}%`;
+          return `<span style="color:${this.color}">\u25CF</span> ${this
+            .key}<br /> <b>CHF ${toMoney(Math.round(this.y))}</b><br />${Math.round(
+            1000 * this.y / total,
+          ) / 10}%`;
         },
         style: { fontSize: '14px' },
       },
@@ -258,7 +260,9 @@ class ExpensesChart extends Component {
     const perMonth = f({ id: 'ExpensesChart.perMonth' });
     that.title = r
       .text(
-        `CHF ${toMoney(Math.round(total))}<br><span style="font-size: 14px;" class="no-bold">${perMonth}*</span>`,
+        `CHF ${toMoney(
+          Math.round(total),
+        )}<br><span style="font-size: 14px;" class="no-bold">${perMonth}*</span>`,
         0,
         0,
       )
