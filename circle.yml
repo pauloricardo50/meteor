@@ -18,7 +18,8 @@ dependencies:
 
 test:
   override:
-    - yarn run test-CI
+    - yarn run test-CI:
+        timeout: 1200
   post:
     - yarn global add mup
 
