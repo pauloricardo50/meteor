@@ -3,13 +3,16 @@ import { Route, Switch } from 'react-router-dom';
 
 import { PublicLayout, Start2Page } from '/imports/ui/containers/PublicContainers';
 import HomePage from '/imports/ui/pages/public/HomePage.jsx';
-import Start1Page from '/imports/ui/pages/public/Start1Page.jsx';
 import LoginPage from '/imports/ui/pages/public/LoginPage.jsx';
 import AboutPage from '/imports/ui/pages/public/AboutPage.jsx';
 import CareersPage from '/imports/ui/pages/public/CareersPage.jsx';
 import TosPage from '/imports/ui/pages/public/TosPage.jsx';
 import EmailVerificationPage from '/imports/ui/pages/public/EmailVerificationPage.jsx';
 import TestPage from '/imports/ui/pages/public/TestPage.jsx';
+
+import Loader from '/imports/js/helpers/loader';
+
+const Start1Page = Loader({ loader: () => import('/imports/ui/pages/public/Start1Page.jsx') });
 
 const PublicRoutes = props => (
   <PublicLayout {...props}>
