@@ -12,9 +12,10 @@ import './meteor-slingshot-server';
 
 Meteor.startup(() => {
   // Do something on startup if necessary
-  if (Meteor.settings.public.environment === 'staging') {
-    setupAuth();
-  }
+  // Add password protection
+  // if (Meteor.settings.public.environment === 'staging') {
+  //   setupAuth();
+  // }
 });
 
 // Inject a loader before client is ready, is removed in the on startup function on the client

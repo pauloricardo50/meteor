@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
+
 const styles = {
   section: {
     display: 'table',
@@ -21,11 +23,11 @@ const styles = {
 const TosPage = () => (
   <section style={styles.section} className="animated fadeIn">
     <article style={styles.article}>
-      <h1>Termes et Conditions</h1>
+      <h1><T id="TosPage.title" /></h1>
 
       <div className="description" style={styles.description}>
         <p>
-          &lt;En développement /&gt;
+          <T id="TosPage.description" />
         </p>
       </div>
     </article>

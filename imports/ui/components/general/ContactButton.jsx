@@ -23,20 +23,16 @@ const styles = {
     bottom: 72,
     opacity: 1,
     transitionDelay: '500ms',
-    transition: 'all 0.2s ease-in-out',
+    transition: 'all 200ms ease-in-out',
     zIndex: -1,
     width: 240,
     height: 270,
     padding: 24,
-    // display: 'flex',
-    // flexDirection: 'column',
   },
   closed: {
     opacity: 0,
     height: 0,
     width: 0,
-    right: 28,
-    bottom: 28,
   },
   iconDiv: {
     marginRight: 16,
@@ -128,7 +124,6 @@ export default class ContactButton extends Component {
         </FloatingActionButton>
         <div
           className="mask1"
-          // style={this.state.open ? styles.openedOverlay : styles.closedOverlay}
           style={{ ...styles.overlay, ...(this.state.open ? {} : styles.closed) }}
         >
           {overlayContent}

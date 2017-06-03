@@ -3,12 +3,15 @@
 import { addLocaleData } from 'react-intl';
 import { T9n } from 'meteor/softwarerero:accounts-t9n';
 import moment from 'moment';
+import Loader from '/imports/js/helpers/loader';
 
 import messagesFR from '/build/lang/fr.json';
 
 // Import used languages from the package here
+// const fr = Loader({
+//   loader: () => import('react-intl/locale-data/fr'),
+// });
 import fr from 'react-intl/locale-data/fr';
-// import en from 'react-intl/locale-data/en';
 // import es from 'react-intl/locale-data/es';
 
 export const getUserLocale = () => {
@@ -39,7 +42,7 @@ export const getFormats = () => {
 
 export const localizationStartup = () => {
   // Add locales used in app here
-  addLocaleData([...fr]);
+  addLocaleData(fr);
   T9n.setLanguage(getUserLocale());
   setupMoment();
   moment.locale('fr');

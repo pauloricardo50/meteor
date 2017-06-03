@@ -18,10 +18,12 @@ export default class DialogSimple extends Component {
   };
 
   render() {
-    const actions = this.props.actions || [<FlatButton label="Ok" onTouchTap={this.handleClose} />];
+    const actions = this.props.actions || [
+      <FlatButton label="Ok" onTouchTap={this.handleClose} autoFocus={this.props.autoFocus} />,
+    ];
 
     return (
-      <div style={this.props.rootStyle}>
+      <span style={this.props.rootStyle}>
         <RaisedButton
           label={this.props.label}
           onTouchTap={this.handleOpen}
@@ -38,7 +40,7 @@ export default class DialogSimple extends Component {
         >
           {this.props.children}
         </Dialog>
-      </div>
+      </span>
     );
   }
 }
@@ -51,6 +53,7 @@ DialogSimple.propTypes = {
   secondary: PropTypes.bool,
   rootStyle: PropTypes.objectOf(PropTypes.any),
   buttonStyle: PropTypes.objectOf(PropTypes.any),
+  autoFocus: PropTypes.bool,
 };
 
 DialogSimple.defaultProps = {
@@ -59,4 +62,5 @@ DialogSimple.defaultProps = {
   secondary: false,
   rootStyle: {},
   buttonStyle: {},
+  autoFocus: false,
 };

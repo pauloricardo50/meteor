@@ -10,12 +10,15 @@ dependencies:
     - npm install fbjs
   cache-directories:
     - "~/.meteor"
+    - "~/.npm"
     - "~/node_modules"
     - "/usr/local/bin"
+    - "/bin/sh"
 
 test:
   override:
-    - yarn run test-CI
+    - yarn run test-CI:
+        timeout: 1200
   post:
     - yarn global add mup
 

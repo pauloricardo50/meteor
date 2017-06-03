@@ -826,6 +826,8 @@ const getFinalArray = (state, props, setFormState) => [
       value: (
         <span className="body">
           <IntlNumber
+            // props.monthly represents 38% of the monthly cost,
+            // then convert it to yearly, and round it up to avoid errors.
             value={Math.round(props.monthly / constants.maxRatio * 12 / 1000) * 1000}
             format="money"
           />

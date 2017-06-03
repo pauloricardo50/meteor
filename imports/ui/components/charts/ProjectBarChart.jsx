@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ReactHighcharts from 'react-highcharts';
+import Loader from '/imports/js/helpers/loader';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import {
@@ -12,6 +12,10 @@ import constants from '/imports/js/config/constants';
 import colors from '/imports/js/config/colors';
 
 import { legendConfig, adjustLegend } from './chartSettings';
+
+const ReactHighcharts = Loader({
+  loader: () => import('react-highcharts'),
+});
 
 const chartColors = {
   notaryFees: colors.charts[4],
