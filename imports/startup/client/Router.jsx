@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { withRouter } from 'react-router';
+import { BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom';
 
 import myTheme from '/imports/js/config/mui_custom';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -32,7 +31,7 @@ class ScrollToTop extends Component {
 
 const ScrollToTopWithRouter = withRouter(ScrollToTop);
 
-const RenderRoutes = () => (
+const RenderRoutes = () =>
   <MuiThemeProvider muiTheme={getMuiTheme(myTheme)}>
     <IntlProvider
       locale={getUserLocale()}
@@ -53,7 +52,6 @@ const RenderRoutes = () => (
         </ScrollToTopWithRouter>
       </Router>
     </IntlProvider>
-  </MuiThemeProvider>
-);
+  </MuiThemeProvider>;
 
 export default RenderRoutes;
