@@ -52,11 +52,11 @@ const getMenuItems = props => {
 // an admin link for admins,
 // a partner link for partners,
 // a home, settings, and contact link for regular users
-const TopNavDropdown = props => (
+const TopNavDropdown = props =>
   <IconMenu
     iconButtonElement={
       <IconButton tooltip="">
-        <Person color="#333333" hoverColor="#888888" />
+        <Person color="#444" hoverColor="#888" />
       </IconButton>
     }
     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
@@ -76,8 +76,7 @@ const TopNavDropdown = props => (
       primaryText="Déconnexion"
       onTouchTap={() => Meteor.logout(() => props.history.push('/home'))}
     />
-  </IconMenu>
-);
+  </IconMenu>;
 
 TopNavDropdown.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
