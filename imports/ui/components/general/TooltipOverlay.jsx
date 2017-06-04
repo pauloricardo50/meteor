@@ -5,14 +5,6 @@ import { tooltips, tooltipsById } from '/imports/js/arrays/tooltips';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import Tooltip from './Tooltip.jsx';
 
-const styles = {
-  span: {
-    borderBottom: 'dashed 1px #aaaaaa',
-    cursor: 'help',
-    position: 'relative',
-  },
-};
-
 export default class TooltipOverlay extends Component {
   constructor(props) {
     super(props);
@@ -40,12 +32,14 @@ export default class TooltipOverlay extends Component {
           />
         }
         rootClose
+        // animation={false}
         trigger={trigger}
         onExit={() => this.setState({ hide: true })}
         // When clicking the same tooltip multiple times, this is not reset
         onEnter={() => this.setState({ hide: false })}
+        container={document.body}
       >
-        <span style={styles.span} tabIndex="0">
+        <span className="tooltip-overlay hvr-underline-from-center" tabIndex="0">
           {children}
         </span>
       </OverlayTrigger>

@@ -19,7 +19,12 @@ export default class DialogSimple extends Component {
 
   render() {
     const actions = this.props.actions || [
-      <FlatButton label="Ok" onTouchTap={this.handleClose} autoFocus={this.props.autoFocus} />,
+      <FlatButton
+        primary
+        label="Ok"
+        onTouchTap={this.handleClose}
+        autoFocus={this.props.autoFocus} // TODO doesn't work
+      />,
     ];
 
     return (

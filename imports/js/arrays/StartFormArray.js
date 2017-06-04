@@ -13,7 +13,6 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'propertyValue',
     condition: state.knowsProperty === true,
     type: 'textInput',
-    // text1: "Le prix d'achat de la propriété est de",
     money: true,
   },
   {
@@ -35,7 +34,6 @@ const getAcquisitionArray = (state, props, setFormState) => [
     condition: state.knowsProperty === true,
     type: 'buttons',
     question: true,
-    // text1: 'Souhaitez-vous rajouter à votre projet des travaux de plus-value?',
     buttons: [
       { id: true, label: <T id="general.yes" /> },
       { id: false, label: <T id="general.no" /> },
@@ -46,23 +44,12 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'propertyWork',
     condition: state.propertyWorkExists === true,
     type: 'textInput',
-    // text1: 'Les travaux de plus-value sont estimés à',
     money: true,
   },
   {
     id: 'projectAgreed',
     condition: state.propertyWork !== undefined && state.propertyWork !== 0,
     type: 'buttons',
-    // text1: (
-    //   <span>
-    //     Le coût de votre projet sera donc de
-    //     {' '}
-    //     <span className="active">
-    //       CHF {toMoney(1.05 * state.propertyValue + (state.propertyWork || 0))}
-    //     </span>
-    //     .
-    //   </span>
-    // ),
     intlValues: {
       value: (
         <span className="active">
@@ -79,7 +66,6 @@ const getAcquisitionArray = (state, props, setFormState) => [
   {
     id: 'usageType',
     type: 'buttons',
-    // text1: "Quel sera le type d'utilisation de cette propriété?",
     question: true,
     buttons: [
       { id: 'primary', label: <T id="Start2Form.usageTypeButtonPrincipal" /> },
@@ -91,13 +77,11 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'propertyRent',
     condition: state.usageType === 'investment',
     type: 'textInput',
-    // text1: "J'estime que le loyer mensuel pour cette propriété sera",
     money: true,
   },
   {
     id: 'borrowerCount',
     type: 'buttons',
-    // text1: "Combien d'emprunteurs êtes vous?",
     question: true,
     buttons: [{ id: 1, label: <T id="general.one" /> }, { id: 2, label: <T id="general.two" /> }],
   },
@@ -105,8 +89,6 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'age',
     condition: state.borrowerCount === 1,
     type: 'textInput',
-    // text1: "J'ai",
-    // text2: 'ans.',
     text2: true,
     placeholder: '18',
     number: true,
@@ -117,8 +99,6 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'oldestAge',
     condition: state.borrowerCount > 1,
     type: 'textInput',
-    // text1: "L'emprunteur le plus agé a",
-    // text2: 'ans.',
     text2: true,
     placeholder: '18',
     number: true,
@@ -129,8 +109,6 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'gender',
     condition: state.borrowerCount === 1 && state.age >= 50,
     type: 'buttons',
-    // text1: 'Je suis',
-    // text2: '.',
     text2: true,
     buttons: [
       { id: 'f', label: <T id="Start2Form.gender.woman" /> },
@@ -141,7 +119,6 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'oldestGender',
     condition: state.borrowerCount > 1 && state.oldestAge >= 50,
     type: 'buttons',
-    // text1: 'Et cette personne est',
     buttons: [
       { id: 'f', label: <T id="Start2Form.gender.woman" /> },
       { id: 'm', label: <T id="Start2Form.gender.man" /> },
@@ -150,17 +127,6 @@ const getAcquisitionArray = (state, props, setFormState) => [
   {
     id: 'initialIncomeAgreed',
     type: 'buttons',
-    // text1: (
-    //   <span>
-    //     Vous avez indiqué que vos revenus sont de
-    //     {' '}
-    //     <span className="active">
-    //       CHF {toMoney(state.initialIncome)}
-    //     </span>
-    //     {' '}
-    //     par an, vous pouvez les détailler maintenant.
-    //   </span>
-    // ),
     intlValues: {
       value: (
         <span className="active">
@@ -175,18 +141,12 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'income',
     type: 'multipleInput',
     firstMultiple: true,
-    // text1: (
-    //   <span>
-    //     Quel est votre salaire <span className="bold">annuel</span> brut?
-    //   </span>
-    // ),
     money: true,
     zeroAllowed: true,
   },
   {
     id: 'bonusExists',
     type: 'buttons',
-    // text1: 'Avez vous touché un bonus lors des 4 dernières années?',
     question: true,
     buttons: [
       { id: true, label: <T id="general.yes" /> },
@@ -197,7 +157,6 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'bonus4',
     condition: state.bonusExists === true,
     type: 'multipleInput',
-    // text1: 'Bonus 2017',
     money: true,
     zeroAllowed: true,
   },
@@ -205,7 +164,6 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'bonus3',
     condition: state.bonusExists === true,
     type: 'multipleInput',
-    // text1: 'Bonus 2016',
     money: true,
     zeroAllowed: true,
   },
@@ -213,7 +171,6 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'bonus2',
     condition: state.bonusExists === true,
     type: 'multipleInput',
-    // text1: 'Bonus 2015',
     money: true,
     zeroAllowed: true,
   },
@@ -221,21 +178,12 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'bonus1',
     condition: state.bonusExists === true,
     type: 'multipleInput',
-    // text1: 'Bonus 2014',
     money: true,
     zeroAllowed: true,
   },
   {
     id: 'otherIncome',
     type: 'buttons',
-    // text1: (
-    //   <span>
-    //     Avez-vous d'autres sources de
-    //     {' '}
-    //     <span className="bold">revenus annuels</span>
-    //     ?
-    //   </span>
-    // ),
     question: true,
     deleteId: 'otherIncomeArray',
     buttons: [
@@ -252,7 +200,6 @@ const getAcquisitionArray = (state, props, setFormState) => [
       {
         id: 'description',
         type: 'selectInput',
-        // label: <T id="Start2Form.otherIncomeArray.title1" />,
         options: [
           { id: 'welfareIncome' },
           { id: 'pensionIncome' },
@@ -265,7 +212,6 @@ const getAcquisitionArray = (state, props, setFormState) => [
       {
         id: 'value',
         type: 'textInput',
-        // label: <T id="Start2Form.otherIncomeArray.title2" />,
         money: true,
       },
     ],
@@ -273,18 +219,6 @@ const getAcquisitionArray = (state, props, setFormState) => [
   {
     id: 'expensesExist',
     type: 'buttons',
-    // text1: (
-    //   <span>
-    //     Avez-vous des
-    //     {' '}
-    //     <span className="bold">charges annuelles</span>
-    //     {' '}
-    //     comme des leasings,
-    //     {' '}
-    //     {state.usageType !== 'primary' ? 'rentes, ' : ''}
-    //     pensions, loyers, crédits personnels ou autres prêts immobiliers?
-    //   </span>
-    // ),
     intlValues: {
       optional: state.usageType !== 'primary' ? 'rentes, ' : '',
     },
@@ -300,13 +234,6 @@ const getAcquisitionArray = (state, props, setFormState) => [
     condition: state.expensesExist === true,
     existId: 'expensesExist',
     type: 'arrayInput',
-    // text1: (
-    //   <span>
-    //     Donnez-nous la liste de vos charges
-    //     {' '}
-    //     <span className="bold">annuelles</span>
-    //   </span>
-    // ),
     inputs: [
       {
         id: 'description',
@@ -331,17 +258,6 @@ const getAcquisitionArray = (state, props, setFormState) => [
   {
     id: 'initialFortuneAgreed',
     type: 'buttons',
-    // text1: (
-    //   <span>
-    //     Vous avez indiqué que vous vouliez allouer
-    //     {' '}
-    //     <span className="active">
-    //       CHF {toMoney(state.initialFortune)}
-    //     </span>
-    //     {' '}
-    //     de fonds propres pour ce projet. Merci de détailler votre fortune maintenant.
-    //   </span>
-    // ),
     intlValues: {
       value: (
         <span className="active">
@@ -356,15 +272,14 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'fortune',
     type: 'multipleInput',
     firstMultiple: true,
-    // text1: 'Quelle est votre épargne bancaire personnelle (cash et titres)?',
     question: true,
     money: true,
+    zeroAllowed: state.borrowerCount > 1,
   },
   {
     id: 'insurance1Exists',
     condition: state.usageType === 'primary',
     type: 'buttons',
-    // text1: 'Avez-vous un 2ème pilier?',
     question: true,
     buttons: [
       { id: true, label: <T id="general.yes" /> },
@@ -382,14 +297,12 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'insurance1',
     condition: state.usageType === 'primary' && state.insurance1Exists === true,
     type: 'multipleInput',
-    // text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 2ème pilier?',
     money: true,
   },
   {
     id: 'insurance2Exists',
     condition: state.usageType === 'primary',
     type: 'buttons',
-    // text1: 'Avez-vous un 3ème pilier?',
     question: true,
     buttons: [
       { id: true, label: <T id="general.yes" /> },
@@ -407,13 +320,11 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'insurance2',
     condition: state.usageType === 'primary' && state.insurance2Exists === true,
     type: 'multipleInput',
-    // text1: 'Quels sont les fonds de prévoyance disponibles au sein de votre 3ème pilier?',
     money: true,
   },
   {
     id: 'realEstateExists',
     type: 'buttons',
-    // text1: "Êtes-vous propriétaire d'autres biens immobiliers?",
     question: true,
     deleteId: 'realEstateArray',
     buttons: [
@@ -452,24 +363,10 @@ const getErrorArray = (state, props, setFormState) => [
   {
     id: 'notEnoughCash',
     error: true,
-    condition: state.usageType === 'primary' &&
-      (props.fortune < props.minCash && props.insuranceFortune >= 0.1 * props.propAndWork),
+    condition:
+      state.usageType === 'primary' &&
+        (props.fortune < props.minCash && props.insuranceFortune >= 0.1 * props.propAndWork),
     type: 'buttons',
-    // text1: (
-    //   <span>
-    //     Vous devez avoir au moins
-    //     {' '}
-    //     <span className="body">
-    //       CHF
-    //       {' '}
-    //       {toMoney(props.minCash)}
-    //     </span>
-    //     {' '}
-    //     <AutoTooltip>
-    //       de fortune (sans compter votre prévoyance) pour ce projet, vous pouvez modifier les valeurs en haut.
-    //     </AutoTooltip>
-    //   </span>
-    // ),
     intlValues: {
       value: (
         <span className="body">
@@ -507,17 +404,6 @@ const getErrorArray = (state, props, setFormState) => [
     error: true,
     condition: props.fortune + props.insuranceFortune < props.minFortune,
     type: 'buttons',
-    // text1: (
-    //   <span>
-    //     Vous devez avoir au moins
-    //     {' '}
-    //     <span className="body">CHF {toMoney(props.minFortune)}</span>
-    //     {' '}
-    //     <AutoTooltip>
-    //       de fonds propres pour ce projet, vous pouvez modifier les valeurs en haut.
-    //     </AutoTooltip>
-    //   </span>
-    // ),
     intlValues: {
       value: (
         <span className="body">
@@ -553,11 +439,6 @@ const getFinalArray = (state, props, setFormState) => [
     id: 'acceptedLoan',
     condition: state.type === 'acquisition',
     type: 'buttons',
-    // text1: (
-    //   <span>
-    //     Vous pouvez emprunter <span className="active">CHF {toMoney(props.maxLoan)}</span>.
-    //   </span>
-    // ),
     intlValues: {
       value: (
         <span className="active">
@@ -587,11 +468,6 @@ const getFinalArray = (state, props, setFormState) => [
     id: 'loanWanted',
     condition: state.type === 'acquisition' && state.acceptedLoan === false,
     type: 'sliderInput',
-    // text1: (
-    //   <span>
-    //     Combien voulez-vous emprunter ?
-    //   </span>
-    // ),
     child1: (
       <span className="loanWanted-slider">
         <div>
@@ -639,21 +515,11 @@ const getFinalArray = (state, props, setFormState) => [
   },
   {
     id: 'fortuneRequiredAgreed',
-    condition: state.type === 'acquisition' &&
-      (state.usageType !== 'primary' ||
-        (state.usageType === 'primary' && props.insuranceFortune <= 0)),
+    condition:
+      state.type === 'acquisition' &&
+        (state.usageType !== 'primary' ||
+          (state.usageType === 'primary' && props.insuranceFortune <= 0)),
     type: 'buttons',
-    // text1: (
-    //   <span>
-    //     Vous devrez donc mettre
-    //     {' '}
-    //     <span className="active">
-    //       CHF {toMoney(props.fortuneNeeded)}
-    //     </span>
-    //     {' '}
-    //     <AutoTooltip>de fonds propres.</AutoTooltip>
-    //   </span>
-    // ),
     intlValues: {
       value: (
         <span className="active">
@@ -674,12 +540,12 @@ const getFinalArray = (state, props, setFormState) => [
   },
   {
     id: 'useInsurance1',
-    condition: state.type === 'acquisition' &&
-      state.usageType === 'primary' &&
-      props.fortune >= props.fortuneNeeded &&
-      props.insuranceFortune > 0,
+    condition:
+      state.type === 'acquisition' &&
+        state.usageType === 'primary' &&
+        props.fortune >= props.fortuneNeeded &&
+        props.insuranceFortune > 0,
     type: 'buttons',
-    // text1: 'Voulez-vous utiliser votre fortune de prévoyance sur ce projet ?',
     buttons: [
       {
         id: true,
@@ -708,11 +574,11 @@ const getFinalArray = (state, props, setFormState) => [
   },
   {
     id: 'useInsurance2',
-    condition: state.type === 'acquisition' &&
-      state.usageType === 'primary' &&
-      props.fortune < props.fortuneNeeded,
+    condition:
+      state.type === 'acquisition' &&
+        state.usageType === 'primary' &&
+        props.fortune < props.fortuneNeeded,
     type: 'buttons',
-    // text1: 'Vous devrez utiliser votre fortune de prévoyance pour ce projet',
     buttons: [
       { id: true, label: 'Ok' },
       { id: undefined, label: <T id="Start2Form.whyButton" />, noPrimary: true },
@@ -723,7 +589,6 @@ const getFinalArray = (state, props, setFormState) => [
     id: 'insuranceConditions',
     condition: state.useInsurance1 === true || state.useInsurance2 === true,
     type: 'buttons',
-    // text1: 'Il y a des conditions pour pouvoir utiliser sa prévoyance, est-ce que vous les passez?',
     question: true,
     buttons: [
       {
@@ -764,28 +629,16 @@ const getFinalArray = (state, props, setFormState) => [
   },
   {
     id: 'fortuneSliders',
-    condition: state.type === 'acquisition' &&
-      state.usageType === 'primary' &&
-      (state.useInsurance1 === true || state.useInsurance2 === true) &&
-      state.insuranceConditions === true,
+    condition:
+      state.type === 'acquisition' &&
+        state.usageType === 'primary' &&
+        (state.useInsurance1 === true || state.useInsurance2 === true) &&
+        state.insuranceConditions === true,
     type: 'custom',
     component: FortuneSliders,
     validation: () =>
       state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= props.minFortune &&
       state.fortuneUsed >= props.minCash,
-    // text1: (
-    //   <span>
-    //     Vous devez donc mettre
-    //     {' '}
-    //     <span className="active">
-    //       CHF {toMoney(props.project - state.loanWanted)}
-    //     </span>
-    //     {' '}
-    //     <AutoTooltip>
-    //       de fonds propres, comment voulez-vous les répartir?
-    //     </AutoTooltip>
-    //   </span>
-    // ),
     intlValues: {
       value: (
         <span className="active">
@@ -811,17 +664,6 @@ const getFinalArray = (state, props, setFormState) => [
     error: true,
     condition: (props.income && props.monthly / ((props.income - props.expenses) / 12)) > 0.38,
     type: 'buttons',
-    // text1: (
-    //   <span>
-    //     Vos revenus disponibles (
-    //     <span className="body">
-    //       CHF {toMoney((props.income - props.expenses) / 12)}
-    //     </span>
-    //     /mois) sont insuffisants pour couvrir les coûts mensuels de ce projet (
-    //     <span className="body">CHF {toMoney(props.monthly)}</span>
-    //     ) sans représenter plus de 38% de ces revenus, vous pouvez modifier les valeurs en haut.
-    //   </span>
-    // ),
     intlValues: {
       value: (
         <span className="body">
@@ -857,10 +699,10 @@ const getFinalArray = (state, props, setFormState) => [
   },
   {
     id: 'finalized',
-    condition: state.type === 'test' ||
-      state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= props.minFortune,
+    condition:
+      state.type === 'test' ||
+        state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= props.minFortune,
     type: 'buttons',
-    // text1: 'Vous-êtes arrivé au bout, formidable!',
     hideResult: true,
     buttons: !state.hideFinalButton
       ? [

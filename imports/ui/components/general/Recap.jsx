@@ -682,7 +682,7 @@ const Recap = props => {
               key={item.label}
             >
               <h4 className="secondary">
-                <T id={item.label} tooltipPlacement="right" />
+                <T id={item.label} tooltipPlacement="bottom" />
               </h4>
               <h3 {...item.props}>{item.value}</h3>
             </div>
