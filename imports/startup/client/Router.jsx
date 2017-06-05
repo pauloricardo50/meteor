@@ -13,7 +13,10 @@ import PasswordPage from '/imports/ui/pages/public/PasswordPage.jsx';
 
 import PublicRoutes from './routes/PublicRoutes.jsx';
 // const PublicRoutes = Loadable({ loader: () => import('./routes/UserRoutes.jsx') });
-const UserRoutes = Loadable({ loader: () => import('./routes/UserRoutes.jsx') });
+
+import UserRoutes from './routes/UserRoutes.jsx';
+// const UserRoutes = Loadable({ loader: () => import('./routes/UserRoutes.jsx') });
+
 const AdminRoutes = Loadable({ loader: () => import('./routes/AdminRoutes.jsx') });
 const PartnerRoutes = Loadable({ loader: () => import('./routes/PartnerRoutes.jsx') });
 

@@ -10,6 +10,7 @@ import { swissFrancMask } from '/imports/js/helpers/textMasks';
 
 import LoadingButton from '/imports/ui/components/general/LoadingButton.jsx';
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 import { getFortune, getInsuranceFortune } from '/imports/js/helpers/finance-math';
 import { toNumber } from '/imports/js/helpers/conversionFunctions';
@@ -26,14 +27,14 @@ const handleClick = (props, state) => {
 
 const getArray = (borrowers, showInsurance) => [
   {
-    labelText: 'Épargne',
+    labelText: <T id="general.savings" />,
     id: 'fortuneUsed',
     sliderIncrement: 0,
     max: getFortune(borrowers),
   },
   ...(showInsurance
     ? {
-      labelText: 'Prévoyance',
+      labelText: <T id="general.insuranceFunds" />,
       id: 'insuranceFortuneUsed',
       sliderIncrement: 0,
       max: getInsuranceFortune(borrowers),
@@ -77,10 +78,9 @@ export default class StructurePage extends Component {
     return (
       <ProcessPage {...this.props} stepNb={2} id="structure" showBottom={false}>
         <section className="mask1">
-          <h1>Structure du Projet</h1>
           <div className="description">
             <p>
-              Vous pouvez ajuster la structure globale de votre projet une dernière fois, nous vous aiderons à la peaufiner.
+              <T id="StructurePage.description" />
             </p>
           </div>
 
@@ -112,7 +112,7 @@ export default class StructurePage extends Component {
 
           <div className="text-center" style={{ margin: '40px 0' }}>
             <LoadingButton
-              label="Valider la structure"
+              label={<T id="StructurePage.CTA" />}
               handleClick={() => handleClick(this.props, this.state)}
               value={!!this.props.loanRequest.logic.hasValidatedStructure}
             />

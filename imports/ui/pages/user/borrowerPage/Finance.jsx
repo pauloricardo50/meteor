@@ -9,6 +9,7 @@ import cleanMethod from '/imports/api/cleanMethods';
 import Recap from '/imports/ui/components/general/Recap';
 import constants from '/imports/js/config/constants';
 import LoadingButton from '/imports/ui/components/general/LoadingButton.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const styles = {
   div: {
@@ -51,10 +52,12 @@ const BorrowerFinancePage = props => {
     <section className="borrower-finance-page animated fadeIn" key={borrowerId}>
       <hr />
       <h2 className="text-center">
-        Mes Finances
+        <T id="Finance.title" />
         <br />
         {borrower.logic.hasValidatedFinances &&
-          <small className="success">Validées <span className="fa fa-check" /></small>}
+          <small className="success">
+            <T id="Finance.validated" /> <span className="fa fa-check" />
+          </small>}
       </h2>
 
       <div
@@ -65,12 +68,12 @@ const BorrowerFinancePage = props => {
           margin: '0 20px',
         }}
       >
-        <h3>Récapitulatif (en {constants.getCurrency()})</h3>
+        <h3><T id="Finance.recapTitle" values={{ currency: constants.getCurrency() }} /></h3>
         <Recap arrayName="borrower" borrower={borrower} />
       </div>
 
       <div className="description">
-        <p>Les champs marqués avec un * sont obligatoires.</p>
+        <p><T id="Forms.mandatory" /></p>
       </div>
 
       <AutoForm

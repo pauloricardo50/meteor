@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Session } from 'meteor/session';
 
+import { DocHead } from 'meteor/kadira:dochead';
+import { injectIntl } from 'react-intl';
+
 import getSteps from '/imports/js/arrays/steps';
 import ProcessPageBar from './ProcessPageBar.jsx';
 
@@ -36,9 +39,20 @@ export const getStepValues = props => {
   return { currentStep, index, length, nextLink, prevLink };
 };
 
-export default class ProcessPage extends Component {
+class ProcessPage extends Component {
+  constructor(props) {
+    super(props);
+
+    const values = getStepValues(this.props);
+    this.barProps = { ...this.props, ...values };
+  }
+
   componentDidMount() {
-    Session.set('stepNb', this.props.stepNb);
+    const { intl, stepNb } = this.props;
+    DocHead.setTitle(
+      `${intl.formatMessage({ id: `steps.${this.barProps.currentStep.id}.title` })} | e-Potek`,
+    );
+    Session.set('stepNb', stepNb);
   }
 
   componentWillUnmount() {
@@ -46,11 +60,9 @@ export default class ProcessPage extends Component {
   }
 
   render() {
-    const values = getStepValues(this.props);
-    const barProps = { ...this.props, ...values };
     return (
       <section className="page-title">
-        <ProcessPageBar {...barProps} className="top-bar" />
+        <ProcessPageBar {...this.barProps} className="top-bar" />
         <div className="children animated fadeIn">
           {this.props.children}
         </div>
@@ -75,3 +87,5 @@ ProcessPage.defaultProps = {
   serverTime: undefined,
   children: undefined,
 };
+
+export default injectIntl(ProcessPage);

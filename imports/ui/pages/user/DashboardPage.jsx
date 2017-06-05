@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Page from '/imports/ui/components/general/Page.jsx';
-
+import { T } from '/imports/ui/components/general/Translation.jsx';
 import NewRequestModal from './dashboardPage/NewRequestModal.jsx';
 import DashboardRecap from './dashboardPage/DashboardRecap.jsx';
 import DashboardCharts from './dashboardPage/DashboardCharts.jsx';
@@ -31,7 +31,7 @@ export default class DashboardPage extends Component {
 
   render() {
     return (
-      <Page title="Tableau de Bord" className="joyride-dashboard">
+      <Page id="DashboardPage" className="joyride-dashboard">
         <div className="container-fluid" style={{ width: '100%', padding: 0 }}>
 
           <div className="col-md-6 col-lg-4 joyride-recap" style={{ marginBottom: 15 }}>

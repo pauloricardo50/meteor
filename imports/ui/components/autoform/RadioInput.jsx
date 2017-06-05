@@ -65,14 +65,14 @@ export default class RadioInput extends Component {
   render() {
     return (
       <div style={{ ...styles.div, ...this.props.style }}>
-        <label htmlFor={this.props.label}>{this.props.label}</label>
+        <label htmlFor={this.props.id}>{this.props.label}</label>
         <RadioButtonGroup
-          name={this.props.label}
+          name={this.props.id}
           defaultSelected={this.state.value}
           onChange={this.props.onConditionalChange}
           style={styles.RadioButtonGroup}
         >
-          {this.props.options.map(option => (
+          {this.props.options.map(option =>
             <RadioButton
               label={option.label}
               value={option.id}
@@ -81,8 +81,8 @@ export default class RadioInput extends Component {
               style={styles.RadioButton}
               labelStyle={styles.RadioButtonLabel}
               disabled={this.props.disabled}
-            />
-          ))}
+            />,
+          )}
         </RadioButtonGroup>
         <FormValidator {...this.props} />
       </div>
@@ -92,16 +92,17 @@ export default class RadioInput extends Component {
 
 RadioInput.propTypes = {
   id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
   onConditionalChange: PropTypes.func,
   currentValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number]),
   documentId: PropTypes.string.isRequired,
   updateFunc: PropTypes.string.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
 };
 
 RadioInput.defaultProps = {
   currentValue: undefined,
   onConditionalChange: () => null,
+  disabled: false,
 };

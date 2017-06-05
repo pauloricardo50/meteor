@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
 import ConfirmButton from '/imports/ui/components/general/ConfirmButton.jsx';
 import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 import { filesPercent } from '/imports/js/arrays/steps';
 import { borrowerFiles, requestFiles } from '/imports/js/arrays/files';
@@ -17,10 +18,12 @@ const getAction = (request, percent) => {
   if (!request.logic.lender.closingRequested) {
     return (
       <div className="text-center" style={{ marginBottom: 40 }}>
-        <h4>Progrès: {Math.round(percent * 1000) / 10}%</h4>
+        <h4>
+          <T id="ClosingPage.progress" values={{ value: percent }} />
+        </h4>
         <ConfirmButton
           disabled={percent < 1}
-          label="Demander le décaissement"
+          label={<T id="ClosingPage.CTA" />}
           secondary
           handleClick={() => handleClick(request._id)}
         />
@@ -29,7 +32,7 @@ const getAction = (request, percent) => {
   }
   return (
     <div className="text-center">
-      <h4>Vous serez notifié par e-mail lorsque votre prêteur est disposé au décaissement.</h4>
+      <h4><T id="ClosingPage.loading" /></h4>
       <div style={{ height: 150 }}>
         <LoadingComponent />
       </div>
@@ -46,10 +49,9 @@ const ClosingPage = props => {
   return (
     <ProcessPage {...props} stepNb={3} id="contract" showBottom={false}>
       <div className="mask1">
-        <h1>Décaissez votre prêt</h1>
         <div className="description">
           <p>
-            Lorsque vous avez soumis les derniers documents, vous pourrez demander à votre prêteur de décaisser le prêt.
+            <T id="ClosingPage.description" />
           </p>
         </div>
 

@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { injectIntl } from 'react-intl';
 
 import OffersTable from '/imports/ui/components/general/OffersTable.jsx';
 import FakeOfferAdder from '/imports/ui/components/general/FakeOfferAdder.jsx';
 import OfferToggle from '/imports/ui/components/general/OfferToggle.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 import CountUp from 'react-countup';
 
@@ -96,7 +98,7 @@ const getFakeOffers = props => {
   ];
 };
 
-export default class Results extends Component {
+class AuctionResults extends Component {
   constructor(props) {
     super(props);
 
@@ -106,9 +108,10 @@ export default class Results extends Component {
   }
 
   render() {
+    const f = this.props.intl.formatMessage;
     return (
       <section className="mask1 animated fadeIn" style={styles.section}>
-        <h1>Résultats des enchères</h1>
+        <h1><T id="AuctionResults.title" /></h1>
 
         <h1 className="text-center display2" style={styles.countUp}>
           <CountUp
@@ -120,16 +123,13 @@ export default class Results extends Component {
             separator=" "
             decimal=","
             prefix=""
-            suffix=" Offres reçues"
+            suffix={f({ id: AuctionResults.countSuffix })}
           />
         </h1>
 
         <div className="description">
           <p>
-            Voici les offres que vous ont fait les prêteurs. Attention, ces taux sont indicatifs, et les taux les plus bas ne correspondent pas toujours à ce dont vous avez besoin.
-            <br /><br />
-            Vous pouvez dès à présent choisir le prêteur que vous voulez et avoir une estimation
-            très précise de ce que ce prêt va vous coûter.
+            <T id="AuctionResults.description" />
           </p>
         </div>
 
@@ -149,11 +149,13 @@ export default class Results extends Component {
   }
 }
 
-Results.propTypes = {
+AuctionResults.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   offers: PropTypes.arrayOf(PropTypes.any),
 };
 
-Results.defaultProps = {
+AuctionResults.defaultProps = {
   offers: [],
 };
+
+export default injectIntl(AuctionResults);

@@ -9,9 +9,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import AccountPage from '../user/AccountPage.jsx';
 import AuctionPage from '../user/AuctionPage.jsx';
 import BorrowerPage from '../user/BorrowerPage.jsx';
-import ContactPage from '../user/ContactPage.jsx';
 import DashboardPage from '../user/DashboardPage.jsx';
-import ExpertisePage from '../user/ExpertisePage.jsx';
 import ContractPage from '../user/ContractPage.jsx';
 import ClosingPage from '../user/ClosingPage.jsx';
 import LenderPickerPage from '../user/LenderPickerPage.jsx';
@@ -39,9 +37,7 @@ const pages = {
   AccountPage,
   AuctionPage,
   // BorrowerPage,
-  ContactPage,
   DashboardPage,
-  ExpertisePage,
   ContractPage,
   ClosingPage,
   LenderPickerPage,

@@ -7,6 +7,7 @@ import { personalInfoPercent } from '/imports/js/arrays/steps';
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 import FakeBorrowerCompleter from '/imports/ui/components/general/FakeBorrowerCompleter.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const BorrowerInfoPage = props => {
   const borrowerId = props.match.params.borrowerId;
@@ -17,16 +18,16 @@ const BorrowerInfoPage = props => {
     <section className="animated fadeIn" key={borrowerId}>
       <hr />
       <h2 className="text-center">
-        Mes Informations Personelles
+        <T id="Info.title" />
         <br />
         <small className={percent >= 1 && 'success'}>
-          Progrès: {Math.round(percent * 1000) / 10}%
+          <T id="general.progress" value={{ value: percent }} />
           {' '}
           {percent >= 1 && <span className="fa fa-check" />}
         </small>
       </h2>
       <div className="description">
-        <p>Les champs marqués avec un * sont obligatoires.</p>
+        <p><T id="Forms.mandatory" /></p>
       </div>
 
       <AutoForm

@@ -8,6 +8,7 @@ import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
 import ConfirmButton from '/imports/ui/components/general/ConfirmButton.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 export default class VerificationPage extends Component {
   handleClick = () => {
@@ -28,10 +29,10 @@ export default class VerificationPage extends Component {
       content = (
         <div className="text-center animated fadeIn" style={{ margin: '40px 0' }}>
           <h1 className="success">
-            Votre dossier est valide! <span className="fa fa-check" />
+            <T id="VerificationPage.successTitle" /> <span className="fa fa-check" />
           </h1>
           <p className="description">
-            Les informations que vous nous avez confiées nous ont permis de vérifier l'intégrité et la qualité de votre demande de prêt.
+            <T id="VerificationPage.successDescription" />
           </p>
         </div>
       );
@@ -39,13 +40,11 @@ export default class VerificationPage extends Component {
       content = (
         <div className="text-center animated fadeIn" style={{ margin: '40px 0' }}>
           <h1 className="warning">
-            Il y a eu un petit souci <span className="fa fa-times" />
+            <T id="VerificationPage.failedTitle" /> <span className="fa fa-times" />
           </h1>
           <div className="description">
             <p>
-              Votre expert a vérifié votre dossier, et y a trouvé une faille. Veuillez addresser les points ci-dessous puis demander une re-vérification.
-              <br /><br />
-              N'hésitez pas à appeler votre expert en cas de doute.
+              <T id="VerificationPage.failedDescription" />
             </p>
           </div>
           <ul style={{ margin: '20px 0' }} className="verification-comment-list">
@@ -59,7 +58,11 @@ export default class VerificationPage extends Component {
               <LoadingComponent />
             </div>
             : <div style={{ marginTop: 40 }}>
-              <ConfirmButton label="Re-Vérifier" primary handleClick={this.handleClick} />
+              <ConfirmButton
+                label={<T id="VerificationPage.CTA2" />}
+                primary
+                handleClick={this.handleClick}
+              />
             </div>}
         </div>
       );
@@ -68,7 +71,7 @@ export default class VerificationPage extends Component {
         <article>
           <div className="description">
             <p>
-              Votre dossier va être analysé en détail par les professionels d'e-Potek, et votre conseiller vous aidera pour préparer la meilleure demande possible.
+              <T id="VerificationPage.description" />
             </p>
           </div>
           {verification.requested
@@ -77,10 +80,10 @@ export default class VerificationPage extends Component {
             </div>
             : <div className="text-center" style={{ margin: '40px 0' }}>
               <ConfirmButton
-                label="Envoyer mon dossier"
+                label={<T id="VerificationPage.CTA" />}
                 primary
                 handleClick={this.handleClick}
-                text="Vous ne pourrez plus modifier vos informations et vos documents"
+                text={<T id="VerificationPage.CTA.warning" />}
               />
             </div>}
         </article>
@@ -90,7 +93,6 @@ export default class VerificationPage extends Component {
     return (
       <ProcessPage {...this.props} stepNb={1} id="verification" showBottom={false}>
         <section className="mask1">
-          <h1>Faites la vérification</h1>
 
           {content}
         </section>

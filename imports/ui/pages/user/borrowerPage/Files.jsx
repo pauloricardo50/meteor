@@ -6,6 +6,7 @@ import DropzoneArray from '/imports/ui/components/general/DropzoneArray.jsx';
 import { filesPercent } from '/imports/js/arrays/steps';
 import { borrowerFiles } from '/imports/js/arrays/files';
 import RadioInput from '/imports/ui/components/autoform/RadioInput.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const styles = {
   section: {
@@ -37,10 +38,10 @@ export default class Files extends Component {
       <section className="animated fadeIn" key={this.props.borrower._id} style={styles.section}>
         <hr />
         <h2 className="text-center">
-          Mes Documents
+          <T id="Files.title" />
           <br />
           <small className={percent >= 1 && 'success'}>
-            Progrès: {Math.round(percent * 1000) / 10}%
+            <T id="general.progress" values={{ value: percent }} />
             {' '}
             {percent >= 1 && <span className="fa fa-check" />}
           </small>
@@ -48,25 +49,24 @@ export default class Files extends Component {
 
         <div className="description">
           <p>
-            <div className="text-center">
+            <div className="text-center" style={{ textAlign: 'center' }}>
               <span className="fa fa-lock fa-3x" />
             </div>
             <br />
-            Voici l'endroit où vous pouvez uploader vos document en toute confidentialité. Votre conseiller attitré
-            {' '}
-            <Link to="/app/contact" className="active">Yannis</Link>
-            {' '}
-            est le seul à y avoir accès.
+            <T id="Files.description" />
           </p>
         </div>
 
-        <h3 className="text-center">Documents de base</h3>
+        <h3 className="text-center"><T id="Files.files1.title" /></h3>
 
         <div style={styles.radioDiv}>
           <RadioInput
             id="hasChangedSalary"
-            label="Est-ce que votre salaire est différent de votre dernière déclaration fiscale?"
-            options={[{ id: true, label: 'Oui' }, { id: false, label: 'Non' }]}
+            label={<T id="Files.hasChangedSalary" />}
+            options={[
+              { id: true, label: <T id="general.yes" /> },
+              { id: false, label: <T id="general.no" /> },
+            ]}
             currentValue={this.props.borrower.hasChangedSalary}
             documentId={this.props.borrower._id}
             updateFunc="updateBorrower"
@@ -77,6 +77,7 @@ export default class Files extends Component {
           array={borrowerFiles(this.props.borrower).auction}
           documentId={this.props.borrower._id}
           pushFunc="pushBorrowerValue"
+          updateFunc="updateBorrower"
           collection="borrowers"
           filesObject={this.props.borrower.files}
           filesObjectSelector="files"

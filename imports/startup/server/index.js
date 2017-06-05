@@ -1,14 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import { Inject } from 'meteor/meteorhacks:inject-initial';
 
-import setupAuth from './http-auth.js';
-
 import '/imports/js/server/emails';
 import '/imports/js/server/methods';
+import '/imports/js/server/files';
 import '/imports/api/api';
 import '../accounts-config';
 import './accounts-server-config';
 import './meteor-slingshot-server';
+import setupAuth from './http-auth.js';
 
 Meteor.startup(() => {
   // Do something on startup if necessary

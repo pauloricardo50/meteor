@@ -3,8 +3,8 @@ import React, { PropTypes } from 'react';
 import Recap from '/imports/ui/components/general/Recap.jsx';
 
 import FlatButton from 'material-ui/FlatButton';
-import { toMoney } from '/imports/js/helpers/conversionFunctions';
-import { getLoanValue } from '/imports/js/helpers/requestFunctions';
+
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const styles = {
   recap: {
@@ -52,9 +52,15 @@ export default class DashboardRecap extends React.Component {
     return (
       <div className="mask1">
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <h4 className="fixed-size bold" style={{ marginTop: 0 }}>Plan Financier</h4>
+          <h4 className="fixed-size bold" style={{ marginTop: 0 }}>
+            <T id="DashboardRecap.title" />
+          </h4>
           <FlatButton
-            label={this.state.showDetail ? 'Général' : 'Détail'}
+            label={
+              this.state.showDetail
+                ? <T id="DashboardRecap.overview" />
+                : <T id="DashboardRecap.detail" />
+            }
             onTouchTap={this.handleToggle}
             primary
           />

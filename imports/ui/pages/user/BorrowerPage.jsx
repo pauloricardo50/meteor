@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
-import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
 import Info from './borrowerPage/Info.jsx';
 import Finance from './borrowerPage/Finance.jsx';
 import Files from './borrowerPage/Files.jsx';
-import Header from './borrowerPage/Header.jsx';
+import BorrowerHeader from './borrowerPage/BorrowerHeader.jsx';
 
 const styles = {
   div: {
@@ -28,31 +28,30 @@ const styles = {
   },
 };
 
-const Links = props => (
+const Links = props =>
   <div className="borrower-links text-center">
     <Link
       to={`/app/requests/${props.requestId}/borrowers/${props.borrower._id}/personal`}
       className={props.tab === 'personal' && 'active'}
     >
       <span className="fa fa-user" />
-      <h4>Perso</h4>
+      <h4><T id="BorrowerPage.personal" /></h4>
     </Link>
     <Link
       to={`/app/requests/${props.requestId}/borrowers/${props.borrower._id}/finance`}
       className={props.tab === 'finance' && 'active'}
     >
       <span className="fa fa-money" />
-      <h4>Finances</h4>
+      <h4><T id="BorrowerPage.finance" /></h4>
     </Link>
     <Link
       to={`/app/requests/${props.requestId}/borrowers/${props.borrower._id}/files`}
       className={props.tab === 'files' && 'active'}
     >
       <span className="fa fa-files-o" />
-      <h4>Documents</h4>
+      <h4><T id="BorrowerPage.files" /></h4>
     </Link>
-  </div>
-);
+  </div>;
 
 export default class BorrowerPage extends Component {
   constructor(props) {
@@ -95,7 +94,7 @@ export default class BorrowerPage extends Component {
     return (
       <ProcessPage {...this.props} stepNb={1} id={this.state.tab}>
         <section className="mask1 borrower-page">
-          <Header borrower={borrower} {...this.props} index={index} />
+          <BorrowerHeader borrower={borrower} {...this.props} index={index} />
           <Links borrower={borrower} {...this.props} tab={this.state.tab} requestId={requestId} />
 
           {this.getContent()}

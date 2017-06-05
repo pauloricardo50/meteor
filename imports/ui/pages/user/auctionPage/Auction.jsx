@@ -5,14 +5,15 @@ import moment from 'moment';
 
 import OffersTable from '/imports/ui/components/general/OffersTable.jsx';
 import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 require('moment-duration-format');
 
-var time;
+let time;
 
 const styles = {
   p: {
-    paddingBottom: 150,
+    paddingBottom: 40,
   },
   tableDiv: {
     overflow: 'scroll',
@@ -65,19 +66,16 @@ export default class Auction extends Component {
   render() {
     return (
       <section className="mask1 animated fadeIn">
-        <h2>Enchères en cours..</h2>
+        <h2><T id="Auction.title" /></h2>
         <div className="text-center" style={styles.timer}>
           <h1 className="display3">{this.state.remainingTime}</h1>
         </div>
         <p className="disabled text-center" style={styles.p}>
-          Vous recevrez une notification lorsque ce sera terminé
+          <T id="Auction.notified" />
         </p>
-        <div style={styles.tableDiv}>
-          <OffersTable offers={[]} />
-        </div>
         <div>
           <p className="secondary bold text-center animated pulse infinite">
-            Bataille des prêteurs en cours
+            <T id="Auction.tableText" />
           </p>
           <div style={{ height: 150 }}>
             <LoadingComponent />

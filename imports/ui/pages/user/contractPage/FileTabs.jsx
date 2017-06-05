@@ -5,34 +5,35 @@ import DropzoneArray from '/imports/ui/components/general/DropzoneArray.jsx';
 
 import { requestFiles, borrowerFiles } from '/imports/js/arrays/files';
 
-const FileTabs = props => (
+const FileTabs = props =>
   <div>
-    {props.borrowers.map(b => (
+    {props.borrowers.map(b =>
       <div style={{ margin: '40px 0' }} key={b._id}>
         <h2 className="text-center">{b.firstName}</h2>
         <DropzoneArray
           array={borrowerFiles(b).contract}
           documentId={b._id}
           pushFunc="pushBorrowerValue"
+          pushFunc="updateBorrower"
           collection="borrowers"
           filesObject={b.files}
           filesObjectSelector="files"
         />
-      </div>
-    ))}
+      </div>,
+    )}
     <div style={{ margin: '40px 0' }}>
       <h2 className="text-center">Bien Immobilier</h2>
       <DropzoneArray
         array={requestFiles(props.loanRequest).contract}
         documentId={props.loanRequest._id}
         pushFunc="pushRequestValue"
+        pushFunc="updateRequest"
         collection="loanRequests"
         filesObject={props.loanRequest.files}
         filesObjectSelector="files"
       />
     </div>
-  </div>
-);
+  </div>;
 
 FileTabs.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,

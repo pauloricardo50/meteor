@@ -69,8 +69,8 @@ export default class LenderPickerPage extends React.Component {
       amortizationStrategyPreset: r.logic.amortizationStrategyPreset,
       loanStrategyPreset: r.logic.loanStrategyPreset,
       loanTranches: r.general.loanTranches || [],
-      loanStrategyValidated: r.logic.loanStrategyPreset &&
-        loanStrategySuccess(r.general.loanTranches, getLoanValue(r)),
+      loanStrategyValidated:
+        r.logic.loanStrategyPreset && loanStrategySuccess(r.general.loanTranches, getLoanValue(r)),
       standard: true,
     };
   }
@@ -143,16 +143,12 @@ export default class LenderPickerPage extends React.Component {
         showBottom={!!this.props.loanRequest.logic.lender.offerId}
       >
         <section className="mask1 partner-picker">
-          <h1 className="text-center" style={{ marginBottom: 50 }}>
-            Choisissez votre prêteur
-          </h1>
-
-          {this.getSteps().map((step, i) => (
+          {this.getSteps().map((step, i) =>
             <Scroll.Element name={`${i}`} key={i}>
               {i > 0 && <hr />}
               {step}
-            </Scroll.Element>
-          ))}
+            </Scroll.Element>,
+          )}
         </section>
       </ProcessPage>
     );

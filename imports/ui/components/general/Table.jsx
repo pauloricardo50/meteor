@@ -26,7 +26,7 @@ export default class Table extends Component {
     } = this.props;
 
     // Make sure columns and rows are the same length
-    if (columns.length !== rows[0].columns.length) {
+    if (rows.length && columns.length !== rows[0].columns.length) {
       throw Error();
     }
 

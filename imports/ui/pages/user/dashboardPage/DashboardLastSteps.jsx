@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import colors from '/imports/js/config/colors';
 
+import { T, IntlDate } from '/imports/ui/components/general/Translation.jsx';
+
 const styles = {
   div: {
     marginBottom: 15,
@@ -14,25 +16,37 @@ const styles = {
 const DashboardLastSteps = props => {
   return (
     <div className="mask1" style={styles.div}>
-      <h4 className="fixed-size bold" style={{ marginTop: 0 }}>Date de Décaissement</h4>
+      <h4 className="fixed-size bold" style={{ marginTop: 0 }}>
+        <T id="DashboardLastSteps.title" />
+      </h4>
 
       <h3 className="text-center">
-        {moment(props.loanRequest.general.wantedClosingDate).format('dddd, D MMMM YYYY')}
+        <IntlDate
+          value={props.loanRequest.general.wantedClosingDate}
+          month="long"
+          year="numeric"
+          weekday="long"
+          day="2-digit"
+        />
+
+        {/* {moment(props.loanRequest.general.wantedClosingDate).format('dddd, D MMMM YYYY')} */}
       </h3>
 
       <hr />
-      <h4 className="fixed-size bold" style={{ marginTop: 0 }}>Dernières Étapes</h4>
+      <h4 className="fixed-size bold" style={{ marginTop: 0 }}>
+        <T id="DashboardLastSteps.subtitle" />
+      </h4>
 
       <div>
-        <span className="bold">Obtenir le contrat</span>
+        <span className="bold"><T id="DashboardLastSteps.contract" /></span>
         <br />
-        <span>Documents nécessaires: 0/9</span>
+        <span><T id="DashboardLastSteps.progress" values={{ value: '0', total: 9 }} /></span>
       </div>
       <br />
       <div>
-        <span className="bold">Décaisser le prêt</span>
+        <span className="bold"><T id="DashboardLastSteps.closing" /></span>
         <br />
-        <span>Progrès: 0/7</span>
+        <span><T id="DashboardLastSteps.progress" values={{ value: '0', total: 7 }} /></span>
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ import { requestFiles } from '/imports/js/arrays/files';
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 import FakePropertyCompleter from '/imports/ui/components/general/FakePropertyCompleter.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const styles = {
   topDiv: {
@@ -37,23 +38,24 @@ const PropertyPage = props => {
     <ProcessPage {...props} stepNb={1} id="property">
       <section className="mask1 property-page">
         <h1 className="text-center">
-          {props.borrowers.length > 1 ? 'Notre bien immobilier' : 'Mon bien immobilier'}
+          <T id="PropertyPage.title" values={{ count: props.borrowers.length }} />
           <br />
           <small className={percent >= 1 && 'success'}>
-            Progrès: {Math.round(percent * 1000) / 10}%
+            <T id="PropertyPage.progress" values={{ value: percent }} />
             {' '}
             {percent >= 1 && <span className="fa fa-check" />}
           </small>
         </h1>
 
         <div className="description">
-          <p>Les champs marqués avec un * sont obligatoires.</p>
+          <p><T id="Forms.mandatory" /></p>
         </div>
 
         <DropzoneArray
           array={requestFiles(props.borrower).auction}
           documentId={props.loanRequest._id}
           pushFunc="pushRequestValue"
+          updateFunc="pushRequestValue"
           collection="loanRequests"
           filesObject={props.loanRequest.files}
           filesObjectSelector="files"
