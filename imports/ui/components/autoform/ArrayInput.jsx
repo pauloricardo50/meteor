@@ -4,6 +4,7 @@ import cleanMethod from '/imports/api/cleanMethods';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
 import TextInput from './TextInput.jsx';
 import SelectFieldInput from './SelectFieldInput.jsx';
 
@@ -40,9 +41,10 @@ export default class ArrayInput extends React.Component {
               ...this.props,
               ...input,
               id: `${this.props.id}.${i}.${input.id}`,
-              currentValue: this.props.currentValue &&
-                this.props.currentValue[i] &&
-                this.props.currentValue[i][input.id],
+              currentValue:
+                this.props.currentValue &&
+                  this.props.currentValue[i] &&
+                  this.props.currentValue[i][input.id],
               key: input.id,
             };
 
@@ -84,7 +86,8 @@ export default class ArrayInput extends React.Component {
         <FormValidator {...this.props} />
 
         <div className="text-center">
-          {this.state.count <= 0 && <RaisedButton label="Ajouter" onTouchTap={this.addValue} />}
+          {this.state.count <= 0 &&
+            <RaisedButton label={<T id="ArrayInput.add" />} onTouchTap={this.addValue} />}
           {this.state.count > 0 &&
             <RaisedButton
               label="-"

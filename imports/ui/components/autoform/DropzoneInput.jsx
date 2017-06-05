@@ -5,6 +5,8 @@ import cleanMethod from '/imports/api/cleanMethods';
 
 import DropzoneComponent from 'react-dropzone-component';
 
+import { injectIntl } from 'react-intl';
+
 const handleSave = (props, file) => {
   let fileNameCount = '00';
   let fileCount = 0;
@@ -29,30 +31,32 @@ const handleSave = (props, file) => {
 
 // Gets already uploaded files and simulates them being added to the dropzone
 // so they appear properly
-const getUploadedFiles = (props, myDropzone) => {
+const getUploadedFiles = ({ currentValue }, myDropzone) => {
   // https://github.com/enyo/dropzone/wiki/FAQ#how-to-show-files-already-stored-on-server
-  if (props.currentValue) {
-    props.currentValue.forEach(file => {
+  if (currentValue) {
+    currentValue.forEach(file => {
       myDropzone.emit('addedfile', file);
       myDropzone.emit('complete', file);
     });
   }
 };
 
-const componentConfig = props => ({
+const componentConfig = ({ currentValue }) => ({
   iconFiletypes: ['.jpg', '.png', '.pdf'],
-  showFiletypeIcon: !props.currentValue || (props.currentValue && props.currentValue.length < 1), // Show if there are no uploaded files
+  showFiletypeIcon: !currentValue || (currentValue && currentValue.length < 1), // Show if there are no uploaded files
   postUrl: '/', // Modified later
 });
 
 const djsConfig = props => ({
   method: 'POST',
   autoProcessQueue: true,
-  dictDefaultMessage: props.message,
-  dictCancelUpload: 'Annuler',
-  dictCancelUploadConfirmation: 'Êtes-vous sûr?',
-  dictRemoveFile: 'Supprimer',
-  dictInvalidFileType: 'Vous ne pouvez pas uploader un fichier de ce type',
+  dictDefaultMessage: props.intl.formatMessage({ id: 'DropzoneInput.message' }),
+  dictCancelUpload: props.intl.formatMessage({ id: 'DropzoneInput.cancelUpload' }),
+  dictCancelUploadConfirmation: props.intl.formatMessage({
+    id: 'DropzoneInput.cancelUploadConfirmation',
+  }),
+  dictRemoveFile: props.intl.formatMessage({ id: 'DropzoneInput.removeFile' }),
+  dictInvalidFileType: props.intl.formatMessage({ id: 'DropzoneInput.invalidFileType' }),
   maxFilesize: 100, // MB
   clickable: true,
   acceptedFiles: 'image/*,application/pdf',
@@ -95,7 +99,7 @@ const eventHandlers = props => ({
   },
 });
 
-const DropzoneInput = props => (
+const DropzoneInput = props =>
   <div>
     {props.label && <h3 htmlFor={props.id}>{props.label}</h3>}
     <DropzoneComponent
@@ -104,13 +108,11 @@ const DropzoneInput = props => (
       eventHandlers={eventHandlers(props)}
       djsConfig={djsConfig(props)}
     />
-  </div>
-);
+  </div>;
 
 DropzoneInput.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string,
-  message: PropTypes.string,
   currentValue: PropTypes.arrayOf(PropTypes.object),
   mongoId: PropTypes.string.isRequired,
   documentId: PropTypes.string.isRequired,
@@ -120,8 +122,7 @@ DropzoneInput.propTypes = {
 
 DropzoneInput.defaultProps = {
   label: '',
-  message: 'Déposez un ou plusieurs fichiers ici, ou cliquez pour choisir',
   currentValue: undefined,
 };
 
-export default DropzoneInput;
+export default injectIntl(DropzoneInput);

@@ -56,19 +56,20 @@ export default class Tooltip extends Component {
     }
 
     return (
-      <Transition hide={hide}>
-        {({ key, style }) =>
-          <Popover
-            {...this.props}
-            id={baseId}
-            key={key}
-            style={{ opacity: style.opacity, transform: `scale(${style.scale})` }}
-            positionTop={getPositionTop(positionTop, baseId, placement)}
-            positionLeft={getPositionLeft(positionLeft, baseId, placement)}
-          >
-            {content}
-          </Popover>}
-      </Transition>
+      // <Transition hide={hide}>
+      //   {({ key, style }) =>
+      <Popover
+        {...this.props}
+        id={baseId}
+        // key={key}
+        // style={{ opacity: style.opacity, transform: `scale(${style.scale})` }}
+        // positionTop={getPositionTop(positionTop, baseId, placement)}
+        // positionLeft={getPositionLeft(positionLeft, baseId, placement)}
+      >
+        {content}
+      </Popover>
+      // }
+      // </Transition>
     );
   }
 }

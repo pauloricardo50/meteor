@@ -70,7 +70,7 @@ const TopNavDropdown = props =>
     )}
     <Divider />
     <MenuItem
-      primaryText={<T id="TopNavDropdown.logout" />}
+      primaryText={<T id="general.logout" />}
       onTouchTap={() => Meteor.logout(() => props.history.push('/home'))}
     />
   </IconMenu>;
