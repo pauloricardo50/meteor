@@ -3,6 +3,8 @@ import React from 'react';
 
 import Toggle from 'material-ui/Toggle';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
+
 const styles = {
   div: {
     display: 'flex',
@@ -25,7 +27,7 @@ const OfferToggle = props => {
         onTouchTap={() => props.handleToggle(null, false)}
         style={styles.span}
       >
-        Offres standard ({standardCount})
+        <T id="OfferToggle.standard" values={{ count: standardCount }} />
       </span>
       <Toggle
         toggled={props.value}
@@ -37,7 +39,7 @@ const OfferToggle = props => {
         onTouchTap={() => props.handleToggle(null, true)}
         style={styles.span}
       >
-        Offres avec contrepartie ({counterpartCount})
+        <T id="OfferToggle.counterpart" values={{ count: counterpartCount }} />
       </span>
     </div>
   );

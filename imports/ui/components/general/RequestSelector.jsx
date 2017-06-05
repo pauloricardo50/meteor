@@ -6,6 +6,8 @@ import Divider from 'material-ui/Divider';
 import BuildingIcon from 'material-ui/svg-icons/communication/business';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
+
 const styles = {
   div: {
     width: '90%',
@@ -25,7 +27,7 @@ const handleChange = (value, props) => {
   }
 };
 
-const RequestSelector = props => (
+const RequestSelector = props =>
   <div style={styles.div}>
     <DropDownMenu
       value={props.currentValue}
@@ -33,19 +35,18 @@ const RequestSelector = props => (
       autoWidth={false}
       style={styles.dropdown}
     >
-      {props.loanRequests.map(r => (
+      {props.loanRequests.map(r =>
         <MenuItem
           key={r._id}
           value={r._id}
           primaryText={r.name}
           leftIcon={r.property.style === 'villa' ? <HomeIcon /> : <BuildingIcon />}
-        />
-      ))}
+        />,
+      )}
       {props.loanRequests.length > 0 && <Divider />}
-      <MenuItem value={0} primaryText="Ajouter nouvelle demande" />
+      <MenuItem value={0} primaryText={<T id="RequestSelector.addRequest" />} />
     </DropDownMenu>
-  </div>
-);
+  </div>;
 
 RequestSelector.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.object),

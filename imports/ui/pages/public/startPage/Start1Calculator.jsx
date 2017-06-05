@@ -16,9 +16,7 @@ import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
 import Start1Line from './Start1Line.jsx';
 import Start1Recap from './Start1Recap.jsx';
 
-const ExpensesChartInterests = Loadable({
-  loader: () => import('/imports/ui/components/charts/ExpensesChartInterests.jsx'),
-});
+import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
 
 const Start1Calculator = props => {
   const {

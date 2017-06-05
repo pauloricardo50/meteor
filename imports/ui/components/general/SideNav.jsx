@@ -15,24 +15,6 @@ const styles = {
   },
 };
 
-const userLinks = [
-  {
-    link: '/app',
-    icon: <span className="icon fa fa-home fa-2x" />,
-    label: 'Tableau de Bord',
-  },
-  {
-    link: '/app/profile',
-    icon: <span className="icon fa fa-user-circle fa-2x" />,
-    label: 'Mon Profil',
-  },
-  {
-    link: '/app/contact',
-    icon: <span className="icon fa fa-phone-square fa-2x" />,
-    label: 'Votre Conseiller',
-  },
-];
-
 const adminLinks = [
   {
     link: '/admin',
@@ -68,9 +50,6 @@ const SideNav = props => {
   let links = [];
 
   switch (props.type) {
-    case 'user':
-      links = userLinks;
-      break;
     case 'admin':
       links = adminLinks;
       break;
@@ -94,14 +73,14 @@ const SideNav = props => {
       </Link>
 
       <ul className="side-nav-list">
-        {links.map(link => (
+        {links.map(link =>
           <li key={link.link}>
             <NavLink exact to={link.link} activeClassName="active-link">
               {link.icon}
               <h5>{link.label}</h5>
             </NavLink>
-          </li>
-        ))}
+          </li>,
+        )}
       </ul>
 
       <div className="logout text-center">

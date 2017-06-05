@@ -10,6 +10,8 @@ import { DocHead } from 'meteor/kadira:dochead';
 import cleanMethod from '/imports/api/cleanMethods';
 import { getWidth } from '/imports/js/helpers/browserFunctions';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
+
 const styles = {
   button: {
     marginLeft: 8,
@@ -64,14 +66,20 @@ export default class ProcessPageBar extends Component {
           {showBackButton &&
             <RaisedButton
               icon={this.state.smallWidth ? <ArrowLeft /> : undefined}
-              label={this.state.smallWidth ? '' : 'Précédent'}
+              label={this.state.smallWidth ? '' : <T id="ProcessPageBar.previous" />}
               style={this.state.smallWidth ? styles.smallButton : styles.button}
               disabled={!this.props.prevLink}
               containerElement={this.props.prevLink ? <Link to={this.props.prevLink} /> : undefined}
             />}
           <RaisedButton
             icon={this.state.smallWidth ? <ArrowRight /> : undefined}
-            label={this.state.smallWidth ? '' : lastPartOfStep ? 'Prochaine étape' : 'Suivant'}
+            label={
+              this.state.smallWidth
+                ? ''
+                : lastPartOfStep
+                  ? <T id="ProcessPageBar.nextStep" />
+                  : <T id="ProcessPageBar.next" />
+            }
             style={this.state.smallWidth ? styles.smallButton : styles.button}
             secondary={this.props.currentStep.isDone()}
             disabled={!this.props.nextLink || (lastPartOfStep && !this.props.currentStep.isDone())}

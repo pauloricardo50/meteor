@@ -11,36 +11,14 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
   const steps = [
     {
       nb: 0,
-      title: '0. Passez le test',
-      subtitle: '5 min',
       items: [],
     },
 
-    // Step 1
     {
       nb: 1,
-      title: '1. Préparez votre dossier',
-      subtitle: '15 minutes',
       items: [
-        // ...borrowers.map((b, i) => ({
-        //   id: `profile${i}`,
-        //   title: `Complétez votre profil ${borrowers.length > 1 ? i + 1 : ''}`,
-        //   subtitle: '15 min',
-        //   link: `/app/requests/${loanRequest._id}/borrowers/${b._id}`,
-        //   percent: () => {
-        //     const personal = personalInfoPercent([b]);
-        //     const files = auctionFilesPercent([b]);
-        //     const finance = b.logic.hasValidatedFinances ? 1 : 0;
-        //     return (personal + files + finance) / 3;
-        //   },
-        //   isDone() {
-        //     return this.percent() >= 1;
-        //   },
-        // })),
         {
           id: 'personal',
-          title: 'Dites en plus sur vous',
-          subtitle: '1 min',
           link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}/personal`,
           percent: () => personalInfoPercent(borrowers),
           isDone() {
@@ -49,15 +27,11 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         },
         {
           id: 'finance',
-          title: 'Vérifiez vos finances',
-          subtitle: '20 sec',
           link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}/finance`,
           isDone: () => borrowers.reduce((res, b) => res && b.logic.hasValidatedFinances, true),
         },
         {
           id: 'files',
-          title: 'Uploadez les documents',
-          subtitle: '10 min',
           link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}/files`,
           percent: () => filesPercent(borrowers, borrowerFiles, 'auction'),
           isDone() {
@@ -66,9 +40,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         },
         {
           id: 'property',
-          title: 'Détaillez votre propriété',
           link: `/app/requests/${loanRequest._id}/property`,
-          subtitle: '4 min',
           percent: () =>
             (propertyPercent(loanRequest, borrowers) +
               filesPercent(loanRequest, requestFiles, 'auction')) /
@@ -79,78 +51,58 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         },
         {
           id: 'verification',
-          title: "Vérification d'e-Potek",
-          subtitle: '2h',
           link: `/app/requests/${loanRequest._id}/verification`,
           isDone: () => loanRequest.logic.verification.validated === true,
         },
-        // {
-        //   title: "Faites l'expertise",
-        //   subtitle: '1 min',
-        //   link: `/app/requests/${loanRequest._id}/expertise`,
-        //   isDone: () => loanRequest.logic.expertiseDone,
-        // },
       ],
     },
 
-    // Step 2
     {
       nb: 2,
-      title: '2. Trouvez votre prêteur',
-      subtitle: loanRequest.logic.step < 2 ? 'Dans 1 jour' : '3 jours',
       items: [
         {
           id: 'structure',
-          title: 'Vérifiez la structure de votre projet',
           link: `/app/requests/${loanRequest._id}/structure`,
-          subtitle: '1 min',
           isDone: () => loanRequest.logic.hasValidatedStructure,
           disabled: loanRequest.logic.step < 2,
         },
         {
           id: 'auction',
-          title: 'Envoyez les enchères',
           link: `/app/requests/${loanRequest._id}/auction`,
-          subtitle: '2 jours',
           isDone: () =>
             loanRequest.logic.auctionStarted && loanRequest.logic.auctionEndTime <= serverTime,
           disabled: loanRequest.logic.step < 2,
         },
         {
           id: 'lenderPicker',
-          title: 'Choisissez votre prêteur',
-          subtitle: '5 min',
           link: `/app/requests/${loanRequest._id}/lenderpicker`,
-          disabled: loanRequest.logic.step < 2 &&
-            !(serverTime &&
-              loanRequest.logic.auctionEndTime &&
-              loanRequest.logic.auctionEndTime > serverTime),
+          disabled:
+            loanRequest.logic.step < 2 &&
+              !(
+                serverTime &&
+                loanRequest.logic.auctionEndTime &&
+                loanRequest.logic.auctionEndTime > serverTime
+              ),
           isDone: () => !!(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
         },
       ],
     },
 
-    // Step 3
     {
       nb: 3,
-      title: '3. Finalisez votre demande',
-      subtitle: loanRequest.logic.step < 3 ? 'Dans 4 jours' : '60 minutes',
       items: [
         {
           id: 'contract',
-          title: 'Obtenez le contrat',
           link: `/app/requests/${loanRequest._id}/contract`,
-          subtitle: '30 min',
-          disabled: loanRequest.logic.step < 3 &&
-            !(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
+          disabled:
+            loanRequest.logic.step < 3 &&
+              !(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
           percent: () => 0,
           isDone: () => false,
         },
         {
           id: 'closing',
-          title: 'Décaissez votre emprunt',
           link: `/app/requests/${loanRequest._id}/closing`,
-          subtitle: '30 min',
           disabled: true, // TODO
           percent: () => 0,
           isDone: () => false,
@@ -158,7 +110,6 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
       ],
     },
 
-    // Step 4
     {
       nb: 4,
       title: React.createElement(
@@ -169,7 +120,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         },
         null,
       ),
-      description: 'Félicitations, vous êtes arrivé au bout, profitez de votre nouvelle propriété comme il se doit.',
+      subtitle: null,
       items: [],
     },
   ];

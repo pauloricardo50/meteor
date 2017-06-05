@@ -57,7 +57,7 @@ export default class Tooltip extends Component {
 
     return (
       <Transition hide={hide}>
-        {({ key, style }) => (
+        {({ key, style }) =>
           <Popover
             {...this.props}
             id={baseId}
@@ -67,8 +67,7 @@ export default class Tooltip extends Component {
             positionLeft={getPositionLeft(positionLeft, baseId, placement)}
           >
             {content}
-          </Popover>
-        )}
+          </Popover>}
       </Transition>
     );
   }

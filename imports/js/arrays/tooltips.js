@@ -22,6 +22,7 @@ const generalTooltips = {
   'charges estimées': 'monthlyEstimated',
   emprunteurs: 'borrowers',
   "type d'utilisation": 'usageType',
+  'bonus considéré': ['consideredBonus'],
   bonus: 'bonus',
 
   '2e pilier': 'secondPillar',

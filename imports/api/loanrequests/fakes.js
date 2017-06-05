@@ -32,7 +32,7 @@ export const fakeProperty = {
   },
   minergie: true,
   isCoproperty: true,
-  copropertyPercentage: 0.400,
+  copropertyPercentage: 0.4,
   cityPlacementQuality: 2,
   buildingPlacementQuality: 3,
   buildingQuality: 1,
@@ -79,6 +79,17 @@ export const fakeFiles = {
   coownershipAgreement: [fakeFile],
 };
 
+export const fakeFiles2 = {
+  plans: [fakeFile],
+  cubage: [fakeFile],
+  pictures: [fakeFile],
+  // buyersContract: [fakeFile],
+  // landRegisterExtract: [fakeFile],
+  // marketingBrochure: [fakeFile],
+  // coownershipAllocationAgreement: [fakeFile],
+  // coownershipAgreement: [fakeFile],
+};
+
 export const requestStep1 = {
   name: 'Rue du Test 42',
   general: fakeGeneral,
@@ -95,7 +106,7 @@ export const requestStep2 = {
   files: fakeFiles,
 };
 
-export const requestStep3 = {
+export const requestStep3 = (completeFiles) => ({
   name: 'Rue du Test 42',
   general: {
     ...fakeGeneral,
@@ -109,5 +120,5 @@ export const requestStep3 = {
   },
   property: fakeProperty,
   logic: logic3,
-  files: fakeFiles,
-};
+  files: completeFiles ? fakeFiles : fakeFiles2,
+});

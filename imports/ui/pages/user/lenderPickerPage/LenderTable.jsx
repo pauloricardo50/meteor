@@ -10,13 +10,8 @@ import cleanMethod from '/imports/api/cleanMethods';
 
 import OfferToggle from '/imports/ui/components/general/OfferToggle.jsx';
 import ConditionsButton from '/imports/ui/components/general/ConditionsButton.jsx';
-
-const styles = {
-  tableDiv: {
-    overflowX: 'scroll',
-    width: '100%',
-  },
-};
+import Table from '/imports/ui/components/general/Table.jsx';
+import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
 
 const getOffers = props => {
   let newOffers = props.offers.map(offer => {
@@ -81,31 +76,44 @@ const handleSave = (props, offerId) => {
 };
 
 const handleChoose = (id, props) => {
-  if (props.formState.chosenLender === id) {
+  if (id === undefined) {
     props.setFormState('chosenLender', '', () => handleSave(props, ''));
   } else {
     props.setFormState('chosenLender', id, () => handleSave(props, id));
   }
 };
 
+const columns = [
+  {
+    label: '',
+    align: 'center',
+    style: {
+      width: 80,
+    },
+  },
+  {
+    id: 'LenderTable.amount',
+    align: 'right',
+    format: val => <IntlNumber value={val} format="money" />,
+  },
+  {
+    id: 'LenderTable.monthly',
+    align: 'right',
+    format: val =>
+      <h3 className="fixed-size" style={{ margin: 0 }}>
+        <IntlNumber value={val} format="money" /> <T id="LenderTable.perMonth" />
+      </h3>,
+  },
+  {
+    id: 'LenderTable.conditions',
+    align: 'center',
+    style: { paddingLeft: 0, paddingRight: 0 },
+  },
+];
+
 export default class LenderTable extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showFullTable: false,
-    };
-  }
-
-  handleToggleTable = () => {
-    this.setState(prevState => ({
-      showFullTable: !prevState.showFullTable,
-    }));
-  };
-
   render() {
     const offers = getOffers(this.props);
-    const shownOffers = this.state.showFullTable ? offers : offers.slice(0, 5);
     const saved = this.props.loanRequest.logic.lender.offerId === this.props.formState.chosenLender;
 
     return (
@@ -113,22 +121,10 @@ export default class LenderTable extends Component {
         <h2 className="text-c">Les meilleurs prêteurs</h2>
         <div className="description">
           <p>
-            Voici les offres que vous avez reçues, vous pouvez modifier les valeurs en haut pour changer les résultats.
+            Voici les offres que vous avez reçues, vous pouvez modifier les valeurs en haut pour
+            changer les résultats.
           </p>
         </div>
-
-        {/* {this.props.formState.chosenLender &&
-          <div className="text-center" style={{ margin: '40px 0' }}>
-            <RaisedButton
-              label={saved ? 'Sauvegardé' : 'Sauvegarder'}
-              keyboardFocused={!saved}
-              primary={!saved}
-              onTouchTap={() => handleSave(this.props)}
-              style={{ height: 'unset' }}
-              overlayStyle={{ padding: 20 }}
-              icon={saved && <CheckIcon />}
-            />
-          </div>} */}
 
         <OfferToggle
           value={!this.props.formState.standard}
@@ -136,70 +132,27 @@ export default class LenderTable extends Component {
           offers={this.props.offers}
         />
 
-        <div style={styles.tableDiv}>
-          <table className="minimal-table">
-            <colgroup>
-              <col span="1" style={{ width: 70 }} />
-              <col span="1" style={{ minWidth: 100 }} />
-              <col span="1" style={{ minWidth: 100 }} />
-              <col span="1" style={{ minWidth: 150 }} />
-            </colgroup>
-            <thead>
-              <tr>
-                <th className="l" />
-                <th className="r">Montant prêté</th>
-                <th className="r">Coût mensuel</th>
-                <th className="c">Conditions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {shownOffers &&
-                shownOffers.length > 0 &&
-                shownOffers.map(
-                  (offer, index) =>
-                    offer &&
-                    <tr
-                      key={offer._id || index}
-                      onTouchTap={() => handleChoose(offer._id, this.props)}
-                      className={
-                        offer._id === this.props.formState.chosenLender ? 'chosen' : 'choose'
-                      }
-                    >
-                      <td className="l">
-                        {index + 1}
-                        {' '}
-                        {offer._id === this.props.formState.chosenLender &&
-                          <span className="fa fa-check" />}
-                      </td>
-                      <td className="r">
-                        CHF {toMoney(Math.round(offer.maxAmount))}
-                      </td>
-                      <td className="r">
-                        <h3 className="fixed-size" style={{ margin: 0 }}>
-                          CHF {toMoney(offer.monthly)} <small>/mois</small>
-                        </h3>
-                      </td>
-                      <td className="c">
-                        {offer.conditions.length > 0 || offer.counterparts.length > 0
-                          ? <ConditionsButton
-                            conditions={offer.conditions}
-                            counterparts={offer.counterparts}
-                          />
-                          : '-'}
-                      </td>
-                    </tr>,
-                )}
-            </tbody>
-          </table>
-        </div>
-
-        {offers.length > 5 &&
-          <div className="text-center" style={{ marginBottom: 20 }}>
-            <RaisedButton
-              label={this.state.showFullTable ? 'Masquer' : 'Afficher tout'}
-              onTouchTap={this.handleToggleTable}
-            />
-          </div>}
+        <Table
+          columns={columns}
+          rows={offers.map((offer, i) => ({
+            id: offer._id,
+            columns: [
+              i + 1,
+              offer.maxAmount,
+              offer.monthly,
+              offer.conditions.length > 0 || offer.counterparts.length > 0
+                ? <ConditionsButton
+                  conditions={offer.conditions}
+                  counterparts={offer.counterparts}
+                />
+                : '-',
+            ],
+          }))}
+          selectable
+          onRowSelection={rowIndex =>
+            handleChoose(rowIndex !== undefined ? offers[rowIndex]._id : undefined, this.props)}
+          selected={this.props.formState.chosenLender}
+        />
       </article>
     );
   }

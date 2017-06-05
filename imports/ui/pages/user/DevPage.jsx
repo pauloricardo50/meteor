@@ -27,9 +27,9 @@ const addStep2Request = () => {
   });
 };
 
-const addStep3Request = () => {
+const addStep3Request = (completeFiles = true) => {
   cleanMethod('insertBorrower', completeFakeBorrower, null, (err, res) => {
-    const request = requestStep3;
+    const request = requestStep3(completeFiles);
     request.borrowers = [res];
     cleanMethod('insertRequest', request, null, (error, result) => {
       const object = getRandomOffer({ ...request, _id: result }, true);
@@ -71,6 +71,7 @@ export default class DevPage extends Component {
         <button onClick={addStep1Request}>step 1 Request</button>
         <button onClick={addStep2Request}>step 2 Request</button>
         <button onClick={addStep3Request}>step 3 Request</button>
+        <button onClick={() => addStep3Request(false)}>step 3 Request, few files</button>
         <button onClick={() => purge(this.props)}>Purge</button>
       </div>
     );

@@ -5,6 +5,7 @@ import AssessmentIcon from 'material-ui/svg-icons/action/assessment';
 import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
 import RequestSelector from './RequestSelector.jsx';
 import SideNavStepper from './SideNavStepper.jsx';
 
@@ -41,7 +42,7 @@ const SideNavUser = props => {
         >
           <div className="onclick-wrapper" onTouchTap={props.handleClickLink}>
             <div className="icon"><AssessmentIcon color="#ADB5BD" /></div>
-            <h5 className="title">Tableau de Bord</h5>
+            <h5 className="title"><T id="SideNavUser.dashboard" /></h5>
           </div>
         </NavLink>
 

@@ -93,48 +93,31 @@ const StartResult = props => {
           </h4>}
       </div>
 
-      {props.type !== 'test' &&
-        <div className="buttons">
-          <RaisedButton
-            label={<T id="general.modify" />}
-            onTouchTap={() =>
-              Scroll.animateScroll.scrollToTop({
-                smooth: true,
-                duration: 1000,
-              })}
-            style={{ marginRight: 8 }}
-          />
-          <RaisedButton
-            label={
-              Meteor.user() ? <T id="general.continue" /> : <T id="StartResult.createAccount" />
-            }
-            onTouchTap={() => handleClick(props)}
-            primary
-          />
-        </div>}
-
-      {props.type === 'test' &&
-        <div className="buttons">
-          <RaisedButton
-            label={<T id="general.modify" />}
-            onTouchTap={() =>
-              Scroll.animateScroll.scrollToTop({
-                smooth: true,
-                duration: 1000,
-              })}
-            style={{ marginRight: 8 }}
-          />
-          <RaisedButton
-            label={<T id="general.continue" />}
-            onTouchTap={() => {
-              props.setFormState('type', 'acquisition');
-              props.setFormState('finalized', undefined);
-              props.setFormState('knowsProperty', true);
-              props.setFormState('propertyValue', props.property);
-            }}
-            primary
-          />
-        </div>}
+      <div className="buttons">
+        <RaisedButton
+          label={<T id="general.modify" />}
+          onTouchTap={() =>
+            Scroll.animateScroll.scrollToTop({
+              smooth: true,
+              duration: 1000,
+            })}
+          style={{ marginRight: 8 }}
+        />
+        <RaisedButton
+          label={<T id="general.continue" />}
+          onTouchTap={
+            props.type === 'test'
+              ? () => {
+                props.setFormState('type', 'acquisition');
+                props.setFormState('finalized', undefined);
+                props.setFormState('knowsProperty', true);
+                props.setFormState('propertyValue', props.property);
+              }
+              : () => handleClick(props)
+          }
+          primary
+        />
+      </div>
 
     </article>
   );

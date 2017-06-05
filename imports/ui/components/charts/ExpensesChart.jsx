@@ -17,18 +17,22 @@ const chartColors = {
 };
 
 const update = that => {
-  const total = that.state.interests + that.state.amortization + that.state.maintenance;
-  const showLabels = that.state.interests && that.state.amortization && that.state.maintenance;
+  const { interests, amortization, maintenance } = that.state;
+  const total = interests + amortization + maintenance;
+  const showLabels = interests && amortization && maintenance;
   const f = that.props.intl.formatMessage;
+  const fN = that.props.intl.formatNumber;
+
   that.chart.getChart().update({
     title: {
-      text: `CHF ${toMoney(Math.round(total))}<br>par mois*`,
+      text: `${fN(Math.round(total), { format: 'money' })}<br>par mois*`,
     },
     tooltip: {
       formatter() {
-        return `<span style="color:${this.color}">\u25CF</span> ${this.key}<br /> <b>CHF ${toMoney(
-          Math.round(this.y),
-        )}</b><br />${Math.round(1000 * this.y / total) / 10}%`;
+        const { y, color, key } = this;
+        const value = fN(Math.round(y), { format: 'money' });
+        const percent = fN(y / total, { format: 'percentage' });
+        return `<span style="color:${color}">\u25CF</span> ${key}<br /> <b>${value}</b><br />${percent}`;
       },
     },
     series: [
@@ -36,17 +40,17 @@ const update = that => {
         data: [
           {
             name: f({ id: 'general.interests' }),
-            y: that.state.interests,
+            y: interests,
             id: 'interests',
           },
           {
             name: f({ id: 'general.amortization' }),
-            y: that.state.amortization,
+            y: amortization,
             id: 'amortization',
           },
           {
             name: f({ id: 'general.buildingMaintenance' }),
-            y: that.state.maintenance,
+            y: maintenance,
             id: 'maintenance',
           },
         ],
@@ -137,6 +141,8 @@ class ExpensesChart extends Component {
     const total = this.state.interests + this.state.amortization + this.state.maintenance;
     const that = this;
     const f = this.props.intl.formatMessage;
+    const fN = this.props.intl.formatNumber;
+
     const options = {
       chart: {
         type: 'pie',
@@ -158,10 +164,11 @@ class ExpensesChart extends Component {
       },
       tooltip: {
         formatter() {
-          return `<span style="color:${this.color}">\u25CF</span> ${this
-            .key}<br /> <b>CHF ${toMoney(Math.round(this.y))}</b><br />${Math.round(
-            1000 * this.y / total,
-          ) / 10}%`;
+          const { y, color, key } = this;
+          const value = fN(Math.round(y), { format: 'money' });
+          const percent = fN(y / total, { format: 'percentage' });
+
+          return `<span style="color:${color}">\u25CF</span> ${key}<br /> <b>${value}</b><br />${percent}`;
         },
         style: { fontSize: '14px' },
       },
@@ -249,6 +256,7 @@ class ExpensesChart extends Component {
   addTitle = that => {
     const total = this.state.interests + this.state.amortization + this.state.maintenance;
     const f = this.props.intl.formatMessage;
+    const fN = this.props.intl.formatNumber;
 
     if (that.title) {
       that.title.destroy();
@@ -260,9 +268,9 @@ class ExpensesChart extends Component {
     const perMonth = f({ id: 'ExpensesChart.perMonth' });
     that.title = r
       .text(
-        `CHF ${toMoney(
-          Math.round(total),
-        )}<br><span style="font-size: 14px;" class="no-bold">${perMonth}*</span>`,
+        `${fN(Math.round(total), {
+          format: 'money',
+        })}<br><span style="font-size: 14px;" class="no-bold">${perMonth}*</span>`,
         0,
         0,
       )

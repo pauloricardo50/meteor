@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Loadable from '/imports/js/helpers/loadable';
+import { injectIntl } from 'react-intl';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import {
@@ -28,7 +29,8 @@ const chartColors = {
 const getConfig = props => {
   const r = props.loanRequest;
   const total = getProjectValue(r);
-
+  const f = props.intl.formatMessage;
+  const fN = props.intl.formatNumber;
   const options = {
     chart: {
       type: 'bar',
@@ -49,21 +51,22 @@ const getConfig = props => {
       // },
     },
     title: {
-      text: 'Mon Projet',
+      text: f({ id: 'ProjectBarChart.title' }),
       style: { fontSize: '18px', color: '#222', fontWeight: 400 },
       align: props.titleAlign,
     },
     subtitle: {
-      text: `CHF ${toMoney(total)}`,
+      text: fN(total, { format: 'money' }),
       style: { fontSize: '14px' },
       align: props.titleAlign,
     },
     tooltip: {
       formatter() {
-        return `<span style="color:${this.color}">\u25CF</span> ${this.series
-          .name}<br /> <b>CHF ${toMoney(Math.round(this.y))}</b><br />${Math.round(
-          1000 * this.y / total,
-        ) / 10}%`;
+        const { y, color, series } = this;
+        const value = fN(Math.round(y), { format: 'money' });
+        const percent = fN(y / total, { format: 'percentage' });
+
+        return `<span style="color:${color}">\u25CF</span> ${series.name}<br /> <b>${value}</b><br />${percent}`;
       },
       style: { fontSize: '14px' },
     },
@@ -119,12 +122,12 @@ const getConfig = props => {
     // ],
     series: [
       {
-        name: 'Propriété',
+        name: f({ id: 'ProjectBarChart.property' }),
         data: [getPropAndWork(r)],
         stack: 1,
       },
       {
-        name: 'Frais',
+        name: f({ id: 'ProjectBarChart.fees' }),
         data: [
           r.property.value * constants.notaryFees +
             r.general.insuranceFortuneUsed * constants.lppFees || 0,
@@ -132,12 +135,12 @@ const getConfig = props => {
         stack: 1,
       },
       {
-        name: 'Prêt',
+        name: f({ id: 'general.mortgageLoan' }),
         data: [getLoanValue(r)],
         stack: 2,
       },
       {
-        name: 'Fonds Propres',
+        name: f({ id: 'general.ownFunds' }),
         data: [total - getLoanValue(r)],
         stack: 2,
       },
@@ -169,4 +172,4 @@ ProjectBarChart.propTypes = {
   titleAlign: PropTypes.string,
 };
 
-export default ProjectBarChart;
+export default injectIntl(ProjectBarChart);
