@@ -5,6 +5,7 @@ import cleanMethod from '/imports/api/cleanMethods';
 
 import DatePicker from 'material-ui/DatePicker';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
 import FormValidator from './FormValidator.jsx';
 
 const styles = {
@@ -58,7 +59,7 @@ export default class DateInput extends Component {
         </label>
         <DatePicker
           name={this.props.label}
-          hintText="Choisissez une date"
+          hintText={<T id="DateInput.placeholder" />}
           value={this.props.currentValue}
           onChange={this.handleChange}
           id={this.props.id}
@@ -68,7 +69,7 @@ export default class DateInput extends Component {
           textFieldStyle={styles.DatePickerField}
           locale="fr"
           // DateTimeFormat={getDateFormat()}
-          cancelLabel="Annuler"
+          cancelLabel={<T id="general.cancel" />}
           disabled={this.props.disabled}
         />
         <FormValidator {...this.props} />

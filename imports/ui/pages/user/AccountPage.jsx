@@ -6,6 +6,7 @@ import Checkbox from 'material-ui/Checkbox';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import Page from '/imports/ui/components/general/Page.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const styles = {
   section: {
@@ -26,15 +27,15 @@ const styles = {
   },
 };
 
-const AccountPage = props => (
-  <Page title="Mon Compte">
+const AccountPage = props =>
+  <Page title={<T id="AccountPage.title" />}>
     <div className="mask1" style={styles.section}>
       {/* <h1>Mon Profil</h1>
       <hr /> */}
 
       <span className="hidden-sm hidden-md hidden-lg" style={styles.mobileLogoutButton}>
         <RaisedButton
-          label="Déconnexion"
+          label={<T id="general.logout" />}
           onTouchTap={() => Meteor.logout(() => props.history.push('/home'))}
         />
       </span>
@@ -71,8 +72,7 @@ const AccountPage = props => (
         </div>
       </div>
     </div>
-  </Page>
-);
+  </Page>;
 
 AccountPage.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any).isRequired,

@@ -58,7 +58,7 @@ const SideNavStepperStep = props => {
                   ? props.history.location.pathname
                   : item.link || props.history.location.pathname
               }
-              key={item.title}
+              key={item.id}
               className={classnames({ item: true, disable: item.disabled || !item.link })}
               activeClassName={item.link !== undefined && !item.disabled ? 'active' : ''}
             >
