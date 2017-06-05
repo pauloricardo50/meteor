@@ -7,7 +7,7 @@ import FlatButton from 'material-ui/FlatButton';
 
 import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown.jsx';
 import TopNavDrawer from '/imports/ui/components/general/TopNavDrawer.jsx';
-import { Roles } from 'meteor/alanning:roles';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 import colors from '/imports/js/config/colors';
 
@@ -43,7 +43,7 @@ const TopNav = props => {
           props.currentUser
             ? <TopNavDropdown {...props} />
             : <FlatButton
-              label="Login"
+              label={<T id="TopNav.login" />}
               containerElement={<Link to="/login" />}
               secondary
               labelStyle={{ color: colors.primary }}

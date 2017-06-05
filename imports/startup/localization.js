@@ -15,35 +15,33 @@ import fr from 'react-intl/locale-data/fr';
 // import es from 'react-intl/locale-data/es';
 
 export const getUserLocale = () => {
-  return 'fr';
+  return 'fr-CH';
 };
 
 export const getTranslations = () => {
   return messagesFR;
 };
 
-export const getFormats = () => {
-  return {
-    number: {
-      money: {
-        style: 'currency',
-        currency: 'CHF',
-        maximumFractionDigits: 0,
-        minimumFractionDigits: 0,
-      },
-      percentage: {
-        style: 'percent',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      },
+export const getFormats = () => ({
+  number: {
+    money: {
+      style: 'currency',
+      currency: 'CHF',
+      maximumFractionDigits: 0,
+      minimumFractionDigits: 0,
     },
-  };
-};
+    percentage: {
+      style: 'percent',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    },
+  },
+});
 
 export const localizationStartup = () => {
   // Add locales used in app here
   addLocaleData(fr);
-  T9n.setLanguage(getUserLocale());
+  T9n.setLanguage('fr');
   setupMoment();
   moment.locale('fr');
 };

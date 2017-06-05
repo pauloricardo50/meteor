@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const styles = {
   hr: {
@@ -19,15 +21,14 @@ const styles = {
   },
 };
 
-const getList = conditionArray => (
+const getList = conditionArray =>
   <ul style={styles.list}>
     {conditionArray
       .map(c => <li style={styles.listItem}><h4 className="fixed-size">{c}</h4></li>)
       .reduce((prev, curr) => [prev, <hr style={styles.hr} />, curr])}
-  </ul>
-);
+  </ul>;
 
-export default class ConditionsButton extends React.Component {
+export default class ConditionsButton extends Component {
   constructor(props) {
     super(props);
 
@@ -46,12 +47,14 @@ export default class ConditionsButton extends React.Component {
   };
 
   render() {
-    const actions = [<FlatButton label="Ok" primary onTouchTap={this.handleClose} />];
+    const actions = [
+      <FlatButton label={<T id="ConditionsButton.CTA" />} primary onTouchTap={this.handleClose} />,
+    ];
 
     return (
       <div>
         <RaisedButton
-          label="Conditions"
+          label={<T id="ConditionsButton.title" />}
           onTouchTap={this.handleOpen}
           primary={this.props.primary}
           onClick={this.props.onClick}
@@ -65,16 +68,14 @@ export default class ConditionsButton extends React.Component {
           <div className="conditions-modal">
             {this.props.conditions.length > 0 &&
               <div>
-                <h2 className="fixed-size">Conditions <small>Obligatoires</small></h2>
+                <h2 className="fixed-size"><T id="ConditionsButton.mandatory" /></h2>
                 {getList(this.props.conditions)}
               </div>}
 
             {this.props.counterparts.length > 0 &&
               <div>
                 <h2 className="fixed-size">
-                  Contreparties
-                  {' '}
-                  <small>Pour les meilleurs taux</small>
+                  <T id="ConditionsButton.counterparts" />
                 </h2>
                 {getList(this.props.counterparts)}
               </div>}

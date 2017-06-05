@@ -10,38 +10,35 @@ import IconButton from 'material-ui/IconButton';
 import Divider from 'material-ui/Divider';
 import Person from 'material-ui/svg-icons/social/person';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
+
 const getMenuItems = props => {
   const isDev = Roles.userIsInRole(props.currentUser._id, 'dev');
   const isAdmin = Roles.userIsInRole(props.currentUser._id, 'admin');
   const isPartner = Roles.userIsInRole(props.currentUser._id, 'partner');
   return [
     {
-      label: 'Admin Home',
+      id: 'admin',
       link: '/admin',
       show: isAdmin,
     },
     {
-      label: 'Partner Home',
+      id: 'partner',
       link: '/partner',
       show: isPartner,
     },
     {
-      label: 'Dashboard',
+      id: 'dashboard',
       link: '/app',
       show: !isAdmin && !isPartner,
     },
     {
-      label: 'Mon Compte',
+      id: 'account',
       link: '/app/profile',
       show: !isAdmin && !isPartner,
     },
-    // {
-    //   label: 'Contact',
-    //   link: '/app/contact',
-    //   show: !isAdmin && !isPartner,
-    // },
     {
-      label: '< dev />',
+      id: 'dev',
       link: '/app/dev',
       show: isDev,
     },
@@ -67,13 +64,13 @@ const TopNavDropdown = props =>
         item.show &&
         <MenuItem
           key={item.link}
-          primaryText={item.label}
+          primaryText={<T id={`TopNavDropdown.${item.id}`} />}
           containerElement={<Link to={item.link} />}
         />,
     )}
     <Divider />
     <MenuItem
-      primaryText="Déconnexion"
+      primaryText={<T id="TopNavDropdown.logout" />}
       onTouchTap={() => Meteor.logout(() => props.history.push('/home'))}
     />
   </IconMenu>;

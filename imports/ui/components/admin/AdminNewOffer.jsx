@@ -4,7 +4,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import OfferForm from '/imports/ui/components/general/OfferForm';
+import OfferForm from '/imports/ui/components/admin/OfferForm';
 
 const styles = {
   backDrop: {

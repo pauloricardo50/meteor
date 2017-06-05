@@ -5,6 +5,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
+
 export default class ConfirmButton extends Component {
   constructor(props) {
     super(props);
@@ -24,9 +26,9 @@ export default class ConfirmButton extends Component {
     const Button = this.props.flat ? FlatButton : RaisedButton;
 
     const actions = [
-      <FlatButton label="Annuler" primary onTouchTap={this.handleClose} />,
+      <FlatButton label={<T id="general.cancel" />} primary onTouchTap={this.handleClose} />,
       <FlatButton
-        label="Oui"
+        label={<T id="general.yes" />}
         primary
         keyboardFocused
         onTouchTap={() => {
@@ -46,7 +48,7 @@ export default class ConfirmButton extends Component {
           disabled={this.props.disabled}
         />
         <Dialog
-          title="Êtes-vous sûr ?"
+          title={<h3><T id="general.areYouSure" /></h3>}
           actions={actions}
           modal={false}
           open={this.state.open}

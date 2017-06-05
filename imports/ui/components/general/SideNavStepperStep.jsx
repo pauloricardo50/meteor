@@ -7,6 +7,7 @@ import LockIcon from 'material-ui/svg-icons/action/lock-outline';
 import classnames from 'classnames';
 
 import colors from '/imports/js/config/colors';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const getStepIcon = ({ step, loanRequest }) => {
   const stepNb = step.nb;
@@ -38,15 +39,19 @@ const SideNavStepperStep = props => {
       >
         {getStepIcon(props)}
         <div className="text">
-          <span className={'title'}>
-            {props.step.title}
+          <span className="title">
+            {props.step.title || <T id={`steps.${props.step.nb}.title`} />}
           </span>
-          <span className="subtitle">{props.step.subtitle}</span>
+          <span className="subtitle">
+            {props.step.subtitle !== undefined
+              ? props.step.subtitle
+              : <T id={`steps.${props.step.nb}.subtitle`} />}
+          </span>
         </div>
       </div>
       {props.active &&
         <ul className="step-list">
-          {props.step.items.map(item => (
+          {props.step.items.map(item =>
             <NavLink
               to={
                 item.disabled
@@ -63,12 +68,16 @@ const SideNavStepperStep = props => {
               >
                 {getItemIcon(item)}
                 <div className="text">
-                  <span className="title">{item.title}</span>
-                  <span className="subtitle">{item.subtitle}</span>
+                  <span className="title">
+                    <T id={`steps.${item.id}.title`} />
+                  </span>
+                  <span className="subtitle">
+                    <T id={`steps.${item.id}.subtitle`} />
+                  </span>
                 </div>
               </div>
-            </NavLink>
-          ))}
+            </NavLink>,
+          )}
         </ul>}
     </li>
   );

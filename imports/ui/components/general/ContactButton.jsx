@@ -7,7 +7,10 @@ import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import MailIcon from 'material-ui/svg-icons/communication/mail-outline';
 import PhoneIcon from 'material-ui/svg-icons/communication/call';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
+
 import colors from '/imports/js/config/colors';
+import supportStaff from '/imports/js/arrays/supportStaff';
 
 const styles = {
   div: {
@@ -50,6 +53,8 @@ const styles = {
   },
 };
 
+const staff = supportStaff[0];
+
 const overlayContent = (
   <div
     style={{
@@ -61,13 +66,13 @@ const overlayContent = (
   >
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <img
-        src="/img/yannis.jpg"
-        alt="Yannis"
+        src={staff.img}
+        alt={staff.fullName}
         style={{ width: 64, height: 64, borderRadius: '50%', marginRight: 16 }}
       />
       <div className="text" style={{ flexGrow: 1 }}>
-        <h4 className="fixed-size no-margin" style={{ marginBottom: 8 }}>Yannis Eggert</h4>
-        <p className="secondary" style={{ margin: 0 }}>Votre conseiller</p>
+        <h4 className="fixed-size no-margin" style={{ marginBottom: 8 }}>{staff.fullName}</h4>
+        <p className="secondary" style={{ margin: 0 }}><T id="ContactButton.yourAdvisor" /></p>
       </div>
     </div>
     <hr style={{ margin: '24px -24px' }} />
@@ -83,8 +88,8 @@ const overlayContent = (
         <PhoneIcon style={styles.icon} color="#495057" />
       </div>
       <div className="text" style={{ flexGrow: 1 }}>
-        <p className="bold" style={{ margin: 0 }}>Par téléphone</p>
-        <a href="tel:+41 78 709 31 31" className="active">+41 22 346 73 73</a>
+        <p className="bold" style={{ margin: 0 }}><T id="ContactButton.byPhone" /></p>
+        <a href={`tel:${staff.phone}`} className="active">{staff.phone}</a>
       </div>
     </div>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -92,8 +97,8 @@ const overlayContent = (
         <MailIcon style={styles.icon} color="#495057" />
       </div>
       <div className="text" style={{ flexGrow: 1 }}>
-        <p className="bold" style={{ margin: 0 }}>Par email</p>
-        <a href="mailto:yannis@e-potek.ch" className="active">yannis@e-potek.ch</a>
+        <p className="bold" style={{ margin: 0 }}><T id="ContactButton.byEmail" /></p>
+        <a href={`mailto:${staff.email}`} className="active">{staff.email}</a>
       </div>
     </div>
   </div>

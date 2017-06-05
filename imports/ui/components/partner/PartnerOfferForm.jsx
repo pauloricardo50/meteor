@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import OfferForm from '/imports/ui/components/general/OfferForm';
+import OfferForm from '/imports/ui/components/admin/OfferForm';
 
 const handleSubmit = history => {
   history.push('/partner');

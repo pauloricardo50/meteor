@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
+
 import HomeDev from './HomeDev.jsx';
 
 const styles = {
@@ -17,13 +19,10 @@ const styles = {
   },
 };
 
-const NewUserOptions = () => (
+const NewUserOptions = () =>
   <section className="text-center new-user">
-    <h1>Ça à l'air bien vide!</h1>
-    <h3 style={styles.h3}>
-      Vous pourrez monter votre dossier, lancer les enchères,
-      et conclure votre demande de prêt depuis ici.
-    </h3>
+    <h1><T id="NewUserOptions.title" /></h1>
+    <h3 style={styles.h3}><T id="NewUserOptions.description" /></h3>
     {/* <RaisedButton
       label="Prenez le test"
       primary
@@ -31,14 +30,13 @@ const NewUserOptions = () => (
       style={styles.button}
     /> */}
     <RaisedButton
-      label="Faire une acquisition"
+      label={<T id="HomePage.CTA1" />}
       containerElement={<Link to="/start1/acquisition" />}
       primary
       style={styles.button}
     />
     <HomeDev style={styles.button} primary />
-  </section>
-);
+  </section>;
 
 export default NewUserOptions;
 

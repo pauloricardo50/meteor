@@ -1,8 +1,8 @@
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 
 export const swissFrancMask = createNumberMask({
-  prefix: '',
-  suffix: ' CHF',
+  prefix: 'CHF ',
+  suffix: '',
   includeThousandsSeparator: true,
   thousandsSeparatorSymbol: ' ',
 });

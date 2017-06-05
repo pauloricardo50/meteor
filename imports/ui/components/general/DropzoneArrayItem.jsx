@@ -7,6 +7,8 @@ import ArrowDown from 'material-ui/svg-icons/navigation/arrow-drop-down-circle';
 import DropzoneInput from '../autoform/DropzoneInput.jsx';
 import colors from '/imports/js/config/colors';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
+
 const getStyles = (props, currentValue) => {
   return {
     article: {
@@ -53,9 +55,10 @@ const DropzoneArrayItem = props => {
         <div className="text">
           <h3>{props.label}</h3>
           <h5 className="secondary">
-            {(currentValue && currentValue.length) || 0}
-            &nbsp;
-            {currentValue && currentValue.length === 1 ? 'fichier' : 'fichiers'}
+            <T
+              id="DropzoneArrayItem.fileCount"
+              values={{ count: (currentValue && currentValue.length) || 0 }}
+            />
           </h5>
         </div>
 
