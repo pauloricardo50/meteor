@@ -16,6 +16,7 @@ Meteor.startup(() => {
   // if (Meteor.settings.public.environment === 'staging') {
   //   setupAuth();
   // }
+  process.env.MAIL_URL = Meteor.settings.smtp;
 });
 
 // Inject a loader before client is ready, is removed in the on startup function on the client

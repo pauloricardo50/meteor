@@ -75,6 +75,12 @@ export default class PasswordLine extends Component {
   handleSuccess = () => {
     saveStartForm(this.props.formState, this.props.history);
 
+    Meteor.call('sendVerificationLink', (error, response) => {
+      if (error) {
+        console.log(error);
+      }
+    });
+
     // Create user for analytics
     analytics.identify(Meteor.userId(), {
       email: Meteor.user().emails[0].address,

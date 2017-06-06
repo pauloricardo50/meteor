@@ -29,7 +29,7 @@ const styles = {
   },
 };
 
-const LoginPage = props => (
+const LoginPage = props =>
   <section style={styles.section}>
     <div style={styles.div1}>
       <div style={styles.div2}>
@@ -37,6 +37,13 @@ const LoginPage = props => (
           onSignedInHook={() => props.history.push('/app')}
           onPostSignUpHook={() => {
             props.history.push('/app');
+
+            Meteor.call('sendVerificationLink', (error, response) => {
+              if (error) {
+                console.log(error);
+              }
+              console.log(response);
+            });
 
             // Create user for analytics
             analytics.identify(Meteor.userId(), {
@@ -47,8 +54,7 @@ const LoginPage = props => (
         />
       </div>
     </div>
-  </section>
-);
+  </section>;
 
 LoginPage.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,

@@ -17,7 +17,9 @@ const getActions = (loanRequest, pushToHistory) => {
   const now = new Date();
   const l = loanRequest.logic;
 
-  if (l.step <= 1) {
+  if (l.done) {
+    return [];
+  } else if (l.step <= 1) {
     return [
       {
         id: 'verify',
@@ -59,8 +61,6 @@ const getActions = (loanRequest, pushToHistory) => {
         },
       },
     ];
-  } else if (l.done) {
-    return [];
   }
 
   return [
