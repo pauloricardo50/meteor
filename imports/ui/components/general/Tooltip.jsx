@@ -27,7 +27,7 @@ const getPositionLeft = (left, id, placement) => {
 
 export default class Tooltip extends Component {
   render() {
-    const { placement, positionTop, positionLeft, id, hide, match } = this.props;
+    const { placement, positionTop, positionLeft, id, pureId, hide, match } = this.props;
 
     let content = null;
     let baseId = id;
@@ -36,7 +36,7 @@ export default class Tooltip extends Component {
       baseId = id[0];
       content = (
         <span style={{ display: 'flex', flexDirection: 'column' }}>
-          <FormattedMessage id={`tooltip.${baseId}`} />
+          <FormattedMessage id={pureId ? baseId : `tooltip.${baseId}`} />
           <DialogSimple
             title={match}
             rootStyle={{ alignSelf: 'center' }}
@@ -45,14 +45,14 @@ export default class Tooltip extends Component {
             autoFocus
           >
             <FormattedMessage
-              id={`tooltip2.${baseId}`}
+              id={pureId ? `${baseId}2` : `tooltip2.${baseId}`}
               values={{ verticalSpace: <span><br /><br /></span> }}
             />
           </DialogSimple>
         </span>
       );
     } else {
-      content = <FormattedMessage id={`tooltip.${id}`} />;
+      content = <FormattedMessage id={pureId ? id : `tooltip.${id}`} />;
     }
 
     return (

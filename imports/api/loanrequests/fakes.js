@@ -74,7 +74,6 @@ export const fakeFiles = {
   pictures: [fakeFile],
   buyersContract: [fakeFile],
   landRegisterExtract: [fakeFile],
-  marketingBrochure: [fakeFile],
   coownershipAllocationAgreement: [fakeFile],
   coownershipAgreement: [fakeFile],
 };
@@ -106,7 +105,7 @@ export const requestStep2 = {
   files: fakeFiles,
 };
 
-export const requestStep3 = (completeFiles) => ({
+export const requestStep3 = completeFiles => ({
   name: 'Rue du Test 42',
   general: {
     ...fakeGeneral,

@@ -5,6 +5,10 @@ import { tooltips, tooltipsById } from '/imports/js/arrays/tooltips';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import Tooltip from './Tooltip.jsx';
 
+const handleClick = event => {
+  event.stopPropagation();
+};
+
 export default class TooltipOverlay extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +21,7 @@ export default class TooltipOverlay extends Component {
   }
 
   render() {
-    const { placement, id, list, match, trigger, children } = this.props;
+    const { placement, id, pureId, list, match, trigger, children } = this.props;
 
     return (
       <OverlayTrigger
@@ -26,7 +30,8 @@ export default class TooltipOverlay extends Component {
           <Tooltip
             placement={placement}
             trigger={trigger}
-            id={id ? tooltipsById(id) : tooltips(list)[match.toLowerCase()]}
+            id={id || tooltips(list)[match.toLowerCase()]}
+            pureId={pureId}
             hide={this.state.hide}
             match={match}
           />
@@ -38,6 +43,7 @@ export default class TooltipOverlay extends Component {
         // When clicking the same tooltip multiple times, this is not reset
         onEnter={() => this.setState({ hide: false })}
         container={document.body}
+        onTouchTap={handleClick}
       >
         <span className="tooltip-overlay hvr-underline-from-center" tabIndex="0">
           {children}
