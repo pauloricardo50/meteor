@@ -19,6 +19,7 @@
   "author": "florianbienefelt",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.63.0",
     "babel-polyfill": "^6.23.0",
     "babel-runtime": "^6.23.0",
     "classnames": "^2.2.5",
