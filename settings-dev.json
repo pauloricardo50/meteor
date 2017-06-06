@@ -29,5 +29,5 @@
   "AWSAdminKey": "",
   "AWSAdminSecret": "",
   "mailchimp": "42e9f66147485839267ee803bd5cff45-us15",
-  "smtp": "smtps://florian%40e-potek.ch:09oikjmn@smtp.gmail.com:587/"
+  "smtp": "smtps://florian%40e-potek.ch:adyexnlzhqieuvmk@smtp.gmail.com:465/"
 }

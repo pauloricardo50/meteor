@@ -17,11 +17,8 @@ const handleClick = (event, props) => {
       Bert.alert(`<h3 style="color:white;margin:0;">${message}</h3>`, 'danger');
     } else {
       const email = Meteor.user().emails[0].address;
-      const message = props.intl.formatMessage({
-        id: 'bert.emailVerificationSent',
-        values: { email },
-      });
-      Bert.alert(`${message}`, 'success');
+      const message = props.intl.formatMessage({ id: 'bert.emailVerificationSent' }, { email });
+      Bert.alert(`<h3 style="color:white;margin:0;">${message}</h3>`, 'success');
     }
   });
 };

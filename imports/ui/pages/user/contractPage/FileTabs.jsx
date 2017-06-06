@@ -14,7 +14,7 @@ const FileTabs = props =>
           array={borrowerFiles(b).contract}
           documentId={b._id}
           pushFunc="pushBorrowerValue"
-          pushFunc="updateBorrower"
+          updateFunc="updateBorrower"
           collection="borrowers"
           filesObject={b.files}
           filesObjectSelector="files"
@@ -27,7 +27,7 @@ const FileTabs = props =>
         array={requestFiles(props.loanRequest).contract}
         documentId={props.loanRequest._id}
         pushFunc="pushRequestValue"
-        pushFunc="updateRequest"
+        updateFunc="updateRequest"
         collection="loanRequests"
         filesObject={props.loanRequest.files}
         filesObjectSelector="files"

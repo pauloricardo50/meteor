@@ -71,6 +71,7 @@ const DropzoneArrayItem = props => {
               tooltipId={doubleTooltip ? [tooltipId] : tooltipId}
               pureId
               noTooltips={noTooltips}
+              tooltipPlacement="top"
             />
           </h3>
           <h5 className="secondary">

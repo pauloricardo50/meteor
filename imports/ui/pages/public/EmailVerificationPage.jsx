@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Bert } from 'meteor/themeteorchef:bert';
-import { Accounts } from 'meteor/accounts-password';
+import { Accounts } from 'meteor/accounts-base';
 import { injectIntl } from 'react-intl';
 
 class EmailVerificationPage extends Component {
@@ -17,8 +17,11 @@ class EmailVerificationPage extends Component {
         this.props.history.push('/');
         Bert.alert(error.reason, 'danger');
       } else {
+        const message = `<h3 style="color:white;margin:0;">${this.props.intl.formatMessage({
+          id: 'EmailVerification.message',
+        })}</h3>`;
+        Bert.alert(message, 'success');
         this.props.history.push('/app');
-        Bert.alert(this.props.intl.formatMessage({ id: 'EmailVerification.message' }), 'success');
       }
     });
   }

@@ -62,7 +62,7 @@ export default class ConfirmButton extends Component {
 }
 
 ConfirmButton.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
   handleClick: PropTypes.func.isRequired,
   text: PropTypes.string,
   primary: PropTypes.bool,
