@@ -47,7 +47,7 @@ export default class Table extends Component {
             <TableRow>
               {columns.map((column, i) =>
                 <TableHeaderColumn key={i} style={{ ...column.style, textAlign: column.align }}>
-                  {column.id && <T id={column.id} values={column.intlValues} />}
+                  {column.id && <T id={column.id} values={column.intlValues} list="table" />}
                 </TableHeaderColumn>,
               )}
             </TableRow>

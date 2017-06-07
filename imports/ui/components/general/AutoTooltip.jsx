@@ -33,16 +33,12 @@ const AutoTooltip = props => {
 };
 
 AutoTooltip.propTypes = {
-  placement: PropTypes.string,
-  trigger: PropTypes.arrayOf(PropTypes.string),
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   list: PropTypes.string,
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
 };
 
 AutoTooltip.defaultProps = {
-  placement: 'bottom',
-  trigger: ['click'], // Can be 'click', 'hover', and/or 'focus'
   children: null,
   list: 'general',
   id: '',

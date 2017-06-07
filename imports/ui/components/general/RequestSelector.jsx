@@ -27,6 +27,14 @@ const handleChange = (value, props) => {
   }
 };
 
+const renderSelected = ({ props }) =>
+  <span style={{ display: 'flex', alignItems: 'center' }}>
+    {React.cloneElement(props.leftIcon, {
+      style: { marginLeft: 8, marginRight: 16, color: '#757575' },
+    })}
+    {props.primaryText}
+  </span>;
+
 const RequestSelector = props =>
   <div style={styles.div}>
     <DropDownMenu
@@ -34,6 +42,7 @@ const RequestSelector = props =>
       onChange={(e, i, value) => handleChange(value, props)}
       autoWidth={false}
       style={styles.dropdown}
+      selectionRenderer={(value, item) => renderSelected(item)}
     >
       {props.loanRequests.map(r =>
         <MenuItem

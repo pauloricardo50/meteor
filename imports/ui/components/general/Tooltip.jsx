@@ -27,7 +27,16 @@ const getPositionLeft = (left, id, placement) => {
 
 export default class Tooltip extends Component {
   render() {
-    const { placement, positionTop, positionLeft, id, pureId, hide, match } = this.props;
+    const {
+      placement,
+      positionTop,
+      positionLeft,
+      id,
+      pureId,
+      hide,
+      match,
+      dialogLabel,
+    } = this.props;
 
     let content = null;
     let baseId = id;
@@ -41,7 +50,7 @@ export default class Tooltip extends Component {
             title={match}
             rootStyle={{ alignSelf: 'center' }}
             buttonStyle={{ marginTop: 16 }}
-            label={<FormattedMessage id="general.learnMore" title="Hehe" />}
+            label={dialogLabel || <FormattedMessage id="general.learnMore" />}
             autoFocus
           >
             <FormattedMessage

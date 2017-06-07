@@ -130,7 +130,7 @@ const getConfig = props => {
         name: f({ id: 'ProjectBarChart.fees' }),
         data: [
           r.property.value * constants.notaryFees +
-            r.general.insuranceFortuneUsed * constants.lppFees || 0,
+            (r.general.insuranceFortuneUsed * constants.lppFees || 0),
         ],
         stack: 1,
       },

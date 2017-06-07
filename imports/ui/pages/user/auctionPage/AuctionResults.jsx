@@ -123,7 +123,7 @@ class AuctionResults extends Component {
             separator=" "
             decimal=","
             prefix=""
-            suffix={f({ id: AuctionResults.countSuffix })}
+            suffix={f({ id: 'AuctionResults.countSuffix' })}
           />
         </h1>
 

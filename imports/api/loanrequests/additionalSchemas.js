@@ -390,6 +390,7 @@ export const LogicSchema = new SimpleSchema({
   'lender.contract': {
     type: String,
     defaultValue: '',
+    optional: true,
   },
   finalStepsAdded: {
     type: Boolean,

@@ -87,6 +87,7 @@ export const requestFiles = (r = {}) => ({
     },
     {
       id: 'cubage',
+      doubleTooltip: true,
     },
     {
       id: 'pictures',

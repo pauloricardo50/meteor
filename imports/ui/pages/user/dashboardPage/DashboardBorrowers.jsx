@@ -20,7 +20,7 @@ const DashboardBorrowers = props => {
             <h4 className="fixed-size no-margin" style={{ marginBottom: 8 }}>
               {b.firstName && b.lastName
                 ? `${b.firstName} ${b.lastName}`
-                : <T id="DashboardBorrowers" values={{ index: i + 1 }} />}
+                : <T id="DashboardBorrowers.title" values={{ index: i + 1 }} />}
               {b.age && <small> - {b.age} ans</small>}
             </h4>
             {b.age &&

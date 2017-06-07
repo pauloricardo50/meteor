@@ -21,7 +21,7 @@ const BorrowerInfoPage = props => {
         <T id="Info.title" />
         <br />
         <small className={percent >= 1 && 'success'}>
-          <T id="general.progress" value={{ value: percent }} />
+          <T id="general.progress" values={{ value: percent }} />
           {' '}
           {percent >= 1 && <span className="fa fa-check" />}
         </small>

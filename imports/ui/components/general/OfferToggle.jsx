@@ -39,7 +39,7 @@ const OfferToggle = props => {
         onTouchTap={() => props.handleToggle(null, true)}
         style={styles.span}
       >
-        <T id="OfferToggle.counterpart" values={{ count: counterpartCount }} />
+        <T id="OfferToggle.counterpart" values={{ count: counterpartCount.toString() }} />
       </span>
     </div>
   );

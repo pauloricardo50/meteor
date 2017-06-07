@@ -72,25 +72,11 @@ const BorrowerFinancePage = props => {
         <Recap arrayName="borrower" borrower={borrower} />
       </div>
 
-      <div className="description">
-        <p><T id="Forms.mandatory" /></p>
-      </div>
-
-      <AutoForm
-        inputs={getBorrowerFinanceArray(props.borrowers, borrowerId)}
-        borrowers={props.borrowers}
-        documentId={borrowerId}
-        updateFunc="updateBorrower"
-        pushFunc="pushBorrowerValue"
-        popFunc="popBorrowerValue"
-        doc={borrower}
-      />
-
-      <div className="conditions">
+      <div className="conditions mask2 primary-border">
         <span>
           <Checkbox
             checked={borrower.logic.financeEthics}
-            label="Les informations entrées ci-dessus sont exhaustives et correctes"
+            label="Les informations entrées ci-dessous sont exhaustives et correctes"
             style={styles.checkbox}
             onCheck={(e, isChecked) => handleCheck(e, isChecked, borrowerId)}
           />
@@ -102,6 +88,18 @@ const BorrowerFinancePage = props => {
           value={borrower.logic.hasValidatedFinances}
         />
       </div>
+
+      <div className="description"><p><T id="Forms.mandatory" /></p></div>
+
+      <AutoForm
+        inputs={getBorrowerFinanceArray(props.borrowers, borrowerId)}
+        borrowers={props.borrowers}
+        documentId={borrowerId}
+        updateFunc="updateBorrower"
+        pushFunc="pushBorrowerValue"
+        popFunc="popBorrowerValue"
+        doc={borrower}
+      />
     </section>
   );
 };

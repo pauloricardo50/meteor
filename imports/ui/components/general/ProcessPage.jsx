@@ -40,33 +40,33 @@ export const getStepValues = props => {
 };
 
 class ProcessPage extends Component {
-  constructor(props) {
-    super(props);
-
-    const values = getStepValues(this.props);
-    this.barProps = { ...this.props, ...values };
-  }
-
   componentDidMount() {
-    const { intl, stepNb } = this.props;
-    DocHead.setTitle(
-      `${intl.formatMessage({ id: `steps.${this.barProps.currentStep.id}.title` })} | e-Potek`,
-    );
-    Session.set('stepNb', stepNb);
+    this.setBarProps();
+
+    Session.set('stepNb', this.props.stepNb);
   }
 
   componentWillUnmount() {
     Session.set('stepNb', undefined);
   }
 
+  setBarProps = () => {
+    const { intl } = this.props;
+    const values = getStepValues(this.props);
+    this.barProps = { ...this.props, ...values };
+    DocHead.setTitle(
+      `${intl.formatMessage({ id: `steps.${this.barProps.currentStep.id}.title` })} | e-Potek`,
+    );
+  };
+
   render() {
+    this.setBarProps();
     return (
       <section className="page-title">
         <ProcessPageBar {...this.barProps} className="top-bar" />
         <div className="children animated fadeIn">
           {this.props.children}
         </div>
-        {/* {this.props.showBottom && <ProcessPageBar {...barProps} className="bottom-bar" />} */}
       </section>
     );
   }
