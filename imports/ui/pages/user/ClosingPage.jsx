@@ -47,7 +47,7 @@ const ClosingPage = props => {
   //   (1 + props.borrowers.length);
 
   return (
-    <ProcessPage {...props} stepNb={3} id="contract" showBottom={false}>
+    <ProcessPage {...props} stepNb={3} id="closing" showBottom={false}>
       <div className="mask1">
         <div className="description">
           <p>

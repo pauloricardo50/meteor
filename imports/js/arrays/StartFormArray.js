@@ -644,6 +644,9 @@ const getFinalArray = (state, props, setFormState) => [
         state.insuranceConditions === true,
     type: 'custom',
     component: FortuneSliders,
+    // minFortune is required to do math in the FortuneSliders component
+    minFortune: props.minFortune,
+    fortune: props.fortune,
     validation: () =>
       state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= props.minFortune &&
       state.fortuneUsed >= props.minCash,

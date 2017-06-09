@@ -58,8 +58,7 @@ export class T extends Component {
 T.propTypes = {
   id: PropTypes.string.isRequired,
   noTooltips: PropTypes.bool,
-  tooltipId: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)])
-    .isRequired,
+  tooltipId: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
   tooltipPlacement: PropTypes.string,
 };
 

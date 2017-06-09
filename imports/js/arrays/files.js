@@ -95,12 +95,12 @@ export const requestFiles = (r = {}) => ({
   ],
   contract: [
     {
-      id: 'reimbursementStatement',
-      condition: !!r.general && r.general.purchaseType === 'refinancing',
-    },
-    {
       id: 'buyersContract',
       tooltipSuffix: !!r.general && r.general.purchaseType === 'refinancing' ? 'a' : 'b',
+    },
+    {
+      id: 'reimbursementStatement',
+      condition: !!r.general && r.general.purchaseType === 'refinancing',
     },
     {
       id: 'rent',

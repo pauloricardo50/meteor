@@ -1,14 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import { toMoney } from '/imports/js/helpers/conversionFunctions';
-
-import RaisedButton from 'material-ui/RaisedButton';
-import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
 import ConditionsButton from '/imports/ui/components/general/ConditionsButton.jsx';
-import Table from './Table.jsx';
-
 import { IntlNumber } from '/imports/ui/components/general/Translation.jsx';
+
+import Table from './Table.jsx';
 
 const percentageStyle = { paddingLeft: 8, paddingRight: 8 };
 const columns = [

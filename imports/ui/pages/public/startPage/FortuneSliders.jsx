@@ -35,7 +35,8 @@ const valueInRange = (value, min, max) => {
     return max;
   }
 
-  return value;
+  // Make sure we remove decimals
+  return Math.round(value);
 };
 
 const getFortuneNeeded = (fortuneUsed, insuranceFortuneUsed, formState) => {
@@ -77,7 +78,10 @@ const handleChangeInsurance = (props, e, insuranceFortuneUsed) => {
 };
 
 const FortuneSliders = props => {
-  const hasToUseLpp = props.formState.fortune < props.formState.minFortune;
+  const hasToUseLpp = props.fortune < props.minFortune;
+  const showSlider =
+    hasToUseLpp || (props.formState.useInsurance1 || props.formState.useInsurance2);
+
   return (
     <div className="fortune-sliders" key={props.index}>
 
@@ -101,7 +105,7 @@ const FortuneSliders = props => {
         initialValue={props.sliders[0].sliderMax}
       />
 
-      {props.formState.useInsurance &&
+      {showSlider &&
         <div className="animated fadeIn" style={{ position: 'relative' }}>
           <h2 className="fixed-size" style={styles.h2}>
             <label htmlFor="" style={styles.label}>
@@ -118,11 +122,10 @@ const FortuneSliders = props => {
             style={styles.sliders}
           />
         </div>}
-      {!props.formState.useInsurance &&
+      {!showSlider &&
         <div className="text-center animated fadeIn">
           <h2 className="fixed-size">
-            {hasToUseLpp && <T id="Start2Form.fortuneSliders.hasToUseLpp" />}
-            {!hasToUseLpp && <T id="Start2Form.fortuneSliders.notHasToUseLpp" />}
+            <T id="Start2Form.fortuneSliders.canUseLpp" />
           </h2>
           <RaisedButton
             label={<T id="Start2Form.fortuneSliders.use" />}
@@ -130,7 +133,6 @@ const FortuneSliders = props => {
             onTouchTap={() => props.setFormState('useInsurance', true)}
             primary
           />
-          <RaisedButton label={<T id="Start2Form.whyButton" />} />
         </div>}
     </div>
   );
@@ -142,6 +144,8 @@ FortuneSliders.propTypes = {
   sliders: PropTypes.arrayOf(PropTypes.object).isRequired,
   text1: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   index: PropTypes.number.isRequired,
+  minFortune: PropTypes.number.isRequired,
+  fortune: PropTypes.number.isRequired,
 };
 
 export default FortuneSliders;

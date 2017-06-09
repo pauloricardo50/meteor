@@ -98,12 +98,12 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
             loanRequest.logic.step < 3 &&
               !(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
           percent: () => 0,
-          isDone: () => false,
+          isDone: () => loanRequest.logic.lender && loanRequest.logic.lender.contractRequested,
         },
         {
           id: 'closing',
           link: `/app/requests/${loanRequest._id}/closing`,
-          disabled: true, // TODO
+          disabled: !(loanRequest.logic.lender && loanRequest.logic.lender.contractRequested),
           percent: () => 0,
           isDone: () => false,
         },
@@ -120,6 +120,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         },
         null,
       ),
+      disabled: true, // TODO
       subtitle: null,
       items: [],
     },
@@ -156,7 +157,7 @@ export const previousDone = (steps, stepNb, itemNb) =>
 
 /**
  * getPercent - Given an array of values, any value that is undefined or null
- * will be counted as incomplete
+ * will be counted as incomplete, make sure we don't divide by 0
  *
  * @param {array} array Array of numbers, strings, or dates
  *
@@ -164,8 +165,14 @@ export const previousDone = (steps, stepNb, itemNb) =>
  */
 export const getPercent = array => {
   const percent =
-    array.reduce((tot, val) => (val !== undefined && val !== null ? tot + 1 : tot), 0) /
-    array.length;
+    array.reduce((tot, val) => {
+      if (_.isArray(val)) {
+        return tot + (val.length ? 1 : 0);
+      } else if (val !== undefined && val !== null) {
+        return tot + 1;
+      }
+      return tot;
+    }, 0) / array.length;
   return isFinite(percent) ? percent : 0;
 };
 

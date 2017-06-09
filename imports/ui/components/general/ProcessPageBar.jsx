@@ -57,6 +57,7 @@ export default class ProcessPageBar extends Component {
     // remove previous button if this is the very first step
     const showBackButton = !(this.props.stepNb === 1 && this.props.index === 0);
     const lastPartOfStep = this.props.index === this.props.length - 1;
+
     return (
       <div className={this.props.className}>
         <h3 className="title fixed-size bold secondary">
@@ -82,7 +83,7 @@ export default class ProcessPageBar extends Component {
             }
             style={this.state.smallWidth ? styles.smallButton : styles.button}
             secondary={this.props.currentStep.isDone()}
-            disabled={!this.props.nextLink || (lastPartOfStep && !this.props.currentStep.isDone())}
+            disabled={(lastPartOfStep && !this.props.currentStep.isDone()) || !this.props.nextLink}
             containerElement={
               this.props.nextLink && !lastPartOfStep ? <Link to={this.props.nextLink} /> : undefined
             }

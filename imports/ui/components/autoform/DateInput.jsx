@@ -4,6 +4,7 @@ import moment from 'moment';
 import cleanMethod from '/imports/api/cleanMethods';
 
 import DatePicker from 'material-ui/DatePicker';
+import { injectIntl } from 'react-intl';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import FormValidator from './FormValidator.jsx';
@@ -26,7 +27,7 @@ const styles = {
   },
 };
 
-export default class DateInput extends Component {
+class DateInput extends Component {
   constructor(props) {
     super(props);
 
@@ -52,6 +53,7 @@ export default class DateInput extends Component {
   };
 
   render() {
+    const formatDate = this.props.intl.formatDate;
     return (
       <div style={{ ...styles.div, ...this.props.style }} className="datepicker">
         <label htmlFor={this.props.label} style={styles.label}>
@@ -67,8 +69,13 @@ export default class DateInput extends Component {
           minDate={this.props.minDate}
           maxDate={this.props.maxDate}
           textFieldStyle={styles.DatePickerField}
-          locale="fr"
-          // DateTimeFormat={getDateFormat()}
+          formatDate={date =>
+            formatDate(date, {
+              month: 'long',
+              year: 'numeric',
+              weekday: 'long',
+              day: '2-digit',
+            })}
           cancelLabel={<T id="general.cancel" />}
           disabled={this.props.disabled}
         />
@@ -96,3 +103,5 @@ DateInput.defaultProps = {
   currentValue: undefined,
   style: {},
 };
+
+export default injectIntl(DateInput);

@@ -54,9 +54,6 @@ export default class StructurePage extends Component {
         insuranceFortuneUsed: this.state.insuranceFortuneUsed,
       },
     });
-    const incomeRatio = getIncomeRatio(loanRequest, borrowers);
-    const borrowRatio = getBorrowRatio(loanRequest, borrowers);
-    const isValid = !this.state.error && incomeRatio <= 0.38 && borrowRatio <= 0.8;
 
     return (
       <ProcessPage {...this.props} stepNb={2} id="structure" showBottom={false}>
@@ -86,7 +83,7 @@ export default class StructurePage extends Component {
 
           <div className="text-center" style={{ marginTop: 60, marginBottom: 40 }}>
             <LoadingButton
-              disabled={!isValid}
+              disabled={this.state.error}
               label={<T id="StructurePage.CTA" />}
               handleClick={() => handleClick(this.props, this.state)}
               value={!!loanRequest.logic.hasValidatedStructure}
