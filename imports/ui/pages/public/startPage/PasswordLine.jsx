@@ -131,7 +131,7 @@ export default class PasswordLine extends Component {
       <div>
         <form action="submit" onSubmit={onSubmit}>
           <h1 className="fixed-size">{content}</h1>
-          <h4 className="fixed-size">{this.state.error}</h4>
+          {/* <h4 className="fixed-size error">{this.state.error}</h4> */}
           {this.state.passwordIsValid && button}
         </form>
       </div>

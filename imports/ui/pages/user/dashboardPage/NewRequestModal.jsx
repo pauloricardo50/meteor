@@ -25,9 +25,7 @@ export default class NewRequestModal extends Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    const object = {
-      name: this.state.value,
-    };
+    const object = { name: this.state.value };
 
     cleanMethod(
       'updateRequest',

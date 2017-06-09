@@ -6,8 +6,8 @@ machine:
 dependencies:
   override:
     - curl https://install.meteor.com | /bin/sh
-    - npm install
-    - npm install fbjs
+    - meteor npm install
+    - meteor npm install fbjs
   cache-directories:
     - "~/.meteor"
     - "~/.npm"
