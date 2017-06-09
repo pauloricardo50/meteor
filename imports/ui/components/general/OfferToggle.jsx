@@ -27,7 +27,8 @@ const OfferToggle = props => {
         onTouchTap={() => props.handleToggle(null, false)}
         style={styles.span}
       >
-        <T id="OfferToggle.standard" values={{ count: standardCount }} />
+        {/* use toString, or else a count of 0 isn't rendered */}
+        <T id="OfferToggle.standard" values={{ count: standardCount.toString() }} />
       </span>
       <Toggle
         toggled={props.value}
@@ -39,7 +40,7 @@ const OfferToggle = props => {
         onTouchTap={() => props.handleToggle(null, true)}
         style={styles.span}
       >
-        <T id="OfferToggle.counterpart" values={{ count: counterpartCount }} />
+        <T id="OfferToggle.counterpart" values={{ count: counterpartCount.toString() }} />
       </span>
     </div>
   );

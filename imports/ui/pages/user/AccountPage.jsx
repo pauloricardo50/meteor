@@ -28,10 +28,8 @@ const styles = {
 };
 
 const AccountPage = props =>
-  <Page title={<T id="AccountPage.title" />}>
+  <Page id="AccountPage">
     <div className="mask1" style={styles.section}>
-      {/* <h1>Mon Profil</h1>
-      <hr /> */}
 
       <span className="hidden-sm hidden-md hidden-lg" style={styles.mobileLogoutButton}>
         <RaisedButton
@@ -42,7 +40,7 @@ const AccountPage = props =>
 
       <div style={styles.div}>
         <div className="form-group">
-          <h4 style={styles.h}>Adresse email</h4><a>Changer</a>
+          <h4 style={styles.h}><T id="AccountPage.email" /></h4><a><T id="AccountPage.change" /></a>
           <br />
           <p className="secondary">
             {props.currentUser.emails[0].address}
@@ -50,26 +48,27 @@ const AccountPage = props =>
         </div>
 
         <div className="form-group">
-          <h4 style={styles.h}>Mot de passe</h4><a>Changer</a>
+          <h4 style={styles.h}><T id="AccountPage.password" /></h4>
+          <a><T id="AccountPage.change" /></a>
         </div>
 
         <div className="form-group">
-          <h4 style={styles.h}>Téléphone</h4><a>Changer</a>
+          <h4 style={styles.h}><T id="AccountPage.phone" /></h4><a><T id="AccountPage.change" /></a>
           <br />
           <p className="secondary">+41 78 000 00 00</p>
         </div>
 
-        <div className="form-group">
+        {/* <div className="form-group">
           <h4 style={styles.h}>Langue</h4><a>Changer</a>
           <br />
           <p className="secondary">Français</p>
-        </div>
+        </div> */}
 
-        <div className="form-group">
-          <h4>Recevoir des notifications quand mon dossier avance</h4>
-          <Checkbox label="Par email" style={{ zIndex: 1 }} />
-          <Checkbox label="Par SMS" style={{ zIndex: 1 }} />
-        </div>
+        {/* <div className="form-group">
+          <h4><T id="AccountPage.notifications" /></h4>
+          <Checkbox label={<T id="AccountPage.notifications.email" />} style={{ zIndex: 1 }} />
+          <Checkbox label={<T id="AccountPage.notifications.sms" />} style={{ zIndex: 1 }} />
+        </div> */}
       </div>
     </div>
   </Page>;

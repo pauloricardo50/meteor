@@ -7,9 +7,11 @@ import PropertyFormArray from '/imports/js/arrays/PropertyFormArray';
 import { propertyPercent, filesPercent } from '/imports/js/arrays/steps';
 import DropzoneArray from '/imports/ui/components/general/DropzoneArray.jsx';
 import { requestFiles } from '/imports/js/arrays/files';
+import { disableForms } from '/imports/js/helpers/requestFunctions';
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 import FakePropertyCompleter from '/imports/ui/components/general/FakePropertyCompleter.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const styles = {
   topDiv: {
@@ -37,26 +39,28 @@ const PropertyPage = props => {
     <ProcessPage {...props} stepNb={1} id="property">
       <section className="mask1 property-page">
         <h1 className="text-center">
-          {props.borrowers.length > 1 ? 'Notre bien immobilier' : 'Mon bien immobilier'}
+          <T id="PropertyPage.title" values={{ count: props.borrowers.length }} />
           <br />
           <small className={percent >= 1 && 'success'}>
-            Progrès: {Math.round(percent * 1000) / 10}%
+            <T id="PropertyPage.progress" values={{ value: percent }} />
             {' '}
             {percent >= 1 && <span className="fa fa-check" />}
           </small>
         </h1>
 
         <div className="description">
-          <p>Les champs marqués avec un * sont obligatoires.</p>
+          <p><T id="Forms.mandatory" /></p>
         </div>
 
         <DropzoneArray
           array={requestFiles(props.borrower).auction}
           documentId={props.loanRequest._id}
           pushFunc="pushRequestValue"
+          updateFunc="pushRequestValue"
           collection="loanRequests"
           filesObject={props.loanRequest.files}
           filesObjectSelector="files"
+          disabled={disableForms(props.loanRequest)}
         />
 
         <AutoForm
@@ -66,6 +70,7 @@ const PropertyPage = props => {
           pushFunc="pushRequestValue"
           popFunc="popRequestValue"
           doc={props.loanRequest}
+          disabled={disableForms(props.loanRequest)}
         />
 
         {isDemo() && <FakePropertyCompleter loanRequest={props.loanRequest} />}

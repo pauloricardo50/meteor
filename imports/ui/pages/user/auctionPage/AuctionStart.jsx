@@ -2,12 +2,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import cleanMethod from '/imports/api/cleanMethods';
 import CountUp from 'react-countup';
+import { injectIntl } from 'react-intl';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import { getLenderCount } from '/imports/js/helpers/requestFunctions';
 
 import AuctionForm from './AuctionForm.jsx';
 import ConfirmButton from '/imports/ui/components/general/ConfirmButton.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 
@@ -33,12 +35,13 @@ const styles = {
   },
 };
 
-const Start = props => {
+const AuctionStart = props => {
   const lenderCount = getLenderCount(props.loanRequest, props.borrowers);
   const r = props.loanRequest;
+  const f = props.intl.formatMessage;
   return (
     <section className="mask1">
-      <h1>Lancez les enchères</h1>
+      <h1><T id="AuctionStart.title" /></h1>
       <h1 className="text-center display2" style={styles.countUp}>
         <CountUp
           className="custom-count"
@@ -49,22 +52,16 @@ const Start = props => {
           separator=" "
           decimal=","
           prefix=""
-          suffix=" Prêteurs"
+          suffix={f({ id: 'AuctionStart.countSuffix' })}
         />
       </h1>
       <a className="bold secondary active text-center" style={styles.a}>
-        <span>Voir la liste</span>
+        <span><T id="AuctionStart.lenderList" /></span>
       </a>
 
       <div className="description">
         <p>
-          Durant les enchères, les
-          {' '}
-          {lenderCount}
-          {' '}
-          prêteurs vont entrer en compétition sur votre dossier. Ils aurant 2 fois 24 heures pour miser avec un taux d'intérêt sur votre projet.
-          {' '}
-          Puis, dans 2 jours ouvrables, vous recevrez un tableau avec toutes les offres.
+          <T id="AuctionStart.description" values={{ count: lenderCount }} />
         </p>
       </div>
 
@@ -75,7 +72,7 @@ const Start = props => {
       <div className="col-xs-12">
         <div className="form-group text-center">
           <ConfirmButton
-            label="Commencer les enchères"
+            label={<T id="AuctionStart.CTA" />}
             primary
             handleClick={() =>
               cleanMethod('startAuction', { isDemo: isDemo() }, props.loanRequest._id)}
@@ -83,16 +80,16 @@ const Start = props => {
           />
         </div>
         <div className="form-group text-center">
-          <RaisedButton label="Pas maintenant" onTouchTap={() => props.history.push('/app')} />
+          <RaisedButton label={<T id="AuctionStart.cancel" />} onTouchTap={() => props.history.push('/app')} />
         </div>
       </div>
     </section>
   );
 };
 
-Start.propTypes = {
+AuctionStart.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-export default Start;
+export default injectIntl(AuctionStart);

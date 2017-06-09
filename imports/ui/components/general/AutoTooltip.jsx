@@ -15,7 +15,7 @@ const AutoTooltip = props => {
 
   if (props.id) {
     // If an id is given, get that specific tooltip and wrap it around the children
-    content = <TooltipOverlay {...props}>{props.children}</TooltipOverlay>;
+    content = <TooltipOverlay {...props} match={props.children}>{props.children}</TooltipOverlay>;
   } else if (typeof props.children !== 'string') {
     // If no id is given and children is not a string, return
     return props.children;
@@ -33,16 +33,12 @@ const AutoTooltip = props => {
 };
 
 AutoTooltip.propTypes = {
-  placement: PropTypes.string,
-  trigger: PropTypes.arrayOf(PropTypes.string),
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   list: PropTypes.string,
-  id: PropTypes.string,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
 };
 
 AutoTooltip.defaultProps = {
-  placement: 'bottom',
-  trigger: ['click'], // Can be 'click', 'hover', and/or 'focus'
   children: null,
   list: 'general',
   id: '',

@@ -27,7 +27,15 @@ const getAcquisitionArray = (state, props, setFormState) => [
       ),
     },
     hideResult: true,
-    buttons: [{ id: true, label: <T id="general.continue" /> }],
+    buttons: [
+      {
+        id: true,
+        noPrimary: true,
+        secondary: true,
+        className: 'animated infinite pulse',
+        label: <T id="general.continue" />,
+      },
+    ],
   },
   {
     id: 'propertyWorkExists',
@@ -83,7 +91,7 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'borrowerCount',
     type: 'buttons',
     question: true,
-    buttons: [{ id: 1, label: <T id="general.one" /> }, { id: 2, label: <T id="general.two" /> }],
+    buttons: [{ id: 1, label: <T id="general.1" /> }, { id: 2, label: <T id="general.2" /> }],
   },
   {
     id: 'age',
@@ -636,6 +644,9 @@ const getFinalArray = (state, props, setFormState) => [
         state.insuranceConditions === true,
     type: 'custom',
     component: FortuneSliders,
+    // minFortune is required to do math in the FortuneSliders component
+    minFortune: props.minFortune,
+    fortune: props.fortune,
     validation: () =>
       state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= props.minFortune &&
       state.fortuneUsed >= props.minCash,

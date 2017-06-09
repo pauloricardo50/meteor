@@ -6,7 +6,6 @@ import ArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 import ArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 import { Link } from 'react-router-dom';
 
-import { DocHead } from 'meteor/kadira:dochead';
 import cleanMethod from '/imports/api/cleanMethods';
 import { getWidth } from '/imports/js/helpers/browserFunctions';
 
@@ -43,7 +42,6 @@ export default class ProcessPageBar extends Component {
   }
 
   componentDidMount() {
-    DocHead.setTitle(`${this.props.currentStep.title} | e-Potek`);
     window.addEventListener('resize', this.resize);
   }
 
@@ -59,9 +57,12 @@ export default class ProcessPageBar extends Component {
     // remove previous button if this is the very first step
     const showBackButton = !(this.props.stepNb === 1 && this.props.index === 0);
     const lastPartOfStep = this.props.index === this.props.length - 1;
+
     return (
       <div className={this.props.className}>
-        <h3 className="title fixed-size bold secondary">{this.props.currentStep.title}</h3>
+        <h3 className="title fixed-size bold secondary">
+          <T id={`steps.${this.props.currentStep.id}.title`} />
+        </h3>
         <div className="buttons">
           {showBackButton &&
             <RaisedButton
@@ -82,7 +83,7 @@ export default class ProcessPageBar extends Component {
             }
             style={this.state.smallWidth ? styles.smallButton : styles.button}
             secondary={this.props.currentStep.isDone()}
-            disabled={!this.props.nextLink || (lastPartOfStep && !this.props.currentStep.isDone())}
+            disabled={(lastPartOfStep && !this.props.currentStep.isDone()) || !this.props.nextLink}
             containerElement={
               this.props.nextLink && !lastPartOfStep ? <Link to={this.props.nextLink} /> : undefined
             }

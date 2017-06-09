@@ -44,7 +44,7 @@ export default class EmailLine extends Component {
     Meteor.clearTimeout(this.timer);
     this.props.setParentState('email', email);
 
-    if (emailValidation(email)[0]) {
+    if (emailValidation(email)) {
       this.timer = Meteor.setTimeout(() => {
         // Check if the email exists in the database
         Meteor.call('doesUserExist', email, (error, result) => {
@@ -80,9 +80,8 @@ export default class EmailLine extends Component {
             name="email"
             value={this.props.email}
             onChange={this.handleChange}
-          >
-            <MaskedInput mask={emailMask} guide autoFocus />
-          </TextField>
+            type="email"
+          />
         </h1>
       </div>
     );

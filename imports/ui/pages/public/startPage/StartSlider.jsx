@@ -51,7 +51,7 @@ StartSlider.propTypes = {
   setActiveLine: PropTypes.func.isRequired,
   step: PropTypes.number,
   onDragStart: PropTypes.func,
-  sliderLabels: PropTypes.arrayOf(PropTypes.string),
+  sliderLabels: PropTypes.arrayOf(PropTypes.any),
   initialValue: PropTypes.number,
 };
 

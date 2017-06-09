@@ -58,7 +58,8 @@ export const getAmortization = (loanRequest, borrowers) => {
       yearlyAmortization = amountToAmortize / remainingYears;
     }
   } else {
-    yearlyAmortization = propAndWork * constants.amortization;
+    // For projects below 65%, stop amortizing
+    // yearlyAmortization = propAndWork * constants.amortization;
   }
 
   return yearlyAmortization / 12;
@@ -91,7 +92,17 @@ export const getMonthlyPayment = (loanRequest, borrowers) => {
   const amortization = getAmortization(loanRequest, borrowers);
   const maintenance = getMaintenance(loanRequest);
 
-  return [amortization + interests + maintenance, amortization, interests, maintenance];
+  return { total: amortization + interests + maintenance, amortization, interests, maintenance };
+};
+
+export const getTheoreticalMonthly = (loanRequest, borrowers) => {
+  const maintenance = getPropAndWork(loanRequest) * constants.maintenance / 12;
+  const loan = getLoanValue(loanRequest);
+
+  const interests = loan * constants.interests / 12;
+  const amortization = getAmortization(loanRequest, borrowers);
+
+  return { total: amortization + interests + maintenance, amortization, interests, maintenance };
 };
 
 export const getBonusIncome = borrowers => {
@@ -144,17 +155,17 @@ export const getBorrowerIncome = borrowers => {
   let sum = 0;
 
   borrowers.forEach(borrower => {
-    sum += borrower.salary;
-    sum += getBonusIncome([borrower]);
-    sum += getOtherIncome([borrower]);
-    sum -= getExpenses([borrower]);
+    sum += borrower.salary || 0;
+    sum += getBonusIncome([borrower]) || 0;
+    sum += getOtherIncome([borrower]) || 0;
+    sum -= getExpenses([borrower]) || 0;
   });
 
   return Math.max(sum, 0);
 };
 
 export const getIncomeRatio = (loanRequest, borrowers) => {
-  const monthlyPayment = getMonthlyPayment(loanRequest, borrowers)[0];
+  const monthlyPayment = getTheoreticalMonthly(loanRequest, borrowers).total;
 
   return monthlyPayment / (getBorrowerIncome(borrowers) / 12);
 };
@@ -246,4 +257,11 @@ export const canAffordRank1 = (loanRequest, borrowers) => {
   const totalFortune = getTotalFortune(borrowers);
 
   return totalFortune >= 0.35 * propAndWork + loanRequest.property.value * constants.notaryFees;
+};
+
+export const getFees = loanRequest => {
+  const notaryFees = loanRequest.property.value * constants.notaryFees;
+  const insuranceFees = loanRequest.general.insuranceFortuneUsed * constants.lppFees;
+
+  return notaryFees + insuranceFees;
 };

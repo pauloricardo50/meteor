@@ -117,7 +117,7 @@ export default class Start2Page extends Component {
     const fees = Math.floor(property * constants.notaryFees);
     const lppFees = Math.floor(s.insuranceFortuneUsed * constants.lppFees || 0);
     const toRetirement = getRetirement(s);
-    const props = {
+    const childProps = {
       formState: s,
       type: s.type,
       usageType: s.usageType,
@@ -125,8 +125,9 @@ export default class Start2Page extends Component {
       propertyWork: s.propertyWork || 0,
       propAndWork: property + (s.propertyWork || 0),
       salary: (s.income1 || 0) + (s.income2 || 0),
-      bonus: getBonusIncome([s.bonus11, s.bonus21, s.bonus31, s.bonus41]) +
-        getBonusIncome([s.bonus12, s.bonus22, s.bonus32, s.bonus42]),
+      bonus:
+        getBonusIncome([s.bonus11, s.bonus21, s.bonus31, s.bonus41]) +
+          getBonusIncome([s.bonus12, s.bonus22, s.bonus32, s.bonus42]),
       income: getIncome(s) || 0,
       otherIncome: getOtherIncome(s.otherIncomeArray) || 0,
       fortune: getFortune(s) || 0,
@@ -145,55 +146,58 @@ export default class Start2Page extends Component {
       propertyRent: s.propertyRent,
       toRetirement,
     };
-    props.minCash = fees + 0.1 * props.propAndWork + 0.1 * props.propAndWork * constants.lppFees;
-    props.fortuneNeeded = props.project - s.loanWanted;
-    props.totalFortune = props.fortune + props.insuranceFortune;
-    props.borrow = getBorrow(
-      props.fortuneUsed + props.insuranceFortuneUsed,
-      props.propAndWork,
-      props.fees + props.lppFees,
+    childProps.minCash =
+      fees + 0.1 * childProps.propAndWork + 0.1 * childProps.propAndWork * constants.lppFees;
+    childProps.fortuneNeeded = childProps.project - s.loanWanted;
+    childProps.totalFortune = childProps.fortune + childProps.insuranceFortune;
+    childProps.borrow = getBorrow(
+      childProps.fortuneUsed + childProps.insuranceFortuneUsed,
+      childProps.propAndWork,
+      childProps.fees + childProps.lppFees,
     );
-    props.monthly = getMonthly(s, props.borrow, toRetirement) || 0;
-    props.monthlyReal = getMonthlyReal(s, props.borrow, toRetirement) || 0;
-    props.ratio = getRatio(props.income, props.expenses, props.monthly);
-    props.lenderCount = getLenderCount(props.borrow, props.ratio);
+    childProps.monthly = getMonthly(s, childProps.borrow, toRetirement) || 0;
+    childProps.monthlyReal = getMonthlyReal(s, childProps.borrow, toRetirement) || 0;
+    childProps.ratio = getRatio(childProps.income, childProps.expenses, childProps.monthly);
+    childProps.lenderCount = getLenderCount(childProps.borrow, childProps.ratio);
 
     // if you want to have a minimum loan, you use all your fortune, hence, you'll have to pay maximum lppFees
     // Round up to make sure the project works
-    props.minLoan = Math.round(
-      props.propAndWork - (props.fortune + props.insuranceFortune * (1 - constants.lppFees)) + fees,
+    childProps.minLoan = Math.round(
+      childProps.propAndWork -
+        (childProps.fortune + childProps.insuranceFortune * (1 - constants.lppFees)) +
+        fees,
     );
     // If the income is too low to afford a loan higher than some amount
-    props.maxLoan = getMaxLoan(
+    childProps.maxLoan = getMaxLoan(
       s,
-      props.income,
-      props.fortune,
-      props.insuranceFortune,
+      childProps.income,
+      childProps.fortune,
+      childProps.insuranceFortune,
       toRetirement,
-      props.propAndWork,
+      childProps.propAndWork,
     );
-    props.minFortune =
-      fees + (1 - constants.maxLoan(s.usageType, props.toRetirement)) * props.propAndWork;
+    childProps.minFortune =
+      fees + (1 - constants.maxLoan(s.usageType, childProps.toRetirement)) * childProps.propAndWork;
 
     // If there isn't enough cash, add to minfortune the lppFees that will have to be paid, as long as it is below requirement
-    if (props.fortune < props.minFortune) {
-      props.minFortune += Math.min(
-        props.insuranceFortune * constants.lppFees,
-        (props.minFortune - props.fortune) * constants.lppFees,
+    if (childProps.fortune < childProps.minFortune) {
+      childProps.minFortune += Math.min(
+        childProps.insuranceFortune * constants.lppFees,
+        (childProps.minFortune - childProps.fortune) * constants.lppFees,
       );
     }
 
-    if (!props.property) {
-      props.property = calculateProperty(
-        props.fortune,
-        props.insuranceFortune,
-        props.income,
-        props.usageType,
-        props.toRetirement,
+    if (!childProps.property) {
+      childProps.property = calculateProperty(
+        childProps.fortune,
+        childProps.insuranceFortune,
+        childProps.income,
+        childProps.usageType,
+        childProps.toRetirement,
       );
     }
 
-    const finished = isFinished(s, props.minFortune);
+    const finished = isFinished(s, childProps.minFortune);
 
     return (
       <div style={{ height: 'inherit', width: 'inherit' }}>
@@ -201,7 +205,7 @@ export default class Start2Page extends Component {
           <div className={classNames({ form: true, isFinished: finished })}>
             <AutoStart
               formState={s}
-              formArray={getFormArray(s, props, this.setFormState)}
+              formArray={getFormArray(s, childProps, this.setFormState)}
               setFormState={this.setFormState}
               setActiveLine={this.setActiveLine}
             />
@@ -213,14 +217,14 @@ export default class Start2Page extends Component {
               </h3>
               <div className="shadow-top" />
               <div className="shadow-bottom" />
-              <Recap {...props} arrayName="start2" noScale />
+              <Recap {...childProps} arrayName="start2" noScale />
             </div>}
           {finished &&
             <Scroll.Element name={'final'}>
               <StartResult
                 history={this.props.history}
                 currentUser={this.props.currentUser}
-                {...props}
+                {...childProps}
                 setFormState={this.setFormState}
               />
             </Scroll.Element>}

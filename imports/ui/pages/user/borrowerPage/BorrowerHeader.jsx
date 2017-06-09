@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import ArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 import ArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
+
 const styles = {
   div: {
     display: 'flex',
@@ -26,7 +28,7 @@ const styles = {
   },
 };
 
-const Header = ({ borrower, borrowers, index }) => {
+const BorrowerHeader = ({ borrower, borrowers, index }) => {
   const leftUrl = `/app/borrowers/${borrowers[index - 1] && borrowers[index - 1]._id}`;
   const rightUrl = `/app/borrowers/${borrowers[index + 1] && borrowers[index + 1]._id}`;
   const showLeft = index > 0;
@@ -59,16 +61,20 @@ const Header = ({ borrower, borrowers, index }) => {
       </div>
 
       <h1>
-        {borrower.firstName || `Emprunteur ${index + 1}`}
-      </h1>{borrower.age && <h3 className="secondary">{borrower.age} ans</h3>}
+        {borrower.firstName || <T id="BorrowerHeader.title" values={{ index: index + 1 }} />}
+      </h1>
+      {borrower.age &&
+        <h3 className="secondary">
+          <T id="BorrowerHeader.age" values={{ value: borrower.age }} />
+        </h3>}
     </header>
   );
 };
 
-Header.propTypes = {
+BorrowerHeader.propTypes = {
   borrower: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   index: PropTypes.number.isRequired,
 };
 
-export default Header;
+export default BorrowerHeader;

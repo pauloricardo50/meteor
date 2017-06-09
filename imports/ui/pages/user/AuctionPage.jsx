@@ -5,11 +5,11 @@ import { Meteor } from 'meteor/meteor';
 import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
 
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
-import Start from './auctionPage/Start.jsx';
+import AuctionStart from './auctionPage/AuctionStart.jsx';
 import Auction from './auctionPage/Auction.jsx';
-import Results from './auctionPage/Results.jsx';
+import AuctionResults from './auctionPage/AuctionResults.jsx';
 
-var time;
+let time;
 
 export default class AuctionPage extends Component {
   constructor(props) {
@@ -52,14 +52,14 @@ export default class AuctionPage extends Component {
       // After the auction, clear interval
       Meteor.clearInterval(time);
 
-      return <Results loanRequest={this.props.loanRequest} offers={this.props.offers} />;
+      return <AuctionResults loanRequest={this.props.loanRequest} offers={this.props.offers} />;
     } else if (this.props.loanRequest.logic.auctionStarted) {
       // During the auction
       return <Auction loanRequest={this.props.loanRequest} offers={this.props.offers} />;
     }
     // Before the auction, lets the user start it
     return (
-      <Start
+      <AuctionStart
         loanRequest={this.props.loanRequest}
         borrowers={this.props.borrowers}
         history={this.props.history}

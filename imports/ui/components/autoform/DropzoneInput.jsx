@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
-import cleanMethod from '/imports/api/cleanMethods';
-
 import DropzoneComponent from 'react-dropzone-component';
-
 import { injectIntl } from 'react-intl';
+
+import cleanMethod from '/imports/api/cleanMethods';
 
 const handleSave = (props, file) => {
   let fileNameCount = '00';
@@ -27,6 +27,15 @@ const handleSave = (props, file) => {
   };
 
   cleanMethod(props.pushFunc, object, props.documentId);
+};
+
+const handleDelete = (props, fileToDelete) => {
+  // Filter out the file we want to delete
+  const newFileArray = props.currentValue.filter(file => file.key !== fileToDelete.key);
+  const object = {};
+  object[props.mongoId] = newFileArray;
+
+  cleanMethod(props.updateFunc, object, props.documentId);
 };
 
 // Gets already uploaded files and simulates them being added to the dropzone
@@ -64,7 +73,7 @@ const djsConfig = props => ({
     // not working
     return `hi${fileName}`;
   },
-  // addRemoveLinks: true, // TODO
+  addRemoveLinks: true, // TODO
   parallelUploads: 1,
   uploadMultiple: false,
   accept(file, done) {
@@ -89,8 +98,16 @@ const eventHandlers = props => ({
   success: (file, response) => {
     handleSave(props, file);
   },
-  removedFile: file => {
-    // TODO: Add logic to remove file from DB and server
+  removedfile(file) {
+    Meteor.call('deleteFile', file.key, (err, result) => {
+      if (err) {
+        // Put the file back
+        this.emit('addedfile', file);
+        this.emit('complete', file);
+      } else {
+        handleDelete(props, file);
+      }
+    });
   },
   sending(file, xhr, formData) {
     file.postData.forEach(field => {
@@ -117,6 +134,7 @@ DropzoneInput.propTypes = {
   mongoId: PropTypes.string.isRequired,
   documentId: PropTypes.string.isRequired,
   pushFunc: PropTypes.string.isRequired,
+  updateFunc: PropTypes.string.isRequired,
   collection: PropTypes.string.isRequired,
 };
 

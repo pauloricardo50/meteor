@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
 
 import { getInterests, getAmortization } from '/imports/js/helpers/finance-math';
-import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import colors from '/imports/js/config/colors';
 
 import { legendConfig } from './chartSettings';

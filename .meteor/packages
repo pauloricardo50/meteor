@@ -33,7 +33,6 @@ hwillson:stub-collections
 
 
 # User Accounts
-accounts-password@1.3.6         # Basic accounts package from Meteor, automatically adds accounts-base package
 alanning:roles                  # Easy role management
 std:accounts-ui                 # React account component
 # std:accounts-basic
@@ -69,3 +68,4 @@ ongoworks:spiderable    # Lets webcrawlers crawl your website to index it, ex: G
 force-ssl@1.0.14                       # Automatically route users to https
 okgrow:analytics                       # Analytics package (e-potek uses only GA)
 dynamic-import
+accounts-password

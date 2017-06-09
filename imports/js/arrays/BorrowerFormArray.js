@@ -301,26 +301,12 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
           label: 'Type de revenu',
           placeholder: 'Choisissez...',
           options: [
-            {
-              id: 'welfareIncome',
-              label: 'Allocations',
-            },
-            {
-              id: 'pensionIncome',
-              label: 'Pensions',
-            },
-            {
-              id: 'rentIncome',
-              label: 'Rentes',
-            },
-            {
-              id: 'realEstateIncome',
-              label: 'Revenus de fortune immobilière',
-            },
-            {
-              id: 'other',
-              label: 'Revenus de vos titres',
-            },
+            { id: 'welfareIncome' },
+            { id: 'pensionIncome' },
+            { id: 'rentIncome' },
+            { id: 'realEstateIncome' },
+            { id: 'investmentIncome' },
+            { id: 'other' },
           ],
         },
         {

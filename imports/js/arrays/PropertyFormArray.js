@@ -216,7 +216,7 @@ const getPropertyArray = (loanRequest, borrowers) => {
     {
       id: 'property.roomCount',
       type: 'textInput',
-      number: true,
+      decimal: true,
       label: 'Nb. de chambres',
       placeholder: '3.5',
       info: 'Chambres à coucher',
@@ -359,7 +359,8 @@ const getPropertyArray = (loanRequest, borrowers) => {
       id: 'property.other',
       type: 'textInputLarge',
       label: 'Autres informations',
-      placeholder: 'Aménagements extérieurs, piscine, jardins, cabanons, annexes, sous-sols utiles,...',
+      placeholder:
+        'Aménagements extérieurs, piscine, jardins, cabanons, annexes, sous-sols utiles,...',
       rows: 3,
       required: false,
     },

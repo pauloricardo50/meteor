@@ -11,6 +11,7 @@ Accounts.emailTemplates.verifyEmail = {
   text(user, url) {
     const emailAddress = user.emails[0].address;
     const urlWithoutHash = url.replace('#/', '');
+    console.log(urlWithoutHash);
     const supportEmail = 'info@e-potek.ch';
     const emailBody = `Pour vérifier votre adresse e-mail (${emailAddress}), visitez le lien suivant:\n\n${urlWithoutHash}\n\n Si vous n'avez pas demandé cette vérification, vous pouvez ignorer cet e-mail. Par contre, si vous pensez qu'il y a quelque chose d'anormal, n'hésitez pas à nous écrire: ${supportEmail}.`;
 

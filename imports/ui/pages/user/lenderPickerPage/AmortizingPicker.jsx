@@ -30,7 +30,7 @@ const getChoices = () => {
 const StrategyAmortization = props => {
   return (
     <article>
-      <h2>{props.index}. Choisissez votre stratégie d'amortissement</h2>
+      <h2>Choisissez votre stratégie d'amortissement</h2>
 
       <div className="description">
         <p>

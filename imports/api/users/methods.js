@@ -21,9 +21,6 @@ Meteor.methods({
       Roles.addUsersToRoles(id, 'admin');
     }
   },
-});
-
-Meteor.methods({
   doesUserExist(email) {
     check(email, String);
     if (Meteor.isServer) {
@@ -31,6 +28,12 @@ Meteor.methods({
     }
 
     return undefined;
+  },
+  sendVerificationLink() {
+    const userId = Meteor.userId();
+    if (userId) {
+      return Accounts.sendVerificationEmail(userId);
+    }
   },
 });
 
@@ -40,10 +43,7 @@ export const createPartner = new ValidatedMethod({
   validate({ options }) {},
   run({ options }) {
     if (!this.userId) {
-      throw new Meteor.Error(
-        'notLoggedIn',
-        'Must be logged in to update a request',
-      );
+      throw new Meteor.Error('notLoggedIn', 'Must be logged in to update a request');
     }
     if (!Roles.userIsInRole(this.userId, 'admin')) {
       throw new Meteor.Error('notAdmin', 'Must be an Admin to do this');

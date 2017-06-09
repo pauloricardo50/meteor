@@ -14,9 +14,9 @@ const generalTooltips = {
   "prêt / prix d'achat": 'borrowRatio',
   'prêt / valeur du bien': 'borrowRatio',
 
-  'frais de notaire': 'notaryFees',
-  'frais retrait lpp': 'insuranceFees',
-  'travaux de plus-value': 'propertyWork',
+  'frais de notaire': ['notaryFees'],
+  'frais retrait prévoyance': 'insuranceFees',
+  'travaux de plus-value': ['propertyWork'],
   expertise: 'expertise',
   'prêteurs intéressés': 'interestedLenders',
   'charges estimées': 'monthlyEstimated',
@@ -31,6 +31,9 @@ const generalTooltips = {
 
   '3e pilier': 'thirdPillar',
   '3ème pilier': 'thirdPillar',
+
+  'offres standard': 'standardOffers',
+  'offres avec contrepartie': 'counterpartOffers',
 };
 
 const offerTableTooltips = {

@@ -1,18 +1,19 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { _ } from 'lodash';
+
 import cleanMethod from '/imports/api/cleanMethods';
-
-import Slider from 'material-ui/Slider';
-import TextField from 'material-ui/TextField';
-import MaskedInput from 'react-text-mask';
-
-import { swissFrancMask } from '/imports/js/helpers/textMasks';
 
 import LoadingButton from '/imports/ui/components/general/LoadingButton.jsx';
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
-import { getFortune, getInsuranceFortune } from '/imports/js/helpers/finance-math';
+import StructureSliders from './structurePage/StructureSliders.jsx';
+import StructureRecap from './structurePage/StructureRecap.jsx';
+import StructureError from './structurePage/StructureError.jsx';
+
 import { toNumber } from '/imports/js/helpers/conversionFunctions';
+import { getIncomeRatio, getBorrowRatio } from '/imports/js/helpers/finance-math';
 
 const handleClick = (props, state) => {
   // Save data to DB
@@ -24,36 +25,6 @@ const handleClick = (props, state) => {
   cleanMethod('updateRequest', object, props.loanRequest._id);
 };
 
-const getArray = (borrowers, showInsurance) => [
-  {
-    labelText: 'Épargne',
-    id: 'fortuneUsed',
-    sliderIncrement: 0,
-    max: getFortune(borrowers),
-  },
-  ...(showInsurance
-    ? {
-      labelText: 'Prévoyance',
-      id: 'insuranceFortuneUsed',
-      sliderIncrement: 0,
-      max: getInsuranceFortune(borrowers),
-    }
-    : {}),
-];
-
-const styles = {
-  div: {
-    padding: '0 40px',
-    maxWidth: 800,
-    margin: '0 auto',
-  },
-  slider: {
-    marginBottom: 0,
-  },
-};
-
-const inRange = (min, max, val) => Math.max(min, Math.min(max, val));
-
 export default class StructurePage extends Component {
   constructor(props) {
     super(props);
@@ -61,6 +32,7 @@ export default class StructurePage extends Component {
     this.state = {
       fortuneUsed: this.props.loanRequest.general.fortuneUsed,
       insuranceFortuneUsed: this.props.loanRequest.general.insuranceFortuneUsed,
+      error: false,
     };
   }
 
@@ -70,51 +42,51 @@ export default class StructurePage extends Component {
     this.setState(object);
   };
 
+  setParentState = (key, value) => {
+    this.setState({ [key]: value });
+  };
+
   render() {
-    const showInsurance =
-      this.props.loanRequest.property.usageType === 'primary' &&
-      getInsuranceFortune(this.props.borrowers) > 0;
+    const { loanRequest, borrowers } = this.props;
+    const modifiedRequest = _.merge({}, loanRequest, {
+      general: {
+        fortuneUsed: this.state.fortuneUsed,
+        insuranceFortuneUsed: this.state.insuranceFortuneUsed,
+      },
+    });
+
     return (
       <ProcessPage {...this.props} stepNb={2} id="structure" showBottom={false}>
         <section className="mask1">
-          <h1>Structure du Projet</h1>
           <div className="description">
             <p>
-              Vous pouvez ajuster la structure globale de votre projet une dernière fois, nous vous aiderons à la peaufiner.
+              <T id="StructurePage.description" />
             </p>
           </div>
 
-          {getArray(this.props.borrowers, showInsurance).map(
-            item =>
-              item.max &&
-              <h1 key={item.id} style={styles.div}>
-                <TextField
-                  id={item.id}
-                  floatingLabelText={item.labelText}
-                  onChange={e => this.handleChange(e.target.value, item.id)}
-                >
-                  <MaskedInput
-                    value={inRange(0, item.max, this.state[item.id])}
-                    mask={swissFrancMask}
-                    guide
-                    pattern="[0-9]*"
-                  />
-                </TextField>
-                <Slider
-                  value={this.state[item.id]}
-                  min={0}
-                  max={item.max}
-                  onChange={(e, v) => this.handleChange(v, item.id)}
-                  style={styles.slider}
-                />
-              </h1>,
-          )}
+          <div className="text-center">
+            <StructureError
+              loanRequest={modifiedRequest}
+              borrowers={borrowers}
+              setParentState={this.setParentState}
+            />
+          </div>
 
-          <div className="text-center" style={{ margin: '40px 0' }}>
+          <StructureSliders
+            {...this.props}
+            parentState={this.state}
+            handleChange={this.handleChange}
+            disabled={loanRequest.logic.hasValidatedStructure}
+          />
+
+          <StructureRecap {...this.props} loanRequest={modifiedRequest} />
+
+          <div className="text-center" style={{ marginTop: 60, marginBottom: 40 }}>
             <LoadingButton
-              label="Valider la structure"
+              disabled={this.state.error}
+              label={<T id="StructurePage.CTA" />}
               handleClick={() => handleClick(this.props, this.state)}
-              value={!!this.props.loanRequest.logic.hasValidatedStructure}
+              value={!!loanRequest.logic.hasValidatedStructure}
             />
           </div>
         </section>
@@ -125,4 +97,5 @@ export default class StructurePage extends Component {
 
 StructurePage.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

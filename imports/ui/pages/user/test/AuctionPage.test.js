@@ -4,12 +4,12 @@ import { describe, it, beforeEach } from 'meteor/practicalmeteor:mocha';
 import getMountedComponent from '/imports/js/helpers/testHelpers';
 import { Factory } from 'meteor/dburles:factory';
 
-import Start from '../auctionPage/Start.jsx';
+import AuctionStart from '../auctionPage/AuctionStart.jsx';
 
 if (Meteor.isClient) {
   describe('<AuctionPage />', () => {
     let props;
-    const component = () => getMountedComponent(Start, props);
+    const component = () => getMountedComponent(AuctionStart, props);
 
     beforeEach(() => {
       getMountedComponent.reset();

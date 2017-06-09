@@ -98,12 +98,12 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
             loanRequest.logic.step < 3 &&
               !(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
           percent: () => 0,
-          isDone: () => false,
+          isDone: () => loanRequest.logic.lender && loanRequest.logic.lender.contractRequested,
         },
         {
           id: 'closing',
           link: `/app/requests/${loanRequest._id}/closing`,
-          disabled: true, // TODO
+          disabled: !(loanRequest.logic.lender && loanRequest.logic.lender.contractRequested),
           percent: () => 0,
           isDone: () => false,
         },
@@ -120,6 +120,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         },
         null,
       ),
+      disabled: true, // TODO
       subtitle: null,
       items: [],
     },
@@ -141,24 +142,64 @@ export default getSteps;
 // Returns the current value of an autoForm input
 const getCurrentValue = (input, doc) => _.get(doc, input.id);
 
-export const previousDone = (steps, nb, itemNb) =>
-  steps[nb].items.slice(0, itemNb).reduce((res, i) => res && i.isDone(), true);
+/**
+ * previousDone - Checks if all previous subSteps have been finished upto this
+ * item
+ *
+ * @param {array} steps  An array of subSteps/items
+ * @param {number} stepNb The step Number
+ * @param {number} itemNb The number of the item that is concerned
+ *
+ * @return {boolean} Description
+ */
+export const previousDone = (steps, stepNb, itemNb) =>
+  steps[stepNb].items.slice(0, itemNb).reduce((res, i) => res && i.isDone(), true);
 
-// Any value that is undefined or null will be counted as incomplete
+/**
+ * getPercent - Given an array of values, any value that is undefined or null
+ * will be counted as incomplete, make sure we don't divide by 0
+ *
+ * @param {array} array Array of numbers, strings, or dates
+ *
+ * @return {number} a value between 0 and 1
+ */
 export const getPercent = array => {
   const percent =
-    array.reduce((tot, val) => (val !== undefined && val !== null ? tot + 1 : tot), 0) /
-    array.length;
+    array.reduce((tot, val) => {
+      if (_.isArray(val)) {
+        return tot + (val.length ? 1 : 0);
+      } else if (val !== undefined && val !== null) {
+        return tot + 1;
+      }
+      return tot;
+    }, 0) / array.length;
   return isFinite(percent) ? percent : 0;
 };
 
-// A boolean to determine if a field in an array should be counted or not
+/**
+ * shouldCountField - A boolean to determine if a field in an array
+ * should be counted or not
+ *
+ * @param {object} f A formArray field object
+ *
+ * @return {boolean} Description
+ */
 const shouldCountField = f =>
   (f.condition === undefined || f.condition === true) &&
   f.required !== false &&
   !f.disabled &&
   f.type !== 'h3';
 
+/**
+ * getCountedArray - Returns an array of values that are mandatory and should
+ * be counted to determine a completion percentage of a form
+ *
+ * @param {array}  formArray Description
+ * @param {object}  doc       Description
+ * @param {array} [arr=[]]  Description
+ *
+ * @return {array} an array with all the currentValues that are mandatory
+ */
 const getCountedArray = (formArray, doc, arr = []) => {
   formArray.forEach(i => {
     if (shouldCountField(i) && i.type === 'conditionalInput') {
@@ -177,6 +218,14 @@ const getCountedArray = (formArray, doc, arr = []) => {
   return arr;
 };
 
+/**
+ * personalInfoPercent - Determines the completion rate of the borrower's
+ * personal information forms
+ *
+ * @param {object} borrowers Description
+ *
+ * @return {number} A value between 0 and 1
+ */
 export const personalInfoPercent = borrowers => {
   const a = [];
   borrowers.forEach(b => {
@@ -187,6 +236,14 @@ export const personalInfoPercent = borrowers => {
   return getPercent(a);
 };
 
+/**
+ * propertyPercent - Determines the completion rate of the property forms
+ *
+ * @param {object} loanRequest Description
+ * @param {object} borrowers   Description
+ *
+ * @return {number} A percentage between 0 and 1
+ */
 export const propertyPercent = (loanRequest, borrowers) => {
   const formArray = getPropertyArray(loanRequest, borrowers);
   const a = getCountedArray(formArray, loanRequest);
@@ -210,13 +267,27 @@ export const auctionFilesPercent = borrowers => {
   return getPercent(a);
 };
 
+/**
+ * filesPercent - Determines the completion rate of file upload for a given
+ * step, doc and array of files
+ *
+ * @param {object} doc           The mongoDB document where files are saved
+ * @param {function} fileArrayFunc A function that returns an array of files
+ * @param {number} step          The step that determines which files are
+ * required at this moment
+ *
+ * @return {number} a value between 0 and 1 indicating the percentage of
+ * completion, 1 is complete, 0 is not started
+ */
 export const filesPercent = (doc, fileArrayFunc, step) => {
   const a = [];
   const iterate = (files, doc2) => {
     if (isDemo()) {
       a.push(doc2.files[files[0].id]);
     } else {
-      files.forEach(f => f.condition !== false && a.push(doc2.files[f.id]));
+      files.forEach(
+        f => !(f.required === false || f.condition === false) && a.push(doc2.files[f.id]),
+      );
     }
   };
 

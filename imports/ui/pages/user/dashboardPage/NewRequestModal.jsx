@@ -6,6 +6,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
+
 export default class NewRequestModal extends Component {
   constructor(props) {
     super(props);
@@ -23,9 +25,7 @@ export default class NewRequestModal extends Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    const object = {
-      name: this.state.value,
-    };
+    const object = { name: this.state.value };
 
     cleanMethod(
       'updateRequest',
@@ -54,21 +54,21 @@ export default class NewRequestModal extends Component {
 
     return (
       <Dialog
-        title="Donnez un nom à votre Projet"
+        title={<h3><T id="NewRequestModal.title" /></h3>}
         actions={button}
         modal
         open={this.state.open}
       >
         <p className="secondary">
-          Ça nous permettra de l'identifier
+          <T id="NewRequestModal.description" />
         </p>
 
         <form onSubmit={this.handleSubmit}>
           <div className="text-center">
             <TextField
               name="address"
-              hintText="Rue du Pré 2"
-              floatingLabelText="Nom du projet"
+              hintText={<T id="NewRequestModal.placeholder" />}
+              floatingLabelText={<T id="NewRequestModal.label" />}
               autoFocus
               value={this.state.value}
               onChange={this.handleChange}

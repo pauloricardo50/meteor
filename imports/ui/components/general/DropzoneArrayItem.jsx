@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import classnames from 'classnames';
 
 import IconButton from 'material-ui/IconButton';
 import ArrowDown from 'material-ui/svg-icons/navigation/arrow-drop-down-circle';
@@ -31,20 +32,36 @@ const getStyles = (props, currentValue) => {
 };
 
 const DropzoneArrayItem = props => {
-  const currentValue = props.filesObject[props.id];
+  const {
+    filesObject,
+    filesObjectSelector,
+    id,
+    doubleTooltip,
+    noTooltips,
+    tooltipSuffix,
+    handleClick,
+    handleMouseEnter,
+    active,
+    disabled,
+  } = props;
 
+  const currentValue = filesObject[props.id];
   const styles = getStyles(props, currentValue);
 
   // Create the id to be used with mongoDB updating operations
-  const mongoId = `${props.filesObjectSelector}.${props.id}`;
+  const mongoId = `${filesObjectSelector}.${id}`;
+  const tooltipId = `files.${id}.tooltip${tooltipSuffix}`;
 
   return (
-    <article style={styles.article} className="mask1 dropzoneArrayItem">
+    <article
+      style={styles.article}
+      className={classnames({ 'mask1 dropzoneArrayItem': true, disabled })}
+    >
       <div
         style={styles.topDiv}
         className="top"
-        onTouchTap={props.handleClick}
-        onDragEnter={props.handleMouseEnter}
+        onTouchTap={disabled ? () => {} : event => handleClick(event)}
+        onDragEnter={handleMouseEnter}
       >
         <div className="left">
           {currentValue && currentValue.length > 0
@@ -53,7 +70,15 @@ const DropzoneArrayItem = props => {
         </div>
 
         <div className="text">
-          <h3>{props.label}</h3>
+          <h3>
+            <T
+              id={`files.${id}`}
+              tooltipId={doubleTooltip ? [tooltipId] : tooltipId}
+              pureId
+              noTooltips={noTooltips}
+              tooltipPlacement="top"
+            />
+          </h3>
           <h5 className="secondary">
             <T
               id="DropzoneArrayItem.fileCount"
@@ -63,13 +88,13 @@ const DropzoneArrayItem = props => {
         </div>
 
         <div className="right">
-          <IconButton style={styles.caret}>
+          <IconButton style={styles.caret} disabled={disabled}>
             <ArrowDown color="#d8d8d8" hoverColor="#a8a8a8" />
           </IconButton>
         </div>
       </div>
 
-      {props.active &&
+      {active &&
         <div className="dropzoneDiv">
           <DropzoneInput {...props} currentValue={currentValue} mongoId={mongoId} label="" />
         </div>}
@@ -78,11 +103,11 @@ const DropzoneArrayItem = props => {
 };
 
 DropzoneArrayItem.propTypes = {
-  label: PropTypes.string.isRequired,
   active: PropTypes.bool,
   handleClick: PropTypes.func.isRequired,
   handleMouseEnter: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
+  tooltipSuffix: PropTypes.string,
   filesObject: PropTypes.objectOf(PropTypes.array).isRequired,
   filesObjectSelector: PropTypes.string.isRequired,
 };
@@ -90,6 +115,7 @@ DropzoneArrayItem.propTypes = {
 DropzoneArrayItem.defaultProps = {
   active: false,
   currentValue: undefined,
+  tooltipSuffix: '',
 };
 
 export default DropzoneArrayItem;

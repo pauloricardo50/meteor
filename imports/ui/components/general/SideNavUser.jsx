@@ -42,7 +42,7 @@ const SideNavUser = props => {
         >
           <div className="onclick-wrapper" onTouchTap={props.handleClickLink}>
             <div className="icon"><AssessmentIcon color="#ADB5BD" /></div>
-            <h5 className="title"><T id="SideNavUser.dashboard" /></h5>
+            <h4 className="fixed-size title"><T id="SideNavUser.dashboard" /></h4>
           </div>
         </NavLink>
 

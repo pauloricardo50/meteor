@@ -20,6 +20,7 @@ export const decimalMask = createNumberMask({
   prefix: '',
   allowDecimal: true,
   decimalLimit: 3,
-  requireDecimal: true,
+  decimalSymbol: '.',
+  requireDecimal: false,
   allowLeadingZeroes: true,
 });

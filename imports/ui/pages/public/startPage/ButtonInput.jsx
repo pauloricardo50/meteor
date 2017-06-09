@@ -80,6 +80,7 @@ const ButtonInput = props => {
                 primary={!button.noPrimary}
                 secondary={button.secondary}
                 key={index}
+                className={button.className}
               />,
         )}
       </div>
@@ -100,6 +101,14 @@ ButtonInput.propTypes = {
   setActiveLine: PropTypes.func.isRequired,
   deleteId: PropTypes.string,
   hideResult: PropTypes.bool,
+};
+
+ButtonInput.defaultProps = {
+  text2: '',
+  question: false,
+  formState: {},
+  deleteId: undefined,
+  hideResult: false,
 };
 
 export default ButtonInput;

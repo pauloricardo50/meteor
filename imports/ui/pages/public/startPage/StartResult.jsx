@@ -3,6 +3,7 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
 import CountUp from 'react-countup';
+import { injectIntl } from 'react-intl';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
@@ -42,6 +43,8 @@ const StartResult = props => {
     loan = props.property * constants.maxLoan(props.usageType, props.toRetirement);
   }
 
+  const countSuffix = props.intl.formatMessage({ id: 'StartResult.countSuffix' });
+
   return (
     <article className="mask1 start-result">
       <h1>
@@ -58,7 +61,7 @@ const StartResult = props => {
           separator=" "
           decimal=","
           prefix=""
-          suffix={<span>{' '}<T id="StartResult.countSuffix" /></span>}
+          suffix={countSuffix}
         />
       </h1>
 
@@ -140,4 +143,4 @@ StartResult.propTypes = {
   type: PropTypes.string.isRequired,
 };
 
-export default StartResult;
+export default injectIntl(StartResult);

@@ -75,6 +75,12 @@ export default class PasswordLine extends Component {
   handleSuccess = () => {
     saveStartForm(this.props.formState, this.props.history);
 
+    Meteor.call('sendVerificationLink', (error, response) => {
+      if (error) {
+        console.log(error);
+      }
+    });
+
     // Create user for analytics
     analytics.identify(Meteor.userId(), {
       email: Meteor.user().emails[0].address,
@@ -125,7 +131,7 @@ export default class PasswordLine extends Component {
       <div>
         <form action="submit" onSubmit={onSubmit}>
           <h1 className="fixed-size">{content}</h1>
-          <h4 className="fixed-size">{this.state.error}</h4>
+          {/* <h4 className="fixed-size error">{this.state.error}</h4> */}
           {this.state.passwordIsValid && button}
         </form>
       </div>

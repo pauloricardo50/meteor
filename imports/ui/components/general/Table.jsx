@@ -26,7 +26,7 @@ export default class Table extends Component {
     } = this.props;
 
     // Make sure columns and rows are the same length
-    if (columns.length !== rows[0].columns.length) {
+    if (rows.length && columns.length !== rows[0].columns.length) {
       throw Error();
     }
 
@@ -47,20 +47,25 @@ export default class Table extends Component {
             <TableRow>
               {columns.map((column, i) =>
                 <TableHeaderColumn key={i} style={{ ...column.style, textAlign: column.align }}>
-                  {column.id && <T id={column.id} values={column.intlValues} />}
+                  {column.id && <T id={column.id} values={column.intlValues} list="table" />}
                 </TableHeaderColumn>,
               )}
             </TableRow>
           </TableHeader>
-          <TableBody displayRowCheckbox={selectable} deselectOnClickaway showRowHover stripedRows>
-            {rows.map(row =>
-              <TableRow key={row.id} selected={row.id === selected}>
-                {row.columns.map((column, i) =>
+          <TableBody
+            displayRowCheckbox={selectable}
+            deselectOnClickaway={false}
+            showRowHover
+            stripedRows
+          >
+            {rows.map((row, i) =>
+              <TableRow key={row.id || i} selected={row.id === selected}>
+                {row.columns.map((column, j) =>
                   <TableRowColumn
-                    key={i}
-                    style={{ ...columns[i].style, textAlign: columns[i].align, fontWeight: 400 }}
+                    key={j}
+                    style={{ ...columns[j].style, textAlign: columns[j].align, fontWeight: 400 }}
                   >
-                    {typeof columns[i].format === 'function' ? columns[i].format(column) : column}
+                    {typeof columns[j].format === 'function' ? columns[j].format(column) : column}
                   </TableRowColumn>,
                 )}
               </TableRow>,

@@ -9,6 +9,8 @@ import cleanMethod from '/imports/api/cleanMethods';
 import Recap from '/imports/ui/components/general/Recap';
 import constants from '/imports/js/config/constants';
 import LoadingButton from '/imports/ui/components/general/LoadingButton.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
+import { disableForms } from '/imports/js/helpers/requestFunctions';
 
 const styles = {
   div: {
@@ -51,10 +53,12 @@ const BorrowerFinancePage = props => {
     <section className="borrower-finance-page animated fadeIn" key={borrowerId}>
       <hr />
       <h2 className="text-center">
-        Mes Finances
+        <T id="Finance.title" />
         <br />
         {borrower.logic.hasValidatedFinances &&
-          <small className="success">Validées <span className="fa fa-check" /></small>}
+          <small className="success">
+            <T id="Finance.validated" /> <span className="fa fa-check" />
+          </small>}
       </h2>
 
       <div
@@ -65,29 +69,15 @@ const BorrowerFinancePage = props => {
           margin: '0 20px',
         }}
       >
-        <h3>Récapitulatif (en {constants.getCurrency()})</h3>
+        <h3><T id="Finance.recapTitle" values={{ currency: constants.getCurrency() }} /></h3>
         <Recap arrayName="borrower" borrower={borrower} />
       </div>
 
-      <div className="description">
-        <p>Les champs marqués avec un * sont obligatoires.</p>
-      </div>
-
-      <AutoForm
-        inputs={getBorrowerFinanceArray(props.borrowers, borrowerId)}
-        borrowers={props.borrowers}
-        documentId={borrowerId}
-        updateFunc="updateBorrower"
-        pushFunc="pushBorrowerValue"
-        popFunc="popBorrowerValue"
-        doc={borrower}
-      />
-
-      <div className="conditions">
+      <div className="conditions mask2 primary-border">
         <span>
           <Checkbox
             checked={borrower.logic.financeEthics}
-            label="Les informations entrées ci-dessus sont exhaustives et correctes"
+            label="Les informations entrées ci-dessous sont exhaustives et correctes"
             style={styles.checkbox}
             onCheck={(e, isChecked) => handleCheck(e, isChecked, borrowerId)}
           />
@@ -99,12 +89,25 @@ const BorrowerFinancePage = props => {
           value={borrower.logic.hasValidatedFinances}
         />
       </div>
+
+      <div className="description"><p><T id="Forms.mandatory" /></p></div>
+
+      <AutoForm
+        inputs={getBorrowerFinanceArray(props.borrowers, borrowerId)}
+        borrowers={props.borrowers}
+        documentId={borrowerId}
+        updateFunc="updateBorrower"
+        pushFunc="pushBorrowerValue"
+        popFunc="popBorrowerValue"
+        doc={borrower}
+        disabled={disableForms(props.loanRequest)}
+      />
     </section>
   );
 };
 
 BorrowerFinancePage.propTypes = {
-  // loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 

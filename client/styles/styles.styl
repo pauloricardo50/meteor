@@ -459,6 +459,11 @@ div.strategy-choices
   &:hover
     box-shadow: 0px 2px 20px 0px rgba(0,0,0,0.2);
     background-color: rgba(240, 240, 240, 0.2);
+  &.disabled
+    opacity: 0.8;
+    background-color: white;
+    &:hover
+      box-shadow: 0 0 4px 0 rgba(33,37,41,0.16);
   .top
     min-height: 80px;
     width: 100%;
@@ -1188,10 +1193,8 @@ ul.request-map
   .conditions
     width: 100%;
     max-width: 500px;
-    margin: 0 auto;
-    margin-top: 80px;
-    margin-bottom: 16px;
-    height: 100px;
+    margin: 40px auto 0 auto;
+    padding: 40px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

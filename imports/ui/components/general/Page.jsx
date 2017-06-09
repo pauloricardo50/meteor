@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { DocHead } from 'meteor/kadira:dochead';
+import { injectIntl } from 'react-intl';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
-export default class Page extends Component {
+class Page extends Component {
   componentDidMount() {
-    if (this.props.title) {
-      DocHead.setTitle(`${this.props.title} | e-Potek`);
+    if (this.props.id) {
+      DocHead.setTitle(
+        `${this.props.intl.formatMessage({ id: `${this.props.id}.title` })} | e-Potek`,
+      );
     } else {
       DocHead.setTitle('e-Potek');
     }
@@ -16,7 +20,7 @@ export default class Page extends Component {
     return (
       <section className="page-title">
         <div className={`top-bar ${this.props.className}`}>
-          <h3 className="title fixed-size bold secondary">{this.props.title}</h3>
+          <h3 className="title fixed-size bold secondary"><T id={`${this.props.id}.title`} /></h3>
           {this.props.rightComponent}
         </div>
         <div className="children animated fadeIn">
@@ -28,7 +32,7 @@ export default class Page extends Component {
 }
 
 Page.propTypes = {
-  title: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
   rightComponent: PropTypes.element,
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]).isRequired,
   className: PropTypes.string,
@@ -38,3 +42,5 @@ Page.defaultProps = {
   rightComponent: null,
   className: '',
 };
+
+export default injectIntl(Page);

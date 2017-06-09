@@ -19,15 +19,13 @@ import AutoTooltip from './AutoTooltip.jsx';
 * @extends Component
 */
 export class T extends Component {
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   return nextProps.id !== this.props.id;
-  // }
-
   render() {
-    if (this.props.noTooltips) {
+    const { noTooltips, id, values, tooltipId, tooltipPlacement, tooltipDelay } = this.props;
+
+    if (noTooltips) {
       return <FormattedMessage {...this.props} />;
-    } else if (typeof this.props.id !== 'string') {
-      return this.props.id;
+    } else if (typeof id !== 'string') {
+      return id;
     }
 
     // formattedMessage provides an array of values in the children function.
@@ -35,29 +33,23 @@ export class T extends Component {
     // HTML element was added as a values prop, then it returns several values
     // To avoid unnecessary spans, separate those with a single message
     // and those, rare, with more.
+    const Auto = (content, key) =>
+      <AutoTooltip
+        {...this.props}
+        id={tooltipId}
+        placement={tooltipPlacement}
+        delay={tooltipDelay}
+        key={key}
+      >
+        {content}
+      </AutoTooltip>;
+
     return (
-      <FormattedMessage {...this.props}>
+      <FormattedMessage id={id} values={{ ...values, verticalSpace: <span><br /><br /></span> }}>
         {(...formattedMessage) =>
           formattedMessage.length === 1
-            ? <AutoTooltip
-              {...this.props}
-              id={this.props.tooltipId}
-              placement={this.props.tooltipPlacement}
-            >
-              {formattedMessage[0]}
-            </AutoTooltip>
-            : <span>
-              {formattedMessage.map((msg, i) => (
-                <AutoTooltip
-                  {...this.props}
-                  id={this.props.tooltipId}
-                  placement={this.props.tooltipPlacement}
-                  key={i}
-                >
-                  {msg}
-                </AutoTooltip>
-                ))}
-            </span>}
+            ? Auto(formattedMessage[0])
+            : <span>{formattedMessage.map((msg, i) => Auto(msg, i))}</span>}
       </FormattedMessage>
     );
   }
@@ -66,7 +58,7 @@ export class T extends Component {
 T.propTypes = {
   id: PropTypes.string.isRequired,
   noTooltips: PropTypes.bool,
-  tooltipId: PropTypes.string,
+  tooltipId: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
   tooltipPlacement: PropTypes.string,
 };
 

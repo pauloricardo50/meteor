@@ -5,6 +5,10 @@ import { tooltips, tooltipsById } from '/imports/js/arrays/tooltips';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import Tooltip from './Tooltip.jsx';
 
+const handleClick = event => {
+  event.stopPropagation();
+};
+
 export default class TooltipOverlay extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +21,7 @@ export default class TooltipOverlay extends Component {
   }
 
   render() {
-    const { placement, id, list, match, trigger, children } = this.props;
+    const { placement, id, pureId, list, match, trigger, delayShow, children } = this.props;
 
     return (
       <OverlayTrigger
@@ -26,18 +30,21 @@ export default class TooltipOverlay extends Component {
           <Tooltip
             placement={placement}
             trigger={trigger}
-            id={id ? tooltipsById(id) : tooltips(list)[match.toLowerCase()]}
+            id={id || tooltips(list)[match.toLowerCase()]}
+            pureId={pureId}
             hide={this.state.hide}
             match={match}
           />
         }
         rootClose
-        // animation={false}
+        animation={false}
         trigger={trigger}
+        delayShow={delayShow}
         onExit={() => this.setState({ hide: true })}
         // When clicking the same tooltip multiple times, this is not reset
         onEnter={() => this.setState({ hide: false })}
         container={document.body}
+        onTouchTap={handleClick}
       >
         <span className="tooltip-overlay hvr-underline-from-center" tabIndex="0">
           {children}
@@ -47,4 +54,20 @@ export default class TooltipOverlay extends Component {
   }
 }
 
-TooltipOverlay.propTypes = {};
+TooltipOverlay.propTypes = {
+  placement: PropTypes.string,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
+  pureId: PropTypes.bool,
+  list: PropTypes.string.isRequired,
+  match: PropTypes.oneOfType([PropTypes.element, PropTypes.string]).isRequired,
+  trigger: PropTypes.arrayOf(PropTypes.string),
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]).isRequired,
+  delayShow: PropTypes.number,
+};
+
+TooltipOverlay.defaultProps = {
+  trigger: ['click'], // Can be 'click', 'hover', and/or 'focus'
+  placement: 'bottom',
+  pureId: false,
+  delayShow: 300,
+};
