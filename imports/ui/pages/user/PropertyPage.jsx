@@ -7,6 +7,7 @@ import PropertyFormArray from '/imports/js/arrays/PropertyFormArray';
 import { propertyPercent, filesPercent } from '/imports/js/arrays/steps';
 import DropzoneArray from '/imports/ui/components/general/DropzoneArray.jsx';
 import { requestFiles } from '/imports/js/arrays/files';
+import { disableForms } from '/imports/js/helpers/requestFunctions';
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 import FakePropertyCompleter from '/imports/ui/components/general/FakePropertyCompleter.jsx';
@@ -59,6 +60,7 @@ const PropertyPage = props => {
           collection="loanRequests"
           filesObject={props.loanRequest.files}
           filesObjectSelector="files"
+          disabled={disableForms(props.loanRequest)}
         />
 
         <AutoForm
@@ -68,6 +70,7 @@ const PropertyPage = props => {
           pushFunc="pushRequestValue"
           popFunc="popRequestValue"
           doc={props.loanRequest}
+          disabled={disableForms(props.loanRequest)}
         />
 
         {isDemo() && <FakePropertyCompleter loanRequest={props.loanRequest} />}

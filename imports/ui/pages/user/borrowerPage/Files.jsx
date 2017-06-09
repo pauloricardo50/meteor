@@ -7,6 +7,7 @@ import { filesPercent } from '/imports/js/arrays/steps';
 import { borrowerFiles } from '/imports/js/arrays/files';
 import RadioInput from '/imports/ui/components/autoform/RadioInput.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
+import { disableForms } from '/imports/js/helpers/requestFunctions';
 
 const styles = {
   section: {
@@ -70,6 +71,7 @@ export default class Files extends Component {
             currentValue={this.props.borrower.hasChangedSalary}
             documentId={this.props.borrower._id}
             updateFunc="updateBorrower"
+            disabled={disableForms(this.props.loanRequest)}
           />
         </div>
 
@@ -81,6 +83,7 @@ export default class Files extends Component {
           collection="borrowers"
           filesObject={this.props.borrower.files}
           filesObjectSelector="files"
+          disabled={disableForms(this.props.loanRequest)}
         />
 
       </section>

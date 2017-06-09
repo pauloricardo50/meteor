@@ -43,10 +43,11 @@ const DashboardUnverified = props => {
       >
         <h3 className="fixed-size" style={{ margin: 0 }}><T id="DashboardUnverified.title" /></h3>
         <div style={{ display: 'flex' }}>
-          <p style={{ marginRight: 4, marginBottom: 0 }}>
+          <p style={{ margin: 0 }}>
             <T id="DashboardUnverified.description" />
+            {' '}
+            <a onTouchTap={e => handleClick(e, props)}><T id="DashboardUnverified.CTA" /></a>
           </p>
-          <a onTouchTap={e => handleClick(e, props)}><T id="DashboardUnverified.CTA" /></a>
         </div>
       </div>
       <span className="fa fa-info fa-2x" style={{ color: colors.lightBorder, paddingRight: 16 }} />

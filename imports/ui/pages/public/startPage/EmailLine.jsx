@@ -80,9 +80,8 @@ export default class EmailLine extends Component {
             name="email"
             value={this.props.email}
             onChange={this.handleChange}
-          >
-            <MaskedInput mask={emailMask} guide autoFocus />
-          </TextField>
+            type="email"
+          />
         </h1>
       </div>
     );

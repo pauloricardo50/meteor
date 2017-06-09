@@ -44,23 +44,23 @@ describe('Finance Math', () => {
 
   describe('Get Amortization', () => {
     it('Should return 1000 for a 1200000 property', () => {
-      // const request = {
-      //   property: {
-      //     value: 1200000,
-      //   },
-      //   general: {
-      //     fortuneUsed: 300000,
-      //     insuranceFortuneUsed: 0,
-      //   },
-      // };
-      //
-      // const borrowers = [
-      //   {
-      //     age: 30,
-      //     gender: 'm',
-      //   },
-      // ];
-      // expect(getAmortization(request, borrowers)).to.equal(1000);
+      const request = {
+        property: { value: 1200000 },
+        general: { fortuneUsed: 300000, insuranceFortuneUsed: 0 },
+      };
+      const borrowers = [{ age: 30, gender: 'm' }];
+
+      expect(Math.round(getAmortization(request, borrowers))).to.equal(1000);
+    });
+
+    it('Should return 0 when borrowing less than 65%', () => {
+      const request = {
+        property: { value: 1000000 },
+        general: { fortuneUsed: 400000, insuranceFortuneUsed: 0 },
+      };
+      const borrowers = [{ age: 30, gender: 'm' }];
+
+      expect(getAmortization(request, borrowers)).to.equal(0);
     });
   });
 
@@ -72,18 +72,9 @@ describe('Finance Math', () => {
 
   describe('Get Real Estate Fortune', () => {
     it('Should return 50k for a 100k value and 50k loan', () => {
-      expect(
-        getRealEstateFortune([
-          {
-            realEstate: [
-              {
-                value: 100000,
-                loan: 50000,
-              },
-            ],
-          },
-        ]),
-      ).to.equal(50000);
+      expect(getRealEstateFortune([{ realEstate: [{ value: 100000, loan: 50000 }] }])).to.equal(
+        50000,
+      );
     });
   });
 });

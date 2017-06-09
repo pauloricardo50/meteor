@@ -47,7 +47,7 @@ class ProcessPage extends Component {
   }
 
   componentWillUnmount() {
-    Session.set('stepNb', undefined);
+    Session.set('stepNb', this.props.loanRequest.logic.step);
   }
 
   setBarProps = () => {

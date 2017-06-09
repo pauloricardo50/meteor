@@ -53,11 +53,11 @@ export default class Table extends Component {
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={selectable} deselectOnClickaway showRowHover stripedRows>
-            {rows.map(row =>
-              <TableRow key={row.id} selected={row.id === selected}>
-                {row.columns.map((column, i) =>
+            {rows.map((row, i) =>
+              <TableRow key={row.id || i} selected={row.id === selected}>
+                {row.columns.map((column, j) =>
                   <TableRowColumn
-                    key={i}
+                    key={j}
                     style={{ ...columns[i].style, textAlign: columns[i].align, fontWeight: 400 }}
                   >
                     {typeof columns[i].format === 'function' ? columns[i].format(column) : column}

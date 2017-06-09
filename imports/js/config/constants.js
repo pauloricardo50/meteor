@@ -8,6 +8,7 @@ const constants = {
   notaryFees: 0.05,
   lppFees: 0.1,
   maxRatio: 0.38,
+  minCash: 0.1,
   getCurrency: () => 'CHF',
   loanCost(borrowRatio, toRetirement) {
     return this.interests + this.getAmortization(borrowRatio, toRetirement);

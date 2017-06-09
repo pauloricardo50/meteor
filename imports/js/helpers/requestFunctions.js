@@ -1,6 +1,6 @@
 import constants from '../config/constants';
 
-import { getIncomeRatio, getBorrowRatio } from './finance-math';
+import { getIncomeRatio, getBorrowRatio, getFees } from './finance-math';
 
 export const getProjectValue = loanRequest => {
   if (loanRequest.property.value <= 0) {
@@ -106,4 +106,28 @@ export const getLenderCount = (loanRequest, borrowers) => {
   }
 
   return 0;
+};
+
+export const disableForms = loanRequest =>
+  loanRequest.logic.step > 1 ||
+  loanRequest.logic.verification.requested ||
+  loanRequest.logic.verification.validated !== undefined;
+
+export const isRequestValid = (loanRequest, borrowers) => {
+  const incomeRatio = getIncomeRatio(loanRequest, borrowers);
+  const borrowRatio = getBorrowRatio(loanRequest, borrowers);
+  const fees = getFees(loanRequest);
+  const propAndWork = getPropAndWork(loanRequest);
+
+  const cashRequired = constants.minCash * propAndWork + fees;
+
+  if (incomeRatio > 0.38) {
+    throw new Error('income');
+  } else if (loanRequest.general.fortuneUsed < cashRequired) {
+    throw new Error('cash');
+  } else if (borrowRatio > 0.8) {
+    throw new Error('ownFunds');
+  }
+
+  return true;
 };

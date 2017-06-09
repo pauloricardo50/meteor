@@ -43,7 +43,7 @@ const getDashboardArray = props => {
   const project = getProjectValue(r);
   const totalUsed = getTotalUsed(r);
   const propAndWork = getPropAndWork(r);
-  const monthly = getMonthlyPayment(r, b)[0];
+  const monthly = getMonthlyPayment(r, b).total;
   const expenses = getExpenses(b);
   const bonusIncome = getBonusIncome(b);
   const otherIncome = getOtherIncome(b);
@@ -269,7 +269,7 @@ const getSmallDashboardArray = props => {
   const r = props.loanRequest;
   const b = props.borrowers;
   const loan = getLoanValue(r);
-  const monthly = getMonthlyPayment(r, b)[0];
+  const monthly = getMonthlyPayment(r, b).total;
   const totalUsed = getTotalUsed(r);
   const propAndWork = getPropAndWork(r);
 
@@ -632,6 +632,117 @@ const getBorrowerArray = props => {
   ];
 };
 
+const getStructureArray = props => {
+  const r = props.loanRequest;
+  const b = props.borrowers;
+  const project = getProjectValue(r);
+  const loan = getLoanValue(r);
+  const monthly = getMonthlyPayment(r, b).total;
+  const totalUsed = getTotalUsed(r);
+  const propAndWork = getPropAndWork(r);
+  const lenderCount = getLenderCount(r, b);
+  const incomeRatio = getIncomeRatio(r, b);
+  const borrowRatio = getBorrowRatio(r, b);
+
+  return [
+    {
+      title: true,
+      label: 'Recap.title',
+      props: {
+        style: {
+          marginTop: 0,
+        },
+      },
+    },
+    {
+      label: 'Recap.propAndWork',
+      value: toMoney(Math.round(propAndWork)),
+      hide: !r.property.propertyWork,
+    },
+    {
+      label: 'general.notaryFees',
+      value: toMoney(Math.round(r.property.value * constants.notaryFees)),
+    },
+    {
+      label: 'general.insuranceFees',
+      value: toMoney(Math.round(r.general.insuranceFortuneUsed * constants.lppFees)),
+      hide: !r.general.insuranceFortuneUsed,
+    },
+    {
+      label: 'Recap.totalCost',
+      labelStyle: {
+        fontWeight: 400,
+      },
+      value: (
+        <span className="bold sum">
+          {toMoney(project)}
+        </span>
+      ),
+      spacingTop: true,
+      spacing: true,
+    },
+    {
+      label: 'general.mortgageLoan',
+      value: toMoney(loan),
+    },
+    {
+      label: 'Recap.ownFundsTotal',
+      value: toMoney(totalUsed),
+      spacing: true,
+    },
+    {
+      label: 'Recap.monthlyCost',
+      value: (
+        <span>
+          {toMoney(monthly)} <small>/mois</small>
+        </span>
+      ),
+    },
+    {
+      title: true,
+      label: 'Recap.finmaRules',
+    },
+    {
+      label: r.property.propertyWork ? 'Recap.borrowRatio2' : 'Recap.borrowRatio1',
+      value: (
+        <span>
+          {Math.round(borrowRatio * 1000) / 10}%
+          {' '}
+          <span
+            className={
+              borrowRatio <= constants.maxLoan(r.property.usageType) + 0.001 // add 0.1% to avoid rounding errors
+                ? 'fa fa-check success'
+                : 'fa fa-times error'
+            }
+          />
+        </span>
+      ),
+    },
+    {
+      label: 'Recap.incomeRatio',
+      value: (
+        <span>
+          {Math.round(incomeRatio * 1000) / 10}%
+          {' '}
+          <span
+            className={
+              incomeRatio <= 1 / 3
+                ? 'fa fa-check success'
+                : incomeRatio <= 0.38 ? 'fa fa-exclamation warning' : 'fa fa-times error'
+            }
+          />
+        </span>
+      ),
+      spacing: true,
+    },
+    {
+      label: 'Recap.interestedLenders',
+      value: lenderCount,
+      spacing: true,
+    },
+  ];
+};
+
 const arraySwitch = props => {
   switch (props.arrayName) {
     case 'start1':
@@ -644,6 +755,8 @@ const arraySwitch = props => {
       return getSmallDashboardArray(props);
     case 'borrower':
       return getBorrowerArray(props);
+    case 'structure':
+      return getStructureArray(props);
     default:
       throw new Meteor.Error('Not a valid recap array');
   }

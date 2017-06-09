@@ -15,7 +15,7 @@ const generalTooltips = {
   'prêt / valeur du bien': 'borrowRatio',
 
   'frais de notaire': ['notaryFees'],
-  'frais retrait lpp': 'insuranceFees',
+  'frais retrait prévoyance': 'insuranceFees',
   'travaux de plus-value': ['propertyWork'],
   expertise: 'expertise',
   'prêteurs intéressés': 'interestedLenders',

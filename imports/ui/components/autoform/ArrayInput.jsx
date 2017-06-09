@@ -87,15 +87,25 @@ export default class ArrayInput extends React.Component {
 
         <div className="text-center">
           {this.state.count <= 0 &&
-            <RaisedButton label={<T id="ArrayInput.add" />} onTouchTap={this.addValue} />}
+            <RaisedButton
+              label={<T id="ArrayInput.add" />}
+              onTouchTap={this.addValue}
+              disabled={this.props.disabled}
+            />}
           {this.state.count > 0 &&
             <RaisedButton
               label="-"
               onTouchTap={this.removeValue}
               style={styles.button}
-              disabled={this.state.count <= 0}
+              disabled={this.state.count <= 0 || this.props.disabled}
             />}
-          {this.state.count > 0 && <RaisedButton label="+" onTouchTap={this.addValue} primary />}
+          {this.state.count > 0 &&
+            <RaisedButton
+              label="+"
+              onTouchTap={this.addValue}
+              primary
+              disabled={this.props.disabled}
+            />}
         </div>
       </div>
     );

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import classnames from 'classnames';
 
 import IconButton from 'material-ui/IconButton';
 import ArrowDown from 'material-ui/svg-icons/navigation/arrow-drop-down-circle';
@@ -41,6 +42,7 @@ const DropzoneArrayItem = props => {
     handleClick,
     handleMouseEnter,
     active,
+    disabled,
   } = props;
 
   const currentValue = filesObject[props.id];
@@ -51,11 +53,14 @@ const DropzoneArrayItem = props => {
   const tooltipId = `files.${id}.tooltip${tooltipSuffix}`;
 
   return (
-    <article style={styles.article} className="mask1 dropzoneArrayItem">
+    <article
+      style={styles.article}
+      className={classnames({ 'mask1 dropzoneArrayItem': true, disabled })}
+    >
       <div
         style={styles.topDiv}
         className="top"
-        onTouchTap={handleClick}
+        onTouchTap={disabled ? () => {} : event => handleClick(event)}
         onDragEnter={handleMouseEnter}
       >
         <div className="left">
@@ -83,7 +88,7 @@ const DropzoneArrayItem = props => {
         </div>
 
         <div className="right">
-          <IconButton style={styles.caret}>
+          <IconButton style={styles.caret} disabled={disabled}>
             <ArrowDown color="#d8d8d8" hoverColor="#a8a8a8" />
           </IconButton>
         </div>

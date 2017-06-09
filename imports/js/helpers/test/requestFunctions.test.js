@@ -7,6 +7,7 @@ import {
   getLoanValue,
   loanStrategySuccess,
   getMonthlyWithOffer,
+  isRequestValid,
 } from '../requestFunctions';
 
 describe('Request functions', () => {
@@ -213,6 +214,46 @@ describe('Request functions', () => {
           amortization,
         ),
       ).to.equal(0);
+    });
+  });
+
+  describe('isRequestValid', () => {
+    let request;
+    let borrowers;
+    let fortuneUsed;
+    let insuranceFortuneUsed;
+    let tranches;
+    let amortization;
+    let interestRates;
+
+    beforeEach(() => {
+      fortuneUsed = 250000;
+      insuranceFortuneUsed = 0;
+      request = {
+        property: { value: 1000000 },
+        general: { fortuneUsed },
+        logic: {},
+      };
+      borrowers = [{ salary: 100000 }];
+    });
+
+    it('should throw for insufficient revenues', () => {
+      expect(() => isRequestValid(request, borrowers)).to.throw('income');
+    });
+
+    it('should throw for insufficient cash', () => {
+      // 150k is required here
+      request.general.fortuneUsed = 140000;
+      request.general.insuranceFortuneUsed = 250000;
+      borrowers = [{ salary: 300000 }];
+      expect(() => isRequestValid(request, borrowers)).to.throw('cash');
+    });
+
+    it('should throw for insufficient own funds', () => {
+      request.general.fortuneUsed = 160000;
+      request.general.insuranceFortuneUsed = 80000;
+      borrowers = [{ salary: 300000 }];
+      expect(() => isRequestValid(request, borrowers)).to.throw('ownFunds');
     });
   });
 });

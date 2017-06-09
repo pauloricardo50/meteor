@@ -10,6 +10,7 @@ import Recap from '/imports/ui/components/general/Recap';
 import constants from '/imports/js/config/constants';
 import LoadingButton from '/imports/ui/components/general/LoadingButton.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
+import { disableForms } from '/imports/js/helpers/requestFunctions';
 
 const styles = {
   div: {
@@ -99,13 +100,14 @@ const BorrowerFinancePage = props => {
         pushFunc="pushBorrowerValue"
         popFunc="popBorrowerValue"
         doc={borrower}
+        disabled={disableForms(props.loanRequest)}
       />
     </section>
   );
 };
 
 BorrowerFinancePage.propTypes = {
-  // loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
