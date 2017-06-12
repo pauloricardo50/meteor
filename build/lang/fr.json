@@ -11,6 +11,20 @@
   "AccountPage.password": "Mot de passe",
   "AccountPage.phone": "Téléphone",
   "AccountPage.title": "Mon Compte",
+  "PasswordChange.dialogTitle": "Changer mon mot de passe",
+  "PasswordChange.change": "Changer",
+  "PasswordChange.oldPassword": "Ancien mot de passe",
+  "PasswordChange.password": "Nouveau mot de passe",
+  "PasswordChange.passwordRepeat": "Répéter mot de passe",
+
+  "PasswordResetPage.title": "Entrez votre nouveau mot de passe",
+  "PasswordResetPage.password": "Votre nouveau mot de passe",
+  "PasswordResetPage.confirmPassword": "Confirmer le mot de passe",
+  "PasswordResetPage.CTA": "Login",
+
+
+
+
   "ArrayInput.add": "Ajouter",
   "Auction.notified": "Vous recevrez une notification lorsque ce sera terminé",
   "Auction.tableText": "Bataille des prêteurs en cours",
@@ -197,6 +211,7 @@
   "general.savings": "Épargne",
   "general.showAll": "Afficher tout",
   "general.yes": "Oui",
+  "general.ok": "Ok",
   "HomeDev.CTA": "M'avertir par e-mail",
   "HomeDev.description": "Nous allons bientôt ouvrir e-Potek aux refinancements, soyez le premier averti !",
   "HomeDev.title": "En Développement",

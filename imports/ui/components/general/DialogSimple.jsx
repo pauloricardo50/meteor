@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
 export default class DialogSimple extends Component {
-  state = {
-    open: false,
-  };
+  state = { open: false };
 
   handleOpen = () => {
     this.setState({ open: true });
@@ -17,13 +16,19 @@ export default class DialogSimple extends Component {
     this.setState({ open: false });
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.close && nextProps.close) {
+      this.setState({ open: false });
+    }
+  }
+
   render() {
     const actions = this.props.actions || [
       <FlatButton
         primary
         label="Ok"
         onTouchTap={this.handleClose}
-        autoFocus={this.props.autoFocus} // TODO doesn't work
+        autoFocus={this.props.autoFocus} // TODO doesn't work with tooltips
       />,
     ];
 
@@ -59,6 +64,7 @@ DialogSimple.propTypes = {
   rootStyle: PropTypes.objectOf(PropTypes.any),
   buttonStyle: PropTypes.objectOf(PropTypes.any),
   autoFocus: PropTypes.bool,
+  close: PropTypes.bool,
 };
 
 DialogSimple.defaultProps = {
@@ -68,4 +74,5 @@ DialogSimple.defaultProps = {
   rootStyle: {},
   buttonStyle: {},
   autoFocus: false,
+  close: false,
 };

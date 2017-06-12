@@ -8,6 +8,7 @@ import AboutPage from '/imports/ui/pages/public/AboutPage.jsx';
 import CareersPage from '/imports/ui/pages/public/CareersPage.jsx';
 import TosPage from '/imports/ui/pages/public/TosPage.jsx';
 import EmailVerificationPage from '/imports/ui/pages/public/EmailVerificationPage.jsx';
+import PasswordResetPage from '/imports/ui/pages/public/PasswordResetPage.jsx';
 import TestPage from '/imports/ui/pages/public/TestPage.jsx';
 
 import Loadable from '/imports/js/helpers/loadable';
@@ -26,6 +27,7 @@ const PublicRoutes = props =>
       <Route path="/tos" component={TosPage} />
       <Route path="/test" component={TestPage} />
       <Route path="/verify-email/:token" component={EmailVerificationPage} />
+      <Route path="/reset-password/:token" component={PasswordResetPage} />
     </Switch>
   </PublicLayout>;
 
