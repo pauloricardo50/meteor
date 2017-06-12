@@ -22,7 +22,8 @@ const styles = {
 const handleChange = (value, props) => {
   if (value === 0) {
     console.log('new request!');
-  } else if (value !== props.currentValue) {
+  } else {
+    props.toggleDrawer();
     props.history.push(`/app/requests/${value}`);
   }
 };
@@ -60,6 +61,7 @@ const RequestSelector = props =>
 RequestSelector.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.object),
   currentValue: PropTypes.string,
+  toggleDrawer: PropTypes.func.isRequired,
 };
 
 RequestSelector.defaultProps = {

@@ -24,7 +24,8 @@ export const getMinIncome = (property, fortune) => {
   const i = constants.interests;
   const mR = constants.maxRatio;
 
-  const withAmortizing = (property * m + loan * (i + (loan - 0.65 * property) / (15 * loan))) / mR;
+  const withAmortizing =
+    (property * m + loan * (i + (loan - 0.65 * property) / (15 * loan))) / mR;
 
   const withoutAmortizing = (property * m + loan * i) / mR;
 
@@ -46,7 +47,8 @@ export const getMinFortune = (property, income) => {
   // For the case that there is a reasonable amount of fortune, go to rank 2
   // Here amortization is complex and depends on the borrow Ratio
   const rank2Fortune =
-    (property * (15 * m + nF + 0.35 + 15 * i * (1 + nF)) - mR * 15 * income) / (15 * i + 1);
+    (property * (15 * m + nF + 0.35 + 15 * i * (1 + nF)) - mR * 15 * income) /
+    (15 * i + 1);
 
   const rankFortune = Math.max(rank1Fortune, rank2Fortune);
 
@@ -59,9 +61,13 @@ export const getMinFortune = (property, income) => {
 export const changeProperty = (state, o, property) => {
   if (state.fortune.auto && state.income.auto) {
     o.fortune.minValue = property * (0.2 + 0.05);
-    o.income.minValue = 3 * property * (constants.maintenance + 0.8 * constants.loanCost(0.8));
+    o.income.minValue =
+      3 * property * (constants.maintenance + 0.8 * constants.loanCost(0.8));
   } else if (state.fortune.auto) {
-    o.fortune.minValue = getMinFortune(state.property.value, state.income.value);
+    o.fortune.minValue = getMinFortune(
+      state.property.value,
+      state.income.value,
+    );
   } else if (state.income.auto) {
     o.income.minValue = getMinIncome(state.property.value, state.fortune.value);
   }
@@ -74,7 +80,8 @@ export const changeProperty = (state, o, property) => {
 export const changeFortune = (state, o, fortune) => {
   if (state.property.auto && state.income.auto) {
     o.property.minValue = fortune / (0.2 + 0.05);
-    o.income.minValue = fortune / (0.2 + 0.05) * constants.propertyToIncome('primary', 0.8);
+    o.income.minValue =
+      fortune / (0.2 + 0.05) * constants.propertyToIncome('primary', 0.8);
   } else if (state.property.auto) {
     o.property.minValue = constants.maxProperty(state.income.value, fortune);
   } else if (state.income.auto) {
@@ -93,7 +100,10 @@ export const changeIncome = (state, o, income) => {
   } else if (state.property.auto) {
     o.property.minValue = constants.maxProperty(income, state.fortune.value);
   } else if (state.fortune.auto) {
-    o.fortune.minValue = getMinFortune(state.property.value, state.income.value);
+    o.fortune.minValue = getMinFortune(
+      state.property.value,
+      state.income.value,
+    );
   }
 
   o = setDefaultMinValues(state, o);
@@ -108,7 +118,8 @@ export const changeIncome = (state, o, income) => {
 export const isFinished = (state, minFortune) =>
   state.finalized &&
   !state.error &&
-  (state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= minFortune || state.type === 'test');
+  (state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= minFortune ||
+    state.type === 'test');
 
 export const getProject = state => {
   const property = state.propertyValue || calculateProperty(state) || 0;
@@ -147,33 +158,54 @@ export const getIncome = state => {
 };
 
 export const getOtherIncome = (array = []) =>
-  [...array.map(i => i.value || 0)].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
-
-export const getFortune = state =>
-  [state.fortune1, state.fortune2].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
-
-export const getInsuranceFortune = state =>
-  [state.insurance11, state.insurance12, state.insurance21, state.insurance22].reduce(
+  [...array.map(i => i.value || 0)].reduce(
     (tot, val) => (val > 0 && tot + val) || tot,
     0,
   );
 
+export const getFortune = state =>
+  [state.fortune1, state.fortune2].reduce(
+    (tot, val) => (val > 0 && tot + val) || tot,
+    0,
+  );
+
+export const getInsuranceFortune = state =>
+  [
+    state.insurance11,
+    state.insurance12,
+    state.insurance21,
+    state.insurance22,
+  ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+
 export const getRealEstateFortune = (array = []) =>
-  [...array.map(i => i.value - i.loan || 0)].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+  [...array.map(i => i.value - i.loan || 0)].reduce(
+    (tot, val) => (val > 0 && tot + val) || tot,
+    0,
+  );
 
 export const getRealEstateValue = (array = []) =>
-  [...array.map(i => i.value || 0)].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+  [...array.map(i => i.value || 0)].reduce(
+    (tot, val) => (val > 0 && tot + val) || tot,
+    0,
+  );
 
 export const getRealEstateDebt = (array = []) =>
-  [...array.map(i => i.loan || 0)].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+  [...array.map(i => i.loan || 0)].reduce(
+    (tot, val) => (val > 0 && tot + val) || tot,
+    0,
+  );
 
 export const getExpenses = (array = []) =>
-  [...array.map(i => i.value)].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+  [...array.map(i => i.value)].reduce(
+    (tot, val) => (val > 0 && tot + val) || tot,
+    0,
+  );
 
 export const getMonthly = (state, borrow, toRetirement) => {
   const s = state;
   const projectValue = getProject(state);
-  const propAndWork = s.propertyValue + (s.propertyWorkExists ? s.propertyWork : 0);
+  const propAndWork =
+    s.propertyValue + (s.propertyWorkExists ? s.propertyWork : 0);
 
   const maintenance = propAndWork * constants.maintenance;
   const interestsAndAmortizing =
@@ -197,8 +229,20 @@ export const getMonthlyReal = (state, borrow, toRetirement) => {
   );
 };
 
-export const calculateProperty = (fortune, insuranceFortune, income, usageType, toRetirement) => {
-  return constants.maxProperty(income, fortune, insuranceFortune, usageType, toRetirement);
+export const calculateProperty = (
+  fortune,
+  insuranceFortune,
+  income,
+  usageType,
+  toRetirement,
+) => {
+  return constants.maxProperty(
+    income,
+    fortune,
+    insuranceFortune,
+    usageType,
+    toRetirement,
+  );
 };
 
 export const getLenderCount = (borrow, ratio) => {
@@ -239,7 +283,14 @@ export const getRetirement = state => {
   return 100;
 };
 
-export const getMaxLoan = (state, income, fortune, insuranceFortune, toRetirement, propAndWork) => {
+export const getMaxLoan = (
+  state,
+  income,
+  fortune,
+  insuranceFortune,
+  toRetirement,
+  propAndWork,
+) => {
   const property = state.propertyValue;
   const maintenance = property * constants.maintenance;
   const mR = constants.maxRatio;
@@ -251,7 +302,8 @@ export const getMaxLoan = (state, income, fortune, insuranceFortune, toRetiremen
 
   // Check LaTeX document, equation 15, and solve for the loan
   const calculatedMaxLoan =
-    (toRetirement * (mR * income - maintenance) + 0.65 * property) / (i * toRetirement + 1);
+    (toRetirement * (mR * income - maintenance) + 0.65 * property) /
+    (i * toRetirement + 1);
 
   // Floor this value to make sure the user can afford it if any rounding happens
   // If it had to round up, it would be too expensive
@@ -326,7 +378,8 @@ export const saveStartForm = (f, history) => {
   // Insert each document
   cleanMethod('insertBorrower', borrowerOne, undefined, (err1, result1) => {
     if (multiple) {
-      borrowerTwo.sameAddress = result1;
+      // borrowerTwo.sameAddress = result1; TODO: use this to identify which
+      // borrower has the same address as whom
       cleanMethod('insertBorrower', borrowerTwo, undefined, (err2, result2) =>
         insertRequest(result1, result2),
       );

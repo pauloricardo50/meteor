@@ -74,15 +74,6 @@ const getActions = (loanRequest, pushToHistory) => {
       },
     },
     {
-      id: 'finalSteps',
-      condition: l.lender.contacted && !l.finalStepsAdded,
-      title: () => 'Transmettre réponse du prêteur',
-      date: () => l.lender.contactedTime,
-      handleClick: () => {
-        pushToHistory(`/admin/requests/${loanRequest._id}/finalsteps`);
-      },
-    },
-    {
       id: 'addFinalSteps',
       condition: l.lender.contacted && !l.finalStepsAdded,
       title: () => 'Transmettre réponse du prêteur',

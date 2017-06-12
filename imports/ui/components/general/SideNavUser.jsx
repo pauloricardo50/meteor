@@ -33,7 +33,7 @@ const SideNavUser = props => {
       style={props.style}
     >
       <div className="scrollable">
-        <RequestSelector {...props} currentValue={requestId} />
+        <RequestSelector {...props} currentValue={requestId} toggleDrawer={props.toggleDrawer} />
         <NavLink
           exact
           to={`/app/requests/${requestId}`}
@@ -63,12 +63,14 @@ SideNavUser.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.object),
   handleClickLink: PropTypes.func,
   fixed: PropTypes.bool,
+  toggleDrawer: PropTypes.func,
 };
 
 SideNavUser.defaultProps = {
   loanRequests: [],
   handleClickLink: () => null,
   fixed: false,
+  toggleDrawer: () => {},
 };
 
 export default SideNavUser;
