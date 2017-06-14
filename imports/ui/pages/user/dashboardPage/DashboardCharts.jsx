@@ -4,25 +4,13 @@ import PropTypes from 'prop-types';
 import ProjectPieChart from '/imports/ui/components/charts/ProjectPieChart.jsx';
 import ProjectBarChart from '/imports/ui/components/charts/ProjectBarChart.jsx';
 import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
+import DashboardItem from './DashboardItem.jsx';
 
 const DashboardCharts = props => {
-  // return (
-  //   <div className="row">
-  //     <div className="col-lg-6 " style={{ marginBottom: 15 }}>
-  //       <div className="mask1">
-  //         <ProjectPieChart {...props} titleAlign="left" />
-  //       </div>
-  //     </div>
-  //     <div className="col-lg-6" style={{ marginBottom: 15 }}>
-  //       <div className="mask1">
-  //         <ExpensesChart {...props} showLegend title="DashboardCharts.expensesTitle" titleAlign="left" />
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
-
   return (
-    <div className="mask1">
+    <DashboardItem
+      menuActions={[{ id: 'financePage', link: `/app/requests/${props.loanRequest._id}/finance` }]}
+    >
       <ProjectBarChart {...props} titleAlign="left" />
       <hr style={{ marginTop: 8, marginBottom: 16 }} />
       <ExpensesChart
@@ -31,10 +19,12 @@ const DashboardCharts = props => {
         title="DashboardCharts.expensesTitle"
         titleAlign="left"
       />
-    </div>
+    </DashboardItem>
   );
 };
 
-DashboardCharts.propTypes = {};
+DashboardCharts.propTypes = {
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+};
 
 export default DashboardCharts;

@@ -47,9 +47,9 @@ export const getAmortization = (loanRequest, borrowers) => {
   const loanPercent = loan / propAndWork;
 
   let yearlyAmortization = 0;
+  const remainingYears = Math.min(yearsToRetirement, 15);
   if (loanPercent > 0.65) {
     // The loan has to be below 65% before 15 years or before retirement, whichever comes first
-    const remainingYears = Math.min(yearsToRetirement, 15);
     const amountToAmortize = (loanPercent - 0.65) * propAndWork;
 
     // Make sure we don't create a black hole, or use negative values by error
@@ -62,19 +62,19 @@ export const getAmortization = (loanRequest, borrowers) => {
     // yearlyAmortization = propAndWork * constants.amortization;
   }
 
-  return yearlyAmortization / 12;
+  return { amortization: yearlyAmortization / 12, years: remainingYears };
 };
 
 // get interest to pay for a loanrequest every month
-export const getInterests = loanRequest => {
-  const loan = getLoanValue(loanRequest);
+export const getInterests = (loanRequest, rate, loanValue) => {
+  const loan = loanValue || getLoanValue(loanRequest);
 
   if (loan <= 0) {
     return 0;
   }
 
   // Use a base interest rate of 1.5%
-  const interests = 0.015;
+  const interests = rate || 0.015;
   if (loanRequest.logic.hasChosenStrategy) {
     // TODO: return real interest rate
   }
@@ -89,7 +89,7 @@ export const getMaintenance = loanRequest => {
 
 export const getMonthlyPayment = (loanRequest, borrowers) => {
   const interests = getInterests(loanRequest);
-  const amortization = getAmortization(loanRequest, borrowers);
+  const { amortization } = getAmortization(loanRequest, borrowers);
   const maintenance = getMaintenance(loanRequest);
 
   return { total: amortization + interests + maintenance, amortization, interests, maintenance };
@@ -100,7 +100,7 @@ export const getTheoreticalMonthly = (loanRequest, borrowers) => {
   const loan = getLoanValue(loanRequest);
 
   const interests = loan * constants.interests / 12;
-  const amortization = getAmortization(loanRequest, borrowers);
+  const { amortization } = getAmortization(loanRequest, borrowers);
 
   return { total: amortization + interests + maintenance, amortization, interests, maintenance };
 };

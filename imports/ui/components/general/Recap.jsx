@@ -288,20 +288,21 @@ const getSmallDashboardArray = props => {
       value: toMoney(loan),
     },
     {
-      label: 'Recap.monthlyCost',
-      value: (
-        <span>
-          {toMoney(monthly)} <small>/mois</small>
-        </span>
-      ),
-    },
-    {
       label: 'Recap.ownFundsTotal',
       value: toMoney(totalUsed),
     },
     {
       label: r.property.value === propAndWork ? 'Recap.purchasePrice' : 'Recap.propAndWork',
       value: toMoney(Math.round(propAndWork)),
+      spacing: true,
+    },
+    {
+      label: 'Recap.monthlyCost',
+      value: (
+        <span>
+          {toMoney(monthly)} <small>/mois</small>
+        </span>
+      ),
     },
   ];
 };

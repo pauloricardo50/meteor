@@ -101,14 +101,6 @@ const getActions = (loanRequest, pushToHistory) => {
       },
     },
     {
-      id: 'requestContract',
-      condition: l.contractRequested && !l.contract,
-      title: () => 'Demander le contrat',
-      handleClick: () => {
-        pushToHistory(`/admin/requests/${loanRequest._id}?tab=actions`);
-      },
-    },
-    {
       id: 'uploadContract',
       condition: l.lender.contractRequested && l.lender.contractRequestSent && !l.lender.contract,
       title: () => 'Uploader le contrat',

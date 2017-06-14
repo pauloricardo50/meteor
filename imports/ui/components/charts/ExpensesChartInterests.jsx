@@ -28,6 +28,7 @@ export default class ExpensesChartInterests extends Component {
         <ExpensesChart
           {...this.props}
           interests={this.props.loan * rates[this.state.selectValue] / 12}
+          interestRate={rates[this.state.selectValue]}
         />
         <SelectField
           floatingLabelText={<T id="ExpensesChartInterests.selectFieldLabel" />}
@@ -65,5 +66,9 @@ export default class ExpensesChartInterests extends Component {
 }
 
 ExpensesChartInterests.propTypes = {
-  loan: PropTypes.number.isRequired,
+  loan: PropTypes.number,
+};
+
+ExpensesChartInterests.defaultProps = {
+  loan: 0,
 };

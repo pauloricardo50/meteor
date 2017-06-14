@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 
-import Recap from '/imports/ui/components/general/Recap.jsx';
-
 import FlatButton from 'material-ui/FlatButton';
 
+import Recap from '/imports/ui/components/general/Recap.jsx';
+import DashboardItem from './DashboardItem.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const styles = {
@@ -50,23 +50,18 @@ export default class DashboardRecap extends React.Component {
     }
 
     return (
-      <div className="mask1">
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <h4 className="fixed-size bold" style={{ marginTop: 0 }}>
-            <T id="DashboardRecap.title" />
-          </h4>
-          <FlatButton
-            label={
-              this.state.showDetail
-                ? <T id="DashboardRecap.overview" />
-                : <T id="DashboardRecap.detail" />
-            }
-            onTouchTap={this.handleToggle}
-            primary
-          />
-        </div>
+      <DashboardItem
+        className="mask1"
+        title={<T id="DashboardRecap.title" />}
+        menuActions={[
+          {
+            id: this.state.showDetail ? 'showOverview' : 'showDetail',
+            handleClick: this.handleToggle,
+          },
+        ]}
+      >
         {content}
-      </div>
+      </DashboardItem>
     );
   }
 }
