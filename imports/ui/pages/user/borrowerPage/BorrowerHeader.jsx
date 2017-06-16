@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import { Link } from 'react-router-dom';
@@ -29,12 +30,10 @@ const styles = {
 };
 
 const BorrowerHeader = ({ requestId, borrower, borrowers, index, tab }) => {
-  const leftUrl = `/app/requests/${requestId}/borrowers/${borrowers[
-    index - 1
-  ] && borrowers[index - 1]._id}/${tab}`;
-  const rightUrl = `/app/requests/${requestId}/borrowers/${borrowers[
-    index + 1
-  ] && borrowers[index + 1]._id}/${tab}`;
+  const leftUrl = `/app/requests/${requestId}/borrowers/${borrowers[index - 1] &&
+    borrowers[index - 1]._id}/${tab}`;
+  const rightUrl = `/app/requests/${requestId}/borrowers/${borrowers[index + 1] &&
+    borrowers[index + 1]._id}/${tab}`;
   const showLeft = index > 0;
   const showRight = index + 1 < borrowers.length;
 
@@ -43,30 +42,29 @@ const BorrowerHeader = ({ requestId, borrower, borrowers, index, tab }) => {
       <div style={styles.div}>
         {showLeft
           ? <RaisedButton
-              icon={<ArrowLeft />}
-              primary
-              style={styles.buttonLeft}
-              containerElement={<Link to={leftUrl} />}
-              className="animated fadeIn"
-            />
+            icon={<ArrowLeft />}
+            primary
+            style={styles.buttonLeft}
+            containerElement={<Link to={leftUrl} />}
+            className="animated fadeIn"
+          />
           : <div style={styles.emptyDiv} />}
 
         <span className="fa fa-user-circle-o fa-5x" />
 
         {showRight
           ? <RaisedButton
-              icon={<ArrowRight />}
-              primary
-              style={styles.buttonRight}
-              containerElement={<Link to={rightUrl} />}
-              className="animated fadeIn"
-            />
+            icon={<ArrowRight />}
+            primary
+            style={styles.buttonRight}
+            containerElement={<Link to={rightUrl} />}
+            className="animated fadeIn"
+          />
           : <div style={styles.emptyDiv} />}
       </div>
 
       <h1>
-        {borrower.firstName ||
-          <T id="BorrowerHeader.title" values={{ index: index + 1 }} />}
+        {borrower.firstName || <T id="BorrowerHeader.title" values={{ index: index + 1 }} />}
       </h1>
       {borrower.age &&
         <h3 className="secondary">

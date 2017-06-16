@@ -48,15 +48,7 @@ export default class Files extends Component {
           </small>
         </h2>
 
-        <div className="description">
-          <p>
-            <div className="text-center" style={{ textAlign: 'center' }}>
-              <span className="fa fa-lock fa-3x" />
-            </div>
-            <br />
-            <T id="Files.description" />
-          </p>
-        </div>
+        <div className="description"><p><T id="Files.description" /></p></div>
 
         <h3 className="text-center"><T id="Files.files1.title" /></h3>
 
