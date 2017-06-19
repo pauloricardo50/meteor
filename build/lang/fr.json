@@ -2,6 +2,9 @@
   "AboutPage.description1": "e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève. Expansion prévue prochainement.",
   "AboutPage.description2": "L'équipe derrière e-Potek est composée d'entrepreneurs vétérans avec une expérience cumulée de plus de 30 ans dans la finance et les prêts hypothécaires en Suisse.",
   "AboutPage.title": "Le Prêt Hypothécaire de Demain",
+  "AcceptClosingModal.description": "Toute l'équipe d'e-Potek vous félicite pour le décaissement de votre prêt hypothécaire, et d'être enfin propriétaire de votre bien immobilier.{verticalSpace}Vous pouvez maintenant utiliser votre tableau de bord e-Potek pour garder un oeil sur votre prochaine échéance de paiement, et consulter les taux lorsque le refinancement s'approchera.",
+  "AcceptClosingModal.description2": "Merci d'avoir utilisé e-Potek, voici votre code pour nous recommander auprès de vos proches, et empocher jusqu'a CHF 1 000 pour une affaire conclue.",
+  "AcceptClosingModal.title": "Félicitations!",
   "AccountPage.change": "Changer",
   "AccountPage.email": "Adresse email",
   "AccountPage.language": "Langue",
@@ -16,19 +19,6 @@
   "ActionsTable.date": "Date",
   "ActionsTable.do": " ",
   "ActionsTable.requestName": "Projet",
-
-  "AcceptClosingModal.title": "Félicitations!",
-  "AcceptClosingModal.description": "Toute l'équipe d'e-Potek vous félicite pour le décaissement de votre prêt hypothécaire, et d'être enfin propriétaire de votre bien immobilier.{verticalSpace}Vous pouvez maintenant utiliser votre tableau de bord e-Potek pour garder un oeil sur votre prochaine échéance de paiement, et consulter les taux lorsque le refinancement s'approchera.",
-
-  "AcceptClosingModal.description2": "Merci d'avoir utilisé e-Potek, voici votre code pour nous recommander auprès de vos proches, et empocher jusqu'a CHF 1 000 pour une affaire conclue.",
-
-  "DashboardPayments.title": "Prochain paiement",
-  "DashboardPayments.lastDate": "Dernier paiement",
-
-
-  "DashboardDownload.title": "Documents",
-  "DashboardDownload.contract": "Votre contrat",
-
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",
   "adminAction.confirmClosing": "Confirmer le décaissement",
@@ -92,6 +82,8 @@
   "DashboardBorrowers.itemTitle": "Emprunteur {index}",
   "DashboardBorrowers.title": "{count, plural, one {Emprunteur} other {Emprunteurs}}",
   "DashboardCharts.expensesTitle": "Coût Mensuel",
+  "DashboardDownload.contract": "Votre contrat",
+  "DashboardDownload.title": "Documents",
   "DashboardLastSteps.closing": "Décaisser le prêt",
   "DashboardLastSteps.contract": "Obtenir le contrat",
   "DashboardLastSteps.progress": "Progrès: {value}/{total}",
@@ -101,6 +93,8 @@
   "DashboardMenu.showDetail": "Afficher les détails",
   "DashboardMenu.showOverview": "Afficher le résumé",
   "DashboardPage.title": "Tableau de Bord",
+  "DashboardPayments.lastDate": "Dernier paiement",
+  "DashboardPayments.title": "Prochain paiement",
   "DashboardRecap.detail": "Détail",
   "DashboardRecap.overview": "Résumé",
   "DashboardRecap.title": "Plan Financier",
@@ -226,6 +220,7 @@
   "general.buildingMaintenance": "Frais d'entretien",
   "general.cancel": "Annuler",
   "general.continue": "Continuer",
+  "general.download": "Télécharger",
   "general.hide": "Masquer",
   "general.income": "Revenus",
   "general.insuranceFees": "Frais retrait Prévoyance",
@@ -245,7 +240,6 @@
   "general.savings": "Épargne",
   "general.showAll": "Afficher tout",
   "general.yes": "Oui",
-  "general.download": "Télécharger",
   "HomeDev.CTA": "M'avertir par e-mail",
   "HomeDev.description": "Nous allons bientôt ouvrir e-Potek aux refinancements, soyez le premier averti !",
   "HomeDev.title": "En Développement",

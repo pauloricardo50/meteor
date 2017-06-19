@@ -212,14 +212,15 @@ export const getTotalFortune = borrowers => {
   return Math.max(0, Math.round(sum));
 };
 
-export const getRealEstateFortune = borrowers => {
+export const getRealEstateFortune = (borrowers = []) => {
   let sum = 0;
   borrowers.forEach(borrower => {
-    sum += [
-      ...borrower.realEstate.map(i => {
-        return i.value - i.loan || 0;
-      }),
-    ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+    if (borrower.realEstate) {
+      sum += [...borrower.realEstate.map(i => i.value - i.loan || 0)].reduce(
+        (tot, val) => (val > 0 && tot + val) || tot,
+        0,
+      );
+    }
   });
 
   return Math.max(0, Math.round(sum));
@@ -228,10 +229,12 @@ export const getRealEstateFortune = borrowers => {
 export const getRealEstateValue = borrowers => {
   let sum = 0;
   borrowers.forEach(borrower => {
-    sum += [...borrower.realEstate.map(i => i.value || 0)].reduce(
-      (tot, val) => (val > 0 && tot + val) || tot,
-      0,
-    );
+    if (borrower.realEstate) {
+      sum += [...borrower.realEstate.map(i => i.value || 0)].reduce(
+        (tot, val) => (val > 0 && tot + val) || tot,
+        0,
+      );
+    }
   });
 
   return Math.max(0, Math.round(sum));
@@ -240,10 +243,12 @@ export const getRealEstateValue = borrowers => {
 export const getRealEstateDebt = borrowers => {
   let sum = 0;
   borrowers.forEach(borrower => {
-    sum += [...borrower.realEstate.map(i => i.loan || 0)].reduce(
-      (tot, val) => (val > 0 && tot + val) || tot,
-      0,
-    );
+    if (borrower.realEstate) {
+      sum += [...borrower.realEstate.map(i => i.loan || 0)].reduce(
+        (tot, val) => (val > 0 && tot + val) || tot,
+        0,
+      );
+    }
   });
 
   return Math.max(0, Math.round(sum));
