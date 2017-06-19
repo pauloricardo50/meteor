@@ -140,6 +140,11 @@ export const requestFiles = (r = {}) => ({
   //     condition: !!r.logic && r.insuranceUsePreset === 'withdrawal',
   //   },
   // ],
+  admin: [
+    {
+      id: 'contract',
+    },
+  ],
 });
 
 const getFileIDs = list => {

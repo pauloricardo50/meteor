@@ -17,7 +17,9 @@ import PublicRoutes from './routes/PublicRoutes.jsx';
 import UserRoutes from './routes/UserRoutes.jsx';
 // const UserRoutes = Loadable({ loader: () => import('./routes/UserRoutes.jsx') });
 
-const AdminRoutes = Loadable({ loader: () => import('./routes/AdminRoutes.jsx') });
+// const AdminRoutes = Loadable({ loader: () => import('./routes/AdminRoutes.jsx') });
+import AdminRoutes from './routes/AdminRoutes.jsx';
+
 const PartnerRoutes = Loadable({ loader: () => import('./routes/PartnerRoutes.jsx') });
 
 class ScrollToTop extends Component {

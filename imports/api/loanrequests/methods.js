@@ -4,6 +4,8 @@ import { check } from 'meteor/check';
 import moment from 'moment';
 import { Roles } from 'meteor/alanning:roles';
 
+import { insertAdminAction } from '/imports/api/adminActions/methods';
+
 import LoanRequests from './loanrequests';
 
 export const insertRequest = new ValidatedMethod({
@@ -33,9 +35,7 @@ export const updateRequest = new ValidatedMethod({
     check(id, String);
   },
   run({ object, id }) {
-    return LoanRequests.update(id, {
-      $set: object,
-    });
+    return LoanRequests.update(id, { $set: object });
   },
 });
 
@@ -51,9 +51,7 @@ export const incrementStep = new ValidatedMethod({
 
     // TODO: make sure step is really done
 
-    return LoanRequests.update(id, {
-      $set: { 'logic.step': currentStep + 1 },
-    });
+    return LoanRequests.update(id, { $set: { 'logic.step': currentStep + 1 } });
   },
 });
 
@@ -64,22 +62,28 @@ export const startAuction = new ValidatedMethod({
   },
   run({ object, id }) {
     const auctionObject = {};
+    let auctionEndTime;
     auctionObject['logic.auctionStarted'] = true;
     auctionObject['logic.auctionStartTime'] = moment().toDate();
-    auctionObject['general.a'];
+    // auctionObject['general.a'];
 
     // object parameter only contains the isDemo value
     if (object.isDemo) {
-      auctionObject['logic.auctionEndTime'] = moment().add(30, 's').toDate();
+      auctionEndTime = moment().add(30, 's').toDate();
     } else {
-      auctionObject['logic.auctionEndTime'] = getAuctionEndTime(moment());
+      auctionEndTime = getAuctionEndTime(moment());
     }
+
+    auctionObject['logic.auctionEndTime'] = auctionEndTime;
 
     console.log(`Temps de fin réel: ${getAuctionEndTime(moment())}`);
 
-    return LoanRequests.update(id, {
-      $set: auctionObject,
-    });
+    // TODO: This can fuck up if the update goes through but the insertAdminAction fails
+    // same for the requestVerification method
+    LoanRequests.update(id, { $set: auctionObject });
+    return Meteor.wrapAsync(
+      insertAdminAction.call({ requestId: id, actionId: 'auction', extra: { auctionEndTime } }),
+    );
   },
 });
 
@@ -157,12 +161,22 @@ export const requestVerification = new ValidatedMethod({
     check(id, String);
   },
   run({ id }) {
-    return LoanRequests.update(id, {
+    const request = LoanRequests.findOne({ _id: id });
+
+    if (request.logic.verification.requested) {
+      // Don't do anything if this request is already in requested mode
+      return false;
+    }
+
+    console.log('heyhey');
+    // Insert an admin action and set the proper keys in the loanRequest
+    LoanRequests.update(id, {
       $set: {
         'logic.verification.requested': true,
         'logic.verification.requestedTime': new Date(),
       },
     });
+    return Meteor.wrapAsync(insertAdminAction.call({ actionId: 'verify', requestId: id }));
   },
 });
 

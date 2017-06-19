@@ -81,6 +81,7 @@ class AmortizationChart extends Component {
           },
           opposite: true,
           max: Math.max(...payment) * 1.5,
+          min: 0,
         },
       ],
       tooltip: { shared: true },

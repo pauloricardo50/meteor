@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import AWS from 'aws-sdk';
 import { check } from 'meteor/check';
+import { Roles } from 'meteor/alanning:roles';
 
 import LoanRequests from '/imports/api/loanrequests/loanrequests';
 import Borrowers from '/imports/api/borrowers/borrowers';
@@ -15,8 +16,13 @@ Meteor.methods({
     const requestFound = !!LoanRequests.findOne({ _id: keyId, userId: Meteor.userId() });
     const borrowerFound = !!Borrowers.findOne({ _id: keyId, userId: Meteor.userId() });
 
-    if (!(requestFound || borrowerFound)) {
-      throw new Meteor.Error('unauthorized', 'You are not allowed to do this');
+    if (
+      Roles.userIsInRole(Meteor.userId(), 'admin') ||
+      Roles.userIsInRole(Meteor.userId(), 'dev')
+    ) {
+      // Continue
+    } else if (!(requestFound || borrowerFound)) {
+      throw new Meteor.Error('unauthorized');
     }
 
     AWS.config.update({
@@ -25,10 +31,7 @@ Meteor.methods({
     });
 
     const s3 = new AWS.S3({ signatureVersion: 'v4' });
-    const params = {
-      Bucket: Meteor.settings.S3Bucket,
-      Key: key,
-    };
+    const params = { Bucket: Meteor.settings.S3Bucket, Key: key };
 
     return Meteor.wrapAsync(() => s3.deleteObject(params));
   },

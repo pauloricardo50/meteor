@@ -17,7 +17,10 @@ export default class VerificationPage extends Component {
       object['logic.verification.validated'] = true;
       cleanMethod('updateRequest', object, this.props.loanRequest._id);
     } else {
-      cleanMethod('requestVerification', null, this.props.loanRequest._id);
+      cleanMethod('requestVerification', null, this.props.loanRequest._id, (err, result) => {
+        console.log(err);
+        console.log(result);
+      });
     }
   };
 

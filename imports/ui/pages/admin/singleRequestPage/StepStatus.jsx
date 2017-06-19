@@ -2,6 +2,8 @@ import React from 'react';
 import getSteps from '/imports/js/arrays/steps';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
+
 const StepStatus = props => {
   const steps = getSteps(props).slice(1, -1);
   const currentStep = props.loanRequest.logic.step;
@@ -15,18 +17,18 @@ const StepStatus = props => {
         margin: 20,
       }}
     >
-      {steps.map((s, i) => (
+      {steps.map((s, i) =>
         <li key={s.title} style={{ display: 'flex', flexDirection: 'column' }}>
-          <div>{s.title} {currentStep > i && <CheckIcon />}</div>
+          <div><T id={`steps.${s.nb}.title`} /> {currentStep > i && <CheckIcon />}</div>
           <ul>
-            {s.items.map(item => (
+            {s.items.map(item =>
               <li key={item.id}>
-                {item.title} {item.isDone() && <CheckIcon />}
-              </li>
-            ))}
+                <T id={`steps.${item.id}.title`} /> {item.isDone() && <CheckIcon />}
+              </li>,
+            )}
           </ul>
-        </li>
-      ))}
+        </li>,
+      )}
     </ul>
   );
 };

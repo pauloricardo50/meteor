@@ -2,8 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
+import RaisedButton from 'material-ui/RaisedButton';
+
 import ConfirmMethod from './ConfirmMethod.jsx';
 import { cancelAuction, finishAuction, deleteRequest } from '/imports/api/loanrequests/methods';
+import DialogSimple from '/imports/ui/components/general/DialogSimple.jsx';
+import DropzoneArray from '/imports/ui/components/general/DropzoneArray.jsx';
+import { downloadPDF } from '/imports/js/helpers/download-pdf';
 
 const styles = {
   div: {
@@ -17,23 +22,34 @@ const styles = {
 };
 
 const ActionsTab = props => {
-  const serverTime = props.serverTime;
+  const { serverTime, loanRequest } = props;
 
-  const l = props.loanRequest.logic;
+  const l = loanRequest.logic;
 
   return (
     <div style={styles.div}>
+      <RaisedButton
+        label="Télécharger PDF Anonyme"
+        onTouchTap={e => downloadPDF(e, loanRequest._id, 'anonymous')}
+        style={styles.button}
+      />
+      <RaisedButton
+        label="Télécharger PDF Complet"
+        onTouchTap={e => downloadPDF(e, loanRequest._id, 'default')}
+        style={styles.button}
+      />
+
       <ConfirmMethod
         label="Annuler les enchères"
         keyword="ANNULER"
-        method={cb => cancelAuction.call({ id: props.loanRequest._id }, cb)}
+        method={cb => cancelAuction.call({ id: loanRequest._id }, cb)}
         style={styles.button}
         disabled={!(l.auctionStarted && serverTime && serverTime < l.auctionEndTime)}
       />
       <ConfirmMethod
         label="Terminer les enchères"
         keyword="TERMINER"
-        method={cb => finishAuction.call({ id: props.loanRequest._id }, cb)}
+        method={cb => finishAuction.call({ id: loanRequest._id }, cb)}
         style={styles.button}
         disabled={!(l.auctionStarted && serverTime && serverTime < l.auctionEndTime)}
       />
@@ -41,17 +57,31 @@ const ActionsTab = props => {
         label="Supprimer la demande"
         keyword="SUPPRIMER"
         method={cb =>
-          deleteRequest.call({ id: props.loanRequest._id }, err => {
+          deleteRequest.call({ id: loanRequest._id }, err => {
             if (!err) {
               window.location.href = '/admin';
             }
           })}
         style={styles.button}
       />
+      <DialogSimple title="Uploader contrat" label="Uploader contrat" buttonStyle={styles.button}>
+        <DropzoneArray
+          array={[{ id: 'contract' }]}
+          documentId={loanRequest._id}
+          pushFunc="pushRequestValue"
+          updateFunc="updateRequest"
+          collection="loanRequests"
+          filesObject={loanRequest.files}
+          filesObjectSelector="files"
+          disabled={false}
+        />
+      </DialogSimple>
     </div>
   );
 };
 
-ActionsTab.propTypes = {};
+ActionsTab.propTypes = {
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+};
 
 export default ActionsTab;

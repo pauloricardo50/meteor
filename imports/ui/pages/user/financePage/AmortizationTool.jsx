@@ -30,7 +30,7 @@ export default class AmortizationTool extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { value: 1, initialRate: 0.015 * 100 };
+    this.state = { value: 0, initialRate: 0.015 * 100 };
 
     this.totalYears = 20;
   }

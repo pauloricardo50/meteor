@@ -1,93 +1,129 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Meteor } from 'meteor/meteor';
-
-import {
-  Table,
-  TableBody,
-  TableFooter,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
 import { FormattedRelative } from 'react-intl';
 
-import adminActions from '/imports/js/arrays/adminActions';
+import FlatButton from 'material-ui/FlatButton';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 
-const getActions = props => {
-  const array = [];
+import Table from '/imports/ui/components/general/Table.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
-  props.loanRequests.forEach(r => {
-    array.push(...adminActions(r, props.history.push));
-  });
+import getActions from '/imports/js/arrays/adminActions';
+import { completeAction } from '/imports/api/adminActions/methods';
 
-  return array;
-};
-
-const columns = ['Nom du Projet', 'Action', 'Date', 'Commentaire'];
+const columns = [
+  {
+    id: 'ActionsTable.requestName',
+    align: 'left',
+  },
+  {
+    id: 'ActionsTable.actionName',
+    align: 'left',
+  },
+  {
+    id: 'ActionsTable.date',
+    align: 'left',
+    format: date => <FormattedRelative value={date} />,
+  },
+  {
+    id: 'ActionsTable.comment',
+    align: 'left',
+    className: 'secondary',
+  },
+  {
+    id: 'ActionsTable.do',
+    format: handleClick =>
+      <FlatButton
+        label="Go"
+        onTouchTap={event => {
+          event.stopPropagation();
+          handleClick();
+        }}
+        primary
+      />,
+    align: 'center',
+    style: { paddingLeft: 0, paddingRight: 0, width: 88 },
+  },
+];
 
 export default class ActionsTable extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { actions: getActions(this.props) };
+    this.state = { selectedRow: '', filter: 'active' };
   }
 
-  componentDidMount() {
-    this.timer = Meteor.setInterval(() => {
-      this.setState({ actions: getActions(this.props) });
-    }, 10000);
-  }
+  handleRowSelection = index => {
+    if (Number.isInteger(index)) {
+      this.setState({ selectedRow: this.getFilteredActions()[index]._id });
+    } else {
+      this.setState({ selectedRow: '' });
+    }
+  };
 
-  componentWillUnmount() {
-    Meteor.clearInterval(this.timer);
-  }
+  handleFilter = (event, index, filter) => this.setState({ filter, selectedRow: '' });
+
+  handleClick = () => {
+    completeAction.call({ id: this.state.selectedRow }, err => {
+      if (err) {
+        console.log(err);
+      }
+    });
+  };
+
+  getFilteredActions = () => this.props.adminActions.filter(a => a.status === this.state.filter);
 
   render() {
-    if (!this.state.actions.length) {
-      return (
-        <h2 className="secondary text-center" style={{ margin: '40px 0' }}>
-          Rien à faire en ce moment
-        </h2>
-      );
-    }
-
+    const actions = this.getFilteredActions();
     return (
-      <Table
-        // height={500}
-        fixedHeader
-        selectable={false}
-      >
-        <TableHeader displaySelectAll={false}>
-          <TableRow>
-            <TableHeaderColumn colSpan={columns.length} style={{ textAlign: 'center' }}>
-              À Faire
-            </TableHeaderColumn>
-          </TableRow>
-          <TableRow>
-            {columns.map(c => <TableHeaderColumn key={c}>{c}</TableHeaderColumn>)}
-          </TableRow>
-        </TableHeader>
-        <TableBody showRowHover stripedRows displayRowCheckbox={false}>
-          {this.state.actions.length &&
-            this.state.actions.map(action => (
-              <TableRow
-                key={`${action.id}${action.requestId}`}
-                onTouchTap={() => action.handleClick()}
-              >
-                <TableRowColumn>{action.requestName}</TableRowColumn>
-                <TableRowColumn>{action.title()}</TableRowColumn>
-                <TableRowColumn>
-                  <FormattedRelative value={action.date && action.date()} />
-                </TableRowColumn>
-                <TableRowColumn>{action.comment && action.comment()}</TableRowColumn>
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
+      <article>
+        <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+          <DropDownMenu value={this.state.filter} onChange={this.handleFilter}>
+            <MenuItem value={'active'} primaryText="Actif" />
+            <MenuItem value={'completed'} primaryText="Complété" />
+          </DropDownMenu>
+          <FlatButton
+            label="Marquer comme complété"
+            onTouchTap={this.handleClick}
+            disabled={!this.state.selectedRow}
+            primary
+          />
+        </div>
+
+        <Table
+          height={actions.length === 0 ? '0px' : '500px'}
+          selectable
+          selected={this.state.selectedRow}
+          onRowSelection={this.handleRowSelection}
+          columns={columns}
+          rows={actions.map(action => {
+            const request = this.props.loanRequests.find(r => r._id === action.requestId);
+            const title = <T id={`adminAction.${action.actionId}`} />;
+            const actionDetails = getActions.find(a => a.id === action.actionId);
+
+            return {
+              id: action._id,
+              columns: [
+                request.name,
+                title,
+                action.createdAt,
+                actionDetails.comment ? actionDetails.comment(request) : '-',
+                () => actionDetails.handleClick(request, this.props.history.push),
+              ],
+            };
+          })}
+        />
+
+        {actions.length === 0 &&
+          <div className="text-center"><h2 className="secondary">Aucune action</h2></div>}
+      </article>
     );
   }
 }
 
-ActionsTable.propTypes = {};
+ActionsTable.propTypes = {
+  adminActions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loanRequests: PropTypes.arrayOf(PropTypes.object).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+};

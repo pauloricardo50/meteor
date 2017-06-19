@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
+import { Roles } from 'meteor/alanning:roles';
+
 import LoanRequests from '/imports/api/loanrequests/loanrequests';
 import Borrowers from '/imports/api/borrowers/borrowers';
 
@@ -17,6 +19,11 @@ const getFileCount = props => {
 Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
   authorize(file, props) {
     // Don't use arrow function, this is the current object here
+
+    // Check for devs and admins
+    if (Roles.userIsInRole(this.userId, 'admin') || Roles.userIsInRole(this.userId, 'dev')) {
+      return true;
+    }
 
     // Deny uploads if user is not logged in.
     if (!this.userId) {

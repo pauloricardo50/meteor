@@ -8,7 +8,6 @@ import RequestTabs from './singleRequestPage/RequestTabs.jsx';
 import StepStatus from './singleRequestPage/StepStatus.jsx';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
-import adminActions from '/imports/js/arrays/adminActions';
 import { getLoanValue } from '/imports/js/helpers/requestFunctions';
 
 const styles = {
@@ -44,7 +43,6 @@ export default class SingleRequestPage extends Component {
   }
 
   render() {
-    const actions = adminActions(this.props.loanRequest, this.props);
     return (
       <section>
         <RaisedButton

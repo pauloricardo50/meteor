@@ -1,17 +1,14 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import RaisedButton from 'material-ui/RaisedButton';
-import CheckIcon from 'material-ui/svg-icons/navigation/check';
-
 import { getMonthlyWithOffer } from '/imports/js/helpers/requestFunctions';
-import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import cleanMethod from '/imports/api/cleanMethods';
 
 import OfferToggle from '/imports/ui/components/general/OfferToggle.jsx';
 import ConditionsButton from '/imports/ui/components/general/ConditionsButton.jsx';
 import Table from '/imports/ui/components/general/Table.jsx';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
+import { insertAdminAction } from '/imports/api/adminActions/methods';
 
 const getOffers = props => {
   let newOffers = props.offers.map(offer => {
@@ -72,12 +69,18 @@ const handleSave = (props, offerId) => {
   object['general.loanTranches'] = props.formState.loanTranches;
   object['logic.lender.offerId'] = offerId;
 
-  cleanMethod('updateRequest', object, props.loanRequest._id);
+  cleanMethod('updateRequest', object, props.loanRequest._id, err => {
+    if (!err) {
+      // This will only be called the first time a lender is chosen
+      insertAdminAction.call({ requestId: props.loanRequest._id, actionId: 'lenderChosen' });
+    }
+  });
 };
 
 const handleChoose = (id, props) => {
   if (id === undefined) {
-    props.setFormState('chosenLender', '', () => handleSave(props, ''));
+    // TODO: How to handle unselecting? Currently, do not allow a user to unselect his lender
+    // props.setFormState('chosenLender', '', () => handleSave(props, ''));
   } else {
     props.setFormState('chosenLender', id, () => handleSave(props, id));
   }
