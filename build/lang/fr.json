@@ -25,6 +25,10 @@
   "DashboardPayments.title": "Prochain paiement",
   "DashboardPayments.lastDate": "Dernier paiement",
 
+
+  "DashboardDownload.title": "Documents",
+  "DashboardDownload.contract": "Votre contrat",
+
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",
   "adminAction.confirmClosing": "Confirmer le décaissement",
@@ -241,6 +245,7 @@
   "general.savings": "Épargne",
   "general.showAll": "Afficher tout",
   "general.yes": "Oui",
+  "general.download": "Télécharger",
   "HomeDev.CTA": "M'avertir par e-mail",
   "HomeDev.description": "Nous allons bientôt ouvrir e-Potek aux refinancements, soyez le premier averti !",
   "HomeDev.title": "En Développement",

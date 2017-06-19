@@ -9,30 +9,53 @@ import Borrowers from '/imports/api/borrowers/borrowers';
 Meteor.methods({
   deleteFile(key) {
     check(key, String);
+    isAllowed(key);
 
-    // Check if this user is the owner of the document he's trying to delete a
-    // file from
-    const keyId = key.split('/')[0];
-    const requestFound = !!LoanRequests.findOne({ _id: keyId, userId: Meteor.userId() });
-    const borrowerFound = !!Borrowers.findOne({ _id: keyId, userId: Meteor.userId() });
-
-    if (
-      Roles.userIsInRole(Meteor.userId(), 'admin') ||
-      Roles.userIsInRole(Meteor.userId(), 'dev')
-    ) {
-      // Continue
-    } else if (!(requestFound || borrowerFound)) {
-      throw new Meteor.Error('unauthorized');
-    }
-
-    AWS.config.update({
-      accessKeyId: Meteor.settings.AWS.users.accessKeyId,
-      secretAccessKey: Meteor.settings.AWS.users.secretAccesskey,
-    });
-
-    const s3 = new AWS.S3({ signatureVersion: 'v4' });
+    const s3 = setupS3();
     const params = { Bucket: Meteor.settings.S3Bucket, Key: key };
 
     return Meteor.wrapAsync(() => s3.deleteObject(params));
   },
+  downloadFile(key) {
+    check(key, String);
+    isAllowed(key);
+
+    const s3 = setupS3();
+    const params = { Bucket: Meteor.settings.S3Bucket, Key: key };
+
+    // Don't ask me why this works...
+    // https://gist.github.com/rclai/b9331afd2fbabadb0074
+    const async = Meteor.wrapAsync((parameters, callback) =>
+      s3.getObject(parameters, (error, data) => {
+        callback(error, data);
+      }),
+    );
+
+    return async(params);
+  },
 });
+
+const isAllowed = key => {
+  // Check if this user is the owner of the document he's trying to delete a
+  // file from
+  const keyId = key.split('/')[0];
+  const requestFound = !!LoanRequests.findOne({ _id: keyId, userId: Meteor.userId() });
+  const borrowerFound = !!Borrowers.findOne({ _id: keyId, userId: Meteor.userId() });
+
+  if (Roles.userIsInRole(Meteor.userId(), 'admin') || Roles.userIsInRole(Meteor.userId(), 'dev')) {
+    return true;
+  } else if (!(requestFound || borrowerFound)) {
+    throw new Meteor.Error('unauthorized');
+  }
+
+  return true;
+};
+
+const setupS3 = () => {
+  AWS.config.update({
+    accessKeyId: Meteor.settings.AWS.users.accessKeyId,
+    secretAccessKey: Meteor.settings.AWS.users.secretAccesskey,
+  });
+
+  return new AWS.S3({ signatureVersion: 'v4' });
+};

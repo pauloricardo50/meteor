@@ -7,6 +7,7 @@ import DashboardBorrowers from './DashboardBorrowers.jsx';
 import DashboardLastSteps from './DashboardLastSteps.jsx';
 import DashboardUnverified from './DashboardUnverified.jsx';
 import DashboardPayments from './DashboardPayments.jsx';
+import DashboardDownload from './DashboardDownload.jsx';
 
 const getArray = props => {
   return [
@@ -31,7 +32,10 @@ const getArray = props => {
       className: 'col-md-6 col-lg-4 joyride-charts',
     },
     {
-      components: [{ component: DashboardBorrowers, show: true }],
+      components: [
+        { component: DashboardBorrowers, show: true },
+        { component: DashboardDownload, show: props.loanRequest.files.contract },
+      ],
       className: 'col-md-6 col-lg-4 joyride-borrowers',
     },
   ];
