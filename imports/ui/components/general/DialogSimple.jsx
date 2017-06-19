@@ -5,16 +5,13 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
+
 export default class DialogSimple extends Component {
-  state = { open: false };
-
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
+  constructor(props) {
+    super(props);
+    this.state = { open: false, disabled: false, isCancel: true };
+  }
 
   componentWillReceiveProps(nextProps) {
     if (!this.props.close && nextProps.close) {
@@ -22,15 +19,31 @@ export default class DialogSimple extends Component {
     }
   }
 
+  handleOpen = () => this.setState({ open: true });
+
+  handleClose = isSubmit => this.setState({ open: false, isCancel: !isSubmit });
+
+  disableClose = () => this.setState({ disabled: true });
+
+  enableClose = () => this.setState({ disabled: false });
+
   render() {
     const actions = this.props.actions || [
+      <FlatButton primary label={<T id="general.cancel" />} onTouchTap={this.handleClose} />,
       <FlatButton
         primary
         label="Ok"
-        onTouchTap={this.handleClose}
+        onTouchTap={() => this.handleClose(true)}
         autoFocus={this.props.autoFocus} // TODO doesn't work with tooltips
+        disabled={this.state.disabled}
       />,
     ];
+
+    const childProps = {
+      disableClose: this.disableClose,
+      enableClose: this.enableClose,
+      isCancel: this.state.isCancel,
+    };
 
     return (
       <span style={this.props.rootStyle}>
@@ -44,11 +57,11 @@ export default class DialogSimple extends Component {
         <Dialog
           title={<h3>{this.props.title}</h3>}
           actions={actions}
-          modal={false}
+          modal={this.props.modal}
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-          {this.props.children}
+          {this.props.children && React.cloneElement(this.props.children, { ...childProps })}
         </Dialog>
       </span>
     );
@@ -65,6 +78,7 @@ DialogSimple.propTypes = {
   buttonStyle: PropTypes.objectOf(PropTypes.any),
   autoFocus: PropTypes.bool,
   close: PropTypes.bool,
+  modal: PropTypes.bool,
 };
 
 DialogSimple.defaultProps = {
@@ -75,4 +89,5 @@ DialogSimple.defaultProps = {
   buttonStyle: {},
   autoFocus: false,
   close: false,
+  modal: false,
 };

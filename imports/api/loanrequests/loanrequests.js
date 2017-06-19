@@ -43,6 +43,10 @@ const LoanRequestSchema = new SimpleSchema({
       }
     },
   },
+  status: {
+    type: String,
+    defaultValue: 'active',
+  },
   name: {
     type: String,
     optional: true,

@@ -49,47 +49,52 @@ export default class ProcessPageBar extends Component {
     window.removeEventListener('resize', this.resize);
   }
 
-  resize = () => {
-    this.setState({ smallWidth: getWidth() < 768 });
-  };
+  resize = () => this.setState({ smallWidth: getWidth() < 768 });
 
-  render() {
+  renderButtons = () => {
     // remove previous button if this is the very first step
     const showBackButton = !(this.props.stepNb === 1 && this.props.index === 0);
     const lastPartOfStep = this.props.index === this.props.length - 1;
+
+    return (
+      <div className="buttons">
+        {showBackButton &&
+          <RaisedButton
+            icon={this.state.smallWidth ? <ArrowLeft /> : undefined}
+            label={this.state.smallWidth ? '' : <T id="ProcessPageBar.previous" />}
+            style={this.state.smallWidth ? styles.smallButton : styles.button}
+            disabled={!this.props.prevLink}
+            containerElement={this.props.prevLink ? <Link to={this.props.prevLink} /> : undefined}
+          />}
+        <RaisedButton
+          icon={this.state.smallWidth ? <ArrowRight /> : undefined}
+          label={
+            this.state.smallWidth
+              ? ''
+              : lastPartOfStep ? <T id="ProcessPageBar.nextStep" /> : <T id="ProcessPageBar.next" />
+          }
+          style={this.state.smallWidth ? styles.smallButton : styles.button}
+          secondary={this.props.currentStep.isDone()}
+          disabled={(lastPartOfStep && !this.props.currentStep.isDone()) || !this.props.nextLink}
+          containerElement={
+            this.props.nextLink && !lastPartOfStep ? <Link to={this.props.nextLink} /> : undefined
+          }
+          onTouchTap={lastPartOfStep ? () => handleNextStep(this.props) : () => null}
+        />
+      </div>
+    );
+  };
+
+  render() {
+    // Hide buttons if the request is done
+    const showButtons = this.props.status === 'active';
 
     return (
       <div className={this.props.className}>
         <h3 className="title fixed-size bold secondary">
           <T id={`steps.${this.props.currentStep.id}.title`} />
         </h3>
-        <div className="buttons">
-          {showBackButton &&
-            <RaisedButton
-              icon={this.state.smallWidth ? <ArrowLeft /> : undefined}
-              label={this.state.smallWidth ? '' : <T id="ProcessPageBar.previous" />}
-              style={this.state.smallWidth ? styles.smallButton : styles.button}
-              disabled={!this.props.prevLink}
-              containerElement={this.props.prevLink ? <Link to={this.props.prevLink} /> : undefined}
-            />}
-          <RaisedButton
-            icon={this.state.smallWidth ? <ArrowRight /> : undefined}
-            label={
-              this.state.smallWidth
-                ? ''
-                : lastPartOfStep
-                  ? <T id="ProcessPageBar.nextStep" />
-                  : <T id="ProcessPageBar.next" />
-            }
-            style={this.state.smallWidth ? styles.smallButton : styles.button}
-            secondary={this.props.currentStep.isDone()}
-            disabled={(lastPartOfStep && !this.props.currentStep.isDone()) || !this.props.nextLink}
-            containerElement={
-              this.props.nextLink && !lastPartOfStep ? <Link to={this.props.nextLink} /> : undefined
-            }
-            onTouchTap={lastPartOfStep ? () => handleNextStep(this.props) : () => null}
-          />
-        </div>
+        {showButtons && this.renderButtons()}
       </div>
     );
   }
@@ -101,6 +106,7 @@ ProcessPageBar.propTypes = {
   stepNb: PropTypes.number.isRequired,
   prevLink: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   nextLink: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  status: PropTypes.string.isRequired,
 };
 
 ProcessPageBar.defaultProps = {

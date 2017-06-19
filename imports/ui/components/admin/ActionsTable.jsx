@@ -105,11 +105,13 @@ export default class ActionsTable extends Component {
             return {
               id: action._id,
               columns: [
-                request.name,
+                request ? request.name : 'Demande supprimée',
                 title,
                 action.createdAt,
-                actionDetails.comment ? actionDetails.comment(request) : '-',
-                () => actionDetails.handleClick(request, this.props.history.push),
+                actionDetails.comment && request ? actionDetails.comment(request) : '-',
+                request
+                  ? () => actionDetails.handleClick(request, this.props.history.push)
+                  : () => {},
               ],
             };
           })}

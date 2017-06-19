@@ -400,8 +400,20 @@ export const LogicSchema = new SimpleSchema({
     type: Date,
     optional: true,
   },
-  done: {
+  acceptedClosing: {
     type: Boolean,
     defaultValue: false,
+  },
+  recommendationCode: {
+    type: String,
+    defaultValue: '',
+  },
+  firstPaymentDate: {
+    type: Date,
+    optional: true,
+  },
+  paymentSchedule: {
+    type: String,
+    optional: true,
   },
 });

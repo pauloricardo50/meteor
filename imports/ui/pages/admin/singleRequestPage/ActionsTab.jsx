@@ -5,9 +5,15 @@ import { Meteor } from 'meteor/meteor';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import ConfirmMethod from './ConfirmMethod.jsx';
-import { cancelAuction, finishAuction, deleteRequest } from '/imports/api/loanrequests/methods';
+import {
+  cancelAuction,
+  finishAuction,
+  deleteRequest,
+  confirmClosing,
+} from '/imports/api/loanrequests/methods';
 import DialogSimple from '/imports/ui/components/general/DialogSimple.jsx';
 import DropzoneArray from '/imports/ui/components/general/DropzoneArray.jsx';
+import ClosingForm from '/imports/ui/components/admin/ClosingForm.jsx';
 import { downloadPDF } from '/imports/js/helpers/download-pdf';
 
 const styles = {
@@ -53,6 +59,13 @@ const ActionsTab = props => {
         style={styles.button}
         disabled={!(l.auctionStarted && serverTime && serverTime < l.auctionEndTime)}
       />
+      <DialogSimple
+        title="Confirmer le décaissement"
+        label="Confirmer décaissement"
+        buttonStyle={styles.button}
+      >
+        <ClosingForm loanRequest={loanRequest} />
+      </DialogSimple>
       <ConfirmMethod
         label="Supprimer la demande"
         keyword="SUPPRIMER"

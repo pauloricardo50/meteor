@@ -33,7 +33,6 @@ export default class NewRequestModal extends Component {
       this.props.requestId,
       () => {
         this.setState({ open: false });
-        this.props.history.push('/app');
       },
       {
         title: 'Formidable',

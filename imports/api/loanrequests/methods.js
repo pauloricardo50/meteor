@@ -168,7 +168,6 @@ export const requestVerification = new ValidatedMethod({
       return false;
     }
 
-    console.log('heyhey');
     // Insert an admin action and set the proper keys in the loanRequest
     LoanRequests.update(id, {
       $set: {
@@ -193,7 +192,7 @@ export const deleteRequest = new ValidatedMethod({
       return LoanRequests.remove(id);
     }
 
-    throw new Error('not authorized');
+    throw new Meteor.Error('not authorized');
   },
 });
 
@@ -207,7 +206,7 @@ export const finishAuction = new ValidatedMethod({
       return LoanRequests.update(id, { $set: { 'logic.auctionEndTime': new Date() } });
     }
 
-    throw new Error('not authorized');
+    throw new Meteor.Error('not authorized');
   },
 });
 
@@ -227,6 +226,24 @@ export const cancelAuction = new ValidatedMethod({
       });
     }
 
-    throw new Error('not authorized');
+    throw new Meteor.Error('not authorized');
+  },
+});
+
+export const confirmClosing = new ValidatedMethod({
+  name: 'loanRequests.confirmClosing',
+  validate({ id }) {
+    check(id, String);
+  },
+  run({ id, object }) {
+    // TODO: Send email to user, clean up, etc.
+
+    if (Roles.userIsInRole(Meteor.userId(), 'admin')) {
+      return LoanRequests.update(id, {
+        $set: { status: 'done', ...object },
+      });
+    }
+
+    throw new Meteor.Error('not authorized');
   },
 });

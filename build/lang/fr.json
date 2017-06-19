@@ -16,6 +16,15 @@
   "ActionsTable.date": "Date",
   "ActionsTable.do": " ",
   "ActionsTable.requestName": "Projet",
+
+  "AcceptClosingModal.title": "Félicitations!",
+  "AcceptClosingModal.description": "Toute l'équipe d'e-Potek vous félicite pour le décaissement de votre prêt hypothécaire, et d'être enfin propriétaire de votre bien immobilier.{verticalSpace}Vous pouvez maintenant utiliser votre tableau de bord e-Potek pour garder un oeil sur votre prochaine échéance de paiement, et consulter les taux lorsque le refinancement s'approchera.",
+
+  "AcceptClosingModal.description2": "Merci d'avoir utilisé e-Potek, voici votre code pour nous recommander auprès de vos proches, et empocher jusqu'a CHF 1 000 pour une affaire conclue.",
+
+  "DashboardPayments.title": "Prochain paiement",
+  "DashboardPayments.lastDate": "Dernier paiement",
+
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",
   "adminAction.confirmClosing": "Confirmer le décaissement",
@@ -33,7 +42,7 @@
   "AmortizationChart.yAxis1": "Dette et fonds propres",
   "AmortizationChart.yAxis2": "Paiements mensuels",
   "AmortizationTool.catastrophy.title": "Scénario catastrophe",
-  "AmortizationTool.futureRate": "Taux futur",
+  "AmortizationTool.futureRate": "Refinancement dans 10 ans",
   "AmortizationTool.initialRate": "Taux initial à 10 ans",
   "AmortizationTool.lower.title": "Baisse des taux",
   "AmortizationTool.rate": "Taux à 10 ans: {rate, number, percentage}",

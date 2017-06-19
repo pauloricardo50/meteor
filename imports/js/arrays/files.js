@@ -144,6 +144,9 @@ export const requestFiles = (r = {}) => ({
     {
       id: 'contract',
     },
+    {
+      id: 'signedContract',
+    },
   ],
 });
 

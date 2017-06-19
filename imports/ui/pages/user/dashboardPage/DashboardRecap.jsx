@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import FlatButton from 'material-ui/FlatButton';
@@ -20,12 +20,12 @@ const styles = {
     alignItems: 'flex-start',
   },
 };
-export default class DashboardRecap extends React.Component {
+export default class DashboardRecap extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      showDetail: !this.props.smallWidth && this.props.loanRequest.logic.step < 3,
+      showDetail: !this.props.smallWidth && !this.props.hideDetail,
     };
   }
 
@@ -52,7 +52,6 @@ export default class DashboardRecap extends React.Component {
 
     return (
       <DashboardItem
-        className="mask1"
         title={<T id="DashboardRecap.title" />}
         menuActions={[
           {
@@ -69,4 +68,9 @@ export default class DashboardRecap extends React.Component {
 
 DashboardRecap.propTypes = {
   smallWidth: PropTypes.bool.isRequired,
+  hideDetail: PropTypes.bool,
+};
+
+DashboardRecap.defaultProps = {
+  hideDetail: false,
 };

@@ -12,6 +12,7 @@ import { T } from '/imports/ui/components/general/Translation.jsx';
 const styles = {
   div: {
     position: 'relative',
+    marginBottom: 15,
   },
   icon: {
     position: 'absolute',
@@ -22,7 +23,7 @@ const styles = {
 
 const DashboardItem = props => {
   return (
-    <div className={`mask1 ${props.className}`} style={styles.div}>
+    <div className={`mask1 ${props.className}`} style={{ ...styles.div, ...props.style }}>
 
       {props.title && <h4 className="fixed-size bold" style={{ marginTop: 0 }}>{props.title}</h4>}
 
@@ -58,12 +59,14 @@ DashboardItem.propTypes = {
   title: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   menuActions: PropTypes.arrayOf(PropTypes.object),
   children: PropTypes.any.isRequired,
+  style: PropTypes.objectOf(PropTypes.any),
 };
 
 DashboardItem.defaultProps = {
   className: '',
   title: '',
   menuActions: [],
+  style: {},
 };
 
 export default DashboardItem;
