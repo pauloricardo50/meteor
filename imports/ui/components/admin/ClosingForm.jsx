@@ -69,7 +69,13 @@ export default class ClosingForm extends Component {
 
 ClosingForm.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
-  enableClose: PropTypes.func.isRequired,
-  disableClose: PropTypes.func.isRequired,
-  isCancel: PropTypes.bool.isRequired,
+  enableClose: PropTypes.func,
+  disableClose: PropTypes.func,
+  isCancel: PropTypes.bool,
+};
+
+ClosingForm.defaultProps = {
+  enableClose: () => {},
+  disableClose: () => {},
+  isCancel: false,
 };

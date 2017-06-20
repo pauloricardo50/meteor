@@ -4,6 +4,7 @@ import { injectIntl } from 'react-intl';
 import ReactHighcharts from 'react-highcharts';
 
 import { getInterests, getAmortization } from '/imports/js/helpers/finance-math';
+import { getInterestsWithOffer } from '/imports/js/helpers/requestFunctions';
 import colors from '/imports/js/config/colors';
 
 import { legendConfig } from './chartSettings';
@@ -87,8 +88,18 @@ class ExpensesChart extends Component {
     super(props);
 
     if (this.props.loanRequest) {
+      let realRate = 0;
+      if (this.props.loanRequest.logic.lender && this.props.loanRequest.logic.lender.offerId) {
+        const offer = this.props.offers.find(
+          o => o._id === this.props.loanRequest.logic.lender.offerId,
+        );
+        if (offer) {
+          realRate = getInterestsWithOffer(this.props.loanRequest, offer, false);
+        }
+      }
+
       this.state = {
-        interests: getInterests(this.props.loanRequest, this.props.interestRate),
+        interests: realRate || getInterests(this.props.loanRequest, this.props.interestRate),
         amortization: getAmortization(this.props.loanRequest, this.props.borrowers).amortization,
         maintenance: this.props.loanRequest.property.value * 0.01 / 12,
       };

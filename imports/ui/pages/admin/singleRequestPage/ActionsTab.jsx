@@ -14,6 +14,7 @@ import {
 import DialogSimple from '/imports/ui/components/general/DialogSimple.jsx';
 import DropzoneArray from '/imports/ui/components/general/DropzoneArray.jsx';
 import ClosingForm from '/imports/ui/components/admin/ClosingForm.jsx';
+import LastStepsForm from '/imports/ui/components/admin/LastStepsForm.jsx';
 import { downloadPDF } from '/imports/js/helpers/download-pdf';
 
 const styles = {
@@ -88,6 +89,9 @@ const ActionsTab = props => {
           filesObjectSelector="files"
           disabled={false}
         />
+      </DialogSimple>
+      <DialogSimple title="Dernières Etapes" label="Dernières Etapes">
+        <LastStepsForm loanRequest={loanRequest} />
       </DialogSimple>
     </div>
   );

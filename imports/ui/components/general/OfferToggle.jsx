@@ -28,7 +28,10 @@ const OfferToggle = props => {
         style={styles.span}
       >
         {/* use toString, or else a count of 0 isn't rendered */}
-        <T id="OfferToggle.standard" values={{ count: standardCount.toString() }} />
+        <T
+          id={props.short ? 'OfferToggle.standard-short' : 'OfferToggle.standard'}
+          values={{ count: standardCount.toString() }}
+        />
       </span>
       <Toggle
         toggled={props.value}
@@ -40,7 +43,10 @@ const OfferToggle = props => {
         onTouchTap={() => props.handleToggle(null, true)}
         style={styles.span}
       >
-        <T id="OfferToggle.counterpart" values={{ count: counterpartCount.toString() }} />
+        <T
+          id={props.short ? 'OfferToggle.counterpart-short' : 'OfferToggle.counterpart'}
+          values={{ count: counterpartCount.toString() }}
+        />
       </span>
     </div>
   );
@@ -50,6 +56,11 @@ OfferToggle.propTypes = {
   value: PropTypes.bool.isRequired,
   handleToggle: PropTypes.func.isRequired,
   offers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  short: PropTypes.bool,
+};
+
+OfferToggle.defaultProps = {
+  short: false,
 };
 
 export default OfferToggle;

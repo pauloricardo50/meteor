@@ -42,6 +42,18 @@
   "AmortizationTool.rate": "Taux à 10 ans: {rate, number, percentage}",
   "AmortizationTool.rise.title": "Augmentation des taux",
   "AmortizationTool.stable.title": "Taux stables",
+
+  "DashboardOffer.title": "Offre retenue",
+
+  "offer.maxAmount": "Prêt maximal",
+  "offer.amortization": "Amortissement demandé",
+  "offer.interestLibor": "Taux Libor",
+  "offer.interest1": "Taux 1 an",
+  "offer.interest2": "Taux 2 ans",
+  "offer.interest5": "Taux 5 ans",
+  "offer.interest10": "Taux 10 ans",
+  "offer.interest15": "Taux 15 ans",
+
   "ArrayInput.add": "Ajouter",
   "Auction.notified": "Vous recevrez une notification lorsque ce sera terminé",
   "Auction.tableText": "Bataille des prêteurs en cours",
@@ -283,6 +295,8 @@
   "OffersTable.years": "{years, plural, one {Taux un an} other {Taux # ans}}",
   "OfferToggle.counterpart": "Offres avec contrepartie ({count})",
   "OfferToggle.standard": "Offres standard ({count})",
+  "OfferToggle.counterpart-short": "Avec contrepartie",
+  "OfferToggle.standard-short": "Standard",
   "PasswordChange.change": "Changer",
   "PasswordChange.dialogTitle": "Changer mon mot de passe",
   "PasswordChange.oldPassword": "Ancien mot de passe",

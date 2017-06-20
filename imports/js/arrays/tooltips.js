@@ -33,7 +33,9 @@ const generalTooltips = {
   '3ème pilier': 'thirdPillar',
 
   'offres standard': 'standardOffers',
+  standard: 'standardOffers', // careful with this one
   'offres avec contrepartie': 'counterpartOffers',
+  'avec contrepartie': 'counterpartOffers',
 };
 
 const offerTableTooltips = {

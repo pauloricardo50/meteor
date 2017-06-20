@@ -18,7 +18,7 @@ const StepStatus = props => {
       }}
     >
       {steps.map((s, i) =>
-        <li key={s.title} style={{ display: 'flex', flexDirection: 'column' }}>
+        <li key={s.nb} style={{ display: 'flex', flexDirection: 'column' }}>
           <div><T id={`steps.${s.nb}.title`} /> {currentStep > i && <CheckIcon />}</div>
           <ul>
             {s.items.map(item =>
