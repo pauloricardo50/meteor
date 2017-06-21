@@ -40,13 +40,14 @@ const PropertyPage = props => {
       <section className="mask1 property-page">
         <h1 className="text-center">
           <T id="PropertyPage.title" values={{ count: props.borrowers.length }} />
-          <br />
           <small className={percent >= 1 && 'success'}>
             <T id="PropertyPage.progress" values={{ value: percent }} />
             {' '}
             {percent >= 1 && <span className="fa fa-check" />}
           </small>
         </h1>
+
+        <div className="description"><p><T id="PropertyPage.description" /></p></div>
 
         <div className="description">
           <p><T id="Forms.mandatory" /></p>

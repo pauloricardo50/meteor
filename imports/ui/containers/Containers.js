@@ -38,8 +38,10 @@ export const userContainer = c =>
     composeWithTracker(userOffersComposer, Loading),
     composeWithTracker(currentUserComposer, Loading),
   )(c);
+
 export const userRequestContainer = c =>
   merge(composeWithTracker(userRequestComposer), composeWithTracker(currentUserComposer))(c);
+
 export const userBorrowerContainer = c =>
   merge(
     composeWithTracker(userBorrowerComposer, Loading),
@@ -55,14 +57,17 @@ export const adminContainer = c =>
     composeWithTracker(adminActionsComposer),
     composeWithTracker(currentUserComposer, Loading),
   )(c);
+
 export const adminUserContainer = c =>
   merge(composeWithTracker(adminUserComposer), composeWithTracker(currentUserComposer))(c);
+
 export const adminRequestContainer = c =>
   merge(
     composeWithTracker(adminRequestComposer),
     composeWithTracker(currentUserComposer),
     composeWithTracker(adminActionsComposer),
   )(c);
+
 export const adminOfferContainer = c =>
   merge(composeWithTracker(adminOfferComposer), composeWithTracker(currentUserComposer))(c);
 
@@ -73,7 +78,9 @@ export const partnerContainer = c =>
     composeWithTracker(partnerOffersComposer),
     composeWithTracker(currentUserComposer, Loading),
   )(c);
+
 export const partnerOfferContainer = c =>
   merge(composeWithTracker(partnerOfferComposer), composeWithTracker(currentUserComposer))(c);
+
 export const partnerRequestContainer = c =>
   merge(composeWithTracker(partnerRequestComposer), composeWithTracker(currentUserComposer))(c);

@@ -28,13 +28,27 @@ export default class DialogSimple extends Component {
   enableClose = () => this.setState({ disabled: false });
 
   render() {
-    const actions = this.props.actions || [
+    let { actions } = this.props;
+    const {
+      autoFocus,
+      rootStyle,
+      label,
+      primary,
+      secondary,
+      buttonStyle,
+      title,
+      modal,
+      children,
+      passProps,
+    } = this.props;
+
+    actions = actions || [
       <FlatButton primary label={<T id="general.cancel" />} onTouchTap={this.handleClose} />,
       <FlatButton
         primary
         label="Ok"
         onTouchTap={() => this.handleClose(true)}
-        autoFocus={this.props.autoFocus} // TODO doesn't work with tooltips
+        autoFocus={autoFocus} // TODO doesn't work with tooltips
         disabled={this.state.disabled}
       />,
     ];
@@ -46,22 +60,22 @@ export default class DialogSimple extends Component {
     };
 
     return (
-      <span style={this.props.rootStyle}>
+      <span style={rootStyle}>
         <RaisedButton
-          label={this.props.label}
+          label={label}
           onTouchTap={this.handleOpen}
-          primary={this.props.primary}
-          secondary={this.props.secondary}
-          style={this.props.buttonStyle}
+          primary={primary}
+          secondary={secondary}
+          style={buttonStyle}
         />
         <Dialog
-          title={<h3>{this.props.title}</h3>}
+          title={<h3>{title}</h3>}
           actions={actions}
-          modal={this.props.modal}
+          modal={modal}
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-          {this.props.children && React.cloneElement(this.props.children, { ...childProps })}
+          {children && passProps ? React.cloneElement(children, { ...childProps }) : children}
         </Dialog>
       </span>
     );
@@ -79,6 +93,7 @@ DialogSimple.propTypes = {
   autoFocus: PropTypes.bool,
   close: PropTypes.bool,
   modal: PropTypes.bool,
+  passProps: PropTypes.bool,
 };
 
 DialogSimple.defaultProps = {
@@ -90,4 +105,5 @@ DialogSimple.defaultProps = {
   autoFocus: false,
   close: false,
   modal: false,
+  passProps: false,
 };

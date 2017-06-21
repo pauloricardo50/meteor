@@ -61,6 +61,8 @@ const BorrowerFinancePage = props => {
           </small>}
       </h2>
 
+      <div className="description"><p><T id="Finance.description" /></p></div>
+
       <div
         style={{
           display: 'flex',

@@ -64,6 +64,7 @@ const ActionsTab = props => {
         title="Confirmer le décaissement"
         label="Confirmer décaissement"
         buttonStyle={styles.button}
+        passProps
       >
         <ClosingForm loanRequest={loanRequest} />
       </DialogSimple>
@@ -90,7 +91,7 @@ const ActionsTab = props => {
           disabled={false}
         />
       </DialogSimple>
-      <DialogSimple title="Dernières Etapes" label="Dernières Etapes">
+      <DialogSimple title="Dernières Etapes" label="Dernières Etapes" passProps>
         <LastStepsForm loanRequest={loanRequest} />
       </DialogSimple>
     </div>

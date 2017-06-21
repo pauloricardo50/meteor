@@ -85,7 +85,10 @@ export default class Start1Validator extends Component {
     return (
       <div style={styles.div} className="mask2 primary-border">
         {MyIcon &&
-          <MyIcon style={{ marginRight: 16, height: '2em', width: '2em' }} className={className} />}
+          <MyIcon
+            style={{ marginRight: '2em', height: '3em', width: '3em' }}
+            className={className}
+          />}
         <div style={styles.content}>
           <h2 className={className} style={{ margin: 0 }}>
             {message && <T id={message} />}

@@ -1,4 +1,3 @@
-
 // Write the keys in lowercase
 // If the value is an array, it means there need to be 2 strings for the
 // "Learn More" part.
@@ -25,6 +24,7 @@ const generalTooltips = {
   "type d'utilisation": 'usageType',
   'bonus considéré': ['consideredBonus'],
   bonus: 'bonus',
+  'autres sources de revenus': 'otherIncome',
 
   '2e pilier': 'secondPillar',
   '2ème pilier': 'secondPillar',

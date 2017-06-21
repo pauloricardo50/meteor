@@ -135,7 +135,7 @@ class AuctionResults extends Component {
 
         <FakeOfferAdder loanRequest={this.props.loanRequest} />
 
-        <OfferToggle
+        {/* <OfferToggle
           value={this.state.showSpecial}
           handleToggle={(e, c) => this.setState({ showSpecial: c })}
           offers={this.props.offers}
@@ -143,7 +143,7 @@ class AuctionResults extends Component {
 
         <div style={styles.tableDiv}>
           <OffersTable showSpecial={this.state.showSpecial} offers={this.props.offers} />
-        </div>
+        </div> */}
       </section>
     );
   }
