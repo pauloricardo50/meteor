@@ -15,6 +15,7 @@ import Accordion from '/imports/ui/components/general/Accordion.jsx';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
 import Start1Line from './Start1Line.jsx';
 import Start1Recap from './Start1Recap.jsx';
+import Start1Validator from './Start1Validator.jsx';
 
 import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
 
@@ -68,6 +69,11 @@ const Start1Calculator = props => {
         </div>
       </div>
 
+      {isReady &&
+        <div className="text-center">
+          <Start1Validator incomeRatio={incomeRatio} borrowRatio={borrowRatio} />
+        </div>}
+
       <div className="chart text-center">
         <Accordion isActive={isReady && fortune < property}>
           <h3 style={{ margin: '40px 0' }}>
@@ -107,6 +113,18 @@ const Start1Calculator = props => {
   );
 };
 
-Start1Calculator.propTypes = {};
+Start1Calculator.propTypes = {
+  inputArray: PropTypes.arrayOf(PropTypes.object).isRequired,
+  income: PropTypes.number.isRequired,
+  fortune: PropTypes.number.isRequired,
+  property: PropTypes.number.isRequired,
+  incomeRatio: PropTypes.number.isRequired,
+  borrowRatio: PropTypes.number.isRequired,
+  parentState: PropTypes.objectOf(PropTypes.any).isRequired,
+  setStateValue: PropTypes.func.isRequired,
+  setSliderMax: PropTypes.func.isRequired,
+  handleReset: PropTypes.func.isRequired,
+  getUrl: PropTypes.func.isRequired,
+};
 
 export default Start1Calculator;

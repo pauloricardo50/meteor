@@ -35,8 +35,9 @@ const getArray = (income, fortune, property, borrow, ratio) => {
   const propertyIcon = classnames({
     fa: true,
     'fa-check success': borrow <= 0.8 + 0.001 && ratio <= 1 / 3 + 0.001,
-    'fa-exclamation warning': !isFalse &&
-      ((borrow <= 0.9 && borrow > 0.8 + 0.001) || (ratio <= 0.38 && ratio > 1 / 3 + 0.001)),
+    'fa-exclamation warning':
+      !isFalse &&
+        ((borrow <= 0.9 && borrow > 0.8 + 0.001) || (ratio <= 0.38 && ratio > 1 / 3 + 0.001)),
     'fa-times error': isFalse,
   });
   return [

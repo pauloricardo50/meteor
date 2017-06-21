@@ -1,3 +1,4 @@
+
 // Write the keys in lowercase
 // If the value is an array, it means there need to be 2 strings for the
 // "Learn More" part.

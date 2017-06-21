@@ -28,6 +28,12 @@ export default class SideNavStepper extends React.Component {
       // Use defer to allow the other component to update Session before grabbing it here
       // Otherwise it is always one step behind when the stepNb changes
       Meteor.defer(() => this.setState({ active: Session.get('stepNb') }));
+
+      // Update server time when the user moves around, to make sure all
+      // validation works fine
+      Meteor.call('getServerTime', (e, res) => {
+        this.setState({ serverTime: res });
+      });
     }
   }
 

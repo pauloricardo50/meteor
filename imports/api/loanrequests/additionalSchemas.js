@@ -399,6 +399,7 @@ export const LogicSchema = new SimpleSchema({
   recommendationCode: {
     type: String,
     defaultValue: '',
+    optional: true,
   },
   firstPaymentDate: {
     type: Date,
