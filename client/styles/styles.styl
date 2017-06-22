@@ -814,6 +814,7 @@ ul.request-map
   align-items: center;
   div.text
     padding: 40px;
+    max-width: 1000px;
     h1
       color: #aaa;
       margin-bottom: 0;
@@ -1313,3 +1314,7 @@ ul.request-map
       color: #D8D8D8;
       fill: #d8d8d8 !important;
       transition: all 0.1s $bezier;
+
+// Material-ui dialogs have a 1500 z-Index
+.popover
+  z-index: 1501;

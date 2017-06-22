@@ -39,6 +39,7 @@ export default class NewRequestModal extends Component {
         message:
           '<h4 class="bert">Vous pouvez avancer quand vous voulez, et à votre rythme. Vous trouverez toujours tout ici, à sa place.</h4>',
         style: 'fixed-top',
+        delay: 15000,
       },
     );
   };

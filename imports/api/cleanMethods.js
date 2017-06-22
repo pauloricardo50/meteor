@@ -53,6 +53,10 @@ const methodCallback = (error, result, callback, bertObject) => {
     });
     console.log(error);
   } else if (bertObject) {
+    if (bertObject.delay) {
+      Bert.defaults.hideDelay = bertObject.delay;
+    }
+
     Bert.alert({
       title: bertObject.title || "C'est réussi",
       message: bertObject.message || '<h3 class="bert">Bien joué!</h3>',
