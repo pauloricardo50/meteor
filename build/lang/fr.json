@@ -27,6 +27,12 @@
   "adminAction.uploadContract": "Uploader le contrat",
   "adminAction.verify": "Vérifier dossier",
   "adminAction.verifyFinalSteps": "Vérifier les derniers documents",
+
+  "DashboardProperty.title": "Bien immobilier",
+  "DashboardStatus.title": "Statut de votre demande",
+  "DashboardStatus.step": "{step, plural, one {1ère étape} =2 {2ème étape} =3 {3ème étape} =4 {4ème étape}}",
+
+
   "AmortizationChart.amortizationSeries": "Amortissement mensuel",
   "AmortizationChart.debtSeries": "Dette",
   "AmortizationChart.fortuneSeries": "Fonds Propres",

@@ -1,3 +1,7 @@
+import { personalInfoPercent } from '/imports/js/arrays/steps';
+import { filesPercent } from '/imports/js/arrays/steps';
+import { borrowerFiles } from '/imports/js/arrays/files';
+
 export const getFortune = (borrowers = []) => {
   const array = [];
 
@@ -16,3 +20,6 @@ export const getInsuranceFortune = (borrowers = []) => {
   });
   return array.reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
 };
+
+export const getBorrowerCompletion = borrower =>
+  (filesPercent([borrower], borrowerFiles, 'auction') + personalInfoPercent([borrower])) / 2;

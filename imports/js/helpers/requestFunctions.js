@@ -1,6 +1,8 @@
 import constants from '../config/constants';
 
 import { getIncomeRatio, getBorrowRatio, getFees } from './finance-math';
+import { propertyPercent, filesPercent } from '/imports/js/arrays/steps';
+import { requestFiles } from '/imports/js/arrays/files';
 
 export const getProjectValue = loanRequest => {
   if (loanRequest.property.value <= 0) {
@@ -161,3 +163,7 @@ export const isRequestValid = (loanRequest, borrowers) => {
 
   return true;
 };
+
+export const getPropertyCompletion = (loanRequest, borrowers) =>
+  (propertyPercent(loanRequest, borrowers) + filesPercent(loanRequest, requestFiles, 'auction')) /
+  2;

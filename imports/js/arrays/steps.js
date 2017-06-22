@@ -303,3 +303,8 @@ export const filesPercent = (doc, fileArrayFunc, step) => {
 
   return getPercent(a);
 };
+
+
+export const getCurrentLink = () => {
+
+}

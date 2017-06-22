@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import FlatButton from 'material-ui/FlatButton';
-
 import Recap from '/imports/ui/components/general/Recap.jsx';
 import DashboardItem from './DashboardItem.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
@@ -20,18 +18,15 @@ const styles = {
     alignItems: 'flex-start',
   },
 };
+
 export default class DashboardRecap extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      showDetail: !this.props.smallWidth && !this.props.hideDetail,
-    };
+    this.state = { showDetail: false };
   }
 
-  handleToggle = () => {
-    this.setState(prev => ({ showDetail: !prev.showDetail }));
-  };
+  handleToggle = () => this.setState(prev => ({ showDetail: !prev.showDetail }));
 
   render() {
     let content = null;

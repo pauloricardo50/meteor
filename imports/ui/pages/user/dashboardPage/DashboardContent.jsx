@@ -9,8 +9,11 @@ import DashboardUnverified from './DashboardUnverified.jsx';
 import DashboardPayments from './DashboardPayments.jsx';
 import DashboardDownload from './DashboardDownload.jsx';
 import DashboardOffer from './DashboardOffer.jsx';
+import DashboardProperty from './DashboardProperty.jsx';
+import DashboardStatus from './DashboardStatus.jsx';
 
 const getArray = props => {
+  const done = props.loanRequest.status === 'done';
   return [
     {
       components: [{ component: DashboardUnverified, show: !props.currentUser.emails[0].verified }],
@@ -18,8 +21,9 @@ const getArray = props => {
     },
     {
       components: [
-        { component: DashboardLastSteps, show: props.loanRequest.logic.step === 3 },
-        { component: DashboardPayments, show: props.loanRequest.status === 'done' },
+        { component: DashboardLastSteps, show: !done && props.loanRequest.logic.step === 3 },
+        { component: DashboardStatus, show: !done },
+        { component: DashboardPayments, show: done },
         {
           component: DashboardRecap,
           show: true,
@@ -35,6 +39,7 @@ const getArray = props => {
     {
       components: [
         { component: DashboardBorrowers, show: true },
+        { component: DashboardProperty, show: true },
         { component: DashboardDownload, show: props.loanRequest.files.contract },
         {
           component: DashboardOffer,

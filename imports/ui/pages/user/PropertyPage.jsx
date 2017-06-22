@@ -4,10 +4,9 @@ import React from 'react';
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
 import AutoForm from '/imports/ui/components/autoform/AutoForm.jsx';
 import PropertyFormArray from '/imports/js/arrays/PropertyFormArray';
-import { propertyPercent, filesPercent } from '/imports/js/arrays/steps';
 import DropzoneArray from '/imports/ui/components/general/DropzoneArray.jsx';
 import { requestFiles } from '/imports/js/arrays/files';
-import { disableForms } from '/imports/js/helpers/requestFunctions';
+import { disableForms, getPropertyCompletion } from '/imports/js/helpers/requestFunctions';
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 import FakePropertyCompleter from '/imports/ui/components/general/FakePropertyCompleter.jsx';
@@ -30,16 +29,14 @@ const styles = {
 };
 
 const PropertyPage = props => {
-  const percent =
-    (propertyPercent(props.loanRequest, props.borrowers) +
-      filesPercent(props.loanRequest, requestFiles, 'auction')) /
-    2;
+  const percent = getPropertyCompletion(props.loanRequest, props.borrowers);
 
   return (
     <ProcessPage {...props} stepNb={1} id="property">
       <section className="mask1 property-page">
         <h1 className="text-center">
           <T id="PropertyPage.title" values={{ count: props.borrowers.length }} />
+          <br />
           <small className={percent >= 1 && 'success'}>
             <T id="PropertyPage.progress" values={{ value: percent }} />
             {' '}
