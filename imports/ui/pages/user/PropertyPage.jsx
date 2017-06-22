@@ -51,7 +51,7 @@ const PropertyPage = props => {
         </div>
 
         <DropzoneArray
-          array={requestFiles(props.borrower).auction}
+          array={requestFiles(props.loanRequest).auction}
           documentId={props.loanRequest._id}
           pushFunc="pushRequestValue"
           updateFunc="pushRequestValue"
