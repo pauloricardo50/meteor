@@ -10,18 +10,25 @@ DDPRateLimiter.setErrorMessage(({ timeToReset }) => {
 
 const fetchMethodNames = methods => _.pluck(methods, 'name');
 
-const assignLimits = ({ methods, limit, timeRange }) => {
+const assignLimits = ({ methods, limit = 5, timeRange = 1000 }) => {
   const methodNames = fetchMethodNames(methods);
-  DDPRateLimiter.addRule(
-    {
-      type: 'method',
-      name(name) {
-        return _.contains(methodNames, name);
+
+  if (Meteor.isServer) {
+    DDPRateLimiter.addRule(
+      {
+        name(name) {
+          return _.contains(methodNames, name);
+        },
+        connectionId() {
+          return true;
+        },
       },
-    },
-    limit,
-    timeRange,
-  );
+      limit,
+      timeRange,
+    );
+  }
 };
 
-export const rateLimit = options => assignLimits(options);
+export default function rateLimit(options) {
+  return assignLimits(options);
+}

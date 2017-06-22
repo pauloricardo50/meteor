@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { Roles } from 'meteor/alanning:roles';
 import { check } from 'meteor/check';
+import rateLimit from '/imports/js/helpers/rate-limit.js';
 
 import AdminActions from './adminActions';
 
@@ -42,3 +43,5 @@ export const completeAction = new ValidatedMethod({
     });
   },
 });
+
+rateLimit({ methods: [insertAdminAction, completeAction] });

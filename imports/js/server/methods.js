@@ -5,7 +5,7 @@ import LoanRequests from '/imports/api/loanrequests/loanrequests';
 import Borrowers from '/imports/api/borrowers/borrowers';
 import { generateComponentAsPDF } from '/imports/js/server/generate-pdf.js';
 import { RequestPDF, AnonymousRequestPDF } from '/imports/api/loanrequests/pdf.js';
-import { rateLimit } from './rate-limit.js';
+import rateLimit from '/imports/js/helpers/rate-limit.js';
 
 Meteor.methods({
   getServerTime() {
@@ -40,8 +40,4 @@ export const downloadPDF = new ValidatedMethod({
   },
 });
 
-rateLimit({
-  methods: [downloadPDF],
-  limit: 1,
-  timeRange: 1000,
-});
+rateLimit({ methods: [downloadPDF] });

@@ -3,6 +3,7 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { check } from 'meteor/check';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
+import rateLimit from '/imports/js/helpers/rate-limit.js';
 
 Meteor.methods({
   toggleAdmin(id) {
@@ -59,4 +60,8 @@ export const createPartner = new ValidatedMethod({
       // Accounts.sendEnrollmentEmail(id, options.email);
     }
   },
+});
+
+rateLimit({
+  methods: ['toggleAdmin', 'doesUserExist', 'sendVerificationLink', createPartner],
 });

@@ -3,6 +3,7 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { check } from 'meteor/check';
 import moment from 'moment';
 import { Roles } from 'meteor/alanning:roles';
+import rateLimit from '/imports/js/helpers/rate-limit.js';
 
 import { insertAdminAction } from '/imports/api/adminActions/methods';
 
@@ -143,18 +144,6 @@ export const popRequestValue = new ValidatedMethod({
   },
 });
 
-// if (Meteor.isServer) {
-//   import { rateLimit } from '/imports/js/server/rate-limit.js';
-//
-//   rateLimit({
-//     methods: [
-//       updateValues,
-//     ],
-//     limit: 2,
-//     timeRange: 1000,
-//   });
-// }
-
 export const requestVerification = new ValidatedMethod({
   name: 'loanRequests.requestVerification',
   validate({ id }) {
@@ -246,4 +235,20 @@ export const confirmClosing = new ValidatedMethod({
 
     throw new Meteor.Error('not authorized');
   },
+});
+
+rateLimit({
+  methods: [
+    insertRequest,
+    updateRequest,
+    incrementStep,
+    startAuction,
+    pushRequestValue,
+    popRequestValue,
+    requestVerification,
+    deleteRequest,
+    finishAuction,
+    cancelAuction,
+    confirmClosing,
+  ],
 });

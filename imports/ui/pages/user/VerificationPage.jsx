@@ -17,10 +17,7 @@ export default class VerificationPage extends Component {
       object['logic.verification.validated'] = true;
       cleanMethod('updateRequest', object, this.props.loanRequest._id);
     } else {
-      cleanMethod('requestVerification', null, this.props.loanRequest._id, (err, result) => {
-        console.log(err);
-        console.log(result);
-      });
+      cleanMethod('requestVerification', null, this.props.loanRequest._id);
     }
   };
 
@@ -81,7 +78,20 @@ export default class VerificationPage extends Component {
             ? <div style={{ height: 150 }} className="animated fadeIn">
               <LoadingComponent />
             </div>
-            : <div className="text-center" style={{ margin: '40px 0' }}>
+            : <div
+              className="text-center"
+              style={{
+                margin: '40px 0',
+                display: 'flex',
+                justifyContent: 'center',
+                flexWrap: 'wrap',
+              }}
+            >
+              <RaisedButton
+                label={<T id="general.cancel" />}
+                containerElement={<Link to={`/app/requests/${this.props.loanRequest._id}`} />}
+                style={{ marginRight: 8 }}
+              />
               <ConfirmButton
                 label={<T id="VerificationPage.CTA" />}
                 primary
