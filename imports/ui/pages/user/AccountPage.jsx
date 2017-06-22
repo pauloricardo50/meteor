@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import Checkbox from 'material-ui/Checkbox';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import Page from '/imports/ui/components/general/Page.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
+import PasswordChange from './accountPage/PasswordChange.jsx';
 
 const styles = {
   section: {
@@ -40,7 +40,8 @@ const AccountPage = props =>
 
       <div style={styles.div}>
         <div className="form-group">
-          <h4 style={styles.h}><T id="AccountPage.email" /></h4><a><T id="AccountPage.change" /></a>
+          <h4 style={styles.h}><T id="AccountPage.email" /></h4>
+          {/* <a><T id="AccountPage.change" /></a> */}
           <br />
           <p className="secondary">
             {props.currentUser.emails[0].address}
@@ -49,14 +50,15 @@ const AccountPage = props =>
 
         <div className="form-group">
           <h4 style={styles.h}><T id="AccountPage.password" /></h4>
-          <a><T id="AccountPage.change" /></a>
+          <br />
+          <PasswordChange />
         </div>
 
-        <div className="form-group">
+        {/* <div className="form-group">
           <h4 style={styles.h}><T id="AccountPage.phone" /></h4><a><T id="AccountPage.change" /></a>
           <br />
           <p className="secondary">+41 78 000 00 00</p>
-        </div>
+        </div> */}
 
         {/* <div className="form-group">
           <h4 style={styles.h}>Langue</h4><a>Changer</a>

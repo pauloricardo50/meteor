@@ -66,7 +66,7 @@ export default class StructureError extends Component {
   render() {
     const { message, icon: MyIcon, className } = this.state;
     return (
-      <div style={styles.div} className="mask1 primary-border">
+      <div style={styles.div} className="mask2 primary-border">
         {MyIcon &&
           <MyIcon style={{ marginRight: 16, height: '2em', width: '2em' }} className={className} />}
         <h2 className={className} style={{ margin: 0 }}>

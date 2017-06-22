@@ -4,8 +4,8 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import LoanRequests from '/imports/api/loanrequests/loanrequests';
 import Borrowers from '/imports/api/borrowers/borrowers';
 import { generateComponentAsPDF } from '/imports/js/server/generate-pdf.js';
-import { RequestPDF } from '/imports/api/loanrequests/pdf.js';
-import { rateLimit } from './rate-limit.js';
+import { RequestPDF, AnonymousRequestPDF } from '/imports/api/loanrequests/pdf.js';
+import rateLimit from '/imports/js/helpers/rate-limit.js';
 
 Meteor.methods({
   getServerTime() {
@@ -15,15 +15,21 @@ Meteor.methods({
 
 export const downloadPDF = new ValidatedMethod({
   name: 'pdf.download',
-  validate({ requestId }) {
+  validate({ requestId, type }) {
     check(requestId, String);
+    check(type, String);
   },
-  run({ requestId }) {
+  run({ requestId, type }) {
     const loanRequest = LoanRequests.findOne({ _id: requestId });
     const borrowers = Borrowers.find({ _id: { $in: loanRequest.borrowers } });
-    const fileName = `demande_${loanRequest.property.address1}.pdf`;
+    const prefix = type === 'anonymous' ? 'Anonyme' : 'Complet';
+    const fileName = `${prefix} ${loanRequest.property.address1}.pdf`;
+
+    // If type is anonymous, request the anonymous pdf
+    const component = type === 'anonymous' ? AnonymousRequestPDF : RequestPDF;
+
     return generateComponentAsPDF({
-      component: RequestPDF,
+      component,
       props: { loanRequest, borrowers },
       fileName,
     })
@@ -34,8 +40,4 @@ export const downloadPDF = new ValidatedMethod({
   },
 });
 
-rateLimit({
-  methods: [downloadPDF],
-  limit: 1,
-  timeRange: 1000,
-});
+rateLimit({ methods: [downloadPDF] });

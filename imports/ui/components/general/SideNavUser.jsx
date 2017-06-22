@@ -10,13 +10,24 @@ import RequestSelector from './RequestSelector.jsx';
 import SideNavStepper from './SideNavStepper.jsx';
 
 const SideNavUser = props => {
+  const {
+    loanRequests,
+    location,
+    style,
+    handleClickLink,
+    fixed,
+    toggleDrawer,
+    history,
+    borrowers,
+  } = props;
+
   // Return an empty side nav if there is no loanRequest
-  if (props.loanRequests.length <= 0) {
+  if (loanRequests.length <= 0) {
     return <nav className="side-nav-user hidden-xs" />;
   }
 
   // Get the pathname, remove the leading '/', and split by '/'
-  const splittedUrl = props.location.pathname.substring(1).split('/');
+  const splittedUrl = location.pathname.substring(1).split('/');
   // If it has enough elements, parse the requestId
   const requestId = splittedUrl.length >= 3 && splittedUrl[1] === 'requests' ? splittedUrl[2] : '';
   let currentRequest;
@@ -29,30 +40,31 @@ const SideNavUser = props => {
 
   return (
     <nav
-      className={classnames({ 'side-nav-user': true, 'joyride-side-nav fixed': props.fixed })}
-      style={props.style}
+      className={classnames({ 'side-nav-user': true, 'joyride-side-nav fixed': fixed })}
+      style={style}
     >
       <div className="scrollable">
-        <RequestSelector {...props} currentValue={requestId} />
+        <RequestSelector {...props} currentValue={requestId} toggleDrawer={toggleDrawer} />
         <NavLink
           exact
           to={`/app/requests/${requestId}`}
           activeClassName="active-link"
           className="link"
         >
-          <div className="onclick-wrapper" onTouchTap={props.handleClickLink}>
+          <div className="onclick-wrapper" onTouchTap={handleClickLink}>
             <div className="icon"><AssessmentIcon color="#ADB5BD" /></div>
             <h4 className="fixed-size title"><T id="SideNavUser.dashboard" /></h4>
           </div>
         </NavLink>
 
         {requestId &&
+          currentRequest.status === 'active' &&
           <SideNavStepper
-            handleClickLink={props.handleClickLink}
-            history={props.history}
-            location={props.location}
+            handleClickLink={handleClickLink}
+            history={history}
+            location={location}
             loanRequest={currentRequest}
-            borrowers={props.borrowers.filter(b => borrowerIds.indexOf(b._id) > -1)}
+            borrowers={borrowers.filter(b => borrowerIds.indexOf(b._id) > -1)}
           />}
       </div>
     </nav>
@@ -63,12 +75,14 @@ SideNavUser.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.object),
   handleClickLink: PropTypes.func,
   fixed: PropTypes.bool,
+  toggleDrawer: PropTypes.func,
 };
 
 SideNavUser.defaultProps = {
   loanRequests: [],
   handleClickLink: () => null,
   fixed: false,
+  toggleDrawer: () => {},
 };
 
 export default SideNavUser;

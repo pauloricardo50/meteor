@@ -59,11 +59,16 @@ export default class Table extends Component {
             stripedRows
           >
             {rows.map((row, i) =>
-              <TableRow key={row.id || i} selected={row.id === selected}>
+              <TableRow
+                key={row.id || i}
+                selected={row.id === selected}
+                onTouchTap={row.handleClick ? () => row.handleClick() : () => {}}
+              >
                 {row.columns.map((column, j) =>
                   <TableRowColumn
                     key={j}
                     style={{ ...columns[j].style, textAlign: columns[j].align, fontWeight: 400 }}
+                    className={column.className}
                   >
                     {typeof columns[j].format === 'function' ? columns[j].format(column) : column}
                   </TableRowColumn>,

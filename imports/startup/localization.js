@@ -19,6 +19,12 @@ export const getUserLocale = () => {
 };
 
 export const getTranslations = () => {
+  // log amount of words in translation
+  // const val = Object.keys(messagesFR).reduce(
+  //   (tot, key) => tot + messagesFR[key].split(' ').length,
+  //   0,
+  // );
+  // console.log(val);
   return messagesFR;
 };
 

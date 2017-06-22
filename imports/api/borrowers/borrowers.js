@@ -12,6 +12,12 @@ Borrowers.deny({
   remove: () => true,
 });
 
+Borrowers.allow({
+  insert: () => false,
+  update: () => false,
+  remove: () => false,
+});
+
 const BorrowerFilesSchema = new SimpleSchema(getFileSchema('borrower'));
 
 const LogicSchema = new SimpleSchema({
@@ -111,7 +117,7 @@ export const BorrowerSchema = new SimpleSchema({
   birthDate: {
     type: String,
     optional: true,
-    regEx: '/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/', // YYYY-MM-DD
+    regEx: '/^d{4}[/-](0?[1-9]|1[012])[/-](0?[1-9]|[12][0-9]|3[01])$/', // YYYY-MM-DD
   },
   birthPlace: {
     type: String,

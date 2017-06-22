@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import constants from '/imports/js/config/constants';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';

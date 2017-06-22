@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
+import rateLimit from '/imports/js/helpers/rate-limit.js';
 
 import Borrowers from './borrowers';
 
@@ -61,4 +62,8 @@ export const deleteBorrower = new ValidatedMethod({
 
     return false;
   },
+});
+
+rateLimit({
+  methods: [insertBorrower, updateBorrower, pushBorrowerValue, popBorrowerValue, deleteBorrower],
 });

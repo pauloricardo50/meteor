@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import { Link } from 'react-router-dom';
@@ -28,9 +29,11 @@ const styles = {
   },
 };
 
-const BorrowerHeader = ({ borrower, borrowers, index }) => {
-  const leftUrl = `/app/borrowers/${borrowers[index - 1] && borrowers[index - 1]._id}`;
-  const rightUrl = `/app/borrowers/${borrowers[index + 1] && borrowers[index + 1]._id}`;
+const BorrowerHeader = ({ requestId, borrower, borrowers, index, tab }) => {
+  const leftUrl = `/app/requests/${requestId}/borrowers/${borrowers[index - 1] &&
+    borrowers[index - 1]._id}/${tab}`;
+  const rightUrl = `/app/requests/${requestId}/borrowers/${borrowers[index + 1] &&
+    borrowers[index + 1]._id}/${tab}`;
   const showLeft = index > 0;
   const showRight = index + 1 < borrowers.length;
 

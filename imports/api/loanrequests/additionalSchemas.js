@@ -392,16 +392,28 @@ export const LogicSchema = new SimpleSchema({
     defaultValue: '',
     optional: true,
   },
-  finalStepsAdded: {
+  acceptedClosing: {
     type: Boolean,
     defaultValue: false,
   },
-  finalStepsAddedTime: {
+  recommendationCode: {
+    type: String,
+    defaultValue: '',
+    optional: true,
+  },
+  firstPaymentDate: {
     type: Date,
     optional: true,
   },
-  done: {
-    type: Boolean,
-    defaultValue: false,
+  paymentSchedule: {
+    type: String,
+    optional: true,
   },
+  lastSteps: {
+    type: Array,
+    defaultValue: [],
+  },
+  'lastSteps.$': Object,
+  'lastSteps.$.id': String,
+  'lastSteps.$.type': String,
 });

@@ -1,6 +1,8 @@
 import constants from '../config/constants';
 
 import { getIncomeRatio, getBorrowRatio, getFees } from './finance-math';
+import { propertyPercent, filesPercent } from '/imports/js/arrays/steps';
+import { requestFiles } from '/imports/js/arrays/files';
 
 export const getProjectValue = loanRequest => {
   if (loanRequest.property.value <= 0) {
@@ -86,6 +88,36 @@ export const getMonthlyWithOffer = (
   return interests >= 0 ? Math.round((maintenance + loan * amortization + interests) / 12) : 0;
 };
 
+/**
+ * getInterestsWithOffer - Get the aggregate monthly interest rate for a
+ * loanRequest and an offer
+ *
+ * @param {type}    loanRequest              Description
+ * @param {type}    offer                    Description
+ * @param {boolean} [withCounterparts=false] Description
+ *
+ * @return {Number} min 0
+ */
+export const getInterestsWithOffer = (loanRequest, offer, withCounterparts = false) => {
+  const tranches = loanRequest.general.loanTranches;
+  const interestRates = withCounterparts ? offer.counterpartOffer : offer.standardOffer;
+
+  let interests = 0;
+  tranches.some(tranche => {
+    const rate = interestRates[tranche.type];
+
+    // If the lender doesn't have this interest rate, return false
+    if (!rate) {
+      interests = -1;
+      return false;
+    }
+
+    interests += tranche.value * rate;
+  });
+
+  return interests >= 0 ? Math.round(interests / 12) : 0;
+};
+
 export const getPropAndWork = loanRequest =>
   loanRequest.property.value + (loanRequest.property.propertyWork || 0);
 
@@ -131,3 +163,7 @@ export const isRequestValid = (loanRequest, borrowers) => {
 
   return true;
 };
+
+export const getPropertyCompletion = (loanRequest, borrowers) =>
+  (propertyPercent(loanRequest, borrowers) + filesPercent(loanRequest, requestFiles, 'auction')) /
+  2;

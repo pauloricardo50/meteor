@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import LoanRequests from '../loanrequests/loanrequests';
+import rateLimit from '/imports/js/helpers/rate-limit.js';
 import { Roles } from 'meteor/alanning:roles';
 
 import Offers from './offers';
@@ -67,8 +68,7 @@ export const insertFakeOffer = new ValidatedMethod({
   name: 'offers.insertFake',
   validate: null,
   run({ object }) {
-    object.userId = Meteor.userId();
-    return Offers.insert(object);
+    return Offers.insert({ ...object, userId: Meteor.userId() });
   },
 });
 
@@ -86,3 +86,5 @@ export const deleteOffer = new ValidatedMethod({
     return false;
   },
 });
+
+rateLimit({ methods: [insertOffer, insertAdminOffer, updateOffer, insertFakeOffer, deleteOffer] });

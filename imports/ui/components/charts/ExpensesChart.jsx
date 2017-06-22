@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
+import ReactHighcharts from 'react-highcharts';
 
 import { getInterests, getAmortization } from '/imports/js/helpers/finance-math';
+import { getInterestsWithOffer } from '/imports/js/helpers/requestFunctions';
 import colors from '/imports/js/config/colors';
 
 import { legendConfig } from './chartSettings';
-
-import ReactHighcharts from 'react-highcharts';
 
 const chartColors = {
   interest: colors.charts[0],
@@ -88,9 +88,19 @@ class ExpensesChart extends Component {
     super(props);
 
     if (this.props.loanRequest) {
+      let realRate = 0;
+      if (this.props.loanRequest.logic.lender && this.props.loanRequest.logic.lender.offerId) {
+        const offer = this.props.offers.find(
+          o => o._id === this.props.loanRequest.logic.lender.offerId,
+        );
+        if (offer) {
+          realRate = getInterestsWithOffer(this.props.loanRequest, offer, false);
+        }
+      }
+
       this.state = {
-        interests: getInterests(this.props.loanRequest),
-        amortization: getAmortization(this.props.loanRequest, this.props.borrowers),
+        interests: realRate || getInterests(this.props.loanRequest, this.props.interestRate),
+        amortization: getAmortization(this.props.loanRequest, this.props.borrowers).amortization,
         maintenance: this.props.loanRequest.property.value * 0.01 / 12,
       };
     } else {
@@ -105,8 +115,6 @@ class ExpensesChart extends Component {
   componentWillReceiveProps(n) {
     const p = this.props;
 
-    this.setState({});
-
     if (
       n.interests !== p.interests ||
       n.amortization !== p.amortization ||
@@ -117,8 +125,8 @@ class ExpensesChart extends Component {
       if (this.props.loanRequest) {
         this.setState(
           {
-            interests: getInterests(n.loanRequest),
-            amortization: getAmortization(n.loanRequest, n.borrowers),
+            interests: getInterests(n.loanRequest, n.interestRate),
+            amortization: getAmortization(n.loanRequest, n.borrowers).amortization,
             maintenance: n.loanRequest.property.value * 0.01 / 12,
           },
           () => update(this),

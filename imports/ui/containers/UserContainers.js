@@ -9,6 +9,7 @@ import _VerificationPage from '/imports/ui/pages/user/VerificationPage.jsx';
 import _ContractPage from '/imports/ui/pages/user/ContractPage.jsx';
 import _ClosingPage from '/imports/ui/pages/user/ClosingPage.jsx';
 import _DevPage from '/imports/ui/pages/user/DevPage.jsx';
+import _FinancePage from '/imports/ui/pages/user/FinancePage.jsx';
 
 import { userContainer, userRequestContainer, userBorrowerContainer } from './Containers';
 
@@ -23,3 +24,4 @@ export const VerificationPage = userRequestContainer(_VerificationPage);
 export const ContractPage = userRequestContainer(_ContractPage);
 export const ClosingPage = userRequestContainer(_ClosingPage);
 export const DevPage = userContainer(_DevPage);
+export const FinancePage = userRequestContainer(_FinancePage);

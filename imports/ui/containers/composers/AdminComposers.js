@@ -3,11 +3,11 @@ import { Meteor } from 'meteor/meteor';
 import LoanRequests from '/imports/api/loanrequests/loanrequests';
 import Offers from '/imports/api/offers/offers';
 import Borrowers from '/imports/api/borrowers/borrowers';
+import AdminActions from '/imports/api/adminActions/adminActions';
 
 export function adminRequestsComposer(props, onData) {
   if (Meteor.subscribe('allLoanRequests').ready()) {
     const loanRequests = LoanRequests.find({}).fetch();
-
     onData(null, { loanRequests });
   }
 }
@@ -15,7 +15,6 @@ export function adminRequestsComposer(props, onData) {
 export function adminUsersComposer(props, onData) {
   if (Meteor.subscribe('allUsers').ready()) {
     const users = Meteor.users.find({}).fetch();
-
     onData(null, { users });
   }
 }
@@ -23,8 +22,14 @@ export function adminUsersComposer(props, onData) {
 export function adminOffersComposer(props, onData) {
   if (Meteor.subscribe('allOffers').ready()) {
     const offers = Offers.find({}).fetch();
-
     onData(null, { offers });
+  }
+}
+
+export function adminActionsComposer(props, onData) {
+  if (Meteor.subscribe('allAdminActions').ready()) {
+    const adminActions = AdminActions.find({}).fetch();
+    onData(null, { adminActions });
   }
 }
 

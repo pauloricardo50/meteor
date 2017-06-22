@@ -53,7 +53,7 @@ class ProcessPage extends Component {
   setBarProps = () => {
     const { intl } = this.props;
     const values = getStepValues(this.props);
-    this.barProps = { ...this.props, ...values };
+    this.barProps = { ...this.props, ...values, status: this.props.loanRequest.status };
     DocHead.setTitle(
       `${intl.formatMessage({ id: `steps.${this.barProps.currentStep.id}.title` })} | e-Potek`,
     );

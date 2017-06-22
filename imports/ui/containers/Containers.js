@@ -1,9 +1,7 @@
 import { merge } from 'react-komposer';
 
 import Loading from '/imports/ui/components/general/Loading.jsx';
-
-import composeWithTracker
-  from '/imports/ui/containers/composers/composeWithTracker';
+import composeWithTracker from '/imports/ui/containers/composers/composeWithTracker';
 
 import { currentUserComposer } from './composers/GeneralComposers';
 import {
@@ -17,6 +15,7 @@ import {
   adminRequestsComposer,
   adminRequestComposer,
   adminUsersComposer,
+  adminActionsComposer,
   adminUserComposer,
   adminOffersComposer,
   adminOfferComposer,
@@ -29,8 +28,7 @@ import {
 } from './composers/PartnerComposers';
 
 // Basic container
-export const generalContainer = c =>
-  merge(composeWithTracker(currentUserComposer, Loading))(c);
+export const generalContainer = c => merge(composeWithTracker(currentUserComposer, Loading))(c);
 
 // User containers
 export const userContainer = c =>
@@ -40,11 +38,10 @@ export const userContainer = c =>
     composeWithTracker(userOffersComposer, Loading),
     composeWithTracker(currentUserComposer, Loading),
   )(c);
+
 export const userRequestContainer = c =>
-  merge(
-    composeWithTracker(userRequestComposer),
-    composeWithTracker(currentUserComposer),
-  )(c);
+  merge(composeWithTracker(userRequestComposer), composeWithTracker(currentUserComposer))(c);
+
 export const userBorrowerContainer = c =>
   merge(
     composeWithTracker(userBorrowerComposer, Loading),
@@ -57,23 +54,22 @@ export const adminContainer = c =>
     composeWithTracker(adminRequestsComposer),
     composeWithTracker(adminUsersComposer),
     composeWithTracker(adminOffersComposer),
+    composeWithTracker(adminActionsComposer),
     composeWithTracker(currentUserComposer, Loading),
   )(c);
+
 export const adminUserContainer = c =>
-  merge(
-    composeWithTracker(adminUserComposer),
-    composeWithTracker(currentUserComposer),
-  )(c);
+  merge(composeWithTracker(adminUserComposer), composeWithTracker(currentUserComposer))(c);
+
 export const adminRequestContainer = c =>
   merge(
     composeWithTracker(adminRequestComposer),
     composeWithTracker(currentUserComposer),
+    composeWithTracker(adminActionsComposer),
   )(c);
+
 export const adminOfferContainer = c =>
-  merge(
-    composeWithTracker(adminOfferComposer),
-    composeWithTracker(currentUserComposer),
-  )(c);
+  merge(composeWithTracker(adminOfferComposer), composeWithTracker(currentUserComposer))(c);
 
 // Partner containers
 export const partnerContainer = c =>
@@ -82,13 +78,9 @@ export const partnerContainer = c =>
     composeWithTracker(partnerOffersComposer),
     composeWithTracker(currentUserComposer, Loading),
   )(c);
+
 export const partnerOfferContainer = c =>
-  merge(
-    composeWithTracker(partnerOfferComposer),
-    composeWithTracker(currentUserComposer),
-  )(c);
+  merge(composeWithTracker(partnerOfferComposer), composeWithTracker(currentUserComposer))(c);
+
 export const partnerRequestContainer = c =>
-  merge(
-    composeWithTracker(partnerRequestComposer),
-    composeWithTracker(currentUserComposer),
-  )(c);
+  merge(composeWithTracker(partnerRequestComposer), composeWithTracker(currentUserComposer))(c);

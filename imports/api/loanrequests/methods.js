@@ -3,6 +3,9 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { check } from 'meteor/check';
 import moment from 'moment';
 import { Roles } from 'meteor/alanning:roles';
+import rateLimit from '/imports/js/helpers/rate-limit.js';
+
+import { insertAdminAction } from '/imports/api/adminActions/methods';
 
 import LoanRequests from './loanrequests';
 
@@ -33,9 +36,7 @@ export const updateRequest = new ValidatedMethod({
     check(id, String);
   },
   run({ object, id }) {
-    return LoanRequests.update(id, {
-      $set: object,
-    });
+    return LoanRequests.update(id, { $set: object });
   },
 });
 
@@ -51,9 +52,7 @@ export const incrementStep = new ValidatedMethod({
 
     // TODO: make sure step is really done
 
-    return LoanRequests.update(id, {
-      $set: { 'logic.step': currentStep + 1 },
-    });
+    return LoanRequests.update(id, { $set: { 'logic.step': currentStep + 1 } });
   },
 });
 
@@ -64,22 +63,28 @@ export const startAuction = new ValidatedMethod({
   },
   run({ object, id }) {
     const auctionObject = {};
+    let auctionEndTime;
     auctionObject['logic.auctionStarted'] = true;
     auctionObject['logic.auctionStartTime'] = moment().toDate();
-    auctionObject['general.a'];
+    // auctionObject['general.a'];
 
     // object parameter only contains the isDemo value
     if (object.isDemo) {
-      auctionObject['logic.auctionEndTime'] = moment().add(30, 's').toDate();
+      auctionEndTime = moment().add(30, 's').toDate();
     } else {
-      auctionObject['logic.auctionEndTime'] = getAuctionEndTime(moment());
+      auctionEndTime = getAuctionEndTime(moment());
     }
+
+    auctionObject['logic.auctionEndTime'] = auctionEndTime;
 
     console.log(`Temps de fin réel: ${getAuctionEndTime(moment())}`);
 
-    return LoanRequests.update(id, {
-      $set: auctionObject,
-    });
+    // TODO: This can fuck up if the update goes through but the insertAdminAction fails
+    // same for the requestVerification method
+    LoanRequests.update(id, { $set: auctionObject });
+    return Meteor.wrapAsync(
+      insertAdminAction.call({ requestId: id, actionId: 'auction', extra: { auctionEndTime } }),
+    );
   },
 });
 
@@ -139,30 +144,27 @@ export const popRequestValue = new ValidatedMethod({
   },
 });
 
-// if (Meteor.isServer) {
-//   import { rateLimit } from '/imports/js/server/rate-limit.js';
-//
-//   rateLimit({
-//     methods: [
-//       updateValues,
-//     ],
-//     limit: 2,
-//     timeRange: 1000,
-//   });
-// }
-
 export const requestVerification = new ValidatedMethod({
   name: 'loanRequests.requestVerification',
   validate({ id }) {
     check(id, String);
   },
   run({ id }) {
-    return LoanRequests.update(id, {
+    const request = LoanRequests.findOne({ _id: id });
+
+    if (request.logic.verification.requested) {
+      // Don't do anything if this request is already in requested mode
+      return false;
+    }
+
+    // Insert an admin action and set the proper keys in the loanRequest
+    LoanRequests.update(id, {
       $set: {
         'logic.verification.requested': true,
         'logic.verification.requestedTime': new Date(),
       },
     });
+    return Meteor.wrapAsync(insertAdminAction.call({ actionId: 'verify', requestId: id }));
   },
 });
 
@@ -179,7 +181,7 @@ export const deleteRequest = new ValidatedMethod({
       return LoanRequests.remove(id);
     }
 
-    throw new Error('not authorized');
+    throw new Meteor.Error('not authorized');
   },
 });
 
@@ -193,7 +195,7 @@ export const finishAuction = new ValidatedMethod({
       return LoanRequests.update(id, { $set: { 'logic.auctionEndTime': new Date() } });
     }
 
-    throw new Error('not authorized');
+    throw new Meteor.Error('not authorized');
   },
 });
 
@@ -213,6 +215,40 @@ export const cancelAuction = new ValidatedMethod({
       });
     }
 
-    throw new Error('not authorized');
+    throw new Meteor.Error('not authorized');
   },
+});
+
+export const confirmClosing = new ValidatedMethod({
+  name: 'loanRequests.confirmClosing',
+  validate({ id }) {
+    check(id, String);
+  },
+  run({ id, object }) {
+    // TODO: Send email to user, clean up, etc.
+
+    if (Roles.userIsInRole(Meteor.userId(), 'admin')) {
+      return LoanRequests.update(id, {
+        $set: { status: 'done', ...object },
+      });
+    }
+
+    throw new Meteor.Error('not authorized');
+  },
+});
+
+rateLimit({
+  methods: [
+    insertRequest,
+    updateRequest,
+    incrementStep,
+    startAuction,
+    pushRequestValue,
+    popRequestValue,
+    requestVerification,
+    deleteRequest,
+    finishAuction,
+    cancelAuction,
+    confirmClosing,
+  ],
 });

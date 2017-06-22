@@ -401,9 +401,17 @@ const getErrorArray = (state, props, setFormState) => [
         },
       },
       {
-        id: false,
-        label: <T id="Start2Form.whyButton" />,
-        noPrimary: true,
+        id: undefined,
+        component: (
+          <DialogSimple
+            label={<T id="Start2Form.whyButton" />}
+            title={<T id="Start2Form.notEnoughCash.dialogTitle" />}
+            key={2}
+            rootStyle={{ display: 'inline-block', marginRight: 8, marginBottom: 8 }}
+          >
+            <T id="Start2Form.notEnoughCash.description" />
+          </DialogSimple>
+        ),
       },
     ],
   },
@@ -437,7 +445,19 @@ const getErrorArray = (state, props, setFormState) => [
           });
         },
       },
-      { id: false, label: <T id="Start2Form.whyButton" />, noPrimary: true },
+      {
+        id: undefined,
+        component: (
+          <DialogSimple
+            label={<T id="Start2Form.whyButton" />}
+            title={<T id="Start2Form.notEnoughOwnFunds.dialogTitle" />}
+            key={2}
+            rootStyle={{ display: 'inline-block', marginRight: 8, marginBottom: 8 }}
+          >
+            <T id="Start2Form.notEnoughOwnFunds.description" />
+          </DialogSimple>
+        ),
+      },
     ],
   },
 ];
@@ -574,8 +594,16 @@ const getFinalArray = (state, props, setFormState) => [
       },
       {
         id: undefined,
-        label: <T id="Start2Form.whyButton" />,
-        noPrimary: true,
+        component: (
+          <DialogSimple
+            label={<T id="Start2Form.whyButton" />}
+            title={<T id="Start2Form.useInsurance1.dialogTitle" />}
+            key={2}
+            rootStyle={{ display: 'inline-block', marginRight: 8, marginBottom: 8 }}
+          >
+            <T id="Start2Form.useInsurance1.description" />
+          </DialogSimple>
+        ),
       },
     ],
     question: true,
@@ -589,7 +617,19 @@ const getFinalArray = (state, props, setFormState) => [
     type: 'buttons',
     buttons: [
       { id: true, label: 'Ok' },
-      { id: undefined, label: <T id="Start2Form.whyButton" />, noPrimary: true },
+      {
+        id: undefined,
+        component: (
+          <DialogSimple
+            label={<T id="Start2Form.whyButton" />}
+            title={<T id="Start2Form.useInsurance1.dialogTitle" />}
+            key={2}
+            rootStyle={{ display: 'inline-block', marginRight: 8, marginBottom: 8 }}
+          >
+            <T id="Start2Form.useInsurance2.description" />
+          </DialogSimple>
+        ),
+      },
     ],
     question: true,
   },
@@ -705,7 +745,19 @@ const getFinalArray = (state, props, setFormState) => [
           });
         },
       },
-      { id: false, label: <T id="Start2Form.whyButton" />, noPrimary: true },
+      {
+        id: undefined,
+        component: (
+          <DialogSimple
+            label={<T id="Start2Form.whyButton" />}
+            title={<T id="Start2Form.notEnoughIncome.dialogTitle" />}
+            key={2}
+            rootStyle={{ display: 'inline-block', marginRight: 8, marginBottom: 8 }}
+          >
+            <T id="Start2Form.notEnoughIncome.description" />
+          </DialogSimple>
+        ),
+      },
     ],
   },
   {

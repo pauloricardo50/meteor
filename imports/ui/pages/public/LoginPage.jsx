@@ -29,6 +29,10 @@ const styles = {
   },
 };
 
+const handlePasswordReset = () => {
+  console.log('jejes');
+};
+
 const LoginPage = props =>
   <section style={styles.section}>
     <div style={styles.div1}>
@@ -51,6 +55,7 @@ const LoginPage = props =>
               id: Meteor.userId(),
             });
           }}
+          onResetPasswordHook={handlePasswordReset}
         />
       </div>
     </div>

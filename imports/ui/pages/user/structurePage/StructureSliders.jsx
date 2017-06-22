@@ -33,12 +33,15 @@ const inRange = (min, max, val) => Math.max(min, Math.min(max, val));
 
 const styles = {
   div: {
+    marginBottom: 40,
+  },
+  h1: {
     padding: '0 40px',
     maxWidth: 800,
     margin: '0 auto',
   },
   slider: {
-    marginBottom: 0,
+    margin: 0,
   },
 };
 
@@ -47,11 +50,11 @@ const StructureSliders = props => {
     props.loanRequest.property.usageType === 'primary' && getInsuranceFortune(props.borrowers) > 0;
 
   return (
-    <div>
+    <div style={styles.div}>
       {getArray(props.borrowers, showInsurance).map(
         item =>
           item.max &&
-          <h1 key={item.id} style={styles.div}>
+          <h1 key={item.id} style={styles.h1}>
             <TextField
               id={item.id}
               floatingLabelText={item.labelText}
@@ -71,6 +74,7 @@ const StructureSliders = props => {
               max={item.max}
               onChange={(e, v) => props.handleChange(v, item.id)}
               style={styles.slider}
+              sliderStyle={styles.slider}
               disabled={props.disabled}
             />
           </h1>,

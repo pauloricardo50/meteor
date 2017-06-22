@@ -43,6 +43,7 @@ const DropzoneArrayItem = props => {
     handleMouseEnter,
     active,
     disabled,
+    required,
   } = props;
 
   const currentValue = filesObject[props.id];
@@ -78,6 +79,7 @@ const DropzoneArrayItem = props => {
               noTooltips={noTooltips}
               tooltipPlacement="top"
             />
+            {required === false ? '' : ' *'}
           </h3>
           <h5 className="secondary">
             <T
@@ -110,12 +112,14 @@ DropzoneArrayItem.propTypes = {
   tooltipSuffix: PropTypes.string,
   filesObject: PropTypes.objectOf(PropTypes.array).isRequired,
   filesObjectSelector: PropTypes.string.isRequired,
+  required: PropTypes.bool,
 };
 
 DropzoneArrayItem.defaultProps = {
   active: false,
   currentValue: undefined,
   tooltipSuffix: '',
+  required: true,
 };
 
 export default DropzoneArrayItem;

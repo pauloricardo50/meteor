@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
-import Info from './borrowerPage/Info.jsx';
-import Finance from './borrowerPage/Finance.jsx';
+import BorrowerInfoPage from './borrowerPage/BorrowerInfoPage.jsx';
+import BorrowerFinancePage from './borrowerPage/BorrowerFinancePage.jsx';
 import Files from './borrowerPage/Files.jsx';
 import BorrowerHeader from './borrowerPage/BorrowerHeader.jsx';
 
@@ -64,16 +64,16 @@ export default class BorrowerPage extends Component {
   getContent() {
     switch (this.state.tab) {
       case 'personal':
-        return <Info {...this.props} />;
+        return <BorrowerInfoPage {...this.props} />;
       case 'finance':
-        return <Finance {...this.props} />;
+        return <BorrowerFinancePage {...this.props} />;
       case 'files': {
         const borrowerId = this.props.match.params.borrowerId;
         const borrower = this.props.borrowers.find(b => b._id === borrowerId);
         return <Files {...this.props} borrower={borrower} />;
       }
       default:
-        return <Info {...this.props} />;
+        return <BorrowerInfoPage {...this.props} />;
     }
   }
 
@@ -94,7 +94,13 @@ export default class BorrowerPage extends Component {
     return (
       <ProcessPage {...this.props} stepNb={1} id={this.state.tab}>
         <section className="mask1 borrower-page">
-          <BorrowerHeader borrower={borrower} {...this.props} index={index} />
+          <BorrowerHeader
+            borrower={borrower}
+            {...this.props}
+            index={index}
+            tab={this.state.tab}
+            requestId={this.props.loanRequest._id}
+          />
           <Links borrower={borrower} {...this.props} tab={this.state.tab} requestId={requestId} />
 
           {this.getContent()}

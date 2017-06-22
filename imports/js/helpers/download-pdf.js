@@ -24,18 +24,19 @@ const base64ToBlob = base64String => {
   return byteArray ? createBlob(byteArray) : null;
 };
 
-export const downloadPDF = (event, requestId) => {
+export const downloadPDF = (event, requestId, type) => {
   event.preventDefault();
   const { target } = event;
+  const initialLabel = target.innerHTML;
   target.innerHTML = '<em>Downloading...</em>';
   target.classList.add('downloading');
-  Meteor.call('pdf.download', { requestId }, (error, response) => {
+  Meteor.call('pdf.download', { requestId, type }, (error, response) => {
     if (error) {
       Bert.alert(error.reason, 'danger');
     } else {
       const blob = base64ToBlob(response.base64);
       fileSaver.saveAs(blob, response.fileName);
-      target.innerHTML = 'Télécharger PDF';
+      target.innerHTML = initialLabel;
       target.classList.remove('downloading');
     }
   });

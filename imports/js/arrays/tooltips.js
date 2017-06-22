@@ -24,6 +24,7 @@ const generalTooltips = {
   "type d'utilisation": 'usageType',
   'bonus considéré': ['consideredBonus'],
   bonus: 'bonus',
+  'autres sources de revenus': 'otherIncome',
 
   '2e pilier': 'secondPillar',
   '2ème pilier': 'secondPillar',
@@ -33,7 +34,9 @@ const generalTooltips = {
   '3ème pilier': 'thirdPillar',
 
   'offres standard': 'standardOffers',
+  standard: 'standardOffers', // careful with this one
   'offres avec contrepartie': 'counterpartOffers',
+  'avec contrepartie': 'counterpartOffers',
 };
 
 const offerTableTooltips = {

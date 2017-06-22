@@ -14,6 +14,7 @@ import {
   ContractPage,
   ClosingPage,
   DevPage,
+  FinancePage,
 } from '/imports/ui/containers/UserContainers';
 import NewPage from '/imports/ui/pages/user/NewPage.jsx';
 
@@ -36,6 +37,7 @@ const UserRoutes = props =>
           component={BorrowerPage}
         />
         <Route path="/app/requests/:requestId/property" component={PropertyPage} />
+        <Route path="/app/requests/:requestId/finance" component={FinancePage} />
         <Route path="/app/requests/:requestId/verification" component={VerificationPage} />
         <Route path="/app/requests/:requestId/auction" component={AuctionPage} />
         <Route path="/app/requests/:requestId/structure" component={StructurePage} />

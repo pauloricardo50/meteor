@@ -6,8 +6,14 @@ import DashboardCharts from './DashboardCharts.jsx';
 import DashboardBorrowers from './DashboardBorrowers.jsx';
 import DashboardLastSteps from './DashboardLastSteps.jsx';
 import DashboardUnverified from './DashboardUnverified.jsx';
+import DashboardPayments from './DashboardPayments.jsx';
+import DashboardDownload from './DashboardDownload.jsx';
+import DashboardOffer from './DashboardOffer.jsx';
+import DashboardProperty from './DashboardProperty.jsx';
+import DashboardStatus from './DashboardStatus.jsx';
 
 const getArray = props => {
+  const done = props.loanRequest.status === 'done';
   return [
     {
       components: [{ component: DashboardUnverified, show: !props.currentUser.emails[0].verified }],
@@ -15,8 +21,14 @@ const getArray = props => {
     },
     {
       components: [
-        { component: DashboardLastSteps, show: props.loanRequest.logic.step === 3 },
-        { component: DashboardRecap, show: true },
+        { component: DashboardLastSteps, show: !done && props.loanRequest.logic.step === 3 },
+        { component: DashboardStatus, show: !done },
+        { component: DashboardPayments, show: done },
+        {
+          component: DashboardRecap,
+          show: true,
+          additionalProps: { hideDetail: props.loanRequest.status === 'done' },
+        },
       ],
       className: 'col-md-6 col-lg-4 joyride-recap',
     },
@@ -25,7 +37,15 @@ const getArray = props => {
       className: 'col-md-6 col-lg-4 joyride-charts',
     },
     {
-      components: [{ component: DashboardBorrowers, show: true }],
+      components: [
+        { component: DashboardBorrowers, show: true },
+        { component: DashboardProperty, show: true },
+        { component: DashboardDownload, show: props.loanRequest.files.contract },
+        {
+          component: DashboardOffer,
+          show: props.loanRequest.logic.lender && props.loanRequest.logic.lender.offerId,
+        },
+      ],
       className: 'col-md-6 col-lg-4 joyride-borrowers',
     },
   ];
@@ -36,7 +56,9 @@ const DashboardContent = props => {
     <div className="container-fluid" style={{ width: '100%', padding: 0 }}>
       {getArray(props).map((column, i) =>
         <div className={column.className} style={{ marginBottom: 15 }} key={i}>
-          {column.components.map((c, j) => c.show && <c.component {...props} key={j} />)}
+          {column.components.map(
+            (c, j) => c.show && <c.component {...props} {...c.additionalProps || {}} key={j} />,
+          )}
         </div>,
       )}
     </div>

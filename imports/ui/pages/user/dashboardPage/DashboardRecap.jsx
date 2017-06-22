@@ -1,9 +1,8 @@
-import React, { PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import Recap from '/imports/ui/components/general/Recap.jsx';
-
-import FlatButton from 'material-ui/FlatButton';
-
+import DashboardItem from './DashboardItem.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const styles = {
@@ -19,18 +18,15 @@ const styles = {
     alignItems: 'flex-start',
   },
 };
-export default class DashboardRecap extends React.Component {
+
+export default class DashboardRecap extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      showDetail: !this.props.smallWidth && this.props.loanRequest.logic.step < 3,
-    };
+    this.state = { showDetail: false };
   }
 
-  handleToggle = () => {
-    this.setState(prev => ({ showDetail: !prev.showDetail }));
-  };
+  handleToggle = () => this.setState(prev => ({ showDetail: !prev.showDetail }));
 
   render() {
     let content = null;
@@ -50,27 +46,26 @@ export default class DashboardRecap extends React.Component {
     }
 
     return (
-      <div className="mask1">
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <h4 className="fixed-size bold" style={{ marginTop: 0 }}>
-            <T id="DashboardRecap.title" />
-          </h4>
-          <FlatButton
-            label={
-              this.state.showDetail
-                ? <T id="DashboardRecap.overview" />
-                : <T id="DashboardRecap.detail" />
-            }
-            onTouchTap={this.handleToggle}
-            primary
-          />
-        </div>
+      <DashboardItem
+        title={<T id="DashboardRecap.title" />}
+        menuActions={[
+          {
+            id: this.state.showDetail ? 'showOverview' : 'showDetail',
+            handleClick: this.handleToggle,
+          },
+        ]}
+      >
         {content}
-      </div>
+      </DashboardItem>
     );
   }
 }
 
 DashboardRecap.propTypes = {
   smallWidth: PropTypes.bool.isRequired,
+  hideDetail: PropTypes.bool,
+};
+
+DashboardRecap.defaultProps = {
+  hideDetail: false,
 };

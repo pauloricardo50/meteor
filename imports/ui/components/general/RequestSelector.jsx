@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -22,7 +23,8 @@ const styles = {
 const handleChange = (value, props) => {
   if (value === 0) {
     console.log('new request!');
-  } else if (value !== props.currentValue) {
+  } else {
+    props.toggleDrawer();
     props.history.push(`/app/requests/${value}`);
   }
 };
@@ -60,6 +62,7 @@ const RequestSelector = props =>
 RequestSelector.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.object),
   currentValue: PropTypes.string,
+  toggleDrawer: PropTypes.func.isRequired,
 };
 
 RequestSelector.defaultProps = {

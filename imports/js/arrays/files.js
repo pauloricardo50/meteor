@@ -88,9 +88,15 @@ export const requestFiles = (r = {}) => ({
     {
       id: 'cubage',
       doubleTooltip: true,
+      condition: r.property && r.property.style === 'villa',
     },
     {
       id: 'pictures',
+    },
+    {
+      id: 'marketingBrochure',
+      condition: !!r.general && r.general.purchaseType === 'acquisition',
+      required: false,
     },
   ],
   contract: [
@@ -110,11 +116,6 @@ export const requestFiles = (r = {}) => ({
     {
       id: 'landRegisterExtract',
       doubleTooltip: true,
-    },
-    {
-      id: 'marketingBrochure',
-      condition: !!r.general && r.general.purchaseType === 'acquisition',
-      required: false,
     },
     {
       id: 'coownershipAllocationAgreement',
@@ -140,6 +141,14 @@ export const requestFiles = (r = {}) => ({
   //     condition: !!r.logic && r.insuranceUsePreset === 'withdrawal',
   //   },
   // ],
+  admin: [
+    {
+      id: 'contract',
+    },
+    {
+      id: 'signedContract',
+    },
+  ],
 });
 
 const getFileIDs = list => {

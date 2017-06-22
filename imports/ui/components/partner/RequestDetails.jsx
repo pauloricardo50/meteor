@@ -36,7 +36,7 @@ const types = {
 };
 
 const getRatio = props => {
-  const amortization = getAmortization(props.loanRequest, props.borrowers);
+  const { amortization } = getAmortization(props.loanRequest, props.borrowers);
   const interests = getInterests(props.loanRequest);
   const maintenance = props.loanRequest.property.value * 0.01 / 12;
 

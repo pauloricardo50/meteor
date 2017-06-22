@@ -272,6 +272,7 @@ const getSmallDashboardArray = props => {
   const monthly = getMonthlyPayment(r, b).total;
   const totalUsed = getTotalUsed(r);
   const propAndWork = getPropAndWork(r);
+  const project = getProjectValue(r);
 
   return [
     {
@@ -288,20 +289,25 @@ const getSmallDashboardArray = props => {
       value: toMoney(loan),
     },
     {
-      label: 'Recap.monthlyCost',
-      value: (
-        <span>
-          {toMoney(monthly)} <small>/mois</small>
-        </span>
-      ),
-    },
-    {
       label: 'Recap.ownFundsTotal',
       value: toMoney(totalUsed),
     },
     {
       label: r.property.value === propAndWork ? 'Recap.purchasePrice' : 'Recap.propAndWork',
       value: toMoney(Math.round(propAndWork)),
+    },
+    {
+      label: 'Recap.totalCost',
+      value: toMoney(project),
+      spacing: true,
+    },
+    {
+      label: 'Recap.monthlyCost',
+      value: (
+        <span>
+          {toMoney(monthly)} <small>/mois</small>
+        </span>
+      ),
     },
   ];
 };

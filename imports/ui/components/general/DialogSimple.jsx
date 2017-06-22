@@ -1,49 +1,81 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
+
 export default class DialogSimple extends Component {
-  state = {
-    open: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = { open: false, disabled: false, isCancel: true };
+  }
 
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.close && nextProps.close) {
+      this.setState({ open: false });
+    }
+  }
 
-  handleClose = () => {
-    this.setState({ open: false });
-  };
+  handleOpen = () => this.setState({ open: true });
+
+  handleClose = isSubmit => this.setState({ open: false, isCancel: !isSubmit });
+
+  disableClose = () => this.setState({ disabled: true });
+
+  enableClose = () => this.setState({ disabled: false });
 
   render() {
-    const actions = this.props.actions || [
+    let { actions } = this.props;
+    const {
+      autoFocus,
+      rootStyle,
+      label,
+      primary,
+      secondary,
+      buttonStyle,
+      title,
+      modal,
+      children,
+      passProps,
+    } = this.props;
+
+    actions = actions || [
+      <FlatButton primary label={<T id="general.cancel" />} onTouchTap={this.handleClose} />,
       <FlatButton
         primary
         label="Ok"
-        onTouchTap={this.handleClose}
-        autoFocus={this.props.autoFocus} // TODO doesn't work
+        onTouchTap={() => this.handleClose(true)}
+        autoFocus={autoFocus} // TODO doesn't work with tooltips
+        disabled={this.state.disabled}
       />,
     ];
 
+    const childProps = {
+      disableClose: this.disableClose,
+      enableClose: this.enableClose,
+      isCancel: this.state.isCancel,
+    };
+
     return (
-      <span style={this.props.rootStyle}>
+      <span style={rootStyle}>
         <RaisedButton
-          label={this.props.label}
+          label={label}
           onTouchTap={this.handleOpen}
-          primary={this.props.primary}
-          secondary={this.props.secondary}
-          style={this.props.buttonStyle}
+          primary={primary}
+          secondary={secondary}
+          style={buttonStyle}
         />
         <Dialog
-          title={<h3>{this.props.title}</h3>}
+          title={<h3>{title}</h3>}
           actions={actions}
-          modal={false}
+          modal={modal}
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-          {this.props.children}
+          {children && passProps ? React.cloneElement(children, { ...childProps }) : children}
         </Dialog>
       </span>
     );
@@ -59,6 +91,9 @@ DialogSimple.propTypes = {
   rootStyle: PropTypes.objectOf(PropTypes.any),
   buttonStyle: PropTypes.objectOf(PropTypes.any),
   autoFocus: PropTypes.bool,
+  close: PropTypes.bool,
+  modal: PropTypes.bool,
+  passProps: PropTypes.bool,
 };
 
 DialogSimple.defaultProps = {
@@ -68,4 +103,7 @@ DialogSimple.defaultProps = {
   rootStyle: {},
   buttonStyle: {},
   autoFocus: false,
+  close: false,
+  modal: false,
+  passProps: false,
 };

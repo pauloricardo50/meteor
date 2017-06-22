@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Page from '/imports/ui/components/general/Page.jsx';
 import NewRequestModal from './dashboardPage/NewRequestModal.jsx';
+import AcceptClosingModal from './dashboardPage/AcceptClosingModal.jsx';
 import DashboardContent from './dashboardPage/DashboardContent.jsx';
 
 import { getWidth } from '/imports/js/helpers/browserFunctions';
@@ -26,16 +27,17 @@ export default class DashboardPage extends Component {
   };
 
   render() {
+    const { loanRequest, history } = this.props;
+    const showNewRequestModal = !loanRequest.name;
+    const showClosedModal = loanRequest.status === 'done' && !loanRequest.logic.acceptedClosing;
+
     return (
       <Page id="DashboardPage" className="joyride-dashboard">
         <DashboardContent {...this.props} smallWidth={this.state.smallWidth} />
 
-        {!this.props.loanRequest.name &&
-          <NewRequestModal
-            open
-            requestId={this.props.loanRequest._id}
-            history={this.props.history}
-          />}
+        {showNewRequestModal && <NewRequestModal open requestId={loanRequest._id} />}
+
+        {showClosedModal && <AcceptClosingModal open loanRequest={loanRequest} />}
       </Page>
     );
   }

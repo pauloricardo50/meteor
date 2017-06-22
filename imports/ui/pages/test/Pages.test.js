@@ -18,6 +18,7 @@ import NewRequestPage from '../user/NewRequestPage.jsx';
 import PropertyPage from '../user/PropertyPage.jsx';
 import StructurePage from '../user/StructurePage.jsx';
 import VerificationPage from '../user/VerificationPage.jsx';
+import FinancePage from '../user/FinancePage.jsx';
 
 // Admin pages
 import AdminDashboardPage from '../admin/AdminDashboardPage.jsx';

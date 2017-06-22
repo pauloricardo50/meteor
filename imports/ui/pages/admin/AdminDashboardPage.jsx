@@ -39,6 +39,7 @@ const AdminDashboardPage = props => {
         loanRequests={props.loanRequests}
         recentOffers={props.offers.filter(offer => offer.auctionEndTime >= now)}
         history={props.history}
+        adminActions={props.adminActions}
       />
 
     </section>
@@ -46,12 +47,14 @@ const AdminDashboardPage = props => {
 };
 
 AdminDashboardPage.defaultProps = {
+  adminActions: [],
   loanRequests: [],
   users: [],
   offers: [],
 };
 
 AdminDashboardPage.propTypes = {
+  adminActions: PropTypes.arrayOf(PropTypes.object),
   loanRequests: PropTypes.arrayOf(PropTypes.object),
   users: PropTypes.arrayOf(PropTypes.object).isRequired,
   offers: PropTypes.arrayOf(PropTypes.object),

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
 import IconButton from 'material-ui/IconButton';
@@ -14,10 +15,7 @@ export default class TopNavDrawer extends React.Component {
     this.state = { open: false };
   }
 
-  handleToggle = () =>
-    this.setState(prev => ({
-      open: !prev.open,
-    }));
+  handleToggle = () => this.setState(prev => ({ open: !prev.open }));
 
   handleClickLink = () => {
     Meteor.defer(() => this.setState({ open: false }));
@@ -43,7 +41,11 @@ export default class TopNavDrawer extends React.Component {
               <CloseIcon color="#333333" hoverColor="#888888" />
             </IconButton>
           </div>
-          <SideNavUser {...this.props} handleClickLink={() => this.handleClickLink()} />
+          <SideNavUser
+            {...this.props}
+            handleClickLink={() => this.handleClickLink()}
+            toggleDrawer={this.handleToggle}
+          />
         </Drawer>
       </div>
     );
