@@ -2,13 +2,15 @@ import { Meteor } from 'meteor/meteor';
 import { Inject } from 'meteor/meteorhacks:inject-initial';
 
 import '/imports/js/server/emails';
-import '/imports/js/server/methods';
+import '/imports/api/methods/server/methods';
+import '/imports/api/methods/methods';
 import '/imports/js/server/files';
 import '/imports/api/api';
 import '../accounts-config';
 import './accounts-server-config';
 import './meteor-slingshot-server';
-import setupAuth from './http-auth.js';
+import setupAuth from './http-auth';
+import setupMandrill from './email-config';
 
 Meteor.startup(() => {
   // Do something on startup if necessary
@@ -16,7 +18,8 @@ Meteor.startup(() => {
   // if (Meteor.settings.public.environment === 'staging') {
   //   setupAuth();
   // }
-  process.env.MAIL_URL = Meteor.settings.smtp;
+
+  setupMandrill();
 });
 
 // Inject a loader before client is ready, is removed in the on startup function on the client

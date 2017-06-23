@@ -68,3 +68,4 @@ force-ssl                      # Automatically route users to https
 okgrow:analytics                       # Analytics package (e-potek uses only GA)
 dynamic-import
 accounts-password
+wylio:mandrill

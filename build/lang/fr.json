@@ -42,6 +42,16 @@
   "AmortizationTool.rate": "Taux à 10 ans: {rate, number, percentage}",
   "AmortizationTool.rise.title": "Augmentation des taux",
   "AmortizationTool.stable.title": "Taux stables",
+
+  "emails.footer": "{copyright}Vous recevez cet email car vous avez créé un compte sur {url}{unsubscribe}",
+  "emails.unsubscribe": "Me Désabonner",
+  "emails.verifyEmail.subject": "Hypothèque, quand je t'aurai..",
+  "emails.resetPassword.subject": "Égarer son mot de passe",
+  "emails.resetPassword.from": "Gardien des clés d'e-Potek",
+  "emails.resetPassword.title": "Vous avez invoqué le gardien des clés d'e-Potek",
+  "emails.resetPassword.body": "Il vous regarde avec un air exaspéré, visiblement déçu que vous ayiez pu oublier un mot de passe aussi simple. Il essaie d'attirer votre attention sur le gros bouton en bas.",
+  "emails.resetPassword.CTA": "Le gros bouton",
+
   "ArrayInput.add": "Ajouter",
   "Auction.notified": "Vous recevrez une notification lorsque ce sera terminé",
   "Auction.tableText": "Bataille des prêteurs en cours",
