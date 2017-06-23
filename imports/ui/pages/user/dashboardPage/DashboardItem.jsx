@@ -23,7 +23,7 @@ const styles = {
 
 const DashboardItem = props => {
   return (
-    <div className={`mask1 ${props.className}`} style={{ ...styles.div, ...props.style }}>
+    <div className={`mask1 grid-item ${props.className}`} style={{ ...styles.div, ...props.style }}>
 
       {props.title && <h4 className="fixed-size bold" style={{ marginTop: 0 }}>{props.title}</h4>}
 

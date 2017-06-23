@@ -34,6 +34,7 @@ Factory.define('borrower', Borrowers, {
   createdAt: () => new Date(),
   expenses: () => [{ description: 'test', value: 1 }],
   files: () => ({}),
+  logic: () => ({}),
 });
 
 Factory.define('loanRequest', LoanRequests, {

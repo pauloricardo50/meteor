@@ -26,7 +26,14 @@ export default class DashboardRecap extends Component {
     this.state = { showDetail: false };
   }
 
-  handleToggle = () => this.setState(prev => ({ showDetail: !prev.showDetail }));
+  handleToggle = () => {
+    this.setState(
+      prev => ({ showDetail: !prev.showDetail }),
+      () => {
+        this.props.reloadMasonry();
+      },
+    );
+  };
 
   render() {
     let content = null;

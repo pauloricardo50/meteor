@@ -22,4 +22,7 @@ export const getInsuranceFortune = (borrowers = []) => {
 };
 
 export const getBorrowerCompletion = borrower =>
-  (filesPercent([borrower], borrowerFiles, 'auction') + personalInfoPercent([borrower])) / 2;
+  (filesPercent([borrower], borrowerFiles, 'auction') +
+    personalInfoPercent([borrower]) +
+    (borrower.logic.hasValidatedFinances ? 1 : 0)) /
+  3;

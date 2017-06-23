@@ -15,6 +15,11 @@ LoanRequests.deny({
   update: () => true,
   remove: () => true,
 });
+LoanRequests.allow({
+  insert: () => false,
+  update: () => false,
+  remove: () => false,
+});
 
 // Documentation is in the google drive dev/MongoDB Schemas
 const LoanRequestSchema = new SimpleSchema({
