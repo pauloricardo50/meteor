@@ -30,7 +30,5 @@
   "AWSAdminSecret": "",
   "MANDRILL_LOGIN": "florian@e-potek.ch",
   "MANDRILL_API_KEY": "L-_o7XAONIxbqkdWgADH5Q",
-  "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg",
-  "mailchimp": "42e9f66147485839267ee803bd5cff45-us15",
-  "smtp": "smtps://florian%40e-potek.ch:adyexnlzhqieuvmk@smtp.gmail.com:465/"
+  "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg"
 }
