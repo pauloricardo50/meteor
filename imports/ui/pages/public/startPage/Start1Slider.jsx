@@ -18,7 +18,7 @@ const Start1Slider = props =>
           : Math.min(Math.round(props.auto ? props.motionValue : props.value), props.sliderMax)
       }
       onChange={(e, v) => {
-        trackOncePerSession(`Start1Slider - Used slider ${name}`);
+        trackOncePerSession(`Start1Slider - Used slider ${props.name}`);
         props.setStateValue(props.name, v);
       }}
       className="slider"

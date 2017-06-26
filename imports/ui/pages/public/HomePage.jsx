@@ -180,9 +180,9 @@ export default class HomePage extends Component {
               <div className="container-lrg center">
                 <div className="col-7">
                   <h5 className="heading">
-                    <T id="HomePage.tagline2" />
+                    <T id="HomePage.tagline1" />
                     <hr />
-                    <T id="HomePage.tagline3" />
+                    <T id="HomePage.tagline2" />
                   </h5>
                 </div>
                 <div className="col-5">

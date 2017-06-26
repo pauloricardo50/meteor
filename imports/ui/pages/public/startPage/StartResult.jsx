@@ -21,6 +21,7 @@ const styles = {
 
 const handleClick = ({ formState, setFormState, currentUser, history }) => {
   if (currentUser) {
+    track('Funnel - completed form while logged in', {});
     saveStartForm(formState, history);
     return;
   }
