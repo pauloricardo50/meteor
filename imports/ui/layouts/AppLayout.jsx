@@ -8,7 +8,7 @@ import TopNav from '/imports/ui/components/general/TopNav.jsx';
 import SideNavUser from '/imports/ui/components/general/SideNavUser.jsx';
 import SideNav from '/imports/ui/components/general/SideNav.jsx';
 import ContactButton from '/imports/ui/components/general/ContactButton.jsx';
-import UserJoyride from '/imports/ui/components/general/UserJoyride.jsx';
+// import UserJoyride from '/imports/ui/components/general/UserJoyride.jsx';
 
 const getRedirect = props => {
   const isAdmin = Roles.userIsInRole(props.currentUser, 'admin');

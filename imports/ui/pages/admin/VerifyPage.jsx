@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Meteor } from 'meteor/meteor';
 
 import cleanMethod from '/imports/api/cleanMethods';
 
@@ -49,7 +50,14 @@ export default class VerifyPage extends Component {
       'logic.verification.validated': this.state.validated,
     };
 
-    cleanMethod('updateRequest', object, this.props.loanRequest._id, () => window.close());
+    cleanMethod('updateRequest', object, this.props.loanRequest._id, () => {
+      Meteor.call('email.send', {
+        emailId: this.state.validated ? 'verificationPassed' : 'verificationError',
+        requestId: this.props.loanRequest._id,
+        userId: this.props.loanRequest.userId,
+      });
+      window.close();
+    });
   };
 
   render() {
@@ -68,9 +76,9 @@ export default class VerifyPage extends Component {
         <h3>Fichiers à ouvrir:</h3>
         <ul>
           <li>Demande de prêt: <span className="bold">{this.props.loanRequest._id}</span></li>
-          {this.props.borrowers.map((b, i) => (
-            <li key={b._id}>Emprunteur {i + 1}: <span className="bold">{b._id}</span></li>
-          ))}
+          {this.props.borrowers.map((b, i) =>
+            <li key={b._id}>Emprunteur {i + 1}: <span className="bold">{b._id}</span></li>,
+          )}
         </ul>
 
         <hr />
@@ -89,7 +97,7 @@ export default class VerifyPage extends Component {
           </DropDownMenu>
         </div>
 
-        {this.state.comments.map((c, i) => (
+        {this.state.comments.map((c, i) =>
           <TextField
             value={c}
             multiLine
@@ -97,8 +105,8 @@ export default class VerifyPage extends Component {
             fullWidth
             floatingLabelText={`Commentaire No.${i + 1}`}
             onChange={e => this.handleChangeComment(e, i)}
-          />
-        ))}
+          />,
+        )}
         <div className="text-center">
           <RaisedButton
             label="+"
@@ -114,13 +122,16 @@ export default class VerifyPage extends Component {
             style={styles.buttons}
           />
         </div>
+        <div className="description"><p>Ceci enverra un email au client en notification</p></div>
         <div className="text-center" style={styles.finalButton}>
           <RaisedButton
             label="Envoyer"
             primary
             disabled={
-              !(this.state.validated === true ||
-                (this.state.validated === false && this.state.comments[0]))
+              !(
+                this.state.validated === true ||
+                (this.state.validated === false && this.state.comments[0])
+              )
             }
             onTouchTap={this.handleSubmit}
           />

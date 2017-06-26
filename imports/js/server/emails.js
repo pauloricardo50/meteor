@@ -3,7 +3,7 @@ import { Accounts } from 'meteor/accounts-base';
 import rateLimit from '/imports/js/helpers/rate-limit.js';
 import { Mandrill } from 'meteor/wylio:mandrill';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
-import { check } from 'meteor/check';
+import { check, Match } from 'meteor/check';
 import LoanRequests from '/imports/api/loanrequests/loanrequests';
 
 import formatMessage from './intl';
@@ -63,55 +63,91 @@ const getEmailContent = emailId => {
  *
  * @return {type} Description
  */
-const emailCallback = (error, result, requestId, emailId, callback, operation = 'push') => {
+const emailCallback = (error, result, requestId, emailId, operation = 'push') => {
   if (error) {
     console.log(error);
-  } else if (operation === 'update') {
-    LoanRequests.update(
-      { _id: requestId, 'emails._id': result._id },
-      { $update: { 'emails.$': { status: result.status } } },
-    );
-  } else {
-    LoanRequests.update(
-      { _id: requestId },
-      { $push: { 'emails.$': { emailId, _id: result._id, status: result.status } } },
+  }
+
+  const content = JSON.parse(result.content)[0];
+
+  if (operation === 'update') {
+    return LoanRequests.update(
+      { _id: requestId, 'emails._id': content._id },
+      { $update: { 'emails.$': { status: content.status, lastUpdated: new Date() } } },
+      (err, res) => {
+        if (err) {
+          console.log(err);
+        }
+      },
     );
   }
-  return callback(error, result);
+  return LoanRequests.update(
+    requestId,
+    {
+      $push: {
+        emails: { emailId, _id: content._id, status: content.status, lastUpdated: new Date() },
+      },
+    },
+    (err, res) => {
+      if (err) {
+        console.log(err);
+      }
+    },
+  );
 };
 
-export const sendEmailFromServer = new ValidatedMethod({
+export const sendEmail = new ValidatedMethod({
   name: 'email.send',
-  validate({ emailId, requestId, template = 'notification', CTA_URL, sendAt }) {
+  validate({ emailId, requestId, template = 'notification', CTA_URL, sendAt, userId }) {
     check(emailId, String);
     check(requestId, String);
-    check(template, String);
-    check(CTA_URL, String);
-    check(sendAt, Date);
+    check(template, Match.Optional(String));
+    check(CTA_URL, Match.Optional(String));
+    check(sendAt, Match.Optional(Date));
+    check(userId, Match.Optional(String));
   },
-  run({ emailId, requestId, template = 'notification', CTA_URL, sendAt }) {
+  run({ emailId, requestId, template = 'notification', CTA_URL, sendAt, userId }) {
     const { email, subject, title, body, CTA } = getEmailContent(emailId);
+    let toEmail;
+    if (userId) {
+      toEmail = Meteor.users.findOne(userId).emails[0].address;
+    }
+    toEmail = toEmail || email;
+
+    // If this is a demo site, do not send emails
+    if (
+      this.connection &&
+      this.connection.httpHeaders &&
+      this.connection.httpHeaders.host.indexOf('demo')
+    ) {
+      return false;
+    }
 
     const options = {
       template_name: template,
       template_content: [{ name: 'footer', content: emailFooter() }],
       message: {
-        from_email: email,
-        from_name: fromEmail,
+        from_email: fromEmail,
+        from_name: from,
         subject,
         to: [
           {
-            email,
+            email: toEmail,
             // name: 'Jon Snow',
             type: 'to',
           },
         ],
         global_merge_vars: [{ name: 'CTA_URL', content: defaultCTA_URL }],
         merge_vars: [
-          { name: 'title', content: title },
-          { name: 'body', content: body },
-          { name: 'CTA', content: CTA },
-          { name: 'CTA_URL', content: CTA_URL }, // overrides the global_merge_vars if it is set
+          {
+            rcpt: toEmail,
+            vars: [
+              { name: 'title', content: title },
+              { name: 'body', content: body },
+              { name: 'CTA', content: CTA },
+              { name: 'CTA_URL', content: CTA_URL }, // overrides the global_merge_vars if it is set}
+            ],
+          },
         ],
         metadata: [{ userId: Meteor.user()._id, requestId }],
       },
@@ -122,10 +158,8 @@ export const sendEmailFromServer = new ValidatedMethod({
     }
 
     this.unblock();
-    return Meteor.wrapAsync(callback =>
-      Mandrill.messages.sendTemplate(options, (error, result) =>
-        emailCallback(error, result, requestId, emailId, callback),
-      ),
+    Mandrill.messages.sendTemplate(options, (error, result) =>
+      emailCallback(error, result, requestId, emailId),
     );
   },
 });
@@ -138,8 +172,8 @@ export const cancelScheduledEmail = new ValidatedMethod({
   },
   run({ id, requestId }) {
     this.unblock();
-    return Mandrill.messages.cancelScheduled({ id }, (error, result) =>
-      emailCallback(error, result, requestId, undefined, () => {}, 'update'),
+    Mandrill.messages.cancelScheduled({ id }, (error, result) =>
+      emailCallback(error, result, requestId, undefined, 'update'),
     );
   },
 });
@@ -153,14 +187,18 @@ export const rescheduleEmail = new ValidatedMethod({
   },
   run({ id, requestId, date }) {
     this.unblock();
-    return Mandrill.messages.reschedule({ id, send_at: date.toISOString() }, (error, result) =>
-      emailCallback(error, result, requestId, undefined, () => {}, 'update'),
+    Mandrill.messages.reschedule({ id, send_at: date.toISOString() }, (error, result) =>
+      emailCallback(error, result, requestId, undefined, 'update'),
     );
   },
 });
 
 // Send max 1 email per second
-rateLimit({ methods: [sendEmailFromServer, cancelScheduledEmail], limit: 1, timeRange: 1000 });
+rateLimit({
+  methods: [sendEmail, cancelScheduledEmail, rescheduleEmail],
+  limit: 1,
+  timeRange: 1000,
+});
 
 // Meteor default emails
 // https://themeteorchef.com/tutorials/sign-up-with-email-verification

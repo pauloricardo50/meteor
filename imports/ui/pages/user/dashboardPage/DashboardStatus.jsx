@@ -91,7 +91,7 @@ export default class DashboardStatus extends Component {
           <RaisedButton
             label={<T id="general.continue" />}
             secondary
-            containerElement={nextLink && <Link to={nextLink} />}
+            containerElement={nextLink ? <Link to={nextLink} /> : null}
             onTouchTap={nextLink ? () => {} : () => this.handleNextStep()}
           />
         </div>

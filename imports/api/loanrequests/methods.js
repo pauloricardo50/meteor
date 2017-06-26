@@ -81,10 +81,23 @@ export const startAuction = new ValidatedMethod({
 
     // TODO: This can fuck up if the update goes through but the insertAdminAction fails
     // same for the requestVerification method
-    LoanRequests.update(id, { $set: auctionObject });
-    return Meteor.wrapAsync(
-      insertAdminAction.call({ requestId: id, actionId: 'auction', extra: { auctionEndTime } }),
-    );
+    return LoanRequests.update(id, { $set: auctionObject }, (error1, res1) => {
+      if (!error1) {
+        insertAdminAction.call(
+          { requestId: id, actionId: 'auction', extra: { auctionEndTime } },
+          (error2, res2) => {
+            if (!error2 && Meteor.isServer) {
+              // Schedule email
+              Meteor.call('email.send', {
+                emailId: 'auctionEnded',
+                requestId: id,
+                sendAt: auctionEndTime,
+              });
+            }
+          },
+        );
+      }
+    });
   },
 });
 
@@ -196,7 +209,18 @@ export const finishAuction = new ValidatedMethod({
   },
   run({ id }) {
     if (Roles.userIsInRole(Meteor.userId(), 'admin')) {
-      return LoanRequests.update(id, { $set: { 'logic.auctionEndTime': new Date() } });
+      return LoanRequests.update(id, { $set: { 'logic.auctionEndTime': new Date() } }, error => {
+        if (!error && Meteor.isServer) {
+          const request = LoanRequests.findOne({ _id: id });
+          const email = request.emails.find(
+            e => e.emailId === 'auctionEnded' && e.scheduledAt >= new Date(),
+          );
+          if (email) {
+            // Reschedule email to now
+            Meteor.call('email.reschedule', { id: email._id, requestId: id, date: new Date() });
+          }
+        }
+      });
     }
 
     throw new Meteor.Error('not authorized');
@@ -210,13 +234,27 @@ export const cancelAuction = new ValidatedMethod({
   },
   run({ id }) {
     if (Roles.userIsInRole(Meteor.userId(), 'admin')) {
-      return LoanRequests.update(id, {
-        $set: {
-          'logic.auctionEndTime': undefined,
-          'logic.auctionStarted': false,
-          'logic.auctionStartTime': undefined,
+      return LoanRequests.update(
+        id,
+        {
+          $set: {
+            'logic.auctionEndTime': undefined,
+            'logic.auctionStarted': false,
+            'logic.auctionStartTime': undefined,
+          },
         },
-      });
+        error => {
+          if (!error && Meteor.isServer) {
+            const request = LoanRequests.findOne({ _id: id });
+            const email = request.emails.find(
+              e => e.emailId === 'auctionEnded' && e.scheduledAt >= new Date(),
+            );
+            if (email) {
+              Meteor.call('email.cancelScheduled', { id: email._id, requestId: id });
+            }
+          }
+        },
+      );
     }
 
     throw new Meteor.Error('not authorized');

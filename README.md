@@ -1,29 +1,26 @@
-# README #
-
-This README would normally document whatever steps are necessary to get your application up and running.
-
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
 ### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
+* Initial setup
+
+1. install meteor using `curl https://install.meteor.com/ | sh`
+1. run `meteor npm install yarn -g`.
+1. run `meteor yarn install`
+1. run `meteor yarn start`
+1. go to localhost:3000 to use the app
+
 * How to run tests
-* Deployment instructions
 
-### Contribution guidelines ###
+1. run `meteor yarn run test` to start a testing server
+1. go to localhost:4000 to see the test-runner
 
-* Writing tests
-* Code review
-* Other guidelines
 
-### Who do I talk to? ###
+### CI/CD ###
 
-* Repo owner or admin
-* Other community or team contact
+A CircleCI account is watching the `master` and `staging` branches and automatically runs tests on them and deploys them to the proper servers.
+
+The staging branch is deployed to staging.e-potek.ch
+The master branch is deployed to e-potek.ch
+
+### Other stuff ###
+
+* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
