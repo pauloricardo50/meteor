@@ -9,6 +9,7 @@ import { isDemo } from '/imports/js/helpers/browserFunctions';
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
 import ConfirmButton from '/imports/ui/components/general/ConfirmButton.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
+import track from '/imports/js/helpers/analytics';
 
 export default class VerificationPage extends Component {
   handleClick = () => {
@@ -17,7 +18,9 @@ export default class VerificationPage extends Component {
       object['logic.verification.validated'] = true;
       cleanMethod('updateRequest', object, this.props.loanRequest._id);
     } else {
-      cleanMethod('requestVerification', null, this.props.loanRequest._id);
+      cleanMethod('requestVerification', null, this.props.loanRequest._id, () => {
+        track('requested verification', {});
+      });
     }
   };
 

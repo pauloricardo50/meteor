@@ -8,6 +8,7 @@ import FlatButton from 'material-ui/FlatButton';
 import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown.jsx';
 import TopNavDrawer from '/imports/ui/components/general/TopNavDrawer.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
+import track from '/imports/js/helpers/analytics';
 
 import colors from '/imports/js/config/colors';
 
@@ -47,11 +48,12 @@ const TopNav = props => {
               containerElement={<Link to="/login" />}
               secondary
               labelStyle={{ color: colors.primary }}
+              onTouchTap={() => track('TopNav - clicked login', {})}
             />
         }
       >
         <div className="logo">
-          <Link to="/home" className="link">
+          <Link to="/home" className="link" onTouchTap={() => track('TopNav - clicked logo', {})}>
             <img src="/img/logo_black.svg" alt="e-Potek" style={styles.image} />
           </Link>
         </div>

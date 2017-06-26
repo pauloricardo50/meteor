@@ -16,6 +16,11 @@ const setupMandrill = () => {
     host: 'smtps.mandrillapp.com', // the SMTP host
     // baseUrl: 'https://mandrillapp.com/api/1.0/'  // update this in case Mandrill changes its API endpoint URL or version
   });
+
+  Mandrill.messages.listScheduled({}, (err, res) => {
+    console.log(err);
+    console.log(res);
+  });
 };
 
 export default setupMandrill;

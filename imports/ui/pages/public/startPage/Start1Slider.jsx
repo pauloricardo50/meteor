@@ -4,7 +4,9 @@ import React from 'react';
 import Slider from 'material-ui/Slider';
 import AddIcon from 'material-ui/svg-icons/content/add';
 
-const Start1Slider = props => (
+import { trackOncePerSession } from '/imports/js/helpers/analytics';
+
+const Start1Slider = props =>
   <div className="sliderDiv">
     <Slider
       min={0}
@@ -13,23 +15,19 @@ const Start1Slider = props => (
       value={
         props.motionValue < 5000
           ? 0
-          : Math.min(
-              Math.round(props.auto ? props.motionValue : props.value),
-              props.sliderMax,
-            )
+          : Math.min(Math.round(props.auto ? props.motionValue : props.value), props.sliderMax)
       }
-      onChange={(e, v) => props.setStateValue(props.name, v)}
+      onChange={(e, v) => {
+        trackOncePerSession(`Start1Slider - Used slider ${name}`);
+        props.setStateValue(props.name, v);
+      }}
       className="slider"
     />
     {props.value >= props.sliderMax &&
       <div className="sliderMaxButton animated fadeIn">
-        <AddIcon
-          onTouchTap={props.setSliderMax}
-          style={{ cursor: 'pointer' }}
-        />
+        <AddIcon onTouchTap={props.setSliderMax} style={{ cursor: 'pointer' }} />
       </div>}
-  </div>
-);
+  </div>;
 
 Start1Slider.propTypes = {
   value: PropTypes.number.isRequired,

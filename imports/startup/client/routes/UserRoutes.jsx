@@ -45,7 +45,7 @@ const UserRoutes = props =>
         <Route path="/app/requests/:requestId/lenderpicker" component={LenderPickerPage} />
         <Route path="/app/requests/:requestId/contract" component={ContractPage} />
         <Route path="/app/requests/:requestId/closing" component={ClosingPage} />
-        <Route path="/app/requests/:requestId" component={DashboardPage} name="asdf" />
+        <Route path="/app/requests/:requestId" component={DashboardPage} />
         <Route path="/app" render={routeProps => <NewPage {...layoutProps} {...routeProps} />} />
         <Route component={NotFound} />
       </Switch>}

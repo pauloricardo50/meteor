@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
+import track from '/imports/js/helpers/analytics';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import { getBorrowerCompletion } from '/imports/js/helpers/borrowerFunctions';
 import DashboardItem from './DashboardItem.jsx';
@@ -21,6 +22,7 @@ const DashboardBorrowers = props => {
             to={`/app/requests/${props.loanRequest._id}/borrowers/${b._id}/personal`}
             key={b._id}
             className="link"
+            onTouchTap={() => track('clicked dashboard borrower', {})}
           >
             <span className="icon fa fa-user-circle-o fa-4x" style={{ marginRight: 16 }} />
             <div className="text">

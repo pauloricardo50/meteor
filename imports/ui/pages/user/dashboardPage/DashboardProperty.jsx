@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import BuildingIcon from 'material-ui/svg-icons/communication/business';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 
+import track from '/imports/js/helpers/analytics';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import { getPropertyCompletion } from '/imports/js/helpers/requestFunctions';
 import DashboardItem from './DashboardItem.jsx';
@@ -19,7 +20,11 @@ const DashboardProperty = props => {
       className="dashboard-list"
       title={<T id="DashboardProperty.title" values={{ count: props.borrowers.length }} />}
     >
-      <Link to={`/app/requests/${props.loanRequest._id}/property`} className="link">
+      <Link
+        to={`/app/requests/${props.loanRequest._id}/property`}
+        className="link"
+        onTouchTap={() => track('clicked dashboard property', {})}
+      >
         <Icon style={{ marginRight: 16, width: 64, height: 64 }} className="icon" />
         {/* <span className="fa fa-user-circle-o fa-4x" style={{ marginRight: 16 }} /> */}
         <div className="text">

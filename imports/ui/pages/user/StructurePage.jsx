@@ -7,6 +7,7 @@ import cleanMethod from '/imports/api/cleanMethods';
 import LoadingButton from '/imports/ui/components/general/LoadingButton.jsx';
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
+import track from '/imports/js/helpers/analytics';
 
 import StructureSliders from './structurePage/StructureSliders.jsx';
 import StructureRecap from './structurePage/StructureRecap.jsx';
@@ -22,7 +23,9 @@ const handleClick = (props, state) => {
   object['general.fortuneUsed'] = state.fortuneUsed;
   object['general.insuranceFortuneUsed'] = state.insuranceFortuneUsed;
 
-  cleanMethod('updateRequest', object, props.loanRequest._id);
+  cleanMethod('updateRequest', object, props.loanRequest._id, () => {
+    track('validated structure', {});
+  });
 };
 
 export default class StructurePage extends Component {

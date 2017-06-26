@@ -5,7 +5,7 @@ import Scroll from 'react-scroll';
 import classnames from 'classnames';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
-
+import { trackOncePerSession } from '/imports/js/helpers/analytics';
 import ButtonInput from './ButtonInput.jsx';
 import Input from './Input.jsx';
 import MultipleInput from './MultipleInput.jsx';
@@ -100,10 +100,11 @@ export default class AutoStart extends Component {
           activeLine: active,
           last: input.id === 'finalized',
         }),
-        autoFocus: prevInput.type === 'buttons' &&
-          this.props.formState.lastModified === prevInput.id &&
-          !this.props.formState.stopScroll &&
-          !this.props.formState.finalized,
+        autoFocus:
+          prevInput.type === 'buttons' &&
+            this.props.formState.lastModified === prevInput.id &&
+            !this.props.formState.stopScroll &&
+            !this.props.formState.finalized,
         // If text1 is specified, use it, otherwise use the id to get the string
         // arrayInputs don't have a description, so ignore it and use undefined
         text1: input.text1 !== undefined || input.type === 'arrayInput'
@@ -172,6 +173,7 @@ export default class AutoStart extends Component {
     } else if (prevInput.error === true) {
       // If an error ever appears, start error mode (prevent any further rendering)
       this.error = true;
+      trackOncePerSession('AutoStart - startForm error', { errorId: prevInput.id });
       return 'break';
     } else if (!prevTrue(prevInput, this.props.formState)) {
       // Make sure previous input is valid before continuing

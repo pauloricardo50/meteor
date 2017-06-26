@@ -8,6 +8,7 @@ import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import MaskedInput from 'react-text-mask';
 import { swissFrancMask } from '/imports/js/helpers/textMasks';
 import constants from '/imports/js/config/constants';
+import { trackOncePerSession } from '/imports/js/helpers/analytics';
 
 const primaryColor = '#4A90E2';
 
@@ -25,13 +26,17 @@ const errorStyle = {
 // Use class to allow refs and focus to work
 export default class Start1Text extends Component {
   render() {
+    const { name, setStateValue, auto, motionValue, value, minValue } = this.props;
     return (
       <div className="text-div">
         <TextField
-          id={this.props.name}
-          name={this.props.name}
-          onChange={e => this.props.setStateValue(this.props.name, e.target.value)}
-          errorStyle={this.props.minValue <= this.props.value ? defaultStyle : errorStyle}
+          id={name}
+          name={name}
+          onChange={e => {
+            trackOncePerSession(`Start1Text - Used textfield ${name}`);
+            setStateValue(name, e.target.value);
+          }}
+          errorStyle={minValue <= value ? defaultStyle : errorStyle}
           className="input"
           ref={c => {
             this.input = c;
@@ -40,7 +45,7 @@ export default class Start1Text extends Component {
         >
           <MaskedInput
             type="text"
-            value={(this.props.auto ? Math.round(this.props.motionValue) : this.props.value) || ''}
+            value={(auto ? Math.round(motionValue) : value) || ''}
             mask={swissFrancMask}
             placeholder={constants.getCurrency()}
             guide={false}
@@ -51,15 +56,15 @@ export default class Start1Text extends Component {
         <span
           className={classnames({
             reset: true,
-            off: this.props.value === 0,
+            off: value === 0,
           })}
         >
           <CloseIcon
             onTouchTap={() => {
-              this.props.setStateValue(this.props.name, 0, true);
+              setStateValue(name, 0, true);
               this.input.input.inputElement.focus();
             }}
-            disabled={this.props.value === 0}
+            disabled={value === 0}
           />
         </span>
       </div>

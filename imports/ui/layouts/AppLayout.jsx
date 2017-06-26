@@ -8,6 +8,8 @@ import TopNav from '/imports/ui/components/general/TopNav.jsx';
 import SideNavUser from '/imports/ui/components/general/SideNavUser.jsx';
 import SideNav from '/imports/ui/components/general/SideNav.jsx';
 import ContactButton from '/imports/ui/components/general/ContactButton.jsx';
+import track from '/imports/js/helpers/analytics';
+
 // import UserJoyride from '/imports/ui/components/general/UserJoyride.jsx';
 
 const getRedirect = props => {
@@ -84,6 +86,7 @@ const AppLayout = props => {
   const isApp = props.history.location.pathname.slice(0, 4) === '/app';
 
   if (redirect) {
+    track('AppLayout - was redirected', { from: props.history.location.pathname, to: redirect });
     return <Redirect to={redirect} />;
   }
   return (
@@ -102,7 +105,7 @@ const AppLayout = props => {
         {/* </RouteTransition> */}
       </main>
 
-      {isApp && <ContactButton />}
+      {isApp && <ContactButton history={props.history} />}
     </div>
   );
 };

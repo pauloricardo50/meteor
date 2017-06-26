@@ -2,13 +2,13 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { analytics } from 'meteor/okgrow:analytics';
+import { addUserTracking } from '/imports/js/helpers/analytics';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
 import { T } from '/imports/ui/components/general/Translation.jsx';
-
+import track from '/imports/js/helpers/analytics';
 import { saveStartForm } from '/imports/js/helpers/startFunctions';
 
 const styles = {
@@ -53,6 +53,7 @@ export default class PasswordLine extends Component {
         this.setState({ error: error.message, loading: false });
       } else {
         this.handleSuccess();
+        track('Funnel - User created account', {});
       }
     });
   };
@@ -64,10 +65,8 @@ export default class PasswordLine extends Component {
       if (error) {
         this.setState({ error: error.message, loading: false });
       } else {
-        // this.handleSuccess();
-        // TODO this should only be possible if the current logged in user doesn't have borrowers set up
-        // Or simply add new borrowers to the account no matter what
-        console.log('handle login!');
+        this.handleSuccess();
+        track('Funnel - User logged in', {});
       }
     });
   };
@@ -82,7 +81,7 @@ export default class PasswordLine extends Component {
     });
 
     // Create user for analytics
-    analytics.identify(Meteor.userId(), {
+    addUserTracking(Meteor.userId(), {
       email: Meteor.user().emails[0].address,
       id: Meteor.userId(),
     });

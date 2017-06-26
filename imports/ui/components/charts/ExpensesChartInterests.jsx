@@ -6,6 +6,7 @@ import MenuItem from 'material-ui/MenuItem';
 
 import ExpensesChart from './ExpensesChart.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
+import track from '/imports/js/helpers/analytics';
 
 const rates = [0.01, 0.01, 0.015, 0.02];
 
@@ -19,6 +20,7 @@ export default class ExpensesChartInterests extends Component {
   }
 
   handleChange = (event, index, selectValue) => {
+    track('ExpensesChartInterests - changed interest rate', { value: selectValue });
     this.setState({ selectValue });
   };
 

@@ -7,6 +7,7 @@ import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import MailIcon from 'material-ui/svg-icons/communication/mail-outline';
 import PhoneIcon from 'material-ui/svg-icons/communication/call';
 
+import track from '/imports/js/helpers/analytics';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
 import colors from '/imports/js/config/colors';
@@ -55,7 +56,7 @@ const styles = {
 
 const staff = supportStaff[0];
 
-const overlayContent = (
+const overlayContent = path =>
   <div
     style={{
       display: 'flex',
@@ -89,7 +90,13 @@ const overlayContent = (
       </div>
       <div className="text" style={{ flexGrow: 1 }}>
         <p className="bold" style={{ margin: 0 }}><T id="ContactButton.byPhone" /></p>
-        <a href={`tel:${staff.phone}`} className="active">{staff.phone}</a>
+        <a
+          href={`tel:${staff.phone}`}
+          className="active"
+          onTouchTap={() => track('ContactButton - clicked on phone', { path })}
+        >
+          {staff.phone}
+        </a>
       </div>
     </div>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -98,11 +105,16 @@ const overlayContent = (
       </div>
       <div className="text" style={{ flexGrow: 1 }}>
         <p className="bold" style={{ margin: 0 }}><T id="ContactButton.byEmail" /></p>
-        <a href={`mailto:${staff.email}`} className="active">{staff.email}</a>
+        <a
+          href={`mailto:${staff.email}`}
+          className="active"
+          onTouchTap={() => track('ContactButton - clicked on email', { path })}
+        >
+          {staff.email}
+        </a>
       </div>
     </div>
-  </div>
-);
+  </div>;
 
 export default class ContactButton extends Component {
   constructor(props) {
@@ -114,6 +126,10 @@ export default class ContactButton extends Component {
   }
 
   handleClick = () => {
+    // Track when the button is clicked
+    if (!this.state.open) {
+      track('ContactButton - clicked', { path: this.props.history.location.pathname });
+    }
     this.setState({ open: !this.state.open });
   };
 
@@ -131,11 +147,13 @@ export default class ContactButton extends Component {
           className="mask1"
           style={{ ...styles.overlay, ...(this.state.open ? {} : styles.closed) }}
         >
-          {overlayContent}
+          {overlayContent(this.props.history.location.pathname)}
         </div>
       </div>
     );
   }
 }
 
-ContactButton.propTypes = {};
+ContactButton.propTypes = {
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+};

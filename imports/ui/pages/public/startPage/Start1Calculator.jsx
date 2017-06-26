@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { analytics } from 'meteor/okgrow:analytics';
+import track from '/imports/js/helpers/analytics';
 
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -101,12 +101,7 @@ const Start1Calculator = props => {
             id="ok"
             style={{ height: 'unset' }}
             overlayStyle={{ padding: 20 }}
-            onTouchTap={() =>
-              analytics.track('Passed Start 1', {
-                property,
-                income,
-                fortune,
-              })}
+            onTouchTap={() => track('Funnel - Passed Start 1', { property, income, fortune })}
           />
         </div>}
     </div>

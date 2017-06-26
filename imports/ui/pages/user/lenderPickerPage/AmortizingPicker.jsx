@@ -41,6 +41,7 @@ const StrategyAmortization = props => {
       </div>
 
       <StrategyChoices
+        name="amortizationStrategyPreset"
         currentValue={props.formState.amortizationStrategyPreset}
         choices={getChoices()}
         handleChoose={id =>

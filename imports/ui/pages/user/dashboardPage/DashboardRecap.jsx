@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Recap from '/imports/ui/components/general/Recap.jsx';
 import DashboardItem from './DashboardItem.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
+import track from '/imports/js/helpers/analytics';
 
 const styles = {
   recap: {
@@ -27,6 +28,7 @@ export default class DashboardRecap extends Component {
   }
 
   handleToggle = () => {
+    track('dashboard recap show detail', { nextState: this.state.showDetail ? 'close' : 'open' });
     this.setState(
       prev => ({ showDetail: !prev.showDetail }),
       () => {
@@ -71,6 +73,7 @@ export default class DashboardRecap extends Component {
 DashboardRecap.propTypes = {
   smallWidth: PropTypes.bool.isRequired,
   hideDetail: PropTypes.bool,
+  reloadMasonry: PropTypes.func.isRequired,
 };
 
 DashboardRecap.defaultProps = {

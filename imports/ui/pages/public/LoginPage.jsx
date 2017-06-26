@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/std:accounts-ui';
-import { analytics } from 'meteor/okgrow:analytics';
+import { addUserTracking } from '/imports/js/helpers/analytics';
 
 const styles = {
   section: {
@@ -50,7 +50,7 @@ const LoginPage = props =>
             });
 
             // Create user for analytics
-            analytics.identify(Meteor.userId(), {
+            addUserTracking(Meteor.userId(), {
               email: Meteor.user().emails[0].address,
               id: Meteor.userId(),
             });

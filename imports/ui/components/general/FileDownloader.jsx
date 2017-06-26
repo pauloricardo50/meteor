@@ -6,6 +6,8 @@ import fileSaver from 'file-saver';
 import RaisedButton from 'material-ui/RaisedButton';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
 
+import track from '/imports/js/helpers/analytics';
+
 export default class FileDownloader extends Component {
   constructor(props) {
     super(props);
@@ -15,8 +17,13 @@ export default class FileDownloader extends Component {
 
   handleClick = () => {
     this.setState({ downloading: true }, () => {
+      track('FileDownloader - clicked button', {});
+      const t0 = performance.now();
+
       Meteor.call('downloadFile', this.props.fileKey, (err, data) => {
         this.setState({ downloading: false });
+        const t1 = performance.now();
+        track('FileDownloader - file downloaded', { duration: t1 - t0 });
 
         if (err) {
           console.log(err);

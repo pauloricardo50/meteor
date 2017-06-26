@@ -35,7 +35,8 @@ const InsuranceStrategy = props => {
 
       <div className="description">
         <p>
-          Vous avez décidé d'utiliser votre prévoyance pour ce projet. Il faut encore décider par quel mécanisme financier vous allez le faire.
+          Vous avez décidé d'utiliser votre prévoyance pour ce projet. Il faut encore décider par
+          quel mécanisme financier vous allez le faire.
           <br /><br />
         </p>
       </div>
@@ -45,6 +46,7 @@ const InsuranceStrategy = props => {
       </div>
 
       <StrategyChoices
+        name="insuranceUsePreset"
         currentValue={props.formState.insuranceUsePreset}
         choices={getChoices()}
         handleChoose={id =>

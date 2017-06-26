@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 import cleanMethod from '/imports/api/cleanMethods';
 import { getWidth } from '/imports/js/helpers/browserFunctions';
-
+import track from '/imports/js/helpers/analytics';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const styles = {
@@ -65,6 +65,7 @@ export default class ProcessPageBar extends Component {
             style={this.state.smallWidth ? styles.smallButton : styles.button}
             disabled={!this.props.prevLink}
             containerElement={this.props.prevLink ? <Link to={this.props.prevLink} /> : undefined}
+            onTouchTap={() => track('ProcessPageBar - clicked back', { to: this.props.prevLink })}
           />}
         <RaisedButton
           icon={this.state.smallWidth ? <ArrowRight /> : undefined}
@@ -79,7 +80,14 @@ export default class ProcessPageBar extends Component {
           containerElement={
             this.props.nextLink && !lastPartOfStep ? <Link to={this.props.nextLink} /> : undefined
           }
-          onTouchTap={lastPartOfStep ? () => handleNextStep(this.props) : () => null}
+          onTouchTap={() => {
+            track('ProcessPageBar - clicked next', {
+              to: lastPartOfStep ? 'next step' : this.props.nextLink,
+            });
+            if (lastPartOfStep) {
+              handleNextStep(this.props);
+            }
+          }}
         />
       </div>
     );

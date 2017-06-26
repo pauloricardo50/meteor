@@ -70,6 +70,7 @@ const handleSave = (props, offerId) => {
   object['logic.lender.offerId'] = offerId;
 
   cleanMethod('updateRequest', object, props.loanRequest._id, err => {
+    track('chose a lender', { offerId });
     if (!err) {
       // This will only be called the first time a lender is chosen
       insertAdminAction.call({ requestId: props.loanRequest._id, actionId: 'lenderChosen' });

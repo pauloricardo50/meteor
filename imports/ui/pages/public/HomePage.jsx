@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { DocHead } from 'meteor/kadira:dochead';
 import { Link } from 'react-router-dom';
 import HomeDev from '/imports/ui/components/general/HomeDev.jsx';
-import { analytics } from 'meteor/okgrow:analytics';
+import track from '/imports/js/helpers/analytics';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
 import RaisedButton from 'material-ui/RaisedButton';
@@ -58,8 +58,9 @@ export default class HomePage extends Component {
                     overlayStyle={styles.button}
                     id="acquisitionButton"
                     onTouchTap={() =>
-                      analytics.track('Clicked home page CTA', {
+                      track('Funnel - clicked home page CTA', {
                         title: 'acquisition',
+                        at: 'top',
                       })}
                   />
                   <HomeDev
@@ -69,8 +70,9 @@ export default class HomePage extends Component {
                     overlayStyle={styles.button}
                     id="refinancing"
                     handleClick={() =>
-                      analytics.track('Clicked home page CTA', {
+                      track('Funnel - clicked home page CTA', {
                         title: 'refinancing',
+                        at: 'top',
                       })}
                   />
                 </div>
@@ -193,8 +195,9 @@ export default class HomePage extends Component {
                       labelStyle={styles.label}
                       overlayStyle={styles.button}
                       onTouchTap={() =>
-                        analytics.track('Clicked home page CTA', {
+                        track('Funnel - clicked home page CTA', {
                           title: 'acquisition',
+                          at: 'bottom',
                         })}
                     />
                     <HomeDev
@@ -203,8 +206,9 @@ export default class HomePage extends Component {
                       labelStyle={styles.label}
                       overlayStyle={styles.button}
                       handleClick={() =>
-                        analytics.track('Clicked home page CTA', {
+                        track('Funnel - clicked home page CTA', {
                           title: 'refinancing',
+                          at: 'bottom',
                         })}
                     />
                   </div>

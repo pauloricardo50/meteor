@@ -5,6 +5,7 @@ import { Meteor } from 'meteor/meteor';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
+import track from '/imports/js/helpers/analytics';
 import cleanMethod from '/imports/api/cleanMethods';
 import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
@@ -92,7 +93,12 @@ export default class DashboardStatus extends Component {
             label={<T id="general.continue" />}
             secondary
             containerElement={nextLink ? <Link to={nextLink} /> : null}
-            onTouchTap={nextLink ? () => {} : () => this.handleNextStep()}
+            onTouchTap={() => {
+              track('clicked dashboard status button', { nextLink });
+              if (nextLink) {
+                this.handleNextStep();
+              }
+            }}
           />
         </div>
       </DashboardItem>

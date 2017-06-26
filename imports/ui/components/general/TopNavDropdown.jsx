@@ -11,6 +11,7 @@ import Divider from 'material-ui/Divider';
 import Person from 'material-ui/svg-icons/social/person';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
+import track from '/imports/js/helpers/analytics';
 
 const getMenuItems = props => {
   const isDev = Roles.userIsInRole(props.currentUser._id, 'dev');
@@ -65,13 +66,26 @@ const TopNavDropdown = props =>
         <MenuItem
           key={item.link}
           primaryText={<T id={`TopNavDropdown.${item.id}`} />}
-          containerElement={<Link to={item.link} />}
+          containerElement={
+            <Link
+              to={item.link}
+              onTouchTap={() => {
+                track('TopNavDropdown - clicked on link', {
+                  from: props.history.location.pathname,
+                  to: item.link,
+                });
+              }}
+            />
+          }
         />,
     )}
     <Divider />
     <MenuItem
       primaryText={<T id="general.logout" />}
-      onTouchTap={() => Meteor.logout(() => props.history.push('/home'))}
+      onTouchTap={() => {
+        track('TopNavDropdown - logged out', {});
+        Meteor.logout(() => props.history.push('/home'));
+      }}
     />
   </IconMenu>;
 

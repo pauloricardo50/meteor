@@ -5,6 +5,7 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
+import track from '/imports/js/helpers/analytics';
 
 export default class HomeDev extends React.Component {
   constructor(props) {
@@ -48,7 +49,14 @@ export default class HomeDev extends React.Component {
         >
           <T id="HomeDev.description" />
           <div className="text-center" style={{ marginTop: 20 }}>
-            <RaisedButton label={<T id="HomeDev.CTA" />} primary href="http://eepurl.com/cKvR45" />
+            <RaisedButton
+              label={<T id="HomeDev.CTA" />}
+              primary
+              href="http://eepurl.com/cKvR45"
+              onTouchTap={() => {
+                track('HomeDev - clicked on CTA', {});
+              }}
+            />
           </div>
         </Dialog>
       </span>

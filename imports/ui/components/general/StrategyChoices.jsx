@@ -1,10 +1,11 @@
- import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import classNames from 'classnames';
 import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
+import track from '/imports/js/helpers/analytics';
 
 import { LoadingComponent } from './Loading.jsx';
 
@@ -55,19 +56,27 @@ export default class StrategyChoices extends Component {
             </h4>
           </li>
 
-          {choice.reasons.map((reason, i) => (
+          {choice.reasons.map((reason, i) =>
             <li className="bold reason" key={i}>
               <AutoTooltip>{reason}</AutoTooltip>
-            </li>
-          ))}
+            </li>,
+          )}
         </ul>
 
         <div className="button">
           <RaisedButton
             primary={!this.props.currentValue}
             label={chosen ? 'Annuler' : 'Choisir'}
-            onTouchTap={() =>
-              chosen ? this.props.handleChoose('') : this.props.handleChoose(choice.id)}
+            onTouchTap={() => {
+              if (chosen) {
+                this.props.handleChoose('');
+              } else {
+                track(`StrategyChoices - chose ${this.props.name}`, {
+                  choiceId: choice.id,
+                });
+                this.props.handleChoose(choice.id);
+              }
+            }}
           />
         </div>
       </article>
@@ -94,6 +103,7 @@ StrategyChoices.propTypes = {
   load: PropTypes.bool,
   currentValue: PropTypes.oneOfType([PropTypes.string, PropTypes.any]),
   handleChoose: PropTypes.func,
+  name: PropTypes.string.isRequired,
 };
 
 StrategyChoices.defaultProps = {
