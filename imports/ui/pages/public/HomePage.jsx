@@ -38,7 +38,7 @@ export default class HomePage extends Component {
                 <h1 className="heading animated fadeInDown">
                   <T id="HomePage.tagline1" />
                   <hr />
-                  <T id="HomePage.tagline3" />
+                  <T id="HomePage.tagline2" />
                 </h1>
 
               </div>
