@@ -22,9 +22,7 @@ export default class DashboardPage extends Component {
     window.removeEventListener('resize', this.resize);
   }
 
-  resize = () => {
-    this.setState({ smallWidth: getWidth() < 768 });
-  };
+  resize = () => this.setState({ smallWidth: getWidth() < 768 });
 
   render() {
     const { loanRequest, history } = this.props;

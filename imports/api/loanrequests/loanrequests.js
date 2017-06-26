@@ -23,10 +23,7 @@ LoanRequests.allow({
 
 // Documentation is in the google drive dev/MongoDB Schemas
 const LoanRequestSchema = new SimpleSchema({
-  userId: {
-    type: String,
-    index: true,
-  },
+  userId: { type: String, index: true },
   createdAt: {
     type: Date,
     autoValue() {
@@ -48,46 +45,21 @@ const LoanRequestSchema = new SimpleSchema({
       }
     },
   },
-  status: {
-    type: String,
-    defaultValue: 'active',
-  },
-  name: {
-    type: String,
-    optional: true,
-    defaultValue: '',
-  },
-  general: {
-    type: GeneralSchema,
-    defaultValue: {},
-  },
-  borrowers: {
-    type: Array,
-  },
-  'borrowers.$': {
-    type: String,
-  },
-  property: {
-    type: PropertySchema,
-  },
-  files: {
-    type: RequestFilesSchema,
-    defaultValue: {},
-  },
-  logic: {
-    type: LogicSchema,
-    defaultValue: {},
-  },
-  admin: {
-    // TODO
-    type: Object,
-    optional: true,
-  },
-  adminValidation: {
-    type: Object,
-    defaultValue: {},
-    blackbox: true,
-  },
+  status: { type: String, defaultValue: 'active' },
+  name: { type: String, optional: true, defaultValue: '' },
+  general: { type: GeneralSchema, defaultValue: {} },
+  borrowers: { type: Array, defaultValue: [] },
+  'borrowers.$': String,
+  property: PropertySchema,
+  files: { type: RequestFilesSchema, defaultValue: {} },
+  logic: { type: LogicSchema, defaultValue: {} },
+  adminValidation: { type: Object, defaultValue: {}, blackbox: true },
+  emails: { type: Array, defaultValue: [] },
+  'emails.$': Object,
+  'emails.$._id': String,
+  'emails.$.emailId': String,
+  'emails.$.status': String,
+  'emails.$.scheduledAt': { type: String, optional: true },
 });
 
 // Finally, attach schema to the Mongo collection and export

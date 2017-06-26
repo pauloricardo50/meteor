@@ -44,4 +44,14 @@ export const completeAction = new ValidatedMethod({
   },
 });
 
+export const removeParentRequest = new ValidatedMethod({
+  name: 'adminActions.removeParentRequest',
+  validate({ requestId }) {
+    check(requestId, String);
+  },
+  run({ requestId }) {
+    return AdminActions.update({ requestId }, { $set: { status: 'parentDeleted' } });
+  },
+});
+
 rateLimit({ methods: [insertAdminAction, completeAction] });

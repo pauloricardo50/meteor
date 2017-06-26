@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Roles } from 'meteor/alanning:roles';
 import rateLimit from '/imports/js/helpers/rate-limit.js';
 
-import { insertAdminAction } from '/imports/api/adminActions/methods';
+import { insertAdminAction, removeParentRequest } from '/imports/api/adminActions/methods';
 
 import LoanRequests from './loanrequests';
 
@@ -178,7 +178,11 @@ export const deleteRequest = new ValidatedMethod({
       Roles.userIsInRole(Meteor.userId(), 'dev') ||
       Roles.userIsInRole(Meteor.userId(), 'admin')
     ) {
-      return LoanRequests.remove(id);
+      return LoanRequests.remove(id, err => {
+        if (!err) {
+          removeParentRequest.call({ requestId: id });
+        }
+      });
     }
 
     throw new Meteor.Error('not authorized');
