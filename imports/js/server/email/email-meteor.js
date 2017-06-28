@@ -2,7 +2,12 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { Mandrill } from 'meteor/wylio:mandrill';
 
-import { from, fromEmail, emailFooter, getEmailContent } from './email-defaults';
+import {
+  from,
+  fromEmail,
+  emailFooter,
+  getEmailContent,
+} from './email-defaults';
 
 // Meteor default emails
 // https://themeteorchef.com/tutorials/sign-up-with-email-verification
@@ -41,7 +46,7 @@ Accounts.emailTemplates.resetPassword = {
     try {
       this.unblock();
       result = Mandrill.templates.render({
-        template_name: 'notification',
+        template_name: 'notification+CTA',
         template_content: [{ name: 'footer', content: emailFooter(false) }], // no footer
         merge_vars: [
           { name: 'title', content: title },

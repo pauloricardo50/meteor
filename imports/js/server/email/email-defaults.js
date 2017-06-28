@@ -32,12 +32,15 @@ export const emailFooter = (unsubscribe = true) => {
  *
  * @return {Object} contains all the fields
  */
-export const getEmailContent = emailId => {
-  const subject = formatMessage(`emails.${emailId}.subject`);
-  const title = formatMessage(`emails.${emailId}.title`);
-  const body = formatMessage(`emails.${emailId}.body`);
-  const CTA = formatMessage(`emails.${emailId}.CTA`);
-  const fromCustom = formatMessage(`emails.${emailId}.from`);
+export const getEmailContent = (emailId, intlValues = {}) => {
+  const subject = formatMessage(`emails.${emailId}.subject`, intlValues);
+  const title = formatMessage(`emails.${emailId}.title`, intlValues);
+  const body = formatMessage(`emails.${emailId}.body`, {
+    verticalSpace: '<span><br/><br/></span>',
+    ...intlValues,
+  });
+  const CTA = formatMessage(`emails.${emailId}.CTA`, intlValues);
+  const fromCustom = formatMessage(`emails.${emailId}.from`, intlValues);
   const email = Meteor.user() && Meteor.user().emails[0].address;
 
   return { email, subject, title, body, CTA, from: fromCustom };

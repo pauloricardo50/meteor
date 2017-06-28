@@ -5,7 +5,10 @@ import moment from 'moment';
 import { Roles } from 'meteor/alanning:roles';
 import rateLimit from '/imports/js/helpers/rate-limit.js';
 
-import { insertAdminAction, removeParentRequest } from '/imports/api/adminActions/methods';
+import {
+  insertAdminAction,
+  removeParentRequest,
+} from '/imports/api/adminActions/methods';
 
 import LoanRequests from './loanrequests';
 
@@ -91,12 +94,14 @@ export const startAuction = new ValidatedMethod({
               Meteor.call('email.send', {
                 emailId: 'auctionStarted',
                 requestId: id,
+                intlValues: { date: auctionEndTime },
               });
               // Schedule email
               Meteor.call('email.send', {
                 emailId: 'auctionEnded',
                 requestId: id,
                 sendAt: auctionEndTime,
+                template: 'notification+CTA',
               });
             }
           },
@@ -194,7 +199,9 @@ export const requestVerification = new ValidatedMethod({
         }
       },
     );
-    return Meteor.wrapAsync(insertAdminAction.call({ actionId: 'verify', requestId: id }));
+    return Meteor.wrapAsync(
+      insertAdminAction.call({ actionId: 'verify', requestId: id }),
+    );
   },
 });
 
@@ -226,18 +233,26 @@ export const finishAuction = new ValidatedMethod({
   },
   run({ id }) {
     if (Roles.userIsInRole(Meteor.userId(), 'admin')) {
-      return LoanRequests.update(id, { $set: { 'logic.auctionEndTime': new Date() } }, error => {
-        if (!error && Meteor.isServer) {
-          const request = LoanRequests.findOne({ _id: id });
-          const email = request.emails.find(
-            e => e.emailId === 'auctionEnded' && e.scheduledAt >= new Date(),
-          );
-          if (email) {
-            // Reschedule email to now
-            Meteor.call('email.reschedule', { id: email._id, requestId: id, date: new Date() });
+      return LoanRequests.update(
+        id,
+        { $set: { 'logic.auctionEndTime': new Date() } },
+        error => {
+          if (!error && Meteor.isServer) {
+            const request = LoanRequests.findOne({ _id: id });
+            const email = request.emails.find(
+              e => e.emailId === 'auctionEnded' && e.scheduledAt >= new Date(),
+            );
+            if (email) {
+              // Reschedule email to now
+              Meteor.call('email.reschedule', {
+                id: email._id,
+                requestId: id,
+                date: new Date(),
+              });
+            }
           }
-        }
-      });
+        },
+      );
     }
 
     throw new Meteor.Error('not authorized');
@@ -264,10 +279,16 @@ export const cancelAuction = new ValidatedMethod({
           if (!error && Meteor.isServer) {
             const request = LoanRequests.findOne({ _id: id });
             const email = request.emails.find(
-              e => e && e.emailId === 'auctionEnded' && e.scheduledAt >= new Date(),
+              e =>
+                e &&
+                e.emailId === 'auctionEnded' &&
+                e.scheduledAt >= new Date(),
             );
             if (email) {
-              Meteor.call('email.cancelScheduled', { id: email._id, requestId: id });
+              Meteor.call('email.cancelScheduled', {
+                id: email._id,
+                requestId: id,
+              });
             }
           }
         },
@@ -334,7 +355,10 @@ export const modifyEmail = new ValidatedMethod({
       object['emails.$.scheduledAt'] = sendAt;
     }
 
-    return LoanRequests.update({ _id: requestId, 'emails._id': _id }, { $set: object });
+    return LoanRequests.update(
+      { _id: requestId, 'emails._id': _id },
+      { $set: object },
+    );
   },
 });
 
