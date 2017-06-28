@@ -12,3 +12,6 @@ import './offers/methods';
 
 import './users/server/publications';
 import './users/methods';
+
+import './methods/server/methods';
+import './methods/methods';

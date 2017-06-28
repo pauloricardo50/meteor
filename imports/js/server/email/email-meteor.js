@@ -16,7 +16,7 @@ Accounts.emailTemplates.from = `${from} <${fromEmail}>`;
 
 Accounts.emailTemplates.verifyEmail = {
   subject: () => getEmailContent('verifyEmail').subject,
-  html: (user, url) => {
+  html(user, url) {
     const urlWithoutHash = url.replace('#/', '');
     let result;
 
@@ -29,6 +29,7 @@ Accounts.emailTemplates.verifyEmail = {
         metadata: [{ userId: user._id }],
       });
     } catch (error) {
+      console.log(error);
       throw new Meteor.Error('Error while rendering Mandrill template', error);
     }
     return result.data.html;
@@ -38,7 +39,7 @@ Accounts.emailTemplates.verifyEmail = {
 Accounts.emailTemplates.resetPassword = {
   from: () => `${getEmailContent('resetPassword').from} <${fromEmail}>`,
   subject: () => getEmailContent('resetPassword').subject,
-  html: (user, url) => {
+  html(user, url) {
     const urlWithoutHash = url.replace('#/', '');
     const { title, body, CTA } = getEmailContent('resetPassword');
     let result;
@@ -57,7 +58,10 @@ Accounts.emailTemplates.resetPassword = {
         metadata: [{ userId: user._id }],
       });
     } catch (error) {
-      throw new Meteor.Error('Error while rendering Mandrill template', error);
+      throw new Meteor.Error(
+        'Error while rendering Mandrill template',
+        error.reason || error.message,
+      );
     }
     return result.data.html;
   },

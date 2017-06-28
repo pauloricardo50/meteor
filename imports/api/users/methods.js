@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
-import { check } from 'meteor/check';
+import { check, Match } from 'meteor/check';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 import rateLimit from '/imports/js/helpers/rate-limit.js';
@@ -30,10 +30,15 @@ Meteor.methods({
 
     return undefined;
   },
-  sendVerificationLink() {
-    const userId = Meteor.userId();
-    if (userId) {
-      return Accounts.sendVerificationEmail(userId);
+  sendVerificationLink(userId) {
+    console.log('yayaya');
+    check(userId, Match.Optional(String));
+
+    const id = userId || Meteor.userId();
+    if (id) {
+      return Accounts.sendVerificationEmail(id);
+    } else {
+      throw new Meteor.Error('no userId for verification email');
     }
   },
 });
@@ -44,7 +49,10 @@ export const createPartner = new ValidatedMethod({
   validate({ options }) {},
   run({ options }) {
     if (!this.userId) {
-      throw new Meteor.Error('notLoggedIn', 'Must be logged in to update a request');
+      throw new Meteor.Error(
+        'notLoggedIn',
+        'Must be logged in to update a request',
+      );
     }
     if (!Roles.userIsInRole(this.userId, 'admin')) {
       throw new Meteor.Error('notAdmin', 'Must be an Admin to do this');
@@ -63,5 +71,10 @@ export const createPartner = new ValidatedMethod({
 });
 
 rateLimit({
-  methods: ['toggleAdmin', 'doesUserExist', 'sendVerificationLink', createPartner],
+  methods: [
+    'toggleAdmin',
+    'doesUserExist',
+    'sendVerificationLink',
+    createPartner,
+  ],
 });
