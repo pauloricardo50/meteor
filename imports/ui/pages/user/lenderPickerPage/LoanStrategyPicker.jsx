@@ -101,7 +101,7 @@ const getStructure = (choiceId, props) => {
   return false;
 };
 
-const LoanStrategyPicker = props => (
+const LoanStrategyPicker = props =>
   <article>
     <h2>{props.index}. Choisissez votre stratégie de taux</h2>
 
@@ -116,6 +116,7 @@ const LoanStrategyPicker = props => (
     </div>
 
     <StrategyChoices
+      name="loanStrategyPreset"
       currentValue={props.formState.loanStrategyPreset}
       choices={getChoices()}
       handleChoose={id => handleChoose(id, props)}
@@ -143,8 +144,7 @@ const LoanStrategyPicker = props => (
         </div>
       </div>}
 
-  </article>
-);
+  </article>;
 
 LoanStrategyPicker.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,

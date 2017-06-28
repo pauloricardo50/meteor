@@ -19,7 +19,7 @@ export default class DialogSimple extends Component {
     }
   }
 
-  handleOpen = () => this.setState({ open: true });
+  handleOpen = () => this.setState({ open: true }, () => this.props.onOpen());
 
   handleClose = isSubmit => this.setState({ open: false, isCancel: !isSubmit });
 
@@ -94,6 +94,7 @@ DialogSimple.propTypes = {
   close: PropTypes.bool,
   modal: PropTypes.bool,
   passProps: PropTypes.bool,
+  onOpen: PropTypes.func,
 };
 
 DialogSimple.defaultProps = {
@@ -106,4 +107,5 @@ DialogSimple.defaultProps = {
   close: false,
   modal: false,
   passProps: false,
+  onOpen: () => {},
 };

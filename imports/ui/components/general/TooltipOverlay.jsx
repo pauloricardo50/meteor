@@ -5,6 +5,8 @@ import { tooltips, tooltipsById } from '/imports/js/arrays/tooltips';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import Tooltip from './Tooltip.jsx';
 
+import track from '/imports/js/helpers/analytics';
+
 const handleClick = event => {
   event.stopPropagation();
 };
@@ -22,6 +24,7 @@ export default class TooltipOverlay extends Component {
 
   render() {
     const { placement, id, pureId, list, match, trigger, delayShow, children } = this.props;
+    const tooltipId = id || tooltips(list)[match.toLowerCase()];
 
     return (
       <OverlayTrigger
@@ -30,7 +33,7 @@ export default class TooltipOverlay extends Component {
           <Tooltip
             placement={placement}
             trigger={trigger}
-            id={id || tooltips(list)[match.toLowerCase()]}
+            id={tooltipId}
             pureId={pureId}
             hide={this.state.hide}
             match={match}
@@ -43,6 +46,7 @@ export default class TooltipOverlay extends Component {
         onExit={() => this.setState({ hide: true })}
         // When clicking the same tooltip multiple times, this is not reset
         onEnter={() => this.setState({ hide: false })}
+        onEntered={() => track('Tooltip - tooltip clicked', { tooltipId })}
         container={document.body}
         onTouchTap={handleClick}
       >

@@ -6,6 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
+import track from '/imports/js/helpers/analytics';
 
 const styles = {
   hr: {
@@ -37,6 +38,7 @@ export default class ConditionsButton extends Component {
 
   handleOpen = e => {
     e.stopPropagation();
+    track('ConditionsButton - clicked open', {});
     this.setState({ open: true });
   };
 

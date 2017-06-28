@@ -29,7 +29,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-
 /*text*/
 
 .heading {
@@ -64,11 +63,11 @@ body {
   font-weight: 100;
 }
 
-.heading+.paragraph {
+.heading + .paragraph {
   margin-top: 30px;
 }
 
-.subheading+.paragraph {
+.subheading + .paragraph {
   margin-top: 10px;
 }
 
@@ -107,7 +106,6 @@ p.paragraph {
   text-align: right;
 }
 
-
 /*flexbox styles*/
 
 .flex, .spread, .center, .right, .vertical, .centervertical {
@@ -135,7 +133,6 @@ p.paragraph {
 .vertical {
   flex-direction: column;
 }
-
 
 /*grid*/
 
@@ -191,7 +188,6 @@ p.paragraph {
   width: 100%;
 }
 
-
 /*containers*/
 
 .container-lrg, .container-sml {
@@ -209,6 +205,8 @@ p.paragraph {
 
 .ctas {
   margin: 40px 0 0 0;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .centerdevices, .sidedevices {
@@ -477,7 +475,7 @@ p.paragraph {
 
 .feature2 .col-6:nth-of-type(2n - 1) {
   padding: 90px 90px 90px 20px;
-  border-right: 1px solid rgba(0, 0, 0, .1)
+  border-right: 1px solid rgba(0, 0, 0, .1);
 }
 
 .feature2 .col-6:nth-of-type(3n - 1) {

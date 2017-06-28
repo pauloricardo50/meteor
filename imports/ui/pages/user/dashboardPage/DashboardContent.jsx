@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Masonry from 'react-masonry-component';
 
 import DashboardRecap from './DashboardRecap.jsx';
 import DashboardCharts from './DashboardCharts.jsx';
@@ -12,59 +13,66 @@ import DashboardOffer from './DashboardOffer.jsx';
 import DashboardProperty from './DashboardProperty.jsx';
 import DashboardStatus from './DashboardStatus.jsx';
 
-const getArray = props => {
-  const done = props.loanRequest.status === 'done';
+const getGrid = ({ loanRequest }) => {
+  const done = loanRequest.status === 'done';
+
   return [
+    { component: DashboardLastSteps, show: !done && loanRequest.logic.step === 3 },
+    { component: DashboardStatus, show: !done },
+    { component: DashboardPayments, show: done },
+    { component: DashboardRecap, show: true },
+    { component: DashboardCharts, show: true },
+    { component: DashboardBorrowers, show: true },
+    { component: DashboardProperty, show: true },
+    { component: DashboardDownload, show: loanRequest.files.contract },
     {
-      components: [{ component: DashboardUnverified, show: !props.currentUser.emails[0].verified }],
-      className: 'col-xs-12',
-    },
-    {
-      components: [
-        { component: DashboardLastSteps, show: !done && props.loanRequest.logic.step === 3 },
-        { component: DashboardStatus, show: !done },
-        { component: DashboardPayments, show: done },
-        {
-          component: DashboardRecap,
-          show: true,
-          additionalProps: { hideDetail: props.loanRequest.status === 'done' },
-        },
-      ],
-      className: 'col-md-6 col-lg-4 joyride-recap',
-    },
-    {
-      components: [{ component: DashboardCharts, show: true }],
-      className: 'col-md-6 col-lg-4 joyride-charts',
-    },
-    {
-      components: [
-        { component: DashboardBorrowers, show: true },
-        { component: DashboardProperty, show: true },
-        { component: DashboardDownload, show: props.loanRequest.files.contract },
-        {
-          component: DashboardOffer,
-          show: props.loanRequest.logic.lender && props.loanRequest.logic.lender.offerId,
-        },
-      ],
-      className: 'col-md-6 col-lg-4 joyride-borrowers',
+      component: DashboardOffer,
+      show: loanRequest.logic.lender && loanRequest.logic.lender.offerId,
     },
   ];
 };
 
-const DashboardContent = props => {
-  return (
-    <div className="container-fluid" style={{ width: '100%', padding: 0 }}>
-      {getArray(props).map((column, i) =>
-        <div className={column.className} style={{ marginBottom: 15 }} key={i}>
-          {column.components.map(
-            (c, j) => c.show && <c.component {...props} {...c.additionalProps || {}} key={j} />,
-          )}
-        </div>,
-      )}
-    </div>
-  );
+export default class DashboardContent extends Component {
+  reloadMasonry = () => this.masonry.layout();
+
+  render() {
+    const masonryOptions = {
+      transitionDuration: '0s', // Anything else, makes it run horribly in safari
+      stagger: 0,
+      columnWidth: '.grid-sizer',
+      itemSelector: '.grid-item',
+      gutter: 16,
+      horizontalOrder: false,
+    };
+
+    return (
+      <div>
+        {!this.props.currentUser.emails[0].verified &&
+          <div style={{ marginBottom: 16 }}><DashboardUnverified {...this.props} /></div>}
+
+        <Masonry
+          className={'grid'}
+          elementType={'div'}
+          options={masonryOptions}
+          disableImagesLoaded={false}
+          updateOnEachImageLoad={false}
+          ref={c => {
+            this.masonry = this.masonry || c.masonry;
+          }}
+        >
+          <div className="grid-sizer" />
+          {getGrid(this.props)
+            .filter(component => component.show)
+            .map((c, i) =>
+              <c.component {...this.props} reloadMasonry={this.reloadMasonry} key={i} />,
+            )}
+        </Masonry>
+      </div>
+    );
+  }
+}
+
+DashboardContent.propTypes = {
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
 };
-
-DashboardContent.propTypes = {};
-
-export default DashboardContent;

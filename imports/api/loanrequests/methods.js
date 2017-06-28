@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
-import { check } from 'meteor/check';
+import { check, Match } from 'meteor/check';
 import moment from 'moment';
 import { Roles } from 'meteor/alanning:roles';
 import rateLimit from '/imports/js/helpers/rate-limit.js';
 
-import { insertAdminAction } from '/imports/api/adminActions/methods';
+import { insertAdminAction, removeParentRequest } from '/imports/api/adminActions/methods';
 
 import LoanRequests from './loanrequests';
 
@@ -58,15 +58,15 @@ export const incrementStep = new ValidatedMethod({
 
 export const startAuction = new ValidatedMethod({
   name: 'loanRequests.startAuction',
-  validate({ id }) {
+  validate({ id, object }) {
     check(id, String);
+    check(object, Match.Optional(Object));
   },
   run({ object, id }) {
     const auctionObject = {};
     let auctionEndTime;
     auctionObject['logic.auctionStarted'] = true;
     auctionObject['logic.auctionStartTime'] = moment().toDate();
-    // auctionObject['general.a'];
 
     // object parameter only contains the isDemo value
     if (object.isDemo) {
@@ -81,10 +81,28 @@ export const startAuction = new ValidatedMethod({
 
     // TODO: This can fuck up if the update goes through but the insertAdminAction fails
     // same for the requestVerification method
-    LoanRequests.update(id, { $set: auctionObject });
-    return Meteor.wrapAsync(
-      insertAdminAction.call({ requestId: id, actionId: 'auction', extra: { auctionEndTime } }),
-    );
+    return LoanRequests.update(id, { $set: auctionObject }, (error1, res1) => {
+      if (!error1) {
+        insertAdminAction.call(
+          { requestId: id, actionId: 'auction', extra: { auctionEndTime } },
+          (error2, res2) => {
+            if (!error2 && Meteor.isServer) {
+              // Send email
+              Meteor.call('email.send', {
+                emailId: 'auctionStarted',
+                requestId: id,
+              });
+              // Schedule email
+              Meteor.call('email.send', {
+                emailId: 'auctionEnded',
+                requestId: id,
+                sendAt: auctionEndTime,
+              });
+            }
+          },
+        );
+      }
+    });
   },
 });
 
@@ -158,12 +176,24 @@ export const requestVerification = new ValidatedMethod({
     }
 
     // Insert an admin action and set the proper keys in the loanRequest
-    LoanRequests.update(id, {
-      $set: {
-        'logic.verification.requested': true,
-        'logic.verification.requestedTime': new Date(),
+    LoanRequests.update(
+      id,
+      {
+        $set: {
+          'logic.verification.requested': true,
+          'logic.verification.requestedTime': new Date(),
+        },
       },
-    });
+      err => {
+        if (!err && Meteor.isServer) {
+          console.log('callback');
+          Meteor.call('email.send', {
+            emailId: 'verificationRequested',
+            requestId: id,
+          });
+        }
+      },
+    );
     return Meteor.wrapAsync(insertAdminAction.call({ actionId: 'verify', requestId: id }));
   },
 });
@@ -178,7 +208,11 @@ export const deleteRequest = new ValidatedMethod({
       Roles.userIsInRole(Meteor.userId(), 'dev') ||
       Roles.userIsInRole(Meteor.userId(), 'admin')
     ) {
-      return LoanRequests.remove(id);
+      return LoanRequests.remove(id, err => {
+        if (!err) {
+          removeParentRequest.call({ requestId: id });
+        }
+      });
     }
 
     throw new Meteor.Error('not authorized');
@@ -192,7 +226,18 @@ export const finishAuction = new ValidatedMethod({
   },
   run({ id }) {
     if (Roles.userIsInRole(Meteor.userId(), 'admin')) {
-      return LoanRequests.update(id, { $set: { 'logic.auctionEndTime': new Date() } });
+      return LoanRequests.update(id, { $set: { 'logic.auctionEndTime': new Date() } }, error => {
+        if (!error && Meteor.isServer) {
+          const request = LoanRequests.findOne({ _id: id });
+          const email = request.emails.find(
+            e => e.emailId === 'auctionEnded' && e.scheduledAt >= new Date(),
+          );
+          if (email) {
+            // Reschedule email to now
+            Meteor.call('email.reschedule', { id: email._id, requestId: id, date: new Date() });
+          }
+        }
+      });
     }
 
     throw new Meteor.Error('not authorized');
@@ -206,13 +251,27 @@ export const cancelAuction = new ValidatedMethod({
   },
   run({ id }) {
     if (Roles.userIsInRole(Meteor.userId(), 'admin')) {
-      return LoanRequests.update(id, {
-        $set: {
-          'logic.auctionEndTime': undefined,
-          'logic.auctionStarted': false,
-          'logic.auctionStartTime': undefined,
+      return LoanRequests.update(
+        id,
+        {
+          $set: {
+            'logic.auctionEndTime': undefined,
+            'logic.auctionStarted': false,
+            'logic.auctionStartTime': undefined,
+          },
         },
-      });
+        error => {
+          if (!error && Meteor.isServer) {
+            const request = LoanRequests.findOne({ _id: id });
+            const email = request.emails.find(
+              e => e && e.emailId === 'auctionEnded' && e.scheduledAt >= new Date(),
+            );
+            if (email) {
+              Meteor.call('email.cancelScheduled', { id: email._id, requestId: id });
+            }
+          }
+        },
+      );
     }
 
     throw new Meteor.Error('not authorized');
@@ -237,6 +296,48 @@ export const confirmClosing = new ValidatedMethod({
   },
 });
 
+export const addEmail = new ValidatedMethod({
+  name: 'loanRequests.addEmail',
+  validate({ requestId, emailId, _id, status, sendAt }) {
+    check(requestId, String);
+    check(emailId, String);
+    check(_id, String);
+    check(status, String);
+    check(sendAt, Match.Optional(Date));
+  },
+  run({ requestId, emailId, _id, status, sendAt }) {
+    const object = { emailId, _id, status, updatedAt: new Date() };
+
+    if (sendAt) {
+      object.scheduledAt = sendAt;
+    }
+
+    return LoanRequests.update(requestId, { $push: { emails: object } });
+  },
+});
+
+export const modifyEmail = new ValidatedMethod({
+  name: 'loanRequests.modifyEmail',
+  validate({ requestId, _id, status, sendAt }) {
+    check(requestId, String);
+    check(_id, String);
+    check(status, Match.Optional(String));
+    check(sendAt, Match.Optional(Date));
+  },
+  run({ requestId, _id, status, sendAt }) {
+    const object = {
+      'emails.$.status': status,
+      'emails.$.updatedAt': new Date(),
+    };
+
+    if (sendAt) {
+      object['emails.$.scheduledAt'] = sendAt;
+    }
+
+    return LoanRequests.update({ _id: requestId, 'emails._id': _id }, { $set: object });
+  },
+});
+
 rateLimit({
   methods: [
     insertRequest,
@@ -250,5 +351,7 @@ rateLimit({
     finishAuction,
     cancelAuction,
     confirmClosing,
+    addEmail,
+    modifyEmail,
   ],
 });

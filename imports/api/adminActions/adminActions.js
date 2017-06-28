@@ -4,6 +4,19 @@ import SimpleSchema from 'simpl-schema';
 
 const AdminActions = new Mongo.Collection('adminActions');
 
+// Prevent all client side modifications of mongoDB
+AdminActions.deny({
+  insert: () => true,
+  update: () => true,
+  remove: () => true,
+});
+
+AdminActions.allow({
+  insert: () => false,
+  update: () => false,
+  remove: () => false,
+});
+
 const AdminActionSchema = new SimpleSchema({
   createdAt: {
     type: Date,

@@ -10,6 +10,11 @@ Offers.deny({
   update: () => true,
   remove: () => true,
 });
+Offers.allow({
+  insert: () => false,
+  update: () => false,
+  remove: () => false,
+});
 
 const singleOffer = new SimpleSchema({
   maxAmount: {

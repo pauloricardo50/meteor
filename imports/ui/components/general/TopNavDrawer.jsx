@@ -7,6 +7,7 @@ import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import Drawer from 'material-ui/Drawer';
 import SideNavUser from '/imports/ui/components/general/SideNavUser.jsx';
+import track from '/imports/js/helpers/analytics';
 
 export default class TopNavDrawer extends React.Component {
   constructor(props) {
@@ -15,7 +16,14 @@ export default class TopNavDrawer extends React.Component {
     this.state = { open: false };
   }
 
-  handleToggle = () => this.setState(prev => ({ open: !prev.open }));
+  handleToggle = () => {
+    this.setState(
+      prev => ({ open: !prev.open }),
+      () => {
+        track('TopNavDrawer - toggled drawer', { toOpen: this.state.open });
+      },
+    );
+  };
 
   handleClickLink = () => {
     Meteor.defer(() => this.setState({ open: false }));
@@ -31,7 +39,11 @@ export default class TopNavDrawer extends React.Component {
           open={this.state.open}
           docked={false}
           width={300}
-          onRequestChange={open => this.setState({ open })}
+          onRequestChange={(open, reason) => {
+            this.setState({ open }, () =>
+              track('TopNavDrawer - request drawer change', { open, reason }),
+            );
+          }}
         >
           <div className="top-bar">
             <IconButton

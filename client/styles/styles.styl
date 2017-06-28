@@ -1318,3 +1318,18 @@ ul.request-map
 // Material-ui dialogs have a 1500 z-Index
 .popover
   z-index: 1501;
+
+.grid
+  width: 100%;
+  position: relative;
+
+.grid-sizer, .grid-item
+  width: 100%;
+  +above($med)
+    width: calc((100% - 16px) / 2);
+  +above($wide)
+    width: calc((100% - 32px) / 3);
+
+.grid-item
+  margin-bottom: 16px;
+  // width: 100%;

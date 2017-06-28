@@ -1,5 +1,5 @@
 export const legendConfig = {
-  align: 'left',
+  align: 'center',
   verticalAlign: 'bottom',
   layout: 'horizontal',
   itemStyle: {

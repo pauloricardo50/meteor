@@ -13,7 +13,6 @@
     "react"
   ],
   "extends": [
-    "airbnb",
     "plugin:meteor/recommended"
   ],
   "settings": {

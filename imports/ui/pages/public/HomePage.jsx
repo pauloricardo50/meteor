@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { DocHead } from 'meteor/kadira:dochead';
 import { Link } from 'react-router-dom';
 import HomeDev from '/imports/ui/components/general/HomeDev.jsx';
-import { analytics } from 'meteor/okgrow:analytics';
+import track from '/imports/js/helpers/analytics';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
 import RaisedButton from 'material-ui/RaisedButton';
@@ -38,7 +38,7 @@ export default class HomePage extends Component {
                 <h1 className="heading animated fadeInDown">
                   <T id="HomePage.tagline1" />
                   <hr />
-                  <T id="HomePage.tagline3" />
+                  <T id="HomePage.tagline2" />
                 </h1>
 
               </div>
@@ -58,8 +58,9 @@ export default class HomePage extends Component {
                     overlayStyle={styles.button}
                     id="acquisitionButton"
                     onTouchTap={() =>
-                      analytics.track('Clicked home page CTA', {
+                      track('Funnel - clicked home page CTA', {
                         title: 'acquisition',
+                        at: 'top',
                       })}
                   />
                   <HomeDev
@@ -69,8 +70,9 @@ export default class HomePage extends Component {
                     overlayStyle={styles.button}
                     id="refinancing"
                     handleClick={() =>
-                      analytics.track('Clicked home page CTA', {
+                      track('Funnel - clicked home page CTA', {
                         title: 'refinancing',
+                        at: 'top',
                       })}
                   />
                 </div>
@@ -178,9 +180,9 @@ export default class HomePage extends Component {
               <div className="container-lrg center">
                 <div className="col-7">
                   <h5 className="heading">
-                    <T id="HomePage.tagline2" />
+                    <T id="HomePage.tagline1" />
                     <hr />
-                    <T id="HomePage.tagline3" />
+                    <T id="HomePage.tagline2" />
                   </h5>
                 </div>
                 <div className="col-5">
@@ -193,8 +195,9 @@ export default class HomePage extends Component {
                       labelStyle={styles.label}
                       overlayStyle={styles.button}
                       onTouchTap={() =>
-                        analytics.track('Clicked home page CTA', {
+                        track('Funnel - clicked home page CTA', {
                           title: 'acquisition',
+                          at: 'bottom',
                         })}
                     />
                     <HomeDev
@@ -203,8 +206,9 @@ export default class HomePage extends Component {
                       labelStyle={styles.label}
                       overlayStyle={styles.button}
                       handleClick={() =>
-                        analytics.track('Clicked home page CTA', {
+                        track('Funnel - clicked home page CTA', {
                           title: 'refinancing',
+                          at: 'bottom',
                         })}
                     />
                   </div>

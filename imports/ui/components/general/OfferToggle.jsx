@@ -36,7 +36,10 @@ const OfferToggle = props => {
       <Toggle
         toggled={props.value}
         style={{ margin: '0 16px', width: 'unset' }}
-        onToggle={props.handleToggle}
+        onToggle={() => {
+          track('OfferToggle - clicked on offer toggle');
+          props.handleToggle();
+        }}
       />
       <span
         className={props.value && 'active'}

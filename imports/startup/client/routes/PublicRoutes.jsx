@@ -10,6 +10,7 @@ import TosPage from '/imports/ui/pages/public/TosPage.jsx';
 import EmailVerificationPage from '/imports/ui/pages/public/EmailVerificationPage.jsx';
 import PasswordResetPage from '/imports/ui/pages/public/PasswordResetPage.jsx';
 import TestPage from '/imports/ui/pages/public/TestPage.jsx';
+import NotFound from '/imports/ui/components/general/NotFound.jsx';
 
 import Loadable from '/imports/js/helpers/loadable';
 
@@ -28,6 +29,7 @@ const PublicRoutes = props =>
       <Route path="/test" component={TestPage} />
       <Route path="/verify-email/:token" component={EmailVerificationPage} />
       <Route path="/reset-password/:token" component={PasswordResetPage} />
+      <Route component={NotFound} />
     </Switch>
   </PublicLayout>;
 

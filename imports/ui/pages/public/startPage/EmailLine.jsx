@@ -12,6 +12,8 @@ import { emailValidation } from '/imports/js/helpers/validation';
 const styles = {
   textField: {
     fontSize: 'inherit',
+    width: 350,
+    maxWidth: '80%',
   },
   button: {
     marginRight: 8,

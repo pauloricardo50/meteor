@@ -34,6 +34,7 @@ Factory.define('borrower', Borrowers, {
   createdAt: () => new Date(),
   expenses: () => [{ description: 'test', value: 1 }],
   files: () => ({}),
+  logic: () => ({}),
 });
 
 Factory.define('loanRequest', LoanRequests, {
@@ -48,8 +49,8 @@ Factory.define('loanRequest', LoanRequests, {
   property: () => ({ value: 1000000 }),
   files: () => ({}),
   logic: () => ({ auction: {}, lender: {}, verification: {}, step: 1 }),
-  admin: () => ({}),
   name: () => 'request name',
+  emails: () => [],
 });
 
 Factory.define(

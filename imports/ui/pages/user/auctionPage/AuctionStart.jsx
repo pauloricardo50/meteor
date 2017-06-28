@@ -10,7 +10,7 @@ import { getLenderCount } from '/imports/js/helpers/requestFunctions';
 import AuctionForm from './AuctionForm.jsx';
 import ConfirmButton from '/imports/ui/components/general/ConfirmButton.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
-
+import track from '/imports/js/helpers/analytics';
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 
 const styles = {
@@ -75,12 +75,17 @@ const AuctionStart = props => {
             label={<T id="AuctionStart.CTA" />}
             primary
             handleClick={() =>
-              cleanMethod('startAuction', { isDemo: isDemo() }, props.loanRequest._id)}
+              cleanMethod('startAuction', { isDemo: isDemo() }, props.loanRequest._id, () =>
+                track('started auction', {}),
+              )}
             disabled={!(r.logic.auction.mostImportant && r.general.wantedClosingDate)}
           />
         </div>
         <div className="form-group text-center">
-          <RaisedButton label={<T id="AuctionStart.cancel" />} onTouchTap={() => props.history.push('/app')} />
+          <RaisedButton
+            label={<T id="AuctionStart.cancel" />}
+            onTouchTap={() => props.history.push('/app')}
+          />
         </div>
       </div>
     </section>

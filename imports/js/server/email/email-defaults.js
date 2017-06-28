@@ -1,0 +1,44 @@
+import { Meteor } from 'meteor/meteor';
+import formatMessage from '../intl';
+
+// Defaults
+export const from = "Yannis d'e-Potek";
+export const fromEmail = 'info@e-potek.ch';
+export const defaultCTA_URL = 'https://www.e-potek.ch/app';
+
+/**
+ * emailFooter - Returns the default email footer for all emails
+ *
+ * @param {boolean} [unsubscribe=true] Whether to show an unsubscribe line or not
+ *
+ * @return {type} a HTML string
+ */
+
+export const emailFooter = (unsubscribe = true) => {
+  return formatMessage('emails.footer', {
+    copyright: '<em>&copy; *|CURRENT_YEAR|* e-Potek</em><br /><br />',
+    url: '<a href="http://e-potek.ch" target="_blank">www.e-potek.ch</a><br />',
+    unsubscribe: unsubscribe
+      ? `<a href="*|UNSUB|*">${formatMessage('emails.unsubscribe')}</a>`
+      : '',
+  });
+};
+
+/**
+ * getEmailContent - Returns all the fields for an email
+ *
+ * @param {String} emailId an id representing what email this is, example:
+ * auctionEnded, verificationRequested
+ *
+ * @return {Object} contains all the fields
+ */
+export const getEmailContent = emailId => {
+  const subject = formatMessage(`emails.${emailId}.subject`);
+  const title = formatMessage(`emails.${emailId}.title`);
+  const body = formatMessage(`emails.${emailId}.body`);
+  const CTA = formatMessage(`emails.${emailId}.CTA`);
+  const fromCustom = formatMessage(`emails.${emailId}.from`);
+  const email = Meteor.user() && Meteor.user().emails[0].address;
+
+  return { email, subject, title, body, CTA, from: fromCustom };
+};

@@ -11,6 +11,7 @@ import constants from '/imports/js/config/constants';
 import LoadingButton from '/imports/ui/components/general/LoadingButton.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import { disableForms } from '/imports/js/helpers/requestFunctions';
+import track from '/imports/js/helpers/analytics';
 
 const styles = {
   div: {
@@ -43,7 +44,9 @@ const handleClick = (event, id, props) => {
   const object = {};
   object['logic.hasValidatedFinances'] = true;
 
-  cleanMethod('updateBorrower', object, id);
+  cleanMethod('updateBorrower', object, id, () => {
+    track('validated finances', {});
+  });
 };
 
 const BorrowerFinancePage = props => {

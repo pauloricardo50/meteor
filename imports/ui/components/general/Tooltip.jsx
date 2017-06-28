@@ -7,6 +7,8 @@ import Popover from 'react-bootstrap/lib/Popover';
 import Transition from './Transition.jsx';
 import DialogSimple from './DialogSimple.jsx';
 
+import track from '/imports/js/helpers/analytics';
+
 // Required functions if react motion is used, which wraps the popover
 // and shifts it down or right depending on the placement
 const getPositionTop = (top, id, placement) => {
@@ -52,6 +54,7 @@ export default class Tooltip extends Component {
             buttonStyle={{ marginTop: 16 }}
             label={dialogLabel || <FormattedMessage id="general.learnMore" />}
             autoFocus
+            onOpen={() => track('Tooltip - opened dialog', { tooltipId: baseId })}
           >
             <FormattedMessage
               id={pureId ? `${baseId}2` : `tooltip2.${baseId}`}

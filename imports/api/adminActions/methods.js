@@ -14,10 +14,10 @@ export const insertAdminAction = new ValidatedMethod({
   },
   run({ requestId, actionId }) {
     // Make sure this action doesn't already exist for this request
-    const actionExists = !!AdminActions.findOne({ actionId, requestId });
-    if (actionExists) {
-      throw new Meteor.Error('duplicate admin action');
-    }
+    // const actionExists = !!AdminActions.findOne({ actionId, requestId });
+    // if (actionExists) {
+    //   throw new Meteor.Error('duplicate admin action');
+    // }
 
     return AdminActions.insert({ actionId, requestId });
   },
@@ -41,6 +41,16 @@ export const completeAction = new ValidatedMethod({
         completedAt: new Date(),
       },
     });
+  },
+});
+
+export const removeParentRequest = new ValidatedMethod({
+  name: 'adminActions.removeParentRequest',
+  validate({ requestId }) {
+    check(requestId, String);
+  },
+  run({ requestId }) {
+    return AdminActions.update({ requestId }, { $set: { status: 'parentDeleted' } });
   },
 });
 

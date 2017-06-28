@@ -22,8 +22,10 @@ const styles = {
 
 const handleChange = (value, props) => {
   if (value === 0) {
+    track('RequestSelector - clicked on new request', {});
     console.log('new request!');
   } else {
+    track('RequestSelector - switched to request', { requestId: value });
     props.toggleDrawer();
     props.history.push(`/app/requests/${value}`);
   }

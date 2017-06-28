@@ -15,7 +15,13 @@ class EmailVerificationPage extends Component {
     Accounts.verifyEmail(token, error => {
       if (error) {
         this.props.history.push('/');
-        Bert.alert(error.reason, 'danger');
+        console.log(error.reason);
+        Bert.alert(
+          this.props.intl.formatMessage({
+            id: 'EmailVerification.error',
+          }),
+          'danger',
+        );
       } else {
         const message = `<h3 style="color:white;margin:0;">${this.props.intl.formatMessage({
           id: 'EmailVerification.message',
