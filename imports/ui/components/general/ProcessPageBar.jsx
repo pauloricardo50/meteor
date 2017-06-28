@@ -52,37 +52,41 @@ export default class ProcessPageBar extends Component {
   resize = () => this.setState({ smallWidth: getWidth() < 768 });
 
   renderButtons = () => {
+    const { stepNb, index, length, prevLink, currentStep, nextLink } = this.props;
+    const { smallWidth } = this.state;
+
     // remove previous button if this is the very first step
-    const showBackButton = !(this.props.stepNb === 1 && this.props.index === 0);
-    const lastPartOfStep = this.props.index === this.props.length - 1;
+    const showBackButton = !(stepNb === 1 && index === 0);
+    const lastPartOfStep = index === length - 1;
+
+    const isDone = currentStep.isDone();
 
     return (
       <div className="buttons">
         {showBackButton &&
           <RaisedButton
-            icon={this.state.smallWidth ? <ArrowLeft /> : undefined}
-            label={this.state.smallWidth ? '' : <T id="ProcessPageBar.previous" />}
-            style={this.state.smallWidth ? styles.smallButton : styles.button}
-            disabled={!this.props.prevLink}
-            containerElement={this.props.prevLink ? <Link to={this.props.prevLink} /> : undefined}
-            onTouchTap={() => track('ProcessPageBar - clicked back', { to: this.props.prevLink })}
+            icon={smallWidth ? <ArrowLeft /> : undefined}
+            label={smallWidth ? '' : <T id="ProcessPageBar.previous" />}
+            style={smallWidth ? styles.smallButton : styles.button}
+            disabled={!prevLink}
+            containerElement={prevLink ? <Link to={prevLink} /> : undefined}
+            onTouchTap={() => track('ProcessPageBar - clicked back', { to: prevLink })}
           />}
         <RaisedButton
-          icon={this.state.smallWidth ? <ArrowRight /> : undefined}
+          icon={smallWidth ? <ArrowRight /> : undefined}
           label={
-            this.state.smallWidth
+            smallWidth
               ? ''
               : lastPartOfStep ? <T id="ProcessPageBar.nextStep" /> : <T id="ProcessPageBar.next" />
           }
-          style={this.state.smallWidth ? styles.smallButton : styles.button}
-          secondary={this.props.currentStep.isDone()}
-          disabled={(lastPartOfStep && !this.props.currentStep.isDone()) || !this.props.nextLink}
-          containerElement={
-            this.props.nextLink && !lastPartOfStep ? <Link to={this.props.nextLink} /> : undefined
-          }
+          style={smallWidth ? styles.smallButton : styles.button}
+          secondary={isDone}
+          className={isDone && 'animated infinite pulse'}
+          disabled={(lastPartOfStep && !isDone) || !nextLink}
+          containerElement={nextLink && !lastPartOfStep ? <Link to={nextLink} /> : undefined}
           onTouchTap={() => {
             track('ProcessPageBar - clicked next', {
-              to: lastPartOfStep ? 'next step' : this.props.nextLink,
+              to: lastPartOfStep ? 'next step' : nextLink,
             });
             if (lastPartOfStep) {
               handleNextStep(this.props);

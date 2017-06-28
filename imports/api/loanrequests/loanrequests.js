@@ -59,8 +59,8 @@ const LoanRequestSchema = new SimpleSchema({
   'emails.$._id': String,
   'emails.$.emailId': String,
   'emails.$.status': String,
-  'emails.$.lastUpdated': Date,
-  'emails.$.scheduledAt': { type: String, optional: true },
+  'emails.$.updatedAt': Date,
+  'emails.$.scheduledAt': { type: Date, optional: true },
 });
 
 // Finally, attach schema to the Mongo collection and export

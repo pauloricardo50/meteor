@@ -44,10 +44,10 @@ export default class StartSignUp extends Component {
 
         {this.state.showPassword &&
           <div className="animated fadeIn" style={styles.passwordDiv}>
-            <h2>
+            <h3 className="fixed-size">
               {this.state.login && <T id="StartSignUp.signedUp" />}
               {this.state.signUp && <T id="StartSignUp.notSignedUp" />}
-            </h2>
+            </h3>
             <PasswordLine
               history={this.props.history}
               {...this.state}

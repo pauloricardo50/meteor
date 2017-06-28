@@ -22,6 +22,8 @@ import {
   incrementStep,
   requestVerification,
   deleteRequest,
+  addEmail,
+  modifyEmail,
 } from '../methods';
 
 describe('loanRequests', () => {
@@ -106,7 +108,25 @@ describe('loanRequests', () => {
       });
 
       describe('startAuction', () => {
-        it('Should work');
+        if (Meteor.isServer) {
+          it('Should work', () => {
+            const id = request._id;
+
+            expect(request.logic.auctionStarted).to.equal(false);
+            expect(request.logic.auctionStartTime).to.equal(undefined);
+
+            startAuction.call({ id, object: {} });
+            const modifiedRequest = LoanRequests.findOne({ _id: id });
+
+            expect(modifiedRequest.logic.auctionStarted).to.be.true;
+            expect(modifiedRequest.logic.auctionStartTime instanceof Date).to.be.true;
+
+            // Meteor.defer(() => {
+            //   expect(modifiedRequest.emails.length).to.equal(2);
+            //   done();
+            // });
+          });
+        }
       });
 
       describe('incrementStep', () => {
@@ -149,6 +169,61 @@ describe('loanRequests', () => {
             // Wrap it in a function to be able to test if it throws
             deleteRequest.call({ id });
           }).to.throw(Error);
+        });
+      });
+
+      describe('addEmail', () => {
+        it('adds an email', () => {
+          const id = request._id;
+          const email = { requestId: id, emailId: 'test', _id: 'testId', status: 'sent' };
+
+          expect(request.emails.length).to.equal(0);
+
+          addEmail.call(email);
+          const modifiedRequest = LoanRequests.findOne({ _id: id });
+
+          expect(modifiedRequest.emails.length).to.equal(1);
+          expect(modifiedRequest.emails[0].emailId).to.equal(email.emailId);
+          expect(modifiedRequest.emails[0]._id).to.equal(email._id);
+          expect(modifiedRequest.emails[0].status).to.equal(email.status);
+          expect(modifiedRequest.emails[0].updatedAt instanceof Date).to.be.true;
+          expect(Object.keys(modifiedRequest.emails[0]).length).to.equal(4);
+        });
+
+        it('adds a scheduled email', () => {
+          const id = request._id;
+          const date = new Date();
+          const email = {
+            requestId: id,
+            emailId: 'test',
+            _id: 'testId',
+            status: 'sent',
+            sendAt: date,
+          };
+
+          addEmail.call(email);
+          const modifiedRequest = LoanRequests.findOne({ _id: id });
+
+          expect(modifiedRequest.emails[0].scheduledAt.getTime()).to.equal(date.getTime());
+          expect(Object.keys(modifiedRequest.emails[0]).length).to.equal(5);
+        });
+      });
+
+      describe('modifyEmail', () => {
+        it('modifies an email', () => {
+          const id = request._id;
+          const email = { requestId: id, emailId: 'test', _id: 'testId', status: 'sent' };
+          const modification = { requestId: id, _id: 'testId', status: 'modified' };
+
+          expect(request.emails.length).to.equal(0);
+
+          addEmail.call(email);
+          addEmail.call({ ...email, _id: 'testId2' });
+          modifyEmail.call(modification);
+          const modifiedRequest = LoanRequests.findOne({ _id: id });
+
+          expect(Object.keys(modifiedRequest.emails[0]).length).to.equal(4);
+          expect(modifiedRequest.emails[0].status).to.equal(modification.status);
         });
       });
     });
