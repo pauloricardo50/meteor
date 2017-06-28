@@ -25,7 +25,10 @@ export default class Accordion extends Component {
 
     if (this.props.isActive && this.content) {
       this.setState(prevState => ({
-        styles: { ...prevState.styles, height: `${this.content.clientHeight}px` },
+        styles: {
+          ...prevState.styles,
+          height: `${this.content.clientHeight}px`,
+        },
       }));
     }
   }
