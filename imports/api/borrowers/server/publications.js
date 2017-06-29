@@ -12,7 +12,10 @@ Meteor.publish('borrower', function publish(id) {
 
   check(id, String);
 
-  if (Roles.userIsInRole(this.userId, 'admin')) {
+  if (
+    Roles.userIsInRole(this.userId, 'admin') ||
+    Roles.userIsInRole(this.userId, 'dev')
+  ) {
     return Borrowers.find({
       _id: id,
     });
@@ -39,7 +42,10 @@ Meteor.publish('borrowers', function publish() {
 // Publish all borrowers in the database for admins
 Meteor.publish('allBorrowers', function publish() {
   // Verify if user is logged In
-  if (Roles.userIsInRole(this.userId, 'admin')) {
+  if (
+    Roles.userIsInRole(this.userId, 'admin') ||
+    Roles.userIsInRole(this.userId, 'dev')
+  ) {
     // Return all users
     return Borrowers.find();
   }
@@ -48,10 +54,13 @@ Meteor.publish('allBorrowers', function publish() {
 });
 
 // Publish all borrowers for a loanRequest for admins
-Meteor.publish('requestBorrowers', function (borrowerIds) {
+Meteor.publish('requestBorrowers', function(borrowerIds) {
   check(borrowerIds, [String]);
   // Verify if user is an admin
-  if (Roles.userIsInRole(this.userId, 'admin')) {
+  if (
+    Roles.userIsInRole(this.userId, 'admin') ||
+    Roles.userIsInRole(this.userId, 'dev')
+  ) {
     // Return all borrowers
     return Borrowers.find({
       _id: { $in: borrowerIds },

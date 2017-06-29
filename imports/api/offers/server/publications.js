@@ -46,7 +46,10 @@ Meteor.publish('partnerOffers', function() {
 // Publish all offers in the database for admins
 Meteor.publish('allOffers', function() {
   // Verify if user is logged In
-  if (Roles.userIsInRole(this.userId, 'admin')) {
+  if (
+    Roles.userIsInRole(this.userId, 'admin') ||
+    Roles.userIsInRole(this.userId, 'dev')
+  ) {
     // Return all users
     return Offers.find();
   }
@@ -58,7 +61,10 @@ Meteor.publish('allOffers', function() {
 Meteor.publish('requestOffers', function(requestId) {
   check(requestId, String);
   // Verify if user is logged In
-  if (Roles.userIsInRole(this.userId, 'admin')) {
+  if (
+    Roles.userIsInRole(this.userId, 'admin') ||
+    Roles.userIsInRole(this.userId, 'dev')
+  ) {
     // Return all users
     return Offers.find({
       requestId,
