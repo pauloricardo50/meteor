@@ -233,7 +233,10 @@ export const finishAuction = new ValidatedMethod({
     check(id, String);
   },
   run({ id }) {
-    if (Roles.userIsInRole(Meteor.userId(), 'admin')) {
+    if (
+      Roles.userIsInRole(Meteor.userId(), 'admin') ||
+      Roles.userIsInRole(Meteor.userId(), 'dev')
+    ) {
       return LoanRequests.update(
         id,
         { $set: { 'logic.auctionEndTime': new Date() } },
@@ -268,7 +271,10 @@ export const cancelAuction = new ValidatedMethod({
     check(id, String);
   },
   run({ id }) {
-    if (Roles.userIsInRole(Meteor.userId(), 'admin')) {
+    if (
+      Roles.userIsInRole(Meteor.userId(), 'admin') ||
+      Roles.userIsInRole(Meteor.userId(), 'dev')
+    ) {
       return LoanRequests.update(
         id,
         {
@@ -316,7 +322,10 @@ export const confirmClosing = new ValidatedMethod({
   run({ id, object }) {
     // TODO: Send email to user, clean up, etc.
 
-    if (Roles.userIsInRole(Meteor.userId(), 'admin')) {
+    if (
+      Roles.userIsInRole(Meteor.userId(), 'admin') ||
+      Roles.userIsInRole(Meteor.userId(), 'dev')
+    ) {
       return LoanRequests.update(id, {
         $set: { status: 'done', ...object },
       });
