@@ -62,7 +62,7 @@ export const completeActionByActionId = new ValidatedMethod({
       status: 'active',
     });
 
-    if (!!action) {
+    if (!action) {
       throw new Meteor.Error("action couldn't be found");
     }
 
