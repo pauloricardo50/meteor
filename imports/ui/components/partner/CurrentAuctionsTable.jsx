@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import AuctionTableLine
-  from '/imports/ui/components/partner/AuctionTableLine.jsx';
+import AuctionTableLine from '/imports/ui/components/partner/AuctionTableLine.jsx';
 
 const styles = {
   article: {
@@ -36,14 +35,14 @@ const CurrentAuctionsTable = props => {
             </tr>
           </thead>
           <tbody>
-            {props.currentAuctions.map((auction, index) => (
+            {props.currentAuctions.map((auction, index) =>
               <AuctionTableLine
                 auction={auction}
                 key={auction._id}
                 index={index}
                 offers={props.offers}
-              />
-            ))}
+              />,
+            )}
           </tbody>
         </table>
       </article>

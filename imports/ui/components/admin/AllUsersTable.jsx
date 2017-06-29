@@ -39,38 +39,34 @@ export default class AllUsersTable extends Component {
       >
         <Column
           header={<Cell>#</Cell>}
-          cell={({ rowIndex }) => (
+          cell={({ rowIndex }) =>
             <Cell>
               {this.rows[rowIndex][0]}
-            </Cell>
-          )}
+            </Cell>}
           width={40}
         />
         <Column
           header={<Cell>Email</Cell>}
-          cell={({ rowIndex }) => (
+          cell={({ rowIndex }) =>
             <Cell>
               {this.rows[rowIndex][1]}
-            </Cell>
-          )}
+            </Cell>}
           width={200}
         />
         <Column
           header={<Cell>Créé le</Cell>}
-          cell={({ rowIndex }) => (
+          cell={({ rowIndex }) =>
             <Cell>
               {this.rows[rowIndex][2]}
-            </Cell>
-          )}
+            </Cell>}
           width={170}
         />
         <Column
           header={<Cell>Roles</Cell>}
-          cell={({ rowIndex }) => (
+          cell={({ rowIndex }) =>
             <Cell>
               {this.rows[rowIndex][3]}
-            </Cell>
-          )}
+            </Cell>}
           width={100}
         />
       </Table>

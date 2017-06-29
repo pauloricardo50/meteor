@@ -65,15 +65,25 @@ const overlayContent = path =>
       height: '100%',
     }}
   >
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+    >
       <img
         src={staff.img}
         alt={staff.fullName}
         style={{ width: 64, height: 64, borderRadius: '50%', marginRight: 16 }}
       />
       <div className="text" style={{ flexGrow: 1 }}>
-        <h4 className="fixed-size no-margin" style={{ marginBottom: 8 }}>{staff.fullName}</h4>
-        <p className="secondary" style={{ margin: 0 }}><T id="ContactButton.yourAdvisor" /></p>
+        <h4 className="fixed-size no-margin" style={{ marginBottom: 8 }}>
+          {staff.fullName}
+        </h4>
+        <p className="secondary" style={{ margin: 0 }}>
+          <T id="ContactButton.yourAdvisor" />
+        </p>
       </div>
     </div>
     <hr style={{ margin: '24px -24px' }} />
@@ -89,7 +99,9 @@ const overlayContent = path =>
         <PhoneIcon style={styles.icon} color="#495057" />
       </div>
       <div className="text" style={{ flexGrow: 1 }}>
-        <p className="bold" style={{ margin: 0 }}><T id="ContactButton.byPhone" /></p>
+        <p className="bold" style={{ margin: 0 }}>
+          <T id="ContactButton.byPhone" />
+        </p>
         <a
           href={`tel:${staff.phone}`}
           className="active"
@@ -99,12 +111,20 @@ const overlayContent = path =>
         </a>
       </div>
     </div>
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+    >
       <div style={styles.iconDiv}>
         <MailIcon style={styles.icon} color="#495057" />
       </div>
       <div className="text" style={{ flexGrow: 1 }}>
-        <p className="bold" style={{ margin: 0 }}><T id="ContactButton.byEmail" /></p>
+        <p className="bold" style={{ margin: 0 }}>
+          <T id="ContactButton.byEmail" />
+        </p>
         <a
           href={`mailto:${staff.email}`}
           className="active"
@@ -128,7 +148,9 @@ export default class ContactButton extends Component {
   handleClick = () => {
     // Track when the button is clicked
     if (!this.state.open) {
-      track('ContactButton - clicked', { path: this.props.history.location.pathname });
+      track('ContactButton - clicked', {
+        path: this.props.history.location.pathname,
+      });
     }
     this.setState({ open: !this.state.open });
   };
@@ -145,7 +167,10 @@ export default class ContactButton extends Component {
         </FloatingActionButton>
         <div
           className="mask1"
-          style={{ ...styles.overlay, ...(this.state.open ? {} : styles.closed) }}
+          style={{
+            ...styles.overlay,
+            ...(this.state.open ? {} : styles.closed),
+          }}
         >
           {overlayContent(this.props.history.location.pathname)}
         </div>

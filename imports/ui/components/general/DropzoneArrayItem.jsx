@@ -23,7 +23,8 @@ const getStyles = (props, currentValue) => {
     },
     icon: {
       color: currentValue && currentValue.length > 0 ? colors.secondary : '',
-      borderColor: currentValue && currentValue.length > 0 ? colors.secondary : '',
+      borderColor:
+        currentValue && currentValue.length > 0 ? colors.secondary : '',
     },
     caret: {
       transform: props.active ? 'rotate(180deg)' : '',
@@ -98,7 +99,12 @@ const DropzoneArrayItem = props => {
 
       {active &&
         <div className="dropzoneDiv">
-          <DropzoneInput {...props} currentValue={currentValue} mongoId={mongoId} label="" />
+          <DropzoneInput
+            {...props}
+            currentValue={currentValue}
+            mongoId={mongoId}
+            label=""
+          />
         </div>}
     </article>
   );

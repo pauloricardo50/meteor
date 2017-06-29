@@ -13,25 +13,52 @@ const getStepIcon = ({ step, loanRequest }) => {
   const stepNb = step.nb;
   const realStep = loanRequest.logic.step;
   if (stepNb < realStep) {
-    return <div className="icon done"><CheckIcon /></div>;
+    return (
+      <div className="icon done">
+        <CheckIcon />
+      </div>
+    );
   } else if (stepNb === realStep) {
-    return <div className="icon"><span className="available-icon" /></div>;
+    return (
+      <div className="icon">
+        <span className="available-icon" />
+      </div>
+    );
   }
-  return <div className="icon"><LockIcon /></div>;
+  return (
+    <div className="icon">
+      <LockIcon />
+    </div>
+  );
 };
 
 const getItemIcon = item => {
   if (item.isDone()) {
-    return <div className="icon success"><CheckIcon color={colors.secondary} /></div>;
+    return (
+      <div className="icon success">
+        <CheckIcon color={colors.secondary} />
+      </div>
+    );
   } else if (item.disabled) {
-    return <div className="icon"><LockIcon /></div>;
+    return (
+      <div className="icon">
+        <LockIcon />
+      </div>
+    );
   }
-  return <div className="icon"><span className="available-icon" /></div>;
+  return (
+    <div className="icon">
+      <span className="available-icon" />
+    </div>
+  );
 };
 
 const SideNavStepperStep = props => {
   return (
-    <li key={props.step.nb} className={classnames({ step: true, isActive: props.active })}>
+    <li
+      key={props.step.nb}
+      className={classnames({ step: true, isActive: props.active })}
+    >
       <div className="absolute-line" />
       <div
         className={classnames({ top: true, inactive: props.step.nb === 0 })}
@@ -59,8 +86,13 @@ const SideNavStepperStep = props => {
                   : item.link || props.history.location.pathname
               }
               key={item.id}
-              className={classnames({ item: true, disable: item.disabled || !item.link })}
-              activeClassName={item.link !== undefined && !item.disabled ? 'active' : ''}
+              className={classnames({
+                item: true,
+                disable: item.disabled || !item.link,
+              })}
+              activeClassName={
+                item.link !== undefined && !item.disabled ? 'active' : ''
+              }
             >
               <div
                 className="onclick-wrapper"

@@ -31,8 +31,12 @@ export default class NotFound extends Component {
   render() {
     return (
       <section style={styles.section}>
-        <h1 style={styles.h1}><T id="NotFound.title" /></h1>
-        <h3 className="secondary"><T id="NotFound.description" /></h3>
+        <h1 style={styles.h1}>
+          <T id="NotFound.title" />
+        </h1>
+        <h3 className="secondary">
+          <T id="NotFound.description" />
+        </h3>
         <div style={styles.button}>
           <RaisedButton
             primary

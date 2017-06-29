@@ -32,7 +32,9 @@ const getAction = (request, percent) => {
   }
   return (
     <div className="text-center">
-      <h4><T id="ClosingPage.loading" /></h4>
+      <h4>
+        <T id="ClosingPage.loading" />
+      </h4>
       <div style={{ height: 150 }}>
         <LoadingComponent />
       </div>
@@ -56,7 +58,6 @@ const ClosingPage = props => {
         </div>
 
         {/* {getAction(props.loanRequest, percent)} */}
-
       </div>
     </ProcessPage>
   );

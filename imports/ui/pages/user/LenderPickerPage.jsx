@@ -3,7 +3,10 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
 
-import { getLoanValue, loanStrategySuccess } from '/imports/js/helpers/requestFunctions';
+import {
+  getLoanValue,
+  loanStrategySuccess,
+} from '/imports/js/helpers/requestFunctions';
 
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
 import LenderPickerStart from './lenderPickerPage/LenderPickerStart.jsx';
@@ -70,7 +73,8 @@ export default class LenderPickerPage extends React.Component {
       loanStrategyPreset: r.logic.loanStrategyPreset,
       loanTranches: r.general.loanTranches || [],
       loanStrategyValidated:
-        r.logic.loanStrategyPreset && loanStrategySuccess(r.general.loanTranches, getLoanValue(r)),
+        r.logic.loanStrategyPreset &&
+        loanStrategySuccess(r.general.loanTranches, getLoanValue(r)),
       standard: true,
     };
   }

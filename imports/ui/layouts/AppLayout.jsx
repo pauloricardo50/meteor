@@ -86,7 +86,10 @@ const AppLayout = props => {
   const isApp = props.history.location.pathname.slice(0, 4) === '/app';
 
   if (redirect) {
-    track('AppLayout - was redirected', { from: props.history.location.pathname, to: redirect });
+    track('AppLayout - was redirected', {
+      from: props.history.location.pathname,
+      to: redirect,
+    });
     return <Redirect to={redirect} />;
   }
   return (

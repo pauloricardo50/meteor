@@ -29,7 +29,10 @@ const SideNavUser = props => {
   // Get the pathname, remove the leading '/', and split by '/'
   const splittedUrl = location.pathname.substring(1).split('/');
   // If it has enough elements, parse the requestId
-  const requestId = splittedUrl.length >= 3 && splittedUrl[1] === 'requests' ? splittedUrl[2] : '';
+  const requestId =
+    splittedUrl.length >= 3 && splittedUrl[1] === 'requests'
+      ? splittedUrl[2]
+      : '';
   let currentRequest;
   let borrowerIds;
 
@@ -40,11 +43,18 @@ const SideNavUser = props => {
 
   return (
     <nav
-      className={classnames({ 'side-nav-user': true, 'joyride-side-nav fixed': fixed })}
+      className={classnames({
+        'side-nav-user': true,
+        'joyride-side-nav fixed': fixed,
+      })}
       style={style}
     >
       <div className="scrollable">
-        <RequestSelector {...props} currentValue={requestId} toggleDrawer={toggleDrawer} />
+        <RequestSelector
+          {...props}
+          currentValue={requestId}
+          toggleDrawer={toggleDrawer}
+        />
         <NavLink
           exact
           to={`/app/requests/${requestId}`}
@@ -52,8 +62,12 @@ const SideNavUser = props => {
           className="link"
         >
           <div className="onclick-wrapper" onTouchTap={handleClickLink}>
-            <div className="icon"><AssessmentIcon color="#ADB5BD" /></div>
-            <h4 className="fixed-size title"><T id="SideNavUser.dashboard" /></h4>
+            <div className="icon">
+              <AssessmentIcon color="#ADB5BD" />
+            </div>
+            <h4 className="fixed-size title">
+              <T id="SideNavUser.dashboard" />
+            </h4>
           </div>
         </NavLink>
 

@@ -9,7 +9,10 @@ import MaskedInput from 'react-text-mask';
 import constants from '/imports/js/config/constants';
 import colors from '/imports/js/config/colors';
 import { swissFrancMask, decimalMask } from '/imports/js/helpers/textMasks';
-import { toNumber, toDecimalNumber } from '/imports/js/helpers/conversionFunctions';
+import {
+  toNumber,
+  toDecimalNumber,
+} from '/imports/js/helpers/conversionFunctions';
 import SavingIcon from './SavingIcon.jsx';
 import FormValidator from './FormValidator.jsx';
 
@@ -69,9 +72,10 @@ export default class TextInput extends Component {
 
   handleChange = event => {
     // Make sure value is a number if this is a number or money input
-    const safeValue = this.props.number || this.props.money
-      ? toNumber(event.target.value)
-      : event.target.value;
+    const safeValue =
+      this.props.number || this.props.money
+        ? toNumber(event.target.value)
+        : event.target.value;
 
     this.setState({ value: safeValue }, () => {
       // do not show saving icon when changing text, only show it on blur
@@ -98,16 +102,24 @@ export default class TextInput extends Component {
 
     Meteor.clearTimeout(this.timeout);
     this.timeout = Meteor.setTimeout(() => {
-      cleanMethod(this.props.updateFunc, object, this.props.documentId, error => {
-        this.setState({ saving: false });
-        if (!error) {
-          // on success, set saving briefly to true, before setting it to false again to trigger icon
-          this.setState({ errorText: '', saving: showSaving }, this.setState({ saving: false }));
-        } else {
-          // If there was an error, reset value to the backend value
-          this.setState({ value: this.props.currentValue });
-        }
-      });
+      cleanMethod(
+        this.props.updateFunc,
+        object,
+        this.props.documentId,
+        error => {
+          this.setState({ saving: false });
+          if (!error) {
+            // on success, set saving briefly to true, before setting it to false again to trigger icon
+            this.setState(
+              { errorText: '', saving: showSaving },
+              this.setState({ saving: false }),
+            );
+          } else {
+            // If there was an error, reset value to the backend value
+            this.setState({ value: this.props.currentValue });
+          }
+        },
+      );
     }, constants.cpsLimit);
   };
 
@@ -118,7 +130,11 @@ export default class TextInput extends Component {
           floatingLabelText={this.props.label}
           floatingLabelFixed={this.props.floatingLabelFixed}
           hintText={this.props.placeholder}
-          value={this.props.number ? this.formatter(this.state.value) : this.state.value}
+          value={
+            this.props.number
+              ? this.formatter(this.state.value)
+              : this.state.value
+          }
           onChange={this.handleChange}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
@@ -128,7 +144,9 @@ export default class TextInput extends Component {
           multiLine={this.props.multiLine}
           rows={this.props.rows}
           pattern={this.props.number && '[0-9]*'}
-          errorText={this.state.errorText || (this.state.showInfo && this.props.info)}
+          errorText={
+            this.state.errorText || (this.state.showInfo && this.props.info)
+          }
           errorStyle={this.state.errorText ? {} : styles.infoStyle}
           underlineFocusStyle={this.state.errorText ? {} : styles.infoStyle}
           floatingLabelShrinkStyle={
@@ -169,7 +187,11 @@ TextInput.propTypes = {
   rows: PropTypes.number,
   documentId: PropTypes.string.isRequired,
   updateFunc: PropTypes.string,
-  info: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.array]),
+  info: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+    PropTypes.array,
+  ]),
   disabled: PropTypes.bool,
   number: PropTypes.bool,
   decimal: PropTypes.bool,

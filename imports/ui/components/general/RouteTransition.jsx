@@ -16,7 +16,7 @@ const getStyles = () => ({
   scale: spring(1),
 });
 
-const RouteTransition = ({ children: child, pathname }) => (
+const RouteTransition = ({ children: child, pathname }) =>
   <TransitionMotion
     styles={[
       {
@@ -28,7 +28,7 @@ const RouteTransition = ({ children: child, pathname }) => (
     willEnter={willEnter}
     willLeave={willLeave}
   >
-    {interpolated => (
+    {interpolated =>
       <div>
         {interpolated.map(({ key, style, data }) => {
           return (
@@ -44,10 +44,8 @@ const RouteTransition = ({ children: child, pathname }) => (
             </div>
           );
         })}
-      </div>
-    )}
-  </TransitionMotion>
-);
+      </div>}
+  </TransitionMotion>;
 
 var styles = {
   wrapper: {

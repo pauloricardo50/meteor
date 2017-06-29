@@ -62,7 +62,8 @@ export default class ActionsTable extends Component {
     }
   };
 
-  handleFilter = (event, index, filter) => this.setState({ filter, selectedRow: '' });
+  handleFilter = (event, index, filter) =>
+    this.setState({ filter, selectedRow: '' });
 
   handleClick = () => {
     completeAction.call({ id: this.state.selectedRow }, err => {
@@ -72,13 +73,20 @@ export default class ActionsTable extends Component {
     });
   };
 
-  getFilteredActions = () => this.props.adminActions.filter(a => a.status === this.state.filter);
+  getFilteredActions = () =>
+    this.props.adminActions.filter(a => a.status === this.state.filter);
 
   render() {
     const actions = this.getFilteredActions();
     return (
       <article>
-        <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+          }}
+        >
           <DropDownMenu value={this.state.filter} onChange={this.handleFilter}>
             <MenuItem value={'active'} primaryText="Actif" />
             <MenuItem value={'completed'} primaryText="Complété" />
@@ -98,9 +106,13 @@ export default class ActionsTable extends Component {
           onRowSelection={this.handleRowSelection}
           columns={columns}
           rows={actions.map(action => {
-            const request = this.props.loanRequests.find(r => r._id === action.requestId);
+            const request = this.props.loanRequests.find(
+              r => r._id === action.requestId,
+            );
             const title = <T id={`adminAction.${action.actionId}`} />;
-            const actionDetails = getActions.find(a => a.id === action.actionId);
+            const actionDetails = getActions.find(
+              a => a.id === action.actionId,
+            );
 
             return {
               id: action._id,
@@ -108,9 +120,15 @@ export default class ActionsTable extends Component {
                 request ? request.name : 'Demande supprimée',
                 title,
                 action.createdAt,
-                actionDetails.comment && request ? actionDetails.comment(request) : '-',
+                actionDetails.comment && request
+                  ? actionDetails.comment(request)
+                  : '-',
                 request
-                  ? () => actionDetails.handleClick(request, this.props.history.push)
+                  ? () =>
+                      actionDetails.handleClick(
+                        request,
+                        this.props.history.push,
+                      )
                   : () => {},
               ],
             };
@@ -118,7 +136,9 @@ export default class ActionsTable extends Component {
         />
 
         {actions.length === 0 &&
-          <div className="text-center"><h2 className="secondary">Aucune action</h2></div>}
+          <div className="text-center">
+            <h2 className="secondary">Aucune action</h2>
+          </div>}
       </article>
     );
   }

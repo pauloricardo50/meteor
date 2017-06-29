@@ -26,9 +26,13 @@ const TodoList = props => {
     <section>
       <h2>Actions à prendre</h2>
 
-      {actionsArray.map((a, i) => (
-        <TodoItem request={a.request} key={`${a.request._id}${i}`} {...a.action} />
-      ))}
+      {actionsArray.map((a, i) =>
+        <TodoItem
+          request={a.request}
+          key={`${a.request._id}${i}`}
+          {...a.action}
+        />,
+      )}
 
       {actionsArray.length <= 0 &&
         <h3 className="text-center secondary" style={{ padding: '40px 0' }}>

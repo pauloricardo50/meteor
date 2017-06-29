@@ -6,8 +6,15 @@ import ReactHighcharts from 'react-highcharts';
 
 import { injectIntl } from 'react-intl';
 
-import { getAmortization, getMaintenance, getInterests } from '/imports/js/helpers/finance-math';
-import { getLoanValue, getPropAndWork } from '/imports/js/helpers/requestFunctions';
+import {
+  getAmortization,
+  getMaintenance,
+  getInterests,
+} from '/imports/js/helpers/finance-math';
+import {
+  getLoanValue,
+  getPropAndWork,
+} from '/imports/js/helpers/requestFunctions';
 import colors from '/imports/js/config/colors';
 
 const chartColors = {

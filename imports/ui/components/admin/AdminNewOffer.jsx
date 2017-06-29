@@ -58,7 +58,12 @@ export default class AdminNewOffer extends React.Component {
           contentStyle={styles.dialog}
           autoScrollBodyContent
         >
-          <OfferForm {...this.props} method="insertAdminOffer" callback={this.handleClose} admin />
+          <OfferForm
+            {...this.props}
+            method="insertAdminOffer"
+            callback={this.handleClose}
+            admin
+          />
         </Dialog>
       </div>
     );

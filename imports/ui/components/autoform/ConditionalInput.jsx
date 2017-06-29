@@ -43,9 +43,14 @@ export default class ConditionalInput extends Component {
   }
 
   render() {
-    const conditionalChildren = React.Children.toArray(this.props.children).slice(1);
+    const conditionalChildren = React.Children
+      .toArray(this.props.children)
+      .slice(1);
     return (
-      <div className="form-group" style={{ ...this.props.style, position: 'relative' }}>
+      <div
+        className="form-group"
+        style={{ ...this.props.style, position: 'relative' }}
+      >
         {React.cloneElement(
           // The conditional input
           this.props.children[0],
@@ -67,6 +72,9 @@ export default class ConditionalInput extends Component {
 }
 
 ConditionalInput.propTypes = {
-  conditionalTrueValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]).isRequired,
-  children: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.array, PropTypes.object])),
+  conditionalTrueValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string])
+    .isRequired,
+  children: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  ),
 };

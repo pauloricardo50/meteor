@@ -38,7 +38,10 @@ export default class Transition extends Component {
   willEnter = () => styles.willEnter;
 
   // Styles to interpolate to on dismount
-  willLeave = () => ({ scale: s1(styles.willLeave.scale), opacity: s2(styles.willLeave.opacity) });
+  willLeave = () => ({
+    scale: s1(styles.willLeave.scale),
+    opacity: s2(styles.willLeave.opacity),
+  });
 
   render() {
     const { items } = this.state;
@@ -52,11 +55,10 @@ export default class Transition extends Component {
           style: { scale: s1(item.scale), opacity: s2(item.opacity) },
         }))}
       >
-        {interpolatedStyles => (
+        {interpolatedStyles =>
           <span>
             {interpolatedStyles.map(config => this.props.children(config))}
-          </span>
-        )}
+          </span>}
       </TransitionMotion>
     );
   }

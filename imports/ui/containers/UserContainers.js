@@ -11,7 +11,11 @@ import _ClosingPage from '/imports/ui/pages/user/ClosingPage.jsx';
 import _DevPage from '/imports/ui/pages/user/DevPage.jsx';
 import _FinancePage from '/imports/ui/pages/user/FinancePage.jsx';
 
-import { userContainer, userRequestContainer, userBorrowerContainer } from './Containers';
+import {
+  userContainer,
+  userRequestContainer,
+  userBorrowerContainer,
+} from './Containers';
 
 export const UserLayout = userContainer(AppLayout);
 export const DashboardPage = userRequestContainer(_DashboardPage);

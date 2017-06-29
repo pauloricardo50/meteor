@@ -20,7 +20,9 @@ export default class ExpensesChartInterests extends Component {
   }
 
   handleChange = (event, index, selectValue) => {
-    track('ExpensesChartInterests - changed interest rate', { value: selectValue });
+    track('ExpensesChartInterests - changed interest rate', {
+      value: selectValue,
+    });
     this.setState({ selectValue });
   };
 
@@ -41,24 +43,38 @@ export default class ExpensesChartInterests extends Component {
         >
           <MenuItem
             value={0}
-            primaryText={<T id="ExpensesChartInterests.libor" values={{ value: rates[0] }} />}
+            primaryText={
+              <T
+                id="ExpensesChartInterests.libor"
+                values={{ value: rates[0] }}
+              />
+            }
           />
           <MenuItem
             value={1}
             primaryText={
-              <T id="ExpensesChartInterests.years" values={{ value: rates[1], years: 5 }} />
+              <T
+                id="ExpensesChartInterests.years"
+                values={{ value: rates[1], years: 5 }}
+              />
             }
           />
           <MenuItem
             value={2}
             primaryText={
-              <T id="ExpensesChartInterests.years" values={{ value: rates[2], years: 10 }} />
+              <T
+                id="ExpensesChartInterests.years"
+                values={{ value: rates[2], years: 10 }}
+              />
             }
           />
           <MenuItem
             value={3}
             primaryText={
-              <T id="ExpensesChartInterests.years" values={{ value: rates[3], years: 15 }} />
+              <T
+                id="ExpensesChartInterests.years"
+                values={{ value: rates[3], years: 15 }}
+              />
             }
           />
         </SelectField>

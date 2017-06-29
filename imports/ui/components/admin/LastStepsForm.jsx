@@ -15,8 +15,14 @@ export default class LastStepsForm extends Component {
   constructor(props) {
     super(props);
 
-    if (this.props.loanRequest.logic.lastSteps && this.props.loanRequest.logic.lastSteps.length) {
-      this.state = { lastSteps: this.props.loanRequest.logic.lastSteps, selected: null };
+    if (
+      this.props.loanRequest.logic.lastSteps &&
+      this.props.loanRequest.logic.lastSteps.length
+    ) {
+      this.state = {
+        lastSteps: this.props.loanRequest.logic.lastSteps,
+        selected: null,
+      };
     } else {
       this.state = { lastSteps: [], selected: null };
     }
@@ -25,11 +31,16 @@ export default class LastStepsForm extends Component {
   handleAdd = () => {
     const type = 'file';
     const id = this.state.selected;
-    this.setState(prev => ({ lastSteps: [...prev.lastSteps, { id, type }], selected: null }));
+    this.setState(prev => ({
+      lastSteps: [...prev.lastSteps, { id, type }],
+      selected: null,
+    }));
   };
 
   handleRemove = id => {
-    this.setState(prev => ({ lastSteps: prev.lastSteps.filter(step => step.id !== id) }));
+    this.setState(prev => ({
+      lastSteps: prev.lastSteps.filter(step => step.id !== id),
+    }));
   };
 
   handleChange = (event, index, value) => this.setState({ selected: value });
@@ -55,7 +66,10 @@ export default class LastStepsForm extends Component {
           >
             <MenuItem value={null} />
             {this.getFileIds().map(id =>
-              <MenuItem value={id} primaryText={<T id={`lastSteps.${id}`} />} />,
+              <MenuItem
+                value={id}
+                primaryText={<T id={`lastSteps.${id}`} />}
+              />,
             )}
           </DropDownMenu>
           <RaisedButton
@@ -67,7 +81,10 @@ export default class LastStepsForm extends Component {
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', margin: '40px 0' }}>
           {this.state.lastSteps.map(step =>
-            <Chip onRequestDelete={() => this.handleRemove(step.id)} key={step.id}>
+            <Chip
+              onRequestDelete={() => this.handleRemove(step.id)}
+              key={step.id}
+            >
               {<T id={`lastSteps.${step.id}`} />}
             </Chip>,
           )}

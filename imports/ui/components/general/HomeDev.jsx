@@ -26,7 +26,9 @@ export default class HomeDev extends React.Component {
   };
 
   render() {
-    const actions = [<FlatButton label="Ok" primary onTouchTap={this.handleClose} />];
+    const actions = [
+      <FlatButton label="Ok" primary onTouchTap={this.handleClose} />,
+    ];
 
     return (
       <span>
@@ -41,7 +43,11 @@ export default class HomeDev extends React.Component {
           id="refinancing"
         />
         <Dialog
-          title={<h3><T id="HomeDev.title" /></h3>}
+          title={
+            <h3>
+              <T id="HomeDev.title" />
+            </h3>
+          }
           actions={actions}
           modal={false}
           open={this.state.open}

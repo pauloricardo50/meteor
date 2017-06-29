@@ -43,7 +43,9 @@ export function adminRequestComposer(props, onData) {
       const user = Meteor.users.find({ _id: loanRequest.userId }).fetch()[0];
       if (Meteor.subscribe('requestOffers', requestId).ready()) {
         const offers = Offers.find({ requestId }).fetch();
-        if (Meteor.subscribe('requestBorrowers', loanRequest.borrowers).ready()) {
+        if (
+          Meteor.subscribe('requestBorrowers', loanRequest.borrowers).ready()
+        ) {
           const borrowers = Borrowers.find({}).fetch();
 
           onData(null, { loanRequest, user, offers, borrowers });

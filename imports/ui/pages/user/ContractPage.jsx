@@ -19,7 +19,9 @@ const getAction = (request, percent) => {
   if (!request.logic.lender.contractRequested) {
     return (
       <div className="text-center" style={{ marginBottom: 40 }}>
-        <h4><T id="ContractPage.progress" values={{ value: percent }} /></h4>
+        <h4>
+          <T id="ContractPage.progress" values={{ value: percent }} />
+        </h4>
         <ConfirmButton
           disabled={percent < 1}
           label={<T id="ContractPage.CTA" />}
@@ -31,7 +33,9 @@ const getAction = (request, percent) => {
   }
   return (
     <div className="text-center">
-      <h4><T id="ContractPage.loading" /></h4>
+      <h4>
+        <T id="ContractPage.loading" />
+      </h4>
       <div style={{ height: 150 }}>
         <LoadingComponent />
       </div>

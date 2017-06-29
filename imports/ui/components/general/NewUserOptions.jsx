@@ -21,8 +21,12 @@ const styles = {
 
 const NewUserOptions = () =>
   <section className="text-center new-user">
-    <h1><T id="NewUserOptions.title" /></h1>
-    <h3 style={styles.h3}><T id="NewUserOptions.description" /></h3>
+    <h1>
+      <T id="NewUserOptions.title" />
+    </h1>
+    <h3 style={styles.h3}>
+      <T id="NewUserOptions.description" />
+    </h3>
     {/* <RaisedButton
       label="Prenez le test"
       primary

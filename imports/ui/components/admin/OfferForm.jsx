@@ -137,7 +137,6 @@ export default class OfferForm extends Component {
     return (
       <article className="col-xs-12" style={styles.article}>
         <form onSubmit={this.handleSubmit}>
-
           {this.props.admin &&
             <TextField
               floatingLabelText="Institution"
@@ -161,10 +160,16 @@ export default class OfferForm extends Component {
             <TextField
               floatingLabelText="Prêt Maximal"
               pattern="[0-9]*"
-              hintText={`CHF ${toMoney(Math.round(this.props.loanRequest.property.value * 0.8))}`}
+              hintText={`CHF ${toMoney(
+                Math.round(this.props.loanRequest.property.value * 0.8),
+              )}`}
               onChange={(e, n) => this.handleChange(e, n, 'maxAmount')}
             >
-              <MaskedInput mask={swissFrancMask} guide value={this.state.maxAmount} />
+              <MaskedInput
+                mask={swissFrancMask}
+                guide
+                value={this.state.maxAmount}
+              />
             </TextField>
           </div>
 
@@ -175,7 +180,11 @@ export default class OfferForm extends Component {
               type="text"
               onChange={(e, n) => this.handleChange(e, n, 'amortization')}
             >
-              <MaskedInput mask={percentMask} guide value={this.state.amortization} />
+              <MaskedInput
+                mask={percentMask}
+                guide
+                value={this.state.amortization}
+              />
             </TextField>
           </div>
 
@@ -183,7 +192,7 @@ export default class OfferForm extends Component {
             Taux Standard
           </h4>
 
-          {getFormArray(0).map(field => (
+          {getFormArray(0).map(field =>
             <div className="col-xs-6 col-md-3" key={field.name}>
               <TextField
                 floatingLabelText={field.label}
@@ -192,16 +201,23 @@ export default class OfferForm extends Component {
                 fullWidth
                 onChange={(e, n) => this.handleChange(e, n, field.name)}
               >
-                <MaskedInput mask={percentMask} guide value={this.state[field.name]} />
+                <MaskedInput
+                  mask={percentMask}
+                  guide
+                  value={this.state[field.name]}
+                />
               </TextField>
-            </div>
-          ))}
+            </div>,
+          )}
 
           <Checkbox
             label="Ajouter une offre avec contrepartie"
             style={styles.checkbox}
             className="col-xs-12"
-            onCheck={() => this.setState(prev => ({ showCounterpart: !prev.showCounterpart }))}
+            onCheck={() =>
+              this.setState(prev => ({
+                showCounterpart: !prev.showCounterpart,
+              }))}
             checked={this.state.showCounterpart}
           />
 
@@ -224,19 +240,24 @@ export default class OfferForm extends Component {
                 />
               </div>
 
-              {getFormArray(1).map(field => (
+              {getFormArray(1).map(field =>
                 <div className="col-xs-6 col-md-3" key={field.name}>
                   <TextField
                     floatingLabelText={field.label}
                     hintText={'1%'}
                     type="text"
                     fullWidth
-                    onChange={(e, n) => this.handleChange(e, parseFloat(n), field.name)}
+                    onChange={(e, n) =>
+                      this.handleChange(e, parseFloat(n), field.name)}
                   >
-                    <MaskedInput mask={percentMask} guide value={this.state[field.name]} />
+                    <MaskedInput
+                      mask={percentMask}
+                      guide
+                      value={this.state[field.name]}
+                    />
                   </TextField>
-                </div>
-              ))}
+                </div>,
+              )}
             </div>}
 
           <div className="col-xs-12" style={styles.buttons}>

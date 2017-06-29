@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import FlatButton from 'material-ui/FlatButton';
 
-const OfferTableLine = props => (
+const OfferTableLine = props =>
   <tr>
     <td className="l">
       {moment(props.offer.auctionEndTime).format('MMM. D, YYYY')}
@@ -17,8 +17,7 @@ const OfferTableLine = props => (
         onTouchTap={() => console.log('develop this')}
       />
     </td>
-  </tr>
-);
+  </tr>;
 
 OfferTableLine.propTypes = {
   offer: PropTypes.objectOf(PropTypes.any).isRequired,

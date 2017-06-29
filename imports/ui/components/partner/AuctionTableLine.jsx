@@ -11,12 +11,14 @@ import Countdown from '/imports/ui/components/general/Countdown.jsx';
 const offerExists = props =>
   props.offers.some(offer => props.auction._id === offer.requestId);
 
-const AuctionTableLine = props => (
+const AuctionTableLine = props =>
   <tr>
     <td className="left-align">
       <Countdown endTime={props.auction.auctionEndTime} />
     </td>
-    <td className="left-align">{props.auction.type}</td>
+    <td className="left-align">
+      {props.auction.type}
+    </td>
     <td className="right-align">
       {`CHF ${toMoney(props.auction.value)}`}
     </td>
@@ -27,8 +29,7 @@ const AuctionTableLine = props => (
         containerElement={<Link to={`/partner/${props.auction._id}`} />}
       />
     </td>
-  </tr>
-);
+  </tr>;
 
 AuctionTableLine.propTypes = {
   auction: PropTypes.objectOf(PropTypes.any).isRequired,

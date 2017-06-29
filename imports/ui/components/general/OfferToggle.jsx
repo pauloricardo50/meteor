@@ -19,7 +19,8 @@ const styles = {
 
 const OfferToggle = props => {
   const standardCount = props.offers.length;
-  const counterpartCount = props.offers.filter(o => o.counterparts.length > 0).length;
+  const counterpartCount = props.offers.filter(o => o.counterparts.length > 0)
+    .length;
   return (
     <div style={styles.div}>
       <span
@@ -29,7 +30,9 @@ const OfferToggle = props => {
       >
         {/* use toString, or else a count of 0 isn't rendered */}
         <T
-          id={props.short ? 'OfferToggle.standard-short' : 'OfferToggle.standard'}
+          id={
+            props.short ? 'OfferToggle.standard-short' : 'OfferToggle.standard'
+          }
           values={{ count: standardCount.toString() }}
         />
       </span>
@@ -47,7 +50,11 @@ const OfferToggle = props => {
         style={styles.span}
       >
         <T
-          id={props.short ? 'OfferToggle.counterpart-short' : 'OfferToggle.counterpart'}
+          id={
+            props.short
+              ? 'OfferToggle.counterpart-short'
+              : 'OfferToggle.counterpart'
+          }
           values={{ count: counterpartCount.toString() }}
         />
       </span>

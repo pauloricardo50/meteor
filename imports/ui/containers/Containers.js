@@ -28,7 +28,8 @@ import {
 } from './composers/PartnerComposers';
 
 // Basic container
-export const generalContainer = c => merge(composeWithTracker(currentUserComposer, Loading))(c);
+export const generalContainer = c =>
+  merge(composeWithTracker(currentUserComposer, Loading))(c);
 
 // User containers
 export const userContainer = c =>
@@ -40,7 +41,10 @@ export const userContainer = c =>
   )(c);
 
 export const userRequestContainer = c =>
-  merge(composeWithTracker(userRequestComposer), composeWithTracker(currentUserComposer))(c);
+  merge(
+    composeWithTracker(userRequestComposer),
+    composeWithTracker(currentUserComposer),
+  )(c);
 
 export const userBorrowerContainer = c =>
   merge(
@@ -59,7 +63,10 @@ export const adminContainer = c =>
   )(c);
 
 export const adminUserContainer = c =>
-  merge(composeWithTracker(adminUserComposer), composeWithTracker(currentUserComposer))(c);
+  merge(
+    composeWithTracker(adminUserComposer),
+    composeWithTracker(currentUserComposer),
+  )(c);
 
 export const adminRequestContainer = c =>
   merge(
@@ -69,7 +76,10 @@ export const adminRequestContainer = c =>
   )(c);
 
 export const adminOfferContainer = c =>
-  merge(composeWithTracker(adminOfferComposer), composeWithTracker(currentUserComposer))(c);
+  merge(
+    composeWithTracker(adminOfferComposer),
+    composeWithTracker(currentUserComposer),
+  )(c);
 
 // Partner containers
 export const partnerContainer = c =>
@@ -80,7 +90,13 @@ export const partnerContainer = c =>
   )(c);
 
 export const partnerOfferContainer = c =>
-  merge(composeWithTracker(partnerOfferComposer), composeWithTracker(currentUserComposer))(c);
+  merge(
+    composeWithTracker(partnerOfferComposer),
+    composeWithTracker(currentUserComposer),
+  )(c);
 
 export const partnerRequestContainer = c =>
-  merge(composeWithTracker(partnerRequestComposer), composeWithTracker(currentUserComposer))(c);
+  merge(
+    composeWithTracker(partnerRequestComposer),
+    composeWithTracker(currentUserComposer),
+  )(c);

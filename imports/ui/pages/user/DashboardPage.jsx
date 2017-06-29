@@ -27,15 +27,18 @@ export default class DashboardPage extends Component {
   render() {
     const { loanRequest, history } = this.props;
     const showNewRequestModal = !loanRequest.name;
-    const showClosedModal = loanRequest.status === 'done' && !loanRequest.logic.acceptedClosing;
+    const showClosedModal =
+      loanRequest.status === 'done' && !loanRequest.logic.acceptedClosing;
 
     return (
       <Page id="DashboardPage" className="joyride-dashboard">
         <DashboardContent {...this.props} smallWidth={this.state.smallWidth} />
 
-        {showNewRequestModal && <NewRequestModal open requestId={loanRequest._id} />}
+        {showNewRequestModal &&
+          <NewRequestModal open requestId={loanRequest._id} />}
 
-        {showClosedModal && <AcceptClosingModal open loanRequest={loanRequest} />}
+        {showClosedModal &&
+          <AcceptClosingModal open loanRequest={loanRequest} />}
       </Page>
     );
   }

@@ -43,8 +43,8 @@ export default class ArrayInput extends React.Component {
               id: `${this.props.id}.${i}.${input.id}`,
               currentValue:
                 this.props.currentValue &&
-                  this.props.currentValue[i] &&
-                  this.props.currentValue[i][input.id],
+                this.props.currentValue[i] &&
+                this.props.currentValue[i][input.id],
               key: input.id,
             };
 
@@ -80,7 +80,9 @@ export default class ArrayInput extends React.Component {
   render() {
     return (
       <div style={{ ...this.props.style, marginTop: 24, position: 'relative' }}>
-        <label htmlFor="">{this.props.label}</label>
+        <label htmlFor="">
+          {this.props.label}
+        </label>
 
         {this.getArray()}
         <FormValidator {...this.props} />
