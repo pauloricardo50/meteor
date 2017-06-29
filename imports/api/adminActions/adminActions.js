@@ -4,6 +4,10 @@ import SimpleSchema from 'simpl-schema';
 
 const AdminActions = new Mongo.Collection('adminActions');
 
+// Action types
+// 'verify'
+// 'auction'
+
 // Prevent all client side modifications of mongoDB
 AdminActions.deny({
   insert: () => true,

@@ -51,6 +51,11 @@ export default class VerifyPage extends Component {
     };
 
     cleanMethod('updateRequest', object, this.props.loanRequest._id, () => {
+      Meteor.call('adminActions.completeByActionId', {
+        requestId: this.props.loanRequest._id,
+        actionId: 'verify',
+      });
+
       Meteor.call('email.send', {
         emailId: this.state.validated
           ? 'verificationPassed'
@@ -59,6 +64,7 @@ export default class VerifyPage extends Component {
         userId: this.props.loanRequest.userId,
         template: 'notification+CTA',
       });
+
       window.close();
     });
   };

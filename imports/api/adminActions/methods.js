@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { Roles } from 'meteor/alanning:roles';
-import { check } from 'meteor/check';
+import { check, Match } from 'meteor/check';
 import rateLimit from '/imports/js/helpers/rate-limit.js';
 
 import AdminActions from './adminActions';
@@ -13,11 +13,15 @@ export const insertAdminAction = new ValidatedMethod({
     check(actionId, String);
   },
   run({ requestId, actionId }) {
-    // Make sure this action doesn't already exist for this request
-    // const actionExists = !!AdminActions.findOne({ actionId, requestId });
-    // if (actionExists) {
-    //   throw new Meteor.Error('duplicate admin action');
-    // }
+    // Make sure there isn't an action active with the same ID
+    const actionExists = !!AdminActions.findOne({
+      actionId,
+      requestId,
+      status: 'active',
+    });
+    if (actionExists) {
+      throw new Meteor.Error('duplicate active admin action');
+    }
 
     return AdminActions.insert({ actionId, requestId });
   },
@@ -44,13 +48,43 @@ export const completeAction = new ValidatedMethod({
   },
 });
 
+export const completeActionByActionId = new ValidatedMethod({
+  name: 'adminActions.completeByActionId',
+  validate({ requestId, actionId, newStatus }) {
+    check(requestId, String);
+    check(actionId, String);
+    check(newStatus, Match.Optional(String));
+  },
+  run({ requestId, actionId, newStatus }) {
+    const action = AdminActions.findOne({
+      requestId,
+      actionId,
+      status: 'active',
+    });
+
+    if (!!action) {
+      throw new Meteor.Error("action couldn't be found");
+    }
+
+    return AdminActions.update(action._id, {
+      $set: {
+        status: newStatus || 'completed',
+        completedAt: new Date(),
+      },
+    });
+  },
+});
+
 export const removeParentRequest = new ValidatedMethod({
   name: 'adminActions.removeParentRequest',
   validate({ requestId }) {
     check(requestId, String);
   },
   run({ requestId }) {
-    return AdminActions.update({ requestId }, { $set: { status: 'parentDeleted' } });
+    return AdminActions.update(
+      { requestId },
+      { $set: { status: 'parentDeleted' } },
+    );
   },
 });
 

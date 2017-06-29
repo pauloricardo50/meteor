@@ -7,6 +7,7 @@ import rateLimit from '/imports/js/helpers/rate-limit.js';
 
 import {
   insertAdminAction,
+  completeActionByActionId,
   removeParentRequest,
 } from '/imports/api/adminActions/methods';
 
@@ -251,6 +252,8 @@ export const finishAuction = new ValidatedMethod({
               });
             }
           }
+
+          completeActionByActionId.call({ requestId: id, actionId: 'auction' });
         },
       );
     }
@@ -291,6 +294,12 @@ export const cancelAuction = new ValidatedMethod({
               });
             }
           }
+
+          completeActionByActionId.call({
+            requestId: id,
+            actionId: 'auction',
+            newStatus: 'cancelled',
+          });
         },
       );
     }

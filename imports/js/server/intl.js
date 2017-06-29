@@ -1,5 +1,9 @@
 import IntlMessageFormat from 'intl-messageformat';
-import { getUserLocale, getTranslations, getFormats } from '/imports/startup/localization';
+import {
+  getUserLocale,
+  getTranslations,
+  getFormats,
+} from '/imports/startup/localization';
 
 /**
  * formatMessage - A server-side method to use the intl package
@@ -14,7 +18,12 @@ const formatMessage = (id, values = {}) => {
   if (id === undefined) {
     throw new Error('an id is required in formatMessage');
   }
-  const message = new IntlMessageFormat(getTranslations()[id] || id, getUserLocale(), getFormats());
+  const message = new IntlMessageFormat(
+    getTranslations()[id] || id,
+    'fr-FR',
+    // getFormats(),
+  );
+  console.log(message);
   return message.format(values);
 };
 
