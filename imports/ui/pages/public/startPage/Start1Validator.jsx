@@ -9,16 +9,16 @@ import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const styles = {
   div: {
-    display: 'inline-flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: '40px auto',
-    padding: 40,
+    // display: 'inline-flex',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // margin: '40px auto',
+    // padding: 40,
   },
   content: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    // display: 'flex',
+    // flexDirection: 'column',
+    // alignItems: 'center',
   },
 };
 
@@ -83,17 +83,20 @@ export default class Start1Validator extends Component {
     const { message, message2, icon: MyIcon, className } = this.state;
 
     return (
-      <div style={styles.div} className="mask2 primary-border">
+      <div style={styles.div} className="mask2 primary-border start1-errors">
         {MyIcon &&
           <MyIcon
-            style={{ marginRight: '2em', height: '3em', width: '3em' }}
-            className={className}
+            // style={{ marginRight: '2em', height: '3em', width: '3em' }}
+            className={className + ' icon'}
           />}
-        <div style={styles.content}>
+        <div style={styles.content} id="content">
           <h2 className={className} style={{ margin: 0 }}>
             {message && <T id={message} />}
           </h2>
-          {message2 && <h4 style={{ maxWidth: 400, marginBottom: 0 }}><T id={message2} /></h4>}
+          {message2 &&
+            <h4 style={{ maxWidth: 400, marginBottom: 0 }}>
+              <T id={message2} />
+            </h4>}
         </div>
       </div>
     );
