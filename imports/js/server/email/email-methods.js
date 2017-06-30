@@ -77,7 +77,6 @@ export const sendEmail = new ValidatedMethod({
             type: 'to',
           },
         ],
-        global_merge_vars: [{ name: 'CTA_URL', content: defaultCTA_URL }],
         merge_vars: [
           {
             rcpt: toEmail,
@@ -85,7 +84,7 @@ export const sendEmail = new ValidatedMethod({
               { name: 'title', content: title },
               { name: 'body', content: body },
               { name: 'CTA', content: CTA },
-              { name: 'CTA_URL', content: CTA_URL }, // overrides the global_merge_vars if it is set}
+              { name: 'CTA_URL', content: CTA_URL || defaultCTA_URL }, // overrides the global_merge_vars if it is set}
             ],
           },
         ],
