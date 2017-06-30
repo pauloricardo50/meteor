@@ -18,6 +18,10 @@
   "ActionsTable.comment": "Commentaire",
   "ActionsTable.date": "Date",
   "ActionsTable.do": " ",
+
+  "HomePage.CTA.buy": "Faire une acquisition",
+  "HomePage.CTA.compare": "Comparer des propriétés",
+
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",

@@ -34,7 +34,13 @@ const NewUserOptions = () =>
       style={styles.button}
     /> */}
     <RaisedButton
-      label={<T id="HomePage.CTA1" />}
+      label={<T id="HomePage.CTA.compare" />}
+      containerElement={<Link to="/app/compare" />}
+      primary
+      style={styles.button}
+    />
+    <RaisedButton
+      label={<T id="HomePage.CTA.buy" />}
       containerElement={<Link to="/start1/acquisition" />}
       primary
       style={styles.button}
