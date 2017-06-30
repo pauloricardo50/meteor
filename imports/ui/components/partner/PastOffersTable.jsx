@@ -10,7 +10,7 @@ const styles = {
   },
 };
 
-const PastOffersTable = props => (
+const PastOffersTable = props =>
   <article style={styles.article}>
     <h1 className="text-center">Offres passées</h1>
 
@@ -30,13 +30,12 @@ const PastOffersTable = props => (
         </tr>
       </thead>
       <tbody>
-        {props.offers.map((offer, i) => (
-          <OfferTableLine offer={offer} key={offer._id} index={i} />
-        ))}
+        {props.offers.map((offer, i) =>
+          <OfferTableLine offer={offer} key={offer._id} index={i} />,
+        )}
       </tbody>
     </table>
-  </article>
-);
+  </article>;
 
 PastOffersTable.propTypes = {
   offers: PropTypes.arrayOf(PropTypes.any).isRequired,

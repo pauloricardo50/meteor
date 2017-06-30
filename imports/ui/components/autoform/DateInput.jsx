@@ -55,7 +55,10 @@ class DateInput extends Component {
   render() {
     const formatDate = this.props.intl.formatDate;
     return (
-      <div style={{ ...styles.div, ...this.props.style }} className="datepicker">
+      <div
+        style={{ ...styles.div, ...this.props.style }}
+        className="datepicker"
+      >
         <label htmlFor={this.props.label} style={styles.label}>
           {this.props.label}
         </label>

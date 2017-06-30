@@ -28,7 +28,9 @@ const handleCheat = props => {
 
   const finalObject = MergeRecursive(object, props.loanRequest);
 
-  cleanMethod('updateRequest', finalObject, props.loanRequest._id, () => location.reload());
+  cleanMethod('updateRequest', finalObject, props.loanRequest._id, () =>
+    location.reload(),
+  );
 };
 
 const FakePropertyCompleter = props => {

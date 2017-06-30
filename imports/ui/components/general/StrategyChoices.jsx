@@ -42,23 +42,22 @@ export default class StrategyChoices extends Component {
         {choice.isBest &&
           !this.props.currentValue &&
           <div className="recommended animated fadeIn">
-            <div className="bold">
-              Recommandé pour vous
-            </div>
+            <div className="bold">Recommandé pour vous</div>
           </div>}
 
         <ul>
           <li className={chosen ? 'title-chosen' : 'title'}>
             <h4 className="bold fixed-size">
-              <AutoTooltip>{choice.title}</AutoTooltip>
-              {' '}
+              <AutoTooltip>{choice.title}</AutoTooltip>{' '}
               {chosen && <span className="fa fa-check" />}
             </h4>
           </li>
 
           {choice.reasons.map((reason, i) =>
             <li className="bold reason" key={i}>
-              <AutoTooltip>{reason}</AutoTooltip>
+              <AutoTooltip>
+                {reason}
+              </AutoTooltip>
             </li>,
           )}
         </ul>
@@ -86,13 +85,13 @@ export default class StrategyChoices extends Component {
   render() {
     return (
       <div className="strategy-choices">
-
         {this.state.showChoices
-          ? this.props.choices.map((choice, index) => this.renderChoice(choice, index))
+          ? this.props.choices.map((choice, index) =>
+              this.renderChoice(choice, index),
+            )
           : <span className="loading">
-            <LoadingComponent />
-          </span>}
-
+              <LoadingComponent />
+            </span>}
       </div>
     );
   }

@@ -23,7 +23,16 @@ export default class TooltipOverlay extends Component {
   }
 
   render() {
-    const { placement, id, pureId, list, match, trigger, delayShow, children } = this.props;
+    const {
+      placement,
+      id,
+      pureId,
+      list,
+      match,
+      trigger,
+      delayShow,
+      children,
+    } = this.props;
     const tooltipId = id || tooltips(list)[match.toLowerCase()];
 
     return (
@@ -50,7 +59,10 @@ export default class TooltipOverlay extends Component {
         container={document.body}
         onTouchTap={handleClick}
       >
-        <span className="tooltip-overlay hvr-underline-from-center" tabIndex="0">
+        <span
+          className="tooltip-overlay hvr-underline-from-center"
+          tabIndex="0"
+        >
           {children}
         </span>
       </OverlayTrigger>
@@ -60,12 +72,16 @@ export default class TooltipOverlay extends Component {
 
 TooltipOverlay.propTypes = {
   placement: PropTypes.string,
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
+  id: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string),
+  ]).isRequired,
   pureId: PropTypes.bool,
   list: PropTypes.string.isRequired,
   match: PropTypes.oneOfType([PropTypes.element, PropTypes.string]).isRequired,
   trigger: PropTypes.arrayOf(PropTypes.string),
-  children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]).isRequired,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
+    .isRequired,
   delayShow: PropTypes.number,
 };
 

@@ -43,7 +43,11 @@ export default class DialogSimple extends Component {
     } = this.props;
 
     actions = actions || [
-      <FlatButton primary label={<T id="general.cancel" />} onTouchTap={this.handleClose} />,
+      <FlatButton
+        primary
+        label={<T id="general.cancel" />}
+        onTouchTap={this.handleClose}
+      />,
       <FlatButton
         primary
         label="Ok"
@@ -69,13 +73,19 @@ export default class DialogSimple extends Component {
           style={buttonStyle}
         />
         <Dialog
-          title={<h3>{title}</h3>}
+          title={
+            <h3>
+              {title}
+            </h3>
+          }
           actions={actions}
           modal={modal}
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-          {children && passProps ? React.cloneElement(children, { ...childProps }) : children}
+          {children && passProps
+            ? React.cloneElement(children, { ...childProps })
+            : children}
         </Dialog>
       </span>
     );

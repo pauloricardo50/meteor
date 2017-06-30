@@ -47,8 +47,14 @@ export default class DashboardStatus extends Component {
 
   getNextLink = () => {
     const { loanRequest, borrowers } = this.props;
-    const steps = getSteps({ loanRequest, borrowers, serverTime: this.state.serverTime });
-    const nextItem = steps[loanRequest.logic.step].items.find(subStep => !subStep.isDone());
+    const steps = getSteps({
+      loanRequest,
+      borrowers,
+      serverTime: this.state.serverTime,
+    });
+    const nextItem = steps[loanRequest.logic.step].items.find(
+      subStep => !subStep.isDone(),
+    );
     return nextItem && nextItem.link;
   };
 
@@ -66,23 +72,30 @@ export default class DashboardStatus extends Component {
     const nextLink = this.getNextLink();
 
     const verificationRequested =
-      loanRequest.logic.verification && loanRequest.logic.verification.requested;
+      loanRequest.logic.verification &&
+      loanRequest.logic.verification.requested;
     const auctionGoingOn =
       !!serverTime &&
       loanRequest.logic.auctionStarted &&
-      loanRequest.logic.auctionEndTime > serverTime.setSeconds(serverTime.getSeconds() + 1);
+      loanRequest.logic.auctionEndTime >
+        serverTime.setSeconds(serverTime.getSeconds() + 1);
     const showLoading = verificationRequested || auctionGoingOn;
 
     return (
       <DashboardItem title={<T id="DashboardStatus.title" />}>
         <h2 className="fixed-size" style={styles.step}>
-          <T id="DashboardStatus.step" values={{ step: loanRequest.logic.step }} />
+          <T
+            id="DashboardStatus.step"
+            values={{ step: loanRequest.logic.step }}
+          />
           {showLoading && <br />}
           {showLoading &&
             <small>
               <T
                 id={
-                  verificationRequested ? 'DashboardStatus.verification' : 'DashboardStatus.auction'
+                  verificationRequested
+                    ? 'DashboardStatus.verification'
+                    : 'DashboardStatus.auction'
                 }
               />
             </small>}

@@ -20,7 +20,14 @@ import AutoTooltip from './AutoTooltip.jsx';
 */
 export class T extends Component {
   render() {
-    const { noTooltips, id, values, tooltipId, tooltipPlacement, tooltipDelay } = this.props;
+    const {
+      noTooltips,
+      id,
+      values,
+      tooltipId,
+      tooltipPlacement,
+      tooltipDelay,
+    } = this.props;
 
     if (noTooltips) {
       return <FormattedMessage {...this.props} />;
@@ -45,11 +52,24 @@ export class T extends Component {
       </AutoTooltip>;
 
     return (
-      <FormattedMessage id={id} values={{ ...values, verticalSpace: <span><br /><br /></span> }}>
+      <FormattedMessage
+        id={id}
+        values={{
+          ...values,
+          verticalSpace: (
+            <span>
+              <br />
+              <br />
+            </span>
+          ),
+        }}
+      >
         {(...formattedMessage) =>
           formattedMessage.length === 1
             ? Auto(formattedMessage[0])
-            : <span>{formattedMessage.map((msg, i) => Auto(msg, i))}</span>}
+            : <span>
+                {formattedMessage.map((msg, i) => Auto(msg, i))}
+              </span>}
       </FormattedMessage>
     );
   }
@@ -58,7 +78,10 @@ export class T extends Component {
 T.propTypes = {
   id: PropTypes.string.isRequired,
   noTooltips: PropTypes.bool,
-  tooltipId: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+  tooltipId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string),
+  ]),
   tooltipPlacement: PropTypes.string,
 };
 

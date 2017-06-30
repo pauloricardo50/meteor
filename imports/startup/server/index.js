@@ -3,8 +3,6 @@ import { Inject } from 'meteor/meteorhacks:inject-initial';
 
 import '/imports/js/server/email/email-methods';
 import '/imports/js/server/email/email-meteor';
-import '/imports/api/methods/server/methods';
-import '/imports/api/methods/methods';
 import '/imports/js/server/files';
 import '/imports/api/api';
 import '../accounts-config';

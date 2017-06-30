@@ -32,7 +32,10 @@ export default class SelectFieldInput extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     // Prevent weird component rerenders, which break keyboard+mouse use of this component
-    return this.props.currentValue !== nextProps.currentValue || this.state !== nextState;
+    return (
+      this.props.currentValue !== nextProps.currentValue ||
+      this.state !== nextState
+    );
   }
 
   handleChange = (event, index, value) => {
@@ -49,7 +52,10 @@ export default class SelectFieldInput extends Component {
 
       if (!error) {
         // on success, set saving briefly to true, before setting it to false again to trigger icon
-        this.setState({ errorText: '', saving: true }, this.setState({ saving: false }));
+        this.setState(
+          { errorText: '', saving: true },
+          this.setState({ saving: false }),
+        );
       }
     });
   };
@@ -68,9 +74,13 @@ export default class SelectFieldInput extends Component {
           disabled={this.props.disabled}
         >
           <MenuItem value={null} primaryText="" key={0} />
-          {this.props.options.map((option, index) => (
-            <MenuItem value={option.id} primaryText={option.label} key={option.id} />
-          ))}
+          {this.props.options.map((option, index) =>
+            <MenuItem
+              value={option.id}
+              primaryText={option.label}
+              key={option.id}
+            />,
+          )}
         </SelectField>
         <SavingIcon
           saving={this.state.saving}

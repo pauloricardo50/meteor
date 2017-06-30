@@ -9,7 +9,9 @@ class Page extends Component {
   componentDidMount() {
     if (this.props.id) {
       DocHead.setTitle(
-        `${this.props.intl.formatMessage({ id: `${this.props.id}.title` })} | e-Potek`,
+        `${this.props.intl.formatMessage({
+          id: `${this.props.id}.title`,
+        })} | e-Potek`,
       );
     } else {
       DocHead.setTitle('e-Potek');
@@ -20,7 +22,9 @@ class Page extends Component {
     return (
       <section className="page-title">
         <div className={`top-bar ${this.props.className}`}>
-          <h3 className="title fixed-size bold secondary"><T id={`${this.props.id}.title`} /></h3>
+          <h3 className="title fixed-size bold secondary">
+            <T id={`${this.props.id}.title`} />
+          </h3>
           {this.props.rightComponent}
         </div>
         <div className="children animated fadeIn">
@@ -34,7 +38,8 @@ class Page extends Component {
 Page.propTypes = {
   id: PropTypes.string.isRequired,
   rightComponent: PropTypes.element,
-  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]).isRequired,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array])
+    .isRequired,
   className: PropTypes.string,
 };
 

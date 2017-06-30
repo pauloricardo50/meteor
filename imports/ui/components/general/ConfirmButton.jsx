@@ -26,7 +26,11 @@ export default class ConfirmButton extends Component {
     const Button = this.props.flat ? FlatButton : RaisedButton;
 
     const actions = [
-      <FlatButton label={<T id="general.cancel" />} primary onTouchTap={this.handleClose} />,
+      <FlatButton
+        label={<T id="general.cancel" />}
+        primary
+        onTouchTap={this.handleClose}
+      />,
       <FlatButton
         label={<T id="general.yes" />}
         primary
@@ -48,7 +52,11 @@ export default class ConfirmButton extends Component {
           disabled={this.props.disabled}
         />
         <Dialog
-          title={<h3><T id="general.areYouSure" /></h3>}
+          title={
+            <h3>
+              <T id="general.areYouSure" />
+            </h3>
+          }
           actions={actions}
           modal={false}
           open={this.state.open}

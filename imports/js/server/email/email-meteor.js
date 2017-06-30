@@ -2,7 +2,12 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { Mandrill } from 'meteor/wylio:mandrill';
 
-import { from, fromEmail, emailFooter, getEmailContent } from './email-defaults';
+import {
+  from,
+  fromEmail,
+  emailFooter,
+  getEmailContent,
+} from './email-defaults';
 
 // Meteor default emails
 // https://themeteorchef.com/tutorials/sign-up-with-email-verification
@@ -10,13 +15,14 @@ Accounts.emailTemplates.siteName = 'e-Potek';
 Accounts.emailTemplates.from = `${from} <${fromEmail}>`;
 
 Accounts.emailTemplates.verifyEmail = {
-  subject: () => getEmailContent('verifyEmail').subject,
-  html: (user, url) => {
+  subject() {
+    return getEmailContent('verifyEmail').subject;
+  },
+  html(user, url) {
     const urlWithoutHash = url.replace('#/', '');
     let result;
 
     try {
-      this.unblock();
       result = Mandrill.templates.render({
         template_name: 'welcome',
         template_content: [{ name: 'footer', content: emailFooter(false) }], // no footer
@@ -24,6 +30,7 @@ Accounts.emailTemplates.verifyEmail = {
         metadata: [{ userId: user._id }],
       });
     } catch (error) {
+      console.log(error);
       throw new Meteor.Error('Error while rendering Mandrill template', error);
     }
     return result.data.html;
@@ -33,15 +40,15 @@ Accounts.emailTemplates.verifyEmail = {
 Accounts.emailTemplates.resetPassword = {
   from: () => `${getEmailContent('resetPassword').from} <${fromEmail}>`,
   subject: () => getEmailContent('resetPassword').subject,
-  html: (user, url) => {
+  html(user, url) {
     const urlWithoutHash = url.replace('#/', '');
     const { title, body, CTA } = getEmailContent('resetPassword');
     let result;
 
     try {
-      this.unblock();
+      // TODO: Make sure this doesn't block
       result = Mandrill.templates.render({
-        template_name: 'notification',
+        template_name: 'notification+CTA',
         template_content: [{ name: 'footer', content: emailFooter(false) }], // no footer
         merge_vars: [
           { name: 'title', content: title },
@@ -52,7 +59,10 @@ Accounts.emailTemplates.resetPassword = {
         metadata: [{ userId: user._id }],
       });
     } catch (error) {
-      throw new Meteor.Error('Error while rendering Mandrill template', error);
+      throw new Meteor.Error(
+        'Error while rendering Mandrill template',
+        error.reason || error.message || error,
+      );
     }
     return result.data.html;
   },

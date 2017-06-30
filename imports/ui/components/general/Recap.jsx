@@ -87,7 +87,9 @@ const getDashboardArray = props => {
     },
     {
       label: 'general.insuranceFees',
-      value: toMoney(Math.round(r.general.insuranceFortuneUsed * constants.lppFees)),
+      value: toMoney(
+        Math.round(r.general.insuranceFortuneUsed * constants.lppFees),
+      ),
       hide: !r.general.insuranceFortuneUsed,
     },
     {
@@ -145,11 +147,12 @@ const getDashboardArray = props => {
       label: 'Recap.finmaRules',
     },
     {
-      label: r.property.propertyWork ? 'Recap.borrowRatio2' : 'Recap.borrowRatio1',
+      label: r.property.propertyWork
+        ? 'Recap.borrowRatio2'
+        : 'Recap.borrowRatio1',
       value: (
         <span>
-          {Math.round(borrowRatio * 1000) / 10}%
-          {' '}
+          {Math.round(borrowRatio * 1000) / 10}%{' '}
           <span
             className={
               borrowRatio <= constants.maxLoan(r.property.usageType) + 0.001 // add 0.1% to avoid rounding errors
@@ -164,13 +167,14 @@ const getDashboardArray = props => {
       label: 'Recap.incomeRatio',
       value: (
         <span>
-          {Math.round(incomeRatio * 1000) / 10}%
-          {' '}
+          {Math.round(incomeRatio * 1000) / 10}%{' '}
           <span
             className={
               incomeRatio <= 1 / 3
                 ? 'fa fa-check success'
-                : incomeRatio <= 0.38 ? 'fa fa-exclamation warning' : 'fa fa-times error'
+                : incomeRatio <= 0.38
+                  ? 'fa fa-exclamation warning'
+                  : 'fa fa-times error'
             }
           />
         </span>
@@ -293,7 +297,10 @@ const getSmallDashboardArray = props => {
       value: toMoney(totalUsed),
     },
     {
-      label: r.property.value === propAndWork ? 'Recap.purchasePrice' : 'Recap.propAndWork',
+      label:
+        r.property.value === propAndWork
+          ? 'Recap.purchasePrice'
+          : 'Recap.propAndWork',
       value: toMoney(Math.round(propAndWork)),
     },
     {
@@ -326,7 +333,8 @@ const getStart2Array = props => {
       },
     },
     {
-      label: p.type === 'test' ? 'Recap.purchasePrice' : 'Recap.maxPurchasePrice',
+      label:
+        p.type === 'test' ? 'Recap.purchasePrice' : 'Recap.maxPurchasePrice',
       value: toMoney(Math.round(p.property)),
     },
     {
@@ -357,7 +365,11 @@ const getStart2Array = props => {
       value: (
         <span className="bold sum">
           {toMoney(
-            Math.round(p.property * (1 + constants.notaryFees) + p.propertyWork + p.lppFees),
+            Math.round(
+              p.property * (1 + constants.notaryFees) +
+                p.propertyWork +
+                p.lppFees,
+            ),
           )}
         </span>
       ),
@@ -413,8 +425,7 @@ const getStart2Array = props => {
       label: p.propertyWork ? 'Recap.borrowRatio2' : 'Recap.borrowRatio1',
       value: (
         <span>
-          {Math.round(p.borrow * 1000) / 10}%
-          {' '}
+          {Math.round(p.borrow * 1000) / 10}%{' '}
           <span
             className={
               p.borrow <= constants.maxLoan(p.usageType) + 0.001 // add 0.1% to avoid rounding errors
@@ -430,13 +441,14 @@ const getStart2Array = props => {
       label: 'Recap.incomeRatio',
       value: (
         <span>
-          {Math.round(p.ratio * 1000) / 10}%
-          {' '}
+          {Math.round(p.ratio * 1000) / 10}%{' '}
           <span
             className={
               p.ratio <= 1 / 3
                 ? 'fa fa-check success'
-                : p.ratio <= 0.38 ? 'fa fa-exclamation warning' : 'fa fa-times error'
+                : p.ratio <= 0.38
+                  ? 'fa fa-exclamation warning'
+                  : 'fa fa-times error'
             }
           />
         </span>
@@ -485,7 +497,9 @@ const getStart2Array = props => {
       label: 'Recap.netFortune',
       value: (
         <span className="sum">
-          {toMoney(Math.round(p.fortune + p.insuranceFortuneDisplayed + p.realEstate))}
+          {toMoney(
+            Math.round(p.fortune + p.insuranceFortuneDisplayed + p.realEstate),
+          )}
         </span>
       ),
       spacingTop: true,
@@ -494,7 +508,13 @@ const getStart2Array = props => {
     {
       title: true,
       label: 'general.income',
-      hide: !(p.salary || p.bonus || p.otherIncome || p.expenses || p.propertyRent),
+      hide: !(
+        p.salary ||
+        p.bonus ||
+        p.otherIncome ||
+        p.expenses ||
+        p.propertyRent
+      ),
     },
     {
       label: 'Recap.receivedRent',
@@ -671,7 +691,9 @@ const getStructureArray = props => {
     },
     {
       label: 'general.insuranceFees',
-      value: toMoney(Math.round(r.general.insuranceFortuneUsed * constants.lppFees)),
+      value: toMoney(
+        Math.round(r.general.insuranceFortuneUsed * constants.lppFees),
+      ),
       hide: !r.general.insuranceFortuneUsed,
     },
     {
@@ -709,11 +731,12 @@ const getStructureArray = props => {
       label: 'Recap.finmaRules',
     },
     {
-      label: r.property.propertyWork ? 'Recap.borrowRatio2' : 'Recap.borrowRatio1',
+      label: r.property.propertyWork
+        ? 'Recap.borrowRatio2'
+        : 'Recap.borrowRatio1',
       value: (
         <span>
-          {Math.round(borrowRatio * 1000) / 10}%
-          {' '}
+          {Math.round(borrowRatio * 1000) / 10}%{' '}
           <span
             className={
               borrowRatio <= constants.maxLoan(r.property.usageType) + 0.001 // add 0.1% to avoid rounding errors
@@ -728,13 +751,14 @@ const getStructureArray = props => {
       label: 'Recap.incomeRatio',
       value: (
         <span>
-          {Math.round(incomeRatio * 1000) / 10}%
-          {' '}
+          {Math.round(incomeRatio * 1000) / 10}%{' '}
           <span
             className={
               incomeRatio <= 1 / 3
                 ? 'fa fa-check success'
-                : incomeRatio <= 0.38 ? 'fa fa-exclamation warning' : 'fa fa-times error'
+                : incomeRatio <= 0.38
+                  ? 'fa fa-exclamation warning'
+                  : 'fa fa-times error'
             }
           />
         </span>
@@ -803,7 +827,9 @@ const Recap = props => {
               <h4 className="secondary">
                 <T id={item.label} tooltipPlacement="bottom" />
               </h4>
-              <h3 {...item.props}>{item.value}</h3>
+              <h3 {...item.props}>
+                {item.value}
+              </h3>
             </div>
           );
         })}

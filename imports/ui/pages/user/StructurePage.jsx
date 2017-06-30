@@ -14,7 +14,10 @@ import StructureRecap from './structurePage/StructureRecap.jsx';
 import StructureError from './structurePage/StructureError.jsx';
 
 import { toNumber } from '/imports/js/helpers/conversionFunctions';
-import { getIncomeRatio, getBorrowRatio } from '/imports/js/helpers/finance-math';
+import {
+  getIncomeRatio,
+  getBorrowRatio,
+} from '/imports/js/helpers/finance-math';
 
 const handleClick = (props, state) => {
   // Save data to DB
@@ -84,7 +87,10 @@ export default class StructurePage extends Component {
 
           <StructureRecap {...this.props} loanRequest={modifiedRequest} />
 
-          <div className="text-center" style={{ marginTop: 60, marginBottom: 40 }}>
+          <div
+            className="text-center"
+            style={{ marginTop: 60, marginBottom: 40 }}
+          >
             <LoadingButton
               disabled={this.state.error}
               label={<T id="StructurePage.CTA" />}

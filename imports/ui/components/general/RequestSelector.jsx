@@ -8,6 +8,7 @@ import BuildingIcon from 'material-ui/svg-icons/communication/business';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
+import track from '/imports/js/helpers/analytics';
 
 const styles = {
   div: {
@@ -53,7 +54,9 @@ const RequestSelector = props =>
           key={r._id}
           value={r._id}
           primaryText={r.name}
-          leftIcon={r.property.style === 'villa' ? <HomeIcon /> : <BuildingIcon />}
+          leftIcon={
+            r.property.style === 'villa' ? <HomeIcon /> : <BuildingIcon />
+          }
         />,
       )}
       {props.loanRequests.length > 0 && <Divider />}

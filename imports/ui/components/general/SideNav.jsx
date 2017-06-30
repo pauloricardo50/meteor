@@ -69,7 +69,12 @@ const SideNav = props => {
   return (
     <nav className={classes}>
       <Link to="/home">
-        <img src="/img/logo_black.svg" alt="e-Potek" style={styles.logo} className="logo" />
+        <img
+          src="/img/logo_black.svg"
+          alt="e-Potek"
+          style={styles.logo}
+          className="logo"
+        />
       </Link>
 
       <ul className="side-nav-list">
@@ -77,7 +82,9 @@ const SideNav = props => {
           <li key={link.link}>
             <NavLink exact to={link.link} activeClassName="active-link">
               {link.icon}
-              <h5>{link.label}</h5>
+              <h5>
+                {link.label}
+              </h5>
             </NavLink>
           </li>,
         )}
@@ -90,7 +97,6 @@ const SideNav = props => {
           icon={<PowerOffIcon />}
         />
       </div>
-
     </nav>
   );
 };

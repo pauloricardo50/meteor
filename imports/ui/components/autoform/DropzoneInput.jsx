@@ -31,7 +31,9 @@ const handleSave = (props, file) => {
 
 const handleDelete = (props, fileToDelete) => {
   // Filter out the file we want to delete
-  const newFileArray = props.currentValue.filter(file => file.key !== fileToDelete.key);
+  const newFileArray = props.currentValue.filter(
+    file => file.key !== fileToDelete.key,
+  );
   const object = {};
   object[props.mongoId] = newFileArray;
 
@@ -60,12 +62,16 @@ const djsConfig = props => ({
   method: 'POST',
   autoProcessQueue: true,
   dictDefaultMessage: props.intl.formatMessage({ id: 'DropzoneInput.message' }),
-  dictCancelUpload: props.intl.formatMessage({ id: 'DropzoneInput.cancelUpload' }),
+  dictCancelUpload: props.intl.formatMessage({
+    id: 'DropzoneInput.cancelUpload',
+  }),
   dictCancelUploadConfirmation: props.intl.formatMessage({
     id: 'DropzoneInput.cancelUploadConfirmation',
   }),
   dictRemoveFile: props.intl.formatMessage({ id: 'DropzoneInput.removeFile' }),
-  dictInvalidFileType: props.intl.formatMessage({ id: 'DropzoneInput.invalidFileType' }),
+  dictInvalidFileType: props.intl.formatMessage({
+    id: 'DropzoneInput.invalidFileType',
+  }),
   maxFilesize: 100, // MB
   clickable: true,
   acceptedFiles: 'image/*,application/pdf',
@@ -118,7 +124,10 @@ const eventHandlers = props => ({
 
 const DropzoneInput = props =>
   <div>
-    {props.label && <h3 htmlFor={props.id}>{props.label}</h3>}
+    {props.label &&
+      <h3 htmlFor={props.id}>
+        {props.label}
+      </h3>}
     <DropzoneComponent
       name={props.id}
       config={componentConfig(props)}

@@ -4,6 +4,7 @@ import React from 'react';
 import Toggle from 'material-ui/Toggle';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
+import track from '/imports/js/helpers/analytics';
 
 const styles = {
   div: {
@@ -19,7 +20,8 @@ const styles = {
 
 const OfferToggle = props => {
   const standardCount = props.offers.length;
-  const counterpartCount = props.offers.filter(o => o.counterparts.length > 0).length;
+  const counterpartCount = props.offers.filter(o => o.counterparts.length > 0)
+    .length;
   return (
     <div style={styles.div}>
       <span
@@ -29,16 +31,18 @@ const OfferToggle = props => {
       >
         {/* use toString, or else a count of 0 isn't rendered */}
         <T
-          id={props.short ? 'OfferToggle.standard-short' : 'OfferToggle.standard'}
+          id={
+            props.short ? 'OfferToggle.standard-short' : 'OfferToggle.standard'
+          }
           values={{ count: standardCount.toString() }}
         />
       </span>
       <Toggle
         toggled={props.value}
         style={{ margin: '0 16px', width: 'unset' }}
-        onToggle={() => {
+        onToggle={(event, isChecked) => {
           track('OfferToggle - clicked on offer toggle');
-          props.handleToggle();
+          props.handleToggle(null, isChecked);
         }}
       />
       <span
@@ -47,7 +51,11 @@ const OfferToggle = props => {
         style={styles.span}
       >
         <T
-          id={props.short ? 'OfferToggle.counterpart-short' : 'OfferToggle.counterpart'}
+          id={
+            props.short
+              ? 'OfferToggle.counterpart-short'
+              : 'OfferToggle.counterpart'
+          }
           values={{ count: counterpartCount.toString() }}
         />
       </span>

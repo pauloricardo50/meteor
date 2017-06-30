@@ -9,7 +9,9 @@ describe('intl-server', () => {
   });
 
   it('formats additional values property', () => {
-    expect(formatMessage('BorrowerHeader.title', { index: 10 })).to.equal('Emprunteur 10');
+    expect(formatMessage('BorrowerHeader.title', { index: 10 })).to.equal(
+      'Emprunteur 10',
+    );
   });
 
   it('returns the id if the message is unknown', () => {
@@ -19,5 +21,11 @@ describe('intl-server', () => {
 
   it('throws if no id is provided', () => {
     expect(() => formatMessage()).to.throw;
+  });
+
+  it('returns a french date', () => {
+    // expect(formatMessage('{date, date, long}', { date: new Date(0) })).to.equal(
+    //   'hi!',
+    // );
   });
 });

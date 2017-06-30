@@ -15,7 +15,11 @@ const AutoTooltip = props => {
 
   if (props.id) {
     // If an id is given, get that specific tooltip and wrap it around the children
-    content = <TooltipOverlay {...props} match={props.children}>{props.children}</TooltipOverlay>;
+    content = (
+      <TooltipOverlay {...props} match={props.children}>
+        {props.children}
+      </TooltipOverlay>
+    );
   } else if (typeof props.children !== 'string') {
     // If no id is given and children is not a string, return
     return props.children;
@@ -25,17 +29,27 @@ const AutoTooltip = props => {
     content = reactStringReplace(
       props.children,
       new RegExp(`(${Object.keys(tooltips(props.list)).join('|')})`, 'gi'),
-      (match, i) => <TooltipOverlay {...props} key={i} match={match}>{match}</TooltipOverlay>,
+      (match, i) =>
+        <TooltipOverlay {...props} key={i} match={match}>
+          {match}
+        </TooltipOverlay>,
     );
   }
 
-  return <span>{content}</span>;
+  return (
+    <span>
+      {content}
+    </span>
+  );
 };
 
 AutoTooltip.propTypes = {
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   list: PropTypes.string,
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
+  id: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string),
+  ]).isRequired,
 };
 
 AutoTooltip.defaultProps = {

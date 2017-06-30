@@ -42,7 +42,11 @@ export default class AuctionPage extends Component {
 
   getContent() {
     if (!this.state.serverTime) {
-      return <div style={{ height: 150 }}><LoadingComponent /></div>;
+      return (
+        <div style={{ height: 150 }}>
+          <LoadingComponent />
+        </div>
+      );
     }
 
     if (
@@ -52,10 +56,20 @@ export default class AuctionPage extends Component {
       // After the auction, clear interval
       Meteor.clearInterval(time);
 
-      return <AuctionResults loanRequest={this.props.loanRequest} offers={this.props.offers} />;
+      return (
+        <AuctionResults
+          loanRequest={this.props.loanRequest}
+          offers={this.props.offers}
+        />
+      );
     } else if (this.props.loanRequest.logic.auctionStarted) {
       // During the auction
-      return <Auction loanRequest={this.props.loanRequest} offers={this.props.offers} />;
+      return (
+        <Auction
+          loanRequest={this.props.loanRequest}
+          offers={this.props.offers}
+        />
+      );
     }
     // Before the auction, lets the user start it
     return (

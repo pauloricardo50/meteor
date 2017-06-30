@@ -77,13 +77,23 @@ const inputSwitch = (singleInput, index, parentProps) => {
           style={props.style}
         >
           {inputSwitch(singleInput.inputs[0], 0, parentProps)}
-          {singleInput.inputs.slice(1).map((input, i) => inputSwitch(input, i, parentProps))}
+          {singleInput.inputs
+            .slice(1)
+            .map((input, i) => inputSwitch(input, i, parentProps))}
         </ConditionalInput>
       );
     case 'h3':
-      return <h3 style={styles.subtitle} key={index}>{singleInput.text}</h3>;
+      return (
+        <h3 style={styles.subtitle} key={index}>
+          {singleInput.text}
+        </h3>
+      );
     case 'h2':
-      return <h2 style={styles.subtitle} key={index}>{singleInput.text}</h2>;
+      return (
+        <h2 style={styles.subtitle} key={index}>
+          {singleInput.text}
+        </h2>
+      );
     case 'space':
       return (
         <div style={{ width: '100%', height: singleInput.height }} key={index}>
@@ -108,13 +118,12 @@ const inputSwitch = (singleInput, index, parentProps) => {
   }
 };
 
-const AutoForm = props => (
+const AutoForm = props =>
   <div className={props.formClasses}>
     <form style={styles.form} onSubmit={e => e.preventDefault()}>
       {props.inputs.map((input, i) => inputSwitch(input, i, props))}
     </form>
-  </div>
-);
+  </div>;
 
 AutoForm.propTypes = {
   inputs: PropTypes.arrayOf(PropTypes.object).isRequired,

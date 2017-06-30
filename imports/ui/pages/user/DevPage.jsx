@@ -4,10 +4,17 @@ import cleanMethod from '/imports/api/cleanMethods';
 import { Roles } from 'meteor/alanning:roles';
 
 import { completeFakeBorrower } from '/imports/api/borrowers/fakes';
-import { requestStep1, requestStep2, requestStep3 } from '/imports/api/loanrequests/fakes';
+import {
+  requestStep1,
+  requestStep2,
+  requestStep3,
+} from '/imports/api/loanrequests/fakes';
 import { getRandomOffer } from '/imports/api/offers/fakes';
 
-import { updateRequest, deleteRequest } from '/imports/api/loanrequests/methods';
+import {
+  updateRequest,
+  deleteRequest,
+} from '/imports/api/loanrequests/methods';
 import { deleteBorrower } from '/imports/api/borrowers/methods';
 import { deleteOffer, insertAdminOffer } from '/imports/api/offers/methods';
 
@@ -71,7 +78,9 @@ export default class DevPage extends Component {
         <button onClick={addStep1Request}>step 1 Request</button>
         <button onClick={addStep2Request}>step 2 Request</button>
         <button onClick={addStep3Request}>step 3 Request</button>
-        <button onClick={() => addStep3Request(false)}>step 3 Request, few files</button>
+        <button onClick={() => addStep3Request(false)}>
+          step 3 Request, few files
+        </button>
         <button onClick={() => purge(this.props)}>Purge</button>
       </div>
     );

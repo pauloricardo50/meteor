@@ -46,8 +46,16 @@ export default class Table extends Component {
           >
             <TableRow>
               {columns.map((column, i) =>
-                <TableHeaderColumn key={i} style={{ ...column.style, textAlign: column.align }}>
-                  {column.id && <T id={column.id} values={column.intlValues} list="table" />}
+                <TableHeaderColumn
+                  key={i}
+                  style={{ ...column.style, textAlign: column.align }}
+                >
+                  {column.id &&
+                    <T
+                      id={column.id}
+                      values={column.intlValues}
+                      list="table"
+                    />}
                 </TableHeaderColumn>,
               )}
             </TableRow>
@@ -62,15 +70,23 @@ export default class Table extends Component {
               <TableRow
                 key={row.id || i}
                 selected={row.id === selected}
-                onTouchTap={row.handleClick ? () => row.handleClick() : () => {}}
+                onTouchTap={
+                  row.handleClick ? () => row.handleClick() : () => {}
+                }
               >
                 {row.columns.map((column, j) =>
                   <TableRowColumn
                     key={j}
-                    style={{ ...columns[j].style, textAlign: columns[j].align, fontWeight: 400 }}
+                    style={{
+                      ...columns[j].style,
+                      textAlign: columns[j].align,
+                      fontWeight: 400,
+                    }}
                     className={column.className}
                   >
-                    {typeof columns[j].format === 'function' ? columns[j].format(column) : column}
+                    {typeof columns[j].format === 'function'
+                      ? columns[j].format(column)
+                      : column}
                   </TableRowColumn>,
                 )}
               </TableRow>,

@@ -74,17 +74,17 @@ export default class OffersTable extends Component {
       o =>
         this.props.showSpecial
           ? {
-            _id: o._id,
-            ...o.counterpartOffer,
-            conditions: o.conditions,
-            counterparts: o.counterparts,
-          }
+              _id: o._id,
+              ...o.counterpartOffer,
+              conditions: o.conditions,
+              counterparts: o.counterparts,
+            }
           : {
-            _id: o._id,
-            ...o.standardOffer,
-            conditions: o.conditions,
-            counterparts: [],
-          },
+              _id: o._id,
+              ...o.standardOffer,
+              conditions: o.conditions,
+              counterparts: [],
+            },
     );
     offers.sort((a, b) => a.interest10 - b.interest10);
     if (this.props.showSpecial) {
@@ -107,9 +107,9 @@ export default class OffersTable extends Component {
               offer.amortization,
               offer.conditions.length > 0 || offer.counterparts.length > 0
                 ? <ConditionsButton
-                  conditions={offer.conditions}
-                  counterparts={offer.counterparts}
-                />
+                    conditions={offer.conditions}
+                    counterparts={offer.counterparts}
+                  />
                 : '-',
             ],
           }))}

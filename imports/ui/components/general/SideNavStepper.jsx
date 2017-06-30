@@ -46,10 +46,15 @@ export default class SideNavStepper extends React.Component {
   };
 
   render() {
-    const steps = getSteps({ ...this.props, serverTime: this.state.serverTime });
+    const steps = getSteps({
+      ...this.props,
+      serverTime: this.state.serverTime,
+    });
     return (
       <div className="side-stepper">
-        <h5 className="fixed-size top-title"><T id="SideNavStepper.title" /></h5>
+        <h5 className="fixed-size top-title">
+          <T id="SideNavStepper.title" />
+        </h5>
         <ul className="list">
           {steps.map((s, i) =>
             <SideNavStepperStep

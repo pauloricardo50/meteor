@@ -6,7 +6,10 @@ import AutoForm from '/imports/ui/components/autoform/AutoForm.jsx';
 import PropertyFormArray from '/imports/js/arrays/PropertyFormArray';
 import DropzoneArray from '/imports/ui/components/general/DropzoneArray.jsx';
 import { requestFiles } from '/imports/js/arrays/files';
-import { disableForms, getPropertyCompletion } from '/imports/js/helpers/requestFunctions';
+import {
+  disableForms,
+  getPropertyCompletion,
+} from '/imports/js/helpers/requestFunctions';
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 import FakePropertyCompleter from '/imports/ui/components/general/FakePropertyCompleter.jsx';
@@ -35,19 +38,27 @@ const PropertyPage = props => {
     <ProcessPage {...props} stepNb={1} id="property">
       <section className="mask1 property-page">
         <h1 className="text-center">
-          <T id="PropertyPage.title" values={{ count: props.borrowers.length }} />
+          <T
+            id="PropertyPage.title"
+            values={{ count: props.borrowers.length }}
+          />
           <br />
           <small className={percent >= 1 && 'success'}>
-            <T id="PropertyPage.progress" values={{ value: percent }} />
-            {' '}
+            <T id="PropertyPage.progress" values={{ value: percent }} />{' '}
             {percent >= 1 && <span className="fa fa-check" />}
           </small>
         </h1>
 
-        <div className="description"><p><T id="PropertyPage.description" /></p></div>
+        <div className="description">
+          <p>
+            <T id="PropertyPage.description" />
+          </p>
+        </div>
 
         <div className="description">
-          <p><T id="Forms.mandatory" /></p>
+          <p>
+            <T id="Forms.mandatory" />
+          </p>
         </div>
 
         <DropzoneArray

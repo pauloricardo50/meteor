@@ -32,7 +32,8 @@ const styles = {
 };
 
 const TopNav = props => {
-  const isApp = props.history && props.history.location.pathname.slice(0, 4) === '/app';
+  const isApp =
+    props.history && props.history.location.pathname.slice(0, 4) === '/app';
 
   return (
     <div className="top-nav" style={{ zIndex: 20 }}>
@@ -44,16 +45,20 @@ const TopNav = props => {
           props.currentUser
             ? <TopNavDropdown {...props} />
             : <FlatButton
-              label={<T id="TopNav.login" />}
-              containerElement={<Link to="/login" />}
-              secondary
-              labelStyle={{ color: colors.primary }}
-              onTouchTap={() => track('TopNav - clicked login', {})}
-            />
+                label={<T id="TopNav.login" />}
+                containerElement={<Link to="/login" />}
+                secondary
+                labelStyle={{ color: colors.primary }}
+                onTouchTap={() => track('TopNav - clicked login', {})}
+              />
         }
       >
         <div className="logo">
-          <Link to="/home" className="link" onTouchTap={() => track('TopNav - clicked logo', {})}>
+          <Link
+            to="/home"
+            className="link"
+            onTouchTap={() => track('TopNav - clicked logo', {})}
+          >
             <img src="/img/logo_black.svg" alt="e-Potek" style={styles.image} />
           </Link>
         </div>

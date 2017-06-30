@@ -51,11 +51,20 @@ export default class VerifyPage extends Component {
     };
 
     cleanMethod('updateRequest', object, this.props.loanRequest._id, () => {
+      Meteor.call('adminActions.completeByActionId', {
+        requestId: this.props.loanRequest._id,
+        actionId: 'verify',
+      });
+
       Meteor.call('email.send', {
-        emailId: this.state.validated ? 'verificationPassed' : 'verificationError',
+        emailId: this.state.validated
+          ? 'verificationPassed'
+          : 'verificationError',
         requestId: this.props.loanRequest._id,
         userId: this.props.loanRequest.userId,
+        template: 'notification+CTA',
       });
+
       window.close();
     });
   };
@@ -75,9 +84,14 @@ export default class VerifyPage extends Component {
 
         <h3>Fichiers à ouvrir:</h3>
         <ul>
-          <li>Demande de prêt: <span className="bold">{this.props.loanRequest._id}</span></li>
+          <li>
+            Demande de prêt:{' '}
+            <span className="bold">{this.props.loanRequest._id}</span>
+          </li>
           {this.props.borrowers.map((b, i) =>
-            <li key={b._id}>Emprunteur {i + 1}: <span className="bold">{b._id}</span></li>,
+            <li key={b._id}>
+              Emprunteur {i + 1}: <span className="bold">{b._id}</span>
+            </li>,
           )}
         </ul>
 
@@ -110,19 +124,24 @@ export default class VerifyPage extends Component {
         <div className="text-center">
           <RaisedButton
             label="+"
-            onTouchTap={() => this.setState(prev => ({ comments: [...prev.comments, ''] }))}
+            onTouchTap={() =>
+              this.setState(prev => ({ comments: [...prev.comments, ''] }))}
             primary
             style={styles.buttons}
           />
           <RaisedButton
             label="-"
             onTouchTap={() =>
-              this.setState(prev => ({ comments: [...prev.comments].splice(-1, 1) }))}
+              this.setState(prev => ({
+                comments: [...prev.comments].splice(-1, 1),
+              }))}
             disabled={this.state.comments.length <= 1}
             style={styles.buttons}
           />
         </div>
-        <div className="description"><p>Ceci enverra un email au client en notification</p></div>
+        <div className="description">
+          <p>Ceci enverra un email au client en notification</p>
+        </div>
         <div className="text-center" style={styles.finalButton}>
           <RaisedButton
             label="Envoyer"

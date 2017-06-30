@@ -23,7 +23,9 @@ export const getStepValues = props => {
     nextStep = stepItems[index + 1];
     nextLink = nextStep && !nextStep.disabled && nextStep.link;
   } else {
-    nextStep = steps[props.stepNb + 1].items.length > 0 && steps[props.stepNb + 1].items[0];
+    nextStep =
+      steps[props.stepNb + 1].items.length > 0 &&
+      steps[props.stepNb + 1].items[0];
     nextLink = nextStep && nextStep.link;
   }
 
@@ -53,9 +55,15 @@ class ProcessPage extends Component {
   setBarProps = () => {
     const { intl } = this.props;
     const values = getStepValues(this.props);
-    this.barProps = { ...this.props, ...values, status: this.props.loanRequest.status };
+    this.barProps = {
+      ...this.props,
+      ...values,
+      status: this.props.loanRequest.status,
+    };
     DocHead.setTitle(
-      `${intl.formatMessage({ id: `steps.${this.barProps.currentStep.id}.title` })} | e-Potek`,
+      `${intl.formatMessage({
+        id: `steps.${this.barProps.currentStep.id}.title`,
+      })} | e-Potek`,
     );
   };
 

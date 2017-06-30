@@ -25,7 +25,13 @@ const styles = {
 const getList = conditionArray =>
   <ul style={styles.list}>
     {conditionArray
-      .map(c => <li style={styles.listItem}><h4 className="fixed-size">{c}</h4></li>)
+      .map(c =>
+        <li style={styles.listItem}>
+          <h4 className="fixed-size">
+            {c}
+          </h4>
+        </li>,
+      )
       .reduce((prev, curr) => [prev, <hr style={styles.hr} />, curr])}
   </ul>;
 
@@ -48,7 +54,11 @@ export default class ConditionsButton extends Component {
 
   render() {
     const actions = [
-      <FlatButton label={<T id="ConditionsButton.CTA" />} primary onTouchTap={this.handleClose} />,
+      <FlatButton
+        label={<T id="ConditionsButton.CTA" />}
+        primary
+        onTouchTap={this.handleClose}
+      />,
     ];
 
     return (
@@ -68,7 +78,9 @@ export default class ConditionsButton extends Component {
           <div className="conditions-modal">
             {this.props.conditions.length > 0 &&
               <div>
-                <h2 className="fixed-size"><T id="ConditionsButton.mandatory" /></h2>
+                <h2 className="fixed-size">
+                  <T id="ConditionsButton.mandatory" />
+                </h2>
                 {getList(this.props.conditions)}
               </div>}
 

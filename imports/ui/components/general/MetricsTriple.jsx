@@ -13,18 +13,22 @@ const MetricsTriple = props =>
         <div className="metric" key={i}>
           <div>
             <h4 className="secondary">
-              <AutoTooltip placement="top">{metric.name}</AutoTooltip>
-              {' '}
+              <AutoTooltip placement="top">{metric.name}</AutoTooltip>{' '}
               {metric.isValid !== undefined &&
                 (metric.isValid
                   ? <span className="fa fa-check success" />
                   : <span className="fa fa-times error" />)}
             </h4>
 
-            {!metric.isValid && <p className="error">{metric.error}</p>}
+            {!metric.isValid &&
+              <p className="error">
+                {metric.error}
+              </p>}
 
             <h1>
-              {props.percent ? `${Math.round(metric.value * 1000) / 10}%` : metric.value}
+              {props.percent
+                ? `${Math.round(metric.value * 1000) / 10}%`
+                : metric.value}
             </h1>
           </div>
         </div>,

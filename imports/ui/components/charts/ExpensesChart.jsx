@@ -3,7 +3,10 @@ import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
 import ReactHighcharts from 'react-highcharts';
 
-import { getInterests, getAmortization } from '/imports/js/helpers/finance-math';
+import {
+  getInterests,
+  getAmortization,
+} from '/imports/js/helpers/finance-math';
 import { getInterestsWithOffer } from '/imports/js/helpers/requestFunctions';
 import colors from '/imports/js/config/colors';
 
@@ -72,7 +75,9 @@ const update = that => {
           chartOptions: {
             plotOptions: {
               pie: {
-                dataLabels: { enabled: that.props.showLegend !== false || showLabels },
+                dataLabels: {
+                  enabled: that.props.showLegend !== false || showLabels,
+                },
                 showInLegend: that.props.showLegend || false,
               },
             },
@@ -89,18 +94,30 @@ class ExpensesChart extends Component {
 
     if (this.props.loanRequest) {
       let realRate = 0;
-      if (this.props.loanRequest.logic.lender && this.props.loanRequest.logic.lender.offerId) {
+      if (
+        this.props.loanRequest.logic.lender &&
+        this.props.loanRequest.logic.lender.offerId
+      ) {
         const offer = this.props.offers.find(
           o => o._id === this.props.loanRequest.logic.lender.offerId,
         );
         if (offer) {
-          realRate = getInterestsWithOffer(this.props.loanRequest, offer, false);
+          realRate = getInterestsWithOffer(
+            this.props.loanRequest,
+            offer,
+            false,
+          );
         }
       }
 
       this.state = {
-        interests: realRate || getInterests(this.props.loanRequest, this.props.interestRate),
-        amortization: getAmortization(this.props.loanRequest, this.props.borrowers).amortization,
+        interests:
+          realRate ||
+          getInterests(this.props.loanRequest, this.props.interestRate),
+        amortization: getAmortization(
+          this.props.loanRequest,
+          this.props.borrowers,
+        ).amortization,
         maintenance: this.props.loanRequest.property.value * 0.01 / 12,
       };
     } else {
@@ -126,7 +143,8 @@ class ExpensesChart extends Component {
         this.setState(
           {
             interests: getInterests(n.loanRequest, n.interestRate),
-            amortization: getAmortization(n.loanRequest, n.borrowers).amortization,
+            amortization: getAmortization(n.loanRequest, n.borrowers)
+              .amortization,
             maintenance: n.loanRequest.property.value * 0.01 / 12,
           },
           () => update(this),
@@ -145,7 +163,8 @@ class ExpensesChart extends Component {
   }
 
   getConfig = () => {
-    const total = this.state.interests + this.state.amortization + this.state.maintenance;
+    const total =
+      this.state.interests + this.state.amortization + this.state.maintenance;
     const that = this;
     const f = this.props.intl.formatMessage;
     const fN = this.props.intl.formatNumber;
@@ -190,7 +209,8 @@ class ExpensesChart extends Component {
             crop: false,
             enabled: true,
             distance: 10,
-            format: '<span class="bold">{point.name}</span><br />CHF {point.y:,.0f}',
+            format:
+              '<span class="bold">{point.name}</span><br />CHF {point.y:,.0f}',
             style: {
               color: '#333',
               fontSize: '14px',
@@ -229,7 +249,11 @@ class ExpensesChart extends Component {
           ],
         },
       ],
-      colors: [chartColors.interest, chartColors.amortization, chartColors.maintenance],
+      colors: [
+        chartColors.interest,
+        chartColors.amortization,
+        chartColors.maintenance,
+      ],
       lang: { thousandsSep: "'" },
       credits: { enabled: false },
       responsive: {
@@ -247,7 +271,9 @@ class ExpensesChart extends Component {
             chartOptions: {
               plotOptions: {
                 pie: {
-                  dataLabels: { enabled: this.props.showLegend !== false || true },
+                  dataLabels: {
+                    enabled: this.props.showLegend !== false || true,
+                  },
                   showInLegend: this.props.showLegend || false,
                 },
               },
@@ -261,7 +287,8 @@ class ExpensesChart extends Component {
   };
 
   addTitle = that => {
-    const total = this.state.interests + this.state.amortization + this.state.maintenance;
+    const total =
+      this.state.interests + this.state.amortization + this.state.maintenance;
     const f = this.props.intl.formatMessage;
     const fN = this.props.intl.formatNumber;
 

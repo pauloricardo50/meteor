@@ -12,7 +12,10 @@ import track from '/imports/js/helpers/analytics';
 // Required functions if react motion is used, which wraps the popover
 // and shifts it down or right depending on the placement
 const getPositionTop = (top, id, placement) => {
-  if ((placement === 'left' || placement === 'right') && document.getElementById(id)) {
+  if (
+    (placement === 'left' || placement === 'right') &&
+    document.getElementById(id)
+  ) {
     return top - 0.5 * document.getElementById(id).clientHeight;
   }
 
@@ -20,7 +23,10 @@ const getPositionTop = (top, id, placement) => {
 };
 
 const getPositionLeft = (left, id, placement) => {
-  if ((placement === 'top' || placement === 'bottom') && document.getElementById(id)) {
+  if (
+    (placement === 'top' || placement === 'bottom') &&
+    document.getElementById(id)
+  ) {
     return left - 0.5 * document.getElementById(id).clientWidth;
   }
 
@@ -54,11 +60,19 @@ export default class Tooltip extends Component {
             buttonStyle={{ marginTop: 16 }}
             label={dialogLabel || <FormattedMessage id="general.learnMore" />}
             autoFocus
-            onOpen={() => track('Tooltip - opened dialog', { tooltipId: baseId })}
+            onOpen={() =>
+              track('Tooltip - opened dialog', { tooltipId: baseId })}
           >
             <FormattedMessage
               id={pureId ? `${baseId}2` : `tooltip2.${baseId}`}
-              values={{ verticalSpace: <span><br /><br /></span> }}
+              values={{
+                verticalSpace: (
+                  <span>
+                    <br />
+                    <br />
+                  </span>
+                ),
+              }}
             />
           </DialogSimple>
         </span>

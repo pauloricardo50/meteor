@@ -5,21 +5,47 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { check, Match } from 'meteor/check';
 import LoanRequests from '/imports/api/loanrequests/loanrequests';
 
-import { from, fromEmail, defaultCTA_URL, emailFooter, getEmailContent } from './email-defaults';
+import {
+  from,
+  fromEmail,
+  defaultCTA_URL,
+  emailFooter,
+  getEmailContent,
+} from './email-defaults';
 import { addEmail, modifyEmail } from '/imports/api/loanrequests/methods';
 
 export const sendEmail = new ValidatedMethod({
   name: 'email.send',
-  validate({ emailId, requestId, template = 'notification', CTA_URL, sendAt, userId }) {
+  validate({
+    emailId,
+    requestId,
+    template = 'notification',
+    CTA_URL,
+    sendAt,
+    userId,
+    intlValues,
+  }) {
     check(emailId, String);
     check(requestId, String);
     check(template, Match.Optional(String));
     check(CTA_URL, Match.Optional(String));
     check(sendAt, Match.Optional(Date));
     check(userId, Match.Optional(String));
+    check(intlValues, Match.Optional(Object));
   },
-  run({ emailId, requestId, template = 'notification', CTA_URL, sendAt, userId }) {
-    const { email, subject, title, body, CTA } = getEmailContent(emailId);
+  run({
+    emailId,
+    requestId,
+    template = 'notification',
+    CTA_URL,
+    sendAt,
+    userId,
+    intlValues,
+  }) {
+    const { email, subject, title, body, CTA } = getEmailContent(
+      emailId,
+      intlValues,
+    );
     let toEmail;
 
     // When this is sent by an admin, use the userId to find the email to whom this should be sent to
@@ -51,7 +77,6 @@ export const sendEmail = new ValidatedMethod({
             type: 'to',
           },
         ],
-        global_merge_vars: [{ name: 'CTA_URL', content: defaultCTA_URL }],
         merge_vars: [
           {
             rcpt: toEmail,
@@ -59,7 +84,7 @@ export const sendEmail = new ValidatedMethod({
               { name: 'title', content: title },
               { name: 'body', content: body },
               { name: 'CTA', content: CTA },
-              { name: 'CTA_URL', content: CTA_URL }, // overrides the global_merge_vars if it is set}
+              { name: 'CTA_URL', content: CTA_URL || defaultCTA_URL }, // overrides the global_merge_vars if it is set}
             ],
           },
         ],
@@ -108,9 +133,12 @@ export const cancelScheduledEmail = new ValidatedMethod({
       }
 
       const content = JSON.parse(result.content);
-      return modifyEmail.call({ requestId, _id: content._id, status: 'cancelled' }, err => {
-        throw new Meteor.Error(err);
-      });
+      return modifyEmail.call(
+        { requestId, _id: content._id, status: 'cancelled' },
+        err => {
+          throw new Meteor.Error(err);
+        },
+      );
     });
   },
 });
@@ -124,16 +152,22 @@ export const rescheduleEmail = new ValidatedMethod({
   },
   run({ id, requestId, date }) {
     this.unblock();
-    Mandrill.messages.reschedule({ id, send_at: date.toISOString() }, (error, result) => {
-      if (error) {
-        throw new Meteor.Error(error);
-      }
+    Mandrill.messages.reschedule(
+      { id, send_at: date.toISOString() },
+      (error, result) => {
+        if (error) {
+          throw new Meteor.Error(error);
+        }
 
-      const content = JSON.parse(result.content);
-      return modifyEmail.call({ requestId, _id: content._id, sendAt }, err => {
-        throw new Meteor.Error(err);
-      });
-    });
+        const content = JSON.parse(result.content);
+        return modifyEmail.call(
+          { requestId, _id: content._id, sendAt },
+          err => {
+            throw new Meteor.Error(err);
+          },
+        );
+      },
+    );
   },
 });
 

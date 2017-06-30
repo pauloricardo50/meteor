@@ -30,8 +30,10 @@ const styles = {
 const AccountPage = props =>
   <Page id="AccountPage">
     <div className="mask1" style={styles.section}>
-
-      <span className="hidden-sm hidden-md hidden-lg" style={styles.mobileLogoutButton}>
+      <span
+        className="hidden-sm hidden-md hidden-lg"
+        style={styles.mobileLogoutButton}
+      >
         <RaisedButton
           label={<T id="general.logout" />}
           onTouchTap={() => Meteor.logout(() => props.history.push('/home'))}
@@ -40,7 +42,9 @@ const AccountPage = props =>
 
       <div style={styles.div}>
         <div className="form-group">
-          <h4 style={styles.h}><T id="AccountPage.email" /></h4>
+          <h4 style={styles.h}>
+            <T id="AccountPage.email" />
+          </h4>
           {/* <a><T id="AccountPage.change" /></a> */}
           <br />
           <p className="secondary">
@@ -49,7 +53,9 @@ const AccountPage = props =>
         </div>
 
         <div className="form-group">
-          <h4 style={styles.h}><T id="AccountPage.password" /></h4>
+          <h4 style={styles.h}>
+            <T id="AccountPage.password" />
+          </h4>
           <br />
           <PasswordChange />
         </div>

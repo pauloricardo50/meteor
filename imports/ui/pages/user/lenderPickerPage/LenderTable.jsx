@@ -9,6 +9,7 @@ import ConditionsButton from '/imports/ui/components/general/ConditionsButton.js
 import Table from '/imports/ui/components/general/Table.jsx';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
 import { insertAdminAction } from '/imports/api/adminActions/methods';
+import track from '/imports/js/helpers/analytics';
 
 const getOffers = props => {
   let newOffers = props.offers.map(offer => {
@@ -64,7 +65,8 @@ const handleSave = (props, offerId) => {
   const object = {};
 
   object['logic.insuranceUsePreset'] = props.formState.insuranceUsePreset;
-  object['logic.amortizationStrategyPreset'] = props.formState.amortizationStrategyPreset;
+  object['logic.amortizationStrategyPreset'] =
+    props.formState.amortizationStrategyPreset;
   object['logic.loanStrategyPreset'] = props.formState.loanStrategyPreset;
   object['general.loanTranches'] = props.formState.loanTranches;
   object['logic.lender.offerId'] = offerId;
@@ -73,7 +75,10 @@ const handleSave = (props, offerId) => {
     track('chose a lender', { offerId });
     if (!err) {
       // This will only be called the first time a lender is chosen
-      insertAdminAction.call({ requestId: props.loanRequest._id, actionId: 'lenderChosen' });
+      insertAdminAction.call({
+        requestId: props.loanRequest._id,
+        actionId: 'lenderChosen',
+      });
     }
   });
 };
@@ -105,7 +110,8 @@ const columns = [
     align: 'right',
     format: val =>
       <h3 className="fixed-size" style={{ margin: 0 }}>
-        <IntlNumber value={val} format="money" /> <T id="LenderTable.perMonth" />
+        <IntlNumber value={val} format="money" />{' '}
+        <T id="LenderTable.perMonth" />
       </h3>,
   },
   {
@@ -118,15 +124,17 @@ const columns = [
 export default class LenderTable extends Component {
   render() {
     const offers = getOffers(this.props);
-    const saved = this.props.loanRequest.logic.lender.offerId === this.props.formState.chosenLender;
+    const saved =
+      this.props.loanRequest.logic.lender.offerId ===
+      this.props.formState.chosenLender;
 
     return (
       <article>
         <h2 className="text-c">Les meilleurs prêteurs</h2>
         <div className="description">
           <p>
-            Voici les offres que vous avez reçues, vous pouvez modifier les valeurs en haut pour
-            changer les résultats.
+            Voici les offres que vous avez reçues, vous pouvez modifier les
+            valeurs en haut pour changer les résultats.
           </p>
         </div>
 
@@ -146,15 +154,18 @@ export default class LenderTable extends Component {
               offer.monthly,
               offer.conditions.length > 0 || offer.counterparts.length > 0
                 ? <ConditionsButton
-                  conditions={offer.conditions}
-                  counterparts={offer.counterparts}
-                />
+                    conditions={offer.conditions}
+                    counterparts={offer.counterparts}
+                  />
                 : '-',
             ],
           }))}
           selectable
           onRowSelection={rowIndex =>
-            handleChoose(rowIndex !== undefined ? offers[rowIndex]._id : undefined, this.props)}
+            handleChoose(
+              rowIndex !== undefined ? offers[rowIndex]._id : undefined,
+              this.props,
+            )}
           selected={this.props.formState.chosenLender}
         />
       </article>
