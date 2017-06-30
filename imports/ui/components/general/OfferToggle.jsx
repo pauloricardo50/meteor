@@ -40,9 +40,9 @@ const OfferToggle = props => {
       <Toggle
         toggled={props.value}
         style={{ margin: '0 16px', width: 'unset' }}
-        onToggle={() => {
+        onToggle={(event, isChecked) => {
           track('OfferToggle - clicked on offer toggle');
-          props.handleToggle();
+          props.handleToggle(null, isChecked);
         }}
       />
       <span
