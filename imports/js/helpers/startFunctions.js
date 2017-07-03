@@ -111,6 +111,14 @@ export const changeIncome = (state, o, income) => {
   return o;
 };
 
+export const start1Monthly = (income, fortune, property, borrow) =>
+  Math.max(
+    (property * constants.maintenanceReal +
+      (property - fortune) * constants.loanCostReal(borrow)) /
+      12,
+    0,
+  );
+
 //
 // The following functions are used in Start 2 Form
 //
@@ -121,7 +129,7 @@ export const isFinished = (state, minFortune) =>
   (state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= minFortune ||
     state.type === 'test');
 
-export const getProject = state => {
+export const getProject = (state) => {
   const property = state.propertyValue || calculateProperty(state) || 0;
   const project =
     property +
@@ -143,7 +151,7 @@ export const getBonusIncome = (arr = []) => {
   return 0.5 * (bestSum / 3) || 0;
 };
 
-export const getIncome = state => {
+export const getIncome = (state) => {
   const s = state;
   const bonus1 = getBonusIncome([s.bonus11, s.bonus21, s.bonus31, s.bonus41]);
   const bonus2 = getBonusIncome([s.bonus12, s.bonus22, s.bonus32, s.bonus42]);
@@ -235,15 +243,14 @@ export const calculateProperty = (
   income,
   usageType,
   toRetirement,
-) => {
-  return constants.maxProperty(
+) =>
+  constants.maxProperty(
     income,
     fortune,
     insuranceFortune,
     usageType,
     toRetirement,
   );
-};
 
 export const getLenderCount = (borrow, ratio) => {
   if (ratio > 0.38) {
@@ -268,7 +275,7 @@ export const getBorrow = (totalFortune, propAndWork, fees) =>
     Math.max((propAndWork - (totalFortune - fees)) / propAndWork, 0)) ||
   0;
 
-export const getRetirement = state => {
+export const getRetirement = (state) => {
   const multiple = state.borrowerCount > 1;
 
   const age = multiple ? state.oldestAge : state.age;
@@ -296,9 +303,10 @@ export const getMaxLoan = (
   const mR = constants.maxRatio;
   const i = constants.interests;
 
-  const maxLoan = state.usageType === 'secondary'
-    ? Math.floor(0.7 * propAndWork)
-    : Math.floor(0.8 * propAndWork);
+  const maxLoan =
+    state.usageType === 'secondary'
+      ? Math.floor(0.7 * propAndWork)
+      : Math.floor(0.8 * propAndWork);
 
   // Check LaTeX document, equation 15, and solve for the loan
   const calculatedMaxLoan =

@@ -22,6 +22,15 @@
   "HomePage.CTA.buy": "Faire une acquisition",
   "HomePage.CTA.compare": "Comparer des propriétés",
 
+  "ComparePage.CTA": "Ajouter un bien à comparer",
+
+  "Comparator.value": "Prix d'achat",
+  "Comparator.loan": "Prêt Hypothécaire",
+  "Comparator.ownFunds": "Fonds propres requis",
+  "Comparator.monthly": "Charges estimées",
+  "Comparator.createdAt": "Créé le",
+  "Comparator.name": "Nom",
+
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",
