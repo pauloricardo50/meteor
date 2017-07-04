@@ -201,6 +201,11 @@ svg.warning
 .disabled
   opacity 0.25
 
+.text-ellipsis
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
 .description
   display: flex;
   align-items: center;
@@ -220,6 +225,12 @@ svg.warning
   border-radius: 4px;
   &.primary-border
     border: 1px solid brand-primary;
+  &.error-border
+    border: 1px solid brand-danger;
+  &.warning-border
+    border: 1px solid brand-warning;
+  &.success-border
+    border: 1px solid brand-success;
 
 .mask1
   box-shadow: 0 0 4px 0 rgba(33,37,41,0.16);

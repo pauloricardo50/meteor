@@ -91,7 +91,9 @@ describe('loanRequests', () => {
           const modifiedRequest = LoanRequests.findOne({ _id: id });
           const length = request.general.partnersToAvoid.length;
 
-          expect(modifiedRequest.general.partnersToAvoid.length).to.equal(length + 1);
+          expect(modifiedRequest.general.partnersToAvoid.length).to.equal(
+            length + 1,
+          );
         });
       });
 
@@ -103,7 +105,9 @@ describe('loanRequests', () => {
           const modifiedRequest = LoanRequests.findOne({ _id: id });
           const length = request.general.partnersToAvoid.length;
 
-          expect(modifiedRequest.general.partnersToAvoid.length).to.equal(length - 1);
+          expect(modifiedRequest.general.partnersToAvoid.length).to.equal(
+            length - 1,
+          );
         });
       });
 
@@ -112,14 +116,15 @@ describe('loanRequests', () => {
           it('Should work', () => {
             const id = request._id;
 
-            expect(request.logic.auctionStarted).to.equal(false);
+            expect(!!request.logic.auctionStarted).to.equal(false);
             expect(request.logic.auctionStartTime).to.equal(undefined);
 
             startAuction.call({ id, object: {} });
             const modifiedRequest = LoanRequests.findOne({ _id: id });
 
             expect(modifiedRequest.logic.auctionStarted).to.be.true;
-            expect(modifiedRequest.logic.auctionStartTime instanceof Date).to.be.true;
+            expect(modifiedRequest.logic.auctionStartTime instanceof Date).to.be
+              .true;
 
             // Meteor.defer(() => {
             //   expect(modifiedRequest.emails.length).to.equal(2);
@@ -175,7 +180,12 @@ describe('loanRequests', () => {
       describe('addEmail', () => {
         it('adds an email', () => {
           const id = request._id;
-          const email = { requestId: id, emailId: 'test', _id: 'testId', status: 'sent' };
+          const email = {
+            requestId: id,
+            emailId: 'test',
+            _id: 'testId',
+            status: 'sent',
+          };
 
           expect(request.emails.length).to.equal(0);
 
@@ -186,7 +196,8 @@ describe('loanRequests', () => {
           expect(modifiedRequest.emails[0].emailId).to.equal(email.emailId);
           expect(modifiedRequest.emails[0]._id).to.equal(email._id);
           expect(modifiedRequest.emails[0].status).to.equal(email.status);
-          expect(modifiedRequest.emails[0].updatedAt instanceof Date).to.be.true;
+          expect(modifiedRequest.emails[0].updatedAt instanceof Date).to.be
+            .true;
           expect(Object.keys(modifiedRequest.emails[0]).length).to.equal(4);
         });
 
@@ -204,7 +215,9 @@ describe('loanRequests', () => {
           addEmail.call(email);
           const modifiedRequest = LoanRequests.findOne({ _id: id });
 
-          expect(modifiedRequest.emails[0].scheduledAt.getTime()).to.equal(date.getTime());
+          expect(modifiedRequest.emails[0].scheduledAt.getTime()).to.equal(
+            date.getTime(),
+          );
           expect(Object.keys(modifiedRequest.emails[0]).length).to.equal(5);
         });
       });
@@ -212,8 +225,17 @@ describe('loanRequests', () => {
       describe('modifyEmail', () => {
         it('modifies an email', () => {
           const id = request._id;
-          const email = { requestId: id, emailId: 'test', _id: 'testId', status: 'sent' };
-          const modification = { requestId: id, _id: 'testId', status: 'modified' };
+          const email = {
+            requestId: id,
+            emailId: 'test',
+            _id: 'testId',
+            status: 'sent',
+          };
+          const modification = {
+            requestId: id,
+            _id: 'testId',
+            status: 'modified',
+          };
 
           expect(request.emails.length).to.equal(0);
 
@@ -223,7 +245,9 @@ describe('loanRequests', () => {
           const modifiedRequest = LoanRequests.findOne({ _id: id });
 
           expect(Object.keys(modifiedRequest.emails[0]).length).to.equal(4);
-          expect(modifiedRequest.emails[0].status).to.equal(modification.status);
+          expect(modifiedRequest.emails[0].status).to.equal(
+            modification.status,
+          );
         });
       });
     });
@@ -233,7 +257,13 @@ describe('loanRequests', () => {
     let endDate;
 
     beforeEach(() => {
-      endDate = moment().year(2017).month(0).hours(23).minutes(59).seconds(59).milliseconds(0);
+      endDate = moment()
+        .year(2017)
+        .month(0)
+        .hours(23)
+        .minutes(59)
+        .seconds(59)
+        .milliseconds(0);
     });
 
     it('Should return wednesday night for a monday afternoon', () => {
@@ -241,7 +271,9 @@ describe('loanRequests', () => {
       const date = moment().year(2017).month(0).date(2).hours(14);
       endDate.date(4);
 
-      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+      expect(getAuctionEndTime(date).getTime()).to.equal(
+        endDate.toDate().getTime(),
+      );
     });
 
     it('Should return monday night for a thursday afternoon', () => {
@@ -249,7 +281,9 @@ describe('loanRequests', () => {
       const date = moment().year(2017).month(0).date(5).hours(14);
       endDate.date(9);
 
-      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+      expect(getAuctionEndTime(date).getTime()).to.equal(
+        endDate.toDate().getTime(),
+      );
     });
 
     it('Should return Tuesday night for a friday afternoon', () => {
@@ -257,7 +291,9 @@ describe('loanRequests', () => {
       const date = moment().year(2017).month(0).date(6).hours(14);
       endDate.date(10);
 
-      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+      expect(getAuctionEndTime(date).getTime()).to.equal(
+        endDate.toDate().getTime(),
+      );
     });
 
     it('Should return Tuesday night for a monday early morning', () => {
@@ -265,7 +301,9 @@ describe('loanRequests', () => {
       const date = moment().year(2017).month(0).date(2).hours(5);
       endDate.date(3);
 
-      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+      expect(getAuctionEndTime(date).getTime()).to.equal(
+        endDate.toDate().getTime(),
+      );
     });
 
     it('Should return Tuesday night for a saturday afternoon', () => {
@@ -273,7 +311,9 @@ describe('loanRequests', () => {
       const date = moment().year(2017).month(0).date(7).hours(14);
       endDate.date(10);
 
-      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+      expect(getAuctionEndTime(date).getTime()).to.equal(
+        endDate.toDate().getTime(),
+      );
     });
 
     it('Should return Tuesday night for a saturday early morning', () => {
@@ -281,7 +321,9 @@ describe('loanRequests', () => {
       const date = moment().year(2017).month(0).date(7).hours(5);
       endDate.date(10);
 
-      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+      expect(getAuctionEndTime(date).getTime()).to.equal(
+        endDate.toDate().getTime(),
+      );
     });
 
     it('Should return Tuesday night for a sunday afternoon', () => {
@@ -289,7 +331,9 @@ describe('loanRequests', () => {
       const date = moment().year(2017).month(0).date(8).hours(14);
       endDate.date(10);
 
-      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+      expect(getAuctionEndTime(date).getTime()).to.equal(
+        endDate.toDate().getTime(),
+      );
     });
 
     it('Should return Tuesday night for a sunday early morning', () => {
@@ -297,7 +341,9 @@ describe('loanRequests', () => {
       const date = moment().year(2017).month(0).date(8).hours(5);
       endDate.date(10);
 
-      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+      expect(getAuctionEndTime(date).getTime()).to.equal(
+        endDate.toDate().getTime(),
+      );
     });
   });
 });

@@ -40,6 +40,9 @@ export default class DialogSimple extends Component {
       modal,
       children,
       passProps,
+      bodyStyle,
+      contentStyle,
+      style,
     } = this.props;
 
     actions = actions || [
@@ -61,6 +64,7 @@ export default class DialogSimple extends Component {
       disableClose: this.disableClose,
       enableClose: this.enableClose,
       isCancel: this.state.isCancel,
+      handleClose: this.handleClose,
     };
 
     return (
@@ -82,8 +86,11 @@ export default class DialogSimple extends Component {
           modal={modal}
           open={this.state.open}
           onRequestClose={this.handleClose}
+          bodyStyle={bodyStyle}
+          contentStyle={contentStyle}
+          style={style}
         >
-          {children && passProps
+          {!!children && passProps
             ? React.cloneElement(children, { ...childProps })
             : children}
         </Dialog>
