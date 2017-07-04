@@ -9,7 +9,7 @@ import CompareTable, {
   getProperties,
 } from '../CompareTable.jsx';
 import CompareHeader from '../CompareHeader.jsx';
-import CompareColumn from '../CompareColumn.jsx';
+import CompareTableContent from '../CompareTableContent.jsx';
 
 describe('<CompareTable />', () => {
   it('renders', () => {
@@ -18,16 +18,11 @@ describe('<CompareTable />', () => {
     expect(wrapper.exists()).to.be.true;
   });
 
-  it('always renders a CompareHeader', () => {
+  it('always renders a CompareHeader and CompareTableContent', () => {
     const wrapper = shallow(<CompareTable properties={[]} />);
 
     expect(wrapper.find(CompareHeader).exists()).to.be.true;
-  });
-
-  it('renders as many CompareColumns as there are properties', () => {
-    const wrapper = shallow(<CompareTable properties={[{}, {}]} />);
-
-    expect(wrapper.find(CompareColumn).length).to.equal(2);
+    expect(wrapper.find(CompareTableContent).exists()).to.be.true;
   });
 
   describe('handleSort', () => {

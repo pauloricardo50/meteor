@@ -29,6 +29,7 @@ describe('<Comparator />', () => {
       income: '',
       fortune: '',
       borrowRatio: 0.8,
+      addedProperties: [],
     });
   });
 
