@@ -17,12 +17,12 @@ import {
   changeIncome,
   getBorrowRatio,
   getIncomeRatio,
+  getTheoreticalMonthly,
 } from '/imports/js/helpers/startFunctions';
 import { storageAvailable } from '/imports/js/helpers/browserFunctions';
-import constants from '/imports/js/config/constants';
+import Accordion from '/imports/ui/components/general/Accordion.jsx';
 
 import Start1Calculator from './startPage/Start1Calculator.jsx';
-import Accordion from '/imports/ui/components/general/Accordion.jsx';
 
 const getArray = (income, fortune, property, borrow, ratio) => {
   const incomeIcon = classnames({
@@ -128,15 +128,6 @@ export default class Start1Page extends Component {
     if (storageAvailable('localStorage')) {
       localStorage.ePotekSliders = JSON.stringify(this.state);
     }
-  }
-
-  getMonthly(income, fortune, property, borrow) {
-    return Math.max(
-      (property * constants.maintenance +
-        (property - fortune) * constants.loanCost(borrow)) /
-        12,
-      0,
-    );
   }
 
   getUrl = () => {
@@ -256,8 +247,7 @@ export default class Start1Page extends Component {
     const income = this.state.income.value;
     const fortune = this.state.fortune.value;
     const borrowRatio = getBorrowRatio(property, fortune);
-    const monthly = this.getMonthly(
-      income,
+    const monthly = getTheoreticalMonthly(
       fortune - property * 0.05,
       property,
       borrowRatio,

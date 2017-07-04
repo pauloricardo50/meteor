@@ -2,18 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { _ } from 'lodash';
-import { TransitionMotion, spring, presets } from 'react-motion';
 
 import CompareHeader from './CompareHeader.jsx';
 import CompareTableContent from './CompareTableContent.jsx';
 
 const defaultFields = [
   { id: 'name', type: 'text' },
-  { id: 'isValid', type: 'validator' },
+  { id: 'isValid', type: 'boolean' },
   { id: 'value', type: 'money' },
   { id: 'loan', type: 'money' },
   { id: 'ownFunds', type: 'money' },
-  { id: 'monthly', type: 'money' },
+  { id: 'realMonthly', type: 'money' },
   { id: 'createdAt', type: 'date' },
   { id: 'minergy', type: 'boolean' },
 ];

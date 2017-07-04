@@ -102,7 +102,7 @@ export default class GoogleMapsAutocomplete extends Component {
                 secondaryText={formattedSuggestion.secondaryText}
               />)}
             styles={defaultStyles}
-            onSelect={address => this.handleFormSubmit(null, address)}
+            onSelect={address => this.setState({ address })}
             onEnterKeyDown={address => this.handleFormSubmit(null, address)}
             highlightFirstSuggestion
             options={{

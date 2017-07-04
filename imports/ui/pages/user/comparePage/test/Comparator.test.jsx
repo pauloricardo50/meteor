@@ -21,18 +21,6 @@ describe('<Comparator />', () => {
     expect(wrapper.hasClass('comparator')).to.be.true;
   });
 
-  it('has default options in its state', () => {
-    const wrapper = shallow(<Comparator />);
-
-    expect(wrapper.state()).to.deep.equal({
-      useBorrowers: false,
-      income: '',
-      fortune: '',
-      borrowRatio: 0.8,
-      addedProperties: [],
-    });
-  });
-
   it('changes options when changeOptions is called', (done) => {
     const wrapper = shallow(<Comparator />);
     expect(typeof wrapper.instance().changeOptions).to.equal('function');

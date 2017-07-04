@@ -14,7 +14,7 @@ const FilterIcon = ({ filtered, handleFilter }) => {
   } else if (filtered && filtered.show === false) {
     icon = <VisibilityOff color={colors.primary} />;
   } else {
-    icon = <Visibility />;
+    icon = <Visibility color={colors.lightBorder} />;
   }
 
   return (

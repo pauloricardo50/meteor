@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  start1Monthly,
+  getRealMonthly,
+  getTheoreticalMonthly,
   getIncomeRatio,
   getBorrowRatio,
 } from '/imports/js/helpers/startFunctions';
@@ -58,8 +59,8 @@ export default class Comparator extends Component {
 
     this.state = {
       useBorrowers: false,
-      income: '',
-      fortune: '',
+      income: '80000',
+      fortune: '120000',
       borrowRatio: 0.8,
       addedProperties: [],
     };
@@ -84,10 +85,15 @@ export default class Comparator extends Component {
 
   modifyProperty = (property) => {
     const { income, fortune, borrowRatio } = this.state;
-    const monthly = start1Monthly(income, fortune, property.value, borrowRatio);
     const loan = borrowRatio * property.value;
     const ownFunds = (1 - borrowRatio + constants.notaryFees) * property.value;
-    const incomeRatio = getIncomeRatio(monthly, income);
+    const theoreticalMonthly = getTheoreticalMonthly(
+      ownFunds,
+      property.value,
+      borrowRatio,
+    );
+    const realMonthly = getRealMonthly(ownFunds, property.value, borrowRatio);
+    const incomeRatio = getIncomeRatio(theoreticalMonthly, income);
     const realBorrowRatio = getBorrowRatio(property.value, fortune);
 
     const {
@@ -98,7 +104,8 @@ export default class Comparator extends Component {
 
     return {
       ...property,
-      monthly,
+      realMonthly,
+      theoreticalMonthly,
       loan,
       ownFunds,
       isValid,

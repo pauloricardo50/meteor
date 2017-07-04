@@ -12,7 +12,9 @@ const SortIcon = ({ sorted, handleSort }) => {
   } else if (sorted && sorted.ascending === false) {
     icon = <MuiSortIcon color={colors.primary} className="rotate-270" />;
   } else {
-    icon = <MuiSortIcon className="flip-rotate-270" />;
+    icon = (
+      <MuiSortIcon color={colors.lightBorder} className="flip-rotate-270" />
+    );
   }
 
   return (
