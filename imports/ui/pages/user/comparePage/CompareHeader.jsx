@@ -17,18 +17,10 @@ const renderField = (props, field) => {
 
   if (type === 'boolean') {
     icon = (
-      <FilterIcon
-        filtered={props.filtering.find(filt => filt.id === id)}
-        handleFilter={() => props.handleFilter(id)}
-      />
+      <FilterIcon filtered={props.filtering.find(filt => filt.id === id)} />
     );
   } else {
-    icon = (
-      <SortIcon
-        sorted={props.sorting.find(sort => sort.id === id)}
-        handleSort={() => props.handleSort(id)}
-      />
-    );
+    icon = <SortIcon sorted={props.sorting.find(sort => sort.id === id)} />;
   }
 
   return (
@@ -58,6 +50,11 @@ const CompareHeader = props =>
         onMouseEnter={() => props.onHoverEnter(field.id)}
         onMouseLeave={props.onHoverLeave}
         className={props.hovered === field.id && 'hovered'}
+        onTouchTap={
+          field.type === 'boolean'
+            ? () => props.handleFilter(field.id)
+            : () => props.handleSort(field.id)
+        }
       >
         {renderField(props, field)}
       </li>),
