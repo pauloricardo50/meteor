@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import classnames from 'classnames';
+
 import {
   IntlNumber,
   IntlDate,
@@ -15,7 +17,7 @@ const renderField = (props, field) => {
 
   if (field.id === 'monthly') {
     return (
-      <span>
+      <span className="text-ellipsis">
         <IntlNumber value={value} format="money" />{' '}
         <span className="secondary">/mois</span>
       </span>
@@ -45,9 +47,15 @@ const renderField = (props, field) => {
 };
 
 const CompareColumn = props =>
-  (<ul className="mask1 compare-column default-column">
+  (<ul className="mask1 compare-column default-column" style={props.style}>
     {props.fields.map(field =>
-      (<li key={field.id}>
+      (<li
+        key={field.id}
+        className={classnames({
+          'text-ellipsis': true,
+          hovered: props.hovered === field.id,
+        })}
+      >
         {renderField(props, field)}
       </li>),
     )}
@@ -56,6 +64,13 @@ const CompareColumn = props =>
 CompareColumn.propTypes = {
   property: PropTypes.objectOf(PropTypes.any).isRequired,
   fields: PropTypes.arrayOf(PropTypes.object).isRequired,
+  style: PropTypes.objectOf(PropTypes.any),
+  hovered: PropTypes.string,
+};
+
+CompareColumn.defaultProps = {
+  style: {},
+  hovered: undefined,
 };
 
 export default CompareColumn;

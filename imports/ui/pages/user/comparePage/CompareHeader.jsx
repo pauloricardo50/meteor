@@ -53,7 +53,12 @@ const CompareHeader = props =>
       />
     </li>
     {props.fields.map(field =>
-      (<li key={field.id}>
+      (<li
+        key={field.id}
+        onMouseEnter={() => props.onHoverEnter(field.id)}
+        onMouseLeave={props.onHoverLeave}
+        className={props.hovered === field.id && 'hovered'}
+      >
         {renderField(props, field)}
       </li>),
     )}
@@ -71,11 +76,15 @@ CompareHeader.propTypes = {
   handleFilter: PropTypes.func.isRequired,
   handleReset: PropTypes.func.isRequired,
   addCustomField: PropTypes.func.isRequired,
+  onHoverEnter: PropTypes.func.isRequired,
+  onHoverLeave: PropTypes.func.isRequired,
+  hovered: PropTypes.string,
 };
 
 CompareHeader.defaultProps = {
   sorting: [],
   filtering: [],
+  hovered: undefined,
 };
 
 export default CompareHeader;

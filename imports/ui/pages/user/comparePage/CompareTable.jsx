@@ -106,6 +106,10 @@ export default class CompareTable extends Component {
     this.setState(nextState, callback);
   };
 
+  onHoverEnter = fieldId => this.setState({ hovered: fieldId });
+
+  onHoverLeave = () => this.setState({ hovered: undefined });
+
   render() {
     const { properties, addCustomField } = this.props;
     const { fields, sorting, filtering } = this.state;
@@ -122,9 +126,18 @@ export default class CompareTable extends Component {
           handleFilter={this.handleFilter}
           handleReset={this.handleReset}
           addCustomField={addCustomField}
+          onHoverEnter={this.onHoverEnter}
+          onHoverLeave={this.onHoverLeave}
+          hovered={this.state.hovered}
         />
 
-        <CompareTableContent properties={sortedProperties} fields={fields} />
+        <CompareTableContent
+          properties={sortedProperties}
+          fields={fields}
+          onHoverEnter={this.onHoverEnter}
+          onHoverLeave={this.onHoverLeave}
+          hovered={this.state.hovered}
+        />
       </div>
     );
   }

@@ -1364,6 +1364,7 @@ ul.request-map
   display: flex;
   flex-direction: column;
   li
+    transition: background-color 200ms $bezier;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1379,6 +1380,8 @@ ul.request-map
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+    &.hovered
+      background-color: light-grey;
   &.header-column
     margin-right: 80px;
     flex-shrink: 0;
