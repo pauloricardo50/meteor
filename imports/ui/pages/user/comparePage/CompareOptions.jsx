@@ -33,7 +33,13 @@ export default class CompareOptions extends Component {
     return (
       <div
         className="mask1"
-        style={{ display: 'flex', flexDirection: 'column', marginBottom: 16 }}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          marginBottom: 16,
+          width: '100%',
+          maxWidth: 800,
+        }}
       >
         <DefaultOptions {...this.props} />
         {showAdvanced && <AdvancedOptions {...this.props} />}
@@ -68,4 +74,6 @@ export default class CompareOptions extends Component {
   }
 }
 
-CompareOptions.propTypes = {};
+CompareOptions.propTypes = {
+  handleAddProperty: PropTypes.func.isRequired,
+};

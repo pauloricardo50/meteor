@@ -116,7 +116,7 @@ export default class Comparator extends Component {
 
   render() {
     return (
-      <section className="comparator">
+      <section className="comparator flex-col center">
         <CompareOptions
           options={this.state}
           changeOptions={this.changeOptions}

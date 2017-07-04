@@ -263,6 +263,16 @@ svg.warning
   box-shadow: 0px 40px 40px 0px rgba(0,0,0,0.16);
 
 
+.flex-row, .flex-col
+  display: flex;
+  flex-direction: row;
+  &.center
+    align-items: center;
+    justify-content: center;
+
+.flex-col
+  flex-direction: column;
+
 
 .top-nav
   position relative;

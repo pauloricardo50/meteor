@@ -118,7 +118,12 @@ export default class CompareTable extends Component {
 
     return (
       <div
-        style={{ display: 'flex', overflowX: 'scroll', position: 'relative' }}
+        style={{
+          display: 'flex',
+          overflowX: 'scroll',
+          position: 'relative',
+          width: '100%',
+        }}
       >
         <CompareHeader
           fields={fields}
