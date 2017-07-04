@@ -7,6 +7,7 @@ import {
   IntlNumber,
   IntlDate,
 } from '/imports/ui/components/general/Translation.jsx';
+import ValidatorItem from './ValidatorItem.jsx';
 
 const renderField = (props, field) => {
   const value = props.property[field.id];
@@ -21,6 +22,14 @@ const renderField = (props, field) => {
         <IntlNumber value={value} format="money" />{' '}
         <span className="secondary">/mois</span>
       </span>
+    );
+  } else if (field.id === 'isValid') {
+    return (
+      <ValidatorItem
+        isValid={value}
+        error={props.property.error}
+        errorClass={props.property.errorClass}
+      />
     );
   }
 
@@ -47,7 +56,14 @@ const renderField = (props, field) => {
 };
 
 const CompareColumn = props =>
-  (<ul className="mask1 compare-column default-column" style={props.style}>
+  (<ul
+    className={classnames({
+      'mask1 compare-column default-column': true,
+      [`${props.property.errorClass}-border`]: !props.property.isValid,
+      'success-border': props.property.isValid,
+    })}
+    style={props.style}
+  >
     {props.fields.map(field =>
       (<li
         key={field.id}

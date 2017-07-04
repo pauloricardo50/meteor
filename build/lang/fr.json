@@ -31,6 +31,7 @@
   "Comparator.createdAt": "Créé le",
   "Comparator.name": "Nom",
   "Comparator.minergy": "Minergie",
+  "Comparator.isValid": "Ça passe?",
   "general.validate": "Valider",
 
   "GoogleMapsAutocomplete.label": "Addresse de la propriété",
@@ -42,6 +43,11 @@
   "CompareOptions.showAdvanced": "Options Avancées",
   "CompareOptions.hideAdvanced": "Masquer Options",
   "PropertyAdder.add": "Ajouter",
+  "ValidatorItem.isValid": "Acquisition possible!",
+  "ValidatorItem.error.income": "Manque de revenus",
+  "ValidatorItem.error.incomeTight": "Revenus limite limite",
+  "ValidatorItem.error.fortune": "Manque de fortune",
+  "ValidatorItem.error.fortuneTight": "Possible avec prévoyance",
 
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",

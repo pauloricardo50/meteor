@@ -9,6 +9,7 @@ import CompareTableContent from './CompareTableContent.jsx';
 
 const defaultFields = [
   { id: 'name', type: 'text' },
+  { id: 'isValid', type: 'validator' },
   { id: 'value', type: 'money' },
   { id: 'loan', type: 'money' },
   { id: 'ownFunds', type: 'money' },

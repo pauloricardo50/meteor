@@ -21,7 +21,7 @@ export default class PropertyAdder extends Component {
 
   handleSubmit = () => {
     const { address, value, latlng } = this.state;
-    this.props.handleAddProperty(address, value, latlng, () => {
+    this.props.handleAddProperty(address, latlng, value, () => {
       this.props.handleClose();
     });
   };

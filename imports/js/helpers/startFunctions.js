@@ -119,6 +119,11 @@ export const start1Monthly = (income, fortune, property, borrow) =>
     0,
   );
 
+export const getIncomeRatio = (monthly, income) => monthly / (income / 12);
+
+export const getBorrowRatio = (property, fortune) =>
+  Math.max((property * 1.05 - fortune) / property, 0);
+
 //
 // The following functions are used in Start 2 Form
 //

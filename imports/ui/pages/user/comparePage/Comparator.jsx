@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { start1Monthly } from '/imports/js/helpers/startFunctions';
+import {
+  start1Monthly,
+  getIncomeRatio,
+  getBorrowRatio,
+} from '/imports/js/helpers/startFunctions';
+import { validateRatiosCompletely } from '/imports/js/helpers/requestFunctions';
+import constants from '/imports/js/config/constants';
 
 import CompareTable from './CompareTable.jsx';
 import CompareOptions from './CompareOptions.jsx';
@@ -55,6 +61,7 @@ export default class Comparator extends Component {
       income: '',
       fortune: '',
       borrowRatio: 0.8,
+      addedProperties: [],
     };
   }
 
@@ -63,20 +70,40 @@ export default class Comparator extends Component {
 
   addCustomField = name => true;
 
-  handleAddProperty = (value, address, latlng, callback) => {
-    callback();
+  handleAddProperty = (address, latlng, value, callback) => {
+    this.setState(
+      prev => ({
+        addedProperties: [
+          ...prev.addedProperties,
+          { name: address.split(',')[0], value, latlng, createdAt: new Date() },
+        ],
+      }),
+      callback,
+    );
   };
 
   modifyProperty = (property) => {
     const { income, fortune, borrowRatio } = this.state;
     const monthly = start1Monthly(income, fortune, property.value, borrowRatio);
     const loan = borrowRatio * property.value;
-    const ownFunds = (1 - borrowRatio) * property.value;
+    const ownFunds = (1 - borrowRatio + constants.notaryFees) * property.value;
+    const incomeRatio = getIncomeRatio(monthly, income);
+    const realBorrowRatio = getBorrowRatio(property.value, fortune);
+
+    const {
+      isValid,
+      message: error,
+      className: errorClass,
+    } = validateRatiosCompletely(incomeRatio, realBorrowRatio);
+
     return {
       ...property,
       monthly,
       loan,
       ownFunds,
+      isValid,
+      error,
+      errorClass,
     };
   };
 
@@ -91,7 +118,9 @@ export default class Comparator extends Component {
         <CompareTable
           {...this.props}
           addCustomField={this.addCustomField}
-          properties={properties.map(this.modifyProperty)}
+          properties={[...properties, ...this.state.addedProperties].map(
+            this.modifyProperty,
+          )}
         />
       </section>
     );
