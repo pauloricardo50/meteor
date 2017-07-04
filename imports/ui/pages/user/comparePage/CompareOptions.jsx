@@ -3,8 +3,18 @@ import PropTypes from 'prop-types';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
+import DialogSimple from '/imports/ui/components/general/DialogSimple.jsx';
 import DefaultOptions from './DefaultOptions.jsx';
 import AdvancedOptions from './AdvancedOptions.jsx';
+import PropertyAdder from './PropertyAdder.jsx';
+
+const styles = {
+  button: {
+    marginLeft: 8,
+    marginBottom: 8,
+  },
+};
 
 export default class CompareOptions extends Component {
   constructor(props) {
@@ -18,6 +28,8 @@ export default class CompareOptions extends Component {
 
   render() {
     const { showAdvanced } = this.state;
+    const { handleAddProperty } = this.props;
+
     return (
       <div
         className="mask1"
@@ -29,11 +41,27 @@ export default class CompareOptions extends Component {
           <RaisedButton
             onClick={this.handleClick}
             label={
-              showAdvanced
-                ? 'CompareOptions.hideAdvanced'
-                : 'CompareOptions.showAdvanced'
+              <T
+                id={
+                  showAdvanced
+                    ? 'CompareOptions.hideAdvanced'
+                    : 'CompareOptions.showAdvanced'
+                }
+              />
             }
+            style={styles.button}
           />
+          <DialogSimple
+            primary
+            label={<T id="CompareOptions.addProperty" />}
+            title={<T id="CompareOptions.addProperty" />}
+            buttonStyle={styles.button}
+            passProps
+            actions={[]}
+            bodyStyle={{ overflowY: 'visible' }} // required to show the google place autocomplete
+          >
+            <PropertyAdder handleAddProperty={handleAddProperty} />
+          </DialogSimple>
         </div>
       </div>
     );

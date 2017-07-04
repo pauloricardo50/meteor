@@ -72,3 +72,6 @@ accounts-password
 wylio:mandrill
 okgrow:analytics
 practicalmeteor:mocha-console-runner
+dburles:google-maps
+react-meteor-data
+random

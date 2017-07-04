@@ -26,7 +26,7 @@ const CompareTableContent = (props) => {
                 defaultStyle={{ x: 0 }}
                 style={{
                   // Don't use 'i' here, it will not represent the proper
-                  // index of this element
+                  // index of this element after elements are transitioning out
                   x: spring(getIndexForName(properties, property.name) * 256),
                 }}
                 key={key}

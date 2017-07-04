@@ -12,19 +12,37 @@ const properties = [
     name: 'Chemin des Paquerettes 13',
     value: 519000,
     createdAt: new Date().setHours(now.getHours() - 1),
-    bool: true,
+    minergy: true,
   },
   {
     name: 'Rue du Four 3',
     value: 467000,
-    createdAt: new Date().setHours(now.getHours() + 3),
-    bool: false,
+    createdAt: new Date().setHours(now.getHours() - 3),
+    minergy: false,
   },
   {
     name: 'Avenue du parc 17',
     value: 564000,
     createdAt: new Date(),
-    bool: true,
+    minergy: true,
+  },
+  {
+    name: 'Chemin du Lac 9',
+    value: 434000,
+    createdAt: new Date().setHours(now.getHours() - 30),
+    minergy: true,
+  },
+  {
+    name: 'Place Rousseau 4',
+    value: 532000,
+    createdAt: new Date().setHours(now.getHours() - 67),
+    minergy: true,
+  },
+  {
+    name: 'Rue des vignerons 17',
+    value: 604000,
+    createdAt: new Date().setHours(now.getHours() - 45),
+    minergy: false,
   },
 ];
 
@@ -40,16 +58,16 @@ export default class Comparator extends Component {
     };
   }
 
-  changeOptions = (key, value, callback) => {
-    console.log(key, value);
+  changeOptions = (key, value, callback) =>
     this.setState({ [key]: value }, callback);
+
+  addCustomField = name => true;
+
+  handleAddProperty = (value, address, latlng, callback) => {
+    callback();
   };
 
-  addCustomField = name => {
-    return true;
-  };
-
-  modifyProperty = property => {
+  modifyProperty = (property) => {
     const { income, fortune, borrowRatio } = this.state;
     const monthly = start1Monthly(income, fortune, property.value, borrowRatio);
     const loan = borrowRatio * property.value;
@@ -68,6 +86,7 @@ export default class Comparator extends Component {
         <CompareOptions
           options={this.state}
           changeOptions={this.changeOptions}
+          handleAddProperty={this.handleAddProperty}
         />
         <CompareTable
           {...this.props}

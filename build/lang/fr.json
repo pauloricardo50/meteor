@@ -30,6 +30,18 @@
   "Comparator.monthly": "Charges estimées",
   "Comparator.createdAt": "Créé le",
   "Comparator.name": "Nom",
+  "Comparator.minergy": "Minergie",
+  "general.validate": "Valider",
+
+  "GoogleMapsAutocomplete.label": "Addresse de la propriété",
+
+  "DefaultOptions.income": "Revenus annuels bruts",
+  "DefaultOptions.fortune": "Fonds propres",
+
+  "CompareOptions.addProperty": "Ajouter une propriété",
+  "CompareOptions.showAdvanced": "Options Avancées",
+  "CompareOptions.hideAdvanced": "Masquer Options",
+  "PropertyAdder.add": "Ajouter",
 
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",

@@ -14,7 +14,7 @@ const defaultFields = [
   { id: 'ownFunds', type: 'money' },
   { id: 'monthly', type: 'money' },
   { id: 'createdAt', type: 'date' },
-  { id: 'bool', type: 'boolean' },
+  { id: 'minergy', type: 'boolean' },
 ];
 
 export const sortFunc = (array, sorting) =>
@@ -117,7 +117,9 @@ export default class CompareTable extends Component {
     const sortedProperties = getProperties(properties, filtering, sorting);
 
     return (
-      <div style={{ display: 'flex', overflowX: 'scroll' }}>
+      <div
+        style={{ display: 'flex', overflowX: 'scroll', position: 'relative' }}
+      >
         <CompareHeader
           fields={fields}
           sorting={sorting}

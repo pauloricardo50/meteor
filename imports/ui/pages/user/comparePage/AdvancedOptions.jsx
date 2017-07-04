@@ -5,6 +5,7 @@ import Slider from 'material-ui/Slider';
 
 const AdvancedOptions = props =>
   (<div>
+    <hr />
     <Slider />
   </div>);
 

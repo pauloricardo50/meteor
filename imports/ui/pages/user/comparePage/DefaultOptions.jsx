@@ -1,11 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import TextField from 'material-ui/TextField';
-
-import MaskedInput from 'react-text-mask';
-import { swissFrancMask } from '/imports/js/helpers/textMasks';
-import { toNumber } from '/imports/js/helpers/conversionFunctions';
+import InputMoney from '/imports/ui/components/general/InputMoney.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 import BorrowerOptions from './BorrowerOptions.jsx';
 
 const textFields = ['income', 'fortune'];
@@ -14,24 +11,25 @@ const DefaultOptions = ({ options, changeOptions }) => {
   if (options.useBorrowers) {
     return <BorrowerOptions />;
   }
-  console.log(options);
+
   return (
-    <div>
+    <div
+      style={{
+        margin: '20px 0',
+        display: 'flex',
+        justifyContent: 'space-around',
+        flexWrap: 'wrap',
+      }}
+    >
       {textFields.map(field =>
-        (<TextField
-          label={`DefaultOptions.${field}`}
+        (<InputMoney
           key={field}
+          label={<T id={`DefaultOptions.${field}`} />}
           id={field}
-          type="text"
-          onChange={e => changeOptions(field, toNumber(e.target.value))}
-        >
-          <MaskedInput
-            value={options[field]}
-            mask={swissFrancMask}
-            guide
-            pattern="[0-9]*"
-          />
-        </TextField>),
+          handleChange={changeOptions}
+          currentValue={options[field]}
+          floatingLabelFixed
+        />),
       )}
     </div>
   );
