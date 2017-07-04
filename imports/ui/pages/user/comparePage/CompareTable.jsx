@@ -117,14 +117,7 @@ export default class CompareTable extends Component {
     const sortedProperties = getProperties(properties, filtering, sorting);
 
     return (
-      <div
-        style={{
-          display: 'flex',
-          overflowX: 'scroll',
-          position: 'relative',
-          width: '100%',
-        }}
-      >
+      <div className="compare-table">
         <CompareHeader
           fields={fields}
           sorting={sorting}

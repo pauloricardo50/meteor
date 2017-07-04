@@ -16,7 +16,7 @@ const renderField = (props, field) => {
     return '-';
   }
 
-  if (field.id === 'monthly') {
+  if (field.id === 'realMonthly') {
     return (
       <span className="text-ellipsis">
         <IntlNumber value={value} format="money" />{' '}
