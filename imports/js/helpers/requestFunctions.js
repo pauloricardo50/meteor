@@ -194,10 +194,10 @@ export const validateRatios = (incomeRatio, borrowRatio) => {
 
   if (incomeRatioSafe > 0.38) {
     throw new Error('income');
-  } else if (incomeRatioSafe > 1 / 3) {
-    throw new Error('incomeTight');
   } else if (borrowRatioSafe > 0.9) {
     throw new Error('fortune');
+  } else if (incomeRatioSafe > 1 / 3) {
+    throw new Error('incomeTight');
   } else if (borrowRatioSafe > 0.8) {
     throw new Error('fortuneTight');
   }

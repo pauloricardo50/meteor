@@ -1357,13 +1357,13 @@ ul.request-map
   // width: 100%;
 
 
-.compare-column
+ul.compare-column
   list-style: none;
   width: 240px;
   padding: 0 !important;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-x: hidden;
   li
     transition: background-color 200ms $bezier, transform 200ms $bezier;
     display: flex;
@@ -1375,6 +1375,7 @@ ul.request-map
     width: 100%;
     padding: 0 16px;
     transform: scale(1);
+    overflow-x: hidden;
     .content
       display: flex;
       align-items: center;
