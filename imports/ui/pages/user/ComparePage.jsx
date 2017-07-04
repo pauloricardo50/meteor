@@ -30,7 +30,11 @@ export default class ComparePage extends Component {
       );
     }
 
-    return <Comparator {...this.props} />;
+    return (
+      <div style={{ padding: 16 }}>
+        <Comparator {...this.props} />
+      </div>
+    );
   }
 }
 
@@ -39,5 +43,5 @@ ComparePage.propTypes = {
 };
 
 ComparePage.defaultProps = {
-  properties: [{}],
+  properties: [{}], // TODO: remove this empty object
 };
