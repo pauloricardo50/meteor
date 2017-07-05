@@ -156,6 +156,7 @@ export default class Comparator extends Component {
             const property = this.state.addedProperties.find(
               p => p.name === name,
             );
+            console.log(property.createdAt);
             this.setState(prev => ({
               addedProperties: [
                 ...prev.addedProperties.filter(p => p.name !== name),

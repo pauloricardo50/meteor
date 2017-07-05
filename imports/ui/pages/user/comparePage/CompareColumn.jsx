@@ -15,7 +15,7 @@ const renderField = (props, field) => {
 
   if (value === undefined) {
     return '-';
-  } else if (typeof value === 'object') {
+  } else if (typeof value === 'object' && field.type !== 'date') {
     return (
       <div className="flex-col center">
         <span className="text-ellipsis">
