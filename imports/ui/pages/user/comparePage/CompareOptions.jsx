@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import RaisedButton from 'material-ui/RaisedButton';
+import Toggle from 'material-ui/Toggle';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import DialogSimple from '/imports/ui/components/general/DialogSimple.jsx';
@@ -28,21 +29,29 @@ export default class CompareOptions extends Component {
 
   render() {
     const { showAdvanced } = this.state;
-    const { handleAddProperty } = this.props;
+    const { handleAddProperty, options, changeOptions } = this.props;
 
     return (
       <div
-        className="mask1"
+        className="mask1 flex-col center"
         style={{
-          display: 'flex',
-          flexDirection: 'column',
           marginBottom: 16,
           width: '100%',
           maxWidth: 700,
         }}
       >
+        <Toggle
+          style={{ width: '100%', maxWidth: 200 }}
+          label={<T id="CompareOptions.useBorrowers" />}
+          toggled={!options.useBorrowers}
+          onToggle={(event, isChecked) =>
+            changeOptions('useBorrowers', !isChecked)}
+        />
+
         <DefaultOptions {...this.props} />
+
         {showAdvanced && <AdvancedOptions {...this.props} />}
+
         <div
           className="text-center"
           style={showAdvanced ? { marginTop: 20 } : {}}

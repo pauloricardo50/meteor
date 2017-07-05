@@ -34,6 +34,8 @@
   "Forms.secondary": "Résidence secondaire",
   "Forms.investment": "Bien d'investissement",
 
+  "CompareOptions.useBorrowers": "Calculs simplifiés",
+
   "FieldToggles.label": "Choisir les champs",
   "FieldToggles.title": "Choisir quels champs afficher",
   "FieldToggles.defaultFields": "Champs e-Potek",

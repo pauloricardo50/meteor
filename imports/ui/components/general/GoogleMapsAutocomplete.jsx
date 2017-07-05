@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Meteor } from 'meteor/meteor';
 
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -71,6 +72,7 @@ export default class GoogleMapsAutocomplete extends Component {
         this.props.handleChange('isValidPlace', true);
         this.props.handleChange('latlng', latlng);
         this.props.handleChange('address', this.state.address);
+        Meteor.defer(() => window.dispatchEvent(new Event('resize')));
       })
       .catch((error) => {
         this.props.handleChange('loading', false);

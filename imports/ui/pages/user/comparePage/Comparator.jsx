@@ -83,6 +83,7 @@ export default class Comparator extends Component {
       addedProperties: [],
       customFields: [],
       hiddenFields: ['realBorrowRatio', 'incomeRatio', 'theoreticalMonthly'],
+      borrowers: [],
     };
     this.setupProperties(this.props, this.state);
     this.filterFields(this.props, this.state);
@@ -134,7 +135,13 @@ export default class Comparator extends Component {
       prev => ({
         addedProperties: [
           ...prev.addedProperties,
-          { name: address.split(',')[0], value, latlng, createdAt: new Date() },
+          {
+            name: address.split(',')[0],
+            address,
+            value,
+            latlng,
+            createdAt: new Date(),
+          },
         ],
       }),
       callback,

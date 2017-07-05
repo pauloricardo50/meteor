@@ -20,8 +20,6 @@ const FieldToggles = ({ allFields, hiddenFields, toggleField }) => {
     field => field.id.indexOf('custom') < 0,
   );
 
-  console.log(defaultFields, customFields);
-
   return (
     <div className="flex-col center">
       <h3>

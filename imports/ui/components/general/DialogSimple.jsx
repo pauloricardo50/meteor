@@ -91,6 +91,7 @@ export default class DialogSimple extends Component {
           contentStyle={contentStyle}
           style={style}
           autoScrollBodyContent={autoScroll}
+          repositionOnUpdate
         >
           {!!children && passProps
             ? React.cloneElement(children, { ...childProps })

@@ -6,6 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import TextInput from '/imports/ui/components/general/TextInput.jsx';
 import GoogleMapsAutocomplete from '/imports/ui/components/general/GoogleMapsAutocomplete.jsx';
 import GoogleMapContainer from '/imports/ui/components/general/GoogleMapContainer.jsx';
+import GoogleMap from '/imports/ui/components/general/GoogleMap.jsx';
 
 import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
 
@@ -39,6 +40,8 @@ export default class PropertyAdder extends Component {
       >
         <GoogleMapContainer>
           <GoogleMapsAutocomplete handleChange={this.handleChange} />
+          {!!(isValidPlace && latlng) &&
+            <GoogleMap latlng={latlng} address={address} />}
         </GoogleMapContainer>
 
         {loading && <LoadingComponent />}
