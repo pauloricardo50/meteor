@@ -67,6 +67,7 @@ class CustomFieldAdder extends Component {
     return (
       <div className="flex-col center">
         <AutoComplete
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
           floatingLabelText={<T id="CustomFieldAdder.name" />}
           searchText={name}
           onUpdateInput={(value) => {

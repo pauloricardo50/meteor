@@ -60,7 +60,7 @@ export default class Comparator extends Component {
     this.state = {
       useBorrowers: false,
       income: '80000',
-      fortune: '120000',
+      fortune: '110000',
       borrowRatio: 0.8,
       addedProperties: [],
       customFields: [],

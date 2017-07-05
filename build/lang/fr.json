@@ -607,6 +607,7 @@
   "tooltip.thirdPillar": "XXX",
   "tooltip.usageType": "Les résidences principales permettent l'utilisation du 2ème pilier en tant que fonds propres",
   "tooltip.yearlyIncome": "La somme de votre salaire, et toute autre source de revenus",
+  "tooltip.ownFundsRequired": "Les fonds propres nécessaires de votre part pour financer ce projet, y compris les frais de notaire",
   "tooltip2.consideredBonus": "Les bonus étant des montants variables, les banques ne les comptent pas à 100%.{verticalSpace}Si vous avez 4 bonus sur les années précédentes de 10, 20, 30 et 40 CHF, nous utiliserons 50% de la moyenne de 20, 30 et 40, soit 15 CHF.",
   "tooltip2.finma": "La FINMA détermine quelles sont les conditions minimales pour que vous puissiez obtenir un prêt, pour vous protéger d'éventuelles remontées imprévues des taux hypothécaires.{verticalSpace}Les taux sont bas aujourd'hui, mais si vos finances ne sont pas assez solides et que les taux montent, vous pourriez avoir de sérieuses difficultés financières.",
   "tooltip2.notaryFees": "Les frais de notaire sont compris d'une multitude de frais supplémentaires que vous devrez couvrir avec votre épargne, il est impossible d'utiliser sa prévoyance ou son prêt hypothécaire pour les payer. ",
