@@ -45,7 +45,7 @@ export default class CompareOptions extends Component {
         {showAdvanced && <AdvancedOptions {...this.props} />}
         <div className="text-center">
           <RaisedButton
-            onClick={this.handleClick}
+            onTouchTap={() => this.handleClick()}
             label={
               <T
                 id={

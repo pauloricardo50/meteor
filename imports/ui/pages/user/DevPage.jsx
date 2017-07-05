@@ -59,7 +59,7 @@ const addStep3Request = (completeFiles = true) => {
   });
 };
 
-const purge = props => {
+const purge = (props) => {
   props.loanRequests.forEach(r => deleteRequest.call({ id: r._id }));
   props.borrowers.forEach(r => deleteBorrower.call({ id: r._id }));
   props.offers.forEach(r => deleteOffer.call({ id: r._id }));
@@ -75,13 +75,13 @@ export default class DevPage extends Component {
   render() {
     return (
       <div>
-        <button onClick={addStep1Request}>step 1 Request</button>
-        <button onClick={addStep2Request}>step 2 Request</button>
-        <button onClick={addStep3Request}>step 3 Request</button>
-        <button onClick={() => addStep3Request(false)}>
+        <button onTouchTap={addStep1Request}>step 1 Request</button>
+        <button onTouchTap={addStep2Request}>step 2 Request</button>
+        <button onTouchTap={addStep3Request}>step 3 Request</button>
+        <button onTouchTap={() => addStep3Request(false)}>
           step 3 Request, few files
         </button>
-        <button onClick={() => purge(this.props)}>Purge</button>
+        <button onTouchTap={() => purge(this.props)}>Purge</button>
       </div>
     );
   }

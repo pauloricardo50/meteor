@@ -23,7 +23,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 // La banque ne va pas dire non -> envoyer tous les documents
 // Banque revient en 2 jours
 
-const getEmail = props => {
+const getEmail = (props) => {
   const subject = `[e-Potek] ${props.loanRequest.property.address1}`;
   const body = 'Bonjour,';
   return `mailto:?subject=${subject}&body=${body}`;
@@ -39,14 +39,17 @@ export default class ContactLendersPage extends Component {
           <RaisedButton
             label="Télécharger PDF"
             primary
-            onClick={e => downloadPDF(e, this.props.loanRequest._id)}
+            onTouchTap={e => downloadPDF(e, this.props.loanRequest._id)}
           />
         </div>
 
         <div className="text-center" style={{ margin: '40px 0' }}>
-          <RaisedButton label="Template email" primary href={getEmail(this.props)} />
+          <RaisedButton
+            label="Template email"
+            primary
+            href={getEmail(this.props)}
+          />
         </div>
-
       </section>
     );
   }

@@ -187,10 +187,16 @@ export const getPropertyCompletion = (loanRequest, borrowers) =>
     filesPercent(loanRequest, requestFiles, 'auction')) /
   2;
 
-export const validateRatios = (incomeRatio, borrowRatio) => {
+export const validateRatios = (incomeRatio, borrowRatio, borrowRatioWanted) => {
   // To prevent rounding errors
   const incomeRatioSafe = incomeRatio - 0.001;
   const borrowRatioSafe = borrowRatio - 0.001;
+
+  if (borrowRatioWanted && borrowRatioWanted !== 0.8) {
+    if (borrowRatioSafe > borrowRatioWanted) {
+      throw new Error('fortune');
+    }
+  }
 
   if (incomeRatioSafe > 0.38) {
     throw new Error('income');
@@ -203,9 +209,13 @@ export const validateRatios = (incomeRatio, borrowRatio) => {
   }
 };
 
-export const validateRatiosCompletely = (incomeRatio, borrowRatio) => {
+export const validateRatiosCompletely = (
+  incomeRatio,
+  borrowRatio,
+  borrowRatioWanted,
+) => {
   try {
-    validateRatios(incomeRatio, borrowRatio);
+    validateRatios(incomeRatio, borrowRatio, borrowRatioWanted);
     return {
       isValid: true,
       message: 'valid',

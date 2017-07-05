@@ -42,7 +42,7 @@ const CompareHeader = props =>
         onTouchTap={props.handleReset}
         icon={<LoopIcon style={{ color: 'white' }} />}
         style={{ color: 'white' }}
-        disabled={props.filtering.length === 0 && props.sorting.length === 0}
+        // disabled={props.filtering.length === 0 && props.sorting.length === 0}
       />
     </li>
     {props.fields.map(field =>

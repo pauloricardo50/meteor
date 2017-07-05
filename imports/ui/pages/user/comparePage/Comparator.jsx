@@ -78,7 +78,7 @@ export default class Comparator extends Component {
           {
             name,
             type,
-            id: `custom${prev.customFields.length}${1}`,
+            id: `custom${prev.customFields.length}${1}`, // FIXME: This will fail if fields are added, deleted, and added again
             custom: true,
           },
         ],
@@ -115,7 +115,7 @@ export default class Comparator extends Component {
       isValid,
       message: error,
       className: errorClass,
-    } = validateRatiosCompletely(incomeRatio, realBorrowRatio);
+    } = validateRatiosCompletely(incomeRatio, realBorrowRatio, borrowRatio);
 
     return {
       ...property,

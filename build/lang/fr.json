@@ -27,6 +27,9 @@
   "adminAction.uploadContract": "Uploader le contrat",
   "adminAction.verify": "Vérifier dossier",
   "adminAction.verifyFinalSteps": "Vérifier les derniers documents",
+
+  "AdvancedOptions.borrowRatio": "Endettement voulu",
+
   "AmortizationChart.amortizationSeries": "Amortissement mensuel",
   "AmortizationChart.debtSeries": "Dette",
   "AmortizationChart.fortuneSeries": "Fonds Propres",
