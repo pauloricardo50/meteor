@@ -135,6 +135,8 @@ export default class Comparator extends Component {
 
   handleAddProperty = (address, latlng, value, callback) => {
     const name = address.split(',')[0];
+    // TODO: Make sure name is unique identifier
+
     this.setState(
       prev => ({
         addedProperties: [
@@ -149,23 +151,25 @@ export default class Comparator extends Component {
         ],
       }),
       () => {
-        getClosestStations(latlng.lat, latlng.lng).then((stations) => {
-          const property = this.state.addedProperties.find(
-            p => p.name === name,
-          );
-          this.setState(prev => ({
-            addedProperties: [
-              ...prev.addedProperties.filter(p => p.name !== name),
-              {
-                ...property,
-                nearestStation: {
-                  primary: stations[0].name,
-                  secondary: toDistanceString(stations[0].distance),
+        getClosestStations(latlng.lat, latlng.lng)
+          .then((stations) => {
+            const property = this.state.addedProperties.find(
+              p => p.name === name,
+            );
+            this.setState(prev => ({
+              addedProperties: [
+                ...prev.addedProperties.filter(p => p.name !== name),
+                {
+                  ...property,
+                  nearestStation: {
+                    primary: stations[0].name,
+                    secondary: toDistanceString(stations[0].distance),
+                  },
                 },
-              },
-            ],
-          }));
-        });
+              ],
+            }));
+          })
+          .catch(error => console.log(error));
         if (typeof callback === 'function') {
           callback();
         }
