@@ -6,17 +6,6 @@ import { _ } from 'lodash';
 import CompareHeader from './CompareHeader.jsx';
 import CompareTableContent from './CompareTableContent.jsx';
 
-const defaultFields = [
-  { id: 'name', type: 'text' },
-  { id: 'isValid', type: 'boolean', noEdit: true },
-  { id: 'value', type: 'money' },
-  { id: 'loan', type: 'money', noEdit: true },
-  { id: 'ownFunds', type: 'money', noEdit: true },
-  { id: 'realMonthly', type: 'money', noEdit: true },
-  { id: 'createdAt', type: 'date', noEdit: true },
-  { id: 'minergy', type: 'boolean' },
-];
-
 export const sortFunc = (array, sorting) =>
   _.orderBy(
     array,
@@ -110,10 +99,9 @@ export default class CompareTable extends Component {
   onHoverLeave = () => this.setState({ hovered: undefined });
 
   render() {
-    const { properties, addCustomField, customFields } = this.props;
+    const { properties, addCustomField, fields } = this.props;
     const { sorting, filtering } = this.state;
 
-    const fields = [...defaultFields, ...customFields];
     const sortedProperties = getProperties(properties, filtering, sorting);
 
     return (
@@ -147,6 +135,7 @@ CompareTable.propTypes = {
   properties: PropTypes.arrayOf(PropTypes.object).isRequired,
   customFields: PropTypes.arrayOf(PropTypes.object),
   addCustomField: PropTypes.func.isRequired,
+  fields: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 CompareTable.defaultProps = {

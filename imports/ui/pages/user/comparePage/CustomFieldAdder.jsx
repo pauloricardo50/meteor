@@ -12,7 +12,7 @@ import { _ } from 'lodash';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
-const types = ['boolean', 'number', 'money', 'date', 'text'];
+const types = ['boolean', 'number', 'money', 'date', 'text', 'percent'];
 
 const suggestions = [
   { id: 'rooms', type: 'number' },

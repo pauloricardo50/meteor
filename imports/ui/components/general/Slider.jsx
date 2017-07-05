@@ -36,29 +36,38 @@ const Slider = ({
   currentValue,
   style,
   sliderStyle,
-}) =>
-  (<div className="flex-col" style={{ ...style, ...styles.div }}>
-    <label htmlFor={id}>
-      {label}
-    </label>
-    <div style={{ position: 'relative', padding: '0 16px' }}>
-      <MuiSlider
-        id={id}
-        min={min}
-        max={max}
-        step={step}
-        onChange={(event, newValue) => handleChange(id, newValue)}
-        value={currentValue}
-        sliderStyle={{ ...sliderStyle, ...styles.slider }}
-      />
-      <p className="secondary" style={styles.labelMin}>
-        {labelMin}
-      </p>
-      <p className="secondary" style={styles.labelMax}>
-        {labelMax}
-      </p>
+}) => {
+  if (currentValue > max) {
+    handleChange(id, max);
+  } else if (currentValue < min) {
+    handleChange(id, min);
+  }
+
+  return (
+    <div className="flex-col" style={{ ...style, ...styles.div }}>
+      <label htmlFor={id}>
+        {label}
+      </label>
+      <div style={{ position: 'relative', padding: '0 16px' }}>
+        <MuiSlider
+          id={id}
+          min={min}
+          max={max}
+          step={step}
+          onChange={(event, newValue) => handleChange(id, newValue)}
+          value={currentValue}
+          sliderStyle={{ ...sliderStyle, ...styles.slider }}
+        />
+        <p className="secondary" style={styles.labelMin}>
+          {labelMin}
+        </p>
+        <p className="secondary" style={styles.labelMax}>
+          {labelMax}
+        </p>
+      </div>
     </div>
-  </div>);
+  );
+};
 
 Slider.propTypes = {
   label: PropTypes.node.isRequired,

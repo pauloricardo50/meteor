@@ -53,6 +53,20 @@ const properties = [
   },
 ];
 
+const defaultFields = [
+  { id: 'name', type: 'text' },
+  { id: 'isValid', type: 'boolean', noEdit: true },
+  { id: 'value', type: 'money' },
+  { id: 'loan', type: 'money', noEdit: true },
+  { id: 'ownFunds', type: 'money', noEdit: true },
+  { id: 'realMonthly', type: 'money', noEdit: true },
+  { id: 'theoreticalMonthly', type: 'money', noEdit: true },
+  { id: 'createdAt', type: 'date', noEdit: true },
+  { id: 'minergy', type: 'boolean' },
+  { id: 'realBorrowRatio', type: 'percent', noEdit: true },
+  { id: 'incomeRatio', type: 'percent', noEdit: true },
+];
+
 export default class Comparator extends Component {
   constructor(props) {
     super(props);
@@ -62,8 +76,10 @@ export default class Comparator extends Component {
       income: '80000',
       fortune: '110000',
       borrowRatio: 0.8,
+      usageType: 'primary',
       addedProperties: [],
       customFields: [],
+      hiddenFields: ['realBorrowRatio', 'incomeRatio', 'theoreticalMonthly'],
     };
   }
 
@@ -85,6 +101,18 @@ export default class Comparator extends Component {
       }),
       callback,
     );
+
+  toggleField = (fieldId) => {
+    if (this.state.hiddenFields.indexOf(fieldId) >= 0) {
+      this.setState(prev => ({
+        hiddenFields: [...prev.hiddenFields.filter(id => id !== fieldId)],
+      }));
+    } else {
+      this.setState(prev => ({
+        hiddenFields: [...prev.hiddenFields, fieldId],
+      }));
+    }
+  };
 
   handleAddProperty = (address, latlng, value, callback) => {
     this.setState(
@@ -126,24 +154,36 @@ export default class Comparator extends Component {
       isValid,
       error,
       errorClass,
+      realBorrowRatio,
+      incomeRatio,
     };
   };
 
   render() {
+    const { customFields, addedProperties, hiddenFields } = this.state;
+
+    const allFields = [...defaultFields, ...customFields];
+    const fields = allFields.filter(
+      field => hiddenFields.indexOf(field.id) < 0,
+    );
+
     return (
       <section className="comparator flex-col center">
         <CompareOptions
           options={this.state}
           changeOptions={this.changeOptions}
           handleAddProperty={this.handleAddProperty}
+          allFields={allFields}
+          hiddenFields={hiddenFields}
+          toggleField={this.toggleField}
         />
         <CompareTable
           {...this.props}
           addCustomField={this.addCustomField}
-          properties={[...properties, ...this.state.addedProperties].map(
+          properties={[...properties, ...addedProperties].map(
             this.modifyProperty,
           )}
-          customFields={this.state.customFields}
+          fields={fields}
         />
       </section>
     );

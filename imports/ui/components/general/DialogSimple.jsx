@@ -43,6 +43,7 @@ export default class DialogSimple extends Component {
       bodyStyle,
       contentStyle,
       style,
+      autoScroll,
     } = this.props;
 
     actions = actions || [
@@ -89,6 +90,7 @@ export default class DialogSimple extends Component {
           bodyStyle={bodyStyle}
           contentStyle={contentStyle}
           style={style}
+          autoScrollBodyContent={autoScroll}
         >
           {!!children && passProps
             ? React.cloneElement(children, { ...childProps })
@@ -112,6 +114,7 @@ DialogSimple.propTypes = {
   modal: PropTypes.bool,
   passProps: PropTypes.bool,
   onOpen: PropTypes.func,
+  autoScroll: PropTypes.bool,
 };
 
 DialogSimple.defaultProps = {
@@ -125,4 +128,5 @@ DialogSimple.defaultProps = {
   modal: false,
   passProps: false,
   onOpen: () => {},
+  autoScroll: false,
 };

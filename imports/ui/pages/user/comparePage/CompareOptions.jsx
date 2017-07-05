@@ -43,7 +43,10 @@ export default class CompareOptions extends Component {
       >
         <DefaultOptions {...this.props} />
         {showAdvanced && <AdvancedOptions {...this.props} />}
-        <div className="text-center">
+        <div
+          className="text-center"
+          style={showAdvanced ? { marginTop: 20 } : {}}
+        >
           <RaisedButton
             onTouchTap={() => this.handleClick()}
             label={

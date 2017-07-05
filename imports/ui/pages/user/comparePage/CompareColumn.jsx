@@ -16,7 +16,7 @@ const renderField = (props, field) => {
     return '-';
   }
 
-  if (field.id === 'realMonthly') {
+  if (field.id.indexOf('Monthly') >= 0) {
     return (
       <span className="text-ellipsis">
         <IntlNumber value={value} format="money" />{' '}
@@ -50,6 +50,8 @@ const renderField = (props, field) => {
       );
     case 'boolean':
       return value ? 'Yep' : 'Nope';
+    case 'percent':
+      return <IntlNumber value={value} format="percentage" />;
     default:
       return value;
   }
