@@ -26,6 +26,20 @@ export function toDecimalNumber(value) {
   // Remove unwanted characters, except digits, dots and commas
   const newValue = value ? String(value).replace(/[^\d.,]/g, '') : value;
   // replace commas with dots
-  const commaReplaced = newValue ? Number(newValue.replace(',', '.')) : newValue;
+  const commaReplaced = newValue
+    ? Number(newValue.replace(',', '.'))
+    : newValue;
   return commaReplaced;
 }
+
+export const toDistanceString = (dist) => {
+  if (dist <= 0) {
+    return '0 m';
+  } else if (dist < 1000) {
+    return `${Math.round(dist / 10) * 10} m`;
+  } else if (dist < 10000) {
+    return `${(Math.round(dist / 100) / 10).toFixed(1)} km`;
+  }
+
+  return `${Math.round(dist / 1000)} km`;
+};

@@ -17,14 +17,12 @@ describe('<CompareOptions />', () => {
 
   it('renders', () => {
     const wrapper = shallow(<CompareOptions options={{}} />);
-
     expect(wrapper.exists()).to.be.true;
     expect(wrapper.name()).to.equal('div');
   });
 
   it('has a mask1 class on it', () => {
     const wrapper = shallow(<CompareOptions options={{}} />);
-
     expect(wrapper.hasClass('mask1')).to.be.true;
   });
 

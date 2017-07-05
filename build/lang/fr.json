@@ -36,6 +36,8 @@
 
   "CompareOptions.useBorrowers": "Calculs simplifiés",
 
+  "Comparator.nearestStation": "Transport public le plus proche",
+
   "FieldToggles.label": "Choisir les champs",
   "FieldToggles.title": "Choisir quels champs afficher",
   "FieldToggles.defaultFields": "Champs e-Potek",

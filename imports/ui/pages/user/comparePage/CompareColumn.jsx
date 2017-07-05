@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import classnames from 'classnames';
+import { _ } from 'lodash';
 
 import {
   IntlNumber,
@@ -14,6 +15,17 @@ const renderField = (props, field) => {
 
   if (value === undefined) {
     return '-';
+  } else if (typeof value === 'object') {
+    return (
+      <div className="flex-col center">
+        <span className="text-ellipsis">
+          {value.primary}
+        </span>
+        <span className="secondary">
+          {value.secondary}
+        </span>
+      </div>
+    );
   }
 
   if (field.id.indexOf('Monthly') >= 0) {

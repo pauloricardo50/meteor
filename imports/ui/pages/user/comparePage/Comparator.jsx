@@ -10,7 +10,9 @@ import {
   getBorrowRatio,
 } from '/imports/js/helpers/startFunctions';
 import { validateRatiosCompletely } from '/imports/js/helpers/requestFunctions';
+import { toDistanceString } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
+import { getClosestStations } from '/imports/js/helpers/APIs';
 
 import CompareTable from './CompareTable.jsx';
 import CompareOptions from './CompareOptions.jsx';
@@ -67,6 +69,7 @@ const defaultFields = [
   { id: 'minergy', type: 'boolean' },
   { id: 'realBorrowRatio', type: 'percent', noEdit: true },
   { id: 'incomeRatio', type: 'percent', noEdit: true },
+  { id: 'nearestStation', type: 'text', noEdit: true },
 ];
 
 export default class Comparator extends Component {
@@ -131,12 +134,13 @@ export default class Comparator extends Component {
   };
 
   handleAddProperty = (address, latlng, value, callback) => {
+    const name = address.split(',')[0];
     this.setState(
       prev => ({
         addedProperties: [
           ...prev.addedProperties,
           {
-            name: address.split(',')[0],
+            name,
             address,
             value,
             latlng,
@@ -144,7 +148,28 @@ export default class Comparator extends Component {
           },
         ],
       }),
-      callback,
+      () => {
+        getClosestStations(latlng.lat, latlng.lng).then((stations) => {
+          const property = this.state.addedProperties.find(
+            p => p.name === name,
+          );
+          this.setState(prev => ({
+            addedProperties: [
+              ...prev.addedProperties.filter(p => p.name !== name),
+              {
+                ...property,
+                nearestStation: {
+                  primary: stations[0].name,
+                  secondary: toDistanceString(stations[0].distance),
+                },
+              },
+            ],
+          }));
+        });
+        if (typeof callback === 'function') {
+          callback();
+        }
+      },
     );
   };
 
