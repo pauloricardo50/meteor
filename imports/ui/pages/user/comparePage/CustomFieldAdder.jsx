@@ -19,6 +19,7 @@ const suggestions = [
   { id: 'pool', type: 'boolean' },
   { id: 'washingMachine', type: 'boolean' },
   { id: 'parkingSpots', type: 'number' },
+  { id: 'garage', type: 'boolean' },
   { id: 'summerTemperature', type: 'number' },
   { id: 'constructionYear', type: 'date' },
   { id: 'floor', type: 'number' },
@@ -37,6 +38,10 @@ const suggestions = [
   { id: 'renovationRequired', type: 'money' },
   { id: 'extensionAllowed', type: 'boolean' },
   { id: 'internetSpeed', type: 'number' },
+  { id: 'haunted', type: 'boolean' },
+  { id: 'landingRunway', type: 'boolean' },
+  { id: 'contact', type: 'text' },
+  { id: 'richNeighbours', type: 'boolean' },
 ];
 
 class CustomFieldAdder extends Component {

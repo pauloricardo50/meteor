@@ -59,6 +59,11 @@
   "CustomFieldAdder.renovationRequired": "Rénovations nécessaires",
   "CustomFieldAdder.extensionAllowed": "Aggrandissement possible",
   "CustomFieldAdder.pool": "Avec piscine",
+  "CustomFieldAdder.haunted": "Maison hantée",
+  "CustomFieldAdder.contact": "Contact",
+  "CustomFieldAdder.landingRunway": "Avec piste d'atterissage",
+  "CustomFieldAdder.richNeighbours": "Voisins milliardaires",
+  "CustomFieldAdder.garage": "Avec garage",
 
   "adminAction.verifyFinalSteps": "Vérifier les derniers documents",
   "AmortizationChart.amortizationSeries": "Amortissement mensuel",
