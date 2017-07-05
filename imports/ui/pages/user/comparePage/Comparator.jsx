@@ -63,13 +63,28 @@ export default class Comparator extends Component {
       fortune: '120000',
       borrowRatio: 0.8,
       addedProperties: [],
+      customFields: [],
     };
   }
 
   changeOptions = (key, value, callback) =>
     this.setState({ [key]: value }, callback);
 
-  addCustomField = name => true;
+  addCustomField = (name, type, callback) =>
+    this.setState(
+      prev => ({
+        customFields: [
+          ...prev.customFields,
+          {
+            name,
+            type,
+            id: `custom${prev.customFields.length}${1}`,
+            custom: true,
+          },
+        ],
+      }),
+      callback,
+    );
 
   handleAddProperty = (address, latlng, value, callback) => {
     this.setState(
@@ -128,6 +143,7 @@ export default class Comparator extends Component {
           properties={[...properties, ...this.state.addedProperties].map(
             this.modifyProperty,
           )}
+          customFields={this.state.customFields}
         />
       </section>
     );

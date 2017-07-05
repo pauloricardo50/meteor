@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
+import DialogSimple from '/imports/ui/components/general/DialogSimple.jsx';
 
+import CustomFieldAdder from './CustomFieldAdder.jsx';
 import FilterIcon from './FilterIcon.jsx';
 import SortIcon from './SortIcon.jsx';
 
@@ -61,7 +62,15 @@ const CompareHeader = props =>
     )}
 
     <li>
-      <RaisedButton label="+" primary onTouchTap={props.addCustomField} />
+      <DialogSimple
+        label="+"
+        primary
+        passProps
+        actions={[]}
+        title={<T id="CustomFieldAdder.title" />}
+      >
+        <CustomFieldAdder addCustomField={props.addCustomField} />
+      </DialogSimple>
     </li>
   </ul>);
 
