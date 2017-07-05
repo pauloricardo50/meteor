@@ -111,13 +111,23 @@ export const changeIncome = (state, o, income) => {
   return o;
 };
 
-export const getRealMonthly = (fortune, property, borrow) =>
-  Math.max(
+export const getRealMonthly = (fortune, property, borrow, interestRate) => {
+  if (interestRate) {
+    return Math.max(
+      (property * constants.maintenanceReal +
+        (property - fortune) *
+          constants.loanCostReal(borrow, 15, interestRate)) /
+        12,
+      0,
+    );
+  }
+  return Math.max(
     (property * constants.maintenanceReal +
       (property - fortune) * constants.loanCostReal(borrow)) /
       12,
     0,
   );
+};
 
 export const getTheoreticalMonthly = (fortune, property, borrow) =>
   Math.max(

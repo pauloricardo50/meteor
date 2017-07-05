@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import FlatButton from 'material-ui/FlatButton';
 
-import InputMoney from '/imports/ui/components/general/InputMoney.jsx';
+import TextInput from '/imports/ui/components/general/TextInput.jsx';
 import GoogleMapsAutocomplete from '/imports/ui/components/general/GoogleMapsAutocomplete.jsx';
 import GoogleMapContainer from '/imports/ui/components/general/GoogleMapContainer.jsx';
 
@@ -44,12 +44,13 @@ export default class PropertyAdder extends Component {
         {loading && <LoadingComponent />}
         {isValidPlace
           ? <h2 className="fixed-size">
-            <InputMoney
+            <TextInput
               label={<T id="Comparator.value" />}
               floatingLabelFixed
               handleChange={this.handleChange}
               currentValue={value}
               id="value"
+              type="money"
             />
           </h2>
           : <div style={{ height: 72 }} />}

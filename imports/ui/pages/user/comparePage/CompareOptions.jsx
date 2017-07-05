@@ -38,7 +38,7 @@ export default class CompareOptions extends Component {
           flexDirection: 'column',
           marginBottom: 16,
           width: '100%',
-          maxWidth: 800,
+          maxWidth: 700,
         }}
       >
         <DefaultOptions {...this.props} />

@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import InputMoney from '/imports/ui/components/general/InputMoney.jsx';
+import TextInput from '/imports/ui/components/general/TextInput.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import BorrowerOptions from './BorrowerOptions.jsx';
 
-const textFields = ['income', 'fortune'];
+const textFields = [
+  { id: 'income', type: 'money' },
+  { id: 'fortune', type: 'money' },
+  { id: 'interestRate', type: 'percent' },
+];
 
 const DefaultOptions = ({ options, changeOptions }) => {
   if (options.useBorrowers) {
@@ -21,14 +25,15 @@ const DefaultOptions = ({ options, changeOptions }) => {
         flexWrap: 'wrap',
       }}
     >
-      {textFields.map(field =>
-        (<InputMoney
-          key={field}
-          label={<T id={`DefaultOptions.${field}`} />}
-          id={field}
+      {textFields.map(({ id, type }) =>
+        (<TextInput
+          key={id}
+          label={<T id={`DefaultOptions.${id}`} />}
+          id={id}
           handleChange={changeOptions}
-          currentValue={options[field]}
+          currentValue={options[id]}
           floatingLabelFixed
+          type={type}
         />),
       )}
     </div>

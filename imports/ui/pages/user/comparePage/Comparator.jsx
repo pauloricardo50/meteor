@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { _ } from 'lodash';
+
 import {
   getRealMonthly,
   getTheoreticalMonthly,
@@ -73,24 +75,25 @@ export default class Comparator extends Component {
 
     this.state = {
       useBorrowers: false,
-      income: '80000',
-      fortune: '110000',
+      income: 80000,
+      fortune: 110000,
+      interestRate: 0.015,
       borrowRatio: 0.8,
       usageType: 'primary',
       addedProperties: [],
       customFields: [],
       hiddenFields: ['realBorrowRatio', 'incomeRatio', 'theoreticalMonthly'],
     };
-    this.setup(this.props, this.state);
+    this.setupProperties(this.props, this.state);
+    this.filterFields(this.props, this.state);
   }
 
   componentDidMount() {}
 
   componentDidUpdate(prevProps, prevState) {
-    if (
-      prevState.addedProperties.length !== this.state.addedProperties.length
-    ) {
-      this.setup(this.props, this.state);
+    if (!_.isEqual(prevState, this.state)) {
+      this.setupProperties(this.props, this.state);
+      this.filterFields(this.props, this.state);
       this.forceUpdate();
     }
   }
@@ -139,7 +142,7 @@ export default class Comparator extends Component {
   };
 
   modifyProperty = (property) => {
-    const { income, fortune, borrowRatio } = this.state;
+    const { income, fortune, borrowRatio, interestRate } = this.state;
     const loan = borrowRatio * property.value;
     const ownFunds = (1 - borrowRatio + constants.notaryFees) * property.value;
     const theoreticalMonthly = getTheoreticalMonthly(
@@ -147,7 +150,12 @@ export default class Comparator extends Component {
       property.value,
       borrowRatio,
     );
-    const realMonthly = getRealMonthly(ownFunds, property.value, borrowRatio);
+    const realMonthly = getRealMonthly(
+      ownFunds,
+      property.value,
+      borrowRatio,
+      interestRate,
+    );
     const incomeRatio = getIncomeRatio(theoreticalMonthly, income);
     const realBorrowRatio = getBorrowRatio(property.value, fortune);
 
@@ -171,19 +179,20 @@ export default class Comparator extends Component {
     };
   };
 
-  setup = (props, state) => {
+  setupProperties = (props, state) => {
     this.modifiedProperties = [...properties, ...state.addedProperties].map(
       this.modifyProperty,
     );
   };
 
+  filterFields = (props, state) => {
+    this.filteredFields = [...defaultFields, ...state.customFields].filter(
+      field => state.hiddenFields.indexOf(field.id) < 0,
+    );
+  };
+
   render() {
     const { customFields, addedProperties, hiddenFields } = this.state;
-
-    const allFields = [...defaultFields, ...customFields];
-    const fields = allFields.filter(
-      field => hiddenFields.indexOf(field.id) < 0,
-    );
 
     return (
       <section className="comparator flex-col center">
@@ -191,7 +200,7 @@ export default class Comparator extends Component {
           options={this.state}
           changeOptions={this.changeOptions}
           handleAddProperty={this.handleAddProperty}
-          allFields={allFields}
+          allFields={[...defaultFields, ...customFields]}
           hiddenFields={hiddenFields}
           toggleField={this.toggleField}
         />
@@ -199,7 +208,7 @@ export default class Comparator extends Component {
           {...this.props}
           addCustomField={this.addCustomField}
           properties={this.modifiedProperties}
-          fields={fields}
+          fields={this.filteredFields}
         />
       </section>
     );

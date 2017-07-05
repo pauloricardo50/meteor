@@ -8,7 +8,7 @@ import { Meteor } from 'meteor/meteor';
 import getMountedComponent from '/imports/js/helpers/testHelpers';
 import DefaultOptions from '../DefaultOptions.jsx';
 import BorrowerOptions from '../BorrowerOptions.jsx';
-import InputMoney from '/imports/ui/components/general/InputMoney.jsx';
+import TextInput from '/imports/ui/components/general/TextInput.jsx';
 
 const setup = (options, props) =>
   shallow(
@@ -50,7 +50,7 @@ describe('<DefaultOptions />', () => {
   it('renders 2 InputMoney', () => {
     const wrapper = setup();
 
-    expect(wrapper.find(InputMoney).length).to.equal(2);
+    expect(wrapper.find(TextInput).length).to.equal(2);
   });
 
   if (Meteor.isClient) {

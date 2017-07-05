@@ -16,7 +16,7 @@ const AdvancedOptions = ({
   hiddenFields,
 }) =>
   (<div className="flex-col center">
-    <hr />
+    <hr style={{ width: '100%' }} />
 
     <div className="flex-col" style={{ width: '100%', maxWidth: 400 }}>
       <Slider
@@ -46,6 +46,7 @@ const AdvancedOptions = ({
       title={<T id="FieldToggles.title" />}
       primary
       autoScroll
+      buttonStyle={{ marginTop: 20 }}
     >
       <FieldToggles
         toggleField={toggleField}

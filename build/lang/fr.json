@@ -178,6 +178,7 @@
   "DateInput.placeholder": "Choisissez une date",
   "DefaultOptions.fortune": "Fonds propres",
   "DefaultOptions.income": "Revenus annuels bruts",
+  "DefaultOptions.interestRate": "Taux d'intérêts",
   "DropzoneArrayItem.fileCount": "{count, plural, =0 {Pas de fichiers} one {Un fichier} other {# fichiers}}",
   "DropzoneInput.cancelUpload": "Annuler l'upload",
   "DropzoneInput.cancelUploadConfirmation": "Êtes-vous sûr?",
