@@ -42,6 +42,7 @@ const suggestions = [
   { id: 'landingRunway', type: 'boolean' },
   { id: 'contact', type: 'text' },
   { id: 'richNeighbours', type: 'boolean' },
+  { id: 'biscuitHouse', type: 'boolean' },
 ];
 
 class CustomFieldAdder extends Component {
