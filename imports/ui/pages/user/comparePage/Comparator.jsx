@@ -81,6 +81,18 @@ export default class Comparator extends Component {
       customFields: [],
       hiddenFields: ['realBorrowRatio', 'incomeRatio', 'theoreticalMonthly'],
     };
+    this.setup(this.props, this.state);
+  }
+
+  componentDidMount() {}
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.addedProperties.length !== this.state.addedProperties.length
+    ) {
+      this.setup(this.props, this.state);
+      this.forceUpdate();
+    }
   }
 
   changeOptions = (key, value, callback) =>
@@ -159,6 +171,12 @@ export default class Comparator extends Component {
     };
   };
 
+  setup = (props, state) => {
+    this.modifiedProperties = [...properties, ...state.addedProperties].map(
+      this.modifyProperty,
+    );
+  };
+
   render() {
     const { customFields, addedProperties, hiddenFields } = this.state;
 
@@ -180,9 +198,7 @@ export default class Comparator extends Component {
         <CompareTable
           {...this.props}
           addCustomField={this.addCustomField}
-          properties={[...properties, ...addedProperties].map(
-            this.modifyProperty,
-          )}
+          properties={this.modifiedProperties}
           fields={fields}
         />
       </section>

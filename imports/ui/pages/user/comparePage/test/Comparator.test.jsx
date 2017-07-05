@@ -30,6 +30,13 @@ describe('<Comparator />', () => {
     });
   });
 
+  it('keeps the name field at the top, even with custom fields', () => {
+    const wrapper = shallow(<Comparator />);
+    const childWrapper = wrapper.find(CompareTable).dive();
+
+    expect(childWrapper.instance().props.fields[0].id).to.equal('name');
+  });
+
   it('renders CompareOptions and a CompareTable', () => {
     const wrapper = shallow(<Comparator />);
 

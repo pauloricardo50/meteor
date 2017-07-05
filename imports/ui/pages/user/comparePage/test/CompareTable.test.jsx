@@ -25,18 +25,6 @@ describe('<CompareTable />', () => {
     expect(wrapper.find(CompareTableContent).exists()).to.be.true;
   });
 
-  it('keeps the name field at the top, even with custom fields', () => {
-    const wrapper = shallow(
-      <CompareTable
-        properties={[]}
-        customFields={[{ custom: true, name: 'test', id: 'custom1' }]}
-      />,
-    );
-    const childWrapper = wrapper.find(CompareHeader).dive();
-
-    expect(childWrapper.instance().props.fields[0].id).to.equal('name');
-  });
-
   describe('handleSort', () => {
     it('sorts in ascending order on first call', (done) => {
       const wrapper = shallow(<CompareTable properties={[{}, {}]} />);
