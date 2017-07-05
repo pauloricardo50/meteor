@@ -12,6 +12,8 @@ export default class GoogleMap extends Component {
       options: {
         center: this.props.latlng,
         zoom: 14,
+        scrollwheel: false,
+        disableDefaultUI: true,
       },
     });
 
@@ -55,7 +57,8 @@ export default class GoogleMap extends Component {
         ref={(c) => {
           this.map = c;
         }}
-        style={{ width: '100%', height: 300 }}
+        style={this.props.style}
+        className={this.props.className}
       />
     );
   }

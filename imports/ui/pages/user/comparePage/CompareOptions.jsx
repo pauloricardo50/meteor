@@ -69,17 +69,7 @@ export default class CompareOptions extends Component {
             }
             style={styles.button}
           />
-          <DialogSimple
-            primary
-            label={<T id="CompareOptions.addProperty" />}
-            title={<T id="CompareOptions.addProperty" />}
-            buttonStyle={styles.button}
-            passProps
-            actions={[]}
-            bodyStyle={{ overflowY: 'visible' }} // required to show the google place autocomplete
-          >
-            <PropertyAdder handleAddProperty={handleAddProperty} />
-          </DialogSimple>
+          <PropertyAdder handleAddProperty={handleAddProperty} />
         </div>
       </div>
     );

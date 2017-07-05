@@ -164,6 +164,7 @@ export default class Comparator extends Component {
                   nearestStation: {
                     primary: stations[0].name,
                     secondary: toDistanceString(stations[0].distance),
+                    value: stations[0].distance,
                   },
                 },
               ],

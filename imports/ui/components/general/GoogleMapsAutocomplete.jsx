@@ -10,6 +10,7 @@ import PlacesAutocomplete, {
 
 import TextField from 'material-ui/TextField';
 import MenuItem from 'material-ui/MenuItem';
+import { List, ListItem } from 'material-ui/List';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
@@ -62,20 +63,21 @@ export default class GoogleMapsAutocomplete extends Component {
   handleFormSubmit = (event, address) => {
     if (event) {
       event.preventDefault();
+      event.stopPropagation();
     }
 
     this.props.handleChange('loading', true);
     geocodeByAddress(address || this.state.address)
       .then(results => getLatLng(results[0]))
       .then((latlng) => {
-        this.props.handleChange('loading', false);
         this.props.handleChange('isValidPlace', true);
         this.props.handleChange('latlng', latlng);
         this.props.handleChange('address', this.state.address);
+
+        // Necessary for the dialog to resize properly after changing its contents
         Meteor.defer(() => window.dispatchEvent(new Event('resize')));
       })
       .catch((error) => {
-        this.props.handleChange('loading', false);
         this.props.handleChange('isValidPlace', true);
         console.error('Error', error);
       });
@@ -88,7 +90,7 @@ export default class GoogleMapsAutocomplete extends Component {
     };
 
     return (
-      <h2 style={{ width: '100%' }} className="fixed-size">
+      <h3 style={{ width: '100%' }} className="fixed-size">
         <TextField
           floatingLabelText={<T id="GoogleMapsAutocomplete.label" />}
           autoFocus
@@ -99,9 +101,10 @@ export default class GoogleMapsAutocomplete extends Component {
           <PlacesAutocomplete
             inputProps={inputProps}
             autocompleteItem={({ formattedSuggestion }) =>
-              (<MenuItem
+              (<ListItem
                 primaryText={formattedSuggestion.mainText}
                 secondaryText={formattedSuggestion.secondaryText}
+                onClick={e => e.stopPropagation()}
               />)}
             styles={defaultStyles}
             onSelect={address =>
@@ -122,7 +125,7 @@ export default class GoogleMapsAutocomplete extends Component {
             }}
           />
         </TextField>
-      </h2>
+      </h3>
     );
   }
 }
