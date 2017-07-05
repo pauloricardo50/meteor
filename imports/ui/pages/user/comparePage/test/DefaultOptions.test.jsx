@@ -47,10 +47,10 @@ describe('<DefaultOptions />', () => {
     expect(wrapper.find(BorrowerOptions).exists()).to.be.false;
   });
 
-  it('renders 2 InputMoney', () => {
+  it('renders 3 TextInput', () => {
     const wrapper = setup();
 
-    expect(wrapper.find(TextInput).length).to.equal(2);
+    expect(wrapper.find(TextInput).length).to.equal(3);
   });
 
   if (Meteor.isClient) {

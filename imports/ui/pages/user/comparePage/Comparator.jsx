@@ -77,7 +77,7 @@ export default class Comparator extends Component {
       useBorrowers: false,
       income: 80000,
       fortune: 110000,
-      interestRate: 0.015,
+      interestRate: 0.0125,
       borrowRatio: 0.8,
       usageType: 'primary',
       addedProperties: [],
