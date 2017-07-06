@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { Meteor } from 'meteor/meteor';
+
 import { _ } from 'lodash';
+
+import FlatButton from 'material-ui/FlatButton';
+import ArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
+import ArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
+
+import { easeOut } from '/imports/js/helpers/browserFunctions';
 
 import CompareHeader from './CompareHeader.jsx';
 import CompareTableContent from './CompareTableContent.jsx';
@@ -31,7 +39,44 @@ export default class CompareTable extends Component {
       sorting: [],
       filtering: [],
     };
+
+    this.interval = undefined;
   }
+
+  handleScroll = (toLeft) => {
+    Meteor.clearInterval(this.interval);
+
+    if (this.ref) {
+      const pos = this.ref.scrollLeft;
+      const maxScroll = this.ref.scrollWidth - this.ref.clientWidth;
+      let prevScroll;
+      let nextScroll;
+      let i = 0;
+      const curve = easeOut(pos, toLeft ? pos + 256 : pos - 256, 15);
+
+      const frame = () => {
+        // 256 = column width + 16px margin
+        if (
+          Math.abs(pos - this.ref.scrollLeft) > 256 ||
+          (prevScroll > 0 && nextScroll === 0) ||
+          (prevScroll < maxScroll && nextScroll === maxScroll) ||
+          (!toLeft && this.ref.scrollLeft === 0) ||
+          (toLeft && this.ref.scrollLeft === maxScroll)
+        ) {
+          Meteor.clearInterval(this.interval);
+        } else if (i < curve.length) {
+          this.ref.scrollLeft = curve[i];
+          prevScroll = nextScroll;
+          nextScroll = this.ref.scrollLeft;
+        } else {
+          Meteor.clearInterval(this.interval);
+        }
+        i += 1;
+      };
+
+      this.interval = Meteor.setInterval(frame, 15);
+    }
+  };
 
   handleReset = () => {
     this.setState({
@@ -105,27 +150,46 @@ export default class CompareTable extends Component {
     const sortedProperties = getProperties(properties, filtering, sorting);
 
     return (
-      <div className="compare-table">
-        <CompareHeader
-          fields={fields}
-          sorting={sorting}
-          filtering={filtering}
-          handleSort={this.handleSort}
-          handleFilter={this.handleFilter}
-          handleReset={this.handleReset}
-          addCustomField={addCustomField}
-          onHoverEnter={this.onHoverEnter}
-          onHoverLeave={this.onHoverLeave}
-          hovered={this.state.hovered}
-        />
+      <div className="flex-col center" style={{ width: '100%' }}>
+        <div>
+          <FlatButton
+            icon={<ArrowLeft />}
+            onTouchTap={() => this.handleScroll(false)}
+            primary
+          />
+          <FlatButton
+            icon={<ArrowRight />}
+            onTouchTap={() => this.handleScroll(true)}
+            primary
+          />
+        </div>
+        <div
+          className="compare-table"
+          ref={(c) => {
+            this.ref = c;
+          }}
+        >
+          <CompareHeader
+            fields={fields}
+            sorting={sorting}
+            filtering={filtering}
+            handleSort={this.handleSort}
+            handleFilter={this.handleFilter}
+            handleReset={this.handleReset}
+            addCustomField={addCustomField}
+            onHoverEnter={this.onHoverEnter}
+            onHoverLeave={this.onHoverLeave}
+            hovered={this.state.hovered}
+          />
 
-        <CompareTableContent
-          properties={sortedProperties}
-          fields={fields}
-          onHoverEnter={this.onHoverEnter}
-          onHoverLeave={this.onHoverLeave}
-          hovered={this.state.hovered}
-        />
+          <CompareTableContent
+            properties={sortedProperties}
+            fields={fields}
+            onHoverEnter={this.onHoverEnter}
+            onHoverLeave={this.onHoverLeave}
+            hovered={this.state.hovered}
+          />
+        </div>
       </div>
     );
   }

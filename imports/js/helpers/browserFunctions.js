@@ -12,11 +12,9 @@ const getSubdomain = () => {
   return fullPath.split('.')[0];
 };
 
-export const isDemo = () => {
-  return getSubdomain() === 'demo';
-};
+export const isDemo = () => getSubdomain() === 'demo';
 
-export const storageAvailable = type => {
+export const storageAvailable = (type) => {
   try {
     const storage = window[type];
     const x = '__storage_test__';
@@ -26,4 +24,15 @@ export const storageAvailable = type => {
   } catch (e) {
     return false;
   }
+};
+
+export const easeOut = (min, max, intervals) => {
+  const diff = 1 / intervals;
+  const difference = max - min;
+  const curve = [];
+
+  for (let i = diff; i <= 1; i += diff) {
+    curve.push(min + difference * Math.pow(i, 0.48));
+  }
+  return curve;
 };
