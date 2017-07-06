@@ -28,7 +28,7 @@ export const getNearbyPlace = (latitude, longitude, type, byDistance) => {
     service.nearbySearch(
       {
         location,
-        radius: byDistance ? undefined : 50000,
+        radius: byDistance ? undefined : 5000,
         rankBy: byDistance
           ? window.google.maps.places.RankBy.DISTANCE
           : window.google.maps.places.RankBy.PROMINENCE,

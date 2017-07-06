@@ -28,6 +28,20 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="msapplication-TileImage" content="/icons/ms-icon-144x144.png">
+
+<!-- is executed when the browser doesn't support/or disables JS -->
+  <noscript>
+  	<style>
+  		body {
+  			font-size: 32px;
+  			text-align: center;
+  		}
+  		body:before {
+  			content: "Sneaky hacker! e-Potek ne fonctionne malheureusement pas sans JavaScript!";
+        line-height: 100px;
+  		}
+  	</style>
+  </noscript>
 </head>
 
 <body><div id="react-root"></div></body>
