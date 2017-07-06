@@ -151,7 +151,7 @@ export default class CompareTable extends Component {
 
     return (
       <div className="flex-col center" style={{ width: '100%' }}>
-        <div>
+        <div style={{ marginBottom: 8 }}>
           <FlatButton
             icon={<ArrowLeft />}
             onTouchTap={() => this.handleScroll(false)}
