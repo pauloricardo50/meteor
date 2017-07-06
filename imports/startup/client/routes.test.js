@@ -3,8 +3,13 @@ import { render } from 'react-dom';
 import { expect } from 'chai';
 import { describe, it } from 'meteor/practicalmeteor:mocha';
 
+import jsdom from 'jsdom';
+
 import renderRoutes from './Router.jsx';
 import { start } from './index';
+
+global.document = jsdom('');
+global.window = document.defaultView;
 
 describe('App', () => {
   it('renders without crashing', () => {
