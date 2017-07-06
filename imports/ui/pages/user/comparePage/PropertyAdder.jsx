@@ -73,15 +73,15 @@ export default class PropertyAdder extends Component {
               alignItems: 'center',
             }}
           >
-            <GoogleMapContainer>
-              <GoogleMapsAutocomplete handleChange={this.handleChange} />
-              {!!(isValidPlace && latlng) &&
-                <GoogleMap
-                  latlng={latlng}
-                  address={address}
-                  className="property-adder-map"
-                />}
-            </GoogleMapContainer>
+            {/* <GoogleMapContainer> */}
+            <GoogleMapsAutocomplete handleChange={this.handleChange} />
+            {!!(isValidPlace && latlng) &&
+              <GoogleMap
+                latlng={latlng}
+                address={address}
+                className="property-adder-map"
+              />}
+            {/* </GoogleMapContainer> */}
 
             {!isValidPlace && <div style={{ height: 300 }} />}
             {isValidPlace &&

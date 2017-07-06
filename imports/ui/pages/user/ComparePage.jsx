@@ -6,6 +6,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import Comparator from './comparePage/Comparator.jsx';
 
+import GoogleMapContainer from '/imports/ui/components/general/GoogleMapContainer.jsx';
+
 const styles = {
   initial: {
     display: 'flex',
@@ -31,9 +33,11 @@ export default class ComparePage extends Component {
     }
 
     return (
-      <div style={{ padding: 16 }}>
-        <Comparator {...this.props} />
-      </div>
+      <section style={{ padding: 16 }}>
+        <GoogleMapContainer>
+          <Comparator {...this.props} />
+        </GoogleMapContainer>
+      </section>
     );
   }
 }
@@ -43,5 +47,5 @@ ComparePage.propTypes = {
 };
 
 ComparePage.defaultProps = {
-  properties: [{}], // TODO: remove this empty object
+  properties: [{}],
 };

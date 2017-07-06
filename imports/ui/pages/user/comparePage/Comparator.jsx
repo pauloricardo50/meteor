@@ -12,7 +12,7 @@ import {
 import { validateRatiosCompletely } from '/imports/js/helpers/requestFunctions';
 import { toDistanceString } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
-import { getClosestStations } from '/imports/js/helpers/APIs';
+import { getClosestStations, getNearbyPlace } from '/imports/js/helpers/APIs';
 
 import CompareTable from './CompareTable.jsx';
 import CompareOptions from './CompareOptions.jsx';
@@ -69,7 +69,9 @@ const defaultFields = [
   { id: 'minergy', type: 'boolean' },
   { id: 'realBorrowRatio', type: 'percent', noEdit: true },
   { id: 'incomeRatio', type: 'percent', noEdit: true },
-  { id: 'nearestStation', type: 'text', noEdit: true },
+  { id: 'nearestStore', type: 'text', noEdit: true },
+  { id: 'nearestTrainStation', type: 'text', noEdit: true },
+  { id: 'nearestBusStation', type: 'text', noEdit: true },
 ];
 
 export default class Comparator extends Component {
@@ -133,8 +135,26 @@ export default class Comparator extends Component {
     }
   };
 
+  addValueToProperty = (key, value, propertyName) => {
+    const property = this.state.addedProperties.find(
+      p => p.name === propertyName,
+    );
+
+    this.setState(prev => ({
+      addedProperties: [
+        ...prev.addedProperties.filter(p => p.name !== propertyName),
+        {
+          ...property,
+          [key]: value,
+        },
+      ],
+    }));
+  };
+
   handleAddProperty = (address, latlng, value, callback) => {
     const name = address.split(',')[0];
+    const lat = latlng.lat;
+    const lng = latlng.lng;
     // TODO: Make sure name is unique identifier
 
     this.setState(
@@ -151,32 +171,62 @@ export default class Comparator extends Component {
         ],
       }),
       () => {
-        getClosestStations(latlng.lat, latlng.lng)
-          .then((stations) => {
-            const property = this.state.addedProperties.find(
-              p => p.name === name,
-            );
-            console.log(property.createdAt);
-            this.setState(prev => ({
-              addedProperties: [
-                ...prev.addedProperties.filter(p => p.name !== name),
-                {
-                  ...property,
-                  nearestStation: {
-                    primary: stations[0].name,
-                    secondary: toDistanceString(stations[0].distance),
-                    value: stations[0].distance,
-                  },
-                },
-              ],
-            }));
-          })
-          .catch(error => console.log(error));
+        // getClosestStations(lat, lng)
+        //   .then((stations) => {
+        //     this.addValueToProperty(
+        //       'nearestStation',
+        //       {
+        //         primary: stations[0].name,
+        //         secondary: toDistanceString(stations[0].distance),
+        //         value: stations[0].distance,
+        //       },
+        //       name,
+        //     );
+        //   })
+        //   .catch(error => console.log(error));
+
+        [
+          { googId: 'department_store', id: 'nearestStore', byDistance: true },
+          {
+            googId: 'train_station',
+            id: 'nearestTrainStation',
+            byDistance: true,
+          },
+          { googId: 'bus_station', id: 'nearestBusStation', byDistance: true },
+        ].forEach(request =>
+          this.addGooglePlace(
+            name,
+            lat,
+            lng,
+            request.googId,
+            request.id,
+            request.byDistance,
+          ),
+        );
+
         if (typeof callback === 'function') {
           callback();
         }
       },
     );
+  };
+
+  addGooglePlace = (name, lat, lng, type, id, byDistance) => {
+    if (window.google) {
+      getNearbyPlace(lat, lng, type, byDistance)
+        .then((result) => {
+          this.addValueToProperty(
+            id,
+            {
+              primary: result.name,
+              secondary: toDistanceString(result.distance.value),
+              value: result.distance.value,
+            },
+            name,
+          );
+        })
+        .catch(error => console.log(error));
+    }
   };
 
   modifyProperty = (property) => {

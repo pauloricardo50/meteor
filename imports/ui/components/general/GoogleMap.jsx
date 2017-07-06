@@ -67,9 +67,10 @@ export default class GoogleMap extends Component {
 GoogleMap.propTypes = {
   id: PropTypes.string,
   latlng: PropTypes.object.isRequired,
-  address: PropTypes.string.isRequired,
+  address: PropTypes.string,
 };
 
 GoogleMap.defaultProps = {
   id: 'myMap',
+  address: undefined,
 };

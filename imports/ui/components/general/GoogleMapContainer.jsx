@@ -23,7 +23,7 @@ class GoogleMap extends Component {
         <div
           className="map-container"
           ref={c => (this.container = c)}
-          style={{ width: '100%' }}
+          // style={{ width: '100%' }}
         >
           {this.props.children}
         </div>

@@ -36,7 +36,9 @@
 
   "CompareOptions.useBorrowers": "Calculs simplifiés",
 
-  "Comparator.nearestStation": "Transport public le plus proche",
+  "Comparator.nearestBusStation": "Bus le plus proche",
+  "Comparator.nearestStore": "Commissions le plus proche",
+  "Comparator.nearestTrainStation": "Train le plus proche",
 
   "FieldToggles.label": "Choisir les champs",
   "FieldToggles.title": "Choisir quels champs afficher",
