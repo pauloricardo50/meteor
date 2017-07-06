@@ -61,6 +61,7 @@ const defaultFields = [
   { id: 'name', type: 'text' },
   { id: 'isValid', type: 'boolean', noEdit: true },
   { id: 'value', type: 'money' },
+  { id: 'notaryFees', type: 'money' },
   { id: 'loan', type: 'money', noEdit: true },
   { id: 'ownFunds', type: 'money', noEdit: true },
   { id: 'realMonthly', type: 'money', noEdit: true },
@@ -230,9 +231,16 @@ export default class Comparator extends Component {
   };
 
   modifyProperty = (property) => {
-    const { income, fortune, borrowRatio, interestRate } = this.state;
+    const {
+      income,
+      fortune,
+      borrowRatio,
+      interestRate,
+      usageType,
+    } = this.state;
     const loan = borrowRatio * property.value;
-    const ownFunds = (1 - borrowRatio + constants.notaryFees) * property.value;
+    const notaryFees = property.value * constants.notaryFees;
+    const ownFunds = (1 - borrowRatio) * property.value + notaryFees;
     const theoreticalMonthly = getTheoreticalMonthly(
       ownFunds,
       property.value,
@@ -251,12 +259,18 @@ export default class Comparator extends Component {
       isValid,
       message: error,
       className: errorClass,
-    } = validateRatiosCompletely(incomeRatio, realBorrowRatio, borrowRatio);
+    } = validateRatiosCompletely(
+      incomeRatio,
+      realBorrowRatio,
+      borrowRatio,
+      usageType === 'primary',
+    );
 
     return {
       ...property,
       realMonthly,
       theoreticalMonthly,
+      notaryFees,
       loan,
       ownFunds,
       isValid,

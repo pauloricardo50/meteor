@@ -27,14 +27,16 @@ const FieldToggles = ({ allFields, hiddenFields, toggleField }) => {
       </h3>
 
       <div className="flex-col" style={styles.toggles}>
-        {defaultFields.map(field =>
-          (<Toggle
-            key={field.id}
-            label={<T id={`Comparator.${field.id}`} />}
-            toggled={hiddenFields.indexOf(field.id) < 0}
-            onToggle={() => toggleField(field.id)}
-          />),
-        )}
+        {defaultFields
+          .filter(field => field.id !== 'name')
+          .map(field =>
+            (<Toggle
+              key={field.id}
+              label={<T id={`Comparator.${field.id}`} />}
+              toggled={hiddenFields.indexOf(field.id) < 0}
+              onToggle={() => toggleField(field.id)}
+            />),
+          )}
       </div>
 
       <h3>
