@@ -9,6 +9,7 @@ import {
   IntlDate,
 } from '/imports/ui/components/general/Translation.jsx';
 import ValidatorItem from './ValidatorItem.jsx';
+import CompareColumnFooter from './CompareColumnFooter.jsx';
 
 const renderField = (props, field) => {
   const value = props.property[field.id];
@@ -89,6 +90,7 @@ const CompareColumn = props =>
         {renderField(props, field)}
       </li>),
     )}
+    <CompareColumnFooter />
   </ul>);
 
 CompareColumn.propTypes = {

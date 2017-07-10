@@ -1,5 +1,5 @@
 import cleanMethod from '/imports/api/cleanMethods';
-import constants, { incomeLimitedProperty } from '../config/constants';
+import constants from '../config/constants';
 
 // if 2 values are not in auto mode, set both of their minValues to 0
 const setDefaultMinValues = (s, o) => {
@@ -336,8 +336,8 @@ export const getMaxLoan = (
     (toRetirement * (mR * income - maintenance) + 0.65 * property) /
     (i * toRetirement + 1);
 
-  // Floor this value to make sure the user can afford it if any rounding happens
-  // If it had to round up, it would be too expensive
+  // Floor this value to make sure the user can afford it if any rounding
+  // happens, If it had to round up, it would be too expensive
   return Math.floor(Math.min(maxLoan, calculatedMaxLoan));
 };
 

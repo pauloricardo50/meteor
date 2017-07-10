@@ -18,6 +18,11 @@
   "ActionsTable.comment": "Commentaire",
   "ActionsTable.date": "Date",
   "ActionsTable.do": " ",
+
+  "CompareColumnFooter.show": "Options",
+  "CompareColumnFooter.hide": "Masquer",
+  "general.delete": "Supprimer",
+
   "Comparator.notaryFees": "Frais de notaire",
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",

@@ -1,0 +1,56 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+
+import { T } from '/imports/ui/components/general/Translation.jsx';
+
+export default class CompareColumnFooter extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showButtons: false,
+    };
+  }
+
+  toggleButtons = () =>
+    this.setState(prev => ({ showButtons: !prev.showButtons }));
+
+  render() {
+    const { showButtons } = this.state;
+    return (
+      <div className="flex-col center">
+        <FlatButton
+          label={
+            <T
+              id={
+                showButtons
+                  ? 'CompareColumnFooter.hide'
+                  : 'CompareColumnFooter.show'
+              }
+            />
+          }
+          onTouchTap={this.toggleButtons}
+          style={{ margin: '8px 0' }}
+        />
+
+        {showButtons &&
+          <div className="flex-col center">
+            <RaisedButton
+              label={<T id="general.modify" />}
+              style={{ margin: '8px 0' }}
+              primary
+            />
+            <RaisedButton
+              label={<T id="general.delete" />}
+              style={{ margin: '8px 0' }}
+            />
+          </div>}
+      </div>
+    );
+  }
+}
+
+CompareColumnFooter.propTypes = {};

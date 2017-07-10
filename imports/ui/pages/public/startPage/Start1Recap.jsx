@@ -5,7 +5,7 @@ import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
 import {
   getLenderCount,
-  realMonthly,
+  getRealMonthly,
 } from '/imports/js/helpers/startFunctions';
 
 import Recap from '/imports/ui/components/general/Recap.jsx';
@@ -57,7 +57,7 @@ const getArray = ({ income, fortune, property, borrowRatio, incomeRatio }) => [
       Math.round(borrowRatio * 1000) / 1000 <= 0.8 && fortune < property
         ? <span>
           {toMoney(
-              realMonthly(fortune - property * 0.05, property, borrowRatio),
+              getRealMonthly(fortune - property * 0.05, property, borrowRatio),
             )}{' '}
           <small>/mois</small>
         </span>
