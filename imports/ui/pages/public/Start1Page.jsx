@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { _ } from 'lodash';
+import merge from 'lodash/merge';
 import queryString from 'query-string';
 import classnames from 'classnames';
 
@@ -159,7 +159,7 @@ export default class Start1Page extends Component {
 
     // Set the state of the value that is changed, and immediately recommend other minValues
     this.setState(
-      prev => _.merge({}, prev, object),
+      prev => merge({}, prev, object),
       () => this.recommendValues(name, autoOff),
     );
   };
@@ -227,7 +227,7 @@ export default class Start1Page extends Component {
               const resetO = {};
               resetO[key] = {};
               resetO[key].value = this.state[name].minValue;
-              this.setState(prev => _.merge({}, prev, resetO));
+              this.setState(prev => merge({}, prev, resetO));
             }, 400);
           }
         }
@@ -239,7 +239,7 @@ export default class Start1Page extends Component {
       o[name].minValue = 0;
     }
 
-    this.setState(prev => _.merge({}, prev, o));
+    this.setState(prev => merge({}, prev, o));
   }
 
   render() {

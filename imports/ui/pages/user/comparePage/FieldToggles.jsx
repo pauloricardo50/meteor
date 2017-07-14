@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { _ } from 'lodash';
+import partition from 'lodash/partition';
 
 import Toggle from 'material-ui/Toggle';
 
@@ -15,7 +15,7 @@ const styles = {
 };
 
 const FieldToggles = ({ allFields, hiddenFields, toggleField }) => {
-  const [defaultFields, customFields] = _.partition(
+  const [defaultFields, customFields] = partition(
     allFields,
     field => field.id.indexOf('custom') < 0,
   );

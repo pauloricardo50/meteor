@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Meteor } from 'meteor/meteor';
 
-import { _ } from 'lodash';
+import orderBy from 'lodash/orderBy';
 
 import FlatButton from 'material-ui/FlatButton';
 import ArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
@@ -15,7 +15,7 @@ import CompareHeader from './CompareHeader.jsx';
 import CompareTableContent from './CompareTableContent.jsx';
 
 export const sortFunc = (array, sorting) =>
-  _.orderBy(
+  orderBy(
     array,
     sorting.map(item => item.id),
     sorting.map(item => (item.ascending ? 'asc' : 'desc')),

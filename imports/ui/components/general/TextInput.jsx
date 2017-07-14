@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { _ } from 'lodash';
+import omit from 'lodash/omit';
 import TextField from 'material-ui/TextField';
 
 import MaskedInput from 'react-text-mask';
@@ -44,7 +44,7 @@ const TextInput = (props) => {
   const { label } = props;
 
   // Remove props that aren't needed
-  const passedProps = _.omit(props, ['handleChange', 'currentValue', 'label']);
+  const passedProps = omit(props, ['handleChange', 'currentValue', 'label']);
 
   const {
     onChangeHandler,

@@ -8,7 +8,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
 import { injectIntl } from 'react-intl';
-import { _ } from 'lodash';
+import shuffle from 'lodash/shuffle';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
@@ -48,7 +48,7 @@ const suggestions = [
 class CustomFieldAdder extends Component {
   constructor(props) {
     super(props);
-    this.state = { randomSuggestions: _.shuffle(suggestions) };
+    this.state = { randomSuggestions: shuffle(suggestions) };
   }
 
   handleChange = (key, value) => this.setState({ [key]: value });
@@ -89,7 +89,7 @@ class CustomFieldAdder extends Component {
           // after all changes have been made
           onClose={() =>
             Meteor.defer(() =>
-              this.setState({ randomSuggestions: _.shuffle(suggestions) }),
+              this.setState({ randomSuggestions: shuffle(suggestions) }),
             )}
         />
 

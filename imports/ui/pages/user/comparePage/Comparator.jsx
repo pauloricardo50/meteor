@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { _ } from 'lodash';
+import isEqual from 'lodash/isEqual';
 
 import {
   getRealMonthly,
@@ -98,7 +98,7 @@ export default class Comparator extends Component {
   componentDidMount() {}
 
   componentDidUpdate(prevProps, prevState) {
-    if (!_.isEqual(prevState, this.state)) {
+    if (!isEqual(prevState, this.state)) {
       this.setupProperties(this.props, this.state);
       this.filterFields(this.props, this.state);
       this.forceUpdate();

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { _ } from 'lodash';
+import isArray from 'lodash/isArray';
 
 import { FormattedMessage } from 'react-intl';
 import Popover from 'react-bootstrap/lib/Popover';
@@ -49,7 +49,7 @@ export default class Tooltip extends Component {
     let content = null;
     let baseId = id;
 
-    if (_.isArray(id)) {
+    if (isArray(id)) {
       baseId = id[0];
       content = (
         <span style={{ display: 'flex', flexDirection: 'column' }}>

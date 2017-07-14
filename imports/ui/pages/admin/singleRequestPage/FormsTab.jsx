@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { _ } from 'lodash';
+import get from 'lodash/get';
 
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -131,7 +131,7 @@ const reduceToPercent = (formArray, validationArray) =>
     .filter(i => i.condition !== false && i.ignore !== true)
     .map(i => (i.type === 'conditionalInput' ? i.inputs[0] : i))
     .reduce(
-      (tot, i, index, array) => (_.get(validationArray, i.id) ? tot + 1 / array.length : tot),
+      (tot, i, index, array) => (get(validationArray, i.id) ? tot + 1 / array.length : tot),
       0,
     );
 

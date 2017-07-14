@@ -1,5 +1,6 @@
 import React from 'react';
-import { _ } from 'lodash';
+import get from 'lodash/get';
+import isArray from 'lodash/isArray';
 
 import { getBorrowerInfoArray } from './BorrowerFormArray';
 import { borrowerFiles, requestFiles } from '/imports/js/arrays/files';
@@ -140,7 +141,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
 export default getSteps;
 
 // Returns the current value of an autoForm input
-const getCurrentValue = (input, doc) => _.get(doc, input.id);
+const getCurrentValue = (input, doc) => get(doc, input.id);
 
 /**
  * previousDone - Checks if all previous subSteps have been finished upto this
@@ -166,7 +167,7 @@ export const previousDone = (steps, stepNb, itemNb) =>
 export const getPercent = array => {
   const percent =
     array.reduce((tot, val) => {
-      if (_.isArray(val)) {
+      if (isArray(val)) {
         return tot + (val.length ? 1 : 0);
       } else if (val !== undefined && val !== null) {
         return tot + 1;
@@ -291,7 +292,7 @@ export const filesPercent = (doc, fileArrayFunc, step) => {
     }
   };
 
-  if (_.isArray(doc)) {
+  if (isArray(doc)) {
     doc.forEach(item => {
       const fileArray = fileArrayFunc(item)[step];
       iterate(fileArray, item);
