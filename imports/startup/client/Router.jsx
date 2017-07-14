@@ -11,16 +11,16 @@ import { getUserLocale, getTranslations, getFormats } from '../localization';
 import Loadable from '/imports/js/helpers/loadable';
 import PasswordPage from '/imports/ui/pages/public/PasswordPage.jsx';
 
-// import PublicRoutes from './routes/PublicRoutes.jsx';
-// import UserRoutes from './routes/UserRoutes.jsx';
-// import AdminRoutes from './routes/AdminRoutes.jsx';
-// import PartnerRoutes from './routes/PartnerRoutes.jsx';
+import PublicRoutes from './routes/PublicRoutes.jsx';
+import UserRoutes from './routes/UserRoutes.jsx';
+import AdminRoutes from './routes/AdminRoutes.jsx';
+import PartnerRoutes from './routes/PartnerRoutes.jsx';
 
 
-const PublicRoutes = Loadable({ loader: () => import('./routes/PublicRoutes.jsx') });
-const UserRoutes = Loadable({ loader: () => import('./routes/UserRoutes.jsx') });
-const AdminRoutes = Loadable({ loader: () => import('./routes/AdminRoutes.jsx') });
-const PartnerRoutes = Loadable({ loader: () => import('./routes/PartnerRoutes.jsx') });
+// const PublicRoutes = Loadable({ loader: () => import('./routes/PublicRoutes.jsx') });
+// const UserRoutes = Loadable({ loader: () => import('./routes/UserRoutes.jsx') });
+// const AdminRoutes = Loadable({ loader: () => import('./routes/AdminRoutes.jsx') });
+// const PartnerRoutes = Loadable({ loader: () => import('./routes/PartnerRoutes.jsx') });
 
 
 class ScrollToTop extends Component {
