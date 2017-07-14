@@ -54,7 +54,6 @@ edgee:slingshot
 
 
 # Internationalization
-softwarerero:accounts-t9n         # Translates meteor's account package
 
 
 # UI tricks
@@ -70,9 +69,11 @@ force-ssl@1.0.14                      # Automatically route users to https
 dynamic-import@0.1.1
 accounts-password@1.4.0
 wylio:mandrill
-okgrow:analytics
 practicalmeteor:mocha-console-runner
 dburles:google-maps
 react-meteor-data
 random@1.0.10
 meteorhacks:kadira
+bundle-visualizer
+okgrow:analytics
+softwarerero:accounts-t9n
