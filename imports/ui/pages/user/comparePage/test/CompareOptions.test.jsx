@@ -11,8 +11,10 @@ import DefaultOptions from '../DefaultOptions.jsx';
 import AdvancedOptions from '../AdvancedOptions.jsx';
 
 describe('<CompareOptions />', () => {
+  const component = () => getMountedComponent(CompareOptions, { options: {} });
+
   beforeEach(() => {
-    getMountedComponent.reset();
+    getMountedComponent.reset(false);
   });
 
   it('renders', () => {
@@ -49,15 +51,14 @@ describe('<CompareOptions />', () => {
   if (Meteor.isClient) {
     // Otherwise it needs jsdom to work
     it('renders the advanced options after clicking on the button', (done) => {
-      const wrapper = getMountedComponent(CompareOptions, { options: {} });
-      expect(wrapper.find(DefaultOptions).exists()).to.be.true;
-      expect(wrapper.find(AdvancedOptions).exists()).to.be.false;
+      expect(component().find(DefaultOptions).exists()).to.be.true;
+      expect(component().find(AdvancedOptions).exists()).to.be.false;
 
       // Simulate click
-      wrapper.instance().handleClick(() => {
-        expect(wrapper.find(DefaultOptions).exists(), 'default is true').to.be
+      component().instance().handleClick(() => {
+        expect(component().find(DefaultOptions).exists(), 'default is true').to.be
           .true;
-        expect(wrapper.find(AdvancedOptions).exists(), 'advanced is true').to.be
+        expect(component().find(AdvancedOptions).exists(), 'advanced is true').to.be
           .true;
         done();
       });
