@@ -72,7 +72,6 @@ const getMountedComponent = (Component, props, withRouter) => {
 * @return {type} undefined
 */
 getMountedComponent.reset = (useStubs = true) => {
-  // delete getMountedComponent.mountedComponent;
   getMountedComponent.mountedComponent = undefined;
   if (useStubs) {
     StubCollections.restore();

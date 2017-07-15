@@ -43,11 +43,6 @@ describe('loanRequests', () => {
   });
 
   describe('methods', () => {
-    beforeEach(function () {
-      // if (Meteor.isServer) {
-      resetDatabase();
-      // }
-    });
 
     describe('insertRequest', () => {
       it('Properly inserts a minimal request', () => {
