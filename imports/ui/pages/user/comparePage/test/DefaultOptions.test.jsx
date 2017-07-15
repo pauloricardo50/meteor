@@ -26,7 +26,7 @@ const setup = (options, props) =>
 
 describe('<DefaultOptions />', () => {
   beforeEach(() => {
-    getMountedComponent.reset();
+    getMountedComponent.reset(false);
   });
 
   it('renders', () => {
