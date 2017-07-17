@@ -11,6 +11,7 @@ import _ClosingPage from '/imports/ui/pages/user/ClosingPage.jsx';
 import _DevPage from '/imports/ui/pages/user/DevPage.jsx';
 import _FinancePage from '/imports/ui/pages/user/FinancePage.jsx';
 import _ComparePage from '/imports/ui/pages/user/ComparePage.jsx';
+import _AppPage from '/imports/ui/pages/user/AppPage.jsx';
 
 import {
   userContainer,
@@ -31,3 +32,4 @@ export const ClosingPage = userRequestContainer(_ClosingPage);
 export const DevPage = userContainer(_DevPage);
 export const FinancePage = userRequestContainer(_FinancePage);
 export const ComparePage = userContainer(_ComparePage);
+export const AppPage = userContainer(_AppPage);

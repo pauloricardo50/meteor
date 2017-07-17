@@ -16,16 +16,17 @@ import {
   DevPage,
   FinancePage,
   ComparePage,
+  AppPage,
 } from '/imports/ui/containers/UserContainers';
 import NewPage from '/imports/ui/pages/user/NewPage.jsx';
 import NotFound from '/imports/ui/components/general/NotFound.jsx';
 
 const UserRoutes = props =>
-  <UserLayout
+  (<UserLayout
     {...props}
     type="user"
     render={layoutProps =>
-      <Switch>
+      (<Switch>
         {/* <Route
           exact
           path="/app/new/:requestId"
@@ -74,12 +75,9 @@ const UserRoutes = props =>
         />
         <Route path="/app/requests/:requestId" component={DashboardPage} />
         <Route path="/app/compare" component={ComparePage} />
-        <Route
-          path="/app"
-          render={routeProps => <NewPage {...layoutProps} {...routeProps} />}
-        />
+        <Route path="/app" component={AppPage} />
         <Route component={NotFound} />
-      </Switch>}
-  />;
+      </Switch>)}
+  />);
 
 export default UserRoutes;

@@ -27,9 +27,10 @@ export const insertRequest = new ValidatedMethod({
     }
 
     // Allow adding a userId for testing purposes
-    object.userId = userId || Meteor.userId();
-
-    return LoanRequests.insert(object);
+    return LoanRequests.insert({
+      ...object,
+      userId: userId || Meteor.userId(),
+    });
   },
 });
 
@@ -113,7 +114,7 @@ export const startAuction = new ValidatedMethod({
 });
 
 // Gives the end time of an auction, given the start time
-export const getAuctionEndTime = startTime => {
+export const getAuctionEndTime = (startTime) => {
   startTime = moment(startTime);
   const endTime = startTime;
 
@@ -190,7 +191,7 @@ export const requestVerification = new ValidatedMethod({
           'logic.verification.requestedTime': new Date(),
         },
       },
-      err => {
+      (err) => {
         if (!err && Meteor.isServer) {
           console.log('callback');
           Meteor.call('email.send', {
@@ -216,7 +217,7 @@ export const deleteRequest = new ValidatedMethod({
       Roles.userIsInRole(Meteor.userId(), 'dev') ||
       Roles.userIsInRole(Meteor.userId(), 'admin')
     ) {
-      return LoanRequests.remove(id, err => {
+      return LoanRequests.remove(id, (err) => {
         if (!err) {
           removeParentRequest.call({ requestId: id });
         }
@@ -240,7 +241,7 @@ export const finishAuction = new ValidatedMethod({
       return LoanRequests.update(
         id,
         { $set: { 'logic.auctionEndTime': new Date() } },
-        error => {
+        (error) => {
           if (!error && Meteor.isServer) {
             const request = LoanRequests.findOne({ _id: id });
             const email = request.emails.find(
@@ -284,7 +285,7 @@ export const cancelAuction = new ValidatedMethod({
             'logic.auctionStartTime': undefined,
           },
         },
-        error => {
+        (error) => {
           if (!error && Meteor.isServer) {
             const request = LoanRequests.findOne({ _id: id });
             const email = request.emails.find(

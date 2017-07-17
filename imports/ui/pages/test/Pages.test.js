@@ -20,6 +20,7 @@ import StructurePage from '../user/StructurePage.jsx';
 import VerificationPage from '../user/VerificationPage.jsx';
 import FinancePage from '../user/FinancePage.jsx';
 import ComparePage from '../user/ComparePage.jsx';
+import AppPage from '../user/AppPage.jsx';
 
 // Admin pages
 import AdminDashboardPage from '../admin/AdminDashboardPage.jsx';

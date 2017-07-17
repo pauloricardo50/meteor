@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Component } from 'react';
 import { Roles } from 'meteor/alanning:roles';
 import { Redirect } from 'react-router-dom';
 import classnames from 'classnames';
@@ -12,7 +12,7 @@ import track from '/imports/js/helpers/analytics';
 
 // import UserJoyride from '/imports/ui/components/general/UserJoyride.jsx';
 
-const getRedirect = props => {
+const getRedirect = (props) => {
   const isAdmin = Roles.userIsInRole(props.currentUser, 'admin');
   const isPartner = Roles.userIsInRole(props.currentUser, 'partner');
   const isDev = Roles.userIsInRole(props.currentUser, 'dev');
@@ -32,15 +32,8 @@ const getRedirect = props => {
       } else if (isPartner) {
         return '/isPartner';
       }
-      if (
-        props.loanRequests &&
-        props.loanRequests.length >= 1 &&
-        props.history.location.pathname === '/app'
-      ) {
-        return `/app/requests/${props.loanRequests[0]._id}`;
-      }
-      // If there is no active request, force route to dashboard, except if
-      // user is on dashboard, profile, or contact page
+      // If there is no active request, force route to app page, except if
+      // user is on app, profile, or contact page
       if (
         props.loanRequests &&
         props.loanRequests.length < 1 &&
@@ -75,43 +68,57 @@ const getRedirect = props => {
   return false;
 };
 
-const AppLayout = props => {
-  const redirect = getRedirect(props);
-  const isUser = Roles.userIsInRole(props.currentUser, 'user');
-  const classes = classnames({
-    'app-layout': true,
-    'always-side-nav': props.type === 'admin',
-  });
-
-  const isApp = props.history.location.pathname.slice(0, 4) === '/app';
-
-  if (redirect) {
-    track('AppLayout - was redirected', {
-      from: props.history.location.pathname,
-      to: redirect,
-    });
-    return <Redirect to={redirect} />;
+const showNav = ({ location }) => {
+  if (location.pathname === '/app' || location.pathname === '/app/compare') {
+    return false;
   }
-  return (
-    <div>
-      {/* {isApp && <UserJoyride />} */}
 
-      <TopNav {...props} public={false} />
-
-      {isApp ? <SideNavUser {...props} fixed /> : <SideNav {...props} />}
-
-      <main className={classes}>
-        {/* <RouteTransition pathname={props.history.location.pathname}> */}
-        <div className="wrapper">
-          {props.render(props)}
-        </div>
-        {/* </RouteTransition> */}
-      </main>
-
-      {isApp && <ContactButton history={props.history} />}
-    </div>
-  );
+  return true;
 };
+
+export default class AppLayout extends Component {
+  render() {
+    const { type, history, render } = this.props;
+    const redirect = getRedirect(this.props);
+    const classes = classnames({
+      'app-layout': true,
+      'always-side-nav': type === 'admin',
+      'no-nav': !showNav(history),
+    });
+
+    const isApp = history.location.pathname.slice(0, 4) === '/app';
+
+    if (redirect) {
+      track('AppLayout - was redirected', {
+        from: history.location.pathname,
+        to: redirect,
+      });
+      return <Redirect to={redirect} />;
+    }
+    return (
+      <div>
+        {/* {isApp && <UserJoyride />} */}
+
+        <TopNav {...this.props} public={false} />
+
+        {showNav(history) &&
+          (isApp
+            ? <SideNavUser {...this.props} fixed />
+            : <SideNav {...this.props} />)}
+
+        <main className={classes}>
+          {/* <RouteTransition pathname={props.history.location.pathname}> */}
+          <div className="wrapper">
+            {render(this.props)}
+          </div>
+          {/* </RouteTransition> */}
+        </main>
+
+        {isApp && <ContactButton history={history} />}
+      </div>
+    );
+  }
+}
 
 AppLayout.defaultProps = {
   type: 'user',
@@ -129,5 +136,3 @@ AppLayout.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.object),
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
-
-export default AppLayout;
