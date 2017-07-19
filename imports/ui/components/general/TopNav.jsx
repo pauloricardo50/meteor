@@ -31,7 +31,7 @@ const styles = {
   },
 };
 
-const TopNav = props => {
+const TopNav = (props) => {
   const isApp =
     props.history && props.history.location.pathname.slice(0, 4) === '/app';
 
@@ -45,12 +45,13 @@ const TopNav = props => {
           props.currentUser
             ? <TopNavDropdown {...props} />
             : <Button
-                label={<T id="TopNav.login" />}
-                containerElement={<Link to="/login" />}
-                secondary
-                labelStyle={{ color: colors.primary }}
-                onTouchTap={() => track('TopNav - clicked login', {})}
-              />
+              label={<T id="TopNav.login" />}
+              containerElement={<Link to="/login" />}
+              secondary
+              labelStyle={{ color: colors.primary }}
+              onTouchTap={() => track('TopNav - clicked login', {})}
+              style={{ marginTop: 5 }}
+            />
         }
       >
         <div className="logo">
