@@ -70,7 +70,7 @@ const renderField = (props, field) => {
 };
 
 const CompareColumn = props =>
-  (<ul
+  <ul
     className={classnames({
       'mask1 compare-column default-column': true,
       [`${props.property.errorClass}-border`]: !props.property.isValid,
@@ -79,23 +79,27 @@ const CompareColumn = props =>
     style={props.style}
   >
     {props.fields.map(field =>
-      (<li
+      <li
         key={field.id}
         className={classnames({
           'text-ellipsis': true,
           hovered: props.hovered === field.id,
         })}
+        onMouseEnter={() => props.onHoverEnter(field.id)}
+        onMouseLeave={props.onHoverLeave}
       >
         {renderField(props, field)}
-      </li>),
+      </li>,
     )}
     <CompareColumnFooter />
-  </ul>);
+  </ul>;
 
 CompareColumn.propTypes = {
   property: PropTypes.objectOf(PropTypes.any).isRequired,
   fields: PropTypes.arrayOf(PropTypes.object).isRequired,
   style: PropTypes.objectOf(PropTypes.any),
+  onHoverEnter: PropTypes.func.isRequired,
+  onHoverLeave: PropTypes.func.isRequired,
   hovered: PropTypes.string,
 };
 

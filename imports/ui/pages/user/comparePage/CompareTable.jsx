@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
 import orderBy from 'lodash/orderBy';
+import debounce from 'lodash/debounce';
 
 import FlatButton from 'material-ui/FlatButton';
 import ArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
@@ -38,12 +39,28 @@ export default class CompareTable extends Component {
     this.state = {
       sorting: [],
       filtering: [],
+      scrollLeft: 0,
+      hovered: undefined,
     };
 
     this.interval = undefined;
   }
 
-  handleScroll = (toLeft) => {
+  componentDidMount() {
+    // The third parameter is important, so that it listens to the nested
+    // scroll event as well
+    window.addEventListener('scroll', this.setScroll, true);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.setScroll);
+  }
+
+  setScroll = debounce(() => {
+    this.setState({ scrollLeft: this.ref.scrollLeft });
+  }, 50);
+
+  handleScroll = toLeft => {
     Meteor.clearInterval(this.interval);
 
     if (this.ref) {
@@ -145,7 +162,7 @@ export default class CompareTable extends Component {
 
   render() {
     const { properties, addCustomField, fields } = this.props;
-    const { sorting, filtering } = this.state;
+    const { sorting, filtering, scrollLeft } = this.state;
 
     const sortedProperties = getProperties(properties, filtering, sorting);
 
@@ -165,7 +182,7 @@ export default class CompareTable extends Component {
         </div>
         <div
           className="compare-table"
-          ref={(c) => {
+          ref={c => {
             this.ref = c;
           }}
         >
@@ -180,7 +197,11 @@ export default class CompareTable extends Component {
             onHoverEnter={this.onHoverEnter}
             onHoverLeave={this.onHoverLeave}
             hovered={this.state.hovered}
+            scrollLeft={scrollLeft}
           />
+
+          {/* Empty div to position things properly */}
+          <div className="empty-compare-header" />
 
           <CompareTableContent
             properties={sortedProperties}

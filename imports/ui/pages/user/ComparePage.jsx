@@ -33,7 +33,7 @@ export default class ComparePage extends Component {
     }
 
     return (
-      <section style={{ padding: 16 }}>
+      <section style={{ marginLeft: -16, marginRight: -16 }}>
         <GoogleMapContainer>
           <Comparator {...this.props} />
         </GoogleMapContainer>

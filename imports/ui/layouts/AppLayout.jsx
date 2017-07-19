@@ -12,7 +12,7 @@ import track from '/imports/js/helpers/analytics';
 
 // import UserJoyride from '/imports/ui/components/general/UserJoyride.jsx';
 
-const getRedirect = (props) => {
+const getRedirect = props => {
   const isAdmin = Roles.userIsInRole(props.currentUser, 'admin');
   const isPartner = Roles.userIsInRole(props.currentUser, 'partner');
   const isDev = Roles.userIsInRole(props.currentUser, 'dev');
@@ -38,6 +38,7 @@ const getRedirect = (props) => {
         props.loanRequests &&
         props.loanRequests.length < 1 &&
         (props.history.location.pathname !== '/app' &&
+          props.history.location.pathname !== '/app/compare' &&
           props.history.location.pathname !== '/app/profile' &&
           props.history.location.pathname !== '/app/contact')
       ) {

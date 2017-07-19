@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import FlatButton from 'material-ui/FlatButton';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
+import IconButton from 'material-ui/IconButton';
+import LockOpen from 'material-ui/svg-icons/action/lock-open';
+import LockClosed from 'material-ui/svg-icons/action/lock-outline';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import DialogSimple from '/imports/ui/components/general/DialogSimple.jsx';
@@ -12,9 +15,9 @@ import FilterIcon from './FilterIcon.jsx';
 import SortIcon from './SortIcon.jsx';
 
 const renderField = (props, field) => {
-  const text = field.custom ? field.name : <T id={`Comparator.${field.id}`} />;
+  const { id, type, name, custom } = field;
+  const text = custom ? name : <T id={`Comparator.${id}`} />;
   let icon;
-  const { id, type } = field;
 
   if (type === 'boolean') {
     icon = (
@@ -34,45 +37,95 @@ const renderField = (props, field) => {
   );
 };
 
-const CompareHeader = props =>
-  (<ul className="mask1 compare-column header-column">
-    <li className="text-center">
-      <FlatButton
-        label="Reset"
-        onTouchTap={props.handleReset}
-        icon={<LoopIcon style={{ color: 'white' }} />}
-        style={{ color: 'white' }}
-        // disabled={props.filtering.length === 0 && props.sorting.length === 0}
-      />
-    </li>
-    {props.fields.map(field =>
-      (<li
-        key={field.id}
-        onMouseEnter={() => props.onHoverEnter(field.id)}
-        onMouseLeave={props.onHoverLeave}
-        className={props.hovered === field.id && 'hovered'}
-        onTouchTap={
-          field.type === 'boolean'
-            ? () => props.handleFilter(field.id)
-            : () => props.handleSort(field.id)
-        }
-      >
-        {renderField(props, field)}
-      </li>),
-    )}
+export default class CompareHeader extends Component {
+  constructor(props) {
+    super(props);
 
-    <li>
-      <DialogSimple
-        label="+"
-        primary
-        passProps
-        actions={[]}
-        title={<T id="CustomFieldAdder.title" />}
+    this.state = { pinHeader: true };
+  }
+
+  togglePin = () => this.setState(prev => ({ pinHeader: !prev.pinHeader }));
+
+  render() {
+    const {
+      fields,
+      handleReset,
+      onHoverEnter,
+      onHoverLeave,
+      handleFilter,
+      handleSort,
+      addCustomField,
+      hovered,
+      scrollLeft,
+    } = this.props;
+
+    const { pinHeader } = this.state;
+
+    return (
+      <ul
+        className="mask1 compare-column header-column"
+        ref={node => {
+          this.node = node;
+        }}
+        style={{
+          position: 'absolute',
+          left: pinHeader ? Math.max(scrollLeft, 16) : 16,
+          zIndex: 2,
+          transition: 'left 200ms ease-in-out',
+          marginBottom: 0,
+        }}
       >
-        <CustomFieldAdder addCustomField={props.addCustomField} />
-      </DialogSimple>
-    </li>
-  </ul>);
+        <li
+          className="text-center"
+          style={{ position: 'relative', overflow: 'visible' }}
+        >
+          <FlatButton
+            label="Reset"
+            onTouchTap={handleReset}
+            icon={<LoopIcon style={{ color: 'white' }} />}
+            style={{ color: 'white' }}
+          />
+          <IconButton
+            tooltip="Pin"
+            onTouchTap={this.togglePin}
+            style={{ position: 'absolute', right: 0, top: 0 }}
+          >
+            {pinHeader
+              ? <LockClosed color="white" />
+              : <LockOpen color="white" />}
+          </IconButton>
+        </li>
+        {fields.map(field =>
+          <li
+            key={field.id}
+            onMouseEnter={() => onHoverEnter(field.id)}
+            onMouseLeave={onHoverLeave}
+            className={hovered === field.id && 'hovered'}
+            onTouchTap={
+              field.type === 'boolean'
+                ? () => handleFilter(field.id)
+                : () => handleSort(field.id)
+            }
+          >
+            {renderField(this.props, field)}
+          </li>,
+        )}
+
+        <li>
+          <DialogSimple
+            label="+"
+            primary
+            passProps
+            actions={[]}
+            title={<T id="CustomFieldAdder.title" />}
+          >
+            <CustomFieldAdder addCustomField={addCustomField} />
+          </DialogSimple>
+        </li>
+      </ul>
+    );
+  }
+}
 
 CompareHeader.propTypes = {
   fields: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -85,6 +138,7 @@ CompareHeader.propTypes = {
   onHoverEnter: PropTypes.func.isRequired,
   onHoverLeave: PropTypes.func.isRequired,
   hovered: PropTypes.string,
+  scrollLeft: PropTypes.number.isRequired,
 };
 
 CompareHeader.defaultProps = {
@@ -92,5 +146,3 @@ CompareHeader.defaultProps = {
   filtering: [],
   hovered: undefined,
 };
-
-export default CompareHeader;
