@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import classnames from 'classnames';
@@ -10,7 +10,7 @@ import {
 import ValidatorItem from './ValidatorItem.jsx';
 import CompareColumnFooter from './CompareColumnFooter.jsx';
 
-const renderField = (props, field) => {
+const renderField = (props, field, editing) => {
   const value = props.property[field.id];
 
   if (value === undefined) {
@@ -69,33 +69,68 @@ const renderField = (props, field) => {
   }
 };
 
-const CompareColumn = props =>
-  (<ul
-    className={classnames({
-      'mask1 compare-column default-column': true,
-      [`${props.property.errorClass}-border`]: !props.property.isValid,
-      'success-border': props.property.isValid,
-    })}
-    style={props.style}
-  >
-    {props.fields.map(field =>
-      (<li
-        key={field.id}
+export default class CompareColumn extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      editing: false,
+    };
+  }
+
+  startEditing = () => {
+    this.setState({ editing: true });
+  };
+
+  stopEditing = () => {
+    this.setState({ editing: false });
+  };
+
+  render() {
+    const {
+      property,
+      style,
+      fields,
+      onHoverEnter,
+      onHoverLeave,
+      hovered,
+      deleteProperty,
+    } = this.props;
+    const { editing } = this.state;
+
+    return (
+      <ul
         className={classnames({
-          'text-ellipsis': true,
-          hovered: props.hovered === field.id,
+          'mask1 compare-column default-column': true,
+          [`${property.errorClass}-border`]: !property.isValid,
+          'success-border': property.isValid,
         })}
-        onMouseEnter={() => props.onHoverEnter(field.id)}
-        onMouseLeave={props.onHoverLeave}
+        style={style}
       >
-        {renderField(props, field)}
-      </li>),
-    )}
-    <CompareColumnFooter
-      id={props.property._id}
-      deleteProperty={props.deleteProperty}
-    />
-  </ul>);
+        {fields.map(field =>
+          (<li
+            key={field.id}
+            className={classnames({
+              'text-ellipsis': true,
+              hovered: hovered === field.id,
+            })}
+            onMouseEnter={() => onHoverEnter(field.id)}
+            onMouseLeave={onHoverLeave}
+          >
+            {renderField(this.props, field, editing)}
+          </li>),
+        )}
+        <CompareColumnFooter
+          id={property._id}
+          deleteProperty={deleteProperty}
+          startEditing={this.startEditing}
+          stopEditing={this.stopEditing}
+          editing={editing}
+        />
+      </ul>
+    );
+  }
+}
 
 CompareColumn.propTypes = {
   property: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -111,5 +146,3 @@ CompareColumn.defaultProps = {
   style: {},
   hovered: undefined,
 };
-
-export default CompareColumn;

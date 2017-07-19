@@ -4,6 +4,8 @@ import { Factory } from 'meteor/dburles:factory';
 import LoanRequests from './loanrequests/loanrequests';
 import Borrowers from './borrowers/borrowers';
 import Offers from './offers/offers';
+import Comparators from './comparators/comparators';
+import Properties from './properties/properties';
 
 const chance = require('chance').Chance();
 
@@ -77,4 +79,17 @@ Factory.define('offer', Offers, {
     interest5: 0.01,
     interest10: 0.01,
   }),
+});
+
+Factory.define('comparator', Comparators, {
+  userId: Factory.get('user'),
+});
+
+Factory.define('property', Properties, {
+  userId: Factory.get('user'),
+  name: 'testName',
+  address: 'testAddress',
+  value: 100000,
+  latitude: 10,
+  longitude: 20,
 });

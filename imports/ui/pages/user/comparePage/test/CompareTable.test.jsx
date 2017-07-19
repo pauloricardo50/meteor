@@ -12,23 +12,25 @@ import CompareHeader from '../CompareHeader.jsx';
 import CompareTableContent from '../CompareTableContent.jsx';
 
 describe('<CompareTable />', () => {
-  it('renders', () => {
-    const wrapper = shallow(<CompareTable properties={[]} />);
+  let properties;
+  let wrapper;
 
+  beforeEach(() => {
+    properties = [Factory.create('property'), Factory.create('property')];
+    wrapper = shallow(<CompareTable properties={properties} />);
+  });
+
+  it('renders', () => {
     expect(wrapper.exists()).to.be.true;
   });
 
   it('always renders a CompareHeader and CompareTableContent', () => {
-    const wrapper = shallow(<CompareTable properties={[]} />);
-
     expect(wrapper.find(CompareHeader).exists()).to.be.true;
     expect(wrapper.find(CompareTableContent).exists()).to.be.true;
   });
 
   describe('handleSort', () => {
     it('sorts in ascending order on first call', (done) => {
-      const wrapper = shallow(<CompareTable properties={[{}, {}]} />);
-
       expect(wrapper.state().sorting).to.deep.equal([]);
 
       wrapper.instance().handleSort('test', () => {
@@ -40,8 +42,6 @@ describe('<CompareTable />', () => {
     });
 
     it('sorts in descending order on second call', (done) => {
-      const wrapper = shallow(<CompareTable properties={[{}, {}]} />);
-
       wrapper.setState(
         {
           sorting: [{ id: 'test', ascending: true }],
@@ -58,8 +58,6 @@ describe('<CompareTable />', () => {
     });
 
     it('removes sorting on third call', (done) => {
-      const wrapper = shallow(<CompareTable properties={[{}, {}]} />);
-
       wrapper.setState(
         {
           sorting: [{ id: 'test', ascending: false }],
@@ -76,8 +74,6 @@ describe('<CompareTable />', () => {
 
   describe('handleFilter', () => {
     it('filters to show true on first call', (done) => {
-      const wrapper = shallow(<CompareTable properties={[{}, {}]} />);
-
       expect(wrapper.state().filtering).to.deep.equal([]);
 
       wrapper.instance().handleFilter('test', () => {
@@ -89,8 +85,6 @@ describe('<CompareTable />', () => {
     });
 
     it('sorts in descending order on second call', (done) => {
-      const wrapper = shallow(<CompareTable properties={[{}, {}]} />);
-
       wrapper.setState(
         {
           filtering: [{ id: 'test', show: true }],
@@ -107,8 +101,6 @@ describe('<CompareTable />', () => {
     });
 
     it('removes filtering on third call', (done) => {
-      const wrapper = shallow(<CompareTable properties={[{}, {}]} />);
-
       wrapper.setState(
         {
           filtering: [{ id: 'test', show: false }],

@@ -20,7 +20,13 @@ export default class CompareColumnFooter extends Component {
 
   render() {
     const { showButtons } = this.state;
-    const { deleteProperty, id } = this.props;
+    const {
+      deleteProperty,
+      id,
+      editing,
+      startEditing,
+      stopEditing,
+    } = this.props;
 
     return (
       <div className="flex-col center" style={{ flexWrap: ' ' }}>
@@ -42,9 +48,10 @@ export default class CompareColumnFooter extends Component {
           <div className="flex-col center">
             <Button
               raised
-              label={<T id="general.modify" />}
+              label={<T id={editing ? 'general.save' : 'general.modify'} />}
               style={{ margin: '8px 0' }}
               primary
+              onTouchTap={editing ? stopEditing : startEditing}
             />
             <ConfirmButton
               raised
@@ -61,4 +68,7 @@ export default class CompareColumnFooter extends Component {
 CompareColumnFooter.propTypes = {
   deleteProperty: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
+  editing: PropTypes.bool.isRequired,
+  startEditing: PropTypes.func.isRequired,
+  stopEditing: PropTypes.func.isRequired,
 };

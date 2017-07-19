@@ -15,9 +15,6 @@ import PasswordResetPage from '/imports/ui/pages/public/PasswordResetPage.jsx';
 import TestPage from '/imports/ui/pages/public/TestPage.jsx';
 import NotFound from '/imports/ui/components/general/NotFound.jsx';
 
-// To be removed
-import ComparePage from '/imports/ui/pages/user/ComparePage.jsx';
-
 import Loadable from '/imports/js/helpers/loadable';
 
 const Start1Page = Loadable({
@@ -37,9 +34,6 @@ const PublicRoutes = props =>
       <Route path="/test" component={TestPage} />
       <Route path="/verify-email/:token" component={EmailVerificationPage} />
       <Route path="/reset-password/:token" component={PasswordResetPage} />
-
-      <Route path="/compare" component={ComparePage} />
-
       <Route component={NotFound} />
     </Switch>
   </PublicLayout>);
