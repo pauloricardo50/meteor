@@ -39,6 +39,7 @@ export const userContainer = c =>
     composeWithTracker(userBorrowersComposer, Loading),
     composeWithTracker(userOffersComposer, Loading),
     composeWithTracker(currentUserComposer, Loading),
+    composeWithTracker(userCompareComposer, Loading),
   )(c);
 
 export const userRequestContainer = c =>

@@ -6,6 +6,7 @@ import Toggle from 'material-ui/Toggle';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import DialogSimple from '/imports/ui/components/general/DialogSimple.jsx';
+import cleanMethods from '/imports/api/cleanMethods';
 import DefaultOptions from './DefaultOptions.jsx';
 import AdvancedOptions from './AdvancedOptions.jsx';
 import PropertyAdder from './PropertyAdder.jsx';
@@ -29,7 +30,7 @@ export default class CompareOptions extends Component {
 
   render() {
     const { showAdvanced } = this.state;
-    const { handleAddProperty, options, changeOptions } = this.props;
+    const { handleAddProperty, comparator, changeComparator } = this.props;
 
     return (
       <div
@@ -43,9 +44,9 @@ export default class CompareOptions extends Component {
         <Toggle
           style={{ width: '100%', maxWidth: 200 }}
           label={<T id="CompareOptions.useBorrowers" />}
-          toggled={!options.useBorrowers}
+          toggled={!comparator.useBorrowers}
           onToggle={(event, isChecked) =>
-            changeOptions('useBorrowers', !isChecked)}
+            changeComparator('useBorrowers', !isChecked)}
         />
 
         <DefaultOptions {...this.props} />
@@ -56,7 +57,8 @@ export default class CompareOptions extends Component {
           className="text-center"
           style={showAdvanced ? { marginTop: 20 } : {}}
         >
-          <Button raised
+          <Button
+            raised
             onTouchTap={() => this.handleClick()}
             label={
               <T

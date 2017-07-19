@@ -5,8 +5,8 @@ import Button from '/imports/ui/components/general/Button.jsx';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import Comparator from './comparePage/Comparator.jsx';
-
 import GoogleMapContainer from '/imports/ui/components/general/GoogleMapContainer.jsx';
+import cleanMethod from '/imports/api/cleanMethods';
 
 const styles = {
   initial: {
@@ -22,15 +22,25 @@ export default class ComparePage extends Component {
     super(props);
   }
 
+  handleStart = () => {
+    cleanMethod('insertComparator');
+  };
+
   render() {
-    const { properties } = this.props;
-    // if (properties.length <= 0) {
-    //   return (
-    //     <section style={styles.initial}>
-    //       <Button raised primary label={<T id="ComparePage.CTA" />} />
-    //     </section>
-    //   );
-    // }
+    const { properties, comparator } = this.props;
+
+    if (!comparator) {
+      return (
+        <section style={styles.initial}>
+          <Button
+            raised
+            primary
+            label={<T id="ComparePage.start" />}
+            onTouchTap={this.handleStart}
+          />
+        </section>
+      );
+    }
 
     return (
       <section style={{ marginLeft: -16, marginRight: -16 }}>
@@ -44,8 +54,10 @@ export default class ComparePage extends Component {
 
 ComparePage.propTypes = {
   properties: PropTypes.arrayOf(PropTypes.object),
+  comparator: PropTypes.objectOf(PropTypes.any),
 };
 
 ComparePage.defaultProps = {
-  properties: [{}],
+  properties: [],
+  comparator: undefined,
 };

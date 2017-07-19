@@ -9,11 +9,12 @@ import { T } from '/imports/ui/components/general/Translation.jsx';
 import FieldToggles from './FieldToggles.jsx';
 
 const AdvancedOptions = ({
-  options,
-  changeOptions,
+  comparator,
+  changeComparator,
   toggleField,
   allFields,
   hiddenFields,
+  removeCustomField,
 }) =>
   (<div className="flex-col center">
     <hr style={{ width: '100%' }} />
@@ -23,12 +24,12 @@ const AdvancedOptions = ({
         label={<T id="AdvancedOptions.borrowRatio" />}
         id="borrowRatio"
         min={0}
-        max={options.usageType === 'secondary' ? 0.7 : 0.8}
+        max={comparator.usageType === 'secondary' ? 0.7 : 0.8}
         step={0.01}
-        currentValue={options.borrowRatio}
-        handleChange={changeOptions}
+        currentValue={comparator.borrowRatio}
+        handleChange={changeComparator}
         labelMin="0%"
-        labelMax={options.usageType === 'secondary' ? '70%' : '80%'}
+        labelMax={comparator.usageType === 'secondary' ? '70%' : '80%'}
       />
     </div>
 
@@ -36,8 +37,8 @@ const AdvancedOptions = ({
       options={['primary', 'secondary', 'investment']}
       label={<T id="Forms.usageType" />}
       id="usageType"
-      handleChange={changeOptions}
-      currentValue={options.usageType}
+      handleChange={changeComparator}
+      currentValue={comparator.usageType}
       intlPrefix="Forms"
     />
 
@@ -51,7 +52,8 @@ const AdvancedOptions = ({
       <FieldToggles
         toggleField={toggleField}
         allFields={allFields}
-        hiddenFields={hiddenFields}
+        hiddenFields={comparator.hiddenFields}
+        removeCustomField={removeCustomField}
       />
     </DialogSimple>
   </div>);

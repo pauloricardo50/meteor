@@ -11,7 +11,7 @@ import ArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 import ArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 
 import { easeOut } from '/imports/js/helpers/browserFunctions';
-
+import { T } from '/imports/ui/components/general/Translation.jsx';
 import CompareHeader from './CompareHeader.jsx';
 import CompareTableContent from './CompareTableContent.jsx';
 
@@ -60,7 +60,7 @@ export default class CompareTable extends Component {
     this.setState({ scrollLeft: this.ref.scrollLeft });
   }, 50);
 
-  handleScroll = toLeft => {
+  handleScroll = (toLeft) => {
     Meteor.clearInterval(this.interval);
 
     if (this.ref) {
@@ -161,7 +161,7 @@ export default class CompareTable extends Component {
   onHoverLeave = () => this.setState({ hovered: undefined });
 
   render() {
-    const { properties, addCustomField, fields } = this.props;
+    const { properties, addCustomField, fields, deleteProperty } = this.props;
     const { sorting, filtering, scrollLeft } = this.state;
 
     const sortedProperties = getProperties(properties, filtering, sorting);
@@ -182,7 +182,7 @@ export default class CompareTable extends Component {
         </div>
         <div
           className="compare-table"
-          ref={c => {
+          ref={(c) => {
             this.ref = c;
           }}
         >
@@ -203,13 +203,18 @@ export default class CompareTable extends Component {
           {/* Empty div to position things properly */}
           <div className="empty-compare-header" />
 
-          <CompareTableContent
-            properties={sortedProperties}
-            fields={fields}
-            onHoverEnter={this.onHoverEnter}
-            onHoverLeave={this.onHoverLeave}
-            hovered={this.state.hovered}
-          />
+          {properties.length
+            ? <CompareTableContent
+              properties={sortedProperties}
+              fields={fields}
+              onHoverEnter={this.onHoverEnter}
+              onHoverLeave={this.onHoverLeave}
+              hovered={this.state.hovered}
+              deleteProperty={deleteProperty}
+            />
+            : <h2 className="flex center">
+              <T id="CompareTable.empty" />
+            </h2>}
         </div>
       </div>
     );
@@ -221,6 +226,7 @@ CompareTable.propTypes = {
   customFields: PropTypes.arrayOf(PropTypes.object),
   addCustomField: PropTypes.func.isRequired,
   fields: PropTypes.arrayOf(PropTypes.object).isRequired,
+  deleteProperty: PropTypes.func.isRequired,
 };
 
 CompareTable.defaultProps = {

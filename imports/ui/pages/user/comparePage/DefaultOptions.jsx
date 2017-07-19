@@ -11,8 +11,8 @@ const textFields = [
   { id: 'interestRate', type: 'percent' },
 ];
 
-const DefaultOptions = ({ options, changeOptions }) => {
-  if (options.useBorrowers) {
+const DefaultOptions = ({ comparator, changeComparator }) => {
+  if (comparator.useBorrowers) {
     return <BorrowerOptions />;
   }
 
@@ -31,8 +31,8 @@ const DefaultOptions = ({ options, changeOptions }) => {
             key={id}
             label={<T id={`DefaultOptions.${id}`} />}
             id={id}
-            handleChange={changeOptions}
-            currentValue={options[id]}
+            handleChange={changeComparator}
+            currentValue={comparator[id]}
             floatingLabelFixed
             type={type}
             style={{ width: 160, marginRight: 16 }}
@@ -44,8 +44,8 @@ const DefaultOptions = ({ options, changeOptions }) => {
 };
 
 DefaultOptions.propTypes = {
-  options: PropTypes.objectOf(PropTypes.any).isRequired,
-  changeOptions: PropTypes.func.isRequired,
+  comparator: PropTypes.objectOf(PropTypes.any).isRequired,
+  changeComparator: PropTypes.func.isRequired,
 };
 
 export default DefaultOptions;

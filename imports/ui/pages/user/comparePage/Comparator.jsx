@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import isEqual from 'lodash/isEqual';
+import throttle from 'lodash/throttle';
 
 import {
   getRealMonthly,
@@ -13,6 +13,7 @@ import { validateRatiosCompletely } from '/imports/js/helpers/requestFunctions';
 import { toDistanceString } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
 import { getClosestStations, getNearbyPlace } from '/imports/js/helpers/APIs';
+import cleanMethod from '/imports/api/cleanMethods';
 
 import CompareTable from './CompareTable.jsx';
 import CompareOptions from './CompareOptions.jsx';
@@ -67,7 +68,6 @@ const defaultFields = [
   { id: 'realMonthly', type: 'money', noEdit: true },
   { id: 'theoreticalMonthly', type: 'money', noEdit: true },
   { id: 'createdAt', type: 'date', noEdit: true },
-  { id: 'minergy', type: 'boolean' },
   { id: 'realBorrowRatio', type: 'percent', noEdit: true },
   { id: 'incomeRatio', type: 'percent', noEdit: true },
   { id: 'nearestStore', type: 'text', noEdit: true },
@@ -79,138 +79,133 @@ export default class Comparator extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      useBorrowers: false,
-      income: 80000,
-      fortune: 110000,
-      interestRate: 0.0125,
-      borrowRatio: 0.8,
-      usageType: 'primary',
-      addedProperties: [],
-      customFields: [],
-      hiddenFields: ['realBorrowRatio', 'incomeRatio', 'theoreticalMonthly'],
-      borrowers: [],
-    };
-    this.setupProperties(this.props, this.state);
-    this.filterFields(this.props, this.state);
+    this.setupProperties(this.props);
+    this.filterFields();
   }
 
-  componentDidMount() {}
-
-  componentDidUpdate(prevProps, prevState) {
-    if (!isEqual(prevState, this.state)) {
-      this.setupProperties(this.props, this.state);
-      this.filterFields(this.props, this.state);
+  componentDidUpdate(prevProps) {
+    if (prevProps.properties.length !== this.props.properties.length) {
+      this.setupProperties(this.props);
+      this.filterFields();
       this.forceUpdate();
     }
   }
 
-  changeOptions = (key, value, callback) =>
-    this.setState({ [key]: value }, callback);
+  // Throttle this function because of the slider
+  changeComparator = throttle(
+    (key, value, callback) =>
+      cleanMethod(
+        'updateComparator',
+        { [key]: value },
+        this.props.comparator._id,
+        callback,
+      ),
+    200,
+  );
 
   addCustomField = (name, type, callback) =>
-    this.setState(
-      prev => ({
-        customFields: [
-          ...prev.customFields,
-          {
-            name,
-            type,
-            id: `custom${prev.customFields.length}${1}`, // FIXME: This will fail if fields are added, deleted, and added again
-            custom: true,
-          },
-        ],
-      }),
-      callback,
-    );
-
-  toggleField = (fieldId) => {
-    if (this.state.hiddenFields.indexOf(fieldId) >= 0) {
-      this.setState(prev => ({
-        hiddenFields: [...prev.hiddenFields.filter(id => id !== fieldId)],
-      }));
-    } else {
-      this.setState(prev => ({
-        hiddenFields: [...prev.hiddenFields, fieldId],
-      }));
-    }
-  };
-
-  addValueToProperty = (key, value, propertyName) => {
-    const property = this.state.addedProperties.find(
-      p => p.name === propertyName,
-    );
-
-    this.setState(prev => ({
-      addedProperties: [
-        ...prev.addedProperties.filter(p => p.name !== propertyName),
-        {
-          ...property,
-          [key]: value,
-        },
-      ],
-    }));
-  };
-
-  handleAddProperty = (address, latlng, value, callback) => {
-    const name = address.split(',')[0];
-    const lat = latlng.lat;
-    const lng = latlng.lng;
-    // TODO: Make sure name is unique identifier
-
-    this.setState(
-      prev => ({
-        addedProperties: [
-          ...prev.addedProperties,
-          {
-            name,
-            address,
-            value,
-            latlng,
-            createdAt: new Date(),
-          },
-        ],
-      }),
+    cleanMethod(
+      'addComparatorField',
+      { name, type },
+      this.props.comparator._id,
       () => {
-        // getClosestStations(lat, lng)
-        //   .then((stations) => {
-        //     this.addValueToProperty(
-        //       'nearestStation',
-        //       {
-        //         primary: stations[0].name,
-        //         secondary: toDistanceString(stations[0].distance),
-        //         value: stations[0].distance,
-        //       },
-        //       name,
-        //     );
-        //   })
-        //   .catch(error => console.log(error));
-
-        [
-          { googId: 'department_store', id: 'nearestStore', byDistance: true },
-          {
-            googId: 'train_station',
-            id: 'nearestTrainStation',
-            byDistance: true,
-          },
-          { googId: 'bus_station', id: 'nearestBusStation', byDistance: true },
-        ].forEach(request =>
-          this.addGooglePlace(
-            name,
-            lat,
-            lng,
-            request.googId,
-            request.id,
-            request.byDistance,
-          ),
-        );
-
+        this.filterFields();
         if (typeof callback === 'function') {
           callback();
         }
       },
     );
-  };
+
+  removeCustomField = fieldId =>
+    cleanMethod(
+      'removeComparatorField',
+      { fieldId },
+      this.props.comparator._id,
+      () => {
+        this.filterFields();
+      },
+    );
+
+  toggleField = fieldId =>
+    cleanMethod('toggleHiddenField', { fieldId }, this.props.comparator._id);
+
+  deleteProperty = id => cleanMethod('deleteProperty', null, id);
+
+  // addValueToProperty = (key, value, propertyName) => {
+  //   const property = this.state.addedProperties.find(
+  //     p => p.name === propertyName,
+  //   );
+  //
+  //   this.setState(prev => ({
+  //     addedProperties: [
+  //       ...prev.addedProperties.filter(p => p.name !== propertyName),
+  //       {
+  //         ...property,
+  //         [key]: value,
+  //       },
+  //     ],
+  //   }));
+  // };
+
+  // handleAddProperty = (address, latlng, value, callback) => {
+  //   const name = address.split(',')[0];
+  //   const lat = latlng.lat;
+  //   const lng = latlng.lng;
+  //   // TODO: Make sure name is unique identifier
+  //
+  //   this.setState(
+  //     prev => ({
+  //       addedProperties: [
+  //         ...prev.addedProperties,
+  //         {
+  //           name,
+  //           address,
+  //           value,
+  //           latlng,
+  //           createdAt: new Date(),
+  //         },
+  //       ],
+  //     }),
+  //     () => {
+  //       // getClosestStations(lat, lng)
+  //       //   .then((stations) => {
+  //       //     this.addValueToProperty(
+  //       //       'nearestStation',
+  //       //       {
+  //       //         primary: stations[0].name,
+  //       //         secondary: toDistanceString(stations[0].distance),
+  //       //         value: stations[0].distance,
+  //       //       },
+  //       //       name,
+  //       //     );
+  //       //   })
+  //       //   .catch(error => console.log(error));
+  //
+  //       [
+  //         { googId: 'department_store', id: 'nearestStore', byDistance: true },
+  //         {
+  //           googId: 'train_station',
+  //           id: 'nearestTrainStation',
+  //           byDistance: true,
+  //         },
+  //         { googId: 'bus_station', id: 'nearestBusStation', byDistance: true },
+  //       ].forEach(request =>
+  //         this.addGooglePlace(
+  //           name,
+  //           lat,
+  //           lng,
+  //           request.googId,
+  //           request.id,
+  //           request.byDistance,
+  //         ),
+  //       );
+  //
+  //       if (typeof callback === 'function') {
+  //         callback();
+  //       }
+  //     },
+  //   );
+  // };
 
   addGooglePlace = (name, lat, lng, type, id, byDistance) => {
     if (window.google) {
@@ -237,7 +232,8 @@ export default class Comparator extends Component {
       borrowRatio,
       interestRate,
       usageType,
-    } = this.state;
+    } = this.props.comparator;
+
     const loan = borrowRatio * property.value;
     const notaryFees = property.value * constants.notaryFees;
     const ownFunds = (1 - borrowRatio) * property.value + notaryFees;
@@ -281,40 +277,46 @@ export default class Comparator extends Component {
     };
   };
 
-  setupProperties = (props, state) => {
-    this.modifiedProperties = [...properties, ...state.addedProperties].map(
-      this.modifyProperty,
-    );
+  setupProperties = (props) => {
+    this.modifiedProperties = [...props.properties].map(this.modifyProperty);
   };
 
-  filterFields = (props, state) => {
-    this.filteredFields = [...defaultFields, ...state.customFields].filter(
-      field => state.hiddenFields.indexOf(field.id) < 0,
-    );
+  filterFields = () => {
+    const { comparator } = this.props;
+    this.filteredFields = [
+      ...defaultFields,
+      ...comparator.customFields.map(f => ({ ...f, custom: true })),
+    ].filter(field => comparator.hiddenFields.indexOf(field.id) < 0);
   };
 
   render() {
-    const { customFields, addedProperties, hiddenFields } = this.state;
+    // const { customFields, addedProperties, hiddenFields } = this.state;
+    const { comparator } = this.props;
 
     return (
       <section className="comparator flex-col center">
         <CompareOptions
-          options={this.state}
-          changeOptions={this.changeOptions}
-          handleAddProperty={this.handleAddProperty}
-          allFields={[...defaultFields, ...customFields]}
-          hiddenFields={hiddenFields}
+          comparator={comparator}
+          changeComparator={this.changeComparator}
+          // handleAddProperty={this.handleAddProperty}
+          allFields={[...defaultFields, ...comparator.customFields]}
           toggleField={this.toggleField}
+          removeCustomField={this.removeCustomField}
         />
         <CompareTable
-          {...this.props}
-          addCustomField={this.addCustomField}
+          // {...this.props}
+          comparator={comparator}
           properties={this.modifiedProperties}
+          addCustomField={this.addCustomField}
           fields={this.filteredFields}
+          deleteProperty={this.deleteProperty}
         />
       </section>
     );
   }
 }
 
-Comparator.propTypes = {};
+Comparator.propTypes = {
+  properties: PropTypes.arrayOf(PropTypes.object).isRequired,
+  comparator: PropTypes.objectOf(PropTypes.any).isRequired,
+};

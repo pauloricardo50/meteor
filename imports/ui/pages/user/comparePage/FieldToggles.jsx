@@ -6,6 +6,7 @@ import partition from 'lodash/partition';
 import Toggle from 'material-ui/Toggle';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 const styles = {
   toggles: {
@@ -14,7 +15,12 @@ const styles = {
   },
 };
 
-const FieldToggles = ({ allFields, hiddenFields, toggleField }) => {
+const FieldToggles = ({
+  allFields,
+  hiddenFields,
+  toggleField,
+  removeCustomField,
+}) => {
   const [defaultFields, customFields] = partition(
     allFields,
     field => field.id.indexOf('custom') < 0,
@@ -46,12 +52,23 @@ const FieldToggles = ({ allFields, hiddenFields, toggleField }) => {
       {customFields.length
         ? <div className="flex-col center" style={styles.toggles}>
           {customFields.map(field =>
-              (<Toggle
+              (<div
+                style={{ position: 'relative', width: '100%', height: 38 }}
                 key={field.id}
-                label={field.name}
-                toggled={hiddenFields.indexOf(field.id) < 0}
-                onToggle={() => toggleField(field.id)}
-              />),
+                className="flex center"
+              >
+                <Toggle
+                  label={field.name}
+                  toggled={hiddenFields.indexOf(field.id) < 0}
+                  onToggle={() => toggleField(field.id)}
+                />
+                <Button
+                  primary
+                  label={<T id="general.delete" />}
+                  onTouchTap={() => removeCustomField(field.id)}
+                  style={{ position: 'absolute', left: '100%', top: 0 }}
+                />
+              </div>),
             )}
         </div>
         : <div className="description">

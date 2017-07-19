@@ -29,6 +29,8 @@
   "adminAction.verifyFinalSteps": "Vérifier les derniers documents",
 
   "AppPage.begin": "Commencer",
+  "ComparePage.start": "Commencer à comparer",
+  "CompareTable.empty": "Ajoutez une propriété pour commencer",
 
   "AdvancedOptions.borrowRatio": "Endettement voulu",
   "AmortizationChart.amortizationSeries": "Amortissement mensuel",

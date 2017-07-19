@@ -21,9 +21,11 @@ import {
   updateComparator,
   addComparatorField,
   removeComparatorField,
+  toggleHiddenField,
 } from './comparators/methods';
 import {
   insertProperty,
+  deleteProperty,
   updateProperty,
   setPropertyField,
 } from './properties/methods';
@@ -50,8 +52,10 @@ const methods = {
   updateComparator,
   addComparatorField,
   removeComparatorField,
+  toggleHiddenField,
 
   insertProperty,
+  deleteProperty,
   updateProperty,
   setPropertyField,
 };

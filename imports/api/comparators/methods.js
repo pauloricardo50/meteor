@@ -26,32 +26,39 @@ export const insertComparator = new ValidatedMethod({
 
 export const updateComparator = new ValidatedMethod({
   name: 'comparators.update',
-  validate({ object }) {
+  validate({ object, id }) {
+    check(id, String);
     check(object, Object);
     validateUser();
   },
-  run({ object }) {
-    const userId = Meteor.userId();
-    const comparator = Comparators.find({ userId });
-
-    return Comparators.update(comparator._id, { $set: object });
+  run({ object, id }) {
+    return Comparators.update(id, { $set: object });
   },
 });
 
 export const addComparatorField = new ValidatedMethod({
   name: 'comparators.addField',
-  validate({ name }) {
+  validate({ object, id }) {
+    const { name, type } = object;
+
+    check(id, String);
     check(name, String);
+    check(type, String);
     validateUser();
   },
-  run({ name }) {
-    const userId = Meteor.userId();
-    const comparator = Comparators.find({ userId });
+  run({ object, id }) {
+    const { name, type } = object;
 
-    return Comparators.update(comparator._id, {
+    const comparator = Comparators.findOne({ _id: id });
+
+    return Comparators.update(id, {
       $inc: { customFieldCount: 1 },
       $push: {
-        customFields: { id: `custom${comparator.customFieldCount}`, name },
+        customFields: {
+          id: `custom${comparator.customFieldCount}`,
+          name,
+          type,
+        },
       },
     });
   },
@@ -59,16 +66,43 @@ export const addComparatorField = new ValidatedMethod({
 
 export const removeComparatorField = new ValidatedMethod({
   name: 'comparators.removeField',
-  validate({ id }) {
+  validate({ object, id }) {
     check(id, String);
+    check(object, String);
+    check(object.fieldId, String);
     validateUser();
   },
-  run({ id }) {
-    const userId = Meteor.userId();
-    const comparator = Comparators.find({ userId });
+  run({ object, id }) {
+    const { fieldId } = object;
 
-    return Comparators.update(comparator._id, {
-      $pull: { customFields: { id } },
+    return Comparators.update(id, {
+      $pull: { customFields: { id: fieldId } },
+    });
+  },
+});
+
+export const toggleHiddenField = new ValidatedMethod({
+  name: 'comparators.toggleHiddenField',
+  validate({ object, id }) {
+    check(id, String);
+    check(object, Object);
+    check(object.fieldId, String);
+    validateUser();
+  },
+  run({ object, id }) {
+    const { fieldId } = object;
+
+    const comparator = Comparators.findOne({ _id: id });
+
+    if (comparator.hiddenFields.indexOf(fieldId) >= 0) {
+      // Field is currently hidden
+      return Comparators.update(id, {
+        $pull: { hiddenFields: fieldId },
+      });
+    }
+
+    return Comparators.update(id, {
+      $push: { hiddenFields: fieldId },
     });
   },
 });

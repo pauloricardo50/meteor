@@ -49,12 +49,12 @@ export default class CompareHeader extends Component {
   render() {
     const {
       fields,
+      addCustomField,
       handleReset,
       onHoverEnter,
       onHoverLeave,
       handleFilter,
       handleSort,
-      addCustomField,
       hovered,
       scrollLeft,
     } = this.props;
@@ -64,7 +64,7 @@ export default class CompareHeader extends Component {
     return (
       <ul
         className="mask1 compare-column header-column"
-        ref={node => {
+        ref={(node) => {
           this.node = node;
         }}
         style={{
@@ -96,7 +96,7 @@ export default class CompareHeader extends Component {
           </IconButton>
         </li>
         {fields.map(field =>
-          <li
+          (<li
             key={field.id}
             onMouseEnter={() => onHoverEnter(field.id)}
             onMouseLeave={onHoverLeave}
@@ -108,7 +108,7 @@ export default class CompareHeader extends Component {
             }
           >
             {renderField(this.props, field)}
-          </li>,
+          </li>),
         )}
 
         <li>

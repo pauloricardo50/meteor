@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '/imports/ui/components/general/Button.jsx';
+import ConfirmButton from '/imports/ui/components/general/ConfirmButton.jsx';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
@@ -19,8 +20,10 @@ export default class CompareColumnFooter extends Component {
 
   render() {
     const { showButtons } = this.state;
+    const { deleteProperty, id } = this.props;
+
     return (
-      <div className="flex-col center" style={{ flexWrap: 'nowrap' }}>
+      <div className="flex-col center" style={{ flexWrap: ' ' }}>
         <Button
           label={
             <T
@@ -43,10 +46,11 @@ export default class CompareColumnFooter extends Component {
               style={{ margin: '8px 0' }}
               primary
             />
-            <Button
+            <ConfirmButton
               raised
               label={<T id="general.delete" />}
               style={{ margin: '8px 0' }}
+              handleClick={() => deleteProperty(id)}
             />
           </div>}
       </div>
@@ -54,4 +58,7 @@ export default class CompareColumnFooter extends Component {
   }
 }
 
-CompareColumnFooter.propTypes = {};
+CompareColumnFooter.propTypes = {
+  deleteProperty: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+};

@@ -22,6 +22,17 @@ export default class ConfirmButton extends Component {
   };
 
   render() {
+    const {
+      handleClick,
+      label,
+      primary,
+      secondary,
+      disabled,
+      text,
+      style,
+      raised,
+    } = this.props;
+
     const actions = [
       <Button
         key={1}
@@ -35,7 +46,7 @@ export default class ConfirmButton extends Component {
         primary
         keyboardFocused
         onTouchTap={() => {
-          this.props.handleClick();
+          handleClick();
           this.handleClose();
         }}
       />,
@@ -44,11 +55,13 @@ export default class ConfirmButton extends Component {
     return (
       <div>
         <Button
-          label={this.props.label}
+          raised={raised}
+          label={label}
           onTouchTap={this.handleOpen}
-          primary={this.props.primary}
-          secondary={this.props.secondary}
-          disabled={this.props.disabled}
+          primary={primary}
+          secondary={secondary}
+          disabled={disabled}
+          style={style}
         />
         <Dialog
           title={
@@ -61,7 +74,7 @@ export default class ConfirmButton extends Component {
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-          {this.props.text}
+          {text}
         </Dialog>
       </div>
     );
@@ -76,6 +89,7 @@ ConfirmButton.propTypes = {
   secondary: PropTypes.bool,
   disabled: PropTypes.bool,
   flat: PropTypes.bool,
+  raised: PropTypes.bool,
 };
 
 ConfirmButton.defaultProps = {
@@ -84,4 +98,5 @@ ConfirmButton.defaultProps = {
   secondary: false,
   disabled: false,
   flat: false,
+  raised: false,
 };

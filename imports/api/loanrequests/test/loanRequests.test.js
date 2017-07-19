@@ -29,7 +29,7 @@ import {
 describe('loanRequests', () => {
   beforeEach(function () {
     // if (Meteor.isServer) {
-    resetDatabase();
+    // resetDatabase();
     // }
   });
 
@@ -43,7 +43,6 @@ describe('loanRequests', () => {
   });
 
   describe('methods', () => {
-
     describe('insertRequest', () => {
       it('Properly inserts a minimal request', () => {
         const object = {

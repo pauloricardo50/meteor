@@ -14,22 +14,30 @@ import ColumnTransition from './ColumnTransition.jsx';
 const getIndexForName = (properties, name) =>
   Math.max(properties.findIndex(property => property.name === name), 0);
 
-const CompareTableContent = props => {
-  const { properties, fields, hovered, onHoverEnter, onHoverLeave } = props;
+const CompareTableContent = (props) => {
+  const {
+    properties,
+    fields,
+    hovered,
+    onHoverEnter,
+    onHoverLeave,
+    deleteProperty,
+  } = props;
   return (
     <div>
       <ul
         style={{ display: 'flex', alignItems: 'flex-start', marginBottom: 0 }}
       >
         {properties.map(property =>
-          <CompareColumn
+          (<CompareColumn
             key={property.name}
             property={property}
             fields={fields}
             hovered={hovered}
             onHoverEnter={onHoverEnter}
             onHoverLeave={onHoverLeave}
-          />,
+            deleteProperty={deleteProperty}
+          />),
         )}
       </ul>
     </div>
@@ -42,6 +50,7 @@ CompareTableContent.propTypes = {
   onHoverEnter: PropTypes.func.isRequired,
   onHoverLeave: PropTypes.func.isRequired,
   hovered: PropTypes.string,
+  deleteProperty: PropTypes.func.isRequired,
 };
 
 CompareTableContent.defaultProps = {

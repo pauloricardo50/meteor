@@ -33,6 +33,17 @@ export const insertProperty = new ValidatedMethod({
   },
 });
 
+export const deleteProperty = new ValidatedMethod({
+  name: 'properties.delete',
+  validate({ id }) {
+    check(id, String);
+    validateUser();
+  },
+  run({ id }) {
+    return Properties.remove(id);
+  },
+});
+
 export const updateProperty = new ValidatedMethod({
   name: 'properties.update',
   validate({ id, object }) {
