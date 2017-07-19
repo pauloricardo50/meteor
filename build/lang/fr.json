@@ -27,6 +27,9 @@
   "adminAction.uploadContract": "Uploader le contrat",
   "adminAction.verify": "Vérifier dossier",
   "adminAction.verifyFinalSteps": "Vérifier les derniers documents",
+
+  "AppPage.begin": "Commencer",
+
   "AdvancedOptions.borrowRatio": "Endettement voulu",
   "AmortizationChart.amortizationSeries": "Amortissement mensuel",
   "AmortizationChart.debtSeries": "Dette",
@@ -645,6 +648,7 @@
   "TopNavDropdown.account": "Mon Compte",
   "TopNavDropdown.admin": "Admin Dashboard",
   "TopNavDropdown.dashboard": "Tableau de Bord",
+  "TopNavDropdown.app": "App",
   "TopNavDropdown.dev": "< dev />",
   "TopNavDropdown.logout": "Déconnexion",
   "TopNavDropdown.partner": "Partner Dashboard",

@@ -26,7 +26,10 @@ const AppItem = ({ title, subtitle, mainText, href }) =>
       {subtitle}
     </h4>
 
-    <h1 style={{ alignSelf: 'center', margin: '40px 0' }}>
+    <h1
+      style={{ alignSelf: 'center', margin: '40px 0' }}
+      className="text-center"
+    >
       {mainText}
     </h1>
   </Link>);

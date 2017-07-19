@@ -13,7 +13,7 @@ import Person from 'material-ui/svg-icons/social/person';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import track from '/imports/js/helpers/analytics';
 
-const getMenuItems = props => {
+const getMenuItems = (props) => {
   const isDev = Roles.userIsInRole(props.currentUser._id, 'dev');
   const isAdmin = Roles.userIsInRole(props.currentUser._id, 'admin');
   const isPartner = Roles.userIsInRole(props.currentUser._id, 'partner');
@@ -29,7 +29,7 @@ const getMenuItems = props => {
       show: isPartner,
     },
     {
-      id: 'dashboard',
+      id: 'app',
       link: '/app',
       show: !isAdmin && !isPartner,
     },
@@ -51,7 +51,7 @@ const getMenuItems = props => {
 // a partner link for partners,
 // a home, settings, and contact link for regular users
 const TopNavDropdown = props =>
-  <IconMenu
+  (<IconMenu
     iconButtonElement={
       <IconButton tooltip="">
         <Person color="#444" hoverColor="#888" />
@@ -87,7 +87,7 @@ const TopNavDropdown = props =>
         Meteor.logout(() => props.history.push('/home'));
       }}
     />
-  </IconMenu>;
+  </IconMenu>);
 
 TopNavDropdown.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any).isRequired,

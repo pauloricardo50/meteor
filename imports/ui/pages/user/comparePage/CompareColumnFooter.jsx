@@ -20,7 +20,7 @@ export default class CompareColumnFooter extends Component {
   render() {
     const { showButtons } = this.state;
     return (
-      <div className="flex-col center">
+      <div className="flex-col center" style={{ flexWrap: 'nowrap' }}>
         <Button
           label={
             <T

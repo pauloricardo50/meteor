@@ -11,7 +11,18 @@ const AppPage = ({ loanRequests, properties }) =>
         key={request._id}
         title={request.name || <T id="AppPage.noName" />}
         subtitle={<T id="AppPage.loanRequest" />}
-        mainText={<T id="AppPage.step" values={{ step: request.logic.step }} />}
+        mainText={
+          <span>
+            <T id="AppPage.step" values={{ step: request.logic.step }} />
+            {!request.name &&
+              <span>
+                <br />
+                <span className="active">
+                  <T id="AppPage.begin" />
+                </span>
+              </span>}
+          </span>
+        }
         href={`/app/requests/${request._id}`}
       />),
     )}

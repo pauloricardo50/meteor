@@ -22,15 +22,15 @@ export default class ConfirmButton extends Component {
   };
 
   render() {
-    const Button = this.props.flat ? FlatButton : RaisedButton;
-
     const actions = [
       <Button
+        key={1}
         label={<T id="general.cancel" />}
         primary
         onTouchTap={this.handleClose}
       />,
       <Button
+        key={2}
         label={<T id="general.yes" />}
         primary
         keyboardFocused
