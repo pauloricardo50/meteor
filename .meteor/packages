@@ -4,12 +4,11 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-meteor-base@1.1.0              # Packages every Meteor app needs to have
+meteor-base              # Packages every Meteor app needs to have
 # mobile-experience         # Packages for a great mobile UX
-mongo@1.1.19                   # The database Meteor supports right now
-# blaze-html-templates      # Compile .html files into Meteor Blaze views
-reactive-var@1.0.11            # Reactive variable for tracker
-tracker@1.1.3                  # Meteor's client-side reactive programming library
+mongo                   # The database Meteor supports right now
+reactive-var            # Reactive variable for tracker
+tracker                  # Meteor's client-side reactive programming library
 static-html                     # Allows rendering HTML for initial files (main.html)
 
 standard-minifier-css@1.3.4     # CSS minifier run for production mode
