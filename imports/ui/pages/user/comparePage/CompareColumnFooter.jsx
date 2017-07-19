@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
@@ -22,7 +21,7 @@ export default class CompareColumnFooter extends Component {
     const { showButtons } = this.state;
     return (
       <div className="flex-col center">
-        <FlatButton
+        <Button
           label={
             <T
               id={
@@ -38,12 +37,14 @@ export default class CompareColumnFooter extends Component {
 
         {showButtons &&
           <div className="flex-col center">
-            <RaisedButton
+            <Button
+              raised
               label={<T id="general.modify" />}
               style={{ margin: '8px 0' }}
               primary
             />
-            <RaisedButton
+            <Button
+              raised
               label={<T id="general.delete" />}
               style={{ margin: '8px 0' }}
             />

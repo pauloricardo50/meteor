@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import Dialog from 'material-ui/Dialog';
 
 import TextInput from '/imports/ui/components/general/TextInput.jsx';
@@ -36,7 +35,8 @@ export default class PropertyAdder extends Component {
 
     return (
       <div>
-        <RaisedButton
+        <Button
+          raised
           primary
           label={<T id="CompareOptions.addProperty" />}
           onTouchTap={this.handleOpen}
@@ -102,11 +102,11 @@ export default class PropertyAdder extends Component {
                 alignSelf: 'flex-end',
               }}
             >
-              <FlatButton
+              <Button
                 label={<T id="general.cancel" />}
                 onTouchTap={this.handleClose}
               />
-              <FlatButton
+              <Button
                 primary
                 label={<T id="PropertyAdder.add" />}
                 onTouchTap={this.handleSubmit}

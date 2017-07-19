@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { Link, NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 
-import FlatButton from 'material-ui/FlatButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import PowerOffIcon from 'material-ui/svg-icons/action/power-settings-new';
 
 const styles = {
@@ -91,7 +91,7 @@ const SideNav = props => {
       </ul>
 
       <div className="logout text-center">
-        <FlatButton
+        <Button
           label="Déconnexion"
           onTouchTap={() => Meteor.logout(() => props.history.push('/home'))}
           icon={<PowerOffIcon />}

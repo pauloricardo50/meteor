@@ -5,7 +5,7 @@ import HomeDev from '/imports/ui/components/general/HomeDev.jsx';
 import track from '/imports/js/helpers/analytics';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 const styles = {
   style: {
@@ -49,7 +49,7 @@ export default class HomePage extends Component {
                   <T id="HomePage.description" description="Description above the CTAs" />
                 </h2> */}
                 <div className="ctas">
-                  <RaisedButton
+                  <Button raised
                     label={<T id="HomePage.CTA1" />}
                     containerElement={<Link to="/start1/acquisition" />}
                     style={styles.style}
@@ -187,7 +187,7 @@ export default class HomePage extends Component {
                 </div>
                 <div className="col-5">
                   <div className="ctas text-right">
-                    <RaisedButton
+                    <Button raised
                       label={<T id="HomePage.CTA1" />}
                       containerElement={<Link to="/start1/acquisition" />}
                       style={styles.style}

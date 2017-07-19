@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import Chip from 'material-ui/Chip';
 
 import cleanMethod from '/imports/api/cleanMethods';
@@ -72,7 +72,7 @@ export default class LastStepsForm extends Component {
               />,
             )}
           </DropDownMenu>
-          <RaisedButton
+          <Button raised
             label="Ajouter"
             onTouchTap={this.handleAdd}
             disabled={!this.state.selected}
@@ -90,7 +90,7 @@ export default class LastStepsForm extends Component {
           )}
         </div>
         <div className="text-center">
-          <RaisedButton
+          <Button raised
             primary={
               JSON.stringify(this.props.loanRequest.logic.lastSteps) !==
               JSON.stringify(this.state.lastSteps)

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import track from '/imports/js/helpers/analytics';
 import cleanMethod from '/imports/api/cleanMethods';
@@ -102,7 +102,7 @@ export default class DashboardStatus extends Component {
         </h2>
         {showLoading && <div style={{ height: 80 }}><LoadingComponent /></div>}
         <div className="text-center" style={styles.button}>
-          <RaisedButton
+          <Button raised
             label={<T id="general.continue" />}
             secondary
             containerElement={nextLink ? <Link to={nextLink} /> : null}

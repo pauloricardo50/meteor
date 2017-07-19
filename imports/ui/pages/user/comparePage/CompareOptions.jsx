@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import Toggle from 'material-ui/Toggle';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
@@ -56,7 +56,7 @@ export default class CompareOptions extends Component {
           className="text-center"
           style={showAdvanced ? { marginTop: 20 } : {}}
         >
-          <RaisedButton
+          <Button raised
             onTouchTap={() => this.handleClick()}
             label={
               <T

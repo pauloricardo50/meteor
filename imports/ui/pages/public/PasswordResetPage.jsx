@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Accounts } from 'meteor/accounts-base';
 
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
@@ -71,7 +71,7 @@ export default class PasswordResetPage extends Component {
         />
 
         <div style={styles.button}>
-          <RaisedButton
+          <Button raised
             label={<T id="PasswordResetPage.CTA" />}
             disabled={!isValid}
             onTouchTap={this.handleSubmit}

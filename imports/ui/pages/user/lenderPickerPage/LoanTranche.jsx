@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 
@@ -94,7 +94,7 @@ export default class LoanTranche extends Component {
             </h4>}
 
         {this.props.manual &&
-          <RaisedButton
+          <Button raised
             icon={<span className="fa fa-times" />}
             style={styles.deleteButton}
             buttonStyle={styles.buttonStyle}
@@ -111,7 +111,7 @@ export default class LoanTranche extends Component {
           <div className="money">
             <h4 className="center-adjust">
               {this.props.manual &&
-                <RaisedButton
+                <Button raised
                   label="-"
                   onTouchTap={this.props.decrementTranche}
                   style={styles.button}
@@ -129,7 +129,7 @@ export default class LoanTranche extends Component {
               </span>
 
               {this.props.manual &&
-                <RaisedButton
+                <Button raised
                   label="+"
                   primary
                   onTouchTap={this.props.incrementTranche}

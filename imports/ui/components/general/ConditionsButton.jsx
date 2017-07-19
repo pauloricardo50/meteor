@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import track from '/imports/js/helpers/analytics';
@@ -54,7 +53,7 @@ export default class ConditionsButton extends Component {
 
   render() {
     const actions = [
-      <FlatButton
+      <Button
         label={<T id="ConditionsButton.CTA" />}
         primary
         onTouchTap={this.handleClose}
@@ -63,7 +62,8 @@ export default class ConditionsButton extends Component {
 
     return (
       <div>
-        <RaisedButton
+        <Button
+          raised
           label={<T id="ConditionsButton.title" />}
           onTouchTap={this.handleOpen}
           primary={this.props.primary}

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 const styles = {
   buttonDiv: {
@@ -29,7 +29,7 @@ export default class AdminNoteForm extends Component {
           rows={5}
         />
         <div className="pull-right" style={styles.buttonDiv}>
-          <RaisedButton
+          <Button raised
             label="Ajouter"
             primary
             onTouchTap={this.handleSubmit}

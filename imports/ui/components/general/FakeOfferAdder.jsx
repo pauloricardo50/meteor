@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { insertFakeOffer } from '/imports/api/offers/methods';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import { getRandomOffer } from '/imports/api/offers/fakes';
 
@@ -20,12 +20,12 @@ const addLotsOfFakeOffers = request => {
 const FakeOfferAdder = props => {
   return (
     <div className="text-center" style={{ marginBottom: 40 }}>
-      <RaisedButton
+      <Button raised
         label="Ajouter 20 offres imaginaires"
         onTouchTap={() => addLotsOfFakeOffers(props.loanRequest)}
         style={{ margin: 8 }}
       />
-      <RaisedButton
+      <Button raised
         label="Ajouter offre imaginaire"
         onTouchTap={() => addFakeOffer(props.loanRequest)}
         style={{ margin: 8 }}

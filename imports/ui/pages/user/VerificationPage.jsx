@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import { Link } from 'react-router-dom';
 import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
 import { isDemo } from '/imports/js/helpers/browserFunctions';
@@ -112,7 +112,7 @@ export default class VerificationPage extends Component {
                   flexWrap: 'wrap',
                 }}
               >
-                <RaisedButton
+                <Button raised
                   label={<T id="general.cancel" />}
                   containerElement={
                     <Link to={`/app/requests/${this.props.loanRequest._id}`} />

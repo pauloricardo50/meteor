@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 const styles = {
   backButton: {
@@ -11,7 +11,7 @@ const styles = {
 
 const AdminOfferPage = props => (
   <section>
-    <RaisedButton label="Retour" style={styles.backButton} />
+    <Button raised label="Retour" style={styles.backButton} />
     <div className="mask1">
       Salut!
     </div>

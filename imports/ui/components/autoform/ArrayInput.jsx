@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import TextInput from './TextInput.jsx';
@@ -89,20 +89,20 @@ export default class ArrayInput extends React.Component {
 
         <div className="text-center">
           {this.state.count <= 0 &&
-            <RaisedButton
+            <Button raised
               label={<T id="ArrayInput.add" />}
               onTouchTap={this.addValue}
               disabled={this.props.disabled}
             />}
           {this.state.count > 0 &&
-            <RaisedButton
+            <Button raised
               label="-"
               onTouchTap={this.removeValue}
               style={styles.button}
               disabled={this.state.count <= 0 || this.props.disabled}
             />}
           {this.state.count > 0 &&
-            <RaisedButton
+            <Button raised
               label="+"
               onTouchTap={this.addValue}
               primary

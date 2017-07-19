@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import { Link } from 'react-router-dom';
 import ArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 import ArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
@@ -41,7 +41,7 @@ const BorrowerHeader = ({ requestId, borrower, borrowers, index, tab }) => {
     <header className="text-center">
       <div style={styles.div}>
         {showLeft
-          ? <RaisedButton
+          ? <Button raised
             icon={<ArrowLeft />}
             primary
             style={styles.buttonLeft}
@@ -53,7 +53,7 @@ const BorrowerHeader = ({ requestId, borrower, borrowers, index, tab }) => {
         <span className="fa fa-user-circle-o fa-5x" />
 
         {showRight
-          ? <RaisedButton
+          ? <Button raised
             icon={<ArrowRight />}
             primary
             style={styles.buttonRight}

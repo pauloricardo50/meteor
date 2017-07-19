@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import Scroll from 'react-scroll';
 
 import { loanStrategySuccess, getLoanValue } from '/imports/js/helpers/requestFunctions';
@@ -134,7 +134,7 @@ const LoanStrategyPicker = props =>
           />
         </Scroll.Element>
         <div className="text-center" style={{ margin: '20px 0' }}>
-          <RaisedButton
+          <Button raised
             label="Continuer"
             primary={!props.formState.loanStrategyValidated}
             disabled={!loanStrategySuccess(props.formState.loanTranches, props.loanValue)}

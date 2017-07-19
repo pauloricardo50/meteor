@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import Comparator from './comparePage/Comparator.jsx';
@@ -27,7 +27,7 @@ export default class ComparePage extends Component {
     if (properties.length <= 0) {
       return (
         <section style={styles.initial}>
-          <RaisedButton primary label={<T id="ComparePage.CTA" />} />
+          <Button raised primary label={<T id="ComparePage.CTA" />} />
         </section>
       );
     }

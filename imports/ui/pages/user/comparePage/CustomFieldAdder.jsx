@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
-import FlatButton from 'material-ui/FlatButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import AutoComplete from 'material-ui/AutoComplete';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -114,11 +114,11 @@ class CustomFieldAdder extends Component {
             alignSelf: 'flex-end',
           }}
         >
-          <FlatButton
+          <Button
             label={<T id="general.cancel" />}
             onTouchTap={this.props.handleClose}
           />
-          <FlatButton
+          <Button
             primary
             label={<T id="CustomFieldAdder.add" />}
             onTouchTap={this.handleSubmit}

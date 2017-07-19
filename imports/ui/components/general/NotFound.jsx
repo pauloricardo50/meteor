@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import { Link } from 'react-router-dom';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
@@ -38,7 +38,7 @@ export default class NotFound extends Component {
           <T id="NotFound.description" />
         </h3>
         <div style={styles.button}>
-          <RaisedButton
+          <Button raised
             primary
             label={<T id="NotFound.button" />}
             containerElement={<Link to="/home" />}

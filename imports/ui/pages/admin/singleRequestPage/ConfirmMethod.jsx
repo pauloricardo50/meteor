@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import TextField from 'material-ui/TextField';
 
 export default class ConfirmMethod extends Component {
@@ -27,7 +26,7 @@ export default class ConfirmMethod extends Component {
     });
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({
       text: event.target.value,
     });
@@ -35,8 +34,8 @@ export default class ConfirmMethod extends Component {
 
   render() {
     const actions = [
-      <FlatButton label="Annuler" primary onTouchTap={this.handleClose} />,
-      <FlatButton
+      <Button label="Annuler" primary onTouchTap={this.handleClose} />,
+      <Button
         label="Okay"
         primary
         disabled={this.state.text !== this.props.keyword}
@@ -46,16 +45,23 @@ export default class ConfirmMethod extends Component {
 
     return (
       <div>
-        <RaisedButton
+        <Button
+          raised
           label={this.props.label}
           onTouchTap={this.handleOpen}
           style={this.props.style}
           disabled={this.props.disabled}
         />
-        <Dialog title="Êtes-vous sûr?" actions={actions} modal open={this.state.open}>
+        <Dialog
+          title="Êtes-vous sûr?"
+          actions={actions}
+          modal
+          open={this.state.open}
+        >
           Tapez le mot "{this.props.keyword}" pour valider cette action.
-
-          <div><TextField autoFocus onChange={this.handleChange} /></div>
+          <div>
+            <TextField autoFocus onChange={this.handleChange} />
+          </div>
         </Dialog>
       </div>
     );

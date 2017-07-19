@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import FlatButton from 'material-ui/FlatButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
 import IconButton from 'material-ui/IconButton';
 import LockOpen from 'material-ui/svg-icons/action/lock-open';
@@ -79,7 +79,7 @@ export default class CompareHeader extends Component {
           className="text-center"
           style={{ position: 'relative', overflow: 'visible' }}
         >
-          <FlatButton
+          <Button
             label="Reset"
             onTouchTap={handleReset}
             icon={<LoopIcon style={{ color: 'white' }} />}

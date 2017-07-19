@@ -4,8 +4,7 @@ import merge from 'lodash/merge';
 import queryString from 'query-string';
 import classnames from 'classnames';
 
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import ArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
 import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 
@@ -263,7 +262,7 @@ export default class Start1Page extends Component {
           </h1>
           <hr />
 
-          <FlatButton
+          <Button
             icon={
               this.state.showDescription || this.state.isFirstVisit
                 ? <ArrowUp />
@@ -311,7 +310,8 @@ export default class Start1Page extends Component {
               getUrl={this.getUrl}
             />
             : <div className="text-center" style={{ marginBottom: 40 }}>
-              <RaisedButton
+              <Button
+                raised
                 primary
                 label={<T id="Start1Page.showCalculatorButton" />}
                 onTouchTap={() =>

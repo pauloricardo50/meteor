@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
 import Scroll from 'react-scroll';
@@ -55,7 +55,7 @@ export default class LoadingButton extends Component {
     }
 
     return (
-      <RaisedButton
+      <Button raised
         // {...this.props}
         label={this.props.label}
         primary={this.state.isFirstVisit}

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import fileSaver from 'file-saver';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
 
 import track from '/imports/js/helpers/analytics';
@@ -37,7 +37,7 @@ export default class FileDownloader extends Component {
 
   render() {
     return (
-      <RaisedButton
+      <Button raised
         icon={this.state.downloading && <LoopIcon className="fa-spin" />}
         label={this.props.buttonLabel}
         onTouchTap={this.handleClick}

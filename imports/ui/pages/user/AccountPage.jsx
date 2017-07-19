@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import Page from '/imports/ui/components/general/Page.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
@@ -34,7 +34,7 @@ const AccountPage = props =>
         className="hidden-sm hidden-md hidden-lg"
         style={styles.mobileLogoutButton}
       >
-        <RaisedButton
+        <Button raised
           label={<T id="general.logout" />}
           onTouchTap={() => Meteor.logout(() => props.history.push('/home'))}
         />

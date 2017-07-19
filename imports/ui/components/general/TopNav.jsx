@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import AppBar from 'material-ui/AppBar';
-import FlatButton from 'material-ui/FlatButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown.jsx';
 import TopNavDrawer from '/imports/ui/components/general/TopNavDrawer.jsx';
@@ -44,7 +44,7 @@ const TopNav = props => {
         iconElementRight={
           props.currentUser
             ? <TopNavDropdown {...props} />
-            : <FlatButton
+            : <Button
                 label={<T id="TopNav.login" />}
                 containerElement={<Link to="/login" />}
                 secondary

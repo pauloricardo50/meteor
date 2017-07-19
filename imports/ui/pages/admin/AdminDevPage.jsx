@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 const addVerifyingRequest = () => {
   const object = {
@@ -25,7 +25,7 @@ const AdminDev = props => {
     <section>
       <h1>Ajouter des tests</h1>
       <div>
-        <RaisedButton label="En demande de vérification" onTouchTap={() => addVerifyingRequest()} />
+        <Button raised label="En demande de vérification" onTouchTap={() => addVerifyingRequest()} />
       </div>
     </section>
   );

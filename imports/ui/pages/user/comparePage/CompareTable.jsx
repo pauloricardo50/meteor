@@ -6,7 +6,7 @@ import { Meteor } from 'meteor/meteor';
 import orderBy from 'lodash/orderBy';
 import debounce from 'lodash/debounce';
 
-import FlatButton from 'material-ui/FlatButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import ArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 import ArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 
@@ -169,12 +169,12 @@ export default class CompareTable extends Component {
     return (
       <div className="flex-col center" style={{ width: '100%' }}>
         <div style={{ marginBottom: 8 }}>
-          <FlatButton
+          <Button
             icon={<ArrowLeft />}
             onTouchTap={() => this.handleScroll(false)}
             primary
           />
-          <FlatButton
+          <Button
             icon={<ArrowRight />}
             onTouchTap={() => this.handleScroll(true)}
             primary

@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
@@ -47,12 +46,12 @@ export default class DialogSimple extends Component {
     } = this.props;
 
     actions = actions || [
-      <FlatButton
+      <Button
         primary
         label={<T id="general.cancel" />}
         onTouchTap={this.handleClose}
       />,
-      <FlatButton
+      <Button
         primary
         label="Ok"
         onTouchTap={() => this.handleClose(true)}
@@ -70,7 +69,8 @@ export default class DialogSimple extends Component {
 
     return (
       <span style={rootStyle}>
-        <RaisedButton
+        <Button
+          raised
           label={label}
           onTouchTap={this.handleOpen}
           primary={primary}

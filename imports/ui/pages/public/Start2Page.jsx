@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import getFormArray from '/imports/js/arrays/StartFormArray';
 import constants from '/imports/js/config/constants';
@@ -106,7 +106,7 @@ export default class Start2Page extends Component {
             </h2>
           </div>
           <div>
-            <RaisedButton
+            <Button raised
               label={<T id="Start2Page.initialButton" />}
               primary
               onTouchTap={() =>

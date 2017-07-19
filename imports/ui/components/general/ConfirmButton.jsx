@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import Dialog from 'material-ui/Dialog';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
@@ -26,12 +25,12 @@ export default class ConfirmButton extends Component {
     const Button = this.props.flat ? FlatButton : RaisedButton;
 
     const actions = [
-      <FlatButton
+      <Button
         label={<T id="general.cancel" />}
         primary
         onTouchTap={this.handleClose}
       />,
-      <FlatButton
+      <Button
         label={<T id="general.yes" />}
         primary
         keyboardFocused
