@@ -35,6 +35,7 @@ const DefaultOptions = ({ options, changeOptions }) => {
             currentValue={options[id]}
             floatingLabelFixed
             type={type}
+            style={{ width: 160, marginRight: 16 }}
           />),
         )}
       </div>

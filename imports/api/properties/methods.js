@@ -9,7 +9,9 @@ import Properties from './properties';
 
 export const insertProperty = new ValidatedMethod({
   name: 'properties.insert',
-  validate({ value, address, latitude, longitude }) {
+  validate({ object }) {
+    const { value, address, latitude, longitude } = object;
+    check(object, Object);
     check(value, Number);
     check(address, String);
     check(latitude, Number);
@@ -17,8 +19,11 @@ export const insertProperty = new ValidatedMethod({
 
     validateUser();
   },
-  run({ value, address, latitude, longitude }) {
+  run({ object }) {
+    const { value, address, latitude, longitude } = object;
+
     return Properties.insert({
+      userId: Meteor.userId(),
       name: address.split(',')[0],
       value,
       address,
@@ -41,7 +46,7 @@ export const updateProperty = new ValidatedMethod({
   },
 });
 
-export const setField = new ValidatedMethod({
+export const setPropertyField = new ValidatedMethod({
   name: 'properties.setField',
   validate({ id, key }) {
     check(id, String);

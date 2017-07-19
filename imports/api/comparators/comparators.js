@@ -44,6 +44,7 @@ export const ComparatorSchema = new SimpleSchema({
   'customFields.$': Object,
   'customFields.$.id': String,
   'customFields.$.name': String,
+  'customFields.$.type': String,
   customFieldCount: { type: Number, defaultValue: 0 },
   hiddenFields: {
     type: Array,

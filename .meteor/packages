@@ -73,6 +73,6 @@ practicalmeteor:mocha-console-runner
 dburles:google-maps
 react-meteor-data
 random@1.0.10
-meteorhacks:kadira
+# meteorhacks:kadira
 okgrow:analytics
 softwarerero:accounts-t9n

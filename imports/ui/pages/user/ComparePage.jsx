@@ -24,13 +24,13 @@ export default class ComparePage extends Component {
 
   render() {
     const { properties } = this.props;
-    if (properties.length <= 0) {
-      return (
-        <section style={styles.initial}>
-          <Button raised primary label={<T id="ComparePage.CTA" />} />
-        </section>
-      );
-    }
+    // if (properties.length <= 0) {
+    //   return (
+    //     <section style={styles.initial}>
+    //       <Button raised primary label={<T id="ComparePage.CTA" />} />
+    //     </section>
+    //   );
+    // }
 
     return (
       <section style={{ marginLeft: -16, marginRight: -16 }}>

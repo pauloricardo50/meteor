@@ -3,6 +3,19 @@ import { Meteor } from 'meteor/meteor';
 import LoanRequests from '/imports/api/loanrequests/loanrequests';
 import Offers from '/imports/api/offers/offers';
 import Borrowers from '/imports/api/borrowers/borrowers';
+import Properties from '/imports/api/properties/properties';
+import Comparators from '/imports/api/comparators/comparators';
+
+export function userCompareComposer(props, onData) {
+  if (
+    Meteor.subscribe('userProperties').ready() &&
+    Meteor.subscribe('userComparators').ready()
+  ) {
+    const properties = Properties.find({}).fetch();
+    const comparators = Comparators.find({}).fetch();
+    onData(null, { properties, comparator: comparators[0] || undefined });
+  }
+}
 
 // Get all requests for this user
 export function userRequestsComposer(props, onData) {

@@ -20,7 +20,7 @@ export const insertComparator = new ValidatedMethod({
       throw new Meteor.Error("Can't have more than one comparator per user");
     }
 
-    return Comparators.insert();
+    return Comparators.insert({ userId: Meteor.userId() });
   },
 });
 

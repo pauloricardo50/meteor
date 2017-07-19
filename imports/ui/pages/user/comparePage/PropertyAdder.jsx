@@ -10,6 +10,7 @@ import GoogleMapContainer from '/imports/ui/components/general/GoogleMapContaine
 import GoogleMap from '/imports/ui/components/general/GoogleMap.jsx';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
+import cleanMethod from '/imports/api/cleanMethods';
 
 export default class PropertyAdder extends Component {
   constructor(props) {
@@ -25,9 +26,20 @@ export default class PropertyAdder extends Component {
 
   handleSubmit = () => {
     const { address, value, latlng } = this.state;
-    this.props.handleAddProperty(address, latlng, value, () => {
-      this.handleClose();
-    });
+    cleanMethod(
+      'insertProperty',
+      {
+        address,
+        value,
+        latitude: latlng.lat,
+        longitude: latlng.lng,
+      },
+      null,
+      this.handleClose,
+    );
+    // this.props.handleAddProperty(address, latlng, value, () => {
+    //   this.handleClose();
+    // });
   };
 
   render() {

@@ -17,6 +17,7 @@ import {
   userContainer,
   userRequestContainer,
   userBorrowerContainer,
+  userCompareContainer,
 } from './Containers';
 
 export const UserLayout = userContainer(AppLayout);
@@ -31,5 +32,5 @@ export const ContractPage = userRequestContainer(_ContractPage);
 export const ClosingPage = userRequestContainer(_ClosingPage);
 export const DevPage = userContainer(_DevPage);
 export const FinancePage = userRequestContainer(_FinancePage);
-export const ComparePage = userContainer(_ComparePage);
+export const ComparePage = userCompareContainer(_ComparePage);
 export const AppPage = userContainer(_AppPage);
