@@ -68,7 +68,7 @@ export const removeComparatorField = new ValidatedMethod({
   name: 'comparators.removeField',
   validate({ object, id }) {
     check(id, String);
-    check(object, String);
+    check(object, Object);
     check(object.fieldId, String);
     validateUser();
   },

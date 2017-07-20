@@ -80,15 +80,21 @@ export default class Comparator extends Component {
     super(props);
 
     this.setupProperties(this.props);
-    this.filterFields();
+    this.filterFields(this.props);
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.properties.length !== this.props.properties.length) {
-      this.setupProperties(this.props);
-      this.filterFields();
-      this.forceUpdate();
-    }
+  // componentDidUpdate(prevProps) {
+  //   if (prevProps.properties.length !== this.props.properties.length) {
+  //     this.setupProperties(this.props);
+  //     this.filterFields(this.props);
+  //     this.forceUpdate();
+  //   }
+  // }
+
+  componentWillReceiveProps(nextProps) {
+    this.setupProperties(nextProps);
+    this.filterFields(nextProps);
+    this.forceUpdate();
   }
 
   // Throttle this function because of the slider
@@ -109,7 +115,7 @@ export default class Comparator extends Component {
       { name, type },
       this.props.comparator._id,
       () => {
-        this.filterFields();
+        this.filterFields(this.props);
         if (typeof callback === 'function') {
           callback();
         }
@@ -122,7 +128,7 @@ export default class Comparator extends Component {
       { fieldId },
       this.props.comparator._id,
       () => {
-        this.filterFields();
+        this.filterFields(this.props);
       },
     );
 
@@ -281,8 +287,8 @@ export default class Comparator extends Component {
     this.modifiedProperties = [...props.properties].map(this.modifyProperty);
   };
 
-  filterFields = () => {
-    const { comparator } = this.props;
+  filterFields = (props) => {
+    const { comparator } = props;
     this.filteredFields = [
       ...defaultFields,
       ...comparator.customFields.map(f => ({ ...f, custom: true })),
