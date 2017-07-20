@@ -42,7 +42,7 @@ export default class HomePage extends Component {
                 </h1>
               </div>
             </div>
-            <div className="container-lrg flex">
+            <div className="container-lrg flex-launch">
               <div className="col-6 centervertical animated fadeInLeft">
                 {/* <h2 className="desc">
                   <T id="HomePage.description" description="Description above the CTAs" />
@@ -117,7 +117,7 @@ export default class HomePage extends Component {
             </div>
           </header>
           <div className="feature3 animated fadeInUp">
-            <div className="container-lrg flex">
+            <div className="container-lrg flex-launch">
               <div className="col-12">
                 <b className="emoji">
                   <span className="fa fa-calculator" />
@@ -165,7 +165,7 @@ export default class HomePage extends Component {
             </div>
           </div>
           <div className="feature2">
-            <div className="container-lrg flex">
+            <div className="container-lrg flex-launch">
               <div className="col-6">
                 <b className="emoji">
                   <span className="fa fa-money" />
