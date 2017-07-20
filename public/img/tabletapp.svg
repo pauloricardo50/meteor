@@ -56,7 +56,7 @@
             </g>
             <g id="Head-Column" filter="url(#filter-3)" transform="translate(0.000000, 111.000000)">
                 <rect id="Rectangle-2" fill="#FFFFFF" x="0" y="0" width="299" height="826" rx="4"></rect>
-                <path d="M4,0 L295,0 L295,0 C297.209139,-4.05812251e-16 299,1.790861 299,4 L299,56 L0,56 L0,4 L0,4 C-2.705415e-16,1.790861 1.790861,4.05812251e-16 4,0 Z" id="Rectangle-3" fill="#4A90E2"></path>
+                <path d="M4,0 L295,0 L295,0 C297.209139,-3.17995656e-14 299,1.790861 299,4 L299,56 L0,56 L0,4 L0,4 C-2.705415e-16,1.790861 1.790861,4.05812251e-16 4,0 Z" id="Rectangle-3" fill="#4A90E2"></path>
                 <g id="header-column/text" transform="translate(12.000000, 57.000000)" font-size="16" font-family="SourceSansPro-Light, Source Sans Pro" line-spacing="24" fill="#000000" font-weight="300">
                     <text id="Title">
                         <tspan x="23.9130435" y="43.2">Nom</tspan>
@@ -157,7 +157,7 @@
                 </g>
                 <g id="Group-Copy-6" transform="translate(0.000000, 504.000000)">
                     <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
-                    <text id="" font-family="material" font-size="36" font-weight="normal" line-spacing="32" fill="#50E3C2">
+                    <text id="" font-family="material" font-size="36" font-weight="normal" line-spacing="32" fill="#6ED2B1">
                         <tspan x="132" y="52.3640747"></tspan>
                     </text>
                 </g>

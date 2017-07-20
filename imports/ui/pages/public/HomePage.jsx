@@ -98,7 +98,7 @@ export default class HomePage extends Component {
                     <div className="mask">
                       <img
                         className="mask-img"
-                        src="/img/mobileapp.svg"
+                        srcSet="/img/mobileapp@1x.png 500w, /img/mobileapp@2x.png 1000w"
                         alt="e-Potek Mobile Example"
                       />
                     </div>
@@ -107,7 +107,7 @@ export default class HomePage extends Component {
                     <div className="mask">
                       <img
                         className="mask-img"
-                        src="/img/tabletapp.svg"
+                        srcSet="/img/tabletapp@1x.png 800w, /img/tabletapp@2x.png 2000w"
                         alt="e-Potek Tablet Example"
                       />
                     </div>
