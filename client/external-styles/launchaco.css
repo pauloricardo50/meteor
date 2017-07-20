@@ -1,14 +1,17 @@
-.footer, .header {
-  background: #4990E2;
+.footer,
+.header {
+  background: #4990e2;
   /* fallback for old browsers #3CE2B4, #B0F6FF,#6ED2B1  */
-  background: -webkit-linear-gradient(to left, #6ED2B1, #4990E2);
+  background: -webkit-linear-gradient(to left, #6ed2b1, #4990e2);
   /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to left, #6ED2B1, #4990E2);
+  background: linear-gradient(to left, #6ed2b1, #4990e2);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   color: white !important;
 }
 
-.header h1, .header h2, .footer h5 {
+.header h1,
+.header h2,
+.footer h5 {
   color: white;
 }
 
@@ -17,10 +20,12 @@ a:hover {
 }
 
 .ctas-button {
-  color: #4990E2;
+  color: #4990e2;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   margin: 0;
   box-sizing: border-box;
 }
@@ -87,7 +92,8 @@ p.paragraph {
   }
 }
 
-.nav-link2, .nav-link {
+.nav-link2,
+.nav-link {
   text-decoration: none;
   font-size: 18px;
   line-height: 30px;
@@ -108,7 +114,12 @@ p.paragraph {
 
 /*flexbox styles*/
 
-.flex, .spread, .center, .right, .vertical, .centervertical {
+.flex-launch,
+.spread,
+.center,
+.right,
+.vertical,
+.centervertical {
   display: flex;
 }
 
@@ -136,7 +147,18 @@ p.paragraph {
 
 /*grid*/
 
-.col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12 {
+.col-1,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-10,
+.col-11,
+.col-12 {
   padding: 0 20px;
 }
 
@@ -190,7 +212,8 @@ p.paragraph {
 
 /*containers*/
 
-.container-lrg, .container-sml {
+.container-lrg,
+.container-sml {
   margin: auto;
   width: 100%;
 }
@@ -209,7 +232,8 @@ p.paragraph {
   flex-wrap: wrap;
 }
 
-.centerdevices, .sidedevices {
+.centerdevices,
+.sidedevices {
   position: relative;
 }
 
@@ -249,14 +273,15 @@ p.paragraph {
 }
 
 @media (max-width: 900px) {
-  .header .flex {
+  .header .flex-launch {
     flex-direction: column;
   }
   .header .heading {
     margin-top: 60px;
     margin-bottom: 20px;
   }
-  .header .paragraph, .desc {
+  .header .paragraph,
+  .desc {
     margin-top: 30px;
     text-align: center;
   }
@@ -271,7 +296,8 @@ p.paragraph {
   }
 }
 
-.ctas-button, .ctas-button-2 {
+.ctas-button,
+.ctas-button-2 {
   display: inline-block;
   height: 40px;
   line-height: 38px;
@@ -294,7 +320,8 @@ p.paragraph {
 }
 
 @media (max-width: 440px) {
-  .ctas-button, .ctas-button-2 {
+  .ctas-button,
+  .ctas-button-2 {
     display: block;
     width: 100%;
     text-align: center;
@@ -306,11 +333,12 @@ p.paragraph {
 
 .socialproof {
   padding: 90px 0;
-  background: #F6F9FC;
+  background: #f6f9fc;
   color: rgb(107, 124, 147) !important;
 }
 
-.ctas-button, .ctas-button-2 {
+.ctas-button,
+.ctas-button-2 {
   display: inline-block;
   height: 40px;
   line-height: 38px;
@@ -332,7 +360,8 @@ p.paragraph {
 }
 
 @media (max-width: 440px) {
-  .ctas-button, .ctas-button-2 {
+  .ctas-button,
+  .ctas-button-2 {
     display: block;
     width: 100%;
     text-align: center;
@@ -358,7 +387,8 @@ p.paragraph {
   .footer .center {
     flex-direction: column;
   }
-  .footer .col-7, .footer .col-5 {
+  .footer .col-7,
+  .footer .col-5 {
     width: 100%;
   }
   .footer .text-right {
@@ -374,7 +404,8 @@ p.paragraph {
   }
 }
 
-.ctas-button, .ctas-button-2 {
+.ctas-button,
+.ctas-button-2 {
   display: inline-block;
   height: 40px;
   line-height: 38px;
@@ -396,7 +427,8 @@ p.paragraph {
 }
 
 @media (max-width: 440px) {
-  .ctas-button, .ctas-button-2 {
+  .ctas-button,
+  .ctas-button-2 {
     display: block;
     width: 100%;
     text-align: center;
@@ -426,7 +458,7 @@ p.paragraph {
     font-size: 40px;
     color: rgb(107, 124, 147) !important;
   }
-  .feature3 .flex {
+  .feature3 .flex-launch {
     flex-wrap: wrap;
   }
   .feature3 .col-4:nth-of-type(1) {
@@ -452,7 +484,7 @@ p.paragraph {
   /* FLORIAN padding */
   padding: 90px 0 0 0;
   border-bottom: 1px solid rgba(0, 0, 0, .1);
-  background: #F6F9FC;
+  background: #f6f9fc;
   color: rgb(107, 124, 147) !important;
 }
 
@@ -505,10 +537,11 @@ p.paragraph {
   .feature2 {
     padding: 90px 0;
   }
-  .feature2 .flex {
+  .feature2 .flex-launch {
     flex-direction: column;
   }
-  .feature2 .col-6:nth-of-type(1), .feature2 .col-6:nth-of-type(2) {
+  .feature2 .col-6:nth-of-type(1),
+  .feature2 .col-6:nth-of-type(2) {
     padding: 0 20px;
     border: none;
     width: 100%;
