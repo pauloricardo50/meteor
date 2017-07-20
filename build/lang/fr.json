@@ -44,6 +44,10 @@
   "AmortizationTool.rise.title": "Augmentation des taux",
   "AmortizationTool.stable.title": "Taux stables",
   "AppPage.begin": "Commencer",
+
+  "CompareColumn.boolean.true": "Oui",
+  "CompareColumn.boolean.false": "Non",
+
   "AppPage.comparator": "Comparateur de propriétés",
   "AppPage.loanRequest": "Demande de prêt",
   "AppPage.newRequest": "Nouvelle demande de prêt",

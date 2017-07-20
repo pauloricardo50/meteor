@@ -26,10 +26,11 @@ export default class CompareColumnFooter extends Component {
       editing,
       startEditing,
       stopEditing,
+      cancelEditing,
     } = this.props;
 
     return (
-      <div className="flex-col center" style={{ flexWrap: ' ' }}>
+      <div className="flex-col center" style={{ flexWrap: 'nowrap' }}>
         <Button
           label={
             <T
@@ -40,7 +41,10 @@ export default class CompareColumnFooter extends Component {
               }
             />
           }
-          onTouchTap={this.toggleButtons}
+          onTouchTap={() => {
+            cancelEditing();
+            this.toggleButtons();
+          }}
           style={{ margin: '8px 0' }}
         />
 

@@ -5,8 +5,6 @@ import Button from '/imports/ui/components/general/Button.jsx';
 import Toggle from 'material-ui/Toggle';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
-import DialogSimple from '/imports/ui/components/general/DialogSimple.jsx';
-import cleanMethods from '/imports/api/cleanMethods';
 import DefaultOptions from './DefaultOptions.jsx';
 import AdvancedOptions from './AdvancedOptions.jsx';
 import PropertyAdder from './PropertyAdder.jsx';
@@ -30,7 +28,7 @@ export default class CompareOptions extends Component {
 
   render() {
     const { showAdvanced } = this.state;
-    const { handleAddProperty, comparator, changeComparator } = this.props;
+    const { comparator, changeComparator } = this.props;
 
     return (
       <div
@@ -71,7 +69,7 @@ export default class CompareOptions extends Component {
             }
             style={styles.button}
           />
-          <PropertyAdder handleAddProperty={handleAddProperty} />
+          <PropertyAdder />
         </div>
       </div>
     );
@@ -79,5 +77,6 @@ export default class CompareOptions extends Component {
 }
 
 CompareOptions.propTypes = {
-  handleAddProperty: PropTypes.func.isRequired,
+  comparator: PropTypes.objectOf(PropTypes.any).isRequired,
+  changeComparator: PropTypes.func.isRequired,
 };

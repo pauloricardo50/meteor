@@ -65,6 +65,7 @@ describe('loanRequests', function () {
       let request;
       beforeEach(function beforeEach2() {
         request = Factory.create('loanRequest');
+        console.log(request);
       });
 
       describe('updateRequest', () => {
@@ -205,6 +206,8 @@ describe('loanRequests', function () {
 
         it('adds a scheduled email', (done) => {
           const id = request._id;
+          console.log('THIS TEST FAILS!!');
+          console.log(request);
           const date = new Date();
           const email = {
             requestId: id,

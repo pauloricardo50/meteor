@@ -15,22 +15,29 @@ import { T } from '/imports/ui/components/general/Translation.jsx';
 import CompareHeader from './CompareHeader.jsx';
 import CompareTableContent from './CompareTableContent.jsx';
 
-export const sortFunc = (array, sorting) =>
+export const sortFunc = (properties, sorting) =>
   orderBy(
-    array,
+    properties,
     sorting.map(item => item.id),
     sorting.map(item => (item.ascending ? 'asc' : 'desc')),
   );
 
-export const filterFunc = (array, filtering) =>
-  array.filter(item =>
+export const filterFunc = (properties, filtering) =>
+  properties.filter(item =>
     filtering.every(
       filterObject => item[filterObject.id] === filterObject.show,
     ),
   );
 
+// Spread the custom property fields inside the object so that they are sorted and filtered properly
 export const getProperties = (properties, filtering, sorting) =>
-  sortFunc(filterFunc(properties, filtering), sorting);
+  sortFunc(
+    filterFunc(
+      properties.map(property => ({ ...property, ...property.fields })),
+      filtering,
+    ),
+    sorting,
+  );
 
 export default class CompareTable extends Component {
   constructor(props) {

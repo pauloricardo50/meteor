@@ -3,71 +3,11 @@ import PropTypes from 'prop-types';
 
 import classnames from 'classnames';
 
-import {
-  IntlNumber,
-  IntlDate,
-} from '/imports/ui/components/general/Translation.jsx';
-import ValidatorItem from './ValidatorItem.jsx';
+import cleanMethod from '/imports/api/cleanMethods';
+
 import CompareColumnFooter from './CompareColumnFooter.jsx';
-
-const renderField = (props, field, editing) => {
-  const value = props.property[field.id];
-
-  if (value === undefined) {
-    return '-';
-  } else if (typeof value === 'object' && field.type !== 'date') {
-    return (
-      <div className="flex-col center">
-        <span className="text-ellipsis">
-          {value.primary}
-        </span>
-        <span className="secondary">
-          {value.secondary}
-        </span>
-      </div>
-    );
-  }
-
-  if (field.id.indexOf('Monthly') >= 0) {
-    return (
-      <span className="text-ellipsis">
-        <IntlNumber value={value} format="money" />{' '}
-        <span className="secondary">/mois</span>
-      </span>
-    );
-  } else if (field.id === 'isValid') {
-    return (
-      <ValidatorItem
-        isValid={value}
-        error={props.property.error}
-        errorClass={props.property.errorClass}
-      />
-    );
-  }
-
-  switch (field.type) {
-    case 'number':
-      return value;
-    case 'money':
-      return <IntlNumber value={value} format="money" />;
-    case 'date':
-      return (
-        <IntlDate
-          value={value}
-          month="long"
-          day="numeric"
-          hour="2-digit"
-          minute="2-digit"
-        />
-      );
-    case 'boolean':
-      return value ? 'Yep' : 'Nope';
-    case 'percent':
-      return <IntlNumber value={value} format="percentage" />;
-    default:
-      return value;
-  }
-};
+import CompareColumnField from './CompareColumnField.jsx';
+import CompareColumnEditingField from './CompareColumnEditingField.jsx';
 
 export default class CompareColumn extends Component {
   constructor(props) {
@@ -79,12 +19,61 @@ export default class CompareColumn extends Component {
   }
 
   startEditing = () => {
-    this.setState({ editing: true });
+    const { property, fields } = this.props;
+    const values = {};
+
+    // Set state with all the current values
+    fields.forEach((field) => {
+      if (!field.noEdit) {
+        if (field.custom) {
+          values[field.id] = property.fields[field.id];
+        } else {
+          values[field.id] = property[field.id];
+        }
+      }
+    });
+
+    this.setState({
+      editing: true,
+      name: property.name,
+      value: property.value,
+      ...values,
+    });
+  };
+
+  cancelEditing = () => {
+    // Wipe state, careful if more state stuff is added in the future
+    this.state = { editing: false };
   };
 
   stopEditing = () => {
-    this.setState({ editing: false });
+    const { property } = this.props;
+    const customFields = { ...this.state };
+    delete customFields.editing;
+    delete customFields.name;
+    delete customFields.value;
+
+    const readyForDB = {};
+    Object.keys(customFields).forEach((key) => {
+      readyForDB[`fields.${key}`] = customFields[key];
+    });
+
+    cleanMethod(
+      'updateProperty',
+      {
+        name: this.state.name || property.name,
+        value: this.state.value || property.value,
+        ...readyForDB,
+      },
+      property._id,
+      () => {
+        // reset state
+        this.state = { editing: false };
+      },
+    );
   };
+
+  handleChange = (key, value) => this.setState({ [key]: value });
 
   render() {
     const {
@@ -117,7 +106,14 @@ export default class CompareColumn extends Component {
             onMouseEnter={() => onHoverEnter(field.id)}
             onMouseLeave={onHoverLeave}
           >
-            {renderField(this.props, field, editing)}
+            {editing && !field.noEdit
+              ? <CompareColumnEditingField
+                {...this.props}
+                field={field}
+                parentState={this.state}
+                handleChange={this.handleChange}
+              />
+              : <CompareColumnField field={field} property={property} />}
           </li>),
         )}
         <CompareColumnFooter
@@ -125,6 +121,7 @@ export default class CompareColumn extends Component {
           deleteProperty={deleteProperty}
           startEditing={this.startEditing}
           stopEditing={this.stopEditing}
+          cancelEditing={this.cancelEditing}
           editing={editing}
         />
       </ul>

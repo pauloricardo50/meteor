@@ -12,8 +12,9 @@ const RadioButtons = ({
   intlPrefix,
   currentValue,
   label,
+  style,
 }) =>
-  (<div>
+  (<div style={style}>
     <label htmlFor={id}>
       {label}
     </label>
@@ -22,6 +23,7 @@ const RadioButtons = ({
       valueSelected={currentValue}
       name={id}
       className="flex"
+      style={{ justifyContent: ' space-around' }}
     >
       {options.map(option =>
         (<RadioButton
@@ -36,11 +38,17 @@ const RadioButtons = ({
 
 RadioButtons.propTypes = {
   id: PropTypes.string.isRequired,
-  label: PropTypes.node.isRequired,
+  label: PropTypes.node,
   intlPrefix: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
   handleChange: PropTypes.func.isRequired,
   currentValue: PropTypes.node.isRequired,
+  style: PropTypes.object,
+};
+
+RadioButtons.defaultProps = {
+  label: '',
+  style: {},
 };
 
 export default RadioButtons;

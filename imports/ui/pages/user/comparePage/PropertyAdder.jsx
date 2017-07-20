@@ -85,7 +85,6 @@ export default class PropertyAdder extends Component {
               alignItems: 'center',
             }}
           >
-            {/* <GoogleMapContainer> */}
             <GoogleMapsAutocomplete handleChange={this.handleChange} />
             {!!(isValidPlace && latlng) &&
               <GoogleMap
@@ -93,7 +92,6 @@ export default class PropertyAdder extends Component {
                 address={address}
                 className="property-adder-map"
               />}
-            {/* </GoogleMapContainer> */}
 
             {!isValidPlace && <div style={{ height: 300 }} />}
             {isValidPlace &&
@@ -131,7 +129,3 @@ export default class PropertyAdder extends Component {
     );
   }
 }
-
-PropertyAdder.propTypes = {
-  handleAddProperty: PropTypes.func.isRequired,
-};

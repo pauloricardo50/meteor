@@ -13,7 +13,6 @@ const AdvancedOptions = ({
   changeComparator,
   toggleField,
   allFields,
-  hiddenFields,
   removeCustomField,
 }) =>
   (<div className="flex-col center">
@@ -59,11 +58,11 @@ const AdvancedOptions = ({
   </div>);
 
 AdvancedOptions.propTypes = {
-  options: PropTypes.objectOf(PropTypes.any).isRequired,
-  changeOptions: PropTypes.func.isRequired,
+  comparator: PropTypes.objectOf(PropTypes.any).isRequired,
+  changeComparator: PropTypes.func.isRequired,
   toggleField: PropTypes.func.isRequired,
   allFields: PropTypes.array.isRequired,
-  hiddenFields: PropTypes.array.isRequired,
+  removeCustomField: PropTypes.func.isRequired,
 };
 
 export default AdvancedOptions;

@@ -62,7 +62,7 @@ const defaultFields = [
   { id: 'name', type: 'text' },
   { id: 'isValid', type: 'boolean', noEdit: true },
   { id: 'value', type: 'money' },
-  { id: 'notaryFees', type: 'money' },
+  { id: 'notaryFees', type: 'money', noEdit: true },
   { id: 'loan', type: 'money', noEdit: true },
   { id: 'ownFunds', type: 'money', noEdit: true },
   { id: 'realMonthly', type: 'money', noEdit: true },
@@ -80,7 +80,7 @@ export default class Comparator extends Component {
     super(props);
 
     this.setupProperties(this.props);
-    this.filterFields(this.props);
+    this.hideFields(this.props);
   }
 
   // componentDidUpdate(prevProps) {
@@ -93,7 +93,7 @@ export default class Comparator extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setupProperties(nextProps);
-    this.filterFields(nextProps);
+    this.hideFields(nextProps);
     this.forceUpdate();
   }
 
@@ -115,7 +115,7 @@ export default class Comparator extends Component {
       { name, type },
       this.props.comparator._id,
       () => {
-        this.filterFields(this.props);
+        this.hideFields(this.props);
         if (typeof callback === 'function') {
           callback();
         }
@@ -128,7 +128,7 @@ export default class Comparator extends Component {
       { fieldId },
       this.props.comparator._id,
       () => {
-        this.filterFields(this.props);
+        this.hideFields(this.props);
       },
     );
 
@@ -287,7 +287,7 @@ export default class Comparator extends Component {
     this.modifiedProperties = [...props.properties].map(this.modifyProperty);
   };
 
-  filterFields = (props) => {
+  hideFields = (props) => {
     const { comparator } = props;
     this.filteredFields = [
       ...defaultFields,

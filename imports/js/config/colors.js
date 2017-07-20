@@ -1,6 +1,7 @@
 const colors = {
   primary: '#4990E2',
   secondary: '#6ED2B1',
+  success: '#6ED2B1', // for convenience, same as secondary
   warning: '#F3AF50',
   error: '#B73E25',
   lightBorder: '#DEE2E6',

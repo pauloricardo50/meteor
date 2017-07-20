@@ -31,6 +31,13 @@ const getDefaults = ({ type, id, handleChange, currentValue }) => {
         placeholder: '%',
         currentValue: (currentValue * 100).toFixed(2),
       };
+    case 'number':
+      return {
+        onChangeHandler: event =>
+          handleChange(id, toNumber(event.target.value)),
+        showMask: false,
+        currentValue,
+      };
     default:
       return {
         onChangeHandler: event => handleChange(id, event.target.value),
@@ -78,13 +85,16 @@ const TextInput = (props) => {
 
 TextInput.propTypes = {
   id: PropTypes.string.isRequired,
-  label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   currentValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   handleChange: PropTypes.func.isRequired,
+  type: PropTypes.string,
 };
 
 TextInput.defaultProps = {
+  label: '',
   currentValue: undefined,
+  type: undefined,
 };
 
 export default TextInput;
