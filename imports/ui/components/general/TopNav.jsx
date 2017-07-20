@@ -32,17 +32,19 @@ const styles = {
 };
 
 const TopNav = (props) => {
-  const isApp =
-    props.history && props.history.location.pathname.slice(0, 4) === '/app';
+  const { history, currentUser, loanRequests } = props;
+  const isApp = history && history.location.pathname.slice(0, 4) === '/app';
+
+  const showDrawer = isApp && loanRequests.length > 0;
 
   return (
     <div className="top-nav" style={{ zIndex: 20 }}>
       <AppBar
         style={!props.public ? styles.navbar : styles.publicNavbar}
-        iconElementLeft={isApp ? <TopNavDrawer {...props} /> : undefined}
-        iconStyleLeft={!isApp ? { display: 'none' } : {}}
+        iconElementLeft={showDrawer ? <TopNavDrawer {...props} /> : undefined}
+        iconStyleLeft={!showDrawer ? { display: 'none' } : {}}
         iconElementRight={
-          props.currentUser
+          currentUser
             ? <TopNavDropdown {...props} />
             : <Button
               label={<T id="TopNav.login" />}
@@ -70,11 +72,14 @@ const TopNav = (props) => {
 
 TopNav.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any),
+  loanRequests: PropTypes.arrayOf(PropTypes.object),
   public: PropTypes.bool,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 TopNav.defaultProps = {
   currentUser: undefined,
+  loanRequests: [],
   public: false,
 };
 

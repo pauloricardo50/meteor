@@ -9,7 +9,7 @@ import { T } from '/imports/ui/components/general/Translation.jsx';
 import RequestSelector from './RequestSelector.jsx';
 import SideNavStepper from './SideNavStepper.jsx';
 
-const SideNavUser = props => {
+const SideNavUser = (props) => {
   const {
     loanRequests,
     location,
@@ -55,21 +55,22 @@ const SideNavUser = props => {
           currentValue={requestId}
           toggleDrawer={toggleDrawer}
         />
-        <NavLink
-          exact
-          to={`/app/requests/${requestId}`}
-          activeClassName="active-link"
-          className="link"
-        >
-          <div className="onclick-wrapper" onTouchTap={handleClickLink}>
-            <div className="icon">
-              <AssessmentIcon color="#ADB5BD" />
+        {requestId &&
+          <NavLink
+            exact
+            to={`/app/requests/${requestId}`}
+            activeClassName="active-link"
+            className="link"
+          >
+            <div className="onclick-wrapper" onTouchTap={handleClickLink}>
+              <div className="icon">
+                <AssessmentIcon color="#ADB5BD" />
+              </div>
+              <h4 className="fixed-size title">
+                <T id="SideNavUser.dashboard" />
+              </h4>
             </div>
-            <h4 className="fixed-size title">
-              <T id="SideNavUser.dashboard" />
-            </h4>
-          </div>
-        </NavLink>
+          </NavLink>}
 
         {requestId &&
           currentRequest.status === 'active' &&
