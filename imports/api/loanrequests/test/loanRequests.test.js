@@ -27,9 +27,9 @@ import {
 } from '../methods';
 
 describe('loanRequests', () => {
-  beforeEach(function () {
+  beforeEach(function beforeEach1() {
     // if (Meteor.isServer) {
-    // resetDatabase();
+    resetDatabase();
     // }
   });
 
@@ -62,7 +62,7 @@ describe('loanRequests', () => {
 
     describe('modifiers', () => {
       let request;
-      beforeEach(() => {
+      beforeEach(function beforeEach2() {
         request = Factory.create('loanRequest');
       });
 
@@ -133,31 +133,35 @@ describe('loanRequests', () => {
       });
 
       describe('requestVerification', () => {
-        it('Should set requested to true and add a time', () => {
+        it('Should set requested to true and add a time', (done) => {
           const id = request._id;
-          requestVerification.call({ id });
-          const modifiedRequest = LoanRequests.findOne({ _id: id });
+          requestVerification.call({ id }, () => {
+            const modifiedRequest = LoanRequests.findOne({ _id: id });
 
-          expect(modifiedRequest.logic.verification.requested).to.be.true;
-          expect(modifiedRequest.logic.verification.requestedTime).to.exist;
+            expect(modifiedRequest.logic.verification.requested).to.be.true;
+            expect(modifiedRequest.logic.verification.requestedTime).to.exist;
+            done();
+          });
         });
       });
 
       describe('deleteRequest', () => {
         if (Meteor.isClient) {
-          it('Should work if user is a developer', () => {
+          it('Should work if user is a developer', (done) => {
             const devRequest = Factory.create('loanRequestDev');
 
             Meteor.userId = () => devRequest.userId;
 
             const id = devRequest._id;
-            deleteRequest.call({ id });
-            const modifiedRequest = LoanRequests.findOne({ _id: id });
+            deleteRequest.call({ id }, () => {
+              const modifiedRequest = LoanRequests.findOne({ _id: id });
 
-            expect(modifiedRequest).to.not.exist;
+              expect(modifiedRequest).to.not.exist;
 
-            // Reset the userId function to its default value
-            Meteor.userId = () => Accounts.userId;
+              // Reset the userId function to its default value
+              Meteor.userId = () => Accounts.userId;
+              done();
+            });
           });
         }
 
@@ -250,7 +254,7 @@ describe('loanRequests', () => {
   describe('getAuctionEndTime', () => {
     let endDate;
 
-    beforeEach(() => {
+    beforeEach(function beforeEach3() {
       endDate = moment()
         .year(2017)
         .month(0)
