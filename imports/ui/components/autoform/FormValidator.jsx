@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { _ } from 'lodash';
+import get from 'lodash/get';
 
 import cleanMethod from '/imports/api/cleanMethods';
 
@@ -30,7 +30,7 @@ export default class FormValidator extends Component {
       return null;
     }
 
-    const checked = !!_.get(this.props.doc.adminValidation, this.props.id);
+    const checked = !!get(this.props.doc.adminValidation, this.props.id);
     return (
       <div style={styles.div}>
         <div style={styles.wrapper}>

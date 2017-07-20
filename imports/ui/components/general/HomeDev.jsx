@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import track from '/imports/js/helpers/analytics';
@@ -27,12 +26,13 @@ export default class HomeDev extends React.Component {
 
   render() {
     const actions = [
-      <FlatButton label="Ok" primary onTouchTap={this.handleClose} />,
+      <Button label="Ok" primary onTouchTap={this.handleClose} />,
     ];
 
     return (
       <span>
-        <RaisedButton
+        <Button
+          raised
           label={<T id="HomePage.CTA2" />}
           onTouchTap={this.handleOpen}
           primary={this.props.primary}
@@ -55,7 +55,8 @@ export default class HomeDev extends React.Component {
         >
           <T id="HomeDev.description" />
           <div className="text-center" style={{ marginTop: 20 }}>
-            <RaisedButton
+            <Button
+              raised
               label={<T id="HomeDev.CTA" />}
               primary
               href="http://eepurl.com/cKvR45"

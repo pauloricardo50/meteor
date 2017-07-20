@@ -5,6 +5,7 @@ import composeWithTracker from '/imports/ui/containers/composers/composeWithTrac
 
 import { currentUserComposer } from './composers/GeneralComposers';
 import {
+  userCompareComposer,
   userRequestsComposer,
   userBorrowersComposer,
   userOffersComposer,
@@ -38,6 +39,7 @@ export const userContainer = c =>
     composeWithTracker(userBorrowersComposer, Loading),
     composeWithTracker(userOffersComposer, Loading),
     composeWithTracker(currentUserComposer, Loading),
+    composeWithTracker(userCompareComposer, Loading),
   )(c);
 
 export const userRequestContainer = c =>
@@ -49,6 +51,12 @@ export const userRequestContainer = c =>
 export const userBorrowerContainer = c =>
   merge(
     composeWithTracker(userBorrowerComposer, Loading),
+    composeWithTracker(currentUserComposer, Loading),
+  )(c);
+
+export const userCompareContainer = c =>
+  merge(
+    composeWithTracker(userCompareComposer, Loading),
     composeWithTracker(currentUserComposer, Loading),
   )(c);
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import TextField from 'material-ui/TextField';
 
 export default class BetaAccess extends React.Component {
@@ -22,7 +21,7 @@ export default class BetaAccess extends React.Component {
     this.setState({ open: true });
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
 
     // If you read this, write to me at florian@e-potek.ch, we're hiring curious people!
@@ -35,13 +34,13 @@ export default class BetaAccess extends React.Component {
 
   render() {
     const actions = [
-      <FlatButton label="Annuler" onTouchTap={this.handleClose} />,
-      <FlatButton label="Okay" primary onTouchTap={this.handleSubmit} />,
+      <Button label="Annuler" onTouchTap={this.handleClose} />,
+      <Button label="Okay" primary onTouchTap={this.handleSubmit} />,
     ];
 
     return (
       <div>
-        <RaisedButton label="Accéder à la Beta" onTouchTap={this.handleOpen} />
+        <Button raised label="Accéder à la Beta" onTouchTap={this.handleOpen} />
         <Dialog
           title="Accéder à la Beta"
           actions={actions}
@@ -58,7 +57,7 @@ export default class BetaAccess extends React.Component {
               autoFocus
               floatingLabelText="Mot de passe"
               type="password"
-              ref={r => {
+              ref={(r) => {
                 this.password = r;
               }}
               style={{ width: 100 }}

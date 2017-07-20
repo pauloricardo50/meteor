@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import RequestDetails from '/imports/ui/components/partner/RequestDetails.jsx';
 import PartnerOfferForm from '/imports/ui/components/partner/PartnerOfferForm.jsx';
@@ -21,7 +21,7 @@ const PartnerRequestPage = props => {
     return (
       <section>
         <div className="form-group">
-          <RaisedButton
+          <Button raised
             icon={<span className="fa fa-angle-left" />}
             label="Retour"
             href="/partner"
@@ -43,7 +43,7 @@ const PartnerRequestPage = props => {
         <br />
         Soit cette demande de prêt n'existe pas, soit vous n'êtes pas autorisé à la voir.
       </h1>
-      <RaisedButton label="Retour" href="/partner" style={styles.back} />
+      <Button raised label="Retour" href="/partner" style={styles.back} />
     </section>
   );
 };

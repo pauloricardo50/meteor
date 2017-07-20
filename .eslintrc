@@ -1,10 +1,9 @@
 {
   "parser": "babel-eslint",
-  "env": {
-    "browser": true
-  },
   "parserOptions": {
-    "allowImportExportEverywhere": true
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "plugins": [
     "import",
@@ -13,43 +12,39 @@
     "react"
   ],
   "extends": [
-    "plugin:meteor/recommended"
+    "airbnb",
+    "plugin:meteor/recommended",
+    "plugin:react/recommended"
   ],
-  "settings": {
-    "import/resolver": "meteor"
+  "env": {
+    "browser": true
+  },
+  "globals": {
+    "expect": false
   },
   "rules": {
-    "react/jsx-filename-extension": [
-      1,
-      {
-        "extensions": [
-          ".js",
-          ".jsx"
-        ]
-      }
-    ],
+    "import/no-unresolved": 0,
+    "import/no-extraneous-dependencies": 0,
+    "import/extensions": 0,
     "no-underscore-dangle": [
       "error",
       {
         "allow": [
-          "_id"
+          "_id",
+          "_ensureIndex",
+          "_verifyEmailToken",
+          "_resetPasswordToken",
+          "_name"
         ]
       }
     ],
-    "no-use-before-define": [
-      "error",
-      {
-        "functions": false,
-        "classes": true
-      }
-    ],
-    "import/no-extraneous-dependencies": 0,
-    "import/no-absolute-path": 0,
-    "import/extensions": 0,
     "class-methods-use-this": 0,
+    "react/jsx-filename-extension": 0,
+    "react/forbid-prop-types": 0,
+    "max-len": [ "error", 80],
     "no-absolute-path": 0,
-    "arrow-body-style": 0,
-    "arrow-parens": 0,
-    "react/jsx-wrap-multilines": 0
+    "import/no-absolute-path": 0,
+    "jsx-a11y/href-no-hash": 0,
+    "no-mixed-operators": 0
   }
 }

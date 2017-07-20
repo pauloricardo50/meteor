@@ -4,7 +4,7 @@ import cleanMethod from '/imports/api/cleanMethods';
 import CountUp from 'react-countup';
 import { injectIntl } from 'react-intl';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import { getLenderCount } from '/imports/js/helpers/requestFunctions';
 
 import AuctionForm from './AuctionForm.jsx';
@@ -82,7 +82,7 @@ const AuctionStart = props => {
           />
         </div>
         <div className="form-group text-center">
-          <RaisedButton
+          <Button raised
             label={<T id="AuctionStart.cancel" />}
             onTouchTap={() => props.history.push('/app')}
           />

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Accounts } from 'meteor/accounts-base';
 
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import DialogSimple from '/imports/ui/components/general/DialogSimple.jsx';
@@ -64,8 +64,8 @@ export default class PasswordChange extends Component {
         title={<T id="PasswordChange.dialogTitle" />}
         label={<T id="PasswordChange.change" />}
         actions={[
-          <FlatButton label={<T id="general.cancel" />} onTouchTap={this.handleClose} />,
-          <FlatButton
+          <Button label={<T id="general.cancel" />} onTouchTap={this.handleClose} />,
+          <Button
             label={<T id="general.ok" />}
             primary
             disabled={!isValid}

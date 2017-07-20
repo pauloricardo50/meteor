@@ -4,7 +4,11 @@ import { getIncomeRatio, getBorrowRatio, getFees } from './finance-math';
 import { propertyPercent, filesPercent } from '/imports/js/arrays/steps';
 import { requestFiles } from '/imports/js/arrays/files';
 
-export const getProjectValue = loanRequest => {
+import CheckIcon from 'material-ui/svg-icons/navigation/check';
+import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import WarningIcon from 'material-ui/svg-icons/alert/warning';
+
+export const getProjectValue = (loanRequest) => {
   if (loanRequest.property.value <= 0) {
     return 0;
   }
@@ -14,13 +18,14 @@ export const getProjectValue = loanRequest => {
     (loanRequest.property.propertyWork || 0);
 
   if (loanRequest.property.usageType === 'primary') {
-    value += (loanRequest.general.insuranceFortuneUsed || 0) * constants.lppFees;
+    value +=
+      (loanRequest.general.insuranceFortuneUsed || 0) * constants.lppFees;
   }
 
   return Math.max(0, Math.round(value));
 };
 
-export const getLoanValue = loanRequest => {
+export const getLoanValue = (loanRequest) => {
   let value = getProjectValue(loanRequest) - loanRequest.general.fortuneUsed;
 
   if (loanRequest.property.usageType === 'primary') {
@@ -36,7 +41,10 @@ export const loanStrategySuccess = (loanTranches = [], loanValue) => {
     return false;
   }
   // User has to choose a preset
-  const trancheSum = loanTranches.reduce((tot, tranche) => tranche.value + tot, 0);
+  const trancheSum = loanTranches.reduce(
+    (tot, tranche) => tranche.value + tot,
+    0,
+  );
   if (trancheSum === loanValue) {
     // If the sum of all tranches is equal to the loan, success!
     return true;
@@ -45,13 +53,10 @@ export const loanStrategySuccess = (loanTranches = [], loanValue) => {
   return false;
 };
 
-export const strategiesChosen = loanRequest => {
-  return (
-    loanStrategySuccess(loanRequest) &&
-    loanRequest.logic.amortizationStrategyPreset &&
-    loanRequest.logic.hasValidatedCashStrategy
-  );
-};
+export const strategiesChosen = loanRequest =>
+  loanStrategySuccess(loanRequest) &&
+  loanRequest.logic.amortizationStrategyPreset &&
+  loanRequest.logic.hasValidatedCashStrategy;
 
 export const getMonthlyWithOffer = (
   request,
@@ -66,14 +71,16 @@ export const getMonthlyWithOffer = (
 
   // Modify it to include additional parameters
   r.general.fortuneUsed = fortuneUsed || r.general.fortuneUsed;
-  r.general.insuranceFortuneUsed = insuranceFortuneUsed || r.general.insuranceFortuneUsed;
+  r.general.insuranceFortuneUsed =
+    insuranceFortuneUsed || r.general.insuranceFortuneUsed;
   const loan = getLoanValue(r);
 
   const maintenance =
-    constants.maintenanceReal * (r.property.value + (r.property.propertyWork || 0));
+    constants.maintenanceReal *
+    (r.property.value + (r.property.propertyWork || 0));
 
   let interests = 0;
-  tranches.some(tranche => {
+  tranches.some((tranche) => {
     const rate = interestRates[tranche.type];
 
     // If the lender doesn't have this interest rate, return false
@@ -85,7 +92,9 @@ export const getMonthlyWithOffer = (
     interests += tranche.value * rate;
   });
 
-  return interests >= 0 ? Math.round((maintenance + loan * amortization + interests) / 12) : 0;
+  return interests >= 0
+    ? Math.round((maintenance + loan * amortization + interests) / 12)
+    : 0;
 };
 
 /**
@@ -98,12 +107,18 @@ export const getMonthlyWithOffer = (
  *
  * @return {Number} min 0
  */
-export const getInterestsWithOffer = (loanRequest, offer, withCounterparts = false) => {
+export const getInterestsWithOffer = (
+  loanRequest,
+  offer,
+  withCounterparts = false,
+) => {
   const tranches = loanRequest.general.loanTranches;
-  const interestRates = withCounterparts ? offer.counterpartOffer : offer.standardOffer;
+  const interestRates = withCounterparts
+    ? offer.counterpartOffer
+    : offer.standardOffer;
 
   let interests = 0;
-  tranches.some(tranche => {
+  tranches.some((tranche) => {
     const rate = interestRates[tranche.type];
 
     // If the lender doesn't have this interest rate, return false
@@ -122,7 +137,10 @@ export const getPropAndWork = loanRequest =>
   loanRequest.property.value + (loanRequest.property.propertyWork || 0);
 
 export const getTotalUsed = loanRequest =>
-  Math.round(loanRequest.general.fortuneUsed + (loanRequest.general.insuranceFortuneUsed || 0));
+  Math.round(
+    loanRequest.general.fortuneUsed +
+      (loanRequest.general.insuranceFortuneUsed || 0),
+  );
 
 export const getLenderCount = (loanRequest, borrowers) => {
   const incomeRatio = getIncomeRatio(loanRequest, borrowers);
@@ -165,5 +183,62 @@ export const isRequestValid = (loanRequest, borrowers) => {
 };
 
 export const getPropertyCompletion = (loanRequest, borrowers) =>
-  (propertyPercent(loanRequest, borrowers) + filesPercent(loanRequest, requestFiles, 'auction')) /
+  (propertyPercent(loanRequest, borrowers) +
+    filesPercent(loanRequest, requestFiles, 'auction')) /
   2;
+
+export const validateRatios = (
+  incomeRatio,
+  borrowRatio,
+  borrowRatioWanted,
+  allowInsurance,
+) => {
+  // To prevent rounding errors
+  const incomeRatioSafe = incomeRatio - 0.001;
+  const borrowRatioSafe = borrowRatio - 0.001;
+
+  if (borrowRatioWanted && borrowRatioWanted !== 0.8) {
+    if (borrowRatioSafe > borrowRatioWanted) {
+      throw new Error('fortune');
+    }
+  }
+
+  if (incomeRatioSafe > 0.38) {
+    throw new Error('income');
+  } else if (!allowInsurance && borrowRatioSafe > 0.8) {
+    throw new Error('fortune');
+  } else if (borrowRatioSafe > 0.9) {
+    throw new Error('fortune');
+  } else if (incomeRatioSafe > 1 / 3) {
+    throw new Error('incomeTight');
+  } else if (borrowRatioSafe > 0.8) {
+    throw new Error('fortuneTight');
+  }
+};
+
+export const validateRatiosCompletely = (
+  incomeRatio,
+  borrowRatio,
+  borrowRatioWanted,
+  allowInsurance = true,
+) => {
+  try {
+    validateRatios(incomeRatio, borrowRatio, borrowRatioWanted, allowInsurance);
+    return {
+      isValid: true,
+      message: 'valid',
+      message2: '',
+      icon: CheckIcon,
+      className: 'success',
+    };
+  } catch (error) {
+    const isTight = error.message.indexOf('Tight') >= 0;
+    return {
+      isValid: false,
+      message: `${error.message}`,
+      message2: `${error.message}2`,
+      icon: isTight ? WarningIcon : CloseIcon,
+      className: isTight ? 'warning' : 'error',
+    };
+  }
+};

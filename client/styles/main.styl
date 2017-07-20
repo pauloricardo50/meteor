@@ -201,6 +201,11 @@ svg.warning
 .disabled
   opacity 0.25
 
+.text-ellipsis
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
 .description
   display: flex;
   align-items: center;
@@ -218,8 +223,14 @@ svg.warning
   overflow: auto;
   padding: 16px
   border-radius: 4px;
-  &.primary-border
+  &.primary-border, &.hover-primary:hover
     border: 1px solid brand-primary;
+  &.error-border
+    border: 1px solid brand-danger;
+  &.warning-border
+    border: 1px solid brand-warning;
+  &.success-border
+    border: 1px solid brand-success;
 
 .mask1
   box-shadow: 0 0 4px 0 rgba(33,37,41,0.16);
@@ -251,6 +262,17 @@ svg.warning
 .mask3
   box-shadow: 0px 40px 40px 0px rgba(0,0,0,0.16);
 
+
+.flex, .flex-row, .flex-col
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  &.center
+    align-items: center;
+    justify-content: center;
+
+.flex-col
+  flex-direction: column;
 
 
 .top-nav
@@ -366,8 +388,10 @@ svg.warning
   min-height: 100%;
   +above($med)
     padding-top: 80px;
-    padding-left 316px; // side-nav width + 20px
+    padding-left 316px; // side-nav width + 16px
     padding-bottom 16px;
+  &.no-nav
+    padding-left: 16px;
   &.always-side-nav
     padding-left: 266px; // side bar doesn't disappear
   .wrapper

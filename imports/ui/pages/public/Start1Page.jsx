@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { _ } from 'lodash';
+import merge from 'lodash/merge';
 import queryString from 'query-string';
 import classnames from 'classnames';
 
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import ArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
 import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import { toNumber } from '/imports/js/helpers/conversionFunctions';
-import { changeProperty, changeFortune, changeIncome } from '/imports/js/helpers/startFunctions';
+import {
+  changeProperty,
+  changeFortune,
+  changeIncome,
+  getBorrowRatio,
+  getIncomeRatio,
+  getTheoreticalMonthly,
+} from '/imports/js/helpers/startFunctions';
 import { storageAvailable } from '/imports/js/helpers/browserFunctions';
-import constants from '/imports/js/config/constants';
+import Accordion from '/imports/ui/components/general/Accordion.jsx';
 
 import Start1Calculator from './startPage/Start1Calculator.jsx';
-import Accordion from '/imports/ui/components/general/Accordion.jsx';
 
 const getArray = (income, fortune, property, borrow, ratio) => {
   const incomeIcon = classnames({
@@ -37,7 +42,8 @@ const getArray = (income, fortune, property, borrow, ratio) => {
     'fa-check success': borrow <= 0.8 + 0.001 && ratio <= 1 / 3 + 0.001,
     'fa-exclamation warning':
       !isFalse &&
-        ((borrow <= 0.9 && borrow > 0.8 + 0.001) || (ratio <= 0.38 && ratio > 1 / 3 + 0.001)),
+      ((borrow <= 0.9 && borrow > 0.8 + 0.001) ||
+        (ratio <= 0.38 && ratio > 1 / 3 + 0.001)),
     'fa-times error': isFalse,
   });
   return [
@@ -123,16 +129,10 @@ export default class Start1Page extends Component {
     }
   }
 
-  getMonthly(income, fortune, property, borrow) {
-    return Math.max(
-      (property * constants.maintenance + (property - fortune) * constants.loanCost(borrow)) / 12,
-      0,
-    );
-  }
-
   getUrl = () => {
     const queryparams = {
-      property: this.type !== 'test' ? Math.round(this.state.property.value) : 0,
+      property:
+        this.type !== 'test' ? Math.round(this.state.property.value) : 0,
       income: Math.round(this.state.income.value),
       fortune: Math.round(this.state.fortune.value),
     };
@@ -157,7 +157,10 @@ export default class Start1Page extends Component {
     }
 
     // Set the state of the value that is changed, and immediately recommend other minValues
-    this.setState(prev => _.merge({}, prev, object), () => this.recommendValues(name, autoOff));
+    this.setState(
+      prev => merge({}, prev, object),
+      () => this.recommendValues(name, autoOff),
+    );
   };
 
   handleReset = () => {
@@ -204,7 +207,11 @@ export default class Start1Page extends Component {
     for (const key in o) {
       if (o.hasOwnProperty(key)) {
         // If the minValue was modified, and the property is still on auto mode, also set the value
-        if (o[key].minValue !== undefined && o[key].minValue !== null && this.state[key].auto) {
+        if (
+          o[key].minValue !== undefined &&
+          o[key].minValue !== null &&
+          this.state[key].auto
+        ) {
           o[key].value = o[key].minValue;
         }
 
@@ -219,7 +226,7 @@ export default class Start1Page extends Component {
               const resetO = {};
               resetO[key] = {};
               resetO[key].value = this.state[name].minValue;
-              this.setState(prev => _.merge({}, prev, resetO));
+              this.setState(prev => merge({}, prev, resetO));
             }, 400);
           }
         }
@@ -231,29 +238,40 @@ export default class Start1Page extends Component {
       o[name].minValue = 0;
     }
 
-    this.setState(prev => _.merge({}, prev, o));
+    this.setState(prev => merge({}, prev, o));
   }
 
   render() {
     const property = this.state.property.value;
     const income = this.state.income.value;
     const fortune = this.state.fortune.value;
-    const borrowRatio = Math.max((property * 1.05 - fortune) / property, 0);
-    const incomeRatio =
-      this.getMonthly(income, fortune - property * 0.05, property, borrowRatio) / (income / 12);
+    const borrowRatio = getBorrowRatio(property, fortune);
+    const monthly = getTheoreticalMonthly(
+      fortune - property * 0.05,
+      property,
+      borrowRatio,
+    );
+    const incomeRatio = getIncomeRatio(monthly, income);
     const childProps = { income, fortune, property, borrowRatio, incomeRatio };
 
     return (
       <section className="oscar">
         <article className="mask1 small-oscar">
-          <h1><T id="Start1Page.title" /></h1>
+          <h1>
+            <T id="Start1Page.title" />
+          </h1>
           <hr />
 
-          <FlatButton
+          <Button
             icon={
-              this.state.showDescription || this.state.isFirstVisit ? <ArrowUp /> : <ArrowDown />
+              this.state.showDescription || this.state.isFirstVisit
+                ? <ArrowUp />
+                : <ArrowDown />
             }
-            onTouchTap={() => this.setState(prev => ({ showDescription: !prev.showDescription }))}
+            onTouchTap={() =>
+              this.setState(prev => ({
+                showDescription: !prev.showDescription,
+              }))}
             style={
               this.state.showDescription
                 ? { minWidth: 'unset', width: 36 }
@@ -267,7 +285,8 @@ export default class Start1Page extends Component {
             <div className="description" style={{ margin: 0 }}>
               <p>
                 <T id="Start1Page.description1" />
-                <br /><br />
+                <br />
+                <br />
                 <T id="Start1Page.description2" />
               </p>
             </div>
@@ -291,10 +310,15 @@ export default class Start1Page extends Component {
               getUrl={this.getUrl}
             />
             : <div className="text-center" style={{ marginBottom: 40 }}>
-              <RaisedButton
+              <Button
+                raised
                 primary
                 label={<T id="Start1Page.showCalculatorButton" />}
-                onTouchTap={() => this.setState({ isFirstVisit: false, showDescription: false })}
+                onTouchTap={() =>
+                    this.setState({
+                      isFirstVisit: false,
+                      showDescription: false,
+                    })}
                 style={{ height: 'unset' }}
                 overlayStyle={{ padding: 20 }}
               />

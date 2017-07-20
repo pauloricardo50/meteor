@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import ProjectPieChart from '/imports/ui/components/charts/ProjectPieChart.jsx';
 import Recap from '/imports/ui/components/general/Recap';
@@ -49,7 +49,7 @@ export default class OverviewTab extends React.Component {
         <hr />
 
         <div className="text-center">
-          <RaisedButton
+          <Button raised
             label={this.state.showObject ? 'Masquer' : 'Afficher détails'}
             onTouchTap={() => this.setState(prev => ({ showObject: !prev.showObject }))}
           />

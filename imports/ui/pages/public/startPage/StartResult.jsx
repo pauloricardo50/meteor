@@ -5,7 +5,7 @@ import Scroll from 'react-scroll';
 import CountUp from 'react-countup';
 import { injectIntl } from 'react-intl';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
 import Recap from '/imports/ui/components/general/Recap.jsx';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
@@ -121,7 +121,7 @@ class StartResult extends Component {
         </div>
 
         <div className="buttons">
-          <RaisedButton
+          <Button raised
             label={<T id="general.modify" />}
             onTouchTap={() => {
               track('StartResult - clicked start result modify');
@@ -133,7 +133,7 @@ class StartResult extends Component {
             }}
             style={{ marginRight: 8 }}
           />
-          <RaisedButton
+          <Button raised
             label={<T id="general.continue" />}
             onTouchTap={() => {
               track('Funnel - clicked start result CTA', { type });

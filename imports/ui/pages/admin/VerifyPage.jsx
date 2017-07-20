@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 
 import cleanMethod from '/imports/api/cleanMethods';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import TextField from 'material-ui/TextField';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -122,14 +122,14 @@ export default class VerifyPage extends Component {
           />,
         )}
         <div className="text-center">
-          <RaisedButton
+          <Button raised
             label="+"
             onTouchTap={() =>
               this.setState(prev => ({ comments: [...prev.comments, ''] }))}
             primary
             style={styles.buttons}
           />
-          <RaisedButton
+          <Button raised
             label="-"
             onTouchTap={() =>
               this.setState(prev => ({
@@ -143,7 +143,7 @@ export default class VerifyPage extends Component {
           <p>Ceci enverra un email au client en notification</p>
         </div>
         <div className="text-center" style={styles.finalButton}>
-          <RaisedButton
+          <Button raised
             label="Envoyer"
             primary
             disabled={

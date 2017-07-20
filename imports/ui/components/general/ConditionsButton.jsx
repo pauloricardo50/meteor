@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import track from '/imports/js/helpers/analytics';
@@ -23,17 +22,17 @@ const styles = {
 };
 
 const getList = conditionArray =>
-  <ul style={styles.list}>
+  (<ul style={styles.list}>
     {conditionArray
       .map(c =>
-        <li style={styles.listItem}>
+        (<li style={styles.listItem}>
           <h4 className="fixed-size">
             {c}
           </h4>
-        </li>,
+        </li>),
       )
       .reduce((prev, curr) => [prev, <hr style={styles.hr} />, curr])}
-  </ul>;
+  </ul>);
 
 export default class ConditionsButton extends Component {
   constructor(props) {
@@ -42,7 +41,7 @@ export default class ConditionsButton extends Component {
     this.state = { open: false };
   }
 
-  handleOpen = e => {
+  handleOpen = (e) => {
     e.stopPropagation();
     track('ConditionsButton - clicked open', {});
     this.setState({ open: true });
@@ -54,7 +53,7 @@ export default class ConditionsButton extends Component {
 
   render() {
     const actions = [
-      <FlatButton
+      <Button
         label={<T id="ConditionsButton.CTA" />}
         primary
         onTouchTap={this.handleClose}
@@ -63,11 +62,12 @@ export default class ConditionsButton extends Component {
 
     return (
       <div>
-        <RaisedButton
+        <Button
+          raised
           label={<T id="ConditionsButton.title" />}
           onTouchTap={this.handleOpen}
           primary={this.props.primary}
-          onClick={this.props.onClick}
+          onTouchTap={this.props.onClick}
         />
         <Dialog
           actions={actions}

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import { getLoanValue } from '/imports/js/helpers/requestFunctions';
@@ -177,7 +177,7 @@ const FinanceStrategyPicker = props => {
               {' '}
               tranche(s).
             </h3>
-            <RaisedButton
+            <Button raised
               label="Ajouter une Tranche"
               onTouchTap={() => addTranche(props)}
               primary

@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
@@ -40,15 +39,19 @@ export default class DialogSimple extends Component {
       modal,
       children,
       passProps,
+      bodyStyle,
+      contentStyle,
+      style,
+      autoScroll,
     } = this.props;
 
     actions = actions || [
-      <FlatButton
+      <Button
         primary
         label={<T id="general.cancel" />}
         onTouchTap={this.handleClose}
       />,
-      <FlatButton
+      <Button
         primary
         label="Ok"
         onTouchTap={() => this.handleClose(true)}
@@ -61,11 +64,13 @@ export default class DialogSimple extends Component {
       disableClose: this.disableClose,
       enableClose: this.enableClose,
       isCancel: this.state.isCancel,
+      handleClose: this.handleClose,
     };
 
     return (
       <span style={rootStyle}>
-        <RaisedButton
+        <Button
+          raised
           label={label}
           onTouchTap={this.handleOpen}
           primary={primary}
@@ -82,8 +87,13 @@ export default class DialogSimple extends Component {
           modal={modal}
           open={this.state.open}
           onRequestClose={this.handleClose}
+          bodyStyle={bodyStyle}
+          contentStyle={contentStyle}
+          style={style}
+          autoScrollBodyContent={autoScroll}
+          repositionOnUpdate
         >
-          {children && passProps
+          {!!children && passProps
             ? React.cloneElement(children, { ...childProps })
             : children}
         </Dialog>
@@ -105,6 +115,7 @@ DialogSimple.propTypes = {
   modal: PropTypes.bool,
   passProps: PropTypes.bool,
   onOpen: PropTypes.func,
+  autoScroll: PropTypes.bool,
 };
 
 DialogSimple.defaultProps = {
@@ -118,4 +129,5 @@ DialogSimple.defaultProps = {
   modal: false,
   passProps: false,
   onOpen: () => {},
+  autoScroll: false,
 };

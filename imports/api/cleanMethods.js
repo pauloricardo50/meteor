@@ -16,6 +16,19 @@ import {
   pushBorrowerValue,
   popBorrowerValue,
 } from './borrowers/methods';
+import {
+  insertComparator,
+  updateComparator,
+  addComparatorField,
+  removeComparatorField,
+  toggleHiddenField,
+} from './comparators/methods';
+import {
+  insertProperty,
+  deleteProperty,
+  updateProperty,
+  setPropertyField,
+} from './properties/methods';
 
 const methods = {
   insertRequest,
@@ -34,6 +47,17 @@ const methods = {
   insertOffer,
   insertAdminOffer,
   updateOffer,
+
+  insertComparator,
+  updateComparator,
+  addComparatorField,
+  removeComparatorField,
+  toggleHiddenField,
+
+  insertProperty,
+  deleteProperty,
+  updateProperty,
+  setPropertyField,
 };
 
 // The callback passed to all methods, shows a Bert error when it happens
@@ -71,7 +95,9 @@ const methodCallback = (error, result, callback, bertObject) => {
 // A wrapper method that displays an error if it occurs
 const cleanMethod = (name, object, id, callback, bertObject) => {
   if (methods[name]) {
-    return methods[name].call({ object, id }, (e, r) => methodCallback(e, r, callback, bertObject));
+    return methods[name].call({ object, id }, (e, r) =>
+      methodCallback(e, r, callback, bertObject),
+    );
   }
   throw new Meteor.Error('Not a valid clean method');
 };

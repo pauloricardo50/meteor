@@ -13,25 +13,36 @@ const constants = {
   loanCost(borrowRatio, toRetirement) {
     return this.interests + this.getAmortization(borrowRatio, toRetirement);
   },
-  loanCostReal(borrowRatio, toRetirement) {
-    return this.interestsReal + this.getAmortization(borrowRatio, toRetirement);
+  loanCostReal(borrowRatio, toRetirement, interestRate) {
+    return (
+      (interestRate || this.interestsReal) +
+      this.getAmortization(borrowRatio, toRetirement)
+    );
   },
 
   propertyToIncome(usageType = 'primary', borrowRatio, toRetirement) {
     return (
       3 *
       (this.maintenance +
-        this.maxLoan(usageType, toRetirement) * this.loanCost(borrowRatio, toRetirement))
+        this.maxLoan(usageType, toRetirement) *
+          this.loanCost(borrowRatio, toRetirement))
     );
   },
   propertyToIncomeReal(usageType = 'primary', borrowRatio, toRetirement) {
     return (
       3 *
       (this.maintenanceReal +
-        this.maxLoan(usageType, toRetirement) * this.loanCostReal(borrowRatio, toRetirement))
+        this.maxLoan(usageType, toRetirement) *
+          this.loanCostReal(borrowRatio, toRetirement))
     );
   },
-  maxProperty(income, fortune, insuranceFortune = 0, usageType = 'primary', toRetirement = 15) {
+  maxProperty(
+    income,
+    fortune,
+    insuranceFortune = 0,
+    usageType = 'primary',
+    toRetirement = 15,
+  ) {
     let r = toRetirement;
     // Make sure toRetirement is capped between 0 and 15 years
     if (toRetirement < 0) {
@@ -40,8 +51,20 @@ const constants = {
       r = 15;
     }
 
-    const fortuneLimited = fortuneLimitedProperty(income, fortune, insuranceFortune, usageType, r);
-    const incomeLimited = incomeLimitedProperty(income, fortune, insuranceFortune, usageType, r);
+    const fortuneLimited = fortuneLimitedProperty(
+      income,
+      fortune,
+      insuranceFortune,
+      usageType,
+      r,
+    );
+    const incomeLimited = incomeLimitedProperty(
+      income,
+      fortune,
+      insuranceFortune,
+      usageType,
+      r,
+    );
 
     // Use floor to make sure the ratios are respected and avoid edge cases
     return Math.round(Math.min(fortuneLimited, incomeLimited));
@@ -61,10 +84,14 @@ const constants = {
       const toAmortize = borrowRatio - 0.65;
       if (toRetirement > 15) {
         // use parseFloat, to round to 15 decimals, which is the maximal guaranteed precision of floating pt. numbers
-        return Math.max(parseFloat(toAmortize / borrowRatio / 15).toPrecision(15));
+        return Math.max(
+          parseFloat(toAmortize / borrowRatio / 15).toPrecision(15),
+        );
       } else if (toRetirement >= 0) {
         // use parseFloat, to round to 15 decimals, which is the maximal guaranteed precision of floating pt. numbers
-        return Math.max(parseFloat(toAmortize / borrowRatio / toRetirement).toPrecision(15));
+        return Math.max(
+          parseFloat(toAmortize / borrowRatio / toRetirement).toPrecision(15),
+        );
       }
       return parseFloat(toAmortize / borrowRatio).toPrecision(15);
     }
@@ -88,7 +115,8 @@ export const fortuneLimitedProperty = (
     fortuneLimited = calculatePrimaryProperty(fortune, insuranceFortune);
   } else {
     // Fortune should cover 20% and notary fees
-    fortuneLimited = fortune / (1 - constants.maxLoan(usageType, toRetirement) + 0.05);
+    fortuneLimited =
+      fortune / (1 - constants.maxLoan(usageType, toRetirement) + 0.05);
   }
   return fortuneLimited;
 };
@@ -114,7 +142,8 @@ export const incomeLimitedProperty = (
   const r = toRetirement;
 
   // The first one is with 0 amortization
-  const incomeLimited1 = (mR * income + (totalFortune - lppFees) * i) / (m + (1 + nF) * i);
+  const incomeLimited1 =
+    (mR * income + (totalFortune - lppFees) * i) / (m + (1 + nF) * i);
 
   // The second is with amortization factored in (and it could be negative due to math)
   const incomeLimited2 =
@@ -135,12 +164,16 @@ export const calculatePrimaryProperty = (fortune, insuranceFortune) => {
   const notaryFees = constants.notaryFees;
 
   // Make sure cash can pay for lppFees, and fortune can cover notaryfees
-  const totalFortuneLimitedValue = (fortune - lppFees + insuranceFortune) / (0.2 + notaryFees);
+  const totalFortuneLimitedValue =
+    (fortune - lppFees + insuranceFortune) / (0.2 + notaryFees);
 
   // Make sure cash can pay for lppfees and notaryfees
   const cashLimitedValue = (fortune - lppFees) / (0.1 + notaryFees);
 
-  return Math.max(Math.round(Math.min(cashLimitedValue, totalFortuneLimitedValue)), 0);
+  return Math.max(
+    Math.round(Math.min(cashLimitedValue, totalFortuneLimitedValue)),
+    0,
+  );
 };
 
 export default constants;

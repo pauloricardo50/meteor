@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { addUserTracking } from '/imports/js/helpers/analytics';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import TextField from 'material-ui/TextField';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
 import { T } from '/imports/ui/components/general/Translation.jsx';
@@ -113,7 +113,7 @@ export default class PasswordLine extends Component {
     if (this.props.login || this.props.signUp) {
       content = textfield;
       button = (
-        <RaisedButton
+        <Button raised
           label={this.props.login ? <T id="PasswordLine.login" /> : <T id="PasswordLine.create" />}
           primary
           onTouchTap={onSubmit}
@@ -123,7 +123,7 @@ export default class PasswordLine extends Component {
         />
       );
     } else {
-      button = <RaisedButton label="Excellent!" primary href="/home" />;
+      button = <Button raised label="Excellent!" primary href="/home" />;
     }
 
     return (

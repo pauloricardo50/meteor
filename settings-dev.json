@@ -1,12 +1,13 @@
 {
   "public": {
     "environment": "dev",
-      "analyticsSettings": {
-        "Mixpanel": {
-          "token": "2798b48714b4d78fda1c63d822e54064",
-          "people": true
-        }
+    "analyticsSettings": {
+      "Mixpanel": {
+        "token": "2798b48714b4d78fda1c63d822e54064",
+        "people": true
       }
+    },
+    "google_maps_key": "AIzaSyCdoi6BxlTf7GgxqAGAsd1ADM_UwgqWUP8"
   },
   "AWS": {
     "users": {
@@ -30,5 +31,12 @@
   "AWSAdminSecret": "",
   "MANDRILL_LOGIN": "florian@e-potek.ch",
   "MANDRILL_API_KEY": "L-_o7XAONIxbqkdWgADH5Q",
-  "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg"
+  "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg",
+  "kadira": {
+    "appId": "59LE9xwsTvYugwMZt",
+    "appSecret": "e247f531-efc2-4e8d-9abb-0e9552ecc710",
+    "options": {
+      "endpoint": "http://localhost:11011"
+    }
+  }
 }

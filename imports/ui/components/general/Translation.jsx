@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import Loadable from '/imports/js/helpers/loadable';
+
+// const {
+//   FormattedMessage,
+//   FormattedDate,
+//   FormattedTime,
+//   FormattedRelative,
+//   FormattedNumber,
+//   FormattedPlural,
+// } = Loadable({ loader: () => import('react-intl') });
 import {
   FormattedMessage,
   FormattedDate,

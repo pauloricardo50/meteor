@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 
 import track from '/imports/js/helpers/analytics';
 
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
 
 import constants from '/imports/js/config/constants';
@@ -19,7 +18,7 @@ import Start1Validator from './Start1Validator.jsx';
 
 import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
 
-const Start1Calculator = props => {
+const Start1Calculator = (props) => {
   const {
     inputArray,
     income,
@@ -42,7 +41,7 @@ const Start1Calculator = props => {
       <div className="content">
         <div className="sliders">
           {inputArray.map(line =>
-            <Start1Line
+            (<Start1Line
               isReady={isReady}
               key={line.name}
               {...parentState[line.name]}
@@ -54,9 +53,9 @@ const Start1Calculator = props => {
                   `${line.name}Slider`,
                   parentState[`${line.name}Slider`] + line.sliderIncrement,
                 )}
-            />,
+            />),
           )}
-          <FlatButton
+          <Button
             label="Reset"
             onTouchTap={handleReset}
             className="reset-button"
@@ -71,22 +70,32 @@ const Start1Calculator = props => {
 
       {isReady &&
         <div className="text-center">
-          <Start1Validator incomeRatio={incomeRatio} borrowRatio={borrowRatio} />
+          <Start1Validator
+            incomeRatio={incomeRatio}
+            borrowRatio={borrowRatio}
+          />
         </div>}
 
       <div className="chart text-center">
         <Accordion isActive={isReady && fortune < property}>
           <h3 style={{ margin: '40px 0' }}>
-            <T id="Start1Page.loanValue" description="shows the loan value in large afterwards" />
-            {' '}
+            <T
+              id="Start1Page.loanValue"
+              description="shows the loan value in large afterwards"
+            />{' '}
             <span className="active">
-              <IntlNumber value={Math.round(loan / 1000) * 1000} format="money" />
+              <IntlNumber
+                value={Math.round(loan / 1000) * 1000}
+                format="money"
+              />
             </span>
           </h3>
           <ExpensesChartInterests
             title="Start1Page.chartTitle"
             loan={loan || 0}
-            amortization={loan * constants.getAmortization(borrowRatio) / 12 || 0}
+            amortization={
+              loan * constants.getAmortization(borrowRatio) / 12 || 0
+            }
             maintenance={property * constants.maintenanceReal / 12 || 0}
           />
         </Accordion>
@@ -94,14 +103,19 @@ const Start1Calculator = props => {
 
       {isReady &&
         <div className="button text-center animated fadeIn">
-          <RaisedButton
+          <Button
+            raised
             label={<T id="Start1Page.CTA" />}
-            primary={borrowRatio <= 0.8 + 0.001 && incomeRatio <= constants.maxRatio + 0.001}
+            primary={
+              borrowRatio <= 0.8 + 0.001 &&
+              incomeRatio <= constants.maxRatio + 0.001
+            }
             containerElement={<Link to={getUrl()} />}
             id="ok"
             style={{ height: 'unset' }}
             overlayStyle={{ padding: 20 }}
-            onTouchTap={() => track('Funnel - Passed Start 1', { property, income, fortune })}
+            onTouchTap={() =>
+              track('Funnel - Passed Start 1', { property, income, fortune })}
           />
         </div>}
     </div>

@@ -1,17 +1,15 @@
-import './adminActions/server/publications';
 import './adminActions/methods';
 
-import './borrowers/server/publications';
 import './borrowers/methods';
 
-import './loanrequests/server/publications';
+import './comparators/methods';
+
 import './loanrequests/methods';
 
-import './offers/server/publications';
 import './offers/methods';
 
-import './users/server/publications';
+import './properties/methods';
+
 import './users/methods';
 
-import './methods/server/methods';
 import './methods/methods';

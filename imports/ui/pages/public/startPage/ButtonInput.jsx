@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
 
 const styles = {
@@ -67,7 +67,7 @@ const ButtonInput = props => {
           (button, index) =>
             button.component
               ? button.component
-              : <RaisedButton
+              : <Button raised
                 label={button.label || button.id}
                 onTouchTap={e => {
                   handleClick(props, e, button.id, button.onClick);

@@ -1,7 +1,10 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { PublicLayout, Start2Page } from '/imports/ui/containers/PublicContainers';
+import {
+  PublicLayout,
+  Start2Page,
+} from '/imports/ui/containers/PublicContainers';
 import HomePage from '/imports/ui/pages/public/HomePage.jsx';
 import LoginPage from '/imports/ui/pages/public/LoginPage.jsx';
 import AboutPage from '/imports/ui/pages/public/AboutPage.jsx';
@@ -14,10 +17,12 @@ import NotFound from '/imports/ui/components/general/NotFound.jsx';
 
 import Loadable from '/imports/js/helpers/loadable';
 
-const Start1Page = Loadable({ loader: () => import('/imports/ui/pages/public/Start1Page.jsx') });
+const Start1Page = Loadable({
+  loader: () => import('/imports/ui/pages/public/Start1Page.jsx'),
+});
 
 const PublicRoutes = props =>
-  <PublicLayout {...props}>
+  (<PublicLayout {...props}>
     <Switch>
       <Route path="/home" component={HomePage} />
       <Route path="/login" component={LoginPage} />
@@ -31,6 +36,6 @@ const PublicRoutes = props =>
       <Route path="/reset-password/:token" component={PasswordResetPage} />
       <Route component={NotFound} />
     </Switch>
-  </PublicLayout>;
+  </PublicLayout>);
 
 export default PublicRoutes;

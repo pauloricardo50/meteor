@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
 
 const styles = {
@@ -24,8 +24,8 @@ const LenderPickerStart = props => {
         </p>
       </div>
       <div className="text-center" style={styles.buttonDiv}>
-        <RaisedButton label="Appeler mon conseiller" primary style={styles.button} />
-        <RaisedButton
+        <Button raised label="Appeler mon conseiller" primary style={styles.button} />
+        <Button raised
           label="Continuer"
           style={styles.button}
           onTouchTap={() => props.setFormState('initialContinue', true, () => props.scroll('1'))}

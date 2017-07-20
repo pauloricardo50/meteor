@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import StartTextField from './StartTextField';
@@ -145,14 +145,14 @@ export default class ArrayInput extends React.Component {
           </h1>
         ))}
         <div className={!this.props.active ? 'inputHider' : 'animated fadeIn'}>
-          <RaisedButton
+          <Button raised
             label="+"
             primary
             onTouchTap={this.handleAdd}
             style={styles.button}
             disabled={!this.props.allOptions && this.state.count >= optionQty}
           />
-          <RaisedButton label="-" onTouchTap={this.handleRemove} style={styles.button} />
+          <Button raised label="-" onTouchTap={this.handleRemove} style={styles.button} />
         </div>
       </article>
     );

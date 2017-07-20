@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import RequestTabs from './singleRequestPage/RequestTabs.jsx';
 import StepStatus from './singleRequestPage/StepStatus.jsx';
@@ -45,14 +45,15 @@ export default class SingleRequestPage extends Component {
   render() {
     return (
       <section>
-        <RaisedButton
+        <Button raised
           label="Retour"
           style={styles.returnButton}
           onTouchTap={() => this.props.history.push('/admin/requests')}
         />
         <div className="mask1">
           <h1>
-            {this.props.loanRequest.name || 'Demande de Prêt'} - Emprunt de CHF&nbsp;
+            {this.props.loanRequest.name || 'Demande de Prêt'} - Emprunt de
+            CHF&nbsp;
             {toMoney(getLoanValue(this.props.loanRequest))}
           </h1>
 
@@ -62,7 +63,7 @@ export default class SingleRequestPage extends Component {
             {actions.length > 0
               ? actions.map((action, i) => (
                 <div key={i} className="form-group">
-                  <RaisedButton label={action.label} onClick={action.handleClick} primary />
+                  <Button raised label={action.label} onTouchTap={action.handleClick} primary />
                 </div>
                 ))
               : <h2 className="secondary">Aucune action à prendre</h2>}

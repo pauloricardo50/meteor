@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import StrategyChoices from '/imports/ui/components/general/StrategyChoices.jsx';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 const getChoices = () => {
   return [
@@ -42,7 +42,7 @@ const InsuranceStrategy = props => {
       </div>
 
       <div className="text-center" style={{ width: '100%', marginBottom: 40 }}>
-        <RaisedButton label="En savoir plus" primary />
+        <Button raised label="En savoir plus" primary />
       </div>
 
       <StrategyChoices

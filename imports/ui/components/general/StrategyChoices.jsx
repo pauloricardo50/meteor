@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import classNames from 'classnames';
 import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
 import track from '/imports/js/helpers/analytics';
@@ -63,7 +63,7 @@ export default class StrategyChoices extends Component {
         </ul>
 
         <div className="button">
-          <RaisedButton
+          <Button raised
             primary={!this.props.currentValue}
             label={chosen ? 'Annuler' : 'Choisir'}
             onTouchTap={() => {

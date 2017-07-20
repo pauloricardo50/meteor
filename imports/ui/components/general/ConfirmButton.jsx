@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import Dialog from 'material-ui/Dialog';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
@@ -23,20 +22,31 @@ export default class ConfirmButton extends Component {
   };
 
   render() {
-    const Button = this.props.flat ? FlatButton : RaisedButton;
+    const {
+      handleClick,
+      label,
+      primary,
+      secondary,
+      disabled,
+      text,
+      style,
+      raised,
+    } = this.props;
 
     const actions = [
-      <FlatButton
+      <Button
+        key={1}
         label={<T id="general.cancel" />}
         primary
         onTouchTap={this.handleClose}
       />,
-      <FlatButton
+      <Button
+        key={2}
         label={<T id="general.yes" />}
         primary
         keyboardFocused
         onTouchTap={() => {
-          this.props.handleClick();
+          handleClick();
           this.handleClose();
         }}
       />,
@@ -45,11 +55,13 @@ export default class ConfirmButton extends Component {
     return (
       <div>
         <Button
-          label={this.props.label}
+          raised={raised}
+          label={label}
           onTouchTap={this.handleOpen}
-          primary={this.props.primary}
-          secondary={this.props.secondary}
-          disabled={this.props.disabled}
+          primary={primary}
+          secondary={secondary}
+          disabled={disabled}
+          style={style}
         />
         <Dialog
           title={
@@ -62,7 +74,7 @@ export default class ConfirmButton extends Component {
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-          {this.props.text}
+          {text}
         </Dialog>
       </div>
     );
@@ -77,6 +89,7 @@ ConfirmButton.propTypes = {
   secondary: PropTypes.bool,
   disabled: PropTypes.bool,
   flat: PropTypes.bool,
+  raised: PropTypes.bool,
 };
 
 ConfirmButton.defaultProps = {
@@ -85,4 +98,5 @@ ConfirmButton.defaultProps = {
   secondary: false,
   disabled: false,
   flat: false,
+  raised: false,
 };

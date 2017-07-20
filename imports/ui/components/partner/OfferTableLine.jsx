@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import moment from 'moment';
 
-import FlatButton from 'material-ui/FlatButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 const OfferTableLine = props =>
   <tr>
@@ -12,7 +12,7 @@ const OfferTableLine = props =>
     <td className="l">hehe</td>
     <td className="r">haha</td>
     <td className="r">
-      <FlatButton
+      <Button
         label="Voir l'offre"
         onTouchTap={() => console.log('develop this')}
       />

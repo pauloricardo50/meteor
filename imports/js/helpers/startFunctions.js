@@ -1,5 +1,5 @@
 import cleanMethod from '/imports/api/cleanMethods';
-import constants, { incomeLimitedProperty } from '../config/constants';
+import constants from '../config/constants';
 
 // if 2 values are not in auto mode, set both of their minValues to 0
 const setDefaultMinValues = (s, o) => {
@@ -111,6 +111,37 @@ export const changeIncome = (state, o, income) => {
   return o;
 };
 
+export const getRealMonthly = (fortune, property, borrow, interestRate) => {
+  if (interestRate) {
+    return Math.max(
+      (property * constants.maintenanceReal +
+        (property - fortune) *
+          constants.loanCostReal(borrow, 15, interestRate)) /
+        12,
+      0,
+    );
+  }
+  return Math.max(
+    (property * constants.maintenanceReal +
+      (property - fortune) * constants.loanCostReal(borrow)) /
+      12,
+    0,
+  );
+};
+
+export const getTheoreticalMonthly = (fortune, property, borrow) =>
+  Math.max(
+    (property * constants.maintenance +
+      (property - fortune) * constants.loanCost(borrow)) /
+      12,
+    0,
+  );
+
+export const getIncomeRatio = (monthly, income) => monthly / (income / 12);
+
+export const getBorrowRatio = (property, fortune) =>
+  Math.max((property * 1.05 - fortune) / property, 0);
+
 //
 // The following functions are used in Start 2 Form
 //
@@ -121,7 +152,7 @@ export const isFinished = (state, minFortune) =>
   (state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= minFortune ||
     state.type === 'test');
 
-export const getProject = state => {
+export const getProject = (state) => {
   const property = state.propertyValue || calculateProperty(state) || 0;
   const project =
     property +
@@ -143,7 +174,7 @@ export const getBonusIncome = (arr = []) => {
   return 0.5 * (bestSum / 3) || 0;
 };
 
-export const getIncome = state => {
+export const getIncome = (state) => {
   const s = state;
   const bonus1 = getBonusIncome([s.bonus11, s.bonus21, s.bonus31, s.bonus41]);
   const bonus2 = getBonusIncome([s.bonus12, s.bonus22, s.bonus32, s.bonus42]);
@@ -235,15 +266,14 @@ export const calculateProperty = (
   income,
   usageType,
   toRetirement,
-) => {
-  return constants.maxProperty(
+) =>
+  constants.maxProperty(
     income,
     fortune,
     insuranceFortune,
     usageType,
     toRetirement,
   );
-};
 
 export const getLenderCount = (borrow, ratio) => {
   if (ratio > 0.38) {
@@ -268,7 +298,7 @@ export const getBorrow = (totalFortune, propAndWork, fees) =>
     Math.max((propAndWork - (totalFortune - fees)) / propAndWork, 0)) ||
   0;
 
-export const getRetirement = state => {
+export const getRetirement = (state) => {
   const multiple = state.borrowerCount > 1;
 
   const age = multiple ? state.oldestAge : state.age;
@@ -296,17 +326,18 @@ export const getMaxLoan = (
   const mR = constants.maxRatio;
   const i = constants.interests;
 
-  const maxLoan = state.usageType === 'secondary'
-    ? Math.floor(0.7 * propAndWork)
-    : Math.floor(0.8 * propAndWork);
+  const maxLoan =
+    state.usageType === 'secondary'
+      ? Math.floor(0.7 * propAndWork)
+      : Math.floor(0.8 * propAndWork);
 
   // Check LaTeX document, equation 15, and solve for the loan
   const calculatedMaxLoan =
     (toRetirement * (mR * income - maintenance) + 0.65 * property) /
     (i * toRetirement + 1);
 
-  // Floor this value to make sure the user can afford it if any rounding happens
-  // If it had to round up, it would be too expensive
+  // Floor this value to make sure the user can afford it if any rounding
+  // happens, If it had to round up, it would be too expensive
   return Math.floor(Math.min(maxLoan, calculatedMaxLoan));
 };
 
@@ -371,7 +402,8 @@ export const saveStartForm = (f, history) => {
       loanRequest.borrowers.push(id2);
     }
     cleanMethod('insertRequest', loanRequest, undefined, (err, requestId) =>
-      history.push(`/app/requests/${requestId}`),
+      // history.push(`/app/requests/${requestId}`),
+      history.push('/app'),
     );
   };
 

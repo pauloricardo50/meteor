@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { _ } from 'lodash';
+import merge from 'lodash/merge';
 
 import cleanMethod from '/imports/api/cleanMethods';
 
@@ -54,7 +54,7 @@ export default class StructurePage extends Component {
 
   render() {
     const { loanRequest, borrowers } = this.props;
-    const modifiedRequest = _.merge({}, loanRequest, {
+    const modifiedRequest = merge({}, loanRequest, {
       general: {
         fortuneUsed: this.state.fortuneUsed,
         insuranceFortuneUsed: this.state.insuranceFortuneUsed,

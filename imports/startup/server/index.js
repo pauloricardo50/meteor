@@ -5,6 +5,7 @@ import '/imports/js/server/email/email-methods';
 import '/imports/js/server/email/email-meteor';
 import '/imports/js/server/files';
 import '/imports/api/api';
+import '/imports/api/api-server';
 import '../accounts-config';
 import './accounts-server-config';
 import './meteor-slingshot-server';

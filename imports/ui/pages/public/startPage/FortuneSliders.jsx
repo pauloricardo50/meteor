@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import { getProject } from '/imports/js/helpers/startFunctions';
@@ -127,7 +127,7 @@ const FortuneSliders = props => {
           <h2 className="fixed-size">
             <T id="Start2Form.fortuneSliders.canUseLpp" />
           </h2>
-          <RaisedButton
+          <Button raised
             label={<T id="Start2Form.fortuneSliders.use" />}
             style={{ marginRight: 8 }}
             onTouchTap={() => props.setFormState('useInsurance', true)}

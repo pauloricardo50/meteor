@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import ConfirmMethod from './ConfirmMethod.jsx';
 import {
@@ -35,12 +35,12 @@ const ActionsTab = props => {
 
   return (
     <div style={styles.div}>
-      <RaisedButton
+      <Button raised
         label="Télécharger PDF Anonyme"
         onTouchTap={e => downloadPDF(e, loanRequest._id, 'anonymous')}
         style={styles.button}
       />
-      <RaisedButton
+      <Button raised
         label="Télécharger PDF Complet"
         onTouchTap={e => downloadPDF(e, loanRequest._id, 'default')}
         style={styles.button}

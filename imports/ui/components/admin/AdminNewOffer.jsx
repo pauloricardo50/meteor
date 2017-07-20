@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import OfferForm from '/imports/ui/components/admin/OfferForm';
 
@@ -36,13 +35,14 @@ export default class AdminNewOffer extends React.Component {
 
   render() {
     const actions = [
-      <FlatButton label="Annuler" primary onTouchTap={this.handleClose} />,
-      // <FlatButton label="Ajouter" primary keyboardFocused onTouchTap={this.handleClose} />,
+      <Button label="Annuler" primary onTouchTap={this.handleClose} />,
+      // <Button label="Ajouter" primary keyboardFocused onTouchTap={this.handleClose} />,
     ];
 
     return (
       <div>
-        <RaisedButton
+        <Button
+          raised
           label="Ajouter une offre"
           onTouchTap={this.handleOpen}
           primary

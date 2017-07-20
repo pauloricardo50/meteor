@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedRelative } from 'react-intl';
 
-import FlatButton from 'material-ui/FlatButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 
@@ -34,7 +34,7 @@ const columns = [
   {
     id: 'ActionsTable.do',
     format: handleClick =>
-      <FlatButton
+      <Button
         label="Go"
         onTouchTap={event => {
           event.stopPropagation();
@@ -91,7 +91,7 @@ export default class ActionsTable extends Component {
             <MenuItem value={'active'} primaryText="Actif" />
             <MenuItem value={'completed'} primaryText="Complété" />
           </DropDownMenu>
-          <FlatButton
+          <Button
             label="Marquer comme complété"
             onTouchTap={this.handleClick}
             disabled={!this.state.selectedRow}

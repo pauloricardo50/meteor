@@ -19,6 +19,8 @@ import PropertyPage from '../user/PropertyPage.jsx';
 import StructurePage from '../user/StructurePage.jsx';
 import VerificationPage from '../user/VerificationPage.jsx';
 import FinancePage from '../user/FinancePage.jsx';
+import ComparePage from '../user/ComparePage.jsx';
+import AppPage from '../user/AppPage.jsx';
 
 // Admin pages
 import AdminDashboardPage from '../admin/AdminDashboardPage.jsx';
@@ -47,6 +49,7 @@ const pages = {
   // PropertyPage,
   StructurePage,
   VerificationPage,
+  ComparePage,
 
   AdminDashboardPage,
   AdminDevPage,
@@ -68,7 +71,7 @@ if (Meteor.isClient) {
       resetDatabase();
     });
 
-    Object.keys(pages).forEach(key => {
+    Object.keys(pages).forEach((key) => {
       const page = pages[key];
       describe(`${key}`, () => {
         let props;
@@ -86,7 +89,9 @@ if (Meteor.isClient) {
             offers: [],
             location: {},
             history: {},
-            match: { params: { borrowerId: borrower._id, requestId: request._id } },
+            match: {
+              params: { borrowerId: borrower._id, requestId: request._id },
+            },
           };
         });
 

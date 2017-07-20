@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import getFormArray from '/imports/js/arrays/StartFormArray';
 import constants from '/imports/js/config/constants';
@@ -96,14 +96,21 @@ export default class Start2Page extends Component {
       return (
         <div className="ux-text animated fadeIn text-center">
           <div className="text">
-            <h1><T id="Start2Page.initialText1" /></h1>
-            <h2><small><T id="Start2Page.initialText2" /></small></h2>
+            <h1>
+              <T id="Start2Page.initialText1" />
+            </h1>
+            <h2>
+              <small>
+                <T id="Start2Page.initialText2" />
+              </small>
+            </h2>
           </div>
           <div>
-            <RaisedButton
+            <Button raised
               label={<T id="Start2Page.initialButton" />}
               primary
-              onClick={() => Meteor.setTimeout(() => this.setState({ showUX: false }), 400)}
+              onTouchTap={() =>
+                Meteor.setTimeout(() => this.setState({ showUX: false }), 400)}
             />
           </div>
         </div>
@@ -127,11 +134,12 @@ export default class Start2Page extends Component {
       salary: (s.income1 || 0) + (s.income2 || 0),
       bonus:
         getBonusIncome([s.bonus11, s.bonus21, s.bonus31, s.bonus41]) +
-          getBonusIncome([s.bonus12, s.bonus22, s.bonus32, s.bonus42]),
+        getBonusIncome([s.bonus12, s.bonus22, s.bonus32, s.bonus42]),
       income: getIncome(s) || 0,
       otherIncome: getOtherIncome(s.otherIncomeArray) || 0,
       fortune: getFortune(s) || 0,
-      insuranceFortune: s.insuranceConditions !== false ? getInsuranceFortune(s) || 0 : 0,
+      insuranceFortune:
+        s.insuranceConditions !== false ? getInsuranceFortune(s) || 0 : 0,
       insuranceFortuneDisplayed: getInsuranceFortune(s) || 0,
       expenses: getExpenses(s.expensesArray) || 0,
       fortuneUsed: s.fortuneUsed || 0,
@@ -147,7 +155,9 @@ export default class Start2Page extends Component {
       toRetirement,
     };
     childProps.minCash =
-      fees + 0.1 * childProps.propAndWork + 0.1 * childProps.propAndWork * constants.lppFees;
+      fees +
+      0.1 * childProps.propAndWork +
+      0.1 * childProps.propAndWork * constants.lppFees;
     childProps.fortuneNeeded = childProps.project - s.loanWanted;
     childProps.totalFortune = childProps.fortune + childProps.insuranceFortune;
     childProps.borrow = getBorrow(
@@ -156,15 +166,24 @@ export default class Start2Page extends Component {
       childProps.fees + childProps.lppFees,
     );
     childProps.monthly = getMonthly(s, childProps.borrow, toRetirement) || 0;
-    childProps.monthlyReal = getMonthlyReal(s, childProps.borrow, toRetirement) || 0;
-    childProps.ratio = getRatio(childProps.income, childProps.expenses, childProps.monthly);
-    childProps.lenderCount = getLenderCount(childProps.borrow, childProps.ratio);
+    childProps.monthlyReal =
+      getMonthlyReal(s, childProps.borrow, toRetirement) || 0;
+    childProps.ratio = getRatio(
+      childProps.income,
+      childProps.expenses,
+      childProps.monthly,
+    );
+    childProps.lenderCount = getLenderCount(
+      childProps.borrow,
+      childProps.ratio,
+    );
 
     // if you want to have a minimum loan, you use all your fortune, hence, you'll have to pay maximum lppFees
     // Round up to make sure the project works
     childProps.minLoan = Math.round(
       childProps.propAndWork -
-        (childProps.fortune + childProps.insuranceFortune * (1 - constants.lppFees)) +
+        (childProps.fortune +
+          childProps.insuranceFortune * (1 - constants.lppFees)) +
         fees,
     );
     // If the income is too low to afford a loan higher than some amount
@@ -177,7 +196,9 @@ export default class Start2Page extends Component {
       childProps.propAndWork,
     );
     childProps.minFortune =
-      fees + (1 - constants.maxLoan(s.usageType, childProps.toRetirement)) * childProps.propAndWork;
+      fees +
+      (1 - constants.maxLoan(s.usageType, childProps.toRetirement)) *
+        childProps.propAndWork;
 
     // If there isn't enough cash, add to minfortune the lppFees that will have to be paid, as long as it is below requirement
     if (childProps.fortune < childProps.minFortune) {
@@ -236,7 +257,6 @@ export default class Start2Page extends Component {
         </section>
 
         {!finished && <div style={{ height: '30%' }} />}
-
       </div>
     );
   }

@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import AppBar from 'material-ui/AppBar';
-import FlatButton from 'material-ui/FlatButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown.jsx';
 import TopNavDrawer from '/imports/ui/components/general/TopNavDrawer.jsx';
@@ -31,26 +31,29 @@ const styles = {
   },
 };
 
-const TopNav = props => {
-  const isApp =
-    props.history && props.history.location.pathname.slice(0, 4) === '/app';
+const TopNav = (props) => {
+  const { history, currentUser, loanRequests } = props;
+  const isApp = history && history.location.pathname.slice(0, 4) === '/app';
+
+  const showDrawer = isApp && loanRequests.length > 0;
 
   return (
     <div className="top-nav" style={{ zIndex: 20 }}>
       <AppBar
         style={!props.public ? styles.navbar : styles.publicNavbar}
-        iconElementLeft={isApp ? <TopNavDrawer {...props} /> : undefined}
-        iconStyleLeft={!isApp ? { display: 'none' } : {}}
+        iconElementLeft={showDrawer ? <TopNavDrawer {...props} /> : undefined}
+        iconStyleLeft={!showDrawer ? { display: 'none' } : {}}
         iconElementRight={
-          props.currentUser
+          currentUser
             ? <TopNavDropdown {...props} />
-            : <FlatButton
-                label={<T id="TopNav.login" />}
-                containerElement={<Link to="/login" />}
-                secondary
-                labelStyle={{ color: colors.primary }}
-                onTouchTap={() => track('TopNav - clicked login', {})}
-              />
+            : <Button
+              label={<T id="TopNav.login" />}
+              containerElement={<Link to="/login" />}
+              secondary
+              labelStyle={{ color: colors.primary }}
+              onTouchTap={() => track('TopNav - clicked login', {})}
+              style={{ marginTop: 5 }}
+            />
         }
       >
         <div className="logo">
@@ -69,11 +72,14 @@ const TopNav = props => {
 
 TopNav.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any),
+  loanRequests: PropTypes.arrayOf(PropTypes.object),
   public: PropTypes.bool,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 TopNav.defaultProps = {
   currentUser: undefined,
+  loanRequests: [],
   public: false,
 };
 

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import TextField from 'material-ui/TextField';
 import MaskedInput from 'react-text-mask';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import Checkbox from 'material-ui/Checkbox';
 
 import { toMoney, toNumber } from '/imports/js/helpers/conversionFunctions';
@@ -262,12 +262,12 @@ export default class OfferForm extends Component {
 
           <div className="col-xs-12" style={styles.buttons}>
             {this.props.handleCancel &&
-              <RaisedButton
+              <Button raised
                 label="Annuler"
                 style={styles.button}
                 onTouchTap={this.props.handleCancel}
               />}
-            <RaisedButton label="Envoyer" type="submit" primary />
+            <Button raised label="Envoyer" type="submit" primary />
           </div>
         </form>
       </article>

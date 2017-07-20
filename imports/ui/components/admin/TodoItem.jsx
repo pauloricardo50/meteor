@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import moment from 'moment';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 const TodoItem = props => {
   return (
@@ -17,7 +17,7 @@ const TodoItem = props => {
         </p>
       </div>
 
-      <RaisedButton
+      <Button raised
         label={props.label}
         onTouchTap={e => props.handleClick(e)}
         primary

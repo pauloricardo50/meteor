@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 
 // choisit un prêteur dans la liste
 // e-potek voit "Prêteur a été choisi" -> "connecter avec preteur"
@@ -23,7 +23,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 // La banque ne va pas dire non -> envoyer tous les documents
 // Banque revient en 2 jours
 
-const getEmail = props => {
+const getEmail = (props) => {
   const subject = `[e-Potek] ${props.loanRequest.property.address1}`;
   const body = 'Bonjour,';
   return `mailto:?subject=${subject}&body=${body}`;
@@ -36,17 +36,20 @@ export default class ContactLendersPage extends Component {
         <h1>Contacter les prêteurs</h1>
 
         <div className="text-center" style={{ margin: '40px 0' }}>
-          <RaisedButton
+          <Button raised
             label="Télécharger PDF"
             primary
-            onClick={e => downloadPDF(e, this.props.loanRequest._id)}
+            onTouchTap={e => downloadPDF(e, this.props.loanRequest._id)}
           />
         </div>
 
         <div className="text-center" style={{ margin: '40px 0' }}>
-          <RaisedButton label="Template email" primary href={getEmail(this.props)} />
+          <Button raised
+            label="Template email"
+            primary
+            href={getEmail(this.props)}
+          />
         </div>
-
       </section>
     );
   }

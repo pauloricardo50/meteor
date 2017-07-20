@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import Dialog from 'material-ui/Dialog';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
@@ -35,7 +35,7 @@ export default class AcceptClosingModal extends Component {
 
   render() {
     const button = (
-      <RaisedButton label="Fantastique" secondary onTouchTap={this.handleConfirm} autoFocus />
+      <Button raised label="Fantastique" secondary onTouchTap={this.handleConfirm} autoFocus />
     );
 
     return (

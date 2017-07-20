@@ -1,3 +1,4 @@
+
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -70,12 +71,13 @@ const getMountedComponent = (Component, props, withRouter) => {
 *
 * @return {type} undefined
 */
-getMountedComponent.reset = () => {
-  // delete getMountedComponent.mountedComponent;
+getMountedComponent.reset = (useStubs = true) => {
   getMountedComponent.mountedComponent = undefined;
-  StubCollections.restore();
-  StubCollections.add([LoanRequests, Borrowers, Offers, Meteor.users]);
-  StubCollections.stub();
+  if (useStubs) {
+    StubCollections.restore();
+    StubCollections.add([LoanRequests, Borrowers, Offers, Meteor.users]);
+    StubCollections.stub();
+  }
 };
 
 export default getMountedComponent;

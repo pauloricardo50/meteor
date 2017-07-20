@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { _ } from 'lodash';
+import get from 'lodash/get';
 
 import TextInput from './TextInput.jsx';
 import RadioInput from './RadioInput.jsx';
@@ -42,7 +42,7 @@ const inputSwitch = (singleInput, index, parentProps) => {
     ...singleInput,
     key: index, // Some inputs don't have id's, this means rendering a different form requires a re-render (or key prop on the form)
     style: parentProps.fullWidth ? styles.fullWidth : styles.smallWidth,
-    currentValue: _.get(parentProps.doc, singleInput.id),
+    currentValue: get(parentProps.doc, singleInput.id),
     disabled: parentProps.disabled,
   };
 

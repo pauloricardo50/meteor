@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '/imports/ui/components/general/Button.jsx';
 import ArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 import ArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 import { Link } from 'react-router-dom';
@@ -71,7 +71,7 @@ export default class ProcessPageBar extends Component {
     return (
       <div className="buttons">
         {showBackButton &&
-          <RaisedButton
+          <Button raised
             icon={smallWidth ? <ArrowLeft /> : undefined}
             label={smallWidth ? '' : <T id="ProcessPageBar.previous" />}
             style={smallWidth ? styles.smallButton : styles.button}
@@ -80,7 +80,7 @@ export default class ProcessPageBar extends Component {
             onTouchTap={() =>
               track('ProcessPageBar - clicked back', { to: prevLink })}
           />}
-        <RaisedButton
+        <Button raised
           icon={smallWidth ? <ArrowRight /> : undefined}
           label={
             smallWidth
