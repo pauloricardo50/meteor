@@ -1,21 +1,306 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="1210px" height="937px" viewBox="0 0 1210 937" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <!-- Generator: Sketch 45.2 (43514) - http://www.bohemiancoding.com/sketch -->
     <title>tabletapp</title>
     <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <defs>
+        <rect id="path-1" x="0" y="0" width="1210" height="90"></rect>
+        <filter x="-0.5%" y="-6.7%" width="101.0%" height="113.3%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.129411765   0 0 0 0 0.145098039   0 0 0 0 0.160784314  0 0 0 0.16 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <filter x="-2.0%" y="-0.8%" width="104.0%" height="101.6%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.129411765   0 0 0 0 0.145098039   0 0 0 0 0.160784314  0 0 0 0.16 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-2.3%" y="-0.8%" width="104.3%" height="101.6%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.129411765   0 0 0 0 0.145098039   0 0 0 0 0.160784314  0 0 0 0.16 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-2.3%" y="-0.8%" width="104.3%" height="101.6%" filterUnits="objectBoundingBox" id="filter-5">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.129411765   0 0 0 0 0.145098039   0 0 0 0 0.160784314  0 0 0 0.16 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-2.3%" y="-0.8%" width="104.3%" height="101.6%" filterUnits="objectBoundingBox" id="filter-6">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.129411765   0 0 0 0 0.145098039   0 0 0 0 0.160784314  0 0 0 0.16 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="home-page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="tabletapp">
-            <rect id="Rectangle-3" fill="#FFFFFF" x="0" y="0" width="1210" height="937"></rect>
-            <g id="logo_black" transform="translate(317.000000, 393.000000)">
-                <g id="Calque_1">
-                    <path d="M195.685672,34.6355056 C190.878759,38.1707865 185.978095,38.9564045 177.548951,38.9564045 L163.631064,38.9564045 L163.631064,75.5730337 L160.690665,75.5730337 L160.690665,0 L177.57452,0 C186.19969,0 190.904328,0.785617978 195.711241,4.32089888 C200.425839,7.66315713 203.180741,13.1292105 203.066499,18.9146067 C203.040931,25.5069663 199.998257,31.4930337 195.685672,34.6355056 L195.685672,34.6355056 Z M194.117459,6.67775281 C190.000901,3.62921348 185.884343,2.64719101 177.651226,2.64719101 L163.631064,2.64719101 L163.631064,36.3092135 L177.651226,36.3092135 C185.790591,36.3092135 189.992378,34.908764 194.108936,31.868764 C197.637415,29.3069663 200.074963,24.5249438 200.074963,19.0597753 C200.100532,13.3213483 197.645938,9.23955056 194.117459,6.68629213 L194.117459,6.67775281 Z" id="Shape" fill="#0E1C2D"></path>
-                    <path d="M283.190236,75.5132584 C262.411418,75.5132584 245.544609,59.698427 245.544609,37.8975281 C245.544609,16.0966292 262.402895,0.281797753 283.190236,0.281797753 C303.977578,0.281797753 320.835864,16.0966292 320.835864,37.8975281 C320.835864,59.698427 303.977578,75.5132584 283.190236,75.5132584 L283.190236,75.5132584 Z M283.190236,2.92898876 C263.979631,2.92898876 248.485007,17.7617978 248.485007,37.8975281 C248.485007,58.0332584 263.971108,72.8660674 283.190236,72.8660674 C302.409365,72.8660674 317.895465,58.0332584 317.895465,37.8975281 C317.895465,17.7617978 302.409365,2.92898876 283.190236,2.92898876 L283.190236,2.92898876 Z" id="Shape" fill="#0E1C2D"></path>
-                    <polygon id="Shape" fill="#0E1C2D" points="386.129764 75.5132584 383.189365 75.5132584 383.189365 2.87775281 363.484431 2.87775281 363.484431 0.187865169 405.834697 0.187865169 405.834697 2.84359551 386.129764 2.84359551"></polygon>
-                    <polygon id="Shape" fill="#0E1C2D" points="449.096913 0 488.898833 0 488.898833 2.65573034 452.011743 2.65573034 452.011743 36.3177528 488.873264 36.3177528 488.873264 38.7173034 452.011743 38.7173034 452.011743 72.8746067 488.873264 72.8746067 488.873264 75.5303371 449.071344 75.5303371"></polygon>
-                    <polygon id="Shape" fill="#0E1C2D" points="546.240871 39.7591011 534.479276 55.2750562 534.479276 75.5559551 531.538877 75.5559551 531.538877 0 534.479276 0 534.479276 50.6552809 534.683826 50.6552809 572.755598 4.85404476e-14 576.284077 4.85404476e-14 548.115908 37.3937079 576.284077 75.5559551 572.755598 75.5559551"></polygon>
-                    <polygon id="Path-2" fill="#0E1C2D" points="96.3087149 36.2921348 96.3087149 38.8539326 138.923191 38.8539326 138.923191 36.2921348"></polygon>
-                    <path d="M70.7315066,48.6229213 C66.3422157,63.0714607 53.234003,72.8489888 37.6456278,72.8489888 C18.6992319,72.8489888 3.38358936,58.4175281 2.9659675,38.6916854 L75.2997784,38.6916854 L75.2997784,37.8377528 C75.2997784,16.0368539 58.4414919,0.222022472 37.6541507,0.222022472 C16.8668095,0.222022472 0.00852289513,16.0368539 0.00852289513,37.8377528 C0.00852289513,59.6386517 16.8668095,75.4534831 37.6541507,75.4534831 C54.8363072,75.4534831 69.2996603,64.6341573 73.8082718,48.5716854 L70.7400295,48.5716854 L70.7315066,48.6229213 Z M37.6456278,2.92044944 C56.3448597,2.92044944 71.515613,16.9761798 72.3082422,36.2921348 L2.98301329,36.2921348 C3.77564254,16.9761798 18.9463959,2.92898876 37.6456278,2.92898876 L37.6456278,2.92044944 Z" id="Shape" fill="#4990E2"></path>
+            <rect id="Rectangle-3" fill="#FFFFFF" fill-rule="nonzero" x="0" y="0" width="1210" height="937"></rect>
+            <g id="Rectangle">
+                <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+            </g>
+            <g id="Head-Column" filter="url(#filter-3)" transform="translate(0.000000, 111.000000)">
+                <rect id="Rectangle-2" fill="#FFFFFF" x="0" y="0" width="299" height="826" rx="4"></rect>
+                <path d="M4,0 L295,0 L295,0 C297.209139,-4.05812251e-16 299,1.790861 299,4 L299,56 L0,56 L0,4 L0,4 C-2.705415e-16,1.790861 1.790861,4.05812251e-16 4,0 Z" id="Rectangle-3" fill="#4A90E2"></path>
+                <g id="header-column/text" transform="translate(12.000000, 57.000000)" font-size="16" font-family="SourceSansPro-Light, Source Sans Pro" line-spacing="24" fill="#000000" font-weight="300">
+                    <text id="Title">
+                        <tspan x="23.9130435" y="43.2">Nom</tspan>
+                    </text>
+                </g>
+                <g id="header-column/number-active" transform="translate(12.000000, 141.000000)">
+                    <text id="Title" font-family="SourceSansPro-Light, Source Sans Pro" font-size="16" font-weight="300" line-spacing="24" fill="#000000">
+                        <tspan x="23.9130435" y="43.2">Prix d'achat</tspan>
+                    </text>
+                    <g id="" transform="translate(227.173913, 32.000000)" font-size="20" font-family="FontAwesome" fill="#4A90E2" font-weight="normal">
+                        <text transform="translate(10.000000, 10.000000) rotate(-90.000000) translate(-10.000000, -10.000000) ">
+                            <tspan x="0" y="17"></tspan>
+                        </text>
+                    </g>
+                </g>
+                <g id="header-column/number" transform="translate(12.000000, 225.000000)" font-size="16" font-family="SourceSansPro-Light, Source Sans Pro" line-spacing="24" fill="#000000" font-weight="300">
+                    <text id="Title">
+                        <tspan x="23.9130435" y="43.2">Coût estimé</tspan>
+                    </text>
+                </g>
+                <g id="header-column/number" transform="translate(12.000000, 477.000000)" font-size="16" font-family="SourceSansPro-Light, Source Sans Pro" line-spacing="24" fill="#000000" font-weight="300">
+                    <text id="Title">
+                        <tspan x="23.9130435" y="43.2">Impôts communaux</tspan>
+                    </text>
+                </g>
+                <g id="header-column/number" transform="translate(12.000000, 393.000000)" font-size="16" font-family="SourceSansPro-Light, Source Sans Pro" line-spacing="24" fill="#000000" font-weight="300">
+                    <text id="Title">
+                        <tspan x="23.9130435" y="43.2">Emménagement possible</tspan>
+                    </text>
+                </g>
+                <g id="header-column/text" transform="translate(12.000000, 308.000000)" font-size="16" font-family="SourceSansPro-Light, Source Sans Pro" line-spacing="24" fill="#000000" font-weight="300">
+                    <text id="Title">
+                        <tspan x="23.9130435" y="43.2">Arrêt de bus proche</tspan>
+                    </text>
+                </g>
+                <g id="header-column/boolean" transform="translate(12.000000, 561.000000)">
+                    <text id="Title" font-family="SourceSansPro-Light, Source Sans Pro" font-size="16" font-weight="300" line-spacing="24" fill="#000000">
+                        <tspan x="23.9130435" y="43.2">Minergie</tspan>
+                    </text>
+                    <text id="visibility_off---material" font-family="Monaco" font-size="20" font-weight="normal"></text>
+                </g>
+                <g id="header-column/boolean" transform="translate(12.000000, 728.000000)">
+                    <text id="Title" font-family="SourceSansPro-Light, Source Sans Pro" font-size="16" font-weight="300" line-spacing="24" fill="#000000">
+                        <tspan x="23.9130435" y="43.2">Accès pour le chat</tspan>
+                    </text>
+                    <text id="visibility_off---material" font-family="Monaco" font-size="20" font-weight="normal"></text>
+                </g>
+                <g id="header-column/boolean-active" transform="translate(12.000000, 645.000000)">
+                    <text id="Title" font-family="SourceSansPro-Light, Source Sans Pro" font-size="16" font-weight="300" line-spacing="24" fill="#000000">
+                        <tspan x="23.9130435" y="43.2">Vue sur le lac</tspan>
+                    </text>
+                    <text id="visibility---material" font-family="material" font-size="20" font-weight="normal" fill="#4A90E2">
+                        <tspan x="227.173913" y="49"></tspan>
+                    </text>
+                </g>
+                <text id="Reset" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="20" font-weight="normal" line-spacing="32" fill="#FFFFFF">
+                    <tspan x="126.32" y="30">Reset</tspan>
+                </text>
+            </g>
+            <g id="Property-1" filter="url(#filter-4)" transform="translate(379.000000, 169.000000)">
+                <rect id="Rectangle-2" fill="#FFFFFF" x="0" y="0" width="299" height="826" rx="4"></rect>
+                <path d="M4,0 L295,0 L295,-4.4408921e-16 C297.209139,-8.49901461e-16 299,1.790861 299,4 L299,84 L0,84 L0,4 L-4.4408921e-16,4 C-7.1463071e-16,1.790861 1.790861,-3.82769592e-17 4,-4.4408921e-16 Z" id="Rectangle-3" fill="#4A90E2"></path>
+                <text id="Chemin-du-lac-19" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="20" font-weight="normal" line-spacing="32" fill="#FFFFFF">
+                    <tspan x="78.09" y="44">Chemin du lac 19</tspan>
+                </text>
+                <g id="Group" transform="translate(0.000000, 84.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="CHF-560’000" font-family="SourceSansPro-Light, Source Sans Pro" font-size="20" font-weight="300" line-spacing="32" fill="#000000">
+                        <tspan x="100" y="44">CHF 560’000</tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy-4" transform="translate(0.000000, 420.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="18.7%" font-family="SourceSansPro-Light, Source Sans Pro" font-size="20" font-weight="300" line-spacing="32" fill="#000000">
+                        <tspan x="125" y="44">18.7%</tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy-2" transform="translate(0.000000, 252.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="Bel-Air" font-family="SourceSansPro-Light, Source Sans Pro" font-size="20" font-weight="300" line-spacing="32" fill="#000000">
+                        <tspan x="123" y="30">Bel-Air</tspan>
+                    </text>
+                    <text id="230m" opacity="0.5" font-family="SourceSansPro-Light, Source Sans Pro" font-size="20" font-weight="300" line-spacing="32" fill="#000000">
+                        <tspan x="128" y="62">230m</tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy-5" transform="translate(0.000000, 588.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="" font-family="material" font-size="36" font-weight="normal" line-spacing="32" fill="#50E3C2">
+                        <tspan x="132" y="52.3640747"></tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy" transform="translate(0.000000, 168.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="CHF-1’371-/mois" font-family="SourceSansPro-Light, Source Sans Pro" font-size="20" font-weight="300" line-spacing="32" fill="#000000">
+                        <tspan x="84" y="44">CHF 1’371 /mois</tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy-6" transform="translate(0.000000, 504.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="" font-family="material" font-size="36" font-weight="normal" line-spacing="32" fill="#50E3C2">
+                        <tspan x="132" y="52.3640747"></tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy-3" transform="translate(0.000000, 336.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="30-Août-2017" font-family="SourceSansPro-Light, Source Sans Pro" font-size="20" font-weight="300" line-spacing="32" fill="#000000">
+                        <tspan x="98" y="44">30 Août 2017</tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy-7" transform="translate(0.000000, 672.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="close---material" font-family="material" font-size="36" font-weight="normal" line-spacing="32" fill="#D0021B">
+                        <tspan x="132" y="52.3640747"></tspan>
+                    </text>
+                </g>
+            </g>
+            <g id="Property-1-Copy" filter="url(#filter-5)" transform="translate(710.000000, 169.000000)">
+                <rect id="Rectangle-2" fill="#FFFFFF" x="0" y="0" width="299" height="826" rx="4"></rect>
+                <path d="M4,0 L295,0 L295,-4.4408921e-16 C297.209139,-8.49901461e-16 299,1.790861 299,4 L299,84 L0,84 L0,4 L-4.4408921e-16,4 C-7.1463071e-16,1.790861 1.790861,-3.82769592e-17 4,-4.4408921e-16 Z" id="Rectangle-3" fill="#4A90E2"></path>
+                <text id="Place-Rousseau-2" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="20" font-weight="normal" line-spacing="32" fill="#FFFFFF">
+                    <tspan x="77.39" y="44">Place Rousseau 2</tspan>
+                </text>
+                <g id="Group" transform="translate(0.000000, 84.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="CHF-544’300" font-family="SourceSansPro-Light, Source Sans Pro" font-size="20" font-weight="300" line-spacing="32" fill="#000000">
+                        <tspan x="100" y="44">CHF 544’300</tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy-4" transform="translate(0.000000, 420.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="18.7%" font-family="SourceSansPro-Light, Source Sans Pro" font-size="20" font-weight="300" line-spacing="32" fill="#000000">
+                        <tspan x="125" y="44">18.7%</tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy-2" transform="translate(0.000000, 252.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="Gare-Cornavin" font-family="SourceSansPro-Light, Source Sans Pro" font-size="20" font-weight="300" line-spacing="32" fill="#000000">
+                        <tspan x="93" y="30">Gare Cornavin</tspan>
+                    </text>
+                    <text id="120m" opacity="0.5" font-family="SourceSansPro-Light, Source Sans Pro" font-size="20" font-weight="300" line-spacing="32" fill="#000000">
+                        <tspan x="127" y="62">120m</tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy-5" transform="translate(0.000000, 588.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="" font-family="material" font-size="36" font-weight="normal" line-spacing="32" fill="#50E3C2">
+                        <tspan x="132" y="52.3640747"></tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy" transform="translate(0.000000, 168.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="CHF-1’332-/mois" font-family="SourceSansPro-Light, Source Sans Pro" font-size="20" font-weight="300" line-spacing="32" fill="#000000">
+                        <tspan x="84" y="44">CHF 1’332 /mois</tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy-6" transform="translate(0.000000, 504.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="" font-family="material" font-size="36" font-weight="normal" line-spacing="32" fill="#D0021B">
+                        <tspan x="132" y="52.3640747"></tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy-3" transform="translate(0.000000, 336.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="10-Novembre-2017" font-family="SourceSansPro-Light, Source Sans Pro" font-size="20" font-weight="300" line-spacing="32" fill="#000000">
+                        <tspan x="74" y="44">10 Novembre 2017</tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy-7" transform="translate(0.000000, 672.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="" font-family="material" font-size="36" font-weight="normal" line-spacing="32" fill="#D0021B">
+                        <tspan x="132" y="52.3640747"></tspan>
+                    </text>
+                </g>
+            </g>
+            <g id="Property-1-Copy-2" filter="url(#filter-6)" transform="translate(1041.000000, 169.000000)">
+                <rect id="Rectangle-2" fill="#FFFFFF" x="0" y="0" width="299" height="826" rx="4"></rect>
+                <path d="M4,0 L295,0 L295,-4.4408921e-16 C297.209139,-8.49901461e-16 299,1.790861 299,4 L299,84 L0,84 L0,4 L-4.4408921e-16,4 C-7.1463071e-16,1.790861 1.790861,-3.82769592e-17 4,-4.4408921e-16 Z" id="Rectangle-3" fill="#4A90E2"></path>
+                <text id="Rue-du-Four-9" font-family="SourceSansPro-Regular, Source Sans Pro" font-size="20" font-weight="normal" line-spacing="32" fill="#FFFFFF">
+                    <tspan x="92.18" y="44">Rue du Four 9</tspan>
+                </text>
+                <g id="Group" transform="translate(0.000000, 84.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="CHF-489’000" font-family="SourceSansPro-Light, Source Sans Pro" font-size="20" font-weight="300" line-spacing="32" fill="#000000">
+                        <tspan x="100" y="44">CHF 489’000</tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy-4" transform="translate(0.000000, 420.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="16.4%" font-family="SourceSansPro-Light, Source Sans Pro" font-size="20" font-weight="300" line-spacing="32" fill="#000000">
+                        <tspan x="125" y="44">16.4%</tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy-2" transform="translate(0.000000, 252.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="Champ-louis" font-family="SourceSansPro-Light, Source Sans Pro" font-size="20" font-weight="300" line-spacing="32" fill="#000000">
+                        <tspan x="99" y="30">Champ-louis</tspan>
+                    </text>
+                    <text id="520m" opacity="0.5" font-family="SourceSansPro-Light, Source Sans Pro" font-size="20" font-weight="300" line-spacing="32" fill="#000000">
+                        <tspan x="128" y="62">520m</tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy-5" transform="translate(0.000000, 588.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="" font-family="material" font-size="36" font-weight="normal" line-spacing="32" fill="#50E3C2">
+                        <tspan x="132" y="52.3640747"></tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy" transform="translate(0.000000, 168.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="CHF-1’197-/mois" font-family="SourceSansPro-Light, Source Sans Pro" font-size="20" font-weight="300" line-spacing="32" fill="#000000">
+                        <tspan x="84" y="44">CHF 1’197 /mois</tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy-6" transform="translate(0.000000, 504.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="" font-family="material" font-size="36" font-weight="normal" line-spacing="32" fill="#50E3C2">
+                        <tspan x="132" y="52.3640747"></tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy-3" transform="translate(0.000000, 336.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="5-Septembre-2017" font-family="SourceSansPro-Light, Source Sans Pro" font-size="20" font-weight="300" line-spacing="32" fill="#000000">
+                        <tspan x="77" y="44">5 Septembre 2017</tspan>
+                    </text>
+                </g>
+                <g id="Group-Copy-7" transform="translate(0.000000, 672.000000)">
+                    <rect id="Rectangle-4" x="0" y="0" width="299" height="84"></rect>
+                    <text id="" font-family="material" font-size="36" font-weight="normal" line-spacing="32" fill="#50E3C2">
+                        <tspan x="132" y="52.3640747"></tspan>
+                    </text>
+                </g>
+            </g>
+            <g id="Logo/Black" transform="translate(24.000000, 27.000000)">
+                <g id="logo_black">
+                    <g id="Calque_1">
+                        <path d="M92.9252585,16.4062921 C90.6425997,18.0808989 88.315421,18.4530337 84.3126736,18.4530337 L77.703486,18.4530337 L77.703486,35.7977528 L76.3071787,35.7977528 L76.3071787,0 L84.3248154,0 C88.4206499,0 90.6547415,0.372134831 92.9374003,2.04674157 C95.1762217,3.62991654 96.484442,6.21909971 96.430192,8.95955056 C96.4180502,12.0822472 94.9731758,14.9177528 92.9252585,16.4062921 L92.9252585,16.4062921 Z M92.1805613,3.16314607 C90.2257312,1.71910112 88.270901,1.25393258 84.3612408,1.25393258 L77.703486,1.25393258 L77.703486,17.1991011 L84.3612408,17.1991011 C88.2263811,17.1991011 90.2216839,16.5357303 92.176514,15.0957303 C93.8520827,13.8822472 95.0096012,11.6170787 95.0096012,9.02831461 C95.021743,6.31011236 93.85613,4.37662921 92.1805613,3.16719101 L92.1805613,3.16314607 Z" id="Shape" fill="#0E1C2D"></path>
+                        <path d="M134.478552,35.7694382 C124.611315,35.7694382 116.601773,28.2782022 116.601773,17.9514607 C116.601773,7.6247191 124.607267,0.133483146 134.478552,0.133483146 C144.349838,0.133483146 152.355332,7.6247191 152.355332,17.9514607 C152.355332,28.2782022 144.349838,35.7694382 134.478552,35.7694382 L134.478552,35.7694382 Z M134.478552,1.38741573 C125.356012,1.38741573 117.99808,8.41348315 117.99808,17.9514607 C117.99808,27.4894382 125.351965,34.5155056 134.478552,34.5155056 C143.60514,34.5155056 150.959025,27.4894382 150.959025,17.9514607 C150.959025,8.41348315 143.60514,1.38741573 134.478552,1.38741573 L134.478552,1.38741573 Z" id="Shape" fill="#0E1C2D"></path>
+                        <polygon id="Shape" fill="#0E1C2D" points="183.361448 35.7694382 181.96514 35.7694382 181.96514 1.36314607 172.607858 1.36314607 172.607858 0.088988764 192.71873 0.088988764 192.71873 1.34696629 183.361448 1.34696629"></polygon>
+                        <polygon id="Shape" fill="#0E1C2D" points="213.262659 0 232.163397 0 232.163397 1.25797753 214.646824 1.25797753 214.646824 17.2031461 232.151256 17.2031461 232.151256 18.3397753 214.646824 18.3397753 214.646824 34.5195506 232.151256 34.5195506 232.151256 35.7775281 213.250517 35.7775281"></polygon>
+                        <polygon id="Shape" fill="#0E1C2D" points="259.393412 18.8332584 253.808183 26.1829213 253.808183 35.7896629 252.411876 35.7896629 252.411876 0 253.808183 0 253.808183 23.9946067 253.905318 23.9946067 271.984461 2.29928436e-14 273.66003 2.29928436e-14 260.283811 17.712809 273.66003 35.7896629 271.984461 35.7896629"></polygon>
+                        <polygon id="Path-2" fill="#0E1C2D" points="45.7341211 17.1910112 45.7341211 18.4044944 65.9704579 18.4044944 65.9704579 17.1910112"></polygon>
+                        <path d="M33.5882718,23.0319101 C31.5039291,29.8759551 25.2792319,34.5074157 17.8767799,34.5074157 C8.87970458,34.5074157 1.60676514,27.6714607 1.40844904,18.3276404 L35.7576071,18.3276404 L35.7576071,17.9231461 C35.7576071,7.59640449 27.7521123,0.105168539 17.8808272,0.105168539 C8.0095421,0.105168539 0.00404726736,7.59640449 0.00404726736,17.9231461 C0.00404726736,28.2498876 8.0095421,35.7411236 17.8808272,35.7411236 C26.0401182,35.7411236 32.9083309,30.6161798 35.0493353,23.0076404 L33.5923191,23.0076404 L33.5882718,23.0319101 Z M17.8767799,1.38337079 C26.7564845,1.38337079 33.9606204,8.04134831 34.3370162,17.1910112 L1.41654357,17.1910112 C1.79293944,8.04134831 8.99707533,1.38741573 17.8767799,1.38741573 L17.8767799,1.38337079 Z" id="Shape" fill="#4A90E2"></path>
+                    </g>
                 </g>
             </g>
         </g>
