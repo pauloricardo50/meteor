@@ -204,6 +204,20 @@ export default class HomePage extends Component {
                   <div className="ctas text-right">
                     <Button
                       raised
+                      label={<T id="HomePage.compare" />}
+                      containerElement={<Link to="/app/compare" />}
+                      style={styles.style}
+                      buttonStyle={styles.button}
+                      labelStyle={styles.label}
+                      overlayStyle={styles.button}
+                      onTouchTap={() =>
+                        track('Funnel - clicked home page CTA', {
+                          title: 'compare',
+                          at: 'bottom',
+                        })}
+                    />
+                    <Button
+                      raised
                       label={<T id="HomePage.CTA1" />}
                       containerElement={<Link to="/start1/acquisition" />}
                       style={styles.style}
