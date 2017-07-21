@@ -44,11 +44,6 @@
   "AmortizationTool.rise.title": "Augmentation des taux",
   "AmortizationTool.stable.title": "Taux stables",
   "AppPage.begin": "Commencer",
-  "HomePage.compare": "Comparer des propriétés",
-
-  "CompareColumn.boolean.true": "Oui",
-  "CompareColumn.boolean.false": "Non",
-
   "AppPage.comparator": "Comparateur de propriétés",
   "AppPage.loanRequest": "Demande de prêt",
   "AppPage.newRequest": "Nouvelle demande de prêt",
@@ -96,6 +91,8 @@
   "Comparator.realMonthly": "Charges estimées",
   "Comparator.theoreticalMonthly": "Charges théoriques FINMA",
   "Comparator.value": "Prix d'achat",
+  "CompareColumn.boolean.false": "Non",
+  "CompareColumn.boolean.true": "Oui",
   "CompareColumnFooter.hide": "Masquer",
   "CompareColumnFooter.show": "Options",
   "CompareOptions.addProperty": "Ajouter une propriété",
@@ -370,6 +367,7 @@
   "HomeDev.CTA": "M'avertir par e-mail",
   "HomeDev.description": "Nous allons bientôt ouvrir e-Potek aux refinancements, soyez le premier averti !",
   "HomeDev.title": "En Développement",
+  "HomePage.compare": "Comparer des propriétés",
   "HomePage.CTA.buy": "Faire une acquisition",
   "HomePage.CTA.compare": "Comparer des propriétés",
   "HomePage.CTA1": "Faire une acquisition",

@@ -28,7 +28,7 @@ export default class CompareOptions extends Component {
 
   render() {
     const { showAdvanced } = this.state;
-    const { comparator, changeComparator } = this.props;
+    const { comparator, changeComparator, addProperty } = this.props;
 
     return (
       <div
@@ -69,7 +69,7 @@ export default class CompareOptions extends Component {
             }
             style={styles.button}
           />
-          <PropertyAdder />
+          <PropertyAdder addProperty={addProperty} />
         </div>
       </div>
     );
@@ -79,4 +79,5 @@ export default class CompareOptions extends Component {
 CompareOptions.propTypes = {
   comparator: PropTypes.objectOf(PropTypes.any).isRequired,
   changeComparator: PropTypes.func.isRequired,
+  addProperty: PropTypes.func.isRequired,
 };

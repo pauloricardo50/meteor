@@ -265,7 +265,7 @@ export default class HomePage extends Component {
                   </div>
                   <br />
                   <div>
-                    <span>© 2016-2017 e-Potek</span>
+                    <span>© 2017 e-Potek</span>
                   </div>
                 </div>
               </div>

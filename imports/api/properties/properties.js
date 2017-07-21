@@ -17,10 +17,7 @@ Properties.allow({
 });
 
 export const PropertySchema = new SimpleSchema({
-  userId: {
-    type: String,
-    index: true,
-  },
+  userId: { type: String, index: true },
   createdAt: {
     type: Date,
     autoValue() {
@@ -42,11 +39,9 @@ export const PropertySchema = new SimpleSchema({
   latitude: Number,
   longitude: Number,
   value: Number,
-  fields: {
-    type: Object,
-    blackbox: true,
-    defaultValue: {},
-  },
+  nearestBusStation: { type: Object, blackbox: true, optional: true },
+  nearestTrainStation: { type: Object, blackbox: true, optional: true },
+  fields: { type: Object, blackbox: true, defaultValue: {} },
 });
 
 // Attach schema

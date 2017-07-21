@@ -26,20 +26,16 @@ export default class PropertyAdder extends Component {
 
   handleSubmit = () => {
     const { address, value, latlng } = this.state;
-    cleanMethod(
-      'insertProperty',
+
+    this.props.addProperty(
       {
         address,
         value,
         latitude: latlng.lat,
         longitude: latlng.lng,
       },
-      null,
       this.handleClose,
     );
-    // this.props.handleAddProperty(address, latlng, value, () => {
-    //   this.handleClose();
-    // });
   };
 
   render() {
@@ -129,3 +125,7 @@ export default class PropertyAdder extends Component {
     );
   }
 }
+
+PropertyAdder.propTypes = {
+  addProperty: PropTypes.func.isRequired,
+};

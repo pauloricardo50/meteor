@@ -6,7 +6,6 @@ import DashboardRecap from './DashboardRecap.jsx';
 import DashboardCharts from './DashboardCharts.jsx';
 import DashboardBorrowers from './DashboardBorrowers.jsx';
 import DashboardLastSteps from './DashboardLastSteps.jsx';
-import DashboardUnverified from './DashboardUnverified.jsx';
 import DashboardPayments from './DashboardPayments.jsx';
 import DashboardDownload from './DashboardDownload.jsx';
 import DashboardOffer from './DashboardOffer.jsx';
@@ -17,7 +16,10 @@ const getGrid = ({ loanRequest }) => {
   const done = loanRequest.status === 'done';
 
   return [
-    { component: DashboardLastSteps, show: !done && loanRequest.logic.step === 3 },
+    {
+      component: DashboardLastSteps,
+      show: !done && loanRequest.logic.step === 3,
+    },
     { component: DashboardStatus, show: !done },
     { component: DashboardPayments, show: done },
     { component: DashboardRecap, show: true },
@@ -47,16 +49,13 @@ export default class DashboardContent extends Component {
 
     return (
       <div>
-        {!this.props.currentUser.emails[0].verified &&
-          <div style={{ marginBottom: 16 }}><DashboardUnverified {...this.props} /></div>}
-
         <Masonry
           className={'grid'}
           elementType={'div'}
           options={masonryOptions}
           disableImagesLoaded={false}
           updateOnEachImageLoad={false}
-          ref={c => {
+          ref={(c) => {
             this.masonry = this.masonry || c.masonry;
           }}
         >
@@ -64,7 +63,11 @@ export default class DashboardContent extends Component {
           {getGrid(this.props)
             .filter(component => component.show)
             .map((c, i) =>
-              <c.component {...this.props} reloadMasonry={this.reloadMasonry} key={i} />,
+              (<c.component
+                {...this.props}
+                reloadMasonry={this.reloadMasonry}
+                key={i}
+              />),
             )}
         </Masonry>
       </div>

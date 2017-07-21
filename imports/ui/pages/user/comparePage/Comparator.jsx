@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Meteor } from 'meteor/meteor';
 
 import throttle from 'lodash/throttle';
 
@@ -18,46 +19,6 @@ import cleanMethod from '/imports/api/cleanMethods';
 import CompareTable from './CompareTable.jsx';
 import CompareOptions from './CompareOptions.jsx';
 
-const now = new Date();
-const properties = [
-  {
-    name: 'Chemin des Paquerettes 13',
-    value: 519000,
-    createdAt: new Date().setHours(now.getHours() - 1),
-    minergy: true,
-  },
-  {
-    name: 'Rue du Four 3',
-    value: 467000,
-    createdAt: new Date().setHours(now.getHours() - 3),
-    minergy: false,
-  },
-  {
-    name: 'Avenue du parc 17',
-    value: 564000,
-    createdAt: new Date(),
-    minergy: true,
-  },
-  {
-    name: 'Chemin du Lac 9',
-    value: 434000,
-    createdAt: new Date().setHours(now.getHours() - 30),
-    minergy: true,
-  },
-  {
-    name: 'Place Rousseau 4',
-    value: 532000,
-    createdAt: new Date().setHours(now.getHours() - 67),
-    minergy: true,
-  },
-  {
-    name: 'Rue des vignerons 17',
-    value: 604000,
-    createdAt: new Date().setHours(now.getHours() - 45),
-    minergy: false,
-  },
-];
-
 const defaultFields = [
   { id: 'name', type: 'text' },
   { id: 'isValid', type: 'boolean', noEdit: true },
@@ -70,7 +31,7 @@ const defaultFields = [
   { id: 'createdAt', type: 'date', noEdit: true },
   { id: 'realBorrowRatio', type: 'percent', noEdit: true },
   { id: 'incomeRatio', type: 'percent', noEdit: true },
-  { id: 'nearestStore', type: 'text', noEdit: true },
+  // { id: 'nearestStore', type: 'text', noEdit: true },
   { id: 'nearestTrainStation', type: 'text', noEdit: true },
   { id: 'nearestBusStation', type: 'text', noEdit: true },
 ];
@@ -79,7 +40,7 @@ export default class Comparator extends Component {
   constructor(props) {
     super(props);
 
-    this.setupProperties(this.props);
+    this.setupProperties(this.props, true);
     this.hideFields(this.props);
   }
 
@@ -135,100 +96,82 @@ export default class Comparator extends Component {
   toggleField = fieldId =>
     cleanMethod('toggleHiddenField', { fieldId }, this.props.comparator._id);
 
+  addProperty = (object, callback) => {
+    cleanMethod('insertProperty', object, null, (err, result) => {
+      if (!err) {
+        if (typeof callback === 'function') {
+          callback();
+        }
+        Meteor.defer(() => {
+          this.callGoogleApi(result);
+        });
+      }
+    });
+  };
+
   deleteProperty = id => cleanMethod('deleteProperty', null, id);
 
-  // addValueToProperty = (key, value, propertyName) => {
-  //   const property = this.state.addedProperties.find(
-  //     p => p.name === propertyName,
-  //   );
-  //
-  //   this.setState(prev => ({
-  //     addedProperties: [
-  //       ...prev.addedProperties.filter(p => p.name !== propertyName),
-  //       {
-  //         ...property,
-  //         [key]: value,
-  //       },
-  //     ],
-  //   }));
-  // };
+  addValueToProperty = (key, value, propertyId) => {
+    const index = this.modifiedProperties.findIndex(
+      prop => prop._id === propertyId,
+    );
+    if (index >= 0) {
+      const property = this.modifiedProperties[index];
 
-  // handleAddProperty = (address, latlng, value, callback) => {
-  //   const name = address.split(',')[0];
-  //   const lat = latlng.lat;
-  //   const lng = latlng.lng;
-  //   // TODO: Make sure name is unique identifier
-  //
-  //   this.setState(
-  //     prev => ({
-  //       addedProperties: [
-  //         ...prev.addedProperties,
-  //         {
-  //           name,
-  //           address,
-  //           value,
-  //           latlng,
-  //           createdAt: new Date(),
-  //         },
-  //       ],
-  //     }),
-  //     () => {
-  //       // getClosestStations(lat, lng)
-  //       //   .then((stations) => {
-  //       //     this.addValueToProperty(
-  //       //       'nearestStation',
-  //       //       {
-  //       //         primary: stations[0].name,
-  //       //         secondary: toDistanceString(stations[0].distance),
-  //       //         value: stations[0].distance,
-  //       //       },
-  //       //       name,
-  //       //     );
-  //       //   })
-  //       //   .catch(error => console.log(error));
-  //
-  //       [
-  //         { googId: 'department_store', id: 'nearestStore', byDistance: true },
-  //         {
-  //           googId: 'train_station',
-  //           id: 'nearestTrainStation',
-  //           byDistance: true,
-  //         },
-  //         { googId: 'bus_station', id: 'nearestBusStation', byDistance: true },
-  //       ].forEach(request =>
-  //         this.addGooglePlace(
-  //           name,
-  //           lat,
-  //           lng,
-  //           request.googId,
-  //           request.id,
-  //           request.byDistance,
-  //         ),
-  //       );
-  //
-  //       if (typeof callback === 'function') {
-  //         callback();
-  //       }
-  //     },
-  //   );
-  // };
+      this.modifiedProperties[index] = { ...property, [key]: value };
+      this.forceUpdate();
+    }
+  };
 
-  addGooglePlace = (name, lat, lng, type, id, byDistance) => {
+  callGoogleApi = (propertyId, callback) => {
+    console.log(propertyId);
+    const property = this.props.properties.find(p => p._id === propertyId);
+    const lat = property.latitude;
+    const lng = property.longitude;
+
+    [
+      {
+        googId: 'train_station',
+        id: 'nearestTrainStation',
+        byDistance: true,
+      },
+      { googId: 'bus_station', id: 'nearestBusStation', byDistance: true },
+    ].forEach(request =>
+      this.addGooglePlace(
+        propertyId,
+        lat,
+        lng,
+        request.googId,
+        request.id,
+        request.byDistance,
+      ),
+    );
+
+    if (typeof callback === 'function') {
+      callback();
+    }
+  };
+
+  addGooglePlace = (propertyId, lat, lng, type, id, byDistance) => {
     if (window.google) {
-      getNearbyPlace(lat, lng, type, byDistance)
+      return getNearbyPlace(lat, lng, type, byDistance)
         .then((result) => {
-          this.addValueToProperty(
-            id,
+          cleanMethod(
+            'updateProperty',
             {
-              primary: result.name,
-              secondary: toDistanceString(result.distance.value),
-              value: result.distance.value,
+              [id]: {
+                primary: result.name,
+                secondary: toDistanceString(result.distance.value),
+                value: result.distance.value,
+              },
             },
-            name,
+            propertyId,
           );
         })
         .catch(error => console.log(error));
     }
+
+    return new Promise((res, reject) => reject("google doesn't exist"));
   };
 
   modifyProperty = (property) => {
@@ -296,7 +239,6 @@ export default class Comparator extends Component {
   };
 
   render() {
-    // const { customFields, addedProperties, hiddenFields } = this.state;
     const { comparator } = this.props;
 
     return (
@@ -304,13 +246,12 @@ export default class Comparator extends Component {
         <CompareOptions
           comparator={comparator}
           changeComparator={this.changeComparator}
-          // handleAddProperty={this.handleAddProperty}
           allFields={[...defaultFields, ...comparator.customFields]}
           toggleField={this.toggleField}
           removeCustomField={this.removeCustomField}
+          addProperty={this.addProperty}
         />
         <CompareTable
-          // {...this.props}
           comparator={comparator}
           properties={this.modifiedProperties}
           addCustomField={this.addCustomField}
