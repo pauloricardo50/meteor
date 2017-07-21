@@ -23,11 +23,13 @@ const lateStrings = [
   'Contact de Mr. Internet',
   'Attente de la fin du sablier...',
   'Début du mode attente_interminable_v2',
+  "Préparation d'un remède de grand-mère",
 ];
 
 const animationDuration = 250;
 const animationInterval = 2000;
 const animationCurve = 'ease-in-out';
+const initialDelay = 1000; // Don't show anything during super-fast loads
 
 // show 0-250, hide 1500-1750
 // show 1750-2000, hide 3500-3750
@@ -42,6 +44,9 @@ const getAnimation = (index, type) => {
   } else if (type === 'hide') {
     delay = animationInterval * (index + 1) - animationDuration * 2;
   }
+
+  delay += initialDelay;
+
   return `${animationName} ${animationDuration}ms ${delay}ms ${animationCurve} forwards`;
 };
 

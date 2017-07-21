@@ -6,11 +6,21 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import Borrowers from '../borrowers';
-import { insertBorrower, updateBorrower, pushBorrowerValue, popBorrowerValue } from '../methods';
+import {
+  insertBorrower,
+  updateBorrower,
+  pushBorrowerValue,
+  popBorrowerValue,
+} from '../methods';
+import { stubCollections } from '/imports/js/helpers/testHelpers';
 
 import '../../factories.js';
 
 describe('borrowers', () => {
+  before(() => {
+    stubCollections();
+  });
+
   beforeEach(function () {
     // if (Meteor.isServer) {
     resetDatabase();

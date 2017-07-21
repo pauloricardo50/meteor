@@ -6,6 +6,7 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import { Accounts } from 'meteor/accounts-base';
+import { stubCollections } from '/imports/js/helpers/testHelpers';
 
 import Offers from '../offers';
 
@@ -20,6 +21,10 @@ import {
 import '../../factories.js';
 
 describe('offers', () => {
+  before(() => {
+    stubCollections();
+  });
+
   beforeEach(function () {
     // if (Meteor.isServer) {
     resetDatabase();
