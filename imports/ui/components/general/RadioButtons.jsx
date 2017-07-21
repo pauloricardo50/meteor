@@ -42,13 +42,14 @@ RadioButtons.propTypes = {
   intlPrefix: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
   handleChange: PropTypes.func.isRequired,
-  currentValue: PropTypes.node.isRequired,
+  currentValue: PropTypes.any,
   style: PropTypes.object,
 };
 
 RadioButtons.defaultProps = {
   label: '',
   style: {},
+  currentValue: undefined,
 };
 
 export default RadioButtons;

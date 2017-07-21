@@ -44,14 +44,6 @@ export default class Comparator extends Component {
     this.hideFields(this.props);
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps.properties.length !== this.props.properties.length) {
-  //     this.setupProperties(this.props);
-  //     this.filterFields(this.props);
-  //     this.forceUpdate();
-  //   }
-  // }
-
   componentWillReceiveProps(nextProps) {
     this.setupProperties(nextProps);
     this.hideFields(nextProps);
@@ -124,7 +116,6 @@ export default class Comparator extends Component {
   };
 
   callGoogleApi = (propertyId, callback) => {
-    console.log(propertyId);
     const property = this.props.properties.find(p => p._id === propertyId);
     const lat = property.latitude;
     const lng = property.longitude;

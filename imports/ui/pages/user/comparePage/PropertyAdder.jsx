@@ -92,14 +92,25 @@ export default class PropertyAdder extends Component {
             {!isValidPlace && <div style={{ height: 300 }} />}
             {isValidPlace &&
               <h2 className="fixed-size">
-                <TextInput
-                  label={<T id="Comparator.value" />}
-                  floatingLabelFixed
-                  handleChange={this.handleChange}
-                  currentValue={value}
-                  id="value"
-                  type="money"
-                />
+                <form
+                  action="submit"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (value) {
+                      this.handleSubmit();
+                    }
+                  }}
+                  noValidate
+                >
+                  <TextInput
+                    label={<T id="Comparator.value" />}
+                    floatingLabelFixed
+                    handleChange={this.handleChange}
+                    currentValue={value}
+                    id="value"
+                    type="money"
+                  />
+                </form>
               </h2>}
             <div
               style={{
