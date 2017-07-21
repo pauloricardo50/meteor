@@ -18,6 +18,9 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import LoanRequests from '/imports/api/loanrequests/loanrequests';
 import Borrowers from '/imports/api/borrowers/borrowers';
 import Offers from '/imports/api/offers/offers';
+import AdminActions from '/imports/api/adminActions/adminActions';
+import Comparators from '/imports/api/comparators/comparators';
+import Properties from '/imports/api/properties/properties';
 
 // Mounts a component for testing, and wraps it around everything it needs
 const customMount = (Component, props, withRouter) => {
@@ -97,6 +100,14 @@ export default getMountedComponent;
  */
 export const stubCollections = () => {
   StubCollections.restore();
-  StubCollections.add([LoanRequests, Borrowers, Offers, Meteor.users]);
+  StubCollections.add([
+    LoanRequests,
+    Borrowers,
+    Offers,
+    AdminActions,
+    Properties,
+    Comparators,
+    Meteor.users,
+  ]);
   StubCollections.stub();
 };
