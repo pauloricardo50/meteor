@@ -21,5 +21,12 @@
   "S3Bucket": "e-potek",
   "MANDRILL_LOGIN": "florian@e-potek.ch",
   "MANDRILL_API_KEY": "Bn4sTZ-Q9JqK-PyXACgJ_w",
-  "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg"
+  "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg",
+  "kadira": {
+    "appId": "mPB7PKBH3dhPNQ5ou",
+    "appSecret": "d7d9873f-11ba-4200-8a06-bf52597826d5",
+    "options": {
+      "endpoint": "http://kadira.e-potek.ch:11011"
+    }
+  }
 }
