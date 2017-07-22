@@ -38,9 +38,11 @@
   width: 830px;
   height: 560px;
   padding: 15px 85px;
+  transform: matrix3d(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1);
+  transform: scale3d(1,1,1);
   -moz-transform: matrix3d(.8, .08, 0, -.0002, -.12, .88, 0, -.000001, 0, 0, 1, 0, -4, 100, 0, 1);
   -webkit-transform: matrix3d(.8, .08, 0, -.0002, -.12, .88, 0, -.000001, 0, 0, 1, 0, -4, 100, 0, 1);
-  transfrom: matrix3d(.8, .08, 0, -.0002, -.12, .88, 0, -.000001, 0, 0, 1, 0, -4, 100, 0, 1);
+  transform: matrix3d(.8, .08, 0, -.0002, -.12, .88, 0, -.000001, 0, 0, 1, 0, -4, 100, 0, 1);
   background: linear-gradient(135deg, rgb(226, 230, 234) 0%, rgba(223, 228, 234, 1) 100%);
   border-width: 3px 4px 2px 0;
 }

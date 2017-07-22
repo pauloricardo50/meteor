@@ -26,20 +26,16 @@ export default class PropertyAdder extends Component {
 
   handleSubmit = () => {
     const { address, value, latlng } = this.state;
-    cleanMethod(
-      'insertProperty',
+
+    this.props.addProperty(
       {
         address,
         value,
         latitude: latlng.lat,
         longitude: latlng.lng,
       },
-      null,
       this.handleClose,
     );
-    // this.props.handleAddProperty(address, latlng, value, () => {
-    //   this.handleClose();
-    // });
   };
 
   render() {
@@ -96,14 +92,25 @@ export default class PropertyAdder extends Component {
             {!isValidPlace && <div style={{ height: 300 }} />}
             {isValidPlace &&
               <h2 className="fixed-size">
-                <TextInput
-                  label={<T id="Comparator.value" />}
-                  floatingLabelFixed
-                  handleChange={this.handleChange}
-                  currentValue={value}
-                  id="value"
-                  type="money"
-                />
+                <form
+                  action="submit"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (value) {
+                      this.handleSubmit();
+                    }
+                  }}
+                  noValidate
+                >
+                  <TextInput
+                    label={<T id="Comparator.value" />}
+                    floatingLabelFixed
+                    handleChange={this.handleChange}
+                    currentValue={value}
+                    id="value"
+                    type="money"
+                  />
+                </form>
               </h2>}
             <div
               style={{
@@ -129,3 +136,7 @@ export default class PropertyAdder extends Component {
     );
   }
 }
+
+PropertyAdder.propTypes = {
+  addProperty: PropTypes.func.isRequired,
+};

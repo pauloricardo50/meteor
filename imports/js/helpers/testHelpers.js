@@ -1,4 +1,3 @@
-
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -7,7 +6,11 @@ import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider, intlShape } from 'react-intl';
 import StubCollections from 'meteor/hwillson:stub-collections';
 
-import { getUserLocale, getTranslations, getFormats } from '/imports/startup/localization';
+import {
+  getUserLocale,
+  getTranslations,
+  getFormats,
+} from '/imports/startup/localization';
 
 import myTheme from '/imports/js/config/mui_custom';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -15,6 +18,9 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import LoanRequests from '/imports/api/loanrequests/loanrequests';
 import Borrowers from '/imports/api/borrowers/borrowers';
 import Offers from '/imports/api/offers/offers';
+import AdminActions from '/imports/api/adminActions/adminActions';
+import Comparators from '/imports/api/comparators/comparators';
+import Properties from '/imports/api/properties/properties';
 
 // Mounts a component for testing, and wraps it around everything it needs
 const customMount = (Component, props, withRouter) => {
@@ -61,7 +67,11 @@ const customMount = (Component, props, withRouter) => {
  */
 const getMountedComponent = (Component, props, withRouter) => {
   if (!getMountedComponent.mountedComponent) {
-    getMountedComponent.mountedComponent = customMount(Component, props, withRouter);
+    getMountedComponent.mountedComponent = customMount(
+      Component,
+      props,
+      withRouter,
+    );
   }
   return getMountedComponent.mountedComponent;
 };
@@ -90,6 +100,14 @@ export default getMountedComponent;
  */
 export const stubCollections = () => {
   StubCollections.restore();
-  StubCollections.add([LoanRequests, Borrowers, Offers, Meteor.users]);
+  StubCollections.add([
+    LoanRequests,
+    Borrowers,
+    Offers,
+    AdminActions,
+    Properties,
+    Comparators,
+    Meteor.users,
+  ]);
   StubCollections.stub();
 };

@@ -41,7 +41,7 @@ const DatePicker = (props) => {
 };
 
 DatePicker.propTypes = {
-  currentValue: PropTypes.object.isRequired,
+  currentValue: PropTypes.object,
   handleChange: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
   minDate: PropTypes.object,
@@ -51,6 +51,7 @@ DatePicker.propTypes = {
 };
 
 DatePicker.defaultProps = {
+  currentValue: undefined,
   minDate: undefined,
   maxDate: undefined,
   disabled: false,

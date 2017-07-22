@@ -42,7 +42,7 @@ export default class HomePage extends Component {
                 </h1>
               </div>
             </div>
-            <div className="container-lrg flex">
+            <div className="container-lrg flex-launch">
               <div className="col-6 centervertical animated fadeInLeft">
                 {/* <h2 className="desc">
                   <T id="HomePage.description" description="Description above the CTAs" />
@@ -98,7 +98,7 @@ export default class HomePage extends Component {
                     <div className="mask">
                       <img
                         className="mask-img"
-                        src="/img/mobileapp.svg"
+                        srcSet="/img/mobileapp@1x.png 500w, /img/mobileapp@2x.png 1000w"
                         alt="e-Potek Mobile Example"
                       />
                     </div>
@@ -107,7 +107,7 @@ export default class HomePage extends Component {
                     <div className="mask">
                       <img
                         className="mask-img"
-                        src="/img/tabletapp.svg"
+                        srcSet="/img/tabletapp@1x.png 800w, /img/tabletapp@2x.png 2000w"
                         alt="e-Potek Tablet Example"
                       />
                     </div>
@@ -117,7 +117,7 @@ export default class HomePage extends Component {
             </div>
           </header>
           <div className="feature3 animated fadeInUp">
-            <div className="container-lrg flex">
+            <div className="container-lrg flex-launch">
               <div className="col-12">
                 <b className="emoji">
                   <span className="fa fa-calculator" />
@@ -165,7 +165,7 @@ export default class HomePage extends Component {
             </div>
           </div>
           <div className="feature2">
-            <div className="container-lrg flex">
+            <div className="container-lrg flex-launch">
               <div className="col-6">
                 <b className="emoji">
                   <span className="fa fa-money" />
@@ -265,7 +265,7 @@ export default class HomePage extends Component {
                   </div>
                   <br />
                   <div>
-                    <span>© 2016-2017 e-Potek</span>
+                    <span>© 2017 e-Potek</span>
                   </div>
                 </div>
               </div>

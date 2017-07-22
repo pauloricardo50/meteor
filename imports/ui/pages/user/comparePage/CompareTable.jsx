@@ -79,6 +79,9 @@ export default class CompareTable extends Component {
       const curve = easeOut(pos, toLeft ? pos + 256 : pos - 256, 15);
 
       const frame = () => {
+        if (!this.ref) {
+          return;
+        }
         // 256 = column width + 16px margin
         if (
           Math.abs(pos - this.ref.scrollLeft) > 256 ||

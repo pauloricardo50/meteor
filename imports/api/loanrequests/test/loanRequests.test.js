@@ -9,6 +9,7 @@ import moment from 'moment';
 import LoanRequests from '../loanrequests';
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
+import { stubCollections } from '/imports/js/helpers/testHelpers';
 
 import '../../factories.js';
 
@@ -27,8 +28,11 @@ import {
 } from '../methods';
 
 describe('loanRequests', function () {
-  this.timeout(10000);
-  beforeEach(function beforeEach1() {
+  before(() => {
+    stubCollections();
+  });
+
+  beforeEach(function () {
     // if (Meteor.isServer) {
     resetDatabase();
     // }
@@ -63,9 +67,8 @@ describe('loanRequests', function () {
 
     describe('modifiers', () => {
       let request;
-      beforeEach(function beforeEach2() {
+      beforeEach(function () {
         request = Factory.create('loanRequest');
-        console.log(request);
       });
 
       describe('updateRequest', () => {
@@ -206,8 +209,6 @@ describe('loanRequests', function () {
 
         it('adds a scheduled email', (done) => {
           const id = request._id;
-          console.log('THIS TEST FAILS!!');
-          console.log(request);
           const date = new Date();
           const email = {
             requestId: id,
@@ -270,7 +271,7 @@ describe('loanRequests', function () {
   describe('getAuctionEndTime', () => {
     let endDate;
 
-    beforeEach(function beforeEach3() {
+    beforeEach(function () {
       endDate = moment()
         .year(2017)
         .month(0)

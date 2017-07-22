@@ -2,10 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
+import Unverified from '/imports/ui/components/general/Unverified.jsx';
+
 import AppItem from './appPage/AppItem.jsx';
 
-const AppPage = ({ loanRequests, properties }) =>
+const AppPage = ({ loanRequests, properties, currentUser }) =>
   (<section className="flex-col center">
+    {!currentUser.emails[0].verified &&
+      <div style={{ marginBottom: 16 }}>
+        <Unverified />
+      </div>}
+
     {loanRequests.map(request =>
       (<AppItem
         key={request._id}
@@ -45,6 +52,7 @@ const AppPage = ({ loanRequests, properties }) =>
 AppPage.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.object),
   properties: PropTypes.arrayOf(PropTypes.object),
+  currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 AppPage.defaultProps = {

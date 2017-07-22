@@ -11,7 +11,7 @@ export function userCompareComposer(props, onData) {
     Meteor.subscribe('userProperties').ready() &&
     Meteor.subscribe('userComparators').ready()
   ) {
-    const properties = Properties.find({}).fetch();
+    const properties = Properties.find({}, { sort: { createdAt: -1 } }).fetch();
     const comparators = Comparators.find({}).fetch();
     onData(null, { properties, comparator: comparators[0] || undefined });
   }
