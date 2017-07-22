@@ -26,7 +26,7 @@
     "appId": "mPB7PKBH3dhPNQ5ou",
     "appSecret": "d7d9873f-11ba-4200-8a06-bf52597826d5",
     "options": {
-      "endpoint": "https://kadira-engine.e-potek.ch:11011"
+      "endpoint": "https://kadira-engine.e-potek.ch"
     }
   }
 }
