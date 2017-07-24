@@ -16,7 +16,8 @@ import { stubCollections } from '/imports/js/helpers/testHelpers';
 
 import '../../factories.js';
 
-describe('borrowers', () => {
+describe('borrowers', function () {
+  this.timeout(10000);
   before(() => {
     stubCollections();
   });
