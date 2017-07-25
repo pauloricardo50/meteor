@@ -70,8 +70,10 @@
     "babel-preset-env": "^1.5.2",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "babel-project-relative-import": "^2.0.1",
     "babel-register": "^6.24.1",
     "babel-root-slash-import": "^1.1.0",
+    "browserify": "^14.4.0",
     "chai": "^4.0.2",
     "chance": "^1.0.10",
     "enzyme": "^2.9.1",
@@ -82,11 +84,14 @@
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-meteor": "^4.0.1",
     "eslint-plugin-react": "^7.1.0",
+    "jest": "^20.0.4",
     "jsdom": "^11.0.0",
     "mocha": "^3.4.2",
     "nightmare": "^2.10.0",
     "react-addons-test-utils": "^15.6.0",
     "react-test-renderer": "^15.6.1",
-    "sinon": "^2.3.6"
+    "sinon": "^2.3.6",
+    "testdouble": "^3.2.2",
+    "wallabify": "0.0.15"
   }
 }
