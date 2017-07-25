@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
+import RadioButton from 'material-ui/RadioButton/RadioButton';
+import RadioButtonGroup from 'material-ui/RadioButton/RadioButtonGroup';
 
 import FormValidator from './FormValidator.jsx';
 
@@ -40,7 +41,7 @@ export default class RadioInput extends Component {
     }
   }
 
-  setValue = event => {
+  setValue = (event) => {
     // Change radio button group state to appropriate value
     this.setState(
       { value: event.target.value },
@@ -48,7 +49,7 @@ export default class RadioInput extends Component {
     );
   };
 
-  saveValue = value => {
+  saveValue = (value) => {
     // For radiobuttons, check if I actually want to pass a boolean instead of a String
     // event.target.value is always a String
     let safeValue = value;
@@ -78,7 +79,7 @@ export default class RadioInput extends Component {
           style={styles.RadioButtonGroup}
         >
           {this.props.options.map(option =>
-            <RadioButton
+            (<RadioButton
               label={option.label}
               value={option.id}
               onTouchTap={this.setValue}
@@ -86,7 +87,7 @@ export default class RadioInput extends Component {
               style={styles.RadioButton}
               labelStyle={styles.RadioButtonLabel}
               disabled={this.props.disabled}
-            />,
+            />),
           )}
         </RadioButtonGroup>
         <FormValidator {...this.props} />

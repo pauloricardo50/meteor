@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
+import RadioButton from 'material-ui/RadioButton/RadioButton';
+import RadioButtonGroup from 'material-ui/RadioButton/RadioButtonGroup';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 

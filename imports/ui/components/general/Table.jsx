@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  Table as MuiTable,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
+import MuiTable from 'material-ui/Table/Table';
+import TableBody from 'material-ui/Table/TableBody';
+import TableHeader from 'material-ui/Table/TableHeader';
+import TableHeaderColumn from 'material-ui/Table/TableHeaderColumn';
+import TableRow from 'material-ui/Table/TableRow';
+import TableRowColumn from 'material-ui/Table/TableRowColumn';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
@@ -46,7 +44,7 @@ export default class Table extends Component {
           >
             <TableRow>
               {columns.map((column, i) =>
-                <TableHeaderColumn
+                (<TableHeaderColumn
                   key={i}
                   style={{ ...column.style, textAlign: column.align }}
                 >
@@ -56,7 +54,7 @@ export default class Table extends Component {
                       values={column.intlValues}
                       list="table"
                     />}
-                </TableHeaderColumn>,
+                </TableHeaderColumn>),
               )}
             </TableRow>
           </TableHeader>
@@ -67,7 +65,7 @@ export default class Table extends Component {
             stripedRows
           >
             {rows.map((row, i) =>
-              <TableRow
+              (<TableRow
                 key={row.id || i}
                 selected={row.id === selected}
                 onTouchTap={
@@ -75,7 +73,7 @@ export default class Table extends Component {
                 }
               >
                 {row.columns.map((column, j) =>
-                  <TableRowColumn
+                  (<TableRowColumn
                     key={j}
                     style={{
                       ...columns[j].style,
@@ -87,9 +85,9 @@ export default class Table extends Component {
                     {typeof columns[j].format === 'function'
                       ? columns[j].format(column)
                       : column}
-                  </TableRowColumn>,
+                  </TableRowColumn>),
                 )}
-              </TableRow>,
+              </TableRow>),
             )}
           </TableBody>
         </MuiTable>
