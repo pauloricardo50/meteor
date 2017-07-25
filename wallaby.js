@@ -1,31 +1,24 @@
 module.exports = function (wallaby) {
-  const testFilePattern = 'imports/**/*.spec.js';
-  const filePattern = 'imports/**/*.js';
-  console.log('wtf?');
-
   return {
-    debug: true,
+    debug: false,
     testFramework: 'jest',
     files: [
-      { pattern: './jest.config.js', load: false, instrumenting: false },
-      { pattern: filePattern, load: false },
-      { pattern: testFilePattern, ignore: true },
+      { pattern: './jest.config.js', instrumenting: false },
+      { pattern: 'imports/**/*.js*' },
+      { pattern: '!imports/**/*.spec.js' },
     ],
-    tests: [{ pattern: testFilePattern }],
+    tests: [{ pattern: 'imports/**/*.spec.js' }],
     compilers: {
-      '**/*.js': wallaby.compilers.babel(),
-      '**/*.jsx': wallaby.compilers.babel(),
+      '**/*.js*': wallaby.compilers.babel(),
     },
     env: {
       type: 'node',
       runner: 'node',
     },
     setup: () => {
-      /* eslint global-require: 0 */
-      const jestConfig = require('./jest.config.js');
+      const jestConfig = require('./jest.config.js'); // eslint-disable-line global-require
       jestConfig.globals = { __DEV__: true };
       wallaby.testFramework.configure(jestConfig);
-      console.log('hehe');
     },
   };
 };
