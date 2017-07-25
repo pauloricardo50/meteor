@@ -10,7 +10,8 @@ import PlacesAutocomplete, {
 
 import TextField from 'material-ui/TextField';
 import MenuItem from 'material-ui/MenuItem';
-import { List, ListItem } from 'material-ui/List';
+import List from 'material-ui/List/List';
+import ListItem from 'material-ui/List/ListItem';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
