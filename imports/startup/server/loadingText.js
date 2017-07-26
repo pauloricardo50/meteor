@@ -5,7 +5,6 @@ const strings = [
   'Ajustement des effets pyrotechniques',
   'Obtention des meilleurs taux',
   'Alerte de notre conseiller le plus sympa',
-  'Paiement des pots-de-vin',
   "Préchauffage de l'ordinateur",
   'Pose de la cerise sur le gateau',
   'Mise à jour des régulations fédérales',
