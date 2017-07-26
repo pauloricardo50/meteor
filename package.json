@@ -73,7 +73,10 @@
     "babel-project-relative-import": "^2.0.1",
     "babel-register": "^6.24.1",
     "babel-root-slash-import": "^1.1.0",
+<<<<<<< HEAD
     "browserify": "^14.4.0",
+=======
+>>>>>>> origin/master
     "chai": "^4.0.2",
     "chance": "^1.0.10",
     "enzyme": "^2.9.1",
