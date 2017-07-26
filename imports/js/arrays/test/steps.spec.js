@@ -1,6 +1,10 @@
 /* eslint-env jest */
-import { Factory } from 'meteor/dburles:factory';
-import { Meteor } from 'meteor/meteor';
+// import { Factory } from 'meteor/dburles:factory';
+// import { Meteor } from 'meteor/meteor';
+
+console.log(global.Package);
+console.log(window.Package);
+const Factory = Package['dburles:factory'];
 
 import { borrowerFiles } from '/imports/js/arrays/files';
 import { previousDone, filesPercent } from '../steps';
@@ -10,7 +14,7 @@ describe('Steps', () => {
     it('Should return true for a basic setup', () => {
       const steps = [
         {
-          items: [
+          testems: [
             { isDone: () => true },
             { isDone: () => true },
             { isDone: () => true },
@@ -18,13 +22,13 @@ describe('Steps', () => {
         },
       ];
 
-      expect(previousDone(steps, 0, 4)).to.be.true;
+      expect(previousDone(steps, 0, 4)).toBe(true);
     });
 
     it('Should return false for a basic setup', () => {
       const steps = [
         {
-          items: [
+          testems: [
             { isDone: () => true },
             { isDone: () => false },
             { isDone: () => true },
@@ -32,7 +36,7 @@ describe('Steps', () => {
         },
       ];
 
-      expect(previousDone(steps, 0, 4)).to.be.false;
+      expect(previousDone(steps, 0, 4)).toBe(false);
     });
   });
 
@@ -48,12 +52,12 @@ describe('Steps', () => {
     });
 
     it('Returns 0 for an empty borrower', () => {
-      expect(filesPercent(borrower, borrowerFiles, 'auction')).to.equal(0);
+      expect(filesPercent(borrower, borrowerFiles, 'auction')).toBe(0);
     });
 
-    it('Returns 0.2 with a single file', () => {
-      borrower.files = { identity: {} };
-      expect(filesPercent(borrower, borrowerFiles, 'auction')).to.equal(0.2);
+    it('Returns 0.2 wtesth a single file', () => {
+      borrower.files = { identtesty: {} };
+      expect(filesPercent(borrower, borrowerFiles, 'auction')).toBe(0.2);
     });
 
     it('Returns 0 for two empty borrowers', () => {
@@ -62,17 +66,17 @@ describe('Steps', () => {
       ).to.equal(0);
     });
 
-    it('Returns 0.1 for one empty borrower and one with a single file', () => {
+    it('Returns 0.1 for one empty borrower and one wtesth a single file', () => {
       const borrower2 = {
         ...borrower,
         files: {
-          identity: {},
+          identtesty: {},
         },
       };
 
       expect(
         filesPercent([borrower, borrower2], borrowerFiles, 'auction'),
-      ).to.equal(0.1);
+      ).toBe(0.1);
     });
   });
 });

@@ -4,10 +4,10 @@ module.exports = function wallabyConfig(wallaby) {
     testFramework: 'jest',
     files: [
       { pattern: './jest.config.js', instrumenting: false },
-      { pattern: 'imports/**/*.js*' },
-      { pattern: '!imports/**/*.spec.js' },
+      'imports/**/*.js*',
+      '!imports/**/*.spec.js',
     ],
-    tests: [{ pattern: 'imports/**/*.spec.js' }],
+    tests: ['imports/**/*.spec.js'],
     compilers: {
       '**/*.js*': wallaby.compilers.babel(),
     },
