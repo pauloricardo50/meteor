@@ -13,7 +13,7 @@ dependencies:
   cache-directories:
     - "~/.meteor"
     - "~/.npm"
-    - "~/node_modules"
+    - "node_modules"
     - "/usr/local/bin"
     - "/bin/sh"
 

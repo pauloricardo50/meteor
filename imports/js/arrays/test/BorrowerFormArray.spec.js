@@ -14,12 +14,17 @@ describe('BorrowerFormArrays', () => {
       expect(() => getBorrowerInfoArray(borrowers, 'id4')).to.throw();
     });
 
-    it('returns an array of objects', () => {
+    it('returns an array of objects, each having an id', () => {
       const array = getBorrowerInfoArray(borrowers, 'id1');
 
       expect(typeof array).to.equal('object');
       expect(array).to.have.length.above(0);
-      array.forEach(field => expect(typeof field).to.equal('object'));
+      array.forEach((field) => {
+        expect(typeof field).to.equal('object');
+        if (field.type !== 'conditionalInput' && field.type !== 'h3') {
+          expect(!!field.id).to.equal(true);
+        }
+      });
     });
   });
 
@@ -30,12 +35,17 @@ describe('BorrowerFormArrays', () => {
       expect(() => getBorrowerFinanceArray(borrowers, 'id4')).to.throw();
     });
 
-    it('returns an array of objects', () => {
+    it('returns an array of objects, each having an id', () => {
       const array = getBorrowerFinanceArray(borrowers, 'id1');
 
       expect(typeof array).to.equal('object');
       expect(array).to.have.length.above(0);
-      array.forEach(field => expect(typeof field).to.equal('object'));
+      array.forEach((field) => {
+        expect(typeof field).to.equal('object');
+        if (field.type !== 'conditionalInput' && field.type !== 'h3') {
+          expect(!!field.id).to.equal(true);
+        }
+      });
     });
   });
 });
