@@ -3,7 +3,7 @@ module.exports = function (wallaby) {
     debug: false,
     testFramework: 'mocha',
     files: [
-      { pattern: 'test/mocha-config.js', instrument: false },
+      { pattern: '.test/mocha-config.js', instrument: false },
       'imports/**/*.js*',
       '!imports/**/*.spec.js*',
     ],
