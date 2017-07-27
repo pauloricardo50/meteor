@@ -95,12 +95,13 @@ export const partnerList = [
 // lenders we will potentially contact
 export const getPartnerList = (canton, partnersToAvoid) => {
   const filteredList = partnerList.filter(partner =>
-    partner.cantons.includes(canton));
+    partner.cantons.includes(canton),
+  );
 
-  if (partnersToAvoid.length > 0) {
+  if (partnersToAvoid && partnersToAvoid.length > 0) {
     partnersToAvoid.forEach((partnerToAvoid, index) => {
       if (filteredList[index].key === partnerToAvoid) {
-        delete filteredList[index];
+        filteredList.splice(index, 1);
       }
     });
   }

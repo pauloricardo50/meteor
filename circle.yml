@@ -7,22 +7,21 @@ machine:
 
 dependencies:
   override:
-    - curl https://install.meteor.com | /bin/sh
+    # Install & cache Meteor
+    - .test/install-meteor.sh
+
+    # Install and cache all dependencies
     - meteor npm install
-    - meteor npm install fbjs
+
   cache-directories:
     - "~/.meteor"
     - "~/.npm"
-    - "~/node_modules"
-    - "/usr/local/bin"
-    - "/bin/sh"
+    - "node_modules"
 
 test:
   override:
     - yarn run test-CI:
         timeout: 1200
-  post:
-    - yarn global add mup
 
 deployment:
   staging:
