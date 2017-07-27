@@ -1,4 +1,10 @@
-import td from 'testdouble';
+const stubs = {
+  meteor: {
+    Meteor: {
+      methods: () => {},
+      defer: () => {},
+    },
+  },
+};
 
-const Meteor = td.object(['methods', 'call']);
-td.replace('meteor/meteor', { Meteor });
+export default stubs;

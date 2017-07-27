@@ -14,5 +14,12 @@ module.exports = function (wallaby) {
     env: {
       type: 'node',
     },
+    // preprocessors: {
+    //   'imports/**/*.js*': (file) => {
+    //     // change absolute imports to absolute root imports
+    //     const content = file.content;
+    //     return content.replace("require('/", "require('~/dev/epotek/");
+    //   },
+    // },
   };
 };

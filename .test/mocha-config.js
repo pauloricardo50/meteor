@@ -1,20 +1,20 @@
-// const main = require('require-main-filename')();
+const main = require('require-main-filename')();
 
-// const chai = require('chai');
-//
-// chai.should();
-// global.expect = chai.expect;
-// global.assert = chai.assert;
+const chai = require('chai');
+
+chai.should();
+global.expect = chai.expect;
+global.assert = chai.assert;
 
 const td = require('testdouble');
 const { beforeEach } = require('mocha');
-// const quibble = require('quibble');
+const quibble = require('quibble');
 
-// global.td = td;
+global.td = td;
 
 beforeEach(() => {
   td.reset();
-  // quibble.ignoreCallsFromThisFile(main);
+  quibble.ignoreCallsFromThisFile(main);
   global.Meteor = {
     call: function empty() {},
   };
