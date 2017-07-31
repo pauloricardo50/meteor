@@ -1,3 +1,5 @@
+// TODO: This does not yet work with wallabyJS
+
 import proxyquire from 'proxyquire';
 
 const proxyquireStrict = proxyquire.noCallThru();
@@ -15,7 +17,12 @@ const proxyStubs = {
   'meteor/meteor': packages.meteor,
 };
 
-// const stubPackages = fileToImport => proxyquireStrict(fileToImport, proxyStubs);
-const stubPackages = fileToImport => require('../StartFormArray');
+const stubPackages = (fileToImport) => {
+  const a = '';
+
+  console.log(fileToImport);
+  console.log(typeof proxyquireStrict);
+  return proxyquireStrict(fileToImport, proxyStubs);
+};
 
 export default stubPackages;

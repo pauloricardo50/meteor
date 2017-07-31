@@ -1,16 +1,10 @@
 /* eslint-env mocha */
-import { expect } from 'chai';
-
-// import getFormArray, {
-//   getAcquisitionArray,
-//   getErrorArray,
-//   getFinalArray,
-// } from '../StartFormArray';
-
-import stubPackages from '/imports/js/helpers/testStubs';
-
+// import { expect } from 'chai';
+//
+// import stubPackages from '/imports/js/helpers/testStubs';
+//
 // const getFormArray = stubPackages('../StartFormArray.js');
-
+//
 // describe('StartFormArray', () => {
 //   describe('getFormArray', () => {
 //     it('returns an array', () => {
