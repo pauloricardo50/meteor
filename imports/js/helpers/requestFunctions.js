@@ -1,15 +1,16 @@
-import constants from '../config/constants';
-
-import { getIncomeRatio } from './finance-math';
-import { propertyPercent, filesPercent } from '/imports/js/arrays/steps';
-import { requestFiles } from '/imports/js/arrays/files';
-
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import WarningIcon from 'material-ui/svg-icons/alert/warning';
 
+import constants from '../config/constants';
+import { getIncomeRatio } from './finance-math';
+import { propertyPercent, filesPercent } from '../arrays/steps';
+import { requestFiles } from '../arrays/files';
+
 export const getProjectValue = (loanRequest) => {
-  if (loanRequest.property.value <= 0) {
+  if (!loanRequest.property) {
+    return 0;
+  } else if (loanRequest.property.value <= 0) {
     return 0;
   }
 
@@ -26,7 +27,12 @@ export const getProjectValue = (loanRequest) => {
 };
 
 export const getLoanValue = (loanRequest) => {
-  let value = getProjectValue(loanRequest) - loanRequest.general.fortuneUsed;
+  if (!loanRequest.general) {
+    return 0;
+  }
+
+  let value =
+    getProjectValue(loanRequest) - (loanRequest.general.fortuneUsed || 0);
 
   if (loanRequest.property.usageType === 'primary') {
     value -= loanRequest.general.insuranceFortuneUsed || 0;
@@ -37,9 +43,13 @@ export const getLoanValue = (loanRequest) => {
 };
 
 export const loanStrategySuccess = (loanTranches = [], loanValue) => {
+  if (!Number.isInteger(loanValue)) {
+    throw new Error('loanValue must be an integer');
+  }
   if (loanTranches.length < 1) {
     return false;
   }
+
   // User has to choose a preset
   const trancheSum = loanTranches.reduce(
     (tot, tranche) => tranche.value + tot,
@@ -54,17 +64,61 @@ export const loanStrategySuccess = (loanTranches = [], loanValue) => {
 };
 
 export const strategiesChosen = loanRequest =>
-  loanStrategySuccess(loanRequest) &&
+  loanStrategySuccess(
+    loanRequest.general.loanTranches,
+    getLoanValue(loanRequest),
+  ) &&
   loanRequest.logic.amortizationStrategyPreset &&
   loanRequest.logic.hasValidatedCashStrategy;
 
+/**
+   * getInterestsWithOffer - Get the aggregate monthly interest rate for a
+   * loanRequest and an offer
+   *
+   * @param {type}    loanRequest              Description
+   * @param {type}    offer                    Description
+   * @param {boolean} [withCounterparts=false] Description
+   *
+   * @return {Number} min 0
+   */
+export const getInterestsWithOffer = (
+  loanRequest,
+  offer,
+  isStandard = true,
+) => {
+  if (!offer) {
+    return 0;
+  }
+
+  const tranches = loanRequest.general.loanTranches;
+  const interestRates = isStandard
+    ? offer.standardOffer
+    : offer.counterpartOffer;
+
+  let interests = 0;
+  tranches.every((tranche) => {
+    const rate = interestRates[tranche.type];
+
+    // If the lender doesn't have this interest rate, return false
+    if (!rate) {
+      interests = -1;
+      // break loop
+      return false;
+    }
+
+    interests += tranche.value * rate;
+    return true;
+  });
+
+  return interests >= 0 ? Math.round(interests / 12) : interests;
+};
+
 export const getMonthlyWithOffer = (
   request,
-  fortuneUsed,
-  insuranceFortuneUsed,
-  tranches,
-  interestRates,
-  amortization,
+  offer,
+  isStandard = true,
+  fortuneUsed = 0,
+  insuranceFortuneUsed = 0,
 ) => {
   // Make a copy of the request
   const r = JSON.parse(JSON.stringify(request));
@@ -79,62 +133,22 @@ export const getMonthlyWithOffer = (
     constants.maintenanceReal *
     (r.property.value + (r.property.propertyWork || 0));
 
-  let interests = 0;
-  tranches.some((tranche) => {
-    const rate = interestRates[tranche.type];
+  let amortization = isStandard
+    ? offer.standardOffer.amortization
+    : offer.counterpartOffer.amortization;
+  amortization = amortization || constants.amortization;
 
-    // If the lender doesn't have this interest rate, return false
-    if (!rate) {
-      interests = -1;
-      return false;
-    }
-
-    interests += tranche.value * rate;
-  });
+  const interests = getInterestsWithOffer(r, offer, isStandard);
 
   return interests >= 0
-    ? Math.round((maintenance + loan * amortization + interests) / 12)
+    ? Math.round((maintenance + loan * amortization + interests) / 12) || 0
     : 0;
 };
 
-/**
- * getInterestsWithOffer - Get the aggregate monthly interest rate for a
- * loanRequest and an offer
- *
- * @param {type}    loanRequest              Description
- * @param {type}    offer                    Description
- * @param {boolean} [withCounterparts=false] Description
- *
- * @return {Number} min 0
- */
-export const getInterestsWithOffer = (
-  loanRequest,
-  offer,
-  withCounterparts = false,
-) => {
-  const tranches = loanRequest.general.loanTranches;
-  const interestRates = withCounterparts
-    ? offer.counterpartOffer
-    : offer.standardOffer;
-
-  let interests = 0;
-  tranches.some((tranche) => {
-    const rate = interestRates[tranche.type];
-
-    // If the lender doesn't have this interest rate, return false
-    if (!rate) {
-      interests = -1;
-      return false;
-    }
-
-    interests += tranche.value * rate;
-  });
-
-  return interests >= 0 ? Math.round(interests / 12) : 0;
-};
-
 export const getPropAndWork = loanRequest =>
-  loanRequest.property.value + (loanRequest.property.propertyWork || 0);
+  (loanRequest.property &&
+    loanRequest.property.value + (loanRequest.property.propertyWork || 0)) ||
+  0;
 
 export const getTotalUsed = loanRequest =>
   Math.round(
@@ -142,9 +156,16 @@ export const getTotalUsed = loanRequest =>
       (loanRequest.general.insuranceFortuneUsed || 0),
   );
 
+export const getBorrowRatio = (loanRequest) => {
+  const loan = getLoanValue(loanRequest);
+  const propAndWork = getPropAndWork(loanRequest);
+
+  return loan / propAndWork;
+};
+
 export const getLenderCount = (loanRequest, borrowers) => {
   const incomeRatio = getIncomeRatio(loanRequest, borrowers);
-  const borrowRatio = getBorrowRatio(loanRequest, borrowers);
+  const borrowRatio = getBorrowRatio(loanRequest);
   if (incomeRatio > 0.38) {
     return 0;
   } else if (incomeRatio > 1 / 3) {
@@ -159,9 +180,25 @@ export const getLenderCount = (loanRequest, borrowers) => {
 };
 
 export const disableForms = loanRequest =>
-  loanRequest.logic.step > 1 ||
-  loanRequest.logic.verification.requested ||
-  loanRequest.logic.verification.validated !== undefined;
+  !!(
+    loanRequest.logic &&
+    (loanRequest.logic.step > 1 ||
+      (loanRequest.logic.verification &&
+        (loanRequest.logic.verification.requested ||
+          loanRequest.logic.verification.validated !== undefined)))
+  );
+
+export const getFees = (loanRequest) => {
+  const notaryFees = loanRequest.property.value * constants.notaryFees;
+  let insuranceFees = 0;
+
+  if (loanRequest.property.usageType === 'primary') {
+    insuranceFees =
+      loanRequest.general.insuranceFortuneUsed * constants.lppFees;
+  }
+
+  return notaryFees + (insuranceFees || 0);
+};
 
 export const isRequestValid = (loanRequest, borrowers) => {
   const incomeRatio = getIncomeRatio(loanRequest, borrowers);
@@ -243,22 +280,6 @@ export const validateRatiosCompletely = (
   }
 };
 
-export const getFees = (loanRequest) => {
-  const notaryFees = loanRequest.property.value * constants.notaryFees;
-  const insuranceFees =
-    loanRequest.general.insuranceFortuneUsed * constants.lppFees;
-
-  return notaryFees + insuranceFees;
-};
-
 // Returns the maintenance to pay every month, i.e. 1% of the property divided by 12 months
 export const getMaintenance = loanRequest =>
   loanRequest.property.value * 0.01 / 12;
-
-export const getBorrowRatio = (loanRequest) => {
-  const loan = getLoanValue(loanRequest);
-  const propAndWork =
-    loanRequest.property.value + (loanRequest.property.propertyWork || 0);
-
-  return loan / propAndWork;
-};

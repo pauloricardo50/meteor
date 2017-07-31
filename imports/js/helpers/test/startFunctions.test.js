@@ -1,5 +1,5 @@
+/* eslint-env mocha */
 import { expect } from 'chai';
-import { describe, it } from 'meteor/practicalmeteor:mocha';
 
 import {
   getMinIncome,
@@ -49,7 +49,9 @@ describe('Start Functions', () => {
     });
 
     it('Should return 250 for 3x 500 and any value below that', () => {
-      expect(getBonusIncome([500, 500, 500, Math.random() * 499])).to.equal(250);
+      expect(getBonusIncome([500, 500, 500, Math.random() * 499])).to.equal(
+        250,
+      );
     });
 
     it('Should ignore any value beyond the 4 first ones', () => {
@@ -85,7 +87,8 @@ describe('Start Functions', () => {
       };
       const totalFortune = state.fortune + state.insuranceFortune;
       const fees =
-        state.propertyValue * constants.notaryFees + state.insuranceFortune * constants.lppFees;
+        state.propertyValue * constants.notaryFees +
+        state.insuranceFortune * constants.lppFees;
       const borrow = getBorrow(totalFortune, state.propertyValue, fees);
       const monthly = getMonthly(state, borrow);
 
@@ -103,7 +106,8 @@ describe('Start Functions', () => {
       };
       const totalFortune = state.fortune + state.insuranceFortune;
       const fees =
-        state.propertyValue * constants.notaryFees + state.insuranceFortune * constants.lppFees;
+        state.propertyValue * constants.notaryFees +
+        state.insuranceFortune * constants.lppFees;
       const borrow = getBorrow(totalFortune, state.propertyValue, fees);
       const monthly = getMonthly(state, borrow);
 

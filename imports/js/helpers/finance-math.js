@@ -5,6 +5,7 @@ import {
   getMaintenance,
 } from './requestFunctions';
 import { getTotalFortune, getBorrowerIncome } from './borrowerFunctions';
+import { arrayify } from './general';
 
 // Export all functions from requestFunctions and borrowerFunctions
 // as well
@@ -42,11 +43,12 @@ export const getYearsToRetirement = (age1, age2, gender1, gender2) => {
 export const getAmortization = (loanRequest, borrowers) => {
   const loan = getLoanValue(loanRequest);
   const propAndWork = getPropAndWork(loanRequest);
+  const safeBorrowers = arrayify(borrowers);
   const yearsToRetirement = getYearsToRetirement(
-    Number(borrowers[0].age),
-    borrowers[1] && borrowers[1].age ? Number(borrowers[1].age) : 0,
-    borrowers[0].gender,
-    borrowers[1] && borrowers[1].gender,
+    Number(safeBorrowers[0].age),
+    safeBorrowers[1] && safeBorrowers[1].age ? Number(safeBorrowers[1].age) : 0,
+    safeBorrowers[0].gender,
+    safeBorrowers[1] && safeBorrowers[1].gender,
   );
 
   // fallback if the loan is smaller than 0

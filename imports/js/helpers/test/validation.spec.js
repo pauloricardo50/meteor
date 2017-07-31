@@ -1,5 +1,5 @@
+/* eslint-env mocha */
 import { expect } from 'chai';
-import { describe, it } from 'meteor/practicalmeteor:mocha';
 
 import { emailValidation } from '../validation';
 
