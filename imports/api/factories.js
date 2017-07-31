@@ -84,6 +84,7 @@ Factory.define('offer', Offers, {
 Factory.define('comparator', Comparators, {
   userId: Factory.get('user'),
   customFields: [],
+  hiddenFields: [],
 });
 
 Factory.define('property', Properties, {

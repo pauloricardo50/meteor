@@ -15,7 +15,7 @@ import DialogSimple from '/imports/ui/components/general/DialogSimple.jsx';
 import DropzoneArray from '/imports/ui/components/general/DropzoneArray.jsx';
 import ClosingForm from '/imports/ui/components/admin/ClosingForm.jsx';
 import LastStepsForm from '/imports/ui/components/admin/LastStepsForm.jsx';
-import { downloadPDF } from '/imports/js/helpers/download-pdf';
+import downloadPDF from '/imports/js/helpers/download-pdf';
 
 const styles = {
   div: {
@@ -28,19 +28,21 @@ const styles = {
   },
 };
 
-const ActionsTab = props => {
+const ActionsTab = (props) => {
   const { serverTime, loanRequest } = props;
 
   const l = loanRequest.logic;
 
   return (
     <div style={styles.div}>
-      <Button raised
+      <Button
+        raised
         label="Télécharger PDF Anonyme"
         onTouchTap={e => downloadPDF(e, loanRequest._id, 'anonymous')}
         style={styles.button}
       />
-      <Button raised
+      <Button
+        raised
         label="Télécharger PDF Complet"
         onTouchTap={e => downloadPDF(e, loanRequest._id, 'default')}
         style={styles.button}
@@ -51,14 +53,18 @@ const ActionsTab = props => {
         keyword="ANNULER"
         method={cb => cancelAuction.call({ id: loanRequest._id }, cb)}
         style={styles.button}
-        disabled={!(l.auctionStarted && serverTime && serverTime < l.auctionEndTime)}
+        disabled={
+          !(l.auctionStarted && serverTime && serverTime < l.auctionEndTime)
+        }
       />
       <ConfirmMethod
         label="Terminer les enchères"
         keyword="TERMINER"
         method={cb => finishAuction.call({ id: loanRequest._id }, cb)}
         style={styles.button}
-        disabled={!(l.auctionStarted && serverTime && serverTime < l.auctionEndTime)}
+        disabled={
+          !(l.auctionStarted && serverTime && serverTime < l.auctionEndTime)
+        }
       />
       <DialogSimple
         title="Confirmer le décaissement"
@@ -72,14 +78,18 @@ const ActionsTab = props => {
         label="Supprimer la demande"
         keyword="SUPPRIMER"
         method={cb =>
-          deleteRequest.call({ id: loanRequest._id }, err => {
+          deleteRequest.call({ id: loanRequest._id }, (err) => {
             if (!err) {
               window.location.href = '/admin';
             }
           })}
         style={styles.button}
       />
-      <DialogSimple title="Uploader contrat" label="Uploader contrat" buttonStyle={styles.button}>
+      <DialogSimple
+        title="Uploader contrat"
+        label="Uploader contrat"
+        buttonStyle={styles.button}
+      >
         <DropzoneArray
           array={[{ id: 'contract' }]}
           documentId={loanRequest._id}

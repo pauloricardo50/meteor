@@ -1,5 +1,5 @@
+/* eslint-env mocha */
 import { expect } from 'chai';
-import { describe, it } from 'meteor/practicalmeteor:mocha';
 
 import {
   toMoney,
@@ -47,6 +47,17 @@ describe('Conversion functions', () => {
     it("Should return 1009 for '100.9'", () => {
       expect(toNumber('100.9')).to.equal(1009);
     });
+
+    it('should return the same value if given a falsy non-number', () => {
+      expect(toNumber('')).to.equal('');
+      expect(toNumber(undefined)).to.equal(undefined);
+      expect(toNumber(null)).to.equal(null);
+      expect(toNumber(false)).to.equal(false);
+    });
+
+    it('should return 0 if given true', () => {
+      expect(toNumber(true)).to.equal(0);
+    });
   });
 
   describe('To decimal number', () => {
@@ -68,6 +79,13 @@ describe('Conversion functions', () => {
 
     it('Should return -1 for -1', () => {
       expect(toDecimalNumber(-1)).to.equal(-1);
+    });
+
+    it('should return the same value if given a falsy non-number', () => {
+      expect(toDecimalNumber('')).to.equal('');
+      expect(toDecimalNumber(undefined)).to.equal(undefined);
+      expect(toDecimalNumber(null)).to.equal(null);
+      expect(toDecimalNumber(false)).to.equal(false);
     });
   });
 

@@ -14,9 +14,9 @@ import {
   changeProperty,
   changeFortune,
   changeIncome,
-  getBorrowRatio,
   getIncomeRatio,
   getTheoreticalMonthly,
+  getBorrowRatio,
 } from '/imports/js/helpers/startFunctions';
 import { storageAvailable } from '/imports/js/helpers/browserFunctions';
 import Accordion from '/imports/ui/components/general/Accordion.jsx';
@@ -296,13 +296,13 @@ export default class Start1Page extends Component {
             ? <Start1Calculator
               {...childProps}
               inputArray={getArray(
-                  income,
-                  fortune,
-                  property,
-                  borrowRatio,
-                  incomeRatio,
-                  this.state.property.auto,
-                )}
+                income,
+                fortune,
+                property,
+                borrowRatio,
+                incomeRatio,
+                this.state.property.auto,
+              )}
               setStateValue={this.setStateValue}
               setSliderMax={this.setSliderMax}
               parentState={this.state}
@@ -315,10 +315,10 @@ export default class Start1Page extends Component {
                 primary
                 label={<T id="Start1Page.showCalculatorButton" />}
                 onTouchTap={() =>
-                    this.setState({
-                      isFirstVisit: false,
-                      showDescription: false,
-                    })}
+                  this.setState({
+                    isFirstVisit: false,
+                    showDescription: false,
+                  })}
                 style={{ height: 'unset' }}
                 overlayStyle={{ padding: 20 }}
               />

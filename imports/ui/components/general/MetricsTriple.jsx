@@ -1,16 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { getIncomeRatio } from '/imports/js/helpers/finance-math';
-import constants from '/imports/js/config/constants';
 import AutoTooltip from './AutoTooltip.jsx';
 
 const MetricsTriple = props =>
-  <div className="metrics">
+  (<div className="metrics">
     {props.metrics.map(
-      (metric, i) =>
+      metric =>
         !metric.hide &&
-        <div className="metric" key={i}>
+        <div className="metric" key={metric.name}>
           <div>
             <h4 className="secondary">
               <AutoTooltip placement="top">{metric.name}</AutoTooltip>{' '}
@@ -33,7 +31,7 @@ const MetricsTriple = props =>
           </div>
         </div>,
     )}
-  </div>;
+  </div>);
 
 MetricsTriple.defaultProps = {
   percent: true,

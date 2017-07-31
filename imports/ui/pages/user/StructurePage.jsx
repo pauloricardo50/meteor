@@ -8,16 +8,11 @@ import LoadingButton from '/imports/ui/components/general/LoadingButton.jsx';
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import track from '/imports/js/helpers/analytics';
+import { toNumber } from '/imports/js/helpers/conversionFunctions';
 
 import StructureSliders from './structurePage/StructureSliders.jsx';
 import StructureRecap from './structurePage/StructureRecap.jsx';
 import StructureError from './structurePage/StructureError.jsx';
-
-import { toNumber } from '/imports/js/helpers/conversionFunctions';
-import {
-  getIncomeRatio,
-  getBorrowRatio,
-} from '/imports/js/helpers/finance-math';
 
 const handleClick = (props, state) => {
   // Save data to DB

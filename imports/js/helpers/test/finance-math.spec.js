@@ -1,5 +1,5 @@
+/* eslint-env mocha */
 import { expect } from 'chai';
-import { describe, it } from 'meteor/practicalmeteor:mocha';
 
 import {
   getYearsToRetirement,
@@ -26,7 +26,9 @@ describe('Finance Math', () => {
     });
 
     it('Should return 35 with an undefined gender of 30 yo', () => {
-      expect(getYearsToRetirement(30, undefined, undefined, undefined)).to.equal(35);
+      expect(
+        getYearsToRetirement(30, undefined, undefined, undefined),
+      ).to.equal(35);
     });
 
     it('Should return 0 with a female of 64 yo', () => {
@@ -50,7 +52,9 @@ describe('Finance Math', () => {
       };
       const borrowers = [{ age: 30, gender: 'm' }];
 
-      expect(Math.round(getAmortization(request, borrowers).amortization)).to.equal(1000);
+      expect(
+        Math.round(getAmortization(request, borrowers).amortization),
+      ).to.equal(1000);
     });
 
     it('Should return 0 when borrowing less than 65%', () => {
@@ -72,9 +76,11 @@ describe('Finance Math', () => {
 
   describe('Get Real Estate Fortune', () => {
     it('Should return 50k for a 100k value and 50k loan', () => {
-      expect(getRealEstateFortune([{ realEstate: [{ value: 100000, loan: 50000 }] }])).to.equal(
-        50000,
-      );
+      expect(
+        getRealEstateFortune([
+          { realEstate: [{ value: 100000, loan: 50000 }] },
+        ]),
+      ).to.equal(50000);
     });
   });
 });

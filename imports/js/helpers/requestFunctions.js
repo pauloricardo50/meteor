@@ -1,6 +1,6 @@
 import constants from '../config/constants';
 
-import { getIncomeRatio, getBorrowRatio, getFees } from './finance-math';
+import { getIncomeRatio } from './finance-math';
 import { propertyPercent, filesPercent } from '/imports/js/arrays/steps';
 import { requestFiles } from '/imports/js/arrays/files';
 
@@ -241,4 +241,24 @@ export const validateRatiosCompletely = (
       className: isTight ? 'warning' : 'error',
     };
   }
+};
+
+export const getFees = (loanRequest) => {
+  const notaryFees = loanRequest.property.value * constants.notaryFees;
+  const insuranceFees =
+    loanRequest.general.insuranceFortuneUsed * constants.lppFees;
+
+  return notaryFees + insuranceFees;
+};
+
+// Returns the maintenance to pay every month, i.e. 1% of the property divided by 12 months
+export const getMaintenance = loanRequest =>
+  loanRequest.property.value * 0.01 / 12;
+
+export const getBorrowRatio = (loanRequest) => {
+  const loan = getLoanValue(loanRequest);
+  const propAndWork =
+    loanRequest.property.value + (loanRequest.property.propertyWork || 0);
+
+  return loan / propAndWork;
 };
