@@ -1,15 +1,23 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
-import proxyquire from 'proxyquire';
 
+import proxyquire from 'proxyquire';
 import meteorStubs from '/imports/js/helpers/meteorStubs';
 
-const proxyquireStrict = proxyquire.noCallThru();
-const { getFormArray } = proxyquireStrict('../StartFormArray.js', {
-  ...meteorStubs,
-}).default();
+let getFormArray;
+if (global.Meteor && global.Meteor.isTest) {
+  getFormArray = require('../StartFormArray.js').default; // eslint-disable-line global-require
+} else {
+  getFormArray = proxyquire('../StartFormArray.js', {
+    ...meteorStubs,
+  }).default;
+}
 
-console.log(getFormArray);
+describe('wuut?', () => {
+  it('works', () => {
+    expect(true).to.equal(true);
+  });
+});
 
 describe('StartFormArray', () => {
   describe('getFormArray', () => {

@@ -9,7 +9,7 @@ import TextField from 'material-ui/TextField';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import track from '/imports/js/helpers/analytics';
-import { saveStartForm } from '/imports/js/helpers/startFunctions';
+import { saveStartForm } from './saveStartForm';
 
 const styles = {
   textField: {
@@ -21,12 +21,10 @@ const styles = {
   },
 };
 
-const getUserObject = props => {
-  return {
-    email: props.email,
-    password: props.password,
-  };
-};
+const getUserObject = props => ({
+  email: props.email,
+  password: props.password,
+});
 
 export default class PasswordLine extends Component {
   constructor(props) {
@@ -39,11 +37,11 @@ export default class PasswordLine extends Component {
     };
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.props.setParentState('password', event.target.value);
   };
 
-  handleCreate = e => {
+  handleCreate = (e) => {
     e.preventDefault();
 
     const user = getUserObject(this.props);
@@ -58,17 +56,21 @@ export default class PasswordLine extends Component {
     });
   };
 
-  handleLogin = e => {
+  handleLogin = (e) => {
     e.preventDefault();
 
-    Meteor.loginWithPassword(this.props.email, this.props.password, (error, result) => {
-      if (error) {
-        this.setState({ error: error.message, loading: false });
-      } else {
-        this.handleSuccess();
-        track('Funnel - User logged in', {});
-      }
-    });
+    Meteor.loginWithPassword(
+      this.props.email,
+      this.props.password,
+      (error, result) => {
+        if (error) {
+          this.setState({ error: error.message, loading: false });
+        } else {
+          this.handleSuccess();
+          track('Funnel - User logged in', {});
+        }
+      },
+    );
   };
 
   handleSuccess = () => {
@@ -101,7 +103,7 @@ export default class PasswordLine extends Component {
       />
     );
 
-    const onSubmit = e => {
+    const onSubmit = (e) => {
       this.setState({ loading: true });
       if (this.props.login) {
         this.handleLogin(e);
@@ -113,8 +115,13 @@ export default class PasswordLine extends Component {
     if (this.props.login || this.props.signUp) {
       content = textfield;
       button = (
-        <Button raised
-          label={this.props.login ? <T id="PasswordLine.login" /> : <T id="PasswordLine.create" />}
+        <Button
+          raised
+          label={
+            this.props.login
+              ? <T id="PasswordLine.login" />
+              : <T id="PasswordLine.create" />
+          }
           primary
           onTouchTap={onSubmit}
           type="submit"
@@ -129,7 +136,9 @@ export default class PasswordLine extends Component {
     return (
       <div>
         <form action="submit" onSubmit={onSubmit}>
-          <h1 className="fixed-size">{content}</h1>
+          <h1 className="fixed-size">
+            {content}
+          </h1>
           {/* <h4 className="fixed-size error">{this.state.error}</h4> */}
           {this.state.passwordIsValid && button}
         </form>

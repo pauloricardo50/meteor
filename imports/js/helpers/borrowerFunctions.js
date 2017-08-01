@@ -32,7 +32,7 @@ export const getBonusIncome = (borrowers) => {
   let total = 0;
   arrayify(borrowers).forEach((borrower) => {
     if (borrower.bonus) {
-      let arr = Object.values(borrower.bonus);
+      let arr = Object.keys(borrower.bonus).map(key => borrower.bonus[key]);
       if (arr.length < 1) {
         return;
       } else if (arr.length > 4) {

@@ -376,7 +376,7 @@ export const getAcquisitionArray = (state, props, setFormState) => [
   },
 ];
 
-const getErrorArray = (state, props, setFormState) => [
+export const getErrorArray = (state, props, setFormState) => [
   {
     id: 'notEnoughCash',
     error: true,
@@ -480,7 +480,7 @@ const getErrorArray = (state, props, setFormState) => [
   },
 ];
 
-const getFinalArray = (state, props, setFormState) => [
+export const getFinalArray = (state, props, setFormState) => [
   {
     id: 'acceptedLoan',
     condition: state.type === 'acquisition',

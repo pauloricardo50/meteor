@@ -1,3 +1,5 @@
+import { _ } from 'underscore';
+
 const stubs = {
   meteor: {
     Meteor: {
@@ -6,13 +8,23 @@ const stubs = {
     '@noCallThru': true,
     '@global': true,
   },
+  mongo: {
+    Mongo: {
+      Collection: () => ({
+        deny: () => {},
+        allow: () => {},
+        attachSchema: () => {},
+      }),
+    },
+    '@global': true,
+  },
   bert: {
     Bert: {},
     '@noCallThru': true,
     '@global': true,
   },
   validatedMethod: {
-    ValidatedMethod: {},
+    ValidatedMethod: () => ({}),
     '@noCallThru': true,
     '@global': true,
   },
@@ -32,7 +44,12 @@ const stubs = {
     '@global': true,
   },
   meteorUnderscore: {
-    _: {},
+    _,
+    '@noCallThru': true,
+    '@global': true,
+  },
+  analytics: {
+    track: () => {},
     '@noCallThru': true,
     '@global': true,
   },
@@ -40,13 +57,14 @@ const stubs = {
 
 const meteorStubs = {
   'meteor/meteor': stubs.meteor,
+  'meteor/mongo': stubs.mongo,
   'meteor/themeteorchef:bert': stubs.bert,
   'meteor/mdg:validated-method': stubs.validatedMethod,
   'meteor/check': stubs.check,
   'meteor/alanning:roles': stubs.alanningRoles,
   'meteor/ddp-rate-limiter': stubs.ddpRateLimiter,
   'meteor/underscore': stubs.meteorUnderscore,
-  'babel-polyfill': { something: {} },
+  'meteor/okgrow:analytics': stubs.analytics,
 };
 
 export default meteorStubs;

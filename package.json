@@ -90,6 +90,7 @@
     "proxyquire": "^1.8.0",
     "react-test-renderer": "^15.6.1",
     "require-main-filename": "^1.0.1",
-    "sinon": "^2.4.1"
+    "sinon": "^2.4.1",
+    "underscore": "^1.8.3"
   }
 }

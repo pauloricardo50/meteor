@@ -11,7 +11,7 @@ import Recap from '/imports/ui/components/general/Recap.jsx';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
 import track from '/imports/js/helpers/analytics';
 import constants from '/imports/js/config/constants';
-import { saveStartForm } from '/imports/js/helpers/startFunctions';
+import { saveStartForm } from './saveStartForm';
 
 const styles = {
   h4: {
@@ -94,13 +94,16 @@ class StartResult extends Component {
           <div className="chart">
             <h3>
               {type === 'acquisition' && <T id="StartResult.loan" />}
-              {type === 'test' && <T id="StartResult.maxLoan" />}
-              {' '}
-              <span className="active"><IntlNumber value={loan} format="money" /></span>
+              {type === 'test' && <T id="StartResult.maxLoan" />}{' '}
+              <span className="active">
+                <IntlNumber value={loan} format="money" />
+              </span>
             </h3>
             <ExpensesChartInterests
               loan={loan}
-              amortization={loan * constants.getAmortization(borrow, toRetirement) / 12}
+              amortization={
+                loan * constants.getAmortization(borrow, toRetirement) / 12
+              }
               maintenance={propAndWork * constants.maintenanceReal / 12}
             />
           </div>
@@ -109,19 +112,25 @@ class StartResult extends Component {
         <div className="description">
           {type === 'acquisition' &&
             <h4 style={styles.h4}>
-              <T id="StartResult.description1" values={{ count: lenderCount }} />
+              <T
+                id="StartResult.description1"
+                values={{ count: lenderCount }}
+              />
             </h4>}
           {type === 'test' &&
             <h4 style={styles.h4}>
               <T
                 id="StartResult.description2"
-                values={{ value: <IntlNumber value={property} format="money" /> }}
+                values={{
+                  value: <IntlNumber value={property} format="money" />,
+                }}
               />
             </h4>}
         </div>
 
         <div className="buttons">
-          <Button raised
+          <Button
+            raised
             label={<T id="general.modify" />}
             onTouchTap={() => {
               track('StartResult - clicked start result modify');
@@ -133,7 +142,8 @@ class StartResult extends Component {
             }}
             style={{ marginRight: 8 }}
           />
-          <Button raised
+          <Button
+            raised
             label={<T id="general.continue" />}
             onTouchTap={() => {
               track('Funnel - clicked start result CTA', { type });
@@ -150,7 +160,6 @@ class StartResult extends Component {
             primary
           />
         </div>
-
       </article>
     );
   }
