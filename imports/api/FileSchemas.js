@@ -1,4 +1,4 @@
-import 'babel-polyfill';
+
 import SimpleSchema from 'simpl-schema';
 
 // Schema used for every file
