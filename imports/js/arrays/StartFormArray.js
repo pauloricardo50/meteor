@@ -8,7 +8,7 @@ import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
 
 import constants from '/imports/js/config/constants';
 
-const getAcquisitionArray = (state, props, setFormState) => [
+export const getAcquisitionArray = (state, props, setFormState) => [
   {
     id: 'propertyValue',
     condition: state.knowsProperty === true,
@@ -77,8 +77,14 @@ const getAcquisitionArray = (state, props, setFormState) => [
     question: true,
     buttons: [
       { id: 'primary', label: <T id="Start2Form.usageTypeButtonPrincipal" /> },
-      { id: 'secondary', label: <T id="Start2Form.usageTypeButtonSecondary" /> },
-      { id: 'investment', label: <T id="Start2Form.usageTypeButtonInvestment" /> },
+      {
+        id: 'secondary',
+        label: <T id="Start2Form.usageTypeButtonSecondary" />,
+      },
+      {
+        id: 'investment',
+        label: <T id="Start2Form.usageTypeButtonInvestment" />,
+      },
     ],
   },
   {
@@ -91,7 +97,10 @@ const getAcquisitionArray = (state, props, setFormState) => [
     id: 'borrowerCount',
     type: 'buttons',
     question: true,
-    buttons: [{ id: 1, label: <T id="general.1" /> }, { id: 2, label: <T id="general.2" /> }],
+    buttons: [
+      { id: 1, label: <T id="general.1" /> },
+      { id: 2, label: <T id="general.2" /> },
+    ],
   },
   {
     id: 'age',
@@ -373,7 +382,8 @@ const getErrorArray = (state, props, setFormState) => [
     error: true,
     condition:
       state.usageType === 'primary' &&
-        (props.fortune < props.minCash && props.insuranceFortune >= 0.1 * props.propAndWork),
+      (props.fortune < props.minCash &&
+        props.insuranceFortune >= 0.1 * props.propAndWork),
     type: 'buttons',
     intlValues: {
       value: (
@@ -407,7 +417,11 @@ const getErrorArray = (state, props, setFormState) => [
             label={<T id="Start2Form.whyButton" />}
             title={<T id="Start2Form.notEnoughCash.dialogTitle" />}
             key={2}
-            rootStyle={{ display: 'inline-block', marginRight: 8, marginBottom: 8 }}
+            rootStyle={{
+              display: 'inline-block',
+              marginRight: 8,
+              marginBottom: 8,
+            }}
           >
             <T id="Start2Form.notEnoughCash.description" />
           </DialogSimple>
@@ -452,7 +466,11 @@ const getErrorArray = (state, props, setFormState) => [
             label={<T id="Start2Form.whyButton" />}
             title={<T id="Start2Form.notEnoughOwnFunds.dialogTitle" />}
             key={2}
-            rootStyle={{ display: 'inline-block', marginRight: 8, marginBottom: 8 }}
+            rootStyle={{
+              display: 'inline-block',
+              marginRight: 8,
+              marginBottom: 8,
+            }}
           >
             <T id="Start2Form.notEnoughOwnFunds.description" />
           </DialogSimple>
@@ -499,13 +517,20 @@ const getFinalArray = (state, props, setFormState) => [
     child1: (
       <span className="loanWanted-slider">
         <div>
-          <label htmlFor=""><T id="general.mortgageLoan" /></label>
+          <label htmlFor="">
+            <T id="general.mortgageLoan" />
+          </label>
           <span className="active">
-            <IntlNumber value={state.loanWanted || props.maxLoan} format="money" />
+            <IntlNumber
+              value={state.loanWanted || props.maxLoan}
+              format="money"
+            />
           </span>
         </div>
         <div>
-          <label htmlFor=""><T id="general.ownFunds" /></label>
+          <label htmlFor="">
+            <T id="general.ownFunds" />
+          </label>
           <span className="body">
             <IntlNumber
               value={props.fortuneNeeded || props.project - props.maxLoan}
@@ -536,17 +561,18 @@ const getFinalArray = (state, props, setFormState) => [
     },
     validation: {
       min: Math.max(100000, props.minLoan),
-      max: state.usageType === 'secondary'
-        ? Math.ceil(0.7 * props.propAndWork)
-        : Math.ceil(0.8 * props.propAndWork),
+      max:
+        state.usageType === 'secondary'
+          ? Math.ceil(0.7 * props.propAndWork)
+          : Math.ceil(0.8 * props.propAndWork),
     },
   },
   {
     id: 'fortuneRequiredAgreed',
     condition:
       state.type === 'acquisition' &&
-        (state.usageType !== 'primary' ||
-          (state.usageType === 'primary' && props.insuranceFortune <= 0)),
+      (state.usageType !== 'primary' ||
+        (state.usageType === 'primary' && props.insuranceFortune <= 0)),
     type: 'buttons',
     intlValues: {
       value: (
@@ -570,9 +596,9 @@ const getFinalArray = (state, props, setFormState) => [
     id: 'useInsurance1',
     condition:
       state.type === 'acquisition' &&
-        state.usageType === 'primary' &&
-        props.fortune >= props.fortuneNeeded &&
-        props.insuranceFortune > 0,
+      state.usageType === 'primary' &&
+      props.fortune >= props.fortuneNeeded &&
+      props.insuranceFortune > 0,
     type: 'buttons',
     buttons: [
       {
@@ -599,7 +625,11 @@ const getFinalArray = (state, props, setFormState) => [
             label={<T id="Start2Form.whyButton" />}
             title={<T id="Start2Form.useInsurance1.dialogTitle" />}
             key={2}
-            rootStyle={{ display: 'inline-block', marginRight: 8, marginBottom: 8 }}
+            rootStyle={{
+              display: 'inline-block',
+              marginRight: 8,
+              marginBottom: 8,
+            }}
           >
             <T id="Start2Form.useInsurance1.description" />
           </DialogSimple>
@@ -612,8 +642,8 @@ const getFinalArray = (state, props, setFormState) => [
     id: 'useInsurance2',
     condition:
       state.type === 'acquisition' &&
-        state.usageType === 'primary' &&
-        props.fortune < props.fortuneNeeded,
+      state.usageType === 'primary' &&
+      props.fortune < props.fortuneNeeded,
     type: 'buttons',
     buttons: [
       { id: true, label: 'Ok' },
@@ -624,7 +654,11 @@ const getFinalArray = (state, props, setFormState) => [
             label={<T id="Start2Form.whyButton" />}
             title={<T id="Start2Form.useInsurance1.dialogTitle" />}
             key={2}
-            rootStyle={{ display: 'inline-block', marginRight: 8, marginBottom: 8 }}
+            rootStyle={{
+              display: 'inline-block',
+              marginRight: 8,
+              marginBottom: 8,
+            }}
           >
             <T id="Start2Form.useInsurance2.description" />
           </DialogSimple>
@@ -662,13 +696,22 @@ const getFinalArray = (state, props, setFormState) => [
             label={<T id="Start2Form.insuranceConditions.button" />}
             title={<T id="Start2Form.insuranceConditions.title" />}
             key={2}
-            rootStyle={{ display: 'inline-block', marginRight: 8, marginBottom: 8 }}
+            rootStyle={{
+              display: 'inline-block',
+              marginRight: 8,
+              marginBottom: 8,
+            }}
           >
             <T id="Start2Form.insuranceConditions.description" />
-            <br /><br />
+            <br />
+            <br />
             <ul>
-              <li><T id="Start2Form.insuranceConditions.1" /></li>
-              <li><T id="Start2Form.insuranceConditions.2" /></li>
+              <li>
+                <T id="Start2Form.insuranceConditions.1" />
+              </li>
+              <li>
+                <T id="Start2Form.insuranceConditions.2" />
+              </li>
             </ul>
           </DialogSimple>
         ),
@@ -679,17 +722,17 @@ const getFinalArray = (state, props, setFormState) => [
     id: 'fortuneSliders',
     condition:
       state.type === 'acquisition' &&
-        state.usageType === 'primary' &&
-        (state.useInsurance1 === true || state.useInsurance2 === true) &&
-        state.insuranceConditions === true,
+      state.usageType === 'primary' &&
+      (state.useInsurance1 === true || state.useInsurance2 === true) &&
+      state.insuranceConditions === true,
     type: 'custom',
     component: FortuneSliders,
     // minFortune is required to do math in the FortuneSliders component
     minFortune: props.minFortune,
     fortune: props.fortune,
     validation: () =>
-      state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= props.minFortune &&
-      state.fortuneUsed >= props.minCash,
+      state.fortuneUsed + (state.insuranceFortuneUsed || 0) >=
+        props.minFortune && state.fortuneUsed >= props.minCash,
     intlValues: {
       value: (
         <span className="active">
@@ -700,20 +743,34 @@ const getFinalArray = (state, props, setFormState) => [
     sliders: [
       {
         id: 'fortuneUsed',
-        sliderMin: Math.max(props.fortuneNeeded - props.insuranceFortune, props.minCash),
-        sliderMax: props.fortune >= props.fortuneNeeded ? props.fortuneNeeded : props.fortune,
+        sliderMin: Math.max(
+          props.fortuneNeeded - props.insuranceFortune,
+          props.minCash,
+        ),
+        sliderMax:
+          props.fortune >= props.fortuneNeeded
+            ? props.fortuneNeeded
+            : props.fortune,
       },
       {
         id: 'insuranceFortuneUsed',
-        sliderMin: props.fortune >= props.fortuneNeeded ? 0 : props.fortuneNeeded - props.fortune,
-        sliderMax: Math.min(props.insuranceFortune, props.fortuneNeeded - props.minCash),
+        sliderMin:
+          props.fortune >= props.fortuneNeeded
+            ? 0
+            : props.fortuneNeeded - props.fortune,
+        sliderMax: Math.min(
+          props.insuranceFortune,
+          props.fortuneNeeded - props.minCash,
+        ),
       },
     ],
   },
   {
     id: 'notEnoughIncome',
     error: true,
-    condition: (props.income && props.monthly / ((props.income - props.expenses) / 12)) > 0.38,
+    condition:
+      (props.income && props.monthly / ((props.income - props.expenses) / 12)) >
+      0.38,
     type: 'buttons',
     intlValues: {
       value: (
@@ -721,7 +778,9 @@ const getFinalArray = (state, props, setFormState) => [
           <IntlNumber
             // props.monthly represents 38% of the monthly cost,
             // then convert it to yearly, and round it up to avoid errors.
-            value={Math.round(props.monthly / constants.maxRatio * 12 / 1000) * 1000}
+            value={
+              Math.round(props.monthly / constants.maxRatio * 12 / 1000) * 1000
+            }
             format="money"
           />
         </span>
@@ -752,7 +811,11 @@ const getFinalArray = (state, props, setFormState) => [
             label={<T id="Start2Form.whyButton" />}
             title={<T id="Start2Form.notEnoughIncome.dialogTitle" />}
             key={2}
-            rootStyle={{ display: 'inline-block', marginRight: 8, marginBottom: 8 }}
+            rootStyle={{
+              display: 'inline-block',
+              marginRight: 8,
+              marginBottom: 8,
+            }}
           >
             <T id="Start2Form.notEnoughIncome.description" />
           </DialogSimple>
@@ -764,7 +827,7 @@ const getFinalArray = (state, props, setFormState) => [
     id: 'finalized',
     condition:
       state.type === 'test' ||
-        state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= props.minFortune,
+      state.fortuneUsed + (state.insuranceFortuneUsed || 0) >= props.minFortune,
     type: 'buttons',
     hideResult: true,
     buttons: !state.hideFinalButton
@@ -773,7 +836,7 @@ const getFinalArray = (state, props, setFormState) => [
           id: true,
           label: <T id="Start2Form.finalized.button" />,
           onClick() {
-              // After clicking on this button, hide it
+            // After clicking on this button, hide it
             setFormState('hideFinalButton', true);
             const options = {
               duration: 350,
@@ -790,7 +853,9 @@ const getFinalArray = (state, props, setFormState) => [
 
 const getFormArray = (state, props, setFormState) =>
   getAcquisitionArray(state, props, setFormState).concat(
-    state.type === 'acquisition' ? getErrorArray(state, props, setFormState) : [], // these errors only for acquisitions
+    state.type === 'acquisition'
+      ? getErrorArray(state, props, setFormState)
+      : [], // these errors only for acquisitions
     getFinalArray(state, props, setFormState),
   );
 

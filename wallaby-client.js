@@ -1,9 +1,4 @@
-// const wallabify = require('wallabify');
-// const proxyquireify = require('proxyquireify');
-
 module.exports = function (wallaby) {
-  // const postprocessor = wallabify({}, b => b.plugin(proxyquireify.plugin));
-
   return {
     name: 'e-Potek Client',
     debug: true,
@@ -20,21 +15,5 @@ module.exports = function (wallaby) {
     env: {
       type: 'node',
     },
-    // preprocessors: {
-    //   'app*/**/*.js': function (file) {
-    //     return require('babel').transform(file.content, { sourceMap: true });
-    //   },
-    // },
-    // postprocessor,
-    // bootstrap() {
-    //   window.__moduleBundler.loadTests();
-    // },
-    // preprocessors: {
-    //   'imports/**/*.js*': (file) => {
-    //     // change absolute imports to absolute root imports
-    //     const content = file.content;
-    //     return content.replace("require('/", "require('~/dev/epotek/");
-    //   },
-    // },
   };
 };
