@@ -227,8 +227,8 @@ export const getPropertyCompletion = (loanRequest, borrowers) =>
 export const validateRatios = (
   incomeRatio,
   borrowRatio,
+  allowInsurance = true,
   borrowRatioWanted,
-  allowInsurance,
 ) => {
   // To prevent rounding errors
   const incomeRatioSafe = incomeRatio - 0.001;
@@ -251,13 +251,15 @@ export const validateRatios = (
   } else if (borrowRatioSafe > 0.8) {
     throw new Error('fortuneTight');
   }
+
+  return true;
 };
 
 export const validateRatiosCompletely = (
   incomeRatio,
   borrowRatio,
-  borrowRatioWanted,
   allowInsurance = true,
+  borrowRatioWanted = 0.9,
 ) => {
   try {
     validateRatios(incomeRatio, borrowRatio, borrowRatioWanted, allowInsurance);
@@ -281,5 +283,9 @@ export const validateRatiosCompletely = (
 };
 
 // Returns the maintenance to pay every month, i.e. 1% of the property divided by 12 months
-export const getMaintenance = loanRequest =>
-  loanRequest.property.value * 0.01 / 12;
+export const getMaintenance = (loanRequest) => {
+  if (loanRequest && loanRequest.property) {
+    return loanRequest.property.value * 0.01 / 12;
+  }
+  throw new Error('invalid loanRequest');
+};

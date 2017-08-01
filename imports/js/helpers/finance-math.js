@@ -3,14 +3,15 @@ import {
   getLoanValue,
   getPropAndWork,
   getMaintenance,
+  getFees,
 } from './requestFunctions';
-import { getTotalFortune, getBorrowerIncome } from './borrowerFunctions';
+import {
+  getFortune,
+  getInsuranceFortune,
+  getTotalFortune,
+  getBorrowerIncome,
+} from './borrowerFunctions';
 import { arrayify } from './general';
-
-// Export all functions from requestFunctions and borrowerFunctions
-// as well
-export * from './requestFunctions';
-export * from './borrowerFunctions';
 
 // Determine retirement age depending on the gender of the borrowers
 // Return a positive value only, negative values rounded to 0
@@ -84,14 +85,11 @@ export const getInterests = (loanRequest, rate, loanValue) => {
   const loan = loanValue || getLoanValue(loanRequest);
 
   if (loan <= 0) {
-    return 0;
+    throw new Error('negative loan');
   }
 
   // Use a base interest rate of 1.5%
   const interests = rate || 0.015;
-  if (loanRequest.logic.hasChosenStrategy) {
-    // TODO: return real interest rate
-  }
 
   return loan * interests / 12;
 };
@@ -131,12 +129,22 @@ export const getIncomeRatio = (loanRequest, borrowers) => {
 };
 
 export const canAffordRank1 = (loanRequest, borrowers) => {
-  // TODO: make sure it accounts for lppFees as well if needed
   const propAndWork = getPropAndWork(loanRequest);
   const totalFortune = getTotalFortune(borrowers);
+  const fortune = getFortune(borrowers);
+  const insuranceFortune = getInsuranceFortune(borrowers);
+  const fortuneRequired =
+    0.35 * propAndWork + loanRequest.property.value * constants.notaryFees;
 
-  return (
-    totalFortune >=
-    0.35 * propAndWork + loanRequest.property.value * constants.notaryFees
-  );
+  if (fortune >= fortuneRequired) {
+    return true;
+  }
+
+  if (loanRequest.property && loanRequest.property.usageType === 'primary') {
+    if (fortune + insuranceFortune >= fortuneRequired) {
+      // ignore lppFees
+      return true;
+    }
+  }
+  return false;
 };

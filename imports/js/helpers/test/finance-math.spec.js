@@ -5,14 +5,10 @@ import {
   getYearsToRetirement,
   getAmortization,
   getInterests,
-  getMaintenance,
   getMonthlyPayment,
-  getBonusIncome,
-  getOtherIncome,
-  getExpenses,
-  getBorrowerIncome,
-  getRatio,
-  getRealEstateFortune,
+  getTheoreticalMonthly,
+  getIncomeRatio,
+  canAffordRank1,
 } from '../finance-math';
 
 describe('Finance Math', () => {
@@ -68,19 +64,112 @@ describe('Finance Math', () => {
     });
   });
 
-  describe('Get Bonus Income', () => {
-    it('Should return 0 for an empty object', () => {
-      expect(getBonusIncome([{ bonus: {} }])).to.equal(0);
+  describe('getInterests', () => {
+    it('throws an error if loan is negative', () => {
+      expect(() => getInterests({}, 0, -1)).to.throw();
+    });
+
+    it('returns the correct value', () => {
+      const loan = 100000;
+      expect(getInterests({}, 0, loan)).to.equal(loan * 0.015 / 12);
+    });
+
+    it('uses the interestRate', () => {
+      const loan = 100000;
+      const rate = 0.01;
+      expect(getInterests({}, rate, loan)).to.equal(loan * rate / 12);
     });
   });
 
-  describe('Get Real Estate Fortune', () => {
-    it('Should return 50k for a 100k value and 50k loan', () => {
+  describe('getMonthlyPayment', () => {
+    it('returns an object', () => {
       expect(
-        getRealEstateFortune([
-          { realEstate: [{ value: 100000, loan: 50000 }] },
-        ]),
-      ).to.equal(50000);
+        typeof getMonthlyPayment({ property: { value: 100 }, general: {} }, {}),
+      ).to.equal('object');
+    });
+
+    it('returns a total and the 3 values that make the total', () => {
+      const value = getMonthlyPayment(
+        { property: { value: 100 }, general: {} },
+        {},
+      );
+
+      expect(Object.keys(value).length).to.equal(4);
+      expect(value.total).to.equal(
+        value.amortization + value.interests + value.maintenance,
+      );
+    });
+  });
+
+  describe('getTheoreticalMonthly', () => {
+    it('returns an object', () => {
+      expect(
+        typeof getTheoreticalMonthly(
+          { property: { value: 100 }, general: {} },
+          {},
+        ),
+      ).to.equal('object');
+    });
+
+    it('returns a total and the 3 values that make the total', () => {
+      const value = getTheoreticalMonthly(
+        { property: { value: 100 }, general: {} },
+        {},
+      );
+
+      expect(Object.keys(value).length).to.equal(4);
+      expect(value.total).to.equal(
+        value.amortization + value.interests + value.maintenance,
+      );
+    });
+  });
+
+  describe('getIncomeRatio', () => {
+    it('works');
+  });
+
+  describe('canAffordRank1', () => {
+    it('returns true for the right conditions', () => {
+      expect(
+        canAffordRank1(
+          { general: {}, property: { value: 1000000 } },
+          { bankFortune: 400000 },
+        ),
+      ).to.equal(true);
+    });
+
+    it('returns false for the right conditions', () => {
+      expect(
+        canAffordRank1(
+          { general: {}, property: { value: 1000000 } },
+          { bankFortune: 300000 },
+        ),
+      ).to.equal(false);
+    });
+
+    it('should return false if property is not primary and insurance fortune should be used', () => {
+      expect(
+        canAffordRank1(
+          { general: {}, property: { value: 1000000 } },
+          { bankFortune: 300000, insuranceSecondPillar: 200000 },
+        ),
+      ).to.equal(false);
+    });
+
+    it('should account for insuranceSecondPillar and insuranceThirdPillar', () => {
+      expect(
+        canAffordRank1(
+          { general: {}, property: { value: 1000000, usageType: 'primary' } },
+          { bankFortune: 300000, insuranceSecondPillar: 200000 },
+        ),
+      ).to.equal(true);
+
+      expect(
+        canAffordRank1(
+          { general: {}, property: { value: 1000000, usageType: 'primary' } },
+          { bankFortune: 300000, insuranceThirdPillar: 200000 },
+        ),
+      ).to.equal(true);
     });
   });
 });

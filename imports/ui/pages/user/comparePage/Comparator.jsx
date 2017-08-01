@@ -198,8 +198,8 @@ export default class Comparator extends Component {
     } = validateRatiosCompletely(
       incomeRatio,
       realBorrowRatio,
-      borrowRatio,
       usageType === 'primary',
+      borrowRatio,
     );
 
     return {
