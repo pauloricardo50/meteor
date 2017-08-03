@@ -4,11 +4,12 @@ module.exports = function (wallaby) {
     debug: true,
     testFramework: 'mocha',
     files: [
-      { pattern: '.test/mocha-config.js', instrument: false, load: true },
-      { pattern: 'imports/**/*.js*', load: true },
+      { pattern: '.test/mocha-config.js', instrument: false },
+      'imports/**/*.js*',
+      'build/**/*.json',
       '!imports/**/*.spec.js*',
     ],
-    tests: [{ pattern: 'imports/**/*.spec.js*', load: true }],
+    tests: ['imports/**/*.spec.js*'],
     compilers: {
       '**/*.js*': wallaby.compilers.babel(),
     },
