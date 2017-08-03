@@ -25,9 +25,8 @@ describe('intl-server', () => {
     expect(() => formatMessage()).to.throw;
   });
 
-  it('returns a french date', () => {
-    // expect(formatMessage('{date, date, long}', { date: new Date(0) })).to.equal(
-    //   'hi!',
-    // );
+  it('uses the custom fallback if it is not undefined', () => {
+    expect(formatMessage('fakeId', {}, 'custom')).to.equal('custom');
+    expect(formatMessage('fakeId', {}, '')).to.equal('');
   });
 });

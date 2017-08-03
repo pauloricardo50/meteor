@@ -5,7 +5,7 @@
     "start": "meteor --settings settings-dev.json",
     "production": "meteor run --production --settings settings-dev.json",
     "visualize": "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 3010",
-    "test": "meteor test --driver-package=practicalmeteor:mocha --port 3005",
+    "test": "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 3005",
     "test-debug": "meteor test --driver-package=practicalmeteor:mocha --port 5000 --debug-port 5858",
     "test-CI": "TEST_BROWSER_DRIVER=nightmare SERVER_TEST_REPORTER=xunit XUNIT_FILE=$CIRCLE_TEST_REPORTS/reports/unit.xml meteor test --once --driver-package dispatch:mocha",
     "test-cli": "TEST_BROWSER_DRIVER=nightmare meteor test --port 3002 --driver-package dispatch:mocha",

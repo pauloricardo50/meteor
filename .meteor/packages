@@ -30,6 +30,8 @@ dispatch:mocha
 dburles:factory
 xolvio:cleaner
 hwillson:stub-collections
+random@1.0.10
+practicalmeteor:mocha-console-runner
 
 
 
@@ -52,6 +54,7 @@ edgee:slingshot
 
 
 # Internationalization
+softwarerero:accounts-t9n
 
 
 # UI tricks
@@ -67,10 +70,6 @@ force-ssl@1.0.14                      # Automatically route users to https
 dynamic-import@0.1.1
 accounts-password@1.4.0
 wylio:mandrill
-practicalmeteor:mocha-console-runner
 dburles:google-maps
-react-meteor-data
-random@1.0.10
 meteorhacks:kadira
 okgrow:analytics
-softwarerero:accounts-t9n

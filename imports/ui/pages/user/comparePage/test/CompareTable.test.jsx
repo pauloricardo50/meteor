@@ -1,7 +1,8 @@
+/* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { describe, it } from 'meteor/practicalmeteor:mocha';
 import { shallow } from 'enzyme';
+import { Factory } from 'meteor/dburles:factory';
 
 import CompareTable, {
   sortFunc,
@@ -17,7 +18,14 @@ describe('<CompareTable />', () => {
 
   beforeEach(() => {
     properties = [Factory.create('property'), Factory.create('property')];
-    wrapper = shallow(<CompareTable properties={properties} />);
+    wrapper = shallow(
+      <CompareTable
+        properties={properties}
+        addCustomField={() => {}}
+        fields={[]}
+        deleteProperty={() => {}}
+      />,
+    );
   });
 
   it('renders', () => {

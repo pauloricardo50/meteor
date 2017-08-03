@@ -18,7 +18,13 @@ describe('<CompareOptions />', () => {
   beforeEach(() => {
     comparator = Factory.create('comparator');
     getMountedComponent.reset(false);
-    wrapper = shallow(<CompareOptions comparator={comparator} />);
+    wrapper = shallow(
+      <CompareOptions
+        comparator={comparator}
+        changeComparator={() => {}}
+        addProperty={() => {}}
+      />,
+    );
   });
 
   it('renders', () => {

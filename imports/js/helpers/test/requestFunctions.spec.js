@@ -284,17 +284,22 @@ describe('Request functions', () => {
   });
 
   describe('getMonthlyWithOffer', () => {
-    const request = {
-      general: {
-        loanTranches: [{ value: 720000, type: 'test' }],
-        fortuneUsed: 250000,
-      },
-      property: { value: 1000000 },
-    };
-    const offer = {
-      standardOffer: {},
-      counterpartOffer: {},
-    };
+    let request;
+    let offer;
+
+    beforeEach(() => {
+      request = {
+        general: {
+          loanTranches: [{ value: 720000, type: 'test' }],
+          fortuneUsed: 250000,
+        },
+        property: { value: 1000000 },
+      };
+      offer = {
+        standardOffer: {},
+        counterpartOffer: {},
+      };
+    });
 
     it('returns 0 if interests is wrong', () => {
       expect(getMonthlyWithOffer(request, offer)).to.equal(0);

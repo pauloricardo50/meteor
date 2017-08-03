@@ -3,8 +3,8 @@ import { Accounts } from 'meteor/accounts-base';
 import { Mandrill } from 'meteor/wylio:mandrill';
 
 import {
-  from,
   fromEmail,
+  defaultFrom,
   emailFooter,
   getEmailContent,
 } from './email-defaults';
@@ -12,12 +12,11 @@ import {
 // Meteor default emails
 // https://themeteorchef.com/tutorials/sign-up-with-email-verification
 Accounts.emailTemplates.siteName = 'e-Potek';
-Accounts.emailTemplates.from = `${from} <${fromEmail}>`;
+Accounts.emailTemplates.from = defaultFrom;
 
 Accounts.emailTemplates.verifyEmail = {
-  subject() {
-    return getEmailContent('verifyEmail').subject;
-  },
+  from: () => defaultFrom,
+  subject: () => getEmailContent('verifyEmail').subject,
   html(user, url) {
     const urlWithoutHash = url.replace('#/', '');
     let result;

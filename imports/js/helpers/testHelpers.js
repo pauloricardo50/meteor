@@ -111,3 +111,5 @@ export const stubCollections = () => {
   ]);
   StubCollections.stub();
 };
+
+stubCollections.restore = () => StubCollections.restore();
