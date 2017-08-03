@@ -11,14 +11,14 @@ import constants from '/imports/js/config/constants';
 export const getAcquisitionArray = (state, props, setFormState) => [
   {
     id: 'propertyValue',
-    condition: state.knowsProperty === true,
     type: 'textInput',
+    condition: state.knowsProperty === true,
     money: true,
   },
   {
     id: 'notaryFeesAgreed',
-    condition: state.knowsProperty === true,
     type: 'buttons',
+    condition: state.knowsProperty === true,
     intlValues: {
       value: (
         <span className="active">
@@ -39,8 +39,8 @@ export const getAcquisitionArray = (state, props, setFormState) => [
   },
   {
     id: 'propertyWorkExists',
-    condition: state.knowsProperty === true,
     type: 'buttons',
+    condition: state.knowsProperty === true,
     question: true,
     buttons: [
       { id: true, label: <T id="general.yes" /> },
@@ -56,8 +56,8 @@ export const getAcquisitionArray = (state, props, setFormState) => [
   },
   {
     id: 'projectAgreed',
-    condition: state.propertyWork !== undefined && state.propertyWork !== 0,
     type: 'buttons',
+    condition: state.propertyWork !== undefined && state.propertyWork !== 0,
     intlValues: {
       value: (
         <span className="active">
@@ -89,8 +89,8 @@ export const getAcquisitionArray = (state, props, setFormState) => [
   },
   {
     id: 'propertyRent',
-    condition: state.usageType === 'investment',
     type: 'textInput',
+    condition: state.usageType === 'investment',
     money: true,
   },
   {
@@ -104,8 +104,8 @@ export const getAcquisitionArray = (state, props, setFormState) => [
   },
   {
     id: 'age',
-    condition: state.borrowerCount === 1,
     type: 'textInput',
+    condition: state.borrowerCount === 1,
     text2: true,
     placeholder: '18',
     number: true,
@@ -114,8 +114,8 @@ export const getAcquisitionArray = (state, props, setFormState) => [
   },
   {
     id: 'oldestAge',
-    condition: state.borrowerCount > 1,
     type: 'textInput',
+    condition: state.borrowerCount > 1,
     text2: true,
     placeholder: '18',
     number: true,
@@ -124,8 +124,8 @@ export const getAcquisitionArray = (state, props, setFormState) => [
   },
   {
     id: 'gender',
-    condition: state.borrowerCount === 1 && state.age >= 50,
     type: 'buttons',
+    condition: state.borrowerCount === 1 && state.age >= 50,
     text2: true,
     buttons: [
       { id: 'f', label: <T id="Start2Form.gender.woman" /> },
@@ -134,8 +134,8 @@ export const getAcquisitionArray = (state, props, setFormState) => [
   },
   {
     id: 'oldestGender',
-    condition: state.borrowerCount > 1 && state.oldestAge >= 50,
     type: 'buttons',
+    condition: state.borrowerCount > 1 && state.oldestAge >= 50,
     buttons: [
       { id: 'f', label: <T id="Start2Form.gender.woman" /> },
       { id: 'm', label: <T id="Start2Form.gender.man" /> },
@@ -172,29 +172,29 @@ export const getAcquisitionArray = (state, props, setFormState) => [
   },
   {
     id: 'bonus4',
-    condition: state.bonusExists === true,
     type: 'multipleInput',
+    condition: state.bonusExists === true,
     money: true,
     zeroAllowed: true,
   },
   {
     id: 'bonus3',
-    condition: state.bonusExists === true,
     type: 'multipleInput',
+    condition: state.bonusExists === true,
     money: true,
     zeroAllowed: true,
   },
   {
     id: 'bonus2',
-    condition: state.bonusExists === true,
     type: 'multipleInput',
+    condition: state.bonusExists === true,
     money: true,
     zeroAllowed: true,
   },
   {
     id: 'bonus1',
-    condition: state.bonusExists === true,
     type: 'multipleInput',
+    condition: state.bonusExists === true,
     money: true,
     zeroAllowed: true,
   },
@@ -210,9 +210,9 @@ export const getAcquisitionArray = (state, props, setFormState) => [
   },
   {
     id: 'otherIncomeArray',
+    type: 'arrayInput',
     condition: state.otherIncome === true,
     existId: 'otherIncome',
-    type: 'arrayInput',
     inputs: [
       {
         id: 'description',
@@ -248,9 +248,9 @@ export const getAcquisitionArray = (state, props, setFormState) => [
   },
   {
     id: 'expensesArray',
+    type: 'arrayInput',
     condition: state.expensesExist === true,
     existId: 'expensesExist',
-    type: 'arrayInput',
     inputs: [
       {
         id: 'description',
@@ -412,6 +412,7 @@ export const getErrorArray = (state, props, setFormState) => [
       },
       {
         id: undefined,
+        help: true,
         component: (
           <DialogSimple
             label={<T id="Start2Form.whyButton" />}
@@ -461,6 +462,7 @@ export const getErrorArray = (state, props, setFormState) => [
       },
       {
         id: undefined,
+        help: true,
         component: (
           <DialogSimple
             label={<T id="Start2Form.whyButton" />}
@@ -620,6 +622,7 @@ export const getFinalArray = (state, props, setFormState) => [
       },
       {
         id: undefined,
+        help: true,
         component: (
           <DialogSimple
             label={<T id="Start2Form.whyButton" />}
@@ -649,6 +652,7 @@ export const getFinalArray = (state, props, setFormState) => [
       { id: true, label: 'Ok' },
       {
         id: undefined,
+        help: true,
         component: (
           <DialogSimple
             label={<T id="Start2Form.whyButton" />}
@@ -690,6 +694,7 @@ export const getFinalArray = (state, props, setFormState) => [
       },
       {
         id: undefined,
+        help: true,
         component: (
           <DialogSimple
             secondary
@@ -806,6 +811,7 @@ export const getFinalArray = (state, props, setFormState) => [
       },
       {
         id: undefined,
+        help: true,
         component: (
           <DialogSimple
             label={<T id="Start2Form.whyButton" />}

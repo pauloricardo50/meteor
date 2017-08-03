@@ -2,9 +2,32 @@
 import { expect } from 'chai';
 
 import constants, { calculatePrimaryProperty } from '../constants';
-// import { getBorrow, getRatio, getMonthly } from '../../helpers/startFunctions';
 
 describe('Constants', () => {
+  it('loanCost should return the right value', () => {
+    expect(constants.loanCost(0.8)).to.equal(0.0625);
+  });
+
+  it('loanCostReal should return the right value', () => {
+    expect(constants.loanCostReal(0.8)).to.equal(0.0275);
+  });
+
+  it('loanCostReal should return the right value when given a specific rate', () => {
+    expect(constants.loanCostReal(0.8, 20, 0.05)).to.equal(0.0625);
+  });
+
+  it('propertyToIncome should return the right value', () => {
+    expect(constants.propertyToIncome('primary', 0.8).toFixed(2)).to.equal(
+      '0.18',
+    );
+  });
+
+  it('propertyToIncomeReal should return the right value', () => {
+    expect(constants.propertyToIncomeReal('primary', 0.8).toFixed(2)).to.equal(
+      '0.08',
+    );
+  });
+
   describe('Calculate primary property value', () => {
     it('Should return 1M if 250k fortune and 0 insurance fortune', () => {
       expect(calculatePrimaryProperty(250000, 0)).to.equal(1000000);
@@ -56,30 +79,6 @@ describe('Constants', () => {
         1742056,
       );
     });
-
-    // it('Should always have a ratio below the maximum ratio', () => {
-    //   const income = Math.random() * 100000 + 100000;
-    //   const fortune = Math.random() * 200000 + 300000;
-    //   const insuranceFortune = Math.random() * 100000 + 100000;
-    //   const property = constants.maxProperty(
-    //     income,
-    //     fortune,
-    //     insuranceFortune,
-    //     'primary',
-    //   );
-    //   const state = {
-    //     fortuneUsed: fortune,
-    //     insuranceFortuneUsed: insuranceFortune,
-    //     propertyValue: property,
-    //   };
-    //   const totalFortune = fortune + insuranceFortune;
-    //   const fees =
-    //     property * constants.notaryFees + insuranceFortune * constants.lppFees;
-    //   const borrow = getBorrow(totalFortune, property, fees);
-    //   const monthly = getMonthly(state, borrow);
-    //
-    //   expect(getRatio(income, 0, monthly)).to.be.at.most(constants.maxRatio);
-    // });
   });
 
   describe('Get amortization', () => {

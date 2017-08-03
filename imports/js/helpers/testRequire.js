@@ -7,16 +7,17 @@ import { dirname, resolve } from 'path';
 import meteorStubs from '/imports/js/helpers/meteorStubs';
 
 const testRequire = (filePath) => {
-  const realPath = resolve(dirname(callerPath()), filePath);
   let importedModule;
 
   if (global.Meteor) {
-    // If this test is happening in a meteor environment, import it directly
+    // If this test is happening in a meteor environment, return false
+    // and require it in the file
     importedModule = false;
   } else {
     // If this is a local environment, like wallabyJS, import it with proxyquire
     // and stubs
     const proxyquire = require('proxyquire');
+    const realPath = resolve(dirname(callerPath()), filePath);
     importedModule = proxyquire(realPath, meteorStubs);
   }
 

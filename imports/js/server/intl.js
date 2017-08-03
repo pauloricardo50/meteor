@@ -23,7 +23,6 @@ const formatMessage = (id, values = {}) => {
     'fr-FR',
     // getFormats(),
   );
-  console.log(message);
   return message.format(values);
 };
 

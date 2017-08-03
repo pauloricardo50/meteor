@@ -1,7 +1,9 @@
+/* eslint-env mocha */
 import { expect } from 'chai';
-import { describe, it } from 'meteor/practicalmeteor:mocha';
 
-import formatMessage from '../intl';
+import testRequire from '/imports/js/helpers/testRequire';
+
+const { default: formatMessage } = testRequire('../intl') || require('../intl');
 
 describe('intl-server', () => {
   it('works for an existing id', () => {
