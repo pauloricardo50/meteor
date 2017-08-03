@@ -6,7 +6,6 @@ module.exports = function (wallaby) {
     files: [
       { pattern: '.test/mocha-config.js', instrument: false },
       'imports/**/*.js*',
-      'build/**/*.json',
       '!imports/**/*.spec.js*',
     ],
     tests: ['imports/**/*.spec.js*'],

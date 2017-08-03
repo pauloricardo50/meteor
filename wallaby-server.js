@@ -17,6 +17,8 @@
 //   };
 // };
 
+// FIXME: this is a work in progress
+
 module.exports = (wallaby) => {
   const path = require('path');
   return {
@@ -36,7 +38,9 @@ module.exports = (wallaby) => {
     },
     workers: { initial: 1, regular: 1, recycle: true },
     setup: () => {
-      wallaby.testFramework.addFile(`${wallaby.localProjectDir}/.test/mocha-config.js`);
+      wallaby.testFramework.addFile(
+        `${wallaby.localProjectDir}/.test/mocha-config.js`,
+      );
     },
   };
 };

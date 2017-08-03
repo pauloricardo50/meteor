@@ -5,9 +5,9 @@ import LoanRequests from '../../loanrequests/loanrequests';
 import { Roles } from 'meteor/alanning:roles';
 
 // Get all offers for the currently active request
-Meteor.publish('activeOffers', function() {
+Meteor.publish('activeOffers', () => {
   const activeRequest = LoanRequests.findOne({
-    userId: this.userId,
+    userId: Meteor.userId(),
     active: true,
   });
 
@@ -17,9 +17,9 @@ Meteor.publish('activeOffers', function() {
 });
 
 // Get all offers for the currently active request
-Meteor.publish('userOffers', function() {
+Meteor.publish('userOffers', () => {
   const loanRequests = LoanRequests.find({
-    userId: this.userId,
+    userId: Meteor.userId(),
   });
 
   const IDs = loanRequests.map(r => r._id);
@@ -30,10 +30,10 @@ Meteor.publish('userOffers', function() {
 });
 
 // Get all offers the partner has made
-Meteor.publish('partnerOffers', function() {
-  const user = Meteor.users.findOne({ _id: this.userId });
+Meteor.publish('partnerOffers', function () {
+  const user = Meteor.users.findOne({ _id: Meteor.userId() });
 
-  if (Roles.userIsInRole(this.userId, 'partner')) {
+  if (Roles.userIsInRole(Meteor.userId(), 'partner')) {
     return Offers.find({
       organization: user.profile && user.profile.organization,
       // auctionEndTime: { $lt: new Date() },
@@ -44,11 +44,11 @@ Meteor.publish('partnerOffers', function() {
 });
 
 // Publish all offers in the database for admins
-Meteor.publish('allOffers', function() {
+Meteor.publish('allOffers', function () {
   // Verify if user is logged In
   if (
-    Roles.userIsInRole(this.userId, 'admin') ||
-    Roles.userIsInRole(this.userId, 'dev')
+    Roles.userIsInRole(Meteor.userId(), 'admin') ||
+    Roles.userIsInRole(Meteor.userId(), 'dev')
   ) {
     // Return all users
     return Offers.find();
@@ -58,12 +58,12 @@ Meteor.publish('allOffers', function() {
 });
 
 // Publish all offers for a loanRequest for admins
-Meteor.publish('requestOffers', function(requestId) {
+Meteor.publish('requestOffers', function (requestId) {
   check(requestId, String);
   // Verify if user is logged In
   if (
-    Roles.userIsInRole(this.userId, 'admin') ||
-    Roles.userIsInRole(this.userId, 'dev')
+    Roles.userIsInRole(Meteor.userId(), 'admin') ||
+    Roles.userIsInRole(Meteor.userId(), 'dev')
   ) {
     // Return all users
     return Offers.find({

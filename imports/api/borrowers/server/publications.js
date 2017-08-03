@@ -6,15 +6,15 @@ import Borrowers from '../borrowers';
 // Publish a specific loanRequest with an ID
 Meteor.publish('borrower', function publish(id) {
   // Verify if user is logged In
-  if (!this.userId) {
+  if (!Meteor.userId()) {
     return this.ready();
   }
 
   check(id, String);
 
   if (
-    Roles.userIsInRole(this.userId, 'admin') ||
-    Roles.userIsInRole(this.userId, 'dev')
+    Roles.userIsInRole(Meteor.userId(), 'admin') ||
+    Roles.userIsInRole(Meteor.userId(), 'dev')
   ) {
     return Borrowers.find({
       _id: id,
@@ -22,7 +22,7 @@ Meteor.publish('borrower', function publish(id) {
   }
 
   return Borrowers.find({
-    userId: this.userId,
+    userId: Meteor.userId(),
     _id: id,
   });
 });
@@ -30,12 +30,12 @@ Meteor.publish('borrower', function publish(id) {
 // Publish all borrowers from the current user
 Meteor.publish('borrowers', function publish() {
   // Verify if user is logged In
-  if (!this.userId) {
+  if (!Meteor.userId()) {
     return this.ready();
   }
 
   return Borrowers.find({
-    userId: this.userId,
+    userId: Meteor.userId(),
   });
 });
 
@@ -43,8 +43,8 @@ Meteor.publish('borrowers', function publish() {
 Meteor.publish('allBorrowers', function publish() {
   // Verify if user is logged In
   if (
-    Roles.userIsInRole(this.userId, 'admin') ||
-    Roles.userIsInRole(this.userId, 'dev')
+    Roles.userIsInRole(Meteor.userId(), 'admin') ||
+    Roles.userIsInRole(Meteor.userId(), 'dev')
   ) {
     // Return all users
     return Borrowers.find();
@@ -54,12 +54,12 @@ Meteor.publish('allBorrowers', function publish() {
 });
 
 // Publish all borrowers for a loanRequest for admins
-Meteor.publish('requestBorrowers', function(borrowerIds) {
+Meteor.publish('requestBorrowers', function (borrowerIds) {
   check(borrowerIds, [String]);
   // Verify if user is an admin
   if (
-    Roles.userIsInRole(this.userId, 'admin') ||
-    Roles.userIsInRole(this.userId, 'dev')
+    Roles.userIsInRole(Meteor.userId(), 'admin') ||
+    Roles.userIsInRole(Meteor.userId(), 'dev')
   ) {
     // Return all borrowers
     return Borrowers.find({
