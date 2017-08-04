@@ -413,6 +413,7 @@
   "offer.interest2": "Taux 2 ans",
   "offer.interest5": "Taux 5 ans",
   "offer.interestLibor": "Taux Libor",
+  "InterestRanges.title": "Vos Taux",
   "offer.maxAmount": "Prêt maximal",
   "OffersTable.amount": "Montant",
   "OffersTable.conditions": "Conditions?",

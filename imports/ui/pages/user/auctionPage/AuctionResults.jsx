@@ -7,6 +7,8 @@ import FakeOfferAdder from '/imports/ui/components/general/FakeOfferAdder.jsx';
 import OfferToggle from '/imports/ui/components/general/OfferToggle.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
+import InterestRanges from './InterestRanges.jsx';
+
 import CountUp from 'react-countup';
 
 const styles = {
@@ -41,7 +43,7 @@ const styles = {
   },
 };
 
-const getFakeOffers = props => {
+const getFakeOffers = (props) => {
   const loanWanted =
     props.loanRequest.property.value -
     props.loanRequest.general.fortuneUsed -
@@ -108,16 +110,19 @@ class AuctionResults extends Component {
   }
 
   render() {
-    const f = this.props.intl.formatMessage;
+    const { intl, offers, loanRequest } = this.props;
+    const f = intl.formatMessage;
     return (
       <section className="mask1 animated fadeIn" style={styles.section}>
-        <h1><T id="AuctionResults.title" /></h1>
+        <h1>
+          <T id="AuctionResults.title" />
+        </h1>
 
         <h1 className="text-center display2" style={styles.countUp}>
           <CountUp
             className="custom-count"
             start={0}
-            end={this.props.offers.length}
+            end={offers.length}
             duration={3.5}
             useEasing
             separator=" "
@@ -133,17 +138,13 @@ class AuctionResults extends Component {
           </p>
         </div>
 
-        <FakeOfferAdder loanRequest={this.props.loanRequest} />
+        <div className="flex center">
+          <InterestRanges offers={offers} />
+        </div>
 
-        {/* <OfferToggle
-          value={this.state.showSpecial}
-          handleToggle={(e, c) => this.setState({ showSpecial: c })}
-          offers={this.props.offers}
-        />
-
-        <div style={styles.tableDiv}>
-          <OffersTable showSpecial={this.state.showSpecial} offers={this.props.offers} />
-        </div> */}
+        <div style={{ marginTop: 40 }}>
+          <FakeOfferAdder loanRequest={loanRequest} />
+        </div>
       </section>
     );
   }
