@@ -13,10 +13,10 @@ import Person from 'material-ui/svg-icons/social/person';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import track from '/imports/js/helpers/analytics';
 
-const getMenuItems = (props) => {
-  const isDev = Roles.userIsInRole(props.currentUser._id, 'dev');
-  const isAdmin = Roles.userIsInRole(props.currentUser._id, 'admin');
-  const isPartner = Roles.userIsInRole(props.currentUser._id, 'partner');
+const getMenuItems = (currentUser) => {
+  const isDev = Roles.userIsInRole(currentUser._id, 'dev');
+  const isAdmin = Roles.userIsInRole(currentUser._id, 'admin');
+  const isPartner = Roles.userIsInRole(currentUser._id, 'partner');
   return [
     {
       id: 'admin',
@@ -50,17 +50,17 @@ const getMenuItems = (props) => {
 // an admin link for admins,
 // a partner link for partners,
 // a home, settings, and contact link for regular users
-const TopNavDropdown = props =>
+const TopNavDropdown = ({ currentUser, history }) =>
   (<IconMenu
     iconButtonElement={
-      <IconButton tooltip="">
+      <IconButton tooltip={currentUser.emails[0].address}>
         <Person color="#444" hoverColor="#888" />
       </IconButton>
     }
     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
     targetOrigin={{ horizontal: 'right', vertical: 'top' }}
   >
-    {getMenuItems(props).map(
+    {getMenuItems(currentUser).map(
       item =>
         item.show &&
         <MenuItem
@@ -71,7 +71,7 @@ const TopNavDropdown = props =>
               to={item.link}
               onTouchTap={() => {
                 track('TopNavDropdown - clicked on link', {
-                  from: props.history.location.pathname,
+                  from: history.location.pathname,
                   to: item.link,
                 });
               }}
@@ -84,13 +84,14 @@ const TopNavDropdown = props =>
       primaryText={<T id="general.logout" />}
       onTouchTap={() => {
         track('TopNavDropdown - logged out', {});
-        Meteor.logout(() => props.history.push('/home'));
+        Meteor.logout(() => history.push('/home'));
       }}
     />
   </IconMenu>);
 
 TopNavDropdown.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 export default TopNavDropdown;

@@ -12,9 +12,11 @@ import { generalTooltips } from '/imports/js/arrays/tooltips';
 const styles = {
   list: {
     width: '100%',
+    maxWidth: 800,
   },
   selected: {
     width: '100%',
+    maxWidth: 800,
   },
 };
 
@@ -26,6 +28,13 @@ class SearchResults extends Component {
     this.setupSearch();
   }
 
+  componentWillReceiveProps(nextProps) {
+    // Cancel viewing results if something new is typed/deleted
+    if (nextProps.search !== this.props.search && this.state.showId) {
+      this.setState({ showId: '' });
+    }
+  }
+
   setupSearch = () => {
     this.search = new JsSearch.Search('id');
     this.search.addIndex('tooltipMatch');
@@ -33,13 +42,6 @@ class SearchResults extends Component {
     this.search.addIndex('tooltipValue2');
     this.search.addDocuments(this.getTooltips());
   };
-
-  componentWillReceiveProps(nextProps) {
-    // Cancel viewing results if something new is typed/deleted
-    if (nextProps.search !== this.props.search && this.state.showId) {
-      this.setState({ showId: '' });
-    }
-  }
 
   getTooltips = () => {
     const f = this.props.intl.formatMessage;
@@ -114,6 +116,7 @@ class SearchResults extends Component {
 
 SearchResults.propTypes = {
   search: PropTypes.string.isRequired,
+  intl: PropTypes.object.isRequired,
 };
 
 export default injectIntl(SearchResults);
