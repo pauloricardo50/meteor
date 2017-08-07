@@ -1,7 +1,7 @@
 machine:
   timezone: Europe/Zurich
   environment:
-    NODE_ENV: development
+    NODE_ENV: test
   node:
     version: 4.8.0
 
