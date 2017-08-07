@@ -40,11 +40,6 @@ export const generalTooltips = {
   'avec contrepartie': 'counterpartOffers',
 };
 
-// For testing purposes
-if (process.env.NODE_ENV === 'test') {
-  generalTooltips['123test'] = 'testTooltip';
-}
-
 export const offerTableTooltips = {
   montant: 'offerTable.amount',
   libor: 'offerTable.libor',

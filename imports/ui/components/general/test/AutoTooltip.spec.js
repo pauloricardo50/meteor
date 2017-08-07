@@ -45,7 +45,7 @@ describe('<AutoTooltip />', () => {
   });
 
   it('returns a parsed string with tooltips', () => {
-    const text = 'a 123test b';
+    const text = 'a finma b';
     const wrapper = shallow(
       <AutoTooltip>
         {text}
@@ -56,7 +56,7 @@ describe('<AutoTooltip />', () => {
   });
 
   it('returns a parsed string with multiple tooltips', () => {
-    const text = 'a 123test b 123test c';
+    const text = 'a finma b finma c';
     const wrapper = shallow(
       <AutoTooltip>
         {text}
