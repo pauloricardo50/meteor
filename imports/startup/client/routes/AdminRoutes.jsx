@@ -16,22 +16,50 @@ import AdminDevPage from '/imports/ui/pages/admin/AdminDevPage.jsx';
 import NotFound from '/imports/ui/components/general/NotFound.jsx';
 
 const AdminRoutes = props =>
-  <AdminLayout
+  (<AdminLayout
     {...props}
     type="admin"
     render={layoutProps =>
-      <Switch>
-        <Route exact path="/admin" render={() => <AdminDashboardPage {...layoutProps} />} />
-        <Route exact path="/admin/users" render={() => <UsersPage {...layoutProps} />} />
-        <Route exact path="/admin/requests" render={() => <RequestsPage {...layoutProps} />} />
-        <Route path="/admin/requests/:requestId/verify" component={VerifyPage} />
-        <Route path="/admin/requests/:requestId/contactlenders" component={ContactLendersPage} />
-        <Route path="/admin/requests/:requestId/offers/:offerId" component={OfferPage} />
-        <Route path="/admin/requests/:requestId" component={SingleRequestPage} />
+      (<Switch>
+        <Route
+          exact
+          path="/admin"
+          render={() => <AdminDashboardPage {...layoutProps} />}
+        />
+        <Route
+          exact
+          path="/admin/users"
+          render={() => <UsersPage {...layoutProps} />}
+        />
+        <Route
+          exact
+          path="/admin/requests"
+          render={() => <RequestsPage {...layoutProps} />}
+        />
+        <Route
+          path="/admin/requests/:requestId/verify"
+          component={VerifyPage}
+        />
+        <Route
+          path="/admin/requests/:requestId/contactlenders"
+          component={ContactLendersPage}
+        />
+        <Route
+          path="/admin/requests/:requestId/offers/:offerId"
+          component={OfferPage}
+        />
+        <Route
+          path="/admin/requests/:requestId"
+          component={SingleRequestPage}
+        />
         <Route path="/admin/users/:userId" component={SingleUserPage} />
-        <Route exact path="/admin/dev" render={() => <AdminDevPage {...layoutProps} />} />
+        <Route
+          exact
+          path="/admin/dev"
+          render={() => <AdminDevPage {...layoutProps} />}
+        />
         <Route component={NotFound} />
-      </Switch>}
-  />;
+      </Switch>)}
+  />);
 
 export default AdminRoutes;

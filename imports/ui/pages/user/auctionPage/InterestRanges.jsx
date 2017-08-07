@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
 import colors from '/imports/js/config/colors';
 
-const InterestRanges = ({ offers }) => {
+const InterestRanges = ({ offers, style }) => {
   const combinedOffers = [
     ...offers.map(o => o.standardOffer || {}),
     ...offers.map(o => o.counterpartOffer || {}),
@@ -14,6 +14,7 @@ const InterestRanges = ({ offers }) => {
     if (offer) {
       Object.keys(offer).map((key) => {
         // Get all keys that have interest in their name
+        // Add their values to the respective array in an object
         if (key.indexOf('interest') >= 0) {
           if (ratesObject[key]) {
             ratesObject[key].push(offer[key]);
@@ -28,7 +29,7 @@ const InterestRanges = ({ offers }) => {
   }, {});
 
   return (
-    <div className="flex-col center" style={{ width: '100%', maxWidth: 250 }}>
+    <div className="flex-col center" style={style}>
       <h3
         style={{
           borderBottom: `1px solid ${colors.lightBorder}`,

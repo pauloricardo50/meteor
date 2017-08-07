@@ -16,6 +16,7 @@ const stubs = {
         attachSchema: () => {},
       }),
     },
+    '@noCallThru': true,
     '@global': true,
   },
   bert: {
@@ -58,11 +59,27 @@ const stubs = {
     '@noCallThru': true,
     '@global': true,
   },
+  session: {
+    Session: {},
+    '@noCallThru': true,
+    '@global': true,
+  },
+  dochead: {
+    DocHead: {},
+    '@noCallThru': true,
+    '@global': true,
+  },
+  cleanMethod: {
+    default: () => {},
+    '@noCallThru': true,
+    '@global': true,
+  },
 };
 
 const meteorStubs = {
   'meteor/meteor': stubs.meteor,
   'meteor/mongo': stubs.mongo,
+  'meteor/session': stubs.session,
   'meteor/themeteorchef:bert': stubs.bert,
   'meteor/mdg:validated-method': stubs.validatedMethod,
   'meteor/check': stubs.check,
@@ -71,6 +88,8 @@ const meteorStubs = {
   'meteor/underscore': stubs.meteorUnderscore,
   'meteor/okgrow:analytics': stubs.analytics,
   'meteor/softwarerero:accounts-t9n': stubs.accountsT9n,
+  'meteor/kadira:dochead': stubs.dochead,
+  '/imports/api/cleanMethods': stubs.cleanMethod,
 };
 
 export default meteorStubs;

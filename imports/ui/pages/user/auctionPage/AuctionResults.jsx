@@ -139,7 +139,10 @@ class AuctionResults extends Component {
         </div>
 
         <div className="flex center">
-          <InterestRanges offers={offers} />
+          <InterestRanges
+            offers={offers}
+            style={{ width: '100%', maxWidth: 250 }}
+          />
         </div>
 
         <div style={{ marginTop: 40 }}>
