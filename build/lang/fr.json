@@ -18,6 +18,12 @@
   "ActionsTable.comment": "Commentaire",
   "ActionsTable.date": "Date",
   "ActionsTable.do": " ",
+
+  "general.search": "Rechercher",
+  "general.close": "Fermer",
+  "Search.placeholder": "Cherchez quelque chose..",
+  "SearchResults.none": "Aucun résultat",
+
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",

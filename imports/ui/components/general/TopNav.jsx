@@ -4,32 +4,18 @@ import { Link } from 'react-router-dom';
 
 import AppBar from 'material-ui/AppBar';
 import Button from '/imports/ui/components/general/Button.jsx';
+import Toolbar from 'material-ui/Toolbar/Toolbar';
+import ToolbarGroup from 'material-ui/Toolbar/ToolbarGroup';
+import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
+import ToolbarTitle from 'material-ui/Toolbar/ToolbarTitle';
 
 import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown.jsx';
 import TopNavDrawer from '/imports/ui/components/general/TopNavDrawer.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import track from '/imports/js/helpers/analytics';
+import SearchModal from '/imports/ui/components/general/SearchModal.jsx';
 
 import colors from '/imports/js/config/colors';
-
-const styles = {
-  navbar: {
-    position: 'relative',
-    backgroundColor: 'rgba(255, 255, 255, 1)',
-    color: '#000000',
-    borderBottom: '1px solid #d8d8d8',
-    boxShadow: 'unset',
-  },
-  publicNavbar: {
-    position: 'relative',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    color: '#000000',
-    boxShadow: '0px 2px 40px 0px rgba(0,0,0,0.08)',
-  },
-  button: {
-    color: '#000000',
-  },
-};
 
 const TopNav = (props) => {
   const { history, currentUser, loanRequests } = props;
@@ -38,35 +24,41 @@ const TopNav = (props) => {
   const showDrawer = isApp && loanRequests.length > 0;
 
   return (
-    <div className="top-nav" style={{ zIndex: 20 }}>
-      <AppBar
-        style={!props.public ? styles.navbar : styles.publicNavbar}
-        iconElementLeft={showDrawer ? <TopNavDrawer {...props} /> : undefined}
-        iconStyleLeft={!showDrawer ? { display: 'none' } : {}}
-        iconElementRight={
-          currentUser
-            ? <TopNavDropdown {...props} />
-            : <Button
-              label={<T id="TopNav.login" />}
-              containerElement={<Link to="/login" />}
-              secondary
-              labelStyle={{ color: colors.primary }}
-              onTouchTap={() => track('TopNav - clicked login', {})}
-              style={{ marginTop: 5 }}
-            />
-        }
-      >
+    <Toolbar className="top-nav">
+      <ToolbarGroup firstChild className="top-nav-content">
+        {showDrawer ? <TopNavDrawer {...props} /> : null}
+
         <div className="logo">
           <Link
             to="/home"
             className="link"
             onTouchTap={() => track('TopNav - clicked logo', {})}
           >
-            <img src="/img/logo_black.svg" alt="e-Potek" style={styles.image} />
+            <img src="/img/logo_black.svg" alt="e-Potek" />
           </Link>
         </div>
-      </AppBar>
-    </div>
+
+        <div className="buttons">
+          <SearchModal />
+          {currentUser
+            ? <TopNavDropdown {...props} />
+            : <Button
+              label={<T id="TopNav.login" />}
+              containerElement={<Link to="/login" />}
+              secondary
+              labelStyle={{
+                color: colors.primary,
+                paddingLeft: 4,
+                paddingRight: 4,
+              }}
+              style={{ minWidth: 'unset' }}
+              // buttonStyle={{ minWidth: 'unset' }}
+              onTouchTap={() => track('TopNav - clicked login', {})}
+            />}
+        </div>
+      </ToolbarGroup>
+    </Toolbar>
+    // </div>
   );
 };
 

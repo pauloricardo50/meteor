@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'test';
+
 module.exports = function (wallaby) {
   return {
     name: 'e-Potek Client',

@@ -2,7 +2,6 @@
 // If the value is an array, it means there need to be 2 strings for the
 // "Learn More" part.
 export const generalTooltips = {
-  '123test': 'testTooltip',
   'revenus annuels bruts': 'yearlyIncome',
   'fonds propres requis': 'ownFundsRequired',
   'fonds propres': 'ownFunds',
@@ -40,6 +39,11 @@ export const generalTooltips = {
   'offres avec contrepartie': 'counterpartOffers',
   'avec contrepartie': 'counterpartOffers',
 };
+
+// For testing purposes
+if (process.env.NODE_ENV === 'test') {
+  generalTooltips['123test'] = 'testTooltip';
+}
 
 export const offerTableTooltips = {
   montant: 'offerTable.amount',
