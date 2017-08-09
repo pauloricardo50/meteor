@@ -85,8 +85,7 @@ getMountedComponent.reset = (useStubs = true) => {
   getMountedComponent.mountedComponent = undefined;
   if (useStubs) {
     StubCollections.restore();
-    StubCollections.add([LoanRequests, Borrowers, Offers, Meteor.users]);
-    StubCollections.stub();
+    StubCollections.stub([LoanRequests, Borrowers, Offers, Meteor.users]);
   }
 };
 
@@ -99,17 +98,17 @@ export default getMountedComponent;
  * @return {type} undefined
  */
 export const stubCollections = () => {
-  StubCollections.restore();
-  StubCollections.add([
+  StubCollections.stub([
+    Meteor.users,
     LoanRequests,
     Borrowers,
     Offers,
     AdminActions,
     Properties,
     Comparators,
-    Meteor.users,
   ]);
-  StubCollections.stub();
 };
 
-stubCollections.restore = () => StubCollections.restore();
+stubCollections.restore = () => {
+  StubCollections.restore();
+};

@@ -8,6 +8,7 @@ import { stubCollections } from '/imports/js/helpers/testHelpers';
 import LoanRequests from '/imports/api/loanrequests/loanrequests';
 import Borrowers from '/imports/api/borrowers/borrowers';
 import AWS from 'aws-sdk';
+import StubCollections from 'meteor/hwillson:stub-collections';
 
 import { isAllowed } from '../files.js';
 
@@ -15,14 +16,14 @@ describe('files', () => {
   describe('isAllowed', () => {
     let user;
     beforeEach(() => {
-      stubCollections();
+      StubCollections.stub([Meteor.users]);
       user = Factory.create('user');
       sinon.stub(Meteor, 'user').callsFake(() => user);
       sinon.stub(Meteor, 'userId').callsFake(() => user._id);
     });
 
     afterEach(() => {
-      stubCollections.restore();
+      StubCollections.restore();
       Meteor.user.restore();
       Meteor.userId.restore();
     });
@@ -60,35 +61,59 @@ describe('files', () => {
     });
   });
 
-  // FIXME: this test randomly times out..
+  describe('deleteFile', () => {
+    const callbackResult = 'this is the result!';
+    let user;
 
-  // describe('deleteFile', () => {
-  //   const callbackResult = 'this is the result!';
-  //   let user;
-  //
-  //   beforeEach(() => {
-  //     user = Factory.create('admin');
-  //     sinon.stub(AWS, 'S3').callsFake(() => ({
-  //       deleteObject: (params, callback) => callback(undefined, callbackResult),
-  //     }));
-  //     sinon.stub(AWS.config, 'update').callsFake(() => {});
-  //     sinon.stub(Meteor, 'userId').callsFake(() => user._id);
-  //   });
-  //
-  //   afterEach(() => {
-  //     stubCollections.restore();
-  //     AWS.S3.restore();
-  //     AWS.config.update.restore();
-  //     Meteor.userId.restore();
-  //   });
-  //
-  //   it('calls deleteObject with a params object', (done) => {
-  //     const key = 'testKey';
-  //
-  //     Meteor.call('deleteFile', key, (err, result) => {
-  //       expect(result).to.equal(callbackResult);
-  //       done();
-  //     });
-  //   });
-  // });
+    beforeEach(() => {
+      console.log('files');
+      const time = process.hrtime();
+
+      const t = [];
+      const s = [];
+      s[0] = process.hrtime();
+      StubCollections.stub([Meteor.users]);
+
+      t[0] = process.hrtime(s[0]);
+      s[1] = process.hrtime();
+
+      user = Factory.create('admin');
+
+      t[1] = process.hrtime(s[1]);
+      s[2] = process.hrtime();
+
+      sinon.stub(AWS, 'S3').callsFake(() => ({
+        deleteObject: (params, callback) => callback(undefined, callbackResult),
+      }));
+      sinon.stub(AWS.config, 'update').callsFake(() => {});
+      sinon.stub(Meteor, 'userId').callsFake(() => user._id);
+
+      t.forEach((tim) => {
+        console.log(`${tim[1] / 1000000} ms`);
+      });
+
+      console.log(`total: ${process.hrtime(time)[1] / 1000000} ms`);
+      return true;
+    });
+
+    afterEach(() => {
+      StubCollections.restore();
+      AWS.S3.restore();
+      AWS.config.update.restore();
+      Meteor.userId.restore();
+    });
+
+    it('calls deleteObject with a params object', (done) => {
+      Meteor.call('deleteFile', '', (err, result) => {
+        if (err) {
+          done(err);
+        }
+        console.log('delete files!');
+        console.log(err);
+        console.log(result);
+        expect(result).to.equal(callbackResult);
+        done();
+      });
+    });
+  });
 });

@@ -5,6 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 import sinon from 'sinon';
 import { stubCollections } from '/imports/js/helpers/testHelpers';
+import StubCollections from 'meteor/hwillson:stub-collections';
 
 import {
   getEmailContent,
@@ -15,54 +16,87 @@ import {
 describe('emails', () => {
   let user;
 
-  // FIXME: These tests are timing out...
+  describe('getEmailContent', () => {
+    beforeEach((done) => {
+      console.log('getEmail');
 
-  // describe('getEmailContent', () => {
-  //   beforeEach(() => {
-  //     stubCollections();
-  //     user = Factory.create('user');
-  //     sinon.stub(Meteor, 'user').callsFake(() => user);
-  //   });
-  //
-  //   afterEach(() => {
-  //     stubCollections.restore();
-  //     Meteor.user.restore();
-  //   });
-  //
-  //   it('returns a valid email string for each existing email', () => {
-  //     const emails = [
-  //       'auctionStarted',
-  //       'auctionEnded',
-  //       'resetPassword',
-  //       'verificationError',
-  //       'verificationPassed',
-  //       'verificationRequested',
-  //     ];
-  //
-  //     const intlValues = {
-  //       date: new Date(),
-  //     };
-  //
-  //     emails.forEach((emailId) => {
-  //       const content = getEmailContent(emailId, intlValues);
-  //
-  //       Object.keys(content).forEach((key) => {
-  //         expect(typeof content[key]).to.equal('string');
-  //         expect(content[key], `${emailId} ${key}`).to.have.length.above(0);
-  //       });
-  //     });
-  //   });
-  //
-  //   it("returns the currently logged in user's email", () => {
-  //     expect(getEmailContent('testId').email).to.equal(user.emails[0].address);
-  //   });
-  //
-  //   it('returns the defaultCTA_URL if no CTA is specified for the email', () => {
-  //     expect(getEmailContent('testId').CTA).to.equal(defaultCTA_URL);
-  //   });
-  //
-  //   it('returns the default from value if none is specified', () => {
-  //     expect(getEmailContent('testId').from).to.equal(defaultFrom);
-  //   });
-  // });
+      const time = process.hrtime();
+      // debugger;
+      const t = [];
+      const s = [];
+      s[0] = process.hrtime();
+      try {
+        // debugger;
+        // done();
+        // return;
+        StubCollections.stub([Meteor.users]);
+      } catch (e) {
+        done(e);
+      }
+      t[0] = process.hrtime(s[0]);
+      s[1] = process.hrtime();
+
+      user = Factory.create('user');
+      t[1] = process.hrtime(s[1]);
+      s[2] = process.hrtime();
+
+      sinon.stub(Meteor, 'user').callsFake(() => user);
+      sinon.stub(Meteor, 'userId').callsFake(() => user._id);
+      t[2] = process.hrtime(s[2]);
+
+      t.forEach((tim) => {
+        console.log(`${tim[1] / 1000000} ms`);
+      });
+
+      console.log(`totalz: ${process.hrtime(time)[1] / 1000000} ms`);
+      done();
+    });
+
+    afterEach(() => {
+      console.log('5');
+      Meteor.user.restore();
+      Meteor.userId.restore();
+      console.log('6');
+      StubCollections.restore();
+      console.log('7 ');
+    });
+
+    it('returns a valid email string for each existing email', () => {
+      const emails = [
+        'auctionStarted',
+        'auctionEnded',
+        'resetPassword',
+        'verificationError',
+        'verificationPassed',
+        'verificationRequested',
+      ];
+
+      console.log('testing!!');
+
+      const intlValues = {
+        date: new Date(),
+      };
+
+      emails.forEach((emailId) => {
+        const content = getEmailContent(emailId, intlValues);
+
+        Object.keys(content).forEach((key) => {
+          expect(typeof content[key]).to.equal('string');
+          expect(content[key], `${emailId} ${key}`).to.have.length.above(0);
+        });
+      });
+    });
+
+    // it("returns the currently logged in user's email", () => {
+    //   expect(getEmailContent('testId').email).to.equal(user.emails[0].address);
+    // });
+    //
+    // it('returns the defaultCTA_URL if no CTA is specified for the email', () => {
+    //   expect(getEmailContent('testId').CTA).to.equal(defaultCTA_URL);
+    // });
+    //
+    // it('returns the default from value if none is specified', () => {
+    //   expect(getEmailContent('testId').from).to.equal(defaultFrom);
+    // });
+  });
 });

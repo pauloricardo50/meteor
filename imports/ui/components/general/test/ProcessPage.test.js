@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import { describe, it, beforeEach } from 'meteor/practicalmeteor:mocha';
 import getMountedComponent from '/imports/js/helpers/testHelpers';
 import { Factory } from 'meteor/dburles:factory';
+import { stubCollections } from '/imports/js/helpers/testHelpers';
 
 import ProcessPage from '../ProcessPage.jsx';
 import { getStepValues } from '../ProcessPage.jsx';
@@ -45,6 +46,14 @@ if (Meteor.isClient) {
 }
 
 describe('getStepValues', () => {
+  beforeEach(() => {
+    stubCollections();
+  });
+
+  afterEach(() => {
+    stubCollections.restore();
+  });
+
   it('Works for any item of a step', () => {
     const parameters = {
       stepNb: 1,
