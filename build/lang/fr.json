@@ -18,6 +18,9 @@
   "ActionsTable.comment": "Commentaire",
   "ActionsTable.date": "Date",
   "ActionsTable.do": " ",
+
+  "LoginPage.title": "Login / Créer un compte",
+
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",

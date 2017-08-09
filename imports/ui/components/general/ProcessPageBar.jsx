@@ -25,7 +25,7 @@ const styles = {
 const handleNextStep = ({ stepNb, loanRequest, history, nextLink }) => {
   // increment step if this is the currentstep
   if (stepNb === loanRequest.logic.step) {
-    cleanMethod('incrementStep', null, loanRequest._id, error => {
+    cleanMethod('incrementStep', null, loanRequest._id, (error) => {
       if (!error && nextLink) {
         history.push(nextLink);
       }
@@ -71,7 +71,8 @@ export default class ProcessPageBar extends Component {
     return (
       <div className="buttons">
         {showBackButton &&
-          <Button raised
+          <Button
+            raised
             icon={smallWidth ? <ArrowLeft /> : undefined}
             label={smallWidth ? '' : <T id="ProcessPageBar.previous" />}
             style={smallWidth ? styles.smallButton : styles.button}
@@ -80,8 +81,10 @@ export default class ProcessPageBar extends Component {
             onTouchTap={() =>
               track('ProcessPageBar - clicked back', { to: prevLink })}
           />}
-        <Button raised
-          icon={smallWidth ? <ArrowRight /> : undefined}
+        <Button
+          raised
+          labelPosition="before"
+          icon={smallWidth || isDone ? <ArrowRight /> : undefined}
           label={
             smallWidth
               ? ''
