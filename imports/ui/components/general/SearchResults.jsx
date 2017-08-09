@@ -46,7 +46,7 @@ class SearchResults extends Component {
   getTooltips = () => {
     const f = this.props.intl.formatMessage;
     const intlValues = {
-      verticalSpace: '',
+      verticalSpace: ' ',
     };
 
     return Object.keys(generalTooltips).map((match) => {

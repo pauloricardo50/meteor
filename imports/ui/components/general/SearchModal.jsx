@@ -25,6 +25,8 @@ export default class SearchModal extends Component {
         <IconButton
           tooltip={<T id="general.search" />}
           onTouchTap={this.handleOpen}
+          touch
+          tooltipPosition="bottom-left"
         >
           <SearchIcon color="#444" hoverColor="#888" />
         </IconButton>

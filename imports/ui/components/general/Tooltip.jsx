@@ -33,71 +33,75 @@ const getPositionLeft = (left, id, placement) => {
   return left;
 };
 
-export default class Tooltip extends Component {
-  render() {
-    const {
-      placement,
-      positionTop,
-      positionLeft,
-      id,
-      pureId,
-      hide,
-      match,
-      dialogLabel,
-    } = this.props;
+const Tooltip = (props) => {
+  const {
+    placement,
+    positionTop,
+    positionLeft,
+    id,
+    pureId,
+    hide,
+    match,
+    dialogLabel,
+  } = props;
 
-    let content = null;
-    let baseId = id;
+  let content = null;
+  let baseId = id;
 
-    if (isArray(id)) {
-      baseId = id[0];
-      content = (
-        <span style={{ display: 'flex', flexDirection: 'column' }}>
-          <FormattedMessage id={pureId ? baseId : `tooltip.${baseId}`} />
-          <DialogSimple
-            title={match}
-            rootStyle={{ alignSelf: 'center' }}
-            buttonStyle={{ marginTop: 16 }}
-            label={dialogLabel || <FormattedMessage id="general.learnMore" />}
-            autoFocus
-            onOpen={() =>
-              track('Tooltip - opened dialog', { tooltipId: baseId })}
-          >
-            <FormattedMessage
-              id={pureId ? `${baseId}2` : `tooltip2.${baseId}`}
-              values={{
-                verticalSpace: (
-                  <span>
-                    <br />
-                    <br />
-                  </span>
-                ),
-              }}
-            />
-          </DialogSimple>
-        </span>
-      );
-    } else {
-      content = <FormattedMessage id={pureId ? id : `tooltip.${id}`} />;
-    }
-
-    return (
-      // <Transition hide={hide}>
-      //   {({ key, style }) =>
-      <Popover
-        {...this.props}
-        id={baseId}
-        // key={key}
-        // style={{ opacity: style.opacity, transform: `scale(${style.scale})` }}
-        // positionTop={getPositionTop(positionTop, baseId, placement)}
-        // positionLeft={getPositionLeft(positionLeft, baseId, placement)}
-      >
-        {content}
-      </Popover>
-      // }
-      // </Transition>
+  if (isArray(id)) {
+    baseId = id[0];
+    content = (
+      <span style={{ display: 'flex', flexDirection: 'column' }}>
+        <FormattedMessage id={pureId ? baseId : `tooltip.${baseId}`} />
+        <DialogSimple
+          title={match}
+          rootStyle={{ alignSelf: 'center' }}
+          // Dialogs normally have zIndex of 1500
+          // Usually dialogs should be behind tooltips (which are
+          // at zindex 1501), but when you trigger a dialog from a tooltip,
+          // it should be above the previous tooltip, hence 1502
+          style={{ zIndex: 1502 }}
+          buttonStyle={{ marginTop: 16 }}
+          label={dialogLabel || <FormattedMessage id="general.learnMore" />}
+          autoFocus
+          onOpen={() => track('Tooltip - opened dialog', { tooltipId: baseId })}
+        >
+          <FormattedMessage
+            id={pureId ? `${baseId}2` : `tooltip2.${baseId}`}
+            values={{
+              verticalSpace: (
+                <span>
+                  <br />
+                  <br />
+                </span>
+              ),
+            }}
+          />
+        </DialogSimple>
+      </span>
     );
+  } else {
+    content = <FormattedMessage id={pureId ? id : `tooltip.${id}`} />;
   }
-}
+
+  return (
+    // <Transition hide={hide}>
+    //   {({ key, style }) =>
+    <Popover
+      {...props}
+      id={baseId}
+      // key={key}
+      // style={{ opacity: style.opacity, transform: `scale(${style.scale})` }}
+      // positionTop={getPositionTop(positionTop, baseId, placement)}
+      // positionLeft={getPositionLeft(positionLeft, baseId, placement)}
+    >
+      {content}
+    </Popover>
+    // }
+    // </Transition>
+  );
+};
 
 Tooltip.propTypes = {};
+
+export default Tooltip;

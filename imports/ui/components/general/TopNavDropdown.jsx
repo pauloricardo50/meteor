@@ -53,7 +53,11 @@ const getMenuItems = (currentUser) => {
 const TopNavDropdown = ({ currentUser, history }) =>
   (<IconMenu
     iconButtonElement={
-      <IconButton tooltip={currentUser.emails[0].address}>
+      <IconButton
+        tooltip={currentUser.emails[0].address}
+        touch
+        tooltipPosition="bottom-left"
+      >
         <Person color="#444" hoverColor="#888" />
       </IconButton>
     }
