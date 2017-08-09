@@ -14,11 +14,13 @@ import { T } from '/imports/ui/components/general/Translation.jsx';
 const styles = {
   button: {
     marginLeft: 8,
+    animationIterationCount: 5,
   },
   smallButton: {
     minWidth: 'unset',
     width: 36,
     marginLeft: 8,
+    animationIterationCount: 5,
   },
 };
 
@@ -94,7 +96,7 @@ export default class ProcessPageBar extends Component {
           }
           style={smallWidth ? styles.smallButton : styles.button}
           secondary={isDone}
-          className={isDone && 'animated infinite pulse'}
+          className={isDone && 'animated pulse'}
           disabled={(lastPartOfStep && !isDone) || !nextLink}
           containerElement={
             nextLink && !lastPartOfStep ? <Link to={nextLink} /> : undefined
