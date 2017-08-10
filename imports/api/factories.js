@@ -50,6 +50,7 @@ Factory.define('loanRequest', LoanRequests, {
     partnersToAvoid: ['joe', 'john'],
   }),
   borrowers: [Factory.get('borrower')],
+  status: 'active',
   property: () => ({ value: 1000000 }),
   files: () => ({}),
   logic: () => ({ auction: {}, lender: {}, verification: {}, step: 1 }),
@@ -87,6 +88,7 @@ Factory.define('comparator', Comparators, {
   userId: Factory.get('user'),
   customFields: [],
   hiddenFields: [],
+  borrowRatio: 0.8,
 });
 
 Factory.define('property', Properties, {

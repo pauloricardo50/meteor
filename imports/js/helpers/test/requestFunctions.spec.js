@@ -153,11 +153,11 @@ describe('Request functions', () => {
           [{ type: 'libor', value: 100 }, { type: 'interest10', value: 100 }],
           200,
         ),
-      ).to.be.true;
+      ).to.equal(true);
     });
 
     it('Should return false if no loanTranche was given', () => {
-      expect(loanStrategySuccess([], 200)).to.be.false;
+      expect(loanStrategySuccess([], 200)).to.equal(false);
     });
   });
 

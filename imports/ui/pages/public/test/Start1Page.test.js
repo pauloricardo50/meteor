@@ -1,6 +1,6 @@
+/* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import { describe, it, beforeEach } from 'meteor/practicalmeteor:mocha';
 import getMountedComponent from '/imports/js/helpers/testHelpers';
 
 import Start1Page from '../Start1Page.jsx';
@@ -19,7 +19,7 @@ if (Meteor.isClient) {
       const sections = component().find('section');
 
       expect(sections.length).to.be.at.least(1);
-      expect(sections.first().hasClass('oscar')).to.be.true;
+      expect(sections.first().hasClass('oscar')).to.equal(true);
     });
   });
 }

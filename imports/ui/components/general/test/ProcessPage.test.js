@@ -1,13 +1,13 @@
+/* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import { describe, it, beforeEach } from 'meteor/practicalmeteor:mocha';
-import getMountedComponent from '/imports/js/helpers/testHelpers';
+import getMountedComponent, {
+  stubCollections,
+} from '/imports/js/helpers/testHelpers';
 import { Factory } from 'meteor/dburles:factory';
-import { stubCollections } from '/imports/js/helpers/testHelpers';
 
-import ProcessPage from '../ProcessPage.jsx';
-import { getStepValues } from '../ProcessPage.jsx';
 import getSteps from '/imports/js/arrays/steps';
+import ProcessPage, { getStepValues } from '../ProcessPage.jsx';
 
 if (Meteor.isClient) {
   describe('<ProcessPage />', () => {
@@ -15,6 +15,7 @@ if (Meteor.isClient) {
     const component = () => getMountedComponent(ProcessPage, props, true);
 
     beforeEach(() => {
+      stubCollections();
       getMountedComponent.reset();
       props = {
         loanRequest: Factory.create('loanRequest'),
@@ -28,6 +29,10 @@ if (Meteor.isClient) {
       };
     });
 
+    afterEach(() => {
+      stubCollections.restore();
+    });
+
     it('Renders correctly before auction', () => {
       const sections = component().find('section');
 
@@ -36,7 +41,7 @@ if (Meteor.isClient) {
 
     it('Changes the page title when the id changes', () => {
       const initialTitle = document.title;
-      expect(!!initialTitle).to.be.true;
+      expect(!!initialTitle).to.equal(true);
       props.id = 'files';
       const c = component();
       const newTitle = document.title;

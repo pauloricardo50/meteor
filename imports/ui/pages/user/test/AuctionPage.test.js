@@ -1,7 +1,9 @@
+/* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import { describe, it, beforeEach } from 'meteor/practicalmeteor:mocha';
-import getMountedComponent from '/imports/js/helpers/testHelpers';
+import getMountedComponent, {
+  stubCollections,
+} from '/imports/js/helpers/testHelpers';
 import { Factory } from 'meteor/dburles:factory';
 
 import AuctionStart from '../auctionPage/AuctionStart.jsx';
@@ -12,6 +14,7 @@ if (Meteor.isClient) {
     const component = () => getMountedComponent(AuctionStart, props);
 
     beforeEach(() => {
+      stubCollections();
       getMountedComponent.reset();
       props = {
         loanRequest: Factory.create('loanRequest'),
@@ -20,8 +23,12 @@ if (Meteor.isClient) {
       };
     });
 
+    afterEach(() => {
+      stubCollections.restore();
+    });
+
     it('Renders correctly before auction', () => {
-      expect(component().hasClass('mask1')).to.be.true;
+      expect(component().hasClass('mask1')).to.equal(true);
     });
   });
 }

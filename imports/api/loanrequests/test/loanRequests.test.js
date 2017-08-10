@@ -111,7 +111,7 @@ describe('loanRequests', () => {
             startAuction.call({ id, object: {} });
             const modifiedRequest = LoanRequests.findOne({ _id: id });
 
-            expect(modifiedRequest.logic.auctionStarted).to.be.true;
+            expect(modifiedRequest.logic.auctionStarted).to.equal(true);
             expect(modifiedRequest.logic.auctionStartTime instanceof Date).to.be
               .true;
 
@@ -134,7 +134,7 @@ describe('loanRequests', () => {
       //     requestVerification.call({ id }, () => {
       //       const modifiedRequest = LoanRequests.findOne({ _id: id });
       //
-      //       expect(modifiedRequest.logic.verification.requested).to.be.true;
+      //       expect(modifiedRequest.logic.verification.requested).to.equal(true);
       //       expect(modifiedRequest.logic.verification.requestedTime).to.exist;
       //       done();
       //     });

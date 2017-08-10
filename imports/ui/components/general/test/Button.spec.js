@@ -8,7 +8,8 @@ import FlatButton from 'material-ui/FlatButton';
 import Button from '../Button.jsx';
 
 describe('Button', () => {
-  const wrapper = props => shallow(<Button {...props} />);
+  // Label removes testing warnings
+  const wrapper = props => shallow(<Button label="test" {...props} />);
 
   it('renders', () => {
     expect(wrapper().exists()).to.equal(true);

@@ -38,7 +38,7 @@ const customMount = (Component, props, withRouter) => {
   return mount(
     withRouter
       ? <MemoryRouter>
-        <Component {...props} />
+        <Component history={{ location: { pathname: '' } }} {...props} />
       </MemoryRouter>
       : <Component {...props} />,
     {

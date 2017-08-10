@@ -1,8 +1,9 @@
+/* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { describe, it, beforeEach } from 'meteor/practicalmeteor:mocha';
 import { shallow } from 'enzyme';
 import { Factory } from 'meteor/dburles:factory';
+import { stubCollections } from '/imports/js/helpers/testHelpers';
 
 import Comparator from '../Comparator.jsx';
 import CompareTable from '../CompareTable.jsx';
@@ -14,6 +15,7 @@ describe('<Comparator />', () => {
   let wrapper;
 
   beforeEach(() => {
+    stubCollections();
     comparator = Factory.create('comparator');
     properties = [Factory.create('property')];
     wrapper = shallow(
@@ -21,13 +23,17 @@ describe('<Comparator />', () => {
     );
   });
 
+  afterEach(() => {
+    stubCollections.restore();
+  });
+
   it('renders', () => {
-    expect(wrapper.exists()).to.be.true;
+    expect(wrapper.exists()).to.equal(true);
     expect(wrapper.name()).to.equal('section');
   });
 
   it('has a comparator class', () => {
-    expect(wrapper.hasClass('comparator')).to.be.true;
+    expect(wrapper.hasClass('comparator')).to.equal(true);
   });
 
   it('keeps the name field at the top, even with custom fields', () => {

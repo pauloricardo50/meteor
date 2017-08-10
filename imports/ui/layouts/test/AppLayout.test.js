@@ -1,7 +1,9 @@
+/* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import { describe, it, beforeEach } from 'meteor/practicalmeteor:mocha';
-import getMountedComponent from '/imports/js/helpers/testHelpers';
+import getMountedComponent, {
+  stubCollections,
+} from '/imports/js/helpers/testHelpers';
 import { Factory } from 'meteor/dburles:factory';
 
 import AppLayout from '../AppLayout.jsx';
@@ -12,6 +14,7 @@ if (Meteor.isClient) {
     const component = () => getMountedComponent(AppLayout, props, true);
 
     beforeEach(() => {
+      stubCollections();
       const user = Factory.create('dev');
       props = {
         currentUser: user,
@@ -22,6 +25,10 @@ if (Meteor.isClient) {
         },
       };
       getMountedComponent.reset();
+    });
+
+    afterEach(() => {
+      stubCollections.restore();
     });
 
     it('Renders correctly', () => {

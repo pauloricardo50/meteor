@@ -55,7 +55,7 @@ describe('emails', () => {
         // debugger;
         // done();
         // return;
-        StubCollections.stub([Meteor.users]);
+        StubCollections.stub();
       } catch (e) {
         done(e);
       }

@@ -9,6 +9,7 @@ import '/imports/api/api-server';
 import '../accounts-config';
 import './accounts-server-config';
 import './meteor-slingshot-server';
+import './kadira-dev.js';
 import setupAuth from './http-auth';
 import setupMandrill from './email-config';
 import getHtml from './loadingText';

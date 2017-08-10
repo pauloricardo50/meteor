@@ -96,7 +96,7 @@ export default class ProcessPageBar extends Component {
           }
           style={smallWidth ? styles.smallButton : styles.button}
           secondary={isDone}
-          className={isDone && 'animated pulse'}
+          className={isDone ? 'animated pulse' : undefined}
           disabled={(lastPartOfStep && !isDone) || !nextLink}
           containerElement={
             nextLink && !lastPartOfStep ? <Link to={nextLink} /> : undefined
@@ -135,10 +135,11 @@ ProcessPageBar.propTypes = {
   stepNb: PropTypes.number.isRequired,
   prevLink: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   nextLink: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  status: PropTypes.string.isRequired,
+  status: PropTypes.string,
 };
 
 ProcessPageBar.defaultProps = {
   prevLink: undefined,
   nextLink: undefined,
+  status: 'active',
 };

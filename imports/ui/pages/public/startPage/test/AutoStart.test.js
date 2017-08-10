@@ -1,5 +1,5 @@
+/* eslint-env mocha */
 import { expect } from 'chai';
-import { describe, it, beforeEach } from 'meteor/practicalmeteor:mocha';
 
 import { arrayIsTrue } from '../AutoStart.jsx';
 
@@ -14,19 +14,22 @@ describe('Auto Start', () => {
     it('Should return true for a basic array', () => {
       const array = [{ key1: true, key2: true }];
 
-      expect(arrayIsTrue(array, keys)).to.be.true;
+      expect(arrayIsTrue(array, keys)).to.equal(true);
     });
 
     it('Should return false for a basic array', () => {
       const array = [{ key1: true, key2: undefined }];
 
-      expect(arrayIsTrue(array, keys)).to.be.false;
+      expect(arrayIsTrue(array, keys)).to.equal(false);
     });
 
     it('Should return false for a longerish array', () => {
-      const array = [{ key1: true, key2: true }, { key1: true, key2: undefined }];
+      const array = [
+        { key1: true, key2: true },
+        { key1: true, key2: undefined },
+      ];
 
-      expect(arrayIsTrue(array, keys)).to.be.false;
+      expect(arrayIsTrue(array, keys)).to.equal(false);
     });
 
     it('Should return true for a longer array', () => {
@@ -36,7 +39,7 @@ describe('Auto Start', () => {
         { key1: true, key2: true },
       ];
 
-      expect(arrayIsTrue(array, keys)).to.be.true;
+      expect(arrayIsTrue(array, keys)).to.equal(true);
     });
 
     it('Should return false for a longer array', () => {
@@ -46,7 +49,7 @@ describe('Auto Start', () => {
         { key1: true, key2: true },
       ];
 
-      expect(arrayIsTrue(array, keys)).to.be.false;
+      expect(arrayIsTrue(array, keys)).to.equal(false);
     });
 
     it('Should return false for a longer array with one more key', () => {
@@ -57,7 +60,7 @@ describe('Auto Start', () => {
         { key1: true, key2: true },
       ];
 
-      expect(arrayIsTrue(array, keys)).to.be.false;
+      expect(arrayIsTrue(array, keys)).to.equal(false);
     });
   });
 });

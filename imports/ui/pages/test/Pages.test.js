@@ -1,7 +1,9 @@
+/* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import { describe, it, beforeEach } from 'meteor/practicalmeteor:mocha';
-import getMountedComponent from '/imports/js/helpers/testHelpers';
+import getMountedComponent, {
+  stubCollections,
+} from '/imports/js/helpers/testHelpers';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
@@ -69,6 +71,11 @@ if (Meteor.isClient) {
   describe('Pages basic render', () => {
     beforeEach(() => {
       resetDatabase();
+      stubCollections();
+    });
+
+    afterEach(() => {
+      stubCollections.restore();
     });
 
     Object.keys(pages).forEach((key) => {

@@ -92,8 +92,12 @@ StructureSliders.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   handleChange: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
   parentState: PropTypes.objectOf(PropTypes.any).isRequired,
+};
+
+StructureSliders.defaultProps = {
+  disabled: false,
 };
 
 export default StructureSliders;

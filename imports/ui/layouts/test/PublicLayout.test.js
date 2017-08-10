@@ -1,8 +1,8 @@
+/* eslint-env mocha */
 import React from 'react';
 
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import { describe, it, beforeEach } from 'meteor/practicalmeteor:mocha';
 import getMountedComponent from '/imports/js/helpers/testHelpers';
 
 import PublicLayout from '../PublicLayout.jsx';

@@ -51,7 +51,7 @@ export class T extends Component {
     // To avoid unnecessary spans, separate those with a single message
     // and those, rare, with more.
     const Auto = (content, key) =>
-      <AutoTooltip
+      (<AutoTooltip
         {...this.props}
         id={tooltipId}
         placement={tooltipPlacement}
@@ -59,7 +59,7 @@ export class T extends Component {
         key={key}
       >
         {content}
-      </AutoTooltip>;
+      </AutoTooltip>);
 
     return (
       <FormattedMessage
@@ -75,11 +75,11 @@ export class T extends Component {
         }}
       >
         {(...formattedMessage) =>
-          formattedMessage.length === 1
+          (formattedMessage.length === 1
             ? Auto(formattedMessage[0])
             : <span>
-                {formattedMessage.map((msg, i) => Auto(msg, i))}
-              </span>}
+              {formattedMessage.map((msg, i) => Auto(msg, i))}
+            </span>)}
       </FormattedMessage>
     );
   }
@@ -101,7 +101,7 @@ T.defaultProps = {
   tooltipPlacement: undefined,
 };
 
-export const IntlDate = props => {
+export const IntlDate = (props) => {
   switch (props.type) {
     case 'time':
       return <FormattedTime {...props} />;
@@ -112,7 +112,7 @@ export const IntlDate = props => {
   }
 };
 
-export const IntlNumber = props => {
+export const IntlNumber = (props) => {
   switch (props.type) {
     case 'plural':
       return <FormattedPlural {...props} />;

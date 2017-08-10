@@ -24,11 +24,11 @@ describe('<CompareHeader />', () => {
   });
 
   it('renders', () => {
-    expect(wrapper().exists()).to.be.true;
+    expect(wrapper().exists()).to.equal(true);
   });
 
   it('has a mask1 class', () => {
-    expect(wrapper().hasClass('mask1')).to.be.true;
+    expect(wrapper().hasClass('mask1')).to.equal(true);
   });
 
   it('renders a list with as many li as there are field props + 2 default ones', () => {

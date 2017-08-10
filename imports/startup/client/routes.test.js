@@ -1,7 +1,7 @@
+/* eslint-env mocha */
 import React from 'react';
 import { render } from 'react-dom';
 import { expect } from 'chai';
-import { describe, it } from 'meteor/practicalmeteor:mocha';
 
 import jsdom from 'jsdom';
 
