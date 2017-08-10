@@ -112,3 +112,12 @@ export const stubCollections = () => {
 stubCollections.restore = () => {
   StubCollections.restore();
 };
+
+if (Meteor.isTest) {
+  // This is some test initialization, stubbing all the collections here,
+  // avoids all timeouts coming later due to us using this function.
+  console.log('Initializing Tests');
+  stubCollections();
+  stubCollections.restore();
+  console.log('Ready to roll');
+}

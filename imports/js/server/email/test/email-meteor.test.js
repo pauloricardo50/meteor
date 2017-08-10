@@ -13,12 +13,38 @@ import {
   defaultFrom,
 } from '../email-defaults';
 
+import LoanRequests from '/imports/api/loanrequests/loanrequests';
+import Borrowers from '/imports/api/borrowers/borrowers';
+import Offers from '/imports/api/offers/offers';
+import AdminActions from '/imports/api/adminActions/adminActions';
+import Comparators from '/imports/api/comparators/comparators';
+import Properties from '/imports/api/properties/properties';
+
+// describe('test', () => {
+//   before(() => {
+//     StubCollections.add([
+//       Meteor.users,
+//       LoanRequests,
+//       Borrowers,
+//       Offers,
+//       AdminActions,
+//       Properties,
+//       Comparators,
+//     ]);
+//     StubCollections.stub();
+//     StubCollections.restore();
+//     console.log('yep!');
+//   });
+//
+//   it('works');
+// });
+
 describe('emails', () => {
   let user;
 
   describe('getEmailContent', () => {
     beforeEach((done) => {
-      console.log('getEmail');
+      console.log('getEmails');
 
       const time = process.hrtime();
       // debugger;

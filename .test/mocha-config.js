@@ -18,4 +18,6 @@ beforeEach(() => {
   global.Meteor = {
     call: function empty() {},
   };
+
+  console.log();
 });
