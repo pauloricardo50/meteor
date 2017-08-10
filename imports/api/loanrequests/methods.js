@@ -76,13 +76,12 @@ export const startAuction = new ValidatedMethod({
     // object parameter only contains the isDemo value
     if (object.isDemo) {
       auctionEndTime = moment().add(30, 's').toDate();
+      console.log(`Temps de fin réel: ${getAuctionEndTime(moment())}`);
     } else {
       auctionEndTime = getAuctionEndTime(moment());
     }
 
     auctionObject['logic.auctionEndTime'] = auctionEndTime;
-
-    console.log(`Temps de fin réel: ${getAuctionEndTime(moment())}`);
 
     // TODO: This can fuck up if the update goes through but the insertAdminAction fails
     // same for the requestVerification method
