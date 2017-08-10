@@ -40,7 +40,10 @@ export const insertAdminOffer = new ValidatedMethod({
   validate: null,
   run({ object }) {
     if (
-      !(Roles.userIsInRole(Meteor.userId(), 'admin') || Roles.userIsInRole(Meteor.userId(), 'dev'))
+      !(
+        Roles.userIsInRole(Meteor.userId(), 'admin') ||
+        Roles.userIsInRole(Meteor.userId(), 'dev')
+      )
     ) {
       return false;
     }
@@ -87,4 +90,12 @@ export const deleteOffer = new ValidatedMethod({
   },
 });
 
-rateLimit({ methods: [insertOffer, insertAdminOffer, updateOffer, insertFakeOffer, deleteOffer] });
+rateLimit({
+  methods: [
+    insertOffer,
+    insertAdminOffer,
+    updateOffer,
+    insertFakeOffer,
+    deleteOffer,
+  ],
+});

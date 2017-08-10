@@ -20,6 +20,7 @@ describe('offers', () => {
   let user;
 
   beforeEach(() => {
+    // resetDatabase();
     stubCollections();
     user = Factory.create('partner');
     sinon.stub(Meteor, 'userId').callsFake(() => user._id);
@@ -30,24 +31,30 @@ describe('offers', () => {
     stubCollections.restore();
     Meteor.userId.restore();
     Meteor.user.restore();
-    resetDatabase();
   });
 
   describe('methods', () => {
-    describe('insertOffer', () => {
-      it('inserts an offer', () => {
-        const object = Factory.build('offer');
-        const request = Factory.create('loanRequest');
-        object.requestId = request._id;
-        object.userId = user._id;
+    if (Meteor.isServer) {
+      describe('insertOffer', () => {
+        it('inserts an offer', (done) => {
+          const object = Factory.build('offer');
+          const request = Factory.create('loanRequest');
+          object.requestId = request._id;
+          object.userId = user._id;
 
-        const offerId = insertOffer.call({ object });
-        const offer = Offers.findOne({ _id: offerId });
-
-        expect(typeof offer).to.equal('object');
-        expect(offer.userId).to.equal(object.userId);
+          const offerId = insertOffer.call({ object }, (err, result) => {
+            if (err) {
+              done(err);
+            }
+            const offer = Offers.findOne({ _id: result });
+            expect(typeof offer).to.equal('object');
+            expect(offer.userId).to.equal(object.userId);
+            done();
+          });
+        });
       });
-    });
+    }
+
     // describe('modifiers', () => {
     //   let borrower;
     //   beforeEach(() => {

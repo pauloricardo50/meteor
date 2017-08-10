@@ -5,6 +5,7 @@ import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider, intlShape } from 'react-intl';
 import StubCollections from 'meteor/hwillson:stub-collections';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import {
   getUserLocale,
@@ -108,7 +109,7 @@ stubCollections.restore = () => {
 if (Meteor.isTest) {
   // This is some test initialization, stubbing all the collections here,
   // avoids all timeouts coming later due to us using this function.
-  console.log('Initializing Tests');
+  console.log('Initializing Tests...');
   StubCollections.add([
     Meteor.users,
     LoanRequests,
@@ -120,5 +121,10 @@ if (Meteor.isTest) {
   ]);
   StubCollections.stub(); // This part is critical, need to stub once beforeAll
   stubCollections.restore();
+
+  if (Meteor.isClient) {
+    injectTapEventPlugin(); // Removes any warnings with onTouchTap during tests
+  }
+
   console.log('Ready to roll');
 }
