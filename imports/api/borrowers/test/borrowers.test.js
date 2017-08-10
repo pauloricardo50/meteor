@@ -1,39 +1,27 @@
 /* eslint-env mocha */
-/* eslint-disable func-names, prefer-arrow-callback */
-
-import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import Borrowers from '../borrowers';
+import { stubCollections } from '/imports/js/helpers/testHelpers';
+
 import {
   insertBorrower,
   updateBorrower,
   pushBorrowerValue,
   popBorrowerValue,
 } from '../methods';
-import { stubCollections } from '/imports/js/helpers/testHelpers';
 
 import '../../factories.js';
 
-describe('borrowers', function () {
-  this.timeout(10000);
-  before(() => {
+describe('borrowers', () => {
+  beforeEach(() => {
+    resetDatabase();
     stubCollections();
   });
 
-  beforeEach(function () {
-    // if (Meteor.isServer) {
-    resetDatabase();
-    // }
-  });
-
-  describe('mutators', function () {
-    it('builds correctly from factory', function () {
-      const borrower = Factory.create('borrower');
-      expect(typeof borrower).to.equal('object');
-      expect(borrower._id).to.exist;
-    });
+  afterEach(() => {
+    stubCollections.restore();
   });
 
   describe('methods', () => {

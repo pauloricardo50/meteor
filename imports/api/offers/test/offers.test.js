@@ -1,12 +1,10 @@
 /* eslint-env mocha */
-/* eslint-disable func-names, prefer-arrow-callback */
-
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
-import { Accounts } from 'meteor/accounts-base';
 import { stubCollections } from '/imports/js/helpers/testHelpers';
+import sinon from 'sinon';
 
 import Offers from '../offers';
 
@@ -18,48 +16,38 @@ import {
   deleteOffer,
 } from '../methods';
 
-import '../../factories.js';
-
 describe('offers', () => {
-  before(() => {
+  let user;
+
+  beforeEach(() => {
     stubCollections();
+    user = Factory.create('partner');
+    sinon.stub(Meteor, 'userId').callsFake(() => user._id);
+    sinon.stub(Meteor, 'user').callsFake(() => user);
   });
 
-  beforeEach(function () {
-    // if (Meteor.isServer) {
+  afterEach(() => {
+    stubCollections.restore();
+    Meteor.userId.restore();
+    Meteor.user.restore();
     resetDatabase();
-    // }
-  });
-
-  describe('mutators', function () {
-    it('builds correctly from factory', function () {
-      // FIXME This sometimes returns "Can't read property "_id" of undefined"
-      // const offer = Factory.create('offer');
-      //
-      // expect(typeof offer).to.equal('object');
-      // expect(offer._id).to.exist;
-    });
   });
 
   describe('methods', () => {
-    it('should work');
-    // describe('insertOffer', () => {
-    //   it('inserts an offer', () => {
-    //     const user = Factory.create('partner');
-    //     const object = Factory.build('offer');
-    //
-    //     Meteor.userId = () => user.userId;
-    //
-    //     const offerId = insertOffer.call({ object });
-    //     const offer = Offers.findOne({ _id: offerId });
-    //
-    //     expect(typeof offer).to.equal('object');
-    //     expect(offer.userId).to.equal(object.userId);
-    //
-    //     // Reset the userId function to its default value
-    //     Meteor.userId = () => Accounts.userId;
-    //   });
-    // });
+    describe('insertOffer', () => {
+      it('inserts an offer', () => {
+        const object = Factory.build('offer');
+        const request = Factory.create('loanRequest');
+        object.requestId = request._id;
+        object.userId = user._id;
+
+        const offerId = insertOffer.call({ object });
+        const offer = Offers.findOne({ _id: offerId });
+
+        expect(typeof offer).to.equal('object');
+        expect(offer.userId).to.equal(object.userId);
+      });
+    });
     // describe('modifiers', () => {
     //   let borrower;
     //   beforeEach(() => {

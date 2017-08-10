@@ -98,15 +98,7 @@ export default getMountedComponent;
  * @return {type} undefined
  */
 export const stubCollections = () => {
-  StubCollections.stub([
-    Meteor.users,
-    LoanRequests,
-    Borrowers,
-    Offers,
-    AdminActions,
-    Properties,
-    Comparators,
-  ]);
+  StubCollections.stub();
 };
 
 stubCollections.restore = () => {
@@ -117,7 +109,16 @@ if (Meteor.isTest) {
   // This is some test initialization, stubbing all the collections here,
   // avoids all timeouts coming later due to us using this function.
   console.log('Initializing Tests');
-  stubCollections();
+  StubCollections.add([
+    Meteor.users,
+    LoanRequests,
+    Borrowers,
+    Offers,
+    AdminActions,
+    Properties,
+    Comparators,
+  ]);
+  StubCollections.stub(); // This part is critical, need to stub once beforeAll
   stubCollections.restore();
   console.log('Ready to roll');
 }

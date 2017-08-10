@@ -9,20 +9,22 @@ import Properties from './properties/properties';
 
 const chance = require('chance').Chance();
 
-// Factory users for testing purposes
 Factory.define('user', Meteor.users, {
   roles: () => 'user',
   emails: () => [{ address: chance.email(), verified: false }],
+  profile: {},
 });
 
 Factory.define('dev', Meteor.users, {
   roles: () => 'dev',
   emails: () => [{ address: chance.email(), verified: false }],
+  profile: {},
 });
 
 Factory.define('admin', Meteor.users, {
   roles: () => 'admin',
   emails: () => [{ address: chance.email(), verified: false }],
+  profile: {},
 });
 
 Factory.define('partner', Meteor.users, {

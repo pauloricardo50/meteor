@@ -27,24 +27,14 @@ import {
   modifyEmail,
 } from '../methods';
 
-describe('loanRequests', function () {
-  before(() => {
+describe('loanRequests', () => {
+  beforeEach(() => {
+    resetDatabase();
     stubCollections();
   });
 
-  beforeEach(function () {
-    // if (Meteor.isServer) {
-    resetDatabase();
-    // }
-  });
-
-  describe('mutators', function () {
-    it('builds correctly from factory', function () {
-      const request = Factory.create('loanRequest');
-
-      expect(typeof request).to.equal('object');
-      expect(request._id).to.exist;
-    });
+  afterEach(() => {
+    stubCollections.restore();
   });
 
   describe('methods', () => {
@@ -67,7 +57,7 @@ describe('loanRequests', function () {
 
     describe('modifiers', () => {
       let request;
-      beforeEach(function () {
+      beforeEach(() => {
         request = Factory.create('loanRequest');
       });
 
@@ -271,7 +261,7 @@ describe('loanRequests', function () {
   describe('getAuctionEndTime', () => {
     let endDate;
 
-    beforeEach(function () {
+    beforeEach(() => {
       endDate = moment()
         .year(2017)
         .month(0)

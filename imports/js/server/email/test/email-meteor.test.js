@@ -113,16 +113,16 @@ describe('emails', () => {
       });
     });
 
-    // it("returns the currently logged in user's email", () => {
-    //   expect(getEmailContent('testId').email).to.equal(user.emails[0].address);
-    // });
-    //
-    // it('returns the defaultCTA_URL if no CTA is specified for the email', () => {
-    //   expect(getEmailContent('testId').CTA).to.equal(defaultCTA_URL);
-    // });
-    //
-    // it('returns the default from value if none is specified', () => {
-    //   expect(getEmailContent('testId').from).to.equal(defaultFrom);
-    // });
+    it("returns the currently logged in user's email", () => {
+      expect(getEmailContent('testId').email).to.equal(user.emails[0].address);
+    });
+
+    it('returns the defaultCTA_URL if no CTA is specified for the email', () => {
+      expect(getEmailContent('testId').CTA).to.equal(defaultCTA_URL);
+    });
+
+    it('returns the default from value if none is specified', () => {
+      expect(getEmailContent('testId').from).to.equal(defaultFrom);
+    });
   });
 });
