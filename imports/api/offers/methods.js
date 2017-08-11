@@ -3,13 +3,17 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import LoanRequests from '../loanrequests/loanrequests';
 import rateLimit from '/imports/js/helpers/rate-limit.js';
 import { Roles } from 'meteor/alanning:roles';
+import { check, Match } from 'meteor/check';
 
 import Offers from './offers';
 
 // Insert a new offer
 export const insertOffer = new ValidatedMethod({
   name: 'offers.insert',
-  validate: null,
+  validate({ object, userId }) {
+    check(object, Object);
+    check(userId, Match.Optional(String));
+  },
   run({ object, userId }) {
     // Make sure there isn't already an offer for this request
     const user = Meteor.user();
@@ -61,9 +65,12 @@ export const insertAdminOffer = new ValidatedMethod({
 
 export const updateOffer = new ValidatedMethod({
   name: 'offers.update',
-  validate: null,
-  run({ object }) {
-    return Offers.update(object);
+  validate({ id, object }) {
+    check(id, String);
+    check(object, Object);
+  },
+  run({ id, object }) {
+    return Offers.update(id, { $set: object });
   },
 });
 
