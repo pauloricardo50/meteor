@@ -109,9 +109,9 @@ export default class ActionsTable extends Component {
             const request = this.props.loanRequests.find(
               r => r._id === action.requestId,
             );
-            const title = <T id={`adminAction.${action.actionType}`} />;
+            const title = <T id={`adminAction.${action.type}`} />;
             const actionDetails = getActions.find(
-              a => a.id === action.actionType,
+              a => a.id === action.type,
             );
 
             return {

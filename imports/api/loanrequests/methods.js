@@ -7,7 +7,7 @@ import rateLimit from '/imports/js/helpers/rate-limit.js';
 
 import {
   insertAdminAction,
-  completeActionByactionType,
+  completeActionByType,
   removeParentRequest,
 } from '/imports/api/adminActions/methods';
 
@@ -88,7 +88,7 @@ export const startAuction = new ValidatedMethod({
     return LoanRequests.update(id, { $set: auctionObject }, (error1, res1) => {
       if (!error1) {
         insertAdminAction.call(
-          { requestId: id, actionType: 'auction', extra: { auctionEndTime } },
+          { requestId: id, type: 'auction', extra: { auctionEndTime } },
           (error2, res2) => {
             if (!error2 && Meteor.isServer) {
               // Send email
@@ -201,7 +201,7 @@ export const requestVerification = new ValidatedMethod({
       },
     );
     return Meteor.wrapAsync(
-      insertAdminAction.call({ actionType: 'verify', requestId: id }),
+      insertAdminAction.call({ type: 'verify', requestId: id }),
     );
   },
 });
@@ -256,7 +256,10 @@ export const finishAuction = new ValidatedMethod({
             }
           }
 
-          completeActionByactionType.call({ requestId: id, actionType: 'auction' });
+          completeActionByType.call({
+            requestId: id,
+            type: 'auction',
+          });
         },
       );
     }
@@ -301,9 +304,9 @@ export const cancelAuction = new ValidatedMethod({
             }
           }
 
-          completeActionByactionType.call({
+          completeActionByType.call({
             requestId: id,
-            actionType: 'auction',
+            type: 'auction',
             newStatus: 'cancelled',
           });
         },

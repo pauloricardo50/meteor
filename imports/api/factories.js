@@ -87,7 +87,7 @@ Factory.define('offer', Offers, {
 
 Factory.define('adminAction', AdminActions, {
   requestId: Factory.get('loanRequest'),
-  actionType: 'test',
+  type: 'test',
   status: 'active',
 });
 

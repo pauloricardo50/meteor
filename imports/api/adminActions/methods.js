@@ -9,15 +9,15 @@ import { validateUser } from '../helpers';
 
 export const insertAdminAction = new ValidatedMethod({
   name: 'adminActions.insert',
-  validate({ requestId, actionType }) {
+  validate({ requestId, type }) {
     check(requestId, String);
-    check(actionType, String);
+    check(type, String);
     validateUser();
   },
-  run({ requestId, actionType }) {
+  run({ requestId, type }) {
     // Make sure there isn't an action active with the same ID
     const actionExists = !!AdminActions.findOne({
-      actionType,
+      type,
       requestId,
       status: 'active',
     });
@@ -25,7 +25,7 @@ export const insertAdminAction = new ValidatedMethod({
       throw new Meteor.Error('duplicate active admin action');
     }
 
-    return AdminActions.insert({ actionType, requestId });
+    return AdminActions.insert({ type, requestId });
   },
 });
 
@@ -36,7 +36,7 @@ export const completeAction = new ValidatedMethod({
     validateUser();
   },
   run({ id }) {
-    const action = AdminActions.find({ _id: id });
+    const action = AdminActions.findOne({ _id: id });
 
     if (action.status === 'completed') {
       throw new Meteor.Error('action is already completed');
@@ -51,18 +51,18 @@ export const completeAction = new ValidatedMethod({
   },
 });
 
-export const completeActionByactionType = new ValidatedMethod({
-  name: 'adminActions.completeByactionType',
-  validate({ requestId, actionType, newStatus }) {
+export const completeActionByType = new ValidatedMethod({
+  name: 'adminActions.completeActionByType',
+  validate({ requestId, type, newStatus }) {
     check(requestId, String);
-    check(actionType, String);
+    check(type, String);
     check(newStatus, Match.Optional(String));
     validateUser();
   },
-  run({ requestId, actionType, newStatus }) {
+  run({ requestId, type, newStatus }) {
     const action = AdminActions.findOne({
       requestId,
-      actionType,
+      type,
       status: 'active',
     });
 
@@ -88,6 +88,7 @@ export const removeParentRequest = new ValidatedMethod({
     return AdminActions.update(
       { requestId },
       { $set: { status: 'parentDeleted' } },
+      { multi: true },
     );
   },
 });

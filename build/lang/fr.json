@@ -1,6 +1,5 @@
 {
-  "AboutPage.description1": "e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève. Expansion prévue prochainement.",
-  "AboutPage.description2": "L'équipe derrière e-Potek est composée d'entrepreneurs vétérans avec une expérience cumulée de plus de 30 ans dans la finance et les prêts hypothécaires en Suisse.",
+  "AboutPage.description": "e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève. Expansion prévue prochainement.{verticalSpace}L'équipe derrière e-Potek est composée d'entrepreneurs vétérans avec une expérience cumulée de plus de 30 ans dans la finance et les prêts hypothécaires en Suisse.",
   "AboutPage.title": "Le Prêt Hypothécaire de Demain",
   "AcceptClosingModal.description": "Toute l'équipe d'e-Potek vous félicite pour le décaissement de votre prêt hypothécaire, et d'être enfin propriétaire de votre bien immobilier.{verticalSpace}Vous pouvez maintenant utiliser votre tableau de bord e-Potek pour garder un oeil sur votre prochaine échéance de paiement, et consulter les taux lorsque le refinancement s'approchera.",
   "AcceptClosingModal.description2": "Merci d'avoir utilisé e-Potek, voici votre code pour nous recommander auprès de vos proches, et empocher jusqu'a CHF 1 000 pour une affaire conclue.",
@@ -18,9 +17,6 @@
   "ActionsTable.comment": "Commentaire",
   "ActionsTable.date": "Date",
   "ActionsTable.do": " ",
-
-  "LoginPage.title": "Login / Créer un compte",
-
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",
@@ -403,6 +399,7 @@
   "LenderTable.conditions": "Conditions?",
   "LenderTable.monthly": "Coût mensuel",
   "LenderTable.perMonth": "/mois",
+  "LoginPage.title": "Login / Créer un compte",
   "NewRequestModal.description": "Ça nous permettra de l'identifier",
   "NewRequestModal.label": "Nom du projet",
   "NewRequestModal.placeholder": "Rue du Pré 2",

@@ -1,5 +1,4 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const styles = {
@@ -20,8 +19,8 @@ const styles = {
   },
 };
 
-const AboutPage = props => (
-  <section style={styles.section} className="animated fadeIn">
+const AboutPage = () =>
+  (<section style={styles.section} className="animated fadeIn">
     <article style={styles.article}>
       <h1>
         <T id="AboutPage.title" />
@@ -29,16 +28,10 @@ const AboutPage = props => (
 
       <div className="description" style={styles.description}>
         <p>
-          <T id="AboutPage.description1" />
-          <br />
-          <br />
-          <T id="AboutPage.description2" />
+          <T id="AboutPage.description" />
         </p>
       </div>
     </article>
-  </section>
-);
-
-AboutPage.propTypes = {};
+  </section>);
 
 export default AboutPage;
