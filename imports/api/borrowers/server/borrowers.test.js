@@ -1,8 +1,11 @@
 /* eslint-env mocha */
+import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import { stubCollections } from '/imports/js/helpers/testHelpers';
+import sinon from 'sinon';
+
 import Borrowers from '../borrowers';
 
 import {
@@ -12,7 +15,7 @@ import {
   popBorrowerValue,
 } from '../methods';
 
-describe('borrowers', () => {
+describe('Borrowers', () => {
   beforeEach(() => {
     resetDatabase();
     stubCollections();
@@ -23,59 +26,61 @@ describe('borrowers', () => {
   });
 
   describe('methods', () => {
+    let borrowerId;
+    let userId;
+
+    beforeEach(() => {
+      userId = Factory.create('user')._id;
+      borrowerId = Factory.create('borrower')._id;
+      sinon.stub(Meteor, 'userId').callsFake(() => userId);
+    });
+
+    afterEach(() => {
+      Meteor.userId.restore();
+    });
+
     describe('insertBorrower', () => {
       it('Properly inserts a minimal borrower', () => {
-        const object = {};
-        const userId = 'asdf';
-
-        const borrowerId = insertBorrower.call({ object, userId });
-        const borrower = Borrowers.findOne({ _id: borrowerId });
+        const id = insertBorrower.call({ object: {}, userId });
+        const borrower = Borrowers.findOne(id);
 
         expect(typeof borrower).to.equal('object');
         expect(borrower.userId).to.equal(userId);
       });
     });
 
-    describe('modifiers', () => {
-      let borrower;
+    describe('updateBorrower', () => {
+      it('Updates a borrower', () => {
+        const object = { firstName: 'John' };
+        updateBorrower.call({ object, id: borrowerId });
+        const modifiedBorrower = Borrowers.findOne(borrowerId);
 
-      beforeEach(() => {
-        borrower = Factory.create('borrower');
+        expect(modifiedBorrower.firstName).to.equal('John');
       });
+    });
 
-      describe('updateBorrower', () => {
-        it('Updates a borrower', () => {
-          const id = borrower._id;
-          const object = { firstName: 'John' };
-          updateBorrower.call({ object, id });
-          const modifiedBorrower = Borrowers.findOne({ _id: id });
+    describe('pushBorrowerValue', () => {
+      it('Pushes a value to borrower', () => {
+        const object = { expenses: { description: 'test2', value: 2 } };
+        const borrower = Borrowers.findOne(borrowerId);
 
-          expect(modifiedBorrower.firstName).to.equal('John');
-        });
+        pushBorrowerValue.call({ object, id: borrowerId });
+        const modifiedBorrower = Borrowers.findOne(borrowerId);
+        const length = borrower.expenses.length;
+
+        expect(modifiedBorrower.expenses.length).to.equal(length + 1);
       });
+    });
 
-      describe('pushBorrowerValue', () => {
-        it('Pushes a value to borrower', () => {
-          const id = borrower._id;
-          const object = { expenses: { description: 'test2', value: 2 } };
-          pushBorrowerValue.call({ object, id });
-          const modifiedBorrower = Borrowers.findOne({ _id: id });
-          const length = borrower.expenses.length;
+    describe('popBorrowerValue', () => {
+      it('Pops a value from a borrower', () => {
+        const object = { expenses: 1 };
+        const borrower = Borrowers.findOne(borrowerId);
+        popBorrowerValue.call({ object, id: borrowerId });
+        const modifiedBorrower = Borrowers.findOne(borrowerId);
+        const length = borrower.expenses.length;
 
-          expect(modifiedBorrower.expenses.length).to.equal(length + 1);
-        });
-      });
-
-      describe('popBorrowerValue', () => {
-        it('Pops a value from a borrower', () => {
-          const id = borrower._id;
-          const object = { expenses: 1 };
-          popBorrowerValue.call({ object, id });
-          const modifiedBorrower = Borrowers.findOne({ _id: id });
-          const length = borrower.expenses.length;
-
-          expect(modifiedBorrower.expenses.length).to.equal(length - 1);
-        });
+        expect(modifiedBorrower.expenses.length).to.equal(length - 1);
       });
     });
   });

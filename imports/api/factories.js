@@ -94,6 +94,7 @@ Factory.define('adminAction', AdminActions, {
 Factory.define('comparator', Comparators, {
   userId: Factory.get('user'),
   customFields: [],
+  customFieldCount: 0,
   hiddenFields: [],
   borrowRatio: 0.8,
 });

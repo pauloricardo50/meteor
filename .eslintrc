@@ -33,7 +33,8 @@
           "_ensureIndex",
           "_verifyEmailToken",
           "_resetPasswordToken",
-          "_name"
+          "_name",
+          "_execute"
         ]
       }
     ],

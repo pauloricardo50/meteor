@@ -12,7 +12,7 @@ export const insertComparator = new ValidatedMethod({
   validate() {
     validateUser();
   },
-  run({}) {
+  run() {
     const userId = Meteor.userId();
     const userComparators = Comparators.find({ userId }).count();
 
@@ -20,15 +20,15 @@ export const insertComparator = new ValidatedMethod({
       throw new Meteor.Error("Can't have more than one comparator per user");
     }
 
-    return Comparators.insert({ userId: Meteor.userId() });
+    return Comparators.insert({ userId });
   },
 });
 
 export const updateComparator = new ValidatedMethod({
   name: 'comparators.update',
   validate({ object, id }) {
-    check(id, String);
     check(object, Object);
+    check(id, String);
     validateUser();
   },
   run({ object, id }) {
