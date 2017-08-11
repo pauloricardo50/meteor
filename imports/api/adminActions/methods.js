@@ -5,17 +5,19 @@ import { check, Match } from 'meteor/check';
 import rateLimit from '/imports/js/helpers/rate-limit.js';
 
 import AdminActions from './adminActions';
+import { validateUser } from '../helpers';
 
 export const insertAdminAction = new ValidatedMethod({
   name: 'adminActions.insert',
-  validate({ requestId, actionId }) {
+  validate({ requestId, actionType }) {
     check(requestId, String);
-    check(actionId, String);
+    check(actionType, String);
+    validateUser();
   },
-  run({ requestId, actionId }) {
+  run({ requestId, actionType }) {
     // Make sure there isn't an action active with the same ID
     const actionExists = !!AdminActions.findOne({
-      actionId,
+      actionType,
       requestId,
       status: 'active',
     });
@@ -23,7 +25,7 @@ export const insertAdminAction = new ValidatedMethod({
       throw new Meteor.Error('duplicate active admin action');
     }
 
-    return AdminActions.insert({ actionId, requestId });
+    return AdminActions.insert({ actionType, requestId });
   },
 });
 
@@ -31,6 +33,7 @@ export const completeAction = new ValidatedMethod({
   name: 'adminActions.complete',
   validate({ id }) {
     check(id, String);
+    validateUser();
   },
   run({ id }) {
     const action = AdminActions.find({ _id: id });
@@ -48,17 +51,18 @@ export const completeAction = new ValidatedMethod({
   },
 });
 
-export const completeActionByActionId = new ValidatedMethod({
-  name: 'adminActions.completeByActionId',
-  validate({ requestId, actionId, newStatus }) {
+export const completeActionByactionType = new ValidatedMethod({
+  name: 'adminActions.completeByactionType',
+  validate({ requestId, actionType, newStatus }) {
     check(requestId, String);
-    check(actionId, String);
+    check(actionType, String);
     check(newStatus, Match.Optional(String));
+    validateUser();
   },
-  run({ requestId, actionId, newStatus }) {
+  run({ requestId, actionType, newStatus }) {
     const action = AdminActions.findOne({
       requestId,
-      actionId,
+      actionType,
       status: 'active',
     });
 

@@ -16,6 +16,10 @@ import {
 import myTheme from '/imports/js/config/mui_custom';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
+// This has to be imported here for client side tests to use factories
+// Because each test using factories also uses stubCollections
+import '/imports/api/factories';
+
 import LoanRequests from '/imports/api/loanrequests/loanrequests';
 import Borrowers from '/imports/api/borrowers/borrowers';
 import Offers from '/imports/api/offers/offers';

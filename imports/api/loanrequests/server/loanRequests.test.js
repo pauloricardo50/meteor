@@ -1,17 +1,14 @@
 /* eslint-env mocha */
-/* eslint-disable func-names, prefer-arrow-callback */
-
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import moment from 'moment';
-import LoanRequests from '../loanrequests';
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
 import { stubCollections } from '/imports/js/helpers/testHelpers';
 
-import '../../factories.js';
+import LoanRequests from '../loanrequests';
 
 import {
   insertRequest,
@@ -164,7 +161,7 @@ describe('loanRequests', () => {
         it("Should throw an error if user isn't a developer", () => {
           const id = request._id;
 
-          expect(function () {
+          expect(() => {
             // Wrap it in a function to be able to test if it throws
             deleteRequest.call({ id });
           }).to.throw(Error);

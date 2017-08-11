@@ -1,4 +1,3 @@
-
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
@@ -38,7 +37,7 @@ const AdminActionSchema = new SimpleSchema({
     type: Date,
     optional: true,
   },
-  actionId: String,
+  actionType: String,
   requestId: String,
   staffId: {
     type: String,

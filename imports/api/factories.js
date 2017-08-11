@@ -6,6 +6,7 @@ import Borrowers from './borrowers/borrowers';
 import Offers from './offers/offers';
 import Comparators from './comparators/comparators';
 import Properties from './properties/properties';
+import AdminActions from './adminActions/adminActions';
 
 const chance = require('chance').Chance();
 
@@ -82,6 +83,12 @@ Factory.define('offer', Offers, {
     interest5: 0.01,
     interest10: 0.01,
   }),
+});
+
+Factory.define('adminAction', AdminActions, {
+  requestId: Factory.get('loanRequest'),
+  actionType: 'test',
+  status: 'active',
 });
 
 Factory.define('comparator', Comparators, {

@@ -2,8 +2,8 @@
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
-import Borrowers from '../borrowers';
 import { stubCollections } from '/imports/js/helpers/testHelpers';
+import Borrowers from '../borrowers';
 
 import {
   insertBorrower,
@@ -11,8 +11,6 @@ import {
   pushBorrowerValue,
   popBorrowerValue,
 } from '../methods';
-
-import '../../factories.js';
 
 describe('borrowers', () => {
   beforeEach(() => {

@@ -70,7 +70,7 @@ const handleSave = (props, offerId) => {
       // This will only be called the first time a lender is chosen
       insertAdminAction.call({
         requestId: props.loanRequest._id,
-        actionId: 'lenderChosen',
+        actionType: 'lenderChosen',
       });
     }
   });

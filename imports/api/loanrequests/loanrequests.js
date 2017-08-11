@@ -1,9 +1,12 @@
-
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
-import { GeneralSchema, PropertySchema, LogicSchema } from './additionalSchemas';
 import { getFileSchema } from '/imports/js/arrays/files';
+import {
+  GeneralSchema,
+  PropertySchema,
+  LogicSchema,
+} from './additionalSchemas';
 
 const RequestFilesSchema = new SimpleSchema(getFileSchema('request'));
 
@@ -36,7 +39,10 @@ const LoanRequestSchema = new SimpleSchema({
     type: Date,
     autoValue() {
       // Verify the update is from the user owning this doc, ignoring admin/partner updates
-      const doc = LoanRequests.findOne({ _id: this.docId }, { fields: { userId: 1 } });
+      const doc = LoanRequests.findOne(
+        { _id: this.docId },
+        { fields: { userId: 1 } },
+      );
 
       if (this.isInsert) {
         return new Date();

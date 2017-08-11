@@ -25,6 +25,7 @@ describe('Factories', () => {
     'offer',
     'comparator',
     'property',
+    'adminAction',
   ];
 
   factories.forEach((fact) => {

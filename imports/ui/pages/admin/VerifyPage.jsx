@@ -51,9 +51,9 @@ export default class VerifyPage extends Component {
     };
 
     cleanMethod('updateRequest', object, this.props.loanRequest._id, () => {
-      Meteor.call('adminActions.completeByActionId', {
+      Meteor.call('adminActions.completeByactionType', {
         requestId: this.props.loanRequest._id,
-        actionId: 'verify',
+        actionType: 'verify',
       });
 
       Meteor.call('email.send', {
