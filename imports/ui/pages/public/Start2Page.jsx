@@ -55,39 +55,39 @@ export default class Start2Page extends Component {
     };
   }
 
-  componentDidMount() {
-    this.setState({
-      age: 23,
-      bonusExists: false,
-      borrowerCount: 1,
-      expensesExist: false,
-      finalized: true,
-      fortune1: 250000,
-      fortuneRequiredAgreed: true,
-      fortuneUsed: 250000,
-      income1: 200000,
-      initialFortune: 250000,
-      initialFortuneAgreed: true,
-      initialIncome: 200000,
-      initialIncomeAgreed: true,
-      insurance1Exists: false,
-      insurance11: 0,
-      insurance2Exists: false,
-      insuranceFortuneUsed: 0,
-      knowsProperty: true,
-      loanWanted: 800000,
-      notaryFeesAgreed: true,
-      otherIncome: false,
-      propertyValue: 1000000,
-      propertyWorkExists: false,
-      purchaseType: 'acquisition',
-      realEstateExists: false,
-      showUX: false,
-      type: 'acquisition',
-      usageType: 'primary',
-      useInsurance: false,
-    });
-  }
+  // componentDidMount() {
+  //   this.setState({
+  //     age: 23,
+  //     bonusExists: false,
+  //     borrowerCount: 1,
+  //     expensesExist: false,
+  //     finalized: true,
+  //     fortune1: 250000,
+  //     fortuneRequiredAgreed: true,
+  //     fortuneUsed: 250000,
+  //     income1: 200000,
+  //     initialFortune: 250000,
+  //     initialFortuneAgreed: true,
+  //     initialIncome: 200000,
+  //     initialIncomeAgreed: true,
+  //     insurance1Exists: false,
+  //     insurance11: 0,
+  //     insurance2Exists: false,
+  //     insuranceFortuneUsed: 0,
+  //     knowsProperty: true,
+  //     loanWanted: 800000,
+  //     notaryFeesAgreed: true,
+  //     otherIncome: false,
+  //     propertyValue: 1000000,
+  //     propertyWorkExists: false,
+  //     purchaseType: 'acquisition',
+  //     realEstateExists: false,
+  //     showUX: false,
+  //     type: 'acquisition',
+  //     usageType: 'primary',
+  //     useInsurance: false,
+  //   });
+  // }
 
   setActiveLine = (id, callback) => {
     if (this.state.activeLine !== id) {
