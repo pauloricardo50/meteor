@@ -14,9 +14,9 @@ import {
   changeProperty,
   changeFortune,
   changeIncome,
-  getBorrowRatio,
   getIncomeRatio,
   getTheoreticalMonthly,
+  getBorrowRatio,
 } from '/imports/js/helpers/startFunctions';
 import { storageAvailable } from '/imports/js/helpers/browserFunctions';
 import Accordion from '/imports/ui/components/general/Accordion.jsx';
@@ -242,6 +242,7 @@ export default class Start1Page extends Component {
   }
 
   render() {
+    const { showDescription, isFirstVisit } = this.state;
     const property = this.state.property.value;
     const income = this.state.income.value;
     const fortune = this.state.fortune.value;
@@ -262,25 +263,22 @@ export default class Start1Page extends Component {
           </h1>
           <hr />
 
-          <Button
-            icon={
-              this.state.showDescription || this.state.isFirstVisit
-                ? <ArrowUp />
-                : <ArrowDown />
-            }
-            onTouchTap={() =>
-              this.setState(prev => ({
-                showDescription: !prev.showDescription,
-              }))}
-            style={
-              this.state.showDescription
-                ? { minWidth: 'unset', width: 36 }
-                : { marginBottom: 16, minWidth: 'unset', width: 36 }
-            }
-          />
+          {!isFirstVisit &&
+            <Button
+              icon={showDescription ? <ArrowUp /> : <ArrowDown />}
+              onTouchTap={() =>
+                this.setState(prev => ({
+                  showDescription: !prev.showDescription,
+                }))}
+              style={
+                showDescription
+                  ? { minWidth: 'unset', width: 36 }
+                  : { marginBottom: 16, minWidth: 'unset', width: 36 }
+              }
+            />}
           <Accordion
-            isActive={this.state.showDescription}
-            style={this.state.showDescription ? { margin: '40px 0' } : {}}
+            isActive={showDescription}
+            style={showDescription ? { margin: '40px 0' } : {}}
           >
             <div className="description" style={{ margin: 0 }}>
               <p>
@@ -292,17 +290,17 @@ export default class Start1Page extends Component {
             </div>
           </Accordion>
 
-          {!this.state.isFirstVisit
+          {!isFirstVisit
             ? <Start1Calculator
               {...childProps}
               inputArray={getArray(
-                  income,
-                  fortune,
-                  property,
-                  borrowRatio,
-                  incomeRatio,
-                  this.state.property.auto,
-                )}
+                income,
+                fortune,
+                property,
+                borrowRatio,
+                incomeRatio,
+                this.state.property.auto,
+              )}
               setStateValue={this.setStateValue}
               setSliderMax={this.setSliderMax}
               parentState={this.state}
@@ -315,10 +313,10 @@ export default class Start1Page extends Component {
                 primary
                 label={<T id="Start1Page.showCalculatorButton" />}
                 onTouchTap={() =>
-                    this.setState({
-                      isFirstVisit: false,
-                      showDescription: false,
-                    })}
+                  this.setState({
+                    isFirstVisit: false,
+                    showDescription: false,
+                  })}
                 style={{ height: 'unset' }}
                 overlayStyle={{ padding: 20 }}
               />

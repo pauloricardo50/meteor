@@ -4,28 +4,18 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/std:accounts-ui';
 import { addUserTracking } from '/imports/js/helpers/analytics';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
+
 const styles = {
   section: {
-    paddingTop: 100,
-    display: 'table',
-    position: 'absolute',
     width: '100%',
-    height: 'calc(100% - 64px)',
-    backgroundPosition: '50% 50%',
-    backgroundAttachment: 'scroll',
-    backgroundRepeat: 'no-repeat no-repeat',
-    backgroundSize: 'cover',
-  },
-  div1: {
-    display: 'table-cell',
-    verticalAlign: 'middle',
-  },
-  div2: {
-    margin: 'auto',
-    display: 'block',
-    maxWidth: 500,
-    paddingLeft: 16,
-    paddingRight: 16,
+    minHeight: 'calc(100% - 64px)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    overflowY: 'scroll',
+    padding: '0 16px',
   },
 };
 
@@ -34,32 +24,31 @@ const handlePasswordReset = () => {
 };
 
 const LoginPage = props =>
-  <section style={styles.section}>
-    <div style={styles.div1}>
-      <div style={styles.div2}>
-        <Accounts.ui.LoginForm
-          onSignedInHook={() => props.history.push('/app')}
-          onPostSignUpHook={() => {
-            props.history.push('/app');
+  (<section style={styles.section}>
+    <h1>
+      <T id="LoginPage.title" />
+    </h1>
+    <Accounts.ui.LoginForm
+      onSignedInHook={() => props.history.push('/app')}
+      onPostSignUpHook={() => {
+        props.history.push('/app');
 
-            Meteor.call('sendVerificationLink', (error, response) => {
-              if (error) {
-                console.log(error);
-              }
-              console.log(response);
-            });
+        Meteor.call('sendVerificationLink', (error, response) => {
+          if (error) {
+            console.log(error);
+          }
+          console.log(response);
+        });
 
-            // Create user for analytics
-            addUserTracking(Meteor.userId(), {
-              email: Meteor.user().emails[0].address,
-              id: Meteor.userId(),
-            });
-          }}
-          onResetPasswordHook={handlePasswordReset}
-        />
-      </div>
-    </div>
-  </section>;
+        // Create user for analytics
+        addUserTracking(Meteor.userId(), {
+          email: Meteor.user().emails[0].address,
+          id: Meteor.userId(),
+        });
+      }}
+      onResetPasswordHook={handlePasswordReset}
+    />
+  </section>);
 
 LoginPage.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,

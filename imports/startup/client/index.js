@@ -16,7 +16,7 @@ import RenderRoutes from './Router.jsx';
  *
  * @return {type} undefined
  */
-export const start = (testElement) => {
+const start = (testElement) => {
   // Initial injected html done in server startup index.js
   const loader = document.getElementById('inject-loader-wrapper');
   const loader2 = document.getElementById('loading-text');
@@ -43,5 +43,7 @@ export const start = (testElement) => {
   // Render react-router routes
   render(RenderRoutes(), testElement || document.getElementById('react-root'));
 };
+
+export default start;
 
 Meteor.startup(() => start());

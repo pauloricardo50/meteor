@@ -3,9 +3,12 @@ import { check } from 'meteor/check';
 import AdminActions from '../adminActions';
 import { Roles } from 'meteor/alanning:roles';
 
-Meteor.publish('allAdminActions', function () {
+Meteor.publish('allAdminActions', function publish() {
   // Verify if user is an admin
-  if (Roles.userIsInRole(this.userId, 'admin') || Roles.userIsInRole(this.userId, 'dev')) {
+  if (
+    Roles.userIsInRole(Meteor.userId(), 'admin') ||
+    Roles.userIsInRole(Meteor.userId(), 'dev')
+  ) {
     // Return all
     return AdminActions.find();
   }

@@ -7,26 +7,18 @@ import Loadable from '/imports/js/helpers/loadable';
 
 import messagesFR from '/build/lang/fr.json';
 
-// Import used languages from the package here
-// const fr = Loadable({
-//   loader: () => import('react-intl/locale-data/fr'),
-// });
 import fr from 'react-intl/locale-data/fr';
-// import es from 'react-intl/locale-data/es';
 
-export const getUserLocale = () => {
-  return 'fr-CH';
-};
+export const getUserLocale = () => 'fr-CH';
 
-export const getTranslations = () => {
+export const getTranslations = () =>
   // log amount of words in translation
   // const val = Object.keys(messagesFR).reduce(
   //   (tot, key) => tot + messagesFR[key].split(' ').length,
   //   0,
   // );
   // console.log(val);
-  return messagesFR;
-};
+  messagesFR;
 
 export const getFormats = () => ({
   number: {
@@ -57,7 +49,9 @@ const setupMoment = () => {
     months: 'Janvier_Février_Mars_Avril_Mai_Juin_Juillet_Août_Septembre_Octobre_Novembre_Décembre'.split(
       '_',
     ),
-    monthsShort: 'Janv._Févr._Mars_Avr._Mai_Juin_Juil._Août_Sept._Oct._Nov._Déc.'.split('_'),
+    monthsShort: 'Janv._Févr._Mars_Avr._Mai_Juin_Juil._Août_Sept._Oct._Nov._Déc.'.split(
+      '_',
+    ),
     monthsParseExact: true,
     weekdays: 'Dimanche_Lundi_Mardi_Mercredi_Jeudi_Vendredi_Samedi'.split('_'),
     weekdaysShort: 'Dim._Lun._Mar._Mer._Jeu._Ven._Sam.'.split('_'),

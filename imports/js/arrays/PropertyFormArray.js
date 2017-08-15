@@ -3,6 +3,10 @@ import React from 'react';
 const getPropertyArray = (loanRequest, borrowers) => {
   const r = loanRequest;
 
+  if (!r) {
+    throw new Error('requires a loanRequest');
+  }
+
   return [
     {
       id: 'property.value',
@@ -56,7 +60,8 @@ const getPropertyArray = (loanRequest, borrowers) => {
     {
       type: 'conditionalInput',
       conditionalTrueValue: 'other',
-      condition: borrowers.length > 1 && r.general.purchaseType === 'refinancing',
+      condition:
+        borrowers.length > 1 && r.general.purchaseType === 'refinancing',
       inputs: [
         {
           id: 'general.currentOwner',
@@ -83,7 +88,8 @@ const getPropertyArray = (loanRequest, borrowers) => {
     {
       type: 'conditionalInput',
       conditionalTrueValue: 'other',
-      condition: borrowers.length > 1 && r.general.purchaseType !== 'refinancing',
+      condition:
+        borrowers.length > 1 && r.general.purchaseType !== 'refinancing',
       inputs: [
         {
           id: 'general.futureOwner',
@@ -171,7 +177,11 @@ const getPropertyArray = (loanRequest, borrowers) => {
       id: 'property.landArea',
       type: 'textInput',
       number: true,
-      label: <span>Surface du terrain en m<sup>2</sup> *</span>,
+      label: (
+        <span>
+          Surface du terrain en m<sup>2</sup> *
+        </span>
+      ),
       placeholder: '250',
       condition: r.property.style === 'villa',
     },
@@ -179,14 +189,22 @@ const getPropertyArray = (loanRequest, borrowers) => {
       id: 'property.insideArea',
       type: 'textInput',
       number: true,
-      label: <span>Surface habitable en m<sup>2</sup> *</span>,
+      label: (
+        <span>
+          Surface habitable en m<sup>2</sup> *
+        </span>
+      ),
       placeholder: '150',
     },
     {
       id: 'property.balconyArea',
       type: 'textInput',
       number: true,
-      label: <span>Surface des balcons en m<sup>2</sup></span>,
+      label: (
+        <span>
+          Surface des balcons en m<sup>2</sup>
+        </span>
+      ),
       placeholder: '20',
       required: false,
     },
@@ -194,7 +212,11 @@ const getPropertyArray = (loanRequest, borrowers) => {
       id: 'property.terraceArea',
       type: 'textInput',
       number: true,
-      label: <span>Surface des terrasses en m<sup>2</sup></span>,
+      label: (
+        <span>
+          Surface des terrasses en m<sup>2</sup>
+        </span>
+      ),
       placeholder: '40',
       required: false,
     },
@@ -202,7 +224,11 @@ const getPropertyArray = (loanRequest, borrowers) => {
       id: 'property.volume',
       type: 'textInput',
       number: true,
-      label: <span>Volume/Cubage en m<sup>3</sup> *</span>,
+      label: (
+        <span>
+          Volume/Cubage en m<sup>3</sup> *
+        </span>
+      ),
       placeholder: '1000',
       condition: r.property.style === 'villa',
     },
@@ -227,7 +253,8 @@ const getPropertyArray = (loanRequest, borrowers) => {
       number: true,
       label: 'Nb. de salles de bain',
       placeholder: '1',
-      info: 'Salles de bains ou salles d’eau (respectivement avec baignoire ou douche)',
+      info:
+        'Salles de bains ou salles d’eau (respectivement avec baignoire ou douche)',
     },
     {
       id: 'property.toiletCount',

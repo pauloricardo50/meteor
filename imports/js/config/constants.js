@@ -19,7 +19,6 @@ const constants = {
       this.getAmortization(borrowRatio, toRetirement)
     );
   },
-
   propertyToIncome(usageType = 'primary', borrowRatio, toRetirement) {
     return (
       3 *

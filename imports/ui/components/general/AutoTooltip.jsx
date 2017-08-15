@@ -6,7 +6,7 @@ import reactStringReplace from 'react-string-replace';
 import { tooltips } from '/imports/js/arrays/tooltips';
 import TooltipOverlay from './TooltipOverlay.jsx';
 
-const AutoTooltip = props => {
+const AutoTooltip = (props) => {
   let content = null;
 
   if (!props.children) {
@@ -30,9 +30,9 @@ const AutoTooltip = props => {
       props.children,
       new RegExp(`(${Object.keys(tooltips(props.list)).join('|')})`, 'gi'),
       (match, i) =>
-        <TooltipOverlay {...props} key={i} match={match}>
+        (<TooltipOverlay {...props} key={i} match={match}>
           {match}
-        </TooltipOverlay>,
+        </TooltipOverlay>),
     );
   }
 

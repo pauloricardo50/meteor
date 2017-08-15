@@ -1,3 +1,10 @@
+.scroll-button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: -72px;
+}
+
 .footer,
 .header {
   background: #4990e2;

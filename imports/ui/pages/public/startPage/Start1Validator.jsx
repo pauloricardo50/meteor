@@ -11,21 +11,6 @@ import {
   validateRatiosCompletely,
 } from '/imports/js/helpers/requestFunctions';
 
-const styles = {
-  div: {
-    // display: 'inline-flex',
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // margin: '40px auto',
-    // padding: 40,
-  },
-  content: {
-    // display: 'flex',
-    // flexDirection: 'column',
-    // alignItems: 'center',
-  },
-};
-
 export default class Start1Validator extends Component {
   constructor(props) {
     super(props);
@@ -55,13 +40,9 @@ export default class Start1Validator extends Component {
     const { message, message2, icon: MyIcon, className } = this.state;
 
     return (
-      <div style={styles.div} className="mask2 primary-border start1-errors">
-        {MyIcon &&
-          <MyIcon
-            // style={{ marginRight: '2em', height: '3em', width: '3em' }}
-            className={`${className} icon`}
-          />}
-        <div style={styles.content} id="content">
+      <div className="mask2 start1-errors">
+        {MyIcon && <MyIcon className={`${className} icon`} />}
+        <div id="content">
           <h2 className={className} style={{ margin: 0 }}>
             {message && <T id={`Start1Validator.${message}`} />}
           </h2>

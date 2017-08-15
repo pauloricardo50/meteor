@@ -15,16 +15,17 @@ const buildByteArray = (string, stringLength) => {
   return array;
 };
 
-const createBlob = byteArray => new Blob([byteArray], { type: 'application/pdf' });
+const createBlob = byteArray =>
+  new Blob([byteArray], { type: 'application/pdf' });
 
-const base64ToBlob = base64String => {
+const base64ToBlob = (base64String) => {
   const decodedString = decodeBase64(base64String);
   const decodedStringLength = getLength(decodedString);
   const byteArray = buildByteArray(decodedString, decodedStringLength);
   return byteArray ? createBlob(byteArray) : null;
 };
 
-export const downloadPDF = (event, requestId, type) => {
+const downloadPDF = (event, requestId, type) => {
   event.preventDefault();
   const { target } = event;
   const initialLabel = target.innerHTML;
@@ -41,3 +42,5 @@ export const downloadPDF = (event, requestId, type) => {
     }
   });
 };
+
+export default downloadPDF;

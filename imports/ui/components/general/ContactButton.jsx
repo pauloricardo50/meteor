@@ -57,7 +57,7 @@ const styles = {
 const staff = supportStaff[0];
 
 const overlayContent = path =>
-  <div
+  (<div
     style={{
       display: 'flex',
       flexDirection: 'column',
@@ -134,7 +134,7 @@ const overlayContent = path =>
         </a>
       </div>
     </div>
-  </div>;
+  </div>);
 
 export default class ContactButton extends Component {
   constructor(props) {
@@ -156,6 +156,9 @@ export default class ContactButton extends Component {
   };
 
   render() {
+    const { open } = this.state;
+    const { history } = this.props;
+
     return (
       <div style={styles.div}>
         <FloatingActionButton
@@ -163,16 +166,16 @@ export default class ContactButton extends Component {
           backgroundColor={colors.primary}
           onTouchTap={this.handleClick}
         >
-          {this.state.open ? <CloseIcon /> : <ForumIcon />}
+          {open ? <CloseIcon /> : <ForumIcon />}
         </FloatingActionButton>
         <div
           className="mask1"
           style={{
             ...styles.overlay,
-            ...(this.state.open ? {} : styles.closed),
+            ...(open ? {} : styles.closed),
           }}
         >
-          {overlayContent(this.props.history.location.pathname)}
+          {overlayContent(history.location.pathname)}
         </div>
       </div>
     );

@@ -274,39 +274,38 @@ svg.warning
 .flex-col
   flex-direction: column;
 
-
 .top-nav
-  position relative;
-  width: 100%
-  z-index: z.nav;
-  boxShadow: 0px 2px 40px 0px rgba(0,0,0,0.08);
+  background-color: white !important;
+  padding: 0 8px !important;
+  width: 100%;
+  height: 64px !important;
+  position: relative;
+  display: flex;
+  z-index: 20;
+  border-bottom: 1px solid #d8d8d8;
   +above($med)
     position: fixed;
-  .menu-button
-    display: block;
-    +above($med)
-      display: none;
-    .top-bar
-      height: 64px;
-      border-bottom: 1px solid #d8d8d8;
-  .logo
+  .top-nav-content
+    margin-left: 0 !important;
     display: flex;
-    position: absolute;
     width: 100%;
-    top: 8px;
-    left: 0px;
-    +above($med)
-      left: 24px;
-      width: auto;
-    .link
-      margin: 0 auto;
-    img
-      // position: relative;
-      margin: 0 auto;
-      height: 48px;
-      max-width: 184px;
+    .empty, .menu-button
+      display: flex;
       +above($med)
-        margin: 0;
+        display: none;
+    .logo
+      display: flex;
+      height: 16px;
+      +above($med)
+        height: 28px;
+        padding-left: 12px;
+      img, .link
+        display: flex;
+        height: 100%;
+    .buttons
+      display: flex;
+      align-items: center;
+
 
 
 .side-nav

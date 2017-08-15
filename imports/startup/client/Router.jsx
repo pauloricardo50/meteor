@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  withRouter,
+} from 'react-router-dom';
 
 import myTheme from '/imports/js/config/mui_custom';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -16,12 +21,18 @@ import PasswordPage from '/imports/ui/pages/public/PasswordPage.jsx';
 // import AdminRoutes from './routes/AdminRoutes.jsx';
 // import PartnerRoutes from './routes/PartnerRoutes.jsx';
 
-
-const PublicRoutes = Loadable({ loader: () => import('./routes/PublicRoutes.jsx') });
-const UserRoutes = Loadable({ loader: () => import('./routes/UserRoutes.jsx') });
-const AdminRoutes = Loadable({ loader: () => import('./routes/AdminRoutes.jsx') });
-const PartnerRoutes = Loadable({ loader: () => import('./routes/PartnerRoutes.jsx') });
-
+const PublicRoutes = Loadable({
+  loader: () => import('./routes/PublicRoutes.jsx'),
+});
+const UserRoutes = Loadable({
+  loader: () => import('./routes/UserRoutes.jsx'),
+});
+const AdminRoutes = Loadable({
+  loader: () => import('./routes/AdminRoutes.jsx'),
+});
+const PartnerRoutes = Loadable({
+  loader: () => import('./routes/PartnerRoutes.jsx'),
+});
 
 class ScrollToTop extends Component {
   componentDidUpdate(prevProps) {
@@ -38,7 +49,7 @@ class ScrollToTop extends Component {
 const ScrollToTopWithRouter = withRouter(ScrollToTop);
 
 const RenderRoutes = () =>
-  <MuiThemeProvider muiTheme={getMuiTheme(myTheme)}>
+  (<MuiThemeProvider muiTheme={getMuiTheme(myTheme)}>
     <IntlProvider
       locale={getUserLocale()}
       messages={getTranslations()}
@@ -51,13 +62,16 @@ const RenderRoutes = () =>
           <Switch>
             <Route path="/app" render={props => <UserRoutes {...props} />} />
             <Route path="/admin" render={props => <AdminRoutes {...props} />} />
-            <Route path="/partner" render={props => <PartnerRoutes {...props} />} />
+            <Route
+              path="/partner"
+              render={props => <PartnerRoutes {...props} />}
+            />
             <Route exact path="/" component={PasswordPage} />
             <Route path="/" render={props => <PublicRoutes {...props} />} />
           </Switch>
         </ScrollToTopWithRouter>
       </Router>
     </IntlProvider>
-  </MuiThemeProvider>;
+  </MuiThemeProvider>);
 
 export default RenderRoutes;

@@ -11,7 +11,7 @@ import { filesPercent } from '/imports/js/arrays/steps';
 import { borrowerFiles, requestFiles } from '/imports/js/arrays/files';
 import cleanMethod from '/imports/api/cleanMethods';
 
-const handleClick = id => {
+const handleClick = (id) => {
   cleanMethod('updateRequest', { 'logic.lender.contractRequested': true }, id);
 };
 
@@ -23,6 +23,7 @@ const getAction = (request, percent) => {
           <T id="ContractPage.progress" values={{ value: percent }} />
         </h4>
         <ConfirmButton
+          raised
           disabled={percent < 1}
           label={<T id="ContractPage.CTA" />}
           secondary
@@ -43,7 +44,7 @@ const getAction = (request, percent) => {
   );
 };
 
-const ContractPage = props => {
+const ContractPage = (props) => {
   const percent =
     (filesPercent(props.loanRequest, requestFiles, 'contract') +
       filesPercent(props.borrowers, borrowerFiles, 'contract')) /

@@ -20,7 +20,8 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
       items: [
         {
           id: 'personal',
-          link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}/personal`,
+          link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]
+            ._id}/personal`,
           percent: () => personalInfoPercent(borrowers),
           isDone() {
             return this.percent() >= 1;
@@ -28,12 +29,18 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         },
         {
           id: 'finance',
-          link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}/finance`,
-          isDone: () => borrowers.reduce((res, b) => res && b.logic.hasValidatedFinances, true),
+          link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]
+            ._id}/finance`,
+          isDone: () =>
+            borrowers.reduce(
+              (res, b) => res && b.logic.hasValidatedFinances,
+              true,
+            ),
         },
         {
           id: 'files',
-          link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]._id}/files`,
+          link: `/app/requests/${loanRequest._id}/borrowers/${borrowers[0]
+            ._id}/files`,
           percent: () => filesPercent(borrowers, borrowerFiles, 'auction'),
           isDone() {
             return this.percent() >= 1;
@@ -71,7 +78,8 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           id: 'auction',
           link: `/app/requests/${loanRequest._id}/auction`,
           isDone: () =>
-            loanRequest.logic.auctionStarted && loanRequest.logic.auctionEndTime <= serverTime,
+            loanRequest.logic.auctionStarted &&
+            loanRequest.logic.auctionEndTime <= serverTime,
           disabled: loanRequest.logic.step < 2,
         },
         {
@@ -79,12 +87,13 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           link: `/app/requests/${loanRequest._id}/lenderpicker`,
           disabled:
             loanRequest.logic.step < 2 &&
-              !(
-                serverTime &&
-                loanRequest.logic.auctionEndTime &&
-                loanRequest.logic.auctionEndTime > serverTime
-              ),
-          isDone: () => !!(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
+            !(
+              serverTime &&
+              loanRequest.logic.auctionEndTime &&
+              loanRequest.logic.auctionEndTime > serverTime
+            ),
+          isDone: () =>
+            !!(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
         },
       ],
     },
@@ -97,14 +106,19 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           link: `/app/requests/${loanRequest._id}/contract`,
           disabled:
             loanRequest.logic.step < 3 &&
-              !(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
+            !(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
           percent: () => 0,
-          isDone: () => loanRequest.logic.lender && loanRequest.logic.lender.contractRequested,
+          isDone: () =>
+            loanRequest.logic.lender &&
+            loanRequest.logic.lender.contractRequested,
         },
         {
           id: 'closing',
           link: `/app/requests/${loanRequest._id}/closing`,
-          disabled: !(loanRequest.logic.lender && loanRequest.logic.lender.contractRequested),
+          disabled: !(
+            loanRequest.logic.lender &&
+            loanRequest.logic.lender.contractRequested
+          ),
           percent: () => 0,
           isDone: () => false,
         },
@@ -153,8 +167,17 @@ const getCurrentValue = (input, doc) => get(doc, input.id);
  *
  * @return {boolean} Description
  */
-export const previousDone = (steps, stepNb, itemNb) =>
-  steps[stepNb].items.slice(0, itemNb).reduce((res, i) => res && i.isDone(), true);
+export const previousDone = (steps, stepNb, itemNb) => {
+  if (stepNb >= steps.length) {
+    throw new Error('invalid stepNb');
+  } else if (itemNb >= steps[stepNb].items.length) {
+    throw new Error('invalid itemNb');
+  }
+
+  return steps[stepNb].items
+    .slice(0, itemNb)
+    .reduce((res, i) => res && i.isDone(), true);
+};
 
 /**
  * getPercent - Given an array of values, any value that is undefined or null
@@ -164,7 +187,7 @@ export const previousDone = (steps, stepNb, itemNb) =>
  *
  * @return {number} a value between 0 and 1
  */
-export const getPercent = array => {
+export const getPercent = (array = []) => {
   const percent =
     array.reduce((tot, val) => {
       if (isArray(val)) {
@@ -185,7 +208,7 @@ export const getPercent = array => {
  *
  * @return {boolean} Description
  */
-const shouldCountField = f =>
+export const shouldCountField = f =>
   (f.condition === undefined || f.condition === true) &&
   f.required !== false &&
   !f.disabled &&
@@ -201,18 +224,20 @@ const shouldCountField = f =>
  *
  * @return {array} an array with all the currentValues that are mandatory
  */
-const getCountedArray = (formArray, doc, arr = []) => {
-  formArray.forEach(i => {
-    if (shouldCountField(i) && i.type === 'conditionalInput') {
-      if (getCurrentValue(i.inputs[0], doc) === i.conditionalTrueValue) {
-        // If the conditional input is triggering the next input, add all values
-        i.inputs.forEach(input => arr.push(getCurrentValue(input, doc)));
+export const getCountedArray = (formArray, doc, arr = []) => {
+  formArray.forEach((i) => {
+    if (shouldCountField(i)) {
+      if (i.type === 'conditionalInput') {
+        if (getCurrentValue(i.inputs[0], doc) === i.conditionalTrueValue) {
+          // If the conditional input is triggering the next input, add all values
+          i.inputs.forEach(input => arr.push(getCurrentValue(input, doc)));
+        } else {
+          // If conditional value is not triggering
+          arr.push(getCurrentValue(i.inputs[0], doc));
+        }
       } else {
-        // If conditional value is not triggering
-        arr.push(getCurrentValue(i.inputs[0], doc));
+        arr.push(getCurrentValue(i, doc));
       }
-    } else if (shouldCountField(i)) {
-      arr.push(getCurrentValue(i, doc));
     }
   });
 
@@ -227,9 +252,9 @@ const getCountedArray = (formArray, doc, arr = []) => {
  *
  * @return {number} A value between 0 and 1
  */
-export const personalInfoPercent = borrowers => {
+export const personalInfoPercent = (borrowers) => {
   const a = [];
-  borrowers.forEach(b => {
+  borrowers.forEach((b) => {
     const formArray = getBorrowerInfoArray(borrowers, b._id);
     getCountedArray(formArray, b, a);
   });
@@ -252,9 +277,9 @@ export const propertyPercent = (loanRequest, borrowers) => {
   return getPercent(a);
 };
 
-export const auctionFilesPercent = borrowers => {
+export const auctionFilesPercent = (borrowers) => {
   const a = [];
-  borrowers.forEach(b => {
+  borrowers.forEach((b) => {
     const fileArray = borrowerFiles(b).auction;
 
     if (isDemo()) {
@@ -287,13 +312,15 @@ export const filesPercent = (doc, fileArrayFunc, step) => {
       a.push(doc2.files[files[0].id]);
     } else {
       files.forEach(
-        f => !(f.required === false || f.condition === false) && a.push(doc2.files[f.id]),
+        f =>
+          !(f.required === false || f.condition === false) &&
+          a.push(doc2.files[f.id]),
       );
     }
   };
 
   if (isArray(doc)) {
-    doc.forEach(item => {
+    doc.forEach((item) => {
       const fileArray = fileArrayFunc(item)[step];
       iterate(fileArray, item);
     });
@@ -305,7 +332,4 @@ export const filesPercent = (doc, fileArrayFunc, step) => {
   return getPercent(a);
 };
 
-
-export const getCurrentLink = () => {
-
-}
+export const getCurrentLink = () => {};

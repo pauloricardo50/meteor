@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { DocHead } from 'meteor/kadira:dochead';
 import { Link } from 'react-router-dom';
+import Scroll from 'react-scroll';
+
+import BottomArrow from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import IconButton from 'material-ui/IconButton';
+
 import HomeDev from '/imports/ui/components/general/HomeDev.jsx';
 import track from '/imports/js/helpers/analytics';
 import { T } from '/imports/ui/components/general/Translation.jsx';
@@ -115,8 +120,27 @@ export default class HomePage extends Component {
                 </div>
               </div>
             </div>
+            <div className="scroll-button">
+              <IconButton
+                onTouchTap={() => {
+                  Scroll.scroller.scrollTo('descriptions', {
+                    duration: 500,
+                    delay: 200,
+                    smooth: true,
+                    ignoreCancelEvents: true,
+                  });
+                }}
+                style={{ width: 72, height: 72 }}
+                iconStyle={{ width: 36, height: 48 }}
+              >
+                <BottomArrow color="#444" hoverColor="#888" />
+              </IconButton>
+            </div>
           </header>
-          <div className="feature3 animated fadeInUp">
+          <Scroll.Element
+            name="descriptions"
+            className="feature3 animated fadeInUp"
+          >
             <div className="container-lrg flex-launch">
               <div className="col-12">
                 <b className="emoji">
@@ -163,7 +187,7 @@ export default class HomePage extends Component {
                 </p>
               </div>
             </div>
-          </div>
+          </Scroll.Element>
           <div className="feature2">
             <div className="container-lrg flex-launch">
               <div className="col-6">

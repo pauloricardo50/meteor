@@ -1,7 +1,9 @@
+/* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { describe, it } from 'meteor/practicalmeteor:mocha';
 import { shallow } from 'enzyme';
+import { Factory } from 'meteor/dburles:factory';
+import { stubCollections } from '/imports/js/helpers/testHelpers';
 
 import CompareTable, {
   sortFunc,
@@ -16,17 +18,29 @@ describe('<CompareTable />', () => {
   let wrapper;
 
   beforeEach(() => {
+    stubCollections();
     properties = [Factory.create('property'), Factory.create('property')];
-    wrapper = shallow(<CompareTable properties={properties} />);
+    wrapper = shallow(
+      <CompareTable
+        properties={properties}
+        addCustomField={() => {}}
+        fields={[]}
+        deleteProperty={() => {}}
+      />,
+    );
+  });
+
+  afterEach(() => {
+    stubCollections.restore();
   });
 
   it('renders', () => {
-    expect(wrapper.exists()).to.be.true;
+    expect(wrapper.exists()).to.equal(true);
   });
 
   it('always renders a CompareHeader and CompareTableContent', () => {
-    expect(wrapper.find(CompareHeader).exists()).to.be.true;
-    expect(wrapper.find(CompareTableContent).exists()).to.be.true;
+    expect(wrapper.find(CompareHeader).exists()).to.equal(true);
+    expect(wrapper.find(CompareTableContent).exists()).to.equal(true);
   });
 
   describe('handleSort', () => {

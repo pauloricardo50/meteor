@@ -5,7 +5,7 @@ export const getBorrowerInfoArray = (borrowers, id) => {
   const isFirst = borrowers[0]._id === id;
 
   if (!b) {
-    return [];
+    throw new Error("couldn't find borrower");
   }
 
   return [
@@ -39,7 +39,8 @@ export const getBorrowerInfoArray = (borrowers, id) => {
     {
       id: 'sameAddress',
       type: 'radioInput',
-      label: `Utiliser la même adresse que ${borrowers[0].firstName || 'Emprunteur 1'}?`,
+      label: `Utiliser la même adresse que ${borrowers[0].firstName ||
+        'Emprunteur 1'}?`,
       options: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
       condition: multiple && !isFirst,
     },
@@ -186,7 +187,7 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
   const isFirst = borrowers[0]._id === id;
 
   if (!b) {
-    return [];
+    throw new Error("couldn't find borrower");
   }
 
   const incomeArray = [

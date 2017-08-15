@@ -14,18 +14,20 @@ import { T } from '/imports/ui/components/general/Translation.jsx';
 const styles = {
   button: {
     marginLeft: 8,
+    animationIterationCount: 5,
   },
   smallButton: {
     minWidth: 'unset',
     width: 36,
     marginLeft: 8,
+    animationIterationCount: 5,
   },
 };
 
 const handleNextStep = ({ stepNb, loanRequest, history, nextLink }) => {
   // increment step if this is the currentstep
   if (stepNb === loanRequest.logic.step) {
-    cleanMethod('incrementStep', null, loanRequest._id, error => {
+    cleanMethod('incrementStep', null, loanRequest._id, (error) => {
       if (!error && nextLink) {
         history.push(nextLink);
       }
@@ -69,9 +71,10 @@ export default class ProcessPageBar extends Component {
     const isDone = currentStep.isDone();
 
     return (
-      <div className="buttons">
+      <div className="buttons" key="someKey">
         {showBackButton &&
-          <Button raised
+          <Button
+            raised
             icon={smallWidth ? <ArrowLeft /> : undefined}
             label={smallWidth ? '' : <T id="ProcessPageBar.previous" />}
             style={smallWidth ? styles.smallButton : styles.button}
@@ -80,8 +83,10 @@ export default class ProcessPageBar extends Component {
             onTouchTap={() =>
               track('ProcessPageBar - clicked back', { to: prevLink })}
           />}
-        <Button raised
-          icon={smallWidth ? <ArrowRight /> : undefined}
+        <Button
+          raised
+          labelPosition="before"
+          icon={smallWidth || isDone ? <ArrowRight /> : undefined}
           label={
             smallWidth
               ? ''
@@ -91,7 +96,7 @@ export default class ProcessPageBar extends Component {
           }
           style={smallWidth ? styles.smallButton : styles.button}
           secondary={isDone}
-          className={isDone && 'animated infinite pulse'}
+          className={isDone ? 'animated pulse' : undefined}
           disabled={(lastPartOfStep && !isDone) || !nextLink}
           containerElement={
             nextLink && !lastPartOfStep ? <Link to={nextLink} /> : undefined
@@ -130,10 +135,11 @@ ProcessPageBar.propTypes = {
   stepNb: PropTypes.number.isRequired,
   prevLink: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   nextLink: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  status: PropTypes.string.isRequired,
+  status: PropTypes.string,
 };
 
 ProcessPageBar.defaultProps = {
   prevLink: undefined,
   nextLink: undefined,
+  status: 'active',
 };

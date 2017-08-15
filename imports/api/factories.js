@@ -6,23 +6,26 @@ import Borrowers from './borrowers/borrowers';
 import Offers from './offers/offers';
 import Comparators from './comparators/comparators';
 import Properties from './properties/properties';
+import AdminActions from './adminActions/adminActions';
 
 const chance = require('chance').Chance();
 
-// Factory users for testing purposes
 Factory.define('user', Meteor.users, {
   roles: () => 'user',
   emails: () => [{ address: chance.email(), verified: false }],
+  profile: {},
 });
 
 Factory.define('dev', Meteor.users, {
   roles: () => 'dev',
   emails: () => [{ address: chance.email(), verified: false }],
+  profile: {},
 });
 
 Factory.define('admin', Meteor.users, {
   roles: () => 'admin',
   emails: () => [{ address: chance.email(), verified: false }],
+  profile: {},
 });
 
 Factory.define('partner', Meteor.users, {
@@ -48,12 +51,15 @@ Factory.define('loanRequest', LoanRequests, {
     partnersToAvoid: ['joe', 'john'],
   }),
   borrowers: [Factory.get('borrower')],
+  status: 'active',
   property: () => ({ value: 1000000 }),
   files: () => ({}),
   logic: () => ({ auction: {}, lender: {}, verification: {}, step: 1 }),
   name: () => 'request name',
   emails: () => [],
 });
+
+Factory.define('loanRequest2', LoanRequests);
 
 Factory.define(
   'loanRequestDev',
@@ -81,8 +87,18 @@ Factory.define('offer', Offers, {
   }),
 });
 
+Factory.define('adminAction', AdminActions, {
+  requestId: Factory.get('loanRequest'),
+  type: 'test',
+  status: 'active',
+});
+
 Factory.define('comparator', Comparators, {
   userId: Factory.get('user'),
+  customFields: [],
+  customFieldCount: 0,
+  hiddenFields: [],
+  borrowRatio: 0.8,
 });
 
 Factory.define('property', Properties, {

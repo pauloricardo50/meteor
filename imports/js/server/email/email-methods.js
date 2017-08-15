@@ -3,7 +3,6 @@ import rateLimit from '/imports/js/helpers/rate-limit.js';
 import { Mandrill } from 'meteor/wylio:mandrill';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { check, Match } from 'meteor/check';
-import LoanRequests from '/imports/api/loanrequests/loanrequests';
 
 import {
   from,
@@ -111,7 +110,7 @@ export const sendEmail = new ValidatedMethod({
           status: content.status,
           sendAt,
         },
-        err => {
+        (err) => {
           throw new Meteor.Error(err);
         },
       );
@@ -135,7 +134,7 @@ export const cancelScheduledEmail = new ValidatedMethod({
       const content = JSON.parse(result.content);
       return modifyEmail.call(
         { requestId, _id: content._id, status: 'cancelled' },
-        err => {
+        (err) => {
           throw new Meteor.Error(err);
         },
       );
@@ -162,7 +161,7 @@ export const rescheduleEmail = new ValidatedMethod({
         const content = JSON.parse(result.content);
         return modifyEmail.call(
           { requestId, _id: content._id, sendAt },
-          err => {
+          (err) => {
             throw new Meteor.Error(err);
           },
         );

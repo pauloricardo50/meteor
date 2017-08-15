@@ -1,6 +1,6 @@
+/* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import { describe, it, beforeEach } from 'meteor/practicalmeteor:mocha';
 import getMountedComponent from '/imports/js/helpers/testHelpers';
 
 import Start2Page from '../Start2Page.jsx';
@@ -64,11 +64,13 @@ if (Meteor.isClient) {
       const divs = component().find('div');
 
       expect(divs.length).to.be.at.least(1);
-      expect(divs.first().hasClass('ux-text')).to.be.true;
+      expect(divs.first().hasClass('ux-text')).to.equal(true);
     });
 
     it('Gets to the end with basic answers', () => {
-      component().setState(state, () => expect(component().find(StartResult).length).to.equal(1));
+      component().setState(state, () =>
+        expect(component().find(StartResult).length).to.equal(1),
+      );
     });
   });
 }

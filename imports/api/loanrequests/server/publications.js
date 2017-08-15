@@ -4,17 +4,17 @@ import LoanRequests from '../loanrequests';
 import { Roles } from 'meteor/alanning:roles';
 
 // Publish a specific loanRequest with an ID
-Meteor.publish('loanRequest', function (id) {
+Meteor.publish('loanRequest', function publish(id) {
   // Verify if user is logged In
-  if (!this.userId) {
+  if (!Meteor.userId()) {
     return this.ready();
   }
 
   check(id, String);
 
   if (
-    Roles.userIsInRole(this.userId, 'admin') ||
-    Roles.userIsInRole(this.userId, 'dev')
+    Roles.userIsInRole(Meteor.userId(), 'admin') ||
+    Roles.userIsInRole(Meteor.userId(), 'dev')
   ) {
     return LoanRequests.find({
       _id: id,
@@ -22,7 +22,7 @@ Meteor.publish('loanRequest', function (id) {
   }
 
   return LoanRequests.find({
-    userId: this.userId,
+    userId: Meteor.userId(),
     _id: id,
   });
 
@@ -30,23 +30,23 @@ Meteor.publish('loanRequest', function (id) {
 });
 
 // Publish all loanrequests from the current user
-Meteor.publish('loanRequests', function () {
+Meteor.publish('loanRequests', function publish() {
   // Verify if user is logged In
-  if (!this.userId) {
+  if (!Meteor.userId()) {
     return this.ready();
   }
 
   return LoanRequests.find({
-    userId: this.userId,
+    userId: Meteor.userId(),
   });
 });
 
 // Publish all loanrequests in the database for admins
-Meteor.publish('allLoanRequests', function () {
+Meteor.publish('allLoanRequests', function publish() {
   // Verify if user is logged In
   if (
-    Roles.userIsInRole(this.userId, 'admin') ||
-    Roles.userIsInRole(this.userId, 'dev')
+    Roles.userIsInRole(Meteor.userId(), 'admin') ||
+    Roles.userIsInRole(Meteor.userId(), 'dev')
   ) {
     // Return all users
     return LoanRequests.find();
@@ -96,9 +96,9 @@ const partnerVisibleFields = organization => ({
 });
 
 // Publish all loanrequests this partner has access to
-Meteor.publish('partnerRequestsAuction', function () {
-  if (Roles.userIsInRole(this.userId, 'partner')) {
-    const user = Meteor.users.findOne(this.userId);
+Meteor.publish('partnerRequestsAuction', function publish() {
+  if (Roles.userIsInRole(Meteor.userId(), 'partner')) {
+    const user = Meteor.users.findOne(Meteor.userId());
 
     // Show requests where the canton matches this partner's cantons
     // and the auction has started
@@ -130,10 +130,10 @@ Meteor.publish('partnerRequestsAuction', function () {
 });
 
 // Publish all loanrequests this partner has access to
-Meteor.publish('partnerRequestsCompleted', function () {
-  if (Roles.userIsInRole(this.userId, 'partner')) {
+Meteor.publish('partnerRequestsCompleted', function publish() {
+  if (Roles.userIsInRole(Meteor.userId(), 'partner')) {
     // Get the current partner user
-    const user = Meteor.users.findOne(this.userId);
+    const user = Meteor.users.findOne(Meteor.userId());
 
     // Return the requests where this partner has been selected
     return LoanRequests.find(
@@ -150,12 +150,12 @@ Meteor.publish('partnerRequestsCompleted', function () {
 });
 
 // Publish the loanrequest with a specific ID, and only show the fields for an anonymous offer
-Meteor.publish('partnerSingleLoanRequest', function (id) {
+Meteor.publish('partnerSingleLoanRequest', function publish(id) {
   check(id, String);
 
   // Verify if this is a partner account
-  if (Roles.userIsInRole(this.userId, 'partner')) {
-    const user = Meteor.users.findOne(this.userId);
+  if (Roles.userIsInRole(Meteor.userId(), 'partner')) {
+    const user = Meteor.users.findOne(Meteor.userId());
 
     return LoanRequests.find(
       {

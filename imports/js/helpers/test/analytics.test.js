@@ -1,12 +1,12 @@
+/* eslint-env mocha */
 import { expect } from 'chai';
-// import { describe, it, beforeEach } from 'meteor/practicalmeteor:mocha';
 
 import { allowTracking, track, addUserTracking } from '../analytics';
 
 describe('analytics', () => {
   describe('allowTracking', () => {
     it('does not work in test mode', () => {
-      expect(allowTracking()).to.be.false;
+      expect(allowTracking()).to.equal(false);
     });
   });
 

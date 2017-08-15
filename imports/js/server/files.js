@@ -7,17 +7,27 @@ import rateLimit from '/imports/js/helpers/rate-limit.js';
 import LoanRequests from '/imports/api/loanrequests/loanrequests';
 import Borrowers from '/imports/api/borrowers/borrowers';
 
-const isAllowed = key => {
+/* eslint import/prefer-default-export: 0 */
+export const isAllowed = (key) => {
   // Check if this user is the owner of the document he's trying to delete a
   // file from
   const keyId = key.split('/')[0];
-  const requestFound = !!LoanRequests.findOne({ _id: keyId, userId: Meteor.userId() });
-  const borrowerFound = !!Borrowers.findOne({ _id: keyId, userId: Meteor.userId() });
+  const requestFound = !!LoanRequests.findOne({
+    _id: keyId,
+    userId: Meteor.userId(),
+  });
+  const borrowerFound = !!Borrowers.findOne({
+    _id: keyId,
+    userId: Meteor.userId(),
+  });
 
-  if (Roles.userIsInRole(Meteor.userId(), 'admin') || Roles.userIsInRole(Meteor.userId(), 'dev')) {
+  if (
+    Roles.userIsInRole(Meteor.userId(), 'admin') ||
+    Roles.userIsInRole(Meteor.userId(), 'dev')
+  ) {
     return true;
   } else if (!(requestFound || borrowerFound)) {
-    throw new Meteor.Error('unauthorized');
+    throw new Meteor.Error('unauthorized email');
   }
 
   return true;
@@ -40,7 +50,9 @@ Meteor.methods({
     const s3 = setupS3();
     const params = { Bucket: Meteor.settings.S3Bucket, Key: key };
 
-    return Meteor.wrapAsync(() => s3.deleteObject(params));
+    const async = Meteor.wrapAsync(s3.deleteObject);
+
+    return async(params);
   },
   downloadFile(key) {
     check(key, String);

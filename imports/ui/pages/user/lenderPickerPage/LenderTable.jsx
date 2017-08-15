@@ -11,14 +11,9 @@ import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
 import { insertAdminAction } from '/imports/api/adminActions/methods';
 import track from '/imports/js/helpers/analytics';
 
-const getOffers = props => {
-  let newOffers = props.offers.map(offer => {
-    let rates = [];
-    let amortization = 0;
-    if (props.formState.standard) {
-      rates = offer.standardOffer;
-      amortization = offer.standardOffer.amortization;
-    } else {
+const getOffers = (props) => {
+  let newOffers = props.offers.map((offer) => {
+    if (!props.formState.standard) {
       if (offer.counterparts.length <= 0) {
         // if this offer doesn't have a counterparts offer, return a basic object to be filtered out
         return {
@@ -27,16 +22,14 @@ const getOffers = props => {
           counterparts: offer.counterparts,
         };
       }
-      rates = offer.counterpartOffer;
-      amortization = offer.counterpartOffer.amortization;
     }
     const monthly = getMonthlyWithOffer(
       props.loanRequest,
+      offer,
+      props.formState.standard,
       props.formState.fortuneUsed,
       props.formState.insuranceFortuneUsed,
       props.formState.loanTranches,
-      rates,
-      amortization,
     );
 
     return {
@@ -71,13 +64,13 @@ const handleSave = (props, offerId) => {
   object['general.loanTranches'] = props.formState.loanTranches;
   object['logic.lender.offerId'] = offerId;
 
-  cleanMethod('updateRequest', object, props.loanRequest._id, err => {
+  cleanMethod('updateRequest', object, props.loanRequest._id, (err) => {
     track('chose a lender', { offerId });
     if (!err) {
       // This will only be called the first time a lender is chosen
       insertAdminAction.call({
         requestId: props.loanRequest._id,
-        actionId: 'lenderChosen',
+        type: 'lenderChosen',
       });
     }
   });
@@ -109,10 +102,10 @@ const columns = [
     id: 'LenderTable.monthly',
     align: 'right',
     format: val =>
-      <h3 className="fixed-size" style={{ margin: 0 }}>
+      (<h3 className="fixed-size" style={{ margin: 0 }}>
         <IntlNumber value={val} format="money" />{' '}
         <T id="LenderTable.perMonth" />
-      </h3>,
+      </h3>),
   },
   {
     id: 'LenderTable.conditions',
@@ -154,9 +147,9 @@ export default class LenderTable extends Component {
               offer.monthly,
               offer.conditions.length > 0 || offer.counterparts.length > 0
                 ? <ConditionsButton
-                    conditions={offer.conditions}
-                    counterparts={offer.counterparts}
-                  />
+                  conditions={offer.conditions}
+                  counterparts={offer.counterparts}
+                />
                 : '-',
             ],
           }))}

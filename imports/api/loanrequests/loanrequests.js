@@ -1,22 +1,25 @@
-import 'babel-polyfill';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
-import { GeneralSchema, PropertySchema, LogicSchema } from './additionalSchemas';
 import { getFileSchema } from '/imports/js/arrays/files';
-
-const RequestFilesSchema = new SimpleSchema(getFileSchema('request'));
+import {
+  GeneralSchema,
+  PropertySchema,
+  LogicSchema,
+} from './additionalSchemas';
 
 const LoanRequests = new Mongo.Collection('loanRequests');
 
+const RequestFilesSchema = new SimpleSchema(getFileSchema('request'));
+
 // Prevent all client side modifications of mongoDB
-LoanRequests.deny({
-  insert: () => true,
-  update: () => true,
-  remove: () => true,
-});
+// LoanRequests.deny({
+//   insert: () => true,
+//   update: () => true,
+//   remove: () => true,
+// });
 LoanRequests.allow({
-  insert: () => false,
+  insert: () => true,
   update: () => false,
   remove: () => false,
 });
@@ -36,7 +39,10 @@ const LoanRequestSchema = new SimpleSchema({
     type: Date,
     autoValue() {
       // Verify the update is from the user owning this doc, ignoring admin/partner updates
-      const doc = LoanRequests.findOne({ _id: this.docId }, { fields: { userId: 1 } });
+      const doc = LoanRequests.findOne(
+        { _id: this.docId },
+        { fields: { userId: 1 } },
+      );
 
       if (this.isInsert) {
         return new Date();

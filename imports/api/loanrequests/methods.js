@@ -7,7 +7,7 @@ import rateLimit from '/imports/js/helpers/rate-limit.js';
 
 import {
   insertAdminAction,
-  completeActionByActionId,
+  completeActionByType,
   removeParentRequest,
 } from '/imports/api/adminActions/methods';
 
@@ -17,9 +17,9 @@ export const insertRequest = new ValidatedMethod({
   name: 'loanrequests.insert',
   validate() {},
   run({ object, userId }) {
-    const userRequests = LoanRequests.find({ userId: Meteor.userId() });
+    const requestCount = LoanRequests.find({ userId: Meteor.userId() }).count();
 
-    if (userRequests.length > 3) {
+    if (requestCount > 3) {
       throw new Meteor.Error(
         'maxRequests',
         'Vous ne pouvez pas avoir plus de 3 requêtes à la fois',
@@ -31,6 +31,14 @@ export const insertRequest = new ValidatedMethod({
       ...object,
       userId: userId || Meteor.userId(),
     });
+  },
+});
+
+export const testInsert = new ValidatedMethod({
+  name: 'testInsert',
+  validate: null,
+  run({ userId, object }) {
+    return LoanRequests.insert({ ...object, userId });
   },
 });
 
@@ -76,21 +84,22 @@ export const startAuction = new ValidatedMethod({
     // object parameter only contains the isDemo value
     if (object.isDemo) {
       auctionEndTime = moment().add(30, 's').toDate();
+      console.log(`Temps de fin réel: ${getAuctionEndTime(moment())}`);
     } else {
       auctionEndTime = getAuctionEndTime(moment());
     }
 
     auctionObject['logic.auctionEndTime'] = auctionEndTime;
 
-    console.log(`Temps de fin réel: ${getAuctionEndTime(moment())}`);
-
     // TODO: This can fuck up if the update goes through but the insertAdminAction fails
     // same for the requestVerification method
     return LoanRequests.update(id, { $set: auctionObject }, (error1, res1) => {
       if (!error1) {
         insertAdminAction.call(
-          { requestId: id, actionId: 'auction', extra: { auctionEndTime } },
+          { requestId: id, type: 'auction', extra: { auctionEndTime } },
           (error2, res2) => {
+            // A stub of this method could be called, but it shouldn't try to
+            // send emails, which is why isServer is checked
             if (!error2 && Meteor.isServer) {
               // Send email
               Meteor.call('email.send', {
@@ -115,36 +124,36 @@ export const startAuction = new ValidatedMethod({
 
 // Gives the end time of an auction, given the start time
 export const getAuctionEndTime = (startTime) => {
-  startTime = moment(startTime);
-  const endTime = startTime;
+  const time = moment(startTime);
 
-  if (startTime.isoWeekday() === 6) {
+  if (time.isoWeekday() === 6) {
     // On saturdays, go to Tuesday
-    endTime.add(3, 'd');
-  } else if (startTime.isoWeekday() === 7) {
+    time.add(3, 'd');
+  } else if (time.isoWeekday() === 7) {
     // On saturdays, go to Tuesday
-    endTime.add(2, 'd');
-  } else if (startTime.hour() >= 0 && startTime.hour() < 7) {
-    // If the start time is between midnight and 7:00, set endtime to be tomorrow night
-    endTime.add(1, 'd');
+    time.add(2, 'd');
+  } else if (time.hour() >= 0 && time.hour() < 7) {
+    // If the start time is between midnight and 7:00,
+    // set endtime to be tomorrow night
+    time.add(1, 'd');
   } else {
     // Else, set endtime in 2 days from now
-    endTime.add(2, 'd');
+    time.add(2, 'd');
   }
 
   // Skip weekends
-  if (endTime.isoWeekday() === 6 || endTime.isoWeekday() === 7) {
+  if (time.isoWeekday() === 6 || time.isoWeekday() === 7) {
     // Saturday or Sunday
-    endTime.add(2, 'd');
+    time.add(2, 'd');
   }
 
   // Auctions always end at midnight
-  endTime.hours(23);
-  endTime.minutes(59);
-  endTime.seconds(59);
-  endTime.milliseconds(0);
+  time.hours(23);
+  time.minutes(59);
+  time.seconds(59);
+  time.milliseconds(0);
 
-  return endTime.toDate();
+  return time.toDate();
 };
 
 // Lets you push a value to an array
@@ -202,7 +211,7 @@ export const requestVerification = new ValidatedMethod({
       },
     );
     return Meteor.wrapAsync(
-      insertAdminAction.call({ actionId: 'verify', requestId: id }),
+      insertAdminAction.call({ type: 'verify', requestId: id }),
     );
   },
 });
@@ -257,7 +266,10 @@ export const finishAuction = new ValidatedMethod({
             }
           }
 
-          completeActionByActionId.call({ requestId: id, actionId: 'auction' });
+          completeActionByType.call({
+            requestId: id,
+            type: 'auction',
+          });
         },
       );
     }
@@ -302,9 +314,9 @@ export const cancelAuction = new ValidatedMethod({
             }
           }
 
-          completeActionByActionId.call({
+          completeActionByType.call({
             requestId: id,
-            actionId: 'auction',
+            type: 'auction',
             newStatus: 'cancelled',
           });
         },

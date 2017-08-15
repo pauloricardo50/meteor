@@ -32,7 +32,12 @@ export default class TopNavDrawer extends React.Component {
   render() {
     return (
       <div className="menu-button">
-        <IconButton onTouchTap={this.handleToggle}>
+        <IconButton
+          onTouchTap={this.handleToggle}
+          touch
+          tooltip="Menu"
+          tooltipPosition="bottom-right"
+        >
           <MenuIcon color="#333333" hoverColor="#888888" />
         </IconButton>
         <Drawer

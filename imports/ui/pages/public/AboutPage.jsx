@@ -1,5 +1,4 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const styles = {
@@ -20,28 +19,19 @@ const styles = {
   },
 };
 
-export default class AboutPage extends Component {
-  constructor(props) {
-    super(props);
-  }
+const AboutPage = () =>
+  (<section style={styles.section} className="animated fadeIn">
+    <article style={styles.article}>
+      <h1>
+        <T id="AboutPage.title" />
+      </h1>
 
-  render() {
-    return (
-      <section style={styles.section} className="animated fadeIn">
-        <article style={styles.article}>
-          <h1><T id="AboutPage.title" /></h1>
+      <div className="description" style={styles.description}>
+        <p>
+          <T id="AboutPage.description" />
+        </p>
+      </div>
+    </article>
+  </section>);
 
-          <div className="description" style={styles.description}>
-            <p>
-              <T id="AboutPage.description1" />
-              <br /><br />
-              <T id="AboutPage.description2" />
-            </p>
-          </div>
-        </article>
-      </section>
-    );
-  }
-}
-
-AboutPage.propTypes = {};
+export default AboutPage;

@@ -51,9 +51,9 @@ export default class VerifyPage extends Component {
     };
 
     cleanMethod('updateRequest', object, this.props.loanRequest._id, () => {
-      Meteor.call('adminActions.completeByActionId', {
+      Meteor.call('adminActions.completeActionByType', {
         requestId: this.props.loanRequest._id,
-        actionId: 'verify',
+        type: 'verify',
       });
 
       Meteor.call('email.send', {
@@ -89,9 +89,9 @@ export default class VerifyPage extends Component {
             <span className="bold">{this.props.loanRequest._id}</span>
           </li>
           {this.props.borrowers.map((b, i) =>
-            <li key={b._id}>
+            (<li key={b._id}>
               Emprunteur {i + 1}: <span className="bold">{b._id}</span>
-            </li>,
+            </li>),
           )}
         </ul>
 
@@ -112,24 +112,26 @@ export default class VerifyPage extends Component {
         </div>
 
         {this.state.comments.map((c, i) =>
-          <TextField
+          (<TextField
             value={c}
             multiLine
             rows={2}
             fullWidth
             floatingLabelText={`Commentaire No.${i + 1}`}
             onChange={e => this.handleChangeComment(e, i)}
-          />,
+          />),
         )}
         <div className="text-center">
-          <Button raised
+          <Button
+            raised
             label="+"
             onTouchTap={() =>
               this.setState(prev => ({ comments: [...prev.comments, ''] }))}
             primary
             style={styles.buttons}
           />
-          <Button raised
+          <Button
+            raised
             label="-"
             onTouchTap={() =>
               this.setState(prev => ({
@@ -143,7 +145,8 @@ export default class VerifyPage extends Component {
           <p>Ceci enverra un email au client en notification</p>
         </div>
         <div className="text-center" style={styles.finalButton}>
-          <Button raised
+          <Button
+            raised
             label="Envoyer"
             primary
             disabled={

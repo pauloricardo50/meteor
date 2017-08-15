@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
@@ -7,6 +6,7 @@ const AdminActions = new Mongo.Collection('adminActions');
 // Action types
 // 'verify'
 // 'auction'
+// 'lenderChosen'
 
 // Prevent all client side modifications of mongoDB
 AdminActions.deny({
@@ -38,7 +38,7 @@ const AdminActionSchema = new SimpleSchema({
     type: Date,
     optional: true,
   },
-  actionId: String,
+  type: String,
   requestId: String,
   staffId: {
     type: String,

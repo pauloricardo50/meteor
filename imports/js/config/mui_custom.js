@@ -4,7 +4,7 @@ import Spacing from 'material-ui/styles/spacing';
 
 import colors from './colors';
 
-export default {
+const muiCustom = {
   // spacing: Spacing.default,
   fontFamily: 'Source Sans Pro, sans-serif',
   fontWeight: 300,
@@ -44,3 +44,5 @@ export default {
     handleSizeActive: 30,
   },
 };
+
+export default muiCustom;

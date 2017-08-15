@@ -1,15 +1,19 @@
 export const getWidth = () => {
-  const w = window;
-  const d = document;
-  const documentElement = d.documentElement;
-  const body = d.getElementsByTagName('body')[0];
-  return w.innerWidth || documentElement.clientWidth || body.clientWidth;
+  if (global.window) {
+    const w = window;
+    const d = document;
+    const documentElement = d.documentElement;
+    const body = d.getElementsByTagName('body')[0];
+    return w.innerWidth || documentElement.clientWidth || body.clientWidth;
+  }
 };
 
 const getSubdomain = () => {
-  const fullPath = window.location.host;
-  // window.location.host is subdomain.domain.com
-  return fullPath.split('.')[0];
+  if (global.window) {
+    const fullPath = window.location.host;
+    // window.location.host is subdomain.domain.com
+    return fullPath.split('.')[0];
+  }
 };
 
 export const isDemo = () => getSubdomain() === 'demo';

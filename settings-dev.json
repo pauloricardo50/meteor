@@ -31,12 +31,5 @@
   "AWSAdminSecret": "",
   "MANDRILL_LOGIN": "florian@e-potek.ch",
   "MANDRILL_API_KEY": "L-_o7XAONIxbqkdWgADH5Q",
-  "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg",
-  "kadira": {
-    "appId": "59LE9xwsTvYugwMZt",
-    "appSecret": "e247f531-efc2-4e8d-9abb-0e9552ecc710",
-    "options": {
-      "endpoint": "http://localhost:11011"
-    }
-  }
+  "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg"
 }

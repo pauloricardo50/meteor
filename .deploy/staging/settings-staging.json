@@ -8,9 +8,6 @@
       "Mixpanel": {
         "token": "8fd61d69bbe35690f6c3925e3cb5d21b",
         "people": true
-      },
-      "Amplitude": {
-        "apiKey": "f4aeda0796f81d6c7ccbdece79b9c8ba"
       }
     },
     "google_maps_key": "AIzaSyCsdThaRqcTSjvzz4IeeZnn4zkXSinehzo"

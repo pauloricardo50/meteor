@@ -14,16 +14,16 @@ import {
  *
  * @return {type} The formatted string
  */
-const formatMessage = (id, values = {}) => {
+const formatMessage = (id, values = {}, customFallback) => {
   if (id === undefined) {
     throw new Error('an id is required in formatMessage');
   }
   const message = new IntlMessageFormat(
-    getTranslations()[id] || id,
+    getTranslations()[id] ||
+      (customFallback !== undefined ? customFallback : id),
     'fr-FR',
     // getFormats(),
   );
-  console.log(message);
   return message.format(values);
 };
 

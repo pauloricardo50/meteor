@@ -14,26 +14,29 @@ import {
   getTotalUsed,
   getLoanValue,
   getLenderCount,
+  getBorrowRatio,
 } from '/imports/js/helpers/requestFunctions';
 
 import {
-  getMonthlyPayment,
-  getIncomeRatio,
-  getBorrowRatio,
   getExpenses,
   getBorrowerIncome,
   getRealEstateFortune,
-  getRealEstateValue,
   getTotalFortune,
   getRealEstateDebt,
-  getInsuranceFortune,
   getFortune,
   getBonusIncome,
   getOtherIncome,
   getBorrowerSalary,
+  getRealEstateValue,
+  getInsuranceFortune,
+} from '/imports/js/helpers/borrowerFunctions';
+
+import {
+  getMonthlyPayment,
+  getIncomeRatio,
 } from '/imports/js/helpers/finance-math';
 
-const getDashboardArray = props => {
+const getDashboardArray = (props) => {
   const r = props.loanRequest;
   const b = props.borrowers;
 
@@ -269,7 +272,7 @@ const getDashboardArray = props => {
   ];
 };
 
-const getSmallDashboardArray = props => {
+const getSmallDashboardArray = (props) => {
   const r = props.loanRequest;
   const b = props.borrowers;
   const loan = getLoanValue(r);
@@ -319,7 +322,7 @@ const getSmallDashboardArray = props => {
   ];
 };
 
-const getStart2Array = props => {
+const getStart2Array = (props) => {
   const p = props;
 
   return [
@@ -563,7 +566,7 @@ const getStart2Array = props => {
   ];
 };
 
-const getBorrowerArray = props => {
+const getBorrowerArray = (props) => {
   const b = [props.borrower];
 
   const expenses = getExpenses(b);
@@ -658,7 +661,7 @@ const getBorrowerArray = props => {
   ];
 };
 
-const getStructureArray = props => {
+const getStructureArray = (props) => {
   const r = props.loanRequest;
   const b = props.borrowers;
   const project = getProjectValue(r);
@@ -773,7 +776,7 @@ const getStructureArray = props => {
   ];
 };
 
-const arraySwitch = props => {
+const arraySwitch = (props) => {
   switch (props.arrayName) {
     case 'start1':
       return null;
@@ -792,12 +795,12 @@ const arraySwitch = props => {
   }
 };
 
-const Recap = props => {
+const Recap = (props) => {
   const array = props.array || arraySwitch(props);
   return (
     <article className="validator">
       <div className="result animated fadeIn">
-        {array.map(item => {
+        {array.map((item) => {
           if (item.hide) {
             return null;
           } else if (item.title) {

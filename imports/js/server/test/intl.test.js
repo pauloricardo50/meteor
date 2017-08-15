@@ -1,7 +1,9 @@
+/* eslint-env mocha */
 import { expect } from 'chai';
-import { describe, it } from 'meteor/practicalmeteor:mocha';
 
-import formatMessage from '../intl';
+import testRequire from '/imports/js/helpers/testRequire';
+
+const { default: formatMessage } = testRequire('../intl') || require('../intl');
 
 describe('intl-server', () => {
   it('works for an existing id', () => {
@@ -23,9 +25,8 @@ describe('intl-server', () => {
     expect(() => formatMessage()).to.throw;
   });
 
-  it('returns a french date', () => {
-    // expect(formatMessage('{date, date, long}', { date: new Date(0) })).to.equal(
-    //   'hi!',
-    // );
+  it('uses the custom fallback if it is not undefined', () => {
+    expect(formatMessage('fakeId', {}, 'custom')).to.equal('custom');
+    expect(formatMessage('fakeId', {}, '')).to.equal('');
   });
 });

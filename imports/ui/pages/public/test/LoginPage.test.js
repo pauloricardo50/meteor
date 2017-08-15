@@ -1,6 +1,6 @@
+/* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import { describe, it, beforeEach } from 'meteor/practicalmeteor:mocha';
 import getMountedComponent from '/imports/js/helpers/testHelpers';
 
 import LoginPage from '../LoginPage.jsx';

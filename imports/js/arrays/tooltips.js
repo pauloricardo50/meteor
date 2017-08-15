@@ -1,7 +1,7 @@
 // Write the keys in lowercase
 // If the value is an array, it means there need to be 2 strings for the
 // "Learn More" part.
-const generalTooltips = {
+export const generalTooltips = {
   'revenus annuels bruts': 'yearlyIncome',
   'fonds propres requis': 'ownFundsRequired',
   'fonds propres': 'ownFunds',
@@ -40,7 +40,7 @@ const generalTooltips = {
   'avec contrepartie': 'counterpartOffers',
 };
 
-const offerTableTooltips = {
+export const offerTableTooltips = {
   montant: 'offerTable.amount',
   libor: 'offerTable.libor',
   '2 ans': 'offerTable.2',
@@ -63,9 +63,12 @@ export const tooltips = (list) => {
 };
 
 export const tooltipsById = (id) => {
+  if (typeof id !== 'string') {
+    throw new Error('not a string');
+  }
   const array = id.split('.');
 
-  if (array.length !== 2) {
+  if (array.length !== 2 || array[1].length <= 0) {
     throw Error(
       'Wrong id given for tooltips, requires 2 strings separated by a .',
     );

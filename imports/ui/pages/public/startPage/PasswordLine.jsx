@@ -2,14 +2,13 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { addUserTracking } from '/imports/js/helpers/analytics';
+import track, { addUserTracking } from '/imports/js/helpers/analytics';
 
 import Button from '/imports/ui/components/general/Button.jsx';
 import TextField from 'material-ui/TextField';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
 import { T } from '/imports/ui/components/general/Translation.jsx';
-import track from '/imports/js/helpers/analytics';
-import { saveStartForm } from '/imports/js/helpers/startFunctions';
+import saveStartForm from './saveStartForm';
 
 const styles = {
   textField: {
@@ -19,13 +18,6 @@ const styles = {
     marginRight: 8,
     marginBottom: 8,
   },
-};
-
-const getUserObject = props => {
-  return {
-    email: props.email,
-    password: props.password,
-  };
 };
 
 export default class PasswordLine extends Component {
@@ -39,16 +31,27 @@ export default class PasswordLine extends Component {
     };
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.props.setParentState('password', event.target.value);
   };
 
-  handleCreate = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
+    this.setState({ loading: true });
+    if (this.props.login) {
+      this.handleLogin();
+    } else {
+      this.handleCreate();
+    }
+  };
 
-    const user = getUserObject(this.props);
+  handleCreate = () => {
+    const user = {
+      email: this.props.email,
+      password: this.props.password,
+    };
 
-    Accounts.createUser(user, (error, result) => {
+    Accounts.createUser(user, (error) => {
       if (error) {
         this.setState({ error: error.message, loading: false });
       } else {
@@ -58,10 +61,8 @@ export default class PasswordLine extends Component {
     });
   };
 
-  handleLogin = e => {
-    e.preventDefault();
-
-    Meteor.loginWithPassword(this.props.email, this.props.password, (error, result) => {
+  handleLogin = () => {
+    Meteor.loginWithPassword(this.props.email, this.props.password, (error) => {
       if (error) {
         this.setState({ error: error.message, loading: false });
       } else {
@@ -74,7 +75,7 @@ export default class PasswordLine extends Component {
   handleSuccess = () => {
     saveStartForm(this.props.formState, this.props.history);
 
-    Meteor.call('sendVerificationLink', (error, response) => {
+    Meteor.call('sendVerificationLink', (error) => {
       if (error) {
         console.log(error);
       }
@@ -88,38 +89,34 @@ export default class PasswordLine extends Component {
   };
 
   render() {
+    const { password, login, signUp } = this.props;
     let content = null;
     let button = null;
     const textfield = (
       <TextField
         style={styles.textField}
         name="email"
-        value={this.props.password}
+        value={password}
         onChange={this.handleChange}
         type="password"
         autoFocus
       />
     );
 
-    const onSubmit = e => {
-      this.setState({ loading: true });
-      if (this.props.login) {
-        this.handleLogin(e);
-      } else {
-        this.handleCreate(e);
-      }
-    };
-
-    if (this.props.login || this.props.signUp) {
+    if (login || signUp) {
       content = textfield;
       button = (
-        <Button raised
-          label={this.props.login ? <T id="PasswordLine.login" /> : <T id="PasswordLine.create" />}
+        <Button
+          raised
+          label={
+            login
+              ? <T id="PasswordLine.login" />
+              : <T id="PasswordLine.create" />
+          }
           primary
-          onTouchTap={onSubmit}
           type="submit"
           icon={this.state.loading && <LoopIcon className="fa-spin" />}
-          disabled={!this.props.password}
+          disabled={!password}
         />
       );
     } else {
@@ -128,9 +125,13 @@ export default class PasswordLine extends Component {
 
     return (
       <div>
-        <form action="submit" onSubmit={onSubmit}>
-          <h1 className="fixed-size">{content}</h1>
-          {/* <h4 className="fixed-size error">{this.state.error}</h4> */}
+        <form action="submit" onSubmit={this.handleSubmit}>
+          <h1 className="fixed-size">
+            {content}
+          </h1>
+          <h4 className="fixed-size error">
+            {this.state.error}
+          </h4>
           {this.state.passwordIsValid && button}
         </form>
       </div>
@@ -145,6 +146,7 @@ PasswordLine.propTypes = {
   password: PropTypes.string,
   login: PropTypes.bool,
   signUp: PropTypes.bool,
+  history: PropTypes.object.isRequired,
 };
 
 PasswordLine.defaultProps = {

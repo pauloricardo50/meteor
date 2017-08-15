@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import SimpleSchema from 'simpl-schema';
 
 export const borrowerFiles = (b = {}) => ({
@@ -102,7 +101,8 @@ export const requestFiles = (r = {}) => ({
   contract: [
     {
       id: 'buyersContract',
-      tooltipSuffix: !!r.general && r.general.purchaseType === 'refinancing' ? 'a' : 'b',
+      tooltipSuffix:
+        !!r.general && r.general.purchaseType === 'refinancing' ? 'a' : 'b',
     },
     {
       id: 'reimbursementStatement',
@@ -151,7 +151,7 @@ export const requestFiles = (r = {}) => ({
   ],
 });
 
-const getFileIDs = list => {
+export const getFileIDs = (list) => {
   let files;
   const ids = [];
   switch (list) {
@@ -171,7 +171,7 @@ const getFileIDs = list => {
 };
 
 // Schema used for every file
-const FileSchema = new SimpleSchema({
+export const FileSchema = new SimpleSchema({
   name: String,
   size: Number,
   type: String,
@@ -184,12 +184,12 @@ const FileSchema = new SimpleSchema({
 });
 
 // Generates a schema given a list name (request, or borrowers)
-export const getFileSchema = list => {
+export const getFileSchema = (list) => {
   const schema = {};
 
   const arr = getFileIDs(list);
 
-  arr.forEach(id => {
+  arr.forEach((id) => {
     schema[id] = {
       type: Array,
       optional: true,

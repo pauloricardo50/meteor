@@ -5,6 +5,7 @@ import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider, intlShape } from 'react-intl';
 import StubCollections from 'meteor/hwillson:stub-collections';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import {
   getUserLocale,
@@ -14,6 +15,10 @@ import {
 
 import myTheme from '/imports/js/config/mui_custom';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+// This has to be imported here for client side tests to use factories
+// Because each test using factories also uses stubCollections
+import '/imports/api/factories';
 
 import LoanRequests from '/imports/api/loanrequests/loanrequests';
 import Borrowers from '/imports/api/borrowers/borrowers';
@@ -38,7 +43,7 @@ const customMount = (Component, props, withRouter) => {
   return mount(
     withRouter
       ? <MemoryRouter>
-        <Component {...props} />
+        <Component history={{ location: { pathname: '' } }} {...props} />
       </MemoryRouter>
       : <Component {...props} />,
     {
@@ -85,8 +90,7 @@ getMountedComponent.reset = (useStubs = true) => {
   getMountedComponent.mountedComponent = undefined;
   if (useStubs) {
     StubCollections.restore();
-    StubCollections.add([LoanRequests, Borrowers, Offers, Meteor.users]);
-    StubCollections.stub();
+    StubCollections.stub([LoanRequests, Borrowers, Offers, Meteor.users]);
   }
 };
 
@@ -99,15 +103,32 @@ export default getMountedComponent;
  * @return {type} undefined
  */
 export const stubCollections = () => {
+  StubCollections.stub();
+};
+
+stubCollections.restore = () => {
   StubCollections.restore();
+};
+
+if (Meteor.isTest) {
+  // This is some test initialization, stubbing all the collections here,
+  // avoids all timeouts coming later due to us using this function.
+  console.log('Initializing Tests...');
   StubCollections.add([
+    Meteor.users,
     LoanRequests,
     Borrowers,
     Offers,
     AdminActions,
     Properties,
     Comparators,
-    Meteor.users,
   ]);
-  StubCollections.stub();
-};
+  StubCollections.stub(); // This part is critical, need to stub once beforeAll
+  stubCollections.restore();
+
+  if (Meteor.isClient) {
+    injectTapEventPlugin(); // Removes any warnings with onTouchTap during tests
+  }
+
+  console.log('Ready to roll');
+}
