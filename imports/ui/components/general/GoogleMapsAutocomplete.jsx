@@ -100,6 +100,7 @@ export default class GoogleMapsAutocomplete extends Component {
           floatingLabelStyle={{ fontSize: 'initial' }}
         >
           <PlacesAutocomplete
+            googleLogo={false} // FIXME https://github.com/kenny-hibino/react-places-autocomplete/issues/103
             inputProps={inputProps}
             autocompleteItem={({ formattedSuggestion }) =>
               (<ListItem
