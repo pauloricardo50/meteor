@@ -6,39 +6,26 @@ import { Roles } from 'meteor/alanning:roles';
 import rateLimit from '/imports/js/helpers/rate-limit.js';
 
 Meteor.methods({
-  toggleAdmin(id) {
-    check(id, String);
-
-    // Verify that user is logged in and is an admin
-    // if (!this.userId) {
-    //   throw new Meteor.Error('not-authorized');
-    // } else if (!Roles.userIsInRole(this.userId, 'admin')) {
-    //   throw new Meteor.Error('not-authorized');
-    // }
-
-    if (Roles.userIsInRole(id, 'admin')) {
-      Roles.removeUsersFromRoles(id, 'admin');
-    } else {
-      Roles.addUsersToRoles(id, 'admin');
-    }
-  },
   doesUserExist(email) {
     check(email, String);
     if (Meteor.isServer) {
+      // This should remain a simple inequality check
       return Accounts.findUserByEmail(email) != null;
     }
 
     return undefined;
   },
   sendVerificationLink(userId) {
-    console.log('yayaya');
     check(userId, Match.Optional(String));
 
-    const id = userId || Meteor.userId();
-    if (id) {
-      return Accounts.sendVerificationEmail(id);
-    } else {
+    if (!this.isSimulation) {
+      const id = userId || Meteor.userId();
+      if (id) {
+        return Accounts.sendVerificationEmail(id);
+      }
       throw new Meteor.Error('no userId for verification email');
+    } else {
+      return undefined;
     }
   },
 });
@@ -46,7 +33,9 @@ Meteor.methods({
 // Create a partner User
 export const createPartner = new ValidatedMethod({
   name: 'users.createPartner',
-  validate({ options }) {},
+  validate({ options }) {
+    check(options, Object);
+  },
   run({ options }) {
     if (!this.userId) {
       throw new Meteor.Error(
@@ -68,6 +57,16 @@ export const createPartner = new ValidatedMethod({
       // Accounts.sendEnrollmentEmail(id, options.email);
     }
   },
+});
+
+export const createUser = new ValidatedMethod({
+  name: 'users.create',
+  validate({ options }) {
+    check(options, Object);
+    check(options.email, String);
+    check(options.password, String);
+  },
+  run({ options }) {},
 });
 
 rateLimit({

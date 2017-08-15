@@ -45,6 +45,7 @@
     "no-absolute-path": 0,
     "import/no-absolute-path": 0,
     "jsx-a11y/href-no-hash": 0,
-    "no-mixed-operators": 0
+    "no-mixed-operators": 0,
+    "import/prefer-default-export": 0
   }
 }
