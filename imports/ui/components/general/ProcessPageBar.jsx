@@ -71,7 +71,7 @@ export default class ProcessPageBar extends Component {
     const isDone = currentStep.isDone();
 
     return (
-      <div className="buttons">
+      <div className="buttons" key="someKey">
         {showBackButton &&
           <Button
             raised

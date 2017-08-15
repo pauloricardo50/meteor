@@ -59,6 +59,8 @@ Factory.define('loanRequest', LoanRequests, {
   emails: () => [],
 });
 
+Factory.define('loanRequest2', LoanRequests);
+
 Factory.define(
   'loanRequestDev',
   LoanRequests,

@@ -21,3 +21,7 @@ import './users/methods';
 
 import './methods/server/methods';
 import './methods/methods';
+
+import './factories';
+
+import './loanrequests/loanrequests';

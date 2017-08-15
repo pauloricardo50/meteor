@@ -1,12 +1,12 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import moment from 'moment';
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
 import { stubCollections } from '/imports/js/helpers/testHelpers';
+import sinon from 'sinon';
 
 import LoanRequests from '../loanrequests';
 
@@ -25,27 +25,33 @@ import {
 } from '../methods';
 
 describe('loanRequests', () => {
+  let userId;
+
   beforeEach(() => {
-    resetDatabase();
     stubCollections();
+    userId = Factory.create('user')._id;
+    sinon.stub(Meteor, 'userId').callsFake(() => userId);
   });
 
   afterEach(() => {
     stubCollections.restore();
+    Meteor.userId.restore();
   });
 
   describe('methods', () => {
     describe('insertRequest', () => {
       it('Properly inserts a minimal request', () => {
         const object = {
-          general: { fortuneUsed: 10 },
-          property: { value: 100 },
-          borrowers: ['asd'],
+          // general: { fortuneUsed: 10 },
+          // property: { value: 100 },
+          // borrowers: ['asd'],
         };
-        const userId = 'asdf';
 
         const requestId = insertRequest.call({ object, userId });
-        const request = LoanRequests.findOne({ _id: requestId });
+        const request = LoanRequests.findOne(requestId);
+        console.log('huh?');
+        console.log('id2', requestId);
+        console.log('wut?', JSON.stringify(request, 0, 2));
 
         expect(typeof request).to.equal('object');
         expect(request.userId).to.equal(userId);
@@ -56,6 +62,7 @@ describe('loanRequests', () => {
       let request;
       beforeEach(() => {
         request = Factory.create('loanRequest');
+        console.log('before', request._id);
       });
 
       describe('updateRequest', () => {

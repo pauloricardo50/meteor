@@ -8,18 +8,18 @@ import {
   LogicSchema,
 } from './additionalSchemas';
 
-const RequestFilesSchema = new SimpleSchema(getFileSchema('request'));
-
 const LoanRequests = new Mongo.Collection('loanRequests');
 
+const RequestFilesSchema = new SimpleSchema(getFileSchema('request'));
+
 // Prevent all client side modifications of mongoDB
-LoanRequests.deny({
-  insert: () => true,
-  update: () => true,
-  remove: () => true,
-});
+// LoanRequests.deny({
+//   insert: () => true,
+//   update: () => true,
+//   remove: () => true,
+// });
 LoanRequests.allow({
-  insert: () => false,
+  insert: () => true,
   update: () => false,
   remove: () => false,
 });
