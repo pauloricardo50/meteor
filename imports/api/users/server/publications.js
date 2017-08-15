@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { check } from 'meteor/check';
 
-Meteor.publish('allUsers', function () {
+Meteor.publish('allUsers', function publish() {
   // Verify if the current user is an admin
   if (
     Roles.userIsInRole(Meteor.userId(), 'admin') ||
@@ -15,7 +15,7 @@ Meteor.publish('allUsers', function () {
   return this.ready();
 });
 
-Meteor.publish('currentUser', function () {
+Meteor.publish('currentUser', function publish() {
   if (Meteor.userId()) {
     return Meteor.users.find({
       _id: Meteor.userId(),
@@ -25,7 +25,7 @@ Meteor.publish('currentUser', function () {
   return this.ready();
 });
 
-Meteor.publish('user', function (id) {
+Meteor.publish('user', function publish(id) {
   check(id, String);
   if (
     Roles.userIsInRole(Meteor.userId(), 'admin') ||

@@ -54,7 +54,7 @@ Meteor.publish('allBorrowers', function publish() {
 });
 
 // Publish all borrowers for a loanRequest for admins
-Meteor.publish('requestBorrowers', function (borrowerIds) {
+Meteor.publish('requestBorrowers', function publish(borrowerIds) {
   check(borrowerIds, [String]);
   // Verify if user is an admin
   if (
