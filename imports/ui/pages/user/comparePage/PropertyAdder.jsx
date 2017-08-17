@@ -34,7 +34,17 @@ export default class PropertyAdder extends Component {
         latitude: latlng.lat,
         longitude: latlng.lng,
       },
-      this.handleClose,
+      () => {
+        // Reset form
+        this.setState({
+          address: undefined,
+          value: undefined,
+          latitude: undefined,
+          longitude: undefined,
+          isValidPlace: undefined,
+        });
+        this.handleClose();
+      },
     );
   };
 

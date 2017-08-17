@@ -57,6 +57,7 @@ export default class CompareHeader extends Component {
       handleSort,
       hovered,
       scrollLeft,
+      noProperties,
     } = this.props;
 
     const { pinHeader } = this.state;
@@ -68,7 +69,9 @@ export default class CompareHeader extends Component {
           this.node = node;
         }}
         style={{
-          position: 'absolute',
+          // Make sure the header stays in palce if no properties are shown
+          // this is due to overflow and absolute not mixing well
+          position: noProperties ? 'relative' : 'absolute',
           left: pinHeader ? Math.max(scrollLeft, 16) : 16,
           zIndex: 2,
           transition: 'left 200ms ease-in-out',

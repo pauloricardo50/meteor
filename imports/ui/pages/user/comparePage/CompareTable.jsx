@@ -208,6 +208,7 @@ export default class CompareTable extends Component {
             onHoverLeave={this.onHoverLeave}
             hovered={this.state.hovered}
             scrollLeft={scrollLeft}
+            noProperties={sortedProperties.length === 0}
           />
 
           {/* Empty div to position things properly */}
