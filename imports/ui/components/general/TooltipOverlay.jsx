@@ -60,7 +60,8 @@ export default class TooltipOverlay extends Component {
         onTouchTap={handleClick}
       >
         <span
-          className="tooltip-overlay hvr-underline-from-center"
+          // className="tooltip-overlay hvr-underline-from-center"
+          className="tooltip-overlay"
           tabIndex="0"
         >
           {children}
