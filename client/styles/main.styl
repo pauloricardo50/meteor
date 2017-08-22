@@ -394,9 +394,14 @@ svg.warning
   &.always-side-nav
     padding-left: 266px; // side bar doesn't disappear
   .wrapper
-    margin: 0 0;
     height: 100%;
     min-height: 100%;
+    .page
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+      &.full-width
+        max-width: unset;
   .transition-wrapper
     position: absolute;
     width: calc(100% - 32px);

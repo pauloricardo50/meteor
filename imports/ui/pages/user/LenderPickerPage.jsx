@@ -20,21 +20,19 @@ const handleSubmit = () => {
   const object = {};
 };
 
-const getLoan = (props, state) => {
-  return getLoanValue(props.loanRequest);
-};
+const getLoan = (props, state) => getLoanValue(props.loanRequest);
 
 const getComponents = (props, state) => [
-  {
-    component: LenderPickerStart,
-    condition: true,
-    next: state.initialContinue,
-  },
-  {
-    component: RankStrategy,
-    condition: false,
-    next: true,
-  },
+  // {
+  //   component: LenderPickerStart,
+  //   condition: true,
+  //   next: state.initialContinue,
+  // },
+  // {
+  //   component: RankStrategy,
+  //   condition: false,
+  //   next: true,
+  // },
   {
     component: InsuranceStrategy,
     condition: props.loanRequest.general.insuranceFortuneUsed > 0,
@@ -50,10 +48,10 @@ const getComponents = (props, state) => [
     condition: true,
     next: state.loanStrategyValidated && state.loanStrategyPreset,
   },
-  {
-    component: LenderTable,
-    condition: true,
-  },
+  // {
+  //   component: LenderTable,
+  //   condition: true,
+  // },
 ];
 
 export default class LenderPickerPage extends React.Component {
@@ -88,18 +86,19 @@ export default class LenderPickerPage extends React.Component {
       offers: this.props.offers,
       loanValue: getLoan(this.props, this.state),
       history: this.props.history,
-      scroll: i => {
-        const options = {
-          duration: 350,
-          delay: 0,
-          smooth: true,
-        };
-        Meteor.defer(() => Scroll.scroller.scrollTo(`${i}`, options));
-      },
+      scroll: () => {},
+      // scroll: (i) => {
+      //   const options = {
+      //     duration: 350,
+      //     delay: 0,
+      //     smooth: true,
+      //   };
+      //   Meteor.defer(() => Scroll.scroller.scrollTo(`${i}`, options));
+      // },
     };
 
     const componentsShown = [];
-    getComponents(this.props, this.state).every(c => {
+    getComponents(this.props, this.state).every((c) => {
       const nb = componentsShown.length;
 
       if (c.condition === false) {
@@ -148,10 +147,10 @@ export default class LenderPickerPage extends React.Component {
       >
         <section className="mask1 partner-picker">
           {this.getSteps().map((step, i) =>
-            <Scroll.Element name={`${i}`} key={i}>
-              {i > 0 && <hr />}
+            (<Scroll.Element name={`${i}`} key={i}>
+              {i > 0 && <hr style={{ margin: '32px 0' }} />}
               {step}
-            </Scroll.Element>,
+            </Scroll.Element>),
           )}
         </section>
       </ProcessPage>

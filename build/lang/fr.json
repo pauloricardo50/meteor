@@ -18,7 +18,14 @@
   "ActionsTable.date": "Date",
   "ActionsTable.do": " ",
 
-  "CompareTableContent.empty": "Aucune propriété avec ce filtre",
+  "LoanStrategyPicker.title": "Stratégie de taux",
+  "LoanStrategyPicker.description": "Il n'y a pas une seule stratégie parfaite pour structurer votre prêt, cependant, nous pouvons vous aiguiller dans la bonne direction grâce à notre savoir-faire.{verticalSpace}Sinon, utilisez notre outil interactif ci-dessous.",
+
+  "InsuranceStrategy.title": "Stratégie de prévoyance",
+  "InsuranceStrategy.description": "Vous avez décidé d'utiliser votre prévoyance pour ce projet. Il faut encore décider par quel mécanisme financier vous allez le faire.",
+
+  "AmortizingPicker.title": "Stratégie d'amortissement",
+  "AmortizingPicker.description": "Choisir comment amortir son bien immobilier peut avoir des conséquences très importantes pour votre futur. N'hésitez pas à nous appeler pour prendre cette décision en toute confiance.",
 
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
@@ -104,6 +111,7 @@
   "ComparePage.CTA": "Ajouter un bien à comparer",
   "ComparePage.start": "Commencer à comparer",
   "CompareTable.empty": "Ajoutez une propriété pour commencer",
+  "CompareTableContent.empty": "Aucune propriété avec ce filtre",
   "ConditionsButton.counterpart": "Contreparties pour les meilleurs taux",
   "ConditionsButton.counterparts": "Contreparties pour les meilleurs taux",
   "ConditionsButton.CTA": "Ok",
@@ -615,6 +623,7 @@
   "steps.structure.title": "Structure finale",
   "steps.verification.subtitle": "2h",
   "steps.verification.title": "Vérification d'e-Potek",
+  "StrategyChoices.recommended": "Recommandé pour vous",
   "StructureError.cash": "Vous n'avez pas assez d'épargne engagée dans ce projet",
   "StructureError.income": "Vous n'avez pas assez de revenus pour couvrir les charges de votre projet",
   "StructureError.ownFunds": "Il n'y a pas assez de fonds propres dans votre structure",

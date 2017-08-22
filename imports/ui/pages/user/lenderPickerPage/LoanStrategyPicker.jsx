@@ -5,9 +5,13 @@ import cleanMethod from '/imports/api/cleanMethods';
 import Button from '/imports/ui/components/general/Button.jsx';
 import Scroll from 'react-scroll';
 
-import { loanStrategySuccess, getLoanValue } from '/imports/js/helpers/requestFunctions';
+import {
+  loanStrategySuccess,
+  getLoanValue,
+} from '/imports/js/helpers/requestFunctions';
 import StrategyChoices from '/imports/ui/components/general/StrategyChoices.jsx';
 import FinanceStrategyPicker from './FinanceStrategyPicker.jsx';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 const styles = {
   callButton: {
@@ -60,18 +64,17 @@ const getChoices = () => [
   {
     id: 'fixed',
     title: '100% Fixé',
-    reasons: ['Dormez serein', 'Profitez des taux historiquement bas', <span>&nbsp;</span>],
+    reasons: ['Dormez serein', 'Profitez des taux historiquement bas'],
     isBest: true,
-  },
-  {
-    id: 'fixedLibor',
-    title: '20% Libor',
-    reasons: ['Jouez le Libor', 'Risque faible', "Vérifiez votre capacité d'épargne au préalable"],
   },
   {
     id: 'manual',
     title: 'Mode Manuel',
-    reasons: ['Fixez chaque tranche vous-même', 'Choisissez la durée', 'À vos risques et périls'],
+    reasons: [
+      'Fixez chaque tranche vous-même',
+      'Choisissez la durée',
+      'À vos risques et périls',
+    ],
   },
 ];
 
@@ -102,18 +105,14 @@ const getStructure = (choiceId, props) => {
 };
 
 const LoanStrategyPicker = props =>
-  <article>
-    <h2>{props.index}. Choisissez votre stratégie de taux</h2>
+  (<article>
+    <h2>
+      <T id="LoanStrategyPicker.title" />
+    </h2>
 
-    <div className="description">
-      <p>
-        Il n'y a pas une seule stratégie parfaite pour structurer votre prêt, cependant,
-        nous pouvons vous aiguiller dans la bonne direction grâce à notre expertise.
-        <br />
-        <br />
-        Sinon, utilisez notre outil interactif ci-dessous.
-      </p>
-    </div>
+    <p className="strategy-description">
+      <T id="LoanStrategyPicker.description" />
+    </p>
 
     <StrategyChoices
       name="loanStrategyPreset"
@@ -134,17 +133,26 @@ const LoanStrategyPicker = props =>
           />
         </Scroll.Element>
         <div className="text-center" style={{ margin: '20px 0' }}>
-          <Button raised
+          <Button
+            raised
             label="Continuer"
             primary={!props.formState.loanStrategyValidated}
-            disabled={!loanStrategySuccess(props.formState.loanTranches, props.loanValue)}
+            disabled={
+              !loanStrategySuccess(
+                props.formState.loanTranches,
+                props.loanValue,
+              )
+            }
             onTouchTap={() =>
-              props.setFormState('loanStrategyValidated', true, props.scroll(props.index + 1))}
+              props.setFormState(
+                'loanStrategyValidated',
+                true,
+                props.scroll(props.index + 1),
+              )}
           />
         </div>
       </div>}
-
-  </article>;
+  </article>);
 
 LoanStrategyPicker.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
