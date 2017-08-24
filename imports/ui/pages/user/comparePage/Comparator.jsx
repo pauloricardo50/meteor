@@ -57,8 +57,7 @@ export default class Comparator extends Component {
         'updateComparator',
         { [key]: value },
         this.props.comparator._id,
-        callback,
-      ),
+      ).then(callback),
     200,
   );
 
@@ -67,37 +66,33 @@ export default class Comparator extends Component {
       'addComparatorField',
       { name, type },
       this.props.comparator._id,
-      () => {
-        this.hideFields(this.props);
-        if (typeof callback === 'function') {
-          callback();
-        }
-      },
-    );
+    ).then(() => {
+      this.hideFields(this.props);
+      if (typeof callback === 'function') {
+        callback();
+      }
+    });
 
   removeCustomField = fieldId =>
     cleanMethod(
       'removeComparatorField',
       { fieldId },
       this.props.comparator._id,
-      () => {
-        this.hideFields(this.props);
-      },
-    );
+    ).then(() => {
+      this.hideFields(this.props);
+    });
 
   toggleField = fieldId =>
     cleanMethod('toggleHiddenField', { fieldId }, this.props.comparator._id);
 
   addProperty = (object, callback) => {
-    cleanMethod('insertProperty', object, null, (err, result) => {
-      if (!err) {
-        if (typeof callback === 'function') {
-          callback();
-        }
-        Meteor.defer(() => {
-          this.callGoogleApi(result);
-        });
+    cleanMethod('insertProperty', object).then((result) => {
+      if (typeof callback === 'function') {
+        callback();
       }
+      Meteor.defer(() => {
+        this.callGoogleApi(result);
+      });
     });
   };
 
@@ -146,7 +141,7 @@ export default class Comparator extends Component {
   addGooglePlace = (propertyId, lat, lng, type, id, byDistance) => {
     if (window.google) {
       return getNearbyPlace(lat, lng, type, byDistance)
-        .then((result) => {
+        .then(result =>
           cleanMethod(
             'updateProperty',
             {
@@ -157,8 +152,8 @@ export default class Comparator extends Component {
               },
             },
             propertyId,
-          );
-        })
+          ),
+        )
         .catch(error => console.log(error));
     }
 

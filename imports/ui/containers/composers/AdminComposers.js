@@ -59,7 +59,7 @@ export function adminUserComposer(props, onData) {
   const userId = props.match.params.userId;
 
   if (Meteor.subscribe('user', userId).ready()) {
-    const user = Meteor.users.findOne({ _id: userId }); // .fetch();
+    const user = Meteor.users.findOne(userId); // .fetch();
 
     onData(null, { user });
   }

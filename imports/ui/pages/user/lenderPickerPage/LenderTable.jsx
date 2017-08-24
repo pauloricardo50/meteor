@@ -64,15 +64,13 @@ const handleSave = (props, offerId) => {
   object['general.loanTranches'] = props.formState.loanTranches;
   object['logic.lender.offerId'] = offerId;
 
-  cleanMethod('updateRequest', object, props.loanRequest._id, (err) => {
+  cleanMethod('updateRequest', object, props.loanRequest._id).then(() => {
     track('chose a lender', { offerId });
-    if (!err) {
-      // This will only be called the first time a lender is chosen
-      insertAdminAction.call({
-        requestId: props.loanRequest._id,
-        type: 'lenderChosen',
-      });
-    }
+    // This will only be called the first time a lender is chosen
+    insertAdminAction.call({
+      requestId: props.loanRequest._id,
+      type: 'lenderChosen',
+    });
   });
 };
 
@@ -116,52 +114,50 @@ const columns = [
 
 export default class LenderTable extends Component {
   render() {
-    const offers = getOffers(this.props);
-    const saved =
-      this.props.loanRequest.logic.lender.offerId ===
-      this.props.formState.chosenLender;
+    // const offers = getOffers(this.props);
 
     return (
-      <article>
-        <h2 className="text-c">Les meilleurs prêteurs</h2>
-        <div className="description">
-          <p>
-            Voici les offres que vous avez reçues, vous pouvez modifier les
-            valeurs en haut pour changer les résultats.
-          </p>
-        </div>
-
-        <OfferToggle
-          value={!this.props.formState.standard}
-          handleToggle={(e, c) => this.props.setFormState('standard', !c)}
-          offers={this.props.offers}
-        />
-
-        <Table
-          columns={columns}
-          rows={offers.map((offer, i) => ({
-            id: offer._id,
-            columns: [
-              i + 1,
-              offer.maxAmount,
-              offer.monthly,
-              offer.conditions.length > 0 || offer.counterparts.length > 0
-                ? <ConditionsButton
-                  conditions={offer.conditions}
-                  counterparts={offer.counterparts}
-                />
-                : '-',
-            ],
-          }))}
-          selectable
-          onRowSelection={rowIndex =>
-            handleChoose(
-              rowIndex !== undefined ? offers[rowIndex]._id : undefined,
-              this.props,
-            )}
-          selected={this.props.formState.chosenLender}
-        />
-      </article>
+      <div>A Table!</div>
+      // <article>
+      //   <h2 className="text-c">Les meilleurs prêteurs</h2>
+      //   <div className="description">
+      //     <p>
+      //       Voici les offres que vous avez reçues, vous pouvez modifier les
+      //       valeurs en haut pour changer les résultats.
+      //     </p>
+      //   </div>
+      //
+      //   <OfferToggle
+      //     value={!this.props.formState.standard}
+      //     handleToggle={(e, c) => this.props.setFormState('standard', !c)}
+      //     offers={this.props.offers}
+      //   />
+      //
+      //   <Table
+      //     columns={columns}
+      //     rows={offers.map((offer, i) => ({
+      //       id: offer._id,
+      //       columns: [
+      //         i + 1,
+      //         offer.maxAmount,
+      //         offer.monthly,
+      //         offer.conditions.length > 0 || offer.counterparts.length > 0
+      //           ? <ConditionsButton
+      //             conditions={offer.conditions}
+      //             counterparts={offer.counterparts}
+      //           />
+      //           : '-',
+      //       ],
+      //     }))}
+      //     selectable
+      //     onRowSelection={rowIndex =>
+      //       handleChoose(
+      //         rowIndex !== undefined ? offers[rowIndex]._id : undefined,
+      //         this.props,
+      //       )}
+      //     selected={this.props.formState.chosenLender}
+      //   />
+      // </article>
     );
   }
 }

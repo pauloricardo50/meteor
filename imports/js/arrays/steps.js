@@ -5,6 +5,7 @@ import isArray from 'lodash/isArray';
 import { getBorrowerInfoArray } from './BorrowerFormArray';
 import { borrowerFiles, requestFiles } from '/imports/js/arrays/files';
 import getPropertyArray from './PropertyFormArray';
+import { strategyDone } from '/imports/js/helpers/requestFunctions';
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 
@@ -77,21 +78,17 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         {
           id: 'auction',
           link: `/app/requests/${loanRequest._id}/auction`,
-          isDone: () =>
-            loanRequest.logic.auctionStarted &&
-            loanRequest.logic.auctionEndTime <= serverTime,
+          isDone: () => loanRequest.logic.auction.status === 'ended',
           disabled: loanRequest.logic.step < 2,
+        },
+        {
+          id: 'strategy',
+          link: `/app/requests/${loanRequest._id}/strategy`,
+          isDone: () => strategyDone(loanRequest),
         },
         {
           id: 'lenderPicker',
           link: `/app/requests/${loanRequest._id}/lenderpicker`,
-          disabled:
-            loanRequest.logic.step < 2 &&
-            !(
-              serverTime &&
-              loanRequest.logic.auctionEndTime &&
-              loanRequest.logic.auctionEndTime > serverTime
-            ),
           isDone: () =>
             !!(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
         },
@@ -147,7 +144,8 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
   // steps[0].items[6].disabled = !previousDone(steps, 0, 6); // Expertise
 
   steps[2].items[1].disabled = !previousDone(steps, 2, 1); // Enchères
-  steps[2].items[2].disabled = !previousDone(steps, 2, 2); // Choix du prêteur
+  steps[2].items[2].disabled = !previousDone(steps, 2, 2); // Stratégie
+  steps[2].items[3].disabled = !previousDone(steps, 2, 3); // Choix du prêteur
 
   return steps;
 };

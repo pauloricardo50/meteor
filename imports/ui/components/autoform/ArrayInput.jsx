@@ -31,29 +31,30 @@ export default class ArrayInput extends React.Component {
 
   getArray = () => {
     const array = [];
+    const mapInput = (input, i) => {
+      const props = {
+        ...this.props,
+        ...input,
+        id: `${this.props.id}.${i}.${input.id}`,
+        currentValue:
+          this.props.currentValue &&
+          this.props.currentValue[i] &&
+          this.props.currentValue[i][input.id],
+        key: input.id,
+      };
 
-    for (var i = 0; i < this.state.count; i++) {
+      if (input.type === 'textInput') {
+        return <TextInput {...props} noValidator />;
+      } else if (input.type === 'selectInput') {
+        return <SelectFieldInput {...props} noValidator />;
+      }
+    };
+
+    for (let i = 0; i < this.state.count; i += 1) {
       // If there are multiple components per array item
       array.push(
         <div className="mask1" style={styles.arrayItem} key={i}>
-          {this.props.inputs.map(input => {
-            const props = {
-              ...this.props,
-              ...input,
-              id: `${this.props.id}.${i}.${input.id}`,
-              currentValue:
-                this.props.currentValue &&
-                this.props.currentValue[i] &&
-                this.props.currentValue[i][input.id],
-              key: input.id,
-            };
-
-            if (input.type === 'textInput') {
-              return <TextInput {...props} noValidator />;
-            } else if (input.type === 'selectInput') {
-              return <SelectFieldInput {...props} noValidator />;
-            }
-          })}
+          {this.props.inputs.map(input => mapInput(input, i))}
         </div>,
       );
     }
@@ -71,7 +72,7 @@ export default class ArrayInput extends React.Component {
       const object = {};
       object[`${this.props.id}`] = 1;
 
-      cleanMethod(this.props.popFunc, object, this.props.documentId, () =>
+      cleanMethod(this.props.popFunc, object, this.props.documentId).then(() =>
         this.setState({ count: this.state.count - 1 }),
       );
     }
@@ -89,20 +90,23 @@ export default class ArrayInput extends React.Component {
 
         <div className="text-center">
           {this.state.count <= 0 &&
-            <Button raised
+            <Button
+              raised
               label={<T id="ArrayInput.add" />}
               onTouchTap={this.addValue}
               disabled={this.props.disabled}
             />}
           {this.state.count > 0 &&
-            <Button raised
+            <Button
+              raised
               label="-"
               onTouchTap={this.removeValue}
               style={styles.button}
               disabled={this.state.count <= 0 || this.props.disabled}
             />}
           {this.state.count > 0 &&
-            <Button raised
+            <Button
+              raised
               label="+"
               onTouchTap={this.addValue}
               primary

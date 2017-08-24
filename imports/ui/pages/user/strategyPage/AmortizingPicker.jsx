@@ -22,7 +22,7 @@ const getChoices = () => [
   },
 ];
 
-const AmortizingPicker = props =>
+const AmortizingPicker = ({ loanRequest, handleSave }) =>
   (<article>
     <h2>
       <T id="AmortizingPicker.title" />
@@ -34,21 +34,16 @@ const AmortizingPicker = props =>
 
     <StrategyChoices
       name="amortizationStrategyPreset"
-      currentValue={props.formState.amortizationStrategyPreset}
+      currentValue={loanRequest.logic.amortizationStrategyPreset}
       choices={getChoices()}
       handleChoose={id =>
-        props.setFormState(
-          'amortizationStrategyPreset',
-          id,
-          props.scroll(props.index + 1),
-        )}
+        handleSave({ 'logic.amortizationStrategyPreset': id })}
     />
   </article>);
 
 AmortizingPicker.propTypes = {
-  formState: PropTypes.objectOf(PropTypes.any).isRequired,
-  setFormState: PropTypes.func.isRequired,
-  scroll: PropTypes.func.isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  handleSave: PropTypes.func.isRequired,
 };
 
 export default AmortizingPicker;

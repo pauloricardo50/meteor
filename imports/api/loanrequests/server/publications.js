@@ -90,9 +90,9 @@ const partnerVisibleFields = organization => ({
 
   'logic.step': 1,
   'logic.uploadTaxesLater': 1,
-  'logic.auctionStarted': 1,
-  'logic.auctionStartTime': 1,
-  'logic.auctionEndTime': 1,
+  'logic.auction.status': 1,
+  'logic.auction.startTime': 1,
+  'logic.auction.endTime': 1,
 });
 
 // Publish all loanrequests this partner has access to
@@ -108,8 +108,7 @@ Meteor.publish('partnerRequestsAuction', function publish() {
       {
         $and: [
           { 'general.canton': { $in: user.profile.cantons } },
-          { 'logic.auctionStarted': true },
-          { 'logic.auctionEndTime': { $gt: new Date() } },
+          { 'logic.auction.status': 'started' },
           {
             $or: [
               { 'general.partnersToAvoidExists': false },
@@ -162,8 +161,7 @@ Meteor.publish('partnerSingleLoanRequest', function publish(id) {
         $and: [
           { _id: id },
           { 'general.canton': { $in: user.profile.cantons } },
-          { 'logic.auctionStarted': true },
-          { 'logic.auctionEndTime': { $gt: new Date() } },
+          { 'logic.auction.status': 'started' },
           {
             $or: [
               { 'general.partnersToAvoidExists': false },

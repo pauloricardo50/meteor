@@ -8,6 +8,7 @@ import {
   BorrowerPage,
   PropertyPage,
   AuctionPage,
+  StrategyPage,
   LenderPickerPage,
   StructurePage,
   VerificationPage,
@@ -54,12 +55,16 @@ const UserRoutes = props =>
           component={VerificationPage}
         />
         <Route
+          path="/app/requests/:requestId/structure"
+          component={StructurePage}
+        />
+        <Route
           path="/app/requests/:requestId/auction"
           component={AuctionPage}
         />
         <Route
-          path="/app/requests/:requestId/structure"
-          component={StructurePage}
+          path="/app/requests/:requestId/strategy"
+          component={StrategyPage}
         />
         <Route
           path="/app/requests/:requestId/lenderpicker"

@@ -3,6 +3,7 @@ import rateLimit from '/imports/js/helpers/rate-limit.js';
 import { Mandrill } from 'meteor/wylio:mandrill';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { check, Match } from 'meteor/check';
+import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
 
 import {
   from,
@@ -15,6 +16,7 @@ import { addEmail, modifyEmail } from '/imports/api/loanrequests/methods';
 
 export const sendEmail = new ValidatedMethod({
   name: 'email.send',
+  mixins: [CallPromiseMixin],
   validate({
     emailId,
     requestId,
@@ -87,12 +89,18 @@ export const sendEmail = new ValidatedMethod({
             ],
           },
         ],
-        metadata: [{ userId: Meteor.user()._id, requestId }],
+        metadata: [{ userId: Meteor.userId(), requestId }],
       },
     };
 
     if (sendAt) {
       options.send_at = sendAt.toISOString();
+    }
+
+    // FIXME Mandrill can't be tested currently
+    // https://github.com/Wylio/meteor-mandrill/issues/23
+    if (Meteor.isTest) {
+      return;
     }
 
     this.unblock();
@@ -120,6 +128,7 @@ export const sendEmail = new ValidatedMethod({
 
 export const cancelScheduledEmail = new ValidatedMethod({
   name: 'email.cancelScheduled',
+  mixins: [CallPromiseMixin],
   validate({ id, requestId }) {
     check(id, String);
     check(requestId, String);
@@ -144,6 +153,7 @@ export const cancelScheduledEmail = new ValidatedMethod({
 
 export const rescheduleEmail = new ValidatedMethod({
   name: 'email.reschedule',
+  mixins: [CallPromiseMixin],
   validate({ id, requestId, date }) {
     check(id, String);
     check(requestId, String);

@@ -41,7 +41,10 @@ export default class AuctionPage extends Component {
   }
 
   getContent() {
-    if (!this.state.serverTime) {
+    const { loanRequest, offers, borrowers, history } = this.props;
+    const { serverTime } = this.state;
+
+    if (!serverTime) {
       return (
         <div style={{ height: 150 }}>
           <LoadingComponent />
@@ -50,45 +53,38 @@ export default class AuctionPage extends Component {
     }
 
     if (
-      this.props.loanRequest.logic.auctionEndTime <=
-      this.state.serverTime.setSeconds(this.state.serverTime.getSeconds() + 1)
+      loanRequest.logic.auction.endTime <=
+        serverTime.setSeconds(serverTime.getSeconds() + 1) ||
+      loanRequest.logic.auction.status === 'ended'
     ) {
       // After the auction, clear interval
       Meteor.clearInterval(time);
 
-      return (
-        <AuctionResults
-          loanRequest={this.props.loanRequest}
-          offers={this.props.offers}
-        />
-      );
-    } else if (this.props.loanRequest.logic.auctionStarted) {
+      return <AuctionResults loanRequest={loanRequest} offers={offers} />;
+    } else if (loanRequest.logic.auction.status === 'started') {
       // During the auction
-      return (
-        <Auction
-          loanRequest={this.props.loanRequest}
-          offers={this.props.offers}
-        />
-      );
+      return <Auction loanRequest={loanRequest} offers={offers} />;
     }
     // Before the auction, lets the user start it
     return (
       <AuctionStart
-        loanRequest={this.props.loanRequest}
-        borrowers={this.props.borrowers}
-        history={this.props.history}
-        serverTime={this.state.serverTime}
+        loanRequest={loanRequest}
+        borrowers={borrowers}
+        history={history}
+        serverTime={serverTime}
       />
     );
   }
 
   render() {
+    const { serverTime } = this.state;
+
     return (
       <ProcessPage
         {...this.props}
         stepNb={2}
         id="auction"
-        serverTime={this.state.serverTime}
+        serverTime={serverTime}
         showBottom={false}
       >
         {this.getContent()}

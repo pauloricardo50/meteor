@@ -27,7 +27,7 @@ const getChoices = () => [
   },
 ];
 
-const InsuranceStrategy = props =>
+const InsuranceStrategy = ({ loanRequest, handleSave }) =>
   (<article>
     <h2>
       <T id="InsuranceStrategy.title" />
@@ -37,27 +37,17 @@ const InsuranceStrategy = props =>
       <T id="InsuranceStrategy.description" />
     </p>
 
-    <div className="text-center" style={{ width: '100%', marginBottom: 40 }}>
-      <Button raised label="En savoir plus" primary />
-    </div>
-
     <StrategyChoices
       name="insuranceUsePreset"
-      currentValue={props.formState.insuranceUsePreset}
+      currentValue={loanRequest.logic.insuranceUsePreset}
       choices={getChoices()}
-      handleChoose={id =>
-        props.setFormState(
-          'insuranceUsePreset',
-          id,
-          props.scroll(props.index + 1),
-        )}
+      handleChoose={id => handleSave({ 'logic.insuranceUsePreset': id })}
     />
   </article>);
 
 InsuranceStrategy.propTypes = {
-  formState: PropTypes.objectOf(PropTypes.any).isRequired,
-  setFormState: PropTypes.func.isRequired,
-  scroll: PropTypes.func.isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  handleSave: PropTypes.func.isRequired,
 };
 
 export default InsuranceStrategy;

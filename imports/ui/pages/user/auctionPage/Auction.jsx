@@ -29,26 +29,21 @@ export default class Auction extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      remainingTime: '00:00:00',
-    };
+    this.state = { remainingTime: '00:00:00' };
   }
 
   componentDidMount() {
-    const that = this;
     // Call it once before the setInterval so that the timer appears instantly
-    this.setTime(that);
-    time = Meteor.setInterval(() => {
-      that.setTime(that);
-    }, 1000);
+    this.setTime();
+    time = Meteor.setInterval(this.setTime, 1000);
   }
 
   componentWillUnmount() {
     Meteor.clearInterval(time);
   }
 
-  setTime(that) {
-    const endDate = moment(that.props.loanRequest.logic.auctionEndTime);
+  setTime = () => {
+    const endDate = moment(this.props.loanRequest.logic.auction.endTime);
     // Get the time difference between the end and current time with moment()
     const difference = moment.duration(endDate.diff(moment()), 'milliseconds');
     // Get the minutes and seconds to display using moment-duration-format,
@@ -58,17 +53,19 @@ export default class Auction extends Component {
     // Get the hours
     const hours = Math.floor(difference.asHours());
     // Concatenate both and set the state
-    that.setState({
-      remainingTime: `${hours}${minSec}`,
-    });
-  }
+    this.setState({ remainingTime: `${hours}${minSec}` });
+  };
 
   render() {
     return (
       <section className="mask1 animated fadeIn">
-        <h2><T id="Auction.title" /></h2>
+        <h2>
+          <T id="Auction.title" />
+        </h2>
         <div className="text-center" style={styles.timer}>
-          <h1 className="display3">{this.state.remainingTime}</h1>
+          <h1 className="display3">
+            {this.state.remainingTime}
+          </h1>
         </div>
         <p className="disabled text-center" style={styles.p}>
           <T id="Auction.notified" />

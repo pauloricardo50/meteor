@@ -4,7 +4,10 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import LoanRequests from '/imports/api/loanrequests/loanrequests';
 import Borrowers from '/imports/api/borrowers/borrowers';
 import { generateComponentAsPDF } from '/imports/js/server/generate-pdf.js';
-import { RequestPDF, AnonymousRequestPDF } from '/imports/api/loanrequests/pdf.js';
+import {
+  RequestPDF,
+  AnonymousRequestPDF,
+} from '/imports/api/loanrequests/pdf.js';
 import rateLimit from '/imports/js/helpers/rate-limit.js';
 
 Meteor.methods({
@@ -20,7 +23,7 @@ export const downloadPDF = new ValidatedMethod({
     check(type, String);
   },
   run({ requestId, type }) {
-    const loanRequest = LoanRequests.findOne({ _id: requestId });
+    const loanRequest = LoanRequests.findOne(requestId);
     const borrowers = Borrowers.find({ _id: { $in: loanRequest.borrowers } });
     const prefix = type === 'anonymous' ? 'Anonyme' : 'Complet';
     const fileName = `${prefix} ${loanRequest.property.address1}.pdf`;
@@ -34,7 +37,7 @@ export const downloadPDF = new ValidatedMethod({
       fileName,
     })
       .then(result => result)
-      .catch(error => {
+      .catch((error) => {
         throw new Meteor.Error('500', error);
       });
   },

@@ -1,4 +1,3 @@
-
 import SimpleSchema from 'simpl-schema';
 
 export const GeneralSchema = new SimpleSchema({
@@ -49,7 +48,7 @@ export const GeneralSchema = new SimpleSchema({
   },
   loanTranches: {
     type: Array,
-    minCount: 1,
+    // minCount: 1,
     defaultValue: [
       {
         type: 'interestLibor',
@@ -321,24 +320,38 @@ export const LogicSchema = new SimpleSchema({
     type: Boolean,
     defaultValue: false,
   },
-  auctionStarted: {
-    type: Boolean,
-    defaultValue: false,
-  },
-  auctionStartTime: {
-    type: Date,
-    optional: true,
-  },
-  auctionEndTime: {
-    type: Date,
-    optional: true,
-  },
+  // auctionStarted: {
+  //   type: Boolean,
+  //   defaultValue: false,
+  // },
+  // auction.startTime: {
+  //   type: Date,
+  //   optional: true,
+  // },
+  // auctionEndTime: {
+  //   type: Date,
+  //   optional: true,
+  // },
   auction: {
     type: Object,
     defaultValue: {},
   },
+  'auction.status': {
+    type: String,
+    optional: true,
+    defaultValue: '',
+    allowedValues: ['', 'started', 'ended'],
+  },
+  'auction.startTime': {
+    type: Date,
+    optional: true,
+  },
+  'auction.endTime': {
+    type: Date,
+    optional: true,
+  },
   'auction.mostImportant': {
-    type: 'string',
+    type: String,
     optional: true,
   },
   hasValidatedStructure: {

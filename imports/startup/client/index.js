@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import '/imports/api/api';
+import '/imports/api/api.js';
 import '../accounts-config';
 import '../meteor-slingshot';
 

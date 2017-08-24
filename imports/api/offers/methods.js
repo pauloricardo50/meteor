@@ -1,15 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import LoanRequests from '../loanrequests/loanrequests';
-import rateLimit from '/imports/js/helpers/rate-limit.js';
 import { Roles } from 'meteor/alanning:roles';
 import { check, Match } from 'meteor/check';
+import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
+import rateLimit from '/imports/js/helpers/rate-limit.js';
 
 import Offers from './offers';
 
 // Insert a new offer
 export const insertOffer = new ValidatedMethod({
   name: 'offers.insert',
+  mixins: [CallPromiseMixin],
   validate({ object, userId }) {
     check(object, Object);
     check(userId, Match.Optional(String));
@@ -28,12 +30,12 @@ export const insertOffer = new ValidatedMethod({
       );
     }
 
-    const request = LoanRequests.findOne({ _id: object.requestId });
+    const request = LoanRequests.findOne(object.requestId);
 
     object.userId = userId || Meteor.userId();
     object.organization = user.profile.organization;
     object.canton = user.profile.cantons[0];
-    object.auctionEndTime = request.logic.auctionEndTime;
+    object.auctionEndTime = request.logic.auction.endTime;
 
     return Offers.insert(object);
   },
@@ -41,6 +43,7 @@ export const insertOffer = new ValidatedMethod({
 
 export const insertAdminOffer = new ValidatedMethod({
   name: 'offers.insertAdmin',
+  mixins: [CallPromiseMixin],
   validate: null,
   run({ object }) {
     if (
@@ -52,11 +55,11 @@ export const insertAdminOffer = new ValidatedMethod({
       return false;
     }
 
-    const request = LoanRequests.findOne({ _id: object.requestId });
+    const request = LoanRequests.findOne(object.requestId);
 
     object.userId = Meteor.userId();
     object.isAdmin = true;
-    object.auctionEndTime = request.logic.auctionEndTime; // this doesn't update when the request is ended prematurely by an admin
+    object.auctionEndTime = request.logic.auction.endTime; // this doesn't update when the request is ended prematurely by an admin
     object.canton = 'GE';
 
     return Offers.insert(object);
@@ -65,6 +68,7 @@ export const insertAdminOffer = new ValidatedMethod({
 
 export const updateOffer = new ValidatedMethod({
   name: 'offers.update',
+  mixins: [CallPromiseMixin],
   validate({ id, object }) {
     check(id, String);
     check(object, Object);
@@ -76,6 +80,7 @@ export const updateOffer = new ValidatedMethod({
 
 export const insertFakeOffer = new ValidatedMethod({
   name: 'offers.insertFake',
+  mixins: [CallPromiseMixin],
   validate: null,
   run({ object }) {
     return Offers.insert({ ...object, userId: Meteor.userId() });
@@ -84,6 +89,7 @@ export const insertFakeOffer = new ValidatedMethod({
 
 export const deleteOffer = new ValidatedMethod({
   name: 'offers.delete',
+  mixins: [CallPromiseMixin],
   validate() {},
   run({ id }) {
     if (

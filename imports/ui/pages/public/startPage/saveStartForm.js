@@ -53,31 +53,18 @@ const saveStartForm = (f, history) => {
       propertyWork: f.propertyWork || 0,
       investmentRent: f.propertyRent,
     },
+    borrowers: [],
   };
 
-  const insertRequest = (id1, id2 = false) => {
-    loanRequest.borrowers = [id1];
-    if (id2) {
-      loanRequest.borrowers.push(id2);
-    }
-    cleanMethod('insertRequest', loanRequest, undefined, (err, requestId) =>
+  cleanMethod('insertBorrower', borrowerOne)
+    .then(id1 => loanRequest.borrowers.push(id1))
+    .then(() => !!multiple && cleanMethod('insertBorrower', borrowerTwo))
+    .then(id2 => !!id2 && loanRequest.borrowers.push(id2))
+    .then(() => cleanMethod('insertRequest', loanRequest))
+    .then(requestId =>
       // history.push(`/app/requests/${requestId}`),
       history.push('/app'),
     );
-  };
-
-  // Insert each document
-  cleanMethod('insertBorrower', borrowerOne, undefined, (err1, result1) => {
-    if (multiple) {
-      // borrowerTwo.sameAddress = result1; TODO: use this to identify which
-      // borrower has the same address as whom
-      cleanMethod('insertBorrower', borrowerTwo, undefined, (err2, result2) =>
-        insertRequest(result1, result2),
-      );
-    } else {
-      insertRequest(result1);
-    }
-  });
 };
 
 export default saveStartForm;

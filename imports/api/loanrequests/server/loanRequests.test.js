@@ -70,7 +70,7 @@ describe('loanRequests', () => {
           const id = request._id;
           const object = { 'general.fortuneUsed': 300000 };
           updateRequest.call({ object, id });
-          const modifiedRequest = LoanRequests.findOne({ _id: id });
+          const modifiedRequest = LoanRequests.findOne(id);
 
           expect(modifiedRequest.general.fortuneUsed).to.equal(300000);
         });
@@ -81,7 +81,7 @@ describe('loanRequests', () => {
           const id = request._id;
           const object = { 'general.partnersToAvoid': 'Jack' };
           pushRequestValue.call({ object, id });
-          const modifiedRequest = LoanRequests.findOne({ _id: id });
+          const modifiedRequest = LoanRequests.findOne(id);
           const length = request.general.partnersToAvoid.length;
 
           expect(modifiedRequest.general.partnersToAvoid.length).to.equal(
@@ -95,7 +95,7 @@ describe('loanRequests', () => {
           const id = request._id;
           const object = { 'general.partnersToAvoid': 1 };
           popRequestValue.call({ object, id });
-          const modifiedRequest = LoanRequests.findOne({ _id: id });
+          const modifiedRequest = LoanRequests.findOne(id);
           const length = request.general.partnersToAvoid.length;
 
           expect(modifiedRequest.general.partnersToAvoid.length).to.equal(
@@ -106,23 +106,25 @@ describe('loanRequests', () => {
 
       describe('startAuction', () => {
         if (Meteor.isServer) {
-          it('Should work', () => {
+          it('Should work', (done) => {
             const id = request._id;
 
-            expect(!!request.logic.auctionStarted).to.equal(false);
-            expect(request.logic.auctionStartTime).to.equal(undefined);
+            expect(!!request.logic.auction.status).to.equal(false);
+            expect(request.logic.auction.startTime).to.equal(undefined);
 
-            startAuction.call({ id, object: {} });
-            const modifiedRequest = LoanRequests.findOne({ _id: id });
+            startAuction
+              .callPromise({ id, object: {} })
+              .then(() => {
+                const modifiedRequest = LoanRequests.findOne(id);
 
-            expect(modifiedRequest.logic.auctionStarted).to.equal(true);
-            expect(modifiedRequest.logic.auctionStartTime instanceof Date).to.be
-              .true;
-
-            // Meteor.defer(() => {
-            //   expect(modifiedRequest.emails.length).to.equal(2);
-            //   done();
-            // });
+                expect(modifiedRequest.logic.auction.status).to.equal(
+                  'started',
+                );
+                expect(modifiedRequest.logic.auction.startTime instanceof Date)
+                  .to.be.true;
+                done();
+              })
+              .catch(done);
           });
         }
       });
@@ -136,7 +138,7 @@ describe('loanRequests', () => {
       //   it('Should set requested to true and add a time', (done) => {
       //     const id = request._id;
       //     requestVerification.call({ id }, () => {
-      //       const modifiedRequest = LoanRequests.findOne({ _id: id });
+      //       const modifiedRequest = LoanRequests.findOne(id));
       //
       //       expect(modifiedRequest.logic.verification.requested).to.equal(true);
       //       expect(modifiedRequest.logic.verification.requestedTime).to.exist;
@@ -147,21 +149,14 @@ describe('loanRequests', () => {
 
       describe('deleteRequest', () => {
         if (Meteor.isClient) {
-          it('Should work if user is a developer', (done) => {
-            const devRequest = Factory.create('loanRequestDev');
+          it('Should work if user is a developer', () => {
+            const id = Factory.create('loanRequestDev')._id;
 
-            Meteor.userId = () => devRequest.userId;
+            deleteRequest.call({ id });
 
-            const id = devRequest._id;
-            deleteRequest.call({ id }, () => {
-              const modifiedRequest = LoanRequests.findOne({ _id: id });
+            const modifiedRequest = LoanRequests.findOne(id);
 
-              expect(modifiedRequest).to.not.exist;
-
-              // Reset the userId function to its default value
-              Meteor.userId = () => Accounts.userId;
-              done();
-            });
+            expect(modifiedRequest).to.not.exist;
           });
         }
 
@@ -188,7 +183,7 @@ describe('loanRequests', () => {
           expect(request.emails.length).to.equal(0);
 
           addEmail.call(email, () => {
-            const modifiedRequest = LoanRequests.findOne({ _id: id });
+            const modifiedRequest = LoanRequests.findOne(id);
 
             expect(modifiedRequest.emails.length).to.equal(1);
             expect(modifiedRequest.emails[0].emailId).to.equal(email.emailId);
@@ -213,7 +208,7 @@ describe('loanRequests', () => {
           };
 
           addEmail.call(email, () => {
-            const modifiedRequest = LoanRequests.findOne({ _id: id });
+            const modifiedRequest = LoanRequests.findOne(id);
 
             expect(modifiedRequest.emails[0].scheduledAt.getTime()).to.equal(
               date.getTime(),
@@ -245,7 +240,7 @@ describe('loanRequests', () => {
           addEmail.call(email, () => {
             addEmail.call({ ...email, _id: 'testId2' }, () => {
               modifyEmail.call(modification, () => {
-                const modifiedRequest = LoanRequests.findOne({ _id: id });
+                const modifiedRequest = LoanRequests.findOne(id);
 
                 expect(Object.keys(modifiedRequest.emails[0]).length).to.equal(
                   4,

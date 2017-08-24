@@ -60,23 +60,9 @@ const methods = {
   setPropertyField,
 };
 
-// The callback passed to all methods, shows a Bert error when it happens
-const methodCallback = (error, result, callback, bertObject) => {
-  let callbackResult;
-  if (typeof callback === 'function') {
-    callbackResult = callback(error, result);
-  }
-
-  if (error) {
-    Bert.defaults.hideDelay = 7500;
-    Bert.alert({
-      title: 'Misère, une erreur!',
-      message: `<h3 class="bert">${error.message}</h3>`,
-      type: 'danger',
-      style: 'fixed-top',
-    });
-    console.log(error);
-  } else if (bertObject) {
+// Passed to all methods, shows a Bert error when it happens
+const handleResult = (result, bertObject) => {
+  if (bertObject) {
     if (bertObject.delay) {
       Bert.defaults.hideDelay = bertObject.delay;
     }
@@ -89,15 +75,30 @@ const methodCallback = (error, result, callback, bertObject) => {
     });
   }
 
-  return callbackResult || result;
+  return result;
+};
+
+// Passed to all methods, shows a bert alert
+const handleError = (error) => {
+  Bert.defaults.hideDelay = 7500;
+  Bert.alert({
+    title: 'Misère, une erreur!',
+    message: `<h3 class="bert">${error.message}</h3>`,
+    type: 'danger',
+    style: 'fixed-top',
+  });
+  console.log(error);
+
+  return error;
 };
 
 // A wrapper method that displays an error if it occurs
-const cleanMethod = (name, object, id, callback, bertObject) => {
+const cleanMethod = (name, object, id, bertObject) => {
   if (methods[name]) {
-    return methods[name].call({ object, id }, (e, r) =>
-      methodCallback(e, r, callback, bertObject),
-    );
+    return methods[name]
+      .callPromise({ object, id })
+      .then(result => handleResult(result, bertObject))
+      .catch(handleError);
   }
   throw new Meteor.Error('Not a valid clean method');
 };

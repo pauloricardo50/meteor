@@ -6,7 +6,7 @@ import Button from '/imports/ui/components/general/Button.jsx';
 import { fakeProperty } from '/imports/api/loanrequests/fakes';
 
 const MergeRecursive = (obj1, obj2) => {
-  for (var p in obj2) {
+  for (const p in obj2) {
     try {
       // Property in destination object set; update its value.
       if (obj2[p].constructor == Object) {
@@ -23,23 +23,20 @@ const MergeRecursive = (obj1, obj2) => {
   return obj1;
 };
 
-const handleCheat = props => {
+const handleCheat = (props) => {
   const object = { property: fakeProperty };
 
   const finalObject = MergeRecursive(object, props.loanRequest);
 
-  cleanMethod('updateRequest', finalObject, props.loanRequest._id, () =>
+  cleanMethod('updateRequest', finalObject, props.loanRequest._id).then(() =>
     location.reload(),
   );
 };
 
-const FakePropertyCompleter = props => {
-  return (
-    <div className="text-center" style={{ margin: '20px 0' }}>
-      <Button raised label="Tricher" onTouchTap={() => handleCheat(props)} />
-    </div>
-  );
-};
+const FakePropertyCompleter = props =>
+  (<div className="text-center" style={{ margin: '20px 0' }}>
+    <Button raised label="Tricher" onTouchTap={() => handleCheat(props)} />
+  </div>);
 
 FakePropertyCompleter.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,

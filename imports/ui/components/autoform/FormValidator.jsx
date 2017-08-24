@@ -24,25 +24,25 @@ const styles = {
   },
 };
 
-export default class FormValidator extends Component {
-  render() {
-    if (!this.props.admin) {
-      return null;
-    }
-
-    const checked = !!get(this.props.doc.adminValidation, this.props.id);
-    return (
-      <div style={styles.div}>
-        <div style={styles.wrapper}>
-          <Checkbox
-            label={checked ? 'Validé' : 'Valider'}
-            checked={checked}
-            onCheck={(e, c) => handleCheck(this.props, c)}
-          />
-        </div>
-      </div>
-    );
+const FormValidator = (props) => {
+  if (!props.admin) {
+    return null;
   }
-}
+
+  const checked = !!get(props.doc.adminValidation, props.id);
+  return (
+    <div style={styles.div}>
+      <div style={styles.wrapper}>
+        <Checkbox
+          label={checked ? 'Validé' : 'Valider'}
+          checked={checked}
+          onCheck={(e, c) => handleCheck(props, c)}
+        />
+      </div>
+    </div>
+  );
+};
 
 FormValidator.propTypes = {};
+
+export default FormValidator;

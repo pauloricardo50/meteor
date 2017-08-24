@@ -369,22 +369,30 @@ div.strategy-choices
     display: flex;
     flex-direction: column;
     margin-bottom: 16px;
-    padding: 16px;
     box-sizing: content-box;
     &:hover
       border: solid 1px brand-primary;
-      cursor: pointer;
     &.chosen
       border: solid 2px brand-primary;
-    .top
+    .content
+      padding: 16px;
       display: flex;
-      justify-content: flex-start;
-      margin-bottom: 8px;
-      .title
-        margin: 0;
-      .recommended
-        background-color: brand-color;
-        color: white;
+      flex-direction: column;
+      &:hover
+        cursor: pointer;
+      .top
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 8px;
+        align-items: center;
+        .title
+          margin: 0;
+        .recommended
+          background-color: brand-primary;
+          color: white;
+          margin-left: 8px;
+          border-radius: 4px;
+          padding: 2px 4px;
 
 
 
@@ -1418,3 +1426,25 @@ ul.compare-column
   margin: 32px 0;
   font-size: 1.25em;
   line-height: 1.5em;
+
+.tranche-picker
+  display: flex;
+  padding: 16px;
+  flex-direction: column;
+  .picker-content
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    .selector
+      display: flex;
+      flex-direction: column;
+      .tranche-count
+        display: flex;
+        align-items: center;
+  .buttons
+    display: flex;
+    justify-content: center;
