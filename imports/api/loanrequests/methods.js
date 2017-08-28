@@ -15,7 +15,7 @@ import {
 import LoanRequests from './loanrequests';
 
 const importServerMethods = () => {
-  if (!this.isSimulation) {
+  if (Meteor.isServer || (!!this && !this.isSimulation)) {
     const { scheduleMethod } = require('/imports/api/server/jobs/methods');
     const {
       sendEmail,
@@ -117,12 +117,7 @@ export const startAuction = new ValidatedMethod({
     };
 
     if (Meteor.isServer) {
-      const {
-        scheduleMethod,
-        sendEmail,
-        cancelScheduledEmail,
-        rescheduleEmail,
-      } = importServerMethods();
+      const { scheduleMethod, sendEmail } = importServerMethods();
 
       LoanRequests.update(id, { $set: auctionObject });
       return insertAdminAction
