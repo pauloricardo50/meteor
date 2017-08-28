@@ -46,7 +46,7 @@ describe('Offers', () => {
           if (err) {
             done(err);
           }
-          const offer = Offers.findOne({ _id: result });
+          const offer = Offers.findOne(result);
           expect(typeof offer).to.equal('object');
           expect(offer.userId).to.equal(object.userId);
           done();
@@ -56,7 +56,7 @@ describe('Offers', () => {
       it('reads from the user and the request when inserting', () => {
         const date = new Date();
         const request = Factory.create('loanRequest', {
-          logic: { auctionEndTime: date },
+          logic: { auction: { endTime: date } },
         });
         user = Factory.create('partner', {
           profile: { organization: 'testOrganization', cantons: ['ZH'] },

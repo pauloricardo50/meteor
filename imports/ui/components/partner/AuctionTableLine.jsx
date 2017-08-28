@@ -12,7 +12,7 @@ const offerExists = props =>
   props.offers.some(offer => props.auction._id === offer.requestId);
 
 const AuctionTableLine = props =>
-  <tr>
+  (<tr>
     <td className="left-align">
       <Countdown endTime={props.auction.auctionEndTime} />
     </td>
@@ -23,13 +23,14 @@ const AuctionTableLine = props =>
       {`CHF ${toMoney(props.auction.value)}`}
     </td>
     <td className="right-align">
-      <Button raised
+      <Button
+        raised
         label={offerExists(props) ? 'Modifier mon offre' : 'Faire une offre'}
         primary={!!offerExists(props)}
         containerElement={<Link to={`/partner/${props.auction._id}`} />}
       />
     </td>
-  </tr>;
+  </tr>);
 
 AuctionTableLine.propTypes = {
   auction: PropTypes.objectOf(PropTypes.any).isRequired,

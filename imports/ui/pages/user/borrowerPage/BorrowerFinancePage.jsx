@@ -44,12 +44,12 @@ const handleClick = (event, id, props) => {
   const object = {};
   object['logic.hasValidatedFinances'] = true;
 
-  cleanMethod('updateBorrower', object, id, () => {
-    track('validated finances', {});
-  });
+  cleanMethod('updateBorrower', object, id).then(() =>
+    track('validated finances', {}),
+  );
 };
 
-const BorrowerFinancePage = props => {
+const BorrowerFinancePage = (props) => {
   const borrowerId = props.match.params.borrowerId;
   const borrower = props.borrowers.find(b => b._id === borrowerId);
   return (
@@ -64,7 +64,11 @@ const BorrowerFinancePage = props => {
           </small>}
       </h2>
 
-      <div className="description"><p><T id="Finance.description" /></p></div>
+      <div className="description">
+        <p>
+          <T id="Finance.description" />
+        </p>
+      </div>
 
       <div
         style={{
@@ -74,7 +78,12 @@ const BorrowerFinancePage = props => {
           margin: '0 20px',
         }}
       >
-        <h3><T id="Finance.recapTitle" values={{ currency: constants.getCurrency() }} /></h3>
+        <h3>
+          <T
+            id="Finance.recapTitle"
+            values={{ currency: constants.getCurrency() }}
+          />
+        </h3>
         <Recap arrayName="borrower" borrower={borrower} />
       </div>
 
@@ -95,7 +104,11 @@ const BorrowerFinancePage = props => {
         />
       </div>
 
-      <div className="description"><p><T id="Forms.mandatory" /></p></div>
+      <div className="description">
+        <p>
+          <T id="Forms.mandatory" />
+        </p>
+      </div>
 
       <AutoForm
         inputs={getBorrowerFinanceArray(props.borrowers, borrowerId)}

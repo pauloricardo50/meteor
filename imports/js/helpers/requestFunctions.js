@@ -289,3 +289,27 @@ export const getMaintenance = (loanRequest) => {
   }
   throw new Error('invalid loanRequest');
 };
+
+export const strategyDone = (loanRequest) => {
+  const { general, logic } = loanRequest;
+  if (general.insuranceFortuneUsed > 0 && !logic.insuranceUsePreset) {
+    return false;
+  }
+
+  if (!logic.amortizationStrategyPreset) {
+    return false;
+  }
+
+  if (!logic.loanStrategyPreset) {
+    return false;
+  }
+
+  if (
+    logic.loanStrategyPreset === 'manual' &&
+    !loanStrategySuccess(general.loanTranches, getLoanValue(loanRequest))
+  ) {
+    return false;
+  }
+
+  return true;
+};

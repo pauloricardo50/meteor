@@ -45,7 +45,7 @@ const handleDelete = (props, fileToDelete) => {
 const getUploadedFiles = ({ currentValue }, myDropzone) => {
   // https://github.com/enyo/dropzone/wiki/FAQ#how-to-show-files-already-stored-on-server
   if (currentValue) {
-    currentValue.forEach(file => {
+    currentValue.forEach((file) => {
       myDropzone.emit('addedfile', file);
       myDropzone.emit('complete', file);
     });
@@ -116,14 +116,14 @@ const eventHandlers = props => ({
     });
   },
   sending(file, xhr, formData) {
-    file.postData.forEach(field => {
+    file.postData.forEach((field) => {
       formData.append(field.name, field.value);
     });
   },
 });
 
 const DropzoneInput = props =>
-  <div>
+  (<div>
     {props.label &&
       <h3 htmlFor={props.id}>
         {props.label}
@@ -134,7 +134,7 @@ const DropzoneInput = props =>
       eventHandlers={eventHandlers(props)}
       djsConfig={djsConfig(props)}
     />
-  </div>;
+  </div>);
 
 DropzoneInput.propTypes = {
   id: PropTypes.string.isRequired,

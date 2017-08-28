@@ -49,6 +49,7 @@ export const logic2 = {
     validated: true,
     comments: [],
   },
+  auction: {},
 };
 
 export const logic3 = {
@@ -58,9 +59,13 @@ export const logic3 = {
     validated: true,
     comments: [],
   },
-  auctionStarted: true,
-  auctionStartTime: new Date(),
-  auctionEndTime: new Date(),
+  // auctionStarted: true,
+  auction: {
+    status: 'ended',
+    startTime: new Date(),
+    endTime: new Date(),
+  },
+  // auctionEndTime: new Date(),
   hasValidatedStructure: true,
   insuranceUsePreset: 'withdrawal',
   loanStrategyPreset: 'fixed',

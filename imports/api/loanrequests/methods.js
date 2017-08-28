@@ -4,6 +4,7 @@ import { check, Match } from 'meteor/check';
 import moment from 'moment';
 import { Roles } from 'meteor/alanning:roles';
 import rateLimit from '/imports/js/helpers/rate-limit.js';
+import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
 
 import {
   insertAdminAction,
@@ -13,8 +14,27 @@ import {
 
 import LoanRequests from './loanrequests';
 
+const importServerMethods = () => {
+  if (Meteor.isServer || (!!this && !this.isSimulation)) {
+    const { scheduleMethod } = require('/imports/api/server/jobs/methods');
+    const {
+      sendEmail,
+      cancelScheduledEmail,
+      rescheduleEmail,
+    } = require('/imports/js/server/email/email-methods');
+
+    return {
+      scheduleMethod,
+      sendEmail,
+      cancelScheduledEmail,
+      rescheduleEmail,
+    };
+  }
+};
+
 export const insertRequest = new ValidatedMethod({
   name: 'loanrequests.insert',
+  mixins: [CallPromiseMixin],
   validate() {},
   run({ object, userId }) {
     const requestCount = LoanRequests.find({ userId: Meteor.userId() }).count();
@@ -36,6 +56,7 @@ export const insertRequest = new ValidatedMethod({
 
 export const testInsert = new ValidatedMethod({
   name: 'testInsert',
+  mixins: [CallPromiseMixin],
   validate: null,
   run({ userId, object }) {
     return LoanRequests.insert({ ...object, userId });
@@ -45,6 +66,7 @@ export const testInsert = new ValidatedMethod({
 // Lets you set an entire object in the document
 export const updateRequest = new ValidatedMethod({
   name: 'loanRequests.update',
+  mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
   },
@@ -56,11 +78,12 @@ export const updateRequest = new ValidatedMethod({
 // Increments the step of the request, if conditions are true
 export const incrementStep = new ValidatedMethod({
   name: 'loanRequests.incrementStep',
+  mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
   },
   run({ id }) {
-    const loanRequest = LoanRequests.findOne({ _id: id });
+    const loanRequest = LoanRequests.findOne(id);
     const currentStep = loanRequest.logic.step;
 
     // TODO: make sure step is really done
@@ -71,15 +94,13 @@ export const incrementStep = new ValidatedMethod({
 
 export const startAuction = new ValidatedMethod({
   name: 'loanRequests.startAuction',
+  mixins: [CallPromiseMixin],
   validate({ id, object }) {
     check(id, String);
     check(object, Match.Optional(Object));
   },
   run({ object, id }) {
-    const auctionObject = {};
     let auctionEndTime;
-    auctionObject['logic.auctionStarted'] = true;
-    auctionObject['logic.auctionStartTime'] = moment().toDate();
 
     // object parameter only contains the isDemo value
     if (object.isDemo) {
@@ -89,36 +110,41 @@ export const startAuction = new ValidatedMethod({
       auctionEndTime = getAuctionEndTime(moment());
     }
 
-    auctionObject['logic.auctionEndTime'] = auctionEndTime;
+    const auctionObject = {
+      'logic.auction.status': 'started',
+      'logic.auction.startTime': moment().toDate(),
+      'logic.auction.endTime': auctionEndTime,
+    };
 
-    // TODO: This can fuck up if the update goes through but the insertAdminAction fails
-    // same for the requestVerification method
-    return LoanRequests.update(id, { $set: auctionObject }, (error1, res1) => {
-      if (!error1) {
-        insertAdminAction.call(
-          { requestId: id, type: 'auction', extra: { auctionEndTime } },
-          (error2, res2) => {
-            // A stub of this method could be called, but it shouldn't try to
-            // send emails, which is why isServer is checked
-            if (!error2 && Meteor.isServer) {
-              // Send email
-              Meteor.call('email.send', {
-                emailId: 'auctionStarted',
-                requestId: id,
-                intlValues: { date: auctionEndTime },
-              });
-              // Schedule email
-              Meteor.call('email.send', {
-                emailId: 'auctionEnded',
-                requestId: id,
-                sendAt: auctionEndTime,
-                template: 'notification+CTA',
-              });
-            }
-          },
-        );
-      }
-    });
+    if (Meteor.isServer) {
+      const { scheduleMethod, sendEmail } = importServerMethods();
+
+      LoanRequests.update(id, { $set: auctionObject });
+      return insertAdminAction
+        .callPromise({
+          requestId: id,
+          type: 'auction',
+          extra: { auctionEndTime },
+        })
+        .then(() =>
+          sendEmail.callPromise({
+            emailId: 'auctionStarted',
+            requestId: id,
+            intlValues: { date: auctionEndTime },
+          }),
+        )
+        .then(() =>
+          scheduleMethod.callPromise({
+            method: 'loanRequests.endAuction',
+            params: [{ id }],
+            date: auctionEndTime,
+          }),
+        )
+        .then(() => 'success')
+        .catch((e) => {
+          throw e;
+        });
+    }
   },
 });
 
@@ -159,6 +185,7 @@ export const getAuctionEndTime = (startTime) => {
 // Lets you push a value to an array
 export const pushRequestValue = new ValidatedMethod({
   name: 'loanRequests.pushValue',
+  mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
   },
@@ -170,6 +197,7 @@ export const pushRequestValue = new ValidatedMethod({
 // Lets you pop a value from the end of an array
 export const popRequestValue = new ValidatedMethod({
   name: 'loanRequests.popValue',
+  mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
   },
@@ -180,11 +208,12 @@ export const popRequestValue = new ValidatedMethod({
 
 export const requestVerification = new ValidatedMethod({
   name: 'loanRequests.requestVerification',
+  mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
   },
   run({ id }) {
-    const request = LoanRequests.findOne({ _id: id });
+    const request = LoanRequests.findOne(id);
 
     if (request.logic.verification.requested) {
       // Don't do anything if this request is already in requested mode
@@ -202,8 +231,14 @@ export const requestVerification = new ValidatedMethod({
       },
       (err) => {
         if (!err && Meteor.isServer) {
-          console.log('callback');
-          Meteor.call('email.send', {
+          const {
+            scheduleMethod,
+            sendEmail,
+            cancelScheduledEmail,
+            rescheduleEmail,
+          } = importServerMethods();
+
+          sendEmail.call({
             emailId: 'verificationRequested',
             requestId: id,
           });
@@ -218,6 +253,7 @@ export const requestVerification = new ValidatedMethod({
 
 export const deleteRequest = new ValidatedMethod({
   name: 'loanRequests.delete',
+  mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
   },
@@ -237,8 +273,51 @@ export const deleteRequest = new ValidatedMethod({
   },
 });
 
+export const endAuction = new ValidatedMethod({
+  name: 'loanRequests.endAuction',
+  mixins: [CallPromiseMixin],
+  validate({ id }) {
+    check(id, String);
+  },
+  run({ id }) {
+    console.log('ending request..');
+    const request = LoanRequests.findOne(id);
+
+    // This method is called in the future, so make sure that it isn't
+    // executed again if this has already been done
+    if (!request || request.logic.auction.status === 'ended') {
+      return;
+    }
+
+    LoanRequests.update(id, {
+      $set: {
+        'logic.auction.status': 'ended',
+        'logic.auction.endTime': new Date(),
+      },
+    });
+
+    completeActionByType.call({ requestId: id, type: 'auction' });
+
+    if (Meteor.isServer) {
+      const {
+        scheduleMethod,
+        sendEmail,
+        cancelScheduledEmail,
+        rescheduleEmail,
+      } = importServerMethods();
+
+      sendEmail.call({
+        emailId: 'auctionEnded',
+        requestId: id,
+        template: 'notification+CTA',
+      });
+    }
+  },
+});
+
 export const finishAuction = new ValidatedMethod({
   name: 'loanRequests.finishAuction',
+  mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
   },
@@ -252,13 +331,20 @@ export const finishAuction = new ValidatedMethod({
         { $set: { 'logic.auctionEndTime': new Date() } },
         (error) => {
           if (!error && Meteor.isServer) {
-            const request = LoanRequests.findOne({ _id: id });
+            const {
+              scheduleMethod,
+              sendEmail,
+              cancelScheduledEmail,
+              rescheduleEmail,
+            } = importServerMethods();
+
+            const request = LoanRequests.findOne(id);
             const email = request.emails.find(
               e => e.emailId === 'auctionEnded' && e.scheduledAt >= new Date(),
             );
             if (email) {
               // Reschedule email to now
-              Meteor.call('email.reschedule', {
+              rescheduleEmail.call({
                 id: email._id,
                 requestId: id,
                 date: new Date(),
@@ -280,6 +366,7 @@ export const finishAuction = new ValidatedMethod({
 
 export const cancelAuction = new ValidatedMethod({
   name: 'loanRequests.cancelAuction',
+  mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
   },
@@ -292,14 +379,21 @@ export const cancelAuction = new ValidatedMethod({
         id,
         {
           $set: {
-            'logic.auctionEndTime': undefined,
-            'logic.auctionStarted': false,
-            'logic.auctionStartTime': undefined,
+            'logic.auction.endTime': undefined,
+            'logic.auction.status': '',
+            'logic.auction.startTime': undefined,
           },
         },
         (error) => {
           if (!error && Meteor.isServer) {
-            const request = LoanRequests.findOne({ _id: id });
+            const {
+              scheduleMethod,
+              sendEmail,
+              cancelScheduledEmail,
+              rescheduleEmail,
+            } = importServerMethods();
+
+            const request = LoanRequests.findOne(id);
             const email = request.emails.find(
               e =>
                 e &&
@@ -307,7 +401,7 @@ export const cancelAuction = new ValidatedMethod({
                 e.scheduledAt >= new Date(),
             );
             if (email) {
-              Meteor.call('email.cancelScheduled', {
+              cancelScheduledEmail.call('email.cancelScheduled', {
                 id: email._id,
                 requestId: id,
               });
@@ -329,6 +423,7 @@ export const cancelAuction = new ValidatedMethod({
 
 export const confirmClosing = new ValidatedMethod({
   name: 'loanRequests.confirmClosing',
+  mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
   },
@@ -350,6 +445,7 @@ export const confirmClosing = new ValidatedMethod({
 
 export const addEmail = new ValidatedMethod({
   name: 'loanRequests.addEmail',
+  mixins: [CallPromiseMixin],
   validate({ requestId, emailId, _id, status, sendAt }) {
     check(requestId, String);
     check(emailId, String);
@@ -370,6 +466,7 @@ export const addEmail = new ValidatedMethod({
 
 export const modifyEmail = new ValidatedMethod({
   name: 'loanRequests.modifyEmail',
+  mixins: [CallPromiseMixin],
   validate({ requestId, _id, status, sendAt }) {
     check(requestId, String);
     check(_id, String);

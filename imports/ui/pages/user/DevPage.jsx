@@ -19,44 +19,68 @@ import { deleteBorrower } from '/imports/api/borrowers/methods';
 import { deleteOffer, insertAdminOffer } from '/imports/api/offers/methods';
 
 const addStep1Request = () => {
-  cleanMethod('insertBorrower', completeFakeBorrower, null, (err, res) => {
+  cleanMethod('insertBorrower', completeFakeBorrower).then((res) => {
     const request = requestStep1;
     request.borrowers = [res];
-    cleanMethod('insertRequest', request, null);
+    cleanMethod('insertRequest', request);
   });
 };
 
 const addStep2Request = () => {
-  cleanMethod('insertBorrower', completeFakeBorrower, null, (err, res) => {
+  cleanMethod('insertBorrower', completeFakeBorrower).then((res) => {
     const request = requestStep2;
     request.borrowers = [res];
-    cleanMethod('insertRequest', request, null);
+    cleanMethod('insertRequest', request);
   });
 };
 
 const addStep3Request = (completeFiles = true) => {
-  cleanMethod('insertBorrower', completeFakeBorrower, null, (err, res) => {
-    const request = requestStep3(completeFiles);
-    request.borrowers = [res];
-    cleanMethod('insertRequest', request, null, (error, result) => {
-      const object = getRandomOffer({ ...request, _id: result }, true);
-      insertAdminOffer.call({ object }, (err2, res2) => {
-        updateRequest.call(
-          {
-            object: {
-              'logic.lender.offerId': res2,
-              'logic.lender.chosenTime': new Date(),
-            },
-            id: result,
-          },
-          () => {
-            // Weird bug with offer publications that forces me to reload TODO: fix it
-            location.reload();
-          },
-        );
-      });
-    });
-  });
+  const request = requestStep3(completeFiles);
+  let requestId;
+  cleanMethod('insertBorrower', completeFakeBorrower)
+    .then((res) => {
+      request.borrowers = [res];
+    })
+    .then(() => cleanMethod('insertRequest', request))
+    .then((id) => {
+      requestId = id;
+      const object = getRandomOffer({ ...request, _id: requestId }, true);
+      return insertAdminOffer.callPromise({ object });
+    })
+    .then(offerId =>
+      updateRequest.callPromise({
+        object: {
+          'logic.lender.offerId': offerId,
+          'logic.lender.chosenTime': new Date(),
+        },
+        id: requestId,
+      }),
+    )
+    .then(() => {
+      // Weird bug with offer publications that forces me to reload TODO: fix it
+      location.reload();
+    })
+    .catch(console.log);
+
+  //   cleanMethod('insertRequest', request, null, (error, result) => {
+  //     const object = getRandomOffer({ ...request, _id: result }, true);
+  //     insertAdminOffer.call({ object }, (err2, res2) => {
+  //       updateRequest.call(
+  //         {
+  //           object: {
+  //             'logic.lender.offerId': res2,
+  //             'logic.lender.chosenTime': new Date(),
+  //           },
+  //           id: result,
+  //         },
+  //         () => {
+  //           // Weird bug with offer publications that forces me to reload TODO: fix it
+  //           location.reload();
+  //         },
+  //       );
+  //     });
+  //   });
+  // });
 };
 
 const purge = (props) => {

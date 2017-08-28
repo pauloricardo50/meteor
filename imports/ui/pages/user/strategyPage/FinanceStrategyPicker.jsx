@@ -36,7 +36,7 @@ const getRemainingTypes = (props, ignoredValue) => {
   ];
 
   // Filter out existing values, for each remove the string if there is a match
-  props.loanTranches.forEach(t => {
+  props.loanTranches.forEach((t) => {
     // If the value is different from the one we're currently running this from
     if (t.type !== ignoredValue) {
       const index = initialChoices.indexOf(t.type);
@@ -49,18 +49,18 @@ const getRemainingTypes = (props, ignoredValue) => {
   return initialChoices;
 };
 
-const getMoneyLeft = props => {
+const getMoneyLeft = (props) => {
   let loan = getLoanValue(props.loanRequest);
 
   // Substract the values of each tranche
-  props.loanTranches.forEach(tranche => {
+  props.loanTranches.forEach((tranche) => {
     loan -= tranche.value;
   });
 
   return loan;
 };
 
-const addTranche = props => {
+const addTranche = (props) => {
   const newTranche = {
     type: getRemainingTypes(props)[0],
     value: getMoneyLeft(props) > 100000 ? 100000 : getMoneyLeft(props),
@@ -92,15 +92,13 @@ const decrementTranche = (props, event, i) => {
 
   if (tranches[i].value > 110000) {
     // Remove 10'000, or the remaining value until the next 10'000
-    tranches[i].value -= tranches[i].value % 10000 === 0
-      ? 10000
-      : tranches[i].value % 10000;
+    tranches[i].value -=
+      tranches[i].value % 10000 === 0 ? 10000 : tranches[i].value % 10000;
   } else if (tranches[i].type === 'interestLibor') {
     // If this is the libor tranche, reduce it until it's 10'000, below that, set it to 0
     if (tranches[i].value > 10000) {
-      tranches[i].value -= tranches[i].value % 10000 === 0
-        ? 10000
-        : tranches[i].value % 10000;
+      tranches[i].value -=
+        tranches[i].value % 10000 === 0 ? 10000 : tranches[i].value % 10000;
     } else {
       tranches[i].value = 0;
     }
@@ -118,7 +116,7 @@ const changeTrancheType = (props, i, newType) => {
   props.setFormState('loanTranches', tranches);
 };
 
-const FinanceStrategyPicker = props => {
+const FinanceStrategyPicker = (props) => {
   const loan = getLoanValue(props.loanRequest);
   const moneyLeft = getMoneyLeft(props);
   const tranchesArray = [];
@@ -143,7 +141,6 @@ const FinanceStrategyPicker = props => {
 
   return (
     <article>
-
       {props.manual &&
         <div>
           <h4>
@@ -171,13 +168,11 @@ const FinanceStrategyPicker = props => {
 
           <div className="text-center">
             <h3>
-              Je veux diviser mon prêt en
-              {' '}
-              {props.loanTranches.length}
-              {' '}
+              Je veux diviser mon prêt en {props.loanTranches.length}{' '}
               tranche(s).
             </h3>
-            <Button raised
+            <Button
+              raised
               label="Ajouter une Tranche"
               onTouchTap={() => addTranche(props)}
               primary
@@ -193,7 +188,6 @@ const FinanceStrategyPicker = props => {
         </div>}
 
       {tranchesArray}
-
     </article>
   );
 };

@@ -20,11 +20,22 @@ export default class GoogleMap extends Component {
     this.addMarker();
   }
 
+  componentWillUnmount() {
+    if (GoogleMaps.maps[this.name]) {
+      window.google.maps.event.clearInstanceListeners(
+        GoogleMaps.maps[this.name].instance,
+      );
+      delete GoogleMaps.maps[this.name];
+    }
+  }
+
   addMarker = () => {
     GoogleMaps.ready(this.name, (map) => {
       const infowindow = new window.google.maps.InfoWindow({
         content: this.props.address,
       });
+
+      map.instance.setCenter(this.props.latlng);
 
       const marker = new window.google.maps.Marker({
         draggable: false,
@@ -41,15 +52,6 @@ export default class GoogleMap extends Component {
       Meteor.setTimeout(() => infowindow.open(map.instance, marker), 1000);
     });
   };
-
-  componentWillUnmount() {
-    if (GoogleMaps.maps[this.name]) {
-      window.google.maps.event.clearInstanceListeners(
-        GoogleMaps.maps[this.name].instance,
-      );
-      delete GoogleMaps.maps[this.name];
-    }
-  }
 
   render() {
     return (

@@ -62,7 +62,7 @@ export function userRequestComposer(props, onData) {
 export function userBorrowerComposer(props, onData) {
   const borrowerId = props.match.params.borrowerId;
   if (Meteor.subscribe('borrower', borrowerId).ready()) {
-    const borrower = Borrowers.findOne({ _id: borrowerId });
+    const borrower = Borrowers.findOne(borrowerId);
     onData(null, { borrower });
   }
 }

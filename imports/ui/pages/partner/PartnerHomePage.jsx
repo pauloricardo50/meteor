@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import moment from 'moment';
-import { Meteor } from 'meteor/meteor';
+import React from 'react';
 
 import CurrentAuctionsTable from '/imports/ui/components/partner/CurrentAuctionsTable.jsx';
 import PastOffersTable from '/imports/ui/components/partner/PastOffersTable.jsx';
@@ -43,80 +41,52 @@ const purchaseTypes = {
   construction: 'Contruction',
 };
 
-var time;
+const getCurrentAuctions = (loanRequests) => {
+  const auctions = [];
 
-export default class PartnerHomePage extends Component {
-  constructor(props) {
-    super(props);
+  loanRequests.forEach((request) => {
+    if (request.logic.auction.status === 'started') {
+      auctions.push({
+        auctionEndTime: request.logic.auction.endTime,
+        value: request.property.value,
+        type: purchaseTypes[request.general.purchaseType],
+        _id: request._id,
+      });
+    }
+  });
 
-    this.state = {
-      currentTime: undefined,
-    };
-  }
+  return auctions;
+};
 
-  componentDidMount() {
-    time = Meteor.setInterval(() => {
-      this.setState({ currentTime: new Date() });
-    }, 1000);
-  }
+const getPartnerLogo = () => '/partners/UBS_logo.png';
 
-  componentWillUnmount() {
-    Meteor.clearInterval(time);
-  }
+const PartnerHomePage = ({ loanRequests, currentOffers, oldOffers }) => {
+  const currentAuctions = getCurrentAuctions(loanRequests);
 
-  getCurrentAuctions = () => {
-    const auctions = [];
-    this.props.loanRequests.forEach((request, index) => {
-      // TODO replace this if with better logic, maybe server side "auctionHasEnded"
-      // TODO get server time for this comparison
-      if (
-        !request.general.selectedPartner &&
-        !(request.logic.auctionEndTime <= this.state.currentTime)
-      ) {
-        const object = {
-          auctionEndTime: request.logic.auctionEndTime,
-          value: request.property.value,
-          type: purchaseTypes[request.general.purchaseType],
-          _id: request._id,
-        };
-        auctions.push(object);
-      }
-    });
+  return (
+    <section className="mask1" style={styles.section}>
+      <div className="partner-logos">
+        <img src={getPartnerLogo()} alt="Logo Partenaire" className="partner" />
+        <img src="/img/logo_black.svg" alt="Logo e-Potek" className="epotek" />
+      </div>
 
-    return auctions;
-  };
+      {currentAuctions.length
+        ? <CurrentAuctionsTable
+          currentAuctions={currentAuctions}
+          offers={currentOffers}
+        />
+        : <div className="text-center col-xs-12" style={styles.noAuctionDiv}>
+          <h2>Aucune nouvelle offre à faire en ce moment.</h2>
+        </div>}
 
-  getPartnerLogo() {
-    return '/partners/UBS_logo.png';
-  }
+      <div className="col-xs-12">
+        <hr className="col-xs-4 col-xs-offset-4" />
+      </div>
 
-  render() {
-    return (
-      <section className="mask1" style={styles.section}>
-        <div className="partner-logos">
-          <img src={this.getPartnerLogo()} alt="Logo Partenaire" className="partner" />
-          <img src="/img/logo_black.svg" alt="Logo e-Potek" className="epotek" />
-        </div>
-
-        {this.getCurrentAuctions().length
-          ? <CurrentAuctionsTable
-            currentAuctions={this.getCurrentAuctions()}
-            offers={this.props.currentOffers}
-          />
-          : <div className="text-center col-xs-12" style={styles.noAuctionDiv}>
-            <h2>Aucune nouvelle offre à faire en ce moment.</h2>
-          </div>}
-
-        <div className="col-xs-12">
-          <hr className="col-xs-4 col-xs-offset-4" />
-        </div>
-
-        <PastOffersTable offers={this.props.oldOffers} />
-
-      </section>
-    );
-  }
-}
+      <PastOffersTable offers={oldOffers} />
+    </section>
+  );
+};
 
 PartnerHomePage.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.object),
@@ -129,3 +99,5 @@ PartnerHomePage.defaultProps = {
   currentOffers: [],
   oldOffers: [],
 };
+
+export default PartnerHomePage;

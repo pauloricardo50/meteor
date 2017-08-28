@@ -27,11 +27,9 @@ const styles = {
 const handleNextStep = ({ stepNb, loanRequest, history, nextLink }) => {
   // increment step if this is the currentstep
   if (stepNb === loanRequest.logic.step) {
-    cleanMethod('incrementStep', null, loanRequest._id, (error) => {
-      if (!error && nextLink) {
-        history.push(nextLink);
-      }
-    });
+    cleanMethod('incrementStep', null, loanRequest._id).then(
+      () => !!nextLink && history.push(nextLink),
+    );
   } else {
     history.push(nextLink);
   }

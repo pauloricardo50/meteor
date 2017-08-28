@@ -22,10 +22,7 @@ export default class VerificationPage extends Component {
         'requestVerification',
         null,
         this.props.loanRequest._id,
-        () => {
-          track('requested verification', {});
-        },
-      );
+      ).then(() => track('requested verification', {}));
     }
   };
 
@@ -70,25 +67,26 @@ export default class VerificationPage extends Component {
             {verification.comments.length > 0 &&
               verification.comments
                 .map((comment, i) =>
-                  <li key={i}>
+                  (<li key={i}>
                     <h3>
                       {i + 1}. {comment}
                     </h3>
-                  </li>,
+                  </li>),
                 )
                 .reduce((prev, curr) => [prev, <hr />, curr])}
           </ul>
           {verification.requested
             ? <div style={{ height: 150 }} className="animated fadeIn">
-                <LoadingComponent />
-              </div>
+              <LoadingComponent />
+            </div>
             : <div style={{ marginTop: 40 }}>
-                <ConfirmButton
-                  label={<T id="VerificationPage.CTA2" />}
-                  primary
-                  handleClick={this.handleClick}
-                />
-              </div>}
+              <ConfirmButton
+                raised
+                label={<T id="VerificationPage.CTA2" />}
+                primary
+                handleClick={this.handleClick}
+              />
+            </div>}
         </div>
       );
     } else {
@@ -101,31 +99,33 @@ export default class VerificationPage extends Component {
           </div>
           {verification.requested
             ? <div style={{ height: 150 }} className="animated fadeIn">
-                <LoadingComponent />
-              </div>
+              <LoadingComponent />
+            </div>
             : <div
-                className="text-center"
-                style={{
-                  margin: '40px 0',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  flexWrap: 'wrap',
-                }}
-              >
-                <Button raised
-                  label={<T id="general.cancel" />}
-                  containerElement={
-                    <Link to={`/app/requests/${this.props.loanRequest._id}`} />
-                  }
-                  style={{ marginRight: 8 }}
-                />
-                <ConfirmButton
-                  label={<T id="VerificationPage.CTA" />}
-                  primary
-                  handleClick={this.handleClick}
-                  text={<T id="VerificationPage.CTA.warning" />}
-                />
-              </div>}
+              className="text-center"
+              style={{
+                margin: '40px 0',
+                display: 'flex',
+                justifyContent: 'center',
+                flexWrap: 'wrap',
+              }}
+            >
+              <Button
+                raised
+                label={<T id="general.cancel" />}
+                containerElement={
+                  <Link to={`/app/requests/${this.props.loanRequest._id}`} />
+                }
+                style={{ marginRight: 8 }}
+              />
+              <ConfirmButton
+                raised
+                label={<T id="VerificationPage.CTA" />}
+                primary
+                handleClick={this.handleClick}
+                text={<T id="VerificationPage.CTA.warning" />}
+              />
+            </div>}
         </article>
       );
     }

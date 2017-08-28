@@ -66,10 +66,9 @@ export default class CompareColumn extends Component {
         ...readyForDB,
       },
       property._id,
-      () => {
-        // reset state
-        this.state = { editing: false };
-      },
+    ).then(() =>
+      // reset state
+      this.setState({ editing: false }),
     );
   };
 

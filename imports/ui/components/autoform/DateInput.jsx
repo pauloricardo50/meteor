@@ -40,7 +40,7 @@ class DateInput extends Component {
     this.saveValue(date);
   };
 
-  saveValue = date => {
+  saveValue = (date) => {
     // Remove time from date
     // TODO: verify this works in all timezones
     const dateWithoutTime = moment(date).format('YYYY-MM-DD');

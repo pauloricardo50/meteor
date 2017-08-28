@@ -31,7 +31,7 @@ export default class DashboardPage extends Component {
       loanRequest.status === 'done' && !loanRequest.logic.acceptedClosing;
 
     return (
-      <Page id="DashboardPage" className="joyride-dashboard">
+      <Page id="DashboardPage" className="joyride-dashboard" fullWidth>
         <DashboardContent {...this.props} smallWidth={this.state.smallWidth} />
 
         {showNewRequestModal &&

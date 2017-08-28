@@ -29,7 +29,7 @@ const styles = {
 };
 
 const ActionsTab = (props) => {
-  const { serverTime, loanRequest } = props;
+  const { loanRequest } = props;
 
   const l = loanRequest.logic;
 
@@ -53,18 +53,14 @@ const ActionsTab = (props) => {
         keyword="ANNULER"
         method={cb => cancelAuction.call({ id: loanRequest._id }, cb)}
         style={styles.button}
-        disabled={
-          !(l.auctionStarted && serverTime && serverTime < l.auctionEndTime)
-        }
+        disabled={!(l.auction.status === 'started')}
       />
       <ConfirmMethod
         label="Terminer les enchères"
         keyword="TERMINER"
         method={cb => finishAuction.call({ id: loanRequest._id }, cb)}
         style={styles.button}
-        disabled={
-          !(l.auctionStarted && serverTime && serverTime < l.auctionEndTime)
-        }
+        disabled={!(l.auction.status === 'started')}
       />
       <DialogSimple
         title="Confirmer le décaissement"

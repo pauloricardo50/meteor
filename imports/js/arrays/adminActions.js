@@ -16,7 +16,7 @@ const getActions = [
   {
     id: 'auction',
     comment: loanRequest =>
-      `Fin: ${moment(loanRequest.logic.auctionEndTime).format(
+      `Fin: ${moment(loanRequest.logic.auction.endTime).format(
         'D MMM H:mm:ss',
       )}, Offres: ${Offers.find({
         requestId: loanRequest._id,

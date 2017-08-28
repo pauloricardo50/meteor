@@ -58,13 +58,10 @@ export default class DashboardStatus extends Component {
     return nextItem && nextItem.link;
   };
 
-  handleNextStep = () => {
-    cleanMethod('incrementStep', null, this.props.loanRequest._id, error => {
-      if (!error) {
-        this.props.history.push(this.getNextLink());
-      }
-    });
-  };
+  handleNextStep = () =>
+    cleanMethod('incrementStep', null, this.props.loanRequest._id).then(() =>
+      this.props.history.push(this.getNextLink()),
+    );
 
   render() {
     const { loanRequest, borrowers } = this.props;
@@ -74,11 +71,8 @@ export default class DashboardStatus extends Component {
     const verificationRequested =
       loanRequest.logic.verification &&
       loanRequest.logic.verification.requested;
-    const auctionGoingOn =
-      !!serverTime &&
-      loanRequest.logic.auctionStarted &&
-      loanRequest.logic.auctionEndTime >
-        serverTime.setSeconds(serverTime.getSeconds() + 1);
+    const auctionGoingOn = loanRequest.logic.auction.status === 'started';
+
     const showLoading = verificationRequested || auctionGoingOn;
 
     return (
@@ -100,9 +94,13 @@ export default class DashboardStatus extends Component {
               />
             </small>}
         </h2>
-        {showLoading && <div style={{ height: 80 }}><LoadingComponent /></div>}
+        {showLoading &&
+          <div style={{ height: 80 }}>
+            <LoadingComponent />
+          </div>}
         <div className="text-center" style={styles.button}>
-          <Button raised
+          <Button
+            raised
             label={<T id="general.continue" />}
             secondary
             containerElement={nextLink ? <Link to={nextLink} /> : null}

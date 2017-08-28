@@ -3,62 +3,58 @@ import React, { Component } from 'react';
 
 import Button from '/imports/ui/components/general/Button.jsx';
 import classNames from 'classnames';
-import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
 import track from '/imports/js/helpers/analytics';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 export default class StrategyChoices extends Component {
   renderChoice(choice, index) {
     const { currentValue, name, handleChoose } = this.props;
     const chosen = currentValue === choice.id;
     const articleClasses = classNames({
-      mask1: true,
-      'text-center': true,
-      mask2: choice.isBest,
+      choice: true,
       chosen,
     });
 
     return (
       <article className={articleClasses} key={index}>
-        {choice.isBest &&
-          !currentValue &&
-          <div className="recommended animated fadeIn">
-            <div className="bold">Recommandé pour vous</div>
-          </div>}
-
-        <ul>
-          <li className={chosen ? 'title-chosen' : 'title'}>
-            <h4 className="bold fixed-size">
-              <AutoTooltip>{choice.title}</AutoTooltip>{' '}
-              {chosen && <span className="fa fa-check" />}
+        <div
+          className="content"
+          onTouchTap={() => {
+            if (chosen) {
+              handleChoose('');
+            } else {
+              track(`StrategyChoices - chose ${name}`, {
+                choiceId: choice.id,
+              });
+              handleChoose(choice.id);
+            }
+          }}
+        >
+          <div className="top">
+            <h4 className="title bold">
+              {choice.title}
             </h4>
-          </li>
-
-          {choice.reasons.map((reason, i) =>
-            (<li className="bold reason" key={i}>
-              <AutoTooltip>
-                {reason}
-              </AutoTooltip>
-            </li>),
-          )}
-        </ul>
-
-        <div className="button">
-          <Button
-            raised
-            primary={!currentValue}
-            label={chosen ? 'Annuler' : 'Choisir'}
-            onTouchTap={() => {
-              if (chosen) {
-                handleChoose('');
-              } else {
-                track(`StrategyChoices - chose ${name}`, {
-                  choiceId: choice.id,
-                });
-                handleChoose(choice.id);
-              }
-            }}
-          />
+            {choice.isBest &&
+              <div className="recommended">
+                <T id="StrategyChoices.recommended" />
+              </div>}
+          </div>
+          <div className="reasons secondary">
+            {choice.reasons
+              .map(reason =>
+                (<span key={reason.id}>
+                  {reason}
+                </span>),
+              )
+              .reduce((prev, curr) => [prev, <span> &bull; </span>, curr])}
+          </div>
         </div>
+        {chosen &&
+          !!choice.children &&
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <hr />
+            {choice.children}
+          </div>}
       </article>
     );
   }

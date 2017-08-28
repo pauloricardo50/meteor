@@ -8,7 +8,7 @@ import { injectIntl } from 'react-intl';
 import getSteps from '/imports/js/arrays/steps';
 import ProcessPageBar from './ProcessPageBar.jsx';
 
-export const getStepValues = props => {
+export const getStepValues = (props) => {
   const steps = getSteps(props);
   const stepItems = steps[props.stepNb].items;
   const currentStep = stepItems.find(i => i.id === props.id);
@@ -72,7 +72,7 @@ class ProcessPage extends Component {
     return (
       <section className="page-title">
         <ProcessPageBar {...this.barProps} className="top-bar" />
-        <div className="children animated fadeIn">
+        <div className="children animated fadeIn page">
           {this.props.children}
         </div>
       </section>

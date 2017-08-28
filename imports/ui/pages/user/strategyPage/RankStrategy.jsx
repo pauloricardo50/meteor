@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const RankStrategy = props => {
-  return <div>MyComponent</div>;
-};
+const RankStrategy = props => <div>MyComponent</div>;
 
 RankStrategy.propTypes = {};
 

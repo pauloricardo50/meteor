@@ -85,7 +85,7 @@ export default class OfferForm extends Component {
     this.setState(object);
   };
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
 
     // Prevent enter key from submitting form
@@ -126,7 +126,7 @@ export default class OfferForm extends Component {
       object.counterparts = [this.state.counterparts];
     }
 
-    cleanMethod(this.props.method, object, null, error => {
+    cleanMethod(this.props.method, object).catch((error) => {
       if (!error) {
         this.props.callback();
       }
@@ -193,7 +193,7 @@ export default class OfferForm extends Component {
           </h4>
 
           {getFormArray(0).map(field =>
-            <div className="col-xs-6 col-md-3" key={field.name}>
+            (<div className="col-xs-6 col-md-3" key={field.name}>
               <TextField
                 floatingLabelText={field.label}
                 hintText={'1%'}
@@ -207,7 +207,7 @@ export default class OfferForm extends Component {
                   value={this.state[field.name]}
                 />
               </TextField>
-            </div>,
+            </div>),
           )}
 
           <Checkbox
@@ -241,7 +241,7 @@ export default class OfferForm extends Component {
               </div>
 
               {getFormArray(1).map(field =>
-                <div className="col-xs-6 col-md-3" key={field.name}>
+                (<div className="col-xs-6 col-md-3" key={field.name}>
                   <TextField
                     floatingLabelText={field.label}
                     hintText={'1%'}
@@ -256,13 +256,14 @@ export default class OfferForm extends Component {
                       value={this.state[field.name]}
                     />
                   </TextField>
-                </div>,
+                </div>),
               )}
             </div>}
 
           <div className="col-xs-12" style={styles.buttons}>
             {this.props.handleCancel &&
-              <Button raised
+              <Button
+                raised
                 label="Annuler"
                 style={styles.button}
                 onTouchTap={this.props.handleCancel}

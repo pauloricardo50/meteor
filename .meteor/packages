@@ -46,11 +46,13 @@ jabbslad:basic-auth             # basic http auth to protect a website
 
 # Data
 mdg:validated-method            # MDG written server-side validation before storing
+didericis:callpromise-mixin
 check@1.2.5                    # variable type verification for server side validation
 session@1.1.7                  # Lets you use Session variables
 aldeed:collection2-core
 aldeed:schema-index
 edgee:slingshot
+vsivsi:job-collection
 
 
 # Internationalization

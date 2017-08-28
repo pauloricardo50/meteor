@@ -70,7 +70,7 @@ export default class TextInput extends Component {
     this.saveValue();
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     // Make sure value is a number if this is a number or money input
     const safeValue =
       this.props.number || this.props.money
@@ -102,24 +102,19 @@ export default class TextInput extends Component {
 
     Meteor.clearTimeout(this.timeout);
     this.timeout = Meteor.setTimeout(() => {
-      cleanMethod(
-        this.props.updateFunc,
-        object,
-        this.props.documentId,
-        error => {
-          this.setState({ saving: false });
-          if (!error) {
-            // on success, set saving briefly to true, before setting it to false again to trigger icon
-            this.setState(
-              { errorText: '', saving: showSaving },
-              this.setState({ saving: false }),
-            );
-          } else {
-            // If there was an error, reset value to the backend value
-            this.setState({ value: this.props.currentValue });
-          }
-        },
-      );
+      cleanMethod(this.props.updateFunc, object, this.props.documentId)
+        .then(() =>
+          // on success, set saving briefly to true, before setting it to false again to trigger icon
+          this.setState(
+            { errorText: '', saving: showSaving },
+            this.setState({ saving: false }),
+          ),
+        )
+        .catch(() => {
+          this.setState({ saving: false, value: this.props.currentValue });
+          // If there was an error, reset value to the backend value
+          this.setState({});
+        });
     }, constants.cpsLimit);
   };
 

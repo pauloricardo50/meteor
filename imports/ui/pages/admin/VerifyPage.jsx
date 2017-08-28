@@ -50,7 +50,11 @@ export default class VerifyPage extends Component {
       'logic.verification.validated': this.state.validated,
     };
 
-    cleanMethod('updateRequest', object, this.props.loanRequest._id, () => {
+    cleanMethod(
+      'updateRequest',
+      object,
+      this.props.loanRequest._id,
+    ).then(() => {
       Meteor.call('adminActions.completeActionByType', {
         requestId: this.props.loanRequest._id,
         type: 'verify',

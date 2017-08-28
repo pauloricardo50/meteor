@@ -15,6 +15,7 @@ import { toDistanceString } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
 import { getClosestStations, getNearbyPlace } from '/imports/js/helpers/APIs';
 import cleanMethod from '/imports/api/cleanMethods';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 import CompareTable from './CompareTable.jsx';
 import CompareOptions from './CompareOptions.jsx';
@@ -57,8 +58,7 @@ export default class Comparator extends Component {
         'updateComparator',
         { [key]: value },
         this.props.comparator._id,
-        callback,
-      ),
+      ).then(callback),
     200,
   );
 
@@ -67,37 +67,33 @@ export default class Comparator extends Component {
       'addComparatorField',
       { name, type },
       this.props.comparator._id,
-      () => {
-        this.hideFields(this.props);
-        if (typeof callback === 'function') {
-          callback();
-        }
-      },
-    );
+    ).then(() => {
+      this.hideFields(this.props);
+      if (typeof callback === 'function') {
+        callback();
+      }
+    });
 
   removeCustomField = fieldId =>
     cleanMethod(
       'removeComparatorField',
       { fieldId },
       this.props.comparator._id,
-      () => {
-        this.hideFields(this.props);
-      },
-    );
+    ).then(() => {
+      this.hideFields(this.props);
+    });
 
   toggleField = fieldId =>
     cleanMethod('toggleHiddenField', { fieldId }, this.props.comparator._id);
 
   addProperty = (object, callback) => {
-    cleanMethod('insertProperty', object, null, (err, result) => {
-      if (!err) {
-        if (typeof callback === 'function') {
-          callback();
-        }
-        Meteor.defer(() => {
-          this.callGoogleApi(result);
-        });
+    cleanMethod('insertProperty', object).then((result) => {
+      if (typeof callback === 'function') {
+        callback();
       }
+      Meteor.defer(() => {
+        this.callGoogleApi(result);
+      });
     });
   };
 
@@ -146,7 +142,7 @@ export default class Comparator extends Component {
   addGooglePlace = (propertyId, lat, lng, type, id, byDistance) => {
     if (window.google) {
       return getNearbyPlace(lat, lng, type, byDistance)
-        .then((result) => {
+        .then(result =>
           cleanMethod(
             'updateProperty',
             {
@@ -157,8 +153,8 @@ export default class Comparator extends Component {
               },
             },
             propertyId,
-          );
-        })
+          ),
+        )
         .catch(error => console.log(error));
     }
 
@@ -242,13 +238,17 @@ export default class Comparator extends Component {
           removeCustomField={this.removeCustomField}
           addProperty={this.addProperty}
         />
-        <CompareTable
-          comparator={comparator}
-          properties={this.modifiedProperties}
-          addCustomField={this.addCustomField}
-          fields={this.filteredFields}
-          deleteProperty={this.deleteProperty}
-        />
+        {this.modifiedProperties.length > 0
+          ? <CompareTable
+            comparator={comparator}
+            properties={this.modifiedProperties}
+            addCustomField={this.addCustomField}
+            fields={this.filteredFields}
+            deleteProperty={this.deleteProperty}
+          />
+          : <h2 className="secondary text-center">
+            <T id="Comparator.empty" />
+          </h2>}
       </section>
     );
   }

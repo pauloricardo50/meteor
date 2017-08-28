@@ -6,6 +6,7 @@ import '/imports/js/server/email/email-meteor';
 import '/imports/js/server/files';
 import '/imports/api/api';
 import '/imports/api/api-server';
+import jc from '/imports/api/server/jobs/jobs';
 import '../accounts-config';
 import './accounts-server-config';
 import './meteor-slingshot-server';
@@ -22,6 +23,8 @@ Meteor.startup(() => {
   // }
 
   setupMandrill();
+
+  jc.startJobServer();
 });
 
 // Inject a loader before client is ready, is removed in the on startup function on the client

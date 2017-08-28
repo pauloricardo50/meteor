@@ -47,17 +47,17 @@ export default class SelectFieldInput extends Component {
 
     object[this.props.id] = this.state.value;
 
-    cleanMethod(this.props.updateFunc, object, this.props.documentId, error => {
-      this.setState({ saving: false });
-
-      if (!error) {
+    cleanMethod(this.props.updateFunc, object, this.props.documentId)
+      .then(() =>
         // on success, set saving briefly to true, before setting it to false again to trigger icon
         this.setState(
           { errorText: '', saving: true },
           this.setState({ saving: false }),
-        );
-      }
-    });
+        ),
+      )
+      .catch(error =>
+        this.setState({ saving: false, errorText: error.message }),
+      );
   };
 
   render() {
@@ -75,11 +75,11 @@ export default class SelectFieldInput extends Component {
         >
           <MenuItem value={null} primaryText="" key={0} />
           {this.props.options.map((option, index) =>
-            <MenuItem
+            (<MenuItem
               value={option.id}
               primaryText={option.label}
               key={option.id}
-            />,
+            />),
           )}
         </SelectField>
         <SavingIcon

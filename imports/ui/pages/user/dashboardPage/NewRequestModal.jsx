@@ -18,35 +18,28 @@ export default class NewRequestModal extends Component {
     };
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({ value: event.target.value });
   };
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
 
     const object = { name: this.state.value };
 
-    cleanMethod(
-      'updateRequest',
-      object,
-      this.props.requestId,
-      () => {
-        this.setState({ open: false });
-      },
-      {
-        title: `C'est parti pour ${this.state.value}`,
-        message:
-          '<h4 class="bert">Vous pouvez avancer quand vous voulez, et à votre rythme. Vous trouverez toujours tout ici, à sa place.</h4>',
-        style: 'fixed-top',
-        delay: 15000,
-      },
-    );
+    cleanMethod('updateRequest', object, this.props.requestId, {
+      title: `C'est parti pour ${this.state.value}`,
+      message:
+        '<h4 class="bert">Vous pouvez avancer quand vous voulez, et à votre rythme. Vous trouverez toujours tout ici, à sa place.</h4>',
+      style: 'fixed-top',
+      delay: 15000,
+    }).then(() => this.setState({ open: false }));
   };
 
   render() {
     const button = (
-      <Button raised
+      <Button
+        raised
         label="Ok"
         primary
         disabled={!this.state.value}
@@ -56,7 +49,11 @@ export default class NewRequestModal extends Component {
 
     return (
       <Dialog
-        title={<h3><T id="NewRequestModal.title" /></h3>}
+        title={
+          <h3>
+            <T id="NewRequestModal.title" />
+          </h3>
+        }
         actions={button}
         modal
         open={this.state.open}

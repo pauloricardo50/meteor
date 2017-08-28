@@ -32,7 +32,7 @@ Meteor.publish('userOffers', () => {
 
 // Get all offers the partner has made
 Meteor.publish('partnerOffers', function publish() {
-  const user = Meteor.users.findOne({ _id: Meteor.userId() });
+  const user = Meteor.users.findOne(Meteor.userId());
 
   if (Roles.userIsInRole(Meteor.userId(), 'partner')) {
     return Offers.find({

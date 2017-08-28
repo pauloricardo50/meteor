@@ -3,12 +3,14 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { check, Match } from 'meteor/check';
 import rateLimit from '/imports/js/helpers/rate-limit.js';
 import { Roles } from 'meteor/alanning:roles';
+import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
 
 import { validateUser } from '../helpers';
 import Properties from './properties';
 
 export const insertProperty = new ValidatedMethod({
   name: 'properties.insert',
+  mixins: [CallPromiseMixin],
   validate({ object }) {
     const { value, address, latitude, longitude } = object;
     check(object, Object);
@@ -35,6 +37,7 @@ export const insertProperty = new ValidatedMethod({
 
 export const deleteProperty = new ValidatedMethod({
   name: 'properties.delete',
+  mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
     validateUser();
@@ -46,6 +49,7 @@ export const deleteProperty = new ValidatedMethod({
 
 export const updateProperty = new ValidatedMethod({
   name: 'properties.update',
+  mixins: [CallPromiseMixin],
   validate({ id, object }) {
     check(id, String);
     check(object, Object);
@@ -59,6 +63,7 @@ export const updateProperty = new ValidatedMethod({
 
 export const setPropertyField = new ValidatedMethod({
   name: 'properties.setField',
+  mixins: [CallPromiseMixin],
   validate({ id, key }) {
     check(id, String);
     check(key, String);

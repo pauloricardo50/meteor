@@ -1,14 +1,16 @@
 import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { check, Match } from 'meteor/check';
-import rateLimit from '/imports/js/helpers/rate-limit.js';
 import { Roles } from 'meteor/alanning:roles';
+import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
+import rateLimit from '/imports/js/helpers/rate-limit.js';
 
 import { validateUser } from '../helpers';
 import Comparators from './comparators';
 
 export const insertComparator = new ValidatedMethod({
   name: 'comparators.insert',
+  mixins: [CallPromiseMixin],
   validate() {
     validateUser();
   },
@@ -26,6 +28,7 @@ export const insertComparator = new ValidatedMethod({
 
 export const updateComparator = new ValidatedMethod({
   name: 'comparators.update',
+  mixins: [CallPromiseMixin],
   validate({ object, id }) {
     check(object, Object);
     check(id, String);
@@ -38,6 +41,7 @@ export const updateComparator = new ValidatedMethod({
 
 export const addComparatorField = new ValidatedMethod({
   name: 'comparators.addField',
+  mixins: [CallPromiseMixin],
   validate({ object, id }) {
     const { name, type } = object;
 
@@ -49,7 +53,7 @@ export const addComparatorField = new ValidatedMethod({
   run({ object, id }) {
     const { name, type } = object;
 
-    const comparator = Comparators.findOne({ _id: id });
+    const comparator = Comparators.findOne(id);
 
     return Comparators.update(id, {
       $inc: { customFieldCount: 1 },
@@ -66,6 +70,7 @@ export const addComparatorField = new ValidatedMethod({
 
 export const removeComparatorField = new ValidatedMethod({
   name: 'comparators.removeField',
+  mixins: [CallPromiseMixin],
   validate({ object, id }) {
     check(id, String);
     check(object, Object);
@@ -83,6 +88,7 @@ export const removeComparatorField = new ValidatedMethod({
 
 export const toggleHiddenField = new ValidatedMethod({
   name: 'comparators.toggleHiddenField',
+  mixins: [CallPromiseMixin],
   validate({ object, id }) {
     check(id, String);
     check(object, Object);
@@ -92,7 +98,7 @@ export const toggleHiddenField = new ValidatedMethod({
   run({ object, id }) {
     const { fieldId } = object;
 
-    const comparator = Comparators.findOne({ _id: id });
+    const comparator = Comparators.findOne(id);
 
     if (comparator.hiddenFields.indexOf(fieldId) >= 0) {
       // Field is currently hidden

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Motion, spring, presets } from 'react-motion';
 
+import { T } from '/imports/ui/components/general/Translation.jsx';
 import CompareColumn from './CompareColumn.jsx';
 import ColumnTransition from './ColumnTransition.jsx';
 
@@ -14,15 +15,22 @@ import ColumnTransition from './ColumnTransition.jsx';
 const getIndexForName = (properties, name) =>
   Math.max(properties.findIndex(property => property.name === name), 0);
 
-const CompareTableContent = (props) => {
-  const {
-    properties,
-    fields,
-    hovered,
-    onHoverEnter,
-    onHoverLeave,
-    deleteProperty,
-  } = props;
+const CompareTableContent = ({
+  properties,
+  fields,
+  hovered,
+  onHoverEnter,
+  onHoverLeave,
+  deleteProperty,
+}) => {
+  if (properties.length === 0) {
+    return (
+      <h2 className="secondary">
+        <T id="CompareTableContent.empty" />
+      </h2>
+    );
+  }
+
   return (
     <div>
       <ul
@@ -30,7 +38,7 @@ const CompareTableContent = (props) => {
       >
         {properties.map(property =>
           (<CompareColumn
-            key={property.name}
+            key={property._id}
             property={property}
             fields={fields}
             hovered={hovered}

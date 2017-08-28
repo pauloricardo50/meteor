@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { Roles } from 'meteor/alanning:roles';
 import { check, Match } from 'meteor/check';
+import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
 import rateLimit from '/imports/js/helpers/rate-limit.js';
 
 import AdminActions from './adminActions';
@@ -9,6 +10,7 @@ import { validateUser } from '../helpers';
 
 export const insertAdminAction = new ValidatedMethod({
   name: 'adminActions.insert',
+  mixins: [CallPromiseMixin],
   validate({ requestId, type }) {
     check(requestId, String);
     check(type, String);
@@ -31,12 +33,13 @@ export const insertAdminAction = new ValidatedMethod({
 
 export const completeAction = new ValidatedMethod({
   name: 'adminActions.complete',
+  mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
     validateUser();
   },
   run({ id }) {
-    const action = AdminActions.findOne({ _id: id });
+    const action = AdminActions.findOne(id);
 
     if (action.status === 'completed') {
       throw new Meteor.Error('action is already completed');
@@ -53,6 +56,7 @@ export const completeAction = new ValidatedMethod({
 
 export const completeActionByType = new ValidatedMethod({
   name: 'adminActions.completeActionByType',
+  mixins: [CallPromiseMixin],
   validate({ requestId, type, newStatus }) {
     check(requestId, String);
     check(type, String);
@@ -81,6 +85,7 @@ export const completeActionByType = new ValidatedMethod({
 
 export const removeParentRequest = new ValidatedMethod({
   name: 'adminActions.removeParentRequest',
+  mixins: [CallPromiseMixin],
   validate({ requestId }) {
     check(requestId, String);
   },

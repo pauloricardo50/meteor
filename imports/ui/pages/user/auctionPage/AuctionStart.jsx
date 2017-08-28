@@ -35,13 +35,15 @@ const styles = {
   },
 };
 
-const AuctionStart = props => {
+const AuctionStart = (props) => {
   const lenderCount = getLenderCount(props.loanRequest, props.borrowers);
   const r = props.loanRequest;
   const f = props.intl.formatMessage;
   return (
     <section className="mask1">
-      <h1><T id="AuctionStart.title" /></h1>
+      <h1>
+        <T id="AuctionStart.title" />
+      </h1>
       <h1 className="text-center display2" style={styles.countUp}>
         <CountUp
           className="custom-count"
@@ -56,7 +58,9 @@ const AuctionStart = props => {
         />
       </h1>
       <a className="bold secondary active text-center" style={styles.a}>
-        <span><T id="AuctionStart.lenderList" /></span>
+        <span>
+          <T id="AuctionStart.lenderList" />
+        </span>
       </a>
 
       <div className="description">
@@ -72,17 +76,28 @@ const AuctionStart = props => {
       <div className="col-xs-12">
         <div className="form-group text-center">
           <ConfirmButton
+            raised
             label={<T id="AuctionStart.CTA" />}
             primary
             handleClick={() =>
-              cleanMethod('startAuction', { isDemo: isDemo() }, props.loanRequest._id, () =>
-                track('started auction', {}),
-              )}
-            disabled={!(r.logic.auction.mostImportant && r.general.wantedClosingDate)}
+              cleanMethod(
+                'startAuction',
+                { isDemo: isDemo() },
+                props.loanRequest._id,
+              )
+                .then((res) => {
+                  console.log('cleanMethod done...', res);
+                  track('started auction', {});
+                })
+                .catch(e => console.log('auction start failed ', e))}
+            disabled={
+              !(r.logic.auction.mostImportant && r.general.wantedClosingDate)
+            }
           />
         </div>
         <div className="form-group text-center">
-          <Button raised
+          <Button
+            raised
             label={<T id="AuctionStart.cancel" />}
             onTouchTap={() => props.history.push('/app')}
           />

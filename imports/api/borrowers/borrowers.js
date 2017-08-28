@@ -1,4 +1,3 @@
-
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { getFileSchema } from '/imports/js/arrays/files';
@@ -55,7 +54,7 @@ export const BorrowerSchema = new SimpleSchema({
     type: Date,
     autoValue() {
       // Verify the update is from the user owning this doc, ignoring admin/partner updates
-      const doc = Borrowers.findOne({ _id: this.docId }, { fields: { userId: 1 } });
+      const doc = Borrowers.findOne(this.docId, { fields: { userId: 1 } });
 
       if (this.isInsert) {
         return new Date();

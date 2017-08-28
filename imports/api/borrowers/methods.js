@@ -2,12 +2,14 @@ import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
+import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
 import rateLimit from '/imports/js/helpers/rate-limit.js';
 
 import Borrowers from './borrowers';
 
 export const insertBorrower = new ValidatedMethod({
   name: 'borrowers.insert',
+  mixins: [CallPromiseMixin],
   validate() {},
   run({ object, userId }) {
     // Allow adding a userId for testing purposes
@@ -20,6 +22,7 @@ export const insertBorrower = new ValidatedMethod({
 // Lets you set an entire object in the document
 export const updateBorrower = new ValidatedMethod({
   name: 'borrowers.update',
+  mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
   },
@@ -31,6 +34,7 @@ export const updateBorrower = new ValidatedMethod({
 // Lets you push a value to an array
 export const pushBorrowerValue = new ValidatedMethod({
   name: 'borrowers.pushValue',
+  mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
   },
@@ -42,6 +46,7 @@ export const pushBorrowerValue = new ValidatedMethod({
 // Lets you pop a value from the end of an array
 export const popBorrowerValue = new ValidatedMethod({
   name: 'borrowers.popValue',
+  mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
   },
@@ -52,6 +57,7 @@ export const popBorrowerValue = new ValidatedMethod({
 
 export const deleteBorrower = new ValidatedMethod({
   name: 'borrowers.delete',
+  mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
   },
@@ -65,5 +71,11 @@ export const deleteBorrower = new ValidatedMethod({
 });
 
 rateLimit({
-  methods: [insertBorrower, updateBorrower, pushBorrowerValue, popBorrowerValue, deleteBorrower],
+  methods: [
+    insertBorrower,
+    updateBorrower,
+    pushBorrowerValue,
+    popBorrowerValue,
+    deleteBorrower,
+  ],
 });

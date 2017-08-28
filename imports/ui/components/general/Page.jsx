@@ -19,16 +19,21 @@ class Page extends Component {
   }
 
   render() {
+    const { id, className, rightComponent, children, fullWidth } = this.props;
     return (
       <section className="page-title">
-        <div className={`top-bar ${this.props.className}`}>
+        <div className={`top-bar ${className}`}>
           <h3 className="title fixed-size bold secondary">
-            <T id={`${this.props.id}.title`} />
+            <T id={`${id}.title`} />
           </h3>
-          {this.props.rightComponent}
+          {rightComponent}
         </div>
-        <div className="children animated fadeIn">
-          {this.props.children}
+        <div
+          className={`children animated fadeIn page ${fullWidth
+            ? 'full-width'
+            : ''}`}
+        >
+          {children}
         </div>
       </section>
     );
@@ -41,11 +46,13 @@ Page.propTypes = {
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.array])
     .isRequired,
   className: PropTypes.string,
+  fullWidth: PropTypes.bool,
 };
 
 Page.defaultProps = {
   rightComponent: null,
   className: '',
+  fullWidth: false,
 };
 
 export default injectIntl(Page);
