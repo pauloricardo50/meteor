@@ -81,6 +81,7 @@ export default class VerificationPage extends Component {
             </div>
             : <div style={{ marginTop: 40 }}>
               <ConfirmButton
+                raised
                 label={<T id="VerificationPage.CTA2" />}
                 primary
                 handleClick={this.handleClick}
@@ -118,6 +119,7 @@ export default class VerificationPage extends Component {
                 style={{ marginRight: 8 }}
               />
               <ConfirmButton
+                raised
                 label={<T id="VerificationPage.CTA" />}
                 primary
                 handleClick={this.handleClick}

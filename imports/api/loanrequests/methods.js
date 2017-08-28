@@ -14,6 +14,24 @@ import {
 
 import LoanRequests from './loanrequests';
 
+const importServerMethods = () => {
+  if (!this.isSimulation) {
+    const { scheduleMethod } = require('/imports/api/server/jobs/methods');
+    const {
+      sendEmail,
+      cancelScheduledEmail,
+      rescheduleEmail,
+    } = require('/imports/js/server/email/email-methods');
+
+    return {
+      scheduleMethod,
+      sendEmail,
+      cancelScheduledEmail,
+      rescheduleEmail,
+    };
+  }
+};
+
 export const insertRequest = new ValidatedMethod({
   name: 'loanrequests.insert',
   mixins: [CallPromiseMixin],
@@ -99,12 +117,12 @@ export const startAuction = new ValidatedMethod({
     };
 
     if (Meteor.isServer) {
-      import { scheduleMethod } from '/imports/api/server/jobs/methods';
-      import {
+      const {
+        scheduleMethod,
         sendEmail,
         cancelScheduledEmail,
         rescheduleEmail,
-      } from '/imports/js/server/email/email-methods';
+      } = importServerMethods();
 
       LoanRequests.update(id, { $set: auctionObject });
       return insertAdminAction
@@ -128,7 +146,7 @@ export const startAuction = new ValidatedMethod({
           }),
         )
         .then(() => 'success')
-        .catch(e => {
+        .catch((e) => {
           throw e;
         });
     }
@@ -136,7 +154,7 @@ export const startAuction = new ValidatedMethod({
 });
 
 // Gives the end time of an auction, given the start time
-export const getAuctionEndTime = startTime => {
+export const getAuctionEndTime = (startTime) => {
   const time = moment(startTime);
 
   if (time.isoWeekday() === 6) {
@@ -216,13 +234,14 @@ export const requestVerification = new ValidatedMethod({
           'logic.verification.requestedTime': new Date(),
         },
       },
-      err => {
+      (err) => {
         if (!err && Meteor.isServer) {
-          import {
+          const {
+            scheduleMethod,
             sendEmail,
             cancelScheduledEmail,
             rescheduleEmail,
-          } from '/imports/js/server/email/email-methods';
+          } = importServerMethods();
 
           sendEmail.call({
             emailId: 'verificationRequested',
@@ -248,7 +267,7 @@ export const deleteRequest = new ValidatedMethod({
       Roles.userIsInRole(Meteor.userId(), 'dev') ||
       Roles.userIsInRole(Meteor.userId(), 'admin')
     ) {
-      return LoanRequests.remove(id, err => {
+      return LoanRequests.remove(id, (err) => {
         if (!err) {
           removeParentRequest.call({ requestId: id });
         }
@@ -285,11 +304,12 @@ export const endAuction = new ValidatedMethod({
     completeActionByType.call({ requestId: id, type: 'auction' });
 
     if (Meteor.isServer) {
-      import {
+      const {
+        scheduleMethod,
         sendEmail,
         cancelScheduledEmail,
         rescheduleEmail,
-      } from '/imports/js/server/email/email-methods';
+      } = importServerMethods();
 
       sendEmail.call({
         emailId: 'auctionEnded',
@@ -314,13 +334,14 @@ export const finishAuction = new ValidatedMethod({
       return LoanRequests.update(
         id,
         { $set: { 'logic.auctionEndTime': new Date() } },
-        error => {
+        (error) => {
           if (!error && Meteor.isServer) {
-            import {
+            const {
+              scheduleMethod,
               sendEmail,
               cancelScheduledEmail,
               rescheduleEmail,
-            } from '/imports/js/server/email/email-methods';
+            } = importServerMethods();
 
             const request = LoanRequests.findOne(id);
             const email = request.emails.find(
@@ -368,13 +389,14 @@ export const cancelAuction = new ValidatedMethod({
             'logic.auction.startTime': undefined,
           },
         },
-        error => {
+        (error) => {
           if (!error && Meteor.isServer) {
-            import {
+            const {
+              scheduleMethod,
               sendEmail,
               cancelScheduledEmail,
               rescheduleEmail,
-            } from '/imports/js/server/email/email-methods';
+            } = importServerMethods();
 
             const request = LoanRequests.findOne(id);
             const email = request.emails.find(

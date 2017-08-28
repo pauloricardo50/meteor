@@ -38,7 +38,7 @@ const CompareTableContent = ({
       >
         {properties.map(property =>
           (<CompareColumn
-            key={property.name}
+            key={property._id}
             property={property}
             fields={fields}
             hovered={hovered}

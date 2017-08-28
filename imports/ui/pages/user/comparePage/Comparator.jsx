@@ -15,6 +15,7 @@ import { toDistanceString } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
 import { getClosestStations, getNearbyPlace } from '/imports/js/helpers/APIs';
 import cleanMethod from '/imports/api/cleanMethods';
+import { T } from '/imports/ui/components/general/Translation.jsx';
 
 import CompareTable from './CompareTable.jsx';
 import CompareOptions from './CompareOptions.jsx';
@@ -237,13 +238,17 @@ export default class Comparator extends Component {
           removeCustomField={this.removeCustomField}
           addProperty={this.addProperty}
         />
-        <CompareTable
-          comparator={comparator}
-          properties={this.modifiedProperties}
-          addCustomField={this.addCustomField}
-          fields={this.filteredFields}
-          deleteProperty={this.deleteProperty}
-        />
+        {this.modifiedProperties.length > 0
+          ? <CompareTable
+            comparator={comparator}
+            properties={this.modifiedProperties}
+            addCustomField={this.addCustomField}
+            fields={this.filteredFields}
+            deleteProperty={this.deleteProperty}
+          />
+          : <h2 className="secondary text-center">
+            <T id="Comparator.empty" />
+          </h2>}
       </section>
     );
   }

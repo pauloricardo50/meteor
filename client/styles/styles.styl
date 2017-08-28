@@ -1363,9 +1363,11 @@ ul.compare-column
       justify-content: space-between;
       width: 100%;
       .text
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+        white-space: normal;
+        // overflow: hidden;
+        // white-space: nowrap;
+        // text-overflow: ellipsis;
+        // text-overflow: clip;
     &.hovered
       background-color: grey3;
       transform: scale(1.05);
@@ -1376,7 +1378,7 @@ ul.compare-column
       border-top-left-radius: 4px;
       border-top-right-radius: 4px;
   &.header-column
-    width: 180px;
+    width: 160px;
     margin-right: 40px;
     +above($small)
       margin-right: 80px;

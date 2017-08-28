@@ -63,9 +63,10 @@ export default class CompareTable extends Component {
     window.removeEventListener('scroll', this.setScroll);
   }
 
-  setScroll = debounce(() => {
-    this.setState({ scrollLeft: this.ref.scrollLeft });
-  }, 50);
+  setScroll = debounce(
+    () => !!this.ref && this.setState({ scrollLeft: this.ref.scrollLeft }),
+    50,
+  );
 
   handleScroll = (toLeft) => {
     Meteor.clearInterval(this.interval);
@@ -105,12 +106,7 @@ export default class CompareTable extends Component {
     }
   };
 
-  handleReset = () => {
-    this.setState({
-      sorting: [],
-      filtering: [],
-    });
-  };
+  handleReset = () => this.setState({ sorting: [], filtering: [] });
 
   handleSort = (id, callback) => {
     const sorter = this.state.sorting.find(item => item.id === id);

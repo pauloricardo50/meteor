@@ -8,11 +8,11 @@ import { injectIntl } from 'react-intl';
 
 import {
   getAmortization,
-  getMaintenance,
   getInterests,
 } from '/imports/js/helpers/finance-math';
 import {
   getLoanValue,
+  getMaintenance,
   getPropAndWork,
 } from '/imports/js/helpers/requestFunctions';
 import colors from '/imports/js/config/colors';
@@ -166,7 +166,7 @@ class AmortizationChart extends Component {
       <div id="amortizationChart">
         <ReactHighcharts
           config={this.getConfig()}
-          ref={c => {
+          ref={(c) => {
             this.chart = c;
           }}
         />
