@@ -44,8 +44,7 @@
   "AmortizationTool.stable.title": "Taux stables",
   "AmortizingPicker.description": "Choisir comment amortir son bien immobilier peut avoir des conséquences très importantes pour votre futur. N'hésitez pas à nous appeler pour prendre cette décision en toute confiance.",
   "AmortizingPicker.title": "Stratégie d'amortissement",
-  "Comparator.empty": "Ajoutez une propriété pour commencer",
-
+  "AppPage.begin": "Commencer",
   "AppPage.comparator": "Comparateur de propriétés",
   "AppPage.loanRequest": "Demande de prêt",
   "AppPage.newRequest": "Nouvelle demande de prêt",
@@ -78,6 +77,7 @@
   "ClosingPage.loading": "Vous serez notifié par e-mail lorsque votre prêteur est disposé au décaissement.",
   "ClosingPage.progress": "Progrès: {value, number, percent}",
   "Comparator.createdAt": "Créé le",
+  "Comparator.empty": "Ajoutez une propriété pour commencer",
   "Comparator.incomeRatio": "Charges / Revenus",
   "Comparator.isValid": "Ça passe?",
   "Comparator.loan": "Prêt Hypothécaire",
