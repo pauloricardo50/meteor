@@ -498,7 +498,7 @@ p.paragraph {
 @media (min-width: 900px) {
   .feature1 {
     /* FLORIAN */
-    /*padding-bottom: 90px;*/
+    padding-bottom: 90px;
   }
 }
 

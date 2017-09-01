@@ -17,6 +17,10 @@
   "ActionsTable.comment": "Commentaire",
   "ActionsTable.date": "Date",
   "ActionsTable.do": " ",
+
+  "HomePage.webapp.title": "Votre guide personnel",
+  "HomePage.webapp.description": "Notre application vous accompagne du début jusqu'à la fin et s'adapte de façon intelligente à votre situation",
+
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",

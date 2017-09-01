@@ -188,6 +188,33 @@ export default class HomePage extends Component {
               </div>
             </div>
           </Scroll.Element>
+
+          <div className="feature1">
+            <div className="container-sml">
+              <div className="col-12 text-center">
+                <h3 className="heading">
+                  <T id="HomePage.webapp.title" />
+                </h3>
+                <p className="paragraph">
+                  <T id="HomePage.webapp.description" />
+                </p>
+              </div>
+            </div>
+            <div className="container-lrg centerdevices col-12">
+              <div className="browserwrapper">
+                <div className="browser">
+                  <div className="mask">
+                    <img
+                      className="mask-img"
+                      src="img/webapp.png"
+                      alt="e-Potek browser demo"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="feature2">
             <div className="container-lrg flex-launch">
               <div className="col-6">
