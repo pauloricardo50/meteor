@@ -10,29 +10,27 @@ import colors from '/imports/js/config/colors';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
-const getStyles = (props, currentValue) => {
-  return {
-    article: {
-      width: props.active ? '100%' : '',
-      maxWidth: props.active ? 800 : '',
-      height: props.active ? 380 : 80,
-      backgroundColor: props.active ? 'white' : '',
-    },
-    topDiv: {
-      borderBottom: props.active ? 'solid 1px #ddd' : '',
-    },
-    icon: {
-      color: currentValue && currentValue.length > 0 ? colors.secondary : '',
-      borderColor:
+const getStyles = (props, currentValue) => ({
+  article: {
+    width: props.active ? '100%' : '',
+    maxWidth: props.active ? 800 : '',
+    height: props.active ? 380 : 80,
+    backgroundColor: props.active ? 'white' : '',
+  },
+  topDiv: {
+    borderBottom: props.active ? 'solid 1px #ddd' : '',
+  },
+  icon: {
+    color: currentValue && currentValue.length > 0 ? colors.secondary : '',
+    borderColor:
         currentValue && currentValue.length > 0 ? colors.secondary : '',
-    },
-    caret: {
-      transform: props.active ? 'rotate(180deg)' : '',
-    },
-  };
-};
+  },
+  caret: {
+    transform: props.active ? 'rotate(180deg)' : '',
+  },
+});
 
-const DropzoneArrayItem = props => {
+const DropzoneArrayItem = (props) => {
   const {
     filesObject,
     filesObjectSelector,
