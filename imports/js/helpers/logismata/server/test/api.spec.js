@@ -8,7 +8,7 @@ import {
   getParamsArray,
   callApi,
   getLocationId,
-} from '../api';
+} from '../../api';
 
 describe('logismata API', () => {
   describe('getAuthToken', () => {

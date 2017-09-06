@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import constants, { logismataValues } from '../constants';
+import constants, { logismataValues } from '../../constants';
 
 describe('constants', () => {
   it('returns the right values', () => {
