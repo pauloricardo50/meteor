@@ -1450,3 +1450,29 @@ ul.compare-column
   .buttons
     display: flex;
     justify-content: center;
+
+.uploader
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid light-grey;
+  padding: 16px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  .title
+    display: flex;
+    align-items: flex-end;
+    h4, h5
+      margin: 0;
+    padding-bottom: 8px;
+  .file
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid light-grey;
+    .verified
+      color: brand-success;
+    .unverified
+      color: black;
+      opacity: 0.6;

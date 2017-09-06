@@ -46,6 +46,8 @@ export const insertRequest = new ValidatedMethod({
       );
     }
 
+    console.log(object);
+
     // Allow adding a userId for testing purposes
     return LoanRequests.insert({
       ...object,

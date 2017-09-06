@@ -181,6 +181,12 @@ export const FileSchema = new SimpleSchema({
   },
   key: String,
   fileCount: Number,
+  status: {
+    optional: true,
+    type: String,
+    allowedValues: ['unverified', 'verified', 'error'],
+  },
+  error: { optional: true, type: String },
 });
 
 // Generates a schema given a list name (request, or borrowers)
@@ -208,4 +214,6 @@ export const fakeFile = {
   url: 'https://www.fake-url.com',
   key: 'asdf/fakeKey/fakeFile.pdf',
   fileCount: 0,
+  status: 'verified',
+  error: '',
 };
