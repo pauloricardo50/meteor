@@ -11,7 +11,7 @@ import Recap from '/imports/ui/components/general/Recap.jsx';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
 import track from '/imports/js/helpers/analytics';
 import constants from '/imports/js/config/constants';
-import { saveStartForm } from './saveStartForm';
+import saveStartForm from './saveStartForm';
 
 const styles = {
   h4: {
@@ -110,14 +110,15 @@ class StartResult extends Component {
         </div>
 
         <div className="description">
-          {type === 'acquisition' &&
+          {type === 'acquisition' && (
             <h4 style={styles.h4}>
               <T
                 id="StartResult.description1"
                 values={{ count: lenderCount }}
               />
-            </h4>}
-          {type === 'test' &&
+            </h4>
+          )}
+          {type === 'test' && (
             <h4 style={styles.h4}>
               <T
                 id="StartResult.description2"
@@ -125,7 +126,8 @@ class StartResult extends Component {
                   value: <IntlNumber value={property} format="money" />,
                 }}
               />
-            </h4>}
+            </h4>
+          )}
         </div>
 
         <div className="buttons">
