@@ -57,7 +57,7 @@ export default class MultipleInput extends Component {
     return (
       <article
         className={this.props.className.concat(multiple ? ' no-scale' : '')}
-        onTouchTap={this.handleClick.bind(this)}
+        onClick={this.handleClick.bind(this)}
       >
 
         {multiple &&

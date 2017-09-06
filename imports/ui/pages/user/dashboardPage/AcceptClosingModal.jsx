@@ -35,7 +35,7 @@ export default class AcceptClosingModal extends Component {
 
   render() {
     const button = (
-      <Button raised label="Fantastique" secondary onTouchTap={this.handleConfirm} autoFocus />
+      <Button raised label="Fantastique" secondary onClick={this.handleConfirm} autoFocus />
     );
 
     return (

@@ -104,7 +104,7 @@ export default class DashboardStatus extends Component {
             label={<T id="general.continue" />}
             secondary
             containerElement={nextLink ? <Link to={nextLink} /> : null}
-            onTouchTap={() => {
+            onClick={() => {
               track('clicked dashboard status button', { nextLink });
               if (!nextLink) {
                 this.handleNextStep();

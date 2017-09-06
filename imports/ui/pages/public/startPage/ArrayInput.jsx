@@ -96,7 +96,7 @@ export default class ArrayInput extends React.Component {
     return (
       <article
         className={this.props.className}
-        onTouchTap={() => this.props.setActiveLine(this.props.id)}
+        onClick={() => this.props.setActiveLine(this.props.id)}
       >
         {this.props.text1 && <h1 className="fixed-size">{this.props.text1}</h1>}
 
@@ -148,11 +148,11 @@ export default class ArrayInput extends React.Component {
           <Button raised
             label="+"
             primary
-            onTouchTap={this.handleAdd}
+            onClick={this.handleAdd}
             style={styles.button}
             disabled={!this.props.allOptions && this.state.count >= optionQty}
           />
-          <Button raised label="-" onTouchTap={this.handleRemove} style={styles.button} />
+          <Button raised label="-" onClick={this.handleRemove} style={styles.button} />
         </div>
       </article>
     );

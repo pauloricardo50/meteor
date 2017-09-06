@@ -38,13 +38,13 @@ const ActionsTab = (props) => {
       <Button
         raised
         label="Télécharger PDF Anonyme"
-        onTouchTap={e => downloadPDF(e, loanRequest._id, 'anonymous')}
+        onClick={e => downloadPDF(e, loanRequest._id, 'anonymous')}
         style={styles.button}
       />
       <Button
         raised
         label="Télécharger PDF Complet"
-        onTouchTap={e => downloadPDF(e, loanRequest._id, 'default')}
+        onClick={e => downloadPDF(e, loanRequest._id, 'default')}
         style={styles.button}
       />
 

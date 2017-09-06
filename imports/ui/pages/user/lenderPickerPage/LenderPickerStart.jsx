@@ -28,7 +28,7 @@ const LenderPickerStart = props => {
         <Button raised
           label="Continuer"
           style={styles.button}
-          onTouchTap={() => props.setFormState('initialContinue', true, () => props.scroll('1'))}
+          onClick={() => props.setFormState('initialContinue', true, () => props.scroll('1'))}
         />
       </div>
     </article>

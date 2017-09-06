@@ -60,7 +60,7 @@ const DropzoneArrayItem = (props) => {
       <div
         style={styles.topDiv}
         className="top"
-        onTouchTap={disabled ? () => {} : event => handleClick(event)}
+        onClick={disabled ? () => {} : event => handleClick(event)}
         onDragEnter={handleMouseEnter}
       >
         <div className="left">

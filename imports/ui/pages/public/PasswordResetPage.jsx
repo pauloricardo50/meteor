@@ -74,7 +74,7 @@ export default class PasswordResetPage extends Component {
           <Button raised
             label={<T id="PasswordResetPage.CTA" />}
             disabled={!isValid}
-            onTouchTap={this.handleSubmit}
+            onClick={this.handleSubmit}
             primary
           />
         </div>

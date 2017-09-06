@@ -36,7 +36,7 @@ const AccountPage = props =>
       >
         <Button raised
           label={<T id="general.logout" />}
-          onTouchTap={() => Meteor.logout(() => props.history.push('/home'))}
+          onClick={() => Meteor.logout(() => props.history.push('/home'))}
         />
       </span>
 

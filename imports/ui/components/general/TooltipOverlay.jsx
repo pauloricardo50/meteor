@@ -57,7 +57,7 @@ export default class TooltipOverlay extends Component {
         onEnter={() => this.setState({ hide: false })}
         onEntered={() => track('Tooltip - tooltip clicked', { tooltipId })}
         container={document.body}
-        onTouchTap={handleClick}
+        onClick={handleClick}
       >
         <span
           // className="tooltip-overlay hvr-underline-from-center"

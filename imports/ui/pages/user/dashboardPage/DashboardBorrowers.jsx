@@ -22,7 +22,7 @@ const DashboardBorrowers = props => {
             to={`/app/requests/${props.loanRequest._id}/borrowers/${b._id}/personal`}
             key={b._id}
             className="link"
-            onTouchTap={() => track('clicked dashboard borrower', {})}
+            onClick={() => track('clicked dashboard borrower', {})}
           >
             <span className="icon fa fa-user-circle-o fa-4x" style={{ marginRight: 16 }} />
             <div className="text">

@@ -5,7 +5,6 @@ import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider, intlShape } from 'react-intl';
 import StubCollections from 'meteor/hwillson:stub-collections';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import {
   getUserLocale,
@@ -41,11 +40,13 @@ const customMount = (Component, props, withRouter) => {
   const { intl } = intlProvider.getChildContext();
 
   return mount(
-    withRouter
-      ? <MemoryRouter>
+    withRouter ? (
+      <MemoryRouter>
         <Component history={{ location: { pathname: '' } }} {...props} />
       </MemoryRouter>
-      : <Component {...props} />,
+    ) : (
+      <Component {...props} />
+    ),
     {
       context: {
         muiTheme: getMuiTheme(myTheme),
@@ -125,10 +126,6 @@ if (Meteor.isTest) {
   ]);
   StubCollections.stub(); // This part is critical, need to stub once beforeAll
   stubCollections.restore();
-
-  if (Meteor.isClient) {
-    injectTapEventPlugin(); // Removes any warnings with onTouchTap during tests
-  }
 
   console.log('Ready to roll');
 }

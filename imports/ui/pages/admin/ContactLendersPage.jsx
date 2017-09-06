@@ -41,7 +41,7 @@ export default class ContactLendersPage extends Component {
             raised
             label="Télécharger PDF"
             primary
-            onTouchTap={e => downloadPDF(e, this.props.loanRequest._id)}
+            onClick={e => downloadPDF(e, this.props.loanRequest._id)}
           />
         </div>
 

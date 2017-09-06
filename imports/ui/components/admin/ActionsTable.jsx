@@ -36,7 +36,7 @@ const columns = [
     format: handleClick =>
       <Button
         label="Go"
-        onTouchTap={event => {
+        onClick={event => {
           event.stopPropagation();
           handleClick();
         }}
@@ -93,7 +93,7 @@ export default class ActionsTable extends Component {
           </DropDownMenu>
           <Button
             label="Marquer comme complété"
-            onTouchTap={this.handleClick}
+            onClick={this.handleClick}
             disabled={!this.state.selectedRow}
             primary
           />

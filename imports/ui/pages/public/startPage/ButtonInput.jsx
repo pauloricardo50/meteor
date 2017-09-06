@@ -47,7 +47,7 @@ const ButtonInput = props => {
   return (
     <article
       className={[props.className, noModify ? 'no-modify' : ''].join(' ')}
-      onTouchTap={() => props.setActiveLine(props.id)}
+      onClick={() => props.setActiveLine(props.id)}
     >
 
       <h1 className="fixed-size">
@@ -69,7 +69,7 @@ const ButtonInput = props => {
               ? button.component
               : <Button raised
                 label={button.label || button.id}
-                onTouchTap={e => {
+                onClick={e => {
                   handleClick(props, e, button.id, button.onClick);
                   if (document.activeElement) {
                       // Take focus away, better UX on mobile

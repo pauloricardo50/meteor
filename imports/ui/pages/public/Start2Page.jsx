@@ -144,7 +144,7 @@ export default class Start2Page extends Component {
               raised
               label={<T id="Start2Page.initialButton" />}
               primary
-              onTouchTap={() =>
+              onClick={() =>
                 Meteor.setTimeout(() => this.setState({ showUX: false }), 400)}
             />
           </div>

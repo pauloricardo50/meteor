@@ -266,7 +266,7 @@ export default class Start1Page extends Component {
           {!isFirstVisit &&
             <Button
               icon={showDescription ? <ArrowUp /> : <ArrowDown />}
-              onTouchTap={() =>
+              onClick={() =>
                 this.setState(prev => ({
                   showDescription: !prev.showDescription,
                 }))}
@@ -312,7 +312,7 @@ export default class Start1Page extends Component {
                 raised
                 primary
                 label={<T id="Start1Page.showCalculatorButton" />}
-                onTouchTap={() =>
+                onClick={() =>
                   this.setState({
                     isFirstVisit: false,
                     showDescription: false,

@@ -52,7 +52,7 @@ const Unverified = props =>
       <div style={{ display: 'flex' }}>
         <p style={{ margin: 0 }}>
           <T id="DashboardUnverified.description" />{' '}
-          <a onTouchTap={e => handleClick(e, props)}>
+          <a onClick={e => handleClick(e, props)}>
             <T id="DashboardUnverified.CTA" />
           </a>
         </p>

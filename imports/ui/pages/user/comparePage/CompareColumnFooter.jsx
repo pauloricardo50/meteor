@@ -41,7 +41,7 @@ export default class CompareColumnFooter extends Component {
               }
             />
           }
-          onTouchTap={() => {
+          onClick={() => {
             cancelEditing();
             this.toggleButtons();
           }}
@@ -55,7 +55,7 @@ export default class CompareColumnFooter extends Component {
               label={<T id={editing ? 'general.save' : 'general.modify'} />}
               style={{ margin: '8px 0' }}
               primary
-              onTouchTap={editing ? stopEditing : startEditing}
+              onClick={editing ? stopEditing : startEditing}
             />
             <ConfirmButton
               raised

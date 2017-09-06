@@ -15,7 +15,7 @@ export default class Input extends Component {
     return (
       <article
         className={this.props.className}
-        onTouchTap={() => {
+        onClick={() => {
           this.props.setActiveLine(this.props.id);
           if (this.props.money && this.props.text) {
             this.input.input.inputElement.focus();

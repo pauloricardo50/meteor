@@ -99,13 +99,13 @@ export default class DevPage extends Component {
   render() {
     return (
       <div>
-        <button onTouchTap={addStep1Request}>step 1 Request</button>
-        <button onTouchTap={addStep2Request}>step 2 Request</button>
-        <button onTouchTap={addStep3Request}>step 3 Request</button>
-        <button onTouchTap={() => addStep3Request(false)}>
+        <button onClick={addStep1Request}>step 1 Request</button>
+        <button onClick={addStep2Request}>step 2 Request</button>
+        <button onClick={addStep3Request}>step 3 Request</button>
+        <button onClick={() => addStep3Request(false)}>
           step 3 Request, few files
         </button>
-        <button onTouchTap={() => purge(this.props)}>Purge</button>
+        <button onClick={() => purge(this.props)}>Purge</button>
       </div>
     );
   }

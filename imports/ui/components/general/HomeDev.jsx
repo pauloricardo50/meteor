@@ -26,7 +26,7 @@ export default class HomeDev extends React.Component {
 
   render() {
     const actions = [
-      <Button label="Ok" primary onTouchTap={this.handleClose} />,
+      <Button label="Ok" primary onClick={this.handleClose} />,
     ];
 
     return (
@@ -34,7 +34,7 @@ export default class HomeDev extends React.Component {
         <Button
           raised
           label={<T id="HomePage.CTA2" />}
-          onTouchTap={this.handleOpen}
+          onClick={this.handleOpen}
           primary={this.props.primary}
           style={this.props.style}
           buttonStyle={this.props.buttonStyle}
@@ -60,7 +60,7 @@ export default class HomeDev extends React.Component {
               label={<T id="HomeDev.CTA" />}
               primary
               href="http://eepurl.com/cKvR45"
-              onTouchTap={() => {
+              onClick={() => {
                 track('HomeDev - clicked on CTA', {});
               }}
             />

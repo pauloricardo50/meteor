@@ -32,7 +32,7 @@ const TopNav = (props) => {
           <Link
             to="/home"
             className="link"
-            onTouchTap={() => track('TopNav - clicked logo', {})}
+            onClick={() => track('TopNav - clicked logo', {})}
           >
             <img src="/img/logo_black.svg" alt="e-Potek" />
           </Link>
@@ -53,7 +53,7 @@ const TopNav = (props) => {
               }}
               style={{ minWidth: 'unset' }}
               // buttonStyle={{ minWidth: 'unset' }}
-              onTouchTap={() => track('TopNav - clicked login', {})}
+              onClick={() => track('TopNav - clicked login', {})}
             />}
         </div>
       </ToolbarGroup>

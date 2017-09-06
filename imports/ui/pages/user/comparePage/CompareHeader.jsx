@@ -84,13 +84,13 @@ export default class CompareHeader extends Component {
         >
           <Button
             label="Reset"
-            onTouchTap={handleReset}
+            onClick={handleReset}
             icon={<LoopIcon style={{ color: 'white' }} />}
             style={{ color: 'white' }}
           />
           <IconButton
             tooltip="Pin"
-            onTouchTap={this.togglePin}
+            onClick={this.togglePin}
             style={{ position: 'absolute', right: 0, top: 0 }}
           >
             {pinHeader
@@ -104,7 +104,7 @@ export default class CompareHeader extends Component {
             onMouseEnter={() => onHoverEnter(field.id)}
             onMouseLeave={onHoverLeave}
             className={hovered === field.id && 'hovered'}
-            onTouchTap={
+            onClick={
               field.type === 'boolean'
                 ? () => handleFilter(field.id)
                 : () => handleSort(field.id)

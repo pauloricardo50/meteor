@@ -62,7 +62,7 @@ const SideNavUser = (props) => {
             activeClassName="active-link"
             className="link"
           >
-            <div className="onclick-wrapper" onTouchTap={handleClickLink}>
+            <div className="onclick-wrapper" onClick={handleClickLink}>
               <div className="icon">
                 <AssessmentIcon color="#ADB5BD" />
               </div>

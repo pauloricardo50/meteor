@@ -62,7 +62,7 @@ const SideNavStepperStep = props => {
       <div className="absolute-line" />
       <div
         className={classnames({ top: true, inactive: props.step.nb === 0 })}
-        onTouchTap={props.handleClick}
+        onClick={props.handleClick}
       >
         {getStepIcon(props)}
         <div className="text">
@@ -96,7 +96,7 @@ const SideNavStepperStep = props => {
             >
               <div
                 className="onclick-wrapper"
-                onTouchTap={item.link ? props.handleClickLink : () => null}
+                onClick={item.link ? props.handleClickLink : () => null}
               >
                 {getItemIcon(item)}
                 <div className="text">

@@ -57,7 +57,7 @@ const Start1Calculator = (props) => {
           )}
           <Button
             label="Reset"
-            onTouchTap={handleReset}
+            onClick={handleReset}
             className="reset-button"
             icon={<LoopIcon />}
           />
@@ -114,7 +114,7 @@ const Start1Calculator = (props) => {
             id="ok"
             style={{ height: 'unset' }}
             overlayStyle={{ padding: 20 }}
-            onTouchTap={() =>
+            onClick={() =>
               track('Funnel - Passed Start 1', { property, income, fortune })}
           />
         </div>}

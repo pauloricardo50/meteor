@@ -49,12 +49,12 @@ export default class DialogSimple extends Component {
       <Button
         primary
         label={<T id="general.cancel" />}
-        onTouchTap={this.handleClose}
+        onClick={this.handleClose}
       />,
       <Button
         primary
         label="Ok"
-        onTouchTap={() => this.handleClose(true)}
+        onClick={() => this.handleClose(true)}
         autoFocus={autoFocus} // TODO doesn't work with tooltips
         disabled={this.state.disabled}
       />,
@@ -72,7 +72,7 @@ export default class DialogSimple extends Component {
         <Button
           raised
           label={label}
-          onTouchTap={this.handleOpen}
+          onClick={this.handleOpen}
           primary={primary}
           secondary={secondary}
           style={buttonStyle}

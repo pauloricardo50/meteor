@@ -59,7 +59,7 @@ export default class LoadingButton extends Component {
         // {...this.props}
         label={this.props.label}
         primary={this.state.isFirstVisit}
-        onTouchTap={this.handleClick}
+        onClick={this.handleClick}
         icon={icon}
         disabled={this.props.disabled}
       />

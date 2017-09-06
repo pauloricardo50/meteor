@@ -129,7 +129,7 @@ export default class VerifyPage extends Component {
           <Button
             raised
             label="+"
-            onTouchTap={() =>
+            onClick={() =>
               this.setState(prev => ({ comments: [...prev.comments, ''] }))}
             primary
             style={styles.buttons}
@@ -137,7 +137,7 @@ export default class VerifyPage extends Component {
           <Button
             raised
             label="-"
-            onTouchTap={() =>
+            onClick={() =>
               this.setState(prev => ({
                 comments: [...prev.comments].splice(-1, 1),
               }))}
@@ -159,7 +159,7 @@ export default class VerifyPage extends Component {
                 (this.state.validated === false && this.state.comments[0])
               )
             }
-            onTouchTap={this.handleSubmit}
+            onClick={this.handleSubmit}
           />
         </div>
       </section>

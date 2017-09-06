@@ -177,12 +177,12 @@ export default class CompareTable extends Component {
         <div style={{ marginBottom: 8 }}>
           <Button
             icon={<ArrowLeft />}
-            onTouchTap={() => this.handleScroll(false)}
+            onClick={() => this.handleScroll(false)}
             primary
           />
           <Button
             icon={<ArrowRight />}
-            onTouchTap={() => this.handleScroll(true)}
+            onClick={() => this.handleScroll(true)}
             primary
           />
         </div>

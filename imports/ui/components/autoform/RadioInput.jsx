@@ -82,7 +82,7 @@ export default class RadioInput extends Component {
             (<RadioButton
               label={option.label}
               value={option.id}
-              onTouchTap={this.setValue}
+              onClick={this.setValue}
               key={option.id}
               style={styles.RadioButton}
               labelStyle={styles.RadioButtonLabel}

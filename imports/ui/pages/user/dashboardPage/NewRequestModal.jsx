@@ -43,7 +43,7 @@ export default class NewRequestModal extends Component {
         label="Ok"
         primary
         disabled={!this.state.value}
-        onTouchTap={this.handleSubmit}
+        onClick={this.handleSubmit}
       />
     );
 

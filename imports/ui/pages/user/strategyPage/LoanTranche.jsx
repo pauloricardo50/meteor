@@ -98,7 +98,7 @@ export default class LoanTranche extends Component {
             icon={<span className="fa fa-times" />}
             style={styles.deleteButton}
             buttonStyle={styles.buttonStyle}
-            onTouchTap={this.props.removeTranche}
+            onClick={this.props.removeTranche}
           />}
 
         <div className="trancheBar">
@@ -113,7 +113,7 @@ export default class LoanTranche extends Component {
               {this.props.manual &&
                 <Button raised
                   label="-"
-                  onTouchTap={this.props.decrementTranche}
+                  onClick={this.props.decrementTranche}
                   style={styles.button}
                   buttonStyle={styles.buttonStyle}
                   disabled={
@@ -132,7 +132,7 @@ export default class LoanTranche extends Component {
                 <Button raised
                   label="+"
                   primary
-                  onTouchTap={this.props.incrementTranche}
+                  onClick={this.props.incrementTranche}
                   style={styles.button}
                   buttonStyle={styles.buttonStyle}
                   disabled={!this.props.moneyLeft}

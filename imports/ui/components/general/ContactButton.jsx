@@ -105,7 +105,7 @@ const overlayContent = path =>
         <a
           href={`tel:${staff.phone}`}
           className="active"
-          onTouchTap={() => track('ContactButton - clicked on phone', { path })}
+          onClick={() => track('ContactButton - clicked on phone', { path })}
         >
           {staff.phone}
         </a>
@@ -128,7 +128,7 @@ const overlayContent = path =>
         <a
           href={`mailto:${staff.email}`}
           className="active"
-          onTouchTap={() => track('ContactButton - clicked on email', { path })}
+          onClick={() => track('ContactButton - clicked on email', { path })}
         >
           {staff.email}
         </a>
@@ -164,7 +164,7 @@ export default class ContactButton extends Component {
         <FloatingActionButton
           style={styles.button}
           backgroundColor={colors.primary}
-          onTouchTap={this.handleClick}
+          onClick={this.handleClick}
         >
           {open ? <CloseIcon /> : <ForumIcon />}
         </FloatingActionButton>

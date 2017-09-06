@@ -57,7 +57,7 @@ export default class CompareOptions extends Component {
         >
           <Button
             raised
-            onTouchTap={() => this.handleClick()}
+            onClick={() => this.handleClick()}
             label={
               <T
                 id={

@@ -14,7 +14,7 @@ const OfferTableLine = props =>
     <td className="r">
       <Button
         label="Voir l'offre"
-        onTouchTap={() => console.log('develop this')}
+        onClick={() => console.log('develop this')}
       />
     </td>
   </tr>;

@@ -34,12 +34,12 @@ export default class ConfirmMethod extends Component {
 
   render() {
     const actions = [
-      <Button label="Annuler" primary onTouchTap={this.handleClose} />,
+      <Button label="Annuler" primary onClick={this.handleClose} />,
       <Button
         label="Okay"
         primary
         disabled={this.state.text !== this.props.keyword}
-        onTouchTap={this.handleSubmit}
+        onClick={this.handleSubmit}
       />,
     ];
 
@@ -48,7 +48,7 @@ export default class ConfirmMethod extends Component {
         <Button
           raised
           label={this.props.label}
-          onTouchTap={this.handleOpen}
+          onClick={this.handleOpen}
           style={this.props.style}
           disabled={this.props.disabled}
         />

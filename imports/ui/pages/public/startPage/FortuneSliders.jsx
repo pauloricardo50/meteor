@@ -130,7 +130,7 @@ const FortuneSliders = props => {
           <Button raised
             label={<T id="Start2Form.fortuneSliders.use" />}
             style={{ marginRight: 8 }}
-            onTouchTap={() => props.setFormState('useInsurance', true)}
+            onClick={() => props.setFormState('useInsurance', true)}
             primary
           />
         </div>}

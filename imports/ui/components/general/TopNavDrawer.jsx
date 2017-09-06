@@ -33,7 +33,7 @@ export default class TopNavDrawer extends React.Component {
     return (
       <div className="menu-button">
         <IconButton
-          onTouchTap={this.handleToggle}
+          onClick={this.handleToggle}
           touch
           tooltip="Menu"
           tooltipPosition="bottom-right"
@@ -52,7 +52,7 @@ export default class TopNavDrawer extends React.Component {
         >
           <div className="top-bar">
             <IconButton
-              onTouchTap={() => this.setState({ open: false })}
+              onClick={() => this.setState({ open: false })}
               style={{ marginTop: 8, marginLeft: 8, zIndex: 100 }}
             >
               <CloseIcon color="#333333" hoverColor="#888888" />

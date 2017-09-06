@@ -64,12 +64,12 @@ export default class PasswordChange extends Component {
         title={<T id="PasswordChange.dialogTitle" />}
         label={<T id="PasswordChange.change" />}
         actions={[
-          <Button label={<T id="general.cancel" />} onTouchTap={this.handleClose} />,
+          <Button label={<T id="general.cancel" />} onClick={this.handleClose} />,
           <Button
             label={<T id="general.ok" />}
             primary
             disabled={!isValid}
-            onTouchTap={this.handleSubmit}
+            onClick={this.handleSubmit}
           />,
         ]}
         close={close}

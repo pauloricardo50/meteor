@@ -48,7 +48,7 @@ export default class SingleRequestPage extends Component {
         <Button raised
           label="Retour"
           style={styles.returnButton}
-          onTouchTap={() => this.props.history.push('/admin/requests')}
+          onClick={() => this.props.history.push('/admin/requests')}
         />
         <div className="mask1">
           <h1>
@@ -63,7 +63,7 @@ export default class SingleRequestPage extends Component {
             {actions.length > 0
               ? actions.map((action, i) => (
                 <div key={i} className="form-group">
-                  <Button raised label={action.label} onTouchTap={action.handleClick} primary />
+                  <Button raised label={action.label} onClick={action.handleClick} primary />
                 </div>
                 ))
               : <h2 className="secondary">Aucune action à prendre</h2>}

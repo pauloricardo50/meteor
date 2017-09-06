@@ -35,8 +35,8 @@ export default class AdminNewOffer extends React.Component {
 
   render() {
     const actions = [
-      <Button label="Annuler" primary onTouchTap={this.handleClose} />,
-      // <Button label="Ajouter" primary keyboardFocused onTouchTap={this.handleClose} />,
+      <Button label="Annuler" primary onClick={this.handleClose} />,
+      // <Button label="Ajouter" primary keyboardFocused onClick={this.handleClose} />,
     ];
 
     return (
@@ -44,7 +44,7 @@ export default class AdminNewOffer extends React.Component {
         <Button
           raised
           label="Ajouter une offre"
-          onTouchTap={this.handleOpen}
+          onClick={this.handleOpen}
           primary
           style={this.props.style}
         />

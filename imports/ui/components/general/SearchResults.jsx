@@ -103,7 +103,7 @@ class SearchResults extends Component {
           .slice(0, 5)
           .map(result =>
             (<ListItem
-              onTouchTap={() => this.setState({ showId: result.id })}
+              onClick={() => this.setState({ showId: result.id })}
               key={result.id}
               primaryText={result.tooltipMatch}
               secondaryText={result.tooltipValue1}

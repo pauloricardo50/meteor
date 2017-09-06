@@ -174,7 +174,7 @@ const FinanceStrategyPicker = (props) => {
             <Button
               raised
               label="Ajouter une Tranche"
-              onTouchTap={() => addTranche(props)}
+              onClick={() => addTranche(props)}
               primary
               style={styles.button}
               disabled={moneyLeft < 100000}

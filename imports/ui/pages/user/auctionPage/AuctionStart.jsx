@@ -99,7 +99,7 @@ const AuctionStart = (props) => {
           <Button
             raised
             label={<T id="AuctionStart.cancel" />}
-            onTouchTap={() => props.history.push('/app')}
+            onClick={() => props.history.push('/app')}
           />
         </div>
       </div>

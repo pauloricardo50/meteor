@@ -51,7 +51,7 @@ export default class OverviewTab extends React.Component {
         <div className="text-center">
           <Button raised
             label={this.state.showObject ? 'Masquer' : 'Afficher détails'}
-            onTouchTap={() => this.setState(prev => ({ showObject: !prev.showObject }))}
+            onClick={() => this.setState(prev => ({ showObject: !prev.showObject }))}
           />
         </div>
         {this.state.showObject &&

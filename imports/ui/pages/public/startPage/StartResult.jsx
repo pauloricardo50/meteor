@@ -134,7 +134,7 @@ class StartResult extends Component {
           <Button
             raised
             label={<T id="general.modify" />}
-            onTouchTap={() => {
+            onClick={() => {
               track('StartResult - clicked start result modify');
 
               Scroll.animateScroll.scrollToTop({
@@ -147,7 +147,7 @@ class StartResult extends Component {
           <Button
             raised
             label={<T id="general.continue" />}
-            onTouchTap={() => {
+            onClick={() => {
               track('Funnel - clicked start result CTA', { type });
 
               if (type === 'test') {

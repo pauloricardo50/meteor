@@ -36,7 +36,7 @@ export default class ComparePage extends Component {
             raised
             primary
             label={<T id="ComparePage.start" />}
-            onTouchTap={this.handleStart}
+            onClick={this.handleStart}
           />
         </section>
       );

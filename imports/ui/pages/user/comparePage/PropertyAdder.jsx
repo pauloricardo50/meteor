@@ -57,7 +57,7 @@ export default class PropertyAdder extends Component {
           raised
           primary
           label={<T id="CompareOptions.addProperty" />}
-          onTouchTap={this.handleOpen}
+          onClick={this.handleOpen}
           style={{
             marginLeft: 8,
             marginBottom: 8,
@@ -131,12 +131,12 @@ export default class PropertyAdder extends Component {
             >
               <Button
                 label={<T id="general.cancel" />}
-                onTouchTap={this.handleClose}
+                onClick={this.handleClose}
               />
               <Button
                 primary
                 label={<T id="PropertyAdder.add" />}
-                onTouchTap={this.handleSubmit}
+                onClick={this.handleSubmit}
                 disabled={!(isValidPlace && value)}
               />
             </div>

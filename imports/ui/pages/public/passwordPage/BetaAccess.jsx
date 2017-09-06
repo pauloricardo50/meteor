@@ -34,13 +34,13 @@ export default class BetaAccess extends React.Component {
 
   render() {
     const actions = [
-      <Button label="Annuler" onTouchTap={this.handleClose} />,
-      <Button label="Okay" primary onTouchTap={this.handleSubmit} />,
+      <Button label="Annuler" onClick={this.handleClose} />,
+      <Button label="Okay" primary onClick={this.handleSubmit} />,
     ];
 
     return (
       <div>
-        <Button raised label="Accéder à la Beta" onTouchTap={this.handleOpen} />
+        <Button raised label="Accéder à la Beta" onClick={this.handleOpen} />
         <Dialog
           title="Accéder à la Beta"
           actions={actions}

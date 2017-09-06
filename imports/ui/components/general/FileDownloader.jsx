@@ -40,7 +40,7 @@ export default class FileDownloader extends Component {
       <Button raised
         icon={this.state.downloading && <LoopIcon className="fa-spin" />}
         label={this.props.buttonLabel}
-        onTouchTap={this.handleClick}
+        onClick={this.handleClick}
       />
     );
   }

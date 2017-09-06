@@ -62,7 +62,7 @@ export default class HomePage extends Component {
                     labelStyle={styles.label}
                     overlayStyle={styles.button}
                     id="compareButton"
-                    onTouchTap={() =>
+                    onClick={() =>
                       track('Funnel - clicked home page CTA', {
                         title: 'compare',
                         at: 'top',
@@ -77,7 +77,7 @@ export default class HomePage extends Component {
                     labelStyle={styles.label}
                     overlayStyle={styles.button}
                     id="acquisitionButton"
-                    onTouchTap={() =>
+                    onClick={() =>
                       track('Funnel - clicked home page CTA', {
                         title: 'acquisition',
                         at: 'top',
@@ -122,7 +122,7 @@ export default class HomePage extends Component {
             </div>
             <div className="scroll-button">
               <IconButton
-                onTouchTap={() => {
+                onClick={() => {
                   Scroll.scroller.scrollTo('descriptions', {
                     duration: 500,
                     delay: 200,
@@ -261,7 +261,7 @@ export default class HomePage extends Component {
                       buttonStyle={styles.button}
                       labelStyle={styles.label}
                       overlayStyle={styles.button}
-                      onTouchTap={() =>
+                      onClick={() =>
                         track('Funnel - clicked home page CTA', {
                           title: 'compare',
                           at: 'bottom',
@@ -275,7 +275,7 @@ export default class HomePage extends Component {
                       buttonStyle={styles.button}
                       labelStyle={styles.label}
                       overlayStyle={styles.button}
-                      onTouchTap={() =>
+                      onClick={() =>
                         track('Funnel - clicked home page CTA', {
                           title: 'acquisition',
                           at: 'bottom',

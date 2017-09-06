@@ -19,7 +19,7 @@ const TodoItem = props => {
 
       <Button raised
         label={props.label}
-        onTouchTap={e => props.handleClick(e)}
+        onClick={e => props.handleClick(e)}
         primary
       />
     </article>

@@ -56,7 +56,7 @@ export default class ConditionsButton extends Component {
       <Button
         label={<T id="ConditionsButton.CTA" />}
         primary
-        onTouchTap={this.handleClose}
+        onClick={this.handleClose}
       />,
     ];
 
@@ -65,9 +65,9 @@ export default class ConditionsButton extends Component {
         <Button
           raised
           label={<T id="ConditionsButton.title" />}
-          onTouchTap={this.handleOpen}
+          onClick={this.handleOpen}
           primary={this.props.primary}
-          onTouchTap={this.props.onClick}
+          onClick={this.props.onClick}
         />
         <Dialog
           actions={actions}

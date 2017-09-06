@@ -60,7 +60,7 @@ export default class Start1Text extends Component {
           })}
         >
           <CloseIcon
-            onTouchTap={() => {
+            onClick={() => {
               setStateValue(name, 0, true);
               this.input.input.inputElement.focus();
             }}

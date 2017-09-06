@@ -93,7 +93,7 @@ const SideNav = props => {
       <div className="logout text-center">
         <Button
           label="Déconnexion"
-          onTouchTap={() => Meteor.logout(() => props.history.push('/home'))}
+          onClick={() => Meteor.logout(() => props.history.push('/home'))}
           icon={<PowerOffIcon />}
         />
       </div>

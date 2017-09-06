@@ -42,7 +42,7 @@ const DashboardItem = props => {
             <MenuItem
               key={a.id}
               primaryText={<T id={`DashboardMenu.${a.id}`} />}
-              onTouchTap={() => (a.handleClick ? a.handleClick() : {})}
+              onClick={() => (a.handleClick ? a.handleClick() : {})}
               containerElement={a.link && <Link to={a.link} />}
             />,
           )}

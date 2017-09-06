@@ -68,7 +68,7 @@ export default class Table extends Component {
               (<TableRow
                 key={row.id || i}
                 selected={row.id === selected}
-                onTouchTap={
+                onClick={
                   row.handleClick ? () => row.handleClick() : () => {}
                 }
               >

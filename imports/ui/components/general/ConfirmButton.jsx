@@ -38,14 +38,14 @@ export default class ConfirmButton extends Component {
         key={1}
         label={<T id="general.cancel" />}
         primary
-        onTouchTap={this.handleClose}
+        onClick={this.handleClose}
       />,
       <Button
         key={2}
         label={<T id="general.yes" />}
         primary
         keyboardFocused
-        onTouchTap={() => {
+        onClick={() => {
           handleClick();
           this.handleClose();
         }}
@@ -57,7 +57,7 @@ export default class ConfirmButton extends Component {
         <Button
           raised={raised}
           label={label}
-          onTouchTap={this.handleOpen}
+          onClick={this.handleOpen}
           primary={primary}
           secondary={secondary}
           disabled={disabled}

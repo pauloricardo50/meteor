@@ -26,7 +26,7 @@ const OfferToggle = props => {
     <div style={styles.div}>
       <span
         className={!props.value && 'active'}
-        onTouchTap={() => props.handleToggle(null, false)}
+        onClick={() => props.handleToggle(null, false)}
         style={styles.span}
       >
         {/* use toString, or else a count of 0 isn't rendered */}
@@ -47,7 +47,7 @@ const OfferToggle = props => {
       />
       <span
         className={props.value && 'active'}
-        onTouchTap={() => props.handleToggle(null, true)}
+        onClick={() => props.handleToggle(null, true)}
         style={styles.span}
       >
         <T

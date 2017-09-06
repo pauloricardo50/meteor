@@ -25,7 +25,7 @@ const Start1Slider = props =>
     />
     {props.value >= props.sliderMax &&
       <div className="sliderMaxButton animated fadeIn">
-        <AddIcon onTouchTap={props.setSliderMax} style={{ cursor: 'pointer' }} />
+        <AddIcon onClick={props.setSliderMax} style={{ cursor: 'pointer' }} />
       </div>}
   </div>;
 

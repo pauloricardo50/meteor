@@ -266,7 +266,7 @@ export default class OfferForm extends Component {
                 raised
                 label="Annuler"
                 style={styles.button}
-                onTouchTap={this.props.handleCancel}
+                onClick={this.props.handleCancel}
               />}
             <Button raised label="Envoyer" type="submit" primary />
           </div>

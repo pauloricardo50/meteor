@@ -35,7 +35,7 @@ const handleCheat = (props) => {
 
 const FakePropertyCompleter = props =>
   (<div className="text-center" style={{ margin: '20px 0' }}>
-    <Button raised label="Tricher" onTouchTap={() => handleCheat(props)} />
+    <Button raised label="Tricher" onClick={() => handleCheat(props)} />
   </div>);
 
 FakePropertyCompleter.propTypes = {

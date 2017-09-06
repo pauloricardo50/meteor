@@ -25,7 +25,7 @@ const AdminDev = props => {
     <section>
       <h1>Ajouter des tests</h1>
       <div>
-        <Button raised label="En demande de vérification" onTouchTap={() => addVerifyingRequest()} />
+        <Button raised label="En demande de vérification" onClick={() => addVerifyingRequest()} />
       </div>
     </section>
   );

@@ -22,12 +22,12 @@ const FakeOfferAdder = props => {
     <div className="text-center" style={{ marginBottom: 40 }}>
       <Button raised
         label="Ajouter 20 offres imaginaires"
-        onTouchTap={() => addLotsOfFakeOffers(props.loanRequest)}
+        onClick={() => addLotsOfFakeOffers(props.loanRequest)}
         style={{ margin: 8 }}
       />
       <Button raised
         label="Ajouter offre imaginaire"
-        onTouchTap={() => addFakeOffer(props.loanRequest)}
+        onClick={() => addFakeOffer(props.loanRequest)}
         style={{ margin: 8 }}
       />
     </div>

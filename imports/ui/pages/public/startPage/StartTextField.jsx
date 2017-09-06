@@ -66,7 +66,7 @@ export default class StartTextField extends React.Component {
           <div className={classnames({ 'delete-button': true, off: !val })}>
             <div className="absolute-wrapper">
               <CloseIcon
-                onTouchTap={() => {
+                onClick={() => {
                   this.props.setFormState(this.props.id, '');
                   if (this.props.inputRef) {
                     this.props.inputRef.input.inputElement.focus();

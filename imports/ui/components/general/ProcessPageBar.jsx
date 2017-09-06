@@ -78,7 +78,7 @@ export default class ProcessPageBar extends Component {
             style={smallWidth ? styles.smallButton : styles.button}
             disabled={!prevLink}
             containerElement={prevLink ? <Link to={prevLink} /> : undefined}
-            onTouchTap={() =>
+            onClick={() =>
               track('ProcessPageBar - clicked back', { to: prevLink })}
           />}
         <Button
@@ -99,7 +99,7 @@ export default class ProcessPageBar extends Component {
           containerElement={
             nextLink && !lastPartOfStep ? <Link to={nextLink} /> : undefined
           }
-          onTouchTap={() => {
+          onClick={() => {
             track('ProcessPageBar - clicked next', {
               to: lastPartOfStep ? 'next step' : nextLink,
             });

@@ -74,7 +74,7 @@ export default class LastStepsForm extends Component {
           </DropDownMenu>
           <Button raised
             label="Ajouter"
-            onTouchTap={this.handleAdd}
+            onClick={this.handleAdd}
             disabled={!this.state.selected}
             primary
           />
@@ -96,7 +96,7 @@ export default class LastStepsForm extends Component {
               JSON.stringify(this.state.lastSteps)
             }
             label="Enregistrer"
-            onTouchTap={this.handleSave}
+            onClick={this.handleSave}
           />
         </div>
       </article>

@@ -23,7 +23,7 @@ const DashboardProperty = props => {
       <Link
         to={`/app/requests/${props.loanRequest._id}/property`}
         className="link"
-        onTouchTap={() => track('clicked dashboard property', {})}
+        onClick={() => track('clicked dashboard property', {})}
       >
         <Icon style={{ marginRight: 16, width: 64, height: 64 }} className="icon" />
         {/* <span className="fa fa-user-circle-o fa-4x" style={{ marginRight: 16 }} /> */}

@@ -65,7 +65,7 @@ const FieldToggles = ({
                 <Button
                   primary
                   label={<T id="general.delete" />}
-                  onTouchTap={() => removeCustomField(field.id)}
+                  onClick={() => removeCustomField(field.id)}
                   style={{ position: 'absolute', left: '100%', top: 0 }}
                 />
               </div>),

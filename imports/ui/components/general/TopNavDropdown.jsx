@@ -73,7 +73,7 @@ const TopNavDropdown = ({ currentUser, history }) =>
           containerElement={
             <Link
               to={item.link}
-              onTouchTap={() => {
+              onClick={() => {
                 track('TopNavDropdown - clicked on link', {
                   from: history.location.pathname,
                   to: item.link,
@@ -86,7 +86,7 @@ const TopNavDropdown = ({ currentUser, history }) =>
     <Divider />
     <MenuItem
       primaryText={<T id="general.logout" />}
-      onTouchTap={() => {
+      onClick={() => {
         track('TopNavDropdown - logged out', {});
         Meteor.logout(() => history.push('/home'));
       }}

@@ -43,7 +43,7 @@ export default class OffersTab extends Component {
         <ul className="admin-offer-list">
           {this.props.offers.map((o, i) => (
             <li className="mask1" key={o._id}>
-              <div className="top" onTouchTap={() => this.handleToggle(i)}>
+              <div className="top" onClick={() => this.handleToggle(i)}>
                 <div className="title">
                   <h2 className="fixed-size">
                     <span className="bold">{o.organization}</span>

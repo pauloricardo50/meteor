@@ -19,7 +19,7 @@ export default class StrategyChoices extends Component {
       <article className={articleClasses} key={index}>
         <div
           className="content"
-          onTouchTap={() => {
+          onClick={() => {
             if (chosen) {
               handleChoose('');
             } else {

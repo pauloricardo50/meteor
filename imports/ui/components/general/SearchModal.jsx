@@ -24,7 +24,7 @@ export default class SearchModal extends Component {
       <span>
         <IconButton
           tooltip={<T id="general.search" />}
-          onTouchTap={this.handleOpen}
+          onClick={this.handleOpen}
           touch
           tooltipPosition="bottom-left"
         >
@@ -38,7 +38,7 @@ export default class SearchModal extends Component {
           }
           actions={[
             <Button
-              onTouchTap={this.handleClose}
+              onClick={this.handleClose}
               key={0}
               label={<T id="general.close" />}
             />,

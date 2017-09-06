@@ -116,12 +116,12 @@ class CustomFieldAdder extends Component {
         >
           <Button
             label={<T id="general.cancel" />}
-            onTouchTap={this.props.handleClose}
+            onClick={this.props.handleClose}
           />
           <Button
             primary
             label={<T id="CustomFieldAdder.add" />}
-            onTouchTap={this.handleSubmit}
+            onClick={this.handleSubmit}
             disabled={!(currentType && name)}
           />
         </div>
