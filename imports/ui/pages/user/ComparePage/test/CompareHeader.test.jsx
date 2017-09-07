@@ -3,7 +3,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 
-import CompareHeader from '../CompareHeader.jsx';
+import CompareHeader from '../CompareHeader';
 
 describe('<CompareHeader />', () => {
   let props;

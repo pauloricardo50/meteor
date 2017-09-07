@@ -2,13 +2,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
-import TextInput from './TextInput.jsx';
-import SelectFieldInput from './SelectFieldInput.jsx';
+import { T } from '/imports/ui/components/general/Translation';
+import TextInput from './TextInput';
+import SelectFieldInput from './SelectFieldInput';
 
-import FormValidator from './FormValidator.jsx';
+import FormValidator from './FormValidator';
 
 const styles = {
   button: {

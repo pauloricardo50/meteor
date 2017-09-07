@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 import Dialog from 'material-ui/Dialog';
 
-import TextInput from '/imports/ui/components/general/TextInput.jsx';
-import GoogleMapsAutocomplete from '/imports/ui/components/general/GoogleMapsAutocomplete.jsx';
-import GoogleMapContainer from '/imports/ui/components/general/GoogleMapContainer.jsx';
-import GoogleMap from '/imports/ui/components/general/GoogleMap.jsx';
+import TextInput from '/imports/ui/components/general/TextInput';
+import GoogleMapsAutocomplete from '/imports/ui/components/general/GoogleMapsAutocomplete';
+import GoogleMapContainer from '/imports/ui/components/general/GoogleMapContainer';
+import GoogleMap from '/imports/ui/components/general/GoogleMap';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 import cleanMethod from '/imports/api/cleanMethods';
 
 export default class PropertyAdder extends Component {

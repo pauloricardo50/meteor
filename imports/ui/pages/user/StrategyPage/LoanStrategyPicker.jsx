@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { getLoanValue } from '/imports/js/helpers/requestFunctions';
-import StrategyChoices from '/imports/ui/components/general/StrategyChoices.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
-import TranchePicker from './TranchePicker.jsx';
+import StrategyChoices from '/imports/ui/components/general/StrategyChoices';
+import { T } from '/imports/ui/components/general/Translation';
+import TranchePicker from './TranchePicker';
 
 const getChoices = () => [
   {

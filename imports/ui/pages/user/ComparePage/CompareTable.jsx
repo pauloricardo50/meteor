@@ -6,14 +6,14 @@ import { Meteor } from 'meteor/meteor';
 import orderBy from 'lodash/orderBy';
 import debounce from 'lodash/debounce';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 import ArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 import ArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 
 import { easeOut } from '/imports/js/helpers/browserFunctions';
-import { T } from '/imports/ui/components/general/Translation.jsx';
-import CompareHeader from './CompareHeader.jsx';
-import CompareTableContent from './CompareTableContent.jsx';
+import { T } from '/imports/ui/components/general/Translation';
+import CompareHeader from './CompareHeader';
+import CompareTableContent from './CompareTableContent';
 
 export const sortFunc = (properties, sorting) =>
   orderBy(

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
-import Comparator from './Comparator.jsx';
-import GoogleMapContainer from '/imports/ui/components/general/GoogleMapContainer.jsx';
+import { T } from '/imports/ui/components/general/Translation';
+import Comparator from './Comparator';
+import GoogleMapContainer from '/imports/ui/components/general/GoogleMapContainer';
 import cleanMethod from '/imports/api/cleanMethods';
 
 const styles = {

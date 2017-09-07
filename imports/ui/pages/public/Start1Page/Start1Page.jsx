@@ -4,11 +4,11 @@ import merge from 'lodash/merge';
 import queryString from 'query-string';
 import classnames from 'classnames';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 import ArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
 import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 import { toNumber } from '/imports/js/helpers/conversionFunctions';
 import {
   changeProperty,
@@ -19,9 +19,9 @@ import {
   getBorrowRatio,
 } from '/imports/js/helpers/startFunctions';
 import { storageAvailable } from '/imports/js/helpers/browserFunctions';
-import Accordion from '/imports/ui/components/general/Accordion.jsx';
+import Accordion from '/imports/ui/components/general/Accordion';
 
-import Start1Calculator from './Start1Calculator.jsx';
+import Start1Calculator from './Start1Calculator';
 
 const getArray = (income, fortune, property, borrow, ratio) => {
   const incomeIcon = classnames({

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Uploader from './Uploader.jsx';
+import Uploader from './Uploader';
 
 const UploaderArray = props =>
   (<div className="flex-col center">

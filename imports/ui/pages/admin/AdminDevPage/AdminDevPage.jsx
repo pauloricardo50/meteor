@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 
 const addVerifyingRequest = () => {
   const object = {

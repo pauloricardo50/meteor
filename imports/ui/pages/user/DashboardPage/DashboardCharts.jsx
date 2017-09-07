@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ProjectPieChart from '/imports/ui/components/charts/ProjectPieChart.jsx';
-import ProjectBarChart from '/imports/ui/components/charts/ProjectBarChart.jsx';
-import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
-import DashboardItem from './DashboardItem.jsx';
+import ProjectPieChart from '/imports/ui/components/charts/ProjectPieChart';
+import ProjectBarChart from '/imports/ui/components/charts/ProjectBarChart';
+import ExpensesChart from '/imports/ui/components/charts/ExpensesChart';
+import DashboardItem from './DashboardItem';
 
 const DashboardCharts = props => {
   return (

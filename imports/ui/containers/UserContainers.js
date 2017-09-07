@@ -1,18 +1,18 @@
-import AppLayout from '/imports/ui/layouts/AppLayout.jsx';
-import _DashboardPage from '/imports/ui/pages/user/DashboardPage.jsx';
-import _BorrowerPage from '/imports/ui/pages/user/BorrowerPage.jsx';
-import _PropertyPage from '/imports/ui/pages/user/PropertyPage.jsx';
-import _AuctionPage from '/imports/ui/pages/user/AuctionPage.jsx';
-import _StrategyPage from '/imports/ui/pages/user/StrategyPage.jsx';
-import _LenderPickerPage from '/imports/ui/pages/user/LenderPickerPage.jsx';
-import _StructurePage from '/imports/ui/pages/user/StructurePage.jsx';
-import _VerificationPage from '/imports/ui/pages/user/VerificationPage.jsx';
-import _ContractPage from '/imports/ui/pages/user/ContractPage.jsx';
-import _ClosingPage from '/imports/ui/pages/user/ClosingPage.jsx';
-import _DevPage from '/imports/ui/pages/user/DevPage.jsx';
-import _FinancePage from '/imports/ui/pages/user/FinancePage.jsx';
-import _ComparePage from '/imports/ui/pages/user/ComparePage.jsx';
-import _AppPage from '/imports/ui/pages/user/AppPage.jsx';
+import AppLayout from '/imports/ui/layouts/AppLayout';
+import _DashboardPage from '/imports/ui/pages/user/DashboardPage';
+import _BorrowerPage from '/imports/ui/pages/user/BorrowerPage';
+import _PropertyPage from '/imports/ui/pages/user/PropertyPage';
+import _AuctionPage from '/imports/ui/pages/user/AuctionPage';
+import _StrategyPage from '/imports/ui/pages/user/StrategyPage';
+import _LenderPickerPage from '/imports/ui/pages/user/LenderPickerPage';
+import _StructurePage from '/imports/ui/pages/user/StructurePage';
+import _VerificationPage from '/imports/ui/pages/user/VerificationPage';
+import _ContractPage from '/imports/ui/pages/user/ContractPage';
+import _ClosingPage from '/imports/ui/pages/user/ClosingPage';
+import _DevPage from '/imports/ui/pages/user/DevPage';
+import _FinancePage from '/imports/ui/pages/user/FinancePage';
+import _ComparePage from '/imports/ui/pages/user/ComparePage';
+import _AppPage from '/imports/ui/pages/user/AppPage';
 
 import {
   userContainer,

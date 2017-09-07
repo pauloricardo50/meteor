@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import AllUsersTable from '/imports/ui/components/admin/AllUsersTable.jsx';
+import AllUsersTable from '/imports/ui/components/admin/AllUsersTable';
 
 const styles = {
   table: {

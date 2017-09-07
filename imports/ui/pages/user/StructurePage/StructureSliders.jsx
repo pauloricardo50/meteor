@@ -11,7 +11,7 @@ import {
   getInsuranceFortune,
 } from '/imports/js/helpers/borrowerFunctions';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
 const getArray = (borrowers, showInsurance) => [
   {

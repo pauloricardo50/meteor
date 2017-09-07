@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedRelative } from 'react-intl';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 
-import Table from '/imports/ui/components/general/Table.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import Table from '/imports/ui/components/general/Table';
+import { T } from '/imports/ui/components/general/Translation';
 
 import getActions from '/imports/js/arrays/adminActions';
 import { completeAction } from '/imports/api/adminActions/methods';

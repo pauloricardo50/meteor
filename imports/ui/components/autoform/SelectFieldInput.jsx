@@ -4,8 +4,8 @@ import React, { Component } from 'react';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-import SavingIcon from './SavingIcon.jsx';
-import FormValidator from './FormValidator.jsx';
+import SavingIcon from './SavingIcon';
+import FormValidator from './FormValidator';
 import cleanMethod from '/imports/api/cleanMethods';
 
 const styles = {

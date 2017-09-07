@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
 import Scroll from 'react-scroll';

@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import { getLoanValue } from '/imports/js/helpers/requestFunctions';
 
-import LoanTranche from './LoanTranche.jsx';
+import LoanTranche from './LoanTranche';
 
 const styles = {
   button: {

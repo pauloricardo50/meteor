@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import getMountedComponent from '/imports/js/helpers/testHelpers';
 
-import Start1Page from '../Start1Page.jsx';
+import Start1Page from '../Start1Page';
 
 if (Meteor.isClient) {
   describe('<Start1Page />', () => {

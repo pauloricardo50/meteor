@@ -8,8 +8,8 @@ import {
   getRealMonthly,
 } from '/imports/js/helpers/startFunctions';
 
-import Recap from '/imports/ui/components/general/Recap.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import Recap from '/imports/ui/components/general/Recap';
+import { T } from '/imports/ui/components/general/Translation';
 
 const isReady = ({ income, fortune, property }) =>
   property && income && fortune;

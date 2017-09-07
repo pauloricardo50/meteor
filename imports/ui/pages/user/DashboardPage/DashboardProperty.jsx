@@ -7,9 +7,9 @@ import BuildingIcon from 'material-ui/svg-icons/communication/business';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 
 import track from '/imports/js/helpers/analytics';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 import { getPropertyCompletion } from '/imports/js/helpers/requestFunctions';
-import DashboardItem from './DashboardItem.jsx';
+import DashboardItem from './DashboardItem';
 
 const DashboardProperty = props => {
   const Icon = props.loanRequest.property.style === 'villa' ? HomeIcon : BuildingIcon;

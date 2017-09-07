@@ -3,14 +3,14 @@ import React from 'react';
 
 import get from 'lodash/get';
 
-import TextInput from './TextInput.jsx';
-import RadioInput from './RadioInput.jsx';
-import SelectFieldInput from './SelectFieldInput.jsx';
-import ConditionalInput from './ConditionalInput.jsx';
-import DateInput from './DateInput.jsx';
-import DropzoneInput from './DropzoneInput.jsx';
-import DropzoneArray from '../general/DropzoneArray.jsx';
-import ArrayInput from './ArrayInput.jsx';
+import TextInput from './TextInput';
+import RadioInput from './RadioInput';
+import SelectFieldInput from './SelectFieldInput';
+import ConditionalInput from './ConditionalInput';
+import DateInput from './DateInput';
+import DropzoneInput from './DropzoneInput';
+import DropzoneArray from '../general/DropzoneArray';
+import ArrayInput from './ArrayInput';
 
 const styles = {
   form: {

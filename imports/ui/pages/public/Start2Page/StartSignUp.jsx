@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import EmailLine from './EmailLine.jsx';
-import PasswordLine from './PasswordLine.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import EmailLine from './EmailLine';
+import PasswordLine from './PasswordLine';
+import { T } from '/imports/ui/components/general/Translation';
 
 const styles = {
   section: {

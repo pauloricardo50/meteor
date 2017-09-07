@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
-import Unverified from '/imports/ui/components/general/Unverified.jsx';
+import { T } from '/imports/ui/components/general/Translation';
+import Unverified from '/imports/ui/components/general/Unverified';
 
-import AppItem from './AppItem.jsx';
+import AppItem from './AppItem';
 
 const AppPage = ({ loanRequests, properties, currentUser }) => (
   <section className="flex-col center">

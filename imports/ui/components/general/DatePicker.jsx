@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import MuiDatePicker from 'material-ui/DatePicker';
 import { injectIntl } from 'react-intl';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
 const DatePicker = (props) => {
   const {

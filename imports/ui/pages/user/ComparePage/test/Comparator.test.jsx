@@ -5,9 +5,9 @@ import { shallow } from 'enzyme';
 import { Factory } from 'meteor/dburles:factory';
 import { stubCollections } from '/imports/js/helpers/testHelpers';
 
-import Comparator from '../Comparator.jsx';
-import CompareTable from '../CompareTable.jsx';
-import CompareOptions from '../CompareOptions.jsx';
+import Comparator from '../Comparator';
+import CompareTable from '../CompareTable';
+import CompareOptions from '../CompareOptions';
 
 describe('<Comparator />', () => {
   let comparator;

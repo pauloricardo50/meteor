@@ -5,9 +5,9 @@ import classnames from 'classnames';
 
 import cleanMethod from '/imports/api/cleanMethods';
 
-import CompareColumnFooter from './CompareColumnFooter.jsx';
-import CompareColumnField from './CompareColumnField.jsx';
-import CompareColumnEditingField from './CompareColumnEditingField.jsx';
+import CompareColumnFooter from './CompareColumnFooter';
+import CompareColumnField from './CompareColumnField';
+import CompareColumnEditingField from './CompareColumnEditingField';
 
 export default class CompareColumn extends Component {
   constructor(props) {

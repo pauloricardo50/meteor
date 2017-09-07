@@ -5,9 +5,9 @@ import AssessmentIcon from 'material-ui/svg-icons/action/assessment';
 import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
-import RequestSelector from './RequestSelector.jsx';
-import SideNavStepper from './SideNavStepper.jsx';
+import { T } from '/imports/ui/components/general/Translation';
+import RequestSelector from './RequestSelector';
+import SideNavStepper from './SideNavStepper';
 
 const SideNavUser = (props) => {
   const {

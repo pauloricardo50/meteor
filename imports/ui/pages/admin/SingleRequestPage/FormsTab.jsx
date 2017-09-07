@@ -6,7 +6,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Toggle from 'material-ui/Toggle';
 
-import AutoForm from '/imports/ui/components/autoform/AutoForm.jsx';
+import AutoForm from '/imports/ui/components/autoform/AutoForm';
 
 import PropertyFormArray from '/imports/js/arrays/PropertyFormArray';
 import {

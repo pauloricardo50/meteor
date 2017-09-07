@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import colors from '/imports/js/config/colors';
 
-import { T, IntlDate } from '/imports/ui/components/general/Translation.jsx';
-import DashboardItem from './DashboardItem.jsx';
+import { T, IntlDate } from '/imports/ui/components/general/Translation';
+import DashboardItem from './DashboardItem';
 
 const styles = {
   div: {

@@ -1,5 +1,5 @@
-import _PublicLayout from '/imports/ui/layouts/PublicLayout.jsx';
-import _Start2Page from '/imports/ui/pages/public/Start2Page.jsx';
+import _PublicLayout from '/imports/ui/layouts/PublicLayout';
+import _Start2Page from '/imports/ui/pages/public/Start2Page';
 
 import { generalContainer } from './Containers';
 

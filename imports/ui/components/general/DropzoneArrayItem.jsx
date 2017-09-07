@@ -5,10 +5,10 @@ import classnames from 'classnames';
 import IconButton from 'material-ui/IconButton';
 import ArrowDown from 'material-ui/svg-icons/navigation/arrow-drop-down-circle';
 
-import DropzoneInput from '../autoform/DropzoneInput.jsx';
+import DropzoneInput from '../autoform/DropzoneInput';
 import colors from '/imports/js/config/colors';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
 const getStyles = (props, currentValue) => ({
   article: {

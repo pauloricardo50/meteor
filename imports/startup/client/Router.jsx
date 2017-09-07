@@ -14,24 +14,24 @@ import { IntlProvider } from 'react-intl';
 import { getUserLocale, getTranslations, getFormats } from '../localization';
 
 import Loadable from '/imports/js/helpers/loadable';
-import PasswordPage from '/imports/ui/pages/public/PasswordPage.jsx';
+import PasswordPage from '/imports/ui/pages/public/PasswordPage';
 
-// import PublicRoutes from './routes/PublicRoutes.jsx';
-// import UserRoutes from './routes/UserRoutes.jsx';
-// import AdminRoutes from './routes/AdminRoutes.jsx';
-// import PartnerRoutes from './routes/PartnerRoutes.jsx';
+// import PublicRoutes from './routes/PublicRoutes';
+// import UserRoutes from './routes/UserRoutes';
+// import AdminRoutes from './routes/AdminRoutes';
+// import PartnerRoutes from './routes/PartnerRoutes';
 
 const PublicRoutes = Loadable({
-  loader: () => import('./routes/PublicRoutes.jsx'),
+  loader: () => import('./routes/PublicRoutes'),
 });
 const UserRoutes = Loadable({
-  loader: () => import('./routes/UserRoutes.jsx'),
+  loader: () => import('./routes/UserRoutes'),
 });
 const AdminRoutes = Loadable({
-  loader: () => import('./routes/AdminRoutes.jsx'),
+  loader: () => import('./routes/AdminRoutes'),
 });
 const PartnerRoutes = Loadable({
-  loader: () => import('./routes/PartnerRoutes.jsx'),
+  loader: () => import('./routes/PartnerRoutes'),
 });
 
 class ScrollToTop extends Component {

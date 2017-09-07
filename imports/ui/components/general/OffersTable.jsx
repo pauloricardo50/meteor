@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import ConditionsButton from '/imports/ui/components/general/ConditionsButton.jsx';
-import { IntlNumber } from '/imports/ui/components/general/Translation.jsx';
+import ConditionsButton from '/imports/ui/components/general/ConditionsButton';
+import { IntlNumber } from '/imports/ui/components/general/Translation';
 
-import Table from './Table.jsx';
+import Table from './Table';
 
 const percentageStyle = { paddingLeft: 8, paddingRight: 8 };
 const columns = [

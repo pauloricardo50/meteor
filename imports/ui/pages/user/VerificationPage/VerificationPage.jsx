@@ -2,13 +2,13 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 import { Link } from 'react-router-dom';
-import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
+import { LoadingComponent } from '/imports/ui/components/general/Loading';
 import { isDemo } from '/imports/js/helpers/browserFunctions';
-import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
-import ConfirmButton from '/imports/ui/components/general/ConfirmButton.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import ProcessPage from '/imports/ui/components/general/ProcessPage';
+import ConfirmButton from '/imports/ui/components/general/ConfirmButton';
+import { T } from '/imports/ui/components/general/Translation';
 import track from '/imports/js/helpers/analytics';
 
 export default class VerificationPage extends Component {

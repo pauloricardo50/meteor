@@ -13,8 +13,8 @@ import {
   toNumber,
   toDecimalNumber,
 } from '/imports/js/helpers/conversionFunctions';
-import SavingIcon from './SavingIcon.jsx';
-import FormValidator from './FormValidator.jsx';
+import SavingIcon from './SavingIcon';
+import FormValidator from './FormValidator';
 
 const styles = {
   div: {

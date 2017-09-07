@@ -4,19 +4,19 @@ import { Link } from 'react-router-dom';
 
 import track from '/imports/js/helpers/analytics';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
 
 import constants from '/imports/js/config/constants';
 import Loadable from '/imports/js/helpers/loadable';
 
-import Accordion from '/imports/ui/components/general/Accordion.jsx';
-import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
-import Start1Line from './Start1Line.jsx';
-import Start1Recap from './Start1Recap.jsx';
-import Start1Validator from './Start1Validator.jsx';
+import Accordion from '/imports/ui/components/general/Accordion';
+import { T, IntlNumber } from '/imports/ui/components/general/Translation';
+import Start1Line from './Start1Line';
+import Start1Recap from './Start1Recap';
+import Start1Validator from './Start1Validator';
 
-import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
+import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests';
 
 const Start1Calculator = (props) => {
   const {

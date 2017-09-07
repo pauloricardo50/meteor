@@ -4,12 +4,12 @@ import cleanMethod from '/imports/api/cleanMethods';
 import CountUp from 'react-countup';
 import { injectIntl } from 'react-intl';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 import { getLenderCount } from '/imports/js/helpers/requestFunctions';
 
-import AuctionForm from './AuctionForm.jsx';
-import ConfirmButton from '/imports/ui/components/general/ConfirmButton.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import AuctionForm from './AuctionForm';
+import ConfirmButton from '/imports/ui/components/general/ConfirmButton';
+import { T } from '/imports/ui/components/general/Translation';
 import track from '/imports/js/helpers/analytics';
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 

@@ -5,10 +5,10 @@ import Scroll from 'react-scroll';
 import CountUp from 'react-countup';
 import { injectIntl } from 'react-intl';
 
-import Button from '/imports/ui/components/general/Button.jsx';
-import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests.jsx';
-import Recap from '/imports/ui/components/general/Recap.jsx';
-import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
+import Button from '/imports/ui/components/general/Button';
+import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests';
+import Recap from '/imports/ui/components/general/Recap';
+import { T, IntlNumber } from '/imports/ui/components/general/Translation';
 import track from '/imports/js/helpers/analytics';
 import constants from '/imports/js/config/constants';
 import saveStartForm from './saveStartForm';

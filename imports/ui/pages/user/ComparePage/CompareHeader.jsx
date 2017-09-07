@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
 import IconButton from 'material-ui/IconButton';
 import LockOpen from 'material-ui/svg-icons/action/lock-open';
 import LockClosed from 'material-ui/svg-icons/action/lock-outline';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
-import DialogSimple from '/imports/ui/components/general/DialogSimple.jsx';
+import { T } from '/imports/ui/components/general/Translation';
+import DialogSimple from '/imports/ui/components/general/DialogSimple';
 
-import CustomFieldAdder from './CustomFieldAdder.jsx';
-import FilterIcon from './FilterIcon.jsx';
-import SortIcon from './SortIcon.jsx';
+import CustomFieldAdder from './CustomFieldAdder';
+import FilterIcon from './FilterIcon';
+import SortIcon from './SortIcon';
 
 const renderField = (props, field) => {
   const { id, type, name, custom } = field;

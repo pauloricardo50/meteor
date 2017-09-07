@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import AutoTooltip from './AutoTooltip.jsx';
+import AutoTooltip from './AutoTooltip';
 
 const MetricsTriple = props =>
   (<div className="metrics">

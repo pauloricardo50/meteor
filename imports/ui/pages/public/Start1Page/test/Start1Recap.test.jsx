@@ -3,8 +3,8 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 
-import Start1Recap from '../Start1Recap.jsx';
-import Recap from '/imports/ui/components/general/Recap.jsx';
+import Start1Recap from '../Start1Recap';
+import Recap from '/imports/ui/components/general/Recap';
 
 describe('Start1Recap', () => {
   it('renders without props', () => {

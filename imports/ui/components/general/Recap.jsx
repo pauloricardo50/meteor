@@ -5,8 +5,8 @@ import classnames from 'classnames';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
-import AutoTooltip from './AutoTooltip.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import AutoTooltip from './AutoTooltip';
+import { T } from '/imports/ui/components/general/Translation';
 
 import {
   getPropAndWork,

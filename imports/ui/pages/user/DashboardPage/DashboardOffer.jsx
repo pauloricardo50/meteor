@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
-import OfferToggle from '/imports/ui/components/general/OfferToggle.jsx';
-import ConditionsButton from '/imports/ui/components/general/ConditionsButton.jsx';
-import DashboardItem from './DashboardItem.jsx';
+import { T, IntlNumber } from '/imports/ui/components/general/Translation';
+import OfferToggle from '/imports/ui/components/general/OfferToggle';
+import ConditionsButton from '/imports/ui/components/general/ConditionsButton';
+import DashboardItem from './DashboardItem';
 
 export default class DashboardOffer extends Component {
   constructor(props) {

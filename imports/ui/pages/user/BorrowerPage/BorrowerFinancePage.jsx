@@ -3,13 +3,13 @@ import React from 'react';
 
 import Checkbox from 'material-ui/Checkbox';
 
-import AutoForm from '/imports/ui/components/autoform/AutoForm.jsx';
+import AutoForm from '/imports/ui/components/autoform/AutoForm';
 import { getBorrowerFinanceArray } from '/imports/js/arrays/BorrowerFormArray';
 import cleanMethod from '/imports/api/cleanMethods';
 import Recap from '/imports/ui/components/general/Recap';
 import constants from '/imports/js/config/constants';
-import LoadingButton from '/imports/ui/components/general/LoadingButton.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import LoadingButton from '/imports/ui/components/general/LoadingButton';
+import { T } from '/imports/ui/components/general/Translation';
 import { disableForms } from '/imports/js/helpers/requestFunctions';
 import track from '/imports/js/helpers/analytics';
 

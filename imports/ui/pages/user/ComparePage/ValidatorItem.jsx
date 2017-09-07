@@ -5,7 +5,7 @@ import CheckIcon from 'material-ui/svg-icons/navigation/check';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import WarningIcon from 'material-ui/svg-icons/alert/warning';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
 const styles = {
   div: {

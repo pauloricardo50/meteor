@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import AutoForm from '/imports/ui/components/autoform/AutoForm.jsx';
+import AutoForm from '/imports/ui/components/autoform/AutoForm';
 
 import { getAuctionEndTime } from '/imports/api/loanrequests/methods';
 import cleanMethod from '/imports/api/cleanMethods';

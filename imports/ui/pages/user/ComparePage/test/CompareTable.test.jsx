@@ -9,9 +9,9 @@ import CompareTable, {
   sortFunc,
   filterFunc,
   getProperties,
-} from '../CompareTable.jsx';
-import CompareHeader from '../CompareHeader.jsx';
-import CompareTableContent from '../CompareTableContent.jsx';
+} from '../CompareTable';
+import CompareHeader from '../CompareHeader';
+import CompareTableContent from '../CompareTableContent';
 
 describe('<CompareTable />', () => {
   let properties;

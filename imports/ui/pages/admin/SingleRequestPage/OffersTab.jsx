@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import AdminNewOffer from '/imports/ui/components/admin/AdminNewOffer.jsx';
+import AdminNewOffer from '/imports/ui/components/admin/AdminNewOffer';
 import ConfirmMethod from './ConfirmMethod';
 import { deleteOffer } from '/imports/api/offers/methods';
-import ConditionsButton from '/imports/ui/components/general/ConditionsButton.jsx';
+import ConditionsButton from '/imports/ui/components/general/ConditionsButton';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 
 export default class OffersTab extends Component {

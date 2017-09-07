@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { Link, NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 import PowerOffIcon from 'material-ui/svg-icons/action/power-settings-new';
 
 const styles = {

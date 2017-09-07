@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Page from '/imports/ui/components/general/Page.jsx';
-import AmortizationTool from './AmortizationTool.jsx';
+import Page from '/imports/ui/components/general/Page';
+import AmortizationTool from './AmortizationTool';
 
 const styles = {
   div: {

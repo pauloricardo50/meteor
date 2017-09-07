@@ -4,10 +4,10 @@ import React, { Component } from 'react';
 import { getMonthlyWithOffer } from '/imports/js/helpers/requestFunctions';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import OfferToggle from '/imports/ui/components/general/OfferToggle.jsx';
-import ConditionsButton from '/imports/ui/components/general/ConditionsButton.jsx';
-import Table from '/imports/ui/components/general/Table.jsx';
-import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
+import OfferToggle from '/imports/ui/components/general/OfferToggle';
+import ConditionsButton from '/imports/ui/components/general/ConditionsButton';
+import Table from '/imports/ui/components/general/Table';
+import { T, IntlNumber } from '/imports/ui/components/general/Translation';
 import { insertAdminAction } from '/imports/api/adminActions/methods';
 import track from '/imports/js/helpers/analytics';
 

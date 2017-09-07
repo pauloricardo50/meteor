@@ -3,17 +3,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import AppBar from 'material-ui/AppBar';
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 import Toolbar from 'material-ui/Toolbar/Toolbar';
 import ToolbarGroup from 'material-ui/Toolbar/ToolbarGroup';
 import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
 import ToolbarTitle from 'material-ui/Toolbar/ToolbarTitle';
 
-import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown.jsx';
-import TopNavDrawer from '/imports/ui/components/general/TopNavDrawer.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown';
+import TopNavDrawer from '/imports/ui/components/general/TopNavDrawer';
+import { T } from '/imports/ui/components/general/Translation';
 import track from '/imports/js/helpers/analytics';
-import SearchModal from '/imports/ui/components/general/SearchModal.jsx';
+import SearchModal from '/imports/ui/components/general/SearchModal';
 
 import colors from '/imports/js/config/colors';
 

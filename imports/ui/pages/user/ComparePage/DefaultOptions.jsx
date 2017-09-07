@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import TextInput from '/imports/ui/components/general/TextInput.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
-import BorrowerOptions from './BorrowerOptions.jsx';
+import TextInput from '/imports/ui/components/general/TextInput';
+import { T } from '/imports/ui/components/general/Translation';
+import BorrowerOptions from './BorrowerOptions';
 
 const textFields = [
   { id: 'income', type: 'money' },

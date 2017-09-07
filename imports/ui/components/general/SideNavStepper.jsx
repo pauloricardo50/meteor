@@ -4,8 +4,8 @@ import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 
 import getSteps from '/imports/js/arrays/steps';
-import SideNavStepperStep from './SideNavStepperStep.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import SideNavStepperStep from './SideNavStepperStep';
+import { T } from '/imports/ui/components/general/Translation';
 
 export default class SideNavStepper extends React.Component {
   constructor(props) {

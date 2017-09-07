@@ -6,7 +6,7 @@ import { DocHead } from 'meteor/kadira:dochead';
 import { injectIntl } from 'react-intl';
 
 import getSteps from '/imports/js/arrays/steps';
-import ProcessPageBar from './ProcessPageBar.jsx';
+import ProcessPageBar from './ProcessPageBar';
 
 export const getStepValues = (props) => {
   const steps = getSteps(props);

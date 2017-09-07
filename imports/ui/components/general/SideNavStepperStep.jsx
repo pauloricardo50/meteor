@@ -7,7 +7,7 @@ import LockIcon from 'material-ui/svg-icons/action/lock-outline';
 import classnames from 'classnames';
 
 import colors from '/imports/js/config/colors';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
 const getStepIcon = ({ step, loanRequest }) => {
   const stepNb = step.nb;

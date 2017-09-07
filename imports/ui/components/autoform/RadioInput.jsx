@@ -5,7 +5,7 @@ import cleanMethod from '/imports/api/cleanMethods';
 import RadioButton from 'material-ui/RadioButton/RadioButton';
 import RadioButtonGroup from 'material-ui/RadioButton/RadioButtonGroup';
 
-import FormValidator from './FormValidator.jsx';
+import FormValidator from './FormValidator';
 
 const styles = {
   RadioButtonGroup: {

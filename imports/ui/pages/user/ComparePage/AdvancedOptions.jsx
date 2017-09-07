@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import DialogSimple from '/imports/ui/components/general/DialogSimple.jsx';
-import Slider from '/imports/ui/components/general/Slider.jsx';
-import RadioButtons from '/imports/ui/components/general/RadioButtons.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import DialogSimple from '/imports/ui/components/general/DialogSimple';
+import Slider from '/imports/ui/components/general/Slider';
+import RadioButtons from '/imports/ui/components/general/RadioButtons';
+import { T } from '/imports/ui/components/general/Translation';
 
-import FieldToggles from './FieldToggles.jsx';
+import FieldToggles from './FieldToggles';
 
 const AdvancedOptions = ({
   comparator,

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Page from '/imports/ui/components/general/Page.jsx';
-import NewRequestModal from './NewRequestModal.jsx';
-import AcceptClosingModal from './AcceptClosingModal.jsx';
-import DashboardContent from './DashboardContent.jsx';
+import Page from '/imports/ui/components/general/Page';
+import NewRequestModal from './NewRequestModal';
+import AcceptClosingModal from './AcceptClosingModal';
+import DashboardContent from './DashboardContent';
 
 import { getWidth } from '/imports/js/helpers/browserFunctions';
 

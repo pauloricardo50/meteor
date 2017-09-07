@@ -2,9 +2,9 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import { PartnerLayout } from '/imports/ui/containers/PartnerContainers';
-import PartnerHomePage from '/imports/ui/pages/partner/PartnerHomePage.jsx';
-import PartnerRequestPage from '/imports/ui/pages/partner/PartnerRequestPage.jsx';
-import NotFound from '/imports/ui/components/general/NotFound.jsx';
+import PartnerHomePage from '/imports/ui/pages/partner/PartnerHomePage';
+import PartnerRequestPage from '/imports/ui/pages/partner/PartnerRequestPage';
+import NotFound from '/imports/ui/components/general/NotFound';
 
 const PartnerRoutes = props =>
   (<PartnerLayout

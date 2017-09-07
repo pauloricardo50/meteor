@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import cleanMethod from '/imports/api/cleanMethods';
-import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
-import RankStrategy from './RankStrategy.jsx';
-import AmortizingPicker from './AmortizingPicker.jsx';
-import InsuranceStrategy from './InsuranceStrategy.jsx';
-import LoanStrategyPicker from './LoanStrategyPicker.jsx';
+import ProcessPage from '/imports/ui/components/general/ProcessPage';
+import RankStrategy from './RankStrategy';
+import AmortizingPicker from './AmortizingPicker';
+import InsuranceStrategy from './InsuranceStrategy';
+import LoanStrategyPicker from './LoanStrategyPicker';
 
 const getComponents = (props, handleSave) => {
   const childProps = {

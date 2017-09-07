@@ -5,10 +5,10 @@ import queryString from 'query-string';
 import Tabs from 'material-ui/Tabs/Tabs';
 import Tab  from 'material-ui/Tabs/Tab';
 
-import OverviewTab from './OverviewTab.jsx';
-import OffersTab from './OffersTab.jsx';
-import ActionsTab from './ActionsTab.jsx';
-import FormsTab from './FormsTab.jsx';
+import OverviewTab from './OverviewTab';
+import OffersTab from './OffersTab';
+import ActionsTab from './ActionsTab';
+import FormsTab from './FormsTab';
 
 const tabs = ['overview', 'forms', 'offers', 'actions'];
 

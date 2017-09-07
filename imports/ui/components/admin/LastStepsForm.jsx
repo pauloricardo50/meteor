@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 import Chip from 'material-ui/Chip';
 
 import cleanMethod from '/imports/api/cleanMethods';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
 const fileIds = ['retirementWithdrawalStatement', 'asdf', 'dghkdsf'];
 

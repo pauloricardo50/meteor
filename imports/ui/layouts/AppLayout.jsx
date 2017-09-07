@@ -4,13 +4,13 @@ import { Roles } from 'meteor/alanning:roles';
 import { Redirect } from 'react-router-dom';
 import classnames from 'classnames';
 
-import TopNav from '/imports/ui/components/general/TopNav.jsx';
-import SideNavUser from '/imports/ui/components/general/SideNavUser.jsx';
-import SideNav from '/imports/ui/components/general/SideNav.jsx';
-import ContactButton from '/imports/ui/components/general/ContactButton.jsx';
+import TopNav from '/imports/ui/components/general/TopNav';
+import SideNavUser from '/imports/ui/components/general/SideNavUser';
+import SideNav from '/imports/ui/components/general/SideNav';
+import ContactButton from '/imports/ui/components/general/ContactButton';
 import track from '/imports/js/helpers/analytics';
 
-// import UserJoyride from '/imports/ui/components/general/UserJoyride.jsx';
+// import UserJoyride from '/imports/ui/components/general/UserJoyride';
 
 const getRedirect = (props) => {
   const isAdmin = Roles.userIsInRole(props.currentUser, 'admin');

@@ -6,8 +6,8 @@ import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import MaskedInput from 'react-text-mask';
 
-import AmortizationChart from '/imports/ui/components/charts/AmortizationChart.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import AmortizationChart from '/imports/ui/components/charts/AmortizationChart';
+import { T } from '/imports/ui/components/general/Translation';
 import { percentMask } from '/imports/js/helpers/textMasks';
 
 const interestRates = [

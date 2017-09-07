@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
-import FileDownloader from '/imports/ui/components/general/FileDownloader.jsx';
+import { T } from '/imports/ui/components/general/Translation';
+import FileDownloader from '/imports/ui/components/general/FileDownloader';
 
-import DashboardItem from './DashboardItem.jsx';
+import DashboardItem from './DashboardItem';
 
 const DashboardDownload = props => {
   const { files } = props.loanRequest;

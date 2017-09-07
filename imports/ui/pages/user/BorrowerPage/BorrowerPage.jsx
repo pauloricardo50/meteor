@@ -3,12 +3,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
-import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
-import BorrowerInfoPage from './BorrowerInfoPage.jsx';
-import BorrowerFinancePage from './BorrowerFinancePage.jsx';
-import Files from './Files.jsx';
-import BorrowerHeader from './BorrowerHeader.jsx';
+import { T } from '/imports/ui/components/general/Translation';
+import ProcessPage from '/imports/ui/components/general/ProcessPage';
+import BorrowerInfoPage from './BorrowerInfoPage';
+import BorrowerFinancePage from './BorrowerFinancePage';
+import Files from './Files';
+import BorrowerHeader from './BorrowerHeader';
 
 const styles = {
   div: {

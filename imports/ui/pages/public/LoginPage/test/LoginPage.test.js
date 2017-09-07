@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import getMountedComponent from '/imports/js/helpers/testHelpers';
 
-import LoginPage from '../LoginPage.jsx';
+import LoginPage from '../LoginPage';
 
 if (Meteor.isClient) {
   describe('<LoginPage />', () => {

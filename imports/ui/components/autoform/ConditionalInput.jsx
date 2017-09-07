@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import FormValidator from './FormValidator.jsx';
+import FormValidator from './FormValidator';
 
 export default class ConditionalInput extends Component {
   constructor(props) {

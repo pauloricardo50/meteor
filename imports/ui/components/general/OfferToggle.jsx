@@ -3,7 +3,7 @@ import React from 'react';
 
 import Toggle from 'material-ui/Toggle';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 import track from '/imports/js/helpers/analytics';
 
 const styles = {

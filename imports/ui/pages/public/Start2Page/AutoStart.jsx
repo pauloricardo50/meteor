@@ -4,12 +4,12 @@ import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
 import classnames from 'classnames';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 import { trackOncePerSession } from '/imports/js/helpers/analytics';
-import ButtonInput from './ButtonInput.jsx';
-import Input from './Input.jsx';
-import MultipleInput from './MultipleInput.jsx';
-import ArrayInput from './ArrayInput.jsx';
+import ButtonInput from './ButtonInput';
+import Input from './Input';
+import MultipleInput from './MultipleInput';
+import ArrayInput from './ArrayInput';
 
 // Verify if the previous value is false
 const isFalse = (val, zeroAllowed = false) =>

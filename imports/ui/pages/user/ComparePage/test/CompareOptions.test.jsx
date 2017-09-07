@@ -8,10 +8,10 @@ import { Factory } from 'meteor/dburles:factory';
 import getMountedComponent, {
   stubCollections,
 } from '/imports/js/helpers/testHelpers';
-import CompareOptions from '../CompareOptions.jsx';
+import CompareOptions from '../CompareOptions';
 
-import DefaultOptions from '../DefaultOptions.jsx';
-import AdvancedOptions from '../AdvancedOptions.jsx';
+import DefaultOptions from '../DefaultOptions';
+import AdvancedOptions from '../AdvancedOptions';
 
 describe('<CompareOptions />', () => {
   let comparator;

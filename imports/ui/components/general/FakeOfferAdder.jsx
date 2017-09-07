@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { insertFakeOffer } from '/imports/api/offers/methods';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 
 import { getRandomOffer } from '/imports/api/offers/fakes';
 

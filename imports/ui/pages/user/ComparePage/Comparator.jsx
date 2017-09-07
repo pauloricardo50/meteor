@@ -15,10 +15,10 @@ import { toDistanceString } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
 import { getClosestStations, getNearbyPlace } from '/imports/js/helpers/APIs';
 import cleanMethod from '/imports/api/cleanMethods';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
-import CompareTable from './CompareTable.jsx';
-import CompareOptions from './CompareOptions.jsx';
+import CompareTable from './CompareTable';
+import CompareOptions from './CompareOptions';
 
 const defaultFields = [
   { id: 'name', type: 'text' },

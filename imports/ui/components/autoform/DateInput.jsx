@@ -6,8 +6,8 @@ import cleanMethod from '/imports/api/cleanMethods';
 import DatePicker from 'material-ui/DatePicker';
 import { injectIntl } from 'react-intl';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
-import FormValidator from './FormValidator.jsx';
+import { T } from '/imports/ui/components/general/Translation';
+import FormValidator from './FormValidator';
 
 const styles = {
   div: {

@@ -13,7 +13,7 @@ import MenuItem from 'material-ui/MenuItem';
 import List from 'material-ui/List/List';
 import ListItem from 'material-ui/List/ListItem';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
 const defaultStyles = {
   root: {

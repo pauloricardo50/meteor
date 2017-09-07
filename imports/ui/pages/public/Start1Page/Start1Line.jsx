@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Motion, spring, presets } from 'react-motion';
 
-import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
-import Start1Text from './Start1Text.jsx';
-import Start1Slider from './Start1Slider.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import AutoTooltip from '/imports/ui/components/general/AutoTooltip';
+import Start1Text from './Start1Text';
+import Start1Slider from './Start1Slider';
+import { T } from '/imports/ui/components/general/Translation';
 
 const Start1Line = props => (
   <Motion defaultStyle={{ x: 0 }} style={{ x: spring(props.value, presets.gentle) }}>

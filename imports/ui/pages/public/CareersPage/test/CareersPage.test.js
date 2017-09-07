@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import getMountedComponent from '/imports/js/helpers/testHelpers';
 
-import CareersPage from '../CareersPage.jsx';
+import CareersPage from '../CareersPage';
 
 if (Meteor.isClient) {
   describe('<CareersPage />', () => {

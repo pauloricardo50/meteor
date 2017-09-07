@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 
 import getFormArray from '/imports/js/arrays/StartFormArray';
 import constants from '/imports/js/config/constants';
@@ -31,11 +31,11 @@ import {
   getMaxLoan,
 } from '/imports/js/helpers/startFunctions';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
-import Recap from '/imports/ui/components/general/Recap.jsx';
-import AutoStart from './AutoStart.jsx';
-import StartResult from './StartResult.jsx';
-import StartSignUp from './StartSignUp.jsx';
+import { T } from '/imports/ui/components/general/Translation';
+import Recap from '/imports/ui/components/general/Recap';
+import AutoStart from './AutoStart';
+import StartResult from './StartResult';
+import StartSignUp from './StartSignUp';
 
 export default class Start2Page extends Component {
   constructor(props) {

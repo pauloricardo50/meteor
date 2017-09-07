@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import getMountedComponent from '/imports/js/helpers/testHelpers';
 
-import TosPage from '../TosPage.jsx';
+import TosPage from '../TosPage';
 
 if (Meteor.isClient) {
   describe('<TosPage />', () => {

@@ -5,8 +5,8 @@ import partition from 'lodash/partition';
 
 import Toggle from 'material-ui/Toggle';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
-import Button from '/imports/ui/components/general/Button.jsx';
+import { T } from '/imports/ui/components/general/Translation';
+import Button from '/imports/ui/components/general/Button';
 
 const styles = {
   toggles: {

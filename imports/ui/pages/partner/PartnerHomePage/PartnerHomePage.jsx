@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import CurrentAuctionsTable from '/imports/ui/components/partner/CurrentAuctionsTable.jsx';
-import PastOffersTable from '/imports/ui/components/partner/PastOffersTable.jsx';
+import CurrentAuctionsTable from '/imports/ui/components/partner/CurrentAuctionsTable';
+import PastOffersTable from '/imports/ui/components/partner/PastOffersTable';
 
 // const dummyAuctions = [
 //   {

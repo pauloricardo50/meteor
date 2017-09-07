@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import TextField from 'material-ui/TextField';
 import MaskedInput from 'react-text-mask';
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 import Checkbox from 'material-ui/Checkbox';
 
 import { toMoney, toNumber } from '/imports/js/helpers/conversionFunctions';

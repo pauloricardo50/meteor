@@ -6,11 +6,11 @@ import Scroll from 'react-scroll';
 import BottomArrow from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import IconButton from 'material-ui/IconButton';
 
-import HomeDev from '/imports/ui/components/general/HomeDev.jsx';
+import HomeDev from '/imports/ui/components/general/HomeDev';
 import track from '/imports/js/helpers/analytics';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 
 const styles = {
   style: {

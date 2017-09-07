@@ -12,8 +12,8 @@ import {
   VerifyPage,
   ContactLendersPage,
 } from '/imports/ui/containers/AdminContainers';
-import AdminDevPage from '/imports/ui/pages/admin/AdminDevPage.jsx';
-import NotFound from '/imports/ui/components/general/NotFound.jsx';
+import AdminDevPage from '/imports/ui/pages/admin/AdminDevPage';
+import NotFound from '/imports/ui/components/general/NotFound';
 
 const AdminRoutes = props =>
   (<AdminLayout

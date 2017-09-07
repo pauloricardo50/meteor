@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import fileSaver from 'file-saver';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 import LoopIcon from 'material-ui/svg-icons/av/loop';
 
 import track from '/imports/js/helpers/analytics';

@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { arrayIsTrue } from '../AutoStart.jsx';
+import { arrayIsTrue } from '../AutoStart';
 
 describe('Auto Start', () => {
   describe('Array is true', () => {

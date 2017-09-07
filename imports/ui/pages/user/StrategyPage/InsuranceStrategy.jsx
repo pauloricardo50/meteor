@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
-import StrategyChoices from '/imports/ui/components/general/StrategyChoices.jsx';
-import Button from '/imports/ui/components/general/Button.jsx';
+import { T } from '/imports/ui/components/general/Translation';
+import StrategyChoices from '/imports/ui/components/general/StrategyChoices';
+import Button from '/imports/ui/components/general/Button';
 
 const getChoices = () => [
   {

@@ -6,7 +6,7 @@ import { expect } from 'chai';
 
 // import jsdom from 'jsdom';
 
-import renderRoutes from './Router.jsx';
+import renderRoutes from './Router';
 // import start from './index';
 
 if (Meteor.isClient) {

@@ -7,10 +7,10 @@ import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import {
   IntlNumber,
   IntlDate,
-} from '/imports/ui/components/general/Translation.jsx';
+} from '/imports/ui/components/general/Translation';
 import colors from '/imports/js/config/colors';
 
-import ValidatorItem from './ValidatorItem.jsx';
+import ValidatorItem from './ValidatorItem';
 
 const CompareColumnField = (props) => {
   const { field, property } = props;

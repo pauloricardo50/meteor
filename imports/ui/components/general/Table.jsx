@@ -8,7 +8,7 @@ import TableHeaderColumn from 'material-ui/Table/TableHeaderColumn';
 import TableRow from 'material-ui/Table/TableRow';
 import TableRowColumn from 'material-ui/Table/TableRowColumn';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
 export default class Table extends Component {
   render() {

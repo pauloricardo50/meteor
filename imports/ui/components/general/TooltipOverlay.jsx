@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { tooltips, tooltipsById } from '/imports/js/arrays/tooltips';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
-import Tooltip from './Tooltip.jsx';
+import Tooltip from './Tooltip';
 
 import track from '/imports/js/helpers/analytics';
 
@@ -17,7 +17,7 @@ export default class TooltipOverlay extends Component {
 
     // The hide value is used to signal to react-motion that the component
     // should start to animate out
-    // In the Transition.jsx component, when it detects a change in hide
+    // In the Transition component, when it detects a change in hide
     // from false to true, it starts to animate out
     this.state = { hide: false };
   }

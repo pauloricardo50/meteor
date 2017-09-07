@@ -20,7 +20,7 @@ import {
   FormattedPlural,
 } from 'react-intl';
 
-import AutoTooltip from './AutoTooltip.jsx';
+import AutoTooltip from './AutoTooltip';
 
 /**
 * T - A wrapper around react-intl's Formatted Message, it

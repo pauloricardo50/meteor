@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
+import { T, IntlNumber } from '/imports/ui/components/general/Translation';
 import colors from '/imports/js/config/colors';
 
 const InterestRanges = ({ offers, style }) => {

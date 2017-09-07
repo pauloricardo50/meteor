@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import { Motion, spring, presets } from 'react-motion';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
-import CompareColumn from './CompareColumn.jsx';
-import ColumnTransition from './ColumnTransition.jsx';
+import { T } from '/imports/ui/components/general/Translation';
+import CompareColumn from './CompareColumn';
+import ColumnTransition from './ColumnTransition';
 
 // When combining TransitionMotion and Motion, weird stuff happens
 // TransitionMotion keeps the elements in memory, even if they aren't there

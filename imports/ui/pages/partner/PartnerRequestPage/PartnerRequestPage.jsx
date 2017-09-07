@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 
-import RequestDetails from '/imports/ui/components/partner/RequestDetails.jsx';
-import PartnerOfferForm from '/imports/ui/components/partner/PartnerOfferForm.jsx';
+import RequestDetails from '/imports/ui/components/partner/RequestDetails';
+import PartnerOfferForm from '/imports/ui/components/partner/PartnerOfferForm';
 
 const styles = {
   section: {

@@ -6,7 +6,7 @@ import getMountedComponent, {
 } from '/imports/js/helpers/testHelpers';
 import { Factory } from 'meteor/dburles:factory';
 
-import AppLayout from '../AppLayout.jsx';
+import AppLayout from '../AppLayout';
 
 if (Meteor.isClient) {
   describe('<AppLayout />', () => {

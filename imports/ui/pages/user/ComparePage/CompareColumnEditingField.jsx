@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import TextInput from '/imports/ui/components/general/TextInput.jsx';
-import DatePicker from '/imports/ui/components/general/DatePicker.jsx';
-import RadioButtons from '/imports/ui/components/general/RadioButtons.jsx';
+import TextInput from '/imports/ui/components/general/TextInput';
+import DatePicker from '/imports/ui/components/general/DatePicker';
+import RadioButtons from '/imports/ui/components/general/RadioButtons';
 
 const styles = {
   field: {

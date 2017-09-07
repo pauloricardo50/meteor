@@ -5,9 +5,9 @@ import SearchIcon from 'material-ui/svg-icons/action/search';
 import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
-import Button from './Button.jsx';
-import Search from './Search.jsx';
+import { T } from '/imports/ui/components/general/Translation';
+import Button from './Button';
+import Search from './Search';
 
 export default class SearchModal extends Component {
   constructor(props) {

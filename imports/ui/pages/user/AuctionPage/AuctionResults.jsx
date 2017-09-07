@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
 
-import OffersTable from '/imports/ui/components/general/OffersTable.jsx';
-import FakeOfferAdder from '/imports/ui/components/general/FakeOfferAdder.jsx';
-import OfferToggle from '/imports/ui/components/general/OfferToggle.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import OffersTable from '/imports/ui/components/general/OffersTable';
+import FakeOfferAdder from '/imports/ui/components/general/FakeOfferAdder';
+import OfferToggle from '/imports/ui/components/general/OfferToggle';
+import { T } from '/imports/ui/components/general/Translation';
 
-import InterestRanges from './InterestRanges.jsx';
+import InterestRanges from './InterestRanges';
 
 import CountUp from 'react-countup';
 

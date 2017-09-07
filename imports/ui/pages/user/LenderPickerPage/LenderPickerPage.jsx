@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
+import ProcessPage from '/imports/ui/components/general/ProcessPage';
 
 export default class LenderPickerPage extends Component {
   render() {

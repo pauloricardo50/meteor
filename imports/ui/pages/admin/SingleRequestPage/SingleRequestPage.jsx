@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 
-import RequestTabs from './RequestTabs.jsx';
-import StepStatus from './StepStatus.jsx';
+import RequestTabs from './RequestTabs';
+import StepStatus from './StepStatus';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import { getLoanValue } from '/imports/js/helpers/requestFunctions';

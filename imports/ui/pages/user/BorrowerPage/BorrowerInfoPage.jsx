@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import AutoForm from '/imports/ui/components/autoform/AutoForm.jsx';
+import AutoForm from '/imports/ui/components/autoform/AutoForm';
 import { getBorrowerInfoArray } from '/imports/js/arrays/BorrowerFormArray';
 import { personalInfoPercent } from '/imports/js/arrays/steps';
 import { disableForms } from '/imports/js/helpers/requestFunctions';
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
-import FakeBorrowerCompleter from '/imports/ui/components/general/FakeBorrowerCompleter.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import FakeBorrowerCompleter from '/imports/ui/components/general/FakeBorrowerCompleter';
+import { T } from '/imports/ui/components/general/Translation';
 
 const BorrowerInfoPage = props => {
   const borrowerId = props.match.params.borrowerId;

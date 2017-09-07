@@ -7,7 +7,7 @@ import Divider from 'material-ui/Divider';
 import BuildingIcon from 'material-ui/svg-icons/communication/business';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 import track from '/imports/js/helpers/analytics';
 
 const styles = {

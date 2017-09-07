@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import DropzoneArray from '/imports/ui/components/general/DropzoneArray.jsx';
+import DropzoneArray from '/imports/ui/components/general/DropzoneArray';
 import { filesPercent } from '/imports/js/arrays/steps';
 import { borrowerFiles } from '/imports/js/arrays/files';
-import RadioInput from '/imports/ui/components/autoform/RadioInput.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import RadioInput from '/imports/ui/components/autoform/RadioInput';
+import { T } from '/imports/ui/components/general/Translation';
 import { disableForms } from '/imports/js/helpers/requestFunctions';
 
 const styles = {

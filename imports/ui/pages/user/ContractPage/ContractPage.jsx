@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
-import ConfirmButton from '/imports/ui/components/general/ConfirmButton.jsx';
-import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import ProcessPage from '/imports/ui/components/general/ProcessPage';
+import ConfirmButton from '/imports/ui/components/general/ConfirmButton';
+import { LoadingComponent } from '/imports/ui/components/general/Loading';
+import { T } from '/imports/ui/components/general/Translation';
 
 import { filesPercent } from '/imports/js/arrays/steps';
 import { borrowerFiles, requestFiles } from '/imports/js/arrays/files';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import FileTabs from './FileTabs.jsx';
+import FileTabs from './FileTabs';
 
 // const handleClick = (id) => {
 //   cleanMethod('updateRequest', { 'logic.lender.contractRequested': true }, id);

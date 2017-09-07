@@ -4,8 +4,8 @@ import React, { Component } from 'react';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-import ExpensesChart from './ExpensesChart.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import ExpensesChart from './ExpensesChart';
+import { T } from '/imports/ui/components/general/Translation';
 import track from '/imports/js/helpers/analytics';
 
 const rates = [0.01, 0.01, 0.015, 0.02];

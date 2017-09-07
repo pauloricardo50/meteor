@@ -4,9 +4,9 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import track from '/imports/js/helpers/analytics';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 import { getBorrowerCompletion } from '/imports/js/helpers/borrowerFunctions';
-import DashboardItem from './DashboardItem.jsx';
+import DashboardItem from './DashboardItem';
 
 const DashboardBorrowers = props => {
   return (

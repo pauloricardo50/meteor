@@ -4,8 +4,8 @@ import isArray from 'lodash/isArray';
 
 import { FormattedMessage } from 'react-intl';
 import Popover from 'react-bootstrap/lib/Popover';
-import Transition from './Transition.jsx';
-import DialogSimple from './DialogSimple.jsx';
+import Transition from './Transition';
+import DialogSimple from './DialogSimple';
 
 import track from '/imports/js/helpers/analytics';
 

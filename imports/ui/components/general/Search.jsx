@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
 
 import Loadable from '/imports/js/helpers/loadable';
-import TextInput from './TextInput.jsx';
+import TextInput from './TextInput';
 
-import SearchResults from './SearchResults.jsx';
-// const SearchResults = Loadable({ loader: () => import('./SearchResults.jsx') });
+import SearchResults from './SearchResults';
+// const SearchResults = Loadable({ loader: () => import('./SearchResults') });
 
 const styles = {
   div: {

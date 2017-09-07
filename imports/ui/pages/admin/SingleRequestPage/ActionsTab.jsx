@@ -2,19 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 
-import ConfirmMethod from './ConfirmMethod.jsx';
+import ConfirmMethod from './ConfirmMethod';
 import {
   cancelAuction,
   finishAuction,
   deleteRequest,
   confirmClosing,
 } from '/imports/api/loanrequests/methods';
-import DialogSimple from '/imports/ui/components/general/DialogSimple.jsx';
-import DropzoneArray from '/imports/ui/components/general/DropzoneArray.jsx';
-import ClosingForm from '/imports/ui/components/admin/ClosingForm.jsx';
-import LastStepsForm from '/imports/ui/components/admin/LastStepsForm.jsx';
+import DialogSimple from '/imports/ui/components/general/DialogSimple';
+import DropzoneArray from '/imports/ui/components/general/DropzoneArray';
+import ClosingForm from '/imports/ui/components/admin/ClosingForm';
+import LastStepsForm from '/imports/ui/components/admin/LastStepsForm';
 import downloadPDF from '/imports/js/helpers/download-pdf';
 
 const styles = {

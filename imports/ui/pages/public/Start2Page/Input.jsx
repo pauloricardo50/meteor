@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
-import StartTextField from './StartTextField.jsx';
-import StartSelectField from './StartSelectField.jsx';
-import StartSlider from './StartSlider.jsx';
+import AutoTooltip from '/imports/ui/components/general/AutoTooltip';
+import StartTextField from './StartTextField';
+import StartSelectField from './StartSelectField';
+import StartSlider from './StartSlider';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 

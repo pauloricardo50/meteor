@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Masonry from 'react-masonry-component';
 
-import DashboardRecap from './DashboardRecap.jsx';
-import DashboardCharts from './DashboardCharts.jsx';
-import DashboardBorrowers from './DashboardBorrowers.jsx';
-import DashboardLastSteps from './DashboardLastSteps.jsx';
-import DashboardPayments from './DashboardPayments.jsx';
-import DashboardDownload from './DashboardDownload.jsx';
-import DashboardOffer from './DashboardOffer.jsx';
-import DashboardProperty from './DashboardProperty.jsx';
-import DashboardStatus from './DashboardStatus.jsx';
+import DashboardRecap from './DashboardRecap';
+import DashboardCharts from './DashboardCharts';
+import DashboardBorrowers from './DashboardBorrowers';
+import DashboardLastSteps from './DashboardLastSteps';
+import DashboardPayments from './DashboardPayments';
+import DashboardDownload from './DashboardDownload';
+import DashboardOffer from './DashboardOffer';
+import DashboardProperty from './DashboardProperty';
+import DashboardStatus from './DashboardStatus';
 
 const getGrid = ({ loanRequest }) => {
   const done = loanRequest.status === 'done';

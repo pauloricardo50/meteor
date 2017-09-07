@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 
-import ProjectPieChart from '/imports/ui/components/charts/ProjectPieChart.jsx';
+import ProjectPieChart from '/imports/ui/components/charts/ProjectPieChart';
 import Recap from '/imports/ui/components/general/Recap';
 import renderObject from '/imports/js/helpers/renderObject';
 

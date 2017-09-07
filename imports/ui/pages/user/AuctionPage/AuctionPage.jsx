@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
+import { LoadingComponent } from '/imports/ui/components/general/Loading';
 
-import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
-import AuctionStart from './AuctionStart.jsx';
-import Auction from './Auction.jsx';
-import AuctionResults from './AuctionResults.jsx';
+import ProcessPage from '/imports/ui/components/general/ProcessPage';
+import AuctionStart from './AuctionStart';
+import Auction from './Auction';
+import AuctionResults from './AuctionResults';
 
 let time;
 

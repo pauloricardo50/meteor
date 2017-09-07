@@ -7,7 +7,7 @@ import getMountedComponent, {
 import { Factory } from 'meteor/dburles:factory';
 
 import getSteps from '/imports/js/arrays/steps';
-import ProcessPage, { getStepValues } from '../ProcessPage.jsx';
+import ProcessPage, { getStepValues } from '../ProcessPage';
 
 if (Meteor.isClient) {
   describe('<ProcessPage />', () => {

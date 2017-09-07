@@ -10,9 +10,9 @@ import getMountedComponent, {
   stubCollections,
 } from '/imports/js/helpers/testHelpers';
 
-import TextInput from '/imports/ui/components/general/TextInput.jsx';
-import DefaultOptions from '../DefaultOptions.jsx';
-import BorrowerOptions from '../BorrowerOptions.jsx';
+import TextInput from '/imports/ui/components/general/TextInput';
+import DefaultOptions from '../DefaultOptions';
+import BorrowerOptions from '../BorrowerOptions';
 
 describe('<DefaultOptions />', () => {
   let comparator;

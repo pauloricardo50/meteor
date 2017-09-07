@@ -1,10 +1,10 @@
 import React from 'react';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 
-import BetaAccess from './BetaAccess.jsx';
+import BetaAccess from './BetaAccess';
 import { isDemo } from '/imports/js/helpers/browserFunctions';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
 const PasswordPage = props => (
   <main className="password-page animated fadeIn">

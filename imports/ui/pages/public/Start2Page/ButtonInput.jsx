@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import Button from '/imports/ui/components/general/Button.jsx';
-import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
+import Button from '/imports/ui/components/general/Button';
+import AutoTooltip from '/imports/ui/components/general/AutoTooltip';
 
 const styles = {
   button: {

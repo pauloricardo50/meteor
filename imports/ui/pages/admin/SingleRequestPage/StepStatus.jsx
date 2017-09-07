@@ -2,7 +2,7 @@ import React from 'react';
 import getSteps from '/imports/js/arrays/steps';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
 const StepStatus = props => {
   const steps = getSteps(props).slice(1, -1);

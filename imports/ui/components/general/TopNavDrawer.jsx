@@ -6,7 +6,7 @@ import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import Drawer from 'material-ui/Drawer';
-import SideNavUser from '/imports/ui/components/general/SideNavUser.jsx';
+import SideNavUser from '/imports/ui/components/general/SideNavUser';
 import track from '/imports/js/helpers/analytics';
 
 export default class TopNavDrawer extends React.Component {

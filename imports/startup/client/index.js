@@ -6,7 +6,7 @@ import '../accounts-config';
 import '../meteor-slingshot';
 
 import { localizationStartup } from '../localization';
-import RenderRoutes from './Router.jsx';
+import RenderRoutes from './Router';
 
 /**
  * start - sets the app up

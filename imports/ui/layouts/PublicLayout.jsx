@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import TopNav from '/imports/ui/components/general/TopNav.jsx';
-// import RouteTransition from '/imports/ui/components/general/RouteTransition.jsx';
+import TopNav from '/imports/ui/components/general/TopNav';
+// import RouteTransition from '/imports/ui/components/general/RouteTransition';
 
 const PublicLayout = props =>
   <div>

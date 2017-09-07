@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
-import AutoForm from '/imports/ui/components/autoform/AutoForm.jsx';
+import ProcessPage from '/imports/ui/components/general/ProcessPage';
+import AutoForm from '/imports/ui/components/autoform/AutoForm';
 import PropertyFormArray from '/imports/js/arrays/PropertyFormArray';
-import DropzoneArray from '/imports/ui/components/general/DropzoneArray.jsx';
+import DropzoneArray from '/imports/ui/components/general/DropzoneArray';
 import { requestFiles } from '/imports/js/arrays/files';
 import {
   disableForms,
@@ -12,8 +12,8 @@ import {
 } from '/imports/js/helpers/requestFunctions';
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
-import FakePropertyCompleter from '/imports/ui/components/general/FakePropertyCompleter.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import FakePropertyCompleter from '/imports/ui/components/general/FakePropertyCompleter';
+import { T } from '/imports/ui/components/general/Translation';
 
 const styles = {
   topDiv: {

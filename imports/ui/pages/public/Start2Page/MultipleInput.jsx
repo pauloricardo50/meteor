@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import AutoTooltip from '/imports/ui/components/general/AutoTooltip.jsx';
+import AutoTooltip from '/imports/ui/components/general/AutoTooltip';
 import StartTextField from './StartTextField';
 
 const styles = {

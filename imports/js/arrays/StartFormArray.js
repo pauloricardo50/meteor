@@ -2,9 +2,9 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
 
-import FortuneSliders from '/imports/ui/pages/public/startPage/FortuneSliders.jsx';
-import DialogSimple from '/imports/ui/components/general/DialogSimple.jsx';
-import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
+import FortuneSliders from '/imports/ui/pages/public/startPage/FortuneSliders';
+import DialogSimple from '/imports/ui/components/general/DialogSimple';
+import { T, IntlNumber } from '/imports/ui/components/general/Translation';
 
 import constants from '/imports/js/config/constants';
 

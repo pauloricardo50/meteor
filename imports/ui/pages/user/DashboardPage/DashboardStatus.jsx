@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 
 import track from '/imports/js/helpers/analytics';
 import cleanMethod from '/imports/api/cleanMethods';
-import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { LoadingComponent } from '/imports/ui/components/general/Loading';
+import { T } from '/imports/ui/components/general/Translation';
 import getSteps from '/imports/js/arrays/steps';
-import DashboardItem from './DashboardItem.jsx';
+import DashboardItem from './DashboardItem';
 
 const styles = {
   button: {

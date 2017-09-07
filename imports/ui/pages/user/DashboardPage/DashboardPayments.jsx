@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T, IntlDate } from '/imports/ui/components/general/Translation.jsx';
+import { T, IntlDate } from '/imports/ui/components/general/Translation';
 
-import DashboardItem from './DashboardItem.jsx';
+import DashboardItem from './DashboardItem';
 
 const getDate = loanRequest => {
   const { firstPaymentDate, paymentSchedule } = loanRequest.logic;

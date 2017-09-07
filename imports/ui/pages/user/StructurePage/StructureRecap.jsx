@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ExpensesChart from '/imports/ui/components/charts/ExpensesChart.jsx';
-import Recap from '/imports/ui/components/general/Recap.jsx';
+import ExpensesChart from '/imports/ui/components/charts/ExpensesChart';
+import Recap from '/imports/ui/components/general/Recap';
 
 const styles = {
   div: {

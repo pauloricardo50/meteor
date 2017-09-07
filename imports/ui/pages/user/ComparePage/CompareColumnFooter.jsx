@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '/imports/ui/components/general/Button.jsx';
-import ConfirmButton from '/imports/ui/components/general/ConfirmButton.jsx';
+import Button from '/imports/ui/components/general/Button';
+import ConfirmButton from '/imports/ui/components/general/ConfirmButton';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
 export default class CompareColumnFooter extends Component {
   constructor(props) {

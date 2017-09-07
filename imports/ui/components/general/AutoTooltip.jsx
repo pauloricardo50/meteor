@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import reactStringReplace from 'react-string-replace';
 
 import { tooltips } from '/imports/js/arrays/tooltips';
-import TooltipOverlay from './TooltipOverlay.jsx';
+import TooltipOverlay from './TooltipOverlay';
 
 const AutoTooltip = (props) => {
   let content = null;

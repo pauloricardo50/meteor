@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 

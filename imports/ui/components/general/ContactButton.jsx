@@ -8,7 +8,7 @@ import MailIcon from 'material-ui/svg-icons/communication/mail-outline';
 import PhoneIcon from 'material-ui/svg-icons/communication/call';
 
 import track from '/imports/js/helpers/analytics';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
 import colors from '/imports/js/config/colors';
 import supportStaff from '/imports/js/arrays/supportStaff';

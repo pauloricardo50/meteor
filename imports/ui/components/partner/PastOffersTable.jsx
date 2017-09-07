@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import OfferTableLine from '/imports/ui/components/partner/OfferTableLine.jsx';
+import OfferTableLine from '/imports/ui/components/partner/OfferTableLine';
 
 const styles = {
   article: {

@@ -4,15 +4,15 @@ import merge from 'lodash/merge';
 
 import cleanMethod from '/imports/api/cleanMethods';
 
-import LoadingButton from '/imports/ui/components/general/LoadingButton.jsx';
-import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import LoadingButton from '/imports/ui/components/general/LoadingButton';
+import ProcessPage from '/imports/ui/components/general/ProcessPage';
+import { T } from '/imports/ui/components/general/Translation';
 import track from '/imports/js/helpers/analytics';
 import { toNumber } from '/imports/js/helpers/conversionFunctions';
 
-import StructureSliders from './StructureSliders.jsx';
-import StructureRecap from './StructureRecap.jsx';
-import StructureError from './StructureError.jsx';
+import StructureSliders from './StructureSliders';
+import StructureRecap from './StructureRecap';
+import StructureError from './StructureError';
 
 const handleClick = (props, state) => {
   // Save data to DB

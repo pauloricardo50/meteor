@@ -5,7 +5,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { GoogleMaps } from 'meteor/dburles:google-maps';
 
-import { LoadingComponent } from './Loading.jsx';
+import { LoadingComponent } from './Loading';
 
 class GoogleMap extends Component {
   componentDidMount() {

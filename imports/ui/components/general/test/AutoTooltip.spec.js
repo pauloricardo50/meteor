@@ -6,10 +6,10 @@ import { shallow } from 'enzyme';
 import testRequire from '/imports/js/helpers/testRequire';
 
 const { default: AutoTooltip } =
-  testRequire('../AutoTooltip.jsx') || require('../AutoTooltip.jsx');
+  testRequire('../AutoTooltip') || require('../AutoTooltip');
 
 const { default: TooltipOverlay } =
-  testRequire('../TooltipOverlay.jsx') || require('../TooltipOverlay.jsx');
+  testRequire('../TooltipOverlay') || require('../TooltipOverlay');
 
 describe('<AutoTooltip />', () => {
   it('returns null if no children are given', () => {

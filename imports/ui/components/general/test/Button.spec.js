@@ -5,7 +5,7 @@ import { expect } from 'chai';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
-import Button from '../Button.jsx';
+import Button from '../Button';
 
 describe('Button', () => {
   // Label removes testing warnings

@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import { getProject } from '/imports/js/helpers/startFunctions';
 import constants from '/imports/js/config/constants';
-import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
+import { T, IntlNumber } from '/imports/ui/components/general/Translation';
 
-import StartSlider from './StartSlider.jsx';
+import StartSlider from './StartSlider';
 
 const styles = {
   sliders: {

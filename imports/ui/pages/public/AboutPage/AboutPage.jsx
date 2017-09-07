@@ -1,5 +1,5 @@
 import React from 'react';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
 const styles = {
   section: {

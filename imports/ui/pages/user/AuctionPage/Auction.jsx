@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
-import OffersTable from '/imports/ui/components/general/OffersTable.jsx';
-import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import OffersTable from '/imports/ui/components/general/OffersTable';
+import { LoadingComponent } from '/imports/ui/components/general/Loading';
+import { T } from '/imports/ui/components/general/Translation';
 
 require('moment-duration-format');
 

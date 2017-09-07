@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 
-import Page from '/imports/ui/components/general/Page.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
-import PasswordChange from './PasswordChange.jsx';
+import Page from '/imports/ui/components/general/Page';
+import { T } from '/imports/ui/components/general/Translation';
+import PasswordChange from './PasswordChange';
 
 const styles = {
   section: {
