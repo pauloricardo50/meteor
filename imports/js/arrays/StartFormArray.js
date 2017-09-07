@@ -2,7 +2,7 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
 
-import FortuneSliders from '/imports/ui/pages/public/startPage/FortuneSliders';
+import FortuneSliders from '/imports/ui/pages/public/Start2Page/FortuneSliders';
 import DialogSimple from '/imports/ui/components/general/DialogSimple';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation';
 

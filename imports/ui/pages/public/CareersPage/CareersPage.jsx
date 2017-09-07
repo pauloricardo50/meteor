@@ -47,3 +47,5 @@ const CareersPage = () => (
 );
 
 CareersPage.propTypes = {};
+
+export default CareersPage;
