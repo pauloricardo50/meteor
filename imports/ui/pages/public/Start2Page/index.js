@@ -1,1 +1,1 @@
-export { default } from './Start2page';
+export { default } from './Start2Page';
