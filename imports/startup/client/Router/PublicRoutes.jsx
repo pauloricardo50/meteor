@@ -12,7 +12,6 @@ import CareersPage from '/imports/ui/pages/public/CareersPage';
 import TosPage from '/imports/ui/pages/public/TosPage';
 import EmailVerificationPage from '/imports/ui/pages/public/EmailVerificationPage';
 import PasswordResetPage from '/imports/ui/pages/public/PasswordResetPage';
-import TestPage from '/imports/ui/pages/public/TestPage';
 import NotFound from '/imports/ui/components/general/NotFound';
 
 import Loadable from '/imports/js/helpers/loadable';
@@ -21,8 +20,8 @@ const Start1Page = Loadable({
   loader: () => import('/imports/ui/pages/public/Start1Page'),
 });
 
-const PublicRoutes = props =>
-  (<PublicLayout {...props}>
+const PublicRoutes = props => (
+  <PublicLayout {...props}>
     <Switch>
       <Route path="/home" component={HomePage} />
       <Route path="/login" component={LoginPage} />
@@ -31,11 +30,11 @@ const PublicRoutes = props =>
       <Route path="/careers" component={CareersPage} />
       <Route path="/about" component={AboutPage} />
       <Route path="/tos" component={TosPage} />
-      <Route path="/test" component={TestPage} />
       <Route path="/verify-email/:token" component={EmailVerificationPage} />
       <Route path="/reset-password/:token" component={PasswordResetPage} />
       <Route component={NotFound} />
     </Switch>
-  </PublicLayout>);
+  </PublicLayout>
+);
 
 export default PublicRoutes;

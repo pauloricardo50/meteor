@@ -19,20 +19,14 @@ import {
   ComparePage,
   AppPage,
 } from '/imports/ui/containers/UserContainers';
-import NewPage from '/imports/ui/pages/user/NewPage';
 import NotFound from '/imports/ui/components/general/NotFound';
 
-const UserRoutes = props =>
-  (<UserLayout
+const UserRoutes = props => (
+  <UserLayout
     {...props}
     type="user"
-    render={layoutProps =>
-      (<Switch>
-        {/* <Route
-          exact
-          path="/app/new/:requestId"
-          render={routeProps => <NewPage {...layoutProps} {...routeProps} />}
-        /> */}
+    render={layoutProps => (
+      <Switch>
         <Route path="/app/dev" component={DevPage} />
         <Route
           path="/app/profile"
@@ -82,7 +76,9 @@ const UserRoutes = props =>
         <Route path="/app/compare" component={ComparePage} />
         <Route path="/app" component={AppPage} />
         <Route component={NotFound} />
-      </Switch>)}
-  />);
+      </Switch>
+    )}
+  />
+);
 
 export default UserRoutes;

@@ -11,27 +11,27 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import { IntlProvider } from 'react-intl';
-import { getUserLocale, getTranslations, getFormats } from '../localization';
+import { getUserLocale, getTranslations, getFormats } from '../../localization';
 
 import Loadable from '/imports/js/helpers/loadable';
 import PasswordPage from '/imports/ui/pages/public/PasswordPage';
 
-// import PublicRoutes from './routes/PublicRoutes';
-// import UserRoutes from './routes/UserRoutes';
-// import AdminRoutes from './routes/AdminRoutes';
-// import PartnerRoutes from './routes/PartnerRoutes';
+// import PublicRoutes from './PublicRoutes';
+// import UserRoutes from './UserRoutes';
+// import AdminRoutes from './AdminRoutes';
+// import PartnerRoutes from './PartnerRoutes';
 
 const PublicRoutes = Loadable({
-  loader: () => import('./routes/PublicRoutes'),
+  loader: () => import('./PublicRoutes'),
 });
 const UserRoutes = Loadable({
-  loader: () => import('./routes/UserRoutes'),
+  loader: () => import('./UserRoutes'),
 });
 const AdminRoutes = Loadable({
-  loader: () => import('./routes/AdminRoutes'),
+  loader: () => import('./AdminRoutes'),
 });
 const PartnerRoutes = Loadable({
-  loader: () => import('./routes/PartnerRoutes'),
+  loader: () => import('./PartnerRoutes'),
 });
 
 class ScrollToTop extends Component {
@@ -48,8 +48,8 @@ class ScrollToTop extends Component {
 
 const ScrollToTopWithRouter = withRouter(ScrollToTop);
 
-const RenderRoutes = () =>
-  (<MuiThemeProvider muiTheme={getMuiTheme(myTheme)}>
+const RenderRoutes = () => (
+  <MuiThemeProvider muiTheme={getMuiTheme(myTheme)}>
     <IntlProvider
       locale={getUserLocale()}
       messages={getTranslations()}
@@ -72,6 +72,7 @@ const RenderRoutes = () =>
         </ScrollToTopWithRouter>
       </Router>
     </IntlProvider>
-  </MuiThemeProvider>);
+  </MuiThemeProvider>
+);
 
 export default RenderRoutes;
