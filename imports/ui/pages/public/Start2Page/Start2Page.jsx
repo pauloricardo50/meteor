@@ -33,9 +33,9 @@ import {
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import Recap from '/imports/ui/components/general/Recap.jsx';
-import AutoStart from './startPage/AutoStart.jsx';
-import StartResult from './startPage/StartResult.jsx';
-import StartSignUp from './startPage/StartSignUp.jsx';
+import AutoStart from './AutoStart.jsx';
+import StartResult from './StartResult.jsx';
+import StartSignUp from './StartSignUp.jsx';
 
 export default class Start2Page extends Component {
   constructor(props) {
@@ -266,7 +266,7 @@ export default class Start2Page extends Component {
               setActiveLine={this.setActiveLine}
             />
           </div>
-          {!finished &&
+          {!finished && (
             <div className="start2recap mask1 animated fadeInUp">
               <h3 className="recap-title bold">
                 <T id="Start2Page.recapTitle" />
@@ -274,8 +274,9 @@ export default class Start2Page extends Component {
               <div className="shadow-top" />
               <div className="shadow-bottom" />
               <Recap {...childProps} arrayName="start2" noScale />
-            </div>}
-          {finished &&
+            </div>
+          )}
+          {finished && (
             <Scroll.Element name={'final'}>
               <StartResult
                 history={this.props.history}
@@ -283,12 +284,14 @@ export default class Start2Page extends Component {
                 {...childProps}
                 setFormState={this.setFormState}
               />
-            </Scroll.Element>}
+            </Scroll.Element>
+          )}
 
-          {this.state.done &&
+          {this.state.done && (
             <Scroll.Element name={'done'} style={{ width: '100%' }}>
               <StartSignUp formState={s} history={this.props.history} />
-            </Scroll.Element>}
+            </Scroll.Element>
+          )}
         </section>
 
         {!finished && <div style={{ height: '30%' }} />}

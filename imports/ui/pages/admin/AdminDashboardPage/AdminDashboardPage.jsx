@@ -5,7 +5,7 @@ import MetricsTriple from '/imports/ui/components/general/MetricsTriple.jsx';
 import TodoList from '/imports/ui/components/admin/TodoList.jsx';
 import ActionsTable from '/imports/ui/components/admin/ActionsTable.jsx';
 
-const getUserMetrics = props => {
+const getUserMetrics = (props) => {
   const d1 = new Date();
   const d2 = new Date();
   d1.setDate(d1.getDate() - 7);
@@ -18,16 +18,18 @@ const getUserMetrics = props => {
     },
     {
       name: 'Derniers 7 jours',
-      value: `+${props.users.filter(user => user.createdAt.getTime() >= d1).length}`,
+      value: `+${props.users.filter(user => user.createdAt.getTime() >= d1)
+        .length}`,
     },
     {
       name: 'Derniers 30 jours',
-      value: `+${props.users.filter(user => user.createdAt.getTime() >= d2).length}`,
+      value: `+${props.users.filter(user => user.createdAt.getTime() >= d2)
+        .length}`,
     },
   ];
 };
 
-const AdminDashboardPage = props => {
+const AdminDashboardPage = (props) => {
   const now = new Date();
   return (
     <section className="mask1">
@@ -41,7 +43,6 @@ const AdminDashboardPage = props => {
         history={props.history}
         adminActions={props.adminActions}
       />
-
     </section>
   );
 };

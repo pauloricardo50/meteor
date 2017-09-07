@@ -12,9 +12,7 @@ const styles = {
 const AdminOfferPage = props => (
   <section>
     <Button raised label="Retour" style={styles.backButton} />
-    <div className="mask1">
-      Salut!
-    </div>
+    <div className="mask1">Salut!</div>
   </section>
 );
 

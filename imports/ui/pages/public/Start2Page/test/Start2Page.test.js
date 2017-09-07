@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import getMountedComponent from '/imports/js/helpers/testHelpers';
 
 import Start2Page from '../Start2Page.jsx';
-import StartResult from '../startPage/StartResult.jsx';
+import StartResult from '../StartResult.jsx';
 
 if (Meteor.isClient) {
   describe('<Start2Page />', () => {

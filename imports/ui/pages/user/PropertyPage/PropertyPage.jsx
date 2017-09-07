@@ -31,7 +31,7 @@ const styles = {
   },
 };
 
-const PropertyPage = props => {
+const PropertyPage = (props) => {
   const percent = getPropertyCompletion(props.loanRequest, props.borrowers);
 
   return (

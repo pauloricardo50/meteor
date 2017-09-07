@@ -30,7 +30,10 @@ export default class PasswordResetPage extends Component {
 
   handleChange = (event, key) => {
     this.setState({ [key]: event.target.value }, () => {
-      if (!!this.state.newPassword && this.state.newPassword === this.state.newPassword2) {
+      if (
+        !!this.state.newPassword &&
+        this.state.newPassword === this.state.newPassword2
+      ) {
         this.setState({ isValid: true });
       } else {
         this.setState({ isValid: false });
@@ -40,7 +43,7 @@ export default class PasswordResetPage extends Component {
 
   handleSubmit = () => {
     const token = this.props.match.params.token;
-    Accounts.resetPassword(token, this.state.newPassword, err => {
+    Accounts.resetPassword(token, this.state.newPassword, (err) => {
       if (err) {
         console.log(err);
         // TODO
@@ -54,7 +57,9 @@ export default class PasswordResetPage extends Component {
     const { isValid, newPassword, newPassword2 } = this.state;
     return (
       <div style={styles.div}>
-        <h1><T id="PasswordResetPage.title" /></h1>
+        <h1>
+          <T id="PasswordResetPage.title" />
+        </h1>
         <TextField
           floatingLabelText={<T id="PasswordResetPage.password" />}
           floatingLabelFixed
@@ -71,7 +76,8 @@ export default class PasswordResetPage extends Component {
         />
 
         <div style={styles.button}>
-          <Button raised
+          <Button
+            raised
             label={<T id="PasswordResetPage.CTA" />}
             disabled={!isValid}
             onClick={this.handleSubmit}

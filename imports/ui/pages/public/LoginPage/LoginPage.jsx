@@ -23,8 +23,8 @@ const handlePasswordReset = () => {
   console.log('jejes');
 };
 
-const LoginPage = props =>
-  (<section style={styles.section}>
+const LoginPage = props => (
+  <section style={styles.section}>
     <h1>
       <T id="LoginPage.title" />
     </h1>
@@ -48,7 +48,8 @@ const LoginPage = props =>
       }}
       onResetPasswordHook={handlePasswordReset}
     />
-  </section>);
+  </section>
+);
 
 LoginPage.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,

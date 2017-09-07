@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 
 import Button from '/imports/ui/components/general/Button.jsx';
 
-import RequestTabs from './singleRequestPage/RequestTabs.jsx';
-import StepStatus from './singleRequestPage/StepStatus.jsx';
+import RequestTabs from './RequestTabs.jsx';
+import StepStatus from './StepStatus.jsx';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import { getLoanValue } from '/imports/js/helpers/requestFunctions';
@@ -45,7 +45,8 @@ export default class SingleRequestPage extends Component {
   render() {
     return (
       <section>
-        <Button raised
+        <Button
+          raised
           label="Retour"
           style={styles.returnButton}
           onClick={() => this.props.history.push('/admin/requests')}

@@ -12,7 +12,7 @@ class EmailVerificationPage extends Component {
       this.props.history.push('/');
     }
 
-    Accounts.verifyEmail(token, error => {
+    Accounts.verifyEmail(token, (error) => {
       if (error) {
         this.props.history.push('/');
         console.log(error.reason);
@@ -23,9 +23,11 @@ class EmailVerificationPage extends Component {
           'danger',
         );
       } else {
-        const message = `<h3 style="color:white;margin:0;">${this.props.intl.formatMessage({
-          id: 'EmailVerification.message',
-        })}</h3>`;
+        const message = `<h3 style="color:white;margin:0;">${this.props.intl.formatMessage(
+          {
+            id: 'EmailVerification.message',
+          },
+        )}</h3>`;
         Bert.alert(message, 'success');
         this.props.history.push('/app');
       }

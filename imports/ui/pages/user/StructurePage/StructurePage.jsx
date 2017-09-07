@@ -10,9 +10,9 @@ import { T } from '/imports/ui/components/general/Translation.jsx';
 import track from '/imports/js/helpers/analytics';
 import { toNumber } from '/imports/js/helpers/conversionFunctions';
 
-import StructureSliders from './structurePage/StructureSliders.jsx';
-import StructureRecap from './structurePage/StructureRecap.jsx';
-import StructureError from './structurePage/StructureError.jsx';
+import StructureSliders from './StructureSliders.jsx';
+import StructureRecap from './StructureRecap.jsx';
+import StructureError from './StructureError.jsx';
 
 const handleClick = (props, state) => {
   // Save data to DB

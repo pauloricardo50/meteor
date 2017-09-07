@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const AdminSingleUserPage = props => {
-  return (
-    <section className="mask1">
-      <h1>{props.currentUser.emails[0].address}</h1>
-    </section>
-  );
-};
+const AdminSingleUserPage = props => (
+  <section className="mask1">
+    <h1>{props.currentUser.emails[0].address}</h1>
+  </section>
+);
 
 AdminSingleUserPage.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.any),

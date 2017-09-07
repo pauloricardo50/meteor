@@ -19,8 +19,8 @@ const styles = {
   },
 };
 
-const AboutPage = () =>
-  (<section style={styles.section} className="animated fadeIn">
+const AboutPage = () => (
+  <section style={styles.section} className="animated fadeIn">
     <article style={styles.article}>
       <h1>
         <T id="AboutPage.title" />
@@ -32,6 +32,7 @@ const AboutPage = () =>
         </p>
       </div>
     </article>
-  </section>);
+  </section>
+);
 
 export default AboutPage;

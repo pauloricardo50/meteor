@@ -66,27 +66,29 @@ export default class VerificationPage extends Component {
           >
             {verification.comments.length > 0 &&
               verification.comments
-                .map((comment, i) =>
-                  (<li key={i}>
+                .map((comment, i) => (
+                  <li key={i}>
                     <h3>
                       {i + 1}. {comment}
                     </h3>
-                  </li>),
-                )
+                  </li>
+                ))
                 .reduce((prev, curr) => [prev, <hr />, curr])}
           </ul>
-          {verification.requested
-            ? <div style={{ height: 150 }} className="animated fadeIn">
+          {verification.requested ? (
+            <div style={{ height: 150 }} className="animated fadeIn">
               <LoadingComponent />
             </div>
-            : <div style={{ marginTop: 40 }}>
+          ) : (
+            <div style={{ marginTop: 40 }}>
               <ConfirmButton
                 raised
                 label={<T id="VerificationPage.CTA2" />}
                 primary
                 handleClick={this.handleClick}
               />
-            </div>}
+            </div>
+          )}
         </div>
       );
     } else {
@@ -97,11 +99,12 @@ export default class VerificationPage extends Component {
               <T id="VerificationPage.description" />
             </p>
           </div>
-          {verification.requested
-            ? <div style={{ height: 150 }} className="animated fadeIn">
+          {verification.requested ? (
+            <div style={{ height: 150 }} className="animated fadeIn">
               <LoadingComponent />
             </div>
-            : <div
+          ) : (
+            <div
               className="text-center"
               style={{
                 margin: '40px 0',
@@ -125,7 +128,8 @@ export default class VerificationPage extends Component {
                 handleClick={this.handleClick}
                 text={<T id="VerificationPage.CTA.warning" />}
               />
-            </div>}
+            </div>
+          )}
         </article>
       );
     }
@@ -137,9 +141,7 @@ export default class VerificationPage extends Component {
         id="verification"
         showBottom={false}
       >
-        <section className="mask1">
-          {content}
-        </section>
+        <section className="mask1">{content}</section>
       </ProcessPage>
     );
   }

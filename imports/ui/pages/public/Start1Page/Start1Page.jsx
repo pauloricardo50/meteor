@@ -21,7 +21,7 @@ import {
 import { storageAvailable } from '/imports/js/helpers/browserFunctions';
 import Accordion from '/imports/ui/components/general/Accordion.jsx';
 
-import Start1Calculator from './startPage/Start1Calculator.jsx';
+import Start1Calculator from './Start1Calculator.jsx';
 
 const getArray = (income, fortune, property, borrow, ratio) => {
   const incomeIcon = classnames({
@@ -263,7 +263,7 @@ export default class Start1Page extends Component {
           </h1>
           <hr />
 
-          {!isFirstVisit &&
+          {!isFirstVisit && (
             <Button
               icon={showDescription ? <ArrowUp /> : <ArrowDown />}
               onClick={() =>
@@ -271,11 +271,14 @@ export default class Start1Page extends Component {
                   showDescription: !prev.showDescription,
                 }))}
               style={
-                showDescription
-                  ? { minWidth: 'unset', width: 36 }
-                  : { marginBottom: 16, minWidth: 'unset', width: 36 }
+                showDescription ? (
+                  { minWidth: 'unset', width: 36 }
+                ) : (
+                  { marginBottom: 16, minWidth: 'unset', width: 36 }
+                )
               }
-            />}
+            />
+          )}
           <Accordion
             isActive={showDescription}
             style={showDescription ? { margin: '40px 0' } : {}}
@@ -290,8 +293,8 @@ export default class Start1Page extends Component {
             </div>
           </Accordion>
 
-          {!isFirstVisit
-            ? <Start1Calculator
+          {!isFirstVisit ? (
+            <Start1Calculator
               {...childProps}
               inputArray={getArray(
                 income,
@@ -307,7 +310,8 @@ export default class Start1Page extends Component {
               handleReset={this.handleReset}
               getUrl={this.getUrl}
             />
-            : <div className="text-center" style={{ marginBottom: 40 }}>
+          ) : (
+            <div className="text-center" style={{ marginBottom: 40 }}>
               <Button
                 raised
                 primary
@@ -320,7 +324,8 @@ export default class Start1Page extends Component {
                 style={{ height: 'unset' }}
                 overlayStyle={{ padding: 20 }}
               />
-            </div>}
+            </div>
+          )}
         </article>
       </section>
     );

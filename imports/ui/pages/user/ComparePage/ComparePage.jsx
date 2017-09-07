@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Button from '/imports/ui/components/general/Button.jsx';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
-import Comparator from './comparePage/Comparator.jsx';
+import Comparator from './Comparator.jsx';
 import GoogleMapContainer from '/imports/ui/components/general/GoogleMapContainer.jsx';
 import cleanMethod from '/imports/api/cleanMethods';
 

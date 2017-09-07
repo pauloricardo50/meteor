@@ -5,9 +5,9 @@ import { Meteor } from 'meteor/meteor';
 import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
 
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
-import AuctionStart from './auctionPage/AuctionStart.jsx';
-import Auction from './auctionPage/Auction.jsx';
-import AuctionResults from './auctionPage/AuctionResults.jsx';
+import AuctionStart from './AuctionStart.jsx';
+import Auction from './Auction.jsx';
+import AuctionResults from './AuctionResults.jsx';
 
 let time;
 

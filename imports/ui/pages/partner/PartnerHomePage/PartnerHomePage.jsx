@@ -70,14 +70,16 @@ const PartnerHomePage = ({ loanRequests, currentOffers, oldOffers }) => {
         <img src="/img/logo_black.svg" alt="Logo e-Potek" className="epotek" />
       </div>
 
-      {currentAuctions.length
-        ? <CurrentAuctionsTable
+      {currentAuctions.length ? (
+        <CurrentAuctionsTable
           currentAuctions={currentAuctions}
           offers={currentOffers}
         />
-        : <div className="text-center col-xs-12" style={styles.noAuctionDiv}>
+      ) : (
+        <div className="text-center col-xs-12" style={styles.noAuctionDiv}>
           <h2>Aucune nouvelle offre à faire en ce moment.</h2>
-        </div>}
+        </div>
+      )}
 
       <div className="col-xs-12">
         <hr className="col-xs-4 col-xs-offset-4" />

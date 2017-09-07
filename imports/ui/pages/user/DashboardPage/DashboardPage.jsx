@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Page from '/imports/ui/components/general/Page.jsx';
-import NewRequestModal from './dashboardPage/NewRequestModal.jsx';
-import AcceptClosingModal from './dashboardPage/AcceptClosingModal.jsx';
-import DashboardContent from './dashboardPage/DashboardContent.jsx';
+import NewRequestModal from './NewRequestModal.jsx';
+import AcceptClosingModal from './AcceptClosingModal.jsx';
+import DashboardContent from './DashboardContent.jsx';
 
 import { getWidth } from '/imports/js/helpers/browserFunctions';
 
@@ -34,11 +34,13 @@ export default class DashboardPage extends Component {
       <Page id="DashboardPage" className="joyride-dashboard" fullWidth>
         <DashboardContent {...this.props} smallWidth={this.state.smallWidth} />
 
-        {showNewRequestModal &&
-          <NewRequestModal open requestId={loanRequest._id} />}
+        {showNewRequestModal && (
+          <NewRequestModal open requestId={loanRequest._id} />
+        )}
 
-        {showClosedModal &&
-          <AcceptClosingModal open loanRequest={loanRequest} />}
+        {showClosedModal && (
+          <AcceptClosingModal open loanRequest={loanRequest} />
+        )}
       </Page>
     );
   }

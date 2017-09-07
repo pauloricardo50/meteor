@@ -1,5 +1,5 @@
+import React from 'react';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
@@ -21,35 +21,29 @@ const styles = {
   },
 };
 
-export default class CareersPage extends Component {
-  constructor(props) {
-    super(props);
-  }
+const CareersPage = () => (
+  <section style={styles.section} className="animated fadeIn">
+    <article style={styles.article}>
+      <h1>
+        <T id="CareersPage.title" />
+      </h1>
 
-  render() {
-    return (
-      <section style={styles.section} className="animated fadeIn">
-        <article style={styles.article}>
-          <h1><T id="CareersPage.title" /></h1>
-
-          <div className="description" style={styles.description}>
-            <p>
-              <T
-                id="CareersPage.description"
-                values={{
-                  email: (
-                    <a href="mailto:jobs@e-potek.ch?subject=Je%20veux%20révolutionner%20la%20finance">
-                      jobs@e-potek.ch
-                    </a>
-                  ),
-                }}
-              />
-            </p>
-          </div>
-        </article>
-      </section>
-    );
-  }
-}
+      <div className="description" style={styles.description}>
+        <p>
+          <T
+            id="CareersPage.description"
+            values={{
+              email: (
+                <a href="mailto:jobs@e-potek.ch?subject=Je%20veux%20révolutionner%20la%20finance">
+                  jobs@e-potek.ch
+                </a>
+              ),
+            }}
+          />
+        </p>
+      </div>
+    </article>
+  </section>
+);
 
 CareersPage.propTypes = {};

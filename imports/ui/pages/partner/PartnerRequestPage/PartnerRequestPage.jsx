@@ -16,12 +16,13 @@ const styles = {
   },
 };
 
-const PartnerRequestPage = props => {
+const PartnerRequestPage = (props) => {
   if (props.loanRequest) {
     return (
       <section>
         <div className="form-group">
-          <Button raised
+          <Button
+            raised
             icon={<span className="fa fa-angle-left" />}
             label="Retour"
             href="/partner"
@@ -41,7 +42,8 @@ const PartnerRequestPage = props => {
       <h1>
         Il semblerait qu'il y ait eu une erreur.
         <br />
-        Soit cette demande de prêt n'existe pas, soit vous n'êtes pas autorisé à la voir.
+        Soit cette demande de prêt n'existe pas, soit vous n'êtes pas autorisé à
+        la voir.
       </h1>
       <Button raised label="Retour" href="/partner" style={styles.back} />
     </section>

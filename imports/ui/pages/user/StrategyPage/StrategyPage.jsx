@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 import cleanMethod from '/imports/api/cleanMethods';
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
-import RankStrategy from './strategyPage/RankStrategy.jsx';
-import AmortizingPicker from './strategyPage/AmortizingPicker.jsx';
-import InsuranceStrategy from './strategyPage/InsuranceStrategy.jsx';
-import LoanStrategyPicker from './strategyPage/LoanStrategyPicker.jsx';
+import RankStrategy from './RankStrategy.jsx';
+import AmortizingPicker from './AmortizingPicker.jsx';
+import InsuranceStrategy from './InsuranceStrategy.jsx';
+import LoanStrategyPicker from './LoanStrategyPicker.jsx';
 
 const getComponents = (props, handleSave) => {
   const childProps = {

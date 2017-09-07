@@ -6,7 +6,7 @@ import Button from '/imports/ui/components/general/Button.jsx';
 
 import Page from '/imports/ui/components/general/Page.jsx';
 import { T } from '/imports/ui/components/general/Translation.jsx';
-import PasswordChange from './accountPage/PasswordChange.jsx';
+import PasswordChange from './PasswordChange.jsx';
 
 const styles = {
   section: {
@@ -27,14 +27,15 @@ const styles = {
   },
 };
 
-const AccountPage = props =>
+const AccountPage = props => (
   <Page id="AccountPage">
     <div className="mask1" style={styles.section}>
       <span
         className="hidden-sm hidden-md hidden-lg"
         style={styles.mobileLogoutButton}
       >
-        <Button raised
+        <Button
+          raised
           label={<T id="general.logout" />}
           onClick={() => Meteor.logout(() => props.history.push('/home'))}
         />
@@ -47,9 +48,7 @@ const AccountPage = props =>
           </h4>
           {/* <a><T id="AccountPage.change" /></a> */}
           <br />
-          <p className="secondary">
-            {props.currentUser.emails[0].address}
-          </p>
+          <p className="secondary">{props.currentUser.emails[0].address}</p>
         </div>
 
         <div className="form-group">
@@ -79,7 +78,8 @@ const AccountPage = props =>
         </div> */}
       </div>
     </div>
-  </Page>;
+  </Page>
+);
 
 AccountPage.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any).isRequired,

@@ -6,7 +6,7 @@ import getMountedComponent, {
 } from '/imports/js/helpers/testHelpers';
 import { Factory } from 'meteor/dburles:factory';
 
-import AuctionStart from '../auctionPage/AuctionStart.jsx';
+import AuctionStart from '../AuctionStart.jsx';
 
 if (Meteor.isClient) {
   describe('<AuctionPage />', () => {

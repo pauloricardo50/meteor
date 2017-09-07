@@ -23,7 +23,9 @@ const styles = {
 const TosPage = () => (
   <section style={styles.section} className="animated fadeIn">
     <article style={styles.article}>
-      <h1><T id="TosPage.title" /></h1>
+      <h1>
+        <T id="TosPage.title" />
+      </h1>
 
       <div className="description" style={styles.description}>
         <p>

@@ -4,35 +4,37 @@ import PropTypes from 'prop-types';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import Unverified from '/imports/ui/components/general/Unverified.jsx';
 
-import AppItem from './appPage/AppItem.jsx';
+import AppItem from './AppItem.jsx';
 
-const AppPage = ({ loanRequests, properties, currentUser }) =>
-  (<section className="flex-col center">
-    {!currentUser.emails[0].verified &&
+const AppPage = ({ loanRequests, properties, currentUser }) => (
+  <section className="flex-col center">
+    {!currentUser.emails[0].verified && (
       <div style={{ marginBottom: 16 }}>
         <Unverified />
-      </div>}
+      </div>
+    )}
 
-    {loanRequests.map(request =>
-      (<AppItem
+    {loanRequests.map(request => (
+      <AppItem
         key={request._id}
         title={request.name || <T id="AppPage.noName" />}
         subtitle={<T id="AppPage.loanRequest" />}
         mainText={
           <span>
             <T id="AppPage.step" values={{ step: request.logic.step }} />
-            {!request.name &&
+            {!request.name && (
               <span>
                 <br />
                 <span className="active">
                   <T id="AppPage.begin" />
                 </span>
-              </span>}
+              </span>
+            )}
           </span>
         }
         href={`/app/requests/${request._id}`}
-      />),
-    )}
+      />
+    ))}
 
     <AppItem
       title={<T id="AppPage.comparator" />}
@@ -47,7 +49,8 @@ const AppPage = ({ loanRequests, properties, currentUser }) =>
       mainText={<span className="active">+</span>}
       href="/start1/acquisition"
     />
-  </section>);
+  </section>
+);
 
 AppPage.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.object),

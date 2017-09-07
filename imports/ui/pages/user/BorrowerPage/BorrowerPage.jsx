@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
-import BorrowerInfoPage from './borrowerPage/BorrowerInfoPage.jsx';
-import BorrowerFinancePage from './borrowerPage/BorrowerFinancePage.jsx';
-import Files from './borrowerPage/Files.jsx';
-import BorrowerHeader from './borrowerPage/BorrowerHeader.jsx';
+import BorrowerInfoPage from './BorrowerInfoPage.jsx';
+import BorrowerFinancePage from './BorrowerFinancePage.jsx';
+import Files from './Files.jsx';
+import BorrowerHeader from './BorrowerHeader.jsx';
 
 const styles = {
   div: {
@@ -28,7 +28,7 @@ const styles = {
   },
 };
 
-const Links = props =>
+const Links = props => (
   <div className="borrower-links text-center">
     <Link
       to={`/app/requests/${props.requestId}/borrowers/${props.borrower
@@ -60,7 +60,8 @@ const Links = props =>
         <T id="BorrowerPage.files" />
       </h4>
     </Link>
-  </div>;
+  </div>
+);
 
 export default class BorrowerPage extends Component {
   constructor(props) {

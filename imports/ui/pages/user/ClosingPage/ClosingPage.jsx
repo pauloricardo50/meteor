@@ -10,7 +10,7 @@ import { filesPercent } from '/imports/js/arrays/steps';
 import { borrowerFiles, requestFiles } from '/imports/js/arrays/files';
 import cleanMethod from '/imports/api/cleanMethods';
 
-const handleClick = id => {
+const handleClick = (id) => {
   cleanMethod('updateRequest', { 'logic.lender.closingRequested': true }, id);
 };
 
@@ -42,13 +42,13 @@ const getAction = (request, percent) => {
   );
 };
 
-const ClosingPage = props => {
+const ClosingPage = props =>
   // const percent =
   //   (filesPercent(props.loanRequest, requestFiles, 'closing') +
   //     filesPercent(props.borrowers, borrowerFiles, 'closing')) /
   //   (1 + props.borrowers.length);
 
-  return (
+  (
     <ProcessPage {...props} stepNb={3} id="closing" showBottom={false}>
       <div className="mask1">
         <div className="description">
@@ -60,8 +60,8 @@ const ClosingPage = props => {
         {/* {getAction(props.loanRequest, percent)} */}
       </div>
     </ProcessPage>
-  );
-};
+  )
+;
 
 ClosingPage.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,

@@ -92,11 +92,11 @@ export default class VerifyPage extends Component {
             Demande de prêt:{' '}
             <span className="bold">{this.props.loanRequest._id}</span>
           </li>
-          {this.props.borrowers.map((b, i) =>
-            (<li key={b._id}>
+          {this.props.borrowers.map((b, i) => (
+            <li key={b._id}>
               Emprunteur {i + 1}: <span className="bold">{b._id}</span>
-            </li>),
-          )}
+            </li>
+          ))}
         </ul>
 
         <hr />
@@ -115,16 +115,16 @@ export default class VerifyPage extends Component {
           </DropDownMenu>
         </div>
 
-        {this.state.comments.map((c, i) =>
-          (<TextField
+        {this.state.comments.map((c, i) => (
+          <TextField
             value={c}
             multiLine
             rows={2}
             fullWidth
             floatingLabelText={`Commentaire No.${i + 1}`}
             onChange={e => this.handleChangeComment(e, i)}
-          />),
-        )}
+          />
+        ))}
         <div className="text-center">
           <Button
             raised

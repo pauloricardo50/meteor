@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import FileTabs from './contractPage/FileTabs.jsx';
 import ProcessPage from '/imports/ui/components/general/ProcessPage.jsx';
 import ConfirmButton from '/imports/ui/components/general/ConfirmButton.jsx';
 import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
@@ -10,6 +9,8 @@ import { T } from '/imports/ui/components/general/Translation.jsx';
 import { filesPercent } from '/imports/js/arrays/steps';
 import { borrowerFiles, requestFiles } from '/imports/js/arrays/files';
 import cleanMethod from '/imports/api/cleanMethods';
+
+import FileTabs from './FileTabs.jsx';
 
 // const handleClick = (id) => {
 //   cleanMethod('updateRequest', { 'logic.lender.contractRequested': true }, id);
@@ -44,26 +45,24 @@ import cleanMethod from '/imports/api/cleanMethods';
 //   );
 // };
 
-const ContractPage = props =>
+const ContractPage = props => (
   // const percent =
   //   (filesPercent(props.loanRequest, requestFiles, 'contract') +
   //     filesPercent(props.borrowers, borrowerFiles, 'contract')) /
   //   (1 + props.borrowers.length);
 
-  (
-    <ProcessPage {...props} stepNb={3} id="contract" showBottom={false}>
-      <div className="mask1">
-        <div className="description">
-          <p>
-            <T id="ContractPage.description" />
-          </p>
-        </div>
-
-        <FileTabs {...props} />
+  <ProcessPage {...props} stepNb={3} id="contract" showBottom={false}>
+    <div className="mask1">
+      <div className="description">
+        <p>
+          <T id="ContractPage.description" />
+        </p>
       </div>
-    </ProcessPage>
-  )
-;
+
+      <FileTabs {...props} />
+    </div>
+  </ProcessPage>
+);
 
 ContractPage.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,

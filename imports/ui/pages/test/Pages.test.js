@@ -15,8 +15,6 @@ import DashboardPage from '../user/DashboardPage.jsx';
 import ContractPage from '../user/ContractPage.jsx';
 import ClosingPage from '../user/ClosingPage.jsx';
 import LenderPickerPage from '../user/LenderPickerPage.jsx';
-import NewPage from '../user/NewPage.jsx';
-import NewRequestPage from '../user/NewRequestPage.jsx';
 import PropertyPage from '../user/PropertyPage.jsx';
 import StructurePage from '../user/StructurePage.jsx';
 import VerificationPage from '../user/VerificationPage.jsx';
@@ -46,8 +44,6 @@ const pages = {
   ContractPage,
   ClosingPage,
   LenderPickerPage,
-  NewPage,
-  NewRequestPage,
   // PropertyPage,
   StructurePage,
   VerificationPage,

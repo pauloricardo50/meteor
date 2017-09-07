@@ -19,7 +19,9 @@ export default class LastStepsPage extends Component {
   };
 
   removeValue = (type, index) => {
-    this.setState(prevState => ({ [type]: prevState[type].filter((_, i) => i !== index) }));
+    this.setState(prevState => ({
+      [type]: prevState[type].filter((_, i) => i !== index),
+    }));
   };
 
   render() {

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Page from '/imports/ui/components/general/Page.jsx';
-import AmortizationTool from './financePage/AmortizationTool.jsx';
+import AmortizationTool from './AmortizationTool.jsx';
 
 const styles = {
   div: {
@@ -10,16 +10,14 @@ const styles = {
   },
 };
 
-const FinancePage = props => {
-  return (
-    <Page id="FinancePage">
-      {/* <div className="mask1" style={styles.div}>
+const FinancePage = props => (
+  <Page id="FinancePage">
+    {/* <div className="mask1" style={styles.div}>
         <ExpensesChartInterests {...props} />
       </div> */}
-      <AmortizationTool {...props} />
-    </Page>
-  );
-};
+    <AmortizationTool {...props} />
+  </Page>
+);
 
 FinancePage.propTypes = {};
 
