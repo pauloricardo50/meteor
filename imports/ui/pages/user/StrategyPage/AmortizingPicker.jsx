@@ -4,6 +4,8 @@ import React from 'react';
 import { T } from '/imports/ui/components/general/Translation';
 import StrategyChoices from '/imports/ui/components/general/StrategyChoices';
 
+import AmortizingSummary from './AmortizingSummary';
+
 const getChoices = () => [
   {
     id: 'indirect',
@@ -22,8 +24,8 @@ const getChoices = () => [
   },
 ];
 
-const AmortizingPicker = ({ loanRequest, handleSave }) =>
-  (<article>
+const AmortizingPicker = ({ loanRequest, handleSave }) => (
+  <article>
     <h2>
       <T id="AmortizingPicker.title" />
     </h2>
@@ -39,7 +41,12 @@ const AmortizingPicker = ({ loanRequest, handleSave }) =>
       handleChoose={id =>
         handleSave({ 'logic.amortizationStrategyPreset': id })}
     />
-  </article>);
+
+    {!!loanRequest.logic.amortizationStrategyPreset && (
+      <AmortizingSummary loanRequest={loanRequest} />
+    )}
+  </article>
+);
 
 AmortizingPicker.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,

@@ -5,6 +5,7 @@ import { getLoanValue } from '/imports/js/helpers/requestFunctions';
 import StrategyChoices from '/imports/ui/components/general/StrategyChoices';
 import { T } from '/imports/ui/components/general/Translation';
 import TranchePicker from './TranchePicker';
+import LenderSummary from './LenderSummary';
 
 const getChoices = () => [
   {
@@ -45,8 +46,6 @@ const handleChoose = (id, loanRequest, handleSave) => {
       'logic.loanStrategyPreset': id,
     });
   } else {
-    console.log(id);
-    console.log(getStructure(id, loanRequest));
     handleSave({
       'logic.loanStrategyPreset': id,
       'general.loanTranches': getStructure(id, loanRequest),
@@ -54,8 +53,8 @@ const handleChoose = (id, loanRequest, handleSave) => {
   }
 };
 
-const LoanStrategyPicker = ({ loanRequest, handleSave }) =>
-  (<article>
+const LoanStrategyPicker = ({ loanRequest, handleSave, offers }) => (
+  <article>
     <h2>
       <T id="LoanStrategyPicker.title" />
     </h2>
@@ -70,11 +69,23 @@ const LoanStrategyPicker = ({ loanRequest, handleSave }) =>
       choices={getChoices()}
       handleChoose={id => handleChoose(id, loanRequest, handleSave)}
     />
-  </article>);
+
+    <p className="secondary">
+      <small>
+        <T id="LoanStrategyPicker.disclaimer" />
+      </small>
+    </p>
+
+    {loanRequest.logic.loanStrategyPreset && (
+      <LenderSummary loanRequest={loanRequest} offers={offers} />
+    )}
+  </article>
+);
 
 LoanStrategyPicker.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   handleSave: PropTypes.func.isRequired,
+  offers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default LoanStrategyPicker;

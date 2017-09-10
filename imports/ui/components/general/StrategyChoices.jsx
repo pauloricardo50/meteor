@@ -31,30 +31,30 @@ export default class StrategyChoices extends Component {
           }}
         >
           <div className="top">
-            <h4 className="title bold">
-              {choice.title}
-            </h4>
-            {choice.isBest &&
+            <h4 className="title bold">{choice.title}</h4>
+            {choice.isBest && (
               <div className="recommended">
                 <T id="StrategyChoices.recommended" />
-              </div>}
+              </div>
+            )}
           </div>
           <div className="reasons secondary">
             {choice.reasons
-              .map(reason =>
-                (<span key={reason.id}>
-                  {reason}
-                </span>),
-              )
-              .reduce((prev, curr) => [prev, <span> &bull; </span>, curr])}
+              .map(reason => <span key={reason.id}>{reason}</span>)
+              .reduce((prev, curr, i) => [
+                prev,
+                <span key={i}> &bull; </span>,
+                curr,
+              ])}
           </div>
         </div>
         {chosen &&
-          !!choice.children &&
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <hr />
-            {choice.children}
-          </div>}
+        !!choice.children && (
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <hr />
+              {choice.children}
+            </div>
+          )}
       </article>
     );
   }

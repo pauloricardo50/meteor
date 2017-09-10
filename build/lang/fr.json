@@ -1,13 +1,17 @@
 {
-  "AboutPage.description": "e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève. Expansion prévue prochainement.{verticalSpace}L'équipe derrière e-Potek est composée d'entrepreneurs vétérans avec une expérience cumulée de plus de 30 ans dans la finance et les prêts hypothécaires en Suisse.",
+  "AboutPage.description":
+    "e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève. Expansion prévue prochainement.{verticalSpace}L'équipe derrière e-Potek est composée d'entrepreneurs vétérans avec une expérience cumulée de plus de 30 ans dans la finance et les prêts hypothécaires en Suisse.",
   "AboutPage.title": "Le Prêt Hypothécaire de Demain",
-  "AcceptClosingModal.description": "Toute l'équipe d'e-Potek vous félicite pour le décaissement de votre prêt hypothécaire, et d'être enfin propriétaire de votre bien immobilier.{verticalSpace}Vous pouvez maintenant utiliser votre tableau de bord e-Potek pour garder un oeil sur votre prochaine échéance de paiement, et consulter les taux lorsque le refinancement s'approchera.",
-  "AcceptClosingModal.description2": "Merci d'avoir utilisé e-Potek, voici votre code pour nous recommander auprès de vos proches, et empocher jusqu'a CHF 1 000 pour une affaire conclue.",
+  "AcceptClosingModal.description":
+    "Toute l'équipe d'e-Potek vous félicite pour le décaissement de votre prêt hypothécaire, et d'être enfin propriétaire de votre bien immobilier.{verticalSpace}Vous pouvez maintenant utiliser votre tableau de bord e-Potek pour garder un oeil sur votre prochaine échéance de paiement, et consulter les taux lorsque le refinancement s'approchera.",
+  "AcceptClosingModal.description2":
+    "Merci d'avoir utilisé e-Potek, voici votre code pour nous recommander auprès de vos proches, et empocher jusqu'a CHF 1 000 pour une affaire conclue.",
   "AcceptClosingModal.title": "Félicitations!",
   "AccountPage.change": "Changer",
   "AccountPage.email": "Adresse email",
   "AccountPage.language": "Langue",
-  "AccountPage.notifications": "Recevoir des notifications quand mon dossier avance",
+  "AccountPage.notifications":
+    "Recevoir des notifications quand mon dossier avance",
   "AccountPage.notifications.email": "Par email",
   "AccountPage.notifications.sms": "Par SMS",
   "AccountPage.password": "Mot de passe",
@@ -19,7 +23,17 @@
   "ActionsTable.do": " ",
 
   "HomePage.webapp.title": "Votre guide personnel",
-  "HomePage.webapp.description": "Notre application vous accompagne du début jusqu'à la fin et s'adapte de façon intelligente à votre situation",
+  "HomePage.webapp.description":
+    "Notre application vous accompagne du début jusqu'à la fin et s'adapte de façon intelligente à votre situation",
+
+  "AmortizingSummary.indirect.description":
+    "Vous avez choisi l'amortissement indirect.",
+
+  "AmortizingSummary.direct.description":
+    "Vous avez choisi l'amortissement direct.",
+
+  "LoanStrategyPicker.disclaimer":
+    "n.b. Ce choix est indicatif, et vous permet de déterminer quelle stratégie vous conviendra le mieux.",
 
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
@@ -46,26 +60,30 @@
   "AmortizationTool.rate": "Taux à 10 ans: {rate, number, percentage}",
   "AmortizationTool.rise.title": "Augmentation des taux",
   "AmortizationTool.stable.title": "Taux stables",
-  "AmortizingPicker.description": "Choisir comment amortir son bien immobilier peut avoir des conséquences très importantes pour votre futur. N'hésitez pas à nous appeler pour prendre cette décision en toute confiance.",
+  "AmortizingPicker.description":
+    "Choisir comment amortir son bien immobilier peut avoir des conséquences très importantes pour votre futur. N'hésitez pas à nous appeler pour prendre cette décision en toute confiance.",
   "AmortizingPicker.title": "Stratégie d'amortissement",
   "AppPage.begin": "Commencer",
   "AppPage.comparator": "Comparateur de propriétés",
   "AppPage.loanRequest": "Demande de prêt",
   "AppPage.newRequest": "Nouvelle demande de prêt",
   "AppPage.noName": "Sans titre",
-  "AppPage.properties": "{count, plural, =0 {Pas de propriétés} one {Une propriété} other {# propriétés}}",
+  "AppPage.properties":
+    "{count, plural, =0 {Pas de propriétés} one {Une propriété} other {# propriétés}}",
   "AppPage.step": "{step, plural, one {1ère Étape} other {#ème Étape}}",
   "ArrayInput.add": "Ajouter",
   "Auction.notified": "Vous recevrez une notification lorsque ce sera terminé",
   "Auction.tableText": "Bataille des prêteurs en cours",
   "Auction.title": "Enchères en cours..",
   "AuctionResults.countSuffix": " Offres reçues",
-  "AuctionResults.description": "Vos offres sont arrivées, vous pouvez dès à présent choisir votre prêteur.",
+  "AuctionResults.description":
+    "Vos offres sont arrivées, vous pouvez dès à présent choisir votre prêteur.",
   "AuctionResults.title": "Résultat des enchères",
   "AuctionStart.cancel": "Pas maintenant",
   "AuctionStart.countSuffix": " Prêteurs",
   "AuctionStart.CTA": "Commencer les enchères",
-  "AuctionStart.description": "Durant les enchères, les {count} prêteurs vont entrer en compétition sur votre dossier. Ils auront 2 fois 24 heures pour miser avec un taux d'intérêt sur votre projet.{verticalSpace}Puis, dans 2 jours ouvrables, vous recevrez un tableau avec toutes les offres.",
+  "AuctionStart.description":
+    "Durant les enchères, les {count} prêteurs vont entrer en compétition sur votre dossier. Ils auront 2 fois 24 heures pour miser avec un taux d'intérêt sur votre projet.{verticalSpace}Puis, dans 2 jours ouvrables, vous recevrez un tableau avec toutes les offres.",
   "AuctionStart.lenderList": "Voir la liste",
   "AuctionStart.title": "Lancez les enchères",
   "bert.emailVerificationSent": "Vérification envoyée à {email}!",
@@ -74,11 +92,14 @@
   "BorrowerPage.files": "Documents",
   "BorrowerPage.finance": "Finances",
   "BorrowerPage.personal": "Perso",
-  "CareersPage.description": "Nous ne cherchons pas activement de nouveaux candidats en ce moment. Cependant, nous sommes toujours ouverts aux candidatures spontanées, écris-nous à {email}.",
+  "CareersPage.description":
+    "Nous ne cherchons pas activement de nouveaux candidats en ce moment. Cependant, nous sommes toujours ouverts aux candidatures spontanées, écris-nous à {email}.",
   "CareersPage.title": "Travailler à e-Potek",
   "ClosingPage.CTA": "Demander le décaissement",
-  "ClosingPage.description": "Lorsque vous avez soumis les derniers documents, vous pourrez demander à votre prêteur de décaisser le prêt.",
-  "ClosingPage.loading": "Vous serez notifié par e-mail lorsque votre prêteur est disposé au décaissement.",
+  "ClosingPage.description":
+    "Lorsque vous avez soumis les derniers documents, vous pourrez demander à votre prêteur de décaisser le prêt.",
+  "ClosingPage.loading":
+    "Vous serez notifié par e-mail lorsque votre prêteur est disposé au décaissement.",
   "ClosingPage.progress": "Progrès: {value, number, percent}",
   "Comparator.createdAt": "Créé le",
   "Comparator.empty": "Ajoutez une propriété pour commencer",
@@ -118,8 +139,10 @@
   "ContactButton.byPhone": "Par téléphone",
   "ContactButton.yourAdvisor": "Votre conseiller",
   "ContractPage.CTA": "Demander le contrat",
-  "ContractPage.description": "Pour obtenir un contrat officiel de prêt, votre prêteur a encore besoin de quelques documents. Dès que vous avez soumis tous les documents nécessaires, vous pourrez demander le contrat, ce qui prendra quelques jours à votre prêteur.",
-  "ContractPage.loading": "Vous serez notifié par e-mail lorsque votre contrat est prêt.",
+  "ContractPage.description":
+    "Pour obtenir un contrat officiel de prêt, votre prêteur a encore besoin de quelques documents. Dès que vous avez soumis tous les documents nécessaires, vous pourrez demander le contrat, ce qui prendra quelques jours à votre prêteur.",
+  "ContractPage.loading":
+    "Vous serez notifié par e-mail lorsque votre contrat est prêt.",
   "ContractPage.progress": "Progrès: {value, number, percent}",
   "CustomFieldAdder.add": "Ajouter",
   "CustomFieldAdder.attic": "Avec grenier",
@@ -161,7 +184,8 @@
   "CustomFieldAdder.washingMachine": "Avec machine à laver",
   "DashboardBorrowers.age": "{value} ans",
   "DashboardBorrowers.itemTitle": "Emprunteur {index}",
-  "DashboardBorrowers.title": "{count, plural, one {Emprunteur} other {Emprunteurs}}",
+  "DashboardBorrowers.title":
+    "{count, plural, one {Emprunteur} other {Emprunteurs}}",
   "DashboardCharts.expensesTitle": "Coût Mensuel",
   "DashboardDownload.contract": "Votre contrat",
   "DashboardDownload.title": "Documents",
@@ -182,48 +206,63 @@
   "DashboardRecap.overview": "Résumé",
   "DashboardRecap.title": "Plan Financier",
   "DashboardStatus.auction": "Enchères en cours...",
-  "DashboardStatus.step": "{step, plural, one {1ère étape} =2 {2ème étape} =3 {3ème étape} =4 {4ème étape}}",
+  "DashboardStatus.step":
+    "{step, plural, one {1ère étape} =2 {2ème étape} =3 {3ème étape} =4 {4ème étape}}",
   "DashboardStatus.title": "Statut de votre demande",
   "DashboardStatus.verification": "Vérification en cours...",
   "DashboardUnverified.CTA": "Renvoyer l'email",
-  "DashboardUnverified.description": "Jetez un oeil à votre boite email pour un message de notre part. Rien reçu?",
-  "DashboardUnverified.title": "Vous n'avez pas encore vérifié votre adresse email.",
+  "DashboardUnverified.description":
+    "Jetez un oeil à votre boite email pour un message de notre part. Rien reçu?",
+  "DashboardUnverified.title":
+    "Vous n'avez pas encore vérifié votre adresse email.",
   "DateInput.placeholder": "Choisissez une date",
   "DefaultOptions.fortune": "Fonds propres",
   "DefaultOptions.income": "Revenus annuels bruts",
   "DefaultOptions.interestRate": "Taux d'intérêts",
-  "DropzoneArrayItem.fileCount": "{count, plural, =0 {Pas de fichiers} one {Un fichier} other {# fichiers}}",
+  "DropzoneArrayItem.fileCount":
+    "{count, plural, =0 {Pas de fichiers} one {Un fichier} other {# fichiers}}",
   "DropzoneInput.cancelUpload": "Annuler l'upload",
   "DropzoneInput.cancelUploadConfirmation": "Êtes-vous sûr?",
-  "DropzoneInput.invalidFileType": "Vous ne pouvez uploader que des fichiers PDF, JPG et PNG.",
-  "DropzoneInput.message": "Déposez un ou plusieurs fichiers ici, ou cliquez pour choisir",
+  "DropzoneInput.invalidFileType":
+    "Vous ne pouvez uploader que des fichiers PDF, JPG et PNG.",
+  "DropzoneInput.message":
+    "Déposez un ou plusieurs fichiers ici, ou cliquez pour choisir",
   "DropzoneInput.removeFile": "Supprimer",
   "e-Potek": "e-Potek",
-  "emails.auctionEnded.body": "Les prêteurs se sont battus d'arrache-pied pour vous faire des offres incroyables et avoir le plaisir de financer votre futur bien immobilier. Découvrez combien d'offres vous avez reçues, et choisissez votre prêteur en cliquant sur le bouton en bas.",
+  "emails.auctionEnded.body":
+    "Les prêteurs se sont battus d'arrache-pied pour vous faire des offres incroyables et avoir le plaisir de financer votre futur bien immobilier. Découvrez combien d'offres vous avez reçues, et choisissez votre prêteur en cliquant sur le bouton en bas.",
   "emails.auctionEnded.CTA": "Choisir son prêteur",
   "emails.auctionEnded.subject": "[e-Potek] Les résultats sont arrivés",
   "emails.auctionEnded.title": "Félicitations",
-  "emails.auctionStarted.body": "Nous avons appelé tous les prêteurs de la place à se lancer et vous faire une offre incroyable. Vous pourrez accéder aux résultats le {date, date, full} à minuit.{verticalSpace}Vous recevrez une nouvelle notification quand les enchères seront terminées, donc en attendant, reposez vous!",
+  "emails.auctionStarted.body":
+    "Nous avons appelé tous les prêteurs de la place à se lancer et vous faire une offre incroyable. Vous pourrez accéder aux résultats le {date, date, full} à minuit.{verticalSpace}Vous recevrez une nouvelle notification quand les enchères seront terminées, donc en attendant, reposez vous!",
   "emails.auctionStarted.subject": "[e-Potek] Les enchères ont commencé",
   "emails.auctionStarted.title": "La bataille se prépare",
-  "emails.footer": "{copyright}Vous recevez cet email car vous avez créé un compte sur {url}{unsubscribe}",
-  "emails.resetPassword.body": "Il vous regarde avec un air exaspéré, visiblement déçu que vous ayiez pu oublier un mot de passe aussi simple. Il essaie d'attirer votre attention sur le gros bouton en bas.",
+  "emails.footer":
+    "{copyright}Vous recevez cet email car vous avez créé un compte sur {url}{unsubscribe}",
+  "emails.resetPassword.body":
+    "Il vous regarde avec un air exaspéré, visiblement déçu que vous ayiez pu oublier un mot de passe aussi simple. Il essaie d'attirer votre attention sur le gros bouton en bas.",
   "emails.resetPassword.CTA": "Le gros bouton",
   "emails.resetPassword.from": "Gardien des clés d'e-Potek",
   "emails.resetPassword.subject": "Égarer son mot de passe",
-  "emails.resetPassword.title": "Vous avez invoqué le gardien des clés d'e-Potek",
+  "emails.resetPassword.title":
+    "Vous avez invoqué le gardien des clés d'e-Potek",
   "emails.unsubscribe": "Me Désabonner",
-  "emails.verificationError.body": "Il semblerait qu'il y a eu un petit problème lors de la vérification.",
+  "emails.verificationError.body":
+    "Il semblerait qu'il y a eu un petit problème lors de la vérification.",
   "emails.verificationError.CTA": "Fixer la fuite d'eau",
   "emails.verificationError.subject": "[e-Potek] Souci de vérification",
   "emails.verificationError.title": "Oops..",
-  "emails.verificationPassed.body": "Vous pouvez continuer votre demande de prêt et lancer les enchères à tout moment. Vous pourrez encore modifier la structure de votre projet une dernière fois avant de vous lancer.",
+  "emails.verificationPassed.body":
+    "Vous pouvez continuer votre demande de prêt et lancer les enchères à tout moment. Vous pourrez encore modifier la structure de votre projet une dernière fois avant de vous lancer.",
   "emails.verificationPassed.CTA": "Continuer",
   "emails.verificationPassed.subject": "[e-Potek] Vérification réussie",
   "emails.verificationPassed.title": "Tout est en ordre",
-  "emails.verificationRequested.body": "Nous allons regarder ce que vous nous avez confié avec le plus grand soin, et vérifier que vos informations sont en ordre et dans le meilleur état pour être envoyé aux prêteurs. Nous traiterons votre dossier dans les plus brefs délais durant les heures ouvrables.",
+  "emails.verificationRequested.body":
+    "Nous allons regarder ce que vous nous avez confié avec le plus grand soin, et vérifier que vos informations sont en ordre et dans le meilleur état pour être envoyé aux prêteurs. Nous traiterons votre dossier dans les plus brefs délais durant les heures ouvrables.",
   "emails.verificationRequested.subject": "[e-Potek] Vérification demandée",
-  "emails.verificationRequested.title": "Vous avez demandé la vérification de votre dossier",
+  "emails.verificationRequested.title":
+    "Vous avez demandé la vérification de votre dossier",
   "emails.verifyEmail.subject": "Hypothèque, quand je t'aurai..",
   "EmailVerification.error": "Zut, il y a eu une erreur, rééssayez!",
   "EmailVerification.message": "Email vérifié, Merci!",
@@ -231,86 +270,125 @@
   "ExpensesChart.perMonth": "par mois",
   "ExpensesChartInterests.libor": "Libor moyen: {value, number, percentage}",
   "ExpensesChartInterests.selectFieldLabel": "Taux d'intérêt indicatif",
-  "ExpensesChartInterests.years": "{years} ans moyen: {value, number, percentage}",
+  "ExpensesChartInterests.years":
+    "{years} ans moyen: {value, number, percentage}",
   "FieldToggles.customFields": "Champs personnels",
   "FieldToggles.defaultFields": "Champs e-Potek",
   "FieldToggles.label": "Choisir les champs",
-  "FieldToggles.noCustomFields": "Vous n'avez pas encore de champs personnels, ajoutez-en en cliquant en bas à gauche de la page.",
+  "FieldToggles.noCustomFields":
+    "Vous n'avez pas encore de champs personnels, ajoutez-en en cliquant en bas à gauche de la page.",
   "FieldToggles.title": "Choisir quels champs afficher",
   "files.bankAssetsChange": "Justificatif de fortune bancaire",
-  "files.bankAssetsChange.tooltip": "Tout document justifiant de votre fortune bancaires (print screen e-banking, relevé mensuel ou annuel)",
+  "files.bankAssetsChange.tooltip":
+    "Tout document justifiant de votre fortune bancaires (print screen e-banking, relevé mensuel ou annuel)",
   "files.bonus": "Justificatif des bonus",
-  "files.bonus.tooltip": "Un justificatif par bonus perçu lors des 4 dernières années",
+  "files.bonus.tooltip":
+    "Un justificatif par bonus perçu lors des 4 dernières années",
   "files.buyersContract": "Acte d'achat",
-  "files.buyersContract.tooltipa": "Vous pouvez demander un duplicata auprès du notaire qui était chargé de la signature par le passé",
-  "files.buyersContract.tooltipb": "Le notaire est chargé de produire un projet d’acte d’achat",
+  "files.buyersContract.tooltipa":
+    "Vous pouvez demander un duplicata auprès du notaire qui était chargé de la signature par le passé",
+  "files.buyersContract.tooltipb":
+    "Le notaire est chargé de produire un projet d’acte d’achat",
   "files.contract": "Contrat",
   "files.coownershipAgreement": "Règlement PPE",
-  "files.coownershipAgreement.tooltip": "Ce document édicte les règles de vie de la copropriété",
-  "files.coownershipAgreement.tooltip2": "Un tiers est nommé comme administrateur de la propriété (souvent une régie) cette entité peut vous fournir ce document.",
+  "files.coownershipAgreement.tooltip":
+    "Ce document édicte les règles de vie de la copropriété",
+  "files.coownershipAgreement.tooltip2":
+    "Un tiers est nommé comme administrateur de la propriété (souvent une régie) cette entité peut vous fournir ce document.",
   "files.coownershipAllocationAgreement": "Cahier de répartition des locaux",
-  "files.coownershipAllocationAgreement.tooltip": "Document décrivant la pondération de votre lot PPE vis à vis de l’immeuble entier",
-  "files.coownershipAllocationAgreement.tooltip2": "Un tiers est nommé comme administrateur de la propriété (souvent une régie) cette entité peut vous fournir ce document.",
+  "files.coownershipAllocationAgreement.tooltip":
+    "Document décrivant la pondération de votre lot PPE vis à vis de l’immeuble entier",
+  "files.coownershipAllocationAgreement.tooltip2":
+    "Un tiers est nommé comme administrateur de la propriété (souvent une régie) cette entité peut vous fournir ce document.",
   "files.cubage": "Cubage",
-  "files.cubage.tooltip": "Le cubage indique le volume en mètres cubes de votre bien immobilier.",
-  "files.cubage.tooltip2": "Peut être mentionné sur la police d’assurance du bâtiment, dans un rapport du BEB ou peut être demandé auprès de votre architecte.",
+  "files.cubage.tooltip":
+    "Le cubage indique le volume en mètres cubes de votre bien immobilier.",
+  "files.cubage.tooltip2":
+    "Peut être mentionné sur la police d’assurance du bâtiment, dans un rapport du BEB ou peut être demandé auprès de votre architecte.",
   "files.currentMortgages": "Contrats de prêts existants",
-  "files.currentMortgages.tooltip": "Nous avons besoins de connaître le montant de votre prêt hypothécaire existant, le taux d’intérêt et son échéance ainsi que de l‘amortissement annuel y relatif",
-  "Files.description": "Voici l'endroit où vous pouvez uploader vos document en toute confidentialité.",
+  "files.currentMortgages.tooltip":
+    "Nous avons besoins de connaître le montant de votre prêt hypothécaire existant, le taux d’intérêt et son échéance ainsi que de l‘amortissement annuel y relatif",
+  "Files.description":
+    "Voici l'endroit où vous pouvez uploader vos document en toute confidentialité.",
   "files.divorceJudgment": "Jugement de divorce",
   "files.expenses": "Charges",
   "files.expenses.tooltip": "Justificatif des charges mentionnées",
   "Files.files1.title": "Documents de base",
   "files.fireAndWaterInsurance": "Assurance incendie et dégâts des eaux",
-  "files.fireAndWaterInsurance.tooltip": "Vous pouvez obtenir la copie de la police d’assurance existante auprès du vendeur",
-  "Files.hasChangedSalary": "Est-ce que votre salaire est différent de votre dernière déclaration fiscale?",
+  "files.fireAndWaterInsurance.tooltip":
+    "Vous pouvez obtenir la copie de la police d’assurance existante auprès du vendeur",
+  "Files.hasChangedSalary":
+    "Est-ce que votre salaire est différent de votre dernière déclaration fiscale?",
   "files.identity": "Pièce d'identité",
   "files.identity.tooltip": "Passeport ou carte d'identité (les 2 côtés)",
   "files.landRegisterExtract": "Extrait du registre foncier",
-  "files.landRegisterExtract.tooltip": "Contient toutes les informations officielles de votre bien immobilier",
-  "files.landRegisterExtract.tooltip2": "Vous pouvez obtenir l’extrait du registre du commerce auprès du registre foncier auquel votre commune est rattachée.",
+  "files.landRegisterExtract.tooltip":
+    "Contient toutes les informations officielles de votre bien immobilier",
+  "files.landRegisterExtract.tooltip2":
+    "Vous pouvez obtenir l’extrait du registre du commerce auprès du registre foncier auquel votre commune est rattachée.",
   "files.lastSalaries": "3 dernières fiches de salaire",
   "files.marketingBrochure": "Brochure de vente",
-  "files.marketingBrochure.tooltip": "Brochure marketing décrivant le bien immobilier. N'est pas obligatoire.",
+  "files.marketingBrochure.tooltip":
+    "Brochure marketing décrivant le bien immobilier. N'est pas obligatoire.",
   "files.nonPursuitExtract": "Extrait de l'office des poursuites",
-  "files.nonPursuitExtract.tooltip": "Mentionne si vous êtes sujet à des poursuites. Avoir des poursuites peut arriver à tout le monde et peuvent parfois s’expliquer",
-  "files.nonPursuitExtract.tooltip2": "Vous pouvez commander un extrait de l’office des poursuites sur le site internet ou physiquement au guichet de l’office cantonal de votre canton de résidence actuel. Il doit dater de moins de 3 mois.",
+  "files.nonPursuitExtract.tooltip":
+    "Mentionne si vous êtes sujet à des poursuites. Avoir des poursuites peut arriver à tout le monde et peuvent parfois s’expliquer",
+  "files.nonPursuitExtract.tooltip2":
+    "Vous pouvez commander un extrait de l’office des poursuites sur le site internet ou physiquement au guichet de l’office cantonal de votre canton de résidence actuel. Il doit dater de moins de 3 mois.",
   "files.otherIncome": "Autres revenus",
-  "files.otherIncome.tooltip": "Justificatif de chaque autre revenu que vous avez mentionné",
+  "files.otherIncome.tooltip":
+    "Justificatif de chaque autre revenu que vous avez mentionné",
   "files.ownCompanyFinancialStatements": "États financiers de l'employeur",
-  "files.ownCompanyFinancialStatements.tooltip": "Bilans et comptes Pertes et Profits des 3 dernières années",
+  "files.ownCompanyFinancialStatements.tooltip":
+    "Bilans et comptes Pertes et Profits des 3 dernières années",
   "files.pensionFundYearlyStatement": "Certificat de la caisse de pension",
-  "files.pensionFundYearlyStatement.tooltip": "Certificat que vous recevez chaque année de la part de la caisse de pension de votre employeur ou attestation de compte Libre Passage",
-  "files.pensionFundYearlyStatement.tooltip2": "Ce document contient le capital prévoyance disponible pour l’accession à la propriété ainsi que différentes informations y relatives, vous devriez recevoir ce document chaque année au mois de janvier si vous ne le trouvez pas vous pouvez le réclamer auprès de votre caisse de pension directement.",
+  "files.pensionFundYearlyStatement.tooltip":
+    "Certificat que vous recevez chaque année de la part de la caisse de pension de votre employeur ou attestation de compte Libre Passage",
+  "files.pensionFundYearlyStatement.tooltip2":
+    "Ce document contient le capital prévoyance disponible pour l’accession à la propriété ainsi que différentes informations y relatives, vous devriez recevoir ce document chaque année au mois de janvier si vous ne le trouvez pas vous pouvez le réclamer auprès de votre caisse de pension directement.",
   "files.pictures": "4 Photos du bien",
-  "files.pictures.tooltip": "Cuisine, salle de bains, façade extérieure, et vue. Mettez le bien immobilier en valeur",
+  "files.pictures.tooltip":
+    "Cuisine, salle de bains, façade extérieure, et vue. Mettez le bien immobilier en valeur",
   "files.plans": "Plans",
-  "files.plans.tooltip": "Vous pouvez obtenir le plan auprès du vendeur ou auprès de la régie, il est préférable d’obtenir un plan avec les métrées",
+  "files.plans.tooltip":
+    "Vous pouvez obtenir le plan auprès du vendeur ou auprès de la régie, il est préférable d’obtenir un plan avec les métrées",
   "files.reimbursementStatement": "Décompte de remboursement",
-  "files.reimbursementStatement.tooltip": "Le décompte de remboursement est produit par votre prêteur actuel",
+  "files.reimbursementStatement.tooltip":
+    "Le décompte de remboursement est produit par votre prêteur actuel",
   "files.rent": "Loyers perçus",
-  "files.rent.tooltip": "Loyer versé par le locataire existant ou justificatif du futur loyer",
-  "files.rent.tooltip2": "Vous pouvez obtenir cette information auprès du vendeur ou auprès de la régie qui va gérer vos locataires, si vous n’avez pas de régie nous vous recommandons de vous informer sur la régie qui s'occupe actuellement de la gestion de l'immeuble.",
+  "files.rent.tooltip":
+    "Loyer versé par le locataire existant ou justificatif du futur loyer",
+  "files.rent.tooltip2":
+    "Vous pouvez obtenir cette information auprès du vendeur ou auprès de la régie qui va gérer vos locataires, si vous n’avez pas de régie nous vous recommandons de vous informer sur la régie qui s'occupe actuellement de la gestion de l'immeuble.",
   "files.residencyPermit": "Permis d’établissement",
-  "files.residencyPermit.tooltip": "Permis d’établissement pour étrangers mentionnant votre résidence fiscale",
+  "files.residencyPermit.tooltip":
+    "Permis d’établissement pour étrangers mentionnant votre résidence fiscale",
   "files.retirementInsurancePlan": "Fortune de prévoyance Assurance",
-  "files.retirementInsurancePlan.tooltip": "Document attestant de la valeur de rachat et des primes payées sur vos polices d’assurances 3A et 3B",
-  "files.retirementInsurancePlan.tooltip2": "Vous pouvez obtenir ces informations auprès des compagnies d’assurances dans lesquels vous effectuez votre épargne de prévoyance.",
+  "files.retirementInsurancePlan.tooltip":
+    "Document attestant de la valeur de rachat et des primes payées sur vos polices d’assurances 3A et 3B",
+  "files.retirementInsurancePlan.tooltip2":
+    "Vous pouvez obtenir ces informations auprès des compagnies d’assurances dans lesquels vous effectuez votre épargne de prévoyance.",
   "files.retirementPlanOther": "Fortune de prévoyance Bancaire",
-  "files.retirementPlanOther.tooltip": "Relevé au 31/12 de vos compte épargne 3A et/ou comptes libre-passage",
-  "files.retirementPlanOther.tooltip2": "Vous pouvez obtenir les relevés de vos comptes épargne 3A auprès des établissements bancaires dans lesquels vous déposez votre épargne",
+  "files.retirementPlanOther.tooltip":
+    "Relevé au 31/12 de vos compte épargne 3A et/ou comptes libre-passage",
+  "files.retirementPlanOther.tooltip2":
+    "Vous pouvez obtenir les relevés de vos comptes épargne 3A auprès des établissements bancaires dans lesquels vous déposez votre épargne",
   "files.salaryCertificate": "Certificat de salaire",
-  "files.salaryCertificate.tooltip": "De l’année précédente - est utilisé pour votre déclaration fiscale",
+  "files.salaryCertificate.tooltip":
+    "De l’année précédente - est utilisé pour votre déclaration fiscale",
   "files.salaryChange": "Justificatif du nouveau salaire",
-  "files.salaryChange.tooltip": "Options: 3 dernières fiches salaires / une attestation de votre employeur / contrat de travail / avenant à votre contrat de travail",
+  "files.salaryChange.tooltip":
+    "Options: 3 dernières fiches salaires / une attestation de votre employeur / contrat de travail / avenant à votre contrat de travail",
   "files.taxes": "Déclaration fiscale",
-  "files.taxes.tooltip": "Dernière disponible, complète et détaillée dans la mesure du possible accompagnée des annexes",
+  "files.taxes.tooltip":
+    "Dernière disponible, complète et détaillée dans la mesure du possible accompagnée des annexes",
   "Files.title": "Mes Documents",
   "Files.status.unverified": "En attente de vérification",
   "Files.status.error": "Non valide",
   "Files.status.verified": "Validé",
 
-  "Finance.description": "Normalement, vous nous avez déjà donné tout ce dont nous avons besoin sur cette page.{verticalSpace}Vérifiez cependant que vous avez détaillé de façon exhaustive vos finances personelles. Les prêteurs vous offriront des conditions plus attractives si vos moyens dépassent le minimum nécéssaire pour votre Prêt Hypothécaire.",
+  "Finance.description":
+    "Normalement, vous nous avez déjà donné tout ce dont nous avons besoin sur cette page.{verticalSpace}Vérifiez cependant que vous avez détaillé de façon exhaustive vos finances personelles. Les prêteurs vous offriront des conditions plus attractives si vos moyens dépassent le minimum nécéssaire pour votre Prêt Hypothécaire.",
   "Finance.recapTitle": "Récapitulatif (en {currency})",
   "Finance.title": "Mes Finances",
   "Finance.validated": "Validées",
@@ -378,7 +456,8 @@
   "general.yes": "Oui",
   "GoogleMapsAutocomplete.label": "Addresse de la propriété",
   "HomeDev.CTA": "M'avertir par e-mail",
-  "HomeDev.description": "Nous allons bientôt ouvrir e-Potek aux refinancements, soyez le premier averti !",
+  "HomeDev.description":
+    "Nous allons bientôt ouvrir e-Potek aux refinancements, soyez le premier averti !",
   "HomeDev.title": "En Développement",
   "HomePage.compare": "Comparer des propriétés",
   "HomePage.CTA.buy": "Faire une acquisition",
@@ -391,36 +470,46 @@
   "HomePage.footer.careers": "Carrières",
   "HomePage.footer.conditions": "Conditions",
   "HomePage.footer.contact": "Contact",
-  "HomePage.sellingpoint1.text": "Identifiez le montant que vous pouvez emprunter en quelques clics.",
+  "HomePage.sellingpoint1.text":
+    "Identifiez le montant que vous pouvez emprunter en quelques clics.",
   "HomePage.sellingpoint1.title": "1. Testez votre éligibilité",
-  "HomePage.sellingpoint2.text": "Obtenez de manière anonyme des offres sur mesure de la part des prêteurs du marché.",
+  "HomePage.sellingpoint2.text":
+    "Obtenez de manière anonyme des offres sur mesure de la part des prêteurs du marché.",
   "HomePage.sellingpoint2.title": "2. Organisez les enchères",
-  "HomePage.sellingpoint3.text": "La plateforme simple et sécurisée vous permet de communiquer facilement avec votre prêteur.",
+  "HomePage.sellingpoint3.text":
+    "La plateforme simple et sécurisée vous permet de communiquer facilement avec votre prêteur.",
   "HomePage.sellingpoint3.title": "3. Communiquez avec votre prêteur",
-  "HomePage.sellingpoint4.text": "Vous êtes accompagnés dans vos décisions stratégiques par des spécialistes en financement jusqu'à l'obtention de votre prêt.",
+  "HomePage.sellingpoint4.text":
+    "Vous êtes accompagnés dans vos décisions stratégiques par des spécialistes en financement jusqu'à l'obtention de votre prêt.",
   "HomePage.sellingpoint4.title": "4. Obtenez votre prêt",
-  "HomePage.sellingpoint5.text": "Avancez à votre rythme, arrêtez quand vous voulez, tout ça en toute gratuité, pour toujours.",
+  "HomePage.sellingpoint5.text":
+    "Avancez à votre rythme, arrêtez quand vous voulez, tout ça en toute gratuité, pour toujours.",
   "HomePage.sellingpoint5.title": "Sans engagement et entièrement gratuit",
-  "HomePage.sellingpoint6.text": "Vos données sont en sûreté, et vous maintenez une confidentialité maximale auprès de tous les établissements financiers.",
+  "HomePage.sellingpoint6.text":
+    "Vos données sont en sûreté, et vous maintenez une confidentialité maximale auprès de tous les établissements financiers.",
   "HomePage.sellingpoint6.title": "En toute sécurité",
   "HomePage.tagline1": "Mettez votre prêt hypothécaire aux enchères",
   "HomePage.tagline2": "Tout simplement",
   "Info.title": "Mes Informations Personelles",
-  "InsuranceStrategy.description": "Vous avez décidé d'utiliser votre prévoyance pour ce projet. Il faut encore décider par quel mécanisme financier vous allez le faire.",
+  "InsuranceStrategy.description":
+    "Vous avez décidé d'utiliser votre prévoyance pour ce projet. Il faut encore décider par quel mécanisme financier vous allez le faire.",
   "InsuranceStrategy.title": "Stratégie de prévoyance",
   "InterestRanges.title": "Vos Taux",
   "LenderTable.amount": "Montant prêté",
   "LenderTable.conditions": "Conditions?",
   "LenderTable.monthly": "Coût mensuel",
   "LenderTable.perMonth": "/mois",
-  "LoanStrategyPicker.description": "Il n'y a pas une seule stratégie parfaite pour structurer votre prêt, cependant, nous pouvons vous aiguiller dans la bonne direction grâce à notre savoir-faire.{verticalSpace}Sinon, utilisez notre outil interactif ci-dessous.",
+  "LoanStrategyPicker.description":
+    "Il n'y a pas une seule stratégie parfaite pour structurer votre prêt, cependant, nous pouvons vous aiguiller dans la bonne direction grâce à notre savoir-faire.{verticalSpace}Sinon, utilisez notre outil interactif ci-dessous.",
   "LoanStrategyPicker.title": "Stratégie de taux",
   "LoginPage.title": "Login / Créer un compte",
   "NewRequestModal.description": "Ça nous permettra de l'identifier",
   "NewRequestModal.label": "Nom du projet",
   "NewRequestModal.placeholder": "Rue du Pré 2",
-  "NewRequestModal.title": "Donnez un nom à votre projet, il sera visible par e-Potek.",
-  "NewUserOptions.description": "Vous pourrez monter votre dossier, lancer les enchères, et conclure votre demande de prêt depuis ici.",
+  "NewRequestModal.title":
+    "Donnez un nom à votre projet, il sera visible par e-Potek.",
+  "NewUserOptions.description":
+    "Vous pourrez monter votre dossier, lancer les enchères, et conclure votre demande de prêt depuis ici.",
   "NewUserOptions.title": "Ça à l'air bien vide ici!",
   "NotFound.button": "Retourner à la maison",
   "NotFound.description": "On dirait que vous vous êtes perdu!",
@@ -460,9 +549,11 @@
   "ProjectBarChart.property": "Propriété",
   "ProjectBarChart.title": "Mon Projet",
   "PropertyAdder.add": "Ajouter",
-  "PropertyPage.description": "Il nous faut des informations supplémentaires sur votre bien immobilier, nous pourrons alors mieux comprendre vos besoins, et vous indiquer si le prix du bien est conforme au marché.",
+  "PropertyPage.description":
+    "Il nous faut des informations supplémentaires sur votre bien immobilier, nous pourrons alors mieux comprendre vos besoins, et vous indiquer si le prix du bien est conforme au marché.",
   "PropertyPage.progress": "Progrès: {value, number, percent}",
-  "PropertyPage.title": "{count, plural, one {Mon bien immobilier} other {Notre bien immobilier}}",
+  "PropertyPage.title":
+    "{count, plural, one {Mon bien immobilier} other {Notre bien immobilier}}",
   "Recap.availableFunds": "Fonds propres dispo",
   "Recap.bankFortune": "Fortune bancaire",
   "Recap.borrowRatio": "Prêt / Prix d'achat",
@@ -498,23 +589,29 @@
   "SideNavUser.dashboard": "Tableau de Bord",
   "Start1Page.chartTitle": "Charges estimées",
   "Start1Page.CTA": "Passer au check-up complet",
-  "Start1Page.description1": "Ce calculateur vous permet de rapidement déterminer votre capacité d'achat avant de faire une analyse de votre situation personnelle plus détaillée.",
-  "Start1Page.description2": "Entrez les valeurs que vous connaissez, puis nous calculerons automatiquement le reste pour optimiser votre capacité d'achat, tout en respectant les normes FINMA en vigueur en Suisse.",
+  "Start1Page.description1":
+    "Ce calculateur vous permet de rapidement déterminer votre capacité d'achat avant de faire une analyse de votre situation personnelle plus détaillée.",
+  "Start1Page.description2":
+    "Entrez les valeurs que vous connaissez, puis nous calculerons automatiquement le reste pour optimiser votre capacité d'achat, tout en respectant les normes FINMA en vigueur en Suisse.",
   "Start1Page.fortuneLabel": "Fonds Propres",
   "Start1Page.incomeLabel": "Revenus annuels bruts",
   "Start1Page.loanValue": "Votre Prêt Hypothécaire:",
   "Start1Page.propertyLabel": "Prix d'achat",
   "Start1Page.showCalculatorButton": "Démarrer",
   "Start1Page.title": "Calculateur",
-  "Start1Recap.temporaryTitle": "Entrez une ou plusieurs valeurs et modifiez les à votre guise",
+  "Start1Recap.temporaryTitle":
+    "Entrez une ou plusieurs valeurs et modifiez les à votre guise",
   "Start1Validator.fortune": "Vous n'avez pas assez de fonds propres",
   "Start1Validator.fortune2": "Essayez de réduire le prix d'achat",
   "Start1Validator.fortuneTight": "Vos fonds propres sont faibles",
-  "Start1Validator.fortuneTight2": "Si vous voulez acquérir une résidence principale, vous pouvez combler le manque avec votre prévoyance",
+  "Start1Validator.fortuneTight2":
+    "Si vous voulez acquérir une résidence principale, vous pouvez combler le manque avec votre prévoyance",
   "Start1Validator.income": "Vous n'avez pas assez de revenus",
-  "Start1Validator.income2": "N'hésitez pas a compter vos rentes, pensions, soustraire un loyer que vous n'aurez plus à payer",
+  "Start1Validator.income2":
+    "N'hésitez pas a compter vos rentes, pensions, soustraire un loyer que vous n'aurez plus à payer",
   "Start1Validator.incomeTight": "Vos revenus sont limite",
-  "Start1Validator.incomeTight2": "Peu de prêteurs pourront vous suivre, mais ça va fonctionner",
+  "Start1Validator.incomeTight2":
+    "Peu de prêteurs pourront vous suivre, mais ça va fonctionner",
   "Start1Validator.valid": "Tout est bon, continuez!",
   "Start2Form.acceptedLoan": "Vous pouvez emprunter {value}.",
   "Start2Form.age": "J'ai",
@@ -523,83 +620,115 @@
   "Start2Form.bonus2": "Bonus 2015",
   "Start2Form.bonus3": "Bonus 2016",
   "Start2Form.bonus4": "Bonus 2017",
-  "Start2Form.bonusExists": "Avez vous touché un bonus lors des 4 dernières années?",
+  "Start2Form.bonusExists":
+    "Avez vous touché un bonus lors des 4 dernières années?",
   "Start2Form.borrowerCount": "Combien d'emprunteurs êtes vous?",
-  "Start2Form.expensesExist": "Avez-vous des charges annuelles comme des leasings, {optional}pensions, loyers, crédits personnels ou autres prêts immobiliers?",
+  "Start2Form.expensesExist":
+    "Avez-vous des charges annuelles comme des leasings, {optional}pensions, loyers, crédits personnels ou autres prêts immobiliers?",
   "Start2Form.finalized": "Vous-êtes arrivé au bout, formidable!",
   "Start2Form.finalized.button": "Afficher les résultats",
-  "Start2Form.fortune": "Quelle est votre épargne bancaire personnelle (cash et titres)?",
-  "Start2Form.fortuneRequiredAgreed": "Vous devrez donc mettre {value} de fonds propres.",
-  "Start2Form.fortuneSliders": "Vous devez donc mettre {value} de fonds propres, comment voulez-vous les répartir?",
-  "Start2Form.fortuneSliders.hasToUseLpp": "Vous devez utiliser votre prévoyance pour ce projet",
+  "Start2Form.fortune":
+    "Quelle est votre épargne bancaire personnelle (cash et titres)?",
+  "Start2Form.fortuneRequiredAgreed":
+    "Vous devrez donc mettre {value} de fonds propres.",
+  "Start2Form.fortuneSliders":
+    "Vous devez donc mettre {value} de fonds propres, comment voulez-vous les répartir?",
+  "Start2Form.fortuneSliders.hasToUseLpp":
+    "Vous devez utiliser votre prévoyance pour ce projet",
   "Start2Form.fortuneSliders.label1": "Épargne",
   "Start2Form.fortuneSliders.label2": "Prévoyance",
-  "Start2Form.fortuneSliders.notHasToUseLpp": "Vous êtes éligible pour utiliser votre prévoyance",
+  "Start2Form.fortuneSliders.notHasToUseLpp":
+    "Vous êtes éligible pour utiliser votre prévoyance",
   "Start2Form.fortuneSliders.use": "Utiliser",
   "Start2Form.gender": "Je suis",
   "Start2Form.gender.man": "un homme",
   "Start2Form.gender.woman": "une femme",
   "Start2Form.gender2": ".",
   "Start2Form.income": "Quel est votre salaire annuel brut?",
-  "Start2Form.initialFortuneAgreed": "Vous avez indiqué que vous vouliez allouer {value} de fonds propres pour ce projet. Merci de détailler votre fortune maintenant.",
-  "Start2Form.initialIncomeAgreed": "Vous avez indiqué que vos revenus sont de {value} par an, vous pouvez les détailler maintenant.",
-  "Start2Form.insurance1": "Quels sont les fonds de prévoyance disponibles au sein de votre 2ème pilier?",
+  "Start2Form.initialFortuneAgreed":
+    "Vous avez indiqué que vous vouliez allouer {value} de fonds propres pour ce projet. Merci de détailler votre fortune maintenant.",
+  "Start2Form.initialIncomeAgreed":
+    "Vous avez indiqué que vos revenus sont de {value} par an, vous pouvez les détailler maintenant.",
+  "Start2Form.insurance1":
+    "Quels sont les fonds de prévoyance disponibles au sein de votre 2ème pilier?",
   "Start2Form.insurance1Exists": "Avez-vous un 2ème pilier?",
-  "Start2Form.insurance2": "Quels sont les fonds de prévoyance disponibles au sein de votre 3ème pilier?",
+  "Start2Form.insurance2":
+    "Quels sont les fonds de prévoyance disponibles au sein de votre 3ème pilier?",
   "Start2Form.insurance2Exists": "Avez-vous un 3ème pilier?",
-  "Start2Form.insuranceConditions": "Il y a des conditions pour pouvoir utiliser sa prévoyance, est-ce que vous les passez?",
-  "Start2Form.insuranceConditions.1": "Ne pas avoir fait de retrait dans les 5 dernières années",
+  "Start2Form.insuranceConditions":
+    "Il y a des conditions pour pouvoir utiliser sa prévoyance, est-ce que vous les passez?",
+  "Start2Form.insuranceConditions.1":
+    "Ne pas avoir fait de retrait dans les 5 dernières années",
   "Start2Form.insuranceConditions.2": "Faire un retrait d'au moins 20 000 CHF",
   "Start2Form.insuranceConditions.button": "Conditions",
-  "Start2Form.insuranceConditions.description": "Pour pouvoir utiliser votre prévoyance sur votre projet, vous devez remplir les conditions suivantes:",
+  "Start2Form.insuranceConditions.description":
+    "Pour pouvoir utiliser votre prévoyance sur votre projet, vous devez remplir les conditions suivantes:",
   "Start2Form.insuranceConditions.title": "Conditions",
   "Start2Form.loanWanted": "Combien voulez-vous emprunter?",
   "Start2Form.loanWanted.sliderMax": "Max",
   "Start2Form.loanWanted.sliderMin": "Min",
-  "Start2Form.notaryFeesAgreed": "A ce prix s'ajoutent les frais de notaire de {value}.",
-  "Start2Form.notEnoughCash": "Vous devez avoir au moins {value} de fortune (sans compter votre prévoyance) pour ce projet.",
-  "Start2Form.notEnoughCash.description": "Vous devez pouvoir couvrir au moins 10% du bien immobilier ainsi que les différents frais (~5%) avec votre épargne personelle. Il n'est malheureusement pas possible d'utiliser votre Prêt Hypothécaire pour payer les frais de notaire.",
+  "Start2Form.notaryFeesAgreed":
+    "A ce prix s'ajoutent les frais de notaire de {value}.",
+  "Start2Form.notEnoughCash":
+    "Vous devez avoir au moins {value} de fortune (sans compter votre prévoyance) pour ce projet.",
+  "Start2Form.notEnoughCash.description":
+    "Vous devez pouvoir couvrir au moins 10% du bien immobilier ainsi que les différents frais (~5%) avec votre épargne personelle. Il n'est malheureusement pas possible d'utiliser votre Prêt Hypothécaire pour payer les frais de notaire.",
   "Start2Form.notEnoughCash.dialogTitle": "Manque d'épargne",
-  "Start2Form.notEnoughIncome": "Vous devez avoir un revenu annuel disponible d'au moins {value} pour couvrir les charges de votre bien, selon les règles FINMA.",
-  "Start2Form.notEnoughIncome.description": "Vous n'avez pas assez de revenus pour passer les critères de la FINMA, qui demande que la charge théorique de ce bien soit environ 3 fois plus petite que vos revenus totaux.{verticalSpace}Le calcul utilisé est sévère, et utilise en outre un taux d'intérêt théorique de 5%. Vérifiez que vous ayez compté tous les revenus que nous vous proposons d'ajouter, et vos éventuels bonus.",
+  "Start2Form.notEnoughIncome":
+    "Vous devez avoir un revenu annuel disponible d'au moins {value} pour couvrir les charges de votre bien, selon les règles FINMA.",
+  "Start2Form.notEnoughIncome.description":
+    "Vous n'avez pas assez de revenus pour passer les critères de la FINMA, qui demande que la charge théorique de ce bien soit environ 3 fois plus petite que vos revenus totaux.{verticalSpace}Le calcul utilisé est sévère, et utilise en outre un taux d'intérêt théorique de 5%. Vérifiez que vous ayez compté tous les revenus que nous vous proposons d'ajouter, et vos éventuels bonus.",
   "Start2Form.notEnoughIncome.dialogTitle": "Manque de revenus",
-  "Start2Form.notEnoughOwnFunds": "Vous devez avoir au moins {value} de fonds propres pour ce projet.",
-  "Start2Form.notEnoughOwnFunds.description": "Vous devez avoir au moins 20% de fonds propres engagés dans ce projet, sans oublier les frais de notaire qui doivent venir directement de votre épargne personelle, il n'est pas possible d'utiliser votre Prêt Hypothécaire ni votre prévoyance pour les payer.",
+  "Start2Form.notEnoughOwnFunds":
+    "Vous devez avoir au moins {value} de fonds propres pour ce projet.",
+  "Start2Form.notEnoughOwnFunds.description":
+    "Vous devez avoir au moins 20% de fonds propres engagés dans ce projet, sans oublier les frais de notaire qui doivent venir directement de votre épargne personelle, il n'est pas possible d'utiliser votre Prêt Hypothécaire ni votre prévoyance pour les payer.",
   "Start2Form.notEnoughOwnFunds.dialogTitle": "Manque de fonds propres",
   "Start2Form.oldestAge": "L'emprunteur le plus agé a",
   "Start2Form.oldestAge2": "ans.",
   "Start2Form.oldestGender": "Et cette personne est",
   "Start2Form.otherIncome": "Avez-vous d'autres sources de revenus annuels?",
   "Start2Form.projectAgreed": "Le coût de votre projet sera donc de {value}.",
-  "Start2Form.propertyRent": "J'estime que le loyer mensuel pour cette propriété sera",
+  "Start2Form.propertyRent":
+    "J'estime que le loyer mensuel pour cette propriété sera",
   "Start2Form.propertyValue": "Le prix d'achat de la propriété est de",
   "Start2Form.propertyWork": "Les travaux de plus-value sont estimés à",
-  "Start2Form.propertyWorkExists": "Souhaitez-vous rajouter à votre projet des travaux de plus-value?",
-  "Start2Form.realEstateExists": "Êtes-vous propriétaire d'autres biens immobiliers?",
+  "Start2Form.propertyWorkExists":
+    "Souhaitez-vous rajouter à votre projet des travaux de plus-value?",
+  "Start2Form.realEstateExists":
+    "Êtes-vous propriétaire d'autres biens immobiliers?",
   "Start2Form.usageType": "Quel sera le type d'utilisation de cette propriété?",
   "Start2Form.usageTypeButtonInvestment": "Je veux le louer",
   "Start2Form.usageTypeButtonPrincipal": "Ma résidence principale",
   "Start2Form.usageTypeButtonSecondary": "Ma résidence secondaire",
-  "Start2Form.useInsurance1": "Voulez-vous utiliser votre fortune de prévoyance sur ce projet ?",
-  "Start2Form.useInsurance1.description": "En Suisse, vous pouvez utiliser votre prévoyance en tant que fonds propres, pour autant que ce bien devienne votre résidence principale.{verticalSpace}Vous avez suffisamment d'épargne pour ne pas être obligé d'utiliser votre prévoyance, mais ça vous permettrait de garder plus de liquidités.",
+  "Start2Form.useInsurance1":
+    "Voulez-vous utiliser votre fortune de prévoyance sur ce projet ?",
+  "Start2Form.useInsurance1.description":
+    "En Suisse, vous pouvez utiliser votre prévoyance en tant que fonds propres, pour autant que ce bien devienne votre résidence principale.{verticalSpace}Vous avez suffisamment d'épargne pour ne pas être obligé d'utiliser votre prévoyance, mais ça vous permettrait de garder plus de liquidités.",
   "Start2Form.useInsurance1.dialogTitle": "Prévoyance en fonds propres",
-  "Start2Form.useInsurance2": "Vous devrez utiliser votre fortune de prévoyance pour ce projet",
-  "Start2Form.useInsurance2.description": "Vous n'avez pas suffisamment d'épargne personelle pour acquérir ce bien, heureusement vous pouvez utiliser votre prévoyance pour combler le manque.",
+  "Start2Form.useInsurance2":
+    "Vous devrez utiliser votre fortune de prévoyance pour ce projet",
+  "Start2Form.useInsurance2.description":
+    "Vous n'avez pas suffisamment d'épargne personelle pour acquérir ce bien, heureusement vous pouvez utiliser votre prévoyance pour combler le manque.",
   "Start2Form.whyButton": "Pourquoi ?",
   "Start2Page.initialButton": "C'est parti",
   "Start2Page.initialText1": "Allons vous obtenir ce prêt hypothécaire",
-  "Start2Page.initialText2": "Il nous faut plus d'informations pour mieux comprendre vos besoins, prenez 2 minutes pour nous en dire un peu plus sur vous",
+  "Start2Page.initialText2":
+    "Il nous faut plus d'informations pour mieux comprendre vos besoins, prenez 2 minutes pour nous en dire un peu plus sur vous",
   "Start2Page.recapTitle": "Votre Plan Financier",
   "StartResult.countSuffix": " Prêteurs",
   "StartResult.createAccount": "Créer un compte",
-  "StartResult.description1": "Vous êtes éligible pour e-Potek. Pour continuer votre demande de prêt, créez vous un compte et nous vous aiderons à préparer votre dossier pour mettre ces {count} prêteurs en compétition.",
-  "StartResult.description2": "Vous pouvez acquérir un bien immobilier d'une valeur maximale de {value}. Cliquez sur continuer pour affiner vos informations et avoir une estimation précise d'emprunt et de ce que ça va vous coûter.",
+  "StartResult.description1":
+    "Vous êtes éligible pour e-Potek. Pour continuer votre demande de prêt, créez vous un compte et nous vous aiderons à préparer votre dossier pour mettre ces {count} prêteurs en compétition.",
+  "StartResult.description2":
+    "Vous pouvez acquérir un bien immobilier d'une valeur maximale de {value}. Cliquez sur continuer pour affiner vos informations et avoir une estimation précise d'emprunt et de ce que ça va vous coûter.",
   "StartResult.loan": "Votre Prêt Hypothécaire:",
   "StartResult.maxLoan": "Prêt Hypothécaire maximal:",
   "StartResult.title": "Résultat: {result}",
   "StartSignUp.email": "Entrez votre adresse email",
   "StartSignUp.notSignedUp": "Entrez votre nouveau mot de passe",
-  "StartSignUp.signedUp": "Cette adresse existe déjà, entrez votre mot de passe",
+  "StartSignUp.signedUp":
+    "Cette adresse existe déjà, entrez votre mot de passe",
   "steps.0.subtitle": "5 min",
   "steps.0.title": "0. Passez le test",
   "steps.1.subtitle": "15 minutes",
@@ -631,47 +760,77 @@
   "steps.verification.subtitle": "2h",
   "steps.verification.title": "Vérification d'e-Potek",
   "StrategyChoices.recommended": "Recommandé pour vous",
-  "StructureError.cash": "Vous n'avez pas assez d'épargne engagée dans ce projet",
-  "StructureError.income": "Vous n'avez pas assez de revenus pour couvrir les charges de votre projet",
-  "StructureError.ownFunds": "Il n'y a pas assez de fonds propres dans votre structure",
+  "StructureError.cash":
+    "Vous n'avez pas assez d'épargne engagée dans ce projet",
+  "StructureError.income":
+    "Vous n'avez pas assez de revenus pour couvrir les charges de votre projet",
+  "StructureError.ownFunds":
+    "Il n'y a pas assez de fonds propres dans votre structure",
   "StructureError.valid": "Votre structure est valide",
   "StructurePage.CTA": "Confirmer la structure",
-  "StructurePage.description": "Vous pouvez ajuster la structure globale de votre projet une dernière fois, nous vous aiderons à la peaufiner.",
-  "tooltip.bonus": "Tout revenu variable supplémentaire à votre salaire de base, lié à vos performances",
-  "tooltip.borrowers": "Les personnes financièrement et légalement bénéficiaires du prêt",
-  "tooltip.borrowRatio": "Ce ratio détermine combien est couvert par le prêt hypothécaire, il ne doit pas dépasser 80% dans la majorité des cas.",
-  "tooltip.consideredBonus": "Nous utilisons 50% de la moyenne de vos 3 meilleurs bonus.",
-  "tooltip.counterpartOffers": "Les meilleures offres des prêteurs, qui vous donnent un taux d'intérêt spécialement bas, en échange d'une contrepartie.",
-  "tooltip.expertise": "Vérification de la valeur du bien par rapport à son état et son emplacement",
+  "StructurePage.description":
+    "Vous pouvez ajuster la structure globale de votre projet une dernière fois, nous vous aiderons à la peaufiner.",
+  "tooltip.bonus":
+    "Tout revenu variable supplémentaire à votre salaire de base, lié à vos performances",
+  "tooltip.borrowers":
+    "Les personnes financièrement et légalement bénéficiaires du prêt",
+  "tooltip.borrowRatio":
+    "Ce ratio détermine combien est couvert par le prêt hypothécaire, il ne doit pas dépasser 80% dans la majorité des cas.",
+  "tooltip.consideredBonus":
+    "Nous utilisons 50% de la moyenne de vos 3 meilleurs bonus.",
+  "tooltip.counterpartOffers":
+    "Les meilleures offres des prêteurs, qui vous donnent un taux d'intérêt spécialement bas, en échange d'une contrepartie.",
+  "tooltip.expertise":
+    "Vérification de la valeur du bien par rapport à son état et son emplacement",
   "tooltip.finma": "Autorité fédérale de surveillance des marchés financiers",
-  "tooltip.incomeRatio": "Ce ratio indique combien de vos revenus vont théoriquement être utilisés pour payer les charges de votre bien. Il ne doit pas dépasser 33%, exceptions jusqu'à 38%.",
-  "tooltip.insuranceFees": "Lorsque vous retirez votre lpp en avance, vous devez payer des impôts sur ce retrait",
-  "tooltip.interestedLenders": "La quantité de prêteurs e-Potek dont les conditions correspondent à votre dossier",
+  "tooltip.incomeRatio":
+    "Ce ratio indique combien de vos revenus vont théoriquement être utilisés pour payer les charges de votre bien. Il ne doit pas dépasser 33%, exceptions jusqu'à 38%.",
+  "tooltip.insuranceFees":
+    "Lorsque vous retirez votre lpp en avance, vous devez payer des impôts sur ce retrait",
+  "tooltip.interestedLenders":
+    "La quantité de prêteurs e-Potek dont les conditions correspondent à votre dossier",
   "tooltip.lpp": "Aussi appelé 2ème pilier",
-  "tooltip.monthlyEstimated": "Avant les enchères d'e-Potek, cette estimation conservative sert d'indication",
-  "tooltip.notaryFees": "Frais obligatoires lorsqu'on conclut un prêt hypothécaire - environ 5% du prix d'achat",
+  "tooltip.monthlyEstimated":
+    "Avant les enchères d'e-Potek, cette estimation conservative sert d'indication",
+  "tooltip.notaryFees":
+    "Frais obligatoires lorsqu'on conclut un prêt hypothécaire - environ 5% du prix d'achat",
   "tooltip.offerTable.10": "Un taux d'intérêt qui arrive à échéance en 10 ans",
   "tooltip.offerTable.2": "Un taux d'intérêt qui arrive à échéance en 2 ans",
   "tooltip.offerTable.5": "Un taux d'intérêt qui arrive à échéance en 5 ans",
-  "tooltip.offerTable.amortization": "L'amortissement annuel minimum de l'emprunt demandé par la banque",
-  "tooltip.offerTable.amount": "Le montant maximal que la banque peut vous prêter",
-  "tooltip.offerTable.conditions": "Les conditions que vous devez remplir pour avoir accès à cette offre",
-  "tooltip.offerTable.expertise": "Indique si la banque veut faire une expertise supplémentaire, ajoute environ 2 semaines à la procédure",
-  "tooltip.offerTable.libor": "\"London Interbank Offered Rate\", c'est un type de taux d'intérêt parmi les plus bas mais aussi le plus volatile",
-  "tooltip.otherIncome": "Allocations, rentes, pensions, loyers, investissements, revenus de titres, ou autres activités",
-  "tooltip.ownFunds": "Vos économies, prévoyance et dons de tiers que vous allez engager dans le projet",
-  "tooltip.ownFundsRequired": "Les fonds propres nécessaires de votre part pour financer ce projet, y compris les frais de notaire",
-  "tooltip.propertyWork": "Agrandissements, rénovations ou améliorations du bien.",
+  "tooltip.offerTable.amortization":
+    "L'amortissement annuel minimum de l'emprunt demandé par la banque",
+  "tooltip.offerTable.amount":
+    "Le montant maximal que la banque peut vous prêter",
+  "tooltip.offerTable.conditions":
+    "Les conditions que vous devez remplir pour avoir accès à cette offre",
+  "tooltip.offerTable.expertise":
+    "Indique si la banque veut faire une expertise supplémentaire, ajoute environ 2 semaines à la procédure",
+  "tooltip.offerTable.libor":
+    "\"London Interbank Offered Rate\", c'est un type de taux d'intérêt parmi les plus bas mais aussi le plus volatile",
+  "tooltip.otherIncome":
+    "Allocations, rentes, pensions, loyers, investissements, revenus de titres, ou autres activités",
+  "tooltip.ownFunds":
+    "Vos économies, prévoyance et dons de tiers que vous allez engager dans le projet",
+  "tooltip.ownFundsRequired":
+    "Les fonds propres nécessaires de votre part pour financer ce projet, y compris les frais de notaire",
+  "tooltip.propertyWork":
+    "Agrandissements, rénovations ou améliorations du bien.",
   "tooltip.purchasePrice": "La valeur du bien que vous voulez acquérir",
   "tooltip.secondPillar": "Aussi appelé LPP",
   "tooltip.standardOffers": "Les offres de base des banques.",
   "tooltip.thirdPillar": "XXX",
-  "tooltip.usageType": "Les résidences principales permettent l'utilisation du 2ème pilier en tant que fonds propres",
-  "tooltip.yearlyIncome": "La somme de votre salaire, et toute autre source de revenus",
-  "tooltip2.consideredBonus": "Les bonus étant des montants variables, les banques ne les comptent pas à 100%.{verticalSpace}Si vous avez 4 bonus sur les années précédentes de 10, 20, 30 et 40 CHF, nous utiliserons 50% de la moyenne de 20, 30 et 40, soit 15 CHF.",
-  "tooltip2.finma": "La FINMA détermine quelles sont les conditions minimales pour que vous puissiez obtenir un prêt, pour vous protéger d'éventuelles remontées imprévues des taux hypothécaires.{verticalSpace}Les taux sont bas aujourd'hui, mais si vos finances ne sont pas assez solides et que les taux montent, vous pourriez avoir de sérieuses difficultés financières.",
-  "tooltip2.notaryFees": "Les frais de notaire sont compris d'une multitude de frais supplémentaires que vous devrez couvrir avec votre épargne, il est impossible d'utiliser sa prévoyance ou son prêt hypothécaire pour les payer. ",
-  "tooltip2.propertyWork": "Ces travaux sont une bonne façon d'augmenter la valeur de votre bien, sans augmenter les frais de notaire.",
+  "tooltip.usageType":
+    "Les résidences principales permettent l'utilisation du 2ème pilier en tant que fonds propres",
+  "tooltip.yearlyIncome":
+    "La somme de votre salaire, et toute autre source de revenus",
+  "tooltip2.consideredBonus":
+    "Les bonus étant des montants variables, les banques ne les comptent pas à 100%.{verticalSpace}Si vous avez 4 bonus sur les années précédentes de 10, 20, 30 et 40 CHF, nous utiliserons 50% de la moyenne de 20, 30 et 40, soit 15 CHF.",
+  "tooltip2.finma":
+    "La FINMA détermine quelles sont les conditions minimales pour que vous puissiez obtenir un prêt, pour vous protéger d'éventuelles remontées imprévues des taux hypothécaires.{verticalSpace}Les taux sont bas aujourd'hui, mais si vos finances ne sont pas assez solides et que les taux montent, vous pourriez avoir de sérieuses difficultés financières.",
+  "tooltip2.notaryFees":
+    "Les frais de notaire sont compris d'une multitude de frais supplémentaires que vous devrez couvrir avec votre épargne, il est impossible d'utiliser sa prévoyance ou son prêt hypothécaire pour les payer. ",
+  "tooltip2.propertyWork":
+    "Ces travaux sont une bonne façon d'augmenter la valeur de votre bien, sans augmenter les frais de notaire.",
   "TopNav.login": "Login",
   "TopNavDropdown.account": "Mon Compte",
   "TopNavDropdown.admin": "Admin Dashboard",
@@ -690,11 +849,15 @@
   "ValidatorItem.error.incomeTight": "Revenus limite limite",
   "ValidatorItem.isValid": "Acquisition possible!",
   "VerificationPage.CTA": "Envoyer mon dossier",
-  "VerificationPage.CTA.warning": "Vous ne pourrez plus modifier vos informations et vos documents",
+  "VerificationPage.CTA.warning":
+    "Vous ne pourrez plus modifier vos informations et vos documents",
   "VerificationPage.CTA2": "Re-Vérifier",
-  "VerificationPage.description": "Votre dossier va être analysé en détail par les professionels d'e-Potek, et votre conseiller vous aidera pour préparer la meilleure demande possible.",
-  "VerificationPage.failedDescription": "Votre expert a vérifié votre dossier, et y a trouvé une faille. Veuillez addresser les points ci-dessous puis demander une re-vérification.{verticalSpace}N'hésitez pas à appeler votre expert en cas de doute.",
+  "VerificationPage.description":
+    "Votre dossier va être analysé en détail par les professionels d'e-Potek, et votre conseiller vous aidera pour préparer la meilleure demande possible.",
+  "VerificationPage.failedDescription":
+    "Votre expert a vérifié votre dossier, et y a trouvé une faille. Veuillez addresser les points ci-dessous puis demander une re-vérification.{verticalSpace}N'hésitez pas à appeler votre expert en cas de doute.",
   "VerificationPage.failedTitle": "Il y a eu un petit souci",
-  "VerificationPage.successDescription": "Les informations que vous nous avez confiées nous ont permis de vérifier l'intégrité et la qualité de votre demande de prêt.",
+  "VerificationPage.successDescription":
+    "Les informations que vous nous avez confiées nous ont permis de vérifier l'intégrité et la qualité de votre demande de prêt.",
   "VerificationPage.successTitle": "Votre dossier est valide!"
 }

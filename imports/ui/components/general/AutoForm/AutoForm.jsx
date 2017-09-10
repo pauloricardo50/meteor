@@ -9,7 +9,7 @@ import SelectFieldInput from './SelectFieldInput';
 import ConditionalInput from './ConditionalInput';
 import DateInput from './DateInput';
 import DropzoneInput from './DropzoneInput';
-import DropzoneArray from '../general/DropzoneArray';
+import DropzoneArray from '../DropzoneArray';
 import ArrayInput from './ArrayInput';
 
 const styles = {
@@ -118,12 +118,13 @@ const inputSwitch = (singleInput, index, parentProps) => {
   }
 };
 
-const AutoForm = props =>
+const AutoForm = props => (
   <div className={props.formClasses}>
     <form style={styles.form} onSubmit={e => e.preventDefault()}>
       {props.inputs.map((input, i) => inputSwitch(input, i, props))}
     </form>
-  </div>;
+  </div>
+);
 
 AutoForm.propTypes = {
   inputs: PropTypes.arrayOf(PropTypes.object).isRequired,
