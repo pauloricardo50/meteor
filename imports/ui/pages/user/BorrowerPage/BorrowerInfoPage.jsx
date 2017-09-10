@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import AutoForm from '/imports/ui/components/autoform/AutoForm';
+import AutoForm from '/imports/ui/components/general/AutoForm';
 import { getBorrowerInfoArray } from '/imports/js/arrays/BorrowerFormArray';
 import { personalInfoPercent } from '/imports/js/arrays/steps';
 import { disableForms } from '/imports/js/helpers/requestFunctions';
@@ -10,7 +10,7 @@ import { isDemo } from '/imports/js/helpers/browserFunctions';
 import FakeBorrowerCompleter from '/imports/ui/components/general/FakeBorrowerCompleter';
 import { T } from '/imports/ui/components/general/Translation';
 
-const BorrowerInfoPage = props => {
+const BorrowerInfoPage = (props) => {
   const borrowerId = props.match.params.borrowerId;
   const borrower = props.borrowers.find(b => b._id === borrowerId);
   const percent = personalInfoPercent([borrower]);
@@ -22,13 +22,14 @@ const BorrowerInfoPage = props => {
         <T id="Info.title" />
         <br />
         <small className={percent >= 1 && 'success'}>
-          <T id="general.progress" values={{ value: percent }} />
-          {' '}
+          <T id="general.progress" values={{ value: percent }} />{' '}
           {percent >= 1 && <span className="fa fa-check" />}
         </small>
       </h2>
       <div className="description">
-        <p><T id="Forms.mandatory" /></p>
+        <p>
+          <T id="Forms.mandatory" />
+        </p>
       </div>
 
       <AutoForm

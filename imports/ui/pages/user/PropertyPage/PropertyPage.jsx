@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import ProcessPage from '/imports/ui/components/general/ProcessPage';
-import AutoForm from '/imports/ui/components/autoform/AutoForm';
+import AutoForm from '/imports/ui/components/general/AutoForm';
 import PropertyFormArray from '/imports/js/arrays/PropertyFormArray';
 import DropzoneArray from '/imports/ui/components/general/DropzoneArray';
 import { requestFiles } from '/imports/js/arrays/files';

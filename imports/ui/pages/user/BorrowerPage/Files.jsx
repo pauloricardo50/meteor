@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import DropzoneArray from '/imports/ui/components/general/DropzoneArray';
 import { filesPercent } from '/imports/js/arrays/steps';
 import { borrowerFiles } from '/imports/js/arrays/files';
-import RadioInput from '/imports/ui/components/autoform/RadioInput';
+import RadioInput from '/imports/ui/components/general/AutoForm/RadioInput';
 import { T } from '/imports/ui/components/general/Translation';
 import { disableForms } from '/imports/js/helpers/requestFunctions';
 
@@ -31,26 +31,39 @@ export default class Files extends Component {
 
   render() {
     // const percent = auctionFilesPercent([this.props.borrower]);
-    const percent = filesPercent([this.props.borrower], borrowerFiles, 'auction');
+    const percent = filesPercent(
+      [this.props.borrower],
+      borrowerFiles,
+      'auction',
+    );
 
     // console.log(percent, percent2);
 
     return (
-      <section className="animated fadeIn" key={this.props.borrower._id} style={styles.section}>
+      <section
+        className="animated fadeIn"
+        key={this.props.borrower._id}
+        style={styles.section}
+      >
         <hr />
         <h2 className="text-center">
           <T id="Files.title" />
           <br />
           <small className={percent >= 1 && 'success'}>
-            <T id="general.progress" values={{ value: percent }} />
-            {' '}
+            <T id="general.progress" values={{ value: percent }} />{' '}
             {percent >= 1 && <span className="fa fa-check" />}
           </small>
         </h2>
 
-        <div className="description"><p><T id="Files.description" /></p></div>
+        <div className="description">
+          <p>
+            <T id="Files.description" />
+          </p>
+        </div>
 
-        <h3 className="text-center"><T id="Files.files1.title" /></h3>
+        <h3 className="text-center">
+          <T id="Files.files1.title" />
+        </h3>
 
         <div style={styles.radioDiv}>
           <RadioInput
@@ -77,7 +90,6 @@ export default class Files extends Component {
           filesObjectSelector="files"
           disabled={disableForms(this.props.loanRequest)}
         />
-
       </section>
     );
   }

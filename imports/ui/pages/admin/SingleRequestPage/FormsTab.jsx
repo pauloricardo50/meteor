@@ -6,7 +6,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Toggle from 'material-ui/Toggle';
 
-import AutoForm from '/imports/ui/components/autoform/AutoForm';
+import AutoForm from '/imports/ui/components/general/AutoForm';
 
 import PropertyFormArray from '/imports/js/arrays/PropertyFormArray';
 import {
@@ -14,7 +14,7 @@ import {
   getBorrowerFinanceArray,
 } from '/imports/js/arrays/BorrowerFormArray';
 
-const getBorrowerForms = borrowers => {
+const getBorrowerForms = (borrowers) => {
   const array = [];
   borrowers.forEach((b, i) => {
     array.push(
@@ -43,10 +43,14 @@ const getBorrowerForms = borrowers => {
   return array;
 };
 
-const getRequestForms = request => {
+const getRequestForms = (request) => {
   const array = [];
   array.push(
-    <MenuItem value={`request.${request._id}.property`} key="property" primaryText={'Propriété'} />,
+    <MenuItem
+      value={`request.${request._id}.property`}
+      key="property"
+      primaryText={'Propriété'}
+    />,
   );
 
   return array;
@@ -81,7 +85,10 @@ const getForm = (props, value, modify) => {
           return (
             <AutoForm
               key={value}
-              inputs={getBorrowerFinanceArray(props.borrowers, splittedValue[1])}
+              inputs={getBorrowerFinanceArray(
+                props.borrowers,
+                splittedValue[1],
+              )}
               borrowers={props.borrowers}
               documentId={splittedValue[1]}
               updateFunc="updateBorrower"
@@ -131,18 +138,32 @@ const reduceToPercent = (formArray, validationArray) =>
     .filter(i => i.condition !== false && i.ignore !== true)
     .map(i => (i.type === 'conditionalInput' ? i.inputs[0] : i))
     .reduce(
-      (tot, i, index, array) => (get(validationArray, i.id) ? tot + 1 / array.length : tot),
+      (tot, i, index, array) =>
+        (get(validationArray, i.id) ? tot + 1 / array.length : tot),
       0,
     );
 
 const getPercent = (request, borrowers) => {
   const percentages = [
-    reduceToPercent(PropertyFormArray(request, borrowers), request.adminValidation),
+    reduceToPercent(
+      PropertyFormArray(request, borrowers),
+      request.adminValidation,
+    ),
   ];
 
-  borrowers.forEach(b => {
-    percentages.push(reduceToPercent(getBorrowerFinanceArray(borrowers, b._id), b.adminValidation));
-    percentages.push(reduceToPercent(getBorrowerInfoArray(borrowers, b._id), b.adminValidation));
+  borrowers.forEach((b) => {
+    percentages.push(
+      reduceToPercent(
+        getBorrowerFinanceArray(borrowers, b._id),
+        b.adminValidation,
+      ),
+    );
+    percentages.push(
+      reduceToPercent(
+        getBorrowerInfoArray(borrowers, b._id),
+        b.adminValidation,
+      ),
+    );
   });
 
   // const arr = getBorrowerFinanceArray(borrowers, borrowers[0]._id)
@@ -155,7 +176,8 @@ const getPercent = (request, borrowers) => {
   // Use to Fixed to round out the percentage when it's 0.99999997
   return (
     percentages.length > 0 &&
-    percentages.map(p => Number(p.toFixed(3))).reduce((p, c) => p + c, 0) / percentages.length
+    percentages.map(p => Number(p.toFixed(3))).reduce((p, c) => p + c, 0) /
+      percentages.length
   );
 };
 
@@ -170,7 +192,8 @@ export default class FormsTab extends Component {
   }
 
   handleChange = (event, index, value) => this.setState({ value });
-  handleToggle = (event, isInputChecked) => this.setState({ modify: isInputChecked });
+  handleToggle = (event, isInputChecked) =>
+    this.setState({ modify: isInputChecked });
 
   render() {
     return (
@@ -191,9 +214,10 @@ export default class FormsTab extends Component {
         />
 
         <div>
-          Vérification:
-          {' '}
-          {Math.round(getPercent(this.props.loanRequest, this.props.borrowers) * 1000) / 10}
+          Vérification:{' '}
+          {Math.round(
+            getPercent(this.props.loanRequest, this.props.borrowers) * 1000,
+          ) / 10}
           %
         </div>
 

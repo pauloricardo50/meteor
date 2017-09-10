@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import IconButton from 'material-ui/IconButton';
 import ArrowDown from 'material-ui/svg-icons/navigation/arrow-drop-down-circle';
 
-import DropzoneInput from '../autoform/DropzoneInput';
+import DropzoneInput from './AutoForm/DropzoneInput';
 import colors from '/imports/js/config/colors';
 
 import { T } from '/imports/ui/components/general/Translation';
@@ -23,7 +23,7 @@ const getStyles = (props, currentValue) => ({
   icon: {
     color: currentValue && currentValue.length > 0 ? colors.secondary : '',
     borderColor:
-        currentValue && currentValue.length > 0 ? colors.secondary : '',
+      currentValue && currentValue.length > 0 ? colors.secondary : '',
   },
   caret: {
     transform: props.active ? 'rotate(180deg)' : '',
@@ -64,9 +64,11 @@ const DropzoneArrayItem = (props) => {
         onDragEnter={handleMouseEnter}
       >
         <div className="left">
-          {currentValue && currentValue.length > 0
-            ? <span className="fa fa-check" style={styles.icon} />
-            : <span />}
+          {currentValue && currentValue.length > 0 ? (
+            <span className="fa fa-check" style={styles.icon} />
+          ) : (
+            <span />
+          )}
         </div>
 
         <div className="text">
@@ -95,7 +97,7 @@ const DropzoneArrayItem = (props) => {
         </div>
       </div>
 
-      {active &&
+      {active && (
         <div className="dropzoneDiv">
           <DropzoneInput
             {...props}
@@ -103,7 +105,8 @@ const DropzoneArrayItem = (props) => {
             mongoId={mongoId}
             label=""
           />
-        </div>}
+        </div>
+      )}
     </article>
   );
 };

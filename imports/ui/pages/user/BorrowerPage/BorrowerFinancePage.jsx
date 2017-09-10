@@ -3,7 +3,7 @@ import React from 'react';
 
 import Checkbox from 'material-ui/Checkbox';
 
-import AutoForm from '/imports/ui/components/autoform/AutoForm';
+import AutoForm from '/imports/ui/components/general/AutoForm';
 import { getBorrowerFinanceArray } from '/imports/js/arrays/BorrowerFormArray';
 import cleanMethod from '/imports/api/cleanMethods';
 import Recap from '/imports/ui/components/general/Recap';
@@ -58,10 +58,11 @@ const BorrowerFinancePage = (props) => {
       <h2 className="text-center">
         <T id="Finance.title" />
         <br />
-        {borrower.logic.hasValidatedFinances &&
+        {borrower.logic.hasValidatedFinances && (
           <small className="success">
             <T id="Finance.validated" /> <span className="fa fa-check" />
-          </small>}
+          </small>
+        )}
       </h2>
 
       <div className="description">

@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import AutoForm from '/imports/ui/components/autoform/AutoForm';
+import AutoForm from '/imports/ui/components/general/AutoForm';
 
 import { getAuctionEndTime } from '/imports/api/loanrequests/methods';
 import cleanMethod from '/imports/api/cleanMethods';
 
-const getMinDate = serverTime => moment(getAuctionEndTime(serverTime)).add(2, 'd').toDate();
+const getMinDate = serverTime =>
+  moment(getAuctionEndTime(serverTime))
+    .add(2, 'd')
+    .toDate();
 
 const getFormArray = (request, serverTime) => [
   {
