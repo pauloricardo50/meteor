@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
 
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
 import '/imports/api/api.js';
 import '../accounts-config';
 import '../meteor-slingshot';
@@ -27,6 +29,8 @@ const start = (testElement) => {
   }
 
   localizationStartup();
+
+  injectTapEventPlugin();
 
   // Render react-router routes
   render(RenderRoutes(), testElement || document.getElementById('react-root'));
