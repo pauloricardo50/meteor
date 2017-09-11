@@ -18,7 +18,7 @@ const chartColors = {
   maintenance: colors.charts[2],
 };
 
-const update = that => {
+const update = (that) => {
   const { interests, amortization, maintenance } = that.state;
   const total = interests + amortization + maintenance;
   const showLabels = interests && amortization && maintenance;
@@ -286,7 +286,7 @@ class ExpensesChart extends Component {
     return options;
   };
 
-  addTitle = that => {
+  addTitle = (that) => {
     const total =
       this.state.interests + this.state.amortization + this.state.maintenance;
     const f = this.props.intl.formatMessage;
@@ -348,7 +348,7 @@ class ExpensesChart extends Component {
       <div id="expensesChart">
         <ReactHighcharts
           config={this.getConfig()}
-          ref={c => {
+          ref={(c) => {
             this.chart = c;
           }}
           neverReflow

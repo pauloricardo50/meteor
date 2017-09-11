@@ -16,20 +16,20 @@ const getComponents = (props, handleSave) => {
 
   return [
     {
-      component: RankStrategy,
+      component: <RankStrategy {...childProps} key="rank" />,
       condition: false,
       next: true,
     },
     {
-      component: <InsuranceStrategy {...childProps} />,
+      component: <InsuranceStrategy {...childProps} key="insurance" />,
       condition: props.loanRequest.general.insuranceFortuneUsed > 0,
     },
     {
-      component: <AmortizingPicker {...childProps} />,
+      component: <AmortizingPicker {...childProps} key="amortizing" />,
       condition: true,
     },
     {
-      component: <LoanStrategyPicker {...childProps} />,
+      component: <LoanStrategyPicker {...childProps} key="loanStrategy" />,
       condition: true,
     },
   ];
@@ -47,9 +47,9 @@ export default class StrategyPage extends Component {
           {getComponents(this.props, this.handleSave)
             .filter(i => i.condition)
             .map(i => i.component)
-            .reduce((prev, curr) => [
+            .reduce((prev, curr, i) => [
               prev,
-              <hr style={{ margin: '32px 0' }} />,
+              <hr style={{ margin: '32px 0' }} key={i} />,
               curr,
             ])}
         </section>

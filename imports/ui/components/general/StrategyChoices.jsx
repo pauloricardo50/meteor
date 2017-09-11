@@ -40,7 +40,7 @@ export default class StrategyChoices extends Component {
           </div>
           <div className="reasons secondary">
             {choice.reasons
-              .map(reason => <span key={reason.id}>{reason}</span>)
+              .map(reason => <span key={reason}>{reason}</span>)
               .reduce((prev, curr, i) => [
                 prev,
                 <span key={i}> &bull; </span>,
@@ -48,13 +48,12 @@ export default class StrategyChoices extends Component {
               ])}
           </div>
         </div>
-        {chosen &&
-        !!choice.children && (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <hr />
-              {choice.children}
-            </div>
-          )}
+        {!!(chosen && choice.children) && (
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <hr />
+            {choice.children}
+          </div>
+        )}
       </article>
     );
   }

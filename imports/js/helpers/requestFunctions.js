@@ -120,6 +120,11 @@ export const getMonthlyWithOffer = (
   fortuneUsed = 0,
   insuranceFortuneUsed = 0,
 ) => {
+  // Return undefined if the counterpartOffer doesn't exist
+  if (!isStandard && !request.counterpartOffer) {
+    return undefined;
+  }
+
   // Make a copy of the request
   const r = JSON.parse(JSON.stringify(request));
 

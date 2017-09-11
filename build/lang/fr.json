@@ -33,7 +33,15 @@
     "Vous avez choisi l'amortissement direct.",
 
   "LoanStrategyPicker.disclaimer":
-    "n.b. Ce choix est indicatif, et vous permet de déterminer quelle stratégie vous conviendra le mieux.",
+    "* Ce choix est indicatif, et vous permet de déterminer quelle stratégie vous conviendra le mieux.",
+
+  "LenderSummary.title": "Offres correspondant à vos critères",
+  "LenderSummary.amount": "Montant prêté le plus élevé",
+  "LenderSummary.monthly": "Coût mensuel le plus bas",
+  "LenderSummary.count": "Quantité",
+  "Tranche.tranche": "Tranche",
+  "TrancheChart.rest": "Montant restant à attribuer",
+  "TrancheChart.value": "Montant",
 
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
@@ -441,6 +449,8 @@
   "general.lenders": "Prêteurs",
   "general.logout": "Déconnexion",
   "general.modify": "Modifier",
+  "general.perMonth": "/mois",
+
   "general.mortgageLoan": "Prêt Hypothécaire",
   "general.no": "Non",
   "general.notaryFees": "Frais de notaire",

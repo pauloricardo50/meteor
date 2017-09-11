@@ -58,9 +58,15 @@ export const GeneralSchema = new SimpleSchema({
   },
   'loanTranches.$': Object,
   'loanTranches.$.type': {
-    // libor, floating, 1y, 2y, 5y, 10y
     type: String,
     optional: true,
+    allowedValues: [
+      'interestLibor',
+      'interest1',
+      'interest2',
+      'interest5',
+      'interest10',
+    ],
   },
   'loanTranches.$.value': {
     type: Number,

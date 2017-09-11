@@ -3,7 +3,10 @@ import React from 'react';
 import Loadable from '/imports/js/helpers/loadable';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
-import { getLoanValue, getProjectValue } from '/imports/js/helpers/requestFunctions';
+import {
+  getLoanValue,
+  getProjectValue,
+} from '/imports/js/helpers/requestFunctions';
 import constants from '/imports/js/config/constants';
 import colors from '/imports/js/config/colors';
 
@@ -21,7 +24,7 @@ const chartColors = {
   loan: colors.charts[0],
 };
 
-const getConfig = props => {
+const getConfig = (props) => {
   const r = props.loanRequest;
   const total = getProjectValue(r);
 
@@ -43,7 +46,8 @@ const getConfig = props => {
     },
     tooltip: {
       formatter() {
-        return `<span style="color:${this.color}">\u25CF</span> ${this.key}<br /> <b>CHF ${toMoney(
+        return `<span style="color:${this.color}">\u25CF</span> ${this
+          .key}<br /> <b>CHF ${toMoney(
           Math.round(this.y),
         )}</b><br />${Math.round(1000 * this.y / total) / 10}%`;
       },
@@ -82,8 +86,8 @@ const getConfig = props => {
             name: 'Fortune', // subtract fees from this
             y:
               r.general.fortuneUsed -
-                r.property.value * constants.notaryFees -
-                (r.general.insuranceFortuneUsed * constants.lppFees || 0),
+              r.property.value * constants.notaryFees -
+              (r.general.insuranceFortuneUsed * constants.lppFees || 0),
           },
           {
             name: 'Frais de Notaire',

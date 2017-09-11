@@ -7,7 +7,7 @@ import { T } from '/imports/ui/components/general/Translation';
 import TranchePicker from './TranchePicker';
 import LenderSummary from './LenderSummary';
 
-const getChoices = () => [
+const getChoices = (loanRequest, offers) => [
   {
     id: 'fixed',
     title: '100% Fixé',
@@ -22,7 +22,7 @@ const getChoices = () => [
       'Choisissez la durée',
       'À vos risques et périls',
     ],
-    children: <TranchePicker />,
+    children: <TranchePicker offers={offers} loanRequest={loanRequest} />,
   },
 ];
 
@@ -66,7 +66,7 @@ const LoanStrategyPicker = ({ loanRequest, handleSave, offers }) => (
     <StrategyChoices
       name="loanStrategyPreset"
       currentValue={loanRequest.logic.loanStrategyPreset}
-      choices={getChoices()}
+      choices={getChoices(loanRequest, offers)}
       handleChoose={id => handleChoose(id, loanRequest, handleSave)}
     />
 
