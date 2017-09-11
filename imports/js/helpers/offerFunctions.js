@@ -23,3 +23,34 @@ export const getRange = (offers, key) =>
     },
     { min: Infinity, max: 0 },
   );
+
+export const extractOffers = (offers, loanRequest) => {
+  const array = [];
+  offers.forEach((offer) => {
+    const meta = {
+      organization: offer.organization,
+      canton: offer.canton,
+      id: offer._id,
+    };
+
+    array.push({
+      ...offer.standardOffer,
+      ...meta,
+      conditions: offer.conditions,
+      uid: `standard${offer._id}`,
+      type: 'standard',
+    });
+
+    if (offer.counterpartOffer) {
+      array.push({
+        ...offer.counterpartOffer,
+        ...meta,
+        conditions: offer.conditions,
+        counterparts: offer.counterparts,
+        uid: `counterparts${offer._id}`,
+        type: 'counterparts',
+      });
+    }
+  });
+  return array;
+};

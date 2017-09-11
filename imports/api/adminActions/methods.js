@@ -18,12 +18,13 @@ export const insertAdminAction = new ValidatedMethod({
   },
   run({ requestId, type }) {
     // Make sure there isn't an action active with the same ID
-    const actionExists = !!AdminActions.findOne({
+    const existingAction = AdminActions.findOne({
       type,
       requestId,
       status: 'active',
     });
-    if (actionExists) {
+    console.log('existing action ', existingAction);
+    if (existingAction) {
       throw new Meteor.Error('duplicate active admin action');
     }
 

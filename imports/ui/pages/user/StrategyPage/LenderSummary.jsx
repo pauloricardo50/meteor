@@ -41,9 +41,9 @@ const values = (offers, loanRequest) => {
 
 const LenderSummary = ({ offers, loanRequest }) => (
   <SummaryComponent>
-    <h3 style={{ paddingBottom: 8 }}>
+    <h4 style={{ paddingBottom: 8 }}>
       <T id="LenderSummary.title" />
-    </h3>
+    </h4>
     <div
       className="flex"
       style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}

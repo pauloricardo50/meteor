@@ -31,8 +31,9 @@ const getConfig = ({ tranches, total, intl }) => {
       type: 'pie',
       style: { fontFamily: 'Source Sans Pro' },
       animation: false,
-      height: 200,
-      width: 200,
+      height: 250,
+      width: 250,
+      marginBottom: 56,
     },
     title: {
       text: `<span class="bold">${fN(Math.round(currentSum), {
@@ -45,19 +46,20 @@ const getConfig = ({ tranches, total, intl }) => {
         fontWeight: 300,
         color: showRest ? '#222' : colors.error,
       },
+      y: -24,
       align: 'center',
       verticalAlign: 'bottom',
     },
     subtitle: {
       text: fN(Math.round(currentSum) / Math.round(total), {
-        format: 'percentage',
+        format: 'percentageRounded',
       }),
       style: {
         fontSize: '14px',
         fontWeight: 400,
         color: '#888',
       },
-      // y: 20,
+      y: -8,
       align: 'center',
       verticalAlign: 'bottom',
     },

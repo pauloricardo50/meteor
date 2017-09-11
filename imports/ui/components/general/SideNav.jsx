@@ -46,7 +46,7 @@ const partnerLinks = [
   },
 ];
 
-const SideNav = props => {
+const SideNav = (props) => {
   let links = [];
 
   switch (props.type) {
@@ -68,26 +68,24 @@ const SideNav = props => {
 
   return (
     <nav className={classes}>
-      <Link to="/home">
+      {/* <Link to="/home">
         <img
           src="/img/logo_black.svg"
           alt="e-Potek"
           style={styles.logo}
           className="logo"
         />
-      </Link>
+      </Link> */}
 
       <ul className="side-nav-list">
-        {links.map(link =>
+        {links.map(link => (
           <li key={link.link}>
             <NavLink exact to={link.link} activeClassName="active-link">
               {link.icon}
-              <h5>
-                {link.label}
-              </h5>
+              <h5>{link.label}</h5>
             </NavLink>
-          </li>,
-        )}
+          </li>
+        ))}
       </ul>
 
       <div className="logout text-center">

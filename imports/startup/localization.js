@@ -39,6 +39,11 @@ export const getFormats = () => ({
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     },
+    percentageRounded: {
+      style: 'percent',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    },
   },
 });
 

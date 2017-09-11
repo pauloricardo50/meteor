@@ -43,6 +43,9 @@
   "TrancheChart.rest": "Montant restant à attribuer",
   "TrancheChart.value": "Montant",
 
+  "OfferPickerPage.title": "Les meilleures offres",
+  "OfferPickerPage.description": "Choisissez l'offre qui vous convient.",
+
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",
@@ -757,8 +760,8 @@
   "steps.files.title": "Uploadez vos documents",
   "steps.finance.subtitle": "10 min",
   "steps.finance.title": "Vérifiez vos finances",
-  "steps.lenderPicker.subtitle": "5 min",
-  "steps.lenderPicker.title": "Choisissez votre prêteur",
+  "steps.offerPicker.subtitle": "5 min",
+  "steps.offerPicker.title": "Choisissez votre prêteur",
   "steps.personal.subtitle": "1 min",
   "steps.personal.title": "Dites en plus sur vous",
   "steps.property.subtitle": "4 min",

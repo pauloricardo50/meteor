@@ -16,7 +16,10 @@ import LoanRequests from './loanrequests';
 
 const importServerMethods = () => {
   if (Meteor.isServer || (!!this && !this.isSimulation)) {
-    const { scheduleMethod } = require('/imports/api/server/jobs/methods');
+    const {
+      scheduleMethod,
+      rescheduleJob,
+    } = require('/imports/api/server/jobs/methods');
     const {
       sendEmail,
       cancelScheduledEmail,
@@ -106,7 +109,9 @@ export const startAuction = new ValidatedMethod({
 
     // object parameter only contains the isDemo value
     if (object.isDemo) {
-      auctionEndTime = moment().add(30, 's').toDate();
+      auctionEndTime = moment()
+        .add(30, 's')
+        .toDate();
       console.log(`Temps de fin réel: ${getAuctionEndTime(moment())}`);
     } else {
       auctionEndTime = getAuctionEndTime(moment());
@@ -317,55 +322,6 @@ export const endAuction = new ValidatedMethod({
   },
 });
 
-export const finishAuction = new ValidatedMethod({
-  name: 'loanRequests.finishAuction',
-  mixins: [CallPromiseMixin],
-  validate({ id }) {
-    check(id, String);
-  },
-  run({ id }) {
-    if (
-      Roles.userIsInRole(Meteor.userId(), 'admin') ||
-      Roles.userIsInRole(Meteor.userId(), 'dev')
-    ) {
-      return LoanRequests.update(
-        id,
-        { $set: { 'logic.auctionEndTime': new Date() } },
-        (error) => {
-          if (!error && Meteor.isServer) {
-            const {
-              scheduleMethod,
-              sendEmail,
-              cancelScheduledEmail,
-              rescheduleEmail,
-            } = importServerMethods();
-
-            const request = LoanRequests.findOne(id);
-            const email = request.emails.find(
-              e => e.emailId === 'auctionEnded' && e.scheduledAt >= new Date(),
-            );
-            if (email) {
-              // Reschedule email to now
-              rescheduleEmail.call({
-                id: email._id,
-                requestId: id,
-                date: new Date(),
-              });
-            }
-          }
-
-          completeActionByType.call({
-            requestId: id,
-            type: 'auction',
-          });
-        },
-      );
-    }
-
-    throw new Meteor.Error('not authorized');
-  },
-});
-
 export const cancelAuction = new ValidatedMethod({
   name: 'loanRequests.cancelAuction',
   mixins: [CallPromiseMixin],
@@ -502,7 +458,6 @@ rateLimit({
     popRequestValue,
     requestVerification,
     deleteRequest,
-    finishAuction,
     cancelAuction,
     confirmClosing,
     addEmail,

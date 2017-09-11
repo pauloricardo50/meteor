@@ -9,7 +9,7 @@ import {
   PropertyPage,
   AuctionPage,
   StrategyPage,
-  LenderPickerPage,
+  OfferPickerPage,
   StructurePage,
   VerificationPage,
   ContractPage,
@@ -61,8 +61,8 @@ const UserRoutes = props => (
           component={StrategyPage}
         />
         <Route
-          path="/app/requests/:requestId/lenderpicker"
-          component={LenderPickerPage}
+          path="/app/requests/:requestId/offerpicker"
+          component={OfferPickerPage}
         />
         <Route
           path="/app/requests/:requestId/contract"

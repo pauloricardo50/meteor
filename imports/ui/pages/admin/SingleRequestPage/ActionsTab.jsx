@@ -7,7 +7,7 @@ import Button from '/imports/ui/components/general/Button';
 import ConfirmMethod from './ConfirmMethod';
 import {
   cancelAuction,
-  finishAuction,
+  endAuction,
   deleteRequest,
   confirmClosing,
 } from '/imports/api/loanrequests/methods';
@@ -58,7 +58,7 @@ const ActionsTab = (props) => {
       <ConfirmMethod
         label="Terminer les enchères"
         keyword="TERMINER"
-        method={cb => finishAuction.call({ id: loanRequest._id }, cb)}
+        method={cb => endAuction.call({ id: loanRequest._id }, cb)}
         style={styles.button}
         disabled={!(l.auction.status === 'started')}
       />

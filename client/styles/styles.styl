@@ -359,21 +359,29 @@ $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
     text
       overflow: visible !important;
 
+
+.choice
+  border-radius: 4px;
+  border: solid 1px grey1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  box-sizing: content-box;
+  padding: 16px;
+  &:hover
+    border: solid 1px brand-primary;
+    cursor: pointer;
+  &.chosen
+    border: solid 2px brand-primary;
+
+
 div.strategy-choices
   width: 100%;
   display: flex;
   flex-direction: column;
   .choice
-    border-radius: 4px;
-    border: solid 1px grey1;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 16px;
-    box-sizing: content-box;
-    &:hover
-      border: solid 1px brand-primary;
-    &.chosen
-      border: solid 2px brand-primary;
+    padding: 0;
+    cursor: default;
     .content
       padding: 16px;
       display: flex;
@@ -393,8 +401,6 @@ div.strategy-choices
           margin-left: 8px;
           border-radius: 4px;
           padding: 2px 4px;
-
-
 
 
 .dropzoneArrayItem
@@ -1451,9 +1457,10 @@ ul.compare-column
   .buttons
     display: flex;
     justify-content: center;
-  // #tranche-chart
-  //   width: 200px;
-  //   height: 200px !important;
+  #tranche-chart
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
 
 .uploader
   width: 100%;
@@ -1488,4 +1495,8 @@ ul.compare-column
   padding: 16px;
   h1, h2, h3, h4, h5, h6
     color: white;
+    margin: 0;
+    opacity: 0.6;
+    font-weight: 400;
+  label
     margin: 0;

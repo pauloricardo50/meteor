@@ -87,8 +87,8 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           isDone: () => strategyDone(loanRequest),
         },
         {
-          id: 'lenderPicker',
-          link: `/app/requests/${loanRequest._id}/lenderpicker`,
+          id: 'offerPicker',
+          link: `/app/requests/${loanRequest._id}/offerpicker`,
           isDone: () =>
             !!(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
         },

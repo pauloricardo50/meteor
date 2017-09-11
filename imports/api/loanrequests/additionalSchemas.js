@@ -381,6 +381,11 @@ export const LogicSchema = new SimpleSchema({
     optional: true,
   },
   lender: Object,
+  'lender.type': {
+    type: String,
+    optional: true,
+    allowedValues: ['standard', 'counterparts'],
+  },
   'lender.offerId': {
     type: String,
     optional: true,

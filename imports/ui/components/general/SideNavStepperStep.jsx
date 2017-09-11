@@ -32,7 +32,7 @@ const getStepIcon = ({ step, loanRequest }) => {
   );
 };
 
-const getItemIcon = item => {
+const getItemIcon = (item) => {
   if (item.isDone()) {
     return (
       <div className="icon success">
@@ -53,67 +53,70 @@ const getItemIcon = item => {
   );
 };
 
-const SideNavStepperStep = props => {
-  return (
-    <li
-      key={props.step.nb}
-      className={classnames({ step: true, isActive: props.active })}
+const SideNavStepperStep = props => (
+  <li
+    key={props.step.nb}
+    className={classnames({ step: true, isActive: props.active })}
+  >
+    <div className="absolute-line" />
+    <div
+      className={classnames({ top: true, inactive: props.step.nb === 0 })}
+      onClick={props.handleClick}
     >
-      <div className="absolute-line" />
-      <div
-        className={classnames({ top: true, inactive: props.step.nb === 0 })}
-        onClick={props.handleClick}
-      >
-        {getStepIcon(props)}
-        <div className="text">
-          <span className="title">
-            {props.step.title || <T id={`steps.${props.step.nb}.title`} />}
-          </span>
-          <span className="subtitle">
-            {props.step.subtitle !== undefined
-              ? props.step.subtitle
-              : <T id={`steps.${props.step.nb}.subtitle`} />}
-          </span>
-        </div>
-      </div>
-      {props.active &&
-        <ul className="step-list">
-          {props.step.items.map(item =>
-            <NavLink
-              to={
-                item.disabled
-                  ? props.history.location.pathname
-                  : item.link || props.history.location.pathname
-              }
-              key={item.id}
-              className={classnames({
-                item: true,
-                disable: item.disabled || !item.link,
-              })}
-              activeClassName={
-                item.link !== undefined && !item.disabled ? 'active' : ''
-              }
-            >
-              <div
-                className="onclick-wrapper"
-                onClick={item.link ? props.handleClickLink : () => null}
-              >
-                {getItemIcon(item)}
-                <div className="text">
-                  <span className="title">
-                    <T id={`steps.${item.id}.title`} />
-                  </span>
-                  <span className="subtitle">
-                    <T id={`steps.${item.id}.subtitle`} />
-                  </span>
-                </div>
-              </div>
-            </NavLink>,
+      {getStepIcon(props)}
+      <div className="text">
+        <span className="title">
+          {props.step.title || <T id={`steps.${props.step.nb}.title`} />}
+        </span>
+        <span className="subtitle">
+          {props.step.subtitle !== undefined ? (
+            props.step.subtitle
+          ) : (
+            <T id={`steps.${props.step.nb}.subtitle`} />
           )}
-        </ul>}
-    </li>
-  );
-};
+        </span>
+      </div>
+    </div>
+    {props.active && (
+      <ul className="step-list">
+        {props.step.items.map(item => (
+          <NavLink
+            to={
+              item.disabled ? (
+                props.history.location.pathname
+              ) : (
+                item.link || props.history.location.pathname
+              )
+            }
+            key={item.id}
+            className={classnames({
+              item: true,
+              disable: item.disabled || !item.link,
+            })}
+            activeClassName={
+              item.link !== undefined && !item.disabled ? 'active' : ''
+            }
+          >
+            <div
+              className="onclick-wrapper"
+              onClick={item.link ? props.handleClickLink : () => null}
+            >
+              {getItemIcon(item)}
+              <div className="text">
+                <span className="title">
+                  <T id={`steps.${item.id}.title`} />
+                </span>
+                <span className="subtitle">
+                  <T id={`steps.${item.id}.subtitle`} />
+                </span>
+              </div>
+            </div>
+          </NavLink>
+        ))}
+      </ul>
+    )}
+  </li>
+);
 
 SideNavStepperStep.propTypes = {
   step: PropTypes.objectOf(PropTypes.any).isRequired,

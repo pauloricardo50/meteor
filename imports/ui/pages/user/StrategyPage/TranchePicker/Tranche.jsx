@@ -20,16 +20,18 @@ const Tranche = ({ tranche, changeTranche, deleteTranche, options }) => (
       style={{ width: 140, marginLeft: 4, marginRight: 4 }}
     />
     :
-    <span style={{ marginLeft: 8 }}>CHF</span>
-    <TextInput
-      style={{ marginLeft: 4, width: 32 }}
-      currentValue={tranche.value / 10000}
-      handleChange={(id, value) =>
-        changeTranche(tranche.type, 'value', value * 10000)}
-      type="number"
-      id="value"
-    />
-    {"0'000"}
+    <div>
+      <span style={{ marginLeft: 8 }}>CHF</span>
+      <TextInput
+        style={{ marginLeft: 4, width: 32 }}
+        currentValue={tranche.value / 10000}
+        handleChange={(id, value) =>
+          changeTranche(tranche.type, 'value', value * 10000)}
+        type="number"
+        id="value"
+      />
+      {"0'000"}
+    </div>
     <Button
       style={{ marginLeft: 16 }}
       label={<T id="general.delete" />}

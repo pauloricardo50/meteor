@@ -45,7 +45,9 @@ export default class ConfirmButton extends Component {
         label={<T id="general.yes" />}
         primary
         keyboardFocused
-        onClick={() => {
+        onClick={(e) => {
+          // prevents onClick from triggering twice when using enter to validate...
+          e.preventDefault();
           handleClick();
           this.handleClose();
         }}
