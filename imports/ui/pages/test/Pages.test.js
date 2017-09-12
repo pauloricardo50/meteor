@@ -14,7 +14,7 @@ import BorrowerPage from '../user/BorrowerPage';
 import DashboardPage from '../user/DashboardPage';
 import ContractPage from '../user/ContractPage';
 import ClosingPage from '../user/ClosingPage';
-import LenderPickerPage from '../user/LenderPickerPage';
+import OfferPickerPage from '../user/OfferPickerPage';
 import PropertyPage from '../user/PropertyPage';
 import StructurePage from '../user/StructurePage';
 import VerificationPage from '../user/VerificationPage';
@@ -43,7 +43,7 @@ const pages = {
   DashboardPage,
   ContractPage,
   ClosingPage,
-  LenderPickerPage,
+  OfferPickerPage,
   // PropertyPage,
   StructurePage,
   VerificationPage,

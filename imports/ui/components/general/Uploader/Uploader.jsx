@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Title from './Title';
 import File from './File';
+import FileAdder from './FileAdder';
 
 const Uploader = (props) => {
   const { file, doc } = props;
@@ -15,6 +16,7 @@ const Uploader = (props) => {
     <div className="uploader">
       <Title {...file} currentValue={currentValue} />
       {currentValue && currentValue.map(f => <File key={f.key} {...f} />)}
+      <FileAdder />
     </div>
   );
 };
