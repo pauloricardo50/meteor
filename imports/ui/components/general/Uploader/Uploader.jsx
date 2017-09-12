@@ -14,13 +14,8 @@ export default class Uploader extends Component {
     };
   }
 
-  handleDrop = (event) => {
-    // console.log('wut?');
-    // const file = files[0];
-    // console.log(file);
-    console.log(event);
-    console.log(event.target);
-    console.log(event.target.value);
+  handleDrop = ({ target }) => {
+    console.log(target.files);
   };
 
   render() {

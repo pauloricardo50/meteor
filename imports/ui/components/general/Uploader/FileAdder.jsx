@@ -20,7 +20,13 @@ const styles = {
 const FileAdder = ({ id, handleDrop }) => (
   <a>
     {/* Hide the input, and make the label interactive */}
-    <input type="file" id={id} style={styles.input} onChange={handleDrop} />
+    <input
+      type="file"
+      id={id}
+      style={styles.input}
+      multiple
+      onChange={handleDrop}
+    />
     <label htmlFor={id} style={styles.label}>
       <T id="FileAdder.title" />
     </label>
