@@ -7,7 +7,7 @@ import colors from './colors';
 const muiCustom = {
   // spacing: Spacing.default,
   fontFamily: 'Source Sans Pro, sans-serif',
-  fontWeight: 300,
+  fontWeight: 400,
   palette: {
     primary1Color: colors.primary,
     // primary2Color: '#50A1FF',

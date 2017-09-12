@@ -3,12 +3,33 @@ import PropTypes from 'prop-types';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
-const FileAdder = props => (
+const styles = {
+  input: {
+    width: 0.1,
+    height: 0.1,
+    opacity: 0,
+    overflow: 'hidden',
+    position: 'absolute',
+    zIndex: -1,
+  },
+  label: {
+    cursor: 'pointer',
+  },
+};
+
+const FileAdder = ({ id, handleDrop }) => (
   <a>
-    <T id="FileAdder.title" />
+    {/* Hide the input, and make the label interactive */}
+    <input type="file" id={id} style={styles.input} onChange={handleDrop} />
+    <label htmlFor={id} style={styles.label}>
+      <T id="FileAdder.title" />
+    </label>
   </a>
 );
 
-FileAdder.propTypes = {};
+FileAdder.propTypes = {
+  handleDrop: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+};
 
 export default FileAdder;

@@ -43,7 +43,7 @@ const getConfig = ({ tranches, total, intl }) => {
       })}`,
       style: {
         fontSize: '16px',
-        fontWeight: 300,
+        fontWeight: 400,
         color: showRest ? '#222' : colors.error,
       },
       y: -24,

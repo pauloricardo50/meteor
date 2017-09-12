@@ -214,7 +214,7 @@ class ExpensesChart extends Component {
             style: {
               color: '#333',
               fontSize: '14px',
-              fontWeight: 300,
+              fontWeight: 400,
               overflow: 'visible',
             },
           },
