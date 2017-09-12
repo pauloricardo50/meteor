@@ -2,6 +2,7 @@ machine:
   timezone: Europe/Zurich
   environment:
     NODE_ENV: development
+    TOOL_NODE_FLAGS: "--max_old_space_size=4096"
   node:
     version: 4.8.0
 
