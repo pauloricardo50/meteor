@@ -100,13 +100,10 @@ const getDashboardArray = (props) => {
       labelStyle: {
         fontWeight: 400,
       },
-      value: (
-        <span className="bold sum">
-          {toMoney(project)}
-        </span>
-      ),
+      value: <span className="sum">{toMoney(project)}</span>,
       spacingTop: true,
       spacing: true,
+      bold: true,
     },
     {
       label: 'general.ownFunds',
@@ -125,13 +122,10 @@ const getDashboardArray = (props) => {
     },
     {
       label: 'Recap.ownFundsTotal',
-      value: (
-        <span className=" sum">
-          {toMoney(getTotalUsed(r))}
-        </span>
-      ),
+      value: <span className="sum">{toMoney(getTotalUsed(r))}</span>,
       spacingTop: true,
       hide: !r.general.insuranceFortuneUsed,
+      bold: true,
     },
     {
       label: 'general.mortgageLoan',
@@ -158,9 +152,11 @@ const getDashboardArray = (props) => {
           {Math.round(borrowRatio * 1000) / 10}%{' '}
           <span
             className={
-              borrowRatio <= constants.maxLoan(r.property.usageType) + 0.001 // add 0.1% to avoid rounding errors
-                ? 'fa fa-check success'
-                : 'fa fa-times error'
+              borrowRatio <= constants.maxLoan(r.property.usageType) + 0.001 ? ( // add 0.1% to avoid rounding errors
+                'fa fa-check success'
+              ) : (
+                'fa fa-times error'
+              )
             }
           />
         </span>
@@ -173,11 +169,13 @@ const getDashboardArray = (props) => {
           {Math.round(incomeRatio * 1000) / 10}%{' '}
           <span
             className={
-              incomeRatio <= 1 / 3
-                ? 'fa fa-check success'
-                : incomeRatio <= 0.38
-                  ? 'fa fa-exclamation warning'
-                  : 'fa fa-times error'
+              incomeRatio <= 1 / 3 ? (
+                'fa fa-check success'
+              ) : incomeRatio <= 0.38 ? (
+                'fa fa-exclamation warning'
+              ) : (
+                'fa fa-times error'
+              )
             }
           />
         </span>
@@ -199,13 +197,10 @@ const getDashboardArray = (props) => {
     },
     {
       label: 'Recap.availableFunds',
-      value: (
-        <span className="sum">
-          {toMoney(totalFortune)}
-        </span>
-      ),
+      value: <span className="sum">{toMoney(totalFortune)}</span>,
       hide: !realEstateFortune,
       spacingTop: true,
+      bold: true,
     },
     {
       label: 'Recap.realEstate',
@@ -221,9 +216,7 @@ const getDashboardArray = (props) => {
     {
       label: 'Recap.netFortune',
       value: (
-        <span className="sum">
-          {toMoney(totalFortune + realEstateFortune)}
-        </span>
+        <span className="sum">{toMoney(totalFortune + realEstateFortune)}</span>
       ),
       spacingTop: true,
       hide: !realEstateFortune,
@@ -253,12 +246,9 @@ const getDashboardArray = (props) => {
     },
     {
       label: 'Recap.consideredIncome',
-      value: (
-        <span className="sum">
-          {toMoney(getBorrowerIncome(b))}
-        </span>
-      ),
+      value: <span className="sum">{toMoney(getBorrowerIncome(b))}</span>,
       spacingTop: true,
+      bold: true,
     },
     {
       title: true,
@@ -397,12 +387,13 @@ const getStart2Array = (props) => {
     {
       label: 'Recap.ownFundsTotal',
       value: (
-        <span className=" sum">
+        <span className="sum">
           {toMoney(Math.round(p.fortuneUsed + p.insuranceFortuneUsed))}
         </span>
       ),
       spacingTop: true,
       hide: !p.fortuneUsed || !p.insuranceFortuneUsed,
+      bold: true,
     },
     {
       label: 'general.mortgageLoan',
@@ -431,9 +422,11 @@ const getStart2Array = (props) => {
           {Math.round(p.borrow * 1000) / 10}%{' '}
           <span
             className={
-              p.borrow <= constants.maxLoan(p.usageType) + 0.001 // add 0.1% to avoid rounding errors
-                ? 'fa fa-check success'
-                : 'fa fa-times error'
+              p.borrow <= constants.maxLoan(p.usageType) + 0.001 ? ( // add 0.1% to avoid rounding errors
+                'fa fa-check success'
+              ) : (
+                'fa fa-times error'
+              )
             }
           />
         </span>
@@ -447,11 +440,13 @@ const getStart2Array = (props) => {
           {Math.round(p.ratio * 1000) / 10}%{' '}
           <span
             className={
-              p.ratio <= 1 / 3
-                ? 'fa fa-check success'
-                : p.ratio <= 0.38
-                  ? 'fa fa-exclamation warning'
-                  : 'fa fa-times error'
+              p.ratio <= 1 / 3 ? (
+                'fa fa-check success'
+              ) : p.ratio <= 0.38 ? (
+                'fa fa-exclamation warning'
+              ) : (
+                'fa fa-times error'
+              )
             }
           />
         </span>
@@ -483,6 +478,7 @@ const getStart2Array = (props) => {
       ),
       hide: !p.insuranceFortuneDisplayed,
       spacingTop: true,
+      bold: true,
     },
     {
       label: 'Recap.realEstate',
@@ -507,6 +503,7 @@ const getStart2Array = (props) => {
       ),
       spacingTop: true,
       hide: !p.realEstate,
+      bold: true,
     },
     {
       title: true,
@@ -553,6 +550,7 @@ const getStart2Array = (props) => {
       ),
       hide: !(p.salary || p.bonus || p.otherIncome || p.expenses),
       spacingTop: true,
+      bold: true,
     },
     {
       title: true,
@@ -597,13 +595,10 @@ const getBorrowerArray = (props) => {
     },
     {
       label: 'Recap.availableFunds',
-      value: (
-        <span className="sum">
-          {toMoney(totalFortune)}
-        </span>
-      ),
+      value: <span className="sum">{toMoney(totalFortune)}</span>,
       hide: !realEstateFortune,
       spacingTop: true,
+      bold: true,
     },
     {
       label: 'Recap.realEstate',
@@ -619,9 +614,7 @@ const getBorrowerArray = (props) => {
     {
       label: 'Recap.netFortune',
       value: (
-        <span className="sum">
-          {toMoney(totalFortune + realEstateFortune)}
-        </span>
+        <span className="sum">{toMoney(totalFortune + realEstateFortune)}</span>
       ),
       spacingTop: true,
       hide: !realEstateFortune,
@@ -651,12 +644,9 @@ const getBorrowerArray = (props) => {
     },
     {
       label: 'Recap.consideredIncome',
-      value: (
-        <span className="sum">
-          {toMoney(getBorrowerIncome(b))}
-        </span>
-      ),
+      value: <span className="sum">{toMoney(getBorrowerIncome(b))}</span>,
       spacingTop: true,
+      bold: true,
     },
   ];
 };
@@ -704,13 +694,10 @@ const getStructureArray = (props) => {
       labelStyle: {
         fontWeight: 400,
       },
-      value: (
-        <span className="bold sum">
-          {toMoney(project)}
-        </span>
-      ),
+      value: <span className="sum">{toMoney(project)}</span>,
       spacingTop: true,
       spacing: true,
+      bold: true,
     },
     {
       label: 'general.mortgageLoan',
@@ -742,9 +729,11 @@ const getStructureArray = (props) => {
           {Math.round(borrowRatio * 1000) / 10}%{' '}
           <span
             className={
-              borrowRatio <= constants.maxLoan(r.property.usageType) + 0.001 // add 0.1% to avoid rounding errors
-                ? 'fa fa-check success'
-                : 'fa fa-times error'
+              borrowRatio <= constants.maxLoan(r.property.usageType) + 0.001 ? ( // add 0.1% to avoid rounding errors
+                'fa fa-check success'
+              ) : (
+                'fa fa-times error'
+              )
             }
           />
         </span>
@@ -757,11 +746,13 @@ const getStructureArray = (props) => {
           {Math.round(incomeRatio * 1000) / 10}%{' '}
           <span
             className={
-              incomeRatio <= 1 / 3
-                ? 'fa fa-check success'
-                : incomeRatio <= 0.38
-                  ? 'fa fa-exclamation warning'
-                  : 'fa fa-times error'
+              incomeRatio <= 1 / 3 ? (
+                'fa fa-check success'
+              ) : incomeRatio <= 0.38 ? (
+                'fa fa-exclamation warning'
+              ) : (
+                'fa fa-times error'
+              )
             }
           />
         </span>
@@ -820,6 +811,7 @@ const Recap = (props) => {
               className={classnames({
                 'fixed-size': true,
                 'no-scale': props.noScale,
+                bold: item.bold,
               })}
               style={{
                 marginBottom: item.spacing && 16,
@@ -830,9 +822,7 @@ const Recap = (props) => {
               <h4 className="secondary">
                 <T id={item.label} tooltipPlacement="bottom" />
               </h4>
-              <h3 {...item.props}>
-                {item.value}
-              </h3>
+              <h3 {...item.props}>{item.value}</h3>
             </div>
           );
         })}

@@ -34,13 +34,14 @@ const getArray = ({ income, fortune, property, borrowRatio, incomeRatio }) => [
       fontWeight: 400,
     },
     value: (
-      <span className="bold">
+      <span>
         {toMoney(
           Math.round(property * (1 + constants.notaryFees) / 1000) * 1000,
         )}
       </span>
     ),
     spacing: true,
+    bold: true,
   },
   {
     label: 'general.ownFunds',
@@ -54,14 +55,16 @@ const getArray = ({ income, fortune, property, borrowRatio, incomeRatio }) => [
   {
     label: 'Recap.monthlyCost',
     value:
-      Math.round(borrowRatio * 1000) / 1000 <= 0.8 && fortune < property
-        ? <span>
+      Math.round(borrowRatio * 1000) / 1000 <= 0.8 && fortune < property ? (
+        <span>
           {toMoney(
-              getRealMonthly(fortune - property * 0.05, property, borrowRatio),
-            )}{' '}
+            getRealMonthly(fortune - property * 0.05, property, borrowRatio),
+          )}{' '}
           <small>/mois</small>
         </span>
-        : '-',
+      ) : (
+        '-'
+      ),
   },
   {
     title: true,
@@ -74,11 +77,13 @@ const getArray = ({ income, fortune, property, borrowRatio, incomeRatio }) => [
         {Math.round(borrowRatio * 1000) / 10}%&nbsp;
         <span
           className={
-            borrowRatio <= 0.8 + 0.001 // for rounding
-              ? 'fa fa-check success'
-              : borrowRatio <= 0.9
-                ? 'fa fa-exclamation warning'
-                : 'fa fa-times error'
+            borrowRatio <= 0.8 + 0.001 ? ( // for rounding
+              'fa fa-check success'
+            ) : borrowRatio <= 0.9 ? (
+              'fa fa-exclamation warning'
+            ) : (
+              'fa fa-times error'
+            )
           }
         />
       </span>
@@ -91,11 +96,13 @@ const getArray = ({ income, fortune, property, borrowRatio, incomeRatio }) => [
         {Math.round(incomeRatio * 1000) / 10}%&nbsp;
         <span
           className={
-            incomeRatio <= 1 / 3 + 0.001 // for rounding
-              ? 'fa fa-check success'
-              : incomeRatio <= 0.38
-                ? 'fa fa-exclamation warning'
-                : 'fa fa-times error'
+            incomeRatio <= 1 / 3 + 0.001 ? ( // for rounding
+              'fa fa-check success'
+            ) : incomeRatio <= 0.38 ? (
+              'fa fa-exclamation warning'
+            ) : (
+              'fa fa-times error'
+            )
           }
         />
       </span>
@@ -112,17 +119,21 @@ const getArray = ({ income, fortune, property, borrowRatio, incomeRatio }) => [
   },
 ];
 
-const Start1Recap = props =>
-  (<article className="validator">
-    {isReady(props)
-      ? <Recap array={getArray(props)} />
-      : !props.noPlaceholder &&
+const Start1Recap = props => (
+  <article className="validator">
+    {isReady(props) ? (
+      <Recap array={getArray(props)} />
+    ) : (
+      !props.noPlaceholder && (
         <div>
           <h4 className="secondary" style={{ textAlign: 'center' }}>
             <T id="Start1Recap.temporaryTitle" />
           </h4>
-        </div>}
-  </article>);
+        </div>
+      )
+    )}
+  </article>
+);
 
 Start1Recap.propTypes = {
   income: PropTypes.number,

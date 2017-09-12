@@ -40,7 +40,7 @@ export default class HomePage extends Component {
           <header className="header">
             <div className="container-sml text-center">
               <div className="col-12">
-                <h1 className="heading animated fadeInDown">
+                <h1 className="heading animated fadeInDown thin">
                   <T id="HomePage.tagline1" />
                   <hr />
                   <T id="HomePage.tagline2" />
@@ -245,11 +245,11 @@ export default class HomePage extends Component {
             <div className="content">
               <div className="container-lrg center">
                 <div className="col-7">
-                  <h5 className="heading">
+                  <h1 className="heading thin">
                     <T id="HomePage.tagline1" />
                     <hr />
                     <T id="HomePage.tagline2" />
-                  </h5>
+                  </h1>
                 </div>
                 <div className="col-5">
                   <div className="ctas text-right">

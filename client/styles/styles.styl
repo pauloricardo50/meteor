@@ -775,6 +775,7 @@ ul.request-map
     justify-content: space-between;
     align-items: flex-start;
     div
+      transition: all 0.2s $bezier;
       h3, h4
         margin: 0;
       h3
@@ -789,7 +790,6 @@ ul.request-map
           width: 21px;
           text-align: center;
       &:hover
-        transition: all 0.2s $bezier;
         transform: scale(1.03);
         &.no-scale
           transform: none;

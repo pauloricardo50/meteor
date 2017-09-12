@@ -18,7 +18,7 @@
 
 .header h1,
 .header h2,
-.footer h5 {
+.footer h1 {
   color: white;
 }
 
@@ -84,7 +84,7 @@ body {
 }
 
 p.paragraph {
-  color: rgba(0, 0, 0, .5);
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .logo {
@@ -314,7 +314,7 @@ p.paragraph {
   font-size: 15px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: .3px;
+  letter-spacing: 0.3px;
   border: 1px solid white;
   text-decoration: none;
 }
@@ -355,7 +355,7 @@ p.paragraph {
   font-size: 15px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: .3px;
+  letter-spacing: 0.3px;
   border: 1px solid white;
   text-decoration: none;
 }
@@ -422,7 +422,7 @@ p.paragraph {
   font-size: 15px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: .3px;
+  letter-spacing: 0.3px;
   border: 1px solid white;
   text-decoration: none;
 }
@@ -447,7 +447,7 @@ p.paragraph {
 
 .feature3 {
   padding: 90px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   background: white;
   color: rgb(107, 124, 147) !important;
 }
@@ -490,7 +490,7 @@ p.paragraph {
 .feature1 {
   /* FLORIAN padding */
   padding: 90px 0 0 0;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   background: #f6f9fc;
   color: rgb(107, 124, 147) !important;
 }
@@ -507,14 +507,14 @@ p.paragraph {
 }
 
 .feature2 {
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   background: white;
   color: rgb(107, 124, 147) !important;
 }
 
 .feature2 .col-6:nth-of-type(2n - 1) {
   padding: 90px 90px 90px 20px;
-  border-right: 1px solid rgba(0, 0, 0, .1);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .feature2 .col-6:nth-of-type(3n - 1) {
