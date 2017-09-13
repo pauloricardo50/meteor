@@ -15,6 +15,7 @@ jobs:
           TZ: "/usr/share/zoneinfo/Europe/Zurich"
           NODE_ENV: development
           TOOL_NODE_FLAGS: "--max_old_space_size=4096"
+          CI_RESULTS_FILE: results/unit.xml
     steps:
       - checkout
       - restore_cache:
@@ -56,6 +57,7 @@ jobs:
       - run:
           name: install npm packages
           command: meteor npm install
+      - run: mkdir ~/results
       - run:
           name: run tests
           command: meteor npm run test-CI
@@ -90,7 +92,6 @@ jobs:
             - ./node_modules/
             - ~/.npm/
       - store_test_results:
-          path: ./tests/coverage/unit-tests/
+          path: ~/results
       - store_artifacts:
-          path: ./tests/coverage/unit-tests/
-          destination: unit-tests
+          path: ~/results
