@@ -13,6 +13,8 @@ jobs:
           METEOR_BIN_TMP_DIR: /home/circleci/build-temp/
           METEOR_BIN_TMP_FILE: meteor-bin-temp
           TZ: "/usr/share/zoneinfo/Europe/Zurich"
+          NODE_ENV: development
+          TOOL_NODE_FLAGS: "--max_old_space_size=4096"
     steps:
       - checkout
       - restore_cache:
