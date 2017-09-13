@@ -2,20 +2,42 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { T } from '/imports/ui/components/general/Translation';
-import Button from '/imports/ui/components/general/Button';
+import IconButton from '/imports/ui/components/general/IconButton';
 
-const File = ({ name, size, type, url, fileCount, status, error }) => (
-  <div className="file">
-    <h5 className="secondary bold">{name}</h5>
-    <div>
-      <span className={`${status} bold`}>
-        <T id={`Files.status.${status}`} />
-      </span>
-      {<Button label={<T id="general.delete" />} />}
+const File = ({ file, disabled, handleRemove }) => {
+  const { name, key, status, error } = file;
+
+  return (
+    <div className="flex-col">
+      <div className="file">
+        <h5 className="secondary bold">{name}</h5>
+        <div className="flex center">
+          <span className={`${status} bold`}>
+            <T id={`Files.status.${status}`} />
+          </span>
+          {
+            <IconButton
+              touch={false}
+              type="close"
+              tooltip={<T id="general.delete" />}
+              onClick={() => handleRemove(key)}
+            />
+          }
+        </div>
+      </div>
+      {error && <p className="error">{error}</p>}
     </div>
-  </div>
-);
+  );
+};
 
-File.propTypes = {};
+File.propTypes = {
+  file: PropTypes.objectOf(PropTypes.any).isRequired,
+  disabled: PropTypes.bool.isRequired,
+  handleRemove: PropTypes.func.isRequired,
+};
+
+File.defaultProps = {
+  error: '',
+};
 
 export default File;

@@ -17,7 +17,7 @@ const styles = {
   },
 };
 
-const FileAdder = ({ id, handleDrop }) => (
+const FileAdder = ({ id, handleAddFiles }) => (
   <a>
     {/* Hide the input, and make the label interactive */}
     <input
@@ -25,7 +25,7 @@ const FileAdder = ({ id, handleDrop }) => (
       id={id}
       style={styles.input}
       multiple
-      onChange={handleDrop}
+      onChange={handleAddFiles}
     />
     <label htmlFor={id} style={styles.label}>
       <T id="FileAdder.title" />
@@ -34,7 +34,7 @@ const FileAdder = ({ id, handleDrop }) => (
 );
 
 FileAdder.propTypes = {
-  handleDrop: PropTypes.func.isRequired,
+  handleAddFiles: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
 };
 

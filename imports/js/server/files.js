@@ -50,8 +50,8 @@ Meteor.methods({
     const s3 = setupS3();
     const params = { Bucket: Meteor.settings.S3Bucket, Key: key };
 
-    const async = Meteor.wrapAsync(s3.deleteObject);
-
+    // bind s3 to avoid an error of context 'makeRequest is not a function'
+    const async = Meteor.wrapAsync(s3.deleteObject.bind(s3));
     return async(params);
   },
   downloadFile(key) {

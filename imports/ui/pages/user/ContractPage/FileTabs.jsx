@@ -15,14 +15,15 @@ const styles = {
   },
 };
 
-const FileTabs = props =>
-  (<div>
+const FileTabs = props => (
+  <div>
     <Tabs defaultActiveKey={1} id="tabs">
       <Tab eventKey={1} title="Bien Immobilier">
         <div style={styles.tabContent}>
           <UploaderArray
             fileArray={requestFiles(props.loanRequest).contract}
             doc={props.loanRequest}
+            collection="loanRequests"
           />
           {/* <DropzoneArray
             array={requestFiles(props.loanRequest).contract}
@@ -35,10 +36,14 @@ const FileTabs = props =>
           /> */}
         </div>
       </Tab>
-      {props.borrowers.map((b, index) =>
-        (<Tab eventKey={index + 2} title={b.firstName} key={b._id}>
+      {props.borrowers.map((b, index) => (
+        <Tab eventKey={index + 2} title={b.firstName} key={b._id}>
           <div style={styles.tabContent}>
-            <UploaderArray fileArray={borrowerFiles(b).contract} doc={b} />
+            <UploaderArray
+              fileArray={borrowerFiles(b).contract}
+              doc={b}
+              collection="borrowers"
+            />
 
             {/* <DropzoneArray
               array={borrowerFiles(b).contract}
@@ -50,10 +55,11 @@ const FileTabs = props =>
               filesObjectSelector="files"
             /> */}
           </div>
-        </Tab>),
-      )}
+        </Tab>
+      ))}
     </Tabs>
-  </div>);
+  </div>
+);
 
 FileTabs.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,

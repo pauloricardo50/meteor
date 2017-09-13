@@ -4,20 +4,11 @@ import { Roles } from 'meteor/alanning:roles';
 
 import LoanRequests from '/imports/api/loanrequests/loanrequests';
 import Borrowers from '/imports/api/borrowers/borrowers';
-
+import { getFileCount } from '/imports/js/arrays/files';
 import '../meteor-slingshot';
 
-const getFileCount = (props) => {
-  let fileCount = '00';
-  if (props.currentValue) {
-    const newCount = Math.max(...props.currentValue.map(f => f.fileCount)) + 1;
-    fileCount = newCount < 10 ? `0${newCount}` : newCount;
-  }
-  return fileCount;
-};
-
 Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
-  authorize(file, props) {
+  authorize(file, { collection, docId }) {
     // Don't use arrow function, this is the current object here
 
     // Check for devs and admins
@@ -37,14 +28,14 @@ Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
     }
 
     // Make sure this user is the owner of the document
-    if (props.collection === 'borrowers') {
-      const doc = Borrowers.findOne(props.documentId);
+    if (collection === 'borrowers') {
+      const doc = Borrowers.findOne(docId);
 
       if (doc.userId !== this.userId) {
         throw new Meteor.Error('Invalid user', "You're not allowed to do this");
       }
-    } else if (props.collection === 'loanRequests') {
-      const doc = LoanRequests.findOne(props.documentId);
+    } else if (collection === 'loanRequests') {
+      const doc = LoanRequests.findOne(docId);
       if (doc.userId !== this.userId) {
         throw new Meteor.Error('Invalid user', "You're not allowed to do this");
       }
@@ -54,7 +45,9 @@ Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
 
     return true;
   },
-  key(file, props) {
-    return `${props.documentId}/${props.id}/${getFileCount(props)}${file.name}`;
+  key(file, { currentValue, docId, id }) {
+    const { fileCountString } = getFileCount(currentValue);
+
+    return `${docId}/${id}/${fileCountString}${file.name}`;
   },
 });

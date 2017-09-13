@@ -3,17 +3,43 @@ import PropTypes from 'prop-types';
 
 import Uploader from './Uploader';
 
-const UploaderArray = props =>
-  (<div className="flex-col center">
-    {props.fileArray.map(
+const UploaderArray = ({ fileArray, doc, disabled, collection }) => (
+  <div className="flex-col center">
+    {fileArray.map(
       file =>
-        file.condition !== false &&
-        <Uploader {...props} file={file} key={file.id} />,
+        file.condition !== false && (
+          <Uploader
+            fileMeta={file}
+            key={file.id}
+            currentValue={doc.files[file.id]}
+            docId={doc._id}
+            pushFunc={
+              collection === 'loanRequests' ? (
+                'pushRequestValue'
+              ) : (
+                'pushBorrowerValue'
+              )
+            }
+            updateFunc={
+              collection === 'loanRequests' ? 'updateRequest' : 'updateBorrower'
+            }
+            disabled={disabled}
+            collection={collection}
+          />
+        ),
     )}
-  </div>);
+  </div>
+);
 
 UploaderArray.propTypes = {
   fileArray: PropTypes.arrayOf(PropTypes.object).isRequired,
+  doc: PropTypes.objectOf(PropTypes.any).isRequired,
+  disabled: PropTypes.bool,
+  collection: PropTypes.string.isRequired,
+};
+
+UploaderArray.defaultProps = {
+  disabled: false,
 };
 
 export default UploaderArray;

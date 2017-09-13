@@ -182,7 +182,6 @@ export const FileSchema = new SimpleSchema({
   key: String,
   fileCount: Number,
   status: {
-    optional: true,
     type: String,
     allowedValues: ['unverified', 'verified', 'error'],
   },
@@ -216,4 +215,15 @@ export const fakeFile = {
   fileCount: 0,
   status: 'verified',
   error: '',
+};
+
+export const getFileCount = (currentValue) => {
+  let fileCountString = '00';
+  let fileCount = 0;
+  if (currentValue && currentValue.length > 0) {
+    // If something goes wrong, minimum should be -1 + 1 = 0
+    fileCount = Math.max(...currentValue.map(f => f.fileCount), -1) + 1;
+    fileCountString = fileCount < 10 ? `0${fileCount}` : `${fileCount}`;
+  }
+  return { fileCount, fileCountString };
 };

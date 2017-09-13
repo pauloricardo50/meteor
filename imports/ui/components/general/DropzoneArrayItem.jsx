@@ -52,6 +52,8 @@ const DropzoneArrayItem = (props) => {
   const mongoId = `${filesObjectSelector}.${id}`;
   const tooltipId = `files.${id}.tooltip${tooltipSuffix}`;
 
+  console.log('mongoId:', mongoId);
+
   return (
     <article
       style={styles.article}
