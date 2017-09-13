@@ -20,8 +20,6 @@ dependencies:
     - "node_modules"
 
 test:
-  pre:
-    - meteor npm install --global source-map@0.5.6
   override:
     - yarn run test-CI:
         timeout: 1200
