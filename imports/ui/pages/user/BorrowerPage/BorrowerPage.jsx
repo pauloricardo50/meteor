@@ -28,12 +28,11 @@ const styles = {
   },
 };
 
-const Links = props => (
+const Links = ({ requestId, borrower, tab }) => (
   <div className="borrower-links text-center">
     <Link
-      to={`/app/requests/${props.requestId}/borrowers/${props.borrower
-        ._id}/personal`}
-      className={props.tab === 'personal' && 'active'}
+      to={`/app/requests/${requestId}/borrowers/${borrower._id}/personal`}
+      className={tab === 'personal' && 'active'}
     >
       <span className="fa fa-user" />
       <h4>
@@ -41,9 +40,8 @@ const Links = props => (
       </h4>
     </Link>
     <Link
-      to={`/app/requests/${props.requestId}/borrowers/${props.borrower
-        ._id}/finance`}
-      className={props.tab === 'finance' && 'active'}
+      to={`/app/requests/${requestId}/borrowers/${borrower._id}/finance`}
+      className={tab === 'finance' && 'active'}
     >
       <span className="fa fa-money" />
       <h4>
@@ -51,9 +49,8 @@ const Links = props => (
       </h4>
     </Link>
     <Link
-      to={`/app/requests/${props.requestId}/borrowers/${props.borrower
-        ._id}/files`}
-      className={props.tab === 'files' && 'active'}
+      to={`/app/requests/${requestId}/borrowers/${borrower._id}/files`}
+      className={tab === 'files' && 'active'}
     >
       <span className="fa fa-files-o" />
       <h4>

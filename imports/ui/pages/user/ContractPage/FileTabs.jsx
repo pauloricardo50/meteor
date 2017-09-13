@@ -25,15 +25,6 @@ const FileTabs = props => (
             doc={props.loanRequest}
             collection="loanRequests"
           />
-          {/* <DropzoneArray
-            array={requestFiles(props.loanRequest).contract}
-            documentId={props.loanRequest._id}
-            pushFunc="pushRequestValue"
-            updateFunc="updateRequest"
-            collection="loanRequests"
-            filesObject={props.loanRequest.files}
-            filesObjectSelector="files"
-          /> */}
         </div>
       </Tab>
       {props.borrowers.map((b, index) => (
@@ -44,16 +35,6 @@ const FileTabs = props => (
               doc={b}
               collection="borrowers"
             />
-
-            {/* <DropzoneArray
-              array={borrowerFiles(b).contract}
-              documentId={b._id}
-              pushFunc="pushBorrowerValue"
-              updateFunc="updateBorrower"
-              collection="borrowers"
-              filesObject={b.files}
-              filesObjectSelector="files"
-            /> */}
           </div>
         </Tab>
       ))}

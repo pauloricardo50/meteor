@@ -36,7 +36,7 @@ export default class Uploader extends Component {
         name: `${fileCountString}${file.name}`,
         size: file.size,
         type: file.type,
-        url: downloadUrl,
+        url: encodeURI(downloadUrl), // To avoid spaces and unallowed chars
         key: downloadUrl.split('amazonaws.com/')[1],
         status: 'unverified',
         fileCount,
@@ -85,7 +85,7 @@ export default class Uploader extends Component {
         {tempFiles.map((f, i) => (
           <TempFile
             file={f}
-            key={f.name + i}
+            key={f.name + i} // if the same file is uploaded twice there's a conflict
             docId={docId}
             collection={collection}
             handleSave={this.handleSave}

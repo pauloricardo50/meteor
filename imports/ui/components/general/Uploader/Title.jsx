@@ -29,7 +29,7 @@ const Title = ({
       <h5 className="secondary">
         <span style={{ padding: '0 4px' }}>&bull;</span>
         <T
-          id="DropzoneArrayItem.fileCount"
+          id="Uploader.fileCount"
           values={{ count: (currentValue && currentValue.length) || 0 }}
         />
       </h5>
@@ -37,6 +37,13 @@ const Title = ({
   );
 };
 
-Title.propTypes = {};
+Title.propTypes = {
+  id: PropTypes.string.isRequired,
+  doubleTooltip: PropTypes.bool,
+  noTooltips: PropTypes.bool,
+  required: PropTypes.bool,
+  currentValue: PropTypes.arrayOf(PropTypes.object).isRequired,
+  tooltipSuffix: PropTypes.string,
+};
 
 export default Title;

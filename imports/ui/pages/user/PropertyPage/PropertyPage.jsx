@@ -4,7 +4,7 @@ import React from 'react';
 import ProcessPage from '/imports/ui/components/general/ProcessPage';
 import AutoForm from '/imports/ui/components/general/AutoForm';
 import PropertyFormArray from '/imports/js/arrays/PropertyFormArray';
-import DropzoneArray from '/imports/ui/components/general/DropzoneArray';
+import UploaderArray from '/imports/ui/components/general/UploaderArray';
 import { requestFiles } from '/imports/js/arrays/files';
 import {
   disableForms,
@@ -61,14 +61,10 @@ const PropertyPage = (props) => {
           </p>
         </div>
 
-        <DropzoneArray
-          array={requestFiles(props.loanRequest).auction}
-          documentId={props.loanRequest._id}
-          pushFunc="pushRequestValue"
-          updateFunc="pushRequestValue"
+        <UploaderArray
+          fileArray={requestFiles(props.loanRequest).auction}
+          doc={props.loanRequest}
           collection="loanRequests"
-          filesObject={props.loanRequest.files}
-          filesObjectSelector="files"
           disabled={disableForms(props.loanRequest)}
         />
 

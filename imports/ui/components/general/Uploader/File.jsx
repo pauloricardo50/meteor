@@ -15,14 +15,14 @@ const File = ({ file, disabled, handleRemove }) => {
           <span className={`${status} bold`}>
             <T id={`Files.status.${status}`} />
           </span>
-          {
+          {!disabled && (
             <IconButton
               touch={false}
               type="close"
               tooltip={<T id="general.delete" />}
               onClick={() => handleRemove(key)}
             />
-          }
+          )}
         </div>
       </div>
       {error && <p className="error">{error}</p>}

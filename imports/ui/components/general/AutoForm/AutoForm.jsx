@@ -8,8 +8,7 @@ import RadioInput from './RadioInput';
 import SelectFieldInput from './SelectFieldInput';
 import ConditionalInput from './ConditionalInput';
 import DateInput from './DateInput';
-import DropzoneInput from './DropzoneInput';
-import DropzoneArray from '../DropzoneArray';
+import UploaderArray from '../UploaderArray';
 import ArrayInput from './ArrayInput';
 
 const styles = {
@@ -103,14 +102,7 @@ const inputSwitch = (singleInput, index, parentProps) => {
     case 'dateInput':
       return <DateInput {...props} />;
     case 'dropzoneInput':
-      return (
-        // <DropzoneInput
-        //   {...singleInput}
-        //   {...extraValues}
-        //   key={index}
-        // />
-        <DropzoneArray {...props} />
-      );
+      return <UploaderArray {...props} />;
     case 'arrayInput':
       return <ArrayInput {...props} />;
     default:

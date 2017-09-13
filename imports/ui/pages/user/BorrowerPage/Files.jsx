@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
-import DropzoneArray from '/imports/ui/components/general/DropzoneArray';
+import UploaderArray from '/imports/ui/components/general/UploaderArray';
 import { filesPercent } from '/imports/js/arrays/steps';
 import { borrowerFiles } from '/imports/js/arrays/files';
 import RadioInput from '/imports/ui/components/general/AutoForm/RadioInput';
@@ -20,81 +19,64 @@ const styles = {
   },
 };
 
-export default class Files extends Component {
-  constructor(props) {
-    super(props);
+const Files = (props) => {
+  const { borrower, loanRequest } = props;
+  const percent = filesPercent([borrower], borrowerFiles, 'auction');
 
-    this.state = {
-      active: -1,
-    };
-  }
+  return (
+    <section
+      className="animated fadeIn"
+      key={borrower._id}
+      style={styles.section}
+    >
+      <hr />
+      <h2 className="text-center">
+        <T id="Files.title" />
+        <br />
+        <small className={percent >= 1 && 'success'}>
+          <T id="general.progress" values={{ value: percent }} />{' '}
+          {percent >= 1 && <span className="fa fa-check" />}
+        </small>
+      </h2>
 
-  render() {
-    // const percent = auctionFilesPercent([this.props.borrower]);
-    const percent = filesPercent(
-      [this.props.borrower],
-      borrowerFiles,
-      'auction',
-    );
+      <div className="description">
+        <p>
+          <T id="Files.description" />
+        </p>
+      </div>
 
-    // console.log(percent, percent2);
+      <h3 className="text-center">
+        <T id="Files.files1.title" />
+      </h3>
 
-    return (
-      <section
-        className="animated fadeIn"
-        key={this.props.borrower._id}
-        style={styles.section}
-      >
-        <hr />
-        <h2 className="text-center">
-          <T id="Files.title" />
-          <br />
-          <small className={percent >= 1 && 'success'}>
-            <T id="general.progress" values={{ value: percent }} />{' '}
-            {percent >= 1 && <span className="fa fa-check" />}
-          </small>
-        </h2>
-
-        <div className="description">
-          <p>
-            <T id="Files.description" />
-          </p>
-        </div>
-
-        <h3 className="text-center">
-          <T id="Files.files1.title" />
-        </h3>
-
-        <div style={styles.radioDiv}>
-          <RadioInput
-            id="hasChangedSalary"
-            label={<T id="Files.hasChangedSalary" />}
-            options={[
-              { id: true, label: <T id="general.yes" /> },
-              { id: false, label: <T id="general.no" /> },
-            ]}
-            currentValue={this.props.borrower.hasChangedSalary}
-            documentId={this.props.borrower._id}
-            updateFunc="updateBorrower"
-            disabled={disableForms(this.props.loanRequest)}
-          />
-        </div>
-
-        <DropzoneArray
-          array={borrowerFiles(this.props.borrower).auction}
-          documentId={this.props.borrower._id}
-          pushFunc="pushBorrowerValue"
+      <div style={styles.radioDiv}>
+        <RadioInput
+          id="hasChangedSalary"
+          label={<T id="Files.hasChangedSalary" />}
+          options={[
+            { id: true, label: <T id="general.yes" /> },
+            { id: false, label: <T id="general.no" /> },
+          ]}
+          currentValue={borrower.hasChangedSalary}
+          documentId={borrower._id}
           updateFunc="updateBorrower"
-          collection="borrowers"
-          filesObject={this.props.borrower.files}
-          filesObjectSelector="files"
-          disabled={disableForms(this.props.loanRequest)}
+          disabled={disableForms(loanRequest)}
         />
-      </section>
-    );
-  }
-}
+      </div>
+
+      <UploaderArray
+        fileArray={borrowerFiles(borrower).auction}
+        doc={borrower}
+        collection="borrowers"
+        disabled={disableForms(loanRequest)}
+      />
+    </section>
+  );
+};
 
 Files.propTypes = {
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrower: PropTypes.objectOf(PropTypes.any).isRequired,
 };
+
+export default Files;
