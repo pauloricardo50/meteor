@@ -11,7 +11,7 @@ dependencies:
     # Install & cache Meteor
     - .test/install-meteor.sh
 
-    # Install and cache all dependencies
+    # Install all dependencies
     - meteor npm install
 
   cache-directories:
@@ -21,15 +21,15 @@ dependencies:
 
 test:
   override:
-    - yarn run test-CI:
+    - meteor npm run test-CI:
         timeout: 1200
 
 deployment:
   staging:
     branch: staging
     commands:
-      - yarn run deploy:staging
+      - meteor npm run deploy:staging
   production:
     branch: master
     commands:
-      - yarn run deploy:production
+      - meteor npm run deploy:production
