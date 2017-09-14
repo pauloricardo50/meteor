@@ -42,6 +42,7 @@
   "Tranche.tranche": "Tranche",
   "TrancheChart.rest": "Montant restant à attribuer",
   "TrancheChart.value": "Montant",
+  "TranchePicker.add": "+ Ajouter une tranche",
 
   "FileAdder.title": "+ Uploader un fichier",
 
@@ -856,8 +857,6 @@
   "TopNavDropdown.partner": "Partner Dashboard",
   "TosPage.description": "<En Développement />",
   "TosPage.title": "Termes et Conditions",
-  "TrancheCount.add": "Ajouter",
-  "TrancheCount.description": "Nombre de tranches:",
   "ValidatorItem.error.fortune": "Manque de fortune",
   "ValidatorItem.error.fortuneTight": "Possible avec prévoyance",
   "ValidatorItem.error.income": "Manque de revenus",

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { T } from '/imports/ui/components/general/Translation';
 import Select from '/imports/ui/components/general/Select';
 import TextInput from '/imports/ui/components/general/TextInput';
-import Button from '/imports/ui/components/general/Button';
+import IconButton from '/imports/ui/components/general/IconButton';
 
 const Tranche = ({ tranche, changeTranche, deleteTranche, options }) => (
   <div className="flex" style={{ alignItems: 'center', flexWrap: 'wrap' }}>
@@ -32,10 +32,12 @@ const Tranche = ({ tranche, changeTranche, deleteTranche, options }) => (
       />
       {"0'000"}
     </div>
-    <Button
+    <IconButton
+      type="close"
       style={{ marginLeft: 16 }}
-      label={<T id="general.delete" />}
+      tooltip={<T id="general.delete" />}
       onClick={() => deleteTranche(tranche.type)}
+      touch={false}
     />
   </div>
 );

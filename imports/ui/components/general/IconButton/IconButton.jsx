@@ -17,8 +17,13 @@ const getIcon = (type) => {
   }
 };
 
-const IconButton = ({ onClick, type, tooltip, touch }) => (
-  <MuiIconButton onClick={onClick} tooltip={tooltip} touch={touch}>
+const IconButton = ({ onClick, type, tooltip, touch, style }) => (
+  <MuiIconButton
+    onClick={onClick}
+    tooltip={tooltip}
+    touch={touch}
+    style={style}
+  >
     {getIcon(type)}
   </MuiIconButton>
 );
@@ -28,11 +33,13 @@ IconButton.propTypes = {
   type: PropTypes.string.isRequired,
   tooltip: PropTypes.node,
   touch: PropTypes.bool,
+  style: PropTypes.objectOf(PropTypes.any),
 };
 
 IconButton.defaultProps = {
   tooltip: '',
   touch: true,
+  style: {},
 };
 
 export default IconButton;

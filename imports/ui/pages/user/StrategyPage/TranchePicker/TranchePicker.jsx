@@ -5,7 +5,6 @@ import Button from '/imports/ui/components/general/Button';
 import { T } from '/imports/ui/components/general/Translation.jsx';
 import { getLoanValue } from '/imports/js/helpers/requestFunctions';
 import cleanMethod from '/imports/api/cleanMethods';
-import TrancheCount from './TrancheCount';
 import Tranche from './Tranche';
 import TrancheChart from './TrancheChart';
 
@@ -81,15 +80,12 @@ export default class TranchePicker extends Component {
     const { tranches } = this.state;
     const { loanRequest } = this.props;
 
+    const disableAdd = tranches.length >= types.length;
+
     return (
       <div className="tranche-picker">
         <div className="picker-content">
           <div className="selector">
-            <TrancheCount
-              trancheCount={tranches.length}
-              handleAdd={this.handleAddTranche}
-              disabled={tranches.length >= types.length}
-            />
             {tranches.map(tranche => (
               <Tranche
                 tranche={tranche}
@@ -99,6 +95,13 @@ export default class TranchePicker extends Component {
                 options={this.getTrancheOptions(tranche.type)}
               />
             ))}
+            <a
+              onClick={disableAdd ? null : this.handleAddTranche}
+              style={{ paddingTop: 16 }}
+              className={disableAdd ? 'disabled' : ''}
+            >
+              <T id="TranchePicker.add" />
+            </a>
           </div>
           {tranches.length && (
             <TrancheChart
