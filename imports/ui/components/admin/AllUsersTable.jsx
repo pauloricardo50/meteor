@@ -1,79 +1,49 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import { Table, Column, Cell } from 'fixed-data-table-2';
 import moment from 'moment';
+import Table from '/imports/ui/components/general/Table.jsx';
+
+const columns = [
+  { name: '#', style: { width: 32, textAlign: 'left' } },
+  { name: 'Email', style: { textAlign: 'left' } },
+  { name: 'Créé le', style: { textAlign: 'left' } },
+  { name: 'Roles', style: { textAlign: 'left' } },
+];
 
 export default class AllUsersTable extends Component {
   constructor(props) {
     super(props);
 
-    this.rows = [];
-    this.props.users.forEach((user, index) => {
-      const row = [
+    this.setupRows();
+  }
+
+  setupRows = () => {
+    this.rows = this.props.users.map((user, index) => ({
+      id: user._id,
+      columns: [
         index + 1,
         user.emails[0].address.toString(),
         moment(user.createdAt).format('D MMM YY à HH:mm:ss'),
         user.roles ? user.roles.toString() : '',
-        user._id,
-      ];
-      this.rows.push(row);
-    });
-  }
-
-  handleClick = (e, rowIndex) => {
-    const id = this.rows[rowIndex][4];
-
-    this.props.history.push(`/admin/users/${id}`);
+      ],
+      handleClick: () => this.props.history.push(`/admin/users/${user._id}`),
+    }));
   };
 
   render() {
     return (
       <Table
-        rowHeight={50}
-        rowsCount={this.rows.length}
-        width={510}
-        height={500}
-        headerHeight={50}
-        onRowClick={this.handleClick}
-      >
-        <Column
-          header={<Cell>#</Cell>}
-          cell={({ rowIndex }) =>
-            <Cell>
-              {this.rows[rowIndex][0]}
-            </Cell>}
-          width={40}
-        />
-        <Column
-          header={<Cell>Email</Cell>}
-          cell={({ rowIndex }) =>
-            <Cell>
-              {this.rows[rowIndex][1]}
-            </Cell>}
-          width={200}
-        />
-        <Column
-          header={<Cell>Créé le</Cell>}
-          cell={({ rowIndex }) =>
-            <Cell>
-              {this.rows[rowIndex][2]}
-            </Cell>}
-          width={170}
-        />
-        <Column
-          header={<Cell>Roles</Cell>}
-          cell={({ rowIndex }) =>
-            <Cell>
-              {this.rows[rowIndex][3]}
-            </Cell>}
-          width={100}
-        />
-      </Table>
+        height="500px"
+        selectable={false}
+        columns={columns}
+        rows={this.rows}
+      />
     );
   }
 }
 
 AllUsersTable.propTypes = {
-  users: PropTypes.arrayOf(PropTypes.any),
+  users: PropTypes.arrayOf(PropTypes.any).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };

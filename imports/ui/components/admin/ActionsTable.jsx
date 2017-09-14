@@ -33,15 +33,16 @@ const columns = [
   },
   {
     id: 'ActionsTable.do',
-    format: handleClick =>
+    format: handleClick => (
       <Button
         label="Go"
-        onClick={event => {
+        onClick={(event) => {
           event.stopPropagation();
           handleClick();
         }}
         primary
-      />,
+      />
+    ),
     align: 'center',
     style: { paddingLeft: 0, paddingRight: 0, width: 88 },
   },
@@ -54,7 +55,13 @@ export default class ActionsTable extends Component {
     this.state = { selectedRow: '', filter: 'active' };
   }
 
-  handleRowSelection = index => {
+  getFilteredActions = () =>
+    this.props.adminActions.filter(a => a.status === this.state.filter);
+
+  handleFilter = (event, index, filter) =>
+    this.setState({ filter, selectedRow: '' });
+
+  handleRowSelection = (index) => {
     if (Number.isInteger(index)) {
       this.setState({ selectedRow: this.getFilteredActions()[index]._id });
     } else {
@@ -62,19 +69,12 @@ export default class ActionsTable extends Component {
     }
   };
 
-  handleFilter = (event, index, filter) =>
-    this.setState({ filter, selectedRow: '' });
-
-  handleClick = () => {
-    completeAction.call({ id: this.state.selectedRow }, err => {
+  handleClick = () =>
+    completeAction.call({ id: this.state.selectedRow }, (err) => {
       if (err) {
         console.log(err);
       }
     });
-  };
-
-  getFilteredActions = () =>
-    this.props.adminActions.filter(a => a.status === this.state.filter);
 
   render() {
     const actions = this.getFilteredActions();
@@ -105,14 +105,12 @@ export default class ActionsTable extends Component {
           selected={this.state.selectedRow}
           onRowSelection={this.handleRowSelection}
           columns={columns}
-          rows={actions.map(action => {
+          rows={actions.map((action) => {
             const request = this.props.loanRequests.find(
               r => r._id === action.requestId,
             );
             const title = <T id={`adminAction.${action.type}`} />;
-            const actionDetails = getActions.find(
-              a => a.id === action.type,
-            );
+            const actionDetails = getActions.find(a => a.id === action.type);
 
             return {
               id: action._id,
@@ -125,20 +123,21 @@ export default class ActionsTable extends Component {
                   : '-',
                 request
                   ? () =>
-                      actionDetails.handleClick(
-                        request,
-                        this.props.history.push,
-                      )
+                    actionDetails.handleClick(
+                      request,
+                      this.props.history.push,
+                    )
                   : () => {},
               ],
             };
           })}
         />
 
-        {actions.length === 0 &&
-          <div className="text-center">
+        {actions.length === 0 && (
+          <div className="text-center" style={{ padding: 16 }}>
             <h2 className="secondary">Aucune action</h2>
-          </div>}
+          </div>
+        )}
       </article>
     );
   }
