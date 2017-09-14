@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 
 import Button from '/imports/ui/components/general/Button';
 
+import { getLoanValue } from '/imports/js/helpers/requestFunctions';
+import { IntlNumber } from '/imports/ui/components/general/Translation';
+
 import RequestTabs from './RequestTabs';
 import StepStatus from './StepStatus';
-
-import { toMoney } from '/imports/js/helpers/conversionFunctions';
-import { getLoanValue } from '/imports/js/helpers/requestFunctions';
+import FileVerificationNotification from './FileVerificationNotification';
 
 const styles = {
   actions: {
@@ -43,32 +44,30 @@ export default class SingleRequestPage extends Component {
   }
 
   render() {
+    const { history, loanRequest, borrowers } = this.props;
     return (
       <section>
         <Button
           raised
           label="Retour"
           style={styles.returnButton}
-          onClick={() => this.props.history.push('/admin/requests')}
+          onClick={() => history.push('/admin/requests')}
         />
         <div className="mask1">
           <h1>
-            {this.props.loanRequest.name || 'Demande de Prêt'} - Emprunt de
-            CHF&nbsp;
-            {toMoney(getLoanValue(this.props.loanRequest))}
+            {loanRequest.name || 'Demande de Prêt'} - Emprunt de{' '}
+            <IntlNumber
+              value={getLoanValue(this.props.loanRequest)}
+              format="money"
+            />
           </h1>
 
           <StepStatus {...this.props} serverTime={this.state.serverTime} />
 
-          {/* <div className="text-center" style={styles.actions}>
-            {actions.length > 0
-              ? actions.map((action, i) => (
-                <div key={i} className="form-group">
-                  <Button raised label={action.label} onClick={action.handleClick} primary />
-                </div>
-                ))
-              : <h2 className="secondary">Aucune action à prendre</h2>}
-          </div> */}
+          <FileVerificationNotification
+            loanRequest={loanRequest}
+            borrowers={borrowers}
+          />
 
           <RequestTabs {...this.props} serverTime={this.state.serverTime} />
         </div>
