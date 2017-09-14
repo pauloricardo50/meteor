@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import MuiIconButton from 'material-ui/IconButton';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import AddIcon from 'material-ui/svg-icons/content/add-circle-outline';
 
 const getIcon = (type) => {
   const props = { color: '#444', hoverColor: '#888' };
@@ -12,6 +13,8 @@ const getIcon = (type) => {
       return <CloseIcon {...props} />;
     case 'check':
       return <CheckIcon {...props} />;
+    case 'add':
+      return <AddIcon {...props} />;
     default:
       throw new Error('invalid icon provided to IconButton');
   }

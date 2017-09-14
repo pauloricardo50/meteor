@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { T } from '/imports/ui/components/general/Translation.jsx';
 
+import FileStatusIcon from './FileStatusIcon';
+
 const Title = ({
   id,
   doubleTooltip,
@@ -16,23 +18,27 @@ const Title = ({
 
   return (
     <div className="title">
-      <h4>
-        <T
-          id={`files.${id}`}
-          tooltipId={doubleTooltip ? [tooltipId] : tooltipId}
-          pureId
-          noTooltips={noTooltips}
-          tooltipPlacement="top"
-        />
-        {required === false && '*'}
-      </h4>
-      <h5 className="secondary">
-        <span style={{ padding: '0 4px' }}>&bull;</span>
-        <T
-          id="Uploader.fileCount"
-          values={{ count: (currentValue && currentValue.length) || 0 }}
-        />
-      </h5>
+      <FileStatusIcon files={currentValue} />
+
+      <div className="text">
+        <h4 className="flex center">
+          <T
+            id={`files.${id}`}
+            tooltipId={doubleTooltip ? [tooltipId] : tooltipId}
+            pureId
+            noTooltips={noTooltips}
+            tooltipPlacement="top"
+          />
+          {required === false && '*'}
+        </h4>
+        <h5 className="secondary">
+          <span style={{ padding: '0 4px' }}>&bull;</span>
+          <T
+            id="Uploader.fileCount"
+            values={{ count: (currentValue && currentValue.length) || 0 }}
+          />
+        </h5>
+      </div>
     </div>
   );
 };

@@ -14,6 +14,7 @@ const styles = {
   },
   label: {
     cursor: 'pointer',
+    paddingTop: 8,
   },
 };
 
