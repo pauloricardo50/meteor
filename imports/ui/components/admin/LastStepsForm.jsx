@@ -28,6 +28,11 @@ export default class LastStepsForm extends Component {
     }
   }
 
+  getFileIds = () => {
+    const currentIds = this.state.lastSteps.map(step => step.id);
+    return fileIds.filter(id => currentIds.indexOf(id) < 0);
+  };
+
   handleAdd = () => {
     const type = 'file';
     const id = this.state.selected;
@@ -37,63 +42,64 @@ export default class LastStepsForm extends Component {
     }));
   };
 
-  handleRemove = id => {
+  handleRemove = id =>
     this.setState(prev => ({
       lastSteps: prev.lastSteps.filter(step => step.id !== id),
     }));
-  };
 
   handleChange = (event, index, value) => this.setState({ selected: value });
 
-  handleSave = () => {
-    const object = { 'logic.lastSteps': this.state.lastSteps };
-    cleanMethod('updateRequest', object, this.props.loanRequest._id);
-  };
-
-  getFileIds = () => {
-    const currentIds = this.state.lastSteps.map(step => step.id);
-    return fileIds.filter(id => currentIds.indexOf(id) < 0);
-  };
+  handleSave = () =>
+    cleanMethod(
+      'updateRequest',
+      { 'logic.lastSteps': this.state.lastSteps },
+      this.props.loanRequest._id,
+    );
 
   render() {
+    const { selected, lastSteps } = this.state;
+    const { loanRequest } = this.props;
     return (
       <article>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <DropDownMenu
-            value={this.state.selected}
+            value={selected}
             onChange={this.handleChange}
             style={{ minWidth: 120 }}
           >
             <MenuItem value={null} />
-            {this.getFileIds().map(id =>
+            {this.getFileIds().map(id => (
               <MenuItem
+                key={id}
                 value={id}
                 primaryText={<T id={`lastSteps.${id}`} />}
-              />,
-            )}
+              />
+            ))}
           </DropDownMenu>
-          <Button raised
+          <Button
+            raised
             label="Ajouter"
             onClick={this.handleAdd}
-            disabled={!this.state.selected}
+            disabled={!selected}
             primary
           />
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', margin: '40px 0' }}>
-          {this.state.lastSteps.map(step =>
+          {lastSteps.map(step => (
             <Chip
               onRequestDelete={() => this.handleRemove(step.id)}
               key={step.id}
             >
               {<T id={`lastSteps.${step.id}`} />}
-            </Chip>,
-          )}
+            </Chip>
+          ))}
         </div>
         <div className="text-center">
-          <Button raised
+          <Button
+            raised
             primary={
-              JSON.stringify(this.props.loanRequest.logic.lastSteps) !==
-              JSON.stringify(this.state.lastSteps)
+              JSON.stringify(loanRequest.logic.lastSteps) !==
+              JSON.stringify(lastSteps)
             }
             label="Enregistrer"
             onClick={this.handleSave}

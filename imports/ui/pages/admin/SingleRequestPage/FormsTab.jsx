@@ -13,6 +13,7 @@ import {
   getBorrowerInfoArray,
   getBorrowerFinanceArray,
 } from '/imports/js/arrays/BorrowerFormArray';
+import { IntlNumber } from '/imports/ui/components/general/Translation.jsx';
 
 import FilesVerification from './FilesVerification';
 
@@ -220,10 +221,10 @@ export default class FormsTab extends Component {
 
         <div>
           Vérification:{' '}
-          {Math.round(
-            getPercent(this.props.loanRequest, this.props.borrowers) * 1000,
-          ) / 10}
-          %
+          <IntlNumber
+            value={getPercent(this.props.loanRequest, this.props.borrowers)}
+            format="percentage"
+          />
         </div>
 
         <hr />
