@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Tab from 'react-bootstrap/lib/Tab';
 import Tabs from 'react-bootstrap/lib/Tabs';
 
-// import DropzoneArray from '/imports/ui/components/general/DropzoneArray';
 import UploaderArray from '/imports/ui/components/general/UploaderArray';
 
 import { requestFiles, borrowerFiles } from '/imports/js/arrays/files';

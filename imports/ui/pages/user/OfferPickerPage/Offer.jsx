@@ -2,17 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T, IntlNumber } from '/imports/ui/components/general/Translation';
 import ConditionsButton from '/imports/ui/components/general/ConditionsButton';
 
 const values = offer => [
-  { key: 'maxAmount' },
-  { key: 'amortization' },
-  { key: 'interestLibor' },
-  { key: 'interest1' },
-  { key: 'interest2' },
-  { key: 'interest5' },
-  { key: 'interest10' },
+  { key: 'maxAmount', format: 'money' },
+  { key: 'amortization', format: 'percentage' },
+  { key: 'interestLibor', format: 'percentage' },
+  { key: 'interest1', format: 'percentage' },
+  { key: 'interest2', format: 'percentage' },
+  { key: 'interest5', format: 'percentage' },
+  { key: 'interest10', format: 'percentage' },
   {
     component: (
       <ConditionsButton
@@ -39,7 +39,7 @@ const Offer = ({ offer, chosen, handleSave }) => (
   >
     <h3 style={{ margin: 0, padding: 16 }}>{offer.organization}</h3>
     <div className="flex" style={{ flexWrap: 'wrap' }}>
-      {values(offer).map(({ key, component }, i) => {
+      {values(offer).map(({ key, component, format }, i) => {
         if (component) {
           return (
             <div style={styles.item} key={i}>
@@ -58,13 +58,14 @@ const Offer = ({ offer, chosen, handleSave }) => (
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 cursor: 'pointer',
+                fontSize: '80%',
               }}
               htmlFor={key}
             >
               <T id={`offer.${key}`} />
             </label>
             <h4 className="bold" style={{ margin: 0 }} id={key}>
-              {offer[key]}
+              <IntlNumber value={offer[key]} format={format} />
             </h4>
           </div>
         );

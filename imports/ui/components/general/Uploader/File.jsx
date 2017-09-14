@@ -15,7 +15,7 @@ const File = ({ file, disabled, handleRemove }) => {
           <span className={`${status} bold`}>
             <T id={`Files.status.${status}`} />
           </span>
-          {!disabled && (
+          {!!(!disabled && status !== 'valid') && (
             <IconButton
               touch={false}
               type="close"
