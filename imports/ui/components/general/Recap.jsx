@@ -5,8 +5,7 @@ import classnames from 'classnames';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
-import AutoTooltip from './AutoTooltip';
-import { T } from '/imports/ui/components/general/Translation';
+import { T, IntlNumber } from '/imports/ui/components/general/Translation';
 
 import {
   getPropAndWork,
@@ -149,7 +148,7 @@ const getDashboardArray = (props) => {
         : 'Recap.borrowRatio1',
       value: (
         <span>
-          {Math.round(borrowRatio * 1000) / 10}%{' '}
+          <IntlNumber value={borrowRatio} format="percentage" />{' '}
           <span
             className={
               borrowRatio <= constants.maxLoan(r.property.usageType) + 0.001 ? ( // add 0.1% to avoid rounding errors
@@ -166,7 +165,7 @@ const getDashboardArray = (props) => {
       label: 'Recap.incomeRatio',
       value: (
         <span>
-          {Math.round(incomeRatio * 1000) / 10}%{' '}
+          <IntlNumber value={incomeRatio} format="percentage" />{' '}
           <span
             className={
               incomeRatio <= 1 / 3 ? (
@@ -419,7 +418,7 @@ const getStart2Array = (props) => {
       label: p.propertyWork ? 'Recap.borrowRatio2' : 'Recap.borrowRatio1',
       value: (
         <span>
-          {Math.round(p.borrow * 1000) / 10}%{' '}
+          <IntlNumber value={p.borrow} format="percentage" />{' '}
           <span
             className={
               p.borrow <= constants.maxLoan(p.usageType) + 0.001 ? ( // add 0.1% to avoid rounding errors
@@ -437,7 +436,7 @@ const getStart2Array = (props) => {
       label: 'Recap.incomeRatio',
       value: (
         <span>
-          {Math.round(p.ratio * 1000) / 10}%{' '}
+          <IntlNumber value={p.ratio} format="percentage" />{' '}
           <span
             className={
               p.ratio <= 1 / 3 ? (
@@ -726,7 +725,7 @@ const getStructureArray = (props) => {
         : 'Recap.borrowRatio1',
       value: (
         <span>
-          {Math.round(borrowRatio * 1000) / 10}%{' '}
+          <IntlNumber value={borrowRatio} format="percentage" />{' '}
           <span
             className={
               borrowRatio <= constants.maxLoan(r.property.usageType) + 0.001 ? ( // add 0.1% to avoid rounding errors
@@ -743,7 +742,7 @@ const getStructureArray = (props) => {
       label: 'Recap.incomeRatio',
       value: (
         <span>
-          {Math.round(incomeRatio * 1000) / 10}%{' '}
+          <IntlNumber value={incomeRatio} format="percentage" />{' '}
           <span
             className={
               incomeRatio <= 1 / 3 ? (

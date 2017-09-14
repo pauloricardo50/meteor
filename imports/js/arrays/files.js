@@ -77,6 +77,9 @@ export const borrowerFiles = (b = {}) => ({
     },
   ],
   closing: [],
+  all() {
+    return [...this.auction, ...this.contract, ...this.closing];
+  },
 });
 
 export const requestFiles = (r = {}) => ({
@@ -132,6 +135,7 @@ export const requestFiles = (r = {}) => ({
       condition: !!(r.property && r.property.isNew),
     },
   ],
+  closing: [],
   // closing: [
   //   {
   //     id: 'retirementWithdrawalStatement',
@@ -149,6 +153,9 @@ export const requestFiles = (r = {}) => ({
       id: 'signedContract',
     },
   ],
+  all() {
+    return [...this.auction, ...this.contract, ...this.closing, ...this.admin];
+  },
 });
 
 export const getFileIDs = (list) => {
@@ -165,7 +172,7 @@ export const getFileIDs = (list) => {
       throw new Error('invalid file list');
   }
 
-  Object.keys(files).forEach(key => files[key].forEach(f => ids.push(f.id)));
+  files.all().forEach(f => ids.push(f.id));
 
   return ids;
 };
@@ -183,7 +190,7 @@ export const FileSchema = new SimpleSchema({
   fileCount: Number,
   status: {
     type: String,
-    allowedValues: ['unverified', 'verified', 'error'],
+    allowedValues: ['unverified', 'valid', 'error'],
   },
   error: { optional: true, type: String },
 });
@@ -213,7 +220,7 @@ export const fakeFile = {
   url: 'https://www.fake-url.com',
   key: 'asdf/fakeKey/fakeFile.pdf',
   fileCount: 0,
-  status: 'verified',
+  status: 'valid',
   error: '',
 };
 

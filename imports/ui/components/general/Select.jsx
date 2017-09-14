@@ -17,6 +17,13 @@ const Select = ({ id, label, currentValue, onChange, options, style }) => (
   </SelectField>
 );
 
-Select.propTypes = {};
+Select.propTypes = {
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  currentValue: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  options: PropTypes.arrayOf(PropTypes.object).isRequired,
+  style: PropTypes.objectOf(PropTypes.any),
+};
 
 export default Select;

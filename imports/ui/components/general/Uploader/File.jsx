@@ -25,7 +25,7 @@ const File = ({ file, disabled, handleRemove }) => {
           )}
         </div>
       </div>
-      {error && <p className="error">{error}</p>}
+      {error && status === 'error' && <p className="error">{error}</p>}
     </div>
   );
 };

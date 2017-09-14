@@ -73,14 +73,16 @@ export default class Uploader extends Component {
       <div className="uploader">
         <Title {...fileMeta} currentValue={currentValue} />
 
-        {currentValue.map(f => (
-          <File
-            key={f.key}
-            file={f}
-            disabled={disabled}
-            handleRemove={this.handleRemove}
-          />
-        ))}
+        {currentValue
+          .sort((a, b) => a.fileCount > b.fileCount)
+          .map(f => (
+            <File
+              key={f.key}
+              file={f}
+              disabled={disabled}
+              handleRemove={this.handleRemove}
+            />
+          ))}
 
         {tempFiles.map((f, i) => (
           <TempFile

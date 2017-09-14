@@ -9,7 +9,7 @@ import {
 } from '/imports/js/helpers/startFunctions';
 
 import Recap from '/imports/ui/components/general/Recap';
-import { T } from '/imports/ui/components/general/Translation';
+import { T, IntlNumber } from '/imports/ui/components/general/Translation';
 
 const isReady = ({ income, fortune, property }) =>
   property && income && fortune;
@@ -74,7 +74,7 @@ const getArray = ({ income, fortune, property, borrowRatio, incomeRatio }) => [
     label: 'Recap.borrowRatio',
     value: (
       <span>
-        {Math.round(borrowRatio * 1000) / 10}%&nbsp;
+        <IntlNumber value={borrowRatio} format="percentage" />{' '}
         <span
           className={
             borrowRatio <= 0.8 + 0.001 ? ( // for rounding
@@ -93,7 +93,7 @@ const getArray = ({ income, fortune, property, borrowRatio, incomeRatio }) => [
     label: 'Recap.incomeRatio',
     value: (
       <span>
-        {Math.round(incomeRatio * 1000) / 10}%&nbsp;
+        <IntlNumber value={incomeRatio} format="percentage" />{' '}
         <span
           className={
             incomeRatio <= 1 / 3 + 0.001 ? ( // for rounding

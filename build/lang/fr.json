@@ -335,6 +335,9 @@
     "Est-ce que votre salaire est différent de votre dernière déclaration fiscale?",
   "files.identity": "Pièce d'identité",
   "files.identity.tooltip": "Passeport ou carte d'identité (les 2 côtés)",
+  "files.signedContract": "Contrat signé",
+  "files.signedContract.tooltip":
+    "Le contrat de prêt avec votre signature à tous les endroits requis",
   "files.landRegisterExtract": "Extrait du registre foncier",
   "files.landRegisterExtract.tooltip":
     "Contient toutes les informations officielles de votre bien immobilier",
@@ -399,7 +402,7 @@
   "Files.title": "Mes Documents",
   "Files.status.unverified": "En attente de vérification",
   "Files.status.error": "Non valide",
-  "Files.status.verified": "Validé",
+  "Files.status.valid": "Validé",
 
   "Finance.description":
     "Normalement, vous nous avez déjà donné tout ce dont nous avons besoin sur cette page.{verticalSpace}Vérifiez cependant que vous avez détaillé de façon exhaustive vos finances personelles. Les prêteurs vous offriront des conditions plus attractives si vos moyens dépassent le minimum nécéssaire pour votre Prêt Hypothécaire.",

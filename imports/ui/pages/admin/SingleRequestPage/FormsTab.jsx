@@ -14,6 +14,8 @@ import {
   getBorrowerFinanceArray,
 } from '/imports/js/arrays/BorrowerFormArray';
 
+import FilesVerification from './FilesVerification';
+
 const getBorrowerForms = (borrowers) => {
   const array = [];
   borrowers.forEach((b, i) => {
@@ -31,13 +33,9 @@ const getBorrowerForms = (borrowers) => {
         key={`finance${i}`}
       />,
     );
-    // array.push(
-    //   <MenuItem
-    //     value={`borrower.${b._id}.files`}
-    //     primaryText={`Emprunteur ${i + 1} fichiers`}
-    //     key={`files${i}`}
-    //   />,
-    // );
+    array.push(
+      <MenuItem value={'files'} primaryText={'Documents'} key={'files'} />,
+    );
   });
 
   return array;
@@ -124,6 +122,13 @@ const getForm = (props, value, modify) => {
         />
       );
     }
+    case 'files':
+      return (
+        <FilesVerification
+          loanRequest={props.loanRequest}
+          borrowers={props.borrowers}
+        />
+      );
     default:
       throw new Error('invalid form id value');
   }
