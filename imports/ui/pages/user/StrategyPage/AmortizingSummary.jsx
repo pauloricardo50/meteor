@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 
 import SummaryComponent from '/imports/ui/components/general/SummaryComponent';
 import { T } from '/imports/ui/components/general/Translation';
+import Logismata from '/imports/ui/components/general/Logismata';
 
-const AmortizingSummary = ({ loanRequest }) => {
+import AmortizationCalculator from './AmortizationCalculator';
+
+const AmortizingSummary = ({ loanRequest, borrowers }) => {
   const choice = loanRequest.logic.amortizationStrategyPreset;
 
   return (
@@ -12,13 +15,19 @@ const AmortizingSummary = ({ loanRequest }) => {
       <p>
         <T id={`AmortizingSummary.${choice}.description`} />
       </p>
-      <div className="flex">XXX</div>
+      <Logismata>
+        <AmortizationCalculator
+          loanRequest={loanRequest}
+          borrowers={borrowers}
+        />
+      </Logismata>
     </SummaryComponent>
   );
 };
 
 AmortizingSummary.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default AmortizingSummary;

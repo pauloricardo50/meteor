@@ -21,7 +21,7 @@ export const logismataValues = {
     7: 'registered partnership',
   },
   confession: {
-    default: undefined,
+    default: 'other',
     1: 'reformed',
     2: 'roman catholic',
     3: 'christian catholic',
@@ -57,7 +57,7 @@ export const logismataValues = {
     2: 'Fixed Rate',
     3: 'Libor',
   },
-  amoSavingType: {
+  savingType: {
     default: 1,
     1: 'Saving 3a',
     2: 'Saving 3b/Assets',

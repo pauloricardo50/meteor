@@ -24,7 +24,7 @@ const getChoices = () => [
   },
 ];
 
-const AmortizingPicker = ({ loanRequest, handleSave }) => (
+const AmortizingPicker = ({ loanRequest, borrowers, handleSave }) => (
   <article>
     <h2>
       <T id="AmortizingPicker.title" />
@@ -43,13 +43,14 @@ const AmortizingPicker = ({ loanRequest, handleSave }) => (
     />
 
     {!!loanRequest.logic.amortizationStrategyPreset && (
-      <AmortizingSummary loanRequest={loanRequest} />
+      <AmortizingSummary loanRequest={loanRequest} borrowers={borrowers} />
     )}
   </article>
 );
 
 AmortizingPicker.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   handleSave: PropTypes.func.isRequired,
 };
 
