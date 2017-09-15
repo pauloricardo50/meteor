@@ -50,8 +50,8 @@ export class T extends Component {
     // HTML element was added as a values prop, then it returns several values
     // To avoid unnecessary spans, separate those with a single message
     // and those, rare, with more.
-    const Auto = (content, key) =>
-      (<AutoTooltip
+    const Auto = (content, key) => (
+      <AutoTooltip
         {...this.props}
         id={tooltipId}
         placement={tooltipPlacement}
@@ -59,7 +59,8 @@ export class T extends Component {
         key={key}
       >
         {content}
-      </AutoTooltip>);
+      </AutoTooltip>
+    );
 
     return (
       <FormattedMessage
@@ -75,11 +76,11 @@ export class T extends Component {
         }}
       >
         {(...formattedMessage) =>
-          (formattedMessage.length === 1
-            ? Auto(formattedMessage[0])
-            : <span>
-              {formattedMessage.map((msg, i) => Auto(msg, i))}
-            </span>)}
+          (formattedMessage.length === 1 ? (
+            Auto(formattedMessage[0])
+          ) : (
+            <span>{formattedMessage.map((msg, i) => Auto(msg, i))}</span>
+          ))}
       </FormattedMessage>
     );
   }

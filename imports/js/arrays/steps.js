@@ -61,6 +61,9 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         {
           id: 'verification',
           link: `/app/requests/${loanRequest._id}/verification`,
+          waiting: () =>
+            loanRequest.logic.verification.requested &&
+            !loanRequest.logic.verification.validated,
           isDone: () => loanRequest.logic.verification.validated === true,
         },
       ],
@@ -78,6 +81,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         {
           id: 'auction',
           link: `/app/requests/${loanRequest._id}/auction`,
+          waiting: () => loanRequest.logic.auction.status === 'started',
           isDone: () => loanRequest.logic.auction.status === 'ended',
           disabled: loanRequest.logic.step < 2,
         },

@@ -561,6 +561,7 @@ svg:not(:root) {
               color: white !important;
               width: 18px !important;
               height: 18px !important;
+
           .text
             display: flex;
             flex-direction: column;
@@ -613,6 +614,9 @@ svg:not(:root) {
               color: #DEE2E6;
               .available-icon
                 background-color: #DEE2E6;
+              &.warning
+                svg
+                  color: brand-warning !important;
               svg
                 color: grey !important;
                 width: 20px !important;
@@ -632,6 +636,8 @@ svg:not(:root) {
               .subtitle
                 color: #ADB5BD;
                 font-weight: 400;
+                &.warning
+                  color: brand-warning;
             &.active
               border-left: 1px solid brand-primary;
               background-color: #F1F3F5;
