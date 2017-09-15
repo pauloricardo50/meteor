@@ -21,6 +21,11 @@
   "ActionsTable.comment": "Commentaire",
   "ActionsTable.date": "Date",
   "ActionsTable.do": " ",
+
+  "ContractDownloader.waiting": "Votre contrat arrivera ici.",
+  "ContractDownloader.ready":
+    "Votre contrat est prêt, vous pouvez le télécharger dès maintenant.",
+
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",

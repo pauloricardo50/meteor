@@ -108,10 +108,20 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           disabled:
             loanRequest.logic.step < 3 &&
             !(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
-          percent: () => 0,
-          isDone: () =>
-            loanRequest.logic.lender &&
-            loanRequest.logic.lender.contractRequested,
+          percent: () =>
+            (filesPercent(loanRequest, requestFiles, 'contract') +
+              filesPercent(borrowers, borrowerFiles, 'contract')) /
+            (1 + borrowers.length),
+          waiting: () =>
+            loanRequest.logic.lender.contractRequested &&
+            !loanRequest.logic.lender.contract,
+          isDone() {
+            return (
+              loanRequest.files.contract &&
+              loanRequest.files.contract.length &&
+              this.percent() >= 1
+            );
+          },
         },
         {
           id: 'closing',

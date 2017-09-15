@@ -36,10 +36,15 @@ export default class FileDownloader extends Component {
   };
 
   render() {
+    const { disabled, primary, style, buttonLabel } = this.props;
     return (
-      <Button raised
+      <Button
+        label={buttonLabel}
+        disabled={disabled}
+        primary={primary}
+        style={style}
+        raised
         icon={this.state.downloading && <LoopIcon className="fa-spin" />}
-        label={this.props.buttonLabel}
         onClick={this.handleClick}
       />
     );

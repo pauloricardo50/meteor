@@ -2,48 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import ProcessPage from '/imports/ui/components/general/ProcessPage';
-import ConfirmButton from '/imports/ui/components/general/ConfirmButton';
-import { LoadingComponent } from '/imports/ui/components/general/Loading';
 import { T } from '/imports/ui/components/general/Translation';
 
 import { filesPercent } from '/imports/js/arrays/steps';
 import { borrowerFiles, requestFiles } from '/imports/js/arrays/files';
-import cleanMethod from '/imports/api/cleanMethods';
 
 import FileTabs from './FileTabs';
-
-// const handleClick = (id) => {
-//   cleanMethod('updateRequest', { 'logic.lender.contractRequested': true }, id);
-// };
-//
-// const getAction = (request, percent) => {
-//   if (!request.logic.lender.contractRequested) {
-//     return (
-//       <div className="text-center" style={{ marginBottom: 40 }}>
-//         <h4>
-//           <T id="ContractPage.progress" values={{ value: percent }} />
-//         </h4>
-//         <ConfirmButton
-//           raised
-//           disabled={percent < 1}
-//           label={<T id="ContractPage.CTA" />}
-//           secondary
-//           handleClick={() => handleClick(request._id)}
-//         />
-//       </div>
-//     );
-//   }
-//   return (
-//     <div className="text-center">
-//       <h4>
-//         <T id="ContractPage.loading" />
-//       </h4>
-//       <div style={{ height: 150 }}>
-//         <LoadingComponent />
-//       </div>
-//     </div>
-//   );
-// };
+import ContractDownloader from './ContractDownloader';
 
 const ContractPage = props => (
   // const percent =
@@ -58,6 +23,8 @@ const ContractPage = props => (
           <T id="ContractPage.description" />
         </p>
       </div>
+
+      <ContractDownloader contract={props.loanRequest.files.contract} />
 
       <FileTabs {...props} />
     </div>
