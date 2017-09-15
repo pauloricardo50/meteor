@@ -215,5 +215,25 @@ describe('steps', () => {
         );
       });
     });
+
+    describe('status verification', () => {
+      it('returns 0 if no files are valid', () => {
+        dummyFunc = () => [[{ id: 'myFile', condition: undefined }]];
+        dummyDoc.files.myFile = [{ status: 'invalid' }];
+        expect(filesPercent(dummyDoc, dummyFunc, 0, true)).to.equal(0);
+      });
+
+      it('returns 0.5 if one file is valid', () => {
+        dummyFunc = () => [
+          [
+            { id: 'myFile', condition: undefined },
+            { id: 'myFile2', condition: undefined },
+          ],
+        ];
+        dummyDoc.files.myFile = [{ status: 'invalid' }];
+        dummyDoc.files.myFile2 = [{ status: 'valid' }];
+        expect(filesPercent(dummyDoc, dummyFunc, 0, true)).to.equal(0.5);
+      });
+    });
   });
 });

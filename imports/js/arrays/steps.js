@@ -116,22 +116,27 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
             loanRequest.logic.lender.contractRequested &&
             !loanRequest.logic.lender.contract,
           isDone() {
+            const validPercent =
+              (filesPercent(loanRequest, requestFiles, 'contract', true) +
+                filesPercent(borrowers, borrowerFiles, 'contract', true)) /
+              (1 + borrowers.length);
             return (
               loanRequest.files.contract &&
               loanRequest.files.contract.length &&
-              this.percent() >= 1
+              validPercent >= 1
             );
           },
         },
         {
           id: 'closing',
           link: `/app/requests/${loanRequest._id}/closing`,
-          disabled: !(
-            loanRequest.logic.lender &&
-            loanRequest.logic.lender.contractRequested
-          ),
-          percent: () => 0,
-          isDone: () => false,
+          disabled:
+            (filesPercent(loanRequest, requestFiles, 'contract') +
+              filesPercent(borrowers, borrowerFiles, 'contract')) /
+              (1 + borrowers.length) <
+            1,
+          // percent: () => 0,
+          isDone: () => loanRequest.status === 'done',
         },
       ],
     },
@@ -317,17 +322,26 @@ export const auctionFilesPercent = (borrowers) => {
  * @return {number} a value between 0 and 1 indicating the percentage of
  * completion, 1 is complete, 0 is not started
  */
-export const filesPercent = (doc, fileArrayFunc, step) => {
+export const filesPercent = (doc, fileArrayFunc, step, checkValidity) => {
   const a = [];
   const iterate = (files, doc2) => {
     if (isDemo()) {
       a.push(doc2.files[files[0].id]);
     } else {
-      files.forEach(
-        f =>
-          !(f.required === false || f.condition === false) &&
-          a.push(doc2.files[f.id]),
-      );
+      files.forEach((f) => {
+        if (!(f.required === false || f.condition === false)) {
+          if (checkValidity) {
+            a.push(
+              isArray(doc2.files[f.id]) &&
+              doc2.files[f.id].every(file => file.status === 'valid')
+                ? true
+                : undefined,
+            );
+          } else {
+            a.push(doc2.files[f.id]);
+          }
+        }
+      });
     }
   };
 

@@ -16,14 +16,16 @@ const handleSave = (props, file) => {
     fileNameCount = fileCount < 10 ? `0${fileCount}` : fileCount;
   }
 
-  const object = {};
-  object[props.mongoId] = {
-    name: `${fileNameCount}${file.name}`,
-    size: file.size,
-    type: file.type,
-    url: file.xhr.responseURL,
-    key: file.postData[0].value,
-    fileCount,
+  const object = {
+    [props.mongoId]: {
+      name: `${fileNameCount}${file.name}`,
+      size: file.size,
+      type: file.type,
+      url: file.xhr.responseURL,
+      key: file.postData[0].value,
+      status: 'unverified',
+      fileCount,
+    },
   };
 
   cleanMethod(props.pushFunc, object, props.documentId);
@@ -122,19 +124,17 @@ const eventHandlers = props => ({
   },
 });
 
-const DropzoneInput = props =>
-  (<div>
-    {props.label &&
-      <h3 htmlFor={props.id}>
-        {props.label}
-      </h3>}
+const DropzoneInput = props => (
+  <div>
+    {props.label && <h3 htmlFor={props.id}>{props.label}</h3>}
     <DropzoneComponent
       name={props.id}
       config={componentConfig(props)}
       eventHandlers={eventHandlers(props)}
       djsConfig={djsConfig(props)}
     />
-  </div>);
+  </div>
+);
 
 DropzoneInput.propTypes = {
   id: PropTypes.string.isRequired,

@@ -23,7 +23,8 @@ export default class ClosingForm extends Component {
 
   handleDateChange = (event, date) => this.setState({ date }, this.validate);
 
-  handleSelectChange = (event, index, schedule) => this.setState({ schedule }, this.validate);
+  handleSelectChange = (event, index, schedule) =>
+    this.setState({ schedule }, this.validate);
 
   handleSubmit = () => {
     if (!(this.state.date && this.state.schedule) || this.props.isCancel) {
