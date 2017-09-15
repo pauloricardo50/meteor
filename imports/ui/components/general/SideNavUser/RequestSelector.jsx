@@ -32,15 +32,16 @@ const handleChange = (value, props) => {
   }
 };
 
-const renderSelected = ({ props }) =>
+const renderSelected = ({ props }) => (
   <span style={{ display: 'flex', alignItems: 'center' }}>
     {React.cloneElement(props.leftIcon, {
       style: { marginLeft: 8, marginRight: 16, color: '#757575' },
     })}
     {props.primaryText}
-  </span>;
+  </span>
+);
 
-const RequestSelector = props =>
+const RequestSelector = props => (
   <div style={styles.div}>
     <DropDownMenu
       value={props.currentValue}
@@ -49,7 +50,7 @@ const RequestSelector = props =>
       style={styles.dropdown}
       selectionRenderer={(value, item) => renderSelected(item)}
     >
-      {props.loanRequests.map(r =>
+      {props.loanRequests.map(r => (
         <MenuItem
           key={r._id}
           value={r._id}
@@ -57,12 +58,13 @@ const RequestSelector = props =>
           leftIcon={
             r.property.style === 'villa' ? <HomeIcon /> : <BuildingIcon />
           }
-        />,
-      )}
+        />
+      ))}
       {props.loanRequests.length > 0 && <Divider />}
       <MenuItem value={0} primaryText={<T id="RequestSelector.addRequest" />} />
     </DropDownMenu>
-  </div>;
+  </div>
+);
 
 RequestSelector.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.object),

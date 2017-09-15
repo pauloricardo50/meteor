@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
 import LockIcon from 'material-ui/svg-icons/action/lock-outline';
+import CircularProgress from 'material-ui/CircularProgress';
 import classnames from 'classnames';
 
 import colors from '/imports/js/config/colors';
 import { T } from '/imports/ui/components/general/Translation';
+import ProgressIcon from './ProgressIcon';
 
 const getStepIcon = ({ step, loanRequest }) => {
   const stepNb = step.nb;
@@ -43,6 +45,22 @@ const getItemIcon = (item) => {
     return (
       <div className="icon">
         <LockIcon />
+      </div>
+    );
+  } else if (typeof item.percent === 'function') {
+    return (
+      <div className="icon" style={{ position: 'relative' }}>
+        <span className="available-icon" />
+        <CircularProgress
+          mode="determinate"
+          value={item.percent() * 100}
+          style={{ position: 'absolute', transform: 'rotate(-90deg)' }}
+          innerStyle={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        />
       </div>
     );
   }

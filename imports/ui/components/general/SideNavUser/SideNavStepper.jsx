@@ -4,8 +4,8 @@ import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 
 import getSteps from '/imports/js/arrays/steps';
-import SideNavStepperStep from './SideNavStepperStep';
 import { T } from '/imports/ui/components/general/Translation';
+import SideNavStepperStep from './SideNavStepperStep';
 
 export default class SideNavStepper extends React.Component {
   constructor(props) {
@@ -56,7 +56,7 @@ export default class SideNavStepper extends React.Component {
           <T id="SideNavStepper.title" />
         </h5>
         <ul className="list">
-          {steps.map((s, i) =>
+          {steps.map((s, i) => (
             <SideNavStepperStep
               {...this.props}
               key={i}
@@ -64,8 +64,8 @@ export default class SideNavStepper extends React.Component {
               active={this.state.active === i}
               currentRequestStep={this.props.loanRequest.logic.step === i}
               handleClick={() => this.handleClick(i)}
-            />,
-          )}
+            />
+          ))}
         </ul>
       </div>
     );
