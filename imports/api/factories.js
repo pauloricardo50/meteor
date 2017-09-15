@@ -8,7 +8,12 @@ import Comparators from './comparators/comparators';
 import Properties from './properties/properties';
 import AdminActions from './adminActions/adminActions';
 
-const chance = require('chance').Chance();
+let chance;
+if (Meteor.isTest) {
+  chance = require('chance').Chance();
+} else {
+  chance = { email: () => 'test@test.com' };
+}
 
 Factory.define('user', Meteor.users, {
   roles: () => 'user',

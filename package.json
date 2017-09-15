@@ -11,7 +11,7 @@
     "test-debug":
       "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 5000 --debug-port 5858",
     "test-CI":
-      "TEST_BROWSER_DRIVER=phantomjs SERVER_TEST_REPORTER=xunit XUNIT_FILE=$CI_RESULTS_FILE meteor test --verbose --settings settings-dev.json --once --driver-package dispatch:mocha",
+      "TEST_BROWSER_DRIVER=phantomjs SERVER_TEST_REPORTER=xunit XUNIT_FILE=$CI_RESULTS_FILE meteor test --settings settings-dev.json --once --driver-package dispatch:mocha",
     "test-cli":
       "TEST_BROWSER_DRIVER=nightmare meteor test --settings settings-dev.json --port 3002 --driver-package dispatch:mocha",
     "deploy:production":
