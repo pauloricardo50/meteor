@@ -12,6 +12,7 @@ const Title = ({
   required,
   currentValue,
   tooltipSuffix,
+  title,
 }) => {
   // Construct the custom tooltip id for this file
   const tooltipId = `files.${id}.tooltip${tooltipSuffix || ''}`;
@@ -22,13 +23,15 @@ const Title = ({
 
       <div className="text">
         <h4 className="flex center">
-          <T
-            id={`files.${id}`}
-            tooltipId={doubleTooltip ? [tooltipId] : tooltipId}
-            pureId
-            noTooltips={noTooltips}
-            tooltipPlacement="top"
-          />
+          {title || (
+            <T
+              id={`files.${id}`}
+              tooltipId={doubleTooltip ? [tooltipId] : tooltipId}
+              pureId
+              noTooltips={noTooltips}
+              tooltipPlacement="top"
+            />
+          )}
           {required === false && '*'}
         </h4>
         <h5 className="secondary">
@@ -50,6 +53,7 @@ Title.propTypes = {
   required: PropTypes.bool,
   currentValue: PropTypes.arrayOf(PropTypes.object).isRequired,
   tooltipSuffix: PropTypes.string,
+  title: PropTypes.string,
 };
 
 export default Title;
