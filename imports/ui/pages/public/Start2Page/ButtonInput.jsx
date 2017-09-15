@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import Button from '/imports/ui/components/general/Button';
-import AutoTooltip from '/imports/ui/components/general/AutoTooltip';
 
 const styles = {
   button: {
@@ -11,14 +10,16 @@ const styles = {
   },
 };
 
-const getText = props => {
+const getText = (props) => {
   if (props.error) {
     return '';
   }
 
   const currentValue = props.formState[props.id];
   if (currentValue !== undefined) {
-    const currentButton = props.buttons.find(button => button.id === currentValue);
+    const currentButton = props.buttons.find(
+      button => button.id === currentValue,
+    );
 
     return currentButton.label || currentButton.id;
   }
@@ -42,37 +43,38 @@ const handleClick = (props, event, value, callback) => {
   );
 };
 
-const ButtonInput = props => {
+const ButtonInput = (props) => {
   const noModify = props.hideResult;
   return (
     <article
       className={[props.className, noModify ? 'no-modify' : ''].join(' ')}
       onClick={() => props.setActiveLine(props.id)}
     >
-
       <h1 className="fixed-size">
-        <span className={props.error && 'error'}>
-          {props.text1}
-        </span>
+        <span className={props.error && 'error'}>{props.text1}</span>
         &nbsp;
         {!props.hideResult && props.question && <br />}
-
         {!props.hideResult && <span className="active">{getText(props)}</span>}
         &nbsp;
         {props.text2}
       </h1>
 
-      <div style={styles.buttons} className={!props.active ? 'inputHider' : 'animated fadeIn'}>
+      <div
+        style={styles.buttons}
+        className={!props.active ? 'inputHider' : 'animated fadeIn'}
+      >
         {props.buttons.map(
           (button, index) =>
-            button.component
-              ? button.component
-              : <Button raised
+            (button.component ? (
+              button.component
+            ) : (
+              <Button
+                raised
                 label={button.label || button.id}
-                onClick={e => {
+                onClick={(e) => {
                   handleClick(props, e, button.id, button.onClick);
                   if (document.activeElement) {
-                      // Take focus away, better UX on mobile
+                    // Take focus away, better UX on mobile
                     document.activeElement.blur();
                   }
                 }}
@@ -81,10 +83,10 @@ const ButtonInput = props => {
                 secondary={button.secondary}
                 key={index}
                 className={button.className}
-              />,
+              />
+            )),
         )}
       </div>
-
     </article>
   );
 };

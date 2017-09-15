@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import AutoTooltip from '/imports/ui/components/general/AutoTooltip';
+import { AutoTooltip } from '/imports/ui/components/general/Translation';
 import StartTextField from './StartTextField';
 
 const styles = {
@@ -59,14 +59,16 @@ export default class MultipleInput extends Component {
         className={this.props.className.concat(multiple ? ' no-scale' : '')}
         onClick={this.handleClick.bind(this)}
       >
-
         {multiple &&
-          this.props.firstMultiple &&
-          <h1 style={styles.borrowerH1} className="fixed-size">
-            <span className="col-xs-5">Emprunteur 1</span>
-            <span className="col-xs-5 col-xs-offset-2">Emprunteur 2</span>
-            <span className="col-xs-12"><hr style={styles.hr} /></span>
-          </h1>}
+        this.props.firstMultiple && (
+        <h1 style={styles.borrowerH1} className="fixed-size">
+              <span className="col-xs-5">Emprunteur 1</span>
+              <span className="col-xs-5 col-xs-offset-2">Emprunteur 2</span>
+              <span className="col-xs-12">
+            <hr style={styles.hr} />
+          </span>
+            </h1>
+          )}
 
         <TitleTag style={styles.h1} className="fixed-size">
           <AutoTooltip>{this.props.text1}</AutoTooltip>
@@ -78,7 +80,7 @@ export default class MultipleInput extends Component {
               {...this.props}
               width={multiple ? '100%' : this.props.width}
               id={`${this.props.id}1`}
-              setRef={c => {
+              setRef={(c) => {
                 this.firstInput = c;
               }}
               multiple={multiple}
@@ -86,7 +88,7 @@ export default class MultipleInput extends Component {
           </span>
         </h1>
 
-        {multiple &&
+        {multiple && (
           <h1 className={classes2} style={styles.textFieldH1}>
             <span className="active">
               <StartTextField
@@ -96,8 +98,8 @@ export default class MultipleInput extends Component {
                 autoFocus={false}
               />
             </span>
-          </h1>}
-
+          </h1>
+        )}
       </article>
     );
   }

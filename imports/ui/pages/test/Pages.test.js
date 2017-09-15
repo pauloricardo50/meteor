@@ -89,6 +89,7 @@ if (Meteor.isClient) {
             loanRequest: request,
             borrowers: [borrower],
             currentUser: user,
+            user,
             offers: [],
             location: {},
             history: {},

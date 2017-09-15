@@ -7,7 +7,7 @@ import {
 } from '/imports/js/helpers/finance-math';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import colors from '/imports/js/config/colors';
-import { IntlNumber } from '/imports/ui/components/general/Translation.jsx';
+import { IntlNumber } from '/imports/ui/components/general/Translation';
 
 const styles = {
   topDiv: {

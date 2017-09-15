@@ -2,19 +2,20 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Motion, spring, presets } from 'react-motion';
 
-import AutoTooltip from '/imports/ui/components/general/AutoTooltip';
 import Start1Text from './Start1Text';
 import Start1Slider from './Start1Slider';
 import { T } from '/imports/ui/components/general/Translation';
 
 const Start1Line = props => (
-  <Motion defaultStyle={{ x: 0 }} style={{ x: spring(props.value, presets.gentle) }}>
+  <Motion
+    defaultStyle={{ x: 0 }}
+    style={{ x: spring(props.value, presets.gentle) }}
+  >
     {value => (
       <article className="oscar-line">
         <label htmlFor="">
-          {/* use props.name as a for tag, not done here to allow tooltips to be clicked*/}
-          <T id={props.label} tooltipPlacement="right" />
-          {' '}
+          {/* use props.name as a for tag, not done here to allow tooltips to be clicked */}
+          <T id={props.label} tooltipPlacement="right" />{' '}
           {props.isReady && <span className={props.labelIcon} />}
         </label>
         <Start1Text {...props} motionValue={value.x} />

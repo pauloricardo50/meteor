@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import SummaryComponent from '/imports/ui/components/general/SummaryComponent';
-import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
+import { T, IntlNumber } from '/imports/ui/components/general/Translation';
 import { getRange } from '/imports/js/helpers/offerFunctions';
 import { getMonthlyWithOffer } from '/imports/js/helpers/requestFunctions';
 

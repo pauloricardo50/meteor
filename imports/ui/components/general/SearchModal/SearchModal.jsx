@@ -6,7 +6,7 @@ import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
 
 import { T } from '/imports/ui/components/general/Translation';
-import Button from './Button';
+import Button from '../Button';
 import Search from './Search';
 
 export default class SearchModal extends Component {

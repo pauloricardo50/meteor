@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import SummaryComponent from '/imports/ui/components/general/SummaryComponent';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
 const AmortizingSummary = ({ loanRequest }) => {
   const choice = loanRequest.logic.amortizationStrategyPreset;

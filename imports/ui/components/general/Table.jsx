@@ -24,7 +24,7 @@ const Table = (props) => {
 
   // Make sure columns and rows are the same length
   if (rows.length && columns.length !== rows[0].columns.length) {
-    throw new Error('column length has to be correct in Table.jsx');
+    throw new Error('column length has to be correct in Table');
   }
 
   return (

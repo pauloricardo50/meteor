@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { IntlNumber } from '/imports/ui/components/general/Translation.jsx';
-
-import AutoTooltip from './AutoTooltip';
+import { IntlNumber } from '/imports/ui/components/general/Translation';
 
 const MetricsTriple = props => (
   <div className="metrics">
@@ -13,7 +11,7 @@ const MetricsTriple = props => (
           <div className="metric" key={metric.name}>
             <div>
               <h4 className="secondary">
-                <AutoTooltip placement="top">{metric.name}</AutoTooltip>{' '}
+                {metric.name}{' '}
                 {metric.isValid !== undefined &&
                   (metric.isValid ? (
                     <span className="fa fa-check success" />

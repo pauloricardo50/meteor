@@ -6,7 +6,7 @@ import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
 import SvgIconFace from 'material-ui/svg-icons/action/face';
 
-import { IntlNumber } from '/imports/ui/components/general/Translation.jsx';
+import { IntlNumber } from '/imports/ui/components/general/Translation';
 
 const Request = ({ loanRequest, borrowers, history }) => (
   <div className="mask1" style={{ marginBottom: 16 }}>

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import ProcessPage from '/imports/ui/components/general/ProcessPage';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 import OfferList from './OfferList';
 
 const OfferPickerPage = props => (

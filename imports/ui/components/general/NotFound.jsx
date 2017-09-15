@@ -38,7 +38,8 @@ export default class NotFound extends Component {
           <T id="NotFound.description" />
         </h3>
         <div style={styles.button}>
-          <Button raised
+          <Button
+            raised
             primary
             label={<T id="NotFound.button" />}
             containerElement={<Link to="/home" />}

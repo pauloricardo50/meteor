@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import isArray from 'lodash/isArray';
 
 import { FormattedMessage } from 'react-intl';
 import Popover from 'react-bootstrap/lib/Popover';
 import Transition from './Transition';
-import DialogSimple from './DialogSimple';
+import DialogSimple from '../DialogSimple';
 
 import track from '/imports/js/helpers/analytics';
 

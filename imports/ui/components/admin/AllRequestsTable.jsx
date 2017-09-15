@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import Table from '/imports/ui/components/general/Table.jsx';
+import Table from '/imports/ui/components/general/Table';
 import moment from 'moment';
 
-import { IntlNumber } from '/imports/ui/components/general/Translation.jsx';
+import { IntlNumber } from '/imports/ui/components/general/Translation';
 
 const columns = [
   { name: '#', style: { width: 32, textAlign: 'left' } },

@@ -9,7 +9,6 @@ import classnames from 'classnames';
 
 import colors from '/imports/js/config/colors';
 import { T } from '/imports/ui/components/general/Translation';
-import ProgressIcon from './ProgressIcon';
 
 const getStepIcon = ({ step, loanRequest }) => {
   const stepNb = step.nb;

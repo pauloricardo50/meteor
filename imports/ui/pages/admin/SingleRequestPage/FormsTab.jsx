@@ -13,7 +13,7 @@ import {
   getBorrowerInfoArray,
   getBorrowerFinanceArray,
 } from '/imports/js/arrays/BorrowerFormArray';
-import { IntlNumber } from '/imports/ui/components/general/Translation.jsx';
+import { IntlNumber } from '/imports/ui/components/general/Translation';
 
 import FilesVerification from './FilesVerification';
 

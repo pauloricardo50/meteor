@@ -23,7 +23,6 @@ export const insertAdminAction = new ValidatedMethod({
       requestId,
       status: 'active',
     });
-    console.log('existing action ', existingAction);
     if (existingAction) {
       throw new Meteor.Error('duplicate active admin action');
     }

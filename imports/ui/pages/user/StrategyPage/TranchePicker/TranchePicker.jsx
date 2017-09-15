@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '/imports/ui/components/general/Button';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 import { getLoanValue } from '/imports/js/helpers/requestFunctions';
 import cleanMethod from '/imports/api/cleanMethods';
 import Tranche from './Tranche';

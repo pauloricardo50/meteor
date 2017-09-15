@@ -6,7 +6,7 @@ import { Slingshot } from 'meteor/edgee:slingshot';
 import CircularProgress from 'material-ui/CircularProgress';
 import LinearProgress from 'material-ui/LinearProgress';
 
-import { IntlNumber } from '/imports/ui/components/general/Translation.jsx';
+import { IntlNumber } from '/imports/ui/components/general/Translation';
 
 export default class TempFile extends Component {
   constructor(props) {

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { tooltips, tooltipsById } from '/imports/js/arrays/tooltips';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
-import Tooltip from './Tooltip';
 
+import { tooltips, tooltipsById } from '/imports/js/arrays/tooltips';
 import track from '/imports/js/helpers/analytics';
 
-const handleClick = event => {
+import Tooltip from './Tooltip';
+
+const handleClick = (event) => {
   event.stopPropagation();
 };
 
