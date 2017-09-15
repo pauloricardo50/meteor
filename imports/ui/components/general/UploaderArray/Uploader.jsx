@@ -65,7 +65,14 @@ export default class Uploader extends Component {
   };
 
   render() {
-    const { fileMeta, currentValue, disabled, docId, collection } = this.props;
+    const {
+      fileMeta,
+      currentValue,
+      disabled,
+      docId,
+      collection,
+      pushFunc,
+    } = this.props;
     const { tempFiles } = this.state;
     const { id } = fileMeta;
 
@@ -105,8 +112,8 @@ export default class Uploader extends Component {
 
 Uploader.propTypes = {
   fileMeta: PropTypes.objectOf(PropTypes.any).isRequired,
-  pushFunc: PropTypes.string.isRequired,
-  updateFunc: PropTypes.string.isRequired,
+  pushFunc: PropTypes.string,
+  updateFunc: PropTypes.string,
   docId: PropTypes.string.isRequired,
   currentValue: PropTypes.arrayOf(PropTypes.object),
   disabled: PropTypes.bool.isRequired,

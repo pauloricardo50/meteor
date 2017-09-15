@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import AssessmentIcon from 'material-ui/svg-icons/action/assessment';
+import FolderIcon from 'material-ui/svg-icons/file/folder-open';
 import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 
@@ -55,32 +56,51 @@ const SideNavUser = (props) => {
           currentValue={requestId}
           toggleDrawer={toggleDrawer}
         />
-        {requestId &&
-          <NavLink
-            exact
-            to={`/app/requests/${requestId}`}
-            activeClassName="active-link"
-            className="link"
-          >
-            <div className="onclick-wrapper" onClick={handleClickLink}>
-              <div className="icon">
-                <AssessmentIcon color="#ADB5BD" />
+        {requestId && (
+          <div style={{ width: '100%' }}>
+            <NavLink
+              exact
+              to={`/app/requests/${requestId}`}
+              activeClassName="active-link"
+              className="link"
+            >
+              <div className="onclick-wrapper" onClick={handleClickLink}>
+                <div className="icon">
+                  <AssessmentIcon color="#ADB5BD" />
+                </div>
+                <h4 className="fixed-size title">
+                  <T id="SideNavUser.dashboard" />
+                </h4>
               </div>
-              <h4 className="fixed-size title">
-                <T id="SideNavUser.dashboard" />
-              </h4>
-            </div>
-          </NavLink>}
-
-        {requestId &&
-          currentRequest.status === 'active' &&
-          <SideNavStepper
-            handleClickLink={handleClickLink}
-            history={history}
-            location={location}
-            loanRequest={currentRequest}
-            borrowers={borrowers.filter(b => borrowerIds.indexOf(b._id) > -1)}
-          />}
+            </NavLink>
+            <NavLink
+              exact
+              to={`/app/requests/${requestId}/files`}
+              activeClassName="active-link"
+              className="link"
+            >
+              <div className="onclick-wrapper" onClick={handleClickLink}>
+                <div className="icon">
+                  <FolderIcon color="#ADB5BD" />
+                </div>
+                <h4 className="fixed-size title">
+                  <T id="SideNavUser.files" />
+                </h4>
+              </div>
+            </NavLink>
+            {currentRequest.status === 'active' && (
+              <SideNavStepper
+                handleClickLink={handleClickLink}
+                history={history}
+                location={location}
+                loanRequest={currentRequest}
+                borrowers={borrowers.filter(
+                  b => borrowerIds.indexOf(b._id) > -1,
+                )}
+              />
+            )}
+          </div>
+        )}
       </div>
     </nav>
   );

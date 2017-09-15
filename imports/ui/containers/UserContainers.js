@@ -13,6 +13,7 @@ import _DevPage from '/imports/ui/pages/user/DevPage';
 import _FinancePage from '/imports/ui/pages/user/FinancePage';
 import _ComparePage from '/imports/ui/pages/user/ComparePage';
 import _AppPage from '/imports/ui/pages/user/AppPage';
+import _FilesPage from '/imports/ui/pages/user/FilesPage';
 
 import {
   userContainer,
@@ -36,3 +37,4 @@ export const DevPage = userContainer(_DevPage);
 export const FinancePage = userRequestContainer(_FinancePage);
 export const ComparePage = userCompareContainer(_ComparePage);
 export const AppPage = userContainer(_AppPage);
+export const FilesPage = userRequestContainer(_FilesPage);

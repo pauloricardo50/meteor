@@ -26,6 +26,11 @@
   "ContractDownloader.ready":
     "Votre contrat est prêt, vous pouvez le télécharger dès maintenant.",
 
+  "SideNavUser.files": "Documents",
+  "FilesPage.title": "Documents",
+  "FilesPage.description":
+    "Vous trouverez ici tous les documents que vous avez ajoutés à votre projet. Ils sont enregistrés en toute sécurité, et vous pourrez les y retrouver à tout instant.",
+
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",

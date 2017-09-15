@@ -18,6 +18,7 @@ import {
   FinancePage,
   ComparePage,
   AppPage,
+  FilesPage,
 } from '/imports/ui/containers/UserContainers';
 import NotFound from '/imports/ui/components/general/NotFound';
 
@@ -72,6 +73,7 @@ const UserRoutes = props => (
           path="/app/requests/:requestId/closing"
           component={ClosingPage}
         />
+        <Route path="/app/requests/:requestId/files" component={FilesPage} />
         <Route path="/app/requests/:requestId" component={DashboardPage} />
         <Route path="/app/compare" component={ComparePage} />
         <Route path="/app" component={AppPage} />
