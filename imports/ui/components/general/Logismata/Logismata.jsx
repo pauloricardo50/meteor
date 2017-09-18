@@ -30,12 +30,10 @@ export default class Logismata extends Component {
       return <div>{error}</div>;
     }
 
-    console.log(authToken);
-
     return (
       <div>
         {authToken ? (
-          <div>hi</div> // children
+          children
         ) : (
           <div style={{ height: 100 }}>
             <LoadingComponent />

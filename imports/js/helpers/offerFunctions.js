@@ -54,3 +54,18 @@ export const extractOffers = (offers, loanRequest) => {
   });
   return array;
 };
+
+export const getBestRate = (offers = [], duration = 'interest10') =>
+  (offers.length
+    ? Math.min(
+      ...offers.reduce((acc, offer) => {
+        if (offer.standardOffer[duration]) {
+          acc.push(offer.standardOffer[duration]);
+        }
+        if (offer.counterpartOffer && offer.counterpartOffer[duration]) {
+          acc.push(offer.counterpartOffer[duration]);
+        }
+        return acc;
+      }, []),
+    )
+    : undefined);

@@ -17,19 +17,19 @@ export default class AmortizationCalculator extends Component {
   }
 
   calculate = () => {
-    const { loanRequest, borrowers, logismataToken } = this.props;
+    const { loanRequest, borrowers, offers, logismataToken } = this.props;
 
     if (!logismataToken) {
       return;
     }
 
     setToken(logismataToken)
-      .then(() => calculateDirectAmo(loanRequest, borrowers))
+      .then(() => calculateDirectAmo(loanRequest, borrowers, offers))
       .then((result) => {
         console.log('result1', result);
         this.setState({ direct: result });
       })
-      .then(() => calculateIndirectAmo(loanRequest, borrowers))
+      .then(() => calculateIndirectAmo(loanRequest, borrowers, offers))
       .then((result) => {
         console.log('result2', result);
         this.setState({ indirect: result });
@@ -40,7 +40,11 @@ export default class AmortizationCalculator extends Component {
   };
 
   render() {
-    return <div>{JSON.stringify(this.state)}</div>;
+    return (
+      <div>
+        <pre>{JSON.stringify(this.state, null, 2)}</pre>
+      </div>
+    );
   }
 }
 
@@ -48,6 +52,7 @@ AmortizationCalculator.propTypes = {
   logismataToken: PropTypes.string,
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  offers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 AmortizationCalculator.defaultProps = {

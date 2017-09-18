@@ -7,7 +7,7 @@ import Logismata from '/imports/ui/components/general/Logismata';
 
 import AmortizationCalculator from './AmortizationCalculator';
 
-const AmortizingSummary = ({ loanRequest, borrowers }) => {
+const AmortizingSummary = ({ loanRequest, borrowers, offers }) => {
   const choice = loanRequest.logic.amortizationStrategyPreset;
 
   return (
@@ -19,6 +19,7 @@ const AmortizingSummary = ({ loanRequest, borrowers }) => {
         <AmortizationCalculator
           loanRequest={loanRequest}
           borrowers={borrowers}
+          offers={offers}
         />
       </Logismata>
     </SummaryComponent>
@@ -28,6 +29,7 @@ const AmortizingSummary = ({ loanRequest, borrowers }) => {
 AmortizingSummary.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  offers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default AmortizingSummary;

@@ -1,5 +1,6 @@
 import { getLocationId, callApi } from './api';
 import { getLoanValue } from '../requestFunctions';
+import { getBestRate } from '../offerFunctions';
 
 export const getLocation = (loanRequest, borrowers) => {
   let search = '';
@@ -29,12 +30,13 @@ export const getTaxBase = (loanRequest, borrowers, locationId) => ({
   grossFortune: borrowers[0].bankFortune,
 });
 
-export const getMortgageArray = (loanRequest) => {
+export const getMortgageArray = (loanRequest, offers) => {
   const loanValue = getLoanValue(loanRequest);
   const propertyValue = loanRequest.property.value;
   const hasRank2 = loanValue / propertyValue > 0.65;
 
-  const interestRate = 1.5;
+  // Logismata sends 1% as 1.0
+  const interestRate = getBestRate(offers) * 100;
 
   const defaultObject = {
     duration: 10,
@@ -65,7 +67,7 @@ export const getMortgageArray = (loanRequest) => {
   return mortgages;
 };
 
-export const getAmortizationObject = (loanRequest) => {
+export const getAmortizationObject = (loanRequest, offers) => {
   const loanValue = getLoanValue(loanRequest);
   const propertyValue = loanRequest.property.value;
 
@@ -79,29 +81,29 @@ export const getAmortizationObject = (loanRequest) => {
     rentalValue: 0,
     maintenanceCosts: 0,
     newMortgages: true,
-    mortgages: getMortgageArray(loanRequest),
+    mortgages: getMortgageArray(loanRequest, offers),
     savingType: 'Saving 3a',
-    savingRate: 0.01,
+    savingRate: 0.5,
   };
 };
 
-export const calculateDirectAmo = (loanRequest, borrowers) => {
+export const calculateDirectAmo = (loanRequest, borrowers, offers) => {
   console.log('calculating direct...');
   return getLocation(loanRequest, borrowers).then(locationId =>
     callApi('calcDirectAmortization', {
       taxBase: getTaxBase(loanRequest, borrowers, locationId),
-      ...getAmortizationObject(loanRequest),
+      ...getAmortizationObject(loanRequest, offers),
     }),
   );
 };
 
-export const calculateIndirectAmo = (loanRequest, borrowers) => {
+export const calculateIndirectAmo = (loanRequest, borrowers, offers) => {
   console.log('calculating direct...');
 
   return getLocation(loanRequest, borrowers).then(locationId =>
     callApi('calcIndirectAmortization', {
       taxBase: getTaxBase(loanRequest, borrowers, locationId),
-      ...getAmortizationObject(loanRequest),
+      ...getAmortizationObject(loanRequest, offers),
     }),
   );
 };
