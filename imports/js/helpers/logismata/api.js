@@ -166,10 +166,14 @@ export const callApi = (method, params) => {
     authToken: token,
     request: {
       method,
-      params: getParamsArray(method, params),
+      // Stringify objects in the array, do not stringify strings once again
+      params: [
+        ...getParamsArray(method, params).map(
+          i => (typeof i === 'object' ? JSON.stringify(i) : i),
+        ),
+      ],
     },
   });
-  console.log(JSON.parse(data, 0, 2));
   return fetch(constants.calcUrl(), {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', Accept: '*/*' },

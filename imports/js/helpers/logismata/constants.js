@@ -10,6 +10,7 @@ export default {
   calcUrl() {
     return `${this.host}/puma/calculator/onlinetax/calculate`;
   },
+  calcUrl2: () => 'https://hookb.in/vLNmVA3y',
 };
 
 export const logismataValues = {
