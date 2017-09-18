@@ -14,7 +14,7 @@ jobs:
           METEOR_BIN_TMP_FILE: meteor-bin-temp
           TZ: "/usr/share/zoneinfo/Europe/Zurich"
           NODE_ENV: development
-          TOOL_NODE_FLAGS: "--max_old_space_size=4096"
+          TOOL_NODE_FLAGS: "--max_old_space_size=4096 --optimize_for_size --gc-interval=100"
           CI_RESULTS_FILE: results/unit.xml
     steps:
       - checkout
