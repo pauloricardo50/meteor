@@ -27,6 +27,7 @@ const FilesVerification = ({ loanRequest, borrowers }) => (
                   docId={loanRequest._id}
                   key={file.id}
                   id={file.id}
+                  closingSteps={loanRequest.logic.closingSteps}
                 />
               ),
           )}

@@ -13,6 +13,7 @@ const FileStep = ({ step, handleChange, handleRemove }) => (
       label="Nom du document"
       id="title"
       handleChange={(key, value) => handleChange(step.id, key, value)}
+      currentValue={step.title}
     />
     <Button
       onClick={() => handleRemove(step.id)}

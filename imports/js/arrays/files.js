@@ -145,16 +145,22 @@ export const requestFiles = (r = {}) => ({
   //     condition: !!r.logic && r.insuranceUsePreset === 'withdrawal',
   //   },
   // ],
-  admin: [
-    {
-      id: 'contract',
-    },
-    {
-      id: 'signedContract',
-    },
+  other: [
+    { id: 'upload0' },
+    { id: 'upload1' },
+    { id: 'upload2' },
+    { id: 'upload3' },
+    { id: 'upload4' },
   ],
+  admin: [{ id: 'contract' }, { id: 'signedContract' }],
   all() {
-    return [...this.auction, ...this.contract, ...this.closing, ...this.admin];
+    return [
+      ...this.auction,
+      ...this.contract,
+      ...this.closing,
+      ...this.admin,
+      ...this.other,
+    ];
   },
 });
 

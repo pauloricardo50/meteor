@@ -11,7 +11,7 @@ import {
 import DialogSimple from '/imports/ui/components/general/DialogSimple';
 import DropzoneArray from '/imports/ui/components/general/DropzoneArray';
 import ClosingForm from '/imports/ui/components/admin/ClosingForm';
-import LastStepsForm from '/imports/ui/components/admin/LastStepsForm';
+import ClosingStepsForm from '/imports/ui/components/admin/ClosingStepsForm';
 import downloadPDF from '/imports/js/helpers/download-pdf';
 import ConfirmMethod from './ConfirmMethod';
 
@@ -104,13 +104,13 @@ const ActionsTab = (props) => {
         />
       </DialogSimple>
       <DialogSimple
-        title="Dernières Etapes"
-        label="Dernières Etapes"
+        title="Étapes du Décaissement"
+        label="Étapes du Décaissement"
         passProps
         autoScroll
         cancelOnly
       >
-        <LastStepsForm loanRequest={loanRequest} />
+        <ClosingStepsForm loanRequest={loanRequest} />
       </DialogSimple>
     </div>
   );

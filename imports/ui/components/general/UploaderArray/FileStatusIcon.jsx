@@ -19,7 +19,7 @@ const FileStatusIcon = ({ files, status }) => {
   // Support providing a single status
   const statuses = status ? [status] : files.map(f => f.status);
 
-  if (!files || files.length === 0) {
+  if (status === 'unverified' || ((!files || files.length === 0) && !status)) {
     return (
       <span
         style={{

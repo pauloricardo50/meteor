@@ -433,14 +433,15 @@ export const LogicSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  lastSteps: {
+  closingSteps: {
     type: Array,
     defaultValue: [],
   },
-  'lastSteps.$': Object,
-  'lastSteps.$.id': String,
-  'lastSteps.$.type': String,
-  'lastSteps.$.title': String,
-  'lastSteps.$.description': { type: String, optional: true },
-  'lastSteps.$.status': String,
+  'closingSteps.$': Object,
+  'closingSteps.$.id': String,
+  'closingSteps.$.type': String,
+  'closingSteps.$.title': String,
+  'closingSteps.$.description': { type: String, optional: true },
+  'closingSteps.$.status': { type: String, optional: true },
+  'closingSteps.$.error': { type: String, optional: true },
 });

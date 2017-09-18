@@ -23,16 +23,16 @@ const createId = (currentSteps, newType) => {
   return newType + (max ? Math.max(currentCount, max + 1) : currentCount);
 };
 
-export default class LastStepsForm extends Component {
+export default class ClosingStepsForm extends Component {
   constructor(props) {
     super(props);
 
     const { loanRequest } = this.props;
 
     this.state = {
-      lastSteps:
-        loanRequest.logic.lastSteps && loanRequest.logic.lastSteps.length
-          ? loanRequest.logic.lastSteps
+      closingSteps:
+        loanRequest.logic.closingSteps && loanRequest.logic.closingSteps.length
+          ? loanRequest.logic.closingSteps
           : [],
     };
   }
@@ -40,9 +40,9 @@ export default class LastStepsForm extends Component {
   handleAdd = (type) => {
     this.setState(
       prev => ({
-        lastSteps: [
-          ...prev.lastSteps,
-          { type, status: 'unverified', id: createId(prev.lastSteps, type) },
+        closingSteps: [
+          ...prev.closingSteps,
+          { type, status: 'unverified', id: createId(prev.closingSteps, type) },
         ],
       }),
       // stupid fix because dialog is not resizing
@@ -52,35 +52,32 @@ export default class LastStepsForm extends Component {
 
   handleRemove = stepId =>
     this.setState(prev => ({
-      lastSteps: prev.lastSteps.filter(step => step.id !== stepId),
+      closingSteps: prev.closingSteps.filter(step => step.id !== stepId),
     }));
 
   handleSave = () =>
     cleanMethod(
       'updateRequest',
-      { 'logic.lastSteps': this.state.lastSteps },
+      { 'logic.closingSteps': this.state.closingSteps },
       this.props.loanRequest._id,
     );
 
   handleChange = (stepId, key, value) =>
-    this.setState(
-      prev => ({
-        lastSteps: [
-          ...prev.lastSteps.filter(s => s.id !== stepId),
-          { ...prev.lastSteps.find(s => s.id === stepId), [key]: value },
-        ],
-      }),
-      () => console.log(this.state),
-    );
+    this.setState(prev => ({
+      closingSteps: [
+        ...prev.closingSteps.filter(s => s.id !== stepId),
+        { ...prev.closingSteps.find(s => s.id === stepId), [key]: value },
+      ],
+    }));
 
   render() {
-    const { lastSteps } = this.state;
+    const { closingSteps } = this.state;
     const { loanRequest } = this.props;
     return (
       <article>
         <Adder handleAdd={this.handleAdd} />
         <div style={{ display: 'flex', flexWrap: 'wrap', margin: '40px 0' }}>
-          {lastSteps
+          {closingSteps
             .sort((a, b) => {
               if (a.id < b.id) return -1;
               if (a.id > b.id) return 1;
@@ -109,8 +106,8 @@ export default class LastStepsForm extends Component {
           <Button
             raised
             primary={
-              JSON.stringify(loanRequest.logic.lastSteps) !==
-              JSON.stringify(lastSteps)
+              JSON.stringify(loanRequest.logic.closingSteps) !==
+              JSON.stringify(closingSteps)
             }
             label="Enregistrer"
             onClick={this.handleSave}
@@ -121,6 +118,6 @@ export default class LastStepsForm extends Component {
   }
 }
 
-LastStepsForm.propTypes = {
+ClosingStepsForm.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
 };

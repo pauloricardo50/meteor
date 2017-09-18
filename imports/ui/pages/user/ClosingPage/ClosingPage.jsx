@@ -12,10 +12,11 @@ const ClosingPage = (props) => {
   return (
     <ProcessPage {...props} stepNb={3} id="closing" showBottom={false}>
       <div className="mask1 flex-col">
-        {loanRequest.logic.lastSteps && loanRequest.logic.lastSteps.length ? (
+        {loanRequest.logic.closingSteps && loanRequest.logic.closingSteps.length ? (
           <Content
-            steps={loanRequest.logic.lastSteps}
+            steps={loanRequest.logic.closingSteps}
             loanRequest={loanRequest}
+            disabled={loanRequest.logic.step > 3}
           />
         ) : (
           <Empty />

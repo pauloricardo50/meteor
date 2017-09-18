@@ -11,17 +11,17 @@ const options = [
   { id: 'error', label: 'Erreur' },
 ];
 
-export default class File extends Component {
+export default class ItemVerificator extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { error: this.props.file.error };
+    this.state = { error: this.props.item.error };
   }
 
   handleChange = (_, value) => this.setState({ error: value });
 
   render() {
-    const { file, saveError, setStatus } = this.props;
+    const { item, saveError, setStatus } = this.props;
     const { error } = this.state;
 
     return (
@@ -30,30 +30,30 @@ export default class File extends Component {
           className="flex center"
           style={{ justifyContent: 'space-between' }}
         >
-          <h5 className="secondary bold">{file.name}</h5>
+          {item.name && <h5 className="secondary bold">{item.name}</h5>}
           <Select
-            currentValue={file.status}
+            currentValue={item.status}
             onChange={setStatus}
             options={options}
-            id={file.key}
+            id={item.key}
             label="Statut"
           />
         </div>
-        {file.status === 'error' && (
+        {item.status === 'error' && (
           <div>
             <TextInput
               currentValue={error}
               handleChange={this.handleChange}
               style={{ width: '100%' }}
-              id={file.key}
+              id={item.key}
               placeholder="Ajoutez une explication..."
             />
             <Button
               raised
               primary
               label="Enregistrer"
-              onClick={() => saveError(file.key, error)}
-              disabled={error === file.error}
+              onClick={() => saveError(item.key, error)}
+              disabled={error === item.error}
               style={{ marginBottom: 8 }}
             />
           </div>
@@ -63,8 +63,8 @@ export default class File extends Component {
   }
 }
 
-File.propTypes = {
-  file: PropTypes.objectOf(PropTypes.any).isRequired,
+ItemVerificator.propTypes = {
+  item: PropTypes.objectOf(PropTypes.any).isRequired,
   saveError: PropTypes.func.isRequired,
   setStatus: PropTypes.func.isRequired,
 };

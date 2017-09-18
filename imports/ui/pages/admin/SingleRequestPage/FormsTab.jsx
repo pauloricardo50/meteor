@@ -16,6 +16,7 @@ import {
 import { IntlNumber } from '/imports/ui/components/general/Translation';
 
 import FilesVerification from './FilesVerification';
+import ClosingVerification from './ClosingVerification';
 
 const getBorrowerForms = (borrowers) => {
   const array = [];
@@ -50,6 +51,9 @@ const getRequestForms = (request) => {
       key="property"
       primaryText={'Propriété'}
     />,
+  );
+  array.push(
+    <MenuItem value={'closing'} primaryText={'Décaissement'} key={'closing'} />,
   );
 
   return array;
@@ -126,6 +130,13 @@ const getForm = (props, value, modify) => {
     case 'files':
       return (
         <FilesVerification
+          loanRequest={props.loanRequest}
+          borrowers={props.borrowers}
+        />
+      );
+    case 'closing':
+      return (
+        <ClosingVerification
           loanRequest={props.loanRequest}
           borrowers={props.borrowers}
         />
