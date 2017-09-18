@@ -116,14 +116,12 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
             loanRequest.logic.lender.contractRequested &&
             !loanRequest.logic.lender.contract,
           isDone() {
-            const validPercent =
-              (filesPercent(loanRequest, requestFiles, 'contract', true) +
-                filesPercent(borrowers, borrowerFiles, 'contract', true)) /
-              (1 + borrowers.length);
+            // const validPercent =
+            //   (filesPercent(loanRequest, requestFiles, 'contract', true) +
+            //     filesPercent(borrowers, borrowerFiles, 'contract', true)) /
+            //   (1 + borrowers.length);
             return (
-              loanRequest.files.contract &&
-              loanRequest.files.contract.length &&
-              validPercent >= 1
+              loanRequest.files.contract && loanRequest.files.contract.length
             );
           },
         },
@@ -135,7 +133,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
               filesPercent(borrowers, borrowerFiles, 'contract')) /
               (1 + borrowers.length) <
             1,
-          // percent: () => 0,
+          percent: () => closingPercent(loanRequest),
           isDone: () => loanRequest.status === 'done',
         },
       ],
@@ -358,4 +356,22 @@ export const filesPercent = (doc, fileArrayFunc, step, checkValidity) => {
   return getPercent(a);
 };
 
-export const getCurrentLink = () => {};
+export const closingPercent = (loanRequest) => {
+  const { closingSteps } = loanRequest.logic;
+  const arr = [];
+
+  closingSteps.forEach((step) => {
+    if (step.type === 'todo') {
+      arr.push(step.status === 'valid' ? true : undefined);
+    } else {
+      arr.push(
+        isArray(loanRequest.files[step.id]) &&
+        loanRequest.files[step.id].every(file => file.status === 'valid')
+          ? true
+          : undefined,
+      );
+    }
+  });
+
+  return getPercent(arr);
+};

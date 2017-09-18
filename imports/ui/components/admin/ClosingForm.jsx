@@ -28,10 +28,8 @@ export default class ClosingForm extends Component {
 
   handleSubmit = () => {
     if (!(this.state.date && this.state.schedule) || this.props.isCancel) {
-      console.log('false');
-      return false;
+      return;
     }
-    console.log('true');
 
     const object = {
       'logic.firstPaymentDate': this.state.date,

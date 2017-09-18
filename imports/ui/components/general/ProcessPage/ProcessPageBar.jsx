@@ -70,7 +70,7 @@ export default class ProcessPageBar extends Component {
 
     return (
       <div className="buttons" key="someKey">
-        {showBackButton &&
+        {showBackButton && (
           <Button
             raised
             icon={smallWidth ? <ArrowLeft /> : undefined}
@@ -80,20 +80,23 @@ export default class ProcessPageBar extends Component {
             containerElement={prevLink ? <Link to={prevLink} /> : undefined}
             onClick={() =>
               track('ProcessPageBar - clicked back', { to: prevLink })}
-          />}
+          />
+        )}
         <Button
           raised
           labelPosition="before"
           icon={smallWidth || isDone ? <ArrowRight /> : undefined}
           label={
-            smallWidth
-              ? ''
-              : lastPartOfStep
-                ? <T id="ProcessPageBar.nextStep" />
-                : <T id="ProcessPageBar.next" />
+            smallWidth ? (
+              ''
+            ) : lastPartOfStep ? (
+              <T id="ProcessPageBar.nextStep" />
+            ) : (
+              <T id="ProcessPageBar.next" />
+            )
           }
           style={smallWidth ? styles.smallButton : styles.button}
-          secondary={isDone}
+          secondary={!!isDone}
           className={isDone ? 'animated pulse' : undefined}
           disabled={(lastPartOfStep && !isDone) || !nextLink}
           containerElement={

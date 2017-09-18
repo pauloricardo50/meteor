@@ -439,9 +439,13 @@ export const LogicSchema = new SimpleSchema({
   },
   'closingSteps.$': Object,
   'closingSteps.$.id': String,
-  'closingSteps.$.type': String,
+  'closingSteps.$.type': { type: String, allowedValues: ['todo', 'upload'] },
   'closingSteps.$.title': String,
   'closingSteps.$.description': { type: String, optional: true },
-  'closingSteps.$.status': { type: String, optional: true },
+  'closingSteps.$.status': {
+    type: String,
+    optional: true,
+    allowedValues: ['unverified', 'valid', 'error'],
+  },
   'closingSteps.$.error': { type: String, optional: true },
 });

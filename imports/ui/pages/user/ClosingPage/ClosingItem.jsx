@@ -32,13 +32,14 @@ const ClosingItem = ({ step, loanRequest, disabled }) => {
       <p className="secondary" style={{ paddingTop: 8 }}>
         {description}
       </p>
-      {error && (
-        <div
-          style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid grey' }}
-        >
-          <p className="warning">{error}</p>
-        </div>
-      )}
+      {status === 'error' &&
+        error && (
+          <div
+            style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid grey' }}
+          >
+            <p className="warning">{error}</p>
+          </div>
+        )}
     </div>
   );
 };
