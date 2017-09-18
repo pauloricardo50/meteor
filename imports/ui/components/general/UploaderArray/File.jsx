@@ -5,12 +5,12 @@ import { T } from '/imports/ui/components/general/Translation';
 import IconButton from '/imports/ui/components/general/IconButton';
 
 const File = ({ file, disabled, handleRemove }) => {
-  const { name, key, status, error } = file;
+  const { initialName, key, status, error } = file;
 
   return (
     <div className="flex-col">
       <div className="file">
-        <h5 className="secondary bold">{name}</h5>
+        <h5 className="secondary bold">{initialName}</h5>
         <div className="flex center">
           <span className={`${status} bold`}>
             <T id={`Files.status.${status}`} />

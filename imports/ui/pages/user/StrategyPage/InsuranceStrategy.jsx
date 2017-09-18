@@ -27,8 +27,8 @@ const getChoices = () => [
   },
 ];
 
-const InsuranceStrategy = ({ loanRequest, handleSave }) =>
-  (<article>
+const InsuranceStrategy = ({ loanRequest, handleSave, disabled }) => (
+  <article>
     <h2>
       <T id="InsuranceStrategy.title" />
     </h2>
@@ -42,8 +42,10 @@ const InsuranceStrategy = ({ loanRequest, handleSave }) =>
       currentValue={loanRequest.logic.insuranceUsePreset}
       choices={getChoices()}
       handleChoose={id => handleSave({ 'logic.insuranceUsePreset': id })}
+      disabled={disabled}
     />
-  </article>);
+  </article>
+);
 
 InsuranceStrategy.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,

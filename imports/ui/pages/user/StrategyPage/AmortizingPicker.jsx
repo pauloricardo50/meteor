@@ -24,7 +24,13 @@ const getChoices = () => [
   },
 ];
 
-const AmortizingPicker = ({ loanRequest, borrowers, offers, handleSave }) => (
+const AmortizingPicker = ({
+  loanRequest,
+  borrowers,
+  offers,
+  handleSave,
+  disabled,
+}) => (
   <article>
     <h2>
       <T id="AmortizingPicker.title" />
@@ -40,6 +46,7 @@ const AmortizingPicker = ({ loanRequest, borrowers, offers, handleSave }) => (
       choices={getChoices()}
       handleChoose={id =>
         handleSave({ 'logic.amortizationStrategyPreset': id })}
+      disabled={disabled}
     />
 
     {!!loanRequest.logic.amortizationStrategyPreset && (

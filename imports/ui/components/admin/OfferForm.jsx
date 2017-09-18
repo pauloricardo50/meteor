@@ -105,7 +105,7 @@ export default class OfferForm extends Component {
         interest2: parseFloat(this.state.interest2_0) / 100,
         interest5: parseFloat(this.state.interest5_0) / 100,
         interest10: parseFloat(this.state.interest10_0) / 100,
-        interest15: parseFloat(this.state.interest15_0) / 100,
+        interest15: parseFloat(this.state.interest15_0) / 100 || undefined,
       },
 
       conditions: [this.state.conditions],
@@ -120,17 +120,19 @@ export default class OfferForm extends Component {
         interest2: parseFloat(this.state.interest2_1) / 100,
         interest5: parseFloat(this.state.interest5_1) / 100,
         interest10: parseFloat(this.state.interest10_1) / 100,
-        interest15: parseFloat(this.state.interest15_1) / 100,
+        interest15: parseFloat(this.state.interest15_1) / 100 || undefined,
       };
 
       object.counterparts = [this.state.counterparts];
     }
 
-    cleanMethod(this.props.method, object).catch((error) => {
-      if (!error) {
-        this.props.callback();
-      }
-    });
+    cleanMethod(this.props.method, object)
+      .then(this.props.callback)
+      .catch((error) => {
+        if (!error) {
+          this.props.callback();
+        }
+      });
   };
 
   render() {
@@ -187,11 +189,7 @@ export default class OfferForm extends Component {
               type="text"
               onChange={(e, n) => this.handleChange(e, n, 'amortization')}
             >
-              <MaskedInput
-                mask={percentMask}
-                guide
-                value={this.state.amortization}
-              />
+              <MaskedInput mask={percentMask} guide value={amortization} />
             </TextField>
           </div>
 

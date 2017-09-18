@@ -19,6 +19,7 @@ const handleSave = (props, file) => {
   const object = {
     [props.mongoId]: {
       name: `${fileNameCount}${file.name}`,
+      initialName: file.name,
       size: file.size,
       type: file.type,
       url: file.xhr.responseURL,

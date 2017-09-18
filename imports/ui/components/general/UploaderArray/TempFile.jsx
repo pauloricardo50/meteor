@@ -6,8 +6,6 @@ import { Slingshot } from 'meteor/edgee:slingshot';
 import CircularProgress from 'material-ui/CircularProgress';
 import LinearProgress from 'material-ui/LinearProgress';
 
-import { IntlNumber } from '/imports/ui/components/general/Translation';
-
 export default class TempFile extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +13,12 @@ export default class TempFile extends Component {
   }
 
   componentDidMount() {
-    this.uploader = new Slingshot.Upload('myFileUploads', this.props);
+    this.uploader = new Slingshot.Upload('myFileUploads', {
+      currentValue: this.props.currentValue,
+      collection: this.props.collection,
+      docId: this.props.docId,
+      id: this.props.id,
+    });
 
     const progressSetter = Tracker.autorun(() => {
       this.setState({ progress: this.uploader.progress() });
@@ -67,4 +70,5 @@ TempFile.propTypes = {
   docId: PropTypes.string.isRequired,
   collection: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
+  currentValue: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

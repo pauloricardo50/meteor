@@ -31,11 +31,12 @@ const styles = {
   },
 };
 
-const Offer = ({ offer, chosen, handleSave }) => (
+const Offer = ({ offer, chosen, handleSave, disabled }) => (
   <div
-    className={classNames({ 'choice flex center': true, chosen })}
+    className={classNames({ 'choice flex center': true, chosen, disabled })}
     style={{ flexWrap: 'nowrap', padding: 0 }}
-    onClick={() => handleSave(chosen ? '' : offer.id, offer.type)}
+    onClick={() =>
+      (disabled ? {} : handleSave(chosen ? '' : offer.id, offer.type))}
   >
     <h3 style={{ margin: 0, padding: 16 }}>{offer.organization}</h3>
     <div className="flex" style={{ flexWrap: 'wrap' }}>
@@ -78,6 +79,11 @@ Offer.propTypes = {
   offer: PropTypes.objectOf(PropTypes.any).isRequired,
   chosen: PropTypes.bool.isRequired,
   handleSave: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
+};
+
+Offer.defaultProps = {
+  disabled: false,
 };
 
 export default Offer;

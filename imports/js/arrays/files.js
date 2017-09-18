@@ -180,6 +180,7 @@ export const getFileIDs = (list) => {
 // Schema used for every file
 export const FileSchema = new SimpleSchema({
   name: String,
+  initialName: String,
   size: Number,
   type: String,
   url: {
@@ -215,6 +216,7 @@ export const getFileSchema = (list) => {
 
 export const fakeFile = {
   name: 'fakeFile.pdf',
+  initialName: 'fakeFile.pdf',
   size: 10000,
   type: 'application/pdf',
   url: 'https://www.fake-url.com',

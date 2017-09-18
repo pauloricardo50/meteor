@@ -53,7 +53,7 @@ const handleChoose = (id, loanRequest, handleSave) => {
   }
 };
 
-const LoanStrategyPicker = ({ loanRequest, handleSave, offers }) => (
+const LoanStrategyPicker = ({ loanRequest, handleSave, offers, disabled }) => (
   <article>
     <h2>
       <T id="LoanStrategyPicker.title" />
@@ -68,6 +68,7 @@ const LoanStrategyPicker = ({ loanRequest, handleSave, offers }) => (
       currentValue={loanRequest.logic.loanStrategyPreset}
       choices={getChoices(loanRequest, offers)}
       handleChoose={id => handleChoose(id, loanRequest, handleSave)}
+      disabled={disabled}
     />
 
     <p className="secondary">

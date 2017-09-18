@@ -12,6 +12,7 @@ const getComponents = (props, handleSave) => {
   const childProps = {
     ...props,
     handleSave,
+    disabled: props.loanRequest.logic.step > 2,
   };
 
   return [

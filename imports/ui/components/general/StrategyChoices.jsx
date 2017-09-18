@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import Button from '/imports/ui/components/general/Button';
 import classNames from 'classnames';
 import track from '/imports/js/helpers/analytics';
 import { T } from '/imports/ui/components/general/Translation';
 
 export default class StrategyChoices extends Component {
   renderChoice(choice, index) {
-    const { currentValue, name, handleChoose } = this.props;
+    const { currentValue, name, handleChoose, disabled } = this.props;
     const chosen = currentValue === choice.id;
     const articleClasses = classNames({
       choice: true,
       chosen,
+      disabled,
     });
 
     return (
@@ -20,12 +20,12 @@ export default class StrategyChoices extends Component {
         <div
           className="content"
           onClick={() => {
-            if (chosen) {
+            if (disabled) {
+              // do nothing
+            } else if (chosen) {
               handleChoose('');
             } else {
-              track(`StrategyChoices - chose ${name}`, {
-                choiceId: choice.id,
-              });
+              track(`StrategyChoices - chose ${name}`, { choiceId: choice.id });
               handleChoose(choice.id);
             }
           }}

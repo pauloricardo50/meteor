@@ -34,6 +34,7 @@ export default class Uploader extends Component {
     const object = {
       [`files.${fileMeta.id}`]: {
         name: `${fileCountString}${file.name}`,
+        initialName: file.name,
         size: file.size,
         type: file.type,
         url: encodeURI(downloadUrl), // To avoid spaces and unallowed chars
@@ -45,6 +46,7 @@ export default class Uploader extends Component {
 
     cleanMethod(pushFunc, object, docId).then(() => {
       // Remove uploaded file from tempFiles
+      // FIXME: This prevents someone from uploading a file with the same name twice
       this.setState(prev => ({
         tempFiles: prev.tempFiles.filter(f => f.name !== file.name),
       }));
@@ -99,6 +101,7 @@ export default class Uploader extends Component {
             collection={collection}
             handleSave={this.handleSave}
             id={id}
+            currentValue={currentValue}
           />
         ))}
 

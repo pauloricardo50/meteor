@@ -16,7 +16,7 @@ const handleSave = (id, type, loanRequest) => {
   );
 };
 
-const OfferList = ({ loanRequest, offers }) => {
+const OfferList = ({ loanRequest, offers, disabled }) => {
   const filteredOffers = extractOffers(offers);
   const lender = loanRequest.logic.lender;
 
@@ -28,6 +28,7 @@ const OfferList = ({ loanRequest, offers }) => {
           key={offer.uid}
           handleSave={(id, type) => handleSave(id, type, loanRequest)}
           chosen={lender.offerId === offer.id && lender.type === offer.type}
+          disabled={disabled}
         />
       ))}
     </div>

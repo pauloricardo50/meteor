@@ -17,11 +17,18 @@ const OfferPickerPage = props => (
 
       <span>TODO: Filtre</span>
 
-      <OfferList offers={props.offers} loanRequest={props.loanRequest} />
+      <OfferList
+        offers={props.offers}
+        loanRequest={props.loanRequest}
+        disabled={props.loanRequest.logic.step > 2}
+      />
     </section>
   </ProcessPage>
 );
 
-OfferPickerPage.propTypes = {};
+OfferPickerPage.propTypes = {
+  offers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+};
 
 export default OfferPickerPage;
