@@ -12,8 +12,22 @@
     },
     "google_maps_key": "AIzaSyCsdThaRqcTSjvzz4IeeZnn4zkXSinehzo"
   },
-  "AWSAccessKeyId": "AKIAJF43A4MFAA2ZGTEA",
-  "AWSSecretAccessKey": "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",
+  "AWS": {
+    "users": {
+      "accessKeyId": "AKIAINZ4F3JI4372JZHQ",
+      "secretAccesskey": "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"
+    },
+    "admins": {
+      "accessKeyId": "AKIAJYTM62YXLOL5OCTQ",
+      "secretAccesskey": "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"
+    },
+    "partners": {
+      "accessKeyId": "AKIAINZ4F3JI4372JZHQ",
+      "secretAccesskey": "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"
+    }
+  },
+  "AWSAccessKeyId": "AKIAINZ4F3JI4372JZHQ",
+  "AWSSecretAccessKey": "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",
   "AWSRegion": "eu-central-1",
   "S3Bucket": "e-potek-staging",
   "MANDRILL_LOGIN": "florian@e-potek.ch",
