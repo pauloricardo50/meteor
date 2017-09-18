@@ -15,8 +15,9 @@ const styles = {
   },
 };
 
-const FileStatusIcon = ({ files }) => {
-  const statuses = files.map(f => f.status);
+const FileStatusIcon = ({ files, status }) => {
+  // Support providing a single status
+  const statuses = status ? [status] : files.map(f => f.status);
 
   if (!files || files.length === 0) {
     return (

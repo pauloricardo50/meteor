@@ -120,9 +120,12 @@ Uploader.propTypes = {
   docId: PropTypes.string.isRequired,
   currentValue: PropTypes.arrayOf(PropTypes.object),
   disabled: PropTypes.bool.isRequired,
-  collection: PropTypes.string.isRequired,
+  collection: PropTypes.string,
 };
 
 Uploader.defaultProps = {
   currentValue: [],
+  pushFunc: 'pushRequestValue',
+  updateFunc: 'updateRequest',
+  collection: 'loanRequests',
 };
