@@ -159,6 +159,13 @@ export const getBorrowerInfoArray = (borrowers, id) => {
       ],
     },
     {
+      id: 'childrenCount',
+      type: 'textInput',
+      number: true,
+      label: 'Enfants à charge',
+      placeholder: '2',
+    },
+    {
       id: 'company',
       type: 'textInput',
       label: 'Employeur',

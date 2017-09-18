@@ -11,6 +11,7 @@ export const fakeBorrower = {
   age: 35,
   birthPlace: 'Lausanne',
   civilStatus: 'single',
+  childrenCount: 2,
   company: 'Deloitte',
   personalBank: 'BCGE',
   isSwiss: true,
