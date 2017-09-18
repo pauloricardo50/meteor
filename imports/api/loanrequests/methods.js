@@ -457,7 +457,7 @@ rateLimit({
     pushRequestValue,
     popRequestValue,
     requestVerification,
-    deleteRequest,
+    // deleteRequest,
     cancelAuction,
     confirmClosing,
     addEmail,
