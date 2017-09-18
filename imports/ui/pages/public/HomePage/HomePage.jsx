@@ -301,6 +301,9 @@ export default class HomePage extends Component {
                     <Link className="nav-link" to="/about">
                       <T id="HomePage.footer.about" />
                     </Link>
+                    <Link className="nav-link" to="/faq">
+                      <T id="HomePage.footer.faq" />
+                    </Link>
                     <a
                       className="nav-link"
                       href="mailto:contact@e-potek.ch?subject=I%20Love%20e-Potek!"

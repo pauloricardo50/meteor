@@ -49,6 +49,8 @@ export default class TopNavDrawer extends React.Component {
               track('TopNavDrawer - request drawer change', { open, reason }),
             );
           }}
+          // prevent scroll through
+          overlayStyle={{ overflow: 'hidden' }}
         >
           <div className="top-bar">
             <IconButton

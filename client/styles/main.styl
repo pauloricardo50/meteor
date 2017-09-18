@@ -335,10 +335,10 @@ svg.warning
         color: alpha(#222, 0.6);
         font-weight: 400 !important;
         text-decoration: none;
+        transition: all 0.1s ease;
         &:hover
           text-decoration: none;
           border-left: solid 3px alpha(brand-primary, 0.3);
-          transition: all 0.1s ease;
           color: alpha(#222, 0.8);
         &.active-link
           border-left: solid 3px brand-primary;
@@ -502,6 +502,8 @@ svg:not(:root) {
     width: 100%;
     margin-top: 16px;
     transition: all 300ms $bezier;
+    +below($med)
+      margin-bottom: 44px; // extra padding for iOS bottom bar
     .available-icon
       width: 4px;
       height: 4px;
@@ -668,36 +670,6 @@ svg:not(:root) {
     color: white;
     background-size: 100% 100%;
     transform: scale(1.02);
-
-.hvr-underline-from-center {
-  display: inline-block;
-  // vertical-align: middle;
-  -webkit-transform: perspective(1px) translateZ(0);
-  transform: perspective(1px) translateZ(0);
-  box-shadow: 0 0 1px transparent;
-  position: relative;
-  // overflow: hidden;
-}
-.hvr-underline-from-center:before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  left: 50%;
-  right: 50%;
-  bottom: -1px;
-  background: brand-primary;
-  height: 1px;
-  -webkit-transition-property: left, right;
-  transition-property: left, right;
-  -webkit-transition-duration: 250ms;
-  transition-duration: 250ms;
-  -webkit-transition-timing-function: $bezier;
-  transition-timing-function: $bezier;
-}
-.hvr-underline-from-center:hover:before, .hvr-underline-from-center:focus:before, .hvr-underline-from-center:active:before {
-  left: 0;
-  right: 0;
-}
 
 .mui-table
   &>div:first-child

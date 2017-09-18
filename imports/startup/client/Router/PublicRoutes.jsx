@@ -10,6 +10,7 @@ import LoginPage from '/imports/ui/pages/public/LoginPage';
 import AboutPage from '/imports/ui/pages/public/AboutPage';
 import CareersPage from '/imports/ui/pages/public/CareersPage';
 import TosPage from '/imports/ui/pages/public/TosPage';
+import FaqPage from '/imports/ui/pages/public/FaqPage';
 import EmailVerificationPage from '/imports/ui/pages/public/EmailVerificationPage';
 import PasswordResetPage from '/imports/ui/pages/public/PasswordResetPage';
 import NotFound from '/imports/ui/components/general/NotFound';
@@ -30,6 +31,7 @@ const PublicRoutes = props => (
       <Route path="/careers" component={CareersPage} />
       <Route path="/about" component={AboutPage} />
       <Route path="/tos" component={TosPage} />
+      <Route path="/faq" component={FaqPage} />
       <Route path="/verify-email/:token" component={EmailVerificationPage} />
       <Route path="/reset-password/:token" component={PasswordResetPage} />
       <Route component={NotFound} />

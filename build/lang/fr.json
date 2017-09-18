@@ -22,6 +22,11 @@
   "ActionsTable.date": "Date",
   "ActionsTable.do": " ",
 
+  "HomePage.footer.faq": "FAQ",
+
+  "FaqPage.title": "Questions fréquentes",
+  "FaqPage.description": "En développement..",
+
   "ContractDownloader.waiting": "Votre contrat arrivera ici.",
   "ContractDownloader.ready":
     "Votre contrat est prêt, vous pouvez le télécharger dès maintenant.",
