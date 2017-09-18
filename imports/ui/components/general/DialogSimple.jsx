@@ -27,7 +27,7 @@ export default class DialogSimple extends Component {
   enableClose = () => this.setState({ disabled: false });
 
   render() {
-    let { actions } = this.props;
+    const { actions } = this.props;
     const {
       autoFocus,
       rootStyle,
@@ -43,22 +43,35 @@ export default class DialogSimple extends Component {
       contentStyle,
       style,
       autoScroll,
+      cancelOnly,
     } = this.props;
 
-    actions = actions || [
-      <Button
-        primary
-        label={<T id="general.cancel" />}
-        onClick={this.handleClose}
-      />,
-      <Button
-        primary
-        label="Ok"
-        onClick={() => this.handleClose(true)}
-        autoFocus={autoFocus} // TODO doesn't work with tooltips
-        disabled={this.state.disabled}
-      />,
-    ];
+    const finalActions =
+      actions || cancelOnly
+        ? [
+          <Button
+            primary
+            label={<T id="general.cancel" />}
+            onClick={this.handleClose}
+            key="cancel"
+          />,
+        ]
+        : [
+          <Button
+            primary
+            label={<T id="general.cancel" />}
+            onClick={this.handleClose}
+            key="cancel"
+          />,
+          <Button
+            primary
+            label="Ok"
+            onClick={() => this.handleClose(true)}
+            autoFocus={autoFocus} // TODO doesn't work with tooltips
+            disabled={this.state.disabled}
+            key="submit"
+          />,
+        ];
 
     const childProps = {
       disableClose: this.disableClose,
@@ -78,12 +91,8 @@ export default class DialogSimple extends Component {
           style={buttonStyle}
         />
         <Dialog
-          title={
-            <h3>
-              {title}
-            </h3>
-          }
-          actions={actions}
+          title={<h3>{title}</h3>}
+          actions={finalActions}
           modal={modal}
           open={this.state.open}
           onRequestClose={this.handleClose}
@@ -92,6 +101,7 @@ export default class DialogSimple extends Component {
           style={style}
           autoScrollBodyContent={autoScroll}
           repositionOnUpdate
+          autoDetectWindowHeight
         >
           {!!children && passProps
             ? React.cloneElement(children, { ...childProps })
@@ -116,6 +126,7 @@ DialogSimple.propTypes = {
   passProps: PropTypes.bool,
   onOpen: PropTypes.func,
   autoScroll: PropTypes.bool,
+  cancelOnly: PropTypes.bool,
 };
 
 DialogSimple.defaultProps = {
@@ -130,4 +141,5 @@ DialogSimple.defaultProps = {
   passProps: false,
   onOpen: () => {},
   autoScroll: false,
+  cancelOnly: false,
 };

@@ -1,21 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Meteor } from 'meteor/meteor';
 
 import Button from '/imports/ui/components/general/Button';
 
-import ConfirmMethod from './ConfirmMethod';
 import {
   cancelAuction,
   endAuction,
   deleteRequest,
-  confirmClosing,
 } from '/imports/api/loanrequests/methods';
 import DialogSimple from '/imports/ui/components/general/DialogSimple';
 import DropzoneArray from '/imports/ui/components/general/DropzoneArray';
 import ClosingForm from '/imports/ui/components/admin/ClosingForm';
 import LastStepsForm from '/imports/ui/components/admin/LastStepsForm';
 import downloadPDF from '/imports/js/helpers/download-pdf';
+import ConfirmMethod from './ConfirmMethod';
 
 const styles = {
   div: {
@@ -25,6 +23,14 @@ const styles = {
   },
   button: {
     margin: 8,
+  },
+  backDrop: {
+    backgroundColor: 'transparent',
+    display: 'none',
+  },
+  dialog: {
+    width: '100%',
+    maxWidth: '80%',
   },
 };
 
@@ -97,7 +103,13 @@ const ActionsTab = (props) => {
           disabled={false}
         />
       </DialogSimple>
-      <DialogSimple title="Dernières Etapes" label="Dernières Etapes" passProps>
+      <DialogSimple
+        title="Dernières Etapes"
+        label="Dernières Etapes"
+        passProps
+        autoScroll
+        cancelOnly
+      >
         <LastStepsForm loanRequest={loanRequest} />
       </DialogSimple>
     </div>

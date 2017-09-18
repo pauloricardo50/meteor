@@ -20,18 +20,12 @@ export default class AdminNewOffer extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      open: false,
-    };
+    this.state = { open: false };
   }
 
-  handleClose = () => {
-    this.setState({ open: false });
-  };
+  handleClose = () => this.setState({ open: false });
 
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
+  handleOpen = () => this.setState({ open: true });
 
   render() {
     const actions = [
