@@ -1,14 +1,25 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { _ } from 'lodash';
+import sinon from 'sinon';
+import testRequire from '/imports/js/helpers/testRequire';
 
-import {
+// import {
+//   getAuthToken,
+//   convertParamsToLogismata,
+//   getParamsArray,
+//   callApi,
+//   getLocationId,
+// } from '../../api';
+
+const {
   getAuthToken,
   convertParamsToLogismata,
   getParamsArray,
   callApi,
   getLocationId,
-} from '../../api';
+} =
+  testRequire('../../api') || require('../../api');
 
 describe('logismata API', () => {
   describe('getAuthToken', () => {
@@ -32,13 +43,13 @@ describe('logismata API', () => {
     it('returns an object with all default values', () => {
       expect(convertParamsToLogismata()).to.deep.equal({
         civilStatus: 2,
-        confession: undefined,
+        confession: 'other',
         incomeBase: 1,
         sex: 1,
         country: 0,
         language: 0,
         mortgageType: 2,
-        amoSavingType: 1,
+        savingType: 1,
         existingOrNew: 1,
       });
     });
@@ -47,13 +58,13 @@ describe('logismata API', () => {
       const obj = { sex: 'female' };
       expect(convertParamsToLogismata(obj)).to.deep.equal({
         civilStatus: 2,
-        confession: undefined,
+        confession: 'other',
         incomeBase: 1,
         sex: 2,
         country: 0,
         language: 0,
         mortgageType: 2,
-        amoSavingType: 1,
+        savingType: 1,
         existingOrNew: 1,
       });
     });
@@ -62,13 +73,13 @@ describe('logismata API', () => {
       const obj = { test: 'test' };
       expect(convertParamsToLogismata(obj)).to.deep.equal({
         civilStatus: 2,
-        confession: undefined,
+        confession: 'other',
         incomeBase: 1,
         sex: 1,
         country: 0,
         language: 0,
         mortgageType: 2,
-        amoSavingType: 1,
+        savingType: 1,
         existingOrNew: 1,
         test: 'test',
       });
@@ -101,10 +112,12 @@ describe('logismata API', () => {
   });
 
   describe('callApi', () => {
-    it('throws if an invalid method is given', () =>
-      callApi('test').catch(e =>
-        expect(e.message).to.deep.equal('invalid logismata method name'),
-      ));
+    it('throws if an invalid method is given', () => {
+      expect(() => callApi('test')).to.throw('invalid logismata method name');
+      // callApi('test').catch(e =>
+      //   expect(e.message).to.deep.equal('invalid logismata method name'),
+      // );
+    });
 
     it('works with a simple query', () => {
       const params = {

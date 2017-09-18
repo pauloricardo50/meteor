@@ -4,6 +4,7 @@ const stubs = {
   meteor: {
     Meteor: {
       defer: () => {},
+      isServer: true,
     },
     '@noCallThru': true,
     '@global': true,

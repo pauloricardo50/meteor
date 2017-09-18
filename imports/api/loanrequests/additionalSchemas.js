@@ -438,6 +438,9 @@ export const LogicSchema = new SimpleSchema({
     defaultValue: [],
   },
   'lastSteps.$': Object,
-  'lastSteps.$.id': String,
+  'lastSteps.$.id': { type: String, optional: true },
   'lastSteps.$.type': String,
+  'lastSteps.$.title': String,
+  'lastSteps.$.description': { type: String, optional: true },
+  'lastSteps.$.status': String,
 });

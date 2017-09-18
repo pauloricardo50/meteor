@@ -31,6 +31,9 @@
   "FilesPage.description":
     "Vous trouverez ici tous les documents que vous avez ajoutés à votre projet. Ils sont enregistrés en toute sécurité, et vous pourrez les y retrouver à tout instant.",
 
+  "ClosingPage.empty":
+    "Nous sommes en train de préparer les dernières étapes pour que vous puissiez décaisser votre prêt hypothécaire. Revenez bientôt!",
+
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",
