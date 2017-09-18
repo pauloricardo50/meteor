@@ -86,7 +86,10 @@ const djsConfig = props => ({
   parallelUploads: 1,
   uploadMultiple: false,
   accept(file, done) {
-    const uploader = new Slingshot.Upload('myFileUploads', props);
+    const uploader = new Slingshot.Upload('myFileUploads', {
+      ...props,
+      docId: props.documentId,
+    });
 
     uploader.file = file;
     uploader.request((error, instructions) => {

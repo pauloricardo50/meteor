@@ -69,6 +69,7 @@
   "AppPage.begin": "Commencer",
   "AppPage.comparator": "Comparateur de propriétés",
   "AppPage.loanRequest": "Demande de prêt",
+  "AppPage.loanRequest.done": "Prêt Hypothécaire",
   "AppPage.newRequest": "Nouvelle demande de prêt",
   "AppPage.noName": "Sans titre",
   "AppPage.properties":
@@ -538,6 +539,7 @@
   "offer.interest5": "Taux 5 ans",
   "offer.interestLibor": "Taux Libor",
   "offer.maxAmount": "Prêt maximal",
+  "offer.monthly": "Coût Mensuel",
   "OfferPickerPage.description": "Choisissez l'offre qui vous convient.",
   "OfferPickerPage.title": "Les meilleures offres",
   "OffersTable.amount": "Montant",

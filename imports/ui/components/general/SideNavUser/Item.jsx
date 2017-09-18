@@ -31,7 +31,7 @@ const getIcon = (item, isWaiting) => {
         <WaitingIcon />
       </div>
     );
-  } else if (typeof item.percent === 'function') {
+  } else if (typeof item.percent === 'function' && item.percent() > 0) {
     return (
       <div className="icon" style={{ position: 'relative' }}>
         <span className="available-icon" />

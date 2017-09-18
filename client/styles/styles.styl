@@ -368,9 +368,11 @@ $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
   margin-bottom: 16px;
   box-sizing: content-box;
   padding: 16px;
-  &:hover&:not(.disabled)
+  &:hover
     border: solid 1px brand-primary;
     cursor: pointer;
+    // &.disabled
+    //   border: initial;
   &.chosen
     border: solid 2px brand-primary;
     &.disabled
@@ -390,8 +392,10 @@ div.strategy-choices
       padding: 16px;
       display: flex;
       flex-direction: column;
-      &:hover&:not(.disabled)
+      &:hover
         cursor: pointer;
+        &.disabled
+          cursor: default;
       .top
         display: flex;
         justify-content: flex-start;
@@ -1517,3 +1521,20 @@ ul.compare-column
     label
       margin: 0;
       color: #222;
+
+@keyframes heartBeat {
+  0% {transform: scale(1);}
+  25% {transform: scale(.97);}
+  35% {transform: scale(.9);}
+  45% {transform: scale(1.1);}
+  55% {transform: scale(.9);}
+  65% {transform: scale(1.1);}
+  75% {transform: scale(1.03);}
+  100% {transform: scale(1);}
+}
+
+.heart-beat {
+  animation-name: heartBeat;
+  animation-iteration-count: infinite;
+  animation-duration: 2s;
+}

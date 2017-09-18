@@ -18,19 +18,29 @@ const AppPage = ({ loanRequests, properties, currentUser }) => (
       <AppItem
         key={request._id}
         title={request.name || <T id="AppPage.noName" />}
-        subtitle={<T id="AppPage.loanRequest" />}
+        subtitle={
+          request.status === 'active' ? (
+            <T id="AppPage.loanRequest" />
+          ) : (
+            <T id="AppPage.loanRequest.done" />
+          )
+        }
         mainText={
-          <span>
-            <T id="AppPage.step" values={{ step: request.logic.step }} />
-            {!request.name && (
-              <span>
-                <br />
-                <span className="active">
-                  <T id="AppPage.begin" />
+          request.status === 'active' ? (
+            <span>
+              <T id="AppPage.step" values={{ step: request.logic.step }} />
+              {!request.name && (
+                <span>
+                  <br />
+                  <span className="active">
+                    <T id="AppPage.begin" />
+                  </span>
                 </span>
-              </span>
-            )}
-          </span>
+              )}
+            </span>
+          ) : (
+            <span className="fa fa-home fa-2x heart-beat active" />
+          )
         }
         href={`/app/requests/${request._id}`}
       />

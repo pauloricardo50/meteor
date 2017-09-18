@@ -121,7 +121,7 @@ export const getMonthlyWithOffer = (
   insuranceFortuneUsed = 0,
 ) => {
   // Return undefined if the counterpartOffer doesn't exist
-  if (!isStandard && !request.counterpartOffer) {
+  if (!isStandard && !offer.counterpartOffer) {
     return undefined;
   }
 
@@ -149,6 +149,15 @@ export const getMonthlyWithOffer = (
     ? Math.round((maintenance + loan * amortization + interests) / 12) || 0
     : 0;
 };
+
+export const getMonthlyWithExtractedOffer = (loanRequest, offer) =>
+  getMonthlyWithOffer(
+    loanRequest,
+    {
+      [offer.type === 'standard' ? 'standardOffer' : 'counterpartOffer']: offer,
+    },
+    offer.type === 'standard',
+  );
 
 export const getPropAndWork = loanRequest =>
   (loanRequest.property &&

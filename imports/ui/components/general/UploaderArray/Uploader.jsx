@@ -44,13 +44,7 @@ export default class Uploader extends Component {
       },
     };
 
-    cleanMethod(pushFunc, object, docId).then(() => {
-      // Remove uploaded file from tempFiles
-      // FIXME: This prevents someone from uploading a file with the same name twice
-      this.setState(prev => ({
-        tempFiles: prev.tempFiles.filter(f => f.name !== file.name),
-      }));
-    });
+    cleanMethod(pushFunc, object, docId).then(() => {});
   };
 
   handleRemove = (key) => {
@@ -65,6 +59,32 @@ export default class Uploader extends Component {
       }
     });
   };
+
+  // Remove temp files from state when they are saved to the DB, and appear in
+  // props.
+  // FIXME: This prevents someone from uploading a file with the same name twice
+  componentWillReceiveProps(nextProps) {
+    const { currentValue: nextValue } = nextProps;
+    const { currentValue } = this.props;
+
+    if (nextValue.length !== currentValue.length) {
+      const { tempFiles } = this.state;
+
+      if (tempFiles && tempFiles.length) {
+        nextValue.forEach((file) => {
+          tempFiles.forEach((temp) => {
+            if (temp.name === file.initialName) {
+              this.setState(prev => ({
+                tempFiles: prev.tempFiles.filter(
+                  f => f.name !== file.initialName,
+                ),
+              }));
+            }
+          });
+        });
+      }
+    }
+  }
 
   render() {
     const {

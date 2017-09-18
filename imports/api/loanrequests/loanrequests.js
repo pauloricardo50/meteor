@@ -51,7 +51,11 @@ const LoanRequestSchema = new SimpleSchema({
       }
     },
   },
-  status: { type: String, defaultValue: 'active' },
+  status: {
+    type: String,
+    defaultValue: 'active',
+    allowedValues: ['active', 'done'],
+  },
   name: { type: String, optional: true, defaultValue: '' },
   general: { type: GeneralSchema, defaultValue: {} },
   borrowers: { type: Array, defaultValue: [] },

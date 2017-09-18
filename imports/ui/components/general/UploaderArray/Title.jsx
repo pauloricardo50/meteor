@@ -32,7 +32,7 @@ const Title = ({
               tooltipPlacement="top"
             />
           )}
-          {required === false && '*'}
+          {required === false ? '' : ' *'}
         </h4>
         <h5 className="secondary">
           <span style={{ padding: '0 4px' }}>&bull;</span>

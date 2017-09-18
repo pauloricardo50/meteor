@@ -24,6 +24,7 @@ const OfferList = ({ loanRequest, offers, disabled }) => {
     <div className="flex-col" style={{ width: '100%' }}>
       {filteredOffers.map(offer => (
         <Offer
+          loanRequest={loanRequest}
           offer={offer}
           key={offer.uid}
           handleSave={(id, type) => handleSave(id, type, loanRequest)}
