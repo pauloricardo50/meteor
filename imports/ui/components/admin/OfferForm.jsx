@@ -134,16 +134,27 @@ export default class OfferForm extends Component {
   };
 
   render() {
+    const { admin, loanRequest, handleCancel } = this.props;
+    const {
+      organization,
+      conditions,
+      maxAmount,
+      amortization,
+      showCounterpart,
+      counterparts,
+    } = this.state;
+
     return (
       <article className="col-xs-12" style={styles.article}>
         <form onSubmit={this.handleSubmit}>
-          {this.props.admin &&
+          {admin && (
             <TextField
               floatingLabelText="Institution"
               hintText="UBS"
               onChange={(e, n) => this.handleChange(e, n, 'organization')}
-              value={this.state.organization}
-            />}
+              value={organization}
+            />
+          )}
 
           <TextField
             floatingLabelText="Condition(s) minimum"
@@ -153,7 +164,7 @@ export default class OfferForm extends Component {
             fullWidth
             rows={3}
             onChange={(e, n) => this.handleChange(e, n, 'conditions')}
-            value={this.state.conditions}
+            value={conditions}
           />
 
           <div className="col-xs-12">
@@ -161,15 +172,11 @@ export default class OfferForm extends Component {
               floatingLabelText="Prêt Maximal"
               pattern="[0-9]*"
               hintText={`CHF ${toMoney(
-                Math.round(this.props.loanRequest.property.value * 0.8),
+                Math.round(loanRequest.property.value * 0.8),
               )}`}
               onChange={(e, n) => this.handleChange(e, n, 'maxAmount')}
             >
-              <MaskedInput
-                mask={swissFrancMask}
-                guide
-                value={this.state.maxAmount}
-              />
+              <MaskedInput mask={swissFrancMask} guide value={maxAmount} />
             </TextField>
           </div>
 
@@ -192,8 +199,8 @@ export default class OfferForm extends Component {
             Taux Standard
           </h4>
 
-          {getFormArray(0).map(field =>
-            (<div className="col-xs-6 col-md-3" key={field.name}>
+          {getFormArray(0).map(field => (
+            <div className="col-xs-6 col-md-3" key={field.name}>
               <TextField
                 floatingLabelText={field.label}
                 hintText={'1%'}
@@ -207,8 +214,8 @@ export default class OfferForm extends Component {
                   value={this.state[field.name]}
                 />
               </TextField>
-            </div>),
-          )}
+            </div>
+          ))}
 
           <Checkbox
             label="Ajouter une offre avec contrepartie"
@@ -218,10 +225,10 @@ export default class OfferForm extends Component {
               this.setState(prev => ({
                 showCounterpart: !prev.showCounterpart,
               }))}
-            checked={this.state.showCounterpart}
+            checked={showCounterpart}
           />
 
-          {this.state.showCounterpart &&
+          {showCounterpart && (
             <div>
               <h4 className="text-center col-xs-12" style={styles.h4}>
                 Taux d'intérêt avec contrepartie
@@ -236,19 +243,18 @@ export default class OfferForm extends Component {
                   fullWidth
                   rows={3}
                   onChange={(e, n) => this.handleChange(e, n, 'counterparts')}
-                  value={this.state.counterparts}
+                  value={counterparts}
                 />
               </div>
 
-              {getFormArray(1).map(field =>
-                (<div className="col-xs-6 col-md-3" key={field.name}>
+              {getFormArray(1).map(field => (
+                <div className="col-xs-6 col-md-3" key={field.name}>
                   <TextField
                     floatingLabelText={field.label}
                     hintText={'1%'}
                     type="text"
                     fullWidth
-                    onChange={(e, n) =>
-                      this.handleChange(e, parseFloat(n), field.name)}
+                    onChange={(e, n) => this.handleChange(e, n, field.name)}
                   >
                     <MaskedInput
                       mask={percentMask}
@@ -256,18 +262,20 @@ export default class OfferForm extends Component {
                       value={this.state[field.name]}
                     />
                   </TextField>
-                </div>),
-              )}
-            </div>}
+                </div>
+              ))}
+            </div>
+          )}
 
           <div className="col-xs-12" style={styles.buttons}>
-            {this.props.handleCancel &&
+            {!!handleCancel && (
               <Button
                 raised
                 label="Annuler"
                 style={styles.button}
-                onClick={this.props.handleCancel}
-              />}
+                onClick={handleCancel}
+              />
+            )}
             <Button raised label="Envoyer" type="submit" primary />
           </div>
         </form>
