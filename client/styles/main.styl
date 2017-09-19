@@ -603,6 +603,7 @@ svg:not(:root) {
             border-left: 1px solid rgba(0,0,0,0);
             padding-right: 16px;
             transition: all 300ms $bezier;
+            position: relative;
             &:hover
               background-color: #f4f6f8;
               cursor: pointer;
@@ -614,6 +615,12 @@ svg:not(:root) {
               justify-content: center;
               align-items: center;
               color: #DEE2E6;
+              .circular-progress
+                position: absolute !important;
+                top: 22px; // 64 total height
+                left: 14px; // 48 total width
+                width: 20px !important;
+                height: 20px !important;
               .available-icon
                 background-color: #DEE2E6;
               &.warning

@@ -33,17 +33,12 @@ const getIcon = (item, isWaiting) => {
     );
   } else if (typeof item.percent === 'function' && item.percent() > 0) {
     return (
-      <div className="icon" style={{ position: 'relative' }}>
+      <div className="icon">
         <span className="available-icon" />
         <CircularProgress
           mode="determinate"
           value={item.percent() * 100}
-          style={{ position: 'absolute', transform: 'rotate(-90deg)' }}
-          innerStyle={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
+          className="circular-progress"
         />
       </div>
     );
