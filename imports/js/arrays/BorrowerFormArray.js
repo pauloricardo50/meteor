@@ -137,6 +137,7 @@ export const getBorrowerInfoArray = (borrowers, id) => {
       number: true,
       label: 'Age',
       placeholder: '40',
+      saveOnChange: false,
     },
     {
       id: 'birthPlace',

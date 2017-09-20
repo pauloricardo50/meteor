@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Component } from 'react';
 
 import Button from '/imports/ui/components/general/Button';
 
@@ -14,13 +14,11 @@ const styles = {
   },
 };
 
-export default class ArrayInput extends React.Component {
+export default class ArrayInput extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      count: 1,
-    };
+    this.state = { count: 1 };
   }
 
   getOptions = (input, i) => {
@@ -38,7 +36,10 @@ export default class ArrayInput extends React.Component {
         o => (o && o.id) === (thisVal && thisVal.description),
       );
 
-      return [...optionsWithLabels.filter(x => arr.indexOf(x.id) < 0), thisOption || {}];
+      return [
+        ...optionsWithLabels.filter(x => arr.indexOf(x.id) < 0),
+        thisOption || {},
+      ];
     }
 
     return optionsWithLabels;
@@ -58,8 +59,10 @@ export default class ArrayInput extends React.Component {
   handleAdd = () => {
     this.setState({ count: this.state.count + 1 }, () => {
       // Push an empty object to array
-      const arr = (this.props.formState[this.props.id] &&
-        this.props.formState[this.props.id].slice(0)) || [];
+      const arr =
+        (this.props.formState[this.props.id] &&
+          this.props.formState[this.props.id].slice(0)) ||
+        [];
       const object = {};
       object[this.props.id] = arr.push({});
 
@@ -85,74 +88,91 @@ export default class ArrayInput extends React.Component {
   };
 
   render() {
+    const {
+      formState,
+      inputs,
+      className,
+      setActiveLine,
+      text1,
+      id,
+      active,
+      allOptions,
+    } = this.props;
+    const { count } = this.state;
     const inputProps = {
       ...this.props,
-      formState: { ...this.props.formState },
-      // setformState: this.props.setformState,
+      formState: { ...formState },
+      // setformState: setformState,
       setActiveLine: () => null,
     };
-    const optionQty = this.props.inputs.find(i => i.id === 'description').options.length;
+    const optionQty = inputs.find(i => i.id === 'description').options.length;
 
     return (
-      <article
-        className={this.props.className}
-        onClick={() => this.props.setActiveLine(this.props.id)}
-      >
-        {this.props.text1 && <h1 className="fixed-size">{this.props.text1}</h1>}
+      <article className={className} onClick={() => setActiveLine(id)}>
+        {text1 && <h1 className="fixed-size">{text1}</h1>}
 
-        {[...Array(this.state.count)].map((e, i) => (
+        {[...Array(count)].map((e, i) => (
           <h1 key={i} className="fixed-size array-input">
-            {this.props.inputs.map((input, j) => (
+            {inputs.map((input, j) => (
               <span key={`${input.id}_${i}${j}`} className="array-input-span">
+                {i === 0 && (
+                  <label id={id}>
+                    <T id={`Forms.${id}.${input.id}`} />
+                  </label>
+                )}
 
-                {i === 0 &&
-                  <label id={this.props.id}>
-                    <T id={`Forms.${this.props.id}.${input.id}`} />
-                  </label>}
-
-                {input.type === 'textInput' &&
+                {input.type === 'textInput' && (
                   <StartTextField
                     {...input}
                     {...inputProps}
                     id={input.id}
-                    setFormState={(id, v, cb) => this.setArrayFormState(id, v, cb, i)}
+                    setFormState={(id2, v, cb) =>
+                      this.setArrayFormState(id2, v, cb, i)}
                     value={
-                      this.props.formState[this.props.id] &&
-                        this.props.formState[this.props.id][i] &&
-                        this.props.formState[this.props.id][i][input.id]
+                      formState[id] &&
+                      formState[id][i] &&
+                      formState[id][i][input.id]
                     }
                     autoFocus={j === 0 && inputProps.autoFocus}
                     array
-                  />}
+                  />
+                )}
 
-                {input.type === 'selectInput' &&
+                {input.type === 'selectInput' && (
                   <StartSelectField
                     {...input}
                     {...inputProps}
                     id={input.id}
-                    setFormState={(id, v, cb) => this.setArrayFormState(id, v, cb, i)}
+                    setFormState={(id2, v, cb) =>
+                      this.setArrayFormState(id2, v, cb, i)}
                     value={
-                      this.props.formState[this.props.id] &&
-                        this.props.formState[this.props.id][i] &&
-                        this.props.formState[this.props.id][i][input.id]
+                      formState[id] &&
+                      formState[id][i] &&
+                      formState[id][i][input.id]
                     }
                     options={this.getOptions(input, i)}
                     autoFocus={j === 0 && inputProps.autoFocus}
-                  />}
-
+                  />
+                )}
               </span>
             ))}
           </h1>
         ))}
-        <div className={!this.props.active ? 'inputHider' : 'animated fadeIn'}>
-          <Button raised
+        <div className={!active ? 'inputHider' : 'animated fadeIn'}>
+          <Button
+            raised
             label="+"
             primary
             onClick={this.handleAdd}
             style={styles.button}
-            disabled={!this.props.allOptions && this.state.count >= optionQty}
+            disabled={!allOptions && count >= optionQty}
           />
-          <Button raised label="-" onClick={this.handleRemove} style={styles.button} />
+          <Button
+            raised
+            label="-"
+            onClick={this.handleRemove}
+            style={styles.button}
+          />
         </div>
       </article>
     );
