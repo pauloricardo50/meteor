@@ -24,7 +24,7 @@ const UploaderArray = ({ fileArray, doc, disabled, collection }) => (
           file.condition !== false && (
             <Uploader
               fileMeta={{ ...file, title: getTitle(file.id, doc) }}
-              key={file.id}
+              key={doc._id + file.id}
               currentValue={doc.files[file.id]}
               docId={doc._id}
               pushFunc={

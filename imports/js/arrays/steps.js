@@ -108,10 +108,11 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           disabled:
             loanRequest.logic.step < 3 &&
             !(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
-          percent: () =>
+          percent: () => (
             (filesPercent(loanRequest, requestFiles, 'contract') +
-              filesPercent(borrowers, borrowerFiles, 'contract')) /
-            (1 + borrowers.length),
+                filesPercent(borrowers, borrowerFiles, 'contract')) /
+              2
+          ),
           waiting: () =>
             loanRequest.logic.lender.contractRequested &&
             !loanRequest.logic.lender.contract,
@@ -131,7 +132,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           disabled:
             (filesPercent(loanRequest, requestFiles, 'contract') +
               filesPercent(borrowers, borrowerFiles, 'contract')) /
-              (1 + borrowers.length) <
+              2 <
             1,
           percent: () => closingPercent(loanRequest),
           isDone: () => loanRequest.status === 'done',
@@ -352,9 +353,6 @@ export const filesPercent = (doc, fileArrayFunc, step, checkValidity) => {
     const fileArray = fileArrayFunc(doc)[step];
     iterate(fileArray, doc);
   }
-
-  console.log(step);
-  console.log(getPercent(a));
 
   return getPercent(a);
 };
