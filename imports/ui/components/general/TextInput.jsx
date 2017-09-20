@@ -67,8 +67,6 @@ const TextInput = (props) => {
     currentValue,
   } = getDefaults(props);
 
-  console.log('style', { fontSize: 'inherit', ...style });
-
   return (
     <TextField
       floatingLabelText={label}

@@ -40,7 +40,7 @@ const styles = {
     marginBottom: 40,
   },
   h1: {
-    padding: '0 40px',
+    padding: '0 16px',
     maxWidth: 800,
     margin: '0 auto',
   },
@@ -60,7 +60,7 @@ const StructureSliders = (props) => {
       {getArray(borrowers, showInsurance).map(
         item =>
           item.max && (
-            <h1 key={item.id} style={styles.h1}>
+            <h1 key={item.id} style={styles.h1} className="fixed-size">
               <TextInput
                 id={item.id}
                 label={item.labelText}
@@ -70,8 +70,9 @@ const StructureSliders = (props) => {
                 disabled={disabled}
                 type="money"
                 style={{
-                  height: 80,
+                  height: '2.4em',
                   lineHeight: '36px',
+                  maxWidth: '100%',
                 }}
               />
               <Slider
