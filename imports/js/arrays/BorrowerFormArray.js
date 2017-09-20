@@ -49,14 +49,14 @@ export const getBorrowerInfoArray = (borrowers, id) => {
       type: 'textInput',
       label: 'Adresse 1',
       placeholder: 'Rue des Champs 7',
-      disabled: !!b.sameAddress,
+      disabled: !!b.sameAddress && !isFirst,
     },
     {
       id: 'address2',
       type: 'textInput',
       label: 'Adresse 2',
       placeholder: '',
-      disabled: !!b.sameAddress,
+      disabled: !!b.sameAddress && !isFirst,
       required: false,
     },
     {
@@ -65,7 +65,7 @@ export const getBorrowerInfoArray = (borrowers, id) => {
       number: true,
       label: 'Code Postal',
       placeholder: '1200',
-      disabled: !!b.sameAddress,
+      disabled: !!b.sameAddress && !isFirst,
       saveOnChange: false,
     },
     {
@@ -73,7 +73,7 @@ export const getBorrowerInfoArray = (borrowers, id) => {
       type: 'textInput',
       label: 'Localité',
       placeholder: 'Genève',
-      disabled: !!b.sameAddress,
+      disabled: !!b.sameAddress && !isFirst,
     },
     {
       type: 'conditionalInput',

@@ -42,7 +42,7 @@ const inputSwitch = (singleInput, index, parentProps) => {
     key: index, // Some inputs don't have id's, this means rendering a different form requires a re-render (or key prop on the form)
     style: parentProps.fullWidth ? styles.fullWidth : styles.smallWidth,
     currentValue: get(parentProps.doc, singleInput.id),
-    disabled: parentProps.disabled,
+    disabled: parentProps.disabled || singleInput.disabled,
   };
 
   if (parentProps.noPlaceholders) {

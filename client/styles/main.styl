@@ -221,7 +221,7 @@ svg.warning
   margin-bottom: 48px;
   font-size: 1.25em;
   line-height: 1.6em;
-  *
+  > p
     max-width: 600px;
     text-align: justify;
 
@@ -267,6 +267,14 @@ svg.warning
 .mask3
   box-shadow: 0px 40px 40px 0px rgba(0,0,0,0.16);
 
+.border
+  border-color: border-grey;
+  &.top
+    border-top-style: solid;
+    border-top-width: 1px;
+  &.bottom
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
 
 .flex, .flex-row, .flex-col
   display: flex;

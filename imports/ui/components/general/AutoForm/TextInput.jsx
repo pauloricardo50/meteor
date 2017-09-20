@@ -119,54 +119,68 @@ export default class TextInput extends Component {
   };
 
   render() {
+    const {
+      style,
+      label,
+      floatingLabelFixed,
+      placeholder,
+      number,
+      id,
+      multiLine,
+      rows,
+      info,
+      autocomplete,
+      disabled,
+      inputStyle,
+      money,
+      decimal,
+      noValidator,
+    } = this.props;
+    const { value, errorText, saving, showInfo } = this.state;
+
     return (
-      <div style={{ ...styles.div, ...this.props.style }}>
+      <div style={{ ...styles.div, ...style }}>
         <TextField
-          floatingLabelText={this.props.label}
-          floatingLabelFixed={this.props.floatingLabelFixed}
-          hintText={this.props.placeholder}
-          value={
-            this.props.number
-              ? this.formatter(this.state.value)
-              : this.state.value
-          }
+          floatingLabelText={label}
+          floatingLabelFixed={floatingLabelFixed}
+          hintText={placeholder}
+          value={number ? this.formatter(value) : value}
           onChange={this.handleChange}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
           type="text"
-          id={this.props.id}
+          id={id}
           fullWidth
-          multiLine={this.props.multiLine}
-          rows={this.props.rows}
-          pattern={this.props.number && '[0-9]*'}
-          errorText={
-            this.state.errorText || (this.state.showInfo && this.props.info)
-          }
-          errorStyle={this.state.errorText ? {} : styles.infoStyle}
-          underlineFocusStyle={this.state.errorText ? {} : styles.infoStyle}
+          multiLine={multiLine}
+          rows={rows}
+          pattern={number && '[0-9]*'}
+          errorText={errorText || (showInfo && info)}
+          errorStyle={errorText ? {} : styles.infoStyle}
+          underlineFocusStyle={errorText ? {} : styles.infoStyle}
           floatingLabelShrinkStyle={
-            this.state.showInfo && !this.state.errorText ? styles.infoStyle : {}
+            showInfo && !errorText ? styles.infoStyle : {}
           }
-          autoComplete={this.props.autocomplete || ''}
-          disabled={this.props.disabled}
-          style={this.props.style}
-          inputStyle={this.props.inputStyle}
+          autoComplete={autocomplete || ''}
+          disabled={disabled}
+          style={style}
+          inputStyle={inputStyle}
           noValidate
         >
-          {(this.props.money || this.props.decimal) &&
+          {(money || decimal) && (
             <MaskedInput
-              value={this.state.value}
-              mask={this.props.money ? swissFrancMask : decimalMask}
+              value={value}
+              mask={money ? swissFrancMask : decimalMask}
               guide
               pattern="[0-9]*"
-            />}
+            />
+          )}
         </TextField>
         <SavingIcon
-          saving={this.state.saving}
-          errorExists={this.state.errorText !== ''}
+          saving={saving}
+          errorExists={errorText !== ''}
           style={styles.savingIcon}
         />
-        {!this.props.noValidator && <FormValidator {...this.props} />}
+        {!noValidator && <FormValidator {...this.props} />}
       </div>
     );
   }

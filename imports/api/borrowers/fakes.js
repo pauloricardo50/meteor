@@ -16,6 +16,7 @@ export const fakeBorrower = {
   personalBank: 'BCGE',
   isSwiss: true,
   worksForOwnCompany: false,
+  sameAddress: true,
 };
 
 export const completeFakeBorrower = {

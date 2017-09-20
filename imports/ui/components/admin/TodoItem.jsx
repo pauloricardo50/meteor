@@ -1,30 +1,21 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import moment from 'moment';
+import React from 'react';
 
 import Button from '/imports/ui/components/general/Button';
 
-const TodoItem = props => {
-  return (
-    <article className="mask1 admin-todo">
-      <div className="text">
-        <h3 className="fixed-size">
-          {props.name} <small>{props.small}</small>
-        </h3>
+const TodoItem = ({ name, small, subtitle, label, handleClick }) => (
+  <article className="mask1 admin-todo">
+    <div className="text">
+      <h3 className="fixed-size">
+        {name} <small>{small}</small>
+      </h3>
 
-        <p>
-          {props.subtitle || ''}
-        </p>
-      </div>
+      <p>{subtitle || ''}</p>
+    </div>
 
-      <Button raised
-        label={props.label}
-        onClick={e => props.handleClick(e)}
-        primary
-      />
-    </article>
-  );
-};
+    <Button raised label={label} onClick={handleClick} primary />
+  </article>
+);
 
 TodoItem.defaultProps = {
   offers: [],

@@ -23,9 +23,12 @@ const ClosingItem = ({ step, loanRequest, disabled }) => {
   return (
     <div
       className={classNames({ 'mask1 flex-col': true, secondary: disabled })}
-      style={{ marginBottom: 16, width: '100%' }}
+      style={{ marginBottom: 16, width: '100%', maxWidth: 600 }}
     >
-      <div className="flex" style={{ alignItems: 'center' }}>
+      <div
+        className="flex"
+        style={{ alignItems: 'center', flexWrap: 'nowrap' }}
+      >
         <FileStatusIcon status={status} />
         <h4 className="title no-margin">{title}</h4>
       </div>
@@ -34,10 +37,8 @@ const ClosingItem = ({ step, loanRequest, disabled }) => {
       </p>
       {status === 'error' &&
         error && (
-          <div
-            style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid grey' }}
-          >
-            <p className="warning">{error}</p>
+          <div style={{ marginTop: 8, paddingTop: 8 }} className="border top">
+            <p className="error">{error}</p>
           </div>
         )}
     </div>
