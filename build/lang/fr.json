@@ -23,6 +23,7 @@
   "ActionsTable.do": " ",
 
   "general.property": "Bien immobilier",
+  "general.sortBy": "Trier par",
 
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",

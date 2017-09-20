@@ -19,7 +19,7 @@ const Select = ({ id, label, currentValue, onChange, options, style }) => (
 
 Select.propTypes = {
   id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
   currentValue: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   options: PropTypes.arrayOf(PropTypes.object).isRequired,

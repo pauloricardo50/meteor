@@ -1,3 +1,5 @@
+import { getMonthlyWithExtractedOffer } from '/imports/js/helpers/requestFunctions';
+
 export const getRange = (offers, key) =>
   offers.reduce(
     (accumulator, offer) => {
@@ -40,6 +42,10 @@ export const extractOffers = (offers, loanRequest) => {
       uid: `standard${offer._id}`,
       type: 'standard',
     });
+    array[array.length - 1].monthly = getMonthlyWithExtractedOffer(
+      loanRequest,
+      array[array.length - 1],
+    );
 
     if (offer.counterpartOffer) {
       array.push({
@@ -50,6 +56,10 @@ export const extractOffers = (offers, loanRequest) => {
         uid: `counterparts${offer._id}`,
         type: 'counterparts',
       });
+      array[array.length - 1].monthly = getMonthlyWithExtractedOffer(
+        loanRequest,
+        array[array.length - 1],
+      );
     }
   });
   return array;
