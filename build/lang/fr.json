@@ -25,6 +25,14 @@
   "general.property": "Bien immobilier",
   "general.sortBy": "Trier par",
 
+  "error.fileType.title": "Fichier incompatible",
+  "error.fileType.description":
+    "On ne peut prendre que les .pdf, .jpg, .jpeg et .png",
+
+  "error.fileSize.title": "Fichier trop gros",
+  "error.fileSize.description":
+    "On ne peut prendre que des fichiers en dessous de 50MB",
+
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",

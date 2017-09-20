@@ -1,16 +1,28 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
+import { injectIntl } from 'react-intl';
 
 import cleanMethod from '/imports/api/cleanMethods';
 import { getFileCount } from '/imports/js/arrays/files';
+import bert from '/imports/js/helpers/bert';
+import { allowedFileTypes, maxSize } from '/imports/startup/meteor-slingshot';
 
 import Title from './Title';
 import File from './File';
 import TempFile from './TempFile';
 import FileAdder from './FileAdder';
 
-export default class Uploader extends Component {
+const checkFile = (file) => {
+  if (allowedFileTypes.indexOf(file.type) < 0) {
+    return 'fileType';
+  } else if (file.size > maxSize) {
+    return 'fileSize';
+  }
+  return true;
+};
+
+class Uploader extends Component {
   constructor(props) {
     super(props);
 
@@ -44,12 +56,27 @@ export default class Uploader extends Component {
   }
 
   handleAddFiles = ({ target }) => {
-    console.log(target.files[0]);
-    console.log(this.props);
     const files = [];
+    let showError = false;
     for (let i = 0; i < target.files.length; i += 1) {
       // Convert to Array
-      files.push(target.files[i]);
+      const file = target.files[i];
+      const isValid = checkFile(file);
+      if (isValid === true) {
+        files.push(file);
+      } else {
+        showError = isValid;
+      }
+    }
+
+    if (showError) {
+      const { intl } = this.props;
+      const { formatMessage: f } = intl;
+      bert(
+        f({ id: `error.${showError}.title` }),
+        f({ id: `error.${showError}.description` }),
+        'danger',
+      );
     }
 
     this.setState(prev => ({ tempFiles: [...prev.tempFiles, ...files] }));
@@ -155,3 +182,5 @@ Uploader.defaultProps = {
   updateFunc: 'updateRequest',
   collection: 'loanRequests',
 };
+
+export default injectIntl(Uploader);
