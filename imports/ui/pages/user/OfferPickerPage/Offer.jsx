@@ -7,7 +7,7 @@ import { T, IntlNumber } from '/imports/ui/components/general/Translation';
 const styles = {
   item: {
     width: '25%',
-    minWidth: 120,
+    minWidth: 140,
     padding: 8,
   },
 };

@@ -33,6 +33,7 @@ export const extractOffers = (offers, loanRequest) => {
       organization: offer.organization,
       canton: offer.canton,
       id: offer._id,
+      rating: 5,
     };
 
     array.push({

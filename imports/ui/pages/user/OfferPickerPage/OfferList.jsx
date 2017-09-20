@@ -7,19 +7,24 @@ import ConditionsButton from '/imports/ui/components/general/ConditionsButton';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation';
 import Select from '/imports/ui/components/general/Select';
 import Offer from './Offer';
+import StarRating from './StarRating';
 
-const getOfferValues = offer => [
+const getOfferValues = ({ monthly, rating, conditions, counterparts }) => [
   {
     id: 'monthly',
     value: (
       <span>
-        <IntlNumber value={offer.monthly} format="money" />{' '}
+        <IntlNumber value={monthly} format="money" />{' '}
         <span className="secondary">
           {' '}
           <T id="general.perMonth" />
         </span>
       </span>
     ),
+  },
+  {
+    id: 'rating',
+    value: <StarRating value={rating} />,
   },
   { key: 'maxAmount', format: 'money' },
   { key: 'amortization', format: 'percentage' },
@@ -30,10 +35,7 @@ const getOfferValues = offer => [
   { key: 'interest10', format: 'percentage' },
   {
     component: (
-      <ConditionsButton
-        conditions={offer.conditions}
-        counterparts={offer.counterparts}
-      />
+      <ConditionsButton conditions={conditions} counterparts={counterparts} />
     ),
   },
 ];
