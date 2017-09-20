@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { T } from '/imports/ui/components/general/Translation';
 import IconButton from '/imports/ui/components/general/IconButton';
 
+import Download from './Download';
+
 const File = ({ file, disabled, handleRemove }) => {
   const { initialName, key, status, error } = file;
 
@@ -23,6 +25,7 @@ const File = ({ file, disabled, handleRemove }) => {
               onClick={() => handleRemove(key)}
             />
           )}
+          <Download fileKey={key} fileName={initialName} />
         </div>
       </div>
       {error && status === 'error' && <p className="error">{error}</p>}

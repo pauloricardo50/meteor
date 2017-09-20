@@ -43,7 +43,14 @@ const SideNavStepperStep = ({
   const { nb, title, subtitle, items } = step;
 
   return (
-    <li key={nb} className={classnames({ step: true, isActive: active })}>
+    <li
+      key={nb}
+      className={classnames({
+        step: true,
+        isActive: active,
+        off: nb > loanRequest.logic.step,
+      })}
+    >
       <div className="absolute-line" />
       <div
         className={classnames({ top: true, inactive: nb === 0 })}

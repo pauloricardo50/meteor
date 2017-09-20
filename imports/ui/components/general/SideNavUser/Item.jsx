@@ -63,6 +63,7 @@ const Item = ({ item, history, handleClickLink }) => {
       className={classnames({
         item: true,
         disable: disabled || !link,
+        off: disabled,
       })}
       activeClassName={link !== undefined && !disabled ? 'active' : ''}
     >

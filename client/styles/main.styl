@@ -205,7 +205,8 @@ svg.warning
   opacity: 0.5
 
 .disabled
-  opacity 0.25
+  opacity 0.25;
+  cursor:not-allowed;
 
 .text-ellipsis
   overflow: hidden;
@@ -536,6 +537,10 @@ svg:not(:root) {
           background-color: #f9fafb;
         &:first-child
           cursor: default;
+        &.off
+          cursor: not-allowed;
+          .top
+            cursor: not-allowed;
         .top
           height: 64px;
           display: flex;
@@ -609,6 +614,8 @@ svg:not(:root) {
               cursor: pointer;
             &.disable
               cursor: default;
+            &.off
+              cursor: not-allowed;
             .icon
               width: 48px;
               display flex;

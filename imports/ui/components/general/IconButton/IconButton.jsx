@@ -5,6 +5,8 @@ import MuiIconButton from 'material-ui/IconButton';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import AddIcon from 'material-ui/svg-icons/content/add-circle-outline';
+import DownloadIcon from 'material-ui/svg-icons/file/file-download';
+import LoopIcon from 'material-ui/svg-icons/av/loop';
 
 const getIcon = (type) => {
   const props = { color: '#444', hoverColor: '#888' };
@@ -15,6 +17,10 @@ const getIcon = (type) => {
       return <CheckIcon {...props} />;
     case 'add':
       return <AddIcon {...props} />;
+    case 'download':
+      return <DownloadIcon {...props} />;
+    case 'loop':
+      return <LoopIcon {...props} className="fa-spin" />;
     default:
       throw new Error('invalid icon provided to IconButton');
   }
