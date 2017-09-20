@@ -353,6 +353,9 @@ export const filesPercent = (doc, fileArrayFunc, step, checkValidity) => {
     iterate(fileArray, doc);
   }
 
+  console.log(step);
+  console.log(getPercent(a));
+
   return getPercent(a);
 };
 

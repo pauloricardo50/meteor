@@ -18,28 +18,61 @@ import {
 import { deleteBorrower } from '/imports/api/borrowers/methods';
 import { deleteOffer, insertAdminOffer } from '/imports/api/offers/methods';
 
-const addStep1Request = () => {
-  cleanMethod('insertBorrower', completeFakeBorrower).then((res) => {
-    const request = requestStep1;
-    request.borrowers = [res];
-    cleanMethod('insertRequest', request);
-  });
+const addStep1Request = (twoBorrowers) => {
+  const ids = [];
+  cleanMethod('insertBorrower', completeFakeBorrower)
+    .then((id1) => {
+      ids.push(id1);
+      if (twoBorrowers) {
+        return cleanMethod('insertBorrower', completeFakeBorrower);
+      }
+    })
+    .then((id2) => {
+      if (id2) {
+        ids.push(id2);
+      }
+      const request = requestStep1;
+      request.borrowers = ids;
+      cleanMethod('insertRequest', request);
+    });
 };
 
-const addStep2Request = () => {
-  cleanMethod('insertBorrower', completeFakeBorrower).then((res) => {
-    const request = requestStep2;
-    request.borrowers = [res];
-    cleanMethod('insertRequest', request);
-  });
+const addStep2Request = (twoBorrowers) => {
+  const ids = [];
+
+  cleanMethod('insertBorrower', completeFakeBorrower)
+    .then((id1) => {
+      ids.push(id1);
+      if (twoBorrowers) {
+        return cleanMethod('insertBorrower', completeFakeBorrower);
+      }
+    })
+    .then((id2) => {
+      if (id2) {
+        ids.push(id2);
+      }
+      const request = requestStep2;
+      request.borrowers = ids;
+      cleanMethod('insertRequest', request);
+    });
 };
 
-const addStep3Request = (completeFiles = true) => {
+const addStep3Request = (twoBorrowers, completeFiles = true) => {
+  const ids = [];
   const request = requestStep3(completeFiles);
   let requestId;
   cleanMethod('insertBorrower', completeFakeBorrower)
-    .then((res) => {
-      request.borrowers = [res];
+    .then((id1) => {
+      ids.push(id1);
+      if (twoBorrowers) {
+        return cleanMethod('insertBorrower', completeFakeBorrower);
+      }
+    })
+    .then((id2) => {
+      if (id2) {
+        ids.push(id2);
+      }
+      request.borrowers = ids;
     })
     .then(() => cleanMethod('insertRequest', request))
     .then((id) => {
@@ -90,19 +123,42 @@ const purge = (props) => {
 };
 
 export default class DevPage extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { twoBorrowers: false };
+  }
+
   componentDidMount() {
     if (!Roles.userIsInRole(this.props.currentUser, 'dev')) {
       this.props.history.push('/app');
     }
   }
 
+  handleChange = () =>
+    this.setState(prev => ({ twoBorrowers: !prev.twoBorrowers }));
+
   render() {
+    const { twoBorrowers } = this.state;
     return (
       <div>
-        <button onClick={addStep1Request}>step 1 Request</button>
-        <button onClick={addStep2Request}>step 2 Request</button>
-        <button onClick={addStep3Request}>step 3 Request</button>
-        <button onClick={() => addStep3Request(false)}>
+        <input
+          type="checkbox"
+          name="vehicle"
+          value={twoBorrowers}
+          onChange={this.handleChange}
+        />
+        2 emprunteurs<br />
+        <button onClick={() => addStep1Request(twoBorrowers)}>
+          step 1 Request
+        </button>
+        <button onClick={() => addStep2Request(twoBorrowers)}>
+          step 2 Request
+        </button>
+        <button onClick={() => addStep3Request(twoBorrowers)}>
+          step 3 Request
+        </button>
+        <button onClick={() => addStep3Request(twoBorrowers, false)}>
           step 3 Request, few files
         </button>
         <button onClick={() => purge(this.props)}>Purge</button>
