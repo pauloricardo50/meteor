@@ -242,7 +242,7 @@ export const PropertySchema = new SimpleSchema({
   copropertyPercentage: {
     type: Number,
     min: 0,
-    max: 1,
+    max: 1000,
     optional: true,
   },
   cityPlacementQuality: {

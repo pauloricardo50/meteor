@@ -126,6 +126,10 @@ class Uploader extends Component {
     } = this.props;
     const { tempFiles } = this.state;
     const { id } = fileMeta;
+    // If one of the files has an error, allow uploading even if form is disabled
+    const disableAdd =
+      currentValue.reduce((acc, f) => !(f.status === 'error'), true) &&
+      disabled;
 
     return (
       <div className="uploader">
@@ -154,7 +158,7 @@ class Uploader extends Component {
           />
         ))}
 
-        {!disabled && (
+        {!disableAdd && (
           <FileAdder
             id={fileMeta.id}
             handleAddFiles={this.handleAddFiles}

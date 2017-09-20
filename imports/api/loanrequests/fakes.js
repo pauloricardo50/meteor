@@ -5,7 +5,9 @@ export const fakeGeneral = {
   purchaseType: 'acquisition',
   fortuneUsed: 250000,
   insuranceFortuneUsed: 100000,
-  wantedClosingDate: moment().add(15, 'd').toDate(),
+  wantedClosingDate: moment()
+    .add(15, 'd')
+    .toDate(),
 };
 
 export const fakeProperty = {
@@ -32,7 +34,7 @@ export const fakeProperty = {
   },
   minergie: true,
   isCoproperty: true,
-  copropertyPercentage: 0.4,
+  copropertyPercentage: 400,
   cityPlacementQuality: 2,
   buildingPlacementQuality: 3,
   buildingQuality: 1,
