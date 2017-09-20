@@ -5,6 +5,7 @@ import Slider from 'material-ui/Slider';
 import TextField from 'material-ui/TextField';
 import MaskedInput from 'react-text-mask';
 
+import TextInput from '/imports/ui/components/general/TextInput';
 import { swissFrancMask } from '/imports/js/helpers/textMasks';
 import {
   getFortune,
@@ -58,31 +59,32 @@ const StructureSliders = (props) => {
     <div style={styles.div}>
       {getArray(borrowers, showInsurance).map(
         item =>
-          item.max &&
-          <h1 key={item.id} style={styles.h1}>
-            <TextField
-              id={item.id}
-              floatingLabelText={item.labelText}
-              onChange={e => handleChange(e.target.value, item.id)}
-              disabled={disabled}
-            >
-              <MaskedInput
-                value={inRange(0, item.max, parentState[item.id])}
-                mask={swissFrancMask}
-                guide
-                pattern="[0-9]*"
+          item.max && (
+            <h1 key={item.id} style={styles.h1}>
+              <TextInput
+                id={item.id}
+                label={item.labelText}
+                handleChange={(id, value) =>
+                  handleChange(inRange(0, item.max, value), id)}
+                currentValue={inRange(0, item.max, parentState[item.id])}
+                disabled={disabled}
+                type="money"
+                style={{
+                  height: 80,
+                  lineHeight: '36px',
+                }}
               />
-            </TextField>
-            <Slider
-              value={parentState[item.id]}
-              min={0}
-              max={item.max}
-              onChange={(e, v) => handleChange(v, item.id)}
-              style={styles.slider}
-              sliderStyle={styles.slider}
-              disabled={disabled}
-            />
-          </h1>,
+              <Slider
+                value={parentState[item.id]}
+                min={0}
+                max={item.max}
+                onChange={(e, v) => handleChange(v, item.id)}
+                style={styles.slider}
+                sliderStyle={styles.slider}
+                disabled={disabled}
+              />
+            </h1>
+          ),
       )}
     </div>
   );

@@ -26,19 +26,26 @@ const errorStyle = {
 // Use class to allow refs and focus to work
 export default class Start1Text extends Component {
   render() {
-    const { name, setStateValue, auto, motionValue, value, minValue } = this.props;
+    const {
+      name,
+      setStateValue,
+      auto,
+      motionValue,
+      value,
+      minValue,
+    } = this.props;
     return (
       <div className="text-div">
         <TextField
           id={name}
           name={name}
-          onChange={e => {
+          onChange={(e) => {
             trackOncePerSession(`Start1Text - Used textfield ${name}`);
             setStateValue(name, e.target.value);
           }}
           errorStyle={minValue <= value ? defaultStyle : errorStyle}
           className="input"
-          ref={c => {
+          ref={(c) => {
             this.input = c;
           }}
           type="text"

@@ -48,10 +48,16 @@ const getDefaults = ({ type, id, handleChange, currentValue }) => {
 };
 
 const TextInput = (props) => {
-  const { label } = props;
+  const { label, style, labelStyle } = props;
 
   // Remove props that aren't needed
-  const passedProps = omit(props, ['handleChange', 'currentValue', 'label']);
+  const passedProps = omit(props, [
+    'handleChange',
+    'currentValue',
+    'label',
+    'style',
+    'labelStyle',
+  ]);
 
   const {
     onChangeHandler,
@@ -61,24 +67,27 @@ const TextInput = (props) => {
     currentValue,
   } = getDefaults(props);
 
+  console.log('style', { fontSize: 'inherit', ...style });
+
   return (
     <TextField
       floatingLabelText={label}
       type="text"
       onChange={onChangeHandler}
-      style={{ fontSize: 'inherit' }}
-      floatingLabelStyle={{ fontSize: 'initial' }}
+      style={{ fontSize: 'inherit', ...style }}
+      floatingLabelStyle={{ fontSize: 'initial', ...labelStyle }}
       {...passedProps}
       value={showMask ? undefined : currentValue}
     >
-      {showMask &&
+      {showMask && (
         <MaskedInput
           value={currentValue}
           placeholder={placeholder}
           mask={mask}
           guide
           pattern="[0-9]*"
-        />}
+        />
+      )}
     </TextField>
   );
 };
