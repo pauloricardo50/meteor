@@ -431,6 +431,13 @@
   "Forms.otherIncome.rentIncome": "Rentes",
   "Forms.otherIncome.value": "Montant annuel",
   "Forms.otherIncome.welfareIncome": "Allocations",
+
+  "Forms.otherFortune.art": "Objets d'art",
+  "Forms.otherFortune.cars": "Véhicules",
+  "Forms.otherFortune.boats": "Bateaux",
+  "Forms.otherFortune.airplanes": "Aéronefs",
+  "Forms.otherFortune.jewelry": "Bijoux",
+
   "Forms.primary": "Résidence principale",
   "Forms.realEstate.description": "Type de propriété",
   "Forms.realEstate.investment": "Bien d'investissement",

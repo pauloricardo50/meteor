@@ -265,27 +265,27 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
           options: [
             {
               id: 'leasing',
-              label: 'Leasings',
+              // label: 'Leasings',
             },
             {
               id: 'rent',
-              label: 'Loyers',
+              // label: 'Loyers',
             },
             {
               id: 'personalLoan',
-              label: 'Crédits personnels',
+              // label: 'Crédits personnels',
             },
             {
               id: 'mortgageLoan',
-              label: 'Prêts immobilier',
+              // label: 'Prêts immobilier',
             },
             {
               id: 'pensions',
-              label: 'Pensions et Rentes',
+              // label: 'Pensions et Rentes',
             },
             {
               id: 'other',
-              label: 'Autre',
+              // label: 'Autre',
             },
           ],
         },
@@ -355,15 +355,15 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
           options: [
             {
               id: 'primary',
-              label: 'Propriété Principale',
+              // label: 'Propriété Principale',
             },
             {
               id: 'secondary',
-              label: 'Propriété Secondaire',
+              // label: 'Propriété Secondaire',
             },
             {
               id: 'investment',
-              label: "Bien d'investissement",
+              // label: "Bien d'investissement",
             },
           ],
         },
@@ -397,23 +397,23 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
           options: [
             {
               id: 'art',
-              label: "Objets d'art",
+              // label: "Objets d'art",
             },
             {
               id: 'cars',
-              label: 'Véhicules',
+              // label: 'Véhicules',
             },
             {
               id: 'boats',
-              label: 'Bateaux',
+              // label: 'Bateaux',
             },
             {
               id: 'airplanes',
-              label: 'Aéronefs',
+              // label: 'Aéronefs',
             },
             {
               id: 'jewelry',
-              label: 'Bijoux',
+              // label: 'Bijoux',
             },
           ],
         },

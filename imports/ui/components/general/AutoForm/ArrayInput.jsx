@@ -31,6 +31,7 @@ export default class ArrayInput extends Component {
     const array = [];
     const mapInput = (input, i) => {
       const { id, currentValue } = this.props;
+
       const props = {
         ...this.props,
         ...input,
@@ -43,6 +44,10 @@ export default class ArrayInput extends Component {
       if (input.type === 'textInput') {
         return <TextInput {...props} noValidator />;
       } else if (input.type === 'selectInput') {
+        props.options = input.options.map(o => ({
+          ...o,
+          label: <T id={`Forms.${id}.${o.id}`} />,
+        }));
         return <SelectFieldInput {...props} noValidator />;
       }
     };
@@ -51,7 +56,7 @@ export default class ArrayInput extends Component {
       // If there are multiple components per array item
       array.push(
         <div className="mask1" style={styles.arrayItem} key={i}>
-          {this.props.inputs.map(input => mapInput(input, i))}
+          {this.props.inputs.map(mapInput)}
         </div>,
       );
     }

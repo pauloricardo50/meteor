@@ -4,27 +4,39 @@ import React from 'react';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-const StartSelectField = props => (
-  <SelectField
-    value={props.value || props.formState[props.id] || ''}
-    onChange={(e, i, v) =>
-      props.setFormState(props.id, v, () => props.setActiveLine(''))}
-    maxHeight={200}
-    hintText="Choisissez..."
-  >
-    {/* <MenuItem value={null} primaryText="Choisissez..." /> */}
-    {props.options.map(
-      option =>
-        option.id !== undefined &&
-        <MenuItem
-          value={option.id}
-          primaryText={option.label}
-          key={option.id}
-          autoFocus={props.autoFocus}
-        />,
-    )}
-  </SelectField>
-);
+const StartSelectField = (props) => {
+  const {
+    value,
+    id,
+    formState,
+    setFormState,
+    setActiveLine,
+    options,
+    autoFocus,
+  } = props;
+
+  return (
+    <SelectField
+      value={value || formState[id] || ''}
+      onChange={(e, i, v) => setFormState(id, v, () => setActiveLine(''))}
+      maxHeight={200}
+      hintText="Choisissez..."
+    >
+      {/* <MenuItem value={null} primaryText="Choisissez..." /> */}
+      {options.map(
+        option =>
+          option.id !== undefined && (
+            <MenuItem
+              value={option.id}
+              primaryText={option.label}
+              key={option.id}
+              autoFocus={autoFocus}
+            />
+          ),
+      )}
+    </SelectField>
+  );
+};
 
 StartSelectField.propTypes = {
   id: PropTypes.string.isRequired,
