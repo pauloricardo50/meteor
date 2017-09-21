@@ -183,7 +183,7 @@ export const getIncome = (state) => {
     s.income2,
     bonus1,
     bonus2,
-    getOtherIncome(s.otherIncomeArray),
+    getOtherIncome(s.otherIncome),
   ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
 };
 

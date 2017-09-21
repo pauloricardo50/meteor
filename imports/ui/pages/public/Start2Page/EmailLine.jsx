@@ -41,7 +41,7 @@ export default class EmailLine extends Component {
     this.timer = null;
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     const email = event.target.value;
     Meteor.clearTimeout(this.timer);
     this.props.setParentState('email', email);

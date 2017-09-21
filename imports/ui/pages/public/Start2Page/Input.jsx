@@ -8,6 +8,7 @@ import StartSlider from './StartSlider';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 
+// Keep a Component because of input refs
 export default class Input extends Component {
   render() {
     const currentValue = this.props.formState[this.props.id];

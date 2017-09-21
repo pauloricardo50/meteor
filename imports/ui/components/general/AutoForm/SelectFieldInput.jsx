@@ -61,20 +61,23 @@ export default class SelectFieldInput extends Component {
   };
 
   render() {
+    const { style, label, disabled, options, noValidator } = this.props;
+    const { value, saving, errorText } = this.state;
+
     return (
-      <div style={{ ...styles.div, ...this.props.style }}>
+      <div style={{ ...styles.div, ...style }}>
         <SelectField
-          floatingLabelText={this.props.label}
-          value={this.state.value}
+          floatingLabelText={label}
+          value={value}
           onChange={this.handleChange}
-          errorText={this.state.errorText}
+          errorText={errorText}
           fullWidth
           maxHeight={200}
-          style={this.props.style}
-          disabled={this.props.disabled}
+          style={style}
+          disabled={disabled}
         >
           <MenuItem value={null} primaryText="" key={0} />
-          {this.props.options.map((option, index) => (
+          {options.map(option => (
             <MenuItem
               value={option.id}
               primaryText={option.label}
@@ -83,11 +86,11 @@ export default class SelectFieldInput extends Component {
           ))}
         </SelectField>
         <SavingIcon
-          saving={this.state.saving}
-          errorExists={this.state.errorText !== ''}
+          saving={saving}
+          errorExists={errorText !== ''}
           style={styles.savingIcon}
         />
-        {!this.props.noValidator && <FormValidator {...this.props} />}
+        {!noValidator && <FormValidator {...this.props} />}
       </div>
     );
   }

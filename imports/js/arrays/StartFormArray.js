@@ -199,20 +199,20 @@ export const getAcquisitionArray = (state, props, setFormState) => [
     zeroAllowed: true,
   },
   {
-    id: 'otherIncome',
+    id: 'otherIncomeExists',
     type: 'buttons',
     question: true,
-    deleteId: 'otherIncomeArray',
+    deleteId: 'otherIncome',
     buttons: [
       { id: true, label: <T id="general.yes" /> },
       { id: false, label: <T id="general.no" /> },
     ],
   },
   {
-    id: 'otherIncomeArray',
+    id: 'otherIncome',
     type: 'arrayInput',
-    condition: state.otherIncome === true,
-    existId: 'otherIncome',
+    condition: state.otherIncomeExists === true,
+    existId: 'otherIncomeExists',
     inputs: [
       {
         id: 'description',
@@ -234,23 +234,23 @@ export const getAcquisitionArray = (state, props, setFormState) => [
     ],
   },
   {
-    id: 'expensesExist',
+    id: 'expensesExists',
     type: 'buttons',
     intlValues: {
       optional: state.usageType !== 'primary' ? 'rentes, ' : '',
     },
     question: true,
-    deleteId: 'expensesArray',
+    deleteId: 'expenses',
     buttons: [
       { id: true, label: <T id="general.yes" /> },
       { id: false, label: <T id="general.no" /> },
     ],
   },
   {
-    id: 'expensesArray',
+    id: 'expenses',
     type: 'arrayInput',
-    condition: state.expensesExist === true,
-    existId: 'expensesExist',
+    condition: state.expensesExists === true,
+    existId: 'expensesExists',
     inputs: [
       {
         id: 'description',
@@ -343,14 +343,14 @@ export const getAcquisitionArray = (state, props, setFormState) => [
     id: 'realEstateExists',
     type: 'buttons',
     question: true,
-    deleteId: 'realEstateArray',
+    deleteId: 'realEstate',
     buttons: [
       { id: true, label: <T id="general.yes" /> },
       { id: false, label: <T id="general.no" /> },
     ],
   },
   {
-    id: 'realEstateArray',
+    id: 'realEstate',
     condition: state.realEstateExists === true,
     existId: 'realEstateExists',
     type: 'arrayInput',

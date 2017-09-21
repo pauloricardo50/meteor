@@ -89,6 +89,7 @@ const BorrowerFinancePage = (props) => {
             label="Les informations entrées ci-dessous sont exhaustives et correctes"
             style={styles.checkbox}
             onCheck={(e, isChecked) => handleCheck(e, isChecked, borrowerId)}
+            disabled={borrower.logic.hasValidatedFinances}
           />
         </span>
         <LoadingButton

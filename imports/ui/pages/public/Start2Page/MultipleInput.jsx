@@ -60,13 +60,13 @@ export default class MultipleInput extends Component {
         onClick={this.handleClick.bind(this)}
       >
         {multiple &&
-        this.props.firstMultiple && (
-        <h1 style={styles.borrowerH1} className="fixed-size">
+          this.props.firstMultiple && (
+            <h1 style={styles.borrowerH1} className="fixed-size">
               <span className="col-xs-5">Emprunteur 1</span>
               <span className="col-xs-5 col-xs-offset-2">Emprunteur 2</span>
               <span className="col-xs-12">
-            <hr style={styles.hr} />
-          </span>
+                <hr style={styles.hr} />
+              </span>
             </h1>
           )}
 
