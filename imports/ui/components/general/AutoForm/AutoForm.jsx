@@ -105,6 +105,8 @@ const inputSwitch = (singleInput, index, parentProps) => {
       return <UploaderArray {...props} />;
     case 'arrayInput':
       return <ArrayInput {...props} />;
+    case 'custom':
+      return React.cloneElement(singleInput.component, { ...props });
     default:
       throw new Error(`${singleInput.type} is not a valid AutoForm type`);
   }

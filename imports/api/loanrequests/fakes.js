@@ -14,7 +14,7 @@ export const fakeProperty = {
   value: 1000000,
   propertyWork: 40000,
   address1: 'Rue du Succès 18',
-  zipCode: 1200,
+  zipCode: 1201,
   city: 'Genève',
   usageType: 'primary',
   type: 'flat',

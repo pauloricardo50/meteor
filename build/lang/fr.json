@@ -25,6 +25,9 @@
   "general.property": "Bien immobilier",
   "general.sortBy": "Trier par",
 
+  "ZipAutoComplete.placeholder": "1200",
+  "ZipAutoComplete.empty": "Pas de résultat",
+
   "error.fileType.title": "Fichier incompatible",
   "error.fileType.description":
     "On ne peut prendre que les .pdf, .jpg, .jpeg et .png",

@@ -1,4 +1,5 @@
 import React from 'react';
+import ZipAutoComplete from '/imports/ui/components/general/ZipAutoComplete';
 
 const getPropertyArray = (loanRequest, borrowers) => {
   const r = loanRequest;
@@ -139,19 +140,29 @@ const getPropertyArray = (loanRequest, borrowers) => {
       required: false,
     },
     {
-      id: 'property.zipCode',
-      type: 'textInput',
-      number: true,
-      label: 'Code Postal',
-      placeholder: '1200',
-      saveOnChange: false,
+      id: 'zipCode',
+      type: 'custom',
+      component: (
+        <ZipAutoComplete
+          savePath="property"
+          initialValue={`${r.property.zipCode} ${r.property.city}`}
+        />
+      ),
     },
-    {
-      id: 'property.city',
-      type: 'textInput',
-      label: 'Localité',
-      placeholder: 'Genève',
-    },
+    // {
+    //   id: 'property.zipCode',
+    //   type: 'textInput',
+    //   number: true,
+    //   label: 'Code Postal',
+    //   placeholder: '1200',
+    //   saveOnChange: false,
+    // },
+    // {
+    //   id: 'property.city',
+    //   type: 'textInput',
+    //   label: 'Localité',
+    //   placeholder: 'Genève',
+    // },
     {
       type: 'h3',
       text: 'Détails du bien',
