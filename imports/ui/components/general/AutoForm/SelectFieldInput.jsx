@@ -74,13 +74,13 @@ export default class SelectFieldInput extends Component {
           disabled={this.props.disabled}
         >
           <MenuItem value={null} primaryText="" key={0} />
-          {this.props.options.map((option, index) =>
-            (<MenuItem
+          {this.props.options.map((option, index) => (
+            <MenuItem
               value={option.id}
               primaryText={option.label}
               key={option.id}
-            />),
-          )}
+            />
+          ))}
         </SelectField>
         <SavingIcon
           saving={this.state.saving}
@@ -100,9 +100,10 @@ SelectFieldInput.propTypes = {
   documentId: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
   updateFunc: PropTypes.string.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
 };
 
 SelectFieldInput.defaultProps = {
   currentValue: undefined,
+  disabled: false,
 };

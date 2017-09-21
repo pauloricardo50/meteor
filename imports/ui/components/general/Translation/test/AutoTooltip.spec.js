@@ -12,7 +12,7 @@ const { default: TooltipOverlay } =
   testRequire('../TooltipOverlay') || require('../TooltipOverlay');
 
 describe('<AutoTooltip />', () => {
-  it('returns null if no children are given', () => {
+  it('returns null if no children are given ', () => {
     const wrapper = shallow(<AutoTooltip />);
     expect(wrapper.type()).to.equal(null);
   });
@@ -34,34 +34,27 @@ describe('<AutoTooltip />', () => {
 
   it('returns the child wrapped in a tooltip if an id is provided', () => {
     const text = 'this is a test';
-    const wrapper = shallow(
-      <AutoTooltip id="test">
-        {text}
-      </AutoTooltip>,
-    );
+    const wrapper = shallow(<AutoTooltip id="test">{text}</AutoTooltip>);
     expect(wrapper.find('TooltipOverlay')).to.have.length(1);
-    expect(wrapper.find('TooltipOverlay').childAt(0).text()).to.equal(text);
+    expect(
+      wrapper
+        .find('TooltipOverlay')
+        .childAt(0)
+        .text(),
+    ).to.equal(text);
     expect(wrapper.find('TooltipOverlay').prop('id')).to.equal('test');
   });
 
   it('returns a parsed string with tooltips', () => {
     const text = 'a finma b';
-    const wrapper = shallow(
-      <AutoTooltip>
-        {text}
-      </AutoTooltip>,
-    );
+    const wrapper = shallow(<AutoTooltip>{text}</AutoTooltip>);
 
     expect(wrapper.text()).to.equal('a <TooltipOverlay /> b');
   });
 
   it('returns a parsed string with multiple tooltips', () => {
     const text = 'a finma b finma c';
-    const wrapper = shallow(
-      <AutoTooltip>
-        {text}
-      </AutoTooltip>,
-    );
+    const wrapper = shallow(<AutoTooltip>{text}</AutoTooltip>);
 
     expect(wrapper.text()).to.equal(
       'a <TooltipOverlay /> b <TooltipOverlay /> c',
@@ -70,11 +63,7 @@ describe('<AutoTooltip />', () => {
 
   it('takes a list as a string to take tooltips from', () => {
     const text = 'a 123test b';
-    const wrapper = shallow(
-      <AutoTooltip list="table">
-        {text}
-      </AutoTooltip>,
-    );
+    const wrapper = shallow(<AutoTooltip list="table">{text}</AutoTooltip>);
 
     expect(wrapper.text()).to.equal('a 123test b');
   });

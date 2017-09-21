@@ -410,6 +410,7 @@
   "Finance.recapTitle": "Récapitulatif (en {currency})",
   "Finance.title": "Mes Finances",
   "Finance.validated": "Validées",
+  "Finance.notValidated": "Non validées",
   "FinancePage.title": "Graphiques financiers",
   "Forms.expensesArray.other": "Autre",
   "Forms.expensesArray.description": "Type de charge",

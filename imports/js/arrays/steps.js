@@ -6,7 +6,7 @@ import { getBorrowerInfoArray } from './BorrowerFormArray';
 import { borrowerFiles, requestFiles } from '/imports/js/arrays/files';
 import getPropertyArray from './PropertyFormArray';
 import { strategyDone } from '/imports/js/helpers/requestFunctions';
-
+import { arrayify } from '/imports/js/helpers/general';
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 
 const getSteps = ({ loanRequest, borrowers, serverTime }) => {
@@ -269,8 +269,8 @@ export const getCountedArray = (formArray, doc, arr = []) => {
  */
 export const personalInfoPercent = (borrowers) => {
   const a = [];
-  borrowers.forEach((b) => {
-    const formArray = getBorrowerInfoArray(borrowers, b._id);
+  arrayify(borrowers).forEach((b) => {
+    const formArray = getBorrowerInfoArray(arrayify(borrowers), b._id);
     getCountedArray(formArray, b, a);
   });
 
@@ -294,7 +294,7 @@ export const propertyPercent = (loanRequest, borrowers) => {
 
 export const auctionFilesPercent = (borrowers) => {
   const a = [];
-  borrowers.forEach((b) => {
+  arrayify(borrowers).forEach((b) => {
     const fileArray = borrowerFiles(b).auction;
 
     if (isDemo()) {

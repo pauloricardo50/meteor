@@ -57,12 +57,6 @@ const BorrowerFinancePage = (props) => {
       <hr />
       <h2 className="text-center">
         <T id="Finance.title" />
-        <br />
-        {borrower.logic.hasValidatedFinances && (
-          <small className="success">
-            <T id="Finance.validated" /> <span className="fa fa-check" />
-          </small>
-        )}
       </h2>
 
       <div className="description">

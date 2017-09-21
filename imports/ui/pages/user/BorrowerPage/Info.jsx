@@ -3,7 +3,6 @@ import React from 'react';
 
 import AutoForm from '/imports/ui/components/general/AutoForm';
 import { getBorrowerInfoArray } from '/imports/js/arrays/BorrowerFormArray';
-import { personalInfoPercent } from '/imports/js/arrays/steps';
 import { disableForms } from '/imports/js/helpers/requestFunctions';
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
@@ -11,20 +10,14 @@ import FakeBorrowerCompleter from '/imports/ui/components/general/FakeBorrowerCo
 import { T } from '/imports/ui/components/general/Translation';
 
 const BorrowerInfoPage = (props) => {
-  const borrowerId = props.match.params.borrowerId;
+  const { borrowerId } = props.match.params;
   const borrower = props.borrowers.find(b => b._id === borrowerId);
-  const percent = personalInfoPercent([borrower]);
 
   return (
     <section className="animated fadeIn" key={borrowerId}>
       <hr />
       <h2 className="text-center">
         <T id="Info.title" />
-        <br />
-        <small className={percent >= 1 && 'success'}>
-          <T id="general.progress" values={{ value: percent }} />{' '}
-          {percent >= 1 && <span className="fa fa-check" />}
-        </small>
       </h2>
       <div className="description">
         <p>

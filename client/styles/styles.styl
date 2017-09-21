@@ -1154,36 +1154,21 @@ ul.request-map
 
 .borrower-page
   header
-    .fa
-      padding: 20px;
-    h1
-      margin: 0;
-    h3
-      margin-top: 0;
-  .borrower-links
-    display: flex;
-    width: 100%;
-    max-width: 500px;
-    justify-content: center;
-    margin: 40px auto;
-    a
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-decoration: none;
-      flex-basis: 120px;
-      flex-grow: 1;
-      color: #777;
-      border-right: 1px solid light-grey;
-      h4
-        color: inherit;
+    .fa-user-circle-o
+      color: #666;
+      padding: 16px;
       &:hover
-        color: brand-primary;
-        h4
-          color: brand-primary;
-      &:last-child
-        border-right: none;
+        color: #444;
+    .borrower
+      margin: 0 8px;
+      transform: scale(0.75);
+      &.scale
+        animation: scale-borrower 500ms;
+        animation-fill-mode: forwards;
+
+@keyframes scale-borrower {
+  100% { transform: scale(1); }
+}
 
 .borrower-finance-page
   .conditions
@@ -1195,8 +1180,6 @@ ul.request-map
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-
-
 
 .password-page
   display: flex;

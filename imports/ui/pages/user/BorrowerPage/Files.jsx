@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 
 import UploaderArray from '/imports/ui/components/general/UploaderArray';
-import { filesPercent } from '/imports/js/arrays/steps';
 import { borrowerFiles } from '/imports/js/arrays/files';
 import RadioInput from '/imports/ui/components/general/AutoForm/RadioInput';
 import { T } from '/imports/ui/components/general/Translation';
@@ -21,7 +20,6 @@ const styles = {
 
 const Files = (props) => {
   const { borrower, loanRequest } = props;
-  const percent = filesPercent([borrower], borrowerFiles, 'auction');
 
   return (
     <section
@@ -32,11 +30,6 @@ const Files = (props) => {
       <hr />
       <h2 className="text-center">
         <T id="Files.title" />
-        <br />
-        <small className={percent >= 1 && 'success'}>
-          <T id="general.progress" values={{ value: percent }} />{' '}
-          {percent >= 1 && <span className="fa fa-check" />}
-        </small>
       </h2>
 
       <div className="description">

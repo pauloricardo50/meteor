@@ -5,60 +5,10 @@ import { Link } from 'react-router-dom';
 
 import { T } from '/imports/ui/components/general/Translation';
 import ProcessPage from '/imports/ui/components/general/ProcessPage';
-import BorrowerInfoPage from './BorrowerInfoPage';
-import BorrowerFinancePage from './BorrowerFinancePage';
+import Info from './Info';
+import Finance from './Finance';
 import Files from './Files';
-import BorrowerHeader from './BorrowerHeader';
-
-const styles = {
-  div: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  topButton: {
-    marginBottom: 20,
-    alignSelf: 'flex-end',
-  },
-  bottomButton: {
-    marginTop: 20,
-    alignSelf: 'flex-end',
-  },
-  link: {
-    margin: '20px 8px',
-  },
-};
-
-const Links = ({ requestId, borrower, tab }) => (
-  <div className="borrower-links text-center">
-    <Link
-      to={`/app/requests/${requestId}/borrowers/${borrower._id}/personal`}
-      className={tab === 'personal' && 'active'}
-    >
-      <span className="fa fa-user" />
-      <h4>
-        <T id="BorrowerPage.personal" />
-      </h4>
-    </Link>
-    <Link
-      to={`/app/requests/${requestId}/borrowers/${borrower._id}/finance`}
-      className={tab === 'finance' && 'active'}
-    >
-      <span className="fa fa-money" />
-      <h4>
-        <T id="BorrowerPage.finance" />
-      </h4>
-    </Link>
-    <Link
-      to={`/app/requests/${requestId}/borrowers/${borrower._id}/files`}
-      className={tab === 'files' && 'active'}
-    >
-      <span className="fa fa-files-o" />
-      <h4>
-        <T id="BorrowerPage.files" />
-      </h4>
-    </Link>
-  </div>
-);
+import Header from './Header';
 
 export default class BorrowerPage extends Component {
   constructor(props) {
@@ -66,22 +16,6 @@ export default class BorrowerPage extends Component {
 
     const tab = this.props.match.params.tab || 'personal';
     this.state = { tab };
-  }
-
-  getContent() {
-    switch (this.state.tab) {
-      case 'personal':
-        return <BorrowerInfoPage {...this.props} />;
-      case 'finance':
-        return <BorrowerFinancePage {...this.props} />;
-      case 'files': {
-        const borrowerId = this.props.match.params.borrowerId;
-        const borrower = this.props.borrowers.find(b => b._id === borrowerId);
-        return <Files {...this.props} borrower={borrower} />;
-      }
-      default:
-        return <BorrowerInfoPage {...this.props} />;
-    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -92,28 +26,27 @@ export default class BorrowerPage extends Component {
     }
   }
 
-  render() {
-    const borrowerId = this.props.match.params.borrowerId;
-    const requestId = this.props.match.params.requestId;
-    const borrower = this.props.borrowers.find(b => b._id === borrowerId);
-    const index = this.props.borrowers.indexOf(borrower);
+  getContent() {
+    switch (this.state.tab) {
+      case 'personal':
+        return <Info {...this.props} />;
+      case 'finance':
+        return <Finance {...this.props} />;
+      case 'files': {
+        const borrowerId = this.props.match.params.borrowerId;
+        const borrower = this.props.borrowers.find(b => b._id === borrowerId);
+        return <Files {...this.props} borrower={borrower} />;
+      }
+      default:
+        return <Info {...this.props} />;
+    }
+  }
 
+  render() {
     return (
       <ProcessPage {...this.props} stepNb={1} id={this.state.tab}>
         <section className="mask1 borrower-page">
-          <BorrowerHeader
-            borrower={borrower}
-            {...this.props}
-            index={index}
-            tab={this.state.tab}
-            requestId={this.props.loanRequest._id}
-          />
-          <Links
-            borrower={borrower}
-            {...this.props}
-            tab={this.state.tab}
-            requestId={requestId}
-          />
+          <Header {...this.props} />
 
           {this.getContent()}
         </section>
