@@ -29,9 +29,9 @@ export default class ArrayInput extends Component {
 
   getArray = () => {
     const array = [];
-    const mapInput = (input, i) => {
-      const { id, currentValue } = this.props;
+    const { id, currentValue, inputs } = this.props;
 
+    const mapInput = (input, i) => {
       const props = {
         ...this.props,
         ...input,
@@ -56,7 +56,7 @@ export default class ArrayInput extends Component {
       // If there are multiple components per array item
       array.push(
         <div className="mask1" style={styles.arrayItem} key={i}>
-          {this.props.inputs.map(mapInput)}
+          {inputs.map(input => mapInput(input, i))}
         </div>,
       );
     }
