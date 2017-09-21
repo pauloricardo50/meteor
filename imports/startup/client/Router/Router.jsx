@@ -14,7 +14,7 @@ import { IntlProvider } from 'react-intl';
 import { getUserLocale, getTranslations, getFormats } from '../../localization';
 
 import Loadable from '/imports/js/helpers/loadable';
-import PasswordPage from '/imports/ui/pages/public/PasswordPage';
+import { PasswordPage } from '/imports/ui/containers/PublicContainers';
 
 // import PublicRoutes from './PublicRoutes';
 // import UserRoutes from './UserRoutes';
