@@ -1,29 +1,42 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import MuiIconButton from 'material-ui/IconButton';
 import Icon from '../Icon';
 
-const IconButton = ({
-  onClick,
-  type,
-  tooltip,
-  tooltipPosition,
-  touch,
-  style,
-  iconStyle,
-  iconProps,
-}) => (
-  <MuiIconButton
-    onClick={onClick}
-    tooltip={tooltip}
-    tooltipPosition={tooltipPosition}
-    touch={touch}
-    style={style}
-  >
-    <Icon type={type} withColors style={iconStyle} {...iconProps} />
-  </MuiIconButton>
-);
+// Keep this a class to avoid warnings from IconMenu which adds a ref to this
+// component
+export default class IconButton extends Component {
+  constructor(props) {
+    super(props);
+    // To avoid linter warnings
+    this.state = {};
+  }
+
+  render() {
+    const {
+      onClick,
+      type,
+      tooltip,
+      tooltipPosition,
+      touch,
+      style,
+      iconStyle,
+      iconProps,
+    } = this.props;
+    return (
+      <MuiIconButton
+        onClick={onClick}
+        tooltip={tooltip}
+        tooltipPosition={tooltipPosition}
+        touch={touch}
+        style={style}
+      >
+        <Icon type={type} withColors style={iconStyle} {...iconProps} />
+      </MuiIconButton>
+    );
+  }
+}
 
 IconButton.propTypes = {
   onClick: PropTypes.func,
@@ -39,5 +52,3 @@ IconButton.defaultProps = {
   touch: true,
   style: {},
 };
-
-export default IconButton;

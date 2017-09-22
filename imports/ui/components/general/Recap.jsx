@@ -80,7 +80,7 @@ const getDashboardArray = (props) => {
     },
     {
       label: 'Recap.propAndWork',
-      value: toMoney(Math.round(propAndWork)),
+      value: <span className="sum">{toMoney(Math.round(propAndWork))}</span>,
       hide: !r.property.propertyWork,
     },
     {
@@ -103,6 +103,10 @@ const getDashboardArray = (props) => {
       spacingTop: true,
       spacing: true,
       bold: true,
+    },
+    {
+      title: true,
+      label: 'Recap.financing',
     },
     {
       label: 'general.ownFunds',
@@ -131,6 +135,13 @@ const getDashboardArray = (props) => {
       value: toMoney(loan),
     },
     {
+      label: 'Recap.totalFinancing',
+      value: <span className="sum">{toMoney(project)}</span>,
+      spacingTop: true,
+      spacing: true,
+      bold: true,
+    },
+    {
       label: 'Recap.monthlyCost',
       value: (
         <span>
@@ -151,11 +162,9 @@ const getDashboardArray = (props) => {
           <IntlNumber value={borrowRatio} format="percentage" />{' '}
           <span
             className={
-              borrowRatio <= constants.maxLoan(r.property.usageType) + 0.001 ? ( // add 0.1% to avoid rounding errors
-                'fa fa-check success'
-              ) : (
-                'fa fa-times error'
-              )
+              borrowRatio <= constants.maxLoan(r.property.usageType) + 0.001 // add 0.1% to avoid rounding errors
+                ? 'fa fa-check success'
+                : 'fa fa-times error'
             }
           />
         </span>
@@ -168,13 +177,11 @@ const getDashboardArray = (props) => {
           <IntlNumber value={incomeRatio} format="percentage" />{' '}
           <span
             className={
-              incomeRatio <= 1 / 3 ? (
-                'fa fa-check success'
-              ) : incomeRatio <= 0.38 ? (
-                'fa fa-exclamation warning'
-              ) : (
-                'fa fa-times error'
-              )
+              incomeRatio <= 1 / 3
+                ? 'fa fa-check success'
+                : incomeRatio <= 0.38
+                  ? 'fa fa-exclamation warning'
+                  : 'fa fa-times error'
             }
           />
         </span>
@@ -281,6 +288,37 @@ const getSmallDashboardArray = (props) => {
       },
     },
     {
+      label: 'Recap.purchasePrice',
+      value: toMoney(Math.round(r.property.value)),
+    },
+    {
+      label: 'Recap.propertyWork',
+      value: toMoney(Math.round(r.property.propertyWork)),
+      hide: !r.property.propertyWork,
+    },
+    {
+      label: 'general.notaryFees',
+      value: toMoney(Math.round(r.property.value * constants.notaryFees)),
+    },
+    {
+      label: 'general.insuranceFees',
+      value: toMoney(
+        Math.round(r.general.insuranceFortuneUsed * constants.lppFees),
+      ),
+      hide: !r.general.insuranceFortuneUsed,
+    },
+    {
+      label: 'Recap.totalCost',
+      value: <span className="sum">{toMoney(project)}</span>,
+      spacingTop: true,
+      spacing: true,
+      bold: true,
+    },
+    {
+      title: true,
+      label: 'Recap.financing',
+    },
+    {
       label: 'general.mortgageLoan',
       value: toMoney(loan),
     },
@@ -289,16 +327,11 @@ const getSmallDashboardArray = (props) => {
       value: toMoney(totalUsed),
     },
     {
-      label:
-        r.property.value === propAndWork
-          ? 'Recap.purchasePrice'
-          : 'Recap.propAndWork',
-      value: toMoney(Math.round(propAndWork)),
-    },
-    {
-      label: 'Recap.totalCost',
-      value: toMoney(project),
+      label: 'Recap.totalFinancing',
+      value: <span className="sum">{toMoney(project)}</span>,
+      spacingTop: true,
       spacing: true,
+      bold: true,
     },
     {
       label: 'Recap.monthlyCost',
@@ -421,11 +454,9 @@ const getStart2Array = (props) => {
           <IntlNumber value={p.borrow} format="percentage" />{' '}
           <span
             className={
-              p.borrow <= constants.maxLoan(p.usageType) + 0.001 ? ( // add 0.1% to avoid rounding errors
-                'fa fa-check success'
-              ) : (
-                'fa fa-times error'
-              )
+              p.borrow <= constants.maxLoan(p.usageType) + 0.001 // add 0.1% to avoid rounding errors
+                ? 'fa fa-check success'
+                : 'fa fa-times error'
             }
           />
         </span>
@@ -439,13 +470,11 @@ const getStart2Array = (props) => {
           <IntlNumber value={p.ratio} format="percentage" />{' '}
           <span
             className={
-              p.ratio <= 1 / 3 ? (
-                'fa fa-check success'
-              ) : p.ratio <= 0.38 ? (
-                'fa fa-exclamation warning'
-              ) : (
-                'fa fa-times error'
-              )
+              p.ratio <= 1 / 3
+                ? 'fa fa-check success'
+                : p.ratio <= 0.38
+                  ? 'fa fa-exclamation warning'
+                  : 'fa fa-times error'
             }
           />
         </span>
@@ -728,11 +757,9 @@ const getStructureArray = (props) => {
           <IntlNumber value={borrowRatio} format="percentage" />{' '}
           <span
             className={
-              borrowRatio <= constants.maxLoan(r.property.usageType) + 0.001 ? ( // add 0.1% to avoid rounding errors
-                'fa fa-check success'
-              ) : (
-                'fa fa-times error'
-              )
+              borrowRatio <= constants.maxLoan(r.property.usageType) + 0.001 // add 0.1% to avoid rounding errors
+                ? 'fa fa-check success'
+                : 'fa fa-times error'
             }
           />
         </span>
@@ -745,13 +772,11 @@ const getStructureArray = (props) => {
           <IntlNumber value={incomeRatio} format="percentage" />{' '}
           <span
             className={
-              incomeRatio <= 1 / 3 ? (
-                'fa fa-check success'
-              ) : incomeRatio <= 0.38 ? (
-                'fa fa-exclamation warning'
-              ) : (
-                'fa fa-times error'
-              )
+              incomeRatio <= 1 / 3
+                ? 'fa fa-check success'
+                : incomeRatio <= 0.38
+                  ? 'fa fa-exclamation warning'
+                  : 'fa fa-times error'
             }
           />
         </span>

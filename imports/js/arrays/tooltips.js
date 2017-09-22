@@ -4,6 +4,7 @@
 export const generalTooltips = {
   'revenus annuels bruts': 'yearlyIncome',
   'fonds propres requis': 'ownFundsRequired',
+  'fonds propres - total': 'ownFunds',
   'fonds propres': 'ownFunds',
   "prix d'achat": 'purchasePrice',
 
