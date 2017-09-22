@@ -2,11 +2,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import track, { addUserTracking } from '/imports/js/helpers/analytics';
 
-import Button from '/imports/ui/components/general/Button';
 import TextField from 'material-ui/TextField';
-import LoopIcon from 'material-ui/svg-icons/av/loop';
+
+import track, { addUserTracking } from '/imports/js/helpers/analytics';
+import Button from '/imports/ui/components/general/Button';
+import Icon from '/imports/ui/components/general/Icon';
 import { T } from '/imports/ui/components/general/Translation';
 import saveStartForm from './saveStartForm';
 
@@ -109,13 +110,15 @@ export default class PasswordLine extends Component {
         <Button
           raised
           label={
-            login
-              ? <T id="PasswordLine.login" />
-              : <T id="PasswordLine.create" />
+            login ? (
+              <T id="PasswordLine.login" />
+            ) : (
+              <T id="PasswordLine.create" />
+            )
           }
           primary
           type="submit"
-          icon={this.state.loading && <LoopIcon className="fa-spin" />}
+          icon={this.state.loading && <Icon type="loop" />}
           disabled={!password}
         />
       );
@@ -126,12 +129,8 @@ export default class PasswordLine extends Component {
     return (
       <div>
         <form action="submit" onSubmit={this.handleSubmit}>
-          <h1 className="fixed-size">
-            {content}
-          </h1>
-          <h4 className="fixed-size error">
-            {this.state.error}
-          </h4>
+          <h1 className="fixed-size">{content}</h1>
+          <h4 className="fixed-size error">{this.state.error}</h4>
           {this.state.passwordIsValid && button}
         </form>
       </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import getSteps from '/imports/js/arrays/steps';
-import CheckIcon from 'material-ui/svg-icons/navigation/check';
+import Icon from '/imports/ui/components/general/Icon';
 
 import { T } from '/imports/ui/components/general/Translation';
 
@@ -19,11 +19,11 @@ const StepStatus = props => {
     >
       {steps.map((s, i) =>
         <li key={s.nb} style={{ display: 'flex', flexDirection: 'column' }}>
-          <div><T id={`steps.${s.nb}.title`} /> {currentStep > i && <CheckIcon />}</div>
+          <div><T id={`steps.${s.nb}.title`} /> {currentStep > i && <Icon type="check" />}</div>
           <ul>
             {s.items.map(item =>
               <li key={item.id}>
-                <T id={`steps.${item.id}.title`} /> {item.isDone() && <CheckIcon />}
+                <T id={`steps.${item.id}.title`} /> {item.isDone() && <Icon type="check" />}
               </li>,
             )}
           </ul>

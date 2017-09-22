@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import CheckIcon from 'material-ui/svg-icons/navigation/check';
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
-import WarningIcon from 'material-ui/svg-icons/alert/warning';
+import Icon from '/imports/ui/components/general/Icon';
 
 import { T } from '/imports/ui/components/general/Translation';
 import {
@@ -37,19 +35,20 @@ export default class Start1Validator extends Component {
   };
 
   render() {
-    const { message, message2, icon: MyIcon, className } = this.state;
+    const { message, message2, icon, className } = this.state;
 
     return (
       <div className="mask2 start1-errors">
-        {MyIcon && <MyIcon className={`${className} icon`} />}
+        {icon && <Icon type={icon} className={`${className} icon`} />}
         <div id="content">
           <h2 className={className} style={{ margin: 0 }}>
             {message && <T id={`Start1Validator.${message}`} />}
           </h2>
-          {message2 &&
+          {message2 && (
             <h4 style={{ maxWidth: 400, marginBottom: 0 }}>
               <T id={`Start1Validator.${message2}`} />
-            </h4>}
+            </h4>
+          )}
         </div>
       </div>
     );

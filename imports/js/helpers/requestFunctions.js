@@ -1,7 +1,3 @@
-import CheckIcon from 'material-ui/svg-icons/navigation/check';
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
-import WarningIcon from 'material-ui/svg-icons/alert/warning';
-
 import constants from '../config/constants';
 import { getIncomeRatio } from './finance-math';
 import { propertyPercent, filesPercent } from '../arrays/steps';
@@ -281,7 +277,7 @@ export const validateRatiosCompletely = (
       isValid: true,
       message: 'valid',
       message2: '',
-      icon: CheckIcon,
+      icon: 'check',
       className: 'success',
     };
   } catch (error) {
@@ -290,7 +286,7 @@ export const validateRatiosCompletely = (
       isValid: false,
       message: `${error.message}`,
       message2: `${error.message}2`,
-      icon: isTight ? WarningIcon : CloseIcon,
+      icon: isTight ? 'warning' : 'close',
       className: isTight ? 'warning' : 'error',
     };
   }

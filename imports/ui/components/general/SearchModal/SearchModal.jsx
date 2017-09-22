@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import SearchIcon from 'material-ui/svg-icons/action/search';
-import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
 
 import { T } from '/imports/ui/components/general/Translation';
+import IconButton from '../IconButton';
 import Button from '../Button';
 import Search from './Search';
 
@@ -23,13 +22,12 @@ export default class SearchModal extends Component {
     return (
       <span>
         <IconButton
+          type="search"
           tooltip={<T id="general.search" />}
           onClick={this.handleOpen}
           touch
           tooltipPosition="bottom-left"
-        >
-          <SearchIcon color="#444" hoverColor="#888" />
-        </IconButton>
+        />
         <Dialog
           title={
             <h3>

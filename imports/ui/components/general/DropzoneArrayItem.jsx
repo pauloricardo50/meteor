@@ -2,8 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classnames from 'classnames';
 
-import IconButton from 'material-ui/IconButton';
-import ArrowDown from 'material-ui/svg-icons/navigation/arrow-drop-down-circle';
+import IconButton from '/imports/ui/components/general/IconButton';
 
 import DropzoneInput from './AutoForm/DropzoneInput';
 import colors from '/imports/js/config/colors';
@@ -93,9 +92,12 @@ const DropzoneArrayItem = (props) => {
         </div>
 
         <div className="right">
-          <IconButton style={styles.caret} disabled={disabled}>
-            <ArrowDown color="#d8d8d8" hoverColor="#a8a8a8" />
-          </IconButton>
+          <IconButton
+            type="dropdown"
+            style={styles.caret}
+            disabled={disabled}
+            iconProps={{ color: '#d8d8d8', hoverColor: '#a8a8a8' }}
+          />
         </div>
       </div>
 

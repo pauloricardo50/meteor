@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import CheckIcon from 'material-ui/svg-icons/navigation/check';
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import Icon from '/imports/ui/components/general/Icon';
 
 import { isRequestValid } from '/imports/js/helpers/requestFunctions';
 import { T } from '/imports/ui/components/general/Translation';
@@ -49,7 +48,7 @@ export default class StructureError extends Component {
         this.props.setParentState('error', false);
         this.setState({
           message: 'StructureError.valid',
-          icon: CheckIcon,
+          icon: 'check',
           className: 'success',
         });
       }
@@ -57,18 +56,23 @@ export default class StructureError extends Component {
       this.props.setParentState('error', true);
       this.setState({
         message: `StructureError.${error.message}`,
-        icon: CloseIcon,
+        icon: 'close',
         className: 'error',
       });
     }
   };
 
   render() {
-    const { message, icon: MyIcon, className } = this.state;
+    const { message, icon, className } = this.state;
     return (
       <div style={styles.div} className="mask2 primary-border">
-        {MyIcon &&
-          <MyIcon style={{ marginRight: 16, height: '2em', width: '2em' }} className={className} />}
+        {icon && (
+          <Icon
+            type={icon}
+            style={{ marginRight: 16, height: '2em', width: '2em' }}
+            className={className}
+          />
+        )}
         <h2 className={className} style={{ margin: 0 }}>
           {message && <T id={message} />}
         </h2>

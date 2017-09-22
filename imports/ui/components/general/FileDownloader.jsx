@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import fileSaver from 'file-saver';
 
 import Button from '/imports/ui/components/general/Button';
-import LoopIcon from 'material-ui/svg-icons/av/loop';
+import Icon from '/imports/ui/components/general/Icon';
 
 import track from '/imports/js/helpers/analytics';
 
@@ -44,7 +44,7 @@ export default class FileDownloader extends Component {
         primary={primary}
         style={style}
         raised
-        icon={this.state.downloading && <LoopIcon className="fa-spin" />}
+        icon={this.state.downloading && <Icon type="loop" />}
         onClick={this.handleClick}
       />
     );

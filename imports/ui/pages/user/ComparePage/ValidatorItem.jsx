@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import CheckIcon from 'material-ui/svg-icons/navigation/check';
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
-import WarningIcon from 'material-ui/svg-icons/alert/warning';
+import Icon from '/imports/ui/components/general/Icon';
 
 import { T } from '/imports/ui/components/general/Translation';
 
@@ -21,7 +19,7 @@ const ValidatorItem = ({ isValid, error, errorClass }) => {
   if (isValid) {
     return (
       <div style={styles.div}>
-        <CheckIcon className="success" />
+        <Icon type="check" className="success" />
         <T id="ValidatorItem.isValid" />
       </div>
     );
@@ -29,7 +27,7 @@ const ValidatorItem = ({ isValid, error, errorClass }) => {
 
   return (
     <div style={styles.div}>
-      <CloseIcon className={errorClass} />
+      <Icon type="close" className={errorClass} />
       <T id={`ValidatorItem.error.${error}`} />
     </div>
   );

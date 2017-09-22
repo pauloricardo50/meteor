@@ -1,19 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 
 import Button from '/imports/ui/components/general/Button';
-import PowerOffIcon from 'material-ui/svg-icons/action/power-settings-new';
-
-const styles = {
-  logo: {
-    maxHeight: 25,
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
-};
+import Icon from '/imports/ui/components/general/Icon';
 
 const adminLinks = [
   {
@@ -92,7 +84,7 @@ const SideNav = (props) => {
         <Button
           label="Déconnexion"
           onClick={() => Meteor.logout(() => props.history.push('/home'))}
-          icon={<PowerOffIcon />}
+          icon={<Icon type="powerOff" />}
         />
       </div>
     </nav>

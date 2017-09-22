@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import AssessmentIcon from 'material-ui/svg-icons/action/assessment';
-import FolderIcon from 'material-ui/svg-icons/file/folder-open';
 import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 
 import { T } from '/imports/ui/components/general/Translation';
 import RequestSelector from './RequestSelector';
 import SideNavStepper from './SideNavStepper';
+import Icon from '../Icon';
 
 const SideNavUser = (props) => {
   const {
@@ -66,7 +65,7 @@ const SideNavUser = (props) => {
             >
               <div className="onclick-wrapper" onClick={handleClickLink}>
                 <div className="icon">
-                  <AssessmentIcon color="#ADB5BD" />
+                  <Icon type="dashboard" color="#ADB5BD" />
                 </div>
                 <h4 className="fixed-size title">
                   <T id="SideNavUser.dashboard" />
@@ -81,7 +80,7 @@ const SideNavUser = (props) => {
             >
               <div className="onclick-wrapper" onClick={handleClickLink}>
                 <div className="icon">
-                  <FolderIcon color="#ADB5BD" />
+                  <Icon type="folder" color="#ADB5BD" />
                 </div>
                 <h4 className="fixed-size title">
                   <T id="SideNavUser.files" />

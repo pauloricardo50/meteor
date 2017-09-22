@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import CheckIcon from 'material-ui/svg-icons/navigation/check';
-import LockIcon from 'material-ui/svg-icons/action/lock-outline';
+import Icon from '/imports/ui/components/general/Icon';
 import classnames from 'classnames';
 
 import { T } from '/imports/ui/components/general/Translation';
@@ -15,7 +14,7 @@ const getIcon = (step, loanRequest) => {
   if (stepNb < realStep) {
     return (
       <div className="icon done">
-        <CheckIcon />
+        <Icon type="check" />
       </div>
     );
   } else if (stepNb === realStep) {
@@ -27,7 +26,7 @@ const getIcon = (step, loanRequest) => {
   }
   return (
     <div className="icon">
-      <LockIcon />
+      <Icon type="lock" />
     </div>
   );
 };

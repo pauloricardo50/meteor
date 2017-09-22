@@ -1,12 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Star from 'material-ui/svg-icons/toggle/star';
-import StarHalf from 'material-ui/svg-icons/toggle/star-half';
-import StarEmpty from 'material-ui/svg-icons/toggle/star-border';
-
 import StarRatingComponent from 'react-star-rating-component';
 import colors from '/imports/js/config/colors';
+import Icon from '/imports/ui/components/general/Icon';
 
 const styles = {
   svg: {
@@ -23,11 +20,11 @@ const StarRating = ({ value }) => (
     emptyStarColor={colors.lightBorder}
     renderStarIcon={(index, val) =>
       (index <= val ? (
-        <Star style={styles.svg} />
+        <Icon type="star" style={styles.svg} />
       ) : (
-        <StarEmpty style={styles.svg} />
+        <Icon type="starEmpty" style={styles.svg} />
       ))}
-    renderStarIconHalf={() => <StarHalf style={styles.svg} />}
+    renderStarIconHalf={() => <Icon type="starHalf" style={styles.svg} />}
   />
 );
 

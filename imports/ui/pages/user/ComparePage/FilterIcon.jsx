@@ -1,16 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Visibility from 'material-ui/svg-icons/action/visibility';
-import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
+import Icon from '/imports/ui/components/general/Icon';
 
 import colors from '/imports/js/config/colors';
 
 const FilterIcon = ({ filtered }) => {
   if (filtered && filtered.show === true) {
-    return <Visibility color={colors.primary} />;
+    return <Icon type="eye" color={colors.primary} />;
   } else if (filtered && filtered.show === false) {
-    return <VisibilityOff color={colors.primary} />;
+    return <Icon type="eyeCrossed" color={colors.primary} />;
   }
   return null;
 };

@@ -6,12 +6,11 @@ import { Link } from 'react-router-dom';
 
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
-import IconButton from 'material-ui/IconButton';
 import Divider from 'material-ui/Divider';
-import Person from 'material-ui/svg-icons/social/person';
 
 import { T } from '/imports/ui/components/general/Translation';
 import track from '/imports/js/helpers/analytics';
+import IconButton from '/imports/ui/components/general/IconButton';
 
 const getMenuItems = (currentUser) => {
   const isDev = Roles.userIsInRole(currentUser._id, 'dev');
@@ -50,38 +49,38 @@ const getMenuItems = (currentUser) => {
 // an admin link for admins,
 // a partner link for partners,
 // a home, settings, and contact link for regular users
-const TopNavDropdown = ({ currentUser, history }) =>
-  (<IconMenu
+const TopNavDropdown = ({ currentUser, history }) => (
+  <IconMenu
     iconButtonElement={
       <IconButton
+        type="person"
         tooltip={currentUser.emails[0].address}
         touch
         tooltipPosition="bottom-left"
-      >
-        <Person color="#444" hoverColor="#888" />
-      </IconButton>
+      />
     }
     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
     targetOrigin={{ horizontal: 'right', vertical: 'top' }}
   >
     {getMenuItems(currentUser).map(
       item =>
-        item.show &&
-        <MenuItem
-          key={item.link}
-          primaryText={<T id={`TopNavDropdown.${item.id}`} />}
-          containerElement={
-            <Link
-              to={item.link}
-              onClick={() => {
-                track('TopNavDropdown - clicked on link', {
-                  from: history.location.pathname,
-                  to: item.link,
-                });
-              }}
-            />
-          }
-        />,
+        item.show && (
+          <MenuItem
+            key={item.link}
+            primaryText={<T id={`TopNavDropdown.${item.id}`} />}
+            containerElement={
+              <Link
+                to={item.link}
+                onClick={() => {
+                  track('TopNavDropdown - clicked on link', {
+                    from: history.location.pathname,
+                    to: item.link,
+                  });
+                }}
+              />
+            }
+          />
+        ),
     )}
     <Divider />
     <MenuItem
@@ -91,7 +90,8 @@ const TopNavDropdown = ({ currentUser, history }) =>
         Meteor.logout(() => history.push('/home'));
       }}
     />
-  </IconMenu>);
+  </IconMenu>
+);
 
 TopNavDropdown.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any).isRequired,

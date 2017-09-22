@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '/imports/ui/components/general/Button';
-import ArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
-import ArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
+import Icon from '/imports/ui/components/general/Icon';
 import { Link } from 'react-router-dom';
 
 import cleanMethod from '/imports/api/cleanMethods';
@@ -73,7 +72,7 @@ export default class ProcessPageBar extends Component {
         {showBackButton && (
           <Button
             raised
-            icon={smallWidth ? <ArrowLeft /> : undefined}
+            icon={smallWidth ? <Icon type="left" /> : undefined}
             label={smallWidth ? '' : <T id="ProcessPageBar.previous" />}
             style={smallWidth ? styles.smallButton : styles.button}
             disabled={!prevLink}
@@ -85,7 +84,7 @@ export default class ProcessPageBar extends Component {
         <Button
           raised
           labelPosition="before"
-          icon={smallWidth || isDone ? <ArrowRight /> : undefined}
+          icon={smallWidth || isDone ? <Icon type="right" /> : undefined}
           label={
             smallWidth ? (
               ''

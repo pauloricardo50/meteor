@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '/imports/ui/components/general/Button';
-import LoopIcon from 'material-ui/svg-icons/av/loop';
-import IconButton from 'material-ui/IconButton';
-import LockOpen from 'material-ui/svg-icons/action/lock-open';
-import LockClosed from 'material-ui/svg-icons/action/lock-outline';
-
 import { T } from '/imports/ui/components/general/Translation';
 import DialogSimple from '/imports/ui/components/general/DialogSimple';
+import IconButton from '/imports/ui/components/general/IconButton';
+import Icon from '/imports/ui/components/general/Icon';
+import Button from '/imports/ui/components/general/Button';
 
 import CustomFieldAdder from './CustomFieldAdder';
 import FilterIcon from './FilterIcon';
@@ -29,9 +26,7 @@ const renderField = (props, field) => {
 
   return (
     <div className="content">
-      <span className="text">
-        {text}
-      </span>
+      <span className="text">{text}</span>
       {icon}
     </div>
   );
@@ -85,21 +80,19 @@ export default class CompareHeader extends Component {
           <Button
             label="Reset"
             onClick={handleReset}
-            icon={<LoopIcon style={{ color: 'white' }} />}
+            icon={<Icon type="loop" style={{ color: 'white' }} />}
             style={{ color: 'white' }}
           />
           <IconButton
+            type={pinHeader ? 'lock' : 'lockOpen'}
             tooltip="Pin"
             onClick={this.togglePin}
             style={{ position: 'absolute', right: 0, top: 0 }}
-          >
-            {pinHeader
-              ? <LockClosed color="white" />
-              : <LockOpen color="white" />}
-          </IconButton>
+            iconProps={{ color: 'white' }}
+          />
         </li>
-        {fields.map(field =>
-          (<li
+        {fields.map(field => (
+          <li
             key={field.id}
             onMouseEnter={() => onHoverEnter(field.id)}
             onMouseLeave={onHoverLeave}
@@ -111,8 +104,8 @@ export default class CompareHeader extends Component {
             }
           >
             {renderField(this.props, field)}
-          </li>),
-        )}
+          </li>
+        ))}
 
         <li>
           <DialogSimple

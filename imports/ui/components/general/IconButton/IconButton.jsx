@@ -2,43 +2,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import MuiIconButton from 'material-ui/IconButton';
-import CheckIcon from 'material-ui/svg-icons/navigation/check';
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
-import AddIcon from 'material-ui/svg-icons/content/add-circle-outline';
-import DownloadIcon from 'material-ui/svg-icons/file/file-download';
-import LoopIcon from 'material-ui/svg-icons/av/loop';
+import Icon from '../Icon';
 
-const getIcon = (type) => {
-  const props = { color: '#444', hoverColor: '#888' };
-  switch (type) {
-    case 'close':
-      return <CloseIcon {...props} />;
-    case 'check':
-      return <CheckIcon {...props} />;
-    case 'add':
-      return <AddIcon {...props} />;
-    case 'download':
-      return <DownloadIcon {...props} />;
-    case 'loop':
-      return <LoopIcon {...props} className="fa-spin" />;
-    default:
-      throw new Error('invalid icon provided to IconButton');
-  }
-};
-
-const IconButton = ({ onClick, type, tooltip, touch, style }) => (
+const IconButton = ({
+  onClick,
+  type,
+  tooltip,
+  tooltipPosition,
+  touch,
+  style,
+  iconStyle,
+  iconProps,
+}) => (
   <MuiIconButton
     onClick={onClick}
     tooltip={tooltip}
+    tooltipPosition={tooltipPosition}
     touch={touch}
     style={style}
   >
-    {getIcon(type)}
+    <Icon type={type} withColors style={iconStyle} {...iconProps} />
   </MuiIconButton>
 );
 
 IconButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   type: PropTypes.string.isRequired,
   tooltip: PropTypes.node,
   touch: PropTypes.bool,
@@ -46,6 +34,7 @@ IconButton.propTypes = {
 };
 
 IconButton.defaultProps = {
+  onClick: () => {},
   tooltip: '',
   touch: true,
   style: {},

@@ -6,6 +6,8 @@ const colors = {
   error: '#B73E25',
   lightBorder: '#DEE2E6',
   charts: ['#2C82BE', '#76DDFB', '#DBECF8', '#53A8E2', '#6AC6FF', '#4990E2'],
+  iconColor: '#444',
+  iconHoverColor: '#888',
 };
 
 export default colors;

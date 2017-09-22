@@ -3,8 +3,7 @@ import { DocHead } from 'meteor/kadira:dochead';
 import { Link } from 'react-router-dom';
 import Scroll from 'react-scroll';
 
-import BottomArrow from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
-import IconButton from 'material-ui/IconButton';
+import IconButton from '/imports/ui/components/general/IconButton';
 
 import HomeDev from '/imports/ui/components/general/HomeDev';
 import track from '/imports/js/helpers/analytics';
@@ -122,6 +121,7 @@ export default class HomePage extends Component {
             </div>
             <div className="scroll-button">
               <IconButton
+                type="down"
                 onClick={() => {
                   Scroll.scroller.scrollTo('descriptions', {
                     duration: 500,
@@ -132,9 +132,7 @@ export default class HomePage extends Component {
                 }}
                 style={{ width: 72, height: 72 }}
                 iconStyle={{ width: 36, height: 48 }}
-              >
-                <BottomArrow color="#444" hoverColor="#888" />
-              </IconButton>
+              />
             </div>
           </header>
           <Scroll.Element

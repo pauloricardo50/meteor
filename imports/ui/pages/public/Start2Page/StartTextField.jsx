@@ -4,7 +4,7 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import MaskedInput from 'react-text-mask';
 
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import IconButton from '/imports/ui/components/general/IconButton';
 import classnames from 'classnames';
 
 import { swissFrancMask } from '/imports/js/helpers/textMasks';
@@ -30,7 +30,9 @@ export default class StartTextField extends React.Component {
 
   handleChange(event) {
     // Save a Number if it is money, else the string
-    const value = this.props.money ? toNumber(event.target.value) : event.target.value;
+    const value = this.props.money
+      ? toNumber(event.target.value)
+      : event.target.value;
     this.props.setFormState(this.props.id, value);
   }
 
@@ -50,32 +52,35 @@ export default class StartTextField extends React.Component {
           pattern={this.props.number && '[0-9]*'}
           ref={c => this.props.setRef(c)}
         >
-          {this.props.money &&
+          {this.props.money && (
             <MaskedInput
               mask={swissFrancMask}
               guide
               pattern="[0-9]*"
               autoFocus={this.props.autoFocus}
               value={this.props.zeroAllowed ? val : val || ''}
-            />}
+            />
+          )}
         </TextField>
 
         {!this.props.text2 &&
           !this.props.multiple &&
-          !this.props.array &&
-          <div className={classnames({ 'delete-button': true, off: !val })}>
-            <div className="absolute-wrapper">
-              <CloseIcon
-                onClick={() => {
-                  this.props.setFormState(this.props.id, '');
-                  if (this.props.inputRef) {
-                    this.props.inputRef.input.inputElement.focus();
-                  }
-                }}
-                disabled={!val}
-              />
+          !this.props.array && (
+            <div className={classnames({ 'delete-button': true, off: !val })}>
+              <div className="absolute-wrapper">
+                <IconButton
+                  type="close"
+                  onClick={() => {
+                    this.props.setFormState(this.props.id, '');
+                    if (this.props.inputRef) {
+                      this.props.inputRef.input.inputElement.focus();
+                    }
+                  }}
+                  disabled={!val}
+                />
+              </div>
             </div>
-          </div>}
+          )}
       </span>
     );
   }

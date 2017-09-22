@@ -2,16 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ForumIcon from 'material-ui/svg-icons/communication/forum';
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
-import MailIcon from 'material-ui/svg-icons/communication/mail-outline';
-import PhoneIcon from 'material-ui/svg-icons/communication/call';
 
 import track from '/imports/js/helpers/analytics';
 import { T } from '/imports/ui/components/general/Translation';
-
 import colors from '/imports/js/config/colors';
 import supportStaff from '/imports/js/arrays/supportStaff';
+import Icon from '/imports/ui/components/general/Icon';
 
 const styles = {
   div: {
@@ -56,8 +52,8 @@ const styles = {
 
 const staff = supportStaff[0];
 
-const overlayContent = path =>
-  (<div
+const overlayContent = path => (
+  <div
     style={{
       display: 'flex',
       flexDirection: 'column',
@@ -96,7 +92,7 @@ const overlayContent = path =>
       }}
     >
       <div style={styles.iconDiv}>
-        <PhoneIcon style={styles.icon} color="#495057" />
+        <Icon type="phone" style={styles.icon} color="#495057" />
       </div>
       <div className="text" style={{ flexGrow: 1 }}>
         <p className="bold" style={{ margin: 0 }}>
@@ -119,7 +115,7 @@ const overlayContent = path =>
       }}
     >
       <div style={styles.iconDiv}>
-        <MailIcon style={styles.icon} color="#495057" />
+        <Icon type="mail" style={styles.icon} color="#495057" />
       </div>
       <div className="text" style={{ flexGrow: 1 }}>
         <p className="bold" style={{ margin: 0 }}>
@@ -134,7 +130,8 @@ const overlayContent = path =>
         </a>
       </div>
     </div>
-  </div>);
+  </div>
+);
 
 export default class ContactButton extends Component {
   constructor(props) {
@@ -166,7 +163,7 @@ export default class ContactButton extends Component {
           backgroundColor={colors.primary}
           onClick={this.handleClick}
         >
-          {open ? <CloseIcon /> : <ForumIcon />}
+          {open ? <Icon type="close" /> : <Icon type="forum" />}
         </FloatingActionButton>
         <div
           className="mask1"

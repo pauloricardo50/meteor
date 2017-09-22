@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
-import SvgIconFace from 'material-ui/svg-icons/action/face';
+import Icon from '/imports/ui/components/general/Icon';
 
 import { IntlNumber } from '/imports/ui/components/general/Translation';
 
@@ -58,7 +58,7 @@ const Request = ({ loanRequest, borrowers, history }) => (
     <h5>Emprunteurs</h5>
     {borrowers.map(borrower => (
       <Chip style={{ margin: 8 }} key={borrower._id}>
-        <Avatar icon={<SvgIconFace />} />
+        <Avatar icon={<Icon type="face" />} />
         {borrower.firstName} {borrower.lastName}
       </Chip>
     ))}

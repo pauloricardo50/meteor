@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
 import Button from '/imports/ui/components/general/Button';
-import CheckIcon from 'material-ui/svg-icons/navigation/check';
-import LoopIcon from 'material-ui/svg-icons/av/loop';
+import Icon from '/imports/ui/components/general/Icon';
 import Scroll from 'react-scroll';
 
 const scroll = () => {
@@ -49,13 +48,14 @@ export default class LoadingButton extends Component {
   render() {
     let icon = null;
     if (!this.state.isFirstVisit) {
-      icon = <CheckIcon />;
+      icon = <Icon type="check" />;
     } else if (this.state.loading) {
-      icon = <LoopIcon className="fa-spin" />;
+      icon = <Icon type="loop" />;
     }
 
     return (
-      <Button raised
+      <Button
+        raised
         // {...this.props}
         label={this.props.label}
         primary={this.state.isFirstVisit}

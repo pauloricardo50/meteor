@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import CheckIcon from 'material-ui/svg-icons/navigation/check';
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import Icon from '/imports/ui/components/general/Icon';
 
 import {
   IntlNumber,
@@ -27,12 +26,8 @@ const CompareColumnField = (props) => {
   } else if (typeof value === 'object' && field.type !== 'date') {
     return (
       <div className="flex-col center">
-        <span className="text-ellipsis">
-          {value.primary}
-        </span>
-        <span className="secondary">
-          {value.secondary}
-        </span>
+        <span className="text-ellipsis">{value.primary}</span>
+        <span className="secondary">{value.secondary}</span>
       </div>
     );
   }
@@ -56,11 +51,7 @@ const CompareColumnField = (props) => {
 
   switch (field.type) {
     case 'number':
-      return (
-        <span>
-          {value}
-        </span>
-      );
+      return <span>{value}</span>;
     case 'money':
       return <IntlNumber value={value} format="money" />;
     case 'date':
@@ -76,19 +67,17 @@ const CompareColumnField = (props) => {
     case 'boolean':
       return (
         <span>
-          {value
-            ? <CheckIcon color={colors.success} />
-            : <CloseIcon color={colors.error} />}
+          {value ? (
+            <Icon type="check" color={colors.success} />
+          ) : (
+            <Icon type="close" color={colors.error} />
+          )}
         </span>
       );
     case 'percent':
       return <IntlNumber value={value} format="percentage" />;
     default:
-      return (
-        <span className="text-ellipsis">
-          {value}
-        </span>
-      );
+      return <span className="text-ellipsis">{value}</span>;
   }
 };
 

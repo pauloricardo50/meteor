@@ -1,9 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import CheckIcon from 'material-ui/svg-icons/navigation/check';
-import WarningIcon from 'material-ui/svg-icons/alert/warning';
-import WaitingIcon from 'material-ui/svg-icons/action/hourglass-empty';
+import Icon from '/imports/ui/components/general/Icon';
 
 import colors from '/imports/js/config/colors';
 
@@ -32,14 +29,15 @@ const FileStatusIcon = ({ files, status }) => {
       />
     );
   } else if (statuses.indexOf('error') >= 0) {
-    return <WarningIcon className="error" style={styles.icon} />;
+    return <Icon type="warning" className="error" style={styles.icon} />;
   } else if (statuses.indexOf('unverified') >= 0) {
-    return <WaitingIcon color={colors.lightBorder} style={styles.icon} />;
+    return (
+      <Icon type="waiting" color={colors.lightBorder} style={styles.icon} />
+    );
   }
 
-  return <CheckIcon className="success" style={styles.icon} />;
+  return <Icon type="check" className="success" style={styles.icon} />;
 };
 
 FileStatusIcon.propTypes = {};
-
 export default FileStatusIcon;

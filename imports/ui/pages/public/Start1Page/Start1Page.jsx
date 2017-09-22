@@ -5,8 +5,7 @@ import queryString from 'query-string';
 import classnames from 'classnames';
 
 import Button from '/imports/ui/components/general/Button';
-import ArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
-import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import Icon from '/imports/ui/components/general/Icon';
 
 import { T } from '/imports/ui/components/general/Translation';
 import { toNumber } from '/imports/js/helpers/conversionFunctions';
@@ -265,17 +264,15 @@ export default class Start1Page extends Component {
 
           {!isFirstVisit && (
             <Button
-              icon={showDescription ? <ArrowUp /> : <ArrowDown />}
+              icon={showDescription ? <Icon type="up" /> : <Icon type="down" />}
               onClick={() =>
                 this.setState(prev => ({
                   showDescription: !prev.showDescription,
                 }))}
               style={
-                showDescription ? (
-                  { minWidth: 'unset', width: 36 }
-                ) : (
-                  { marginBottom: 16, minWidth: 'unset', width: 36 }
-                )
+                showDescription
+                  ? { minWidth: 'unset', width: 36 }
+                  : { marginBottom: 16, minWidth: 'unset', width: 36 }
               }
             />
           )}

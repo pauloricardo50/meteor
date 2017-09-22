@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 
-import CheckIcon from 'material-ui/svg-icons/navigation/check';
-import LockIcon from 'material-ui/svg-icons/action/lock-outline';
-import WaitingIcon from 'material-ui/svg-icons/action/hourglass-empty';
+import Icon from '/imports/ui/components/general/Icon';
 import CircularProgress from 'material-ui/CircularProgress';
 
 import { T } from '/imports/ui/components/general/Translation';
@@ -16,19 +14,19 @@ const getIcon = (item, isWaiting) => {
   if (item.isDone()) {
     return (
       <div className="icon success">
-        <CheckIcon color={colors.secondary} />
+        <Icon type="check" color={colors.secondary} />
       </div>
     );
   } else if (item.disabled) {
     return (
       <div className="icon">
-        <LockIcon />
+        <Icon type="lock" />
       </div>
     );
   } else if (isWaiting) {
     return (
       <div className="icon warning">
-        <WaitingIcon />
+        <Icon type="waiting" />
       </div>
     );
   } else if (typeof item.percent === 'function' && item.percent() > 0) {

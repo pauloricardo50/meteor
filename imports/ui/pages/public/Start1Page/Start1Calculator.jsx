@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import track from '/imports/js/helpers/analytics';
 
 import Button from '/imports/ui/components/general/Button';
-import LoopIcon from 'material-ui/svg-icons/av/loop';
+import Icon from '/imports/ui/components/general/Icon';
 
 import constants from '/imports/js/config/constants';
 import Loadable from '/imports/js/helpers/loadable';
@@ -40,8 +40,8 @@ const Start1Calculator = (props) => {
     <div style={{ width: '100%' }}>
       <div className="content">
         <div className="sliders">
-          {inputArray.map(line =>
-            (<Start1Line
+          {inputArray.map(line => (
+            <Start1Line
               isReady={isReady}
               key={line.name}
               {...parentState[line.name]}
@@ -53,13 +53,13 @@ const Start1Calculator = (props) => {
                   `${line.name}Slider`,
                   parentState[`${line.name}Slider`] + line.sliderIncrement,
                 )}
-            />),
-          )}
+            />
+          ))}
           <Button
             label="Reset"
             onClick={handleReset}
             className="reset-button"
-            icon={<LoopIcon />}
+            icon={<Icon type="loop" />}
           />
         </div>
         <div className="separator" />
@@ -68,13 +68,14 @@ const Start1Calculator = (props) => {
         </div>
       </div>
 
-      {isReady &&
+      {isReady && (
         <div className="text-center">
           <Start1Validator
             incomeRatio={incomeRatio}
             borrowRatio={borrowRatio}
           />
-        </div>}
+        </div>
+      )}
 
       <div className="chart text-center">
         <Accordion isActive={isReady && fortune < property}>
@@ -101,7 +102,7 @@ const Start1Calculator = (props) => {
         </Accordion>
       </div>
 
-      {isReady &&
+      {isReady && (
         <div className="button text-center animated fadeIn">
           <Button
             raised
@@ -117,7 +118,8 @@ const Start1Calculator = (props) => {
             onClick={() =>
               track('Funnel - Passed Start 1', { property, income, fortune })}
           />
-        </div>}
+        </div>
+      )}
     </div>
   );
 };

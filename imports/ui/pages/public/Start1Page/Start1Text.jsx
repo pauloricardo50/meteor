@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 
 import TextField from 'material-ui/TextField';
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import IconButton from '/imports/ui/components/general/IconButton';
 import MaskedInput from 'react-text-mask';
 import { swissFrancMask } from '/imports/js/helpers/textMasks';
 import constants from '/imports/js/config/constants';
@@ -66,7 +66,8 @@ export default class Start1Text extends Component {
             off: value === 0,
           })}
         >
-          <CloseIcon
+          <IconButton
+            type="close"
             onClick={() => {
               setStateValue(name, 0, true);
               this.input.input.inputElement.focus();

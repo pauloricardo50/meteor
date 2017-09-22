@@ -7,8 +7,7 @@ import orderBy from 'lodash/orderBy';
 import debounce from 'lodash/debounce';
 
 import Button from '/imports/ui/components/general/Button';
-import ArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
-import ArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
+import Icon from '/imports/ui/components/general/Icon';
 
 import { easeOut } from '/imports/js/helpers/browserFunctions';
 import { T } from '/imports/ui/components/general/Translation';
@@ -176,12 +175,12 @@ export default class CompareTable extends Component {
       <div className="flex-col center" style={{ width: '100%' }}>
         <div style={{ marginBottom: 8 }}>
           <Button
-            icon={<ArrowLeft />}
+            icon={<Icon type="left" />}
             onClick={() => this.handleScroll(false)}
             primary
           />
           <Button
-            icon={<ArrowRight />}
+            icon={<Icon type="right" />}
             onClick={() => this.handleScroll(true)}
             primary
           />
@@ -210,8 +209,8 @@ export default class CompareTable extends Component {
           {/* Empty div to position things properly */}
           <div className="empty-compare-header" />
 
-          {properties.length
-            ? <CompareTableContent
+          {properties.length ? (
+            <CompareTableContent
               properties={sortedProperties}
               fields={fields}
               onHoverEnter={this.onHoverEnter}
@@ -219,9 +218,11 @@ export default class CompareTable extends Component {
               hovered={this.state.hovered}
               deleteProperty={deleteProperty}
             />
-            : <h2 className="flex center">
+          ) : (
+            <h2 className="flex center">
               <T id="CompareTable.empty" />
-            </h2>}
+            </h2>
+          )}
         </div>
       </div>
     );
