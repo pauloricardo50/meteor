@@ -275,7 +275,7 @@ export const PropertySchema = new SimpleSchema({
     max: 5,
     optional: true,
   },
-  other: {
+  otherNotes: {
     type: String,
     optional: true,
   },

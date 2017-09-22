@@ -21,7 +21,7 @@ const styles = {
   },
 };
 
-export default class ZipAutoComplete extends Component {
+class ZipAutoComplete extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -137,3 +137,5 @@ ZipAutoComplete.defaultProps = {
   disabled: false,
   style: {},
 };
+
+export default ZipAutoComplete;

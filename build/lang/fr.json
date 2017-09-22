@@ -544,6 +544,125 @@
   "Forms.bonus.bonus2014": "Bonus 2014",
   "Forms.bonus.bonus2014.placeholder": "CHF 10 000",
 
+  "Forms.value": "Prix d'achat",
+  "Forms.value.placeholder": "CHF 500 000",
+
+  "Forms.propertyWork": "Travaux de plus-value",
+  "Forms.propertyWork.placeholder": "CHF 50 000",
+
+  "Forms.usageType.primary": "Résidence principale",
+  "Forms.usageType.secondary": "Résidence secondaire",
+  "Forms.usageType.investment": "Bien d'investissement",
+
+  "Forms.style": "Type de bien immobilier",
+  "Forms.style.villa": "Villa",
+  "Forms.style.flat": "Appartement",
+
+  "Forms.currentOwner": "Qui est le propriétaire actuel?",
+  "Forms.currentOwner.0": "{name}",
+  "Forms.currentOwner.1": "{name}",
+  "Forms.currentOwner.both": "Les Deux",
+  "Forms.currentOwner.other": "Autre",
+
+  "Forms.futureOwner": "Qui sera le propriétaire du bien immobilier?",
+  "Forms.futureOwner.0": "{name}",
+  "Forms.futureOwner.1": "{name}",
+  "Forms.futureOwner.both": "Les Deux",
+  "Forms.futureOwner.other": "Autre",
+
+  "Forms.otherOwner": "Autre propriétaire",
+  "Forms.otherOwner.placeholder": " ",
+
+  "Forms.isNew": "Est-ce un bien neuf?",
+  "Forms.propertyAddress": "Adresse du bien immobilier",
+  "Forms.propertyDetails": "Détails du bien",
+  "Forms.constructionYear": "Année de construction",
+  "Forms.constructionYear.placeholder": "2005",
+
+  "Forms.renovationYear": "Année de rénovation",
+  "Forms.renovationYear.placeholder": "2010",
+  "Forms.renovationYear.info": "Seulement si la propriété a été rénovée",
+
+  "Forms.landArea": "Surface du terrain en m2",
+  "Forms.landArea.placeholder": "250",
+
+  "Forms.insideArea": "Surface habitable en m2",
+  "Forms.insideArea.placeholder": "150",
+
+  "Forms.balconyArea": "Surface des balcons en m2",
+  "Forms.balconyArea.placeholder": "20",
+
+  "Forms.terraceArea": "Surface des terrasses en m2",
+  "Forms.terraceArea.placeholder": "40",
+
+  "Forms.volume": "Volume/Cubage en m3",
+  "Forms.volume.placeholder": "1000",
+
+  "Forms.volumeNorm": "Type de cubage",
+  "Forms.volumeNorm.placeholder": "SIA",
+
+  "Forms.roomCount": "Nb. de chambres",
+  "Forms.roomCount.placeholder": "3.5",
+  "Forms.roomCount.info": "Chambres à coucher",
+
+  "Forms.bathroomCount": "Nb. de salles de bain",
+  "Forms.bathroomCount.placeholder": "1",
+  "Forms.bathroomCount.info":
+    "Salles de bains ou salles d’eau (respectivement avec baignoire ou douche)",
+
+  "Forms.toiletCount": "Nb. de WC",
+  "Forms.toiletCount.placeholder": "1",
+
+  "Forms.parking.box": "Box de parking",
+  "Forms.parking.box.placeholder": "1",
+
+  "Forms.parking.inside": "Places de parc intérieur",
+  "Forms.parking.inside.placeholder": "1",
+
+  "Forms.parking.outside": "Places de parc extérieur",
+  "Forms.parking.outside.placeholder": "1",
+
+  "Forms.minergie": "Est-ce une construction Minergie?",
+  "Forms.propertyQuality": "Qualité et Emplacement",
+  "Forms.isCoproperty": "Est-ce une copropriété?",
+  "Forms.copropertyPercentage": "Répartition du bien au sein de la copropriété",
+  "Forms.copropertyPercentage.placeholder": "125",
+  "Forms.copropertyPercentage.info": "En millièmes",
+
+  "Forms.cityPlacementQuality": "Type d'emplacement au sein de la commune",
+  "Forms.cityPlacementQuality.0": "Mauvais",
+  "Forms.cityPlacementQuality.1": "Moyen",
+  "Forms.cityPlacementQuality.2": "Bon",
+  "Forms.cityPlacementQuality.3": "Très Bon",
+
+  "Forms.buildingPlacementQuality": "Emplacement dans l'immeublee",
+  "Forms.buildingPlacementQuality.0": "Mauvais",
+  "Forms.buildingPlacementQuality.1": "Moyen",
+  "Forms.buildingPlacementQuality.2": "Bon",
+  "Forms.buildingPlacementQuality.3": "Très Bon",
+
+  "Forms.buildingQuality": "Condition d’entretien du bâtiment",
+  "Forms.buildingQuality.0": "Mauvais",
+  "Forms.buildingQuality.1": "Moyen",
+  "Forms.buildingQuality.2": "Bon",
+  "Forms.buildingQuality.3": "Très Bon",
+
+  "Forms.flatQuality": "Condition d’entretien de l’appartement",
+  "Forms.flatQuality.0": "Mauvais",
+  "Forms.flatQuality.1": "Moyen",
+  "Forms.flatQuality.2": "Bon",
+  "Forms.flatQuality.3": "Très Bon",
+
+  "Forms.materialsQuality": "Qualité des matériaux",
+  "Forms.materialsQuality.0": "Mauvais",
+  "Forms.materialsQuality.1": "Moyen",
+  "Forms.materialsQuality.2": "Bon",
+  "Forms.materialsQuality.3": "Très Bon",
+
+  "Forms.otherNotes": "Autres informations",
+  "Forms.otherNotes.placeholder":
+    "Aménagements extérieurs, piscine, jardins, cabanons, annexes, sous-sols utiles,...",
+
   "general.one": "Un",
   "general.1": "Un",
   "general.2": "Deux",

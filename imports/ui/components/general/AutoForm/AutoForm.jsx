@@ -4,6 +4,7 @@ import React from 'react';
 import get from 'lodash/get';
 
 import { T } from '/imports/ui/components/general/Translation';
+import ZipAutoComplete from '/imports/ui/components/general/ZipAutoComplete';
 
 import TextInput from './TextInput';
 import RadioInput from './RadioInput';
@@ -85,7 +86,12 @@ const inputSwitch = (childProps, index, parentProps) => {
     case 'arrayInput':
       return <ArrayInput {...childProps} />;
     case 'custom':
-      return React.cloneElement(childProps.component, { ...childProps });
+      if (childProps.component === 'ZipAutoComplete') {
+        return (
+          <ZipAutoComplete {...childProps} {...childProps.componentProps} />
+        );
+      }
+      return null;
     default:
       throw new Error(`${childProps.type} is not a valid AutoForm type`);
   }
@@ -117,13 +123,19 @@ const mapInputs = (singleInput, index, parentProps) => {
   if (childProps.required !== false) {
     childProps.label = (
       <span>
-        <T id={`Forms.${childProps.id}`} values={childProps.intlValues} />
+        <T
+          id={`Forms.${childProps.intlId || childProps.id}`}
+          values={childProps.intlValues}
+        />
         {' *'}
       </span>
     );
   } else {
     childProps.label = (
-      <T id={`Forms.${childProps.id}`} values={childProps.intlValues} />
+      <T
+        id={`Forms.${childProps.intlId || childProps.id}`}
+        values={childProps.intlValues}
+      />
     );
   }
 
@@ -135,6 +147,13 @@ const mapInputs = (singleInput, index, parentProps) => {
   ) {
     childProps.options = childProps.options.map(
       o => (o.id === undefined ? { id: o } : o),
+    );
+  }
+
+  // if info is true, map it to a i18n string
+  if (childProps.info) {
+    childProps.info = (
+      <T id={`Forms.${childProps.intlId || childProps.id}.info`} />
     );
   }
 

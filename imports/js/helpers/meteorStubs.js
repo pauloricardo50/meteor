@@ -41,7 +41,9 @@ const stubs = {
     '@global': true,
   },
   ddpRateLimiter: {
-    RateLimit: {},
+    DDPRateLimiter: {
+      addRule: () => {},
+    },
     '@noCallThru': true,
     '@global': true,
   },
@@ -75,6 +77,11 @@ const stubs = {
     '@noCallThru': true,
     '@global': true,
   },
+  callpromiseMixin: {
+    CallPromiseMixin: {},
+    '@noCallThru': true,
+    '@global': true,
+  },
 };
 
 const meteorStubs = {
@@ -91,6 +98,7 @@ const meteorStubs = {
   'meteor/softwarerero:accounts-t9n': stubs.accountsT9n,
   'meteor/kadira:dochead': stubs.dochead,
   '/imports/api/cleanMethods': stubs.cleanMethod,
+  'meteor/didericis:callpromise-mixin': stubs.callpromiseMixin,
 };
 
 export default meteorStubs;

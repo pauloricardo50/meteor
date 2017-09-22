@@ -1,6 +1,3 @@
-import React from 'react';
-import ZipAutoComplete from '/imports/ui/components/general/ZipAutoComplete';
-
 export const getBorrowerInfoArray = (borrowers, id) => {
   const b = borrowers.find(borr => borr._id === id);
   const multiple = borrowers.length > 1;
@@ -42,9 +39,8 @@ export const getBorrowerInfoArray = (borrowers, id) => {
     {
       id: 'zipCode',
       type: 'custom',
-      component: (
-        <ZipAutoComplete savePath="" initialValue={`${b.zipCode} ${b.city}`} />
-      ),
+      component: 'ZipAutoComplete',
+      componentProps: { savePath: '', initialValue: `${b.zipCode} ${b.city}` },
       disabled: !!b.sameAddress && !isFirst,
     },
     {

@@ -62,7 +62,15 @@ export default class SelectFieldInput extends Component {
   };
 
   render() {
-    const { style, label, disabled, options, noValidator, id } = this.props;
+    const {
+      style,
+      label,
+      disabled,
+      options,
+      noValidator,
+      id,
+      intlid,
+    } = this.props;
     const { value, saving, errorText } = this.state;
 
     return (
@@ -83,7 +91,10 @@ export default class SelectFieldInput extends Component {
               value={optionId}
               primaryText={
                 optionLabel || (
-                  <T id={`Forms.${id}.${optionId}`} values={intlValues} />
+                  <T
+                    id={`Forms.${intlId || id}.${optionId}`}
+                    values={intlValues}
+                  />
                 )
               }
               key={optionId}

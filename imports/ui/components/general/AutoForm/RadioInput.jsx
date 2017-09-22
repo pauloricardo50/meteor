@@ -57,7 +57,12 @@ export default class RadioInput extends Component {
     } else if (optionId === false) {
       return <T id="general.no" values={intlValues} />;
     }
-    return <T id={`Forms.${this.props.id}.${optionId}`} values={intlValues} />;
+    return (
+      <T
+        id={`Forms.${this.props.intlId || this.props.id}.${optionId}`}
+        values={intlValues}
+      />
+    );
   };
 
   saveValue = (value) => {

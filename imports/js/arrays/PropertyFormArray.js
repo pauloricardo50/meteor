@@ -1,5 +1,28 @@
-import React from 'react';
-import ZipAutoComplete from '/imports/ui/components/general/ZipAutoComplete';
+const mapInput = (input) => {
+  const intlSafeObject = { ...input };
+  // If the id contains a dot in it, split it and add a intlId
+  // This makes it easier to write intl messages
+  if (input.id && input.id.indexOf('.') > 0) {
+    // Perform some additional slicing to make sure ids with multiple dots
+    // work by removing only the first part
+    intlSafeObject.intlId = input.id
+      .split('.')
+      .slice(1)
+      .join('.');
+  }
+
+  if (input.inputs) {
+    // If there are nested inputs, give them an intlId too
+    intlSafeObject.inputs = input.inputs.map(
+      obj =>
+        (obj.id && obj.id.indexOf('.') > 0
+          ? { ...obj, intlId: obj.id.split('.')[1] }
+          : obj),
+    );
+  }
+
+  return intlSafeObject;
+};
 
 const getPropertyArray = (loanRequest, borrowers) => {
   const r = loanRequest;
@@ -9,55 +32,19 @@ const getPropertyArray = (loanRequest, borrowers) => {
   }
 
   const array = [
-    {
-      id: 'property.value',
-      type: 'textInput',
-      money: true,
-      label: "Prix d'Achat",
-      placeholder: "CHF 500'000",
-    },
+    { id: 'property.value', type: 'textInput', money: true },
     {
       id: 'property.propertyWork',
       type: 'textInput',
       money: true,
-      label: 'Travaux de plus-value',
-      placeholder: "CHF 50'000",
       required: false,
     },
     {
       id: 'property.usageType',
       type: 'radioInput',
-      label: 'Utilisation de la propriété',
-      options: [
-        {
-          id: 'primary',
-          label: 'Résidence Principale',
-        },
-        {
-          id: 'secondary',
-          label: 'Résidence Secondaire',
-        },
-        {
-          id: 'investment',
-          label: "Bien d'investissement",
-        },
-      ],
+      options: ['primary', 'secondary', 'investment'],
     },
-    {
-      id: 'property.style',
-      type: 'radioInput',
-      label: 'Type de bien immobilier',
-      options: [
-        {
-          id: 'villa',
-          label: 'Villa',
-        },
-        {
-          id: 'flat',
-          label: 'Appartement',
-        },
-      ],
-    },
+    { id: 'property.style', type: 'radioInput', options: ['villa', 'flat'] },
     {
       type: 'conditionalInput',
       conditionalTrueValue: 'other',
@@ -67,22 +54,16 @@ const getPropertyArray = (loanRequest, borrowers) => {
         {
           id: 'general.currentOwner',
           type: 'radioInput',
-          label: 'Qui est le propriétaire actuel?',
           options: [
             ...borrowers.map((b, i) => ({
-              id: `${i}`,
-              label: b.firstName || `Emprunteur ${i + 1}`,
+              id: i,
+              intlValues: { name: b.firstName || `Emprunteur ${i + 1}` },
             })),
-            { id: 'both', label: 'Les Deux' },
-            { id: 'other', label: 'Autre' },
+            'both',
+            'other',
           ],
         },
-        {
-          id: 'general.otherOwner',
-          type: 'textInput',
-          label: 'Autre propriétaire',
-          placeholder: '',
-        },
+        { id: 'general.otherOwner', type: 'textInput' },
       ],
     },
     {
@@ -94,198 +75,107 @@ const getPropertyArray = (loanRequest, borrowers) => {
         {
           id: 'general.futureOwner',
           type: 'radioInput',
-          label: 'Qui sera le propriétaire du bien immobilier?',
           options: [
-            { id: '0', label: borrowers[0].firstName || 'Emprunteur 1' },
-            {
-              id: '1',
-              label: (borrowers[1] && borrowers[1].firstName) || 'Emprunteur 2',
-            },
-            { id: 'both', label: 'Les Deux' },
-            { id: 'other', label: 'Autre' },
+            ...borrowers.map((b, i) => ({
+              id: i,
+              intlValues: { name: b.firstName || `Emprunteur ${i + 1}` },
+            })),
+            'both',
+            'other',
           ],
         },
         {
           id: 'general.otherOwner',
           type: 'textInput',
-          label: 'Autre propriétaire',
-          placeholder: '',
         },
       ],
     },
     {
       id: 'property.isNew',
       type: 'radioInput',
-      label: 'Est-ce un bien neuf?',
-      options: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
+      options: [true, false],
       condition: r.general.purchaseType === 'acquisition',
     },
     {
       type: 'h3',
-      text: 'Adresse du bien immobilier',
+      id: 'propertyAddress',
       ignore: true,
+      required: false,
     },
     {
       id: 'property.address1',
       type: 'textInput',
-      label: 'Adresse 1',
-      placeholder: 'Rue des Champs 7',
     },
     {
       id: 'property.address2',
       type: 'textInput',
-      label: 'Adresse 2',
-      placeholder: '',
       required: false,
     },
     {
       id: 'property.zipCode',
       type: 'custom',
-      component: (
-        <ZipAutoComplete
-          savePath="property."
-          initialValue={`${r.property.zipCode} ${r.property.city}`}
-        />
-      ),
+      component: 'ZipAutoComplete',
+      componentProps: {
+        savePath: 'property.',
+        initialValue: `${r.property.zipCode} ${r.property.city}`,
+      },
     },
     {
       type: 'h3',
-      text: 'Détails du bien',
+      id: 'propertyDetails',
       ignore: true,
+      required: false,
     },
-    {
-      id: 'property.constructionYear',
-      type: 'textInput',
-      number: true,
-      label: 'Année de construction',
-      placeholder: '2005',
-    },
+    { id: 'property.constructionYear', type: 'textInput', number: true },
     {
       id: 'property.renovationYear',
       type: 'textInput',
       number: true,
-      label: 'Année de rénovation',
-      placeholder: '2010',
       required: false,
-      info: 'Seulement si la propriété a été rénovée',
+      info: true,
     },
     {
       id: 'property.landArea',
       type: 'textInput',
       number: true,
-      label: (
-        <span>
-          Surface du terrain en m<sup>2</sup> *
-        </span>
-      ),
-      placeholder: '250',
       condition: r.property.style === 'villa',
     },
-    {
-      id: 'property.insideArea',
-      type: 'textInput',
-      number: true,
-      label: (
-        <span>
-          Surface habitable en m<sup>2</sup> *
-        </span>
-      ),
-      placeholder: '150',
-    },
+    { id: 'property.insideArea', type: 'textInput', number: true },
     {
       id: 'property.balconyArea',
       type: 'textInput',
       number: true,
-      label: (
-        <span>
-          Surface des balcons en m<sup>2</sup>
-        </span>
-      ),
-      placeholder: '20',
       required: false,
     },
     {
       id: 'property.terraceArea',
       type: 'textInput',
       number: true,
-      label: (
-        <span>
-          Surface des terrasses en m<sup>2</sup>
-        </span>
-      ),
-      placeholder: '40',
       required: false,
     },
     {
       id: 'property.volume',
       type: 'textInput',
       number: true,
-      label: (
-        <span>
-          Volume/Cubage en m<sup>3</sup> *
-        </span>
-      ),
-      placeholder: '1000',
       condition: r.property.style === 'villa',
     },
     {
       id: 'property.volumeNorm',
       type: 'textInput',
-      label: 'Type de cubage',
-      placeholder: 'SIA',
       condition: r.property.style === 'villa',
     },
-    {
-      id: 'property.roomCount',
-      type: 'textInput',
-      decimal: true,
-      label: 'Nb. de chambres',
-      placeholder: '3.5',
-      info: 'Chambres à coucher',
-    },
+    { id: 'property.roomCount', type: 'textInput', decimal: true, info: true },
     {
       id: 'property.bathroomCount',
       type: 'textInput',
       number: true,
-      label: 'Nb. de salles de bain',
-      placeholder: '1',
-      info:
-        'Salles de bains ou salles d’eau (respectivement avec baignoire ou douche)',
+      info: true,
     },
-    {
-      id: 'property.toiletCount',
-      type: 'textInput',
-      number: true,
-      label: 'Nb. de WC',
-      placeholder: '1',
-    },
-    {
-      id: 'property.parking.box',
-      type: 'textInput',
-      number: true,
-      label: 'Box de parking',
-      placeholder: '1',
-    },
-    {
-      id: 'property.parking.inside',
-      type: 'textInput',
-      number: true,
-      label: 'Places de parc intérieur',
-      placeholder: '1',
-    },
-    {
-      id: 'property.parking.outside',
-      type: 'textInput',
-      number: true,
-      label: 'Places de parc extérieur',
-      placeholder: '1',
-    },
-    {
-      id: 'property.minergie',
-      type: 'radioInput',
-      label: 'Est-ce une construction Minergie?',
-      options: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
-    },
+    { id: 'property.toiletCount', type: 'textInput', number: true },
+    { id: 'property.parking.box', type: 'textInput', number: true },
+    { id: 'property.parking.inside', type: 'textInput', number: true },
+    { id: 'property.parking.outside', type: 'textInput', number: true },
+    { id: 'property.minergie', type: 'radioInput', options: [true, false] },
     {
       type: 'conditionalInput',
       conditionalTrueValue: true,
@@ -294,16 +184,13 @@ const getPropertyArray = (loanRequest, borrowers) => {
         {
           id: 'property.isCoproperty',
           type: 'radioInput',
-          label: 'Est-ce une copropriété',
-          options: [{ id: true, label: 'Oui' }, { id: false, label: 'Non' }],
+          options: [true, false],
         },
         {
           id: 'property.copropertyPercentage',
           type: 'textInput',
           number: true,
-          label: 'Répartition du bien au sein de la copropriété',
-          placeholder: '125',
-          info: 'En millièmes',
+          info: true,
         },
       ],
     },
@@ -311,102 +198,46 @@ const getPropertyArray = (loanRequest, borrowers) => {
       id: 'property.copropertyPercentage',
       type: 'textInput',
       number: true,
-      label: 'Répartition du bien au sein de la copropriété',
-      placeholder: '125',
       condition: r.property.style === 'flat',
-      info: 'En millièmes',
+      info: true,
     },
-    {
-      type: 'h3',
-      text: 'Qualité et Emplacement',
-      ignore: true,
-    },
+    { type: 'h3', id: 'propertyQuality', ignore: true, required: false },
     {
       id: 'property.cityPlacementQuality',
       type: 'radioInput',
-      label: "Type d'emplacement au sein de la commune",
-      options: [
-        { id: 0, label: 'Mauvais' },
-        { id: 1, label: 'Moyen' },
-        { id: 2, label: 'Bon' },
-        { id: 3, label: 'Très Bon' },
-      ],
+      options: [0, 1, 2, 3],
     },
     {
       id: 'property.buildingPlacementQuality',
       type: 'radioInput',
-      label: "Emplacement dans l'immeuble",
-      options: [
-        { id: 0, label: 'Mauvais' },
-        { id: 1, label: 'Moyen' },
-        { id: 2, label: 'Bon' },
-        { id: 3, label: 'Très Bon' },
-      ],
+      options: [0, 1, 2, 3],
       condition: r.property.style === 'flat',
     },
     {
       id: 'property.buildingQuality',
       type: 'radioInput',
-      label: 'Condition d’entretien du bâtiment',
-      options: [
-        { id: 0, label: 'Mauvais' },
-        { id: 1, label: 'Moyen' },
-        { id: 2, label: 'Bon' },
-        { id: 3, label: 'Très Bon' },
-      ],
+      options: [0, 1, 2, 3],
     },
     {
       id: 'property.flatQuality',
       type: 'radioInput',
-      label: 'Condition d’entretien de l’appartement',
-      options: [
-        { id: 0, label: 'Mauvais' },
-        { id: 1, label: 'Moyen' },
-        { id: 2, label: 'Bon' },
-        { id: 3, label: 'Très Bon' },
-      ],
+      options: [0, 1, 2, 3],
       condition: r.property.style === 'flat',
     },
     {
       id: 'property.materialsQuality',
       type: 'radioInput',
-      label: 'Qualité des matériaux',
-      options: [
-        { id: 0, label: 'Mauvais' },
-        { id: 1, label: 'Moyen' },
-        { id: 2, label: 'Bon' },
-        { id: 3, label: 'Très Bon' },
-      ],
+      options: [0, 1, 2, 3],
     },
     {
-      id: 'property.other',
+      id: 'property.otherNotes',
       type: 'textInputLarge',
-      label: 'Autres informations',
-      placeholder:
-        'Aménagements extérieurs, piscine, jardins, cabanons, annexes, sous-sols utiles,...',
       rows: 3,
       required: false,
     },
   ];
 
-  return array.map((input) => {
-    const intlSafeObject = { ...input };
-    // If the id contains a dot in it, split it and add a intlId
-    // This makes it easier to write intl messages
-    if (input.id && input.id.indexOf('.') > 0) {
-      intlSafeObject.intlId = input.id.split('.')[1];
-    }
-
-    if (input.inputs) {
-      // If there are nested inputs, give them an intlId too
-      intlSafeObject.inputs = input.inputs.map(
-        obj =>
-          (obj.id && obj.id.indexOf('.') > 0 ? { ...obj, intlId: obj.id } : obj),
-      );
-    }
-
-    return intlSafeObject;
-  });
+  return array.map(mapInput);
 };
 
 export default getPropertyArray;

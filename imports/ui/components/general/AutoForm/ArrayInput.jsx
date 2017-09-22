@@ -136,7 +136,7 @@ ArrayInput.propTypes = {
   inputs: PropTypes.arrayOf(PropTypes.object).isRequired,
   currentValue: PropTypes.arrayOf(PropTypes.any),
   id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
   popFunc: PropTypes.string.isRequired,
   documentId: PropTypes.string.isRequired,
 };
