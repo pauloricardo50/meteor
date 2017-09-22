@@ -23,10 +23,15 @@ export default class ArrayInput extends Component {
 
   getOptions = (input, i) => {
     // Give each option the proper label from react-intl
-    const optionsWithLabels = input.options.map(o => ({
-      ...o,
-      label: <T id={`Forms.${this.props.id}.${o.id}`} />,
-    }));
+    const optionsWithLabels = input.options.map(
+      o =>
+        (o.id === undefined
+          ? { id: o, label: <T id={`Forms.${this.props.id}.${o}`} /> }
+          : {
+            ...o,
+            label: <T id={`Forms.${this.props.id}.${o.id}`} />,
+          }),
+    );
 
     if (!this.props.allOptions) {
       const currentValues = this.props.formState[this.props.id] || [];

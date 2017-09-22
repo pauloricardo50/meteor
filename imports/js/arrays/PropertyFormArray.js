@@ -8,7 +8,7 @@ const getPropertyArray = (loanRequest, borrowers) => {
     throw new Error('requires a loanRequest');
   }
 
-  return [
+  const array = [
     {
       id: 'property.value',
       type: 'textInput',
@@ -140,29 +140,15 @@ const getPropertyArray = (loanRequest, borrowers) => {
       required: false,
     },
     {
-      id: 'zipCode',
+      id: 'property.zipCode',
       type: 'custom',
       component: (
         <ZipAutoComplete
-          savePath="property"
+          savePath="property."
           initialValue={`${r.property.zipCode} ${r.property.city}`}
         />
       ),
     },
-    // {
-    //   id: 'property.zipCode',
-    //   type: 'textInput',
-    //   number: true,
-    //   label: 'Code Postal',
-    //   placeholder: '1200',
-    //   saveOnChange: false,
-    // },
-    // {
-    //   id: 'property.city',
-    //   type: 'textInput',
-    //   label: 'Localité',
-    //   placeholder: 'Genève',
-    // },
     {
       type: 'h3',
       text: 'Détails du bien',
@@ -403,6 +389,8 @@ const getPropertyArray = (loanRequest, borrowers) => {
       required: false,
     },
   ];
+
+  return array;
 };
 
 export default getPropertyArray;

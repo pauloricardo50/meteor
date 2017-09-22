@@ -32,23 +32,36 @@ export default class ArrayInput extends Component {
     const { id, currentValue, inputs } = this.props;
 
     const mapInput = (input, i) => {
-      const props = {
+      const { id: inputId, type, options } = input;
+      const childProps = {
         ...this.props,
         ...input,
-        id: `${id}.${i}.${input.id}`,
+        id: `${id}.${i}.${inputId}`,
         currentValue:
-          currentValue && currentValue[i] && currentValue[i][input.id],
-        key: input.id,
+          currentValue && currentValue[i] && currentValue[i][inputId],
+        key: inputId,
+        label: <T id={`Forms.${id}.${inputId}`} />,
+        placeholder: <T id={`Forms.${id}.${inputId}.placeholder`} />,
       };
 
-      if (input.type === 'textInput') {
-        return <TextInput {...props} noValidator />;
-      } else if (input.type === 'selectInput') {
-        props.options = input.options.map(o => ({
-          ...o,
-          label: <T id={`Forms.${id}.${o.id}`} />,
-        }));
-        return <SelectFieldInput {...props} noValidator />;
+      if (type === 'textInput') {
+        return <TextInput {...childProps} noValidator />;
+      } else if (type === 'selectInput') {
+        // Map these labels here to prevent having the id being xxx.0 or xxx.1
+        // and mess up the labels in the SelectFieldInput
+        childProps.options = options.map(
+          o =>
+            (o.id === undefined
+              ? {
+                id: o,
+                label: <T id={`Forms.${id}.${o}`} />,
+              }
+              : {
+                ...o,
+                label: <T id={`Forms.${id}.${o.id}`} />,
+              }),
+        );
+        return <SelectFieldInput {...childProps} noValidator />;
       }
     };
 

@@ -24,7 +24,11 @@ const styles = {
 export default class ZipAutoComplete extends Component {
   constructor(props) {
     super(props);
-    this.state = { searchText: this.props.initialValue, dataSource: [] };
+    this.state = {
+      searchText: this.props.initialValue,
+      dataSource: [],
+      saving: false,
+    };
   }
 
   handleChange = searchText => this.setState({ searchText }, this.fetchResults);
@@ -32,13 +36,14 @@ export default class ZipAutoComplete extends Component {
   fetchResults = () => {
     const { searchText } = this.state;
     if (searchText && searchText.length >= 4) {
-      getLocations(searchText.slice(0, 4))
+      const zipCode = searchText.slice(0, 4);
+      getLocations(zipCode)
         .then((array) => {
           if (array && array.length) {
             this.setState({
               dataSource: array.map(city => ({
-                text: `${searchText} ${city}`,
-                value: <MenuItem primaryText={`${searchText} ${city}`} />,
+                text: `${zipCode} ${city}`,
+                value: <MenuItem primaryText={`${zipCode} ${city}`} />,
               })),
             });
           } else {
@@ -71,22 +76,22 @@ export default class ZipAutoComplete extends Component {
 
     // Save data to DB
     const object = {
-      [`${savePath}.zipCode`]: zipCode,
-      [`${savePath}.city`]: city,
+      [`${savePath}zipCode`]: zipCode,
+      [`${savePath}city`]: city,
     };
 
     cleanMethod(updateFunc, object, documentId)
       .then(() =>
-        // on success, set saving briefly to true, before setting it to false again to trigger icon
+        // on success, set saving briefly to true,
+        // before setting it to false again to trigger icon
         this.setState(
           { errorText: '', saving: true },
           this.setState({ saving: false }),
         ),
       )
       .catch(() => {
-        this.setState({ saving: false });
         // If there was an error, reset value to the backend value
-        this.setState({});
+        this.setState({ saving: false, searchText: this.props.initialValue });
       });
   };
 
@@ -107,15 +112,28 @@ export default class ZipAutoComplete extends Component {
           textFieldStyle={style}
           style={style}
         />
-        <SavingIcon saving={saving} style={styles.savingIcon} />
+        <SavingIcon
+          saving={saving}
+          style={styles.savingIcon}
+          errorExists={false}
+        />
       </div>
     );
   }
 }
 
 ZipAutoComplete.propTypes = {
-  label: PropTypes.number.isRequired,
+  label: PropTypes.node.isRequired,
   savePath: PropTypes.string.isRequired,
   updateFunc: PropTypes.string.isRequired,
   documentId: PropTypes.string.isRequired,
+  initialValue: PropTypes.string,
+  disabled: PropTypes.bool,
+  style: PropTypes.objectOf(PropTypes.any),
+};
+
+ZipAutoComplete.defaultProps = {
+  initialValue: '',
+  disabled: false,
+  style: {},
 };

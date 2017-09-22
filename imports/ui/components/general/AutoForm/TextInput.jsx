@@ -188,8 +188,8 @@ export default class TextInput extends Component {
 
 TextInput.propTypes = {
   id: PropTypes.string.isRequired,
-  label: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
-  placeholder: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
+  placeholder: PropTypes.node.isRequired,
   currentValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   autocomplete: PropTypes.string,
   multiLine: PropTypes.bool,

@@ -7,6 +7,7 @@ import MenuItem from 'material-ui/MenuItem';
 import SavingIcon from './SavingIcon';
 import FormValidator from './FormValidator';
 import cleanMethod from '/imports/api/cleanMethods';
+import { T } from '/imports/ui/components/general/Translation';
 
 const styles = {
   div: {
@@ -61,7 +62,7 @@ export default class SelectFieldInput extends Component {
   };
 
   render() {
-    const { style, label, disabled, options, noValidator } = this.props;
+    const { style, label, disabled, options, noValidator, id } = this.props;
     const { value, saving, errorText } = this.state;
 
     return (
@@ -77,11 +78,15 @@ export default class SelectFieldInput extends Component {
           disabled={disabled}
         >
           <MenuItem value={null} primaryText="" key={0} />
-          {options.map(option => (
+          {options.map(({ id: optionId, intlValues, label: optionLabel }) => (
             <MenuItem
-              value={option.id}
-              primaryText={option.label}
-              key={option.id}
+              value={optionId}
+              primaryText={
+                optionLabel || (
+                  <T id={`Forms.${id}.${optionId}`} values={intlValues} />
+                )
+              }
+              key={optionId}
             />
           ))}
         </SelectField>
@@ -97,7 +102,7 @@ export default class SelectFieldInput extends Component {
 }
 
 SelectFieldInput.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
   id: PropTypes.string.isRequired,
   currentValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   documentId: PropTypes.string.isRequired,

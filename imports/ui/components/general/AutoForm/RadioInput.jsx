@@ -5,6 +5,7 @@ import cleanMethod from '/imports/api/cleanMethods';
 import RadioButton from 'material-ui/RadioButton/RadioButton';
 import RadioButtonGroup from 'material-ui/RadioButton/RadioButtonGroup';
 
+import { T } from '/imports/ui/components/general/Translation';
 import FormValidator from './FormValidator';
 
 const styles = {
@@ -49,6 +50,16 @@ export default class RadioInput extends Component {
     );
   };
 
+  getOptionLabel = (optionId, intlValues) => {
+    // If the options are true and false, render "yes" and "no" as labels
+    if (optionId === true) {
+      return <T id="general.yes" values={intlValues} />;
+    } else if (optionId === false) {
+      return <T id="general.no" values={intlValues} />;
+    }
+    return <T id={`Forms.${this.props.id}.${optionId}`} values={intlValues} />;
+  };
+
   saveValue = (value) => {
     // For radiobuttons, check if I actually want to pass a boolean instead of a String
     // event.target.value is always a String
@@ -67,28 +78,34 @@ export default class RadioInput extends Component {
   };
 
   render() {
+    const {
+      id,
+      style,
+      label,
+      onConditionalChange,
+      options,
+      disabled,
+    } = this.props;
     return (
-      <div style={{ ...styles.div, ...this.props.style }}>
-        <label htmlFor={this.props.id}>
-          {this.props.label}
-        </label>
+      <div style={{ ...styles.div, ...style }}>
+        <label htmlFor={id}>{label}</label>
         <RadioButtonGroup
           name={this.props.id}
           defaultSelected={this.state.value}
-          onChange={this.props.onConditionalChange}
+          onChange={onConditionalChange}
           style={styles.RadioButtonGroup}
         >
-          {this.props.options.map(option =>
-            (<RadioButton
-              label={option.label}
-              value={option.id}
+          {options.map(({ id: optionId, intlValues }) => (
+            <RadioButton
+              label={this.getOptionLabel(optionId, intlValues)}
+              value={optionId}
               onClick={this.setValue}
-              key={option.id}
+              key={optionId}
               style={styles.RadioButton}
               labelStyle={styles.RadioButtonLabel}
-              disabled={this.props.disabled}
-            />),
-          )}
+              disabled={disabled}
+            />
+          ))}
         </RadioButtonGroup>
         <FormValidator {...this.props} />
       </div>

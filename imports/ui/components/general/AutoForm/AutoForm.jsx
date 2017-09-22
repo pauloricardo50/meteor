@@ -3,6 +3,8 @@ import React from 'react';
 
 import get from 'lodash/get';
 
+import { T } from '/imports/ui/components/general/Translation';
+
 import TextInput from './TextInput';
 import RadioInput from './RadioInput';
 import SelectFieldInput from './SelectFieldInput';
@@ -36,47 +38,68 @@ const styles = {
 };
 
 const inputSwitch = (singleInput, index, parentProps) => {
-  const props = {
+  const childProps = {
     ...parentProps,
     ...singleInput,
     key: index, // Some inputs don't have id's, this means rendering a different form requires a re-render (or key prop on the form)
     style: parentProps.fullWidth ? styles.fullWidth : styles.smallWidth,
     currentValue: get(parentProps.doc, singleInput.id),
     disabled: parentProps.disabled || singleInput.disabled,
+    placeholder: <T id={`Forms.${singleInput.id}.placeholder`} />,
   };
 
   if (parentProps.noPlaceholders) {
-    props.placeholder = '';
+    childProps.placeholder = '';
   }
 
   // Prevent undefined condition to trigger as well
-  if (singleInput.condition === false) {
+  if (childProps.condition === false) {
     return null;
   }
 
-  if (singleInput.required !== false && typeof singleInput.label === 'string') {
-    // Add a required star to every label, except if it isn't required
-    props.label = `${singleInput.label} *`;
+  // Add a required star to every label, except if it isn't required
+  if (childProps.required !== false) {
+    childProps.label = (
+      <span>
+        <T id={`Forms.${childProps.id}`} values={childProps.intlValues} />
+        {' *'}
+      </span>
+    );
+  } else {
+    childProps.label = (
+      <T id={`Forms.${childProps.id}`} values={childProps.intlValues} />
+    );
   }
 
-  switch (singleInput.type) {
+  // Support options that are only string/boolean ids instead of objects
+  // check for undefined because of boolean false ids
+  if (
+    childProps.type === 'radioInput' ||
+    childProps.type === 'selectFieldInput'
+  ) {
+    childProps.options = childProps.options.map(
+      o => (o.id === undefined ? { id: o } : o),
+    );
+  }
+
+  switch (childProps.type) {
     case 'textInput':
-      return <TextInput multiLine={false} {...props} />;
+      return <TextInput multiLine={false} {...childProps} />;
     case 'textInputLarge':
-      return <TextInput multiLine {...props} style={styles.mediumWidth} />;
+      return <TextInput multiLine {...childProps} style={styles.mediumWidth} />;
     case 'radioInput':
-      return <RadioInput {...props} />;
+      return <RadioInput {...childProps} />;
     case 'selectFieldInput':
-      return <SelectFieldInput {...props} />;
+      return <SelectFieldInput {...childProps} />;
     case 'conditionalInput':
       return (
         <ConditionalInput
-          conditionalTrueValue={singleInput.conditionalTrueValue}
+          conditionalTrueValue={childProps.conditionalTrueValue}
           key={index}
-          style={props.style}
+          style={childProps.style}
         >
-          {inputSwitch(singleInput.inputs[0], 0, parentProps)}
-          {singleInput.inputs
+          {inputSwitch(childProps.inputs[0], 0, parentProps)}
+          {childProps.inputs
             .slice(1)
             .map((input, i) => inputSwitch(input, i, parentProps))}
         </ConditionalInput>
@@ -84,31 +107,31 @@ const inputSwitch = (singleInput, index, parentProps) => {
     case 'h3':
       return (
         <h3 style={styles.subtitle} key={index}>
-          {singleInput.text}
+          {childProps.label}
         </h3>
       );
     case 'h2':
       return (
         <h2 style={styles.subtitle} key={index}>
-          {singleInput.text}
+          {childProps.label}
         </h2>
       );
     case 'space':
       return (
-        <div style={{ width: '100%', height: singleInput.height }} key={index}>
-          {singleInput.text}
+        <div style={{ width: '100%', height: childProps.height }} key={index}>
+          {childProps.text}
         </div>
       );
     case 'dateInput':
-      return <DateInput {...props} />;
+      return <DateInput {...childProps} />;
     case 'dropzoneInput':
-      return <UploaderArray {...props} />;
+      return <UploaderArray {...childProps} />;
     case 'arrayInput':
-      return <ArrayInput {...props} />;
+      return <ArrayInput {...childProps} />;
     case 'custom':
-      return React.cloneElement(singleInput.component, { ...props });
+      return React.cloneElement(childProps.component, { ...childProps });
     default:
-      throw new Error(`${singleInput.type} is not a valid AutoForm type`);
+      throw new Error(`${childProps.type} is not a valid AutoForm type`);
   }
 };
 
