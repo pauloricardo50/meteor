@@ -37,7 +37,61 @@ const styles = {
   },
 };
 
-const inputSwitch = (singleInput, index, parentProps) => {
+const inputSwitch = (childProps, index, parentProps) => {
+  switch (childProps.type) {
+    case 'textInput':
+      return <TextInput multiLine={false} {...childProps} />;
+    case 'textInputLarge':
+      return <TextInput multiLine {...childProps} style={styles.mediumWidth} />;
+    case 'radioInput':
+      return <RadioInput {...childProps} />;
+    case 'selectFieldInput':
+      return <SelectFieldInput {...childProps} />;
+    case 'conditionalInput':
+      return (
+        <ConditionalInput
+          conditionalTrueValue={childProps.conditionalTrueValue}
+          key={index}
+          style={childProps.style}
+        >
+          {mapInputs(childProps.inputs[0], 0, parentProps)}
+          {childProps.inputs
+            .slice(1)
+            .map((input, i) => mapInputs(input, i, parentProps))}
+        </ConditionalInput>
+      );
+    case 'h3':
+      return (
+        <h3 style={styles.subtitle} key={index}>
+          {childProps.label}
+        </h3>
+      );
+    case 'h2':
+      return (
+        <h2 style={styles.subtitle} key={index}>
+          {childProps.label}
+        </h2>
+      );
+    case 'space':
+      return (
+        <div style={{ width: '100%', height: childProps.height }} key={index}>
+          {childProps.text}
+        </div>
+      );
+    case 'dateInput':
+      return <DateInput {...childProps} />;
+    case 'dropzoneInput':
+      return <UploaderArray {...childProps} />;
+    case 'arrayInput':
+      return <ArrayInput {...childProps} />;
+    case 'custom':
+      return React.cloneElement(childProps.component, { ...childProps });
+    default:
+      throw new Error(`${childProps.type} is not a valid AutoForm type`);
+  }
+};
+
+const mapInputs = (singleInput, index, parentProps) => {
   const childProps = {
     ...parentProps,
     ...singleInput,
@@ -45,7 +99,9 @@ const inputSwitch = (singleInput, index, parentProps) => {
     style: parentProps.fullWidth ? styles.fullWidth : styles.smallWidth,
     currentValue: get(parentProps.doc, singleInput.id),
     disabled: parentProps.disabled || singleInput.disabled,
-    placeholder: <T id={`Forms.${singleInput.id}.placeholder`} />,
+    placeholder: (
+      <T id={`Forms.${singleInput.intlId || singleInput.id}.placeholder`} />
+    ),
   };
 
   if (parentProps.noPlaceholders) {
@@ -82,63 +138,13 @@ const inputSwitch = (singleInput, index, parentProps) => {
     );
   }
 
-  switch (childProps.type) {
-    case 'textInput':
-      return <TextInput multiLine={false} {...childProps} />;
-    case 'textInputLarge':
-      return <TextInput multiLine {...childProps} style={styles.mediumWidth} />;
-    case 'radioInput':
-      return <RadioInput {...childProps} />;
-    case 'selectFieldInput':
-      return <SelectFieldInput {...childProps} />;
-    case 'conditionalInput':
-      return (
-        <ConditionalInput
-          conditionalTrueValue={childProps.conditionalTrueValue}
-          key={index}
-          style={childProps.style}
-        >
-          {inputSwitch(childProps.inputs[0], 0, parentProps)}
-          {childProps.inputs
-            .slice(1)
-            .map((input, i) => inputSwitch(input, i, parentProps))}
-        </ConditionalInput>
-      );
-    case 'h3':
-      return (
-        <h3 style={styles.subtitle} key={index}>
-          {childProps.label}
-        </h3>
-      );
-    case 'h2':
-      return (
-        <h2 style={styles.subtitle} key={index}>
-          {childProps.label}
-        </h2>
-      );
-    case 'space':
-      return (
-        <div style={{ width: '100%', height: childProps.height }} key={index}>
-          {childProps.text}
-        </div>
-      );
-    case 'dateInput':
-      return <DateInput {...childProps} />;
-    case 'dropzoneInput':
-      return <UploaderArray {...childProps} />;
-    case 'arrayInput':
-      return <ArrayInput {...childProps} />;
-    case 'custom':
-      return React.cloneElement(childProps.component, { ...childProps });
-    default:
-      throw new Error(`${childProps.type} is not a valid AutoForm type`);
-  }
+  return inputSwitch(childProps, index, parentProps);
 };
 
 const AutoForm = props => (
   <div className={props.formClasses}>
     <form style={styles.form} onSubmit={e => e.preventDefault()}>
-      {props.inputs.map((input, i) => inputSwitch(input, i, props))}
+      {props.inputs.map((input, i) => mapInputs(input, i, props))}
     </form>
   </div>
 );

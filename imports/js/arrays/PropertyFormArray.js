@@ -69,11 +69,10 @@ const getPropertyArray = (loanRequest, borrowers) => {
           type: 'radioInput',
           label: 'Qui est le propriétaire actuel?',
           options: [
-            { id: '0', label: borrowers[0].firstName || 'Emprunteur 1' },
-            {
-              id: '1',
-              label: (borrowers[1] && borrowers[1].firstName) || 'Emprunteur 2',
-            },
+            ...borrowers.map((b, i) => ({
+              id: `${i}`,
+              label: b.firstName || `Emprunteur ${i + 1}`,
+            })),
             { id: 'both', label: 'Les Deux' },
             { id: 'other', label: 'Autre' },
           ],
@@ -390,7 +389,24 @@ const getPropertyArray = (loanRequest, borrowers) => {
     },
   ];
 
-  return array;
+  return array.map((input) => {
+    const intlSafeObject = { ...input };
+    // If the id contains a dot in it, split it and add a intlId
+    // This makes it easier to write intl messages
+    if (input.id && input.id.indexOf('.') > 0) {
+      intlSafeObject.intlId = input.id.split('.')[1];
+    }
+
+    if (input.inputs) {
+      // If there are nested inputs, give them an intlId too
+      intlSafeObject.inputs = input.inputs.map(
+        obj =>
+          (obj.id && obj.id.indexOf('.') > 0 ? { ...obj, intlId: obj.id } : obj),
+      );
+    }
+
+    return intlSafeObject;
+  });
 };
 
 export default getPropertyArray;
