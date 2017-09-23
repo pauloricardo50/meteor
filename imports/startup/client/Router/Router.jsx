@@ -6,8 +6,7 @@ import {
   withRouter,
 } from 'react-router-dom';
 
-import myTheme from '/imports/js/config/mui_custom';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import theme from '/imports/js/config/mui_custom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import { IntlProvider } from 'react-intl';
@@ -24,15 +23,15 @@ import { PasswordPage } from '/imports/ui/containers/PublicContainers';
 const PublicRoutes = Loadable({
   loader: () => import('./PublicRoutes'),
 });
-const UserRoutes = Loadable({
-  loader: () => import('./UserRoutes'),
-});
-const AdminRoutes = Loadable({
-  loader: () => import('./AdminRoutes'),
-});
-const PartnerRoutes = Loadable({
-  loader: () => import('./PartnerRoutes'),
-});
+// const UserRoutes = Loadable({
+//   loader: () => import('./UserRoutes'),
+// });
+// const AdminRoutes = Loadable({
+//   loader: () => import('./AdminRoutes'),
+// });
+// const PartnerRoutes = Loadable({
+//   loader: () => import('./PartnerRoutes'),
+// });
 
 class ScrollToTop extends Component {
   componentDidUpdate(prevProps) {
@@ -49,7 +48,7 @@ class ScrollToTop extends Component {
 const ScrollToTopWithRouter = withRouter(ScrollToTop);
 
 const RenderRoutes = () => (
-  <MuiThemeProvider muiTheme={getMuiTheme(myTheme)}>
+  <MuiThemeProvider theme={theme}>
     <IntlProvider
       locale={getUserLocale()}
       messages={getTranslations()}
@@ -60,13 +59,13 @@ const RenderRoutes = () => (
       <Router>
         <ScrollToTopWithRouter>
           <Switch>
-            <Route path="/app" render={props => <UserRoutes {...props} />} />
+            {/* <Route path="/app" render={props => <UserRoutes {...props} />} />
             <Route path="/admin" render={props => <AdminRoutes {...props} />} />
             <Route
               path="/partner"
               render={props => <PartnerRoutes {...props} />}
             />
-            <Route exact path="/" component={PasswordPage} />
+            <Route exact path="/" component={PasswordPage} /> */}
             <Route path="/" render={props => <PublicRoutes {...props} />} />
           </Switch>
         </ScrollToTopWithRouter>

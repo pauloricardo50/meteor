@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
+// import RaisedButton from 'material-ui/RaisedButton';
+// import FlatButton from 'material-ui/FlatButton';
+import MuiButton from 'material-ui/Button';
 
 const Button = (props) => {
   // error complains about unknown "raised" prop if this isn't done
@@ -10,10 +11,10 @@ const Button = (props) => {
   delete childProps.raised;
 
   if (props.raised) {
-    return <RaisedButton {...childProps} />;
+    return <MuiButton raised {...childProps} />;
   }
 
-  return <FlatButton {...childProps} />;
+  return <MuiButton {...childProps} />;
 };
 
 Button.propTypes = {

@@ -39,7 +39,7 @@ practicalmeteor:mocha-console-runner
 alanning:roles                  # Easy role management
 std:accounts-ui                 # React account component
 # std:accounts-basic
-zetoff:accounts-material-ui
+# zetoff:accounts-material-ui
 email@1.2.3
 jabbslad:basic-auth             # basic http auth to protect a website
 

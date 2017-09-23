@@ -1,7 +1,5 @@
-import muiColors from 'material-ui/styles/colors';
-import ColorManipulator from 'material-ui/utils/colorManipulator';
-import Spacing from 'material-ui/styles/spacing';
-
+import createMuiTheme from 'material-ui/styles/createMuiTheme';
+import createPalette from 'material-ui/styles/createPalette';
 import colors from './colors';
 
 const muiCustom = {
@@ -45,4 +43,16 @@ const muiCustom = {
   },
 };
 
-export default muiCustom;
+const theme = createMuiTheme({
+  // palette: {
+  //   primary: colors.primary, // Purple and green play nicely together.
+  //   secondary: colors.secondary,
+  //   error: colors.error,
+  // },
+  typography: {
+    fontFamily: 'Source Sans Pro, sans-serif',
+    fontWeightRegular: 400,
+  },
+});
+
+export default theme;

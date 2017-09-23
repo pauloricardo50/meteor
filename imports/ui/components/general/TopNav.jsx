@@ -2,15 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import AppBar from 'material-ui/AppBar';
 import Button from '/imports/ui/components/general/Button';
 import Toolbar from 'material-ui/Toolbar/Toolbar';
-import ToolbarGroup from 'material-ui/Toolbar/ToolbarGroup';
-import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
-import ToolbarTitle from 'material-ui/Toolbar/ToolbarTitle';
 
-import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown';
-import TopNavDrawer from '/imports/ui/components/general/TopNavDrawer';
+// import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown';
+// import TopNavDrawer from '/imports/ui/components/general/TopNavDrawer';
 import { T } from '/imports/ui/components/general/Translation';
 import track from '/imports/js/helpers/analytics';
 import SearchModal from '/imports/ui/components/general/SearchModal';
@@ -25,8 +21,8 @@ const TopNav = (props) => {
 
   return (
     <Toolbar className="top-nav">
-      <ToolbarGroup firstChild className="top-nav-content">
-        {showDrawer ? <TopNavDrawer {...props} /> : null}
+      <div className="top-nav-content">
+        {/* {showDrawer ? <TopNavDrawer {...props} /> : null} */}
 
         <div className="logo">
           <Link
@@ -40,9 +36,8 @@ const TopNav = (props) => {
 
         <div className="buttons">
           <SearchModal />
-          {currentUser
-            ? <TopNavDropdown {...props} />
-            : <Button
+          {currentUser ? null : ( // <TopNavDropdown {...props} />
+            <Button
               label={<T id="TopNav.login" />}
               containerElement={<Link to="/login" />}
               secondary
@@ -54,9 +49,10 @@ const TopNav = (props) => {
               style={{ minWidth: 'unset' }}
               // buttonStyle={{ minWidth: 'unset' }}
               onClick={() => track('TopNav - clicked login', {})}
-            />}
+            />
+          )}
         </div>
-      </ToolbarGroup>
+      </div>{' '}
     </Toolbar>
     // </div>
   );
