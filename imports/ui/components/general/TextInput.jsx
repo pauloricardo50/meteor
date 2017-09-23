@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import omit from 'lodash/omit';
-import TextField from 'material-ui/TextField';
+import TextField from '/imports/ui/components/general/Material/TextField';
 
 import MaskedInput from 'react-text-mask';
 import { swissFrancMask, percentMask } from '/imports/js/helpers/textMasks';

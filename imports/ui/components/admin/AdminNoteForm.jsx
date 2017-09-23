@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import TextField from 'material-ui/TextField';
+import TextField from '/imports/ui/components/general/Material/TextField';
 import Button from '/imports/ui/components/general/Button';
 
 const styles = {
@@ -12,7 +12,7 @@ const styles = {
 };
 
 export default class AdminNoteForm extends Component {
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
 
     console.log('TODO :)');
@@ -29,7 +29,8 @@ export default class AdminNoteForm extends Component {
           rows={5}
         />
         <div className="pull-right" style={styles.buttonDiv}>
-          <Button raised
+          <Button
+            raised
             label="Ajouter"
             primary
             onClick={this.handleSubmit}

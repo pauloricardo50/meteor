@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { FormattedRelative } from 'react-intl';
 
 import Button from '/imports/ui/components/general/Button';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
+import DropDownMenu from '/imports/ui/components/general/Material/DropDownMenu';
+import MenuItem from '/imports/ui/components/general/Material/MenuItem';
 
 import Table from '/imports/ui/components/general/Table';
 import { T } from '/imports/ui/components/general/Translation';

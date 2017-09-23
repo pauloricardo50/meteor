@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import SelectField from '/imports/ui/components/general/Material/SelectField';
+import MenuItem from '/imports/ui/components/general/Material/MenuItem';
 
 import SavingIcon from './SavingIcon';
 import FormValidator from './FormValidator';

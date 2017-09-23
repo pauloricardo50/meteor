@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import TextField from 'material-ui/TextField';
+import SelectField from '/imports/ui/components/general/Material/SelectField';
+import MenuItem from '/imports/ui/components/general/Material/MenuItem';
+import TextField from '/imports/ui/components/general/Material/TextField';
 import MaskedInput from 'react-text-mask';
 
 import AmortizationChart from '/imports/ui/components/charts/AmortizationChart';

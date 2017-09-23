@@ -5,9 +5,9 @@ import { Meteor } from 'meteor/meteor';
 import cleanMethod from '/imports/api/cleanMethods';
 
 import Button from '/imports/ui/components/general/Button';
-import TextField from 'material-ui/TextField';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
+import TextField from '/imports/ui/components/general/Material/TextField';
+import DropDownMenu from '/imports/ui/components/general/Material/DropDownMenu';
+import MenuItem from '/imports/ui/components/general/Material/MenuItem';
 
 const styles = {
   dropdown: {

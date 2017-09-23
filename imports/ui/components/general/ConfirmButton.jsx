@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '/imports/ui/components/general/Button';
-import Dialog from 'material-ui/Dialog';
+import Dialog from '/imports/ui/components/general/Material/Dialog';
 
 import { T } from '/imports/ui/components/general/Translation';
 

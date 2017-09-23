@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import SelectField from '/imports/ui/components/general/Material/SelectField';
+import MenuItem from '/imports/ui/components/general/Material/MenuItem';
 
 const Select = ({ id, label, currentValue, onChange, options, style }) => (
   <SelectField

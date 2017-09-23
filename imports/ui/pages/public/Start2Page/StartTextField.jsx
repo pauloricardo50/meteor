@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import TextField from 'material-ui/TextField';
+import TextField from '/imports/ui/components/general/Material/TextField';
 import MaskedInput from 'react-text-mask';
 
 import IconButton from '/imports/ui/components/general/IconButton';

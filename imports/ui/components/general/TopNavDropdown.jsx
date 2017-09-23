@@ -5,8 +5,8 @@ import { Roles } from 'meteor/alanning:roles';
 import { Link } from 'react-router-dom';
 
 import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import Divider from 'material-ui/Divider';
+import MenuItem from '/imports/ui/components/general/Material/MenuItem';
+import Divider from '/imports/ui/components/general/Material/Divider';
 
 import { T } from '/imports/ui/components/general/Translation';
 import track from '/imports/js/helpers/analytics';

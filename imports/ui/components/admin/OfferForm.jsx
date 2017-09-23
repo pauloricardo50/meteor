@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import TextField from 'material-ui/TextField';
+import TextField from '/imports/ui/components/general/Material/TextField';
 import MaskedInput from 'react-text-mask';
 import Button from '/imports/ui/components/general/Button';
-import Checkbox from 'material-ui/Checkbox';
+import Checkbox from '/imports/ui/components/general/Material/Checkbox';
 
 import { toMoney, toNumber } from '/imports/js/helpers/conversionFunctions';
 import { swissFrancMask, percentMask } from '/imports/js/helpers/textMasks';

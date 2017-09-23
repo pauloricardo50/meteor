@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
-import Divider from 'material-ui/Divider';
+import DropDownMenu from '/imports/ui/components/general/Material/DropDownMenu';
+import MenuItem from '/imports/ui/components/general/Material/MenuItem';
+import Divider from '/imports/ui/components/general/Material/Divider';
 
 import { T } from '/imports/ui/components/general/Translation';
 import Icon from '/imports/ui/components/general/Icon';

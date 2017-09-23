@@ -8,8 +8,8 @@ import PlacesAutocomplete, {
   getLatLng,
 } from 'react-places-autocomplete';
 
-import TextField from 'material-ui/TextField';
-import MenuItem from 'material-ui/MenuItem';
+import TextField from '/imports/ui/components/general/Material/TextField';
+import MenuItem from '/imports/ui/components/general/Material/MenuItem';
 import List from 'material-ui/List/List';
 import ListItem from 'material-ui/List/ListItem';
 

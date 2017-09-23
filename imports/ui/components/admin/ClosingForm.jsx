@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import DatePicker from 'material-ui/DatePicker';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import DatePicker from '/imports/ui/components/general/Material/DatePicker';
+import SelectField from '/imports/ui/components/general/Material/SelectField';
+import MenuItem from '/imports/ui/components/general/Material/MenuItem';
 
 import { confirmClosing } from '/imports/api/loanrequests/methods';
 

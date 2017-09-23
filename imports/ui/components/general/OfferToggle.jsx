@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Toggle from 'material-ui/Toggle';
+import Toggle from '/imports/ui/components/general/Material/Toggle';
 
 import { T } from '/imports/ui/components/general/Translation';
 import track from '/imports/js/helpers/analytics';
@@ -18,7 +18,7 @@ const styles = {
   },
 };
 
-const OfferToggle = props => {
+const OfferToggle = (props) => {
   const standardCount = props.offers.length;
   const counterpartCount = props.offers.filter(o => o.counterparts.length > 0)
     .length;

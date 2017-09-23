@@ -4,8 +4,8 @@ import { Meteor } from 'meteor/meteor';
 
 import Button from '/imports/ui/components/general/Button';
 import AutoComplete from 'material-ui/AutoComplete';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import SelectField from '/imports/ui/components/general/Material/SelectField';
+import MenuItem from '/imports/ui/components/general/Material/MenuItem';
 
 import { injectIntl } from 'react-intl';
 import shuffle from 'lodash/shuffle';

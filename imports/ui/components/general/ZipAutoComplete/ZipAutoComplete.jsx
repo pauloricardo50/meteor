@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import AutoComplete from 'material-ui/AutoComplete';
-import MenuItem from 'material-ui/MenuItem';
+import MenuItem from '/imports/ui/components/general/Material/MenuItem';
 
 import { T } from '/imports/ui/components/general/Translation';
 import { getLocations } from '/imports/js/helpers/APIs';

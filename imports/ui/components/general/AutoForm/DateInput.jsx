@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import DatePicker from 'material-ui/DatePicker';
+import DatePicker from '/imports/ui/components/general/Material/DatePicker';
 import { injectIntl } from 'react-intl';
 
 import { T } from '/imports/ui/components/general/Translation';

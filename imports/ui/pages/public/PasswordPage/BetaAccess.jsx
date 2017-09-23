@@ -1,7 +1,7 @@
 import React from 'react';
-import Dialog from 'material-ui/Dialog';
+import Dialog from '/imports/ui/components/general/Material/Dialog';
 import Button from '/imports/ui/components/general/Button';
-import TextField from 'material-ui/TextField';
+import TextField from '/imports/ui/components/general/Material/TextField';
 
 export default class BetaAccess extends React.Component {
   constructor(props) {

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import classnames from 'classnames';
 
-import TextField from 'material-ui/TextField';
+import TextField from '/imports/ui/components/general/Material/TextField';
 import IconButton from '/imports/ui/components/general/IconButton';
 import MaskedInput from 'react-text-mask';
 import { swissFrancMask } from '/imports/js/helpers/textMasks';

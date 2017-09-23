@@ -1,21 +1,24 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Slider from 'material-ui/Slider';
+import Slider from '/imports/ui/components/general/Material/Slider';
 
-const StartSlider = props => {
+const StartSlider = (props) => {
   const val = props.value || props.formState[props.id];
   return (
     <span style={{ display: 'block', position: 'relative' }}>
       <Slider
         min={props.sliderMin}
         max={props.sliderMax}
-        step={props.step || Math.max(Math.round((props.sliderMax - props.sliderMin) / 100), 1)}
+        step={
+          props.step ||
+          Math.max(Math.round((props.sliderMax - props.sliderMin) / 100), 1)
+        }
         name={props.id}
         value={
           Math.min(Math.max(val, props.sliderMin), props.sliderMax) ||
-            props.initialValue ||
-            props.sliderMin
+          props.initialValue ||
+          props.sliderMin
         }
         onChange={(e, v) => props.setFormState(props.id, Math.round(v))}
         onDragStart={() => {
@@ -27,15 +30,14 @@ const StartSlider = props => {
         sliderStyle={{ ...props.style }}
         style={{ padding: '0 40px' }}
       />
-      {props.sliderLabels &&
+      {props.sliderLabels && (
         <div className="slider-labels">
-          <h6 className="secondary fixed-size left">
-            {props.sliderLabels[0]}
-          </h6>
+          <h6 className="secondary fixed-size left">{props.sliderLabels[0]}</h6>
           <h6 className="secondary fixed-size right">
             {props.sliderLabels[1]}
           </h6>
-        </div>}
+        </div>
+      )}
     </span>
   );
 };

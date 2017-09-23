@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import cleanMethod from '/imports/api/cleanMethods';
 
 import Button from '/imports/ui/components/general/Button';
-import Dialog from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
+import Dialog from '/imports/ui/components/general/Material/Dialog';
+import TextField from '/imports/ui/components/general/Material/TextField';
 
 import { T } from '/imports/ui/components/general/Translation';
 

@@ -4,7 +4,7 @@ import get from 'lodash/get';
 
 import cleanMethod from '/imports/api/cleanMethods';
 
-import Checkbox from 'material-ui/Checkbox';
+import Checkbox from '/imports/ui/components/general/Material/Checkbox';
 
 const handleCheck = (props, isInputChecked) => {
   const object = {};

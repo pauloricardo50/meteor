@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import TextField from 'material-ui/TextField';
+import TextField from '/imports/ui/components/general/Material/TextField';
 import MaskedInput from 'react-text-mask';
 
 import constants from '/imports/js/config/constants';

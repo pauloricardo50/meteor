@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Dialog from 'material-ui/Dialog';
+import Dialog from '/imports/ui/components/general/Material/Dialog';
 import Button from '/imports/ui/components/general/Button';
 
 import OfferForm from '/imports/ui/components/admin/OfferForm';

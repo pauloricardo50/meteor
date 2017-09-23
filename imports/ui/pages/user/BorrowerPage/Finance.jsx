@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Checkbox from 'material-ui/Checkbox';
+import Checkbox from '/imports/ui/components/general/Material/Checkbox';
 
 import AutoForm from '/imports/ui/components/general/AutoForm';
 import { getBorrowerFinanceArray } from '/imports/js/arrays/BorrowerFormArray';

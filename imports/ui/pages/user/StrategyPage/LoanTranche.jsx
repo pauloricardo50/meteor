@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
+import DropDownMenu from '/imports/ui/components/general/Material/DropDownMenu';
+import MenuItem from '/imports/ui/components/general/Material/MenuItem';
 import Button from '/imports/ui/components/general/Button';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';

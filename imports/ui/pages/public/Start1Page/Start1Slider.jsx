@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Slider from 'material-ui/Slider';
+import Slider from '/imports/ui/components/general/Material/Slider';
 import Icon from '/imports/ui/components/general/Icon';
 
 import { trackOncePerSession } from '/imports/js/helpers/analytics';
