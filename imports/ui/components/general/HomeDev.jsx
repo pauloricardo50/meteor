@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Component } from 'react';
 import Dialog from '/imports/ui/components/general/Material/Dialog';
 import Button from '/imports/ui/components/general/Button';
 
 import { T } from '/imports/ui/components/general/Translation';
 import track from '/imports/js/helpers/analytics';
 
-export default class HomeDev extends React.Component {
+export default class HomeDev extends Component {
   constructor(props) {
     super(props);
 
@@ -25,9 +25,7 @@ export default class HomeDev extends React.Component {
   };
 
   render() {
-    const actions = [
-      <Button label="Ok" primary onClick={this.handleClose} />,
-    ];
+    const actions = [<Button label="Ok" primary onClick={this.handleClose} />];
 
     return (
       <span>
@@ -37,9 +35,6 @@ export default class HomeDev extends React.Component {
           onClick={this.handleOpen}
           primary={this.props.primary}
           style={this.props.style}
-          buttonStyle={this.props.buttonStyle}
-          labelStyle={this.props.labelStyle}
-          overlayStyle={this.props.overlayStyle}
           id="refinancing"
         />
         <Dialog

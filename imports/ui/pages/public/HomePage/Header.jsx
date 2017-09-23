@@ -1,30 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Scroll from 'react-scroll';
 
-import track from '/imports/js/helpers/analytics';
-import HomeDev from '/imports/ui/components/general/HomeDev';
 import { T } from '/imports/ui/components/general/Translation';
-import Button from '/imports/ui/components/general/Button';
 import IconButton from '/imports/ui/components/general/IconButton';
 
-const styles = {
-  style: {
-    height: 50,
-    marginRight: 8,
-    marginTop: 8,
-  },
-  button: {
-    height: 50,
-  },
-  label: {
-    fontSize: '1.2em',
-    height: 50,
-    display: 'inline-block',
-  },
-};
+import Buttons from './Buttons';
 
-const Header = props => (
+const Header = () => (
   <header className="header">
     <div className="container-sml text-center">
       <div className="col-12">
@@ -40,50 +22,7 @@ const Header = props => (
         {/* <h2 className="desc">
           <T id="HomePage.description" description="Description above the CTAs" />
         </h2> */}
-        <div className="ctas">
-          <Button
-            raised
-            label={<T id="HomePage.compare" />}
-            containerElement={<Link to="/app/compare" />}
-            style={styles.style}
-            buttonStyle={styles.button}
-            labelStyle={styles.label}
-            overlayStyle={styles.button}
-            id="compareButton"
-            onClick={() =>
-              track('Funnel - clicked home page CTA', {
-                title: 'compare',
-                at: 'top',
-              })}
-          />
-          <Button
-            raised
-            label={<T id="HomePage.CTA1" />}
-            containerElement={<Link to="/start1/acquisition" />}
-            style={styles.style}
-            buttonStyle={styles.button}
-            labelStyle={styles.label}
-            overlayStyle={styles.button}
-            id="acquisitionButton"
-            onClick={() =>
-              track('Funnel - clicked home page CTA', {
-                title: 'acquisition',
-                at: 'top',
-              })}
-          />
-          <HomeDev
-            style={styles.style}
-            buttonStyle={styles.button}
-            labelStyle={styles.label}
-            overlayStyle={styles.button}
-            id="refinancing"
-            handleClick={() =>
-              track('Funnel - clicked home page CTA', {
-                title: 'refinancing',
-                at: 'top',
-              })}
-          />
-        </div>
+        <Buttons />
       </div>
       <div className="col-6 sidedevices animated fadeInRight">
         <div className="iphoneipad">

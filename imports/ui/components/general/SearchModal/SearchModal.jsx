@@ -29,6 +29,7 @@ export default class SearchModal extends Component {
           tooltipPosition="bottom-left"
         />
         <Dialog
+          fullScreen
           title={
             <h3>
               <T id="general.search" />

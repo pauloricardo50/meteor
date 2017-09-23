@@ -1,27 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import HomeDev from '/imports/ui/components/general/HomeDev';
-import track from '/imports/js/helpers/analytics';
 import { T } from '/imports/ui/components/general/Translation';
 
-import Button from '/imports/ui/components/general/Button';
-
-const styles = {
-  style: {
-    height: 50,
-    marginRight: 8,
-    marginTop: 8,
-  },
-  button: {
-    height: 50,
-  },
-  label: {
-    fontSize: '1.2em',
-    height: 50,
-    display: 'inline-block',
-  },
-};
+import Buttons from './Buttons';
 
 const Footer = () => (
   <div className="footer">
@@ -35,47 +17,7 @@ const Footer = () => (
           </h1>
         </div>
         <div className="col-5">
-          <div className="ctas text-right">
-            <Button
-              raised
-              label={<T id="HomePage.compare" />}
-              containerElement={<Link to="/app/compare" />}
-              style={styles.style}
-              buttonStyle={styles.button}
-              labelStyle={styles.label}
-              overlayStyle={styles.button}
-              onClick={() =>
-                track('Funnel - clicked home page CTA', {
-                  title: 'compare',
-                  at: 'bottom',
-                })}
-            />
-            <Button
-              raised
-              label={<T id="HomePage.CTA1" />}
-              containerElement={<Link to="/start1/acquisition" />}
-              style={styles.style}
-              buttonStyle={styles.button}
-              labelStyle={styles.label}
-              overlayStyle={styles.button}
-              onClick={() =>
-                track('Funnel - clicked home page CTA', {
-                  title: 'acquisition',
-                  at: 'bottom',
-                })}
-            />
-            <HomeDev
-              style={styles.style}
-              buttonStyle={styles.button}
-              labelStyle={styles.label}
-              overlayStyle={styles.button}
-              handleClick={() =>
-                track('Funnel - clicked home page CTA', {
-                  title: 'refinancing',
-                  at: 'bottom',
-                })}
-            />
-          </div>
+          <Buttons footer />
         </div>
       </div>
       <div className="container-sml footer-nav text-center">

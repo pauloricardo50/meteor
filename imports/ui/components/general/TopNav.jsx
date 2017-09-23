@@ -39,22 +39,16 @@ const TopNav = (props) => {
           {currentUser ? null : ( // <TopNavDropdown {...props} />
             <Button
               label={<T id="TopNav.login" />}
-              containerElement={<Link to="/login" />}
-              secondary
-              labelStyle={{
-                color: colors.primary,
-                paddingLeft: 4,
-                paddingRight: 4,
-              }}
-              style={{ minWidth: 'unset' }}
-              // buttonStyle={{ minWidth: 'unset' }}
+              component={Link}
+              to="/login"
+              primary
+              dense
               onClick={() => track('TopNav - clicked login', {})}
             />
           )}
         </div>
-      </div>{' '}
+      </div>
     </Toolbar>
-    // </div>
   );
 };
 

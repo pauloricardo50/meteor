@@ -44,14 +44,52 @@ const muiCustom = {
 };
 
 const theme = createMuiTheme({
-  // palette: {
-  //   primary: colors.primary, // Purple and green play nicely together.
-  //   secondary: colors.secondary,
-  //   error: colors.error,
-  // },
+  palette: {
+    primary: {
+      50: '#e9f2fc',
+      100: '#c8def6',
+      200: '#a4c8f1',
+      300: '#80b1eb',
+      400: '#64a1e6',
+      500: '#4990e2',
+      600: '#4288df',
+      700: '#397dda',
+      800: '#3173d6',
+      900: '#2161cf',
+      A100: '#ffffff',
+      A200: '#d4e3ff',
+      A400: '#a1c1ff',
+      A700: '#88b0ff',
+      contrastDefaultColor: 'light',
+    },
+    secondary: {
+      50: '#eefaf6',
+      100: '#d4f2e8',
+      200: '#b7e9d8',
+      300: '#9ae0c8',
+      400: '#84d9bd',
+      500: '#6ed2b1',
+      600: '#66cdaa',
+      700: '#5bc7a1',
+      800: '#51c198',
+      900: '#3fb688',
+      A100: '#ffffff',
+      A200: '#d4ffee',
+      A400: '#a1ffd9',
+      A700: '#87ffcf',
+      contrastDefaultColor: 'dark',
+    },
+    error: colors.error,
+  },
   typography: {
     fontFamily: 'Source Sans Pro, sans-serif',
+    fontSize: '1em',
     fontWeightRegular: 400,
+    fontWeightMedium: 600,
+    button: {
+      fontWeight: 400,
+      textTransform: 'capitalize', // Remove the 'uppercase' transform
+    },
   },
 });
 

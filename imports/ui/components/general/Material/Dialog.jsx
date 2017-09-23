@@ -1,8 +1,24 @@
 import React from 'react';
 
-import MuiDialog from 'material-ui/Dialog';
+import MuiDialog, {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from 'material-ui/Dialog';
 
-const Dialog = props => <MuiDialog {...props} />;
+const Dialog = (props) => {
+  const { title, actions, children } = props;
+  return (
+    <MuiDialog {...props}>
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent>
+        <DialogContentText>{children}</DialogContentText>
+      </DialogContent>
+      {actions && <DialogActions>{actions}</DialogActions>}
+    </MuiDialog>
+  );
+};
 
 Dialog.propTypes = {};
 
