@@ -90,8 +90,6 @@ export const getLocations = zipCode =>
       if (localities && localities.length) {
         localities.forEach(l => array.push(l.long_name));
       }
-      console.log(result.results[0]);
-      console.log(array);
       // filter duplicates
       return array.filter((value, index) => array.indexOf(value) === index);
     });
