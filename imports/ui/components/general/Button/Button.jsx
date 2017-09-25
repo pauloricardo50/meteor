@@ -18,10 +18,11 @@ const getColor = ({ primary, secondary, color }) => {
 };
 
 const Button = (props) => {
-  const childProps = omit(props, ['primary', 'secondary', 'label']);
+  const childProps = omit(props, ['primary', 'secondary', 'label', 'icon']);
 
   return (
     <MuiButton {...childProps} color={getColor(props)}>
+      {props.icon}
       {props.label || props.children}
     </MuiButton>
   );

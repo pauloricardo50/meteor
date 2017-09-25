@@ -184,7 +184,9 @@ input[type=number]
   font-weight: 300;
 
 .active
-  color: brand-primary !important;
+  &:not(button) // If a button is .active, don't change its color
+    color: brand-primary;
+
 
 .success
   color: brand-success;
@@ -295,6 +297,13 @@ svg.warning
 
 .flex-col
   flex-direction: column;
+
+.icon-button
+  svg
+    transition: color 200ms $bezier;
+    color: #444;
+    &:hover
+      color: #888;
 
 .top-nav
   background-color: white !important;

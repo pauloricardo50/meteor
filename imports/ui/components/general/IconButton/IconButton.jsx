@@ -31,6 +31,7 @@ export default class IconButton extends Component {
         tooltipPosition={tooltipPosition}
         touch={touch}
         style={style}
+        className="icon-button"
       >
         <Icon type={type} withColors style={iconStyle} {...iconProps} />
       </MuiIconButton>
