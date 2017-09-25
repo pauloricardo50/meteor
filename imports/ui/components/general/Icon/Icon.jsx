@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import omit from 'lodash/omit';
-
 import CheckIcon from 'material-ui-icons/Check';
 import CloseIcon from 'material-ui-icons/Close';
 import AddIcon from 'material-ui-icons/AddCircleOutline';
@@ -37,8 +35,6 @@ import MoreIcon from 'material-ui-icons/MoreHoriz';
 import Star from 'material-ui-icons/Star';
 import StarHalf from 'material-ui-icons/StarHalf';
 import StarEmpty from 'material-ui-icons/StarBorder';
-
-import colors from '/imports/js/config/colors';
 
 const iconMap = {
   close: CloseIcon,
@@ -78,37 +74,26 @@ const iconMap = {
 
 const Icon = (props) => {
   const { type } = props;
-  const iconProps = props.withColors
-    ? { ...props, color: colors.iconColor, hoverColor: colors.iconHoverColor }
-    : { ...props };
-
   const MyIcon = iconMap[type];
 
   if (!MyIcon) {
     throw new Error('invalid icon type');
   } else if (MyIcon.component) {
-    return (
-      <MyIcon.component
-        className={MyIcon.className}
-        {...omit(iconProps, ['withColors'])}
-      />
-    );
+    return <MyIcon.component className={MyIcon.className} {...props} />;
   }
 
-  return <MyIcon {...omit(iconProps, ['withColors'])} />;
+  return <MyIcon {...props} />;
 };
 
 Icon.propTypes = {
   type: PropTypes.string.isRequired,
   color: PropTypes.string,
   hoverColor: PropTypes.string,
-  withColors: PropTypes.bool,
 };
 
 Icon.defaultProps = {
   color: '',
   hoverColor: '',
-  withColors: false,
 };
 
 export default Icon;

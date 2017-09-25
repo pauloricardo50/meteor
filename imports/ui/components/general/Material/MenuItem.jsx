@@ -1,6 +1,6 @@
 import React from 'react';
 
-import MuiMenuItem from 'material-ui/MenuItem';
+import { MenuItem as MuiMenuItem } from 'material-ui/Menu';
 
 const MenuItem = props => <MuiMenuItem {...props} />;
 

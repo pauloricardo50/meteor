@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 
 import Icon from '/imports/ui/components/general/Icon';
-import CircularProgress from 'material-ui/CircularProgress';
+import { CircularProgress } from 'material-ui/Progress';
 
 import { T } from '/imports/ui/components/general/Translation';
 import colors from '/imports/js/config/colors';

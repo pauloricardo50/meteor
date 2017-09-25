@@ -33,7 +33,7 @@ export default class IconButton extends Component {
         style={style}
         className="icon-button"
       >
-        <Icon type={type} withColors style={iconStyle} {...iconProps} />
+        <Icon type={type} style={iconStyle} {...iconProps} />
       </MuiIconButton>
     );
   }

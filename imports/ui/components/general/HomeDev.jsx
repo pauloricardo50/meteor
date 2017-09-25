@@ -25,7 +25,9 @@ export default class HomeDev extends Component {
   };
 
   render() {
-    const actions = [<Button label="Ok" primary onClick={this.handleClose} />];
+    const actions = [
+      <Button key="ok" label="Ok" primary onClick={this.handleClose} />,
+    ];
 
     return (
       <span>

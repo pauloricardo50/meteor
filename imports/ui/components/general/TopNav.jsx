@@ -5,13 +5,12 @@ import { Link } from 'react-router-dom';
 import Button from '/imports/ui/components/general/Button';
 import Toolbar from 'material-ui/Toolbar/Toolbar';
 
-// import TopNavDropdown from '/imports/ui/components/general/TopNavDropdown';
-// import TopNavDrawer from '/imports/ui/components/general/TopNavDrawer';
-import { T } from '/imports/ui/components/general/Translation';
 import track from '/imports/js/helpers/analytics';
-import SearchModal from '/imports/ui/components/general/SearchModal';
 
-import colors from '/imports/js/config/colors';
+import TopNavDrawer from './TopNavDrawer';
+import SearchModal from './SearchModal';
+import { T } from './Translation';
+import TopNavDropdown from './TopNavDropdown';
 
 const TopNav = (props) => {
   const { history, currentUser, loanRequests } = props;
@@ -22,7 +21,7 @@ const TopNav = (props) => {
   return (
     <Toolbar className="top-nav">
       <div className="top-nav-content">
-        {/* {showDrawer ? <TopNavDrawer {...props} /> : null} */}
+        {showDrawer ? <TopNavDrawer {...props} /> : null}
 
         <div className="logo">
           <Link
@@ -36,7 +35,9 @@ const TopNav = (props) => {
 
         <div className="buttons">
           <SearchModal />
-          {currentUser ? null : ( // <TopNavDropdown {...props} />
+          {currentUser ? (
+            <TopNavDropdown {...props} />
+          ) : (
             <Button
               label={<T id="TopNav.login" />}
               component={Link}
