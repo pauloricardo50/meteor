@@ -79,7 +79,23 @@ const theme = createMuiTheme({
       A700: '#87ffcf',
       contrastDefaultColor: 'dark',
     },
-    error: colors.error,
+    error: {
+      50: '#f6e8e5',
+      100: '#e9c5be',
+      200: '#db9f92',
+      300: '#cd7866',
+      400: '#c25b46',
+      500: '#b73e25',
+      600: '#b03821',
+      700: '#a7301b',
+      800: '#9f2816',
+      900: '#901b0d',
+      A100: '#ffc5c0',
+      A200: '#ff968d',
+      A400: '#ff675a',
+      A700: '#ff5041',
+      contrastDefaultColor: 'light',
+    },
   },
   typography: {
     fontFamily: 'Source Sans Pro, sans-serif',
@@ -89,6 +105,17 @@ const theme = createMuiTheme({
     button: {
       fontWeight: 400,
       textTransform: 'capitalize', // Remove the 'uppercase' transform
+    },
+  },
+  shades: {
+    light: {
+      input: {
+        bottomLine: 'rgba(0, 0, 0, 0.42)',
+        helperText: 'rgba(0, 0, 0, 0.54)',
+        labelText: 'rgba(0, 0, 0, 0.54)',
+        inputText: 'rgba(0, 0, 0, 0.6)',
+        disabled: 'rgba(0, 0, 0, 0.42)',
+      },
     },
   },
 });

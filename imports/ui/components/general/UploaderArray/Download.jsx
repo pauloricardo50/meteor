@@ -36,7 +36,7 @@ export default class Download extends Component {
     return (
       <IconButton
         touch={false}
-        type={downloading ? 'loop' : 'download'}
+        type={downloading ? 'loop-spin' : 'download'}
         tooltip={<T id="general.download" />}
         onClick={this.handleClick}
         disabled={downloading}

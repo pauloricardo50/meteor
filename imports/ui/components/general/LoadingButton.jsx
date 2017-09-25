@@ -50,7 +50,7 @@ export default class LoadingButton extends Component {
     if (!this.state.isFirstVisit) {
       icon = <Icon type="check" />;
     } else if (this.state.loading) {
-      icon = <Icon type="loop" />;
+      icon = <Icon type="loop-spin" />;
     }
 
     return (

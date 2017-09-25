@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import Button from '/imports/ui/components/general/Button';
 import { T } from '/imports/ui/components/general/Translation';
@@ -28,7 +27,7 @@ const Buttons = props => (
     <Button
       raised
       label={<T id="HomePage.compare" />}
-      component={Link}
+      link
       to="/app/compare"
       style={styles.style}
       // buttonStyle={styles.button}
@@ -41,7 +40,7 @@ const Buttons = props => (
     <Button
       raised
       label={<T id="HomePage.CTA1" />}
-      component={Link}
+      link
       to="/start1/acquisition"
       style={styles.style}
       // buttonStyle={styles.button}

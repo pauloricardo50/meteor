@@ -64,8 +64,8 @@ const RenderRoutes = () => (
             <Route
               path="/partner"
               render={props => <PartnerRoutes {...props} />}
-            />
-            <Route exact path="/" component={PasswordPage} /> */}
+            /> */}
+            <Route exact path="/" component={PasswordPage} />
             <Route path="/" render={props => <PublicRoutes {...props} />} />
           </Switch>
         </ScrollToTopWithRouter>

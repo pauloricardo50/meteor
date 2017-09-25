@@ -17,17 +17,17 @@ import NotFound from '/imports/ui/components/general/NotFound';
 
 import Loadable from '/imports/js/helpers/loadable';
 
-// const Start1Page = Loadable({
-//   loader: () => import('/imports/ui/pages/public/Start1Page'),
-// });
+const Start1Page = Loadable({
+  loader: () => import('/imports/ui/pages/public/Start1Page'),
+});
 
 const PublicRoutes = props => (
   <PublicLayout {...props}>
     <Switch>
       <Route path="/home" component={HomePage} />
       <Route path="/login" component={LoginPage} />
-      {/* <Route path="/start1/:type" component={Start1Page} />
-      <Route path="/start2/:type" component={Start2Page} /> */}
+      <Route path="/start1/:type" component={Start1Page} />
+      {/* <Route path="/start2/:type" component={Start2Page} /> */}
       <Route path="/careers" component={CareersPage} />
       <Route path="/about" component={AboutPage} />
       <Route path="/tos" component={TosPage} />

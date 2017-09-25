@@ -60,7 +60,8 @@ const iconMap = {
   building: BuildingIcon,
   dashboard: AssessmentIcon,
   folder: FolderIcon,
-  loop: { component: LoopIcon, className: 'fa-spin' },
+  loop: LoopIcon,
+  'loop-spin': { component: LoopIcon, className: 'fa-spin' },
   person: Person,
   face: FaceIcon,
   eye: Eye,
@@ -87,13 +88,8 @@ const Icon = (props) => {
 
 Icon.propTypes = {
   type: PropTypes.string.isRequired,
-  color: PropTypes.string,
-  hoverColor: PropTypes.string,
 };
 
-Icon.defaultProps = {
-  color: '',
-  hoverColor: '',
-};
+Icon.defaultProps = {};
 
 export default Icon;

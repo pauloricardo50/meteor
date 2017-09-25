@@ -34,15 +34,17 @@ export default class Accordion extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      isActive: nextProps.isActive,
-      styles: {
-        height: nextProps.isActive ? `${this.content.clientHeight}px` : 0,
-        overflow: nextProps.isActive ? 'unset' : 'hidden',
-        transition: '500ms cubic-bezier(.02, .01, .47, 1)',
-        opacity: nextProps.isActive ? 1 : 0,
-      },
-    });
+    if (this.content) {
+      this.setState({
+        isActive: nextProps.isActive,
+        styles: {
+          height: nextProps.isActive ? `${this.content.clientHeight}px` : 0,
+          overflow: nextProps.isActive ? 'unset' : 'hidden',
+          transition: '500ms cubic-bezier(.02, .01, .47, 1)',
+          opacity: nextProps.isActive ? 1 : 0,
+        },
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -59,20 +61,20 @@ export default class Accordion extends Component {
   render() {
     // Deep copy state
     const adjustedStyles = JSON.parse(JSON.stringify(this.state.styles));
-    if (this.state.styles.height !== 0) {
+    if (this.state.styles.height !== 0 && this.content) {
       adjustedStyles.height = `${this.content.clientHeight}px`;
     }
     return (
       <div
         className="Accordion-container"
         style={{ ...adjustedStyles, ...this.props.style }}
-        ref={c => {
+        ref={(c) => {
           this.container = c;
         }}
       >
         <div
           className="Accordion-content"
-          ref={c => {
+          ref={(c) => {
             this.content = c;
           }}
         >

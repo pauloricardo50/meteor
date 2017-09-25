@@ -35,6 +35,7 @@ const Button = (props) => {
       component={props.link ? Link : null}
     >
       {props.icon}
+      {props.icon && <span style={{ height: '100%', width: 8 }} />}
       {props.label || props.children}
     </MuiButton>
   );

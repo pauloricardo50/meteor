@@ -1,9 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import MuiSlider from 'material-ui/Slider';
+import RcSlider from 'rc-slider';
 
-const Slider = props => <MuiSlider {...props} />;
+import colors from '/imports/js/config/colors';
+
+const styles = {
+  color: {
+    color: colors.primary,
+  },
+};
+
+const Slider = props => <RcSlider {...props} />;
 
 Slider.propTypes = {};
 

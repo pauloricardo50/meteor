@@ -8,6 +8,9 @@ import { swissFrancMask, percentMask } from '/imports/js/helpers/textMasks';
 import { toNumber } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
 
+import Input, { InputLabel } from 'material-ui/Input';
+import { FormControl, FormHelperText } from 'material-ui/Form';
+
 const getDefaults = ({ type, id, handleChange, value }) => {
   switch (type) {
     case 'money':
@@ -48,7 +51,7 @@ const getDefaults = ({ type, id, handleChange, value }) => {
 };
 
 const TextInput = (props) => {
-  const { label, style, labelStyle } = props;
+  const { label, style, labelStyle, id, info, error } = props;
 
   // Remove props that aren't needed
   const passedProps = omit(props, [
@@ -57,6 +60,7 @@ const TextInput = (props) => {
     'label',
     'style',
     'labelStyle',
+    'info',
   ]);
 
   const { onChangeHandler, showMask, mask, placeholder, value } = getDefaults(
@@ -64,25 +68,51 @@ const TextInput = (props) => {
   );
 
   return (
-    <TextField
-      label={label}
-      type="text"
-      onChange={onChangeHandler}
-      style={{ fontSize: 'inherit', ...style }}
-      floatingLabelStyle={{ fontSize: 'initial', ...labelStyle }}
-      {...passedProps}
-      value={showMask ? undefined : value}
-    >
-      {showMask && (
-        <MaskedInput
-          value={value}
-          placeholder={placeholder}
-          mask={mask}
-          guide
-          pattern="[0-9]*"
-        />
+    <FormControl error={error}>
+      {label && (
+        <InputLabel htmlFor={id} style={labelStyle}>
+          {label}
+        </InputLabel>
       )}
-    </TextField>
+      <Input
+        id={id}
+        value={value}
+        onChange={onChangeHandler}
+        type="text"
+        style={{ fontSize: 'inherit', ...style }}
+        inputComponent={showMask && MaskedInput}
+        inputProps={
+          showMask && {
+            value,
+            mask,
+            placeholder,
+            guide: true,
+            pattern: '[0-9]*',
+          }
+        }
+        {...passedProps}
+      />
+      {info && <FormHelperText>{info}</FormHelperText>}
+    </FormControl>
+    // <TextField
+    //   label={label}
+    //   type="text"
+    //   onChange={onChangeHandler}
+    //   style={{ fontSize: 'inherit', ...style }}
+    //   floatingLabelStyle={{ fontSize: 'initial', ...labelStyle }}
+    //   {...passedProps}
+    //   value={showMask ? undefined : value}
+    // >
+    //   {showMask && (
+    //     <MaskedInput
+    //       value={value}
+    //       placeholder={placeholder}
+    //       mask={mask}
+    //       guide
+    //       pattern="[0-9]*"
+    //     />
+    //   )}
+    // </TextField>
   );
 };
 
@@ -92,12 +122,16 @@ TextInput.propTypes = {
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   handleChange: PropTypes.func.isRequired,
   type: PropTypes.string,
+  info: PropTypes.node,
+  error: PropTypes.bool,
 };
 
 TextInput.defaultProps = {
   label: '',
   value: undefined,
   type: undefined,
+  info: '',
+  error: false,
 };
 
 export default TextInput;

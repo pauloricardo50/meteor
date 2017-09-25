@@ -10,6 +10,9 @@ import { swissFrancMask } from '/imports/js/helpers/textMasks';
 import constants from '/imports/js/config/constants';
 import { trackOncePerSession } from '/imports/js/helpers/analytics';
 
+import Input from 'material-ui/Input';
+import TextInput from '/imports/ui/components/general/TextInput';
+
 const primaryColor = '#4A90E2';
 
 const defaultStyle = {
@@ -33,33 +36,25 @@ export default class Start1Text extends Component {
       motionValue,
       value,
       minValue,
+      error,
     } = this.props;
+
     return (
       <div className="text-div">
-        <TextField
+        <TextInput
           id={name}
-          name={name}
-          onChange={(e) => {
+          value={(auto ? Math.round(motionValue) : value) || ''}
+          handleChange={(_, newValue) => {
             trackOncePerSession(`Start1Text - Used textfield ${name}`);
-            setStateValue(name, e.target.value);
+            setStateValue(name, newValue);
           }}
-          errorStyle={minValue <= value ? defaultStyle : errorStyle}
-          className="input"
           ref={(c) => {
             this.input = c;
           }}
-          type="text"
-        >
-          <MaskedInput
-            type="text"
-            value={(auto ? Math.round(motionValue) : value) || ''}
-            mask={swissFrancMask}
-            placeholder={constants.getCurrency()}
-            guide={false}
-            pattern="[0-9]*"
-            showMask={false}
-          />
-        </TextField>
+          type="money"
+          className="input"
+          error={error}
+        />
         <span
           className={classnames({
             reset: true,

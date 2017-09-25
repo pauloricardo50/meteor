@@ -672,8 +672,6 @@ ul.request-map
         align-items: center;
         .reset-button
           margin-bottom: 16px;
-        .slider
-          padding: 0 32px;
     .oscar-line
       position: relative;
       display: inline-block;
@@ -691,11 +689,11 @@ ul.request-map
           line-height: 24px !important;
           height: 48px !important;
           width: 200px !important;
-          +above($med)
-            font-size: 40px !important;
-            line-height: 36px !important;
-            height: 64px !important;
-            width: 230px !important;
+          // +above($med)
+          //   font-size: 40px !important;
+          //   line-height: 32px !important;
+          //   height: 64px !important;
+          //   width: 230px !important;
         .reset
           margin-left: 8px;
           display: flex;
@@ -711,18 +709,16 @@ ul.request-map
             cursor: default;
             svg
               color: alpha(#222, 0.4) !important;
-      .slider > div
-        margin: 0 !important;
-        margin-top: 8px !important;
       .sliderDiv
         position: relative;
-        margin-top: -8px;
+        margin-top: 16px;
+        padding: 0 32px;
       .sliderMaxButton
         height: 32px;
         display: inline;
         position: absolute;
-        right: -10px;
-        top: 0px;
+        right: -8px;
+        top: -8px;
         svg
           height: 30px !important;
   .chart

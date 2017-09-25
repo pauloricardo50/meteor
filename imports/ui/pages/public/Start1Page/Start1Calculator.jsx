@@ -111,10 +111,9 @@ const Start1Calculator = (props) => {
               borrowRatio <= 0.8 + 0.001 &&
               incomeRatio <= constants.maxRatio + 0.001
             }
-            containerElement={<Link to={getUrl()} />}
+            link
+            to={getUrl()}
             id="ok"
-            style={{ height: 'unset' }}
-            overlayStyle={{ padding: 20 }}
             onClick={() =>
               track('Funnel - Passed Start 1', { property, income, fortune })}
           />
