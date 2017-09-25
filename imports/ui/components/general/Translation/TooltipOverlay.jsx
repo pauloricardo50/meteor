@@ -9,6 +9,7 @@ import track from '/imports/js/helpers/analytics';
 import Tooltip from './Tooltip';
 
 const handleClick = (event) => {
+  console.log('hey!');
   event.stopPropagation();
 };
 
