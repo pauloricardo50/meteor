@@ -551,7 +551,6 @@ export const getFinalArray = (state, props, setFormState) => [
       <T id="Start2Form.loanWanted.sliderMin" />,
       <T id="Start2Form.loanWanted.sliderMax" />,
     ],
-    step: 10000,
     onDragStart() {
       // Make sure we reset the next sliders if this is modified afterwards
       if (state.fortuneUsed) {
@@ -595,6 +594,7 @@ export const getFinalArray = (state, props, setFormState) => [
     ],
   },
   {
+    // insurance is not needed, but still propose to use it
     id: 'useInsurance1',
     condition:
       state.type === 'acquisition' &&
@@ -642,6 +642,7 @@ export const getFinalArray = (state, props, setFormState) => [
     question: true,
   },
   {
+    // insurance is necessary
     id: 'useInsurance2',
     condition:
       state.type === 'acquisition' &&

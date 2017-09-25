@@ -8,6 +8,13 @@ import MuiSelect from 'material-ui/Select';
 import Input, { InputLabel } from 'material-ui/Input';
 import Icon from '../Icon';
 import MenuItem from '../Material/MenuItem';
+import withStyles from 'material-ui/styles/withStyles';
+
+const styles = {
+  icon: {
+    top: 'calc(50% - 12px)',
+  },
+};
 
 const Select = (props) => {
   const { value, handleChange, options, id, label } = props;
@@ -15,10 +22,11 @@ const Select = (props) => {
     <FormControl>
       {label && <InputLabel htmlFor={id}>{label}</InputLabel>}
       <MuiSelect
-        {...omit(props, ['value', 'handleChange', 'id', 'label'])}
+        {...omit(props, ['value', 'handleChange', 'id', 'label', 'options'])}
         value={value}
         onChange={e => handleChange(id, e.target.value)}
         input={<Input id={id} />}
+        classes={{ icon: props.classes.icon }}
       >
         {options.map((option) => {
           // If a component is provided, return the component
@@ -51,4 +59,4 @@ Select.defaultProps = {
   label: undefined,
 };
 
-export default Select;
+export default withStyles(styles)(Select);

@@ -10,6 +10,8 @@ import classnames from 'classnames';
 import { swissFrancMask } from '/imports/js/helpers/textMasks';
 import { toNumber } from '/imports/js/helpers/conversionFunctions';
 
+import TextInput from '/imports/ui/components/general/TextInput';
+
 export default class StartTextField extends React.Component {
   getStyles() {
     let width;
@@ -28,31 +30,51 @@ export default class StartTextField extends React.Component {
     };
   }
 
-  handleChange(event) {
-    // Save a Number if it is money, else the string
-    const value = this.props.money
-      ? toNumber(event.target.value)
-      : event.target.value;
-    this.props.setFormState(this.props.id, value);
-  }
-
   render() {
-    const val = this.props.value || this.props.formState[this.props.id];
+    const {
+      value,
+      formState,
+      setFormState,
+      id,
+      money,
+      number,
+      zeroAllowed,
+      setActiveLine,
+      placeholder,
+      autoFocus,
+      setRef,
+      text2,
+      multiple,
+      array,
+      inputRef,
+    } = this.props;
+
+    const val = value || formState[id];
+    let type;
+    if (money) {
+      type = 'money';
+    } else if (number) {
+      type = 'number';
+    } else {
+      type = 'text';
+    }
 
     return (
       <span style={{ position: 'relative' }}>
-        <TextField
+        <TextInput
           style={this.getStyles()}
-          name={this.props.id}
-          value={this.props.zeroAllowed ? val : val || ''}
-          onChange={e => this.handleChange(e, false)}
-          onBlur={() => this.props.setActiveLine('')}
-          hintText={this.props.placeholder || (this.props.money ? 'CHF' : '')}
-          autoFocus={this.props.autoFocus}
-          pattern={this.props.number && '[0-9]*'}
-          ref={c => this.props.setRef(c)}
+          name={id}
+          id={id}
+          value={zeroAllowed ? val : val || ''}
+          handleChange={setFormState}
+          onBlur={() => setActiveLine('')}
+          placeholder={placeholder}
+          autoFocus={autoFocus}
+          pattern={number && '[0-9]*'}
+          ref={c => setRef(c)}
+          type={type}
         >
-          {this.props.money && (
+          {/* {this.props.money && (
             <MaskedInput
               mask={swissFrancMask}
               guide
@@ -60,27 +82,25 @@ export default class StartTextField extends React.Component {
               autoFocus={this.props.autoFocus}
               value={this.props.zeroAllowed ? val : val || ''}
             />
-          )}
-        </TextField>
+          )} */}
+        </TextInput>
 
-        {!this.props.text2 &&
-          !this.props.multiple &&
-          !this.props.array && (
-            <div className={classnames({ 'delete-button': true, off: !val })}>
-              <div className="absolute-wrapper">
-                <IconButton
-                  type="close"
-                  onClick={() => {
-                    this.props.setFormState(this.props.id, '');
-                    if (this.props.inputRef) {
-                      this.props.inputRef.input.inputElement.focus();
-                    }
-                  }}
-                  disabled={!val}
-                />
-              </div>
+        {!!(!text2 && !multiple && !array) && (
+          <div className={classnames({ 'delete-button': true, off: !val })}>
+            <div className="absolute-wrapper">
+              <IconButton
+                type="close"
+                onClick={() => {
+                  setFormState(id, '');
+                  if (inputRef) {
+                    inputRef.input.inputElement.focus();
+                  }
+                }}
+                disabled={!val}
+              />
             </div>
-          )}
+          </div>
+        )}
       </span>
     );
   }

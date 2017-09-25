@@ -1053,13 +1053,21 @@ ul.request-map
   .email
     input
       font-size: inherit !important;
-  .slider-labels
-    position: absolute;
-    top: 16px;
-    width: 100%;
+  .start-slider
+    position: relative;
     display: flex;
-    justify-content: space-between;
-    padding: 0 16px;
+    flex-direction: column;
+    padding: 0 32px;
+    margin-top: 16px;
+    .slider-labels
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 16px;
+      pointer-events: none;
   .loanWanted-slider
     width: 100%;
     display: flex;

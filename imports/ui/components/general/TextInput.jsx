@@ -51,7 +51,7 @@ const getDefaults = ({ type, id, handleChange, value }) => {
 };
 
 const TextInput = (props) => {
-  const { label, style, labelStyle, id, info, error } = props;
+  const { label, style, labelStyle, id, info, error, ref } = props;
 
   // Remove props that aren't needed
   const passedProps = omit(props, [
@@ -61,6 +61,7 @@ const TextInput = (props) => {
     'style',
     'labelStyle',
     'info',
+    'ref',
   ]);
 
   const { onChangeHandler, showMask, mask, placeholder, value } = getDefaults(
@@ -80,16 +81,19 @@ const TextInput = (props) => {
         onChange={onChangeHandler}
         type="text"
         style={{ fontSize: 'inherit', ...style }}
-        inputComponent={showMask && MaskedInput}
+        inputComponent={showMask ? MaskedInput : undefined}
         inputProps={
-          showMask && {
-            value,
-            mask,
-            placeholder,
-            guide: true,
-            pattern: '[0-9]*',
-          }
+          showMask
+            ? {
+              value,
+              mask,
+              placeholder,
+              guide: true,
+              pattern: '[0-9]*',
+            }
+            : {}
         }
+        inputRef={ref}
         {...passedProps}
       />
       {info && <FormHelperText>{info}</FormHelperText>}

@@ -77,7 +77,7 @@ const theme = createMuiTheme({
       A200: '#d4ffee',
       A400: '#a1ffd9',
       A700: '#87ffcf',
-      contrastDefaultColor: 'dark',
+      contrastDefaultColor: 'light',
     },
     error: {
       50: '#f6e8e5',

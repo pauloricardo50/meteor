@@ -6,32 +6,37 @@ import Icon from '/imports/ui/components/general/Icon';
 
 import { trackOncePerSession } from '/imports/js/helpers/analytics';
 
-const Start1Slider = props => (
+const Start1Slider = ({
+  sliderMax,
+  motionValue,
+  auto,
+  value,
+  name,
+  setStateValue,
+  setSliderMax,
+}) => (
   <div className="sliderDiv">
     <div>
       <Slider
         min={0}
-        max={props.sliderMax}
+        max={sliderMax}
         step={1000}
         value={
-          props.motionValue < 5000
+          motionValue < 5000
             ? 0
-            : Math.min(
-              Math.round(props.auto ? props.motionValue : props.value),
-              props.sliderMax,
-            )
+            : Math.min(Math.round(auto ? motionValue : value), sliderMax)
         }
         onChange={(v) => {
-          trackOncePerSession(`Start1Slider - Used slider ${props.name}`);
-          props.setStateValue(props.name, v);
+          trackOncePerSession(`Start1Slider - Used slider ${name}`);
+          setStateValue(name, v);
         }}
         className="slider"
       />
-      {props.value >= props.sliderMax && (
+      {value >= sliderMax && (
         <div className="sliderMaxButton animated fadeIn">
           <Icon
             type="add"
-            onClick={props.setSliderMax}
+            onClick={setSliderMax}
             style={{ cursor: 'pointer' }}
           />
         </div>

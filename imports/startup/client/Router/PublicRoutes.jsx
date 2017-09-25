@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import {
   PublicLayout,
-  // Start2Page,
+  Start2Page,
 } from '/imports/ui/containers/PublicContainers';
 import HomePage from '/imports/ui/pages/public/HomePage';
 import LoginPage from '/imports/ui/pages/public/LoginPage';
@@ -27,7 +27,7 @@ const PublicRoutes = props => (
       <Route path="/home" component={HomePage} />
       <Route path="/login" component={LoginPage} />
       <Route path="/start1/:type" component={Start1Page} />
-      {/* <Route path="/start2/:type" component={Start2Page} /> */}
+      <Route path="/start2/:type" component={Start2Page} />
       <Route path="/careers" component={CareersPage} />
       <Route path="/about" component={AboutPage} />
       <Route path="/tos" component={TosPage} />

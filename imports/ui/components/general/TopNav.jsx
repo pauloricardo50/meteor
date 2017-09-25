@@ -40,7 +40,7 @@ const TopNav = (props) => {
           ) : (
             <Button
               label={<T id="TopNav.login" />}
-              component={Link}
+              link
               to="/login"
               primary
               dense
