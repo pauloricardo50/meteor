@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import SelectField from '/imports/ui/components/general/Material/SelectField';
-import MenuItem from '/imports/ui/components/general/Material/MenuItem';
-import TextField from '/imports/ui/components/general/Material/TextField';
-import MaskedInput from 'react-text-mask';
+// import SelectField from '/imports/ui/components/general/Material/SelectField';
+// import MenuItem from '/imports/ui/components/general/Material/MenuItem';
+// import TextField from '/imports/ui/components/general/Material/TextField';
+// import MaskedInput from 'react-text-mask';
+
+import Select from '/imports/ui/components/general/Select';
+import TextInput from '/imports/ui/components/general/TextInput';
 
 import AmortizationChart from '/imports/ui/components/charts/AmortizationChart';
 import { T } from '/imports/ui/components/general/Translation';
-import { percentMask } from '/imports/js/helpers/textMasks';
+// import { percentMask } from '/imports/js/helpers/textMasks';
 
 const interestRates = [
   { id: 'lower', rate: 0.008 },
@@ -37,7 +40,8 @@ export default class AmortizationTool extends Component {
 
   handleSelectChange = (event, index, value) => this.setState({ value });
 
-  handleTextChange = event => this.setState({ initialRate: event.target.value });
+  handleTextChange = event =>
+    this.setState({ initialRate: event.target.value });
 
   getRates = () => {
     const array = [];
@@ -57,26 +61,44 @@ export default class AmortizationTool extends Component {
     return (
       <div className="mask1">
         <div style={styles.div}>
-          <TextField
-            floatingLabelText={<T id="AmortizationTool.initialRate" />}
-            onChange={this.handleTextChange}
+          <TextInput
+            label={<T id="AmortizationTool.initialRate" />}
+            handleChange={this.handleTextChange}
+            type="percent"
+            value={this.state.initialRate}
           >
-            <MaskedInput mask={percentMask} guide value={this.state.initialRate} />
-          </TextField>
-          <SelectField
-            floatingLabelText={<T id="AmortizationTool.futureRate" />}
+            {/* <MaskedInput
+              mask={percentMask}
+              guide
+              value={this.state.initialRate}
+            /> */}
+          </TextInput>
+          <Select
+            label={<T id="AmortizationTool.futureRate" />}
             value={this.state.value}
-            onChange={this.handleSelectChange}
+            handleChange={this.handleSelectChange}
+            options={interestRates.map(rate => ({
+              id: rate.id,
+              label: <T id={`AmortizationTool.${rate.id}.title`} />,
+            }))}
+            renderValue={id => (
+              <T
+                id={'AmortizationTool.rate'}
+                values={{ rate: interestRates.find(i => i.id === id).rate }}
+              />
+            )}
           >
-            {interestRates.map((r, i) =>
+            {/* {interestRates.map((r, i) => (
               <MenuItem
                 value={i}
                 key={r.id}
                 primaryText={<T id={`AmortizationTool.${r.id}.title`} />}
-                label={<T id={'AmortizationTool.rate'} values={{ rate: r.rate }} />}
-              />,
-            )}
-          </SelectField>
+                label={
+                  <T id={'AmortizationTool.rate'} values={{ rate: r.rate }} />
+                }
+              />
+            ))} */}
+          </Select>
         </div>
         <AmortizationChart
           {...this.props}

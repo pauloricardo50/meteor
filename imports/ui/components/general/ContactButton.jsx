@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-
+import Button from '/imports/ui/components/general/Button';
 import track from '/imports/js/helpers/analytics';
 import { T } from '/imports/ui/components/general/Translation';
 import colors from '/imports/js/config/colors';
@@ -158,13 +157,14 @@ export default class ContactButton extends Component {
 
     return (
       <div style={styles.div}>
-        <FloatingActionButton
+        <Button
           style={styles.button}
           backgroundColor={colors.primary}
           onClick={this.handleClick}
+          fab
         >
           {open ? <Icon type="close" /> : <Icon type="forum" />}
-        </FloatingActionButton>
+        </Button>
         <div
           className="mask1"
           style={{

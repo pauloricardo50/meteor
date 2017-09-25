@@ -14,8 +14,8 @@ const AdvancedOptions = ({
   toggleField,
   allFields,
   removeCustomField,
-}) =>
-  (<div className="flex-col center">
+}) => (
+  <div className="flex-col center">
     <hr style={{ width: '100%' }} />
 
     <div className="flex-col" style={{ width: '100%', maxWidth: 400 }}>
@@ -55,7 +55,8 @@ const AdvancedOptions = ({
         removeCustomField={removeCustomField}
       />
     </DialogSimple>
-  </div>);
+  </div>
+);
 
 AdvancedOptions.propTypes = {
   comparator: PropTypes.objectOf(PropTypes.any).isRequired,

@@ -1,12 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from '/imports/ui/components/general/Material/MenuItem';
-import IconButton from '/imports/ui/components/general/IconButton';
 
 import { T } from '/imports/ui/components/general/Translation';
+import DropdownMenu from '/imports/ui/components/general/DropdownMenu';
 
 const styles = {
   div: {
@@ -32,26 +28,19 @@ const DashboardItem = props => (
     )}
 
     {props.menuActions.length > 0 && (
-      <IconMenu
+      <DropdownMenu
         style={styles.icon}
-        iconButtonElement={
-          <IconButton
-            type="more"
-            iconProps={{ color: '#ADB5BD', hoverColor: '#8B939B' }}
-          />
-        }
+        iconType="more"
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-      >
-        {props.menuActions.map(a => (
-          <MenuItem
-            key={a.id}
-            primaryText={<T id={`DashboardMenu.${a.id}`} />}
-            onClick={() => (a.handleClick ? a.handleClick() : {})}
-            containerElement={a.link && <Link to={a.link} />}
-          />
-        ))}
-      </IconMenu>
+        options={props.menuActions.map(a => ({
+          ...a,
+          onClick: a.handleClick,
+          link: !!a.link,
+          to: a.link,
+          label: <T id={`DashboardMenu.${a.id}`} />,
+        }))}
+      />
     )}
 
     {props.children}

@@ -16,17 +16,28 @@ const styles = {
   },
 };
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+
 const Select = (props) => {
-  const { value, handleChange, options, id, label } = props;
+  const { value, handleChange, options, id, label, ...otherProps } = props;
   return (
     <FormControl>
       {label && <InputLabel htmlFor={id}>{label}</InputLabel>}
       <MuiSelect
-        {...omit(props, ['value', 'handleChange', 'id', 'label', 'options'])}
+        {...otherProps}
         value={value}
         onChange={e => handleChange(id, e.target.value)}
         input={<Input id={id} />}
         classes={{ icon: props.classes.icon }}
+        MenuProps={{
+          PaperProps: {
+            style: {
+              maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+              width: 200,
+            },
+          },
+        }}
       >
         {options.map((option) => {
           // If a component is provided, return the component

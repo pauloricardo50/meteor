@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
-import { Link } from 'react-router-dom';
 
 // import IconMenu from 'material-ui/IconMenu';
 // import MenuItem from '/imports/ui/components/general/Material/MenuItem';
@@ -60,29 +59,27 @@ const TopNavDropdown = (props) => {
   const { currentUser, history } = props;
 
   return (
-    <div>
-      <DropdownMenu
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        iconType="person"
-        options={getMenuItems(currentUser, history)
-          .filter(o => o.show)
-          .map(option => ({
-            id: option.id,
-            onClick: option.onClick,
-            component: Link,
-            to: option.link,
-            label: option.label || <T id={`TopNavDropdown.${option.id}`} />,
-            history, // required for Link to work
-          }))}
-      />
-    </div>
+    <DropdownMenu
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left',
+      }}
+      transformOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left',
+      }}
+      iconType="person"
+      options={getMenuItems(currentUser, history)
+        .filter(o => o.show)
+        .map(option => ({
+          id: option.id,
+          onClick: option.onClick,
+          link: true,
+          to: option.link,
+          label: option.label || <T id={`TopNavDropdown.${option.id}`} />,
+          history, // required for Link to work
+        }))}
+    />
   );
 };
 

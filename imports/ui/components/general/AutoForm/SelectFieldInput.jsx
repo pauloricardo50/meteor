@@ -1,13 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import SelectField from '/imports/ui/components/general/Material/SelectField';
-import MenuItem from '/imports/ui/components/general/Material/MenuItem';
+// import SelectField from '/imports/ui/components/general/Material/SelectField';
+// import MenuItem from '/imports/ui/components/general/Material/MenuItem';
 
 import SavingIcon from './SavingIcon';
 import FormValidator from './FormValidator';
 import cleanMethod from '/imports/api/cleanMethods';
 import { T } from '/imports/ui/components/general/Translation';
+
+import Select from '/imports/ui/components/general/Select';
 
 const styles = {
   div: {
@@ -75,17 +77,34 @@ export default class SelectFieldInput extends Component {
 
     return (
       <div style={{ ...styles.div, ...style }}>
-        <SelectField
-          floatingLabelText={label}
+        <Select
+          label={label}
           value={value}
-          onChange={this.handleChange}
-          errorText={errorText}
-          fullWidth
-          maxHeight={200}
+          handleChange={this.handleChange}
+          // errorText={errorText}
+          // fullWidth
+          // maxHeight={200}
           style={style}
           disabled={disabled}
+          options={options.map(
+            ({
+              id: optionId,
+              intlId,
+              intlValues,
+              label: optionLabel,
+              ...otherProps
+            }) => ({
+              label: optionLabel || (
+                <T
+                  id={`Forms.${intlId || id}.${optionId}`}
+                  values={intlValues}
+                />
+              ),
+              ...otherProps,
+            }),
+          )}
         >
-          <MenuItem value={null} primaryText="" key={0} />
+          {/* <MenuItem value={null} primaryText="" key={0} />
           {options.map(({ id: optionId, intlValues, label: optionLabel }) => (
             <MenuItem
               value={optionId}
@@ -99,8 +118,8 @@ export default class SelectFieldInput extends Component {
               }
               key={optionId}
             />
-          ))}
-        </SelectField>
+          ))} */}
+        </Select>
         <SavingIcon
           saving={saving}
           errorExists={errorText !== ''}

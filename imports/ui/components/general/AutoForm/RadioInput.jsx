@@ -2,8 +2,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import RadioButton from 'material-ui/RadioButton/RadioButton';
-import RadioButtonGroup from 'material-ui/RadioButton/RadioButtonGroup';
+import Radio, {
+  RadioGroup,
+} from '/imports/ui/components/general/Material/Radio';
+import { FormLabel, FormControl, FormControlLabel } from 'material-ui/Form';
 
 import { T } from '/imports/ui/components/general/Translation';
 import FormValidator from './FormValidator';
@@ -92,28 +94,29 @@ export default class RadioInput extends Component {
       disabled,
     } = this.props;
     return (
-      <div style={{ ...styles.div, ...style }}>
-        <label htmlFor={id}>{label}</label>
-        <RadioButtonGroup
+      <FormControl style={{ ...styles.div, ...style }}>
+        <FormLabel htmlFor={id}>{label}</FormLabel>
+        <RadioGroup
           name={this.props.id}
-          defaultSelected={this.state.value}
+          value={this.state.value}
           onChange={onConditionalChange}
           style={styles.RadioButtonGroup}
         >
           {options.map(({ id: optionId, intlValues }) => (
-            <RadioButton
+            <FormControlLabel
+              control={Radio}
               label={this.getOptionLabel(optionId, intlValues)}
               value={optionId}
               onClick={this.setValue}
               key={optionId}
-              style={styles.RadioButton}
-              labelStyle={styles.RadioButtonLabel}
+              // style={styles.RadioButton}
+              // labelStyle={styles.RadioButtonLabel}
               disabled={disabled}
             />
           ))}
-        </RadioButtonGroup>
+        </RadioGroup>
         <FormValidator {...this.props} />
-      </div>
+      </FormControl>
     );
   }
 }

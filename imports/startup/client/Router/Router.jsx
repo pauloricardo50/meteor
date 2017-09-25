@@ -16,7 +16,7 @@ import Loadable from '/imports/js/helpers/loadable';
 import { PasswordPage } from '/imports/ui/containers/PublicContainers';
 
 // import PublicRoutes from './PublicRoutes';
-// import UserRoutes from './UserRoutes';
+import UserRoutes from './UserRoutes';
 // import AdminRoutes from './AdminRoutes';
 // import PartnerRoutes from './PartnerRoutes';
 
@@ -59,8 +59,8 @@ const RenderRoutes = () => (
       <Router>
         <ScrollToTopWithRouter>
           <Switch>
-            {/* <Route path="/app" render={props => <UserRoutes {...props} />} />
-            <Route path="/admin" render={props => <AdminRoutes {...props} />} />
+            <Route path="/app" render={props => <UserRoutes {...props} />} />
+            {/* <Route path="/admin" render={props => <AdminRoutes {...props} />} />
             <Route
               path="/partner"
               render={props => <PartnerRoutes {...props} />}

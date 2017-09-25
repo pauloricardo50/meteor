@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import RadioButton from 'material-ui/RadioButton/RadioButton';
-import RadioButtonGroup from 'material-ui/RadioButton/RadioButtonGroup';
+import Radio, {
+  RadioGroup,
+} from '/imports/ui/components/general/Material/Radio';
+import { FormLabel, FormControl, FormControlLabel } from 'material-ui/Form';
 
 import { T } from '/imports/ui/components/general/Translation';
 
@@ -14,28 +16,28 @@ const RadioButtons = ({
   currentValue,
   label,
   style,
-}) =>
-  (<div style={style}>
-    <label htmlFor={id}>
-      {label}
-    </label>
-    <RadioButtonGroup
+}) => (
+  <FormControl style={style}>
+    <FormLabel htmlFor={id}>{label}</FormLabel>
+    <RadioGroup
       onChange={(event, value) => handleChange(id, value)}
-      valueSelected={currentValue}
+      value={currentValue}
       name={id}
       className="flex"
       style={{ justifyContent: ' space-around' }}
     >
-      {options.map(option =>
-        (<RadioButton
+      {options.map(option => (
+        <FormControlLabel
+          control={Radio}
           key={option}
           value={option}
           label={<T id={`${intlPrefix}.${option}`} />}
-          style={{ width: 'unset' }}
-        />),
-      )}
-    </RadioButtonGroup>
-  </div>);
+          // style={{ width: 'unset' }}
+        />
+      ))}
+    </RadioGroup>
+  </FormControl>
+);
 
 RadioButtons.propTypes = {
   id: PropTypes.string.isRequired,

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import MuiSlider from 'material-ui/Slider';
+import MuiSlider from './Material/Slider';
 
 const styles = {
   div: {
@@ -45,9 +45,7 @@ const Slider = ({
 
   return (
     <div className="flex-col" style={{ ...style, ...styles.div }}>
-      <label htmlFor={id}>
-        {label}
-      </label>
+      <label htmlFor={id}>{label}</label>
       <div style={{ position: 'relative', padding: '0 16px' }}>
         <MuiSlider
           id={id}
@@ -56,7 +54,7 @@ const Slider = ({
           step={step}
           onChange={(event, newValue) => handleChange(id, newValue)}
           value={currentValue}
-          sliderStyle={{ ...sliderStyle, ...styles.slider }}
+          // sliderStyle={{ ...sliderStyle, ...styles.slider }}
         />
         <p className="secondary" style={styles.labelMin}>
           {labelMin}

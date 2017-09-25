@@ -1,12 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import MuiTable from 'material-ui/Table/Table';
-import TableBody from 'material-ui/Table/TableBody';
-import TableHeader from 'material-ui/Table/TableHeader';
-import TableHeaderColumn from 'material-ui/Table/TableHeaderColumn';
-import TableRow from 'material-ui/Table/TableRow';
-import TableRowColumn from 'material-ui/Table/TableRowColumn';
+// import MuiTable from 'material-ui/Table/Table';
+// import TableBody from 'material-ui/Table/TableBody';
+// import TableHeader from 'material-ui/Table/TableHeader';
+// import TableHeaderColumn from 'material-ui/Table/TableHeaderColumn';
+// import TableRow from 'material-ui/Table/TableRow';
+// import TableRowColumn from 'material-ui/Table/TableRowColumn';
+
+import MuiTable, {
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from 'material-ui/Table';
 
 import { T } from '/imports/ui/components/general/Translation';
 
@@ -36,22 +43,22 @@ const Table = (props) => {
         onRowSelection={rowIndexes =>
           onRowSelection(multiSelectable ? rowIndexes : rowIndexes[0])}
       >
-        <TableHeader
+        <TableHead
           adjustForCheckbox={selectable}
           enableSelectAll={selectable && selectAll}
           displaySelectAll={selectable && selectAll}
         >
           <TableRow>
             {columns.map((column, i) => (
-              <TableHeaderColumn key={i} style={column.style}>
+              <TableCell key={i} style={column.style}>
                 {column.id && (
                   <T id={column.id} values={column.intlValues} list="table" />
                 )}
                 {column.name || ''}
-              </TableHeaderColumn>
+              </TableCell>
             ))}
           </TableRow>
-        </TableHeader>
+        </TableHead>
         <TableBody
           displayRowCheckbox={selectable}
           deselectOnClickaway={false}
@@ -66,17 +73,15 @@ const Table = (props) => {
               onMouseDown={row.handleClick || null}
             >
               {row.columns.map((column, j) => (
-                <TableRowColumn
+                <TableCell
                   key={j}
                   style={{ ...columns[j].style, fontWeight: 400 }}
                   // className={column.className}
                 >
-                  {typeof columns[j].format === 'function' ? (
-                    columns[j].format(column)
-                  ) : (
-                    column
-                  )}
-                </TableRowColumn>
+                  {typeof columns[j].format === 'function'
+                    ? columns[j].format(column)
+                    : column}
+                </TableCell>
               ))}
             </TableRow>
           ))}

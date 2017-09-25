@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import DatePicker from '/imports/ui/components/general/Material/DatePicker';
+import MyDateInput from '/imports/ui/components/general/DateInput';
 import { injectIntl } from 'react-intl';
 
 import { T } from '/imports/ui/components/general/Translation';
@@ -59,10 +59,8 @@ class DateInput extends Component {
         style={{ ...styles.div, ...this.props.style }}
         className="datepicker"
       >
-        <label htmlFor={this.props.label} style={styles.label}>
-          {this.props.label}
-        </label>
-        <DatePicker
+        <MyDateInput
+          label={this.props.label}
           name={this.props.label}
           hintText={<T id="DateInput.placeholder" />}
           value={this.props.currentValue}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import AutoComplete from 'material-ui/AutoComplete';
+import AutoComplete from '../AutoComplete';
 import MenuItem from '/imports/ui/components/general/Material/MenuItem';
 
 import { T } from '/imports/ui/components/general/Translation';
@@ -26,7 +26,7 @@ class ZipAutoComplete extends Component {
     super(props);
     this.state = {
       searchText: this.props.initialValue,
-      dataSource: [],
+      data: [],
       saving: false,
     };
   }
@@ -41,19 +41,19 @@ class ZipAutoComplete extends Component {
         .then((array) => {
           if (array && array.length) {
             this.setState({
-              dataSource: array.map(city => ({
-                text: `${zipCode} ${city}`,
-                value: <MenuItem primaryText={`${zipCode} ${city}`} />,
+              data: array.map(city => ({
+                value: `${zipCode} ${city}`,
+                label: <MenuItem primaryText={`${zipCode} ${city}`} />,
               })),
             });
           } else {
             this.setState({
-              dataSource: [
+              data: [
                 {
-                  value: (
+                  label: (
                     <MenuItem primaryText={<T id="ZipAutoComplete.empty" />} />
                   ),
-                  text: '-',
+                  value: '-',
                 },
               ],
             });
@@ -63,7 +63,7 @@ class ZipAutoComplete extends Component {
     }
   };
 
-  handleSelect = ({ text: result }) => {
+  handleSelect = ({ value: result }) => {
     if (result !== '-') {
       const zipCode = parseInt(result, 10);
       const city = result.split(' ')[1];
@@ -96,18 +96,18 @@ class ZipAutoComplete extends Component {
   };
 
   render() {
-    const { searchText, dataSource, saving } = this.state;
+    const { searchText, data, saving } = this.state;
     const { disabled, style, label } = this.props;
     return (
       <div style={{ ...styles.div, ...style }}>
         <AutoComplete
-          floatingLabelText={label}
-          searchText={searchText}
-          hintText={<T id="ZipAutoComplete.placeholder" />}
-          onUpdateInput={this.handleChange}
-          onNewRequest={this.handleSelect}
-          dataSource={dataSource}
-          filter={() => true} // show all results, to allow showing an empty result
+          label={label}
+          value={searchText}
+          placeholder={<T id="ZipAutoComplete.placeholder" />}
+          onChange={this.handleChange}
+          onSelect={this.handleSelect}
+          suggestions={data}
+          // filter={() => true} // show all results, to allow showing an empty result
           disabled={disabled}
           textFieldStyle={style}
           style={style}

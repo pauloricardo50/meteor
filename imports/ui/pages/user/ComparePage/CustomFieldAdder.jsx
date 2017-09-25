@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
 import Button from '/imports/ui/components/general/Button';
-import AutoComplete from 'material-ui/AutoComplete';
-import SelectField from '/imports/ui/components/general/Material/SelectField';
-import MenuItem from '/imports/ui/components/general/Material/MenuItem';
+import AutoComplete from '/imports/ui/components/general/AutoComplete';
+// import SelectField from '/imports/ui/components/general/Material/SelectField';
+// import MenuItem from '/imports/ui/components/general/Material/MenuItem';
+import Select from '/imports/ui/components/general/Select';
 
 import { injectIntl } from 'react-intl';
 import shuffle from 'lodash/shuffle';
@@ -67,46 +68,52 @@ class CustomFieldAdder extends Component {
     return (
       <div className="flex-col center">
         <AutoComplete
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-          floatingLabelText={<T id="CustomFieldAdder.name" />}
-          searchText={name}
-          onUpdateInput={(value) => {
-            this.handleChange('name', value);
-          }}
-          onNewRequest={(chosenRequest, index) => {
+          // anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+          label={<T id="CustomFieldAdder.name" />}
+          value={name}
+          onChange={value => this.handleChange('name', value)}
+          onSelect={(chosenRequest, index) => {
+            console.log('fix this');
             const type = randomSuggestions[index].type;
             this.handleChange('type', type);
+            Meteor.defer(() =>
+              this.setState({ randomSuggestions: shuffle(suggestions) }),
+            );
           }}
-          openOnFocus
-          dataSource={randomSuggestions.map(suggestion => ({
+          // openOnFocus
+          suggestions={randomSuggestions.map(suggestion => ({
             text: f({ id: `CustomFieldAdder.${suggestion.id}` }),
             value: suggestion.id,
           }))}
-          filter={AutoComplete.fuzzyFilter}
-          menuCloseDelay={0}
-          maxSearchResults={5}
+          // filter={AutoComplete.fuzzyFilter}
+          // menuCloseDelay={0}
+          // maxSearchResults={5}
           // Use defer to make sure suggestions are shuffled again only
           // after all changes have been made
-          onClose={() =>
-            Meteor.defer(() =>
-              this.setState({ randomSuggestions: shuffle(suggestions) }),
-            )}
+          // onClose={() =>
+          //   Meteor.defer(() =>
+          //     this.setState({ randomSuggestions: shuffle(suggestions) }),
+          //   )}
         />
 
-        <SelectField
-          floatingLabelText={<T id="CustomFieldAdder.type" />}
+        <Select
+          label={<T id="CustomFieldAdder.type" />}
           value={currentType}
-          onChange={(event, key, value) => this.handleChange('type', value)}
+          handleChange={(_, value) => this.handleChange('type', value)}
+          options={types.map(type => ({
+            id: type,
+            label: <T id={`CustomFieldAdder.${type}`} />,
+          }))}
         >
-          <MenuItem value={null} />
-          {types.map(type =>
-            (<MenuItem
+          {/* <MenuItem value={null} />
+          {types.map(type => (
+            <MenuItem
               key={type}
               value={type}
               primaryText={<T id={`CustomFieldAdder.${type}`} />}
-            />),
-          )}
-        </SelectField>
+            />
+          ))} */}
+        </Select>
         <div
           style={{
             display: 'flex',

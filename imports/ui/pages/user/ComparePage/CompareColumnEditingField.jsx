@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import TextInput from '/imports/ui/components/general/TextInput';
-import DatePicker from '/imports/ui/components/general/DatePicker';
+import DateInput from '/imports/ui/components/general/DateInput';
 import RadioButtons from '/imports/ui/components/general/RadioButtons';
 
 const styles = {
@@ -42,7 +42,8 @@ const CompareColumnEditingField = (props) => {
       );
     case 'date':
       return (
-        <DatePicker
+        // FIXME
+        <DateInput
           currentValue={parentState[field.id]}
           id={field.id}
           handleChange={handleChange}
@@ -78,11 +79,7 @@ const CompareColumnEditingField = (props) => {
         />
       );
     default:
-      return (
-        <span>
-          {value}
-        </span>
-      );
+      return <span>{value}</span>;
   }
 };
 

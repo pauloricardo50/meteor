@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import MenuItem from '../Material/MenuItem';
 import Menu from '../Material/Menu';
@@ -19,11 +20,11 @@ export default class DropdownMenu extends Component {
   handleRequestClose = () => this.setState({ isOpen: false });
 
   render() {
-    const { iconType, options, history } = this.props;
+    const { iconType, options, history, style } = this.props;
     const { isOpen, anchorEl } = this.state;
 
     return (
-      <div>
+      <div style={{ ...style }}>
         <IconButton onClick={this.handleOpen} type={iconType} />
 
         <Menu
@@ -41,8 +42,14 @@ export default class DropdownMenu extends Component {
           {options.map(option => (
             <MenuItem
               key={option.id}
-              onClick={this.handleRequestClose}
+              onClick={() => {
+                if (option.onClick) {
+                  option.onClick();
+                }
+                this.handleRequestClose();
+              }}
               {...option}
+              component={option.link ? Link : null}
             >
               {option.label}
             </MenuItem>
@@ -56,4 +63,9 @@ export default class DropdownMenu extends Component {
 DropdownMenu.propTypes = {
   iconType: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
+  style: PropTypes.objectOf(PropTypes.any),
+};
+
+DropdownMenu.defaultProps = {
+  style: {},
 };
