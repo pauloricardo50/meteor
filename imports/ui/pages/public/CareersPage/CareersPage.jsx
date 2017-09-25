@@ -34,7 +34,10 @@ const CareersPage = () => (
             id="CareersPage.description"
             values={{
               email: (
-                <a href="mailto:jobs@e-potek.ch?subject=Je%20veux%20révolutionner%20la%20finance">
+                <a
+                  href="mailto:jobs@e-potek.ch?subject=Je%20veux%20révolutionner%20la%20finance"
+                  className="color"
+                >
                   jobs@e-potek.ch
                 </a>
               ),

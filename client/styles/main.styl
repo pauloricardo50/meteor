@@ -137,11 +137,17 @@ hr
   margin-top: 16px;
   margin-bottom: 16px;
 
-// a
-//   cursor: pointer;
-//   color: inherit;
-//   &:hover
-//     color: inherit;
+a
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+  &.color
+    transition: color 300ms $bezier;
+    color: brand-primary;
+    &:hover
+      color: brand-success;
+  // &:hover
+  //   color: inherit;
 
 // Against BootStrap styling
 // label

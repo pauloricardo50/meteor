@@ -24,6 +24,9 @@
   "Recap.financing": "Financement",
   "Recap.totalFinancing": "Financement total",
 
+  "LoginForm.email": "Adresse e-mail",
+  "LoginForm.password": "Mot de passe",
+
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",
@@ -629,6 +632,8 @@
   "general.learnMore": "En savoir plus",
   "general.lenders": "Prêteurs",
   "general.logout": "Déconnexion",
+  "general.login": "Login",
+  "general.signup": "Créer un compte",
   "general.modify": "Modifier",
   "general.mortgageLoan": "Prêt Hypothécaire",
   "general.no": "Non",
@@ -706,6 +711,7 @@
     "* Ce choix est indicatif, et vous permet de déterminer quelle stratégie vous conviendra le mieux.",
   "LoanStrategyPicker.title": "Stratégie de taux",
   "LoginPage.title": "Login / Créer un compte",
+  "LoginPage.loggedIn": "Vous êtes connecté",
   "NewRequestModal.description": "Ça nous permettra de l'identifier",
   "NewRequestModal.label": "Nom du projet",
   "NewRequestModal.placeholder": "Rue du Pré 2",

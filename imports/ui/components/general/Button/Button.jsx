@@ -7,14 +7,14 @@ import omit from 'lodash/omit';
 // import FlatButton from 'material-ui/FlatButton'
 import MuiButton from 'material-ui/Button';
 
-const getColor = ({ primary, secondary }) => {
+const getColor = ({ primary, secondary, color }) => {
   if (primary) {
     return 'primary';
   } else if (secondary) {
     return 'accent';
   }
 
-  return '';
+  return color;
 };
 
 const Button = (props) => {

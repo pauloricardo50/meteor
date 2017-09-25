@@ -6,6 +6,9 @@ import { addUserTracking } from '/imports/js/helpers/analytics';
 
 import { T } from '/imports/ui/components/general/Translation';
 
+import LoggedIn from './LoggedIn';
+import Form from './Form';
+
 const styles = {
   section: {
     width: '100%',
@@ -28,7 +31,8 @@ const LoginPage = props => (
     <h1>
       <T id="LoginPage.title" />
     </h1>
-    <Accounts.ui.LoginForm
+    {Meteor.user() ? <LoggedIn /> : <Form />}
+    {/* <Accounts.ui.LoginForm
       onSignedInHook={() => props.history.push('/app')}
       onPostSignUpHook={() => {
         props.history.push('/app');
@@ -47,7 +51,7 @@ const LoginPage = props => (
         });
       }}
       onResetPasswordHook={handlePasswordReset}
-    />
+    /> */}
   </section>
 );
 

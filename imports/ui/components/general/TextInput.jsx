@@ -8,7 +8,7 @@ import { swissFrancMask, percentMask } from '/imports/js/helpers/textMasks';
 import { toNumber } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
 
-const getDefaults = ({ type, id, handleChange, currentValue }) => {
+const getDefaults = ({ type, id, handleChange, value }) => {
   switch (type) {
     case 'money':
       return {
@@ -17,7 +17,7 @@ const getDefaults = ({ type, id, handleChange, currentValue }) => {
         showMask: true,
         mask: swissFrancMask,
         placeholder: constants.getCurrency(),
-        currentValue,
+        value,
       };
     case 'percent':
       return {
@@ -29,20 +29,20 @@ const getDefaults = ({ type, id, handleChange, currentValue }) => {
         showMask: true,
         mask: percentMask,
         placeholder: '%',
-        currentValue: (currentValue * 100).toFixed(2),
+        value: (value * 100).toFixed(2),
       };
     case 'number':
       return {
         onChangeHandler: event =>
           handleChange(id, toNumber(event.target.value)),
         showMask: false,
-        currentValue,
+        value,
       };
     default:
       return {
         onChangeHandler: event => handleChange(id, event.target.value),
         showMask: false,
-        currentValue,
+        value,
       };
   }
 };
@@ -53,33 +53,29 @@ const TextInput = (props) => {
   // Remove props that aren't needed
   const passedProps = omit(props, [
     'handleChange',
-    'currentValue',
+    'value',
     'label',
     'style',
     'labelStyle',
   ]);
 
-  const {
-    onChangeHandler,
-    showMask,
-    mask,
-    placeholder,
-    currentValue,
-  } = getDefaults(props);
+  const { onChangeHandler, showMask, mask, placeholder, value } = getDefaults(
+    props,
+  );
 
   return (
     <TextField
-      floatingLabelText={label}
+      label={label}
       type="text"
       onChange={onChangeHandler}
       style={{ fontSize: 'inherit', ...style }}
       floatingLabelStyle={{ fontSize: 'initial', ...labelStyle }}
       {...passedProps}
-      value={showMask ? undefined : currentValue}
+      value={showMask ? undefined : value}
     >
       {showMask && (
         <MaskedInput
-          value={currentValue}
+          value={value}
           placeholder={placeholder}
           mask={mask}
           guide
@@ -93,14 +89,14 @@ const TextInput = (props) => {
 TextInput.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-  currentValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   handleChange: PropTypes.func.isRequired,
   type: PropTypes.string,
 };
 
 TextInput.defaultProps = {
   label: '',
-  currentValue: undefined,
+  value: undefined,
   type: undefined,
 };
 
