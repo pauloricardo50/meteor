@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 
 import { T } from '/imports/ui/components/general/Translation';
-// import RequestSelector from './RequestSelector';
+import RequestSelector from './RequestSelector';
 import SideNavStepper from './SideNavStepper';
 import Icon from '../Icon';
 
@@ -50,11 +50,11 @@ const SideNavUser = (props) => {
       style={style}
     >
       <div className="scrollable">
-        {/* <RequestSelector
+        <RequestSelector
           {...props}
           currentValue={requestId}
           toggleDrawer={toggleDrawer}
-        /> */}
+        />
         {requestId && (
           <div style={{ width: '100%' }}>
             <NavLink

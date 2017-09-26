@@ -33,24 +33,22 @@ export default class SelectFieldInput extends Component {
     };
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    // Prevent weird component rerenders, which break keyboard+mouse use of this component
-    return (
-      this.props.currentValue !== nextProps.currentValue ||
-      this.state !== nextState
-    );
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   // Prevent weird component rerenders, which break keyboard+mouse use of this component
+  //   return (
+  //     this.props.currentValue !== nextProps.currentValue ||
+  //     this.state !== nextState
+  //   );
+  // }
 
-  handleChange = (event, index, value) => {
-    this.setState({ value }, () => this.saveValue());
-  };
+  handleChange = (_, value) => this.setState({ value }, () => this.saveValue());
 
   saveValue = () => {
-    const object = {};
+    const { id, updateFunc, documentId } = this.props;
+    const { value } = this.state;
+    const object = { [id]: value };
 
-    object[this.props.id] = this.state.value;
-
-    cleanMethod(this.props.updateFunc, object, this.props.documentId)
+    cleanMethod(updateFunc, object, documentId)
       .then(() =>
         // on success, set saving briefly to true, before setting it to false again to trigger icon
         this.setState(
@@ -63,6 +61,20 @@ export default class SelectFieldInput extends Component {
       );
   };
 
+  mapOptions = () =>
+    this.props.options.map(
+      ({ id, intlId, intlValues, label, ...otherProps }) => ({
+        label: label || (
+          <T
+            id={`Forms.${intlId || this.props.id}.${id}`}
+            values={intlValues}
+          />
+        ),
+        id,
+        ...otherProps,
+      }),
+    );
+
   render() {
     const {
       style,
@@ -71,55 +83,22 @@ export default class SelectFieldInput extends Component {
       options,
       noValidator,
       id,
-      intlid,
+      // intlid,
     } = this.props;
     const { value, saving, errorText } = this.state;
 
     return (
       <div style={{ ...styles.div, ...style }}>
         <Select
+          id={id}
           label={label}
           value={value}
           handleChange={this.handleChange}
-          // errorText={errorText}
-          // fullWidth
-          // maxHeight={200}
-          style={style}
+          style={{ ...style, marginBottom: 8 }}
           disabled={disabled}
-          options={options.map(
-            ({
-              id: optionId,
-              intlId,
-              intlValues,
-              label: optionLabel,
-              ...otherProps
-            }) => ({
-              label: optionLabel || (
-                <T
-                  id={`Forms.${intlId || id}.${optionId}`}
-                  values={intlValues}
-                />
-              ),
-              ...otherProps,
-            }),
-          )}
-        >
-          {/* <MenuItem value={null} primaryText="" key={0} />
-          {options.map(({ id: optionId, intlValues, label: optionLabel }) => (
-            <MenuItem
-              value={optionId}
-              primaryText={
-                optionLabel || (
-                  <T
-                    id={`Forms.${intlId || id}.${optionId}`}
-                    values={intlValues}
-                  />
-                )
-              }
-              key={optionId}
-            />
-          ))} */}
-        </Select>
+          renderValue={val => this.mapOptions().find(o => o.id === val).label}
+          options={this.mapOptions()}
+        />
         <SavingIcon
           saving={saving}
           errorExists={errorText !== ''}

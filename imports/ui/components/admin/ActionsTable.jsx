@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { FormattedRelative } from 'react-intl';
 
 import Button from '/imports/ui/components/general/Button';
-import DropDownMenu from '/imports/ui/components/general/Material/DropDownMenu';
-import MenuItem from '/imports/ui/components/general/Material/MenuItem';
-
+import Select from '/imports/ui/components/general/Select';
 import Table from '/imports/ui/components/general/Table';
 import { T } from '/imports/ui/components/general/Translation';
 
@@ -58,8 +56,8 @@ export default class ActionsTable extends Component {
   getFilteredActions = () =>
     this.props.adminActions.filter(a => a.status === this.state.filter);
 
-  handleFilter = (event, index, filter) =>
-    this.setState({ filter, selectedRow: '' });
+  handleFilter = (_, newFilter) =>
+    this.setState({ filter: newFilter, selectedRow: '' });
 
   handleRowSelection = (index) => {
     if (Number.isInteger(index)) {
@@ -87,10 +85,15 @@ export default class ActionsTable extends Component {
             alignItems: 'center',
           }}
         >
-          <DropDownMenu value={this.state.filter} onChange={this.handleFilter}>
-            <MenuItem value={'active'} primaryText="Actif" />
-            <MenuItem value={'completed'} primaryText="Complété" />
-          </DropDownMenu>
+          <Select
+            value={this.state.filter}
+            handleChange={this.handleFilter}
+            options={[
+              { id: 'active', label: 'Actif' },
+              { id: 'completed', label: 'Complété' },
+            ]}
+            renderValue={value => (value === 'active' ? 'Actif' : 'Complété')}
+          />
           <Button
             label="Marquer comme complété"
             onClick={this.handleClick}

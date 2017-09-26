@@ -1,14 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import TextField from '/imports/ui/components/general/Material/TextField';
-import MaskedInput from 'react-text-mask';
-
 import IconButton from '/imports/ui/components/general/IconButton';
 import classnames from 'classnames';
-
-import { swissFrancMask } from '/imports/js/helpers/textMasks';
-import { toNumber } from '/imports/js/helpers/conversionFunctions';
 
 import TextInput from '/imports/ui/components/general/TextInput';
 
@@ -73,17 +67,7 @@ export default class StartTextField extends React.Component {
           pattern={number && '[0-9]*'}
           ref={c => setRef(c)}
           type={type}
-        >
-          {/* {this.props.money && (
-            <MaskedInput
-              mask={swissFrancMask}
-              guide
-              pattern="[0-9]*"
-              autoFocus={this.props.autoFocus}
-              value={this.props.zeroAllowed ? val : val || ''}
-            />
-          )} */}
-        </TextInput>
+        />
 
         {!!(!text2 && !multiple && !array) && (
           <div className={classnames({ 'delete-button': true, off: !val })}>

@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import omit from 'lodash/omit';
-
 import { FormControl } from 'material-ui/Form';
 import MuiSelect from 'material-ui/Select';
 import Input, { InputLabel } from 'material-ui/Input';
@@ -22,7 +20,7 @@ const ITEM_PADDING_TOP = 8;
 const Select = (props) => {
   const { value, handleChange, options, id, label, ...otherProps } = props;
   return (
-    <FormControl>
+    <FormControl className="mui-select">
       {label && <InputLabel htmlFor={id}>{label}</InputLabel>}
       <MuiSelect
         {...otherProps}

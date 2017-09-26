@@ -116,9 +116,8 @@ export default class VerificationPage extends Component {
               <Button
                 raised
                 label={<T id="general.cancel" />}
-                containerElement={
-                  <Link to={`/app/requests/${this.props.loanRequest._id}`} />
-                }
+                link
+                to={`/app/requests/${this.props.loanRequest._id}`}
                 style={{ marginRight: 8 }}
               />
               <ConfirmButton

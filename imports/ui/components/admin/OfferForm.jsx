@@ -162,7 +162,7 @@ export default class OfferForm extends Component {
             floatingLabelText="Condition(s) minimum"
             hintText="Expertise requise"
             type="text"
-            multiLine
+            multiline
             fullWidth
             rows={3}
             onChange={(e, n) => this.handleChange(e, n, 'conditions')}
@@ -237,7 +237,7 @@ export default class OfferForm extends Component {
                   floatingLabelText="Contrepartie(s) spéciale(s)"
                   hintText="Gestion de Fortune, Assurance Voiture"
                   type="text"
-                  multiLine
+                  multiline
                   fullWidth
                   rows={3}
                   onChange={(e, n) => this.handleChange(e, n, 'counterparts')}

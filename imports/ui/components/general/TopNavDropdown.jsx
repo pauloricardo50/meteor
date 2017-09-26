@@ -3,12 +3,7 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
-// import IconMenu from 'material-ui/IconMenu';
-// import MenuItem from '/imports/ui/components/general/Material/MenuItem';
-// import Divider from '/imports/ui/components/general/Material/Divider';
-
 import track from '/imports/js/helpers/analytics';
-
 import { T } from './Translation';
 import DropdownMenu from './DropdownMenu';
 

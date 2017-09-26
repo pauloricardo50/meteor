@@ -8,31 +8,44 @@ import { FormLabel, FormControl, FormControlLabel } from 'material-ui/Form';
 
 import { T } from '/imports/ui/components/general/Translation';
 
+const safeChange = (value, id, handleChange, options) => {
+  // If all options are booleans, transform the onChange handler's value
+  // to booleans
+  if (options.every(o => typeof o === 'boolean' || typeof o.id === 'boolean')) {
+    return handleChange(id, value === 'true');
+  }
+  return handleChange(id, value);
+};
+
+// Cast value to strings, so that is plays nicely with material-ui,
+// in the onChange handler, convert back to boolean
 const RadioButtons = ({
   options,
   handleChange,
   id,
   intlPrefix,
-  currentValue,
+  value,
   label,
   style,
+  disabled,
 }) => (
-  <FormControl style={style}>
+  <FormControl style={style} className="mui-radio-group">
     <FormLabel htmlFor={id}>{label}</FormLabel>
     <RadioGroup
-      onChange={(event, value) => handleChange(id, value)}
-      value={currentValue}
+      onChange={(event, newValue) =>
+        safeChange(newValue, id, handleChange, options)}
+      value={`${value}`}
       name={id}
       className="flex"
-      style={{ justifyContent: ' space-around' }}
+      style={{ justifyContent: 'space-around' }}
     >
       {options.map(option => (
         <FormControlLabel
-          control={Radio}
-          key={option}
-          value={option}
-          label={<T id={`${intlPrefix}.${option}`} />}
-          // style={{ width: 'unset' }}
+          control={<Radio />}
+          key={option.id || option}
+          value={`${option.id !== undefined ? option.id : option}`}
+          label={option.label || <T id={`${intlPrefix}.${option}`} />}
+          disabled={disabled}
         />
       ))}
     </RadioGroup>
@@ -42,17 +55,20 @@ const RadioButtons = ({
 RadioButtons.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.node,
-  intlPrefix: PropTypes.string.isRequired,
+  intlPrefix: PropTypes.string,
   options: PropTypes.array.isRequired,
   handleChange: PropTypes.func.isRequired,
-  currentValue: PropTypes.any,
+  value: PropTypes.any,
   style: PropTypes.object,
+  disabled: PropTypes.bool,
 };
 
 RadioButtons.defaultProps = {
   label: '',
   style: {},
-  currentValue: undefined,
+  value: undefined,
+  intlPrefix: '',
+  disabled: false,
 };
 
 export default RadioButtons;

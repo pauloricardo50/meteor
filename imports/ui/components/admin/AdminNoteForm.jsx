@@ -25,7 +25,7 @@ export default class AdminNoteForm extends Component {
           floatingLabelText="Description de l'intéraction"
           hintText="Client a demandé une explication de l'amortissement indirect.."
           fullWidth
-          multiLine
+          multiline
           rows={5}
         />
         <div className="pull-right" style={styles.buttonDiv}>

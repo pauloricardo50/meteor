@@ -21,7 +21,7 @@ const TodoStep = ({ step, handleChange, handleRemove }) => (
       handleChange={(key, value) => handleChange(step.id, key, value)}
       currentValue={step.description}
       fullWidth
-      multiLine
+      multiline
       rows={2}
     />
     <Button

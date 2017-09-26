@@ -50,6 +50,28 @@ export default class ProcessPageBar extends Component {
 
   resize = () => this.setState({ smallWidth: getWidth() < 768 });
 
+  getNextButtonChildren = (smallWidth, isDone, lastPartOfStep) => {
+    let label;
+
+    if (smallWidth) {
+      label = null;
+    } else if (lastPartOfStep) {
+      label = <T id="ProcessPageBar.nextStep" />;
+    } else {
+      label = <T id="ProcessPageBar.next" />;
+    }
+
+    if (smallWidth || isDone) {
+      return (
+        <span style={{ display: 'flex', alignItems: 'center' }}>
+          {label}
+          <Icon type="right" style={{ marginLeft: 8 }} />
+        </span>
+      );
+    }
+    return label;
+  };
+
   renderButtons = () => {
     const {
       stepNb,
@@ -66,6 +88,7 @@ export default class ProcessPageBar extends Component {
     const lastPartOfStep = index === length - 1;
 
     const isDone = currentStep.isDone();
+    const disableNext = (lastPartOfStep && !isDone) || !nextLink;
 
     return (
       <div className="buttons" key="someKey">
@@ -76,31 +99,20 @@ export default class ProcessPageBar extends Component {
             label={smallWidth ? '' : <T id="ProcessPageBar.previous" />}
             style={smallWidth ? styles.smallButton : styles.button}
             disabled={!prevLink}
-            containerElement={prevLink ? <Link to={prevLink} /> : undefined}
+            link={!!prevLink}
+            to={prevLink}
             onClick={() =>
               track('ProcessPageBar - clicked back', { to: prevLink })}
           />
         )}
         <Button
           raised
-          labelPosition="before"
-          icon={smallWidth || isDone ? <Icon type="right" /> : undefined}
-          label={
-            smallWidth ? (
-              ''
-            ) : lastPartOfStep ? (
-              <T id="ProcessPageBar.nextStep" />
-            ) : (
-              <T id="ProcessPageBar.next" />
-            )
-          }
           style={smallWidth ? styles.smallButton : styles.button}
           secondary={!!isDone}
-          className={isDone ? 'animated pulse' : undefined}
-          disabled={(lastPartOfStep && !isDone) || !nextLink}
-          containerElement={
-            nextLink && !lastPartOfStep ? <Link to={nextLink} /> : undefined
-          }
+          className={isDone && !disableNext ? 'animated pulse' : undefined}
+          disabled={disableNext}
+          link={nextLink && !lastPartOfStep}
+          to={nextLink}
           onClick={() => {
             track('ProcessPageBar - clicked next', {
               to: lastPartOfStep ? 'next step' : nextLink,
@@ -109,7 +121,9 @@ export default class ProcessPageBar extends Component {
               handleNextStep(this.props);
             }
           }}
-        />
+        >
+          {this.getNextButtonChildren(smallWidth, isDone, lastPartOfStep)}
+        </Button>
       </div>
     );
   };

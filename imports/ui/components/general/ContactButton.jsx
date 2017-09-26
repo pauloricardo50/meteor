@@ -159,9 +159,9 @@ export default class ContactButton extends Component {
       <div style={styles.div}>
         <Button
           style={styles.button}
-          backgroundColor={colors.primary}
           onClick={this.handleClick}
           fab
+          color="primary"
         >
           {open ? <Icon type="close" /> : <Icon type="forum" />}
         </Button>

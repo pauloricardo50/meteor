@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Checkbox from '/imports/ui/components/general/Material/Checkbox';
+import Checkbox from '/imports/ui/components/general/Checkbox';
 
 import AutoForm from '/imports/ui/components/general/AutoForm';
 import { getBorrowerFinanceArray } from '/imports/js/arrays/BorrowerFormArray';
@@ -31,7 +31,7 @@ const styles = {
   },
 };
 
-const handleCheck = (event, isInputChecked, id) => {
+const handleCheck = (_, isInputChecked, id) => {
   // Save data to DB
   const object = {};
   object['logic.financeEthics'] = isInputChecked;
@@ -39,7 +39,7 @@ const handleCheck = (event, isInputChecked, id) => {
   cleanMethod('updateBorrower', object, id);
 };
 
-const handleClick = (event, id, props) => {
+const handleClick = (event, id) => {
   // Save data to DB
   const object = {};
   object['logic.hasValidatedFinances'] = true;
@@ -85,16 +85,17 @@ const BorrowerFinancePage = (props) => {
       <div className="conditions mask2 primary-border">
         <span>
           <Checkbox
-            checked={borrower.logic.financeEthics}
+            id="hasValidatedFinances"
+            value={borrower.logic.financeEthics}
             label="Les informations entrées ci-dessous sont exhaustives et correctes"
             style={styles.checkbox}
-            onCheck={(e, isChecked) => handleCheck(e, isChecked, borrowerId)}
+            onChange={(_, isChecked) => handleCheck(_, isChecked, borrowerId)}
             disabled={borrower.logic.hasValidatedFinances}
           />
         </span>
         <LoadingButton
           label="Valider mes finances"
-          handleClick={e => handleClick(e, borrowerId, props)}
+          handleClick={e => handleClick(e, borrowerId)}
           disabled={!borrower.logic.financeEthics}
           value={borrower.logic.hasValidatedFinances}
         />

@@ -37,7 +37,7 @@ export default class AllRequestsTable extends Component {
       id: request._id,
       columns: [
         index + 1,
-        request.property.address1.toString(),
+        request.name,
         moment(request.createdAt).format('D MMM YY à HH:mm:ss'),
         moment(request.updatedAt).format('D MMM YY à HH:mm:ss'),
         request.logic.step + 1,

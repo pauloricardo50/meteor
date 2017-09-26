@@ -1,26 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// import DropDownMenu from '/imports/ui/components/general/Material/DropDownMenu';
-// import MenuItem from '/imports/ui/components/general/Material/MenuItem';
-// import Divider from '/imports/ui/components/general/Material/Divider';
-//
 import { T } from '/imports/ui/components/general/Translation';
-// import Icon from '/imports/ui/components/general/Icon';
 import track from '/imports/js/helpers/analytics';
-import Select from './Select';
+import Select from '../Select';
 import Divider from '../Material/Divider';
 
-// const styles = {
-//   div: {
-//     width: '90%',
-//     marginTop: 8,
-//     height: 62,
-//   },
-//   dropdown: {
-//     width: '100%',
-//   },
-// };
+const styles = {
+  div: {
+    width: '90%',
+    marginTop: 8,
+    height: 62,
+  },
+  dropdown: {
+    width: '100%',
+  },
+};
 
 const handleChange = (value, props) => {
   if (value === 0) {
@@ -33,15 +28,6 @@ const handleChange = (value, props) => {
   }
 };
 
-// const renderSelected = ({ props }) => (
-//   <span style={{ display: 'flex', alignItems: 'center' }}>
-//     {React.cloneElement(props.leftIcon, {
-//       style: { marginLeft: 8, marginRight: 16, color: '#757575' },
-//     })}
-//     {props.primaryText}
-//   </span>
-// );
-
 const getOptions = (props) => {
   const array = [];
 
@@ -53,17 +39,23 @@ const getOptions = (props) => {
     }),
   );
 
-  array.push(<Divider />);
-
+  array.push(<Divider key="divider" />);
   array.push({ id: 0, label: <T id="RequestSelector.addRequest" /> });
+
+  return array;
 };
 
 const RequestSelector = props => (
-  <Select
-    value={props.currentValue}
-    handleChange={(id, value) => handleChange(value, props)}
-    options={getOptions(props)}
-  />
+  <div style={styles.div}>
+    <Select
+      id="request-selector"
+      value={props.currentValue}
+      handleChange={(id, value) => handleChange(value, props)}
+      options={getOptions(props)}
+      style={styles.dropdown}
+    />
+  </div>
+
   // <div style={styles.div}>
   //   <DropDownMenu
   //     value={props.currentValue}

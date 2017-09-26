@@ -24,9 +24,9 @@ function renderInput(inputProps) {
         classes: {
           input: classes.input,
         },
-        ...other,
       }}
       onChange={e => onChange(e.target.value)}
+      {...other}
     />
   );
 }
@@ -135,7 +135,16 @@ class AutoComplete extends Component {
   };
 
   render() {
-    const { classes, onSelect, value, onChange, label } = this.props;
+    const {
+      classes,
+      onSelect,
+      value,
+      onChange,
+      label,
+      placeholder,
+      disabled,
+      style,
+    } = this.props;
 
     return (
       <Autosuggest
@@ -153,9 +162,7 @@ class AutoComplete extends Component {
         getSuggestionValue={getSuggestionValue}
         renderSuggestion={renderSuggestion}
         inputProps={{
-          autoFocus: true,
           classes,
-          placeholder: 'Search a country (start with a)',
           value,
           onChange,
           label,

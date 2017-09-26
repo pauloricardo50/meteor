@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 
-import SelectField from '/imports/ui/components/general/Material/SelectField';
-import MenuItem from '/imports/ui/components/general/Material/MenuItem';
+// import SelectField from '/imports/ui/components/general/Material/SelectField';
+// import MenuItem from '/imports/ui/components/general/Material/MenuItem';
 import Toggle from '/imports/ui/components/general/Material/Toggle';
+import Select from '/imports/ui/components/general/Select';
 
 import AutoForm from '/imports/ui/components/general/AutoForm';
 
@@ -21,43 +22,33 @@ import ClosingVerification from './ClosingVerification';
 const getBorrowerForms = (borrowers) => {
   const array = [];
   borrowers.forEach((b, i) => {
-    array.push(
-      <MenuItem
-        value={`borrower.${b._id}.personal`}
-        primaryText={`Emprunteur ${i + 1} perso`}
-        key={`personal${i}`}
-      />,
-    );
-    array.push(
-      <MenuItem
-        value={`borrower.${b._id}.finance`}
-        primaryText={`Emprunteur ${i + 1} finance`}
-        key={`finance${i}`}
-      />,
-    );
-    array.push(
-      <MenuItem value={'files'} primaryText={'Documents'} key={'files'} />,
-    );
+    array.push({
+      id: `borrower.${b._id}.personal`,
+      label: `Emprunteur ${i + 1} Perso`,
+    });
+    array.push({
+      id: `borrower.${b._id}.finance`,
+      label: `Emprunteur ${i + 1} Finances`,
+    });
+    array.push({
+      id: 'files',
+      label: 'Documents',
+    });
   });
 
   return array;
 };
 
-const getRequestForms = (request) => {
-  const array = [];
-  array.push(
-    <MenuItem
-      value={`request.${request._id}.property`}
-      key="property"
-      primaryText={'Propriété'}
-    />,
-  );
-  array.push(
-    <MenuItem value={'closing'} primaryText={'Décaissement'} key={'closing'} />,
-  );
-
-  return array;
-};
+const getRequestForms = request => [
+  {
+    id: `request.${request._id}.property`,
+    label: 'Bien immobilier',
+  },
+  {
+    id: 'closing',
+    label: 'Décaissement',
+  },
+];
 
 const getForm = (props, value, modify) => {
   if (!value) {
@@ -198,6 +189,13 @@ const getPercent = (request, borrowers) => {
   );
 };
 
+const getSelectOptions = (borrowers, loanRequest) => {
+  const borrowerForms = getBorrowerForms(borrowers);
+  const requestForms = getRequestForms(loanRequest);
+
+  return [...borrowerForms, ...requestForms];
+};
+
 export default class FormsTab extends Component {
   constructor(props) {
     super(props);
@@ -208,21 +206,20 @@ export default class FormsTab extends Component {
     };
   }
 
-  handleChange = (event, index, value) => this.setState({ value });
+  handleChange = (_, value) => this.setState({ value });
   handleToggle = (event, isInputChecked) =>
     this.setState({ modify: isInputChecked });
 
   render() {
+    const { borrowers, loanRequest } = this.props;
     return (
       <section>
-        <SelectField
-          floatingLabelText="Formulaire"
+        <Select
+          label="Formulaire"
           value={this.state.value}
-          onChange={this.handleChange}
-        >
-          {getBorrowerForms(this.props.borrowers)}
-          {getRequestForms(this.props.loanRequest)}
-        </SelectField>
+          handleChange={this.handleChange}
+          options={getSelectOptions(borrowers, loanRequest)}
+        />
         <Toggle
           label="Peut modifier"
           toggled={this.state.modify}
@@ -233,7 +230,7 @@ export default class FormsTab extends Component {
         <div>
           Vérification:{' '}
           <IntlNumber
-            value={getPercent(this.props.loanRequest, this.props.borrowers)}
+            value={getPercent(loanRequest, borrowers)}
             format="percentage"
           />
         </div>

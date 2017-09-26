@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import omit from 'lodash/omit';
-import TextField from '/imports/ui/components/general/Material/TextField';
 
 import MaskedInput from 'react-text-mask';
 import { swissFrancMask, percentMask } from '/imports/js/helpers/textMasks';
@@ -11,7 +9,7 @@ import constants from '/imports/js/config/constants';
 import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl, FormHelperText } from 'material-ui/Form';
 
-const getDefaults = ({ type, id, handleChange, value }) => {
+const getDefaults = ({ type, id, handleChange, value, placeholder }) => {
   switch (type) {
     case 'money':
       return {
@@ -51,50 +49,58 @@ const getDefaults = ({ type, id, handleChange, value }) => {
 };
 
 const TextInput = (props) => {
-  const { label, style, labelStyle, id, info, error, ref } = props;
+  const {
+    label,
+    style,
+    labelStyle,
+    id,
+    info,
+    error,
+    ref,
+    placeholder,
+    fullWidth,
+    handleChange,
+    ...otherProps
+  } = props;
 
-  // Remove props that aren't needed
-  const passedProps = omit(props, [
-    'handleChange',
-    'value',
-    'label',
-    'style',
-    'labelStyle',
-    'info',
-    'ref',
-  ]);
-
-  const { onChangeHandler, showMask, mask, placeholder, value } = getDefaults(
-    props,
-  );
+  const {
+    onChangeHandler,
+    showMask,
+    mask,
+    placeholder: defaultPlaceholder,
+    value,
+  } = getDefaults(props);
 
   return (
-    <FormControl error={error}>
+    <FormControl error={error} className="mui-text-input" style={style}>
       {label && (
         <InputLabel htmlFor={id} style={labelStyle}>
           {label}
         </InputLabel>
       )}
       <Input
+        {...otherProps}
         id={id}
-        value={value}
+        // value={value}
         onChange={onChangeHandler}
         type="text"
-        style={{ fontSize: 'inherit', ...style }}
+        style={{ fontSize: 'inherit' }}
         inputComponent={showMask ? MaskedInput : undefined}
         inputProps={
           showMask
             ? {
               value,
               mask,
-              placeholder,
+              placeholder: placeholder || defaultPlaceholder,
               guide: true,
               pattern: '[0-9]*',
             }
-            : {}
+            : {
+              value,
+              placeholder: placeholder || defaultPlaceholder,
+            }
         }
         inputRef={ref}
-        {...passedProps}
       />
       {info && <FormHelperText>{info}</FormHelperText>}
     </FormControl>
