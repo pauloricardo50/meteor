@@ -55,7 +55,7 @@ export default class ClosingForm extends Component {
         <Select
           label="Fréquence de paiement"
           value={this.state.schedule}
-          handleChange={this.handleSelectChange}
+          onChange={this.handleSelectChange}
           options={schedules.map(s => ({ id: s, label: s }))}
           renderValue={val => val}
         />

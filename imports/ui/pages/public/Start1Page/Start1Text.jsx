@@ -26,7 +26,7 @@ export default class Start1Text extends Component {
         <TextInput
           id={name}
           value={(auto ? Math.round(motionValue) : value) || ''}
-          handleChange={(_, newValue) => {
+          onChange={(_, newValue) => {
             trackOncePerSession(`Start1Text - Used textfield ${name}`);
             setStateValue(name, newValue);
           }}

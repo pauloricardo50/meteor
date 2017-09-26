@@ -31,7 +31,7 @@ const DefaultOptions = ({ comparator, changeComparator }) => {
             key={id}
             label={<T id={`DefaultOptions.${id}`} />}
             id={id}
-            handleChange={changeComparator}
+            onChange={changeComparator}
             currentValue={comparator[id]}
             floatingLabelFixed
             type={type}

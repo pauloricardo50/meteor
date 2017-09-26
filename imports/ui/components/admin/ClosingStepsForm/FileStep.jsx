@@ -12,7 +12,7 @@ const FileStep = ({ step, handleChange, handleRemove }) => (
     <TextInput
       label="Nom du document"
       id="title"
-      handleChange={(key, value) => handleChange(step.id, key, value)}
+      onChange={(key, value) => handleChange(step.id, key, value)}
       currentValue={step.title}
     />
     <Button

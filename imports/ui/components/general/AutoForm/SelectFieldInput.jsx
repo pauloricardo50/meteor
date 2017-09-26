@@ -93,7 +93,7 @@ export default class SelectFieldInput extends Component {
           id={id}
           label={label}
           value={value}
-          handleChange={this.handleChange}
+          onChange={this.handleChange}
           style={{ ...style, marginBottom: 8 }}
           disabled={disabled}
           renderValue={val => this.mapOptions().find(o => o.id === val).label}

@@ -16,26 +16,29 @@ const getFormArray = (request, serverTime) => [
   {
     type: 'h3',
     text: 'Derniers réglages',
+    id: 'auction.formTitle',
   },
   {
-    id: 'general.wantedClosingDate',
+    id: 'auction.wantedClosingDate',
     type: 'dateInput',
-    label: 'Date espérée du décaissement',
+    // label: 'Date espérée du décaissement',
     minDate: getMinDate(serverTime),
   },
   {
-    id: 'logic.auction.mostImportant',
+    id: 'auction.mostImportant',
     type: 'selectFieldInput',
-    label: 'Critère le plus important',
+    // label: 'Critère le plus important',
     options: [
-      {
-        id: 'speed',
-        label: 'Décaissement le plus rapide',
-      },
-      {
-        id: 'price',
-        label: 'Coût mensuel le plus bas',
-      },
+      'speed',
+      'price',
+      // {
+      //   id: 'speed',
+      //   label: 'Décaissement le plus rapide',
+      // },
+      // {
+      //   id: 'price',
+      //   label: 'Coût mensuel le plus bas',
+      // },
     ],
   },
 ];

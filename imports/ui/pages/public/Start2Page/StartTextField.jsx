@@ -60,7 +60,7 @@ export default class StartTextField extends React.Component {
           name={id}
           id={id}
           value={zeroAllowed ? val : val || ''}
-          handleChange={setFormState}
+          onChange={setFormState}
           onBlur={() => setActiveLine('')}
           placeholder={placeholder}
           autoFocus={autoFocus}

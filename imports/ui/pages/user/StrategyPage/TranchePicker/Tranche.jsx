@@ -25,7 +25,7 @@ const Tranche = ({ tranche, changeTranche, deleteTranche, options }) => (
       <TextInput
         style={{ marginLeft: 4, width: 32 }}
         currentValue={tranche.value / 10000}
-        handleChange={(id, value) =>
+        onChange={(id, value) =>
           changeTranche(tranche.type, 'value', value * 10000)}
         type="number"
         id="value"

@@ -32,15 +32,15 @@ const Slider = ({
   min,
   max,
   step,
-  handleChange,
+  onChange,
   currentValue,
   style,
   sliderStyle,
 }) => {
   if (currentValue > max) {
-    handleChange(id, max);
+    onChange(id, max);
   } else if (currentValue < min) {
-    handleChange(id, min);
+    onChange(id, min);
   }
 
   return (
@@ -52,7 +52,7 @@ const Slider = ({
           min={min}
           max={max}
           step={step}
-          onChange={(event, newValue) => handleChange(id, newValue)}
+          onChange={(event, newValue) => onChange(id, newValue)}
           value={currentValue}
           // sliderStyle={{ ...sliderStyle, ...styles.slider }}
         />
@@ -75,7 +75,7 @@ Slider.propTypes = {
   min: PropTypes.number.isRequired,
   max: PropTypes.number.isRequired,
   step: PropTypes.number.isRequired,
-  handleChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   currentValue: PropTypes.number.isRequired,
   style: PropTypes.objectOf(PropTypes.any),
   sliderStyle: PropTypes.objectOf(PropTypes.any),

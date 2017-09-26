@@ -91,7 +91,7 @@ export default class PropertyAdder extends Component {
               alignItems: 'center',
             }}
           >
-            <GoogleMapsAutocomplete handleChange={this.handleChange} />
+            <GoogleMapsAutocomplete onChange={this.handleChange} />
             {!!(isValidPlace && latlng) &&
               <GoogleMap
                 latlng={latlng}
@@ -115,7 +115,7 @@ export default class PropertyAdder extends Component {
                   <TextInput
                     label={<T id="Comparator.value" />}
                     floatingLabelFixed
-                    handleChange={this.handleChange}
+                    onChange={this.handleChange}
                     currentValue={value}
                     id="value"
                     type="money"

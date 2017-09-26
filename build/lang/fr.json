@@ -27,6 +27,12 @@
   "LoginForm.email": "Adresse e-mail",
   "LoginForm.password": "Mot de passe",
 
+  "Forms.auction.formTitle": "Derniers réglages",
+  "Forms.auction.wantedClosingDate": "Date espérée du décaissement",
+  "Forms.auction.mostImportant": "Critère le plus important",
+  "Forms.auction.mostImportant.speed": "Décaissement le plus rapide",
+  "Forms.auction.mostImportant.price": "Coût mensuel le plus bas",
+
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",

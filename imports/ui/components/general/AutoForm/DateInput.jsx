@@ -11,9 +11,9 @@ import FormValidator from './FormValidator';
 
 const styles = {
   div: {
-    display: 'block',
-    marginTop: 10,
-    marginBottom: 0,
+    // display: 'block',
+    // marginTop: 10,
+    marginBottom: 8,
     position: 'relative',
   },
   DatePickerField: {
@@ -79,6 +79,7 @@ class DateInput extends Component {
             })}
           cancelLabel={<T id="general.cancel" />}
           disabled={this.props.disabled}
+          fullWidth
         />
         <FormValidator {...this.props} />
       </div>

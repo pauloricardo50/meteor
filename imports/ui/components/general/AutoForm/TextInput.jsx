@@ -155,7 +155,7 @@ export default class TextInput extends Component {
           label={label}
           placeholder={placeholder}
           value={value}
-          handleChange={this.handleChange}
+          onChange={this.handleChange}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
           type={type}

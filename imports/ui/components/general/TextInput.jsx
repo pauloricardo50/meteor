@@ -9,12 +9,11 @@ import constants from '/imports/js/config/constants';
 import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl, FormHelperText } from 'material-ui/Form';
 
-const getDefaults = ({ type, id, handleChange, value, placeholder }) => {
+const getDefaults = ({ type, id, onChange, value }) => {
   switch (type) {
     case 'money':
       return {
-        onChangeHandler: event =>
-          handleChange(id, toNumber(event.target.value)),
+        onChangeHandler: event => onChange(id, toNumber(event.target.value)),
         showMask: true,
         mask: swissFrancMask,
         placeholder: constants.getCurrency(),
@@ -23,7 +22,7 @@ const getDefaults = ({ type, id, handleChange, value, placeholder }) => {
     case 'percent':
       return {
         onChangeHandler: event =>
-          handleChange(
+          onChange(
             id,
             Math.round(parseFloat(event.target.value) * 100) / 10000,
           ),
@@ -34,14 +33,13 @@ const getDefaults = ({ type, id, handleChange, value, placeholder }) => {
       };
     case 'number':
       return {
-        onChangeHandler: event =>
-          handleChange(id, toNumber(event.target.value)),
+        onChangeHandler: event => onChange(id, toNumber(event.target.value)),
         showMask: false,
         value,
       };
     default:
       return {
-        onChangeHandler: event => handleChange(id, event.target.value),
+        onChangeHandler: event => onChange(id, event.target.value),
         showMask: false,
         value,
       };
@@ -59,7 +57,7 @@ const TextInput = (props) => {
     ref,
     placeholder,
     fullWidth,
-    handleChange,
+    onChange,
     ...otherProps
   } = props;
 
@@ -74,7 +72,7 @@ const TextInput = (props) => {
   return (
     <FormControl error={error} className="mui-text-input" style={style}>
       {label && (
-        <InputLabel htmlFor={id} style={labelStyle}>
+        <InputLabel htmlFor={id} style={labelStyle} shrink>
           {label}
         </InputLabel>
       )}
@@ -94,35 +92,18 @@ const TextInput = (props) => {
               placeholder: placeholder || defaultPlaceholder,
               guide: true,
               pattern: '[0-9]*',
+              noValidate: true,
             }
             : {
               value,
               placeholder: placeholder || defaultPlaceholder,
+              noValidate: true,
             }
         }
         inputRef={ref}
       />
       {info && <FormHelperText>{info}</FormHelperText>}
     </FormControl>
-    // <TextField
-    //   label={label}
-    //   type="text"
-    //   onChange={onChangeHandler}
-    //   style={{ fontSize: 'inherit', ...style }}
-    //   floatingLabelStyle={{ fontSize: 'initial', ...labelStyle }}
-    //   {...passedProps}
-    //   value={showMask ? undefined : value}
-    // >
-    //   {showMask && (
-    //     <MaskedInput
-    //       value={value}
-    //       placeholder={placeholder}
-    //       mask={mask}
-    //       guide
-    //       pattern="[0-9]*"
-    //     />
-    //   )}
-    // </TextField>
   );
 };
 
@@ -130,9 +111,10 @@ TextInput.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  handleChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   type: PropTypes.string,
   info: PropTypes.node,
+  placeholder: PropTypes.node,
   error: PropTypes.bool,
 };
 
@@ -140,7 +122,8 @@ TextInput.defaultProps = {
   label: '',
   value: undefined,
   type: undefined,
-  info: '',
+  info: undefined,
+  placeholder: undefined,
   error: false,
 };
 

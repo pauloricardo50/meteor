@@ -87,7 +87,7 @@ export default class ActionsTable extends Component {
         >
           <Select
             value={this.state.filter}
-            handleChange={this.handleFilter}
+            onChange={this.handleFilter}
             options={[
               { id: 'active', label: 'Actif' },
               { id: 'completed', label: 'Complété' },

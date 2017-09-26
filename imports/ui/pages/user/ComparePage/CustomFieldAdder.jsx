@@ -99,7 +99,7 @@ class CustomFieldAdder extends Component {
         <Select
           label={<T id="CustomFieldAdder.type" />}
           value={currentType}
-          handleChange={(_, value) => this.handleChange('type', value)}
+          onChange={(_, value) => this.handleChange('type', value)}
           options={types.map(type => ({
             id: type,
             label: <T id={`CustomFieldAdder.${type}`} />,

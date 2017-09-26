@@ -217,8 +217,9 @@ export default class FormsTab extends Component {
         <Select
           label="Formulaire"
           value={this.state.value}
-          handleChange={this.handleChange}
+          onChange={this.handleChange}
           options={getSelectOptions(borrowers, loanRequest)}
+          style={{ width: '100%', maxWidth: 250 }}
         />
         <Toggle
           label="Peut modifier"

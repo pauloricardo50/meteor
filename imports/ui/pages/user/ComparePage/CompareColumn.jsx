@@ -110,7 +110,7 @@ export default class CompareColumn extends Component {
                 {...this.props}
                 field={field}
                 parentState={this.state}
-                handleChange={this.handleChange}
+                onChange={this.handleChange}
               />
               : <CompareColumnField field={field} property={property} />}
           </li>),

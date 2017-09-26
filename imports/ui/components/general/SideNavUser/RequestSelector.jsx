@@ -50,7 +50,7 @@ const RequestSelector = props => (
     <Select
       id="request-selector"
       value={props.currentValue}
-      handleChange={(id, value) => handleChange(value, props)}
+      onChange={(id, value) => handleChange(value, props)}
       options={getOptions(props)}
       style={styles.dropdown}
     />

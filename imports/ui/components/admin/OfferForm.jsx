@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import TextField from '/imports/ui/components/general/Material/TextField';
-import MaskedInput from 'react-text-mask';
 import Button from '/imports/ui/components/general/Button';
-import Checkbox from '/imports/ui/components/general/Material/Checkbox';
+import Checkbox from '/imports/ui/components/general/Checkbox';
+import TextInput from '/imports/ui/components/general/TextInput';
 
 import { toMoney, toNumber } from '/imports/js/helpers/conversionFunctions';
-import { swissFrancMask, percentMask } from '/imports/js/helpers/textMasks';
 import cleanMethod from '/imports/api/cleanMethods';
 
 const styles = {
@@ -57,6 +55,8 @@ const getFormArray = i => [
   },
 ];
 
+const fix = val => parseFloat(val) / 100 || undefined;
+
 export default class OfferForm extends Component {
   constructor(props) {
     super(props);
@@ -67,25 +67,30 @@ export default class OfferForm extends Component {
       maxAmount: '',
       amortization: '',
       libor_0: '',
+      interest1_0: '',
+      interest2_0: '',
       interest5_0: '',
       interest10_0: '',
       interest15_0: '',
       conditions: '',
       counterparts: '',
       libor_1: '',
+      interest1_1: '',
+      interest2_1: '',
       interest5_1: '',
       interest10_1: '',
       interest15_1: '',
     };
   }
 
-  handleChange = (event, newValue, name) => {
+  handleChange = (name, newValue) => {
     const object = {};
     object[name] = newValue;
     this.setState(object);
   };
 
   handleSubmit = (event) => {
+    console.log('submitting..');
     event.preventDefault();
 
     // Prevent enter key from submitting form
@@ -126,6 +131,8 @@ export default class OfferForm extends Component {
       object.counterparts = [this.state.counterparts];
     }
 
+    console.log(object);
+
     cleanMethod(this.props.method, object)
       .then(this.props.callback)
       .catch((error) => {
@@ -147,83 +154,78 @@ export default class OfferForm extends Component {
     } = this.state;
 
     return (
-      <article className="col-xs-12" style={styles.article}>
-        <form onSubmit={this.handleSubmit}>
+      <article className="flex-col" style={styles.article}>
+        <form onSubmit={this.handleSubmit} noValidate>
           {admin && (
-            <TextField
-              floatingLabelText="Institution"
-              hintText="UBS"
-              onChange={(e, n) => this.handleChange(e, n, 'organization')}
+            <TextInput
+              id="organization"
+              label="Institution"
+              placeholder="UBS"
+              onChange={this.handleChange}
               value={organization}
             />
           )}
 
-          <TextField
-            floatingLabelText="Condition(s) minimum"
-            hintText="Expertise requise"
+          <TextInput
+            id="conditions"
+            label="Condition(s) minimum"
+            placeholder="Expertise requise"
             type="text"
             multiline
-            fullWidth
             rows={3}
-            onChange={(e, n) => this.handleChange(e, n, 'conditions')}
+            onChange={this.handleChange}
             value={conditions}
           />
 
           <div className="col-xs-12">
-            <TextField
-              floatingLabelText="Prêt Maximal"
-              pattern="[0-9]*"
-              hintText={`CHF ${toMoney(
+            <TextInput
+              id="maxAmount"
+              label="Prêt Maximal"
+              placeholder={`CHF ${toMoney(
                 Math.round(loanRequest.property.value * 0.8),
               )}`}
-              onChange={(e, n) => this.handleChange(e, n, 'maxAmount')}
-            >
-              <MaskedInput mask={swissFrancMask} guide value={maxAmount} />
-            </TextField>
+              onChange={this.handleChange}
+              type="money"
+              value={maxAmount}
+            />
           </div>
 
           <div className="col-xs-12">
-            <TextField
-              floatingLabelText="Amortissement"
-              hintText={'1%'}
-              type="text"
-              onChange={(e, n) => this.handleChange(e, n, 'amortization')}
-            >
-              <MaskedInput mask={percentMask} guide value={amortization} />
-            </TextField>
+            <TextInput
+              id="amortization"
+              label="Amortissement"
+              placeholder="1%"
+              onChange={this.handleChange}
+              type="percent"
+              value={amortization}
+            />
           </div>
 
           <h4 className="text-center col-xs-12" style={styles.h4}>
             Taux Standard
           </h4>
 
-          {getFormArray(0).map(field => (
-            <div className="col-xs-6 col-md-3" key={field.name}>
-              <TextField
-                floatingLabelText={field.label}
-                hintText={'1%'}
-                type="text"
-                fullWidth
-                onChange={(e, n) => this.handleChange(e, n, field.name)}
-              >
-                <MaskedInput
-                  mask={percentMask}
-                  guide
-                  value={this.state[field.name]}
+          <div className="flex" style={{ flexWrap: 'wrap' }}>
+            {getFormArray(0).map(({ name, label }) => (
+              <div key={name}>
+                <TextInput
+                  id={name}
+                  label={label}
+                  // placeholder="1%"
+                  type="percent"
+                  onChange={this.handleChange}
+                  value={this.state[name]}
                 />
-              </TextField>
-            </div>
-          ))}
+              </div>
+            ))}
+          </div>
 
           <Checkbox
             label="Ajouter une offre avec contrepartie"
             style={styles.checkbox}
-            className="col-xs-12"
-            onCheck={() =>
-              this.setState(prev => ({
-                showCounterpart: !prev.showCounterpart,
-              }))}
-            checked={showCounterpart}
+            onChange={(_, newValue) =>
+              this.setState({ showCounterpart: newValue })}
+            value={showCounterpart}
           />
 
           {showCounterpart && (
@@ -233,33 +235,30 @@ export default class OfferForm extends Component {
               </h4>
 
               <div className="col-xs-10 col-xs-offset-1">
-                <TextField
-                  floatingLabelText="Contrepartie(s) spéciale(s)"
-                  hintText="Gestion de Fortune, Assurance Voiture"
+                <TextInput
+                  id="counterparts"
+                  label="Contrepartie(s) spéciale(s)"
+                  placeholder="Gestion de Fortune, Assurance Voiture"
                   type="text"
                   multiline
                   fullWidth
                   rows={3}
-                  onChange={(e, n) => this.handleChange(e, n, 'counterparts')}
+                  onChange={this.handleChange}
                   value={counterparts}
                 />
               </div>
 
-              {getFormArray(1).map(field => (
-                <div className="col-xs-6 col-md-3" key={field.name}>
-                  <TextField
-                    floatingLabelText={field.label}
-                    hintText={'1%'}
-                    type="text"
+              {getFormArray(1).map(({ name, label }) => (
+                <div className="col-xs-6 col-md-3" key={name}>
+                  <TextInput
+                    id={name}
+                    label={label}
+                    placeholder="1%"
+                    type="percent"
                     fullWidth
-                    onChange={(e, n) => this.handleChange(e, n, field.name)}
-                  >
-                    <MaskedInput
-                      mask={percentMask}
-                      guide
-                      value={this.state[field.name]}
-                    />
-                  </TextField>
+                    onChange={this.handleChange}
+                    value={this.state[name]}
+                  />
                 </div>
               ))}
             </div>

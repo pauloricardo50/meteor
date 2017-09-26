@@ -48,9 +48,7 @@ export default class AdminNewOffer extends React.Component {
           modal
           open={this.state.open}
           onRequestClose={this.handleClose}
-          overlayStyle={styles.backDrop}
-          contentStyle={styles.dialog}
-          autoScrollBodyContent
+          fullScreen
         >
           <OfferForm
             {...this.props}

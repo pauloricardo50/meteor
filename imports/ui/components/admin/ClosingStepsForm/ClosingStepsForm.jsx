@@ -89,14 +89,14 @@ export default class ClosingStepsForm extends Component {
                   <TodoStep
                     step={step}
                     key={step.id}
-                    handleChange={this.handleChange}
+                    onChange={this.handleChange}
                     handleRemove={this.handleRemove}
                   />
                 ) : (
                   <FileStep
                     step={step}
                     key={step.id}
-                    handleChange={this.handleChange}
+                    onChange={this.handleChange}
                     handleRemove={this.handleRemove}
                   />
                 )),

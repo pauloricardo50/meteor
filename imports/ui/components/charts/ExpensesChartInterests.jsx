@@ -68,7 +68,7 @@ export default class ExpensesChartInterests extends Component {
             label={<T id="ExpensesChartInterests.selectFieldLabel" />}
             value={selectValue}
             renderValue={value => options.find(o => o.id === value).label}
-            handleChange={this.handleChange}
+            onChange={this.handleChange}
             style={{ width: '100%' }}
             options={options}
           />

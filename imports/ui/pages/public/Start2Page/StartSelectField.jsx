@@ -10,7 +10,7 @@ const StartSelectField = (props) => {
     <Select
       id={id}
       value={value || formState[id] || ''}
-      handleChange={(_, newValue) =>
+      onChange={(_, newValue) =>
         setFormState(id, newValue, () => setActiveLine(''))}
       style={{ width: 200 }}
       options={options.filter(o => o.id !== undefined)}

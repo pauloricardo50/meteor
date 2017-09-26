@@ -23,7 +23,7 @@ const PasswordPage = (props) => {
         href="http://eepurl.com/cI56Sn"
         primary
         label={<T id="PasswordPage.button" />}
-        keyboardFocused
+        focusRipple
       />
       <BetaAccess {...props} />
       {!isDemo() && (

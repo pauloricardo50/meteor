@@ -48,7 +48,7 @@ class Search extends Component {
             id="search"
             style={styles.input}
             currentValue={search}
-            handleChange={this.handleChange}
+            onChange={this.handleChange}
           />
         </h2>
         <SearchResults search={search} />

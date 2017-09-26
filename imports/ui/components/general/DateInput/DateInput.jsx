@@ -9,7 +9,7 @@ import { T } from '/imports/ui/components/general/Translation';
 const DateInput = (props) => {
   const {
     currentValue,
-    handleChange,
+    onChange,
     id,
     minDate,
     maxDate,
@@ -17,6 +17,7 @@ const DateInput = (props) => {
     style,
     intl,
     label,
+    ...otherProps
   } = props;
   const formatDate = intl.formatDate;
   return (
@@ -47,13 +48,14 @@ const DateInput = (props) => {
       InputLabelProps={{
         shrink: true,
       }}
+      {...otherProps}
     />
   );
 };
 
 DateInput.propTypes = {
   currentValue: PropTypes.object,
-  handleChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
   minDate: PropTypes.object,
   maxDate: PropTypes.object,

@@ -106,7 +106,7 @@ export default class VerifyPage extends Component {
           <h2>Réponse</h2>
           <Select
             value={this.state.validated}
-            handleChange={this.handleChange}
+            onChange={this.handleChange}
             style={styles.dropdown}
             options={[
               { id: null },

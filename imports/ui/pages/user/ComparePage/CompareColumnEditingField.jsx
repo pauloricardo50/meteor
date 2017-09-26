@@ -12,7 +12,7 @@ const styles = {
 };
 
 const CompareColumnEditingField = (props) => {
-  const { field, property, parentState, handleChange } = props;
+  const { field, property, parentState, onChange } = props;
   let value;
 
   if (field.custom) {
@@ -28,7 +28,7 @@ const CompareColumnEditingField = (props) => {
           currentValue={parentState[field.id]}
           id={field.id}
           type="number"
-          handleChange={handleChange}
+          onChange={onChange}
         />
       );
     case 'money':
@@ -37,7 +37,7 @@ const CompareColumnEditingField = (props) => {
           currentValue={parentState[field.id]}
           id={field.id}
           type="money"
-          handleChange={handleChange}
+          onChange={onChange}
         />
       );
     case 'date':
@@ -46,7 +46,7 @@ const CompareColumnEditingField = (props) => {
         <DateInput
           currentValue={parentState[field.id]}
           id={field.id}
-          handleChange={handleChange}
+          onChange={onChange}
           style={styles.field}
         />
       );
@@ -55,7 +55,7 @@ const CompareColumnEditingField = (props) => {
         <RadioButtons
           currentValue={parentState[field.id]}
           id={field.id}
-          handleChange={handleChange}
+          onChange={onChange}
           options={[true, false]}
           intlPrefix="CompareColumn.boolean"
           style={{ width: '100%' }}
@@ -67,7 +67,7 @@ const CompareColumnEditingField = (props) => {
           currentValue={parentState[field.id]}
           id={field.id}
           type="percent"
-          handleChange={handleChange}
+          onChange={onChange}
         />
       );
     case 'text':
@@ -75,7 +75,7 @@ const CompareColumnEditingField = (props) => {
         <TextInput
           currentValue={parentState[field.id]}
           id={field.id}
-          handleChange={handleChange}
+          onChange={onChange}
         />
       );
     default:
@@ -86,7 +86,7 @@ const CompareColumnEditingField = (props) => {
 CompareColumnEditingField.propTypes = {
   field: PropTypes.object.isRequired,
   property: PropTypes.object.isRequired,
-  handleChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   parentState: PropTypes.object.isRequired,
 };
 

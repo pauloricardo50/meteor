@@ -73,7 +73,7 @@ export default class RadioInput extends Component {
             id: o.id,
             label: this.getOptionLabel(o.id, o.intlValues),
           }))}
-          handleChange={(_, newValue) => {
+          onChange={(_, newValue) => {
             onConditionalChange(newValue);
             this.setValue(newValue);
           }}

@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 import { FormControl } from 'material-ui/Form';
 import MuiSelect from 'material-ui/Select';
 import Input, { InputLabel } from 'material-ui/Input';
+import withStyles from 'material-ui/styles/withStyles';
+
 import Icon from '../Icon';
 import MenuItem from '../Material/MenuItem';
-import withStyles from 'material-ui/styles/withStyles';
 
 const styles = {
   icon: {
@@ -18,16 +19,25 @@ const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 
 const Select = (props) => {
-  const { value, handleChange, options, id, label, ...otherProps } = props;
+  const {
+    value,
+    onChange,
+    options,
+    id,
+    label,
+    style,
+    classes,
+    ...otherProps
+  } = props;
   return (
-    <FormControl className="mui-select">
+    <FormControl className="mui-select" style={style}>
       {label && <InputLabel htmlFor={id}>{label}</InputLabel>}
       <MuiSelect
         {...otherProps}
         value={value}
-        onChange={e => handleChange(id, e.target.value)}
+        onChange={e => onChange(id, e.target.value)}
         input={<Input id={id} />}
-        classes={{ icon: props.classes.icon }}
+        classes={{ icon: classes.icon }}
         MenuProps={{
           PaperProps: {
             style: {
@@ -57,7 +67,7 @@ const Select = (props) => {
 
 Select.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  handleChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
   id: PropTypes.string.isRequired,
   label: PropTypes.node,

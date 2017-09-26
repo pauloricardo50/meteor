@@ -63,7 +63,7 @@ export default class AmortizationTool extends Component {
         <div style={styles.div}>
           <TextInput
             label={<T id="AmortizationTool.initialRate" />}
-            handleChange={this.handleTextChange}
+            onChange={this.handleTextChange}
             type="percent"
             value={this.state.initialRate}
           >
@@ -76,7 +76,7 @@ export default class AmortizationTool extends Component {
           <Select
             label={<T id="AmortizationTool.futureRate" />}
             value={this.state.value}
-            handleChange={this.handleSelectChange}
+            onChange={this.handleSelectChange}
             options={interestRates.map(rate => ({
               id: rate.id,
               label: <T id={`AmortizationTool.${rate.id}.title`} />,

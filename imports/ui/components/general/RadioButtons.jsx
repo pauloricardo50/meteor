@@ -8,20 +8,20 @@ import { FormLabel, FormControl, FormControlLabel } from 'material-ui/Form';
 
 import { T } from '/imports/ui/components/general/Translation';
 
-const safeChange = (value, id, handleChange, options) => {
+const safeChange = (value, id, onChange, options) => {
   // If all options are booleans, transform the onChange handler's value
   // to booleans
   if (options.every(o => typeof o === 'boolean' || typeof o.id === 'boolean')) {
-    return handleChange(id, value === 'true');
+    return onChange(id, value === 'true');
   }
-  return handleChange(id, value);
+  return onChange(id, value);
 };
 
 // Cast value to strings, so that is plays nicely with material-ui,
 // in the onChange handler, convert back to boolean
 const RadioButtons = ({
   options,
-  handleChange,
+  onChange,
   id,
   intlPrefix,
   value,
@@ -33,7 +33,7 @@ const RadioButtons = ({
     <FormLabel htmlFor={id}>{label}</FormLabel>
     <RadioGroup
       onChange={(event, newValue) =>
-        safeChange(newValue, id, handleChange, options)}
+        safeChange(newValue, id, onChange, options)}
       value={`${value}`}
       name={id}
       className="flex"
@@ -57,7 +57,7 @@ RadioButtons.propTypes = {
   label: PropTypes.node,
   intlPrefix: PropTypes.string,
   options: PropTypes.array.isRequired,
-  handleChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   value: PropTypes.any,
   style: PropTypes.object,
   disabled: PropTypes.bool,

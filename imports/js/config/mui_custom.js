@@ -110,11 +110,11 @@ const theme = createMuiTheme({
   shades: {
     light: {
       input: {
-        bottomLine: 'rgba(0, 0, 0, 0.42)',
-        helperText: 'rgba(0, 0, 0, 0.54)',
-        labelText: 'rgba(0, 0, 0, 0.54)',
-        inputText: 'rgba(0, 0, 0, 0.6)',
-        disabled: 'rgba(0, 0, 0, 0.42)',
+        bottomLine: colors.lightBorder,
+        helperText: 'inherit',
+        labelText: 'inherit',
+        inputText: 'inherit',
+        disabled: 'inherit',
       },
     },
   },
