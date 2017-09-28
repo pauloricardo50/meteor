@@ -8,9 +8,10 @@ import Divider from '../Material/Divider';
 
 const styles = {
   div: {
-    width: '90%',
-    marginTop: 8,
-    height: 62,
+    width: '75%',
+    height: 64,
+    display: 'flex',
+    alignItems: 'center',
   },
   dropdown: {
     width: '100%',

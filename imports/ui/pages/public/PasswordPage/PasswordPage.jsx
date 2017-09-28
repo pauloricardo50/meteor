@@ -20,18 +20,21 @@ const PasswordPage = (props) => {
       <Button
         raised
         className="subscribe"
-        href="http://eepurl.com/cI56Sn"
+        link
+        to="http://eepurl.com/cI56Sn"
         primary
         label={<T id="PasswordPage.button" />}
-        focusRipple
       />
       <BetaAccess {...props} />
       {!isDemo() && (
         <Button
           raised
           label="Demo"
-          href="https://demo.e-potek.ch"
+          // link
+          // to="https://demo.e-potek.ch"
           style={{ marginTop: 16 }}
+          focusRipple
+          autoFocus
         />
       )}
     </main>

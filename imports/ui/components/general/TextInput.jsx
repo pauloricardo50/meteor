@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { injectIntl } from 'react-intl';
 import MaskedInput from 'react-text-mask';
 import { swissFrancMask, percentMask } from '/imports/js/helpers/textMasks';
 import { toNumber } from '/imports/js/helpers/conversionFunctions';
@@ -58,6 +58,7 @@ const TextInput = (props) => {
     placeholder,
     fullWidth,
     onChange,
+    intl,
     ...otherProps
   } = props;
 
@@ -68,6 +69,10 @@ const TextInput = (props) => {
     placeholder: defaultPlaceholder,
     value,
   } = getDefaults(props);
+
+  const finalPlaceholder = placeholder
+    ? intl.formatMessage({ id: placeholder })
+    : defaultPlaceholder;
 
   return (
     <FormControl error={error} className="mui-text-input" style={style}>
@@ -84,22 +89,14 @@ const TextInput = (props) => {
         type="text"
         style={{ fontSize: 'inherit' }}
         inputComponent={showMask ? MaskedInput : undefined}
-        inputProps={
-          showMask
-            ? {
-              value,
-              mask,
-              placeholder: placeholder || defaultPlaceholder,
-              guide: true,
-              pattern: '[0-9]*',
-              noValidate: true,
-            }
-            : {
-              value,
-              placeholder: placeholder || defaultPlaceholder,
-              noValidate: true,
-            }
-        }
+        inputProps={{
+          value,
+          placeholder: finalPlaceholder,
+          noValidate: true,
+          mask: mask || undefined,
+          guide: !!mask,
+          pattern: mask ? '[0-9]*' : undefined,
+        }}
         inputRef={ref}
       />
       {info && <FormHelperText>{info}</FormHelperText>}
@@ -114,7 +111,7 @@ TextInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   type: PropTypes.string,
   info: PropTypes.node,
-  placeholder: PropTypes.node,
+  placeholder: PropTypes.string,
   error: PropTypes.bool,
 };
 
@@ -127,4 +124,4 @@ TextInput.defaultProps = {
   error: false,
 };
 
-export default TextInput;
+export default injectIntl(TextInput);

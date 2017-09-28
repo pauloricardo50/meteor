@@ -105,9 +105,7 @@ const mapInputs = (singleInput, index, parentProps) => {
     style: parentProps.fullWidth ? styles.fullWidth : styles.smallWidth,
     currentValue: get(parentProps.doc, singleInput.id),
     disabled: parentProps.disabled || singleInput.disabled,
-    placeholder: (
-      <T id={`Forms.${singleInput.intlId || singleInput.id}.placeholder`} />
-    ),
+    placeholder: `Forms.${singleInput.intlId || singleInput.id}.placeholder`,
   };
 
   if (parentProps.noPlaceholders) {

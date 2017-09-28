@@ -23,10 +23,10 @@ export default class SearchModal extends Component {
       <span>
         <IconButton
           type="search"
-          tooltip={<T id="general.search" />}
           onClick={this.handleOpen}
-          touch
-          tooltipPosition="bottom-left"
+          // tooltip={<T id="general.search" />}
+          // touch
+          // tooltipPosition="bottom-left"
         />
         <Dialog
           fullScreen

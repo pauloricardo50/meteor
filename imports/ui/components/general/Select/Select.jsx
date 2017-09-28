@@ -55,7 +55,7 @@ const Select = (props) => {
           const { id: optionId, label: optionLabel, icon } = option;
           return (
             <MenuItem value={optionId} key={optionId}>
-              {icon && <Icon type={icon} />}
+              {icon && <Icon type={icon} style={{ margin: '0 16px 0 8px' }} />}
               {optionLabel}
             </MenuItem>
           );

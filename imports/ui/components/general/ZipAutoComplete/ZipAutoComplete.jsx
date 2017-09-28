@@ -103,7 +103,7 @@ class ZipAutoComplete extends Component {
         <AutoComplete
           label={label}
           value={searchText}
-          placeholder={<T id="ZipAutoComplete.placeholder" />}
+          placeholder={'ZipAutoComplete.placeholder'}
           onChange={this.handleChange}
           onSelect={this.handleSelect}
           suggestions={data}

@@ -28,10 +28,10 @@ export default class TopNavDrawer extends React.Component {
       <div className="menu-button">
         <IconButton
           onClick={this.handleToggle}
-          touch
-          tooltip="Menu"
-          tooltipPosition="bottom-right"
           type="menu"
+          // touch
+          // tooltip="Menu"
+          // tooltipPosition="bottom-right"
         />
         <Drawer
           open={this.state.open}

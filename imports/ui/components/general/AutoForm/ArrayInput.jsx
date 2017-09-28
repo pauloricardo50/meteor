@@ -41,7 +41,7 @@ export default class ArrayInput extends Component {
           currentValue && currentValue[i] && currentValue[i][inputId],
         key: inputId,
         label: <T id={`Forms.${id}.${inputId}`} />,
-        placeholder: <T id={`Forms.${id}.${inputId}.placeholder`} />,
+        placeholder: `Forms.${id}.${inputId}.placeholder`,
       };
 
       if (type === 'textInput') {

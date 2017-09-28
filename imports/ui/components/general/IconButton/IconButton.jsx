@@ -27,11 +27,11 @@ export default class IconButton extends Component {
     return (
       <MuiIconButton
         onClick={onClick}
-        tooltip={tooltip}
-        tooltipPosition={tooltipPosition}
-        touch={touch}
         style={style}
         className="icon-button"
+        // tooltip={tooltip}
+        // tooltipPosition={tooltipPosition}
+        // touch={touch}
       >
         <Icon type={type} style={iconStyle} {...iconProps} />
       </MuiIconButton>
@@ -49,7 +49,7 @@ IconButton.propTypes = {
 
 IconButton.defaultProps = {
   onClick: () => {},
-  tooltip: '',
-  touch: true,
+  tooltip: undefined,
+  touch: undefined,
   style: {},
 };

@@ -28,6 +28,8 @@ brand-black = #051C2C;
 brand-grey = #637E94;
 
 
+bodyColor = rgba(black, 0.6);
+titleColor = rgba(black, 0.74)
 
 z = {
   neg: -7,
@@ -58,7 +60,7 @@ $bezier = cubic-bezier(.02, .01, .47, 1);
 /* Typography */
 body
   background-color backgroundcolor
-  color #666;
+  color bodyColor;
   line-height: 1.5em;
   font-size: 16px;
   font-family: 'Source Sans Pro', sans-serif;
@@ -72,7 +74,7 @@ body, html, main, #react-root
   height 100%
 
 h1, h2, h3, h4, h5, h6
-  color : #444;
+  color: titleColor;
   line-height: 1.1em;
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 400;
@@ -207,7 +209,7 @@ svg.warning
   color: brand-warning !important;
 
 .body
-  color: #444;
+  color: bodyColor;
 
 .normal
   opacity: 1;
