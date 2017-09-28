@@ -90,7 +90,7 @@ export default class TextInput extends Component {
   };
 
   saveValue = (showSaving = true) => {
-    const { id, updateFunc, documentId, currentValue } = this.props;
+    const { id, updateFunc, docId, currentValue } = this.props;
     const { value } = this.state;
     // Save data to DB
     const object = {
@@ -106,7 +106,7 @@ export default class TextInput extends Component {
 
     Meteor.clearTimeout(this.timeout);
     this.timeout = Meteor.setTimeout(() => {
-      cleanMethod(updateFunc, object, documentId)
+      cleanMethod(updateFunc, object, docId)
         .then(() =>
           // on success, set saving briefly to true, before setting it to false again to trigger icon
           this.setState(
@@ -172,7 +172,7 @@ export default class TextInput extends Component {
           // }
           // autoComplete={autocomplete || ''}
           disabled={disabled}
-          style={{ width: '100%', ...style, marginBottom: 8 }}
+          style={{ width: '100%', ...style, marginBottom: 16 }}
           // inputStyle={inputStyle}
           noValidate
           fullWidth
@@ -205,7 +205,7 @@ TextInput.propTypes = {
   autocomplete: PropTypes.string,
   multiline: PropTypes.bool,
   rows: PropTypes.number,
-  documentId: PropTypes.string.isRequired,
+  docId: PropTypes.string.isRequired,
   updateFunc: PropTypes.string,
   info: PropTypes.oneOfType([
     PropTypes.string,

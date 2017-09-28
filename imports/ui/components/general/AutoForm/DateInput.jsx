@@ -49,7 +49,7 @@ class DateInput extends Component {
     const object = {};
     object[this.props.id] = dateWithoutTime;
 
-    cleanMethod(this.props.updateFunc, object, this.props.documentId);
+    cleanMethod(this.props.updateFunc, object, this.props.docId);
   };
 
   render() {
@@ -93,7 +93,7 @@ DateInput.propTypes = {
   currentValue: PropTypes.object,
   maxDate: PropTypes.objectOf(PropTypes.any),
   minDate: PropTypes.objectOf(PropTypes.any),
-  documentId: PropTypes.string.isRequired,
+  docId: PropTypes.string.isRequired,
   style: PropTypes.objectOf(PropTypes.any),
   updateFunc: PropTypes.string.isRequired,
   disabled: PropTypes.bool.isRequired,

@@ -9,7 +9,7 @@ import { isDemo } from '/imports/js/helpers/browserFunctions';
 import FakeBorrowerCompleter from '/imports/ui/components/general/FakeBorrowerCompleter';
 import { T } from '/imports/ui/components/general/Translation';
 
-const BorrowerInfoPage = (props) => {
+const Info = (props) => {
   const { borrowerId } = props.match.params;
   const borrower = props.borrowers.find(b => b._id === borrowerId);
 
@@ -28,7 +28,7 @@ const BorrowerInfoPage = (props) => {
       <AutoForm
         inputs={getBorrowerInfoArray(props.borrowers, borrowerId)}
         formClasses="user-form"
-        documentId={borrowerId}
+        docId={borrowerId}
         updateFunc="updateBorrower"
         pushFunc="pushBorrowerValue"
         popFunc="popBorrowerValue"
@@ -41,9 +41,9 @@ const BorrowerInfoPage = (props) => {
   );
 };
 
-BorrowerInfoPage.propTypes = {
+Info.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-export default BorrowerInfoPage;
+export default Info;

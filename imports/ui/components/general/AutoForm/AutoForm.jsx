@@ -54,6 +54,7 @@ const inputSwitch = (childProps, index, parentProps) => {
           conditionalTrueValue={childProps.conditionalTrueValue}
           key={index}
           style={childProps.style}
+          doc={parentProps.doc}
         >
           {mapInputs(childProps.inputs[0], 0, parentProps)}
           {childProps.inputs
@@ -172,7 +173,7 @@ AutoForm.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any),
   borrowers: PropTypes.arrayOf(PropTypes.object),
   fullWidth: PropTypes.bool,
-  documentId: PropTypes.string.isRequired,
+  docId: PropTypes.string.isRequired,
   updateFunc: PropTypes.string,
   pushFunc: PropTypes.string,
   popFunc: PropTypes.string,

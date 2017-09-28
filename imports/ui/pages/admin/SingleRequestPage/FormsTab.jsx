@@ -65,7 +65,7 @@ const getForm = (props, value, modify) => {
               key={value}
               inputs={getBorrowerInfoArray(props.borrowers, splittedValue[1])}
               formClasses="user-form"
-              documentId={splittedValue[1]}
+              docId={splittedValue[1]}
               updateFunc="updateBorrower"
               pushFunc="pushBorrowerValue"
               popFunc="popBorrowerValue"
@@ -84,7 +84,7 @@ const getForm = (props, value, modify) => {
                 splittedValue[1],
               )}
               borrowers={props.borrowers}
-              documentId={splittedValue[1]}
+              docId={splittedValue[1]}
               updateFunc="updateBorrower"
               pushFunc="pushBorrowerValue"
               popFunc="popBorrowerValue"
@@ -107,7 +107,7 @@ const getForm = (props, value, modify) => {
         <AutoForm
           key={value}
           inputs={PropertyFormArray(props.loanRequest, props.borrowers)}
-          documentId={props.loanRequest._id}
+          docId={props.loanRequest._id}
           updateFunc="updateRequest"
           pushFunc="pushRequestValue"
           popFunc="popRequestValue"

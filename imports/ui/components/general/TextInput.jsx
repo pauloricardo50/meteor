@@ -94,7 +94,7 @@ const TextInput = (props) => {
           placeholder: finalPlaceholder,
           noValidate: true,
           mask: mask || undefined,
-          guide: !!mask,
+          // guide: !!mask,
           pattern: mask ? '[0-9]*' : undefined,
         }}
         inputRef={ref}

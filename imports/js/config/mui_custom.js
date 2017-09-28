@@ -4,6 +4,46 @@ import colors from './colors';
 
 // Commented parts are the defaults, non-commented are edited
 const theme = createMuiTheme({
+  overrides: {
+    MuiButton: {
+      raised: {
+        backgroundColor: 'white',
+      },
+      raisedAccent: {
+        color: 'white',
+      },
+    },
+    MuiInput: {
+      underline: {
+        '&:before': {
+          transition: 'background-color 200ms ease, height 200ms ease',
+        },
+        '&:hover:not($disabled):before': {
+          backgroundColor: '#666',
+        },
+      },
+      inkbar: {
+        '&:after': {
+          backgroundColor: colors.primary,
+        },
+      },
+      input: {
+        // This logic shows the placeholder when the label is fixed
+        'label + $formControl &': {
+          '&::-webkit-input-placeholder': { opacity: 0.5 },
+          '&::-moz-placeholder': { opacity: 0.5 }, // Firefox 19+
+          '&:-ms-input-placeholder': { opacity: 0.5 }, // IE 11
+          '&::-ms-input-placeholder': { opacity: 0.5 }, // Edge
+        },
+      },
+    },
+    MuiSelect: {
+      select: {
+        display: 'flex',
+        alignItems: 'center',
+      },
+    },
+  },
   // direction: 'ltr',
   palette: {
     // common: {
@@ -347,50 +387,6 @@ const theme = createMuiTheme({
   //   snackbar: 2900,
   //   tooltip: 3000,
   // },
-  overrides: {
-    MuiButton: {
-      raised: {
-        backgroundColor: 'white',
-      },
-      raisedAccent: {
-        color: 'white',
-      },
-    },
-    MuiInput: {
-      underline: {
-        '&:before': {
-          transition: 'background-color 200ms ease, height 200ms ease',
-        },
-        '&:hover:not($disabled):before': {
-          backgroundColor: '#666',
-        },
-      },
-      inkbar: {
-        '&:after': {
-          backgroundColor: colors.primary,
-        },
-      },
-    },
-    MuiInputLabel: {
-      '&:focus': {
-        color: colors.primary,
-      },
-    },
-    MuiFormControl: {
-      '&:focus': {
-        color: colors.primary,
-      },
-      focused: {
-        color: colors.primary,
-      },
-    },
-    MuiSelect: {
-      select: {
-        display: 'flex',
-        alignItems: 'center',
-      },
-    },
-  },
 });
 
 export default theme;

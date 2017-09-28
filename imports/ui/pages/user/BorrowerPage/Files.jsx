@@ -51,9 +51,10 @@ const Files = (props) => {
             { id: false, label: <T id="general.no" /> },
           ]}
           currentValue={borrower.hasChangedSalary}
-          documentId={borrower._id}
+          docId={borrower._id}
           updateFunc="updateBorrower"
           disabled={disableForms(loanRequest)}
+          doc={borrower}
         />
       </div>
 

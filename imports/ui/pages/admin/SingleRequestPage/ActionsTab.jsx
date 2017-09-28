@@ -94,7 +94,7 @@ const ActionsTab = (props) => {
       >
         <DropzoneArray
           array={[{ id: 'contract' }]}
-          documentId={loanRequest._id}
+          docId={loanRequest._id}
           pushFunc="pushRequestValue"
           updateFunc="updateRequest"
           collection="loanRequests"

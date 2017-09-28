@@ -72,7 +72,7 @@ class ZipAutoComplete extends Component {
   };
 
   saveValue = (zipCode, city) => {
-    const { updateFunc, documentId, savePath } = this.props;
+    const { updateFunc, docId, savePath } = this.props;
 
     // Save data to DB
     const object = {
@@ -80,7 +80,7 @@ class ZipAutoComplete extends Component {
       [`${savePath}city`]: city,
     };
 
-    cleanMethod(updateFunc, object, documentId)
+    cleanMethod(updateFunc, object, docId)
       .then(() =>
         // on success, set saving briefly to true,
         // before setting it to false again to trigger icon
@@ -126,7 +126,7 @@ ZipAutoComplete.propTypes = {
   label: PropTypes.node.isRequired,
   savePath: PropTypes.string.isRequired,
   updateFunc: PropTypes.string.isRequired,
-  documentId: PropTypes.string.isRequired,
+  docId: PropTypes.string.isRequired,
   initialValue: PropTypes.string,
   disabled: PropTypes.bool,
   style: PropTypes.objectOf(PropTypes.any),

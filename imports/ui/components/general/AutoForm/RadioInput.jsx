@@ -50,7 +50,7 @@ export default class RadioInput extends Component {
     const object = {};
     object[this.props.id] = safeValue;
 
-    cleanMethod(this.props.updateFunc, object, this.props.documentId);
+    cleanMethod(this.props.updateFunc, object, this.props.docId);
   };
 
   render() {
@@ -65,7 +65,7 @@ export default class RadioInput extends Component {
 
     return (
       // relative position for the FormValidator
-      <div style={{ ...style, marginBottom: 8, position: 'relative' }}>
+      <div style={{ ...style, marginBottom: 16, position: 'relative' }}>
         <RadioButtons
           label={label}
           id={id}
@@ -96,7 +96,7 @@ RadioInput.propTypes = {
     PropTypes.string,
     PropTypes.number,
   ]),
-  documentId: PropTypes.string.isRequired,
+  docId: PropTypes.string.isRequired,
   updateFunc: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
 };

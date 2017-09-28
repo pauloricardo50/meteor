@@ -44,11 +44,11 @@ export default class SelectFieldInput extends Component {
   handleChange = (_, value) => this.setState({ value }, () => this.saveValue());
 
   saveValue = () => {
-    const { id, updateFunc, documentId } = this.props;
+    const { id, updateFunc, docId } = this.props;
     const { value } = this.state;
     const object = { [id]: value };
 
-    cleanMethod(updateFunc, object, documentId)
+    cleanMethod(updateFunc, object, docId)
       .then(() =>
         // on success, set saving briefly to true, before setting it to false again to trigger icon
         this.setState(
@@ -114,7 +114,7 @@ SelectFieldInput.propTypes = {
   label: PropTypes.node.isRequired,
   id: PropTypes.string.isRequired,
   currentValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  documentId: PropTypes.string.isRequired,
+  docId: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
   updateFunc: PropTypes.string.isRequired,
   disabled: PropTypes.bool,

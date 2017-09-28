@@ -37,7 +37,7 @@ const RadioButtons = ({
       value={`${value}`}
       name={id}
       className="flex"
-      style={{ justifyContent: 'space-around' }}
+      style={{ justifyContent: 'flex-start' }}
     >
       {options.map(option => (
         <FormControlLabel

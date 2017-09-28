@@ -85,7 +85,7 @@ export default class ArrayInput extends Component {
     cleanMethod(
       this.props.popFunc,
       { [`${this.props.id}`]: 1 },
-      this.props.documentId,
+      this.props.docId,
     ).then(() => this.setState({ count: this.state.count - 1 }));
 
   render() {
@@ -93,8 +93,13 @@ export default class ArrayInput extends Component {
     const { count } = this.state;
 
     return (
-      <div style={{ ...style, marginTop: 24, position: 'relative' }}>
-        <label htmlFor="">{label}</label>
+      <div
+        className="flex-col"
+        style={{ ...style, marginBottom: 24, position: 'relative' }}
+      >
+        <label htmlFor="" style={{ marginBottom: 8 }}>
+          {label}
+        </label>
 
         {this.getArray()}
         <FormValidator {...this.props} />
@@ -138,7 +143,7 @@ ArrayInput.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.node.isRequired,
   popFunc: PropTypes.string.isRequired,
-  documentId: PropTypes.string.isRequired,
+  docId: PropTypes.string.isRequired,
 };
 
 ArrayInput.defaultProps = {

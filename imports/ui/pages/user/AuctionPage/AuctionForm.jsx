@@ -62,7 +62,7 @@ export default class AuctionForm extends Component {
       <AutoForm
         inputs={getFormArray(this.props.loanRequest, this.props.serverTime)}
         formClasses="user-form"
-        documentId={this.props.loanRequest._id}
+        docId={this.props.loanRequest._id}
         updateFunc="updateRequest"
         pushFunc="pushRequestValue"
         popFunc="popRequestValue"

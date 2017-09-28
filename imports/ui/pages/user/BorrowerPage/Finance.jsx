@@ -110,7 +110,7 @@ const BorrowerFinancePage = (props) => {
       <AutoForm
         inputs={getBorrowerFinanceArray(props.borrowers, borrowerId)}
         borrowers={props.borrowers}
-        documentId={borrowerId}
+        docId={borrowerId}
         updateFunc="updateBorrower"
         pushFunc="pushBorrowerValue"
         popFunc="popBorrowerValue"
