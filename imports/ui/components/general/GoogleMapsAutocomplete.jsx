@@ -92,7 +92,7 @@ export default class GoogleMapsAutocomplete extends Component {
     return (
       <h3 style={{ width: '100%' }} className="fixed-size">
         <TextField
-          floatingLabelText={<T id="GoogleMapsAutocomplete.label" />}
+          label={<T id="GoogleMapsAutocomplete.label" />}
           autoFocus
           floatingLabelFixed
           style={{ width: '100%', fontSize: 'inherit', height: 100 }}

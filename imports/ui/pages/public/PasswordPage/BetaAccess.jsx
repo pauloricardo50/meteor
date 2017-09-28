@@ -43,7 +43,6 @@ export default class BetaAccess extends React.Component {
         <Dialog
           title="Accéder à la Beta"
           actions={actions}
-          modal={false}
           open={open}
           onRequestClose={this.handleClose}
         >

@@ -51,14 +51,7 @@ export default class AllRequestsTable extends Component {
   };
 
   render() {
-    return (
-      <Table
-        height="800px"
-        selectable={false}
-        columns={columns}
-        rows={this.rows}
-      />
-    );
+    return <Table selectable={false} columns={columns} rows={this.rows} />;
   }
 }
 

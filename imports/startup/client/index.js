@@ -3,9 +3,10 @@ import { render } from 'react-dom';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import '/imports/api/api.js';
+import '/imports/api/api';
 import '../accounts-config';
 import '../meteor-slingshot';
+import './css';
 
 import { localizationStartup } from '../localization';
 import RenderRoutes from './Router';

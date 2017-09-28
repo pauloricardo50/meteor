@@ -4,9 +4,7 @@ import moment from 'moment';
 import cleanMethod from '/imports/api/cleanMethods';
 
 import MyDateInput from '/imports/ui/components/general/DateInput';
-import { injectIntl } from 'react-intl';
 
-import { T } from '/imports/ui/components/general/Translation';
 import FormValidator from './FormValidator';
 
 const styles = {
@@ -36,50 +34,41 @@ class DateInput extends Component {
     };
   }
 
-  handleChange = (event, date) => {
+  handleChange = (date) => {
+    console.log('autoform changing', date);
     this.saveValue(date);
   };
 
   saveValue = (date) => {
-    // Remove time from date
-    // TODO: verify this works in all timezones
-    const dateWithoutTime = moment(date).format('YYYY-MM-DD');
-
     // Save data to DB
-    const object = {};
-    object[this.props.id] = dateWithoutTime;
+    const object = { [this.props.id]: date };
 
     cleanMethod(this.props.updateFunc, object, this.props.docId);
   };
 
   render() {
-    const formatDate = this.props.intl.formatDate;
+    const {
+      style,
+      label,
+      currentValue,
+      id,
+      minDate,
+      maxDate,
+      disabled,
+      openDirection,
+    } = this.props;
+
     return (
-      <div
-        style={{ ...styles.div, ...this.props.style }}
-        className="datepicker"
-      >
+      <div style={{ ...styles.div, ...style }} className="datepicker">
         <MyDateInput
-          label={this.props.label}
-          name={this.props.label}
-          hintText={<T id="DateInput.placeholder" />}
-          value={this.props.currentValue}
+          label={label}
+          value={currentValue}
           onChange={this.handleChange}
-          id={this.props.id}
-          errorText={this.state.errorText}
-          minDate={this.props.minDate}
-          maxDate={this.props.maxDate}
-          textFieldStyle={styles.DatePickerField}
-          formatDate={date =>
-            formatDate(date, {
-              month: 'long',
-              year: 'numeric',
-              weekday: 'long',
-              day: '2-digit',
-            })}
-          cancelLabel={<T id="general.cancel" />}
-          disabled={this.props.disabled}
-          fullWidth
+          id={id}
+          minDate={minDate}
+          maxDate={maxDate}
+          disabled={disabled}
+          openDirection={openDirection}
         />
         <FormValidator {...this.props} />
       </div>
@@ -88,7 +77,7 @@ class DateInput extends Component {
 }
 
 DateInput.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
   id: PropTypes.string.isRequired,
   currentValue: PropTypes.object,
   maxDate: PropTypes.objectOf(PropTypes.any),
@@ -96,7 +85,8 @@ DateInput.propTypes = {
   docId: PropTypes.string.isRequired,
   style: PropTypes.objectOf(PropTypes.any),
   updateFunc: PropTypes.string.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
+  openDirection: PropTypes.string,
 };
 
 DateInput.defaultProps = {
@@ -104,6 +94,8 @@ DateInput.defaultProps = {
   minDate: undefined,
   currentValue: undefined,
   style: {},
+  disabled: false,
+  openDirection: undefined,
 };
 
-export default injectIntl(DateInput);
+export default DateInput;

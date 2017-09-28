@@ -37,6 +37,12 @@ const getDefaults = ({ type, id, onChange, value }) => {
         showMask: false,
         value,
       };
+    case 'date':
+      return {
+        onChangeHandler: undefined,
+        showMask: false,
+        value: '',
+      };
     default:
       return {
         onChangeHandler: event => onChange(id, event.target.value),
@@ -59,6 +65,8 @@ const TextInput = (props) => {
     fullWidth,
     onChange,
     intl,
+    inputComponent,
+    inputProps,
     ...otherProps
   } = props;
 
@@ -84,19 +92,20 @@ const TextInput = (props) => {
       <Input
         {...otherProps}
         id={id}
-        // value={value}
         onChange={onChangeHandler}
         type="text"
         style={{ fontSize: 'inherit' }}
-        inputComponent={showMask ? MaskedInput : undefined}
-        inputProps={{
-          value,
-          placeholder: finalPlaceholder,
-          noValidate: true,
-          mask: mask || undefined,
-          // guide: !!mask,
-          pattern: mask ? '[0-9]*' : undefined,
-        }}
+        inputComponent={inputComponent || (showMask ? MaskedInput : undefined)}
+        inputProps={
+          inputProps || {
+            value,
+            placeholder: finalPlaceholder,
+            noValidate: true,
+            mask: mask || undefined,
+            // guide: !!mask,
+            pattern: mask ? '[0-9]*' : undefined,
+          }
+        }
         inputRef={ref}
       />
       {info && <FormHelperText>{info}</FormHelperText>}
@@ -108,20 +117,25 @@ TextInput.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   type: PropTypes.string,
   info: PropTypes.node,
   placeholder: PropTypes.string,
   error: PropTypes.bool,
+  inputComponent: PropTypes.node,
+  inputProps: PropTypes.object,
 };
 
 TextInput.defaultProps = {
+  onChange: undefined,
   label: '',
   value: undefined,
   type: undefined,
   info: undefined,
   placeholder: undefined,
   error: false,
+  inputComponent: null,
+  inputProps: undefined,
 };
 
 export default injectIntl(TextInput);

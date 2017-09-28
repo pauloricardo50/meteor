@@ -123,7 +123,7 @@ export default class VerifyPage extends Component {
             multiline
             rows={2}
             fullWidth
-            floatingLabelText={`Commentaire No.${i + 1}`}
+            label={`Commentaire No.${i + 1}`}
             onChange={e => this.handleChangeComment(e, i)}
           />
         ))}

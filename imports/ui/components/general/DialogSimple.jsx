@@ -91,7 +91,7 @@ export default class DialogSimple extends Component {
           style={buttonStyle}
         />
         <Dialog
-          title={<h3>{title}</h3>}
+          title={title}
           actions={finalActions}
           modal={modal}
           open={this.state.open}

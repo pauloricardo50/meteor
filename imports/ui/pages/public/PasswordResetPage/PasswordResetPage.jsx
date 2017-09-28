@@ -61,14 +61,14 @@ export default class PasswordResetPage extends Component {
           <T id="PasswordResetPage.title" />
         </h1>
         <TextField
-          floatingLabelText={<T id="PasswordResetPage.password" />}
+          label={<T id="PasswordResetPage.password" />}
           floatingLabelFixed
           type="password"
           value={newPassword}
           onChange={e => this.handleChange(e, 'newPassword')}
         />
         <TextField
-          floatingLabelText={<T id="PasswordResetPage.confirmPassword" />}
+          label={<T id="PasswordResetPage.confirmPassword" />}
           floatingLabelFixed
           type="password"
           value={newPassword2}

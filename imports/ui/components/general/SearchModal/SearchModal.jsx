@@ -30,11 +30,7 @@ export default class SearchModal extends Component {
         />
         <Dialog
           fullScreen
-          title={
-            <h3>
-              <T id="general.search" />
-            </h3>
-          }
+          title={<T id="general.search" />}
           actions={[
             <Button
               onClick={this.handleClose}

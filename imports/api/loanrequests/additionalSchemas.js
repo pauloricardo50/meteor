@@ -92,6 +92,10 @@ export const GeneralSchema = new SimpleSchema({
     type: Date,
     optional: true,
   },
+  auctionMostImportant: {
+    type: String,
+    optional: true,
+  },
 });
 
 export const PropertySchema = new SimpleSchema({
@@ -354,10 +358,6 @@ export const LogicSchema = new SimpleSchema({
   },
   'auction.endTime': {
     type: Date,
-    optional: true,
-  },
-  'auction.mostImportant': {
-    type: String,
     optional: true,
   },
   hasValidatedStructure: {

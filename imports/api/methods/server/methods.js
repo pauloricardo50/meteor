@@ -11,9 +11,7 @@ import {
 import rateLimit from '/imports/js/helpers/rate-limit.js';
 
 Meteor.methods({
-  getServerTime() {
-    return new Date();
-  },
+  getServerTime: () => new Date(),
 });
 
 export const downloadPDF = new ValidatedMethod({

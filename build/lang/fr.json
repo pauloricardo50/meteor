@@ -28,10 +28,10 @@
   "LoginForm.password": "Mot de passe",
 
   "Forms.auction.formTitle": "Derniers réglages",
-  "Forms.auction.wantedClosingDate": "Date espérée du décaissement",
-  "Forms.auction.mostImportant": "Critère le plus important",
-  "Forms.auction.mostImportant.speed": "Décaissement le plus rapide",
-  "Forms.auction.mostImportant.price": "Coût mensuel le plus bas",
+  "Forms.general.wantedClosingDate": "Date espérée du décaissement",
+  "Forms.general.auctionMostImportant": "Critère le plus important",
+  "Forms.general.auctionMostImportant.speed": "Décaissement le plus rapide",
+  "Forms.general.auctionMostImportant.price": "Coût mensuel le plus bas",
 
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",

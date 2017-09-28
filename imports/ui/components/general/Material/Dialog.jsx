@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import MuiDialog, {
   DialogActions,
@@ -8,9 +9,13 @@ import MuiDialog, {
 } from 'material-ui/Dialog';
 
 const Dialog = (props) => {
-  const { title, actions, children } = props;
+  const { title, actions, children, important, ...otherProps } = props;
   return (
-    <MuiDialog {...props}>
+    <MuiDialog
+      ignoreBackdropClick={important}
+      ignoreEscapeKeyUp={important}
+      {...otherProps}
+    >
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <DialogContentText>{children}</DialogContentText>
@@ -20,6 +25,19 @@ const Dialog = (props) => {
   );
 };
 
-Dialog.propTypes = {};
+Dialog.propTypes = {
+  // A dialog can only be closed using the buttons if this boolean is set
+  important: PropTypes.bool,
+  title: PropTypes.node,
+  actions: PropTypes.array,
+  children: PropTypes.node,
+};
+
+Dialog.defaultProps = {
+  important: false,
+  title: undefined,
+  actions: undefined,
+  children: undefined,
+};
 
 export default Dialog;

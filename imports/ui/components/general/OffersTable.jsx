@@ -1,5 +1,5 @@
+import React from 'react';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 
 import ConditionsButton from '/imports/ui/components/general/ConditionsButton';
 import { IntlNumber } from '/imports/ui/components/general/Translation';
@@ -68,56 +68,56 @@ const columns = [
   },
 ];
 
-export default class OffersTable extends Component {
-  render() {
-    let offers = this.props.offers.map(
-      o =>
-        this.props.showSpecial
-          ? {
-              _id: o._id,
-              ...o.counterpartOffer,
-              conditions: o.conditions,
-              counterparts: o.counterparts,
-            }
-          : {
-              _id: o._id,
-              ...o.standardOffer,
-              conditions: o.conditions,
-              counterparts: [],
-            },
-    );
-    offers.sort((a, b) => a.interest10 - b.interest10);
-    if (this.props.showSpecial) {
-      offers = offers.filter(o => o.counterparts.length > 0);
-    }
-
-    return (
-      <article>
-        <Table
-          columns={columns}
-          rows={offers.map((offer, i) => ({
-            id: offer._id,
-            columns: [
-              i + 1,
-              offer.maxAmount,
-              offer.interestLibor,
-              offer.interest2,
-              offer.interest5,
-              offer.interest10,
-              offer.amortization,
-              offer.conditions.length > 0 || offer.counterparts.length > 0
-                ? <ConditionsButton
-                    conditions={offer.conditions}
-                    counterparts={offer.counterparts}
-                  />
-                : '-',
-            ],
-          }))}
-        />
-      </article>
-    );
+const OffersTable = ({ offers, showSpecial }) => {
+  let mappedOffers = offers.map(
+    o =>
+      (showSpecial
+        ? {
+          _id: o._id,
+          ...o.counterpartOffer,
+          conditions: o.conditions,
+          counterparts: o.counterparts,
+        }
+        : {
+          _id: o._id,
+          ...o.standardOffer,
+          conditions: o.conditions,
+          counterparts: [],
+        }),
+  );
+  mappedOffers.sort((a, b) => a.interest10 - b.interest10);
+  if (showSpecial) {
+    mappedOffers = mappedOffers.filter(o => o.counterparts.length > 0);
   }
-}
+
+  return (
+    <article>
+      <Table
+        columns={columns}
+        rows={mappedOffers.map((offer, i) => ({
+          id: offer._id,
+          columns: [
+            i + 1,
+            offer.maxAmount,
+            offer.interestLibor,
+            offer.interest2,
+            offer.interest5,
+            offer.interest10,
+            offer.amortization,
+            offer.conditions.length > 0 || offer.counterparts.length > 0 ? (
+              <ConditionsButton
+                conditions={offer.conditions}
+                counterparts={offer.counterparts}
+              />
+            ) : (
+              '-'
+            ),
+          ],
+        }))}
+      />
+    </article>
+  );
+};
 
 OffersTable.propTypes = {
   offers: PropTypes.arrayOf(PropTypes.object),
@@ -127,3 +127,5 @@ OffersTable.propTypes = {
 OffersTable.defaultProps = {
   offers: [],
 };
+
+export default OffersTable;

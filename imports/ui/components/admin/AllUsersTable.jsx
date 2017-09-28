@@ -34,7 +34,7 @@ export default class AllUsersTable extends Component {
   render() {
     return (
       <Table
-        height="500px"
+        style={{ height: 800 }}
         selectable={false}
         columns={columns}
         rows={this.rows}

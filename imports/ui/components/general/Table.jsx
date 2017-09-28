@@ -21,12 +21,12 @@ const Table = (props) => {
   const {
     columns,
     rows,
-    height,
     selectable,
     multiSelectable,
     selectAll,
     onRowSelection,
     selected,
+    style,
   } = props;
 
   // Make sure columns and rows are the same length
@@ -37,7 +37,7 @@ const Table = (props) => {
   return (
     <div className="mui-table">
       <MuiTable
-        height={height}
+        style={style}
         selectable={selectable}
         multiSelectable={multiSelectable}
         onRowSelection={rowIndexes =>
@@ -94,7 +94,6 @@ const Table = (props) => {
 Table.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   rows: PropTypes.arrayOf(PropTypes.object).isRequired,
-  height: PropTypes.string,
   selectable: PropTypes.bool,
   multiSelectable: PropTypes.bool,
   selectAll: PropTypes.bool,

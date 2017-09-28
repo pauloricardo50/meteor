@@ -1,74 +1,66 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
-import TextField from '../Material/TextField';
-import { injectIntl } from 'react-intl';
+import TextInput from '../TextInput';
+import DatePicker from './DatePicker';
 
-import { T } from '/imports/ui/components/general/Translation';
+export default class DateInput extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { focused: false };
+  }
 
-const DateInput = (props) => {
-  const {
-    currentValue,
-    onChange,
-    id,
-    minDate,
-    maxDate,
-    disabled,
-    style,
-    intl,
-    label,
-    ...otherProps
-  } = props;
-  const formatDate = intl.formatDate;
-  return (
-    // <MuiDatePicker
-    //   value={currentValue}
-    //   onChange={(_, date) => handleChange(id, date)}
-    //   id={id}
-    //   minDate={minDate}
-    //   maxDate={maxDate}
-    //   formatDate={date =>
-    //     formatDate(date, {
-    //       month: 'long',
-    //       year: 'numeric',
-    //       weekday: 'long',
-    //       day: '2-digit',
-    //     })}
-    //   cancelLabel={<T id="general.cancel" />}
-    //   disabled={disabled}
-    //   style={style}
-    //   textFieldStyle={{ width: '100%' }}
-    // />
-    <TextField
-      id={id}
-      label={label}
-      type="date"
-      defaultValue={new Date()}
-      // className={classes.textField}
-      InputLabelProps={{
-        shrink: true,
-      }}
-      {...otherProps}
-    />
-  );
-};
+  render() {
+    const {
+      value,
+      onChange,
+      id,
+      minDate,
+      maxDate,
+      openDirection,
+      ...otherProps
+    } = this.props;
+    const { focused } = this.state;
+
+    return (
+      <TextInput
+        className="date-input"
+        {...otherProps}
+        id={id}
+        inputComponent={DatePicker}
+        type="date"
+        placeholder={undefined}
+        inputProps={{
+          id,
+          focused,
+          minDate,
+          maxDate,
+          openDirection,
+          // Check if date exists to allow for empty state
+          date: value ? moment(value) : undefined,
+          onDateChange: date => onChange(date ? date.toDate() : undefined, id),
+          onFocusChange: ({ focused: nextFocused }) =>
+            this.setState({ focused: nextFocused }),
+        }}
+      />
+    );
+  }
+}
 
 DateInput.propTypes = {
-  currentValue: PropTypes.object,
+  value: PropTypes.object,
   onChange: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   minDate: PropTypes.object,
   maxDate: PropTypes.object,
-  disabled: PropTypes.bool,
-  style: PropTypes.object,
+  openDirection: PropTypes.string,
 };
 
 DateInput.defaultProps = {
-  currentValue: undefined,
+  value: undefined,
+  id: undefined,
   minDate: undefined,
   maxDate: undefined,
-  disabled: false,
-  style: {},
+  openDirection: undefined,
 };
-
-export default injectIntl(DateInput);

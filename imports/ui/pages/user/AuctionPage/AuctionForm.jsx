@@ -7,6 +7,7 @@ import AutoForm from '/imports/ui/components/general/AutoForm';
 import { getAuctionEndTime } from '/imports/api/loanrequests/methods';
 import cleanMethod from '/imports/api/cleanMethods';
 
+// Min closing date can be 2 days after auction ends
 const getMinDate = serverTime =>
   moment(getAuctionEndTime(serverTime))
     .add(2, 'd')
@@ -19,27 +20,15 @@ const getFormArray = (request, serverTime) => [
     id: 'auction.formTitle',
   },
   {
-    id: 'auction.wantedClosingDate',
+    id: 'general.wantedClosingDate',
     type: 'dateInput',
-    // label: 'Date espérée du décaissement',
     minDate: getMinDate(serverTime),
+    openDirection: 'up',
   },
   {
-    id: 'auction.mostImportant',
+    id: 'general.auctionMostImportant',
     type: 'selectFieldInput',
-    // label: 'Critère le plus important',
-    options: [
-      'speed',
-      'price',
-      // {
-      //   id: 'speed',
-      //   label: 'Décaissement le plus rapide',
-      // },
-      // {
-      //   id: 'price',
-      //   label: 'Coût mensuel le plus bas',
-      // },
-    ],
+    options: ['speed', 'price'],
   },
 ];
 

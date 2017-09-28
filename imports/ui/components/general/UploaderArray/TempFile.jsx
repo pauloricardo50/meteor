@@ -47,13 +47,14 @@ export default class TempFile extends Component {
           {!isNaN(progress) ? (
             <div style={{ paddingLeft: 16, flexGrow: 1 }}>
               <LinearProgress
+                color="primary"
                 mode="determinate"
                 value={Math.round(progress * 100)}
               />
             </div>
           ) : (
             <div style={{ paddingLeft: 16 }}>
-              <CircularProgress size={24} />
+              <CircularProgress size={24} color="primary" />
             </div>
           )}
         </div>

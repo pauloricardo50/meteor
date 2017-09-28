@@ -49,13 +49,9 @@ export default class NewRequestModal extends Component {
 
     return (
       <Dialog
-        title={
-          <h3>
-            <T id="NewRequestModal.title" />
-          </h3>
-        }
+        title={<T id="NewRequestModal.title" />}
         actions={button}
-        modal
+        important
         open={this.state.open}
       >
         <p className="secondary">
@@ -67,7 +63,7 @@ export default class NewRequestModal extends Component {
             <TextField
               name="address"
               hintText={<T id="NewRequestModal.placeholder" />}
-              floatingLabelText={<T id="NewRequestModal.label" />}
+              label={<T id="NewRequestModal.label" />}
               autoFocus
               value={this.state.value}
               onChange={this.handleChange}

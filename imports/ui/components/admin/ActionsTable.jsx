@@ -103,7 +103,6 @@ export default class ActionsTable extends Component {
         </div>
 
         <Table
-          height={actions.length === 0 ? '0px' : '500px'}
           selectable
           selected={this.state.selectedRow}
           onRowSelection={this.handleRowSelection}

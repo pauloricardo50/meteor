@@ -64,12 +64,7 @@ export default class PropertyAdder extends Component {
           }}
         />
         <Dialog
-          title={
-            <h3>
-              <T id="CompareOptions.addProperty" />
-            </h3>
-          }
-          modal={false}
+          title={<T id="CompareOptions.addProperty" />}
           open={this.state.open}
           onRequestClose={this.handleClose}
           autoScrollBodyContent
@@ -92,15 +87,16 @@ export default class PropertyAdder extends Component {
             }}
           >
             <GoogleMapsAutocomplete onChange={this.handleChange} />
-            {!!(isValidPlace && latlng) &&
+            {!!(isValidPlace && latlng) && (
               <GoogleMap
                 latlng={latlng}
                 address={address}
                 className="property-adder-map"
-              />}
+              />
+            )}
 
             {!isValidPlace && <div style={{ height: 300 }} />}
-            {isValidPlace &&
+            {isValidPlace && (
               <h2 className="fixed-size">
                 <form
                   action="submit"
@@ -121,7 +117,8 @@ export default class PropertyAdder extends Component {
                     type="money"
                   />
                 </form>
-              </h2>}
+              </h2>
+            )}
             <div
               style={{
                 display: 'flex',

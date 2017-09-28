@@ -46,10 +46,11 @@ export default class LoadingButton extends Component {
   };
 
   render() {
+    const { isFirstVisit, loading } = this.state;
     let icon = null;
-    if (!this.state.isFirstVisit) {
+    if (!isFirstVisit) {
       icon = <Icon type="check" />;
-    } else if (this.state.loading) {
+    } else if (loading) {
       icon = <Icon type="loop-spin" />;
     }
 
@@ -58,10 +59,10 @@ export default class LoadingButton extends Component {
         raised
         // {...this.props}
         label={this.props.label}
-        primary={this.state.isFirstVisit}
+        primary={isFirstVisit}
         onClick={this.handleClick}
         icon={icon}
-        disabled={this.props.disabled}
+        disabled={this.props.disabled || (!loading && !isFirstVisit)}
       />
     );
   }

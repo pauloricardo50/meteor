@@ -40,13 +40,8 @@ export default class HomeDev extends Component {
           id="refinancing"
         />
         <Dialog
-          title={
-            <h3>
-              <T id="HomeDev.title" />
-            </h3>
-          }
+          title={<T id="HomeDev.title" />}
           actions={actions}
-          modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
         >

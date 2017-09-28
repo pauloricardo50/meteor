@@ -190,10 +190,14 @@ input[type=number]
 .active
   &:not(button) // If a button is .active, don't change its color
     color: brand-primary;
+    &.important
+      color: brand-primary !important;
 
 
 .success
   color: brand-success;
+  &.important
+    color: brand-success !important;
 
 svg.success
   color: brand-success !important;
@@ -206,6 +210,8 @@ svg.error
 
 .warning
   color: brand-warning;
+  &.important
+    color: brand-warning !important;
 
 svg.warning
   color: brand-warning !important;
@@ -312,6 +318,24 @@ svg.warning
 // Change it from the material-ui default inline-flex..
 .mui-text-input, .mui-select, .mui-radio-group
   display: flex;
+
+// css for airbnb's react-dates
+.date-input
+  display: flex;
+  .SingleDatePickerInput
+    font-family: 'Source Sans Pro', sans-serif !important;
+    font-weight: 400;
+    border: none;
+    display: flex;
+    align-items: center;
+    .DateInput
+      padding: 0;
+    .DateRangePickerInput__close
+      display: flex;
+      svg
+        width: 12px;
+        height: 12px;
+
 
 .top-nav
   background-color: white !important;
@@ -668,10 +692,11 @@ svg:not(:root) {
               .available-icon
                 background-color: #DEE2E6;
               &.warning
-                svg
-                  color: brand-warning !important;
+                color: brand-warning;
+              &.success
+                color: brand-success;
               svg
-                color: grey !important;
+                color: inherit;
                 width: 20px !important;
                 height: 20px !important;
             .text

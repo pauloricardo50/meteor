@@ -30,7 +30,7 @@ export default class AdminNewOffer extends React.Component {
   render() {
     const actions = [
       <Button label="Annuler" primary onClick={this.handleClose} />,
-      // <Button label="Ajouter" primary keyboardFocused onClick={this.handleClose} />,
+      // <Button label="Ajouter" primary autoFocus onClick={this.handleClose} />,
     ];
 
     return (
@@ -45,7 +45,7 @@ export default class AdminNewOffer extends React.Component {
         <Dialog
           title="Ajouter une offre"
           actions={actions}
-          modal
+          important
           open={this.state.open}
           onRequestClose={this.handleClose}
           fullScreen

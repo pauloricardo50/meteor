@@ -134,6 +134,7 @@ class Field extends Accounts.ui.Field {
         required={required ? 'required' : ''}
         autoCapitalize={type == 'email' ? 'none' : false}
         autoCorrect="off"
+        shrink
       />
     ) : null;
   }
