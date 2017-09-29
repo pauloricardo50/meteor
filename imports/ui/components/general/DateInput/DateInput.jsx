@@ -3,7 +3,16 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import TextInput from '../TextInput';
-import DatePicker from './DatePicker';
+
+import Loadable from '/imports/js/helpers/loadable';
+
+// const SingleDatePicker = Loadable({
+//   loader: () => import('react-dates/lib/components/SingleDatePicker'),
+// });
+const DatePicker = Loadable({
+  loader: () => import('./DatePicker'),
+});
+// import DatePicker from './DatePicker';
 
 export default class DateInput extends Component {
   constructor(props) {

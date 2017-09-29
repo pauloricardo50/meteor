@@ -23,6 +23,7 @@ const DatePicker = ({ minDate, maxDate, ...otherProps }) => (
     isOutsideRange={
       minDate || maxDate ? setDateRange(minDate, maxDate) : undefined
     }
+    displayFormat="D MMMM YYYY"
   />
 );
 
