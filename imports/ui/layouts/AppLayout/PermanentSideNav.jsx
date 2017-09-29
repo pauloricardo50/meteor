@@ -8,7 +8,7 @@ import SideNav from '/imports/ui/components/general/SideNav';
 
 const PermanentSideNav = props => (
   <Drawer type="permanent">
-    <div style={{ width: 300 }}>
+    <div style={{ width: props.isApp ? 300 : 250 }}>
       {props.isApp ? <SideNavUser {...props} fixed /> : <SideNav {...props} />}
     </div>
   </Drawer>

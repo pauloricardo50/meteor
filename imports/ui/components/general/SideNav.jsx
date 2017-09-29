@@ -3,6 +3,7 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 
 import Button from '/imports/ui/components/general/Button';
 import Icon from '/imports/ui/components/general/Icon';
@@ -60,14 +61,14 @@ const SideNav = (props) => {
 
   return (
     <nav className={classes}>
-      {/* <Link to="/home">
+      <Link to="/home" style={{ height: 24 }}>
         <img
           src="/img/logo_black.svg"
           alt="e-Potek"
-          style={styles.logo}
+          style={{ height: 24 }}
           className="logo"
         />
-      </Link> */}
+      </Link>
 
       <ul className="side-nav-list">
         {links.map(link => (
