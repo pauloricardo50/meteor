@@ -9,16 +9,18 @@ import MuiDialog, {
 } from 'material-ui/Dialog';
 
 const Dialog = (props) => {
-  const { title, actions, children, important, ...otherProps } = props;
+  const { title, actions, children, important, text, ...otherProps } = props;
   return (
     <MuiDialog
       ignoreBackdropClick={important}
       ignoreEscapeKeyUp={important}
+      // withResponsiveFullScreen
       {...otherProps}
     >
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
-        <DialogContentText>{children}</DialogContentText>
+        {text && <DialogContentText>{text}</DialogContentText>}
+        {children}
       </DialogContent>
       {actions && <DialogActions>{actions}</DialogActions>}
     </MuiDialog>

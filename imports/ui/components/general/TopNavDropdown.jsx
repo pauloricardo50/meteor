@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
 import track from '/imports/js/helpers/analytics';
+import Divider from './Material/Divider';
 import { T } from './Translation';
 import DropdownMenu from './DropdownMenu';
 
@@ -16,21 +17,25 @@ const getMenuItems = (currentUser, history) => {
       id: 'admin',
       link: '/admin',
       show: isAdmin,
+      icon: 'app',
     },
     {
       id: 'partner',
       link: '/partner',
       show: isPartner,
+      icon: 'app',
     },
     {
       id: 'app',
       link: '/app',
       show: !isAdmin && !isPartner,
+      icon: 'app',
     },
     {
       id: 'account',
       link: '/app/profile',
       show: !isAdmin && !isPartner,
+      icon: 'accountCircle',
     },
     {
       id: 'dev',
@@ -46,6 +51,8 @@ const getMenuItems = (currentUser, history) => {
       },
       link: '/home',
       show: true,
+      dividerTop: true,
+      icon: 'powerOff',
     },
   ];
 };
@@ -65,15 +72,18 @@ const TopNavDropdown = (props) => {
       }}
       iconType="person"
       options={getMenuItems(currentUser, history)
+        // Allow the Divider to go through
         .filter(o => o.show)
-        .map(option => ({
-          id: option.id,
-          onClick: option.onClick,
+        .map(({ id: optionId, link, label, ...rest }) => ({
+          ...rest,
+          id: optionId,
           link: true,
-          to: option.link,
-          label: option.label || <T id={`TopNavDropdown.${option.id}`} />,
+          to: link,
+          label: label || <T id={`TopNavDropdown.${optionId}`} />,
           history, // required for Link to work
         }))}
+      tooltip={currentUser.emails[0].address}
+      tooltipPosition="bottom-end"
     />
   );
 };

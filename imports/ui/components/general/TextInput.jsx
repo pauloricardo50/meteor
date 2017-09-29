@@ -67,6 +67,7 @@ const TextInput = (props) => {
     intl,
     inputComponent,
     inputProps,
+    noIntl,
     ...otherProps
   } = props;
 
@@ -78,9 +79,14 @@ const TextInput = (props) => {
     value,
   } = getDefaults(props);
 
-  const finalPlaceholder = placeholder
-    ? intl.formatMessage({ id: placeholder })
-    : defaultPlaceholder;
+  let finalPlaceholder;
+  if (noIntl) {
+    finalPlaceholder = placeholder || defaultPlaceholder;
+  } else {
+    finalPlaceholder = placeholder
+      ? intl.formatMessage({ id: placeholder })
+      : defaultPlaceholder;
+  }
 
   return (
     <FormControl error={error} className="mui-text-input" style={style}>
@@ -122,8 +128,9 @@ TextInput.propTypes = {
   info: PropTypes.node,
   placeholder: PropTypes.string,
   error: PropTypes.bool,
-  inputComponent: PropTypes.node,
+  inputComponent: PropTypes.func,
   inputProps: PropTypes.object,
+  noIntl: PropTypes.bool,
 };
 
 TextInput.defaultProps = {
@@ -136,6 +143,7 @@ TextInput.defaultProps = {
   error: false,
   inputComponent: null,
   inputProps: undefined,
+  noIntl: false,
 };
 
 export default injectIntl(TextInput);

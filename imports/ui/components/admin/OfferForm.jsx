@@ -80,6 +80,7 @@ export default class OfferForm extends Component {
       interest5_1: '',
       interest10_1: '',
       interest15_1: '',
+      error: '',
     };
   }
 
@@ -93,6 +94,10 @@ export default class OfferForm extends Component {
     console.log('submitting..');
     event.preventDefault();
 
+    if (!this.validate()) {
+      return;
+    }
+
     // Prevent enter key from submitting form
     if (event.keyCode === 13) {
       event.preventDefault();
@@ -104,13 +109,13 @@ export default class OfferForm extends Component {
       organization: this.state.organization,
       standardOffer: {
         maxAmount: toNumber(this.state.maxAmount),
-        amortization: parseFloat(this.state.amortization) / 100,
-        interestLibor: parseFloat(this.state.libor_0) / 100,
-        interest1: parseFloat(this.state.interest1_0) / 100,
-        interest2: parseFloat(this.state.interest2_0) / 100,
-        interest5: parseFloat(this.state.interest5_0) / 100,
-        interest10: parseFloat(this.state.interest10_0) / 100,
-        interest15: parseFloat(this.state.interest15_0) / 100 || undefined,
+        amortization: parseFloat(this.state.amortization),
+        interestLibor: parseFloat(this.state.libor_0) || undefined,
+        interest1: parseFloat(this.state.interest1_0) || undefined,
+        interest2: parseFloat(this.state.interest2_0) || undefined,
+        interest5: parseFloat(this.state.interest5_0) || undefined,
+        interest10: parseFloat(this.state.interest10_0) || undefined,
+        interest15: parseFloat(this.state.interest15_0) || undefined,
       },
 
       conditions: [this.state.conditions],
@@ -119,13 +124,13 @@ export default class OfferForm extends Component {
     if (this.state.showCounterpart) {
       object.counterpartOffer = {
         maxAmount: toNumber(this.state.maxAmount),
-        amortization: parseFloat(this.state.amortization) / 100,
-        interestLibor: parseFloat(this.state.libor_1) / 100,
-        interest1: parseFloat(this.state.interest1_1) / 100,
-        interest2: parseFloat(this.state.interest2_1) / 100,
-        interest5: parseFloat(this.state.interest5_1) / 100,
-        interest10: parseFloat(this.state.interest10_1) / 100,
-        interest15: parseFloat(this.state.interest15_1) / 100 || undefined,
+        amortization: parseFloat(this.state.amortization),
+        interestLibor: parseFloat(this.state.libor_1) || undefined,
+        interest1: parseFloat(this.state.interest1_1) || undefined,
+        interest2: parseFloat(this.state.interest2_1) || undefined,
+        interest5: parseFloat(this.state.interest5_1) || undefined,
+        interest10: parseFloat(this.state.interest10_1) || undefined,
+        interest15: parseFloat(this.state.interest15_1) || undefined,
       };
 
       object.counterparts = [this.state.counterparts];
@@ -142,6 +147,17 @@ export default class OfferForm extends Component {
       });
   };
 
+  validate = () => {
+    const { showCounterpart, counterparts } = this.state;
+    if (showCounterpart && !counterparts) {
+      this.setState({ error: 'Il faut des contreparties' });
+      return false;
+    }
+
+    this.setState({ error: '' });
+    return true;
+  };
+
   render() {
     const { admin, loanRequest, handleCancel } = this.props;
     const {
@@ -151,6 +167,7 @@ export default class OfferForm extends Component {
       amortization,
       showCounterpart,
       counterparts,
+      error,
     } = this.state;
 
     return (
@@ -159,55 +176,59 @@ export default class OfferForm extends Component {
           {admin && (
             <TextInput
               id="organization"
-              label="Institution"
+              label="Institution *"
               placeholder="UBS"
               onChange={this.handleChange}
               value={organization}
+              noIntl
             />
           )}
 
           <TextInput
             id="conditions"
             label="Condition(s) minimum"
-            placeholder="Expertise requise"
+            placeholder="Laisser vide si pas de conditions"
             type="text"
             multiline
             rows={3}
             onChange={this.handleChange}
             value={conditions}
+            noIntl
           />
 
-          <div className="col-xs-12">
+          <div>
             <TextInput
               id="maxAmount"
-              label="Prêt Maximal"
+              label="Prêt Maximal *"
               placeholder={`CHF ${toMoney(
                 Math.round(loanRequest.property.value * 0.8),
               )}`}
               onChange={this.handleChange}
               type="money"
               value={maxAmount}
+              noIntl
             />
           </div>
 
-          <div className="col-xs-12">
+          <div>
             <TextInput
               id="amortization"
-              label="Amortissement"
+              label="Amortissement *"
               placeholder="1%"
               onChange={this.handleChange}
               type="percent"
               value={amortization}
+              noIntl
             />
           </div>
 
-          <h4 className="text-center col-xs-12" style={styles.h4}>
+          <h4 className="text-center" style={styles.h4}>
             Taux Standard
           </h4>
 
           <div className="flex" style={{ flexWrap: 'wrap' }}>
             {getFormArray(0).map(({ name, label }) => (
-              <div key={name}>
+              <div key={name} style={{ marginRight: 8 }}>
                 <TextInput
                   id={name}
                   label={label}
@@ -215,6 +236,7 @@ export default class OfferForm extends Component {
                   type="percent"
                   onChange={this.handleChange}
                   value={this.state[name]}
+                  noIntl
                 />
               </div>
             ))}
@@ -226,18 +248,19 @@ export default class OfferForm extends Component {
             onChange={(_, newValue) =>
               this.setState({ showCounterpart: newValue })}
             value={showCounterpart}
+            id="showCounterpart"
           />
 
           {showCounterpart && (
             <div>
-              <h4 className="text-center col-xs-12" style={styles.h4}>
+              <h4 className="text-center" style={styles.h4}>
                 Taux d'intérêt avec contrepartie
               </h4>
 
-              <div className="col-xs-10 col-xs-offset-1">
+              <div>
                 <TextInput
                   id="counterparts"
-                  label="Contrepartie(s) spéciale(s)"
+                  label="Contrepartie(s) spéciale(s) *"
                   placeholder="Gestion de Fortune, Assurance Voiture"
                   type="text"
                   multiline
@@ -245,26 +268,36 @@ export default class OfferForm extends Component {
                   rows={3}
                   onChange={this.handleChange}
                   value={counterparts}
+                  noIntl
                 />
               </div>
 
-              {getFormArray(1).map(({ name, label }) => (
-                <div className="col-xs-6 col-md-3" key={name}>
-                  <TextInput
-                    id={name}
-                    label={label}
-                    placeholder="1%"
-                    type="percent"
-                    fullWidth
-                    onChange={this.handleChange}
-                    value={this.state[name]}
-                  />
-                </div>
-              ))}
+              <div className="flex" style={{ flexWrap: 'wrap' }}>
+                {getFormArray(1).map(({ name, label }) => (
+                  <div key={name} style={{ marginRight: 8 }}>
+                    <TextInput
+                      id={name}
+                      label={label}
+                      placeholder="1%"
+                      type="percent"
+                      fullWidth
+                      onChange={this.handleChange}
+                      value={this.state[name]}
+                      noIntl
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
-          <div className="col-xs-12" style={styles.buttons}>
+          {error && (
+            <div className="description">
+              <p className="error">{error}</p>
+            </div>
+          )}
+
+          <div style={styles.buttons}>
             {!!handleCancel && (
               <Button
                 raised

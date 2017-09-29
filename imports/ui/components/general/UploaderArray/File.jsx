@@ -19,7 +19,6 @@ const File = ({ file, disabled, handleRemove }) => {
           </span>
           {!!(!disabled && status !== 'valid') && (
             <IconButton
-              touch={false}
               type="close"
               tooltip={<T id="general.delete" />}
               onClick={() => handleRemove(key)}

@@ -24,9 +24,8 @@ export default class SearchModal extends Component {
         <IconButton
           type="search"
           onClick={this.handleOpen}
-          // tooltip={<T id="general.search" />}
-          // touch
-          // tooltipPosition="bottom-left"
+          tooltip={<T id="general.search" />}
+          tooltipPlacement="bottom-end"
         />
         <Dialog
           fullScreen
@@ -40,10 +39,6 @@ export default class SearchModal extends Component {
           ]}
           open={isOpen}
           onRequestClose={this.handleClose}
-          autoScrollBodyContent
-          repositionOnUpdate={false}
-          autoDetectWindowHeight
-          contentStyle={{ width: '100%', maxWidth: 'none' }}
         >
           <Search />
         </Dialog>

@@ -31,6 +31,8 @@ import Eye from 'material-ui-icons/Visibility';
 import EyeCrossed from 'material-ui-icons/VisibilityOff';
 import SortIcon from 'material-ui-icons/Sort';
 import MoreIcon from 'material-ui-icons/MoreHoriz';
+import AccountCircle from 'material-ui-icons/AccountCircle';
+import Apps from 'material-ui-icons/Apps';
 
 import Star from 'material-ui-icons/Star';
 import StarHalf from 'material-ui-icons/StarHalf';
@@ -71,6 +73,8 @@ const iconMap = {
   star: Star,
   starHalf: StarHalf,
   starEmpty: StarEmpty,
+  accountCircle: AccountCircle,
+  app: Apps,
 };
 
 const Icon = (props) => {
@@ -78,7 +82,7 @@ const Icon = (props) => {
   const MyIcon = iconMap[type];
 
   if (!MyIcon) {
-    throw new Error('invalid icon type');
+    throw new Error(`invalid icon type: ${type}`);
   } else if (MyIcon.component) {
     return <MyIcon.component className={MyIcon.className} {...props} />;
   }

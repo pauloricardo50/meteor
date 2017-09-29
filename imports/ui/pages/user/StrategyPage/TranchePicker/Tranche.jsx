@@ -37,7 +37,6 @@ const Tranche = ({ tranche, changeTranche, deleteTranche, options }) => (
       style={{ marginLeft: 16 }}
       tooltip={<T id="general.delete" />}
       onClick={() => deleteTranche(tranche.type)}
-      touch={false}
     />
   </div>
 );

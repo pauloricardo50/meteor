@@ -35,19 +35,17 @@ class Search extends Component {
   handleChange = (_, value) => this.setState({ search: value });
 
   render() {
-    const { intl } = this.props;
     const { search } = this.state;
-    const placeholder = intl.formatMessage({ id: 'Search.placeholder' });
 
     return (
       <div style={styles.div}>
         <h2 style={styles.h2}>
           <TextInput
             autoFocus
-            placeholder={placeholder}
+            placeholder={'Search.placeholder'}
             id="search"
             style={styles.input}
-            currentValue={search}
+            value={search}
             onChange={this.handleChange}
           />
         </h2>

@@ -44,6 +44,7 @@ export default class DialogSimple extends Component {
       style,
       autoScroll,
       cancelOnly,
+      ...otherProps,
     } = this.props;
 
     const finalActions =
@@ -91,6 +92,7 @@ export default class DialogSimple extends Component {
           style={buttonStyle}
         />
         <Dialog
+          {...otherProps}
           title={title}
           actions={finalActions}
           modal={modal}

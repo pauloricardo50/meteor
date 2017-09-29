@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import MenuItem from '../Material/MenuItem';
+import Divider from '../Material/Divider';
 import Menu from '../Material/Menu';
 import IconButton from '../IconButton';
+import Icon from '../Icon';
 
 const ITEM_HEIGHT = 48;
 
@@ -19,13 +21,62 @@ export default class DropdownMenu extends Component {
 
   handleRequestClose = () => this.setState({ isOpen: false });
 
+  mapOption = ({
+    id,
+    onClick,
+    link,
+    icon,
+    label,
+    dividerTop,
+    dividerBottom,
+    ...otherProps
+  }) => {
+    const arr = [
+      <MenuItem
+        key={id}
+        onClick={() => {
+          if (onClick) {
+            onClick();
+          }
+          this.handleRequestClose();
+        }}
+        {...otherProps}
+        component={link ? Link : null}
+      >
+        {icon && <Icon type={icon} style={{ marginRight: 8 }} />}
+        {label}
+      </MenuItem>,
+    ];
+
+    // Add support for adding Dividers at the top or bottom of an option
+    if (dividerTop) {
+      arr.unshift(<Divider key={`divider${id}`} />);
+    } else if (dividerBottom) {
+      arr.push(<Divider key={`divider${id}`} />);
+    }
+
+    return arr;
+  };
+
   render() {
-    const { iconType, options, history, style } = this.props;
+    const {
+      iconType,
+      options,
+      history,
+      style,
+      tooltip,
+      tooltipPlacement,
+    } = this.props;
     const { isOpen, anchorEl } = this.state;
 
     return (
       <div style={{ ...style }}>
-        <IconButton onClick={this.handleOpen} type={iconType} />
+        <IconButton
+          onClick={this.handleOpen}
+          type={iconType}
+          tooltip={tooltip}
+          tooltipPlacement={tooltipPlacement}
+        />
 
         <Menu
           id="long-menu"
@@ -39,21 +90,7 @@ export default class DropdownMenu extends Component {
             },
           }}
         >
-          {options.map(option => (
-            <MenuItem
-              key={option.id}
-              onClick={() => {
-                if (option.onClick) {
-                  option.onClick();
-                }
-                this.handleRequestClose();
-              }}
-              {...option}
-              component={option.link ? Link : null}
-            >
-              {option.label}
-            </MenuItem>
-          ))}
+          {options.map(this.mapOption)}
         </Menu>
       </div>
     );
