@@ -32,9 +32,10 @@ export default class Input extends Component {
         className={className}
         onClick={() => {
           setActiveLine(id);
-          if (money && text) {
-            this.input.input.inputElement.focus();
-          } else if (text) {
+          if (this.input && this.input.inputElement) {
+            // Support for react-text-mask
+            this.input.inputElement.focus();
+          } else if (this.input) {
             this.input.focus();
           }
         }}
@@ -46,6 +47,7 @@ export default class Input extends Component {
               <StartTextField
                 {...this.props}
                 setRef={(c) => {
+                  console.log('setting ref', c);
                   this.input = c;
                 }}
                 inputRef={this.input}

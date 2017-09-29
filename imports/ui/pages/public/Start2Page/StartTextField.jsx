@@ -54,7 +54,7 @@ export default class StartTextField extends React.Component {
     }
 
     return (
-      <span style={{ position: 'relative' }}>
+      <span>
         <TextInput
           style={this.getStyles()}
           name={id}
@@ -65,7 +65,7 @@ export default class StartTextField extends React.Component {
           placeholder={placeholder}
           autoFocus={autoFocus}
           pattern={number && '[0-9]*'}
-          ref={c => setRef(c)}
+          inputRef={setRef}
           type={type}
         />
 
@@ -77,7 +77,7 @@ export default class StartTextField extends React.Component {
                 onClick={() => {
                   setFormState(id, '');
                   if (inputRef) {
-                    inputRef.input.inputElement.focus();
+                    inputRef.focus();
                   }
                 }}
                 disabled={!val}

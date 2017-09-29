@@ -8,6 +8,7 @@ import { T } from '/imports/ui/components/general/Translation';
 import RequestSelector from './RequestSelector';
 import SideNavStepper from './SideNavStepper';
 import Icon from '../Icon';
+import DrawerHeader from '../TopNav/DrawerHeader';
 
 const SideNavUser = (props) => {
   const {
@@ -49,6 +50,7 @@ const SideNavUser = (props) => {
       })}
       style={style}
     >
+      <DrawerHeader permanent />
       <div className="scrollable">
         <RequestSelector
           {...props}

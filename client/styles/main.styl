@@ -380,14 +380,18 @@ svg.warning
       align-items: center;
 
 
+.permanent-side-nav
+  +below($med)
+    display: none;
+
 
 .side-nav
   height 100%
   padding 120px 0
   fixed top left
   width: $side-nav;
-  background-color white
-  box-shadow: 0px -2px 40px 0px rgba(0,0,0,0.08);
+  background-color white;
+  // box-shadow: 0px -2px 40px 0px rgba(0,0,0,0.08);
   z-index: z.nav;
   ul.side-nav-list
     list-style: none;
@@ -443,7 +447,27 @@ svg.warning
     background-color: white;
     z-index: 2;
 
+.side-nav-drawer
+  display: flex;
+  flex-direction: column;
+  width: 300px;
 
+.top-bar
+  border-bottom: 1px solid border-grey;
+  width: 100%;
+  height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  a
+    height: 16px;
+    +above($med)
+      height: 24px;
+    img
+      height: 16px;
+      +above($med)
+        height: 24px;
 
 .public-layout
   height: 100%; // fallback
@@ -513,15 +537,12 @@ svg:not(:root) {
   box-shadow: none;
 
 .side-nav-user
-  &.fixed
-    +below($med)
-      display: none;
   transition: all 300ms $bezier;
   background-color: white;
-  border-right: 1px solid grey;
+  // border-right: 1px solid grey;
   min-height: calc(100% - 64px);
   fixed top left;
-  top: 64px;
+  // top: 64px;
   width: 300px;
   z-index: z.nav;
   display: flex;

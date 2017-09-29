@@ -9,9 +9,7 @@ import Divider from '../Material/Divider';
 const styles = {
   div: {
     width: '75%',
-    height: 64,
-    display: 'flex',
-    alignItems: 'center',
+    margin: '16px 0',
   },
   dropdown: {
     width: '100%',

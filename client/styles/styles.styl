@@ -667,8 +667,10 @@ ul.request-map
   justify-content: center;
   align-items: center;
   div.text
-    padding: 40px;
-    max-width: 1000px;
+    padding: 16px;
+    +above($med)
+      padding: 40px;
+    max-width: 800px;
     h1
       color: #aaa;
       margin-bottom: 0;
@@ -679,7 +681,7 @@ ul.request-map
 
 
 .start2
-  width: calc(100% - 40px);
+  width: calc(100% - 32px);
   min-height: 100%;
   margin: 0 16px;
   position: relative;
@@ -690,6 +692,9 @@ ul.request-map
   align-items: flex-start;
   h1.fixed-size
     font-size: 1.4em !important;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     +above($small)
       font-size: 1.6em !important;
     +above($med)
@@ -786,6 +791,7 @@ ul.request-map
           transform: translateY(-50%);
           position: relative;
       span.active
+        position: relative; // for the delete button
         input
           color: inherit !important;
       .inputHider

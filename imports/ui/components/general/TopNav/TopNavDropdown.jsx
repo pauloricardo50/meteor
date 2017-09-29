@@ -4,9 +4,8 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
 import track from '/imports/js/helpers/analytics';
-import Divider from './Material/Divider';
-import { T } from './Translation';
-import DropdownMenu from './DropdownMenu';
+import { T } from '../Translation';
+import DropdownMenu from '../DropdownMenu';
 
 const getMenuItems = (currentUser, history) => {
   const isDev = Roles.userIsInRole(currentUser._id, 'dev');

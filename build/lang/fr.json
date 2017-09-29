@@ -33,6 +33,8 @@
   "Forms.general.auctionMostImportant.speed": "Décaissement le plus rapide",
   "Forms.general.auctionMostImportant.price": "Coût mensuel le plus bas",
 
+  "Start2Form.age.placeholder": "18",
+
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",
@@ -905,6 +907,7 @@
     "Vous devez avoir au moins 20% de fonds propres engagés dans ce projet, sans oublier les frais de notaire qui doivent venir directement de votre épargne personelle, il n'est pas possible d'utiliser votre Prêt Hypothécaire ni votre prévoyance pour les payer.",
   "Start2Form.notEnoughOwnFunds.dialogTitle": "Manque de fonds propres",
   "Start2Form.oldestAge": "L'emprunteur le plus agé a",
+  "Start2Form.oldestAge.placeholder": "18",
   "Start2Form.oldestAge2": "ans.",
   "Start2Form.oldestGender": "Et cette personne est",
   "Start2Form.otherIncomeExists":

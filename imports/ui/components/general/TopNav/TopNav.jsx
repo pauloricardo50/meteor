@@ -2,15 +2,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import Button from '/imports/ui/components/general/Button';
 import Toolbar from 'material-ui/Toolbar/Toolbar';
 
 import track from '/imports/js/helpers/analytics';
 
-import TopNavDrawer from './TopNavDrawer';
-import SearchModal from './SearchModal';
-import { T } from './Translation';
+import Button from '../Button';
+import SearchModal from '../SearchModal';
+import { T } from '../Translation';
 import TopNavDropdown from './TopNavDropdown';
+import TopNavDrawer from './TopNavDrawer';
 
 const TopNav = (props) => {
   const { history, currentUser, loanRequests } = props;

@@ -60,7 +60,7 @@ const TextInput = (props) => {
     id,
     info,
     error,
-    ref,
+    inputRef,
     placeholder,
     fullWidth,
     onChange,
@@ -102,17 +102,15 @@ const TextInput = (props) => {
         type="text"
         style={{ fontSize: 'inherit' }}
         inputComponent={inputComponent || (showMask ? MaskedInput : undefined)}
-        inputProps={
-          inputProps || {
-            value,
-            placeholder: finalPlaceholder,
-            noValidate: true,
-            mask: mask || undefined,
-            // guide: !!mask,
-            pattern: mask ? '[0-9]*' : undefined,
-          }
-        }
-        inputRef={ref}
+        inputProps={{
+          value,
+          placeholder: finalPlaceholder,
+          noValidate: true,
+          mask: mask || undefined,
+          pattern: mask ? '[0-9]*' : undefined,
+          ref: inputRef,
+          ...inputProps,
+        }}
       />
       {info && <FormHelperText>{info}</FormHelperText>}
     </FormControl>
@@ -131,6 +129,7 @@ TextInput.propTypes = {
   inputComponent: PropTypes.func,
   inputProps: PropTypes.object,
   noIntl: PropTypes.bool,
+  inputRef: PropTypes.func,
 };
 
 TextInput.defaultProps = {
@@ -144,6 +143,7 @@ TextInput.defaultProps = {
   inputComponent: null,
   inputProps: undefined,
   noIntl: false,
+  inputRef: undefined,
 };
 
 export default injectIntl(TextInput);

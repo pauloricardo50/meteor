@@ -4,11 +4,9 @@ import { Roles } from 'meteor/alanning:roles';
 import { Redirect } from 'react-router-dom';
 import classnames from 'classnames';
 
-import TopNav from '/imports/ui/components/general/TopNav';
-import SideNavUser from '/imports/ui/components/general/SideNavUser';
-import SideNav from '/imports/ui/components/general/SideNav';
 import ContactButton from '/imports/ui/components/general/ContactButton';
 import track from '/imports/js/helpers/analytics';
+import Navs from './Navs';
 
 // import UserJoyride from '/imports/ui/components/general/UserJoyride';
 
@@ -69,7 +67,7 @@ const getRedirect = (props) => {
   return false;
 };
 
-const showNav = ({ location }) => {
+const getShowSideNav = ({ location }) => {
   if (location.pathname === '/app' || location.pathname === '/app/compare') {
     return false;
   }
@@ -80,12 +78,12 @@ const showNav = ({ location }) => {
 const AppLayout = (props) => {
   const { type, history, render } = props;
   const redirect = getRedirect(props);
+  const showSideNav = getShowSideNav(props);
   const classes = classnames({
     'app-layout': true,
     'always-side-nav': type === 'admin',
-    'no-nav': !showNav(history),
+    'no-nav': !showSideNav,
   });
-
   const isApp = history.location.pathname.slice(0, 4) === '/app';
 
   if (redirect) {
@@ -97,19 +95,10 @@ const AppLayout = (props) => {
   }
   return (
     <div>
-      {/* {isApp && <UserJoyride />} */}
-
-      <TopNav {...props} public={false} />
-
-      {showNav(history) &&
-        (isApp ? <SideNavUser {...props} fixed /> : <SideNav {...props} />)}
+      <Navs {...props} showSideNav={showSideNav} isApp={isApp} />
 
       <main className={classes}>
-        {/* <RouteTransition pathname={props.history.location.pathname}> */}
-        <div className="wrapper">
-          {render(props)}
-        </div>
-        {/* </RouteTransition> */}
+        <div className="wrapper">{render(props)}</div>
       </main>
 
       {isApp && <ContactButton history={history} />}

@@ -30,7 +30,7 @@ export default class Start1Text extends Component {
             trackOncePerSession(`Start1Text - Used textfield ${name}`);
             setStateValue(name, newValue);
           }}
-          ref={(c) => {
+          inputRef={(c) => {
             this.input = c;
           }}
           type="money"
@@ -47,7 +47,9 @@ export default class Start1Text extends Component {
             type="close"
             onClick={() => {
               setStateValue(name, 0, true);
-              this.input.input.inputElement.focus();
+              if (this.input && this.input.inputElement) {
+                this.input.inputElement.focus();
+              }
             }}
             disabled={value === 0}
           />
