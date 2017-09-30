@@ -16,7 +16,7 @@ const styles = {
   },
   savingIcon: {
     position: 'absolute',
-    bottom: 10,
+    top: 16,
     right: -25,
   },
 };
@@ -35,7 +35,10 @@ class ZipAutoComplete extends Component {
   // Has to be done via event to accomodate react-autosuggest
   handleChange = event =>
     this.setState(
-      { searchText: event.target.value, isValid: false },
+      {
+        searchText: event.target.value,
+        isValid: event.target.value === this.state.searchText,
+      },
       this.fetchResults,
     );
 
@@ -77,7 +80,7 @@ class ZipAutoComplete extends Component {
   handleSelect = ({ value }) => {
     if (value !== '-') {
       const zipCode = parseInt(value, 10);
-      const city = value.split(' ')[1];
+      const city = value.slice(5);
       // Set the text input
       this.setState({ searchText: value, isValid: true }, () =>
         this.saveValue(zipCode, city),

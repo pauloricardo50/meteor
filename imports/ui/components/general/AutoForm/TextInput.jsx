@@ -27,7 +27,7 @@ const styles = {
   },
   savingIcon: {
     position: 'absolute',
-    bottom: 10,
+    top: 16,
     right: -25,
   },
   infoStyle: {

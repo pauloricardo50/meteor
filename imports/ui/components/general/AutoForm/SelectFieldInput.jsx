@@ -1,15 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-// import SelectField from '/imports/ui/components/general/Material/SelectField';
-// import MenuItem from '/imports/ui/components/general/Material/MenuItem';
-
-import SavingIcon from './SavingIcon';
-import FormValidator from './FormValidator';
 import cleanMethod from '/imports/api/cleanMethods';
 import { T } from '/imports/ui/components/general/Translation';
-
 import Select from '/imports/ui/components/general/Select';
+import SavingIcon from './SavingIcon';
+import FormValidator from './FormValidator';
 
 const styles = {
   div: {
@@ -17,7 +13,7 @@ const styles = {
   },
   savingIcon: {
     position: 'absolute',
-    top: 30,
+    top: 16,
     right: -30,
   },
 };
@@ -32,14 +28,6 @@ export default class SelectFieldInput extends Component {
       saving: false,
     };
   }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   // Prevent weird component rerenders, which break keyboard+mouse use of this component
-  //   return (
-  //     this.props.currentValue !== nextProps.currentValue ||
-  //     this.state !== nextState
-  //   );
-  // }
 
   handleChange = (_, value) => this.setState({ value }, () => this.saveValue());
 

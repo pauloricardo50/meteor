@@ -40,7 +40,10 @@ export const getBorrowerInfoArray = (borrowers, id) => {
       id: 'zipCode',
       type: 'custom',
       component: 'ZipAutoComplete',
-      componentProps: { savePath: '', initialValue: `${b.zipCode} ${b.city}` },
+      componentProps: {
+        savePath: '',
+        initialValue: b.zipCode && b.city ? `${b.zipCode} ${b.city}` : '',
+      },
       disabled: !!b.sameAddress && !isFirst,
     },
     {
