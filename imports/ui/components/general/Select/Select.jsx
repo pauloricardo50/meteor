@@ -8,6 +8,7 @@ import withStyles from 'material-ui/styles/withStyles';
 
 import Icon from '../Icon';
 import MenuItem from '../Material/MenuItem';
+import Divider from '../Material/Divider';
 
 const styles = {
   icon: {
@@ -17,6 +18,29 @@ const styles = {
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
+
+const mapOption = (option) => {
+  // If a component is provided, return the component
+  if (React.isValidElement(option)) {
+    return option;
+  }
+  const { id, label, icon, dividerTop, dividerBottom } = option;
+  const arr = [
+    <MenuItem value={id} key={id}>
+      {icon && <Icon type={icon} style={{ margin: '0 16px 0 8px' }} />}
+      {label}
+    </MenuItem>,
+  ];
+
+  // Add support for adding Dividers at the top or bottom of an option
+  if (dividerTop) {
+    arr.unshift(<Divider key={`divider${id}`} />);
+  } else if (dividerBottom) {
+    arr.push(<Divider key={`divider${id}`} />);
+  }
+
+  return arr;
+};
 
 const Select = (props) => {
   const {
@@ -47,19 +71,7 @@ const Select = (props) => {
           },
         }}
       >
-        {options.map((option) => {
-          // If a component is provided, return the component
-          if (React.isValidElement(option)) {
-            return option;
-          }
-          const { id: optionId, label: optionLabel, icon } = option;
-          return (
-            <MenuItem value={optionId} key={optionId}>
-              {icon && <Icon type={icon} style={{ margin: '0 16px 0 8px' }} />}
-              {optionLabel}
-            </MenuItem>
-          );
-        })}
+        {options.map(mapOption)}
       </MuiSelect>
     </FormControl>
   );

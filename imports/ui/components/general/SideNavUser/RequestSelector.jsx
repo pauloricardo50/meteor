@@ -39,7 +39,11 @@ const getOptions = (props) => {
   );
 
   array.push(<Divider key="divider" />);
-  array.push({ id: 0, label: <T id="RequestSelector.addRequest" /> });
+  array.push({
+    id: 0,
+    label: <T id="RequestSelector.addRequest" />,
+    dividerTop: true,
+  });
 
   return array;
 };
