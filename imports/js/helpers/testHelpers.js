@@ -12,8 +12,8 @@ import {
   getFormats,
 } from '/imports/startup/localization';
 
-import myTheme from '/imports/js/config/mui_custom';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+// import myTheme from '/imports/js/config/mui_custom';
+// import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 // This has to be imported here for client side tests to use factories
 // Because each test using factories also uses stubCollections
@@ -49,11 +49,11 @@ const customMount = (Component, props, withRouter) => {
     ),
     {
       context: {
-        muiTheme: getMuiTheme(myTheme),
+        // muiTheme: getMuiTheme(myTheme),
         intl,
       },
       childContextTypes: {
-        muiTheme: PropTypes.object,
+        // muiTheme: PropTypes.object,
         intl: intlShape,
       },
     },

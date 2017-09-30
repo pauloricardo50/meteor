@@ -78,7 +78,7 @@ const getShowSideNav = ({ location }) => {
 const AppLayout = (props) => {
   const { type, history, render } = props;
   const redirect = getRedirect(props);
-  const showSideNav = getShowSideNav(props);
+  const showSideNav = getShowSideNav(history);
   const classes = classnames({
     'app-layout': true,
     'always-side-nav': type === 'admin',

@@ -115,7 +115,7 @@ class GoogleMapsAutocomplete extends Component {
             style={{ height: '100%' }}
             autoFocus
             inputComponent={PlacesAutocomplete}
-            classes={classes}
+            classes={{ input: classes.input, underline: classes.underline }}
             inputProps={{
               googleLogo: false, // FIXME https://github.com/kenny-hibino/react-places-autocomplete/issues/103
               inputProps,

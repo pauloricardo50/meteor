@@ -175,11 +175,13 @@ export default class CompareTable extends Component {
       <div className="flex-col center" style={{ width: '100%' }}>
         <div style={{ marginBottom: 8 }}>
           <Button
+            dense
             icon={<Icon type="left" />}
             onClick={() => this.handleScroll(false)}
             primary
           />
           <Button
+            dense
             icon={<Icon type="right" />}
             onClick={() => this.handleScroll(true)}
             primary

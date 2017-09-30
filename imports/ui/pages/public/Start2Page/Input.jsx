@@ -47,7 +47,6 @@ export default class Input extends Component {
               <StartTextField
                 {...this.props}
                 setRef={(c) => {
-                  console.log('setting ref', c);
                   this.input = c;
                 }}
                 inputRef={this.input}
