@@ -6,11 +6,9 @@ import Dialog from '/imports/ui/components/general/Material/Dialog';
 
 import TextInput from '/imports/ui/components/general/TextInput';
 import GoogleMapsAutocomplete from '/imports/ui/components/general/GoogleMapsAutocomplete';
-import GoogleMapContainer from '/imports/ui/components/general/GoogleMapContainer';
 import GoogleMap from '/imports/ui/components/general/GoogleMap';
 
 import { T } from '/imports/ui/components/general/Translation';
-import cleanMethod from '/imports/api/cleanMethods';
 
 export default class PropertyAdder extends Component {
   constructor(props) {
@@ -67,17 +65,21 @@ export default class PropertyAdder extends Component {
           title={<T id="CompareOptions.addProperty" />}
           open={this.state.open}
           onRequestClose={this.handleClose}
-          autoScrollBodyContent
-          style={{ overflow: 'unset', color: 'blue' }}
-          contentStyle={{
-            width: '100%',
-            maxWidth: 'none',
-            overflowY: 'unset',
-            color: 'red',
-          }}
-          // To allow autocomplete to overflow, but not afterwards
-          bodyStyle={isValidPlace ? {} : { overflowY: 'unset' }}
-          repositionOnUpdate
+          fullScreen
+          actions={[
+            <Button
+              key={0}
+              label={<T id="general.cancel" />}
+              onClick={this.handleClose}
+            />,
+            <Button
+              key={1}
+              primary
+              label={<T id="PropertyAdder.add" />}
+              onClick={this.handleSubmit}
+              disabled={!(isValidPlace && value)}
+            />,
+          ]}
         >
           <div
             style={{
@@ -92,6 +94,7 @@ export default class PropertyAdder extends Component {
                 latlng={latlng}
                 address={address}
                 className="property-adder-map"
+                style={{ marginTop: 16 }}
               />
             )}
 
@@ -110,33 +113,15 @@ export default class PropertyAdder extends Component {
                 >
                   <TextInput
                     label={<T id="Comparator.value" />}
-                    floatingLabelFixed
                     onChange={this.handleChange}
-                    currentValue={value}
+                    value={value}
                     id="value"
                     type="money"
+                    inputProps={{ style: { paddingTop: 16 } }}
                   />
                 </form>
               </h2>
             )}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                alignSelf: 'flex-end',
-              }}
-            >
-              <Button
-                label={<T id="general.cancel" />}
-                onClick={this.handleClose}
-              />
-              <Button
-                primary
-                label={<T id="PropertyAdder.add" />}
-                onClick={this.handleSubmit}
-                disabled={!(isValidPlace && value)}
-              />
-            </div>
           </div>
         </Dialog>
       </div>

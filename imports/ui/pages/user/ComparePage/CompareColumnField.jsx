@@ -58,10 +58,11 @@ const CompareColumnField = (props) => {
       return (
         <IntlDate
           value={value}
+          year="numeric"
           month="long"
           day="numeric"
-          hour="2-digit"
-          minute="2-digit"
+          // hour="2-digit"
+          // minute="2-digit"
         />
       );
     case 'boolean':

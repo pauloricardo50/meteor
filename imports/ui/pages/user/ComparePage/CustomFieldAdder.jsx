@@ -4,12 +4,15 @@ import { Meteor } from 'meteor/meteor';
 
 import Button from '/imports/ui/components/general/Button';
 import AutoComplete from '/imports/ui/components/general/AutoComplete';
-// import SelectField from '/imports/ui/components/general/Material/SelectField';
-// import MenuItem from '/imports/ui/components/general/Material/MenuItem';
 import Select from '/imports/ui/components/general/Select';
 
 import { injectIntl } from 'react-intl';
 import shuffle from 'lodash/shuffle';
+import MuiDialog, {
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from 'material-ui/Dialog';
 
 import { T } from '/imports/ui/components/general/Translation';
 
@@ -49,96 +52,105 @@ const suggestions = [
 class CustomFieldAdder extends Component {
   constructor(props) {
     super(props);
-    this.state = { randomSuggestions: shuffle(suggestions) };
+    this.state = {
+      name: '',
+      randomSuggestions: shuffle(suggestions),
+      type: '',
+      open: false,
+    };
   }
+
+  handleOpen = () => this.setState({ open: true });
+  handleClose = () => this.setState({ open: false });
 
   handleChange = (key, value) => this.setState({ [key]: value });
 
-  handleSubmit = () =>
-    this.props.addCustomField(
-      this.state.name,
-      this.state.type,
-      this.props.handleClose,
-    );
+  handleSubmit = (event) => {
+    const { type, name } = this.state;
+    event.preventDefault();
+    if (type && name) {
+      this.props.addCustomField(name, type, this.handleClose);
+    }
+  };
 
   render() {
-    const { name, type: currentType, randomSuggestions } = this.state;
+    const { name, type: currentType, randomSuggestions, open } = this.state;
     const f = this.props.intl.formatMessage;
 
     return (
-      <div className="flex-col center">
-        <AutoComplete
-          // anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-          label={<T id="CustomFieldAdder.name" />}
-          value={name}
-          onChange={value => this.handleChange('name', value)}
-          onSelect={(chosenRequest, index) => {
-            console.log('fix this');
-            const type = randomSuggestions[index].type;
-            this.handleChange('type', type);
-            Meteor.defer(() =>
-              this.setState({ randomSuggestions: shuffle(suggestions) }),
-            );
-          }}
-          // openOnFocus
-          suggestions={randomSuggestions.map(suggestion => ({
-            text: f({ id: `CustomFieldAdder.${suggestion.id}` }),
-            value: suggestion.id,
-          }))}
-          // filter={AutoComplete.fuzzyFilter}
-          // menuCloseDelay={0}
-          // maxSearchResults={5}
-          // Use defer to make sure suggestions are shuffled again only
-          // after all changes have been made
-          // onClose={() =>
-          //   Meteor.defer(() =>
-          //     this.setState({ randomSuggestions: shuffle(suggestions) }),
-          //   )}
-        />
+      <div>
+        <Button raised primary dense label="+" onClick={this.handleOpen} />
+        <MuiDialog
+          open={open}
+          onRequestClose={this.handleClose}
+          // Reset fields
+          onExited={() => this.setState({ name: '', type: '' })}
+        >
+          <DialogTitle>
+            <T id="CustomFieldAdder.title" />
+          </DialogTitle>
+          {/* overflow to allow autocomplete to display its results */}
+          <DialogContent style={{ overflow: 'visible' }}>
+            <form
+              action="submit"
+              onSubmit={this.handleSubmit}
+              style={{ padding: 16 }}
+            >
+              <AutoComplete
+                label={<T id="CustomFieldAdder.name" />}
+                value={name}
+                onChange={event =>
+                  this.handleChange('name', event.target.value || '')}
+                onSelect={({ type, label }) => {
+                  this.handleChange('type', type);
+                  this.handleChange('name', label);
+                  Meteor.defer(() =>
+                    this.setState({ randomSuggestions: shuffle(suggestions) }),
+                  );
+                }}
+                suggestions={randomSuggestions.map(suggestion => ({
+                  label: f({ id: `CustomFieldAdder.${suggestion.id}` }),
+                  value: suggestion.id,
+                  type: suggestion.type,
+                }))}
+                // filter={(suggestion, inputValue) =>
+                //   suggestion.label.toLowerCase().slice(0, inputValue.length) ===
+                //   inputValue}
+              />
 
-        <Select
-          label={<T id="CustomFieldAdder.type" />}
-          value={currentType}
-          onChange={(_, value) => this.handleChange('type', value)}
-          options={types.map(type => ({
-            id: type,
-            label: <T id={`CustomFieldAdder.${type}`} />,
-          }))}
-        >
-          {/* <MenuItem value={null} />
-          {types.map(type => (
-            <MenuItem
-              key={type}
-              value={type}
-              primaryText={<T id={`CustomFieldAdder.${type}`} />}
+              <Select
+                id="CustomFieldAdder.type"
+                label={<T id="CustomFieldAdder.type" />}
+                value={currentType}
+                onChange={(_, value) => this.handleChange('type', value)}
+                options={types.map(type => ({
+                  id: type,
+                  label: <T id={`CustomFieldAdder.${type}`} />,
+                }))}
+                style={{ marginTop: 32 }}
+                renderValue={v => <T id={`CustomFieldAdder.${v}`} />}
+              />
+            </form>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              label={<T id="general.cancel" />}
+              onClick={this.handleClose}
             />
-          ))} */}
-        </Select>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            alignSelf: 'flex-end',
-          }}
-        >
-          <Button
-            label={<T id="general.cancel" />}
-            onClick={this.props.handleClose}
-          />
-          <Button
-            primary
-            label={<T id="CustomFieldAdder.add" />}
-            onClick={this.handleSubmit}
-            disabled={!(currentType && name)}
-          />
-        </div>
+            <Button
+              primary
+              label={<T id="CustomFieldAdder.add" />}
+              onClick={this.handleSubmit}
+              disabled={!(currentType && name)}
+            />
+          </DialogActions>
+        </MuiDialog>
       </div>
     );
   }
 }
 
 CustomFieldAdder.propTypes = {
-  handleClose: PropTypes.func,
   addCustomField: PropTypes.func.isRequired,
   intl: PropTypes.objectOf(PropTypes.any).isRequired,
 };

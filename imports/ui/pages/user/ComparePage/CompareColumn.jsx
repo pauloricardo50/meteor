@@ -95,8 +95,8 @@ export default class CompareColumn extends Component {
         })}
         style={style}
       >
-        {fields.map(field =>
-          (<li
+        {fields.map(field => (
+          <li
             key={field.id}
             className={classnames({
               'text-ellipsis': true,
@@ -105,16 +105,18 @@ export default class CompareColumn extends Component {
             onMouseEnter={() => onHoverEnter(field.id)}
             onMouseLeave={onHoverLeave}
           >
-            {editing && !field.noEdit
-              ? <CompareColumnEditingField
+            {editing && !field.noEdit ? (
+              <CompareColumnEditingField
                 {...this.props}
                 field={field}
                 parentState={this.state}
                 onChange={this.handleChange}
               />
-              : <CompareColumnField field={field} property={property} />}
-          </li>),
-        )}
+            ) : (
+              <CompareColumnField field={field} property={property} />
+            )}
+          </li>
+        ))}
         <CompareColumnFooter
           id={property._id}
           deleteProperty={deleteProperty}

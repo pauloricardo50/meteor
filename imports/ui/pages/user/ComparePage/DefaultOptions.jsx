@@ -26,18 +26,17 @@ const DefaultOptions = ({ comparator, changeComparator }) => {
           flexWrap: 'wrap',
         }}
       >
-        {textFields.map(({ id, type }) =>
-          (<TextInput
+        {textFields.map(({ id, type }) => (
+          <TextInput
             key={id}
             label={<T id={`DefaultOptions.${id}`} />}
             id={id}
             onChange={changeComparator}
-            currentValue={comparator[id]}
-            floatingLabelFixed
+            value={comparator[id]}
             type={type}
             style={{ width: 160, marginRight: 16 }}
-          />),
-        )}
+          />
+        ))}
       </div>
     </div>
   );

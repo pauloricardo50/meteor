@@ -25,7 +25,7 @@ const AdvancedOptions = ({
         min={0}
         max={comparator.usageType === 'secondary' ? 0.7 : 0.8}
         step={0.01}
-        currentValue={comparator.borrowRatio}
+        value={comparator.borrowRatio}
         onChange={changeComparator}
         labelMin="0%"
         labelMax={comparator.usageType === 'secondary' ? '70%' : '80%'}
@@ -37,7 +37,7 @@ const AdvancedOptions = ({
       label={<T id="Forms.usageType" />}
       id="usageType"
       onChange={changeComparator}
-      currentValue={comparator.usageType}
+      value={comparator.usageType}
       intlPrefix="Forms"
     />
 

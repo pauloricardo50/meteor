@@ -44,9 +44,7 @@ const StartSlider = ({
           initialValue ||
           sliderMin
         }
-        onChange={(v) => {
-          setFormState(id, Math.round(v));
-        }}
+        onChange={v => setFormState(id, Math.round(v))}
         onBeforeChange={() => {
           setActiveLine(id);
           if (onDragStart) {

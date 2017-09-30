@@ -14,7 +14,6 @@ const Dialog = (props) => {
     <MuiDialog
       ignoreBackdropClick={important}
       ignoreEscapeKeyUp={important}
-      // withResponsiveFullScreen
       {...otherProps}
     >
       <DialogTitle>{title}</DialogTitle>
@@ -31,6 +30,7 @@ Dialog.propTypes = {
   // A dialog can only be closed using the buttons if this boolean is set
   important: PropTypes.bool,
   title: PropTypes.node,
+  text: PropTypes.node,
   actions: PropTypes.array,
   children: PropTypes.node,
 };
@@ -38,6 +38,7 @@ Dialog.propTypes = {
 Dialog.defaultProps = {
   important: false,
   title: undefined,
+  text: undefined,
   actions: undefined,
   children: undefined,
 };

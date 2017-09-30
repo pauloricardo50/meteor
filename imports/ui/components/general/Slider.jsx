@@ -14,13 +14,13 @@ const styles = {
   },
   labelMin: {
     position: 'absolute',
-    top: 24,
+    top: 16,
     left: 8,
   },
   labelMax: {
     position: 'absolute',
-    top: 24,
-    right: 8,
+    top: 16,
+    right: 0,
   },
 };
 
@@ -33,13 +33,12 @@ const Slider = ({
   max,
   step,
   onChange,
-  currentValue,
+  value,
   style,
-  sliderStyle,
 }) => {
-  if (currentValue > max) {
+  if (value > max) {
     onChange(id, max);
-  } else if (currentValue < min) {
+  } else if (value < min) {
     onChange(id, min);
   }
 
@@ -52,9 +51,8 @@ const Slider = ({
           min={min}
           max={max}
           step={step}
-          onChange={(event, newValue) => onChange(id, newValue)}
-          value={currentValue}
-          // sliderStyle={{ ...sliderStyle, ...styles.slider }}
+          onChange={newValue => onChange(id, newValue)}
+          value={value}
         />
         <p className="secondary" style={styles.labelMin}>
           {labelMin}
@@ -76,7 +74,7 @@ Slider.propTypes = {
   max: PropTypes.number.isRequired,
   step: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
-  currentValue: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
   style: PropTypes.objectOf(PropTypes.any),
   sliderStyle: PropTypes.objectOf(PropTypes.any),
 };

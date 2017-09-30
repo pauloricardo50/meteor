@@ -25,7 +25,7 @@ const CompareColumnEditingField = (props) => {
     case 'number':
       return (
         <TextInput
-          currentValue={parentState[field.id]}
+          value={parentState[field.id]}
           id={field.id}
           type="number"
           onChange={onChange}
@@ -34,7 +34,7 @@ const CompareColumnEditingField = (props) => {
     case 'money':
       return (
         <TextInput
-          currentValue={parentState[field.id]}
+          value={parentState[field.id]}
           id={field.id}
           type="money"
           onChange={onChange}
@@ -42,18 +42,22 @@ const CompareColumnEditingField = (props) => {
       );
     case 'date':
       return (
-        // FIXME
         <DateInput
-          currentValue={parentState[field.id]}
+          value={parentState[field.id]}
           id={field.id}
-          onChange={onChange}
+          onChange={(newDate, id) => onChange(id, newDate)}
           style={styles.field}
+          // withPortal
+          datePickerProps={{
+            withPortal: true,
+          }}
+          // withFullScreenPortal
         />
       );
     case 'boolean':
       return (
         <RadioButtons
-          currentValue={parentState[field.id]}
+          value={parentState[field.id]}
           id={field.id}
           onChange={onChange}
           options={[true, false]}
@@ -64,7 +68,7 @@ const CompareColumnEditingField = (props) => {
     case 'percent':
       return (
         <TextInput
-          currentValue={parentState[field.id]}
+          value={parentState[field.id]}
           id={field.id}
           type="percent"
           onChange={onChange}
@@ -73,7 +77,7 @@ const CompareColumnEditingField = (props) => {
     case 'text':
       return (
         <TextInput
-          currentValue={parentState[field.id]}
+          value={parentState[field.id]}
           id={field.id}
           onChange={onChange}
         />

@@ -28,6 +28,7 @@ export default class DateInput extends Component {
       minDate,
       maxDate,
       openDirection,
+      datePickerProps,
       ...otherProps
     } = this.props;
     const { focused } = this.state;
@@ -51,6 +52,7 @@ export default class DateInput extends Component {
           onDateChange: date => onChange(date ? date.toDate() : undefined, id),
           onFocusChange: ({ focused: nextFocused }) =>
             this.setState({ focused: nextFocused }),
+          ...datePickerProps,
         }}
       />
     );
