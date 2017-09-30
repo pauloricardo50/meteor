@@ -32,14 +32,7 @@ export default class AllUsersTable extends Component {
   };
 
   render() {
-    return (
-      <Table
-        style={{ height: 800 }}
-        selectable={false}
-        columns={columns}
-        rows={this.rows}
-      />
-    );
+    return <Table selectable={false} columns={columns} rows={this.rows} />;
   }
 }
 

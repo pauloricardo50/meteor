@@ -45,7 +45,9 @@ const getDefaults = ({ type, id, onChange, value }) => {
       };
     default:
       return {
-        onChangeHandler: event => onChange(id, event.target.value),
+        // Pass event as third argument, for some components which need it
+        // like react-autosuggest
+        onChangeHandler: event => onChange(id, event.target.value, event),
         showMask: false,
         value,
       };

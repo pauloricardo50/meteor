@@ -24,7 +24,11 @@ const SideNavUser = (props) => {
 
   // Return an empty side nav if there is no loanRequest
   if (loanRequests.length <= 0) {
-    return <nav className="side-nav-user hidden-xs" />;
+    return (
+      <nav className="side-nav-user hidden-xs">
+        <DrawerHeader permanent />
+      </nav>
+    );
   }
 
   // Get the pathname, remove the leading '/', and split by '/'

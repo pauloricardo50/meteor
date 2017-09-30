@@ -1,62 +1,50 @@
-/* eslint-disable flowtype/require-valid-file-annotation */
-/* eslint-disable react/no-array-index-key */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
-import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import { MenuItem } from 'material-ui/Menu';
-// import match from 'autosuggest-highlight/match';
-// import parse from 'autosuggest-highlight/parse';
 import { withStyles } from 'material-ui/styles';
+import TextInput from '../TextInput';
 
-function renderInput(inputProps) {
-  const { classes, autoFocus, value, ref, onChange, ...other } = inputProps;
+const renderInput = (inputProps) => {
+  const {
+    classes,
+    autoFocus,
+    value,
+    ref,
+    onChange,
+    onBlur,
+    id,
+    placeholder,
+    ...other
+  } = inputProps;
 
   return (
-    <TextField
+    <TextInput
+      id={`${id}autocomplete`}
       autoFocus={autoFocus}
       className={classes.textField}
       value={value}
       inputRef={ref}
-      InputProps={{
-        classes: {
-          input: classes.input,
-        },
+      inputProps={{
+        ...other,
       }}
-      onChange={e => onChange(e.target.value)}
+      onChange={(_, __, event) => onChange(event)}
+      onBlur={onBlur}
+      classes={{ input: classes.input }}
+      placeholder={placeholder}
       {...other}
     />
   );
-}
+};
 
-function renderSuggestion(suggestion, { query, isHighlighted }) {
-  // const matches = match(suggestion.label, query);
-  // const parts = parse(suggestion.label, matches);
+const renderSuggestion = (suggestion, { isHighlighted }) => (
+  <MenuItem selected={isHighlighted} component="div">
+    {suggestion.label}
+  </MenuItem>
+);
 
-  return (
-    <MenuItem selected={isHighlighted} component="div">
-      {suggestion.label}
-      {/* <div>
-        {parts.map(
-          (part, index) =>
-            (part.highlight ? (
-              <span key={index} style={{ fontWeight: 300 }}>
-                {part.text}
-              </span>
-            ) : (
-              <strong key={index} style={{ fontWeight: 500 }}>
-                {part.text}
-              </strong>
-            )),
-        )}
-      </div> */}
-    </MenuItem>
-  );
-}
-
-function renderSuggestionsContainer(options) {
+const renderSuggestionsContainer = (options) => {
   const { containerProps, children } = options;
 
   return (
@@ -64,17 +52,14 @@ function renderSuggestionsContainer(options) {
       {children}
     </Paper>
   );
-}
+};
 
-function getSuggestionValue(suggestion) {
-  return suggestion.label;
-}
+const getSuggestionValue = suggestion => suggestion.value;
 
 const styles = theme => ({
   container: {
     flexGrow: 1,
     position: 'relative',
-    // height: 200,
     marginBottom: 16,
   },
   suggestionsContainerOpen: {
@@ -83,6 +68,7 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit * 3,
     left: 0,
     right: 0,
+    zIndex: 1,
   },
   suggestion: {
     display: 'block',
@@ -100,32 +86,25 @@ const styles = theme => ({
 class AutoComplete extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      suggestions: [],
-    };
+    this.state = { suggestions: [] };
   }
 
   handleSuggestionsFetchRequested = ({ value }) =>
-    this.setState({
-      suggestions: this.getSuggestions(value),
-    });
+    this.setState({ suggestions: this.getSuggestions(value) });
 
-  handleSuggestionsClearRequested = () =>
-    this.setState({
-      suggestions: [],
-    });
+  handleSuggestionsClearRequested = () => this.setState({ suggestions: [] });
 
   getSuggestions = (value) => {
+    const { suggestions, maxCount, filter } = this.props;
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
     let count = 0;
 
     return inputLength === 0
       ? []
-      : this.props.suggestions.filter((suggestion) => {
-        const keep =
-            count < 5 &&
-            suggestion.label.toLowerCase().slice(0, inputLength) === inputValue;
+      : suggestions.filter((suggestion) => {
+        const keep = count < maxCount && filter(suggestion, inputValue);
+        // suggestion.label.toLowerCase().slice(0, inputLength) === inputValue;
 
         if (keep) {
           count += 1;
@@ -135,12 +114,23 @@ class AutoComplete extends Component {
       });
   };
 
+  // Fix for async data update
+  componentDidUpdate(prevProps) {
+    if (
+      JSON.stringify(prevProps.suggestions) !==
+      JSON.stringify(this.props.suggestions)
+    ) {
+      this.handleSuggestionsFetchRequested({ value: this.props.value });
+    }
+  }
+
   render() {
     const {
       classes,
       onSelect,
       value,
       onChange,
+      onBlur,
       label,
       placeholder,
       disabled,
@@ -166,6 +156,7 @@ class AutoComplete extends Component {
           classes,
           value,
           onChange,
+          onBlur,
           label,
           placeholder,
           disabled,
@@ -193,6 +184,14 @@ AutoComplete.propTypes = {
   suggestions: PropTypes.arrayOf(PropTypes.object).isRequired,
   classes: PropTypes.object.isRequired,
   label: PropTypes.node,
+  filter: PropTypes.func,
+  maxCount: PropTypes.number,
+};
+
+AutoComplete.defaultProps = {
+  filter: () => true,
+  label: undefined,
+  maxCount: 5,
 };
 
 export default withStyles(styles)(AutoComplete);

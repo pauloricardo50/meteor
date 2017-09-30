@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import AutoComplete from '../AutoComplete';
-import MenuItem from '/imports/ui/components/general/Material/MenuItem';
+import { MenuItem } from 'material-ui/Menu';
 
 import { T } from '/imports/ui/components/general/Translation';
 import { getLocations } from '/imports/js/helpers/APIs';
 import cleanMethod from '/imports/api/cleanMethods';
 
 import SavingIcon from '/imports/ui/components/general/AutoForm/SavingIcon';
+import AutoComplete from '../AutoComplete';
 
 const styles = {
   div: {
@@ -28,31 +28,36 @@ class ZipAutoComplete extends Component {
       searchText: this.props.initialValue,
       data: [],
       saving: false,
+      isValid: false,
     };
   }
 
-  handleChange = searchText => this.setState({ searchText }, this.fetchResults);
+  // Has to be done via event to accomodate react-autosuggest
+  handleChange = event =>
+    this.setState(
+      { searchText: event.target.value, isValid: false },
+      this.fetchResults,
+    );
 
   fetchResults = () => {
     const { searchText } = this.state;
-    if (searchText && searchText.length >= 4) {
-      const zipCode = searchText.slice(0, 4);
+    const zipCode = searchText.slice(0, 4);
+
+    if (zipCode && zipCode.length === 4) {
       getLocations(zipCode)
         .then((array) => {
           if (array && array.length) {
             this.setState({
               data: array.map(city => ({
                 value: `${zipCode} ${city}`,
-                label: <MenuItem primaryText={`${zipCode} ${city}`} />,
+                label: `${zipCode} ${city}`,
               })),
             });
           } else {
             this.setState({
               data: [
                 {
-                  label: (
-                    <MenuItem primaryText={<T id="ZipAutoComplete.empty" />} />
-                  ),
+                  label: '-',
                   value: '-',
                 },
               ],
@@ -60,18 +65,27 @@ class ZipAutoComplete extends Component {
           }
         })
         .catch(console.log);
+    } else {
+      // Remove data, and save undefined values to DB if the input is empty
+      this.setState(
+        { data: [], isValid: false },
+        () => !searchText && this.saveValue(),
+      );
     }
   };
 
-  handleSelect = ({ value: result }) => {
-    if (result !== '-') {
-      const zipCode = parseInt(result, 10);
-      const city = result.split(' ')[1];
-      this.saveValue(zipCode, city);
+  handleSelect = ({ value }) => {
+    if (value !== '-') {
+      const zipCode = parseInt(value, 10);
+      const city = value.split(' ')[1];
+      // Set the text input
+      this.setState({ searchText: value, isValid: true }, () =>
+        this.saveValue(zipCode, city),
+      );
     }
   };
 
-  saveValue = (zipCode, city) => {
+  saveValue = (zipCode = null, city = '') => {
     const { updateFunc, docId, savePath } = this.props;
 
     // Save data to DB
@@ -95,19 +109,28 @@ class ZipAutoComplete extends Component {
       });
   };
 
+  handleBlur = () => {
+    // If the user enters random stuff in the input and blurs it out, remove
+    // content and save undefined values to DB
+    if (!this.state.isValid) {
+      this.setState({ searchText: '' }, this.saveValue);
+    }
+  };
+
   render() {
     const { searchText, data, saving } = this.state;
     const { disabled, style, label } = this.props;
     return (
       <div style={{ ...styles.div, ...style }}>
         <AutoComplete
+          id="ZipAutoComplete"
           label={label}
           value={searchText}
-          placeholder={'ZipAutoComplete.placeholder'}
+          placeholder="ZipAutoComplete.placeholder"
           onChange={this.handleChange}
           onSelect={this.handleSelect}
+          onBlur={this.handleBlur}
           suggestions={data}
-          // filter={() => true} // show all results, to allow showing an empty result
           disabled={disabled}
           textFieldStyle={style}
           style={style}
