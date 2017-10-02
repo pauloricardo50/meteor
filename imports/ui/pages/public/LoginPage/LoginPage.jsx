@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { addUserTracking } from '/imports/js/helpers/analytics';
+import { Meteor } from 'meteor/meteor';
 
+import { addUserTracking } from '/imports/js/helpers/analytics';
 import { T } from '/imports/ui/components/general/Translation';
 import Accounts from './Accounts';
 
@@ -19,15 +20,32 @@ const styles = {
 };
 
 const handlePasswordReset = () => {
-  console.log('jejes');
+  console.log('resetting password (not)');
 };
 
-const LoginPage = () => (
+const LoginPage = props => (
   <section style={styles.section}>
     <h1>
       <T id="LoginPage.title" />
     </h1>
-    <Accounts.ui.LoginForm />
+    <Accounts.ui.LoginForm
+      onSignedInHook={() => props.history.push('/app')}
+      onPostSignUpHook={() => {
+        props.history.push('/app');
+        Meteor.call('sendVerificationLink', (error, response) => {
+          if (error) {
+            console.log(error);
+          }
+          console.log(response);
+        });
+        // Create user for analytics
+        addUserTracking(Meteor.userId(), {
+          email: Meteor.user().emails[0].address,
+          id: Meteor.userId(),
+        });
+      }}
+      onResetPasswordHook={handlePasswordReset}
+    />
   </section>
 );
 

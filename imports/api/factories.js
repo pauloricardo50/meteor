@@ -9,8 +9,9 @@ import Properties from './properties/properties';
 import AdminActions from './adminActions/adminActions';
 
 let chance;
-if (Meteor.isTest) {
-  chance = require('chance').Chance();
+// if (Meteor.isTest) {
+if (false) {
+  // chance = require('chance').Chance();
 } else {
   chance = { email: () => 'test@test.com' };
 }

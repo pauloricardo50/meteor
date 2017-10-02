@@ -248,5 +248,5 @@ Accounts.ui.FormMessage = FormMessage;
 // Accounts.ui.SocialButtons = SocialButtons;
 
 // Export the themed version.
-export { Accounts, STATES };
+export { STATES };
 export default Accounts;
