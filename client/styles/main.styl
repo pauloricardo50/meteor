@@ -382,18 +382,17 @@ svg.warning
       align-items: center;
 
 
-.permanent-side-nav
+.permanent-side-nav:not(.always-side-nav)
   +below($med)
     display: none;
 
 
 .side-nav
   height 100%
-  padding 120px 0
+  // padding 120px 0
   fixed top left
   width: $side-nav;
   background-color white;
-  // box-shadow: 0px -2px 40px 0px rgba(0,0,0,0.08);
   z-index: z.nav;
   ul.side-nav-list
     list-style: none;
@@ -436,11 +435,15 @@ svg.warning
           max-width: 160px;
           overflow: hidden;
           text-overflow: ellipsis;
-  img.logo
-    position: absolute;
+  .logo
     width: $side-nav - 16px;
-    top: 40px;
-    left: 8px
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 32px;
+    img
+      height: 24px;
   .logout
     position: absolute;
     bottom: 0;

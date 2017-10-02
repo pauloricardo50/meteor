@@ -95,7 +95,12 @@ const AppLayout = (props) => {
   }
   return (
     <div>
-      <Navs {...props} showSideNav={showSideNav} isApp={isApp} />
+      <Navs
+        {...props}
+        showSideNav={showSideNav}
+        isApp={isApp}
+        isAdmin={type === 'admin'}
+      />
 
       <main className={classes}>
         <div className="wrapper">{render(props)}</div>

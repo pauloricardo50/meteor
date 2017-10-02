@@ -61,13 +61,8 @@ const SideNav = (props) => {
 
   return (
     <nav className={classes}>
-      <Link to="/home" style={{ height: 24 }}>
-        <img
-          src="/img/logo_black.svg"
-          alt="e-Potek"
-          style={{ height: 24 }}
-          className="logo"
-        />
+      <Link to="/home" className="logo">
+        <img src="/img/logo_black.svg" alt="e-Potek" />
       </Link>
 
       <ul className="side-nav-list">
