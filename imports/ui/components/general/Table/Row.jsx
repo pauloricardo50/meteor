@@ -10,7 +10,7 @@ const Row = ({ row, columnOptions }) => (
         key={j}
         style={columnOptions[j].style}
         numeric={columnOptions[j].numeric}
-        padding={columnOptions[j].padding}
+        padding={columnOptions[j].padding || 'dense'}
       >
         {columnOptions[j].format ? columnOptions[j].format(column) : column}
       </TableCell>

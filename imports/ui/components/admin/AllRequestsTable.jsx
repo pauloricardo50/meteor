@@ -7,22 +7,43 @@ import moment from 'moment';
 import { IntlNumber } from '/imports/ui/components/general/Translation';
 
 const columnOptions = [
-  { id: '#', style: { width: 32, textAlign: 'left' } },
-  { id: 'Nom', style: { width: 40, textAlign: 'left' } },
-  { id: 'Créé le', style: { width: 40, textAlign: 'left' } },
-  { id: 'Updaté le', style: { width: 40, textAlign: 'left' } },
-  { id: 'Étape', style: { width: 40, textAlign: 'left' } },
+  {
+    id: '#',
+    // style: { width: 32, textAlign: 'left' },
+  },
+  {
+    id: 'Nom',
+    // style: { width: 40, textAlign: 'left' },
+  },
+  {
+    id: 'Créé le',
+    // style: { width: 40, textAlign: 'left' },
+  },
+  {
+    id: 'Updaté le',
+    // style: { width: 40, textAlign: 'left' },
+  },
+  {
+    id: 'Étape',
+    // style: { width: 40, textAlign: 'left' },
+    numeric: true,
+  },
   {
     id: 'Valeur du bien',
-    style: { width: 40, textAlign: 'left' },
+    // style: { width: 40, textAlign: 'left' },
     format: value => <IntlNumber value={value} format="money" />,
+    numeric: true,
   },
   {
     id: 'Fortune totale',
-    style: { width: 40, textAlign: 'left' },
+    // style: { width: 40, textAlign: 'left' },
     format: value => <IntlNumber value={value} format="money" />,
+    numeric: true,
   },
-  { id: 'Qualité', style: { width: 40, textAlign: 'left' } },
+  {
+    id: 'Qualité',
+    // style: { width: 40, textAlign: 'left' },
+  },
 ];
 
 export default class AllRequestsTable extends Component {

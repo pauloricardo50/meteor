@@ -24,7 +24,7 @@ const SelectableRow = ({ row, columnOptions, isSelected, onSelect }) => (
         key={j}
         style={columnOptions[j].style}
         numeric={columnOptions[j].numeric}
-        padding={columnOptions[j].padding}
+        padding={columnOptions[j].padding || 'dense'}
       >
         {/* if the format function is provided, format the column, otherwise
           simply return the data */}
