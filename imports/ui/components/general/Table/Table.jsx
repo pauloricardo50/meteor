@@ -120,7 +120,7 @@ export default class Table extends Component {
       style,
       noIntl,
     } = this.props;
-    const { data, rowsPerPage, page, selected } = this.state;
+    const { data, rowsPerPage, page, selected, order, orderBy } = this.state;
     const rowCount = data.length;
 
     return (
@@ -135,6 +135,8 @@ export default class Table extends Component {
             numSelected={selected ? selected.length : 0}
             rowCount={rowCount}
             noIntl={noIntl}
+            order={order}
+            orderBy={orderBy}
           />
           <TableBody
             data={data}

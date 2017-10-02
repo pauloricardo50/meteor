@@ -40,7 +40,12 @@ const TableHeader = ({
           { id, style, intlValues, label, numeric, padding = 'dense' },
           index,
         ) => (
-          <TableCell key={id} style={style} numeric={numeric} padding={padding}>
+          <TableCell
+            key={id}
+            style={style}
+            numeric={numeric}
+            padding={padding}
+          >
             {sortable ? (
               <Tooltip
                 title={<T id="Table.sort" />}
@@ -53,16 +58,16 @@ const TableHeader = ({
                   onClick={() => onSort(index)}
                 >
                   {label ||
-                    (noIntl ? (
-                      id
-                    ) : (
-                      <T id={id} values={intlValues} list="table" />
-                    ))}
+                      (noIntl ? (
+                        id
+                      ) : (
+                        <T id={id} values={intlValues} list="table" />
+                      ))}
                 </TableSortLabel>
               </Tooltip>
             ) : (
               label ||
-              (noIntl ? id : <T id={id} values={intlValues} list="table" />)
+                (noIntl ? id : <T id={id} values={intlValues} list="table" />)
             )}
           </TableCell>
         ),
