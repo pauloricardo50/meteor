@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import { _ } from 'lodash';
 import sinon from 'sinon';
-import testRequire from '/imports/js/helpers/testRequire';
+import testRequire from '/imports/js/helpers/testHelpers/testRequire';
 
 // import {
 //   getAuthToken,

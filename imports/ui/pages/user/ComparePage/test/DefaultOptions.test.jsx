@@ -1,12 +1,13 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import { shallow } from '/imports/js/helpers/testHelpers/enzyme';
 import { spy } from 'sinon';
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 
-import getMountedComponent, {
+import {
+  getMountedComponent,
   stubCollections,
 } from '/imports/js/helpers/testHelpers';
 

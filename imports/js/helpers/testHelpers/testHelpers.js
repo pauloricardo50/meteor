@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider, intlShape } from 'react-intl';
 import StubCollections from 'meteor/hwillson:stub-collections';
@@ -11,9 +10,6 @@ import {
   getTranslations,
   getFormats,
 } from '/imports/startup/localization';
-
-// import myTheme from '/imports/js/config/mui_custom';
-// import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 // This has to be imported here for client side tests to use factories
 // Because each test using factories also uses stubCollections
@@ -25,6 +21,7 @@ import Offers from '/imports/api/offers/offers';
 import AdminActions from '/imports/api/adminActions/adminActions';
 import Comparators from '/imports/api/comparators/comparators';
 import Properties from '/imports/api/properties/properties';
+import { mount } from './enzyme';
 
 // Mounts a component for testing, and wraps it around everything it needs
 const customMount = (Component, props, withRouter) => {
@@ -48,14 +45,8 @@ const customMount = (Component, props, withRouter) => {
       <Component {...props} />
     ),
     {
-      context: {
-        // muiTheme: getMuiTheme(myTheme),
-        intl,
-      },
-      childContextTypes: {
-        // muiTheme: PropTypes.object,
-        intl: intlShape,
-      },
+      context: { intl },
+      childContextTypes: { intl: intlShape },
     },
   );
 };
@@ -71,7 +62,7 @@ const customMount = (Component, props, withRouter) => {
  *
  * @return {object} A mounted component, ready for testing with Enzyme
  */
-const getMountedComponent = (Component, props, withRouter) => {
+export const getMountedComponent = (Component, props, withRouter) => {
   if (!getMountedComponent.mountedComponent) {
     getMountedComponent.mountedComponent = customMount(
       Component,
@@ -94,8 +85,6 @@ getMountedComponent.reset = (useStubs = true) => {
     StubCollections.stub([LoanRequests, Borrowers, Offers, Meteor.users]);
   }
 };
-
-export default getMountedComponent;
 
 /**
  * stubCollections - Stubs collections, for tests using Factory package

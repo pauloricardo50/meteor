@@ -1,7 +1,8 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import { shallow } from '/imports/js/helpers/testHelpers/enzyme';
+import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 import { stubCollections } from '/imports/js/helpers/testHelpers';
 
@@ -36,11 +37,14 @@ describe('<Comparator />', () => {
     expect(wrapper.hasClass('comparator')).to.equal(true);
   });
 
-  it('keeps the name field at the top, even with custom fields', () => {
-    const childWrapper = wrapper.find(CompareTable).dive();
+  // This test requires window to be defined
+  if (Meteor.isClient) {
+    it('keeps the name field at the top, even with custom fields', () => {
+      const childWrapper = wrapper.find(CompareTable).dive();
 
-    expect(childWrapper.instance().props.fields[0].id).to.equal('name');
-  });
+      expect(childWrapper.instance().props.fields[0].id).to.equal('name');
+    });
+  }
 
   it('renders CompareOptions and a CompareTable', () => {
     expect(wrapper.find(CompareOptions).length).to.equal(1);

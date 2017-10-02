@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import getMountedComponent from '/imports/js/helpers/testHelpers';
+import { getMountedComponent } from '/imports/js/helpers/testHelpers';
 
 import Start2Page from '../Start2Page';
 import StartResult from '../StartResult';

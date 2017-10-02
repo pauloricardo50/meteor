@@ -7,6 +7,10 @@ import track from '/imports/js/helpers/analytics';
 import { T } from '../Translation';
 import DropdownMenu from '../DropdownMenu';
 
+// Shows a sign out link for all types of users, but:
+// an admin link for admins,
+// a partner link for partners,
+// a home, settings, and contact link for regular users
 const getMenuItems = (currentUser, history) => {
   const isDev = Roles.userIsInRole(currentUser._id, 'dev');
   const isAdmin = Roles.userIsInRole(currentUser._id, 'admin');
@@ -72,7 +76,7 @@ const TopNavDropdown = (props) => {
       iconType="person"
       options={getMenuItems(currentUser, history)
         // Allow the Divider to go through
-        .filter(o => o.show)
+        .filter(o => !!o.show)
         .map(({ id: optionId, link, label, ...rest }) => ({
           ...rest,
           id: optionId,
@@ -86,54 +90,6 @@ const TopNavDropdown = (props) => {
     />
   );
 };
-
-// Shows a sign out link for all types of users, but:
-// an admin link for admins,
-// a partner link for partners,
-// a home, settings, and contact link for regular users
-
-// <IconMenu
-//   iconButtonElement={
-//     <IconButton
-//       type="person"
-//       tooltip={currentUser.emails[0].address}
-//       touch
-//       tooltipPosition="bottom-left"
-//     />
-//   }
-//   anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-//   targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-// >
-//   {getMenuItems(currentUser).map(
-//     item =>
-//       item.show && (
-//         <MenuItem
-//           key={item.link}
-//           primaryText={<T id={`TopNavDropdown.${item.id}`} />}
-//           containerElement={
-//             <Link
-//               to={item.link}
-//               onClick={() => {
-//                 track('TopNavDropdown - clicked on link', {
-//                   from: history.location.pathname,
-//                   to: item.link,
-//                 });
-//               }}
-//             />
-//           }
-//         />
-//       ),
-//   )}
-//   <Divider />
-//   <MenuItem
-//     primaryText={<T id="general.logout" />}
-//     onClick={() => {
-//       track('TopNavDropdown - logged out', {});
-//       Meteor.logout(() => history.push('/home'));
-//     }}
-//   />
-// </IconMenu>
-// );
 
 TopNavDropdown.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any).isRequired,

@@ -4,20 +4,13 @@
   "scripts": {
     "start": "meteor --settings settings-dev.json",
     "production": "meteor run --production --settings settings-dev.json",
-    "visualize":
-      "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 3010",
-    "test":
-      "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 3005",
-    "test-debug":
-      "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 5000 --debug-port 5858",
-    "test-CI":
-      "TEST_BROWSER_DRIVER=nightmare SERVER_TEST_REPORTER=xunit XUNIT_FILE=$CI_RESULTS_FILE meteor test --settings settings-dev.json --once --driver-package dispatch:mocha",
-    "test-cli":
-      "TEST_BROWSER_DRIVER=nightmare meteor test --settings settings-dev.json --port 3002 --driver-package dispatch:mocha",
-    "deploy:production":
-      "cd .deploy/production && mup deploy --settings=settings-production.json",
-    "deploy:staging":
-      "cd .deploy/staging && mup deploy --settings=settings-staging.json",
+    "visualize": "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 3010",
+    "test": "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 3005",
+    "test-debug": "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 5000 --debug-port 5858",
+    "test-CI": "TEST_BROWSER_DRIVER=nightmare SERVER_TEST_REPORTER=xunit XUNIT_FILE=$CI_RESULTS_FILE meteor test --settings settings-dev.json --once --driver-package dispatch:mocha",
+    "test-cli": "TEST_BROWSER_DRIVER=nightmare meteor test --settings settings-dev.json --port 3002 --driver-package dispatch:mocha",
+    "deploy:production": "cd .deploy/production && mup deploy --settings=settings-production.json",
+    "deploy:staging": "cd .deploy/staging && mup deploy --settings=settings-staging.json",
     "clean": "rm -rf node_modules/ && meteor npm install",
     "cleanstart": "meteor npm run clean && meteor npm run start"
   },
@@ -35,12 +28,11 @@
     "file-saver": "^1.3.3",
     "html-pdf": "^2.1.0",
     "intl-messageformat": "^2.1.0",
-    "intl-relativeformat":
-      "https://github.com/Floriferous/intl-relativeformat/tarball/master",
+    "intl-relativeformat": "https://github.com/Floriferous/intl-relativeformat/tarball/master",
     "js-search": "^1.4.2",
     "lodash": "^4.17.4",
     "material-ui": "^1.0.0-beta.13",
-    "material-ui-icons": "^1.0.0-beta.10",
+    "material-ui-icons": "^1.0.0-beta.13",
     "meteor-node-stubs": "^0.2.11",
     "moment": "^2.18.1",
     "moment-duration-format": "^1.3.0",
@@ -48,13 +40,13 @@
     "query-string": "^5.0.0",
     "rc-slider": "^8.3.1",
     "rc-tooltip": "^3.4.9",
-    "react": "^15.6.1",
+    "react": "^16.0.0",
     "react-addons-shallow-compare": "^15.6.2",
     "react-autosuggest": "^9.3.2",
     "react-bootstrap": "^0.31.2",
     "react-countup": "^2.2.0",
     "react-dates": "^12.6.0",
-    "react-dom": "^15.6.1",
+    "react-dom": "^16.0.0",
     "react-dropzone-component": "^2.0.0",
     "react-highcharts": "^12.0.0",
     "react-inline-css": "^2.3.1",
@@ -70,7 +62,7 @@
     "react-scroll": "^1.5.4",
     "react-star-rating-component": "^1.3.0",
     "react-string-replace": "^0.4.0",
-    "react-tap-event-plugin": "^2.0.1",
+    "react-tap-event-plugin": "^3.0.2",
     "react-text-mask": "^5.0.2",
     "s3": "^4.4.0",
     "simpl-schema": "^0.3.2",
@@ -79,9 +71,8 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-eslint": "^7.2.3",
-    "babel-plugin-react-intl":
-      "https://github.com/Floriferous/babel-plugin-react-intl/tarball/master",
+    "babel-eslint": "^8.0.1",
+    "babel-plugin-react-intl": "https://github.com/Floriferous/babel-plugin-react-intl/tarball/master",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
@@ -90,7 +81,8 @@
     "babel-register": "^6.26.0",
     "babel-root-slash-import": "^1.1.0",
     "chai": "^4.1.2",
-    "enzyme": "^2.9.1",
+    "enzyme": "^3.0.0",
+    "enzyme-adapter-react-16": "^1.0.0",
     "eslint": "^4.6.1",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-import-resolver-meteor": "^0.4.0",
@@ -103,9 +95,9 @@
     "mup": "^1.3.1",
     "nightmare": "^2.10.0",
     "proxyquire": "^1.8.0",
-    "react-test-renderer": "^15.6.1",
+    "react-test-renderer": "^16.0.0",
     "require-main-filename": "^1.0.1",
-    "sinon": "^3.2.1",
+    "sinon": "^4.0.0",
     "underscore": "^1.8.3"
   }
 }

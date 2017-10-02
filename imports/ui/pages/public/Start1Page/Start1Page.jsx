@@ -317,7 +317,7 @@ export default class Start1Page extends Component {
                     showDescription: false,
                   })}
                 style={{ height: 'unset' }}
-                overlayStyle={{ padding: 20 }}
+                // overlayStyle={{ padding: 20 }}
               />
             </div>
           )}

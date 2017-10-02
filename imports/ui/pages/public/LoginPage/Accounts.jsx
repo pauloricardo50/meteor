@@ -74,7 +74,7 @@ class Button extends Accounts.ui.Button {
         label={label}
         icon={icon ? <span className={`fa ${icon}`} /> : null}
         className={className}
-        onTouchTap={onClick}
+        onClick={onClick}
         disabled={disabled}
         style={{ marginRight: 5, marginTop: 8 }}
       />
@@ -86,7 +86,7 @@ class Button extends Accounts.ui.Button {
         primary
         type={type}
         className={className}
-        onTouchTap={onClick}
+        onClick={onClick}
         disabled={disabled}
         style={{ marginRight: 5, marginTop: 8 }}
       />
