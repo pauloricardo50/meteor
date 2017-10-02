@@ -35,6 +35,9 @@
 
   "Start2Form.age.placeholder": "18",
 
+  "Table.sort": "Trier",
+  "Table.empty": "Rien à afficher",
+
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",

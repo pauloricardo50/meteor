@@ -6,23 +6,23 @@ import moment from 'moment';
 
 import { IntlNumber } from '/imports/ui/components/general/Translation';
 
-const columns = [
-  { name: '#', style: { width: 32, textAlign: 'left' } },
-  { name: 'Nom', style: { width: 40, textAlign: 'left' } },
-  { name: 'Créé le', style: { width: 40, textAlign: 'left' } },
-  { name: 'Updaté le', style: { width: 40, textAlign: 'left' } },
-  { name: 'Étape', style: { width: 40, textAlign: 'left' } },
+const columnOptions = [
+  { id: '#', style: { width: 32, textAlign: 'left' } },
+  { id: 'Nom', style: { width: 40, textAlign: 'left' } },
+  { id: 'Créé le', style: { width: 40, textAlign: 'left' } },
+  { id: 'Updaté le', style: { width: 40, textAlign: 'left' } },
+  { id: 'Étape', style: { width: 40, textAlign: 'left' } },
   {
-    name: 'Valeur du bien',
+    id: 'Valeur du bien',
     style: { width: 40, textAlign: 'left' },
     format: value => <IntlNumber value={value} format="money" />,
   },
   {
-    name: 'Fortune totale',
+    id: 'Fortune totale',
     style: { width: 40, textAlign: 'left' },
     format: value => <IntlNumber value={value} format="money" />,
   },
-  { name: 'Qualité', style: { width: 40, textAlign: 'left' } },
+  { id: 'Qualité', style: { width: 40, textAlign: 'left' } },
 ];
 
 export default class AllRequestsTable extends Component {
@@ -51,7 +51,7 @@ export default class AllRequestsTable extends Component {
   };
 
   render() {
-    return <Table selectable={false} columns={columns} rows={this.rows} />;
+    return <Table columnOptions={columnOptions} rows={this.rows} noIntl />;
   }
 }
 

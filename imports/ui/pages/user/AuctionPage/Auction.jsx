@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
-import OffersTable from '/imports/ui/components/general/OffersTable';
 import { LoadingComponent } from '/imports/ui/components/general/Loading';
 import { T } from '/imports/ui/components/general/Translation';
 
@@ -63,9 +62,7 @@ export default class Auction extends Component {
           <T id="Auction.title" />
         </h2>
         <div className="text-center" style={styles.timer}>
-          <h1 className="display3">
-            {this.state.remainingTime}
-          </h1>
+          <h1 className="display3">{this.state.remainingTime}</h1>
         </div>
         <p className="disabled text-center" style={styles.p}>
           <T id="Auction.notified" />
