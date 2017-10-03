@@ -72,7 +72,9 @@ export default class AllRequestsTable extends Component {
   };
 
   render() {
-    return <Table columnOptions={columnOptions} rows={this.rows} noIntl />;
+    return (
+      <Table columnOptions={columnOptions} rows={this.rows} noIntl clickable />
+    );
   }
 }
 

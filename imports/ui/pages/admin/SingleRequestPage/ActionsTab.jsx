@@ -110,7 +110,6 @@ const ActionsTab = (props) => {
         label="Étapes du Décaissement"
         passProps
         autoScroll
-        cancelOnly
       >
         <ClosingStepsForm loanRequest={loanRequest} />
       </DialogSimple>

@@ -6,7 +6,14 @@ import { TableBody as MuiTableBody } from 'material-ui/Table';
 import Row from './Row';
 import SelectableRow from './SelectableRow';
 
-const TableBody = ({ data, selectable, columnOptions, page, rowsPerPage }) => (
+const TableBody = ({
+  data,
+  selectable,
+  columnOptions,
+  page,
+  rowsPerPage,
+  clickable,
+}) => (
   <MuiTableBody>
     {data
       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -21,7 +28,12 @@ const TableBody = ({ data, selectable, columnOptions, page, rowsPerPage }) => (
               onSelect={this.handleSelect}
             />
           ) : (
-            <Row key={row.id || i} row={row} columnOptions={columnOptions} />
+            <Row
+              key={row.id || i}
+              row={row}
+              columnOptions={columnOptions}
+              clickable={clickable}
+            />
           )),
       )}
   </MuiTableBody>
@@ -33,10 +45,12 @@ TableBody.propTypes = {
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
   selectable: PropTypes.bool,
+  clickable: PropTypes.bool,
 };
 
 TableBody.defaultProps = {
   selectable: false,
+  clickable: false,
 };
 
 export default TableBody;

@@ -119,6 +119,7 @@ export default class Table extends Component {
       selectAll,
       style,
       noIntl,
+      clickable,
     } = this.props;
     const { data, rowsPerPage, page, selected, order, orderBy } = this.state;
     const rowCount = data.length;
@@ -144,6 +145,7 @@ export default class Table extends Component {
             columnOptions={columnOptions}
             page={page}
             rowsPerPage={rowsPerPage}
+            clickable={clickable}
           />
           {rowCount > 10 && (
             <TableFooter
@@ -179,6 +181,7 @@ Table.propTypes = {
   sortable: PropTypes.bool,
   style: PropTypes.object,
   noIntl: PropTypes.bool,
+  clickable: PropTypes.bool, // sets rows to change color on hover
 };
 
 Table.defaultProps = {
@@ -190,4 +193,5 @@ Table.defaultProps = {
   sortable: true,
   style: {},
   noIntl: false,
+  clickable: false,
 };

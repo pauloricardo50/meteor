@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import { TableCell, TableRow } from 'material-ui/Table';
 
-const Row = ({ row, columnOptions }) => (
-  <TableRow onClick={row.handleClick || null}>
+const Row = ({ row, columnOptions, clickable }) => (
+  <TableRow hover={clickable} onClick={row.handleClick || null}>
     {row.columns.map((column, j) => (
       <TableCell
         key={j}
