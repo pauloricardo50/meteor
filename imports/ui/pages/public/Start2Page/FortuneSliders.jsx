@@ -6,7 +6,7 @@ import Button from '/imports/ui/components/general/Button';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import { getProject } from '/imports/js/helpers/startFunctions';
 import constants from '/imports/js/config/constants';
-import { T, IntlNumber } from '/imports/ui/components/general/Translation';
+import { T } from '/imports/ui/components/general/Translation';
 
 import StartSlider from './StartSlider';
 
@@ -42,14 +42,11 @@ const valueInRange = (value, min, max) => {
 const getFortuneNeeded = (fortuneUsed, insuranceFortuneUsed, formState) =>
   // Make sure we're properly calculating the fortune needed, which should
   // include any new insuranceFortuneUsed and the taxes that it adds to the project value
-  (
-    getProject({
-      ...formState,
-      insuranceFortuneUsed,
-      fortuneUsed: fortuneUsed || formState.fortuneUsed,
-    }) - formState.loanWanted
-  )
-;
+  getProject({
+    ...formState,
+    insuranceFortuneUsed,
+    fortuneUsed: fortuneUsed || formState.fortuneUsed,
+  }) - formState.loanWanted;
 
 const handleChangeFortune = (props, e, fortuneUsed) => {
   const object = formState => ({
