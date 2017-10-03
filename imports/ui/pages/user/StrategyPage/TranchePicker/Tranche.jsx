@@ -11,7 +11,7 @@ const Tranche = ({ tranche, changeTranche, deleteTranche, options }) => (
     <T id="Tranche.tranche" />
     <Select
       label=""
-      currentValue={tranche.type}
+      value={tranche.type}
       onChange={(id, type) => changeTranche(tranche.type, 'type', type)}
       options={options.map(option => ({
         id: option,
@@ -20,17 +20,18 @@ const Tranche = ({ tranche, changeTranche, deleteTranche, options }) => (
       style={{ width: 140, marginLeft: 4, marginRight: 4 }}
     />
     :
-    <div>
-      <span style={{ marginLeft: 8 }}>CHF</span>
+    <div className="flex center">
+      <span style={{ marginLeft: 8, marginBottom: 2 }}>CHF</span>
       <TextInput
-        style={{ marginLeft: 4, width: 32 }}
-        currentValue={tranche.value / 10000}
+        style={{ marginLeft: 4, width: 28 }}
+        inputProps={{ style: { textAlign: 'right' } }}
+        value={tranche.value / 10000}
         onChange={(id, value) =>
           changeTranche(tranche.type, 'value', value * 10000)}
         type="number"
         id="value"
       />
-      {"0'000"}
+      <span style={{ marginBottom: 2 }}>0'000</span>
     </div>
     <IconButton
       type="close"
@@ -43,6 +44,9 @@ const Tranche = ({ tranche, changeTranche, deleteTranche, options }) => (
 
 Tranche.propTypes = {
   tranche: PropTypes.objectOf(PropTypes.any).isRequired,
+  changeTranche: PropTypes.func.isRequired,
+  deleteTranche: PropTypes.func.isRequired,
+  options: PropTypes.array.isRequired,
 };
 
 export default Tranche;
