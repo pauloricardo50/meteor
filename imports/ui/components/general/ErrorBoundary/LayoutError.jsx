@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { T } from '/imports/ui/components/general/Translation';
 import Button from '/imports/ui/components/general/Button';
 
-const LayoutError = () => (
-  <div className="flex-col center">
+const LayoutError = ({ style }) => (
+  <div className="flex-col center animated jackInTheBox" style={style}>
     <h2 className="error">
       <T id="LayoutError.title" />
     </h2>
@@ -22,6 +22,12 @@ const LayoutError = () => (
   </div>
 );
 
-LayoutError.propTypes = {};
+LayoutError.propTypes = {
+  style: PropTypes.object,
+};
+
+LayoutError.defaultProps = {
+  style: {},
+};
 
 export default LayoutError;

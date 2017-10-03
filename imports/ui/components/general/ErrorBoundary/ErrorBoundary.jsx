@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import LayoutError from './LayoutError';
+import RootError from './RootError';
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
@@ -34,6 +35,15 @@ export default class ErrorBoundary extends Component {
       switch (helper) {
         case 'layout':
           return <LayoutError {...errorProps} />;
+        case 'app':
+          return (
+            <LayoutError
+              {...errorProps}
+              style={{ width: '100%', height: '100%' }}
+            />
+          );
+        case 'root':
+          return <RootError />;
         default:
           return <div>Woops!</div>;
       }
@@ -45,6 +55,10 @@ export default class ErrorBoundary extends Component {
 
 ErrorBoundary.propTypes = {
   helper: PropTypes.string.isRequired,
-  pathname: PropTypes.string.isRequired,
+  pathname: PropTypes.string,
   children: PropTypes.node.isRequired,
+};
+
+ErrorBoundary.defaultProps = {
+  pathname: undefined,
 };

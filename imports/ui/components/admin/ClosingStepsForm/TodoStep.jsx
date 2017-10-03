@@ -13,13 +13,13 @@ const TodoStep = ({ step, handleChange, handleRemove }) => (
       label="Titre"
       id="title"
       onChange={(key, value) => handleChange(step.id, key, value)}
-      currentValue={step.title}
+      value={step.title}
     />
     <TextInput
       label="Description"
       id="description"
       onChange={(key, value) => handleChange(step.id, key, value)}
-      currentValue={step.description}
+      value={step.description}
       fullWidth
       multiline
       rows={2}
