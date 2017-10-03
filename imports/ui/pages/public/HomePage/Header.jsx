@@ -5,6 +5,7 @@ import { T } from '/imports/ui/components/general/Translation';
 import IconButton from '/imports/ui/components/general/IconButton';
 
 import Buttons from './Buttons';
+import Devices from './Devices';
 
 const Header = () => (
   <header className="header">
@@ -19,33 +20,12 @@ const Header = () => (
     </div>
     <div className="container-lrg flex-launch">
       <div className="col-6 centervertical animated fadeInLeft">
-        {/* <h2 className="desc">
-          <T id="HomePage.description" description="Description above the CTAs" />
-        </h2> */}
+        <h2 className="desc">
+          <T id="HomePage.description" />
+        </h2>
         <Buttons />
       </div>
-      <div className="col-6 sidedevices animated fadeInRight">
-        <div className="iphoneipad">
-          <div className="iphone">
-            <div className="mask">
-              <img
-                className="mask-img"
-                srcSet="/img/mobileapp@1x.png 500w, /img/mobileapp@2x.png 1000w"
-                alt="e-Potek Mobile Example"
-              />
-            </div>
-          </div>
-          <div className="ipad">
-            <div className="mask">
-              <img
-                className="mask-img"
-                srcSet="/img/tabletapp@1x.png 800w, /img/tabletapp@2x.png 2000w"
-                alt="e-Potek Tablet Example"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      <Devices />
     </div>
     <div className="scroll-button">
       <IconButton

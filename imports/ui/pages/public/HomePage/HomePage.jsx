@@ -14,7 +14,7 @@ export default class HomePage extends Component {
 
   render() {
     return (
-      <div style={{ display: 'unset !important' }}>
+      <section style={{ display: 'unset !important' }}>
         <div name="launchaco" style={{ display: 'unset' }}>
           <Header />
           <KeyPoints1 />
@@ -22,7 +22,7 @@ export default class HomePage extends Component {
           <KeyPoints2 />
           <Footer />
         </div>
-      </div>
+      </section>
     );
   }
 }

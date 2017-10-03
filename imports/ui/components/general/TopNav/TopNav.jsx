@@ -19,7 +19,7 @@ const TopNav = (props) => {
   const showDrawer = isApp && loanRequests.length > 0;
 
   return (
-    <Toolbar className="top-nav">
+    <Toolbar className="top-nav" style={{ overflowX: 'hidden' }}>
       <div className="top-nav-content">
         {showDrawer ? <TopNavDrawer {...props} /> : null}
 
