@@ -307,7 +307,8 @@ const theme = createMuiTheme({
     // },
     button: {
       fontWeight: 400,
-      textTransform: 'capitalize', // Remove the 'uppercase' transform
+      textTransform: '',
+      // textTransform: 'capitalize', // Remove the 'uppercase' transform
       // fontSize: 14,
       // fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     },

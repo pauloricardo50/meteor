@@ -38,6 +38,11 @@
   "Table.sort": "Trier",
   "Table.empty": "Rien à afficher",
 
+  "LayoutError.title": "Woops une erreur!",
+  "LayoutError.description":
+    "Quelque chose n'a pas fonctionné comme prévu, on en est déjà informés, et vous pouvez essayer de recharger la page.{verticalSpace}Si ça ne résoud pas le problème, écrivez-nous.",
+  "LayoutError.reload": "Recharger la page",
+
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",

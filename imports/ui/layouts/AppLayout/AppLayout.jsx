@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom';
 import classnames from 'classnames';
 
 import ContactButton from '/imports/ui/components/general/ContactButton';
+import ErrorBoundary from '/imports/ui/components/general/ErrorBoundary';
 import track from '/imports/js/helpers/analytics';
 import Navs from './Navs';
 
@@ -103,7 +104,9 @@ const AppLayout = (props) => {
       />
 
       <main className={classes}>
-        <div className="wrapper">{render(props)}</div>
+        <ErrorBoundary helper="layout" pathname={history.location.pathname}>
+          <div className="wrapper">{render(props)}</div>
+        </ErrorBoundary>
       </main>
 
       {isApp && <ContactButton history={history} />}
