@@ -16,21 +16,21 @@ const styles = {
   },
 };
 
-const handleChange = (value, props) => {
+const handleChange = (value, toggleDrawer, history) => {
   if (value === 0) {
     track('RequestSelector - clicked on new request', {});
     console.log('new request!');
   } else {
     track('RequestSelector - switched to request', { requestId: value });
-    props.toggleDrawer();
-    props.history.push(`/app/requests/${value}`);
+    toggleDrawer();
+    history.push(`/app/requests/${value}`);
   }
 };
 
-const getOptions = (props) => {
+const getOptions = (loanRequests) => {
   const array = [];
 
-  props.loanRequests.forEach(r =>
+  loanRequests.forEach(r =>
     array.push({
       id: r._id,
       label: r.name,
@@ -48,54 +48,28 @@ const getOptions = (props) => {
   return array;
 };
 
-const RequestSelector = props => (
+const RequestSelector = ({ value, toggleDrawer, history, loanRequests }) => (
   <div style={styles.div}>
     <Select
       id="request-selector"
-      value={props.currentValue}
-      onChange={(id, value) => handleChange(value, props)}
-      options={getOptions(props)}
+      value={value}
+      onChange={(id, newValue) => handleChange(newValue, toggleDrawer, history)}
+      options={getOptions(loanRequests)}
       style={styles.dropdown}
     />
   </div>
-
-  // <div style={styles.div}>
-  //   <DropDownMenu
-  //     value={props.currentValue}
-  //     onChange={(e, i, value) => handleChange(value, props)}
-  //     autoWidth={false}
-  //     style={styles.dropdown}
-  //     selectionRenderer={(value, item) => renderSelected(item)}
-  //   >
-  //     {props.loanRequests.map(r => (
-  //       <MenuItem
-  //         key={r._id}
-  //         value={r._id}
-  //         primaryText={r.name}
-  //         leftIcon={
-  //           r.property.style === 'villa' ? (
-  //             <Icon type="home" />
-  //           ) : (
-  //             <Icon type="building" />
-  //           )
-  //         }
-  //       />
-  //     ))}
-  //     {props.loanRequests.length > 0 && <Divider />}
-  //     <MenuItem value={0} primaryText={<T id="RequestSelector.addRequest" />} />
-  //   </DropDownMenu>
-  // </div>
 );
 
 RequestSelector.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.object),
-  currentValue: PropTypes.string,
+  value: PropTypes.string,
   toggleDrawer: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 RequestSelector.defaultProps = {
   loanRequests: [],
-  currentValue: '',
+  value: '',
 };
 
 export default RequestSelector;

@@ -42,7 +42,7 @@ const AmortizingPicker = ({
 
     <StrategyChoices
       name="amortizationStrategyPreset"
-      currentValue={loanRequest.logic.amortizationStrategyPreset}
+      value={loanRequest.logic.amortizationStrategyPreset}
       choices={getChoices()}
       handleChoose={id =>
         handleSave({ 'logic.amortizationStrategyPreset': id })}

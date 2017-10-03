@@ -39,7 +39,7 @@ const InsuranceStrategy = ({ loanRequest, handleSave, disabled }) => (
 
     <StrategyChoices
       name="insuranceUsePreset"
-      currentValue={loanRequest.logic.insuranceUsePreset}
+      value={loanRequest.logic.insuranceUsePreset}
       choices={getChoices()}
       handleChoose={id => handleSave({ 'logic.insuranceUsePreset': id })}
       disabled={disabled}

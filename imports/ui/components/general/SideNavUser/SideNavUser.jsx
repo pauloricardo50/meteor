@@ -58,7 +58,7 @@ const SideNavUser = (props) => {
       <div className="scrollable">
         <RequestSelector
           {...props}
-          currentValue={requestId}
+          value={requestId}
           toggleDrawer={toggleDrawer}
         />
         {requestId && (

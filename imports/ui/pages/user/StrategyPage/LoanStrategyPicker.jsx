@@ -65,7 +65,7 @@ const LoanStrategyPicker = ({ loanRequest, handleSave, offers, disabled }) => (
 
     <StrategyChoices
       name="loanStrategyPreset"
-      currentValue={loanRequest.logic.loanStrategyPreset}
+      value={loanRequest.logic.loanStrategyPreset}
       choices={getChoices(loanRequest, offers)}
       handleChoose={id => handleChoose(id, loanRequest, handleSave)}
       disabled={disabled}
