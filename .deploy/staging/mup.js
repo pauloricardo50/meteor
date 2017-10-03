@@ -23,7 +23,7 @@ module.exports = {
         'mongodb://admin1:password@aws-eu-central-1-portal.2.dblayer.com:15723,aws-eu-central-1-portal.0.dblayer.com:15723/e-potek?ssl=true',
     },
     docker: {
-      image: 'abernix/meteord:node-8.1.4-base',
+      image: 'abernix/meteord:node-8.4.0-base',
       // image: 'guillim/meteord:node6.9.1V3',
     },
     ssl: {
