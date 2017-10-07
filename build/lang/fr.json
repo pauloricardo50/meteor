@@ -1,6 +1,6 @@
 {
   "AboutPage.description":
-    "e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève. Expansion prévue prochainement.{verticalSpace}L'équipe derrière e-Potek est composée d'entrepreneurs vétérans avec une expérience cumulée de plus de 30 ans dans la finance et les prêts hypothécaires en Suisse.",
+    "e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève. Expansion prévue prochainement.{verticalSpace}L'équipe derrière e-Potek est composée d'entrepreneurs expérimentés dans la finance et les prêts hypothécaires en Suisse.",
   "AboutPage.title": "Le Prêt Hypothécaire de Demain",
   "AcceptClosingModal.description":
     "Toute l'équipe d'e-Potek vous félicite pour le décaissement de votre prêt hypothécaire, et d'être enfin propriétaire de votre bien immobilier.{verticalSpace}Vous pouvez maintenant utiliser votre tableau de bord e-Potek pour garder un oeil sur votre prochaine échéance de paiement, et consulter les taux lorsque le refinancement s'approchera.",
@@ -21,6 +21,10 @@
   "ActionsTable.comment": "Commentaire",
   "ActionsTable.date": "Date",
   "ActionsTable.do": " ",
+
+  "VerificationRequested.description":
+    "Vérification en cours, vous serez averti par email lorsque c'est fait.",
+
   "ActionsTable.requestName": "Projet",
   "adminAction.addFinalSteps": "Transmettre réponse du prêteur",
   "adminAction.auction": "Enchères en cours",
@@ -36,7 +40,7 @@
   "AmortizationChart.fortuneSeries": "Fonds Propres",
   "AmortizationChart.paymentSeries": "Paiement mensuel",
   "AmortizationChart.refinancingFlag": "Refinancement",
-  "AmortizationChart.title": "Les 20 années à venir",
+  "AmortizationChart.title": "Les vingt années à venir",
   "AmortizationChart.yAxis1": "Dette et fonds propres",
   "AmortizationChart.yAxis2": "Paiements mensuels",
   "AmortizationTool.catastrophy.title": "Scénario catastrophe",
@@ -74,7 +78,7 @@
   "AuctionStart.countSuffix": " Prêteurs",
   "AuctionStart.CTA": "Commencer les enchères",
   "AuctionStart.description":
-    "Durant les enchères, les {count} prêteurs vont entrer en compétition sur votre dossier. Ils auront 2 fois 24 heures pour miser avec un taux d'intérêt sur votre projet.{verticalSpace}Puis, dans 2 jours ouvrables, vous recevrez un tableau avec toutes les offres.",
+    "Durant les enchères, les {count} prêteurs vont entrer en compétition sur votre dossier. Ils auront deux fois 24 heures pour miser avec un taux d'intérêt sur votre projet.{verticalSpace}Puis, dans deux jours ouvrables, vous recevrez un tableau avec toutes les offres.",
   "AuctionStart.lenderList": "Voir la liste",
   "AuctionStart.title": "Lancez les enchères",
   "bert.emailVerificationSent": "Vérification envoyée à {email}!",
@@ -97,7 +101,7 @@
   "Comparator.createdAt": "Créé le",
   "Comparator.empty": "Ajoutez une propriété pour commencer",
   "Comparator.incomeRatio": "Charges / Revenus",
-  "Comparator.isValid": "Ça passe?",
+  "Comparator.isValid": "Ça passe ?",
   "Comparator.loan": "Prêt Hypothécaire",
   "Comparator.minergy": "Minergie",
   "Comparator.monthly": "Charges estimées",
@@ -208,7 +212,7 @@
   "DashboardStatus.verification": "Vérification en cours...",
   "DashboardUnverified.CTA": "Renvoyer l'email",
   "DashboardUnverified.description":
-    "Jetez un oeil à votre boite email pour un message de notre part. Rien reçu?",
+    "Jetez un oeil à votre boite email pour un message de notre part. Rien reçu ?",
   "DashboardUnverified.title":
     "Vous n'avez pas encore vérifié votre adresse email.",
   "DateInput.placeholder": "Choisissez une date",
@@ -218,7 +222,7 @@
   "DropzoneArrayItem.fileCount":
     "{count, plural, =0 {Pas de fichiers} one {Un fichier} other {# fichiers}}",
   "DropzoneInput.cancelUpload": "Annuler l'upload",
-  "DropzoneInput.cancelUploadConfirmation": "Êtes-vous sûr?",
+  "DropzoneInput.cancelUploadConfirmation": "Êtes-vous sûr ?",
   "DropzoneInput.invalidFileType":
     "Vous ne pouvez uploader que des fichiers PDF, JPG et PNG.",
   "DropzoneInput.message":
@@ -323,9 +327,9 @@
   "files.fireAndWaterInsurance.tooltip":
     "Vous pouvez obtenir la copie de la police d’assurance existante auprès du vendeur",
   "Files.hasChangedSalary":
-    "Est-ce que votre salaire est différent de votre dernière déclaration fiscale?",
+    "Est-ce que votre salaire est différent de votre dernière déclaration fiscale ?",
   "files.identity": "Pièce d'identité",
-  "files.identity.tooltip": "Passeport ou carte d'identité (les 2 côtés)",
+  "files.identity.tooltip": "Passeport ou carte d'identité (les deux côtés)",
   "files.landRegisterExtract": "Extrait du registre foncier",
   "files.landRegisterExtract.tooltip":
     "Contient toutes les informations officielles de votre bien immobilier",
@@ -339,7 +343,7 @@
   "files.nonPursuitExtract.tooltip":
     "Mentionne si vous êtes sujet à des poursuites. Avoir des poursuites peut arriver à tout le monde et peuvent parfois s’expliquer",
   "files.nonPursuitExtract.tooltip2":
-    "Vous pouvez commander un extrait de l’office des poursuites sur le site internet ou physiquement au guichet de l’office cantonal de votre canton de résidence actuel. Il doit dater de moins de 3 mois.",
+    "Vous pouvez commander un extrait de l’office des poursuites sur le site internet ou physiquement au guichet de l’office cantonal de votre canton de résidence actuel. Il doit dater de moins de trois mois.",
   "files.otherIncome": "Autres revenus",
   "files.otherIncome.tooltip":
     "Justificatif de chaque autre revenu que vous avez mentionné",
@@ -442,7 +446,8 @@
   "Forms.buildingQuality.3": "Très Bon",
   "Forms.childrenCount": "Enfants à charge",
   "Forms.childrenCount.placeholder": "2",
-  "Forms.cityPlacementQuality": "Type d'emplacement au sein de la commune",
+  "Forms.cityPlacementQuality":
+    "Qualité de l'emplacement au sein de la commune",
   "Forms.cityPlacementQuality.0": "Mauvais",
   "Forms.cityPlacementQuality.1": "Moyen",
   "Forms.cityPlacementQuality.2": "Bon",
@@ -462,7 +467,7 @@
   "Forms.copropertyPercentage": "Répartition du bien au sein de la copropriété",
   "Forms.copropertyPercentage.info": "En millièmes",
   "Forms.copropertyPercentage.placeholder": "125",
-  "Forms.currentOwner": "Qui est le propriétaire actuel?",
+  "Forms.currentOwner": "Qui est le propriétaire actuel ?",
   "Forms.currentOwner.0": "{name}",
   "Forms.currentOwner.1": "{name}",
   "Forms.currentOwner.both": "Les Deux",
@@ -486,12 +491,12 @@
   "Forms.flatQuality.2": "Bon",
   "Forms.flatQuality.3": "Très Bon",
   "Forms.fortune": "Fortune",
-  "Forms.futureOwner": "Qui sera le propriétaire du bien immobilier?",
+  "Forms.futureOwner": "Qui sera le propriétaire du bien immobilier ?",
   "Forms.futureOwner.0": "{name}",
   "Forms.futureOwner.1": "{name}",
   "Forms.futureOwner.both": "Les Deux",
   "Forms.futureOwner.other": "Autre",
-  "Forms.gender": "Genre",
+  "Forms.gender": "Sexe",
   "Forms.gender.f": "Femme",
   "Forms.gender.m": "Homme",
   "Forms.gender.other": "Autre",
@@ -512,9 +517,9 @@
   "Forms.insuranceThirdPillar": "Assurance 3A",
   "Forms.insuranceThirdPillar.placeholder": "CHF 100 000",
   "Forms.investment": "Bien d'investissement",
-  "Forms.isCoproperty": "Est-ce une copropriété?",
-  "Forms.isNew": "Est-ce un bien neuf?",
-  "Forms.isSwiss": "Avez-vous la nationalité Suisse?",
+  "Forms.isCoproperty": "Est-ce une copropriété ?",
+  "Forms.isNew": "Est-ce un bien neuf ?",
+  "Forms.isSwiss": "Avez-vous la nationalité Suisse ?",
   "Forms.landArea": "Surface du terrain en m2",
   "Forms.landArea.placeholder": "250",
   "Forms.lastName": "Nom",
@@ -525,7 +530,7 @@
   "Forms.materialsQuality.1": "Moyen",
   "Forms.materialsQuality.2": "Bon",
   "Forms.materialsQuality.3": "Très Bon",
-  "Forms.minergie": "Est-ce une construction Minergie?",
+  "Forms.minergie": "Est-ce une construction Minergie ?",
   "Forms.otherFortune": "Autre Fortune",
   "Forms.otherFortune.airplanes": "Aéronefs",
   "Forms.otherFortune.art": "Objets d'art",
@@ -591,7 +596,7 @@
   "Forms.roomCount.placeholder": "3.5",
   "Forms.salary": "Revenus bruts annuels",
   "Forms.salary.placeholder": "CHF 100 000",
-  "Forms.sameAddress": "Utiliser la même adresse que {name}?",
+  "Forms.sameAddress": "Utiliser la même adresse que {name} ?",
   "Forms.secondary": "Résidence secondaire",
   "Forms.style": "Type de bien immobilier",
   "Forms.style.flat": "Appartement",
@@ -610,13 +615,13 @@
   "Forms.volume.placeholder": "1000",
   "Forms.volumeNorm": "Type de cubage",
   "Forms.volumeNorm.placeholder": "SIA",
-  "Forms.worksForOwnCompany": "Êtes-vous employé de votre propre entreprise?",
+  "Forms.worksForOwnCompany": "Êtes-vous employé de votre propre entreprise ?",
   "Forms.yourAddress": "Votre adresse",
   "Forms.zipCode": "NPA et localité",
   "general.1": "Un",
   "general.2": "Deux",
   "general.amortization": "Amortissement",
-  "general.areYouSure": "Êtes-vous sûr?",
+  "general.areYouSure": "Êtes-vous sûr ?",
   "general.buildingMaintenance": "Frais d'entretien",
   "general.cancel": "Annuler",
   "general.close": "Fermer",
@@ -705,7 +710,7 @@
   "LenderSummary.monthly": "Coût mensuel le plus bas",
   "LenderSummary.title": "Offres correspondant à vos critères",
   "LenderTable.amount": "Montant prêté",
-  "LenderTable.conditions": "Conditions?",
+  "LenderTable.conditions": "Conditions ?",
   "LenderTable.monthly": "Coût mensuel",
   "LenderTable.perMonth": "/mois",
   "LoanStrategyPicker.description":
@@ -741,7 +746,7 @@
   "OfferPickerPage.description": "Choisissez l'offre qui vous convient.",
   "OfferPickerPage.title": "Les meilleures offres",
   "OffersTable.amount": "Montant",
-  "OffersTable.conditions": "Conditions?",
+  "OffersTable.conditions": "Conditions ?",
   "OffersTable.libor": "Taux Libor",
   "OffersTable.years": "{years, plural, one {Taux un an} other {Taux # ans}}",
   "OfferToggle.counterpart": "Offres avec contrepartie ({count})",
@@ -810,10 +815,8 @@
   "SideNavUser.files": "Documents",
   "Start1Page.chartTitle": "Charges estimées",
   "Start1Page.CTA": "Passer au check-up complet",
-  "Start1Page.description1":
-    "Ce calculateur vous permet de rapidement déterminer votre capacité d'achat avant de faire une analyse de votre situation personnelle plus détaillée.",
-  "Start1Page.description2":
-    "Entrez les valeurs que vous connaissez, puis nous calculerons automatiquement le reste pour optimiser votre capacité d'achat, tout en respectant les normes FINMA en vigueur en Suisse.",
+  "Start1Page.description":
+    "Ce calculateur vous permet de rapidement savoir ce que vous pouvez acheter avant de faire une analyse de votre situation personnelle plus détaillée.{verticalSpace}Entre vos revenus, votre fortune ou la valeur du bien, ajoutez les valeurs que vous connaissez, puis nous calculerons automatiquement le reste pour optimiser votre capacité d'achat, tout en respectant les normes FINMA en vigueur en Suisse.",
   "Start1Page.fortuneLabel": "Fonds Propres",
   "Start1Page.incomeLabel": "Revenus annuels bruts",
   "Start1Page.loanValue": "Votre Prêt Hypothécaire:",
@@ -843,18 +846,18 @@
   "Start2Form.bonus3": "Bonus 2016",
   "Start2Form.bonus4": "Bonus 2017",
   "Start2Form.bonusExists":
-    "Avez vous touché un bonus lors des 4 dernières années?",
-  "Start2Form.borrowerCount": "Combien d'emprunteurs êtes vous?",
+    "Avez vous touché un bonus lors des quatre dernières années ?",
+  "Start2Form.borrowerCount": "Combien êtes vous d'emprunteurs ?",
   "Start2Form.expensesExists":
-    "Avez-vous des charges annuelles comme des leasings, {optional}pensions, loyers, crédits personnels ou autres prêts immobiliers?",
+    "Avez-vous des charges annuelles comme des leasings, {optional}pensions, loyers, crédits personnels ou autres prêts immobiliers ?",
   "Start2Form.finalized": "Vous-êtes arrivé au bout, formidable!",
   "Start2Form.finalized.button": "Afficher les résultats",
   "Start2Form.fortune":
-    "Quelle est votre épargne bancaire personnelle (cash et titres)?",
+    "Quelle est votre épargne bancaire personnelle (cash et titres) ?",
   "Start2Form.fortuneRequiredAgreed":
     "Vous devrez donc mettre {value} de fonds propres.",
   "Start2Form.fortuneSliders":
-    "Vous devez donc mettre {value} de fonds propres, comment voulez-vous les répartir?",
+    "Vous devez donc mettre {value} de fonds propres, comment voulez-vous les répartir ?",
   "Start2Form.fortuneSliders.hasToUseLpp":
     "Vous devez utiliser votre prévoyance pour ce projet",
   "Start2Form.fortuneSliders.label1": "Épargne",
@@ -866,19 +869,19 @@
   "Start2Form.gender.man": "un homme",
   "Start2Form.gender.woman": "une femme",
   "Start2Form.gender2": ".",
-  "Start2Form.income": "Quel est votre salaire annuel brut?",
+  "Start2Form.income": "Quel est votre salaire annuel brut ?",
   "Start2Form.initialFortuneAgreed":
     "Vous avez indiqué que vous vouliez allouer {value} de fonds propres pour ce projet. Merci de détailler votre fortune maintenant.",
   "Start2Form.initialIncomeAgreed":
     "Vous avez indiqué que vos revenus sont de {value} par an, vous pouvez les détailler maintenant.",
   "Start2Form.insurance1":
-    "Quels sont les fonds de prévoyance disponibles au sein de votre 2ème pilier?",
-  "Start2Form.insurance1Exists": "Avez-vous un 2ème pilier?",
+    "Quels sont les fonds de prévoyance disponibles au sein de votre 2ème pilier ?",
+  "Start2Form.insurance1Exists": "Avez-vous un 2ème pilier ?",
   "Start2Form.insurance2":
-    "Quels sont les fonds de prévoyance disponibles au sein de votre 3ème pilier?",
-  "Start2Form.insurance2Exists": "Avez-vous un 3ème pilier?",
+    "Quels sont les fonds de prévoyance disponibles au sein de votre 3ème pilier ?",
+  "Start2Form.insurance2Exists": "Avez-vous un 3ème pilier ?",
   "Start2Form.insuranceConditions":
-    "Il y a des conditions pour pouvoir utiliser sa prévoyance, est-ce que vous les passez?",
+    "Il y a des conditions pour pouvoir utiliser sa prévoyance, est-ce que vous les passez ?",
   "Start2Form.insuranceConditions.1":
     "Ne pas avoir fait de retrait dans les 5 dernières années",
   "Start2Form.insuranceConditions.2": "Faire un retrait d'au moins 20 000 CHF",
@@ -886,11 +889,11 @@
   "Start2Form.insuranceConditions.description":
     "Pour pouvoir utiliser votre prévoyance sur votre projet, vous devez remplir les conditions suivantes:",
   "Start2Form.insuranceConditions.title": "Conditions",
-  "Start2Form.loanWanted": "Combien voulez-vous emprunter?",
+  "Start2Form.loanWanted": "Combien voulez-vous emprunter ?",
   "Start2Form.loanWanted.sliderMax": "Max",
   "Start2Form.loanWanted.sliderMin": "Min",
   "Start2Form.notaryFeesAgreed":
-    "A ce prix s'ajoutent les frais de notaire de {value}.",
+    "À ce prix s'ajoutent les frais de notaire de {value}.",
   "Start2Form.notEnoughCash":
     "Vous devez avoir au moins {value} de fortune (sans compter votre prévoyance) pour ce projet.",
   "Start2Form.notEnoughCash.description":
@@ -911,17 +914,18 @@
   "Start2Form.oldestAge2": "ans.",
   "Start2Form.oldestGender": "Et cette personne est",
   "Start2Form.otherIncomeExists":
-    "Avez-vous d'autres sources de revenus annuels?",
+    "Avez-vous d'autres sources de revenus annuels ?",
   "Start2Form.projectAgreed": "Le coût de votre projet sera donc de {value}.",
   "Start2Form.propertyRent":
     "J'estime que le loyer mensuel pour cette propriété sera",
   "Start2Form.propertyValue": "Le prix d'achat de la propriété est de",
   "Start2Form.propertyWork": "Les travaux de plus-value sont estimés à",
   "Start2Form.propertyWorkExists":
-    "Souhaitez-vous rajouter à votre projet des travaux de plus-value?",
+    "Souhaitez-vous rajouter à votre projet des travaux de plus-value ?",
   "Start2Form.realEstateExists":
-    "Êtes-vous propriétaire d'autres biens immobiliers?",
-  "Start2Form.usageType": "Quel sera le type d'utilisation de cette propriété?",
+    "Êtes-vous propriétaire d'autres biens immobiliers ?",
+  "Start2Form.usageType":
+    "Quel sera le type d'utilisation de cette propriété ?",
   "Start2Form.usageTypeButtonInvestment": "Je veux le louer",
   "Start2Form.usageTypeButtonPrincipal": "Ma résidence principale",
   "Start2Form.usageTypeButtonSecondary": "Ma résidence secondaire",
@@ -938,7 +942,7 @@
   "Start2Page.initialButton": "C'est parti",
   "Start2Page.initialText1": "Allons vous obtenir ce prêt hypothécaire",
   "Start2Page.initialText2":
-    "Il nous faut plus d'informations pour mieux comprendre vos besoins, prenez 2 minutes pour nous en dire un peu plus sur vous",
+    "Il nous faut plus d'informations pour mieux comprendre vos besoins, prenez deux minutes pour nous en dire un peu plus sur vous",
   "Start2Page.recapTitle": "Votre Plan Financier",
   "StartResult.countSuffix": " Prêteurs",
   "StartResult.createAccount": "Créer un compte",

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
+import classnames from 'classnames';
 
 import Button from '/imports/ui/components/general/Button';
 
@@ -44,26 +45,36 @@ const handleClick = (props, event, value, callback) => {
 };
 
 const ButtonInput = (props) => {
-  const noModify = props.hideResult;
+  const {
+    hideResult,
+    className,
+    setActiveLine,
+    id,
+    error,
+    text1,
+    text2,
+    question,
+    active,
+    buttons,
+  } = props;
+
   return (
     <article
-      className={[props.className, noModify ? 'no-modify' : ''].join(' ')}
-      onClick={() => props.setActiveLine(props.id)}
+      className={classnames({ [className]: true, 'no-modify': hideResult })}
+      onClick={() => setActiveLine(id)}
     >
       <h1 className="fixed-size">
-        <span className={props.error && 'error'}>{props.text1}</span>
-        &nbsp;
-        {!props.hideResult && props.question && <br />}
-        {!props.hideResult && <span className="active">{getText(props)}</span>}
-        &nbsp;
-        {props.text2}
+        <span className={error && 'error'}>{text1}&nbsp;</span>
+        {!hideResult && question && <br />}
+        {!hideResult && <span className="active">{getText(props)}</span>}
+        {text2 ? <span>&nbsp;{text2}</span> : null}
       </h1>
 
       <div
         style={styles.buttons}
-        className={!props.active ? 'inputHider' : 'animated fadeIn'}
+        className={!active ? 'inputHider' : 'animated fadeIn'}
       >
-        {props.buttons.map(
+        {buttons.map(
           (button, index) =>
             (button.component ? (
               button.component

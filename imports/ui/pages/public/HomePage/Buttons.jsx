@@ -8,7 +8,7 @@ import track from '/imports/js/helpers/analytics';
 
 const styles = {
   style: {
-    height: 50,
+    height: 48,
     marginRight: 8,
     marginTop: 8,
   },
@@ -30,9 +30,6 @@ const Buttons = props => (
       link
       to="/app/compare"
       style={styles.style}
-      // buttonStyle={styles.button}
-      // labelStyle={styles.label}
-      // overlayStyle={styles.button}
       id="compareButton"
       onClick={() =>
         track('Funnel - clicked home page CTA', { title: 'compare' })}
@@ -43,18 +40,12 @@ const Buttons = props => (
       link
       to="/start1/acquisition"
       style={styles.style}
-      // buttonStyle={styles.button}
-      // labelStyle={styles.label}
-      // overlayStyle={styles.button}
       id="acquisitionButton"
       onClick={() =>
         track('Funnel - clicked home page CTA', { title: 'acquisition' })}
     />
     <HomeDev
       style={styles.style}
-      // buttonStyle={styles.button}
-      // labelStyle={styles.label}
-      // overlayStyle={styles.button}
       id="refinancing"
       handleClick={() =>
         track('Funnel - clicked home page CTA', { title: 'refinancing' })}

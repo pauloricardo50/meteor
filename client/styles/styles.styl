@@ -695,6 +695,7 @@ ul.request-map
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    width: 100%;
     +above($small)
       font-size: 1.6em !important;
     +above($med)
@@ -764,8 +765,9 @@ ul.request-map
       box-shadow: 0px -40px 40px -30px white inset;
   .scroll
     .startArticle
-      display: inline-block;
-      align-items: center;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
       width: 100%;
       transform-origin: left center;
       transition: all 0.3s ease;
@@ -833,6 +835,36 @@ ul.request-map
             margin: 0;
             margin-top: 16px;
             font-size: initial;
+      &.multiple-input
+        color: red;
+        .multiple-header
+          margin-top: 32px;
+          margin-bottom: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          width: 100%;
+          div
+            display: flex;
+            justify-content: space-around;
+            width:100%;
+            +below($med)
+              width: auto;
+              flex-direction: column;
+            span:first-child
+              +below($med)
+                margin-bottom: 8px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid border-grey;
+        .inputs
+          width: 100%;
+          display: flex;
+          justify-content: space-around;
+          +below($med)
+            flex-direction: column;
+          .input1, .input2
+            width: 40%;
+            margin: 0;
     &:last-child
       .startArticle
         cursor: default;

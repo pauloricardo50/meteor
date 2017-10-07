@@ -27,6 +27,8 @@ export default class Input extends Component {
     } = this.props;
     const currentValue = formState[id];
 
+    console.log(text2);
+
     return (
       <article
         className={className}

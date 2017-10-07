@@ -280,10 +280,7 @@ export default class Start1Page extends Component {
           >
             <div className="description" style={{ margin: 0 }}>
               <p>
-                <T id="Start1Page.description1" />
-                <br />
-                <br />
-                <T id="Start1Page.description2" />
+                <T id="Start1Page.description" />
               </p>
             </div>
           </Accordion>

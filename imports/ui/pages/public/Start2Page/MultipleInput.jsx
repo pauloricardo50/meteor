@@ -1,21 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
-import { AutoTooltip } from '/imports/ui/components/general/Translation';
+import classnames from 'classnames';
 import StartTextField from './StartTextField';
 
 const styles = {
-  borrowerH1: {
-    marginTop: 32,
-    marginBottom: 0,
-    display: 'inline-block',
-    width: '100%',
-  },
   hr: {
-    border: 'none',
-    height: 1,
-    color: 'black',
-    backgroundColor: 'black',
+    width: '100%',
     margin: 0,
     marginTop: 16,
   },
@@ -25,12 +15,12 @@ const styles = {
   textFieldH1: {
     marginTop: 0,
     marginBottom: 0,
-    display: 'inline',
+    display: 'flex',
   },
 };
 
 export default class MultipleInput extends Component {
-  handleClick() {
+  handleClick = () => {
     const multiple = this.props.formState.borrowerCount > 1;
     this.props.setActiveLine(this.props.id);
 
@@ -40,66 +30,80 @@ export default class MultipleInput extends Component {
     } else if (!multiple) {
       this.firstInput.focus();
     }
-  }
+  };
 
   render() {
-    const multiple = this.props.formState.borrowerCount > 1;
+    const {
+      formState,
+      className,
+      firstMultiple,
+      text1,
+      width,
+      id,
+    } = this.props;
+    const multiple = formState.borrowerCount > 1;
     let classes1 = 'fixed-size';
     let classes2 = 'fixed-size';
 
     if (multiple) {
-      classes1 = 'col-xs-12 col-sm-5 fixed-size';
-      classes2 = 'col-xs-12 col-sm-5 col-sm-offset-2 fixed-size';
+      classes1 = 'col-xs-12 col-sm-5 fixed-size input1';
+      classes2 = 'col-xs-12 col-sm-5 col-sm-offset-2 fixed-size input2';
     }
 
     const TitleTag = multiple ? 'h3' : 'h1';
 
     return (
       <article
-        className={this.props.className.concat(multiple ? ' no-scale' : '')}
-        onClick={this.handleClick.bind(this)}
+        className={classnames({
+          [className]: true,
+          'no-scale multiple-input': multiple,
+        })}
+        onClick={this.handleClick}
       >
         {multiple &&
-          this.props.firstMultiple && (
-            <h1 style={styles.borrowerH1} className="fixed-size">
-              <span className="col-xs-5">Emprunteur 1</span>
-              <span className="col-xs-5 col-xs-offset-2">Emprunteur 2</span>
-              <span className="col-xs-12">
-                <hr style={styles.hr} />
-              </span>
+          firstMultiple && (
+            <h1 className="fixed-size multiple-header ">
+              <div>
+                <span>Emprunteur 1</span>
+                <span>Emprunteur 2</span>
+              </div>
+              <hr style={styles.hr} />
             </h1>
           )}
 
         <TitleTag style={styles.h1} className="fixed-size">
-          <AutoTooltip>{this.props.text1}</AutoTooltip>
+          {text1}
         </TitleTag>
 
-        <h1 className={classes1} style={styles.textFieldH1}>
-          <span className="active">
-            <StartTextField
-              {...this.props}
-              width={multiple ? '100%' : this.props.width}
-              id={`${this.props.id}1`}
-              setRef={(c) => {
-                this.firstInput = c;
-              }}
-              multiple={multiple}
-            />
-          </span>
-        </h1>
-
-        {multiple && (
-          <h1 className={classes2} style={styles.textFieldH1}>
+        <div className="inputs">
+          <h1 className={classes1}>
             <span className="active">
               <StartTextField
                 {...this.props}
-                width="100%"
-                id={`${this.props.id}2`}
-                autoFocus={false}
+                width={multiple ? '100%' : width}
+                id={`${id}1`}
+                setRef={(c) => {
+                  this.firstInput = c;
+                }}
+                noDelete={multiple}
               />
             </span>
           </h1>
-        )}
+
+          {multiple && (
+            <h1 className={classes2}>
+              <span className="active">
+                <StartTextField
+                  {...this.props}
+                  width="100%"
+                  id={`${id}2`}
+                  autoFocus={false}
+                  noDelete
+                />
+              </span>
+            </h1>
+          )}
+        </div>
       </article>
     );
   }

@@ -4,16 +4,6 @@ import { Meteor } from 'meteor/meteor';
 
 import Button from '/imports/ui/components/general/Button';
 import Icon from '/imports/ui/components/general/Icon';
-import Scroll from 'react-scroll';
-
-const scroll = () => {
-  const options = {
-    duration: 350,
-    delay: 100,
-    smooth: true,
-  };
-  Scroll.animateScroll.scrollToTop(options);
-};
 
 export default class LoadingButton extends Component {
   constructor(props) {
@@ -40,8 +30,6 @@ export default class LoadingButton extends Component {
           scroll();
         }, 1500);
       });
-    } else {
-      scroll();
     }
   };
 

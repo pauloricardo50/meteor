@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import Button from '/imports/ui/components/general/Button';
 import { T } from '/imports/ui/components/general/Translation';
@@ -98,7 +99,10 @@ export default class TranchePicker extends Component {
             <a
               onClick={disableAdd ? null : this.handleAddTranche}
               style={{ paddingTop: 16 }}
-              className={disableAdd ? 'disabled' : ''}
+              className={classnames({
+                disabled: disableAdd,
+                'animated pulse': tranches.length === 0,
+              })}
             >
               <T id="TranchePicker.add" />
             </a>
@@ -106,7 +110,7 @@ export default class TranchePicker extends Component {
           {tranches.length && (
             <TrancheChart
               tranches={tranches}
-              total={getLoanValue(loanRequest)}
+              total={getLoanValue(loanRequest, true)}
             />
           )}
         </div>

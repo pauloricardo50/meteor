@@ -85,8 +85,8 @@ const TopNavDropdown = (props) => {
           label: label || <T id={`TopNavDropdown.${optionId}`} />,
           history, // required for Link to work
         }))}
-      tooltip={currentUser.emails[0].address}
-      tooltipPosition="bottom-end"
+      // tooltip={currentUser.emails[0].address}
+      // tooltipPosition="bottom-end"
     />
   );
 };

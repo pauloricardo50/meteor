@@ -66,6 +66,7 @@ const Tooltip = (props) => {
           label={dialogLabel || <FormattedMessage id="general.learnMore" />}
           autoFocus
           onOpen={() => track('Tooltip - opened dialog', { tooltipId: baseId })}
+          cancelOnly
         >
           <FormattedMessage
             id={pureId ? `${baseId}2` : `tooltip2.${baseId}`}

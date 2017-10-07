@@ -51,6 +51,7 @@ const Select = (props) => {
     label,
     style,
     classes,
+    inputStyle,
     ...otherProps
   } = props;
   return (
@@ -60,8 +61,8 @@ const Select = (props) => {
         {...otherProps}
         value={value}
         onChange={e => onChange(id, e.target.value)}
-        input={<Input id={id} />}
-        classes={{ icon: classes.icon }}
+        input={<Input id={id} style={inputStyle} />}
+        classes={{ ...classes, icon: classes.icon }}
         MenuProps={{
           PaperProps: {
             style: {
@@ -83,11 +84,17 @@ Select.propTypes = {
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
   id: PropTypes.string.isRequired,
   label: PropTypes.node,
+  classes: PropTypes.object,
+  style: PropTypes.object,
+  inputStyle: PropTypes.object,
 };
 
 Select.defaultProps = {
   value: undefined,
   label: undefined,
+  classes: undefined,
+  style: {},
+  inputStyle: {},
 };
 
 export default withStyles(styles)(Select);

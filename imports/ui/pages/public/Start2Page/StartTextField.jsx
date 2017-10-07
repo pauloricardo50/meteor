@@ -38,7 +38,7 @@ export default class StartTextField extends React.Component {
       autoFocus,
       setRef,
       text2,
-      multiple,
+      noDelete,
       array,
       inputRef,
     } = this.props;
@@ -69,7 +69,7 @@ export default class StartTextField extends React.Component {
           type={type}
         />
 
-        {!!(!text2 && !multiple && !array) && (
+        {!!(!text2 && !noDelete && !array) && (
           <div className={classnames({ 'delete-button': true, off: !val })}>
             <div className="absolute-wrapper">
               <IconButton
@@ -104,10 +104,10 @@ StartTextField.propTypes = {
   autoFocus: PropTypes.bool,
   zeroAllowed: PropTypes.bool,
   setRef: PropTypes.func,
-  multiple: PropTypes.bool,
   inputRef: PropTypes.any,
   text2: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   array: PropTypes.bool,
+  noDelete: PropTypes.bool,
 };
 
 StartTextField.defaultProps = {
@@ -117,8 +117,8 @@ StartTextField.defaultProps = {
   autoFocus: false,
   zeroAllowed: false,
   setRef: () => null,
-  multiple: false,
   inputRef: undefined,
   text2: '',
   array: false,
+  noDelete: false,
 };

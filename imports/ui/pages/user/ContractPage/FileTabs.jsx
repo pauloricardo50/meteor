@@ -66,7 +66,6 @@ const FileTabs = ({ loanRequest, borrowers }) => (
         key={b._id}
       >
         <div style={styles.tabContent}>
-          {b._id}
           <UploaderArray
             fileArray={borrowerFiles(b).contract}
             doc={b}

@@ -5,8 +5,8 @@ import Scroll from 'react-scroll';
 import FortuneSliders from '/imports/ui/pages/public/Start2Page/FortuneSliders';
 import DialogSimple from '/imports/ui/components/general/DialogSimple';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation';
-
 import constants from '/imports/js/config/constants';
+import { toMoney } from '/imports/js/helpers/conversionFunctions';
 
 export const getAcquisitionArray = (state, props, setFormState) => [
   {
@@ -162,6 +162,7 @@ export const getAcquisitionArray = (state, props, setFormState) => [
     firstMultiple: true,
     money: true,
     zeroAllowed: true,
+    placeholder: `CHF ${toMoney(state.initialIncome)}`,
   },
   {
     id: 'bonusExists',
@@ -294,6 +295,7 @@ export const getAcquisitionArray = (state, props, setFormState) => [
     question: true,
     money: true,
     zeroAllowed: state.borrowerCount > 1,
+    placeholder: `CHF ${toMoney(state.initialFortune)}`,
   },
   {
     id: 'insurance1Exists',
