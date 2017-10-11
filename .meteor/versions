@@ -62,6 +62,8 @@ meteor-base@1.2.0-rc.6
 meteorhacks:inject-initial@1.0.4
 meteorhacks:kadira@2.30.3
 meteorhacks:meteorx@1.4.1
+meteortesting:browser-tests@0.1.1
+meteortesting:mocha@0.4.4
 meteortoys:allthings@4.0.0
 meteortoys:authenticate@4.0.0
 meteortoys:autopub@4.0.0

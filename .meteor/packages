@@ -75,3 +75,4 @@ wylio:mandrill
 dburles:google-maps
 meteorhacks:kadira
 okgrow:analytics@=3.0.1
+meteortesting:mocha
