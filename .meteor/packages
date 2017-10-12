@@ -26,12 +26,12 @@ fourseven:scss@4.5.0
 
 #testing
 practicalmeteor:mocha
-dispatch:mocha
+# dispatch:mocha
 dburles:factory
 xolvio:cleaner
 hwillson:stub-collections
 # random@1.0.10
-practicalmeteor:mocha-console-runner
+# practicalmeteor:mocha-console-runner
 meteortesting:mocha
 
 
@@ -42,7 +42,7 @@ std:accounts-ui                 # React account component
 # std:accounts-basic
 # zetoff:accounts-material-ui
 email@1.2.3
-jabbslad:basic-auth             # basic http auth to protect a website
+# jabbslad:basic-auth             # basic http auth to protect a website
 
 
 # Data
