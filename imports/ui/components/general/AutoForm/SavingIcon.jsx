@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 
-var timer1;
-var timer2;
+let timer1;
+let timer2;
 
 export default class SavingIcon extends Component {
   constructor(props) {
@@ -30,9 +30,9 @@ export default class SavingIcon extends Component {
               // Remove icon 1 second later (animate.css duration is 1s)
               timer2 = Meteor.setTimeout(() => {
                 this.setState({ showIcon: false });
-              }, 1000);
+              }, 100000); // 1000
             });
-          }, 2000);
+          }, 200000); // 2000
         },
       );
     }

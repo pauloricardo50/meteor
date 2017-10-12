@@ -5,8 +5,8 @@ import Scroll from 'react-scroll';
 import FortuneSliders from '/imports/ui/pages/public/Start2Page/FortuneSliders';
 import DialogSimple from '/imports/ui/components/general/DialogSimple';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation';
-
 import constants from '/imports/js/config/constants';
+import { toMoney } from '/imports/js/helpers/conversionFunctions';
 
 export const getAcquisitionArray = (state, props, setFormState) => [
   {
@@ -107,7 +107,8 @@ export const getAcquisitionArray = (state, props, setFormState) => [
     type: 'textInput',
     condition: state.borrowerCount === 1,
     text2: true,
-    placeholder: '18',
+    // placeholder: '18',
+    // noIntl: true,
     number: true,
     width: 50,
     validation: { min: 18, max: 120 },
@@ -117,7 +118,8 @@ export const getAcquisitionArray = (state, props, setFormState) => [
     type: 'textInput',
     condition: state.borrowerCount > 1,
     text2: true,
-    placeholder: '18',
+    // placeholder: '18',
+    // noIntl: true,
     number: true,
     width: 50,
     validation: { min: 18, max: 120 },
@@ -160,6 +162,7 @@ export const getAcquisitionArray = (state, props, setFormState) => [
     firstMultiple: true,
     money: true,
     zeroAllowed: true,
+    placeholder: `CHF ${toMoney(state.initialIncome)}`,
   },
   {
     id: 'bonusExists',
@@ -292,6 +295,7 @@ export const getAcquisitionArray = (state, props, setFormState) => [
     question: true,
     money: true,
     zeroAllowed: state.borrowerCount > 1,
+    placeholder: `CHF ${toMoney(state.initialFortune)}`,
   },
   {
     id: 'insurance1Exists',
@@ -551,7 +555,6 @@ export const getFinalArray = (state, props, setFormState) => [
       <T id="Start2Form.loanWanted.sliderMin" />,
       <T id="Start2Form.loanWanted.sliderMax" />,
     ],
-    step: 10000,
     onDragStart() {
       // Make sure we reset the next sliders if this is modified afterwards
       if (state.fortuneUsed) {
@@ -595,6 +598,7 @@ export const getFinalArray = (state, props, setFormState) => [
     ],
   },
   {
+    // insurance is not needed, but still propose to use it
     id: 'useInsurance1',
     condition:
       state.type === 'acquisition' &&
@@ -642,6 +646,7 @@ export const getFinalArray = (state, props, setFormState) => [
     question: true,
   },
   {
+    // insurance is necessary
     id: 'useInsurance2',
     condition:
       state.type === 'acquisition' &&

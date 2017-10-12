@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import JsSearch from 'js-search';
 import { injectIntl } from 'react-intl';
 
-import List from 'material-ui/List/List';
-import ListItem from 'material-ui/List/ListItem';
+import List, { ListItem, ListItemText } from 'material-ui/List';
 
 import { T } from '/imports/ui/components/general/Translation';
 import { generalTooltips } from '/imports/js/arrays/tooltips';
+import Button from '/imports/ui/components/general/Button';
 
 const styles = {
   list: {
@@ -83,32 +83,36 @@ class SearchResults extends Component {
       const selectedResult = results.filter(result => result.id === showId)[0];
       return (
         <div className="flex-col" style={styles.selected}>
-          <h3>
-            {selectedResult.tooltipMatch}
-          </h3>
-          <p>
-            {selectedResult.tooltipValue1}
-          </p>
+          <h3>{selectedResult.tooltipMatch}</h3>
+          <p>{selectedResult.tooltipValue1}</p>
           <br />
-          <p>
-            {selectedResult.tooltipValue2}
-          </p>
+          <p>{selectedResult.tooltipValue2}</p>
+          <div className="text-center" style={{ paddingTop: 16 }}>
+            <Button
+              primary
+              label={<T id="general.ok" />}
+              onClick={() => this.setState({ showId: '' })}
+            />
+          </div>
         </div>
       );
     }
 
     return (
       <List style={styles.list}>
-        {results
-          .slice(0, 5)
-          .map(result =>
-            (<ListItem
-              onClick={() => this.setState({ showId: result.id })}
-              key={result.id}
-              primaryText={result.tooltipMatch}
-              secondaryText={result.tooltipValue1}
-            />),
-          )}
+        {results.slice(0, 5).map(result => (
+          <ListItem
+            button
+            divider
+            onClick={() => this.setState({ showId: result.id })}
+            key={result.id}
+          >
+            <ListItemText
+              primary={result.tooltipMatch}
+              secondary={result.tooltipValue1}
+            />
+          </ListItem>
+        ))}
       </List>
     );
   }

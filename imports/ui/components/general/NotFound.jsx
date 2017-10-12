@@ -42,7 +42,9 @@ export default class NotFound extends Component {
             raised
             primary
             label={<T id="NotFound.button" />}
-            containerElement={<Link to="/home" />}
+            component={Link}
+            link
+            to="/home"
           />
         </div>
       </section>

@@ -1,44 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import omit from 'lodash/omit';
+import CheckIcon from 'material-ui-icons/Check';
+import CloseIcon from 'material-ui-icons/Close';
+import AddIcon from 'material-ui-icons/AddCircleOutline';
+import DownloadIcon from 'material-ui-icons/FileDownload';
+import LoopIcon from 'material-ui-icons/Loop';
+import WarningIcon from 'material-ui-icons/Warning';
+import ForumIcon from 'material-ui-icons/Forum';
+import MailIcon from 'material-ui-icons/MailOutline';
+import PhoneIcon from 'material-ui-icons/Call';
+import MenuIcon from 'material-ui-icons/Menu';
+import WaitingIcon from 'material-ui-icons/HourglassEmpty';
+import ArrowUp from 'material-ui-icons/KeyboardArrowUp';
+import DropDownCircle from 'material-ui-icons/ArrowDropDownCircle';
+import ArrowDown from 'material-ui-icons/KeyboardArrowDown';
+import ArrowLeft from 'material-ui-icons/KeyboardArrowLeft';
+import ArrowRight from 'material-ui-icons/KeyboardArrowRight';
+import SearchIcon from 'material-ui-icons/Search';
+import PowerOffIcon from 'material-ui-icons/PowerSettingsNew';
+import LockIcon from 'material-ui-icons/LockOutline';
+import LockOpen from 'material-ui-icons/LockOpen';
+import BuildingIcon from 'material-ui-icons/Business';
+import HomeIcon from 'material-ui-icons/Home';
+import AssessmentIcon from 'material-ui-icons/Assessment';
+import FolderIcon from 'material-ui-icons/FolderOpen';
+import Person from 'material-ui-icons/Person';
+import FaceIcon from 'material-ui-icons/Face';
+import Eye from 'material-ui-icons/Visibility';
+import EyeCrossed from 'material-ui-icons/VisibilityOff';
+import SortIcon from 'material-ui-icons/Sort';
+import MoreIcon from 'material-ui-icons/MoreHoriz';
+import AccountCircle from 'material-ui-icons/AccountCircle';
+import Apps from 'material-ui-icons/Apps';
 
-import CheckIcon from 'material-ui/svg-icons/navigation/check';
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
-import AddIcon from 'material-ui/svg-icons/content/add-circle-outline';
-import DownloadIcon from 'material-ui/svg-icons/file/file-download';
-import LoopIcon from 'material-ui/svg-icons/av/loop';
-import WarningIcon from 'material-ui/svg-icons/alert/warning';
-import ForumIcon from 'material-ui/svg-icons/communication/forum';
-import MailIcon from 'material-ui/svg-icons/communication/mail-outline';
-import PhoneIcon from 'material-ui/svg-icons/communication/call';
-import MenuIcon from 'material-ui/svg-icons/navigation/menu';
-import WaitingIcon from 'material-ui/svg-icons/action/hourglass-empty';
-import ArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
-import DropDownCircle from 'material-ui/svg-icons/navigation/arrow-drop-down-circle';
-import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
-import ArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
-import ArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
-import SearchIcon from 'material-ui/svg-icons/action/search';
-import PowerOffIcon from 'material-ui/svg-icons/action/power-settings-new';
-import LockIcon from 'material-ui/svg-icons/action/lock-outline';
-import LockOpen from 'material-ui/svg-icons/action/lock-open';
-import BuildingIcon from 'material-ui/svg-icons/communication/business';
-import HomeIcon from 'material-ui/svg-icons/action/home';
-import AssessmentIcon from 'material-ui/svg-icons/action/assessment';
-import FolderIcon from 'material-ui/svg-icons/file/folder-open';
-import Person from 'material-ui/svg-icons/social/person';
-import FaceIcon from 'material-ui/svg-icons/action/face';
-import Eye from 'material-ui/svg-icons/action/visibility';
-import EyeCrossed from 'material-ui/svg-icons/action/visibility-off';
-import SortIcon from 'material-ui/svg-icons/content/sort';
-import MoreIcon from 'material-ui/svg-icons/navigation/more-horiz';
-
-import Star from 'material-ui/svg-icons/toggle/star';
-import StarHalf from 'material-ui/svg-icons/toggle/star-half';
-import StarEmpty from 'material-ui/svg-icons/toggle/star-border';
-
-import colors from '/imports/js/config/colors';
+import Star from 'material-ui-icons/Star';
+import StarHalf from 'material-ui-icons/StarHalf';
+import StarEmpty from 'material-ui-icons/StarBorder';
 
 const iconMap = {
   close: CloseIcon,
@@ -64,7 +62,8 @@ const iconMap = {
   building: BuildingIcon,
   dashboard: AssessmentIcon,
   folder: FolderIcon,
-  loop: { component: LoopIcon, className: 'fa-spin' },
+  loop: LoopIcon,
+  'loop-spin': { component: LoopIcon, className: 'fa-spin' },
   person: Person,
   face: FaceIcon,
   eye: Eye,
@@ -74,41 +73,27 @@ const iconMap = {
   star: Star,
   starHalf: StarHalf,
   starEmpty: StarEmpty,
+  accountCircle: AccountCircle,
+  app: Apps,
 };
 
 const Icon = (props) => {
   const { type } = props;
-  const iconProps = props.withColors
-    ? { ...props, color: colors.iconColor, hoverColor: colors.iconHoverColor }
-    : { ...props };
-
   const MyIcon = iconMap[type];
 
   if (!MyIcon) {
-    throw new Error('invalid icon type');
+    throw new Error(`invalid icon type: ${type}`);
   } else if (MyIcon.component) {
-    return (
-      <MyIcon.component
-        className={MyIcon.className}
-        {...omit(iconProps, ['withColors'])}
-      />
-    );
+    return <MyIcon.component className={MyIcon.className} {...props} />;
   }
 
-  return <MyIcon {...omit(iconProps, ['withColors'])} />;
+  return <MyIcon {...props} />;
 };
 
 Icon.propTypes = {
   type: PropTypes.string.isRequired,
-  color: PropTypes.string,
-  hoverColor: PropTypes.string,
-  withColors: PropTypes.bool,
 };
 
-Icon.defaultProps = {
-  color: '',
-  hoverColor: '',
-  withColors: false,
-};
+Icon.defaultProps = {};
 
 export default Icon;

@@ -20,20 +20,18 @@ export default class AuctionPage extends Component {
 
   componentDidMount() {
     // Call it once initially
-    Meteor.call('getServerTime', (e, res) => {
-      this.setState({
-        serverTime: res,
-      });
-    });
-
-    time = Meteor.setInterval(() => {
-      // Call it again every second
+    const getTime = () =>
       Meteor.call('getServerTime', (e, res) => {
-        this.setState({
-          serverTime: res,
-        });
+        if (e) {
+          console.log(e);
+        } else {
+          this.setState({ serverTime: res });
+        }
       });
-    }, 1000);
+
+    getTime();
+
+    time = Meteor.setInterval(getTime, 1000);
   }
 
   componentWillUnmount() {

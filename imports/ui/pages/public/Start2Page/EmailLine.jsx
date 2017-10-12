@@ -4,20 +4,12 @@ import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
 
 import TextField from '/imports/ui/components/general/Material/TextField';
-import MaskedInput from 'react-text-mask';
-import emailMask from 'text-mask-addons/dist/emailMask';
-
 import { emailValidation } from '/imports/js/helpers/validation';
 
 const styles = {
-  textField: {
-    fontSize: 'inherit',
+  root: {
     width: 350,
-    maxWidth: '80%',
-  },
-  button: {
-    marginRight: 8,
-    marginBottom: 8,
+    maxWidth: '100%',
   },
 };
 
@@ -42,9 +34,10 @@ export default class EmailLine extends Component {
   }
 
   handleChange = (event) => {
+    const { setParentState } = this.props;
     const email = event.target.value;
     Meteor.clearTimeout(this.timer);
-    this.props.setParentState('email', email);
+    setParentState('email', email);
 
     if (emailValidation(email)) {
       this.timer = Meteor.setTimeout(() => {
@@ -52,40 +45,35 @@ export default class EmailLine extends Component {
         Meteor.call('doesUserExist', email, (error, result) => {
           if (result) {
             // If it exists
-            this.setState({
-              emailExists: true,
-            });
-            this.props.setParentState('login', true);
-            this.props.setParentState('signUp', false);
+            this.setState({ emailExists: true });
+            setParentState('login', true);
+            setParentState('signUp', false);
           } else {
             // If it doesnt
-            this.setState({
-              emailExists: false,
-            });
-            this.props.setParentState('login', false);
-            this.props.setParentState('signUp', true);
+            this.setState({ emailExists: false });
+            setParentState('login', false);
+            setParentState('signUp', true);
           }
-          this.props.setParentState('showPassword', true, () => scroll());
+          setParentState('showPassword', true, () => scroll());
         });
       }, 400);
     } else {
-      this.props.setParentState('showPassword', false, () => scroll());
+      setParentState('showPassword', false, () => scroll());
     }
   };
 
   render() {
     return (
-      <div>
-        <h1 className="email fixed-size">
-          <TextField
-            style={styles.textField}
-            name="email"
-            value={this.props.email}
-            onChange={this.handleChange}
-            type="email"
-          />
-        </h1>
-      </div>
+      <h2 className="email fixed-size" style={styles.root}>
+        <TextField
+          style={styles.input}
+          name="email"
+          value={this.props.email}
+          onChange={this.handleChange}
+          type="email"
+          fullWidth
+        />
+      </h2>
     );
   }
 }

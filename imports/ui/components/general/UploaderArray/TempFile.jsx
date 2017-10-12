@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { Tracker } from 'meteor/tracker';
 import { Slingshot } from 'meteor/edgee:slingshot';
 
-import CircularProgress from 'material-ui/CircularProgress';
-import LinearProgress from 'material-ui/LinearProgress';
+import { CircularProgress, LinearProgress } from 'material-ui/Progress';
 
 export default class TempFile extends Component {
   constructor(props) {
@@ -48,13 +47,14 @@ export default class TempFile extends Component {
           {!isNaN(progress) ? (
             <div style={{ paddingLeft: 16, flexGrow: 1 }}>
               <LinearProgress
+                color="primary"
                 mode="determinate"
                 value={Math.round(progress * 100)}
               />
             </div>
           ) : (
             <div style={{ paddingLeft: 16 }}>
-              <CircularProgress size={24} />
+              <CircularProgress size={24} color="primary" />
             </div>
           )}
         </div>

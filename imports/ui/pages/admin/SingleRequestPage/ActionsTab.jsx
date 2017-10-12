@@ -92,23 +92,24 @@ const ActionsTab = (props) => {
         label="Uploader contrat"
         buttonStyle={styles.button}
       >
-        <DropzoneArray
-          array={[{ id: 'contract' }]}
-          documentId={loanRequest._id}
-          pushFunc="pushRequestValue"
-          updateFunc="updateRequest"
-          collection="loanRequests"
-          filesObject={loanRequest.files}
-          filesObjectSelector="files"
-          disabled={false}
-        />
+        <div style={{ width: 400 }}>
+          <DropzoneArray
+            array={[{ id: 'contract' }]}
+            docId={loanRequest._id}
+            pushFunc="pushRequestValue"
+            updateFunc="updateRequest"
+            collection="loanRequests"
+            filesObject={loanRequest.files}
+            filesObjectSelector="files"
+            disabled={false}
+          />
+        </div>
       </DialogSimple>
       <DialogSimple
         title="Étapes du Décaissement"
         label="Étapes du Décaissement"
         passProps
         autoScroll
-        cancelOnly
       >
         <ClosingStepsForm loanRequest={loanRequest} />
       </DialogSimple>

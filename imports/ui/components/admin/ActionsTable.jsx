@@ -3,16 +3,14 @@ import PropTypes from 'prop-types';
 import { FormattedRelative } from 'react-intl';
 
 import Button from '/imports/ui/components/general/Button';
-import DropDownMenu from '/imports/ui/components/general/Material/DropDownMenu';
-import MenuItem from '/imports/ui/components/general/Material/MenuItem';
-
+import Select from '/imports/ui/components/general/Select';
 import Table from '/imports/ui/components/general/Table';
 import { T } from '/imports/ui/components/general/Translation';
 
 import getActions from '/imports/js/arrays/adminActions';
 import { completeAction } from '/imports/api/adminActions/methods';
 
-const columns = [
+const columnOptions = [
   {
     id: 'ActionsTable.requestName',
     align: 'left',
@@ -52,29 +50,22 @@ export default class ActionsTable extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { selectedRow: '', filter: 'active' };
+    this.state = { filter: 'active', selected: [] };
   }
 
   getFilteredActions = () =>
     this.props.adminActions.filter(a => a.status === this.state.filter);
 
-  handleFilter = (event, index, filter) =>
-    this.setState({ filter, selectedRow: '' });
+  handleFilter = (_, newFilter) => this.setState({ filter: newFilter });
 
-  handleRowSelection = (index) => {
-    if (Number.isInteger(index)) {
-      this.setState({ selectedRow: this.getFilteredActions()[index]._id });
-    } else {
-      this.setState({ selectedRow: '' });
-    }
-  };
+  handleRowSelect = rowIndexes => this.setState({ selected: rowIndexes });
 
   handleClick = () =>
-    completeAction.call({ id: this.state.selectedRow }, (err) => {
-      if (err) {
-        console.log(err);
-      }
-    });
+    this.state.completed.forEach(actionId =>
+      completeAction.callPromise({ id: actionId }).catch((e) => {
+        console.log('error completing action:', e);
+      }),
+    );
 
   render() {
     const actions = this.getFilteredActions();
@@ -87,24 +78,28 @@ export default class ActionsTable extends Component {
             alignItems: 'center',
           }}
         >
-          <DropDownMenu value={this.state.filter} onChange={this.handleFilter}>
-            <MenuItem value={'active'} primaryText="Actif" />
-            <MenuItem value={'completed'} primaryText="Complété" />
-          </DropDownMenu>
+          <Select
+            id="filter"
+            value={this.state.filter}
+            onChange={this.handleFilter}
+            options={[
+              { id: 'active', label: 'Actif' },
+              { id: 'completed', label: 'Complété' },
+            ]}
+            renderValue={value => (value === 'active' ? 'Actif' : 'Complété')}
+          />
           <Button
             label="Marquer comme complété"
             onClick={this.handleClick}
-            disabled={!this.state.selectedRow}
+            disabled={this.state.selected.length === 0}
             primary
           />
         </div>
 
         <Table
-          height={actions.length === 0 ? '0px' : '500px'}
           selectable
-          selected={this.state.selectedRow}
-          onRowSelection={this.handleRowSelection}
-          columns={columns}
+          onRowSelect={this.handleRowSelect}
+          columnOptions={columnOptions}
           rows={actions.map((action) => {
             const request = this.props.loanRequests.find(
               r => r._id === action.requestId,
@@ -132,12 +127,6 @@ export default class ActionsTable extends Component {
             };
           })}
         />
-
-        {actions.length === 0 && (
-          <div className="text-center" style={{ padding: 16 }}>
-            <h2 className="secondary">Aucune action</h2>
-          </div>
-        )}
       </article>
     );
   }

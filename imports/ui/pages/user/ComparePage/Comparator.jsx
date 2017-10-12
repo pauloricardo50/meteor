@@ -140,6 +140,7 @@ export default class Comparator extends Component {
   };
 
   addGooglePlace = (propertyId, lat, lng, type, id, byDistance) => {
+    // to avoid test errors, as window is not defined on server
     if (window.google) {
       return getNearbyPlace(lat, lng, type, byDistance)
         .then(result =>
@@ -238,17 +239,19 @@ export default class Comparator extends Component {
           removeCustomField={this.removeCustomField}
           addProperty={this.addProperty}
         />
-        {this.modifiedProperties.length > 0
-          ? <CompareTable
+        {this.modifiedProperties.length > 0 ? (
+          <CompareTable
             comparator={comparator}
             properties={this.modifiedProperties}
             addCustomField={this.addCustomField}
             fields={this.filteredFields}
             deleteProperty={this.deleteProperty}
           />
-          : <h2 className="secondary text-center">
+        ) : (
+          <h2 className="secondary text-center">
             <T id="Comparator.empty" />
-          </h2>}
+          </h2>
+        )}
       </section>
     );
   }

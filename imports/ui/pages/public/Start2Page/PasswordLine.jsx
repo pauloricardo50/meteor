@@ -118,7 +118,7 @@ export default class PasswordLine extends Component {
           }
           primary
           type="submit"
-          icon={this.state.loading && <Icon type="loop" />}
+          icon={this.state.loading && <Icon type="loop-spin" />}
           disabled={!password}
         />
       );

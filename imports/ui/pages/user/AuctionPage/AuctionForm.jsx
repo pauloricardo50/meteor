@@ -7,6 +7,7 @@ import AutoForm from '/imports/ui/components/general/AutoForm';
 import { getAuctionEndTime } from '/imports/api/loanrequests/methods';
 import cleanMethod from '/imports/api/cleanMethods';
 
+// Min closing date can be 2 days after auction ends
 const getMinDate = serverTime =>
   moment(getAuctionEndTime(serverTime))
     .add(2, 'd')
@@ -16,27 +17,18 @@ const getFormArray = (request, serverTime) => [
   {
     type: 'h3',
     text: 'Derniers réglages',
+    id: 'auction.formTitle',
   },
   {
     id: 'general.wantedClosingDate',
     type: 'dateInput',
-    label: 'Date espérée du décaissement',
     minDate: getMinDate(serverTime),
+    openDirection: 'up',
   },
   {
-    id: 'logic.auction.mostImportant',
+    id: 'general.auctionMostImportant',
     type: 'selectFieldInput',
-    label: 'Critère le plus important',
-    options: [
-      {
-        id: 'speed',
-        label: 'Décaissement le plus rapide',
-      },
-      {
-        id: 'price',
-        label: 'Coût mensuel le plus bas',
-      },
-    ],
+    options: ['speed', 'price'],
   },
 ];
 
@@ -59,7 +51,7 @@ export default class AuctionForm extends Component {
       <AutoForm
         inputs={getFormArray(this.props.loanRequest, this.props.serverTime)}
         formClasses="user-form"
-        documentId={this.props.loanRequest._id}
+        docId={this.props.loanRequest._id}
         updateFunc="updateRequest"
         pushFunc="pushRequestValue"
         popFunc="popRequestValue"

@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import MetricsTriple from '/imports/ui/components/general/MetricsTriple';
-import TodoList from '/imports/ui/components/admin/TodoList';
 import ActionsTable from '/imports/ui/components/admin/ActionsTable';
 
 const getUserMetrics = (props) => {

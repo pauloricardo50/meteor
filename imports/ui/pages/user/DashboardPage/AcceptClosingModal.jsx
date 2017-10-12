@@ -16,7 +16,7 @@ export default class AcceptClosingModal extends Component {
     };
   }
 
-  handleConfirm = event => {
+  handleConfirm = (event) => {
     event.preventDefault();
 
     cleanMethod(
@@ -28,29 +28,40 @@ export default class AcceptClosingModal extends Component {
       },
       {
         title: 'Formidable',
-        message: `<h4 class="bert">Profitez bien de ${this.props.loanRequest.name}</h4>`,
+        message: `<h4 class="bert">Profitez bien de ${this.props.loanRequest
+          .name}</h4>`,
       },
     );
   };
 
   render() {
     const button = (
-      <Button raised label="Fantastique" secondary onClick={this.handleConfirm} autoFocus />
+      <Button
+        raised
+        label="Fantastique"
+        secondary
+        onClick={this.handleConfirm}
+        autoFocus
+      />
     );
 
     return (
       <Dialog
-        title={<h3><T id="AcceptClosingModal.title" /></h3>}
+        title={<T id="AcceptClosingModal.title" />}
         actions={button}
-        modal
+        important
         open={this.state.open}
       >
         <div className="text-center" style={{ marginBottom: 20 }}>
           <span className="fa fa-birthday-cake fa-5x active" />
         </div>
-        <p className="secondary"><T id="AcceptClosingModal.description" /></p>
+        <p className="secondary">
+          <T id="AcceptClosingModal.description" />
+        </p>
         <br />
-        <p className="secondary"><T id="AcceptClosingModal.description2" /></p>
+        <p className="secondary">
+          <T id="AcceptClosingModal.description2" />
+        </p>
         <h2 className="text-center">{this.props.loanRequest._id}</h2>
       </Dialog>
     );

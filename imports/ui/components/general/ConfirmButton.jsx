@@ -44,7 +44,7 @@ export default class ConfirmButton extends Component {
         key={2}
         label={<T id="general.yes" />}
         primary
-        keyboardFocused
+        autoFocus
         onClick={(e) => {
           // prevents onClick from triggering twice when using enter to validate...
           e.preventDefault();
@@ -66,13 +66,8 @@ export default class ConfirmButton extends Component {
           style={style}
         />
         <Dialog
-          title={
-            <h3>
-              <T id="general.areYouSure" />
-            </h3>
-          }
+          title={<T id="general.areYouSure" />}
           actions={actions}
-          modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
         >

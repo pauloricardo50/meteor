@@ -4,16 +4,6 @@ import { Meteor } from 'meteor/meteor';
 
 import Button from '/imports/ui/components/general/Button';
 import Icon from '/imports/ui/components/general/Icon';
-import Scroll from 'react-scroll';
-
-const scroll = () => {
-  const options = {
-    duration: 350,
-    delay: 100,
-    smooth: true,
-  };
-  Scroll.animateScroll.scrollToTop(options);
-};
 
 export default class LoadingButton extends Component {
   constructor(props) {
@@ -40,17 +30,16 @@ export default class LoadingButton extends Component {
           scroll();
         }, 1500);
       });
-    } else {
-      scroll();
     }
   };
 
   render() {
+    const { isFirstVisit, loading } = this.state;
     let icon = null;
-    if (!this.state.isFirstVisit) {
+    if (!isFirstVisit) {
       icon = <Icon type="check" />;
-    } else if (this.state.loading) {
-      icon = <Icon type="loop" />;
+    } else if (loading) {
+      icon = <Icon type="loop-spin" />;
     }
 
     return (
@@ -58,10 +47,10 @@ export default class LoadingButton extends Component {
         raised
         // {...this.props}
         label={this.props.label}
-        primary={this.state.isFirstVisit}
+        primary={isFirstVisit}
         onClick={this.handleClick}
         icon={icon}
-        disabled={this.props.disabled}
+        disabled={this.props.disabled || (!loading && !isFirstVisit)}
       />
     );
   }

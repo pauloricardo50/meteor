@@ -24,7 +24,7 @@ const getOfferValues = ({ monthly, rating, conditions, counterparts }) => [
   },
   {
     id: 'rating',
-    value: <StarRating value={rating} />,
+    value: <StarRating value={rating || 5} />,
   },
   { key: 'maxAmount', format: 'money' },
   { key: 'amortization', format: 'percentage' },
@@ -75,19 +75,20 @@ export default class OfferList extends Component {
 
     return (
       <div className="flex-col" style={{ width: '100%' }}>
-        <Select
-          id="sort"
-          label={<T id="general.sortBy" />}
-          currentValue={sort}
-          onChange={this.handleChange}
-          options={getOfferValues({})
-            .filter(o => !o.component)
-            .map(o => ({
-              id: o.key || o.id,
-              label: <T id={`offer.${o.key || o.id}`} />,
-            }))}
-          style={{ marginBottom: 16 }}
-        />
+        <div style={{ marginBottom: 16, width: 300 }}>
+          <Select
+            id="sort"
+            label={<T id="general.sortBy" />}
+            value={sort}
+            onChange={this.handleChange}
+            options={getOfferValues({})
+              .filter(o => !o.component)
+              .map(o => ({
+                id: o.key || o.id,
+                label: <T id={`offer.${o.key || o.id}`} />,
+              }))}
+          />
+        </div>
 
         {filteredOffers.map(offer => (
           <Offer

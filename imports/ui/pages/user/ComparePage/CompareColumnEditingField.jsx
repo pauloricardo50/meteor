@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import TextInput from '/imports/ui/components/general/TextInput';
-import DatePicker from '/imports/ui/components/general/DatePicker';
+import DateInput from '/imports/ui/components/general/DateInput';
 import RadioButtons from '/imports/ui/components/general/RadioButtons';
 
 const styles = {
@@ -12,7 +12,7 @@ const styles = {
 };
 
 const CompareColumnEditingField = (props) => {
-  const { field, property, parentState, handleChange } = props;
+  const { field, property, parentState, onChange } = props;
   let value;
 
   if (field.custom) {
@@ -25,36 +25,41 @@ const CompareColumnEditingField = (props) => {
     case 'number':
       return (
         <TextInput
-          currentValue={parentState[field.id]}
+          value={parentState[field.id]}
           id={field.id}
           type="number"
-          handleChange={handleChange}
+          onChange={onChange}
         />
       );
     case 'money':
       return (
         <TextInput
-          currentValue={parentState[field.id]}
+          value={parentState[field.id]}
           id={field.id}
           type="money"
-          handleChange={handleChange}
+          onChange={onChange}
         />
       );
     case 'date':
       return (
-        <DatePicker
-          currentValue={parentState[field.id]}
+        <DateInput
+          value={parentState[field.id]}
           id={field.id}
-          handleChange={handleChange}
+          onChange={(newDate, id) => onChange(id, newDate)}
           style={styles.field}
+          // withPortal
+          datePickerProps={{
+            withPortal: true,
+          }}
+          // withFullScreenPortal
         />
       );
     case 'boolean':
       return (
         <RadioButtons
-          currentValue={parentState[field.id]}
+          value={parentState[field.id]}
           id={field.id}
-          handleChange={handleChange}
+          onChange={onChange}
           options={[true, false]}
           intlPrefix="CompareColumn.boolean"
           style={{ width: '100%' }}
@@ -63,33 +68,29 @@ const CompareColumnEditingField = (props) => {
     case 'percent':
       return (
         <TextInput
-          currentValue={parentState[field.id]}
+          value={parentState[field.id]}
           id={field.id}
           type="percent"
-          handleChange={handleChange}
+          onChange={onChange}
         />
       );
     case 'text':
       return (
         <TextInput
-          currentValue={parentState[field.id]}
+          value={parentState[field.id]}
           id={field.id}
-          handleChange={handleChange}
+          onChange={onChange}
         />
       );
     default:
-      return (
-        <span>
-          {value}
-        </span>
-      );
+      return <span>{value}</span>;
   }
 };
 
 CompareColumnEditingField.propTypes = {
   field: PropTypes.object.isRequired,
   property: PropTypes.object.isRequired,
-  handleChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   parentState: PropTypes.object.isRequired,
 };
 

@@ -29,7 +29,7 @@ const handleSave = (props, file) => {
     },
   };
 
-  cleanMethod(props.pushFunc, object, props.documentId);
+  cleanMethod(props.pushFunc, object, props.docId);
 };
 
 const handleDelete = (props, fileToDelete) => {
@@ -40,7 +40,7 @@ const handleDelete = (props, fileToDelete) => {
   const object = {};
   object[props.mongoId] = newFileArray;
 
-  cleanMethod(props.updateFunc, object, props.documentId);
+  cleanMethod(props.updateFunc, object, props.docId);
 };
 
 // Gets already uploaded files and simulates them being added to the dropzone
@@ -88,7 +88,7 @@ const djsConfig = props => ({
   accept(file, done) {
     const uploader = new Slingshot.Upload('myFileUploads', {
       ...props,
-      docId: props.documentId,
+      docId: props.docId,
     });
 
     uploader.file = file;
@@ -145,7 +145,7 @@ DropzoneInput.propTypes = {
   label: PropTypes.string,
   currentValue: PropTypes.arrayOf(PropTypes.object),
   mongoId: PropTypes.string.isRequired,
-  documentId: PropTypes.string.isRequired,
+  docId: PropTypes.string.isRequired,
   pushFunc: PropTypes.string.isRequired,
   updateFunc: PropTypes.string.isRequired,
   collection: PropTypes.string.isRequired,

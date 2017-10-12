@@ -76,21 +76,21 @@ export default class PasswordChange extends Component {
       >
         <div style={styles.div}>
           <TextField
-            floatingLabelText={<T id="PasswordChange.oldPassword" />}
+            label={<T id="PasswordChange.oldPassword" />}
             floatingLabelFixed
             type="password"
             value={oldPassword}
             onChange={e => this.handleChange(e, 'oldPassword')}
           />
           <TextField
-            floatingLabelText={<T id="PasswordChange.password" />}
+            label={<T id="PasswordChange.password" />}
             floatingLabelFixed
             type="password"
             value={newPassword}
             onChange={e => this.handleChange(e, 'newPassword')}
           />
           <TextField
-            floatingLabelText={<T id="PasswordChange.passwordRepeat" />}
+            label={<T id="PasswordChange.passwordRepeat" />}
             floatingLabelFixed
             type="password"
             value={newPassword2}

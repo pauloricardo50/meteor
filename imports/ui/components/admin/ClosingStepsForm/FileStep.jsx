@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Button from '/imports/ui/components/general/Button';
 import TextInput from '/imports/ui/components/general/TextInput';
 
-const FileStep = ({ step, handleChange, handleRemove }) => (
+const FileStep = ({ step, onChange, handleRemove }) => (
   <div className="mask1 flex-col" style={{ marginBottom: 16, width: '100%' }}>
     <h3>
       Document à uploader <small className="disabled">{step.id}</small>
@@ -12,8 +12,8 @@ const FileStep = ({ step, handleChange, handleRemove }) => (
     <TextInput
       label="Nom du document"
       id="title"
-      handleChange={(key, value) => handleChange(step.id, key, value)}
-      currentValue={step.title}
+      onChange={(key, value) => onChange(step.id, key, value)}
+      value={step.title}
     />
     <Button
       onClick={() => handleRemove(step.id)}
@@ -23,6 +23,10 @@ const FileStep = ({ step, handleChange, handleRemove }) => (
   </div>
 );
 
-FileStep.propTypes = {};
+FileStep.propTypes = {
+  step: PropTypes.objectOf(PropTypes.any).isRequired,
+  onChange: PropTypes.func.isRequired,
+  handleRemove: PropTypes.func.isRequired,
+};
 
 export default FileStep;

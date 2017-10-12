@@ -3,16 +3,15 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import TextField from '/imports/ui/components/general/Material/TextField';
-import MaskedInput from 'react-text-mask';
-
 import constants from '/imports/js/config/constants';
 import colors from '/imports/js/config/colors';
-import { swissFrancMask, decimalMask } from '/imports/js/helpers/textMasks';
 import {
   toNumber,
   toDecimalNumber,
 } from '/imports/js/helpers/conversionFunctions';
+
+import MyTextInput from '/imports/ui/components/general/TextInput';
+
 import SavingIcon from './SavingIcon';
 import FormValidator from './FormValidator';
 
@@ -28,7 +27,7 @@ const styles = {
   },
   savingIcon: {
     position: 'absolute',
-    bottom: 10,
+    top: 16,
     right: -25,
   },
   infoStyle: {
@@ -42,6 +41,7 @@ export default class TextInput extends Component {
     super(props);
 
     this.state = {
+      // Make sure 0 values are displayed properly
       value: props.currentValue === 0 ? 0 : props.currentValue || '',
       errorText: '',
       saving: false,
@@ -70,14 +70,14 @@ export default class TextInput extends Component {
     this.saveValue();
   };
 
-  handleChange = (event) => {
+  handleChange = (_, value) => {
     // Make sure value is a number if this is a number or money input
-    const safeValue =
-      this.props.number || this.props.money
-        ? toNumber(event.target.value)
-        : event.target.value;
+    // const safeValue =
+    //   this.props.number || this.props.money
+    //     ? toNumber(event.target.value)
+    //     : event.target.value;
 
-    this.setState({ value: safeValue }, () => {
+    this.setState({ value }, () => {
       // do not show saving icon when changing text, only show it on blur
       if (this.props.saveOnChange) {
         this.saveValue(false);
@@ -90,19 +90,23 @@ export default class TextInput extends Component {
   };
 
   saveValue = (showSaving = true) => {
+    const { id, updateFunc, docId, currentValue } = this.props;
+    const { value } = this.state;
     // Save data to DB
-    const object = {};
+    const object = {
+      [id]: value,
+    };
 
-    if (this.props.money || this.props.number) {
-      // Make sure we store a number if this is supposed to be one
-      object[this.props.id] = this.formatter(this.state.value);
-    } else {
-      object[this.props.id] = this.state.value;
-    }
+    // if (this.props.money || this.props.number) {
+    //   // Make sure we store a number if this is supposed to be one
+    //   object[this.props.id] = this.formatter(this.state.value);
+    // } else {
+    //   object[this.props.id] = this.state.value;
+    // }
 
     Meteor.clearTimeout(this.timeout);
     this.timeout = Meteor.setTimeout(() => {
-      cleanMethod(this.props.updateFunc, object, this.props.documentId)
+      cleanMethod(updateFunc, object, docId)
         .then(() =>
           // on success, set saving briefly to true, before setting it to false again to trigger icon
           this.setState(
@@ -111,9 +115,8 @@ export default class TextInput extends Component {
           ),
         )
         .catch(() => {
-          this.setState({ saving: false, value: this.props.currentValue });
           // If there was an error, reset value to the backend value
-          this.setState({});
+          this.setState({ saving: false, value: currentValue });
         });
     }, constants.cpsLimit);
   };
@@ -122,11 +125,10 @@ export default class TextInput extends Component {
     const {
       style,
       label,
-      floatingLabelFixed,
       placeholder,
       number,
       id,
-      multiLine,
+      multiline,
       rows,
       info,
       autocomplete,
@@ -138,43 +140,52 @@ export default class TextInput extends Component {
     } = this.props;
     const { value, errorText, saving, showInfo } = this.state;
 
+    let type;
+    if (money) {
+      type = 'money';
+    } else if (number) {
+      type = 'number';
+    } else {
+      type = 'text';
+    }
+
     return (
       <div style={{ ...styles.div, ...style }}>
-        <TextField
-          floatingLabelText={label}
-          floatingLabelFixed={floatingLabelFixed}
-          hintText={placeholder}
-          value={number ? this.formatter(value) : value}
+        <MyTextInput
+          label={label}
+          placeholder={placeholder}
+          value={value}
           onChange={this.handleChange}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}
-          type="text"
+          type={type}
           id={id}
-          fullWidth
-          multiLine={multiLine}
+          // fullWidth
+          multiline={multiline}
           rows={rows}
-          pattern={number && '[0-9]*'}
-          errorText={errorText || (showInfo && info)}
-          errorStyle={errorText ? {} : styles.infoStyle}
-          underlineFocusStyle={errorText ? {} : styles.infoStyle}
-          floatingLabelShrinkStyle={
-            showInfo && !errorText ? styles.infoStyle : {}
-          }
-          autoComplete={autocomplete || ''}
+          // pattern={number && '[0-9]*'}
+          info={errorText || (showInfo && info)}
+          error={!!errorText}
+          // underlineFocusStyle={errorText ? {} : styles.infoStyle}
+          // floatingLabelShrinkStyle={
+          //   showInfo && !errorText ? styles.infoStyle : {}
+          // }
+          // autoComplete={autocomplete || ''}
           disabled={disabled}
-          style={style}
-          inputStyle={inputStyle}
+          style={{ width: '100%', ...style, marginBottom: 16 }}
+          // inputStyle={inputStyle}
           noValidate
+          fullWidth
         >
-          {(money || decimal) && (
+          {/* {(money || decimal) && (
             <MaskedInput
               value={value}
               mask={money ? swissFrancMask : decimalMask}
               guide
               pattern="[0-9]*"
             />
-          )}
-        </TextField>
+          )} */}
+        </MyTextInput>
         <SavingIcon
           saving={saving}
           errorExists={errorText !== ''}
@@ -192,9 +203,9 @@ TextInput.propTypes = {
   placeholder: PropTypes.node.isRequired,
   currentValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   autocomplete: PropTypes.string,
-  multiLine: PropTypes.bool,
+  multiline: PropTypes.bool,
   rows: PropTypes.number,
-  documentId: PropTypes.string.isRequired,
+  docId: PropTypes.string.isRequired,
   updateFunc: PropTypes.string,
   info: PropTypes.oneOfType([
     PropTypes.string,
@@ -214,7 +225,7 @@ TextInput.propTypes = {
 TextInput.defaultProps = {
   currentValue: '',
   autocomplete: '',
-  multiLine: false,
+  multiline: false,
   rows: 1,
   info: '',
   disabled: false,

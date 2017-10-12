@@ -3,39 +3,59 @@ import React from 'react';
 
 import Slider from '/imports/ui/components/general/Material/Slider';
 
-const StartSlider = (props) => {
-  const val = props.value || props.formState[props.id];
+// Set the step according to the delta between max and min, and make
+// sure that the delta can be divided without leftover by step
+const getStep = (step, sliderMin, sliderMax) => {
+  const delta = sliderMax - sliderMin;
+  if (delta < 100 || delta % 100) {
+    return 1;
+  } else if (delta < 10000 || delta % 1000) {
+    return 100;
+  } else if (delta < 100000 || delta % 10000) {
+    return 1000;
+  }
+
+  return 10000;
+};
+
+const StartSlider = ({
+  value,
+  id,
+  formState,
+  sliderMin,
+  sliderMax,
+  step,
+  initialValue,
+  setFormState,
+  setActiveLine,
+  onDragStart,
+  sliderLabels,
+}) => {
+  const val = value || formState[id];
   return (
-    <span style={{ display: 'block', position: 'relative' }}>
+    <span className="start-slider">
       <Slider
-        min={props.sliderMin}
-        max={props.sliderMax}
-        step={
-          props.step ||
-          Math.max(Math.round((props.sliderMax - props.sliderMin) / 100), 1)
-        }
-        name={props.id}
+        min={sliderMin}
+        max={sliderMax}
+        step={getStep(step, sliderMin, sliderMax)}
+        name={id}
         value={
-          Math.min(Math.max(val, props.sliderMin), props.sliderMax) ||
-          props.initialValue ||
-          props.sliderMin
+          Math.min(Math.max(val, sliderMin), sliderMax) ||
+          initialValue ||
+          sliderMin
         }
-        onChange={(e, v) => props.setFormState(props.id, Math.round(v))}
-        onDragStart={() => {
-          props.setActiveLine(props.id);
-          if (props.onDragStart) {
-            props.onDragStart();
+        onChange={v => setFormState(id, Math.round(v))}
+        onBeforeChange={() => {
+          setActiveLine(id);
+          if (onDragStart) {
+            onDragStart();
           }
         }}
-        sliderStyle={{ ...props.style }}
-        style={{ padding: '0 40px' }}
       />
-      {props.sliderLabels && (
+      {sliderLabels && (
         <div className="slider-labels">
-          <h6 className="secondary fixed-size left">{props.sliderLabels[0]}</h6>
-          <h6 className="secondary fixed-size right">
-            {props.sliderLabels[1]}
-          </h6>
+          <h6 className="secondary fixed-size left">{sliderLabels[0]}</h6>
+          <h6 className="secondary fixed-size right">{sliderLabels[1]}</h6>
         </div>
       )}
     </span>

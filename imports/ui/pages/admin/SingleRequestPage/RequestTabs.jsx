@@ -2,34 +2,29 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
-import Tabs from 'material-ui/Tabs/Tabs';
-import Tab  from 'material-ui/Tabs/Tab';
-
+import Tabs from '/imports/ui/components/general/Tabs';
 import OverviewTab from './OverviewTab';
 import OffersTab from './OffersTab';
 import ActionsTab from './ActionsTab';
 import FormsTab from './FormsTab';
 
-const tabs = ['overview', 'forms', 'offers', 'actions'];
+const getTabs = props => [
+  { id: 'overview', label: 'Résumé', content: <OverviewTab {...props} /> },
+  { id: 'forms', label: 'Formulaires', content: <FormsTab {...props} /> },
+  {
+    id: 'offers',
+    label: 'Offres des prêteurs',
+    content: <OffersTab {...props} />,
+  },
+  { id: 'actions', label: 'actions', content: <ActionsTab {...props} /> },
+];
 
-const RequestTabs = props => {
-  const tab = queryString.parse(props.location.search).tab || tabs[0];
-  return (
-    <Tabs initialSelectedIndex={tabs.indexOf(tab)}>
-      <Tab label="Overview">
-        <OverviewTab {...props} />
-      </Tab>
-      <Tab label="Formulaires">
-        <FormsTab {...props} />
-      </Tab>
-      <Tab label="Offres des Prêteurs">
-        <OffersTab {...props} />
-      </Tab>
-      <Tab label="Actions">
-        <ActionsTab {...props} />
-      </Tab>
-    </Tabs>
+const RequestTabs = (props) => {
+  const tabs = getTabs(props);
+  const initialTab = tabs.findIndex(
+    tab => tab.id === queryString.parse(props.location.search).tab,
   );
+  return <Tabs initialIndex={initialTab} tabs={tabs} />;
 };
 
 RequestTabs.propTypes = {

@@ -1,7 +1,8 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import getMountedComponent, {
+import {
+  getMountedComponent,
   stubCollections,
 } from '/imports/js/helpers/testHelpers';
 import { Factory } from 'meteor/dburles:factory';

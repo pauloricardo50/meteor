@@ -41,9 +41,9 @@ const styles = {
 const inputSwitch = (childProps, index, parentProps) => {
   switch (childProps.type) {
     case 'textInput':
-      return <TextInput multiLine={false} {...childProps} />;
+      return <TextInput multiline={false} {...childProps} />;
     case 'textInputLarge':
-      return <TextInput multiLine {...childProps} style={styles.mediumWidth} />;
+      return <TextInput multiline {...childProps} style={styles.mediumWidth} />;
     case 'radioInput':
       return <RadioInput {...childProps} />;
     case 'selectFieldInput':
@@ -54,6 +54,7 @@ const inputSwitch = (childProps, index, parentProps) => {
           conditionalTrueValue={childProps.conditionalTrueValue}
           key={index}
           style={childProps.style}
+          doc={parentProps.doc}
         >
           {mapInputs(childProps.inputs[0], 0, parentProps)}
           {childProps.inputs
@@ -105,9 +106,7 @@ const mapInputs = (singleInput, index, parentProps) => {
     style: parentProps.fullWidth ? styles.fullWidth : styles.smallWidth,
     currentValue: get(parentProps.doc, singleInput.id),
     disabled: parentProps.disabled || singleInput.disabled,
-    placeholder: (
-      <T id={`Forms.${singleInput.intlId || singleInput.id}.placeholder`} />
-    ),
+    placeholder: `Forms.${singleInput.intlId || singleInput.id}.placeholder`,
   };
 
   if (parentProps.noPlaceholders) {
@@ -174,7 +173,7 @@ AutoForm.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any),
   borrowers: PropTypes.arrayOf(PropTypes.object),
   fullWidth: PropTypes.bool,
-  documentId: PropTypes.string.isRequired,
+  docId: PropTypes.string.isRequired,
   updateFunc: PropTypes.string,
   pushFunc: PropTypes.string,
   popFunc: PropTypes.string,

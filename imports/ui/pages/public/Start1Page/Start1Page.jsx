@@ -5,7 +5,7 @@ import queryString from 'query-string';
 import classnames from 'classnames';
 
 import Button from '/imports/ui/components/general/Button';
-import Icon from '/imports/ui/components/general/Icon';
+import IconButton from '/imports/ui/components/general/IconButton';
 
 import { T } from '/imports/ui/components/general/Translation';
 import { toNumber } from '/imports/js/helpers/conversionFunctions';
@@ -51,18 +51,21 @@ const getArray = (income, fortune, property, borrow, ratio) => {
       labelIcon: incomeIcon,
       name: 'income',
       sliderIncrement: 500000,
+      error: ratio > 0.38,
     },
     {
       label: 'Start1Page.fortuneLabel',
       labelIcon: fortuneIcon,
       name: 'fortune',
       sliderIncrement: 500000,
+      error: borrow > 0.9,
     },
     {
       label: 'Start1Page.propertyLabel',
       labelIcon: propertyIcon,
       name: 'property',
       sliderIncrement: 2000000,
+      error: isFalse,
     },
   ];
 };
@@ -203,34 +206,32 @@ export default class Start1Page extends Component {
       }
     })();
 
-    for (const key in o) {
-      if (o.hasOwnProperty(key)) {
-        // If the minValue was modified, and the property is still on auto mode, also set the value
-        if (
-          o[key].minValue !== undefined &&
-          o[key].minValue !== null &&
-          this.state[key].auto
-        ) {
-          o[key].value = o[key].minValue;
-        }
+    Object.keys(o).forEach((key) => {
+      // If the minValue was modified, and the property is still on auto mode, also set the value
+      if (
+        o[key].minValue !== undefined &&
+        o[key].minValue !== null &&
+        this.state[key].auto
+      ) {
+        o[key].value = o[key].minValue;
+      }
 
-        // Set a value back to auto when a user drags it to 0
-        if (key === name && value === 0) {
-          o[key].auto = true;
+      // Set a value back to auto when a user drags it to 0
+      if (key === name && value === 0) {
+        o[key].auto = true;
 
-          // If the user sets a slider back to 0, and it had a minValue set to it, move it to the
-          // minimum value with a little delay
-          if (this.state[name].minValue) {
-            Meteor.setTimeout(() => {
-              const resetO = {};
-              resetO[key] = {};
-              resetO[key].value = this.state[name].minValue;
-              this.setState(prev => merge({}, prev, resetO));
-            }, 400);
-          }
+        // If the user sets a slider back to 0, and it had a minValue set to it, move it to the
+        // minimum value with a little delay
+        if (this.state[name].minValue) {
+          Meteor.setTimeout(() => {
+            const resetO = {};
+            resetO[key] = {};
+            resetO[key].value = this.state[name].minValue;
+            this.setState(prev => merge({}, prev, resetO));
+          }, 400);
         }
       }
-    }
+    });
 
     if (autoOff) {
       o[name].auto = false;
@@ -239,6 +240,11 @@ export default class Start1Page extends Component {
 
     this.setState(prev => merge({}, prev, o));
   }
+
+  toggleDescription = () =>
+    this.setState(prev => ({
+      showDescription: !prev.showDescription,
+    }));
 
   render() {
     const { showDescription, isFirstVisit } = this.state;
@@ -260,20 +266,12 @@ export default class Start1Page extends Component {
           <h1>
             <T id="Start1Page.title" />
           </h1>
-          <hr />
+          {/* <hr /> */}
 
           {!isFirstVisit && (
-            <Button
-              icon={showDescription ? <Icon type="up" /> : <Icon type="down" />}
-              onClick={() =>
-                this.setState(prev => ({
-                  showDescription: !prev.showDescription,
-                }))}
-              style={
-                showDescription
-                  ? { minWidth: 'unset', width: 36 }
-                  : { marginBottom: 16, minWidth: 'unset', width: 36 }
-              }
+            <IconButton
+              type={showDescription ? 'up' : 'down'}
+              onClick={this.toggleDescription}
             />
           )}
           <Accordion
@@ -282,10 +280,7 @@ export default class Start1Page extends Component {
           >
             <div className="description" style={{ margin: 0 }}>
               <p>
-                <T id="Start1Page.description1" />
-                <br />
-                <br />
-                <T id="Start1Page.description2" />
+                <T id="Start1Page.description" />
               </p>
             </div>
           </Accordion>
@@ -319,7 +314,7 @@ export default class Start1Page extends Component {
                     showDescription: false,
                   })}
                 style={{ height: 'unset' }}
-                overlayStyle={{ padding: 20 }}
+                // overlayStyle={{ padding: 20 }}
               />
             </div>
           )}

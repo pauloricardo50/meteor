@@ -6,8 +6,9 @@ import cleanMethod from '/imports/api/cleanMethods';
 
 import Button from '/imports/ui/components/general/Button';
 import TextField from '/imports/ui/components/general/Material/TextField';
-import DropDownMenu from '/imports/ui/components/general/Material/DropDownMenu';
+// import DropDownMenu from '/imports/ui/components/general/Material/DropDownMenu';
 import MenuItem from '/imports/ui/components/general/Material/MenuItem';
+import Select from '/imports/ui/components/general/Select';
 
 const styles = {
   dropdown: {
@@ -35,7 +36,7 @@ export default class VerifyPage extends Component {
     };
   }
 
-  handleChange = (event, index, value) => this.setState({ validated: value });
+  handleChange = (_, value) => this.setState({ validated: value });
 
   handleChangeComment = (event, i) => {
     const array = this.state.comments.slice();
@@ -103,25 +104,26 @@ export default class VerifyPage extends Component {
 
         <div className="text-center">
           <h2>Réponse</h2>
-          <DropDownMenu
+          <Select
             value={this.state.validated}
             onChange={this.handleChange}
-            autoWidth={false}
             style={styles.dropdown}
-          >
-            <MenuItem value={null} />
-            <MenuItem value primaryText="Valide" />
-            <MenuItem value={false} primaryText="Pas Valide" />
-          </DropDownMenu>
+            options={[
+              { id: null },
+              { id: true, label: 'Valide' },
+              { id: false, label: 'Pas valide' },
+            ]}
+          />
         </div>
 
         {this.state.comments.map((c, i) => (
           <TextField
+            key={i}
             value={c}
-            multiLine
+            multiline
             rows={2}
             fullWidth
-            floatingLabelText={`Commentaire No.${i + 1}`}
+            label={`Commentaire No.${i + 1}`}
             onChange={e => this.handleChangeComment(e, i)}
           />
         ))}

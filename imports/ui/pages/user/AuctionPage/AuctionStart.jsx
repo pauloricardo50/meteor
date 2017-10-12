@@ -7,11 +7,11 @@ import { injectIntl } from 'react-intl';
 import Button from '/imports/ui/components/general/Button';
 import { getLenderCount } from '/imports/js/helpers/requestFunctions';
 
-import AuctionForm from './AuctionForm';
 import ConfirmButton from '/imports/ui/components/general/ConfirmButton';
 import { T } from '/imports/ui/components/general/Translation';
 import track from '/imports/js/helpers/analytics';
 import { isDemo } from '/imports/js/helpers/browserFunctions';
+import AuctionForm from './AuctionForm';
 
 const styles = {
   text: {
@@ -32,6 +32,9 @@ const styles = {
     display: 'inline-block',
     width: '100%',
     margin: '20px 0',
+  },
+  button: {
+    margin: 4,
   },
 };
 
@@ -91,8 +94,9 @@ const AuctionStart = (props) => {
                 })
                 .catch(e => console.log('auction start failed ', e))}
             disabled={
-              !(r.logic.auction.mostImportant && r.general.wantedClosingDate)
+              !(r.general.auctionMostImportant && r.general.wantedClosingDate)
             }
+            style={styles.button}
           />
         </div>
         <div className="form-group text-center">
@@ -100,6 +104,7 @@ const AuctionStart = (props) => {
             raised
             label={<T id="AuctionStart.cancel" />}
             onClick={() => props.history.push('/app')}
+            style={styles.button}
           />
         </div>
       </div>

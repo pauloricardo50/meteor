@@ -1,36 +1,51 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import { AutoTooltip } from '/imports/ui/components/general/Translation';
+import { IntlNumber } from '/imports/ui/components/general/Translation';
 import StartTextField from './StartTextField';
 import StartSelectField from './StartSelectField';
 import StartSlider from './StartSlider';
 
-import { toMoney } from '/imports/js/helpers/conversionFunctions';
-
 // Keep a Component because of input refs
 export default class Input extends Component {
   render() {
-    const currentValue = this.props.formState[this.props.id];
+    const {
+      formState,
+      id,
+      className,
+      setActiveLine,
+      money,
+      text,
+      text1,
+      text2,
+      focus,
+      question,
+      select,
+      slider,
+      child1,
+      sliderMin,
+    } = this.props;
+    const currentValue = formState[id];
+
+    console.log(text2);
 
     return (
       <article
-        className={this.props.className}
+        className={className}
         onClick={() => {
-          this.props.setActiveLine(this.props.id);
-          if (this.props.money && this.props.text) {
-            this.input.input.inputElement.focus();
-          } else if (this.props.text) {
+          setActiveLine(id);
+          if (this.input && this.input.inputElement) {
+            // Support for react-text-mask
+            this.input.inputElement.focus();
+          } else if (this.input) {
             this.input.focus();
           }
         }}
       >
         <h1 className="fixed-size">
-          <AutoTooltip>{this.props.text1}</AutoTooltip>
-          &nbsp;
-          {this.props.question && <br />}
+          {text1} {question && <br />}
           <span className="active">
-            {this.props.text && (
+            {text && (
               <StartTextField
                 {...this.props}
                 setRef={(c) => {
@@ -40,22 +55,24 @@ export default class Input extends Component {
               />
             )}
 
-            {this.props.select && <StartSelectField {...this.props} />}
+            {select && <StartSelectField {...this.props} />}
 
-            {this.props.slider && (
+            {slider && (
               <span>
-                {this.props.child1}
-                {this.props.child1 === null &&
-                  (this.props.money
-                    ? `CHF ${toMoney(currentValue) ||
-                        toMoney(this.props.sliderMin)}`
-                    : currentValue)}
+                {child1 !== null ? (
+                  child1
+                ) : (
+                  <IntlNumber
+                    value={currentValue || sliderMin}
+                    format={money ? 'money' : ''}
+                  />
+                )}
               </span>
             )}
-            {this.props.slider && this.props.child1 === null && <br />}
-            {this.props.slider && <StartSlider {...this.props} />}
+            {slider && child1 === null && <br />}
+            {slider && <StartSlider {...this.props} />}
           </span>
-          <AutoTooltip>{this.props.text2}</AutoTooltip>
+          {text2}
         </h1>
       </article>
     );

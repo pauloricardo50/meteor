@@ -1,56 +1,74 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import RadioButton from 'material-ui/RadioButton/RadioButton';
-import RadioButtonGroup from 'material-ui/RadioButton/RadioButtonGroup';
+import Radio, {
+  RadioGroup,
+} from '/imports/ui/components/general/Material/Radio';
+import { FormLabel, FormControl, FormControlLabel } from 'material-ui/Form';
 
 import { T } from '/imports/ui/components/general/Translation';
 
+const safeChange = (value, id, onChange, options) => {
+  // If all options are booleans, transform the onChange handler's value
+  // to booleans
+  if (options.every(o => typeof o === 'boolean' || typeof o.id === 'boolean')) {
+    return onChange(id, value === 'true');
+  }
+  return onChange(id, value);
+};
+
+// Cast value to strings, so that is plays nicely with material-ui,
+// in the onChange handler, convert back to boolean
 const RadioButtons = ({
   options,
-  handleChange,
+  onChange,
   id,
   intlPrefix,
-  currentValue,
+  value,
   label,
   style,
-}) =>
-  (<div style={style}>
-    <label htmlFor={id}>
-      {label}
-    </label>
-    <RadioButtonGroup
-      onChange={(event, value) => handleChange(id, value)}
-      valueSelected={currentValue}
+  disabled,
+}) => (
+  <FormControl style={style} className="mui-radio-group">
+    <FormLabel htmlFor={id}>{label}</FormLabel>
+    <RadioGroup
+      onChange={(event, newValue) =>
+        safeChange(newValue, id, onChange, options)}
+      value={`${value}`}
       name={id}
       className="flex"
-      style={{ justifyContent: ' space-around' }}
+      style={{ justifyContent: 'flex-start' }}
     >
-      {options.map(option =>
-        (<RadioButton
-          key={option}
-          value={option}
-          label={<T id={`${intlPrefix}.${option}`} />}
-          style={{ width: 'unset' }}
-        />),
-      )}
-    </RadioButtonGroup>
-  </div>);
+      {options.map(option => (
+        <FormControlLabel
+          control={<Radio />}
+          key={option.id || option}
+          value={`${option.id !== undefined ? option.id : option}`}
+          label={option.label || <T id={`${intlPrefix}.${option}`} />}
+          disabled={disabled}
+        />
+      ))}
+    </RadioGroup>
+  </FormControl>
+);
 
 RadioButtons.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.node,
-  intlPrefix: PropTypes.string.isRequired,
+  intlPrefix: PropTypes.string,
   options: PropTypes.array.isRequired,
-  handleChange: PropTypes.func.isRequired,
-  currentValue: PropTypes.any,
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.any,
   style: PropTypes.object,
+  disabled: PropTypes.bool,
 };
 
 RadioButtons.defaultProps = {
   label: '',
   style: {},
-  currentValue: undefined,
+  value: undefined,
+  intlPrefix: '',
+  disabled: false,
 };
 
 export default RadioButtons;

@@ -36,7 +36,7 @@ export default class DialogSimple extends Component {
       secondary,
       buttonStyle,
       title,
-      modal,
+      important,
       children,
       passProps,
       bodyStyle,
@@ -44,6 +44,8 @@ export default class DialogSimple extends Component {
       style,
       autoScroll,
       cancelOnly,
+      buttonProps,
+      ...otherProps,
     } = this.props;
 
     const finalActions =
@@ -89,19 +91,21 @@ export default class DialogSimple extends Component {
           primary={primary}
           secondary={secondary}
           style={buttonStyle}
+          {...buttonProps}
         />
         <Dialog
-          title={<h3>{title}</h3>}
+          {...otherProps}
+          title={title}
           actions={finalActions}
-          modal={modal}
+          important={important}
           open={this.state.open}
           onRequestClose={this.handleClose}
-          bodyStyle={bodyStyle}
-          contentStyle={contentStyle}
+          // bodyStyle={bodyStyle}
+          // contentStyle={contentStyle}
           style={style}
-          autoScrollBodyContent={autoScroll}
-          repositionOnUpdate
-          autoDetectWindowHeight
+          // autoScrollBodyContent={autoScroll}
+          // repositionOnUpdate
+          // autoDetectWindowHeight
         >
           {!!children && passProps
             ? React.cloneElement(children, { ...childProps })
@@ -122,7 +126,7 @@ DialogSimple.propTypes = {
   buttonStyle: PropTypes.objectOf(PropTypes.any),
   autoFocus: PropTypes.bool,
   close: PropTypes.bool,
-  modal: PropTypes.bool,
+  important: PropTypes.bool,
   passProps: PropTypes.bool,
   onOpen: PropTypes.func,
   autoScroll: PropTypes.bool,
@@ -137,7 +141,7 @@ DialogSimple.defaultProps = {
   buttonStyle: {},
   autoFocus: false,
   close: false,
-  modal: false,
+  important: false,
   passProps: false,
   onOpen: () => {},
   autoScroll: false,

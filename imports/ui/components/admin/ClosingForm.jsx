@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import DatePicker from '/imports/ui/components/general/Material/DatePicker';
-import SelectField from '/imports/ui/components/general/Material/SelectField';
-import MenuItem from '/imports/ui/components/general/Material/MenuItem';
-
+import DateInput from '/imports/ui/components/general/DateInput';
+import Select from '/imports/ui/components/general/Select';
 import { confirmClosing } from '/imports/api/loanrequests/methods';
 
 const schedules = ['monthly', 'yearly', 'semester'];
@@ -49,18 +47,18 @@ export default class ClosingForm extends Component {
   render() {
     return (
       <div>
-        <DatePicker
-          hintText="Première date de paiement"
+        <DateInput
+          placeholder="Première date de paiement"
           value={this.state.date}
           onChange={this.handleDateChange}
         />
-        <SelectField
-          floatingLabelText="Fréquence de paiement"
+        <Select
+          label="Fréquence de paiement"
           value={this.state.schedule}
           onChange={this.handleSelectChange}
-        >
-          {schedules.map(s => <MenuItem key={s} value={s} primaryText={s} />)}
-        </SelectField>
+          options={schedules.map(s => ({ id: s, label: s }))}
+          renderValue={val => val}
+        />
       </div>
     );
   }

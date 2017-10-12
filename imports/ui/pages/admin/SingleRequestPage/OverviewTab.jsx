@@ -12,7 +12,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    // margin: '0 20px',
+    width: 400,
   },
 };
 
@@ -20,49 +20,63 @@ export default class OverviewTab extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      showObject: false,
-    };
+    this.state = { showObject: false };
   }
 
   render() {
+    const { loanRequest, borrowers } = this.props;
+    const { showObject } = this.state;
+
     return (
       <div>
-        <div className="container" style={{ width: '100%' }}>
-          <div className="row">
-            <div style={styles.recapDiv} className="col-md-6">
-              <h2 className="fixed-size">Récapitulatif</h2>
-              <Recap {...this.props} arrayName="dashboard" />
-            </div>
+        <div
+          className="flex"
+          style={{
+            width: '100%',
+            flexWrap: 'wrap',
+            justifyContent: 'space-around',
+          }}
+        >
+          <div style={styles.recapDiv}>
+            <h2 className="fixed-size">Récapitulatif</h2>
+            <Recap {...this.props} arrayName="dashboard" />
+          </div>
 
-            <div className="col-md-6">
-              {this.props.borrowers.map((b, i) => (
-                <div style={styles.recapDiv} key={b._id}>
-                  <h2 className="fixed-size">{b.firstName || `Emprunteur ${i + 1}`}</h2>
-                  <Recap {...this.props} arrayName="borrower" borrower={b} />
-                </div>
-              ))}
-            </div>
+          <div className="flex-col">
+            {borrowers.map((b, i) => (
+              <div style={styles.recapDiv} key={b._id}>
+                <h2 className="fixed-size">
+                  {b.firstName || `Emprunteur ${i + 1}`}
+                </h2>
+                <Recap {...this.props} arrayName="borrower" borrower={b} />
+              </div>
+            ))}
           </div>
         </div>
 
         <hr />
 
         <div className="text-center">
-          <Button raised
-            label={this.state.showObject ? 'Masquer' : 'Afficher détails'}
-            onClick={() => this.setState(prev => ({ showObject: !prev.showObject }))}
+          <Button
+            raised
+            label={showObject ? 'Masquer' : 'Afficher détails'}
+            onClick={() =>
+              this.setState(prev => ({ showObject: !prev.showObject }))}
           />
         </div>
-        {this.state.showObject &&
+        {showObject && (
           <ul className="request-map">
-            {Object.keys(this.props.loanRequest).map(key =>
-              renderObject(key, this.props.loanRequest),
+            {Object.keys(loanRequest).map(key =>
+              renderObject(key, loanRequest),
             )}
-          </ul>}
+          </ul>
+        )}
       </div>
     );
   }
 }
 
-OverviewTab.propTypes = {};
+OverviewTab.propTypes = {
+  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+};

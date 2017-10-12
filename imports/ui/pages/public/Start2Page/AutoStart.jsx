@@ -109,6 +109,7 @@ export default class AutoStart extends Component {
           startArticle: true,
           activeLine: active,
           last: input.id === 'finalized',
+          slider: input.type === 'sliderInput',
         }),
         autoFocus:
           prevInput.type === 'buttons' &&

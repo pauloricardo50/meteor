@@ -3,25 +3,10 @@ import React, { Component } from 'react';
 
 import classnames from 'classnames';
 
-import TextField from '/imports/ui/components/general/Material/TextField';
 import IconButton from '/imports/ui/components/general/IconButton';
-import MaskedInput from 'react-text-mask';
-import { swissFrancMask } from '/imports/js/helpers/textMasks';
-import constants from '/imports/js/config/constants';
 import { trackOncePerSession } from '/imports/js/helpers/analytics';
 
-const primaryColor = '#4A90E2';
-
-const defaultStyle = {
-  color: primaryColor,
-  borderColor: primaryColor,
-  position: 'absolute',
-  bottom: -8,
-};
-const errorStyle = {
-  position: 'absolute',
-  bottom: -8,
-};
+import TextInput from '/imports/ui/components/general/TextInput';
 
 // Use class to allow refs and focus to work
 export default class Start1Text extends Component {
@@ -33,33 +18,25 @@ export default class Start1Text extends Component {
       motionValue,
       value,
       minValue,
+      error,
     } = this.props;
+
     return (
       <div className="text-div">
-        <TextField
+        <TextInput
           id={name}
-          name={name}
-          onChange={(e) => {
+          value={(auto ? Math.round(motionValue) : value) || ''}
+          onChange={(_, newValue) => {
             trackOncePerSession(`Start1Text - Used textfield ${name}`);
-            setStateValue(name, e.target.value);
+            setStateValue(name, newValue);
           }}
-          errorStyle={minValue <= value ? defaultStyle : errorStyle}
-          className="input"
-          ref={(c) => {
+          inputRef={(c) => {
             this.input = c;
           }}
-          type="text"
-        >
-          <MaskedInput
-            type="text"
-            value={(auto ? Math.round(motionValue) : value) || ''}
-            mask={swissFrancMask}
-            placeholder={constants.getCurrency()}
-            guide={false}
-            pattern="[0-9]*"
-            showMask={false}
-          />
-        </TextField>
+          type="money"
+          className="input"
+          error={error}
+        />
         <span
           className={classnames({
             reset: true,
@@ -70,7 +47,9 @@ export default class Start1Text extends Component {
             type="close"
             onClick={() => {
               setStateValue(name, 0, true);
-              this.input.input.inputElement.focus();
+              if (this.input && this.input.inputElement) {
+                this.input.inputElement.focus();
+              }
             }}
             disabled={value === 0}
           />

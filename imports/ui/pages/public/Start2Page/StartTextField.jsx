@@ -1,14 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import TextField from '/imports/ui/components/general/Material/TextField';
-import MaskedInput from 'react-text-mask';
-
 import IconButton from '/imports/ui/components/general/IconButton';
 import classnames from 'classnames';
 
-import { swissFrancMask } from '/imports/js/helpers/textMasks';
-import { toNumber } from '/imports/js/helpers/conversionFunctions';
+import TextInput from '/imports/ui/components/general/TextInput';
 
 export default class StartTextField extends React.Component {
   getStyles() {
@@ -28,59 +24,67 @@ export default class StartTextField extends React.Component {
     };
   }
 
-  handleChange(event) {
-    // Save a Number if it is money, else the string
-    const value = this.props.money
-      ? toNumber(event.target.value)
-      : event.target.value;
-    this.props.setFormState(this.props.id, value);
-  }
-
   render() {
-    const val = this.props.value || this.props.formState[this.props.id];
+    const {
+      value,
+      formState,
+      setFormState,
+      id,
+      money,
+      number,
+      zeroAllowed,
+      setActiveLine,
+      placeholder,
+      autoFocus,
+      setRef,
+      text2,
+      noDelete,
+      array,
+      inputRef,
+    } = this.props;
+
+    const val = value || formState[id];
+    let type;
+    if (money) {
+      type = 'money';
+    } else if (number) {
+      type = 'number';
+    } else {
+      type = 'text';
+    }
 
     return (
-      <span style={{ position: 'relative' }}>
-        <TextField
+      <span>
+        <TextInput
           style={this.getStyles()}
-          name={this.props.id}
-          value={this.props.zeroAllowed ? val : val || ''}
-          onChange={e => this.handleChange(e, false)}
-          onBlur={() => this.props.setActiveLine('')}
-          hintText={this.props.placeholder || (this.props.money ? 'CHF' : '')}
-          autoFocus={this.props.autoFocus}
-          pattern={this.props.number && '[0-9]*'}
-          ref={c => this.props.setRef(c)}
-        >
-          {this.props.money && (
-            <MaskedInput
-              mask={swissFrancMask}
-              guide
-              pattern="[0-9]*"
-              autoFocus={this.props.autoFocus}
-              value={this.props.zeroAllowed ? val : val || ''}
-            />
-          )}
-        </TextField>
+          name={id}
+          id={id}
+          value={zeroAllowed ? val : val || ''}
+          onChange={setFormState}
+          onBlur={() => setActiveLine('')}
+          placeholder={placeholder}
+          autoFocus={autoFocus}
+          pattern={number && '[0-9]*'}
+          inputRef={setRef}
+          type={type}
+        />
 
-        {!this.props.text2 &&
-          !this.props.multiple &&
-          !this.props.array && (
-            <div className={classnames({ 'delete-button': true, off: !val })}>
-              <div className="absolute-wrapper">
-                <IconButton
-                  type="close"
-                  onClick={() => {
-                    this.props.setFormState(this.props.id, '');
-                    if (this.props.inputRef) {
-                      this.props.inputRef.input.inputElement.focus();
-                    }
-                  }}
-                  disabled={!val}
-                />
-              </div>
+        {!!(!text2 && !noDelete && !array) && (
+          <div className={classnames({ 'delete-button': true, off: !val })}>
+            <div className="absolute-wrapper">
+              <IconButton
+                type="close"
+                onClick={() => {
+                  setFormState(id, '');
+                  if (inputRef) {
+                    inputRef.focus();
+                  }
+                }}
+                disabled={!val}
+              />
             </div>
-          )}
+          </div>
+        )}
       </span>
     );
   }
@@ -100,10 +104,10 @@ StartTextField.propTypes = {
   autoFocus: PropTypes.bool,
   zeroAllowed: PropTypes.bool,
   setRef: PropTypes.func,
-  multiple: PropTypes.bool,
   inputRef: PropTypes.any,
   text2: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   array: PropTypes.bool,
+  noDelete: PropTypes.bool,
 };
 
 StartTextField.defaultProps = {
@@ -113,8 +117,8 @@ StartTextField.defaultProps = {
   autoFocus: false,
   zeroAllowed: false,
   setRef: () => null,
-  multiple: false,
   inputRef: undefined,
   text2: '',
   array: false,
+  noDelete: false,
 };

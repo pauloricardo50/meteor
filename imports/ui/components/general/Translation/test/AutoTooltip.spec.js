@@ -1,9 +1,9 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import { shallow } from '/imports/js/helpers/testHelpers/enzyme';
 
-import testRequire from '/imports/js/helpers/testRequire';
+import testRequire from '/imports/js/helpers/testHelpers/testRequire';
 
 const { default: AutoTooltip } =
   testRequire('../AutoTooltip') || require('../AutoTooltip');

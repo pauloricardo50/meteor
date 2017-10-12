@@ -28,6 +28,8 @@ brand-black = #051C2C;
 brand-grey = #637E94;
 
 
+bodyColor = rgba(black, 0.6);
+titleColor = rgba(black, 0.74)
 
 z = {
   neg: -7,
@@ -58,7 +60,7 @@ $bezier = cubic-bezier(.02, .01, .47, 1);
 /* Typography */
 body
   background-color backgroundcolor
-  color #666;
+  color bodyColor;
   line-height: 1.5em;
   font-size: 16px;
   font-family: 'Source Sans Pro', sans-serif;
@@ -72,7 +74,7 @@ body, html, main, #react-root
   height 100%
 
 h1, h2, h3, h4, h5, h6
-  color : #444;
+  color: titleColor;
   line-height: 1.1em;
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 400;
@@ -134,15 +136,26 @@ h6
   font-size: 0.75em;
 
 hr
+  border: none;
+  border-top: 1px solid border-grey;
   margin-top: 16px;
   margin-bottom: 16px;
 
 a
   cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+  &.color
+    transition: color 300ms $bezier;
+    color: brand-primary;
+    &:hover
+      color: brand-success;
+  // &:hover
+  //   color: inherit;
 
 // Against BootStrap styling
-label
-  font-weight: normal;
+// label
+//   font-weight: normal;
 
 div#react-root
   [data-reactroot]
@@ -175,10 +188,16 @@ input[type=number]
   font-weight: 300;
 
 .active
-  color: brand-primary !important;
+  &:not(button) // If a button is .active, don't change its color
+    color: brand-primary;
+    &.important
+      color: brand-primary !important;
+
 
 .success
   color: brand-success;
+  &.important
+    color: brand-success !important;
 
 svg.success
   color: brand-success !important;
@@ -191,12 +210,14 @@ svg.error
 
 .warning
   color: brand-warning;
+  &.important
+    color: brand-warning !important;
 
 svg.warning
   color: brand-warning !important;
 
 .body
-  color: #444;
+  color: bodyColor;
 
 .normal
   opacity: 1;
@@ -221,7 +242,7 @@ svg.warning
   margin-bottom: 48px;
   font-size: 1.25em;
   line-height: 1.6em;
-  > p
+  > p, >h4
     max-width: 600px;
     text-align: justify;
 
@@ -287,6 +308,45 @@ svg.warning
 .flex-col
   flex-direction: column;
 
+.icon-button
+  svg
+    transition: color 500ms $bezier;
+    color: #444;
+    &:hover
+      color: #888;
+
+// Change it from the material-ui default inline-flex..
+.mui-text-input, .mui-select, .mui-radio-group
+  display: flex;
+
+// css for airbnb's react-dates
+.date-input
+  display: flex;
+  .SingleDatePicker
+    width: 100%;
+    .SingleDatePickerInput
+      font-family: 'Source Sans Pro', sans-serif !important;
+      font-weight: 400;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      .DateInput
+        padding: 0;
+        flex-grow: 1;
+        text-align: center;
+        // display: flex;
+        // align-items: center;
+      .DateRangePickerInput__close
+        display: flex;
+        svg
+          width: 12px;
+          height: 12px;
+
+.SingleDatePicker__picker--portal
+  z-index: 3;
+
 .top-nav
   background-color: white !important;
   padding: 0 8px !important;
@@ -301,6 +361,8 @@ svg.warning
   .top-nav-content
     margin-left: 0 !important;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
     .empty, .menu-button
       display: flex;
@@ -320,14 +382,17 @@ svg.warning
       align-items: center;
 
 
+.permanent-side-nav:not(.always-side-nav)
+  +below($med)
+    display: none;
+
 
 .side-nav
   height 100%
-  padding 120px 0
+  // padding 120px 0
   fixed top left
   width: $side-nav;
-  background-color white
-  box-shadow: 0px -2px 40px 0px rgba(0,0,0,0.08);
+  background-color white;
   z-index: z.nav;
   ul.side-nav-list
     list-style: none;
@@ -370,11 +435,15 @@ svg.warning
           max-width: 160px;
           overflow: hidden;
           text-overflow: ellipsis;
-  img.logo
-    position: absolute;
+  .logo
     width: $side-nav - 16px;
-    top: 40px;
-    left: 8px
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 32px;
+    img
+      height: 24px;
   .logout
     position: absolute;
     bottom: 0;
@@ -383,7 +452,27 @@ svg.warning
     background-color: white;
     z-index: 2;
 
+.side-nav-drawer
+  display: flex;
+  flex-direction: column;
+  width: 300px;
 
+.top-bar
+  border-bottom: 1px solid border-grey;
+  width: 100%;
+  height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  a
+    height: 16px;
+    +above($med)
+      height: 24px;
+    img
+      height: 16px;
+      +above($med)
+        height: 24px;
 
 .public-layout
   height: 100%; // fallback
@@ -422,6 +511,12 @@ svg.warning
     +above($med)
       width: calc(100% - 250px - 32px);
 
+.layout-error
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 
 .full-screen
   width: 100%;
@@ -453,15 +548,12 @@ svg:not(:root) {
   box-shadow: none;
 
 .side-nav-user
-  &.fixed
-    +below($med)
-      display: none;
   transition: all 300ms $bezier;
   background-color: white;
-  border-right: 1px solid grey;
+  // border-right: 1px solid grey;
   min-height: calc(100% - 64px);
   fixed top left;
-  top: 64px;
+  // top: 64px;
   width: 300px;
   z-index: z.nav;
   display: flex;
@@ -640,10 +732,11 @@ svg:not(:root) {
               .available-icon
                 background-color: #DEE2E6;
               &.warning
-                svg
-                  color: brand-warning !important;
+                color: brand-warning;
+              &.success
+                color: brand-success;
               svg
-                color: grey !important;
+                color: inherit;
                 width: 20px !important;
                 height: 20px !important;
             .text

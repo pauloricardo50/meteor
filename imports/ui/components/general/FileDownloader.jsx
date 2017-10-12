@@ -44,7 +44,7 @@ export default class FileDownloader extends Component {
         primary={primary}
         style={style}
         raised
-        icon={this.state.downloading && <Icon type="loop" />}
+        icon={this.state.downloading && <Icon type="loop-spin" />}
         onClick={this.handleClick}
       />
     );

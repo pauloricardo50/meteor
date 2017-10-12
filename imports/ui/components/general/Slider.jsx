@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import MuiSlider from 'material-ui/Slider';
+import MuiSlider from './Material/Slider';
 
 const styles = {
   div: {
@@ -14,13 +14,13 @@ const styles = {
   },
   labelMin: {
     position: 'absolute',
-    top: 24,
+    top: 16,
     left: 8,
   },
   labelMax: {
     position: 'absolute',
-    top: 24,
-    right: 8,
+    top: 16,
+    right: 0,
   },
 };
 
@@ -32,31 +32,27 @@ const Slider = ({
   min,
   max,
   step,
-  handleChange,
-  currentValue,
+  onChange,
+  value,
   style,
-  sliderStyle,
 }) => {
-  if (currentValue > max) {
-    handleChange(id, max);
-  } else if (currentValue < min) {
-    handleChange(id, min);
+  if (value > max) {
+    onChange(id, max);
+  } else if (value < min) {
+    onChange(id, min);
   }
 
   return (
     <div className="flex-col" style={{ ...style, ...styles.div }}>
-      <label htmlFor={id}>
-        {label}
-      </label>
+      <label htmlFor={id}>{label}</label>
       <div style={{ position: 'relative', padding: '0 16px' }}>
         <MuiSlider
           id={id}
           min={min}
           max={max}
           step={step}
-          onChange={(event, newValue) => handleChange(id, newValue)}
-          value={currentValue}
-          sliderStyle={{ ...sliderStyle, ...styles.slider }}
+          onChange={newValue => onChange(id, newValue)}
+          value={value}
         />
         <p className="secondary" style={styles.labelMin}>
           {labelMin}
@@ -77,8 +73,8 @@ Slider.propTypes = {
   min: PropTypes.number.isRequired,
   max: PropTypes.number.isRequired,
   step: PropTypes.number.isRequired,
-  handleChange: PropTypes.func.isRequired,
-  currentValue: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.number.isRequired,
   style: PropTypes.objectOf(PropTypes.any),
   sliderStyle: PropTypes.objectOf(PropTypes.any),
 };

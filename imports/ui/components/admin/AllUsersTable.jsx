@@ -4,11 +4,11 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import Table from '/imports/ui/components/general/Table';
 
-const columns = [
-  { name: '#', style: { width: 32, textAlign: 'left' } },
-  { name: 'Email', style: { textAlign: 'left' } },
-  { name: 'Créé le', style: { textAlign: 'left' } },
-  { name: 'Roles', style: { textAlign: 'left' } },
+const columnOptions = [
+  { id: '#', style: { width: 32, textAlign: 'left' } },
+  { id: 'Email', style: { textAlign: 'left' } },
+  { id: 'Créé le', style: { textAlign: 'left' } },
+  { id: 'Roles', style: { textAlign: 'left' } },
 ];
 
 export default class AllUsersTable extends Component {
@@ -32,14 +32,7 @@ export default class AllUsersTable extends Component {
   };
 
   render() {
-    return (
-      <Table
-        height="500px"
-        selectable={false}
-        columns={columns}
-        rows={this.rows}
-      />
-    );
+    return <Table columnOptions={columnOptions} rows={this.rows} noIntl />;
   }
 }
 

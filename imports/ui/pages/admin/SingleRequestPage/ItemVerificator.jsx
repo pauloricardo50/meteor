@@ -43,7 +43,7 @@ export default class ItemVerificator extends Component {
           <div>
             <TextInput
               currentValue={error}
-              handleChange={this.handleChange}
+              onChange={this.handleChange}
               style={{ width: '100%' }}
               id={item.key}
               placeholder="Ajoutez une explication..."

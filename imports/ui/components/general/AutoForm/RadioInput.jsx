@@ -2,33 +2,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import RadioButton from 'material-ui/RadioButton/RadioButton';
-import RadioButtonGroup from 'material-ui/RadioButton/RadioButtonGroup';
-
 import { T } from '/imports/ui/components/general/Translation';
+import RadioButtons from '/imports/ui/components/general/RadioButtons';
 import FormValidator from './FormValidator';
-
-const styles = {
-  RadioButtonGroup: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  RadioButton: {
-    // Required or else the buttons disappear behind the background color..
-    // File an issue with material-ui?
-    zIndex: 0,
-    width: 'auto',
-    paddingLeft: '20',
-  },
-  RadioButtonLabel: {
-    whiteSpace: 'nowrap',
-  },
-  div: {
-    marginTop: 10,
-    marginBottom: 0,
-    position: 'relative',
-  },
-};
 
 export default class RadioInput extends Component {
   constructor(props) {
@@ -42,13 +18,8 @@ export default class RadioInput extends Component {
     }
   }
 
-  setValue = (event) => {
-    // Change radio button group state to appropriate value
-    this.setState(
-      { value: event.target.value },
-      this.saveValue(event.target.value),
-    );
-  };
+  // Change radio button group state to appropriate value
+  setValue = value => this.setState({ value }, this.saveValue(value));
 
   getOptionLabel = (optionId, intlValues) => {
     // If the options are true and false, render "yes" and "no" as labels
@@ -79,7 +50,7 @@ export default class RadioInput extends Component {
     const object = {};
     object[this.props.id] = safeValue;
 
-    cleanMethod(this.props.updateFunc, object, this.props.documentId);
+    cleanMethod(this.props.updateFunc, object, this.props.docId);
   };
 
   render() {
@@ -91,27 +62,24 @@ export default class RadioInput extends Component {
       options,
       disabled,
     } = this.props;
+
     return (
-      <div style={{ ...styles.div, ...style }}>
-        <label htmlFor={id}>{label}</label>
-        <RadioButtonGroup
-          name={this.props.id}
-          defaultSelected={this.state.value}
-          onChange={onConditionalChange}
-          style={styles.RadioButtonGroup}
-        >
-          {options.map(({ id: optionId, intlValues }) => (
-            <RadioButton
-              label={this.getOptionLabel(optionId, intlValues)}
-              value={optionId}
-              onClick={this.setValue}
-              key={optionId}
-              style={styles.RadioButton}
-              labelStyle={styles.RadioButtonLabel}
-              disabled={disabled}
-            />
-          ))}
-        </RadioButtonGroup>
+      // relative position for the FormValidator
+      <div style={{ ...style, marginBottom: 16, position: 'relative' }}>
+        <RadioButtons
+          label={label}
+          id={id}
+          options={options.map(o => ({
+            id: o.id,
+            label: this.getOptionLabel(o.id, o.intlValues),
+          }))}
+          onChange={(_, newValue) => {
+            onConditionalChange(newValue);
+            this.setValue(newValue);
+          }}
+          value={this.state.value}
+          disabled={disabled}
+        />
         <FormValidator {...this.props} />
       </div>
     );
@@ -128,7 +96,7 @@ RadioInput.propTypes = {
     PropTypes.string,
     PropTypes.number,
   ]),
-  documentId: PropTypes.string.isRequired,
+  docId: PropTypes.string.isRequired,
   updateFunc: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
 };

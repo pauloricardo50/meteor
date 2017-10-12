@@ -55,23 +55,6 @@ $bottom-nav-height = 80px
 
 $bezier = cubic-bezier(.02, .01, .47, 1);
 
-
-.hover-rise
-  text-decoration none
-  list-style: none;
-  cursor pointer
-  -webkit-transition all 250ms cubic-bezier(.02, .01, .47, 1)
-  -moz-transition: all 250ms cubic-bezier(.02, .01, .47, 1);
-  transition: all 250ms cubic-bezier(.02, .01, .47, 1)
-  // Prevent weird text color changes during transitions
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  &:hover
-    +above($med)
-      box-shadow: 0px 40px 40px 15px rgba(0,0,0,0.16);
-      transform: translate(0, -10px);
-      transition-delay: 0s !important;
-
 .dropzone
   border-color brand-primary
   border-style dashed
@@ -195,77 +178,6 @@ $bezier = cubic-bezier(.02, .01, .47, 1);
   100%{transform:rotate(360deg);}
 }
 
-.minimal-table
-  width: 100%;
-  height: auto;
-  display: table;
-  margin: 0 auto 40px auto
-  max-width: 1000px;
-  min-width: 600px;
-  // table-layout: fixed;
-  transition: all 0.3s $bezier;
-  tr
-    transition: all 0.3s $bezier;
-  th
-    font-weight: 400;
-    padding: 10px;
-    border-bottom:  solid 1px grey;
-    white-space: nowrap;
-  td
-    height: 60px;
-    padding: 0 10px;
-    vertical-align: middle;
-    // padding-top: 20px;
-    font-size: 1.1em;
-    +above($med)
-      font-size: 1.2em;
-  .r
-    text-align: right;
-  .l
-    text-align: left;
-  .c
-    text-align: center;
-  tr:hover
-    background-color: light-grey;
-  tr.choose:hover
-    background-color: alpha(brand-success, 0.5);
-    cursor: pointer;
-  tr.chosen
-    background-color: brand-success;
-    color: white;
-    h3
-      color: white;
-
-
-.trancheBar
-  position: relative;
-  height: 50px;
-  width: 100%;
-  background-color: backgroundcolor;
-  border-radius: 5px;
-  .bar
-    transition: width 0.3s ease;
-    height: 100%;
-    background-color: lightness(brand-primary, 70%);
-    border-radius: 5px;
-    &.main
-      background-color: lightness(brand-primary, 80%)
-  .money
-    position: absolute;
-    top: 0;
-    left: 50%;
-    .center-adjust
-      margin-top: 0;
-      margin-bottom: 0;
-      position: relative;
-      left: -50%;
-      height: 50px;
-      white-space: nowrap;
-      .text-span
-        line-height: 50px;
-        margin-left: 8px;
-        margin-right: 8px;
-
 // Animated checkmark SVG
 $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
 
@@ -320,6 +232,35 @@ $curve = cubic-bezier(0.650, 0.000, 0.450, 1.000);
     box-shadow: inset 0px 0px 0px 30px brand-success;
   }
 }
+
+.metrics
+  display: flex;
+  margin: 48px 0;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-wrap: wrap;
+  .metric
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 160px;
+    margin: auto 0;
+    border-right: 1px solid #ccc
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 180px;
+    div
+      h1, h4
+        margin: 0;
+      h1
+        font-size: 3em;
+        +above($med)
+          font-size: 4em;
+  div:last-child
+    border-right: none;
 
 
 .partner-logos
@@ -421,10 +362,6 @@ div.strategy-choices
   flex-direction: column;
   margin-bottom: 16px;
   transition: all 0.2s ease;
-  // will-change: height;
-  // will-change: width;
-  // transform: translate3d(0, 0, 0);
-  // overflow: hidden !important;
   &:hover
     box-shadow: 0px 2px 20px 0px rgba(0,0,0,0.2);
     background-color: rgba(240, 240, 240, 0.2);
@@ -488,36 +425,6 @@ div.strategy-choices
 .bert
   color: white !important;
 
-.metrics
-  display: flex;
-  margin: 48px 0;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  flex-wrap: wrap;
-  .metric
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 160px;
-    margin: auto 0;
-    border-right: 1px solid #ccc
-    flex-grow: 1;
-    flex-shrink: 0;
-    flex-basis: 180px;
-    div
-      h1, h4
-        margin: 0;
-      h1
-        font-size: 3em;
-        +above($med)
-          font-size: 4em;
-  div:last-child
-    border-right: none;
-
-
 .admin-todo
   text-decoration: none;
   color: inherit;
@@ -541,6 +448,8 @@ div.strategy-choices
 ul.request-map
   list-style: none;
   width: 100%;
+  h2, h3, h4
+    margin-bottom: 0;
   li
     width: 33%;
     display: inline-block;
@@ -550,65 +459,8 @@ ul.request-map
     display: block;
   div
     width: 100%;
-    h2
+    h3
       border-bottom: solid 1px #ccc;
-
-// .dashboard-item
-//   transition: all 0.2s ease;
-//   margin-bottom: 40px;
-//   overflow: visible !important;
-//   padding: 0 0 40px 0 !important;
-//   max-height: 4000px;
-//   &.inactive
-//     height: auto;
-//     .top .right button
-//       transform: rotate(-180deg);
-//   .top
-//     padding-left: 20px;
-//     height: 80px;
-//     border-bottom: solid 1px light-grey;
-//     display: flex;
-//     justify-content: space-between;
-//     align-items: center;
-//     h2
-//       margin: 0;
-//     .right
-//       display: flex;
-//       justify-content: center;
-//       align-items: center;
-//       width: 80px;
-//       height: 100%;
-//       border-left: solid 1px light-grey;
-//   .active-div
-//     margin-top: 0px;
-//     .charts
-//       display: inline-block;
-//       width: 100%;
-
-
-// .stepper
-//   padding: 0 8px;
-//   margin: 40px 20px;
-//   width: calc(100% - 40px);
-//   .vertical
-//     margin: auto;
-//     width: 100%;
-//     max-width: 400px;
-//   .horizontal
-//     margin: 0 auto;
-//     width: 100%;
-//     max-width: 800px;
-//     overflow: hidden;
-//   .right-icon
-//     border: 1px solid light-grey;
-//     border-radius: 50%
-//     display: flex !important;
-//     justify-content: center;
-//     align-items: center;
-//     &.success
-//       border: 1px solid brand-success;
-//       color: brand-success;
-
 
 .oscar
   width: 100%;
@@ -672,8 +524,6 @@ ul.request-map
         align-items: center;
         .reset-button
           margin-bottom: 16px;
-        .slider
-          padding: 0 32px;
     .oscar-line
       position: relative;
       display: inline-block;
@@ -691,11 +541,11 @@ ul.request-map
           line-height: 24px !important;
           height: 48px !important;
           width: 200px !important;
-          +above($med)
-            font-size: 40px !important;
-            line-height: 36px !important;
-            height: 64px !important;
-            width: 230px !important;
+          // +above($med)
+          //   font-size: 40px !important;
+          //   line-height: 32px !important;
+          //   height: 64px !important;
+          //   width: 230px !important;
         .reset
           margin-left: 8px;
           display: flex;
@@ -711,18 +561,16 @@ ul.request-map
             cursor: default;
             svg
               color: alpha(#222, 0.4) !important;
-      .slider > div
-        margin: 0 !important;
-        margin-top: 8px !important;
       .sliderDiv
         position: relative;
-        margin-top: -8px;
+        margin-top: 16px;
+        padding: 0 32px;
       .sliderMaxButton
         height: 32px;
         display: inline;
         position: absolute;
-        right: -10px;
-        top: 0px;
+        right: -8px;
+        top: -8px;
         svg
           height: 30px !important;
   .chart
@@ -819,8 +667,10 @@ ul.request-map
   justify-content: center;
   align-items: center;
   div.text
-    padding: 40px;
-    max-width: 1000px;
+    padding: 16px;
+    +above($med)
+      padding: 40px;
+    max-width: 800px;
     h1
       color: #aaa;
       margin-bottom: 0;
@@ -831,7 +681,7 @@ ul.request-map
 
 
 .start2
-  width: calc(100% - 40px);
+  width: calc(100% - 32px);
   min-height: 100%;
   margin: 0 16px;
   position: relative;
@@ -842,6 +692,10 @@ ul.request-map
   align-items: flex-start;
   h1.fixed-size
     font-size: 1.4em !important;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
     +above($small)
       font-size: 1.6em !important;
     +above($med)
@@ -911,8 +765,9 @@ ul.request-map
       box-shadow: 0px -40px 40px -30px white inset;
   .scroll
     .startArticle
-      display: inline-block;
-      align-items: center;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
       width: 100%;
       transform-origin: left center;
       transition: all 0.3s ease;
@@ -938,6 +793,7 @@ ul.request-map
           transform: translateY(-50%);
           position: relative;
       span.active
+        position: relative; // for the delete button
         input
           color: inherit !important;
       .inputHider
@@ -960,6 +816,12 @@ ul.request-map
       &.no-modify:hover
         &:before
           content: '';
+      &.slider
+        h1
+          flex-direction: column;
+          align-items: flex-start;
+          span.active
+            width: 100%;
       h1.array-input
         display: flex;
         flex-wrap: wrap;
@@ -973,6 +835,36 @@ ul.request-map
             margin: 0;
             margin-top: 16px;
             font-size: initial;
+      &.multiple-input
+        color: red;
+        .multiple-header
+          margin-top: 32px;
+          margin-bottom: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          width: 100%;
+          div
+            display: flex;
+            justify-content: space-around;
+            width:100%;
+            +below($med)
+              width: auto;
+              flex-direction: column;
+            span:first-child
+              +below($med)
+                margin-bottom: 8px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid border-grey;
+        .inputs
+          width: 100%;
+          display: flex;
+          justify-content: space-around;
+          +below($med)
+            flex-direction: column;
+          .input1, .input2
+            width: 40%;
+            margin: 0;
     &:last-child
       .startArticle
         cursor: default;
@@ -1057,13 +949,21 @@ ul.request-map
   .email
     input
       font-size: inherit !important;
-  .slider-labels
-    position: absolute;
-    top: 16px;
-    width: 100%;
+  .start-slider
+    position: relative;
     display: flex;
-    justify-content: space-between;
-    padding: 0 16px;
+    flex-direction: column;
+    padding: 0 32px;
+    margin-top: 16px;
+    .slider-labels
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 16px;
+      pointer-events: none;
   .loanWanted-slider
     width: 100%;
     display: flex;
@@ -1084,56 +984,6 @@ ul.request-map
         color: initial;
         margin: 0;
 
-.overview-items
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  flex-wrap: wrap;
-  .borrower-recap, .request-recap
-    padding: 0;
-    margin: 16px;
-    flex: 0 1 200px;
-    height: 200px;
-    display: inline;
-    flex-direction: column;
-    color: initial;
-    .image
-      background-color: brand-primary;
-      height: 120px;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-    .text
-      padding: 4px 16px;
-      height: 80px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      h3, p
-        margin: 0;
-
-.new-borrower, .new-request
-  transition: all 250ms $bezier;
-  background-color: brand-primary !important;
-  padding: 16px;
-  margin: 16px;
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin: 40px 0;
-  h1, h4
-    margin: 0;
-    color: white;
-  &:hover
-    background-color: white !important;
-    h1, h4
-      color: brand-primary;
-
 
 .properties
   width: 100%;
@@ -1144,13 +994,6 @@ ul.request-map
   align-items: center;
   flex-wrap: wrap;
 
-.borrower-form
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  form
-    width: 100%;
-    max-width: 400px;
 
 .borrower-page
   header

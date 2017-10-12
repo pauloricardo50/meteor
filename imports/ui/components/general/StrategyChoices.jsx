@@ -7,8 +7,8 @@ import { T } from '/imports/ui/components/general/Translation';
 
 export default class StrategyChoices extends Component {
   renderChoice(choice, index) {
-    const { currentValue, name, handleChoose, disabled } = this.props;
-    const chosen = currentValue === choice.id;
+    const { value, name, handleChoose, disabled } = this.props;
+    const chosen = value === choice.id;
     const articleClasses = classNames({
       choice: true,
       chosen,
@@ -71,7 +71,7 @@ export default class StrategyChoices extends Component {
 
 StrategyChoices.propTypes = {
   choices: PropTypes.arrayOf(PropTypes.object).isRequired,
-  currentValue: PropTypes.oneOfType([PropTypes.string, PropTypes.any]),
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.any]),
   handleChoose: PropTypes.func,
   name: PropTypes.string.isRequired,
 };
@@ -79,5 +79,5 @@ StrategyChoices.propTypes = {
 StrategyChoices.defaultProps = {
   load: false,
   handleChoose: undefined,
-  currentValue: undefined,
+  value: undefined,
 };

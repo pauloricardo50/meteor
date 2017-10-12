@@ -14,8 +14,8 @@ const AdvancedOptions = ({
   toggleField,
   allFields,
   removeCustomField,
-}) =>
-  (<div className="flex-col center">
+}) => (
+  <div className="flex-col center">
     <hr style={{ width: '100%' }} />
 
     <div className="flex-col" style={{ width: '100%', maxWidth: 400 }}>
@@ -25,8 +25,8 @@ const AdvancedOptions = ({
         min={0}
         max={comparator.usageType === 'secondary' ? 0.7 : 0.8}
         step={0.01}
-        currentValue={comparator.borrowRatio}
-        handleChange={changeComparator}
+        value={comparator.borrowRatio}
+        onChange={changeComparator}
         labelMin="0%"
         labelMax={comparator.usageType === 'secondary' ? '70%' : '80%'}
       />
@@ -36,8 +36,8 @@ const AdvancedOptions = ({
       options={['primary', 'secondary', 'investment']}
       label={<T id="Forms.usageType" />}
       id="usageType"
-      handleChange={changeComparator}
-      currentValue={comparator.usageType}
+      onChange={changeComparator}
+      value={comparator.usageType}
       intlPrefix="Forms"
     />
 
@@ -55,7 +55,8 @@ const AdvancedOptions = ({
         removeCustomField={removeCustomField}
       />
     </DialogSimple>
-  </div>);
+  </div>
+);
 
 AdvancedOptions.propTypes = {
   comparator: PropTypes.objectOf(PropTypes.any).isRequired,

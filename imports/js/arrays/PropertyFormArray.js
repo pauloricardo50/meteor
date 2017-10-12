@@ -117,7 +117,9 @@ const getPropertyArray = (loanRequest, borrowers) => {
       component: 'ZipAutoComplete',
       componentProps: {
         savePath: 'property.',
-        initialValue: `${r.property.zipCode} ${r.property.city}`,
+        initialValue: r.property.zipCode && r.property.city
+          ? `${r.property.zipCode} ${r.property.city}`
+          : '',
       },
     },
     {

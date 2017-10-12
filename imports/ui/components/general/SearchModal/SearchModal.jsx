@@ -23,17 +23,13 @@ export default class SearchModal extends Component {
       <span>
         <IconButton
           type="search"
-          tooltip={<T id="general.search" />}
           onClick={this.handleOpen}
-          touch
-          tooltipPosition="bottom-left"
+          // tooltip={<T id="general.search" />}
+          // tooltipPlacement="bottom-end"
         />
         <Dialog
-          title={
-            <h3>
-              <T id="general.search" />
-            </h3>
-          }
+          fullScreen
+          title={<T id="general.search" />}
           actions={[
             <Button
               onClick={this.handleClose}
@@ -43,10 +39,6 @@ export default class SearchModal extends Component {
           ]}
           open={isOpen}
           onRequestClose={this.handleClose}
-          autoScrollBodyContent
-          repositionOnUpdate={false}
-          autoDetectWindowHeight
-          contentStyle={{ width: '100%', maxWidth: 'none' }}
         >
           <Search />
         </Dialog>

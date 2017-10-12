@@ -10,22 +10,20 @@ export default class BetaAccess extends React.Component {
     this.state = {
       open: false,
       error: '',
+      value: '',
     };
   }
 
-  handleClose = () => {
-    this.setState({ open: false });
-  };
+  handleClose = () => this.setState({ open: false });
 
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
+  handleOpen = () => this.setState({ open: true });
 
   handleSubmit = (e) => {
+    const { value } = this.state;
     e.preventDefault();
 
     // If you read this, write to me at florian@e-potek.ch, we're hiring curious people!
-    if (this.password.input.value === 'goforlife') {
+    if (value === 'goforlife') {
       this.props.history.push('/home');
     } else {
       this.setState({ error: 'Nope' });
@@ -33,9 +31,10 @@ export default class BetaAccess extends React.Component {
   };
 
   render() {
+    const { value, error, open } = this.state;
     const actions = [
-      <Button label="Annuler" onClick={this.handleClose} />,
-      <Button label="Okay" primary onClick={this.handleSubmit} />,
+      <Button label="Annuler" onClick={this.handleClose} key={0} />,
+      <Button label="Okay" primary onClick={this.handleSubmit} key={1} />,
     ];
 
     return (
@@ -44,8 +43,7 @@ export default class BetaAccess extends React.Component {
         <Dialog
           title="Accéder à la Beta"
           actions={actions}
-          modal={false}
-          open={this.state.open}
+          open={open}
           onRequestClose={this.handleClose}
         >
           <form
@@ -55,13 +53,16 @@ export default class BetaAccess extends React.Component {
           >
             <TextField
               autoFocus
-              floatingLabelText="Mot de passe"
+              label="Mot de passe"
               type="password"
-              ref={(r) => {
+              inputRef={(r) => {
                 this.password = r;
               }}
               style={{ width: 100 }}
-              errorText={this.state.error}
+              helperText={error}
+              error={!!error}
+              onChange={e => this.setState({ value: e.target.value })}
+              value={value}
             />
           </form>
         </Dialog>

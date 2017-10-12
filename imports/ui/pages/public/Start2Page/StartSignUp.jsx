@@ -9,6 +9,9 @@ const styles = {
   section: {
     margin: '50px 0 150px 0',
     width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   passwordDiv: {
     marginTop: 40,
@@ -37,16 +40,19 @@ export default class StartSignUp extends Component {
   };
 
   render() {
+    const { showPassword, login, signUp } = this.state;
     return (
-      <section className="text-center" style={styles.section}>
-        <h2><T id="StartSignUp.email" /></h2>
+      <div style={styles.section}>
+        <h2>
+          <T id="StartSignUp.email" />
+        </h2>
         <EmailLine {...this.state} setParentState={this.setParentState} />
 
-        {this.state.showPassword &&
+        {showPassword && (
           <div className="animated fadeIn" style={styles.passwordDiv}>
             <h3 className="fixed-size">
-              {this.state.login && <T id="StartSignUp.signedUp" />}
-              {this.state.signUp && <T id="StartSignUp.notSignedUp" />}
+              {login && <T id="StartSignUp.signedUp" />}
+              {signUp && <T id="StartSignUp.notSignedUp" />}
             </h3>
             <PasswordLine
               history={this.props.history}
@@ -54,9 +60,9 @@ export default class StartSignUp extends Component {
               formState={this.props.formState}
               setParentState={this.setParentState}
             />
-          </div>}
-
-      </section>
+          </div>
+        )}
+      </div>
     );
   }
 }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 
 import Button from '/imports/ui/components/general/Button';
@@ -83,7 +82,7 @@ export default class DashboardStatus extends Component {
             values={{ step: loanRequest.logic.step }}
           />
           {showLoading && <br />}
-          {showLoading &&
+          {showLoading && (
             <small>
               <T
                 id={
@@ -92,18 +91,21 @@ export default class DashboardStatus extends Component {
                     : 'DashboardStatus.auction'
                 }
               />
-            </small>}
+            </small>
+          )}
         </h2>
-        {showLoading &&
+        {showLoading && (
           <div style={{ height: 80 }}>
             <LoadingComponent />
-          </div>}
+          </div>
+        )}
         <div className="text-center" style={styles.button}>
           <Button
             raised
             label={<T id="general.continue" />}
             secondary
-            containerElement={nextLink ? <Link to={nextLink} /> : null}
+            link={!!nextLink}
+            to={nextLink}
             onClick={() => {
               track('clicked dashboard status button', { nextLink });
               if (!nextLink) {

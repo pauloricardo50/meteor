@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import isArray from 'lodash/isArray';
+import omit from 'lodash/omit';
 
 import { FormattedMessage } from 'react-intl';
 import Popover from 'react-bootstrap/lib/Popover';
@@ -65,6 +66,7 @@ const Tooltip = (props) => {
           label={dialogLabel || <FormattedMessage id="general.learnMore" />}
           autoFocus
           onOpen={() => track('Tooltip - opened dialog', { tooltipId: baseId })}
+          cancelOnly
         >
           <FormattedMessage
             id={pureId ? `${baseId}2` : `tooltip2.${baseId}`}
@@ -84,11 +86,13 @@ const Tooltip = (props) => {
     content = <FormattedMessage id={pureId ? id : `tooltip.${id}`} />;
   }
 
+  const passedProps = omit(props, ['trigger', 'pureId', 'hide', 'match']);
+
   return (
     // <Transition hide={hide}>
     //   {({ key, style }) =>
     <Popover
-      {...props}
+      {...passedProps}
       id={baseId}
       // key={key}
       // style={{ opacity: style.opacity, transform: `scale(${style.scale})` }}

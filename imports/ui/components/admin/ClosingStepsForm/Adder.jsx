@@ -15,6 +15,8 @@ const Adder = ({ handleAdd }) => (
   </div>
 );
 
-Adder.propTypes = {};
+Adder.propTypes = {
+  handleAdd: PropTypes.func.isRequired,
+};
 
 export default Adder;

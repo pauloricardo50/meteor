@@ -323,8 +323,14 @@ const getSmallDashboardArray = (props) => {
       value: toMoney(loan),
     },
     {
-      label: 'Recap.ownFundsTotal',
-      value: toMoney(totalUsed),
+      label: 'Recap.ownFundsCash',
+      value: toMoney(r.general.fortuneUsed),
+      hide: !r.general.insuranceFortuneUsed,
+    },
+    {
+      label: 'Recap.ownFundsInsurance',
+      value: toMoney(r.general.insuranceFortuneUsed),
+      hide: !r.general.insuranceFortuneUsed,
     },
     {
       label: 'Recap.totalFinancing',

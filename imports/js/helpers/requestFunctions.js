@@ -22,7 +22,7 @@ export const getProjectValue = (loanRequest) => {
   return Math.max(0, Math.round(value));
 };
 
-export const getLoanValue = (loanRequest) => {
+export const getLoanValue = (loanRequest, roundedTo10000) => {
   if (!loanRequest.general) {
     return 0;
   }
@@ -32,6 +32,11 @@ export const getLoanValue = (loanRequest) => {
 
   if (loanRequest.property.usageType === 'primary') {
     value -= loanRequest.general.insuranceFortuneUsed || 0;
+  }
+
+  // Do this when picking tranches
+  if (roundedTo10000) {
+    value = Math.round(value / 10000) * 10000;
   }
 
   // Check negative values
@@ -122,12 +127,20 @@ export const getMonthlyWithOffer = (
   }
 
   // Make a copy of the request
-  const r = JSON.parse(JSON.stringify(request));
+  const r = {
+    ...request,
+    general: {
+      ...request.general,
+      fortuneUsed: fortuneUsed || request.general.fortuneUsed,
+      insuranceFortuneUsed:
+        insuranceFortuneUsed || request.general.insuranceFortuneUsed,
+    },
+  };
 
   // Modify it to include additional parameters
-  r.general.fortuneUsed = fortuneUsed || r.general.fortuneUsed;
-  r.general.insuranceFortuneUsed =
-    insuranceFortuneUsed || r.general.insuranceFortuneUsed;
+  // r.general.fortuneUsed = fortuneUsed || r.general.fortuneUsed;
+  // r.general.insuranceFortuneUsed =
+  //   insuranceFortuneUsed || r.general.insuranceFortuneUsed;
   const loan = getLoanValue(r);
 
   const maintenance =
@@ -316,7 +329,7 @@ export const strategyDone = (loanRequest) => {
 
   if (
     logic.loanStrategyPreset === 'manual' &&
-    !loanStrategySuccess(general.loanTranches, getLoanValue(loanRequest))
+    !loanStrategySuccess(general.loanTranches, getLoanValue(loanRequest, true))
   ) {
     return false;
   }

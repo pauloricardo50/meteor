@@ -1,83 +1,78 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import SelectField from '/imports/ui/components/general/Material/SelectField';
-import MenuItem from '/imports/ui/components/general/Material/MenuItem';
-
-import ExpensesChart from './ExpensesChart';
 import { T } from '/imports/ui/components/general/Translation';
-import track from '/imports/js/helpers/analytics';
+import Select from '/imports/ui/components/general/Select';
+import ExpensesChart from './ExpensesChart';
 
 const rates = [0.01, 0.01, 0.015, 0.02];
+
+const options = [
+  {
+    id: 0,
+    label: <T id="ExpensesChartInterests.libor" values={{ value: rates[0] }} />,
+  },
+  {
+    id: 1,
+    label: (
+      <T
+        id="ExpensesChartInterests.years"
+        values={{ value: rates[1], years: 5 }}
+      />
+    ),
+  },
+  {
+    id: 2,
+    label: (
+      <T
+        id="ExpensesChartInterests.years"
+        values={{ value: rates[2], years: 10 }}
+      />
+    ),
+  },
+  {
+    id: 3,
+    label: (
+      <T
+        id="ExpensesChartInterests.years"
+        values={{ value: rates[3], years: 15 }}
+      />
+    ),
+  },
+];
 
 export default class ExpensesChartInterests extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      selectValue: 2,
-    };
+    this.state = { selectValue: 2 };
   }
 
-  handleChange = (event, index, selectValue) => {
-    track('ExpensesChartInterests - changed interest rate', {
-      value: selectValue,
-    });
-    this.setState({ selectValue });
-  };
+  handleChange = (_, selectValue) => this.setState({ selectValue });
 
   render() {
+    const { selectValue } = this.state;
+    const { loan } = this.props;
+
     return (
-      <div className="interestPicker text-center">
+      <div className="interestPicker flex-col center">
         <ExpensesChart
           {...this.props}
-          interests={this.props.loan * rates[this.state.selectValue] / 12}
-          interestRate={rates[this.state.selectValue]}
+          interests={loan * rates[selectValue] / 12}
+          interestRate={rates[selectValue]}
         />
-        <SelectField
-          floatingLabelText={<T id="ExpensesChartInterests.selectFieldLabel" />}
-          value={this.state.selectValue}
-          onChange={this.handleChange}
-          style={{ textAlign: 'left' }}
-          autoWidth
-        >
-          <MenuItem
-            value={0}
-            primaryText={
-              <T
-                id="ExpensesChartInterests.libor"
-                values={{ value: rates[0] }}
-              />
-            }
+        {/* Add a div for easier styling */}
+        <div style={{ width: 180, marginTop: 16 }}>
+          <Select
+            id="ExpensesChartInterests"
+            label={<T id="ExpensesChartInterests.selectFieldLabel" />}
+            value={selectValue}
+            renderValue={value => options.find(o => o.id === value).label}
+            onChange={this.handleChange}
+            style={{ width: '100%' }}
+            options={options}
           />
-          <MenuItem
-            value={1}
-            primaryText={
-              <T
-                id="ExpensesChartInterests.years"
-                values={{ value: rates[1], years: 5 }}
-              />
-            }
-          />
-          <MenuItem
-            value={2}
-            primaryText={
-              <T
-                id="ExpensesChartInterests.years"
-                values={{ value: rates[2], years: 10 }}
-              />
-            }
-          />
-          <MenuItem
-            value={3}
-            primaryText={
-              <T
-                id="ExpensesChartInterests.years"
-                values={{ value: rates[3], years: 15 }}
-              />
-            }
-          />
-        </SelectField>
+        </div>
       </div>
     );
   }

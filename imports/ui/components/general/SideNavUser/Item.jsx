@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 
 import Icon from '/imports/ui/components/general/Icon';
-import CircularProgress from 'material-ui/CircularProgress';
+import { CircularProgress } from 'material-ui/Progress';
 
 import { T } from '/imports/ui/components/general/Translation';
 import colors from '/imports/js/config/colors';
@@ -14,7 +14,7 @@ const getIcon = (item, isWaiting) => {
   if (item.isDone()) {
     return (
       <div className="icon success">
-        <Icon type="check" color={colors.secondary} />
+        <Icon type="check" />
       </div>
     );
   } else if (item.disabled) {
@@ -35,8 +35,9 @@ const getIcon = (item, isWaiting) => {
         <span className="available-icon" />
         <CircularProgress
           mode="determinate"
-          value={item.percent() * 100}
-          className="circular-progress"
+          value={Math.round(item.percent() * 100)}
+          className="circular-progress active"
+          color="primary"
         />
       </div>
     );

@@ -35,47 +35,56 @@ const FieldToggles = ({
       <div className="flex-col" style={styles.toggles}>
         {defaultFields
           .filter(field => field.id !== 'name')
-          .map(field =>
-            (<Toggle
+          .map(field => (
+            <Toggle
               key={field.id}
               label={<T id={`Comparator.${field.id}`} />}
               toggled={hiddenFields.indexOf(field.id) < 0}
               onToggle={() => toggleField(field.id)}
-            />),
-          )}
+            />
+          ))}
       </div>
 
       <h3>
         <T id="FieldToggles.customFields" />
       </h3>
 
-      {customFields.length
-        ? <div className="flex-col center" style={styles.toggles}>
-          {customFields.map(field =>
-              (<div
-                style={{ position: 'relative', width: '100%', height: 38 }}
-                key={field.id}
-                className="flex center"
-              >
-                <Toggle
-                  label={field.name}
-                  toggled={hiddenFields.indexOf(field.id) < 0}
-                  onToggle={() => toggleField(field.id)}
-                />
-                <Button
-                  primary
-                  label={<T id="general.delete" />}
-                  onClick={() => removeCustomField(field.id)}
-                  style={{ position: 'absolute', left: '100%', top: 0 }}
-                />
-              </div>),
-            )}
+      {customFields.length ? (
+        <div className="flex-col" style={styles.toggles}>
+          {customFields.map(field => (
+            <div
+              style={{
+                position: 'relative',
+                height: 38,
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+              key={field.id}
+              className="flex"
+            >
+              <Toggle
+                label={field.name}
+                toggled={hiddenFields.indexOf(field.id) < 0}
+                onToggle={() => toggleField(field.id)}
+                // style={{ width: 'unset' }}
+              />
+              <Button
+                dense
+                primary
+                label={<T id="general.delete" />}
+                onClick={() => removeCustomField(field.id)}
+                // style={{ position: 'absolute', left: '100%', top: 0 }}
+              />
+            </div>
+          ))}
         </div>
-        : <div className="description">
+      ) : (
+        <div className="description">
           <p>
             <T id="FieldToggles.noCustomFields" />
           </p>
-        </div>}
+        </div>
+      )}
     </div>
   );
 };

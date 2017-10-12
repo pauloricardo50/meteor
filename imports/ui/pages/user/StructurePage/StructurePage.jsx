@@ -37,15 +37,10 @@ export default class StructurePage extends Component {
     };
   }
 
-  handleChange = (value, id) => {
-    const object = {};
-    object[id] = Math.round(toNumber(value));
-    this.setState(object);
-  };
+  setParentState = (key, value) => this.setState({ [key]: value });
 
-  setParentState = (key, value) => {
-    this.setState({ [key]: value });
-  };
+  handleChange = (value, id) =>
+    this.setState({ [id]: Math.round(toNumber(value)) });
 
   render() {
     const { loanRequest, borrowers } = this.props;
@@ -76,7 +71,7 @@ export default class StructurePage extends Component {
           <StructureSliders
             {...this.props}
             parentState={this.state}
-            handleChange={this.handleChange}
+            onChange={this.handleChange}
             disabled={loanRequest.logic.hasValidatedStructure}
           />
 

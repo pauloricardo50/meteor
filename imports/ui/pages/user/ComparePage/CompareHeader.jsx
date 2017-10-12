@@ -78,6 +78,7 @@ export default class CompareHeader extends Component {
           style={{ position: 'relative', overflow: 'visible' }}
         >
           <Button
+            dense
             label="Reset"
             onClick={handleReset}
             icon={<Icon type="loop" style={{ color: 'white' }} />}
@@ -88,7 +89,7 @@ export default class CompareHeader extends Component {
             tooltip="Pin"
             onClick={this.togglePin}
             style={{ position: 'absolute', right: 0, top: 0 }}
-            iconProps={{ color: 'white' }}
+            iconStyle={{ color: 'white' }}
           />
         </li>
         {fields.map(field => (
@@ -108,15 +109,16 @@ export default class CompareHeader extends Component {
         ))}
 
         <li>
-          <DialogSimple
+          {/* <DialogSimple
             label="+"
             primary
             passProps
             actions={[]}
             title={<T id="CustomFieldAdder.title" />}
-          >
-            <CustomFieldAdder addCustomField={addCustomField} />
-          </DialogSimple>
+            buttonProps={{ dense: true }}
+          > */}
+          <CustomFieldAdder addCustomField={addCustomField} />
+          {/* </DialogSimple> */}
         </li>
       </ul>
     );

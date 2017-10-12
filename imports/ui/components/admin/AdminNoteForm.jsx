@@ -22,10 +22,10 @@ export default class AdminNoteForm extends Component {
     return (
       <form action="submit">
         <TextField
-          floatingLabelText="Description de l'intéraction"
+          label="Description de l'intéraction"
           hintText="Client a demandé une explication de l'amortissement indirect.."
           fullWidth
-          multiLine
+          multiline
           rows={5}
         />
         <div className="pull-right" style={styles.buttonDiv}>

@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import SelectField from '/imports/ui/components/general/Material/SelectField';
-import MenuItem from '/imports/ui/components/general/Material/MenuItem';
-
-import SavingIcon from './SavingIcon';
-import FormValidator from './FormValidator';
 import cleanMethod from '/imports/api/cleanMethods';
 import { T } from '/imports/ui/components/general/Translation';
+import Select from '/imports/ui/components/general/Select';
+import SavingIcon from './SavingIcon';
+import FormValidator from './FormValidator';
 
 const styles = {
   div: {
@@ -15,7 +13,7 @@ const styles = {
   },
   savingIcon: {
     position: 'absolute',
-    top: 30,
+    top: 16,
     right: -30,
   },
 };
@@ -31,24 +29,14 @@ export default class SelectFieldInput extends Component {
     };
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    // Prevent weird component rerenders, which break keyboard+mouse use of this component
-    return (
-      this.props.currentValue !== nextProps.currentValue ||
-      this.state !== nextState
-    );
-  }
-
-  handleChange = (event, index, value) => {
-    this.setState({ value }, () => this.saveValue());
-  };
+  handleChange = (_, value) => this.setState({ value }, () => this.saveValue());
 
   saveValue = () => {
-    const object = {};
+    const { id, updateFunc, docId } = this.props;
+    const { value } = this.state;
+    const object = { [id]: value };
 
-    object[this.props.id] = this.state.value;
-
-    cleanMethod(this.props.updateFunc, object, this.props.documentId)
+    cleanMethod(updateFunc, object, docId)
       .then(() =>
         // on success, set saving briefly to true, before setting it to false again to trigger icon
         this.setState(
@@ -61,6 +49,20 @@ export default class SelectFieldInput extends Component {
       );
   };
 
+  mapOptions = () =>
+    this.props.options.map(
+      ({ id, intlId, intlValues, label, ...otherProps }) => ({
+        label: label || (
+          <T
+            id={`Forms.${intlId || this.props.id}.${id}`}
+            values={intlValues}
+          />
+        ),
+        id,
+        ...otherProps,
+      }),
+    );
+
   render() {
     const {
       style,
@@ -69,38 +71,22 @@ export default class SelectFieldInput extends Component {
       options,
       noValidator,
       id,
-      intlid,
+      // intlid,
     } = this.props;
     const { value, saving, errorText } = this.state;
 
     return (
       <div style={{ ...styles.div, ...style }}>
-        <SelectField
-          floatingLabelText={label}
+        <Select
+          id={id}
+          label={label}
           value={value}
           onChange={this.handleChange}
-          errorText={errorText}
-          fullWidth
-          maxHeight={200}
-          style={style}
+          style={{ ...style, marginBottom: 8 }}
           disabled={disabled}
-        >
-          <MenuItem value={null} primaryText="" key={0} />
-          {options.map(({ id: optionId, intlValues, label: optionLabel }) => (
-            <MenuItem
-              value={optionId}
-              primaryText={
-                optionLabel || (
-                  <T
-                    id={`Forms.${intlId || id}.${optionId}`}
-                    values={intlValues}
-                  />
-                )
-              }
-              key={optionId}
-            />
-          ))}
-        </SelectField>
+          renderValue={val => this.mapOptions().find(o => o.id === val).label}
+          options={this.mapOptions()}
+        />
         <SavingIcon
           saving={saving}
           errorExists={errorText !== ''}
@@ -116,7 +102,7 @@ SelectFieldInput.propTypes = {
   label: PropTypes.node.isRequired,
   id: PropTypes.string.isRequired,
   currentValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  documentId: PropTypes.string.isRequired,
+  docId: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
   updateFunc: PropTypes.string.isRequired,
   disabled: PropTypes.bool,

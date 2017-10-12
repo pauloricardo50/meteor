@@ -6,23 +6,44 @@ import moment from 'moment';
 
 import { IntlNumber } from '/imports/ui/components/general/Translation';
 
-const columns = [
-  { name: '#', style: { width: 32, textAlign: 'left' } },
-  { name: 'Nom', style: { width: 40, textAlign: 'left' } },
-  { name: 'Créé le', style: { width: 40, textAlign: 'left' } },
-  { name: 'Updaté le', style: { width: 40, textAlign: 'left' } },
-  { name: 'Étape', style: { width: 40, textAlign: 'left' } },
+const columnOptions = [
   {
-    name: 'Valeur du bien',
-    style: { width: 40, textAlign: 'left' },
-    format: value => <IntlNumber value={value} format="money" />,
+    id: '#',
+    // style: { width: 32, textAlign: 'left' },
   },
   {
-    name: 'Fortune totale',
-    style: { width: 40, textAlign: 'left' },
-    format: value => <IntlNumber value={value} format="money" />,
+    id: 'Nom',
+    // style: { width: 40, textAlign: 'left' },
   },
-  { name: 'Qualité', style: { width: 40, textAlign: 'left' } },
+  {
+    id: 'Créé le',
+    // style: { width: 40, textAlign: 'left' },
+  },
+  {
+    id: 'Updaté le',
+    // style: { width: 40, textAlign: 'left' },
+  },
+  {
+    id: 'Étape',
+    // style: { width: 40, textAlign: 'left' },
+    numeric: true,
+  },
+  {
+    id: 'Valeur du bien',
+    // style: { width: 40, textAlign: 'left' },
+    format: value => <IntlNumber value={value} format="money" />,
+    numeric: true,
+  },
+  {
+    id: 'Fortune totale',
+    // style: { width: 40, textAlign: 'left' },
+    format: value => <IntlNumber value={value} format="money" />,
+    numeric: true,
+  },
+  {
+    id: 'Qualité',
+    // style: { width: 40, textAlign: 'left' },
+  },
 ];
 
 export default class AllRequestsTable extends Component {
@@ -37,7 +58,7 @@ export default class AllRequestsTable extends Component {
       id: request._id,
       columns: [
         index + 1,
-        request.property.address1.toString(),
+        request.name,
         moment(request.createdAt).format('D MMM YY à HH:mm:ss'),
         moment(request.updatedAt).format('D MMM YY à HH:mm:ss'),
         request.logic.step + 1,
@@ -52,12 +73,7 @@ export default class AllRequestsTable extends Component {
 
   render() {
     return (
-      <Table
-        height="800px"
-        selectable={false}
-        columns={columns}
-        rows={this.rows}
-      />
+      <Table columnOptions={columnOptions} rows={this.rows} noIntl clickable />
     );
   }
 }

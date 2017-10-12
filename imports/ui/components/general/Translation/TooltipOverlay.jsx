@@ -8,9 +8,7 @@ import track from '/imports/js/helpers/analytics';
 
 import Tooltip from './Tooltip';
 
-const handleClick = (event) => {
-  event.stopPropagation();
-};
+const handleClick = event => event.stopPropagation();
 
 export default class TooltipOverlay extends Component {
   constructor(props) {
