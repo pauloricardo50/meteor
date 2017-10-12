@@ -32,6 +32,7 @@ xolvio:cleaner
 hwillson:stub-collections
 # random@1.0.10
 practicalmeteor:mocha-console-runner
+meteortesting:mocha
 
 
 
@@ -75,4 +76,3 @@ wylio:mandrill
 dburles:google-maps
 meteorhacks:kadira
 okgrow:analytics@=3.0.1
-meteortesting:mocha
