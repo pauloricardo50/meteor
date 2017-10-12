@@ -24,7 +24,9 @@ const chartColors = {
   amortization: colors.charts[4],
 };
 
-const getData = ({ loanRequest, borrowers, totalYears, interestRates }) => {
+const getData = ({
+  loanRequest, borrowers, totalYears, interestRates,
+}) => {
   const { amortization, years } = getAmortization(loanRequest, borrowers);
   const maintenance = getMaintenance(loanRequest);
   const loan = getLoanValue(loanRequest);
@@ -52,19 +54,21 @@ const getData = ({ loanRequest, borrowers, totalYears, interestRates }) => {
 
     debt[i] = Math.round(value);
     fortune[i] = Math.round(propAndWork - value);
-    payment[i] = Math.round(
-      amort + maintenance + getInterests(loanRequest, interestRates[i], value),
-    );
+    payment[i] = Math.round(amort + maintenance + getInterests(loanRequest, interestRates[i], value));
     amortizationChart[i] = Math.round(amort);
   }
 
-  return { debt, fortune, payment, amortization: amortizationChart };
+  return {
+    debt, fortune, payment, amortization: amortizationChart,
+  };
 };
 
 class AmortizationChart extends Component {
   getConfig = () => {
     const f = this.props.intl.formatMessage;
-    const { debt, fortune, payment, amortization } = getData(this.props);
+    const {
+      debt, fortune, payment, amortization,
+    } = getData(this.props);
 
     return {
       chart: {
