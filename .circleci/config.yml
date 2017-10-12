@@ -63,9 +63,9 @@ jobs:
       - run:
           name: create results directory
           command: mkdir ./results
-      - run:
-          name: run tests
-          command: meteor npm run test-CI
+      #- run:
+      #    name: run tests
+      #    command: meteor npm run test-CI
       - run:
           name: copy meteor bin to build cache
           command: |
