@@ -71,6 +71,14 @@ jobs:
           command: |
             mkdir -p ~/build-temp
             cp /usr/local/bin/meteor ~/build-temp/meteor-bin
+      - deploy:
+          name: maybe deploy
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              meteor npm run deploy:production
+            elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
+              meteor npm run deploy:staging
+            fi
       - save_cache:
           name: save build
           key: build-temp-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
