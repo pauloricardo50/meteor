@@ -68,13 +68,8 @@ const getRedirect = (props) => {
   return false;
 };
 
-const getShowSideNav = ({ location }) => {
-  if (location.pathname === '/app' || location.pathname === '/app/compare') {
-    return false;
-  }
-
-  return true;
-};
+const getShowSideNav = ({ location }) =>
+  !(location.pathname === '/app' || location.pathname === '/app/compare');
 
 const AppLayout = (props) => {
   const { type, history, render } = props;

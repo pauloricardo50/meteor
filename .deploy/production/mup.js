@@ -18,11 +18,11 @@ module.exports = {
     },
     env: {
       ROOT_URL: 'https://www.e-potek.ch',
-      MONGO_URL: 'mongodb://admin1:password@gcp-europe-west1-cpu.0.dblayer.com:15119/e-potek-test?ssl=true',
+      MONGO_URL:
+        'mongodb://admin1:password@gcp-europe-west1-cpu.0.dblayer.com:15119/e-potek-test?ssl=true',
     },
     docker: {
-      image: 'abernix/meteord:base',
-      // image: 'guillim/meteord:node6.9.1V3',
+      image: 'abernix/meteord:node-8.4.0-base',
     },
     ssl: {
       crt: '../../bundle.crt',
