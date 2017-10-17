@@ -6,7 +6,7 @@ import { getBorrowerInfoArray } from './BorrowerFormArray';
 import { borrowerFiles, requestFiles } from '/imports/js/arrays/files';
 import getPropertyArray from './PropertyFormArray';
 import { strategyDone } from '/imports/js/helpers/requestFunctions';
-
+import { arrayify } from '/imports/js/helpers/general';
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 
 const getSteps = ({ loanRequest, borrowers, serverTime }) => {
@@ -61,6 +61,9 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         {
           id: 'verification',
           link: `/app/requests/${loanRequest._id}/verification`,
+          waiting: () =>
+            loanRequest.logic.verification.requested &&
+            !loanRequest.logic.verification.validated,
           isDone: () => loanRequest.logic.verification.validated === true,
         },
       ],
@@ -78,6 +81,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         {
           id: 'auction',
           link: `/app/requests/${loanRequest._id}/auction`,
+          waiting: () => loanRequest.logic.auction.status === 'started',
           isDone: () => loanRequest.logic.auction.status === 'ended',
           disabled: loanRequest.logic.step < 2,
         },
@@ -87,8 +91,8 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           isDone: () => strategyDone(loanRequest),
         },
         {
-          id: 'lenderPicker',
-          link: `/app/requests/${loanRequest._id}/lenderpicker`,
+          id: 'offerPicker',
+          link: `/app/requests/${loanRequest._id}/offerpicker`,
           isDone: () =>
             !!(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
         },
@@ -104,20 +108,33 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           disabled:
             loanRequest.logic.step < 3 &&
             !(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
-          percent: () => 0,
-          isDone: () =>
-            loanRequest.logic.lender &&
-            loanRequest.logic.lender.contractRequested,
+          percent: () =>
+            (filesPercent(loanRequest, requestFiles, 'contract') +
+              filesPercent(borrowers, borrowerFiles, 'contract')) /
+            2,
+          waiting: () =>
+            loanRequest.logic.lender.contractRequested &&
+            !loanRequest.logic.lender.contract,
+          isDone() {
+            // const validPercent =
+            //   (filesPercent(loanRequest, requestFiles, 'contract', true) +
+            //     filesPercent(borrowers, borrowerFiles, 'contract', true)) /
+            //   (1 + borrowers.length);
+            return (
+              loanRequest.files.contract && loanRequest.files.contract.length
+            );
+          },
         },
         {
           id: 'closing',
           link: `/app/requests/${loanRequest._id}/closing`,
-          disabled: !(
-            loanRequest.logic.lender &&
-            loanRequest.logic.lender.contractRequested
-          ),
-          percent: () => 0,
-          isDone: () => false,
+          disabled:
+            (filesPercent(loanRequest, requestFiles, 'contract') +
+              filesPercent(borrowers, borrowerFiles, 'contract')) /
+              2 <
+              1 || loanRequest.logic.step < 3,
+          percent: () => closingPercent(loanRequest),
+          isDone: () => loanRequest.status === 'done',
         },
       ],
     },
@@ -252,8 +269,8 @@ export const getCountedArray = (formArray, doc, arr = []) => {
  */
 export const personalInfoPercent = (borrowers) => {
   const a = [];
-  borrowers.forEach((b) => {
-    const formArray = getBorrowerInfoArray(borrowers, b._id);
+  arrayify(borrowers).forEach((b) => {
+    const formArray = getBorrowerInfoArray(arrayify(borrowers), b._id);
     getCountedArray(formArray, b, a);
   });
 
@@ -277,7 +294,7 @@ export const propertyPercent = (loanRequest, borrowers) => {
 
 export const auctionFilesPercent = (borrowers) => {
   const a = [];
-  borrowers.forEach((b) => {
+  arrayify(borrowers).forEach((b) => {
     const fileArray = borrowerFiles(b).auction;
 
     if (isDemo()) {
@@ -303,17 +320,26 @@ export const auctionFilesPercent = (borrowers) => {
  * @return {number} a value between 0 and 1 indicating the percentage of
  * completion, 1 is complete, 0 is not started
  */
-export const filesPercent = (doc, fileArrayFunc, step) => {
+export const filesPercent = (doc, fileArrayFunc, step, checkValidity) => {
   const a = [];
   const iterate = (files, doc2) => {
     if (isDemo()) {
       a.push(doc2.files[files[0].id]);
     } else {
-      files.forEach(
-        f =>
-          !(f.required === false || f.condition === false) &&
-          a.push(doc2.files[f.id]),
-      );
+      files.forEach((f) => {
+        if (!(f.required === false || f.condition === false)) {
+          if (checkValidity) {
+            a.push(
+              isArray(doc2.files[f.id]) &&
+              doc2.files[f.id].every(file => file.status === 'valid')
+                ? true
+                : undefined,
+            );
+          } else {
+            a.push(doc2.files[f.id]);
+          }
+        }
+      });
     }
   };
 
@@ -330,4 +356,22 @@ export const filesPercent = (doc, fileArrayFunc, step) => {
   return getPercent(a);
 };
 
-export const getCurrentLink = () => {};
+export const closingPercent = (loanRequest) => {
+  const { closingSteps } = loanRequest.logic;
+  const arr = [];
+
+  closingSteps.forEach((step) => {
+    if (step.type === 'todo') {
+      arr.push(step.status === 'valid' ? true : undefined);
+    } else {
+      arr.push(
+        isArray(loanRequest.files[step.id]) &&
+        loanRequest.files[step.id].every(file => file.status === 'valid')
+          ? true
+          : undefined,
+      );
+    }
+  });
+
+  return getPercent(arr);
+};

@@ -15,43 +15,33 @@ const renderObject = (key, obj) => {
       } else if (value.getMonth) {
         return (
           <li>
-            <h3>
-              {stringKey}
-            </h3>
-            <p>
-              {moment(value).format('D MMM hh:mm:ss')}
-            </p>
+            <h4>{stringKey}</h4>
+            <p>{moment(value).format('D MMM hh:mm:ss')}</p>
           </li>
         );
       }
 
       return (
         <div key={key}>
-          <h2>
-            {stringKey}
-          </h2>
-          <ul>
-            {Object.keys(value).map(k => renderObject(k, value))}
-          </ul>
+          <h3>{stringKey}</h3>
+          <ul>{Object.keys(value).map(k => renderObject(k, value))}</ul>
         </div>
       );
     case 'number':
       return (
         <li key={key}>
-          <h3>
-            {stringKey}
-          </h3>
-          {value > 10000
-            ? <p>{`CHF ${toMoney(value)}`}</p>
-            : <p>{`${value}`}</p>}
+          <h4>{stringKey}</h4>
+          {value > 10000 ? (
+            <p>{`CHF ${toMoney(value)}`}</p>
+          ) : (
+            <p>{`${value}`}</p>
+          )}
         </li>
       );
     default:
       return (
         <li key={key}>
-          <h3>
-            {stringKey}
-          </h3>
+          <h4>{stringKey}</h4>
           <p>{`${value}`}</p>
         </li>
       );

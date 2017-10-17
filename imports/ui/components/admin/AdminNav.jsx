@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SideNav from '../general/SideNav.jsx';
+import SideNav from '../general/SideNav';
 
 const adminLinks = [
   {

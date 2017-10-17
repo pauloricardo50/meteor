@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '/imports/ui/components/general/Button.jsx';
-import Dialog from 'material-ui/Dialog';
+import Button from '/imports/ui/components/general/Button';
+import Dialog from '/imports/ui/components/general/Material/Dialog';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
 export default class ConfirmButton extends Component {
   constructor(props) {
@@ -38,14 +38,16 @@ export default class ConfirmButton extends Component {
         key={1}
         label={<T id="general.cancel" />}
         primary
-        onTouchTap={this.handleClose}
+        onClick={this.handleClose}
       />,
       <Button
         key={2}
         label={<T id="general.yes" />}
         primary
-        keyboardFocused
-        onTouchTap={() => {
+        autoFocus
+        onClick={(e) => {
+          // prevents onClick from triggering twice when using enter to validate...
+          e.preventDefault();
           handleClick();
           this.handleClose();
         }}
@@ -57,20 +59,15 @@ export default class ConfirmButton extends Component {
         <Button
           raised={raised}
           label={label}
-          onTouchTap={this.handleOpen}
+          onClick={this.handleOpen}
           primary={primary}
           secondary={secondary}
           disabled={disabled}
           style={style}
         />
         <Dialog
-          title={
-            <h3>
-              <T id="general.areYouSure" />
-            </h3>
-          }
+          title={<T id="general.areYouSure" />}
           actions={actions}
-          modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
         >

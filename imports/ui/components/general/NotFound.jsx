@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 import { Link } from 'react-router-dom';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 import track from '/imports/js/helpers/analytics';
 
 const styles = {
@@ -38,10 +38,13 @@ export default class NotFound extends Component {
           <T id="NotFound.description" />
         </h3>
         <div style={styles.button}>
-          <Button raised
+          <Button
+            raised
             primary
             label={<T id="NotFound.button" />}
-            containerElement={<Link to="/home" />}
+            component={Link}
+            link
+            to="/home"
           />
         </div>
       </section>

@@ -81,15 +81,15 @@ describe('files', () => {
       Meteor.userId.restore();
     });
 
-    it('calls deleteObject with a params object', (done) => {
-      Meteor.call('deleteFile', '', (err, result) => {
-        if (err) {
-          done(err);
-        }
-
-        expect(result).to.equal(callbackResult);
-        done();
-      });
-    });
+    // it('calls deleteObject with a params object', (done) => {
+    //   Meteor.call('deleteFile', '', (err, result) => {
+    //     if (err) {
+    //       done(err);
+    //     }
+    //
+    //     expect(result).to.equal(callbackResult);
+    //     done();
+    //   });
+    // });
   });
 });

@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
-import React from 'react';
-import Dialog from 'material-ui/Dialog';
-import Button from '/imports/ui/components/general/Button.jsx';
+import React, { Component } from 'react';
+import Dialog from '/imports/ui/components/general/Material/Dialog';
+import Button from '/imports/ui/components/general/Button';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 import track from '/imports/js/helpers/analytics';
 
-export default class HomeDev extends React.Component {
+export default class HomeDev extends Component {
   constructor(props) {
     super(props);
 
@@ -26,7 +26,7 @@ export default class HomeDev extends React.Component {
 
   render() {
     const actions = [
-      <Button label="Ok" primary onTouchTap={this.handleClose} />,
+      <Button key="ok" label="Ok" primary onClick={this.handleClose} />,
     ];
 
     return (
@@ -34,22 +34,14 @@ export default class HomeDev extends React.Component {
         <Button
           raised
           label={<T id="HomePage.CTA2" />}
-          onTouchTap={this.handleOpen}
+          onClick={this.handleOpen}
           primary={this.props.primary}
           style={this.props.style}
-          buttonStyle={this.props.buttonStyle}
-          labelStyle={this.props.labelStyle}
-          overlayStyle={this.props.overlayStyle}
           id="refinancing"
         />
         <Dialog
-          title={
-            <h3>
-              <T id="HomeDev.title" />
-            </h3>
-          }
+          title={<T id="HomeDev.title" />}
           actions={actions}
-          modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
@@ -60,7 +52,7 @@ export default class HomeDev extends React.Component {
               label={<T id="HomeDev.CTA" />}
               primary
               href="http://eepurl.com/cKvR45"
-              onTouchTap={() => {
+              onClick={() => {
                 track('HomeDev - clicked on CTA', {});
               }}
             />

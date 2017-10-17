@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { DocHead } from 'meteor/kadira:dochead';
 import { injectIntl } from 'react-intl';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
 class Page extends Component {
   componentDidMount() {

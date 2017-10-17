@@ -58,9 +58,15 @@ export const GeneralSchema = new SimpleSchema({
   },
   'loanTranches.$': Object,
   'loanTranches.$.type': {
-    // libor, floating, 1y, 2y, 5y, 10y
     type: String,
     optional: true,
+    allowedValues: [
+      'interestLibor',
+      'interest1',
+      'interest2',
+      'interest5',
+      'interest10',
+    ],
   },
   'loanTranches.$.value': {
     type: Number,
@@ -84,6 +90,10 @@ export const GeneralSchema = new SimpleSchema({
   },
   wantedClosingDate: {
     type: Date,
+    optional: true,
+  },
+  auctionMostImportant: {
+    type: String,
     optional: true,
   },
 });
@@ -236,7 +246,7 @@ export const PropertySchema = new SimpleSchema({
   copropertyPercentage: {
     type: Number,
     min: 0,
-    max: 1,
+    max: 1000,
     optional: true,
   },
   cityPlacementQuality: {
@@ -269,7 +279,7 @@ export const PropertySchema = new SimpleSchema({
     max: 5,
     optional: true,
   },
-  other: {
+  otherNotes: {
     type: String,
     optional: true,
   },
@@ -350,10 +360,6 @@ export const LogicSchema = new SimpleSchema({
     type: Date,
     optional: true,
   },
-  'auction.mostImportant': {
-    type: String,
-    optional: true,
-  },
   hasValidatedStructure: {
     type: Boolean,
     defaultValue: false,
@@ -375,6 +381,11 @@ export const LogicSchema = new SimpleSchema({
     optional: true,
   },
   lender: Object,
+  'lender.type': {
+    type: String,
+    optional: true,
+    allowedValues: ['standard', 'counterparts'],
+  },
   'lender.offerId': {
     type: String,
     optional: true,
@@ -422,11 +433,19 @@ export const LogicSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  lastSteps: {
+  closingSteps: {
     type: Array,
     defaultValue: [],
   },
-  'lastSteps.$': Object,
-  'lastSteps.$.id': String,
-  'lastSteps.$.type': String,
+  'closingSteps.$': Object,
+  'closingSteps.$.id': String,
+  'closingSteps.$.type': { type: String, allowedValues: ['todo', 'upload'] },
+  'closingSteps.$.title': String,
+  'closingSteps.$.description': { type: String, optional: true },
+  'closingSteps.$.status': {
+    type: String,
+    optional: true,
+    allowedValues: ['unverified', 'valid', 'error'],
+  },
+  'closingSteps.$.error': { type: String, optional: true },
 });

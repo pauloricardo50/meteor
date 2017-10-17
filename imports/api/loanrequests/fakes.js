@@ -5,14 +5,16 @@ export const fakeGeneral = {
   purchaseType: 'acquisition',
   fortuneUsed: 250000,
   insuranceFortuneUsed: 100000,
-  wantedClosingDate: moment().add(15, 'd').toDate(),
+  wantedClosingDate: moment()
+    .add(15, 'd')
+    .toDate(),
 };
 
 export const fakeProperty = {
   value: 1000000,
   propertyWork: 40000,
   address1: 'Rue du Succès 18',
-  zipCode: 1200,
+  zipCode: 1201,
   city: 'Genève',
   usageType: 'primary',
   type: 'flat',
@@ -32,7 +34,7 @@ export const fakeProperty = {
   },
   minergie: true,
   isCoproperty: true,
-  copropertyPercentage: 0.4,
+  copropertyPercentage: 400,
   cityPlacementQuality: 2,
   buildingPlacementQuality: 3,
   buildingQuality: 1,
@@ -71,6 +73,33 @@ export const logic3 = {
   loanStrategyPreset: 'fixed',
   amortizationStrategyPreset: 'indirect',
   lender: {},
+  closingSteps: [
+    { id: 'upload0', title: 'Contrat de prêt signé', type: 'upload' },
+    {
+      id: 'todo0',
+      title: 'Ouverture de compte chez votre prêteur',
+      description:
+        'Il faut ouvrir un compte bancaire chez votre prêteur où les fonds de votre hypothèque résideront.',
+      type: 'todo',
+      status: 'valid',
+    },
+    {
+      id: 'todo1',
+      title: 'Versement des fonds propres',
+      description:
+        'Vous devez aller chez le notaire et verser les fonds propres nécessaires sur un compte escrow.',
+      type: 'todo',
+      status: 'unverified',
+    },
+    {
+      id: 'todo2',
+      title: 'Engagement du notaire relative aux cédules hypothécaires',
+      description: '',
+      type: 'todo',
+      status: 'error',
+      error: 'Le notaire doit vous convier à un 2ème rendez-vous',
+    },
+  ],
 };
 
 export const fakeFiles = {
@@ -81,6 +110,7 @@ export const fakeFiles = {
   landRegisterExtract: [fakeFile],
   coownershipAllocationAgreement: [fakeFile],
   coownershipAgreement: [fakeFile],
+  upload0: [fakeFile],
 };
 
 export const fakeFiles2 = {

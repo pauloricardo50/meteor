@@ -49,9 +49,6 @@ describe('loanRequests', () => {
 
         const requestId = insertRequest.call({ object, userId });
         const request = LoanRequests.findOne(requestId);
-        console.log('huh?');
-        console.log('id2', requestId);
-        console.log('wut?', JSON.stringify(request, 0, 2));
 
         expect(typeof request).to.equal('object');
         expect(request.userId).to.equal(userId);
@@ -62,7 +59,6 @@ describe('loanRequests', () => {
       let request;
       beforeEach(() => {
         request = Factory.create('loanRequest');
-        console.log('before', request._id);
       });
 
       describe('updateRequest', () => {
@@ -272,7 +268,11 @@ describe('loanRequests', () => {
 
     it('Should return wednesday night for a monday afternoon', () => {
       // Jan 2nd 2017, a monday
-      const date = moment().year(2017).month(0).date(2).hours(14);
+      const date = moment()
+        .year(2017)
+        .month(0)
+        .date(2)
+        .hours(14);
       endDate.date(4);
 
       expect(getAuctionEndTime(date).getTime()).to.equal(
@@ -282,7 +282,11 @@ describe('loanRequests', () => {
 
     it('Should return monday night for a thursday afternoon', () => {
       // Jan 5th 2017, a thursday
-      const date = moment().year(2017).month(0).date(5).hours(14);
+      const date = moment()
+        .year(2017)
+        .month(0)
+        .date(5)
+        .hours(14);
       endDate.date(9);
 
       expect(getAuctionEndTime(date).getTime()).to.equal(
@@ -292,7 +296,11 @@ describe('loanRequests', () => {
 
     it('Should return Tuesday night for a friday afternoon', () => {
       // Jan 6th 2017, a friday
-      const date = moment().year(2017).month(0).date(6).hours(14);
+      const date = moment()
+        .year(2017)
+        .month(0)
+        .date(6)
+        .hours(14);
       endDate.date(10);
 
       expect(getAuctionEndTime(date).getTime()).to.equal(
@@ -302,7 +310,11 @@ describe('loanRequests', () => {
 
     it('Should return Tuesday night for a monday early morning', () => {
       // Jan 2nd 2017, a monday
-      const date = moment().year(2017).month(0).date(2).hours(5);
+      const date = moment()
+        .year(2017)
+        .month(0)
+        .date(2)
+        .hours(5);
       endDate.date(3);
 
       expect(getAuctionEndTime(date).getTime()).to.equal(
@@ -312,7 +324,11 @@ describe('loanRequests', () => {
 
     it('Should return Tuesday night for a saturday afternoon', () => {
       // Jan 7th 2017, a saturday
-      const date = moment().year(2017).month(0).date(7).hours(14);
+      const date = moment()
+        .year(2017)
+        .month(0)
+        .date(7)
+        .hours(14);
       endDate.date(10);
 
       expect(getAuctionEndTime(date).getTime()).to.equal(
@@ -322,7 +338,11 @@ describe('loanRequests', () => {
 
     it('Should return Tuesday night for a saturday early morning', () => {
       // Jan 7th 2017, a saturday
-      const date = moment().year(2017).month(0).date(7).hours(5);
+      const date = moment()
+        .year(2017)
+        .month(0)
+        .date(7)
+        .hours(5);
       endDate.date(10);
 
       expect(getAuctionEndTime(date).getTime()).to.equal(
@@ -332,7 +352,11 @@ describe('loanRequests', () => {
 
     it('Should return Tuesday night for a sunday afternoon', () => {
       // Jan 8th 2017, a sunday
-      const date = moment().year(2017).month(0).date(8).hours(14);
+      const date = moment()
+        .year(2017)
+        .month(0)
+        .date(8)
+        .hours(14);
       endDate.date(10);
 
       expect(getAuctionEndTime(date).getTime()).to.equal(
@@ -342,7 +366,11 @@ describe('loanRequests', () => {
 
     it('Should return Tuesday night for a sunday early morning', () => {
       // Jan 8th 2017, a sunday
-      const date = moment().year(2017).month(0).date(8).hours(5);
+      const date = moment()
+        .year(2017)
+        .month(0)
+        .date(8)
+        .hours(5);
       endDate.date(10);
 
       expect(getAuctionEndTime(date).getTime()).to.equal(

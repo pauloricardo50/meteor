@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import TopNav from '/imports/ui/components/general/TopNav.jsx';
-// import RouteTransition from '/imports/ui/components/general/RouteTransition.jsx';
+import TopNav from '/imports/ui/components/general/TopNav';
 
-const PublicLayout = props =>
-  <div>
+const PublicLayout = props => (
+  <div style={{ height: 'inherit', width: 'inherit' }}>
     <TopNav {...props} public />
     <main className="public-layout">
       {props.children && React.cloneElement(props.children, { ...props })}
     </main>
-  </div>;
+  </div>
+);
 
 PublicLayout.propTypes = {
   children: PropTypes.element,

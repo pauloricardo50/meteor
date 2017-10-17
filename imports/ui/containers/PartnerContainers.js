@@ -1,4 +1,4 @@
-import AppLayout from '/imports/ui/layouts/AppLayout.jsx';
+import AppLayout from '/imports/ui/layouts/AppLayout';
 
 import {
   partnerContainer,

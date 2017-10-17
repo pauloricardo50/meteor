@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { createContainer } from 'meteor/react-meteor-data';
+// import { createContainer } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 
 import { GoogleMaps } from 'meteor/dburles:google-maps';
 
-import { LoadingComponent } from './Loading.jsx';
+import { LoadingComponent } from './Loading';
 
 class GoogleMap extends Component {
   componentDidMount() {
@@ -22,7 +22,9 @@ class GoogleMap extends Component {
       return (
         <div
           className="map-container"
-          ref={c => (this.container = c)}
+          ref={(c) => {
+            this.container = c;
+          }}
           // style={{ width: '100%' }}
         >
           {this.props.children}
@@ -39,9 +41,9 @@ GoogleMap.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const GoogleMapContainer = createContainer(
-  () => ({ loaded: GoogleMaps.loaded() }),
-  GoogleMap,
-);
+// const GoogleMapContainer = createContainer(
+//   () => ({ loaded: GoogleMaps.loaded() }),
+//   GoogleMap,
+// );
 
-export default GoogleMapContainer;
+export default GoogleMap;

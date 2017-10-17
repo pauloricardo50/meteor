@@ -1,12 +1,13 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import getMountedComponent, {
+import {
+  getMountedComponent,
   stubCollections,
 } from '/imports/js/helpers/testHelpers';
 import { Factory } from 'meteor/dburles:factory';
 
-import AppLayout from '../AppLayout.jsx';
+import AppLayout from '../AppLayout';
 
 if (Meteor.isClient) {
   describe('<AppLayout />', () => {

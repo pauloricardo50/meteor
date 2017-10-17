@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Dialog from 'material-ui/Dialog';
-import Button from '/imports/ui/components/general/Button.jsx';
+import Dialog from '/imports/ui/components/general/Material/Dialog';
+import Button from '/imports/ui/components/general/Button';
 
 import OfferForm from '/imports/ui/components/admin/OfferForm';
 
@@ -20,23 +20,17 @@ export default class AdminNewOffer extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      open: false,
-    };
+    this.state = { open: false };
   }
 
-  handleClose = () => {
-    this.setState({ open: false });
-  };
+  handleClose = () => this.setState({ open: false });
 
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
+  handleOpen = () => this.setState({ open: true });
 
   render() {
     const actions = [
-      <Button label="Annuler" primary onTouchTap={this.handleClose} />,
-      // <Button label="Ajouter" primary keyboardFocused onTouchTap={this.handleClose} />,
+      <Button label="Annuler" primary onClick={this.handleClose} />,
+      // <Button label="Ajouter" primary autoFocus onClick={this.handleClose} />,
     ];
 
     return (
@@ -44,19 +38,17 @@ export default class AdminNewOffer extends React.Component {
         <Button
           raised
           label="Ajouter une offre"
-          onTouchTap={this.handleOpen}
+          onClick={this.handleOpen}
           primary
           style={this.props.style}
         />
         <Dialog
           title="Ajouter une offre"
           actions={actions}
-          modal
+          important
           open={this.state.open}
           onRequestClose={this.handleClose}
-          overlayStyle={styles.backDrop}
-          contentStyle={styles.dialog}
-          autoScrollBodyContent
+          fullScreen
         >
           <OfferForm
             {...this.props}

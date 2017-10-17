@@ -127,6 +127,12 @@ export const BorrowerSchema = new SimpleSchema({
     type: String,
     defaultValue: 'single',
   },
+  childrenCount: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 20,
+  },
   company: {
     type: String,
     optional: true,

@@ -1,5 +1,5 @@
 import Loadable from 'react-loadable';
-import { LoadingComponent } from '/imports/ui/components/general/Loading.jsx';
+import { LoadingComponent } from '/imports/ui/components/general/Loading';
 
 export default function MyLoadable(options) {
   return Loadable({

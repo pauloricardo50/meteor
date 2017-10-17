@@ -2,17 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedRelative } from 'react-intl';
 
-import Button from '/imports/ui/components/general/Button.jsx';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
-
-import Table from '/imports/ui/components/general/Table.jsx';
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import Button from '/imports/ui/components/general/Button';
+import Select from '/imports/ui/components/general/Select';
+import Table from '/imports/ui/components/general/Table';
+import { T } from '/imports/ui/components/general/Translation';
 
 import getActions from '/imports/js/arrays/adminActions';
 import { completeAction } from '/imports/api/adminActions/methods';
 
-const columns = [
+const columnOptions = [
   {
     id: 'ActionsTable.requestName',
     align: 'left',
@@ -33,15 +31,16 @@ const columns = [
   },
   {
     id: 'ActionsTable.do',
-    format: handleClick =>
+    format: handleClick => (
       <Button
         label="Go"
-        onTouchTap={event => {
+        onClick={(event) => {
           event.stopPropagation();
           handleClick();
         }}
         primary
-      />,
+      />
+    ),
     align: 'center',
     style: { paddingLeft: 0, paddingRight: 0, width: 88 },
   },
@@ -51,30 +50,22 @@ export default class ActionsTable extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { selectedRow: '', filter: 'active' };
+    this.state = { filter: 'active', selected: [] };
   }
-
-  handleRowSelection = index => {
-    if (Number.isInteger(index)) {
-      this.setState({ selectedRow: this.getFilteredActions()[index]._id });
-    } else {
-      this.setState({ selectedRow: '' });
-    }
-  };
-
-  handleFilter = (event, index, filter) =>
-    this.setState({ filter, selectedRow: '' });
-
-  handleClick = () => {
-    completeAction.call({ id: this.state.selectedRow }, err => {
-      if (err) {
-        console.log(err);
-      }
-    });
-  };
 
   getFilteredActions = () =>
     this.props.adminActions.filter(a => a.status === this.state.filter);
+
+  handleFilter = (_, newFilter) => this.setState({ filter: newFilter });
+
+  handleRowSelect = rowIndexes => this.setState({ selected: rowIndexes });
+
+  handleClick = () =>
+    this.state.completed.forEach(actionId =>
+      completeAction.callPromise({ id: actionId }).catch((e) => {
+        console.log('error completing action:', e);
+      }),
+    );
 
   render() {
     const actions = this.getFilteredActions();
@@ -87,32 +78,34 @@ export default class ActionsTable extends Component {
             alignItems: 'center',
           }}
         >
-          <DropDownMenu value={this.state.filter} onChange={this.handleFilter}>
-            <MenuItem value={'active'} primaryText="Actif" />
-            <MenuItem value={'completed'} primaryText="Complété" />
-          </DropDownMenu>
+          <Select
+            id="filter"
+            value={this.state.filter}
+            onChange={this.handleFilter}
+            options={[
+              { id: 'active', label: 'Actif' },
+              { id: 'completed', label: 'Complété' },
+            ]}
+            renderValue={value => (value === 'active' ? 'Actif' : 'Complété')}
+          />
           <Button
             label="Marquer comme complété"
-            onTouchTap={this.handleClick}
-            disabled={!this.state.selectedRow}
+            onClick={this.handleClick}
+            disabled={this.state.selected.length === 0}
             primary
           />
         </div>
 
         <Table
-          height={actions.length === 0 ? '0px' : '500px'}
           selectable
-          selected={this.state.selectedRow}
-          onRowSelection={this.handleRowSelection}
-          columns={columns}
-          rows={actions.map(action => {
+          onRowSelect={this.handleRowSelect}
+          columnOptions={columnOptions}
+          rows={actions.map((action) => {
             const request = this.props.loanRequests.find(
               r => r._id === action.requestId,
             );
             const title = <T id={`adminAction.${action.type}`} />;
-            const actionDetails = getActions.find(
-              a => a.id === action.type,
-            );
+            const actionDetails = getActions.find(a => a.id === action.type);
 
             return {
               id: action._id,
@@ -125,20 +118,15 @@ export default class ActionsTable extends Component {
                   : '-',
                 request
                   ? () =>
-                      actionDetails.handleClick(
-                        request,
-                        this.props.history.push,
-                      )
+                    actionDetails.handleClick(
+                      request,
+                      this.props.history.push,
+                    )
                   : () => {},
               ],
             };
           })}
         />
-
-        {actions.length === 0 &&
-          <div className="text-center">
-            <h2 className="secondary">Aucune action</h2>
-          </div>}
       </article>
     );
   }

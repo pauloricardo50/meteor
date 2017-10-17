@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Dialog from 'material-ui/Dialog';
-import Button from '/imports/ui/components/general/Button.jsx';
+import Dialog from '/imports/ui/components/general/Material/Dialog';
+import Button from '/imports/ui/components/general/Button';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 import track from '/imports/js/helpers/analytics';
 
 const styles = {
@@ -21,18 +21,21 @@ const styles = {
   },
 };
 
-const getList = conditionArray =>
-  (<ul style={styles.list}>
+const getList = conditionArray => (
+  <ul style={styles.list}>
     {conditionArray
-      .map(c =>
-        (<li style={styles.listItem}>
-          <h4 className="fixed-size">
-            {c}
-          </h4>
-        </li>),
-      )
-      .reduce((prev, curr) => [prev, <hr style={styles.hr} />, curr])}
-  </ul>);
+      .map(c => (
+        <li style={styles.listItem} key={c}>
+          <h4 className="fixed-size">{c}</h4>
+        </li>
+      ))
+      .reduce((prev, curr, i) => [
+        prev,
+        <hr style={styles.hr} key={i} />,
+        curr,
+      ])}
+  </ul>
+);
 
 export default class ConditionsButton extends Component {
   constructor(props) {
@@ -52,11 +55,13 @@ export default class ConditionsButton extends Component {
   };
 
   render() {
+    const { primary, conditions, counterparts } = this.props;
     const actions = [
       <Button
+        key={0}
         label={<T id="ConditionsButton.CTA" />}
         primary
-        onTouchTap={this.handleClose}
+        onClick={this.handleClose}
       />,
     ];
 
@@ -65,9 +70,9 @@ export default class ConditionsButton extends Component {
         <Button
           raised
           label={<T id="ConditionsButton.title" />}
-          onTouchTap={this.handleOpen}
-          primary={this.props.primary}
-          onTouchTap={this.props.onClick}
+          primary={primary}
+          onClick={this.handleOpen}
+          disabled={conditions.length === 0 && counterparts.length === 0}
         />
         <Dialog
           actions={actions}
@@ -76,21 +81,23 @@ export default class ConditionsButton extends Component {
           autoScrollBodyContent
         >
           <div className="conditions-modal">
-            {this.props.conditions.length > 0 &&
+            {!!(conditions.length > 0) && (
               <div>
                 <h2 className="fixed-size">
                   <T id="ConditionsButton.mandatory" />
                 </h2>
-                {getList(this.props.conditions)}
-              </div>}
+                {getList(conditions)}
+              </div>
+            )}
 
-            {this.props.counterparts.length > 0 &&
+            {!!(counterparts.length > 0) && (
               <div>
                 <h2 className="fixed-size">
                   <T id="ConditionsButton.counterparts" />
                 </h2>
-                {getList(this.props.counterparts)}
-              </div>}
+                {getList(counterparts)}
+              </div>
+            )}
           </div>
         </Dialog>
       </div>
@@ -99,6 +106,11 @@ export default class ConditionsButton extends Component {
 }
 
 ConditionsButton.propTypes = {
-  conditions: PropTypes.arrayOf(PropTypes.string).isRequired,
-  counterparts: PropTypes.arrayOf(PropTypes.string).isRequired,
+  conditions: PropTypes.arrayOf(PropTypes.string),
+  counterparts: PropTypes.arrayOf(PropTypes.string),
+};
+
+ConditionsButton.defaultProps = {
+  conditions: [],
+  counterparts: [],
 };

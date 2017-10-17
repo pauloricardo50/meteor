@@ -7,6 +7,7 @@ import {
 } from '/imports/js/helpers/finance-math';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import colors from '/imports/js/config/colors';
+import { IntlNumber } from '/imports/ui/components/general/Translation';
 
 const styles = {
   topDiv: {
@@ -38,7 +39,7 @@ const types = {
   investment: 'Investissement',
 };
 
-const getRatio = props => {
+const getRatio = (props) => {
   const { amortization } = getAmortization(props.loanRequest, props.borrowers);
   const interests = getInterests(props.loanRequest);
   const maintenance = props.loanRequest.property.value * 0.01 / 12;
@@ -47,10 +48,10 @@ const getRatio = props => {
     (amortization + interests + maintenance) /
     (props.loanRequest.general.incomeUsed / 12);
 
-  return Math.round(100 * ratio);
+  return ratio;
 };
 
-const RequestDetails = props => {
+const RequestDetails = (props) => {
   const r = props.loanRequest;
   const loan =
     r.property.value - r.general.fortuneUsed - r.general.insuranceFortuneUsed;
@@ -63,11 +64,10 @@ const RequestDetails = props => {
             CHF {toMoney(loan)}
           </h1>
           <h3 style={styles.loanPercent}>
-            &nbsp;({Math.round(100 * (loan / r.property.value))}%)
+            {' '}
+            (<IntlNumber value={loan / r.property.value} format="percentage" />)
           </h3>
-          <h4>
-            Propriété: CHF {toMoney(r.property.value)}
-          </h4>
+          <h4>Propriété: CHF {toMoney(r.property.value)}</h4>
         </span>
       </div>
       <div className="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
@@ -75,22 +75,16 @@ const RequestDetails = props => {
 
         <div className="col-xs-12">
           <h4 className="pull-left">Propriété</h4>
-          <h4 className="pull-right">
-            CHF {toMoney(r.property.value)}
-          </h4>
+          <h4 className="pull-right">CHF {toMoney(r.property.value)}</h4>
           <br />
         </div>
         <div className="col-xs-12">
           <h4 className="pull-left">Prêt voulu</h4>
-          <h4 className="pull-right">
-            CHF {toMoney(loan)}
-          </h4>
+          <h4 className="pull-right">CHF {toMoney(loan)}</h4>
         </div>
         <div className="col-xs-12">
           <h4 className="pull-left">Fortune</h4>
-          <h4 className="pull-right">
-            CHF {toMoney(r.general.fortuneUsed)}
-          </h4>
+          <h4 className="pull-right">CHF {toMoney(r.general.fortuneUsed)}</h4>
         </div>
         <div className="col-xs-12">
           <h4 className="pull-left">2e pilier</h4>
@@ -100,27 +94,21 @@ const RequestDetails = props => {
         </div>
         <div className="col-xs-12">
           <h4 className="pull-left">Revenus annuels</h4>
-          <h4 className="pull-right">
-            CHF {toMoney(r.general.incomeUsed)}
-          </h4>
+          <h4 className="pull-right">CHF {toMoney(r.general.incomeUsed)}</h4>
         </div>
         <div className="col-xs-12">
           <h4 className="pull-left">Ratio</h4>
           <h4 className="pull-right">
-            {getRatio(props)}%
+            <IntlNumber value={getRatio(props)} format="percentage" />
           </h4>
         </div>
         <div className="col-xs-12">
           <h4 className="pull-left">Age</h4>
-          <h4 className="pull-right">
-            {r.borrowers[0].age}
-          </h4>
+          <h4 className="pull-right">{r.borrowers[0].age}</h4>
         </div>
         <div className="col-xs-12">
           <h4 className="pull-left">Résidence de type</h4>
-          <h4 className="pull-right">
-            {types[r.general.usageType]}
-          </h4>
+          <h4 className="pull-right">{types[r.general.usageType]}</h4>
         </div>
       </div>
     </article>

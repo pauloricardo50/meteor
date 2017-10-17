@@ -70,9 +70,11 @@ GoogleMap.propTypes = {
   id: PropTypes.string,
   latlng: PropTypes.object.isRequired,
   address: PropTypes.string,
+  className: PropTypes.string,
 };
 
 GoogleMap.defaultProps = {
   id: 'myMap',
   address: undefined,
+  className: '',
 };

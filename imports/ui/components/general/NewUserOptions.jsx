@@ -1,11 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
+import { T } from '/imports/ui/components/general/Translation';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
-
-import HomeDev from './HomeDev.jsx';
+import HomeDev from './HomeDev';
 
 const styles = {
   h3: {
@@ -19,7 +17,7 @@ const styles = {
   },
 };
 
-const NewUserOptions = () =>
+const NewUserOptions = () => (
   <section className="text-center new-user">
     <h1>
       <T id="NewUserOptions.title" />
@@ -30,23 +28,29 @@ const NewUserOptions = () =>
     {/* <Button raised
       label="Prenez le test"
       primary
-      containerElement={<Link to="/start1/test" />}
+      link
+      to="/start1/test"
       style={styles.button}
     /> */}
-    <Button raised
+    <Button
+      raised
       label={<T id="HomePage.CTA.compare" />}
-      containerElement={<Link to="/app/compare" />}
+      link
+      to="/app/compare"
       primary
       style={styles.button}
     />
-    <Button raised
+    <Button
+      raised
       label={<T id="HomePage.CTA.buy" />}
-      containerElement={<Link to="/start1/acquisition" />}
+      link
+      to="/start1/acquisition"
       primary
       style={styles.button}
     />
     <HomeDev style={styles.button} primary />
-  </section>;
+  </section>
+);
 
 export default NewUserOptions;
 

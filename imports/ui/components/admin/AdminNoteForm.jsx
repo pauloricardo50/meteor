@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import TextField from 'material-ui/TextField';
-import Button from '/imports/ui/components/general/Button.jsx';
+import TextField from '/imports/ui/components/general/Material/TextField';
+import Button from '/imports/ui/components/general/Button';
 
 const styles = {
   buttonDiv: {
@@ -12,7 +12,7 @@ const styles = {
 };
 
 export default class AdminNoteForm extends Component {
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
 
     console.log('TODO :)');
@@ -22,17 +22,18 @@ export default class AdminNoteForm extends Component {
     return (
       <form action="submit">
         <TextField
-          floatingLabelText="Description de l'intéraction"
+          label="Description de l'intéraction"
           hintText="Client a demandé une explication de l'amortissement indirect.."
           fullWidth
-          multiLine
+          multiline
           rows={5}
         />
         <div className="pull-right" style={styles.buttonDiv}>
-          <Button raised
+          <Button
+            raised
             label="Ajouter"
             primary
-            onTouchTap={this.handleSubmit}
+            onClick={this.handleSubmit}
             type="submit"
           />
         </div>

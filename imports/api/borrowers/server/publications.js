@@ -39,6 +39,22 @@ Meteor.publish('borrowers', function publish() {
   });
 });
 
+// Publish all borrowers for a user
+Meteor.publish('userBorrowers', (userId) => {
+  check(userId, String);
+
+  // Verify if user is logged In
+  if (
+    Roles.userIsInRole(Meteor.userId(), 'admin') ||
+    Roles.userIsInRole(Meteor.userId(), 'dev')
+  ) {
+    // Return all users
+    return Borrowers.find({ userId });
+  }
+
+  return this.ready();
+});
+
 // Publish all borrowers in the database for admins
 Meteor.publish('allBorrowers', function publish() {
   // Verify if user is logged In

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import fileSaver from 'file-saver';
 
-import Button from '/imports/ui/components/general/Button.jsx';
-import LoopIcon from 'material-ui/svg-icons/av/loop';
+import Button from '/imports/ui/components/general/Button';
+import Icon from '/imports/ui/components/general/Icon';
 
 import track from '/imports/js/helpers/analytics';
 
@@ -36,11 +36,16 @@ export default class FileDownloader extends Component {
   };
 
   render() {
+    const { disabled, primary, style, buttonLabel } = this.props;
     return (
-      <Button raised
-        icon={this.state.downloading && <LoopIcon className="fa-spin" />}
-        label={this.props.buttonLabel}
-        onTouchTap={this.handleClick}
+      <Button
+        label={buttonLabel}
+        disabled={disabled}
+        primary={primary}
+        style={style}
+        raised
+        icon={this.state.downloading && <Icon type="loop-spin" />}
+        onClick={this.handleClick}
       />
     );
   }

@@ -28,6 +28,8 @@ brand-black = #051C2C;
 brand-grey = #637E94;
 
 
+bodyColor = rgba(black, 0.6);
+titleColor = rgba(black, 0.74)
 
 z = {
   neg: -7,
@@ -58,11 +60,12 @@ $bezier = cubic-bezier(.02, .01, .47, 1);
 /* Typography */
 body
   background-color backgroundcolor
-  color #444;
+  color bodyColor;
   line-height: 1.5em;
-  font-size: 16px !important;
-  font-family: 'Source Sans Pro', sans-serif !important;
-  font-weight: 300 !important;
+  font-size: 16px;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 400;
+  font-weight: inherit;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
@@ -71,10 +74,12 @@ body, html, main, #react-root
   height 100%
 
 h1, h2, h3, h4, h5, h6
-  color : #222;
+  color: titleColor;
   line-height: 1.1em;
-  font-family: 'Source Sans Pro', sans-serif !important;
-  font-weight: 300 !important;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 400;
+  font-weight: inherit;
+  margin: 0.67em 0;
   &.no-margin
     margin: 0;
 
@@ -131,15 +136,26 @@ h6
   font-size: 0.75em;
 
 hr
+  border: none;
+  border-top: 1px solid border-grey;
   margin-top: 16px;
   margin-bottom: 16px;
 
 a
   cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+  &.color
+    transition: color 300ms $bezier;
+    color: brand-primary;
+    &:hover
+      color: brand-success;
+  // &:hover
+  //   color: inherit;
 
 // Against BootStrap styling
-label
-  font-weight: normal !important;
+// label
+//   font-weight: normal;
 
 div#react-root
   [data-reactroot]
@@ -163,16 +179,25 @@ input[type=number]
   clear both
 
 .bold
-  font-weight: 400 !important;
+  font-weight: 600;
 
 .no-bold
-  font-weight: 300 !important;
+  font-weight: 400;
+
+.thin
+  font-weight: 300;
 
 .active
-  color: brand-primary !important;
+  &:not(button) // If a button is .active, don't change its color
+    color: brand-primary;
+    &.important
+      color: brand-primary !important;
+
 
 .success
   color: brand-success;
+  &.important
+    color: brand-success !important;
 
 svg.success
   color: brand-success !important;
@@ -185,12 +210,14 @@ svg.error
 
 .warning
   color: brand-warning;
+  &.important
+    color: brand-warning !important;
 
 svg.warning
   color: brand-warning !important;
 
 .body
-  color: #444;
+  color: bodyColor;
 
 .normal
   opacity: 1;
@@ -199,7 +226,8 @@ svg.warning
   opacity: 0.5
 
 .disabled
-  opacity 0.25
+  opacity 0.25;
+  cursor:not-allowed;
 
 .text-ellipsis
   overflow: hidden;
@@ -214,7 +242,7 @@ svg.warning
   margin-bottom: 48px;
   font-size: 1.25em;
   line-height: 1.6em;
-  *
+  > p, >h4
     max-width: 600px;
     text-align: justify;
 
@@ -238,8 +266,6 @@ svg.warning
   > h1:first-child
     margin: 0;
     // padding-bottom: 16px;
-    +above($med)
-      padding-left: 16px;
   .primary-top
     display: inline-block;
     width: calc(100% + 32px);
@@ -262,6 +288,14 @@ svg.warning
 .mask3
   box-shadow: 0px 40px 40px 0px rgba(0,0,0,0.16);
 
+.border
+  border-color: border-grey;
+  &.top
+    border-top-style: solid;
+    border-top-width: 1px;
+  &.bottom
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
 
 .flex, .flex-row, .flex-col
   display: flex;
@@ -273,6 +307,45 @@ svg.warning
 
 .flex-col
   flex-direction: column;
+
+.icon-button
+  svg
+    transition: color 500ms $bezier;
+    color: #444;
+    &:hover
+      color: #888;
+
+// Change it from the material-ui default inline-flex..
+.mui-text-input, .mui-select, .mui-radio-group
+  display: flex;
+
+// css for airbnb's react-dates
+.date-input
+  display: flex;
+  .SingleDatePicker
+    width: 100%;
+    .SingleDatePickerInput
+      font-family: 'Source Sans Pro', sans-serif !important;
+      font-weight: 400;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      .DateInput
+        padding: 0;
+        flex-grow: 1;
+        text-align: center;
+        // display: flex;
+        // align-items: center;
+      .DateRangePickerInput__close
+        display: flex;
+        svg
+          width: 12px;
+          height: 12px;
+
+.SingleDatePicker__picker--portal
+  z-index: 3;
 
 .top-nav
   background-color: white !important;
@@ -288,6 +361,8 @@ svg.warning
   .top-nav-content
     margin-left: 0 !important;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
     .empty, .menu-button
       display: flex;
@@ -307,14 +382,17 @@ svg.warning
       align-items: center;
 
 
+.permanent-side-nav:not(.always-side-nav)
+  +below($med)
+    display: none;
+
 
 .side-nav
   height 100%
-  padding 120px 0
+  // padding 120px 0
   fixed top left
   width: $side-nav;
-  background-color white
-  box-shadow: 0px -2px 40px 0px rgba(0,0,0,0.08);
+  background-color white;
   z-index: z.nav;
   ul.side-nav-list
     list-style: none;
@@ -331,10 +409,10 @@ svg.warning
         color: alpha(#222, 0.6);
         font-weight: 400 !important;
         text-decoration: none;
+        transition: all 0.1s ease;
         &:hover
           text-decoration: none;
           border-left: solid 3px alpha(brand-primary, 0.3);
-          transition: all 0.1s ease;
           color: alpha(#222, 0.8);
         &.active-link
           border-left: solid 3px brand-primary;
@@ -357,11 +435,15 @@ svg.warning
           max-width: 160px;
           overflow: hidden;
           text-overflow: ellipsis;
-  img.logo
-    position: absolute;
+  .logo
     width: $side-nav - 16px;
-    top: 40px;
-    left: 8px
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 32px;
+    img
+      height: 24px;
   .logout
     position: absolute;
     bottom: 0;
@@ -370,7 +452,27 @@ svg.warning
     background-color: white;
     z-index: 2;
 
+.side-nav-drawer
+  display: flex;
+  flex-direction: column;
+  width: 300px;
 
+.top-bar
+  border-bottom: 1px solid border-grey;
+  width: 100%;
+  height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  a
+    height: 16px;
+    +above($med)
+      height: 24px;
+    img
+      height: 16px;
+      +above($med)
+        height: 24px;
 
 .public-layout
   height: 100%; // fallback
@@ -409,6 +511,12 @@ svg.warning
     +above($med)
       width: calc(100% - 250px - 32px);
 
+.layout-error
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 
 .full-screen
   width: 100%;
@@ -440,15 +548,12 @@ svg:not(:root) {
   box-shadow: none;
 
 .side-nav-user
-  &.fixed
-    +below($med)
-      display: none;
   transition: all 300ms $bezier;
   background-color: white;
-  border-right: 1px solid grey;
+  // border-right: 1px solid grey;
   min-height: calc(100% - 64px);
   fixed top left;
-  top: 64px;
+  // top: 64px;
   width: 300px;
   z-index: z.nav;
   display: flex;
@@ -498,6 +603,8 @@ svg:not(:root) {
     width: 100%;
     margin-top: 16px;
     transition: all 300ms $bezier;
+    +below($med)
+      margin-bottom: 44px; // extra padding for iOS bottom bar
     .available-icon
       width: 4px;
       height: 4px;
@@ -530,6 +637,10 @@ svg:not(:root) {
           background-color: #f9fafb;
         &:first-child
           cursor: default;
+        &.off
+          cursor: not-allowed;
+          .top
+            cursor: not-allowed;
         .top
           height: 64px;
           display: flex;
@@ -557,6 +668,7 @@ svg:not(:root) {
               color: white !important;
               width: 18px !important;
               height: 18px !important;
+
           .text
             display: flex;
             flex-direction: column;
@@ -596,21 +708,35 @@ svg:not(:root) {
             border-left: 1px solid rgba(0,0,0,0);
             padding-right: 16px;
             transition: all 300ms $bezier;
+            position: relative;
             &:hover
               background-color: #f4f6f8;
               cursor: pointer;
             &.disable
               cursor: default;
+            &.off
+              cursor: not-allowed;
             .icon
               width: 48px;
               display flex;
               justify-content: center;
               align-items: center;
               color: #DEE2E6;
+              .circular-progress
+                position: absolute !important;
+                top: 22px; // 64 total height
+                left: 14px; // 48 total width
+                width: 20px !important;
+                height: 20px !important;
+                transform: rotate(-90deg);
               .available-icon
                 background-color: #DEE2E6;
+              &.warning
+                color: brand-warning;
+              &.success
+                color: brand-success;
               svg
-                color: grey !important;
+                color: inherit;
                 width: 20px !important;
                 height: 20px !important;
             .text
@@ -628,6 +754,8 @@ svg:not(:root) {
               .subtitle
                 color: #ADB5BD;
                 font-weight: 400;
+                &.warning
+                  color: brand-warning;
             &.active
               border-left: 1px solid brand-primary;
               background-color: #F1F3F5;
@@ -653,41 +781,17 @@ svg:not(:root) {
   transition: background-size 0.2s ease-in, color 0.2s ease-in;
   transform: scale(1);
   border-radius: 4px;
+  padding: 0 1px;
   &:hover
     color: white;
     background-size: 100% 100%;
     transform: scale(1.02);
 
-.hvr-underline-from-center {
-  display: inline-block;
-  // vertical-align: middle;
-  -webkit-transform: perspective(1px) translateZ(0);
-  transform: perspective(1px) translateZ(0);
-  box-shadow: 0 0 1px transparent;
-  position: relative;
-  // overflow: hidden;
-}
-.hvr-underline-from-center:before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  left: 50%;
-  right: 50%;
-  bottom: -1px;
-  background: brand-primary;
-  height: 1px;
-  -webkit-transition-property: left, right;
-  transition-property: left, right;
-  -webkit-transition-duration: 250ms;
-  transition-duration: 250ms;
-  -webkit-transition-timing-function: $bezier;
-  transition-timing-function: $bezier;
-}
-.hvr-underline-from-center:hover:before, .hvr-underline-from-center:focus:before, .hvr-underline-from-center:active:before {
-  left: 0;
-  right: 0;
-}
-
 .mui-table
   &>div:first-child
     min-width: 600px;
+
+.bert-alert.success { background: brand-success; }
+.bert-alert.info    { background: brand-primary; }
+.bert-alert.warning { background: brand-warning; }
+.bert-alert.danger  { background: brand-danger; }

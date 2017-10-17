@@ -2,11 +2,11 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
 
-import FortuneSliders from '/imports/ui/pages/public/startPage/FortuneSliders.jsx';
-import DialogSimple from '/imports/ui/components/general/DialogSimple.jsx';
-import { T, IntlNumber } from '/imports/ui/components/general/Translation.jsx';
-
+import FortuneSliders from '/imports/ui/pages/public/Start2Page/FortuneSliders';
+import DialogSimple from '/imports/ui/components/general/DialogSimple';
+import { T, IntlNumber } from '/imports/ui/components/general/Translation';
 import constants from '/imports/js/config/constants';
+import { toMoney } from '/imports/js/helpers/conversionFunctions';
 
 export const getAcquisitionArray = (state, props, setFormState) => [
   {
@@ -107,7 +107,8 @@ export const getAcquisitionArray = (state, props, setFormState) => [
     type: 'textInput',
     condition: state.borrowerCount === 1,
     text2: true,
-    placeholder: '18',
+    // placeholder: '18',
+    // noIntl: true,
     number: true,
     width: 50,
     validation: { min: 18, max: 120 },
@@ -117,7 +118,8 @@ export const getAcquisitionArray = (state, props, setFormState) => [
     type: 'textInput',
     condition: state.borrowerCount > 1,
     text2: true,
-    placeholder: '18',
+    // placeholder: '18',
+    // noIntl: true,
     number: true,
     width: 50,
     validation: { min: 18, max: 120 },
@@ -160,6 +162,7 @@ export const getAcquisitionArray = (state, props, setFormState) => [
     firstMultiple: true,
     money: true,
     zeroAllowed: true,
+    placeholder: `CHF ${toMoney(state.initialIncome)}`,
   },
   {
     id: 'bonusExists',
@@ -199,20 +202,20 @@ export const getAcquisitionArray = (state, props, setFormState) => [
     zeroAllowed: true,
   },
   {
-    id: 'otherIncome',
+    id: 'otherIncomeExists',
     type: 'buttons',
     question: true,
-    deleteId: 'otherIncomeArray',
+    deleteId: 'otherIncome',
     buttons: [
       { id: true, label: <T id="general.yes" /> },
       { id: false, label: <T id="general.no" /> },
     ],
   },
   {
-    id: 'otherIncomeArray',
+    id: 'otherIncome',
     type: 'arrayInput',
-    condition: state.otherIncome === true,
-    existId: 'otherIncome',
+    condition: state.otherIncomeExists === true,
+    existId: 'otherIncomeExists',
     inputs: [
       {
         id: 'description',
@@ -234,23 +237,23 @@ export const getAcquisitionArray = (state, props, setFormState) => [
     ],
   },
   {
-    id: 'expensesExist',
+    id: 'expensesExists',
     type: 'buttons',
     intlValues: {
       optional: state.usageType !== 'primary' ? 'rentes, ' : '',
     },
     question: true,
-    deleteId: 'expensesArray',
+    deleteId: 'expenses',
     buttons: [
       { id: true, label: <T id="general.yes" /> },
       { id: false, label: <T id="general.no" /> },
     ],
   },
   {
-    id: 'expensesArray',
+    id: 'expenses',
     type: 'arrayInput',
-    condition: state.expensesExist === true,
-    existId: 'expensesExist',
+    condition: state.expensesExists === true,
+    existId: 'expensesExists',
     inputs: [
       {
         id: 'description',
@@ -292,6 +295,7 @@ export const getAcquisitionArray = (state, props, setFormState) => [
     question: true,
     money: true,
     zeroAllowed: state.borrowerCount > 1,
+    placeholder: `CHF ${toMoney(state.initialFortune)}`,
   },
   {
     id: 'insurance1Exists',
@@ -343,14 +347,14 @@ export const getAcquisitionArray = (state, props, setFormState) => [
     id: 'realEstateExists',
     type: 'buttons',
     question: true,
-    deleteId: 'realEstateArray',
+    deleteId: 'realEstate',
     buttons: [
       { id: true, label: <T id="general.yes" /> },
       { id: false, label: <T id="general.no" /> },
     ],
   },
   {
-    id: 'realEstateArray',
+    id: 'realEstate',
     condition: state.realEstateExists === true,
     existId: 'realEstateExists',
     type: 'arrayInput',
@@ -551,7 +555,6 @@ export const getFinalArray = (state, props, setFormState) => [
       <T id="Start2Form.loanWanted.sliderMin" />,
       <T id="Start2Form.loanWanted.sliderMax" />,
     ],
-    step: 10000,
     onDragStart() {
       // Make sure we reset the next sliders if this is modified afterwards
       if (state.fortuneUsed) {
@@ -595,6 +598,7 @@ export const getFinalArray = (state, props, setFormState) => [
     ],
   },
   {
+    // insurance is not needed, but still propose to use it
     id: 'useInsurance1',
     condition:
       state.type === 'acquisition' &&
@@ -642,6 +646,7 @@ export const getFinalArray = (state, props, setFormState) => [
     question: true,
   },
   {
+    // insurance is necessary
     id: 'useInsurance2',
     condition:
       state.type === 'acquisition' &&

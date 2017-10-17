@@ -2,37 +2,34 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classnames from 'classnames';
 
-import IconButton from 'material-ui/IconButton';
-import ArrowDown from 'material-ui/svg-icons/navigation/arrow-drop-down-circle';
+import IconButton from '/imports/ui/components/general/IconButton';
 
-import DropzoneInput from '../autoform/DropzoneInput.jsx';
+import DropzoneInput from './AutoForm/DropzoneInput';
 import colors from '/imports/js/config/colors';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
-const getStyles = (props, currentValue) => {
-  return {
-    article: {
-      width: props.active ? '100%' : '',
-      maxWidth: props.active ? 800 : '',
-      height: props.active ? 380 : 80,
-      backgroundColor: props.active ? 'white' : '',
-    },
-    topDiv: {
-      borderBottom: props.active ? 'solid 1px #ddd' : '',
-    },
-    icon: {
-      color: currentValue && currentValue.length > 0 ? colors.secondary : '',
-      borderColor:
-        currentValue && currentValue.length > 0 ? colors.secondary : '',
-    },
-    caret: {
-      transform: props.active ? 'rotate(180deg)' : '',
-    },
-  };
-};
+const getStyles = (props, currentValue) => ({
+  article: {
+    width: props.active ? '100%' : '',
+    maxWidth: props.active ? 800 : '',
+    height: props.active ? 380 : 80,
+    backgroundColor: props.active ? 'white' : '',
+  },
+  topDiv: {
+    borderBottom: props.active ? 'solid 1px #ddd' : '',
+  },
+  icon: {
+    color: currentValue && currentValue.length > 0 ? colors.secondary : '',
+    borderColor:
+      currentValue && currentValue.length > 0 ? colors.secondary : '',
+  },
+  caret: {
+    transform: props.active ? 'rotate(180deg)' : '',
+  },
+});
 
-const DropzoneArrayItem = props => {
+const DropzoneArrayItem = (props) => {
   const {
     filesObject,
     filesObjectSelector,
@@ -54,6 +51,8 @@ const DropzoneArrayItem = props => {
   const mongoId = `${filesObjectSelector}.${id}`;
   const tooltipId = `files.${id}.tooltip${tooltipSuffix}`;
 
+  console.log('mongoId:', mongoId);
+
   return (
     <article
       style={styles.article}
@@ -62,13 +61,15 @@ const DropzoneArrayItem = props => {
       <div
         style={styles.topDiv}
         className="top"
-        onTouchTap={disabled ? () => {} : event => handleClick(event)}
+        onClick={disabled ? () => {} : event => handleClick(event)}
         onDragEnter={handleMouseEnter}
       >
         <div className="left">
-          {currentValue && currentValue.length > 0
-            ? <span className="fa fa-check" style={styles.icon} />
-            : <span />}
+          {currentValue && currentValue.length > 0 ? (
+            <span className="fa fa-check" style={styles.icon} />
+          ) : (
+            <span />
+          )}
         </div>
 
         <div className="text">
@@ -91,13 +92,16 @@ const DropzoneArrayItem = props => {
         </div>
 
         <div className="right">
-          <IconButton style={styles.caret} disabled={disabled}>
-            <ArrowDown color="#d8d8d8" hoverColor="#a8a8a8" />
-          </IconButton>
+          <IconButton
+            type="dropdown"
+            style={styles.caret}
+            disabled={disabled}
+            iconProps={{ color: '#d8d8d8', hoverColor: '#a8a8a8' }}
+          />
         </div>
       </div>
 
-      {active &&
+      {active && (
         <div className="dropzoneDiv">
           <DropzoneInput
             {...props}
@@ -105,7 +109,8 @@ const DropzoneArrayItem = props => {
             mongoId={mongoId}
             label=""
           />
-        </div>}
+        </div>
+      )}
     </article>
   );
 };

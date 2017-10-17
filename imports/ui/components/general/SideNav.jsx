@@ -1,19 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 
-import Button from '/imports/ui/components/general/Button.jsx';
-import PowerOffIcon from 'material-ui/svg-icons/action/power-settings-new';
-
-const styles = {
-  logo: {
-    maxHeight: 25,
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
-};
+import Button from '/imports/ui/components/general/Button';
+import Icon from '/imports/ui/components/general/Icon';
 
 const adminLinks = [
   {
@@ -46,7 +39,7 @@ const partnerLinks = [
   },
 ];
 
-const SideNav = props => {
+const SideNav = (props) => {
   let links = [];
 
   switch (props.type) {
@@ -68,33 +61,26 @@ const SideNav = props => {
 
   return (
     <nav className={classes}>
-      <Link to="/home">
-        <img
-          src="/img/logo_black.svg"
-          alt="e-Potek"
-          style={styles.logo}
-          className="logo"
-        />
+      <Link to="/home" className="logo">
+        <img src="/img/logo_black.svg" alt="e-Potek" />
       </Link>
 
       <ul className="side-nav-list">
-        {links.map(link =>
+        {links.map(link => (
           <li key={link.link}>
             <NavLink exact to={link.link} activeClassName="active-link">
               {link.icon}
-              <h5>
-                {link.label}
-              </h5>
+              <h5>{link.label}</h5>
             </NavLink>
-          </li>,
-        )}
+          </li>
+        ))}
       </ul>
 
       <div className="logout text-center">
         <Button
           label="Déconnexion"
-          onTouchTap={() => Meteor.logout(() => props.history.push('/home'))}
-          icon={<PowerOffIcon />}
+          onClick={() => Meteor.logout(() => props.history.push('/home'))}
+          icon={<Icon type="powerOff" />}
         />
       </div>
     </nav>

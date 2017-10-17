@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Dialog from 'material-ui/Dialog';
-import Button from '/imports/ui/components/general/Button.jsx';
+import Dialog from '/imports/ui/components/general/Material/Dialog';
+import Button from '/imports/ui/components/general/Button';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
 export default class DialogSimple extends Component {
   constructor(props) {
@@ -27,7 +27,7 @@ export default class DialogSimple extends Component {
   enableClose = () => this.setState({ disabled: false });
 
   render() {
-    let { actions } = this.props;
+    const { actions } = this.props;
     const {
       autoFocus,
       rootStyle,
@@ -36,29 +36,44 @@ export default class DialogSimple extends Component {
       secondary,
       buttonStyle,
       title,
-      modal,
+      important,
       children,
       passProps,
       bodyStyle,
       contentStyle,
       style,
       autoScroll,
+      cancelOnly,
+      buttonProps,
+      ...otherProps,
     } = this.props;
 
-    actions = actions || [
-      <Button
-        primary
-        label={<T id="general.cancel" />}
-        onTouchTap={this.handleClose}
-      />,
-      <Button
-        primary
-        label="Ok"
-        onTouchTap={() => this.handleClose(true)}
-        autoFocus={autoFocus} // TODO doesn't work with tooltips
-        disabled={this.state.disabled}
-      />,
-    ];
+    const finalActions =
+      actions || cancelOnly
+        ? [
+          <Button
+            primary
+            label={<T id="general.cancel" />}
+            onClick={this.handleClose}
+            key="cancel"
+          />,
+        ]
+        : [
+          <Button
+            primary
+            label={<T id="general.cancel" />}
+            onClick={this.handleClose}
+            key="cancel"
+          />,
+          <Button
+            primary
+            label="Ok"
+            onClick={() => this.handleClose(true)}
+            autoFocus={autoFocus} // TODO doesn't work with tooltips
+            disabled={this.state.disabled}
+            key="submit"
+          />,
+        ];
 
     const childProps = {
       disableClose: this.disableClose,
@@ -72,26 +87,25 @@ export default class DialogSimple extends Component {
         <Button
           raised
           label={label}
-          onTouchTap={this.handleOpen}
+          onClick={this.handleOpen}
           primary={primary}
           secondary={secondary}
           style={buttonStyle}
+          {...buttonProps}
         />
         <Dialog
-          title={
-            <h3>
-              {title}
-            </h3>
-          }
-          actions={actions}
-          modal={modal}
+          {...otherProps}
+          title={title}
+          actions={finalActions}
+          important={important}
           open={this.state.open}
           onRequestClose={this.handleClose}
-          bodyStyle={bodyStyle}
-          contentStyle={contentStyle}
+          // bodyStyle={bodyStyle}
+          // contentStyle={contentStyle}
           style={style}
-          autoScrollBodyContent={autoScroll}
-          repositionOnUpdate
+          // autoScrollBodyContent={autoScroll}
+          // repositionOnUpdate
+          // autoDetectWindowHeight
         >
           {!!children && passProps
             ? React.cloneElement(children, { ...childProps })
@@ -112,10 +126,11 @@ DialogSimple.propTypes = {
   buttonStyle: PropTypes.objectOf(PropTypes.any),
   autoFocus: PropTypes.bool,
   close: PropTypes.bool,
-  modal: PropTypes.bool,
+  important: PropTypes.bool,
   passProps: PropTypes.bool,
   onOpen: PropTypes.func,
   autoScroll: PropTypes.bool,
+  cancelOnly: PropTypes.bool,
 };
 
 DialogSimple.defaultProps = {
@@ -126,8 +141,9 @@ DialogSimple.defaultProps = {
   buttonStyle: {},
   autoFocus: false,
   close: false,
-  modal: false,
+  important: false,
   passProps: false,
   onOpen: () => {},
   autoScroll: false,
+  cancelOnly: false,
 };

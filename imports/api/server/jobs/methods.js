@@ -5,17 +5,16 @@ import { Job } from 'meteor/vsivsi:job-collection';
 import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
 import jc from './jobs';
 
+// Schedules a method at a given date, to be called with params
 export const scheduleMethod = new ValidatedMethod({
   name: 'jobs.scheduleMethod',
   mixins: [CallPromiseMixin],
   validate({ method, params, date }) {
-    console.log('scheduleMethod arguments: ', method, params, date);
     check(method, String);
     check(params, [Match.OneOf(String, Number, Object)]);
     check(date, Date);
   },
   run({ method, params, date }) {
-    console.log('creating a job..');
     const jobId = new Job(jc, 'scheduleMethod', { method, params })
       .after(date)
       .save();

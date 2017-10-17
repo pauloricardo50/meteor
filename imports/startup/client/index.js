@@ -1,13 +1,15 @@
 import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
+
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import '/imports/api/api.js';
+import '/imports/api/api';
 import '../accounts-config';
 import '../meteor-slingshot';
+import './css';
 
 import { localizationStartup } from '../localization';
-import RenderRoutes from './Router.jsx';
+import RenderRoutes from './Router';
 
 /**
  * start - sets the app up
@@ -29,16 +31,7 @@ const start = (testElement) => {
 
   localizationStartup();
 
-  // Very important for all advanced tap/react/buttons/material-ui to work.
-  // Might not be required in future react versions
-  // Adds the onTouchTap (no delay) prop to all elements which take onClick (delay)
-  // Call this before rendering react
-
-  // When testing, this is called a second time, which throws an error, so
-  // do not run this during tests
-  if (!Meteor.isTest) {
-    injectTapEventPlugin();
-  }
+  injectTapEventPlugin();
 
   // Render react-router routes
   render(RenderRoutes(), testElement || document.getElementById('react-root'));

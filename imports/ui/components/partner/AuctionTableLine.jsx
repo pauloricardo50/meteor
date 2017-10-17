@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 import { Link } from 'react-router-dom';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
-import Countdown from '/imports/ui/components/general/Countdown.jsx';
+import Countdown from '/imports/ui/components/general/Countdown';
 
 // Looks for an offer if it exists
 const offerExists = props =>

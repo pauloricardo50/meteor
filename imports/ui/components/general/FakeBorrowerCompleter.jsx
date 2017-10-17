@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import Button from '/imports/ui/components/general/Button.jsx';
+import Button from '/imports/ui/components/general/Button';
 import { fakeBorrower } from '/imports/api/borrowers/fakes';
 
 const MergeRecursive = (obj1, obj2) => {
@@ -35,7 +35,7 @@ const handleCheat = (props) => {
 
 const FakeBorrowerCompleter = props =>
   (<div className="text-center" style={{ margin: '20px 0' }}>
-    <Button raised label="Tricher" onTouchTap={() => handleCheat(props)} />
+    <Button raised label="Tricher" onClick={() => handleCheat(props)} />
   </div>);
 
 FakeBorrowerCompleter.propTypes = {

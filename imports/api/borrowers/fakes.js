@@ -5,16 +5,18 @@ export const fakeBorrower = {
   lastName: 'Rochat',
   gender: 'f',
   address1: 'Chemin du Mont 3',
-  zipCode: 1200,
+  zipCode: 1201,
   city: 'Genève',
   citizenships: 'Suisse, Français',
   age: 35,
   birthPlace: 'Lausanne',
   civilStatus: 'single',
+  childrenCount: 2,
   company: 'Deloitte',
   personalBank: 'BCGE',
   isSwiss: true,
   worksForOwnCompany: false,
+  sameAddress: true,
 };
 
 export const completeFakeBorrower = {

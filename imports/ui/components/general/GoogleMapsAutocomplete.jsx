@@ -8,12 +8,12 @@ import PlacesAutocomplete, {
   getLatLng,
 } from 'react-places-autocomplete';
 
-import TextField from 'material-ui/TextField';
-import MenuItem from 'material-ui/MenuItem';
-import List from 'material-ui/List/List';
-import ListItem from 'material-ui/List/ListItem';
+import { ListItem, ListItemText } from 'material-ui/List';
+import { FormControl } from 'material-ui/Form';
+import Input, { InputLabel } from 'material-ui/Input';
+import { withStyles } from 'material-ui/styles';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 
 const defaultStyles = {
   root: {
@@ -50,41 +50,54 @@ const defaultStyles = {
   },
 };
 
-export default class GoogleMapsAutocomplete extends Component {
+const styles = {
+  input: {
+    fontSize: 'inherit',
+  },
+  underline: {
+    '&:before': {
+      zIndex: '1',
+    },
+  },
+};
+
+class GoogleMapsAutocomplete extends Component {
   constructor(props) {
     super(props);
     this.state = { address: '' };
   }
 
   handleChange = (address) => {
-    this.props.handleChange('isValidPlace', false);
+    this.props.onChange('isValidPlace', false);
     this.setState({ address });
   };
 
   handleFormSubmit = (event, address) => {
+    const { onChange } = this.props;
     if (event) {
       event.preventDefault();
       event.stopPropagation();
     }
 
-    this.props.handleChange('loading', true);
+    this.props.onChange('loading', true);
     geocodeByAddress(address || this.state.address)
       .then(results => getLatLng(results[0]))
       .then((latlng) => {
-        this.props.handleChange('isValidPlace', true);
-        this.props.handleChange('latlng', latlng);
-        this.props.handleChange('address', this.state.address);
+        this.props.onChange('isValidPlace', true);
+        this.props.onChange('latlng', latlng);
+        this.props.onChange('address', this.state.address);
 
         // Necessary for the dialog to resize properly after changing its contents
         Meteor.defer(() => window.dispatchEvent(new Event('resize')));
       })
       .catch((error) => {
-        this.props.handleChange('isValidPlace', true);
+        this.props.onChange('isValidPlace', true);
         console.error('Error', error);
       });
   };
 
   render() {
+    const { classes } = this.props;
     const inputProps = {
       value: this.state.address,
       onChange: this.handleChange,
@@ -92,46 +105,56 @@ export default class GoogleMapsAutocomplete extends Component {
 
     return (
       <h3 style={{ width: '100%' }} className="fixed-size">
-        <TextField
-          floatingLabelText={<T id="GoogleMapsAutocomplete.label" />}
-          autoFocus
-          floatingLabelFixed
+        <FormControl
           style={{ width: '100%', fontSize: 'inherit', height: 100 }}
-          floatingLabelStyle={{ fontSize: 'initial' }}
         >
-          <PlacesAutocomplete
-            googleLogo={false} // FIXME https://github.com/kenny-hibino/react-places-autocomplete/issues/103
-            inputProps={inputProps}
-            autocompleteItem={({ formattedSuggestion }) =>
-              (<ListItem
-                primaryText={formattedSuggestion.mainText}
-                secondaryText={formattedSuggestion.secondaryText}
-                onClick={e => e.stopPropagation()}
-              />)}
-            styles={defaultStyles}
-            onSelect={address =>
-              this.setState({ address }, this.handleFormSubmit)}
-            onEnterKeyDown={address =>
-              this.setState({ address }, this.handleFormSubmit)}
-            highlightFirstSuggestion
-            options={{
-              radius: 50000, // 50 km
-              types: ['geocode'],
-              // Bounds of Switzerland, a rectangle
-              bounds: {
-                north: 47.8,
-                east: 10.48333333,
-                south: 45.81666667,
-                west: 5.95,
+          <InputLabel shrink>
+            <T id="GoogleMapsAutocomplete.label" />
+          </InputLabel>
+          <Input
+            style={{ height: '100%' }}
+            autoFocus
+            inputComponent={PlacesAutocomplete}
+            classes={{ input: classes.input, underline: classes.underline }}
+            inputProps={{
+              googleLogo: false, // FIXME https://github.com/kenny-hibino/react-places-autocomplete/issues/103
+              inputProps,
+              autocompleteItem: ({ formattedSuggestion }) => (
+                <ListItem onClick={e => e.stopPropagation()}>
+                  <ListItemText
+                    primary={formattedSuggestion.mainText}
+                    secondary={formattedSuggestion.secondaryText}
+                  />
+                </ListItem>
+              ),
+              styles: defaultStyles,
+              onSelect: address =>
+                this.setState({ address }, this.handleFormSubmit),
+              onEnterKeyDown: address =>
+                this.setState({ address }, this.handleFormSubmit),
+              highlightFirstSuggestion: true,
+              options: {
+                radius: 50000, // 50 km
+                types: ['geocode'],
+                // Bounds of Switzerland, a rectangle
+                bounds: {
+                  north: 47.8,
+                  east: 10.48333333,
+                  south: 45.81666667,
+                  west: 5.95,
+                },
+                autoFocus: true,
               },
             }}
           />
-        </TextField>
+        </FormControl>
       </h3>
     );
   }
 }
 
 GoogleMapsAutocomplete.propTypes = {
-  handleChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
+
+export default withStyles(styles)(GoogleMapsAutocomplete);

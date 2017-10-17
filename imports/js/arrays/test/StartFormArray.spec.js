@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import isArray from 'lodash/isArray';
 
-import testRequire from '/imports/js/helpers/testRequire';
+import testRequire from '/imports/js/helpers/testHelpers/testRequire';
 
 const { default: getFormArray } =
   testRequire('../StartFormArray') || require('../StartFormArray');

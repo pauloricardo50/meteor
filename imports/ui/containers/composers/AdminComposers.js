@@ -55,13 +55,20 @@ export function adminRequestComposer(props, onData) {
   }
 }
 
+// Get the user and its associated loanRequests and borrowers
 export function adminUserComposer(props, onData) {
   const userId = props.match.params.userId;
 
   if (Meteor.subscribe('user', userId).ready()) {
-    const user = Meteor.users.findOne(userId); // .fetch();
+    const user = Meteor.users.findOne(userId);
+    if (Meteor.subscribe('userLoanRequests', userId).ready()) {
+      const loanRequests = LoanRequests.find().fetch();
+      if (Meteor.subscribe('userBorrowers', userId).ready()) {
+        const borrowers = Borrowers.find({}).fetch();
 
-    onData(null, { user });
+        onData(null, { loanRequests, user, borrowers });
+      }
+    }
   }
 }
 

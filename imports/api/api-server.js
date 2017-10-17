@@ -28,3 +28,5 @@ import './loanrequests/loanrequests';
 
 import './server/jobs/jobs';
 import './server/jobs/methods';
+
+import '/imports/js/helpers/logismata/methods';

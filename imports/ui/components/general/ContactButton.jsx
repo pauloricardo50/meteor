@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ForumIcon from 'material-ui/svg-icons/communication/forum';
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
-import MailIcon from 'material-ui/svg-icons/communication/mail-outline';
-import PhoneIcon from 'material-ui/svg-icons/communication/call';
-
+import Button from '/imports/ui/components/general/Button';
 import track from '/imports/js/helpers/analytics';
-import { T } from '/imports/ui/components/general/Translation.jsx';
-
+import { T } from '/imports/ui/components/general/Translation';
 import colors from '/imports/js/config/colors';
 import supportStaff from '/imports/js/arrays/supportStaff';
+import Icon from '/imports/ui/components/general/Icon';
 
 const styles = {
   div: {
@@ -56,8 +51,8 @@ const styles = {
 
 const staff = supportStaff[0];
 
-const overlayContent = path =>
-  (<div
+const overlayContent = path => (
+  <div
     style={{
       display: 'flex',
       flexDirection: 'column',
@@ -96,7 +91,7 @@ const overlayContent = path =>
       }}
     >
       <div style={styles.iconDiv}>
-        <PhoneIcon style={styles.icon} color="#495057" />
+        <Icon type="phone" style={styles.icon} color="#495057" />
       </div>
       <div className="text" style={{ flexGrow: 1 }}>
         <p className="bold" style={{ margin: 0 }}>
@@ -105,7 +100,7 @@ const overlayContent = path =>
         <a
           href={`tel:${staff.phone}`}
           className="active"
-          onTouchTap={() => track('ContactButton - clicked on phone', { path })}
+          onClick={() => track('ContactButton - clicked on phone', { path })}
         >
           {staff.phone}
         </a>
@@ -119,7 +114,7 @@ const overlayContent = path =>
       }}
     >
       <div style={styles.iconDiv}>
-        <MailIcon style={styles.icon} color="#495057" />
+        <Icon type="mail" style={styles.icon} color="#495057" />
       </div>
       <div className="text" style={{ flexGrow: 1 }}>
         <p className="bold" style={{ margin: 0 }}>
@@ -128,13 +123,14 @@ const overlayContent = path =>
         <a
           href={`mailto:${staff.email}`}
           className="active"
-          onTouchTap={() => track('ContactButton - clicked on email', { path })}
+          onClick={() => track('ContactButton - clicked on email', { path })}
         >
           {staff.email}
         </a>
       </div>
     </div>
-  </div>);
+  </div>
+);
 
 export default class ContactButton extends Component {
   constructor(props) {
@@ -161,13 +157,14 @@ export default class ContactButton extends Component {
 
     return (
       <div style={styles.div}>
-        <FloatingActionButton
+        <Button
           style={styles.button}
-          backgroundColor={colors.primary}
-          onTouchTap={this.handleClick}
+          onClick={this.handleClick}
+          fab
+          color="primary"
         >
-          {open ? <CloseIcon /> : <ForumIcon />}
-        </FloatingActionButton>
+          {open ? <Icon type="close" /> : <Icon type="forum" />}
+        </Button>
         <div
           className="mask1"
           style={{

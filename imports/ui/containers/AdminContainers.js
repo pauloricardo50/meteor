@@ -1,12 +1,12 @@
-import _AppLayout from '/imports/ui/layouts/AppLayout.jsx';
-import _AdminDashboardPage from '/imports/ui/pages/admin/AdminDashboardPage.jsx';
-import _UsersPage from '/imports/ui/pages/admin/UsersPage.jsx';
-import _RequestsPage from '/imports/ui/pages/admin/RequestsPage.jsx';
-import _OfferPage from '/imports/ui/pages/admin/OfferPage.jsx';
-import _SingleRequestPage from '/imports/ui/pages/admin/SingleRequestPage.jsx';
-import _SingleUserPage from '/imports/ui/pages/admin/SingleUserPage.jsx';
-import _VerifyPage from '/imports/ui/pages/admin/VerifyPage.jsx';
-import _ContactLendersPage from '/imports/ui/pages/admin/ContactLendersPage.jsx';
+import _AppLayout from '/imports/ui/layouts/AppLayout';
+import _AdminDashboardPage from '/imports/ui/pages/admin/AdminDashboardPage';
+import _UsersPage from '/imports/ui/pages/admin/UsersPage';
+import _RequestsPage from '/imports/ui/pages/admin/RequestsPage';
+import _OfferPage from '/imports/ui/pages/admin/OfferPage';
+import _SingleRequestPage from '/imports/ui/pages/admin/SingleRequestPage';
+import _SingleUserPage from '/imports/ui/pages/admin/SingleUserPage';
+import _VerifyPage from '/imports/ui/pages/admin/VerifyPage';
+import _ContactLendersPage from '/imports/ui/pages/admin/ContactLendersPage';
 
 import {
   generalContainer,

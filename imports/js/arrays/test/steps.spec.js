@@ -8,6 +8,7 @@ import {
   shouldCountField,
   getCountedArray,
   filesPercent,
+  closingPercent,
 } from '../steps';
 
 describe('steps', () => {
@@ -214,6 +215,84 @@ describe('steps', () => {
           0.5,
         );
       });
+    });
+
+    describe('status verification', () => {
+      it('returns 0 if no files are valid', () => {
+        dummyFunc = () => [[{ id: 'myFile', condition: undefined }]];
+        dummyDoc.files.myFile = [{ status: 'invalid' }];
+        expect(filesPercent(dummyDoc, dummyFunc, 0, true)).to.equal(0);
+      });
+
+      it('returns 0.5 if one file is valid', () => {
+        dummyFunc = () => [
+          [
+            { id: 'myFile', condition: undefined },
+            { id: 'myFile2', condition: undefined },
+          ],
+        ];
+        dummyDoc.files.myFile = [{ status: 'invalid' }];
+        dummyDoc.files.myFile2 = [{ status: 'valid' }];
+        expect(filesPercent(dummyDoc, dummyFunc, 0, true)).to.equal(0.5);
+      });
+    });
+  });
+
+  describe('closingPercent', () => {
+    it('returns 0 for no steps', () => {
+      const r = { logic: { closingSteps: [] } };
+      expect(closingPercent(r)).to.equal(0);
+    });
+
+    it('returns 1 for one valid todo step', () => {
+      const r = {
+        logic: { closingSteps: [{ status: 'valid', type: 'todo' }] },
+      };
+      expect(closingPercent(r)).to.equal(1);
+    });
+
+    it('returns 0.5 for one valid and invalid todo step', () => {
+      const r = {
+        logic: {
+          closingSteps: [
+            { status: 'valid', type: 'todo' },
+            { status: 'unverified', type: 'todo' },
+          ],
+        },
+      };
+      expect(closingPercent(r)).to.equal(0.5);
+    });
+
+    it('returns 0 for one unverified upload', () => {
+      const r = {
+        logic: { closingSteps: [{ type: 'upload', id: 'myFile' }] },
+        files: { myFile: [{ status: 'unverified' }] },
+      };
+      expect(closingPercent(r)).to.equal(0);
+    });
+
+    it('returns 1 for one valid upload', () => {
+      const r = {
+        logic: { closingSteps: [{ type: 'upload', id: 'myFile' }] },
+        files: { myFile: [{ status: 'valid' }] },
+      };
+      expect(closingPercent(r)).to.equal(1);
+    });
+
+    it('returns 0.5 for one valid and invalid upload', () => {
+      const r = {
+        logic: {
+          closingSteps: [
+            { type: 'upload', id: 'myFile' },
+            { type: 'upload', id: 'myFile2' },
+          ],
+        },
+        files: {
+          myFile: [{ status: 'valid' }],
+          myFile2: [{ status: 'unverified' }],
+        },
+      };
+      expect(closingPercent(r)).to.equal(0.5);
     });
   });
 });

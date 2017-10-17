@@ -109,6 +109,6 @@ rateLimit({
     insertAdminOffer,
     updateOffer,
     insertFakeOffer,
-    deleteOffer,
+    // deleteOffer,
   ],
 });

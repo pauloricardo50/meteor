@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Bert } from 'meteor/themeteorchef:bert';
 import { injectIntl } from 'react-intl';
 
-import { T } from '/imports/ui/components/general/Translation.jsx';
+import { T } from '/imports/ui/components/general/Translation';
 import colors from '/imports/js/config/colors';
 
 const handleClick = (event, props) => {
@@ -52,7 +52,7 @@ const Unverified = props =>
       <div style={{ display: 'flex' }}>
         <p style={{ margin: 0 }}>
           <T id="DashboardUnverified.description" />{' '}
-          <a onTouchTap={e => handleClick(e, props)}>
+          <a onClick={e => handleClick(e, props)}>
             <T id="DashboardUnverified.CTA" />
           </a>
         </p>

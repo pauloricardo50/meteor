@@ -1,7 +1,3 @@
-import CheckIcon from 'material-ui/svg-icons/navigation/check';
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
-import WarningIcon from 'material-ui/svg-icons/alert/warning';
-
 import constants from '../config/constants';
 import { getIncomeRatio } from './finance-math';
 import { propertyPercent, filesPercent } from '../arrays/steps';
@@ -26,7 +22,7 @@ export const getProjectValue = (loanRequest) => {
   return Math.max(0, Math.round(value));
 };
 
-export const getLoanValue = (loanRequest) => {
+export const getLoanValue = (loanRequest, roundedTo10000) => {
   if (!loanRequest.general) {
     return 0;
   }
@@ -36,6 +32,11 @@ export const getLoanValue = (loanRequest) => {
 
   if (loanRequest.property.usageType === 'primary') {
     value -= loanRequest.general.insuranceFortuneUsed || 0;
+  }
+
+  // Do this when picking tranches
+  if (roundedTo10000) {
+    value = Math.round(value / 10000) * 10000;
   }
 
   // Check negative values
@@ -120,13 +121,26 @@ export const getMonthlyWithOffer = (
   fortuneUsed = 0,
   insuranceFortuneUsed = 0,
 ) => {
+  // Return undefined if the counterpartOffer doesn't exist
+  if (!isStandard && !offer.counterpartOffer) {
+    return undefined;
+  }
+
   // Make a copy of the request
-  const r = JSON.parse(JSON.stringify(request));
+  const r = {
+    ...request,
+    general: {
+      ...request.general,
+      fortuneUsed: fortuneUsed || request.general.fortuneUsed,
+      insuranceFortuneUsed:
+        insuranceFortuneUsed || request.general.insuranceFortuneUsed,
+    },
+  };
 
   // Modify it to include additional parameters
-  r.general.fortuneUsed = fortuneUsed || r.general.fortuneUsed;
-  r.general.insuranceFortuneUsed =
-    insuranceFortuneUsed || r.general.insuranceFortuneUsed;
+  // r.general.fortuneUsed = fortuneUsed || r.general.fortuneUsed;
+  // r.general.insuranceFortuneUsed =
+  //   insuranceFortuneUsed || r.general.insuranceFortuneUsed;
   const loan = getLoanValue(r);
 
   const maintenance =
@@ -144,6 +158,15 @@ export const getMonthlyWithOffer = (
     ? Math.round((maintenance + loan * amortization + interests) / 12) || 0
     : 0;
 };
+
+export const getMonthlyWithExtractedOffer = (loanRequest, offer) =>
+  getMonthlyWithOffer(
+    loanRequest,
+    {
+      [offer.type === 'standard' ? 'standardOffer' : 'counterpartOffer']: offer,
+    },
+    offer.type === 'standard',
+  );
 
 export const getPropAndWork = loanRequest =>
   (loanRequest.property &&
@@ -267,7 +290,7 @@ export const validateRatiosCompletely = (
       isValid: true,
       message: 'valid',
       message2: '',
-      icon: CheckIcon,
+      icon: 'check',
       className: 'success',
     };
   } catch (error) {
@@ -276,7 +299,7 @@ export const validateRatiosCompletely = (
       isValid: false,
       message: `${error.message}`,
       message2: `${error.message}2`,
-      icon: isTight ? WarningIcon : CloseIcon,
+      icon: isTight ? 'warning' : 'close',
       className: isTight ? 'warning' : 'error',
     };
   }
@@ -306,7 +329,7 @@ export const strategyDone = (loanRequest) => {
 
   if (
     logic.loanStrategyPreset === 'manual' &&
-    !loanStrategySuccess(general.loanTranches, getLoanValue(loanRequest))
+    !loanStrategySuccess(general.loanTranches, getLoanValue(loanRequest, true))
   ) {
     return false;
   }
