@@ -24,7 +24,6 @@ module.exports = {
     },
     docker: {
       image: 'abernix/meteord:node-8.4.0-base',
-      // image: 'guillim/meteord:node6.9.1V3',
     },
     ssl: {
       crt: '../../bundle.crt',
