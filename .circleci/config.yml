@@ -73,6 +73,7 @@ jobs:
           command: |
             mkdir -p ~/build-temp
             cp /usr/local/bin/meteor ~/build-temp/meteor-bin
+      - add_ssh_keys
       - deploy:
           name: maybe deploy
           command: |
