@@ -2,7 +2,6 @@ version: 2
 jobs:
   build:
     working_directory: ~/app
-    resource_class: large
     docker:
       - image: circleci/openjdk:8-jdk-browsers
         environment:
@@ -74,6 +73,11 @@ jobs:
             mkdir -p ~/build-temp
             cp /usr/local/bin/meteor ~/build-temp/meteor-bin
       - add_ssh_keys
+      - run:
+          name: copy ssh keys to proper folder
+          command: |
+            rm -rf ~/.ssh/id_rsa
+            mv ~/.ssh/id_rsa_09884ca9b31a641158d6b1776599784b ~/.ssh/id_rsa
       - deploy:
           name: maybe deploy
           command: |
