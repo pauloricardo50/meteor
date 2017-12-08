@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/app/sApp
+    working_directory: ~/app
     docker:
       - image: circleci/openjdk:8-jdk-browsers
         environment:
@@ -18,6 +18,9 @@ jobs:
           # METEOR_PROFILE: 1 # If you need to debug meteor, turn this on
     steps:
       - checkout
+      - run:
+        name: switch directory
+        command: cd sApp
       - restore_cache:
           name: restore cached build
           key: build-temp-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
