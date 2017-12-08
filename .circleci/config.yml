@@ -60,7 +60,9 @@ jobs:
             java -version
       - run:
           name: install npm packages
-          command: meteor npm install
+          command: |
+            cd sApp
+            meteor npm install
       - run:
           name: create results directory
           command: mkdir ./results
