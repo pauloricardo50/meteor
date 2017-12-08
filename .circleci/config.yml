@@ -19,8 +19,8 @@ jobs:
     steps:
       - checkout
       - run:
-        name: switch directory
-        command: cd sApp
+          name: switch directory
+          command: cd sApp
       - restore_cache:
           name: restore cached build
           key: build-temp-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
