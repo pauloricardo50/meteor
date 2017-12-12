@@ -36,7 +36,7 @@ export const generalTooltips = {
   '3ème pilier': 'thirdPillar',
 
   'offres standard': 'standardOffers',
-  standard: 'standardOffers', // careful with this one
+  standard: 'standardOffers', // careful with this one, it could trigger on unwanted "standard" uses
   'offres avec contrepartie': 'counterpartOffers',
   'avec contrepartie': 'counterpartOffers',
 };
@@ -52,7 +52,7 @@ export const offerTableTooltips = {
   conditions: 'offerTable.conditions',
 };
 
-export const tooltips = (list) => {
+export const tooltips = list => {
   switch (list) {
     case 'general':
       return generalTooltips;
@@ -63,7 +63,7 @@ export const tooltips = (list) => {
   }
 };
 
-export const tooltipsById = (id) => {
+export const tooltipsById = id => {
   if (typeof id !== 'string') {
     throw new Error('not a string');
   }
