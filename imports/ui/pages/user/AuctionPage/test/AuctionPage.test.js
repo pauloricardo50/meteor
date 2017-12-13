@@ -14,13 +14,17 @@ if (Meteor.isClient) {
   describe('<AuctionPage />', () => {
     describe('<AuctionStart />', () => {
       let props;
+      let request;
+      let userId;
       const component = () => getMountedComponent(AuctionStart, props);
 
       beforeEach(() => {
         resetDatabase();
         stubCollections();
+        userId = Factory.create('user')._id;
+        request = Factory.create('loanRequest', { userId });
         props = {
-          loanRequest: Factory.create('loanRequest'),
+          loanRequest: request,
           borrowers: [{}],
           serverTime: new Date(),
         };

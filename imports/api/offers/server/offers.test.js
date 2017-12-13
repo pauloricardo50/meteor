@@ -37,20 +37,16 @@ describe('Offers', () => {
 
   describe('methods', () => {
     describe('insertOffer', () => {
-      it('inserts an offer', (done) => {
+      it('inserts an offer', () => {
         const object = Factory.build('offer');
         const request = Factory.create('loanRequest', { userId });
         object.requestId = request._id;
         object.userId = userId;
 
-        const offerId = insertOffer.call({ object }, (err, result) => {
-          if (err) {
-            done(err);
-          }
-          const offer = Offers.findOne(result);
+        return insertOffer.callPromise({ object }).then((offerId) => {
+          const offer = Offers.findOne(offerId);
           expect(typeof offer).to.equal('object');
           expect(offer.userId).to.equal(object.userId);
-          done();
         });
       });
 
@@ -61,18 +57,23 @@ describe('Offers', () => {
           logic: { auction: { endTime: date } },
         });
         user = Factory.create('partner', {
+          emails: [{ address: 'wtf@test.com', verified: false }], // To avoid email conflict when creating multiple users
           profile: { organization: 'testOrganization', cantons: ['ZH'] },
           requestId: request._id,
         });
         userId = user._id;
-        const object = Factory.build('offer', { requestId: request._id });
-        const offerId = insertOffer.call({ object });
-        const offer = Offers.findOne(offerId);
+        const object = Factory.build('offer', {
+          requestId: request._id,
+          userId,
+        });
+        return insertOffer.callPromise({ object }).then((offerId) => {
+          const offer = Offers.findOne(offerId);
 
-        expect(offer.userId).to.equal(user._id);
-        expect(offer.organization).to.equal('testOrganization');
-        expect(offer.canton).to.equal('ZH');
-        expect(offer.auctionEndTime).to.deep.equal(date);
+          expect(offer.userId).to.equal(user._id);
+          expect(offer.organization).to.equal('testOrganization');
+          expect(offer.canton).to.equal('ZH');
+          expect(offer.auctionEndTime).to.deep.equal(date);
+        });
       });
     });
 

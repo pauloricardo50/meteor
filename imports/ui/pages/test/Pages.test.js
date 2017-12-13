@@ -83,9 +83,14 @@ if (Meteor.isClient) {
 
         beforeEach(() => {
           getMountedComponent.reset();
-          const request = Factory.create('loanRequest');
-          const borrower = Factory.create('borrower');
           const user = Factory.create('dev');
+          const userId = user._id;
+          const borrower = Factory.create('borrower', { userId });
+          const request = Factory.create('loanRequest', {
+            userId,
+            borrowers: [borrower],
+          });
+
           props = {
             loanRequest: request,
             borrowers: [borrower],

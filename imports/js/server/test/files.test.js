@@ -14,13 +14,16 @@ import { isAllowed } from '../files.js';
 
 describe('files', () => {
   describe('isAllowed', () => {
+    let userId;
     let user;
+
     beforeEach(() => {
       resetDatabase();
       stubCollections();
       user = Factory.create('user');
+      userId = user._id;
       sinon.stub(Meteor, 'user').callsFake(() => user);
-      sinon.stub(Meteor, 'userId').callsFake(() => user._id);
+      sinon.stub(Meteor, 'userId').callsFake(() => userId);
     });
 
     afterEach(() => {
@@ -30,13 +33,13 @@ describe('files', () => {
     });
 
     it('should return true if the user is dev', () => {
-      Meteor.users.update(user._id, { $set: { roles: 'dev' } });
+      Meteor.users.update(userId, { $set: { roles: 'dev' } });
 
       expect(isAllowed('')).to.equal(true);
     });
 
     it('should return true if the user is admin', () => {
-      Meteor.users.update(user._id, { $set: { roles: 'admin' } });
+      Meteor.users.update(userId, { $set: { roles: 'admin' } });
 
       expect(isAllowed('')).to.equal(true);
     });
@@ -46,16 +49,14 @@ describe('files', () => {
     });
 
     it('should return true if this user has a loanRequest', () => {
-      const request = Factory.create('loanRequest');
-      LoanRequests.update(request._id, { $set: { userId: user._id } });
+      const request = Factory.create('loanRequest', { userId });
 
       expect(isAllowed(`${request._id}/`)).to.equal(true);
       LoanRequests.remove(request._id);
     });
 
     it('should return true if this user has a borrower', () => {
-      const borrower = Factory.create('borrower');
-      Borrowers.update(borrower._id, { $set: { userId: user._id } });
+      const borrower = Factory.create('borrower', { userId });
 
       expect(isAllowed(`${borrower._id}/`)).to.equal(true);
       Borrowers.remove(borrower._id);

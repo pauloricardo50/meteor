@@ -20,10 +20,14 @@ describe('<Comparator />', () => {
   beforeEach(() => {
     resetDatabase();
     stubCollections();
-    userId = Factory.create('user')._id;
+
+    const user = Factory.create('user');
+    console.log('Comparator test');
+    console.log(user);
+    userId = user._id;
     comparator = Factory.create('comparator', { userId });
     properties = [Factory.create('property', { userId })];
-    console.log(properties);
+
     wrapper = shallow(<Comparator comparator={comparator} properties={properties} />);
   });
 

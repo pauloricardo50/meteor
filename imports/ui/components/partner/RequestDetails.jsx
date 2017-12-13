@@ -103,10 +103,6 @@ const RequestDetails = (props) => {
           </h4>
         </div>
         <div className="col-xs-12">
-          <h4 className="pull-left">Age</h4>
-          <h4 className="pull-right">{r.borrowers[0].age}</h4>
-        </div>
-        <div className="col-xs-12">
           <h4 className="pull-left">Résidence de type</h4>
           <h4 className="pull-right">{types[r.general.usageType]}</h4>
         </div>

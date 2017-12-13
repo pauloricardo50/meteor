@@ -82,29 +82,25 @@ describe('Request functions', () => {
 
   describe('Get loan value', () => {
     it('returns the property value + fees if no fortune is used', () => {
-      expect(
-        getLoanValue({
-          general: {
-            fortuneUsed: undefined,
-          },
-          property: {
-            value: 100,
-          },
-        }),
-      ).to.equal(105);
+      expect(getLoanValue({
+        general: {
+          fortuneUsed: undefined,
+        },
+        property: {
+          value: 100,
+        },
+      })).to.equal(105);
     });
 
     it('returns the property value if 0 fortune is used', () => {
-      expect(
-        getLoanValue({
-          general: {
-            fortuneUsed: 0,
-          },
-          property: {
-            value: 100,
-          },
-        }),
-      ).to.equal(105);
+      expect(getLoanValue({
+        general: {
+          fortuneUsed: 0,
+        },
+        property: {
+          value: 100,
+        },
+      })).to.equal(105);
     });
 
     it("Should return 800'000 with 1M property, 250k cash", () => {
@@ -148,12 +144,10 @@ describe('Request functions', () => {
     });
 
     it('Should properly verify a loan strategy is complete with two values', () => {
-      expect(
-        loanStrategySuccess(
-          [{ type: 'libor', value: 100 }, { type: 'interest10', value: 100 }],
-          200,
-        ),
-      ).to.equal(true);
+      expect(loanStrategySuccess(
+        [{ type: 'libor', value: 100 }, { type: 'interest10', value: 100 }],
+        200,
+      )).to.equal(true);
     });
 
     it('Should return false if no loanTranche was given', () => {
@@ -182,9 +176,7 @@ describe('Request functions', () => {
 
     it('returns true if tranches do add up', () => {
       expect(loanStrategySuccess([{ value: 2 }], 2)).to.equal(true);
-      expect(loanStrategySuccess([{ value: 1 }, { value: 2 }], 3)).to.equal(
-        true,
-      );
+      expect(loanStrategySuccess([{ value: 1 }, { value: 2 }], 3)).to.equal(true);
     });
 
     it('throws if loanValue is not an integer', () => {
@@ -194,16 +186,14 @@ describe('Request functions', () => {
 
   describe('strategiesChosen', () => {
     it('returns true for the right reasons', () => {
-      expect(
-        strategiesChosen({
-          general: { loanTranches: [{ value: 80 }], fortuneUsed: 25 },
-          property: { value: 100 },
-          logic: {
-            amortizationStrategyPreset: 'hello',
-            hasValidatedCashStrategy: true,
-          },
-        }),
-      ).to.equal(true);
+      expect(strategiesChosen({
+        general: { loanTranches: [{ value: 80 }], fortuneUsed: 25 },
+        property: { value: 100 },
+        logic: {
+          amortizationStrategyPreset: 'hello',
+          hasValidatedCashStrategy: true,
+        },
+      })).to.equal(true);
     });
 
     describe('getInterestsWithOffer', () => {
@@ -212,74 +202,62 @@ describe('Request functions', () => {
       });
 
       it('returns -1 if an interest rate does not exist', () => {
-        expect(
-          getInterestsWithOffer({ general: { loanTranches: [] } }, {}),
-        ).to.equal(0);
+        expect(getInterestsWithOffer({ general: { loanTranches: [] } }, {})).to.equal(0);
 
-        expect(
-          getInterestsWithOffer(
-            {
-              general: {
-                loanTranches: [
-                  { type: 'test', value: 120000 },
-                  { type: 'test2, value: 9' },
-                ],
-              },
+        expect(getInterestsWithOffer(
+          {
+            general: {
+              loanTranches: [
+                { type: 'test', value: 120000 },
+                { type: 'test2, value: 9' },
+              ],
             },
-            { standardOffer: { test: 0.01 } },
-          ),
-        ).to.equal(-1);
+          },
+          { standardOffer: { test: 0.01 } },
+        )).to.equal(-1);
       });
     });
 
     it('returns the right interests if everything is okay', () => {
-      expect(
-        getInterestsWithOffer(
-          { general: { loanTranches: [{ type: 'test', value: 120000 }] } },
-          { standardOffer: { test: 0.01 } },
-        ),
-      ).to.equal(100);
+      expect(getInterestsWithOffer(
+        { general: { loanTranches: [{ type: 'test', value: 120000 }] } },
+        { standardOffer: { test: 0.01 } },
+      )).to.equal(100);
 
-      expect(
-        getInterestsWithOffer(
-          {
-            general: {
-              loanTranches: [
-                { type: 'test', value: 120000 }, // 100
-                { type: 'test2', value: 240000 }, // 400
-              ],
-            },
+      expect(getInterestsWithOffer(
+        {
+          general: {
+            loanTranches: [
+              { type: 'test', value: 120000 }, // 100
+              { type: 'test2', value: 240000 }, // 400
+            ],
           },
-          { standardOffer: { test: 0.01, test2: 0.02 } },
-        ),
-      ).to.equal(500);
+        },
+        { standardOffer: { test: 0.01, test2: 0.02 } },
+      )).to.equal(500);
     });
 
     it('uses the counterpartOffer if asked nicely', () => {
-      expect(
-        getInterestsWithOffer(
-          { general: { loanTranches: [{ type: 'test', value: 120000 }] } },
-          { counterpartOffer: { test: 0.01 } },
-          false,
-        ),
-      ).to.equal(100);
+      expect(getInterestsWithOffer(
+        { general: { loanTranches: [{ type: 'test', value: 120000 }] } },
+        { counterpartOffer: { test: 0.01 } },
+        false,
+      )).to.equal(100);
     });
 
     it('works with multiple interest rates', () => {
-      expect(
-        getInterestsWithOffer(
-          {
-            general: {
-              loanTranches: [
-                { type: 'test', value: 120000 }, // 100
-                { type: 'test2', value: 240000 }, // 400
-                { type: 'test3', value: 360000 }, // 400
-              ],
-            },
+      expect(getInterestsWithOffer(
+        {
+          general: {
+            loanTranches: [
+              { type: 'test', value: 120000 }, // 100
+              { type: 'test2', value: 240000 }, // 400
+              { type: 'test3', value: 360000 }, // 400
+            ],
           },
-          { standardOffer: { testx: 0.01, test2: 0.01, test3: 0.02 } },
-        ),
-      ).to.equal(-1);
+        },
+        { standardOffer: { testx: 0.01, test2: 0.01, test3: 0.02 } },
+      )).to.equal(-1);
     });
   });
 
@@ -307,15 +285,13 @@ describe('Request functions', () => {
 
     it('returns the right value if everything is wired up', () => {
       offer.standardOffer.test = 0.01;
-      expect(getMonthlyWithOffer(request, offer)).to.equal(
-        (5000 + 800000 * 0.0125 + 600) / 12,
-      );
+      expect(getMonthlyWithOffer(request, offer)).to.equal((5000 + 800000 * 0.0125 + 600) / 12);
     });
   });
 
   describe('getPropAnrWork', () => {
     it('returns 0 if an empty object is given', () => {
-      expect(getPropAndWork({})).to.equal(0);
+      expect(getPropAndWork({ property: {} })).to.equal(0);
     });
 
     it('should return value of the property if no propertyWork is specified', () => {
@@ -323,23 +299,17 @@ describe('Request functions', () => {
     });
 
     it('should add value and propertyWork', () => {
-      expect(
-        getPropAndWork({ property: { value: 1, propertyWork: 2 } }),
-      ).to.equal(3);
+      expect(getPropAndWork({ property: { value: 1, propertyWork: 2 } })).to.equal(3);
     });
   });
 
   describe('getTotalUsed', () => {
     it('should add fortuneUsed and insuranceFortuneUsed', () => {
       expect(getTotalUsed({ general: { fortuneUsed: 1 } })).to.equal(1);
-      expect(
-        getTotalUsed({ general: { fortuneUsed: 1, insuranceFortuneUsed: 2 } }),
-      ).to.equal(3);
-      expect(
-        getTotalUsed({
-          general: { fortuneUsed: 1, insuranceFortuneUsed: undefined },
-        }),
-      ).to.equal(1);
+      expect(getTotalUsed({ general: { fortuneUsed: 1, insuranceFortuneUsed: 2 } })).to.equal(3);
+      expect(getTotalUsed({
+        general: { fortuneUsed: 1, insuranceFortuneUsed: undefined },
+      })).to.equal(1);
     });
   });
 
@@ -352,54 +322,40 @@ describe('Request functions', () => {
   describe('disableForms', () => {
     it('returns true when the right conditions are true', () => {
       expect(disableForms({ logic: { step: 2 } })).to.equal(true);
-      expect(
-        disableForms({ logic: { verification: { requested: true } } }),
-      ).to.equal(true);
-      expect(
-        disableForms({ logic: { verification: { validated: true } } }),
-      ).to.equal(true);
+      expect(disableForms({ logic: { verification: { requested: true } } })).to.equal(true);
+      expect(disableForms({ logic: { verification: { validated: true } } })).to.equal(true);
     });
 
     it("returns false if the conditions aren't met", () => {
       expect(disableForms({ logic: { step: 1 } })).to.equal(false);
       expect(disableForms({ logic: { step: 0 } })).to.equal(false);
-      expect(disableForms({ verification: { requested: false } })).to.equal(
-        false,
-      );
-      expect(disableForms({ verification: { validated: false } })).to.equal(
-        false,
-      );
+      expect(disableForms({ verification: { requested: false } })).to.equal(false);
+      expect(disableForms({ verification: { validated: false } })).to.equal(false);
     });
   });
 
   describe('getFees', () => {
     it('returns notaryFees correctly', () => {
-      expect(
-        getFees({
-          property: { usageType: 'primary', value: 100 },
-          general: {},
-        }),
-      ).to.equal(5);
+      expect(getFees({
+        property: { usageType: 'primary', value: 100 },
+        general: {},
+      })).to.equal(5);
     });
 
     it('returns insuranceFortune fees only if property is a primary residency', () => {
-      expect(
-        getFees({
-          property: { usageType: 'primary', value: 100 },
-          general: {
-            insuranceFortuneUsed: 10,
-          },
-        }),
-      ).to.equal(6);
+      expect(getFees({
+        property: { usageType: 'primary', value: 100 },
+        general: {
+          insuranceFortuneUsed: 10,
+        },
+      })).to.equal(6);
 
-      expect(
-        getFees({
-          property: { usageType: 'not-primary', value: 100 },
-          general: {
-            insuranceFortuneUsed: 10,
-          },
-        }),
-      ).to.equal(5);
+      expect(getFees({
+        property: { usageType: 'not-primary', value: 100 },
+        general: {
+          insuranceFortuneUsed: 10,
+        },
+      })).to.equal(5);
     });
   });
 
@@ -455,9 +411,7 @@ describe('Request functions', () => {
     });
 
     it('should throw fortuneTight if insuranceFortune is allowed and conditions', () => {
-      expect(() => validateRatios(0.2, 0.85, true, 0.9)).to.throw(
-        'fortuneTight',
-      );
+      expect(() => validateRatios(0.2, 0.85, true, 0.9)).to.throw('fortuneTight');
     });
 
     it('should throw fortune if insuranceFortune is not allowed and conditions', () => {

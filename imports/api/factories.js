@@ -39,6 +39,7 @@ Factory.define('borrower', Borrowers, {
   expenses: () => [{ description: 'test', value: 1 }],
   files: () => ({}),
   logic: () => ({}),
+  age: 18,
 });
 
 Factory.define('loanRequest', LoanRequests, {

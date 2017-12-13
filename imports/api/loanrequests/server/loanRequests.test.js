@@ -77,7 +77,6 @@ describe('loanRequests', () => {
       describe('pushRequestValue', () => {
         it('Properly pushes a value to request', () => {
           const id = request._id;
-          console.log('testing', request);
           const object = { 'general.partnersToAvoid': 'Jack' };
           pushRequestValue._execute({ object, id });
           const modifiedRequest = LoanRequests.findOne(id);
@@ -146,7 +145,7 @@ describe('loanRequests', () => {
             const devUserId = Factory.create('dev');
             const id = Factory.create('loanRequest', { userId: devUserId })._id;
 
-            deleteRequest.call({ id });
+            deleteRequest._execute({ id });
 
             const modifiedRequest = LoanRequests.findOne(id);
 
@@ -165,7 +164,7 @@ describe('loanRequests', () => {
       });
 
       describe('addEmail', () => {
-        it('adds an email', (done) => {
+        it('adds an email', () => {
           const id = request._id;
           const email = {
             requestId: id,
@@ -176,7 +175,7 @@ describe('loanRequests', () => {
 
           expect(request.emails.length).to.equal(0);
 
-          addEmail.call(email, () => {
+          return addEmail.callPromise(email, () => {
             const modifiedRequest = LoanRequests.findOne(id);
 
             expect(modifiedRequest.emails.length).to.equal(1);
@@ -186,11 +185,10 @@ describe('loanRequests', () => {
             expect(modifiedRequest.emails[0].updatedAt instanceof Date).to.be
               .true;
             expect(Object.keys(modifiedRequest.emails[0]).length).to.equal(4);
-            done();
           });
         });
 
-        it('adds a scheduled email', (done) => {
+        it('adds a scheduled email', () => {
           const id = request._id;
           const date = new Date();
           const email = {
@@ -201,18 +199,17 @@ describe('loanRequests', () => {
             sendAt: date,
           };
 
-          addEmail.call(email, () => {
+          return addEmail.callPromise(email, () => {
             const modifiedRequest = LoanRequests.findOne(id);
 
             expect(modifiedRequest.emails[0].scheduledAt.getTime()).to.equal(date.getTime());
             expect(Object.keys(modifiedRequest.emails[0]).length).to.equal(5);
-            done();
           });
         });
       });
 
       describe('modifyEmail', () => {
-        it('modifies an email', (done) => {
+        it('modifies an email', () => {
           const id = request._id;
           const email = {
             requestId: id,
@@ -229,17 +226,16 @@ describe('loanRequests', () => {
           expect(request.emails.length).to.equal(0);
 
           // Add multiple emails to make test more realistic
-          addEmail.call(email, () => {
-            addEmail.call({ ...email, _id: 'testId2' }, () => {
-              modifyEmail.call(modification, () => {
-                const modifiedRequest = LoanRequests.findOne(id);
+          return addEmail
+            .callPromise(email)
+            .then(() => addEmail.callPromise({ ...email, _id: 'testId2' }))
+            .then(() => modifyEmail.callPromise(modification))
+            .then(() => {
+              const modifiedRequest = LoanRequests.findOne(id);
 
-                expect(Object.keys(modifiedRequest.emails[0]).length).to.equal(4);
-                expect(modifiedRequest.emails[0].status).to.equal(modification.status);
-                done();
-              });
+              expect(Object.keys(modifiedRequest.emails[0]).length).to.equal(4);
+              expect(modifiedRequest.emails[0].status).to.equal(modification.status);
             });
-          });
         });
       });
     });
