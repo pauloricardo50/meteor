@@ -5,6 +5,7 @@ import { shallow } from '/imports/js/helpers/testHelpers/enzyme';
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 import { stubCollections } from '/imports/js/helpers/testHelpers';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import CompareTable, {
   sortFunc,
@@ -21,16 +22,19 @@ if (Meteor.isClient) {
     let wrapper;
 
     beforeEach(() => {
+      resetDatabase();
       stubCollections();
-      properties = [Factory.create('property'), Factory.create('property')];
-      wrapper = shallow(
-        <CompareTable
-          properties={properties}
-          addCustomField={() => {}}
-          fields={[]}
-          deleteProperty={() => {}}
-        />,
-      );
+      const userId = Factory.create('user')._id;
+      properties = [
+        Factory.create('property', { userId }),
+        Factory.create('property', { userId }),
+      ];
+      wrapper = shallow(<CompareTable
+        properties={properties}
+        addCustomField={() => {}}
+        fields={[]}
+        deleteProperty={() => {}}
+      />);
     });
 
     afterEach(() => {
@@ -134,10 +138,18 @@ if (Meteor.isClient) {
 
     describe('functions', () => {
       const properties = [
-        { id: 0, createdAt: new Date(1000), test: true, value: 100 },
-        { id: 1, createdAt: new Date(100), test: false, value: 200 },
-        { id: 2, createdAt: new Date(10), test: true, value: 300 },
-        { id: 3, createdAt: new Date(10), test: true, value: 0 },
+        {
+          id: 0, createdAt: new Date(1000), test: true, value: 100,
+        },
+        {
+          id: 1, createdAt: new Date(100), test: false, value: 200,
+        },
+        {
+          id: 2, createdAt: new Date(10), test: true, value: 300,
+        },
+        {
+          id: 3, createdAt: new Date(10), test: true, value: 0,
+        },
       ];
       const getIds = arr => arr.map(val => val.id);
 

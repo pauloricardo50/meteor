@@ -6,6 +6,7 @@ import {
   stubCollections,
 } from '/imports/js/helpers/testHelpers';
 import { Factory } from 'meteor/dburles:factory';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import getSteps from '/imports/js/arrays/steps';
 import ProcessPage, { getStepValues } from '../ProcessPage';
@@ -16,11 +17,20 @@ if (Meteor.isClient) {
     const component = () => getMountedComponent(ProcessPage, props, true);
 
     beforeEach(() => {
+      resetDatabase();
       stubCollections();
       getMountedComponent.reset();
+
+      const userId = Factory.create('user')._id;
+      const borrower = Factory.create('borrower', { userId });
+      const request = Factory.create('loanRequest', {
+        userId,
+        borrowers: [borrower._id],
+      });
+
       props = {
-        loanRequest: Factory.create('loanRequest'),
-        borrowers: [Factory.create('borrower')],
+        loanRequest: request,
+        borrowers: [borrower],
         stepNb: 1,
         id: 'personal',
         // location: {
@@ -52,22 +62,33 @@ if (Meteor.isClient) {
 }
 
 describe('getStepValues', () => {
+  let parameters;
+
   beforeEach(() => {
+    resetDatabase();
     stubCollections();
+
+    const userId = Factory.create('user')._id;
+    const borrower = Factory.create('borrower', { userId });
+    const request = Factory.create('loanRequest', {
+      userId,
+      borrowers: [borrower._id],
+    });
+
+    parameters = {
+      stepNb: 1,
+      id: 'files',
+      loanRequest: request,
+      borrowers: [borrower],
+    };
   });
 
   afterEach(() => {
     stubCollections.restore();
+    resetDatabase();
   });
 
   it('Works for any item of a step', () => {
-    const parameters = {
-      stepNb: 1,
-      id: 'files',
-      loanRequest: Factory.create('loanRequest'),
-      borrowers: [Factory.create('borrower')],
-    };
-
     const steps = getSteps(parameters);
 
     expect(getStepValues(parameters).index).to.equal(2);
@@ -77,12 +98,7 @@ describe('getStepValues', () => {
   });
 
   it('Works for the last item of a step', () => {
-    const parameters = {
-      stepNb: 1,
-      id: 'verification',
-      loanRequest: Factory.create('loanRequest'),
-      borrowers: [Factory.create('borrower')],
-    };
+    parameters.id = 'verification';
 
     const steps = getSteps(parameters);
 

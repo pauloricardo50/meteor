@@ -138,15 +138,13 @@ export const startAuction = new ValidatedMethod({
             emailId: 'auctionStarted',
             requestId: id,
             intlValues: { date: auctionEndTime },
-          }),
-        )
+          }))
         .then(() =>
           scheduleMethod.callPromise({
             method: 'loanRequests.endAuction',
             params: [{ id }],
             date: auctionEndTime,
-          }),
-        )
+          }))
         .then(() => 'success')
         .catch((e) => {
           throw e;
@@ -197,6 +195,9 @@ export const pushRequestValue = new ValidatedMethod({
     check(id, String);
   },
   run({ object, id }) {
+    console.log('inside meteor method..');
+    console.log('object: ', object);
+    console.log('id: ', id);
     return LoanRequests.update(id, { $push: object });
   },
 });
@@ -252,9 +253,7 @@ export const requestVerification = new ValidatedMethod({
         }
       },
     );
-    return Meteor.wrapAsync(
-      insertAdminAction.call({ type: 'verify', requestId: id }),
-    );
+    return Meteor.wrapAsync(insertAdminAction.call({ type: 'verify', requestId: id }));
   },
 });
 
@@ -352,12 +351,10 @@ export const cancelAuction = new ValidatedMethod({
             } = importServerMethods();
 
             const request = LoanRequests.findOne(id);
-            const email = request.emails.find(
-              e =>
-                e &&
+            const email = request.emails.find(e =>
+              e &&
                 e.emailId === 'auctionEnded' &&
-                e.scheduledAt >= new Date(),
-            );
+                e.scheduledAt >= new Date());
             if (email) {
               cancelScheduledEmail.call('email.cancelScheduled', {
                 id: email._id,
@@ -404,15 +401,21 @@ export const confirmClosing = new ValidatedMethod({
 export const addEmail = new ValidatedMethod({
   name: 'loanRequests.addEmail',
   mixins: [CallPromiseMixin],
-  validate({ requestId, emailId, _id, status, sendAt }) {
+  validate({
+    requestId, emailId, _id, status, sendAt,
+  }) {
     check(requestId, String);
     check(emailId, String);
     check(_id, String);
     check(status, String);
     check(sendAt, Match.Optional(Date));
   },
-  run({ requestId, emailId, _id, status, sendAt }) {
-    const object = { emailId, _id, status, updatedAt: new Date() };
+  run({
+    requestId, emailId, _id, status, sendAt,
+  }) {
+    const object = {
+      emailId, _id, status, updatedAt: new Date(),
+    };
 
     if (sendAt) {
       object.scheduledAt = sendAt;
@@ -425,13 +428,17 @@ export const addEmail = new ValidatedMethod({
 export const modifyEmail = new ValidatedMethod({
   name: 'loanRequests.modifyEmail',
   mixins: [CallPromiseMixin],
-  validate({ requestId, _id, status, sendAt }) {
+  validate({
+    requestId, _id, status, sendAt,
+  }) {
     check(requestId, String);
     check(_id, String);
     check(status, Match.Optional(String));
     check(sendAt, Match.Optional(Date));
   },
-  run({ requestId, _id, status, sendAt }) {
+  run({
+    requestId, _id, status, sendAt,
+  }) {
     const object = {
       'emails.$.status': status,
       'emails.$.updatedAt': new Date(),

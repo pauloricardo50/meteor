@@ -5,6 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 import sinon from 'sinon';
 import { stubCollections } from '/imports/js/helpers/testHelpers';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import {
   getEmailContent,
@@ -17,6 +18,7 @@ describe('emails', () => {
 
   describe('getEmailContent', () => {
     beforeEach(() => {
+      resetDatabase();
       stubCollections();
       user = Factory.create('user');
       sinon.stub(Meteor, 'user').callsFake(() => user);

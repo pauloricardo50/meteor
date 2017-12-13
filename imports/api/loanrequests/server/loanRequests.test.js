@@ -3,10 +3,9 @@ import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import { Factory } from 'meteor/dburles:factory';
 import moment from 'moment';
-import { Roles } from 'meteor/alanning:roles';
-import { Accounts } from 'meteor/accounts-base';
 import { stubCollections } from '/imports/js/helpers/testHelpers';
 import sinon from 'sinon';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import LoanRequests from '../loanrequests';
 
@@ -28,6 +27,7 @@ describe('loanRequests', () => {
   let userId;
 
   beforeEach(() => {
+    resetDatabase();
     stubCollections();
     userId = Factory.create('user')._id;
     sinon.stub(Meteor, 'userId').callsFake(() => userId);
@@ -35,6 +35,7 @@ describe('loanRequests', () => {
 
   afterEach(() => {
     stubCollections.restore();
+
     Meteor.userId.restore();
   });
 
@@ -42,9 +43,9 @@ describe('loanRequests', () => {
     describe('insertRequest', () => {
       it('Properly inserts a minimal request', () => {
         const object = {
-          // general: { fortuneUsed: 10 },
-          // property: { value: 100 },
-          // borrowers: ['asd'],
+          general: { fortuneUsed: 10 },
+          property: { value: 100 },
+          borrowers: ['asd'],
         };
 
         const requestId = insertRequest.call({ object, userId });
@@ -57,8 +58,9 @@ describe('loanRequests', () => {
 
     describe('modifiers', () => {
       let request;
+
       beforeEach(() => {
-        request = Factory.create('loanRequest');
+        request = Factory.create('loanRequest', { userId });
       });
 
       describe('updateRequest', () => {
@@ -75,14 +77,13 @@ describe('loanRequests', () => {
       describe('pushRequestValue', () => {
         it('Properly pushes a value to request', () => {
           const id = request._id;
+          console.log('testing', request);
           const object = { 'general.partnersToAvoid': 'Jack' };
-          pushRequestValue.call({ object, id });
+          pushRequestValue._execute({ object, id });
           const modifiedRequest = LoanRequests.findOne(id);
           const length = request.general.partnersToAvoid.length;
 
-          expect(modifiedRequest.general.partnersToAvoid.length).to.equal(
-            length + 1,
-          );
+          expect(modifiedRequest.general.partnersToAvoid.length).to.equal(length + 1);
         });
       });
 
@@ -94,9 +95,7 @@ describe('loanRequests', () => {
           const modifiedRequest = LoanRequests.findOne(id);
           const length = request.general.partnersToAvoid.length;
 
-          expect(modifiedRequest.general.partnersToAvoid.length).to.equal(
-            length - 1,
-          );
+          expect(modifiedRequest.general.partnersToAvoid.length).to.equal(length - 1);
         });
       });
 
@@ -113,9 +112,7 @@ describe('loanRequests', () => {
               .then(() => {
                 const modifiedRequest = LoanRequests.findOne(id);
 
-                expect(modifiedRequest.logic.auction.status).to.equal(
-                  'started',
-                );
+                expect(modifiedRequest.logic.auction.status).to.equal('started');
                 expect(modifiedRequest.logic.auction.startTime instanceof Date)
                   .to.be.true;
                 done();
@@ -146,7 +143,8 @@ describe('loanRequests', () => {
       describe('deleteRequest', () => {
         if (Meteor.isClient) {
           it('Should work if user is a developer', () => {
-            const id = Factory.create('loanRequestDev')._id;
+            const devUserId = Factory.create('dev');
+            const id = Factory.create('loanRequest', { userId: devUserId })._id;
 
             deleteRequest.call({ id });
 
@@ -206,9 +204,7 @@ describe('loanRequests', () => {
           addEmail.call(email, () => {
             const modifiedRequest = LoanRequests.findOne(id);
 
-            expect(modifiedRequest.emails[0].scheduledAt.getTime()).to.equal(
-              date.getTime(),
-            );
+            expect(modifiedRequest.emails[0].scheduledAt.getTime()).to.equal(date.getTime());
             expect(Object.keys(modifiedRequest.emails[0]).length).to.equal(5);
             done();
           });
@@ -238,12 +234,8 @@ describe('loanRequests', () => {
               modifyEmail.call(modification, () => {
                 const modifiedRequest = LoanRequests.findOne(id);
 
-                expect(Object.keys(modifiedRequest.emails[0]).length).to.equal(
-                  4,
-                );
-                expect(modifiedRequest.emails[0].status).to.equal(
-                  modification.status,
-                );
+                expect(Object.keys(modifiedRequest.emails[0]).length).to.equal(4);
+                expect(modifiedRequest.emails[0].status).to.equal(modification.status);
                 done();
               });
             });
@@ -275,9 +267,7 @@ describe('loanRequests', () => {
         .hours(14);
       endDate.date(4);
 
-      expect(getAuctionEndTime(date).getTime()).to.equal(
-        endDate.toDate().getTime(),
-      );
+      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
     });
 
     it('Should return monday night for a thursday afternoon', () => {
@@ -289,9 +279,7 @@ describe('loanRequests', () => {
         .hours(14);
       endDate.date(9);
 
-      expect(getAuctionEndTime(date).getTime()).to.equal(
-        endDate.toDate().getTime(),
-      );
+      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
     });
 
     it('Should return Tuesday night for a friday afternoon', () => {
@@ -303,9 +291,7 @@ describe('loanRequests', () => {
         .hours(14);
       endDate.date(10);
 
-      expect(getAuctionEndTime(date).getTime()).to.equal(
-        endDate.toDate().getTime(),
-      );
+      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
     });
 
     it('Should return Tuesday night for a monday early morning', () => {
@@ -317,9 +303,7 @@ describe('loanRequests', () => {
         .hours(5);
       endDate.date(3);
 
-      expect(getAuctionEndTime(date).getTime()).to.equal(
-        endDate.toDate().getTime(),
-      );
+      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
     });
 
     it('Should return Tuesday night for a saturday afternoon', () => {
@@ -331,9 +315,7 @@ describe('loanRequests', () => {
         .hours(14);
       endDate.date(10);
 
-      expect(getAuctionEndTime(date).getTime()).to.equal(
-        endDate.toDate().getTime(),
-      );
+      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
     });
 
     it('Should return Tuesday night for a saturday early morning', () => {
@@ -345,9 +327,7 @@ describe('loanRequests', () => {
         .hours(5);
       endDate.date(10);
 
-      expect(getAuctionEndTime(date).getTime()).to.equal(
-        endDate.toDate().getTime(),
-      );
+      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
     });
 
     it('Should return Tuesday night for a sunday afternoon', () => {
@@ -359,9 +339,7 @@ describe('loanRequests', () => {
         .hours(14);
       endDate.date(10);
 
-      expect(getAuctionEndTime(date).getTime()).to.equal(
-        endDate.toDate().getTime(),
-      );
+      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
     });
 
     it('Should return Tuesday night for a sunday early morning', () => {
@@ -373,9 +351,7 @@ describe('loanRequests', () => {
         .hours(5);
       endDate.date(10);
 
-      expect(getAuctionEndTime(date).getTime()).to.equal(
-        endDate.toDate().getTime(),
-      );
+      expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
     });
   });
 });

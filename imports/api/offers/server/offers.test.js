@@ -21,6 +21,7 @@ describe('Offers', () => {
   let userId;
 
   beforeEach(() => {
+    resetDatabase();
     stubCollections();
     user = Factory.create('partner');
     userId = user._id;
@@ -38,7 +39,7 @@ describe('Offers', () => {
     describe('insertOffer', () => {
       it('inserts an offer', (done) => {
         const object = Factory.build('offer');
-        const request = Factory.create('loanRequest');
+        const request = Factory.create('loanRequest', { userId });
         object.requestId = request._id;
         object.userId = userId;
 
@@ -56,6 +57,7 @@ describe('Offers', () => {
       it('reads from the user and the request when inserting', () => {
         const date = new Date();
         const request = Factory.create('loanRequest', {
+          userId,
           logic: { auction: { endTime: date } },
         });
         user = Factory.create('partner', {

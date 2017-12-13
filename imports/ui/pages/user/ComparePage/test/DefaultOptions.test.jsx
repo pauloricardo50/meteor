@@ -5,6 +5,7 @@ import { shallow } from '/imports/js/helpers/testHelpers/enzyme';
 import { spy } from 'sinon';
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import {
   getMountedComponent,
@@ -17,15 +18,18 @@ import BorrowerOptions from '../BorrowerOptions';
 
 describe('<DefaultOptions />', () => {
   let comparator;
+  let userId;
   let wrapper;
 
   beforeEach(() => {
+    resetDatabase();
     stubCollections();
     getMountedComponent.reset(false);
-    comparator = Factory.create('comparator');
-    wrapper = shallow(
-      <DefaultOptions comparator={comparator} changeComparator={() => {}} />,
-    );
+
+    userId = Factory.create('user')._id;
+    comparator = Factory.create('comparator', { userId });
+
+    wrapper = shallow(<DefaultOptions comparator={comparator} changeComparator={() => {}} />);
   });
 
   afterEach(() => {
@@ -36,7 +40,7 @@ describe('<DefaultOptions />', () => {
     expect(wrapper.exists()).to.equal(true);
   });
 
-  it("doesn't renders BorrowerOptions if the prop use Borrowers is false", () => {
+  it("doesn't render BorrowerOptions if the prop use Borrowers is false", () => {
     expect(wrapper.find(BorrowerOptions).exists()).to.equal(false);
   });
 

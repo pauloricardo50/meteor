@@ -4,11 +4,13 @@ import { expect } from 'chai';
 import { Factory } from 'meteor/dburles:factory';
 import { stubCollections } from '/imports/js/helpers/testHelpers';
 import sinon from 'sinon';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { createPartner } from '../methods';
 
 describe('users', () => {
   beforeEach(() => {
+    resetDatabase();
     stubCollections();
   });
 

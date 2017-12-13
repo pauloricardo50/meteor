@@ -4,6 +4,7 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider, intlShape } from 'react-intl';
 import StubCollections from 'meteor/hwillson:stub-collections';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import {
   getUserLocale,
@@ -74,10 +75,10 @@ export const getMountedComponent = (Component, props, withRouter) => {
 };
 
 /**
-* Unknown - Resets the component, to be called in beforeEach hooks
-*
-* @return {type} undefined
-*/
+ * Unknown - Resets the component, to be called in beforeEach hooks
+ *
+ * @return {type} undefined
+ */
 getMountedComponent.reset = (useStubs = true) => {
   getMountedComponent.mountedComponent = undefined;
   if (useStubs) {
@@ -93,7 +94,15 @@ getMountedComponent.reset = (useStubs = true) => {
  * @return {type} undefined
  */
 export const stubCollections = () => {
-  StubCollections.stub();
+  StubCollections.stub([
+    Meteor.users,
+    LoanRequests,
+    Borrowers,
+    Offers,
+    AdminActions,
+    Properties,
+    Comparators,
+  ]);
 };
 
 stubCollections.restore = () => {
@@ -104,6 +113,7 @@ if (Meteor.isTest) {
   // This is some test initialization, stubbing all the collections here,
   // avoids all timeouts coming later due to us using this function.
   console.log('Initializing Tests...');
+  resetDatabase();
   StubCollections.add([
     Meteor.users,
     LoanRequests,

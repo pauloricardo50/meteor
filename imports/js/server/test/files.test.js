@@ -8,6 +8,7 @@ import { stubCollections } from '/imports/js/helpers/testHelpers';
 import LoanRequests from '/imports/api/loanrequests/loanrequests';
 import Borrowers from '/imports/api/borrowers/borrowers';
 import AWS from 'aws-sdk';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { isAllowed } from '../files.js';
 
@@ -15,6 +16,7 @@ describe('files', () => {
   describe('isAllowed', () => {
     let user;
     beforeEach(() => {
+      resetDatabase();
       stubCollections();
       user = Factory.create('user');
       sinon.stub(Meteor, 'user').callsFake(() => user);
@@ -65,6 +67,7 @@ describe('files', () => {
     let user;
 
     beforeEach(() => {
+      resetDatabase();
       stubCollections();
       user = Factory.create('admin');
       sinon.stub(AWS, 'S3').callsFake(() => ({

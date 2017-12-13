@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import { Factory } from 'meteor/dburles:factory';
 import { stubCollections } from '/imports/js/helpers/testHelpers';
 import sinon from 'sinon';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import Comparators from '../comparators';
 
@@ -21,6 +22,7 @@ describe('Comparators', () => {
       let userId;
 
       beforeEach(() => {
+        resetDatabase();
         stubCollections();
         userId = Factory.create('user')._id;
         sinon.stub(Meteor, 'userId').callsFake(() => userId);
@@ -63,6 +65,7 @@ describe('Comparators', () => {
       let comparatorId;
 
       beforeEach(() => {
+        resetDatabase();
         stubCollections();
         userId = Factory.create('user')._id;
         comparatorId = Factory.create('comparator', { userId })._id;
@@ -78,7 +81,7 @@ describe('Comparators', () => {
         it('works', () => {
           let comparator = Comparators.findOne(comparatorId);
           expect(typeof comparator).to.equal('object');
-          expect(comparator.useBorrowers).to.equal(undefined);
+          expect(comparator.useBorrowers).to.equal(false);
 
           updateComparator._execute(
             {},
@@ -173,6 +176,7 @@ describe('Comparators', () => {
 
         it('removes a hidden field if it is curently hidden', () => {
           comparatorId = Factory.create('comparator', {
+            userId,
             hiddenFields: ['myField'],
           })._id;
           let comparator = Comparators.findOne(comparatorId);

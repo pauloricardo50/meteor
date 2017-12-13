@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import { shallow } from '/imports/js/helpers/testHelpers/enzyme';
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import {
   getMountedComponent,
@@ -16,6 +17,7 @@ import AdvancedOptions from '../AdvancedOptions';
 
 describe('<CompareOptions />', () => {
   let comparator;
+  let userId;
   let wrapper;
 
   const component = () =>
@@ -29,19 +31,19 @@ describe('<CompareOptions />', () => {
     });
 
   beforeEach(() => {
+    resetDatabase();
     stubCollections();
-    comparator = Factory.create('comparator');
+    userId = Factory.create('user')._id;
+    comparator = Factory.create('comparator', { userId });
     getMountedComponent.reset(false);
-    wrapper = shallow(
-      <CompareOptions
-        comparator={comparator}
-        changeComparator={() => {}}
-        addProperty={() => {}}
-        toggleField={() => {}}
-        allFields={[]}
-        removeCustomField={() => {}}
-      />,
-    );
+    wrapper = shallow(<CompareOptions
+      comparator={comparator}
+      changeComparator={() => {}}
+      addProperty={() => {}}
+      toggleField={() => {}}
+      allFields={[]}
+      removeCustomField={() => {}}
+    />);
   });
 
   afterEach(() => {
@@ -79,16 +81,12 @@ describe('<CompareOptions />', () => {
   if (Meteor.isClient) {
     // Otherwise it needs jsdom to work
     it('renders the advanced options after clicking on the button', () => {
-      expect(
-        component()
-          .find(DefaultOptions)
-          .exists(),
-      ).to.equal(true);
-      expect(
-        component()
-          .find(AdvancedOptions)
-          .exists(),
-      ).to.equal(false);
+      expect(component()
+        .find(DefaultOptions)
+        .exists()).to.equal(true);
+      expect(component()
+        .find(AdvancedOptions)
+        .exists()).to.equal(false);
 
       // Simulate click
       // component()

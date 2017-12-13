@@ -1,3 +1,0 @@
-[submodule "packages/softwarerero:accounts-t9n"]
-	path = packages/softwarerero:accounts-t9n
-	url = https://github.com/Floriferous/meteor-accounts-t9n.git

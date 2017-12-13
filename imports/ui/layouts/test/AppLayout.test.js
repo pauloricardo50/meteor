@@ -6,6 +6,7 @@ import {
   stubCollections,
 } from '/imports/js/helpers/testHelpers';
 import { Factory } from 'meteor/dburles:factory';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import AppLayout from '../AppLayout';
 
@@ -15,6 +16,7 @@ if (Meteor.isClient) {
     const component = () => getMountedComponent(AppLayout, props, true);
 
     beforeEach(() => {
+      resetDatabase();
       stubCollections();
       const user = Factory.create('dev');
       props = {

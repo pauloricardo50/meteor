@@ -8,34 +8,33 @@ import Comparators from './comparators/comparators';
 import Properties from './properties/properties';
 import AdminActions from './adminActions/adminActions';
 
-const chance = { email: () => 'test@test.com' };
+const TEST_EMAIL = 'test@test.com';
 
 Factory.define('user', Meteor.users, {
   roles: () => 'user',
-  emails: () => [{ address: chance.email(), verified: false }],
+  emails: () => [{ address: TEST_EMAIL, verified: false }],
   profile: {},
 });
 
 Factory.define('dev', Meteor.users, {
   roles: () => 'dev',
-  emails: () => [{ address: chance.email(), verified: false }],
+  emails: () => [{ address: TEST_EMAIL, verified: false }],
   profile: {},
 });
 
 Factory.define('admin', Meteor.users, {
   roles: () => 'admin',
-  emails: () => [{ address: chance.email(), verified: false }],
+  emails: () => [{ address: TEST_EMAIL, verified: false }],
   profile: {},
 });
 
 Factory.define('partner', Meteor.users, {
   roles: () => 'partner',
-  emails: () => [{ address: chance.email(), verified: false }],
+  emails: () => [{ address: TEST_EMAIL, verified: false }],
   profile: () => ({ organization: 'bankName', cantons: ['GE'] }),
 });
 
 Factory.define('borrower', Borrowers, {
-  userId: Factory.get('user'),
   createdAt: () => new Date(),
   expenses: () => [{ description: 'test', value: 1 }],
   files: () => ({}),
@@ -43,35 +42,27 @@ Factory.define('borrower', Borrowers, {
 });
 
 Factory.define('loanRequest', LoanRequests, {
-  userId: Factory.get('user'),
   createdAt: () => new Date(),
   general: () => ({
     fortuneUsed: 250000,
     insuranceFortuneUsed: 0,
     partnersToAvoid: ['joe', 'john'],
   }),
-  borrowers: [Factory.get('borrower')],
+  borrowers: [],
   status: 'active',
   property: () => ({ value: 1000000 }),
   files: () => ({}),
-  logic: () => ({ auction: {}, lender: {}, verification: {}, step: 1 }),
+  logic: () => ({
+    auction: {},
+    lender: {},
+    verification: {},
+    step: 1,
+  }),
   name: () => 'request name',
   emails: () => [],
 });
 
-Factory.define('loanRequest2', LoanRequests);
-
-Factory.define(
-  'loanRequestDev',
-  LoanRequests,
-  Factory.extend('loanRequest', {
-    userId: Factory.get('dev'),
-  }),
-);
-
 Factory.define('offer', Offers, {
-  userId: Factory.get('partner'),
-  requestId: Factory.get('loanRequest'),
   createdAt: () => new Date(),
   organization: 'bankName',
   canton: 'GE',
@@ -88,13 +79,11 @@ Factory.define('offer', Offers, {
 });
 
 Factory.define('adminAction', AdminActions, {
-  requestId: Factory.get('loanRequest'),
   type: 'test',
   status: 'active',
 });
 
 Factory.define('comparator', Comparators, {
-  userId: Factory.get('user'),
   customFields: [],
   customFieldCount: 0,
   hiddenFields: [],
@@ -102,7 +91,6 @@ Factory.define('comparator', Comparators, {
 });
 
 Factory.define('property', Properties, {
-  userId: Factory.get('user'),
   name: 'testName',
   address: 'testAddress',
   value: 100000,

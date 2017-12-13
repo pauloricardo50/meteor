@@ -5,23 +5,26 @@ import { shallow } from '/imports/js/helpers/testHelpers/enzyme';
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 import { stubCollections } from '/imports/js/helpers/testHelpers';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import Comparator from '../Comparator';
 import CompareTable from '../CompareTable';
 import CompareOptions from '../CompareOptions';
 
 describe('<Comparator />', () => {
+  let userId;
   let comparator;
   let properties;
   let wrapper;
 
   beforeEach(() => {
+    resetDatabase();
     stubCollections();
-    comparator = Factory.create('comparator');
-    properties = [Factory.create('property')];
-    wrapper = shallow(
-      <Comparator comparator={comparator} properties={properties} />,
-    );
+    userId = Factory.create('user')._id;
+    comparator = Factory.create('comparator', { userId });
+    properties = [Factory.create('property', { userId })];
+    console.log(properties);
+    wrapper = shallow(<Comparator comparator={comparator} properties={properties} />);
   });
 
   afterEach(() => {

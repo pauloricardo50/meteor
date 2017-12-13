@@ -21,7 +21,6 @@ describe('Factories', () => {
     'partner',
     'borrower',
     'loanRequest',
-    'loanRequestDev',
     'offer',
     'comparator',
     'property',
@@ -30,7 +29,10 @@ describe('Factories', () => {
 
   factories.forEach((fact) => {
     it(`${fact} builds correctly`, () => {
-      const result = Factory.create(fact);
+      const result = Factory.create(fact, {
+        userId: 'testId',
+        requestId: 'test-request',
+      });
 
       expect(typeof result).to.equal('object');
       expect(result._id).to.not.equal(undefined);

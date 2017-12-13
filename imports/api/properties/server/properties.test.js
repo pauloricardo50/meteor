@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import { Factory } from 'meteor/dburles:factory';
 import { stubCollections } from '/imports/js/helpers/testHelpers';
 import sinon from 'sinon';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import Properties from '../properties';
 
@@ -20,6 +21,7 @@ describe('Properties', () => {
       let userId;
 
       beforeEach(() => {
+        resetDatabase();
         stubCollections();
         userId = Factory.create('user')._id;
         sinon.stub(Meteor, 'userId').callsFake(() => userId);
@@ -56,6 +58,7 @@ describe('Properties', () => {
       let propertyId;
 
       beforeEach(() => {
+        resetDatabase();
         stubCollections();
         userId = Factory.create('user')._id;
         propertyId = Factory.create('property', { userId })._id;

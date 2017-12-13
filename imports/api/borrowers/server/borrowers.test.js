@@ -31,7 +31,7 @@ describe('Borrowers', () => {
 
     beforeEach(() => {
       userId = Factory.create('user')._id;
-      borrowerId = Factory.create('borrower')._id;
+      borrowerId = Factory.create('borrower', { userId })._id;
       sinon.stub(Meteor, 'userId').callsFake(() => userId);
     });
 

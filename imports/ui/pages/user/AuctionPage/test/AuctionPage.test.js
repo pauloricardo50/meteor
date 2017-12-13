@@ -6,6 +6,7 @@ import {
   stubCollections,
 } from '/imports/js/helpers/testHelpers';
 import { Factory } from 'meteor/dburles:factory';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import AuctionStart from '../AuctionStart';
 
@@ -16,6 +17,7 @@ if (Meteor.isClient) {
       const component = () => getMountedComponent(AuctionStart, props);
 
       beforeEach(() => {
+        resetDatabase();
         stubCollections();
         props = {
           loanRequest: Factory.create('loanRequest'),

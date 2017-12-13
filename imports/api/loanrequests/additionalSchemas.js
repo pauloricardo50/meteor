@@ -380,7 +380,10 @@ export const LogicSchema = new SimpleSchema({
     defaultValue: '',
     optional: true,
   },
-  lender: Object,
+  lender: {
+    type: Object,
+    defaultValue: {},
+  },
   'lender.type': {
     type: String,
     optional: true,
