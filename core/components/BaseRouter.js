@@ -8,7 +8,7 @@ import {
 import { IntlProvider } from 'react-intl';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import MuiTheme from '../mui_custom';
+import MuiTheme from '../config/mui_custom';
 import Loadable from '../utils/loadable';
 import ErrorBoundary from './ErrorBoundary';
 import ScrollToTop from './ScrollToTop';

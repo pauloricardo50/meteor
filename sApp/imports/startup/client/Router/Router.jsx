@@ -1,80 +1,85 @@
 import React from 'react';
-import {
-  BrowserRouter as ReactRouter,
-  Route,
-  Switch,
-  withRouter,
-} from 'react-router-dom';
-import { IntlProvider } from 'react-intl';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import theme from '/imports/js/config/mui_custom';
-import Loadable from '/imports/js/helpers/loadable';
-import { PasswordPage } from '/imports/ui/containers/PublicContainers';
-import ErrorBoundary from '/imports/ui/components/general/ErrorBoundary';
+import { Route, Switch } from 'react-router-dom';
+
+import BaseRouter from 'core/components/BaseRouter';
+import NotFound from 'core/components/NotFound';
+
 import { getUserLocale, getTranslations, getFormats } from '../../localization';
-import ScrollToTop from './ScrollToTop';
-
-// import PublicRoutes from './PublicRoutes';
-// import UserRoutes from './UserRoutes';
-// import AdminRoutes from './AdminRoutes';
-// import PartnerRoutes from './PartnerRoutes';
-
-const PublicRoutes = Loadable({
-  loader: () => import('./PublicRoutes'),
-});
-const UserRoutes = Loadable({
-  loader: () => import('./UserRoutes'),
-});
-const AdminRoutes = Loadable({
-  loader: () => import('./AdminRoutes'),
-});
-const PartnerRoutes = Loadable({
-  loader: () => import('./PartnerRoutes'),
-});
-
-const ScrollToTopWithRouter = withRouter(ScrollToTop);
+import AccountPage from '../../../ui/pages/user/AccountPage';
+import {
+  UserLayout,
+  DashboardPage,
+  BorrowerPage,
+  PropertyPage,
+  AuctionPage,
+  StrategyPage,
+  OfferPickerPage,
+  StructurePage,
+  VerificationPage,
+  ContractPage,
+  ClosingPage,
+  DevPage,
+  FinancePage,
+  ComparePage,
+  AppPage,
+  FilesPage,
+} from '../../../ui/containers/UserContainers';
 
 const Router = () => (
-  <ErrorBoundary helper="root">
-    {/* Inject custom material-ui theme for everything to look good */}
-    <MuiThemeProvider theme={theme}>
-      {/* Inject Intl props to all components to render the proper locale */}
-      <IntlProvider
-        locale={getUserLocale()}
-        messages={getTranslations()}
-        formats={getFormats()}
-        defaultLocale="fr"
-        // key={getUserLocale()} Use this if the app doesn't reload on locale change
-      >
-        {/* Make sure all errors are catched in the top-level of the app
-        can't put it higher up, because it needs
-        react-intl to display messages */}
-        <ErrorBoundary helper="app">
-          <ReactRouter>
-            {/* Every route change should scroll to top, which isn't automatic */}
-            <ScrollToTopWithRouter>
-              <Switch>
-                <Route
-                  path="/app"
-                  render={props => <UserRoutes {...props} />}
-                />
-                <Route
-                  path="/admin"
-                  render={props => <AdminRoutes {...props} />}
-                />
-                <Route
-                  path="/partner"
-                  render={props => <PartnerRoutes {...props} />}
-                />
-                <Route exact path="/" component={PasswordPage} />
-                <Route path="/" render={props => <PublicRoutes {...props} />} />
-              </Switch>
-            </ScrollToTopWithRouter>
-          </ReactRouter>
-        </ErrorBoundary>
-      </IntlProvider>
-    </MuiThemeProvider>
-  </ErrorBoundary>
+  <BaseRouter
+    locale={getUserLocale()}
+    messages={getTranslations()}
+    formats={getFormats()}
+  >
+    <UserLayout
+      type="user"
+      render={layoutProps => (
+        <Switch>
+          <Route path="/dev" component={DevPage} />
+          <Route
+            path="/profile"
+            render={() => <AccountPage {...layoutProps} />}
+          />
+          <Route
+            path="/requests/:requestId/borrowers/:borrowerId/:tab"
+            component={BorrowerPage}
+          />
+          <Route
+            path="/requests/:requestId/property"
+            component={PropertyPage}
+          />
+          <Route path="/requests/:requestId/finance" component={FinancePage} />
+          <Route
+            path="/requests/:requestId/verification"
+            component={VerificationPage}
+          />
+          <Route
+            path="/requests/:requestId/structure"
+            component={StructurePage}
+          />
+          <Route path="/requests/:requestId/auction" component={AuctionPage} />
+          <Route
+            path="/requests/:requestId/strategy"
+            component={StrategyPage}
+          />
+          <Route
+            path="/requests/:requestId/offerpicker"
+            component={OfferPickerPage}
+          />
+          <Route
+            path="/requests/:requestId/contract"
+            component={ContractPage}
+          />
+          <Route path="/requests/:requestId/closing" component={ClosingPage} />
+          <Route path="/requests/:requestId/files" component={FilesPage} />
+          <Route path="/requests/:requestId" component={DashboardPage} />
+          <Route path="/compare" component={ComparePage} />
+          <Route path="/" component={AppPage} />
+          <Route component={NotFound} />
+        </Switch>
+      )}
+    />
+  </BaseRouter>
 );
 
 export default Router;

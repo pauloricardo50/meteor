@@ -1,27 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import AccountPage from '/imports/ui/pages/user/AccountPage';
-import {
-  UserLayout,
-  DashboardPage,
-  BorrowerPage,
-  PropertyPage,
-  AuctionPage,
-  StrategyPage,
-  OfferPickerPage,
-  StructurePage,
-  VerificationPage,
-  ContractPage,
-  ClosingPage,
-  DevPage,
-  FinancePage,
-  ComparePage,
-  AppPage,
-  FilesPage,
-} from '/imports/ui/containers/UserContainers';
-import NotFound from '/imports/ui/components/general/NotFound';
-
 const UserRoutes = props => (
   <UserLayout
     {...props}
