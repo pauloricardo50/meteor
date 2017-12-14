@@ -2,6 +2,7 @@
   "presets": ["env", "react", "stage-0"],
   "plugins": [
     "transform-class-properties",
-    ["babel-project-relative-import", { "importPathPrefix": "/" }]
+    ["babel-project-relative-import", { "importPathPrefix": "/" }],
+    ["module-alias", [{ "src": "../core", "expose": "core" }]]
   ]
 }
