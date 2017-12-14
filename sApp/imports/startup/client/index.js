@@ -9,7 +9,7 @@ import '../meteor-slingshot';
 import './css';
 
 import { localizationStartup } from '../localization';
-import RenderRoutes from './Router';
+import Router from './Router';
 
 /**
  * start - sets the app up
@@ -34,7 +34,7 @@ const start = (testElement) => {
   injectTapEventPlugin();
 
   // Render react-router routes
-  render(RenderRoutes(), testElement || document.getElementById('react-root'));
+  render(Router(), testElement || document.getElementById('react-root'));
 };
 
 export default start;

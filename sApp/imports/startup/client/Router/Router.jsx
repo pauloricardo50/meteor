@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  BrowserRouter as Router,
+  BrowserRouter as ReactRouter,
   Route,
   Switch,
   withRouter,
@@ -34,7 +34,7 @@ const PartnerRoutes = Loadable({
 
 const ScrollToTopWithRouter = withRouter(ScrollToTop);
 
-const RenderRoutes = () => (
+const Router = () => (
   <ErrorBoundary helper="root">
     {/* Inject custom material-ui theme for everything to look good */}
     <MuiThemeProvider theme={theme}>
@@ -50,7 +50,7 @@ const RenderRoutes = () => (
         can't put it higher up, because it needs
         react-intl to display messages */}
         <ErrorBoundary helper="app">
-          <Router>
+          <ReactRouter>
             {/* Every route change should scroll to top, which isn't automatic */}
             <ScrollToTopWithRouter>
               <Switch>
@@ -70,11 +70,11 @@ const RenderRoutes = () => (
                 <Route path="/" render={props => <PublicRoutes {...props} />} />
               </Switch>
             </ScrollToTopWithRouter>
-          </Router>
+          </ReactRouter>
         </ErrorBoundary>
       </IntlProvider>
     </MuiThemeProvider>
   </ErrorBoundary>
 );
 
-export default RenderRoutes;
+export default Router;

@@ -6,7 +6,7 @@ import { expect } from 'chai';
 
 // import jsdom from 'jsdom';
 
-import renderRoutes from '../Router';
+import Router from '../Router';
 // import start from './index';
 
 if (Meteor.isClient) {
@@ -23,12 +23,12 @@ if (Meteor.isClient) {
 
     it('renders without crashing', () => {
       const div = document.createElement('div');
-      render(renderRoutes(), div);
+      render(Router(), div);
     });
 
     it("doesn't throw", () => {
       const div = document.createElement('div');
-      expect(() => render(renderRoutes(), div)).to.not.throw();
+      expect(() => render(Router(), div)).to.not.throw();
     });
   });
 

@@ -5,7 +5,7 @@ import { T9n } from 'meteor/softwarerero:accounts-t9n';
 import moment from 'moment';
 import Loadable from '/imports/js/helpers/loadable';
 
-import messagesFR from '/build/lang/fr.json';
+import messagesFR from '../../build/lang/fr.json';
 
 import fr from 'react-intl/locale-data/fr';
 
