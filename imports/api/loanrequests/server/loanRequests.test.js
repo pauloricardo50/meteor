@@ -78,14 +78,25 @@ describe('loanRequests', () => {
 
       describe('pushRequestValue', () => {
         it('Properly pushes a value to request', () => {
+          console.log('pushRequestValue test starting..');
           const id = request._id;
           const object = { 'general.partnersToAvoid': 'Jack' };
-          return pushRequestValue.callPromise({ object, id }).then(() => {
-            const modifiedRequest = LoanRequests.findOne(id);
-            const length = request.general.partnersToAvoid.length;
+          console.log('obj: ', { object, id });
+          return pushRequestValue
+            .callPromise({ object, id })
+            .then((result) => {
+              console.log('callPromise result: ', result);
+              const modifiedRequest = LoanRequests.findOne(id);
+              const length = request.general.partnersToAvoid.length;
 
-            expect(modifiedRequest.general.partnersToAvoid.length).to.equal(length + 1);
-          });
+              console.log('modifiedRequest: ', modifiedRequest);
+
+              expect(modifiedRequest.general.partnersToAvoid.length).to.equal(length + 1);
+            })
+            .catch((error) => {
+              console.log('promise error: ', error);
+              throw error;
+            });
         });
       });
 

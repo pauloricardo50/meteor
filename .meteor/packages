@@ -29,7 +29,7 @@ practicalmeteor:mocha
 # dispatch:mocha
 dburles:factory
 xolvio:cleaner
-hwillson:stub-collections
+hwillson:stub-collections@=1.0.3
 # random@1.0.10
 # practicalmeteor:mocha-console-runner
 meteortesting:mocha

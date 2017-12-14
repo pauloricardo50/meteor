@@ -10,7 +10,6 @@ import { createPartner } from '../methods';
 
 describe('users', () => {
   beforeEach(() => {
-    console.log('resetting');
     resetDatabase();
     stubCollections();
   });

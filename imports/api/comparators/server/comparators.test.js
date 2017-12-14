@@ -81,7 +81,7 @@ describe('Comparators', () => {
         it('works', () => {
           let comparator = Comparators.findOne(comparatorId);
           expect(typeof comparator).to.equal('object');
-          expect(comparator.useBorrowers).to.equal(false);
+          expect(comparator.useBorrowers).to.equal(undefined);
 
           updateComparator._execute(
             {},

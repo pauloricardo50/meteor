@@ -192,13 +192,21 @@ export const pushRequestValue = new ValidatedMethod({
   name: 'loanRequests.pushValue',
   mixins: [CallPromiseMixin],
   validate({ id }) {
+    console.log('validate method: ', id);
     check(id, String);
   },
   run({ object, id }) {
     console.log('inside meteor method..');
     console.log('object: ', object);
     console.log('id: ', id);
-    return LoanRequests.update(id, { $push: object });
+    // console.log('request before push: ', LoanRequests.findOne(id));
+    console.log(
+      'collection2: ',
+      LoanRequests._c2._simpleSchema._validationContexts,
+    );
+    const result = LoanRequests.update(id, { $push: object });
+    console.log('update result:', result);
+    return result;
   },
 });
 
@@ -414,7 +422,10 @@ export const addEmail = new ValidatedMethod({
     requestId, emailId, _id, status, sendAt,
   }) {
     const object = {
-      emailId, _id, status, updatedAt: new Date(),
+      emailId,
+      _id,
+      status,
+      updatedAt: new Date(),
     };
 
     if (sendAt) {
