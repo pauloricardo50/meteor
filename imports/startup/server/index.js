@@ -32,4 +32,6 @@ Inject.rawHead('loader', Assets.getText('loader.html'));
 
 // Make sure this is passed a function, so that it gets random strings for
 // every client, instead of once on server-startup
-Inject.rawHead('loadingText', getHtml);
+
+// FIXME: This gets picked up by google crawlers..! Very bad
+// Inject.rawHead('loadingText', getHtml);
