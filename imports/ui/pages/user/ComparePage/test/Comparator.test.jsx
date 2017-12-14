@@ -22,8 +22,6 @@ describe('<Comparator />', () => {
     stubCollections();
 
     const user = Factory.create('user');
-    console.log('Comparator test');
-    console.log(user);
     userId = user._id;
     comparator = Factory.create('comparator', { userId });
     properties = [Factory.create('property', { userId })];

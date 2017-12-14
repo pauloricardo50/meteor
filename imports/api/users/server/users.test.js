@@ -10,6 +10,7 @@ import { createPartner } from '../methods';
 
 describe('users', () => {
   beforeEach(() => {
+    console.log('resetting');
     resetDatabase();
     stubCollections();
   });
@@ -20,10 +21,13 @@ describe('users', () => {
 
   describe('methods', () => {
     describe('doesUserExist', () => {
-      let email = 'yep@yop.com';
+      let email;
 
       beforeEach(() => {
-        Factory.create('user', { emails: [{ address: email }] });
+        email = 'yep@yop.com';
+        Factory.create('user', {
+          emails: [{ address: email, verified: false }],
+        });
       });
 
       it('finds an existing user', () => {
@@ -41,8 +45,8 @@ describe('users', () => {
       });
 
       it('works with totally different email', () => {
-        email = 'hello@world.com';
-        expect(Meteor.call('doesUserExist', email)).to.equal(false);
+        const inexistentEmail = 'hello@world.com';
+        expect(Meteor.call('doesUserExist', inexistentEmail)).to.equal(false);
       });
     });
   });

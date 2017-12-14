@@ -48,11 +48,12 @@ describe('loanRequests', () => {
           borrowers: ['asd'],
         };
 
-        const requestId = insertRequest.call({ object, userId });
-        const request = LoanRequests.findOne(requestId);
+        return insertRequest.callPromise({ object, userId }).then((requestId) => {
+          const request = LoanRequests.findOne(requestId);
 
-        expect(typeof request).to.equal('object');
-        expect(request.userId).to.equal(userId);
+          expect(typeof request).to.equal('object');
+          expect(request.userId).to.equal(userId);
+        });
       });
     });
 
@@ -67,10 +68,11 @@ describe('loanRequests', () => {
         it('Properly update a request', () => {
           const id = request._id;
           const object = { 'general.fortuneUsed': 300000 };
-          updateRequest.call({ object, id });
-          const modifiedRequest = LoanRequests.findOne(id);
 
-          expect(modifiedRequest.general.fortuneUsed).to.equal(300000);
+          return updateRequest.callPromise({ object, id }).then(() => {
+            const modifiedRequest = LoanRequests.findOne(id);
+            expect(modifiedRequest.general.fortuneUsed).to.equal(300000);
+          });
         });
       });
 
@@ -78,11 +80,12 @@ describe('loanRequests', () => {
         it('Properly pushes a value to request', () => {
           const id = request._id;
           const object = { 'general.partnersToAvoid': 'Jack' };
-          pushRequestValue._execute({ object, id });
-          const modifiedRequest = LoanRequests.findOne(id);
-          const length = request.general.partnersToAvoid.length;
+          return pushRequestValue.callPromise({ object, id }).then(() => {
+            const modifiedRequest = LoanRequests.findOne(id);
+            const length = request.general.partnersToAvoid.length;
 
-          expect(modifiedRequest.general.partnersToAvoid.length).to.equal(length + 1);
+            expect(modifiedRequest.general.partnersToAvoid.length).to.equal(length + 1);
+          });
         });
       });
 
@@ -90,33 +93,30 @@ describe('loanRequests', () => {
         it('Properly pops a value from a request', () => {
           const id = request._id;
           const object = { 'general.partnersToAvoid': 1 };
-          popRequestValue.call({ object, id });
-          const modifiedRequest = LoanRequests.findOne(id);
-          const length = request.general.partnersToAvoid.length;
+          popRequestValue.callPromise({ object, id }).then(() => {
+            const modifiedRequest = LoanRequests.findOne(id);
+            const length = request.general.partnersToAvoid.length;
 
-          expect(modifiedRequest.general.partnersToAvoid.length).to.equal(length - 1);
+            expect(modifiedRequest.general.partnersToAvoid.length).to.equal(length - 1);
+          });
         });
       });
 
       describe('startAuction', () => {
         if (Meteor.isServer) {
-          it('Should work', (done) => {
+          it('Should work', () => {
             const id = request._id;
 
             expect(!!request.logic.auction.status).to.equal(false);
             expect(request.logic.auction.startTime).to.equal(undefined);
 
-            startAuction
-              .callPromise({ id, object: {} })
-              .then(() => {
-                const modifiedRequest = LoanRequests.findOne(id);
+            return startAuction.callPromise({ id, object: {} }).then(() => {
+              const modifiedRequest = LoanRequests.findOne(id);
 
-                expect(modifiedRequest.logic.auction.status).to.equal('started');
-                expect(modifiedRequest.logic.auction.startTime instanceof Date)
-                  .to.be.true;
-                done();
-              })
-              .catch(done);
+              expect(modifiedRequest.logic.auction.status).to.equal('started');
+              expect(modifiedRequest.logic.auction.startTime instanceof Date).to
+                .be.true;
+            });
           });
         }
       });
