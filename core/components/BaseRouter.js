@@ -1,21 +1,18 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  withRouter,
-} from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import MuiTheme from '../config/mui_custom';
-import Loadable from '../utils/loadable';
 
 import ErrorBoundary from './ErrorBoundary';
 import ScrollToTop from './ScrollToTop';
 import LoginPage from './LoginPage';
 
-const BaseRouter = ({ locale, messages, formats, children }) => (
+const BaseRouter = ({
+  locale, messages, formats, children,
+}) => (
   <ErrorBoundary helper="root">
     {/* Inject custom material-ui theme for everything to look good */}
     <MuiThemeProvider theme={MuiTheme}>
@@ -25,23 +22,25 @@ const BaseRouter = ({ locale, messages, formats, children }) => (
         messages={messages}
         formats={formats}
         defaultLocale="fr"
-        // key={getUserLocale()} Use this if the app doesn't reload on locale change
+        // key={getUserLocale()} Use this if the app doesn't
+        // reload on locale change
       >
         {/* Make sure all errors are catched in the top-level of the app
         can't put it higher up, because it needs
         react-intl to display messages */}
         <ErrorBoundary helper="app">
           <Router>
-            {/* Every route change should scroll to top, which isn't automatic */}
+            {/* Every route change should scroll to top,
+              which isn't automatic */}
             <ScrollToTop>
               <Switch>
                 {/* LoginPage has to be above / path */}
                 <Route exact path="/login" component={LoginPage} />
                 <Route
                   path="/"
-                  render={childProps => {
-                    return React.cloneElement(children, { ...childProps });
-                  }}
+                  render={childProps =>
+                    React.cloneElement(children, { ...childProps })
+                  }
                 />
               </Switch>
             </ScrollToTop>
@@ -51,5 +50,12 @@ const BaseRouter = ({ locale, messages, formats, children }) => (
     </MuiThemeProvider>
   </ErrorBoundary>
 );
+
+BaseRouter.propTypes = {
+  locale: PropTypes.string.isRequired,
+  messages: PropTypes.object.isRequired,
+  formats: PropTypes.object.isRequired,
+  children: PropTypes.node.isRequired,
+};
 
 export default BaseRouter;
