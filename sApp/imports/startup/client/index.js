@@ -9,7 +9,7 @@ import '../meteor-slingshot';
 import './css';
 
 import { localizationStartup } from '../localization';
-import Router from './Router';
+import AppRouter from './AppRouter';
 
 /**
  * start - sets the app up
@@ -18,7 +18,7 @@ import Router from './Router';
  *
  * @return {type} undefined
  */
-const start = (testElement) => {
+const start = testElement => {
   // Initial injected html done in server startup index.js
   const loader = document.getElementById('inject-loader-wrapper');
   const loader2 = document.getElementById('loading-text');
@@ -34,7 +34,7 @@ const start = (testElement) => {
   injectTapEventPlugin();
 
   // Render react-router routes
-  render(Router(), testElement || document.getElementById('react-root'));
+  render(AppRouter(), testElement || document.getElementById('react-root'));
 };
 
 export default start;

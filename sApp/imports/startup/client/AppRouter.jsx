@@ -25,7 +25,7 @@ import {
   FilesPage,
 } from '../../../ui/containers/UserContainers';
 
-const Router = () => (
+const AppRouter = () => (
   <BaseRouter
     locale={getUserLocale()}
     messages={getTranslations()}
@@ -48,10 +48,7 @@ const Router = () => (
             path="/requests/:requestId/property"
             component={PropertyPage}
           />
-          <Route
-            path="/requests/:requestId/finance"
-            component={FinancePage}
-          />
+          <Route path="/requests/:requestId/finance" component={FinancePage} />
           <Route
             path="/requests/:requestId/verification"
             component={VerificationPage}
@@ -60,10 +57,7 @@ const Router = () => (
             path="/requests/:requestId/structure"
             component={StructurePage}
           />
-          <Route
-            path="/requests/:requestId/auction"
-            component={AuctionPage}
-          />
+          <Route path="/requests/:requestId/auction" component={AuctionPage} />
           <Route
             path="/requests/:requestId/strategy"
             component={StrategyPage}
@@ -76,19 +70,16 @@ const Router = () => (
             path="/requests/:requestId/contract"
             component={ContractPage}
           />
-          <Route
-            path="/requests/:requestId/closing"
-            component={ClosingPage}
-          />
+          <Route path="/requests/:requestId/closing" component={ClosingPage} />
           <Route path="/requests/:requestId/files" component={FilesPage} />
           <Route path="/requests/:requestId" component={DashboardPage} />
           <Route path="/compare" component={ComparePage} />
           <Route path="/" component={AppPage} />
           <Route component={NotFound} />
         </Switch>
-        )}
+      )}
     />
   </BaseRouter>
 );
 
-export default Router;
+export default AppRouter;
