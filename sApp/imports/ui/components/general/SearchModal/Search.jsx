@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
 
-import Loadable from '/imports/js/helpers/loadable';
+import Loadable from 'core/utils/loadable';
 import TextInput from '../TextInput';
 
 // import SearchResults from './SearchResults';
@@ -42,7 +42,7 @@ class Search extends Component {
         <h2 style={styles.h2}>
           <TextInput
             autoFocus
-            placeholder={'Search.placeholder'}
+            placeholder="Search.placeholder"
             id="search"
             style={styles.input}
             value={search}

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Loadable from '/imports/js/helpers/loadable';
+import Loadable from 'core/utils/loadable';
 import { injectIntl } from 'react-intl';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
@@ -26,7 +26,7 @@ const chartColors = {
   loan: colors.charts[0],
 };
 
-const getConfig = props => {
+const getConfig = (props) => {
   const r = props.loanRequest;
   const total = getProjectValue(r);
   const f = props.intl.formatMessage;
@@ -66,7 +66,9 @@ const getConfig = props => {
         const value = fN(Math.round(y), { format: 'money' });
         const percent = fN(y / total, { format: 'percentage' });
 
-        return `<span style="color:${color}">\u25CF</span> ${series.name}<br /> <b>${value}</b><br />${percent}`;
+        return `<span style="color:${color}">\u25CF</span> ${
+          series.name
+        }<br /> <b>${value}</b><br />${percent}`;
       },
       style: { fontSize: '14px' },
     },

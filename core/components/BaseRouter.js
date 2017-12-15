@@ -16,7 +16,7 @@ import ScrollToTop from './ScrollToTop';
 const BaseRouter = ({ locale, messages, formats, children }) => (
   <ErrorBoundary helper="root">
     {/* Inject custom material-ui theme for everything to look good */}
-    <MuiThemeProvider theme={theme}>
+    <MuiThemeProvider theme={MuiTheme}>
       {/* Inject Intl props to all components to render the proper locale */}
       <IntlProvider
         locale={locale}
@@ -31,9 +31,9 @@ const BaseRouter = ({ locale, messages, formats, children }) => (
         <ErrorBoundary helper="app">
           <Router>
             {/* Every route change should scroll to top, which isn't automatic */}
-            <ScrollToTopWithRouter>
+            <ScrollToTop>
               <Switch>{children}</Switch>
-            </ScrollToTopWithRouter>
+            </ScrollToTop>
           </Router>
         </ErrorBoundary>
       </IntlProvider>

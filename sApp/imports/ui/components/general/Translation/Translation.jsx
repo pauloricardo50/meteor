@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Loadable from '/imports/js/helpers/loadable';
+import Loadable from 'core/utils/loadable';
 
 // const {
 //   FormattedMessage,
@@ -23,11 +23,11 @@ import {
 import AutoTooltip from './AutoTooltip';
 
 /**
-* T - A wrapper around react-intl's Formatted Message, it
-* automatically adds tooltips if they exist.
-* It is only rerendered if the id changes
-* @extends Component
-*/
+ * T - A wrapper around react-intl's Formatted Message, it
+ * automatically adds tooltips if they exist.
+ * It is only rerendered if the id changes
+ * @extends Component
+ */
 export class T extends Component {
   render() {
     const {
@@ -80,7 +80,8 @@ export class T extends Component {
             Auto(formattedMessage[0])
           ) : (
             <span>{formattedMessage.map((msg, i) => Auto(msg, i))}</span>
-          ))}
+          ))
+        }
       </FormattedMessage>
     );
   }

@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import classnames from 'classnames';
 
 import ContactButton from '/imports/ui/components/general/ContactButton';
-import ErrorBoundary from '/imports/ui/components/general/ErrorBoundary';
+import ErrorBoundary from 'core/components/ErrorBoundary';
 import track from '/imports/js/helpers/analytics';
 import Navs from './Navs';
 

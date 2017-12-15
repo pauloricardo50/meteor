@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import TextInput from '../TextInput';
 
-import Loadable from '/imports/js/helpers/loadable';
+import Loadable from 'core/utils/loadable';
 
 // const SingleDatePicker = Loadable({
 //   loader: () => import('react-dates/lib/components/SingleDatePicker'),

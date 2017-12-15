@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Loadable from '/imports/js/helpers/loadable';
+import Loadable from 'core/utils/loadable';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import {
@@ -46,10 +46,9 @@ const getConfig = (props) => {
     },
     tooltip: {
       formatter() {
-        return `<span style="color:${this.color}">\u25CF</span> ${this
-          .key}<br /> <b>CHF ${toMoney(
-          Math.round(this.y),
-        )}</b><br />${Math.round(1000 * this.y / total) / 10}%`;
+        return `<span style="color:${this.color}">\u25CF</span> ${
+          this.key
+        }<br /> <b>CHF ${toMoney(Math.round(this.y))}</b><br />${Math.round(1000 * this.y / total) / 10}%`;
       },
       style: { fontSize: '14px' },
     },
