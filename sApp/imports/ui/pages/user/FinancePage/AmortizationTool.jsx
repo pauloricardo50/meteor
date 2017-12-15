@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-// import SelectField from '/imports/ui/components/general/Material/SelectField';
-// import MenuItem from '/imports/ui/components/general/Material/MenuItem';
-// import TextField from '/imports/ui/components/general/Material/TextField';
+// import SelectField from 'core/components/Material/SelectField';
+// import MenuItem from 'core/components/Material/MenuItem';
+// import TextField from 'core/components/Material/TextField';
 // import MaskedInput from 'react-text-mask';
 
 import Select from '/imports/ui/components/general/Select';

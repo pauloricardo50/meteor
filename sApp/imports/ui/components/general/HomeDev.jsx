@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Dialog from '/imports/ui/components/general/Material/Dialog';
+import Dialog from 'core/components/Material/Dialog';
 import Button from '/imports/ui/components/general/Button';
 
 import { T } from 'core/components/Translation';

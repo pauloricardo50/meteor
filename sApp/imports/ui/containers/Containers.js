@@ -1,6 +1,6 @@
 import { merge } from 'react-komposer';
 
-import Loading from '/imports/ui/components/general/Loading';
+import Loading from 'core/components/Loading';
 import composeWithTracker from '/imports/ui/containers/composers/composeWithTracker';
 
 import { currentUserComposer } from './composers/GeneralComposers';

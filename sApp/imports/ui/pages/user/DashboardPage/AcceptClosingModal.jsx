@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import cleanMethod from '/imports/api/cleanMethods';
 
 import Button from '/imports/ui/components/general/Button';
-import Dialog from '/imports/ui/components/general/Material/Dialog';
+import Dialog from 'core/components/Material/Dialog';
 
 import { T } from 'core/components/Translation';
 

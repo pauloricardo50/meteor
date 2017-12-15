@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Slider from '/imports/ui/components/general/Material/Slider';
+import Slider from 'core/components/Material/Slider';
 
 // Set the step according to the delta between max and min, and make
 // sure that the delta can be divided without leftover by step

@@ -6,7 +6,7 @@ import Button from '/imports/ui/components/general/Button';
 
 import track from '/imports/js/helpers/analytics';
 import cleanMethod from '/imports/api/cleanMethods';
-import { LoadingComponent } from '/imports/ui/components/general/Loading';
+import { LoadingComponent } from 'core/components/Loading';
 import { T } from 'core/components/Translation';
 import getSteps from '/imports/js/arrays/steps';
 import DashboardItem from './DashboardItem';

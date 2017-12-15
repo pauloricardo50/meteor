@@ -7,8 +7,8 @@ import Input, { InputLabel } from 'material-ui/Input';
 import withStyles from 'material-ui/styles/withStyles';
 
 import Icon from '../Icon';
-import MenuItem from '../Material/MenuItem';
-import Divider from '../Material/Divider';
+import MenuItem from 'core/components/Material/MenuItem';
+import Divider from 'core/components/Material/Divider';
 
 const styles = {
   icon: {

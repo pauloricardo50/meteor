@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Dialog from '/imports/ui/components/general/Material/Dialog';
+import Dialog from 'core/components/Material/Dialog';
 
 import { T } from 'core/components/Translation';
 import IconButton from '../IconButton';

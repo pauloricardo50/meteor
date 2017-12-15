@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import TextField from '/imports/ui/components/general/Material/TextField';
+import TextField from 'core/components/Material/TextField';
 import Button from '/imports/ui/components/general/Button';
 
 const styles = {

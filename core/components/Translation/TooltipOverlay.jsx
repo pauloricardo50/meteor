@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 
-import { tooltips, tooltipsById } from '/imports/js/arrays/tooltips';
+import { tooltips, tooltipsById } from 'core/utils/tooltips';
 import track from 'core/utils/analytics';
 
 import Tooltip from './Tooltip';

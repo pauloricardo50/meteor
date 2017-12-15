@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Radio, {
   RadioGroup,
-} from '/imports/ui/components/general/Material/Radio';
+} from 'core/components/Material/Radio';
 import { FormLabel, FormControl, FormControlLabel } from 'material-ui/Form';
 
 import { T } from 'core/components/Translation';

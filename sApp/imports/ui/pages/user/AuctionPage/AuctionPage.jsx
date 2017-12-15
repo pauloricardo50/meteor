@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import { LoadingComponent } from '/imports/ui/components/general/Loading';
+import { LoadingComponent } from 'core/components/Loading';
 
 import ProcessPage from '/imports/ui/components/general/ProcessPage';
 import AuctionStart from './AuctionStart';

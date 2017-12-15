@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { LoadingComponent } from '../Loading';
+import { LoadingComponent } from 'core/components/Loading';
 import { getLogismataToken } from '/imports/js/helpers/logismata/methods';
 
 export default class Logismata extends Component {
@@ -15,7 +15,7 @@ export default class Logismata extends Component {
     getLogismataToken
       .callPromise()
       .then(token => this.setState({ authToken: token }))
-      .catch((e) => {
+      .catch(e => {
         this.setState({ error: e.message });
       });
   }

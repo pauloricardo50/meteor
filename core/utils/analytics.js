@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { analytics } from 'meteor/okgrow:analytics';
-import { storageAvailable, isDemo } from '/imports/js/helpers/browserFunctions';
+import { storageAvailable, isDemo } from './browserFunctions';
 
 /**
  * allowTracking - Prevents tracking during tests and on a demo website

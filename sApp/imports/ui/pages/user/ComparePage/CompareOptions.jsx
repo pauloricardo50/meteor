@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '/imports/ui/components/general/Button';
-import Toggle from '/imports/ui/components/general/Material/Toggle';
+import Toggle from 'core/components/Material/Toggle';
 
 import { T } from 'core/components/Translation';
 import DefaultOptions from './DefaultOptions';

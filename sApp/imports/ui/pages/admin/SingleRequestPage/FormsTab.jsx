@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 
-// import SelectField from '/imports/ui/components/general/Material/SelectField';
-// import MenuItem from '/imports/ui/components/general/Material/MenuItem';
-import Toggle from '/imports/ui/components/general/Material/Toggle';
+// import SelectField from 'core/components/Material/SelectField';
+// import MenuItem from 'core/components/Material/MenuItem';
+import Toggle from 'core/components/Material/Toggle';
 import Select from '/imports/ui/components/general/Select';
 
 import AutoForm from '/imports/ui/components/general/AutoForm';

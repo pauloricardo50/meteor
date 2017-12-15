@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 import reactStringReplace from 'react-string-replace';
 
-import { tooltips } from '/imports/js/arrays/tooltips';
+import { tooltips } from 'core/utils/tooltips';
 import TooltipOverlay from './TooltipOverlay';
 
-const AutoTooltip = (props) => {
+const AutoTooltip = props => {
   let content = null;
 
   if (!props.children) {
@@ -29,18 +29,15 @@ const AutoTooltip = (props) => {
     content = reactStringReplace(
       props.children,
       new RegExp(`(${Object.keys(tooltips(props.list)).join('|')})`, 'gi'),
-      (match, i) =>
-        (<TooltipOverlay {...props} key={i} match={match}>
+      (match, i) => (
+        <TooltipOverlay {...props} key={i} match={match}>
           {match}
-        </TooltipOverlay>),
+        </TooltipOverlay>
+      ),
     );
   }
 
-  return (
-    <span>
-      {content}
-    </span>
-  );
+  return <span>{content}</span>;
 };
 
 AutoTooltip.propTypes = {

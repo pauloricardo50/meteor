@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
-import { LoadingComponent } from '/imports/ui/components/general/Loading';
+import { LoadingComponent } from 'core/components/Loading';
 import { T } from 'core/components/Translation';
 
 require('moment-duration-format');

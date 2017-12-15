@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
-import TextField from '/imports/ui/components/general/Material/TextField';
+import TextField from 'core/components/Material/TextField';
 
 import track, { addUserTracking } from '/imports/js/helpers/analytics';
 import Button from '/imports/ui/components/general/Button';

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import partition from 'lodash/partition';
 
-import Toggle from '/imports/ui/components/general/Material/Toggle';
+import Toggle from 'core/components/Material/Toggle';
 
 import { T } from 'core/components/Translation';
 import Button from '/imports/ui/components/general/Button';

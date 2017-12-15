@@ -5,7 +5,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { GoogleMaps } from 'meteor/dburles:google-maps';
 
-import { LoadingComponent } from './Loading';
+import { LoadingComponent } from 'core/components/Loading';
 
 class GoogleMap extends Component {
   componentDidMount() {
@@ -22,7 +22,7 @@ class GoogleMap extends Component {
       return (
         <div
           className="map-container"
-          ref={(c) => {
+          ref={c => {
             this.container = c;
           }}
           // style={{ width: '100%' }}

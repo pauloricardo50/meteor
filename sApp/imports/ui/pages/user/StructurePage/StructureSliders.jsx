@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Slider from '/imports/ui/components/general/Material/Slider';
+import Slider from 'core/components/Material/Slider';
 
 import TextInput from '/imports/ui/components/general/TextInput';
 import {
