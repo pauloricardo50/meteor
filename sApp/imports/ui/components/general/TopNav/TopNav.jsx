@@ -6,7 +6,7 @@ import Toolbar from 'material-ui/Toolbar/Toolbar';
 
 import track from '/imports/js/helpers/analytics';
 
-import Button from '../Button';
+import Button from 'core/components/Button';
 import SearchModal from '../SearchModal';
 import { T } from '../Translation';
 import TopNavDropdown from './TopNavDropdown';

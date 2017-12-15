@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 
 import RequestDetails from '/imports/ui/components/partner/RequestDetails';
 import PartnerOfferForm from '/imports/ui/components/partner/PartnerOfferForm';

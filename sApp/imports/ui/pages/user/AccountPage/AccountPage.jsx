@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 
 import Page from '/imports/ui/components/general/Page';
 import { T } from 'core/components/Translation';

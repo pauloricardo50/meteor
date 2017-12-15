@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow } from '/imports/js/helpers/testHelpers/enzyme';
 import { expect } from 'chai';
 
-import Button from '../Button';
+import Button from 'core/components/Button';
 
 describe('Button', () => {
   // Label removes testing warnings

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 
 const TodoItem = ({ name, small, subtitle, label, handleClick }) => (
   <article className="mask1 admin-todo">

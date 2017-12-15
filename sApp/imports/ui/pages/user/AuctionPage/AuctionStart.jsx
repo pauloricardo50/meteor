@@ -4,7 +4,7 @@ import cleanMethod from '/imports/api/cleanMethods';
 import CountUp from 'react-countup';
 import { injectIntl } from 'react-intl';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 import { getLenderCount } from '/imports/js/helpers/requestFunctions';
 
 import ConfirmButton from '/imports/ui/components/general/ConfirmButton';

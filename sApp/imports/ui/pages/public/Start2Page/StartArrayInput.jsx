@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 
 import { T } from 'core/components/Translation';
 import StartTextField from './StartTextField';

@@ -4,7 +4,7 @@ import merge from 'lodash/merge';
 import queryString from 'query-string';
 import classnames from 'classnames';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 import IconButton from '/imports/ui/components/general/IconButton';
 
 import { T } from 'core/components/Translation';

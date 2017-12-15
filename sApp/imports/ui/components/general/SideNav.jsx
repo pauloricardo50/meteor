@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 import Icon from '/imports/ui/components/general/Icon';
 
 const adminLinks = [

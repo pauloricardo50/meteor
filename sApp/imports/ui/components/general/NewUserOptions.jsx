@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 import { T } from 'core/components/Translation';
 
 import HomeDev from './HomeDev';

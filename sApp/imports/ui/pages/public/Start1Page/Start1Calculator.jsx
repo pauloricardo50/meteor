@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import track from '/imports/js/helpers/analytics';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 import Icon from '/imports/ui/components/general/Icon';
 
 import constants from '/imports/js/config/constants';

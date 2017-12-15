@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 import { Link } from 'react-router-dom';
 
 import { T } from 'core/components/Translation';

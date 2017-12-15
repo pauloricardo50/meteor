@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 import { fakeBorrower } from '/imports/api/borrowers/fakes';
 
 const MergeRecursive = (obj1, obj2) => {

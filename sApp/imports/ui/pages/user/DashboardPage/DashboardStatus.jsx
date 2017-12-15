@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 
 import track from '/imports/js/helpers/analytics';
 import cleanMethod from '/imports/api/cleanMethods';

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classnames from 'classnames';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 
 const styles = {
   button: {

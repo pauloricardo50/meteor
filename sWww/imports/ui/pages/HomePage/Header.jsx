@@ -4,7 +4,7 @@ import Scroll from 'react-scroll';
 import { T } from 'core/components/Translation';
 import IconButton from '/imports/ui/components/general/IconButton';
 
-import Buttons from './Buttons';
+import Buttons from 'core/components/Buttons';
 import Devices from './Devices';
 
 const Header = () => (

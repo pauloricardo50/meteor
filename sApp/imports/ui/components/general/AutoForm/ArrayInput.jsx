@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import cleanMethod from '/imports/api/cleanMethods';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 
 import { T } from 'core/components/Translation';
 import TextInput from './TextInput';

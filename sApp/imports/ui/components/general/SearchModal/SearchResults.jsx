@@ -7,7 +7,7 @@ import List, { ListItem, ListItemText } from 'material-ui/List';
 
 import { T } from 'core/components/Translation';
 import { generalTooltips } from '/imports/js/arrays/tooltips';
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 
 const styles = {
   list: {

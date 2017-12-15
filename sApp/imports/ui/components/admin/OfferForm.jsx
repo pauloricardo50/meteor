@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 import Checkbox from '/imports/ui/components/general/Checkbox';
 import TextInput from '/imports/ui/components/general/TextInput';
 

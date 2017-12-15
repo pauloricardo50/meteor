@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import TextField from 'core/components/Material/TextField';
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 
 const styles = {
   buttonDiv: {

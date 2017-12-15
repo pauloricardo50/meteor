@@ -7,7 +7,7 @@ import omit from 'lodash/omit';
 
 // import RaisedButton from 'material-ui/RaisedButton';
 // import FlatButton from 'material-ui/FlatButton'
-import MuiButton from 'material-ui/Button';
+import MuiButton from 'core/components/Button';
 
 const getColor = ({ primary, secondary, color }) => {
   if (primary) {

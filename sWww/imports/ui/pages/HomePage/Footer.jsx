@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { T } from 'core/components/Translation';
 
-import Buttons from './Buttons';
+import Buttons from 'core/components/Buttons';
 
 const Footer = () => (
   <div className="footer">

@@ -5,7 +5,7 @@ import Scroll from 'react-scroll';
 import CountUp from 'react-countup';
 import { injectIntl } from 'react-intl';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests';
 import Recap from '/imports/ui/components/general/Recap';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation';

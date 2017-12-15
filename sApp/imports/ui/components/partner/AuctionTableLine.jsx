@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 import { Link } from 'react-router-dom';
 
 import { toMoney } from '/imports/js/helpers/conversionFunctions';

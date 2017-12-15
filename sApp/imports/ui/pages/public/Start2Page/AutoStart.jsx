@@ -6,7 +6,7 @@ import classnames from 'classnames';
 
 import { T } from 'core/components/Translation';
 import { trackOncePerSession } from '/imports/js/helpers/analytics';
-import ButtonInput from './ButtonInput';
+import ButtonInput from 'core/components/ButtonInput';
 import Input from './Input';
 import MultipleInput from './MultipleInput';
 import StartArrayInput from './StartArrayInput';

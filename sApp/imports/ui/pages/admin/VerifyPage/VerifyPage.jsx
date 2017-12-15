@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 
 import cleanMethod from '/imports/api/cleanMethods';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 import TextField from 'core/components/Material/TextField';
 // import DropDownMenu from 'core/components/Material/DropDownMenu';
 import MenuItem from 'core/components/Material/MenuItem';

@@ -6,7 +6,7 @@ import partition from 'lodash/partition';
 import Toggle from 'core/components/Material/Toggle';
 
 import { T } from 'core/components/Translation';
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 
 const styles = {
   toggles: {

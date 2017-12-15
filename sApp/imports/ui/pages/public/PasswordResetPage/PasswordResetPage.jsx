@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Accounts } from 'meteor/accounts-base';
 
 import TextField from 'core/components/Material/TextField';
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 
 import { T } from 'core/components/Translation';
 

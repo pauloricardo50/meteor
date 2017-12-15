@@ -9,7 +9,7 @@ import {
   Snackbar,
 } from 'material-ui';
 
-import MuiButton from '/imports/ui/components/general/Button';
+import MuiButton from 'core/components/Button';
 
 class LoginForm extends Accounts.ui.LoginForm {
   componentWillMount() {

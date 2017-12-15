@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 import TextInput from '/imports/ui/components/general/TextInput';
 
 const TodoStep = ({ step, onChange, handleRemove }) => (

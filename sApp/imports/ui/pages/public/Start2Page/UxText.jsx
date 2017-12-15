@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 import { T } from 'core/components/Translation';
 
 const UxText = ({ onClick }) => (

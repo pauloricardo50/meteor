@@ -5,7 +5,7 @@ import Dialog from 'core/components/Material/Dialog';
 
 import { T } from 'core/components/Translation';
 import IconButton from '../IconButton';
-import Button from '../Button';
+import Button from 'core/components/Button';
 import Search from './Search';
 
 export default class SearchModal extends Component {

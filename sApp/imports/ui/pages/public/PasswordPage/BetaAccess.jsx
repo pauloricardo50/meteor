@@ -1,6 +1,6 @@
 import React from 'react';
 import Dialog from 'core/components/Material/Dialog';
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 import TextField from 'core/components/Material/TextField';
 
 export default class BetaAccess extends React.Component {

@@ -6,7 +6,7 @@ import { Meteor } from 'meteor/meteor';
 import orderBy from 'lodash/orderBy';
 import debounce from 'lodash/debounce';
 
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 import Icon from '/imports/ui/components/general/Icon';
 
 import { easeOut } from '/imports/js/helpers/browserFunctions';

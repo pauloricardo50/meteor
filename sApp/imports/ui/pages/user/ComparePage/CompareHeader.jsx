@@ -5,7 +5,7 @@ import { T } from 'core/components/Translation';
 import DialogSimple from '/imports/ui/components/general/DialogSimple';
 import IconButton from '/imports/ui/components/general/IconButton';
 import Icon from '/imports/ui/components/general/Icon';
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 
 import CustomFieldAdder from './CustomFieldAdder';
 import FilterIcon from './FilterIcon';

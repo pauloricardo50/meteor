@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 import ConfirmButton from '/imports/ui/components/general/ConfirmButton';
 import VerificationRequested from './VerificationRequested';
 

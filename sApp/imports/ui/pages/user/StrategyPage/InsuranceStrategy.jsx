@@ -3,7 +3,7 @@ import React from 'react';
 
 import { T } from 'core/components/Translation';
 import StrategyChoices from '/imports/ui/components/general/StrategyChoices';
-import Button from '/imports/ui/components/general/Button';
+import Button from 'core/components/Button';
 
 const getChoices = () => [
   {
