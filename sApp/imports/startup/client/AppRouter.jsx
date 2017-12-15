@@ -4,8 +4,13 @@ import { Route, Switch } from 'react-router-dom';
 import BaseRouter from 'core/components/BaseRouter';
 import NotFound from 'core/components/NotFound';
 
-import { getUserLocale, getTranslations, getFormats } from '../../localization';
-import AccountPage from '../../../ui/pages/user/AccountPage';
+import {
+  getUserLocale,
+  getTranslations,
+  getFormats,
+} from 'core/utils/localization';
+
+import AccountPage from '../../ui/pages/user/AccountPage';
 import {
   UserLayout,
   DashboardPage,
