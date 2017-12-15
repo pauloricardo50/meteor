@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import IconButton from '/imports/ui/components/general/IconButton';
 
 const styles = theme => ({

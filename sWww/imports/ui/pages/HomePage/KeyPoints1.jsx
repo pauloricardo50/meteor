@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Scroll from 'react-scroll';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 const KeyPoints1 = props => (
   <Scroll.Element name="descriptions" className="feature3 animated fadeInUp">

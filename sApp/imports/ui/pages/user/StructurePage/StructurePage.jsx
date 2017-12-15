@@ -6,7 +6,7 @@ import cleanMethod from '/imports/api/cleanMethods';
 
 import LoadingButton from '/imports/ui/components/general/LoadingButton';
 import ProcessPage from '/imports/ui/components/general/ProcessPage';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import track from '/imports/js/helpers/analytics';
 import { toNumber } from '/imports/js/helpers/conversionFunctions';
 

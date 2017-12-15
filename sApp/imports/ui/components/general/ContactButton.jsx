@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Button from '/imports/ui/components/general/Button';
 import track from '/imports/js/helpers/analytics';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import colors from '/imports/js/config/colors';
 import supportStaff from '/imports/js/arrays/supportStaff';
 import Icon from '/imports/ui/components/general/Icon';

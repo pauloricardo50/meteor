@@ -1,7 +1,7 @@
 import React from 'react';
 import Scroll from 'react-scroll';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import IconButton from '/imports/ui/components/general/IconButton';
 
 import Buttons from './Buttons';

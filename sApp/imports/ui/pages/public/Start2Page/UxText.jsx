@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '/imports/ui/components/general/Button';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 const UxText = ({ onClick }) => (
   <div className="ux-text animated fadeIn text-center">

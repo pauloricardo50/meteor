@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Button from '/imports/ui/components/general/Button';
 import Toggle from '/imports/ui/components/general/Material/Toggle';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import DefaultOptions from './DefaultOptions';
 import AdvancedOptions from './AdvancedOptions';
 import PropertyAdder from './PropertyAdder';

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import classNames from 'classnames';
 import track from '/imports/js/helpers/analytics';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 export default class StrategyChoices extends Component {
   renderChoice(choice, index) {

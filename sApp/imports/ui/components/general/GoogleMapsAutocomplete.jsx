@@ -13,7 +13,7 @@ import { FormControl } from 'material-ui/Form';
 import Input, { InputLabel } from 'material-ui/Input';
 import { withStyles } from 'material-ui/styles';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 const defaultStyles = {
   root: {

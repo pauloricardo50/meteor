@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import FileDownloader from '/imports/ui/components/general/FileDownloader';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 const ContractDownloader = ({ contract }) => {
   const contractKey = contract && contract.length && contract[0].key;

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import ConfirmButton from '/imports/ui/components/general/ConfirmButton';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import VerificationRequested from './VerificationRequested';
 
 const VerificationFailed = ({ verification, onClick }) => (

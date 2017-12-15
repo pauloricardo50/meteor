@@ -8,7 +8,7 @@ import Button from '/imports/ui/components/general/Button';
 import { getLenderCount } from '/imports/js/helpers/requestFunctions';
 
 import ConfirmButton from '/imports/ui/components/general/ConfirmButton';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import track from '/imports/js/helpers/analytics';
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 import AuctionForm from './AuctionForm';

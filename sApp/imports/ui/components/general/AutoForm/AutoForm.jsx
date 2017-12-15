@@ -3,7 +3,7 @@ import React from 'react';
 
 import get from 'lodash/get';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import ZipAutoComplete from '/imports/ui/components/general/ZipAutoComplete';
 
 import TextInput from './TextInput';

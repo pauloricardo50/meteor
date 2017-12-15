@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Dialog from '/imports/ui/components/general/Material/Dialog';
 import Button from '/imports/ui/components/general/Button';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import track from '/imports/js/helpers/analytics';
 
 export default class HomeDev extends Component {

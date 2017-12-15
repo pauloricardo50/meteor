@@ -3,7 +3,7 @@ import React from 'react';
 
 import { getLoanValue } from '/imports/js/helpers/requestFunctions';
 import StrategyChoices from '/imports/ui/components/general/StrategyChoices';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import TranchePicker from './TranchePicker';
 import LenderSummary from './LenderSummary';
 

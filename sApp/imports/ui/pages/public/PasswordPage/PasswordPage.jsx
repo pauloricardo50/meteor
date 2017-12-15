@@ -6,7 +6,7 @@ import Button from '/imports/ui/components/general/Button';
 
 import BetaAccess from './BetaAccess';
 import { isDemo } from '/imports/js/helpers/browserFunctions';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 const PasswordPage = (props) => {
   if (props.currentUser) {

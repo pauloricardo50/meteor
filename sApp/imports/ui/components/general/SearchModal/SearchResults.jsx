@@ -5,7 +5,7 @@ import { injectIntl } from 'react-intl';
 
 import List, { ListItem, ListItemText } from 'material-ui/List';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import { generalTooltips } from '/imports/js/arrays/tooltips';
 import Button from '/imports/ui/components/general/Button';
 

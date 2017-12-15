@@ -8,7 +8,7 @@ import TextField from '/imports/ui/components/general/Material/TextField';
 import track, { addUserTracking } from '/imports/js/helpers/analytics';
 import Button from '/imports/ui/components/general/Button';
 import Icon from '/imports/ui/components/general/Icon';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import saveStartForm from './saveStartForm';
 
 const styles = {

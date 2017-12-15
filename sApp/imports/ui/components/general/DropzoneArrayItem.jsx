@@ -7,7 +7,7 @@ import IconButton from '/imports/ui/components/general/IconButton';
 import DropzoneInput from './AutoForm/DropzoneInput';
 import colors from '/imports/js/config/colors';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 const getStyles = (props, currentValue) => ({
   article: {

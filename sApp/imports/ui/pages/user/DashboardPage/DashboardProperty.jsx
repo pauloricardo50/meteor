@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 
 import track from '/imports/js/helpers/analytics';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import Icon from '/imports/ui/components/general/Icon';
 import { getPropertyCompletion } from '/imports/js/helpers/requestFunctions';
 import DashboardItem from './DashboardItem';

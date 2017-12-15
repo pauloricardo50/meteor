@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Button from '/imports/ui/components/general/Button';
 import ConfirmButton from '/imports/ui/components/general/ConfirmButton';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 export default class CompareColumnFooter extends Component {
   constructor(props) {

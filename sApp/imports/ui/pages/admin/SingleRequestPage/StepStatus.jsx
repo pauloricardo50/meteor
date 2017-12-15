@@ -2,7 +2,7 @@ import React from 'react';
 import getSteps from '/imports/js/arrays/steps';
 import Icon from '/imports/ui/components/general/Icon';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 const StepStatus = props => {
   const steps = getSteps(props).slice(1, -1);

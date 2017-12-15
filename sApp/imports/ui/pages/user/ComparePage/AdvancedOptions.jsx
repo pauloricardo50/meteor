@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import DialogSimple from '/imports/ui/components/general/DialogSimple';
 import Slider from '/imports/ui/components/general/Slider';
 import RadioButtons from '/imports/ui/components/general/RadioButtons';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 import FieldToggles from './FieldToggles';
 

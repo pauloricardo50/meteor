@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import track from '/imports/js/helpers/analytics';
 import Select from '../Select';
 import Divider from '../Material/Divider';

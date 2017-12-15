@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import Button from '/imports/ui/components/general/Button';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import StartTextField from './StartTextField';
 import StartSelectField from './StartSelectField';
 

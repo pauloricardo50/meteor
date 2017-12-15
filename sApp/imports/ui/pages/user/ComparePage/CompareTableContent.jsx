@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Motion, spring, presets } from 'react-motion';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import CompareColumn from './CompareColumn';
 import ColumnTransition from './ColumnTransition';
 

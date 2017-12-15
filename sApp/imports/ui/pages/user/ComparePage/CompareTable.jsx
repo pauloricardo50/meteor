@@ -10,7 +10,7 @@ import Button from '/imports/ui/components/general/Button';
 import Icon from '/imports/ui/components/general/Icon';
 
 import { easeOut } from '/imports/js/helpers/browserFunctions';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import CompareHeader from './CompareHeader';
 import CompareTableContent from './CompareTableContent';
 

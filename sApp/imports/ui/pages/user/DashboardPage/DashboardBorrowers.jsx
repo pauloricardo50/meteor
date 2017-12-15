@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import track from '/imports/js/helpers/analytics';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import { getBorrowerCompletion } from '/imports/js/helpers/borrowerFunctions';
 import DashboardItem from './DashboardItem';
 

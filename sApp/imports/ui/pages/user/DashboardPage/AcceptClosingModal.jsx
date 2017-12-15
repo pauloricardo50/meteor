@@ -5,7 +5,7 @@ import cleanMethod from '/imports/api/cleanMethods';
 import Button from '/imports/ui/components/general/Button';
 import Dialog from '/imports/ui/components/general/Material/Dialog';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 export default class AcceptClosingModal extends Component {
   constructor(props) {

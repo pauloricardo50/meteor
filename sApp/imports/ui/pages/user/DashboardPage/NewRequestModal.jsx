@@ -6,7 +6,7 @@ import Button from '/imports/ui/components/general/Button';
 import Dialog from '/imports/ui/components/general/Material/Dialog';
 import TextField from '/imports/ui/components/general/Material/TextField';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 export default class NewRequestModal extends Component {
   constructor(props) {

@@ -13,7 +13,7 @@ import {
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 import FakePropertyCompleter from '/imports/ui/components/general/FakePropertyCompleter';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 const styles = {
   topDiv: {

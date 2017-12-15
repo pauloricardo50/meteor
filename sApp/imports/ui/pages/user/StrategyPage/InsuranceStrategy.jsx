@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import StrategyChoices from '/imports/ui/components/general/StrategyChoices';
 import Button from '/imports/ui/components/general/Button';
 

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import RequestSelector from './RequestSelector';
 import SideNavStepper from './SideNavStepper';
 import Icon from '../Icon';

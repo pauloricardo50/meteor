@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 const VerificationValidated = () => (
   <article className="text-center animated fadeIn" style={{ margin: '40px 0' }}>

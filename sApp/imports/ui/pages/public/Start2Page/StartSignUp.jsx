@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import EmailLine from './EmailLine';
 import PasswordLine from './PasswordLine';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 const styles = {
   section: {

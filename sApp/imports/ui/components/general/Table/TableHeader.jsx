@@ -10,7 +10,7 @@ import {
 import Checkbox from 'material-ui/Checkbox';
 import Tooltip from 'material-ui/Tooltip';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 const TableHeader = ({
   columnOptions,

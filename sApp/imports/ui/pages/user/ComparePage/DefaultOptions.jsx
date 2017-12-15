@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import TextInput from '/imports/ui/components/general/TextInput';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import BorrowerOptions from './BorrowerOptions';
 
 const textFields = [

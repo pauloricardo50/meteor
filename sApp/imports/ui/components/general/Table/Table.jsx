@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import MuiTable from 'material-ui/Table';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';

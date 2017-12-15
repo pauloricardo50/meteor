@@ -9,7 +9,7 @@ import {
   getInsuranceFortune,
 } from '/imports/js/helpers/borrowerFunctions';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 const getArray = (borrowers, showInsurance) => [
   {

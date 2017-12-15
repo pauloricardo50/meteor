@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
 
 import FakeOfferAdder from '/imports/ui/components/general/FakeOfferAdder';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 import InterestRanges from './InterestRanges';
 

@@ -5,10 +5,10 @@ import omit from 'lodash/omit';
 
 import { FormattedMessage } from 'react-intl';
 import Popover from 'react-bootstrap/lib/Popover';
-import Transition from './Transition';
+// import Transition from './Transition';
 import DialogSimple from '../DialogSimple';
 
-import track from '/imports/js/helpers/analytics';
+import track from 'core/utils/analytics';
 
 // Required functions if react motion is used, which wraps the popover
 // and shifts it down or right depending on the placement
@@ -34,7 +34,7 @@ const getPositionLeft = (left, id, placement) => {
   return left;
 };
 
-const Tooltip = (props) => {
+const Tooltip = props => {
   const {
     placement,
     positionTop,

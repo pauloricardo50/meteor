@@ -4,7 +4,7 @@ import cleanMethod from '/imports/api/cleanMethods';
 
 import Button from '/imports/ui/components/general/Button';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import TextInput from './TextInput';
 import SelectFieldInput from './SelectFieldInput';
 

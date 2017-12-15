@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import cleanMethod from '/imports/api/cleanMethods';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import Select from '/imports/ui/components/general/Select';
 import SavingIcon from './SavingIcon';
 import FormValidator from './FormValidator';

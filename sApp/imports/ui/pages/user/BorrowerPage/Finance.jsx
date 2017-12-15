@@ -9,7 +9,7 @@ import cleanMethod from '/imports/api/cleanMethods';
 import Recap from '/imports/ui/components/general/Recap';
 import constants from '/imports/js/config/constants';
 import LoadingButton from '/imports/ui/components/general/LoadingButton';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import { disableForms } from '/imports/js/helpers/requestFunctions';
 import track from '/imports/js/helpers/analytics';
 

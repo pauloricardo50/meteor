@@ -4,7 +4,7 @@ import React from 'react';
 import UploaderArray from '/imports/ui/components/general/UploaderArray';
 import { borrowerFiles } from '/imports/js/arrays/files';
 import RadioInput from '/imports/ui/components/general/AutoForm/RadioInput';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import { disableForms } from '/imports/js/helpers/requestFunctions';
 
 const styles = {

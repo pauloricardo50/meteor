@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import Select from '/imports/ui/components/general/Select';
 import ExpensesChart from './ExpensesChart';
 

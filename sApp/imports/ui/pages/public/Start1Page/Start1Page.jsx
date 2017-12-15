@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import Button from '/imports/ui/components/general/Button';
 import IconButton from '/imports/ui/components/general/IconButton';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import { toNumber } from '/imports/js/helpers/conversionFunctions';
 import {
   changeProperty,

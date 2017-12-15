@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { MenuItem } from 'material-ui/Menu';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import { getLocations } from '/imports/js/helpers/APIs';
 import cleanMethod from '/imports/api/cleanMethods';
 

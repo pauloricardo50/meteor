@@ -3,7 +3,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from '/imports/js/helpers/testHelpers/enzyme';
 
-import testRequire from '/imports/js/helpers/testHelpers/testRequire';
+import testRequire from 'core/utils/testHelpers/testRequire';
 
 const { default: AutoTooltip } =
   testRequire('../AutoTooltip') || require('../AutoTooltip');

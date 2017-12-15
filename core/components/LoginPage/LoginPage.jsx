@@ -3,7 +3,7 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 
 import { addUserTracking } from '/imports/js/helpers/analytics';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import Accounts from './Accounts';
 
 const styles = {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import cleanMethod from '/imports/api/cleanMethods';
 
 import ItemVerificator from './ItemVerificator';

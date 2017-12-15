@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Dialog from '/imports/ui/components/general/Material/Dialog';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import IconButton from '../IconButton';
 import Button from '../Button';
 import Search from './Search';

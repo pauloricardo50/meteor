@@ -5,7 +5,7 @@ import { FormattedRelative } from 'react-intl';
 import Button from '/imports/ui/components/general/Button';
 import Select from '/imports/ui/components/general/Select';
 import Table from '/imports/ui/components/general/Table';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 import getActions from '/imports/js/arrays/adminActions';
 import { completeAction } from '/imports/api/adminActions/methods';

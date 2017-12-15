@@ -23,7 +23,7 @@ import EmailVerificationPage from '/imports/ui/pages/public/EmailVerificationPag
 import PasswordResetPage from '/imports/ui/pages/public/PasswordResetPage';
 import Start1Page from '/imports/ui/pages/public/Start1Page';
 
-const AdminRouter = () => (
+const WwwRouter = () => (
   <BaseRouter
     locale={getUserLocale()}
     messages={getTranslations()}
@@ -47,4 +47,4 @@ const AdminRouter = () => (
   </BaseRouter>
 );
 
-export default AdminRouter;
+export default WwwRouter;

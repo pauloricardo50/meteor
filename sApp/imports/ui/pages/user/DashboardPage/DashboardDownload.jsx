@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import FileDownloader from '/imports/ui/components/general/FileDownloader';
 
 import DashboardItem from './DashboardItem';

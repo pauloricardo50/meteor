@@ -6,7 +6,7 @@ import Button from '/imports/ui/components/general/Button';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import { getProject } from '/imports/js/helpers/startFunctions';
 import constants from '/imports/js/config/constants';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 import StartSlider from './StartSlider';
 

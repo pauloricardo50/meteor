@@ -4,7 +4,7 @@ import { Motion, spring, presets } from 'react-motion';
 
 import Start1Text from './Start1Text';
 import Start1Slider from './Start1Slider';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 const Start1Line = props => (
   <Motion

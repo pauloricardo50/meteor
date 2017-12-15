@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Button from '/imports/ui/components/general/Button';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 import HomeDev from '/imports/ui/components/general/HomeDev';
 import track from '/imports/js/helpers/analytics';

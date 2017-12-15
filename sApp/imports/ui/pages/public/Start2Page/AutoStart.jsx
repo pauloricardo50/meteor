@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
 import classnames from 'classnames';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import { trackOncePerSession } from '/imports/js/helpers/analytics';
 import ButtonInput from './ButtonInput';
 import Input from './Input';

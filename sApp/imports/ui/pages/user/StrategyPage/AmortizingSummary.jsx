@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import SummaryComponent from '/imports/ui/components/general/SummaryComponent';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 import Logismata from '/imports/ui/components/general/Logismata';
 
 import AmortizationCalculator from './AmortizationCalculator';

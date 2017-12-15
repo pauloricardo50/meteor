@@ -6,7 +6,7 @@ import Tabs from 'react-bootstrap/lib/Tabs';
 
 import Page from '/imports/ui/components/general/Page';
 import UploaderArray from '/imports/ui/components/general/UploaderArray';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 const styles = {
   tabContent: {

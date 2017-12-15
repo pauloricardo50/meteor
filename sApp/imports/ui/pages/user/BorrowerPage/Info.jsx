@@ -7,7 +7,7 @@ import { disableForms } from '/imports/js/helpers/requestFunctions';
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 import FakeBorrowerCompleter from '/imports/ui/components/general/FakeBorrowerCompleter';
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 const Info = (props) => {
   const { borrowerId } = props.match.params;

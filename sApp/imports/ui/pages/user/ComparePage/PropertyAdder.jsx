@@ -8,7 +8,7 @@ import TextInput from '/imports/ui/components/general/TextInput';
 import GoogleMapsAutocomplete from '/imports/ui/components/general/GoogleMapsAutocomplete';
 import GoogleMap from '/imports/ui/components/general/GoogleMap';
 
-import { T } from '/imports/ui/components/general/Translation';
+import { T } from 'core/components/Translation';
 
 export default class PropertyAdder extends Component {
   constructor(props) {
