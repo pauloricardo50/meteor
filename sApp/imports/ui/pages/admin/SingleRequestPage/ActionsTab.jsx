@@ -8,7 +8,7 @@ import {
   endAuction,
   deleteRequest,
 } from '/imports/api/loanrequests/methods';
-import DialogSimple from '/imports/ui/components/general/DialogSimple';
+import DialogSimple from 'core/components/DialogSimple';
 import DropzoneArray from '/imports/ui/components/general/DropzoneArray';
 import ClosingForm from '/imports/ui/components/admin/ClosingForm';
 import ClosingStepsForm from '/imports/ui/components/admin/ClosingStepsForm';

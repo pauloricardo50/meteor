@@ -6,7 +6,7 @@ import TextField from 'core/components/Material/TextField';
 import Button from 'core/components/Button';
 
 import { T } from 'core/components/Translation';
-import DialogSimple from '/imports/ui/components/general/DialogSimple';
+import DialogSimple from 'core/components/DialogSimple';
 
 const styles = {
   div: {

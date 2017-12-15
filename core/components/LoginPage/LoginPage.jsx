@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import { addUserTracking } from '/imports/js/helpers/analytics';
-import { T } from 'core/components/Translation';
+import { addUserTracking } from '../../utils/analytics';
+import { T } from '../Translation';
 import Accounts from './Accounts';
 
 const styles = {

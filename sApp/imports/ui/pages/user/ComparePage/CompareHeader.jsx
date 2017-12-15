@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
-import DialogSimple from '/imports/ui/components/general/DialogSimple';
+import DialogSimple from 'core/components/DialogSimple';
 import IconButton from '/imports/ui/components/general/IconButton';
 import Icon from '/imports/ui/components/general/Icon';
 import Button from 'core/components/Button';

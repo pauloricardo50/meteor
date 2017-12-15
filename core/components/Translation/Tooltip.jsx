@@ -6,7 +6,7 @@ import omit from 'lodash/omit';
 import { FormattedMessage } from 'react-intl';
 import Popover from 'react-bootstrap/lib/Popover';
 // import Transition from './Transition';
-import DialogSimple from '../DialogSimple';
+import DialogSimple from 'core/components/DialogSimple';
 
 import track from 'core/utils/analytics';
 

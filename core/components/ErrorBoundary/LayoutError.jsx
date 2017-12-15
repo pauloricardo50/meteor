@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from 'core/components/Translation';
-import Button from 'core/components/Button';
+import { T } from '../Translation';
+import Button from '../Button';
 
 const LayoutError = ({ style }) => (
   <div className="flex-col center animated jackInTheBox" style={style}>
