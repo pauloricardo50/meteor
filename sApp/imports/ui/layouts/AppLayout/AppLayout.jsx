@@ -80,9 +80,11 @@ const AppLayout = (props) => {
     'always-side-nav': type === 'admin',
     'no-nav': !showSideNav,
   });
-  const isApp = history.location.pathname.slice(0, 4) === '/app';
+  const path = history.location.pathname;
+  const isApp = path.slice(0, 4) === '/app';
+  const isLogin = path.slice(0, 6) === '/login';
 
-  if (redirect) {
+  if (redirect && !isLogin) {
     track('AppLayout - was redirected', {
       from: history.location.pathname,
       to: redirect,

@@ -10,8 +10,10 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import MuiTheme from '../config/mui_custom';
 import Loadable from '../utils/loadable';
+
 import ErrorBoundary from './ErrorBoundary';
 import ScrollToTop from './ScrollToTop';
+import LoginPage from './LoginPage';
 
 const BaseRouter = ({ locale, messages, formats, children }) => (
   <ErrorBoundary helper="root">
@@ -32,7 +34,16 @@ const BaseRouter = ({ locale, messages, formats, children }) => (
           <Router>
             {/* Every route change should scroll to top, which isn't automatic */}
             <ScrollToTop>
-              <Switch>{children}</Switch>
+              <Switch>
+                {/* LoginPage has to be above / path */}
+                <Route exact path="/login" component={LoginPage} />
+                <Route
+                  path="/"
+                  render={childProps => {
+                    return React.cloneElement(children, { ...childProps });
+                  }}
+                />
+              </Switch>
             </ScrollToTop>
           </Router>
         </ErrorBoundary>
