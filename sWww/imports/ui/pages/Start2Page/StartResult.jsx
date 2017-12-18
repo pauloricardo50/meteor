@@ -8,7 +8,7 @@ import { injectIntl } from 'react-intl';
 import Button from 'core/components/Button';
 import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests';
 import Recap from 'core/components/Recap';
-import { T, IntlNumber } from '/imports/ui/components/general/Translation';
+import { T, IntlNumber } from 'core/components/Translation';
 import track from 'core/utils/analytics';
 import constants from 'core/config/constants';
 import saveStartForm from './saveStartForm';

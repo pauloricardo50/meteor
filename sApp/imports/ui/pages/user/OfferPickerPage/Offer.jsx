@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { T, IntlNumber } from '/imports/ui/components/general/Translation';
+import { T, IntlNumber } from 'core/components/Translation';
 
 const styles = {
   item: {

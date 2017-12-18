@@ -14,7 +14,7 @@ import {
   getBorrowerInfoArray,
   getBorrowerFinanceArray,
 } from '/imports/js/arrays/BorrowerFormArray';
-import { IntlNumber } from '/imports/ui/components/general/Translation';
+import { IntlNumber } from 'core/components/Translation';
 
 import FilesVerification from './FilesVerification';
 import ClosingVerification from './ClosingVerification';

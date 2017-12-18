@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Button from 'core/components/Button';
 
 import { getLoanValue } from '/imports/js/helpers/requestFunctions';
-import { IntlNumber } from '/imports/ui/components/general/Translation';
+import { IntlNumber } from 'core/components/Translation';
 
 import RequestTabs from './RequestTabs';
 import StepStatus from './StepStatus';

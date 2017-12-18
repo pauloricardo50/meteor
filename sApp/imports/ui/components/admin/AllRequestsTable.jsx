@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import Table from '/imports/ui/components/general/Table';
 import moment from 'moment';
 
-import { IntlNumber } from '/imports/ui/components/general/Translation';
+import { IntlNumber } from 'core/components/Translation';
 
 const columnOptions = [
   {

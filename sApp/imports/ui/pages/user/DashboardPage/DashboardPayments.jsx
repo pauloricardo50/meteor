@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T, IntlDate } from '/imports/ui/components/general/Translation';
+import { T, IntlDate } from 'core/components/Translation';
 
 import DashboardItem from './DashboardItem';
 

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { IntlNumber } from '/imports/ui/components/general/Translation';
+import { IntlNumber } from 'core/components/Translation';
 
 const MetricsTriple = props => (
   <div className="metrics">

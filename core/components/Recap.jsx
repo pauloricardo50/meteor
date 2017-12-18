@@ -5,7 +5,7 @@ import classnames from 'classnames';
 
 import { toMoney } from 'core/utils/conversionFunctions';
 import constants from 'core/config/constants';
-import { T, IntlNumber } from '/imports/ui/components/general/Translation';
+import { T, IntlNumber } from 'core/components/Translation';
 
 import {
   getPropAndWork,

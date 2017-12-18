@@ -6,7 +6,7 @@ import Icon from 'core/components/Icon';
 import {
   IntlNumber,
   IntlDate,
-} from '/imports/ui/components/general/Translation';
+} from 'core/components/Translation';
 import colors from 'core/config/colors';
 
 import ValidatorItem from './ValidatorItem';

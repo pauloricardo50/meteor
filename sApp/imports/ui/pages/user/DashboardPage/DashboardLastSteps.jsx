@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import colors from 'core/config/colors';
 
-import { T, IntlDate } from '/imports/ui/components/general/Translation';
+import { T, IntlDate } from 'core/components/Translation';
 import DashboardItem from './DashboardItem';
 
 const styles = {

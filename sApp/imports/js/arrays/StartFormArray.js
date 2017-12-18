@@ -4,7 +4,7 @@ import Scroll from 'react-scroll';
 
 import FortuneSliders from '/imports/ui/pages/public/Start2Page/FortuneSliders';
 import DialogSimple from 'core/components/DialogSimple';
-import { T, IntlNumber } from '/imports/ui/components/general/Translation';
+import { T, IntlNumber } from 'core/components/Translation';
 import constants from 'core/config/constants';
 import { toMoney } from 'core/utils/conversionFunctions';
 

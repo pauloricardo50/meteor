@@ -9,7 +9,7 @@ import {
 } from 'core/utils/startFunctions';
 
 import Recap from 'core/components/Recap';
-import { T, IntlNumber } from '/imports/ui/components/general/Translation';
+import { T, IntlNumber } from 'core/components/Translation';
 
 const isReady = ({ income, fortune, property }) =>
   property && income && fortune;

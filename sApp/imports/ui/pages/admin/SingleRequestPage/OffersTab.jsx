@@ -7,7 +7,7 @@ import ConfirmMethod from './ConfirmMethod';
 import { deleteOffer } from 'core/api/offers/methods';
 import ConditionsButton from '/imports/ui/components/general/ConditionsButton';
 import { toMoney } from 'core/utils/conversionFunctions';
-import { IntlNumber } from '/imports/ui/components/general/Translation';
+import { IntlNumber } from 'core/components/Translation';
 
 export default class OffersTab extends Component {
   constructor(props) {

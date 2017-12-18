@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import { IntlNumber } from '/imports/ui/components/general/Translation';
+import { IntlNumber } from 'core/components/Translation';
 import StartTextField from './StartTextField';
 import StartSelectField from './StartSelectField';
 import StartSlider from './StartSlider';

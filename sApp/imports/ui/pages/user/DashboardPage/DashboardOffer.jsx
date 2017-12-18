@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T, IntlNumber } from '/imports/ui/components/general/Translation';
+import { T, IntlNumber } from 'core/components/Translation';
 import ConditionsButton from '/imports/ui/components/general/ConditionsButton';
 import DashboardItem from './DashboardItem';
 
