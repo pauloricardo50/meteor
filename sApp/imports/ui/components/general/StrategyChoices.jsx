@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import classNames from 'classnames';
-import track from '/imports/js/helpers/analytics';
+import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
 
 export default class StrategyChoices extends Component {

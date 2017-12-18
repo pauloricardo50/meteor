@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from 'core/components/Button';
-import track from '/imports/js/helpers/analytics';
+import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
 import colors from '/imports/js/config/colors';
 import supportStaff from '/imports/js/arrays/supportStaff';

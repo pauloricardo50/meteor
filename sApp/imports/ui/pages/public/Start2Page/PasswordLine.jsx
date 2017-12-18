@@ -5,7 +5,7 @@ import { Accounts } from 'meteor/accounts-base';
 
 import TextField from 'core/components/Material/TextField';
 
-import track, { addUserTracking } from '/imports/js/helpers/analytics';
+import track, { addUserTracking } from 'core/utils/analytics';
 import Button from 'core/components/Button';
 import Icon from '/imports/ui/components/general/Icon';
 import { T } from 'core/components/Translation';

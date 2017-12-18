@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 
 import IconButton from '/imports/ui/components/general/IconButton';
-import { trackOncePerSession } from '/imports/js/helpers/analytics';
+import { trackOncePerSession } from 'core/utils/analytics';
 
 import TextInput from '/imports/ui/components/general/TextInput';
 

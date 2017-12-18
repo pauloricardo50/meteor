@@ -5,7 +5,7 @@ import Scroll from 'react-scroll';
 import classnames from 'classnames';
 
 import { T } from 'core/components/Translation';
-import { trackOncePerSession } from '/imports/js/helpers/analytics';
+import { trackOncePerSession } from 'core/utils/analytics';
 import ButtonInput from 'core/components/ButtonInput';
 import Input from './Input';
 import MultipleInput from './MultipleInput';

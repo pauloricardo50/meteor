@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 
-import track from '/imports/js/helpers/analytics';
+import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
 import Icon from '/imports/ui/components/general/Icon';
 import { getPropertyCompletion } from '/imports/js/helpers/requestFunctions';

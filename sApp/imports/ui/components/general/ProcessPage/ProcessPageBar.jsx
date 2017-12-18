@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 import cleanMethod from '/imports/api/cleanMethods';
 import { getWidth } from '/imports/js/helpers/browserFunctions';
-import track from '/imports/js/helpers/analytics';
+import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
 
 const styles = {

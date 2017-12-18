@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import track from '/imports/js/helpers/analytics';
+import track from 'core/utils/analytics';
 
 import Button from 'core/components/Button';
 import Icon from '/imports/ui/components/general/Icon';

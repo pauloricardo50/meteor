@@ -4,7 +4,7 @@ import Dialog from 'core/components/Material/Dialog';
 import Button from 'core/components/Button';
 
 import { T } from 'core/components/Translation';
-import track from '/imports/js/helpers/analytics';
+import track from 'core/utils/analytics';
 
 export default class HomeDev extends Component {
   constructor(props) {

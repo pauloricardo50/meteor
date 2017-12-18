@@ -6,7 +6,7 @@ import classnames from 'classnames';
 
 import ContactButton from '/imports/ui/components/general/ContactButton';
 import ErrorBoundary from 'core/components/ErrorBoundary';
-import track from '/imports/js/helpers/analytics';
+import track from 'core/utils/analytics';
 import Navs from './Navs';
 
 // import UserJoyride from '/imports/ui/components/general/UserJoyride';

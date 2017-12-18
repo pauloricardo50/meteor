@@ -4,7 +4,7 @@ import React from 'react';
 import Slider from 'core/components/Material/Slider';
 import Icon from '/imports/ui/components/general/Icon';
 
-import { trackOncePerSession } from '/imports/js/helpers/analytics';
+import { trackOncePerSession } from 'core/utils/analytics';
 
 const Start1Slider = ({
   sliderMax,

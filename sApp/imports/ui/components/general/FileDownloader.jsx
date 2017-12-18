@@ -6,7 +6,7 @@ import fileSaver from 'file-saver';
 import Button from 'core/components/Button';
 import Icon from '/imports/ui/components/general/Icon';
 
-import track from '/imports/js/helpers/analytics';
+import track from 'core/utils/analytics';
 
 export default class FileDownloader extends Component {
   constructor(props) {

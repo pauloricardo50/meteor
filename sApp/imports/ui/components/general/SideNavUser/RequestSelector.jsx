@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
-import track from '/imports/js/helpers/analytics';
+import track from 'core/utils/analytics';
 import Select from '../Select';
 import Divider from 'core/components/Material/Divider';
 

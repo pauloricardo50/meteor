@@ -11,7 +11,7 @@ import constants from '/imports/js/config/constants';
 import LoadingButton from '/imports/ui/components/general/LoadingButton';
 import { T } from 'core/components/Translation';
 import { disableForms } from '/imports/js/helpers/requestFunctions';
-import track from '/imports/js/helpers/analytics';
+import track from 'core/utils/analytics';
 
 const styles = {
   div: {

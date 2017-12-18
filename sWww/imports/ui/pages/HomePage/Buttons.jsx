@@ -4,7 +4,7 @@ import Button from 'core/components/Button';
 import { T } from 'core/components/Translation';
 
 import HomeDev from '/imports/ui/components/general/HomeDev';
-import track from '/imports/js/helpers/analytics';
+import track from 'core/utils/analytics';
 
 const styles = {
   style: {

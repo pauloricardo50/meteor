@@ -4,7 +4,7 @@ import cleanMethod from '/imports/api/cleanMethods';
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 import ProcessPage from '/imports/ui/components/general/ProcessPage';
-import track from '/imports/js/helpers/analytics';
+import track from 'core/utils/analytics';
 
 import VerificationStart from './VerificationStart';
 import VerificationValidated from './VerificationValidated';

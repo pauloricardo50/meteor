@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Recap from '/imports/ui/components/general/Recap';
 import DashboardItem from './DashboardItem';
 import { T } from 'core/components/Translation';
-import track from '/imports/js/helpers/analytics';
+import track from 'core/utils/analytics';
 
 const styles = {
   recap: {

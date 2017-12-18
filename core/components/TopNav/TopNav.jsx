@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import Toolbar from 'material-ui/Toolbar/Toolbar';
 
-import track from '/imports/js/helpers/analytics';
+import track from '../../utils/analytics';
 
 import Button from 'core/components/Button';
 import SearchModal from '../SearchModal';
@@ -12,7 +12,7 @@ import { T } from '../Translation';
 import TopNavDropdown from './TopNavDropdown';
 import TopNavDrawer from './TopNavDrawer';
 
-const TopNav = (props) => {
+const TopNav = props => {
   const { history, currentUser, loanRequests } = props;
   const isApp = history && history.location.pathname.slice(0, 4) === '/app';
 

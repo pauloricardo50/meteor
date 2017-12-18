@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { allowTracking, track, addUserTracking } from '../analytics';
+import { allowTracking, track, addUserTracking } from 'core/utils/analytics';
 
 describe('analytics', () => {
   describe('allowTracking', () => {

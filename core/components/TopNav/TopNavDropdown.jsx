@@ -3,7 +3,7 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
-import track from '/imports/js/helpers/analytics';
+import track from '../../utils/analytics';
 import { T } from '../Translation';
 import DropdownMenu from '../DropdownMenu';
 
@@ -60,7 +60,7 @@ const getMenuItems = (currentUser, history) => {
   ];
 };
 
-const TopNavDropdown = (props) => {
+const TopNavDropdown = props => {
   const { currentUser, history } = props;
 
   return (
