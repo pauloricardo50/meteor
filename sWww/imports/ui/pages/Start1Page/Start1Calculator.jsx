@@ -10,7 +10,7 @@ import Icon from '/imports/ui/components/general/Icon';
 import constants from '/imports/js/config/constants';
 import Loadable from '/imports/js/helpers/loadable';
 
-import Accordion from '/imports/ui/components/general/Accordion';
+import Accordion from 'core/components/Accordion';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation';
 import Start1Line from './Start1Line';
 import Start1Recap from './Start1Recap';

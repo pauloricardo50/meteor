@@ -18,7 +18,7 @@ import {
   getBorrowRatio,
 } from 'core/utils/startFunctions';
 import { storageAvailable } from 'core/utils/browserFunctions';
-import Accordion from '/imports/ui/components/general/Accordion';
+import Accordion from 'core/components/Accordion';
 
 import Start1Calculator from './Start1Calculator';
 
