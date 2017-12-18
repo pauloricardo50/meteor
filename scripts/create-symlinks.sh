@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Creates all symlinks to core in every microservice
 for i in 'sAdmin' 'sApp' 'sLender' 'sWww'
   do
     ln -s ../core ../$i/imports/core
