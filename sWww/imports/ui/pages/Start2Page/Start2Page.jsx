@@ -28,7 +28,7 @@ import {
   getBorrow,
   getRetirement,
   getMaxLoan,
-} from '/imports/js/helpers/startFunctions';
+} from 'core/utils/startFunctions';
 
 import AutoStart from './AutoStart';
 import StartResult from './StartResult';

@@ -16,7 +16,7 @@ import {
   getIncomeRatio,
   getTheoreticalMonthly,
   getBorrowRatio,
-} from '/imports/js/helpers/startFunctions';
+} from 'core/utils/startFunctions';
 import { storageAvailable } from '/imports/js/helpers/browserFunctions';
 import Accordion from '/imports/ui/components/general/Accordion';
 

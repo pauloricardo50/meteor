@@ -9,7 +9,7 @@ import {
   getTheoreticalMonthly,
   getIncomeRatio,
   getBorrowRatio,
-} from '/imports/js/helpers/startFunctions';
+} from 'core/utils/startFunctions';
 import { validateRatiosCompletely } from '/imports/js/helpers/requestFunctions';
 import { toDistanceString } from 'core/utils/conversionFunctions';
 import constants from '/imports/js/config/constants';

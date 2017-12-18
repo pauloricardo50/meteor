@@ -6,7 +6,7 @@ import constants from '/imports/js/config/constants';
 import {
   getLenderCount,
   getRealMonthly,
-} from '/imports/js/helpers/startFunctions';
+} from 'core/utils/startFunctions';
 
 import Recap from '/imports/ui/components/general/Recap';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation';
