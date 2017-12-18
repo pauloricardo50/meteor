@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
-import rateLimit from '/imports/js/helpers/rate-limit.js';
+import rateLimit from '../../utils/rate-limit.js';
 
 export const sendEmail = new ValidatedMethod({
   name: 'sendEmail',

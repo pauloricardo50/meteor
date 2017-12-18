@@ -8,7 +8,7 @@ import {
   RequestPDF,
   AnonymousRequestPDF,
 } from 'core/api/loanrequests/pdf.js';
-import rateLimit from '/imports/js/helpers/rate-limit.js';
+import rateLimit from '../../utils/rate-limit.js';
 
 Meteor.methods({
   getServerTime: () => new Date(),

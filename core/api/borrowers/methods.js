@@ -3,7 +3,7 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
-import rateLimit from '/imports/js/helpers/rate-limit.js';
+import rateLimit from '../../utils/rate-limit.js';
 
 import Borrowers from './borrowers';
 
