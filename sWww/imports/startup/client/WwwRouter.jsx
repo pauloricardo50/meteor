@@ -41,7 +41,7 @@ const WwwRouter = () => (
         <Route path="/faq" component={FaqPage} />
         <Route path="/verify-email/:token" component={EmailVerificationPage} />
         <Route path="/reset-password/:token" component={PasswordResetPage} />
-        <Route component={NotFound} />
+        {/* <Route component={NotFound} /> */}
       </Switch>
     </PublicLayout>
   </BaseRouter>
