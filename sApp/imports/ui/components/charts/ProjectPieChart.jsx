@@ -6,7 +6,7 @@ import { toMoney } from 'core/utils/conversionFunctions';
 import {
   getLoanValue,
   getProjectValue,
-} from '/imports/js/helpers/requestFunctions';
+} from 'core/utils/requestFunctions';
 import constants from 'core/config/constants';
 import colors from 'core/config/colors';
 

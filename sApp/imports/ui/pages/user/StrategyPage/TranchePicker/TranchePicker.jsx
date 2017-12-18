@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import Button from 'core/components/Button';
 import { T } from 'core/components/Translation';
-import { getLoanValue } from '/imports/js/helpers/requestFunctions';
+import { getLoanValue } from 'core/utils/requestFunctions';
 import cleanMethod from 'core/api/cleanMethods';
 import Tranche from './Tranche';
 import TrancheChart from './TrancheChart';

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import SummaryComponent from '/imports/ui/components/general/SummaryComponent';
 import { T, IntlNumber } from 'core/components/Translation';
 import { getRange } from '/imports/js/helpers/offerFunctions';
-import { getMonthlyWithOffer } from '/imports/js/helpers/requestFunctions';
+import { getMonthlyWithOffer } from 'core/utils/requestFunctions';
 
 const values = (offers, loanRequest) => {
   const { max: maxAmount, min: minAmount } = getRange(offers, 'maxAmount');

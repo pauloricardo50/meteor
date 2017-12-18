@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
 import Icon from 'core/components/Icon';
-import { getPropertyCompletion } from '/imports/js/helpers/requestFunctions';
+import { getPropertyCompletion } from 'core/utils/requestFunctions';
 import DashboardItem from './DashboardItem';
 
 const DashboardProperty = (props) => {

@@ -8,7 +8,7 @@ import {
   getLoanValue,
   getProjectValue,
   getPropAndWork,
-} from '/imports/js/helpers/requestFunctions';
+} from 'core/utils/requestFunctions';
 import constants from 'core/config/constants';
 import colors from 'core/config/colors';
 

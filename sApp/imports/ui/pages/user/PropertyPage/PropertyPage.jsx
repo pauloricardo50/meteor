@@ -9,7 +9,7 @@ import { requestFiles } from '/imports/js/arrays/files';
 import {
   disableForms,
   getPropertyCompletion,
-} from '/imports/js/helpers/requestFunctions';
+} from 'core/utils/requestFunctions';
 
 import { isDemo } from 'core/utils/browserFunctions';
 import FakePropertyCompleter from '/imports/ui/components/general/FakePropertyCompleter';

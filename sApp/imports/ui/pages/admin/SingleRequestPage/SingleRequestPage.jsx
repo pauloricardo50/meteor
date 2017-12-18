@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import Button from 'core/components/Button';
 
-import { getLoanValue } from '/imports/js/helpers/requestFunctions';
+import { getLoanValue } from 'core/utils/requestFunctions';
 import { IntlNumber } from 'core/components/Translation';
 
 import RequestTabs from './RequestTabs';

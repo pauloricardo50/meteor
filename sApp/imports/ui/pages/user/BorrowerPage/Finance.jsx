@@ -10,7 +10,7 @@ import Recap from 'core/components/Recap';
 import constants from 'core/config/constants';
 import LoadingButton from '/imports/ui/components/general/LoadingButton';
 import { T } from 'core/components/Translation';
-import { disableForms } from '/imports/js/helpers/requestFunctions';
+import { disableForms } from 'core/utils/requestFunctions';
 import track from 'core/utils/analytics';
 
 const styles = {

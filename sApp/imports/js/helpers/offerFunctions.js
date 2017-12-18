@@ -1,4 +1,4 @@
-import { getMonthlyWithExtractedOffer } from '/imports/js/helpers/requestFunctions';
+import { getMonthlyWithExtractedOffer } from 'core/utils/requestFunctions';
 
 export const getRange = (offers, key) =>
   offers.reduce(

@@ -14,7 +14,7 @@ import {
   getLoanValue,
   getLenderCount,
   getBorrowRatio,
-} from '/imports/js/helpers/requestFunctions';
+} from 'core/utils/requestFunctions';
 
 import {
   getExpenses,

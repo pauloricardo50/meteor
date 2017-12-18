@@ -3,7 +3,7 @@ import React from 'react';
 
 import AutoForm from '/imports/ui/components/general/AutoForm';
 import { getBorrowerInfoArray } from '/imports/js/arrays/BorrowerFormArray';
-import { disableForms } from '/imports/js/helpers/requestFunctions';
+import { disableForms } from 'core/utils/requestFunctions';
 
 import { isDemo } from 'core/utils/browserFunctions';
 import FakeBorrowerCompleter from '/imports/ui/components/general/FakeBorrowerCompleter';

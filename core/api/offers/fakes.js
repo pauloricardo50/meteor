@@ -1,4 +1,4 @@
-import { getLoanValue, getPropAndWork } from '/imports/js/helpers/requestFunctions';
+import { getLoanValue, getPropAndWork } from 'core/utils/requestFunctions';
 
 const getRandomCondition = () => {
   const conditions = ['Expertise additionelle requise', '', '', '', '', '', '', '', ''];

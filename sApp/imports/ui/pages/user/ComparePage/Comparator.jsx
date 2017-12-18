@@ -10,7 +10,7 @@ import {
   getIncomeRatio,
   getBorrowRatio,
 } from 'core/utils/startFunctions';
-import { validateRatiosCompletely } from '/imports/js/helpers/requestFunctions';
+import { validateRatiosCompletely } from 'core/utils/requestFunctions';
 import { toDistanceString } from 'core/utils/conversionFunctions';
 import constants from 'core/config/constants';
 import { getClosestStations, getNearbyPlace } from '/imports/js/helpers/APIs';

@@ -14,7 +14,7 @@ import {
   getLoanValue,
   getMaintenance,
   getPropAndWork,
-} from '/imports/js/helpers/requestFunctions';
+} from 'core/utils/requestFunctions';
 import colors from 'core/config/colors';
 
 const chartColors = {

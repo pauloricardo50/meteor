@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Icon from 'core/components/Icon';
 
-import { isRequestValid } from '/imports/js/helpers/requestFunctions';
+import { isRequestValid } from 'core/utils/requestFunctions';
 import { T } from 'core/components/Translation';
 
 const styles = {

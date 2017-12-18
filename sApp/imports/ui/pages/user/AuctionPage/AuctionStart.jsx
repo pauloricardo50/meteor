@@ -5,7 +5,7 @@ import CountUp from 'react-countup';
 import { injectIntl } from 'react-intl';
 
 import Button from 'core/components/Button';
-import { getLenderCount } from '/imports/js/helpers/requestFunctions';
+import { getLenderCount } from 'core/utils/requestFunctions';
 
 import ConfirmButton from '/imports/ui/components/general/ConfirmButton';
 import { T } from 'core/components/Translation';
