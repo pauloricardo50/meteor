@@ -30,7 +30,7 @@ const WwwRouter = () => (
   >
     <PublicLayout>
       <Switch>
-        <Route path="/" component={PasswordPage} />
+        <Route path="/" exact component={PasswordPage} />
         <Route path="/home" component={HomePage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/start1/:type" component={Start1Page} />
