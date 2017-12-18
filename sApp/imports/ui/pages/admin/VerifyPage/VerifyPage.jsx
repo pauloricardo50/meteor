@@ -8,7 +8,7 @@ import Button from 'core/components/Button';
 import TextField from 'core/components/Material/TextField';
 // import DropDownMenu from 'core/components/Material/DropDownMenu';
 import MenuItem from 'core/components/Material/MenuItem';
-import Select from '/imports/ui/components/general/Select';
+import Select from 'core/components/Select';
 
 const styles = {
   dropdown: {

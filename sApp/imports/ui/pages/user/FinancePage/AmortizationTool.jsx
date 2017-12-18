@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 // import TextField from 'core/components/Material/TextField';
 // import MaskedInput from 'react-text-mask';
 
-import Select from '/imports/ui/components/general/Select';
+import Select from 'core/components/Select';
 import TextInput from 'core/components/TextInput';
 
 import AmortizationChart from 'core/components/charts/AmortizationChart';

@@ -5,7 +5,7 @@ import get from 'lodash/get';
 // import SelectField from 'core/components/Material/SelectField';
 // import MenuItem from 'core/components/Material/MenuItem';
 import Toggle from 'core/components/Material/Toggle';
-import Select from '/imports/ui/components/general/Select';
+import Select from 'core/components/Select';
 
 import AutoForm from '/imports/ui/components/general/AutoForm';
 

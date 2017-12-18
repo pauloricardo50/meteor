@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import DateInput from '/imports/ui/components/general/DateInput';
-import Select from '/imports/ui/components/general/Select';
+import Select from 'core/components/Select';
 import { confirmClosing } from 'core/api/loanrequests/methods';
 
 const schedules = ['monthly', 'yearly', 'semester'];

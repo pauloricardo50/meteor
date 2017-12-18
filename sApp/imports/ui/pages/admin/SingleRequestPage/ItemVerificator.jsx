@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Select from '/imports/ui/components/general/Select';
+import Select from 'core/components/Select';
 import TextInput from 'core/components/TextInput';
 import Button from 'core/components/Button';
 

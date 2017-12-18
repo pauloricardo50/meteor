@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 
 import Button from 'core/components/Button';
 import AutoComplete from '/imports/ui/components/general/AutoComplete';
-import Select from '/imports/ui/components/general/Select';
+import Select from 'core/components/Select';
 
 import { injectIntl } from 'react-intl';
 import shuffle from 'lodash/shuffle';

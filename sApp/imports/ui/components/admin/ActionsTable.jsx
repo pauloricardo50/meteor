@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FormattedRelative } from 'react-intl';
 
 import Button from 'core/components/Button';
-import Select from '/imports/ui/components/general/Select';
+import Select from 'core/components/Select';
 import Table from '/imports/ui/components/general/Table';
 import { T } from 'core/components/Translation';
 

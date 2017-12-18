@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import { T } from 'core/components/Translation';
-import Select from '/imports/ui/components/general/Select';
+import Select from 'core/components/Select';
 import ExpensesChart from './ExpensesChart';
 
 const rates = [0.01, 0.01, 0.015, 0.02];

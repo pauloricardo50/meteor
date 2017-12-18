@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
-import Select from '/imports/ui/components/general/Select';
+import Select from 'core/components/Select';
 import TextInput from 'core/components/TextInput';
 import IconButton from 'core/components/IconButton';
 

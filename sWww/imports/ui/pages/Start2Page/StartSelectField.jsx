@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 
-import Select from '/imports/ui/components/general/Select';
+import Select from 'core/components/Select';
 
 // Use height 48 to make sure these fields are aligned with text inputs
 const styles = {
