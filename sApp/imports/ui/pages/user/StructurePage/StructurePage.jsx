@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import merge from 'lodash/merge';
 
-import cleanMethod from '/imports/api/cleanMethods';
+import cleanMethod from 'core/api/cleanMethods';
 
 import LoadingButton from '/imports/ui/components/general/LoadingButton';
 import ProcessPage from '/imports/ui/components/general/ProcessPage';

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import Offers from '/imports/api/offers/offers';
+import Offers from 'core/api/offers/offers';
 
 const getActions = [
   {

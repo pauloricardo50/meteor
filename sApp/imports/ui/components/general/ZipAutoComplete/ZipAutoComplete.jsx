@@ -5,7 +5,7 @@ import { MenuItem } from 'material-ui/Menu';
 
 import { T } from 'core/components/Translation';
 import { getLocations } from '/imports/js/helpers/APIs';
-import cleanMethod from '/imports/api/cleanMethods';
+import cleanMethod from 'core/api/cleanMethods';
 
 import SavingIcon from '/imports/ui/components/general/AutoForm/SavingIcon';
 import AutoComplete from '../AutoComplete';

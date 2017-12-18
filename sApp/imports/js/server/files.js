@@ -4,8 +4,8 @@ import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import rateLimit from '/imports/js/helpers/rate-limit.js';
 
-import LoanRequests from '/imports/api/loanrequests/loanrequests';
-import Borrowers from '/imports/api/borrowers/borrowers';
+import LoanRequests from 'core/api/loanrequests/loanrequests';
+import Borrowers from 'core/api/borrowers/borrowers';
 
 /* eslint import/prefer-default-export: 0 */
 export const isAllowed = (key) => {

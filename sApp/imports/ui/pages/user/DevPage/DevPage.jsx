@@ -1,22 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import cleanMethod from '/imports/api/cleanMethods';
+import cleanMethod from 'core/api/cleanMethods';
 import { Roles } from 'meteor/alanning:roles';
 
-import { completeFakeBorrower } from '/imports/api/borrowers/fakes';
+import { completeFakeBorrower } from 'core/api/borrowers/fakes';
 import {
   requestStep1,
   requestStep2,
   requestStep3,
-} from '/imports/api/loanrequests/fakes';
-import { getRandomOffer } from '/imports/api/offers/fakes';
+} from 'core/api/loanrequests/fakes';
+import { getRandomOffer } from 'core/api/offers/fakes';
 
 import {
   updateRequest,
   deleteRequest,
-} from '/imports/api/loanrequests/methods';
-import { deleteBorrower } from '/imports/api/borrowers/methods';
-import { deleteOffer, insertAdminOffer } from '/imports/api/offers/methods';
+} from 'core/api/loanrequests/methods';
+import { deleteBorrower } from 'core/api/borrowers/methods';
+import { deleteOffer, insertAdminOffer } from 'core/api/offers/methods';
 
 const addStep1Request = (twoBorrowers) => {
   const ids = [];

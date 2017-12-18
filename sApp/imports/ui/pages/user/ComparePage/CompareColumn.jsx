@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import classnames from 'classnames';
 
-import cleanMethod from '/imports/api/cleanMethods';
+import cleanMethod from 'core/api/cleanMethods';
 
 import CompareColumnFooter from './CompareColumnFooter';
 import CompareColumnField from './CompareColumnField';

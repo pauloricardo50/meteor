@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { injectIntl } from 'react-intl';
 
-import cleanMethod from '/imports/api/cleanMethods';
+import cleanMethod from 'core/api/cleanMethods';
 import { getFileCount } from '/imports/js/arrays/files';
 import bert from '/imports/js/helpers/bert';
 import { allowedFileTypes, maxSize } from '/imports/startup/meteor-slingshot';

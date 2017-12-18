@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import '/imports/api/api';
+import 'core/api';
 import '../accounts-config';
 import '../meteor-slingshot';
 import './css';

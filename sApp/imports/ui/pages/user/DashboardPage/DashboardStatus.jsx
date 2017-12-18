@@ -5,7 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import Button from 'core/components/Button';
 
 import track from 'core/utils/analytics';
-import cleanMethod from '/imports/api/cleanMethods';
+import cleanMethod from 'core/api/cleanMethods';
 import { LoadingComponent } from 'core/components/Loading';
 import { T } from 'core/components/Translation';
 import getSteps from '/imports/js/arrays/steps';

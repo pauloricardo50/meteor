@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import AdminNewOffer from '/imports/ui/components/admin/AdminNewOffer';
 import ConfirmMethod from './ConfirmMethod';
-import { deleteOffer } from '/imports/api/offers/methods';
+import { deleteOffer } from 'core/api/offers/methods';
 import ConditionsButton from '/imports/ui/components/general/ConditionsButton';
 import { toMoney } from '/imports/js/helpers/conversionFunctions';
 import { IntlNumber } from '/imports/ui/components/general/Translation';

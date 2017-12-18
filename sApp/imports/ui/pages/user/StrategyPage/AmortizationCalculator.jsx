@@ -25,16 +25,16 @@ export default class AmortizationCalculator extends Component {
 
     setToken(logismataToken)
       .then(() => calculateDirectAmo(loanRequest, borrowers, offers))
-      .then((result) => {
+      .then(result => {
         console.log('result1', result);
         this.setState({ direct: result });
       })
       .then(() => calculateIndirectAmo(loanRequest, borrowers, offers))
-      .then((result) => {
+      .then(result => {
         console.log('result2', result);
         this.setState({ indirect: result });
       })
-      .catch((e) => {
+      .catch(e => {
         console.log(e);
       });
   };

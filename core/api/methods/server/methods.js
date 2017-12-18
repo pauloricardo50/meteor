@@ -1,13 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
-import LoanRequests from '/imports/api/loanrequests/loanrequests';
-import Borrowers from '/imports/api/borrowers/borrowers';
+import LoanRequests from 'core/api/loanrequests/loanrequests';
+import Borrowers from 'core/api/borrowers/borrowers';
 import { generateComponentAsPDF } from '/imports/js/server/generate-pdf.js';
 import {
   RequestPDF,
   AnonymousRequestPDF,
-} from '/imports/api/loanrequests/pdf.js';
+} from 'core/api/loanrequests/pdf.js';
 import rateLimit from '/imports/js/helpers/rate-limit.js';
 
 Meteor.methods({

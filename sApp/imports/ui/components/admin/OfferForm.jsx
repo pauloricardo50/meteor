@@ -6,7 +6,7 @@ import Checkbox from '/imports/ui/components/general/Checkbox';
 import TextInput from '/imports/ui/components/general/TextInput';
 
 import { toMoney, toNumber } from '/imports/js/helpers/conversionFunctions';
-import cleanMethod from '/imports/api/cleanMethods';
+import cleanMethod from 'core/api/cleanMethods';
 
 const styles = {
   article: {

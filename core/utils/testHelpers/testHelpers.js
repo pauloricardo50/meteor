@@ -14,14 +14,14 @@ import {
 
 // This has to be imported here for client side tests to use factories
 // Because each test using factories also uses stubCollections
-import '/imports/api/factories';
+import 'core/api/factories';
 
-import LoanRequests from '/imports/api/loanrequests/loanrequests';
-import Borrowers from '/imports/api/borrowers/borrowers';
-import Offers from '/imports/api/offers/offers';
-import AdminActions from '/imports/api/adminActions/adminActions';
-import Comparators from '/imports/api/comparators/comparators';
-import Properties from '/imports/api/properties/properties';
+import LoanRequests from 'core/api/loanrequests/loanrequests';
+import Borrowers from 'core/api/borrowers/borrowers';
+import Offers from 'core/api/offers/offers';
+import AdminActions from 'core/api/adminActions/adminActions';
+import Comparators from 'core/api/comparators/comparators';
+import Properties from 'core/api/properties/properties';
 import { mount } from './enzyme';
 
 // Mounts a component for testing, and wraps it around everything it needs

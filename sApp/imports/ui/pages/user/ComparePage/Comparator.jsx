@@ -14,7 +14,7 @@ import { validateRatiosCompletely } from '/imports/js/helpers/requestFunctions';
 import { toDistanceString } from '/imports/js/helpers/conversionFunctions';
 import constants from '/imports/js/config/constants';
 import { getClosestStations, getNearbyPlace } from '/imports/js/helpers/APIs';
-import cleanMethod from '/imports/api/cleanMethods';
+import cleanMethod from 'core/api/cleanMethods';
 import { T } from 'core/components/Translation';
 
 import CompareTable from './CompareTable';

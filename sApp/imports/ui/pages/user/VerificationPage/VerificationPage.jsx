@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import cleanMethod from '/imports/api/cleanMethods';
+import cleanMethod from 'core/api/cleanMethods';
 
 import { isDemo } from '/imports/js/helpers/browserFunctions';
 import ProcessPage from '/imports/ui/components/general/ProcessPage';

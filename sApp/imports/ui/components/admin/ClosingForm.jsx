@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import DateInput from '/imports/ui/components/general/DateInput';
 import Select from '/imports/ui/components/general/Select';
-import { confirmClosing } from '/imports/api/loanrequests/methods';
+import { confirmClosing } from 'core/api/loanrequests/methods';
 
 const schedules = ['monthly', 'yearly', 'semester'];
 

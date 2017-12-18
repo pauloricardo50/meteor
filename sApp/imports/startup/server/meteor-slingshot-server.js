@@ -2,8 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
 import { Roles } from 'meteor/alanning:roles';
 
-import LoanRequests from '/imports/api/loanrequests/loanrequests';
-import Borrowers from '/imports/api/borrowers/borrowers';
+import LoanRequests from 'core/api/loanrequests/loanrequests';
+import Borrowers from 'core/api/borrowers/borrowers';
 import { getFileCount } from '/imports/js/arrays/files';
 import '../meteor-slingshot';
 

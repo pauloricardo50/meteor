@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { insertFakeOffer } from '/imports/api/offers/methods';
+import { insertFakeOffer } from 'core/api/offers/methods';
 
 import Button from 'core/components/Button';
 
-import { getRandomOffer } from '/imports/api/offers/fakes';
+import { getRandomOffer } from 'core/api/offers/fakes';
 
 const addFakeOffer = request => {
   const object = getRandomOffer(request);

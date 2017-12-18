@@ -10,7 +10,7 @@ import {
   insertAdminAction,
   completeActionByType,
   removeParentRequest,
-} from '/imports/api/adminActions/methods';
+} from 'core/api/adminActions/methods';
 
 import LoanRequests from './loanrequests';
 
@@ -19,7 +19,7 @@ const importServerMethods = () => {
     const {
       scheduleMethod,
       rescheduleJob,
-    } = require('/imports/api/server/jobs/methods');
+    } = require('core/api/server/jobs/methods');
     const {
       sendEmail,
       cancelScheduledEmail,

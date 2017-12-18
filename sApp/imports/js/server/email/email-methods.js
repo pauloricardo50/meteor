@@ -12,7 +12,7 @@ import {
   emailFooter,
   getEmailContent,
 } from './email-defaults';
-import { addEmail, modifyEmail } from '/imports/api/loanrequests/methods';
+import { addEmail, modifyEmail } from 'core/api/loanrequests/methods';
 
 export const sendEmail = new ValidatedMethod({
   name: 'email.send',

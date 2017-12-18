@@ -5,7 +5,7 @@ import { Slingshot } from 'meteor/edgee:slingshot';
 import DropzoneComponent from 'react-dropzone-component';
 import { injectIntl } from 'react-intl';
 
-import cleanMethod from '/imports/api/cleanMethods';
+import cleanMethod from 'core/api/cleanMethods';
 
 const handleSave = (props, file) => {
   let fileNameCount = '00';

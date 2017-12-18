@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { extractOffers } from '/imports/js/helpers/offerFunctions';
-import cleanMethod from '/imports/api/cleanMethods';
+import cleanMethod from 'core/api/cleanMethods';
 import ConditionsButton from '/imports/ui/components/general/ConditionsButton';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation';
 import Select from '/imports/ui/components/general/Select';

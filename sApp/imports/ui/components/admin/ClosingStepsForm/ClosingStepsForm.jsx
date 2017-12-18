@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Button from 'core/components/Button';
 
-import cleanMethod from '/imports/api/cleanMethods';
+import cleanMethod from 'core/api/cleanMethods';
 
 import Adder from './Adder';
 import FileStep from './FileStep';

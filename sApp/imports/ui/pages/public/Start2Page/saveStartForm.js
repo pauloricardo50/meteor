@@ -1,4 +1,4 @@
-import cleanMethod from '/imports/api/cleanMethods';
+import cleanMethod from 'core/api/cleanMethods';
 
 // The final function that inserts the documents once the form is finished
 const saveStartForm = (f, history) => {

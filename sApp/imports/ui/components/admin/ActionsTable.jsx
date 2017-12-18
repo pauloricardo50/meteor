@@ -8,7 +8,7 @@ import Table from '/imports/ui/components/general/Table';
 import { T } from 'core/components/Translation';
 
 import getActions from '/imports/js/arrays/adminActions';
-import { completeAction } from '/imports/api/adminActions/methods';
+import { completeAction } from 'core/api/adminActions/methods';
 
 const columnOptions = [
   {
