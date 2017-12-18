@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
 
 import TextField from 'core/components/Material/TextField';
-import { emailValidation } from '/imports/js/helpers/validation';
+import { emailValidation } from 'core/utils/validation';
 
 const styles = {
   root: {
