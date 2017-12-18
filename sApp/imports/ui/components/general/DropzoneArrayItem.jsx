@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classnames from 'classnames';
 
-import IconButton from '/imports/ui/components/general/IconButton';
+import IconButton from 'core/components/IconButton';
 
 import DropzoneInput from './AutoForm/DropzoneInput';
 import colors from '/imports/js/config/colors';

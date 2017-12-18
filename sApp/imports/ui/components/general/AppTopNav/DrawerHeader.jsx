@@ -6,7 +6,7 @@ import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
 
 import { T } from 'core/components/Translation';
-import IconButton from '/imports/ui/components/general/IconButton';
+import IconButton from 'core/components/IconButton';
 
 const styles = theme => ({
   drawerHeader: {

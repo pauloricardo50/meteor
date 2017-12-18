@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import fileSaver from 'file-saver';
 
-import IconButton from '/imports/ui/components/general/IconButton';
+import IconButton from 'core/components/IconButton';
 import { T } from 'core/components/Translation';
 
 export default class Download extends Component {

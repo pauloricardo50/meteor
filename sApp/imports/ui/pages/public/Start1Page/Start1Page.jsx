@@ -5,7 +5,7 @@ import queryString from 'query-string';
 import classnames from 'classnames';
 
 import Button from 'core/components/Button';
-import IconButton from '/imports/ui/components/general/IconButton';
+import IconButton from 'core/components/IconButton';
 
 import { T } from 'core/components/Translation';
 import { toNumber } from '/imports/js/helpers/conversionFunctions';

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { T } from 'core/components/Translation';
 import Select from '/imports/ui/components/general/Select';
 import TextInput from '/imports/ui/components/general/TextInput';
-import IconButton from '/imports/ui/components/general/IconButton';
+import IconButton from 'core/components/IconButton';
 
 const Tranche = ({ tranche, changeTranche, deleteTranche, options }) => (
   <div className="flex" style={{ alignItems: 'center', flexWrap: 'wrap' }}>

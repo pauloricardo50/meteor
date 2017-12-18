@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import IconButton from '/imports/ui/components/general/IconButton';
+import IconButton from 'core/components/IconButton';
 import classnames from 'classnames';
 
 import TextInput from '/imports/ui/components/general/TextInput';

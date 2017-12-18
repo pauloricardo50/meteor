@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import classnames from 'classnames';
 
-import IconButton from '/imports/ui/components/general/IconButton';
+import IconButton from 'core/components/IconButton';
 import { trackOncePerSession } from 'core/utils/analytics';
 
 import TextInput from '/imports/ui/components/general/TextInput';

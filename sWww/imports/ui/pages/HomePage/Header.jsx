@@ -2,9 +2,9 @@ import React from 'react';
 import Scroll from 'react-scroll';
 
 import { T } from 'core/components/Translation';
-import IconButton from '/imports/ui/components/general/IconButton';
+import IconButton from 'core/components/IconButton';
 
-import Buttons from 'core/components/Buttons';
+import Buttons from './Buttons';
 import Devices from './Devices';
 
 const Header = () => (

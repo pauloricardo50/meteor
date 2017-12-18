@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { getFileSchema } from '/imports/js/arrays/files';
+import { getFileSchema } from '../files/files';
 
 const Borrowers = new Mongo.Collection('borrowers');
 

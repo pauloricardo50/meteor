@@ -9,17 +9,17 @@ import {
   getFormats,
 } from 'core/utils/localization';
 
-import PublicLayout from '/imports/ui/layouts/PublicLayout';
-import HomePage from '/imports/ui/pages/public/HomePage';
-import LoginPage from '/imports/ui/pages/public/LoginPage';
-import AboutPage from '/imports/ui/pages/public/AboutPage';
-import CareersPage from '/imports/ui/pages/public/CareersPage';
-import TosPage from '/imports/ui/pages/public/TosPage';
-import FaqPage from '/imports/ui/pages/public/FaqPage';
-import EmailVerificationPage from '/imports/ui/pages/public/EmailVerificationPage';
-import PasswordResetPage from '/imports/ui/pages/public/PasswordResetPage';
-import Start1Page from '/imports/ui/pages/public/Start1Page';
-import Start2Page from '/imports/ui/pages/public/Start2Page';
+import PublicLayout from '../../ui/layouts/PublicLayout';
+import HomePage from '../../ui/pages/HomePage';
+import LoginPage from '../../ui/pages/LoginPage';
+import AboutPage from '../../ui/pages/AboutPage';
+import CareersPage from '../../ui/pages/CareersPage';
+import TosPage from '../../ui/pages/TosPage';
+import FaqPage from '../../ui/pages/FaqPage';
+import EmailVerificationPage from '../../ui/pages/EmailVerificationPage';
+import PasswordResetPage from '../../ui/pages/PasswordResetPage';
+import Start1Page from '../../ui/pages/Start1Page';
+import Start2Page from '../../ui/pages/Start2Page';
 
 const WwwRouter = () => (
   <BaseRouter
