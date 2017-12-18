@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This script starts all microservices and points them to the same mongoDB instance
+
 echo Running e-Potek...
 
 # Check if ttab is installed

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This scripts does a bunch of repetitive setup for each microservice
+# such as installing things, symlinks, copying necessary folders
+
 start=`date +%s`
 echo "Preparing e-Potek..."
 
