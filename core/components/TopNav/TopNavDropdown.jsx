@@ -5,7 +5,7 @@ import { Roles } from 'meteor/alanning:roles';
 
 import track from '../../utils/analytics';
 import { T } from '../Translation';
-import DropdownMenu from '../DropdownMenu';
+import DropdownMenu from 'core/DropdownMenu';
 
 // Shows a sign out link for all types of users, but:
 // an admin link for admins,

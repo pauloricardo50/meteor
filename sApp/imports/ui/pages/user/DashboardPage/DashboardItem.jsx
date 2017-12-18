@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
-import DropdownMenu from '/imports/ui/components/general/DropdownMenu';
+import DropdownMenu from 'core/DropdownMenu';
 
 const styles = {
   div: {
