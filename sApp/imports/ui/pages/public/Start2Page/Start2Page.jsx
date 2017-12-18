@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
+import { generalContainer } from 'core/containers/Containers';
 import getFormArray from '/imports/js/arrays/StartFormArray';
 import constants from '/imports/js/config/constants';
 import {
@@ -147,7 +148,7 @@ const getChildProps = (props, s) => {
   return childProps;
 };
 
-export default class Start2Page extends Component {
+class Start2Page extends Component {
   constructor(props) {
     super(props);
 
@@ -244,7 +245,8 @@ export default class Start2Page extends Component {
       return (
         <UxText
           onClick={() =>
-            Meteor.setTimeout(() => this.setState({ showUX: false }), 400)}
+            Meteor.setTimeout(() => this.setState({ showUX: false }), 400)
+          }
         />
       );
     }
@@ -304,3 +306,6 @@ Start2Page.propTypes = {
 Start2Page.defaultProps = {
   currentUser: undefined,
 };
+
+export default generalContainer(Start2Page);
+

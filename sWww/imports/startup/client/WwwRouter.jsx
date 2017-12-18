@@ -9,7 +9,7 @@ import {
   getFormats,
 } from 'core/utils/localization';
 
-import { generalContainer } from 'core/containers/Containers';
+import PublicLayout from '/imports/ui/layouts/PublicLayout';
 import HomePage from '/imports/ui/pages/public/HomePage';
 import LoginPage from '/imports/ui/pages/public/LoginPage';
 import AboutPage from '/imports/ui/pages/public/AboutPage';
@@ -32,7 +32,7 @@ const WwwRouter = () => (
         <Route path="/home" component={HomePage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/start1/:type" component={Start1Page} />
-        <Route path="/start2/:type" component={generalContainer(Start2Page)} />
+        <Route path="/start2/:type" component={Start2Page} />
         <Route path="/careers" component={CareersPage} />
         <Route path="/about" component={AboutPage} />
         <Route path="/tos" component={TosPage} />
