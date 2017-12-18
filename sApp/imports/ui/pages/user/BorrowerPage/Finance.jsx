@@ -6,7 +6,7 @@ import Checkbox from '/imports/ui/components/general/Checkbox';
 import AutoForm from '/imports/ui/components/general/AutoForm';
 import { getBorrowerFinanceArray } from '/imports/js/arrays/BorrowerFormArray';
 import cleanMethod from 'core/api/cleanMethods';
-import Recap from '/imports/ui/components/general/Recap';
+import Recap from 'core/components/Recap';
 import constants from 'core/config/constants';
 import LoadingButton from '/imports/ui/components/general/LoadingButton';
 import { T } from 'core/components/Translation';

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Recap from '/imports/ui/components/general/Recap';
+import Recap from 'core/components/Recap';
 import DashboardItem from './DashboardItem';
 import { T } from 'core/components/Translation';
 import track from 'core/utils/analytics';

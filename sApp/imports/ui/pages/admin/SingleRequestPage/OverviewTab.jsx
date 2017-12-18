@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Button from 'core/components/Button';
 
 import ProjectPieChart from '/imports/ui/components/charts/ProjectPieChart';
-import Recap from '/imports/ui/components/general/Recap';
+import Recap from 'core/components/Recap';
 import renderObject from '/imports/js/helpers/renderObject';
 
 const styles = {

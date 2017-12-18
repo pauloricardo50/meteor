@@ -8,7 +8,7 @@ import {
   getRealMonthly,
 } from 'core/utils/startFunctions';
 
-import Recap from '/imports/ui/components/general/Recap';
+import Recap from 'core/components/Recap';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation';
 
 const isReady = ({ income, fortune, property }) =>

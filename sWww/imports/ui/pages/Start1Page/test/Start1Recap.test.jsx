@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { shallow } from '/imports/js/helpers/testHelpers/enzyme';
 
 import Start1Recap from '../Start1Recap';
-import Recap from '/imports/ui/components/general/Recap';
+import Recap from 'core/components/Recap';
 
 describe('Start1Recap', () => {
   it('renders without props', () => {

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
-import Recap from '/imports/ui/components/general/Recap';
+import Recap from 'core/components/Recap';
 
 const Start2Recap = props => (
   <div className="start2recap mask1 animated fadeInUp">
