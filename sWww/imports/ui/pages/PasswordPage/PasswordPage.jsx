@@ -7,6 +7,7 @@ import Button from 'core/components/Button';
 import BetaAccess from './BetaAccess';
 import { isDemo } from 'core/utils/browserFunctions';
 import { T } from 'core/components/Translation';
+import { generalContainer } from 'core/containers/Containers';
 
 const PasswordPage = (props) => {
   if (props.currentUser) {
@@ -46,4 +47,4 @@ PasswordPage.defaultProps = {
   currentUser: undefined,
 };
 
-export default PasswordPage;
+export default generalContainer(PasswordPage);

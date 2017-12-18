@@ -20,6 +20,7 @@ import EmailVerificationPage from '../../ui/pages/EmailVerificationPage';
 import PasswordResetPage from '../../ui/pages/PasswordResetPage';
 import Start1Page from '../../ui/pages/Start1Page';
 import Start2Page from '../../ui/pages/Start2Page';
+import PasswordPage from '../../ui/pages/PasswordPage';
 
 const WwwRouter = () => (
   <BaseRouter
@@ -29,6 +30,7 @@ const WwwRouter = () => (
   >
     <PublicLayout>
       <Switch>
+        <Route path="/" component={PasswordPage} />
         <Route path="/home" component={HomePage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/start1/:type" component={Start1Page} />

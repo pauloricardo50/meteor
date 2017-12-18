@@ -10,9 +10,7 @@ import ErrorBoundary from './ErrorBoundary';
 import ScrollToTop from './ScrollToTop';
 import LoginPage from './LoginPage';
 
-const BaseRouter = ({
-  locale, messages, formats, children,
-}) => (
+const BaseRouter = ({ locale, messages, formats, children }) => (
   <ErrorBoundary helper="root">
     {/* Inject custom material-ui theme for everything to look good */}
     <MuiThemeProvider theme={MuiTheme}>
