@@ -29,4 +29,7 @@ import './loanrequests/loanrequests';
 import './server/jobs/jobs';
 import './server/jobs/methods';
 
+import './files/fileMethods';
+import './files/meteor-slingshot-server';
+
 import '../utils/logismata/methods';

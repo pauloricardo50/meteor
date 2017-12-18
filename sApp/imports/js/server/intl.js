@@ -3,7 +3,7 @@ import {
   getUserLocale,
   getTranslations,
   getFormats,
-} from '/imports/startup/localization';
+} from 'core/utils/localization';
 
 /**
  * formatMessage - A server-side method to use the intl package
