@@ -9,7 +9,7 @@ import {
   getProjectValue,
   getPropAndWork,
 } from '/imports/js/helpers/requestFunctions';
-import constants from '/imports/js/config/constants';
+import constants from 'core/config/constants';
 import colors from '/imports/js/config/colors';
 
 import { legendConfig, adjustLegend } from './chartSettings';

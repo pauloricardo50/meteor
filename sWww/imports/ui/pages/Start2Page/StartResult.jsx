@@ -10,7 +10,7 @@ import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartI
 import Recap from '/imports/ui/components/general/Recap';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation';
 import track from 'core/utils/analytics';
-import constants from '/imports/js/config/constants';
+import constants from 'core/config/constants';
 import saveStartForm from './saveStartForm';
 
 const styles = {

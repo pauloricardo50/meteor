@@ -12,7 +12,7 @@ import {
 } from 'core/utils/startFunctions';
 import { validateRatiosCompletely } from '/imports/js/helpers/requestFunctions';
 import { toDistanceString } from 'core/utils/conversionFunctions';
-import constants from '/imports/js/config/constants';
+import constants from 'core/config/constants';
 import { getClosestStations, getNearbyPlace } from '/imports/js/helpers/APIs';
 import cleanMethod from 'core/api/cleanMethods';
 import { T } from 'core/components/Translation';

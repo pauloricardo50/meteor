@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import constants from '/imports/js/config/constants';
+import constants from 'core/config/constants';
 import {
   getProjectValue,
   getLoanValue,

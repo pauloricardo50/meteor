@@ -5,7 +5,7 @@ import Button from 'core/components/Button';
 
 import { toMoney } from 'core/utils/conversionFunctions';
 import { getProject } from 'core/utils/startFunctions';
-import constants from '/imports/js/config/constants';
+import constants from 'core/config/constants';
 import { T } from 'core/components/Translation';
 
 import StartSlider from './StartSlider';

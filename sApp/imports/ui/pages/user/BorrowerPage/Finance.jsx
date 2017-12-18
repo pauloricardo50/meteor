@@ -7,7 +7,7 @@ import AutoForm from '/imports/ui/components/general/AutoForm';
 import { getBorrowerFinanceArray } from '/imports/js/arrays/BorrowerFormArray';
 import cleanMethod from 'core/api/cleanMethods';
 import Recap from '/imports/ui/components/general/Recap';
-import constants from '/imports/js/config/constants';
+import constants from 'core/config/constants';
 import LoadingButton from '/imports/ui/components/general/LoadingButton';
 import { T } from 'core/components/Translation';
 import { disableForms } from '/imports/js/helpers/requestFunctions';

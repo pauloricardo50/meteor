@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { toMoney } from 'core/utils/conversionFunctions';
-import constants from '/imports/js/config/constants';
+import constants from 'core/config/constants';
 import {
   getLenderCount,
   getRealMonthly,

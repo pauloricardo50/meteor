@@ -7,7 +7,7 @@ import queryString from 'query-string';
 
 import { generalContainer } from 'core/containers/Containers';
 import getFormArray from '/imports/js/arrays/StartFormArray';
-import constants from '/imports/js/config/constants';
+import constants from 'core/config/constants';
 import {
   isFinished,
   getBonusIncome,

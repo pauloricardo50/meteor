@@ -7,7 +7,7 @@ import track from 'core/utils/analytics';
 import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
 
-import constants from '/imports/js/config/constants';
+import constants from 'core/config/constants';
 import Loadable from '/imports/js/helpers/loadable';
 
 import Accordion from 'core/components/Accordion';

@@ -5,7 +5,7 @@ import Scroll from 'react-scroll';
 import FortuneSliders from '/imports/ui/pages/public/Start2Page/FortuneSliders';
 import DialogSimple from 'core/components/DialogSimple';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation';
-import constants from '/imports/js/config/constants';
+import constants from 'core/config/constants';
 import { toMoney } from 'core/utils/conversionFunctions';
 
 export const getAcquisitionArray = (state, props, setFormState) => [

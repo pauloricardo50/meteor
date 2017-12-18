@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import classnames from 'classnames';
 
 import { toMoney } from 'core/utils/conversionFunctions';
-import constants from '/imports/js/config/constants';
+import constants from 'core/config/constants';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation';
 
 import {

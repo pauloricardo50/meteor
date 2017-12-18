@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import cleanMethod from 'core/api/cleanMethods';
 
-import constants from '/imports/js/config/constants';
+import constants from 'core/config/constants';
 import colors from '/imports/js/config/colors';
 import {
   toNumber,
