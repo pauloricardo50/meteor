@@ -2,8 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import TopNav from 'core/components/TopNav';
+import { generalContainer } from 'core/containers/Containers';
 
-const PublicLayout = props => (
+export const PublicLayout = props => (
   <div style={{ height: 'inherit', width: 'inherit' }}>
     <TopNav {...props} public />
     <main className="public-layout">
@@ -22,4 +23,4 @@ PublicLayout.defaultProps = {
   children: undefined,
 };
 
-export default PublicLayout;
+export default generalContainer(PublicLayout);

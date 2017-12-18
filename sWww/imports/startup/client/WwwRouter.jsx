@@ -9,10 +9,7 @@ import {
   getFormats,
 } from 'core/utils/localization';
 
-import {
-  PublicLayout,
-  Start2Page,
-} from 'core/containers/PublicContainers';
+import { generalContainer } from 'core/containers/Containers';
 import HomePage from '/imports/ui/pages/public/HomePage';
 import LoginPage from '/imports/ui/pages/public/LoginPage';
 import AboutPage from '/imports/ui/pages/public/AboutPage';
@@ -22,6 +19,7 @@ import FaqPage from '/imports/ui/pages/public/FaqPage';
 import EmailVerificationPage from '/imports/ui/pages/public/EmailVerificationPage';
 import PasswordResetPage from '/imports/ui/pages/public/PasswordResetPage';
 import Start1Page from '/imports/ui/pages/public/Start1Page';
+import Start2Page from '/imports/ui/pages/public/Start2Page';
 
 const WwwRouter = () => (
   <BaseRouter
@@ -34,7 +32,7 @@ const WwwRouter = () => (
         <Route path="/home" component={HomePage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/start1/:type" component={Start1Page} />
-        <Route path="/start2/:type" component={Start2Page} />
+        <Route path="/start2/:type" component={generalContainer(Start2Page)} />
         <Route path="/careers" component={CareersPage} />
         <Route path="/about" component={AboutPage} />
         <Route path="/tos" component={TosPage} />
