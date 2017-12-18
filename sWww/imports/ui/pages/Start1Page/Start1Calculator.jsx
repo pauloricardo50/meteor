@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import track from 'core/utils/analytics';
 
 import Button from 'core/components/Button';
-import Icon from '/imports/ui/components/general/Icon';
+import Icon from 'core/components/Icon';
 
 import constants from '/imports/js/config/constants';
 import Loadable from '/imports/js/helpers/loadable';

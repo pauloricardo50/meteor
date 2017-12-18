@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Icon from '/imports/ui/components/general/Icon';
+import Icon from 'core/components/Icon';
 
 import { isRequestValid } from '/imports/js/helpers/requestFunctions';
 import { T } from 'core/components/Translation';

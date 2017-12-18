@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import Slider from 'core/components/Material/Slider';
-import Icon from '/imports/ui/components/general/Icon';
+import Icon from 'core/components/Icon';
 
 import { trackOncePerSession } from 'core/utils/analytics';
 

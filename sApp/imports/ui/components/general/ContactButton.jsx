@@ -6,7 +6,7 @@ import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
 import colors from '/imports/js/config/colors';
 import supportStaff from '/imports/js/arrays/supportStaff';
-import Icon from '/imports/ui/components/general/Icon';
+import Icon from 'core/components/Icon';
 
 const styles = {
   div: {

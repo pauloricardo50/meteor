@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import StarRatingComponent from 'react-star-rating-component';
 import colors from '/imports/js/config/colors';
-import Icon from '/imports/ui/components/general/Icon';
+import Icon from 'core/components/Icon';
 
 const styles = {
   svg: {

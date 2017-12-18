@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from 'core/components/Button';
-import Icon from '/imports/ui/components/general/Icon';
+import Icon from 'core/components/Icon';
 import { Link } from 'react-router-dom';
 
 import cleanMethod from 'core/api/cleanMethods';

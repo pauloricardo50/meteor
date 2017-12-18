@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 
-import Icon from '/imports/ui/components/general/Icon';
+import Icon from 'core/components/Icon';
 import { CircularProgress } from 'material-ui/Progress';
 
 import { T } from 'core/components/Translation';

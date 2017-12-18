@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
-import Icon from '/imports/ui/components/general/Icon';
+import Icon from 'core/components/Icon';
 
 import { IntlNumber } from '/imports/ui/components/general/Translation';
 

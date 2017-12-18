@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import fileSaver from 'file-saver';
 
 import Button from 'core/components/Button';
-import Icon from '/imports/ui/components/general/Icon';
+import Icon from 'core/components/Icon';
 
 import track from 'core/utils/analytics';
 

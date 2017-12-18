@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import colors from '/imports/js/config/colors';
-import Icon from '/imports/ui/components/general/Icon';
+import Icon from 'core/components/Icon';
 
 const SortIcon = ({ sorted }) => {
   if (sorted && sorted.ascending === true) {

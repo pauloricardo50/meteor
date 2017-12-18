@@ -7,7 +7,7 @@ import orderBy from 'lodash/orderBy';
 import debounce from 'lodash/debounce';
 
 import Button from 'core/components/Button';
-import Icon from '/imports/ui/components/general/Icon';
+import Icon from 'core/components/Icon';
 
 import { easeOut } from 'core/utils/browserFunctions';
 import { T } from 'core/components/Translation';

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { T } from 'core/components/Translation';
 import DialogSimple from 'core/components/DialogSimple';
 import IconButton from 'core/components/IconButton';
-import Icon from '/imports/ui/components/general/Icon';
+import Icon from 'core/components/Icon';
 import Button from 'core/components/Button';
 
 import CustomFieldAdder from './CustomFieldAdder';

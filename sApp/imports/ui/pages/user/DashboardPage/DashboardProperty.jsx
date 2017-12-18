@@ -5,7 +5,7 @@ import classnames from 'classnames';
 
 import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
-import Icon from '/imports/ui/components/general/Icon';
+import Icon from 'core/components/Icon';
 import { getPropertyCompletion } from '/imports/js/helpers/requestFunctions';
 import DashboardItem from './DashboardItem';
 
