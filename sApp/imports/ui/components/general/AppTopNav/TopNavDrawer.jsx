@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import IconButton from '/imports/ui/components/general/IconButton';
+import IconButton from '../IconButton';
 import Drawer from 'material-ui/Drawer';
 import SideNavUser from '/imports/ui/components/general/SideNavUser';
 
 import DrawerHeader from './DrawerHeader';
 
-const TopNavDrawer = (props) => {
+const TopNavDrawer = props => {
   const { drawerState, toggleDrawer, handleClickLink } = props;
   return (
     <div className="menu-button">

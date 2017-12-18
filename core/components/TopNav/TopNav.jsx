@@ -6,14 +6,14 @@ import Toolbar from 'material-ui/Toolbar/Toolbar';
 
 import track from '../../utils/analytics';
 
-import Button from 'core/components/Button';
+import Button from '../Button';
 import SearchModal from '../SearchModal';
 import { T } from '../Translation';
 import TopNavDropdown from './TopNavDropdown';
-import TopNavDrawer from './TopNavDrawer';
+// import TopNavDrawer from './TopNavDrawer';
 
 const TopNav = props => {
-  const { history, currentUser, loanRequests } = props;
+  const { history, currentUser, loanRequests, appChildren } = props;
   const isApp = history && history.location.pathname.slice(0, 4) === '/app';
 
   const showDrawer = isApp && loanRequests.length > 0;
@@ -24,7 +24,8 @@ const TopNav = props => {
     // additional white space is added to the right of the page
     <Toolbar className="top-nav" style={{ overflowX: 'hidden' }}>
       <div className="top-nav-content">
-        {showDrawer ? <TopNavDrawer {...props} /> : null}
+        {appChildren(props)}
+        {/* {showDrawer ? <TopNavDrawer {...props} /> : null} */}
 
         <div className="logo">
           <Link
