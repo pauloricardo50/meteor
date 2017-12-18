@@ -4,9 +4,9 @@ import { Meteor } from 'meteor/meteor';
 import { injectIntl } from 'react-intl';
 
 import cleanMethod from 'core/api/cleanMethods';
-import { getFileCount } from 'core/arrays/files';
+import { getFileCount } from 'core/api/files/files';
 import bert from '/imports/js/helpers/bert';
-import { allowedFileTypes, maxSize } from '/imports/startup/meteor-slingshot';
+import { allowedFileTypes, maxSize } from 'core/api/files/meteor-slingshot';
 
 import Title from './Title';
 import File from './File';
@@ -44,9 +44,7 @@ class Uploader extends Component {
           tempFiles.forEach((temp) => {
             if (temp.name === file.initialName) {
               this.setState(prev => ({
-                tempFiles: prev.tempFiles.filter(
-                  f => f.name !== file.initialName,
-                ),
+                tempFiles: prev.tempFiles.filter(f => f.name !== file.initialName),
               }));
             }
           });
@@ -83,7 +81,9 @@ class Uploader extends Component {
   };
 
   handleSave = (file, downloadUrl) => {
-    const { currentValue, docId, pushFunc, fileMeta } = this.props;
+    const {
+      currentValue, docId, pushFunc, fileMeta,
+    } = this.props;
     const { fileCount, fileCountString } = getFileCount(currentValue);
 
     const object = {
@@ -105,7 +105,9 @@ class Uploader extends Component {
   handleRemove = (key) => {
     Meteor.call('deleteFile', key, (err) => {
       if (!err) {
-        const { currentValue, docId, updateFunc, fileMeta } = this.props;
+        const {
+          currentValue, docId, updateFunc, fileMeta,
+        } = this.props;
         // Filter out the file we want to delete
         const newFileArray = currentValue.filter(file => file.key !== key);
         const object = { [`files.${fileMeta.id}`]: newFileArray };

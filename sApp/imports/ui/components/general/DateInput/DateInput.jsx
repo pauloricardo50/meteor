@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import TextInput from '../TextInput';
-
+import TextInput from 'core/components/TextInput';
 import Loadable from 'core/utils/loadable';
 
 // const SingleDatePicker = Loadable({

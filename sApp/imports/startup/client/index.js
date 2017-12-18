@@ -1,14 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
 
-import injectTapEventPlugin from 'react-tap-event-plugin';
+import 'core/api/api';
+import 'core/api/files/meteor-slingshot';
+import { localizationStartup } from 'core/utils/localization';
 
-import 'core/api';
 import '../accounts-config';
-import '../meteor-slingshot';
 import './css';
-
-import { localizationStartup } from '../localization';
 import AppRouter from './AppRouter';
 
 /**
@@ -18,7 +16,7 @@ import AppRouter from './AppRouter';
  *
  * @return {type} undefined
  */
-const start = testElement => {
+const start = (testElement) => {
   // Initial injected html done in server startup index.js
   const loader = document.getElementById('inject-loader-wrapper');
   const loader2 = document.getElementById('loading-text');
@@ -30,8 +28,6 @@ const start = testElement => {
   }
 
   localizationStartup();
-
-  injectTapEventPlugin();
 
   // Render react-router routes
   render(AppRouter(), testElement || document.getElementById('react-root'));

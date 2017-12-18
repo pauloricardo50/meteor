@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
 import track from 'core/utils/analytics';
-import Select from '../Select';
+import Select from 'core/components/Select';
 import Divider from 'core/components/Material/Divider';
 
 const styles = {
@@ -35,8 +35,7 @@ const getOptions = (loanRequests) => {
       id: r._id,
       label: r.name,
       icon: r.property.style === 'villa' ? 'home' : 'building',
-    }),
-  );
+    }));
 
   array.push(<Divider key="divider" />);
   array.push({
@@ -48,7 +47,9 @@ const getOptions = (loanRequests) => {
   return array;
 };
 
-const RequestSelector = ({ value, toggleDrawer, history, loanRequests }) => (
+const RequestSelector = ({
+  value, toggleDrawer, history, loanRequests,
+}) => (
   <div style={styles.div}>
     <Select
       id="request-selector"

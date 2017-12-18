@@ -5,10 +5,10 @@ import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 
 import { T } from 'core/components/Translation';
+import Icon from 'core/components/Icon';
 import RequestSelector from './RequestSelector';
 import SideNavStepper from './SideNavStepper';
-import Icon from '../Icon';
-import DrawerHeader from '../TopNav/DrawerHeader';
+import DrawerHeader from '../AppTopNav/DrawerHeader';
 
 const SideNavUser = (props) => {
   const {
@@ -99,9 +99,7 @@ const SideNavUser = (props) => {
                 history={history}
                 location={location}
                 loanRequest={currentRequest}
-                borrowers={borrowers.filter(
-                  b => borrowerIds.indexOf(b._id) > -1,
-                )}
+                borrowers={borrowers.filter(b => borrowerIds.indexOf(b._id) > -1)}
               />
             )}
           </div>

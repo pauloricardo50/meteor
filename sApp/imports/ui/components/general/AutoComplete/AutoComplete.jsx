@@ -4,7 +4,8 @@ import Autosuggest from 'react-autosuggest';
 import Paper from 'material-ui/Paper';
 import { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
-import TextInput from '../TextInput';
+
+import TextInput from 'core/components/TextInput';
 
 const renderInput = (inputProps) => {
   const {

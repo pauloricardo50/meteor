@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
 import { personalInfoPercent, filesPercent } from 'core/arrays/steps';
-import { borrowerFiles } from 'core/arrays/files';
+import { borrowerFiles } from 'core/api/files/files';
 
 const Progress = ({ match, borrower }) => {
   const { tab } = match.params;
