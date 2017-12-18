@@ -2,13 +2,12 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import Scroll from 'react-scroll';
 
-import FortuneSliders from '/imports/ui/pages/public/Start2Page/FortuneSliders';
 import DialogSimple from 'core/components/DialogSimple';
 import { T, IntlNumber } from 'core/components/Translation';
 import constants from 'core/config/constants';
 import { toMoney } from 'core/utils/conversionFunctions';
 
-export const getAcquisitionArray = (state, props, setFormState) => [
+export const getAcquisitionArray = (state, props, setFormState, components) => [
   {
     id: 'propertyValue',
     type: 'textInput',
@@ -736,7 +735,7 @@ export const getFinalArray = (state, props, setFormState) => [
       (state.useInsurance1 === true || state.useInsurance2 === true) &&
       state.insuranceConditions === true,
     type: 'custom',
-    component: FortuneSliders,
+    component: components.FortuneSliders,
     // minFortune is required to do math in the FortuneSliders component
     minFortune: props.minFortune,
     fortune: props.fortune,
@@ -843,27 +842,27 @@ export const getFinalArray = (state, props, setFormState) => [
     hideResult: true,
     buttons: !state.hideFinalButton
       ? [
-        {
-          id: true,
-          label: <T id="Start2Form.finalized.button" />,
-          onClick() {
-            // After clicking on this button, hide it
-            setFormState('hideFinalButton', true);
-            const options = {
-              duration: 350,
-              delay: 0,
-              smooth: true,
-            };
-            Meteor.defer(() => Scroll.scroller.scrollTo('final', options));
+          {
+            id: true,
+            label: <T id="Start2Form.finalized.button" />,
+            onClick() {
+              // After clicking on this button, hide it
+              setFormState('hideFinalButton', true);
+              const options = {
+                duration: 350,
+                delay: 0,
+                smooth: true,
+              };
+              Meteor.defer(() => Scroll.scroller.scrollTo('final', options));
+            },
           },
-        },
-      ]
+        ]
       : [],
   },
 ];
 
-const getFormArray = (state, props, setFormState) =>
-  getAcquisitionArray(state, props, setFormState).concat(
+const getFormArray = (state, props, setFormState, components) =>
+  getAcquisitionArray(state, props, setFormState, components).concat(
     state.type === 'acquisition'
       ? getErrorArray(state, props, setFormState)
       : [], // these errors only for acquisitions

@@ -6,7 +6,7 @@ import classnames from 'classnames';
 
 import { T } from 'core/components/Translation';
 import { trackOncePerSession } from 'core/utils/analytics';
-import ButtonInput from 'core/components/ButtonInput';
+import ButtonInput from './ButtonInput';
 import Input from './Input';
 import MultipleInput from './MultipleInput';
 import StartArrayInput from './StartArrayInput';
@@ -23,8 +23,7 @@ const validationCheck = (v, rules) =>
 export const arrayIsTrue = (arr, keys) =>
   (arr && arr.length) >= 1 &&
   arr.every(arrayItem =>
-    keys.reduce((tot, key) => tot && arrayItem[key] !== undefined, true),
-  );
+    keys.reduce((tot, key) => tot && arrayItem[key] !== undefined, true));
 
 const prevTrue = (prev, s) => {
   if (prev.type === 'multipleInput') {
@@ -218,8 +217,7 @@ export default class AutoStart extends Component {
     return (
       <section>
         {this.props.formArray.map((input, index) =>
-          this.inputSwitch(input, index),
-        )}
+          this.inputSwitch(input, index))}
       </section>
     );
   }

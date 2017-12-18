@@ -35,6 +35,7 @@ import StartResult from './StartResult';
 import StartSignUp from './StartSignUp';
 import UxText from './UxText';
 import Start2Recap from './Start2Recap';
+import FortuneSliders from './FortuneSliders';
 
 /**
  * getChildProps - Does all of the math and logic to prepare the props
@@ -106,12 +107,10 @@ const getChildProps = (props, s) => {
   // if you want to have a minimum loan, you use all your fortune,
   // hence, you'll have to pay maximum lppFees
   // Round up to make sure the project works
-  childProps.minLoan = Math.round(
-    childProps.propAndWork -
+  childProps.minLoan = Math.round(childProps.propAndWork -
       (childProps.fortune +
         childProps.insuranceFortune * (1 - constants.lppFees)) +
-      fees,
-  );
+      fees);
   // If the income is too low to afford a loan higher than some amount
   childProps.maxLoan = getMaxLoan(
     s,
@@ -264,6 +263,7 @@ class Start2Page extends Component {
                 this.state,
                 childProps,
                 this.setFormState,
+                { FortuneSliders },
               )}
               setFormState={this.setFormState}
               setActiveLine={this.setActiveLine}
@@ -271,7 +271,7 @@ class Start2Page extends Component {
           </div>
           {!finished && <Start2Recap {...childProps} />}
           {finished && (
-            <Scroll.Element name={'final'}>
+            <Scroll.Element name="final">
               <StartResult
                 history={this.props.history}
                 currentUser={this.props.currentUser}
@@ -282,7 +282,7 @@ class Start2Page extends Component {
           )}
 
           {this.state.done && (
-            <Scroll.Element name={'done'} style={{ width: '100%' }}>
+            <Scroll.Element name="done" style={{ width: '100%' }}>
               <StartSignUp
                 formState={this.state}
                 history={this.props.history}
@@ -308,4 +308,3 @@ Start2Page.defaultProps = {
 };
 
 export default generalContainer(Start2Page);
-
