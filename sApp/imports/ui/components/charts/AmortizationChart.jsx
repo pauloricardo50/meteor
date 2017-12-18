@@ -9,7 +9,7 @@ import { injectIntl } from 'react-intl';
 import {
   getAmortization,
   getInterests,
-} from '/imports/js/helpers/finance-math';
+} from 'core/utils/finance-math';
 import {
   getLoanValue,
   getMaintenance,

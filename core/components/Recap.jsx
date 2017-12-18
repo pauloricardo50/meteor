@@ -28,12 +28,12 @@ import {
   getBorrowerSalary,
   getRealEstateValue,
   getInsuranceFortune,
-} from '/imports/js/helpers/borrowerFunctions';
+} from 'core/utils/borrowerFunctions';
 
 import {
   getMonthlyPayment,
   getIncomeRatio,
-} from '/imports/js/helpers/finance-math';
+} from 'core/utils/finance-math';
 
 const getDashboardArray = (props) => {
   const r = props.loanRequest;

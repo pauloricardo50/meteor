@@ -4,7 +4,7 @@ import React from 'react';
 import {
   getAmortization,
   getInterests,
-} from '/imports/js/helpers/finance-math';
+} from 'core/utils/finance-math';
 import { toMoney } from 'core/utils/conversionFunctions';
 import colors from 'core/config/colors';
 import { IntlNumber } from 'core/components/Translation';

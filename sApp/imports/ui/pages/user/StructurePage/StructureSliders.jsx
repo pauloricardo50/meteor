@@ -7,7 +7,7 @@ import TextInput from 'core/components/TextInput';
 import {
   getFortune,
   getInsuranceFortune,
-} from '/imports/js/helpers/borrowerFunctions';
+} from 'core/utils/borrowerFunctions';
 
 import { T } from 'core/components/Translation';
 

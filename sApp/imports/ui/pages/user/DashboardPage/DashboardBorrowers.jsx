@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
-import { getBorrowerCompletion } from '/imports/js/helpers/borrowerFunctions';
+import { getBorrowerCompletion } from 'core/utils/borrowerFunctions';
 import DashboardItem from './DashboardItem';
 
 const DashboardBorrowers = props => {

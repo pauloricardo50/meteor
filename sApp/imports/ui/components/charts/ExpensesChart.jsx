@@ -6,7 +6,7 @@ import ReactHighcharts from 'react-highcharts';
 import {
   getInterests,
   getAmortization,
-} from '/imports/js/helpers/finance-math';
+} from 'core/utils/finance-math';
 import { getInterestsWithOffer } from 'core/utils/requestFunctions';
 import colors from 'core/config/colors';
 
