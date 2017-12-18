@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import Button from 'core/components/Button';
 
 import BetaAccess from './BetaAccess';
-import { isDemo } from '/imports/js/helpers/browserFunctions';
+import { isDemo } from 'core/utils/browserFunctions';
 import { T } from 'core/components/Translation';
 
 const PasswordPage = (props) => {

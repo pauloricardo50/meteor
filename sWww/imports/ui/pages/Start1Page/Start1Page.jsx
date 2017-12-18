@@ -17,7 +17,7 @@ import {
   getTheoreticalMonthly,
   getBorrowRatio,
 } from 'core/utils/startFunctions';
-import { storageAvailable } from '/imports/js/helpers/browserFunctions';
+import { storageAvailable } from 'core/utils/browserFunctions';
 import Accordion from '/imports/ui/components/general/Accordion';
 
 import Start1Calculator from './Start1Calculator';

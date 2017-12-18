@@ -5,7 +5,7 @@ import AutoForm from '/imports/ui/components/general/AutoForm';
 import { getBorrowerInfoArray } from '/imports/js/arrays/BorrowerFormArray';
 import { disableForms } from '/imports/js/helpers/requestFunctions';
 
-import { isDemo } from '/imports/js/helpers/browserFunctions';
+import { isDemo } from 'core/utils/browserFunctions';
 import FakeBorrowerCompleter from '/imports/ui/components/general/FakeBorrowerCompleter';
 import { T } from 'core/components/Translation';
 

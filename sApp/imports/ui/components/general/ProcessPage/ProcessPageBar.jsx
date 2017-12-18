@@ -6,7 +6,7 @@ import Icon from '/imports/ui/components/general/Icon';
 import { Link } from 'react-router-dom';
 
 import cleanMethod from 'core/api/cleanMethods';
-import { getWidth } from '/imports/js/helpers/browserFunctions';
+import { getWidth } from 'core/utils/browserFunctions';
 import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
 

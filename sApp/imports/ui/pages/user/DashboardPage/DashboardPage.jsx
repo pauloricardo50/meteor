@@ -6,7 +6,7 @@ import NewRequestModal from './NewRequestModal';
 import AcceptClosingModal from './AcceptClosingModal';
 import DashboardContent from './DashboardContent';
 
-import { getWidth } from '/imports/js/helpers/browserFunctions';
+import { getWidth } from 'core/utils/browserFunctions';
 
 export default class DashboardPage extends Component {
   constructor(props) {

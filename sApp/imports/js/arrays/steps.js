@@ -7,7 +7,7 @@ import { borrowerFiles, requestFiles } from '/imports/js/arrays/files';
 import getPropertyArray from './PropertyFormArray';
 import { strategyDone } from '/imports/js/helpers/requestFunctions';
 import { arrayify } from '/imports/js/helpers/general';
-import { isDemo } from '/imports/js/helpers/browserFunctions';
+import { isDemo } from 'core/utils/browserFunctions';
 
 const getSteps = ({ loanRequest, borrowers, serverTime }) => {
   const steps = [

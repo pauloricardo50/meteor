@@ -11,7 +11,7 @@ import {
   getPropertyCompletion,
 } from '/imports/js/helpers/requestFunctions';
 
-import { isDemo } from '/imports/js/helpers/browserFunctions';
+import { isDemo } from 'core/utils/browserFunctions';
 import FakePropertyCompleter from '/imports/ui/components/general/FakePropertyCompleter';
 import { T } from 'core/components/Translation';
 

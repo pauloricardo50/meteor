@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import cleanMethod from 'core/api/cleanMethods';
 
-import { isDemo } from '/imports/js/helpers/browserFunctions';
+import { isDemo } from 'core/utils/browserFunctions';
 import ProcessPage from '/imports/ui/components/general/ProcessPage';
 import track from 'core/utils/analytics';
 

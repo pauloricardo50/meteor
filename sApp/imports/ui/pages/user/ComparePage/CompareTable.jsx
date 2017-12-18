@@ -9,7 +9,7 @@ import debounce from 'lodash/debounce';
 import Button from 'core/components/Button';
 import Icon from '/imports/ui/components/general/Icon';
 
-import { easeOut } from '/imports/js/helpers/browserFunctions';
+import { easeOut } from 'core/utils/browserFunctions';
 import { T } from 'core/components/Translation';
 import CompareHeader from './CompareHeader';
 import CompareTableContent from './CompareTableContent';

@@ -10,7 +10,7 @@ import { getLenderCount } from '/imports/js/helpers/requestFunctions';
 import ConfirmButton from '/imports/ui/components/general/ConfirmButton';
 import { T } from 'core/components/Translation';
 import track from 'core/utils/analytics';
-import { isDemo } from '/imports/js/helpers/browserFunctions';
+import { isDemo } from 'core/utils/browserFunctions';
 import AuctionForm from './AuctionForm';
 
 const styles = {
