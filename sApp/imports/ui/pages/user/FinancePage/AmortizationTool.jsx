@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import Select from '/imports/ui/components/general/Select';
 import TextInput from 'core/components/TextInput';
 
-import AmortizationChart from '/imports/ui/components/charts/AmortizationChart';
+import AmortizationChart from 'core/components/charts/AmortizationChart';
 import { T } from 'core/components/Translation';
 // import { percentMask } from '/imports/js/helpers/textMasks';
 

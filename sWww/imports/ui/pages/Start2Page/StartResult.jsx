@@ -6,7 +6,7 @@ import CountUp from 'react-countup';
 import { injectIntl } from 'react-intl';
 
 import Button from 'core/components/Button';
-import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests';
+import ExpensesChartInterests from 'core/components/charts/ExpensesChartInterests';
 import Recap from 'core/components/Recap';
 import { T, IntlNumber } from 'core/components/Translation';
 import track from 'core/utils/analytics';

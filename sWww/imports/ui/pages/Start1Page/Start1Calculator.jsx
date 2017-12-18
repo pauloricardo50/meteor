@@ -14,7 +14,7 @@ import Start1Line from './Start1Line';
 import Start1Recap from './Start1Recap';
 import Start1Validator from './Start1Validator';
 
-import ExpensesChartInterests from '/imports/ui/components/charts/ExpensesChartInterests';
+import ExpensesChartInterests from 'core/components/charts/ExpensesChartInterests';
 
 const Start1Calculator = (props) => {
   const {

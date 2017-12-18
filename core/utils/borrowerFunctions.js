@@ -1,6 +1,6 @@
 import { personalInfoPercent } from 'core/arrays/steps';
 import { filesPercent } from 'core/arrays/steps';
-import { borrowerFiles } from 'core/arrays/files';
+import { borrowerFiles } from '../api/files/files';
 import { arrayify } from './general';
 
 export const getFortune = borrowers => {

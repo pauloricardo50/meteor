@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ExpensesChart from '/imports/ui/components/charts/ExpensesChart';
+import ExpensesChart from 'core/components/charts/ExpensesChart';
 import Recap from 'core/components/Recap';
 
 const styles = {

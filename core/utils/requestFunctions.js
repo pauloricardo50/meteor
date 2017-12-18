@@ -1,9 +1,9 @@
 import constants from '../config/constants';
 import { getIncomeRatio } from './finance-math';
 import { propertyPercent, filesPercent } from '../arrays/steps';
-import { requestFiles } from '../arrays/files';
+import { requestFiles } from '../api/files/files';
 
-export const getProjectValue = (loanRequest) => {
+export const getProjectValue = loanRequest => {
   if (!loanRequest.property) {
     return 0;
   } else if (loanRequest.property.value <= 0) {
@@ -73,15 +73,15 @@ export const strategiesChosen = loanRequest =>
   loanRequest.logic.hasValidatedCashStrategy;
 
 /**
-   * getInterestsWithOffer - Get the aggregate monthly interest rate for a
-   * loanRequest and an offer
-   *
-   * @param {type}    loanRequest              Description
-   * @param {type}    offer                    Description
-   * @param {boolean} [withCounterparts=false] Description
-   *
-   * @return {Number} min 0
-   */
+ * getInterestsWithOffer - Get the aggregate monthly interest rate for a
+ * loanRequest and an offer
+ *
+ * @param {type}    loanRequest              Description
+ * @param {type}    offer                    Description
+ * @param {boolean} [withCounterparts=false] Description
+ *
+ * @return {Number} min 0
+ */
 export const getInterestsWithOffer = (
   loanRequest,
   offer,
@@ -97,7 +97,7 @@ export const getInterestsWithOffer = (
     : offer.counterpartOffer;
 
   let interests = 0;
-  tranches.every((tranche) => {
+  tranches.every(tranche => {
     const rate = interestRates[tranche.type];
 
     // If the lender doesn't have this interest rate, return false
@@ -179,7 +179,7 @@ export const getTotalUsed = loanRequest =>
       (loanRequest.general.insuranceFortuneUsed || 0),
   );
 
-export const getBorrowRatio = (loanRequest) => {
+export const getBorrowRatio = loanRequest => {
   const loan = getLoanValue(loanRequest);
   const propAndWork = getPropAndWork(loanRequest);
 
@@ -211,7 +211,7 @@ export const disableForms = loanRequest =>
           loanRequest.logic.verification.validated !== undefined)))
   );
 
-export const getFees = (loanRequest) => {
+export const getFees = loanRequest => {
   const notaryFees = loanRequest.property.value * constants.notaryFees;
   let insuranceFees = 0;
 
@@ -306,14 +306,14 @@ export const validateRatiosCompletely = (
 };
 
 // Returns the maintenance to pay every month, i.e. 1% of the property divided by 12 months
-export const getMaintenance = (loanRequest) => {
+export const getMaintenance = loanRequest => {
   if (loanRequest && loanRequest.property) {
     return loanRequest.property.value * 0.01 / 12;
   }
   throw new Error('invalid loanRequest');
 };
 
-export const strategyDone = (loanRequest) => {
+export const strategyDone = loanRequest => {
   const { general, logic } = loanRequest;
   if (general.insuranceFortuneUsed > 0 && !logic.insuranceUsePreset) {
     return false;
