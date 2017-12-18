@@ -9,9 +9,9 @@ import {
   getFormats,
 } from 'core/utils/localization';
 
+import LoginPage from 'core/components/LoginPage';
 import PublicLayout from '../../ui/layouts/PublicLayout';
 import HomePage from '../../ui/pages/HomePage';
-import LoginPage from '../../ui/pages/LoginPage';
 import AboutPage from '../../ui/pages/AboutPage';
 import CareersPage from '../../ui/pages/CareersPage';
 import TosPage from '../../ui/pages/TosPage';

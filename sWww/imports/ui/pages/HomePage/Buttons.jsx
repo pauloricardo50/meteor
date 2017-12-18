@@ -3,7 +3,7 @@ import React from 'react';
 import Button from 'core/components/Button';
 import { T } from 'core/components/Translation';
 
-import HomeDev from '/imports/ui/components/general/HomeDev';
+import HomeDev from 'core/components/HomeDev';
 import track from 'core/utils/analytics';
 
 const styles = {
@@ -32,7 +32,8 @@ const Buttons = props => (
       style={styles.style}
       id="compareButton"
       onClick={() =>
-        track('Funnel - clicked home page CTA', { title: 'compare' })}
+        track('Funnel - clicked home page CTA', { title: 'compare' })
+      }
     />
     <Button
       raised
@@ -42,13 +43,15 @@ const Buttons = props => (
       style={styles.style}
       id="acquisitionButton"
       onClick={() =>
-        track('Funnel - clicked home page CTA', { title: 'acquisition' })}
+        track('Funnel - clicked home page CTA', { title: 'acquisition' })
+      }
     />
     <HomeDev
       style={styles.style}
       id="refinancing"
       handleClick={() =>
-        track('Funnel - clicked home page CTA', { title: 'refinancing' })}
+        track('Funnel - clicked home page CTA', { title: 'refinancing' })
+      }
     />
   </div>
 );
