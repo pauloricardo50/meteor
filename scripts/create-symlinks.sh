@@ -6,7 +6,7 @@ find .. -type l -exec unlink {} \;
 # Create all symlinks to core in every microservice
 for i in 'sAdmin' 'sApp' 'sLender' 'sWww'
   do
-    echo creating symlinks for $i
+    echo Creating symlinks for $i...
     ln -s ../../core ../$i/imports/core
     ln -s ../../core/assets/css ../$i/client/css
     ln -s ../core/assets/private ../$i/private
