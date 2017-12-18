@@ -10,9 +10,9 @@
     "google_maps_key": "AIzaSyCdoi6BxlTf7GgxqAGAsd1ADM_UwgqWUP8",
     "subdomains": {
       "www": "localhost:3000",
-      "app": "localhost:3001",
-      "admin": "localhost:3002",
-      "lender": "localhost:3003"
+      "app": "localhost:4000",
+      "admin": "localhost:5000",
+      "lender": "localhost:5050"
     }
   },
   "AWS": {

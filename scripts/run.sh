@@ -12,6 +12,6 @@ fi
 # Start each app in its own tab
 for i in 'sApp' 'sWww' 'sAdmin' 'sLender'
   do
-    # Make them all connect to the same mongoDB
-    ttab -t $i -d ../$i 'MONGO_URL=mongodb://localhost:3000; meteor npm start'
+    # Make them all connect to the mongoDB instance created by the first app (sWww, running at localhost:3000)
+    ttab -t $i -d ../$i 'MONGO_URL=mongodb://localhost:3001/meteor; meteor npm start'
   done
