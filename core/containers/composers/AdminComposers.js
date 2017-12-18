@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 
-import LoanRequests from '/imports/api/loanrequests/loanrequests';
-import Offers from '/imports/api/offers/offers';
-import Borrowers from '/imports/api/borrowers/borrowers';
-import AdminActions from '/imports/api/adminActions/adminActions';
+import LoanRequests from '../../api/loanrequests/loanrequests';
+import Offers from '../../api/offers/offers';
+import Borrowers from '../../api/borrowers/borrowers';
+import AdminActions from '../../api/adminActions/adminActions';
 
 export function adminRequestsComposer(props, onData) {
   if (Meteor.subscribe('allLoanRequests').ready()) {

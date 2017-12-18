@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 
-import LoanRequests from '/imports/api/loanrequests/loanrequests';
-import Offers from '/imports/api/offers/offers';
-import Borrowers from '/imports/api/borrowers/borrowers';
-import Properties from '/imports/api/properties/properties';
-import Comparators from '/imports/api/comparators/comparators';
+import LoanRequests from '../../api/loanrequests/loanrequests';
+import Offers from '../../api/offers/offers';
+import Borrowers from '../../api/borrowers/borrowers';
+import Properties from '../../api/properties/properties';
+import Comparators from '../../api/comparators/comparators';
 
 export function userCompareComposer(props, onData) {
   if (

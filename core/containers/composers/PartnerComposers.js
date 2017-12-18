@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
-import LoanRequests from '/imports/api/loanrequests/loanrequests';
-import Offers from '/imports/api/offers/offers';
+import LoanRequests from '../../api/loanrequests/loanrequests';
+import Offers from '../../api/offers/offers';
 
 export function partnerOffersComposer(props, onData) {
   if (Meteor.subscribe('partnerOffers').ready()) {
