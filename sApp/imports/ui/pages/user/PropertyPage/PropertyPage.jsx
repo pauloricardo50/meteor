@@ -5,7 +5,7 @@ import ProcessPage from '/imports/ui/components/general/ProcessPage';
 import AutoForm from '/imports/ui/components/general/AutoForm';
 import PropertyFormArray from 'core/arrays/PropertyFormArray';
 import UploaderArray from '/imports/ui/components/general/UploaderArray';
-import { requestFiles } from 'core/arrays/files';
+import { requestFiles } from 'core/api/files/files';
 import {
   disableForms,
   getPropertyCompletion,

@@ -4,9 +4,8 @@ import PropTypes from 'prop-types';
 import {
   calculateDirectAmo,
   calculateIndirectAmo,
-} from '/imports/js/helpers/logismata/mapping';
-
-import { setToken } from '/imports/js/helpers/logismata/api';
+} from 'core/utils/logismata/mapping';
+import { setToken } from 'core/utils/logismata/api';
 
 export default class AmortizationCalculator extends Component {
   constructor(props) {
@@ -17,7 +16,9 @@ export default class AmortizationCalculator extends Component {
   }
 
   calculate = () => {
-    const { loanRequest, borrowers, offers, logismataToken } = this.props;
+    const {
+      loanRequest, borrowers, offers, logismataToken,
+    } = this.props;
 
     if (!logismataToken) {
       return;
@@ -25,16 +26,16 @@ export default class AmortizationCalculator extends Component {
 
     setToken(logismataToken)
       .then(() => calculateDirectAmo(loanRequest, borrowers, offers))
-      .then(result => {
+      .then((result) => {
         console.log('result1', result);
         this.setState({ direct: result });
       })
       .then(() => calculateIndirectAmo(loanRequest, borrowers, offers))
-      .then(result => {
+      .then((result) => {
         console.log('result2', result);
         this.setState({ indirect: result });
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };

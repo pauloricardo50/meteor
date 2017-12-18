@@ -5,7 +5,7 @@ import ProcessPage from '/imports/ui/components/general/ProcessPage';
 import { T } from 'core/components/Translation';
 
 import { filesPercent } from 'core/arrays/steps';
-import { borrowerFiles, requestFiles } from 'core/arrays/files';
+import { borrowerFiles, requestFiles } from 'core/api/files/files';
 
 import FileTabs from './FileTabs';
 import ContractDownloader from './ContractDownloader';

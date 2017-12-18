@@ -1,4 +1,4 @@
-import { fakeFile } from 'core/arrays/files';
+import { fakeFile } from 'core/api/files/files';
 import moment from 'moment';
 
 export const fakeGeneral = {

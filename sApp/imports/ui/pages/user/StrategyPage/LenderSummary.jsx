@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import SummaryComponent from '/imports/ui/components/general/SummaryComponent';
 import { T, IntlNumber } from 'core/components/Translation';
-import { getRange } from '/imports/js/helpers/offerFunctions';
+import { getRange } from 'core/utils/offerFunctions';
 import { getMonthlyWithOffer } from 'core/utils/requestFunctions';
 
 const values = (offers, loanRequest) => {
