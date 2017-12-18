@@ -62,12 +62,14 @@ TopNav.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.object),
   public: PropTypes.bool,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  appChildren: PropTypes.func,
 };
 
 TopNav.defaultProps = {
   currentUser: undefined,
   loanRequests: [],
   public: false,
+  appChildren: () => {},
 };
 
 export default TopNav;

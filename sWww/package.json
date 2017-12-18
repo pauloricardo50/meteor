@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
+    "html-pdf": "^2.2.0",
     "indexof": "0.0.1",
     "intl-messageformat": "^2.2.0",
     "intl-relativeformat": "https://github.com/Floriferous/intl-relativeformat/tarball/master",
@@ -21,6 +22,7 @@
     "react-countup": "^3.0.2",
     "react-dom": "^16.2.0",
     "react-highcharts": "^15.0.0",
+    "react-inline-css": "^2.3.1",
     "react-intl": "https://github.com/Floriferous/react-intl/tarball/build",
     "react-komposer": "^2.0.0",
     "react-loadable": "^5.3.1",

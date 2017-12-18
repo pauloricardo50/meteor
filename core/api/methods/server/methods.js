@@ -1,14 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
-import LoanRequests from 'core/api/loanrequests/loanrequests';
-import Borrowers from 'core/api/borrowers/borrowers';
-import { generateComponentAsPDF } from '/imports/js/server/generate-pdf.js';
-import {
-  RequestPDF,
-  AnonymousRequestPDF,
-} from 'core/api/loanrequests/pdf.js';
-import rateLimit from '../../utils/rate-limit.js';
+
+import LoanRequests from '../../loanrequests/loanrequests';
+import Borrowers from '../../borrowers/borrowers';
+import { generateComponentAsPDF } from '../../../utils/generate-pdf';
+import { RequestPDF, AnonymousRequestPDF } from '../../loanrequests/pdf.js';
+import rateLimit from '../../../utils/rate-limit.js';
 
 Meteor.methods({
   getServerTime: () => new Date(),
@@ -35,7 +33,7 @@ export const downloadPDF = new ValidatedMethod({
       fileName,
     })
       .then(result => result)
-      .catch((error) => {
+      .catch(error => {
         throw new Meteor.Error('500', error);
       });
   },
