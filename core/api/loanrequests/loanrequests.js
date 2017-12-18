@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
-import { getFileSchema } from '/imports/js/arrays/files';
+import { getFileSchema } from '../files/files';
 import {
   GeneralSchema,
   PropertySchema,
