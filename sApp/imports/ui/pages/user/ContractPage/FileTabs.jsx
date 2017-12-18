@@ -6,7 +6,7 @@ import Tabs from 'react-bootstrap/lib/Tabs';
 
 import UploaderArray from '/imports/ui/components/general/UploaderArray';
 
-import { requestFiles, borrowerFiles } from 'core/arrays/files';
+import { requestFiles, borrowerFiles } from 'core/api/files/files';
 import { filesPercent } from 'core/arrays/steps';
 import { T, IntlNumber } from 'core/components/Translation';
 
