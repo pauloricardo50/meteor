@@ -2,7 +2,7 @@
   "name": "sLender",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "meteor run --port 3003"
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
