@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import MaskedInput from 'react-text-mask';
-import { swissFrancMask, percentMask } from '/imports/js/helpers/textMasks';
-import { toNumber } from '/imports/js/helpers/conversionFunctions';
-import constants from '/imports/js/config/constants';
+import { swissFrancMask, percentMask } from '../utils/textMasks';
+import { toNumber } from '../utils/conversionFunctions';
+import constants from '../config/constants';
 
 import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl, FormHelperText } from 'material-ui/Form';
@@ -54,7 +54,7 @@ const getDefaults = ({ type, id, onChange, value }) => {
   }
 };
 
-const TextInput = (props) => {
+const TextInput = props => {
   const {
     label,
     style,

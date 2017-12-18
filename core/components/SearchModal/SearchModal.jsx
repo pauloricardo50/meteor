@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Dialog from 'core/components/Material/Dialog';
+import Dialog from '../Material/Dialog';
 
-import { T } from 'core/components/Translation';
+import { T } from '../Translation';
 import IconButton from '../IconButton';
-import Button from 'core/components/Button';
+import Button from '../Button';
 import Search from './Search';
 
 export default class SearchModal extends Component {

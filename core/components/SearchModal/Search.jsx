@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
 
-import Loadable from 'core/utils/loadable';
+import Loadable from '../../utils/loadable';
 import TextInput from '../TextInput';
 
 // import SearchResults from './SearchResults';
