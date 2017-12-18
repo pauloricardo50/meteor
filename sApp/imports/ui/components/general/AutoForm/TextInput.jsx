@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import cleanMethod from 'core/api/cleanMethods';
 
 import constants from 'core/config/constants';
-import colors from '/imports/js/config/colors';
+import colors from 'core/config/colors';
 import {
   toNumber,
   toDecimalNumber,

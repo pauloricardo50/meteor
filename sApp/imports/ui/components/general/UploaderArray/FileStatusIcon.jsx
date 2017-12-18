@@ -2,7 +2,7 @@ import React from 'react';
 
 import Icon from 'core/components/Icon';
 
-import colors from '/imports/js/config/colors';
+import colors from 'core/config/colors';
 
 const styles = {
   icon: {

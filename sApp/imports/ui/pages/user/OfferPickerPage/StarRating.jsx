@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import StarRatingComponent from 'react-star-rating-component';
-import colors from '/imports/js/config/colors';
+import colors from 'core/config/colors';
 import Icon from 'core/components/Icon';
 
 const styles = {

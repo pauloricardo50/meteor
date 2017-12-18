@@ -7,7 +7,7 @@ import {
   IntlNumber,
   IntlDate,
 } from '/imports/ui/components/general/Translation';
-import colors from '/imports/js/config/colors';
+import colors from 'core/config/colors';
 
 import ValidatorItem from './ValidatorItem';
 

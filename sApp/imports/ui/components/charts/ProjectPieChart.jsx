@@ -8,7 +8,7 @@ import {
   getProjectValue,
 } from '/imports/js/helpers/requestFunctions';
 import constants from 'core/config/constants';
-import colors from '/imports/js/config/colors';
+import colors from 'core/config/colors';
 
 import { legend } from './chartSettings';
 

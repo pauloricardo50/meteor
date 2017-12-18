@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Icon from 'core/components/Icon';
 
-import colors from '/imports/js/config/colors';
+import colors from 'core/config/colors';
 
 const FilterIcon = ({ filtered }) => {
   if (filtered && filtered.show === true) {

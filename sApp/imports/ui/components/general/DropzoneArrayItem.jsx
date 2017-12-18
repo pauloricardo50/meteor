@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import IconButton from 'core/components/IconButton';
 
 import DropzoneInput from './AutoForm/DropzoneInput';
-import colors from '/imports/js/config/colors';
+import colors from 'core/config/colors';
 
 import { T } from 'core/components/Translation';
 

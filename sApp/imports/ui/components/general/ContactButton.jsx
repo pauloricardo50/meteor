@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Button from 'core/components/Button';
 import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
-import colors from '/imports/js/config/colors';
+import colors from 'core/config/colors';
 import supportStaff from '/imports/js/arrays/supportStaff';
 import Icon from 'core/components/Icon';
 

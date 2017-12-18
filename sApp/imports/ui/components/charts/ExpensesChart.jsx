@@ -8,7 +8,7 @@ import {
   getAmortization,
 } from '/imports/js/helpers/finance-math';
 import { getInterestsWithOffer } from '/imports/js/helpers/requestFunctions';
-import colors from '/imports/js/config/colors';
+import colors from 'core/config/colors';
 
 import { legendConfig } from './chartSettings';
 

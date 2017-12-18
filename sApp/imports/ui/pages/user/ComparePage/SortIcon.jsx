@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import colors from '/imports/js/config/colors';
+import colors from 'core/config/colors';
 import Icon from 'core/components/Icon';
 
 const SortIcon = ({ sorted }) => {

@@ -6,7 +6,7 @@ import { Bert } from 'meteor/themeteorchef:bert';
 import { injectIntl } from 'react-intl';
 
 import { T } from 'core/components/Translation';
-import colors from '/imports/js/config/colors';
+import colors from 'core/config/colors';
 
 const handleClick = (event, props) => {
   event.preventDefault();

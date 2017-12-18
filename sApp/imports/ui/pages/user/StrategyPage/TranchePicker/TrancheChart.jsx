@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ReactHighcharts from 'react-highcharts';
 import { injectIntl } from 'react-intl';
 
-import colors from '/imports/js/config/colors';
+import colors from 'core/config/colors';
 
 const getConfig = ({ tranches, total, intl }) => {
   const f = intl.formatMessage;

@@ -15,7 +15,7 @@ import {
   getMaintenance,
   getPropAndWork,
 } from '/imports/js/helpers/requestFunctions';
-import colors from '/imports/js/config/colors';
+import colors from 'core/config/colors';
 
 const chartColors = {
   debt: colors.charts[0],
