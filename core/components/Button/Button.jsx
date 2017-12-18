@@ -7,7 +7,7 @@ import omit from 'lodash/omit';
 
 // import RaisedButton from 'material-ui/RaisedButton';
 // import FlatButton from 'material-ui/FlatButton'
-import MuiButton from 'core/components/Button';
+import MuiButton from 'material-ui/Button';
 
 const getColor = ({ primary, secondary, color }) => {
   if (primary) {
@@ -19,7 +19,7 @@ const getColor = ({ primary, secondary, color }) => {
   return color;
 };
 
-const Button = (props) => {
+const Button = props => {
   const childProps = omit(props, [
     'primary',
     'secondary',
