@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 
-import getSteps from '/imports/js/arrays/steps';
+import getSteps from 'core/arrays/steps';
 import { T } from 'core/components/Translation';
 import Step from './Step';
 

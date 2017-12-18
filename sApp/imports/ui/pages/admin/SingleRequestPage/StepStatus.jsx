@@ -1,5 +1,5 @@
 import React from 'react';
-import getSteps from '/imports/js/arrays/steps';
+import getSteps from 'core/arrays/steps';
 import Icon from 'core/components/Icon';
 
 import { T } from 'core/components/Translation';

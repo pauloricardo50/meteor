@@ -8,7 +8,7 @@ import track from 'core/utils/analytics';
 import cleanMethod from 'core/api/cleanMethods';
 import { LoadingComponent } from 'core/components/Loading';
 import { T } from 'core/components/Translation';
-import getSteps from '/imports/js/arrays/steps';
+import getSteps from 'core/arrays/steps';
 import DashboardItem from './DashboardItem';
 
 const styles = {

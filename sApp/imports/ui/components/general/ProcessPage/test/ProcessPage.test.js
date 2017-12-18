@@ -8,7 +8,7 @@ import {
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import getSteps from '/imports/js/arrays/steps';
+import getSteps from 'core/arrays/steps';
 import ProcessPage, { getStepValues } from '../ProcessPage';
 
 if (Meteor.isClient) {

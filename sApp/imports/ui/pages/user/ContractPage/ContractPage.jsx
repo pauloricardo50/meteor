@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import ProcessPage from '/imports/ui/components/general/ProcessPage';
 import { T } from 'core/components/Translation';
 
-import { filesPercent } from '/imports/js/arrays/steps';
-import { borrowerFiles, requestFiles } from '/imports/js/arrays/files';
+import { filesPercent } from 'core/arrays/steps';
+import { borrowerFiles, requestFiles } from 'core/arrays/files';
 
 import FileTabs from './FileTabs';
 import ContractDownloader from './ContractDownloader';

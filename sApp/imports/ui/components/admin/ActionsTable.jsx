@@ -7,7 +7,7 @@ import Select from '/imports/ui/components/general/Select';
 import Table from '/imports/ui/components/general/Table';
 import { T } from 'core/components/Translation';
 
-import getActions from '/imports/js/arrays/adminActions';
+import getActions from 'core/arrays/adminActions';
 import { completeAction } from 'core/api/adminActions/methods';
 
 const columnOptions = [

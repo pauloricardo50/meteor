@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Tab from 'react-bootstrap/lib/Tab';
 import Tabs from 'react-bootstrap/lib/Tabs';
 
-import { requestFiles, borrowerFiles } from '/imports/js/arrays/files';
+import { requestFiles, borrowerFiles } from 'core/arrays/files';
 import FileVerificator from './FileVerificator';
 
 const styles = {

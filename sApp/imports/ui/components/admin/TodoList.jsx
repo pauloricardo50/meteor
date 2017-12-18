@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import TodoItem from './TodoItem';
-import adminActions from '/imports/js/arrays/adminActions';
+import adminActions from 'core/arrays/adminActions';
 
 const getActions = props => {
   const array = [];

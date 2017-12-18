@@ -9,11 +9,11 @@ import Select from '/imports/ui/components/general/Select';
 
 import AutoForm from '/imports/ui/components/general/AutoForm';
 
-import PropertyFormArray from '/imports/js/arrays/PropertyFormArray';
+import PropertyFormArray from 'core/arrays/PropertyFormArray';
 import {
   getBorrowerInfoArray,
   getBorrowerFinanceArray,
-} from '/imports/js/arrays/BorrowerFormArray';
+} from 'core/arrays/BorrowerFormArray';
 import { IntlNumber } from 'core/components/Translation';
 
 import FilesVerification from './FilesVerification';

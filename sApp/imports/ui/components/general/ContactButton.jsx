@@ -5,7 +5,7 @@ import Button from 'core/components/Button';
 import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
 import colors from 'core/config/colors';
-import supportStaff from '/imports/js/arrays/supportStaff';
+import supportStaff from 'core/arrays/supportStaff';
 import Icon from 'core/components/Icon';
 
 const styles = {

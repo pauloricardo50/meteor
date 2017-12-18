@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
-import steps from '/imports/js/arrays/joyride';
+import steps from 'core/arrays/joyride';
 import Joyride from 'react-joyride';
 
 export default class UserJoyride extends Component {

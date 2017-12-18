@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import isArray from 'lodash/isArray';
 
 import { getBorrowerInfoArray } from './BorrowerFormArray';
-import { borrowerFiles, requestFiles } from '/imports/js/arrays/files';
+import { borrowerFiles, requestFiles } from 'core/arrays/files';
 import getPropertyArray from './PropertyFormArray';
 import { strategyDone } from 'core/utils/requestFunctions';
 import { arrayify } from '/imports/js/helpers/general';

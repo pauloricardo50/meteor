@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
-import { personalInfoPercent, filesPercent } from '/imports/js/arrays/steps';
-import { borrowerFiles } from '/imports/js/arrays/files';
+import { personalInfoPercent, filesPercent } from 'core/arrays/steps';
+import { borrowerFiles } from 'core/arrays/files';
 
 const Progress = ({ match, borrower }) => {
   const { tab } = match.params;

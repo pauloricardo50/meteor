@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
 import { generalContainer } from 'core/containers/Containers';
-import getFormArray from '/imports/js/arrays/StartFormArray';
+import getFormArray from 'core/arrays/StartFormArray';
 import constants from 'core/config/constants';
 import {
   isFinished,

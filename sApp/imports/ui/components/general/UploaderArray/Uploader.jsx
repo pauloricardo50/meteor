@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { injectIntl } from 'react-intl';
 
 import cleanMethod from 'core/api/cleanMethods';
-import { getFileCount } from '/imports/js/arrays/files';
+import { getFileCount } from 'core/arrays/files';
 import bert from '/imports/js/helpers/bert';
 import { allowedFileTypes, maxSize } from '/imports/startup/meteor-slingshot';
 

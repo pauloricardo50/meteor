@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import AutoForm from '/imports/ui/components/general/AutoForm';
-import { getBorrowerInfoArray } from '/imports/js/arrays/BorrowerFormArray';
+import { getBorrowerInfoArray } from 'core/arrays/BorrowerFormArray';
 import { disableForms } from 'core/utils/requestFunctions';
 
 import { isDemo } from 'core/utils/browserFunctions';

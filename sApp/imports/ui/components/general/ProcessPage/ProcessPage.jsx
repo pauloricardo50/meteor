@@ -5,7 +5,7 @@ import { Session } from 'meteor/session';
 import { DocHead } from 'meteor/kadira:dochead';
 import { injectIntl } from 'react-intl';
 
-import getSteps from '/imports/js/arrays/steps';
+import getSteps from 'core/arrays/steps';
 import ProcessPageBar from './ProcessPageBar';
 
 export const getStepValues = (props) => {
