@@ -6,7 +6,7 @@ import FortuneSliders from '/imports/ui/pages/public/Start2Page/FortuneSliders';
 import DialogSimple from 'core/components/DialogSimple';
 import { T, IntlNumber } from '/imports/ui/components/general/Translation';
 import constants from '/imports/js/config/constants';
-import { toMoney } from '/imports/js/helpers/conversionFunctions';
+import { toMoney } from 'core/utils/conversionFunctions';
 
 export const getAcquisitionArray = (state, props, setFormState) => [
   {

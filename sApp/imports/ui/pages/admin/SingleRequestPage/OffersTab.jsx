@@ -6,7 +6,7 @@ import AdminNewOffer from '/imports/ui/components/admin/AdminNewOffer';
 import ConfirmMethod from './ConfirmMethod';
 import { deleteOffer } from 'core/api/offers/methods';
 import ConditionsButton from '/imports/ui/components/general/ConditionsButton';
-import { toMoney } from '/imports/js/helpers/conversionFunctions';
+import { toMoney } from 'core/utils/conversionFunctions';
 import { IntlNumber } from '/imports/ui/components/general/Translation';
 
 export default class OffersTab extends Component {

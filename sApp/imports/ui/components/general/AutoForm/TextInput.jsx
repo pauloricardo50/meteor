@@ -8,7 +8,7 @@ import colors from '/imports/js/config/colors';
 import {
   toNumber,
   toDecimalNumber,
-} from '/imports/js/helpers/conversionFunctions';
+} from 'core/utils/conversionFunctions';
 
 import MyTextInput from '/imports/ui/components/general/TextInput';
 

@@ -3,7 +3,7 @@ import React from 'react';
 
 import Button from 'core/components/Button';
 
-import { toMoney } from '/imports/js/helpers/conversionFunctions';
+import { toMoney } from 'core/utils/conversionFunctions';
 import { getProject } from '/imports/js/helpers/startFunctions';
 import constants from '/imports/js/config/constants';
 import { T } from 'core/components/Translation';

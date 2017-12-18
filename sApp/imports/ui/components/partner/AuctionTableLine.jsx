@@ -4,7 +4,7 @@ import React from 'react';
 import Button from 'core/components/Button';
 import { Link } from 'react-router-dom';
 
-import { toMoney } from '/imports/js/helpers/conversionFunctions';
+import { toMoney } from 'core/utils/conversionFunctions';
 import Countdown from '/imports/ui/components/general/Countdown';
 
 // Looks for an offer if it exists

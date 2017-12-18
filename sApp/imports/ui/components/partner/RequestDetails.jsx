@@ -5,7 +5,7 @@ import {
   getAmortization,
   getInterests,
 } from '/imports/js/helpers/finance-math';
-import { toMoney } from '/imports/js/helpers/conversionFunctions';
+import { toMoney } from 'core/utils/conversionFunctions';
 import colors from '/imports/js/config/colors';
 import { IntlNumber } from '/imports/ui/components/general/Translation';
 

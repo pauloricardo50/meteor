@@ -11,7 +11,7 @@ import {
   getBorrowRatio,
 } from '/imports/js/helpers/startFunctions';
 import { validateRatiosCompletely } from '/imports/js/helpers/requestFunctions';
-import { toDistanceString } from '/imports/js/helpers/conversionFunctions';
+import { toDistanceString } from 'core/utils/conversionFunctions';
 import constants from '/imports/js/config/constants';
 import { getClosestStations, getNearbyPlace } from '/imports/js/helpers/APIs';
 import cleanMethod from 'core/api/cleanMethods';

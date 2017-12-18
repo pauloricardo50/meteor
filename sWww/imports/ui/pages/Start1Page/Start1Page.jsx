@@ -8,7 +8,7 @@ import Button from 'core/components/Button';
 import IconButton from 'core/components/IconButton';
 
 import { T } from 'core/components/Translation';
-import { toNumber } from '/imports/js/helpers/conversionFunctions';
+import { toNumber } from 'core/utils/conversionFunctions';
 import {
   changeProperty,
   changeFortune,

@@ -8,7 +8,7 @@ import LoadingButton from '/imports/ui/components/general/LoadingButton';
 import ProcessPage from '/imports/ui/components/general/ProcessPage';
 import { T } from 'core/components/Translation';
 import track from 'core/utils/analytics';
-import { toNumber } from '/imports/js/helpers/conversionFunctions';
+import { toNumber } from 'core/utils/conversionFunctions';
 
 import StructureSliders from './StructureSliders';
 import StructureRecap from './StructureRecap';

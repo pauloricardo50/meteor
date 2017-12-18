@@ -3,7 +3,7 @@ import React from 'react';
 import Loadable from 'core/utils/loadable';
 import { injectIntl } from 'react-intl';
 
-import { toMoney } from '/imports/js/helpers/conversionFunctions';
+import { toMoney } from 'core/utils/conversionFunctions';
 import {
   getLoanValue,
   getProjectValue,

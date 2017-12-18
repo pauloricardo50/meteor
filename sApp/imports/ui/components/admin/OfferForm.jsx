@@ -5,7 +5,7 @@ import Button from 'core/components/Button';
 import Checkbox from '/imports/ui/components/general/Checkbox';
 import TextInput from '/imports/ui/components/general/TextInput';
 
-import { toMoney, toNumber } from '/imports/js/helpers/conversionFunctions';
+import { toMoney, toNumber } from 'core/utils/conversionFunctions';
 import cleanMethod from 'core/api/cleanMethods';
 
 const styles = {
