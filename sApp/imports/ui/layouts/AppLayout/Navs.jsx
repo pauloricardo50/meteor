@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import classnames from 'classnames';
 
-import TopNav from '/imports/ui/components/general/TopNav';
+import TopNav from 'core/components/TopNav';
 import PermanentSideNav from './PermanentSideNav';
 
 export default class Navs extends Component {

@@ -28,7 +28,7 @@ import {
   ComparePage,
   AppPage,
   FilesPage,
-} from '../../../ui/containers/UserContainers';
+} from 'core/containers/UserContainers';
 
 const AppRouter = () => (
   <BaseRouter

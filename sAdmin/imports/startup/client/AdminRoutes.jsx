@@ -11,16 +11,16 @@ import {
   SingleUserPage,
   VerifyPage,
   ContactLendersPage,
-} from '/imports/ui/containers/AdminContainers';
+} from 'core/containers/AdminContainers';
 import AdminDevPage from '/imports/ui/pages/admin/AdminDevPage';
 import NotFound from '/imports/ui/components/general/NotFound';
 
-const AdminRoutes = props =>
-  (<AdminLayout
+const AdminRoutes = props => (
+  <AdminLayout
     {...props}
     type="admin"
-    render={layoutProps =>
-      (<Switch>
+    render={layoutProps => (
+      <Switch>
         <Route
           exact
           path="/admin"
@@ -59,7 +59,9 @@ const AdminRoutes = props =>
           render={() => <AdminDevPage {...layoutProps} />}
         />
         <Route component={NotFound} />
-      </Switch>)}
-  />);
+      </Switch>
+    )}
+  />
+);
 
 export default AdminRoutes;

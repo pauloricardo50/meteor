@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import TopNav from '/imports/ui/components/general/TopNav';
+import TopNav from 'core/components/TopNav';
 
 const PublicLayout = props => (
   <div style={{ height: 'inherit', width: 'inherit' }}>

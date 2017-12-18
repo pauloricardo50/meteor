@@ -12,7 +12,7 @@ import {
 import {
   PublicLayout,
   Start2Page,
-} from '/imports/ui/containers/PublicContainers';
+} from 'core/containers/PublicContainers';
 import HomePage from '/imports/ui/pages/public/HomePage';
 import LoginPage from '/imports/ui/pages/public/LoginPage';
 import AboutPage from '/imports/ui/pages/public/AboutPage';
