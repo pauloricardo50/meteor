@@ -49,6 +49,11 @@ const theme = createMuiTheme({
         paddingLeft: 8,
       },
     },
+    MuiToolbar: {
+      root: {
+        position: '',
+      },
+    },
   },
   // direction: 'ltr',
   palette: {

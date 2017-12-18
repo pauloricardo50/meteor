@@ -485,7 +485,7 @@ export const getErrorArray = (state, props, setFormState) => [
   },
 ];
 
-export const getFinalArray = (state, props, setFormState) => [
+export const getFinalArray = (state, props, setFormState, components) => [
   {
     id: 'acceptedLoan',
     condition: state.type === 'acquisition',
@@ -735,7 +735,7 @@ export const getFinalArray = (state, props, setFormState) => [
       (state.useInsurance1 === true || state.useInsurance2 === true) &&
       state.insuranceConditions === true,
     type: 'custom',
-    component: components.FortuneSliders,
+    component: components && components.FortuneSliders,
     // minFortune is required to do math in the FortuneSliders component
     minFortune: props.minFortune,
     fortune: props.fortune,
@@ -862,11 +862,11 @@ export const getFinalArray = (state, props, setFormState) => [
 ];
 
 const getFormArray = (state, props, setFormState, components) =>
-  getAcquisitionArray(state, props, setFormState, components).concat(
+  getAcquisitionArray(state, props, setFormState).concat(
     state.type === 'acquisition'
       ? getErrorArray(state, props, setFormState)
       : [], // these errors only for acquisitions
-    getFinalArray(state, props, setFormState),
+    getFinalArray(state, props, setFormState, components),
   );
 
 export default getFormArray;
