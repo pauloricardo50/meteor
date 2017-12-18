@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 // import MaskedInput from 'react-text-mask';
 
 import Select from '/imports/ui/components/general/Select';
-import TextInput from '/imports/ui/components/general/TextInput';
+import TextInput from 'core/components/TextInput';
 
 import AmortizationChart from '/imports/ui/components/charts/AmortizationChart';
 import { T } from 'core/components/Translation';

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import track from 'core/utils/analytics';
 
@@ -8,10 +7,9 @@ import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
 
 import constants from 'core/config/constants';
-import Loadable from '/imports/js/helpers/loadable';
 
 import Accordion from 'core/components/Accordion';
-import { T, IntlNumber } from '/imports/ui/components/general/Translation';
+import { T, IntlNumber } from 'core/components/Translation';
 import Start1Line from './Start1Line';
 import Start1Recap from './Start1Recap';
 import Start1Validator from './Start1Validator';
@@ -52,7 +50,8 @@ const Start1Calculator = (props) => {
                 setSliderMax(
                   `${line.name}Slider`,
                   parentState[`${line.name}Slider`] + line.sliderIncrement,
-                )}
+                )
+              }
             />
           ))}
           <Button
@@ -115,7 +114,8 @@ const Start1Calculator = (props) => {
             to={getUrl()}
             id="ok"
             onClick={() =>
-              track('Funnel - Passed Start 1', { property, income, fortune })}
+              track('Funnel - Passed Start 1', { property, income, fortune })
+            }
           />
         </div>
       )}

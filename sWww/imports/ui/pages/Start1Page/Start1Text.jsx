@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import IconButton from 'core/components/IconButton';
 import { trackOncePerSession } from 'core/utils/analytics';
 
-import TextInput from '/imports/ui/components/general/TextInput';
+import TextInput from 'core/components/TextInput';
 
 // Use class to allow refs and focus to work
 export default class Start1Text extends Component {

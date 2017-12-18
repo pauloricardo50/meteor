@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Slider from 'core/components/Material/Slider';
 
-import TextInput from '/imports/ui/components/general/TextInput';
+import TextInput from 'core/components/TextInput';
 import {
   getFortune,
   getInsuranceFortune,

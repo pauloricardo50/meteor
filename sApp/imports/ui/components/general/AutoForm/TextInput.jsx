@@ -10,7 +10,7 @@ import {
   toDecimalNumber,
 } from 'core/utils/conversionFunctions';
 
-import MyTextInput from '/imports/ui/components/general/TextInput';
+import MyTextInput from 'core/components/TextInput';
 
 import SavingIcon from './SavingIcon';
 import FormValidator from './FormValidator';

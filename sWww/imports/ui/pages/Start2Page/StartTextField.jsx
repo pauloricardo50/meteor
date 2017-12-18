@@ -4,7 +4,7 @@ import React from 'react';
 import IconButton from 'core/components/IconButton';
 import classnames from 'classnames';
 
-import TextInput from '/imports/ui/components/general/TextInput';
+import TextInput from 'core/components/TextInput';
 
 export default class StartTextField extends React.Component {
   getStyles() {

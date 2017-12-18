@@ -12,7 +12,7 @@ import {
   stubCollections,
 } from '/imports/js/helpers/testHelpers';
 
-import TextInput from '/imports/ui/components/general/TextInput';
+import TextInput from 'core/components/TextInput';
 import DefaultOptions from '../DefaultOptions';
 import BorrowerOptions from '../BorrowerOptions';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import TextInput from '/imports/ui/components/general/TextInput';
+import TextInput from 'core/components/TextInput';
 import { T } from 'core/components/Translation';
 import BorrowerOptions from './BorrowerOptions';
 

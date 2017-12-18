@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Button from 'core/components/Button';
-import TextInput from '/imports/ui/components/general/TextInput';
+import TextInput from 'core/components/TextInput';
 
 const FileStep = ({ step, onChange, handleRemove }) => (
   <div className="mask1 flex-col" style={{ marginBottom: 16, width: '100%' }}>

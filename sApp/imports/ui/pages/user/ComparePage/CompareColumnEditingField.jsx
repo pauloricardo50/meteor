@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import TextInput from '/imports/ui/components/general/TextInput';
+import TextInput from 'core/components/TextInput';
 import DateInput from '/imports/ui/components/general/DateInput';
 import RadioButtons from '/imports/ui/components/general/RadioButtons';
 

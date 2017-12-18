@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
 import Select from '/imports/ui/components/general/Select';
-import TextInput from '/imports/ui/components/general/TextInput';
+import TextInput from 'core/components/TextInput';
 import IconButton from 'core/components/IconButton';
 
 const Tranche = ({ tranche, changeTranche, deleteTranche, options }) => (
