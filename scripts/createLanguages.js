@@ -1,24 +1,24 @@
-var path = require('path');
-var fs = require('fs');
+const path = require('path');
+const fs = require('fs');
 
 function findFilesWithExtension(startPath, extension) {
+  let results = [];
+
   if (!fs.existsSync(startPath)) {
     console.log('no dir ', startPath);
-    return;
+    return results;
   }
 
-  var results = [];
-
-  var files = fs.readdirSync(startPath);
-  for (var i = 0; i < files.length; i++) {
-    var filename = path.join(startPath, files[i]);
-    var stat = fs.lstatSync(filename);
+  const files = fs.readdirSync(startPath);
+  for (let i = 0; i < files.length; i++) {
+    const filename = path.join(startPath, files[i]);
+    const stat = fs.lstatSync(filename);
 
     if (stat.isDirectory()) {
-      var recursedResult = findFilesWithExtension(filename, extension); //recurse
+      const recursedResult = findFilesWithExtension(filename, extension); //recurse
       results = [...results, ...recursedResult];
     } else if (filename.indexOf(extension) >= 0) {
-      var fileWithExtension = filename.replace(/^.*[\\\/]/, '');
+      const fileWithExtension = filename.replace(/^.*[\\\/]/, '');
       results.push(fileWithExtension.split('.')[0]);
     }
   }
@@ -27,28 +27,25 @@ function findFilesWithExtension(startPath, extension) {
 }
 
 function filterLanguageKeys(language, allowedKeys) {
-  var langObject = JSON.parse(fs.readFileSync('../lang/' + language + '.json', 'utf8'));
-  var langKeys = Object.keys(langObject);
-  var remainingKeys = langKeys.filter(key => allowedKeys.indexOf(key.split('.')[0]) >= 0);
+  const langObject = JSON.parse(fs.readFileSync('../lang/' + language + '.json', 'utf8'));
+  const langKeys = Object.keys(langObject);
+  const remainingKeys = langKeys.filter(key => allowedKeys.indexOf(key.split('.')[0]) >= 0);
 
-  var optimizedLangObject = Object.keys(langObject)
+  const optimizedLangObject = Object.keys(langObject)
     .filter(key => remainingKeys.includes(key))
-    .reduce((obj, key) => {
-      obj[key] = langObject[key];
-      return obj;
-    }, {});
+    .reduce((obj, key) => Object.assign({ [key]: langObject[key] }, obj), {});
 
   return optimizedLangObject;
 }
 
 function writeLanguageToDirectory(language, path) {
-  var json = JSON.stringify(language);
+  const json = JSON.stringify(language);
   ensureDirectoryExistence(path);
   fs.writeFileSync(path, json, 'utf8');
 }
 
 function ensureDirectoryExistence(filePath) {
-  var dirname = path.dirname(filePath);
+  const dirname = path.dirname(filePath);
   if (fs.existsSync(dirname)) {
     return true;
   }
