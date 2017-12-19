@@ -1,3 +1,4 @@
 import '/imports/startup/server';
+import 'core/api/api-server';
 
-console.log('hello from server');
+console.log(process.env.MONGO_URL);

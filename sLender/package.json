@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "start": "meteor run --settings settings-dev.json --port 5050",
-    "start-db": "MONGO_URL=mongodb://localhost:3001/meteor && meteor npm start"
+    "start-db":
+      "export MONGO_URL=mongodb://localhost:3001/meteor && meteor npm start"
   },
   "dependencies": {
     "aws-sdk": "^2.171.0",
