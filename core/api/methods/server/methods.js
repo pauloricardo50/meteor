@@ -8,9 +8,7 @@ import { generateComponentAsPDF } from '../../../utils/generate-pdf';
 import { RequestPDF, AnonymousRequestPDF } from '../../loanrequests/pdf.js';
 import rateLimit from '../../../utils/rate-limit.js';
 
-Meteor.methods({
-  getServerTime: () => new Date(),
-});
+Meteor.methods({ getServerTime: () => new Date() });
 
 export const downloadPDF = new ValidatedMethod({
   name: 'pdf.download',

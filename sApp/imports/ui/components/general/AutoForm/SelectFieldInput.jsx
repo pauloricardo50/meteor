@@ -36,32 +36,30 @@ export default class SelectFieldInput extends Component {
     const { value } = this.state;
     const object = { [id]: value };
 
-    cleanMethod(updateFunc, object, docId)
+    cleanMethod(updateFunc, { object, id: docId })
       .then(() =>
         // on success, set saving briefly to true, before setting it to false again to trigger icon
         this.setState(
           { errorText: '', saving: true },
           this.setState({ saving: false }),
-        ),
-      )
+        ))
       .catch(error =>
-        this.setState({ saving: false, errorText: error.message }),
-      );
+        this.setState({ saving: false, errorText: error.message }));
   };
 
   mapOptions = () =>
-    this.props.options.map(
-      ({ id, intlId, intlValues, label, ...otherProps }) => ({
-        label: label || (
-          <T
-            id={`Forms.${intlId || this.props.id}.${id}`}
-            values={intlValues}
-          />
-        ),
-        id,
-        ...otherProps,
-      }),
-    );
+    this.props.options.map(({
+      id, intlId, intlValues, label, ...otherProps
+    }) => ({
+      label: label || (
+      <T
+        id={`Forms.${intlId || this.props.id}.${id}`}
+        values={intlValues}
+      />
+      ),
+      id,
+      ...otherProps,
+    }));
 
   render() {
     const {

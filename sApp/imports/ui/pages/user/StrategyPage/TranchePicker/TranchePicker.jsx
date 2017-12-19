@@ -68,13 +68,12 @@ export default class TranchePicker extends Component {
   };
 
   handleSave = () => {
-    cleanMethod(
-      'updateRequest',
-      {
+    cleanMethod('updateRequest', {
+      object: {
         'general.loanTranches': this.state.tranches,
       },
-      this.props.loanRequest._id,
-    );
+      id: this.props.loanRequest._id,
+    });
   };
 
   render() {

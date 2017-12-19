@@ -21,15 +21,16 @@ export default class AcceptClosingModal extends Component {
 
     cleanMethod(
       'updateRequest',
-      { 'logic.acceptedClosing': true },
-      this.props.loanRequest._id,
-      () => {
-        this.setState({ open: false });
+      {
+        object: { 'logic.acceptedClosing': true },
+        id: this.props.loanRequest._id,
       },
+      () => this.setState({ open: false }),
       {
         title: 'Formidable',
-        message: `<h4 class="bert">Profitez bien de ${this.props.loanRequest
-          .name}</h4>`,
+        message: `<h4 class="bert">Profitez bien de ${
+          this.props.loanRequest.name
+        }</h4>`,
       },
     );
   };

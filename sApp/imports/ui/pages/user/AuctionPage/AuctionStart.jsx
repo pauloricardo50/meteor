@@ -83,16 +83,16 @@ const AuctionStart = (props) => {
             label={<T id="AuctionStart.CTA" />}
             primary
             handleClick={() =>
-              cleanMethod(
-                'startAuction',
-                { isDemo: isDemo() },
-                props.loanRequest._id,
-              )
+              cleanMethod('startAuction', {
+                object: { isDemo: isDemo() },
+                id: props.loanRequest._id,
+              })
                 .then((res) => {
                   console.log('cleanMethod done...', res);
                   track('started auction', {});
                 })
-                .catch(e => console.log('auction start failed ', e))}
+                .catch(e => console.log('auction start failed ', e))
+            }
             disabled={
               !(r.general.auctionMostImportant && r.general.wantedClosingDate)
             }

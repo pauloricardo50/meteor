@@ -9,7 +9,6 @@ import track, { addUserTracking } from 'core/utils/analytics';
 import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
 import { T } from 'core/components/Translation';
-import saveStartForm from './saveStartForm';
 
 const styles = {
   textField: {
@@ -39,55 +38,46 @@ export default class PasswordLine extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.setState({ loading: true });
-    if (this.props.login) {
-      this.handleLogin();
-    } else {
-      this.handleCreate();
-    }
-  };
-
-  handleCreate = () => {
-    const user = {
-      email: this.props.email,
-      password: this.props.password,
-    };
-
-    Accounts.createUser(user, (error) => {
-      if (error) {
-        this.setState({ error: error.message, loading: false });
-      } else {
-        this.handleSuccess();
-        track('Funnel - User created account', {});
-      }
+    this.props.handleSubmit((error) => {
+      console.log('Oops, an error: ', error);
+      this.setState({ loading: false });
     });
   };
 
-  handleLogin = () => {
-    Meteor.loginWithPassword(this.props.email, this.props.password, (error) => {
-      if (error) {
-        this.setState({ error: error.message, loading: false });
-      } else {
-        this.handleSuccess();
-        track('Funnel - User logged in', {});
-      }
-    });
-  };
-
-  handleSuccess = () => {
-    saveStartForm(this.props.formState, this.props.history);
-
-    Meteor.call('sendVerificationLink', (error) => {
-      if (error) {
-        console.log(error);
-      }
-    });
-
-    // Create user for analytics
-    addUserTracking(Meteor.userId(), {
-      email: Meteor.user().emails[0].address,
-      id: Meteor.userId(),
-    });
-  };
+  // handleCreate = () => {
+  //   const user = {
+  //     email: this.props.email,
+  //     password: this.props.password,
+  //   };
+  //
+  //   Accounts.createUser(user, (error) => {
+  //     if (error) {
+  //       this.setState({ error: error.message, loading: false });
+  //     } else {
+  //       this.handleSuccess();
+  //       track('Funnel - User created account', {});
+  //     }
+  //   });
+  // };
+  //
+  // handleLogin = () => {
+  //   Meteor.loginWithPassword(this.props.email, this.props.password, (error) => {
+  //     if (error) {
+  //       this.setState({ error: error.message, loading: false });
+  //     } else {
+  //       this.handleSuccess();
+  //       track('Funnel - User logged in', {});
+  //     }
+  //   });
+  // };
+  //
+  // handleSuccess = () => {
+  //   saveStartForm(this.props.formState).then(() => {
+  //     window.location.href = Meteor.settings.public.subdomains.app;
+  //
+  //     // this.props.history('/app')
+  //   });
+  // };
 
   render() {
     const { password, login, signUp } = this.props;

@@ -43,7 +43,7 @@ class DateInput extends Component {
     // Save data to DB
     const object = { [this.props.id]: date };
 
-    cleanMethod(this.props.updateFunc, object, this.props.docId);
+    cleanMethod(this.props.updateFunc, { object, id: this.props.docId });
   };
 
   render() {

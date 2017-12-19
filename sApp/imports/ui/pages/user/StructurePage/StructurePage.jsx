@@ -21,9 +21,8 @@ const handleClick = (props, state) => {
   object['general.fortuneUsed'] = state.fortuneUsed;
   object['general.insuranceFortuneUsed'] = state.insuranceFortuneUsed;
 
-  cleanMethod('updateRequest', object, props.loanRequest._id).then(() =>
-    track('validated structure', {}),
-  );
+  cleanMethod('updateRequest', { object, id: props.loanRequest._id }).then(() =>
+    track('validated structure', {}));
 };
 
 export default class StructurePage extends Component {

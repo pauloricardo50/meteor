@@ -83,8 +83,7 @@ class ZipAutoComplete extends Component {
       const city = value.slice(5);
       // Set the text input
       this.setState({ searchText: value, isValid: true }, () =>
-        this.saveValue(zipCode, city),
-      );
+        this.saveValue(zipCode, city));
     }
   };
 
@@ -97,15 +96,14 @@ class ZipAutoComplete extends Component {
       [`${savePath}city`]: city,
     };
 
-    cleanMethod(updateFunc, object, docId)
+    cleanMethod(updateFunc, { object, id: docId })
       .then(() =>
         // on success, set saving briefly to true,
         // before setting it to false again to trigger icon
         this.setState(
           { errorText: '', saving: true },
           this.setState({ saving: false }),
-        ),
-      )
+        ))
       .catch(() => {
         // If there was an error, reset value to the backend value
         this.setState({ saving: false, searchText: this.props.initialValue });

@@ -138,7 +138,7 @@ export default class OfferForm extends Component {
 
     console.log(object);
 
-    cleanMethod(this.props.method, object)
+    cleanMethod(this.props.method, { object })
       .then(this.props.callback)
       .catch((error) => {
         if (!error) {
@@ -200,9 +200,7 @@ export default class OfferForm extends Component {
             <TextInput
               id="maxAmount"
               label="Prêt Maximal *"
-              placeholder={`CHF ${toMoney(
-                Math.round(loanRequest.property.value * 0.8),
-              )}`}
+              placeholder={`CHF ${toMoney(Math.round(loanRequest.property.value * 0.8))}`}
               onChange={this.handleChange}
               type="money"
               value={maxAmount}
@@ -246,7 +244,8 @@ export default class OfferForm extends Component {
             label="Ajouter une offre avec contrepartie"
             style={styles.checkbox}
             onChange={(_, newValue) =>
-              this.setState({ showCounterpart: newValue })}
+              this.setState({ showCounterpart: newValue })
+            }
             value={showCounterpart}
             id="showCounterpart"
           />

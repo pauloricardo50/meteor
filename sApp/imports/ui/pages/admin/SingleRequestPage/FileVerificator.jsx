@@ -11,32 +11,30 @@ export default class FileVerificator extends Component {
     const { currentValue, id, docId } = this.props;
     const file = currentValue.find(f => f.key === fileKey);
 
-    cleanMethod(
-      this.updateFunc(),
-      {
+    cleanMethod(this.updateFunc(), {
+      object: {
         [`files.${id}`]: [
           ...currentValue.filter(f => f.key !== fileKey),
           { ...file, status: newStatus },
         ],
       },
-      docId,
-    );
+      id: docId,
+    });
   };
 
   saveError = (fileKey, error) => {
     const { currentValue, id, docId } = this.props;
     const file = currentValue.find(f => f.key === fileKey);
 
-    cleanMethod(
-      this.updateFunc(),
-      {
+    cleanMethod(this.updateFunc(), {
+      object: {
         [`files.${id}`]: [
           ...currentValue.filter(f => f.key !== fileKey),
           { ...file, error },
         ],
       },
-      docId,
-    );
+      id: docId,
+    });
   };
 
   updateFunc = () =>

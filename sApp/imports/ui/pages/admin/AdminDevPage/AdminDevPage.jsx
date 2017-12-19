@@ -17,7 +17,7 @@ const addVerifyingRequest = () => {
     },
     admin: {},
   };
-  cleanMethod('insertRequest', object);
+  cleanMethod('insertRequest', { object });
 };
 
 const AdminDev = props => (

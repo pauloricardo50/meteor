@@ -36,7 +36,7 @@ const handleCheck = (_, isInputChecked, id) => {
   const object = {};
   object['logic.financeEthics'] = isInputChecked;
 
-  cleanMethod('updateBorrower', object, id);
+  cleanMethod('updateBorrower', { object, id });
 };
 
 const handleClick = (event, id) => {
@@ -44,9 +44,8 @@ const handleClick = (event, id) => {
   const object = {};
   object['logic.hasValidatedFinances'] = true;
 
-  cleanMethod('updateBorrower', object, id).then(() =>
-    track('validated finances', {}),
-  );
+  cleanMethod('updateBorrower', { object, id }).then(() =>
+    track('validated finances', {}));
 };
 
 const BorrowerFinancePage = (props) => {

@@ -16,9 +16,7 @@ const createId = (currentSteps, newType) => {
     .filter(step => step.type === newType)
     .map(step => step.id);
   const currentCount = currentIds.length;
-  const max = Math.max(
-    ...currentIds.map(id => parseInt(id.replace(/[^0-9]/g, ''), 10)),
-  );
+  const max = Math.max(...currentIds.map(id => parseInt(id.replace(/[^0-9]/g, ''), 10)));
 
   return newType + (max ? Math.max(currentCount, max + 1) : currentCount);
 };
@@ -56,11 +54,10 @@ export default class ClosingStepsForm extends Component {
     }));
 
   handleSave = () =>
-    cleanMethod(
-      'updateRequest',
-      { 'logic.closingSteps': this.state.closingSteps },
-      this.props.loanRequest._id,
-    );
+    cleanMethod('updateRequest', {
+      object: { 'logic.closingSteps': this.state.closingSteps },
+      id: this.props.loanRequest._id,
+    });
 
   handleChange = (stepId, key, value) =>
     this.setState(prev => ({
@@ -83,8 +80,7 @@ export default class ClosingStepsForm extends Component {
               if (a.id > b.id) return 1;
               return 0;
             })
-            .map(
-              (step, i) =>
+            .map((step, i) =>
                 (step.type === 'todo' ? (
                   <TodoStep
                     step={step}
@@ -99,8 +95,7 @@ export default class ClosingStepsForm extends Component {
                     onChange={this.handleChange}
                     handleRemove={this.handleRemove}
                   />
-                )),
-            )}
+                )))}
         </div>
         <div className="text-center">
           <Button

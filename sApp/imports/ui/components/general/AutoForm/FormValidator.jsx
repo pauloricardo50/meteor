@@ -9,7 +9,7 @@ import Checkbox from '/imports/ui/components/general/Checkbox';
 const handleCheck = (props, isInputChecked) => {
   const object = {};
   object[`adminValidation.${props.id}`] = isInputChecked;
-  cleanMethod(props.updateFunc, object, props.docId);
+  cleanMethod(props.updateFunc, { object, id: props.docId });
 };
 
 const styles = {

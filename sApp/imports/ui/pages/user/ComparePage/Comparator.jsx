@@ -54,20 +54,18 @@ export default class Comparator extends Component {
   // Throttle this function because of the slider
   changeComparator = throttle(
     (key, value, callback) =>
-      cleanMethod(
-        'updateComparator',
-        { [key]: value },
-        this.props.comparator._id,
-      ).then(callback),
+      cleanMethod('updateComparator', {
+        object: { [key]: value },
+        id: this.props.comparator._id,
+      }).then(callback),
     200,
   );
 
   addCustomField = (name, type, callback) =>
-    cleanMethod(
-      'addComparatorField',
-      { name, type },
-      this.props.comparator._id,
-    ).then(() => {
+    cleanMethod('addComparatorField', {
+      object: { name, type },
+      id: this.props.comparator._id,
+    }).then(() => {
       this.hideFields(this.props);
       if (typeof callback === 'function') {
         callback();
@@ -75,19 +73,21 @@ export default class Comparator extends Component {
     });
 
   removeCustomField = fieldId =>
-    cleanMethod(
-      'removeComparatorField',
-      { fieldId },
-      this.props.comparator._id,
-    ).then(() => {
+    cleanMethod('removeComparatorField', {
+      object: { fieldId },
+      id: this.props.comparator._id,
+    }).then(() => {
       this.hideFields(this.props);
     });
 
   toggleField = fieldId =>
-    cleanMethod('toggleHiddenField', { fieldId }, this.props.comparator._id);
+    cleanMethod('toggleHiddenField', {
+      object: { fieldId },
+      id: this.props.comparator._id,
+    });
 
   addProperty = (object, callback) => {
-    cleanMethod('insertProperty', object).then((result) => {
+    cleanMethod('insertProperty', { object }).then((result) => {
       if (typeof callback === 'function') {
         callback();
       }
@@ -97,12 +97,10 @@ export default class Comparator extends Component {
     });
   };
 
-  deleteProperty = id => cleanMethod('deleteProperty', null, id);
+  deleteProperty = id => cleanMethod('deleteProperty', { id });
 
   addValueToProperty = (key, value, propertyId) => {
-    const index = this.modifiedProperties.findIndex(
-      prop => prop._id === propertyId,
-    );
+    const index = this.modifiedProperties.findIndex(prop => prop._id === propertyId);
     if (index >= 0) {
       const property = this.modifiedProperties[index];
 
@@ -131,8 +129,7 @@ export default class Comparator extends Component {
         request.googId,
         request.id,
         request.byDistance,
-      ),
-    );
+      ));
 
     if (typeof callback === 'function') {
       callback();
@@ -144,18 +141,16 @@ export default class Comparator extends Component {
     if (window.google) {
       return getNearbyPlace(lat, lng, type, byDistance)
         .then(result =>
-          cleanMethod(
-            'updateProperty',
-            {
+          cleanMethod('updateProperty', {
+            object: {
               [id]: {
                 primary: result.name,
                 secondary: toDistanceString(result.distance.value),
                 value: result.distance.value,
               },
             },
-            propertyId,
-          ),
-        )
+            id: propertyId,
+          }))
         .catch(error => console.log(error));
     }
 

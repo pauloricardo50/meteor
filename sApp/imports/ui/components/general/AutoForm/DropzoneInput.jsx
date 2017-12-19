@@ -29,18 +29,16 @@ const handleSave = (props, file) => {
     },
   };
 
-  cleanMethod(props.pushFunc, object, props.docId);
+  cleanMethod(props.pushFunc, { object, id: props.docId });
 };
 
 const handleDelete = (props, fileToDelete) => {
   // Filter out the file we want to delete
-  const newFileArray = props.currentValue.filter(
-    file => file.key !== fileToDelete.key,
-  );
+  const newFileArray = props.currentValue.filter(file => file.key !== fileToDelete.key);
   const object = {};
   object[props.mongoId] = newFileArray;
 
-  cleanMethod(props.updateFunc, object, props.docId);
+  cleanMethod(props.updateFunc, { object, id: props.docId });
 };
 
 // Gets already uploaded files and simulates them being added to the dropzone

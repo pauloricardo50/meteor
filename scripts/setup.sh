@@ -52,6 +52,8 @@ for i in 'sAdmin' 'sApp' 'sLender' 'sWww'
     fi
   done
 
+echo "Installing npm packages in core/"
+( cd ../core && npm install );
 
 echo "Creating language files..."
 node ./createLanguages.js

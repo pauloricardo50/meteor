@@ -51,16 +51,13 @@ export default class DashboardStatus extends Component {
       borrowers,
       serverTime: this.state.serverTime,
     });
-    const nextItem = steps[loanRequest.logic.step].items.find(
-      subStep => !subStep.isDone(),
-    );
+    const nextItem = steps[loanRequest.logic.step].items.find(subStep => !subStep.isDone());
     return nextItem && nextItem.link;
   };
 
   handleNextStep = () =>
-    cleanMethod('incrementStep', null, this.props.loanRequest._id).then(() =>
-      this.props.history.push(this.getNextLink()),
-    );
+    cleanMethod('incrementStep', { id: this.props.loanRequest._id }).then(() =>
+      this.props.history.push(this.getNextLink()));
 
   render() {
     const { loanRequest, borrowers } = this.props;

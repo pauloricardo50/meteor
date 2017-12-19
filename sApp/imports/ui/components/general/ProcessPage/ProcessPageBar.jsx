@@ -23,12 +23,12 @@ const styles = {
   },
 };
 
-const handleNextStep = ({ stepNb, loanRequest, history, nextLink }) => {
+const handleNextStep = ({
+  stepNb, loanRequest, history, nextLink,
+}) => {
   // increment step if this is the currentstep
   if (stepNb === loanRequest.logic.step) {
-    cleanMethod('incrementStep', null, loanRequest._id).then(
-      () => !!nextLink && history.push(nextLink),
-    );
+    cleanMethod('incrementStep', { id: loanRequest._id }).then(() => !!nextLink && history.push(nextLink));
   } else {
     history.push(nextLink);
   }
@@ -102,7 +102,8 @@ export default class ProcessPageBar extends Component {
             link={!!prevLink}
             to={prevLink}
             onClick={() =>
-              track('ProcessPageBar - clicked back', { to: prevLink })}
+              track('ProcessPageBar - clicked back', { to: prevLink })
+            }
           />
         )}
         <Button

@@ -11,7 +11,7 @@ import Recap from 'core/components/Recap';
 import { T, IntlNumber } from 'core/components/Translation';
 import track from 'core/utils/analytics';
 import constants from 'core/config/constants';
-import saveStartForm from './saveStartForm';
+import saveStartForm from 'core/utils/saveStartForm';
 
 const styles = {
   h4: {
@@ -19,10 +19,12 @@ const styles = {
   },
 };
 
-const handleClick = ({ formState, setFormState, currentUser, history }) => {
+const handleClick = ({ formState, setFormState, currentUser }) => {
   if (currentUser) {
     track('Funnel - completed form while logged in', {});
-    saveStartForm(formState, history);
+    saveStartForm(formState).then(() => {
+      window.location.href = Meteor.settings.public.subdomains.app;
+    });
     return;
   }
   setFormState('done', true, () => {

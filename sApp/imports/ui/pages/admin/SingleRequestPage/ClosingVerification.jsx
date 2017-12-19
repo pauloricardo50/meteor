@@ -12,16 +12,15 @@ export default class ClosingVerification extends Component {
     const steps = loanRequest.logic.closingSteps;
     const step = steps.find(s => s.id === id);
 
-    cleanMethod(
-      'updateRequest',
-      {
+    cleanMethod('updateRequest', {
+      object: {
         'logic.closingSteps': [
           ...steps.filter(s => s.id !== id),
           { ...step, status: newStatus },
         ],
       },
-      loanRequest._id,
-    );
+      id: loanRequest._id,
+    });
   };
 
   saveError = (id, error) => {
@@ -29,16 +28,15 @@ export default class ClosingVerification extends Component {
     const steps = loanRequest.logic.closingSteps;
     const step = steps.find(s => s.id === id);
 
-    cleanMethod(
-      'updateRequest',
-      {
+    cleanMethod('updateRequest', {
+      object: {
         'logic.closingSteps': [
           ...steps.filter(s => s.id !== id),
           { ...step, error },
         ],
       },
-      loanRequest._id,
-    );
+      id: loanRequest._id,
+    });
   };
 
   render() {
@@ -47,8 +45,7 @@ export default class ClosingVerification extends Component {
     return (
       <div style={{ padding: '0 16px' }}>
         {steps && steps.length ? (
-          steps.map(
-            step =>
+          steps.map(step =>
               (step.type === 'upload' ? (
                 <FileVerificator
                   currentValue={loanRequest.files[step.id]}
@@ -76,8 +73,7 @@ export default class ClosingVerification extends Component {
                     saveError={this.saveError}
                   />
                 </div>
-              )),
-          )
+              )))
         ) : (
           <h3>Pas d'étapes à vérifier</h3>
         )}

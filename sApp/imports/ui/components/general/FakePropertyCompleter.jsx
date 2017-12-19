@@ -28,15 +28,17 @@ const handleCheat = (props) => {
 
   const finalObject = MergeRecursive(object, props.loanRequest);
 
-  cleanMethod('updateRequest', finalObject, props.loanRequest._id).then(() =>
-    location.reload(),
-  );
+  cleanMethod('updateRequest', {
+    object: finalObject,
+    id: props.loanRequest._id,
+  }).then(() => location.reload());
 };
 
-const FakePropertyCompleter = props =>
-  (<div className="text-center" style={{ margin: '20px 0' }}>
+const FakePropertyCompleter = props => (
+  <div className="text-center" style={{ margin: '20px 0' }}>
     <Button raised label="Tricher" onClick={() => handleCheat(props)} />
-  </div>);
+  </div>
+);
 
 FakePropertyCompleter.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,

@@ -50,7 +50,7 @@ export default class RadioInput extends Component {
     const object = {};
     object[this.props.id] = safeValue;
 
-    cleanMethod(this.props.updateFunc, object, this.props.docId);
+    cleanMethod(this.props.updateFunc, { object, id: this.props.docId });
   };
 
   render() {

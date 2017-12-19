@@ -51,11 +51,10 @@ export default class VerifyPage extends Component {
       'logic.verification.validated': this.state.validated,
     };
 
-    cleanMethod(
-      'updateRequest',
+    cleanMethod('updateRequest', {
       object,
-      this.props.loanRequest._id,
-    ).then(() => {
+      id: this.props.loanRequest._id,
+    }).then(() => {
       Meteor.call('adminActions.completeActionByType', {
         requestId: this.props.loanRequest._id,
         type: 'verify',
@@ -132,7 +131,8 @@ export default class VerifyPage extends Component {
             raised
             label="+"
             onClick={() =>
-              this.setState(prev => ({ comments: [...prev.comments, ''] }))}
+              this.setState(prev => ({ comments: [...prev.comments, ''] }))
+            }
             primary
             style={styles.buttons}
           />
@@ -142,7 +142,8 @@ export default class VerifyPage extends Component {
             onClick={() =>
               this.setState(prev => ({
                 comments: [...prev.comments].splice(-1, 1),
-              }))}
+              }))
+            }
             disabled={this.state.comments.length <= 1}
             style={styles.buttons}
           />

@@ -5,10 +5,7 @@ import cleanMethod from 'core/api/cleanMethods';
 
 import constants from 'core/config/constants';
 import colors from 'core/config/colors';
-import {
-  toNumber,
-  toDecimalNumber,
-} from 'core/utils/conversionFunctions';
+import { toNumber, toDecimalNumber } from 'core/utils/conversionFunctions';
 
 import MyTextInput from 'core/components/TextInput';
 
@@ -90,7 +87,9 @@ export default class TextInput extends Component {
   };
 
   saveValue = (showSaving = true) => {
-    const { id, updateFunc, docId, currentValue } = this.props;
+    const {
+      id, updateFunc, docId, currentValue,
+    } = this.props;
     const { value } = this.state;
     // Save data to DB
     const object = {
@@ -106,14 +105,13 @@ export default class TextInput extends Component {
 
     Meteor.clearTimeout(this.timeout);
     this.timeout = Meteor.setTimeout(() => {
-      cleanMethod(updateFunc, object, docId)
+      cleanMethod(updateFunc, { object, id: docId })
         .then(() =>
           // on success, set saving briefly to true, before setting it to false again to trigger icon
           this.setState(
             { errorText: '', saving: showSaving },
             this.setState({ saving: false }),
-          ),
-        )
+          ))
         .catch(() => {
           // If there was an error, reset value to the backend value
           this.setState({ saving: false, value: currentValue });
@@ -138,7 +136,9 @@ export default class TextInput extends Component {
       decimal,
       noValidator,
     } = this.props;
-    const { value, errorText, saving, showInfo } = this.state;
+    const {
+      value, errorText, saving, showInfo,
+    } = this.state;
 
     let type;
     if (money) {

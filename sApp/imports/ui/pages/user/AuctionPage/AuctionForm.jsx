@@ -42,7 +42,7 @@ export default class AuctionForm extends Component {
       const object = {
         'general.wantedClosingDate': '',
       };
-      cleanMethod('updateRequest', object, this.props.loanRequest._id);
+      cleanMethod('updateRequest', { object, id: this.props.loanRequest._id });
     }
   }
 

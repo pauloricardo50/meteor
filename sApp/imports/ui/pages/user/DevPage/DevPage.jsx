@@ -11,20 +11,17 @@ import {
 } from 'core/api/loanrequests/fakes';
 import { getRandomOffer } from 'core/api/offers/fakes';
 
-import {
-  updateRequest,
-  deleteRequest,
-} from 'core/api/loanrequests/methods';
+import { updateRequest, deleteRequest } from 'core/api/loanrequests/methods';
 import { deleteBorrower } from 'core/api/borrowers/methods';
 import { deleteOffer, insertAdminOffer } from 'core/api/offers/methods';
 
 const addStep1Request = (twoBorrowers) => {
   const ids = [];
-  cleanMethod('insertBorrower', completeFakeBorrower)
+  cleanMethod('insertBorrower', { object: completeFakeBorrower })
     .then((id1) => {
       ids.push(id1);
       if (twoBorrowers) {
-        return cleanMethod('insertBorrower', completeFakeBorrower);
+        return cleanMethod('insertBorrower', { object: completeFakeBorrower });
       }
     })
     .then((id2) => {
@@ -33,18 +30,18 @@ const addStep1Request = (twoBorrowers) => {
       }
       const request = requestStep1;
       request.borrowers = ids;
-      cleanMethod('insertRequest', request);
+      cleanMethod('insertRequest', { object: request });
     });
 };
 
 const addStep2Request = (twoBorrowers) => {
   const ids = [];
 
-  cleanMethod('insertBorrower', completeFakeBorrower)
+  cleanMethod('insertBorrower', { object: completeFakeBorrower })
     .then((id1) => {
       ids.push(id1);
       if (twoBorrowers) {
-        return cleanMethod('insertBorrower', completeFakeBorrower);
+        return cleanMethod('insertBorrower', { object: completeFakeBorrower });
       }
     })
     .then((id2) => {
@@ -53,7 +50,7 @@ const addStep2Request = (twoBorrowers) => {
       }
       const request = requestStep2;
       request.borrowers = ids;
-      cleanMethod('insertRequest', request);
+      cleanMethod('insertRequest', { object: request });
     });
 };
 
@@ -61,11 +58,11 @@ const addStep3Request = (twoBorrowers, completeFiles = true) => {
   const ids = [];
   const request = requestStep3(completeFiles);
   let requestId;
-  cleanMethod('insertBorrower', completeFakeBorrower)
+  cleanMethod('insertBorrower', { object: completeFakeBorrower })
     .then((id1) => {
       ids.push(id1);
       if (twoBorrowers) {
-        return cleanMethod('insertBorrower', completeFakeBorrower);
+        return cleanMethod('insertBorrower', { object: completeFakeBorrower });
       }
     })
     .then((id2) => {
@@ -74,7 +71,7 @@ const addStep3Request = (twoBorrowers, completeFiles = true) => {
       }
       request.borrowers = ids;
     })
-    .then(() => cleanMethod('insertRequest', request))
+    .then(() => cleanMethod('insertRequest', { object: request }))
     .then((id) => {
       requestId = id;
       const object = getRandomOffer({ ...request, _id: requestId }, true);
@@ -87,8 +84,7 @@ const addStep3Request = (twoBorrowers, completeFiles = true) => {
           'logic.lender.chosenTime': new Date(),
         },
         id: requestId,
-      }),
-    )
+      }))
     .then(() => {
       // Weird bug with offer publications that forces me to reload TODO: fix it
       location.reload();

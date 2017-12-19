@@ -19,7 +19,7 @@ import './properties/methods';
 import './users/server/publications';
 import './users/methods';
 
-import './methods/server/methods';
+import './methods/server';
 import './methods/methods';
 
 import './factories';

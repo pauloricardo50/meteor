@@ -58,18 +58,16 @@ export default class CompareColumn extends Component {
       readyForDB[`fields.${key}`] = customFields[key];
     });
 
-    cleanMethod(
-      'updateProperty',
-      {
+    cleanMethod('updateProperty', {
+      object: {
         name: this.state.name || property.name,
         value: this.state.value || property.value,
         ...readyForDB,
       },
-      property._id,
-    ).then(() =>
+      id: property._id,
+    }).then(() =>
       // reset state
-      this.setState({ editing: false }),
-    );
+      this.setState({ editing: false }));
   };
 
   handleChange = (key, value) => this.setState({ [key]: value });

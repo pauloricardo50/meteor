@@ -1,9 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { Meteor } from 'meteor/meteor';
 
 import EmailLine from './EmailLine';
 import PasswordLine from './PasswordLine';
 import { T } from 'core/components/Translation';
+import cleanMethod from 'core/api/cleanMethods';
+import track, { addUserTracking } from 'core/utils/analytics';
+import saveStartForm from 'core/utils/saveStartForm';
 
 const styles = {
   section: {
@@ -39,6 +43,46 @@ export default class StartSignUp extends Component {
     });
   };
 
+  handleNewEmail = () => {
+    const { email } = this.state;
+    const { formState, history } = this.props;
+
+    cleanMethod('createUserAndRequest', { object: { email, formState } })
+      .then(() => {
+        // addUserTracking(Meteor.userId(), {
+        //   email: Meteor.user().emails[0].address,
+        //   id: Meteor.userId(),
+        // });
+        history.push('/checkYourMailbox');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    // Create account
+    // Insert request
+    // Send verification email
+    // Route to email check page
+  };
+
+  handleOldEmail = (callback) => {
+    const { email, password } = this.state;
+    const { formState } = this.props;
+    Meteor.loginWithPassword(email, password, (error) => {
+      if (error) {
+        this.setState({ error: error.message, loading: false });
+        callback(error);
+      } else {
+        saveStartForm(formState)
+          .then(() => {
+            callback(undefined);
+            track('Funnel - User logged in', {});
+            window.location.href = Meteor.settings.public.subdomains.app;
+          })
+          .catch(callback);
+      }
+    });
+  };
+
   render() {
     const { showPassword, login, signUp } = this.state;
     return (
@@ -46,7 +90,11 @@ export default class StartSignUp extends Component {
         <h2>
           <T id="StartSignUp.email" />
         </h2>
-        <EmailLine {...this.state} setParentState={this.setParentState} />
+        <EmailLine
+          {...this.state}
+          setEmail={this.setParentState}
+          handleSuccess={this.handleSuccess}
+        />
 
         {showPassword && (
           <div className="animated fadeIn" style={styles.passwordDiv}>
@@ -58,7 +106,8 @@ export default class StartSignUp extends Component {
               history={this.props.history}
               {...this.state}
               formState={this.props.formState}
-              setParentState={this.setParentState}
+              setPassword={this.setParentState}
+              handleSubmit={this.handleOldEmail}
             />
           </div>
         )}

@@ -9,7 +9,9 @@ import Select from 'core/components/Select';
 import Offer from './Offer';
 import StarRating from './StarRating';
 
-const getOfferValues = ({ monthly, rating, conditions, counterparts }) => [
+const getOfferValues = ({
+  monthly, rating, conditions, counterparts,
+}) => [
   {
     id: 'monthly',
     value: (
@@ -48,14 +50,13 @@ const sortOffers = (offers, sort) =>
   });
 
 const handleSave = (id, type, loanRequest) => {
-  cleanMethod(
-    'updateRequest',
-    {
+  cleanMethod('updateRequest', {
+    object: {
       'logic.lender.offerId': id,
       'logic.lender.type': id ? type : undefined,
     },
-    loanRequest._id,
-  );
+    id: loanRequest._id,
+  });
 };
 
 export default class OfferList extends Component {

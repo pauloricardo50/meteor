@@ -27,13 +27,17 @@ export default class NewRequestModal extends Component {
 
     const object = { name: this.state.value };
 
-    cleanMethod('updateRequest', object, this.props.requestId, {
-      title: `C'est parti pour ${this.state.value}`,
-      message:
-        '<h4 class="bert">Vous pouvez avancer quand vous voulez, et à votre rythme. Vous trouverez toujours tout ici, à sa place.</h4>',
-      style: 'fixed-top',
-      delay: 15000,
-    }).then(() => this.setState({ open: false }));
+    cleanMethod(
+      'updateRequest',
+      { object, id: this.props.requestId },
+      {
+        title: `C'est parti pour ${this.state.value}`,
+        message:
+          '<h4 class="bert">Vous pouvez avancer quand vous voulez, et à votre rythme. Vous trouverez toujours tout ici, à sa place.</h4>',
+        style: 'fixed-top',
+        delay: 15000,
+      },
+    ).then(() => this.setState({ open: false }));
   };
 
   render() {

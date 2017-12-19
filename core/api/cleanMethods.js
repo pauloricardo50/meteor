@@ -93,14 +93,22 @@ const handleError = (error) => {
 };
 
 // A wrapper method that displays an error if it occurs
-const cleanMethod = (name, object, id, bertObject) => {
+const cleanMethod = (name, params, bertObject) => {
   if (methods[name]) {
     return methods[name]
-      .callPromise({ object, id })
+      .callPromise(params)
       .then(result => handleResult(result, bertObject))
       .catch(handleError);
   }
-  throw new Meteor.Error('Not a valid clean method');
+  return new Promise((resolve, reject) => {
+    Meteor.call(name, params, (error, result) => {
+      if (error) {
+        reject(handleError(error));
+      } else {
+        resolve(handleResult(result, bertObject));
+      }
+    });
+  });
 };
 
 export default cleanMethod;

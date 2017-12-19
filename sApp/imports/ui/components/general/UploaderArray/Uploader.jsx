@@ -99,7 +99,7 @@ class Uploader extends Component {
       },
     };
 
-    cleanMethod(pushFunc, object, docId).then(() => {});
+    cleanMethod(pushFunc, { object, id: docId }).then(() => {});
   };
 
   handleRemove = (key) => {
@@ -112,7 +112,7 @@ class Uploader extends Component {
         const newFileArray = currentValue.filter(file => file.key !== key);
         const object = { [`files.${fileMeta.id}`]: newFileArray };
 
-        cleanMethod(updateFunc, object, docId);
+        cleanMethod(updateFunc, { object, id: docId });
       }
     });
   };

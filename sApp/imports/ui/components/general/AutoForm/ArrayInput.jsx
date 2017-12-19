@@ -49,29 +49,25 @@ export default class ArrayInput extends Component {
       } else if (type === 'selectInput') {
         // Map these labels here to prevent having the id being xxx.0 or xxx.1
         // and mess up the labels in the SelectFieldInput
-        childProps.options = options.map(
-          o =>
-            (o.id === undefined
-              ? {
-                id: o,
-                label: <T id={`Forms.${id}.${o}`} />,
-              }
-              : {
-                ...o,
-                label: <T id={`Forms.${id}.${o.id}`} />,
-              }),
-        );
+        childProps.options = options.map(o =>
+          (o.id === undefined
+            ? {
+              id: o,
+              label: <T id={`Forms.${id}.${o}`} />,
+            }
+            : {
+              ...o,
+              label: <T id={`Forms.${id}.${o.id}`} />,
+            }));
         return <SelectFieldInput {...childProps} noValidator />;
       }
     };
 
     for (let i = 0; i < this.state.count; i += 1) {
       // If there are multiple components per array item
-      array.push(
-        <div className="mask1" style={styles.arrayItem} key={i}>
-          {inputs.map(input => mapInput(input, i))}
-        </div>,
-      );
+      array.push(<div className="mask1" style={styles.arrayItem} key={i}>
+        {inputs.map(input => mapInput(input, i))}
+      </div>);
     }
 
     return array;
@@ -82,11 +78,10 @@ export default class ArrayInput extends Component {
   // Only remove a value if there's more than 1 left
   removeValue = () =>
     this.state.count > 0 &&
-    cleanMethod(
-      this.props.popFunc,
-      { [`${this.props.id}`]: 1 },
-      this.props.docId,
-    ).then(() => this.setState({ count: this.state.count - 1 }));
+    cleanMethod(this.props.popFunc, {
+      object: { [`${this.props.id}`]: 1 },
+      id: this.props.docId,
+    }).then(() => this.setState({ count: this.state.count - 1 }));
 
   render() {
     const { style, label, disabled } = this.props;
