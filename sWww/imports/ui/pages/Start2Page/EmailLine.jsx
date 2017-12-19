@@ -12,6 +12,12 @@ const styles = {
   root: {
     width: 350,
     maxWidth: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  button: {
+    marginTop: 16,
   },
 };
 
@@ -41,25 +47,24 @@ export default class EmailLine extends Component {
     setParentState('email', email);
   };
 
-  handleSubmit = () => {
+  handleSubmit = (event) => {
+    event.preventDefault();
     const { email, setParentState } = this.props;
-    this.setState({ validating: true });
 
     if (emailValidation(email)) {
-      this.setState({ error: false, errorMessage: '' });
+      this.setState({ error: false, errorMessage: '', validating: true });
       // Check if the email exists in the database
       Meteor.call('doesUserExist', email, (error, result) => {
-        this.setState({ validating: false });
-
         if (result) {
+          this.setState({ validating: false });
+
           // If it exists
           setParentState('login', true);
           setParentState('signUp', false);
           setParentState('showPassword', true, () => scroll());
         } else {
           // If it doesnt
-          setParentState('login', false);
-          setParentState('signUp', true);
+          this.props.handleNewEmail(() => this.setState({ validating: false }));
         }
       });
     } else {
@@ -70,9 +75,16 @@ export default class EmailLine extends Component {
 
   render() {
     const { validating, error, errorMessage } = this.state;
+    const { showPassword } = this.props;
 
     return (
-      <h2 className="email fixed-size" style={styles.root}>
+      <form
+        className="email fixed-size"
+        style={styles.root}
+        action="submit"
+        onSubmit={this.handleSubmit}
+        noValidate
+      >
         <TextField
           style={styles.input}
           name="email"
@@ -82,15 +94,20 @@ export default class EmailLine extends Component {
           fullWidth
           error={error}
           helperText={errorMessage}
+          noValidate
         />
-        <Button
-          style={styles.button}
-          onClick={this.handleSubmit}
-          disabled={validating}
-        >
-          <T id="general.continue" />
-        </Button>
-      </h2>
+        {!showPassword && (
+          <Button
+            type="submit"
+            style={styles.button}
+            disabled={validating}
+            primary
+            raised
+          >
+            <T id="general.continue" />
+          </Button>
+        )}
+      </form>
     );
   }
 }

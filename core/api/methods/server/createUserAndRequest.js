@@ -5,18 +5,17 @@ import { addUserTracking } from 'core/utils/analytics';
 
 Meteor.methods({
   createUserAndRequest({ email, formState }) {
+    console.log('creating user and request...', email, formState);
     // Create the new user without a password
-    const newUserId = Accounts.createUser({ email }, (error) => {
-      if (error) {
-        throw new Meteor.Error('createUserAndRequest: account creation error');
-      }
-    });
+    let newUserId;
+    try {
+      newUserId = Accounts.createUser({ email });
+    } catch (e) {
+      throw new Meteor.Error(e);
+    }
 
     // Send an enrollment email
     Accounts.sendEnrollmentEmail(newUserId);
-
-    // Add tracking to analytics
-    addUserTracking(Meteor.userId(), { email, id: newUserId });
 
     // Insert the formdata to loanRequest and borrower(s)
     return saveStartForm(formState, newUserId);

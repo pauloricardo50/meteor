@@ -43,19 +43,18 @@ export default class StartSignUp extends Component {
     });
   };
 
-  handleNewEmail = () => {
+  handleNewEmail = (callback) => {
     const { email } = this.state;
     const { formState, history } = this.props;
 
     cleanMethod('createUserAndRequest', { email, formState })
-      .then(() => {
-        // addUserTracking(Meteor.userId(), {
-        //   email: Meteor.user().emails[0].address,
-        //   id: Meteor.userId(),
-        // });
-        history.push('/checkYourMailbox');
+      .then((userId) => {
+        addUserTracking(userId, { email, id: userId });
+        callback();
+        history.push(`/checkYourMailbox/${email}`);
       })
       .catch((error) => {
+        callback();
         console.log(error);
       });
     // Create account
@@ -74,7 +73,7 @@ export default class StartSignUp extends Component {
       } else {
         saveStartForm(formState)
           .then(() => {
-            callback(undefined);
+            callback();
             track('Funnel - User logged in', {});
             window.location.href = Meteor.settings.public.subdomains.app;
           })
@@ -92,8 +91,9 @@ export default class StartSignUp extends Component {
         </h2>
         <EmailLine
           {...this.state}
-          setEmail={this.setParentState}
+          setParentState={this.setParentState}
           handleSuccess={this.handleSuccess}
+          handleNewEmail={this.handleNewEmail}
         />
 
         {showPassword && (
@@ -106,7 +106,7 @@ export default class StartSignUp extends Component {
               history={this.props.history}
               {...this.state}
               formState={this.props.formState}
-              setPassword={this.setParentState}
+              setParentState={this.setParentState}
               handleSubmit={this.handleOldEmail}
             />
           </div>

@@ -40,16 +40,16 @@ export const insertRequest = new ValidatedMethod({
   mixins: [CallPromiseMixin],
   validate() {},
   run({ object, userId }) {
-    const requestCount = LoanRequests.find({ userId: Meteor.userId() }).count();
-
-    if (requestCount > 3) {
-      throw new Meteor.Error(
-        'maxRequests',
-        'Vous ne pouvez pas avoir plus de 3 requêtes à la fois',
-      );
-    }
-
-    console.log(object);
+    // const requestCount = LoanRequests.find({ userId: Meteor.userId() }).count();
+    //
+    // if (requestCount > 3) {
+    //   throw new Meteor.Error(
+    //     'maxRequests',
+    //     'Vous ne pouvez pas avoir plus de 3 requêtes à la fois',
+    //   );
+    // }
+    //
+    // console.log(object);
 
     // Allow adding a userId for testing purposes
     return LoanRequests.insert({

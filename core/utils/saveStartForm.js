@@ -62,7 +62,8 @@ const saveStartForm = (f, userId) => {
       !!multiple &&
         cleanMethod('insertBorrower', { object: borrowerTwo, userId }))
     .then(id2 => !!id2 && loanRequest.borrowers.push(id2))
-    .then(() => cleanMethod('insertRequest', { object: loanRequest, userId }));
+    .then(() => cleanMethod('insertRequest', { object: loanRequest, userId }))
+    .then(() => userId);
 };
 
 export default saveStartForm;

@@ -18,6 +18,7 @@ import PasswordResetPage from '../../ui/pages/PasswordResetPage';
 import Start1Page from '../../ui/pages/Start1Page';
 import Start2Page from '../../ui/pages/Start2Page';
 import PasswordPage from '../../ui/pages/PasswordPage';
+import CheckMailboxPage from '../../ui/pages/CheckMailboxPage';
 
 const WwwRouter = () => (
   <BaseRouter
@@ -38,6 +39,7 @@ const WwwRouter = () => (
         <Route path="/faq" component={FaqPage} />
         <Route path="/verify-email/:token" component={EmailVerificationPage} />
         <Route path="/reset-password/:token" component={PasswordResetPage} />
+        <Route path="/checkYourMailbox/:email" component={CheckMailboxPage} />
         <Route component={NotFound} />
       </Switch>
     </PublicLayout>

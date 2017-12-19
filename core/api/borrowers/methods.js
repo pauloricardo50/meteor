@@ -12,10 +12,7 @@ export const insertBorrower = new ValidatedMethod({
   mixins: [CallPromiseMixin],
   validate() {},
   run({ object, userId }) {
-    // Allow adding a userId for testing purposes
-    object.userId = userId || Meteor.userId();
-
-    return Borrowers.insert(object);
+    return Borrowers.insert({ ...object, userId: userId || Meteor.userId() });
   },
 });
 
