@@ -1,7 +1,7 @@
 import cleanMethod from 'core/api/cleanMethods';
 
 // The final function that inserts the documents once the form is finished
-const saveStartForm = (f) => {
+const saveStartForm = (f, userId) => {
   const multiple = f.borrowerCount > 1;
   const borrowerOne = {
     age: f.age,
@@ -56,12 +56,13 @@ const saveStartForm = (f) => {
     borrowers: [],
   };
 
-  return cleanMethod('insertBorrower', { object: borrowerOne })
+  return cleanMethod('insertBorrower', { object: borrowerOne, userId })
     .then(id1 => loanRequest.borrowers.push(id1))
     .then(() =>
-      !!multiple && cleanMethod('insertBorrower', { object: borrowerTwo }))
+      !!multiple &&
+        cleanMethod('insertBorrower', { object: borrowerTwo, userId }))
     .then(id2 => !!id2 && loanRequest.borrowers.push(id2))
-    .then(() => cleanMethod('insertRequest', { object: loanRequest }));
+    .then(() => cleanMethod('insertRequest', { object: loanRequest, userId }));
 };
 
 export default saveStartForm;

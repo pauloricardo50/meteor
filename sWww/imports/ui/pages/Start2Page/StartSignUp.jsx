@@ -47,7 +47,7 @@ export default class StartSignUp extends Component {
     const { email } = this.state;
     const { formState, history } = this.props;
 
-    cleanMethod('createUserAndRequest', { object: { email, formState } })
+    cleanMethod('createUserAndRequest', { email, formState })
       .then(() => {
         // addUserTracking(Meteor.userId(), {
         //   email: Meteor.user().emails[0].address,
