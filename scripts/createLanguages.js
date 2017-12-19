@@ -60,7 +60,7 @@ function createPathToLanguage(dir, language) {
   return dir + '/lang/' + language + '.json';
 }
 
-function run({ directories, languages }) {
+function run({ directories, languages, exceptions }) {
   console.log('Starting language building process...');
 
   directories.forEach(directory => {
@@ -68,7 +68,7 @@ function run({ directories, languages }) {
 
     languages.forEach(language => {
       console.log('Creating ' + language + ' file for ' + directory);
-      const languageObject = filterLanguageKeys(language, componentNames);
+      const languageObject = filterLanguageKeys(language, [...exceptions, ...componentNames]);
       const path = createPathToLanguage(directory, language);
 
       writeLanguageToDirectory(languageObject, path);
@@ -79,6 +79,7 @@ function run({ directories, languages }) {
 const config = {
   languages: ['fr', 'en'],
   directories: ['../sApp', '../sWww', '../sAdmin', '../sLender'],
+  exceptions: ['TopNav', 'TopNavDropdown', 'Recap', 'general', 'tooltip', 'tooltip2', 'ExpensesChartInterests', 'ExpensesChart'],
 };
 
 run(config);
