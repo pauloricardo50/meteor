@@ -1,2 +1,3 @@
-console.log('hello from server');
+import '/imports/startup/server';
 
+console.log('hello from server');

@@ -16,3 +16,15 @@ standard-minifier-js@2.2.0    # JS minifier run for production mode
 es5-shim@4.6.15                # ECMAScript 5 compatibility for older browsers
 ecmascript@0.9.0              # Enable ECMAScript2015+ syntax in app code
 shell-server@0.3.0            # Server-side component of the `meteor shell` command
+meteortoys:allthings@4.0.0
+insecure
+autopublish
+alanning:roles
+aldeed:schema-index
+mdg:validated-method
+didericis:callpromise-mixin
+dburles:factory
+vsivsi:job-collection
+themeteorchef:bert
+okgrow:analytics
+edgee:slingshot

@@ -1,2 +1,3 @@
-console.log('hello!');
+import './imports/startup/client';
 
+console.log('hello!');
