@@ -102,7 +102,7 @@ const AppLayout = (props) => {
 
       <main className={classes}>
         <ErrorBoundary helper="layout" pathname={history.location.pathname}>
-          <div className="wrapper">{render(props)}</div>
+          <div x="wrapper">{render(props)}</div>
         </ErrorBoundary>
       </main>
 

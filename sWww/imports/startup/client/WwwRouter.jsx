@@ -3,11 +3,8 @@ import { Route, Switch } from 'react-router-dom';
 
 import BaseRouter from 'core/components/BaseRouter';
 import NotFound from 'core/components/NotFound';
-import {
-  getUserLocale,
-  getTranslations,
-  getFormats,
-} from 'core/utils/localization';
+import { getUserLocale, getFormats } from 'core/utils/localization';
+import messagesFR from '../../../lang/fr.json';
 
 import LoginPage from 'core/components/LoginPage';
 import PublicLayout from '../../ui/layouts/PublicLayout';
@@ -25,7 +22,7 @@ import PasswordPage from '../../ui/pages/PasswordPage';
 const WwwRouter = () => (
   <BaseRouter
     locale={getUserLocale()}
-    messages={getTranslations()}
+    messages={messagesFR}
     formats={getFormats()}
   >
     <PublicLayout>
@@ -41,7 +38,7 @@ const WwwRouter = () => (
         <Route path="/faq" component={FaqPage} />
         <Route path="/verify-email/:token" component={EmailVerificationPage} />
         <Route path="/reset-password/:token" component={PasswordResetPage} />
-        {/* <Route component={NotFound} /> */}
+        <Route component={NotFound} />
       </Switch>
     </PublicLayout>
   </BaseRouter>

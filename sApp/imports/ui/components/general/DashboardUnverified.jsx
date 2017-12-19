@@ -29,8 +29,8 @@ const handleClick = (event, props) => {
   });
 };
 
-const Unverified = props =>
-  (<div
+const DashboardUnverified = props => (
+  <div
     style={{
       display: 'flex',
       alignItems: 'center',
@@ -62,10 +62,11 @@ const Unverified = props =>
       className="fa fa-info fa-2x"
       style={{ color: colors.lightBorder, paddingRight: 16, paddingLeft: 16 }}
     />
-  </div>);
+  </div>
+);
 
-Unverified.propTypes = {
+DashboardUnverified.propTypes = {
   intl: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default injectIntl(Unverified);
+export default injectIntl(DashboardUnverified);

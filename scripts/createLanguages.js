@@ -60,17 +60,16 @@ function createPathToLanguage(dir, language) {
   return dir + '/lang/' + language + '.json';
 }
 
-function run(config) {
+function run({ directories, languages }) {
   console.log('Starting language building process...');
 
-  config.directories.forEach(directory => {
+  directories.forEach(directory => {
     const componentNames = findFilesWithExtension(directory, '.jsx');
 
-    config.languages.forEach(language => {
+    languages.forEach(language => {
       console.log('Creating ' + language + ' file for ' + directory);
       const languageObject = filterLanguageKeys(language, componentNames);
       const path = createPathToLanguage(directory, language);
-      console.log(path);
 
       writeLanguageToDirectory(languageObject, path);
     });

@@ -4,11 +4,8 @@ import { Route, Switch } from 'react-router-dom';
 import BaseRouter from 'core/components/BaseRouter';
 import NotFound from 'core/components/NotFound';
 
-import {
-  getUserLocale,
-  getTranslations,
-  getFormats,
-} from 'core/utils/localization';
+import { getUserLocale, getFormats } from 'core/utils/localization';
+import messagesFR from '../../../lang/fr.json';
 
 import AccountPage from '../../ui/pages/user/AccountPage';
 import {
@@ -33,7 +30,7 @@ import {
 const AppRouter = () => (
   <BaseRouter
     locale={getUserLocale()}
-    messages={getTranslations()}
+    messages={messagesFR}
     formats={getFormats()}
   >
     <UserLayout

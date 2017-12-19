@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
-import Unverified from '/imports/ui/components/general/Unverified';
+import DashboardUnverified from '/imports/ui/components/general/DashboardUnverified';
 
 import AppItem from './AppItem';
 
@@ -10,7 +10,7 @@ const AppPage = ({ loanRequests, properties, currentUser }) => (
   <section className="flex-col center">
     {!currentUser.emails[0].verified && (
       <div style={{ marginBottom: 16 }}>
-        <Unverified />
+        <DashboardUnverified />
       </div>
     )}
 
