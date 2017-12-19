@@ -77,7 +77,7 @@ const config = {
   pathToLangDir: '..',
   languages: ['fr', 'en'],
   directories: ['../sApp', '../sWww', '../sAdmin', '../sLender'],
-  exceptions: ['TopNav', 'TopNavDropdown', 'Recap', 'general', 'tooltip', 'tooltip2', 'ExpensesChartInterests', 'ExpensesChart'],
+  exceptions: ['TopNav', 'TopNavDropdown', 'Recap', 'general', 'tooltip', 'tooltip2', 'ExpensesChartInterests', 'ExpensesChart', 'Search'],
 };
 
 run(config);

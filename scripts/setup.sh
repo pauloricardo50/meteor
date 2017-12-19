@@ -5,6 +5,7 @@
 
 start=`date +%s`
 echo "Preparing e-Potek..."
+doClean=false
 
 # check for flag arguments
 while getopts ":c" opt; do
@@ -42,14 +43,18 @@ for i in 'sAdmin' 'sApp' 'sLender' 'sWww'
     cp -a ../core/assets/private ../$i/private
 
 
-    echo "Installing clean node_modules"
-    if [[ doClean ]];
+    echo "Installing npm packages"
+    if [[ doClean = true ]];
     then
       ( cd ../$i && rm ./package-lock.json && rm -rf node_modules/ && npm cache clear --force && meteor npm install );
     else
-      ( cd ../$i && rm -rf node_modules/ && meteor npm install );
+      ( cd ../$i && meteor npm install );
     fi
   done
+
+
+echo "Creating language files..."
+node ./createLanguages.js
 
 end=`date +%s`
 runtime=$((end-start))

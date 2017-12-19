@@ -38,7 +38,7 @@ export default class SearchModal extends Component {
             />,
           ]}
           open={isOpen}
-          onRequestClose={this.handleClose}
+          onClose={this.handleClose}
         >
           <Search />
         </Dialog>
