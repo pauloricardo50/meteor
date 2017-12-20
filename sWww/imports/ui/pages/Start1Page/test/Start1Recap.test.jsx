@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from '/imports/js/helpers/testHelpers/enzyme';
+import { shallow } from 'core/utils/testHelpers/enzyme';
 
 import Start1Recap from '../Start1Recap';
 import Recap from 'core/components/Recap';

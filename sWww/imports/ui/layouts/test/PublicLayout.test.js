@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import { getMountedComponent } from '/imports/js/helpers/testHelpers';
+import { getMountedComponent } from  'core/utils/testHelpers';
 
 import { PublicLayout } from '../PublicLayout';
 

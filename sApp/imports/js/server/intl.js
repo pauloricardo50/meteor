@@ -1,9 +1,6 @@
 import IntlMessageFormat from 'intl-messageformat';
-import {
-  getUserLocale,
-  getTranslations,
-  getFormats,
-} from 'core/utils/localization';
+import { getUserLocale, getFormats } from 'core/utils/localization';
+import messagesFR from 'core/lang/fr.json';
 
 /**
  * formatMessage - A server-side method to use the intl package
@@ -19,8 +16,7 @@ const formatMessage = (id, values = {}, customFallback) => {
     throw new Error('an id is required in formatMessage');
   }
   const message = new IntlMessageFormat(
-    getTranslations()[id] ||
-      (customFallback !== undefined ? customFallback : id),
+    messagesFR[id] || (customFallback !== undefined ? customFallback : id),
     'fr-FR',
     // getFormats(),
   );

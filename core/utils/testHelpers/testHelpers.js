@@ -6,11 +6,8 @@ import { IntlProvider, intlShape } from 'react-intl';
 import StubCollections from 'meteor/hwillson:stub-collections';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import {
-  getUserLocale,
-  getTranslations,
-  getFormats,
-} from '/imports/startup/localization';
+import { getUserLocale, getFormats } from 'core/utils/localization';
+import messagesFR from '../../lang/fr.json';
 
 // This has to be imported here for client side tests to use factories
 // Because each test using factories also uses stubCollections
@@ -29,7 +26,7 @@ const customMount = (Component, props, withRouter) => {
   const intlProvider = new IntlProvider(
     {
       locale: getUserLocale(),
-      messages: getTranslations(),
+      messages: messagesFR,
       formats: getFormats(),
       defaultLocale: 'fr',
     },

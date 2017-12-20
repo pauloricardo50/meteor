@@ -1,6 +1,6 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
-import testRequire from '/imports/js/helpers/testHelpers/testRequire';
+import testRequire from 'core/utils/testHelpers/testRequire';
 
 const { getLocations } = testRequire('../APIs') || require('../APIs');
 

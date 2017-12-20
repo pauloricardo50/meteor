@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import { _ } from 'lodash';
 import sinon from 'sinon';
-import testRequire from '/imports/js/helpers/testHelpers/testRequire';
+import testRequire from 'core/utils/testHelpers/testRequire';
 
 // import {
 //   getAuthToken,
@@ -87,9 +87,7 @@ describe('logismata API', () => {
 
     it('throws if an incorrect value is provided', () => {
       const obj = { sex: 'test' };
-      expect(() => convertParamsToLogismata(obj)).to.throw(
-        'invalid logismata value provided',
-      );
+      expect(() => convertParamsToLogismata(obj)).to.throw('invalid logismata value provided');
     });
   });
 
@@ -143,7 +141,6 @@ describe('logismata API', () => {
   describe('getLocationId', () => {
     it('returns a correct id for yverdon', () =>
       getLocationId('1400 Yverdon-les-bains').then(id =>
-        expect(id).to.equal(140000000),
-      ));
+        expect(id).to.equal(140000000)));
   });
 });

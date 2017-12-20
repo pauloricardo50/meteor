@@ -1,10 +1,7 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import {
-  getMountedComponent,
-  stubCollections,
-} from '/imports/js/helpers/testHelpers';
+import { getMountedComponent, stubCollections } from 'core/utils/testHelpers';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Tab from 'react-bootstrap/lib/Tab';
 import Tabs from 'react-bootstrap/lib/Tabs';
 
-import { requestFiles, borrowerFiles } from 'core/arrays/files';
+import { requestFiles, borrowerFiles } from 'core/api/files/files';
 import FileVerificator from './FileVerificator';
 
 const styles = {
@@ -19,8 +19,7 @@ const FilesVerification = ({ loanRequest, borrowers }) => (
       <div style={styles.tabContent}>
         {requestFiles(loanRequest)
           .all()
-          .map(
-            file =>
+          .map(file =>
               file.condition !== false && (
                 <FileVerificator
                   currentValue={loanRequest.files[file.id]}
@@ -29,8 +28,7 @@ const FilesVerification = ({ loanRequest, borrowers }) => (
                   id={file.id}
                   closingSteps={loanRequest.logic.closingSteps}
                 />
-              ),
-          )}
+              ))}
       </div>
     </Tab>
     {borrowers.map((b, index) => (
@@ -38,8 +36,7 @@ const FilesVerification = ({ loanRequest, borrowers }) => (
         <div style={styles.tabContent}>
           {borrowerFiles(b)
             .all()
-            .map(
-              file =>
+            .map(file =>
                 file.condition !== false && (
                   <FileVerificator
                     currentValue={b.files[file.id]}
@@ -48,8 +45,7 @@ const FilesVerification = ({ loanRequest, borrowers }) => (
                     id={file.id}
                     isBorrower
                   />
-                ),
-            )}
+                ))}
         </div>
       </Tab>
     ))}

@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from '/imports/js/helpers/testHelpers/enzyme';
+import { shallow } from 'core/utils/testHelpers/enzyme';
 
 import testRequire from 'core/utils/testHelpers/testRequire';
 
@@ -24,11 +24,9 @@ describe('<AutoTooltip />', () => {
   });
 
   it('returns the child if it is not a string', () => {
-    const wrapper = shallow(
-      <AutoTooltip>
-        <div>test</div>
-      </AutoTooltip>,
-    );
+    const wrapper = shallow(<AutoTooltip>
+      <div>test</div>
+    </AutoTooltip>);
     expect(wrapper.equals(<div>test</div>)).to.equal(true);
   });
 
@@ -36,12 +34,10 @@ describe('<AutoTooltip />', () => {
     const text = 'this is a test';
     const wrapper = shallow(<AutoTooltip id="test">{text}</AutoTooltip>);
     expect(wrapper.find('TooltipOverlay')).to.have.length(1);
-    expect(
-      wrapper
-        .find('TooltipOverlay')
-        .childAt(0)
-        .text(),
-    ).to.equal(text);
+    expect(wrapper
+      .find('TooltipOverlay')
+      .childAt(0)
+      .text()).to.equal(text);
     expect(wrapper.find('TooltipOverlay').prop('id')).to.equal('test');
   });
 
@@ -56,9 +52,7 @@ describe('<AutoTooltip />', () => {
     const text = 'a finma b finma c';
     const wrapper = shallow(<AutoTooltip>{text}</AutoTooltip>);
 
-    expect(wrapper.text()).to.equal(
-      'a <TooltipOverlay /> b <TooltipOverlay /> c',
-    );
+    expect(wrapper.text()).to.equal('a <TooltipOverlay /> b <TooltipOverlay /> c');
   });
 
   it('takes a list as a string to take tooltips from', () => {

@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import { Factory } from 'meteor/dburles:factory';
 import moment from 'moment';
-import { stubCollections } from '/imports/js/helpers/testHelpers';
+import { stubCollections } from  'core/utils/testHelpers';
 import sinon from 'sinon';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 

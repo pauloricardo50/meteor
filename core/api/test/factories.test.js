@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { stubCollections } from '/imports/js/helpers/testHelpers';
+import { stubCollections } from  'core/utils/testHelpers';
 
 describe('Factories', () => {
   beforeEach(() => {

@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import isArray from 'lodash/isArray';
 
-import testRequire from '/imports/js/helpers/testHelpers/testRequire';
+import testRequire from 'core/utils/testHelpers/testRequire';
 
 const { default: getFormArray } =
   testRequire('../StartFormArray') || require('../StartFormArray');
@@ -59,8 +59,7 @@ describe('StartFormArray', () => {
           'arrayInput',
           'sliderInput',
           'custom',
-        ]),
-      );
+        ]));
     });
 
     const allKeys = [
@@ -132,8 +131,7 @@ describe('StartFormArray', () => {
               'number',
               'width',
               'validation',
-            ]),
-          );
+            ]));
         });
       });
 
@@ -167,8 +165,7 @@ describe('StartFormArray', () => {
               'deleteId',
               'text2',
               'error',
-            ]),
-          );
+            ]));
         });
       });
 
@@ -234,8 +231,7 @@ describe('StartFormArray', () => {
               'existId',
               'inputs',
               'allOptions',
-            ]),
-          );
+            ]));
         });
       });
 

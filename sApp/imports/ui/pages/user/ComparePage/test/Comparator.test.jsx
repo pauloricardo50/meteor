@@ -1,10 +1,10 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from '/imports/js/helpers/testHelpers/enzyme';
+import { shallow } from 'core/utils/testHelpers/enzyme';
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
-import { stubCollections } from '/imports/js/helpers/testHelpers';
+import { stubCollections } from  'core/utils/testHelpers';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import Comparator from '../Comparator';

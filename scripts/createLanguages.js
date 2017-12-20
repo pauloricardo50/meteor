@@ -27,9 +27,13 @@ function findFilesWithExtension(startPath, extension) {
 }
 
 function filterLanguageKeys(pathToLangDir, language, allowedKeys) {
-  const langObject = JSON.parse(fs.readFileSync(createPathToLanguage(pathToLangDir, language), 'utf8'));
+  const langObject = JSON.parse(
+    fs.readFileSync(createPathToLanguage(pathToLangDir, language), 'utf8'),
+  );
   const langKeys = Object.keys(langObject);
-  const remainingKeys = langKeys.filter(key => allowedKeys.indexOf(key.split('.')[0]) >= 0);
+  const remainingKeys = langKeys.filter(
+    key => allowedKeys.indexOf(key.split('.')[0]) >= 0,
+  );
 
   const optimizedLangObject = Object.keys(langObject)
     .filter(key => remainingKeys.includes(key))
@@ -65,7 +69,10 @@ function run({ directories, languages, exceptions, pathToLangDir }) {
 
     languages.forEach(language => {
       console.log('Creating ' + language + ' file for ' + directory);
-      const languageObject = filterLanguageKeys(pathToLangDir, language, [...exceptions, ...componentNames]);
+      const languageObject = filterLanguageKeys(pathToLangDir, language, [
+        ...exceptions,
+        ...componentNames,
+      ]);
       const path = createPathToLanguage(directory, language);
 
       writeLanguageToDirectory(languageObject, path);
@@ -74,10 +81,20 @@ function run({ directories, languages, exceptions, pathToLangDir }) {
 }
 
 const config = {
-  pathToLangDir: '..',
+  pathToLangDir: '../core',
   languages: ['fr', 'en'],
   directories: ['../sApp', '../sWww', '../sAdmin', '../sLender'],
-  exceptions: ['TopNav', 'TopNavDropdown', 'Recap', 'general', 'tooltip', 'tooltip2', 'ExpensesChartInterests', 'ExpensesChart', 'Search'],
+  exceptions: [
+    'TopNav',
+    'TopNavDropdown',
+    'Recap',
+    'general',
+    'tooltip',
+    'tooltip2',
+    'ExpensesChartInterests',
+    'ExpensesChart',
+    'Search',
+  ],
 };
 
 run(config);
