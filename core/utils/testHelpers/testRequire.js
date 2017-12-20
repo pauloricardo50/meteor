@@ -4,7 +4,7 @@
 import callerPath from 'caller-path';
 import { dirname, resolve } from 'path';
 
-import meteorStubs from '/imports/js/helpers/meteorStubs';
+import meteorStubs from './meteorStubs';
 
 const testRequire = (filePath) => {
   let importedModule;

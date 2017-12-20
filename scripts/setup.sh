@@ -44,7 +44,7 @@ for i in 'sAdmin' 'sApp' 'sLender' 'sWww'
 
 
     echo "Installing npm packages"
-    if [[ doClean = true ]];
+    if [[ $doClean = true ]];
     then
       ( cd ../$i && rm ./package-lock.json && rm -rf node_modules/ && npm cache clear --force && meteor npm install );
     else

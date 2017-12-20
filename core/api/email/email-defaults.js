@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import formatMessage from '../intl';
+import formatMessage from 'core/utils/intl';
 
 // Defaults
 export const from = "Yannis d'e-Potek";
@@ -51,5 +51,7 @@ export const getEmailContent = (emailId, intlValues = {}) => {
   );
   const email = Meteor.user() && Meteor.user().emails[0].address;
 
-  return { email, subject, title, body, CTA, from: customFrom };
+  return {
+    email, subject, title, body, CTA, from: customFrom,
+  };
 };

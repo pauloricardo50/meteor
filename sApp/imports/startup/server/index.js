@@ -1,8 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Inject } from 'meteor/meteorhacks:inject-initial';
 
-import '/imports/js/server/email/email-methods';
-import '/imports/js/server/email/email-meteor';
 import 'core/api/api';
 import 'core/api/api-server';
 import jc from 'core/api/server/jobs/jobs';

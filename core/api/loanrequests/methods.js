@@ -24,7 +24,7 @@ const importServerMethods = () => {
       sendEmail,
       cancelScheduledEmail,
       rescheduleEmail,
-    } = require('/imports/js/server/email/email-methods');
+    } = require('core/api/email/email-methods');
 
     return {
       scheduleMethod,
