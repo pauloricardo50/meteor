@@ -70,13 +70,13 @@ jobs:
           name: run tests for App
           command: |
             cd sApp
-            meteor npm i chromedriver
+            meteor npm i selenium-webdriver@3.0.0-beta-2 chromedriver
             meteor npm run test-CI
       - run:
           name: run tests for Www
           command: |
             cd sWww
-            meteor npm i chromedriver
+            meteor npm i selenium-webdriver@3.0.0-beta-2 chromedriver
             meteor npm run test-CI
       - run:
           name: copy meteor bin to build cache
