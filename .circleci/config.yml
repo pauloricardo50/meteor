@@ -60,7 +60,9 @@ jobs:
             java -version
       - run:
           name: Setup microservices
-          command: ./scripts/setup.sh
+          command: |
+            cd scripts
+            ./setup.sh
       - run:
           name: create results directory
           command: mkdir ./results
