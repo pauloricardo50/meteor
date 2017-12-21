@@ -54,7 +54,8 @@ export const insertRequest = new ValidatedMethod({
     // Allow adding a userId for testing purposes
     return LoanRequests.insert({
       ...object,
-      userId: userId || Meteor.userId(),
+      // Do this to allow userId to be null
+      userId: userId === undefined ? Meteor.userId() : userId,
     });
   },
 });

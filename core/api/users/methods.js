@@ -7,7 +7,7 @@ import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
 import rateLimit from '../../utils/rate-limit.js';
 
 Meteor.methods({
-  doesUserExist(email) {
+  doesUserExist({ email }) {
     check(email, String);
     if (Meteor.isServer) {
       // This should remain a simple inequality check

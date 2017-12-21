@@ -30,60 +30,60 @@ export default class StartSignUp extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = { loading: false, errorText: '' };
   }
 
-  setParentState = (key, value, callback) => {
-    const object = {};
-    object[key] = value;
-    this.setState(object, () => {
+  setParentState = (key, value, callback) =>
+    this.setState({ [key]: value }, () => {
       if (typeof callback === 'function') {
         callback();
       }
     });
-  };
 
-  handleNewEmail = (callback) => {
+  handleNewEmail = (event) => {
+    event.preventDefault();
     const { email } = this.state;
     const { formState, history } = this.props;
 
-    cleanMethod('createUserAndRequest', { email, formState })
-      .then((userId) => {
-        addUserTracking(userId, { email, id: userId });
-        callback();
-        history.push(`/checkYourMailbox/${email}`);
-      })
-      .catch((error) => {
-        callback();
-        console.log(error);
-      });
-    // Create account
-    // Insert request
-    // Send verification email
-    // Route to email check page
+    if (emailValidation(email)) {
+      this.setState({ loading: true });
+
+      cleanMethod('doesUserExist', { email })
+        .then((emailExists) => {
+          if (emailExists) {
+            throw 'Cette adresse existe déjà';
+          }
+        })
+        .then(() =>
+          cleanMethod('createUserAndRequest', { email, formState }).then((userId) => {
+            this.setState({ loading: false, errorText: '' });
+            addUserTracking(userId, { email, id: userId });
+            history.push(`/checkYourMailbox/${email}`);
+          }))
+        .catch(error => this.setState({ loading: false, errorText: error }));
+    } else {
+      this.setState({ errorText: 'Email is invalid', loading: false });
+    }
   };
 
-  handleOldEmail = (callback) => {
-    const { email, password } = this.state;
+  handleExistingAccount = () => {
     const { formState } = this.props;
-    Meteor.loginWithPassword(email, password, (error) => {
-      if (error) {
-        this.setState({ error: error.message, loading: false });
-        callback(error);
-      } else {
-        saveStartForm(formState)
-          .then(() => {
-            callback();
-            track('Funnel - User logged in', {});
-            window.location.href = Meteor.settings.public.subdomains.app;
-          })
-          .catch(callback);
-      }
-    });
+    this.setState({ loading: true });
+
+    saveStartForm(formState, null)
+      .then((requestId) => {
+        this.setState({ loading: false, errorText: '' });
+        window.location.href = `${
+          Meteor.settings.public.subdomains.app
+        }/add-request/${requestId}`;
+      })
+      .catch(error => this.setState({ loading: false, errorText: error }));
   };
 
   render() {
-    const { showPassword, login, signUp } = this.state;
+    const {
+      showPassword, login, signUp, loading, errorText,
+    } = this.state;
     return (
       <div style={styles.section}>
         <h2>
@@ -92,25 +92,11 @@ export default class StartSignUp extends Component {
         <EmailLine
           {...this.state}
           setParentState={this.setParentState}
-          handleSuccess={this.handleSuccess}
           handleNewEmail={this.handleNewEmail}
+          handleExistingAccount={this.handleExistingAccount}
+          loading={loading}
+          errorText={errorText}
         />
-
-        {showPassword && (
-          <div className="animated fadeIn" style={styles.passwordDiv}>
-            <h3 className="fixed-size">
-              {login && <T id="StartSignUp.signedUp" />}
-              {signUp && <T id="StartSignUp.notSignedUp" />}
-            </h3>
-            <PasswordLine
-              history={this.props.history}
-              {...this.state}
-              formState={this.props.formState}
-              setParentState={this.setParentState}
-              handleSubmit={this.handleOldEmail}
-            />
-          </div>
-        )}
       </div>
     );
   }

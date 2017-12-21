@@ -16,8 +16,13 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
   },
-  button: {
+  buttons: {
     marginTop: 16,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  button: {
+    marginRight: 8,
   },
 };
 
@@ -36,9 +41,6 @@ const scroll = () => {
 export default class EmailLine extends Component {
   constructor(props) {
     super(props);
-
-    this.state = { validating: false, error: false, errorMessage: '' };
-    this.timer = null;
   }
 
   handleChange = (event) => {
@@ -49,33 +51,28 @@ export default class EmailLine extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { email, setParentState } = this.props;
+    const { email, setParentState, handleNewEmail } = this.props;
 
     if (emailValidation(email)) {
-      this.setState({ error: false, errorMessage: '', validating: true });
       // Check if the email exists in the database
       Meteor.call('doesUserExist', email, (error, result) => {
         if (result) {
-          this.setState({ validating: false });
-
-          // If it exists
-          setParentState('login', true);
-          setParentState('signUp', false);
-          setParentState('showPassword', true, () => scroll());
         } else {
           // If it doesnt
-          this.props.handleNewEmail(() => this.setState({ validating: false }));
+          handleNewEmail();
         }
       });
-    } else {
-      this.setState({ error: true, errorMessage: 'Email invalide' });
-      setParentState('showPassword', false, () => scroll());
     }
   };
 
   render() {
-    const { validating, error, errorMessage } = this.state;
-    const { showPassword } = this.props;
+    const {
+      showPassword,
+      email,
+      handleExistingAccount,
+      loading,
+      errorText,
+    } = this.props;
 
     return (
       <form
@@ -88,25 +85,33 @@ export default class EmailLine extends Component {
         <TextField
           style={styles.input}
           name="email"
-          value={this.props.email}
+          value={email}
           onChange={this.handleChange}
           type="email"
           fullWidth
-          error={error}
-          helperText={errorMessage}
+          error={!!errorText}
+          helperText={errorText}
           noValidate
         />
-        {!showPassword && (
+        <div style={styles.buttons}>
           <Button
             type="submit"
             style={styles.button}
-            disabled={validating}
+            disabled={loading}
             primary
             raised
           >
             <T id="general.continue" />
           </Button>
-        )}
+          <Button
+            onClick={handleExistingAccount}
+            style={styles.button}
+            disabled={loading}
+            raised
+          >
+            <T id="EmailLine.alreadyAnAccount" />
+          </Button>
+        </div>
       </form>
     );
   }
