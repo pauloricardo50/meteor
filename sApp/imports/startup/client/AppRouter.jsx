@@ -26,6 +26,7 @@ import {
   AppPage,
   FilesPage,
 } from 'core/containers/UserContainers';
+import AddRequestPage from '../../ui/pages/user/AddRequestPage';
 
 const AppRouter = () => (
   <BaseRouter
@@ -76,6 +77,7 @@ const AppRouter = () => (
           <Route path="/requests/:requestId/files" component={FilesPage} />
           <Route path="/requests/:requestId" component={DashboardPage} />
           <Route path="/compare" component={ComparePage} />
+          <Route path="/add-request/:requestId" component={AddRequestPage} />
           <Route path="/" component={AppPage} />
           <Route component={NotFound} />
         </Switch>

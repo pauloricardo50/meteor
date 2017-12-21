@@ -26,50 +26,35 @@ const styles = {
   },
 };
 
-const scroll = () => {
-  Meteor.defer(() => {
-    const options = {
-      duration: 350,
-      delay: 0,
-      smooth: true,
-      ignoreCancelEvents: true,
-    };
-    Scroll.animateScroll.scrollToBottom(options);
-  });
-};
-
 export default class EmailLine extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   handleChange = (event) => {
     const { setParentState } = this.props;
     const email = event.target.value;
     setParentState('email', email);
   };
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-    const { email, setParentState, handleNewEmail } = this.props;
-
-    if (emailValidation(email)) {
-      // Check if the email exists in the database
-      Meteor.call('doesUserExist', email, (error, result) => {
-        if (result) {
-        } else {
-          // If it doesnt
-          handleNewEmail();
-        }
-      });
-    }
-  };
+  // handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const { email, setParentState, handleNewEmail } = this.props;
+  //
+  //   if (emailValidation(email)) {
+  //     // Check if the email exists in the database
+  //     Meteor.call('doesUserExist', email, (error, result) => {
+  //       if (result) {
+  //       } else {
+  //         // If it doesnt
+  //         handleNewEmail();
+  //       }
+  //     });
+  //   }
+  // };
 
   render() {
     const {
       showPassword,
       email,
       handleExistingAccount,
+      handleNewEmail,
       loading,
       errorText,
     } = this.props;
@@ -79,7 +64,7 @@ export default class EmailLine extends Component {
         className="email fixed-size"
         style={styles.root}
         action="submit"
-        onSubmit={this.handleSubmit}
+        onSubmit={handleNewEmail}
         noValidate
       >
         <TextField

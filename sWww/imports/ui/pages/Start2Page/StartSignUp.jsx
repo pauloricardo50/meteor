@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import EmailLine from './EmailLine';
-import PasswordLine from './PasswordLine';
 import { T } from 'core/components/Translation';
 import cleanMethod from 'core/api/cleanMethods';
-import track, { addUserTracking } from 'core/utils/analytics';
+import { addUserTracking } from 'core/utils/analytics';
 import saveStartForm from 'core/utils/saveStartForm';
+import { emailValidation } from 'core/utils/validation';
+import EmailLine from './EmailLine';
 
 const styles = {
   section: {
