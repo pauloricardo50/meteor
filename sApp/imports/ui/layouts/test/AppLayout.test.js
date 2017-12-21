@@ -23,7 +23,7 @@ if (Meteor.isClient) {
         currentUser: user,
         history: {
           location: {
-            pathname: '/app',
+            pathname: '/',
           },
         },
       };

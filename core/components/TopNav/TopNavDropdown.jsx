@@ -30,19 +30,19 @@ const getMenuItems = (currentUser, history) => {
     },
     {
       id: 'app',
-      link: '/app',
+      link: '/',
       show: !isAdmin && !isPartner,
       icon: 'app',
     },
     {
       id: 'account',
-      link: '/app/profile',
+      link: '/profile',
       show: !isAdmin && !isPartner,
       icon: 'accountCircle',
     },
     {
       id: 'dev',
-      link: '/app/dev',
+      link: '/dev',
       show: isDev,
     },
     {
@@ -60,7 +60,7 @@ const getMenuItems = (currentUser, history) => {
   ];
 };
 
-const TopNavDropdown = props => {
+const TopNavDropdown = (props) => {
   const { currentUser, history } = props;
 
   return (
@@ -77,7 +77,9 @@ const TopNavDropdown = props => {
       options={getMenuItems(currentUser, history)
         // Allow the Divider to go through
         .filter(o => !!o.show)
-        .map(({ id: optionId, link, label, ...rest }) => ({
+        .map(({
+ id: optionId, link, label, ...rest
+}) => ({
           ...rest,
           id: optionId,
           link: true,

@@ -9,9 +9,7 @@ const { default: Header, getLink } =
 describe('BorrowerPage Header', () => {
   describe('getLink', () => {
     it('returns the right link', () => {
-      expect(getLink('a', 'b', '/app/requests/c/borrowers/d/a')).to.equal(
-        '/app/requests/c/borrowers/b/a',
-      );
+      expect(getLink('a', 'b', '/requests/c/borrowers/d/a')).to.equal('/requests/c/borrowers/b/a');
     });
   });
 });

@@ -75,7 +75,7 @@ export default class PasswordLine extends Component {
   //   saveStartForm(this.props.formState).then(() => {
   //     window.location.href = Meteor.settings.public.subdomains.app;
   //
-  //     // this.props.history('/app')
+  //     // this.props.history('/')
   //   });
   // };
 

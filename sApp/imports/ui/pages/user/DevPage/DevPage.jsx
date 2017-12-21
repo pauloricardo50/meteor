@@ -127,7 +127,7 @@ export default class DevPage extends Component {
 
   componentDidMount() {
     if (!Roles.userIsInRole(this.props.currentUser, 'dev')) {
-      this.props.history.push('/app');
+      this.props.history.push('/');
     }
   }
 

@@ -17,6 +17,10 @@ const getSubdomain = () => {
 };
 
 export const isDemo = () => getSubdomain() === 'demo';
+export const isWww = () => getSubdomain() === 'www';
+export const isApp = () => getSubdomain() === 'app';
+export const isAdmin = () => getSubdomain() === 'admin';
+export const isLender = () => getSubdomain() === 'lender';
 
 export const storageAvailable = (type) => {
   try {

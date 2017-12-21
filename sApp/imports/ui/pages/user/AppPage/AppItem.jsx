@@ -42,7 +42,7 @@ AppItem.propTypes = {
 
 AppItem.defaultProps = {
   subtitle: '',
-  href: '/app',
+  href: '/',
 };
 
 export default AppItem;

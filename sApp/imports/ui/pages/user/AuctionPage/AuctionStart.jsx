@@ -103,7 +103,7 @@ const AuctionStart = (props) => {
           <Button
             raised
             label={<T id="AuctionStart.cancel" />}
-            onClick={() => props.history.push('/app')}
+            onClick={() => props.history.push('/')}
             style={styles.button}
           />
         </div>

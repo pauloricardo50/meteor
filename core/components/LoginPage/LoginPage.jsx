@@ -33,9 +33,9 @@ const LoginPage = ({ location: { search }, history: { push } }) => {
         <T id="LoginPage.title" />
       </h1>
       <Accounts.ui.LoginForm
-        onSignedInHook={() => push(path || '/app')}
+        onSignedInHook={() => push(path || '/')}
         onPostSignUpHook={() => {
-          push(path || '/app');
+          push(path || '/');
           Meteor.call('sendVerificationLink', (error, response) => {
             if (error) {
               console.log(error);

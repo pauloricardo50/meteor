@@ -48,7 +48,7 @@ export default class PasswordResetPage extends Component {
         console.log(err);
         // TODO
       } else {
-        this.props.history.push('/app');
+        this.props.history.push('/');
       }
     });
   };

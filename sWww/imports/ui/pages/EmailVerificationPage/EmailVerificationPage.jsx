@@ -29,7 +29,7 @@ class EmailVerificationPage extends Component {
           },
         )}</h3>`;
         Bert.alert(message, 'success');
-        this.props.history.push('/app');
+        this.props.history.push('/');
       }
     });
   }

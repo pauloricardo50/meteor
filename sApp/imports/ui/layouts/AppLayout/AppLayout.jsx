@@ -7,6 +7,7 @@ import classnames from 'classnames';
 import ContactButton from '/imports/ui/components/general/ContactButton';
 import ErrorBoundary from 'core/components/ErrorBoundary';
 import track from 'core/utils/analytics';
+import { isApp, isAdmin, isPartner } from 'core/utils/browserFunctions';
 import Navs from './Navs';
 
 // import UserJoyride from '/imports/ui/components/general/UserJoyride';
@@ -24,19 +25,19 @@ const getRedirect = ({
   history: { location: { pathname } },
   loanRequests,
 }) => {
-  const isAdmin = Roles.userIsInRole(currentUser, 'admin');
-  const isPartner = Roles.userIsInRole(currentUser, 'partner');
-  const isDev = Roles.userIsInRole(currentUser, 'dev');
+  const userIsAdmin = Roles.userIsInRole(currentUser, 'admin');
+  const userIsPartner = Roles.userIsInRole(currentUser, 'partner');
+  const userIsDev = Roles.userIsInRole(currentUser, 'dev');
 
   if (!currentUser) {
     return `/login?path=${pathname}`;
   }
 
-  if (isDev) {
+  if (userIsDev) {
     return false;
   }
 
-  if (isAdmin) {
+  if (userIsAdmin) {
     return '/admin';
   } else if (isPartner) {
     return '/isPartner';
@@ -55,7 +56,7 @@ const getRedirect = ({
 };
 
 const getShowSideNav = ({ location }) =>
-  !(location.pathname === '/app' || location.pathname === '/app/compare');
+  !(location.pathname === '/' || location.pathname === '/compare');
 
 const AppLayout = (props) => {
   const { type, history, render } = props;
@@ -67,7 +68,6 @@ const AppLayout = (props) => {
     'no-nav': !showSideNav,
   });
   const path = history.location.pathname;
-  const isApp = path.slice(0, 4) === '/app';
   const isLogin = path.slice(0, 6) === '/login';
 
   if (redirect && !isLogin) {
@@ -77,12 +77,13 @@ const AppLayout = (props) => {
     });
     return <Redirect to={redirect} />;
   }
+
   return (
     <div>
       <Navs
         {...props}
         showSideNav={showSideNav}
-        isApp={isApp}
+        isApp={type === 'app'}
         isAdmin={type === 'admin'}
       />
 
@@ -92,7 +93,7 @@ const AppLayout = (props) => {
         </ErrorBoundary>
       </main>
 
-      {isApp && <ContactButton history={history} />}
+      {type === 'app' && <ContactButton history={history} />}
     </div>
   );
 };

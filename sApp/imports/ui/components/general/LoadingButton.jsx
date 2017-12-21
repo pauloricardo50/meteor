@@ -65,6 +65,6 @@ LoadingButton.propTypes = {
 };
 
 LoadingButton.defaultProps = {
-  link: '/app',
+  link: '/',
   disabled: false,
 };

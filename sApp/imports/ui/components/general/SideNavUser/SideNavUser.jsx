@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
 import { T } from 'core/components/Translation';
@@ -31,12 +31,16 @@ const SideNavUser = (props) => {
     );
   }
 
+  // FIXME: What follows is excessively complex for what it does,
+  // However props.match.params.requestId does not get defined to easily pick
+  // it up... wtf?
+
   // Get the pathname, remove the leading '/', and split by '/'
   const splittedUrl = location.pathname.substring(1).split('/');
   // If it has enough elements, parse the requestId
   const requestId =
-    splittedUrl.length >= 3 && splittedUrl[1] === 'requests'
-      ? splittedUrl[2]
+    splittedUrl.length >= 2 && splittedUrl[0] === 'requests'
+      ? splittedUrl[1]
       : '';
   let currentRequest;
   let borrowerIds;
@@ -65,7 +69,7 @@ const SideNavUser = (props) => {
           <div style={{ width: '100%' }}>
             <NavLink
               exact
-              to={`/app/requests/${requestId}`}
+              to={`/requests/${requestId}`}
               activeClassName="active-link"
               className="link"
             >
@@ -80,7 +84,7 @@ const SideNavUser = (props) => {
             </NavLink>
             <NavLink
               exact
-              to={`/app/requests/${requestId}/files`}
+              to={`/requests/${requestId}/files`}
               activeClassName="active-link"
               className="link"
             >
@@ -123,4 +127,4 @@ SideNavUser.defaultProps = {
   toggleDrawer: () => {},
 };
 
-export default SideNavUser;
+export default withRouter(SideNavUser);

@@ -7,7 +7,7 @@ AccountsUI.ui.config({
   passwordSignupFields: 'EMAIL_ONLY',
   loginPath: '/login',
   homeRoutePath: '/',
-  profilePath: '/app',
+  profilePath: '/',
   minimumPasswordLength: 1,
 });
 

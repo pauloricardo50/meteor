@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Meteor } from 'meteor/meteor';
 
 import { T } from 'core/components/Translation';
 import track from 'core/utils/analytics';
@@ -19,11 +20,11 @@ const styles = {
 const handleChange = (value, toggleDrawer, history) => {
   if (value === 0) {
     track('RequestSelector - clicked on new request', {});
-    console.log('new request!');
+    window.location.replace(`${Meteor.settings.public.subdomains.www}/start1`);
   } else {
     track('RequestSelector - switched to request', { requestId: value });
     toggleDrawer();
-    history.push(`/app/requests/${value}`);
+    history.push(`/requests/${value}`);
   }
 };
 
