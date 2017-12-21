@@ -60,7 +60,7 @@ echo "Installing npm packages in core/"
 ( cd ../core && npm install );
 
 echo "Creating language files..."
-node ./createLanguages.js
+babel-node ./createLanguages.js
 
 end=`date +%s`
 runtime=$((end-start))

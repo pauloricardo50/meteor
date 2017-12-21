@@ -30,9 +30,13 @@ function findFilesWithExtension(startPath, extension) {
 }
 
 function filterLanguageKeys(pathToLangDir, language, allowedKeys) {
-  const langObject = JSON.parse(fs.readFileSync(createPathToLanguage(pathToLangDir, language), 'utf8'));
+  const langObject = JSON.parse(
+    fs.readFileSync(createPathToLanguage(pathToLangDir, language), 'utf8'),
+  );
   const langKeys = Object.keys(langObject);
-  const remainingKeys = langKeys.filter(key => allowedKeys.indexOf(key.split('.')[0]) >= 0);
+  const remainingKeys = langKeys.filter(
+    key => allowedKeys.indexOf(key.split('.')[0]) >= 0,
+  );
 
   const optimizedLangObject = Object.keys(langObject)
     .filter(key => remainingKeys.includes(key))
@@ -60,21 +64,22 @@ function createPathToLanguage(dir, language) {
   return dir + '/lang/' + language + '.json';
 }
 
-function run({ directories, languages, exceptions, pathToLangDir }) {
+function run({ directories, languages, generalExceptions, pathToLangDir }) {
   console.log('Starting language building process...');
 
-  directories.forEach(directory => {
-    const componentNames = findFilesWithExtension(directory, '.jsx');
+  directories.forEach(({ path: dirPath, exceptions: dirExceptions }) => {
+    const componentNames = findFilesWithExtension(dirPath, '.jsx');
 
     languages.forEach(language => {
-      console.log('Creating ' + language + ' file for ' + directory);
+      console.log('Creating ' + language + ' file for ' + dirPath);
       const languageObject = filterLanguageKeys(pathToLangDir, language, [
-        ...exceptions,
+        ...generalExceptions,
+        ...dirExceptions,
         ...componentNames,
       ]);
-      const path = createPathToLanguage(directory, language);
+      const pathToLanguage = createPathToLanguage(dirPath, language);
 
-      writeLanguageToDirectory(languageObject, path);
+      writeLanguageToDirectory(languageObject, pathToLanguage);
     });
   });
 }
@@ -82,8 +87,13 @@ function run({ directories, languages, exceptions, pathToLangDir }) {
 const config = {
   pathToLangDir: '../core',
   languages: ['fr', 'en'],
-  directories: ['../sApp', '../sWww', '../sAdmin', '../sLender'],
-  exceptions: [
+  directories: [
+    { path: '../sApp', exceptions: ['steps'] },
+    { path: '../sWww', exceptions: [] },
+    { path: '../sAdmin', exceptions: [] },
+    { path: '../sLender', exceptions: [] },
+  ],
+  generalExceptions: [
     'TopNav',
     'TopNavDropdown',
     'Recap',
