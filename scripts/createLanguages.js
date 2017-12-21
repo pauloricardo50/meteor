@@ -88,8 +88,8 @@ const config = {
   pathToLangDir: '../core',
   languages: ['fr', 'en'],
   directories: [
-    { path: '../sApp', exceptions: ['steps'] },
-    { path: '../sWww', exceptions: [] },
+    { path: '../sApp', exceptions: ['steps', 'ProjectBarChart'] },
+    { path: '../sWww', exceptions: ['Start2Form'] },
     { path: '../sAdmin', exceptions: [] },
     { path: '../sLender', exceptions: [] },
   ],
@@ -103,6 +103,7 @@ const config = {
     'ExpensesChartInterests',
     'ExpensesChart',
     'Search',
+    'e-Potek',
   ],
 };
 
