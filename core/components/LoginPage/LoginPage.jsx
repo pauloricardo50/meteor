@@ -5,6 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import { addUserTracking } from '../../utils/analytics';
 import { T } from '../Translation';
 import Accounts from './Accounts';
+import queryString from 'query-string';
 
 const styles = {
   section: {
@@ -23,32 +24,35 @@ const handlePasswordReset = () => {
   console.log('resetting password (not)');
 };
 
-const LoginPage = props => (
-  <section style={styles.section}>
-    <h1>
-      <T id="LoginPage.title" />
-    </h1>
-    <Accounts.ui.LoginForm
-      onSignedInHook={() => props.history.push('/app')}
-      onPostSignUpHook={() => {
-        props.history.push('/app');
-        Meteor.call('sendVerificationLink', (error, response) => {
-          if (error) {
-            console.log(error);
-          }
-          console.log(response);
-        });
-        // Create user for analytics
-        addUserTracking(Meteor.userId(), {
-          email: Meteor.user().emails[0].address,
-          id: Meteor.userId(),
-        });
-      }}
-      onResetPasswordHook={handlePasswordReset}
-    />
-  </section>
-);
+const LoginPage = ({ location: { search }, history: { push } }) => {
+  const { path } = queryString.parse(search);
 
+  return (
+    <section style={styles.section}>
+      <h1>
+        <T id="LoginPage.title" />
+      </h1>
+      <Accounts.ui.LoginForm
+        onSignedInHook={() => push(path || '/app')}
+        onPostSignUpHook={() => {
+          push(path || '/app');
+          Meteor.call('sendVerificationLink', (error, response) => {
+            if (error) {
+              console.log(error);
+            }
+            console.log(response);
+          });
+          // Create user for analytics
+          addUserTracking(Meteor.userId(), {
+            email: Meteor.user().emails[0].address,
+            id: Meteor.userId(),
+          });
+        }}
+        onResetPasswordHook={handlePasswordReset}
+      />
+    </section>
+  );
+};
 LoginPage.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };

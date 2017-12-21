@@ -7,7 +7,6 @@ import NotFound from 'core/components/NotFound';
 import { getUserLocale, getFormats } from 'core/utils/localization';
 import messagesFR from '../../../lang/fr.json';
 
-import AccountPage from '../../ui/pages/user/AccountPage';
 import {
   UserLayout,
   DashboardPage,
@@ -26,6 +25,7 @@ import {
   AppPage,
   FilesPage,
 } from 'core/containers/UserContainers';
+import AccountPage from '../../ui/pages/user/AccountPage';
 import AddRequestPage from '../../ui/pages/user/AddRequestPage';
 
 const AppRouter = () => (
@@ -78,7 +78,7 @@ const AppRouter = () => (
           <Route path="/requests/:requestId" component={DashboardPage} />
           <Route path="/compare" component={ComparePage} />
           <Route path="/add-request/:requestId" component={AddRequestPage} />
-          <Route path="/" component={AppPage} />
+          <Route exact path="/" component={AppPage} />
           <Route component={NotFound} />
         </Switch>
       )}

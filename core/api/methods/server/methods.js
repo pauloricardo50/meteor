@@ -8,7 +8,28 @@ import { generateComponentAsPDF } from '../../../utils/generate-pdf';
 import { RequestPDF, AnonymousRequestPDF } from '../../loanrequests/pdf.js';
 import rateLimit from '../../../utils/rate-limit.js';
 
-Meteor.methods({ getServerTime: () => new Date() });
+Meteor.methods({
+  getServerTime: () => new Date(),
+  setUserToRequest: ({ requestId }) => {
+    console.log('setting user to request...:', requestId);
+    check(requestId, String);
+
+    if (!Meteor.userId()) {
+      throw new Meteor.Error('not authorized');
+    }
+
+    const request = LoanRequests.findOne(requestId);
+    console.log('The request: ', request);
+    const { borrowers } = request;
+
+    LoanRequests.update(requestId, { $set: { userId: Meteor.userId() } });
+    borrowers.forEach((borrowerId) => {
+      Borrowers.update(borrowerId, { $set: { userId: Meteor.userId() } });
+    });
+
+    return true;
+  },
+});
 
 export const downloadPDF = new ValidatedMethod({
   name: 'pdf.download',
@@ -31,7 +52,7 @@ export const downloadPDF = new ValidatedMethod({
       fileName,
     })
       .then(result => result)
-      .catch(error => {
+      .catch((error) => {
         throw new Meteor.Error('500', error);
       });
   },

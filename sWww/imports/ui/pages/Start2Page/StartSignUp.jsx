@@ -72,10 +72,16 @@ export default class StartSignUp extends Component {
 
     saveStartForm(formState, null)
       .then((requestId) => {
-        this.setState({ loading: false, errorText: '' });
-        window.location.href = `${
+        console.log('Request inserted: ', requestId);
+        // Keep loading true, to prevent double insert
+        this.setState({ errorText: '' });
+        const appUrl = `http://${
           Meteor.settings.public.subdomains.app
         }/add-request/${requestId}`;
+        console.log('changing location to :', appUrl);
+
+        window.location.replace(appUrl);
+        return false;
       })
       .catch(error => this.setState({ loading: false, errorText: error }));
   };

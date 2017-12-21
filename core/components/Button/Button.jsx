@@ -19,7 +19,7 @@ const getColor = ({ primary, secondary, color }) => {
   return color;
 };
 
-const Button = props => {
+const Button = (props) => {
   const childProps = omit(props, [
     'primary',
     'secondary',

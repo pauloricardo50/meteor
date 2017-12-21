@@ -10,6 +10,7 @@ export const GeneralSchema = new SimpleSchema({
     type: Number,
     min: 0,
     max: 100000000,
+    defaultValue: 0,
   },
   insuranceFortuneUsed: {
     type: Number,
