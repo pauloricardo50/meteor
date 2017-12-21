@@ -43,13 +43,17 @@ for i in 'sAdmin' 'sApp' 'sLender' 'sWww'
     cp -a ../core/assets/private ../$i/private
 
 
-    echo "Installing npm packages"
-    if [[ $doClean = true ]];
+    if [[ $doClean == true ]];
     then
-      ( cd ../$i && rm ./package-lock.json && rm -rf node_modules/ && npm cache clear --force && meteor npm install );
+      echo "Cleaning and installing npm packages"
+      ( cd ../$i && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear --force && meteor npm install );
     else
+      echo "Installing npm packages"
       ( cd ../$i && meteor npm install );
     fi
+
+    echo "Resetting meteor"
+    ( cd ../$i && meteor reset )
   done
 
 echo "Installing npm packages in core/"
