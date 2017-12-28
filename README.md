@@ -1,3 +1,10 @@
+# e-Potek
+
+This app is composed of several microservices:
+- `www` contains the presentation page
+- `app` contains the actual application
+- `admin` contains the administration interface for the application
+
 ### How do I get set up? ###
 
 * Initial setup

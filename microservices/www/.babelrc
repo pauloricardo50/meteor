@@ -1,1 +1,25 @@
-../core/.babelrc
+{
+  "presets": [
+    "env",
+    "react",
+    "stage-0"
+  ],
+  "plugins": [
+    "transform-class-properties",
+    [
+      "babel-project-relative-import",
+      {
+        "importPathPrefix": "/"
+      }
+    ],
+    [
+      "module-alias",
+      [
+        {
+          "src": "./imports/core",
+          "expose": "core"
+        }
+      ]
+    ]
+  ]
+}
