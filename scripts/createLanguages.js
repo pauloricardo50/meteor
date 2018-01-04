@@ -88,10 +88,10 @@ const config = {
   pathToLangDir: '../core',
   languages: ['fr', 'en'],
   directories: [
-    { path: '../sApp', exceptions: ['steps', 'ProjectBarChart'] },
-    { path: '../sWww', exceptions: ['Start2Form'] },
-    { path: '../sAdmin', exceptions: [] },
-    { path: '../sLender', exceptions: [] },
+    { path: '../microservices/app', exceptions: ['steps', 'ProjectBarChart'] },
+    { path: '../microservices/www', exceptions: ['Start2Form'] },
+    { path: '../microservices/admin', exceptions: [] },
+    { path: '../microservices/lender', exceptions: [] },
   ],
   generalExceptions: [
     'TopNav',

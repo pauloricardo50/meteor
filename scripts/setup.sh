@@ -25,35 +25,35 @@ done
 find .. -type l -exec unlink {} \;
 
 # Prepare every microservice
-for i in 'sAdmin' 'sApp' 'sLender' 'sWww'
+for i in 'admin' 'app' 'lender' 'www'
   do
-    echo "Preparing $i..."
+    echo "Preparing $i microservice..."
 
     echo "Creating symlinks"
-    ln -s ../../core ../$i/imports/core
-    ln -s ../../core/assets/css ../$i/client/css
-    ln -s ../core/.babelrc ../$i/.babelrc
+    ln -s ../../../core ../microservices/$i/imports/core
+    ln -s ../../../core/assets/css ../microservices/$i/client/css
+    # ln -s ../../core/.babelrc ../microservices/$i/.babelrc
 
     # public and private folders can't have any symlink: https://github.com/meteor/meteor/issues/7013
     echo "Creating public/private folders"
-    rm -rf ../$i/public
-    cp -a ../core/assets/public ../$i/public
+    rm -rf ../microservices/$i/public
+    cp -a ../core/assets/public ../microservices/$i/public
 
-    rm -rf ../$i/private
-    cp -a ../core/assets/private ../$i/private
+    rm -rf ../microservices/$i/private
+    cp -a ../core/assets/private ../microservices/$i/private
 
 
     if [[ $doClean == true ]];
     then
       echo "Cleaning and installing npm packages"
-      ( cd ../$i && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear --force && meteor npm install );
+      ( cd ../microservices/$i && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear --force && meteor npm install );
     else
       echo "Installing npm packages"
-      ( cd ../$i && meteor npm install );
+      ( cd ../microservices/$i && meteor npm install );
     fi
 
     echo "Resetting meteor"
-    ( cd ../$i && meteor reset )
+    ( cd ../microservices/$i && meteor reset )
   done
 
 echo "Installing npm packages in core/"

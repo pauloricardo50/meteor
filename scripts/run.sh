@@ -12,13 +12,13 @@ if ! type "ttab" > /dev/null; then
 fi
 
 # Start each app in its own tab
-for i in "sWww" "sApp" "sAdmin" "sLender"
+for i in "www" "app" "admin" "lender"
   do
     # Make them all connect to the mongoDB instance created by the first app (sWww, running at localhost:3000)
-    if [[ $i == "sWwww" ]]; then
-        ttab -t $i -d ../$i 'meteor npm start'
+    if [[ $i == "wwww" ]]; then
+        ttab -t $i -d ../microservices/$i 'meteor npm start'
     else
-      ttab -t $i -d ../$i 'export MONGO_URL=mongodb://localhost:3001/meteor; meteor npm start'
+      ttab -t $i -d ../microservices/$i 'export MONGO_URL=mongodb://localhost:3001/meteor; meteor npm start'
     fi
 
   done
