@@ -1,27 +1,36 @@
 # e-Potek
 
 This app is composed of several microservices:
-- `www` contains the presentation page
-- `app` contains the actual application
-- `admin` contains the administration interface for the application
 
-### How do I get set up? ###
+* `www` contains the presentation page
+* `app` contains the actual application
+* `admin` contains the administration interface for the application
+
+### How do I get set up?
 
 * Initial setup
 
 1. install meteor using `curl https://install.meteor.com/ | sh`
-1. run `meteor npm install yarn -g`.
-1. run `meteor yarn install`
-1. run `meteor yarn start`
-1. go to localhost:3000 to use the app
+1. setup all microservices by running the setup script: `./scripts/setup.sh`, this does the following things:
+   * for each microservice:
+     * install all `node_modules`
+     * create symlinks for `core`
+     * create symlinks for `core/assets/css`
+     * create symlinks for `core/assets/public`
+     * create symlinks for `core/assets/private`
+     * install npm packages (use flag `-c` to clean and clear npm packages)
+     * reset meteor
+     * generate language files based on the components in each microservice
+   * install core npm packages
+1. run all apps on the same database by using the run script: `./scripts/run.sh`
+1. run a single microservice by going into the microservice folder and starting it with `meteor npm start`
 
 * How to run tests
 
 1. run `meteor yarn run test` to start a testing server
 1. go to localhost:4000 to see the test-runner
 
-
-### CI/CD ###
+### CI/CD
 
 A CircleCI account is watching the `master` and `staging` branches and automatically runs tests on them and deploys them to the proper servers.
 
