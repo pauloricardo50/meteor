@@ -26,7 +26,7 @@ const FileAdder = ({ docId, id, handleAddFiles }) => (
       id={id}
       style={styles.input}
       multiple
-      onChange={handleAddFiles}
+      onChange={({ target: { files } }) => handleAddFiles(files)}
       // This piece of shit is important or inputs will get mixed up...
       key={docId + id}
     />

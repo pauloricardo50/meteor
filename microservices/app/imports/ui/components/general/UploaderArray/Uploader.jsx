@@ -12,6 +12,7 @@ import Title from './Title';
 import File from './File';
 import TempFile from './TempFile';
 import FileAdder from './FileAdder';
+import FileDropper from './FileDropper';
 
 const checkFile = (file) => {
   if (allowedFileTypes.indexOf(file.type) < 0) {
@@ -53,19 +54,18 @@ class Uploader extends Component {
     }
   }
 
-  handleAddFiles = ({ target }) => {
-    const files = [];
+  handleAddFiles = (files) => {
+    const fileArray = [];
     let showError = false;
-    for (let i = 0; i < target.files.length; i += 1) {
-      // Convert to Array
-      const file = target.files[i];
+
+    files.forEach((file) => {
       const isValid = checkFile(file);
       if (isValid === true) {
-        files.push(file);
+        fileArray.push(file);
       } else {
         showError = isValid;
       }
-    }
+    });
 
     if (showError) {
       const { intl } = this.props;
@@ -75,6 +75,7 @@ class Uploader extends Component {
         f({ id: `error.${showError}.description` }),
         'danger',
       );
+      return;
     }
 
     this.setState(prev => ({ tempFiles: [...prev.tempFiles, ...files] }));
@@ -134,7 +135,11 @@ class Uploader extends Component {
       disabled;
 
     return (
-      <div className="uploader">
+      <FileDropper
+        className="uploader"
+        handleAddFiles={this.handleAddFiles}
+        disabled={disableAdd}
+      >
         <Title {...fileMeta} currentValue={currentValue} />
 
         {currentValue
@@ -167,7 +172,7 @@ class Uploader extends Component {
             docId={docId}
           />
         )}
-      </div>
+      </FileDropper>
     );
   }
 }
