@@ -32,6 +32,7 @@ export const getBorrowerInfoArray = (borrowers, id) => {
       type: 'textInput',
       disabled: disableAddress,
       placeholder: disableAddress && borrowers[0].address1,
+      noIntl: disableAddress,
     },
     {
       id: 'address2',
@@ -39,6 +40,7 @@ export const getBorrowerInfoArray = (borrowers, id) => {
       disabled: !!b.sameAddress && !isFirst,
       required: false,
       placeholder: disableAddress && borrowers[0].address2,
+      noIntl: disableAddress,
     },
     {
       id: 'zipCode',
@@ -54,6 +56,7 @@ export const getBorrowerInfoArray = (borrowers, id) => {
         (borrowers[0].zipCode && borrowers[0].city
           ? `${borrowers[0].zipCode} ${borrowers[0].city}`
           : ''),
+      noIntl: disableAddress,
     },
     {
       type: 'conditionalInput',
