@@ -87,9 +87,10 @@ const TextInput = (props) => {
   if (noIntl) {
     finalPlaceholder = placeholder || defaultPlaceholder;
   } else {
-    finalPlaceholder = placeholder
-      ? intl.formatMessage({ id: placeholder })
-      : defaultPlaceholder;
+    finalPlaceholder =
+      placeholder && typeof placeholder === 'string'
+        ? intl.formatMessage({ id: placeholder })
+        : defaultPlaceholder;
   }
 
   // Ignore placeholder for money inputs, and just show the currency

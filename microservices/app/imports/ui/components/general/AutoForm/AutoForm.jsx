@@ -112,7 +112,9 @@ const mapInputs = (singleInput, index, parentProps) => {
     key: index, // Some inputs don't have id's, this means rendering a different form requires a re-render (or key prop on the form)
     inputProps: {
       ...singleInput,
-      placeholder: `Forms.${singleInput.intlId || singleInput.id}.placeholder`,
+      placeholder:
+        singleInput.placeholder ||
+        `Forms.${singleInput.intlId || singleInput.id}.placeholder`,
       disabled: parentProps.disabled || singleInput.disabled,
       currentValue: get(parentProps.doc, singleInput.id),
       style: parentProps.fullWidth ? styles.fullWidth : styles.smallWidth,

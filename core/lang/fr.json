@@ -534,6 +534,7 @@
   "Forms.worksForOwnCompany": "Êtes-vous employé de votre propre entreprise ?",
   "Forms.yourAddress": "Votre adresse",
   "Forms.zipCode": "NPA et localité",
+  "Forms.zipCode.placeholder": "1201 Genève",
   "general.1": "Un",
   "general.2": "Deux",
   "general.amortization": "Amortissement",
@@ -927,6 +928,5 @@
   "VerificationPage.successDescription": "Les informations que vous nous avez confiées nous ont permis de vérifier l'intégrité et la qualité de votre demande de prêt.",
   "VerificationPage.successTitle": "Votre dossier est valide!",
   "VerificationRequested.description": "Vérification en cours, vous serez averti par email lorsque c'est fait.",
-  "ZipAutoComplete.empty": "Pas de résultat",
-  "ZipAutoComplete.placeholder": "1201 Genève"
+  "ZipAutoComplete.empty": "Pas de résultat"
 }

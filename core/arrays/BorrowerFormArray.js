@@ -8,6 +8,8 @@ export const getBorrowerInfoArray = (borrowers, id) => {
     throw new Error("couldn't find borrower");
   }
 
+  const disableAddress = !!b.sameAddress && !isFirst;
+
   return [
     { id: 'firstName', type: 'textInput' },
     { id: 'lastName', type: 'textInput' },
@@ -28,13 +30,15 @@ export const getBorrowerInfoArray = (borrowers, id) => {
     {
       id: 'address1',
       type: 'textInput',
-      disabled: !!b.sameAddress && !isFirst,
+      disabled: disableAddress,
+      placeholder: disableAddress && borrowers[0].address1,
     },
     {
       id: 'address2',
       type: 'textInput',
       disabled: !!b.sameAddress && !isFirst,
       required: false,
+      placeholder: disableAddress && borrowers[0].address2,
     },
     {
       id: 'zipCode',
@@ -45,6 +49,11 @@ export const getBorrowerInfoArray = (borrowers, id) => {
         initialValue: b.zipCode && b.city ? `${b.zipCode} ${b.city}` : '',
       },
       disabled: !!b.sameAddress && !isFirst,
+      placeholder:
+        disableAddress &&
+        (borrowers[0].zipCode && borrowers[0].city
+          ? `${borrowers[0].zipCode} ${borrowers[0].city}`
+          : ''),
     },
     {
       type: 'conditionalInput',
@@ -64,7 +73,10 @@ export const getBorrowerInfoArray = (borrowers, id) => {
       ],
     },
     {
-      id: 'age', type: 'textInput', number: true, saveOnChange: false,
+      id: 'age',
+      type: 'textInput',
+      number: true,
+      saveOnChange: false,
     },
     { id: 'birthPlace', type: 'textInput' },
     {
@@ -82,7 +94,7 @@ export const getBorrowerInfoArray = (borrowers, id) => {
       id: 'company',
       type: 'textInput',
       required: false,
-      autocomplete: 'organization',
+      autoComplete: 'organization',
     },
     {
       id: 'worksForOwnCompany',
@@ -222,7 +234,10 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
 
   const insuranceArray = [
     {
-      type: 'h3', id: 'insurance', required: false, ignore: true,
+      type: 'h3',
+      id: 'insurance',
+      required: false,
+      ignore: true,
     },
     {
       id: 'insuranceSecondPillar',
@@ -237,7 +252,10 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
       required: false,
     },
     {
-      id: 'insurance3B', type: 'textInput', money: true, required: false,
+      id: 'insurance3B',
+      type: 'textInput',
+      money: true,
+      required: false,
     },
     {
       id: 'insurancePureRisk',

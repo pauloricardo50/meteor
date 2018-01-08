@@ -88,7 +88,11 @@ class ZipAutoComplete extends Component {
   };
 
   saveValue = (zipCode = null, city = '') => {
-    const { updateFunc, docId, inputProps: { savePath } } = this.props;
+    const {
+      updateFunc,
+      docId,
+      inputProps: { componentProps: { savePath } },
+    } = this.props;
 
     // Save data to DB
     const object = {
@@ -123,14 +127,18 @@ class ZipAutoComplete extends Component {
 
   render() {
     const { searchText, data, saving } = this.state;
-    const { inputProps: { disabled, style, label } } = this.props;
+    const {
+      inputProps: {
+        disabled, style, label, placeholder,
+      },
+    } = this.props;
     return (
       <div style={{ ...styles.div, ...style }}>
         <AutoComplete
           id="ZipAutoComplete"
           label={label}
           value={searchText}
-          placeholder="ZipAutoComplete.placeholder"
+          placeholder={placeholder}
           onChange={this.handleChange}
           onSelect={this.handleSelect}
           onBlur={this.handleBlur}
