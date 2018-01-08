@@ -366,7 +366,7 @@
   "Forms.buildingQuality.2": "Bon",
   "Forms.buildingQuality.3": "Très Bon",
   "Forms.childrenCount": "Enfants à charge",
-  "Forms.childrenCount.placeholder": "2",
+  "Forms.childrenCount.placeholder": "0",
   "Forms.cityPlacementQuality": "Qualité de l'emplacement au sein de la commune",
   "Forms.cityPlacementQuality.0": "Mauvais",
   "Forms.cityPlacementQuality.1": "Moyen",
