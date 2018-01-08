@@ -194,6 +194,21 @@ export const BorrowerSchema = new SimpleSchema({
     max: 100000000,
   },
   'otherIncome.$.description': String,
+  otherFortune: {
+    type: Array,
+    optional: true,
+    defaultValue: [],
+  },
+  'otherFortune.$': Object,
+  'otherFortune.$.value': {
+    type: Number,
+    min: 0,
+    max: 100000000,
+  },
+  'otherFortune.$.description': {
+    type: String,
+    allowedValues: ['art', 'cars', 'boats', 'airplanes', 'jewelry'],
+  },
   expenses: {
     type: Array,
     optional: true,
