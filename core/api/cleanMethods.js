@@ -94,6 +94,7 @@ const handleError = (error) => {
 
 // A wrapper method that displays an error if it occurs
 const cleanMethod = (name, params, bertObject) => {
+  console.log('cleanmethod!', name, params);
   if (methods[name]) {
     return methods[name]
       .callPromise(params)

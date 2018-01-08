@@ -6,10 +6,13 @@ import cleanMethod from 'core/api/cleanMethods';
 
 import Checkbox from '/imports/ui/components/general/Checkbox';
 
-const handleCheck = (props, isInputChecked) => {
+const handleCheck = (
+  { updateFunc, docId, inputProps: { id } },
+  isInputChecked,
+) => {
   const object = {};
-  object[`adminValidation.${props.id}`] = isInputChecked;
-  cleanMethod(props.updateFunc, { object, id: props.docId });
+  object[`adminValidation.${id}`] = isInputChecked;
+  cleanMethod(updateFunc, { object, id: docId });
 };
 
 const styles = {
@@ -25,11 +28,12 @@ const styles = {
 };
 
 const FormValidator = (props) => {
-  if (!props.admin) {
+  const { admin, doc, inputProps: id } = props;
+  if (!admin) {
     return null;
   }
 
-  const checked = !!get(props.doc.adminValidation, props.id);
+  const checked = !!get(doc.adminValidation, id);
   return (
     <div style={styles.div}>
       <div style={styles.wrapper}>

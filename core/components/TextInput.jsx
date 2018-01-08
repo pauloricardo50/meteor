@@ -9,7 +9,9 @@ import constants from '../config/constants';
 import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl, FormHelperText } from 'material-ui/Form';
 
-const getDefaults = ({ type, id, onChange, value }) => {
+const getDefaults = ({
+  type, id, onChange, value,
+}) => {
   switch (type) {
     case 'money':
       return {
@@ -54,7 +56,7 @@ const getDefaults = ({ type, id, onChange, value }) => {
   }
 };
 
-const TextInput = props => {
+const TextInput = (props) => {
   const {
     label,
     style,
@@ -90,6 +92,11 @@ const TextInput = props => {
       : defaultPlaceholder;
   }
 
+  // Ignore placeholder for money inputs, and just show the currency
+  if (props.type === 'money') {
+    finalPlaceholder = defaultPlaceholder;
+  }
+
   return (
     <FormControl error={error} className="mui-text-input" style={style}>
       {label && (
@@ -98,7 +105,6 @@ const TextInput = props => {
         </InputLabel>
       )}
       <Input
-        {...otherProps}
         id={id}
         onChange={onChangeHandler}
         type="text"
@@ -112,6 +118,7 @@ const TextInput = props => {
           pattern: mask ? '[0-9]*' : undefined,
           ref: inputRef,
           ...inputProps,
+          ...otherProps,
         }}
       />
       {info && <FormHelperText>{info}</FormHelperText>}

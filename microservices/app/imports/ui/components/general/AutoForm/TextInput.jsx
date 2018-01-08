@@ -37,16 +37,18 @@ export default class TextInput extends Component {
   constructor(props) {
     super(props);
 
+    const { currentValue, number, decimal } = props.inputProps;
+
     this.state = {
       // Make sure 0 values are displayed properly
-      value: props.currentValue === 0 ? 0 : props.currentValue || '',
+      value: currentValue === 0 ? 0 : currentValue || '',
       errorText: '',
       saving: false,
       showInfo: false,
     };
 
-    if (props.number) {
-      if (props.decimal) {
+    if (number) {
+      if (decimal) {
         this.formatter = toDecimalNumber;
       } else {
         this.formatter = toNumber;
@@ -87,21 +89,10 @@ export default class TextInput extends Component {
   };
 
   saveValue = (showSaving = true) => {
-    const {
-      id, updateFunc, docId, currentValue,
-    } = this.props;
+    const { updateFunc, docId, inputProps: { id, currentValue } } = this.props;
     const { value } = this.state;
     // Save data to DB
-    const object = {
-      [id]: value,
-    };
-
-    // if (this.props.money || this.props.number) {
-    //   // Make sure we store a number if this is supposed to be one
-    //   object[this.props.id] = this.formatter(this.state.value);
-    // } else {
-    //   object[this.props.id] = this.state.value;
-    // }
+    const object = { [id]: value };
 
     Meteor.clearTimeout(this.timeout);
     this.timeout = Meteor.setTimeout(() => {
@@ -121,20 +112,20 @@ export default class TextInput extends Component {
 
   render() {
     const {
-      style,
-      label,
-      placeholder,
-      number,
-      id,
-      multiline,
-      rows,
-      info,
-      autocomplete,
-      disabled,
-      inputStyle,
-      money,
-      decimal,
-      noValidator,
+      inputProps: {
+        style,
+        label,
+        placeholder,
+        number,
+        id,
+        multiline,
+        rows,
+        info,
+        disabled,
+        money,
+        noValidator,
+        ...otherProps
+      },
     } = this.props;
     const {
       value, errorText, saving, showInfo,
@@ -160,32 +151,16 @@ export default class TextInput extends Component {
           onFocus={this.handleFocus}
           type={type}
           id={id}
-          // fullWidth
           multiline={multiline}
           rows={rows}
-          // pattern={number && '[0-9]*'}
           info={errorText || (showInfo && info)}
           error={!!errorText}
-          // underlineFocusStyle={errorText ? {} : styles.infoStyle}
-          // floatingLabelShrinkStyle={
-          //   showInfo && !errorText ? styles.infoStyle : {}
-          // }
-          // autoComplete={autocomplete || ''}
           disabled={disabled}
           style={{ width: '100%', ...style, marginBottom: 16 }}
-          // inputStyle={inputStyle}
           noValidate
           fullWidth
-        >
-          {/* {(money || decimal) && (
-            <MaskedInput
-              value={value}
-              mask={money ? swissFrancMask : decimalMask}
-              guide
-              pattern="[0-9]*"
-            />
-          )} */}
-        </MyTextInput>
+          {...otherProps}
+        />
         <SavingIcon
           saving={saving}
           errorExists={errorText !== ''}
@@ -220,6 +195,7 @@ TextInput.propTypes = {
   inputStyle: PropTypes.objectOf(PropTypes.any),
   floatingLabelFixed: PropTypes.bool,
   saveOnChange: PropTypes.bool,
+  noValidator: PropTypes.bool,
 };
 
 TextInput.defaultProps = {
@@ -237,4 +213,5 @@ TextInput.defaultProps = {
   updateFunc: 'updateRequest',
   floatingLabelFixed: true,
   saveOnChange: true,
+  noValidator: false,
 };

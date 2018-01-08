@@ -11,7 +11,7 @@ export default class ConditionalInput extends Component {
 
   // Set the state of the conditional on load
   componentDidMount() {
-    this.setConditional(this.props.children[0].props.currentValue);
+    this.setConditional(this.props.children[0].props.inputProps.currentValue);
   }
 
   onConditionalChange = (value) => {
@@ -40,15 +40,27 @@ export default class ConditionalInput extends Component {
         {React.cloneElement(
           // The conditional input
           children[0],
-          { onConditionalChange: this.onConditionalChange, noValidator: true },
+          {
+            inputProps: {
+              // Merge with old props because React.cloneElement only uses
+              // a shallow merge here
+              ...children[0].props.inputProps,
+              onConditionalChange: this.onConditionalChange,
+              noValidator: true,
+            },
+          },
         )}
         {this.state.conditional ? (
           // The hidden elements that will appear if the conditional input is true
           <div className="animated fadeIn">
             {/* Don't show a validator for conditional child elements */}
             {React.Children.map(conditionalChildren, child =>
-              React.cloneElement(child, { noValidator: true }),
-            )}
+              React.cloneElement(child, {
+                inputProps: {
+                  ...child.props.inputProps,
+                  noValidator: true,
+                },
+              }))}
           </div>
         ) : (
           ''
@@ -62,7 +74,5 @@ export default class ConditionalInput extends Component {
 ConditionalInput.propTypes = {
   conditionalTrueValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string])
     .isRequired,
-  children: PropTypes.arrayOf(
-    PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-  ),
+  children: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.array, PropTypes.object])),
 };

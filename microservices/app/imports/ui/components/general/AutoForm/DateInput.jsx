@@ -26,14 +26,6 @@ const styles = {
 };
 
 class DateInput extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      errorText: '',
-    };
-  }
-
   handleChange = (date) => {
     console.log('autoform changing', date);
     this.saveValue(date);
@@ -41,21 +33,23 @@ class DateInput extends Component {
 
   saveValue = (date) => {
     // Save data to DB
-    const object = { [this.props.id]: date };
+    const object = { [this.props.inputProps.id]: date };
 
     cleanMethod(this.props.updateFunc, { object, id: this.props.docId });
   };
 
   render() {
     const {
-      style,
-      label,
-      currentValue,
-      id,
-      minDate,
-      maxDate,
-      disabled,
-      openDirection,
+      inputProps: {
+        style,
+        label,
+        currentValue,
+        id,
+        minDate,
+        maxDate,
+        disabled,
+        openDirection,
+      },
     } = this.props;
 
     return (

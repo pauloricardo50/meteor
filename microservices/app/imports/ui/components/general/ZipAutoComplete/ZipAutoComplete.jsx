@@ -25,7 +25,7 @@ class ZipAutoComplete extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchText: this.props.initialValue,
+      searchText: this.props.inputProps.initialValue || '',
       data: [],
       saving: false,
       isValid: false,
@@ -88,7 +88,7 @@ class ZipAutoComplete extends Component {
   };
 
   saveValue = (zipCode = null, city = '') => {
-    const { updateFunc, docId, savePath } = this.props;
+    const { updateFunc, docId, inputProps: { savePath } } = this.props;
 
     // Save data to DB
     const object = {
@@ -106,7 +106,10 @@ class ZipAutoComplete extends Component {
         ))
       .catch(() => {
         // If there was an error, reset value to the backend value
-        this.setState({ saving: false, searchText: this.props.initialValue });
+        this.setState({
+          saving: false,
+          searchText: this.props.inputProps.initialValue,
+        });
       });
   };
 
@@ -120,7 +123,7 @@ class ZipAutoComplete extends Component {
 
   render() {
     const { searchText, data, saving } = this.state;
-    const { disabled, style, label } = this.props;
+    const { inputProps: { disabled, style, label } } = this.props;
     return (
       <div style={{ ...styles.div, ...style }}>
         <AutoComplete

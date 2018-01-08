@@ -63,7 +63,9 @@ export const getBorrowerInfoArray = (borrowers, id) => {
         },
       ],
     },
-    { id: 'age', type: 'textInput', number: true, saveOnChange: false },
+    {
+      id: 'age', type: 'textInput', number: true, saveOnChange: false,
+    },
     { id: 'birthPlace', type: 'textInput' },
     {
       id: 'civilStatus',
@@ -76,7 +78,12 @@ export const getBorrowerInfoArray = (borrowers, id) => {
       ],
     },
     { id: 'childrenCount', type: 'textInput', number: true },
-    { id: 'company', type: 'textInput', required: false },
+    {
+      id: 'company',
+      type: 'textInput',
+      required: false,
+      autocomplete: 'organization',
+    },
     {
       id: 'worksForOwnCompany',
       type: 'radioInput',
@@ -214,7 +221,9 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
   ];
 
   const insuranceArray = [
-    { type: 'h3', id: 'insurance', required: false, ignore: true },
+    {
+      type: 'h3', id: 'insurance', required: false, ignore: true,
+    },
     {
       id: 'insuranceSecondPillar',
       type: 'textInput',
@@ -227,7 +236,9 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
       money: true,
       required: false,
     },
-    { id: 'insurance3B', type: 'textInput', money: true, required: false },
+    {
+      id: 'insurance3B', type: 'textInput', money: true, required: false,
+    },
     {
       id: 'insurancePureRisk',
       type: 'textInput',

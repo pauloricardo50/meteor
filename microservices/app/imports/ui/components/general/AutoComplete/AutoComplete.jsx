@@ -27,9 +27,7 @@ const renderInput = (inputProps) => {
       className={classes.textField}
       value={value}
       inputRef={ref}
-      inputProps={{
-        ...other,
-      }}
+      inputProps={{ ...other }}
       onChange={(_, __, event) => onChange(event)}
       onBlur={onBlur}
       classes={{ input: classes.input }}

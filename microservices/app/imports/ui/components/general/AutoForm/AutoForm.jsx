@@ -39,7 +39,19 @@ const styles = {
 };
 
 const inputSwitch = (childProps, index, parentProps) => {
-  switch (childProps.type) {
+  const {
+    type,
+    conditionalTrueValue,
+    style,
+    inputs,
+    label,
+    text,
+    component,
+    componentProps,
+    height,
+  } = childProps.inputProps;
+
+  switch (type) {
     case 'textInput':
       return <TextInput multiline={false} {...childProps} />;
     case 'textInputLarge':
@@ -51,89 +63,88 @@ const inputSwitch = (childProps, index, parentProps) => {
     case 'conditionalInput':
       return (
         <ConditionalInput
-          conditionalTrueValue={childProps.conditionalTrueValue}
+          conditionalTrueValue={conditionalTrueValue}
           key={index}
-          style={childProps.style}
+          style={style}
           doc={parentProps.doc}
         >
-          {mapInputs(childProps.inputs[0], 0, parentProps)}
-          {childProps.inputs
-            .slice(1)
-            .map((input, i) => mapInputs(input, i, parentProps))}
+          {mapInputs(inputs[0], 0, parentProps)}
+          {inputs.slice(1).map((input, i) => mapInputs(input, i, parentProps))}
         </ConditionalInput>
       );
     case 'h3':
       return (
         <h3 style={styles.subtitle} key={index}>
-          {childProps.label}
+          {label}
         </h3>
       );
     case 'h2':
       return (
         <h2 style={styles.subtitle} key={index}>
-          {childProps.label}
+          {label}
         </h2>
       );
     case 'space':
       return (
-        <div style={{ width: '100%', height: childProps.height }} key={index}>
-          {childProps.text}
+        <div style={{ width: '100%', height }} key={index}>
+          {text}
         </div>
       );
     case 'dateInput':
       return <DateInput {...childProps} />;
-    case 'dropzoneInput':
-      return <UploaderArray {...childProps} />;
+    // case 'dropzoneInput':
+    //   return <UploaderArray {...childProps} />;
     case 'arrayInput':
       return <ArrayInput {...childProps} />;
     case 'custom':
-      if (childProps.component === 'ZipAutoComplete') {
-        return (
-          <ZipAutoComplete {...childProps} {...childProps.componentProps} />
-        );
+      if (component === 'ZipAutoComplete') {
+        return <ZipAutoComplete {...childProps} {...componentProps} />;
       }
       return null;
     default:
-      throw new Error(`${childProps.type} is not a valid AutoForm type`);
+      throw new Error(`${type} is not a valid AutoForm type`);
   }
 };
 
 const mapInputs = (singleInput, index, parentProps) => {
   const childProps = {
     ...parentProps,
-    ...singleInput,
     key: index, // Some inputs don't have id's, this means rendering a different form requires a re-render (or key prop on the form)
-    style: parentProps.fullWidth ? styles.fullWidth : styles.smallWidth,
-    currentValue: get(parentProps.doc, singleInput.id),
-    disabled: parentProps.disabled || singleInput.disabled,
-    placeholder: `Forms.${singleInput.intlId || singleInput.id}.placeholder`,
+    inputProps: {
+      ...singleInput,
+      placeholder: `Forms.${singleInput.intlId || singleInput.id}.placeholder`,
+      disabled: parentProps.disabled || singleInput.disabled,
+      currentValue: get(parentProps.doc, singleInput.id),
+      style: parentProps.fullWidth ? styles.fullWidth : styles.smallWidth,
+    },
   };
 
   if (parentProps.noPlaceholders) {
-    childProps.placeholder = '';
+    childProps.inputProps.placeholder = '';
   }
 
   // Prevent undefined condition to trigger as well
-  if (childProps.condition === false) {
+  if (childProps.inputProps.condition === false) {
     return null;
   }
 
   // Add a required star to every label, except if it isn't required
-  if (childProps.required !== false) {
-    childProps.label = (
+  if (childProps.inputProps.required !== false) {
+    childProps.inputProps.label = (
       <span>
         <T
-          id={`Forms.${childProps.intlId || childProps.id}`}
-          values={childProps.intlValues}
+          id={`Forms.${childProps.inputProps.intlId ||
+            childProps.inputProps.id}`}
+          values={childProps.inputProps.intlValues}
         />
         {' *'}
       </span>
     );
   } else {
-    childProps.label = (
+    childProps.inputProps.label = (
       <T
-        id={`Forms.${childProps.intlId || childProps.id}`}
-        values={childProps.intlValues}
+        id={`Forms.${childProps.inputProps.intlId || childProps.inputProps.id}`}
+        values={childProps.inputProps.intlValues}
       />
     );
   }
@@ -141,18 +152,19 @@ const mapInputs = (singleInput, index, parentProps) => {
   // Support options that are only string/boolean ids instead of objects
   // check for undefined because of boolean false ids
   if (
-    childProps.type === 'radioInput' ||
-    childProps.type === 'selectFieldInput'
+    childProps.inputProps.type === 'radioInput' ||
+    childProps.inputProps.type === 'selectFieldInput'
   ) {
-    childProps.options = childProps.options.map(
-      o => (o.id === undefined ? { id: o } : o),
-    );
+    childProps.inputProps.options = childProps.inputProps.options.map(o => (o.id === undefined ? { id: o } : o));
   }
 
   // if info is true, map it to a i18n string
-  if (childProps.info) {
-    childProps.info = (
-      <T id={`Forms.${childProps.intlId || childProps.id}.info`} />
+  if (childProps.inputProps.info) {
+    childProps.inputProps.info = (
+      <T
+        id={`Forms.${childProps.inputProps.intlId ||
+          childProps.inputProps.id}.info`}
+      />
     );
   }
 

@@ -24,24 +24,28 @@ export default class ArrayInput extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { count: this.props.currentValue.length };
+    this.state = {
+      count: (this.props.inputProps.currentValue || []).length,
+    };
   }
 
   getArray = () => {
     const array = [];
-    const { id, currentValue, inputs } = this.props;
+    const { inputProps: { id, currentValue, inputs } } = this.props;
 
     const mapInput = (input, i) => {
       const { id: inputId, type, options } = input;
       const childProps = {
         ...this.props,
-        ...input,
-        id: `${id}.${i}.${inputId}`,
-        currentValue:
-          currentValue && currentValue[i] && currentValue[i][inputId],
-        key: inputId,
-        label: <T id={`Forms.${id}.${inputId}`} />,
-        placeholder: `Forms.${id}.${inputId}.placeholder`,
+        inputProps: {
+          ...input,
+          id: `${id}.${i}.${inputId}`,
+          currentValue:
+            currentValue && currentValue[i] && currentValue[i][inputId],
+          key: inputId,
+          label: <T id={`Forms.${id}.${inputId}`} />,
+          placeholder: `Forms.${id}.${inputId}.placeholder`,
+        },
       };
 
       if (type === 'textInput') {
@@ -49,16 +53,10 @@ export default class ArrayInput extends Component {
       } else if (type === 'selectInput') {
         // Map these labels here to prevent having the id being xxx.0 or xxx.1
         // and mess up the labels in the SelectFieldInput
-        childProps.options = options.map(o =>
-          (o.id === undefined
-            ? {
-              id: o,
-              label: <T id={`Forms.${id}.${o}`} />,
-            }
-            : {
-              ...o,
-              label: <T id={`Forms.${id}.${o.id}`} />,
-            }));
+        childProps.inputProps.options = options.map(opt =>
+          (opt.id === undefined
+            ? { id: opt, label: <T id={`Forms.${id}.${opt}`} /> }
+            : { ...opt, label: <T id={`Forms.${id}.${opt.id}`} /> }));
         return <SelectFieldInput {...childProps} noValidator />;
       }
     };
@@ -79,12 +77,12 @@ export default class ArrayInput extends Component {
   removeValue = () =>
     this.state.count > 0 &&
     cleanMethod(this.props.popFunc, {
-      object: { [`${this.props.id}`]: 1 },
+      object: { [`${this.props.inputProps.id}`]: 1 },
       id: this.props.docId,
     }).then(() => this.setState({ count: this.state.count - 1 }));
 
   render() {
-    const { style, label, disabled } = this.props;
+    const { inputProps: { style, label, disabled } } = this.props;
     const { count } = this.state;
 
     return (

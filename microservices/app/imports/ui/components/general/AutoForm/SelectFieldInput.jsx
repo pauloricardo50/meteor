@@ -23,37 +23,42 @@ export default class SelectFieldInput extends Component {
     super(props);
 
     this.state = {
-      value: this.props.currentValue || null,
+      value: this.props.inputProps.currentValue || null,
       errorText: '',
       saving: false,
     };
   }
 
-  handleChange = (_, value) => this.setState({ value }, () => this.saveValue());
+  handleChange = (_, value) => {
+    this.setState({ value }, () => this.saveValue());
+  };
 
   saveValue = () => {
-    const { id, updateFunc, docId } = this.props;
+    const { inputProps: { id }, updateFunc, docId } = this.props;
     const { value } = this.state;
     const object = { [id]: value };
 
     cleanMethod(updateFunc, { object, id: docId })
-      .then(() =>
+      .then((result) =>
         // on success, set saving briefly to true, before setting it to false again to trigger icon
+      {
         this.setState(
           { errorText: '', saving: true },
           this.setState({ saving: false }),
-        ))
-      .catch(error =>
-        this.setState({ saving: false, errorText: error.message }));
+        );
+      })
+      .catch((error) => {
+        this.setState({ saving: false, errorText: error.message });
+      });
   };
 
   mapOptions = () =>
-    this.props.options.map(({
+    this.props.inputProps.options.map(({
       id, intlId, intlValues, label, ...otherProps
     }) => ({
       label: label || (
       <T
-        id={`Forms.${intlId || this.props.id}.${id}`}
+        id={`Forms.${intlId || this.props.inputProps.id}.${id}`}
         values={intlValues}
       />
       ),
@@ -63,15 +68,13 @@ export default class SelectFieldInput extends Component {
 
   render() {
     const {
-      style,
-      label,
-      disabled,
-      options,
-      noValidator,
-      id,
-      // intlid,
+      inputProps: {
+        style, label, disabled, options, noValidator, id,
+      },
     } = this.props;
     const { value, saving, errorText } = this.state;
+
+    // console.log('selectfield props: ', this.props);
 
     return (
       <div style={{ ...styles.div, ...style }}>

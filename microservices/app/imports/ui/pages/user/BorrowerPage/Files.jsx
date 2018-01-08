@@ -44,16 +44,18 @@ const Files = (props) => {
 
       <div style={styles.radioDiv}>
         <RadioInput
-          id="hasChangedSalary"
-          label={<T id="Files.hasChangedSalary" />}
-          options={[
-            { id: true, label: <T id="general.yes" /> },
-            { id: false, label: <T id="general.no" /> },
-          ]}
-          currentValue={borrower.hasChangedSalary}
+          inputProps={{
+            id: 'hasChangedSalary',
+            label: <T id="Files.hasChangedSalary" />,
+            options: [
+              { id: true, label: <T id="general.yes" /> },
+              { id: false, label: <T id="general.no" /> },
+            ],
+            currentValue: borrower.hasChangedSalary,
+            disabled: disableForms(loanRequest),
+          }}
           docId={borrower._id}
           updateFunc="updateBorrower"
-          disabled={disableForms(loanRequest)}
           doc={borrower}
         />
       </div>

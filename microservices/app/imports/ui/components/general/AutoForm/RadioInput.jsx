@@ -10,8 +10,8 @@ export default class RadioInput extends Component {
   constructor(props) {
     super(props);
     // Set initial state to be the 1st option
-    if (this.props.currentValue !== undefined) {
-      this.state = { value: this.props.currentValue };
+    if (this.props.inputProps.currentValue !== undefined) {
+      this.state = { value: this.props.inputProps.currentValue };
     } else {
       // this.state = { value: this.props.options[0].id };
       this.state = { value: undefined };
@@ -30,7 +30,8 @@ export default class RadioInput extends Component {
     }
     return (
       <T
-        id={`Forms.${this.props.intlId || this.props.id}.${optionId}`}
+        id={`Forms.${this.props.inputProps.intlId ||
+          this.props.inputProps.id}.${optionId}`}
         values={intlValues}
       />
     );
@@ -47,20 +48,15 @@ export default class RadioInput extends Component {
     }
 
     // Save data to DB
-    const object = {};
-    object[this.props.id] = safeValue;
-
+    const object = { [this.props.inputProps.id]: safeValue };
     cleanMethod(this.props.updateFunc, { object, id: this.props.docId });
   };
 
   render() {
     const {
-      id,
-      style,
-      label,
-      onConditionalChange,
-      options,
-      disabled,
+      inputProps: {
+        id, style, label, onConditionalChange, options, disabled,
+      },
     } = this.props;
 
     return (
@@ -74,7 +70,9 @@ export default class RadioInput extends Component {
             label: this.getOptionLabel(o.id, o.intlValues),
           }))}
           onChange={(_, newValue) => {
-            onConditionalChange(newValue);
+            if (typeof onConditionalChange === 'function') {
+              onConditionalChange(newValue);
+            }
             this.setValue(newValue);
           }}
           value={this.state.value}

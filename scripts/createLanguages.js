@@ -90,7 +90,7 @@ const config = {
   directories: [
     {
       path: '../microservices/app',
-      exceptions: ['steps', 'ProjectBarChart', 'LoginPage'],
+      exceptions: ['steps', 'ProjectBarChart', 'LoginPage', 'Forms', 'files'],
     },
     { path: '../microservices/www', exceptions: ['Start2Form'] },
     { path: '../microservices/admin', exceptions: ['LoginPage'] },
@@ -108,6 +108,7 @@ const config = {
     'Search',
     'e-Potek',
     'NotFound',
+    'LayoutError',
   ],
 };
 
