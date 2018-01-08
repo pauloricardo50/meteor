@@ -88,10 +88,13 @@ const config = {
   pathToLangDir: '../core',
   languages: ['fr', 'en'],
   directories: [
-    { path: '../microservices/app', exceptions: ['steps', 'ProjectBarChart'] },
+    {
+      path: '../microservices/app',
+      exceptions: ['steps', 'ProjectBarChart', 'LoginPage'],
+    },
     { path: '../microservices/www', exceptions: ['Start2Form'] },
-    { path: '../microservices/admin', exceptions: [] },
-    { path: '../microservices/lender', exceptions: [] },
+    { path: '../microservices/admin', exceptions: ['LoginPage'] },
+    { path: '../microservices/lender', exceptions: ['LoginPage'] },
   ],
   generalExceptions: [
     'TopNav',
@@ -104,6 +107,7 @@ const config = {
     'ExpensesChart',
     'Search',
     'e-Potek',
+    'NotFound',
   ],
 };
 
