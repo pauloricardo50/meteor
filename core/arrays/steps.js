@@ -303,7 +303,6 @@ export const auctionFilesPercent = (borrowers) => {
     if (isDemo()) {
       a.push(b.files[fileArray[0].id]);
     } else {
-      a.push(b.hasChangedSalary);
       fileArray.forEach(f => f.condition !== false && a.push(b.files[f.id]));
     }
   });

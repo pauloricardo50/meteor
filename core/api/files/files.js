@@ -17,10 +17,6 @@ export const borrowerFiles = (b = {}) => ({
       id: 'salaryCertificate',
     },
     {
-      id: 'salaryChange',
-      condition: !!b.hasChangedSalary,
-    },
-    {
       id: 'bonus',
       condition: !!b.bonus && Object.keys(b.bonus).length > 0,
     },

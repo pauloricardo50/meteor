@@ -123,6 +123,10 @@ export const BorrowerSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  citizenship: {
+    type: String,
+    optional: true,
+  },
   civilStatus: {
     // 'married', 'pacsed', 'single', 'divorced'
     type: String,
@@ -273,11 +277,6 @@ export const BorrowerSchema = new SimpleSchema({
     optional: true,
     min: 0,
     max: 100000000,
-  },
-  hasChangedSalary: {
-    type: Boolean,
-    optional: true,
-    defaultValue: false,
   },
   files: {
     type: BorrowerFilesSchema,

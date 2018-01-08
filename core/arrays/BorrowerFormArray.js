@@ -81,7 +81,8 @@ export const getBorrowerInfoArray = (borrowers, id) => {
       number: true,
       saveOnChange: false,
     },
-    { id: 'birthPlace', type: 'textInput' },
+    { id: 'birthPlace', type: 'textInput', condition: !!b.isSwiss },
+    { id: 'citizenship', type: 'textInput', condition: !b.isSwiss },
     {
       id: 'civilStatus',
       type: 'radioInput',

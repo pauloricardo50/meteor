@@ -42,24 +42,6 @@ const Files = (props) => {
         <T id="Files.files1.title" />
       </h3>
 
-      <div style={styles.radioDiv}>
-        <RadioInput
-          inputProps={{
-            id: 'hasChangedSalary',
-            label: <T id="Files.hasChangedSalary" />,
-            options: [
-              { id: true, label: <T id="general.yes" /> },
-              { id: false, label: <T id="general.no" /> },
-            ],
-            currentValue: borrower.hasChangedSalary,
-            disabled: disableForms(loanRequest),
-          }}
-          docId={borrower._id}
-          updateFunc="updateBorrower"
-          doc={borrower}
-        />
-      </div>
-
       <UploaderArray
         fileArray={borrowerFiles(borrower).auction}
         doc={borrower}
