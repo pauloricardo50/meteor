@@ -28,7 +28,7 @@ const getFormArray = (request, serverTime) => [
   {
     id: 'general.auctionMostImportant',
     type: 'selectFieldInput',
-    options: ['speed', 'price'],
+    options: ['speed', 'price', 'nothing'],
   },
 ];
 

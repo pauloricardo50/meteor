@@ -4,10 +4,7 @@ import PropTypes from 'prop-types';
 import Slider from 'core/components/Material/Slider';
 
 import TextInput from 'core/components/TextInput';
-import {
-  getFortune,
-  getInsuranceFortune,
-} from 'core/utils/borrowerFunctions';
+import { getFortune, getInsuranceFortune } from 'core/utils/borrowerFunctions';
 
 import { T } from 'core/components/Translation';
 
@@ -30,7 +27,9 @@ const getArray = (borrowers, showInsurance) => [
     : []),
 ];
 
-const inRange = (min, max, val) => Math.max(min, Math.min(max, val));
+// Round values here as they might appear wrong
+const inRange = (min, max, val) =>
+  Math.round(Math.max(min, Math.min(max, val)));
 
 const styles = {
   div: {
@@ -47,22 +46,24 @@ const styles = {
 };
 
 const StructureSliders = (props) => {
-  const { loanRequest, borrowers, onChange, disabled, parentState } = props;
+  const {
+    loanRequest, borrowers, onChange, disabled, parentState,
+  } = props;
   const showInsurance =
     loanRequest.property.usageType === 'primary' &&
     getInsuranceFortune(borrowers) > 0;
 
   return (
     <div style={styles.div}>
-      {getArray(borrowers, showInsurance).map(
-        item =>
+      {getArray(borrowers, showInsurance).map(item =>
           item.max && (
             <h1 key={item.id} style={styles.h1} className="fixed-size">
               <TextInput
                 id={item.id}
                 label={item.labelText}
                 onChange={(id, value) =>
-                  onChange(inRange(0, item.max, value), id)}
+                  onChange(inRange(0, item.max, value), id)
+                }
                 value={inRange(0, item.max, parentState[item.id])}
                 disabled={disabled}
                 type="money"
@@ -83,8 +84,7 @@ const StructureSliders = (props) => {
                 disabled={disabled}
               />
             </h1>
-          ),
-      )}
+          ))}
     </div>
   );
 };
