@@ -25,21 +25,6 @@ const NewUserOptions = () => (
     <h3 style={styles.h3}>
       <T id="NewUserOptions.description" />
     </h3>
-    {/* <Button raised
-      label="Prenez le test"
-      primary
-      link
-      to="/start1/test"
-      style={styles.button}
-    /> */}
-    <Button
-      raised
-      label={<T id="HomePage.CTA.compare" />}
-      link
-      to="/app/compare"
-      primary
-      style={styles.button}
-    />
     <Button
       raised
       label={<T id="HomePage.CTA.buy" />}

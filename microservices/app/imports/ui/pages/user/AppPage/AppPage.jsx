@@ -42,7 +42,7 @@ const AppPage = ({ loanRequests, properties, currentUser }) => (
             <span className="fa fa-home fa-2x heart-beat active" />
           )
         }
-        href={`/app/requests/${request._id}`}
+        href={`/requests/${request._id}`}
       />
     ))}
 
@@ -51,7 +51,7 @@ const AppPage = ({ loanRequests, properties, currentUser }) => (
       mainText={
         <T id="AppPage.properties" values={{ count: properties.length }} />
       }
-      href="/app/compare"
+      href="/compare"
     />
 
     <AppItem

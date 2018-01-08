@@ -29,7 +29,7 @@ const VerificationStart = ({ verification, requestId, onClick }) => (
           raised
           label={<T id="general.cancel" />}
           link
-          to={`/app/requests/${requestId}`}
+          to={`/requests/${requestId}`}
           style={{ marginRight: 8 }}
         />
         <ConfirmButton

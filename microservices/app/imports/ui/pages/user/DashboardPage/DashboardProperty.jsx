@@ -23,7 +23,7 @@ const DashboardProperty = (props) => {
       }
     >
       <Link
-        to={`/app/requests/${props.loanRequest._id}/property`}
+        to={`/requests/${props.loanRequest._id}/property`}
         className="link"
         onClick={() => track('clicked dashboard property', {})}
       >

@@ -22,9 +22,9 @@ const styles = {
   },
 };
 
-const Buttons = props => (
-  <div className={props.footer ? 'ctas text-right' : 'ctas'}>
-    <Button
+const Buttons = ({ footer }) => (
+  <div className={footer ? 'ctas text-right' : 'ctas'}>
+    {/* <Button
       raised
       label={<T id="HomePage.compare" />}
       link
@@ -34,7 +34,7 @@ const Buttons = props => (
       onClick={() =>
         track('Funnel - clicked home page CTA', { title: 'compare' })
       }
-    />
+    /> */}
     <Button
       raised
       label={<T id="HomePage.CTA1" />}
