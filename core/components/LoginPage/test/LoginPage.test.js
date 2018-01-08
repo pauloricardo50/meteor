@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import { getMountedComponent } from  'core/utils/testHelpers';
+import { getMountedComponent } from 'core/utils/testHelpers';
 
 import LoginPage from '../LoginPage';
 
@@ -14,6 +14,7 @@ if (Meteor.isClient) {
       getMountedComponent.reset();
       props = {
         history: {},
+        location: {},
       };
     });
 
