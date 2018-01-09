@@ -8,6 +8,7 @@ import { T, IntlNumber } from 'core/components/Translation';
 import Select from 'core/components/Select';
 import Offer from './Offer';
 import StarRating from './StarRating';
+import SortOrderer from './SortOrderer';
 
 const getOfferValues = ({
   monthly, rating, conditions, counterparts,
@@ -42,12 +43,8 @@ const getOfferValues = ({
   },
 ];
 
-const sortOffers = (offers, sort) =>
-  offers.sort((a, b) => {
-    if (a[sort] > b[sort]) return 1;
-    if (a[sort] < b[sort]) return -1;
-    return 0;
-  });
+const sortOffers = (offers, sort, isAscending) =>
+  offers.sort((a, b) => (isAscending ? a[sort] - b[sort] : b[sort] - a[sort]));
 
 const handleSave = (id, type, loanRequest) => {
   cleanMethod('updateRequest', {
@@ -63,20 +60,29 @@ export default class OfferList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { sort: 'monthly' };
+    this.state = { sort: 'monthly', isAscending: true };
   }
 
   handleChange = (_, value) => this.setState({ sort: value });
 
+  handleChangeOrder = () =>
+    this.setState(prev => ({ isAscending: !prev.isAscending }));
+
   render() {
     const { loanRequest, offers, disabled } = this.props;
-    const { sort } = this.state;
-    const filteredOffers = sortOffers(extractOffers(offers, loanRequest), sort);
-    const lender = loanRequest.logic.lender;
+    const { sort, isAscending } = this.state;
+    const filteredOffers = sortOffers(
+      extractOffers(offers, loanRequest),
+      sort,
+      isAscending,
+    );
+    const { lender } = loanRequest.logic;
+
+    console.log('isAscending: ', isAscending);
 
     return (
       <div className="flex-col" style={{ width: '100%' }}>
-        <div style={{ marginBottom: 16, width: 300 }}>
+        <div className="flex" style={{ marginBottom: 16, width: '100%' }}>
           <Select
             id="sort"
             label={<T id="general.sortBy" />}
@@ -88,6 +94,10 @@ export default class OfferList extends Component {
                 id: o.key || o.id,
                 label: <T id={`offer.${o.key || o.id}`} />,
               }))}
+          />
+          <SortOrderer
+            handleChangeOrder={this.handleChangeOrder}
+            isAscending={isAscending}
           />
         </div>
 

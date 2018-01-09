@@ -90,7 +90,14 @@ const config = {
   directories: [
     {
       path: '../microservices/app',
-      exceptions: ['steps', 'ProjectBarChart', 'LoginPage', 'Forms', 'files'],
+      exceptions: [
+        'steps',
+        'ProjectBarChart',
+        'LoginPage',
+        'Forms',
+        'files',
+        'offer',
+      ],
     },
     { path: '../microservices/www', exceptions: ['Start2Form'] },
     { path: '../microservices/admin', exceptions: ['LoginPage'] },

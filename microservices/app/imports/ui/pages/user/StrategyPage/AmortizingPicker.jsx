@@ -4,7 +4,7 @@ import React from 'react';
 import { T } from 'core/components/Translation';
 import StrategyChoices from '/imports/ui/components/general/StrategyChoices';
 
-import AmortizingSummary from './AmortizingSummary';
+// import AmortizingSummary from './AmortizingSummary';
 
 const getChoices = () => [
   {
@@ -45,17 +45,19 @@ const AmortizingPicker = ({
       value={loanRequest.logic.amortizationStrategyPreset}
       choices={getChoices()}
       handleChoose={id =>
-        handleSave({ 'logic.amortizationStrategyPreset': id })}
+        handleSave({ 'logic.amortizationStrategyPreset': id })
+      }
       disabled={disabled}
     />
 
-    {!!loanRequest.logic.amortizationStrategyPreset && (
+    {/* FIXME: Logismata widget, put it back when ready */}
+    {/* {!!loanRequest.logic.amortizationStrategyPreset && (
       <AmortizingSummary
         loanRequest={loanRequest}
         borrowers={borrowers}
         offers={offers}
       />
-    )}
+    )} */}
   </article>
 );
 
