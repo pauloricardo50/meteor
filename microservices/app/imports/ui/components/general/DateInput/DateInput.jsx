@@ -5,6 +5,8 @@ import moment from 'moment';
 import TextInput from 'core/components/TextInput';
 import Loadable from 'core/utils/loadable';
 
+import './DateInput.scss';
+
 // const SingleDatePicker = Loadable({
 //   loader: () => import('react-dates/lib/components/SingleDatePicker'),
 // });
@@ -35,7 +37,6 @@ export default class DateInput extends Component {
     return (
       <TextInput
         className="date-input"
-        {...otherProps}
         id={id}
         inputComponent={DatePicker}
         type="date"
@@ -53,6 +54,7 @@ export default class DateInput extends Component {
             this.setState({ focused: nextFocused }),
           ...datePickerProps,
         }}
+        {...otherProps}
       />
     );
   }

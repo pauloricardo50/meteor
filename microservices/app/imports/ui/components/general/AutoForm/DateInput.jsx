@@ -53,7 +53,7 @@ class DateInput extends Component {
     } = this.props;
 
     return (
-      <div style={{ ...styles.div, ...style }} className="datepicker">
+      <div style={{ ...styles.div, ...style }}>
         <MyDateInput
           label={label}
           value={currentValue}

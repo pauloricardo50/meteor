@@ -417,6 +417,7 @@
   "Forms.gender.m": "Homme",
   "Forms.gender.other": "Autre",
   "Forms.general.auctionMostImportant": "Critère le plus important",
+  "Forms.general.auctionMostImportant.nothing": "Aucun",
   "Forms.general.auctionMostImportant.price": "Coût mensuel le plus bas",
   "Forms.general.auctionMostImportant.speed": "Décaissement le plus rapide",
   "Forms.general.wantedClosingDate": "Date espérée du décaissement",
