@@ -75,7 +75,7 @@ const SideNavUser = (props) => {
             >
               <div className="onclick-wrapper" onClick={handleClickLink}>
                 <div className="icon">
-                  <Icon type="dashboard" color="#ADB5BD" />
+                  <Icon type="dashboard" style={{ color: '#ADB5BD' }} />
                 </div>
                 <h4 className="fixed-size title">
                   <T id="SideNavUser.dashboard" />
@@ -90,7 +90,7 @@ const SideNavUser = (props) => {
             >
               <div className="onclick-wrapper" onClick={handleClickLink}>
                 <div className="icon">
-                  <Icon type="folder" color="#ADB5BD" />
+                  <Icon type="folder" style={{ color: '#ADB5BD' }} />
                 </div>
                 <h4 className="fixed-size title">
                   <T id="SideNavUser.files" />

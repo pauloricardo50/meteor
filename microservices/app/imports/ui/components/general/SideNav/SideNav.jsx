@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
+
+import SideNavList from './SideNavList';
 
 const adminLinks = [
   {
@@ -65,16 +66,7 @@ const SideNav = (props) => {
         <img src="/img/logo_black.svg" alt="e-Potek" />
       </Link>
 
-      <ul className="side-nav-list">
-        {links.map(link => (
-          <li key={link.link}>
-            <NavLink exact to={link.link} activeClassName="active-link">
-              {link.icon}
-              <h5>{link.label}</h5>
-            </NavLink>
-          </li>
-        ))}
-      </ul>
+      <SideNavList links={links} />
 
       <div className="logout text-center">
         <Button
