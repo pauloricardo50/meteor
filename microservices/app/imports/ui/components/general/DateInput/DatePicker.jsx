@@ -6,8 +6,10 @@ import omit from 'lodash/omit';
 
 import SingleDatePicker from 'react-dates/lib/components/SingleDatePicker';
 import isInclusivelyAfterDay from 'react-dates/lib/utils/isInclusivelyAfterDay';
-import DefaultTheme from 'react-dates/lib/theme/DefaultTheme';
-import { withStyles } from 'react-with-styles';
+// import ThemedStyleSheet from 'react-with-styles/lib/ThemedStyleSheet';
+// import DefaultTheme from 'react-dates/lib/theme/DefaultTheme';
+
+import './DateInput.scss';
 
 // Given a min and/or max date, it blocks unavailable dates
 const setDateRange = (minDate = new Date(), maxDate = undefined) => day =>
@@ -57,17 +59,37 @@ DatePicker.defaultProps = {
   maxDate: undefined,
 };
 
-export default withStyles(() => ({
-  ...DefaultTheme,
-  color: {
-    ...DefaultTheme.color,
-    highlighted: {
-      backgroundColor: '#4990e2',
-      backgroundColor_active: '#4990e2',
-      backgroundColor_hover: '#4990e2',
-      color: 'white',
-      color_active: 'white',
-      color_hover: 'white',
-    },
-  },
-}))(DatePicker);
+export default DatePicker;
+
+// ThemedStyleSheet.registerInterface(aphroditeInterface);
+// ThemedStyleSheet.registerTheme({
+//   reactDates: {
+//     ...DefaultTheme.reactDates,
+//     color: {
+//       ...DefaultTheme.reactDates.color,
+//       highlighted: {
+//         backgroundColor: '#4990e2',
+//         backgroundColor_active: '#4990e2',
+//         backgroundColor_hover: '#4990e2',
+//         color: 'white',
+//         color_active: 'white',
+//         color_hover: 'white',
+//       },
+//     },
+//   },
+// });
+
+// export default withStyles(() => ({
+//   ...DefaultTheme,
+//   color: {
+//     ...DefaultTheme.color,
+//     highlighted: {
+//       backgroundColor: '#4990e2',
+//       backgroundColor_active: '#4990e2',
+//       backgroundColor_hover: '#4990e2',
+//       color: 'white',
+//       color_active: 'white',
+//       color_hover: 'white',
+//     },
+//   },
+// }))(DatePicker);

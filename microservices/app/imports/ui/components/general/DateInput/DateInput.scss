@@ -1,3 +1,18 @@
+.CalendarDay__selected {
+  background: #4990e2;
+  color: white;
+}
+
+.CalendarDay__selected:hover {
+  background: #4990e2;
+  color: white;
+}
+
+.CalendarDay__selected:active {
+  background: #4990e2;
+  color: white;
+}
+
 .date-input {
   display: flex;
   width: 100%;
