@@ -116,7 +116,7 @@ const TextInput = (props) => {
         </InputLabel>
       )}
       <Input
-        className={Object.values(classes)}
+        className={classes ? Object.values(classes) : ''}
         id={id}
         onChange={onChangeHandler}
         type="text"

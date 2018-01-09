@@ -437,6 +437,7 @@
   "Forms.isCoproperty": "Est-ce une copropriété ?",
   "Forms.isNew": "Est-ce un bien neuf ?",
   "Forms.isSwiss": "Avez-vous la nationalité Suisse ?",
+  "Forms.isUSPerson": "Êtes-vous une US Person?",
   "Forms.landArea": "Surface du terrain en m2",
   "Forms.landArea.placeholder": "250",
   "Forms.lastName": "Nom",

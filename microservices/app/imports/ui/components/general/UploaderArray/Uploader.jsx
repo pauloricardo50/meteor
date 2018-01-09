@@ -54,7 +54,7 @@ class Uploader extends Component {
     }
   }
 
-  handleAddFiles = (files) => {
+  handleAddFiles = (files = []) => {
     const fileArray = [];
     let showError = false;
 

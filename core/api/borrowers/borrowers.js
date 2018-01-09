@@ -127,6 +127,10 @@ export const BorrowerSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  isUSPerson: {
+    type: Boolean,
+    optional: true,
+  },
   civilStatus: {
     // 'married', 'pacsed', 'single', 'divorced'
     type: String,

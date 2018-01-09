@@ -15,6 +15,7 @@ export const fakeBorrower = {
   company: 'Deloitte',
   personalBank: 'BCGE',
   isSwiss: true,
+  isUSPerson: false,
   worksForOwnCompany: false,
   sameAddress: true,
 };

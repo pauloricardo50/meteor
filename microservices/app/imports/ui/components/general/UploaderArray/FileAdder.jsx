@@ -26,7 +26,8 @@ const FileAdder = ({ docId, id, handleAddFiles }) => (
       id={id}
       style={styles.input}
       multiple
-      onChange={({ target: { files } }) => handleAddFiles(files)}
+      // Do Array.from to extract file from the FileList object
+      onChange={({ target: { files } }) => handleAddFiles(Array.from(files))}
       // This piece of shit is important or inputs will get mixed up...
       key={docId + id}
     />
