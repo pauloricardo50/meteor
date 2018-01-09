@@ -9,7 +9,6 @@ import { withStyles } from 'material-ui/styles';
 const DatePicker = Loadable({
   loader: () => import('./DatePicker'),
 });
-// import DatePicker from './DatePicker';
 
 const styles = theme => ({
   underline: {

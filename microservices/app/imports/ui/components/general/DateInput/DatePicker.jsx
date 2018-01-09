@@ -6,8 +6,6 @@ import omit from 'lodash/omit';
 
 import SingleDatePicker from 'react-dates/lib/components/SingleDatePicker';
 import isInclusivelyAfterDay from 'react-dates/lib/utils/isInclusivelyAfterDay';
-// import ThemedStyleSheet from 'react-with-styles/lib/ThemedStyleSheet';
-// import DefaultTheme from 'react-dates/lib/theme/DefaultTheme';
 
 import './DateInput.scss';
 
@@ -60,36 +58,3 @@ DatePicker.defaultProps = {
 };
 
 export default DatePicker;
-
-// ThemedStyleSheet.registerInterface(aphroditeInterface);
-// ThemedStyleSheet.registerTheme({
-//   reactDates: {
-//     ...DefaultTheme.reactDates,
-//     color: {
-//       ...DefaultTheme.reactDates.color,
-//       highlighted: {
-//         backgroundColor: '#4990e2',
-//         backgroundColor_active: '#4990e2',
-//         backgroundColor_hover: '#4990e2',
-//         color: 'white',
-//         color_active: 'white',
-//         color_hover: 'white',
-//       },
-//     },
-//   },
-// });
-
-// export default withStyles(() => ({
-//   ...DefaultTheme,
-//   color: {
-//     ...DefaultTheme.color,
-//     highlighted: {
-//       backgroundColor: '#4990e2',
-//       backgroundColor_active: '#4990e2',
-//       backgroundColor_hover: '#4990e2',
-//       color: 'white',
-//       color_active: 'white',
-//       color_hover: 'white',
-//     },
-//   },
-// }))(DatePicker);
