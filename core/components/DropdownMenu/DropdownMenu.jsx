@@ -82,7 +82,7 @@ export default class DropdownMenu extends Component {
           id="long-menu"
           anchorEl={anchorEl}
           open={isOpen}
-          onRequestClose={this.handleRequestClose}
+          onClose={this.handleRequestClose}
           PaperProps={{
             style: {
               maxHeight: ITEM_HEIGHT * 4.5,

@@ -17,7 +17,7 @@ const TopNavDrawer = props => {
         tooltip="Menu"
         tooltipPlacement="bottom-start"
       />
-      <Drawer open={drawerState} onRequestClose={() => toggleDrawer(false)}>
+      <Drawer open={drawerState} onClose={() => toggleDrawer(false)}>
         <div className="side-nav-drawer" style={{ width: 300 }}>
           <DrawerHeader showButton onClick={() => toggleDrawer(false)} />
           <SideNavUser

@@ -69,7 +69,7 @@ export default class ConfirmButton extends Component {
           title={<T id="general.areYouSure" />}
           actions={actions}
           open={this.state.open}
-          onRequestClose={this.handleClose}
+          onClose={this.handleClose}
         >
           {text}
         </Dialog>

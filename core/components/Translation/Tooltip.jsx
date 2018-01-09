@@ -34,7 +34,7 @@ const getPositionLeft = (left, id, placement) => {
   return left;
 };
 
-const Tooltip = props => {
+const Tooltip = (props) => {
   const {
     placement,
     positionTop,
@@ -56,7 +56,7 @@ const Tooltip = props => {
         <FormattedMessage id={pureId ? baseId : `tooltip.${baseId}`} />
         <DialogSimple
           title={match}
-          rootStyle={{ alignSelf: 'center' }}
+          // rootStyle={{ alignSelf: 'center' }}
           // Dialogs normally have zIndex of 1500
           // Usually dialogs should be behind tooltips (which are
           // at zindex 1501), but when you trigger a dialog from a tooltip,
@@ -65,7 +65,9 @@ const Tooltip = props => {
           buttonStyle={{ marginTop: 16 }}
           label={dialogLabel || <FormattedMessage id="general.learnMore" />}
           autoFocus
-          onOpen={() => track('Tooltip - opened dialog', { tooltipId: baseId })}
+          onEntered={() =>
+            track('Tooltip - opened dialog', { tooltipId: baseId })
+          }
           cancelOnly
         >
           <FormattedMessage

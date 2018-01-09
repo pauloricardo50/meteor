@@ -45,7 +45,7 @@ const AdvancedOptions = ({
       label={<T id="FieldToggles.label" />}
       title={<T id="FieldToggles.title" />}
       primary
-      autoScroll
+      // autoScroll
       buttonStyle={{ marginTop: 20 }}
     >
       <FieldToggles

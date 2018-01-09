@@ -111,7 +111,7 @@ const TextInput = (props) => {
         type="text"
         style={{ fontSize: 'inherit' }}
         inputComponent={inputComponent || (showMask ? MaskedInput : undefined)}
-        inputProps={{
+        InputProps={{
           value,
           placeholder: finalPlaceholder,
           noValidate: true,

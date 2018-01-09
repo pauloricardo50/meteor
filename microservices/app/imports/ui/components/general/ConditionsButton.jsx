@@ -44,7 +44,7 @@ export default class ConditionsButton extends Component {
     this.state = { open: false };
   }
 
-  handleOpen = (e) => {
+  handleOpen = e => {
     e.stopPropagation();
     track('ConditionsButton - clicked open', {});
     this.setState({ open: true });
@@ -77,8 +77,8 @@ export default class ConditionsButton extends Component {
         <Dialog
           actions={actions}
           open={this.state.open}
-          onRequestClose={this.handleClose}
-          autoScrollBodyContent
+          onClose={this.handleClose}
+          // autoScrollBodyContent
         >
           <div className="conditions-modal">
             {!!(conditions.length > 0) && (

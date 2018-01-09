@@ -44,7 +44,7 @@ export default class BetaAccess extends React.Component {
           title="Accéder à la Beta"
           actions={actions}
           open={open}
-          onRequestClose={this.handleClose}
+          onClose={this.handleClose}
         >
           <form
             action="submit"

@@ -82,7 +82,7 @@ class CustomFieldAdder extends Component {
         <Button raised primary dense label="+" onClick={this.handleOpen} />
         <MuiDialog
           open={open}
-          onRequestClose={this.handleClose}
+          onClose={this.handleClose}
           // Reset fields
           onExited={() => this.setState({ name: '', type: '' })}
         >

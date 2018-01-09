@@ -43,7 +43,7 @@ export default class HomeDev extends Component {
           title={<T id="HomeDev.title" />}
           actions={actions}
           open={this.state.open}
-          onRequestClose={this.handleClose}
+          onClose={this.handleClose}
         >
           <T id="HomeDev.description" />
           <div className="text-center" style={{ marginTop: 20 }}>

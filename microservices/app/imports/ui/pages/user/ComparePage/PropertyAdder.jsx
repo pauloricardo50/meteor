@@ -64,7 +64,7 @@ export default class PropertyAdder extends Component {
         <Dialog
           title={<T id="CompareOptions.addProperty" />}
           open={this.state.open}
-          onRequestClose={this.handleClose}
+          onClose={this.handleClose}
           fullScreen
           actions={[
             <Button

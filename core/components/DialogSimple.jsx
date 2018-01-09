@@ -99,13 +99,8 @@ export default class DialogSimple extends Component {
           actions={finalActions}
           important={important}
           open={this.state.open}
-          onRequestClose={this.handleClose}
-          // bodyStyle={bodyStyle}
-          // contentStyle={contentStyle}
+          onClose={this.handleClose}
           style={style}
-          // autoScrollBodyContent={autoScroll}
-          // repositionOnUpdate
-          // autoDetectWindowHeight
         >
           {!!children && passProps
             ? React.cloneElement(children, { ...childProps })

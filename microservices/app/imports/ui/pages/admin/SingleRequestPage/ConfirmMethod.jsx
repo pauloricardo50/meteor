@@ -26,7 +26,7 @@ export default class ConfirmMethod extends Component {
     });
   };
 
-  handleChange = (event) => {
+  handleChange = event => {
     this.setState({
       text: event.target.value,
     });
@@ -55,7 +55,7 @@ export default class ConfirmMethod extends Component {
         <Dialog
           title="Êtes-vous sûr?"
           actions={actions}
-          modal
+          important
           open={this.state.open}
         >
           Tapez le mot "{this.props.keyword}" pour valider cette action.

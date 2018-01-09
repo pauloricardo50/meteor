@@ -47,7 +47,7 @@ export default class AdminNewOffer extends React.Component {
           actions={actions}
           important
           open={this.state.open}
-          onRequestClose={this.handleClose}
+          onClose={this.handleClose}
           fullScreen
         >
           <OfferForm
