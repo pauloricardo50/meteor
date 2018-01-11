@@ -1,5 +1,5 @@
 {
-  "name": "sAdmin",
+  "name": "epotek-admin",
   "private": true,
   "scripts": {
     "start": "meteor run --port 5000"
