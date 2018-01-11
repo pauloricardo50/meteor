@@ -25,8 +25,6 @@ const getRedirect = ({
   history: { location: { pathname } },
   loanRequests,
 }) => {
-  return false;
-
   const userIsAdmin = Roles.userIsInRole(currentUser, 'admin');
   const userIsPartner = Roles.userIsInRole(currentUser, 'partner');
   const userIsDev = Roles.userIsInRole(currentUser, 'dev');
@@ -34,6 +32,8 @@ const getRedirect = ({
   if (!currentUser) {
     return `/login?path=${pathname}`;
   }
+
+  return false;
 
   if (userIsDev) {
     return false;

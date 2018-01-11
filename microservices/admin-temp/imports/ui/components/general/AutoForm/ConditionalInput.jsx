@@ -65,7 +65,11 @@ export default class ConditionalInput extends Component {
         ) : (
           ''
         )}
-        <FormValidator {...this.props} id={children[0].id} />
+        <FormValidator
+          {...this.props}
+          inputProps={children[0].props.inputProps}
+          id={children[0].id}
+        />
       </div>
     );
   }

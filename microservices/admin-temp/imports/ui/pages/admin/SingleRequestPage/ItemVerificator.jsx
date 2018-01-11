@@ -32,7 +32,7 @@ export default class ItemVerificator extends Component {
         >
           {item.name && <h5 className="secondary bold">{item.name}</h5>}
           <Select
-            currentValue={item.status}
+            value={item.status}
             onChange={setStatus}
             options={options}
             id={item.key}

@@ -28,7 +28,7 @@ const styles = {
 };
 
 const FormValidator = (props) => {
-  const { admin, doc, inputProps: id } = props;
+  const { admin, doc, inputProps: { id } } = props;
   if (!admin) {
     return null;
   }

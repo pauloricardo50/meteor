@@ -57,10 +57,16 @@ const Request = ({ loanRequest, borrowers, history }) => (
 
     <h5>Emprunteurs</h5>
     {borrowers.map(borrower => (
-      <Chip style={{ margin: 8 }} key={borrower._id}>
-        <Avatar icon={<Icon type="face" />} />
-        {borrower.firstName} {borrower.lastName}
-      </Chip>
+      <Chip
+        style={{ margin: 8 }}
+        key={borrower._id}
+        avatar={
+          <Avatar>
+            <Icon type="face" />
+          </Avatar>
+        }
+        label={`${borrower.firstName} ${borrower.lastName}`}
+      />
     ))}
   </div>
 );

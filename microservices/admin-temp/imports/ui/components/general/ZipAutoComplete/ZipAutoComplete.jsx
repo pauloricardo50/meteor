@@ -9,6 +9,7 @@ import cleanMethod from 'core/api/cleanMethods';
 
 import SavingIcon from '/imports/ui/components/general/AutoForm/SavingIcon';
 import AutoComplete from '../AutoComplete';
+import FormValidator from '../AutoForm/FormValidator';
 
 const styles = {
   div: {
@@ -152,6 +153,7 @@ class ZipAutoComplete extends Component {
           style={styles.savingIcon}
           errorExists={false}
         />
+        <FormValidator {...this.props} />
       </div>
     );
   }
