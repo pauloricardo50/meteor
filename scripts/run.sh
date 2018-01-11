@@ -15,7 +15,7 @@ fi
 for i in "www" "app" "admin" "lender"
   do
     # Make them all connect to the mongoDB instance created by the first app (sWww, running at localhost:3000)
-    if [[ $i == "wwww" ]]; then
+    if [[ $i == "www" ]]; then
         ttab -t $i -d ../microservices/$i 'meteor npm start'
     else
       ttab -t $i -d ../microservices/$i 'export MONGO_URL=mongodb://localhost:3001/meteor; meteor npm start'
