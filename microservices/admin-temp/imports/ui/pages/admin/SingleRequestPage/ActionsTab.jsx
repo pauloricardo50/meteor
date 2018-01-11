@@ -82,7 +82,7 @@ const ActionsTab = (props) => {
         method={cb =>
           deleteRequest.call({ id: loanRequest._id }, (err) => {
             if (!err) {
-              window.location.href = '/admin';
+              window.location.href = '/';
             }
           })
         }

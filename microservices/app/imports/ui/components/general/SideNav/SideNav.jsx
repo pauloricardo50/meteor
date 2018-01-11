@@ -11,22 +11,22 @@ import SideNavList from './SideNavList';
 
 const adminLinks = [
   {
-    link: '/admin',
+    link: '/',
     icon: <span className="icon fa fa-home fa-2x" />,
     label: 'Home',
   },
   {
-    link: '/admin/users',
+    link: '/users',
     icon: <span className="icon fa fa-users fa-2x" />,
     label: 'Utilisateurs',
   },
   {
-    link: '/admin/requests',
+    link: '/requests',
     icon: <span className="icon fa fa-files-o fa-2x" />,
     label: 'Demandes de prêt',
   },
   {
-    link: '/admin/dev',
+    link: '/dev',
     icon: <span className="icon fa fa-code fa-2x" />,
     label: 'Dev',
   },

@@ -66,8 +66,7 @@ export default class AllRequestsTable extends Component {
         request.general.fortuneUsed + request.general.insuranceFortuneUsed,
         'Très Bon',
       ],
-      handleClick: () =>
-        this.props.history.push(`/admin/requests/${request._id}`),
+      handleClick: () => this.props.history.push(`/requests/${request._id}`),
     }));
   };
 

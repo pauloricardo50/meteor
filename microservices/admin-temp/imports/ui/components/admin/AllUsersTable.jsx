@@ -27,7 +27,7 @@ export default class AllUsersTable extends Component {
         moment(user.createdAt).format('D MMM YY à HH:mm:ss'),
         user.roles ? user.roles.toString() : '',
       ],
-      handleClick: () => this.props.history.push(`/admin/users/${user._id}`),
+      handleClick: () => this.props.history.push(`/users/${user._id}`),
     }));
   };
 

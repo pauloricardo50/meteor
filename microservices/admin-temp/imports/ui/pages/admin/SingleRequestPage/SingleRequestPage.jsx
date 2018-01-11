@@ -51,7 +51,7 @@ export default class SingleRequestPage extends Component {
           raised
           label="Retour"
           style={styles.returnButton}
-          onClick={() => history.push('/admin/requests')}
+          onClick={() => history.push('/requests')}
         />
         <div className="mask1">
           <h1>
