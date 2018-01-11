@@ -102,6 +102,17 @@ const config = {
     { path: '../microservices/www', exceptions: ['Start2Form'] },
     { path: '../microservices/admin', exceptions: ['LoginPage'] },
     { path: '../microservices/lender', exceptions: ['LoginPage'] },
+    {
+      path: '../microservices/admin-temp',
+      exceptions: [
+        'steps',
+        'ProjectBarChart',
+        'LoginPage',
+        'Forms',
+        'files',
+        'offer',
+      ],
+    },
   ],
   generalExceptions: [
     'TopNav',
