@@ -89,7 +89,8 @@ const handleError = (error) => {
   });
   console.log(error);
 
-  return error;
+  // Throw it again so that it can be catched again where it is called
+  throw error;
 };
 
 // A wrapper method that displays an error if it occurs

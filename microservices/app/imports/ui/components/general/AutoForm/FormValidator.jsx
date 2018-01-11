@@ -10,8 +10,7 @@ const handleCheck = (
   { updateFunc, docId, inputProps: { id } },
   isInputChecked,
 ) => {
-  const object = {};
-  object[`adminValidation.${id}`] = isInputChecked;
+  const object = { [`adminValidation.${id}`]: isInputChecked };
   cleanMethod(updateFunc, { object, id: docId });
 };
 

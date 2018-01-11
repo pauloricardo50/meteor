@@ -23,7 +23,10 @@ export default class AdminNewOffer extends React.Component {
     this.state = { open: false };
   }
 
-  handleClose = () => this.setState({ open: false });
+  handleClose = () => {
+    console.log('handleclose!');
+    this.setState({ open: false });
+  };
 
   handleOpen = () => this.setState({ open: true });
 
@@ -47,7 +50,7 @@ export default class AdminNewOffer extends React.Component {
           actions={actions}
           important
           open={this.state.open}
-          onClose={this.handleClose}
+          // onClose={this.handleClose}
           fullScreen
         >
           <OfferForm

@@ -141,6 +141,8 @@ export default class OfferForm extends Component {
     cleanMethod(this.props.method, { object })
       .then(this.props.callback)
       .catch((error) => {
+        console.log('OfferForm error:', error);
+
         if (!error) {
           this.props.callback();
         }

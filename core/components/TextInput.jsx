@@ -58,6 +58,19 @@ const getDefaults = ({
   }
 };
 
+const getSafeValue = (value, useMask) => {
+  console.log('getSafeValue!');
+  if (useMask) {
+    console.log('useMask', value);
+    if (value === null) {
+      console.log('value is null');
+      return '';
+    }
+  }
+
+  return value;
+};
+
 const TextInput = (props) => {
   const {
     className,
@@ -123,15 +136,15 @@ const TextInput = (props) => {
         style={{ fontSize: 'inherit' }}
         inputComponent={inputComponent || (showMask ? MaskedInput : undefined)}
         inputProps={{
-          value,
+          ...inputProps, // Backwards compatible
+          ...InputProps,
+          ...otherProps,
+          value: getSafeValue(value, !!mask),
           placeholder: finalPlaceholder,
           noValidate: true,
           mask: mask || undefined,
           pattern: mask ? '[0-9]*' : undefined,
           ref: inputRef,
-          ...inputProps, // Backwards compatible
-          ...InputProps,
-          ...otherProps,
         }}
       />
       {info && <FormHelperText>{info}</FormHelperText>}
