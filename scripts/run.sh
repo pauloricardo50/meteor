@@ -14,7 +14,7 @@ fi
 # Start each app in its own tab
 for i in "www" "app" "admin" "lender"
   do
-    # Make them all connect to the mongoDB instance created by the first app (sWww, running at localhost:3000)
+    # Make them all connect to the mongoDB instance created by the first app (epotek-www, running at localhost:3000)
     if [[ $i == "www" ]]; then
         ttab -t $i -d ../microservices/$i 'meteor npm start'
     else
