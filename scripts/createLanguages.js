@@ -28,7 +28,7 @@ const config = {
         'ArrayInput',
       ],
     },
-    { path: '../microservices/www', exceptions: ['Start2Form'] },
+    { path: '../microservices/www', exceptions: ['Start2Form', 'Forms'] },
     { path: '../microservices/admin', exceptions: ['LoginPage'] },
     { path: '../microservices/lender', exceptions: ['LoginPage'] },
     {
@@ -45,6 +45,7 @@ const config = {
         'Uploader',
         'FileAdder',
         'ArrayInput',
+        'adminActions',
       ],
     },
   ],

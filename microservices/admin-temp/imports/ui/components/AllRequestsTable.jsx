@@ -63,7 +63,8 @@ export default class AllRequestsTable extends Component {
         moment(request.updatedAt).format('D MMM YY à HH:mm:ss'),
         request.logic.step + 1,
         request.property.value,
-        request.general.fortuneUsed + request.general.insuranceFortuneUsed,
+        request.general.fortuneUsed +
+          (request.general.insuranceFortuneUsed || 0),
         'Très Bon',
       ],
       handleClick: () => this.props.history.push(`/requests/${request._id}`),

@@ -47,10 +47,14 @@ const Request = ({ loanRequest, borrowers, history }) => (
       <div className="flex-col">
         <label htmlFor="">2-3e pillier utilisé</label>
         <p>
-          <IntlNumber
-            value={loanRequest.general.insuranceFortuneUsed}
-            format="money"
-          />
+          {loanRequest.general.insuranceFortuneUsed ? (
+            <IntlNumber
+              value={loanRequest.general.insuranceFortuneUsed}
+              format="money"
+            />
+          ) : (
+            '-'
+          )}
         </p>
       </div>
     </div>
