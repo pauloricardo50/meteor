@@ -1,19 +1,19 @@
 import AppLayout from '/imports/ui/layouts/AppLayout';
-import _DashboardPage from '/imports/ui/pages/user/DashboardPage';
-import _BorrowerPage from '/imports/ui/pages/user/BorrowerPage';
-import _PropertyPage from '/imports/ui/pages/user/PropertyPage';
-import _AuctionPage from '/imports/ui/pages/user/AuctionPage';
-import _StrategyPage from '/imports/ui/pages/user/StrategyPage';
-import _OfferPickerPage from '/imports/ui/pages/user/OfferPickerPage';
-import _StructurePage from '/imports/ui/pages/user/StructurePage';
-import _VerificationPage from '/imports/ui/pages/user/VerificationPage';
-import _ContractPage from '/imports/ui/pages/user/ContractPage';
-import _ClosingPage from '/imports/ui/pages/user/ClosingPage';
-import _DevPage from '/imports/ui/pages/user/DevPage';
-import _FinancePage from '/imports/ui/pages/user/FinancePage';
-import _ComparePage from '/imports/ui/pages/user/ComparePage';
-import _AppPage from '/imports/ui/pages/user/AppPage';
-import _FilesPage from '/imports/ui/pages/user/FilesPage';
+import _DashboardPage from '/imports/ui/pages/DashboardPage';
+import _BorrowerPage from '/imports/ui/pages/BorrowerPage';
+import _PropertyPage from '/imports/ui/pages/PropertyPage';
+import _AuctionPage from '/imports/ui/pages/AuctionPage';
+import _StrategyPage from '/imports/ui/pages/StrategyPage';
+import _OfferPickerPage from '/imports/ui/pages/OfferPickerPage';
+import _StructurePage from '/imports/ui/pages/StructurePage';
+import _VerificationPage from '/imports/ui/pages/VerificationPage';
+import _ContractPage from '/imports/ui/pages/ContractPage';
+import _ClosingPage from '/imports/ui/pages/ClosingPage';
+import _DevPage from '/imports/ui/pages/DevPage';
+import _FinancePage from '/imports/ui/pages/FinancePage';
+import _ComparePage from '/imports/ui/pages/ComparePage';
+import _AppPage from '/imports/ui/pages/AppPage';
+import _FilesPage from '/imports/ui/pages/FilesPage';
 
 import {
   userContainer,

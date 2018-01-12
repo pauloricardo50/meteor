@@ -18,7 +18,7 @@ import {
   VerifyPage,
   ContactLendersPage,
 } from 'core/containers/AdminContainers';
-import AdminDevPage from '/imports/ui/pages/admin/AdminDevPage';
+import AdminDevPage from '/imports/ui/pages/AdminDevPage';
 
 const AdminRouter = props => (
   <BaseRouter

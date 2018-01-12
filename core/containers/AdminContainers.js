@@ -1,12 +1,12 @@
 import _AppLayout from '/imports/ui/layouts/AdminLayout';
-import _AdminDashboardPage from '/imports/ui/pages/admin/AdminDashboardPage';
-import _UsersPage from '/imports/ui/pages/admin/UsersPage';
-import _RequestsPage from '/imports/ui/pages/admin/RequestsPage';
-import _OfferPage from '/imports/ui/pages/admin/OfferPage';
-import _SingleRequestPage from '/imports/ui/pages/admin/SingleRequestPage';
-import _SingleUserPage from '/imports/ui/pages/admin/SingleUserPage';
-import _VerifyPage from '/imports/ui/pages/admin/VerifyPage';
-import _ContactLendersPage from '/imports/ui/pages/admin/ContactLendersPage';
+import _AdminDashboardPage from '/imports/ui/pages/AdminDashboardPage';
+import _UsersPage from '/imports/ui/pages/UsersPage';
+import _RequestsPage from '/imports/ui/pages/RequestsPage';
+import _OfferPage from '/imports/ui/pages/OfferPage';
+import _SingleRequestPage from '/imports/ui/pages/SingleRequestPage';
+import _SingleUserPage from '/imports/ui/pages/SingleUserPage';
+import _VerifyPage from '/imports/ui/pages/VerifyPage';
+import _ContactLendersPage from '/imports/ui/pages/ContactLendersPage';
 
 import {
   generalContainer,

@@ -25,8 +25,8 @@ import {
   AppPage,
   FilesPage,
 } from 'core/containers/UserContainers';
-import AccountPage from '../../ui/pages/user/AccountPage';
-import AddRequestPage from '../../ui/pages/user/AddRequestPage';
+import AccountPage from '../../ui/pages/AccountPage';
+import AddRequestPage from '../../ui/pages/AddRequestPage';
 
 const AppRouter = () => (
   <BaseRouter

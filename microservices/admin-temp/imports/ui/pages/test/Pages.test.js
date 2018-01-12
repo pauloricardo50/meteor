@@ -5,20 +5,16 @@ import { getMountedComponent, stubCollections } from 'core/utils/testHelpers';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-// User pages
-import AccountPage from '../AccountPage';
-import AuctionPage from '../AuctionPage';
-import BorrowerPage from '../BorrowerPage';
-import DashboardPage from '../DashboardPage';
-import ContractPage from '../ContractPage';
-import ClosingPage from '../ClosingPage';
-import OfferPickerPage from '../OfferPickerPage';
-import PropertyPage from '../PropertyPage';
-import StructurePage from '../StructurePage';
-import VerificationPage from '../VerificationPage';
-import FinancePage from '../FinancePage';
-import ComparePage from '../ComparePage';
-import AppPage from '../AppPage';
+// Admin pages
+import AdminDashboardPage from '../AdminDashboardPage';
+import AdminDevPage from '../AdminDevPage';
+import ContactLendersPage from '../ContactLendersPage';
+import OfferPage from '../OfferPage';
+import RequestsPage from '../RequestsPage';
+import SingleRequestPage from '../SingleRequestPage';
+import SingleUserPage from '../SingleUserPage';
+import UsersPage from '../UsersPage';
+import VerifyPage from '../VerifyPage';
 
 const pages = {
   AccountPage,
