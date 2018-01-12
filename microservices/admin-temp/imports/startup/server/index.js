@@ -6,7 +6,7 @@ import 'core/api/api-server';
 import jc from 'core/api/server/jobs/jobs';
 import '../accounts-config';
 import './accounts-server-config';
-import setupMandrill from './email-config';
+import setupMandrill from 'core/api/email/server/email-config';
 
 Meteor.startup(() => {
   // Do something on startup if necessary

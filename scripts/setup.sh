@@ -47,13 +47,15 @@ for i in 'admin' 'app' 'lender' 'www' 'admin-temp'
     then
       echo "Cleaning and installing npm packages"
       ( cd ../microservices/$i && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear --force && meteor npm install );
+
+      echo "Resetting meteor"
+      ( cd ../microservices/$i && meteor reset )
     else
       echo "Installing npm packages"
       ( cd ../microservices/$i && meteor npm install );
     fi
 
-    echo "Resetting meteor"
-    ( cd ../microservices/$i && meteor reset )
+
   done
 
 echo "Installing npm packages in core/"
