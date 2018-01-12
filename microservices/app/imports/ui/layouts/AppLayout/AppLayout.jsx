@@ -17,8 +17,9 @@ const allowedRoutesWithoutRequest = [
   '/compare',
   '/profile',
   '/add-request',
-  '/enroll',
 ];
+
+const allowedRoutesWithoutLogin = ['/enroll-account'];
 
 const getRedirect = ({
   currentUser,
@@ -30,6 +31,11 @@ const getRedirect = ({
   const userIsDev = Roles.userIsInRole(currentUser, 'dev');
 
   if (!currentUser) {
+    if (
+      allowedRoutesWithoutLogin.some(route => pathname.indexOf(route) === 0)
+    ) {
+      return false;
+    }
     return `/login?path=${pathname}`;
   }
 

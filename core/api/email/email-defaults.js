@@ -52,6 +52,23 @@ export const getEmailContent = (emailId, intlValues = {}) => {
   const email = Meteor.user() && Meteor.user().emails[0].address;
 
   return {
-    email, subject, title, body, CTA, from: customFrom,
+    email,
+    subject,
+    title,
+    body,
+    CTA,
+    from: customFrom,
   };
+};
+
+export const getEnrollmentEmail = (user, url) => {
+  if (user.roles === 'user' || user.roles.indexOf('user') >= 0) {
+    const enrollToken = url.split('/enroll-account/')[1];
+
+    return `${
+      Meteor.settings.public.subdomains.app
+    }/enroll-account/${enrollToken}`;
+  }
+
+  return url;
 };

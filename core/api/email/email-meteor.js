@@ -7,6 +7,7 @@ import {
   defaultFrom,
   emailFooter,
   getEmailContent,
+  getEnrollmentEmail,
 } from './email-defaults';
 
 // Meteor default emails
@@ -78,6 +79,11 @@ Accounts.emailTemplates.enrollAccount = {
     const { title, body, CTA } = getEmailContent('enrollAccount');
     let result;
 
+    const enrollUrl = getEnrollmentEmail(user, url);
+
+    console.log('creating enroll account email..:', user);
+    console.log('url: ', urlWithoutHash);
+
     try {
       result = Mandrill.templates.render({
         template_name: 'notification+CTA',
@@ -86,7 +92,7 @@ Accounts.emailTemplates.enrollAccount = {
           { name: 'title', content: title },
           { name: 'body', content: body },
           { name: 'CTA', content: CTA },
-          { name: 'CTA_URL', content: urlWithoutHash },
+          { name: 'CTA_URL', content: enrollUrl },
         ],
         metadata: [{ userId: user._id }],
       });

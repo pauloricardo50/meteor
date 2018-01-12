@@ -27,6 +27,7 @@ import {
 } from 'core/containers/UserContainers';
 import AccountPage from '../../ui/pages/AccountPage';
 import AddRequestPage from '../../ui/pages/AddRequestPage';
+import PasswordResetpage from '../../ui/pages/PasswordResetPage';
 
 const AppRouter = () => (
   <BaseRouter
@@ -78,6 +79,7 @@ const AppRouter = () => (
           <Route path="/requests/:requestId" component={DashboardPage} />
           <Route path="/compare" component={ComparePage} />
           <Route path="/add-request/:requestId" component={AddRequestPage} />
+          <Route path="/enroll-account/:token" component={PasswordResetpage} />
           <Route exact path="/" component={AppPage} />
           <Route component={NotFound} />
         </Switch>

@@ -5,7 +5,6 @@ import 'core/api/api';
 import 'core/api/api-server';
 import jc from 'core/api/server/jobs/jobs';
 import '../accounts-config';
-import './accounts-server-config';
 import './kadira-dev.js';
 import setupAuth from './http-auth';
 import setupMandrill from 'core/api/email/server/email-config';
