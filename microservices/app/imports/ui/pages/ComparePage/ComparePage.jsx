@@ -5,7 +5,7 @@ import Button from 'core/components/Button';
 
 import { T } from 'core/components/Translation';
 import Comparator from './Comparator';
-import GoogleMapContainer from '/imports/ui/components/general/GoogleMapContainer';
+import GoogleMapContainer from '/imports/ui/components/GoogleMapContainer';
 import cleanMethod from 'core/api/cleanMethods';
 
 const styles = {

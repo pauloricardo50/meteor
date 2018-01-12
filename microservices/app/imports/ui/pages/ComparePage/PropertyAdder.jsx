@@ -5,8 +5,8 @@ import Button from 'core/components/Button';
 import Dialog from 'core/components/Material/Dialog';
 
 import TextInput from 'core/components/TextInput';
-import GoogleMapsAutocomplete from '/imports/ui/components/general/GoogleMapsAutocomplete';
-import GoogleMap from '/imports/ui/components/general/GoogleMap';
+import GoogleMapsAutocomplete from '/imports/ui/components/GoogleMapsAutocomplete';
+import GoogleMap from '/imports/ui/components/GoogleMap';
 
 import { T } from 'core/components/Translation';
 

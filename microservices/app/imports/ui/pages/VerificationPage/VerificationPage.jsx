@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import cleanMethod from 'core/api/cleanMethods';
 
 import { isDemo } from 'core/utils/browserFunctions';
-import ProcessPage from '/imports/ui/components/general/ProcessPage';
+import ProcessPage from '/imports/ui/components/ProcessPage';
 import track from 'core/utils/analytics';
 
 import VerificationStart from './VerificationStart';

@@ -6,7 +6,7 @@ import { getBorrowerInfoArray } from 'core/arrays/BorrowerFormArray';
 import { disableForms } from 'core/utils/requestFunctions';
 
 import { isDemo } from 'core/utils/browserFunctions';
-import FakeBorrowerCompleter from '/imports/ui/components/general/FakeBorrowerCompleter';
+import FakeBorrowerCompleter from '/imports/ui/components/FakeBorrowerCompleter';
 import { T } from 'core/components/Translation';
 
 const Info = (props) => {

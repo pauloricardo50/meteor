@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { T } from 'core/components/Translation';
-import ProcessPage from '/imports/ui/components/general/ProcessPage';
+import ProcessPage from '/imports/ui/components/ProcessPage';
 import Info from './Info';
 import Finance from './Finance';
 import Files from './Files';

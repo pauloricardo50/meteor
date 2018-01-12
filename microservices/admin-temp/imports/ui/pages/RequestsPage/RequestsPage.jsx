@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import AllRequestsTable from '/imports/ui/components/admin/AllRequestsTable';
+import AllRequestsTable from '/imports/ui/components/AllRequestsTable';
 
 const AdminRequestsPage = props => (
   <section className="mask1">

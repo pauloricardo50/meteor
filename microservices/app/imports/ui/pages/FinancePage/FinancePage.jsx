@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Page from '/imports/ui/components/general/Page';
+import Page from '/imports/ui/components/Page';
 import AmortizationTool from './AmortizationTool';
 
 const styles = {

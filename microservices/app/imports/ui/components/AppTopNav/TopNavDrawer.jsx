@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import IconButton from '../IconButton';
 import Drawer from 'material-ui/Drawer';
-import SideNavUser from '/imports/ui/components/general/SideNavUser';
+import SideNavUser from '/imports/ui/components/SideNavUser';
 
 import DrawerHeader from './DrawerHeader';
 

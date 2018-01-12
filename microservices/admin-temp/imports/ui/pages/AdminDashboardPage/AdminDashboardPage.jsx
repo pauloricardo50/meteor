@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import MetricsTriple from 'core/components/MetricsTriple';
-import ActionsTable from '/imports/ui/components/admin/ActionsTable';
+import ActionsTable from '/imports/ui/components/ActionsTable';
 
 const getUserMetrics = (props) => {
   const d1 = new Date();

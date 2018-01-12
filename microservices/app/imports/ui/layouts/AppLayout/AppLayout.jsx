@@ -10,7 +10,7 @@ import track from 'core/utils/analytics';
 import { isApp, isAdmin, isPartner } from 'core/utils/browserFunctions';
 import Navs from './Navs';
 
-// import UserJoyride from '/imports/ui/components/general/UserJoyride';
+// import UserJoyride from '/imports/ui/components/UserJoyride';
 
 const allowedRoutesWithoutRequest = [
   '/',

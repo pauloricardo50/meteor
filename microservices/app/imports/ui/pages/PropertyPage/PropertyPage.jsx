@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import ProcessPage from '/imports/ui/components/general/ProcessPage';
+import ProcessPage from '/imports/ui/components/ProcessPage';
 import AutoForm from 'core/components/AutoForm';
 import PropertyFormArray from 'core/arrays/PropertyFormArray';
 import UploaderArray from 'core/components/UploaderArray';
@@ -12,7 +12,7 @@ import {
 } from 'core/utils/requestFunctions';
 
 import { isDemo } from 'core/utils/browserFunctions';
-import FakePropertyCompleter from '/imports/ui/components/general/FakePropertyCompleter';
+import FakePropertyCompleter from '/imports/ui/components/FakePropertyCompleter';
 import { T } from 'core/components/Translation';
 
 const styles = {

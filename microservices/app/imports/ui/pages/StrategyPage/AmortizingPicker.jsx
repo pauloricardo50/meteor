@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { T } from 'core/components/Translation';
-import StrategyChoices from '/imports/ui/components/general/StrategyChoices';
+import StrategyChoices from '/imports/ui/components/StrategyChoices';
 
 // import AmortizingSummary from './AmortizingSummary';
 

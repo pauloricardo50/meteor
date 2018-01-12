@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { getLoanValue } from 'core/utils/requestFunctions';
-import StrategyChoices from '/imports/ui/components/general/StrategyChoices';
+import StrategyChoices from '/imports/ui/components/StrategyChoices';
 import { T } from 'core/components/Translation';
 import TranchePicker from './TranchePicker';
 import LenderSummary from './LenderSummary';

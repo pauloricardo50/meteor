@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import cleanMethod from 'core/api/cleanMethods';
-import ProcessPage from '/imports/ui/components/general/ProcessPage';
+import ProcessPage from '/imports/ui/components/ProcessPage';
 import RankStrategy from './RankStrategy';
 import AmortizingPicker from './AmortizingPicker';
 import InsuranceStrategy from './InsuranceStrategy';

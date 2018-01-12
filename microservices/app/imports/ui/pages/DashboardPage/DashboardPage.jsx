@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Page from '/imports/ui/components/general/Page';
+import Page from '/imports/ui/components/Page';
 import NewRequestModal from './NewRequestModal';
 import AcceptClosingModal from './AcceptClosingModal';
 import DashboardContent from './DashboardContent';

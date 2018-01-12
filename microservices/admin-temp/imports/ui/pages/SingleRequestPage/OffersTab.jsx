@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import AdminNewOffer from '/imports/ui/components/admin/AdminNewOffer';
+import AdminNewOffer from '/imports/ui/components/AdminNewOffer';
 import ConfirmMethod from './ConfirmMethod';
 import { deleteOffer } from 'core/api/offers/methods';
 import ConditionsButton from 'core/components/ConditionsButton';

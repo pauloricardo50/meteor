@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
 
-import FakeOfferAdder from '/imports/ui/components/general/FakeOfferAdder';
+import FakeOfferAdder from '/imports/ui/components/FakeOfferAdder';
 import { T } from 'core/components/Translation';
 
 import InterestRanges from './InterestRanges';

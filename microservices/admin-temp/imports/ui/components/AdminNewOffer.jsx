@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Dialog from 'core/components/Material/Dialog';
 import Button from 'core/components/Button';
 
-import OfferForm from '/imports/ui/components/admin/OfferForm';
+import OfferForm from '/imports/ui/components/OfferForm';
 
 const styles = {
   backDrop: {

@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { LoadingComponent } from 'core/components/Loading';
 
-import ProcessPage from '/imports/ui/components/general/ProcessPage';
+import ProcessPage from '/imports/ui/components/ProcessPage';
 import AuctionStart from './AuctionStart';
 import Auction from './Auction';
 import AuctionResults from './AuctionResults';

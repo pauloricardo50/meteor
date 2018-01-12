@@ -4,8 +4,8 @@ import merge from 'lodash/merge';
 
 import cleanMethod from 'core/api/cleanMethods';
 
-import LoadingButton from '/imports/ui/components/general/LoadingButton';
-import ProcessPage from '/imports/ui/components/general/ProcessPage';
+import LoadingButton from '/imports/ui/components/LoadingButton';
+import ProcessPage from '/imports/ui/components/ProcessPage';
 import { T } from 'core/components/Translation';
 import track from 'core/utils/analytics';
 import { toNumber } from 'core/utils/conversionFunctions';

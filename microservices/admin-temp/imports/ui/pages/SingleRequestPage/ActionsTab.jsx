@@ -10,8 +10,8 @@ import {
 } from 'core/api/loanrequests/methods';
 import DialogSimple from 'core/components/DialogSimple';
 import DropzoneArray from 'core/components/DropzoneArray';
-import ClosingForm from '/imports/ui/components/admin/ClosingForm';
-import ClosingStepsForm from '/imports/ui/components/admin/ClosingStepsForm';
+import ClosingForm from '/imports/ui/components/ClosingForm';
+import ClosingStepsForm from '/imports/ui/components/ClosingStepsForm';
 import downloadPDF from 'core/utils/download-pdf';
 import ConfirmMethod from './ConfirmMethod';
 

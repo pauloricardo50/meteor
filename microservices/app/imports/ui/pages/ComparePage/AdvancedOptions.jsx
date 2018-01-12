@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import DialogSimple from 'core/components/DialogSimple';
-import Slider from '/imports/ui/components/general/Slider';
+import Slider from '/imports/ui/components/Slider';
 import RadioButtons from 'core/components/RadioButtons';
 import { T } from 'core/components/Translation';
 

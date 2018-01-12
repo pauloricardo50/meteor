@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import SummaryComponent from '/imports/ui/components/general/SummaryComponent';
+import SummaryComponent from '/imports/ui/components/SummaryComponent';
 import { T } from 'core/components/Translation';
-import Logismata from '/imports/ui/components/general/Logismata';
+import Logismata from '/imports/ui/components/Logismata';
 
 import AmortizationCalculator from './AmortizationCalculator';
 
