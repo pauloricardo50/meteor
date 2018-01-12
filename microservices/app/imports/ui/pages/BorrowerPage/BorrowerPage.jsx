@@ -8,7 +8,7 @@ import ProcessPage from '/imports/ui/components/ProcessPage';
 import Info from './Info';
 import Finance from './Finance';
 import Files from './Files';
-import Header from './Header';
+import BorrowerHeader from './BorrowerHeader';
 
 export default class BorrowerPage extends Component {
   constructor(props) {
@@ -46,7 +46,7 @@ export default class BorrowerPage extends Component {
     return (
       <ProcessPage {...this.props} stepNb={1} id={this.state.tab}>
         <section className="mask1 borrower-page">
-          <Header {...this.props} />
+          <BorrowerHeader {...this.props} />
 
           {this.getContent()}
         </section>

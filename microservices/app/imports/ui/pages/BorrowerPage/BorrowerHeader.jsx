@@ -10,7 +10,7 @@ import Progress from './Progress';
 export const getLink = (tab, borrowerId, pathname) =>
   `${pathname.split('borrowers/')[0]}borrowers/${borrowerId}/${tab}`;
 
-const Header = ({ borrowers, match, history }) => {
+const BorrowerHeader = ({ borrowers, match, history }) => {
   const { tab, borrowerId } = match.params;
   const { pathname } = history.location;
 
@@ -46,10 +46,10 @@ const Header = ({ borrowers, match, history }) => {
   );
 };
 
-Header.propTypes = {
+BorrowerHeader.propTypes = {
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   match: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default Header;
+export default BorrowerHeader;
