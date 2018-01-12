@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
 
-import SideNavList from './SideNavList';
+import SideNavList from './SideNavList.jsx';
 
 const adminLinks = [
   {
@@ -40,10 +40,10 @@ const partnerLinks = [
   },
 ];
 
-const SideNav = (props) => {
+const SideNav = ({ type, history }) => {
   let links = [];
 
-  switch (props.type) {
+  switch (type) {
     case 'admin':
       links = adminLinks;
       break;
@@ -57,7 +57,7 @@ const SideNav = (props) => {
   // never hide sidenav for admins
   const classes = classnames({
     'side-nav': true,
-    'hidden-xs': props.type !== 'admin',
+    'hidden-xs': type !== 'admin',
   });
 
   return (
@@ -71,7 +71,7 @@ const SideNav = (props) => {
       <div className="logout text-center">
         <Button
           label="Déconnexion"
-          onClick={() => Meteor.logout(() => props.history.push('/login'))}
+          onClick={() => Meteor.logout(() => history.push('/login'))}
           icon={<Icon type="powerOff" />}
         />
       </div>
