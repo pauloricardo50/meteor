@@ -29,6 +29,13 @@ Meteor.methods({
 
     return true;
   },
+  addBorrower({ requestId }) {
+    const newBorrowerId = Borrowers.insert({ userId: Meteor.userId() });
+
+    return LoanRequests.update(requestId, {
+      $push: { borrowers: newBorrowerId },
+    });
+  },
 });
 
 export const downloadPDF = new ValidatedMethod({

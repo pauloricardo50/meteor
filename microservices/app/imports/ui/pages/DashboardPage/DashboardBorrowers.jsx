@@ -7,23 +7,21 @@ import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
 import { getBorrowerCompletion } from 'core/utils/borrowerFunctions';
 import DashboardItem from './DashboardItem';
+import BorrowerAdder from '../../components/BorrowerAdder';
 
-const DashboardBorrowers = props => (
+const DashboardBorrowers = ({ borrowers, loanRequest }) => (
   <DashboardItem
     className="dashboard-list"
     title={
-      <T
-        id="DashboardBorrowers.title"
-        values={{ count: props.borrowers.length }}
-      />
+      <T id="DashboardBorrowers.title" values={{ count: borrowers.length }} />
     }
   >
-    {props.borrowers.map((b, i) => {
+    {borrowers.map((b, i) => {
       const percent = getBorrowerCompletion(b);
 
       return (
         <Link
-          to={`/requests/${props.loanRequest._id}/borrowers/${b._id}/personal`}
+          to={`/requests/${loanRequest._id}/borrowers/${b._id}/personal`}
           key={b._id}
           className="link"
           onClick={() => track('clicked dashboard borrower', {})}
@@ -57,6 +55,9 @@ const DashboardBorrowers = props => (
         </Link>
       );
     })}
+    {borrowers.length === 1 && (
+      <BorrowerAdder requestId={loanRequest._id} style={{ marginTop: 8 }} />
+    )}
   </DashboardItem>
 );
 

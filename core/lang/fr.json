@@ -24,6 +24,7 @@
 
   "Forms.citizenship": "Nationalité",
   "Forms.citizenship.placeholder": "Français, Allemand, Italien",
+  "BorrowerAdder.label": "+ Ajouter un 2e emprunteur",
 
   "ActionsTable.requestName": "Projet",
   "AddRequestPage.logIntoOtherAccount": "Utiliser un autre compte",
