@@ -29,7 +29,6 @@ export function userRequestsComposer(props, onData) {
 export function userBorrowersComposer(props, onData) {
   if (Meteor.subscribe('borrowers').ready()) {
     const borrowers = Borrowers.find({}).fetch();
-    console.log('borrower container:', borrowers);
     onData(null, { borrowers });
   }
 }
