@@ -62,7 +62,7 @@ const SideNav = (props) => {
 
   return (
     <nav className={classes}>
-      <Link to="/home" className="logo">
+      <Link to="/" className="logo">
         <img src="/img/logo_black.svg" alt="e-Potek" />
       </Link>
 
@@ -71,7 +71,7 @@ const SideNav = (props) => {
       <div className="logout text-center">
         <Button
           label="Déconnexion"
-          onClick={() => Meteor.logout(() => props.history.push('/home'))}
+          onClick={() => Meteor.logout(() => props.history.push('/login'))}
           icon={<Icon type="powerOff" />}
         />
       </div>

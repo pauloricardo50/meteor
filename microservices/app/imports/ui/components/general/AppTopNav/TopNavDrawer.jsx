@@ -7,7 +7,7 @@ import SideNavUser from '/imports/ui/components/general/SideNavUser';
 
 import DrawerHeader from './DrawerHeader';
 
-const TopNavDrawer = props => {
+const TopNavDrawer = (props) => {
   const { drawerState, toggleDrawer, handleClickLink } = props;
   return (
     <div className="menu-button">

@@ -12,8 +12,14 @@ import { T } from '../Translation';
 import TopNavDropdown from './TopNavDropdown';
 // import TopNavDrawer from './TopNavDrawer';
 
-const TopNav = props => {
-  const { history, currentUser, loanRequests, appChildren } = props;
+const TopNav = (props) => {
+  const {
+    history,
+    currentUser,
+    loanRequests,
+    appChildren,
+    public: isPublic,
+  } = props;
   const isApp = history && history.location.pathname.slice(0, 4) === '/';
 
   const showDrawer = isApp && loanRequests.length > 0;
@@ -29,7 +35,7 @@ const TopNav = props => {
 
         <div className="logo">
           <Link
-            to="/home"
+            to={isPublic ? '/home' : '/'}
             className="link"
             onClick={() => track('TopNav - clicked logo', {})}
           >
