@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { extractOffers } from 'core/utils/offerFunctions';
 import cleanMethod from 'core/api/cleanMethods';
-import ConditionsButton from '/imports/ui/components/general/ConditionsButton';
+import ConditionsButton from 'core/components/ConditionsButton';
 import { T, IntlNumber } from 'core/components/Translation';
 import Select from 'core/components/Select';
 import Offer from './Offer';

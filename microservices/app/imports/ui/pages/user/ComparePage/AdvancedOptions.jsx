@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import DialogSimple from 'core/components/DialogSimple';
 import Slider from '/imports/ui/components/general/Slider';
-import RadioButtons from '/imports/ui/components/general/RadioButtons';
+import RadioButtons from 'core/components/RadioButtons';
 import { T } from 'core/components/Translation';
 
 import FieldToggles from './FieldToggles';

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Tab from 'react-bootstrap/lib/Tab';
 import Tabs from 'react-bootstrap/lib/Tabs';
 
-import UploaderArray from '/imports/ui/components/general/UploaderArray';
+import UploaderArray from 'core/components/UploaderArray';
 
 import { requestFiles, borrowerFiles } from 'core/api/files/files';
 import { filesPercent } from 'core/arrays/steps';

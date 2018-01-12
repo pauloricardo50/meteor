@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import UploaderArray from '/imports/ui/components/general/UploaderArray';
+import UploaderArray from 'core/components/UploaderArray';
 import { borrowerFiles } from 'core/api/files/files';
-import RadioInput from '/imports/ui/components/general/AutoForm/RadioInput';
+import RadioInput from 'core/components/AutoForm/RadioInput';
 import { T } from 'core/components/Translation';
 import { disableForms } from 'core/utils/requestFunctions';
 

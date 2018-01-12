@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
-import Tabs from '/imports/ui/components/general/Tabs';
+import Tabs from 'core/components/Tabs';
 import OverviewTab from './OverviewTab';
 import OffersTab from './OffersTab';
 import ActionsTab from './ActionsTab';
@@ -21,9 +21,7 @@ const getTabs = props => [
 
 const RequestTabs = (props) => {
   const tabs = getTabs(props);
-  const initialTab = tabs.findIndex(
-    tab => tab.id === queryString.parse(props.location.search).tab,
-  );
+  const initialTab = tabs.findIndex(tab => tab.id === queryString.parse(props.location.search).tab);
   return <Tabs initialIndex={initialTab} tabs={tabs} />;
 };
 

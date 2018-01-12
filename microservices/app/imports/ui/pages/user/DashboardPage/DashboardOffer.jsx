@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { T, IntlNumber } from 'core/components/Translation';
-import ConditionsButton from '/imports/ui/components/general/ConditionsButton';
+import ConditionsButton from 'core/components/ConditionsButton';
 import DashboardItem from './DashboardItem';
 
 const DashboardOffer = (props) => {

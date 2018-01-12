@@ -4,7 +4,7 @@ import { FormattedRelative } from 'react-intl';
 
 import Button from 'core/components/Button';
 import Select from 'core/components/Select';
-import Table from '/imports/ui/components/general/Table';
+import Table from 'core/components/Table';
 import { T } from 'core/components/Translation';
 
 import getActions from 'core/arrays/adminActions';
@@ -64,8 +64,7 @@ export default class ActionsTable extends Component {
     this.state.completed.forEach(actionId =>
       completeAction.callPromise({ id: actionId }).catch((e) => {
         console.log('error completing action:', e);
-      }),
-    );
+      }));
 
   render() {
     const actions = this.getFilteredActions();
@@ -101,9 +100,7 @@ export default class ActionsTable extends Component {
           onRowSelect={this.handleRowSelect}
           columnOptions={columnOptions}
           rows={actions.map((action) => {
-            const request = this.props.loanRequests.find(
-              r => r._id === action.requestId,
-            );
+            const request = this.props.loanRequests.find(r => r._id === action.requestId);
             const title = <T id={`adminAction.${action.type}`} />;
             const actionDetails = getActions.find(a => a.id === action.type);
 
@@ -118,10 +115,10 @@ export default class ActionsTable extends Component {
                   : '-',
                 request
                   ? () =>
-                    actionDetails.handleClick(
-                      request,
-                      this.props.history.push,
-                    )
+                      actionDetails.handleClick(
+                        request,
+                        this.props.history.push,
+                      )
                   : () => {},
               ],
             };

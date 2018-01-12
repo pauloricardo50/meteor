@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Checkbox from '/imports/ui/components/general/Checkbox';
+import Checkbox from 'core/components/Checkbox';
 
-import AutoForm from '/imports/ui/components/general/AutoForm';
+import AutoForm from 'core/components/AutoForm';
 import { getBorrowerFinanceArray } from 'core/arrays/BorrowerFormArray';
 import cleanMethod from 'core/api/cleanMethods';
 import Recap from 'core/components/Recap';

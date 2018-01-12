@@ -1,4 +1,4 @@
-import _AppLayout from '/imports/ui/layouts/AppLayout';
+import _AppLayout from '/imports/ui/layouts/AdminLayout';
 import _AdminDashboardPage from '/imports/ui/pages/admin/AdminDashboardPage';
 import _UsersPage from '/imports/ui/pages/admin/UsersPage';
 import _RequestsPage from '/imports/ui/pages/admin/RequestsPage';

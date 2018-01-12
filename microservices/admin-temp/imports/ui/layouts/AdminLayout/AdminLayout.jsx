@@ -33,6 +33,8 @@ const getRedirect = ({
     return `/login?path=${pathname}`;
   }
 
+  return false;
+
   if (userIsDev) {
     return false;
   }
@@ -61,11 +63,11 @@ const getShowSideNav = ({ location }) =>
 const AppLayout = (props) => {
   const { type, history, render } = props;
   const redirect = getRedirect(props);
-  const showSideNav = getShowSideNav(history);
+  const showSideNav = true; // getShowSideNav(history);
   const classes = classnames({
     'app-layout': true,
-    'always-side-nav': type === 'admin',
-    'no-nav': !showSideNav,
+    'always-side-nav': true,
+    // 'no-nav': !showSideNav,
   });
   const path = history.location.pathname;
   const isLogin = path.slice(0, 6) === '/login';

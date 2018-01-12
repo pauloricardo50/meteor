@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import moment from 'moment';
-import Table from '/imports/ui/components/general/Table';
+import Table from 'core/components/Table';
 
 const columnOptions = [
   { id: '#', style: { width: 32, textAlign: 'left' } },

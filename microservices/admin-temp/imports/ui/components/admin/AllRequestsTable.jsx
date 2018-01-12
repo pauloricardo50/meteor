@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import Table from '/imports/ui/components/general/Table';
+import Table from 'core/components/Table';
 import moment from 'moment';
 
 import { IntlNumber } from 'core/components/Translation';

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import MetricsTriple from '/imports/ui/components/general/MetricsTriple';
+import MetricsTriple from 'core/components/MetricsTriple';
 import ActionsTable from '/imports/ui/components/admin/ActionsTable';
 
 const getUserMetrics = (props) => {
@@ -17,13 +17,15 @@ const getUserMetrics = (props) => {
     },
     {
       name: 'Derniers 7 jours',
-      value: `+${props.users.filter(user => user.createdAt.getTime() >= d1)
-        .length}`,
+      value: `+${
+        props.users.filter(user => user.createdAt.getTime() >= d1).length
+      }`,
     },
     {
       name: 'Derniers 30 jours',
-      value: `+${props.users.filter(user => user.createdAt.getTime() >= d2)
-        .length}`,
+      value: `+${
+        props.users.filter(user => user.createdAt.getTime() >= d2).length
+      }`,
     },
   ];
 };

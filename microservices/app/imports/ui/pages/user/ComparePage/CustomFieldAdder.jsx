@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
 import Button from 'core/components/Button';
-import AutoComplete from '/imports/ui/components/general/AutoComplete';
+import AutoComplete from 'core/components/AutoComplete';
 import Select from 'core/components/Select';
 
 import { injectIntl } from 'react-intl';
@@ -74,7 +74,9 @@ class CustomFieldAdder extends Component {
   };
 
   render() {
-    const { name, type: currentType, randomSuggestions, open } = this.state;
+    const {
+      name, type: currentType, randomSuggestions, open,
+    } = this.state;
     const f = this.props.intl.formatMessage;
 
     return (
@@ -100,13 +102,13 @@ class CustomFieldAdder extends Component {
                 label={<T id="CustomFieldAdder.name" />}
                 value={name}
                 onChange={event =>
-                  this.handleChange('name', event.target.value || '')}
+                  this.handleChange('name', event.target.value || '')
+                }
                 onSelect={({ type, label }) => {
                   this.handleChange('type', type);
                   this.handleChange('name', label);
                   Meteor.defer(() =>
-                    this.setState({ randomSuggestions: shuffle(suggestions) }),
-                  );
+                    this.setState({ randomSuggestions: shuffle(suggestions) }));
                 }}
                 suggestions={randomSuggestions.map(suggestion => ({
                   label: f({ id: `CustomFieldAdder.${suggestion.id}` }),

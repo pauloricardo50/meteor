@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import Button from 'core/components/Button';
-import Checkbox from '/imports/ui/components/general/Checkbox';
+import Checkbox from 'core/components/Checkbox';
 import TextInput from 'core/components/TextInput';
 
 import { toMoney, toNumber } from 'core/utils/conversionFunctions';

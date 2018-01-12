@@ -2,13 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import {
-  Uploader,
-  FileStatusIcon,
-} from '/imports/ui/components/general/UploaderArray';
+import { Uploader, FileStatusIcon } from 'core/components/UploaderArray';
 
 const ClosingItem = ({ step, loanRequest, disabled }) => {
-  const { type, title, description, status, error, id } = step;
+  const {
+    type, title, description, status, error, id,
+  } = step;
 
   if (type === 'upload') {
     return (

@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import TextInput from 'core/components/TextInput';
-import DateInput from '/imports/ui/components/general/DateInput';
-import RadioButtons from '/imports/ui/components/general/RadioButtons';
+import DateInput from 'core/components/DateInput';
+import RadioButtons from 'core/components/RadioButtons';
 
 const styles = {
   field: {
@@ -12,7 +12,9 @@ const styles = {
 };
 
 const CompareColumnEditingField = (props) => {
-  const { field, property, parentState, onChange } = props;
+  const {
+    field, property, parentState, onChange,
+  } = props;
   let value;
 
   if (field.custom) {

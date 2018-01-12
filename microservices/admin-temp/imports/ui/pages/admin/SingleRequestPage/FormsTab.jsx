@@ -7,7 +7,7 @@ import get from 'lodash/get';
 import Toggle from 'core/components/Material/Toggle';
 import Select from 'core/components/Select';
 
-import AutoForm from '/imports/ui/components/general/AutoForm';
+import AutoForm from 'core/components/AutoForm';
 
 import PropertyFormArray from 'core/arrays/PropertyFormArray';
 import {
@@ -160,18 +160,14 @@ const getPercent = (request, borrowers) => {
   ];
 
   borrowers.forEach((b) => {
-    percentages.push(
-      reduceToPercent(
-        getBorrowerFinanceArray(borrowers, b._id),
-        b.adminValidation,
-      ),
-    );
-    percentages.push(
-      reduceToPercent(
-        getBorrowerInfoArray(borrowers, b._id),
-        b.adminValidation,
-      ),
-    );
+    percentages.push(reduceToPercent(
+      getBorrowerFinanceArray(borrowers, b._id),
+      b.adminValidation,
+    ));
+    percentages.push(reduceToPercent(
+      getBorrowerInfoArray(borrowers, b._id),
+      b.adminValidation,
+    ));
   });
 
   // const arr = getBorrowerFinanceArray(borrowers, borrowers[0]._id)

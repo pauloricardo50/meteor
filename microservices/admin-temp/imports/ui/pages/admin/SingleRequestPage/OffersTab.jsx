@@ -5,7 +5,7 @@ import moment from 'moment';
 import AdminNewOffer from '/imports/ui/components/admin/AdminNewOffer';
 import ConfirmMethod from './ConfirmMethod';
 import { deleteOffer } from 'core/api/offers/methods';
-import ConditionsButton from '/imports/ui/components/general/ConditionsButton';
+import ConditionsButton from 'core/components/ConditionsButton';
 import { toMoney } from 'core/utils/conversionFunctions';
 import { IntlNumber } from 'core/components/Translation';
 
@@ -75,8 +75,7 @@ export default class OffersTab extends Component {
                   />
                 </span>
                 <ul className="overview">
-                  {Object.keys(o.standardOffer).map(
-                    key =>
+                  {Object.keys(o.standardOffer).map(key =>
                       key.includes('interest') &&
                       !!o.standardOffer[key] && (
                         <li key={key}>
@@ -88,8 +87,7 @@ export default class OffersTab extends Component {
                             />
                           </span>
                         </li>
-                      ),
-                  )}
+                      ))}
                 </ul>
                 {o.counterparts.length > 0 && (
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -108,8 +106,7 @@ export default class OffersTab extends Component {
                       />
                     </span>
                     <ul className="overview">
-                      {Object.keys(o.counterpartOffer).map(
-                        key =>
+                      {Object.keys(o.counterpartOffer).map(key =>
                           key.includes('interest') &&
                           !!o.counterpartOffer[key] && (
                             <li key={key}>
@@ -121,8 +118,7 @@ export default class OffersTab extends Component {
                                 />
                               </span>
                             </li>
-                          ),
-                      )}
+                          ))}
                     </ul>
                   </div>
                 )}

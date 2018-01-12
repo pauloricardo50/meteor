@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import ProcessPage from '/imports/ui/components/general/ProcessPage';
-import AutoForm from '/imports/ui/components/general/AutoForm';
+import AutoForm from 'core/components/AutoForm';
 import PropertyFormArray from 'core/arrays/PropertyFormArray';
-import UploaderArray from '/imports/ui/components/general/UploaderArray';
+import UploaderArray from 'core/components/UploaderArray';
 import { requestFiles } from 'core/api/files/files';
 import {
   disableForms,

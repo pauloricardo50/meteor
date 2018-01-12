@@ -9,7 +9,7 @@ import {
   deleteRequest,
 } from 'core/api/loanrequests/methods';
 import DialogSimple from 'core/components/DialogSimple';
-import DropzoneArray from '/imports/ui/components/general/DropzoneArray';
+import DropzoneArray from 'core/components/DropzoneArray';
 import ClosingForm from '/imports/ui/components/admin/ClosingForm';
 import ClosingStepsForm from '/imports/ui/components/admin/ClosingStepsForm';
 import downloadPDF from 'core/utils/download-pdf';
