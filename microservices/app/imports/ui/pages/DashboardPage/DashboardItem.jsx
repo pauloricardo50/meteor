@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from 'core/components/Translation';
-import DropdownMenu from 'core/components/DropdownMenu';
+import DashboardMenu from './DashboardMenu';
 
 const styles = {
   div: {
@@ -16,34 +15,22 @@ const styles = {
   },
 };
 
-const DashboardItem = props => (
+const DashboardItem = ({
+  className, style, title, menuActions, children,
+}) => (
   <div
-    className={`mask1 grid-item ${props.className}`}
-    style={{ ...styles.div, ...props.style }}
+    className={`mask1 grid-item ${className}`}
+    style={{ ...styles.div, ...style }}
   >
-    {props.title && (
+    {title && (
       <h4 className="fixed-size bold" style={{ marginTop: 0 }}>
-        {props.title}
+        {title}
       </h4>
     )}
 
-    {props.menuActions.length > 0 && (
-      <DropdownMenu
-        style={styles.icon}
-        iconType="more"
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-        targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-        options={props.menuActions.map(a => ({
-          ...a,
-          onClick: a.handleClick,
-          link: !!a.link,
-          to: a.link,
-          label: <T id={`DashboardMenu.${a.id}`} />,
-        }))}
-      />
-    )}
+    {menuActions.length > 0 && <DashboardMenu menuActions={menuActions} />}
 
-    {props.children}
+    {children}
   </div>
 );
 
