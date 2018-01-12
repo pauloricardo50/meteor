@@ -6,8 +6,9 @@ const fs = require('fs');
 
 const config = {
   // Where the lang directory is stored with the complete list of strings
+  // for each language
   pathToLangDir: '../core',
-  // An array of languages to add
+  // An array of languages to look for
   languages: ['fr'],
   // The list of directories to scan and create language files for
   directories: [
@@ -20,6 +21,11 @@ const config = {
         'Forms',
         'files',
         'offer',
+        'ContactButton',
+        'ConditionsButton',
+        'Uploader',
+        'FileAdder',
+        'ArrayInput',
       ],
     },
     { path: '../microservices/www', exceptions: ['Start2Form'] },
@@ -35,6 +41,10 @@ const config = {
         'files',
         'offer',
         'Table',
+        'ConditionsButton',
+        'Uploader',
+        'FileAdder',
+        'ArrayInput',
       ],
     },
   ],

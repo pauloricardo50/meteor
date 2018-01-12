@@ -76,11 +76,7 @@ const AppRouter = () => (
           <Route path="/requests/:requestId/closing" component={ClosingPage} />
           <Route path="/requests/:requestId/files" component={FilesPage} />
           <Route path="/requests/:requestId" component={DashboardPage} />
-          <Route
-            path="/compare"
-            component={ComparePage}
-            someProp="hello world"
-          />
+          <Route path="/compare" component={ComparePage} />
           <Route path="/add-request/:requestId" component={AddRequestPage} />
           <Route exact path="/" component={AppPage} />
           <Route component={NotFound} />

@@ -11,6 +11,7 @@ import cleanMethod from 'core/api/cleanMethods';
 const styles = {
   initial: {
     display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     margin: '100px 0',
@@ -32,12 +33,14 @@ export default class ComparePage extends Component {
     if (!comparator) {
       return (
         <section style={styles.initial}>
-          <Button
+          {/* <Button
             raised
             primary
             label={<T id="ComparePage.start" />}
             onClick={this.handleStart}
-          />
+          /> */}
+          <h2>Coming soon</h2>
+          <Button label="Retour" raised primary to="/" link />
         </section>
       );
     }
