@@ -59,11 +59,8 @@ const getDefaults = ({
 };
 
 const getSafeValue = (value, useMask) => {
-  console.log('getSafeValue!');
   if (useMask) {
-    console.log('useMask', value);
     if (value === null) {
-      console.log('value is null');
       return '';
     }
   }

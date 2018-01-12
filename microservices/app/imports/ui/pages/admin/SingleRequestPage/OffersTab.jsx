@@ -52,7 +52,8 @@ export default class OffersTab extends Component {
                       Ajoutée le {moment(o.createdAt).format('D MMM à H:mm')}
                     </small>
                   </h2>
-                  {(o.conditions.length > 0 || o.counterparts.length > 0) && (
+                  {((o.conditions && o.conditions.length > 0) ||
+                    (o.counterparts && o.counterparts.length > 0)) && (
                     <ConditionsButton
                       conditions={o.conditions}
                       counterparts={o.counterparts}
@@ -75,8 +76,7 @@ export default class OffersTab extends Component {
                   />
                 </span>
                 <ul className="overview">
-                  {Object.keys(o.standardOffer).map(
-                    key =>
+                  {Object.keys(o.standardOffer).map(key =>
                       key.includes('interest') &&
                       !!o.standardOffer[key] && (
                         <li key={key}>
@@ -88,8 +88,7 @@ export default class OffersTab extends Component {
                             />
                           </span>
                         </li>
-                      ),
-                  )}
+                      ))}
                 </ul>
                 {o.counterparts.length > 0 && (
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -108,8 +107,7 @@ export default class OffersTab extends Component {
                       />
                     </span>
                     <ul className="overview">
-                      {Object.keys(o.counterpartOffer).map(
-                        key =>
+                      {Object.keys(o.counterpartOffer).map(key =>
                           key.includes('interest') &&
                           !!o.counterpartOffer[key] && (
                             <li key={key}>
@@ -121,8 +119,7 @@ export default class OffersTab extends Component {
                                 />
                               </span>
                             </li>
-                          ),
-                      )}
+                          ))}
                     </ul>
                   </div>
                 )}
