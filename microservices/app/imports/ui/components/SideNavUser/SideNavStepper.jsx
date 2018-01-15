@@ -27,7 +27,9 @@ export default class SideNavStepper extends React.Component {
     ) {
       // Use defer to allow the other component to update Session before grabbing it here
       // Otherwise it is always one step behind when the stepNb changes
-      Meteor.defer(() => this.setState({ active: Session.get('stepNb') }));
+      const sessionStep = Session.get('stepNb');
+      console.log('getting session:', sessionStep);
+      Meteor.defer(() => this.setState({ active: sessionStep }));
 
       // Update server time when the user moves around, to make sure all
       // validation works fine
@@ -39,17 +41,26 @@ export default class SideNavStepper extends React.Component {
 
   handleClick = (i, isNavLink = false) => {
     if (this.state.active === i && !isNavLink) {
+      console.log('setting none active');
+      console.log(isNavLink);
       this.setState({ active: -1 });
     } else {
+      console.log(`setting active to ${i}`);
+      console.log(isNavLink);
+
       this.setState({ active: i });
     }
   };
 
   render() {
+    const { serverTime, active } = this.state;
     const steps = getSteps({
       ...this.props,
-      serverTime: this.state.serverTime,
+      serverTime,
     });
+
+    console.log('active state: ', active);
+
     return (
       <div className="side-stepper">
         <h5 className="fixed-size top-title">
@@ -61,7 +72,7 @@ export default class SideNavStepper extends React.Component {
               {...this.props}
               key={i}
               step={s}
-              active={this.state.active === i}
+              active={active === i}
               currentRequestStep={this.props.loanRequest.logic.step === i}
               handleClick={() => this.handleClick(i)}
             />

@@ -6,6 +6,7 @@ import NotFound from 'core/components/NotFound';
 
 import { getUserLocale, getFormats } from 'core/utils/localization';
 import messagesFR from '../../../lang/fr.json';
+import AppStore from '../../ui/components/AppStore';
 
 import {
   UserLayout,
@@ -34,6 +35,7 @@ const AppRouter = () => (
     locale={getUserLocale()}
     messages={messagesFR}
     formats={getFormats()}
+    WrapperComponent={AppStore}
   >
     <UserLayout
       type="app"

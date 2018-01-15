@@ -104,8 +104,6 @@ const TextInput = (props) => {
     finalPlaceholder = defaultPlaceholder;
   }
 
-  console.log('TextInput prop:', props);
-
   return (
     <FormControl
       error={error}

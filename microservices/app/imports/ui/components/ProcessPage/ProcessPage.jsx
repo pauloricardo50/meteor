@@ -38,18 +38,25 @@ export const getStepValues = (props) => {
   }
   const prevLink = prevStep && prevStep.link;
 
-  return { currentStep, index, length, nextLink, prevLink };
+  return {
+    currentStep,
+    index,
+    length,
+    nextLink,
+    prevLink,
+  };
 };
 
 class ProcessPage extends Component {
   componentDidMount() {
     this.setBarProps();
 
+    console.log('Setting session:', this.props.stepNb);
     Session.set('stepNb', this.props.stepNb);
   }
 
   componentWillUnmount() {
-    Session.set('stepNb', this.props.loanRequest.logic.step);
+    // Session.set('stepNb', this.props.loanRequest.logic.step);
   }
 
   setBarProps = () => {
@@ -60,11 +67,9 @@ class ProcessPage extends Component {
       ...values,
       status: this.props.loanRequest.status,
     };
-    DocHead.setTitle(
-      `${intl.formatMessage({
-        id: `steps.${this.barProps.currentStep.id}.title`,
-      })} | e-Potek`,
-    );
+    DocHead.setTitle(`${intl.formatMessage({
+      id: `steps.${this.barProps.currentStep.id}.title`,
+    })} | e-Potek`);
   };
 
   render() {
