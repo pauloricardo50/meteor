@@ -46,6 +46,7 @@ export default class ArrayInput extends Component {
           label: <T id={`Forms.${id}.${inputId}`} />,
           placeholder: `Forms.${id}.${inputId}.placeholder`,
           required: true,
+          disabled: this.props.disabled,
         },
       };
 

@@ -144,6 +144,7 @@ export default class TextInput extends Component {
     return (
       <div style={{ ...styles.div, ...style }}>
         <MyTextInput
+          {...otherProps}
           label={label}
           placeholder={placeholder}
           value={value}
@@ -160,7 +161,6 @@ export default class TextInput extends Component {
           style={{ width: '100%', ...style, marginBottom: 16 }}
           noValidate
           fullWidth
-          {...otherProps}
         />
         <ValidIcon
           saving={saving}

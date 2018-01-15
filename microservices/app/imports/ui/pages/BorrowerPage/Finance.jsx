@@ -81,25 +81,6 @@ const BorrowerFinancePage = (props) => {
         <Recap arrayName="borrower" borrower={borrower} />
       </div>
 
-      <div className="conditions mask2 primary-border">
-        <span>
-          <Checkbox
-            id="hasValidatedFinances"
-            value={borrower.logic.financeEthics}
-            label="Les informations entrées ci-dessous sont exhaustives et correctes"
-            style={styles.checkbox}
-            onChange={(_, isChecked) => handleCheck(_, isChecked, borrowerId)}
-            disabled={borrower.logic.hasValidatedFinances}
-          />
-        </span>
-        <LoadingButton
-          label="Valider mes finances"
-          handleClick={e => handleClick(e, borrowerId)}
-          disabled={!borrower.logic.financeEthics}
-          value={borrower.logic.hasValidatedFinances}
-        />
-      </div>
-
       <div className="description">
         <p>
           <T id="Forms.mandatory" />
@@ -114,8 +95,29 @@ const BorrowerFinancePage = (props) => {
         pushFunc="pushBorrowerValue"
         popFunc="popBorrowerValue"
         doc={borrower}
-        disabled={disableForms(props.loanRequest)}
+        disabled={
+          disableForms(props.loanRequest) || borrower.logic.hasValidatedFinances
+        }
       />
+
+      <div className="conditions mask2 primary-border">
+        <span>
+          <Checkbox
+            id="hasValidatedFinances"
+            value={borrower.logic.financeEthics}
+            label="Les informations entrées ci-dessus sont exhaustives et correctes"
+            style={styles.checkbox}
+            onChange={(_, isChecked) => handleCheck(_, isChecked, borrowerId)}
+            disabled={borrower.logic.hasValidatedFinances}
+          />
+        </span>
+        <LoadingButton
+          label="Valider mes finances"
+          handleClick={e => handleClick(e, borrowerId)}
+          disabled={!borrower.logic.financeEthics}
+          value={borrower.logic.hasValidatedFinances}
+        />
+      </div>
     </section>
   );
 };

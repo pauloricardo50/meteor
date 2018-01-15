@@ -13,12 +13,10 @@ const mapInput = (input) => {
 
   if (input.inputs) {
     // If there are nested inputs, give them an intlId too
-    intlSafeObject.inputs = input.inputs.map(
-      obj =>
-        (obj.id && obj.id.indexOf('.') > 0
-          ? { ...obj, intlId: obj.id.split('.')[1] }
-          : obj),
-    );
+    intlSafeObject.inputs = input.inputs.map(obj =>
+      (obj.id && obj.id.indexOf('.') > 0
+        ? { ...obj, intlId: obj.id.split('.')[1] }
+        : obj));
   }
 
   return intlSafeObject;
@@ -117,9 +115,10 @@ const getPropertyArray = (loanRequest, borrowers) => {
       component: 'ZipAutoComplete',
       componentProps: {
         savePath: 'property.',
-        initialValue: r.property.zipCode && r.property.city
-          ? `${r.property.zipCode} ${r.property.city}`
-          : '',
+        initialValue:
+          r.property.zipCode && r.property.city
+            ? `${r.property.zipCode} ${r.property.city}`
+            : '',
       },
     },
     {
@@ -166,7 +165,12 @@ const getPropertyArray = (loanRequest, borrowers) => {
       type: 'textInput',
       condition: r.property.style === 'villa',
     },
-    { id: 'property.roomCount', type: 'textInput', decimal: true, info: true },
+    {
+      id: 'property.roomCount',
+      type: 'textInput',
+      decimal: true,
+      info: true,
+    },
     {
       id: 'property.bathroomCount',
       type: 'textInput',
@@ -203,7 +207,12 @@ const getPropertyArray = (loanRequest, borrowers) => {
       condition: r.property.style === 'flat',
       info: true,
     },
-    { type: 'h3', id: 'propertyQuality', ignore: true, required: false },
+    {
+      type: 'h3',
+      id: 'propertyQuality',
+      ignore: true,
+      required: false,
+    },
     {
       id: 'property.cityPlacementQuality',
       type: 'radioInput',
@@ -233,7 +242,8 @@ const getPropertyArray = (loanRequest, borrowers) => {
     },
     {
       id: 'property.otherNotes',
-      type: 'textInputLarge',
+      type: 'textInput',
+      multiline: true,
       rows: 3,
       required: false,
     },

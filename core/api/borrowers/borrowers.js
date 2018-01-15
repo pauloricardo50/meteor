@@ -113,6 +113,7 @@ export const BorrowerSchema = new SimpleSchema({
   residencyPermit: {
     type: String,
     optional: true,
+    allowedValues: ['b', 'c', 'ci', 'f', 'g', 'l', 'n', 's', 'none'],
   },
   birthDate: {
     type: String,

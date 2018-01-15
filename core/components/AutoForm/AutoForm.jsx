@@ -54,8 +54,6 @@ const inputSwitch = (childProps, index, parentProps) => {
   switch (type) {
     case 'textInput':
       return <TextInput multiline={false} {...childProps} />;
-    case 'textInputLarge':
-      return <TextInput multiline {...childProps} style={styles.mediumWidth} />;
     case 'radioInput':
       return <RadioInput {...childProps} />;
     case 'selectFieldInput':

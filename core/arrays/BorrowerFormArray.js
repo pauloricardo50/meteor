@@ -70,8 +70,7 @@ export const getBorrowerInfoArray = (borrowers, id) => {
         {
           id: 'residencyPermit',
           type: 'selectFieldInput',
-          required: false,
-          options: ['b', 'c', 'ci', 'f', 'g', 'l', 'n', 's', 'other'],
+          options: ['b', 'c', 'ci', 'f', 'g', 'l', 'n', 's', 'none'],
         },
       ],
     },

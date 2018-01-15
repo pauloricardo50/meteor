@@ -14,7 +14,7 @@ const styles = {
   savingIcon: {
     position: 'absolute',
     top: 16,
-    right: -30,
+    right: -25,
   },
 };
 

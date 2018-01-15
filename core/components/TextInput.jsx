@@ -58,16 +58,6 @@ const getDefaults = ({
   }
 };
 
-const getSafeValue = (value, useMask) => {
-  if (useMask) {
-    if (value === null) {
-      return '';
-    }
-  }
-
-  return value;
-};
-
 const TextInput = (props) => {
   const {
     className,
@@ -114,6 +104,8 @@ const TextInput = (props) => {
     finalPlaceholder = defaultPlaceholder;
   }
 
+  console.log('TextInput prop:', props);
+
   return (
     <FormControl
       error={error}
@@ -126,17 +118,17 @@ const TextInput = (props) => {
         </InputLabel>
       )}
       <Input
+        {...otherProps}
         className={classes ? Object.values(classes) : ''}
         id={id}
         onChange={onChangeHandler}
         type="text"
         style={{ fontSize: 'inherit' }}
-        inputComponent={inputComponent || (showMask ? MaskedInput : undefined)}
+        inputComponent={showMask ? MaskedInput : inputComponent || undefined}
         inputProps={{
           ...inputProps, // Backwards compatible
           ...InputProps,
-          ...otherProps,
-          value: getSafeValue(value, !!mask),
+          value,
           placeholder: finalPlaceholder,
           noValidate: true,
           mask: mask || undefined,

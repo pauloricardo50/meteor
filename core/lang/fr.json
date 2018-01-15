@@ -514,7 +514,7 @@
   "Forms.residencyPermit.g": "Permis G",
   "Forms.residencyPermit.l": "Permis L",
   "Forms.residencyPermit.n": "Permis N",
-  "Forms.residencyPermit.other": "Autre",
+  "Forms.residencyPermit.none": "Pas de permis",
   "Forms.residencyPermit.s": "Permis S",
   "Forms.roomCount": "Nb. de chambres",
   "Forms.roomCount.info": "Chambres à coucher",
