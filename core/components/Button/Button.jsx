@@ -32,7 +32,7 @@ const Button = (props) => {
     <MuiButton
       {...childProps}
       color={getColor(props)}
-      component={props.link ? Link : null}
+      component={props.component || (props.link ? Link : null)}
     >
       {props.icon}
       {props.icon && <span style={{ height: '100%', width: 8 }} />}

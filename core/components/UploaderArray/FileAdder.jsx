@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
+import Button from 'core/components/Button';
 
 const styles = {
   input: {
@@ -31,9 +32,10 @@ const FileAdder = ({ docId, id, handleAddFiles }) => (
       // This piece of shit is important or inputs will get mixed up...
       key={docId + id}
     />
-    <label htmlFor={id} style={styles.label}>
+    {/* Use label component, so that the htmlFor triggers the file input */}
+    <Button htmlFor={id} style={styles.label} primary component="label">
       <T id="FileAdder.title" />
-    </label>
+    </Button>
   </a>
 );
 
