@@ -20,7 +20,7 @@ const styles = {
 const handleChange = (value, toggleDrawer, history) => {
   if (value === 0) {
     track('RequestSelector - clicked on new request', {});
-    window.location.replace(`${Meteor.settings.public.subdomains.www}/start1`);
+    window.location.replace(`http://${Meteor.settings.public.subdomains.www}/start1`);
   } else {
     track('RequestSelector - switched to request', { requestId: value });
     toggleDrawer();

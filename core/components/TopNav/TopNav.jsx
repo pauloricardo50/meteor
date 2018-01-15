@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Meteor } from 'meteor/meteor';
 
 import Toolbar from 'material-ui/Toolbar/Toolbar';
 
@@ -50,11 +51,12 @@ const TopNav = (props) => {
           ) : (
             <Button
               label={<T id="TopNav.login" />}
-              link
-              to="/login"
               primary
               dense
-              onClick={() => track('TopNav - clicked login', {})}
+              onClick={() => {
+                track('TopNav - clicked login', {});
+                window.location.replace(`http://${Meteor.settings.public.subdomains.app}/login`);
+              }}
             />
           )}
         </div>
