@@ -7,7 +7,7 @@ import { T } from 'core/components/Translation';
 import { getLocations } from '/imports/js/helpers/APIs';
 import cleanMethod from 'core/api/cleanMethods';
 
-import SavingIcon from 'core/components/AutoForm/SavingIcon';
+import ValidIcon from 'core/components/AutoForm/ValidIcon';
 import AutoComplete from '../AutoComplete';
 
 const styles = {
@@ -28,7 +28,7 @@ class ZipAutoComplete extends Component {
       searchText: this.props.inputProps.initialValue || '',
       data: [],
       saving: false,
-      isValid: false,
+      isValid: !!this.props.inputProps.initialValue,
     };
   }
 
@@ -126,7 +126,9 @@ class ZipAutoComplete extends Component {
   };
 
   render() {
-    const { searchText, data, saving } = this.state;
+    const {
+      searchText, data, saving, isValid,
+    } = this.state;
     const {
       inputProps: {
         disabled, style, label, placeholder,
@@ -147,10 +149,13 @@ class ZipAutoComplete extends Component {
           textFieldStyle={style}
           style={style}
         />
-        <SavingIcon
+        <ValidIcon
           saving={saving}
           style={styles.savingIcon}
-          errorExists={false}
+          error={false}
+          // Only show the valid icon when isValid is true
+          value={isValid === true ? true : undefined}
+          required
         />
       </div>
     );

@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import cleanMethod from 'core/api/cleanMethods';
 import { T } from 'core/components/Translation';
 import Select from 'core/components/Select';
-import SavingIcon from './SavingIcon';
+import ValidIcon from './ValidIcon';
 import FormValidator from './FormValidator';
 
 const styles = {
@@ -69,7 +69,13 @@ export default class SelectFieldInput extends Component {
   render() {
     const {
       inputProps: {
-        style, label, disabled, options, noValidator, id,
+        style,
+        label,
+        disabled,
+        options,
+        noValidator,
+        id,
+        required,
       },
     } = this.props;
     const { value, saving, errorText } = this.state;
@@ -86,10 +92,12 @@ export default class SelectFieldInput extends Component {
           renderValue={val => this.mapOptions().find(o => o.id === val).label}
           options={this.mapOptions()}
         />
-        <SavingIcon
+        <ValidIcon
           saving={saving}
-          errorExists={errorText !== ''}
+          error={errorText !== ''}
           style={styles.savingIcon}
+          value={value}
+          required={required}
         />
         {!noValidator && <FormValidator {...this.props} />}
       </div>

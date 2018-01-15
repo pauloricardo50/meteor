@@ -9,7 +9,7 @@ import { toNumber, toDecimalNumber } from 'core/utils/conversionFunctions';
 
 import MyTextInput from 'core/components/TextInput';
 
-import SavingIcon from './SavingIcon';
+import ValidIcon from './ValidIcon';
 import FormValidator from './FormValidator';
 
 const styles = {
@@ -124,6 +124,7 @@ export default class TextInput extends Component {
         disabled,
         money,
         noValidator,
+        required,
         ...otherProps
       },
     } = this.props;
@@ -161,10 +162,12 @@ export default class TextInput extends Component {
           fullWidth
           {...otherProps}
         />
-        <SavingIcon
+        <ValidIcon
           saving={saving}
-          errorExists={errorText !== ''}
+          error={!!errorText}
           style={styles.savingIcon}
+          value={value}
+          required={required}
         />
         {!noValidator && <FormValidator {...this.props} />}
       </div>

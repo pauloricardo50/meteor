@@ -5,6 +5,15 @@ import cleanMethod from 'core/api/cleanMethods';
 import { T } from 'core/components/Translation';
 import RadioButtons from 'core/components/RadioButtons';
 import FormValidator from './FormValidator';
+import ValidIcon from './ValidIcon';
+
+const styles = {
+  validIcon: {
+    position: 'absolute',
+    top: 16,
+    right: -25,
+  },
+};
 
 export default class RadioInput extends Component {
   constructor(props) {
@@ -14,7 +23,7 @@ export default class RadioInput extends Component {
       this.state = { value: this.props.inputProps.currentValue };
     } else {
       // this.state = { value: this.props.options[0].id };
-      this.state = { value: undefined };
+      this.state = { value: undefined, saving: false };
     }
   }
 
@@ -38,6 +47,7 @@ export default class RadioInput extends Component {
   };
 
   saveValue = (value) => {
+    this.setState({ saving: true });
     // For radiobuttons, check if I actually want to pass a boolean instead of a String
     // event.target.value is always a String
     let safeValue = value;
@@ -49,15 +59,24 @@ export default class RadioInput extends Component {
 
     // Save data to DB
     const object = { [this.props.inputProps.id]: safeValue };
-    cleanMethod(this.props.updateFunc, { object, id: this.props.docId });
+    cleanMethod(this.props.updateFunc, { object, id: this.props.docId })
+      .then(() => this.setState({ saving: false }))
+      .catch(() => this.setState({ saving: false }));
   };
 
   render() {
     const {
       inputProps: {
-        id, style, label, onConditionalChange, options, disabled,
+        id,
+        style,
+        label,
+        onConditionalChange,
+        options,
+        disabled,
+        required,
       },
     } = this.props;
+    const { value, saving } = this.state;
 
     return (
       // relative position for the FormValidator
@@ -75,8 +94,14 @@ export default class RadioInput extends Component {
             }
             this.setValue(newValue);
           }}
-          value={this.state.value}
+          value={value}
           disabled={disabled}
+        />
+        <ValidIcon
+          saving={saving}
+          value={value}
+          required={required}
+          style={styles.validIcon}
         />
         <FormValidator {...this.props} />
       </div>

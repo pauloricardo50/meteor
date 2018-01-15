@@ -45,6 +45,7 @@ export default class ArrayInput extends Component {
           key: inputId,
           label: <T id={`Forms.${id}.${inputId}`} />,
           placeholder: `Forms.${id}.${inputId}.placeholder`,
+          required: true,
         },
       };
 

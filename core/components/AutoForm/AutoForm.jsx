@@ -118,6 +118,7 @@ const mapInputs = (singleInput, index, parentProps) => {
       disabled: parentProps.disabled || singleInput.disabled,
       currentValue: get(parentProps.doc, singleInput.id),
       style: parentProps.fullWidth ? styles.fullWidth : styles.smallWidth,
+      required: singleInput.required !== false,
     },
   };
 
@@ -130,8 +131,7 @@ const mapInputs = (singleInput, index, parentProps) => {
     return null;
   }
 
-  // Add a required star to every label, except if it isn't required
-  if (childProps.inputProps.required !== false) {
+  if (childProps.inputProps.required === true) {
     childProps.inputProps.label = (
       <span>
         <T
