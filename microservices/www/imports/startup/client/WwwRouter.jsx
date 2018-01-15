@@ -25,6 +25,7 @@ const WwwRouter = () => (
     locale={getUserLocale()}
     messages={messagesFR}
     formats={getFormats()}
+    hasLogin={false}
   >
     <PublicLayout>
       <Switch>

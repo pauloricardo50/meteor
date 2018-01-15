@@ -1,10 +1,12 @@
 import { createStore, applyMiddleware } from 'redux';
-import rootReducer from '../reducers';
+import createRootReducer from '../reducers';
 
-const initialState = {};
-const middlewares = [];
-
-const createCustomStore = () =>
-  createStore(rootReducer, initialState, applyMiddleware(...middlewares));
+const createCustomStore = ({ collections }) => {
+  const initialState = {};
+  const middlewares = [];
+  const rootReducer = createRootReducer({ collections });
+  return () =>
+    createStore(rootReducer, initialState, applyMiddleware(...middlewares));
+};
 
 export default createCustomStore;

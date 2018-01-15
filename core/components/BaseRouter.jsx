@@ -16,6 +16,7 @@ const BaseRouter = ({
   formats,
   children,
   WrapperComponent,
+  hasLogin,
 }) => (
   <ErrorBoundary helper="root">
     <WrapperComponent>
@@ -40,7 +41,9 @@ const BaseRouter = ({
               <ScrollToTop>
                 <Switch>
                   {/* LoginPage has to be above / path */}
-                  <Route exact path="/login" component={LoginPage} />
+                  {hasLogin && (
+                    <Route exact path="/login" component={LoginPage} />
+                  )}
                   <Route
                     path="/"
                     render={childProps =>
@@ -63,10 +66,12 @@ BaseRouter.propTypes = {
   formats: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
   WrapperComponent: PropTypes.node,
+  hasLogin: PropTypes.bool,
 };
 
 BaseRouter.defaultProps = {
   WrapperComponent: React.Fragment,
+  hasLogin: false,
 };
 
 export default BaseRouter;

@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import createStore from '../../redux/store';
 
-const store = createStore();
+const store = createStore({
+  collections: ['loanRequests', 'borrowers', 'offers'],
+});
 
 const AppStore = ({ children }) => (
   <Provider store={store}>{children}</Provider>
