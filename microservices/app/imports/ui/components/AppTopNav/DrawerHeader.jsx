@@ -18,14 +18,16 @@ const styles = theme => ({
   },
 });
 
-const DrawerHeader = ({ showButton, onClick, permanent, classes }) => (
+const DrawerHeader = ({
+  showButton, onClick, permanent, classes,
+}) => (
   <div
     className={classnames({
       'top-bar': true,
       [classes.drawerHeader]: permanent,
     })}
   >
-    <Link to="/home">
+    <Link to="/">
       <img
         src="/img/logo_black.svg"
         alt="e-Potek"
@@ -36,7 +38,12 @@ const DrawerHeader = ({ showButton, onClick, permanent, classes }) => (
     {showButton && (
       <IconButton
         onClick={onClick}
-        style={{ top: 8, right: 8, position: 'absolute', zIndex: 100 }}
+        style={{
+          top: 8,
+          right: 8,
+          position: 'absolute',
+          zIndex: 100,
+        }}
         type="close"
         tooltip={<T id="general.close" />}
         tooltipPlacement="bottom-start"
