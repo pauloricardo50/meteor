@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Session } from 'meteor/session';
 
 import { DocHead } from 'meteor/kadira:dochead';
 import { injectIntl } from 'react-intl';
 
 import getSteps from 'core/arrays/steps';
 import ProcessPageBar from './ProcessPageBar';
+import StepperContainer from '../../containers/StepperContainer';
 
 export const getStepValues = (props) => {
   const steps = getSteps(props);
@@ -51,12 +51,7 @@ class ProcessPage extends Component {
   componentDidMount() {
     this.setBarProps();
 
-    console.log('Setting session:', this.props.stepNb);
-    Session.set('stepNb', this.props.stepNb);
-  }
-
-  componentWillUnmount() {
-    // Session.set('stepNb', this.props.loanRequest.logic.step);
+    this.props.setStep(this.props.stepNb);
   }
 
   setBarProps = () => {
@@ -93,6 +88,7 @@ ProcessPage.propTypes = {
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   showBottom: PropTypes.bool,
   serverTime: PropTypes.instanceOf(Date),
+  setStep: PropTypes.func.isRequired,
 };
 
 ProcessPage.defaultProps = {
@@ -101,4 +97,4 @@ ProcessPage.defaultProps = {
   children: undefined,
 };
 
-export default injectIntl(ProcessPage);
+export default injectIntl(StepperContainer(ProcessPage));

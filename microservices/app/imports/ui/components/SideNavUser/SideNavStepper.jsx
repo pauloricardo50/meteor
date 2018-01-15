@@ -6,31 +6,24 @@ import { Session } from 'meteor/session';
 import getSteps from 'core/arrays/steps';
 import { T } from 'core/components/Translation';
 import Step from './Step';
+import StepperContainer from '../../containers/StepperContainer';
 
-export default class SideNavStepper extends React.Component {
+class SideNavStepper extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = { active: this.props.loanRequest.logic.step };
+    this.state = {};
   }
 
   componentDidMount() {
     Meteor.call('getServerTime', (e, res) => {
       this.setState({ serverTime: res });
     });
+
+    this.props.setStep(this.props.loanRequest.logic.step);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.location.pathname !== this.props.location.pathname &&
-      Session.get('stepNb') !== undefined
-    ) {
-      // Use defer to allow the other component to update Session before grabbing it here
-      // Otherwise it is always one step behind when the stepNb changes
-      const sessionStep = Session.get('stepNb');
-      console.log('getting session:', sessionStep);
-      Meteor.defer(() => this.setState({ active: sessionStep }));
-
+    if (nextProps.location.pathname !== this.props.location.pathname) {
       // Update server time when the user moves around, to make sure all
       // validation works fine
       Meteor.call('getServerTime', (e, res) => {
@@ -41,25 +34,19 @@ export default class SideNavStepper extends React.Component {
 
   handleClick = (i, isNavLink = false) => {
     if (this.state.active === i && !isNavLink) {
-      console.log('setting none active');
-      console.log(isNavLink);
-      this.setState({ active: -1 });
+      this.props.hideSteps();
     } else {
-      console.log(`setting active to ${i}`);
-      console.log(isNavLink);
-
-      this.setState({ active: i });
+      this.props.setStep(i);
     }
   };
 
   render() {
-    const { serverTime, active } = this.state;
+    const { serverTime } = this.state;
+    const { activeStep } = this.props;
     const steps = getSteps({
       ...this.props,
       serverTime,
     });
-
-    console.log('active state: ', active);
 
     return (
       <div className="side-stepper">
@@ -72,7 +59,7 @@ export default class SideNavStepper extends React.Component {
               {...this.props}
               key={i}
               step={s}
-              active={active === i}
+              active={activeStep === i}
               currentRequestStep={this.props.loanRequest.logic.step === i}
               handleClick={() => this.handleClick(i)}
             />
@@ -85,4 +72,9 @@ export default class SideNavStepper extends React.Component {
 
 SideNavStepper.propTypes = {
   location: PropTypes.objectOf(PropTypes.any).isRequired,
+  setStep: PropTypes.func.isRequired,
+  hideSteps: PropTypes.func.isRequired,
+  activeStep: PropTypes.number.isRequired,
 };
+
+export default StepperContainer(SideNavStepper);
