@@ -17,7 +17,7 @@ const formatMessage = (id, values = {}, customFallback) => {
   }
   const message = new IntlMessageFormat(
     messagesFR[id] || (customFallback !== undefined ? customFallback : id),
-    'fr-FR',
+    getUserLocale(),
     // getFormats(),
   );
   return message.format(values);

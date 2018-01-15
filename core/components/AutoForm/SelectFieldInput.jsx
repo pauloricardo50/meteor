@@ -74,14 +74,14 @@ export default class SelectFieldInput extends Component {
     } = this.props;
     const { value, saving, errorText } = this.state;
 
-    // console.log('selectfield props: ', this.props);
+    console.log('SelectField value: ', value);
 
     return (
       <div style={{ ...styles.div, ...style }}>
         <Select
           id={id}
           label={label}
-          value={value}
+          value={value || null}
           onChange={this.handleChange}
           style={{ ...style, marginBottom: 8 }}
           disabled={disabled}

@@ -49,7 +49,7 @@ export default class SavingIcon extends Component {
       return (
         <span
           style={this.props.style}
-          className={this.state.fade && 'animated zoomOut'}
+          className={this.state.fade ? 'animated zoomOut' : undefined}
         >
           <svg
             className="checkmark"
