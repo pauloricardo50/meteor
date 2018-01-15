@@ -74,8 +74,6 @@ export default class SelectFieldInput extends Component {
     } = this.props;
     const { value, saving, errorText } = this.state;
 
-    console.log('SelectField value: ', value);
-
     return (
       <div style={{ ...styles.div, ...style }}>
         <Select

@@ -57,8 +57,6 @@ const Select = (props) => {
     ...otherProps
   } = props;
 
-  console.log('Select value', value);
-
   return (
     <FormControl className="mui-select" style={style}>
       {label && (

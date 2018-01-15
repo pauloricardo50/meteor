@@ -29,7 +29,12 @@ export default class BorrowerAdder extends Component {
     const { loading } = this.state;
 
     return (
-      <Button onClick={this.handleClick} disabled={loading} style={style}>
+      <Button
+        onClick={this.handleClick}
+        disabled={loading}
+        style={style}
+        primary
+      >
         <T id="BorrowerAdder.label" />
       </Button>
     );

@@ -13,11 +13,16 @@ export default class ConfirmButton extends Component {
     this.state = { open: false };
   }
 
-  handleOpen = () => {
+  handleOpen = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
     this.setState({ open: true });
   };
 
-  handleClose = () => {
+  handleClose = (e) => {
+    // prevents onClick from triggering twice when using enter to validate..
+    e.stopPropagation();
+    e.preventDefault();
     this.setState({ open: false });
   };
 
@@ -31,7 +36,18 @@ export default class ConfirmButton extends Component {
       text,
       style,
       raised,
+      buttonComponent,
     } = this.props;
+
+    const buttonProps = {
+      onClick: this.handleOpen,
+      raised,
+      label,
+      primary,
+      secondary,
+      disabled,
+      style,
+    };
 
     const actions = [
       <Button
@@ -46,25 +62,19 @@ export default class ConfirmButton extends Component {
         primary
         autoFocus
         onClick={(e) => {
-          // prevents onClick from triggering twice when using enter to validate...
-          e.preventDefault();
-          handleClick();
-          this.handleClose();
+          handleClick(e);
+          this.handleClose(e);
         }}
       />,
     ];
 
     return (
       <div>
-        <Button
-          raised={raised}
-          label={label}
-          onClick={this.handleOpen}
-          primary={primary}
-          secondary={secondary}
-          disabled={disabled}
-          style={style}
-        />
+        {buttonComponent ? (
+          React.cloneElement(buttonComponent, { ...buttonProps })
+        ) : (
+          <Button {...buttonProps} />
+        )}
         <Dialog
           title={<T id="general.areYouSure" />}
           actions={actions}
@@ -87,6 +97,7 @@ ConfirmButton.propTypes = {
   disabled: PropTypes.bool,
   flat: PropTypes.bool,
   raised: PropTypes.bool,
+  buttonComponent: PropTypes.node,
 };
 
 ConfirmButton.defaultProps = {
@@ -96,4 +107,5 @@ ConfirmButton.defaultProps = {
   disabled: false,
   flat: false,
   raised: false,
+  buttonComponent: null,
 };
