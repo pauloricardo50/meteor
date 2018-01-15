@@ -124,8 +124,13 @@ export const getTheoreticalMonthly = (loanRequest, borrowers) => {
 
 export const getIncomeRatio = (loanRequest, borrowers) => {
   const monthlyPayment = getTheoreticalMonthly(loanRequest, borrowers).total;
+  const borrowerIncome = getBorrowerIncome(borrowers) / 12;
 
-  return monthlyPayment / (getBorrowerIncome(borrowers) / 12);
+  // Add infinity check
+  if (borrowerIncome > 0) {
+    return monthlyPayment / borrowerIncome;
+  }
+  return '-';
 };
 
 export const canAffordRank1 = (loanRequest, borrowers) => {
