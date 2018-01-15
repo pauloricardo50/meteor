@@ -55,7 +55,9 @@ const DashboardBorrowers = ({ borrowers, loanRequest }) => (
               </h4>
             </div>
           </div>
-          <BorrowerDeleter borrowerId={b._id} requestId={loanRequest._id} />
+          {borrowers.length > 1 && (
+            <BorrowerDeleter borrowerId={b._id} requestId={loanRequest._id} />
+          )}
         </Link>
       );
     })}
