@@ -1,15 +1,15 @@
-export const requestStatus = {
+export const REQUEST_STATUS = {
   ACTIVE: 'ACTIVE',
   DONE: 'DONE',
 };
 
-export const purchaseType = {
+export const PURCHASE_TYPE = {
   ACQUISITION: 'acquisition',
   REFINANCING: 'refinancing',
   CONSTRUCTION: 'construction',
 };
 
-export const cantons = {
+export const CANTONS = {
   AG: 'Aargau',
   AR: 'Appenzell Ausserrhoden',
   AI: 'Appenzell Innerrhoden',
@@ -38,7 +38,7 @@ export const cantons = {
   ZH: 'Zürich',
 };
 
-export const interestRates = {
+export const INTEREST_RATES = {
   LIBOR: 'interestLibor',
   YEARS_1: 'interest1',
   YEARS_2: 'interest2',
@@ -47,9 +47,37 @@ export const interestRates = {
   YEARS_15: 'interest15',
 };
 
-export const owner = {
+export const OWNER = {
   FIRST: '0',
   SECOND: '1',
   BOTH: 'both',
   OTHER: 'other',
+};
+
+export const AUCTION_STATUS = {
+  NONE: '',
+  STARTED: 'started',
+  ENDED: 'ended',
+};
+
+export const OFFER_TYPE = {
+  STANDARD: 'standard',
+  COUNTERPARTS: 'counterparts',
+};
+
+export const CLOSING_STEPS_TYPE = {
+  TODO: 'todo',
+  UPLOAD: 'upload',
+};
+
+export const CLOSING_STEPS_STATUS = {
+  UNVERIFIED: 'unverified',
+  VALID: 'valid',
+  ERROR: 'error',
+};
+
+export const AUCTION_MOST_IMPORTANT = {
+  SPEED: 'SPEED',
+  PRICE: 'PRICE',
+  NOTHING: 'NOTHING',
 };

@@ -1,4 +1,4 @@
-export const residencyPermit = {
+export const RESIDENCY_PERMIT = {
   B: 'b',
   C: 'c',
   CI: 'ci',
@@ -10,19 +10,20 @@ export const residencyPermit = {
   NONE: 'none',
 };
 
-export const gender = {
+export const GENDER = {
   M: 'm',
   F: 'f',
+  OTHER: 'other',
 };
 
-export const civilStatus = {
+export const CIVIL_STATUS = {
   MARRIED: 'married',
   SINGLE: 'single',
   PACSED: 'pacsed',
   DIVORCED: 'divorced',
 };
 
-export const otherFortune = {
+export const OTHER_FORTUNE = {
   ART: 'art',
   CARS: 'cars',
   BOATS: 'boats',
@@ -30,7 +31,7 @@ export const otherFortune = {
   JEWELRY: 'jewelry',
 };
 
-export const otherIncome = {
+export const OTHER_INCOME = {
   WELFARE: 'welfareIncome',
   PENSION: 'pensionIncome',
   RENT: 'rentIncome',
@@ -39,7 +40,7 @@ export const otherIncome = {
   OTHER: 'other',
 };
 
-export const expenses = {
+export const EXPENSES = {
   LEASING: 'leasing',
   RENT: 'rent',
   PERSONAL_LOAN: 'personalLoan',
@@ -48,7 +49,7 @@ export const expenses = {
   OTHER: 'other',
 };
 
-export const realEstate = {
+export const REAL_ESTATE = {
   PRIMARY: 'primary',
   SECONDARY: 'secondary',
   INVESTMENT: 'investment',

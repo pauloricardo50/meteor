@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import AutoForm from 'core/components/AutoForm';
+import { constants } from 'core/api';
 
 import { getAuctionEndTime } from 'core/api/loanrequests/methods';
 import cleanMethod from 'core/api/cleanMethods';
@@ -28,7 +29,7 @@ const getFormArray = (request, serverTime) => [
   {
     id: 'general.auctionMostImportant',
     type: 'selectFieldInput',
-    options: ['speed', 'price', 'nothing'],
+    options: Object.values(constants.AUCTION_MOST_IMPORTANT),
   },
 ];
 

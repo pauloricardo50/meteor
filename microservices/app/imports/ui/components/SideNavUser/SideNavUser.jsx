@@ -6,6 +6,7 @@ import classnames from 'classnames';
 
 import { T } from 'core/components/Translation';
 import Icon from 'core/components/Icon';
+import { REQUEST_STATUS } from 'core/api/constants';
 import RequestSelector from './RequestSelector';
 import SideNavStepper from './SideNavStepper';
 import DrawerHeader from '../AppTopNav/DrawerHeader';
@@ -97,7 +98,7 @@ const SideNavUser = (props) => {
                 </h4>
               </div>
             </NavLink>
-            {currentRequest.status === 'active' && (
+            {currentRequest.status === REQUEST_STATUS.ACTIVE && (
               <SideNavStepper
                 handleClickLink={handleClickLink}
                 history={history}

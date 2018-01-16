@@ -2,13 +2,13 @@ import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { getFileSchema } from '../files/files';
 import {
-  residencyPermit,
-  gender,
-  civilStatus,
-  otherFortune,
-  otherIncome,
-  expenses,
-  realEstate,
+  RESIDENCY_PERMIT,
+  GENDER,
+  CIVIL_STATUS,
+  OTHER_FORTUNE,
+  OTHER_INCOME,
+  EXPENSES,
+  REAL_ESTATE,
 } from './borrowerConstants';
 
 const Borrowers = new Mongo.Collection('borrowers');
@@ -86,7 +86,7 @@ export const BorrowerSchema = new SimpleSchema({
   gender: {
     type: String,
     optional: true,
-    allowedValues: Object.values(gender),
+    allowedValues: Object.values(GENDER),
   },
   age: {
     type: SimpleSchema.Integer,
@@ -123,7 +123,7 @@ export const BorrowerSchema = new SimpleSchema({
   residencyPermit: {
     type: String,
     optional: true,
-    allowedValues: Object.values(residencyPermit),
+    allowedValues: Object.values(RESIDENCY_PERMIT),
   },
   birthDate: {
     type: String,
@@ -144,8 +144,8 @@ export const BorrowerSchema = new SimpleSchema({
   },
   civilStatus: {
     type: String,
-    defaultValue: civilStatus.SINGLE,
-    allowedValues: Object.values(civilStatus),
+    defaultValue: CIVIL_STATUS.SINGLE,
+    allowedValues: Object.values(CIVIL_STATUS),
   },
   childrenCount: {
     type: Number,
@@ -214,7 +214,7 @@ export const BorrowerSchema = new SimpleSchema({
   },
   'otherIncome.$.description': {
     type: String,
-    allowedValues: Object.values(otherIncome),
+    allowedValues: Object.values(OTHER_INCOME),
   },
   otherFortune: {
     type: Array,
@@ -229,7 +229,7 @@ export const BorrowerSchema = new SimpleSchema({
   },
   'otherFortune.$.description': {
     type: String,
-    allowedValues: Object.values(otherFortune),
+    allowedValues: Object.values(OTHER_FORTUNE),
   },
   expenses: {
     type: Array,
@@ -244,7 +244,7 @@ export const BorrowerSchema = new SimpleSchema({
   },
   'expenses.$.description': {
     type: String,
-    allowedValues: Object.values(expenses),
+    allowedValues: Object.values(EXPENSES),
   },
   bankFortune: {
     type: Number,
@@ -270,7 +270,7 @@ export const BorrowerSchema = new SimpleSchema({
   },
   'realEstate.$.description': {
     type: String,
-    allowedValues: Object.values(realEstate),
+    allowedValues: Object.values(REAL_ESTATE),
   },
   personalBank: {
     type: String,

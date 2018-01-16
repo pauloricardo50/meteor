@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { adminActiontype, adminActionStatus } from './adminActionConstants';
+import { ADMIN_ACTION_TYPE, ADMIN_ACTION_STATUS } from './adminActionConstants';
 
 const AdminActions = new Mongo.Collection('adminActions');
 
@@ -33,8 +33,8 @@ const AdminActionSchema = new SimpleSchema({
   },
   status: {
     type: String,
-    defaultValue: adminActionStatus.ACTIVE,
-    allowedValues: Object.values(adminActionStatus),
+    defaultValue: ADMIN_ACTION_STATUS.ACTIVE,
+    allowedValues: Object.values(ADMIN_ACTION_STATUS),
   },
   completedAt: {
     type: Date,
@@ -42,7 +42,7 @@ const AdminActionSchema = new SimpleSchema({
   },
   type: {
     type: String,
-    allowedValues: Object.values(adminActiontype),
+    allowedValues: Object.values(ADMIN_ACTION_TYPE),
   },
   requestId: String,
   staffId: {

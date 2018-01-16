@@ -1,3 +1,5 @@
+import { constants } from 'core/api';
+
 export const getBorrowerInfoArray = (borrowers, id) => {
   const b = borrowers.find(borr => borr._id === id);
   const multiple = borrowers.length > 1;
@@ -13,7 +15,11 @@ export const getBorrowerInfoArray = (borrowers, id) => {
   return [
     { id: 'firstName', type: 'textInput' },
     { id: 'lastName', type: 'textInput' },
-    { id: 'gender', type: 'radioInput', options: ['f', 'm', 'other'] },
+    {
+      id: 'gender',
+      type: 'radioInput',
+      options: Object.values(constants.GENDER),
+    },
     {
       type: 'h3',
       id: 'yourAddress',
@@ -70,7 +76,7 @@ export const getBorrowerInfoArray = (borrowers, id) => {
         {
           id: 'residencyPermit',
           type: 'selectFieldInput',
-          options: ['b', 'c', 'ci', 'f', 'g', 'l', 'n', 's', 'none'],
+          options: Object.values(constants.RESIDENCY_PERMIT),
         },
       ],
     },
@@ -86,12 +92,10 @@ export const getBorrowerInfoArray = (borrowers, id) => {
     {
       id: 'civilStatus',
       type: 'radioInput',
-      options: [
-        { id: 'married', intlValues: { gender: b.gender } },
-        { id: 'pacsed', intlValues: { gender: b.gender } },
-        { id: 'single', intlValues: { gender: b.gender } },
-        { id: 'divorced', intlValues: { gender: b.gender } },
-      ],
+      options: Object.values(constants.CIVIL_STATUS).map(value => ({
+        id: value,
+        intlValues: { gender: b.gender },
+      })),
     },
     { id: 'childrenCount', type: 'textInput', number: true },
     {
@@ -136,10 +140,11 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
           type: 'radioInput',
           options: [true, false],
         },
-        { id: 'bonus.bonus2017', type: 'textInput', money: true },
-        { id: 'bonus.bonus2016', type: 'textInput', money: true },
-        { id: 'bonus.bonus2015', type: 'textInput', money: true },
-        { id: 'bonus.bonus2014', type: 'textInput', money: true },
+        ...[2017, 2016, 2015, 2014].map(year => ({
+          id: `bonus.bonus${year}`,
+          type: 'textInput',
+          money: true,
+        })),
       ],
     },
     {
@@ -150,14 +155,7 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
         {
           id: 'description',
           type: 'selectInput',
-          options: [
-            'leasing',
-            'rent',
-            'personalLoan',
-            'mortgageLoan',
-            'pensions',
-            'other',
-          ],
+          options: Object.values(constants.EXPENSES),
         },
         { id: 'value', type: 'textInput', money: true },
       ],
@@ -170,14 +168,7 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
         {
           id: 'description',
           type: 'selectInput',
-          options: [
-            'welfareIncome',
-            'pensionIncome',
-            'rentIncome',
-            'realEstateIncome',
-            'investmentIncome',
-            'other',
-          ],
+          options: Object.values(constants.OTHER_INCOME),
         },
         { id: 'value', type: 'textInput', money: true },
       ],
@@ -203,7 +194,7 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
         {
           id: 'description',
           type: 'selectInput',
-          options: ['primary', 'secondary', 'investment'],
+          options: Object.values(constants.REAL_ESTATE),
         },
         {
           id: 'value',
@@ -225,7 +216,7 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
         {
           id: 'description',
           type: 'selectInput',
-          options: ['art', 'cars', 'boats', 'airplanes', 'jewelry'],
+          options: Object.values(constants.OTHER_FORTUNE),
         },
         {
           id: 'value',

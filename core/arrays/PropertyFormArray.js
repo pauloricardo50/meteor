@@ -1,3 +1,13 @@
+import { constants } from 'core/api';
+
+const {
+  PROPERTY_STYLE,
+  PURCHASE_TYPE,
+  OWNER,
+  USAGE_TYPE,
+  EXPERTISE_RATING,
+} = constants;
+
 const mapInput = (input) => {
   const intlSafeObject = { ...input };
   // If the id contains a dot in it, split it and add a intlId
@@ -40,47 +50,69 @@ const getPropertyArray = (loanRequest, borrowers) => {
     {
       id: 'property.usageType',
       type: 'radioInput',
-      options: ['primary', 'secondary', 'investment'],
+      options: Object.values(USAGE_TYPE),
     },
-    { id: 'property.style', type: 'radioInput', options: ['villa', 'flat'] },
+    {
+      id: 'property.style',
+      type: 'radioInput',
+      options: Object.values(PROPERTY_STYLE),
+    },
     {
       type: 'conditionalInput',
-      conditionalTrueValue: 'other',
+      conditionalTrueValue: OWNER.OTHER,
       condition:
-        borrowers.length > 1 && r.general.purchaseType === 'refinancing',
+        borrowers.length > 1 &&
+        r.general.purchaseType === PURCHASE_TYPE.REFINANCING,
       inputs: [
         {
           id: 'general.currentOwner',
           type: 'radioInput',
-          options: [
-            ...borrowers.map((b, i) => ({
-              id: i,
-              intlValues: { name: b.firstName || `Emprunteur ${i + 1}` },
-            })),
-            'both',
-            'other',
-          ],
+          options: Object.values(OWNER)
+            .filter(value => (borrowers.length === 1 ? value !== OWNER.SECOND : true))
+            .map((value) => {
+              const isFirst = value === OWNER.FIRST;
+              const isSecond = value === OWNER.SECOND;
+              return isFirst || isSecond
+                ? {
+                  id: isFirst ? 0 : 1,
+                  intlValues: {
+                    name:
+                        borrowers[isFirst ? 0 : 1].firstName ||
+                        `Emprunteur ${isFirst ? 1 : 2}`,
+                  },
+                }
+                : value;
+            }),
         },
         { id: 'general.otherOwner', type: 'textInput' },
       ],
     },
     {
       type: 'conditionalInput',
-      conditionalTrueValue: 'other',
+      conditionalTrueValue: OWNER.OTHER,
       condition:
-        borrowers.length > 1 && r.general.purchaseType !== 'refinancing',
+        borrowers.length > 1 &&
+        r.general.purchaseType !== PURCHASE_TYPE.REFINANCING,
       inputs: [
         {
           id: 'general.futureOwner',
           type: 'radioInput',
-          options: [
-            ...borrowers.map((b, i) => ({
-              id: i,
-              intlValues: { name: b.firstName || `Emprunteur ${i + 1}` },
-            })),
-            'both',
-            'other',
-          ],
+          options: Object.values(OWNER)
+            .filter(value => (borrowers.length === 1 ? value !== OWNER.SECOND : true))
+            .map((value) => {
+              const isFirst = value === OWNER.FIRST;
+              const isSecond = value === OWNER.SECOND;
+              return isFirst || isSecond
+                ? {
+                  id: isFirst ? 0 : 1,
+                  intlValues: {
+                    name:
+                        borrowers[isFirst ? 0 : 1].firstName ||
+                        `Emprunteur ${isFirst ? 1 : 2}`,
+                  },
+                }
+                : value;
+            }),
         },
         {
           id: 'general.otherOwner',
@@ -92,7 +124,7 @@ const getPropertyArray = (loanRequest, borrowers) => {
       id: 'property.isNew',
       type: 'radioInput',
       options: [true, false],
-      condition: r.general.purchaseType === 'acquisition',
+      condition: r.general.purchaseType === PURCHASE_TYPE.ACQUISITION,
     },
     {
       type: 'h3',
@@ -139,7 +171,7 @@ const getPropertyArray = (loanRequest, borrowers) => {
       id: 'property.landArea',
       type: 'textInput',
       number: true,
-      condition: r.property.style === 'villa',
+      condition: r.property.style === PROPERTY_STYLE.VILLA,
     },
     { id: 'property.insideArea', type: 'textInput', number: true },
     {
@@ -158,12 +190,12 @@ const getPropertyArray = (loanRequest, borrowers) => {
       id: 'property.volume',
       type: 'textInput',
       number: true,
-      condition: r.property.style === 'villa',
+      condition: r.property.style === PROPERTY_STYLE.VILLA,
     },
     {
       id: 'property.volumeNorm',
       type: 'textInput',
-      condition: r.property.style === 'villa',
+      condition: r.property.style === PROPERTY_STYLE.VILLA,
     },
     {
       id: 'property.roomCount',
@@ -185,7 +217,7 @@ const getPropertyArray = (loanRequest, borrowers) => {
     {
       type: 'conditionalInput',
       conditionalTrueValue: true,
-      condition: r.property.style === 'villa',
+      condition: r.property.style === PROPERTY_STYLE.VILLA,
       inputs: [
         {
           id: 'property.isCoproperty',
@@ -204,7 +236,7 @@ const getPropertyArray = (loanRequest, borrowers) => {
       id: 'property.copropertyPercentage',
       type: 'textInput',
       number: true,
-      condition: r.property.style === 'flat',
+      condition: r.property.style === PROPERTY_STYLE.FLAT,
       info: true,
     },
     {
@@ -216,29 +248,29 @@ const getPropertyArray = (loanRequest, borrowers) => {
     {
       id: 'property.cityPlacementQuality',
       type: 'radioInput',
-      options: [0, 1, 2, 3],
+      options: Object.values(EXPERTISE_RATING),
     },
     {
       id: 'property.buildingPlacementQuality',
       type: 'radioInput',
-      options: [0, 1, 2, 3],
-      condition: r.property.style === 'flat',
+      options: Object.values(EXPERTISE_RATING),
+      condition: r.property.style === PROPERTY_STYLE.FLAT,
     },
     {
       id: 'property.buildingQuality',
       type: 'radioInput',
-      options: [0, 1, 2, 3],
+      options: Object.values(EXPERTISE_RATING),
     },
     {
       id: 'property.flatQuality',
       type: 'radioInput',
-      options: [0, 1, 2, 3],
-      condition: r.property.style === 'flat',
+      options: Object.values(EXPERTISE_RATING),
+      condition: r.property.style === PROPERTY_STYLE.FLAT,
     },
     {
       id: 'property.materialsQuality',
       type: 'radioInput',
-      options: [0, 1, 2, 3],
+      options: Object.values(EXPERTISE_RATING),
     },
     {
       id: 'property.otherNotes',

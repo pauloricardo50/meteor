@@ -1,6 +1,11 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { status, usageType, style, volumeNorm } from './propertyConstants';
+import {
+  PROPERTY_STATUS,
+  USAGE_TYPE,
+  PROPERTY_STYLE,
+  VOLUME_NORM,
+} from './propertyConstants';
 
 const Properties = new Mongo.Collection('properties');
 
@@ -40,8 +45,8 @@ export const PropertySchema = new SimpleSchema({
   },
   status: {
     type: String,
-    defaultValue: status.FOR_SALE,
-    allowedValues: Object.values(status),
+    defaultValue: PROPERTY_STATUS.FOR_SALE,
+    allowedValues: Object.values(PROPERTY_STATUS),
   },
   value: {
     // Cost of the property
@@ -60,8 +65,8 @@ export const PropertySchema = new SimpleSchema({
   usageType: {
     // primary, secondary or investment
     type: String,
-    defaultValue: usageType.PRIMARY,
-    allowedValues: Object.values(usageType),
+    defaultValue: USAGE_TYPE.PRIMARY,
+    allowedValues: Object.values(USAGE_TYPE),
   },
   investmentRent: {
     // Rent of property if investment
@@ -73,8 +78,8 @@ export const PropertySchema = new SimpleSchema({
   style: {
     type: String,
     optional: true,
-    defaultValue: style.FLAT,
-    allowedValues: Object.values(style),
+    defaultValue: PROPERTY_STYLE.FLAT,
+    allowedValues: Object.values(PROPERTY_STYLE),
   },
   address: {
     // For condensed, google places addresses
@@ -157,8 +162,8 @@ export const PropertySchema = new SimpleSchema({
   },
   volumeNorm: {
     type: String,
-    defaultValue: volumeNorm.SIA,
-    allowedValues: Object.keys(volumeNorm),
+    defaultValue: VOLUME_NORM.SIA,
+    allowedValues: Object.keys(VOLUME_NORM),
   },
   parking: {
     type: Object,

@@ -1,4 +1,5 @@
 import SimpleSchema from 'simpl-schema';
+import { FILE_STATUS } from './fileConstants';
 
 export const borrowerFiles = (b = {}) => ({
   auction: [
@@ -193,7 +194,7 @@ export const FileSchema = new SimpleSchema({
   fileCount: Number,
   status: {
     type: String,
-    allowedValues: ['unverified', 'valid', 'error'],
+    allowedValues: Object.values(FILE_STATUS),
   },
   error: { optional: true, type: String },
 });
@@ -224,7 +225,7 @@ export const fakeFile = {
   url: 'https://www.fake-url.com',
   key: 'asdf/fakeKey/fakeFile.pdf',
   fileCount: 0,
-  status: 'valid',
+  status: FILE_STATUS.VALID,
   error: '',
 };
 

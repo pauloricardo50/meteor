@@ -1,9 +1,11 @@
 import moment from 'moment';
-import Offers from 'core/api/offers/offers';
+import { Offers, constants } from 'core/api';
+
+const { ADMIN_ACTION_TYPE } = constants;
 
 const getActions = [
   {
-    id: 'verify',
+    id: ADMIN_ACTION_TYPE.VERIFY,
     handleClick: (loanRequest, pushToHistory) => {
       pushToHistory(`/requests/${loanRequest._id}?tab=forms`);
       window.open(
@@ -14,7 +16,7 @@ const getActions = [
     },
   },
   {
-    id: 'auction',
+    id: ADMIN_ACTION_TYPE.AUCTION,
     comment: loanRequest =>
       `Fin: ${moment(loanRequest.logic.auction.endTime).format('D MMM H:mm:ss')}, Offres: ${Offers.find({
         requestId: loanRequest._id,
@@ -24,7 +26,7 @@ const getActions = [
     },
   },
   {
-    id: 'lenderChosen',
+    id: ADMIN_ACTION_TYPE.LENDER_CHOSEN,
     handleClick: (loanRequest, pushToHistory) => {
       pushToHistory(`/requests/${loanRequest._id}/contactlenders`);
     },

@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { interestRates, cantons } from '../constants';
+import { INTEREST_RATES, CANTONS } from '../constants';
 
 const Offers = new Mongo.Collection('offers');
 
@@ -25,42 +25,19 @@ const singleOffer = new SimpleSchema({
   amortization: {
     type: Number,
   },
-  interestLibor: {
-    type: Number,
-    min: 0,
-    max: 100,
-    optional: true,
-  },
-  interest1: {
-    type: Number,
-    min: 0,
-    max: 100,
-    optional: true,
-  },
-  interest2: {
-    type: Number,
-    min: 0,
-    max: 100,
-    optional: true,
-  },
-  interest5: {
-    type: Number,
-    min: 0,
-    max: 100,
-    optional: true,
-  },
-  interest10: {
-    type: Number,
-    min: 0,
-    max: 100,
-    optional: true,
-  },
-  interest15: {
-    type: Number,
-    min: 0,
-    max: 100,
-    optional: true,
-  },
+  // For each existing rate, insert an allowed value in the schema
+  ...Object.values(INTEREST_RATES).reduce(
+    (object, interestKey) => ({
+      ...object,
+      [interestKey]: {
+        type: Number,
+        min: 0,
+        max: 100,
+        optional: true,
+      },
+    }),
+    {},
+  ),
 });
 
 export const OfferSchema = new SimpleSchema({
@@ -95,7 +72,7 @@ export const OfferSchema = new SimpleSchema({
   organization: String,
   canton: {
     type: String,
-    allowedValues: Object.keys(cantons),
+    allowedValues: Object.keys(CANTONS),
   },
   auctionEndTime: Date,
   standardOffer: {
