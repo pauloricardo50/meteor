@@ -4,9 +4,9 @@ export const REQUEST_STATUS = {
 };
 
 export const PURCHASE_TYPE = {
-  ACQUISITION: 'acquisition',
-  REFINANCING: 'refinancing',
-  CONSTRUCTION: 'construction',
+  ACQUISITION: 'ACQUISITION',
+  REFINANCING: 'REFINANCING',
+  CONSTRUCTION: 'CONSTRUCTION',
 };
 
 export const CANTONS = {
@@ -50,34 +50,47 @@ export const INTEREST_RATES = {
 export const OWNER = {
   FIRST: '0',
   SECOND: '1',
-  BOTH: 'both',
-  OTHER: 'other',
+  BOTH: 'BOTH',
+  OTHER: 'OTHER',
 };
 
 export const AUCTION_STATUS = {
   NONE: '',
-  STARTED: 'started',
-  ENDED: 'ended',
+  STARTED: 'STARTED',
+  ENDED: 'ENDED',
 };
 
 export const OFFER_TYPE = {
-  STANDARD: 'standard',
-  COUNTERPARTS: 'counterparts',
+  STANDARD: 'STANDARD',
+  COUNTERPARTS: 'COUNTERPARTS',
 };
 
 export const CLOSING_STEPS_TYPE = {
-  TODO: 'todo',
-  UPLOAD: 'upload',
+  TODO: 'TODO',
+  UPLOAD: 'UPLOAD',
 };
 
 export const CLOSING_STEPS_STATUS = {
-  UNVERIFIED: 'unverified',
-  VALID: 'valid',
-  ERROR: 'error',
+  UNVERIFIED: 'UNVERIFIED',
+  VALID: 'VALID',
+  ERROR: 'ERROR',
 };
 
 export const AUCTION_MOST_IMPORTANT = {
   SPEED: 'SPEED',
   PRICE: 'PRICE',
   NOTHING: 'NOTHING',
+};
+
+export const INSURANCE_USE_PRESET = {
+  WITHDRAWAL: 'WITHDRAWAL',
+};
+
+export const LOAN_STRATEGY_PRESET = {
+  FIXED: 'FIXED',
+};
+
+export const AMORTIZATION_STRATEGY_PRESET = {
+  INDIRECT: 'INDIRECT',
+  DIRECT: 'DIRECT',
 };

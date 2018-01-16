@@ -1,11 +1,12 @@
 export const ADMIN_ACTION_TYPE = {
-  VERIFY: 'verify',
-  AUCTION: 'auction',
-  LENDER_CHOSEN: 'lenderChosen',
+  VERIFY: 'VERIFY',
+  AUCTION: 'AUCTION',
+  LENDER_CHOSEN: 'LENDER_CHOSEN',
 };
 
 export const ADMIN_ACTION_STATUS = {
-  ACTIVE: 'active',
-  COMPLETED: 'completed',
-  PARENT_DELETED: 'parentDeleted',
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  PARENT_DELETED: 'PARENT_DELETED',
+  CANCELLED: 'CANCELLED',
 };

@@ -11,46 +11,46 @@ export const RESIDENCY_PERMIT = {
 };
 
 export const GENDER = {
-  M: 'm',
-  F: 'f',
-  OTHER: 'other',
+  M: 'M',
+  F: 'F',
+  OTHER: 'OTHER',
 };
 
 export const CIVIL_STATUS = {
-  MARRIED: 'married',
-  SINGLE: 'single',
-  PACSED: 'pacsed',
-  DIVORCED: 'divorced',
+  MARRIED: 'MARRIED',
+  SINGLE: 'SINGLE',
+  PACSED: 'PACSED',
+  DIVORCED: 'DIVORCED',
 };
 
 export const OTHER_FORTUNE = {
-  ART: 'art',
-  CARS: 'cars',
-  BOATS: 'boats',
-  AIRPLANES: 'airplanes',
-  JEWELRY: 'jewelry',
+  ART: 'ART',
+  CARS: 'CARS',
+  BOATS: 'BOATS',
+  AIRPLANES: 'AIRPLANES',
+  JEWELRY: 'JEWELRY',
 };
 
 export const OTHER_INCOME = {
-  WELFARE: 'welfareIncome',
-  PENSION: 'pensionIncome',
-  RENT: 'rentIncome',
-  REAL_ESTATE: 'realEstateIncome',
-  INVESTMENT: 'investmentIncome',
-  OTHER: 'other',
+  WELFARE: 'WELFARE',
+  PENSION: 'PENSION',
+  RENT: 'RENT',
+  REAL_ESTATE: 'REAL_ESTATE',
+  INVESTMENT: 'INVESTMENT',
+  OTHER: 'OTHER',
 };
 
 export const EXPENSES = {
-  LEASING: 'leasing',
-  RENT: 'rent',
-  PERSONAL_LOAN: 'personalLoan',
-  MORTGAGE_LOAN: 'mortgageLoan',
-  PENSIONS: 'pensions',
-  OTHER: 'other',
+  LEASING: 'LEASING',
+  RENT: 'RENT',
+  PERSONAL_LOAN: 'PERSONAL_LOAN',
+  MORTGAGE_LOAN: 'MORTGAGE_LOAN',
+  PENSIONS: 'PENSIONS',
+  OTHER: 'OTHER',
 };
 
 export const REAL_ESTATE = {
-  PRIMARY: 'primary',
-  SECONDARY: 'secondary',
-  INVESTMENT: 'investment',
+  PRIMARY: 'PRIMARY',
+  SECONDARY: 'SECONDARY',
+  INVESTMENT: 'INVESTMENT',
 };

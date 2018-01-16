@@ -10,8 +10,8 @@ export const USAGE_TYPE = {
 };
 
 export const PROPERTY_STYLE = {
-  FLAT: 'flat',
-  VILLA: 'villa',
+  FLAT: 'FLAT',
+  VILLA: 'VILLA',
 };
 
 export const VOLUME_NORM = {

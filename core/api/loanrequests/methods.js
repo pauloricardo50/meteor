@@ -13,6 +13,12 @@ import {
 } from 'core/api/adminActions/methods';
 
 import LoanRequests from './loanrequests';
+import {
+  ADMIN_ACTION_TYPE,
+  ADMIN_ACTION_STATUS,
+  REQUEST_STATUS,
+  AUCTION_STATUS,
+} from '../constants';
 
 const importServerMethods = () => {
   if (Meteor.isServer || (!!this && !this.isSimulation)) {
@@ -119,7 +125,7 @@ export const startAuction = new ValidatedMethod({
     }
 
     const auctionObject = {
-      'logic.auction.status': 'started',
+      'logic.auction.status': AUCTION_STATUS.STARTED,
       'logic.auction.startTime': moment().toDate(),
       'logic.auction.endTime': auctionEndTime,
     };
@@ -131,7 +137,7 @@ export const startAuction = new ValidatedMethod({
       return insertAdminAction
         .callPromise({
           requestId: id,
-          type: 'auction',
+          type: ADMIN_ACTION_TYPE.AUCTION,
           extra: { auctionEndTime },
         })
         .then(() =>
@@ -262,7 +268,7 @@ export const requestVerification = new ValidatedMethod({
         }
       },
     );
-    return Meteor.wrapAsync(insertAdminAction.call({ type: 'verify', requestId: id }));
+    return Meteor.wrapAsync(insertAdminAction.call({ type: ADMIN_ACTION_TYPE.VERIFY, requestId: id }));
   },
 });
 
@@ -300,18 +306,21 @@ export const endAuction = new ValidatedMethod({
 
     // This method is called in the future, so make sure that it isn't
     // executed again if this has already been done
-    if (!request || request.logic.auction.status === 'ended') {
+    if (!request || request.logic.auction.status === AUCTION_STATUS.ENDED) {
       return;
     }
 
     LoanRequests.update(id, {
       $set: {
-        'logic.auction.status': 'ended',
+        'logic.auction.status': AUCTION_STATUS.ENDED,
         'logic.auction.endTime': new Date(),
       },
     });
 
-    completeActionByType.call({ requestId: id, type: 'auction' });
+    completeActionByType.call({
+      requestId: id,
+      type: ADMIN_ACTION_TYPE.AUCTION,
+    });
 
     if (Meteor.isServer) {
       const {
@@ -374,8 +383,8 @@ export const cancelAuction = new ValidatedMethod({
 
           completeActionByType.call({
             requestId: id,
-            type: 'auction',
-            newStatus: 'cancelled',
+            type: ADMIN_ACTION_TYPE.AUCTION,
+            newStatus: ADMIN_ACTION_STATUS.CANCELLED,
           });
         },
       );
@@ -399,7 +408,7 @@ export const confirmClosing = new ValidatedMethod({
       Roles.userIsInRole(Meteor.userId(), 'dev')
     ) {
       return LoanRequests.update(id, {
-        $set: { status: 'done', ...object },
+        $set: { status: REQUEST_STATUS.DONE, ...object },
       });
     }
 
