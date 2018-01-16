@@ -302,6 +302,7 @@ export const getAcquisitionArray = (state, props, setFormState) => [
       state.usageType === USAGE_TYPE.PRIMARY && state.insurance1Exists === true,
     type: 'multipleInput',
     money: true,
+    zeroAllowed: true,
   },
   {
     id: 'insurance2Exists',
@@ -326,6 +327,7 @@ export const getAcquisitionArray = (state, props, setFormState) => [
       state.usageType === USAGE_TYPE.PRIMARY && state.insurance2Exists === true,
     type: 'multipleInput',
     money: true,
+    zeroAllowed: true,
   },
   {
     id: 'realEstateExists',

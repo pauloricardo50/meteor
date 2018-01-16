@@ -33,11 +33,11 @@ export const completeFakeBorrower = {
   otherIncome: [
     {
       value: 10000,
-      description: 'PENSION_INCOME',
+      description: 'PENSION',
     },
     {
       value: 15000,
-      description: 'RENT_INCOME',
+      description: 'RENT',
     },
   ],
   expenses: [

@@ -30,10 +30,7 @@ import {
   getInsuranceFortune,
 } from 'core/utils/borrowerFunctions';
 
-import {
-  getMonthlyPayment,
-  getIncomeRatio,
-} from 'core/utils/finance-math';
+import { getMonthlyPayment, getIncomeRatio } from 'core/utils/finance-math';
 
 const getDashboardArray = (props) => {
   const r = props.loanRequest;
@@ -89,9 +86,7 @@ const getDashboardArray = (props) => {
     },
     {
       label: 'general.insuranceFees',
-      value: toMoney(
-        Math.round(r.general.insuranceFortuneUsed * constants.lppFees),
-      ),
+      value: toMoney(Math.round(r.general.insuranceFortuneUsed * constants.lppFees)),
       hide: !r.general.insuranceFortuneUsed,
     },
     {
@@ -302,9 +297,7 @@ const getSmallDashboardArray = (props) => {
     },
     {
       label: 'general.insuranceFees',
-      value: toMoney(
-        Math.round(r.general.insuranceFortuneUsed * constants.lppFees),
-      ),
+      value: toMoney(Math.round(r.general.insuranceFortuneUsed * constants.lppFees)),
       hide: !r.general.insuranceFortuneUsed,
     },
     {
@@ -395,13 +388,9 @@ const getStart2Array = (props) => {
       },
       value: (
         <span className="bold sum">
-          {toMoney(
-            Math.round(
-              p.property * (1 + constants.notaryFees) +
+          {toMoney(Math.round(p.property * (1 + constants.notaryFees) +
                 p.propertyWork +
-                p.lppFees,
-            ),
-          )}
+                p.lppFees))}
         </span>
       ),
       spacingTop: true,
@@ -530,9 +519,7 @@ const getStart2Array = (props) => {
       label: 'Recap.netFortune',
       value: (
         <span className="sum">
-          {toMoney(
-            Math.round(p.fortune + p.insuranceFortuneDisplayed + p.realEstate),
-          )}
+          {toMoney(Math.round(p.fortune + p.insuranceFortuneDisplayed + p.realEstate))}
         </span>
       ),
       spacingTop: true,
@@ -718,9 +705,7 @@ const getStructureArray = (props) => {
     },
     {
       label: 'general.insuranceFees',
-      value: toMoney(
-        Math.round(r.general.insuranceFortuneUsed * constants.lppFees),
-      ),
+      value: toMoney(Math.round(r.general.insuranceFortuneUsed * constants.lppFees)),
       hide: !r.general.insuranceFortuneUsed,
     },
     {

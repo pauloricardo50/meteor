@@ -1,7 +1,7 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+// import { Route, Switch } from 'react-router-dom';
 
-import BaseRouter from 'core/components/BaseRouter';
+import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
 import NotFound from 'core/components/NotFound';
 import { getUserLocale, getFormats } from 'core/utils/localization';
 import messagesFR from '../../../lang/fr.json';
@@ -25,7 +25,7 @@ const WwwRouter = () => (
     locale={getUserLocale()}
     messages={messagesFR}
     formats={getFormats()}
-    hasLogin={false}
+    hasLogin={false} // should be false
   >
     <PublicLayout>
       <Switch>

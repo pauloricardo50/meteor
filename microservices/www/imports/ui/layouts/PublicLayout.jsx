@@ -4,11 +4,11 @@ import React from 'react';
 import TopNav from 'core/components/TopNav';
 import { generalContainer } from 'core/containers/Containers';
 
-export const PublicLayout = props => (
+export const PublicLayout = ({ children, ...rest }) => (
   <div style={{ height: 'inherit', width: 'inherit' }}>
-    <TopNav {...props} public />
+    <TopNav {...rest} public />
     <main className="public-layout">
-      {props.children && React.cloneElement(props.children, { ...props })}
+      {children && React.cloneElement(children, rest)}
     </main>
   </div>
 );

@@ -4,10 +4,11 @@ import React from 'react';
 import { T } from 'core/components/Translation';
 import StrategyChoices from '/imports/ui/components/StrategyChoices';
 import Button from 'core/components/Button';
+import { INSURANCE_USE_PRESET } from 'core/api/constants';
 
 const getChoices = () => [
   {
-    id: 'collateral',
+    id: INSURANCE_USE_PRESET.COLLATERAL,
     title: 'Nantissement',
     reasons: [
       'Dette plus élevée',
@@ -17,7 +18,7 @@ const getChoices = () => [
     isBest: true,
   },
   {
-    id: 'withdrawal',
+    id: INSURANCE_USE_PRESET.WITHDRAWAL,
     title: 'Retrait',
     reasons: [
       'Dette plus basse',

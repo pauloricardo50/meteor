@@ -3,12 +3,13 @@ import React from 'react';
 
 import { T } from 'core/components/Translation';
 import StrategyChoices from '/imports/ui/components/StrategyChoices';
+import { AMORTIZATION_STRATEGY_PRESET } from 'core/api/constants';
 
 // import AmortizingSummary from './AmortizingSummary';
 
 const getChoices = () => [
   {
-    id: 'indirect',
+    id: AMORTIZATION_STRATEGY_PRESET.INDIRECT,
     title: 'Amortissement Indirect',
     reasons: [
       'Paiements ne changent pas avec les années',
@@ -18,7 +19,7 @@ const getChoices = () => [
     isBest: true,
   },
   {
-    id: 'direct',
+    id: AMORTIZATION_STRATEGY_PRESET.DIRECT,
     title: 'Amortissement Direct',
     reasons: ['Paiements diminuent avec les années', 'Charge fiscale augmente'],
   },
