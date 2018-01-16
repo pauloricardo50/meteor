@@ -1,5 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
+import { type, status } from './adminActionConstants';
 
 const AdminActions = new Mongo.Collection('adminActions');
 
@@ -32,13 +33,17 @@ const AdminActionSchema = new SimpleSchema({
   },
   status: {
     type: String,
-    defaultValue: 'active',
+    defaultValue: status.ACTIVE,
+    allowedValues: Object.values(status),
   },
   completedAt: {
     type: Date,
     optional: true,
   },
-  type: String,
+  type: {
+    type: String,
+    allowedValues: Object.values(type),
+  },
   requestId: String,
   staffId: {
     type: String,

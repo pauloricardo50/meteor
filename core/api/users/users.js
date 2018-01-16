@@ -1,6 +1,7 @@
-
 import SimpleSchema from 'simpl-schema';
 import { Meteor } from 'meteor/meteor';
+
+import { roles } from './userConstants';
 
 const UserSchema = new SimpleSchema({
   username: {
@@ -58,6 +59,7 @@ const UserSchema = new SimpleSchema({
   },
   'roles.$': {
     type: String,
+    allowedValues: Object.values(roles),
   },
   // In order to avoid an 'Exception in setInterval callback' from Meteor
   heartbeat: {
