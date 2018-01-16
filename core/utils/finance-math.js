@@ -1,3 +1,4 @@
+import { GENDER, USAGE_TYPE } from '../api/constants';
 import constants from '../config/constants';
 import {
   getLoanValue,
@@ -16,10 +17,10 @@ import { arrayify } from './general';
 // Determine retirement age depending on the gender of the borrowers
 // Return a positive value only, negative values rounded to 0
 export const getYearsToRetirement = (age1, age2, gender1, gender2) => {
-  const retirement1 = gender1 === 'f' ? 64 : 65;
+  const retirement1 = gender1 === GENDER.F ? 64 : 65;
   let retirement2 = null;
   if (gender2) {
-    retirement2 = gender2 === 'f' ? 64 : 65;
+    retirement2 = gender2 === GENDER.F ? 64 : 65;
   }
 
   // Substract age to determine remaining time to retirement for both borrowers
@@ -145,7 +146,10 @@ export const canAffordRank1 = (loanRequest, borrowers) => {
     return true;
   }
 
-  if (loanRequest.property && loanRequest.property.usageType === 'primary') {
+  if (
+    loanRequest.property &&
+    loanRequest.property.usageType === USAGE_TYPE.PRIMARY
+  ) {
     if (fortune + insuranceFortune >= fortuneRequired) {
       // ignore lppFees
       return true;

@@ -1,4 +1,5 @@
 import constants from '../config/constants';
+import { USAGE_TYPE } from '../api/constants';
 
 // if 2 values are not in auto mode, set both of their minValues to 0
 const setDefaultMinValues = (s, o) => {
@@ -80,7 +81,9 @@ export const changeFortune = (state, o, fortune) => {
   if (state.property.auto && state.income.auto) {
     o.property.minValue = fortune / (0.2 + 0.05);
     o.income.minValue =
-      fortune / (0.2 + 0.05) * constants.propertyToIncome('primary', 0.8);
+      fortune /
+      (0.2 + 0.05) *
+      constants.propertyToIncome(USAGE_TYPE.PRIMARY, 0.8);
   } else if (state.property.auto) {
     o.property.minValue = constants.maxProperty(state.income.value, fortune);
   } else if (state.income.auto) {
@@ -94,7 +97,8 @@ export const changeFortune = (state, o, fortune) => {
 
 export const changeIncome = (state, o, income) => {
   if (state.property.auto && state.fortune.auto) {
-    o.property.minValue = income / constants.propertyToIncome('primary', 0.8);
+    o.property.minValue =
+      income / constants.propertyToIncome(USAGE_TYPE.PRIMARY, 0.8);
     o.fortune.minValue = o.property.minValue * (0.2 + 0.05);
   } else if (state.property.auto) {
     o.property.minValue = constants.maxProperty(income, state.fortune.value);
@@ -178,7 +182,7 @@ export const getIncome = (state) => {
   const bonus1 = getBonusIncome([s.bonus11, s.bonus21, s.bonus31, s.bonus41]);
   const bonus2 = getBonusIncome([s.bonus12, s.bonus22, s.bonus32, s.bonus42]);
   return [
-    state.usageType === 'investment' ? s.propertyRent * 12 : 0,
+    state.usageType === USAGE_TYPE.INVESTMENT ? s.propertyRent * 12 : 0,
     s.income1,
     s.income2,
     bonus1,
@@ -326,7 +330,7 @@ export const getMaxLoan = (
   const i = constants.interests;
 
   const maxLoan =
-    state.usageType === 'secondary'
+    state.usageType === USAGE_TYPE.SECONDARY
       ? Math.floor(0.7 * propAndWork)
       : Math.floor(0.8 * propAndWork);
 

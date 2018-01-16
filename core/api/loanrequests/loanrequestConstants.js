@@ -88,6 +88,7 @@ export const INSURANCE_USE_PRESET = {
 
 export const LOAN_STRATEGY_PRESET = {
   FIXED: 'FIXED',
+  MANUAL: 'MANUAL',
 };
 
 export const AMORTIZATION_STRATEGY_PRESET = {

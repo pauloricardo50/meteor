@@ -1,4 +1,5 @@
 import constants from '../config/constants';
+import { USAGE_TYPE, LOAN_STRATEGY_PRESET, OFFER_TYPE } from '../api/constants';
 import { getIncomeRatio } from './finance-math';
 import { propertyPercent, filesPercent } from '../arrays/steps';
 import { requestFiles } from '../api/files/files';
@@ -30,7 +31,7 @@ export const getLoanValue = (loanRequest, roundedTo10000) => {
   let value =
     getProjectValue(loanRequest) - (loanRequest.general.fortuneUsed || 0);
 
-  if (loanRequest.property.usageType === 'primary') {
+  if (loanRequest.property.usageType === USAGE_TYPE.PRIMARY) {
     value -= loanRequest.general.insuranceFortuneUsed || 0;
   }
 
@@ -163,9 +164,11 @@ export const getMonthlyWithExtractedOffer = (loanRequest, offer) =>
   getMonthlyWithOffer(
     loanRequest,
     {
-      [offer.type === 'standard' ? 'standardOffer' : 'counterpartOffer']: offer,
+      [offer.type === OFFER_TYPE.STANDARD
+        ? 'standardOffer'
+        : 'counterpartOffer']: offer,
     },
-    offer.type === 'standard',
+    offer.type === OFFER_TYPE.STANDARD,
   );
 
 export const getPropAndWork = loanRequest =>
@@ -213,7 +216,7 @@ export const getFees = (loanRequest) => {
   const notaryFees = loanRequest.property.value * constants.notaryFees;
   let insuranceFees = 0;
 
-  if (loanRequest.property.usageType === 'primary') {
+  if (loanRequest.property.usageType === USAGE_TYPE.PRIMARY) {
     insuranceFees =
       loanRequest.general.insuranceFortuneUsed * constants.lppFees;
   }
@@ -326,7 +329,7 @@ export const strategyDone = (loanRequest) => {
   }
 
   if (
-    logic.loanStrategyPreset === 'manual' &&
+    logic.loanStrategyPreset === LOAN_STRATEGY_PRESET.MANUAL &&
     !loanStrategySuccess(general.loanTranches, getLoanValue(loanRequest, true))
   ) {
     return false;

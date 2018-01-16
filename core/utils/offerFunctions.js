@@ -1,4 +1,5 @@
-import { getMonthlyWithExtractedOffer } from 'core/utils/requestFunctions';
+import { getMonthlyWithExtractedOffer } from './requestFunctions';
+import { OFFER_TYPE, INTEREST_RATES } from '../api/constants';
 
 export const getRange = (offers, key) =>
   offers.reduce(
@@ -41,7 +42,7 @@ export const extractOffers = (offers, loanRequest) => {
       ...meta,
       conditions: offer.conditions,
       uid: `standard${offer._id}`,
-      type: 'standard',
+      type: OFFER_TYPE.STANDARD,
     });
     array[array.length - 1].monthly = getMonthlyWithExtractedOffer(
       loanRequest,
@@ -55,7 +56,7 @@ export const extractOffers = (offers, loanRequest) => {
         conditions: offer.conditions,
         counterparts: offer.counterparts,
         uid: `counterparts${offer._id}`,
-        type: 'counterparts',
+        type: OFFER_TYPE.COUNTERPARTS,
       });
       array[array.length - 1].monthly = getMonthlyWithExtractedOffer(
         loanRequest,
@@ -66,17 +67,15 @@ export const extractOffers = (offers, loanRequest) => {
   return array;
 };
 
-export const getBestRate = (offers = [], duration = 'interest10') =>
+export const getBestRate = (offers = [], duration = INTEREST_RATES.YEAR_10) =>
   (offers.length
-    ? Math.min(
-      ...offers.reduce((acc, offer) => {
-        if (offer.standardOffer[duration]) {
-          acc.push(offer.standardOffer[duration]);
-        }
-        if (offer.counterpartOffer && offer.counterpartOffer[duration]) {
-          acc.push(offer.counterpartOffer[duration]);
-        }
-        return acc;
-      }, []),
-    )
+    ? Math.min(...offers.reduce((acc, offer) => {
+      if (offer.standardOffer[duration]) {
+        acc.push(offer.standardOffer[duration]);
+      }
+      if (offer.counterpartOffer && offer.counterpartOffer[duration]) {
+        acc.push(offer.counterpartOffer[duration]);
+      }
+      return acc;
+    }, []))
     : undefined);

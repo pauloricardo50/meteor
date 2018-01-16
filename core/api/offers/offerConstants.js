@@ -1,0 +1,4 @@
+export const OFFER_TYPE = {
+  STANDARD: 'STANDARD',
+  COUNTERPARTS: 'COUNTERPARTS',
+};

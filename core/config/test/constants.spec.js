@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import { USAGE_TYPE } from 'core/api/constants';
 import constants, { calculatePrimaryProperty } from '../constants';
 
 describe('Constants', () => {
@@ -17,15 +18,11 @@ describe('Constants', () => {
   });
 
   it('propertyToIncome should return the right value', () => {
-    expect(constants.propertyToIncome('primary', 0.8).toFixed(2)).to.equal(
-      '0.18',
-    );
+    expect(constants.propertyToIncome('primary', 0.8).toFixed(2)).to.equal('0.18');
   });
 
   it('propertyToIncomeReal should return the right value', () => {
-    expect(constants.propertyToIncomeReal('primary', 0.8).toFixed(2)).to.equal(
-      '0.08',
-    );
+    expect(constants.propertyToIncomeReal('primary', 0.8).toFixed(2)).to.equal('0.08');
   });
 
   describe('Calculate primary property value', () => {
@@ -57,27 +54,19 @@ describe('Constants', () => {
 
   describe('Calculate maximum property value', () => {
     it('Should return 1M with 250k fortune, 0 insurance fortune, 500k income', () => {
-      expect(constants.maxProperty(500000, 250000, 0, 'primary')).to.equal(
-        1000000,
-      );
+      expect(constants.maxProperty(500000, 250000, 0, USAGE_TYPE.PRIMARY)).to.equal(1000000);
     });
 
     it('Should return 1M with 350k fortune, 0 insurance fortune, 500k income, and secondary usage', () => {
-      expect(constants.maxProperty(500000, 350000, 0, 'secondary')).to.equal(
-        1000000,
-      );
+      expect(constants.maxProperty(500000, 350000, 0, USAGE_TYPE.SECONDARY)).to.equal(1000000);
     });
 
     it("Should return 1'506'542 with 500k fortune, 0 insurance fortune, 200k income", () => {
-      expect(constants.maxProperty(200000, 500000, 0, 'primary')).to.equal(
-        1506542,
-      );
+      expect(constants.maxProperty(200000, 500000, 0, USAGE_TYPE.PRIMARY)).to.equal(1506542);
     });
 
     it("Should return 1'742'056 with 500k fortune, 200k insurance fortune, 200k income", () => {
-      expect(constants.maxProperty(200000, 500000, 200000, 'primary')).to.equal(
-        1742056,
-      );
+      expect(constants.maxProperty(200000, 500000, 200000, USAGE_TYPE.PRIMARY)).to.equal(1742056);
     });
   });
 
