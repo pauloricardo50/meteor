@@ -473,7 +473,7 @@ export const getErrorArray = (state, props, setFormState) => [
 export const getFinalArray = (state, props, setFormState, components) => [
   {
     id: 'acceptedLoan',
-    condition: state.type === PURCHASE_TYPE.ACQUISITION,
+    condition: state.type === 'acquisition',
     type: 'buttons',
     intlValues: {
       value: (
@@ -502,8 +502,7 @@ export const getFinalArray = (state, props, setFormState, components) => [
   },
   {
     id: 'loanWanted',
-    condition:
-      state.type === PURCHASE_TYPE.ACQUISITION && state.acceptedLoan === false,
+    condition: state.type === 'acquisition' && state.acceptedLoan === false,
     type: 'sliderInput',
     child1: (
       <span className="loanWanted-slider">
@@ -560,7 +559,7 @@ export const getFinalArray = (state, props, setFormState, components) => [
   {
     id: 'fortuneRequiredAgreed',
     condition:
-      state.type === PURCHASE_TYPE.ACQUISITION &&
+      state.type === 'acquisition' &&
       (state.usageType !== USAGE_TYPE.PRIMARY ||
         (state.usageType === USAGE_TYPE.PRIMARY &&
           props.insuranceFortune <= 0)),
@@ -587,7 +586,7 @@ export const getFinalArray = (state, props, setFormState, components) => [
     // insurance is not needed, but still propose to use it
     id: 'useInsurance1',
     condition:
-      state.type === PURCHASE_TYPE.ACQUISITION &&
+      state.type === 'acquisition' &&
       state.usageType === USAGE_TYPE.PRIMARY &&
       props.fortune >= props.fortuneNeeded &&
       props.insuranceFortune > 0,
@@ -635,7 +634,7 @@ export const getFinalArray = (state, props, setFormState, components) => [
     // insurance is necessary
     id: 'useInsurance2',
     condition:
-      state.type === PURCHASE_TYPE.ACQUISITION &&
+      state.type === 'acquisition' &&
       state.usageType === USAGE_TYPE.PRIMARY &&
       props.fortune < props.fortuneNeeded,
     type: 'buttons',
@@ -717,7 +716,7 @@ export const getFinalArray = (state, props, setFormState, components) => [
   {
     id: 'fortuneSliders',
     condition:
-      state.type === PURCHASE_TYPE.ACQUISITION &&
+      state.type === 'acquisition' &&
       state.usageType === USAGE_TYPE.PRIMARY &&
       (state.useInsurance1 === true || state.useInsurance2 === true) &&
       state.insuranceConditions === true,
@@ -850,7 +849,7 @@ export const getFinalArray = (state, props, setFormState, components) => [
 
 const getFormArray = (state, props, setFormState, components) =>
   getAcquisitionArray(state, props, setFormState).concat(
-    state.type === PURCHASE_TYPE.ACQUISITION
+    state.type === 'acquisition'
       ? getErrorArray(state, props, setFormState)
       : [], // these errors only for acquisitions
     getFinalArray(state, props, setFormState, components),

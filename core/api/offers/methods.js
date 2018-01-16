@@ -61,8 +61,8 @@ export const insertAdminOffer = new ValidatedMethod({
       ...object,
       userId: Meteor.userId(),
       isAdmin: true,
-      auctionEndTime: request.logic.auction.endTime // this doesn't update when the request is ended prematurely by an admin
-      canton: 'GE'
+      auctionEndTime: request.logic.auction.endTime, // this doesn't update when the request is ended prematurely by an admin
+      canton: 'GE',
     });
   },
 });
