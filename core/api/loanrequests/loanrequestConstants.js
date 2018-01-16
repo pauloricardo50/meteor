@@ -1,4 +1,4 @@
-export const status = {
+export const requestStatus = {
   ACTIVE: 'ACTIVE',
   DONE: 'DONE',
 };

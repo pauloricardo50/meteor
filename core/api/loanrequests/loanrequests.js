@@ -7,7 +7,7 @@ import {
   PropertySchema,
   LogicSchema,
 } from './additionalSchemas';
-import { status } from './loanrequestConstants';
+import { requestStatus } from './loanrequestConstants';
 
 const LoanRequests = new Mongo.Collection('loanRequests');
 
@@ -58,8 +58,8 @@ const LoanRequestSchema = new SimpleSchema({
   },
   status: {
     type: String,
-    defaultValue: status.ACTIVE,
-    allowedValues: Object.values(status),
+    defaultValue: requestStatus.ACTIVE,
+    allowedValues: Object.values(requestStatus),
   },
   name: { type: String, optional: true, defaultValue: '' },
   general: { type: GeneralSchema, defaultValue: {} },

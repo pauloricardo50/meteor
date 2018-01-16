@@ -5,7 +5,7 @@ import {
   owner,
   cantons,
 } from './loanrequestConstants';
-import { gender } from '../borrowers/borrowerConstants';
+import { gender } from '../constants';
 
 export const GeneralSchema = new SimpleSchema({
   purchaseType: {

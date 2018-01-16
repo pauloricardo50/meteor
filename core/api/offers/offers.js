@@ -1,6 +1,6 @@
-
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
+import { interestRates, cantons } from '../constants';
 
 const Offers = new Mongo.Collection('offers');
 
@@ -95,8 +95,7 @@ export const OfferSchema = new SimpleSchema({
   organization: String,
   canton: {
     type: String,
-    min: 2,
-    max: 2,
+    allowedValues: Object.keys(cantons),
   },
   auctionEndTime: Date,
   standardOffer: {
