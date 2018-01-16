@@ -24,7 +24,7 @@ const handleSave = (props, file) => {
       type: file.type,
       url: file.xhr.responseURL,
       key: file.postData[0].value,
-      status: 'unverified',
+      status: 'UNVERIFIED',
       fileCount,
     },
   };

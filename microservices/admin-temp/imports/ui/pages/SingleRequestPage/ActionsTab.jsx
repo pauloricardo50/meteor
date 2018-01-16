@@ -14,6 +14,7 @@ import ClosingForm from '/imports/ui/components/ClosingForm';
 import ClosingStepsForm from '/imports/ui/components/ClosingStepsForm';
 import downloadPDF from 'core/utils/download-pdf';
 import ConfirmMethod from './ConfirmMethod';
+import { AUCTION_STATUS } from 'core/api/constants';
 
 const styles = {
   div: {
@@ -59,14 +60,14 @@ const ActionsTab = (props) => {
         keyword="ANNULER"
         method={cb => cancelAuction.call({ id: loanRequest._id }, cb)}
         style={styles.button}
-        disabled={!(l.auction.status === 'started')}
+        disabled={!(l.auction.status === AUCTION_STATUS.STARTED)}
       />
       <ConfirmMethod
         label="Terminer les enchères"
         keyword="TERMINER"
         method={cb => endAuction.call({ id: loanRequest._id }, cb)}
         style={styles.button}
-        disabled={!(l.auction.status === 'started')}
+        disabled={!(l.auction.status === AUCTION_STATUS.STARTED)}
       />
       <DialogSimple
         title="Confirmer le décaissement"

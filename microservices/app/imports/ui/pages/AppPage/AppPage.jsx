@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
 import DashboardUnverified from '/imports/ui/components/DashboardUnverified';
+import { REQUEST_STATUS } from 'core/api/constants';
 
 import AppItem from './AppItem';
 
@@ -19,14 +20,14 @@ const AppPage = ({ loanRequests, properties, currentUser }) => (
         key={request._id}
         title={request.name || <T id="AppPage.noName" />}
         subtitle={
-          request.status === 'active' ? (
+          request.status === REQUEST_STATUS.ACTIVE ? (
             <T id="AppPage.loanRequest" />
           ) : (
             <T id="AppPage.loanRequest.done" />
           )
         }
         mainText={
-          request.status === 'active' ? (
+          request.status === REQUEST_STATUS.ACTIVE ? (
             <span>
               <T id="AppPage.step" values={{ step: request.logic.step }} />
               {!request.name && (

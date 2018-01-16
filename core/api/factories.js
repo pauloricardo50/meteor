@@ -50,7 +50,7 @@ Factory.define('loanRequest', LoanRequests, {
     partnersToAvoid: ['joe', 'john'],
   }),
   borrowers: [],
-  status: 'active',
+  status: 'ACTIVE',
   property: () => ({ value: 1000000 }),
   files: () => ({}),
   logic: () => ({
@@ -81,7 +81,7 @@ Factory.define('offer', Offers, {
 
 Factory.define('adminAction', AdminActions, {
   type: 'test',
-  status: 'active',
+  status: 'ACTIVE',
 });
 
 Factory.define('comparator', Comparators, {

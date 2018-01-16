@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
 import IconButton from 'core/components/IconButton';
+import { FILE_STATUS } from 'core/api/constants';
 
 import Download from './Download';
 
 const File = ({ file, disabled, handleRemove }) => {
-  const { initialName, key, status, error } = file;
+  const {
+    initialName, key, status, error,
+  } = file;
 
   return (
     <div className="flex-col">
@@ -17,7 +20,7 @@ const File = ({ file, disabled, handleRemove }) => {
           <span className={`${status} bold`}>
             <T id={`Files.status.${status}`} />
           </span>
-          {!!(!disabled && status !== 'valid') && (
+          {!!(!disabled && status !== FILE_STATUS.VALID) && (
             <IconButton
               type="close"
               tooltip={<T id="general.delete" />}
@@ -27,7 +30,8 @@ const File = ({ file, disabled, handleRemove }) => {
           <Download fileKey={key} fileName={initialName} />
         </div>
       </div>
-      {error && status === 'error' && <p className="error">{error}</p>}
+      {error &&
+        status === FILE_STATUS.ERROR && <p className="error">{error}</p>}
     </div>
   );
 };

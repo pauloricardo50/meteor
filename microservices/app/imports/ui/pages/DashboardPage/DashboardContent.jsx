@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Masonry from 'react-masonry-component';
 
+import { REQUEST_STATUS } from 'core/api/constants';
 import DashboardRecap from './DashboardRecap';
 import DashboardCharts from './DashboardCharts';
 import DashboardBorrowers from './DashboardBorrowers';
@@ -13,7 +14,7 @@ import DashboardProperty from './DashboardProperty';
 import DashboardStatus from './DashboardStatus';
 
 const getGrid = ({ loanRequest }) => {
-  const done = loanRequest.status === 'done';
+  const done = loanRequest.status === REQUEST_STATUS.DONE;
 
   return [
     {
@@ -50,8 +51,8 @@ export default class DashboardContent extends Component {
     return (
       <div>
         <Masonry
-          className={'grid'}
-          elementType={'div'}
+          className="grid"
+          elementType="div"
           options={masonryOptions}
           disableImagesLoaded={false}
           updateOnEachImageLoad={false}
@@ -62,13 +63,13 @@ export default class DashboardContent extends Component {
           <div className="grid-sizer" />
           {getGrid(this.props)
             .filter(component => component.show)
-            .map((c, i) =>
-              (<c.component
+            .map((c, i) => (
+              <c.component
                 {...this.props}
                 reloadMasonry={this.reloadMasonry}
                 key={i}
-              />),
-            )}
+              />
+            ))}
         </Masonry>
       </div>
     );

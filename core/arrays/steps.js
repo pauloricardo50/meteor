@@ -8,6 +8,13 @@ import getPropertyArray from './PropertyFormArray';
 import { strategyDone } from 'core/utils/requestFunctions';
 import { arrayify } from '../utils/general';
 import { isDemo } from 'core/utils/browserFunctions';
+import {
+  REQUEST_STATUS,
+  AUCTION_STATUS,
+  FILE_STATUS,
+  CLOSING_STEPS_STATUS,
+  CLOSING_STEPS_TYPE,
+} from '../api/constants';
 
 const getSteps = ({ loanRequest, borrowers, serverTime }) => {
   const steps = [
@@ -84,8 +91,10 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         {
           id: 'auction',
           link: `/requests/${loanRequest._id}/auction`,
-          waiting: () => loanRequest.logic.auction.status === 'started',
-          isDone: () => loanRequest.logic.auction.status === 'ended',
+          waiting: () =>
+            loanRequest.logic.auction.status === AUCTION_STATUS.STARTED,
+          isDone: () =>
+            loanRequest.logic.auction.status === AUCTION_STATUS.ENDED,
           disabled: loanRequest.logic.step < 2,
         },
         {
@@ -137,7 +146,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
               2 <
               1 || loanRequest.logic.step < 3,
           percent: () => closingPercent(loanRequest),
-          isDone: () => loanRequest.status === 'done',
+          isDone: () => loanRequest.status === REQUEST_STATUS.DONE,
         },
       ],
     },
@@ -332,7 +341,7 @@ export const filesPercent = (doc, fileArrayFunc, step, checkValidity) => {
         if (!(f.required === false || f.condition === false)) {
           if (checkValidity) {
             a.push(isArray(doc2.files[f.id]) &&
-              doc2.files[f.id].every(file => file.status === 'valid')
+              doc2.files[f.id].every(file => file.status === FILE_STATUS.DONE)
               ? true
               : undefined);
           } else {
@@ -361,11 +370,11 @@ export const closingPercent = (loanRequest) => {
   const arr = [];
 
   closingSteps.forEach((step) => {
-    if (step.type === 'todo') {
-      arr.push(step.status === 'valid' ? true : undefined);
+    if (step.type === CLOSING_STEPS_TYPE.TODO) {
+      arr.push(step.status === CLOSING_STEPS_STATUS.VALID ? true : undefined);
     } else {
       arr.push(isArray(loanRequest.files[step.id]) &&
-        loanRequest.files[step.id].every(file => file.status === 'valid')
+        loanRequest.files[step.id].every(file => file.status === CLOSING_STEPS_STATUS.VALID)
         ? true
         : undefined);
     }

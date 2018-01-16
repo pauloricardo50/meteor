@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Icon from 'core/components/Icon';
-
 import colors from 'core/config/colors';
+import { FILE_STATUS } from 'core/api/constants';
 
 const styles = {
   icon: {
@@ -16,7 +16,10 @@ const FileStatusIcon = ({ files, status }) => {
   // Support providing a single status
   const statuses = status ? [status] : files.map(f => f.status);
 
-  if (status === 'unverified' || ((!files || files.length === 0) && !status)) {
+  if (
+    status === FILE_STATUS.UNVERIFIED ||
+    ((!files || files.length === 0) && !status)
+  ) {
     return (
       <span
         style={{

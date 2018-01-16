@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Button from 'core/components/Button';
 
 import cleanMethod from 'core/api/cleanMethods';
+import { CLOSING_STEPS_TYPE } from 'core/api/constants';
 
 import Adder from './Adder';
 import FileStep from './FileStep';
@@ -40,7 +41,11 @@ export default class ClosingStepsForm extends Component {
       prev => ({
         closingSteps: [
           ...prev.closingSteps,
-          { type, status: 'unverified', id: createId(prev.closingSteps, type) },
+          {
+            type,
+            status: CLOSING_STEPS_STATUS.UNVERIFIED,
+            id: createId(prev.closingSteps, type),
+          },
         ],
       }),
       // stupid fix because dialog is not resizing
@@ -81,7 +86,7 @@ export default class ClosingStepsForm extends Component {
               return 0;
             })
             .map((step, i) =>
-                (step.type === 'todo' ? (
+                (step.type === CLOSING_STEPS_TYPE.TODO ? (
                   <TodoStep
                     step={step}
                     key={step.id}

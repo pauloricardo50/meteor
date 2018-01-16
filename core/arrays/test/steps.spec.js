@@ -119,28 +119,22 @@ describe('steps', () => {
     });
 
     it('should return an array with the values of the document', () => {
-      expect(
-        getCountedArray(dummyArray, { id1: '1', id2: '2', idx: 'x' }),
-      ).to.deep.equal(['1', '2']);
+      expect(getCountedArray(dummyArray, { id1: '1', id2: '2', idx: 'x' })).to.deep.equal(['1', '2']);
     });
 
     it('should work with nested id values', () => {
-      expect(
-        getCountedArray([...dummyArray, { id: 'id3.id' }], {
-          id1: '1',
-          id2: '2',
-          id3: { id: '3' },
-          idx: 'x',
-        }),
-      ).to.deep.equal(['1', '2', '3']);
+      expect(getCountedArray([...dummyArray, { id: 'id3.id' }], {
+        id1: '1',
+        id2: '2',
+        id3: { id: '3' },
+        idx: 'x',
+      })).to.deep.equal(['1', '2', '3']);
     });
 
     it('pushes to the array passed in as 3rd param', () => {
-      expect(
-        getCountedArray(dummyArray, { id1: '1', id2: '2', idx: 'x' }, [
-          'initialValue',
-        ]),
-      ).to.deep.equal(['initialValue', '1', '2']);
+      expect(getCountedArray(dummyArray, { id1: '1', id2: '2', idx: 'x' }, [
+        'initialValue',
+      ])).to.deep.equal(['initialValue', '1', '2']);
     });
 
     describe('conditional values', () => {
@@ -155,15 +149,11 @@ describe('steps', () => {
       ];
 
       it('should only count the conditional value if it is false', () => {
-        expect(
-          getCountedArray(array, { conditional: 'anything' }),
-        ).to.deep.equal(['anything']);
+        expect(getCountedArray(array, { conditional: 'anything' })).to.deep.equal(['anything']);
       });
 
       it('should count the conditional value and the following if it is true', () => {
-        expect(
-          getCountedArray(array, { conditional: trueValue }),
-        ).to.deep.equal([trueValue, undefined]);
+        expect(getCountedArray(array, { conditional: trueValue })).to.deep.equal([trueValue, undefined]);
       });
     });
   });
@@ -211,16 +201,14 @@ describe('steps', () => {
         const initialDoc = JSON.parse(JSON.stringify(dummyDoc));
         dummyDoc.files.myFile = {};
 
-        expect(filesPercent([initialDoc, dummyDoc], dummyFunc, 0)).to.equal(
-          0.5,
-        );
+        expect(filesPercent([initialDoc, dummyDoc], dummyFunc, 0)).to.equal(0.5);
       });
     });
 
     describe('status verification', () => {
       it('returns 0 if no files are valid', () => {
         dummyFunc = () => [[{ id: 'myFile', condition: undefined }]];
-        dummyDoc.files.myFile = [{ status: 'invalid' }];
+        dummyDoc.files.myFile = [{ status: 'INVALID' }];
         expect(filesPercent(dummyDoc, dummyFunc, 0, true)).to.equal(0);
       });
 
@@ -231,8 +219,8 @@ describe('steps', () => {
             { id: 'myFile2', condition: undefined },
           ],
         ];
-        dummyDoc.files.myFile = [{ status: 'invalid' }];
-        dummyDoc.files.myFile2 = [{ status: 'valid' }];
+        dummyDoc.files.myFile = [{ status: 'INVALID' }];
+        dummyDoc.files.myFile2 = [{ status: 'VALID' }];
         expect(filesPercent(dummyDoc, dummyFunc, 0, true)).to.equal(0.5);
       });
     });
@@ -246,7 +234,7 @@ describe('steps', () => {
 
     it('returns 1 for one valid todo step', () => {
       const r = {
-        logic: { closingSteps: [{ status: 'valid', type: 'todo' }] },
+        logic: { closingSteps: [{ status: 'VALID', type: 'TODO' }] },
       };
       expect(closingPercent(r)).to.equal(1);
     });
@@ -255,8 +243,8 @@ describe('steps', () => {
       const r = {
         logic: {
           closingSteps: [
-            { status: 'valid', type: 'todo' },
-            { status: 'unverified', type: 'todo' },
+            { status: 'valid', type: 'TODO' },
+            { status: 'unverified', type: 'TODO' },
           ],
         },
       };
@@ -265,16 +253,16 @@ describe('steps', () => {
 
     it('returns 0 for one unverified upload', () => {
       const r = {
-        logic: { closingSteps: [{ type: 'upload', id: 'myFile' }] },
-        files: { myFile: [{ status: 'unverified' }] },
+        logic: { closingSteps: [{ type: 'UPLOAD', id: 'myFile' }] },
+        files: { myFile: [{ status: 'UNVERIFIED' }] },
       };
       expect(closingPercent(r)).to.equal(0);
     });
 
     it('returns 1 for one valid upload', () => {
       const r = {
-        logic: { closingSteps: [{ type: 'upload', id: 'myFile' }] },
-        files: { myFile: [{ status: 'valid' }] },
+        logic: { closingSteps: [{ type: 'UPLOAD', id: 'myFile' }] },
+        files: { myFile: [{ status: 'VALID' }] },
       };
       expect(closingPercent(r)).to.equal(1);
     });
@@ -283,13 +271,13 @@ describe('steps', () => {
       const r = {
         logic: {
           closingSteps: [
-            { type: 'upload', id: 'myFile' },
-            { type: 'upload', id: 'myFile2' },
+            { type: 'UPLOAD', id: 'myFile' },
+            { type: 'UPLOAD', id: 'myFile2' },
           ],
         },
         files: {
-          myFile: [{ status: 'valid' }],
-          myFile2: [{ status: 'unverified' }],
+          myFile: [{ status: 'VALID' }],
+          myFile2: [{ status: 'UNVERIFIED' }],
         },
       };
       expect(closingPercent(r)).to.equal(0.5);

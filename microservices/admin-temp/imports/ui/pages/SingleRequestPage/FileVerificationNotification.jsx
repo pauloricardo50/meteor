@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { _ } from 'lodash';
+import { FILE_STATUS } from 'core/api/constants';
 
 const FileVerificationNotification = ({ loanRequest, borrowers }) => {
   const allFiles = _.flattenDeep([
@@ -10,7 +11,7 @@ const FileVerificationNotification = ({ loanRequest, borrowers }) => {
   ]);
 
   const toVerify = allFiles.reduce(
-    (sum, file) => (file.status === 'unverified' ? sum + 1 : sum),
+    (sum, file) => (file.status === FILE_STATUS.UNVERIFIED ? sum + 1 : sum),
     0,
   );
 

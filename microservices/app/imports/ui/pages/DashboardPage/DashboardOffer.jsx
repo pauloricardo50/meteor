@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 
 import { T, IntlNumber } from 'core/components/Translation';
 import ConditionsButton from 'core/components/ConditionsButton';
+import { OFFER_TYPE } from 'core/api/constants';
 import DashboardItem from './DashboardItem';
 
 const DashboardOffer = (props) => {
   const { offers, loanRequest } = props;
   const offer = offers.find(o => o._id === loanRequest.logic.lender.offerId);
   const displayedOffer =
-    loanRequest.logic.lender.type === 'counterparts'
+    loanRequest.logic.lender.type === OFFER_TYPE.COUNTERPARTS
       ? offer.counterpartOffer
       : offer.standardOffer;
 

@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { Uploader, FileStatusIcon } from 'core/components/UploaderArray';
+import { CLOSING_STEPS_STATUS, CLOSING_STEPS_TYPE } from 'core/api/constants';
 
 const ClosingItem = ({ step, loanRequest, disabled }) => {
   const {
     type, title, description, status, error, id,
   } = step;
 
-  if (type === 'upload') {
+  if (type === CLOSING_STEPS_TYPE.UPLOAD) {
     return (
       <Uploader
         fileMeta={{ id, title }}
@@ -34,7 +35,7 @@ const ClosingItem = ({ step, loanRequest, disabled }) => {
       <p className="secondary" style={{ paddingTop: 8 }}>
         {description}
       </p>
-      {status === 'error' &&
+      {status === CLOSING_STEPS_STATUS.ERROR &&
         error && (
           <div style={{ marginTop: 8, paddingTop: 8 }} className="border top">
             <p className="error">{error}</p>

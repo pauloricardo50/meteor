@@ -7,6 +7,7 @@ import cleanMethod from 'core/api/cleanMethods';
 import { getFileCount } from 'core/api/files/files';
 import bert from '/imports/js/helpers/bert';
 import { allowedFileTypes, maxSize } from 'core/api/files/meteor-slingshot';
+import { FILE_STATUS } from '../../api/constants';
 
 import Title from './Title';
 import File from './File';
@@ -95,7 +96,7 @@ class Uploader extends Component {
         type: file.type,
         url: encodeURI(downloadUrl), // To avoid spaces and unallowed chars
         key: downloadUrl.split('amazonaws.com/')[1],
-        status: 'unverified',
+        status: FILE_STATUS.UNVERIFIED,
         fileCount,
       },
     };
@@ -131,8 +132,10 @@ class Uploader extends Component {
     const { id } = fileMeta;
     // If one of the files has an error, allow uploading even if form is disabled
     const disableAdd =
-      currentValue.reduce((acc, f) => !(f.status === 'error'), true) &&
-      disabled;
+      currentValue.reduce(
+        (acc, f) => !(f.status === FILE_STATUS.ERROR),
+        true,
+      ) && disabled;
 
     return (
       <FileDropper

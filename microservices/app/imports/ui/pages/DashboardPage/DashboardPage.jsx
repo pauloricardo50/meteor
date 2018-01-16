@@ -7,6 +7,7 @@ import AcceptClosingModal from './AcceptClosingModal';
 import DashboardContent from './DashboardContent';
 
 import { getWidth } from 'core/utils/browserFunctions';
+import { REQUEST_STATUS } from 'core/api/constants';
 
 export default class DashboardPage extends Component {
   constructor(props) {
@@ -28,7 +29,8 @@ export default class DashboardPage extends Component {
     const { loanRequest, history } = this.props;
     const showNewRequestModal = !loanRequest.name;
     const showClosedModal =
-      loanRequest.status === 'done' && !loanRequest.logic.acceptedClosing;
+      loanRequest.status === REQUEST_STATUS.DONE &&
+      !loanRequest.logic.acceptedClosing;
 
     return (
       <Page id="DashboardPage" className="joyride-dashboard" fullWidth>

@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import Select from 'core/components/Select';
 import TextInput from 'core/components/TextInput';
 import Button from 'core/components/Button';
+import { FILE_STATUS } from 'core/api/constants';
 
 const options = [
-  { id: 'unverified', label: 'En attente' },
-  { id: 'valid', label: 'Validé' },
-  { id: 'error', label: 'Erreur' },
+  { id: FILE_STATUS.UNVERIFIED, label: 'En attente' },
+  { id: FILE_STATUS.VALID, label: 'Validé' },
+  { id: FILE_STATUS.ERROR, label: 'Erreur' },
 ];
 
 export default class ItemVerificator extends Component {
@@ -39,7 +40,7 @@ export default class ItemVerificator extends Component {
             label="Statut"
           />
         </div>
-        {item.status === 'error' && (
+        {item.status === FILE_STATUS.ERROR && (
           <div>
             <TextInput
               currentValue={error}

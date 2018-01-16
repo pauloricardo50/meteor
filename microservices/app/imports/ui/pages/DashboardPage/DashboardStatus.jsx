@@ -9,6 +9,7 @@ import cleanMethod from 'core/api/cleanMethods';
 import { LoadingComponent } from 'core/components/Loading';
 import { T } from 'core/components/Translation';
 import getSteps from 'core/arrays/steps';
+import { AUCTION_STATUS } from 'core/api/constants';
 import DashboardItem from './DashboardItem';
 
 const styles = {
@@ -67,7 +68,8 @@ export default class DashboardStatus extends Component {
     const verificationRequested =
       loanRequest.logic.verification &&
       loanRequest.logic.verification.requested;
-    const auctionGoingOn = loanRequest.logic.auction.status === 'started';
+    const auctionGoingOn =
+      loanRequest.logic.auction.status === AUCTION_STATUS.STARTED;
 
     const showLoading = verificationRequested || auctionGoingOn;
 

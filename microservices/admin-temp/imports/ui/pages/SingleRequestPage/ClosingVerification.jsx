@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import cleanMethod from 'core/api/cleanMethods';
-
+import { CLOSING_STEPS_TYPE } from 'core/api/constants';
 import FileVerificator from './FileVerificator';
 import ItemVerificator from './ItemVerificator';
 
@@ -46,7 +46,7 @@ export default class ClosingVerification extends Component {
       <div style={{ padding: '0 16px' }}>
         {steps && steps.length ? (
           steps.map(step =>
-              (step.type === 'upload' ? (
+              (step.type === CLOSING_STEPS_TYPE.UPLOAD ? (
                 <FileVerificator
                   currentValue={loanRequest.files[step.id]}
                   id={step.id}

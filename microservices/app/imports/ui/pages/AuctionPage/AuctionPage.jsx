@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 
 import { LoadingComponent } from 'core/components/Loading';
+import { AUCTION_STATUS } from 'core/api/constants';
 
 import ProcessPage from '/imports/ui/components/ProcessPage';
 import AuctionStart from './AuctionStart';
@@ -39,7 +40,9 @@ export default class AuctionPage extends Component {
   }
 
   getContent() {
-    const { loanRequest, offers, borrowers, history } = this.props;
+    const {
+      loanRequest, offers, borrowers, history,
+    } = this.props;
     const { serverTime } = this.state;
 
     if (!serverTime) {
@@ -53,13 +56,13 @@ export default class AuctionPage extends Component {
     if (
       loanRequest.logic.auction.endTime <=
         serverTime.setSeconds(serverTime.getSeconds() + 1) ||
-      loanRequest.logic.auction.status === 'ended'
+      loanRequest.logic.auction.status === AUCTION_STATUS.ENDED
     ) {
       // After the auction, clear interval
       Meteor.clearInterval(time);
 
       return <AuctionResults loanRequest={loanRequest} offers={offers} />;
-    } else if (loanRequest.logic.auction.status === 'started') {
+    } else if (loanRequest.logic.auction.status === AUCTION_STATUS.STARTED) {
       // During the auction
       return <Auction loanRequest={loanRequest} offers={offers} />;
     }
