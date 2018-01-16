@@ -7,17 +7,18 @@ import {
   PropertySchema,
   LogicSchema,
 } from './additionalSchemas';
+import { status } from './loanrequestConstants';
 
 const LoanRequests = new Mongo.Collection('loanRequests');
 
 const RequestFilesSchema = new SimpleSchema(getFileSchema('request'));
 
 // Prevent all client side modifications of mongoDB
-// LoanRequests.deny({
-//   insert: () => true,
-//   update: () => true,
-//   remove: () => true,
-// });
+LoanRequests.deny({
+  insert: () => true,
+  update: () => true,
+  remove: () => true,
+});
 LoanRequests.allow({
   insert: () => true,
   update: () => false,
@@ -57,8 +58,8 @@ const LoanRequestSchema = new SimpleSchema({
   },
   status: {
     type: String,
-    defaultValue: 'active',
-    allowedValues: ['active', 'done'],
+    defaultValue: status.ACTIVE,
+    allowedValues: Object.values(status),
   },
   name: { type: String, optional: true, defaultValue: '' },
   general: { type: GeneralSchema, defaultValue: {} },

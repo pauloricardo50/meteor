@@ -842,21 +842,21 @@ export const getFinalArray = (state, props, setFormState, components) => [
     hideResult: true,
     buttons: !state.hideFinalButton
       ? [
-          {
-            id: true,
-            label: <T id="Start2Form.finalized.button" />,
-            onClick() {
-              // After clicking on this button, hide it
-              setFormState('hideFinalButton', true);
-              const options = {
-                duration: 350,
-                delay: 0,
-                smooth: true,
-              };
-              Meteor.defer(() => Scroll.scroller.scrollTo('final', options));
-            },
+        {
+          id: true,
+          label: <T id="Start2Form.finalized.button" />,
+          onClick() {
+            // After clicking on this button, hide it
+            setFormState('hideFinalButton', true);
+            const options = {
+              duration: 350,
+              delay: 0,
+              smooth: true,
+            };
+            Meteor.defer(() => Scroll.scroller.scrollTo('final', options));
           },
-        ]
+        },
+      ]
       : [],
   },
 ];

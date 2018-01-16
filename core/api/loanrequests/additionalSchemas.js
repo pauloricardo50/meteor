@@ -1,10 +1,17 @@
 import SimpleSchema from 'simpl-schema';
+import {
+  purchaseType,
+  interestRates,
+  owner,
+  cantons,
+} from './loanrequestConstants';
+import { gender } from '../borrowers/borrowerConstants';
 
 export const GeneralSchema = new SimpleSchema({
   purchaseType: {
-    // acquisition, refinancing, construction
     type: String,
-    defaultValue: 'acquisition',
+    defaultValue: purchaseType.ACQUISITION,
+    allowedValues: Object.values(purchaseType),
   },
   fortuneUsed: {
     type: Number,
@@ -27,6 +34,7 @@ export const GeneralSchema = new SimpleSchema({
   oldestGender: {
     type: String,
     optional: true,
+    allowedValues: Object.values(gender),
   },
   partnersToAvoidExists: {
     type: Boolean,
@@ -44,15 +52,14 @@ export const GeneralSchema = new SimpleSchema({
   canton: {
     type: String,
     optional: true,
-    min: 2,
-    max: 2,
+    allowedValues: Object.keys(cantons),
   },
   loanTranches: {
     type: Array,
     // minCount: 1,
     defaultValue: [
       {
-        type: 'interestLibor',
+        type: interestRates.LIBOR,
         value: 100000,
       },
     ],
@@ -61,13 +68,7 @@ export const GeneralSchema = new SimpleSchema({
   'loanTranches.$.type': {
     type: String,
     optional: true,
-    allowedValues: [
-      'interestLibor',
-      'interest1',
-      'interest2',
-      'interest5',
-      'interest10',
-    ],
+    allowedValues: Object.values(interestRates),
   },
   'loanTranches.$.value': {
     type: Number,
@@ -76,14 +77,14 @@ export const GeneralSchema = new SimpleSchema({
     max: 100000000,
   },
   currentOwner: {
-    // '0', '1', 'both', 'other'
     type: String,
-    defaultValue: '0',
+    defaultValue: owner.FIRST,
+    allowedValues: Object.values(owner),
   },
   futureOwner: {
-    // '0', '1', 'both', 'other'
     type: String,
-    defaultValue: '0',
+    defaultValue: owner.FIRST,
+    allowedValues: Object.values(owner),
   },
   otherOwner: {
     type: String,
