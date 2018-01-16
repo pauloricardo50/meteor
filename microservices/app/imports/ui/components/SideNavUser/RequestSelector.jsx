@@ -58,6 +58,7 @@ const RequestSelector = ({
       onChange={(id, newValue) => handleChange(newValue, toggleDrawer, history)}
       options={getOptions(loanRequests)}
       style={styles.dropdown}
+      displayEmpty
     />
   </div>
 );

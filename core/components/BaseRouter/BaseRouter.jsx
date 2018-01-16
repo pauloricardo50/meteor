@@ -4,11 +4,11 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import MuiTheme from '../config/mui_custom';
+import MuiTheme from '../../config/mui_custom';
 
-import ErrorBoundary from './ErrorBoundary';
-import ScrollToTop from './ScrollToTop';
-import LoginPage from './LoginPage';
+import ErrorBoundary from '../ErrorBoundary';
+import ScrollToTop from '../ScrollToTop';
+import LoginPage from '../LoginPage';
 
 const BaseRouter = ({
   locale,
@@ -71,7 +71,7 @@ BaseRouter.propTypes = {
 
 BaseRouter.defaultProps = {
   WrapperComponent: React.Fragment,
-  hasLogin: false,
+  hasLogin: true,
 };
 
 export default BaseRouter;

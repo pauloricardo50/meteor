@@ -5,8 +5,11 @@ const createCustomStore = () => {
   const initialState = {};
   const middlewares = [];
   const rootReducer = createRootReducer();
-  return () =>
-    createStore(rootReducer, initialState, applyMiddleware(...middlewares));
+  return createStore(
+    rootReducer,
+    initialState,
+    applyMiddleware(...middlewares),
+  );
 };
 
 export default createCustomStore;
