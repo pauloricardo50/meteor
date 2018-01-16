@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
@@ -9,6 +9,9 @@ import MuiTheme from '../../config/mui_custom';
 import ErrorBoundary from '../ErrorBoundary';
 import ScrollToTop from '../ScrollToTop';
 import LoginPage from '../LoginPage';
+
+import Switch from './Switch';
+import Route from './Route';
 
 const BaseRouter = ({
   locale,

@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { MenuItem } from 'material-ui/Menu';
-
-import { T } from 'core/components/Translation';
 import { getLocations } from '/imports/js/helpers/APIs';
 import cleanMethod from 'core/api/cleanMethods';
 
@@ -23,12 +20,12 @@ const styles = {
 
 class ZipAutoComplete extends Component {
   constructor(props) {
-    super(props);
+    super();
     this.state = {
-      searchText: this.props.inputProps.initialValue || '',
+      searchText: props.initialValue || '',
       data: [],
       saving: false,
-      isValid: !!this.props.inputProps.initialValue,
+      isValid: !!props.initialValue,
     };
   }
 
@@ -112,7 +109,7 @@ class ZipAutoComplete extends Component {
         // If there was an error, reset value to the backend value
         this.setState({
           saving: false,
-          searchText: this.props.inputProps.initialValue,
+          searchText: this.props.initialValue,
         });
       });
   };
