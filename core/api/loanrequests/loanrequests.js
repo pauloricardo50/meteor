@@ -26,7 +26,11 @@ LoanRequests.allow({
 
 // Documentation is in the google drive dev/MongoDB Schemas
 const LoanRequestSchema = new SimpleSchema({
-  userId: { type: String, index: true, optional: true },
+  userId: {
+    type: String,
+    index: true,
+    optional: true,
+  },
   createdAt: {
     type: Date,
     autoValue() {
