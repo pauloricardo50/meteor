@@ -11,7 +11,7 @@ Meteor.methods({
     try {
       newUserId = Accounts.createUser({ email });
     } catch (e) {
-      throw new Meteor.Error(e);
+      throw new Meteor.Error("Couldn't create new user", e);
     }
 
     // Send an enrollment email

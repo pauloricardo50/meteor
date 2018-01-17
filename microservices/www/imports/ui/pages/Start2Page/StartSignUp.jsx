@@ -75,7 +75,7 @@ export default class StartSignUp extends Component {
         console.log('Request inserted: ', requestId);
         // Keep loading true, to prevent double insert
         this.setState({ errorText: '' });
-        const appUrl = `http://${
+        const appUrl = `${
           Meteor.settings.public.subdomains.app
         }/add-request/${requestId}`;
         console.log('changing location to :', appUrl);

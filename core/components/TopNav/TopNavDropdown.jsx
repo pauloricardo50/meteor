@@ -51,7 +51,7 @@ const getMenuItems = (currentUser, history) => {
       onClick: () => {
         track('TopNavDropdown - logged out', {});
         Meteor.logout(() =>
-          window.location.replace(`http://${Meteor.settings.public.subdomains.www}`));
+          window.location.replace(`${Meteor.settings.public.subdomains.www}`));
       },
       link: '/',
       show: true,

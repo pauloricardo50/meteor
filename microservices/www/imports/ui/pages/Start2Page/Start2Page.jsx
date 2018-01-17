@@ -29,6 +29,7 @@ import {
   getRetirement,
   getMaxLoan,
 } from 'core/utils/startFunctions';
+import { PURCHASE_TYPE } from 'core/api/constants';
 
 import AutoStart from './AutoStart';
 import StartResult from './StartResult';
@@ -157,7 +158,7 @@ class Start2Page extends Component {
     this.state = {
       showUX: true,
       type,
-      purchaseType: 'acquisition',
+      purchaseType: PURCHASE_TYPE.ACQUISITION,
       knowsProperty: type === 'acquisition',
       propertyValue: Number(params.property) || undefined,
       initialIncome: Number(params.income) || undefined,

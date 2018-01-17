@@ -55,7 +55,7 @@ const TopNav = (props) => {
               dense
               onClick={() => {
                 track('TopNav - clicked login', {});
-                window.location.replace(`http://${Meteor.settings.public.subdomains.app}/login`);
+                window.location.replace(`${Meteor.settings.public.subdomains.app}/login`);
               }}
             />
           )}
