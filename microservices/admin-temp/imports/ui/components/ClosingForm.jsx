@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import DateInput from 'core/components/DateInput';
 import Select from 'core/components/Select';
 import { confirmClosing } from 'core/api/loanrequests/methods';
+import { PAYMENT_SCHEDULES } from 'core/api/constants';
 
-const schedules = ['monthly', 'yearly', 'semester'];
+const schedules = Object.values(PAYMENT_SCHEDULES);
 
 export default class ClosingForm extends Component {
   constructor(props) {

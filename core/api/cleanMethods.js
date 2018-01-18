@@ -89,7 +89,8 @@ const handleError = (error) => {
   });
   console.log(error);
 
-  // Throw it again so that it can be catched again where it is called
+  // Throw the error again so that it can be catched again via promise chaining
+  // All uses of this module should catch and implement proper fail-safe logic
   throw error;
 };
 

@@ -9,6 +9,10 @@ import {
   CLOSING_STEPS_TYPE,
   CLOSING_STEPS_STATUS,
   AUCTION_MOST_IMPORTANT,
+  INSURANCE_USE_PRESET,
+  LOAN_STRATEGY_PRESET,
+  AMORTIZATION_STRATEGY_PRESET,
+  PAYMENT_SCHEDULES,
 } from './loanrequestConstants';
 import { GENDER } from '../constants';
 
@@ -377,16 +381,19 @@ export const LogicSchema = new SimpleSchema({
     type: String,
     defaultValue: '',
     optional: true,
+    allowedValues: Object.values(LOAN_STRATEGY_PRESET),
   },
   loanStrategyPreset: {
     type: String,
     defaultValue: '',
     optional: true,
+    allowedValues: Object.values(INSURANCE_USE_PRESET),
   },
   amortizationStrategyPreset: {
     type: String,
     defaultValue: '',
     optional: true,
+    allowedValues: Object.values(AMORTIZATION_STRATEGY_PRESET),
   },
   lender: {
     type: Object,
@@ -443,6 +450,7 @@ export const LogicSchema = new SimpleSchema({
   paymentSchedule: {
     type: String,
     optional: true,
+    allowedValues: Object.values(PAYMENT_SCHEDULES),
   },
   closingSteps: {
     type: Array,
