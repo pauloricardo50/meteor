@@ -1,3 +1,5 @@
+import { REQUEST_STATU } from '../constants';
+
 export const RESIDENCY_PERMIT = {
   B: 'b',
   C: 'c',
