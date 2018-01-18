@@ -42,7 +42,7 @@ const BaseRouter = ({
               {/* Every route change should scroll to top,
               which isn't automatic */}
               <ScrollToTop>
-                <Switch hi="wut?">
+                <Switch>
                   {/* LoginPage has to be above / path */}
                   {hasLogin && (
                     <Route exact path="/login" component={LoginPage} />
@@ -52,7 +52,6 @@ const BaseRouter = ({
                     render={childProps =>
                       React.cloneElement(children, childProps)
                     }
-                    // component={children}
                   />
                 </Switch>
               </ScrollToTop>
