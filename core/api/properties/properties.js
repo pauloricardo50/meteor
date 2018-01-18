@@ -51,9 +51,9 @@ export const PropertySchema = new SimpleSchema({
   value: {
     // Cost of the property
     type: Number,
-    optional: true,
     min: 0,
     max: 100000000,
+    optional: true,
   },
   propertyWork: {
     // Additional work on property
@@ -271,6 +271,12 @@ export const PropertySchema = new SimpleSchema({
   },
   fields: {
     // Allows storing custom fields that aren't allowed by the default schema
+    type: Object,
+    blackbox: true,
+    defaultValue: {},
+  },
+  files: {
+    // TODO: set validation here
     type: Object,
     blackbox: true,
     defaultValue: {},

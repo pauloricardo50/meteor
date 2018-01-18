@@ -12,25 +12,13 @@ export const insertProperty = new ValidatedMethod({
   name: 'properties.insert',
   mixins: [CallPromiseMixin],
   validate({ object }) {
-    const { value, address, latitude, longitude } = object;
     check(object, Object);
-    check(value, Number);
-    check(address, String);
-    check(latitude, Number);
-    check(longitude, Number);
-
     validateUser();
   },
   run({ object }) {
-    const { value, address, latitude, longitude } = object;
-
     return Properties.insert({
       userId: Meteor.userId(),
-      name: address.split(',')[0],
-      value,
-      address,
-      latitude,
-      longitude,
+      ...object,
     });
   },
 });

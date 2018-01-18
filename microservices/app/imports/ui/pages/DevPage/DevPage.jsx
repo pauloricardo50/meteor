@@ -10,75 +10,89 @@ import {
   requestStep3,
 } from 'core/api/loanrequests/fakes';
 import { getRandomOffer } from 'core/api/offers/fakes';
-
-import { updateRequest, deleteRequest } from 'core/api/loanrequests/methods';
-import { deleteBorrower } from 'core/api/borrowers/methods';
-import { deleteOffer, insertAdminOffer } from 'core/api/offers/methods';
+import { fakeProperty } from 'core/api/properties/fakes';
 
 const addStep1Request = (twoBorrowers) => {
-  const ids = [];
+  const borrowerIds = [];
   cleanMethod('insertBorrower', { object: completeFakeBorrower })
     .then((id1) => {
-      ids.push(id1);
-      if (twoBorrowers) {
-        return cleanMethod('insertBorrower', { object: completeFakeBorrower });
-      }
+      borrowerIds.push(id1);
+      return twoBorrowers
+        ? cleanMethod('insertBorrower', { object: completeFakeBorrower })
+        : false;
     })
     .then((id2) => {
       if (id2) {
-        ids.push(id2);
+        borrowerIds.push(id2);
       }
+
+      return cleanMethod('insertProperty', { object: fakeProperty });
+    })
+    .then((propertyId) => {
       const request = requestStep1;
-      request.borrowers = ids;
+      request.borrowers = borrowerIds;
+      request.property = propertyId;
       cleanMethod('insertRequest', { object: request });
-    });
+    })
+    .catch(console.log);
 };
 
 const addStep2Request = (twoBorrowers) => {
-  const ids = [];
+  const borrowerIds = [];
 
   cleanMethod('insertBorrower', { object: completeFakeBorrower })
     .then((id1) => {
-      ids.push(id1);
-      if (twoBorrowers) {
-        return cleanMethod('insertBorrower', { object: completeFakeBorrower });
-      }
+      borrowerIds.push(id1);
+      return twoBorrowers
+        ? cleanMethod('insertBorrower', { object: completeFakeBorrower })
+        : false;
     })
     .then((id2) => {
       if (id2) {
-        ids.push(id2);
+        borrowerIds.push(id2);
       }
+
+      return cleanMethod('insertProperty', { object: fakeProperty });
+    })
+    .then((propertyId) => {
       const request = requestStep2;
-      request.borrowers = ids;
+      request.borrowers = borrowerIds;
+      request.property = propertyId;
       cleanMethod('insertRequest', { object: request });
-    });
+    })
+    .catch(console.log);
 };
 
 const addStep3Request = (twoBorrowers, completeFiles = true) => {
-  const ids = [];
+  const borrowerIds = [];
   const request = requestStep3(completeFiles);
   let requestId;
   cleanMethod('insertBorrower', { object: completeFakeBorrower })
     .then((id1) => {
-      ids.push(id1);
-      if (twoBorrowers) {
-        return cleanMethod('insertBorrower', { object: completeFakeBorrower });
-      }
+      borrowerIds.push(id1);
+      return twoBorrowers
+        ? cleanMethod('insertBorrower', { object: completeFakeBorrower })
+        : false;
     })
     .then((id2) => {
       if (id2) {
-        ids.push(id2);
+        borrowerIds.push(id2);
       }
-      request.borrowers = ids;
+
+      return cleanMethod('insertProperty', { object: fakeProperty });
+    })
+    .then((propertyId) => {
+      request.borrowers = borrowerIds;
+      request.property = propertyId;
     })
     .then(() => cleanMethod('insertRequest', { object: request }))
     .then((id) => {
       requestId = id;
       const object = getRandomOffer({ ...request, _id: requestId }, true);
-      return insertAdminOffer.callPromise({ object });
+      return cleanMethod('insertAdminOffer', { object });
     })
     .then(offerId =>
-      updateRequest.callPromise({
+      cleanMethod('updateRequest', {
         object: {
           'logic.lender.offerId': offerId,
           'logic.lender.chosenTime': new Date(),
@@ -87,35 +101,18 @@ const addStep3Request = (twoBorrowers, completeFiles = true) => {
       }))
     .then(() => {
       // Weird bug with offer publications that forces me to reload TODO: fix it
-      location.reload();
+      // location.reload();
     })
     .catch(console.log);
-
-  //   cleanMethod('insertRequest', request, null, (error, result) => {
-  //     const object = getRandomOffer({ ...request, _id: result }, true);
-  //     insertAdminOffer.call({ object }, (err2, res2) => {
-  //       updateRequest.call(
-  //         {
-  //           object: {
-  //             'logic.lender.offerId': res2,
-  //             'logic.lender.chosenTime': new Date(),
-  //           },
-  //           id: result,
-  //         },
-  //         () => {
-  //           // Weird bug with offer publications that forces me to reload TODO: fix it
-  //           location.reload();
-  //         },
-  //       );
-  //     });
-  //   });
-  // });
 };
 
-const purge = (props) => {
-  props.loanRequests.forEach(r => deleteRequest.call({ id: r._id }));
-  props.borrowers.forEach(r => deleteBorrower.call({ id: r._id }));
-  props.offers.forEach(r => deleteOffer.call({ id: r._id }));
+const purge = ({
+  loanRequests, borrowers, offers, properties,
+}) => {
+  loanRequests.forEach(r => cleanMethod('deleteRequest', { id: r._id }));
+  borrowers.forEach(r => cleanMethod('deleteBorrower', { id: r._id }));
+  offers.forEach(r => cleanMethod('deleteOffer', { id: r._id }));
+  properties.forEach(r => cleanMethod('deleteProperty', { id: r._id }));
 };
 
 export default class DevPage extends Component {

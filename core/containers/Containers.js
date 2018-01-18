@@ -10,6 +10,7 @@ import {
   userOffersComposer,
   userRequestComposer,
   userBorrowerComposer,
+  userPropertiesComposer,
 } from './composers/UserComposers';
 import {
   adminRequestsComposer,
@@ -36,22 +37,23 @@ export const userContainer = c =>
   merge(
     composeWithTracker(userRequestsComposer, Loading),
     composeWithTracker(userBorrowersComposer, Loading),
+    composeWithTracker(userPropertiesComposer, Loading),
     composeWithTracker(userOffersComposer, Loading),
     composeWithTracker(currentUserComposer, Loading),
     composeWithTracker(userCompareComposer, Loading),
   )(c);
 
-export const userRequestContainer = c =>
-  merge(
-    composeWithTracker(userRequestComposer),
-    composeWithTracker(currentUserComposer),
-  )(c);
-
-export const userBorrowerContainer = c =>
-  merge(
-    composeWithTracker(userBorrowerComposer, Loading),
-    composeWithTracker(currentUserComposer, Loading),
-  )(c);
+// export const userRequestContainer = c =>
+//   merge(
+//     composeWithTracker(userRequestComposer),
+//     composeWithTracker(currentUserComposer),
+//   )(c);
+//
+// export const userBorrowerContainer = c =>
+//   merge(
+//     composeWithTracker(userBorrowerComposer, Loading),
+//     composeWithTracker(currentUserComposer, Loading),
+//   )(c);
 
 export const userCompareContainer = c =>
   merge(

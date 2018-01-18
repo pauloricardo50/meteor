@@ -1,63 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
-import {
-  insertRequest,
-  updateRequest,
-  startAuction,
-  pushRequestValue,
-  popRequestValue,
-  incrementStep,
-  requestVerification,
-} from './loanrequests/methods';
-import { insertOffer, insertAdminOffer, updateOffer } from './offers/methods';
-import {
-  insertBorrower,
-  updateBorrower,
-  pushBorrowerValue,
-  popBorrowerValue,
-} from './borrowers/methods';
-import {
-  insertComparator,
-  updateComparator,
-  addComparatorField,
-  removeComparatorField,
-  toggleHiddenField,
-} from './comparators/methods';
-import {
-  insertProperty,
-  deleteProperty,
-  updateProperty,
-  setPropertyField,
-} from './properties/methods';
+import * as loanRequestMethods from './loanrequests/methods';
+import * as offerMethods from './offers/methods';
+import * as borrowerMethods from './borrowers/methods';
+import * as comparatorMethods from './comparators/methods';
+import * as propertyMethods from './properties/methods';
 
 const methods = {
-  insertRequest,
-  updateRequest,
-  pushRequestValue,
-  popRequestValue,
-  startAuction,
-  incrementStep,
-  requestVerification,
-
-  insertBorrower,
-  updateBorrower,
-  pushBorrowerValue,
-  popBorrowerValue,
-
-  insertOffer,
-  insertAdminOffer,
-  updateOffer,
-
-  insertComparator,
-  updateComparator,
-  addComparatorField,
-  removeComparatorField,
-  toggleHiddenField,
-
-  insertProperty,
-  deleteProperty,
-  updateProperty,
-  setPropertyField,
+  ...loanRequestMethods,
+  ...offerMethods,
+  ...borrowerMethods,
+  ...comparatorMethods,
+  ...propertyMethods,
 };
 
 // Passed to all methods, shows a Bert error when it happens
