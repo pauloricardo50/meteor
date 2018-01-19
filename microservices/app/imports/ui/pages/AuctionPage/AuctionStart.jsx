@@ -39,7 +39,10 @@ const styles = {
 };
 
 const AuctionStart = (props) => {
-  const lenderCount = getLenderCount(props.loanRequest, props.borrowers);
+  const lenderCount = getLenderCount({
+    loanRequest: props.loanRequest,
+    borrowers: props.borrowers,
+  });
   const r = props.loanRequest;
   const f = props.intl.formatMessage;
   return (

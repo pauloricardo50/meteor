@@ -5,6 +5,7 @@ import Icon from 'core/components/Icon';
 
 import { isRequestValid } from 'core/utils/requestFunctions';
 import { T } from 'core/components/Translation';
+import withRequest from 'core/containers/withRequest';
 
 const styles = {
   div: {
@@ -16,7 +17,7 @@ const styles = {
   },
 };
 
-export default class StructureError extends Component {
+class StructureError extends Component {
   constructor(props) {
     super(props);
 
@@ -42,9 +43,9 @@ export default class StructureError extends Component {
     }
   }
 
-  getContent = ({ loanRequest, borrowers }) => {
+  getContent = ({ loanRequest, borrowers, property }) => {
     try {
-      if (isRequestValid(loanRequest, borrowers)) {
+      if (isRequestValid({ loanRequest, borrowers, property })) {
         this.props.setParentState('error', false);
         this.setState({
           message: 'StructureError.valid',
@@ -84,5 +85,8 @@ export default class StructureError extends Component {
 StructureError.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  property: PropTypes.objectOf(PropTypes.any).isRequired,
   setParentState: PropTypes.func.isRequired,
 };
+
+export default withRequest(StructureError);

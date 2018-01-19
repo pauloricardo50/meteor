@@ -5,13 +5,14 @@ import SummaryComponent from '/imports/ui/components/SummaryComponent';
 import { T, IntlNumber } from 'core/components/Translation';
 import { getRange } from 'core/utils/offerFunctions';
 import { getMonthlyWithOffer } from 'core/utils/requestFunctions';
+import withRequest from 'core/containers/withRequest';
 
-const values = (offers, loanRequest) => {
-  const { max: maxAmount, min: minAmount } = getRange(offers, 'maxAmount');
+const values = ({ offers, loanRequest, property }) => {
+  const { max: maxAmount, min: minAmount } = getRange({ offers }, 'maxAmount');
   const monthlyArray = [];
   offers.forEach((offer) => {
-    monthlyArray.push(getMonthlyWithOffer(loanRequest, offer, true));
-    monthlyArray.push(getMonthlyWithOffer(loanRequest, offer, false));
+    monthlyArray.push(getMonthlyWithOffer({ property, loanRequest, offer }, true));
+    monthlyArray.push(getMonthlyWithOffer({ property, loanRequest, offer }, false));
   });
 
   // remove undefined, NaN values
@@ -39,7 +40,7 @@ const values = (offers, loanRequest) => {
   ];
 };
 
-const LenderSummary = ({ offers, loanRequest }) => (
+const LenderSummary = props => (
   <SummaryComponent>
     <h4 style={{ paddingBottom: 8 }}>
       <T id="LenderSummary.title" />
@@ -48,7 +49,7 @@ const LenderSummary = ({ offers, loanRequest }) => (
       className="flex"
       style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}
     >
-      {values(offers, loanRequest).map(({ id, value }) => (
+      {values(props).map(({ id, value }) => (
         <div className="flex-col" key={id}>
           <label htmlFor={id}>
             <T id={`LenderSummary.${id}`} />
@@ -65,6 +66,7 @@ const LenderSummary = ({ offers, loanRequest }) => (
 LenderSummary.propTypes = {
   offers: PropTypes.arrayOf(PropTypes.object).isRequired,
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default LenderSummary;
+export default withRequest(LenderSummary);

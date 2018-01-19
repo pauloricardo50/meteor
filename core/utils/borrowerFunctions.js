@@ -69,10 +69,10 @@ export const getArrayValues = ({ borrowers }, key, mapFunc) => {
 };
 
 export const getOtherIncome = ({ borrowers }) =>
-  getArrayValues(borrowers, 'otherIncome');
+  getArrayValues({ borrowers }, 'otherIncome');
 
 export const getExpenses = ({ borrowers }) =>
-  getArrayValues(borrowers, 'expenses');
+  getArrayValues({ borrowers }, 'expenses');
 
 export const getBorrowerIncome = ({ borrowers }) => {
   let sum = 0;

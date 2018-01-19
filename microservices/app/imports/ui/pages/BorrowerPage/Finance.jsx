@@ -96,7 +96,8 @@ const BorrowerFinancePage = (props) => {
         popFunc="popBorrowerValue"
         doc={borrower}
         disabled={
-          disableForms(props.loanRequest) || borrower.logic.hasValidatedFinances
+          disableForms({ loanRequest: props.loanRequest }) ||
+          borrower.logic.hasValidatedFinances
         }
       />
 

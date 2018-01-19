@@ -46,7 +46,7 @@ const Files = (props) => {
         fileArray={borrowerFiles(borrower).auction}
         doc={borrower}
         collection="borrowers"
-        disabled={disableForms(loanRequest)}
+        disabled={disableForms({ loanRequest })}
       />
     </section>
   );

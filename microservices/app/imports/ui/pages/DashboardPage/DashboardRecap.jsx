@@ -5,6 +5,7 @@ import Recap from 'core/components/Recap';
 import DashboardItem from './DashboardItem';
 import { T } from 'core/components/Translation';
 import track from 'core/utils/analytics';
+import withRequest from 'core/containers/withRequest';
 
 const styles = {
   recap: {
@@ -20,7 +21,7 @@ const styles = {
   },
 };
 
-export default class DashboardRecap extends Component {
+class DashboardRecap extends Component {
   constructor(props) {
     super(props);
 
@@ -28,7 +29,9 @@ export default class DashboardRecap extends Component {
   }
 
   handleToggle = () => {
-    track('dashboard recap show detail', { nextState: this.state.showDetail ? 'close' : 'open' });
+    track('dashboard recap show detail', {
+      nextState: this.state.showDetail ? 'close' : 'open',
+    });
     this.setState(
       prev => ({ showDetail: !prev.showDetail }),
       () => {
@@ -79,3 +82,5 @@ DashboardRecap.propTypes = {
 DashboardRecap.defaultProps = {
   hideDetail: false,
 };
+
+export default withRequest(DashboardRecap);

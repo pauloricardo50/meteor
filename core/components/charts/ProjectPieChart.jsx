@@ -6,6 +6,7 @@ import { toMoney } from 'core/utils/conversionFunctions';
 import { getLoanValue, getProjectValue } from 'core/utils/requestFunctions';
 import constants from 'core/config/constants';
 import colors from 'core/config/colors';
+import withRequest from 'core/containers/withRequest';
 
 import { legend } from './chartSettings';
 
@@ -72,7 +73,7 @@ const getConfig = (props) => {
         data: [
           {
             name: 'Emprunt',
-            y: getLoanValue(r),
+            y: getLoanValue(props),
           },
           {
             name: '2ème Pilier',
@@ -82,12 +83,12 @@ const getConfig = (props) => {
             name: 'Fortune', // subtract fees from this
             y:
               r.general.fortuneUsed -
-              r.property.value * constants.notaryFees -
+              props.property.value * constants.notaryFees -
               (r.general.insuranceFortuneUsed * constants.lppFees || 0),
           },
           {
             name: 'Frais de Notaire',
-            y: r.property.value * constants.notaryFees,
+            y: props.property.value * constants.notaryFees,
           },
           {
             name: 'Frais 2ème Pilier',
@@ -123,4 +124,4 @@ ProjectPieChart.propTypes = {
   titleAlign: PropTypes.string,
 };
 
-export default ProjectPieChart;
+export default withRequest(ProjectPieChart);

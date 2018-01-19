@@ -8,9 +8,11 @@ import { T } from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 import { getPropertyCompletion } from 'core/utils/requestFunctions';
 import DashboardItem from './DashboardItem';
+import withRequest from 'core/containers/withRequest';
+import { PROPERTY_STYLE } from 'core/api/constants';
 
 const DashboardProperty = (props) => {
-  const percent = getPropertyCompletion(props.loanRequest, props.borrowers);
+  const percent = getPropertyCompletion(props);
 
   return (
     <DashboardItem
@@ -29,7 +31,7 @@ const DashboardProperty = (props) => {
       >
         <Icon
           type={
-            props.loanRequest.property.style === 'villa' ? 'home' : 'building'
+            props.property.style === PROPERTY_STYLE.VILLA ? 'home' : 'building'
           }
           style={{ marginRight: 16, width: 64, height: 64 }}
           className="icon"
@@ -58,6 +60,7 @@ const DashboardProperty = (props) => {
 DashboardProperty.propTypes = {
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default DashboardProperty;
+export default withRequest(DashboardProperty);

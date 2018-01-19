@@ -72,7 +72,7 @@ export default class OfferList extends Component {
     const { loanRequest, offers, disabled } = this.props;
     const { sort, isAscending } = this.state;
     const filteredOffers = sortOffers(
-      extractOffers(offers, loanRequest),
+      extractOffers({ offers, loanRequest }),
       sort,
       isAscending,
     );

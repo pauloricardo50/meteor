@@ -6,6 +6,7 @@ import Button from 'core/components/Button';
 import { T } from 'core/components/Translation';
 import { getLoanValue } from 'core/utils/requestFunctions';
 import cleanMethod from 'core/api/cleanMethods';
+import withRequest from 'core/containers/withRequest';
 import Tranche from './Tranche';
 import TrancheChart from './TrancheChart';
 
@@ -17,7 +18,7 @@ const types = [
   'interest10',
 ];
 
-export default class TranchePicker extends Component {
+class TranchePicker extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -78,7 +79,7 @@ export default class TranchePicker extends Component {
 
   render() {
     const { tranches } = this.state;
-    const { loanRequest } = this.props;
+    const { loanRequest, property } = this.props;
 
     const disableAdd = tranches.length >= types.length;
 
@@ -109,7 +110,7 @@ export default class TranchePicker extends Component {
           {tranches.length && (
             <TrancheChart
               tranches={tranches}
-              total={getLoanValue(loanRequest, true)}
+              total={getLoanValue({ property, loanRequest }, true)}
             />
           )}
         </div>
@@ -133,4 +134,6 @@ export default class TranchePicker extends Component {
 TranchePicker.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   offers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
+export default withRequest(TranchePicker);

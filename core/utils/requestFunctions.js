@@ -12,7 +12,8 @@ export const getProjectValue = ({ loanRequest, property }) => {
   }
 
   let value =
-    property.value * (1 + constants.notaryFees) + (general.propertyWork || 0);
+    property.value * (1 + constants.notaryFees) +
+    (loanRequest.general.propertyWork || 0);
 
   if (loanRequest.general.usageType === USAGE_TYPE.PRIMARY) {
     value +=
@@ -115,8 +116,7 @@ export const getInterestsWithOffer = (
 };
 
 export const getMonthlyWithOffer = (
-  { loanRequest, property },
-  offer,
+  { loanRequest, property, offer },
   isStandard = true,
   fortuneUsed = 0,
   insuranceFortuneUsed = 0,
@@ -163,13 +163,20 @@ export const getMonthlyWithOffer = (
     : 0;
 };
 
-export const getMonthlyWithExtractedOffer = ({ loanRequest, offer }) =>
+export const getMonthlyWithExtractedOffer = ({
+  loanRequest,
+  offer,
+  property,
+}) =>
   getMonthlyWithOffer(
-    loanRequest,
     {
-      [offer.type === OFFER_TYPE.STANDARD
-        ? 'standardOffer'
-        : 'counterpartOffer']: offer,
+      loanRequest,
+      property,
+      offer: {
+        [offer.type === OFFER_TYPE.STANDARD
+          ? 'standardOffer'
+          : 'counterpartOffer']: offer,
+      },
     },
     offer.type === OFFER_TYPE.STANDARD,
   );
@@ -189,7 +196,7 @@ export const getBorrowRatio = ({ loanRequest, property }) => {
 };
 
 export const getLenderCount = ({ loanRequest, borrowers, property }) => {
-  const incomeRatio = getIncomeRatio(loanRequest, borrowers);
+  const incomeRatio = getIncomeRatio({ loanRequest, borrowers, property });
   const borrowRatio = getBorrowRatio({ loanRequest, property });
   if (incomeRatio > 0.38) {
     return 0;
@@ -225,11 +232,11 @@ export const getFees = ({ loanRequest, property }) => {
   return notaryFees + (insuranceFees || 0);
 };
 
-export const isRequestValid = ({ loanRequest, borrowers }) => {
+export const isRequestValid = ({ loanRequest, borrowers, property }) => {
   const incomeRatio = getIncomeRatio({ loanRequest, borrowers });
   const borrowRatio = getBorrowRatio({ loanRequest, borrowers });
   const fees = getFees({ loanRequest });
-  const propAndWork = getPropAndWork({ loanRequest, props });
+  const propAndWork = getPropAndWork({ loanRequest, property });
 
   const cashRequired = constants.minCash * propAndWork + fees;
 
@@ -311,7 +318,7 @@ export const validateRatiosCompletely = (
 // Returns the maintenance to pay every month, i.e. 1% of the property divided by 12 months
 export const getMaintenance = ({ property }) => property.value * 0.01 / 12;
 
-export const strategyDone = ({ loanRequest }) => {
+export const strategyDone = ({ loanRequest, property }) => {
   const { general, logic } = loanRequest;
   if (general.insuranceFortuneUsed > 0 && !logic.insuranceUsePreset) {
     return false;
@@ -327,7 +334,10 @@ export const strategyDone = ({ loanRequest }) => {
 
   if (
     logic.loanStrategyPreset === LOAN_STRATEGY_PRESET.MANUAL &&
-    !loanStrategySuccess(general.loanTranches, getLoanValue(loanRequest, true))
+    !loanStrategySuccess(
+      general.loanTranches,
+      getLoanValue({ loanRequest, property }, true),
+    )
   ) {
     return false;
   }

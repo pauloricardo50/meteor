@@ -19,7 +19,7 @@ const DashboardBorrowers = ({ borrowers, loanRequest }) => (
     }
   >
     {borrowers.map((b, i) => {
-      const percent = getBorrowerCompletion(b);
+      const percent = getBorrowerCompletion({ borrower: b });
 
       return (
         <Link

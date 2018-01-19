@@ -5,6 +5,7 @@ import Slider from 'core/components/Material/Slider';
 
 import TextInput from 'core/components/TextInput';
 import { getFortune, getInsuranceFortune } from 'core/utils/borrowerFunctions';
+import { USAGE_TYPE } from 'core/api/constants';
 
 import { T } from 'core/components/Translation';
 
@@ -13,7 +14,7 @@ const getArray = (borrowers, showInsurance) => [
     labelText: <T id="general.savings" />,
     id: 'fortuneUsed',
     sliderIncrement: 0,
-    max: getFortune(borrowers),
+    max: getFortune({ borrowers }),
   },
   ...(showInsurance
     ? [
@@ -21,7 +22,7 @@ const getArray = (borrowers, showInsurance) => [
         labelText: <T id="general.insuranceFunds" />,
         id: 'insuranceFortuneUsed',
         sliderIncrement: 0,
-        max: getInsuranceFortune(borrowers),
+        max: getInsuranceFortune({ borrowers }),
       },
     ]
     : []),
@@ -50,8 +51,8 @@ const StructureSliders = (props) => {
     loanRequest, borrowers, onChange, disabled, parentState,
   } = props;
   const showInsurance =
-    loanRequest.property.usageType === 'primary' &&
-    getInsuranceFortune(borrowers) > 0;
+    loanRequest.general.usageType === USAGE_TYPE.PRIMARY &&
+    getInsuranceFortune({ borrowers }) > 0;
 
   return (
     <div style={styles.div}>

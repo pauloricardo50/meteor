@@ -47,10 +47,11 @@ class DashboardStatus extends Component {
   }
 
   getNextLink = () => {
-    const { loanRequest, borrowers } = this.props;
+    const { loanRequest, borrowers, property } = this.props;
     const steps = getSteps({
       loanRequest,
       borrowers,
+      property,
       serverTime: this.state.serverTime,
     });
     const nextItem = steps[loanRequest.logic.step].items.find(subStep => !subStep.isDone());
@@ -122,6 +123,7 @@ class DashboardStatus extends Component {
 DashboardStatus.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default withRequest(DashboardStatus);

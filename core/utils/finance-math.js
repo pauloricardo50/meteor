@@ -44,7 +44,7 @@ export const getYearsToRetirement = (age1, age2, gender1, gender2) => {
 // get monthly amortization for a loan request
 export const getAmortization = ({ loanRequest, borrowers, property }) => {
   const loan = getLoanValue({ loanRequest, property });
-  const propAndWork = getPropAndWork({ loanRequest });
+  const propAndWork = getPropAndWork({ loanRequest, property });
   const safeBorrowers = arrayify(borrowers);
   const yearsToRetirement = getYearsToRetirement(
     Number(safeBorrowers[0].age),
@@ -82,8 +82,8 @@ export const getAmortization = ({ loanRequest, borrowers, property }) => {
 };
 
 // get interest to pay for a loanrequest every month
-export const getInterests = ({ loanRequest }, rate, loanValue) => {
-  const loan = loanValue || getLoanValue({ loanRequest });
+export const getInterests = ({ loanRequest, property }, rate, loanValue) => {
+  const loan = loanValue || getLoanValue({ loanRequest, property });
 
   if (loan <= 0) {
     throw new Error('negative loan');
@@ -95,10 +95,14 @@ export const getInterests = ({ loanRequest }, rate, loanValue) => {
   return loan * interests / 12;
 };
 
-export const getMonthlyPayment = ({ loanRequest, borrowers }) => {
-  const interests = getInterests({ loanRequest });
-  const { amortization } = getAmortization({ loanRequest, borrowers });
-  const maintenance = getMaintenance({ loanRequest });
+export const getMonthlyPayment = ({ loanRequest, borrowers, property }) => {
+  const interests = getInterests({ loanRequest, property });
+  const { amortization } = getAmortization({
+    loanRequest,
+    borrowers,
+    property,
+  });
+  const maintenance = getMaintenance({ loanRequest, property });
 
   return {
     total: amortization + interests + maintenance,
@@ -114,7 +118,11 @@ export const getTheoreticalMonthly = ({ loanRequest, borrowers, property }) => {
   const loan = getLoanValue({ loanRequest, property });
 
   const interests = loan * constants.interests / 12;
-  const { amortization } = getAmortization({ loanRequest, borrowers });
+  const { amortization } = getAmortization({
+    loanRequest,
+    borrowers,
+    property,
+  });
 
   return {
     total: amortization + interests + maintenance,
@@ -124,9 +132,12 @@ export const getTheoreticalMonthly = ({ loanRequest, borrowers, property }) => {
   };
 };
 
-export const getIncomeRatio = ({ loanRequest, borrowers }) => {
-  const monthlyPayment = getTheoreticalMonthly({ loanRequest, borrowers })
-    .total;
+export const getIncomeRatio = ({ loanRequest, borrowers, property }) => {
+  const monthlyPayment = getTheoreticalMonthly({
+    loanRequest,
+    borrowers,
+    property,
+  }).total;
   const borrowerIncome = getBorrowerIncome({ borrowers }) / 12;
 
   // Add infinity check
@@ -136,21 +147,21 @@ export const getIncomeRatio = ({ loanRequest, borrowers }) => {
   return '-';
 };
 
-export const canAffordRank1 = ({ loanRequest, borrowers }) => {
-  const propAndWork = getPropAndWork({ loanRequest });
+export const canAffordRank1 = ({ loanRequest, borrowers, property }) => {
+  const propAndWork = getPropAndWork({ loanRequest, property });
   const totalFortune = getTotalFortune({ borrowers });
   const fortune = getFortune({ borrowers });
   const insuranceFortune = getInsuranceFortune({ borrowers });
   const fortuneRequired =
-    0.35 * propAndWork + loanRequest.property.value * constants.notaryFees;
+    0.35 * propAndWork + property.value * constants.notaryFees;
 
   if (fortune >= fortuneRequired) {
     return true;
   }
 
   if (
-    loanRequest.property &&
-    loanRequest.property.usageType === USAGE_TYPE.PRIMARY
+    loanRequest.general &&
+    loanRequest.general.usageType === USAGE_TYPE.PRIMARY
   ) {
     if (fortune + insuranceFortune >= fortuneRequired) {
       // ignore lppFees

@@ -44,7 +44,9 @@ export default class SingleRequestPage extends Component {
   }
 
   render() {
-    const { history, loanRequest, borrowers } = this.props;
+    const {
+      history, loanRequest, borrowers, property,
+    } = this.props;
     return (
       <section>
         <Button
@@ -57,7 +59,7 @@ export default class SingleRequestPage extends Component {
           <h1>
             {loanRequest.name || 'Demande de Prêt'} - Emprunt de{' '}
             <IntlNumber
-              value={getLoanValue(this.props.loanRequest)}
+              value={getLoanValue({ loanRequest, property })}
               format="money"
             />
           </h1>
@@ -79,4 +81,5 @@ export default class SingleRequestPage extends Component {
 SingleRequestPage.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  property: PropTypes.objectOf(PropTypes.any).isRequired,
 };

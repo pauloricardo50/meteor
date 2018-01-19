@@ -33,7 +33,7 @@ const Info = (props) => {
         pushFunc="pushBorrowerValue"
         popFunc="popBorrowerValue"
         doc={borrower}
-        disabled={disableForms(props.loanRequest)}
+        disabled={disableForms({ loanRequest: props.loanRequest })}
       />
 
       {isDemo() && <FakeBorrowerCompleter borrower={borrower} />}

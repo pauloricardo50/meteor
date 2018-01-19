@@ -7,7 +7,7 @@ import { T } from 'core/components/Translation';
 import TranchePicker from './TranchePicker';
 import LenderSummary from './LenderSummary';
 
-const getChoices = (loanRequest, offers) => [
+const getChoices = ({ loanRequest, offers }) => [
   {
     id: 'fixed',
     title: '100% Fixé',
@@ -26,8 +26,8 @@ const getChoices = (loanRequest, offers) => [
   },
 ];
 
-const getStructure = (choiceId, loanRequest) => {
-  const loan = getLoanValue(loanRequest);
+const getStructure = ({ choiceId, loanRequest, property }) => {
+  const loan = getLoanValue({ loanRequest, property });
   if (choiceId === 'fixed') {
     return [
       {
@@ -40,7 +40,7 @@ const getStructure = (choiceId, loanRequest) => {
   return [];
 };
 
-const handleChoose = (id, loanRequest, handleSave) => {
+const handleChoose = ({ id, loanRequest, handleSave }) => {
   if (id === 'manual') {
     handleSave({
       'logic.loanStrategyPreset': id,
@@ -48,40 +48,43 @@ const handleChoose = (id, loanRequest, handleSave) => {
   } else {
     handleSave({
       'logic.loanStrategyPreset': id,
-      'general.loanTranches': getStructure(id, loanRequest),
+      'general.loanTranches': getStructure({ choiceId: id, loanRequest }),
     });
   }
 };
 
-const LoanStrategyPicker = ({ loanRequest, handleSave, offers, disabled }) => (
-  <article>
-    <h2>
-      <T id="LoanStrategyPicker.title" />
-    </h2>
+const LoanStrategyPicker = (props) => {
+  const {
+    loanRequest, handleSave, offers, disabled,
+  } = props;
+  return (
+    <article>
+      <h2>
+        <T id="LoanStrategyPicker.title" />
+      </h2>
 
-    <p className="strategy-description">
-      <T id="LoanStrategyPicker.description" />
-    </p>
+      <p className="strategy-description">
+        <T id="LoanStrategyPicker.description" />
+      </p>
 
-    <StrategyChoices
-      name="loanStrategyPreset"
-      value={loanRequest.logic.loanStrategyPreset}
-      choices={getChoices(loanRequest, offers)}
-      handleChoose={id => handleChoose(id, loanRequest, handleSave)}
-      disabled={disabled}
-    />
+      <StrategyChoices
+        name="loanStrategyPreset"
+        value={loanRequest.logic.loanStrategyPreset}
+        choices={getChoices(props)}
+        handleChoose={id => handleChoose({ ...props, id })}
+        disabled={disabled}
+      />
 
-    <p className="secondary">
-      <small>
-        <T id="LoanStrategyPicker.disclaimer" />
-      </small>
-    </p>
+      <p className="secondary">
+        <small>
+          <T id="LoanStrategyPicker.disclaimer" />
+        </small>
+      </p>
 
-    {loanRequest.logic.loanStrategyPreset && (
-      <LenderSummary loanRequest={loanRequest} offers={offers} />
-    )}
-  </article>
-);
+      {loanRequest.logic.loanStrategyPreset && <LenderSummary />}
+    </article>
+  );
+};
 
 LoanStrategyPicker.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
