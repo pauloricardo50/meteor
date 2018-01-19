@@ -27,7 +27,7 @@ export const getRange = ({ offers }, key) =>
     { min: Infinity, max: 0 },
   );
 
-export const extractOffers = ({ offers, loanRequest }) => {
+export const extractOffers = ({ offers, loanRequest, property }) => {
   const array = [];
   offers.forEach((offer) => {
     const meta = {
@@ -45,7 +45,7 @@ export const extractOffers = ({ offers, loanRequest }) => {
       type: OFFER_TYPE.STANDARD,
     });
     array[array.length - 1].monthly = getMonthlyWithExtractedOffer(
-      { loanRequest },
+      { loanRequest, property, offer },
       array[array.length - 1],
     );
 
@@ -59,7 +59,7 @@ export const extractOffers = ({ offers, loanRequest }) => {
         type: OFFER_TYPE.COUNTERPARTS,
       });
       array[array.length - 1].monthly = getMonthlyWithExtractedOffer(
-        { loanRequest },
+        { loanRequest, property, offer },
         array[array.length - 1],
       );
     }

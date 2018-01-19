@@ -36,8 +36,6 @@ const styles = {
 };
 
 const PropertyPage = (props) => {
-  console.log('PropertyPage props: ', props);
-
   const { loanRequest, borrowers, property } = props;
   const percent = getPropertyCompletion({ loanRequest, borrowers, property });
 
@@ -79,7 +77,7 @@ const PropertyPage = (props) => {
         />
 
         <AutoForm
-          inputs={getPropertyRequestArray(loanRequest, borrowers)}
+          inputs={getPropertyRequestArray({ loanRequest, borrowers })}
           docId={loanRequest._id}
           updateFunc="updateRequest"
           pushFunc="pushRequestValue"
@@ -89,7 +87,7 @@ const PropertyPage = (props) => {
         />
 
         <AutoForm
-          inputs={getPropertyArray(loanRequest, borrowers, property)}
+          inputs={getPropertyArray({ loanRequest, borrowers, property })}
           docId={property._id}
           updateFunc="updateProperty"
           pushFunc="pushPropertyValue"

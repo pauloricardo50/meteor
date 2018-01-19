@@ -233,9 +233,9 @@ export const getFees = ({ loanRequest, property }) => {
 };
 
 export const isRequestValid = ({ loanRequest, borrowers, property }) => {
-  const incomeRatio = getIncomeRatio({ loanRequest, borrowers });
-  const borrowRatio = getBorrowRatio({ loanRequest, borrowers });
-  const fees = getFees({ loanRequest });
+  const incomeRatio = getIncomeRatio({ loanRequest, borrowers, property });
+  const borrowRatio = getBorrowRatio({ loanRequest, borrowers, property });
+  const fees = getFees({ loanRequest, property });
   const propAndWork = getPropAndWork({ loanRequest, property });
 
   const cashRequired = constants.minCash * propAndWork + fees;
@@ -251,12 +251,12 @@ export const isRequestValid = ({ loanRequest, borrowers, property }) => {
   return true;
 };
 
-export const getPropertyCompletion = ({ loanRequest, borrowers, property }) =>
-  (propertyPercent(loanRequest, borrowers, property) +
-    filesPercent(loanRequest, requestFiles, 'auction') +
-    filesPercent(property, propertyFiles, 'auction')) /
-  3;
+export const getPropertyCompletion = ({ loanRequest, borrowers, property }) => {
+  const formsProgress = propertyPercent(loanRequest, borrowers, property);
+  const filesProgress = filesPercent(property, propertyFiles, 'auction');
 
+  return (formsProgress + filesProgress) / 2;
+};
 export const validateRatios = (
   incomeRatio,
   borrowRatio,

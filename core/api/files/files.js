@@ -81,22 +81,22 @@ export const borrowerFiles = (b = {}) => ({
 
 export const requestFiles = (r = {}) => ({
   auction: [
-    {
-      id: 'plans',
-    },
-    {
-      id: 'cubage',
-      doubleTooltip: true,
-      condition: r.property && r.property.style === 'villa',
-    },
-    {
-      id: 'pictures',
-    },
-    {
-      id: 'marketingBrochure',
-      condition: !!r.general && r.general.purchaseType === 'acquisition',
-      required: false,
-    },
+    // {
+    //   id: 'plans',
+    // },
+    // {
+    //   id: 'cubage',
+    //   doubleTooltip: true,
+    //   condition: r.property && r.property.style === 'villa',
+    // },
+    // {
+    //   id: 'pictures',
+    // },
+    // {
+    //   id: 'marketingBrochure',
+    //   condition: !!r.general && r.general.purchaseType === 'acquisition',
+    //   required: false,
+    // },
   ],
   contract: [
     {
@@ -111,10 +111,6 @@ export const requestFiles = (r = {}) => ({
     {
       id: 'rent',
       condition: !!r.general && r.general.usageType === 'investment',
-      doubleTooltip: true,
-    },
-    {
-      id: 'landRegisterExtract',
       doubleTooltip: true,
     },
     {

@@ -6,6 +6,7 @@ import cleanMethod from 'core/api/cleanMethods';
 import ConditionsButton from 'core/components/ConditionsButton';
 import { T, IntlNumber } from 'core/components/Translation';
 import Select from 'core/components/Select';
+import withRequest from 'core/containers/withRequest';
 import Offer from './Offer';
 import StarRating from './StarRating';
 import SortOrderer from './SortOrderer';
@@ -56,7 +57,7 @@ const handleSave = (id, type, loanRequest) => {
   });
 };
 
-export default class OfferList extends Component {
+class OfferList extends Component {
   constructor(props) {
     super(props);
 
@@ -69,10 +70,12 @@ export default class OfferList extends Component {
     this.setState(prev => ({ isAscending: !prev.isAscending }));
 
   render() {
-    const { loanRequest, offers, disabled } = this.props;
+    const {
+      loanRequest, offers, disabled, property,
+    } = this.props;
     const { sort, isAscending } = this.state;
     const filteredOffers = sortOffers(
-      extractOffers({ offers, loanRequest }),
+      extractOffers({ offers, loanRequest, property }),
       sort,
       isAscending,
     );
@@ -117,3 +120,5 @@ export default class OfferList extends Component {
 }
 
 OfferList.propTypes = {};
+
+export default withRequest(OfferList);

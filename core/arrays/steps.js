@@ -5,7 +5,10 @@ import isArray from 'lodash/isArray';
 import { getBorrowerInfoArray } from './BorrowerFormArray';
 import { borrowerFiles, requestFiles, propertyFiles } from '../api/files/files';
 import { getPropertyArray, getPropertyRequestArray } from './PropertyFormArray';
-import { strategyDone } from 'core/utils/requestFunctions';
+import {
+  strategyDone,
+  getPropertyCompletion,
+} from 'core/utils/requestFunctions';
 import { arrayify } from '../utils/general';
 import { isDemo } from 'core/utils/browserFunctions';
 import {
@@ -16,9 +19,10 @@ import {
   CLOSING_STEPS_TYPE,
 } from '../api/constants';
 
-const getSteps = ({
-  loanRequest, borrowers, property, serverTime,
-}) => {
+const getSteps = (props) => {
+  const {
+    loanRequest, borrowers, property, serverTime,
+  } = props;
   const steps = [
     {
       nb: 0,
@@ -62,10 +66,7 @@ const getSteps = ({
         {
           id: 'property',
           link: `/requests/${loanRequest._id}/property`,
-          percent: () =>
-            (propertyPercent(loanRequest, borrowers, property) +
-              getAllFilesPercent({ loanRequest, property }, 'auction')) /
-            2,
+          percent: () => getPropertyCompletion(props),
           isDone() {
             return this.percent() >= 1;
           },
@@ -301,9 +302,14 @@ export const personalInfoPercent = (borrowers) => {
  * @return {number} A percentage between 0 and 1
  */
 export const propertyPercent = (loanRequest, borrowers, property) => {
-  const formArray1 = getPropertyArray(loanRequest, borrowers, property);
-  const formArray2 = getPropertyRequestArray(loanRequest, borrowers, property);
-  let a = getCountedArray(formArray1, loanRequest);
+  const formArray1 = getPropertyArray({ loanRequest, borrowers, property });
+  const formArray2 = getPropertyRequestArray({
+    loanRequest,
+    borrowers,
+    property,
+  });
+
+  let a = getCountedArray(formArray1, property);
   a = [...a, getCountedArray(formArray2, loanRequest)];
 
   return getPercent(a);

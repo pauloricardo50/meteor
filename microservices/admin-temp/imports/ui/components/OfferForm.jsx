@@ -161,7 +161,9 @@ export default class OfferForm extends Component {
   };
 
   render() {
-    const { admin, loanRequest, handleCancel } = this.props;
+    const {
+      admin, loanRequest, handleCancel, property,
+    } = this.props;
     const {
       organization,
       conditions,
@@ -202,7 +204,7 @@ export default class OfferForm extends Component {
             <TextInput
               id="maxAmount"
               label="Prêt Maximal *"
-              placeholder={`CHF ${toMoney(Math.round(loanRequest.property.value * 0.8))}`}
+              placeholder={`CHF ${toMoney(Math.round(property.value * 0.8))}`}
               onChange={this.handleChange}
               type="money"
               value={maxAmount}

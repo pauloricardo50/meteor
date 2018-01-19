@@ -1,4 +1,4 @@
-import { merge } from 'react-komposer';
+import { merge } from '@storybook/react-komposer';
 
 import Loading from '../components/Loading';
 import composeWithTracker from './composers/composeWithTracker';

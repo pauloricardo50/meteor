@@ -34,5 +34,6 @@ export const fakeProperty = {
     plans: [fakeFile],
     cubage: [fakeFile],
     pictures: [fakeFile],
+    landRegisterExtract: [fakeFile],
   },
 };

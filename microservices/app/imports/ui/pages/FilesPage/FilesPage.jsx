@@ -14,21 +14,26 @@ const styles = {
   },
 };
 
-const FilesPage = ({ loanRequest, borrowers }) => (
+const FilesPage = ({ loanRequest, borrowers, property }) => (
   <Page id="FilesPage">
     <div className="mask1">
       <p style={{ marginBottom: 32 }}>
         <T id="FilesPage.description" />
       </p>
 
-      <Tabs defaultActiveKey={1} id="tabs">
-        <Tab eventKey={1} title="Bien Immobilier">
+      <Tabs defaultActiveKey={0} id="tabs">
+        <Tab eventKey={0} title={<T id="general.mortgageLoan" />}>
           <div style={styles.tabContent}>
             <UploaderArray
               doc={loanRequest}
               collection="loanRequests"
               disabled
             />
+          </div>
+        </Tab>
+        <Tab eventKey={1} title={<T id="general.property" />}>
+          <div style={styles.tabContent}>
+            <UploaderArray doc={property} collection="properties" disabled />
           </div>
         </Tab>
         {borrowers.map((b, index) => (
@@ -46,6 +51,7 @@ const FilesPage = ({ loanRequest, borrowers }) => (
 FilesPage.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default FilesPage;

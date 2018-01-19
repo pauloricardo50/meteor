@@ -30,7 +30,7 @@ const mapInput = (input) => {
   return intlSafeObject;
 };
 
-export const getPropertyRequestArray = (loanRequest, borrowers) => {
+export const getPropertyRequestArray = ({ loanRequest, borrowers }) => {
   const r = loanRequest;
 
   if (!r) {
@@ -123,7 +123,7 @@ export const getPropertyRequestArray = (loanRequest, borrowers) => {
   return array.map(mapInput);
 };
 
-export const getPropertyArray = (loanRequest, borrowers, property) => {
+export const getPropertyArray = ({ loanRequest, borrowers, property }) => {
   const r = loanRequest;
 
   if (!r) {

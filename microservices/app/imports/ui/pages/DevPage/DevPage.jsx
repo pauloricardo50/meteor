@@ -88,7 +88,10 @@ const addStep3Request = (twoBorrowers, completeFiles = true) => {
     .then(() => cleanMethod('insertRequest', { object: request }))
     .then((id) => {
       requestId = id;
-      const object = getRandomOffer({ ...request, _id: requestId }, true);
+      const object = getRandomOffer(
+        { loanRequest: { ...request, _id: id }, property: fakeProperty },
+        true,
+      );
       return cleanMethod('insertAdminOffer', { object });
     })
     .then(offerId =>
@@ -100,8 +103,8 @@ const addStep3Request = (twoBorrowers, completeFiles = true) => {
         id: requestId,
       }))
     .then(() => {
-      // Weird bug with offer publications that forces me to reload TODO: fix it
-      // location.reload();
+      // Weird bug with offers publications that forces me to reload TODO: fix it
+      location.reload();
     })
     .catch(console.log);
 };

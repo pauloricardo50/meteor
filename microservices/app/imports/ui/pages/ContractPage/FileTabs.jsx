@@ -6,9 +6,14 @@ import Tabs from 'react-bootstrap/lib/Tabs';
 
 import UploaderArray from 'core/components/UploaderArray';
 
-import { requestFiles, borrowerFiles } from 'core/api/files/files';
+import {
+  requestFiles,
+  borrowerFiles,
+  propertyFiles,
+} from 'core/api/files/files';
 import { filesPercent } from 'core/arrays/steps';
 import { T, IntlNumber } from 'core/components/Translation';
+import withRequest from 'core/containers/withRequest';
 
 const styles = {
   tabContent: {
@@ -20,13 +25,13 @@ const styles = {
   },
 };
 
-const FileTabs = ({ loanRequest, borrowers }) => (
-  <Tabs defaultActiveKey={1} id="tabs" mountOnEnter>
+const FileTabs = ({ loanRequest, borrowers, property }) => (
+  <Tabs defaultActiveKey={0} id="tabs" mountOnEnter>
     <Tab
-      eventKey={1}
+      eventKey={0}
       title={
         <span>
-          <T id="general.property" />
+          <T id="general.mortgageLoan" />
           <small className="secondary">
             {' '}
             &bull;{' '}
@@ -44,6 +49,31 @@ const FileTabs = ({ loanRequest, borrowers }) => (
           fileArray={requestFiles(loanRequest).contract}
           doc={loanRequest}
           collection="loanRequests"
+        />
+      </div>
+    </Tab>
+    <Tab
+      eventKey={1}
+      title={
+        <span>
+          <T id="general.property" />
+          <small className="secondary">
+            {' '}
+            &bull;{' '}
+            <IntlNumber
+              value={filesPercent(property, propertyFiles, 'contract')}
+              format="percentageRounded"
+            />
+          </small>
+        </span>
+      }
+      key={property._id}
+    >
+      <div style={styles.tabContent}>
+        <UploaderArray
+          fileArray={propertyFiles(property).contract}
+          doc={property}
+          collection="properties"
         />
       </div>
     </Tab>
@@ -81,6 +111,7 @@ const FileTabs = ({ loanRequest, borrowers }) => (
 FileTabs.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default FileTabs;
+export default withRequest(FileTabs);

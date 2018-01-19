@@ -1,4 +1,4 @@
-import { compose } from 'react-komposer';
+import { compose } from '@storybook/react-komposer';
 import { Tracker } from 'meteor/tracker';
 
 const getTrackerLoader = loaderFunc => (props, onData, env) => {
@@ -16,6 +16,11 @@ const getTrackerLoader = loaderFunc => (props, onData, env) => {
   };
 };
 
-const composeWithTracker = (loadFunc, options) => component => compose(getTrackerLoader(loadFunc), options)(component);
+export const defaultOptions = {
+  withRef: false,
+};
+
+const composeWithTracker = (loadFunc, options) => component =>
+  compose(getTrackerLoader(loadFunc), { ...options, ...defaultOptions })(component);
 
 export default composeWithTracker;

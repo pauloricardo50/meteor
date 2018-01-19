@@ -17,7 +17,6 @@ const SideNavUserRequest = (props) => {
     toggleDrawer,
     history,
     borrowers,
-    requestId,
     property,
   } = props;
 
@@ -25,7 +24,7 @@ const SideNavUserRequest = (props) => {
     <div style={{ width: '100%' }}>
       <NavLink
         exact
-        to={`/requests/${requestId}`}
+        to={`/requests/${loanRequest._id}`}
         activeClassName="active-link"
         className="link"
       >
@@ -40,7 +39,7 @@ const SideNavUserRequest = (props) => {
       </NavLink>
       <NavLink
         exact
-        to={`/requests/${requestId}/files`}
+        to={`/requests/${loanRequest._id}/files`}
         activeClassName="active-link"
         className="link"
       >

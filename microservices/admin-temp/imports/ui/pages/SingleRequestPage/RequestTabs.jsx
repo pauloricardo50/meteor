@@ -28,6 +28,8 @@ const RequestTabs = (props) => {
 RequestTabs.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  property: PropTypes.objectOf(PropTypes.any).isRequired,
+  offers: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default RequestTabs;

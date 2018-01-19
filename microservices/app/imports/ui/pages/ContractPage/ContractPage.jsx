@@ -11,11 +11,6 @@ import FileTabs from './FileTabs';
 import ContractDownloader from './ContractDownloader';
 
 const ContractPage = props => (
-  // const percent =
-  //   (filesPercent(props.loanRequest, requestFiles, 'contract') +
-  //     filesPercent(props.borrowers, borrowerFiles, 'contract')) /
-  //   (1 + props.borrowers.length);
-
   <ProcessPage {...props} stepNb={3} id="contract" showBottom={false}>
     <div className="mask1">
       <div className="description">

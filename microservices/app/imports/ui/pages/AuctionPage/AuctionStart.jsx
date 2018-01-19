@@ -11,6 +11,7 @@ import ConfirmButton from '/imports/ui/components/ConfirmButton';
 import { T } from 'core/components/Translation';
 import track from 'core/utils/analytics';
 import { isDemo } from 'core/utils/browserFunctions';
+import withRequest from 'core/containers/withRequest';
 import AuctionForm from './AuctionForm';
 
 const styles = {
@@ -39,10 +40,7 @@ const styles = {
 };
 
 const AuctionStart = (props) => {
-  const lenderCount = getLenderCount({
-    loanRequest: props.loanRequest,
-    borrowers: props.borrowers,
-  });
+  const lenderCount = getLenderCount(props);
   const r = props.loanRequest;
   const f = props.intl.formatMessage;
   return (
@@ -120,4 +118,4 @@ AuctionStart.propTypes = {
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-export default injectIntl(AuctionStart);
+export default injectIntl(withRequest(AuctionStart));

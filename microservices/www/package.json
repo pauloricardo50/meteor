@@ -28,7 +28,7 @@
     "react-highcharts": "^15.0.0",
     "react-inline-css": "^2.3.1",
     "react-intl": "https://github.com/Floriferous/react-intl/tarball/build",
-    "react-komposer": "^2.0.0",
+    "@storybook/react-komposer": "^2.0.0",
     "react-loadable": "^5.3.1",
     "react-motion": "^0.5.2",
     "react-router-dom": "^4.2.2",

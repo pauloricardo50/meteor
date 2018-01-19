@@ -49,8 +49,8 @@ export const getRandomOffer = (
   // Randomly add rank 1 offers 25% of the time
   const loanWanted =
     Math.random() > 0.75 && !matchLoanWanted
-      ? 0.65 * getPropAndWork({ loanRequest })
-      : getLoanValue({ loanRequest });
+      ? 0.65 * getPropAndWork({ loanRequest, property })
+      : getLoanValue({ loanRequest, property });
 
   const counterpart = getRandomCounterpart();
   const condition = getRandomCondition();
