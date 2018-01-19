@@ -32,7 +32,7 @@ class SideNavStepper extends React.Component {
   }
 
   handleClick = (i, isNavLink = false) => {
-    if (this.state.active === i && !isNavLink) {
+    if (this.props.activeStep === i && !isNavLink) {
       this.props.hideSteps();
     } else {
       this.props.setStep(i);
