@@ -287,7 +287,10 @@ export const getCountedArray = (formArray, doc, arr = []) => {
 export const personalInfoPercent = (borrowers) => {
   const a = [];
   arrayify(borrowers).forEach((b) => {
-    const formArray = getBorrowerInfoArray(arrayify(borrowers), b._id);
+    const formArray = getBorrowerInfoArray({
+      borrowers: arrayify(borrowers),
+      borrowerId: b._id,
+    });
     getCountedArray(formArray, b, a);
   });
 

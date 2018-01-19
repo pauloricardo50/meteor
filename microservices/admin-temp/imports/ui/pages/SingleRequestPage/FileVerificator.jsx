@@ -37,8 +37,11 @@ export default class FileVerificator extends Component {
     });
   };
 
-  updateFunc = () =>
-    (this.props.isBorrower ? 'updateBorrower' : 'updateRequest');
+  updateFunc = () => {
+    if (this.props.isBorrower) return 'updateBorrower';
+    if (this.props.isProperty) return 'updateProperty';
+    return 'updateRequest';
+  };
 
   render() {
     const { currentValue, id, closingSteps } = this.props;
@@ -72,4 +75,16 @@ export default class FileVerificator extends Component {
   }
 }
 
-FileVerificator.propTypes = {};
+FileVerificator.propTypes = {
+  isBorrower: PropTypes.bool,
+  isProperty: PropTypes.bool,
+  currentValue: PropTypes.arrayOf(PropTypes.object),
+  closingSteps: PropTypes.arrayOf(PropTypes.object),
+};
+
+FileVerificator.defaultProps = {
+  isBorrower: false,
+  isProperty: false,
+  currentValue: [],
+  closingSteps: [],
+};

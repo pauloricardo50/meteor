@@ -77,6 +77,7 @@ export default class SelectFieldInput extends Component {
         id,
         required,
       },
+      admin,
     } = this.props;
     const { value, saving, errorText } = this.state;
 
@@ -98,6 +99,7 @@ export default class SelectFieldInput extends Component {
           style={styles.savingIcon}
           value={value}
           required={required}
+          hide={admin}
         />
         {!noValidator && <FormValidator {...this.props} />}
       </div>

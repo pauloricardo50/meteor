@@ -75,6 +75,7 @@ export default class RadioInput extends Component {
         disabled,
         required,
       },
+      admin,
     } = this.props;
     const { value, saving } = this.state;
 
@@ -102,6 +103,7 @@ export default class RadioInput extends Component {
           value={value}
           required={required}
           style={styles.validIcon}
+          hide={admin}
         />
         <FormValidator {...this.props} />
       </div>

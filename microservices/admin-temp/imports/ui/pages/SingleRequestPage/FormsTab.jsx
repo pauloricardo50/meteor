@@ -9,7 +9,10 @@ import Select from 'core/components/Select';
 
 import AutoForm from 'core/components/AutoForm';
 
-import PropertyFormArray from 'core/arrays/PropertyFormArray';
+import {
+  getPropertyArray,
+  getPropertyRequestArray,
+} from 'core/arrays/PropertyFormArray';
 import {
   getBorrowerInfoArray,
   getBorrowerFinanceArray,
@@ -63,7 +66,10 @@ const getForm = (props, value, modify) => {
           return (
             <AutoForm
               key={value}
-              inputs={getBorrowerInfoArray(props.borrowers, splittedValue[1])}
+              inputs={getBorrowerInfoArray({
+                ...props,
+                borrowerId: splittedValue[1],
+              })}
               formClasses="user-form"
               docId={splittedValue[1]}
               updateFunc="updateBorrower"
@@ -79,10 +85,10 @@ const getForm = (props, value, modify) => {
           return (
             <AutoForm
               key={value}
-              inputs={getBorrowerFinanceArray(
-                props.borrowers,
-                splittedValue[1],
-              )}
+              inputs={getBorrowerFinanceArray({
+                ...props,
+                borrowerId: splittedValue[1],
+              })}
               borrowers={props.borrowers}
               docId={splittedValue[1]}
               updateFunc="updateBorrower"
@@ -104,18 +110,32 @@ const getForm = (props, value, modify) => {
     }
     case 'request': {
       return (
-        <AutoForm
-          key={value}
-          inputs={PropertyFormArray(props.loanRequest, props.borrowers)}
-          docId={props.loanRequest._id}
-          updateFunc="updateRequest"
-          pushFunc="pushRequestValue"
-          popFunc="popRequestValue"
-          doc={props.loanRequest}
-          disabled={!modify}
-          noPlaceholders
-          admin
-        />
+        <div>
+          <AutoForm
+            key={`${value}1`}
+            inputs={getPropertyRequestArray(props)}
+            docId={props.loanRequest._id}
+            updateFunc="updateRequest"
+            pushFunc="pushRequestValue"
+            popFunc="popRequestValue"
+            doc={props.loanRequest}
+            disabled={!modify}
+            noPlaceholders
+            admin
+          />
+          <AutoForm
+            key={`${value}2`}
+            inputs={getPropertyArray(props)}
+            docId={props.property._id}
+            updateFunc="updateProperty"
+            pushFunc="pushPropertyValue"
+            popFunc="popPropertyValue"
+            doc={props.property}
+            disabled={!modify}
+            noPlaceholders
+            admin
+          />
+        </div>
       );
     }
     case 'files':
@@ -123,6 +143,7 @@ const getForm = (props, value, modify) => {
         <FilesVerification
           loanRequest={props.loanRequest}
           borrowers={props.borrowers}
+          property={props.property}
         />
       );
     case 'closing':
@@ -130,6 +151,7 @@ const getForm = (props, value, modify) => {
         <ClosingVerification
           loanRequest={props.loanRequest}
           borrowers={props.borrowers}
+          property={props.property}
         />
       );
     default:
@@ -151,21 +173,23 @@ const reduceToPercent = (formArray, validationArray) =>
       0,
     );
 
-const getPercent = (request, borrowers) => {
+const getPercent = (props) => {
   const percentages = [
     reduceToPercent(
-      PropertyFormArray(request, borrowers),
-      request.adminValidation,
+      getPropertyRequestArray(props),
+      props.loanRequest.adminValidation,
     ),
   ];
 
-  borrowers.forEach((b) => {
+  percentages.push(reduceToPercent(getPropertyArray(props), props.property.adminValidation));
+
+  props.borrowers.forEach((b) => {
     percentages.push(reduceToPercent(
-      getBorrowerFinanceArray(borrowers, b._id),
+      getBorrowerFinanceArray({ ...props, borrowerId: b._id }),
       b.adminValidation,
     ));
     percentages.push(reduceToPercent(
-      getBorrowerInfoArray(borrowers, b._id),
+      getBorrowerInfoArray({ ...props, borrowerId: b._id }),
       b.adminValidation,
     ));
   });
@@ -226,10 +250,7 @@ export default class FormsTab extends Component {
 
         <div>
           Vérification:{' '}
-          <IntlNumber
-            value={getPercent(loanRequest, borrowers)}
-            format="percentage"
-          />
+          <IntlNumber value={getPercent(this.props)} format="percentage" />
         </div>
 
         <hr />
@@ -243,4 +264,5 @@ export default class FormsTab extends Component {
 FormsTab.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  property: PropTypes.objectOf(PropTypes.any).isRequired,
 };

@@ -1,6 +1,6 @@
 import { constants } from 'core/api';
 
-export const getBorrowerInfoArray = (borrowers, id) => {
+export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
   const b = borrowers.find(borr => borr._id === id);
   const multiple = borrowers.length > 1;
   // If this is the first borrower in the array of borrowers, don't ask for same address
@@ -113,7 +113,11 @@ export const getBorrowerInfoArray = (borrowers, id) => {
   ];
 };
 
-export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
+export const getBorrowerFinanceArray = ({
+  borrowers,
+  borrowerId: id,
+  loanRequest,
+}) => {
   const b = borrowers.find(borr => borr._id === id);
   const multiple = borrowers.length > 1;
   // If this is the first borrower in the array of borrowers, don't ask for same address

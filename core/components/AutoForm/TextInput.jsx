@@ -127,6 +127,7 @@ export default class TextInput extends Component {
         required,
         ...otherProps
       },
+      admin,
     } = this.props;
     const {
       value, errorText, saving, showInfo,
@@ -168,6 +169,7 @@ export default class TextInput extends Component {
           style={styles.savingIcon}
           value={value}
           required={required}
+          hide={admin}
         />
         {!noValidator && <FormValidator {...this.props} />}
       </div>

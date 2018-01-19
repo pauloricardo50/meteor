@@ -277,6 +277,7 @@ export const PropertySchema = new SimpleSchema({
     blackbox: true,
     defaultValue: {},
   },
+  adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   files: {
     type: PropertyFilesSchema,
     defaultValue: {},

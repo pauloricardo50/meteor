@@ -26,7 +26,7 @@ const Info = (props) => {
       </div>
 
       <AutoForm
-        inputs={getBorrowerInfoArray(props.borrowers, borrowerId)}
+        inputs={getBorrowerInfoArray({ ...props, borrowerId })}
         formClasses="user-form"
         docId={borrowerId}
         updateFunc="updateBorrower"

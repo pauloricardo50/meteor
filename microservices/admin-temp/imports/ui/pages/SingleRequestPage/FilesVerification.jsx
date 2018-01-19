@@ -4,7 +4,11 @@ import PropTypes from 'prop-types';
 import Tab from 'react-bootstrap/lib/Tab';
 import Tabs from 'react-bootstrap/lib/Tabs';
 
-import { requestFiles, borrowerFiles } from 'core/api/files/files';
+import {
+  requestFiles,
+  borrowerFiles,
+  propertyFiles,
+} from 'core/api/files/files';
 import FileVerificator from './FileVerificator';
 
 const styles = {
@@ -13,9 +17,9 @@ const styles = {
   },
 };
 
-const FilesVerification = ({ loanRequest, borrowers }) => (
-  <Tabs defaultActiveKey={1} id="tabs">
-    <Tab eventKey={1} title="Bien Immobilier">
+const FilesVerification = ({ loanRequest, borrowers, property }) => (
+  <Tabs defaultActiveKey={0} id="tabs">
+    <Tab eventKey={0} title="Prêt Hypothécaire">
       <div style={styles.tabContent}>
         {requestFiles(loanRequest)
           .all()
@@ -31,6 +35,24 @@ const FilesVerification = ({ loanRequest, borrowers }) => (
               ))}
       </div>
     </Tab>
+
+    <Tab eventKey={1} title="Bien Immobilier">
+      <div style={styles.tabContent}>
+        {propertyFiles(property)
+          .all()
+          .map(file =>
+              file.condition !== false && (
+                <FileVerificator
+                  currentValue={property.files[file.id]}
+                  docId={property._id}
+                  key={file.id}
+                  id={file.id}
+                  isProperty
+                />
+              ))}
+      </div>
+    </Tab>
+
     {borrowers.map((b, index) => (
       <Tab eventKey={index + 2} title={b.firstName} key={b._id}>
         <div style={styles.tabContent}>

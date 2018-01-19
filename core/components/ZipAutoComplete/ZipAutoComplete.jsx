@@ -130,7 +130,9 @@ class ZipAutoComplete extends Component {
       inputProps: {
         disabled, style, label, placeholder,
       },
+      admin,
     } = this.props;
+
     return (
       <div style={{ ...styles.div, ...style }}>
         <AutoComplete
@@ -153,6 +155,7 @@ class ZipAutoComplete extends Component {
           // Only show the valid icon when isValid is true
           value={isValid === true ? true : undefined}
           required
+          hide={admin}
         />
       </div>
     );

@@ -6,7 +6,13 @@ import colors from 'core/config/colors';
 import ValidIconContainer, { STATUS } from './ValidIconContainer';
 import './ValidIcon.scss';
 
-const ValidIcon = ({ status, style, fade }) => {
+const ValidIcon = ({
+  status, style, fade, hide,
+}) => {
+  if (hide) {
+    return null;
+  }
+
   switch (status) {
     case STATUS.HIDE:
       return null;
@@ -56,6 +62,12 @@ ValidIcon.propTypes = {
   saving: PropTypes.bool.isRequired,
   errorExists: PropTypes.bool.isRequired,
   style: PropTypes.objectOf(PropTypes.any),
+  hide: PropTypes.bool,
+};
+
+ValidIcon.defaultProps = {
+  style: {},
+  hide: false,
 };
 
 export default ValidIconContainer(ValidIcon);
