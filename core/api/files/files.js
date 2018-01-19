@@ -1,5 +1,5 @@
 import SimpleSchema from 'simpl-schema';
-import { FILE_STATUS } from './fileConstants';
+import { FILE_STATUS, PURCHASE_TYPE, USAGE_TYPE } from '../constants';
 
 export const borrowerFiles = (b = {}) => ({
   auction: [
@@ -161,6 +161,47 @@ export const requestFiles = (r = {}) => ({
   },
 });
 
+export const propertyFiles = (property = {}, request = {}) => ({
+  auction: [
+    {
+      id: 'plans',
+    },
+    {
+      id: 'cubage',
+      doubleTooltip: true,
+      condition: property.style === 'villa',
+    },
+    {
+      id: 'pictures',
+    },
+    {
+      id: 'marketingBrochure',
+      condition: !!(
+        request &&
+        request.general &&
+        request.general.purchaseType === PURCHASE_TYPE.ACQUISITION
+      ),
+      required: false,
+    },
+  ],
+  contract: [
+    {
+      id: 'rent',
+      condition:
+        !!request.general &&
+        request.general.usageType === USAGE_TYPE.INVESTMENT,
+      doubleTooltip: true,
+    },
+    {
+      id: 'landRegisterExtract',
+      doubleTooltip: true,
+    },
+  ],
+  all() {
+    return [...this.auction, ...this.contract];
+  },
+});
+
 export const getFileIDs = (list) => {
   let files;
   const ids = [];
@@ -170,6 +211,9 @@ export const getFileIDs = (list) => {
       break;
     case 'request':
       files = requestFiles();
+      break;
+    case 'property':
+      files = propertyFiles();
       break;
     default:
       throw new Error('invalid file list');

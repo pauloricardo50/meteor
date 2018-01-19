@@ -28,7 +28,7 @@ const chartColors = {
 
 const getConfig = (props) => {
   const r = props.loanRequest;
-  const total = getProjectValue(r);
+  const total = getProjectValue({ loanRequest: r, property: props.proerty });
   const f = props.intl.formatMessage;
   const fN = props.intl.formatNumber;
   const options = {

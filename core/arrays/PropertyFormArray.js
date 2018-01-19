@@ -1,12 +1,10 @@
-import { constants } from 'core/api';
-
-const {
+import {
   PROPERTY_STYLE,
   PURCHASE_TYPE,
   OWNER,
   USAGE_TYPE,
   EXPERTISE_RATING,
-} = constants;
+} from 'core/api/constants';
 
 const mapInput = (input) => {
   const intlSafeObject = { ...input };
@@ -32,7 +30,7 @@ const mapInput = (input) => {
   return intlSafeObject;
 };
 
-const getPropertyArray = (loanRequest, borrowers) => {
+export const getPropertyRequestArray = (loanRequest, borrowers) => {
   const r = loanRequest;
 
   if (!r) {
@@ -40,22 +38,22 @@ const getPropertyArray = (loanRequest, borrowers) => {
   }
 
   const array = [
-    { id: 'property.value', type: 'textInput', money: true },
     {
-      id: 'property.propertyWork',
-      type: 'textInput',
-      money: true,
+      type: 'h3',
+      id: 'propertyInfo',
+      ignore: true,
       required: false,
     },
     {
-      id: 'property.usageType',
+      id: 'general.usageType',
       type: 'radioInput',
       options: Object.values(USAGE_TYPE),
     },
     {
-      id: 'property.style',
-      type: 'radioInput',
-      options: Object.values(PROPERTY_STYLE),
+      id: 'general.propertyWork',
+      type: 'textInput',
+      money: true,
+      required: false,
     },
     {
       type: 'conditionalInput',
@@ -120,8 +118,27 @@ const getPropertyArray = (loanRequest, borrowers) => {
         },
       ],
     },
+  ];
+
+  return array.map(mapInput);
+};
+
+export const getPropertyArray = (loanRequest, borrowers, property) => {
+  const r = loanRequest;
+
+  if (!r) {
+    throw new Error('requires a loanRequest');
+  }
+
+  const array = [
+    { id: 'value', type: 'textInput', money: true },
     {
-      id: 'property.isNew',
+      id: 'style',
+      type: 'radioInput',
+      options: Object.values(PROPERTY_STYLE),
+    },
+    {
+      id: 'isNew',
       type: 'radioInput',
       options: [true, false],
       condition: r.general.purchaseType === PURCHASE_TYPE.ACQUISITION,
@@ -133,23 +150,23 @@ const getPropertyArray = (loanRequest, borrowers) => {
       required: false,
     },
     {
-      id: 'property.address1',
+      id: 'address1',
       type: 'textInput',
     },
     {
-      id: 'property.address2',
+      id: 'address2',
       type: 'textInput',
       required: false,
     },
     {
-      id: 'property.zipCode',
+      id: 'zipCode',
       type: 'custom',
       component: 'ZipAutoComplete',
       componentProps: {
-        savePath: 'property.',
+        savePath: '',
         initialValue:
-          r.property.zipCode && r.property.city
-            ? `${r.property.zipCode} ${r.property.city}`
+          property.zipCode && property.city
+            ? `${property.zipCode} ${property.city}`
             : '',
       },
     },
@@ -159,73 +176,73 @@ const getPropertyArray = (loanRequest, borrowers) => {
       ignore: true,
       required: false,
     },
-    { id: 'property.constructionYear', type: 'textInput', number: true },
+    { id: 'constructionYear', type: 'textInput', number: true },
     {
-      id: 'property.renovationYear',
+      id: 'renovationYear',
       type: 'textInput',
       number: true,
       required: false,
       info: true,
     },
     {
-      id: 'property.landArea',
+      id: 'landArea',
       type: 'textInput',
       number: true,
-      condition: r.property.style === PROPERTY_STYLE.VILLA,
+      condition: property.style === PROPERTY_STYLE.VILLA,
     },
-    { id: 'property.insideArea', type: 'textInput', number: true },
+    { id: 'insideArea', type: 'textInput', number: true },
     {
-      id: 'property.balconyArea',
-      type: 'textInput',
-      number: true,
-      required: false,
-    },
-    {
-      id: 'property.terraceArea',
+      id: 'balconyArea',
       type: 'textInput',
       number: true,
       required: false,
     },
     {
-      id: 'property.volume',
+      id: 'terraceArea',
       type: 'textInput',
       number: true,
-      condition: r.property.style === PROPERTY_STYLE.VILLA,
+      required: false,
     },
     {
-      id: 'property.volumeNorm',
+      id: 'volume',
       type: 'textInput',
-      condition: r.property.style === PROPERTY_STYLE.VILLA,
+      number: true,
+      condition: property.style === PROPERTY_STYLE.VILLA,
     },
     {
-      id: 'property.roomCount',
+      id: 'volumeNorm',
+      type: 'textInput',
+      condition: property.style === PROPERTY_STYLE.VILLA,
+    },
+    {
+      id: 'roomCount',
       type: 'textInput',
       decimal: true,
       info: true,
     },
     {
-      id: 'property.bathroomCount',
+      id: 'bathroomCount',
       type: 'textInput',
       number: true,
       info: true,
     },
-    { id: 'property.toiletCount', type: 'textInput', number: true },
-    { id: 'property.parking.box', type: 'textInput', number: true },
-    { id: 'property.parking.inside', type: 'textInput', number: true },
-    { id: 'property.parking.outside', type: 'textInput', number: true },
-    { id: 'property.minergie', type: 'radioInput', options: [true, false] },
+    { id: 'toiletCount', type: 'textInput', number: true },
+    { id: 'parking.box', type: 'textInput', number: true },
+    { id: 'parking.inside', type: 'textInput', number: true },
+    { id: 'parking.outside', type: 'textInput', number: true },
+    { id: 'minergie', type: 'radioInput', options: [true, false] },
     {
       type: 'conditionalInput',
       conditionalTrueValue: true,
-      condition: r.property.style === PROPERTY_STYLE.VILLA,
+      condition: property.style === PROPERTY_STYLE.VILLA,
       inputs: [
         {
-          id: 'property.isCoproperty',
+          id: 'isCoproperty',
           type: 'radioInput',
           options: [true, false],
         },
         {
-          id: 'property.copropertyPercentage',
+          id: 'copropertyPercentage',
           type: 'textInput',
           number: true,
           info: true,
@@ -233,10 +250,10 @@ const getPropertyArray = (loanRequest, borrowers) => {
       ],
     },
     {
-      id: 'property.copropertyPercentage',
+      id: 'copropertyPercentage',
       type: 'textInput',
       number: true,
-      condition: r.property.style === PROPERTY_STYLE.FLAT,
+      condition: property.style === PROPERTY_STYLE.FLAT,
       info: true,
     },
     {
@@ -246,34 +263,34 @@ const getPropertyArray = (loanRequest, borrowers) => {
       required: false,
     },
     {
-      id: 'property.cityPlacementQuality',
+      id: 'cityPlacementQuality',
       type: 'radioInput',
       options: Object.values(EXPERTISE_RATING),
     },
     {
-      id: 'property.buildingPlacementQuality',
+      id: 'buildingPlacementQuality',
       type: 'radioInput',
       options: Object.values(EXPERTISE_RATING),
-      condition: r.property.style === PROPERTY_STYLE.FLAT,
+      condition: property.style === PROPERTY_STYLE.FLAT,
     },
     {
-      id: 'property.buildingQuality',
-      type: 'radioInput',
-      options: Object.values(EXPERTISE_RATING),
-    },
-    {
-      id: 'property.flatQuality',
-      type: 'radioInput',
-      options: Object.values(EXPERTISE_RATING),
-      condition: r.property.style === PROPERTY_STYLE.FLAT,
-    },
-    {
-      id: 'property.materialsQuality',
+      id: 'buildingQuality',
       type: 'radioInput',
       options: Object.values(EXPERTISE_RATING),
     },
     {
-      id: 'property.otherNotes',
+      id: 'flatQuality',
+      type: 'radioInput',
+      options: Object.values(EXPERTISE_RATING),
+      condition: property.style === PROPERTY_STYLE.FLAT,
+    },
+    {
+      id: 'materialsQuality',
+      type: 'radioInput',
+      options: Object.values(EXPERTISE_RATING),
+    },
+    {
+      id: 'otherNotes',
       type: 'textInput',
       multiline: true,
       rows: 3,
@@ -283,5 +300,3 @@ const getPropertyArray = (loanRequest, borrowers) => {
 
   return array.map(mapInput);
 };
-
-export default getPropertyArray;

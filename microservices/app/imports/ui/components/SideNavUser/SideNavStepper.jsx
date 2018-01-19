@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
-import { Session } from 'meteor/session';
 
 import getSteps from 'core/arrays/steps';
 import { T } from 'core/components/Translation';
@@ -9,8 +8,8 @@ import Step from './Step';
 import StepperContainer from '../../containers/StepperContainer';
 
 class SideNavStepper extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {};
   }
 

@@ -77,6 +77,7 @@ describe('getStepValues', () => {
       id: 'files',
       loanRequest: request,
       borrowers: [borrower],
+      property: {},
     };
   });
 

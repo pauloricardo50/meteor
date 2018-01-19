@@ -1,7 +1,7 @@
 import { getMonthlyWithExtractedOffer } from './requestFunctions';
 import { OFFER_TYPE, INTEREST_RATES } from '../api/constants';
 
-export const getRange = (offers, key) =>
+export const getRange = ({ offers }, key) =>
   offers.reduce(
     (accumulator, offer) => {
       const standard = offer.standardOffer[key];
@@ -27,7 +27,7 @@ export const getRange = (offers, key) =>
     { min: Infinity, max: 0 },
   );
 
-export const extractOffers = (offers, loanRequest) => {
+export const extractOffers = ({ offers, loanRequest }) => {
   const array = [];
   offers.forEach((offer) => {
     const meta = {
@@ -45,7 +45,7 @@ export const extractOffers = (offers, loanRequest) => {
       type: OFFER_TYPE.STANDARD,
     });
     array[array.length - 1].monthly = getMonthlyWithExtractedOffer(
-      loanRequest,
+      { loanRequest },
       array[array.length - 1],
     );
 
@@ -59,7 +59,7 @@ export const extractOffers = (offers, loanRequest) => {
         type: OFFER_TYPE.COUNTERPARTS,
       });
       array[array.length - 1].monthly = getMonthlyWithExtractedOffer(
-        loanRequest,
+        { loanRequest },
         array[array.length - 1],
       );
     }
@@ -67,7 +67,10 @@ export const extractOffers = (offers, loanRequest) => {
   return array;
 };
 
-export const getBestRate = (offers = [], duration = INTEREST_RATES.YEAR_10) =>
+export const getBestRate = (
+  { offers = [] },
+  duration = INTEREST_RATES.YEAR_10,
+) =>
   (offers.length
     ? Math.min(...offers.reduce((acc, offer) => {
       if (offer.standardOffer[duration]) {

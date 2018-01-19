@@ -14,13 +14,18 @@ import {
   AMORTIZATION_STRATEGY_PRESET,
   PAYMENT_SCHEDULES,
 } from './loanrequestConstants';
-import { GENDER } from '../constants';
+import { GENDER, USAGE_TYPE } from '../constants';
 
 export const GeneralSchema = new SimpleSchema({
   purchaseType: {
     type: String,
     defaultValue: PURCHASE_TYPE.ACQUISITION,
     allowedValues: Object.values(PURCHASE_TYPE),
+  },
+  usageType: {
+    type: String,
+    defaultValue: USAGE_TYPE.PRIMARY,
+    allowedValues: Object.values(USAGE_TYPE),
   },
   fortuneUsed: {
     type: Number,
@@ -33,6 +38,12 @@ export const GeneralSchema = new SimpleSchema({
     min: 0,
     max: 100000000,
     optional: true,
+  },
+  propertyWork: {
+    type: Number,
+    min: 0,
+    max: 100000000,
+    defaultValue: 0,
   },
   oldestAge: {
     type: SimpleSchema.Integer,

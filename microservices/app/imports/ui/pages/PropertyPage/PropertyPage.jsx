@@ -3,9 +3,12 @@ import React from 'react';
 
 import ProcessPage from '/imports/ui/components/ProcessPage';
 import AutoForm from 'core/components/AutoForm';
-import PropertyFormArray from 'core/arrays/PropertyFormArray';
+import {
+  getPropertyArray,
+  getPropertyRequestArray,
+} from 'core/arrays/PropertyFormArray';
 import UploaderArray from 'core/components/UploaderArray';
-import { requestFiles } from 'core/api/files/files';
+import { requestFiles, propertyFiles } from 'core/api/files/files';
 import {
   disableForms,
   getPropertyCompletion,
@@ -14,6 +17,7 @@ import {
 import { isDemo } from 'core/utils/browserFunctions';
 import FakePropertyCompleter from '/imports/ui/components/FakePropertyCompleter';
 import { T } from 'core/components/Translation';
+import withRequest from 'core/containers/withRequest';
 
 const styles = {
   topDiv: {
@@ -32,16 +36,16 @@ const styles = {
 };
 
 const PropertyPage = (props) => {
-  const percent = getPropertyCompletion(props.loanRequest, props.borrowers);
+  console.log('PropertyPage props: ', props);
+
+  const { loanRequest, borrowers, property } = props;
+  const percent = getPropertyCompletion({ loanRequest, borrowers, property });
 
   return (
     <ProcessPage {...props} stepNb={1} id="property">
       <section className="mask1 property-page">
         <h1 className="text-center">
-          <T
-            id="PropertyPage.title"
-            values={{ count: props.borrowers.length }}
-          />
+          <T id="PropertyPage.title" values={{ count: borrowers.length }} />
           <br />
           <small className={percent >= 1 && 'success'}>
             <T id="PropertyPage.progress" values={{ value: percent }} />{' '}
@@ -62,23 +66,39 @@ const PropertyPage = (props) => {
         </div>
 
         <UploaderArray
-          fileArray={requestFiles(props.loanRequest).auction}
-          doc={props.loanRequest}
+          fileArray={requestFiles(loanRequest).auction}
+          doc={loanRequest}
           collection="loanRequests"
-          disabled={disableForms(props.loanRequest)}
+          disabled={disableForms({ loanRequest })}
+        />
+        <UploaderArray
+          fileArray={propertyFiles(property, loanRequest).auction}
+          doc={property}
+          collection="properties"
+          disabled={disableForms({ loanRequest })}
         />
 
         <AutoForm
-          inputs={PropertyFormArray(props.loanRequest, props.borrowers)}
-          docId={props.loanRequest._id}
+          inputs={getPropertyRequestArray(loanRequest, borrowers)}
+          docId={loanRequest._id}
           updateFunc="updateRequest"
           pushFunc="pushRequestValue"
           popFunc="popRequestValue"
-          doc={props.loanRequest}
-          disabled={disableForms(props.loanRequest)}
+          doc={loanRequest}
+          disabled={disableForms({ loanRequest })}
         />
 
-        {isDemo() && <FakePropertyCompleter loanRequest={props.loanRequest} />}
+        <AutoForm
+          inputs={getPropertyArray(loanRequest, borrowers, property)}
+          docId={property._id}
+          updateFunc="updateProperty"
+          pushFunc="pushPropertyValue"
+          popFunc="popPropertyValue"
+          doc={property}
+          disabled={disableForms({ loanRequest })}
+        />
+
+        {isDemo() && <FakePropertyCompleter loanRequest={loanRequest} />}
       </section>
     </ProcessPage>
   );
@@ -87,6 +107,7 @@ const PropertyPage = (props) => {
 PropertyPage.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default PropertyPage;
+export default withRequest(PropertyPage);

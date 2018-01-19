@@ -3,7 +3,7 @@ import { filesPercent } from 'core/arrays/steps';
 import { borrowerFiles } from '../api/files/files';
 import { arrayify } from './general';
 
-export const getFortune = (borrowers) => {
+export const getFortune = ({ borrowers }) => {
   const array = [];
 
   arrayify(borrowers).forEach((b) => {
@@ -12,7 +12,7 @@ export const getFortune = (borrowers) => {
   return array.reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
 };
 
-export const getInsuranceFortune = (borrowers) => {
+export const getInsuranceFortune = ({ borrowers }) => {
   const array = [];
 
   arrayify(borrowers).forEach((b) => {
@@ -22,13 +22,13 @@ export const getInsuranceFortune = (borrowers) => {
   return array.reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
 };
 
-export const getBorrowerCompletion = borrower =>
+export const getBorrowerCompletion = ({ borrower }) =>
   (filesPercent([borrower], borrowerFiles, 'auction') +
     personalInfoPercent([borrower]) +
     (borrower.logic.hasValidatedFinances ? 1 : 0)) /
   3;
 
-export const getBonusIncome = (borrowers) => {
+export const getBonusIncome = ({ borrowers }) => {
   let total = 0;
   arrayify(borrowers).forEach((borrower) => {
     if (borrower.bonus) {
@@ -53,7 +53,7 @@ export const getBonusIncome = (borrowers) => {
   return Math.max(0, Math.round(total));
 };
 
-export const getArrayValues = (borrowers, key, mapFunc) => {
+export const getArrayValues = ({ borrowers }, key, mapFunc) => {
   let sum = 0;
 
   arrayify(borrowers).forEach((borrower) => {
@@ -68,12 +68,13 @@ export const getArrayValues = (borrowers, key, mapFunc) => {
   return Math.max(0, Math.round(sum));
 };
 
-export const getOtherIncome = borrowers =>
+export const getOtherIncome = ({ borrowers }) =>
   getArrayValues(borrowers, 'otherIncome');
 
-export const getExpenses = borrowers => getArrayValues(borrowers, 'expenses');
+export const getExpenses = ({ borrowers }) =>
+  getArrayValues(borrowers, 'expenses');
 
-export const getBorrowerIncome = (borrowers) => {
+export const getBorrowerIncome = ({ borrowers }) => {
   let sum = 0;
 
   arrayify(borrowers).forEach((borrower) => {
@@ -86,7 +87,7 @@ export const getBorrowerIncome = (borrowers) => {
   return Math.max(sum, 0);
 };
 
-export const getTotalFortune = (borrowers) => {
+export const getTotalFortune = ({ borrowers }) => {
   let sum = 0;
 
   arrayify(borrowers).forEach((borrower) => {
@@ -100,14 +101,14 @@ export const getTotalFortune = (borrowers) => {
   return Math.max(0, Math.round(sum));
 };
 
-export const getRealEstateFortune = borrowers =>
-  getArrayValues(borrowers, 'realEstate', i => i.value - i.loan);
+export const getRealEstateFortune = ({ borrowers }) =>
+  getArrayValues({ borrowers }, 'realEstate', i => i.value - i.loan);
 
-export const getRealEstateValue = borrowers =>
-  getArrayValues(borrowers, 'realEstate');
+export const getRealEstateValue = ({ borrowers }) =>
+  getArrayValues({ borrowers }, 'realEstate');
 
-export const getRealEstateDebt = borrowers =>
-  getArrayValues(borrowers, 'realEstate', i => i.loan);
+export const getRealEstateDebt = ({ borrowers }) =>
+  getArrayValues({ borrowers }, 'realEstate', i => i.loan);
 
-export const getBorrowerSalary = borrowers =>
+export const getBorrowerSalary = ({ borrowers }) =>
   arrayify(borrowers).reduce((t, b) => t + (b.salary || 0), 0);

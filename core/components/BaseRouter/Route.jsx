@@ -11,7 +11,7 @@ const Route = ({
     render={
       MyComponent
         ? routeProps => <MyComponent {...rest} {...routeProps} />
-        : render
+        : renderProps => render({ ...renderProps, ...rest })
     }
   />
 );

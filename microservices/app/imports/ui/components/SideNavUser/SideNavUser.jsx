@@ -1,15 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { NavLink, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { T } from 'core/components/Translation';
-import Icon from 'core/components/Icon';
-import { REQUEST_STATUS } from 'core/api/constants';
 import RequestSelector from './RequestSelector';
-import SideNavStepper from './SideNavStepper';
 import DrawerHeader from '../AppTopNav/DrawerHeader';
+import SideNavUserRequest from './SideNavUserRequest';
 
 const SideNavUser = (props) => {
   const {
@@ -21,6 +17,7 @@ const SideNavUser = (props) => {
     toggleDrawer,
     history,
     borrowers,
+    properties,
   } = props;
 
   // Return an empty side nav if there is no loanRequest
@@ -47,7 +44,7 @@ const SideNavUser = (props) => {
   let borrowerIds;
 
   if (requestId) {
-    currentRequest = props.loanRequests.find(r => r._id === requestId);
+    currentRequest = loanRequests.find(r => r._id === requestId);
     borrowerIds = currentRequest.borrowers;
   }
 
@@ -67,47 +64,12 @@ const SideNavUser = (props) => {
           toggleDrawer={toggleDrawer}
         />
         {requestId && (
-          <div style={{ width: '100%' }}>
-            <NavLink
-              exact
-              to={`/requests/${requestId}`}
-              activeClassName="active-link"
-              className="link"
-            >
-              <div className="onclick-wrapper" onClick={handleClickLink}>
-                <div className="icon">
-                  <Icon type="dashboard" style={{ color: '#ADB5BD' }} />
-                </div>
-                <h4 className="fixed-size title">
-                  <T id="SideNavUser.dashboard" />
-                </h4>
-              </div>
-            </NavLink>
-            <NavLink
-              exact
-              to={`/requests/${requestId}/files`}
-              activeClassName="active-link"
-              className="link"
-            >
-              <div className="onclick-wrapper" onClick={handleClickLink}>
-                <div className="icon">
-                  <Icon type="folder" style={{ color: '#ADB5BD' }} />
-                </div>
-                <h4 className="fixed-size title">
-                  <T id="SideNavUser.files" />
-                </h4>
-              </div>
-            </NavLink>
-            {currentRequest.status === REQUEST_STATUS.ACTIVE && (
-              <SideNavStepper
-                handleClickLink={handleClickLink}
-                history={history}
-                location={location}
-                loanRequest={currentRequest}
-                borrowers={borrowers.filter(b => borrowerIds.indexOf(b._id) > -1)}
-              />
-            )}
-          </div>
+          <SideNavUserRequest
+            loanRequest={currentRequest}
+            borrowers={borrowers.filter(b => currentRequest.borrowers.indexOf(b._id) > -1)}
+            property={properties.find(p => p._id === currentRequest.property)}
+            {...props}
+          />
         )}
       </div>
     </nav>
@@ -128,4 +90,4 @@ SideNavUser.defaultProps = {
   toggleDrawer: () => {},
 };
 
-export default withRouter(SideNavUser);
+export default SideNavUser;

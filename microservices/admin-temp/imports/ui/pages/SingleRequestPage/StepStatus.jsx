@@ -3,8 +3,9 @@ import getSteps from 'core/arrays/steps';
 import Icon from 'core/components/Icon';
 
 import { T } from 'core/components/Translation';
+import withRequest from 'core/containers/withRequest';
 
-const StepStatus = props => {
+const StepStatus = (props) => {
   const steps = getSteps(props).slice(1, -1);
   const currentStep = props.loanRequest.logic.step;
   return (
@@ -17,22 +18,26 @@ const StepStatus = props => {
         margin: 20,
       }}
     >
-      {steps.map((s, i) =>
+      {steps.map((s, i) => (
         <li key={s.nb} style={{ display: 'flex', flexDirection: 'column' }}>
-          <div><T id={`steps.${s.nb}.title`} /> {currentStep > i && <Icon type="check" />}</div>
+          <div>
+            <T id={`steps.${s.nb}.title`} />{' '}
+            {currentStep > i && <Icon type="check" />}
+          </div>
           <ul>
-            {s.items.map(item =>
+            {s.items.map(item => (
               <li key={item.id}>
-                <T id={`steps.${item.id}.title`} /> {item.isDone() && <Icon type="check" />}
-              </li>,
-            )}
+                <T id={`steps.${item.id}.title`} />{' '}
+                {item.isDone() && <Icon type="check" />}
+              </li>
+            ))}
           </ul>
-        </li>,
-      )}
+        </li>
+      ))}
     </ul>
   );
 };
 
 StepStatus.propTypes = {};
 
-export default StepStatus;
+export default withRequest(StepStatus);

@@ -11,6 +11,7 @@ import { T } from 'core/components/Translation';
 import getSteps from 'core/arrays/steps';
 import { AUCTION_STATUS } from 'core/api/constants';
 import DashboardItem from './DashboardItem';
+import withRequest from 'core/containers/withRequest';
 
 const styles = {
   button: {
@@ -22,7 +23,7 @@ const styles = {
   },
 };
 
-export default class DashboardStatus extends Component {
+class DashboardStatus extends Component {
   constructor(props) {
     super(props);
 
@@ -122,3 +123,5 @@ DashboardStatus.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
+
+export default withRequest(DashboardStatus);

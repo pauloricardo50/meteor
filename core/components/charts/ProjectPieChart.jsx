@@ -3,10 +3,7 @@ import React from 'react';
 import Loadable from 'core/utils/loadable';
 
 import { toMoney } from 'core/utils/conversionFunctions';
-import {
-  getLoanValue,
-  getProjectValue,
-} from 'core/utils/requestFunctions';
+import { getLoanValue, getProjectValue } from 'core/utils/requestFunctions';
 import constants from 'core/config/constants';
 import colors from 'core/config/colors';
 
@@ -26,7 +23,7 @@ const chartColors = {
 
 const getConfig = (props) => {
   const r = props.loanRequest;
-  const total = getProjectValue(r);
+  const total = getProjectValue({ loanRequest: r, property: props.property });
 
   const options = {
     chart: {

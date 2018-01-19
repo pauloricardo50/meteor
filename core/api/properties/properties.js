@@ -1,5 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
+import { getFileSchema } from '../files/files';
 import {
   PROPERTY_STATUS,
   USAGE_TYPE,
@@ -20,6 +21,8 @@ Properties.allow({
   update: () => false,
   remove: () => false,
 });
+
+const PropertyFilesSchema = new SimpleSchema(getFileSchema('property'));
 
 export const PropertySchema = new SimpleSchema({
   userId: {
@@ -63,7 +66,6 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
   },
   usageType: {
-    // primary, secondary or investment
     type: String,
     defaultValue: USAGE_TYPE.PRIMARY,
     allowedValues: Object.values(USAGE_TYPE),
@@ -276,9 +278,7 @@ export const PropertySchema = new SimpleSchema({
     defaultValue: {},
   },
   files: {
-    // TODO: set validation here
-    type: Object,
-    blackbox: true,
+    type: PropertyFilesSchema,
     defaultValue: {},
   },
 });

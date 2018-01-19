@@ -5,6 +5,7 @@ import { DocHead } from 'meteor/kadira:dochead';
 import { injectIntl } from 'react-intl';
 
 import getSteps from 'core/arrays/steps';
+import withRequest from 'core/containers/withRequest';
 import ProcessPageBar from './ProcessPageBar';
 import StepperContainer from '../../containers/StepperContainer';
 
@@ -97,4 +98,4 @@ ProcessPage.defaultProps = {
   children: undefined,
 };
 
-export default injectIntl(StepperContainer(ProcessPage));
+export default injectIntl(StepperContainer(withRequest(ProcessPage)));

@@ -3,8 +3,8 @@ import get from 'lodash/get';
 import isArray from 'lodash/isArray';
 
 import { getBorrowerInfoArray } from './BorrowerFormArray';
-import { borrowerFiles, requestFiles } from '../api/files/files';
-import getPropertyArray from './PropertyFormArray';
+import { borrowerFiles, requestFiles, propertyFiles } from '../api/files/files';
+import { getPropertyArray, getPropertyRequestArray } from './PropertyFormArray';
 import { strategyDone } from 'core/utils/requestFunctions';
 import { arrayify } from '../utils/general';
 import { isDemo } from 'core/utils/browserFunctions';
@@ -16,7 +16,9 @@ import {
   CLOSING_STEPS_TYPE,
 } from '../api/constants';
 
-const getSteps = ({ loanRequest, borrowers, serverTime }) => {
+const getSteps = ({
+  loanRequest, borrowers, property, serverTime,
+}) => {
   const steps = [
     {
       nb: 0,
@@ -61,8 +63,8 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
           id: 'property',
           link: `/requests/${loanRequest._id}/property`,
           percent: () =>
-            (propertyPercent(loanRequest, borrowers) +
-              filesPercent(loanRequest, requestFiles, 'auction')) /
+            (propertyPercent(loanRequest, borrowers, property) +
+              getAllFilesPercent({ loanRequest, property }, 'auction')) /
             2,
           isDone() {
             return this.percent() >= 1;
@@ -100,7 +102,7 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         {
           id: 'strategy',
           link: `/requests/${loanRequest._id}/strategy`,
-          isDone: () => strategyDone(loanRequest),
+          isDone: () => strategyDone({ loanRequest }),
         },
         {
           id: 'offerPicker',
@@ -121,9 +123,10 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
             loanRequest.logic.step < 3 &&
             !(loanRequest.logic.lender && loanRequest.logic.lender.offerId),
           percent: () =>
-            (filesPercent(loanRequest, requestFiles, 'contract') +
-              filesPercent(borrowers, borrowerFiles, 'contract')) /
-            2,
+            getAllFilesPercent(
+              { loanRequest, borrowers, property },
+              'contract',
+            ),
           waiting: () =>
             loanRequest.logic.lender.contractRequested &&
             !loanRequest.logic.lender.contract,
@@ -140,11 +143,13 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
         {
           id: 'closing',
           link: `/requests/${loanRequest._id}/closing`,
+          // FIXME: true && value used because of weird linting...
           disabled:
-            (filesPercent(loanRequest, requestFiles, 'contract') +
-              filesPercent(borrowers, borrowerFiles, 'contract')) /
-              2 <
-              1 || loanRequest.logic.step < 3,
+            (true &&
+              getAllFilesPercent(
+                { loanRequest, borrowers, property },
+                'contract',
+              )) < 1 || loanRequest.logic.step < 3,
           percent: () => closingPercent(loanRequest),
           isDone: () => loanRequest.status === REQUEST_STATUS.DONE,
         },
@@ -153,13 +158,11 @@ const getSteps = ({ loanRequest, borrowers, serverTime }) => {
 
     {
       nb: 4,
-      title: React.createElement(
-        'span',
-        {
-          className: 'fa fa-home fa-2x',
-          style: { color: '#ADB5BD', paddingLeft: 8 },
-        },
-        null,
+      title: (
+        <span
+          className="fa fa-home fa-2x"
+          style={{ color: '#ADB5BD', paddingLeft: 8 }}
+        />
       ),
       disabled: true, // TODO
       subtitle: null,
@@ -297,9 +300,11 @@ export const personalInfoPercent = (borrowers) => {
  *
  * @return {number} A percentage between 0 and 1
  */
-export const propertyPercent = (loanRequest, borrowers) => {
-  const formArray = getPropertyArray(loanRequest, borrowers);
-  const a = getCountedArray(formArray, loanRequest);
+export const propertyPercent = (loanRequest, borrowers, property) => {
+  const formArray1 = getPropertyArray(loanRequest, borrowers, property);
+  const formArray2 = getPropertyRequestArray(loanRequest, borrowers, property);
+  let a = getCountedArray(formArray1, loanRequest);
+  a = [...a, getCountedArray(formArray2, loanRequest)];
 
   return getPercent(a);
 };
@@ -363,6 +368,27 @@ export const filesPercent = (doc, fileArrayFunc, step, checkValidity) => {
   }
 
   return getPercent(a);
+};
+
+export const getAllFilesPercent = (
+  { loanRequest, borrowers, property },
+  step,
+) => {
+  const array = [];
+  if (loanRequest) {
+    array.push(filesPercent(loanRequest, requestFiles, step));
+  }
+
+  if (borrowers) {
+    array.push(filesPercent(borrowers, borrowerFiles, step));
+  }
+
+  if (property) {
+    array.push(filesPercent(property, propertyFiles, step));
+  }
+
+  // Sum and divide by amount of them
+  return array.reduce((a, b) => a + b, 0) / array.length;
 };
 
 export const closingPercent = (loanRequest) => {

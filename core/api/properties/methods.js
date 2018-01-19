@@ -49,6 +49,30 @@ export const updateProperty = new ValidatedMethod({
   },
 });
 
+// Lets you push a value to an array
+export const pushPropertyValue = new ValidatedMethod({
+  name: 'properties.pushValue',
+  mixins: [CallPromiseMixin],
+  validate({ id }) {
+    check(id, String);
+  },
+  run({ object, id }) {
+    return Properties.update(id, { $push: object });
+  },
+});
+
+// Lets you pop a value from the end of an array
+export const popPropertyValue = new ValidatedMethod({
+  name: 'properties.popValue',
+  mixins: [CallPromiseMixin],
+  validate({ id }) {
+    check(id, String);
+  },
+  run({ object, id }) {
+    return Properties.update(id, { $pop: object }, { getAutoValues: false });
+  },
+});
+
 export const setPropertyField = new ValidatedMethod({
   name: 'properties.setField',
   mixins: [CallPromiseMixin],
