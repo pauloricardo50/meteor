@@ -271,7 +271,7 @@ export const PropertySchema = new SimpleSchema({
     blackbox: true,
     optional: true,
   },
-  fields: {
+  customFields: {
     // Allows storing custom fields that aren't allowed by the default schema
     type: Object,
     blackbox: true,

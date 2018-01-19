@@ -41,6 +41,7 @@ const saveStartForm = (f, userId) => {
 
   const loanRequest = {
     general: {
+      usageType: f.usageType,
       purchaseType: f.purchaseType,
       oldestAge: multiple ? f.oldestAge : f.age,
       oldestGender: multiple ? f.oldestGender : f.gender,
@@ -58,7 +59,6 @@ const saveStartForm = (f, userId) => {
   };
 
   const property = {
-    usageType: f.usageType,
     value: f.propertyValue,
     investmentRent: f.propertyRent,
   };
@@ -73,10 +73,14 @@ const saveStartForm = (f, userId) => {
       .then(() => cleanMethod('insertProperty', { object: property, userId }))
       .then((propertyId) => {
         loanRequest.property = propertyId;
-        cleanMethod('insertRequest', { object: loanRequest, userId });
+        return cleanMethod('insertRequest', { object: loanRequest, userId });
       })
       // If no userId is provided, return the requestId
       .then(requestId => userId || requestId)
+      .catch((error) => {
+        console.warn(error);
+        throw error;
+      })
   );
 };
 

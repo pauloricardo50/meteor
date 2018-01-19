@@ -11,14 +11,16 @@ import Properties from './properties';
 export const insertProperty = new ValidatedMethod({
   name: 'properties.insert',
   mixins: [CallPromiseMixin],
-  validate({ object }) {
+  validate({ object, userId }) {
     check(object, Object);
-    validateUser();
+    if (userId) {
+      check(userId, String);
+    }
   },
-  run({ object }) {
+  run({ object, userId }) {
     return Properties.insert({
-      userId: Meteor.userId(),
       ...object,
+      userId: userId === undefined ? Meteor.userId() : userId,
     });
   },
 });

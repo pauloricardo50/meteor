@@ -16,16 +16,20 @@ const methods = {
 
 // Passed to all methods, shows a Bert error when it happens
 const handleResult = (result, bertObject) => {
-  if (bertObject) {
-    if (bertObject.delay) {
-      Bert.defaults.hideDelay = bertObject.delay;
+  if (Meteor.isClient && !!bertObject) {
+    const {
+      delay, title, message, type, style,
+    } = bertObject;
+    if (delay) {
+      Bert.defaults.hideDelay = delay;
     }
 
     Bert.alert({
-      title: bertObject.title || "C'est réussi",
-      message: bertObject.message || '<h3 class="bert">Bien joué!</h3>',
-      type: bertObject.type || 'success',
-      style: bertObject.style || 'growl-top-right',
+      title: title || "C'est réussi",
+      message:
+        message === undefined ? '<h3 class="bert">Bien joué!</h3>' : message,
+      type: type || 'success',
+      style: style || 'growl-top-right',
     });
   }
 
@@ -34,13 +38,16 @@ const handleResult = (result, bertObject) => {
 
 // Passed to all methods, shows a bert alert
 const handleError = (error) => {
-  Bert.defaults.hideDelay = 7500;
-  Bert.alert({
-    title: 'Misère, une erreur!',
-    message: `<h3 class="bert">${error.message}</h3>`,
-    type: 'danger',
-    style: 'fixed-top',
-  });
+  if (Meteor.isClient) {
+    Bert.defaults.hideDelay = 7500;
+    Bert.alert({
+      title: 'Misère, une erreur!',
+      message: `<h3 class="bert">${error.message}</h3>`,
+      type: 'danger',
+      style: 'fixed-top',
+    });
+  }
+
   console.log(error);
 
   // Throw the error again so that it can be catched again via promise chaining

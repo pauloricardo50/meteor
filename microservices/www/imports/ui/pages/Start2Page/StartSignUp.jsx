@@ -48,22 +48,26 @@ export default class StartSignUp extends Component {
     if (emailValidation(email)) {
       this.setState({ loading: true });
 
-      cleanMethod('doesUserExist', { email })
+      return cleanMethod('doesUserExist', { email })
         .then((emailExists) => {
           if (emailExists) {
             throw 'Cette adresse existe déjà';
           }
         })
         .then(() =>
-          cleanMethod('createUserAndRequest', { email, formState }).then((userId) => {
+          cleanMethod(
+            'createUserAndRequest',
+            { email, formState },
+            { title: "C'est dans la boite!", message: '' },
+          ).then((userId) => {
             this.setState({ loading: false, errorText: '' });
             addUserTracking(userId, { email, id: userId });
             history.push(`/checkYourMailbox/${email}`);
           }))
+        .then(() => this.setState({ loading: false }))
         .catch(error => this.setState({ loading: false, errorText: error }));
-    } else {
-      this.setState({ errorText: 'Email is invalid', loading: false });
     }
+    this.setState({ errorText: 'Email is invalid', loading: false });
   };
 
   handleExistingAccount = () => {
