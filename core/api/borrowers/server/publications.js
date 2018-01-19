@@ -80,9 +80,7 @@ Meteor.publish('requestBorrowers', function publish(borrowerIds) {
     Roles.userIsInRole(Meteor.userId(), 'dev')
   ) {
     // Return all borrowers
-    return Borrowers.find({
-      _id: { $in: borrowerIds },
-    });
+    return Borrowers.find({ _id: { $in: borrowerIds } });
   }
 
   return this.ready();

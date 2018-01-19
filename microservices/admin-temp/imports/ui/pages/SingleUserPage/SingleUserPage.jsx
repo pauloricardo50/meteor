@@ -5,7 +5,13 @@ import moment from 'moment';
 
 import Request from './Request';
 
-const AdminSingleUserPage = ({ user, loanRequests, borrowers, history }) => (
+const AdminSingleUserPage = ({
+  user,
+  loanRequests,
+  borrowers,
+  history,
+  properties,
+}) => (
   <section className="mask1">
     <h1>{user.emails[0].address}</h1>
     <p className="secondary" style={{ marginBottom: 32 }}>
@@ -19,6 +25,7 @@ const AdminSingleUserPage = ({ user, loanRequests, borrowers, history }) => (
         key={request._id}
         history={history}
         borrowers={borrowers.filter(b => request.borrowers.indexOf(b._id) >= 0)}
+        property={properties.find(p => p._id === request.property)}
       />
     ))}
   </section>
@@ -29,6 +36,7 @@ AdminSingleUserPage.propTypes = {
   borrowers: PropTypes.arrayOf(PropTypes.any),
   user: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  properties: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 AdminSingleUserPage.defaultProps = {

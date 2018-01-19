@@ -20,6 +20,7 @@ import {
   adminUserComposer,
   adminOffersComposer,
   adminOfferComposer,
+  adminPropertiesComposer,
 } from './composers/AdminComposers';
 import {
   partnerRequestsComposer,
@@ -68,6 +69,7 @@ export const adminContainer = c =>
     composeWithTracker(adminUsersComposer),
     composeWithTracker(adminOffersComposer),
     composeWithTracker(adminActionsComposer),
+    composeWithTracker(adminPropertiesComposer),
     composeWithTracker(currentUserComposer, Loading),
   )(c);
 

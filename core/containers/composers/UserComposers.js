@@ -10,7 +10,7 @@ import {
 
 export function userCompareComposer(props, onData) {
   if (
-    Meteor.subscribe('userProperties').ready() &&
+    Meteor.subscribe('properties').ready() &&
     Meteor.subscribe('userComparators').ready()
   ) {
     const properties = Properties.find({}, { sort: { createdAt: -1 } }).fetch();
@@ -45,7 +45,7 @@ export function userOffersComposer(props, onData) {
 
 // Get all properties for this user
 export function userPropertiesComposer(props, onData) {
-  if (Meteor.subscribe('userProperties').ready()) {
+  if (Meteor.subscribe('properties').ready()) {
     const properties = Properties.find({}).fetch();
     onData(null, { properties });
   }

@@ -47,6 +47,7 @@ export default class SingleRequestPage extends Component {
     const {
       history, loanRequest, borrowers, property,
     } = this.props;
+
     return (
       <section>
         <Button

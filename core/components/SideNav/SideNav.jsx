@@ -79,7 +79,7 @@ const SideNav = ({ type, history }) => {
   );
 };
 
-SideNav.PropTypes = {
+SideNav.propTypes = {
   type: PropTypes.string.isRequired,
 };
 

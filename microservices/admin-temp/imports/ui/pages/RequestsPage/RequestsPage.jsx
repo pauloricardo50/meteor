@@ -13,10 +13,12 @@ const AdminRequestsPage = props => (
 
 AdminRequestsPage.propTypes = {
   loanRequests: PropTypes.arrayOf(PropTypes.any),
+  properties: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 AdminRequestsPage.defaultProps = {
   loanRequests: [],
+  properties: [],
 };
 
 export default AdminRequestsPage;

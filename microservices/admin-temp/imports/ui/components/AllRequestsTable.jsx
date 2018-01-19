@@ -54,21 +54,25 @@ export default class AllRequestsTable extends Component {
   }
 
   setupRows = () => {
-    this.rows = this.props.loanRequests.map((request, index) => ({
-      id: request._id,
-      columns: [
-        index + 1,
-        request.name,
-        moment(request.createdAt).format('D MMM YY à HH:mm:ss'),
-        moment(request.updatedAt).format('D MMM YY à HH:mm:ss'),
-        request.logic.step + 1,
-        request.property.value,
-        request.general.fortuneUsed +
-          (request.general.insuranceFortuneUsed || 0),
-        'Très Bon',
-      ],
-      handleClick: () => this.props.history.push(`/requests/${request._id}`),
-    }));
+    const { loanRequests, properties, history } = this.props;
+    this.rows = loanRequests.map((request, index) => {
+      const propertyValue = properties.find(property => property._id === request.property).value;
+      return {
+        id: request._id,
+        columns: [
+          index + 1,
+          request.name,
+          moment(request.createdAt).format('D MMM YY à HH:mm:ss'),
+          moment(request.updatedAt).format('D MMM YY à HH:mm:ss'),
+          request.logic.step + 1,
+          propertyValue,
+          request.general.fortuneUsed +
+            (request.general.insuranceFortuneUsed || 0),
+          'Très Bon',
+        ],
+        handleClick: () => history.push(`/requests/${request._id}`),
+      };
+    });
   };
 
   render() {

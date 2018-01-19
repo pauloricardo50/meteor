@@ -66,10 +66,7 @@ Meteor.publish('requestOffers', function publish(requestId) {
     Roles.userIsInRole(Meteor.userId(), 'admin') ||
     Roles.userIsInRole(Meteor.userId(), 'dev')
   ) {
-    // Return all users
-    return Offers.find({
-      requestId,
-    });
+    return Offers.find({ requestId });
   }
 
   return this.ready();

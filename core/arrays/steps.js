@@ -23,6 +23,7 @@ const getSteps = (props) => {
   const {
     loanRequest, borrowers, property, serverTime,
   } = props;
+
   const steps = [
     {
       nb: 0,

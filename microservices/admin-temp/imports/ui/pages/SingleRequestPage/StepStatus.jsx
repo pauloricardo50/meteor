@@ -3,7 +3,6 @@ import getSteps from 'core/arrays/steps';
 import Icon from 'core/components/Icon';
 
 import { T } from 'core/components/Translation';
-import withRequest from 'core/containers/withRequest';
 
 const StepStatus = (props) => {
   const steps = getSteps(props).slice(1, -1);
@@ -40,4 +39,4 @@ const StepStatus = (props) => {
 
 StepStatus.propTypes = {};
 
-export default withRequest(StepStatus);
+export default StepStatus;

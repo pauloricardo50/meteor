@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
@@ -8,10 +9,12 @@ import Icon from 'core/components/Icon';
 
 import { IntlNumber } from 'core/components/Translation';
 
-const Request = ({ loanRequest, borrowers, history }) => (
+const Request = ({
+  loanRequest, borrowers, history, property,
+}) => (
   <div className="mask1" style={{ marginBottom: 16 }}>
     <h4 style={{ marginBottom: 16 }}>
-      {loanRequest.property.address1.toString()}
+      <Link to={`/requests/${loanRequest._id}`}>{property.address1}</Link>
     </h4>
 
     <div className="flex admin-request" style={{ flexWrap: 'wrap' }}>
@@ -33,7 +36,7 @@ const Request = ({ loanRequest, borrowers, history }) => (
       <div className="flex-col">
         <label htmlFor="">Valeur du bien</label>
         <p>
-          <IntlNumber value={loanRequest.property.value} format="money" />
+          <IntlNumber value={property.value} format="money" />
         </p>
       </div>
 
@@ -79,6 +82,7 @@ Request.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default Request;

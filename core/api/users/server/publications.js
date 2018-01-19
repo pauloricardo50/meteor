@@ -17,23 +17,19 @@ Meteor.publish('allUsers', function publish() {
 
 Meteor.publish('currentUser', function publish() {
   if (Meteor.userId()) {
-    return Meteor.users.find({
-      _id: Meteor.userId(),
-    });
+    return Meteor.users.find({ _id: Meteor.userId() });
   }
   // Return an empy cursor if not logged in
   return this.ready();
 });
 
-Meteor.publish('user', function publish(id) {
-  check(id, String);
+Meteor.publish('user', function publish(userId) {
+  check(userId, String);
   if (
     Roles.userIsInRole(Meteor.userId(), 'admin') ||
     Roles.userIsInRole(Meteor.userId(), 'dev')
   ) {
-    return Meteor.users.find({
-      _id: id,
-    });
+    return Meteor.users.find({ _id: userId });
   }
   // Return an empy cursor if not logged in
   return this.ready();
