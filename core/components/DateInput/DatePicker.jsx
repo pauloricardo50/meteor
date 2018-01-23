@@ -7,8 +7,6 @@ import omit from 'lodash/omit';
 import SingleDatePicker from 'react-dates/lib/components/SingleDatePicker';
 import isInclusivelyAfterDay from 'react-dates/lib/utils/isInclusivelyAfterDay';
 
-import './DateInput.scss';
-
 // Given a min and/or max date, it blocks unavailable dates
 const setDateRange = (minDate = new Date(), maxDate = undefined) => day =>
   (minDate && !isInclusivelyAfterDay(day, moment(minDate))) ||

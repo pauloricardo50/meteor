@@ -4,7 +4,6 @@ import React from 'react';
 import Icon from 'core/components/Icon';
 import colors from 'core/config/colors';
 import ValidIconContainer, { STATUS } from './ValidIconContainer';
-import './ValidIcon.scss';
 
 const ValidIcon = ({
   status, style, fade, hide,

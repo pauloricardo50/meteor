@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import './FileDropper.scss';
-
 // from https://github.com/react-dropzone/react-dropzone/blob/master/src/utils/index.js
 const getDataTransferItems = (event) => {
   let dataTransferItemsList = [];

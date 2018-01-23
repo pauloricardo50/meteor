@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 
-import './SideNavList.scss';
-
 const SideNavList = ({ links }) => (
   <ul className="side-nav-list">
     {links.map(link => (
