@@ -55,6 +55,7 @@ describe('Request functions', () => {
     });
 
     it('Should return 0 with 0 property, any property work, and any insuranceFortuneUsed', () => {
+      props.property.value = 0;
       props.loanRequest.general.insuranceFortuneUsed = 1000 * Math.random();
       props.loanRequest.general.propertyWork = 1000 * Math.random();
 
@@ -290,9 +291,9 @@ describe('Request functions', () => {
     });
   });
 
-  describe('getPropAnrWork', () => {
-    it('returns 0 if an empty object is given', () => {
-      expect(getPropAndWork({ property: {} })).to.equal(0);
+  describe('getPropAndWork', () => {
+    it('returns 0 if nothing is given', () => {
+      expect(getPropAndWork({})).to.equal(0);
     });
 
     it('should return value of the property if no propertyWork is specified', () => {
@@ -323,7 +324,7 @@ describe('Request functions', () => {
 
   describe('getLenderCount', () => {
     it('returns 0 if empty objects are given', () => {
-      expect(getLenderCount({}, {})).to.equal(0);
+      expect(getLenderCount({})).to.equal(0);
     });
   });
 

@@ -5,7 +5,7 @@ import { propertyPercent, filesPercent } from '../arrays/steps';
 import { requestFiles, propertyFiles } from '../api/files/files';
 
 export const getProjectValue = ({ loanRequest, property }) => {
-  if (!property.value) {
+  if (!property || !property.value) {
     return 0;
   } else if (property.value <= 0) {
     return 0;
@@ -24,7 +24,7 @@ export const getProjectValue = ({ loanRequest, property }) => {
 };
 
 export const getLoanValue = ({ loanRequest, property }, roundedTo10000) => {
-  if (!loanRequest.general) {
+  if (!loanRequest || !loanRequest.general) {
     return 0;
   }
 
@@ -153,8 +153,7 @@ export const getMonthlyWithOffer = (
   amortization = amortization || constants.amortization;
 
   const interests = getInterestsWithOffer(
-    { loanRequest: r },
-    offer,
+    { loanRequest: r, offer },
     isStandard,
   );
 
@@ -182,7 +181,13 @@ export const getMonthlyWithExtractedOffer = ({
   );
 
 export const getPropAndWork = ({ loanRequest, property }) =>
-  (property && property.value + (loanRequest.general.propertyWork || 0)) || 0;
+  (property &&
+    property.value +
+      ((loanRequest &&
+        loanRequest.general &&
+        loanRequest.general.propertyWork) ||
+        0)) ||
+  0;
 
 export const getTotalUsed = ({ loanRequest }) =>
   Math.round(loanRequest.general.fortuneUsed +
