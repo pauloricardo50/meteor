@@ -61,20 +61,13 @@ export default class AuctionPage extends Component {
       // After the auction, clear interval
       Meteor.clearInterval(time);
 
-      return <AuctionResults loanRequest={loanRequest} offers={offers} />;
+      return <AuctionResults {...this.props} />;
     } else if (loanRequest.logic.auction.status === AUCTION_STATUS.STARTED) {
       // During the auction
-      return <Auction loanRequest={loanRequest} offers={offers} />;
+      return <Auction {...this.props} serverTime={serverTime} />;
     }
     // Before the auction, lets the user start it
-    return (
-      <AuctionStart
-        loanRequest={loanRequest}
-        borrowers={borrowers}
-        history={history}
-        serverTime={serverTime}
-      />
-    );
+    return <AuctionStart {...this.props} serverTime={serverTime} />;
   }
 
   render() {

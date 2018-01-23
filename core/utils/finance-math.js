@@ -114,7 +114,7 @@ export const getMonthlyPayment = ({ loanRequest, borrowers, property }) => {
 
 export const getTheoreticalMonthly = ({ loanRequest, borrowers, property }) => {
   const maintenance =
-    getPropAndWork({ loanRequest }) * constants.maintenance / 12;
+    getPropAndWork({ loanRequest, property }) * constants.maintenance / 12;
   const loan = getLoanValue({ loanRequest, property });
 
   const interests = loan * constants.interests / 12;
