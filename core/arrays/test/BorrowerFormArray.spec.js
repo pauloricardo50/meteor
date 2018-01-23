@@ -11,11 +11,12 @@ describe('BorrowerFormArrays', () => {
     const borrowers = [{ _id: 'id1' }, { _id: 'id2' }, { _id: 'id3' }];
 
     it('throws an error if a wrong ID is passed', () => {
-      expect(() => getBorrowerInfoArray(borrowers, 'id4')).to.throw();
+      expect(() =>
+        getBorrowerInfoArray({ borrowers, borrowerId: 'id4' })).to.throw();
     });
 
     it('returns an array of objects, each having an id', () => {
-      const array = getBorrowerInfoArray(borrowers, 'id1');
+      const array = getBorrowerInfoArray({ borrowers, borrowerId: 'id1' });
 
       expect(typeof array).to.equal('object');
       expect(array).to.have.length.above(0);
@@ -32,11 +33,12 @@ describe('BorrowerFormArrays', () => {
     const borrowers = [{ _id: 'id1' }, { _id: 'id2' }, { _id: 'id3' }];
 
     it('throws an error if a wrong ID is passed', () => {
-      expect(() => getBorrowerFinanceArray(borrowers, 'id4')).to.throw();
+      expect(() =>
+        getBorrowerFinanceArray({ borrowers, borrowerId: 'id4' })).to.throw();
     });
 
     it('returns an array of objects, each having an id', () => {
-      const array = getBorrowerFinanceArray(borrowers, 'id1');
+      const array = getBorrowerFinanceArray({ borrowers, borrowerId: 'id1' });
 
       expect(typeof array).to.equal('object');
       expect(array).to.have.length.above(0);

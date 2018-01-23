@@ -243,8 +243,8 @@ describe('steps', () => {
       const r = {
         logic: {
           closingSteps: [
-            { status: 'valid', type: 'TODO' },
-            { status: 'unverified', type: 'TODO' },
+            { status: 'VALID', type: 'TODO' },
+            { status: 'UNVERIFIED', type: 'TODO' },
           ],
         },
       };
