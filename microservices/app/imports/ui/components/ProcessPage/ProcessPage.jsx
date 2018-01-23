@@ -56,12 +56,12 @@ class ProcessPage extends Component {
   }
 
   setBarProps = () => {
-    const { intl } = this.props;
+    const { intl, loanRequest } = this.props;
     const values = getStepValues(this.props);
     this.barProps = {
       ...this.props,
       ...values,
-      status: this.props.loanRequest.status,
+      status: loanRequest.status,
     };
     DocHead.setTitle(`${intl.formatMessage({
       id: `steps.${this.barProps.currentStep.id}.title`,
@@ -98,4 +98,5 @@ ProcessPage.defaultProps = {
   children: undefined,
 };
 
+export { ProcessPage };
 export default injectIntl(StepperContainer(withRequest(ProcessPage)));

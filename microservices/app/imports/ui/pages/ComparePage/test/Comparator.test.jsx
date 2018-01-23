@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { shallow } from 'core/utils/testHelpers/enzyme';
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
-import { stubCollections } from  'core/utils/testHelpers';
+import { stubCollections } from 'core/utils/testHelpers';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import Comparator from '../Comparator';
@@ -24,7 +24,7 @@ describe('<Comparator />', () => {
     const user = Factory.create('user');
     userId = user._id;
     comparator = Factory.create('comparator', { userId });
-    properties = [Factory.create('property', { userId })];
+    properties = [Factory.create('comparatorProperty', { userId })];
 
     wrapper = shallow(<Comparator comparator={comparator} properties={properties} />);
   });

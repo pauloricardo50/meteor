@@ -23,28 +23,17 @@ import AppPage from '../AppPage';
 const pages = {
   AccountPage,
   AuctionPage,
-  // BorrowerPage,
+  BorrowerPage,
   DashboardPage,
   ContractPage,
   ClosingPage,
   OfferPickerPage,
-  // PropertyPage,
+  PropertyPage,
   StructurePage,
   VerificationPage,
   ComparePage,
-
-  AdminDashboardPage,
-  AdminDevPage,
-  ContactLendersPage,
-  OfferPage,
-  RequestsPage,
-  // SingleRequestPage,
-  SingleUserPage,
-  UsersPage,
-  VerifyPage,
-
-  PartnerHomePage,
-  PartnerRequestPage,
+  AppPage,
+  FinancePage,
 };
 
 if (Meteor.isClient) {

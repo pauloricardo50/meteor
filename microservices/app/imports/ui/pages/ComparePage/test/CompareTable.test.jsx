@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { shallow } from 'core/utils/testHelpers/enzyme';
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
-import { stubCollections } from  'core/utils/testHelpers';
+import { stubCollections } from 'core/utils/testHelpers';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import CompareTable, {
@@ -26,8 +26,8 @@ if (Meteor.isClient) {
       stubCollections();
       const userId = Factory.create('user')._id;
       properties = [
-        Factory.create('property', { userId }),
-        Factory.create('property', { userId }),
+        Factory.create('comparatorProperty', { userId }),
+        Factory.create('comparatorProperty', { userId }),
       ];
       wrapper = shallow(<CompareTable
         properties={properties}
@@ -139,16 +139,28 @@ if (Meteor.isClient) {
     describe('functions', () => {
       const properties = [
         {
-          id: 0, createdAt: new Date(1000), test: true, value: 100,
+          id: 0,
+          createdAt: new Date(1000),
+          test: true,
+          value: 100,
         },
         {
-          id: 1, createdAt: new Date(100), test: false, value: 200,
+          id: 1,
+          createdAt: new Date(100),
+          test: false,
+          value: 200,
         },
         {
-          id: 2, createdAt: new Date(10), test: true, value: 300,
+          id: 2,
+          createdAt: new Date(10),
+          test: true,
+          value: 300,
         },
         {
-          id: 3, createdAt: new Date(10), test: true, value: 0,
+          id: 3,
+          createdAt: new Date(10),
+          test: true,
+          value: 0,
         },
       ];
       const getIds = arr => arr.map(val => val.id);

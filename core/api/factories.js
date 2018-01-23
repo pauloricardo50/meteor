@@ -1,12 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
-
-import LoanRequests from './loanrequests/loanrequests';
-import Borrowers from './borrowers/borrowers';
-import Offers from './offers/offers';
-import Comparators from './comparators/comparators';
-import Properties from './properties/properties';
-import AdminActions from './adminActions/adminActions';
+import {
+  LoanRequests,
+  Borrowers,
+  Offers,
+  Comparators,
+  Properties,
+  AdminActions,
+} from '.';
 
 const TEST_EMAIL = 'test@test.com';
 
@@ -28,8 +29,8 @@ Factory.define('admin', Meteor.users, {
   profile: {},
 });
 
-Factory.define('partner', Meteor.users, {
-  roles: () => 'partner',
+Factory.define('lender', Meteor.users, {
+  roles: () => 'lender',
   emails: () => [{ address: TEST_EMAIL, verified: false }],
   profile: () => ({ organization: 'bankName', cantons: ['GE'] }),
 });
@@ -51,7 +52,6 @@ Factory.define('loanRequest', LoanRequests, {
   }),
   borrowers: [],
   status: 'ACTIVE',
-  property: () => ({ value: 1000000 }),
   files: () => ({}),
   logic: () => ({
     auction: {},
@@ -61,6 +61,11 @@ Factory.define('loanRequest', LoanRequests, {
   }),
   name: () => 'request name',
   emails: () => [],
+});
+
+Factory.define('property', Properties, {
+  value: 1000000,
+  files: () => ({}),
 });
 
 Factory.define('offer', Offers, {
@@ -91,10 +96,28 @@ Factory.define('comparator', Comparators, {
   borrowRatio: 0.8,
 });
 
-Factory.define('property', Properties, {
+Factory.define('comparatorProperty', Properties, {
   name: 'testName',
   address: 'testAddress',
   value: 100000,
   latitude: 10,
   longitude: 20,
 });
+
+export const generateData = () => {
+  const user = Factory.create('user');
+  const borrower = Factory.create('borrower', { userId: user._id });
+  const property = Factory.create('property', { userId: user._id });
+  const loanRequest = Factory.create('loanRequest', {
+    userId: user._id,
+    property: property._id,
+    borrowers: [borrower._id],
+  });
+
+  return {
+    loanRequest,
+    user,
+    borrowers: [borrower],
+    property,
+  };
+};

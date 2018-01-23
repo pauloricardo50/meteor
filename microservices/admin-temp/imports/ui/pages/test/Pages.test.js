@@ -17,30 +17,15 @@ import UsersPage from '../UsersPage';
 import VerifyPage from '../VerifyPage';
 
 const pages = {
-  AccountPage,
-  AuctionPage,
-  // BorrowerPage,
-  DashboardPage,
-  ContractPage,
-  ClosingPage,
-  OfferPickerPage,
-  // PropertyPage,
-  StructurePage,
-  VerificationPage,
-  ComparePage,
-
   AdminDashboardPage,
   AdminDevPage,
   ContactLendersPage,
   OfferPage,
   RequestsPage,
-  // SingleRequestPage,
+  SingleRequestPage,
   SingleUserPage,
   UsersPage,
   VerifyPage,
-
-  PartnerHomePage,
-  PartnerRequestPage,
 };
 
 if (Meteor.isClient) {

@@ -4,13 +4,16 @@ import { expect } from 'chai';
 import { getMountedComponent, stubCollections } from 'core/utils/testHelpers';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-
 import getSteps from 'core/arrays/steps';
-import ProcessPage, { getStepValues } from '../ProcessPage';
+import { generateData } from 'core/api/factories';
+import { spy } from 'sinon';
+
+import { ProcessPage, getStepValues } from '../ProcessPage';
 
 if (Meteor.isClient) {
   describe('<ProcessPage />', () => {
     let props;
+    let setStepSpy;
     const component = () => getMountedComponent(ProcessPage, props, true);
 
     beforeEach(() => {
@@ -18,22 +21,17 @@ if (Meteor.isClient) {
       stubCollections();
       getMountedComponent.reset();
 
-      const userId = Factory.create('user')._id;
-      const borrower = Factory.create('borrower', { userId });
-      const request = Factory.create('loanRequest', {
-        userId,
-        borrowers: [borrower._id],
-      });
+      const data = generateData();
+      setStepSpy = spy();
 
       props = {
-        loanRequest: request,
-        borrowers: [borrower],
+        ...data,
         stepNb: 1,
         id: 'personal',
-        // location: {
-        //   history: {},
-        // },
-        // history: {},
+        intl: {
+          formatMessage: ({ id }) => id,
+        },
+        setStep: setStepSpy,
       };
     });
 
@@ -65,19 +63,12 @@ describe('getStepValues', () => {
     resetDatabase();
     stubCollections();
 
-    const userId = Factory.create('user')._id;
-    const borrower = Factory.create('borrower', { userId });
-    const request = Factory.create('loanRequest', {
-      userId,
-      borrowers: [borrower._id],
-    });
+    const data = generateData();
 
     parameters = {
+      ...data,
       stepNb: 1,
       id: 'files',
-      loanRequest: request,
-      borrowers: [borrower],
-      property: {},
     };
   });
 
