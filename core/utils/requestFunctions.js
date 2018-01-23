@@ -66,10 +66,10 @@ export const loanStrategySuccess = (loanTranches = [], loanValue) => {
   return false;
 };
 
-export const strategiesChosen = ({ loanRequest }) =>
+export const strategiesChosen = ({ loanRequest, property }) =>
   loanStrategySuccess(
     loanRequest.general.loanTranches,
-    getLoanValue({ loanRequest }),
+    getLoanValue({ loanRequest, property }),
   ) &&
   loanRequest.logic.amortizationStrategyPreset &&
   loanRequest.logic.hasValidatedCashStrategy;

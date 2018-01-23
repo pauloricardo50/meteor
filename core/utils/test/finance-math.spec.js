@@ -81,14 +81,19 @@ describe('Finance Math', () => {
 
   describe('getMonthlyPayment', () => {
     it('returns an object', () => {
-      expect(typeof getMonthlyPayment({ property: { value: 100 }, general: {} }, {})).to.equal('object');
+      expect(typeof getMonthlyPayment({
+        property: { value: 100 },
+        loanRequest: { general: {} },
+        borrowers: [],
+      })).to.equal('object');
     });
 
     it('returns a total and the 3 values that make the total', () => {
-      const value = getMonthlyPayment(
-        { property: { value: 100 }, general: {} },
-        {},
-      );
+      const value = getMonthlyPayment({
+        property: { value: 100 },
+        loanRequest: { general: {} },
+        borrowers: [],
+      });
 
       expect(Object.keys(value).length).to.equal(4);
       expect(value.total).to.equal(value.amortization + value.interests + value.maintenance);
@@ -97,17 +102,19 @@ describe('Finance Math', () => {
 
   describe('getTheoreticalMonthly', () => {
     it('returns an object', () => {
-      expect(typeof getTheoreticalMonthly(
-        { property: { value: 100 }, general: {} },
-        {},
-      )).to.equal('object');
+      expect(typeof getTheoreticalMonthly({
+        property: { value: 100 },
+        loanRequest: { general: {} },
+        borrowers: [],
+      })).to.equal('object');
     });
 
     it('returns a total and the 3 values that make the total', () => {
-      const value = getTheoreticalMonthly(
-        { property: { value: 100 }, general: {} },
-        {},
-      );
+      const value = getTheoreticalMonthly({
+        property: { value: 100 },
+        loanRequest: { general: {} },
+        borrowers: [],
+      });
 
       expect(Object.keys(value).length).to.equal(4);
       expect(value.total).to.equal(value.amortization + value.interests + value.maintenance);
@@ -120,36 +127,41 @@ describe('Finance Math', () => {
 
   describe('canAffordRank1', () => {
     it('returns true for the right conditions', () => {
-      expect(canAffordRank1(
-        { general: {}, property: { value: 1000000 } },
-        { bankFortune: 400000 },
-      )).to.equal(true);
+      expect(canAffordRank1({
+        loanRequest: { general: {} },
+        property: { value: 1000000 },
+        borrowers: { bankFortune: 400000 },
+      })).to.equal(true);
     });
 
     it('returns false for the right conditions', () => {
-      expect(canAffordRank1(
-        { general: {}, property: { value: 1000000 } },
-        { bankFortune: 300000 },
-      )).to.equal(false);
+      expect(canAffordRank1({
+        loanRequest: { general: {} },
+        property: { value: 1000000 },
+        borrowers: { bankFortune: 300000 },
+      })).to.equal(false);
     });
 
     it('should return false if property is not primary and insurance fortune should be used', () => {
-      expect(canAffordRank1(
-        { general: {}, property: { value: 1000000 } },
-        { bankFortune: 300000, insuranceSecondPillar: 200000 },
-      )).to.equal(false);
+      expect(canAffordRank1({
+        loanRequest: { general: {} },
+        property: { value: 1000000 },
+        borrowers: { bankFortune: 300000, insuranceSecondPillar: 200000 },
+      })).to.equal(false);
     });
 
     it('should account for insuranceSecondPillar and insuranceThirdPillar', () => {
-      expect(canAffordRank1(
-        { general: {}, property: { value: 1000000, usageType: 'primary' } },
-        { bankFortune: 300000, insuranceSecondPillar: 200000 },
-      )).to.equal(true);
+      expect(canAffordRank1({
+        loanRequest: { general: { usageType: 'PRIMARY' } },
+        property: { value: 1000000 },
+        borrowers: { bankFortune: 300000, insuranceSecondPillar: 200000 },
+      })).to.equal(true);
 
-      expect(canAffordRank1(
-        { general: {}, property: { value: 1000000, usageType: 'primary' } },
-        { bankFortune: 300000, insuranceThirdPillar: 200000 },
-      )).to.equal(true);
+      expect(canAffordRank1({
+        loanRequest: { general: { usageType: 'PRIMARY' } },
+        property: { value: 1000000 },
+        borrowers: { bankFortune: 300000, insuranceThirdPillar: 200000 },
+      })).to.equal(true);
     });
   });
 });

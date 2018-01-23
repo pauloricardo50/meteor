@@ -95,7 +95,7 @@ export const getTotalFortune = ({ borrowers }) => {
     sum += borrower.insuranceSecondPillar || 0;
     sum += borrower.insuranceThirdPillar || 0;
 
-    // TODO: Complete!!
+    // TODO: Complete with all fortune fields !!
   });
 
   return Math.max(0, Math.round(sum));
