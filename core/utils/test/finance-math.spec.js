@@ -14,11 +14,11 @@ import {
 describe('Finance Math', () => {
   describe('Calculate Years to Retirement', () => {
     it('Should return 35 with a male of 30 yo', () => {
-      expect(getYearsToRetirement(30, undefined, 'm', undefined)).to.equal(35);
+      expect(getYearsToRetirement(30, undefined, 'M', undefined)).to.equal(35);
     });
 
     it('Should return 34 with a female of 30 yo', () => {
-      expect(getYearsToRetirement(30, undefined, 'f', undefined)).to.equal(34);
+      expect(getYearsToRetirement(30, undefined, 'F', undefined)).to.equal(34);
     });
 
     it('Should return 35 with an undefined gender of 30 yo', () => {
@@ -26,15 +26,15 @@ describe('Finance Math', () => {
     });
 
     it('Should return 0 with a female of 64 yo', () => {
-      expect(getYearsToRetirement(64, undefined, 'f', undefined)).to.equal(0);
+      expect(getYearsToRetirement(64, undefined, 'F', undefined)).to.equal(0);
     });
 
     it('Should return 0 with a female over 64 yo', () => {
-      expect(getYearsToRetirement(80, undefined, 'f', undefined)).to.equal(0);
+      expect(getYearsToRetirement(80, undefined, 'F', undefined)).to.equal(0);
     });
 
     it('Should return 10 with a female of 54 yo and male of 54 yo', () => {
-      expect(getYearsToRetirement(54, 54, 'f', 'm')).to.equal(10);
+      expect(getYearsToRetirement(54, 54, 'F', 'M')).to.equal(10);
     });
   });
 
@@ -43,7 +43,7 @@ describe('Finance Math', () => {
       const request = {
         general: { fortuneUsed: 300000, insuranceFortuneUsed: 0 },
       };
-      const borrowers = [{ age: 30, gender: 'm' }];
+      const borrowers = [{ age: 30, gender: 'M' }];
       const property = { value: 1200000 };
 
       expect(Math.round(getAmortization({ loanRequest: request, borrowers, property })
@@ -52,10 +52,11 @@ describe('Finance Math', () => {
 
     it('Should return 0 when borrowing less than 65%', () => {
       const request = {
-        property: { value: 1000000 },
         general: { fortuneUsed: 400000, insuranceFortuneUsed: 0 },
       };
-      const borrowers = [{ age: 30, gender: 'm' }];
+      const property = { value: 1000000 };
+
+      const borrowers = [{ age: 30, gender: 'M' }];
 
       expect(getAmortization({ loanRequest: request, borrowers, property })
         .amortization).to.equal(0);
@@ -84,7 +85,7 @@ describe('Finance Math', () => {
       expect(typeof getMonthlyPayment({
         property: { value: 100 },
         loanRequest: { general: {} },
-        borrowers: [],
+        borrowers: [{}],
       })).to.equal('object');
     });
 

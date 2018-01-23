@@ -1,5 +1,4 @@
-import { personalInfoPercent } from 'core/arrays/steps';
-import { filesPercent } from 'core/arrays/steps';
+import { personalInfoPercent, filesPercent } from '../arrays/steps';
 import { borrowerFiles } from '../api/files/files';
 import { arrayify } from './general';
 
@@ -79,9 +78,9 @@ export const getBorrowerIncome = ({ borrowers }) => {
 
   arrayify(borrowers).forEach((borrower) => {
     sum += borrower.salary || 0;
-    sum += getBonusIncome([borrower]) || 0;
-    sum += getOtherIncome([borrower]) || 0;
-    sum -= getExpenses([borrower]) || 0;
+    sum += getBonusIncome({ borrowers: borrower }) || 0;
+    sum += getOtherIncome({ borrowers: borrower }) || 0;
+    sum -= getExpenses({ borrowers: borrower }) || 0;
   });
 
   return Math.max(sum, 0);

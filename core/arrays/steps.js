@@ -349,6 +349,10 @@ export const auctionFilesPercent = (borrowers) => {
 export const filesPercent = (doc, fileArrayFunc, step, checkValidity) => {
   const a = [];
   const iterate = (files, doc2) => {
+    if (!doc2 || !doc2.files) {
+      return;
+    }
+
     if (isDemo()) {
       a.push(doc2.files[files[0].id]);
     } else {

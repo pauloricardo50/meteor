@@ -69,7 +69,7 @@ export const extractOffers = ({ offers, loanRequest, property }) => {
 
 export const getBestRate = (
   { offers = [] },
-  duration = INTEREST_RATES.YEAR_10,
+  duration = INTEREST_RATES.YEARS_10,
 ) =>
   (offers.length
     ? Math.min(...offers.reduce((acc, offer) => {

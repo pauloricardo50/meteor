@@ -47,9 +47,9 @@ export const getAmortization = ({ loanRequest, borrowers, property }) => {
   const propAndWork = getPropAndWork({ loanRequest, property });
   const safeBorrowers = arrayify(borrowers);
   const yearsToRetirement = getYearsToRetirement(
-    Number(safeBorrowers[0].age),
+    safeBorrowers[0] ? Number(safeBorrowers[0].age) : undefined,
     safeBorrowers[1] && safeBorrowers[1].age ? Number(safeBorrowers[1].age) : 0,
-    safeBorrowers[0].gender,
+    safeBorrowers[0] ? safeBorrowers[0].gender : undefined,
     safeBorrowers[1] && safeBorrowers[1].gender,
   );
 

@@ -61,12 +61,12 @@ describe('Borrower Functions', () => {
 
   describe('getBorrowerCompletion', () => {
     it('returns 0 if given a simple borrower', () => {
-      expect(getBorrowerCompletion({ borrowers: { files: {}, logic: {} } })).to.equal(0);
+      expect(getBorrowerCompletion({ borrower: { files: {}, logic: {} } })).to.equal(0);
     });
 
     it('returns 1/3 when logic.hasValidatedFinances is true', () => {
       expect(getBorrowerCompletion({
-        borrowers: {
+        borrower: {
           files: {},
           logic: { hasValidatedFinances: true },
         },
@@ -140,7 +140,9 @@ describe('Borrower Functions', () => {
     it("returns the sum of all value keys in an object's array", () => {
       expect(getArrayValues(
         {
-          array: [{ value: 1 }, { value: 2 }],
+          borrowers: {
+            array: [{ value: 1 }, { value: 2 }],
+          },
         },
         'array',
       )).to.equal(3);
@@ -148,28 +150,32 @@ describe('Borrower Functions', () => {
 
     it('works with arrays', () => {
       expect(getArrayValues(
-        [
-          {
-            array: [{ value: 1 }, { value: 2 }],
-          },
-          {
-            array: [{ value: 3 }, { value: 4 }],
-          },
-        ],
+        {
+          borrowers: [
+            {
+              array: [{ value: 1 }, { value: 2 }],
+            },
+            {
+              array: [{ value: 3 }, { value: 4 }],
+            },
+          ],
+        },
         'array',
       )).to.equal(10);
     });
 
     it('works with a provided mapFunc', () => {
       expect(getArrayValues(
-        [
-          {
-            array: [{ yo: 1 }, { value: 2 }],
-          },
-          {
-            array: [{ value: 3 }, { yo: 4 }],
-          },
-        ],
+        {
+          borrowers: [
+            {
+              array: [{ yo: 1 }, { value: 2 }],
+            },
+            {
+              array: [{ value: 3 }, { yo: 4 }],
+            },
+          ],
+        },
         'array',
         item => item.yo,
       )).to.equal(5);
