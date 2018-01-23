@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
-import { stubCollections } from  'core/utils/testHelpers';
+import { stubCollections } from 'core/utils/testHelpers';
 import sinon from 'sinon';
 
 import Offers from '../offers';
@@ -23,7 +23,7 @@ describe('Offers', () => {
   beforeEach(() => {
     resetDatabase();
     stubCollections();
-    user = Factory.create('partner');
+    user = Factory.create('lender');
     userId = user._id;
     sinon.stub(Meteor, 'userId').callsFake(() => userId);
     sinon.stub(Meteor, 'user').callsFake(() => user);
@@ -56,7 +56,7 @@ describe('Offers', () => {
           userId,
           logic: { auction: { endTime: date } },
         });
-        user = Factory.create('partner', {
+        user = Factory.create('lender', {
           emails: [{ address: 'wtf@test.com', verified: false }], // To avoid email conflict when creating multiple users
           profile: { organization: 'testOrganization', cantons: ['ZH'] },
           requestId: request._id,
