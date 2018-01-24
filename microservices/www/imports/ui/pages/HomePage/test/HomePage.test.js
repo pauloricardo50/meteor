@@ -1,14 +1,15 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import { getMountedComponent } from  'core/utils/testHelpers';
+import { getMountedComponent } from 'core/utils/testHelpers';
 
 import HomePage from '../HomePage';
 
 if (Meteor.isClient) {
   describe('<HomePage />', () => {
     let props;
-    const component = () => getMountedComponent(HomePage, props, true);
+    const component = () =>
+      getMountedComponent({ Component: HomePage, props, withRouter: true });
 
     beforeEach(() => {
       props = { currentUser: undefined };

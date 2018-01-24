@@ -6,10 +6,7 @@ import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import {
-  getMountedComponent,
-  stubCollections,
-} from  'core/utils/testHelpers';
+import { getMountedComponent, stubCollections } from 'core/utils/testHelpers';
 import CompareOptions from '../CompareOptions';
 
 import DefaultOptions from '../DefaultOptions';
@@ -21,13 +18,16 @@ describe('<CompareOptions />', () => {
   let wrapper;
 
   const component = () =>
-    getMountedComponent(CompareOptions, {
-      comparator,
-      changeComparator: () => {},
-      addProperty: () => {},
-      toggleField: () => true,
-      allFields: [],
-      removeCustomField: () => true,
+    getMountedComponent({
+      Component: CompareOptions,
+      props: {
+        comparator,
+        changeComparator: () => {},
+        addProperty: () => {},
+        toggleField: () => true,
+        allFields: [],
+        removeCustomField: () => true,
+      },
     });
 
   beforeEach(() => {

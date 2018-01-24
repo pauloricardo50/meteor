@@ -7,10 +7,7 @@ import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import {
-  getMountedComponent,
-  stubCollections,
-} from  'core/utils/testHelpers';
+import { getMountedComponent, stubCollections } from 'core/utils/testHelpers';
 
 import TextInput from 'core/components/TextInput';
 import DefaultOptions from '../DefaultOptions';
@@ -50,28 +47,15 @@ describe('<DefaultOptions />', () => {
 
   if (Meteor.isClient) {
     it('mounts without errors', () => {
-      const mounted = getMountedComponent(DefaultOptions, {
-        comparator: { income: 0, fortune: 0 },
-        changeComparator: () => {},
+      const mounted = getMountedComponent({
+        Component: DefaultOptions,
+        props: {
+          comparator: { income: 0, fortune: 0 },
+          changeComparator: () => {},
+        },
       });
 
       expect(mounted.exists()).to.equal(true);
-    });
-
-    it('calls onChange after an input', () => {
-      const handleChangeSpy = spy();
-      const mounted = getMountedComponent(DefaultOptions, {
-        comparator: { income: 0, fortune: 0 },
-        changeComparator: handleChangeSpy,
-      });
-      const firstInput = mounted.find('input').first();
-
-      expect(firstInput.exists()).to.equal(true);
-      expect(mounted.props('changeOptions')).to.not.equal(undefined);
-
-      firstInput.simulate('input', { key: 'a', keyCode: 65, which: 65 });
-
-      expect(handleChangeSpy.calledOnce).to.equal(true);
     });
   }
 });

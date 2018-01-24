@@ -48,11 +48,18 @@ const getSteps = (props) => {
           link: `/requests/${loanRequest._id}/borrowers/${
             borrowers[0]._id
           }/finance`,
+
           isDone: () =>
             borrowers.reduce(
               (res, b) => res && b.logic.hasValidatedFinances,
               true,
             ),
+          percent: () => (
+            borrowers.reduce(
+              (res, b) => (b.logic.hasValidatedFinances ? res + 1 : res),
+              0,
+            ) / borrowers.length
+          ),
         },
         {
           id: 'files',
@@ -133,10 +140,6 @@ const getSteps = (props) => {
             loanRequest.logic.lender.contractRequested &&
             !loanRequest.logic.lender.contract,
           isDone() {
-            // const validPercent =
-            //   (filesPercent(loanRequest, requestFiles, 'contract', true) +
-            //     filesPercent(borrowers, borrowerFiles, 'contract', true)) /
-            //   (1 + borrowers.length);
             return (
               loanRequest.files.contract && loanRequest.files.contract.length
             );

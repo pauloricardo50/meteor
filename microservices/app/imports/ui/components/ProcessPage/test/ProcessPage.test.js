@@ -1,11 +1,13 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import { getMountedComponent, stubCollections } from 'core/utils/testHelpers';
-import { Factory } from 'meteor/dburles:factory';
+import {
+  getMountedComponent,
+  stubCollections,
+  generateData,
+} from 'core/utils/testHelpers';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import getSteps from 'core/arrays/steps';
-import { generateData } from 'core/api/factories';
 import { spy } from 'sinon';
 
 import { ProcessPage, getStepValues } from '../ProcessPage';
@@ -14,7 +16,8 @@ if (Meteor.isClient) {
   describe('<ProcessPage />', () => {
     let props;
     let setStepSpy;
-    const component = () => getMountedComponent(ProcessPage, props, true);
+    const component = () =>
+      getMountedComponent({ Component: ProcessPage, props, withRouter: true });
 
     beforeEach(() => {
       resetDatabase();

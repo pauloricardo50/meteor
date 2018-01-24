@@ -103,21 +103,3 @@ Factory.define('comparatorProperty', Properties, {
   latitude: 10,
   longitude: 20,
 });
-
-export const generateData = () => {
-  const user = Factory.create('user');
-  const borrower = Factory.create('borrower', { userId: user._id });
-  const property = Factory.create('property', { userId: user._id });
-  const loanRequest = Factory.create('loanRequest', {
-    userId: user._id,
-    property: property._id,
-    borrowers: [borrower._id],
-  });
-
-  return {
-    loanRequest,
-    user,
-    borrowers: [borrower],
-    property,
-  };
-};

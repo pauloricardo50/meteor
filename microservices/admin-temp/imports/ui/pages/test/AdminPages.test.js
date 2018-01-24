@@ -1,7 +1,11 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import { getMountedComponent, stubCollections } from 'core/utils/testHelpers';
+import {
+  getMountedComponent,
+  stubCollections,
+  generateData,
+} from 'core/utils/testHelpers';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
@@ -29,7 +33,7 @@ const pages = {
 };
 
 if (Meteor.isClient) {
-  describe('Pages basic render', () => {
+  describe('Admin Pages basic render', () => {
     beforeEach(() => {
       resetDatabase();
       stubCollections();
@@ -43,28 +47,28 @@ if (Meteor.isClient) {
       const page = pages[key];
       describe(`${key}`, () => {
         let props;
-        const component = () => getMountedComponent(page, props, true);
+        const component = () =>
+          getMountedComponent({
+            Component: page,
+            props,
+            withRouter: true,
+            withStore: true,
+          });
 
         beforeEach(() => {
           getMountedComponent.reset();
-          const user = Factory.create('dev');
-          const userId = user._id;
-          const borrower = Factory.create('borrower', { userId });
-          const request = Factory.create('loanRequest', {
-            userId,
-            borrowers: [borrower],
-          });
+          const data = generateData({ user: { roles: 'dev' } });
 
           props = {
-            loanRequest: request,
-            borrowers: [borrower],
-            currentUser: user,
-            user,
-            offers: [],
+            ...data,
+            currentUser: data.user,
             location: {},
             history: {},
             match: {
-              params: { borrowerId: borrower._id, requestId: request._id },
+              params: {
+                borrowerId: data.borrowers[0]._id,
+                requestId: data.loanRequest._id,
+              },
             },
           };
         });

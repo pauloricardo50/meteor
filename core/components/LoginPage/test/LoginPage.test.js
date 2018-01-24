@@ -8,7 +8,8 @@ import LoginPage from '../LoginPage';
 if (Meteor.isClient) {
   describe('<LoginPage />', () => {
     let props;
-    const component = () => getMountedComponent(LoginPage, props);
+    const component = () =>
+      getMountedComponent({ Component: LoginPage, props });
 
     beforeEach(() => {
       getMountedComponent.reset();
