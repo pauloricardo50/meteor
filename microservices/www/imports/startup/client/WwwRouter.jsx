@@ -27,23 +27,39 @@ const WwwRouter = () => (
     formats={getFormats()}
     hasLogin={false} // should be false
   >
-    <PublicLayout>
-      <Switch>
-        <Route path="/" exact component={PasswordPage} />
-        <Route path="/home" component={HomePage} />
-        <Route path="/login" component={LoginPage} />
-        <Route path="/start1/:type" component={Start1Page} />
-        <Route path="/start2/:type" component={Start2Page} />
-        <Route path="/careers" component={CareersPage} />
-        <Route path="/about" component={AboutPage} />
-        <Route path="/tos" component={TosPage} />
-        <Route path="/faq" component={FaqPage} />
-        <Route path="/verify-email/:token" component={EmailVerificationPage} />
-        <Route path="/reset-password/:token" component={PasswordResetPage} />
-        <Route path="/checkYourMailbox/:email" component={CheckMailboxPage} />
-        <Route component={NotFound} to="/home" />
-      </Switch>
-    </PublicLayout>
+    <Switch>
+      <Route path="/" exact component={PasswordPage} />
+      <Route
+        path="/"
+        component={() => (
+          <PublicLayout>
+            <Switch>
+              <Route path="/home" component={HomePage} />
+              <Route path="/login" component={LoginPage} />
+              <Route path="/start1/:type" component={Start1Page} />
+              <Route path="/start2/:type" component={Start2Page} />
+              <Route path="/careers" component={CareersPage} />
+              <Route path="/about" component={AboutPage} />
+              <Route path="/tos" component={TosPage} />
+              <Route path="/faq" component={FaqPage} />
+              <Route
+                path="/verify-email/:token"
+                component={EmailVerificationPage}
+              />
+              <Route
+                path="/reset-password/:token"
+                component={PasswordResetPage}
+              />
+              <Route
+                path="/checkYourMailbox/:email"
+                component={CheckMailboxPage}
+              />
+              <Route component={NotFound} to="/home" />
+            </Switch>
+          </PublicLayout>
+        )}
+      />
+    </Switch>
   </BaseRouter>
 );
 
