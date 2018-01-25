@@ -1,14 +1,16 @@
 import { Meteor } from 'meteor/meteor';
 
-import LoanRequests from '../../api/loanrequests/loanrequests';
-import Offers from '../../api/offers/offers';
-import Borrowers from '../../api/borrowers/borrowers';
-import Properties from '../../api/properties/properties';
-import Comparators from '../../api/comparators/comparators';
+import {
+  LoanRequests,
+  Offers,
+  Borrowers,
+  Properties,
+  Comparators,
+} from '../../api';
 
 export function userCompareComposer(props, onData) {
   if (
-    Meteor.subscribe('userProperties').ready() &&
+    Meteor.subscribe('properties').ready() &&
     Meteor.subscribe('userComparators').ready()
   ) {
     const properties = Properties.find({}, { sort: { createdAt: -1 } }).fetch();
@@ -38,6 +40,14 @@ export function userOffersComposer(props, onData) {
   if (Meteor.subscribe('userOffers').ready()) {
     const offers = Offers.find({}).fetch();
     onData(null, { offers });
+  }
+}
+
+// Get all properties for this user
+export function userPropertiesComposer(props, onData) {
+  if (Meteor.subscribe('properties').ready()) {
+    const properties = Properties.find({}).fetch();
+    onData(null, { properties });
   }
 }
 

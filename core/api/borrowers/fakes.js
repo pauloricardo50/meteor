@@ -3,18 +3,19 @@ import { fakeFile } from 'core/api/files/files';
 export const fakeBorrower = {
   firstName: 'Marie',
   lastName: 'Rochat',
-  gender: 'f',
+  gender: 'F',
   address1: 'Chemin du Mont 3',
-  zipCode: 1201,
-  city: 'Genève',
+  zipCode: 1400,
+  city: 'Yverdon-les-Bains',
   citizenships: 'Suisse, Français',
   age: 35,
   birthPlace: 'Lausanne',
-  civilStatus: 'single',
+  civilStatus: 'SINGLE',
   childrenCount: 2,
   company: 'Deloitte',
   personalBank: 'BCGE',
   isSwiss: true,
+  isUSPerson: false,
   worksForOwnCompany: false,
   sameAddress: true,
 };
@@ -32,28 +33,28 @@ export const completeFakeBorrower = {
   otherIncome: [
     {
       value: 10000,
-      description: 'pensionIncome',
+      description: 'PENSION',
     },
     {
       value: 15000,
-      description: 'rentIncome',
+      description: 'RENT',
     },
   ],
   expenses: [
     {
       value: 3000,
-      description: 'leasing',
+      description: 'LEASING',
     },
     {
       value: 4000,
-      description: 'personalLoan',
+      description: 'PERSONAL_LOAN',
     },
   ],
   realEstate: [
     {
       value: 433000,
       loan: 240000,
-      description: 'primary',
+      description: 'PRIMARY',
     },
   ],
   bankFortune: 300000,

@@ -7,6 +7,7 @@ import rateLimit from '../../utils/rate-limit.js';
 
 import AdminActions from './adminActions';
 import { validateUser } from '../helpers';
+import { ADMIN_ACTION_STATUS } from './adminActionConstants';
 
 export const insertAdminAction = new ValidatedMethod({
   name: 'adminActions.insert',
@@ -21,7 +22,7 @@ export const insertAdminAction = new ValidatedMethod({
     const existingAction = AdminActions.findOne({
       type,
       requestId,
-      status: 'active',
+      status: ADMIN_ACTION_STATUS.ACTIVE,
     });
     if (existingAction) {
       throw new Meteor.Error('duplicate active admin action');
@@ -41,13 +42,13 @@ export const completeAction = new ValidatedMethod({
   run({ id }) {
     const action = AdminActions.findOne(id);
 
-    if (action.status === 'completed') {
+    if (action.status === ADMIN_ACTION_STATUS.COMPLETED) {
       throw new Meteor.Error('action is already completed');
     }
 
     return AdminActions.update(id, {
       $set: {
-        status: 'completed',
+        status: ADMIN_ACTION_STATUS.COMPLETED,
         completedAt: new Date(),
       },
     });
@@ -67,7 +68,7 @@ export const completeActionByType = new ValidatedMethod({
     const action = AdminActions.findOne({
       requestId,
       type,
-      status: 'active',
+      status: ADMIN_ACTION_STATUS.ACTIVE,
     });
 
     if (!action) {
@@ -76,7 +77,7 @@ export const completeActionByType = new ValidatedMethod({
 
     return AdminActions.update(action._id, {
       $set: {
-        status: newStatus || 'completed',
+        status: newStatus || ADMIN_ACTION_STATUS.COMPLETED,
         completedAt: new Date(),
       },
     });
@@ -92,7 +93,7 @@ export const removeParentRequest = new ValidatedMethod({
   run({ requestId }) {
     return AdminActions.update(
       { requestId },
-      { $set: { status: 'parentDeleted' } },
+      { $set: { status: ADMIN_ACTION_STATUS.PARENT_DELETED } },
       { multi: true },
     );
   },

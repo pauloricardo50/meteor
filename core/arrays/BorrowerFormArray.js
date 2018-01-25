@@ -1,4 +1,6 @@
-export const getBorrowerInfoArray = (borrowers, id) => {
+import { constants } from 'core/api';
+
+export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
   const b = borrowers.find(borr => borr._id === id);
   const multiple = borrowers.length > 1;
   // If this is the first borrower in the array of borrowers, don't ask for same address
@@ -8,10 +10,16 @@ export const getBorrowerInfoArray = (borrowers, id) => {
     throw new Error("couldn't find borrower");
   }
 
+  const disableAddress = !!b.sameAddress && !isFirst;
+
   return [
     { id: 'firstName', type: 'textInput' },
     { id: 'lastName', type: 'textInput' },
-    { id: 'gender', type: 'radioInput', options: ['f', 'm', 'other'] },
+    {
+      id: 'gender',
+      type: 'radioInput',
+      options: Object.values(constants.GENDER),
+    },
     {
       type: 'h3',
       id: 'yourAddress',
@@ -28,13 +36,17 @@ export const getBorrowerInfoArray = (borrowers, id) => {
     {
       id: 'address1',
       type: 'textInput',
-      disabled: !!b.sameAddress && !isFirst,
+      disabled: disableAddress,
+      placeholder: disableAddress && borrowers[0].address1,
+      noIntl: disableAddress,
     },
     {
       id: 'address2',
       type: 'textInput',
       disabled: !!b.sameAddress && !isFirst,
       required: false,
+      placeholder: disableAddress && borrowers[0].address2,
+      noIntl: disableAddress,
     },
     {
       id: 'zipCode',
@@ -45,6 +57,12 @@ export const getBorrowerInfoArray = (borrowers, id) => {
         initialValue: b.zipCode && b.city ? `${b.zipCode} ${b.city}` : '',
       },
       disabled: !!b.sameAddress && !isFirst,
+      placeholder:
+        disableAddress &&
+        (borrowers[0].zipCode && borrowers[0].city
+          ? `${borrowers[0].zipCode} ${borrowers[0].city}`
+          : ''),
+      noIntl: disableAddress,
     },
     {
       type: 'conditionalInput',
@@ -58,25 +76,34 @@ export const getBorrowerInfoArray = (borrowers, id) => {
         {
           id: 'residencyPermit',
           type: 'selectFieldInput',
-          required: false,
-          options: ['b', 'c', 'ci', 'f', 'g', 'l', 'n', 's', 'other'],
+          options: Object.values(constants.RESIDENCY_PERMIT),
         },
       ],
     },
-    { id: 'age', type: 'textInput', number: true, saveOnChange: false },
-    { id: 'birthPlace', type: 'textInput' },
+    {
+      id: 'age',
+      type: 'textInput',
+      number: true,
+      saveOnChange: false,
+    },
+    { id: 'birthPlace', type: 'textInput', condition: !!b.isSwiss },
+    { id: 'citizenship', type: 'textInput', condition: !b.isSwiss },
+    { id: 'isUSPerson', type: 'radioInput', options: [true, false] },
     {
       id: 'civilStatus',
       type: 'radioInput',
-      options: [
-        { id: 'married', intlValues: { gender: b.gender } },
-        { id: 'pacsed', intlValues: { gender: b.gender } },
-        { id: 'single', intlValues: { gender: b.gender } },
-        { id: 'divorced', intlValues: { gender: b.gender } },
-      ],
+      options: Object.values(constants.CIVIL_STATUS).map(value => ({
+        id: value,
+        intlValues: { gender: b.gender },
+      })),
     },
     { id: 'childrenCount', type: 'textInput', number: true },
-    { id: 'company', type: 'textInput', required: false },
+    {
+      id: 'company',
+      type: 'textInput',
+      required: false,
+      autoComplete: 'organization',
+    },
     {
       id: 'worksForOwnCompany',
       type: 'radioInput',
@@ -86,7 +113,11 @@ export const getBorrowerInfoArray = (borrowers, id) => {
   ];
 };
 
-export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
+export const getBorrowerFinanceArray = ({
+  borrowers,
+  borrowerId: id,
+  loanRequest,
+}) => {
   const b = borrowers.find(borr => borr._id === id);
   const multiple = borrowers.length > 1;
   // If this is the first borrower in the array of borrowers, don't ask for same address
@@ -113,10 +144,11 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
           type: 'radioInput',
           options: [true, false],
         },
-        { id: 'bonus.bonus2017', type: 'textInput', money: true },
-        { id: 'bonus.bonus2016', type: 'textInput', money: true },
-        { id: 'bonus.bonus2015', type: 'textInput', money: true },
-        { id: 'bonus.bonus2014', type: 'textInput', money: true },
+        ...[2017, 2016, 2015, 2014].map(year => ({
+          id: `bonus.bonus${year}`,
+          type: 'textInput',
+          money: true,
+        })),
       ],
     },
     {
@@ -127,14 +159,7 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
         {
           id: 'description',
           type: 'selectInput',
-          options: [
-            'leasing',
-            'rent',
-            'personalLoan',
-            'mortgageLoan',
-            'pensions',
-            'other',
-          ],
+          options: Object.values(constants.EXPENSES),
         },
         { id: 'value', type: 'textInput', money: true },
       ],
@@ -147,14 +172,7 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
         {
           id: 'description',
           type: 'selectInput',
-          options: [
-            'welfareIncome',
-            'pensionIncome',
-            'rentIncome',
-            'realEstateIncome',
-            'investmentIncome',
-            'other',
-          ],
+          options: Object.values(constants.OTHER_INCOME),
         },
         { id: 'value', type: 'textInput', money: true },
       ],
@@ -180,7 +198,7 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
         {
           id: 'description',
           type: 'selectInput',
-          options: ['primary', 'secondary', 'investment'],
+          options: Object.values(constants.REAL_ESTATE),
         },
         {
           id: 'value',
@@ -202,7 +220,7 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
         {
           id: 'description',
           type: 'selectInput',
-          options: ['art', 'cars', 'boats', 'airplanes', 'jewelry'],
+          options: Object.values(constants.OTHER_FORTUNE),
         },
         {
           id: 'value',
@@ -214,7 +232,12 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
   ];
 
   const insuranceArray = [
-    { type: 'h3', id: 'insurance', required: false, ignore: true },
+    {
+      type: 'h3',
+      id: 'insurance',
+      required: false,
+      ignore: true,
+    },
     {
       id: 'insuranceSecondPillar',
       type: 'textInput',
@@ -227,7 +250,12 @@ export const getBorrowerFinanceArray = (borrowers, id, loanRequest) => {
       money: true,
       required: false,
     },
-    { id: 'insurance3B', type: 'textInput', money: true, required: false },
+    {
+      id: 'insurance3B',
+      type: 'textInput',
+      money: true,
+      required: false,
+    },
     {
       id: 'insurancePureRisk',
       type: 'textInput',

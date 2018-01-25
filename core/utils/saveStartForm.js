@@ -41,19 +41,26 @@ const saveStartForm = (f, userId) => {
 
   const loanRequest = {
     general: {
+      usageType: f.usageType,
       purchaseType: f.purchaseType,
       oldestAge: multiple ? f.oldestAge : f.age,
       oldestGender: multiple ? f.oldestGender : f.gender,
       fortuneUsed: f.fortuneUsed,
       insuranceFortuneUsed: f.insuranceFortuneUsed,
-    },
-    property: {
-      usageType: f.usageType,
-      value: f.propertyValue,
       propertyWork: f.propertyWork || 0,
-      investmentRent: f.propertyRent,
     },
+    // property: {
+    //   usageType: f.usageType,
+    //   value: f.propertyValue,
+    //   propertyWork: f.propertyWork || 0,
+    //   investmentRent: f.propertyRent,
+    // },
     borrowers: [],
+  };
+
+  const property = {
+    value: f.propertyValue,
+    investmentRent: f.propertyRent,
   };
 
   return (
@@ -63,9 +70,17 @@ const saveStartForm = (f, userId) => {
         !!multiple &&
           cleanMethod('insertBorrower', { object: borrowerTwo, userId }))
       .then(id2 => !!id2 && loanRequest.borrowers.push(id2))
-      .then(() => cleanMethod('insertRequest', { object: loanRequest, userId }))
+      .then(() => cleanMethod('insertProperty', { object: property, userId }))
+      .then((propertyId) => {
+        loanRequest.property = propertyId;
+        return cleanMethod('insertRequest', { object: loanRequest, userId });
+      })
       // If no userId is provided, return the requestId
       .then(requestId => userId || requestId)
+      .catch((error) => {
+        console.warn(error);
+        throw error;
+      })
   );
 };
 

@@ -1,4 +1,5 @@
 import SimpleSchema from 'simpl-schema';
+import { FILE_STATUS, PURCHASE_TYPE, USAGE_TYPE } from '../constants';
 
 export const borrowerFiles = (b = {}) => ({
   auction: [
@@ -15,10 +16,6 @@ export const borrowerFiles = (b = {}) => ({
     },
     {
       id: 'salaryCertificate',
-    },
-    {
-      id: 'salaryChange',
-      condition: !!b.hasChangedSalary,
     },
     {
       id: 'bonus',
@@ -84,22 +81,22 @@ export const borrowerFiles = (b = {}) => ({
 
 export const requestFiles = (r = {}) => ({
   auction: [
-    {
-      id: 'plans',
-    },
-    {
-      id: 'cubage',
-      doubleTooltip: true,
-      condition: r.property && r.property.style === 'villa',
-    },
-    {
-      id: 'pictures',
-    },
-    {
-      id: 'marketingBrochure',
-      condition: !!r.general && r.general.purchaseType === 'acquisition',
-      required: false,
-    },
+    // {
+    //   id: 'plans',
+    // },
+    // {
+    //   id: 'cubage',
+    //   doubleTooltip: true,
+    //   condition: r.property && r.property.style === 'villa',
+    // },
+    // {
+    //   id: 'pictures',
+    // },
+    // {
+    //   id: 'marketingBrochure',
+    //   condition: !!r.general && r.general.purchaseType === 'acquisition',
+    //   required: false,
+    // },
   ],
   contract: [
     {
@@ -114,10 +111,6 @@ export const requestFiles = (r = {}) => ({
     {
       id: 'rent',
       condition: !!r.general && r.general.usageType === 'investment',
-      doubleTooltip: true,
-    },
-    {
-      id: 'landRegisterExtract',
       doubleTooltip: true,
     },
     {
@@ -164,6 +157,47 @@ export const requestFiles = (r = {}) => ({
   },
 });
 
+export const propertyFiles = (property = {}, request = {}) => ({
+  auction: [
+    {
+      id: 'plans',
+    },
+    {
+      id: 'cubage',
+      doubleTooltip: true,
+      condition: property.style === 'villa',
+    },
+    {
+      id: 'pictures',
+    },
+    {
+      id: 'marketingBrochure',
+      condition: !!(
+        request &&
+        request.general &&
+        request.general.purchaseType === PURCHASE_TYPE.ACQUISITION
+      ),
+      required: false,
+    },
+  ],
+  contract: [
+    {
+      id: 'rent',
+      condition:
+        !!request.general &&
+        request.general.usageType === USAGE_TYPE.INVESTMENT,
+      doubleTooltip: true,
+    },
+    {
+      id: 'landRegisterExtract',
+      doubleTooltip: true,
+    },
+  ],
+  all() {
+    return [...this.auction, ...this.contract];
+  },
+});
+
 export const getFileIDs = (list) => {
   let files;
   const ids = [];
@@ -173,6 +207,9 @@ export const getFileIDs = (list) => {
       break;
     case 'request':
       files = requestFiles();
+      break;
+    case 'property':
+      files = propertyFiles();
       break;
     default:
       throw new Error('invalid file list');
@@ -197,7 +234,7 @@ export const FileSchema = new SimpleSchema({
   fileCount: Number,
   status: {
     type: String,
-    allowedValues: ['unverified', 'valid', 'error'],
+    allowedValues: Object.values(FILE_STATUS),
   },
   error: { optional: true, type: String },
 });
@@ -228,7 +265,7 @@ export const fakeFile = {
   url: 'https://www.fake-url.com',
   key: 'asdf/fakeKey/fakeFile.pdf',
   fileCount: 0,
-  status: 'valid',
+  status: FILE_STATUS.VALID,
   error: '',
 };
 

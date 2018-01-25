@@ -1,10 +1,31 @@
 import SimpleSchema from 'simpl-schema';
+import {
+  PURCHASE_TYPE,
+  INTEREST_RATES,
+  OWNER,
+  CANTONS,
+  AUCTION_STATUS,
+  OFFER_TYPE,
+  CLOSING_STEPS_TYPE,
+  CLOSING_STEPS_STATUS,
+  AUCTION_MOST_IMPORTANT,
+  INSURANCE_USE_PRESET,
+  LOAN_STRATEGY_PRESET,
+  AMORTIZATION_STRATEGY_PRESET,
+  PAYMENT_SCHEDULES,
+} from './loanrequestConstants';
+import { GENDER, USAGE_TYPE } from '../constants';
 
 export const GeneralSchema = new SimpleSchema({
   purchaseType: {
-    // acquisition, refinancing, construction
     type: String,
-    defaultValue: 'acquisition',
+    defaultValue: PURCHASE_TYPE.ACQUISITION,
+    allowedValues: Object.values(PURCHASE_TYPE),
+  },
+  usageType: {
+    type: String,
+    defaultValue: USAGE_TYPE.PRIMARY,
+    allowedValues: Object.values(USAGE_TYPE),
   },
   fortuneUsed: {
     type: Number,
@@ -18,6 +39,12 @@ export const GeneralSchema = new SimpleSchema({
     max: 100000000,
     optional: true,
   },
+  propertyWork: {
+    type: Number,
+    min: 0,
+    max: 100000000,
+    defaultValue: 0,
+  },
   oldestAge: {
     type: SimpleSchema.Integer,
     optional: true,
@@ -27,6 +54,7 @@ export const GeneralSchema = new SimpleSchema({
   oldestGender: {
     type: String,
     optional: true,
+    allowedValues: Object.values(GENDER),
   },
   partnersToAvoidExists: {
     type: Boolean,
@@ -44,15 +72,14 @@ export const GeneralSchema = new SimpleSchema({
   canton: {
     type: String,
     optional: true,
-    min: 2,
-    max: 2,
+    allowedValues: Object.keys(CANTONS),
   },
   loanTranches: {
     type: Array,
     // minCount: 1,
     defaultValue: [
       {
-        type: 'interestLibor',
+        type: INTEREST_RATES.LIBOR,
         value: 100000,
       },
     ],
@@ -61,13 +88,7 @@ export const GeneralSchema = new SimpleSchema({
   'loanTranches.$.type': {
     type: String,
     optional: true,
-    allowedValues: [
-      'interestLibor',
-      'interest1',
-      'interest2',
-      'interest5',
-      'interest10',
-    ],
+    allowedValues: Object.values(INTEREST_RATES),
   },
   'loanTranches.$.value': {
     type: Number,
@@ -76,14 +97,14 @@ export const GeneralSchema = new SimpleSchema({
     max: 100000000,
   },
   currentOwner: {
-    // '0', '1', 'both', 'other'
     type: String,
-    defaultValue: '0',
+    defaultValue: OWNER.FIRST,
+    allowedValues: Object.values(OWNER),
   },
   futureOwner: {
-    // '0', '1', 'both', 'other'
     type: String,
-    defaultValue: '0',
+    defaultValue: OWNER.FIRST,
+    allowedValues: Object.values(OWNER),
   },
   otherOwner: {
     type: String,
@@ -96,197 +117,7 @@ export const GeneralSchema = new SimpleSchema({
   auctionMostImportant: {
     type: String,
     optional: true,
-  },
-});
-
-export const PropertySchema = new SimpleSchema({
-  value: {
-    // Cost of the property
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  propertyWork: {
-    // Additional work on property
-    type: Number,
-    min: 0,
-    max: 100000000,
-    optional: true,
-  },
-  usageType: {
-    // primary, secondary or investment
-    type: String,
-    defaultValue: 'primary',
-  },
-  investmentRent: {
-    // Rent of property if investment
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  style: {
-    // villa, flat,
-    type: String,
-    optional: true,
-    defaultValue: 'flat',
-  },
-  address1: {
-    type: String,
-    optional: true,
-  },
-  address2: {
-    type: String,
-    optional: true,
-  },
-  zipCode: {
-    type: Number,
-    optional: true,
-    min: 1000,
-    max: 9999,
-  },
-  city: {
-    type: String,
-    optional: true,
-  },
-  constructionYear: {
-    type: Number,
-    min: 0,
-    max: 2030,
-    optional: true,
-  },
-  renovationYear: {
-    type: Number,
-    min: 0,
-    max: 2030,
-    optional: true,
-  },
-  insideArea: {
-    type: Number,
-    optional: true,
-    min: 0,
-  },
-  landArea: {
-    type: Number,
-    optional: true,
-    min: 0,
-  },
-  balconyArea: {
-    type: Number,
-    optional: true,
-    min: 0,
-  },
-  terraceArea: {
-    type: Number,
-    optional: true,
-    min: 0,
-  },
-  roomCount: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100,
-  },
-  bathroomCount: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100,
-  },
-  toiletCount: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100,
-  },
-  volume: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 5000,
-  },
-  volumeNorm: {
-    type: String,
-    defaultValue: 'SIA',
-  },
-  parking: {
-    type: Object,
-    defaultValue: {},
-  },
-  'parking.box': {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100,
-  },
-  'parking.inside': {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100,
-  },
-  'parking.outside': {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100,
-  },
-  minergie: {
-    type: Boolean,
-    defaultValue: false,
-  },
-  isCoproperty: {
-    type: Boolean,
-    defaultValue: false,
-  },
-  isNew: {
-    type: Boolean,
-    defaultValue: false,
-  },
-  copropertyPercentage: {
-    type: Number,
-    min: 0,
-    max: 1000,
-    optional: true,
-  },
-  cityPlacementQuality: {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  buildingPlacementQuality: {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  buildingQuality: {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  flatQuality: {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  materialsQuality: {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  otherNotes: {
-    type: String,
-    optional: true,
-  },
-  pictures: {
-    type: Array,
-    optional: true,
+    allowedValues: Object.values(AUCTION_MOST_IMPORTANT),
   },
 });
 
@@ -331,18 +162,6 @@ export const LogicSchema = new SimpleSchema({
     type: Boolean,
     defaultValue: false,
   },
-  // auctionStarted: {
-  //   type: Boolean,
-  //   defaultValue: false,
-  // },
-  // auction.startTime: {
-  //   type: Date,
-  //   optional: true,
-  // },
-  // auctionEndTime: {
-  //   type: Date,
-  //   optional: true,
-  // },
   auction: {
     type: Object,
     defaultValue: {},
@@ -350,8 +169,8 @@ export const LogicSchema = new SimpleSchema({
   'auction.status': {
     type: String,
     optional: true,
-    defaultValue: '',
-    allowedValues: ['', 'started', 'ended'],
+    defaultValue: AUCTION_STATUS.NONE,
+    allowedValues: Object.values(AUCTION_STATUS),
   },
   'auction.startTime': {
     type: Date,
@@ -368,18 +187,21 @@ export const LogicSchema = new SimpleSchema({
   },
   insuranceUsePreset: {
     type: String,
-    defaultValue: '',
+    // defaultValue: '',
     optional: true,
+    allowedValues: Object.values(INSURANCE_USE_PRESET),
   },
   loanStrategyPreset: {
     type: String,
-    defaultValue: '',
+    // defaultValue: '',
     optional: true,
+    allowedValues: Object.values(LOAN_STRATEGY_PRESET),
   },
   amortizationStrategyPreset: {
     type: String,
-    defaultValue: '',
+    // defaultValue: '',
     optional: true,
+    allowedValues: Object.values(AMORTIZATION_STRATEGY_PRESET),
   },
   lender: {
     type: Object,
@@ -388,7 +210,7 @@ export const LogicSchema = new SimpleSchema({
   'lender.type': {
     type: String,
     optional: true,
-    allowedValues: ['standard', 'counterparts'],
+    allowedValues: Object.values(OFFER_TYPE),
   },
   'lender.offerId': {
     type: String,
@@ -436,6 +258,7 @@ export const LogicSchema = new SimpleSchema({
   paymentSchedule: {
     type: String,
     optional: true,
+    allowedValues: Object.values(PAYMENT_SCHEDULES),
   },
   closingSteps: {
     type: Array,
@@ -443,13 +266,16 @@ export const LogicSchema = new SimpleSchema({
   },
   'closingSteps.$': Object,
   'closingSteps.$.id': String,
-  'closingSteps.$.type': { type: String, allowedValues: ['todo', 'upload'] },
+  'closingSteps.$.type': {
+    type: String,
+    allowedValues: Object.values(CLOSING_STEPS_TYPE),
+  },
   'closingSteps.$.title': String,
   'closingSteps.$.description': { type: String, optional: true },
   'closingSteps.$.status': {
     type: String,
     optional: true,
-    allowedValues: ['unverified', 'valid', 'error'],
+    allowedValues: Object.values(CLOSING_STEPS_STATUS),
   },
   'closingSteps.$.error': { type: String, optional: true },
 });

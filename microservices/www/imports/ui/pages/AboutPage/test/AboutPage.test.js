@@ -1,14 +1,15 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import { getMountedComponent } from  'core/utils/testHelpers';
+import { getMountedComponent } from 'core/utils/testHelpers';
 
 import AboutPage from '../AboutPage';
 
 if (Meteor.isClient) {
   describe('<AboutPage />', () => {
     let props;
-    const component = () => getMountedComponent(AboutPage, props);
+    const component = () =>
+      getMountedComponent({ Component: AboutPage, props });
 
     beforeEach(() => {
       getMountedComponent.reset();

@@ -4,21 +4,23 @@ import { Roles } from 'meteor/alanning:roles';
 import { Redirect } from 'react-router-dom';
 import classnames from 'classnames';
 
-import ContactButton from '/imports/ui/components/general/ContactButton';
+import ContactButton from 'core/components/ContactButton';
 import ErrorBoundary from 'core/components/ErrorBoundary';
 import track from 'core/utils/analytics';
 import { isApp, isAdmin, isPartner } from 'core/utils/browserFunctions';
+import UserContainer from 'core/containers/UserContainer';
 import Navs from './Navs';
 
-// import UserJoyride from '/imports/ui/components/general/UserJoyride';
+// import UserJoyride from '/imports/ui/components/UserJoyride';
 
 const allowedRoutesWithoutRequest = [
   '/',
   '/compare',
   '/profile',
   '/add-request',
-  '/enroll',
 ];
+
+const allowedRoutesWithoutLogin = ['/enroll-account'];
 
 const getRedirect = ({
   currentUser,
@@ -30,6 +32,11 @@ const getRedirect = ({
   const userIsDev = Roles.userIsInRole(currentUser, 'dev');
 
   if (!currentUser) {
+    if (
+      allowedRoutesWithoutLogin.some(route => pathname.indexOf(route) === 0)
+    ) {
+      return false;
+    }
     return `/login?path=${pathname}`;
   }
 
@@ -59,7 +66,9 @@ const getShowSideNav = ({ location }) =>
   !(location.pathname === '/' || location.pathname === '/compare');
 
 const AppLayout = (props) => {
-  const { type, history, render } = props;
+  const {
+    type, history, render, children,
+  } = props;
   const redirect = getRedirect(props);
   const showSideNav = getShowSideNav(history);
   const classes = classnames({
@@ -89,7 +98,8 @@ const AppLayout = (props) => {
 
       <main className={classes}>
         <ErrorBoundary helper="layout" pathname={history.location.pathname}>
-          <div x="wrapper">{render(props)}</div>
+          {/* <div x="wrapper">{render(props)}</div> */}
+          <div x="wrapper">{React.cloneElement(children, { ...props })}</div>
         </ErrorBoundary>
       </main>
 
@@ -115,4 +125,4 @@ AppLayout.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default AppLayout;
+export default UserContainer(AppLayout);

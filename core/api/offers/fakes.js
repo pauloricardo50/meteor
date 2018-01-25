@@ -1,7 +1,17 @@
 import { getLoanValue, getPropAndWork } from 'core/utils/requestFunctions';
 
 const getRandomCondition = () => {
-  const conditions = ['Expertise additionelle requise', '', '', '', '', '', '', '', ''];
+  const conditions = [
+    'Expertise additionelle requise',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+  ];
 
   return conditions[Math.floor(Math.random() * conditions.length)];
 };
@@ -29,14 +39,18 @@ const round = v => Math.round(v * 10000) / 10000;
 
 const rand = (min, max) => round(Math.random() * (max - min) + min);
 
-export const getRandomOffer = (request, matchLoanWanted = false) => {
+export const getRandomOffer = (
+  { loanRequest, property },
+  matchLoanWanted = false,
+) => {
   const rate1 = rand(0.007, 0.012);
   const rate2 = rand(0.005, 0.009);
 
   // Randomly add rank 1 offers 25% of the time
-  const loanWanted = Math.random() > 0.75 && !matchLoanWanted
-    ? 0.65 * getPropAndWork(request)
-    : getLoanValue(request);
+  const loanWanted =
+    Math.random() > 0.75 && !matchLoanWanted
+      ? 0.65 * getPropAndWork({ loanRequest, property })
+      : getLoanValue({ loanRequest, property });
 
   const counterpart = getRandomCounterpart();
   const condition = getRandomCondition();
@@ -44,7 +58,7 @@ export const getRandomOffer = (request, matchLoanWanted = false) => {
   return {
     organization: 'fake',
     canton: 'GE',
-    requestId: request._id,
+    requestId: loanRequest._id,
     auctionEndTime: new Date(),
     isSwiss: true,
     worksForOwnCompany: true,

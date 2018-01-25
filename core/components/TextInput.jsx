@@ -2,14 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import MaskedInput from 'react-text-mask';
+
+import Input, { InputLabel } from 'material-ui/Input';
+import { FormControl, FormHelperText } from 'material-ui/Form';
+import classnames from 'classnames';
+
 import { swissFrancMask, percentMask } from '../utils/textMasks';
 import { toNumber } from '../utils/conversionFunctions';
 import constants from '../config/constants';
 
-import Input, { InputLabel } from 'material-ui/Input';
-import { FormControl, FormHelperText } from 'material-ui/Form';
-
-const getDefaults = ({ type, id, onChange, value }) => {
+const getDefaults = ({
+  type, id, onChange, value,
+}) => {
   switch (type) {
     case 'money':
       return {
@@ -54,8 +58,9 @@ const getDefaults = ({ type, id, onChange, value }) => {
   }
 };
 
-const TextInput = props => {
+const TextInput = (props) => {
   const {
+    className,
     label,
     style,
     labelStyle,
@@ -69,7 +74,9 @@ const TextInput = props => {
     intl,
     inputComponent,
     inputProps,
+    InputProps,
     noIntl,
+    classes,
     ...otherProps
   } = props;
 
@@ -85,13 +92,24 @@ const TextInput = props => {
   if (noIntl) {
     finalPlaceholder = placeholder || defaultPlaceholder;
   } else {
-    finalPlaceholder = placeholder
-      ? intl.formatMessage({ id: placeholder })
-      : defaultPlaceholder;
+    finalPlaceholder =
+      placeholder && typeof placeholder === 'string'
+        ? intl.formatMessage({ id: placeholder })
+        : defaultPlaceholder;
+  }
+
+  // Ignore placeholder for money inputs, and just show the currency
+  // Showing an amount is confusing
+  if (props.type === 'money') {
+    finalPlaceholder = defaultPlaceholder;
   }
 
   return (
-    <FormControl error={error} className="mui-text-input" style={style}>
+    <FormControl
+      error={error}
+      className={classnames({ 'mui-text-input': true, [className]: true })}
+      style={style}
+    >
       {label && (
         <InputLabel htmlFor={id} style={labelStyle} shrink>
           {label}
@@ -99,19 +117,21 @@ const TextInput = props => {
       )}
       <Input
         {...otherProps}
+        className={classes ? Object.values(classes) : ''}
         id={id}
         onChange={onChangeHandler}
         type="text"
         style={{ fontSize: 'inherit' }}
-        inputComponent={inputComponent || (showMask ? MaskedInput : undefined)}
+        inputComponent={showMask ? MaskedInput : inputComponent || undefined}
         inputProps={{
+          ...inputProps, // Backwards compatible
+          ...InputProps,
           value,
           placeholder: finalPlaceholder,
           noValidate: true,
           mask: mask || undefined,
           pattern: mask ? '[0-9]*' : undefined,
           ref: inputRef,
-          ...inputProps,
         }}
       />
       {info && <FormHelperText>{info}</FormHelperText>}

@@ -3,10 +3,11 @@ import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import { Factory } from 'meteor/dburles:factory';
 import moment from 'moment';
-import { stubCollections } from  'core/utils/testHelpers';
+import { stubCollections } from 'core/utils/testHelpers';
 import sinon from 'sinon';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
+import { AUCTION_STATUS } from '../../constants';
 import LoanRequests from '../loanrequests';
 
 import {
@@ -124,7 +125,7 @@ describe('loanRequests', () => {
             return startAuction.callPromise({ id, object: {} }).then(() => {
               const modifiedRequest = LoanRequests.findOne(id);
 
-              expect(modifiedRequest.logic.auction.status).to.equal('started');
+              expect(modifiedRequest.logic.auction.status).to.equal(AUCTION_STATUS.STARTED);
               expect(modifiedRequest.logic.auction.startTime instanceof Date).to
                 .be.true;
             });

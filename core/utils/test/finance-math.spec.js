@@ -14,53 +14,52 @@ import {
 describe('Finance Math', () => {
   describe('Calculate Years to Retirement', () => {
     it('Should return 35 with a male of 30 yo', () => {
-      expect(getYearsToRetirement(30, undefined, 'm', undefined)).to.equal(35);
+      expect(getYearsToRetirement(30, undefined, 'M', undefined)).to.equal(35);
     });
 
     it('Should return 34 with a female of 30 yo', () => {
-      expect(getYearsToRetirement(30, undefined, 'f', undefined)).to.equal(34);
+      expect(getYearsToRetirement(30, undefined, 'F', undefined)).to.equal(34);
     });
 
     it('Should return 35 with an undefined gender of 30 yo', () => {
-      expect(
-        getYearsToRetirement(30, undefined, undefined, undefined),
-      ).to.equal(35);
+      expect(getYearsToRetirement(30, undefined, undefined, undefined)).to.equal(35);
     });
 
     it('Should return 0 with a female of 64 yo', () => {
-      expect(getYearsToRetirement(64, undefined, 'f', undefined)).to.equal(0);
+      expect(getYearsToRetirement(64, undefined, 'F', undefined)).to.equal(0);
     });
 
     it('Should return 0 with a female over 64 yo', () => {
-      expect(getYearsToRetirement(80, undefined, 'f', undefined)).to.equal(0);
+      expect(getYearsToRetirement(80, undefined, 'F', undefined)).to.equal(0);
     });
 
     it('Should return 10 with a female of 54 yo and male of 54 yo', () => {
-      expect(getYearsToRetirement(54, 54, 'f', 'm')).to.equal(10);
+      expect(getYearsToRetirement(54, 54, 'F', 'M')).to.equal(10);
     });
   });
 
   describe('Get Amortization', () => {
     it('Should return 1000 for a 1200000 property', () => {
       const request = {
-        property: { value: 1200000 },
         general: { fortuneUsed: 300000, insuranceFortuneUsed: 0 },
       };
-      const borrowers = [{ age: 30, gender: 'm' }];
+      const borrowers = [{ age: 30, gender: 'M' }];
+      const property = { value: 1200000 };
 
-      expect(
-        Math.round(getAmortization(request, borrowers).amortization),
-      ).to.equal(1000);
+      expect(Math.round(getAmortization({ loanRequest: request, borrowers, property })
+        .amortization)).to.equal(1000);
     });
 
     it('Should return 0 when borrowing less than 65%', () => {
       const request = {
-        property: { value: 1000000 },
         general: { fortuneUsed: 400000, insuranceFortuneUsed: 0 },
       };
-      const borrowers = [{ age: 30, gender: 'm' }];
+      const property = { value: 1000000 };
 
-      expect(getAmortization(request, borrowers).amortization).to.equal(0);
+      const borrowers = [{ age: 30, gender: 'M' }];
+
+      expect(getAmortization({ loanRequest: request, borrowers, property })
+        .amortization).to.equal(0);
     });
   });
 
@@ -83,44 +82,43 @@ describe('Finance Math', () => {
 
   describe('getMonthlyPayment', () => {
     it('returns an object', () => {
-      expect(
-        typeof getMonthlyPayment({ property: { value: 100 }, general: {} }, {}),
-      ).to.equal('object');
+      expect(typeof getMonthlyPayment({
+        property: { value: 100 },
+        loanRequest: { general: {} },
+        borrowers: [{}],
+      })).to.equal('object');
     });
 
     it('returns a total and the 3 values that make the total', () => {
-      const value = getMonthlyPayment(
-        { property: { value: 100 }, general: {} },
-        {},
-      );
+      const value = getMonthlyPayment({
+        property: { value: 100 },
+        loanRequest: { general: {} },
+        borrowers: [],
+      });
 
       expect(Object.keys(value).length).to.equal(4);
-      expect(value.total).to.equal(
-        value.amortization + value.interests + value.maintenance,
-      );
+      expect(value.total).to.equal(value.amortization + value.interests + value.maintenance);
     });
   });
 
   describe('getTheoreticalMonthly', () => {
     it('returns an object', () => {
-      expect(
-        typeof getTheoreticalMonthly(
-          { property: { value: 100 }, general: {} },
-          {},
-        ),
-      ).to.equal('object');
+      expect(typeof getTheoreticalMonthly({
+        property: { value: 100 },
+        loanRequest: { general: {} },
+        borrowers: [],
+      })).to.equal('object');
     });
 
     it('returns a total and the 3 values that make the total', () => {
-      const value = getTheoreticalMonthly(
-        { property: { value: 100 }, general: {} },
-        {},
-      );
+      const value = getTheoreticalMonthly({
+        property: { value: 100 },
+        loanRequest: { general: {} },
+        borrowers: [],
+      });
 
       expect(Object.keys(value).length).to.equal(4);
-      expect(value.total).to.equal(
-        value.amortization + value.interests + value.maintenance,
-      );
+      expect(value.total).to.equal(value.amortization + value.interests + value.maintenance);
     });
   });
 
@@ -130,46 +128,41 @@ describe('Finance Math', () => {
 
   describe('canAffordRank1', () => {
     it('returns true for the right conditions', () => {
-      expect(
-        canAffordRank1(
-          { general: {}, property: { value: 1000000 } },
-          { bankFortune: 400000 },
-        ),
-      ).to.equal(true);
+      expect(canAffordRank1({
+        loanRequest: { general: {} },
+        property: { value: 1000000 },
+        borrowers: { bankFortune: 400000 },
+      })).to.equal(true);
     });
 
     it('returns false for the right conditions', () => {
-      expect(
-        canAffordRank1(
-          { general: {}, property: { value: 1000000 } },
-          { bankFortune: 300000 },
-        ),
-      ).to.equal(false);
+      expect(canAffordRank1({
+        loanRequest: { general: {} },
+        property: { value: 1000000 },
+        borrowers: { bankFortune: 300000 },
+      })).to.equal(false);
     });
 
     it('should return false if property is not primary and insurance fortune should be used', () => {
-      expect(
-        canAffordRank1(
-          { general: {}, property: { value: 1000000 } },
-          { bankFortune: 300000, insuranceSecondPillar: 200000 },
-        ),
-      ).to.equal(false);
+      expect(canAffordRank1({
+        loanRequest: { general: {} },
+        property: { value: 1000000 },
+        borrowers: { bankFortune: 300000, insuranceSecondPillar: 200000 },
+      })).to.equal(false);
     });
 
     it('should account for insuranceSecondPillar and insuranceThirdPillar', () => {
-      expect(
-        canAffordRank1(
-          { general: {}, property: { value: 1000000, usageType: 'primary' } },
-          { bankFortune: 300000, insuranceSecondPillar: 200000 },
-        ),
-      ).to.equal(true);
+      expect(canAffordRank1({
+        loanRequest: { general: { usageType: 'PRIMARY' } },
+        property: { value: 1000000 },
+        borrowers: { bankFortune: 300000, insuranceSecondPillar: 200000 },
+      })).to.equal(true);
 
-      expect(
-        canAffordRank1(
-          { general: {}, property: { value: 1000000, usageType: 'primary' } },
-          { bankFortune: 300000, insuranceThirdPillar: 200000 },
-        ),
-      ).to.equal(true);
+      expect(canAffordRank1({
+        loanRequest: { general: { usageType: 'PRIMARY' } },
+        property: { value: 1000000 },
+        borrowers: { bankFortune: 300000, insuranceThirdPillar: 200000 },
+      })).to.equal(true);
     });
   });
 });

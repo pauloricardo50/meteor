@@ -52,7 +52,7 @@ export const offerTableTooltips = {
   conditions: 'offerTable.conditions',
 };
 
-export const tooltips = list => {
+export const tooltips = (list) => {
   switch (list) {
     case 'general':
       return generalTooltips;
@@ -63,16 +63,14 @@ export const tooltips = list => {
   }
 };
 
-export const tooltipsById = id => {
+export const tooltipsById = (id) => {
   if (typeof id !== 'string') {
     throw new Error('not a string');
   }
   const array = id.split('.');
 
   if (array.length !== 2 || array[1].length <= 0) {
-    throw Error(
-      'Wrong id given for tooltips, requires 2 strings separated by a .',
-    );
+    throw Error('Wrong id given for tooltips, requires 2 strings separated by a .');
   }
 
   const list = tooltips(array[0]);

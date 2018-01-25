@@ -7,17 +7,18 @@ import {
   PropertySchema,
   LogicSchema,
 } from './additionalSchemas';
+import { REQUEST_STATUS } from './loanrequestConstants';
 
 const LoanRequests = new Mongo.Collection('loanRequests');
 
 const RequestFilesSchema = new SimpleSchema(getFileSchema('request'));
 
 // Prevent all client side modifications of mongoDB
-// LoanRequests.deny({
-//   insert: () => true,
-//   update: () => true,
-//   remove: () => true,
-// });
+LoanRequests.deny({
+  insert: () => true,
+  update: () => true,
+  remove: () => true,
+});
 LoanRequests.allow({
   insert: () => true,
   update: () => false,
@@ -26,7 +27,11 @@ LoanRequests.allow({
 
 // Documentation is in the google drive dev/MongoDB Schemas
 const LoanRequestSchema = new SimpleSchema({
-  userId: { type: String, index: true, optional: true },
+  userId: {
+    type: String,
+    index: true,
+    optional: true,
+  },
   createdAt: {
     type: Date,
     autoValue() {
@@ -53,14 +58,15 @@ const LoanRequestSchema = new SimpleSchema({
   },
   status: {
     type: String,
-    defaultValue: 'active',
-    allowedValues: ['active', 'done'],
+    defaultValue: REQUEST_STATUS.ACTIVE,
+    allowedValues: Object.values(REQUEST_STATUS),
   },
   name: { type: String, optional: true, defaultValue: '' },
   general: { type: GeneralSchema, defaultValue: {} },
   borrowers: { type: Array, defaultValue: [] },
   'borrowers.$': String,
-  property: PropertySchema,
+  // property: PropertySchema,
+  property: String,
   files: { type: RequestFilesSchema, defaultValue: {} },
   logic: { type: LogicSchema, defaultValue: {} },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },

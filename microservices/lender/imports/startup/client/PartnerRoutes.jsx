@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import { PartnerLayout } from 'core/containers/PartnerContainers';
 import PartnerHomePage from '/imports/ui/pages/partner/PartnerHomePage';
 import PartnerRequestPage from '/imports/ui/pages/partner/PartnerRequestPage';
-import NotFound from '/imports/ui/components/general/NotFound';
+import NotFound from '/imports/ui/components/NotFound';
 
 const PartnerRoutes = props => (
   <PartnerLayout

@@ -18,9 +18,7 @@ const getText = (props) => {
 
   const currentValue = props.formState[props.id];
   if (currentValue !== undefined) {
-    const currentButton = props.buttons.find(
-      button => button.id === currentValue,
-    );
+    const currentButton = props.buttons.find(button => button.id === currentValue);
 
     return currentButton.label || currentButton.id;
   }
@@ -40,8 +38,7 @@ const handleClick = (props, event, value, callback) => {
       if (typeof callback === 'function') {
         callback(event);
       }
-    }),
-  );
+    }));
 };
 
 const ButtonInput = (props) => {
@@ -74,8 +71,7 @@ const ButtonInput = (props) => {
         style={styles.buttons}
         className={!active ? 'inputHider' : 'animated fadeIn'}
       >
-        {buttons.map(
-          (button, index) =>
+        {buttons.map((button, index) =>
             (button.component ? (
               button.component
             ) : (
@@ -95,8 +91,7 @@ const ButtonInput = (props) => {
                 key={index}
                 className={button.className}
               />
-            )),
-        )}
+            )))}
       </div>
     </article>
   );

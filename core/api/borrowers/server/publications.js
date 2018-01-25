@@ -34,13 +34,15 @@ Meteor.publish('borrowers', function publish() {
     return this.ready();
   }
 
-  return Borrowers.find({
+  const borrowers = Borrowers.find({
     userId: Meteor.userId(),
   });
+
+  return borrowers;
 });
 
 // Publish all borrowers for a user
-Meteor.publish('userBorrowers', (userId) => {
+Meteor.publish('userBorrowers', function publish(userId) {
   check(userId, String);
 
   // Verify if user is logged In
@@ -78,9 +80,7 @@ Meteor.publish('requestBorrowers', function publish(borrowerIds) {
     Roles.userIsInRole(Meteor.userId(), 'dev')
   ) {
     // Return all borrowers
-    return Borrowers.find({
-      _id: { $in: borrowerIds },
-    });
+    return Borrowers.find({ _id: { $in: borrowerIds } });
   }
 
   return this.ready();

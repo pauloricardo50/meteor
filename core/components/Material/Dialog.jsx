@@ -9,11 +9,13 @@ import MuiDialog, {
 } from 'material-ui/Dialog';
 
 const Dialog = (props) => {
-  const { title, actions, children, important, text, ...otherProps } = props;
+  const {
+    title, actions, children, important, text, ...otherProps
+  } = props;
   return (
     <MuiDialog
-      ignoreBackdropClick={important}
-      ignoreEscapeKeyUp={important}
+      disableBackdropClick={important}
+      disableEscapeKeyDown={important}
       {...otherProps}
     >
       <DialogTitle>{title}</DialogTitle>

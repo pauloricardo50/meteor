@@ -1,77 +1,35 @@
 import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
-import {
-  insertRequest,
-  updateRequest,
-  startAuction,
-  pushRequestValue,
-  popRequestValue,
-  incrementStep,
-  requestVerification,
-} from './loanrequests/methods';
-import { insertOffer, insertAdminOffer, updateOffer } from './offers/methods';
-import {
-  insertBorrower,
-  updateBorrower,
-  pushBorrowerValue,
-  popBorrowerValue,
-} from './borrowers/methods';
-import {
-  insertComparator,
-  updateComparator,
-  addComparatorField,
-  removeComparatorField,
-  toggleHiddenField,
-} from './comparators/methods';
-import {
-  insertProperty,
-  deleteProperty,
-  updateProperty,
-  setPropertyField,
-} from './properties/methods';
+import * as loanRequestMethods from './loanrequests/methods';
+import * as offerMethods from './offers/methods';
+import * as borrowerMethods from './borrowers/methods';
+import * as comparatorMethods from './comparators/methods';
+import * as propertyMethods from './properties/methods';
 
 const methods = {
-  insertRequest,
-  updateRequest,
-  pushRequestValue,
-  popRequestValue,
-  startAuction,
-  incrementStep,
-  requestVerification,
-
-  insertBorrower,
-  updateBorrower,
-  pushBorrowerValue,
-  popBorrowerValue,
-
-  insertOffer,
-  insertAdminOffer,
-  updateOffer,
-
-  insertComparator,
-  updateComparator,
-  addComparatorField,
-  removeComparatorField,
-  toggleHiddenField,
-
-  insertProperty,
-  deleteProperty,
-  updateProperty,
-  setPropertyField,
+  ...loanRequestMethods,
+  ...offerMethods,
+  ...borrowerMethods,
+  ...comparatorMethods,
+  ...propertyMethods,
 };
 
 // Passed to all methods, shows a Bert error when it happens
 const handleResult = (result, bertObject) => {
-  if (bertObject) {
-    if (bertObject.delay) {
-      Bert.defaults.hideDelay = bertObject.delay;
+  if (Meteor.isClient && !!bertObject) {
+    const {
+      delay, title, message, type, style,
+    } = bertObject;
+    if (delay) {
+      Bert.defaults.hideDelay = delay;
     }
 
     Bert.alert({
-      title: bertObject.title || "C'est réussi",
-      message: bertObject.message || '<h3 class="bert">Bien joué!</h3>',
-      type: bertObject.type || 'success',
-      style: bertObject.style || 'growl-top-right',
+      title: title || "C'est réussi",
+      message:
+        message === undefined ? '<h3 class="bert">Bien joué!</h3>' : message,
+      type: type || 'success',
+      style: style || 'growl-top-right',
     });
   }
 
@@ -80,20 +38,26 @@ const handleResult = (result, bertObject) => {
 
 // Passed to all methods, shows a bert alert
 const handleError = (error) => {
-  Bert.defaults.hideDelay = 7500;
-  Bert.alert({
-    title: 'Misère, une erreur!',
-    message: `<h3 class="bert">${error.message}</h3>`,
-    type: 'danger',
-    style: 'fixed-top',
-  });
+  if (Meteor.isClient) {
+    Bert.defaults.hideDelay = 7500;
+    Bert.alert({
+      title: 'Misère, une erreur!',
+      message: `<h3 class="bert">${error.message}</h3>`,
+      type: 'danger',
+      style: 'fixed-top',
+    });
+  }
+
   console.log(error);
 
-  return error;
+  // Throw the error again so that it can be catched again via promise chaining
+  // All uses of this module should catch and implement proper fail-safe logic
+  throw error;
 };
 
 // A wrapper method that displays an error if it occurs
 const cleanMethod = (name, params, bertObject) => {
+  console.log('cleanmethod!', name, params);
   if (methods[name]) {
     return methods[name]
       .callPromise(params)

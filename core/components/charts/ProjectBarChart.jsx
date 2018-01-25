@@ -11,6 +11,7 @@ import {
 } from 'core/utils/requestFunctions';
 import constants from 'core/config/constants';
 import colors from 'core/config/colors';
+import withRequest from 'core/containers/withRequest';
 
 import { legendConfig, adjustLegend } from './chartSettings';
 
@@ -28,7 +29,7 @@ const chartColors = {
 
 const getConfig = (props) => {
   const r = props.loanRequest;
-  const total = getProjectValue(r);
+  const total = getProjectValue(props);
   const f = props.intl.formatMessage;
   const fN = props.intl.formatNumber;
   const options = {
@@ -125,25 +126,25 @@ const getConfig = (props) => {
     series: [
       {
         name: f({ id: 'ProjectBarChart.property' }),
-        data: [getPropAndWork(r)],
+        data: [getPropAndWork(props)],
         stack: 1,
       },
       {
         name: f({ id: 'ProjectBarChart.fees' }),
         data: [
-          r.property.value * constants.notaryFees +
+          props.property.value * constants.notaryFees +
             (r.general.insuranceFortuneUsed * constants.lppFees || 0),
         ],
         stack: 1,
       },
       {
         name: f({ id: 'general.mortgageLoan' }),
-        data: [getLoanValue(r)],
+        data: [getLoanValue(props)],
         stack: 2,
       },
       {
         name: f({ id: 'general.ownFunds' }),
-        data: [total - getLoanValue(r)],
+        data: [total - getLoanValue(props)],
         stack: 2,
       },
     ],
@@ -174,4 +175,4 @@ ProjectBarChart.propTypes = {
   titleAlign: PropTypes.string,
 };
 
-export default injectIntl(ProjectBarChart);
+export default injectIntl(withRequest(ProjectBarChart));

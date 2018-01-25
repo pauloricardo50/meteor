@@ -1,3 +1,5 @@
+import { USAGE_TYPE } from 'core/api/constants';
+
 const constants = {
   cpsLimit: 300, // Average characters typed per second
   amortization: 0.0125,
@@ -19,7 +21,7 @@ const constants = {
       this.getAmortization(borrowRatio, toRetirement)
     );
   },
-  propertyToIncome(usageType = 'primary', borrowRatio, toRetirement) {
+  propertyToIncome(usageType = USAGE_TYPE.PRIMARY, borrowRatio, toRetirement) {
     return (
       3 *
       (this.maintenance +
@@ -27,7 +29,11 @@ const constants = {
           this.loanCost(borrowRatio, toRetirement))
     );
   },
-  propertyToIncomeReal(usageType = 'primary', borrowRatio, toRetirement) {
+  propertyToIncomeReal(
+    usageType = USAGE_TYPE.PRIMARY,
+    borrowRatio,
+    toRetirement,
+  ) {
     return (
       3 *
       (this.maintenanceReal +
@@ -39,7 +45,7 @@ const constants = {
     income,
     fortune,
     insuranceFortune = 0,
-    usageType = 'primary',
+    usageType = USAGE_TYPE.PRIMARY,
     toRetirement = 15,
   ) {
     let r = toRetirement;
@@ -68,11 +74,11 @@ const constants = {
     // Use floor to make sure the ratios are respected and avoid edge cases
     return Math.round(Math.min(fortuneLimited, incomeLimited));
   },
-  maxLoan(usageType = 'primary', toRetirement = 15) {
+  maxLoan(usageType = USAGE_TYPE.PRIMARY, toRetirement = 15) {
     if (toRetirement <= 0) {
       return 0.65;
     }
-    if (usageType === 'secondary') {
+    if (usageType === USAGE_TYPE.SECONDARY) {
       return 0.7;
     }
 
@@ -83,14 +89,10 @@ const constants = {
       const toAmortize = borrowRatio - 0.65;
       if (toRetirement > 15) {
         // use parseFloat, to round to 15 decimals, which is the maximal guaranteed precision of floating pt. numbers
-        return Math.max(
-          parseFloat(toAmortize / borrowRatio / 15).toPrecision(15),
-        );
+        return Math.max(parseFloat(toAmortize / borrowRatio / 15).toPrecision(15));
       } else if (toRetirement >= 0) {
         // use parseFloat, to round to 15 decimals, which is the maximal guaranteed precision of floating pt. numbers
-        return Math.max(
-          parseFloat(toAmortize / borrowRatio / toRetirement).toPrecision(15),
-        );
+        return Math.max(parseFloat(toAmortize / borrowRatio / toRetirement).toPrecision(15));
       }
       return parseFloat(toAmortize / borrowRatio).toPrecision(15);
     }
@@ -103,12 +105,12 @@ export const fortuneLimitedProperty = (
   income,
   fortune,
   insuranceFortune = 0,
-  usageType = 'primary',
+  usageType = USAGE_TYPE.PRIMARY,
   toRetirement = 15,
 ) => {
   let fortuneLimited = 0;
 
-  if (usageType === 'primary') {
+  if (usageType === USAGE_TYPE.PRIMARY) {
     // Use insuranceFortune to calculate more complicated value which
     // includes lppFees
     fortuneLimited = calculatePrimaryProperty(fortune, insuranceFortune);
@@ -124,7 +126,7 @@ export const incomeLimitedProperty = (
   income,
   fortune,
   insuranceFortune = 0,
-  usageType = 'primary',
+  usageType = USAGE_TYPE.PRIMARY,
   toRetirement = 15,
 ) => {
   // The arithmetic relation to have the cost of the loan be at exactly the max ratio of income

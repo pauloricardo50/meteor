@@ -24,7 +24,9 @@ const mapOption = (option) => {
   if (React.isValidElement(option)) {
     return option;
   }
-  const { id, label, icon, dividerTop, dividerBottom } = option;
+  const {
+    id, label, icon, dividerTop, dividerBottom,
+  } = option;
   const arr = [
     <MenuItem value={id} key={id}>
       {icon && <Icon type={icon} style={{ margin: '0 16px 0 8px' }} />}
@@ -54,9 +56,14 @@ const Select = (props) => {
     inputStyle,
     ...otherProps
   } = props;
+
   return (
     <FormControl className="mui-select" style={style}>
-      {label && <InputLabel htmlFor={id}>{label}</InputLabel>}
+      {label && (
+        <InputLabel htmlFor={id} shrink>
+          {label}
+        </InputLabel>
+      )}
       <MuiSelect
         {...otherProps}
         value={value}

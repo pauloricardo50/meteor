@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Meteor } from 'meteor/meteor';
 
 import Toolbar from 'material-ui/Toolbar/Toolbar';
 
@@ -12,8 +13,14 @@ import { T } from '../Translation';
 import TopNavDropdown from './TopNavDropdown';
 // import TopNavDrawer from './TopNavDrawer';
 
-const TopNav = props => {
-  const { history, currentUser, loanRequests, appChildren } = props;
+const TopNav = (props) => {
+  const {
+    history,
+    currentUser,
+    loanRequests,
+    appChildren,
+    public: isPublic,
+  } = props;
   const isApp = history && history.location.pathname.slice(0, 4) === '/';
 
   const showDrawer = isApp && loanRequests.length > 0;
@@ -29,7 +36,7 @@ const TopNav = props => {
 
         <div className="logo">
           <Link
-            to="/home"
+            to={isPublic ? '/home' : '/'}
             className="link"
             onClick={() => track('TopNav - clicked logo', {})}
           >
@@ -44,11 +51,12 @@ const TopNav = props => {
           ) : (
             <Button
               label={<T id="TopNav.login" />}
-              link
-              to="/login"
               primary
               dense
-              onClick={() => track('TopNav - clicked login', {})}
+              onClick={() => {
+                track('TopNav - clicked login', {});
+                window.location.replace(`${Meteor.settings.public.subdomains.app}/login`);
+              }}
             />
           )}
         </div>

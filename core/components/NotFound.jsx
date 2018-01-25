@@ -29,6 +29,7 @@ export default class NotFound extends Component {
   }
 
   render() {
+    const { to } = this.props;
     return (
       <section style={styles.section}>
         <h1 style={styles.h1}>
@@ -44,7 +45,7 @@ export default class NotFound extends Component {
             label={<T id="NotFound.button" />}
             component={Link}
             link
-            to="/home"
+            to={to}
           />
         </div>
       </section>
@@ -54,4 +55,9 @@ export default class NotFound extends Component {
 
 NotFound.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  to: PropTypes.string,
+};
+
+NotFound.defaultProps = {
+  to: '/',
 };

@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { stubCollections } from  'core/utils/testHelpers';
+import { stubCollections } from 'core/utils/testHelpers';
 
 describe('Factories', () => {
   beforeEach(() => {
@@ -18,12 +18,13 @@ describe('Factories', () => {
     'user',
     'dev',
     'admin',
-    'partner',
+    'lender',
     'borrower',
     'loanRequest',
     'offer',
     'comparator',
     'property',
+    'comparatorProperty',
     'adminAction',
   ];
 

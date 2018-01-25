@@ -11,7 +11,6 @@ import rateLimit from '../../../utils/rate-limit.js';
 Meteor.methods({
   getServerTime: () => new Date(),
   setUserToRequest: ({ requestId }) => {
-    console.log('setting user to request...:', requestId);
     check(requestId, String);
 
     if (!Meteor.userId()) {
@@ -19,7 +18,6 @@ Meteor.methods({
     }
 
     const request = LoanRequests.findOne(requestId);
-    console.log('The request: ', request);
     const { borrowers } = request;
 
     LoanRequests.update(requestId, { $set: { userId: Meteor.userId() } });
@@ -28,6 +26,35 @@ Meteor.methods({
     });
 
     return true;
+  },
+  addBorrower({ requestId }) {
+    // TODO: Secure this
+    const request = LoanRequests.findOne(requestId);
+
+    // A request can't have more than 2 borrowers at the moment
+    if (request.borrowers.length >= 2) {
+      return false;
+    }
+
+    const newBorrowerId = Borrowers.insert({ userId: Meteor.userId() });
+
+    return LoanRequests.update(requestId, {
+      $push: { borrowers: newBorrowerId },
+    });
+  },
+  removeBorrower({ requestId, borrowerId }) {
+    // TODO: Secure this
+    const request = LoanRequests.findOne(requestId);
+
+    // A request has to have at least 1 borrower
+    if (request.borrowers.length <= 1) {
+      return false;
+    }
+
+    Borrowers.remove(borrowerId);
+    return LoanRequests.update(requestId, {
+      $pull: { borrowers: borrowerId },
+    });
   },
 });
 

@@ -57,12 +57,13 @@ export const insertAdminOffer = new ValidatedMethod({
 
     const request = LoanRequests.findOne(object.requestId);
 
-    object.userId = Meteor.userId();
-    object.isAdmin = true;
-    object.auctionEndTime = request.logic.auction.endTime; // this doesn't update when the request is ended prematurely by an admin
-    object.canton = 'GE';
-
-    return Offers.insert(object);
+    return Offers.insert({
+      ...object,
+      userId: Meteor.userId(),
+      isAdmin: true,
+      auctionEndTime: request.logic.auction.endTime, // this doesn't update when the request is ended prematurely by an admin
+      canton: 'GE',
+    });
   },
 });
 

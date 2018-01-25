@@ -11,11 +11,11 @@ describe('offerFunctions', () => {
         { standardOffer: { interest10: 20 } },
       ];
 
-      expect(getBestRate(offers)).to.equal(10);
+      expect(getBestRate({ offers })).to.equal(10);
     });
 
     it('returns undefined if no offers are given', () => {
-      expect(getBestRate([])).to.equal(undefined);
+      expect(getBestRate({ offers: [] })).to.equal(undefined);
     });
 
     it('works with counterpart offers', () => {
@@ -27,7 +27,7 @@ describe('offerFunctions', () => {
         },
       ];
 
-      expect(getBestRate(offers)).to.equal(5);
+      expect(getBestRate({ offers })).to.equal(5);
     });
   });
 });

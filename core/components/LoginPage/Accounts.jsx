@@ -229,7 +229,7 @@ class FormMessage extends Accounts.ui.FormMessage {
         action="OK"
         autoHideDuration={4000}
         onActionTouchTap={this.handleRequestClose}
-        onRequestClose={this.handleRequestClose}
+        onClose={this.handleRequestClose}
       />
     ) : null;
   }

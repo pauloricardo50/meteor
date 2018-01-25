@@ -1,7 +1,7 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+// import { Route, Switch } from 'react-router-dom';
 
-import BaseRouter from 'core/components/BaseRouter';
+import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
 import NotFound from 'core/components/NotFound';
 import { getUserLocale, getFormats } from 'core/utils/localization';
 import messagesFR from '../../../lang/fr.json';
@@ -25,24 +25,41 @@ const WwwRouter = () => (
     locale={getUserLocale()}
     messages={messagesFR}
     formats={getFormats()}
+    hasLogin={false} // should be false
   >
-    <PublicLayout>
-      <Switch>
-        <Route path="/" exact component={PasswordPage} />
-        <Route path="/home" component={HomePage} />
-        <Route path="/login" component={LoginPage} />
-        <Route path="/start1/:type" component={Start1Page} />
-        <Route path="/start2/:type" component={Start2Page} />
-        <Route path="/careers" component={CareersPage} />
-        <Route path="/about" component={AboutPage} />
-        <Route path="/tos" component={TosPage} />
-        <Route path="/faq" component={FaqPage} />
-        <Route path="/verify-email/:token" component={EmailVerificationPage} />
-        <Route path="/reset-password/:token" component={PasswordResetPage} />
-        <Route path="/checkYourMailbox/:email" component={CheckMailboxPage} />
-        <Route component={NotFound} />
-      </Switch>
-    </PublicLayout>
+    <Switch>
+      <Route path="/" exact component={PasswordPage} />
+      <Route
+        path="/"
+        component={() => (
+          <PublicLayout>
+            <Switch>
+              <Route path="/home" component={HomePage} />
+              <Route path="/login" component={LoginPage} />
+              <Route path="/start1/:type" component={Start1Page} />
+              <Route path="/start2/:type" component={Start2Page} />
+              <Route path="/careers" component={CareersPage} />
+              <Route path="/about" component={AboutPage} />
+              <Route path="/tos" component={TosPage} />
+              <Route path="/faq" component={FaqPage} />
+              <Route
+                path="/verify-email/:token"
+                component={EmailVerificationPage}
+              />
+              <Route
+                path="/reset-password/:token"
+                component={PasswordResetPage}
+              />
+              <Route
+                path="/checkYourMailbox/:email"
+                component={CheckMailboxPage}
+              />
+              <Route component={NotFound} to="/home" />
+            </Switch>
+          </PublicLayout>
+        )}
+      />
+    </Switch>
   </BaseRouter>
 );
 

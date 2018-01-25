@@ -1,4 +1,4 @@
-import { merge } from 'react-komposer';
+import { merge } from '@storybook/react-komposer';
 
 import Loading from '../components/Loading';
 import composeWithTracker from './composers/composeWithTracker';
@@ -10,6 +10,7 @@ import {
   userOffersComposer,
   userRequestComposer,
   userBorrowerComposer,
+  userPropertiesComposer,
 } from './composers/UserComposers';
 import {
   adminRequestsComposer,
@@ -19,6 +20,7 @@ import {
   adminUserComposer,
   adminOffersComposer,
   adminOfferComposer,
+  adminPropertiesComposer,
 } from './composers/AdminComposers';
 import {
   partnerRequestsComposer,
@@ -36,22 +38,23 @@ export const userContainer = c =>
   merge(
     composeWithTracker(userRequestsComposer, Loading),
     composeWithTracker(userBorrowersComposer, Loading),
+    composeWithTracker(userPropertiesComposer, Loading),
     composeWithTracker(userOffersComposer, Loading),
     composeWithTracker(currentUserComposer, Loading),
     composeWithTracker(userCompareComposer, Loading),
   )(c);
 
-export const userRequestContainer = c =>
-  merge(
-    composeWithTracker(userRequestComposer),
-    composeWithTracker(currentUserComposer),
-  )(c);
-
-export const userBorrowerContainer = c =>
-  merge(
-    composeWithTracker(userBorrowerComposer, Loading),
-    composeWithTracker(currentUserComposer, Loading),
-  )(c);
+// export const userRequestContainer = c =>
+//   merge(
+//     composeWithTracker(userRequestComposer),
+//     composeWithTracker(currentUserComposer),
+//   )(c);
+//
+// export const userBorrowerContainer = c =>
+//   merge(
+//     composeWithTracker(userBorrowerComposer, Loading),
+//     composeWithTracker(currentUserComposer, Loading),
+//   )(c);
 
 export const userCompareContainer = c =>
   merge(
@@ -66,6 +69,7 @@ export const adminContainer = c =>
     composeWithTracker(adminUsersComposer),
     composeWithTracker(adminOffersComposer),
     composeWithTracker(adminActionsComposer),
+    composeWithTracker(adminPropertiesComposer),
     composeWithTracker(currentUserComposer, Loading),
   )(c);
 

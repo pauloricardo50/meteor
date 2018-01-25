@@ -1,28 +1,27 @@
-import { compose } from 'react-komposer';
+import { compose } from '@storybook/react-komposer';
 import { Tracker } from 'meteor/tracker';
 
-function getTrackerLoader(loaderFunc) {
-  return (props, onData, env) => {
-    let trackerCleanup = () => null;
+const getTrackerLoader = loaderFunc => (props, onData, env) => {
+  let trackerCleanup = () => null;
 
-    const handler = Tracker.nonreactive(() => {
-      return Tracker.autorun(() => {
-        // Store clean-up function if provided.
-        trackerCleanup = loaderFunc(props, onData, env) || (() => null);
-      });
-    });
+  const handler = Tracker.nonreactive(() =>
+    Tracker.autorun(() => {
+      // Store clean-up function if provided.
+      trackerCleanup = loaderFunc(props, onData, env) || (() => null);
+    }));
 
-    return () => {
-      trackerCleanup();
-      return handler.stop();
-    };
+  return () => {
+    trackerCleanup();
+    return handler.stop();
   };
-}
+};
 
-function composeWithTracker(loadFunc, options) {
-  return function(component) {
-    return compose(getTrackerLoader(loadFunc), options)(component);
-  };
-}
+// export const defaultOptions = {
+//   withRef: false,
+// };
+
+const composeWithTracker = (loadFunc, options) => component =>
+  // compose(getTrackerLoader(loadFunc), { ...options, ...defaultOptions })(component);
+  compose(getTrackerLoader(loadFunc), options)(component);
 
 export default composeWithTracker;

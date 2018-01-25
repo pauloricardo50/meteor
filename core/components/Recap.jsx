@@ -30,33 +30,31 @@ import {
   getInsuranceFortune,
 } from 'core/utils/borrowerFunctions';
 
-import {
-  getMonthlyPayment,
-  getIncomeRatio,
-} from 'core/utils/finance-math';
+import { getMonthlyPayment, getIncomeRatio } from 'core/utils/finance-math';
 
 const getDashboardArray = (props) => {
   const r = props.loanRequest;
   const b = props.borrowers;
+  const p = props.property;
 
-  const incomeRatio = getIncomeRatio(r, b);
-  const borrowRatio = getBorrowRatio(r, b);
-  const loan = getLoanValue(r);
-  const project = getProjectValue(r);
-  const totalUsed = getTotalUsed(r);
-  const propAndWork = getPropAndWork(r);
-  const monthly = getMonthlyPayment(r, b).total;
-  const expenses = getExpenses(b);
-  const bonusIncome = getBonusIncome(b);
-  const otherIncome = getOtherIncome(b);
-  const realEstateFortune = getRealEstateFortune(b);
-  const realEstateValue = getRealEstateValue(b);
-  const realEstateDebt = getRealEstateDebt(b);
+  const incomeRatio = getIncomeRatio(props);
+  const borrowRatio = getBorrowRatio(props);
+  const loan = getLoanValue(props);
+  const project = getProjectValue(props);
+  const totalUsed = getTotalUsed(props);
+  const propAndWork = getPropAndWork(props);
+  const monthly = getMonthlyPayment(props).total;
+  const expenses = getExpenses(props);
+  const bonusIncome = getBonusIncome(props);
+  const otherIncome = getOtherIncome(props);
+  const realEstateFortune = getRealEstateFortune(props);
+  const realEstateValue = getRealEstateValue(props);
+  const realEstateDebt = getRealEstateDebt(props);
 
-  const fortune = getFortune(b);
-  const insuranceFortune = getInsuranceFortune(b);
-  const totalFortune = getTotalFortune(b);
-  const lenderCount = getLenderCount(r, b);
+  const fortune = getFortune(props);
+  const insuranceFortune = getInsuranceFortune(props);
+  const totalFortune = getTotalFortune(props);
+  const lenderCount = getLenderCount(props);
 
   return [
     {
@@ -70,28 +68,26 @@ const getDashboardArray = (props) => {
     },
     {
       label: 'Recap.purchasePrice',
-      value: toMoney(Math.round(r.property.value)),
+      value: toMoney(Math.round(p.value)),
     },
     {
       label: 'Recap.propertyWork',
-      value: toMoney(Math.round(r.property.propertyWork)),
-      hide: !r.property.propertyWork,
+      value: toMoney(Math.round(r.general.propertyWork)),
+      hide: !r.general.propertyWork,
       spacing: true,
     },
     {
       label: 'Recap.propAndWork',
       value: <span className="sum">{toMoney(Math.round(propAndWork))}</span>,
-      hide: !r.property.propertyWork,
+      hide: !r.general.propertyWork,
     },
     {
       label: 'general.notaryFees',
-      value: toMoney(Math.round(r.property.value * constants.notaryFees)),
+      value: toMoney(Math.round(p.value * constants.notaryFees)),
     },
     {
       label: 'general.insuranceFees',
-      value: toMoney(
-        Math.round(r.general.insuranceFortuneUsed * constants.lppFees),
-      ),
+      value: toMoney(Math.round(r.general.insuranceFortuneUsed * constants.lppFees)),
       hide: !r.general.insuranceFortuneUsed,
     },
     {
@@ -125,7 +121,7 @@ const getDashboardArray = (props) => {
     },
     {
       label: 'Recap.ownFundsTotal',
-      value: <span className="sum">{toMoney(getTotalUsed(r))}</span>,
+      value: <span className="sum">{toMoney(totalUsed)}</span>,
       spacingTop: true,
       hide: !r.general.insuranceFortuneUsed,
       bold: true,
@@ -154,7 +150,7 @@ const getDashboardArray = (props) => {
       label: 'Recap.finmaRules',
     },
     {
-      label: r.property.propertyWork
+      label: r.general.propertyWork
         ? 'Recap.borrowRatio2'
         : 'Recap.borrowRatio1',
       value: (
@@ -162,7 +158,7 @@ const getDashboardArray = (props) => {
           <IntlNumber value={borrowRatio} format="percentage" />{' '}
           <span
             className={
-              borrowRatio <= constants.maxLoan(r.property.usageType) + 0.001 // add 0.1% to avoid rounding errors
+              borrowRatio <= constants.maxLoan(r.general.usageType) + 0.001 // add 0.1% to avoid rounding errors
                 ? 'fa fa-check success'
                 : 'fa fa-times error'
             }
@@ -233,7 +229,7 @@ const getDashboardArray = (props) => {
     },
     {
       label: 'general.salary',
-      value: toMoney(getBorrowerSalary(b)),
+      value: toMoney(getBorrowerSalary(props)),
     },
     {
       label: 'Recap.consideredBonus',
@@ -252,7 +248,7 @@ const getDashboardArray = (props) => {
     },
     {
       label: 'Recap.consideredIncome',
-      value: <span className="sum">{toMoney(getBorrowerIncome(b))}</span>,
+      value: <span className="sum">{toMoney(getBorrowerIncome(props))}</span>,
       spacingTop: true,
       bold: true,
     },
@@ -271,11 +267,12 @@ const getDashboardArray = (props) => {
 const getSmallDashboardArray = (props) => {
   const r = props.loanRequest;
   const b = props.borrowers;
-  const loan = getLoanValue(r);
-  const monthly = getMonthlyPayment(r, b).total;
-  const totalUsed = getTotalUsed(r);
-  const propAndWork = getPropAndWork(r);
-  const project = getProjectValue(r);
+  const p = props.property;
+  const loan = getLoanValue(props);
+  const monthly = getMonthlyPayment(props).total;
+  const totalUsed = getTotalUsed(props);
+  const propAndWork = getPropAndWork(props);
+  const project = getProjectValue(props);
 
   return [
     {
@@ -289,22 +286,20 @@ const getSmallDashboardArray = (props) => {
     },
     {
       label: 'Recap.purchasePrice',
-      value: toMoney(Math.round(r.property.value)),
+      value: toMoney(Math.round(p.value)),
     },
     {
       label: 'Recap.propertyWork',
-      value: toMoney(Math.round(r.property.propertyWork)),
-      hide: !r.property.propertyWork,
+      value: toMoney(Math.round(r.general.propertyWork)),
+      hide: !r.general.propertyWork,
     },
     {
       label: 'general.notaryFees',
-      value: toMoney(Math.round(r.property.value * constants.notaryFees)),
+      value: toMoney(Math.round(p.value * constants.notaryFees)),
     },
     {
       label: 'general.insuranceFees',
-      value: toMoney(
-        Math.round(r.general.insuranceFortuneUsed * constants.lppFees),
-      ),
+      value: toMoney(Math.round(r.general.insuranceFortuneUsed * constants.lppFees)),
       hide: !r.general.insuranceFortuneUsed,
     },
     {
@@ -395,13 +390,9 @@ const getStart2Array = (props) => {
       },
       value: (
         <span className="bold sum">
-          {toMoney(
-            Math.round(
-              p.property * (1 + constants.notaryFees) +
+          {toMoney(Math.round(p.property * (1 + constants.notaryFees) +
                 p.propertyWork +
-                p.lppFees,
-            ),
-          )}
+                p.lppFees))}
         </span>
       ),
       spacingTop: true,
@@ -530,9 +521,7 @@ const getStart2Array = (props) => {
       label: 'Recap.netFortune',
       value: (
         <span className="sum">
-          {toMoney(
-            Math.round(p.fortune + p.insuranceFortuneDisplayed + p.realEstate),
-          )}
+          {toMoney(Math.round(p.fortune + p.insuranceFortuneDisplayed + p.realEstate))}
         </span>
       ),
       spacingTop: true,
@@ -601,15 +590,17 @@ const getStart2Array = (props) => {
 const getBorrowerArray = (props) => {
   const b = [props.borrower];
 
-  const expenses = getExpenses(b);
-  const bonusIncome = getBonusIncome(b);
-  const otherIncome = getOtherIncome(b);
-  const realEstateFortune = getRealEstateFortune(b);
-  const realEstateValue = getRealEstateValue(b);
-  const realEstateDebt = getRealEstateDebt(b);
-  const fortune = getFortune(b);
-  const insuranceFortune = getInsuranceFortune(b);
-  const totalFortune = getTotalFortune(b);
+  const expenses = getExpenses({ borrowers: b });
+  const bonusIncome = getBonusIncome({ borrowers: b });
+  const otherIncome = getOtherIncome({ borrowers: b });
+  const realEstateFortune = getRealEstateFortune({ borrowers: b });
+  const realEstateValue = getRealEstateValue({ borrowers: b });
+  const realEstateDebt = getRealEstateDebt({ borrowers: b });
+  const fortune = getFortune({ borrowers: b });
+  const insuranceFortune = getInsuranceFortune({ borrowers: b });
+  const totalFortune = getTotalFortune({ borrowers: b });
+  const salary = getBorrowerSalary({ borrowers: b });
+  const income = getBorrowerIncome({ borrowers: b });
 
   return [
     {
@@ -659,7 +650,7 @@ const getBorrowerArray = (props) => {
     },
     {
       label: 'general.salary',
-      value: toMoney(getBorrowerSalary(b)),
+      value: toMoney(salary),
     },
     {
       label: 'Recap.consideredBonus',
@@ -678,7 +669,7 @@ const getBorrowerArray = (props) => {
     },
     {
       label: 'Recap.consideredIncome',
-      value: <span className="sum">{toMoney(getBorrowerIncome(b))}</span>,
+      value: <span className="sum">{toMoney(income)}</span>,
       spacingTop: true,
       bold: true,
     },
@@ -688,14 +679,16 @@ const getBorrowerArray = (props) => {
 const getStructureArray = (props) => {
   const r = props.loanRequest;
   const b = props.borrowers;
-  const project = getProjectValue(r);
-  const loan = getLoanValue(r);
-  const monthly = getMonthlyPayment(r, b).total;
-  const totalUsed = getTotalUsed(r);
-  const propAndWork = getPropAndWork(r);
-  const lenderCount = getLenderCount(r, b);
-  const incomeRatio = getIncomeRatio(r, b);
-  const borrowRatio = getBorrowRatio(r, b);
+  const p = props.property;
+
+  const project = getProjectValue(props);
+  const loan = getLoanValue(props);
+  const monthly = getMonthlyPayment(props).total;
+  const totalUsed = getTotalUsed(props);
+  const propAndWork = getPropAndWork(props);
+  const lenderCount = getLenderCount(props);
+  const incomeRatio = getIncomeRatio(props);
+  const borrowRatio = getBorrowRatio(props);
 
   return [
     {
@@ -710,17 +703,15 @@ const getStructureArray = (props) => {
     {
       label: 'Recap.propAndWork',
       value: toMoney(Math.round(propAndWork)),
-      hide: !r.property.propertyWork,
+      hide: !r.general.propertyWork,
     },
     {
       label: 'general.notaryFees',
-      value: toMoney(Math.round(r.property.value * constants.notaryFees)),
+      value: toMoney(Math.round(p.value * constants.notaryFees)),
     },
     {
       label: 'general.insuranceFees',
-      value: toMoney(
-        Math.round(r.general.insuranceFortuneUsed * constants.lppFees),
-      ),
+      value: toMoney(Math.round(r.general.insuranceFortuneUsed * constants.lppFees)),
       hide: !r.general.insuranceFortuneUsed,
     },
     {
@@ -755,7 +746,7 @@ const getStructureArray = (props) => {
       label: 'Recap.finmaRules',
     },
     {
-      label: r.property.propertyWork
+      label: r.general.propertyWork
         ? 'Recap.borrowRatio2'
         : 'Recap.borrowRatio1',
       value: (
@@ -763,7 +754,7 @@ const getStructureArray = (props) => {
           <IntlNumber value={borrowRatio} format="percentage" />{' '}
           <span
             className={
-              borrowRatio <= constants.maxLoan(r.property.usageType) + 0.001 // add 0.1% to avoid rounding errors
+              borrowRatio <= constants.maxLoan(r.general.usageType) + 0.001 // add 0.1% to avoid rounding errors
                 ? 'fa fa-check success'
                 : 'fa fa-times error'
             }

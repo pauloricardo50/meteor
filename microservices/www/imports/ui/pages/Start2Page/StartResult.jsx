@@ -23,7 +23,7 @@ const handleClick = ({ formState, setFormState, currentUser }) => {
   if (currentUser) {
     track('Funnel - completed form while logged in', {});
     saveStartForm(formState).then(() => {
-      window.location.href = Meteor.settings.public.subdomains.app;
+      window.location.replace(`${Meteor.settings.public.subdomains.app}`);
     });
     return;
   }

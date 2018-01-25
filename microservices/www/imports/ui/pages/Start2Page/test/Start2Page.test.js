@@ -15,7 +15,7 @@
 //   describe('<Start2Page />', () => {
 //     let props;
 //     let state;
-//     const component = () => getMountedComponent(Start2Page, props);
+//     const component = () => getMountedComponent({Component: Start2Page, props});
 //
 //     beforeEach(() => {
 //       props = {

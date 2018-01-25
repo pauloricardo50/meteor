@@ -1,6 +1,7 @@
-import { getMonthlyWithExtractedOffer } from 'core/utils/requestFunctions';
+import { getMonthlyWithExtractedOffer } from './requestFunctions';
+import { OFFER_TYPE, INTEREST_RATES } from '../api/constants';
 
-export const getRange = (offers, key) =>
+export const getRange = ({ offers }, key) =>
   offers.reduce(
     (accumulator, offer) => {
       const standard = offer.standardOffer[key];
@@ -26,7 +27,7 @@ export const getRange = (offers, key) =>
     { min: Infinity, max: 0 },
   );
 
-export const extractOffers = (offers, loanRequest) => {
+export const extractOffers = ({ offers, loanRequest, property }) => {
   const array = [];
   offers.forEach((offer) => {
     const meta = {
@@ -41,10 +42,10 @@ export const extractOffers = (offers, loanRequest) => {
       ...meta,
       conditions: offer.conditions,
       uid: `standard${offer._id}`,
-      type: 'standard',
+      type: OFFER_TYPE.STANDARD,
     });
     array[array.length - 1].monthly = getMonthlyWithExtractedOffer(
-      loanRequest,
+      { loanRequest, property, offer },
       array[array.length - 1],
     );
 
@@ -55,10 +56,10 @@ export const extractOffers = (offers, loanRequest) => {
         conditions: offer.conditions,
         counterparts: offer.counterparts,
         uid: `counterparts${offer._id}`,
-        type: 'counterparts',
+        type: OFFER_TYPE.COUNTERPARTS,
       });
       array[array.length - 1].monthly = getMonthlyWithExtractedOffer(
-        loanRequest,
+        { loanRequest, property, offer },
         array[array.length - 1],
       );
     }
@@ -66,17 +67,18 @@ export const extractOffers = (offers, loanRequest) => {
   return array;
 };
 
-export const getBestRate = (offers = [], duration = 'interest10') =>
+export const getBestRate = (
+  { offers = [] },
+  duration = INTEREST_RATES.YEARS_10,
+) =>
   (offers.length
-    ? Math.min(
-      ...offers.reduce((acc, offer) => {
-        if (offer.standardOffer[duration]) {
-          acc.push(offer.standardOffer[duration]);
-        }
-        if (offer.counterpartOffer && offer.counterpartOffer[duration]) {
-          acc.push(offer.counterpartOffer[duration]);
-        }
-        return acc;
-      }, []),
-    )
+    ? Math.min(...offers.reduce((acc, offer) => {
+      if (offer.standardOffer[duration]) {
+        acc.push(offer.standardOffer[duration]);
+      }
+      if (offer.counterpartOffer && offer.counterpartOffer[duration]) {
+        acc.push(offer.counterpartOffer[duration]);
+      }
+      return acc;
+    }, []))
     : undefined);

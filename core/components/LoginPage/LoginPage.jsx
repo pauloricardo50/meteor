@@ -53,6 +53,7 @@ const LoginPage = ({ location: { search }, history: { push } }) => {
     </section>
   );
 };
+
 LoginPage.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };

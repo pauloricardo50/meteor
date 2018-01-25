@@ -6,8 +6,16 @@ import DialogSimple from 'core/components/DialogSimple';
 import { T, IntlNumber } from 'core/components/Translation';
 import constants from 'core/config/constants';
 import { toMoney } from 'core/utils/conversionFunctions';
+import {
+  USAGE_TYPE,
+  OTHER_INCOME,
+  REAL_ESTATE,
+  GENDER,
+  EXPENSES,
+  PURCHASE_TYPE,
+} from 'core/api/constants';
 
-export const getAcquisitionArray = (state, props, setFormState, components) => [
+export const getAcquisitionArray = (state, props, setFormState) => [
   {
     id: 'propertyValue',
     type: 'textInput',
@@ -68,28 +76,21 @@ export const getAcquisitionArray = (state, props, setFormState, components) => [
       ),
     },
     hideResult: true,
-    buttons: [{ id: true, label: 'Continuer' }],
+    buttons: [{ id: true, label: <T id="general.continue" /> }],
   },
   {
     id: 'usageType',
     type: 'buttons',
     question: true,
-    buttons: [
-      { id: 'primary', label: <T id="Start2Form.usageTypeButtonPrincipal" /> },
-      {
-        id: 'secondary',
-        label: <T id="Start2Form.usageTypeButtonSecondary" />,
-      },
-      {
-        id: 'investment',
-        label: <T id="Start2Form.usageTypeButtonInvestment" />,
-      },
-    ],
+    buttons: Object.values(USAGE_TYPE).map(value => ({
+      id: value,
+      label: <T id={`Start2Form.usageTypeButton${value}`} />,
+    })),
   },
   {
     id: 'propertyRent',
     type: 'textInput',
-    condition: state.usageType === 'investment',
+    condition: state.usageType === USAGE_TYPE.INVESTMENT,
     money: true,
   },
   {
@@ -106,8 +107,6 @@ export const getAcquisitionArray = (state, props, setFormState, components) => [
     type: 'textInput',
     condition: state.borrowerCount === 1,
     text2: true,
-    // placeholder: '18',
-    // noIntl: true,
     number: true,
     width: 50,
     validation: { min: 18, max: 120 },
@@ -117,8 +116,6 @@ export const getAcquisitionArray = (state, props, setFormState, components) => [
     type: 'textInput',
     condition: state.borrowerCount > 1,
     text2: true,
-    // placeholder: '18',
-    // noIntl: true,
     number: true,
     width: 50,
     validation: { min: 18, max: 120 },
@@ -128,19 +125,19 @@ export const getAcquisitionArray = (state, props, setFormState, components) => [
     type: 'buttons',
     condition: state.borrowerCount === 1 && state.age >= 50,
     text2: true,
-    buttons: [
-      { id: 'f', label: <T id="Start2Form.gender.woman" /> },
-      { id: 'm', label: <T id="Start2Form.gender.man" /> },
-    ],
+    buttons: Object.values(GENDER).map(value => ({
+      id: value,
+      label: <T id={`Start2Form.gender.${value}`} />,
+    })),
   },
   {
     id: 'oldestGender',
     type: 'buttons',
     condition: state.borrowerCount > 1 && state.oldestAge >= 50,
-    buttons: [
-      { id: 'f', label: <T id="Start2Form.gender.woman" /> },
-      { id: 'm', label: <T id="Start2Form.gender.man" /> },
-    ],
+    buttons: Object.values(GENDER).map(value => ({
+      id: value,
+      label: <T id={`Start2Form.gender.${value}`} />,
+    })),
   },
   {
     id: 'initialIncomeAgreed',
@@ -219,14 +216,7 @@ export const getAcquisitionArray = (state, props, setFormState, components) => [
       {
         id: 'description',
         type: 'selectInput',
-        options: [
-          { id: 'welfareIncome' },
-          { id: 'pensionIncome' },
-          { id: 'rentIncome' },
-          { id: 'realEstateIncome' },
-          { id: 'investmentIncome' },
-          { id: 'other' },
-        ],
+        options: Object.values(OTHER_INCOME).map(value => ({ id: value })),
       },
       {
         id: 'value',
@@ -239,7 +229,7 @@ export const getAcquisitionArray = (state, props, setFormState, components) => [
     id: 'expensesExists',
     type: 'buttons',
     intlValues: {
-      optional: state.usageType !== 'primary' ? 'rentes, ' : '',
+      optional: state.usageType !== USAGE_TYPE.PRIMARY ? 'rentes, ' : '',
     },
     question: true,
     deleteId: 'expenses',
@@ -257,14 +247,7 @@ export const getAcquisitionArray = (state, props, setFormState, components) => [
       {
         id: 'description',
         type: 'selectInput',
-        options: [
-          { id: 'leasing' },
-          { id: 'rent' },
-          { id: 'personalLoan' },
-          { id: 'mortgageLoan' },
-          { id: 'pensions' },
-          { id: 'other' },
-        ],
+        options: Object.values(EXPENSES).map(value => ({ id: value })),
       },
       {
         id: 'value',
@@ -298,7 +281,7 @@ export const getAcquisitionArray = (state, props, setFormState, components) => [
   },
   {
     id: 'insurance1Exists',
-    condition: state.usageType === 'primary',
+    condition: state.usageType === USAGE_TYPE.PRIMARY,
     type: 'buttons',
     question: true,
     buttons: [
@@ -315,13 +298,15 @@ export const getAcquisitionArray = (state, props, setFormState, components) => [
   },
   {
     id: 'insurance1',
-    condition: state.usageType === 'primary' && state.insurance1Exists === true,
+    condition:
+      state.usageType === USAGE_TYPE.PRIMARY && state.insurance1Exists === true,
     type: 'multipleInput',
     money: true,
+    zeroAllowed: true,
   },
   {
     id: 'insurance2Exists',
-    condition: state.usageType === 'primary',
+    condition: state.usageType === USAGE_TYPE.PRIMARY,
     type: 'buttons',
     question: true,
     buttons: [
@@ -338,9 +323,11 @@ export const getAcquisitionArray = (state, props, setFormState, components) => [
   },
   {
     id: 'insurance2',
-    condition: state.usageType === 'primary' && state.insurance2Exists === true,
+    condition:
+      state.usageType === USAGE_TYPE.PRIMARY && state.insurance2Exists === true,
     type: 'multipleInput',
     money: true,
+    zeroAllowed: true,
   },
   {
     id: 'realEstateExists',
@@ -362,7 +349,7 @@ export const getAcquisitionArray = (state, props, setFormState, components) => [
       {
         id: 'description',
         type: 'selectInput',
-        options: [{ id: 'primary' }, { id: 'secondary' }, { id: 'investment' }],
+        options: Object.values(REAL_ESTATE).map(value => ({ id: value })),
       },
       {
         id: 'value',
@@ -384,7 +371,7 @@ export const getErrorArray = (state, props, setFormState) => [
     id: 'notEnoughCash',
     error: true,
     condition:
-      state.usageType === 'primary' &&
+      state.usageType === USAGE_TYPE.PRIMARY &&
       (props.fortune < props.minCash &&
         props.insuranceFortune >= 0.1 * props.propAndWork),
     type: 'buttons',
@@ -566,7 +553,7 @@ export const getFinalArray = (state, props, setFormState, components) => [
     validation: {
       min: Math.max(100000, props.minLoan),
       max:
-        state.usageType === 'secondary'
+        state.usageType === USAGE_TYPE.SECONDARY
           ? Math.ceil(0.7 * props.propAndWork)
           : Math.ceil(0.8 * props.propAndWork),
     },
@@ -575,8 +562,9 @@ export const getFinalArray = (state, props, setFormState, components) => [
     id: 'fortuneRequiredAgreed',
     condition:
       state.type === 'acquisition' &&
-      (state.usageType !== 'primary' ||
-        (state.usageType === 'primary' && props.insuranceFortune <= 0)),
+      (state.usageType !== USAGE_TYPE.PRIMARY ||
+        (state.usageType === USAGE_TYPE.PRIMARY &&
+          props.insuranceFortune <= 0)),
     type: 'buttons',
     intlValues: {
       value: (
@@ -601,7 +589,7 @@ export const getFinalArray = (state, props, setFormState, components) => [
     id: 'useInsurance1',
     condition:
       state.type === 'acquisition' &&
-      state.usageType === 'primary' &&
+      state.usageType === USAGE_TYPE.PRIMARY &&
       props.fortune >= props.fortuneNeeded &&
       props.insuranceFortune > 0,
     type: 'buttons',
@@ -649,7 +637,7 @@ export const getFinalArray = (state, props, setFormState, components) => [
     id: 'useInsurance2',
     condition:
       state.type === 'acquisition' &&
-      state.usageType === 'primary' &&
+      state.usageType === USAGE_TYPE.PRIMARY &&
       props.fortune < props.fortuneNeeded,
     type: 'buttons',
     buttons: [
@@ -731,7 +719,7 @@ export const getFinalArray = (state, props, setFormState, components) => [
     id: 'fortuneSliders',
     condition:
       state.type === 'acquisition' &&
-      state.usageType === 'primary' &&
+      state.usageType === USAGE_TYPE.PRIMARY &&
       (state.useInsurance1 === true || state.useInsurance2 === true) &&
       state.insuranceConditions === true,
     type: 'custom',
@@ -842,21 +830,21 @@ export const getFinalArray = (state, props, setFormState, components) => [
     hideResult: true,
     buttons: !state.hideFinalButton
       ? [
-          {
-            id: true,
-            label: <T id="Start2Form.finalized.button" />,
-            onClick() {
-              // After clicking on this button, hide it
-              setFormState('hideFinalButton', true);
-              const options = {
-                duration: 350,
-                delay: 0,
-                smooth: true,
-              };
-              Meteor.defer(() => Scroll.scroller.scrollTo('final', options));
-            },
+        {
+          id: true,
+          label: <T id="Start2Form.finalized.button" />,
+          onClick() {
+            // After clicking on this button, hide it
+            setFormState('hideFinalButton', true);
+            const options = {
+              duration: 350,
+              delay: 0,
+              smooth: true,
+            };
+            Meteor.defer(() => Scroll.scroller.scrollTo('final', options));
           },
-        ]
+        },
+      ]
       : [],
   },
 ];

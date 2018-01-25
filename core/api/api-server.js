@@ -18,6 +18,7 @@ import './properties/methods';
 
 import './users/server/publications';
 import './users/methods';
+import './users/server/accounts-server-config';
 
 import './methods/server';
 import './methods/methods';

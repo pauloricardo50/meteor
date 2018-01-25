@@ -1,14 +1,15 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
-import { getMountedComponent } from  'core/utils/testHelpers';
+import { getMountedComponent } from 'core/utils/testHelpers';
 
 import Start1Page from '../Start1Page';
 
 if (Meteor.isClient) {
   describe('<Start1Page />', () => {
     let props;
-    const component = () => getMountedComponent(Start1Page, props);
+    const component = () =>
+      getMountedComponent({ Component: Start1Page, props });
 
     beforeEach(() => {
       props = { match: { params: {} } };

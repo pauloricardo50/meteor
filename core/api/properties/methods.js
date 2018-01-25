@@ -11,26 +11,16 @@ import Properties from './properties';
 export const insertProperty = new ValidatedMethod({
   name: 'properties.insert',
   mixins: [CallPromiseMixin],
-  validate({ object }) {
-    const { value, address, latitude, longitude } = object;
+  validate({ object, userId }) {
     check(object, Object);
-    check(value, Number);
-    check(address, String);
-    check(latitude, Number);
-    check(longitude, Number);
-
-    validateUser();
+    if (userId) {
+      check(userId, String);
+    }
   },
-  run({ object }) {
-    const { value, address, latitude, longitude } = object;
-
+  run({ object, userId }) {
     return Properties.insert({
-      userId: Meteor.userId(),
-      name: address.split(',')[0],
-      value,
-      address,
-      latitude,
-      longitude,
+      ...object,
+      userId: userId === undefined ? Meteor.userId() : userId,
     });
   },
 });
@@ -58,6 +48,30 @@ export const updateProperty = new ValidatedMethod({
   },
   run({ id, object }) {
     return Properties.update(id, { $set: object });
+  },
+});
+
+// Lets you push a value to an array
+export const pushPropertyValue = new ValidatedMethod({
+  name: 'properties.pushValue',
+  mixins: [CallPromiseMixin],
+  validate({ id }) {
+    check(id, String);
+  },
+  run({ object, id }) {
+    return Properties.update(id, { $push: object });
+  },
+});
+
+// Lets you pop a value from the end of an array
+export const popPropertyValue = new ValidatedMethod({
+  name: 'properties.popValue',
+  mixins: [CallPromiseMixin],
+  validate({ id }) {
+    check(id, String);
+  },
+  run({ object, id }) {
+    return Properties.update(id, { $pop: object }, { getAutoValues: false });
   },
 });
 

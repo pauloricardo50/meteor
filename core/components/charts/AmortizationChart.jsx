@@ -6,16 +6,14 @@ import ReactHighcharts from 'react-highcharts';
 
 import { injectIntl } from 'react-intl';
 
-import {
-  getAmortization,
-  getInterests,
-} from 'core/utils/finance-math';
+import { getAmortization, getInterests } from 'core/utils/finance-math';
 import {
   getLoanValue,
   getMaintenance,
   getPropAndWork,
 } from 'core/utils/requestFunctions';
 import colors from 'core/config/colors';
+import withRequest from 'core/containers/withRequest';
 
 const chartColors = {
   debt: colors.charts[0],
@@ -25,12 +23,20 @@ const chartColors = {
 };
 
 const getData = ({
-  loanRequest, borrowers, totalYears, interestRates,
+  loanRequest,
+  borrowers,
+  totalYears,
+  interestRates,
+  property,
 }) => {
-  const { amortization, years } = getAmortization(loanRequest, borrowers);
-  const maintenance = getMaintenance(loanRequest);
-  const loan = getLoanValue(loanRequest);
-  const propAndWork = getPropAndWork(loanRequest);
+  const { amortization, years } = getAmortization({
+    loanRequest,
+    borrowers,
+    property,
+  });
+  const maintenance = getMaintenance({ loanRequest, property });
+  const loan = getLoanValue({ loanRequest, property });
+  const propAndWork = getPropAndWork({ loanRequest, property });
 
   const debt = [];
   const fortune = [];
@@ -54,12 +60,17 @@ const getData = ({
 
     debt[i] = Math.round(value);
     fortune[i] = Math.round(propAndWork - value);
-    payment[i] = Math.round(amort + maintenance + getInterests(loanRequest, interestRates[i], value));
+    payment[i] = Math.round(amort +
+        maintenance +
+        getInterests({ loanRequest, property }, interestRates[i], value));
     amortizationChart[i] = Math.round(amort);
   }
 
   return {
-    debt, fortune, payment, amortization: amortizationChart,
+    debt,
+    fortune,
+    payment,
+    amortization: amortizationChart,
   };
 };
 
@@ -182,6 +193,7 @@ class AmortizationChart extends Component {
 AmortizationChart.propTypes = {
   loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  property: PropTypes.objectOf(PropTypes.any).isRequired,
   totalYears: PropTypes.number,
 };
 
@@ -189,4 +201,4 @@ AmortizationChart.defaultProps = {
   totalYears: 20,
 };
 
-export default injectIntl(AmortizationChart);
+export default injectIntl(withRequest(AmortizationChart));

@@ -4,7 +4,71 @@
 const path = require('path');
 const fs = require('fs');
 
-function findFilesWithExtension(startPath, extension) {
+const config = {
+  // Where the lang directory is stored with the complete list of strings
+  // for each language
+  pathToLangDir: '../core',
+  // An array of languages to look for
+  languages: ['fr'],
+  // The list of directories to scan and create language files for
+  directories: [
+    {
+      path: '../microservices/app',
+      exceptions: [
+        'steps',
+        'ProjectBarChart',
+        'LoginPage',
+        'Forms',
+        'files',
+        'offer',
+        'ContactButton',
+        'ConditionsButton',
+        'Uploader',
+        'FileAdder',
+        'ArrayInput',
+      ],
+    },
+    { path: '../microservices/www', exceptions: ['Start2Form', 'Forms'] },
+    { path: '../microservices/admin', exceptions: ['LoginPage'] },
+    { path: '../microservices/lender', exceptions: ['LoginPage'] },
+    {
+      path: '../microservices/admin-temp',
+      exceptions: [
+        'steps',
+        'ProjectBarChart',
+        'LoginPage',
+        'Forms',
+        'files',
+        'offer',
+        'Table',
+        'ConditionsButton',
+        'Uploader',
+        'FileAdder',
+        'ArrayInput',
+        'adminActions',
+      ],
+    },
+  ],
+  // List of strings that don't have a component file associated to them, so
+  // this algorithm would miss them, provide the first part of those strings
+  // here
+  generalExceptions: [
+    'TopNav',
+    'TopNavDropdown',
+    'Recap',
+    'general',
+    'tooltip',
+    'tooltip2',
+    'ExpensesChartInterests',
+    'ExpensesChart',
+    'Search',
+    'e-Potek',
+    'NotFound',
+    'LayoutError',
+  ],
+};
+
+const findFilesWithExtension = (startPath, extension) => {
   let results = [];
 
   if (!fs.existsSync(startPath)) {
@@ -27,9 +91,11 @@ function findFilesWithExtension(startPath, extension) {
   }
 
   return results;
-}
+};
 
-function filterLanguageKeys(pathToLangDir, language, allowedKeys) {
+// Given a lang/ directory and a specific language, get all the strings with
+// keys provided in the allowedKeys array
+const filterLanguageKeys = (pathToLangDir, language, allowedKeys) => {
   const langObject = JSON.parse(
     fs.readFileSync(createPathToLanguage(pathToLangDir, language), 'utf8'),
   );
@@ -43,28 +109,35 @@ function filterLanguageKeys(pathToLangDir, language, allowedKeys) {
     .reduce((obj, key) => Object.assign({ [key]: langObject[key] }, obj), {});
 
   return optimizedLangObject;
-}
+};
 
-function writeLanguageToDirectory(language, path) {
+// Given a JSON object of language strings, write it to path
+const writeLanguageToDirectory = (language, path) => {
   const json = JSON.stringify(language);
   ensureDirectoryExistence(path);
   fs.writeFileSync(path, json, 'utf8');
-}
+};
 
-function ensureDirectoryExistence(filePath) {
+// Recursively create directories if they don't exist to the specified filePath
+const ensureDirectoryExistence = filePath => {
   const dirname = path.dirname(filePath);
   if (fs.existsSync(dirname)) {
     return true;
   }
   ensureDirectoryExistence(dirname);
   fs.mkdirSync(dirname);
-}
+};
 
-function createPathToLanguage(dir, language) {
-  return dir + '/lang/' + language + '.json';
-}
+const createPathToLanguage = (dir, language) =>
+  dir + '/lang/' + language + '.json';
 
-function run({ directories, languages, generalExceptions, pathToLangDir }) {
+// Given a config object, create unique language files for each microservice
+const createLanguages = ({
+  directories,
+  languages,
+  generalExceptions,
+  pathToLangDir,
+}) => {
   console.log('Starting language building process...');
 
   directories.forEach(({ path: dirPath, exceptions: dirExceptions }) => {
@@ -82,29 +155,6 @@ function run({ directories, languages, generalExceptions, pathToLangDir }) {
       writeLanguageToDirectory(languageObject, pathToLanguage);
     });
   });
-}
-
-const config = {
-  pathToLangDir: '../core',
-  languages: ['fr', 'en'],
-  directories: [
-    { path: '../sApp', exceptions: ['steps', 'ProjectBarChart'] },
-    { path: '../sWww', exceptions: ['Start2Form'] },
-    { path: '../sAdmin', exceptions: [] },
-    { path: '../sLender', exceptions: [] },
-  ],
-  generalExceptions: [
-    'TopNav',
-    'TopNavDropdown',
-    'Recap',
-    'general',
-    'tooltip',
-    'tooltip2',
-    'ExpensesChartInterests',
-    'ExpensesChart',
-    'Search',
-    'e-Potek',
-  ],
 };
 
-run(config);
+createLanguages(config);
