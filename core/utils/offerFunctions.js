@@ -44,10 +44,11 @@ export const extractOffers = ({ offers, loanRequest, property }) => {
       uid: `standard${offer._id}`,
       type: OFFER_TYPE.STANDARD,
     });
-    array[array.length - 1].monthly = getMonthlyWithExtractedOffer(
-      { loanRequest, property, offer },
-      array[array.length - 1],
-    );
+    array[array.length - 1].monthly = getMonthlyWithExtractedOffer({
+      loanRequest,
+      property,
+      offer: array[array.length - 1],
+    });
 
     if (offer.counterpartOffer) {
       array.push({
@@ -58,10 +59,11 @@ export const extractOffers = ({ offers, loanRequest, property }) => {
         uid: `counterparts${offer._id}`,
         type: OFFER_TYPE.COUNTERPARTS,
       });
-      array[array.length - 1].monthly = getMonthlyWithExtractedOffer(
-        { loanRequest, property, offer },
-        array[array.length - 1],
-      );
+      array[array.length - 1].monthly = getMonthlyWithExtractedOffer({
+        loanRequest,
+        property,
+        offer: array[array.length - 1],
+      });
     }
   });
   return array;

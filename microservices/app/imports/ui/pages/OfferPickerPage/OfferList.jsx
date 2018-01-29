@@ -81,8 +81,6 @@ class OfferList extends Component {
     );
     const { lender } = loanRequest.logic;
 
-    console.log('isAscending: ', isAscending);
-
     return (
       <div className="flex-col" style={{ width: '100%' }}>
         <div className="flex" style={{ marginBottom: 16, width: '100%' }}>
