@@ -108,13 +108,15 @@ export default class SelectFieldInput extends Component {
 }
 
 SelectFieldInput.propTypes = {
-  label: PropTypes.node.isRequired,
-  id: PropTypes.string.isRequired,
   currentValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   docId: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(PropTypes.object).isRequired,
   updateFunc: PropTypes.string.isRequired,
-  disabled: PropTypes.bool,
+  inputProps: PropTypes.shape({
+    label: PropTypes.node.isRequired,
+    disabled: PropTypes.bool,
+    options: PropTypes.arrayOf(PropTypes.object).isRequired,
+    id: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 SelectFieldInput.defaultProps = {

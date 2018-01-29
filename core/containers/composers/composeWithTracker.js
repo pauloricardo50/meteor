@@ -16,12 +16,12 @@ const getTrackerLoader = loaderFunc => (props, onData, env) => {
   };
 };
 
-// export const defaultOptions = {
-//   withRef: false,
-// };
+export const defaultOptions = {
+  withRef: false,
+};
 
 const composeWithTracker = (loadFunc, options) => component =>
-  // compose(getTrackerLoader(loadFunc), { ...options, ...defaultOptions })(component);
-  compose(getTrackerLoader(loadFunc), options)(component);
+  compose(getTrackerLoader(loadFunc), { ...options, ...defaultOptions })(component);
+// compose(getTrackerLoader(loadFunc), options)(component);
 
 export default composeWithTracker;

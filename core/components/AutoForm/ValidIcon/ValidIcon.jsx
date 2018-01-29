@@ -58,8 +58,6 @@ const ValidIcon = ({
 };
 
 ValidIcon.propTypes = {
-  saving: PropTypes.bool.isRequired,
-  errorExists: PropTypes.bool.isRequired,
   style: PropTypes.objectOf(PropTypes.any),
   hide: PropTypes.bool,
 };

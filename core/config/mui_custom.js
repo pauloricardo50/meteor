@@ -9,9 +9,6 @@ const theme = createMuiTheme({
       raised: {
         backgroundColor: 'white',
       },
-      raisedAccent: {
-        color: 'white',
-      },
     },
     MuiInput: {
       underline: {

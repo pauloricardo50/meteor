@@ -163,19 +163,19 @@ class ZipAutoComplete extends Component {
 }
 
 ZipAutoComplete.propTypes = {
-  label: PropTypes.node.isRequired,
   savePath: PropTypes.string.isRequired,
   updateFunc: PropTypes.string.isRequired,
   docId: PropTypes.string.isRequired,
   initialValue: PropTypes.string,
-  disabled: PropTypes.bool,
-  style: PropTypes.objectOf(PropTypes.any),
+  inputProps: PropTypes.shape({
+    label: PropTypes.node.isRequired,
+    disabled: PropTypes.bool,
+    style: PropTypes.objectOf(PropTypes.any),
+  }).isRequired,
 };
 
 ZipAutoComplete.defaultProps = {
   initialValue: '',
-  disabled: false,
-  style: {},
 };
 
 export default ZipAutoComplete;

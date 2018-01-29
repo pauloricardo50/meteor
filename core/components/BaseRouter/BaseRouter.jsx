@@ -68,7 +68,7 @@ BaseRouter.propTypes = {
   messages: PropTypes.object.isRequired,
   formats: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
-  WrapperComponent: PropTypes.node,
+  WrapperComponent: PropTypes.any,
   hasLogin: PropTypes.bool,
 };
 

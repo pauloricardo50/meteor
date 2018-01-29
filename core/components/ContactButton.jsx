@@ -46,6 +46,7 @@ const styles = {
   icon: {
     height: 24,
     width: 24,
+    color: '#495057',
   },
 };
 
@@ -70,7 +71,12 @@ const overlayContent = path => (
       <img
         src={staff.img}
         alt={staff.fullName}
-        style={{ width: 64, height: 64, borderRadius: '50%', marginRight: 16 }}
+        style={{
+          width: 64,
+          height: 64,
+          borderRadius: '50%',
+          marginRight: 16,
+        }}
       />
       <div className="text" style={{ flexGrow: 1 }}>
         <h4 className="fixed-size no-margin" style={{ marginBottom: 8 }}>
@@ -91,7 +97,7 @@ const overlayContent = path => (
       }}
     >
       <div style={styles.iconDiv}>
-        <Icon type="phone" style={styles.icon} color="#495057" />
+        <Icon type="phone" style={styles.icon} />
       </div>
       <div className="text" style={{ flexGrow: 1 }}>
         <p className="bold" style={{ margin: 0 }}>
@@ -114,7 +120,7 @@ const overlayContent = path => (
       }}
     >
       <div style={styles.iconDiv}>
-        <Icon type="mail" style={styles.icon} color="#495057" />
+        <Icon type="mail" style={styles.icon} />
       </div>
       <div className="text" style={{ flexGrow: 1 }}>
         <p className="bold" style={{ margin: 0 }}>

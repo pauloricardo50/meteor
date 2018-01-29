@@ -117,7 +117,7 @@ const TextInput = (props) => {
       )}
       <Input
         {...otherProps}
-        className={classes ? Object.values(classes) : ''}
+        className={classes ? Object.values(classes).join(' ') : ''}
         id={id}
         onChange={onChangeHandler}
         type="text"

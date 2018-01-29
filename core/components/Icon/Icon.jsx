@@ -63,7 +63,7 @@ const iconMap = {
   dashboard: AssessmentIcon,
   folder: FolderIcon,
   loop: LoopIcon,
-  'loop-spin': { component: LoopIcon, className: 'fa-spin' },
+  'loop-spin': { component: LoopIcon, props: { className: 'fa-spin' } },
   person: Person,
   face: FaceIcon,
   eye: Eye,
@@ -84,7 +84,7 @@ const Icon = (props) => {
   if (!MyIcon) {
     throw new Error(`invalid icon type: ${type}`);
   } else if (MyIcon.component) {
-    return <MyIcon.component className={MyIcon.className} {...props} />;
+    return <MyIcon.component {...MyIcon.props} {...props} />;
   }
 
   return <MyIcon {...props} />;

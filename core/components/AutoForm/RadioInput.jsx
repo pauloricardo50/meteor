@@ -112,9 +112,6 @@ export default class RadioInput extends Component {
 }
 
 RadioInput.propTypes = {
-  id: PropTypes.string.isRequired,
-  label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
-  options: PropTypes.arrayOf(PropTypes.object).isRequired,
   onConditionalChange: PropTypes.func,
   currentValue: PropTypes.oneOfType([
     PropTypes.bool,
@@ -123,11 +120,15 @@ RadioInput.propTypes = {
   ]),
   docId: PropTypes.string.isRequired,
   updateFunc: PropTypes.string.isRequired,
-  disabled: PropTypes.bool,
+  inputProps: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+    options: PropTypes.arrayOf(PropTypes.object).isRequired,
+    disabled: PropTypes.bool,
+  }).isRequired,
 };
 
 RadioInput.defaultProps = {
   currentValue: undefined,
   onConditionalChange: () => null,
-  disabled: false,
 };

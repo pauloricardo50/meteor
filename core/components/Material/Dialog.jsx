@@ -18,7 +18,7 @@ const Dialog = (props) => {
       disableEscapeKeyDown={important}
       {...otherProps}
     >
-      <DialogTitle>{title}</DialogTitle>
+      {title && <DialogTitle>{title}</DialogTitle>}
       <DialogContent>
         {text && <DialogContentText>{text}</DialogContentText>}
         {children}
