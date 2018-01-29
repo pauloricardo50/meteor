@@ -13,7 +13,7 @@ const getColor = ({ primary, secondary, color }) => {
   if (primary) {
     return 'primary';
   } else if (secondary) {
-    return 'accent';
+    return 'secondary';
   }
 
   return color;
