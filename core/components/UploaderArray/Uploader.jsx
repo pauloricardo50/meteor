@@ -5,7 +5,7 @@ import { injectIntl } from 'react-intl';
 
 import cleanMethod from 'core/api/cleanMethods';
 import { getFileCount } from 'core/api/files/files';
-import bert from '/imports/js/helpers/bert';
+import bert from 'core/utils/bert';
 import { allowedFileTypes, maxSize } from 'core/api/files/meteor-slingshot';
 import { FILE_STATUS } from '../../api/constants';
 

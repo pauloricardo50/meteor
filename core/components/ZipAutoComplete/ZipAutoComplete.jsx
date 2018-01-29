@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { getLocations } from '/imports/js/helpers/APIs';
+import { getLocations } from 'core/utils/APIs';
 import cleanMethod from 'core/api/cleanMethods';
 
 import ValidIcon from 'core/components/AutoForm/ValidIcon';
