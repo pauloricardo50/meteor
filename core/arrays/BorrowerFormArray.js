@@ -1,7 +1,7 @@
 import { constants } from 'core/api';
 
 export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
-  const b = borrowers.find(borr => borr._id === id);
+  const b = borrowers.find(borrower => borrower._id === id);
   const multiple = borrowers.length > 1;
   // If this is the first borrower in the array of borrowers, don't ask for same address
   const isFirst = borrowers[0]._id === id;

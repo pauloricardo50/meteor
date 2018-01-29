@@ -65,10 +65,10 @@ const SideNavUser = (props) => {
         />
         {requestId && (
           <SideNavUserRequest
-            loanRequest={currentRequest}
-            borrowers={borrowers.filter(b => currentRequest.borrowers.indexOf(b._id) > -1)}
-            property={properties.find(p => p._id === currentRequest.property)}
             {...props}
+            loanRequest={currentRequest}
+            borrowers={borrowers.filter(b => borrowerIds.indexOf(b._id) > -1)}
+            property={properties.find(p => p._id === currentRequest.property)}
           />
         )}
       </div>
