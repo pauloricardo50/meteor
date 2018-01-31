@@ -79,23 +79,18 @@ describe('loans', () => {
 
       describe('pushLoanValue', () => {
         it('Properly pushes a value to loan', () => {
-          console.log('pushLoanValue test starting..');
+          // FIXME: This test does not appear to run until the end
           const id = loan._id;
           const object = { 'general.partnersToAvoid': 'Jack' };
-          console.log('obj: ', { object, id });
           return pushLoanValue
             .callPromise({ object, id })
             .then((result) => {
-              console.log('callPromise result: ', result);
               const modifiedLoan = Loans.findOne(id);
               const length = loan.general.partnersToAvoid.length;
-
-              console.log('modifiedLoan: ', modifiedLoan);
 
               expect(modifiedLoan.general.partnersToAvoid.length).to.equal(length + 1);
             })
             .catch((error) => {
-              console.log('promise error: ', error);
               throw error;
             });
         });
@@ -126,8 +121,8 @@ describe('loans', () => {
               const modifiedLoan = Loans.findOne(id);
 
               expect(modifiedLoan.logic.auction.status).to.equal(AUCTION_STATUS.STARTED);
-              expect(modifiedLoan.logic.auction.startTime instanceof Date).to
-                .be.true;
+              expect(modifiedLoan.logic.auction.startTime instanceof Date).to.be
+                .true;
             });
           });
         }
@@ -194,8 +189,7 @@ describe('loans', () => {
             expect(modifiedLoan.emails[0].emailId).to.equal(email.emailId);
             expect(modifiedLoan.emails[0]._id).to.equal(email._id);
             expect(modifiedLoan.emails[0].status).to.equal(email.status);
-            expect(modifiedLoan.emails[0].updatedAt instanceof Date).to.be
-              .true;
+            expect(modifiedLoan.emails[0].updatedAt instanceof Date).to.be.true;
             expect(Object.keys(modifiedLoan.emails[0]).length).to.equal(4);
           });
         });
