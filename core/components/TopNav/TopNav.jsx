@@ -17,13 +17,13 @@ const TopNav = (props) => {
   const {
     history,
     currentUser,
-    loanRequests,
+    loans,
     appChildren,
     public: isPublic,
   } = props;
   const isApp = history && history.location.pathname.slice(0, 4) === '/';
 
-  const showDrawer = isApp && loanRequests.length > 0;
+  const showDrawer = isApp && loans.length > 0;
 
   return (
     // This overflowX hidden prevents any icon from having tooltips
@@ -67,7 +67,7 @@ const TopNav = (props) => {
 
 TopNav.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any),
-  loanRequests: PropTypes.arrayOf(PropTypes.object),
+  loans: PropTypes.arrayOf(PropTypes.object),
   public: PropTypes.bool,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
   appChildren: PropTypes.func,
@@ -75,7 +75,7 @@ TopNav.propTypes = {
 
 TopNav.defaultProps = {
   currentUser: undefined,
-  loanRequests: [],
+  loans: [],
   public: false,
   appChildren: () => {},
 };

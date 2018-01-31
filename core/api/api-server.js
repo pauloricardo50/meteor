@@ -7,8 +7,8 @@ import './borrowers/methods';
 import './comparators/server/publications';
 import './comparators/methods';
 
-import './loanrequests/server/publications';
-import './loanrequests/methods';
+import './loans/server/publications';
+import './loans/methods';
 
 import './offers/server/publications';
 import './offers/methods';
@@ -25,7 +25,7 @@ import './methods/methods';
 
 import './factories';
 
-import './loanrequests/loanrequests';
+import './loans/loans';
 
 import './server/jobs/jobs';
 import './server/jobs/methods';

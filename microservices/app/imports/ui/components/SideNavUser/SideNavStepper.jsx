@@ -18,7 +18,7 @@ class SideNavStepper extends React.Component {
       this.setState({ serverTime: res });
     });
 
-    this.props.setStep(this.props.loanRequest.logic.step);
+    this.props.setStep(this.props.loan.logic.step);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -59,7 +59,7 @@ class SideNavStepper extends React.Component {
               key={i}
               step={s}
               active={activeStep === i}
-              currentRequestStep={this.props.loanRequest.logic.step === i}
+              currentLoanStep={this.props.loan.logic.step === i}
               handleClick={() => this.handleClick(i)}
             />
           ))}

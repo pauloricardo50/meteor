@@ -105,7 +105,7 @@ export default class OfferForm extends Component {
     }
 
     const object = {
-      requestId: this.props.loanRequest._id,
+      loanId: this.props.loan._id,
       organization: this.state.organization,
       standardOffer: {
         maxAmount: toNumber(this.state.maxAmount),
@@ -162,7 +162,7 @@ export default class OfferForm extends Component {
 
   render() {
     const {
-      admin, loanRequest, handleCancel, property,
+      admin, loan, handleCancel, property,
     } = this.props;
     const {
       organization,

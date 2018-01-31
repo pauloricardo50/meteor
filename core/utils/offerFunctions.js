@@ -1,4 +1,4 @@
-import { getMonthlyWithExtractedOffer } from './requestFunctions';
+import { getMonthlyWithExtractedOffer } from './loanFunctions';
 import { OFFER_TYPE, INTEREST_RATES } from '../api/constants';
 
 export const getRange = ({ offers }, key) =>
@@ -27,7 +27,7 @@ export const getRange = ({ offers }, key) =>
     { min: Infinity, max: 0 },
   );
 
-export const extractOffers = ({ offers, loanRequest, property }) => {
+export const extractOffers = ({ offers, loan, property }) => {
   const array = [];
   offers.forEach((offer) => {
     const meta = {
@@ -45,7 +45,7 @@ export const extractOffers = ({ offers, loanRequest, property }) => {
       type: OFFER_TYPE.STANDARD,
     });
     array[array.length - 1].monthly = getMonthlyWithExtractedOffer({
-      loanRequest,
+      loan,
       property,
       offer: array[array.length - 1],
     });
@@ -60,7 +60,7 @@ export const extractOffers = ({ offers, loanRequest, property }) => {
         type: OFFER_TYPE.COUNTERPARTS,
       });
       array[array.length - 1].monthly = getMonthlyWithExtractedOffer({
-        loanRequest,
+        loan,
         property,
         offer: array[array.length - 1],
       });

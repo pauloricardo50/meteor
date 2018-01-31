@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 import {
-  LoanRequests,
+  Loans,
   Borrowers,
   Offers,
   Comparators,
@@ -43,7 +43,7 @@ Factory.define('borrower', Borrowers, {
   age: 18,
 });
 
-Factory.define('loanRequest', LoanRequests, {
+Factory.define('loan', Loans, {
   createdAt: () => new Date(),
   general: () => ({
     fortuneUsed: 250000,
@@ -59,7 +59,7 @@ Factory.define('loanRequest', LoanRequests, {
     verification: {},
     step: 1,
   }),
-  name: () => 'request name',
+  name: () => 'loan name',
   emails: () => [],
 });
 

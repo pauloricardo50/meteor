@@ -39,7 +39,7 @@ const saveStartForm = (f, userId) => {
     };
   }
 
-  const loanRequest = {
+  const loan = {
     general: {
       usageType: f.usageType,
       purchaseType: f.purchaseType,
@@ -65,18 +65,18 @@ const saveStartForm = (f, userId) => {
 
   return (
     cleanMethod('insertBorrower', { object: borrowerOne, userId })
-      .then(id1 => loanRequest.borrowers.push(id1))
+      .then(id1 => loan.borrowers.push(id1))
       .then(() =>
         !!multiple &&
           cleanMethod('insertBorrower', { object: borrowerTwo, userId }))
-      .then(id2 => !!id2 && loanRequest.borrowers.push(id2))
+      .then(id2 => !!id2 && loan.borrowers.push(id2))
       .then(() => cleanMethod('insertProperty', { object: property, userId }))
       .then((propertyId) => {
-        loanRequest.property = propertyId;
-        return cleanMethod('insertRequest', { object: loanRequest, userId });
+        loan.property = propertyId;
+        return cleanMethod('insertLoan', { object: loan, userId });
       })
-      // If no userId is provided, return the requestId
-      .then(requestId => userId || requestId)
+      // If no userId is provided, return the loanId
+      .then(loanId => userId || loanId)
       .catch((error) => {
         console.warn(error);
         throw error;

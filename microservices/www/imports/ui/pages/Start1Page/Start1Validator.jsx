@@ -7,7 +7,7 @@ import { T } from 'core/components/Translation';
 import {
   validateRatios,
   validateRatiosCompletely,
-} from 'core/utils/requestFunctions';
+} from 'core/utils/loanFunctions';
 
 export default class Start1Validator extends Component {
   constructor(props) {

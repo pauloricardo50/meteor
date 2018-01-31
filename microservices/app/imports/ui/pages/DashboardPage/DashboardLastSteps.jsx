@@ -17,7 +17,7 @@ const DashboardLastSteps = props => {
     <DashboardItem style={styles.div} title={<T id="DashboardLastSteps.title" />}>
       <h3 className="text-center">
         <IntlDate
-          value={props.loanRequest.general.wantedClosingDate}
+          value={props.loan.general.wantedClosingDate}
           month="long"
           year="numeric"
           weekday="long"
@@ -46,7 +46,7 @@ const DashboardLastSteps = props => {
 };
 
 DashboardLastSteps.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default DashboardLastSteps;

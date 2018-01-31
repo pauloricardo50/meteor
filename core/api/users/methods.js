@@ -42,7 +42,7 @@ export const createPartner = new ValidatedMethod({
     if (!this.userId) {
       throw new Meteor.Error(
         'notLoggedIn',
-        'Must be logged in to update a request',
+        'Must be logged in to update a loan',
       );
     }
     if (!Roles.userIsInRole(this.userId, 'admin')) {

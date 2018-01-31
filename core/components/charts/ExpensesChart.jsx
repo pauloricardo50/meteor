@@ -4,9 +4,9 @@ import { injectIntl } from 'react-intl';
 import ReactHighcharts from 'react-highcharts';
 
 import { getInterests, getAmortization } from 'core/utils/finance-math';
-import { getInterestsWithOffer } from 'core/utils/requestFunctions';
+import { getInterestsWithOffer } from 'core/utils/loanFunctions';
 import colors from 'core/config/colors';
-import withRequest from 'core/containers/withRequest';
+import withLoan from 'core/containers/withLoan';
 
 import { legendConfig } from './chartSettings';
 
@@ -90,17 +90,17 @@ class ExpensesChart extends Component {
   constructor(props) {
     super(props);
 
-    if (this.props.loanRequest) {
+    if (this.props.loan) {
       let realRate = 0;
       if (
-        this.props.loanRequest.logic.lender &&
-        this.props.loanRequest.logic.lender.offerId
+        this.props.loan.logic.lender &&
+        this.props.loan.logic.lender.offerId
       ) {
-        const offer = this.props.offers.find(o => o._id === this.props.loanRequest.logic.lender.offerId);
+        const offer = this.props.offers.find(o => o._id === this.props.loan.logic.lender.offerId);
         if (offer) {
           realRate = getInterestsWithOffer(
             {
-              loanRequest: this.props.loanRequest,
+              loan: this.props.loan,
               offer,
             },
             false,
@@ -129,10 +129,10 @@ class ExpensesChart extends Component {
       n.interests !== p.interests ||
       n.amortization !== p.amortization ||
       n.maintenance !== p.maintenance ||
-      n.loanRequest !== p.loanRequest ||
+      n.loan !== p.loan ||
       n.interestRate !== p.interestRate
     ) {
-      if (this.props.loanRequest) {
+      if (this.props.loan) {
         this.setState(
           {
             interests: getInterests(n, n.interestRate),
@@ -352,7 +352,7 @@ class ExpensesChart extends Component {
 }
 
 ExpensesChart.defaultProps = {
-  loanRequest: undefined,
+  loan: undefined,
   interests: 0,
   amortization: 0,
   maintenance: 0,
@@ -362,7 +362,7 @@ ExpensesChart.defaultProps = {
 };
 
 ExpensesChart.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any),
+  loan: PropTypes.objectOf(PropTypes.any),
   property: PropTypes.objectOf(PropTypes.any),
   interests: PropTypes.number,
   amortization: PropTypes.number,
@@ -372,4 +372,4 @@ ExpensesChart.propTypes = {
   title: PropTypes.string,
 };
 
-export default injectIntl(withRequest(ExpensesChart));
+export default injectIntl(withLoan(ExpensesChart));

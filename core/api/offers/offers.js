@@ -41,7 +41,7 @@ const singleOffer = new SimpleSchema({
 });
 
 export const OfferSchema = new SimpleSchema({
-  requestId: {
+  loanId: {
     type: String,
     index: true,
   },

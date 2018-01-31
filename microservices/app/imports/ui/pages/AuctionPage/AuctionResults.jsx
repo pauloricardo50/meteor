@@ -43,9 +43,9 @@ const styles = {
 
 const getFakeOffers = (props) => {
   const loanWanted =
-    props.loanRequest.property.value -
-    props.loanRequest.general.fortuneUsed -
-    props.loanRequest.general.insuranceFortuneUsed;
+    props.loan.property.value -
+    props.loan.general.fortuneUsed -
+    props.loan.general.insuranceFortuneUsed;
   return [
     {
       standardOffer: {
@@ -108,7 +108,7 @@ class AuctionResults extends Component {
   }
 
   render() {
-    const { intl, offers, loanRequest } = this.props;
+    const { intl, offers, loan } = this.props;
     const f = intl.formatMessage;
     return (
       <section className="mask1 animated fadeIn" style={styles.section}>
@@ -144,7 +144,7 @@ class AuctionResults extends Component {
         </div>
 
         <div style={{ marginTop: 40 }}>
-          <FakeOfferAdder loanRequest={loanRequest} />
+          <FakeOfferAdder loan={loan} />
         </div>
       </section>
     );
@@ -152,7 +152,7 @@ class AuctionResults extends Component {
 }
 
 AuctionResults.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   offers: PropTypes.arrayOf(PropTypes.any),
 };
 

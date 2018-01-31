@@ -12,23 +12,23 @@ import { ADMIN_ACTION_STATUS } from './adminActionConstants';
 export const insertAdminAction = new ValidatedMethod({
   name: 'adminActions.insert',
   mixins: [CallPromiseMixin],
-  validate({ requestId, type }) {
-    check(requestId, String);
+  validate({ loanId, type }) {
+    check(loanId, String);
     check(type, String);
     validateUser();
   },
-  run({ requestId, type }) {
+  run({ loanId, type }) {
     // Make sure there isn't an action active with the same ID
     const existingAction = AdminActions.findOne({
       type,
-      requestId,
+      loanId,
       status: ADMIN_ACTION_STATUS.ACTIVE,
     });
     if (existingAction) {
       throw new Meteor.Error('duplicate active admin action');
     }
 
-    return AdminActions.insert({ type, requestId });
+    return AdminActions.insert({ type, loanId });
   },
 });
 
@@ -58,15 +58,15 @@ export const completeAction = new ValidatedMethod({
 export const completeActionByType = new ValidatedMethod({
   name: 'adminActions.completeActionByType',
   mixins: [CallPromiseMixin],
-  validate({ requestId, type, newStatus }) {
-    check(requestId, String);
+  validate({ loanId, type, newStatus }) {
+    check(loanId, String);
     check(type, String);
     check(newStatus, Match.Optional(String));
     validateUser();
   },
-  run({ requestId, type, newStatus }) {
+  run({ loanId, type, newStatus }) {
     const action = AdminActions.findOne({
-      requestId,
+      loanId,
       type,
       status: ADMIN_ACTION_STATUS.ACTIVE,
     });
@@ -84,15 +84,15 @@ export const completeActionByType = new ValidatedMethod({
   },
 });
 
-export const removeParentRequest = new ValidatedMethod({
-  name: 'adminActions.removeParentRequest',
+export const removeParentLoan = new ValidatedMethod({
+  name: 'adminActions.removeParentLoan',
   mixins: [CallPromiseMixin],
-  validate({ requestId }) {
-    check(requestId, String);
+  validate({ loanId }) {
+    check(loanId, String);
   },
-  run({ requestId }) {
+  run({ loanId }) {
     return AdminActions.update(
-      { requestId },
+      { loanId },
       { $set: { status: ADMIN_ACTION_STATUS.PARENT_DELETED } },
       { multi: true },
     );

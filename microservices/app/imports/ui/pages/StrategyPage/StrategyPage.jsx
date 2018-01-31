@@ -12,7 +12,7 @@ const getComponents = (props, handleSave) => {
   const childProps = {
     ...props,
     handleSave,
-    disabled: props.loanRequest.logic.step > 2,
+    disabled: props.loan.logic.step > 2,
   };
 
   return [
@@ -23,7 +23,7 @@ const getComponents = (props, handleSave) => {
     },
     {
       component: <InsuranceStrategy {...childProps} key="insurance" />,
-      condition: props.loanRequest.general.insuranceFortuneUsed > 0,
+      condition: props.loan.general.insuranceFortuneUsed > 0,
     },
     {
       component: <AmortizingPicker {...childProps} key="amortizing" />,
@@ -38,7 +38,7 @@ const getComponents = (props, handleSave) => {
 
 export default class StrategyPage extends Component {
   handleSave = (object) => {
-    cleanMethod('updateRequest', { object, id: this.props.loanRequest._id });
+    cleanMethod('updateLoan', { object, id: this.props.loan._id });
   };
 
   render() {
@@ -60,5 +60,5 @@ export default class StrategyPage extends Component {
 }
 
 StrategyPage.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };

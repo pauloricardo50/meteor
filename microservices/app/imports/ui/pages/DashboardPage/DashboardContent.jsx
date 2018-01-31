@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Masonry from 'react-masonry-component';
 
-import { REQUEST_STATUS } from 'core/api/constants';
+import { LOAN_STATUS } from 'core/api/constants';
 import DashboardRecap from './DashboardRecap';
 import DashboardCharts from './DashboardCharts';
 import DashboardBorrowers from './DashboardBorrowers';
@@ -13,13 +13,13 @@ import DashboardOffer from './DashboardOffer';
 import DashboardProperty from './DashboardProperty';
 import DashboardStatus from './DashboardStatus';
 
-const getGrid = ({ loanRequest }) => {
-  const done = loanRequest.status === REQUEST_STATUS.DONE;
+const getGrid = ({ loan }) => {
+  const done = loan.status === LOAN_STATUS.DONE;
 
   return [
     {
       component: DashboardLastSteps,
-      show: !done && loanRequest.logic.step === 3,
+      show: !done && loan.logic.step === 3,
     },
     { component: DashboardStatus, show: !done },
     { component: DashboardPayments, show: done },
@@ -27,10 +27,10 @@ const getGrid = ({ loanRequest }) => {
     { component: DashboardCharts, show: true },
     { component: DashboardBorrowers, show: true },
     { component: DashboardProperty, show: true },
-    { component: DashboardDownload, show: loanRequest.files.contract },
+    { component: DashboardDownload, show: loan.files.contract },
     {
       component: DashboardOffer,
-      show: loanRequest.logic.lender && loanRequest.logic.lender.offerId,
+      show: loan.logic.lender && loan.logic.lender.offerId,
     },
   ];
 };
@@ -77,6 +77,6 @@ export default class DashboardContent extends Component {
 }
 
 DashboardContent.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
 };

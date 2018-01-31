@@ -1,4 +1,4 @@
-import { REQUEST_STATU } from '../constants';
+import { LOAN_STATU } from '../constants';
 
 export const RESIDENCY_PERMIT = {
   B: 'b',

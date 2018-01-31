@@ -6,11 +6,11 @@ import adminActions from 'core/arrays/adminActions';
 
 const getActions = props => {
   const array = [];
-  props.loanRequests.forEach(r => {
+  props.loans.forEach(r => {
     const actions = adminActions(r, props);
     actions.forEach(a => {
       const object = {
-        request: r,
+        loan: r,
         action: a,
       };
       array.push(object);
@@ -28,8 +28,8 @@ const TodoList = props => {
 
       {actionsArray.map((a, i) =>
         <TodoItem
-          request={a.request}
-          key={`${a.request._id}${i}`}
+          loan={a.loan}
+          key={`${a.loan._id}${i}`}
           {...a.action}
         />,
       )}
@@ -43,12 +43,12 @@ const TodoList = props => {
 };
 
 TodoList.defaultProps = {
-  loanRequests: [],
+  loans: [],
   recentOffers: [],
 };
 
 TodoList.propTypes = {
-  loanRequests: PropTypes.arrayOf(PropTypes.object),
+  loans: PropTypes.arrayOf(PropTypes.object),
   recentOffers: PropTypes.arrayOf(PropTypes.object),
 };
 

@@ -20,7 +20,7 @@ describe('Factories', () => {
     'admin',
     'lender',
     'borrower',
-    'loanRequest',
+    'loan',
     'offer',
     'comparator',
     'property',
@@ -32,7 +32,7 @@ describe('Factories', () => {
     it(`${fact} builds correctly`, () => {
       const result = Factory.create(fact, {
         userId: 'testId',
-        requestId: 'test-request',
+        loanId: 'test-loan',
       });
 
       expect(typeof result).to.equal('object');

@@ -14,7 +14,7 @@ import {
   getLoanValue,
   getLenderCount,
   getBorrowRatio,
-} from 'core/utils/requestFunctions';
+} from 'core/utils/loanFunctions';
 
 import {
   getExpenses,
@@ -33,13 +33,13 @@ import {
 import { getMonthlyPayment, getIncomeRatio } from 'core/utils/finance-math';
 
 const getDashboardArray = (props) => {
-  const r = props.loanRequest;
+  const r = props.loan;
   const b = props.borrowers;
   const p = props.property;
 
   const incomeRatio = getIncomeRatio(props);
   const borrowRatio = getBorrowRatio(props);
-  const loan = getLoanValue(props);
+  const loanValue = getLoanValue(props);
   const project = getProjectValue(props);
   const totalUsed = getTotalUsed(props);
   const propAndWork = getPropAndWork(props);
@@ -128,7 +128,7 @@ const getDashboardArray = (props) => {
     },
     {
       label: 'general.mortgageLoan',
-      value: toMoney(loan),
+      value: toMoney(loanValue),
     },
     {
       label: 'Recap.totalFinancing',
@@ -265,10 +265,10 @@ const getDashboardArray = (props) => {
 };
 
 const getSmallDashboardArray = (props) => {
-  const r = props.loanRequest;
+  const r = props.loan;
   const b = props.borrowers;
   const p = props.property;
-  const loan = getLoanValue(props);
+  const loanValue = getLoanValue(props);
   const monthly = getMonthlyPayment(props).total;
   const totalUsed = getTotalUsed(props);
   const propAndWork = getPropAndWork(props);
@@ -315,7 +315,7 @@ const getSmallDashboardArray = (props) => {
     },
     {
       label: 'general.mortgageLoan',
-      value: toMoney(loan),
+      value: toMoney(loanValue),
     },
     {
       label: 'Recap.ownFundsCash',
@@ -677,12 +677,12 @@ const getBorrowerArray = (props) => {
 };
 
 const getStructureArray = (props) => {
-  const r = props.loanRequest;
+  const r = props.loan;
   const b = props.borrowers;
   const p = props.property;
 
   const project = getProjectValue(props);
-  const loan = getLoanValue(props);
+  const loanValue = getLoanValue(props);
   const monthly = getMonthlyPayment(props).total;
   const totalUsed = getTotalUsed(props);
   const propAndWork = getPropAndWork(props);
@@ -726,7 +726,7 @@ const getStructureArray = (props) => {
     },
     {
       label: 'general.mortgageLoan',
-      value: toMoney(loan),
+      value: toMoney(loanValue),
     },
     {
       label: 'Recap.ownFundsTotal',
@@ -853,7 +853,7 @@ const Recap = (props) => {
 };
 
 Recap.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any),
+  loan: PropTypes.objectOf(PropTypes.any),
   borrowers: PropTypes.arrayOf(PropTypes.object),
   borrower: PropTypes.objectOf(PropTypes.any),
   array: PropTypes.arrayOf(PropTypes.object),
@@ -861,7 +861,7 @@ Recap.propTypes = {
 };
 
 Recap.defaultProps = {
-  loanRequest: {},
+  loan: {},
   borrowers: [{}],
   borrower: {},
   array: undefined,

@@ -4,7 +4,7 @@ import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import rateLimit from '../../utils/rate-limit.js';
 
-import LoanRequests from 'core/api/loanrequests/loanrequests';
+import Loans from 'core/api/loans/loans';
 import Borrowers from 'core/api/borrowers/borrowers';
 
 /* eslint import/prefer-default-export: 0 */
@@ -12,7 +12,7 @@ export const isAllowed = (key) => {
   // Check if this user is the owner of the document he's trying to delete a
   // file from
   const keyId = key.split('/')[0];
-  const requestFound = !!LoanRequests.findOne({
+  const loanFound = !!Loans.findOne({
     _id: keyId,
     userId: Meteor.userId(),
   });
@@ -26,7 +26,7 @@ export const isAllowed = (key) => {
     Roles.userIsInRole(Meteor.userId(), 'dev')
   ) {
     return true;
-  } else if (!(requestFound || borrowerFound)) {
+  } else if (!(loanFound || borrowerFound)) {
     throw new Meteor.Error('unauthorized email');
   }
 
@@ -50,7 +50,7 @@ Meteor.methods({
     const s3 = setupS3();
     const params = { Bucket: Meteor.settings.S3Bucket, Key: key };
 
-    // bind s3 to avoid an error of context 'makeRequest is not a function'
+    // bind s3 to avoid an error of context 'makeLoan is not a function'
     const async = Meteor.wrapAsync(s3.deleteObject.bind(s3));
     return async(params);
   },

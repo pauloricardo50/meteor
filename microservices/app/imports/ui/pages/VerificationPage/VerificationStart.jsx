@@ -6,7 +6,7 @@ import Button from 'core/components/Button';
 import ConfirmButton from '/imports/ui/components/ConfirmButton';
 import VerificationRequested from './VerificationRequested';
 
-const VerificationStart = ({ verification, requestId, onClick }) => (
+const VerificationStart = ({ verification, loanId, onClick }) => (
   <article>
     <div className="description">
       <p>
@@ -29,7 +29,7 @@ const VerificationStart = ({ verification, requestId, onClick }) => (
           raised
           label={<T id="general.cancel" />}
           link
-          to={`/requests/${requestId}`}
+          to={`/loans/${loanId}`}
           style={{ marginRight: 8 }}
         />
         <ConfirmButton
@@ -46,7 +46,7 @@ const VerificationStart = ({ verification, requestId, onClick }) => (
 
 VerificationStart.propTypes = {
   verification: PropTypes.object.isRequired,
-  requestId: PropTypes.string.isRequired,
+  loanId: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 

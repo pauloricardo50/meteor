@@ -4,7 +4,7 @@ import Loading from '../components/Loading';
 
 import {
   // userCompareComposer,
-  userRequestsComposer,
+  userLoansComposer,
   userBorrowersComposer,
   userOffersComposer,
   userPropertiesComposer,
@@ -13,7 +13,7 @@ import { currentUserComposer } from './composers/GeneralComposers';
 
 const UserContainer = component =>
   merge(
-    composeWithTracker(userRequestsComposer, Loading),
+    composeWithTracker(userLoansComposer, Loading),
     composeWithTracker(userBorrowersComposer, Loading),
     composeWithTracker(userOffersComposer, Loading),
     composeWithTracker(userPropertiesComposer, Loading),

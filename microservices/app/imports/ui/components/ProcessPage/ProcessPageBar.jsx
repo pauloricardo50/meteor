@@ -9,7 +9,7 @@ import cleanMethod from 'core/api/cleanMethods';
 import { getWidth } from 'core/utils/browserFunctions';
 import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
-import { REQUEST_STATUS } from 'core/api/constants';
+import { LOAN_STATUS } from 'core/api/constants';
 
 const styles = {
   button: {
@@ -25,11 +25,11 @@ const styles = {
 };
 
 const handleNextStep = ({
-  stepNb, loanRequest, history, nextLink,
+  stepNb, loan, history, nextLink,
 }) => {
   // increment step if this is the currentstep
-  if (stepNb === loanRequest.logic.step) {
-    cleanMethod('incrementStep', { id: loanRequest._id }).then(() => !!nextLink && history.push(nextLink));
+  if (stepNb === loan.logic.step) {
+    cleanMethod('incrementStep', { id: loan._id }).then(() => !!nextLink && history.push(nextLink));
   } else {
     history.push(nextLink);
   }
@@ -131,8 +131,8 @@ export default class ProcessPageBar extends Component {
   };
 
   render() {
-    // Hide buttons if the request is done
-    const showButtons = this.props.status === REQUEST_STATUS.ACTIVE;
+    // Hide buttons if the loan is done
+    const showButtons = this.props.status === LOAN_STATUS.ACTIVE;
 
     return (
       <div className={this.props.className}>

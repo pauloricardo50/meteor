@@ -1,13 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
-import * as loanRequestMethods from './loanrequests/methods';
+import * as loanMethods from './loans/methods';
 import * as offerMethods from './offers/methods';
 import * as borrowerMethods from './borrowers/methods';
 import * as comparatorMethods from './comparators/methods';
 import * as propertyMethods from './properties/methods';
 
 const methods = {
-  ...loanRequestMethods,
+  ...loanMethods,
   ...offerMethods,
   ...borrowerMethods,
   ...comparatorMethods,

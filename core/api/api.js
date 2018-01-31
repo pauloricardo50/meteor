@@ -4,7 +4,7 @@ import './borrowers/methods';
 
 import './comparators/methods';
 
-import './loanrequests/methods';
+import './loans/methods';
 
 import './offers/methods';
 

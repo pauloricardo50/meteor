@@ -33,13 +33,13 @@ const UploaderArray = ({
                 currentValue={doc.files[file.id]}
                 docId={doc._id}
                 pushFunc={
-                  collection === 'loanRequests'
-                    ? 'pushRequestValue'
+                  collection === 'loans'
+                    ? 'pushLoanValue'
                     : 'pushBorrowerValue'
                 }
                 updateFunc={
-                  collection === 'loanRequests'
-                    ? 'updateRequest'
+                  collection === 'loans'
+                    ? 'updateLoan'
                     : 'updateBorrower'
                 }
                 disabled={disabled}

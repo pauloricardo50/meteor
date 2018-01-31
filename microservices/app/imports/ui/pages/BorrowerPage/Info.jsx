@@ -3,7 +3,7 @@ import React from 'react';
 
 import AutoForm from 'core/components/AutoForm';
 import { getBorrowerInfoArray } from 'core/arrays/BorrowerFormArray';
-import { disableForms } from 'core/utils/requestFunctions';
+import { disableForms } from 'core/utils/loanFunctions';
 
 import { isDemo } from 'core/utils/browserFunctions';
 import FakeBorrowerCompleter from '/imports/ui/components/FakeBorrowerCompleter';
@@ -33,7 +33,7 @@ const Info = (props) => {
         pushFunc="pushBorrowerValue"
         popFunc="popBorrowerValue"
         doc={borrower}
-        disabled={disableForms({ loanRequest: props.loanRequest })}
+        disabled={disableForms({ loan: props.loan })}
       />
 
       {isDemo() && <FakeBorrowerCompleter borrower={borrower} />}
@@ -42,7 +42,7 @@ const Info = (props) => {
 };
 
 Info.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 

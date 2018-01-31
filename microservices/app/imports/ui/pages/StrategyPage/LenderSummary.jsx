@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 import SummaryComponent from '/imports/ui/components/SummaryComponent';
 import { T, IntlNumber } from 'core/components/Translation';
 import { getRange } from 'core/utils/offerFunctions';
-import { getMonthlyWithOffer } from 'core/utils/requestFunctions';
-import withRequest from 'core/containers/withRequest';
+import { getMonthlyWithOffer } from 'core/utils/loanFunctions';
+import withLoan from 'core/containers/withLoan';
 
-const values = ({ offers, loanRequest, property }) => {
+const values = ({ offers, loan, property }) => {
   const { max: maxAmount, min: minAmount } = getRange({ offers }, 'maxAmount');
   const monthlyArray = [];
   offers.forEach((offer) => {
-    monthlyArray.push(getMonthlyWithOffer({ property, loanRequest, offer }, true));
-    monthlyArray.push(getMonthlyWithOffer({ property, loanRequest, offer }, false));
+    monthlyArray.push(getMonthlyWithOffer({ property, loan, offer }, true));
+    monthlyArray.push(getMonthlyWithOffer({ property, loan, offer }, false));
   });
 
   // remove undefined, NaN values
@@ -65,8 +65,8 @@ const LenderSummary = props => (
 
 LenderSummary.propTypes = {
   offers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default withRequest(LenderSummary);
+export default withLoan(LenderSummary);

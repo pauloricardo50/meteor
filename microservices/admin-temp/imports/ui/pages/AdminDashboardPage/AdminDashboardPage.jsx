@@ -39,7 +39,7 @@ const AdminDashboardPage = (props) => {
       <MetricsTriple metrics={getUserMetrics(props)} percent={false} />
 
       <ActionsTable
-        loanRequests={props.loanRequests}
+        loans={props.loans}
         recentOffers={props.offers.filter(offer => offer.auctionEndTime >= now)}
         history={props.history}
         adminActions={props.adminActions}
@@ -50,14 +50,14 @@ const AdminDashboardPage = (props) => {
 
 AdminDashboardPage.defaultProps = {
   adminActions: [],
-  loanRequests: [],
+  loans: [],
   users: [],
   offers: [],
 };
 
 AdminDashboardPage.propTypes = {
   adminActions: PropTypes.arrayOf(PropTypes.object),
-  loanRequests: PropTypes.arrayOf(PropTypes.object),
+  loans: PropTypes.arrayOf(PropTypes.object),
   users: PropTypes.arrayOf(PropTypes.object).isRequired,
   offers: PropTypes.arrayOf(PropTypes.object),
 };

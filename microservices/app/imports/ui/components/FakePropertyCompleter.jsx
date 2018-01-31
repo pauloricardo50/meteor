@@ -3,7 +3,7 @@ import React from 'react';
 import cleanMethod from 'core/api/cleanMethods';
 
 import Button from 'core/components/Button';
-import { fakeProperty } from 'core/api/loanrequests/fakes';
+import { fakeProperty } from 'core/api/loans/fakes';
 
 const MergeRecursive = (obj1, obj2) => {
   for (const p in obj2) {
@@ -26,11 +26,11 @@ const MergeRecursive = (obj1, obj2) => {
 const handleCheat = (props) => {
   const object = { property: fakeProperty };
 
-  const finalObject = MergeRecursive(object, props.loanRequest);
+  const finalObject = MergeRecursive(object, props.loan);
 
-  cleanMethod('updateRequest', {
+  cleanMethod('updateLoan', {
     object: finalObject,
-    id: props.loanRequest._id,
+    id: props.loan._id,
   }).then(() => location.reload());
 };
 
@@ -41,7 +41,7 @@ const FakePropertyCompleter = props => (
 );
 
 FakePropertyCompleter.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default FakePropertyCompleter;

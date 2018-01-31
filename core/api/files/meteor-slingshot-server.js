@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
 import { Roles } from 'meteor/alanning:roles';
 
-import LoanRequests from 'core/api/loanrequests/loanrequests';
+import Loans from 'core/api/loans/loans';
 import Borrowers from 'core/api/borrowers/borrowers';
 import { getFileCount } from './files';
 import './meteor-slingshot';
@@ -34,8 +34,8 @@ Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
       if (doc.userId !== this.userId) {
         throw new Meteor.Error('Invalid user', "You're not allowed to do this");
       }
-    } else if (collection === 'loanRequests') {
-      const doc = LoanRequests.findOne(docId);
+    } else if (collection === 'loans') {
+      const doc = Loans.findOne(docId);
       if (doc.userId !== this.userId) {
         throw new Meteor.Error('Invalid user', "You're not allowed to do this");
       }

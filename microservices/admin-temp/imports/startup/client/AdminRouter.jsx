@@ -11,17 +11,17 @@ import {
   AdminLayout,
   AdminDashboardPage,
   UsersPage,
-  RequestsPage,
+  LoansPage,
   // OfferPage,
-  // SingleRequestPage,
+  // SingleLoanPage,
   SingleUserPage,
   // VerifyPage,
   // ContactLendersPage,
 } from 'core/containers/AdminContainers';
 import AdminDevPage from '/imports/ui/pages/AdminDevPage';
-import AdminRequestContainer from 'core/containers/AdminRequestContainer';
+import AdminLoanContainer from 'core/containers/AdminLoanContainer';
 
-import SingleRequestPage from '../../ui/pages/SingleRequestPage';
+import SingleLoanPage from '../../ui/pages/SingleLoanPage';
 import ContactLendersPage from '../../ui/pages/ContactLendersPage';
 import OfferPage from '../../ui/pages/OfferPage';
 import VerifyPage from '../../ui/pages/VerifyPage';
@@ -49,24 +49,24 @@ const AdminRouter = props => (
           />
           <Route
             exact
-            path="/requests"
-            render={() => <RequestsPage {...layoutProps} />}
+            path="/loans"
+            render={() => <LoansPage {...layoutProps} />}
           />
           <Route
-            path="/requests/:requestId/verify"
-            component={AdminRequestContainer(VerifyPage)}
+            path="/loans/:loanId/verify"
+            component={AdminLoanContainer(VerifyPage)}
           />
           <Route
-            path="/requests/:requestId/contactlenders"
-            component={AdminRequestContainer(ContactLendersPage)}
+            path="/loans/:loanId/contactlenders"
+            component={AdminLoanContainer(ContactLendersPage)}
           />
           <Route
-            path="/requests/:requestId/offers/:offerId"
-            component={AdminRequestContainer(OfferPage)}
+            path="/loans/:loanId/offers/:offerId"
+            component={AdminLoanContainer(OfferPage)}
           />
           <Route
-            path="/requests/:requestId"
-            component={AdminRequestContainer(SingleRequestPage)}
+            path="/loans/:loanId"
+            component={AdminLoanContainer(SingleLoanPage)}
           />
           <Route path="/users/:userId" component={SingleUserPage} />
           <Route

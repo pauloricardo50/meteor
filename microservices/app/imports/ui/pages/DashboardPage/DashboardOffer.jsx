@@ -7,10 +7,10 @@ import { OFFER_TYPE } from 'core/api/constants';
 import DashboardItem from './DashboardItem';
 
 const DashboardOffer = (props) => {
-  const { offers, loanRequest } = props;
-  const offer = offers.find(o => o._id === loanRequest.logic.lender.offerId);
+  const { offers, loan } = props;
+  const offer = offers.find(o => o._id === loan.logic.lender.offerId);
   const displayedOffer =
-    loanRequest.logic.lender.type === OFFER_TYPE.COUNTERPARTS
+    loan.logic.lender.type === OFFER_TYPE.COUNTERPARTS
       ? offer.counterpartOffer
       : offer.standardOffer;
 
@@ -45,7 +45,7 @@ const DashboardOffer = (props) => {
 };
 
 DashboardOffer.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   offers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 

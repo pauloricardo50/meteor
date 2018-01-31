@@ -39,8 +39,8 @@ describe('Offers', () => {
     describe('insertOffer', () => {
       it('inserts an offer', () => {
         const object = Factory.build('offer');
-        const request = Factory.create('loanRequest', { userId });
-        object.requestId = request._id;
+        const loan = Factory.create('loan', { userId });
+        object.loanId = loan._id;
         object.userId = userId;
 
         return insertOffer.callPromise({ object }).then((offerId) => {
@@ -50,20 +50,20 @@ describe('Offers', () => {
         });
       });
 
-      it('reads from the user and the request when inserting', () => {
+      it('reads from the user and the loan when inserting', () => {
         const date = new Date();
-        const request = Factory.create('loanRequest', {
+        const loan = Factory.create('loan', {
           userId,
           logic: { auction: { endTime: date } },
         });
         user = Factory.create('lender', {
           emails: [{ address: 'wtf@test.com', verified: false }], // To avoid email conflict when creating multiple users
           profile: { organization: 'testOrganization', cantons: ['ZH'] },
-          requestId: request._id,
+          loanId: loan._id,
         });
         userId = user._id;
         const object = Factory.build('offer', {
-          requestId: request._id,
+          loanId: loan._id,
           userId,
         });
         return insertOffer.callPromise({ object }).then((offerId) => {
@@ -79,11 +79,11 @@ describe('Offers', () => {
 
     describe('modifiers', () => {
       let offerId;
-      let requestId;
+      let loanId;
 
       beforeEach(() => {
-        requestId = Factory.create('loanRequest', { userId })._id;
-        offerId = Factory.create('offer', { userId, requestId })._id;
+        loanId = Factory.create('loan', { userId })._id;
+        offerId = Factory.create('offer', { userId, loanId })._id;
       });
 
       describe('updateOffer', () => {

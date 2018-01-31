@@ -22,7 +22,7 @@ AdminOfferPage.defaultProps = {
 
 AdminOfferPage.propTypes = {
   offer: PropTypes.objectOf(PropTypes.any),
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default AdminOfferPage;

@@ -44,7 +44,7 @@ const AdminActionSchema = new SimpleSchema({
     type: String,
     allowedValues: Object.values(ADMIN_ACTION_TYPE),
   },
-  requestId: String,
+  loanId: String,
   staffId: {
     type: String,
     optional: true,

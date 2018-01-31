@@ -25,7 +25,7 @@ import downloadPDF from 'core/utils/download-pdf';
 // Banque revient en 2 jours
 
 const getEmail = (props) => {
-  const subject = `[e-Potek] ${props.loanRequest.property.address1}`;
+  const subject = `[e-Potek] ${props.loan.property.address1}`;
   const body = 'Bonjour,';
   return `mailto:?subject=${subject}&body=${body}`;
 };
@@ -41,7 +41,7 @@ export default class ContactLendersPage extends Component {
             raised
             label="Télécharger PDF"
             primary
-            onClick={e => downloadPDF(e, this.props.loanRequest._id)}
+            onClick={e => downloadPDF(e, this.props.loan._id)}
           />
         </div>
 
@@ -59,5 +59,5 @@ export default class ContactLendersPage extends Component {
 }
 
 ContactLendersPage.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };

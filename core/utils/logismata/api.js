@@ -164,7 +164,7 @@ export const getTaxBase = (data) => {};
 export const callApi = (method, params) => {
   const data = JSON.stringify({
     authToken: token,
-    request: {
+    loan: {
       method,
       // Stringify objects in the array, do not stringify strings once again
       params: [

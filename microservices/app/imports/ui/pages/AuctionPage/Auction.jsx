@@ -42,7 +42,7 @@ export default class Auction extends Component {
   }
 
   setTime = () => {
-    const endDate = moment(this.props.loanRequest.logic.auction.endTime);
+    const endDate = moment(this.props.loan.logic.auction.endTime);
     // Get the time difference between the end and current time with moment()
     const difference = moment.duration(endDate.diff(moment()), 'milliseconds');
     // Get the minutes and seconds to display using moment-duration-format,
@@ -81,6 +81,6 @@ export default class Auction extends Component {
 }
 
 Auction.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   offers: PropTypes.arrayOf(PropTypes.any),
 };

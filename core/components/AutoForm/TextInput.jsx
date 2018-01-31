@@ -214,7 +214,7 @@ TextInput.defaultProps = {
   decimal: false,
   money: false,
   inputStyle: undefined,
-  updateFunc: 'updateRequest',
+  updateFunc: 'updateLoan',
   floatingLabelFixed: true,
   saveOnChange: true,
   noValidator: false,

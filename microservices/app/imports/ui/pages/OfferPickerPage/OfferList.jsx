@@ -6,7 +6,7 @@ import cleanMethod from 'core/api/cleanMethods';
 import ConditionsButton from 'core/components/ConditionsButton';
 import { T, IntlNumber } from 'core/components/Translation';
 import Select from 'core/components/Select';
-import withRequest from 'core/containers/withRequest';
+import withLoan from 'core/containers/withLoan';
 import Offer from './Offer';
 import StarRating from './StarRating';
 import SortOrderer from './SortOrderer';
@@ -47,13 +47,13 @@ const getOfferValues = ({
 const sortOffers = (offers, sort, isAscending) =>
   offers.sort((a, b) => (isAscending ? a[sort] - b[sort] : b[sort] - a[sort]));
 
-const handleSave = (id, type, loanRequest) => {
-  cleanMethod('updateRequest', {
+const handleSave = (id, type, loan) => {
+  cleanMethod('updateLoan', {
     object: {
       'logic.lender.offerId': id,
       'logic.lender.type': id ? type : undefined,
     },
-    id: loanRequest._id,
+    id: loan._id,
   });
 };
 
@@ -71,15 +71,15 @@ class OfferList extends Component {
 
   render() {
     const {
-      loanRequest, offers, disabled, property,
+      loan, offers, disabled, property,
     } = this.props;
     const { sort, isAscending } = this.state;
     const filteredOffers = sortOffers(
-      extractOffers({ offers, loanRequest, property }),
+      extractOffers({ offers, loan, property }),
       sort,
       isAscending,
     );
-    const { lender } = loanRequest.logic;
+    const { lender } = loan.logic;
 
     return (
       <div className="flex-col" style={{ width: '100%' }}>
@@ -107,7 +107,7 @@ class OfferList extends Component {
             offerValues={getOfferValues(offer)}
             offer={offer}
             key={offer.uid}
-            handleSave={(id, type) => handleSave(id, type, loanRequest)}
+            handleSave={(id, type) => handleSave(id, type, loan)}
             chosen={lender.offerId === offer.id && lender.type === offer.type}
             disabled={disabled}
           />
@@ -119,4 +119,4 @@ class OfferList extends Component {
 
 OfferList.propTypes = {};
 
-export default withRequest(OfferList);
+export default withLoan(OfferList);

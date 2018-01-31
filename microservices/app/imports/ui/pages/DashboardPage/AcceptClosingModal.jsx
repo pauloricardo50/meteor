@@ -20,16 +20,16 @@ export default class AcceptClosingModal extends Component {
     event.preventDefault();
 
     cleanMethod(
-      'updateRequest',
+      'updateLoan',
       {
         object: { 'logic.acceptedClosing': true },
-        id: this.props.loanRequest._id,
+        id: this.props.loan._id,
       },
       () => this.setState({ open: false }),
       {
         title: 'Formidable',
         message: `<h4 class="bert">Profitez bien de ${
-          this.props.loanRequest.name
+          this.props.loan.name
         }</h4>`,
       },
     );
@@ -63,7 +63,7 @@ export default class AcceptClosingModal extends Component {
         <p className="secondary">
           <T id="AcceptClosingModal.description2" />
         </p>
-        <h2 className="text-center">{this.props.loanRequest._id}</h2>
+        <h2 className="text-center">{this.props.loan._id}</h2>
       </Dialog>
     );
   }
@@ -71,7 +71,7 @@ export default class AcceptClosingModal extends Component {
 
 AcceptClosingModal.propTypes = {
   open: PropTypes.bool,
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 AcceptClosingModal.defaultProps = {

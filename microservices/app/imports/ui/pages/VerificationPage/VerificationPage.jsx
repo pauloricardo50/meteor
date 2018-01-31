@@ -15,18 +15,18 @@ export default class VerificationPage extends Component {
     if (isDemo()) {
       const object = {};
       object['logic.verification.validated'] = true;
-      cleanMethod('updateRequest', { object, id: this.props.loanRequest._id });
+      cleanMethod('updateLoan', { object, id: this.props.loan._id });
     } else {
-      cleanMethod('requestVerification', {
-        id: this.props.loanRequest._id,
+      cleanMethod('loanVerification', {
+        id: this.props.loan._id,
       }).then(() => track('requested verification', {}));
     }
   };
 
   render() {
-    const { loanRequest } = this.props;
+    const { loan } = this.props;
     let content = null;
-    const verification = loanRequest.logic.verification;
+    const verification = loan.logic.verification;
 
     if (verification.validated === true) {
       content = <VerificationValidated />;
@@ -41,7 +41,7 @@ export default class VerificationPage extends Component {
       content = (
         <VerificationStart
           verification={verification}
-          requestId={loanRequest._id}
+          loanId={loan._id}
           onClick={this.handleClick}
         />
       );
@@ -61,5 +61,5 @@ export default class VerificationPage extends Component {
 }
 
 VerificationPage.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };

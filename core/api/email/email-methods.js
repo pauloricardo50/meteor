@@ -12,14 +12,14 @@ import {
   emailFooter,
   getEmailContent,
 } from './email-defaults';
-import { addEmail, modifyEmail } from 'core/api/loanrequests/methods';
+import { addEmail, modifyEmail } from 'core/api/loans/methods';
 
 export const sendEmail = new ValidatedMethod({
   name: 'email.send',
   mixins: [CallPromiseMixin],
   validate({
     emailId,
-    requestId,
+    loanId,
     template = 'notification',
     CTA_URL,
     sendAt,
@@ -27,7 +27,7 @@ export const sendEmail = new ValidatedMethod({
     intlValues,
   }) {
     check(emailId, String);
-    check(requestId, String);
+    check(loanId, String);
     check(template, Match.Optional(String));
     check(CTA_URL, Match.Optional(String));
     check(sendAt, Match.Optional(Date));
@@ -36,7 +36,7 @@ export const sendEmail = new ValidatedMethod({
   },
   run({
     emailId,
-    requestId,
+    loanId,
     template = 'notification',
     CTA_URL,
     sendAt,
@@ -89,7 +89,7 @@ export const sendEmail = new ValidatedMethod({
             ],
           },
         ],
-        metadata: [{ userId: Meteor.userId(), requestId }],
+        metadata: [{ userId: Meteor.userId(), loanId }],
       },
     };
 
@@ -112,7 +112,7 @@ export const sendEmail = new ValidatedMethod({
       const content = JSON.parse(result.content)[0];
       return addEmail.call(
         {
-          requestId,
+          loanId,
           emailId,
           _id: content._id,
           status: content.status,
@@ -129,11 +129,11 @@ export const sendEmail = new ValidatedMethod({
 export const cancelScheduledEmail = new ValidatedMethod({
   name: 'email.cancelScheduled',
   mixins: [CallPromiseMixin],
-  validate({ id, requestId }) {
+  validate({ id, loanId }) {
     check(id, String);
-    check(requestId, String);
+    check(loanId, String);
   },
-  run({ id, requestId }) {
+  run({ id, loanId }) {
     this.unblock();
     Mandrill.messages.cancelScheduled({ id }, (error, result) => {
       if (error) {
@@ -142,7 +142,7 @@ export const cancelScheduledEmail = new ValidatedMethod({
 
       const content = JSON.parse(result.content);
       return modifyEmail.call(
-        { requestId, _id: content._id, status: 'cancelled' },
+        { loanId, _id: content._id, status: 'cancelled' },
         err => {
           throw new Meteor.Error(err);
         },
@@ -154,12 +154,12 @@ export const cancelScheduledEmail = new ValidatedMethod({
 export const rescheduleEmail = new ValidatedMethod({
   name: 'email.reschedule',
   mixins: [CallPromiseMixin],
-  validate({ id, requestId, date }) {
+  validate({ id, loanId, date }) {
     check(id, String);
-    check(requestId, String);
+    check(loanId, String);
     check(date, Date);
   },
-  run({ id, requestId, date }) {
+  run({ id, loanId, date }) {
     this.unblock();
     Mandrill.messages.reschedule(
       { id, send_at: date.toISOString() },
@@ -170,7 +170,7 @@ export const rescheduleEmail = new ValidatedMethod({
 
         const content = JSON.parse(result.content);
         return modifyEmail.call(
-          { requestId, _id: content._id, sendAt },
+          { loanId, _id: content._id, sendAt },
           err => {
             throw new Meteor.Error(err);
           },

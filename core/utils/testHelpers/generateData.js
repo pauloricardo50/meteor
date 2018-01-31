@@ -10,19 +10,19 @@ export const generateData = (overrides = {}) => {
     userId: user._id,
     ...overrides.property,
   });
-  const loanRequest = Factory.create('loanRequest', {
+  const loan = Factory.create('loan', {
     userId: user._id,
     property: property._id,
     borrowers: [borrower._id],
-    ...overrides.loanRequest,
+    ...overrides.loan,
   });
   const offer = Factory.create('offer', {
-    requestId: loanRequest._id,
+    loanId: loan._id,
     ...overrides.offers,
   });
 
   return {
-    loanRequest,
+    loan,
     user,
     borrowers: [borrower],
     property,

@@ -15,8 +15,8 @@ describe('files', () => {
       ids.forEach(id => expect(typeof id).to.equal('string'));
     });
 
-    it('returns an array of strings for the request list', () => {
-      const ids = getFileIDs('request');
+    it('returns an array of strings for the loan list', () => {
+      const ids = getFileIDs('loan');
       expect(typeof ids).to.equal('object');
       ids.forEach(id => expect(typeof id).to.equal('string'));
     });
@@ -27,8 +27,8 @@ describe('files', () => {
       expect(() => getFileSchema('wrong-list')).to.throw();
     });
 
-    it('returns an object of correct objects for borrower and request lists', () => {
-      ['borrower', 'request'].forEach((list) => {
+    it('returns an object of correct objects for borrower and loan lists', () => {
+      ['borrower', 'loan'].forEach((list) => {
         const idCount = getFileIDs(list).length;
         const schema = getFileSchema(list);
 

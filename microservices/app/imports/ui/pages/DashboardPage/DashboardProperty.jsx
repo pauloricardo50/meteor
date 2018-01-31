@@ -6,9 +6,9 @@ import classnames from 'classnames';
 import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
 import Icon from 'core/components/Icon';
-import { getPropertyCompletion } from 'core/utils/requestFunctions';
+import { getPropertyCompletion } from 'core/utils/loanFunctions';
 import DashboardItem from './DashboardItem';
-import withRequest from 'core/containers/withRequest';
+import withLoan from 'core/containers/withLoan';
 import { PROPERTY_STYLE } from 'core/api/constants';
 
 const DashboardProperty = (props) => {
@@ -25,7 +25,7 @@ const DashboardProperty = (props) => {
       }
     >
       <Link
-        to={`/requests/${props.loanRequest._id}/property`}
+        to={`/loans/${props.loan._id}/property`}
         className="link"
         onClick={() => track('clicked dashboard property', {})}
       >
@@ -39,7 +39,7 @@ const DashboardProperty = (props) => {
         {/* <span className="fa fa-user-circle-o fa-4x" style={{ marginRight: 16 }} /> */}
         <div className="text">
           <h4 className="fixed-size no-margin" style={{ marginBottom: 8 }}>
-            {props.loanRequest.name}
+            {props.loan.name}
           </h4>
           <h4
             className={classnames({
@@ -59,8 +59,8 @@ const DashboardProperty = (props) => {
 
 DashboardProperty.propTypes = {
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default withRequest(DashboardProperty);
+export default withLoan(DashboardProperty);

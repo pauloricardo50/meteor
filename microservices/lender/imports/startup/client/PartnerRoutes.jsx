@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import { PartnerLayout } from 'core/containers/PartnerContainers';
 import PartnerHomePage from '/imports/ui/pages/partner/PartnerHomePage';
-import PartnerRequestPage from '/imports/ui/pages/partner/PartnerRequestPage';
+import PartnerLoanPage from '/imports/ui/pages/partner/PartnerLoanPage';
 import NotFound from '/imports/ui/components/NotFound';
 
 const PartnerRoutes = props => (
@@ -19,9 +19,9 @@ const PartnerRoutes = props => (
         />
         <Route
           exact
-          path="/partner/requests/:requestId"
+          path="/partner/loans/:loanId"
           render={routeProps => (
-            <PartnerRequestPage {...layoutProps} {...routeProps} />
+            <PartnerLoanPage {...layoutProps} {...routeProps} />
           )}
         />
         <Route component={NotFound} />

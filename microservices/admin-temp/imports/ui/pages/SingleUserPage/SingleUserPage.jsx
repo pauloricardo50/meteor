@@ -3,11 +3,11 @@ import React from 'react';
 
 import moment from 'moment';
 
-import Request from './Request';
+import Loan from './Loan';
 
 const AdminSingleUserPage = ({
   user,
-  loanRequests,
+  loans,
   borrowers,
   history,
   properties,
@@ -19,20 +19,20 @@ const AdminSingleUserPage = ({
     </p>
 
     <h3>Demandes de prêt</h3>
-    {loanRequests.map(request => (
-      <Request
-        loanRequest={request}
-        key={request._id}
+    {loans.map(loan => (
+      <Loan
+        loan={loan}
+        key={loan._id}
         history={history}
-        borrowers={borrowers.filter(b => request.borrowers.indexOf(b._id) >= 0)}
-        property={properties.find(p => p._id === request.property)}
+        borrowers={borrowers.filter(b => loan.borrowers.indexOf(b._id) >= 0)}
+        property={properties.find(p => p._id === loan.property)}
       />
     ))}
   </section>
 );
 
 AdminSingleUserPage.propTypes = {
-  loanRequests: PropTypes.arrayOf(PropTypes.any),
+  loans: PropTypes.arrayOf(PropTypes.any),
   borrowers: PropTypes.arrayOf(PropTypes.any),
   user: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -40,7 +40,7 @@ AdminSingleUserPage.propTypes = {
 };
 
 AdminSingleUserPage.defaultProps = {
-  loanRequests: [],
+  loans: [],
   borrowers: [],
 };
 

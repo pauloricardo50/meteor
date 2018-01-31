@@ -13,9 +13,9 @@ export default class BorrowerDeleter extends Component {
   }
 
   handleClick = () => {
-    const { borrowerId, requestId } = this.props;
+    const { borrowerId, loanId } = this.props;
     this.setState({ loading: true });
-    return cleanMethod('removeBorrower', { borrowerId, requestId })
+    return cleanMethod('removeBorrower', { borrowerId, loanId })
       .then(() => this.setState({ loading: false }))
       .catch(() => this.setState({ loading: false }));
   };
@@ -39,5 +39,5 @@ export default class BorrowerDeleter extends Component {
 
 BorrowerDeleter.propTypes = {
   borrowerId: PropTypes.string.isRequired,
-  requestId: PropTypes.string.isRequired,
+  loanId: PropTypes.string.isRequired,
 };

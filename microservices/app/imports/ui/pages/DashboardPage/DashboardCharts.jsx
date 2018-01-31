@@ -11,7 +11,7 @@ const DashboardCharts = props => (
     menuActions={[
         {
           id: 'financePage',
-          link: `/requests/${props.loanRequest._id}/finance`,
+          link: `/loans/${props.loan._id}/finance`,
         },
       ]}
   >
@@ -27,7 +27,7 @@ const DashboardCharts = props => (
 );
 
 DashboardCharts.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default DashboardCharts;

@@ -5,7 +5,7 @@ import Recap from 'core/components/Recap';
 import DashboardItem from './DashboardItem';
 import { T } from 'core/components/Translation';
 import track from 'core/utils/analytics';
-import withRequest from 'core/containers/withRequest';
+import withLoan from 'core/containers/withLoan';
 
 const styles = {
   recap: {
@@ -83,4 +83,4 @@ DashboardRecap.defaultProps = {
   hideDetail: false,
 };
 
-export default withRequest(DashboardRecap);
+export default withLoan(DashboardRecap);

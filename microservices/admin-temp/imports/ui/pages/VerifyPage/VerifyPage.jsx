@@ -28,7 +28,7 @@ export default class VerifyPage extends Component {
 
     this.comments = [];
 
-    const v = this.props.loanRequest.logic.verification;
+    const v = this.props.loan.logic.verification;
 
     this.state = {
       comments: v.comments && v.comments.length ? v.comments : [''],
@@ -51,12 +51,12 @@ export default class VerifyPage extends Component {
       'logic.verification.validated': this.state.validated,
     };
 
-    cleanMethod('updateRequest', {
+    cleanMethod('updateLoan', {
       object,
-      id: this.props.loanRequest._id,
+      id: this.props.loan._id,
     }).then(() => {
       Meteor.call('adminActions.completeActionByType', {
-        requestId: this.props.loanRequest._id,
+        loanId: this.props.loan._id,
         type: 'verify',
       });
 
@@ -64,8 +64,8 @@ export default class VerifyPage extends Component {
         emailId: this.state.validated
           ? 'verificationPassed'
           : 'verificationError',
-        requestId: this.props.loanRequest._id,
-        userId: this.props.loanRequest.userId,
+        loanId: this.props.loan._id,
+        userId: this.props.loan.userId,
         template: 'notification+CTA',
       });
 
@@ -74,7 +74,7 @@ export default class VerifyPage extends Component {
   };
 
   render() {
-    if (this.props.loanRequest.logic.verification.requested !== true) {
+    if (this.props.loan.logic.verification.requested !== true) {
       return (
         <section className="text-center">
           <h1>Ce client n'a pas demandé de vérification</h1>
@@ -90,7 +90,7 @@ export default class VerifyPage extends Component {
         <ul>
           <li>
             Demande de prêt:{' '}
-            <span className="bold">{this.props.loanRequest._id}</span>
+            <span className="bold">{this.props.loan._id}</span>
           </li>
           {this.props.borrowers.map((b, i) => (
             <li key={b._id}>
@@ -171,5 +171,5 @@ export default class VerifyPage extends Component {
 }
 
 VerifyPage.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };

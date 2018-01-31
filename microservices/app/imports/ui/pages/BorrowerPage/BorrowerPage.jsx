@@ -56,6 +56,6 @@ export default class BorrowerPage extends Component {
 }
 
 BorrowerPage.propTypes = {
-  // loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  // loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

@@ -8,10 +8,10 @@ import {
   getLoanValue,
   getProjectValue,
   getPropAndWork,
-} from 'core/utils/requestFunctions';
+} from 'core/utils/loanFunctions';
 import constants from 'core/config/constants';
 import colors from 'core/config/colors';
-import withRequest from 'core/containers/withRequest';
+import withLoan from 'core/containers/withLoan';
 
 import { legendConfig, adjustLegend } from './chartSettings';
 
@@ -28,7 +28,7 @@ const chartColors = {
 };
 
 const getConfig = (props) => {
-  const r = props.loanRequest;
+  const r = props.loan;
   const total = getProjectValue(props);
   const f = props.intl.formatMessage;
   const fN = props.intl.formatNumber;
@@ -170,9 +170,9 @@ ProjectBarChart.defaultProps = {
 };
 
 ProjectBarChart.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   divName: PropTypes.string,
   titleAlign: PropTypes.string,
 };
 
-export default injectIntl(withRequest(ProjectBarChart));
+export default injectIntl(withLoan(ProjectBarChart));
