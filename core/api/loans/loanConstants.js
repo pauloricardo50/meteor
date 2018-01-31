@@ -1,4 +1,4 @@
-export const REQUEST_STATUS = {
+export const LOAN_STATUS = {
   ACTIVE: 'ACTIVE',
   DONE: 'DONE',
 };

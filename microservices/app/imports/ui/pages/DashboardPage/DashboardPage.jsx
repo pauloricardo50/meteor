@@ -7,7 +7,7 @@ import AcceptClosingModal from './AcceptClosingModal';
 import DashboardContent from './DashboardContent';
 
 import { getWidth } from 'core/utils/browserFunctions';
-import { REQUEST_STATUS } from 'core/api/constants';
+import { LOAN_STATUS } from 'core/api/constants';
 
 export default class DashboardPage extends Component {
   constructor(props) {
@@ -29,7 +29,7 @@ export default class DashboardPage extends Component {
     const { loan, history } = this.props;
     const showNewLoanModal = !loan.name;
     const showClosedModal =
-      loan.status === REQUEST_STATUS.DONE &&
+      loan.status === LOAN_STATUS.DONE &&
       !loan.logic.acceptedClosing;
 
     return (

@@ -9,7 +9,7 @@ import cleanMethod from 'core/api/cleanMethods';
 import { getWidth } from 'core/utils/browserFunctions';
 import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
-import { REQUEST_STATUS } from 'core/api/constants';
+import { LOAN_STATUS } from 'core/api/constants';
 
 const styles = {
   button: {
@@ -132,7 +132,7 @@ export default class ProcessPageBar extends Component {
 
   render() {
     // Hide buttons if the loan is done
-    const showButtons = this.props.status === REQUEST_STATUS.ACTIVE;
+    const showButtons = this.props.status === LOAN_STATUS.ACTIVE;
 
     return (
       <div className={this.props.className}>

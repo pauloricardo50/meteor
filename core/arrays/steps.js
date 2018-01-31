@@ -12,7 +12,7 @@ import {
 import { arrayify } from '../utils/general';
 import { isDemo } from 'core/utils/browserFunctions';
 import {
-  REQUEST_STATUS,
+  LOAN_STATUS,
   AUCTION_STATUS,
   FILE_STATUS,
   CLOSING_STEPS_STATUS,
@@ -156,7 +156,7 @@ const getSteps = (props) => {
                 'contract',
               )) < 1 || loan.logic.step < 3,
           percent: () => closingPercent(loan),
-          isDone: () => loan.status === REQUEST_STATUS.DONE,
+          isDone: () => loan.status === LOAN_STATUS.DONE,
         },
       ],
     },

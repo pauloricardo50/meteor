@@ -16,7 +16,7 @@ import Loans from './loans';
 import {
   ADMIN_ACTION_TYPE,
   ADMIN_ACTION_STATUS,
-  REQUEST_STATUS,
+  LOAN_STATUS,
   AUCTION_STATUS,
 } from '../constants';
 
@@ -408,7 +408,7 @@ export const confirmClosing = new ValidatedMethod({
       Roles.userIsInRole(Meteor.userId(), 'dev')
     ) {
       return Loans.update(id, {
-        $set: { status: REQUEST_STATUS.DONE, ...object },
+        $set: { status: LOAN_STATUS.DONE, ...object },
       });
     }
 

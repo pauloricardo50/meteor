@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Masonry from 'react-masonry-component';
 
-import { REQUEST_STATUS } from 'core/api/constants';
+import { LOAN_STATUS } from 'core/api/constants';
 import DashboardRecap from './DashboardRecap';
 import DashboardCharts from './DashboardCharts';
 import DashboardBorrowers from './DashboardBorrowers';
@@ -14,7 +14,7 @@ import DashboardProperty from './DashboardProperty';
 import DashboardStatus from './DashboardStatus';
 
 const getGrid = ({ loan }) => {
-  const done = loan.status === REQUEST_STATUS.DONE;
+  const done = loan.status === LOAN_STATUS.DONE;
 
   return [
     {

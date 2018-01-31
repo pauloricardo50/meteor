@@ -4,7 +4,7 @@ import { withRouter, NavLink } from 'react-router-dom';
 
 import { T } from 'core/components/Translation';
 import Icon from 'core/components/Icon';
-import { REQUEST_STATUS } from 'core/api/constants';
+import { LOAN_STATUS } from 'core/api/constants';
 import SideNavStepper from './SideNavStepper';
 
 const SideNavUserLoan = (props) => {
@@ -52,7 +52,7 @@ const SideNavUserLoan = (props) => {
           </h4>
         </div>
       </NavLink>
-      {loan.status === REQUEST_STATUS.ACTIVE && (
+      {loan.status === LOAN_STATUS.ACTIVE && (
         <SideNavStepper
           handleClickLink={handleClickLink}
           history={history}
