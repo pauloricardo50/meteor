@@ -6,14 +6,14 @@ import Button from 'core/components/Button';
 
 import { getRandomOffer } from 'core/api/offers/fakes';
 
-const addFakeOffer = request => {
-  const object = getRandomOffer(request);
+const addFakeOffer = loan => {
+  const object = getRandomOffer(loan);
   insertFakeOffer.call({ object });
 };
 
-const addLotsOfFakeOffers = request => {
+const addLotsOfFakeOffers = loan => {
   for (var i = 0; i < 20; i++) {
-    addFakeOffer(request);
+    addFakeOffer(loan);
   }
 };
 
@@ -22,12 +22,12 @@ const FakeOfferAdder = props => {
     <div className="text-center" style={{ marginBottom: 40 }}>
       <Button raised
         label="Ajouter 20 offres imaginaires"
-        onClick={() => addLotsOfFakeOffers(props.loanRequest)}
+        onClick={() => addLotsOfFakeOffers(props.loan)}
         style={{ margin: 8 }}
       />
       <Button raised
         label="Ajouter offre imaginaire"
-        onClick={() => addFakeOffer(props.loanRequest)}
+        onClick={() => addFakeOffer(props.loan)}
         style={{ margin: 8 }}
       />
     </div>
@@ -35,7 +35,7 @@ const FakeOfferAdder = props => {
 };
 
 FakeOfferAdder.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default FakeOfferAdder;

@@ -8,9 +8,9 @@ import { T } from 'core/components/Translation';
 
 import Item from './Item';
 
-const getIcon = (step, loanRequest) => {
+const getIcon = (step, loan) => {
   const stepNb = step.nb;
-  const realStep = loanRequest.logic.step;
+  const realStep = loan.logic.step;
   if (stepNb < realStep) {
     return (
       <div className="icon done">
@@ -33,7 +33,7 @@ const getIcon = (step, loanRequest) => {
 
 const SideNavStepperStep = ({
   step,
-  loanRequest,
+  loan,
   active,
   handleClick,
   handleClickLink,
@@ -47,7 +47,7 @@ const SideNavStepperStep = ({
       className={classnames({
         step: true,
         isActive: active,
-        off: nb > loanRequest.logic.step,
+        off: nb > loan.logic.step,
       })}
     >
       <div className="absolute-line" />
@@ -55,7 +55,7 @@ const SideNavStepperStep = ({
         className={classnames({ top: true, inactive: nb === 0 })}
         onClick={handleClick}
       >
-        {getIcon(step, loanRequest)}
+        {getIcon(step, loan)}
         <div className="text">
           <span className="title">
             {title || <T id={`steps.${nb}.title`} />}
@@ -86,7 +86,7 @@ const SideNavStepperStep = ({
 };
 
 SideNavStepperStep.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   step: PropTypes.objectOf(PropTypes.any).isRequired,
   active: PropTypes.bool.isRequired,
   handleClick: PropTypes.func.isRequired,

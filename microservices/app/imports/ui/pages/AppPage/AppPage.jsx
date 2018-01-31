@@ -7,7 +7,7 @@ import { REQUEST_STATUS } from 'core/api/constants';
 
 import AppItem from './AppItem';
 
-const AppPage = ({ loanRequests, properties, currentUser }) => (
+const AppPage = ({ loans, properties, currentUser }) => (
   <section className="flex-col center">
     {!currentUser.emails[0].verified && (
       <div style={{ marginBottom: 16 }}>
@@ -15,22 +15,22 @@ const AppPage = ({ loanRequests, properties, currentUser }) => (
       </div>
     )}
 
-    {loanRequests.map(request => (
+    {loans.map(loan => (
       <AppItem
-        key={request._id}
-        title={request.name || <T id="AppPage.noName" />}
+        key={loan._id}
+        title={loan.name || <T id="AppPage.noName" />}
         subtitle={
-          request.status === REQUEST_STATUS.ACTIVE ? (
-            <T id="AppPage.loanRequest" />
+          loan.status === REQUEST_STATUS.ACTIVE ? (
+            <T id="AppPage.loan" />
           ) : (
-            <T id="AppPage.loanRequest.done" />
+            <T id="AppPage.loan.done" />
           )
         }
         mainText={
-          request.status === REQUEST_STATUS.ACTIVE ? (
+          loan.status === REQUEST_STATUS.ACTIVE ? (
             <span>
-              <T id="AppPage.step" values={{ step: request.logic.step }} />
-              {!request.name && (
+              <T id="AppPage.step" values={{ step: loan.logic.step }} />
+              {!loan.name && (
                 <span>
                   <br />
                   <span className="active">
@@ -43,7 +43,7 @@ const AppPage = ({ loanRequests, properties, currentUser }) => (
             <span className="fa fa-home fa-2x heart-beat active" />
           )
         }
-        href={`/requests/${request._id}`}
+        href={`/loans/${loan._id}`}
       />
     ))}
 
@@ -56,7 +56,7 @@ const AppPage = ({ loanRequests, properties, currentUser }) => (
     /> */}
 
     <AppItem
-      title={<T id="AppPage.newRequest" />}
+      title={<T id="AppPage.newLoan" />}
       mainText={<span className="active">+</span>}
       href="/start1/acquisition"
     />
@@ -64,13 +64,13 @@ const AppPage = ({ loanRequests, properties, currentUser }) => (
 );
 
 AppPage.propTypes = {
-  loanRequests: PropTypes.arrayOf(PropTypes.object),
+  loans: PropTypes.arrayOf(PropTypes.object),
   properties: PropTypes.arrayOf(PropTypes.object),
   currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 AppPage.defaultProps = {
-  loanRequests: [],
+  loans: [],
   properties: [],
 };
 

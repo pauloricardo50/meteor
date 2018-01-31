@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import {
-  LoanRequests,
+  Loans,
   Offers,
   Borrowers,
   Properties,
@@ -19,11 +19,11 @@ export function userCompareComposer(props, onData) {
   }
 }
 
-// Get all requests for this user
-export function userRequestsComposer(props, onData) {
-  if (Meteor.subscribe('loanRequests').ready()) {
-    const loanRequests = LoanRequests.find({}).fetch();
-    onData(null, { loanRequests });
+// Get all loans for this user
+export function userLoansComposer(props, onData) {
+  if (Meteor.subscribe('loans').ready()) {
+    const loans = Loans.find({}).fetch();
+    onData(null, { loans });
   }
 }
 
@@ -51,20 +51,20 @@ export function userPropertiesComposer(props, onData) {
   }
 }
 
-// Get a specific request for this user
-export function userRequestComposer(props, onData) {
+// Get a specific loan for this user
+export function userLoanComposer(props, onData) {
   if (
-    Meteor.subscribe('loanRequests').ready() &&
+    Meteor.subscribe('loans').ready() &&
     Meteor.subscribe('borrowers').ready() &&
     Meteor.subscribe('userOffers').ready()
   ) {
-    const requestId = props.match.params.requestId;
-    const loanRequest = LoanRequests.find({ _id: requestId }).fetch()[0];
+    const loanId = props.match.params.loanId;
+    const loan = Loans.find({ _id: loanId }).fetch()[0];
     const borrowers = Borrowers.find({
-      _id: { $in: loanRequest.borrowers },
+      _id: { $in: loan.borrowers },
     }).fetch();
-    const offers = Offers.find({ requestId }).fetch();
-    onData(null, { loanRequest, borrowers, offers });
+    const offers = Offers.find({ loanId }).fetch();
+    onData(null, { loan, borrowers, offers });
   }
 }
 

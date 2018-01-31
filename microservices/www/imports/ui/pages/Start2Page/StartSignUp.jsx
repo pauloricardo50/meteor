@@ -56,7 +56,7 @@ export default class StartSignUp extends Component {
         })
         .then(() =>
           cleanMethod(
-            'createUserAndRequest',
+            'createUserAndLoan',
             { email, formState },
             { title: "C'est dans la boite!", message: '' },
           ).then((userId) => {
@@ -75,13 +75,13 @@ export default class StartSignUp extends Component {
     this.setState({ loading: true });
 
     saveStartForm(formState, null)
-      .then((requestId) => {
-        console.log('Request inserted: ', requestId);
+      .then((loanId) => {
+        console.log('Loan inserted: ', loanId);
         // Keep loading true, to prevent double insert
         this.setState({ errorText: '' });
         const appUrl = `${
           Meteor.settings.public.subdomains.app
-        }/add-request/${requestId}`;
+        }/add-loan/${loanId}`;
         console.log('changing location to :', appUrl);
 
         window.location.replace(appUrl);

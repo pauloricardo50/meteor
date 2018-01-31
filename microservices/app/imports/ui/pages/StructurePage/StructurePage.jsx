@@ -21,7 +21,7 @@ const handleClick = (props, state) => {
   object['general.fortuneUsed'] = state.fortuneUsed;
   object['general.insuranceFortuneUsed'] = state.insuranceFortuneUsed;
 
-  cleanMethod('updateRequest', { object, id: props.loanRequest._id }).then(() =>
+  cleanMethod('updateLoan', { object, id: props.loan._id }).then(() =>
     track('validated structure', {}));
 };
 
@@ -30,8 +30,8 @@ export default class StructurePage extends Component {
     super(props);
 
     this.state = {
-      fortuneUsed: this.props.loanRequest.general.fortuneUsed,
-      insuranceFortuneUsed: this.props.loanRequest.general.insuranceFortuneUsed,
+      fortuneUsed: this.props.loan.general.fortuneUsed,
+      insuranceFortuneUsed: this.props.loan.general.insuranceFortuneUsed,
       error: false,
     };
   }
@@ -42,8 +42,8 @@ export default class StructurePage extends Component {
     this.setState({ [id]: Math.round(toNumber(value)) });
 
   render() {
-    const { loanRequest, borrowers } = this.props;
-    const modifiedRequest = merge({}, loanRequest, {
+    const { loan, borrowers } = this.props;
+    const modifiedLoan = merge({}, loan, {
       general: {
         fortuneUsed: this.state.fortuneUsed,
         insuranceFortuneUsed: this.state.insuranceFortuneUsed,
@@ -61,7 +61,7 @@ export default class StructurePage extends Component {
 
           <div className="text-center">
             <StructureError
-              loanRequest={modifiedRequest}
+              loan={modifiedLoan}
               borrowers={borrowers}
               setParentState={this.setParentState}
             />
@@ -71,10 +71,10 @@ export default class StructurePage extends Component {
             {...this.props}
             parentState={this.state}
             onChange={this.handleChange}
-            disabled={loanRequest.logic.hasValidatedStructure}
+            disabled={loan.logic.hasValidatedStructure}
           />
 
-          <StructureRecap {...this.props} loanRequest={modifiedRequest} />
+          <StructureRecap {...this.props} loan={modifiedLoan} />
 
           <div
             className="text-center"
@@ -84,7 +84,7 @@ export default class StructurePage extends Component {
               disabled={this.state.error}
               label={<T id="StructurePage.CTA" />}
               handleClick={() => handleClick(this.props, this.state)}
-              value={!!loanRequest.logic.hasValidatedStructure}
+              value={!!loan.logic.hasValidatedStructure}
             />
           </div>
         </section>
@@ -94,6 +94,6 @@ export default class StructurePage extends Component {
 }
 
 StructurePage.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

@@ -6,12 +6,12 @@ import { Link } from 'react-router-dom';
 import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
 import { getBorrowerCompletion } from 'core/utils/borrowerFunctions';
-import withRequest from 'core/containers/withRequest';
+import withLoan from 'core/containers/withLoan';
 import DashboardItem from './DashboardItem';
 import BorrowerAdder from '../../components/BorrowerAdder';
 import BorrowerDeleter from '../../components/BorrowerDeleter';
 
-const DashboardBorrowers = ({ borrowers, loanRequest }) => (
+const DashboardBorrowers = ({ borrowers, loan }) => (
   <DashboardItem
     className="dashboard-list"
     title={
@@ -23,7 +23,7 @@ const DashboardBorrowers = ({ borrowers, loanRequest }) => (
 
       return (
         <Link
-          to={`/requests/${loanRequest._id}/borrowers/${b._id}/personal`}
+          to={`/loans/${loan._id}/borrowers/${b._id}/personal`}
           key={b._id}
           className="link"
           onClick={() => track('clicked dashboard borrower', {})}
@@ -57,20 +57,20 @@ const DashboardBorrowers = ({ borrowers, loanRequest }) => (
             </div>
           </div>
           {borrowers.length > 1 && (
-            <BorrowerDeleter borrowerId={b._id} requestId={loanRequest._id} />
+            <BorrowerDeleter borrowerId={b._id} loanId={loan._id} />
           )}
         </Link>
       );
     })}
     {borrowers.length === 1 && (
-      <BorrowerAdder requestId={loanRequest._id} style={{ marginTop: 8 }} />
+      <BorrowerAdder loanId={loan._id} style={{ marginTop: 8 }} />
     )}
   </DashboardItem>
 );
 
 DashboardBorrowers.propTypes = {
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default withRequest(DashboardBorrowers, ['borrowers', 'loanRequest']);
+export default withLoan(DashboardBorrowers, ['borrowers', 'loan']);

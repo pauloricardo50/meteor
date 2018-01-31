@@ -90,7 +90,7 @@ const djsConfig = props => ({
     });
 
     uploader.file = file;
-    uploader.request((error, instructions) => {
+    uploader.loan((error, instructions) => {
       if (error) {
         done(error.message);
       } else {

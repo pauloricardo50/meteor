@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import Icon from 'core/components/Icon';
 
-import { isRequestValid } from 'core/utils/requestFunctions';
+import { isLoanValid } from 'core/utils/loanFunctions';
 import { T } from 'core/components/Translation';
-import withRequest from 'core/containers/withRequest';
+import withLoan from 'core/containers/withLoan';
 
 const styles = {
   div: {
@@ -33,8 +33,8 @@ class StructureError extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const r1 = this.props.loanRequest;
-    const r2 = nextProps.loanRequest;
+    const r1 = this.props.loan;
+    const r2 = nextProps.loan;
     if (
       r1.general.fortuneUsed !== r2.general.fortuneUsed ||
       r1.general.insuranceFortuneUsed !== r2.general.insuranceFortuneUsed
@@ -43,9 +43,9 @@ class StructureError extends Component {
     }
   }
 
-  getContent = ({ loanRequest, borrowers, property }) => {
+  getContent = ({ loan, borrowers, property }) => {
     try {
-      if (isRequestValid({ loanRequest, borrowers, property })) {
+      if (isLoanValid({ loan, borrowers, property })) {
         this.props.setParentState('error', false);
         this.setState({
           message: 'StructureError.valid',
@@ -83,10 +83,10 @@ class StructureError extends Component {
 }
 
 StructureError.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   property: PropTypes.objectOf(PropTypes.any).isRequired,
   setParentState: PropTypes.func.isRequired,
 };
 
-export default withRequest(StructureError);
+export default withLoan(StructureError);

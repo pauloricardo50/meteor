@@ -5,7 +5,7 @@ import { _ } from 'meteor/underscore';
 // DDPRateLimiter.setErrorMessage(({ timeToReset }) => {
 //   const time = Math.ceil(timeToReset / 1000);
 //   const seconds = time === 1 ? 'second' : 'seconds';
-//   return `Easy on the gas, buddy. Too many requests. Try again in ${time} ${seconds}.`;
+//   return `Easy on the gas, buddy. Too many loans. Try again in ${time} ${seconds}.`;
 // });
 
 const fetchMethodNames = methods => _.pluck(methods, 'name');

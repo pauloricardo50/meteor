@@ -11,7 +11,7 @@ import { T } from 'core/components/Translation';
 import getSteps from 'core/arrays/steps';
 import { AUCTION_STATUS } from 'core/api/constants';
 import DashboardItem from './DashboardItem';
-import withRequest from 'core/containers/withRequest';
+import withLoan from 'core/containers/withLoan';
 
 const styles = {
   button: {
@@ -47,31 +47,31 @@ class DashboardStatus extends Component {
   }
 
   getNextLink = () => {
-    const { loanRequest, borrowers, property } = this.props;
+    const { loan, borrowers, property } = this.props;
     const steps = getSteps({
-      loanRequest,
+      loan,
       borrowers,
       property,
       serverTime: this.state.serverTime,
     });
-    const nextItem = steps[loanRequest.logic.step].items.find(subStep => !subStep.isDone());
+    const nextItem = steps[loan.logic.step].items.find(subStep => !subStep.isDone());
     return nextItem && nextItem.link;
   };
 
   handleNextStep = () =>
-    cleanMethod('incrementStep', { id: this.props.loanRequest._id }).then(() =>
+    cleanMethod('incrementStep', { id: this.props.loan._id }).then(() =>
       this.props.history.push(this.getNextLink()));
 
   render() {
-    const { loanRequest, borrowers } = this.props;
+    const { loan, borrowers } = this.props;
     const { serverTime } = this.state;
     const nextLink = this.getNextLink();
 
     const verificationRequested =
-      loanRequest.logic.verification &&
-      loanRequest.logic.verification.requested;
+      loan.logic.verification &&
+      loan.logic.verification.requested;
     const auctionGoingOn =
-      loanRequest.logic.auction.status === AUCTION_STATUS.STARTED;
+      loan.logic.auction.status === AUCTION_STATUS.STARTED;
 
     const showLoading = verificationRequested || auctionGoingOn;
 
@@ -80,7 +80,7 @@ class DashboardStatus extends Component {
         <h2 className="fixed-size" style={styles.step}>
           <T
             id="DashboardStatus.step"
-            values={{ step: loanRequest.logic.step }}
+            values={{ step: loan.logic.step }}
           />
           {showLoading && <br />}
           {showLoading && (
@@ -121,9 +121,9 @@ class DashboardStatus extends Component {
 }
 
 DashboardStatus.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default withRequest(DashboardStatus);
+export default withLoan(DashboardStatus);

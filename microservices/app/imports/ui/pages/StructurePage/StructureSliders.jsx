@@ -48,10 +48,10 @@ const styles = {
 
 const StructureSliders = (props) => {
   const {
-    loanRequest, borrowers, onChange, disabled, parentState,
+    loan, borrowers, onChange, disabled, parentState,
   } = props;
   const showInsurance =
-    loanRequest.general.usageType === USAGE_TYPE.PRIMARY &&
+    loan.general.usageType === USAGE_TYPE.PRIMARY &&
     getInsuranceFortune({ borrowers }) > 0;
 
   return (
@@ -91,7 +91,7 @@ const StructureSliders = (props) => {
 };
 
 StructureSliders.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   onChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool,

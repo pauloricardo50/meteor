@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
-import LoanRequests from '../loanrequests/loanrequests';
+import Loans from '../loans/loans';
 import { Roles } from 'meteor/alanning:roles';
 import { check, Match } from 'meteor/check';
 import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
@@ -17,25 +17,25 @@ export const insertOffer = new ValidatedMethod({
     check(userId, Match.Optional(String));
   },
   run({ object, userId }) {
-    // Make sure there isn't already an offer for this request
+    // Make sure there isn't already an offer for this loan
     const user = Meteor.user();
     const offer = Offers.findOne({
-      requestId: object.requestId,
+      loanId: object.loanId,
       organization: user.profile.organization,
     });
     if (offer) {
       throw new Meteor.Error(
         'noTwoOffers',
-        'Your organization has already made an offer on this request',
+        'Your organization has already made an offer on this loan',
       );
     }
 
-    const request = LoanRequests.findOne(object.requestId);
+    const loan = Loans.findOne(object.loanId);
 
     object.userId = userId || Meteor.userId();
     object.organization = user.profile.organization;
     object.canton = user.profile.cantons[0];
-    object.auctionEndTime = request.logic.auction.endTime;
+    object.auctionEndTime = loan.logic.auction.endTime;
 
     return Offers.insert(object);
   },
@@ -55,13 +55,13 @@ export const insertAdminOffer = new ValidatedMethod({
       return false;
     }
 
-    const request = LoanRequests.findOne(object.requestId);
+    const loan = Loans.findOne(object.loanId);
 
     return Offers.insert({
       ...object,
       userId: Meteor.userId(),
       isAdmin: true,
-      auctionEndTime: request.logic.auction.endTime, // this doesn't update when the request is ended prematurely by an admin
+      auctionEndTime: loan.logic.auction.endTime, // this doesn't update when the loan is ended prematurely by an admin
       canton: 'GE',
     });
   },

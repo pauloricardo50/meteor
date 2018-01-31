@@ -1,17 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 
 import {
-  LoanRequests,
+  Loans,
   Offers,
   Borrowers,
   AdminActions,
   Properties,
 } from '../../api';
 
-export function adminRequestsComposer(props, onData) {
-  if (Meteor.subscribe('allLoanRequests').ready()) {
-    const loanRequests = LoanRequests.find({}).fetch();
-    onData(null, { loanRequests });
+export function adminLoansComposer(props, onData) {
+  if (Meteor.subscribe('allLoans').ready()) {
+    const loans = Loans.find({}).fetch();
+    onData(null, { loans });
   }
 }
 
@@ -43,26 +43,26 @@ export function adminPropertiesComposer(props, onData) {
   }
 }
 
-// Get the request specified in the URL, the user and the offers for it
-export function adminRequestComposer(props, onData) {
-  const { requestId } = props.match.params;
+// Get the loan specified in the URL, the user and the offers for it
+export function adminLoanComposer(props, onData) {
+  const { loanId } = props.match.params;
 
-  if (Meteor.subscribe('loanRequest', requestId).ready()) {
-    const loanRequest = LoanRequests.find({ _id: requestId }).fetch()[0];
+  if (Meteor.subscribe('loan', loanId).ready()) {
+    const loan = Loans.find({ _id: loanId }).fetch()[0];
 
     if (
-      Meteor.subscribe('user', loanRequest.userId).ready() &&
-      Meteor.subscribe('requestOffers', requestId).ready() &&
-      Meteor.subscribe('requestBorrowers', loanRequest.borrowers).ready() &&
-      Meteor.subscribe('property', loanRequest.property).ready()
+      Meteor.subscribe('user', loan.userId).ready() &&
+      Meteor.subscribe('loanOffers', loanId).ready() &&
+      Meteor.subscribe('loanBorrowers', loan.borrowers).ready() &&
+      Meteor.subscribe('property', loan.property).ready()
     ) {
-      const user = Meteor.users.find({ _id: loanRequest.userId }).fetch()[0];
-      const offers = Offers.find({ requestId }).fetch();
+      const user = Meteor.users.find({ _id: loan.userId }).fetch()[0];
+      const offers = Offers.find({ loanId }).fetch();
       const borrowers = Borrowers.find({}).fetch();
       const property = Properties.find({}).fetch()[0];
 
       onData(null, {
-        loanRequest,
+        loan,
         user,
         offers,
         borrowers,
@@ -72,24 +72,24 @@ export function adminRequestComposer(props, onData) {
   }
 }
 
-// Get the user and its associated loanRequests and borrowers
+// Get the user and its associated loans and borrowers
 export function adminUserComposer(props, onData) {
   const { userId } = props.match.params;
 
   if (Meteor.subscribe('user', userId).ready()) {
     const user = Meteor.users.findOne(userId);
     if (
-      Meteor.subscribe('userLoanRequests', userId).ready() &&
+      Meteor.subscribe('userLoans', userId).ready() &&
       Meteor.subscribe('userBorrowers', userId).ready()
     ) {
-      const loanRequests = LoanRequests.find().fetch();
-      const propertyIds = loanRequests && loanRequests.map(r => r.property);
+      const loans = Loans.find().fetch();
+      const propertyIds = loans && loans.map(r => r.property);
       if (Meteor.subscribe('userProperties', userId, propertyIds).ready()) {
         const borrowers = Borrowers.find().fetch();
         const properties = Properties.find().fetch();
 
         onData(null, {
-          loanRequests,
+          loans,
           user,
           borrowers,
           properties,

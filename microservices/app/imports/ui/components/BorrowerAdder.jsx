@@ -12,9 +12,9 @@ export default class BorrowerAdder extends Component {
   }
 
   handleClick = () => {
-    const { requestId } = this.props;
+    const { loanId } = this.props;
     this.setState({ loading: true });
-    cleanMethod('addBorrower', { requestId })
+    cleanMethod('addBorrower', { loanId })
       .then((result) => {
         console.log('Done!', result);
         this.setState({ loading: false });
@@ -42,7 +42,7 @@ export default class BorrowerAdder extends Component {
 }
 
 BorrowerAdder.propTypes = {
-  requestId: PropTypes.string.isRequired,
+  loanId: PropTypes.string.isRequired,
   style: PropTypes.object,
 };
 

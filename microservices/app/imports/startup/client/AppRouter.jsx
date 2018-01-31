@@ -7,7 +7,7 @@ import { getUserLocale, getFormats } from 'core/utils/localization';
 import messagesFR from '../../../lang/fr.json';
 import AppStore from '../../ui/components/AppStore';
 
-import RequestContainer from 'core/containers/RequestContainer';
+import LoanContainer from 'core/containers/LoanContainer';
 
 import DashboardPage from '../../ui/pages/DashboardPage';
 import BorrowerPage from '../../ui/pages/BorrowerPage';
@@ -26,7 +26,7 @@ import DevPage from '../../ui/pages/DevPage';
 import ComparePage from '../../ui/pages/ComparePage';
 import AppPage from '../../ui/pages/AppPage';
 import AccountPage from '../../ui/pages/AccountPage';
-import AddRequestPage from '../../ui/pages/AddRequestPage';
+import AddLoanPage from '../../ui/pages/AddLoanPage';
 import PasswordResetpage from '../../ui/pages/PasswordResetPage';
 
 import AppLayout from '../../ui/layouts/AppLayout';
@@ -43,55 +43,55 @@ const AppRouter = () => (
         <Route path="/dev" component={DevPage} />
         <Route path="/profile" component={AccountPage} />
         <Route
-          path="/requests/:requestId/borrowers/:borrowerId/:tab"
-          component={RequestContainer(BorrowerPage)}
+          path="/loans/:loanId/borrowers/:borrowerId/:tab"
+          component={LoanContainer(BorrowerPage)}
         />
         <Route
-          path="/requests/:requestId/property"
-          component={RequestContainer(PropertyPage)}
+          path="/loans/:loanId/property"
+          component={LoanContainer(PropertyPage)}
         />
         <Route
-          path="/requests/:requestId/finance"
-          component={RequestContainer(FinancePage)}
+          path="/loans/:loanId/finance"
+          component={LoanContainer(FinancePage)}
         />
         <Route
-          path="/requests/:requestId/verification"
-          component={RequestContainer(VerificationPage)}
+          path="/loans/:loanId/verification"
+          component={LoanContainer(VerificationPage)}
         />
         <Route
-          path="/requests/:requestId/structure"
-          component={RequestContainer(StructurePage)}
+          path="/loans/:loanId/structure"
+          component={LoanContainer(StructurePage)}
         />
         <Route
-          path="/requests/:requestId/auction"
-          component={RequestContainer(AuctionPage)}
+          path="/loans/:loanId/auction"
+          component={LoanContainer(AuctionPage)}
         />
         <Route
-          path="/requests/:requestId/strategy"
-          component={RequestContainer(StrategyPage)}
+          path="/loans/:loanId/strategy"
+          component={LoanContainer(StrategyPage)}
         />
         <Route
-          path="/requests/:requestId/offerpicker"
-          component={RequestContainer(OfferPickerPage)}
+          path="/loans/:loanId/offerpicker"
+          component={LoanContainer(OfferPickerPage)}
         />
         <Route
-          path="/requests/:requestId/contract"
-          component={RequestContainer(ContractPage)}
+          path="/loans/:loanId/contract"
+          component={LoanContainer(ContractPage)}
         />
         <Route
-          path="/requests/:requestId/closing"
-          component={RequestContainer(ClosingPage)}
+          path="/loans/:loanId/closing"
+          component={LoanContainer(ClosingPage)}
         />
         <Route
-          path="/requests/:requestId/files"
-          component={RequestContainer(FilesPage)}
+          path="/loans/:loanId/files"
+          component={LoanContainer(FilesPage)}
         />
         <Route
-          path="/requests/:requestId"
-          component={RequestContainer(DashboardPage)}
+          path="/loans/:loanId"
+          component={LoanContainer(DashboardPage)}
         />
         <Route path="/compare" component={ComparePage} />
-        <Route path="/add-request/:requestId" component={AddRequestPage} />
+        <Route path="/add-loan/:loanId" component={AddLoanPage} />
         <Route path="/enroll-account/:token" component={PasswordResetpage} />
         <Route exact path="/" component={AppPage} />
         <Route component={NotFound} />

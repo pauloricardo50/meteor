@@ -1,4 +1,4 @@
-import { getLoanValue, getPropAndWork } from 'core/utils/requestFunctions';
+import { getLoanValue, getPropAndWork } from 'core/utils/loanFunctions';
 
 const getRandomCondition = () => {
   const conditions = [
@@ -40,7 +40,7 @@ const round = v => Math.round(v * 10000) / 10000;
 const rand = (min, max) => round(Math.random() * (max - min) + min);
 
 export const getRandomOffer = (
-  { loanRequest, property },
+  { loan, property },
   matchLoanWanted = false,
 ) => {
   const rate1 = rand(0.007, 0.012);
@@ -49,8 +49,8 @@ export const getRandomOffer = (
   // Randomly add rank 1 offers 25% of the time
   const loanWanted =
     Math.random() > 0.75 && !matchLoanWanted
-      ? 0.65 * getPropAndWork({ loanRequest, property })
-      : getLoanValue({ loanRequest, property });
+      ? 0.65 * getPropAndWork({ loan, property })
+      : getLoanValue({ loan, property });
 
   const counterpart = getRandomCounterpart();
   const condition = getRandomCondition();
@@ -58,7 +58,7 @@ export const getRandomOffer = (
   return {
     organization: 'fake',
     canton: 'GE',
-    requestId: loanRequest._id,
+    loanId: loan._id,
     auctionEndTime: new Date(),
     isSwiss: true,
     worksForOwnCompany: true,

@@ -41,7 +41,7 @@ export default class AuctionPage extends Component {
 
   getContent() {
     const {
-      loanRequest, offers, borrowers, history,
+      loan, offers, borrowers, history,
     } = this.props;
     const { serverTime } = this.state;
 
@@ -54,15 +54,15 @@ export default class AuctionPage extends Component {
     }
 
     if (
-      loanRequest.logic.auction.endTime <=
+      loan.logic.auction.endTime <=
         serverTime.setSeconds(serverTime.getSeconds() + 1) ||
-      loanRequest.logic.auction.status === AUCTION_STATUS.ENDED
+      loan.logic.auction.status === AUCTION_STATUS.ENDED
     ) {
       // After the auction, clear interval
       Meteor.clearInterval(time);
 
       return <AuctionResults {...this.props} />;
-    } else if (loanRequest.logic.auction.status === AUCTION_STATUS.STARTED) {
+    } else if (loan.logic.auction.status === AUCTION_STATUS.STARTED) {
       // During the auction
       return <Auction {...this.props} serverTime={serverTime} />;
     }
@@ -88,7 +88,7 @@ export default class AuctionPage extends Component {
 }
 
 AuctionPage.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   offers: PropTypes.arrayOf(PropTypes.any),
 };

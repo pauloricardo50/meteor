@@ -3,30 +3,30 @@ import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 
 import Offers from '../offers';
-import LoanRequests from '../../loanrequests/loanrequests';
+import Loans from '../../loans/loans';
 
-// Get all offers for the currently active request
+// Get all offers for the currently active loan
 Meteor.publish('activeOffers', () => {
-  const activeRequest = LoanRequests.findOne({
+  const activeLoan = Loans.findOne({
     userId: Meteor.userId(),
     active: true,
   });
 
   return Offers.find({
-    requestId: activeRequest._id,
+    loanId: activeLoan._id,
   });
 });
 
-// Get all offers for the currently active request
+// Get all offers for the currently active loan
 Meteor.publish('userOffers', () => {
-  const loanRequests = LoanRequests.find({
+  const loans = Loans.find({
     userId: Meteor.userId(),
   });
 
-  const IDs = loanRequests.map(r => r._id);
+  const IDs = loans.map(r => r._id);
 
   return Offers.find({
-    requestId: { $in: IDs },
+    loanId: { $in: IDs },
   });
 });
 
@@ -58,15 +58,15 @@ Meteor.publish('allOffers', function publish() {
   return this.ready();
 });
 
-// Publish all offers for a loanRequest for admins
-Meteor.publish('requestOffers', function publish(requestId) {
-  check(requestId, String);
+// Publish all offers for a loan for admins
+Meteor.publish('loanOffers', function publish(loanId) {
+  check(loanId, String);
   // Verify if user is logged In
   if (
     Roles.userIsInRole(Meteor.userId(), 'admin') ||
     Roles.userIsInRole(Meteor.userId(), 'dev')
   ) {
-    return Offers.find({ requestId });
+    return Offers.find({ loanId });
   }
 
   return this.ready();

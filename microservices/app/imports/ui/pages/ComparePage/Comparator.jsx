@@ -10,7 +10,7 @@ import {
   getIncomeRatio,
   getBorrowRatio,
 } from 'core/utils/startFunctions';
-import { validateRatiosCompletely } from 'core/utils/requestFunctions';
+import { validateRatiosCompletely } from 'core/utils/loanFunctions';
 import { toDistanceString } from 'core/utils/conversionFunctions';
 import constants from 'core/config/constants';
 import { getClosestStations, getNearbyPlace } from 'core/utils/APIs';
@@ -121,14 +121,14 @@ export default class Comparator extends Component {
         byDistance: true,
       },
       { googId: 'bus_station', id: 'nearestBusStation', byDistance: true },
-    ].forEach(request =>
+    ].forEach(loan =>
       this.addGooglePlace(
         propertyId,
         lat,
         lng,
-        request.googId,
-        request.id,
-        request.byDistance,
+        loan.googId,
+        loan.id,
+        loan.byDistance,
       ));
 
     if (typeof callback === 'function') {

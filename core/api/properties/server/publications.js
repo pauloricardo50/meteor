@@ -22,7 +22,7 @@ Meteor.publish('userProperties', function publish(userId, propertyIds) {
     Roles.userIsInRole(Meteor.userId(), 'admin') ||
     Roles.userIsInRole(Meteor.userId(), 'dev')
   ) {
-    // Return all properties owned by this user, or pointed at by a loanRequest
+    // Return all properties owned by this user, or pointed at by a loan
     return Properties.find({
       $or: [{ userId }, { _id: { $in: propertyIds } }],
     });

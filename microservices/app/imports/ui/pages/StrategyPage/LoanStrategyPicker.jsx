@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { getLoanValue } from 'core/utils/requestFunctions';
+import { getLoanValue } from 'core/utils/loanFunctions';
 import StrategyChoices from '/imports/ui/components/StrategyChoices';
 import { T } from 'core/components/Translation';
 import TranchePicker from './TranchePicker';
 import LenderSummary from './LenderSummary';
 
-const getChoices = ({ loanRequest, offers }) => [
+const getChoices = ({ loan, offers }) => [
   {
     id: 'fixed',
     title: '100% Fixé',
@@ -22,17 +22,17 @@ const getChoices = ({ loanRequest, offers }) => [
       'Choisissez la durée',
       'À vos risques et périls',
     ],
-    children: <TranchePicker offers={offers} loanRequest={loanRequest} />,
+    children: <TranchePicker offers={offers} loan={loan} />,
   },
 ];
 
-const getStructure = ({ choiceId, loanRequest, property }) => {
-  const loan = getLoanValue({ loanRequest, property });
+const getStructure = ({ choiceId, loan, property }) => {
+  const loanValue = getLoanValue({ loan, property });
   if (choiceId === 'fixed') {
     return [
       {
         type: 'interest10',
-        value: loan,
+        value: loanValue,
       },
     ];
   }
@@ -40,7 +40,7 @@ const getStructure = ({ choiceId, loanRequest, property }) => {
   return [];
 };
 
-const handleChoose = ({ id, loanRequest, handleSave }) => {
+const handleChoose = ({ id, loan, handleSave }) => {
   if (id === 'manual') {
     handleSave({
       'logic.loanStrategyPreset': id,
@@ -48,14 +48,14 @@ const handleChoose = ({ id, loanRequest, handleSave }) => {
   } else {
     handleSave({
       'logic.loanStrategyPreset': id,
-      'general.loanTranches': getStructure({ choiceId: id, loanRequest }),
+      'general.loanTranches': getStructure({ choiceId: id, loan }),
     });
   }
 };
 
 const LoanStrategyPicker = (props) => {
   const {
-    loanRequest, handleSave, offers, disabled,
+    loan, handleSave, offers, disabled,
   } = props;
   return (
     <article>
@@ -69,7 +69,7 @@ const LoanStrategyPicker = (props) => {
 
       <StrategyChoices
         name="loanStrategyPreset"
-        value={loanRequest.logic.loanStrategyPreset}
+        value={loan.logic.loanStrategyPreset}
         choices={getChoices(props)}
         handleChoose={id => handleChoose({ ...props, id })}
         disabled={disabled}
@@ -81,13 +81,13 @@ const LoanStrategyPicker = (props) => {
         </small>
       </p>
 
-      {loanRequest.logic.loanStrategyPreset && <LenderSummary />}
+      {loan.logic.loanStrategyPreset && <LenderSummary />}
     </article>
   );
 };
 
 LoanStrategyPicker.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   handleSave: PropTypes.func.isRequired,
   offers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

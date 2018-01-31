@@ -10,7 +10,7 @@ import Recap from 'core/components/Recap';
 import constants from 'core/config/constants';
 import LoadingButton from '/imports/ui/components/LoadingButton';
 import { T } from 'core/components/Translation';
-import { disableForms } from 'core/utils/requestFunctions';
+import { disableForms } from 'core/utils/loanFunctions';
 import track from 'core/utils/analytics';
 
 const styles = {
@@ -96,7 +96,7 @@ const BorrowerFinancePage = (props) => {
         popFunc="popBorrowerValue"
         doc={borrower}
         disabled={
-          disableForms({ loanRequest: props.loanRequest }) ||
+          disableForms({ loan: props.loan }) ||
           borrower.logic.hasValidatedFinances
         }
       />
@@ -124,7 +124,7 @@ const BorrowerFinancePage = (props) => {
 };
 
 BorrowerFinancePage.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 

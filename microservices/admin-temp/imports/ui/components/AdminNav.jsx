@@ -14,7 +14,7 @@ const adminLinks = [
     label: 'Utilisateurs',
   },
   {
-    link: '/requests',
+    link: '/loans',
     icon: <span className="icon fa fa-files-o fa-2x" />,
     label: 'Demandes de prêt',
   },

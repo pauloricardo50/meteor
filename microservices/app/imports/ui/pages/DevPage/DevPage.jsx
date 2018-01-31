@@ -5,14 +5,14 @@ import { Roles } from 'meteor/alanning:roles';
 
 import { completeFakeBorrower } from 'core/api/borrowers/fakes';
 import {
-  requestStep1,
-  requestStep2,
-  requestStep3,
-} from 'core/api/loanrequests/fakes';
+  loanStep1,
+  loanStep2,
+  loanStep3,
+} from 'core/api/loans/fakes';
 import { getRandomOffer } from 'core/api/offers/fakes';
 import { fakeProperty } from 'core/api/properties/fakes';
 
-const addStep1Request = (twoBorrowers) => {
+const addStep1Loan = (twoBorrowers) => {
   const borrowerIds = [];
   cleanMethod('insertBorrower', { object: completeFakeBorrower })
     .then((id1) => {
@@ -29,15 +29,15 @@ const addStep1Request = (twoBorrowers) => {
       return cleanMethod('insertProperty', { object: fakeProperty });
     })
     .then((propertyId) => {
-      const request = requestStep1;
-      request.borrowers = borrowerIds;
-      request.property = propertyId;
-      cleanMethod('insertRequest', { object: request });
+      const loan = loanStep1;
+      loan.borrowers = borrowerIds;
+      loan.property = propertyId;
+      cleanMethod('insertLoan', { object: loan });
     })
     .catch(console.log);
 };
 
-const addStep2Request = (twoBorrowers) => {
+const addStep2Loan = (twoBorrowers) => {
   const borrowerIds = [];
 
   cleanMethod('insertBorrower', { object: completeFakeBorrower })
@@ -55,18 +55,18 @@ const addStep2Request = (twoBorrowers) => {
       return cleanMethod('insertProperty', { object: fakeProperty });
     })
     .then((propertyId) => {
-      const request = requestStep2;
-      request.borrowers = borrowerIds;
-      request.property = propertyId;
-      cleanMethod('insertRequest', { object: request });
+      const loan = loanStep2;
+      loan.borrowers = borrowerIds;
+      loan.property = propertyId;
+      cleanMethod('insertLoan', { object: loan });
     })
     .catch(console.log);
 };
 
-const addStep3Request = (twoBorrowers, completeFiles = true) => {
+const addStep3Loan = (twoBorrowers, completeFiles = true) => {
   const borrowerIds = [];
-  const request = requestStep3(completeFiles);
-  let requestId;
+  const loan = loanStep3(completeFiles);
+  let loanId;
   cleanMethod('insertBorrower', { object: completeFakeBorrower })
     .then((id1) => {
       borrowerIds.push(id1);
@@ -82,25 +82,25 @@ const addStep3Request = (twoBorrowers, completeFiles = true) => {
       return cleanMethod('insertProperty', { object: fakeProperty });
     })
     .then((propertyId) => {
-      request.borrowers = borrowerIds;
-      request.property = propertyId;
+      loan.borrowers = borrowerIds;
+      loan.property = propertyId;
     })
-    .then(() => cleanMethod('insertRequest', { object: request }))
+    .then(() => cleanMethod('insertLoan', { object: loan }))
     .then((id) => {
-      requestId = id;
+      loanId = id;
       const object = getRandomOffer(
-        { loanRequest: { ...request, _id: id }, property: fakeProperty },
+        { loan: { ...loan, _id: id }, property: fakeProperty },
         true,
       );
       return cleanMethod('insertAdminOffer', { object });
     })
     .then(offerId =>
-      cleanMethod('updateRequest', {
+      cleanMethod('updateLoan', {
         object: {
           'logic.lender.offerId': offerId,
           'logic.lender.chosenTime': new Date(),
         },
-        id: requestId,
+        id: loanId,
       }))
     .then(() => {
       // Weird bug with offers publications that forces me to reload TODO: fix it
@@ -110,9 +110,9 @@ const addStep3Request = (twoBorrowers, completeFiles = true) => {
 };
 
 const purge = ({
-  loanRequests, borrowers, offers, properties,
+  loans, borrowers, offers, properties,
 }) => {
-  loanRequests.forEach(r => cleanMethod('deleteRequest', { id: r._id }));
+  loans.forEach(r => cleanMethod('deleteLoan', { id: r._id }));
   borrowers.forEach(r => cleanMethod('deleteBorrower', { id: r._id }));
   offers.forEach(r => cleanMethod('deleteOffer', { id: r._id }));
   properties.forEach(r => cleanMethod('deleteProperty', { id: r._id }));
@@ -145,17 +145,17 @@ export default class DevPage extends Component {
           onChange={this.handleChange}
         />
         2 emprunteurs<br />
-        <button onClick={() => addStep1Request(twoBorrowers)}>
-          step 1 Request
+        <button onClick={() => addStep1Loan(twoBorrowers)}>
+          step 1 Loan
         </button>
-        <button onClick={() => addStep2Request(twoBorrowers)}>
-          step 2 Request
+        <button onClick={() => addStep2Loan(twoBorrowers)}>
+          step 2 Loan
         </button>
-        <button onClick={() => addStep3Request(twoBorrowers)}>
-          step 3 Request
+        <button onClick={() => addStep3Loan(twoBorrowers)}>
+          step 3 Loan
         </button>
-        <button onClick={() => addStep3Request(twoBorrowers, false)}>
-          step 3 Request, few files
+        <button onClick={() => addStep3Loan(twoBorrowers, false)}>
+          step 3 Loan, few files
         </button>
         <button onClick={() => purge(this.props)}>Purge</button>
       </div>
@@ -164,13 +164,13 @@ export default class DevPage extends Component {
 }
 
 DevPage.propTypes = {
-  loanRequests: PropTypes.arrayOf(PropTypes.object),
+  loans: PropTypes.arrayOf(PropTypes.object),
   borrowers: PropTypes.arrayOf(PropTypes.object),
   offers: PropTypes.arrayOf(PropTypes.object),
 };
 
 DevPage.defaultProps = {
-  loanRequests: [],
+  loans: [],
   borrowers: [],
   offers: [],
 };

@@ -5,8 +5,8 @@ import { T, IntlDate } from 'core/components/Translation';
 
 import DashboardItem from './DashboardItem';
 
-const getDate = loanRequest => {
-  const { firstPaymentDate, paymentSchedule } = loanRequest.logic;
+const getDate = loan => {
+  const { firstPaymentDate, paymentSchedule } = loan.logic;
 
   const today = new Date();
   const date = new Date(firstPaymentDate);
@@ -35,7 +35,7 @@ const getDate = loanRequest => {
 };
 
 const DashboardPayments = props => {
-  const { date, lastDate } = getDate(props.loanRequest);
+  const { date, lastDate } = getDate(props.loan);
 
   return (
     <DashboardItem title={<T id="DashboardPayments.title" />}>
@@ -55,7 +55,7 @@ const DashboardPayments = props => {
 };
 
 DashboardPayments.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default DashboardPayments;

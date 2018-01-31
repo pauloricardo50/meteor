@@ -4,7 +4,7 @@ import cleanMethod from 'core/api/cleanMethods';
 
 import Button from 'core/components/Button';
 
-const addVerifyingRequest = () => {
+const addVerifyingLoan = () => {
   const object = {
     general: { fortuneUsed: 250000, partnersToAvoid: ['joe', 'john'] },
     borrowers: 'testBorrower',
@@ -17,7 +17,7 @@ const addVerifyingRequest = () => {
     },
     admin: {},
   };
-  cleanMethod('insertRequest', { object });
+  cleanMethod('insertLoan', { object });
 };
 
 const AdminDev = props => (
@@ -27,7 +27,7 @@ const AdminDev = props => (
       <Button
         raised
         label="En demande de vérification"
-        onClick={() => addVerifyingRequest()}
+        onClick={() => addVerifyingLoan()}
       />
     </div>
   </section>

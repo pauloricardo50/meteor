@@ -192,9 +192,9 @@ Uploader.propTypes = {
 
 Uploader.defaultProps = {
   currentValue: [],
-  pushFunc: 'pushRequestValue',
-  updateFunc: 'updateRequest',
-  collection: 'loanRequests',
+  pushFunc: 'pushLoanValue',
+  updateFunc: 'updateLoan',
+  collection: 'loans',
 };
 
 export default injectIntl(Uploader);

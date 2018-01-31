@@ -3,10 +3,10 @@ import React from 'react';
 import Loadable from 'core/utils/loadable';
 
 import { toMoney } from 'core/utils/conversionFunctions';
-import { getLoanValue, getProjectValue } from 'core/utils/requestFunctions';
+import { getLoanValue, getProjectValue } from 'core/utils/loanFunctions';
 import constants from 'core/config/constants';
 import colors from 'core/config/colors';
-import withRequest from 'core/containers/withRequest';
+import withLoan from 'core/containers/withLoan';
 
 import { legend } from './chartSettings';
 
@@ -23,8 +23,8 @@ const chartColors = {
 };
 
 const getConfig = (props) => {
-  const r = props.loanRequest;
-  const total = getProjectValue({ loanRequest: r, property: props.property });
+  const r = props.loan;
+  const total = getProjectValue({ loan: r, property: props.property });
 
   const options = {
     chart: {
@@ -119,9 +119,9 @@ ProjectPieChart.defaultProps = {
 };
 
 ProjectPieChart.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   divName: PropTypes.string,
   titleAlign: PropTypes.string,
 };
 
-export default withRequest(ProjectPieChart);
+export default withLoan(ProjectPieChart);

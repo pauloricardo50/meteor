@@ -3,18 +3,18 @@ import { expect } from 'chai';
 
 import {
   getPropertyArray,
-  getPropertyRequestArray,
+  getPropertyLoanArray,
 } from '../PropertyFormArray';
 
 describe('getPropertyArray', () => {
-  it('throws if no loanRequest is passed', () => {
+  it('throws if no loan is passed', () => {
     expect(() => getPropertyArray({})).to.throw();
   });
 
   it('returns an array of objects, with an id in each', () => {
     const arr = getPropertyArray({
       property: {},
-      loanRequest: { general: {} },
+      loan: { general: {} },
       borrowers: [{}],
     });
     expect(arr).to.have.length.above(0);
@@ -27,11 +27,11 @@ describe('getPropertyArray', () => {
   });
 });
 
-describe('getPropertyRequestArray', () => {
+describe('getPropertyLoanArray', () => {
   it('returns an array of objects, with an id in each', () => {
-    const arr = getPropertyRequestArray({
+    const arr = getPropertyLoanArray({
       property: {},
-      loanRequest: { general: {} },
+      loan: { general: {} },
       borrowers: [{}],
     });
     expect(arr).to.have.length.above(0);

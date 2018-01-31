@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { Uploader, FileStatusIcon } from 'core/components/UploaderArray';
 import { CLOSING_STEPS_STATUS, CLOSING_STEPS_TYPE } from 'core/api/constants';
 
-const ClosingItem = ({ step, loanRequest, disabled }) => {
+const ClosingItem = ({ step, loan, disabled }) => {
   const {
     type, title, description, status, error, id,
   } = step;
@@ -14,8 +14,8 @@ const ClosingItem = ({ step, loanRequest, disabled }) => {
     return (
       <Uploader
         fileMeta={{ id, title }}
-        currentValue={loanRequest.files[id]}
-        docId={loanRequest._id}
+        currentValue={loan.files[id]}
+        docId={loan._id}
         disabled={disabled}
       />
     );

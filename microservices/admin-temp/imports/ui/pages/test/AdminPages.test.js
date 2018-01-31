@@ -14,8 +14,8 @@ import AdminDashboardPage from '../AdminDashboardPage';
 import AdminDevPage from '../AdminDevPage';
 import ContactLendersPage from '../ContactLendersPage';
 import OfferPage from '../OfferPage';
-import RequestsPage from '../RequestsPage';
-import SingleRequestPage from '../SingleRequestPage';
+import LoansPage from '../LoansPage';
+import SingleLoanPage from '../SingleLoanPage';
 import SingleUserPage from '../SingleUserPage';
 import UsersPage from '../UsersPage';
 import VerifyPage from '../VerifyPage';
@@ -25,8 +25,8 @@ const pages = {
   AdminDevPage,
   ContactLendersPage,
   OfferPage,
-  RequestsPage,
-  SingleRequestPage,
+  LoansPage,
+  SingleLoanPage,
   SingleUserPage,
   UsersPage,
   VerifyPage,
@@ -67,7 +67,7 @@ if (Meteor.isClient) {
             match: {
               params: {
                 borrowerId: data.borrowers[0]._id,
-                requestId: data.loanRequest._id,
+                loanId: data.loan._id,
               },
             },
           };

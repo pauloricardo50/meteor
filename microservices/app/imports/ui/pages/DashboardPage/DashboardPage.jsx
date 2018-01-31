@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Page from '/imports/ui/components/Page';
-import NewRequestModal from './NewRequestModal';
+import NewLoanModal from './NewLoanModal';
 import AcceptClosingModal from './AcceptClosingModal';
 import DashboardContent from './DashboardContent';
 
@@ -26,22 +26,22 @@ export default class DashboardPage extends Component {
   resize = () => this.setState({ smallWidth: getWidth() < 768 });
 
   render() {
-    const { loanRequest, history } = this.props;
-    const showNewRequestModal = !loanRequest.name;
+    const { loan, history } = this.props;
+    const showNewLoanModal = !loan.name;
     const showClosedModal =
-      loanRequest.status === REQUEST_STATUS.DONE &&
-      !loanRequest.logic.acceptedClosing;
+      loan.status === REQUEST_STATUS.DONE &&
+      !loan.logic.acceptedClosing;
 
     return (
       <Page id="DashboardPage" className="joyride-dashboard" fullWidth>
         <DashboardContent {...this.props} smallWidth={this.state.smallWidth} />
 
-        {showNewRequestModal && (
-          <NewRequestModal open requestId={loanRequest._id} />
+        {showNewLoanModal && (
+          <NewLoanModal open loanId={loan._id} />
         )}
 
         {showClosedModal && (
-          <AcceptClosingModal open loanRequest={loanRequest} />
+          <AcceptClosingModal open loan={loan} />
         )}
       </Page>
     );
@@ -49,7 +49,7 @@ export default class DashboardPage extends Component {
 }
 
 DashboardPage.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object),
 };
 

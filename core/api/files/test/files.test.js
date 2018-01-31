@@ -5,7 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 import sinon from 'sinon';
 import { stubCollections } from 'core/utils/testHelpers';
-import LoanRequests from 'core/api/loanrequests/loanrequests';
+import Loans from 'core/api/loans/loans';
 import Borrowers from 'core/api/borrowers/borrowers';
 import AWS from 'aws-sdk';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
@@ -44,15 +44,15 @@ describe('files', () => {
       expect(isAllowed('')).to.equal(true);
     });
 
-    it('should throw if no loanRequest or borrower is associated to this account', () => {
+    it('should throw if no loan or borrower is associated to this account', () => {
       expect(() => isAllowed('')).to.throw('unauthorized');
     });
 
-    it('should return true if this user has a loanRequest', () => {
-      const request = Factory.create('loanRequest', { userId });
+    it('should return true if this user has a loan', () => {
+      const loan = Factory.create('loan', { userId });
 
-      expect(isAllowed(`${request._id}/`)).to.equal(true);
-      LoanRequests.remove(request._id);
+      expect(isAllowed(`${loan._id}/`)).to.equal(true);
+      Loans.remove(loan._id);
     });
 
     it('should return true if this user has a borrower', () => {

@@ -14,7 +14,7 @@ const styles = {
   },
 };
 
-const FilesPage = ({ loanRequest, borrowers, property }) => (
+const FilesPage = ({ loan, borrowers, property }) => (
   <Page id="FilesPage">
     <div className="mask1">
       <p style={{ marginBottom: 32 }}>
@@ -25,8 +25,8 @@ const FilesPage = ({ loanRequest, borrowers, property }) => (
         <Tab eventKey={0} title={<T id="general.mortgageLoan" />}>
           <div style={styles.tabContent}>
             <UploaderArray
-              doc={loanRequest}
-              collection="loanRequests"
+              doc={loan}
+              collection="loans"
               disabled
             />
           </div>
@@ -49,7 +49,7 @@ const FilesPage = ({ loanRequest, borrowers, property }) => (
 );
 
 FilesPage.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   property: PropTypes.objectOf(PropTypes.any).isRequired,
 };

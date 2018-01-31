@@ -4,9 +4,9 @@ import classnames from 'classnames';
 
 import Button from 'core/components/Button';
 import { T } from 'core/components/Translation';
-import { getLoanValue } from 'core/utils/requestFunctions';
+import { getLoanValue } from 'core/utils/loanFunctions';
 import cleanMethod from 'core/api/cleanMethods';
-import withRequest from 'core/containers/withRequest';
+import withLoan from 'core/containers/withLoan';
 import Tranche from './Tranche';
 import TrancheChart from './TrancheChart';
 
@@ -22,17 +22,17 @@ class TranchePicker extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tranches: this.props.loanRequest.general.loanTranches || [],
+      tranches: this.props.loan.general.loanTranches || [],
     };
   }
 
   componentWillReceiveProps(nextProps) {
     // Make sure state is in sync with DB
     if (
-      JSON.stringify(nextProps.loanRequest.general.loanTranches) !==
-      JSON.stringify(this.props.loanRequest.general.loanTranches)
+      JSON.stringify(nextProps.loan.general.loanTranches) !==
+      JSON.stringify(this.props.loan.general.loanTranches)
     ) {
-      this.setState({ tranches: nextProps.loanRequest.general.loanTranches });
+      this.setState({ tranches: nextProps.loan.general.loanTranches });
     }
   }
 
@@ -69,17 +69,17 @@ class TranchePicker extends Component {
   };
 
   handleSave = () => {
-    cleanMethod('updateRequest', {
+    cleanMethod('updateLoan', {
       object: {
         'general.loanTranches': this.state.tranches,
       },
-      id: this.props.loanRequest._id,
+      id: this.props.loan._id,
     });
   };
 
   render() {
     const { tranches } = this.state;
-    const { loanRequest, property } = this.props;
+    const { loan, property } = this.props;
 
     const disableAdd = tranches.length >= types.length;
 
@@ -110,7 +110,7 @@ class TranchePicker extends Component {
           {tranches.length && (
             <TrancheChart
               tranches={tranches}
-              total={getLoanValue({ property, loanRequest }, true)}
+              total={getLoanValue({ property, loan }, true)}
             />
           )}
         </div>
@@ -122,7 +122,7 @@ class TranchePicker extends Component {
           disabled={
             tranches.length === 0 ||
             JSON.stringify(tranches) ===
-              JSON.stringify(this.props.loanRequest.general.loanTranches)
+              JSON.stringify(this.props.loan.general.loanTranches)
           }
           onClick={this.handleSave}
         />
@@ -132,8 +132,8 @@ class TranchePicker extends Component {
 }
 
 TranchePicker.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   offers: PropTypes.arrayOf(PropTypes.object).isRequired,
   property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
-export default withRequest(TranchePicker);
+export default withLoan(TranchePicker);

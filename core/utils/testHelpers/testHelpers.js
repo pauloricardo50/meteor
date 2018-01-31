@@ -15,7 +15,7 @@ import messagesFR from '../../lang/fr.json';
 // Because each test using factories also uses stubCollections
 import 'core/api/factories';
 
-import LoanRequests from 'core/api/loanrequests/loanrequests';
+import Loans from 'core/api/loans/loans';
 import Borrowers from 'core/api/borrowers/borrowers';
 import Offers from 'core/api/offers/offers';
 import AdminActions from 'core/api/adminActions/adminActions';
@@ -100,7 +100,7 @@ getMountedComponent.reset = (useStubs = true) => {
   getMountedComponent.mountedComponent = undefined;
   if (useStubs) {
     StubCollections.restore();
-    StubCollections.stub([LoanRequests, Borrowers, Offers, Meteor.users]);
+    StubCollections.stub([Loans, Borrowers, Offers, Meteor.users]);
   }
 };
 
@@ -113,7 +113,7 @@ getMountedComponent.reset = (useStubs = true) => {
 export const stubCollections = () => {
   StubCollections.stub([
     Meteor.users,
-    LoanRequests,
+    Loans,
     Borrowers,
     Offers,
     AdminActions,
@@ -133,7 +133,7 @@ if (Meteor.isTest) {
   resetDatabase();
   StubCollections.add([
     Meteor.users,
-    LoanRequests,
+    Loans,
     Borrowers,
     Offers,
     AdminActions,

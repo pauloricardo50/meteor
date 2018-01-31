@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import LoanRequests from '../../api/loanrequests/loanrequests';
+import Loans from '../../api/loans/loans';
 import Offers from '../../api/offers/offers';
 
 export function partnerOffersComposer(props, onData) {
@@ -19,12 +19,12 @@ export function partnerOffersComposer(props, onData) {
   }
 }
 
-export function partnerRequestsComposer(props, onData) {
-  if (Meteor.subscribe('partnerRequestsAuction').ready()) {
-    if (Meteor.subscribe('partnerRequestsCompleted').ready()) {
-      const loanRequests = LoanRequests.find({}).fetch();
+export function partnerLoansComposer(props, onData) {
+  if (Meteor.subscribe('partnerLoansAuction').ready()) {
+    if (Meteor.subscribe('partnerLoansCompleted').ready()) {
+      const loans = Loans.find({}).fetch();
 
-      onData(null, { loanRequests });
+      onData(null, { loans });
     }
   }
 }
@@ -39,12 +39,12 @@ export function partnerOfferComposer(props, onData) {
   }
 }
 
-export function partnerRequestComposer(props, onData) {
-  const requestId = props.match.params.requestId;
+export function partnerLoanComposer(props, onData) {
+  const loanId = props.match.params.loanId;
 
-  if (Meteor.subscribe('partnerSingleLoanRequest', requestId).ready()) {
-    const loanRequest = LoanRequests.findOne({}).fetch();
+  if (Meteor.subscribe('partnerSingleLoan', loanId).ready()) {
+    const loan = Loans.findOne({}).fetch();
 
-    onData(null, { loanRequest });
+    onData(null, { loan });
   }
 }

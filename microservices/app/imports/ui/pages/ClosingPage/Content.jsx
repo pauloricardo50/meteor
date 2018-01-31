@@ -9,7 +9,7 @@ import ClosingItem from './ClosingItem';
 // put all valid status at the end
 const stepSorter = a => (a.status === CLOSING_STEPS_STATUS.VALID ? -1 : 0);
 
-const Content = ({ steps, loanRequest, disabled }) => (
+const Content = ({ steps, loan, disabled }) => (
   <div className="description flex-col">
     <p style={{ marginBottom: 32 }}>
       <T id="ClosingPage.description" />
@@ -20,7 +20,7 @@ const Content = ({ steps, loanRequest, disabled }) => (
       .map((step, i) => (
         <ClosingItem
           step={step}
-          loanRequest={loanRequest}
+          loan={loan}
           key={i}
           disabled={disabled}
         />
@@ -30,7 +30,7 @@ const Content = ({ steps, loanRequest, disabled }) => (
 
 Content.propTypes = {
   steps: PropTypes.arrayOf(PropTypes.object).isRequired,
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   disabled: PropTypes.bool,
 };
 

@@ -5,7 +5,7 @@ import UploaderArray from 'core/components/UploaderArray';
 import { borrowerFiles } from 'core/api/files/files';
 import RadioInput from 'core/components/AutoForm/RadioInput';
 import { T } from 'core/components/Translation';
-import { disableForms } from 'core/utils/requestFunctions';
+import { disableForms } from 'core/utils/loanFunctions';
 
 const styles = {
   section: {
@@ -19,7 +19,7 @@ const styles = {
 };
 
 const Files = (props) => {
-  const { borrower, loanRequest } = props;
+  const { borrower, loan } = props;
 
   return (
     <section
@@ -46,14 +46,14 @@ const Files = (props) => {
         fileArray={borrowerFiles(borrower).auction}
         doc={borrower}
         collection="borrowers"
-        disabled={disableForms({ loanRequest })}
+        disabled={disableForms({ loan })}
       />
     </section>
   );
 };
 
 Files.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrower: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 

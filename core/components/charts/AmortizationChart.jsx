@@ -11,9 +11,9 @@ import {
   getLoanValue,
   getMaintenance,
   getPropAndWork,
-} from 'core/utils/requestFunctions';
+} from 'core/utils/loanFunctions';
 import colors from 'core/config/colors';
-import withRequest from 'core/containers/withRequest';
+import withLoan from 'core/containers/withLoan';
 
 const chartColors = {
   debt: colors.charts[0],
@@ -23,20 +23,16 @@ const chartColors = {
 };
 
 const getData = ({
-  loanRequest,
-  borrowers,
-  totalYears,
-  interestRates,
-  property,
+  loan, borrowers, totalYears, interestRates, property,
 }) => {
   const { amortization, years } = getAmortization({
-    loanRequest,
+    loan,
     borrowers,
     property,
   });
-  const maintenance = getMaintenance({ loanRequest, property });
-  const loan = getLoanValue({ loanRequest, property });
-  const propAndWork = getPropAndWork({ loanRequest, property });
+  const maintenance = getMaintenance({ loan, property });
+  const loanValue = getLoanValue({ loan, property });
+  const propAndWork = getPropAndWork({ loan, property });
 
   const debt = [];
   const fortune = [];
@@ -47,14 +43,14 @@ const getData = ({
     let value;
     let amort;
     if (i <= years) {
-      value = loan - i * (amortization * 12);
+      value = loanValue - i * (amortization * 12);
       amort = amortization;
     } else if (i > 0) {
       // make sure we're not trying to access debt[-1]
       value = debt[i - 1];
       amort = 0;
     } else {
-      value = loan;
+      value = loanValue;
       amort = 0;
     }
 
@@ -62,7 +58,7 @@ const getData = ({
     fortune[i] = Math.round(propAndWork - value);
     payment[i] = Math.round(amort +
         maintenance +
-        getInterests({ loanRequest, property }, interestRates[i], value));
+        getInterests({ loan, property }, interestRates[i], value));
     amortizationChart[i] = Math.round(amort);
   }
 
@@ -191,7 +187,7 @@ class AmortizationChart extends Component {
 }
 
 AmortizationChart.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   property: PropTypes.objectOf(PropTypes.any).isRequired,
   totalYears: PropTypes.number,
@@ -201,4 +197,4 @@ AmortizationChart.defaultProps = {
   totalYears: 20,
 };
 
-export default injectIntl(withRequest(AmortizationChart));
+export default injectIntl(withLoan(AmortizationChart));

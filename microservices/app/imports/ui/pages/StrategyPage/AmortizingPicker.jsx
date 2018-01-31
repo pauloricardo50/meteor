@@ -26,7 +26,7 @@ const getChoices = () => [
 ];
 
 const AmortizingPicker = ({
-  loanRequest,
+  loan,
   borrowers,
   offers,
   handleSave,
@@ -43,7 +43,7 @@ const AmortizingPicker = ({
 
     <StrategyChoices
       name="amortizationStrategyPreset"
-      value={loanRequest.logic.amortizationStrategyPreset}
+      value={loan.logic.amortizationStrategyPreset}
       choices={getChoices()}
       handleChoose={id =>
         handleSave({ 'logic.amortizationStrategyPreset': id })
@@ -52,9 +52,9 @@ const AmortizingPicker = ({
     />
 
     {/* FIXME: Logismata widget, put it back when ready */}
-    {/* {!!loanRequest.logic.amortizationStrategyPreset && (
+    {/* {!!loan.logic.amortizationStrategyPreset && (
       <AmortizingSummary
-        loanRequest={loanRequest}
+        loan={loan}
         borrowers={borrowers}
         offers={offers}
       />
@@ -63,7 +63,7 @@ const AmortizingPicker = ({
 );
 
 AmortizingPicker.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   offers: PropTypes.arrayOf(PropTypes.object).isRequired,
   handleSave: PropTypes.func.isRequired,

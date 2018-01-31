@@ -1,11 +1,11 @@
 import { getLocationId, callApi } from './api';
-import { getLoanValue } from '../requestFunctions';
+import { getLoanValue } from '../loanFunctions';
 import { getBestRate } from '../offerFunctions';
 import { USAGE_TYPE } from 'core/api/constants';
 
-export const getLocation = ({ loanRequest, borrowers, property }) => {
+export const getLocation = ({ loan, borrowers, property }) => {
   let search = '';
-  if (loanRequest.general.usageType === USAGE_TYPE.PRIMARY) {
+  if (loan.general.usageType === USAGE_TYPE.PRIMARY) {
     // use future property address
     search = `${property.zipCode.toString()} ${property.city}`;
   } else {
@@ -16,7 +16,7 @@ export const getLocation = ({ loanRequest, borrowers, property }) => {
   return getLocationId(search);
 };
 
-export const getTaxBase = (loanRequest, borrowers, locationId) => ({
+export const getTaxBase = (loan, borrowers, locationId) => ({
   locationId,
   currentYear: new Date().getFullYear(),
   civilStatus: borrowers[0].civilStatus,
@@ -30,8 +30,8 @@ export const getTaxBase = (loanRequest, borrowers, locationId) => ({
   grossFortune: borrowers[0].bankFortune,
 });
 
-export const getMortgageArray = ({ loanRequest, offers, property }) => {
-  const loanValue = getLoanValue({ loanRequest });
+export const getMortgageArray = ({ loan, offers, property }) => {
+  const loanValue = getLoanValue({ loan });
   const propertyValue = property.value;
   const hasRank2 = loanValue / propertyValue > 0.65;
 
@@ -67,8 +67,8 @@ export const getMortgageArray = ({ loanRequest, offers, property }) => {
   return mortgages;
 };
 
-export const getAmortizationObject = ({ loanRequest, offers, property }) => {
-  const loanValue = getLoanValue({ loanRequest });
+export const getAmortizationObject = ({ loan, offers, property }) => {
+  const loanValue = getLoanValue({ loan });
   const propertyValue = property.value;
 
   // Very simple here, amortization goal is to reach 65%
@@ -81,27 +81,27 @@ export const getAmortizationObject = ({ loanRequest, offers, property }) => {
     rentalValue: 0,
     maintenanceCosts: 0,
     newMortgages: true,
-    mortgages: getMortgageArray({ loanRequest, offers }),
+    mortgages: getMortgageArray({ loan, offers }),
     savingType: 'Saving 3a',
     savingRate: 0.5,
   };
 };
 
-export const calculateDirectAmo = ({ loanRequest, borrowers, offers }) => {
+export const calculateDirectAmo = ({ loan, borrowers, offers }) => {
   console.log('calculating direct...');
-  return getLocation(loanRequest, borrowers).then(locationId =>
+  return getLocation(loan, borrowers).then(locationId =>
     callApi('calcDirectAmortization', {
-      taxBase: getTaxBase({ loanRequest, borrowers }, locationId),
-      ...getAmortizationObject({ loanRequest, offers }),
+      taxBase: getTaxBase({ loan, borrowers }, locationId),
+      ...getAmortizationObject({ loan, offers }),
     }));
 };
 
-export const calculateIndirectAmo = ({ loanRequest, borrowers, offers }) => {
+export const calculateIndirectAmo = ({ loan, borrowers, offers }) => {
   console.log('calculating direct...');
 
-  return getLocation({ loanRequest, borrowers }).then(locationId =>
+  return getLocation({ loan, borrowers }).then(locationId =>
     callApi('calcIndirectAmortization', {
-      taxBase: getTaxBase({ loanRequest, borrowers }, locationId),
-      ...getAmortizationObject({ loanRequest, offers }),
+      taxBase: getTaxBase({ loan, borrowers }, locationId),
+      ...getAmortizationObject({ loan, offers }),
     }));
 };

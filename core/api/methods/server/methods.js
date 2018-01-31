@@ -2,57 +2,57 @@ import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 
-import LoanRequests from '../../loanrequests/loanrequests';
+import Loans from '../../loans/loans';
 import Borrowers from '../../borrowers/borrowers';
 import { generateComponentAsPDF } from '../../../utils/generate-pdf';
-import { RequestPDF, AnonymousRequestPDF } from '../../loanrequests/pdf.js';
+import { LoanPDF, AnonymousLoanPDF } from '../../loans/pdf.js';
 import rateLimit from '../../../utils/rate-limit.js';
 
 Meteor.methods({
   getServerTime: () => new Date(),
-  setUserToRequest: ({ requestId }) => {
-    check(requestId, String);
+  setUserToLoan: ({ loanId }) => {
+    check(loanId, String);
 
     if (!Meteor.userId()) {
       throw new Meteor.Error('not authorized');
     }
 
-    const request = LoanRequests.findOne(requestId);
-    const { borrowers } = request;
+    const loan = Loans.findOne(loanId);
+    const { borrowers } = loan;
 
-    LoanRequests.update(requestId, { $set: { userId: Meteor.userId() } });
+    Loans.update(loanId, { $set: { userId: Meteor.userId() } });
     borrowers.forEach((borrowerId) => {
       Borrowers.update(borrowerId, { $set: { userId: Meteor.userId() } });
     });
 
     return true;
   },
-  addBorrower({ requestId }) {
+  addBorrower({ loanId }) {
     // TODO: Secure this
-    const request = LoanRequests.findOne(requestId);
+    const loan = Loans.findOne(loanId);
 
-    // A request can't have more than 2 borrowers at the moment
-    if (request.borrowers.length >= 2) {
+    // A loan can't have more than 2 borrowers at the moment
+    if (loan.borrowers.length >= 2) {
       return false;
     }
 
     const newBorrowerId = Borrowers.insert({ userId: Meteor.userId() });
 
-    return LoanRequests.update(requestId, {
+    return Loans.update(loanId, {
       $push: { borrowers: newBorrowerId },
     });
   },
-  removeBorrower({ requestId, borrowerId }) {
+  removeBorrower({ loanId, borrowerId }) {
     // TODO: Secure this
-    const request = LoanRequests.findOne(requestId);
+    const loan = Loans.findOne(loanId);
 
-    // A request has to have at least 1 borrower
-    if (request.borrowers.length <= 1) {
+    // A loan has to have at least 1 borrower
+    if (loan.borrowers.length <= 1) {
       return false;
     }
 
     Borrowers.remove(borrowerId);
-    return LoanRequests.update(requestId, {
+    return Loans.update(loanId, {
       $pull: { borrowers: borrowerId },
     });
   },
@@ -60,22 +60,22 @@ Meteor.methods({
 
 export const downloadPDF = new ValidatedMethod({
   name: 'pdf.download',
-  validate({ requestId, type }) {
-    check(requestId, String);
+  validate({ loanId, type }) {
+    check(loanId, String);
     check(type, String);
   },
-  run({ requestId, type }) {
-    const loanRequest = LoanRequests.findOne(requestId);
-    const borrowers = Borrowers.find({ _id: { $in: loanRequest.borrowers } });
+  run({ loanId, type }) {
+    const loan = Loans.findOne(loanId);
+    const borrowers = Borrowers.find({ _id: { $in: loan.borrowers } });
     const prefix = type === 'anonymous' ? 'Anonyme' : 'Complet';
-    const fileName = `${prefix} ${loanRequest.property.address1}.pdf`;
+    const fileName = `${prefix} ${loan.property.address1}.pdf`;
 
-    // If type is anonymous, request the anonymous pdf
-    const component = type === 'anonymous' ? AnonymousRequestPDF : RequestPDF;
+    // If type is anonymous, loan the anonymous pdf
+    const component = type === 'anonymous' ? AnonymousLoanPDF : LoanPDF;
 
     return generateComponentAsPDF({
       component,
-      props: { loanRequest, borrowers },
+      props: { loan, borrowers },
       fileName,
     })
       .then(result => result)

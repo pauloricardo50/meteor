@@ -7,7 +7,7 @@ import FileDownloader from '/imports/ui/components/FileDownloader';
 import DashboardItem from './DashboardItem';
 
 const DashboardDownload = (props) => {
-  const { files } = props.loanRequest;
+  const { files } = props.loan;
   const contractKey =
     files.contract && files.contract.length && files.contract[0].key;
 
@@ -28,7 +28,7 @@ const DashboardDownload = (props) => {
 };
 
 DashboardDownload.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default DashboardDownload;

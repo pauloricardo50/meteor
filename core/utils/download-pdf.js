@@ -25,13 +25,13 @@ const base64ToBlob = (base64String) => {
   return byteArray ? createBlob(byteArray) : null;
 };
 
-const downloadPDF = (event, requestId, type) => {
+const downloadPDF = (event, loanId, type) => {
   event.preventDefault();
   const { target } = event;
   const initialLabel = target.innerHTML;
   target.innerHTML = '<em>Downloading...</em>';
   target.classList.add('downloading');
-  Meteor.call('pdf.download', { requestId, type }, (error, response) => {
+  Meteor.call('pdf.download', { loanId, type }, (error, response) => {
     if (error) {
       Bert.alert(error.reason, 'danger');
     } else {

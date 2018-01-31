@@ -13,11 +13,11 @@ import Navs from './Navs';
 
 // import UserJoyride from '/imports/ui/components/UserJoyride';
 
-const allowedRoutesWithoutRequest = [
+const allowedRoutesWithoutLoan = [
   '/',
   '/compare',
   '/profile',
-  '/add-request',
+  '/add-loan',
 ];
 
 const allowedRoutesWithoutLogin = ['/enroll-account'];
@@ -25,7 +25,7 @@ const allowedRoutesWithoutLogin = ['/enroll-account'];
 const getRedirect = ({
   currentUser,
   history: { location: { pathname } },
-  loanRequests,
+  loans,
 }) => {
   const userIsAdmin = Roles.userIsInRole(currentUser, 'admin');
   const userIsPartner = Roles.userIsInRole(currentUser, 'partner');
@@ -49,12 +49,12 @@ const getRedirect = ({
   } else if (isPartner) {
     return '/isPartner';
   }
-  // If there is no active request, force route to app page, except if
+  // If there is no active loan, force route to app page, except if
   // user is on allowed routes
   if (
-    loanRequests &&
-    loanRequests.length < 1 &&
-    !allowedRoutesWithoutRequest.some(route => pathname.indexOf(route) === 0)
+    loans &&
+    loans.length < 1 &&
+    !allowedRoutesWithoutLoan.some(route => pathname.indexOf(route) === 0)
   ) {
     return '/';
   }
@@ -113,7 +113,7 @@ AppLayout.defaultProps = {
   render: () => null,
   currentUser: undefined,
   noNav: false,
-  loanRequests: undefined,
+  loans: undefined,
 };
 
 AppLayout.propTypes = {
@@ -121,7 +121,7 @@ AppLayout.propTypes = {
   render: PropTypes.func,
   currentUser: PropTypes.objectOf(PropTypes.any),
   noNav: PropTypes.bool,
-  loanRequests: PropTypes.arrayOf(PropTypes.object),
+  loans: PropTypes.arrayOf(PropTypes.object),
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 

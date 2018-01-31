@@ -22,7 +22,7 @@ TodoItem.defaultProps = {
 };
 
 TodoItem.propTypes = {
-  request: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   offers: PropTypes.arrayOf(PropTypes.object),
 };
 

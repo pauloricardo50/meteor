@@ -8,15 +8,15 @@ import Empty from './Empty';
 import Content from './Content';
 
 const ClosingPage = (props) => {
-  const { loanRequest } = props;
+  const { loan } = props;
   return (
     <ProcessPage {...props} stepNb={3} id="closing" showBottom={false}>
       <div className="mask1 flex-col">
-        {loanRequest.logic.closingSteps && loanRequest.logic.closingSteps.length ? (
+        {loan.logic.closingSteps && loan.logic.closingSteps.length ? (
           <Content
-            steps={loanRequest.logic.closingSteps}
-            loanRequest={loanRequest}
-            disabled={loanRequest.logic.step > 3}
+            steps={loan.logic.closingSteps}
+            loan={loan}
+            disabled={loan.logic.step > 3}
           />
         ) : (
           <Empty />
@@ -27,7 +27,7 @@ const ClosingPage = (props) => {
 };
 
 ClosingPage.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   offers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

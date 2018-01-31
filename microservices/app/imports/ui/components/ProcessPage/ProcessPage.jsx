@@ -5,7 +5,7 @@ import { DocHead } from 'meteor/kadira:dochead';
 import { injectIntl } from 'react-intl';
 
 import getSteps from 'core/arrays/steps';
-import withRequest from 'core/containers/withRequest';
+import withLoan from 'core/containers/withLoan';
 import ProcessPageBar from './ProcessPageBar';
 import StepperContainer from '../../containers/StepperContainer';
 
@@ -56,12 +56,12 @@ class ProcessPage extends Component {
   }
 
   setBarProps = () => {
-    const { intl, loanRequest } = this.props;
+    const { intl, loan } = this.props;
     const values = getStepValues(this.props);
     this.barProps = {
       ...this.props,
       ...values,
-      status: loanRequest.status,
+      status: loan.status,
     };
     DocHead.setTitle(`${intl.formatMessage({
       id: `steps.${this.barProps.currentStep.id}.title`,
@@ -85,7 +85,7 @@ ProcessPage.propTypes = {
   children: PropTypes.element,
   stepNb: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   showBottom: PropTypes.bool,
   serverTime: PropTypes.instanceOf(Date),
@@ -99,4 +99,4 @@ ProcessPage.defaultProps = {
 };
 
 export { ProcessPage };
-export default injectIntl(StepperContainer(withRequest(ProcessPage)));
+export default injectIntl(StepperContainer(withLoan(ProcessPage)));

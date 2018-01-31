@@ -182,7 +182,7 @@ const AutoForm = props => (
 AutoForm.propTypes = {
   inputs: PropTypes.arrayOf(PropTypes.object).isRequired,
   formClasses: PropTypes.string,
-  loanRequest: PropTypes.objectOf(PropTypes.any),
+  loan: PropTypes.objectOf(PropTypes.any),
   borrowers: PropTypes.arrayOf(PropTypes.object),
   fullWidth: PropTypes.bool,
   docId: PropTypes.string.isRequired,
@@ -194,12 +194,12 @@ AutoForm.propTypes = {
 };
 
 AutoForm.defaultProps = {
-  loanRequest: {},
+  loan: {},
   borrowers: [],
   fullWidth: false,
-  updateFunc: 'updateRequest',
-  pushFunc: 'pushRequestValue',
-  popFunc: 'popRequestValue',
+  updateFunc: 'updateLoan',
+  pushFunc: 'pushLoanValue',
+  popFunc: 'popLoanValue',
   disabled: false,
   noPlaceholders: false,
 };

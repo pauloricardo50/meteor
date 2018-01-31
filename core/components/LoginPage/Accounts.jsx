@@ -191,7 +191,7 @@ class FormMessage extends Accounts.ui.FormMessage {
     }
   }
 
-  handleRequestClose = () => this.setState({ open: false });
+  handleLoanClose = () => this.setState({ open: false });
 
   render() {
     const { message, type } = this.props;
@@ -228,15 +228,15 @@ class FormMessage extends Accounts.ui.FormMessage {
         // bodyStyle={bodyStyle}
         action="OK"
         autoHideDuration={4000}
-        onActionTouchTap={this.handleRequestClose}
-        onClose={this.handleRequestClose}
+        onActionTouchTap={this.handleLoanClose}
+        onClose={this.handleLoanClose}
       />
     ) : null;
   }
 }
 
 // Notice! Accounts.ui.LoginForm manages all state logic at the moment, so avoid overwriting this
-// one, but have a look at it and learn how it works. And pull requests altering how that works are
+// one, but have a look at it and learn how it works. And pull loans altering how that works are
 // welcome. Alter provided default unstyled UI.
 Accounts.ui.LoginForm = LoginForm;
 Accounts.ui.Form = Form;

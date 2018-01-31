@@ -116,7 +116,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
 export const getBorrowerFinanceArray = ({
   borrowers,
   borrowerId: id,
-  loanRequest,
+  loan,
 }) => {
   const b = borrowers.find(borr => borr._id === id);
   const multiple = borrowers.length > 1;

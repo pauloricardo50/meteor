@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 
 import classnames from 'classnames';
 
-import RequestSelector from './RequestSelector';
+import LoanSelector from './LoanSelector';
 import DrawerHeader from '../AppTopNav/DrawerHeader';
-import SideNavUserRequest from './SideNavUserRequest';
+import SideNavUserLoan from './SideNavUserLoan';
 
 const SideNavUser = (props) => {
   const {
-    loanRequests,
+    loans,
     location,
     style,
     handleClickLink,
@@ -20,8 +20,8 @@ const SideNavUser = (props) => {
     properties,
   } = props;
 
-  // Return an empty side nav if there is no loanRequest
-  if (loanRequests.length <= 0) {
+  // Return an empty side nav if there is no loan
+  if (loans.length <= 0) {
     return (
       <nav className="side-nav-user hidden-xs">
         <DrawerHeader permanent />
@@ -30,22 +30,22 @@ const SideNavUser = (props) => {
   }
 
   // FIXME: What follows is excessively complex for what it does,
-  // However props.match.params.requestId does not get defined to easily pick
+  // However props.match.params.loanId does not get defined to easily pick
   // it up... wtf?
 
   // Get the pathname, remove the leading '/', and split by '/'
   const splittedUrl = location.pathname.substring(1).split('/');
-  // If it has enough elements, parse the requestId
-  const requestId =
-    splittedUrl.length >= 2 && splittedUrl[0] === 'requests'
+  // If it has enough elements, parse the loanId
+  const loanId =
+    splittedUrl.length >= 2 && splittedUrl[0] === 'loans'
       ? splittedUrl[1]
       : '';
-  let currentRequest;
+  let currentLoan;
   let borrowerIds;
 
-  if (requestId) {
-    currentRequest = loanRequests.find(r => r._id === requestId);
-    borrowerIds = currentRequest.borrowers;
+  if (loanId) {
+    currentLoan = loans.find(r => r._id === loanId);
+    borrowerIds = currentLoan.borrowers;
   }
 
   return (
@@ -58,17 +58,17 @@ const SideNavUser = (props) => {
     >
       <DrawerHeader permanent />
       <div className="scrollable">
-        <RequestSelector
+        <LoanSelector
           {...props}
-          value={requestId}
+          value={loanId}
           toggleDrawer={toggleDrawer}
         />
-        {requestId && (
-          <SideNavUserRequest
+        {loanId && (
+          <SideNavUserLoan
             {...props}
-            loanRequest={currentRequest}
+            loan={currentLoan}
             borrowers={borrowers.filter(b => borrowerIds.indexOf(b._id) > -1)}
-            property={properties.find(p => p._id === currentRequest.property)}
+            property={properties.find(p => p._id === currentLoan.property)}
           />
         )}
       </div>
@@ -77,14 +77,14 @@ const SideNavUser = (props) => {
 };
 
 SideNavUser.propTypes = {
-  loanRequests: PropTypes.arrayOf(PropTypes.object),
+  loans: PropTypes.arrayOf(PropTypes.object),
   handleClickLink: PropTypes.func,
   fixed: PropTypes.bool,
   toggleDrawer: PropTypes.func,
 };
 
 SideNavUser.defaultProps = {
-  loanRequests: [],
+  loans: [],
   handleClickLink: () => null,
   fixed: false,
   toggleDrawer: () => {},

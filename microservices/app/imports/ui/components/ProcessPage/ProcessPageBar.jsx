@@ -25,11 +25,11 @@ const styles = {
 };
 
 const handleNextStep = ({
-  stepNb, loanRequest, history, nextLink,
+  stepNb, loan, history, nextLink,
 }) => {
   // increment step if this is the currentstep
-  if (stepNb === loanRequest.logic.step) {
-    cleanMethod('incrementStep', { id: loanRequest._id }).then(() => !!nextLink && history.push(nextLink));
+  if (stepNb === loan.logic.step) {
+    cleanMethod('incrementStep', { id: loan._id }).then(() => !!nextLink && history.push(nextLink));
   } else {
     history.push(nextLink);
   }
@@ -131,7 +131,7 @@ export default class ProcessPageBar extends Component {
   };
 
   render() {
-    // Hide buttons if the request is done
+    // Hide buttons if the loan is done
     const showButtons = this.props.status === REQUEST_STATUS.ACTIVE;
 
     return (

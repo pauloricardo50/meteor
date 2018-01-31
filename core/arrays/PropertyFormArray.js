@@ -30,11 +30,11 @@ const mapInput = (input) => {
   return intlSafeObject;
 };
 
-export const getPropertyRequestArray = ({ loanRequest, borrowers }) => {
-  const r = loanRequest;
+export const getPropertyLoanArray = ({ loan, borrowers }) => {
+  const r = loan;
 
   if (!r) {
-    throw new Error('requires a loanRequest');
+    throw new Error('requires a loan');
   }
 
   const array = [
@@ -123,11 +123,11 @@ export const getPropertyRequestArray = ({ loanRequest, borrowers }) => {
   return array.map(mapInput);
 };
 
-export const getPropertyArray = ({ loanRequest, borrowers, property }) => {
-  const r = loanRequest;
+export const getPropertyArray = ({ loan, borrowers, property }) => {
+  const r = loan;
 
   if (!r) {
-    throw new Error('requires a loanRequest');
+    throw new Error('requires a loan');
   }
 
   const array = [

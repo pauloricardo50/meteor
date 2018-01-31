@@ -12,7 +12,7 @@ import { completeAction } from 'core/api/adminActions/methods';
 
 const columnOptions = [
   {
-    id: 'ActionsTable.requestName',
+    id: 'ActionsTable.loanName',
     align: 'left',
   },
   {
@@ -100,23 +100,23 @@ export default class ActionsTable extends Component {
           onRowSelect={this.handleRowSelect}
           columnOptions={columnOptions}
           rows={actions.map((action) => {
-            const request = this.props.loanRequests.find(r => r._id === action.requestId);
+            const loan = this.props.loans.find(r => r._id === action.loanId);
             const title = <T id={`adminAction.${action.type}`} />;
             const actionDetails = getActions.find(a => a.id === action.type);
 
             return {
               id: action._id,
               columns: [
-                request ? request.name : 'Demande supprimée',
+                loan ? loan.name : 'Demande supprimée',
                 title,
                 action.createdAt,
-                actionDetails.comment && request
-                  ? actionDetails.comment(request)
+                actionDetails.comment && loan
+                  ? actionDetails.comment(loan)
                   : '-',
-                request
+                loan
                   ? () =>
                       actionDetails.handleClick(
-                        request,
+                        loan,
                         this.props.history.push,
                       )
                   : () => {},
@@ -131,6 +131,6 @@ export default class ActionsTable extends Component {
 
 ActionsTable.propTypes = {
   adminActions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  loanRequests: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loans: PropTypes.arrayOf(PropTypes.object).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };

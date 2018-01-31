@@ -1,4 +1,4 @@
-// FIXME: This fucking test doesn't work because of meteor factory not being able to create a loanrequest
+// FIXME: This fucking test doesn't work because of meteor factory not being able to create a loan
 
 // /* eslint-env mocha */
 // import { Meteor } from 'meteor/meteor';
@@ -14,14 +14,14 @@
 //   insertAdminAction,
 //   completeAction,
 //   completeActionByType,
-//   removeParentRequest,
+//   removeParentLoan,
 // } from '../methods';
 //
 // describe('AdminActions', () => {
 //   describe('methods', () => {
 //     let userId;
 //     let actionId;
-//     let requestId;
+//     let loanId;
 //
 //     beforeEach(() => {
 //       resetDatabase();
@@ -31,12 +31,12 @@
 //       // FIXME: This part is shit
 //       userId = Factory.create('user')._id;
 //       console.log(userId);
-//       const req = Factory.create('loanRequest', { userId });
-//       requestId = req._id;
+//       const req = Factory.create('loan', { userId });
+//       loanId = req._id;
 //       console.log(req);
-//       // requestId = Factory.create('loanRequest', { userId })._id;
-//       console.log(requestId);
-//       actionId = Factory.create('adminAction', { userId, requestId })._id;
+//       // loanId = Factory.create('loan', { userId })._id;
+//       console.log(loanId);
+//       actionId = Factory.create('adminAction', { userId, loanId })._id;
 //       console.log(actionId);
 //
 //       sinon.stub(Meteor, 'userId').callsFake(() => userId);
@@ -50,14 +50,14 @@
 //     describe('insertAdminAction', () => {
 //       it('should insert a new admin action without errors', (done) => {
 //         insertAdminAction.call(
-//           { requestId: 'test', type: 'test' },
+//           { loanId: 'test', type: 'test' },
 //           (err, result) => {
 //             if (err) {
 //               done(err);
 //             }
 //
 //             const action = AdminActions.findOne(result);
-//             expect(action.requestId).to.equal('test');
+//             expect(action.loanId).to.equal('test');
 //             expect(action.type).to.equal('test');
 //             done();
 //           },
@@ -66,7 +66,7 @@
 //
 //       it('should throw if the action already exists', () => {
 //         expect(() =>
-//           insertAdminAction._execute({}, { requestId, type: 'test' })).to.throw(Meteor.Error, 'duplicate active admin action');
+//           insertAdminAction._execute({}, { loanId, type: 'test' })).to.throw(Meteor.Error, 'duplicate active admin action');
 //       });
 //     });
 //
@@ -98,7 +98,7 @@
 //
 //     describe('completeActionByType', () => {
 //       it('completes an action', () => {
-//         completeActionByType._execute({}, { requestId, type: 'test' });
+//         completeActionByType._execute({}, { loanId, type: 'test' });
 //
 //         const action = AdminActions.findOne(actionId);
 //         expect(action.type).to.equal('test');
@@ -109,7 +109,7 @@
 //         const newStatus = 'this is a new status';
 //         completeActionByType._execute(
 //           {},
-//           { requestId, type: 'test', newStatus },
+//           { loanId, type: 'test', newStatus },
 //         );
 //
 //         const action = AdminActions.findOne(actionId);
@@ -118,28 +118,28 @@
 //       });
 //     });
 //
-//     describe('removeParentRequest', () => {
+//     describe('removeParentLoan', () => {
 //       it('sets the status of an adminaction to parentDeleted', () => {
-//         removeParentRequest._execute({}, { requestId });
+//         removeParentLoan._execute({}, { loanId });
 //
 //         const action = AdminActions.findOne(actionId);
-//         expect(action.requestId).to.equal(requestId);
+//         expect(action.loanId).to.equal(loanId);
 //         expect(action.status).to.equal('parentDeleted');
 //       });
 //
 //       it('works if multiple actions exist with mongoDBs multi', () => {
 //         const actionId2 = Factory.create('adminAction', {
-//           requestId,
+//           loanId,
 //           type: 'test2',
 //         })._id;
 //
-//         removeParentRequest._execute({}, { requestId });
+//         removeParentLoan._execute({}, { loanId });
 //
 //         const action = AdminActions.findOne(actionId);
 //         const action2 = AdminActions.findOne(actionId2);
-//         expect(action.requestId).to.equal(requestId);
+//         expect(action.loanId).to.equal(loanId);
 //         expect(action.status).to.equal('parentDeleted');
-//         expect(action2.requestId).to.equal(requestId);
+//         expect(action2.loanId).to.equal(loanId);
 //         expect(action2.status).to.equal('parentDeleted');
 //       });
 //     });

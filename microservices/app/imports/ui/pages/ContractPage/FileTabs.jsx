@@ -7,13 +7,13 @@ import Tabs from 'react-bootstrap/lib/Tabs';
 import UploaderArray from 'core/components/UploaderArray';
 
 import {
-  requestFiles,
+  loanFiles,
   borrowerFiles,
   propertyFiles,
 } from 'core/api/files/files';
 import { filesPercent } from 'core/arrays/steps';
 import { T, IntlNumber } from 'core/components/Translation';
-import withRequest from 'core/containers/withRequest';
+import withLoan from 'core/containers/withLoan';
 
 const styles = {
   tabContent: {
@@ -25,7 +25,7 @@ const styles = {
   },
 };
 
-const FileTabs = ({ loanRequest, borrowers, property }) => (
+const FileTabs = ({ loan, borrowers, property }) => (
   <Tabs defaultActiveKey={0} id="tabs" mountOnEnter>
     <Tab
       eventKey={0}
@@ -36,19 +36,19 @@ const FileTabs = ({ loanRequest, borrowers, property }) => (
             {' '}
             &bull;{' '}
             <IntlNumber
-              value={filesPercent(loanRequest, requestFiles, 'contract')}
+              value={filesPercent(loan, loanFiles, 'contract')}
               format="percentageRounded"
             />
           </small>
         </span>
       }
-      key={loanRequest._id}
+      key={loan._id}
     >
       <div style={styles.tabContent}>
         <UploaderArray
-          fileArray={requestFiles(loanRequest).contract}
-          doc={loanRequest}
-          collection="loanRequests"
+          fileArray={loanFiles(loan).contract}
+          doc={loan}
+          collection="loans"
         />
       </div>
     </Tab>
@@ -109,9 +109,9 @@ const FileTabs = ({ loanRequest, borrowers, property }) => (
 );
 
 FileTabs.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default withRequest(FileTabs);
+export default withLoan(FileTabs);

@@ -79,7 +79,7 @@ export const borrowerFiles = (b = {}) => ({
   },
 });
 
-export const requestFiles = (r = {}) => ({
+export const loanFiles = (r = {}) => ({
   auction: [
     // {
     //   id: 'plans',
@@ -157,7 +157,7 @@ export const requestFiles = (r = {}) => ({
   },
 });
 
-export const propertyFiles = (property = {}, request = {}) => ({
+export const propertyFiles = (property = {}, loan = {}) => ({
   auction: [
     {
       id: 'plans',
@@ -173,9 +173,9 @@ export const propertyFiles = (property = {}, request = {}) => ({
     {
       id: 'marketingBrochure',
       condition: !!(
-        request &&
-        request.general &&
-        request.general.purchaseType === PURCHASE_TYPE.ACQUISITION
+        loan &&
+        loan.general &&
+        loan.general.purchaseType === PURCHASE_TYPE.ACQUISITION
       ),
       required: false,
     },
@@ -184,8 +184,8 @@ export const propertyFiles = (property = {}, request = {}) => ({
     {
       id: 'rent',
       condition:
-        !!request.general &&
-        request.general.usageType === USAGE_TYPE.INVESTMENT,
+        !!loan.general &&
+        loan.general.usageType === USAGE_TYPE.INVESTMENT,
       doubleTooltip: true,
     },
     {
@@ -205,8 +205,8 @@ export const getFileIDs = (list) => {
     case 'borrower':
       files = borrowerFiles();
       break;
-    case 'request':
-      files = requestFiles();
+    case 'loan':
+      files = loanFiles();
       break;
     case 'property':
       files = propertyFiles();
@@ -239,7 +239,7 @@ export const FileSchema = new SimpleSchema({
   error: { optional: true, type: String },
 });
 
-// Generates a schema given a list name (request, or borrowers)
+// Generates a schema given a list name (loan, or borrowers)
 export const getFileSchema = (list) => {
   const schema = {};
 

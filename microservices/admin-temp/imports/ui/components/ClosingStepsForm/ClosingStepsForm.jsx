@@ -26,12 +26,12 @@ export default class ClosingStepsForm extends Component {
   constructor(props) {
     super(props);
 
-    const { loanRequest } = this.props;
+    const { loan } = this.props;
 
     this.state = {
       closingSteps:
-        loanRequest.logic.closingSteps && loanRequest.logic.closingSteps.length
-          ? loanRequest.logic.closingSteps
+        loan.logic.closingSteps && loan.logic.closingSteps.length
+          ? loan.logic.closingSteps
           : [],
     };
   }
@@ -59,9 +59,9 @@ export default class ClosingStepsForm extends Component {
     }));
 
   handleSave = () =>
-    cleanMethod('updateRequest', {
+    cleanMethod('updateLoan', {
       object: { 'logic.closingSteps': this.state.closingSteps },
-      id: this.props.loanRequest._id,
+      id: this.props.loan._id,
     });
 
   handleChange = (stepId, key, value) =>
@@ -74,7 +74,7 @@ export default class ClosingStepsForm extends Component {
 
   render() {
     const { closingSteps } = this.state;
-    const { loanRequest } = this.props;
+    const { loan } = this.props;
     return (
       <article>
         <Adder handleAdd={this.handleAdd} />
@@ -106,7 +106,7 @@ export default class ClosingStepsForm extends Component {
           <Button
             raised
             primary={
-              JSON.stringify(loanRequest.logic.closingSteps) !==
+              JSON.stringify(loan.logic.closingSteps) !==
               JSON.stringify(closingSteps)
             }
             label="Enregistrer"
@@ -119,5 +119,5 @@ export default class ClosingStepsForm extends Component {
 }
 
 ClosingStepsForm.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };

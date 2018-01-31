@@ -5,13 +5,13 @@ import CountUp from 'react-countup';
 import { injectIntl } from 'react-intl';
 
 import Button from 'core/components/Button';
-import { getLenderCount } from 'core/utils/requestFunctions';
+import { getLenderCount } from 'core/utils/loanFunctions';
 
 import ConfirmButton from '/imports/ui/components/ConfirmButton';
 import { T } from 'core/components/Translation';
 import track from 'core/utils/analytics';
 import { isDemo } from 'core/utils/browserFunctions';
-import withRequest from 'core/containers/withRequest';
+import withLoan from 'core/containers/withLoan';
 import AuctionForm from './AuctionForm';
 
 const styles = {
@@ -41,7 +41,7 @@ const styles = {
 
 const AuctionStart = (props) => {
   const lenderCount = getLenderCount(props);
-  const r = props.loanRequest;
+  const r = props.loan;
   const f = props.intl.formatMessage;
   return (
     <section className="mask1">
@@ -86,7 +86,7 @@ const AuctionStart = (props) => {
             handleClick={() =>
               cleanMethod('startAuction', {
                 object: { isDemo: isDemo() },
-                id: props.loanRequest._id,
+                id: props.loan._id,
               })
                 .then((res) => {
                   console.log('cleanMethod done...', res);
@@ -114,8 +114,8 @@ const AuctionStart = (props) => {
 };
 
 AuctionStart.propTypes = {
-  loanRequest: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-export default injectIntl(withRequest(AuctionStart));
+export default injectIntl(withLoan(AuctionStart));

@@ -3,7 +3,7 @@ import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import Borrowers from '../borrowers';
 
-// Publish a specific loanRequest with an ID
+// Publish a specific loan with an ID
 Meteor.publish('borrower', function publish(id) {
   // Verify if user is logged In
   if (!Meteor.userId()) {
@@ -71,8 +71,8 @@ Meteor.publish('allBorrowers', function publish() {
   return this.ready();
 });
 
-// Publish all borrowers for a loanRequest for admins
-Meteor.publish('requestBorrowers', function publish(borrowerIds) {
+// Publish all borrowers for a loan for admins
+Meteor.publish('loanBorrowers', function publish(borrowerIds) {
   check(borrowerIds, [String]);
   // Verify if user is an admin
   if (
