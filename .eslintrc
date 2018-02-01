@@ -1,53 +1,51 @@
 {
-  "parser": "babel-eslint",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  },
-  "plugins": [
-    "import",
-    "jsx-a11y",
-    "meteor",
-    "react"
-  ],
-  "extends": [
-    "airbnb",
-    "plugin:meteor/recommended",
-    "plugin:react/recommended"
-  ],
-  "env": {
-    "browser": true
-  },
-  "globals": {
-  },
-  "rules": {
-    "import/no-unresolved": 0,
-    "import/no-extraneous-dependencies": 0,
-    "import/extensions": 0,
-    "no-underscore-dangle": [
-      "error",
-      {
-        "allow": [
-          "_id",
-          "_ensureIndex",
-          "_verifyEmailToken",
-          "_resetPasswordToken",
-          "_name",
-          "_execute"
-        ]
-      }
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "plugins": ["import", "jsx-a11y", "meteor", "react", "prettier"],
+    "extends": [
+        "airbnb",
+        "prettier",
+        "plugin:meteor/recommended",
+        "plugin:react/recommended"
     ],
-    "class-methods-use-this": 0,
-    "react/jsx-filename-extension": 0,
-    "react/forbid-prop-types": 0,
-    "max-len": [ "error", 80],
-    "no-absolute-path": 0,
-    "import/no-absolute-path": 0,
-    "jsx-a11y/href-no-hash": 0,
-    "no-mixed-operators": 0,
-    "import/prefer-default-export": 0,
-    "import/no-named-as-default": 0,
-    "jsx-a11y/no-static-element-interactions": 0
-  }
+    "env": {
+        "browser": true
+    },
+    "globals": {},
+    "rules": {
+        "react/jsx-indent": [1, 4],
+        "react/jsx-indent-props": [1, 4],
+        "indent": [1, 4],
+        "import/no-unresolved": 0,
+        "import/no-extraneous-dependencies": 0,
+        "import/extensions": 0,
+        "no-underscore-dangle": [
+            "error",
+            {
+                "allow": [
+                    "_id",
+                    "_ensureIndex",
+                    "_verifyEmailToken",
+                    "_resetPasswordToken",
+                    "_name",
+                    "_execute"
+                ]
+            }
+        ],
+        "class-methods-use-this": 0,
+        "react/jsx-filename-extension": 0,
+        "react/forbid-prop-types": 0,
+        "max-len": ["error", 80],
+        "no-absolute-path": 0,
+        "import/no-absolute-path": 0,
+        "jsx-a11y/href-no-hash": 0,
+        "no-mixed-operators": 0,
+        "import/prefer-default-export": 0,
+        "import/no-named-as-default": 0,
+        "jsx-a11y/no-static-element-interactions": 0
+    }
 }

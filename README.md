@@ -3,7 +3,7 @@
 This app is composed of several microservices:
 
 * `www` contains the presentation page
-* `app` contains the actual application
+* `app` contains the actual application where people apply
 * `admin` contains the administration interface for the application
 
 ### How do I get set up?
