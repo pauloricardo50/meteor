@@ -5,13 +5,13 @@
 
 start=`date +%s`
 echo "Preparing e-Potek..."
-doClean=false
+DO_CLEAN=false
 
 # check for flag arguments
 while getopts ":c" opt; do
   case $opt in
   c)
-    doClean=true
+    DO_CLEAN=true
     echo "-c flag set: Also hard cleaning up all node_modules" >&2
     ;;
   \?)
@@ -43,7 +43,7 @@ for i in 'admin' 'app' 'lender' 'www' 'admin-temp'
     cp -a ../core/assets/private ../microservices/$i/private
 
 
-    if [[ $doClean == true ]];
+    if [[ $DO_CLEAN == true ]];
     then
       echo "Cleaning and installing npm packages"
       ( cd ../microservices/$i && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear --force && meteor npm install );
