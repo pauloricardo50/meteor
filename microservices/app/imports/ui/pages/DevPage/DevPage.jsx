@@ -4,11 +4,7 @@ import cleanMethod from 'core/api/cleanMethods';
 import { Roles } from 'meteor/alanning:roles';
 
 import { completeFakeBorrower } from 'core/api/borrowers/fakes';
-import {
-  loanStep1,
-  loanStep2,
-  loanStep3,
-} from 'core/api/loans/fakes';
+import { loanStep1, loanStep2, loanStep3 } from 'core/api/loans/fakes';
 import { getRandomOffer } from 'core/api/offers/fakes';
 import { fakeProperty } from 'core/api/properties/fakes';
 
@@ -144,16 +140,10 @@ export default class DevPage extends Component {
           value={twoBorrowers}
           onChange={this.handleChange}
         />
-        2 emprunteurs<br />
-        <button onClick={() => addStep1Loan(twoBorrowers)}>
-          step 1 Loan
-        </button>
-        <button onClick={() => addStep2Loan(twoBorrowers)}>
-          step 2 Loan
-        </button>
-        <button onClick={() => addStep3Loan(twoBorrowers)}>
-          step 3 Loan
-        </button>
+        2 borrowers<br />
+        <button onClick={() => addStep1Loan(twoBorrowers)}>step 1 Loan</button>
+        <button onClick={() => addStep2Loan(twoBorrowers)}>step 2 Loan</button>
+        <button onClick={() => addStep3Loan(twoBorrowers)}>step 3 Loan</button>
         <button onClick={() => addStep3Loan(twoBorrowers, false)}>
           step 3 Loan, few files
         </button>
