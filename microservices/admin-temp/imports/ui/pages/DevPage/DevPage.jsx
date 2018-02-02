@@ -16,8 +16,8 @@ const addStep1Loan = twoBorrowers => {
             borrowerIds.push(id1);
             return twoBorrowers
                 ? cleanMethod("insertBorrower", {
-                      object: completeFakeBorrower
-                  })
+                    object: completeFakeBorrower
+                })
                 : false;
         })
         .then(id2 => {
@@ -44,8 +44,8 @@ const addStep2Loan = twoBorrowers => {
             borrowerIds.push(id1);
             return twoBorrowers
                 ? cleanMethod("insertBorrower", {
-                      object: completeFakeBorrower
-                  })
+                    object: completeFakeBorrower
+                })
                 : false;
         })
         .then(id2 => {
@@ -73,8 +73,8 @@ const addStep3Loan = (twoBorrowers, completeFiles = true) => {
             borrowerIds.push(id1);
             return twoBorrowers
                 ? cleanMethod("insertBorrower", {
-                      object: completeFakeBorrower
-                  })
+                    object: completeFakeBorrower
+                })
                 : false;
         })
         .then(id2 => {

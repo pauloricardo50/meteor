@@ -55,23 +55,21 @@ export default class AllLoansTable extends Component {
 
     setupRows = () => {
         const { loans, properties, history } = this.props;
-        this.rows = loans.map((loan, index) => {
-            return {
-                id: loan._id,
-                columns: [
-                    index + 1,
-                    loan.name,
-                    moment(loan.createdAt).format("D MMM YY à HH:mm:ss"),
-                    moment(loan.updatedAt).format("D MMM YY à HH:mm:ss"),
-                    loan.logic.step + 1,
-                    loan.property ? loan.property.value : "N/A",
-                    loan.general.fortuneUsed +
+        this.rows = loans.map((loan, index) => ({
+            id: loan._id,
+            columns: [
+                index + 1,
+                loan.name,
+                moment(loan.createdAt).format("D MMM YY à HH:mm:ss"),
+                moment(loan.updatedAt).format("D MMM YY à HH:mm:ss"),
+                loan.logic.step + 1,
+                loan.property ? loan.property.value : "N/A",
+                loan.general.fortuneUsed +
                         (loan.general.insuranceFortuneUsed || 0),
-                    "Très Bon"
-                ],
-                handleClick: () => history.push(`/loans/${loan._id}`)
-            };
-        });
+                "Très Bon"
+            ],
+            handleClick: () => history.push(`/loans/${loan._id}`)
+        }));
     };
 
     render() {
