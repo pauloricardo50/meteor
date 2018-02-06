@@ -18,12 +18,7 @@ const AdminLoansPage = props => {
 };
 
 AdminLoansPage.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.any),
-    properties: PropTypes.arrayOf(PropTypes.object).isRequired
-};
-
-AdminLoansPage.defaultProps = {
-    data: []
+    data: PropTypes.arrayOf(PropTypes.any)
 };
 
 export default AdminLoansPage;

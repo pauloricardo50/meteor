@@ -27,6 +27,7 @@ import VerifyPage from "../../ui/pages/VerifyPage";
 import AdminDevPage from "../../ui/pages/AdminDevPage";
 import DevPage from "../../ui/pages/DevPage";
 import LoansPageContainer from "../../ui/pages/LoansPage/LoansPageContainer";
+import SingleLoanPageContainer from "../../ui/pages/SingleLoanPage/SingleLoanPageContainer";
 
 const AdminRouter = props => (
     <BaseRouter
@@ -68,7 +69,7 @@ const AdminRouter = props => (
                     />
                     <Route
                         path="/loans/:loanId"
-                        component={AdminLoanContainer(SingleLoanPage)}
+                        component={SingleLoanPageContainer}
                     />
                     <Route path="/users/:userId" component={SingleUserPage} />
                     <Route

@@ -63,9 +63,9 @@ export default class AllLoansTable extends Component {
                 moment(loan.createdAt).format("D MMM YY à HH:mm:ss"),
                 moment(loan.updatedAt).format("D MMM YY à HH:mm:ss"),
                 loan.logic.step + 1,
-                loan.property ? loan.property.value : "N/A",
+                loan.propertyLink ? loan.propertyLink.value : "N/A",
                 loan.general.fortuneUsed +
-                        (loan.general.insuranceFortuneUsed || 0),
+                    (loan.general.insuranceFortuneUsed || 0),
                 "Très Bon"
             ],
             handleClick: () => history.push(`/loans/${loan._id}`)
