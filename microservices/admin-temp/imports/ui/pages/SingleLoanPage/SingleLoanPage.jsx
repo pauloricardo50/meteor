@@ -44,10 +44,10 @@ export default class SingleLoanPage extends Component {
     }
 
     render() {
-        const { history, data } = this.props;
+        const { history, data, isLoading } = this.props;
         const loan = data;
 
-        if (!loan) return null;
+        if (isLoading || !loan) return null;
 
         const dataToPassDown = {
             ...this.props,

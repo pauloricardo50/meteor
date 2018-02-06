@@ -24,10 +24,25 @@ export default Loans.createQuery("adminLoanView", {
         birthPlace: 1,
         civilStatus: 1,
         childrenCount: 1,
-        // TODO
-        logic: 1,
-        bonus: 1,
+        company: 1,
+        personalBank: 1,
+        isSwiss: 1,
+        isUSPerson: 1,
+        worksForOwnCompany: 1,
+        sameAddress: 1,
         salary: 1,
-        files: 1
+        bonusExists: 1,
+        bonus: 1,
+        otherIncome: 1,
+        expenses: 1,
+        realEstate: 1,
+        bankFortune: 1,
+        insuranceSecondPillar: 1,
+        insuranceThirdPillar: 1,
+        files: 1,
+        logic: 1,
+        otherFortune: 1,
+        corporateBankExists: 1,
+        adminValidation: 1
     }
 });
