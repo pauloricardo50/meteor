@@ -8,11 +8,11 @@ import { getUserLocale, getFormats } from "core/utils/localization";
 import {
     AdminLayout,
     AdminDashboardPage,
-    UsersPage,
+    //UsersPage,
     LoansPage,
     // OfferPage,
     // SingleLoanPage,
-    SingleUserPage
+    //SingleUserPage
     // VerifyPage,
     // ContactLendersPage,
 } from "core/containers/AdminContainers";
@@ -28,6 +28,9 @@ import AdminDevPage from "../../ui/pages/AdminDevPage";
 import DevPage from "../../ui/pages/DevPage";
 import LoansPageContainer from "../../ui/pages/LoansPage/LoansPageContainer";
 import SingleLoanPageContainer from "../../ui/pages/SingleLoanPage/SingleLoanPageContainer";
+
+import UsersPageContainer from "../../ui/pages/UsersPage/UsersPageContainer"
+import SingleUserPageContainer from "../../ui/pages/SingleUserPage/SingleUserPageContainer"
 
 const AdminRouter = props => (
     <BaseRouter
@@ -48,7 +51,7 @@ const AdminRouter = props => (
                     <Route
                         exact
                         path="/users"
-                        render={() => <UsersPage {...layoutProps} />}
+                        render={() => <UsersPageContainer {...layoutProps} />}
                     />
                     <Route
                         exact
@@ -71,7 +74,9 @@ const AdminRouter = props => (
                         path="/loans/:loanId"
                         component={SingleLoanPageContainer}
                     />
-                    <Route path="/users/:userId" component={SingleUserPage} />
+                    <Route 
+                        path="/users/:userId" 
+                        component={SingleUserPageContainer} />
                     <Route
                         exact
                         path="/dev"
