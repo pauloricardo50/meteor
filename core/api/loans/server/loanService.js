@@ -2,12 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 import Loans from './loans';
 
-import {
-    ADMIN_ACTION_TYPE,
-    ADMIN_ACTION_STATUS,
-    LOAN_STATUS,
-    AUCTION_STATUS
-} from '../constants';
+import { LOAN_STATUS, AUCTION_STATUS } from '../constants';
 import { getAuctionEndTime } from '../../utils/loanFunctions';
 
 export default class {
@@ -17,7 +12,7 @@ export default class {
         Loans.insert({
             ...object,
             // Do this to allow userId to be null
-            userId: userId === undefined ? Meteor.userId() : userId
+            userId: userId === undefined ? Meteor.userId() : userId,
         });
 
     static remove = ({ id }) => Loans.remove(id);
@@ -38,19 +33,27 @@ export default class {
             id,
             object: {
                 'logic.verification.requested': true,
-                'logic.verification.requestedTime': new Date()
-            }
+                'logic.verification.requestedTime': new Date(),
+            },
         });
     };
 
     static startAuction = ({ id }) => {
-        const auctionObject = {
-            'logic.auction.status': AUCTION_STATUS.STARTED,
-            'logic.auction.startTime': moment().toDate(),
-            'logic.auction.endTime': getAuctionEndTime(moment())
-        };
+        const loan = Loans.findOne(id);
 
-        return this.update({ id, object: auctionObject });
+        if (loan.logic.auction.status !== AUCTION_STATUS.NONE) {
+            // Don't do anything if this auction has already started or ended
+            return false;
+        }
+
+        return this.update({
+            id,
+            object: {
+                'logic.auction.status': AUCTION_STATUS.STARTED,
+                'logic.auction.startTime': moment().toDate(),
+                'logic.auction.endTime': getAuctionEndTime(moment()),
+            },
+        });
     };
 
     static endAuction = ({ id }) => {
@@ -67,8 +70,8 @@ export default class {
             id,
             object: {
                 'logic.auction.status': AUCTION_STATUS.ENDED,
-                'logic.auction.endTime': new Date()
-            }
+                'logic.auction.endTime': new Date(),
+            },
         });
     };
 
@@ -78,8 +81,8 @@ export default class {
             object: {
                 'logic.auction.endTime': undefined,
                 'logic.auction.status': '',
-                'logic.auction.startTime': undefined
-            }
+                'logic.auction.startTime': undefined,
+            },
         });
 
     static confirmClosing = ({ id, object }) =>
@@ -87,7 +90,7 @@ export default class {
             id,
             object: {
                 status: LOAN_STATUS.DONE,
-                ...object
-            }
+                ...object,
+            },
         });
 }
