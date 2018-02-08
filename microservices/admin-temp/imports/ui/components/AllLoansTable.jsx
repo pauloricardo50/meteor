@@ -56,7 +56,7 @@ export default class AllLoansTable extends Component {
   setupRows = () => {
     const { loans, properties, history } = this.props;
     this.rows = loans.map((loan, index) => {
-      const propertyValue = properties.find(property => property._id === loan.property).value;
+      const propertyValue = properties.find(property => property._id === loan.propertyId).value;
       return {
         id: loan._id,
         columns: [

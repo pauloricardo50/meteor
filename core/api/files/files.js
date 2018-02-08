@@ -87,7 +87,7 @@ export const loanFiles = (r = {}) => ({
     // {
     //   id: 'cubage',
     //   doubleTooltip: true,
-    //   condition: r.property && r.property.style === 'villa',
+    //   condition: r.propertyId && r.propertyId.style === 'villa',
     // },
     // {
     //   id: 'pictures',
@@ -115,17 +115,17 @@ export const loanFiles = (r = {}) => ({
     },
     {
       id: 'coownershipAllocationAgreement',
-      condition: !!r.property && !!r.property.isCoproperty,
+      condition: !!r.propertyId && !!r.propertyId.isCoproperty,
       doubleTooltip: true,
     },
     {
       id: 'coownershipAgreement',
-      condition: !!r.property && !!r.property.isCoproperty,
+      condition: !!r.propertyId && !!r.propertyId.isCoproperty,
       doubleTooltip: true,
     },
     {
       id: 'fireAndWaterInsurance',
-      condition: !!(r.property && r.property.isNew),
+      condition: !!(r.propertyId && r.propertyId.isNew),
     },
   ],
   closing: [],

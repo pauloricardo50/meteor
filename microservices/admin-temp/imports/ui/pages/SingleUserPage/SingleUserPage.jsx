@@ -24,8 +24,8 @@ const AdminSingleUserPage = ({
         loan={loan}
         key={loan._id}
         history={history}
-        borrowers={borrowers.filter(b => loan.borrowers.indexOf(b._id) >= 0)}
-        property={properties.find(p => p._id === loan.property)}
+        borrowers={borrowers.filter(b => loan.borrowerIds.indexOf(b._id) >= 0)}
+        property={properties.find(p => p._id === loan.propertyId)}
       />
     ))}
   </section>

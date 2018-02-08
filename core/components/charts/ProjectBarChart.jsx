@@ -108,14 +108,14 @@ const getConfig = (props) => {
     //       [
     //         'Épargne', // subtract fees from this
     //         r.general.fortuneUsed -
-    //           r.property.value * constants.notaryFees -
+    //           r.propertyId.value * constants.notaryFees -
     //           (r.general.insuranceFortuneUsed * constants.lppFees || 0),
     //       ],
     //     ],
     //     name: 'Épargne',
     //   },
     //   {
-    //     data: [['Frais de Notaire', r.property.value * constants.notaryFees]],
+    //     data: [['Frais de Notaire', r.propertyId.value * constants.notaryFees]],
     //     name: 'Frais de Notaire',
     //   },
     //   {

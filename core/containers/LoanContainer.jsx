@@ -54,7 +54,7 @@ const loanWrapper = (WrappedComponent) => {
           loans.find(loan => loan._id === loanId);
         loanBorrowers =
           loan &&
-          loan.borrowers.map(borrowerId =>
+          loan.borrowerIds.map(borrowerId =>
             borrowers.find(borrower => borrower._id === borrowerId));
         loanOffers =
           offers && offers.filter(offer => offer.loanId === loanId);
@@ -62,8 +62,8 @@ const loanWrapper = (WrappedComponent) => {
           properties &&
           properties.find((property) => {
             // Add this check while transitioning from nested to separate property
-            if (typeof loan.property === 'string') {
-              return property._id === loan.property;
+            if (typeof loan.propertyId === 'string') {
+              return property._id === loan.propertyId;
             }
 
             return false;

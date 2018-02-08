@@ -61,7 +61,7 @@ export function userLoanComposer(props, onData) {
     const loanId = props.match.params.loanId;
     const loan = Loans.find({ _id: loanId }).fetch()[0];
     const borrowers = Borrowers.find({
-      _id: { $in: loan.borrowers },
+      _id: { $in: loan.borrowerIds },
     }).fetch();
     const offers = Offers.find({ loanId }).fetch();
     onData(null, { loan, borrowers, offers });

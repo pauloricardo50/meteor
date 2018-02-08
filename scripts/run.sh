@@ -12,7 +12,7 @@ if ! type "ttab" > /dev/null; then
 fi
 
 # Start each app in its own tab
-for i in "www" "app" "admin-temp" "lender"
+for i in "www" "app" "admin-temp"
   do
     # Make them all connect to the mongoDB instance created by the first app (epotek-www, running at localhost:3000)
     if [[ $i == "www" ]]; then
