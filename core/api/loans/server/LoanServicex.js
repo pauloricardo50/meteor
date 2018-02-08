@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
-import Loans from './loans';
+import Loans from '../loans';
 
 import { LOAN_STATUS, AUCTION_STATUS } from '../constants';
 import { getAuctionEndTime } from '../../utils/loanFunctions';
@@ -12,7 +12,7 @@ export default class {
         Loans.insert({
             ...object,
             // Do this to allow userId to be null
-            userId: userId === undefined ? Meteor.userId() : userId,
+            userId: userId === undefined ? Meteor.userId() : userId
         });
 
     static remove = ({ id }) => Loans.remove(id);
@@ -33,8 +33,8 @@ export default class {
             id,
             object: {
                 'logic.verification.requested': true,
-                'logic.verification.requestedTime': new Date(),
-            },
+                'logic.verification.requestedTime': new Date()
+            }
         });
     };
 
@@ -51,8 +51,8 @@ export default class {
             object: {
                 'logic.auction.status': AUCTION_STATUS.STARTED,
                 'logic.auction.startTime': moment().toDate(),
-                'logic.auction.endTime': getAuctionEndTime(moment()),
-            },
+                'logic.auction.endTime': getAuctionEndTime(moment())
+            }
         });
     };
 
@@ -70,8 +70,8 @@ export default class {
             id,
             object: {
                 'logic.auction.status': AUCTION_STATUS.ENDED,
-                'logic.auction.endTime': new Date(),
-            },
+                'logic.auction.endTime': new Date()
+            }
         });
     };
 
@@ -81,8 +81,8 @@ export default class {
             object: {
                 'logic.auction.endTime': undefined,
                 'logic.auction.status': '',
-                'logic.auction.startTime': undefined,
-            },
+                'logic.auction.startTime': undefined
+            }
         });
 
     static confirmClosing = ({ id, object }) =>
@@ -90,7 +90,7 @@ export default class {
             id,
             object: {
                 status: LOAN_STATUS.DONE,
-                ...object,
-            },
+                ...object
+            }
         });
 }
