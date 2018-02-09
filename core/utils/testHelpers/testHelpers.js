@@ -5,7 +5,6 @@ import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider, intlShape } from 'react-intl';
 import StubCollections from 'meteor/hwillson:stub-collections';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { Provider } from 'react-redux';
 
 import { getUserLocale, getFormats } from 'core/utils/localization';
 import messagesFR from '../../lang/fr.json';
@@ -49,6 +48,7 @@ const customMount = ({ Component, props, withRouter, withStore }) => {
 
     if (withStore) {
         const configureStore = require('redux-mock-store');
+        const { Provider } = require('react-redux');
         const mockStore = configureStore();
         const initialState = { stepper: {} };
         const store = mockStore(initialState);
