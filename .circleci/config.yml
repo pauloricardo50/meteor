@@ -74,7 +74,7 @@ jobs:
             meteor npm run test-CI
       - run:
           name: run tests for admin-temp
-            command: |
+          command: |
             cd microservices/admin-temp
             meteor npm i selenium-webdriver@3.0.0-beta-2 chromedriver
             meteor npm run test-CI
