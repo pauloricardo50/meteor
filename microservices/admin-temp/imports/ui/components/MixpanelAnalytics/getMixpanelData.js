@@ -1,7 +1,5 @@
-import MixpanelExport from 'mixpanel-data-export';
+import cleanMethod from 'core/api/cleanMethods';
 
-const API_KEY = '47c4e11846a6cd795a275ccf9535035a';
-const API_SECRET = '7f8e74ff4fe0f850373abb114ca9ec91';
 const MIXPANEL_URL = `https://mixpanel.com/api/2.0/`;
 
 export const createQuery = params =>
@@ -22,12 +20,10 @@ const buildUrl = ({ params, endpoint = 'segmentation' }) => {
 };
 
 const getData = url =>
-    fetch(url, {
-        method: 'GET',
-        headers: {
-            Authorization: `Basic ${btoa(`${API_SECRET}:${API_KEY}`)}`
-        }
-    })
+    cleanMethod('getMixpanelAuthorization')
+        .then(Authorization =>
+            fetch(url, { method: 'GET', headers: { Authorization } })
+        )
         .then(result => result.json())
         .catch(error => {
             console.log('Mixpanel fetch error:', error);
