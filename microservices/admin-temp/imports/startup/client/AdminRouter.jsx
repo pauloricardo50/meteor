@@ -14,11 +14,11 @@ import {
   LoansPage,
   // OfferPage,
   // SingleLoanPage,
-  SingleUserPage,
+  SingleUserPage
   // VerifyPage,
   // ContactLendersPage,
 } from 'core/containers/AdminContainers';
-import AdminDevPage from '/imports/ui/pages/AdminDevPage';
+import DevPage from 'core/components/DevPage';
 import AdminLoanContainer from 'core/containers/AdminLoanContainer';
 
 import SingleLoanPage from '../../ui/pages/SingleLoanPage';
@@ -69,11 +69,7 @@ const AdminRouter = props => (
             component={AdminLoanContainer(SingleLoanPage)}
           />
           <Route path="/users/:userId" component={SingleUserPage} />
-          <Route
-            exact
-            path="/dev"
-            render={() => <AdminDevPage {...layoutProps} />}
-          />
+          <Route path="/dev" component={DevPage} />
           <Route component={NotFound} />
         </Switch>
       )}

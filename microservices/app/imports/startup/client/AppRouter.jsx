@@ -9,6 +9,7 @@ import AppStore from '../../ui/components/AppStore';
 
 import LoanContainer from 'core/containers/LoanContainer';
 
+import DevPage from 'core/components/DevPage';
 import DashboardPage from '../../ui/pages/DashboardPage';
 import BorrowerPage from '../../ui/pages/BorrowerPage';
 import PropertyPage from '../../ui/pages/PropertyPage';
@@ -22,7 +23,6 @@ import ClosingPage from '../../ui/pages/ClosingPage';
 import FinancePage from '../../ui/pages/FinancePage';
 import FilesPage from '../../ui/pages/FilesPage';
 
-import DevPage from '../../ui/pages/DevPage';
 import ComparePage from '../../ui/pages/ComparePage';
 import AppPage from '../../ui/pages/AppPage';
 import AccountPage from '../../ui/pages/AccountPage';
@@ -86,10 +86,7 @@ const AppRouter = () => (
           path="/loans/:loanId/files"
           component={LoanContainer(FilesPage)}
         />
-        <Route
-          path="/loans/:loanId"
-          component={LoanContainer(DashboardPage)}
-        />
+        <Route path="/loans/:loanId" component={LoanContainer(DashboardPage)} />
         <Route path="/compare" component={ComparePage} />
         <Route path="/add-loan/:loanId" component={AddLoanPage} />
         <Route path="/enroll-account/:token" component={PasswordResetpage} />
