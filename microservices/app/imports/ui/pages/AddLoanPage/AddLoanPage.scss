@@ -1,0 +1,13 @@
+.AddLoanPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.AddLoanPage .buttons {
+  display: flex;
+}
+
+.AddLoanPage .buttons > button {
+  margin-right: 8px;
+}

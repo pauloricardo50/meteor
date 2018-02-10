@@ -1,0 +1,5 @@
+export const FILE_STATUS = {
+  UNVERIFIED: 'UNVERIFIED',
+  VALID: 'VALID',
+  ERROR: 'ERROR',
+};

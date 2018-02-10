@@ -1,0 +1,24 @@
+{
+	"folders": [
+		{
+			"path": "./"
+		},
+		{
+			"path": "microservices/admin"
+		},
+		{
+			"path": "microservices/app"
+		},
+		{
+			"path": "microservices/lender"
+		},
+		{
+			"path": "microservices/www"
+		}
+	],
+	"settings": {
+		"path-intellisense.mappings": {
+			"core": "${workspaceRoot}/core",
+		},
+	}
+}
