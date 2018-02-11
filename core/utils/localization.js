@@ -1,7 +1,6 @@
 // This file is shared between client and server to allow server-side tests to have access to it
 
 import { addLocaleData } from 'react-intl';
-import { T9n } from 'meteor/softwarerero:accounts-t9n';
 import moment from 'moment';
 import Loadable from 'core/utils/loadable';
 import fr from 'react-intl/locale-data/fr';
@@ -14,39 +13,47 @@ export const getFormats = () => ({
       style: 'currency',
       currency: 'CHF',
       maximumFractionDigits: 0,
-      minimumFractionDigits: 0,
+      minimumFractionDigits: 0
     },
     moneyWithoutCurrency: {
       style: 'decimal',
       useGrouping: true,
       maximumFractionDigits: 0,
-      minimumFractionDigits: 0,
+      minimumFractionDigits: 0
     },
     percentage: {
       style: 'percent',
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+      maximumFractionDigits: 2
     },
     percentageRounded: {
       style: 'percent',
       minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    },
-  },
+      maximumFractionDigits: 0
+    }
+  }
 });
 
-export const localizationStartup = () => {
+export const localizationStartup = ({ setupAccounts = true } = {}) => {
   // Add locales used in app here
   addLocaleData(fr);
-  T9n.setLanguage('fr');
   setupMoment();
   moment.locale('fr');
+
+  if (setupAccounts) {
+    const { T9n } = require('meteor/softwarerero:accounts-t9n');
+    T9n.setLanguage('fr');
+  }
 };
 
 const setupMoment = () => {
   moment.locale('fr', {
-    months: 'Janvier_Février_Mars_Avril_Mai_Juin_Juillet_Août_Septembre_Octobre_Novembre_Décembre'.split('_'),
-    monthsShort: 'Janv._Févr._Mars_Avr._Mai_Juin_Juil._Août_Sept._Oct._Nov._Déc.'.split('_'),
+    months: 'Janvier_Février_Mars_Avril_Mai_Juin_Juillet_Août_Septembre_Octobre_Novembre_Décembre'.split(
+      '_'
+    ),
+    monthsShort: 'Janv._Févr._Mars_Avr._Mai_Juin_Juil._Août_Sept._Oct._Nov._Déc.'.split(
+      '_'
+    ),
     monthsParseExact: true,
     weekdays: 'Dimanche_Lundi_Mardi_Mercredi_Jeudi_Vendredi_Samedi'.split('_'),
     weekdaysShort: 'Dim._Lun._Mar._Mer._Jeu._Ven._Sam.'.split('_'),
@@ -58,7 +65,7 @@ const setupMoment = () => {
       L: 'DD/MM/YYYY',
       LL: 'D MMMM YYYY',
       LLL: 'D MMMM YYYY HH:mm',
-      LLLL: 'dddd D MMMM YYYY HH:mm',
+      LLLL: 'dddd D MMMM YYYY HH:mm'
     },
     calendar: {
       sameDay: '[Aujourd’hui à] LT',
@@ -66,7 +73,7 @@ const setupMoment = () => {
       nextWeek: 'dddd [à] LT',
       lastDay: '[Hier à] LT',
       lastWeek: 'dddd [dernier à] LT',
-      sameElse: 'L',
+      sameElse: 'L'
     },
     relativeTime: {
       future: 'dans %s',
@@ -81,7 +88,7 @@ const setupMoment = () => {
       M: 'un mois',
       MM: '%d mois',
       y: 'un an',
-      yy: '%d ans',
+      yy: '%d ans'
     },
     dayOfMonthOrdinalParse: /\d{1,2}(er|e)/,
     ordinal(number) {
@@ -101,7 +108,7 @@ const setupMoment = () => {
     },
     week: {
       dow: 1, // Monday is the first day of the week.
-      doy: 4, // The week that contains Jan 4th is the first week of the year.
-    },
+      doy: 4 // The week that contains Jan 4th is the first week of the year.
+    }
   });
 };
