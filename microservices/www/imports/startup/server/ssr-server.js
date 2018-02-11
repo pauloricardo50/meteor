@@ -33,7 +33,7 @@ onPageLoad(sink => {
 
   sink.appendToBody(`
     <script>
-      window[${startupConstants.REDUX_STORE_KEY}] = ${serverState}
+      window.${startupConstants.REDUX_STORE_KEY} = ${serverState}
     </script>
   `);
 });
