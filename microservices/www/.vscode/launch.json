@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "www: Chrome",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceRoot}"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "www: Node",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "debug"],
+      "port": 9229,
+      "timeout": 30000
+    }
+  ],
+  "compounds": [
+    {
+      "name": "www: All",
+      "configurations": ["www: Node", "www: Chrome"]
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet';
 
 import createStore from '../../redux/store';
 import ServerApp from './ServerApp';
+import * as startupConstants from '../shared/startupConstants';
 
 const prepareState = store => {
   const preloadedState = store.getState();
@@ -20,7 +21,7 @@ onPageLoad(sink => {
   const serverState = prepareState(store);
 
   sink.renderIntoElementById(
-    'react-root',
+    startupConstants.ROOT_ID,
     renderToString(
       <ServerApp store={store} context={context} location={sink.request.url} />
     )
@@ -32,7 +33,7 @@ onPageLoad(sink => {
 
   sink.appendToBody(`
     <script>
-      window.__PRELOADED_STATE__ = ${serverState}
+      window[${startupConstants.REDUX_STORE_KEY}] = ${serverState}
     </script>
   `);
 });
