@@ -7,13 +7,14 @@ import MuiTheme from '../../config/mui_custom';
 
 const LibraryWrappers = ({
   i18n: { locale, messages, formats },
-  WrapperComponent
+  WrapperComponent,
+  children
 }) => {
   return (
     <WrapperComponent>
-      // Inject custom material-ui theme for everything to look good
+      {/* Inject custom material-ui theme for everything to look good */}
       <MuiThemeProvider theme={MuiTheme}>
-        // Inject Intl props to all components to render the proper locale
+        {/* Inject Intl props to all components to render the proper locale */}
         <IntlProvider
           locale={locale}
           messages={messages}
@@ -37,6 +38,8 @@ LibraryWrappers.propTypes = {
   })
 };
 
-LibraryWrappers.defaultProps = {};
+LibraryWrappers.defaultProps = {
+  WrapperComponent: React.Fragment
+};
 
 export default LibraryWrappers;
