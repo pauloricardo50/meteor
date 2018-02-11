@@ -1,8 +1,6 @@
-import { combineReducers } from 'redux';
+// import { combineReducers } from 'redux';
 
-const createRootReducer = () => {
-  return state => state;
-  // return combineReducers({});
-};
+const createRootReducer = () => state => state;
+// return combineReducers({});
 
 export default createRootReducer;

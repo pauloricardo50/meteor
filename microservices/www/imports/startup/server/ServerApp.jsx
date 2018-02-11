@@ -16,7 +16,7 @@ const ServerApp = ({ store, context, location }) => (
 ServerApp.propTypes = {
   store: PropTypes.object.isRequired,
   context: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
 };
 
 export default ServerApp;

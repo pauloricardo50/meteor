@@ -12,8 +12,8 @@ delete window[startupConstants.REDUX_STORE_KEY]; // eslint-disable-line
 const store = createStore({ initialState: preloadedState });
 
 onPageLoad(() => {
-  ReactDOM.hydrate(
-    <ClientApp store={store} />,
-    document.getElementById(startupConstants.ROOT_ID)
-  );
+    ReactDOM.hydrate(
+        <ClientApp store={store} />,
+        document.getElementById(startupConstants.ROOT_ID)
+    );
 });
