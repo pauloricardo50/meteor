@@ -31,6 +31,7 @@ import SingleLoanPageContainer from "../../ui/pages/SingleLoanPage/SingleLoanPag
 
 import UsersPageContainer from "../../ui/pages/UsersPage/UsersPageContainer"
 import SingleUserPageContainer from "../../ui/pages/SingleUserPage/SingleUserPageContainer"
+import TasksPage from "../../ui/pages/TasksPage/TasksPage"
 
 const AdminRouter = props => (
     <BaseRouter
@@ -77,6 +78,9 @@ const AdminRouter = props => (
                     <Route 
                         path="/users/:userId" 
                         component={SingleUserPageContainer} />
+                    <Route 
+                        path="/tasks" 
+                        component={TasksPage} />
                     <Route
                         exact
                         path="/dev"

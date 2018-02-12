@@ -19,7 +19,7 @@ export default class AllUsersTable extends Component {
   }
 
   setupRows = () => {
-    const users = this.props.data;
+    const users = this.props.data; 
 
     this.rows = users.map((user, index) => ({
       id: user._id,
