@@ -36,7 +36,7 @@ for i in 'admin' 'app' 'lender' 'www'
     then
       #only need variables.scss in www
       mkdir ../microservices/$i/client/css
-      ln -s ../../../core/assets/css/variables.scss ../microservices/$i/client/css/variables.scss
+      ln -s ../../../../core/assets/css/variables.scss ../microservices/$i/client/css/variables.scss
     else
       ln -s ../../../core/assets/css ../microservices/$i/client/css
     fi

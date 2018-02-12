@@ -4,10 +4,20 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  overflow-x: scroll;
 }
 
 .home-page .interest-rates .rate {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 8px;
+}
+
+.home-page .interest-rates .rate .type {
+  color: $primary;
+}
+
+.home-page .interest-rates .rate .value {
+  color: lightgray;
 }
