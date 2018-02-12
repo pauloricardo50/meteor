@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import HomePageInterestRates from './HomePageInterestRates';
 import HomePageNav from './HomePageNav';
 import HomePageHeader from './HomePageHeader';
 import HomePageDescription from './HomePageDescription';
@@ -10,6 +11,7 @@ import HomePageFooter from './HomePageFooter';
 
 const HomePage = () => (
     <main className="home-page">
+        <HomePageInterestRates />
         <HomePageNav />
         <HomePageHeader />
         <HomePageDescription />

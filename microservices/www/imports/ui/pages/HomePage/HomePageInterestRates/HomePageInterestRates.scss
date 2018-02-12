@@ -1,0 +1,13 @@
+@import '{}/client/css/variables.scss';
+
+.home-page .interest-rates {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.home-page .interest-rates .rate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
