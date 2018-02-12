@@ -28,14 +28,14 @@ describe('Security tests', () => {
     describe('hasRole', () => {
         it('checks a role without throwing', () => {
             expect(() =>
-                SecurityService.security.checkRole(devId, 'dev')
+                SecurityService.checkRole(devId, 'dev')
             ).to.not.throw();
         });
 
         it('throws if false', () => {
-            expect(() =>
-                SecurityService.security.checkRole(devId, 'test')
-            ).to.throw(SECURITY_ERROR);
+            expect(() => SecurityService.checkRole(devId, 'test')).to.throw(
+                SECURITY_ERROR
+            );
         });
     });
 
