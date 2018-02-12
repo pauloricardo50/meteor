@@ -41,7 +41,7 @@ describe('Security tests', () => {
 
     describe('LoanSecurity', () => {
         beforeEach(() => {
-            loanId = Factory.create('loan', { devId })._id;
+            loanId = Factory.create('loan', { userId: devId })._id;
         });
 
         describe('isAllowedToUpdate', () => {
@@ -51,7 +51,7 @@ describe('Security tests', () => {
                 ).to.equal(undefined);
             });
 
-            it('returns undefined if the user does not own the loan', () => {
+            it('throws if the user does not own the loan', () => {
                 const userId = Factory.create('user')._id;
                 Meteor.userId.restore();
                 sinon.stub(Meteor, 'userId').callsFake(() => userId);
@@ -59,6 +59,18 @@ describe('Security tests', () => {
                 expect(() =>
                     SecurityService.loans.isAllowedToUpdate(loanId)
                 ).to.throw(SECURITY_ERROR);
+            });
+
+            it('returns undefined if the user owns the loan', () => {
+                const userId = Factory.create('user')._id;
+                loanId = Factory.create('loan', { userId })._id;
+
+                Meteor.userId.restore();
+                sinon.stub(Meteor, 'userId').callsFake(() => userId);
+
+                expect(
+                    SecurityService.loans.isAllowedToUpdate(loanId)
+                ).to.equal(undefined);
             });
         });
     });
