@@ -31,7 +31,16 @@ for i in 'admin' 'app' 'lender' 'www'
 
     echo "Creating symlinks"
     ln -s ../../../core ../microservices/$i/imports/core
-    ln -s ../../../core/assets/css ../microservices/$i/client/css
+
+    if [[ $i == 'www' ]];
+    then
+      #only need variables.scss in www
+      mkdir ../microservices/$i/client/css
+      ln -s ../../../core/assets/css/variables.scss ../microservices/$i/client/css/variables.scss
+    else
+      ln -s ../../../core/assets/css ../microservices/$i/client/css
+    fi
+
     # ln -s ../../core/.babelrc ../microservices/$i/.babelrc
 
     # public and private folders can't have any symlink: https://github.com/meteor/meteor/issues/7013
@@ -57,6 +66,7 @@ for i in 'admin' 'app' 'lender' 'www'
 
 
   done
+
 
 echo "Installing npm packages in core/"
 ( cd ../core && meteor npm install );
