@@ -1,14 +1,14 @@
 import Security from './Security';
 import { Loans } from '..';
 
-class LoanSecurity extends Security {
+class LoanSecurity {
     static isAllowedToUpdate(loanId) {
-        if (this.currentUserIsAdmin()) {
+        if (Security.currentUserIsAdmin()) {
             return;
         }
 
         const loan = Loans.findOne(loanId);
-        this.checkOwnership(loan);
+        Security.checkOwnership(loan);
     }
 }
 
