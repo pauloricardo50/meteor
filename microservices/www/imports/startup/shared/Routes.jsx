@@ -1,10 +1,13 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
+import HomePage from '../../ui/pages/HomePage';
+import AboutPage from '../../ui/pages/AboutPage';
+
 const Routes = () => (
   <Switch>
-    <Route exact path="/" component={() => <h1>Hello World</h1>} />
-    <Route exact path="/2" component={() => <h1>Hello World 2</h1>} />
+    <Route path="/about" component={AboutPage} />
+    <Route exact path="/" component={HomePage} />
   </Switch>
 );
 
