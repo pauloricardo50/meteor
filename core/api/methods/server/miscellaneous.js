@@ -1,60 +1,33 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 import { check } from 'meteor/check';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 
 import Loans from '../../loans/loans';
 import Borrowers from '../../borrowers/borrowers';
+
 import { generateComponentAsPDF } from '../../../utils/generate-pdf';
 import { LoanPDF, AnonymousLoanPDF } from '../../loans/pdf.js';
 import rateLimit from '../../../utils/rate-limit.js';
 
 Meteor.methods({
     getServerTime: () => new Date(),
-    setUserToLoan: ({ loanId }) => {
-        check(loanId, String);
+    getMixpanelAuthorization() {
+        if (
+            Roles.userIsInRole(Meteor.userId(), 'dev') ||
+            Roles.userIsInRole(Meteor.userId(), 'admin')
+        ) {
+            const btoa = require('btoa');
 
-        if (!Meteor.userId()) {
-            throw new Meteor.Error('not authorized');
+            const API_KEY = Meteor.settings.MIXPANEL_API_KEY;
+            const API_SECRET = Meteor.settings.MIXPANEL_API_SECRET;
+
+            return `Basic ${btoa(`${API_SECRET}:${API_KEY}`)}`;
         }
 
-        const loan = Loans.findOne(loanId);
-        const { borrowers } = loan;
-
-        Loans.update(loanId, { $set: { userId: Meteor.userId() } });
-        borrowers.forEach(borrowerId => {
-            Borrowers.update(borrowerId, { $set: { userId: Meteor.userId() } });
-        });
-
-        return true;
-    },
-    addBorrower({ loanId }) {
-        // TODO: Secure this
-        const loan = Loans.findOne(loanId);
-
-        // A loan can't have more than 2 borrowers at the moment
-        if (loan.borrowerIds.length >= 2) {
-            return false;
-        }
-
-        const newBorrowerId = Borrowers.insert({ userId: Meteor.userId() });
-
-        return Loans.update(loanId, {
-            $push: { borrowerIds: newBorrowerId },
-        });
-    },
-    removeBorrower({ loanId, borrowerId }) {
-        // TODO: Secure this
-        const loan = Loans.findOne(loanId);
-
-        // A loan has to have at least 1 borrower
-        if (loan.borrowerIds.length <= 1) {
-            return false;
-        }
-
-        Borrowers.remove(borrowerId);
-        return Loans.update(loanId, {
-            $pull: { borrowerIds: borrowerId },
-        });
+        throw new Meteor.Error(
+            'Unauthorized access to getMixpanelAuthorization'
+        );
     },
 });
 
