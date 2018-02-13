@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "format":
-            "prettier-eslint core/components/Accordion.jsx --write --eslint-config-path ./.eslintrc"
+            "prettier-eslint \"core/components/**/*.js*\" --write --eslint-config-path ./.eslintrc"
     },
     "repository": {
         "type": "git",
