@@ -34,28 +34,11 @@ module.exports = {
     // The most sane value, allows objects to stay on a single line if possible
     'object-curly-newline': ['error', { consistent: true }],
     'multiline-ternary': ['error', 'always-multiline'],
+
+    // FIXME: Find a solution for math parentheses mess:
+    // https://github.com/prettier/prettier/issues/3968
     // 'no-extra-parens': ['error', 'all', { nestedBinaryExpressions: false }],
-    'no-mixed-operators': [
-      'error',
-      {
-        groups: [
-          ['%', '**'],
-          ['%', '+'],
-          ['%', '-'],
-          ['%', '*'],
-          ['%', '/'],
-          ['**', '+'],
-          ['**', '-'],
-          ['**', '*'],
-          ['**', '/'],
-          ['&', '|', '^', '~', '<<', '>>', '>>>'],
-          ['==', '!=', '===', '!==', '>', '>=', '<', '<='],
-          ['&&', '||'],
-          ['in', 'instanceof'],
-        ],
-        allowSamePrecedence: false,
-      },
-    ],
+    // 'no-mixed-operators': ['error', { allowSamePrecedence: false }],
 
     // eslint-plugin-import rules
 
