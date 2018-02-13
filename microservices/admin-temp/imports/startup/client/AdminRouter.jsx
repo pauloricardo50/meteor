@@ -29,9 +29,10 @@ import DevPage from "../../ui/pages/DevPage";
 import LoansPageContainer from "../../ui/pages/LoansPage/LoansPageContainer";
 import SingleLoanPageContainer from "../../ui/pages/SingleLoanPage/SingleLoanPageContainer";
 
-import UsersPageContainer from "../../ui/pages/UsersPage/UsersPageContainer"
-import SingleUserPageContainer from "../../ui/pages/SingleUserPage/SingleUserPageContainer"
-import TasksPage from "../../ui/pages/TasksPage/TasksPage"
+import UsersPageContainer from "../../ui/pages/UsersPage/UsersPageContainer";
+import SingleUserPageContainer from "../../ui/pages/SingleUserPage/SingleUserPageContainer";
+import TasksPage from "../../ui/pages/TasksPage/TasksPage";
+import BorrowersPage from "../../ui/pages/BorrowersPage/BorrowersPageContainer";
 
 const AdminRouter = props => (
     <BaseRouter
@@ -81,6 +82,9 @@ const AdminRouter = props => (
                     <Route 
                         path="/tasks" 
                         component={TasksPage} />
+                    <Route 
+                        path="/borrowers" 
+                        component={BorrowersPage} />
                     <Route
                         exact
                         path="/dev"
