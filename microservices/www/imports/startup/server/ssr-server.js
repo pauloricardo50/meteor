@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderToString } from 'react-dom/server';
+import { renderToNodeStream } from 'react-dom/server';
 import { onPageLoad } from 'meteor/server-render';
 import { Helmet } from 'react-helmet';
 
@@ -22,7 +22,7 @@ onPageLoad(sink => {
 
     sink.renderIntoElementById(
         startupConstants.ROOT_ID,
-        renderToString(
+        renderToNodeStream(
             <ServerApp
                 store={store}
                 context={context}
