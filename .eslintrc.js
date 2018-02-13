@@ -5,14 +5,10 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['import', 'jsx-a11y', 'meteor', 'react', 'prettier'],
-  extends: [
-    'airbnb',
-    'prettier',
-    'plugin:meteor/recommended',
-    'plugin:react/recommended',
-  ],
+  plugins: ['import', 'jsx-a11y', 'meteor', 'react'],
+  extends: ['airbnb', 'plugin:meteor/recommended', 'plugin:react/recommended'],
   env: {
+    node: true,
     browser: true,
   },
   globals: {},
@@ -35,20 +31,49 @@ module.exports = {
         ],
       },
     ],
+    // The most sane value, allows objects to stay on a single line if possible
+    'object-curly-newline': ['error', { consistent: true }],
+    'multiline-ternary': ['error', 'always-multiline'],
+    // 'no-extra-parens': ['error', 'all', { nestedBinaryExpressions: false }],
+    'no-mixed-operators': [
+      'error',
+      {
+        groups: [
+          ['%', '**'],
+          ['%', '+'],
+          ['%', '-'],
+          ['%', '*'],
+          ['%', '/'],
+          ['**', '+'],
+          ['**', '-'],
+          ['**', '*'],
+          ['**', '/'],
+          ['&', '|', '^', '~', '<<', '>>', '>>>'],
+          ['==', '!=', '===', '!==', '>', '>=', '<', '<='],
+          ['&&', '||'],
+          ['in', 'instanceof'],
+        ],
+        allowSamePrecedence: false,
+      },
+    ],
 
     // eslint-plugin-import rules
 
-    // This lets you import modules that cannot be found which start with
-    // meteor/* and /* (for /imports)
-    'import/no-unresolved': ['error', { ignore: ['^meteor/', '^/'] }],
+    // Good rule, but requires too many exceptions:
+    // * core/ module (any any imports in core/, because no good package.json)
+    // * /imports modules
+    // * meteor/* modules
+    'import/no-unresolved': 'off',
     // This rule also complains about /imports
     'import/no-absolute-path': 'off',
     // Keep an eye on this issue for a fix that allows this rule to be turned
     // on for meteor packages:
     // https://github.com/benmosher/eslint-plugin-import/issues/479
     'import/no-extraneous-dependencies': 'off',
-    // Require extensions for all files except .js and .jsx
-    'import/extensions': ['always', { js: 'never', jsx: 'never' }],
+    // FIXME: Require extensions for all files except .js and .jsx
+    // this rule is being worked on:
+    // https://github.com/benmosher/eslint-plugin-import/issues/984
+    'import/extensions': 'off',
     // This rule is annoying when you are thinking about extending a file, so
     // you don't export default even with a single export
     'import/prefer-default-export': 'off',
