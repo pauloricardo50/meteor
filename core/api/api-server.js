@@ -47,3 +47,4 @@ import "./loans/queries/exposures";
 import "./users/queries/exposures";
 //import "./adminActions/queries/exposures";
 import "./tasks/queries/exposures";
+import "./borrowers/queries/exposures";
