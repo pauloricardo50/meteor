@@ -58,7 +58,11 @@ const AppPage = ({ loans, properties, currentUser }) => (
     <AppItem
       title={<T id="AppPage.newLoan" />}
       mainText={<span className="active">+</span>}
-      href="/start1/acquisition"
+      onClick={() => {
+        window.location.replace(
+          `${Meteor.settings.public.subdomains.www}/start1/acquisition`
+        );
+      }}
     />
   </section>
 );

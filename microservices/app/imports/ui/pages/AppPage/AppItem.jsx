@@ -17,8 +17,13 @@ const styles = {
   },
 };
 
-const AppItem = ({ title, subtitle, mainText, href }) => (
-  <Link className="mask1 hover-primary flex-col" to={href} style={styles.a}>
+const AppItem = ({ title, subtitle, mainText, href, onClick }) => (
+  <Link
+    className="mask1 hover-primary flex-col"
+    to={href}
+    style={styles.a}
+    onClick={onClick}
+  >
     <h3 style={styles.title}>{title}</h3>
     <h4 className="secondary" style={styles.subtitle}>
       {subtitle}
