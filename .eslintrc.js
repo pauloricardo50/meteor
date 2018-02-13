@@ -71,6 +71,9 @@ module.exports = {
     'jsx-a11y/no-static-element-interactions': 'off',
 
     // eslint-plugin-react rules
+
+    // Lots of objects are being passed around in this repo,
+    // this rule makes it iconvenient to do that
     'react/forbid-prop-types': 'off',
   },
 };
