@@ -12,7 +12,7 @@ const styles = {
     }
 };
 
-export default class SingleLoanPage extends Component {
+export default class SingleUserPage extends Component {
     constructor(props) {
         super(props);
     }
@@ -40,8 +40,6 @@ export default class SingleLoanPage extends Component {
                         history={history}
                         borrowers={loan.borrowersLink}
                         property={loan.propertyLink}
-                        //borrowers={borrowers.filter(b => loan.borrowers.indexOf(b._id) >= 0)}
-                        //property={properties.find(p => p._id === loan.property)}
                     />
                 ))}
             </section>

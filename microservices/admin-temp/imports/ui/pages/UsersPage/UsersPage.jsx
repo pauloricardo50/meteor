@@ -11,12 +11,4 @@ const AdminUsersPage = props => (
   </section>
 );
 
-// AdminUsersPage.propTypes = {
-//   data: PropTypes.arrayOf(PropTypes.any),
-// };
-
-// AdminUsersPage.defaultProps = {
-//   users: [],
-// };
-
 export default AdminUsersPage;
