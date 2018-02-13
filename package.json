@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "format":
-      "prettier-eslint \"core/components/**/*.js*\" --write --eslint-config-path .eslintrc.js"
+      "prettier-eslint \"**/*.js*\" --write --eslint-config-path .eslintrc.js"
   },
   "repository": {
     "type": "git",

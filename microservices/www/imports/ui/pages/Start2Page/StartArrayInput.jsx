@@ -23,23 +23,19 @@ export default class ArrayInput extends Component {
 
   getOptions = (input, i) => {
     // Give each option the proper label from react-intl
-    const optionsWithLabels = input.options.map(
-      o =>
-        (o.id === undefined
-          ? { id: o, label: <T id={`Forms.${this.props.id}.${o}`} /> }
-          : {
-            ...o,
-            label: <T id={`Forms.${this.props.id}.${o.id}`} />,
-          }),
-    );
+    const optionsWithLabels = input.options.map(o =>
+      (o.id === undefined
+        ? { id: o, label: <T id={`Forms.${this.props.id}.${o}`} /> }
+        : {
+          ...o,
+          label: <T id={`Forms.${this.props.id}.${o.id}`} />,
+        }));
 
     if (!this.props.allOptions) {
       const currentValues = this.props.formState[this.props.id] || [];
       const thisVal = currentValues && currentValues[i];
       const arr = currentValues.map(v => v && v.description);
-      const thisOption = optionsWithLabels.find(
-        o => (o && o.id) === (thisVal && thisVal.description),
-      );
+      const thisOption = optionsWithLabels.find(o => (o && o.id) === (thisVal && thisVal.description));
 
       return [
         ...optionsWithLabels.filter(x => arr.indexOf(x.id) < 0),
@@ -83,8 +79,7 @@ export default class ArrayInput extends Component {
       object[this.props.id] = arr.pop();
 
       this.setState({ count: this.state.count - 1 }, () =>
-        this.props.setFormState(this.props.id, arr),
-      );
+        this.props.setFormState(this.props.id, arr));
     } else {
       // If only one entry, and the user hits -, delete all values and set the exist Id to false
       this.props.setFormState(this.props.id, []);
@@ -132,7 +127,8 @@ export default class ArrayInput extends Component {
                     {...inputProps}
                     id={input.id}
                     setFormState={(id2, v, cb) =>
-                      this.setArrayFormState(id2, v, cb, i)}
+                      this.setArrayFormState(id2, v, cb, i)
+                    }
                     value={
                       formState[id] &&
                       formState[id][i] &&
@@ -149,7 +145,8 @@ export default class ArrayInput extends Component {
                     {...inputProps}
                     id={input.id}
                     setFormState={(id2, v, cb) =>
-                      this.setArrayFormState(id2, v, cb, i)}
+                      this.setArrayFormState(id2, v, cb, i)
+                    }
                     value={
                       formState[id] &&
                       formState[id][i] &&

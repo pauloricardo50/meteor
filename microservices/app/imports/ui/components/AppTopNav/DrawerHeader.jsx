@@ -18,9 +18,7 @@ const styles = theme => ({
   },
 });
 
-const DrawerHeader = ({
-  showButton, onClick, permanent, classes,
-}) => (
+const DrawerHeader = ({ showButton, onClick, permanent, classes }) => (
   <div
     className={classnames({
       'top-bar': true,

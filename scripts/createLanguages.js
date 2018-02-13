@@ -97,11 +97,11 @@ const findFilesWithExtension = (startPath, extension) => {
 // keys provided in the allowedKeys array
 const filterLanguageKeys = (pathToLangDir, language, allowedKeys) => {
   const langObject = JSON.parse(
-    fs.readFileSync(createPathToLanguage(pathToLangDir, language), 'utf8'),
+    fs.readFileSync(createPathToLanguage(pathToLangDir, language), 'utf8')
   );
   const langKeys = Object.keys(langObject);
   const remainingKeys = langKeys.filter(
-    key => allowedKeys.indexOf(key.split('.')[0]) >= 0,
+    key => allowedKeys.indexOf(key.split('.')[0]) >= 0
   );
 
   const optimizedLangObject = Object.keys(langObject)

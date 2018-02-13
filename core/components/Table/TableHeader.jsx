@@ -35,43 +35,36 @@ const TableHeader = ({
           />
         </TableCell>
       )}
-      {columnOptions.map(
-        (
-          { id, style, intlValues, label, numeric, padding = 'dense' },
-          index,
-        ) => (
-          <TableCell
-            key={id}
-            style={style}
-            numeric={numeric}
-            padding={padding}
-          >
-            {sortable ? (
-              <Tooltip
-                title={<T id="Table.sort" />}
-                placement="bottom-start"
-                enterDelay={300}
+      {columnOptions.map((
+        { id, style, intlValues, label, numeric, padding = 'dense' },
+        index,
+      ) => (
+        <TableCell key={id} style={style} numeric={numeric} padding={padding}>
+          {sortable ? (
+            <Tooltip
+              title={<T id="Table.sort" />}
+              placement="bottom-start"
+              enterDelay={300}
+            >
+              <TableSortLabel
+                active={orderBy === index}
+                direction={order}
+                onClick={() => onSort(index)}
               >
-                <TableSortLabel
-                  active={orderBy === index}
-                  direction={order}
-                  onClick={() => onSort(index)}
-                >
-                  {label ||
-                      (noIntl ? (
-                        id
-                      ) : (
-                        <T id={id} values={intlValues} list="table" />
-                      ))}
-                </TableSortLabel>
-              </Tooltip>
-            ) : (
-              label ||
-                (noIntl ? id : <T id={id} values={intlValues} list="table" />)
-            )}
-          </TableCell>
-        ),
-      )}
+                {label ||
+                    (noIntl ? (
+                      id
+                    ) : (
+                      <T id={id} values={intlValues} list="table" />
+                    ))}
+              </TableSortLabel>
+            </Tooltip>
+          ) : (
+            label ||
+              (noIntl ? id : <T id={id} values={intlValues} list="table" />)
+          )}
+        </TableCell>
+      ))}
     </TableRow>
   </TableHead>
 );

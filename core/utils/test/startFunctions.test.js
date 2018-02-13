@@ -49,9 +49,7 @@ describe('Start Functions', () => {
     });
 
     it('Should return 250 for 3x 500 and any value below that', () => {
-      expect(getBonusIncome([500, 500, 500, Math.random() * 499])).to.equal(
-        250,
-      );
+      expect(getBonusIncome([500, 500, 500, Math.random() * 499])).to.equal(250);
     });
 
     it('Should ignore any value beyond the 4 first ones', () => {
@@ -67,8 +65,8 @@ describe('Start Functions', () => {
       };
 
       // 833.3333 maintenance, 750 amortization, 3333.3333 interests
-      expect(getMonthly(state)).to.be
-        .above(833 + 800000 * constants.loanCost() / 12)
+      expect(getMonthly(state))
+        .to.be.above(833 + 800000 * constants.loanCost() / 12)
         .and.to.be.below(834 + 800000 * constants.loanCost() / 12);
     });
   });
@@ -92,8 +90,8 @@ describe('Start Functions', () => {
       const borrow = getBorrow(totalFortune, state.propertyValue, fees);
       const monthly = getMonthly(state, borrow);
 
-      expect(getRatio(income, 0, monthly)).to.be.at
-        .most(constants.maxRatio)
+      expect(getRatio(income, 0, monthly))
+        .to.be.at.most(constants.maxRatio)
         .and.to.be.at.least(constants.maxRatio - 0.1);
     });
 

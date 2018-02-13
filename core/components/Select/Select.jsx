@@ -24,9 +24,7 @@ const mapOption = (option) => {
   if (React.isValidElement(option)) {
     return option;
   }
-  const {
-    id, label, icon, dividerTop, dividerBottom,
-  } = option;
+  const { id, label, icon, dividerTop, dividerBottom } = option;
   const arr = [
     <MenuItem value={id} key={id}>
       {icon && <Icon type={icon} style={{ margin: '0 16px 0 8px' }} />}

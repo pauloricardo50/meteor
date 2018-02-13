@@ -24,9 +24,7 @@ import Properties from 'core/api/properties/properties';
 import { mount } from './enzyme';
 
 // Mounts a component for testing, and wraps it around everything it needs
-const customMount = ({
-  Component, props, withRouter, withStore,
-}) => {
+const customMount = ({ Component, props, withRouter, withStore }) => {
   const intlProvider = new IntlProvider(
     {
       locale: getUserLocale(),

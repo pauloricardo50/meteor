@@ -3,10 +3,7 @@ import React from 'react';
 
 import { toMoney } from 'core/utils/conversionFunctions';
 import constants from 'core/config/constants';
-import {
-  getLenderCount,
-  getRealMonthly,
-} from 'core/utils/startFunctions';
+import { getLenderCount, getRealMonthly } from 'core/utils/startFunctions';
 
 import Recap from 'core/components/Recap';
 import { T, IntlNumber } from 'core/components/Translation';
@@ -35,9 +32,7 @@ const getArray = ({ income, fortune, property, borrowRatio, incomeRatio }) => [
     },
     value: (
       <span>
-        {toMoney(
-          Math.round(property * (1 + constants.notaryFees) / 1000) * 1000,
-        )}
+        {toMoney(Math.round(property * (1 + constants.notaryFees) / 1000) * 1000)}
       </span>
     ),
     spacing: true,
@@ -57,9 +52,7 @@ const getArray = ({ income, fortune, property, borrowRatio, incomeRatio }) => [
     value:
       Math.round(borrowRatio * 1000) / 1000 <= 0.8 && fortune < property ? (
         <span>
-          {toMoney(
-            getRealMonthly(fortune - property * 0.05, property, borrowRatio),
-          )}{' '}
+          {toMoney(getRealMonthly(fortune - property * 0.05, property, borrowRatio))}{' '}
           <small>/mois</small>
         </span>
       ) : (
@@ -77,13 +70,11 @@ const getArray = ({ income, fortune, property, borrowRatio, incomeRatio }) => [
         <IntlNumber value={borrowRatio} format="percentage" />{' '}
         <span
           className={
-            borrowRatio <= 0.8 + 0.001 ? ( // for rounding
-              'fa fa-check success'
-            ) : borrowRatio <= 0.9 ? (
-              'fa fa-exclamation warning'
-            ) : (
-              'fa fa-times error'
-            )
+            borrowRatio <= 0.8 + 0.001 // for rounding
+              ? 'fa fa-check success'
+              : borrowRatio <= 0.9
+                ? 'fa fa-exclamation warning'
+                : 'fa fa-times error'
           }
         />
       </span>
@@ -96,13 +87,11 @@ const getArray = ({ income, fortune, property, borrowRatio, incomeRatio }) => [
         <IntlNumber value={incomeRatio} format="percentage" />{' '}
         <span
           className={
-            incomeRatio <= 1 / 3 + 0.001 ? ( // for rounding
-              'fa fa-check success'
-            ) : incomeRatio <= 0.38 ? (
-              'fa fa-exclamation warning'
-            ) : (
-              'fa fa-times error'
-            )
+            incomeRatio <= 1 / 3 + 0.001 // for rounding
+              ? 'fa fa-check success'
+              : incomeRatio <= 0.38
+                ? 'fa fa-exclamation warning'
+                : 'fa fa-times error'
           }
         />
       </span>

@@ -95,67 +95,67 @@ export const convertToLogismataTaxBase = (taxBase) => {
 export const getParamsArray = (method, params) => {
   const logismataParams = convertParamsToLogismata(params);
   switch (method) {
-    case 'getLocationInfo':
-      return [logismataParams.locationId];
-    case 'searchLocations':
-      return [
-        logismataParams.search,
-        logismataParams.language,
-        logismataParams.country,
-      ];
-    case 'calcTaxableIncomeState':
+  case 'getLocationInfo':
+    return [logismataParams.locationId];
+  case 'searchLocations':
+    return [
+      logismataParams.search,
+      logismataParams.language,
+      logismataParams.country,
+    ];
+  case 'calcTaxableIncomeState':
     // Same as calcTaxableIncomeCountry
-    case 'calcTaxableIncomeCountry':
-      return [
-        logismataParams.locationId,
-        logismataParams.age,
-        logismataParams.civilStatus,
-        logismataParams.confession,
-        logismataParams.childrenCount,
-        logismataParams.grossIncome,
-        logismataParams.isEmployee,
-      ];
-    case 'calcTaxableFortune':
-      return [
-        logismataParams.locationId,
-        logismataParams.age,
-        logismataParams.civilStatus,
-        logismataParams.childrenCount,
-        logismataParams.grossFortune,
-      ];
-    case 'calcDirectAmortization':
-      return [
-        '', // customization
-        convertToLogismataTaxBase(params.taxBase),
-        {
-          amortization_goal: logismataParams.amortizationGoal,
-          duration: logismataParams.duration,
-          has_detailed_amortization: logismataParams.isDetailed,
-          rental_value: logismataParams.rentalValue,
-          maintenance_costs: logismataParams.maintenanceCosts,
-          mortgages: logismataParams.mortgages,
-          new_mortgages: logismataParams.newMortgages,
-        },
-      ];
-    case 'calcIndirectAmortization':
-      return [
-        '', // customization
-        convertToLogismataTaxBase(params.taxBase),
-        {
-          amortization_goal: logismataParams.amortizationGoal,
-          duration: logismataParams.duration,
-          saving_type: logismataParams.savingType,
-          saving_interestrate: logismataParams.savingRate,
-          saving_amount_manual: false,
-          saving_amount: logismataParams.savingAmount,
-          rental_value: logismataParams.rentalValue,
-          maintenance_costs: logismataParams.maintenanceCosts,
-          mortgages: logismataParams.mortgages,
-          new_mortgages: logismataParams.newMortgages,
-        },
-      ];
-    default:
-      throw new Error('invalid logismata method name');
+  case 'calcTaxableIncomeCountry':
+    return [
+      logismataParams.locationId,
+      logismataParams.age,
+      logismataParams.civilStatus,
+      logismataParams.confession,
+      logismataParams.childrenCount,
+      logismataParams.grossIncome,
+      logismataParams.isEmployee,
+    ];
+  case 'calcTaxableFortune':
+    return [
+      logismataParams.locationId,
+      logismataParams.age,
+      logismataParams.civilStatus,
+      logismataParams.childrenCount,
+      logismataParams.grossFortune,
+    ];
+  case 'calcDirectAmortization':
+    return [
+      '', // customization
+      convertToLogismataTaxBase(params.taxBase),
+      {
+        amortization_goal: logismataParams.amortizationGoal,
+        duration: logismataParams.duration,
+        has_detailed_amortization: logismataParams.isDetailed,
+        rental_value: logismataParams.rentalValue,
+        maintenance_costs: logismataParams.maintenanceCosts,
+        mortgages: logismataParams.mortgages,
+        new_mortgages: logismataParams.newMortgages,
+      },
+    ];
+  case 'calcIndirectAmortization':
+    return [
+      '', // customization
+      convertToLogismataTaxBase(params.taxBase),
+      {
+        amortization_goal: logismataParams.amortizationGoal,
+        duration: logismataParams.duration,
+        saving_type: logismataParams.savingType,
+        saving_interestrate: logismataParams.savingRate,
+        saving_amount_manual: false,
+        saving_amount: logismataParams.savingAmount,
+        rental_value: logismataParams.rentalValue,
+        maintenance_costs: logismataParams.maintenanceCosts,
+        mortgages: logismataParams.mortgages,
+        new_mortgages: logismataParams.newMortgages,
+      },
+    ];
+  default:
+    throw new Error('invalid logismata method name');
   }
 };
 
@@ -168,9 +168,7 @@ export const callApi = (method, params) => {
       method,
       // Stringify objects in the array, do not stringify strings once again
       params: [
-        ...getParamsArray(method, params).map(
-          i => (typeof i === 'object' ? JSON.stringify(i) : i),
-        ),
+        ...getParamsArray(method, params).map(i => (typeof i === 'object' ? JSON.stringify(i) : i)),
       ],
     },
   });

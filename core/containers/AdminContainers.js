@@ -13,7 +13,7 @@ import {
   adminContainer,
   adminUserContainer,
   adminLoanContainer,
-  adminOfferContainer
+  adminOfferContainer,
 } from './Containers';
 
 export const AdminLayout = generalContainer(_AdminLayout);

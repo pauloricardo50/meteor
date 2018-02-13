@@ -15,9 +15,7 @@ const styles = {
   },
 };
 
-const DashboardItem = ({
-  className, style, title, menuActions, children,
-}) => (
+const DashboardItem = ({ className, style, title, menuActions, children }) => (
   <div
     className={`mask1 grid-item ${className}`}
     style={{ ...styles.div, ...style }}

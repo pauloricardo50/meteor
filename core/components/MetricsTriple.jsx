@@ -5,34 +5,32 @@ import { IntlNumber } from 'core/components/Translation';
 
 const MetricsTriple = props => (
   <div className="metrics">
-    {props.metrics.map(
-      metric =>
-        !metric.hide && (
-          <div className="metric" key={metric.name}>
-            <div>
-              <h4 className="secondary">
-                {metric.name}{' '}
-                {metric.isValid !== undefined &&
+    {props.metrics.map(metric =>
+      !metric.hide && (
+        <div className="metric" key={metric.name}>
+          <div>
+            <h4 className="secondary">
+              {metric.name}{' '}
+              {metric.isValid !== undefined &&
                   (metric.isValid ? (
                     <span className="fa fa-check success" />
                   ) : (
                     <span className="fa fa-times error" />
                   ))}
-              </h4>
+            </h4>
 
-              {!metric.isValid && <p className="error">{metric.error}</p>}
+            {!metric.isValid && <p className="error">{metric.error}</p>}
 
-              <h1>
-                {props.percent ? (
-                  <IntlNumber value={metric.value} format="percentage" />
-                ) : (
-                  metric.value
-                )}
-              </h1>
-            </div>
+            <h1>
+              {props.percent ? (
+                <IntlNumber value={metric.value} format="percentage" />
+              ) : (
+                metric.value
+              )}
+            </h1>
           </div>
-        ),
-    )}
+        </div>
+      ))}
   </div>
 );
 

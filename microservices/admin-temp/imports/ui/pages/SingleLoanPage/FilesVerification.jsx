@@ -4,11 +4,7 @@ import PropTypes from 'prop-types';
 import Tab from 'react-bootstrap/lib/Tab';
 import Tabs from 'react-bootstrap/lib/Tabs';
 
-import {
-  loanFiles,
-  borrowerFiles,
-  propertyFiles,
-} from 'core/api/files/files';
+import { loanFiles, borrowerFiles, propertyFiles } from 'core/api/files/files';
 import FileVerificator from './FileVerificator';
 
 const styles = {
@@ -24,15 +20,15 @@ const FilesVerification = ({ loan, borrowers, property }) => (
         {loanFiles(loan)
           .all()
           .map(file =>
-              file.condition !== false && (
-                <FileVerificator
-                  currentValue={loan.files[file.id]}
-                  docId={loan._id}
-                  key={file.id}
-                  id={file.id}
-                  closingSteps={loan.logic.closingSteps}
-                />
-              ))}
+            file.condition !== false && (
+              <FileVerificator
+                currentValue={loan.files[file.id]}
+                docId={loan._id}
+                key={file.id}
+                id={file.id}
+                closingSteps={loan.logic.closingSteps}
+              />
+            ))}
       </div>
     </Tab>
 
@@ -41,15 +37,15 @@ const FilesVerification = ({ loan, borrowers, property }) => (
         {propertyFiles(property)
           .all()
           .map(file =>
-              file.condition !== false && (
-                <FileVerificator
-                  currentValue={property.files[file.id]}
-                  docId={property._id}
-                  key={file.id}
-                  id={file.id}
-                  isProperty
-                />
-              ))}
+            file.condition !== false && (
+              <FileVerificator
+                currentValue={property.files[file.id]}
+                docId={property._id}
+                key={file.id}
+                id={file.id}
+                isProperty
+              />
+            ))}
       </div>
     </Tab>
 
@@ -59,15 +55,15 @@ const FilesVerification = ({ loan, borrowers, property }) => (
           {borrowerFiles(b)
             .all()
             .map(file =>
-                file.condition !== false && (
-                  <FileVerificator
-                    currentValue={b.files[file.id]}
-                    docId={b._id}
-                    key={file.id}
-                    id={file.id}
-                    isBorrower
-                  />
-                ))}
+              file.condition !== false && (
+                <FileVerificator
+                  currentValue={b.files[file.id]}
+                  docId={b._id}
+                  key={file.id}
+                  id={file.id}
+                  isBorrower
+                />
+              ))}
         </div>
       </Tab>
     ))}

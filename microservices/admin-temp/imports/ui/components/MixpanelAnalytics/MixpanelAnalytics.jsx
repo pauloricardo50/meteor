@@ -6,55 +6,51 @@ import getMixpanelData from './getMixpanelData';
 import groupDataByDay from './groupDataByDay';
 
 export default class MixpanelAnalytics extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = { error: false };
-    }
+    this.state = { error: false };
+  }
 
-    componentDidMount() {
-        this.getData();
-    }
+  componentDidMount() {
+    this.getData();
+  }
 
-    getData = () => {
-        const { loan: { userId } } = this.props;
-        return getMixpanelData(userId)
-            .then(data => {
-                if (data.status === 'ok') {
-                    this.setState({
-                        error: false,
-                        events: data.results.events,
-                        groupedEvents: groupDataByDay(data.results.events)
-                    });
-                } else {
-                    this.setState({ error: data.status });
-                }
-            })
-            .catch(error => {
-                this.setState({ error });
-            });
-    };
-
-    render() {
-        const { error, events, groupedEvents } = this.state;
-
-        if (error) {
-            return (
-                <h3 className="error">
-                    Il y eu une erreur Mixpanel (status: {error})
-                </h3>
-            );
-        } else if (!events) {
-            return <h4>Loading...</h4>;
+  getData = () => {
+    const { loan: { userId } } = this.props;
+    return getMixpanelData(userId)
+      .then((data) => {
+        if (data.status === 'ok') {
+          this.setState({
+            error: false,
+            events: data.results.events,
+            groupedEvents: groupDataByDay(data.results.events),
+          });
+        } else {
+          this.setState({ error: data.status });
         }
+      })
+      .catch((error) => {
+        this.setState({ error });
+      });
+  };
 
-        console.log('Grouped Events:', groupedEvents);
-        return (
-            <MixpanelEventList events={events} groupedEvents={groupedEvents} />
-        );
+  render() {
+    const { error, events, groupedEvents } = this.state;
+
+    if (error) {
+      return (
+        <h3 className="error">Il y eu une erreur Mixpanel (status: {error})</h3>
+      );
+    } else if (!events) {
+      return <h4>Loading...</h4>;
     }
+
+    console.log('Grouped Events:', groupedEvents);
+    return <MixpanelEventList events={events} groupedEvents={groupedEvents} />;
+  }
 }
 
 MixpanelAnalytics.propTypes = {
-    loan: PropTypes.object.isRequired
+  loan: PropTypes.object.isRequired,
 };

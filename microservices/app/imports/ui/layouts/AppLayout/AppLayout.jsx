@@ -20,7 +20,7 @@ const allowedRoutesWithoutLogin = ['/enroll-account'];
 const getRedirect = ({
   currentUser,
   history: { location: { pathname } },
-  loans
+  loans,
 }) => {
   const userIsAdmin = Roles.userIsInRole(currentUser, 'admin');
   const userIsPartner = Roles.userIsInRole(currentUser, 'partner');
@@ -60,7 +60,7 @@ const getRedirect = ({
 const getShowSideNav = ({ location }) =>
   !(location.pathname === '/' || location.pathname === '/compare');
 
-const AppLayout = props => {
+const AppLayout = (props) => {
   console.log('wtf??????');
 
   const { type, history, render, children } = props;
@@ -69,7 +69,7 @@ const AppLayout = props => {
   const classes = classnames({
     'app-layout': true,
     'always-side-nav': type === 'admin',
-    'no-nav': !showSideNav
+    'no-nav': !showSideNav,
   });
   const path = history.location.pathname;
   const isLogin = path.slice(0, 6) === '/login';
@@ -77,7 +77,7 @@ const AppLayout = props => {
   if (redirect && !isLogin) {
     track('AppLayout - was redirected', {
       from: history.location.pathname,
-      to: redirect
+      to: redirect,
     });
     return <Redirect to={redirect} />;
   }
@@ -110,7 +110,7 @@ AppLayout.defaultProps = {
   render: () => null,
   currentUser: undefined,
   noNav: false,
-  loans: undefined
+  loans: undefined,
 };
 
 AppLayout.propTypes = {
@@ -119,7 +119,7 @@ AppLayout.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any),
   noNav: PropTypes.bool,
   loans: PropTypes.arrayOf(PropTypes.object),
-  history: PropTypes.objectOf(PropTypes.any).isRequired
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default UserContainer(AppLayout);

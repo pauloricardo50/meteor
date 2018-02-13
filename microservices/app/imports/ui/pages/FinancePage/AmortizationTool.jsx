@@ -83,7 +83,7 @@ export default class AmortizationTool extends Component {
             }))}
             renderValue={id => (
               <T
-                id={'AmortizationTool.rate'}
+                id="AmortizationTool.rate"
                 values={{ rate: interestRates.find(i => i.id === id).rate }}
               />
             )}

@@ -44,7 +44,8 @@ export default class CompareOptions extends Component {
           label={<T id="CompareOptions.useBorrowers" />}
           toggled={!comparator.useBorrowers}
           onToggle={(event, isChecked) =>
-            changeComparator('useBorrowers', !isChecked)}
+            changeComparator('useBorrowers', !isChecked)
+          }
         />
 
         <DefaultOptions {...this.props} />

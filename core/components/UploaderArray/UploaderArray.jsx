@@ -20,43 +20,37 @@ const getTitle = (id, doc) => {
   return undefined;
 };
 
-const UploaderArray = ({
-  fileArray, doc, disabled, collection,
-}) => (
+const UploaderArray = ({ fileArray, doc, disabled, collection }) => (
   <div className="flex-col center">
     {fileArray
       ? fileArray.map(file =>
-            file.condition !== false && (
-              <Uploader
-                fileMeta={{ ...file, title: getTitle(file.id, doc) }}
-                key={doc._id + file.id}
-                currentValue={doc.files[file.id]}
-                docId={doc._id}
-                pushFunc={
-                  collection === 'loans'
-                    ? 'pushLoanValue'
-                    : 'pushBorrowerValue'
-                }
-                updateFunc={
-                  collection === 'loans'
-                    ? 'updateLoan'
-                    : 'updateBorrower'
-                }
-                disabled={disabled}
-                collection={collection}
-              />
-            ))
-      : // Show all existing files for this doc
-        Object.keys(doc.files).map(fileId => (
+        file.condition !== false && (
           <Uploader
-            fileMeta={{ id: fileId, title: getTitle(fileId, doc) }}
-            collection={collection}
-            key={fileId}
+            fileMeta={{ ...file, title: getTitle(file.id, doc) }}
+            key={doc._id + file.id}
+            currentValue={doc.files[file.id]}
             docId={doc._id}
-            currentValue={doc.files[fileId]}
+            pushFunc={
+              collection === 'loans' ? 'pushLoanValue' : 'pushBorrowerValue'
+            }
+            updateFunc={
+              collection === 'loans' ? 'updateLoan' : 'updateBorrower'
+            }
             disabled={disabled}
+            collection={collection}
           />
-        ))}
+        ))
+      : // Show all existing files for this doc
+      Object.keys(doc.files).map(fileId => (
+        <Uploader
+          fileMeta={{ id: fileId, title: getTitle(fileId, doc) }}
+          collection={collection}
+          key={fileId}
+          docId={doc._id}
+          currentValue={doc.files[fileId]}
+          disabled={disabled}
+        />
+      ))}
   </div>
 );
 

@@ -4,7 +4,7 @@ import fs from 'fs';
 
 let thisModule;
 
-const getBase64String = path => {
+const getBase64String = (path) => {
   try {
     const file = fs.readFileSync(path);
     return new Buffer(file).toString('base64');
@@ -24,7 +24,10 @@ const generatePDF = (html, fileName) => {
         if (error) {
           thisModule.reject(error);
         } else {
-          thisModule.resolve({ fileName, base64: getBase64String(response.filename) });
+          thisModule.resolve({
+            fileName,
+            base64: getBase64String(response.filename),
+          });
           fs.unlink(response.filename);
         }
       });
@@ -49,8 +52,4 @@ const handler = ({ component, props, fileName }, promise) => {
   }
 };
 
-export const generateComponentAsPDF = options => {
-  return new Promise((resolve, reject) => {
-    return handler(options, { resolve, reject });
-  });
-};
+export const generateComponentAsPDF = options => new Promise((resolve, reject) => handler(options, { resolve, reject }));

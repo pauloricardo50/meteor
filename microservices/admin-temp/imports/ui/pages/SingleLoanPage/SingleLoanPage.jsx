@@ -44,9 +44,7 @@ export default class SingleLoanPage extends Component {
   }
 
   render() {
-    const {
-      history, loan, borrowers, property,
-    } = this.props;
+    const { history, loan, borrowers, property } = this.props;
 
     return (
       <section>
@@ -67,10 +65,7 @@ export default class SingleLoanPage extends Component {
 
           <StepStatus {...this.props} serverTime={this.state.serverTime} />
 
-          <FileVerificationNotification
-            loan={loan}
-            borrowers={borrowers}
-          />
+          <FileVerificationNotification loan={loan} borrowers={borrowers} />
 
           <LoanTabs {...this.props} serverTime={this.state.serverTime} />
         </div>

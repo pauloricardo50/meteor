@@ -207,10 +207,7 @@ export const pushLoanValue = new ValidatedMethod({
     console.log('object: ', object);
     console.log('id: ', id);
     // console.log('loan before push: ', Loans.findOne(id));
-    console.log(
-      'collection2: ',
-      Loans._c2._simpleSchema._validationContexts,
-    );
+    console.log('collection2: ', Loans._c2._simpleSchema._validationContexts);
     const result = Loans.update(id, { $push: object });
     console.log('update result:', result);
     return result;
@@ -370,9 +367,7 @@ export const cancelAuction = new ValidatedMethod({
 
             const loan = Loans.findOne(id);
             const email = loan.emails.find(e =>
-              e &&
-                e.emailId === 'auctionEnded' &&
-                e.scheduledAt >= new Date());
+              e && e.emailId === 'auctionEnded' && e.scheduledAt >= new Date());
             if (email) {
               cancelScheduledEmail.call('email.cancelScheduled', {
                 id: email._id,
@@ -419,18 +414,14 @@ export const confirmClosing = new ValidatedMethod({
 export const addEmail = new ValidatedMethod({
   name: 'loans.addEmail',
   mixins: [CallPromiseMixin],
-  validate({
-    loanId, emailId, _id, status, sendAt,
-  }) {
+  validate({ loanId, emailId, _id, status, sendAt }) {
     check(loanId, String);
     check(emailId, String);
     check(_id, String);
     check(status, String);
     check(sendAt, Match.Optional(Date));
   },
-  run({
-    loanId, emailId, _id, status, sendAt,
-  }) {
+  run({ loanId, emailId, _id, status, sendAt }) {
     const object = {
       emailId,
       _id,
@@ -449,17 +440,13 @@ export const addEmail = new ValidatedMethod({
 export const modifyEmail = new ValidatedMethod({
   name: 'loans.modifyEmail',
   mixins: [CallPromiseMixin],
-  validate({
-    loanId, _id, status, sendAt,
-  }) {
+  validate({ loanId, _id, status, sendAt }) {
     check(loanId, String);
     check(_id, String);
     check(status, Match.Optional(String));
     check(sendAt, Match.Optional(Date));
   },
-  run({
-    loanId, _id, status, sendAt,
-  }) {
+  run({ loanId, _id, status, sendAt }) {
     const object = {
       'emails.$.status': status,
       'emails.$.updatedAt': new Date(),
@@ -469,10 +456,7 @@ export const modifyEmail = new ValidatedMethod({
       object['emails.$.scheduledAt'] = sendAt;
     }
 
-    return Loans.update(
-      { _id: loanId, 'emails._id': _id },
-      { $set: object },
-    );
+    return Loans.update({ _id: loanId, 'emails._id': _id }, { $set: object });
   },
 });
 

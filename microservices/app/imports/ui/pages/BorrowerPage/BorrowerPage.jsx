@@ -28,17 +28,17 @@ export default class BorrowerPage extends Component {
 
   getContent() {
     switch (this.state.tab) {
-      case 'personal':
-        return <Info {...this.props} />;
-      case 'finance':
-        return <Finance {...this.props} />;
-      case 'files': {
-        const borrowerId = this.props.match.params.borrowerId;
-        const borrower = this.props.borrowers.find(b => b._id === borrowerId);
-        return <Files {...this.props} borrower={borrower} />;
-      }
-      default:
-        return <Info {...this.props} />;
+    case 'personal':
+      return <Info {...this.props} />;
+    case 'finance':
+      return <Finance {...this.props} />;
+    case 'files': {
+      const borrowerId = this.props.match.params.borrowerId;
+      const borrower = this.props.borrowers.find(b => b._id === borrowerId);
+      return <Files {...this.props} borrower={borrower} />;
+    }
+    default:
+      return <Info {...this.props} />;
     }
   }
 

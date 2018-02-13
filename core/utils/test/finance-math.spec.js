@@ -46,8 +46,7 @@ describe('Finance Math', () => {
       const borrowers = [{ age: 30, gender: 'M' }];
       const property = { value: 1200000 };
 
-      expect(Math.round(getAmortization({ loan: loan, borrowers, property })
-        .amortization)).to.equal(1000);
+      expect(Math.round(getAmortization({ loan, borrowers, property }).amortization)).to.equal(1000);
     });
 
     it('Should return 0 when borrowing less than 65%', () => {
@@ -58,8 +57,7 @@ describe('Finance Math', () => {
 
       const borrowers = [{ age: 30, gender: 'M' }];
 
-      expect(getAmortization({ loan: loan, borrowers, property })
-        .amortization).to.equal(0);
+      expect(getAmortization({ loan, borrowers, property }).amortization).to.equal(0);
     });
   });
 

@@ -78,9 +78,7 @@ const TopNavDropdown = (props) => {
       options={getMenuItems(currentUser, history)
         // Allow the Divider to go through
         .filter(o => !!o.show)
-        .map(({
- id: optionId, link, label, ...rest
-}) => ({
+        .map(({ id: optionId, link, label, ...rest }) => ({
           ...rest,
           id: optionId,
           link: true,

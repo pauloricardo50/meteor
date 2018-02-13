@@ -7,12 +7,12 @@ export const stepperActions = {
 
 const stepper = (state = initialState, action) => {
   switch (action.type) {
-    case stepperActions.SET_STEP:
-      return { ...state, activeStep: action.step };
-    case stepperActions.HIDE_STEPS:
-      return initialState;
-    default:
-      return state;
+  case stepperActions.SET_STEP:
+    return { ...state, activeStep: action.step };
+  case stepperActions.HIDE_STEPS:
+    return initialState;
+  default:
+    return state;
   }
 };
 

@@ -1,10 +1,9 @@
 import React from 'react';
 import InlineCss from 'react-inline-css';
 
-export const AnonymousLoanPDF = (loan, borrowers) => {
-  return (
-    <InlineCss
-      stylesheet={`
+export const AnonymousLoanPDF = (loan, borrowers) => (
+  <InlineCss
+    stylesheet={`
       .Document {
         font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
       }
@@ -12,16 +11,16 @@ export const AnonymousLoanPDF = (loan, borrowers) => {
       h1 {
         color: red;
       }`}
-    >
-      <div className="Document"><h1>Hello Yannis! (Anonymisé)</h1></div>
-    </InlineCss>
-  );
-};
+  >
+    <div className="Document">
+      <h1>Hello Yannis! (Anonymisé)</h1>
+    </div>
+  </InlineCss>
+);
 
-export const LoanPDF = (loan, borrowers) => {
-  return (
-    <InlineCss
-      stylesheet={`
+export const LoanPDF = (loan, borrowers) => (
+  <InlineCss
+    stylesheet={`
       .Document {
         font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
       }
@@ -29,8 +28,9 @@ export const LoanPDF = (loan, borrowers) => {
       h1 {
         color: red;
       }`}
-    >
-      <div className="Document"><h1>Hello Yannis!</h1></div>
-    </InlineCss>
-  );
-};
+  >
+    <div className="Document">
+      <h1>Hello Yannis!</h1>
+    </div>
+  </InlineCss>
+);
