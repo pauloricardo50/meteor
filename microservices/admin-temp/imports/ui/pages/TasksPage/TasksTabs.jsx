@@ -3,7 +3,7 @@ import Tabs from "core/components/Tabs";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import TasksTabContainer from "./TasksTabContainer";
-import { T } from "../../../core/components/Translation/";
+import { T } from "core/components/Translation/";
 
 const getTabs = props => [
     {
@@ -13,7 +13,7 @@ const getTabs = props => [
             <TasksTabContainer
                 {...props}
                 userId={Meteor.userId()}
-                showAsignee={false}
+                showAssignee={false}
                 key="myTasks"
             />
         )
@@ -22,7 +22,7 @@ const getTabs = props => [
         id: "allTasks",
         label: <T id={`TasksTabs.allTasks`} />,
         content: (
-            <TasksTabContainer {...props} showAsignee={true} key="allTasks" />
+            <TasksTabContainer {...props} showAssignee={true} key="allTasks" />
         )
     }
 ];
