@@ -58,7 +58,7 @@ export default class TasksTable extends Component {
               moment(task.updatedAt).format('D MMM YY à HH:mm:ss'),
               moment(task.dueAt).format('D MMM YY à HH:mm:ss'),
               moment(task.completedAt).format('D MMM YY à HH:mm:ss'),
-              task.assignedUser.username || task.assignedUser.emails[0].address.toString(),
+              task.assignedUser && task.assignedUser.username || task.assignedUser && task.assignedUser.emails[0].address.toString() || '',
               <div>
                   <TasksStatusDropdown {...this.props} currentUser={Meteor.user()} taskId={task._id} taskStatus={task.status} styles={styles.dropdownButtons}/>
                   <TasksUserContainer {...this.props} taskId={task._id} taskUser={task.user} styles={styles.dropdownButtons}/>
@@ -86,7 +86,7 @@ export default class TasksTable extends Component {
     return this.rows;
   };
 
-  render() { 
+  render() {
     if (!this.props.isLoading) {
       return <Table columnOptions={columnOptions} rows={this.state.rows} noIntl />;
     }
