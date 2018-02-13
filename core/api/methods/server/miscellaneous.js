@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import btoa from 'btoa';
 import { Roles } from 'meteor/alanning:roles';
 import { check } from 'meteor/check';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
@@ -18,6 +17,8 @@ Meteor.methods({
             Roles.userIsInRole(Meteor.userId(), 'dev') ||
             Roles.userIsInRole(Meteor.userId(), 'admin')
         ) {
+            const btoa = require('btoa');
+
             const API_KEY = Meteor.settings.MIXPANEL_API_KEY;
             const API_SECRET = Meteor.settings.MIXPANEL_API_SECRET;
 
@@ -27,7 +28,7 @@ Meteor.methods({
         throw new Meteor.Error(
             'Unauthorized access to getMixpanelAuthorization'
         );
-    }
+    },
 });
 
 export const downloadPDF = new ValidatedMethod({
@@ -48,13 +49,13 @@ export const downloadPDF = new ValidatedMethod({
         return generateComponentAsPDF({
             component,
             props: { loan, borrowers },
-            fileName
+            fileName,
         })
             .then(result => result)
             .catch(error => {
                 throw new Meteor.Error('500', error);
             });
-    }
+    },
 });
 
 rateLimit({ methods: [downloadPDF] });
