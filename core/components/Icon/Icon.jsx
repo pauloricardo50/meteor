@@ -38,6 +38,9 @@ import Star from 'material-ui-icons/Star';
 import StarHalf from 'material-ui-icons/StarHalf';
 import StarEmpty from 'material-ui-icons/StarBorder';
 
+import PersonAdd from 'material-ui-icons/PersonAdd';
+import OfflinePin from 'material-ui-icons/OfflinePin';
+
 const iconMap = {
   close: CloseIcon,
   check: CheckIcon,
@@ -75,6 +78,8 @@ const iconMap = {
   starEmpty: StarEmpty,
   accountCircle: AccountCircle,
   app: Apps,
+  personAdd: PersonAdd,
+  offlinePin: OfflinePin
 };
 
 const Icon = (props) => {

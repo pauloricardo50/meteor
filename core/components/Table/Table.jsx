@@ -29,12 +29,24 @@ export default class Table extends Component {
   componentWillReceiveProps(nextProps) {
     const currentLength = this.state.data.length;
     const nextLength = nextProps.rows.length;
-
     // Lazy check to see if data has different length
     // FIXME should also check if all the data is the same, careful with sorting
     if (nextLength !== currentLength) {
       this.handleNewData(nextProps);
     }
+    else if (this.state.data && nextProps.rows){
+     
+      const stateRows = this.state.data.map(row => JSON.stringify({columns: row.colums}));
+      const newPropsRows = nextProps.rows.map(row => JSON.stringify({columns: row.colums}));
+      
+      for(var row in  newPropsRows) {
+        if(!stateRows.includes(row)) {
+          this.handleNewData(nextProps); 
+           break;
+        }
+     }
+    }
+    
     // If pagination is currently going on, make sure it is still needed
     if (currentLength > 10 && nextLength <= 10) {
       this.setState({ page: 0 });
