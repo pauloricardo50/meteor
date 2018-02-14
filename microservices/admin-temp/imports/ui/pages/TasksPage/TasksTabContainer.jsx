@@ -1,6 +1,6 @@
 import query from "core/api/tasks/queries/tasksList";
 import { withQuery } from "meteor/cultofcoders:grapher-react";
-import TasksTab from "./TasksTab";
+import TasksTab from "./TasksTable";
 
 const TasksTabContainer = withQuery(
     (props) => { 
