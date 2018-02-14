@@ -2,11 +2,6 @@ import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
 import PropTypes from "prop-types";
 
-import Button from "core/components/Button";
-
-import { getLoanValue } from "core/utils/loanFunctions";
-import { IntlNumber } from "core/components/Translation";
-
 import LoanTabs from "./LoanTabs";
 import StepStatus from "./StepStatus";
 import FileVerificationNotification from "./FileVerificationNotification";
@@ -58,43 +53,12 @@ export default class SingleLoanPage extends Component {
 
         return (
             <section>
-                <Button
-                    raised
-                    label="Retour"
-                    style={styles.returnButton}
-                    onClick={() => history.push("/loans")}
+                <LoanTabs
+                    {...dataToPassDown}
+                    serverTime={this.state.serverTime}
+                    dataToPassDown={dataToPassDown}
                 />
-                <div className="mask1">
-                    <h1>
-                        {loan.name || "Demande de Prêt"} - Emprunt de{" "}
-                        <IntlNumber
-                            value={getLoanValue({
-                                loan,
-                                property: loan.propertyLink
-                            })}
-                            format="money"
-                        />
-                    </h1>
-
-                    <StepStatus
-                        {...dataToPassDown}
-                        serverTime={this.state.serverTime}
-                    />
-
-                    <FileVerificationNotification
-                        loan={loan}
-                        borrowers={loan.borrowersLink}
-                    />
-
-                    <LoanTabs
-                        {...dataToPassDown}
-                        serverTime={this.state.serverTime}
-                    />
-                </div>
             </section>
         );
     }
 }
-
-// SingleLoanPage.propTypes = {
-// };
