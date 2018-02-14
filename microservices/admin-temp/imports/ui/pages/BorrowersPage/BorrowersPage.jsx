@@ -2,13 +2,13 @@ import React from 'react';
 import { Tabs, Tab } from 'material-ui';
 
 
-import AllBorrowersTable from './AllBorrowersTable';
+import BorrowersTable from './BorrowersTable';
 
 const BorrowersPage = props => (
     <section className="mask1">
       <h1>Borrowers</h1>
   
-      <AllBorrowersTable {...props}/>
+      <BorrowersTable {...props}/>
     </section>
   );
 

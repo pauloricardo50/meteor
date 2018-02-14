@@ -12,7 +12,7 @@ const columnOptions = [
   { id: <T id={`BorrowersTable.updatedAt`} />, style: { textAlign: 'left' } },
 ];
 
-export default class AllBorrowersTable extends Component {
+export default class BorrowersTable extends Component {
   constructor(props) {
     super(props);
 
@@ -45,6 +45,6 @@ export default class AllBorrowersTable extends Component {
   }
 }
 
-AllBorrowersTable.propTypes = {
+BorrowersTable.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
