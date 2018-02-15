@@ -133,24 +133,24 @@ export default class AutoStart extends Component {
 
       const scrollingInput = () => {
         switch (input.type) {
-          case 'buttons':
-            return <ButtonInput {...inputProps} />;
-          case 'textInput':
-            return <Input {...inputProps} text />;
-          case 'multipleInput':
-            return <MultipleInput {...inputProps} />;
-          case 'selectInput':
-            return <Input {...inputProps} select />;
-          case 'sliderInput':
-            return <Input {...inputProps} slider />;
-          case 'arrayInput':
-            return <StartArrayInput {...inputProps} />;
-          case 'custom': {
-            const Tag = input.component;
-            return <Tag {...inputProps} />;
-          }
-          default:
-            throw new Error('Not a valid AutoForm type');
+        case 'buttons':
+          return <ButtonInput {...inputProps} />;
+        case 'textInput':
+          return <Input {...inputProps} text />;
+        case 'multipleInput':
+          return <MultipleInput {...inputProps} />;
+        case 'selectInput':
+          return <Input {...inputProps} select />;
+        case 'sliderInput':
+          return <Input {...inputProps} slider />;
+        case 'arrayInput':
+          return <StartArrayInput {...inputProps} />;
+        case 'custom': {
+          const Tag = input.component;
+          return <Tag {...inputProps} />;
+        }
+        default:
+          throw new Error('Not a valid AutoForm type');
         }
       };
 

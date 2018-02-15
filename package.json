@@ -1,33 +1,33 @@
 {
-    "name": "epotek",
-    "version": "1.0.0",
-    "description": "* Initial setup",
-    "main": "index.js",
-    "scripts": {
-        "format":
-            "prettier-eslint core/components/Accordion.jsx --write --eslint-config-path ./.eslintrc"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/e-Potek/epotek.git"
-    },
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/e-Potek/epotek/issues"
-    },
-    "homepage": "https://github.com/e-Potek/epotek#readme",
-    "devDependencies": {
-        "prettier-eslint-cli": "^4.7.0",
-        "babel-eslint": "^8.2.1",
-        "eslint": "^4.17.0",
-        "eslint-config-airbnb": "^16.1.0",
-        "eslint-config-prettier": "^2.9.0",
-        "eslint-import-resolver-meteor": "^0.4.0",
-        "eslint-plugin-import": "^2.8.0",
-        "eslint-plugin-jsx-a11y": "^6.0.3",
-        "eslint-plugin-meteor": "^4.1.4",
-        "eslint-plugin-prettier": "^2.6.0",
-        "eslint-plugin-react": "^7.6.1"
-    }
+  "name": "epotek",
+  "version": "1.0.0",
+  "description": "* Initial setup",
+  "main": "index.js",
+  "scripts": {
+    "format":
+      "prettier-eslint \"**/*.js*\" --write --eslint-config-path .eslintrc.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/e-Potek/epotek.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/e-Potek/epotek/issues"
+  },
+  "homepage": "https://github.com/e-Potek/epotek#readme",
+  "devDependencies": {
+    "prettier-eslint-cli": "^4.7.0",
+    "babel-eslint": "^8.2.1",
+    "eslint": "^4.17.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-import-resolver-meteor": "^0.4.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-meteor": "^4.1.4",
+    "eslint-plugin-prettier": "^2.6.0",
+    "eslint-plugin-react": "^7.6.1"
+  }
 }

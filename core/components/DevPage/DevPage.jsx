@@ -8,25 +8,25 @@ import { loanStep1, loanStep2, loanStep3 } from 'core/api/loans/fakes';
 import { getRandomOffer } from 'core/api/offers/fakes';
 import { fakeProperty } from 'core/api/properties/fakes';
 
-const addStep1Loan = twoBorrowers => {
+const addStep1Loan = (twoBorrowers) => {
   const borrowerIds = [];
   cleanMethod('insertBorrower', { object: completeFakeBorrower })
-    .then(id1 => {
+    .then((id1) => {
       borrowerIds.push(id1);
       return twoBorrowers
         ? cleanMethod('insertBorrower', {
-            object: completeFakeBorrower
-          })
+          object: completeFakeBorrower,
+        })
         : false;
     })
-    .then(id2 => {
+    .then((id2) => {
       if (id2) {
         borrowerIds.push(id2);
       }
 
       return cleanMethod('insertProperty', { object: fakeProperty });
     })
-    .then(propertyId => {
+    .then((propertyId) => {
       const loan = loanStep1;
       loan.borrowerIds = borrowerIds;
       loan.propertyId = propertyId;
@@ -35,26 +35,26 @@ const addStep1Loan = twoBorrowers => {
     .catch(console.log);
 };
 
-const addStep2Loan = twoBorrowers => {
+const addStep2Loan = (twoBorrowers) => {
   const borrowerIds = [];
 
   cleanMethod('insertBorrower', { object: completeFakeBorrower })
-    .then(id1 => {
+    .then((id1) => {
       borrowerIds.push(id1);
       return twoBorrowers
         ? cleanMethod('insertBorrower', {
-            object: completeFakeBorrower
-          })
+          object: completeFakeBorrower,
+        })
         : false;
     })
-    .then(id2 => {
+    .then((id2) => {
       if (id2) {
         borrowerIds.push(id2);
       }
 
       return cleanMethod('insertProperty', { object: fakeProperty });
     })
-    .then(propertyId => {
+    .then((propertyId) => {
       const loan = loanStep2;
       loan.borrowerIds = borrowerIds;
       loan.propertyId = propertyId;
@@ -68,31 +68,31 @@ const addStep3Loan = (twoBorrowers, completeFiles = true) => {
   const loan = loanStep3(completeFiles);
   let loanId;
   cleanMethod('insertBorrower', { object: completeFakeBorrower })
-    .then(id1 => {
+    .then((id1) => {
       borrowerIds.push(id1);
       return twoBorrowers
         ? cleanMethod('insertBorrower', {
-            object: completeFakeBorrower
-          })
+          object: completeFakeBorrower,
+        })
         : false;
     })
-    .then(id2 => {
+    .then((id2) => {
       if (id2) {
         borrowerIds.push(id2);
       }
 
       return cleanMethod('insertProperty', { object: fakeProperty });
     })
-    .then(propertyId => {
+    .then((propertyId) => {
       loan.borrowerIds = borrowerIds;
       loan.propertyId = propertyId;
     })
     .then(() => cleanMethod('insertLoan', { object: loan }))
-    .then(id => {
+    .then((id) => {
       loanId = id;
       const object = getRandomOffer(
         { loan: { ...loan, _id: id }, property: fakeProperty },
-        true
+        true,
       );
       return cleanMethod('insertAdminOffer', { object });
     })
@@ -100,11 +100,10 @@ const addStep3Loan = (twoBorrowers, completeFiles = true) => {
       cleanMethod('updateLoan', {
         object: {
           'logic.lender.offerId': offerId,
-          'logic.lender.chosenTime': new Date()
+          'logic.lender.chosenTime': new Date(),
         },
-        id: loanId
-      })
-    )
+        id: loanId,
+      }))
     .then(() => {
       // Weird bug with offers publications that forces me to reload TODO: fix it
       location.reload();
@@ -161,11 +160,11 @@ export default class DevPage extends Component {
 DevPage.propTypes = {
   loans: PropTypes.arrayOf(PropTypes.object),
   borrowers: PropTypes.arrayOf(PropTypes.object),
-  offers: PropTypes.arrayOf(PropTypes.object)
+  offers: PropTypes.arrayOf(PropTypes.object),
 };
 
 DevPage.defaultProps = {
   loans: [],
   borrowers: [],
-  offers: []
+  offers: [],
 };

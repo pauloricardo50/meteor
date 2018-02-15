@@ -67,8 +67,7 @@ export default class OverviewTab extends React.Component {
         </div>
         {showObject && (
           <ul className="loan-map">
-            {Object.keys(loan).map(key =>
-              renderObject(key, loan))}
+            {Object.keys(loan).map(key => renderObject(key, loan))}
           </ul>
         )}
       </div>

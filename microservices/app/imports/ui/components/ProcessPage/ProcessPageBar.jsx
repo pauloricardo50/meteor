@@ -24,9 +24,7 @@ const styles = {
   },
 };
 
-const handleNextStep = ({
-  stepNb, loan, history, nextLink,
-}) => {
+const handleNextStep = ({ stepNb, loan, history, nextLink }) => {
   // increment step if this is the currentstep
   if (stepNb === loan.logic.step) {
     cleanMethod('incrementStep', { id: loan._id }).then(() => !!nextLink && history.push(nextLink));

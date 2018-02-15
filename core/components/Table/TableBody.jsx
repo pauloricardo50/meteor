@@ -17,25 +17,23 @@ const TableBody = ({
   <MuiTableBody>
     {data
       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-      .map(
-        (row, i) =>
-          (selectable ? (
-            <SelectableRow
-              key={row.id || i}
-              row={row}
-              columnOptions={columnOptions}
-              isSelected={this.isSelected(row.id)}
-              onSelect={this.handleSelect}
-            />
-          ) : (
-            <Row
-              key={row.id || i}
-              row={row}
-              columnOptions={columnOptions}
-              clickable={clickable}
-            />
-          )),
-      )}
+      .map((row, i) =>
+        (selectable ? (
+          <SelectableRow
+            key={row.id || i}
+            row={row}
+            columnOptions={columnOptions}
+            isSelected={this.isSelected(row.id)}
+            onSelect={this.handleSelect}
+          />
+        ) : (
+          <Row
+            key={row.id || i}
+            row={row}
+            columnOptions={columnOptions}
+            clickable={clickable}
+          />
+        )))}
   </MuiTableBody>
 );
 

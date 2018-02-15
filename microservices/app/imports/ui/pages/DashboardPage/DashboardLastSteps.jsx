@@ -12,38 +12,44 @@ const styles = {
   },
 };
 
-const DashboardLastSteps = props => {
-  return (
-    <DashboardItem style={styles.div} title={<T id="DashboardLastSteps.title" />}>
-      <h3 className="text-center">
-        <IntlDate
-          value={props.loan.general.wantedClosingDate}
-          month="long"
-          year="numeric"
-          weekday="long"
-          day="2-digit"
-        />
-      </h3>
+const DashboardLastSteps = props => (
+  <DashboardItem style={styles.div} title={<T id="DashboardLastSteps.title" />}>
+    <h3 className="text-center">
+      <IntlDate
+        value={props.loan.general.wantedClosingDate}
+        month="long"
+        year="numeric"
+        weekday="long"
+        day="2-digit"
+      />
+    </h3>
 
-      <hr />
-      <h4 className="fixed-size bold" style={{ marginTop: 0 }}>
-        <T id="DashboardLastSteps.subtitle" />
-      </h4>
+    <hr />
+    <h4 className="fixed-size bold" style={{ marginTop: 0 }}>
+      <T id="DashboardLastSteps.subtitle" />
+    </h4>
 
-      <div>
-        <span className="bold"><T id="DashboardLastSteps.contract" /></span>
-        <br />
-        <span><T id="DashboardLastSteps.progress" values={{ value: '0', total: 9 }} /></span>
-      </div>
+    <div>
+      <span className="bold">
+        <T id="DashboardLastSteps.contract" />
+      </span>
       <br />
-      <div>
-        <span className="bold"><T id="DashboardLastSteps.closing" /></span>
-        <br />
-        <span><T id="DashboardLastSteps.progress" values={{ value: '0', total: 7 }} /></span>
-      </div>
-    </DashboardItem>
-  );
-};
+      <span>
+        <T id="DashboardLastSteps.progress" values={{ value: '0', total: 9 }} />
+      </span>
+    </div>
+    <br />
+    <div>
+      <span className="bold">
+        <T id="DashboardLastSteps.closing" />
+      </span>
+      <br />
+      <span>
+        <T id="DashboardLastSteps.progress" values={{ value: '0', total: 7 }} />
+      </span>
+    </div>
+  </DashboardItem>
+);
 
 DashboardLastSteps.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,

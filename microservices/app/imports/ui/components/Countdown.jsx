@@ -3,7 +3,7 @@ import React from 'react';
 import moment from 'moment';
 import { Meteor } from 'meteor/meteor';
 
-var time;
+let time;
 
 export default class Countdown extends React.Component {
   constructor(props) {

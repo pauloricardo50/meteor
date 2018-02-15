@@ -74,9 +74,7 @@ class CustomFieldAdder extends Component {
   };
 
   render() {
-    const {
-      name, type: currentType, randomSuggestions, open,
-    } = this.state;
+    const { name, type: currentType, randomSuggestions, open } = this.state;
     const f = this.props.intl.formatMessage;
 
     return (

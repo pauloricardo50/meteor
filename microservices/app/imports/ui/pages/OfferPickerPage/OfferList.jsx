@@ -11,9 +11,7 @@ import Offer from './Offer';
 import StarRating from './StarRating';
 import SortOrderer from './SortOrderer';
 
-const getOfferValues = ({
-  monthly, rating, conditions, counterparts,
-}) => [
+const getOfferValues = ({ monthly, rating, conditions, counterparts }) => [
   {
     id: 'monthly',
     value: (
@@ -70,9 +68,7 @@ class OfferList extends Component {
     this.setState(prev => ({ isAscending: !prev.isAscending }));
 
   render() {
-    const {
-      loan, offers, disabled, property,
-    } = this.props;
+    const { loan, offers, disabled, property } = this.props;
     const { sort, isAscending } = this.state;
     const filteredOffers = sortOffers(
       extractOffers({ offers, loan, property }),

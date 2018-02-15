@@ -66,8 +66,7 @@ Meteor.methods({
     const async = Meteor.wrapAsync((parameters, callback) =>
       s3.getObject(parameters, (error, data) => {
         callback(error, data);
-      }),
-    );
+      }));
 
     return async(params);
   },

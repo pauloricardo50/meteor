@@ -86,21 +86,21 @@ export default class ClosingStepsForm extends Component {
               return 0;
             })
             .map((step, i) =>
-                (step.type === CLOSING_STEPS_TYPE.TODO ? (
-                  <TodoStep
-                    step={step}
-                    key={step.id}
-                    onChange={this.handleChange}
-                    handleRemove={this.handleRemove}
-                  />
-                ) : (
-                  <FileStep
-                    step={step}
-                    key={step.id}
-                    onChange={this.handleChange}
-                    handleRemove={this.handleRemove}
-                  />
-                )))}
+              (step.type === CLOSING_STEPS_TYPE.TODO ? (
+                <TodoStep
+                  step={step}
+                  key={step.id}
+                  onChange={this.handleChange}
+                  handleRemove={this.handleRemove}
+                />
+              ) : (
+                <FileStep
+                  step={step}
+                  key={step.id}
+                  onChange={this.handleChange}
+                  handleRemove={this.handleRemove}
+                />
+              )))}
         </div>
         <div className="text-center">
           <Button

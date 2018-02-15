@@ -11,9 +11,7 @@ describe('intl-server', () => {
   });
 
   it('formats additional values property', () => {
-    expect(formatMessage('BorrowerHeader.title', { index: 10 })).to.equal(
-      'Emprunteur 10',
-    );
+    expect(formatMessage('BorrowerHeader.title', { index: 10 })).to.equal('Emprunteur 10');
   });
 
   it('returns the id if the message is unknown', () => {

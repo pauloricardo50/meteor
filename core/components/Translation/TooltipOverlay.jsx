@@ -22,13 +22,31 @@ export default class TooltipOverlay extends Component {
   }
 
   render() {
-    const { placement, id, pureId, list, match, trigger, delayShow, children } = this.props;
+    const {
+      placement,
+      id,
+      pureId,
+      list,
+      match,
+      trigger,
+      delayShow,
+      children,
+    } = this.props;
     const tooltipId = id || tooltips(list)[match.toLowerCase()];
 
     return (
       <OverlayTrigger
         placement={placement}
-        overlay={<Tooltip placement={placement} trigger={trigger} id={tooltipId} pureId={pureId} hide={this.state.hide} match={match} />}
+        overlay={
+          <Tooltip
+            placement={placement}
+            trigger={trigger}
+            id={tooltipId}
+            pureId={pureId}
+            hide={this.state.hide}
+            match={match}
+          />
+        }
         rootClose
         animation={false}
         trigger={trigger}
@@ -54,12 +72,16 @@ export default class TooltipOverlay extends Component {
 
 TooltipOverlay.propTypes = {
   placement: PropTypes.string,
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
+  id: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string),
+  ]).isRequired,
   pureId: PropTypes.bool,
   list: PropTypes.string.isRequired,
   match: PropTypes.oneOfType([PropTypes.element, PropTypes.string]).isRequired,
   trigger: PropTypes.arrayOf(PropTypes.string),
-  children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]).isRequired,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
+    .isRequired,
   delayShow: PropTypes.number,
 };
 

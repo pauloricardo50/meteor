@@ -8,9 +8,7 @@ import { FILE_STATUS } from 'core/api/constants';
 import Download from './Download';
 
 const File = ({ file, disabled, handleRemove }) => {
-  const {
-    initialName, key, status, error,
-  } = file;
+  const { initialName, key, status, error } = file;
 
   return (
     <div className="flex-col">

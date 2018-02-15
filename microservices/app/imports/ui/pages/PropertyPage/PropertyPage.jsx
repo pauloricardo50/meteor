@@ -9,10 +9,7 @@ import {
 } from 'core/arrays/PropertyFormArray';
 import UploaderArray from 'core/components/UploaderArray';
 import { loanFiles, propertyFiles } from 'core/api/files/files';
-import {
-  disableForms,
-  getPropertyCompletion,
-} from 'core/utils/loanFunctions';
+import { disableForms, getPropertyCompletion } from 'core/utils/loanFunctions';
 
 import { isDemo } from 'core/utils/browserFunctions';
 import FakePropertyCompleter from '/imports/ui/components/FakePropertyCompleter';

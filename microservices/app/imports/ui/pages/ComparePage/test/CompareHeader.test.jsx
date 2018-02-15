@@ -32,8 +32,6 @@ describe('<CompareHeader />', () => {
   });
 
   it('renders a list with as many li as there are field props + 2 default ones', () => {
-    expect(
-      wrapper({ fields: [{ id: 'one' }, { id: 'two' }] }).find('li').length,
-    ).to.equal(4);
+    expect(wrapper({ fields: [{ id: 'one' }, { id: 'two' }] }).find('li').length).to.equal(4);
   });
 });

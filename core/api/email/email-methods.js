@@ -118,7 +118,7 @@ export const sendEmail = new ValidatedMethod({
           status: content.status,
           sendAt,
         },
-        err => {
+        (err) => {
           throw new Meteor.Error(err);
         },
       );
@@ -143,7 +143,7 @@ export const cancelScheduledEmail = new ValidatedMethod({
       const content = JSON.parse(result.content);
       return modifyEmail.call(
         { loanId, _id: content._id, status: 'cancelled' },
-        err => {
+        (err) => {
           throw new Meteor.Error(err);
         },
       );
@@ -169,12 +169,9 @@ export const rescheduleEmail = new ValidatedMethod({
         }
 
         const content = JSON.parse(result.content);
-        return modifyEmail.call(
-          { loanId, _id: content._id, sendAt },
-          err => {
-            throw new Meteor.Error(err);
-          },
-        );
+        return modifyEmail.call({ loanId, _id: content._id, sendAt }, (err) => {
+          throw new Meteor.Error(err);
+        });
       },
     );
   },

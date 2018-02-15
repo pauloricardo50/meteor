@@ -6,11 +6,7 @@ import Tabs from 'react-bootstrap/lib/Tabs';
 
 import UploaderArray from 'core/components/UploaderArray';
 
-import {
-  loanFiles,
-  borrowerFiles,
-  propertyFiles,
-} from 'core/api/files/files';
+import { loanFiles, borrowerFiles, propertyFiles } from 'core/api/files/files';
 import { filesPercent } from 'core/arrays/steps';
 import { T, IntlNumber } from 'core/components/Translation';
 import withLoan from 'core/containers/withLoan';

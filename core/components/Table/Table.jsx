@@ -86,8 +86,7 @@ export default class Table extends Component {
     }
 
     this.setState({ selected: newSelected }, () =>
-      this.props.onRowSelect(this.state.selected),
-    );
+      this.props.onRowSelect(this.state.selected));
   };
 
   handleSelectAllClick = (event, checked) => {

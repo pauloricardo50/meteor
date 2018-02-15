@@ -36,8 +36,8 @@ const CompareTableContent = ({
       <ul
         style={{ display: 'flex', alignItems: 'flex-start', marginBottom: 0 }}
       >
-        {properties.map(property =>
-          (<CompareColumn
+        {properties.map(property => (
+          <CompareColumn
             key={property._id}
             property={property}
             fields={fields}
@@ -45,8 +45,8 @@ const CompareTableContent = ({
             onHoverEnter={onHoverEnter}
             onHoverLeave={onHoverLeave}
             deleteProperty={deleteProperty}
-          />),
-        )}
+          />
+        ))}
       </ul>
     </div>
   );

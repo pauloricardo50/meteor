@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 
 import Button from 'core/components/Button';
 
-import {
-  cancelAuction,
-  endAuction,
-  deleteLoan,
-} from 'core/api/loans/methods';
+import { cancelAuction, endAuction, deleteLoan } from 'core/api/loans/methods';
 import DialogSimple from 'core/components/DialogSimple';
 import DropzoneArray from 'core/components/DropzoneArray';
 import ClosingForm from '/imports/ui/components/ClosingForm';

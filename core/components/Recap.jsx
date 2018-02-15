@@ -790,20 +790,20 @@ const getStructureArray = (props) => {
 
 const arraySwitch = (props) => {
   switch (props.arrayName) {
-    case 'start1':
-      return null;
-    case 'start2':
-      return getStart2Array(props);
-    case 'dashboard':
-      return getDashboardArray(props);
-    case 'dashboard-small':
-      return getSmallDashboardArray(props);
-    case 'borrower':
-      return getBorrowerArray(props);
-    case 'structure':
-      return getStructureArray(props);
-    default:
-      throw new Meteor.Error('Not a valid recap array');
+  case 'start1':
+    return null;
+  case 'start2':
+    return getStart2Array(props);
+  case 'dashboard':
+    return getDashboardArray(props);
+  case 'dashboard-small':
+    return getSmallDashboardArray(props);
+  case 'borrower':
+    return getBorrowerArray(props);
+  case 'structure':
+    return getStructureArray(props);
+  default:
+    throw new Meteor.Error('Not a valid recap array');
   }
 };
 

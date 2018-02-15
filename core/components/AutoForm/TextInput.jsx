@@ -129,9 +129,7 @@ export default class TextInput extends Component {
       },
       admin,
     } = this.props;
-    const {
-      value, errorText, saving, showInfo,
-    } = this.state;
+    const { value, errorText, saving, showInfo } = this.state;
 
     let type;
     if (money) {

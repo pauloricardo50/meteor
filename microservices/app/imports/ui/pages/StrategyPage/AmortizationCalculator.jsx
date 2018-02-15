@@ -16,9 +16,7 @@ export default class AmortizationCalculator extends Component {
   }
 
   calculate = () => {
-    const {
-      loan, borrowers, offers, logismataToken,
-    } = this.props;
+    const { loan, borrowers, offers, logismataToken } = this.props;
 
     if (!logismataToken) {
       return;

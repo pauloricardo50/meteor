@@ -76,18 +76,18 @@ export default class OffersTab extends Component {
                 </span>
                 <ul className="overview">
                   {Object.keys(o.standardOffer).map(key =>
-                      key.includes('interest') &&
+                    key.includes('interest') &&
                       !!o.standardOffer[key] && (
-                        <li key={key}>
-                          <span>{key}</span>
-                          <span className="bold">
-                            <IntlNumber
-                              value={o.standardOffer[key]}
-                              format="percentage"
-                            />
-                          </span>
-                        </li>
-                      ))}
+                      <li key={key}>
+                        <span>{key}</span>
+                        <span className="bold">
+                          <IntlNumber
+                            value={o.standardOffer[key]}
+                            format="percentage"
+                          />
+                        </span>
+                      </li>
+                    ))}
                 </ul>
                 {o.counterparts.length > 0 && (
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -107,18 +107,18 @@ export default class OffersTab extends Component {
                     </span>
                     <ul className="overview">
                       {Object.keys(o.counterpartOffer).map(key =>
-                          key.includes('interest') &&
+                        key.includes('interest') &&
                           !!o.counterpartOffer[key] && (
-                            <li key={key}>
-                              <span>{key}</span>
-                              <span className="bold">
-                                <IntlNumber
-                                  value={o.counterpartOffer[key]}
-                                  format="percentage"
-                                />
-                              </span>
-                            </li>
-                          ))}
+                          <li key={key}>
+                            <span>{key}</span>
+                            <span className="bold">
+                              <IntlNumber
+                                value={o.counterpartOffer[key]}
+                                format="percentage"
+                              />
+                            </span>
+                          </li>
+                        ))}
                     </ul>
                   </div>
                 )}

@@ -62,8 +62,7 @@ export default class StrategyChoices extends Component {
     return (
       <div className="strategy-choices">
         {this.props.choices.map((choice, index) =>
-          this.renderChoice(choice, index),
-        )}
+          this.renderChoice(choice, index))}
       </div>
     );
   }

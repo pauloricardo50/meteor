@@ -4,11 +4,11 @@ import React from 'react';
 import TodoItem from './TodoItem';
 import adminActions from 'core/arrays/adminActions';
 
-const getActions = props => {
+const getActions = (props) => {
   const array = [];
-  props.loans.forEach(r => {
+  props.loans.forEach((r) => {
     const actions = adminActions(r, props);
-    actions.forEach(a => {
+    actions.forEach((a) => {
       const object = {
         loan: r,
         action: a,
@@ -20,24 +20,21 @@ const getActions = props => {
   return array;
 };
 
-const TodoList = props => {
+const TodoList = (props) => {
   const actionsArray = getActions(props);
   return (
     <section>
       <h2>Actions à prendre</h2>
 
-      {actionsArray.map((a, i) =>
-        <TodoItem
-          loan={a.loan}
-          key={`${a.loan._id}${i}`}
-          {...a.action}
-        />,
-      )}
+      {actionsArray.map((a, i) => (
+        <TodoItem loan={a.loan} key={`${a.loan._id}${i}`} {...a.action} />
+      ))}
 
-      {actionsArray.length <= 0 &&
+      {actionsArray.length <= 0 && (
         <h3 className="text-center secondary" style={{ padding: '40px 0' }}>
           Rien à faire en ce moment
-        </h3>}
+        </h3>
+      )}
     </section>
   );
 };

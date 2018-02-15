@@ -195,14 +195,14 @@ export default class Start1Page extends Component {
 
     o = (() => {
       switch (name) {
-        case 'property':
-          return changeProperty(this.state, o, value);
-        case 'fortune':
-          return changeFortune(this.state, o, value);
-        case 'income':
-          return changeIncome(this.state, o, value);
-        default:
-          return o;
+      case 'property':
+        return changeProperty(this.state, o, value);
+      case 'fortune':
+        return changeFortune(this.state, o, value);
+      case 'income':
+        return changeIncome(this.state, o, value);
+      default:
+        return o;
       }
     })();
 
@@ -312,7 +312,8 @@ export default class Start1Page extends Component {
                   this.setState({
                     isFirstVisit: false,
                     showDescription: false,
-                  })}
+                  })
+                }
                 style={{ height: 'unset' }}
                 // overlayStyle={{ padding: 20 }}
               />
