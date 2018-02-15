@@ -3,11 +3,10 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { Roles } from 'meteor/alanning:roles';
 import { check, Match } from 'meteor/check';
 import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
-import rateLimit from '../../utils/rate-limit.js';
+import rateLimit from '../../../utils/rate-limit.js';
 
-import AdminActions from './adminActions';
-import { validateUser } from '../helpers';
-import { ADMIN_ACTION_STATUS } from './adminActionConstants';
+import AdminActions from '../adminActions';
+import { ADMIN_ACTION_STATUS } from '../adminActionConstants';
 
 export const insertAdminAction = new ValidatedMethod({
   name: 'insertAdminAction',
@@ -15,7 +14,6 @@ export const insertAdminAction = new ValidatedMethod({
   validate({ loanId, type }) {
     check(loanId, String);
     check(type, String);
-    validateUser();
   },
   run({ loanId, type }) {
     // Make sure there isn't an action active with the same ID
@@ -37,7 +35,6 @@ export const completeAction = new ValidatedMethod({
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
-    validateUser();
   },
   run({ id }) {
     const action = AdminActions.findOne(id);
@@ -62,7 +59,6 @@ export const completeActionByType = new ValidatedMethod({
     check(loanId, String);
     check(type, String);
     check(newStatus, Match.Optional(String));
-    validateUser();
   },
   run({ loanId, type, newStatus }) {
     const action = AdminActions.findOne({

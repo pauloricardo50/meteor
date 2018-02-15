@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
-import Loans from '../loans/loans';
 import { Roles } from 'meteor/alanning:roles';
 import { check, Match } from 'meteor/check';
 import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
 import rateLimit from '../../../utils/rate-limit.js';
 
+import Loans from '../../loans';
 import Offers from '../offers';
 
 // Insert a new offer

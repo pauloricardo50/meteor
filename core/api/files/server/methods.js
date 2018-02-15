@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import AWS from 'aws-sdk';
 import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
-import rateLimit from '../../utils/rate-limit.js';
+import rateLimit from '../../../utils/rate-limit.js';
 
 import Loans from 'core/api/loans/loans';
 import Borrowers from 'core/api/borrowers/borrowers';

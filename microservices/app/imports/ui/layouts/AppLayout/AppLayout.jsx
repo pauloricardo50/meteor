@@ -61,8 +61,6 @@ const getShowSideNav = ({ location }) =>
   !(location.pathname === '/' || location.pathname === '/compare');
 
 const AppLayout = (props) => {
-  console.log('wtf??????');
-
   const { type, history, render, children } = props;
   const redirect = getRedirect(props);
   const showSideNav = getShowSideNav(history);
@@ -81,8 +79,6 @@ const AppLayout = (props) => {
     });
     return <Redirect to={redirect} />;
   }
-
-  console.log('Applayout props:', props);
 
   return (
     <div>

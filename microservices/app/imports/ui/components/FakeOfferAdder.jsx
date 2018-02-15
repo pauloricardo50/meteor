@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { insertFakeOffer } from 'core/api/offers/methods';
 
 import Button from 'core/components/Button';
-
 import { getRandomOffer } from 'core/api/offers/fakes';
+import cleanMethod from 'core/api/cleanMethods';
 
 const addFakeOffer = (loan) => {
   const object = getRandomOffer(loan);
-  insertFakeOffer.call({ object });
+  cleanMethod('insertFakeOffer', { object });
 };
 
 const addLotsOfFakeOffers = (loan) => {

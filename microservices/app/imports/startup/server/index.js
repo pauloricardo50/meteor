@@ -3,7 +3,7 @@ import { Inject } from 'meteor/meteorhacks:inject-initial';
 
 import 'core/api/api';
 import 'core/api/api-server';
-import jc from 'core/api/server/jobs/jobs';
+import jc from 'core/api/jobs/server/jobs';
 import '../accounts-config';
 import './kadira-dev.js';
 import setupAuth from './http-auth';

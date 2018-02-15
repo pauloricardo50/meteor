@@ -21,7 +21,6 @@ import './users/server/methods';
 import './users/server/accounts-server-config';
 
 import './methods/server';
-import './methods/server/methods';
 
 import './factories';
 

@@ -5,7 +5,7 @@ import moment from 'moment';
 import AutoForm from 'core/components/AutoForm';
 import { constants } from 'core/api';
 
-import { getAuctionEndTime } from 'core/api/loans/methods';
+import { getAuctionEndTime } from 'core/utils/loanFunctions';
 import cleanMethod from 'core/api/cleanMethods';
 
 // Min closing date can be 2 days after auction ends

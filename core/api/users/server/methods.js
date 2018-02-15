@@ -61,17 +61,6 @@ export const createPartner = new ValidatedMethod({
   },
 });
 
-export const createUser = new ValidatedMethod({
-  name: 'createUser',
-  mixins: [CallPromiseMixin],
-  validate({ options }) {
-    check(options, Object);
-    check(options.email, String);
-    check(options.password, String);
-  },
-  run({ options }) {},
-});
-
 rateLimit({
   methods: [
     'toggleAdmin',
