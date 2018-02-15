@@ -4,13 +4,13 @@ import Loans from '../loans/loans';
 import { Roles } from 'meteor/alanning:roles';
 import { check, Match } from 'meteor/check';
 import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
-import rateLimit from '../../utils/rate-limit.js';
+import rateLimit from '../../../utils/rate-limit.js';
 
-import Offers from './offers';
+import Offers from '../offers';
 
 // Insert a new offer
 export const insertOffer = new ValidatedMethod({
-  name: 'offers.insert',
+  name: 'insertOffer',
   mixins: [CallPromiseMixin],
   validate({ object, userId }) {
     check(object, Object);
@@ -42,7 +42,7 @@ export const insertOffer = new ValidatedMethod({
 });
 
 export const insertAdminOffer = new ValidatedMethod({
-  name: 'offers.insertAdmin',
+  name: 'insertAdminOffer',
   mixins: [CallPromiseMixin],
   validate: null,
   run({ object }) {
@@ -68,7 +68,7 @@ export const insertAdminOffer = new ValidatedMethod({
 });
 
 export const updateOffer = new ValidatedMethod({
-  name: 'offers.update',
+  name: 'updateOffer',
   mixins: [CallPromiseMixin],
   validate({ id, object }) {
     check(id, String);
@@ -80,7 +80,7 @@ export const updateOffer = new ValidatedMethod({
 });
 
 export const insertFakeOffer = new ValidatedMethod({
-  name: 'offers.insertFake',
+  name: 'insertFakeOffer',
   mixins: [CallPromiseMixin],
   validate: null,
   run({ object }) {
@@ -89,7 +89,7 @@ export const insertFakeOffer = new ValidatedMethod({
 });
 
 export const deleteOffer = new ValidatedMethod({
-  name: 'offers.delete',
+  name: 'deleteOffer',
   mixins: [CallPromiseMixin],
   validate() {},
   run({ id }) {

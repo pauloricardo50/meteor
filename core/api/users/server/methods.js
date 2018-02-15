@@ -33,7 +33,7 @@ Meteor.methods({
 
 // Create a partner User
 export const createPartner = new ValidatedMethod({
-  name: 'users.createPartner',
+  name: 'createPartner',
   mixins: [CallPromiseMixin],
   validate({ options }) {
     check(options, Object);
@@ -62,7 +62,7 @@ export const createPartner = new ValidatedMethod({
 });
 
 export const createUser = new ValidatedMethod({
-  name: 'users.create',
+  name: 'createUser',
   mixins: [CallPromiseMixin],
   validate({ options }) {
     check(options, Object);

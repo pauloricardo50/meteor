@@ -3,17 +3,14 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { check, Match } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
-import rateLimit from '../../utils/rate-limit.js';
+import rateLimit from '../../../utils/rate-limit.js';
 
-import { validateUser } from '../helpers';
-import Comparators from './comparators';
+import Comparators from '../comparators';
 
 export const insertComparator = new ValidatedMethod({
-  name: 'comparators.insert',
+  name: 'insertComparator',
   mixins: [CallPromiseMixin],
-  validate() {
-    validateUser();
-  },
+  validate() {},
   run() {
     const userId = Meteor.userId();
     const userComparators = Comparators.find({ userId }).count();
@@ -27,12 +24,11 @@ export const insertComparator = new ValidatedMethod({
 });
 
 export const updateComparator = new ValidatedMethod({
-  name: 'comparators.update',
+  name: 'updateComparator',
   mixins: [CallPromiseMixin],
   validate({ object, id }) {
     check(object, Object);
     check(id, String);
-    validateUser();
   },
   run({ object, id }) {
     return Comparators.update(id, { $set: object });
@@ -40,7 +36,7 @@ export const updateComparator = new ValidatedMethod({
 });
 
 export const addComparatorField = new ValidatedMethod({
-  name: 'comparators.addField',
+  name: 'addComparatorField',
   mixins: [CallPromiseMixin],
   validate({ object, id }) {
     const { name, type } = object;
@@ -48,7 +44,6 @@ export const addComparatorField = new ValidatedMethod({
     check(id, String);
     check(name, String);
     check(type, String);
-    validateUser();
   },
   run({ object, id }) {
     const { name, type } = object;
@@ -69,13 +64,12 @@ export const addComparatorField = new ValidatedMethod({
 });
 
 export const removeComparatorField = new ValidatedMethod({
-  name: 'comparators.removeField',
+  name: 'removeComparatorField',
   mixins: [CallPromiseMixin],
   validate({ object, id }) {
     check(id, String);
     check(object, Object);
     check(object.fieldId, String);
-    validateUser();
   },
   run({ object, id }) {
     const { fieldId } = object;
@@ -87,13 +81,12 @@ export const removeComparatorField = new ValidatedMethod({
 });
 
 export const toggleHiddenField = new ValidatedMethod({
-  name: 'comparators.toggleHiddenField',
+  name: 'toggleHiddenField',
   mixins: [CallPromiseMixin],
   validate({ object, id }) {
     check(id, String);
     check(object, Object);
     check(object.fieldId, String);
-    validateUser();
   },
   run({ object, id }) {
     const { fieldId } = object;

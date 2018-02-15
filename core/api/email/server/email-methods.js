@@ -11,11 +11,11 @@ import {
   defaultCTA_URL,
   emailFooter,
   getEmailContent,
-} from './email-defaults';
-import { addEmail, modifyEmail } from 'core/api/loans/methods';
+} from '../email-defaults';
+import { addEmail, modifyEmail } from 'core/api/loans/server/methods';
 
 export const sendEmail = new ValidatedMethod({
-  name: 'email.send',
+  name: 'sendEmail',
   mixins: [CallPromiseMixin],
   validate({
     emailId,
@@ -127,7 +127,7 @@ export const sendEmail = new ValidatedMethod({
 });
 
 export const cancelScheduledEmail = new ValidatedMethod({
-  name: 'email.cancelScheduled',
+  name: 'cancelScheduledEmail',
   mixins: [CallPromiseMixin],
   validate({ id, loanId }) {
     check(id, String);
@@ -152,7 +152,7 @@ export const cancelScheduledEmail = new ValidatedMethod({
 });
 
 export const rescheduleEmail = new ValidatedMethod({
-  name: 'email.reschedule',
+  name: 'rescheduleEmail',
   mixins: [CallPromiseMixin],
   validate({ id, loanId, date }) {
     check(id, String);

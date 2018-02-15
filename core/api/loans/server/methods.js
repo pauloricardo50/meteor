@@ -10,27 +10,27 @@ import {
   insertAdminAction,
   completeActionByType,
   removeParentLoan,
-} from 'core/api/adminActions/methods';
+} from 'core/api/adminActions/server/methods';
 
-import Loans from './loans';
+import Loans from '../loans';
 import {
   ADMIN_ACTION_TYPE,
   ADMIN_ACTION_STATUS,
   LOAN_STATUS,
   AUCTION_STATUS,
-} from '../constants';
+} from '../../constants';
 
 const importServerMethods = () => {
   if (Meteor.isServer || (!!this && !this.isSimulation)) {
     const {
       scheduleMethod,
       rescheduleJob,
-    } = require('core/api/server/jobs/methods');
+    } = require('core/api/jobs/server/methods');
     const {
       sendEmail,
       cancelScheduledEmail,
       rescheduleEmail,
-    } = require('core/api/email/email-methods');
+    } = require('core/api/email/server/email-methods');
 
     return {
       scheduleMethod,
@@ -42,7 +42,7 @@ const importServerMethods = () => {
 };
 
 export const insertLoan = new ValidatedMethod({
-  name: 'loans.insert',
+  name: 'insertLoan',
   mixins: [CallPromiseMixin],
   validate() {},
   run({ object, userId }) {
@@ -77,7 +77,7 @@ export const testInsert = new ValidatedMethod({
 
 // Lets you set an entire object in the document
 export const updateLoan = new ValidatedMethod({
-  name: 'loans.update',
+  name: 'updateLoan',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
@@ -89,7 +89,7 @@ export const updateLoan = new ValidatedMethod({
 
 // Increments the step of the loan, if conditions are true
 export const incrementStep = new ValidatedMethod({
-  name: 'loans.incrementStep',
+  name: 'incrementStep',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
@@ -105,7 +105,7 @@ export const incrementStep = new ValidatedMethod({
 });
 
 export const startAuction = new ValidatedMethod({
-  name: 'loans.startAuction',
+  name: 'startAuction',
   mixins: [CallPromiseMixin],
   validate({ id, object }) {
     check(id, String);
@@ -196,7 +196,7 @@ export const getAuctionEndTime = (startTime) => {
 
 // Lets you push a value to an array
 export const pushLoanValue = new ValidatedMethod({
-  name: 'loans.pushValue',
+  name: 'pushLoanValue',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     console.log('validate method: ', id);
@@ -216,7 +216,7 @@ export const pushLoanValue = new ValidatedMethod({
 
 // Lets you pop a value from the end of an array
 export const popLoanValue = new ValidatedMethod({
-  name: 'loans.popValue',
+  name: 'popLoanValue',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
@@ -227,7 +227,7 @@ export const popLoanValue = new ValidatedMethod({
 });
 
 export const loanVerification = new ValidatedMethod({
-  name: 'loans.loanVerification',
+  name: 'loanVerification',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
@@ -273,7 +273,7 @@ export const loanVerification = new ValidatedMethod({
 });
 
 export const deleteLoan = new ValidatedMethod({
-  name: 'loans.delete',
+  name: 'deleteLoan',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
@@ -295,7 +295,7 @@ export const deleteLoan = new ValidatedMethod({
 });
 
 export const endAuction = new ValidatedMethod({
-  name: 'loans.endAuction',
+  name: 'endAuction',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
@@ -345,7 +345,7 @@ export const endAuction = new ValidatedMethod({
 });
 
 export const cancelAuction = new ValidatedMethod({
-  name: 'loans.cancelAuction',
+  name: 'cancelAuction',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
@@ -375,7 +375,9 @@ export const cancelAuction = new ValidatedMethod({
 
             const loan = Loans.findOne(id);
             const email = loan.emails.find(e =>
-              e && e.emailId === 'auctionEnded' && e.scheduledAt >= new Date());
+              e &&
+                e.emailId === 'auctionEnded' &&
+                e.scheduledAt >= new Date());
             if (email) {
               cancelScheduledEmail.call('email.cancelScheduled', {
                 id: email._id,
@@ -398,7 +400,7 @@ export const cancelAuction = new ValidatedMethod({
 });
 
 export const confirmClosing = new ValidatedMethod({
-  name: 'loans.confirmClosing',
+  name: 'confirmClosing',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
@@ -420,7 +422,7 @@ export const confirmClosing = new ValidatedMethod({
 });
 
 export const addEmail = new ValidatedMethod({
-  name: 'loans.addEmail',
+  name: 'addEmail',
   mixins: [CallPromiseMixin],
   validate({ loanId, emailId, _id, status, sendAt }) {
     check(loanId, String);
@@ -446,7 +448,7 @@ export const addEmail = new ValidatedMethod({
 });
 
 export const modifyEmail = new ValidatedMethod({
-  name: 'loans.modifyEmail',
+  name: 'modifyEmail',
   mixins: [CallPromiseMixin],
   validate({ loanId, _id, status, sendAt }) {
     check(loanId, String);

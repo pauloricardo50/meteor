@@ -10,7 +10,7 @@ import { validateUser } from '../helpers';
 import { ADMIN_ACTION_STATUS } from './adminActionConstants';
 
 export const insertAdminAction = new ValidatedMethod({
-  name: 'adminActions.insert',
+  name: 'insertAdminAction',
   mixins: [CallPromiseMixin],
   validate({ loanId, type }) {
     check(loanId, String);
@@ -33,7 +33,7 @@ export const insertAdminAction = new ValidatedMethod({
 });
 
 export const completeAction = new ValidatedMethod({
-  name: 'adminActions.complete',
+  name: 'completeAction',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
@@ -56,7 +56,7 @@ export const completeAction = new ValidatedMethod({
 });
 
 export const completeActionByType = new ValidatedMethod({
-  name: 'adminActions.completeActionByType',
+  name: 'completeActionByType',
   mixins: [CallPromiseMixin],
   validate({ loanId, type, newStatus }) {
     check(loanId, String);
@@ -85,7 +85,7 @@ export const completeActionByType = new ValidatedMethod({
 });
 
 export const removeParentLoan = new ValidatedMethod({
-  name: 'adminActions.removeParentLoan',
+  name: 'removeParentLoan',
   mixins: [CallPromiseMixin],
   validate({ loanId }) {
     check(loanId, String);

@@ -7,7 +7,7 @@ import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
 import Properties from '../properties';
 
 export const insertProperty = new ValidatedMethod({
-  name: 'properties.insert',
+  name: 'insertProperty',
   mixins: [CallPromiseMixin],
   validate({ object, userId }) {
     check(object, Object);
@@ -24,7 +24,7 @@ export const insertProperty = new ValidatedMethod({
 });
 
 export const deleteProperty = new ValidatedMethod({
-  name: 'properties.delete',
+  name: 'deleteProperty',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
@@ -35,7 +35,7 @@ export const deleteProperty = new ValidatedMethod({
 });
 
 export const updateProperty = new ValidatedMethod({
-  name: 'properties.update',
+  name: 'updateProperty',
   mixins: [CallPromiseMixin],
   validate({ id, object }) {
     check(id, String);
@@ -48,7 +48,7 @@ export const updateProperty = new ValidatedMethod({
 
 // Lets you push a value to an array
 export const pushPropertyValue = new ValidatedMethod({
-  name: 'properties.pushValue',
+  name: 'pushPropertyValue',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
@@ -60,7 +60,7 @@ export const pushPropertyValue = new ValidatedMethod({
 
 // Lets you pop a value from the end of an array
 export const popPropertyValue = new ValidatedMethod({
-  name: 'properties.popValue',
+  name: 'popPropertyValue',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
@@ -71,7 +71,7 @@ export const popPropertyValue = new ValidatedMethod({
 });
 
 export const setPropertyField = new ValidatedMethod({
-  name: 'properties.setField',
+  name: 'setPropertyField',
   mixins: [CallPromiseMixin],
   validate({ id, key }) {
     check(id, String);
