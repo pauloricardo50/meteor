@@ -1,5 +1,5 @@
 import Security from '../security/Security';
-import Loans from '.';
+import { Loans } from '../..';
 
 class LoanSecurity {
     static isAllowedToInsert() {
