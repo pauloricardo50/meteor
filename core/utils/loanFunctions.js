@@ -1,3 +1,4 @@
+import moment from 'moment';
 import constants from '../config/constants';
 import { USAGE_TYPE, LOAN_STRATEGY_PRESET, OFFER_TYPE } from '../api/constants';
 import { getIncomeRatio } from './finance-math';
