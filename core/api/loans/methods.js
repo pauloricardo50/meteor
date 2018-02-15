@@ -265,7 +265,10 @@ export const loanVerification = new ValidatedMethod({
         }
       },
     );
-    return Meteor.wrapAsync(insertAdminAction.call({ type: ADMIN_ACTION_TYPE.VERIFY, loanId: id }));
+    return Meteor.wrapAsync(insertAdminAction.call({
+      type: ADMIN_ACTION_TYPE.VERIFY,
+      loanId: id,
+    }));
   },
 });
 
@@ -327,11 +330,16 @@ export const endAuction = new ValidatedMethod({
         rescheduleEmail,
       } = importServerMethods();
 
-      sendEmail.call({
-        emailId: 'auctionEnded',
-        loanId: id,
-        template: 'notification+CTA',
-      });
+      const loan = Loans.findOne(id);
+      const email = loan.emails.find(e => e && e.emailId === 'auctionEnded' && e.scheduledAt >= new Date());
+      if (email) {
+        cancelScheduledEmail.call('email.cancelScheduled', {
+          id: email._id,
+
+          loanId: id,
+          template: 'notification+CTA',
+        });
+      }
     }
   },
 });
