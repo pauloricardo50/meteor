@@ -1,9 +1,9 @@
-import query from "core/api/users/queries/adminUserView";
-import { withQuery } from "meteor/cultofcoders:grapher-react";
-import SingleUserPage from "./SingleUserPage";
+import query from 'core/api/users/queries/adminUserView';
+import { withQuery } from 'meteor/cultofcoders:grapher-react';
+import SingleUserPage from './SingleUserPage';
 
 const SingleUserPageContainer = withQuery(
-    ({ match }) => { 
+    ({ match }) => {
         return query.clone({ _id: match.params.userId });
     },
     {

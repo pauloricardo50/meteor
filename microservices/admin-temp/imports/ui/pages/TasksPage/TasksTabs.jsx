@@ -1,13 +1,13 @@
-import React from "react";
-import Tabs from "core/components/Tabs";
-import PropTypes from "prop-types";
-import queryString from "query-string";
-import TasksTabContainer from "./TasksTabContainer";
-import { T } from "core/components/Translation/";
+import React from 'react';
+import Tabs from 'core/components/Tabs';
+import PropTypes from 'prop-types';
+import queryString from 'query-string';
+import TasksTabContainer from './TasksTabContainer';
+import { T } from 'core/components/Translation/';
 
 const getTabs = props => [
     {
-        id: "myTasks",
+        id: 'myTasks',
         label: <T id={`TasksTabs.myTasks`} />,
         content: (
             <TasksTabContainer
@@ -19,7 +19,7 @@ const getTabs = props => [
         )
     },
     {
-        id: "allTasks",
+        id: 'allTasks',
         label: <T id={`TasksTabs.allTasks`} />,
         content: (
             <TasksTabContainer {...props} showAssignee={true} key="allTasks" />

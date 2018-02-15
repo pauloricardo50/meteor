@@ -1,11 +1,11 @@
-import PropTypes from "prop-types";
-import React from "react";
-import { Meteor } from "meteor/meteor";
-import { Roles } from "meteor/alanning:roles";
-import { TASK_STATUS } from "core/api/tasks/tasksConstants";
-import { T } from "core/components/Translation/";
-import DropdownMenu from "core/components/DropdownMenu/";
-import { changeTaskStatus } from "core/api/tasks/methods";
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
+import { TASK_STATUS } from 'core/api/tasks/tasksConstants';
+import { T } from 'core/components/Translation/';
+import DropdownMenu from 'core/components/DropdownMenu/';
+import { changeTaskStatus } from 'core/api/tasks/methods';
 
 const changeStatus = (status, taskId) => {
     changeTaskStatus.call({
@@ -30,12 +30,12 @@ const TasksDropdown = props => {
     return (
         <DropdownMenu
             anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left"
+                vertical: 'bottom',
+                horizontal: 'left'
             }}
             transformOrigin={{
-                vertical: "bottom",
-                horizontal: "left"
+                vertical: 'bottom',
+                horizontal: 'left'
             }}
             iconType="offlinePin"
             options={getMenuItems(taskId, taskStatus)

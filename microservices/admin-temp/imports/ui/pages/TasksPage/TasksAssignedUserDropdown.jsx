@@ -1,10 +1,10 @@
-import PropTypes from "prop-types";
-import React from "react";
-import { Meteor } from "meteor/meteor";
-import { Roles } from "meteor/alanning:roles";
-import { T } from "core/components/Translation/";
-import DropdownMenu from "core/components/DropdownMenu/";
-import { changeTaskUser } from "core/api/tasks/methods";
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
+import { T } from 'core/components/Translation/';
+import DropdownMenu from 'core/components/DropdownMenu/';
+import { changeTaskUser } from 'core/api/tasks/methods';
 
 const changeAssignedUser = (user, taskId) => {
     changeTaskUser.call({
@@ -35,12 +35,12 @@ const TasksAssignedUserDropdown = props => {
     return (
         <DropdownMenu
             anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left"
+                vertical: 'bottom',
+                horizontal: 'left'
             }}
             transformOrigin={{
-                vertical: "bottom",
-                horizontal: "left"
+                vertical: 'bottom',
+                horizontal: 'left'
             }}
             iconType="personAdd"
             options={getMenuItems(data, taskUser)
