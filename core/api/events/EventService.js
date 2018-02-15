@@ -40,8 +40,8 @@ export class EventService {
   }
 
   createCategoryMutationListenerAdder(category) {
-    return (eventName, listenerFunction) =>
-      this.addMutationListener(eventName, listenerFunction, category);
+    return (mutationOptions, listenerFunction) =>
+      this.addMutationListener(mutationOptions, listenerFunction, category);
   }
 
   disableListenerCategory(category) {
