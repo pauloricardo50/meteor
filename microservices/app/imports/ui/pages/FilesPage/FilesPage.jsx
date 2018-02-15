@@ -24,11 +24,7 @@ const FilesPage = ({ loan, borrowers, property }) => (
       <Tabs defaultActiveKey={0} id="tabs">
         <Tab eventKey={0} title={<T id="general.mortgageLoan" />}>
           <div style={styles.tabContent}>
-            <UploaderArray
-              doc={loan}
-              collection="loans"
-              disabled
-            />
+            <UploaderArray doc={loan} collection="loans" disabled />
           </div>
         </Tab>
         <Tab eventKey={1} title={<T id="general.property" />}>

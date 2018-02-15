@@ -3,14 +3,16 @@
   "private": true,
   "scripts": {
     "start": "meteor run --settings settings-dev.json --port 5050",
-    "start-db": "export MONGO_URL=mongodb://localhost:3001/meteor && meteor npm start"
+    "start-db":
+      "export MONGO_URL=mongodb://localhost:3001/meteor && meteor npm start"
   },
   "dependencies": {
     "aws-sdk": "^2.171.0",
     "babel-runtime": "^6.26.0",
     "html-pdf": "^2.2.0",
     "intl-messageformat": "^2.2.0",
-    "intl-relativeformat": "https://github.com/Floriferous/intl-relativeformat/tarball/master",
+    "intl-relativeformat":
+      "https://github.com/Floriferous/intl-relativeformat/tarball/master",
     "meteor-node-stubs": "^0.3.2",
     "moment": "^2.20.1",
     "react": "^16.2.0",
@@ -23,7 +25,8 @@
   "devDependencies": {
     "babel-eslint": "^8.0.3",
     "babel-plugin-module-alias": "^1.6.0",
-    "babel-plugin-react-intl": "https://github.com/Floriferous/babel-plugin-react-intl/tarball/master",
+    "babel-plugin-react-intl":
+      "https://github.com/Floriferous/babel-plugin-react-intl/tarball/master",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",

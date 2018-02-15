@@ -45,7 +45,7 @@ export default class DialogSimple extends Component {
       autoScroll,
       cancelOnly,
       buttonProps,
-      ...otherProps,
+      ...otherProps
     } = this.props;
 
     const finalActions =

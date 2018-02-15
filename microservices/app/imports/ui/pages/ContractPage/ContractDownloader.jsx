@@ -15,11 +15,9 @@ const ContractDownloader = ({ contract }) => {
       >
         <T
           id={
-            contractKey ? (
-              'ContractDownloader.ready'
-            ) : (
-              'ContractDownloader.waiting'
-            )
+            contractKey
+              ? 'ContractDownloader.ready'
+              : 'ContractDownloader.waiting'
           }
         />
         <FileDownloader

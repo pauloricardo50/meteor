@@ -37,6 +37,16 @@ A CircleCI account is watching the `master` and `staging` branches and automatic
 The staging branch is deployed to staging.e-potek.ch
 The master branch is deployed to e-potek.ch
 
-### Other stuff ###
+### Production
 
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+The 3 microservices are hosted at the following URLs:
+* https://www.e-potek.ch
+* https://app.e-potek.ch
+* https://admin.e-potek.ch
+
+### Staging
+
+There is a single staging server hosting all copies of the microservices. They can be accessed at the following URLs:
+* https://www.staging.e-potek.ch
+* https://app.staging.e-potek.ch
+* https://admin.staging.e-potek.ch

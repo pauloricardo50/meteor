@@ -14,13 +14,7 @@ import TopNavDropdown from './TopNavDropdown';
 // import TopNavDrawer from './TopNavDrawer';
 
 const TopNav = (props) => {
-  const {
-    history,
-    currentUser,
-    loans,
-    appChildren,
-    public: isPublic,
-  } = props;
+  const { history, currentUser, loans, appChildren, public: isPublic } = props;
   const isApp = history && history.location.pathname.slice(0, 4) === '/';
 
   const showDrawer = isApp && loans.length > 0;

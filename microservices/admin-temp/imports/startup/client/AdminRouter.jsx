@@ -18,7 +18,7 @@ import {
   // VerifyPage,
   // ContactLendersPage,
 } from 'core/containers/AdminContainers';
-import AdminDevPage from '/imports/ui/pages/AdminDevPage';
+import DevPage from 'core/components/DevPage';
 import AdminLoanContainer from 'core/containers/AdminLoanContainer';
 
 import SingleLoanPage from '../../ui/pages/SingleLoanPage';
@@ -32,52 +32,32 @@ const AdminRouter = props => (
     messages={messagesFR}
     formats={getFormats()}
   >
-    <AdminLayout
-      {...props}
-      type="admin"
-      render={layoutProps => (
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={() => <AdminDashboardPage {...layoutProps} />}
-          />
-          <Route
-            exact
-            path="/users"
-            render={() => <UsersPage {...layoutProps} />}
-          />
-          <Route
-            exact
-            path="/loans"
-            render={() => <LoansPage {...layoutProps} />}
-          />
-          <Route
-            path="/loans/:loanId/verify"
-            component={AdminLoanContainer(VerifyPage)}
-          />
-          <Route
-            path="/loans/:loanId/contactlenders"
-            component={AdminLoanContainer(ContactLendersPage)}
-          />
-          <Route
-            path="/loans/:loanId/offers/:offerId"
-            component={AdminLoanContainer(OfferPage)}
-          />
-          <Route
-            path="/loans/:loanId"
-            component={AdminLoanContainer(SingleLoanPage)}
-          />
-          <Route path="/users/:userId" component={SingleUserPage} />
-          <Route
-            exact
-            path="/dev"
-            render={() => <AdminDevPage {...layoutProps} />}
-          />
-          <Route component={NotFound} />
-        </Switch>
-      )}
-    />
+    <AdminLayout type="admin">
+      <Switch>
+        <Route
+          path="/loans/:loanId/verify"
+          component={AdminLoanContainer(VerifyPage)}
+        />
+        <Route
+          path="/loans/:loanId/contactlenders"
+          component={AdminLoanContainer(ContactLendersPage)}
+        />
+        <Route
+          path="/loans/:loanId/offers/:offerId"
+          component={AdminLoanContainer(OfferPage)}
+        />
+        <Route
+          path="/loans/:loanId"
+          component={AdminLoanContainer(SingleLoanPage)}
+        />
+        <Route path="/loans" component={LoansPage} />
+        <Route path="/users/:userId" component={SingleUserPage} />
+        <Route path="/users" component={UsersPage} />
+        <Route path="/dev" component={DevPage} />
+        <Route exact path="/" component={AdminDashboardPage} />
+        <Route component={NotFound} />
+      </Switch>
+    </AdminLayout>
   </BaseRouter>
 );
 

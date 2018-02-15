@@ -1,4 +1,4 @@
-import _AppLayout from '/imports/ui/layouts/AdminLayout';
+import _AdminLayout from '/imports/ui/layouts/AdminLayout';
 import _AdminDashboardPage from '/imports/ui/pages/AdminDashboardPage';
 import _UsersPage from '/imports/ui/pages/UsersPage';
 import _LoansPage from '/imports/ui/pages/LoansPage';
@@ -16,7 +16,7 @@ import {
   adminOfferContainer,
 } from './Containers';
 
-export const AdminLayout = generalContainer(_AppLayout);
+export const AdminLayout = generalContainer(_AdminLayout);
 export const AdminDashboardPage = adminContainer(_AdminDashboardPage);
 export const UsersPage = adminContainer(_UsersPage);
 export const LoansPage = adminContainer(_LoansPage);

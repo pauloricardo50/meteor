@@ -54,9 +54,7 @@ const handleChoose = ({ id, loan, handleSave }) => {
 };
 
 const LoanStrategyPicker = (props) => {
-  const {
-    loan, handleSave, offers, disabled,
-  } = props;
+  const { loan, handleSave, offers, disabled } = props;
   return (
     <article>
       <h2>

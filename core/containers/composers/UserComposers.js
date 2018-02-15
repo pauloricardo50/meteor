@@ -1,12 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import {
-  Loans,
-  Offers,
-  Borrowers,
-  Properties,
-  Comparators,
-} from '../../api';
+import { Loans, Offers, Borrowers, Properties, Comparators } from '../../api';
 
 export function userCompareComposer(props, onData) {
   if (

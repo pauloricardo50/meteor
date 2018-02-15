@@ -23,10 +23,7 @@ export const sortFunc = (properties, sorting) =>
 
 export const filterFunc = (properties, filtering) =>
   properties.filter(item =>
-    filtering.every(
-      filterObject => item[filterObject.id] === filterObject.show,
-    ),
-  );
+    filtering.every(filterObject => item[filterObject.id] === filterObject.show));
 
 // Spread the custom property fields inside the object so that they are sorted and filtered properly
 export const getProperties = (properties, filtering, sorting) =>

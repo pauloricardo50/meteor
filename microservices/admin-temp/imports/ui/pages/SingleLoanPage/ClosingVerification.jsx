@@ -46,34 +46,34 @@ export default class ClosingVerification extends Component {
       <div style={{ padding: '0 16px' }}>
         {steps && steps.length ? (
           steps.map(step =>
-              (step.type === CLOSING_STEPS_TYPE.UPLOAD ? (
-                <FileVerificator
-                  currentValue={loan.files[step.id]}
-                  id={step.id}
-                  closingSteps={steps}
-                  key={step.id}
-                  docId={loan._id}
-                />
-              ) : (
-                <div
-                  className="mask1 flex-col"
-                  key={step.id}
-                  style={{ marginBottom: 8 }}
-                >
-                  <h4>{step.title}</h4>
-                  <p>{step.description}</p>
+            (step.type === CLOSING_STEPS_TYPE.UPLOAD ? (
+              <FileVerificator
+                currentValue={loan.files[step.id]}
+                id={step.id}
+                closingSteps={steps}
+                key={step.id}
+                docId={loan._id}
+              />
+            ) : (
+              <div
+                className="mask1 flex-col"
+                key={step.id}
+                style={{ marginBottom: 8 }}
+              >
+                <h4>{step.title}</h4>
+                <p>{step.description}</p>
 
-                  <ItemVerificator
-                    item={{
-                      key: step.id,
-                      status: step.status,
-                      error: step.error,
-                    }}
-                    setStatus={this.setStatus}
-                    saveError={this.saveError}
-                  />
-                </div>
-              )))
+                <ItemVerificator
+                  item={{
+                    key: step.id,
+                    status: step.status,
+                    error: step.error,
+                  }}
+                  setStatus={this.setStatus}
+                  saveError={this.saveError}
+                />
+              </div>
+            )))
         ) : (
           <h3>Pas d'étapes à vérifier</h3>
         )}

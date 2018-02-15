@@ -22,9 +22,7 @@ const chartColors = {
   amortization: colors.charts[4],
 };
 
-const getData = ({
-  loan, borrowers, totalYears, interestRates, property,
-}) => {
+const getData = ({ loan, borrowers, totalYears, interestRates, property }) => {
   const { amortization, years } = getAmortization({
     loan,
     borrowers,
@@ -73,9 +71,7 @@ const getData = ({
 class AmortizationChart extends Component {
   getConfig = () => {
     const f = this.props.intl.formatMessage;
-    const {
-      debt, fortune, payment, amortization,
-    } = getData(this.props);
+    const { debt, fortune, payment, amortization } = getData(this.props);
 
     return {
       chart: {

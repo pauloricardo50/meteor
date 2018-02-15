@@ -91,9 +91,7 @@ export default class StartSignUp extends Component {
   };
 
   render() {
-    const {
-      showPassword, login, signUp, loading, errorText,
-    } = this.state;
+    const { showPassword, login, signUp, loading, errorText } = this.state;
     return (
       <div style={styles.section}>
         <h2>

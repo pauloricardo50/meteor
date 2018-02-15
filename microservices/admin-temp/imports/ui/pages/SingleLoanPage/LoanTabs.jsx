@@ -7,6 +7,7 @@ import OverviewTab from './OverviewTab';
 import OffersTab from './OffersTab';
 import ActionsTab from './ActionsTab';
 import FormsTab from './FormsTab';
+import MixpanelAnalytics from '../../components/MixpanelAnalytics/MixpanelAnalytics';
 
 const getTabs = props => [
   { id: 'overview', label: 'Résumé', content: <OverviewTab {...props} /> },
@@ -17,6 +18,11 @@ const getTabs = props => [
     content: <OffersTab {...props} />,
   },
   { id: 'actions', label: 'actions', content: <ActionsTab {...props} /> },
+  {
+    id: 'analytics',
+    label: 'Analytics',
+    content: <MixpanelAnalytics {...props} />,
+  },
 ];
 
 const LoanTabs = (props) => {

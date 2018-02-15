@@ -17,4 +17,3 @@ import './methods/methods';
 import './factories';
 
 import './files/meteor-slingshot';
-

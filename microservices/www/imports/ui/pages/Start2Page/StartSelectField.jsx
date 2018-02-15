@@ -31,7 +31,8 @@ const StartSelectField = (props) => {
       id={id}
       value={value || formState[id] || ''}
       onChange={(_, newValue) =>
-        setFormState(id, newValue, () => setActiveLine(''))}
+        setFormState(id, newValue, () => setActiveLine(''))
+      }
       style={{ width: 200, fontSize: 'initial', height: 48 }}
       inputStyle={{ height: 48 }}
       options={options.filter(o => o.id !== undefined)}

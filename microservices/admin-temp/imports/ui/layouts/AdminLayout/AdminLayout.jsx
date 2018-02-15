@@ -60,8 +60,8 @@ const getRedirect = ({
 const getShowSideNav = ({ location }) =>
   !(location.pathname === '/' || location.pathname === '/compare');
 
-const AppLayout = (props) => {
-  const { type, history, render } = props;
+const AdminLayout = (props) => {
+  const { type, history, children } = props;
   const redirect = getRedirect(props);
   const showSideNav = true; // getShowSideNav(history);
   const classes = classnames({
@@ -80,6 +80,8 @@ const AppLayout = (props) => {
     return <Redirect to={redirect} />;
   }
 
+  console.log('AdminLayout props:', props);
+
   return (
     <div>
       <Navs
@@ -91,7 +93,7 @@ const AppLayout = (props) => {
 
       <main className={classes}>
         <ErrorBoundary helper="layout" pathname={history.location.pathname}>
-          <div x="wrapper">{render(props)}</div>
+          <div x="wrapper">{React.cloneElement(children, { ...props })}</div>
         </ErrorBoundary>
       </main>
 
@@ -100,21 +102,19 @@ const AppLayout = (props) => {
   );
 };
 
-AppLayout.defaultProps = {
+AdminLayout.defaultProps = {
   type: 'user',
-  render: () => null,
   currentUser: undefined,
   noNav: false,
   loans: undefined,
 };
 
-AppLayout.propTypes = {
+AdminLayout.propTypes = {
   type: PropTypes.string,
-  render: PropTypes.func,
   currentUser: PropTypes.objectOf(PropTypes.any),
   noNav: PropTypes.bool,
   loans: PropTypes.arrayOf(PropTypes.object),
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default AppLayout;
+export default AdminLayout;

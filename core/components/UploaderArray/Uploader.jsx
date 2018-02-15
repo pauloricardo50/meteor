@@ -83,9 +83,7 @@ class Uploader extends Component {
   };
 
   handleSave = (file, downloadUrl) => {
-    const {
-      currentValue, docId, pushFunc, fileMeta,
-    } = this.props;
+    const { currentValue, docId, pushFunc, fileMeta } = this.props;
     const { fileCount, fileCountString } = getFileCount(currentValue);
 
     const object = {
@@ -107,9 +105,7 @@ class Uploader extends Component {
   handleRemove = (key) => {
     Meteor.call('deleteFile', key, (err) => {
       if (!err) {
-        const {
-          currentValue, docId, updateFunc, fileMeta,
-        } = this.props;
+        const { currentValue, docId, updateFunc, fileMeta } = this.props;
         // Filter out the file we want to delete
         const newFileArray = currentValue.filter(file => file.key !== key);
         const object = { [`files.${fileMeta.id}`]: newFileArray };

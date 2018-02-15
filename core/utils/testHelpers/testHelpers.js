@@ -5,8 +5,6 @@ import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider, intlShape } from 'react-intl';
 import StubCollections from 'meteor/hwillson:stub-collections';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
 
 import { getUserLocale, getFormats } from 'core/utils/localization';
 import messagesFR from '../../lang/fr.json';
@@ -24,9 +22,7 @@ import Properties from 'core/api/properties/properties';
 import { mount } from './enzyme';
 
 // Mounts a component for testing, and wraps it around everything it needs
-const customMount = ({
-  Component, props, withRouter, withStore,
-}) => {
+const customMount = ({ Component, props, withRouter, withStore }) => {
   const intlProvider = new IntlProvider(
     {
       locale: getUserLocale(),
@@ -51,6 +47,8 @@ const customMount = ({
   }
 
   if (withStore) {
+    const configureStore = require('redux-mock-store');
+    const { Provider } = require('react-redux');
     const mockStore = configureStore();
     const initialState = { stepper: {} };
     const store = mockStore(initialState);

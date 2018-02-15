@@ -8,11 +8,9 @@ import { T } from 'core/components/Translation';
 class Page extends Component {
   componentDidMount() {
     if (this.props.id) {
-      DocHead.setTitle(
-        `${this.props.intl.formatMessage({
-          id: `${this.props.id}.title`,
-        })} | e-Potek`,
-      );
+      DocHead.setTitle(`${this.props.intl.formatMessage({
+        id: `${this.props.id}.title`,
+      })} | e-Potek`);
     } else {
       DocHead.setTitle('e-Potek');
     }
@@ -29,9 +27,9 @@ class Page extends Component {
           {rightComponent}
         </div>
         <div
-          className={`children animated fadeIn page ${fullWidth
-            ? 'full-width'
-            : ''}`}
+          className={`children animated fadeIn page ${
+            fullWidth ? 'full-width' : ''
+            }`}
         >
           {children}
         </div>

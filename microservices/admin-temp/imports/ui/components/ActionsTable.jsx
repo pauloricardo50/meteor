@@ -115,10 +115,7 @@ export default class ActionsTable extends Component {
                   : '-',
                 loan
                   ? () =>
-                      actionDetails.handleClick(
-                        loan,
-                        this.props.history.push,
-                      )
+                    actionDetails.handleClick(loan, this.props.history.push)
                   : () => {},
               ],
             };

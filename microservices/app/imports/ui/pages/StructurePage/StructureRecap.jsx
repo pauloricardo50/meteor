@@ -18,16 +18,14 @@ const styles = {
   },
 };
 
-const StructureRecap = props => {
-  return (
-    <div style={styles.div}>
-      <Recap {...props} arrayName="structure" />
-      <div style={styles.chart}>
-        <ExpensesChart {...props} />
-      </div>
+const StructureRecap = props => (
+  <div style={styles.div}>
+    <Recap {...props} arrayName="structure" />
+    <div style={styles.chart}>
+      <ExpensesChart {...props} />
     </div>
-  );
-};
+  </div>
+);
 
 StructureRecap.propTypes = {};
 

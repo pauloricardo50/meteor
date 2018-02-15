@@ -60,102 +60,102 @@ const getForm = (props, value, modify) => {
 
   const splittedValue = value.split('.');
   switch (splittedValue[0]) {
-    case 'borrower': {
-      switch (splittedValue[2]) {
-        case 'personal':
-          return (
-            <AutoForm
-              key={value}
-              inputs={getBorrowerInfoArray({
-                ...props,
-                borrowerId: splittedValue[1],
-              })}
-              formClasses="user-form"
-              docId={splittedValue[1]}
-              updateFunc="updateBorrower"
-              pushFunc="pushBorrowerValue"
-              popFunc="popBorrowerValue"
-              doc={props.borrowers.find(b => b._id === splittedValue[1])}
-              disabled={!modify}
-              noPlaceholders
-              admin
-            />
-          );
-        case 'finance': {
-          return (
-            <AutoForm
-              key={value}
-              inputs={getBorrowerFinanceArray({
-                ...props,
-                borrowerId: splittedValue[1],
-              })}
-              borrowers={props.borrowers}
-              docId={splittedValue[1]}
-              updateFunc="updateBorrower"
-              pushFunc="pushBorrowerValue"
-              popFunc="popBorrowerValue"
-              doc={props.borrowers.find(b => b._id === splittedValue[1])}
-              disabled={!modify}
-              noPlaceholders
-              admin
-            />
-          );
-        }
-        case 'files': {
-          return null;
-        }
-        default:
-          throw new Error('invalid form id value');
-      }
-    }
-    case 'loan': {
+  case 'borrower': {
+    switch (splittedValue[2]) {
+    case 'personal':
       return (
-        <div>
-          <AutoForm
-            key={`${value}1`}
-            inputs={getPropertyLoanArray(props)}
-            docId={props.loan._id}
-            updateFunc="updateLoan"
-            pushFunc="pushLoanValue"
-            popFunc="popLoanValue"
-            doc={props.loan}
-            disabled={!modify}
-            noPlaceholders
-            admin
-          />
-          <AutoForm
-            key={`${value}2`}
-            inputs={getPropertyArray(props)}
-            docId={props.property._id}
-            updateFunc="updateProperty"
-            pushFunc="pushPropertyValue"
-            popFunc="popPropertyValue"
-            doc={props.property}
-            disabled={!modify}
-            noPlaceholders
-            admin
-          />
-        </div>
-      );
-    }
-    case 'files':
-      return (
-        <FilesVerification
-          loan={props.loan}
-          borrowers={props.borrowers}
-          property={props.property}
+        <AutoForm
+          key={value}
+          inputs={getBorrowerInfoArray({
+            ...props,
+            borrowerId: splittedValue[1],
+          })}
+          formClasses="user-form"
+          docId={splittedValue[1]}
+          updateFunc="updateBorrower"
+          pushFunc="pushBorrowerValue"
+          popFunc="popBorrowerValue"
+          doc={props.borrowers.find(b => b._id === splittedValue[1])}
+          disabled={!modify}
+          noPlaceholders
+          admin
         />
       );
-    case 'closing':
+    case 'finance': {
       return (
-        <ClosingVerification
-          loan={props.loan}
+        <AutoForm
+          key={value}
+          inputs={getBorrowerFinanceArray({
+            ...props,
+            borrowerId: splittedValue[1],
+          })}
           borrowers={props.borrowers}
-          property={props.property}
+          docId={splittedValue[1]}
+          updateFunc="updateBorrower"
+          pushFunc="pushBorrowerValue"
+          popFunc="popBorrowerValue"
+          doc={props.borrowers.find(b => b._id === splittedValue[1])}
+          disabled={!modify}
+          noPlaceholders
+          admin
         />
       );
+    }
+    case 'files': {
+      return null;
+    }
     default:
       throw new Error('invalid form id value');
+    }
+  }
+  case 'loan': {
+    return (
+      <div>
+        <AutoForm
+          key={`${value}1`}
+          inputs={getPropertyLoanArray(props)}
+          docId={props.loan._id}
+          updateFunc="updateLoan"
+          pushFunc="pushLoanValue"
+          popFunc="popLoanValue"
+          doc={props.loan}
+          disabled={!modify}
+          noPlaceholders
+          admin
+        />
+        <AutoForm
+          key={`${value}2`}
+          inputs={getPropertyArray(props)}
+          docId={props.property._id}
+          updateFunc="updateProperty"
+          pushFunc="pushPropertyValue"
+          popFunc="popPropertyValue"
+          doc={props.property}
+          disabled={!modify}
+          noPlaceholders
+          admin
+        />
+      </div>
+    );
+  }
+  case 'files':
+    return (
+      <FilesVerification
+        loan={props.loan}
+        borrowers={props.borrowers}
+        property={props.property}
+      />
+    );
+  case 'closing':
+    return (
+      <ClosingVerification
+        loan={props.loan}
+        borrowers={props.borrowers}
+        property={props.property}
+      />
+    );
+  default:
+    throw new Error('invalid form id value');
   }
 };
 
@@ -175,10 +175,7 @@ const reduceToPercent = (formArray, validationArray) =>
 
 const getPercent = (props) => {
   const percentages = [
-    reduceToPercent(
-      getPropertyLoanArray(props),
-      props.loan.adminValidation,
-    ),
+    reduceToPercent(getPropertyLoanArray(props), props.loan.adminValidation),
   ];
 
   percentages.push(reduceToPercent(getPropertyArray(props), props.property.adminValidation));

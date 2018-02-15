@@ -105,12 +105,12 @@ T.defaultProps = {
 
 export const IntlDate = (props) => {
   switch (props.type) {
-    case 'time':
-      return <FormattedTime {...props} />;
-    case 'relative':
-      return <FormattedRelative {...props} />;
-    default:
-      return <FormattedDate {...props} />;
+  case 'time':
+    return <FormattedTime {...props} />;
+  case 'relative':
+    return <FormattedRelative {...props} />;
+  default:
+    return <FormattedDate {...props} />;
   }
 };
 
@@ -121,9 +121,9 @@ export const IntlNumber = (props) => {
   }
 
   switch (props.type) {
-    case 'plural':
-      return <FormattedPlural {...props} />;
-    default:
-      return <FormattedNumber {...props} />;
+  case 'plural':
+    return <FormattedPlural {...props} />;
+  default:
+    return <FormattedNumber {...props} />;
   }
 };

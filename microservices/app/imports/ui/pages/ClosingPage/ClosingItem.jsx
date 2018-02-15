@@ -6,9 +6,7 @@ import { Uploader, FileStatusIcon } from 'core/components/UploaderArray';
 import { CLOSING_STEPS_STATUS, CLOSING_STEPS_TYPE } from 'core/api/constants';
 
 const ClosingItem = ({ step, loan, disabled }) => {
-  const {
-    type, title, description, status, error, id,
-  } = step;
+  const { type, title, description, status, error, id } = step;
 
   if (type === CLOSING_STEPS_TYPE.UPLOAD) {
     return (

@@ -16,7 +16,7 @@ import AdminRouter from './AdminRouter';
  *
  * @return {type} undefined
  */
-const start = testElement => {
+const start = (testElement) => {
   // Initial injected html done in server startup index.js
   const loader = document.getElementById('inject-loader-wrapper');
   const loader2 = document.getElementById('loading-text');

@@ -123,13 +123,9 @@ class ZipAutoComplete extends Component {
   };
 
   render() {
+    const { searchText, data, saving, isValid } = this.state;
     const {
-      searchText, data, saving, isValid,
-    } = this.state;
-    const {
-      inputProps: {
-        disabled, style, label, placeholder,
-      },
+      inputProps: { disabled, style, label, placeholder },
       admin,
     } = this.props;
 

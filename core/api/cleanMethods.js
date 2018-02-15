@@ -17,9 +17,7 @@ const methods = {
 // Passed to all methods, shows a Bert error when it happens
 const handleResult = (result, bertObject) => {
   if (Meteor.isClient && !!bertObject) {
-    const {
-      delay, title, message, type, style,
-    } = bertObject;
+    const { delay, title, message, type, style } = bertObject;
     if (delay) {
       Bert.defaults.hideDelay = delay;
     }

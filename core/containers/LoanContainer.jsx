@@ -16,12 +16,7 @@ const loanWrapper = (WrappedComponent) => {
     }
 
     getChildContext() {
-      const {
-        loan,
-        loanBorrowers,
-        loanOffers,
-        loanProperty,
-      } = this.state;
+      const { loan, loanBorrowers, loanOffers, loanProperty } = this.state;
 
       return {
         loan,
@@ -36,9 +31,7 @@ const loanWrapper = (WrappedComponent) => {
     }
 
     getData = (props) => {
-      const {
-        loans, borrowers, properties, offers, ...rest
-      } = props;
+      const { loans, borrowers, properties, offers, ...rest } = props;
 
       // match has to be passed to children
       const { loanId } = props.match.params;
@@ -49,15 +42,12 @@ const loanWrapper = (WrappedComponent) => {
       let loanProperty = {};
 
       if (loanId) {
-        loan =
-          loans &&
-          loans.find(loan => loan._id === loanId);
+        loan = loans && loans.find(loan => loan._id === loanId);
         loanBorrowers =
           loan &&
           loan.borrowerIds.map(borrowerId =>
             borrowers.find(borrower => borrower._id === borrowerId));
-        loanOffers =
-          offers && offers.filter(offer => offer.loanId === loanId);
+        loanOffers = offers && offers.filter(offer => offer.loanId === loanId);
         loanProperty =
           properties &&
           properties.find((property) => {

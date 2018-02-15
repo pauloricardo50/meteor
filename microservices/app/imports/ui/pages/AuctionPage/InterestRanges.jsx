@@ -41,8 +41,8 @@ const InterestRanges = ({ offers, style }) => {
       >
         <T id="InterestRanges.title" />
       </h3>
-      {Object.keys(rates).map(rate =>
-        (<div
+      {Object.keys(rates).map(rate => (
+        <div
           className="flex"
           style={{
             justifyContent: 'space-between',
@@ -59,8 +59,8 @@ const InterestRanges = ({ offers, style }) => {
             {' - '}
             <IntlNumber value={Math.max(...rates[rate])} format="percentage" />
           </span>
-        </div>),
-      )}
+        </div>
+      ))}
     </div>
   );
 };

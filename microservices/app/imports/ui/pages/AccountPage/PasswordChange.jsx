@@ -46,25 +46,38 @@ export default class PasswordChange extends Component {
   };
 
   handleSubmit = () => {
-    Accounts.changePassword(this.state.oldPassword, this.state.newPassword, err => {
-      if (err) {
-        console.log(err);
-        // TODO
-      } else {
-        this.handleClose();
-      }
-    });
+    Accounts.changePassword(
+      this.state.oldPassword,
+      this.state.newPassword,
+      (err) => {
+        if (err) {
+          console.log(err);
+          // TODO
+        } else {
+          this.handleClose();
+        }
+      },
+    );
   };
 
   render() {
-    const { oldPassword, newPassword, newPassword2, close, isValid } = this.state;
+    const {
+      oldPassword,
+      newPassword,
+      newPassword2,
+      close,
+      isValid,
+    } = this.state;
 
     return (
       <DialogSimple
         title={<T id="PasswordChange.dialogTitle" />}
         label={<T id="PasswordChange.change" />}
         actions={[
-          <Button label={<T id="general.cancel" />} onClick={this.handleClose} />,
+          <Button
+            label={<T id="general.cancel" />}
+            onClick={this.handleClose}
+          />,
           <Button
             label={<T id="general.ok" />}
             primary

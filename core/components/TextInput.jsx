@@ -11,50 +11,48 @@ import { swissFrancMask, percentMask } from '../utils/textMasks';
 import { toNumber } from '../utils/conversionFunctions';
 import constants from '../config/constants';
 
-const getDefaults = ({
-  type, id, onChange, value,
-}) => {
+const getDefaults = ({ type, id, onChange, value }) => {
   switch (type) {
-    case 'money':
-      return {
-        onChangeHandler: event => onChange(id, toNumber(event.target.value)),
-        showMask: true,
-        mask: swissFrancMask,
-        placeholder: constants.getCurrency(),
-        value,
-      };
-    case 'percent':
-      return {
-        onChangeHandler: event =>
-          onChange(
-            id,
-            Math.round(parseFloat(event.target.value) * 100) / 10000,
-          ),
-        showMask: true,
-        mask: percentMask,
-        placeholder: '%',
-        value: (value * 100).toFixed(2),
-      };
-    case 'number':
-      return {
-        onChangeHandler: event => onChange(id, toNumber(event.target.value)),
-        showMask: false,
-        value,
-      };
-    case 'date':
-      return {
-        onChangeHandler: undefined,
-        showMask: false,
-        value: '',
-      };
-    default:
-      return {
-        // Pass event as third argument, for some components which need it
-        // like react-autosuggest
-        onChangeHandler: event => onChange(id, event.target.value, event),
-        showMask: false,
-        value,
-      };
+  case 'money':
+    return {
+      onChangeHandler: event => onChange(id, toNumber(event.target.value)),
+      showMask: true,
+      mask: swissFrancMask,
+      placeholder: constants.getCurrency(),
+      value,
+    };
+  case 'percent':
+    return {
+      onChangeHandler: event =>
+        onChange(
+          id,
+          Math.round(parseFloat(event.target.value) * 100) / 10000,
+        ),
+      showMask: true,
+      mask: percentMask,
+      placeholder: '%',
+      value: (value * 100).toFixed(2),
+    };
+  case 'number':
+    return {
+      onChangeHandler: event => onChange(id, toNumber(event.target.value)),
+      showMask: false,
+      value,
+    };
+  case 'date':
+    return {
+      onChangeHandler: undefined,
+      showMask: false,
+      value: '',
+    };
+  default:
+    return {
+      // Pass event as third argument, for some components which need it
+      // like react-autosuggest
+      onChangeHandler: event => onChange(id, event.target.value, event),
+      showMask: false,
+      value,
+    };
   }
 };
 
