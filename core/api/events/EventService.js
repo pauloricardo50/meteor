@@ -7,6 +7,7 @@ export class EventService {
   constructor({ emmitter }) {
     this.emmitter = emmitter;
     this.disabled = {};
+    this.addErrorListener();
   }
 
   emit(eventName, params) {
@@ -52,6 +53,14 @@ export class EventService {
     this.disabled[category] = false;
   }
 
+  addErrorListener() {
+    this.addListener('error', (error) => {
+      console.log('An error occured in an event listener:');
+      console.log(error);
+      throw error;
+    });
+  }
+
   static logEmittedEvent(eventName, params) {
     if (IS_LOGGING && Meteor.isDevelopment) {
       console.log(`Event "${eventName}" triggered with params:`);
@@ -70,12 +79,4 @@ export class EventService {
 }
 
 const defaultEmmitter = new EventEmitter();
-const Service = new EventService({ defaultEmmitter });
-
-Service.addListener('error', (error) => {
-  console.log('An error occured in an event listener:');
-  console.log(error);
-  throw error;
-});
-
-export default Service;
+export default new EventService({ defaultEmmitter });
