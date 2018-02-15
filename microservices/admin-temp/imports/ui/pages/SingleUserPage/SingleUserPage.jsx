@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Meteor } from "meteor/meteor";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import { Meteor } from 'meteor/meteor';
+import PropTypes from 'prop-types';
 
 import moment from 'moment';
 
@@ -29,21 +29,22 @@ export default class SingleUserPage extends Component {
             <section className="mask1">
                 <h1>{user.emails[0].address}</h1>
                 <p className="secondary" style={styles.createdAt}>
-                    Créé le {moment(user.createdAt).format('D MMM YY à HH:mm:ss')}
+                    Créé le{' '}
+                    {moment(user.createdAt).format('D MMM YY à HH:mm:ss')}
                 </p>
 
                 <h3>Demandes de prêt</h3>
-                {loans && loans.map(loan => (
-                    <Loan
-                        loan={loan}
-                        key={loan._id}
-                        history={history}
-                        borrowers={loan.borrowersLink}
-                        property={loan.propertyLink}
-                    />
-                ))}
+                {loans &&
+                    loans.map(loan => (
+                        <Loan
+                            loan={loan}
+                            key={loan._id}
+                            history={history}
+                            borrowers={loan.borrowersLink}
+                            property={loan.propertyLink}
+                        />
+                    ))}
             </section>
         );
     }
 }
-
