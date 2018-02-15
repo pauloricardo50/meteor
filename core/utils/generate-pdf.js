@@ -52,4 +52,5 @@ const handler = ({ component, props, fileName }, promise) => {
   }
 };
 
-export const generateComponentAsPDF = options => new Promise((resolve, reject) => handler(options, { resolve, reject }));
+export const generateComponentAsPDF = options =>
+  new Promise((resolve, reject) => handler(options, { resolve, reject }));

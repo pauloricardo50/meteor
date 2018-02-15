@@ -13,10 +13,7 @@ const styles = {
 };
 
 const DashboardLastSteps = props => (
-  <DashboardItem
-    style={styles.div}
-    title={<T id="DashboardLastSteps.title" />}
-  >
+  <DashboardItem style={styles.div} title={<T id="DashboardLastSteps.title" />}>
     <h3 className="text-center">
       <IntlDate
         value={props.loan.general.wantedClosingDate}
@@ -38,10 +35,7 @@ const DashboardLastSteps = props => (
       </span>
       <br />
       <span>
-        <T
-          id="DashboardLastSteps.progress"
-          values={{ value: '0', total: 9 }}
-        />
+        <T id="DashboardLastSteps.progress" values={{ value: '0', total: 9 }} />
       </span>
     </div>
     <br />
@@ -51,10 +45,7 @@ const DashboardLastSteps = props => (
       </span>
       <br />
       <span>
-        <T
-          id="DashboardLastSteps.progress"
-          values={{ value: '0', total: 7 }}
-        />
+        <T id="DashboardLastSteps.progress" values={{ value: '0', total: 7 }} />
       </span>
     </div>
   </DashboardItem>
