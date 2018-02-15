@@ -4,10 +4,10 @@ import moment from 'moment';
 
 import AdminNewOffer from '/imports/ui/components/AdminNewOffer';
 import ConfirmMethod from './ConfirmMethod';
-import { deleteOffer } from 'core/api/offers/methods';
 import ConditionsButton from 'core/components/ConditionsButton';
 import { toMoney } from 'core/utils/conversionFunctions';
 import { IntlNumber } from 'core/components/Translation';
+import cleanMethod from 'core/api/cleanMethods';
 
 export default class OffersTab extends Component {
   constructor(props) {
@@ -128,7 +128,9 @@ export default class OffersTab extends Component {
                   <ConfirmMethod
                     label="Supprimer"
                     keyword="SUPPRIMER"
-                    method={cb => deleteOffer.call({ id: o._id }, cb)}
+                    method={cb =>
+                      cleanMethod('deleteOffer', { id: o._id }).then(cb)
+                    }
                   />
                 </div>
               )}
