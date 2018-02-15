@@ -6,7 +6,7 @@ import { Factory } from 'meteor/dburles:factory';
 import { stubCollections } from 'core/utils/testHelpers';
 import sinon from 'sinon';
 
-import Borrowers from '../borrowers';
+import Borrowers from '../../borrowers';
 
 import {
   insertBorrower,

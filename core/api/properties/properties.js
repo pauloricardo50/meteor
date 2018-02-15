@@ -241,10 +241,6 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  pictures: {
-    type: Array,
-    optional: true,
-  },
   name: {
     type: String,
     optional: true,

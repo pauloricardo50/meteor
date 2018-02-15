@@ -6,7 +6,7 @@ import { stubCollections } from 'core/utils/testHelpers';
 import sinon from 'sinon';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import Comparators from '../comparators';
+import Comparators from '../../comparators';
 
 import {
   insertComparator,

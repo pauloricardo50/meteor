@@ -4,7 +4,7 @@ import { check, Match } from 'meteor/check';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
-import rateLimit from '../../utils/rate-limit.js';
+import rateLimit from '../../../utils/rate-limit.js';
 
 Meteor.methods({
   doesUserExist({ email }) {
@@ -33,7 +33,7 @@ Meteor.methods({
 
 // Create a partner User
 export const createPartner = new ValidatedMethod({
-  name: 'users.createPartner',
+  name: 'createPartner',
   mixins: [CallPromiseMixin],
   validate({ options }) {
     check(options, Object);
@@ -59,17 +59,6 @@ export const createPartner = new ValidatedMethod({
       // Accounts.sendEnrollmentEmail(id, options.email);
     }
   },
-});
-
-export const createUser = new ValidatedMethod({
-  name: 'users.create',
-  mixins: [CallPromiseMixin],
-  validate({ options }) {
-    check(options, Object);
-    check(options.email, String);
-    check(options.password, String);
-  },
-  run({ options }) {},
 });
 
 rateLimit({

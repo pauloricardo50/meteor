@@ -3,12 +3,12 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
-import rateLimit from '../../utils/rate-limit.js';
+import rateLimit from '../../../utils/rate-limit.js';
 
-import Borrowers from './borrowers';
+import Borrowers from '../borrowers';
 
 export const insertBorrower = new ValidatedMethod({
-  name: 'borrowers.insert',
+  name: 'insertBorrower',
   mixins: [CallPromiseMixin],
   validate() {},
   run({ object, userId }) {
@@ -22,7 +22,7 @@ export const insertBorrower = new ValidatedMethod({
 
 // Lets you set an entire object in the document
 export const updateBorrower = new ValidatedMethod({
-  name: 'borrowers.update',
+  name: 'updateBorrower',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
@@ -34,7 +34,7 @@ export const updateBorrower = new ValidatedMethod({
 
 // Lets you push a value to an array
 export const pushBorrowerValue = new ValidatedMethod({
-  name: 'borrowers.pushValue',
+  name: 'pushBorrowerValue',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
@@ -46,7 +46,7 @@ export const pushBorrowerValue = new ValidatedMethod({
 
 // Lets you pop a value from the end of an array
 export const popBorrowerValue = new ValidatedMethod({
-  name: 'borrowers.popValue',
+  name: 'popBorrowerValue',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
@@ -57,7 +57,7 @@ export const popBorrowerValue = new ValidatedMethod({
 });
 
 export const deleteBorrower = new ValidatedMethod({
-  name: 'borrowers.delete',
+  name: 'deleteBorrower',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);

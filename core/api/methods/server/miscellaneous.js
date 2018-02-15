@@ -30,7 +30,7 @@ Meteor.methods({
 });
 
 export const downloadPDF = new ValidatedMethod({
-  name: 'pdf.download',
+  name: 'downloadPDF',
   validate({ loanId, type }) {
     check(loanId, String);
     check(type, String);

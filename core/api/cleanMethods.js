@@ -1,18 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
-import * as loanMethods from './loans/methods';
-import * as offerMethods from './offers/methods';
-import * as borrowerMethods from './borrowers/methods';
-import * as comparatorMethods from './comparators/methods';
-import * as propertyMethods from './properties/methods';
-
-const methods = {
-  ...loanMethods,
-  ...offerMethods,
-  ...borrowerMethods,
-  ...comparatorMethods,
-  ...propertyMethods,
-};
 
 // Passed to all methods, shows a Bert error when it happens
 const handleResult = (result, bertObject) => {
@@ -56,12 +43,7 @@ const handleError = (error) => {
 // A wrapper method that displays an error if it occurs
 const cleanMethod = (name, params, bertObject) => {
   console.log('cleanmethod!', name, params);
-  if (methods[name]) {
-    return methods[name]
-      .callPromise(params)
-      .then(result => handleResult(result, bertObject))
-      .catch(handleError);
-  }
+
   return new Promise((resolve, reject) => {
     Meteor.call(name, params, (error, result) => {
       if (error) {
