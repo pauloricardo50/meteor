@@ -10,7 +10,7 @@ import Borrowers from 'core/api/borrowers/borrowers';
 import AWS from 'aws-sdk';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { isAllowed } from '../fileMethods';
+import { isAllowed } from '../methods';
 
 describe('files', () => {
   describe('isAllowed', () => {

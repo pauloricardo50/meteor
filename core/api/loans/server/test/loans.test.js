@@ -7,8 +7,8 @@ import { stubCollections } from 'core/utils/testHelpers';
 import sinon from 'sinon';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { AUCTION_STATUS } from '../../constants';
-import Loans from '../loans';
+import { AUCTION_STATUS } from '../../../constants';
+import Loans from '../../loans';
 
 import {
   insertLoan,

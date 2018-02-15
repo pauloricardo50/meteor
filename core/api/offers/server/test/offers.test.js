@@ -6,7 +6,7 @@ import { Factory } from 'meteor/dburles:factory';
 import { stubCollections } from 'core/utils/testHelpers';
 import sinon from 'sinon';
 
-import Offers from '../offers';
+import Offers from '../../offers';
 
 import {
   insertOffer,

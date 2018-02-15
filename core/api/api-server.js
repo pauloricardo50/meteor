@@ -1,36 +1,36 @@
 import './adminActions/server/publications';
-import './adminActions/methods';
+import './adminActions/server/methods';
 
 import './borrowers/server/publications';
-import './borrowers/methods';
+import './borrowers/server/methods';
 
 import './comparators/server/publications';
-import './comparators/methods';
+import './comparators/server/methods';
 
 import './loans/server/publications';
-import './loans/methods';
+import './loans/server/methods';
 
 import './offers/server/publications';
-import './offers/methods';
+import './offers/server/methods';
 
 import './properties/server/publications';
-import './properties/methods';
+import './properties/server/methods';
 
 import './users/server/publications';
-import './users/methods';
+import './users/server/methods';
 import './users/server/accounts-server-config';
 
 import './methods/server';
-import './methods/methods';
+import './methods/server/methods';
 
 import './factories';
 
 import './loans/loans';
 
-import './server/jobs/jobs';
-import './server/jobs/methods';
+import './jobs/server/jobs';
+import './jobs/server/methods';
 
-import './files/fileMethods';
+import './files/server/methods';
 import './files/meteor-slingshot-server';
 
 import '../utils/logismata/methods';
