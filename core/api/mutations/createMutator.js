@@ -28,7 +28,7 @@ export const validateMutationOptions = ({ name, params }) => {
       if (!type) {
         throw new Meteor.Error(
           INVALID_MUTATION_OPTIONS,
-          `you have to provide a type for parameter: ${param}`,
+          `you have to provide a type for parameter: "${param}" in ${name}`,
         );
       }
     });
