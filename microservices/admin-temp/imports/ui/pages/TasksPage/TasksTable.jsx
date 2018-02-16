@@ -1,14 +1,14 @@
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import { Roles } from "meteor/alanning:roles";
-import moment from "moment";
-import Table from "core/components/Table";
-import TasksStatusDropdown from "./TasksStatusDropdown";
-import TasksUserContainer from "./TasksUsersContainer";
-import { T } from "core/components/Translation/";
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { Roles } from 'meteor/alanning:roles';
+import moment from 'moment';
+import Table from 'core/components/Table';
+import TasksStatusDropdown from './TasksStatusDropdown';
+import TasksUserContainer from './TasksUsersContainer';
+import { T } from 'core/components/Translation/';
 
 const styles = {
-    dropdownButtons: { display: "inline", width: "50%" }
+    dropdownButtons: { display: 'inline', width: '50%' }
 };
 
 export default class TasksTable extends Component {
@@ -30,37 +30,37 @@ export default class TasksTable extends Component {
 
     getColumnOptions = ({ showAssignee }) => {
         let columnOptions = [
-            { id: "#", style: { width: 32, textAlign: "left" } },
+            { id: '#', style: { width: 32, textAlign: 'left' } },
             {
                 id: <T id={`TasksTable.status`} />,
-                style: { textAlign: "left" }
+                style: { textAlign: 'left' }
             },
             {
                 id: <T id={`TasksTable.createdAt`} />,
-                style: { textAlign: "left" }
+                style: { textAlign: 'left' }
             },
             {
                 id: <T id={`TasksTable.updatedAt`} />,
-                style: { textAlign: "left" }
+                style: { textAlign: 'left' }
             },
             {
                 id: <T id={`TasksTable.dueAt`} />,
-                style: { textAlign: "left" }
+                style: { textAlign: 'left' }
             },
             {
                 id: <T id={`TasksTable.completedAt`} />,
-                style: { textAlign: "left" }
+                style: { textAlign: 'left' }
             }
         ];
         if (showAssignee) {
             columnOptions.push({
                 id: <T id={`TasksTable.asignedTo`} />,
-                style: { textAlign: "left" }
+                style: { textAlign: 'left' }
             });
         }
         columnOptions.push({
             id: <T id={`TasksTable.actions`} />,
-            style: { textAlign: "left" }
+            style: { textAlign: 'left' }
         });
         return columnOptions;
     };
@@ -69,17 +69,17 @@ export default class TasksTable extends Component {
         let columns = [
             index + 1,
             task.status,
-            moment(task.createdAt).format("D MMM YY à HH:mm:ss"),
-            moment(task.updatedAt).format("D MMM YY à HH:mm:ss"),
-            moment(task.dueAt).format("D MMM YY à HH:mm:ss"),
-            moment(task.completedAt).format("D MMM YY à HH:mm:ss")
+            moment(task.createdAt).format('D MMM YY à HH:mm:ss'),
+            moment(task.updatedAt).format('D MMM YY à HH:mm:ss'),
+            moment(task.dueAt).format('D MMM YY à HH:mm:ss'),
+            moment(task.completedAt).format('D MMM YY à HH:mm:ss')
         ];
         if (props.showAssignee) {
             columns.push(
                 (task.assignedUser &&
                     (task.assignedUser.username ||
                         task.assignedUser.emails[0].address.toString())) ||
-                    ""
+                    ''
             );
         }
         columns.push(

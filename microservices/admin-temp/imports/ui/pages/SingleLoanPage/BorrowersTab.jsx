@@ -1,7 +1,7 @@
-import React from "react";
-import queryString from "query-string";
-import Tabs from "core/components/Tabs";
-import SingleBorrowerTab from "./SingleBorrowerTab";
+import React from 'react';
+import queryString from 'query-string';
+import Tabs from 'core/components/Tabs';
+import SingleBorrowerTab from './SingleBorrowerTab';
 
 export default class BorrowersTab extends React.Component {
     constructor(props) {
@@ -13,7 +13,7 @@ export default class BorrowersTab extends React.Component {
     getTabs = props => {
         return props.borrowers.map(borrower => ({
             id: borrower._id,
-            label: borrower.firstName + " " + borrower.lastName,
+            label: borrower.firstName + ' ' + borrower.lastName,
             content: <SingleBorrowerTab {...props} borrower={borrower} />
         }));
     };
