@@ -23,14 +23,7 @@ export default class BorrowersTab extends React.Component {
         const { showObject } = this.state;
 
         const tabs = this.getTabs(this.props);
-        const initialTab = tabs.findIndex(
-            tab => tab.id === queryString.parse(this.props.location.search).tab
-        );
 
-        return (
-            <div>
-                <Tabs initialIndex={initialTab} tabs={tabs} />
-            </div>
-        );
+        return <Tabs tabs={tabs} />;
     }
 }

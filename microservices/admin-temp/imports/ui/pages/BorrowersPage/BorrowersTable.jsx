@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import moment from 'moment';
 import Table from 'core/components/Table';
-import { T } from '../../../core/components/Translation/';
+import { T } from 'core/components/Translation/';
 
 const columnOptions = [
     { id: '#', style: { width: 32, textAlign: 'left' } },
