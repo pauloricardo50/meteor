@@ -10,200 +10,212 @@ import TableBody from './TableBody';
 import TableFooter from './TableFooter';
 
 export default class Table extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [],
-      selected: [],
-      order: 'asc',
-      orderBy: 0,
-      rowsPerPage: 10,
-      page: 0,
-    };
-  }
-
-  componentDidMount() {
-    this.handleNewData(this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const currentLength = this.state.data.length;
-    const nextLength = nextProps.rows.length;
-    // Lazy check to see if data has different length
-    // FIXME should also check if all the data is the same, careful with sorting
-    if (nextLength !== currentLength) {
-      this.handleNewData(nextProps);
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: [],
+            selected: [],
+            order: 'asc',
+            orderBy: 0,
+            rowsPerPage: 10,
+            page: 0
+        };
     }
-    else if (this.state.data && nextProps.rows){
-     
-      const stateRows = this.state.data.map(row => JSON.stringify({columns: row.colums}));
-      const newPropsRows = nextProps.rows.map(row => JSON.stringify({columns: row.colums}));
-      
-      for(var row in  newPropsRows) {
-        if(!stateRows.includes(row)) {
-          this.handleNewData(nextProps); 
-           break;
+
+    componentDidMount() {
+        this.handleNewData(this.props);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const currentLength = this.state.data.length;
+        const nextLength = nextProps.rows.length;
+        // Lazy check to see if data has different length
+        // FIXME should also check if all the data is the same, careful with sorting
+        if (nextLength !== currentLength) {
+            this.handleNewData(nextProps);
+        } else if (this.state.data && nextProps.rows) {
+            let differentProps = false;
+            nextProps.rows.every(row => {
+                if (!this.state.data.includes(row)) {
+                    differentProps = true;
+                }
+            });
+
+            if (differentProps) {
+                this.handleNewData(nextProps);
+            }
         }
-     }
-    }
-    
-    // If pagination is currently going on, make sure it is still needed
-    if (currentLength > 10 && nextLength <= 10) {
-      this.setState({ page: 0 });
-    }
-  }
 
-  handleNewData = (props) => {
-    const { rows, columnOptions } = props;
-    // Make sure columns and rows are the same length
-    if (rows.length && columnOptions.length !== rows[0].columns.length) {
-      throw new Error('column length has to be correct in Table');
+        // If pagination is currently going on, make sure it is still needed
+        if (currentLength > 10 && nextLength <= 10) {
+            this.setState({ page: 0 });
+        }
     }
 
-    this.setState({ data: rows }, () => this.handleSort(this.state.orderBy));
-  };
+    handleNewData = props => {
+        const { rows, columnOptions } = props;
+        // Make sure columns and rows are the same length
+        if (rows.length && columnOptions.length !== rows[0].columns.length) {
+            throw new Error('column length has to be correct in Table');
+        }
 
-  handleSort = (columnNb) => {
-    const orderBy = columnNb;
-    let order = 'desc';
+        this.setState({ data: rows }, () =>
+            this.handleSort(this.state.orderBy)
+        );
+    };
 
-    if (this.state.orderBy === orderBy && this.state.order === 'desc') {
-      order = 'asc';
+    handleSort = columnNb => {
+        const orderBy = columnNb;
+        let order = 'desc';
+
+        if (this.state.orderBy === orderBy && this.state.order === 'desc') {
+            order = 'asc';
+        }
+
+        const data =
+            order === 'desc'
+                ? this.state.data.sort(
+                      (a, b) => (b[orderBy] < a[orderBy] ? -1 : 1)
+                  )
+                : this.state.data.sort(
+                      (a, b) => (a[orderBy] < b[orderBy] ? -1 : 1)
+                  );
+
+        this.setState({ data, order, orderBy });
+    };
+
+    handleSelect = rowId => {
+        const { selected } = this.state;
+        const selectedIndex = selected.indexOf(rowId);
+        let newSelected = [];
+
+        if (selectedIndex === -1) {
+            newSelected = newSelected.concat(selected, rowId);
+        } else if (selectedIndex === 0) {
+            newSelected = newSelected.concat(selected.slice(1));
+        } else if (selectedIndex === selected.length - 1) {
+            newSelected = newSelected.concat(selected.slice(0, -1));
+        } else if (selectedIndex > 0) {
+            newSelected = newSelected.concat(
+                selected.slice(0, selectedIndex),
+                selected.slice(selectedIndex + 1)
+            );
+        }
+
+        this.setState({ selected: newSelected }, () =>
+            this.props.onRowSelect(this.state.selected)
+        );
+    };
+
+    handleSelectAllClick = (event, checked) => {
+        if (checked) {
+            this.setState({ selected: this.state.data.map(n => n.id) });
+            return;
+        }
+        this.setState({ selected: [] });
+    };
+
+    handleChangePage = (_, page) => this.setState({ page });
+
+    handleChangeRowsPerPage = event =>
+        this.setState({ rowsPerPage: event.target.value });
+
+    isSelected = id => {
+        if (this.props.multiSelectable) {
+            return this.state.selected.indexOf(id) !== -1;
+        }
+
+        return this.props.selected === id;
+    };
+
+    render() {
+        const {
+            columnOptions,
+            selectable,
+            sortable,
+            selectAll,
+            style,
+            noIntl,
+            clickable
+        } = this.props;
+        const {
+            data,
+            rowsPerPage,
+            page,
+            selected,
+            order,
+            orderBy
+        } = this.state;
+        const rowCount = data.length;
+
+        return (
+            <div className="mui-table" style={style}>
+                <MuiTable>
+                    <TableHeader
+                        columnOptions={columnOptions}
+                        sortable={sortable}
+                        onSelectAll={this.handleSelectAll}
+                        onSort={this.handleSort}
+                        selectAll={selectAll}
+                        numSelected={selected ? selected.length : 0}
+                        rowCount={rowCount}
+                        noIntl={noIntl}
+                        order={order}
+                        orderBy={orderBy}
+                    />
+                    <TableBody
+                        data={data}
+                        selectalbe={selectable}
+                        columnOptions={columnOptions}
+                        page={page}
+                        rowsPerPage={rowsPerPage}
+                        clickable={clickable}
+                    />
+                    {rowCount > 20 && (
+                        <TableFooter
+                            rowCount={rowCount}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onChangePage={this.handleChangePage}
+                            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                        />
+                    )}
+                </MuiTable>
+                {data.length === 0 && (
+                    <h3
+                        className="secondary flex center"
+                        style={{ width: '100%', padding: 32 }}
+                    >
+                        <T id="Table.empty" />
+                    </h3>
+                )}
+            </div>
+        );
     }
-
-    const data =
-      order === 'desc'
-        ? this.state.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
-        : this.state.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1));
-
-    this.setState({ data, order, orderBy });
-  };
-
-  handleSelect = (rowId) => {
-    const { selected } = this.state;
-    const selectedIndex = selected.indexOf(rowId);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, rowId);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    this.setState({ selected: newSelected }, () =>
-      this.props.onRowSelect(this.state.selected),
-    );
-  };
-
-  handleSelectAllClick = (event, checked) => {
-    if (checked) {
-      this.setState({ selected: this.state.data.map(n => n.id) });
-      return;
-    }
-    this.setState({ selected: [] });
-  };
-
-  handleChangePage = (_, page) => this.setState({ page });
-
-  handleChangeRowsPerPage = event =>
-    this.setState({ rowsPerPage: event.target.value });
-
-  isSelected = (id) => {
-    if (this.props.multiSelectable) {
-      return this.state.selected.indexOf(id) !== -1;
-    }
-
-    return this.props.selected === id;
-  };
-
-  render() {
-    const {
-      columnOptions,
-      selectable,
-      sortable,
-      selectAll,
-      style,
-      noIntl,
-      clickable,
-    } = this.props;
-    const { data, rowsPerPage, page, selected, order, orderBy } = this.state;
-    const rowCount = data.length;
-
-    return (
-      <div className="mui-table" style={style}>
-        <MuiTable>
-          <TableHeader
-            columnOptions={columnOptions}
-            sortable={sortable}
-            onSelectAll={this.handleSelectAll}
-            onSort={this.handleSort}
-            selectAll={selectAll}
-            numSelected={selected ? selected.length : 0}
-            rowCount={rowCount}
-            noIntl={noIntl}
-            order={order}
-            orderBy={orderBy}
-          />
-          <TableBody
-            data={data}
-            selectalbe={selectable}
-            columnOptions={columnOptions}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            clickable={clickable}
-          />
-          {rowCount > 10 && (
-            <TableFooter
-              rowCount={rowCount}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onChangePage={this.handleChangePage}
-              onChangeRowsPerPage={this.handleChangeRowsPerPage}
-            />
-          )}
-        </MuiTable>
-        {data.length === 0 && (
-          <h3
-            className="secondary flex center"
-            style={{ width: '100%', padding: 32 }}
-          >
-            <T id="Table.empty" />
-          </h3>
-        )}
-      </div>
-    );
-  }
 }
 
 Table.propTypes = {
-  columnOptions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  rows: PropTypes.arrayOf(PropTypes.object).isRequired,
-  selectable: PropTypes.bool,
-  multiSelectable: PropTypes.bool,
-  selectAll: PropTypes.bool,
-  onRowSelect: PropTypes.func,
-  selected: PropTypes.string,
-  sortable: PropTypes.bool,
-  style: PropTypes.object,
-  noIntl: PropTypes.bool,
-  clickable: PropTypes.bool, // sets rows to change color on hover
+    columnOptions: PropTypes.arrayOf(PropTypes.object).isRequired,
+    rows: PropTypes.arrayOf(PropTypes.object).isRequired,
+    selectable: PropTypes.bool,
+    multiSelectable: PropTypes.bool,
+    selectAll: PropTypes.bool,
+    onRowSelect: PropTypes.func,
+    selected: PropTypes.string,
+    sortable: PropTypes.bool,
+    style: PropTypes.object,
+    noIntl: PropTypes.bool,
+    clickable: PropTypes.bool // sets rows to change color on hover
 };
 
 Table.defaultProps = {
-  selectable: false,
-  multiSelectable: false,
-  selectAll: false,
-  onRowSelect: () => {},
-  selected: undefined,
-  sortable: true,
-  style: {},
-  noIntl: false,
-  clickable: false,
+    selectable: false,
+    multiSelectable: false,
+    selectAll: false,
+    onRowSelect: () => {},
+    selected: undefined,
+    sortable: true,
+    style: {},
+    noIntl: false,
+    clickable: false
 };

@@ -4,7 +4,11 @@ import { Roles } from 'meteor/alanning:roles';
 import moment from 'moment';
 import Table from 'core/components/Table';
 import TasksStatusDropdown from './TasksStatusDropdown';
+<<<<<<< HEAD
 import TasksUserContainer from './TasksUsersContainer';
+=======
+import TasksUserWithData from './TasksUsersWithData';
+>>>>>>> 733e1f7da36ba6c9828562ed1068b279480cd770
 import { T } from 'core/components/Translation/';
 
 const styles = {
@@ -32,6 +36,7 @@ export default class TasksTable extends Component {
         let columnOptions = [
             { id: '#', style: { width: 32, textAlign: 'left' } },
             {
+<<<<<<< HEAD
                 id: <T id={`TasksTable.status`} />,
                 style: { textAlign: 'left' }
             },
@@ -50,10 +55,26 @@ export default class TasksTable extends Component {
             {
                 id: <T id={`TasksTable.completedAt`} />,
                 style: { textAlign: 'left' }
+=======
+                id: <T id={`TasksTable.status`} />
+            },
+            {
+                id: <T id={`TasksTable.createdAt`} />
+            },
+            {
+                id: <T id={`TasksTable.updatedAt`} />
+            },
+            {
+                id: <T id={`TasksTable.dueAt`} />
+            },
+            {
+                id: <T id={`TasksTable.completedAt`} />
+>>>>>>> 733e1f7da36ba6c9828562ed1068b279480cd770
             }
         ];
         if (showAssignee) {
             columnOptions.push({
+<<<<<<< HEAD
                 id: <T id={`TasksTable.asignedTo`} />,
                 style: { textAlign: 'left' }
             });
@@ -61,6 +82,13 @@ export default class TasksTable extends Component {
         columnOptions.push({
             id: <T id={`TasksTable.actions`} />,
             style: { textAlign: 'left' }
+=======
+                id: <T id={`TasksTable.asignedTo`} />
+            });
+        }
+        columnOptions.push({
+            id: <T id={`TasksTable.actions`} />
+>>>>>>> 733e1f7da36ba6c9828562ed1068b279480cd770
         });
         return columnOptions;
     };
@@ -68,7 +96,11 @@ export default class TasksTable extends Component {
     getColumns = ({ props, index, task }) => {
         let columns = [
             index + 1,
+<<<<<<< HEAD
             task.status,
+=======
+            <T id={`TasksStatusDropdown.${task.status}`} />,
+>>>>>>> 733e1f7da36ba6c9828562ed1068b279480cd770
             moment(task.createdAt).format('D MMM YY à HH:mm:ss'),
             moment(task.updatedAt).format('D MMM YY à HH:mm:ss'),
             moment(task.dueAt).format('D MMM YY à HH:mm:ss'),
@@ -91,7 +123,7 @@ export default class TasksTable extends Component {
                     taskStatus={task.status}
                     styles={styles.dropdownButtons}
                 />
-                <TasksUserContainer
+                <TasksUserWithData
                     {...props}
                     taskId={task._id}
                     taskUser={task.user}
@@ -119,14 +151,11 @@ export default class TasksTable extends Component {
     };
 
     render() {
-        if (!this.props.isLoading) {
-            return (
-                <Table
-                    columnOptions={this.state.columnOptions}
-                    rows={this.state.rows}
-                    noIntl
-                />
-            );
+        const { isLoading } = this.props;
+        const { columnOptions, rows } = this.state;
+
+        if (!isLoading) {
+            return <Table columnOptions={columnOptions} rows={rows} noIntl />;
         } else {
             return null;
         }
