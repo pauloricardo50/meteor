@@ -26,11 +26,11 @@ export default class BorrowersTable extends Component {
             id: borrower._id,
             columns: [
                 index + 1,
-                (borrower.firstName || '') + ' ' + (borrower.lastName || ''),
+                `${borrower.firstName} ${borrower.lastName}`,
                 moment(borrower.createdAt).format('D MMM YY à HH:mm:ss'),
                 moment(borrower.updatedAt).format('D MMM YY à HH:mm:ss')
             ]
-            //handleClick: () => this.props.history.push(`/borrowers/${borrower._id}`),
+            // handleClick: () => this.props.history.push(`/borrowers/${borrower._id}`),
         }));
         return this.rows;
     };
@@ -51,5 +51,6 @@ export default class BorrowersTable extends Component {
 }
 
 BorrowersTable.propTypes = {
-    history: PropTypes.objectOf(PropTypes.any).isRequired
+    isLoading: PropTypes.bool.isRequired,
+    data: PropTypes.arrayOf(PropTypes.object).isRequired
 };

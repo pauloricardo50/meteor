@@ -1,5 +1,4 @@
 import React from 'react';
-import { Tabs, Tab } from 'material-ui';
 import { T } from 'core/components/Translation/';
 
 import BorrowersTable from './BorrowersTable';
