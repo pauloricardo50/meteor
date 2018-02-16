@@ -342,9 +342,7 @@ export const cancelAuction = new ValidatedMethod({
 
             const loan = Loans.findOne(id);
             const email = loan.emails.find(e =>
-              e &&
-                e.emailId === 'auctionEnded' &&
-                e.scheduledAt >= new Date());
+              e && e.emailId === 'auctionEnded' && e.scheduledAt >= new Date());
             if (email) {
               cancelScheduledEmail.call('email.cancelScheduled', {
                 id: email._id,
