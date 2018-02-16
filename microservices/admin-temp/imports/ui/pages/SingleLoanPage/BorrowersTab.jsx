@@ -27,10 +27,6 @@ export default class BorrowersTab extends React.Component {
             tab => tab.id === queryString.parse(this.props.location.search).tab
         );
 
-        return (
-            <div>
-                <Tabs initialIndex={initialTab} tabs={tabs} />
-            </div>
-        );
+        return <Tabs initialIndex={initialTab} tabs={tabs} />;
     }
 }
