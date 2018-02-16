@@ -1,5 +1,5 @@
 import Security from './Security';
-import { LoanSecurity } from './CollectionSecurity';
+import LoanSecurity from './collections/LoanSecurity';
 
 class SecurityService extends Security {
     static get loans() {

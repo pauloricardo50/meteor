@@ -1,7 +1,11 @@
-import Security from './Security';
-import { Loans } from '..';
+import Security from '../security/Security';
+import { Loans } from '../..';
 
 class LoanSecurity {
+    static isAllowedToInsert() {
+        Security.checkLoggedIn();
+    }
+
     static isAllowedToUpdate(loanId) {
         if (Security.currentUserIsAdmin()) {
             return;
