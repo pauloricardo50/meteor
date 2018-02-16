@@ -6,45 +6,50 @@ import Table from 'core/components/Table';
 import { T } from '../../../core/components/Translation/';
 
 const columnOptions = [
-  { id: '#', style: { width: 32, textAlign: 'left' } },
-  { id: <T id={`BorrowersTable.name`} />, style: { textAlign: 'left' } },
-  { id: <T id={`BorrowersTable.createdAt`} />, style: { textAlign: 'left' } },
-  { id: <T id={`BorrowersTable.updatedAt`} />, style: { textAlign: 'left' } },
+    { id: '#', style: { width: 32, textAlign: 'left' } },
+    { id: <T id={`BorrowersTable.name`} /> },
+    { id: <T id={`BorrowersTable.createdAt`} /> },
+    { id: <T id={`BorrowersTable.updatedAt`} /> }
 ];
 
 export default class BorrowersTable extends Component {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.setupRows();
-  }
-
-  setupRows = () => {
-    const borrowers = this.props.data; 
-
-    this.rows = borrowers.map((borrower, index) => ({
-      id: borrower._id,
-      columns: [
-        index + 1,
-        (borrower.firstName || '') + ' ' + (borrower.lastName || ''),
-        moment(borrower.createdAt).format('D MMM YY à HH:mm:ss'),
-        moment(borrower.updatedAt).format('D MMM YY à HH:mm:ss'),
-      ],
-      //handleClick: () => this.props.history.push(`/borrowers/${borrower._id}`),
-    }));
-    return this.rows;
-  };
-
-  render() {
-    if (!this.props.isLoading) {
-      return <Table columnOptions={columnOptions} rows={this.setupRows(this.props)} noIntl />;
+        this.setupRows();
     }
-    else {
-      return null;
+
+    setupRows = () => {
+        const borrowers = this.props.data;
+
+        this.rows = borrowers.map((borrower, index) => ({
+            id: borrower._id,
+            columns: [
+                index + 1,
+                (borrower.firstName || '') + ' ' + (borrower.lastName || ''),
+                moment(borrower.createdAt).format('D MMM YY à HH:mm:ss'),
+                moment(borrower.updatedAt).format('D MMM YY à HH:mm:ss')
+            ]
+            //handleClick: () => this.props.history.push(`/borrowers/${borrower._id}`),
+        }));
+        return this.rows;
+    };
+
+    render() {
+        const { isLoading } = this.props;
+        if (isLoading) {
+            return null;
+        }
+        return (
+            <Table
+                columnOptions={columnOptions}
+                rows={this.setupRows(this.props)}
+                noIntl
+            />
+        );
     }
-  }
 }
 
 BorrowersTable.propTypes = {
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
+    history: PropTypes.objectOf(PropTypes.any).isRequired
 };
