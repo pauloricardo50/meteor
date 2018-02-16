@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { check, Match } from 'meteor/check';
 
 const INVALID_MUTATION_OPTIONS = 'INVALID_MUTATION_OPTIONS';
+const MUTATION_ERROR = 'MUTATION_ERROR';
 
 export const beforeLogger = (callParameters, name) => {
   if (Meteor.isDevelopment) {
@@ -65,7 +66,13 @@ const createMutator = (options, functionBody) => {
     [name](callParameters = {}) {
       beforeLogger(callParameters, name);
       checkParams(callParameters, params, name);
-      const result = functionBody(callParameters);
+      let result;
+      try {
+        result = functionBody(callParameters);
+        // Emit event here
+      } catch (error) {
+        throw new Meteor.Error(MUTATION_ERROR, `Error in ${name}`, error);
+      }
       afterLogger(result, name);
     },
   });
