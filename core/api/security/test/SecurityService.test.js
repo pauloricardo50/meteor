@@ -44,6 +44,8 @@ describe('Security service', () => {
 
     it('should throw if an inexistent userId was given', () => {
       expect(() => SecurityService.checkRole('invalid-id', 'user')).to.throw(SECURITY_ERROR);
+      expect(() => SecurityService.checkRole(123, 'user')).to.throw(SECURITY_ERROR);
+      expect(() => SecurityService.checkRole({}, 'user')).to.throw(SECURITY_ERROR);
     });
   });
 
