@@ -6,10 +6,6 @@ import { LOAN_STATUS, AUCTION_STATUS } from '../constants';
 import { getAuctionEndTime } from '../../utils/loanFunctions';
 
 class LoanServiceModel {
-  constructor({ dispatcher }) {
-    this.dispatcher = dispatcher;
-  }
-
   insert = ({ object, userId }) =>
     Loans.insert({
       ...object,
@@ -17,15 +13,23 @@ class LoanServiceModel {
       userId: userId === undefined ? Meteor.userId() : userId,
     });
 
-  askVerification = ({ id }) => {
-    const loan = Loans.findOne(id);
+  update = ({ loanId, object }) => Loans.update(loanId, { $set: object });
+
+  remove = ({ loanId }) => Loans.remove(loanId);
+
+  // TODO: make sure step is really done
+  incrementStep = ({ loanId }) =>
+    Loans.update(loanId, { $inc: { 'logic.step': 1 } });
+
+  askVerification = ({ loanId }) => {
+    const loan = Loans.findOne(loanId);
 
     if (loan.logic.verification.requested) {
       // Don't do anything if this loan is already in requested mode
       return false;
     }
 
-    return Loans.update(id, {
+    return Loans.update(loanId, {
       $set: {
         'logic.verification.requested': true,
         'logic.verification.requestedTime': new Date(),
@@ -33,15 +37,15 @@ class LoanServiceModel {
     });
   };
 
-  startAuction = ({ id }) => {
-    const loan = Loans.findOne(id);
+  startAuction = ({ loanId }) => {
+    const loan = Loans.findOne(loanId);
 
     if (loan.logic.auction.status !== AUCTION_STATUS.NONE) {
       // Don't do anything if this auction has already started or ended
       return false;
     }
 
-    return Loans.update(id, {
+    return Loans.update(loanId, {
       $set: {
         'logic.auction.status': AUCTION_STATUS.STARTED,
         'logic.auction.startTime': moment().toDate(),
@@ -50,8 +54,8 @@ class LoanServiceModel {
     });
   };
 
-  endAuction = ({ id }) => {
-    const loan = Loans.findOne(id);
+  endAuction = ({ loanId }) => {
+    const loan = Loans.findOne(loanId);
 
     // This method is called in the future (through a job),
     // so make sure that it isn't
@@ -68,8 +72,8 @@ class LoanServiceModel {
     });
   };
 
-  cancelAuction = ({ id }) =>
-    this.update(id, {
+  cancelAuction = ({ loanId }) =>
+    this.update(loanId, {
       $set: {
         'logic.auction.endTime': undefined,
         'logic.auction.status': '',
@@ -77,8 +81,8 @@ class LoanServiceModel {
       },
     });
 
-  confirmClosing = ({ id, object }) =>
-    Loans.update(id, {
+  confirmClosing = ({ loanId, object }) =>
+    Loans.update(loanId, {
       $set: {
         status: LOAN_STATUS.DONE,
         ...object,
@@ -86,9 +90,7 @@ class LoanServiceModel {
     });
 }
 
-const LoanService = new LoanServiceModel({
-  // Add Dispatcher here
-});
+const LoanService = new LoanServiceModel({});
 
 export { LoanServiceModel };
 export default LoanService;
