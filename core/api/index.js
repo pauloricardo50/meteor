@@ -6,3 +6,4 @@ export { default as Comparators } from './comparators';
 export { default as AdminActions } from './adminActions';
 export { default as Security } from './security';
 export * as constants from './constants';
+export * from './mutations';
