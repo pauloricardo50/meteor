@@ -6,7 +6,7 @@ export default class BorrowersTab extends React.Component {
     getTabs = props => {
         return props.borrowers.map(borrower => ({
             id: borrower._id,
-            label: borrower.firstName + ' ' + borrower.lastName,
+            label: `${borrower.firstName} ${borrower.lastName}`,
             content: <SingleBorrowerTab {...props} borrower={borrower} />
         }));
     };
@@ -14,6 +14,6 @@ export default class BorrowersTab extends React.Component {
     render() {
         const tabs = this.getTabs(this.props);
 
-        return <Tabs Ptabs={tabs} />;
+        return <Tabs tabs={tabs} />;
     }
 }

@@ -5,71 +5,80 @@ import Button from 'core/components/Button';
 import TextField from 'core/components/Material/TextField';
 
 export default class ConfirmMethod extends Component {
-  state = {
-    open: false,
-    text: '',
-  };
+    state = {
+        open: false,
+        text: ''
+    };
 
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
+    handleOpen = () => {
+        this.setState({ open: true });
+    };
 
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
-  handleSubmit = () => {
-    this.props.method((err, res) => {
-      if (!err) {
+    handleClose = () => {
         this.setState({ open: false });
-      }
-    });
-  };
+    };
 
-  handleChange = event => {
-    this.setState({
-      text: event.target.value,
-    });
-  };
+    handleSubmit = () => {
+        this.props.method(err => {
+            if (!err) {
+                this.setState({ open: false });
+            }
+        });
+    };
 
-  render() {
-    const actions = [
-      <Button label="Annuler" primary onClick={this.handleClose} />,
-      <Button
-        label="Okay"
-        primary
-        disabled={this.state.text !== this.props.keyword}
-        onClick={this.handleSubmit}
-      />,
-    ];
+    handleChange = event => {
+        this.setState({
+            text: event.target.value
+        });
+    };
 
-    return (
-      <div>
-        <Button
-          raised
-          label={this.props.label}
-          onClick={this.handleOpen}
-          style={this.props.style}
-          disabled={this.props.disabled}
-        />
-        <Dialog
-          title="Êtes-vous sûr?"
-          actions={actions}
-          important
-          open={this.state.open}
-        >
-          Tapez le mot "{this.props.keyword}" pour valider cette action.
-          <div>
-            <TextField autoFocus onChange={this.handleChange} />
-          </div>
-        </Dialog>
-      </div>
-    );
-  }
+    render() {
+        const actions = [
+            <Button
+                label="Annuler"
+                primary
+                onClick={this.handleClose}
+                key="cancel"
+            />,
+            <Button
+                label="Okay"
+                primary
+                disabled={this.state.text !== this.props.keyword}
+                onClick={this.handleSubmit}
+                key="ok"
+            />
+        ];
+
+        return (
+            <div>
+                <Button
+                    raised
+                    label={this.props.label}
+                    onClick={this.handleOpen}
+                    style={this.props.style}
+                    disabled={this.props.disabled}
+                />
+                <Dialog
+                    title="Êtes-vous sûr?"
+                    actions={actions}
+                    important
+                    open={this.state.open}
+                >
+                    Tapez le mot &quot;{this.props.keyword}&quot; pour valider
+                    cette action.
+                    <div>
+                        <TextField autoFocus onChange={this.handleChange} />
+                    </div>
+                </Dialog>
+            </div>
+        );
+    }
 }
 
 ConfirmMethod.propTypes = {
-  label: PropTypes.string.isRequired,
-  keyword: PropTypes.string.isRequired,
-  method: PropTypes.func.isRequired,
+    label: PropTypes.string.isRequired,
+    keyword: PropTypes.string.isRequired,
+    method: PropTypes.func.isRequired,
+    disabled: PropTypes.bool.isRequired,
+    style: PropTypes.object.isRequired
 };
