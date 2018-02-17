@@ -19,7 +19,4 @@ export default class {
 
   static popValue = ({ propertyId, object }) =>
     Properties.update(propertyId, { $pop: object });
-
-  static setCustomField = ({ propertyId, key, value }) =>
-    this.update(propertyId, { $set: { [`customFields.${key}`]: value } });
 }
