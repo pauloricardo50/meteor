@@ -8,6 +8,7 @@ import sinon from 'sinon';
 import { stubCollections } from 'core/utils/testHelpers';
 
 import SecurityService, { SECURITY_ERROR } from '..';
+import { LoanSecurity } from '../collections';
 
 describe('Security service', () => {
   let userId;
@@ -16,8 +17,8 @@ describe('Security service', () => {
   beforeEach(() => {
     resetDatabase();
     stubCollections();
-    userId = Factory.create('user');
-    devId = Factory.create('dev');
+    userId = Factory.create('user')._id;
+    devId = Factory.create('dev')._id;
     sinon.stub(Meteor, 'userId').callsFake(() => userId);
   });
 
@@ -46,6 +47,7 @@ describe('Security service', () => {
       expect(() => SecurityService.checkRole('invalid-id', 'user')).to.throw(SECURITY_ERROR);
       expect(() => SecurityService.checkRole(123, 'user')).to.throw(SECURITY_ERROR);
       expect(() => SecurityService.checkRole({}, 'user')).to.throw(SECURITY_ERROR);
+      expect(() => SecurityService.checkRole(() => {}, 'user')).to.throw(SECURITY_ERROR);
     });
   });
 
@@ -59,6 +61,30 @@ describe('Security service', () => {
       sinon.stub(Meteor, 'userId').callsFake(() => undefined);
 
       expect(() => SecurityService.checkLoggedIn()).to.throw(SECURITY_ERROR);
+    });
+  });
+
+  describe('checkOwnership', () => {
+    let loan;
+
+    beforeEach(() => {
+      loan = Factory.create('loan', { userId });
+    });
+
+    it('should not do anything if ownership is correct', () => {
+      SecurityService.checkOwnership(loan);
+    });
+
+    it('should throw if ownership is incorrect', () => {
+      Meteor.userId.restore();
+      sinon.stub(Meteor, 'userId').callsFake(() => devId);
+      expect(() => SecurityService.checkOwnership(loan)).to.throw(SECURITY_ERROR);
+    });
+  });
+
+  describe('collection security getters', () => {
+    it('loans should return LoanSecurity', () => {
+      expect(SecurityService.loans).to.equal(LoanSecurity);
     });
   });
 });

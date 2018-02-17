@@ -16,4 +16,4 @@ class LoanSecurity {
   }
 }
 
-export { LoanSecurity };
+export default LoanSecurity;
