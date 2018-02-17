@@ -36,26 +36,19 @@ export const validateMutationOptions = ({ name, params }) => {
   }
 };
 
-export const checkParams = (callParameters, params, name) => {
-  check(callParameters, Object);
+export const checkParams = (callParameters, params) => {
+  check(
+    callParameters,
+    Object.keys(params).reduce((matchPattern, param) => {
+      const { optional, type } = params[param];
 
-  const expectedParamCount = Object.keys(params).length;
-  const actualParamCount = Object.keys(callParameters).length;
-
-  if (actualParamCount > expectedParamCount) {
-    throw new Meteor.Error(`Too many params provided to mutation: ${name}. Expected ${expectedParamCount}, but received ${actualParamCount}`);
-  }
-
-  Object.keys(params).forEach((param) => {
-    const { type, optional } = params[param];
-    const paramValue = callParameters[param];
-
-    if (optional === true) {
-      check(paramValue, Match.Optional(type));
-    } else {
-      check(paramValue, type);
-    }
-  });
+      // Return a Match Pattern and check for optionals
+      return {
+        ...matchPattern,
+        [param]: optional ? Match.Optional(type) : type,
+      };
+    }, {}),
+  );
 };
 
 const createMutator = (options, functionBody) => {

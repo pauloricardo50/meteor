@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
 
+import { checkParams } from './createMutator';
+
 const handleError = (error, mutationName) => {
   if (Meteor.isClient) {
     Bert.defaults.hideDelay = 7500;
@@ -17,10 +19,12 @@ const handleError = (error, mutationName) => {
   throw error;
 };
 
-const callMutation = (mutationOptions, params) => {
-  const { name } = mutationOptions;
+const callMutation = (mutationOptions, callParams) => {
+  const { name, params } = mutationOptions;
+  checkParams(callParams, params);
+
   return new Promise((resolve, reject) => {
-    Meteor.call(name, params, (error, result) => {
+    Meteor.call(name, callParams, (error, result) => {
       if (error) {
         reject(handleError(error, name));
       } else {
