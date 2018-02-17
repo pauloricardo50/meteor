@@ -1,13 +1,13 @@
-import React from "react";
-import PropTypes from "prop-types";
-import cleanMethod from "core/api/cleanMethods";
+import React from 'react';
+import PropTypes from 'prop-types';
+import cleanMethod from 'core/api/cleanMethods';
 
-import Button from "core/components/Button";
+import Button from 'core/components/Button';
 
 const addVerifyingLoan = () => {
     const object = {
-        general: { fortuneUsed: 250000, partnersToAvoid: ["joe", "john"] },
-        borrowers: "testBorrower",
+        general: { fortuneUsed: 250000, partnersToAvoid: ['joe', 'john'] },
+        borrowers: 'testBorrower',
         property: { value: 1000000 },
         logic: {
             verification: {
@@ -17,7 +17,7 @@ const addVerifyingLoan = () => {
         },
         admin: {}
     };
-    cleanMethod("insertLoan", { object });
+    cleanMethod('insertLoan', { object });
 };
 
 const AdminDev = () => (

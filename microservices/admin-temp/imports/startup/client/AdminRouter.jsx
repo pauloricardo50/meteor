@@ -32,6 +32,7 @@ import SingleLoanPageWithData from '../../ui/pages/SingleLoanPage/SingleLoanPage
 import UsersPageWithData from '../../ui/pages/UsersPage/UsersPageWithData';
 import SingleUserPageWithData from '../../ui/pages/SingleUserPage/SingleUserPageWithData';
 import TasksPage from '../../ui/pages/TasksPage/TasksPage';
+import BorrowersPage from '../../ui/pages/BorrowersPage/BorrowersPageWithData';
 
 const AdminRouter = props => (
     <BaseRouter
@@ -80,6 +81,7 @@ const AdminRouter = props => (
                         component={SingleUserPageWithData}
                     />
                     <Route path="/tasks" component={TasksPage} />
+                    <Route path="/borrowers" component={BorrowersPage} />
                     <Route
                         exact
                         path="/dev"

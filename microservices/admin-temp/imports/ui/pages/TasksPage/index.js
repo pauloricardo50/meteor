@@ -1,1 +1,1 @@
-export { default } from './AdminActionsPage';
+export { default } from './TasksPage';
