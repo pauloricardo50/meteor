@@ -6,7 +6,6 @@ const IS_LOGGING = false;
 export class EventService {
   constructor({ emmitter }) {
     this.emmitter = emmitter;
-    this.disabled = {};
     this.addErrorListener();
   }
 
@@ -19,38 +18,18 @@ export class EventService {
     this.emit(name, params);
   }
 
-  addListener(eventName, listenerFunction, category) {
+  addListener(eventName, listenerFunction) {
     this.emmitter.addListener(eventName, (params) => {
-      if (!this.disabled[category]) {
-        this.logListener(eventName, params, category);
-        listenerFunction(params);
-      }
+      this.logListener(eventName, params);
+      listenerFunction(params);
     });
   }
 
-  addMutationListener({ name }, listenerFunction, category) {
+  addMutationListener({ name }, listenerFunction) {
     if (!name) {
       throw new Meteor.Error('Invalid new listener, please provide a mutationObject with a name');
     }
-    this.addListener(name, listenerFunction, category);
-  }
-
-  createCategoryListenerAdder(category) {
-    return (eventName, listenerFunction) =>
-      this.addListener(eventName, listenerFunction, category);
-  }
-
-  createCategoryMutationListenerAdder(category) {
-    return (mutationOptions, listenerFunction) =>
-      this.addMutationListener(mutationOptions, listenerFunction, category);
-  }
-
-  disableListenerCategory(category) {
-    this.disabled[category] = true;
-  }
-
-  enableListenerCategory(category) {
-    this.disabled[category] = false;
+    this.addListener(name, listenerFunction);
   }
 
   addErrorListener() {
@@ -68,11 +47,9 @@ export class EventService {
     }
   }
 
-  static logListener(eventName, params, category) {
+  static logListener(eventName, params) {
     if (IS_LOGGING && Meteor.isDevelopment) {
-      console.log(`Event "${eventName}" listened to ${
-        category ? `from category "${category}"` : ''
-      }`);
+      console.log(`Event "${eventName}" listened to with params:`);
       console.log(params);
     }
   }
