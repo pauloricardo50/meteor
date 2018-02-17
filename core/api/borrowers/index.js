@@ -1,4 +1,4 @@
-import * as mutations from './mutationDefinitions';
+import * as mutationDefinitions from './mutationDefinitions';
 
 export { default } from './borrowers';
-export const borrowerMutations = mutations;
+export const borrowerMutations = mutationDefinitions;
