@@ -1,44 +1,34 @@
-import React from "react";
-import { getLoanValue } from "core/utils/loanFunctions";
-import { IntlNumber } from "core/components/Translation";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { getLoanValue } from 'core/utils/loanFunctions';
+import { IntlNumber } from 'core/components/Translation';
 
-const styles = {
-    recapDiv: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        width: 400
-    }
+const PropertyTab = props => {
+    const { loan, property } = props;
+
+    return (
+        <div>
+            <h1>
+                {property.name ||
+                    property.address ||
+                    property.address1 ||
+                    property.address2}{' '}
+                - Emprunt de{' '}
+                <IntlNumber
+                    value={getLoanValue({
+                        loan,
+                        property
+                    })}
+                    format="money"
+                />
+            </h1>
+        </div>
+    );
 };
 
-export default class PropertyTab extends React.Component {
-    constructor(props) {
-        super(props);
+PropertyTab.propTypes = {
+    loan: PropTypes.objectOf(PropTypes.any).isRequired,
+    property: PropTypes.arrayOf(PropTypes.object).isRequired
+};
 
-        this.state = { showObject: false };
-    }
-
-    render() {
-        const { loan, borrowers, property, dataToPassDown } = this.props;
-        const { showObject } = this.state;
-
-        return (
-            <div>
-                <h1>
-                    {property.name ||
-                        property.address ||
-                        property.address1 ||
-                        property.address2}{" "}
-                    - Emprunt de{" "}
-                    <IntlNumber
-                        value={getLoanValue({
-                            loan,
-                            property
-                        })}
-                        format="money"
-                    />
-                </h1>
-            </div>
-        );
-    }
-}
+export default PropertyTab;

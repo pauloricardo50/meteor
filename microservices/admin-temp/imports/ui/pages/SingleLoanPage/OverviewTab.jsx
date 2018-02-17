@@ -1,21 +1,20 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import Button from "core/components/Button";
+import Button from 'core/components/Button';
 
-import ProjectPieChart from "core/components/charts/ProjectPieChart";
-import Recap from "core/components/Recap";
-import renderObject from "core/utils/renderObject";
-import StepStatus from "./StepStatus";
-import FileVerificationNotification from "./FileVerificationNotification";
-import { getLoanValue } from "core/utils/loanFunctions";
-import { IntlNumber } from "core/components/Translation";
+import Recap from 'core/components/Recap';
+import renderObject from 'core/utils/renderObject';
+import { getLoanValue } from 'core/utils/loanFunctions';
+import { IntlNumber } from 'core/components/Translation';
+import StepStatus from './StepStatus';
+import FileVerificationNotification from './FileVerificationNotification';
 
 const styles = {
     recapDiv: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
         width: 400
     }
 };
@@ -34,7 +33,7 @@ export default class OverviewTab extends React.Component {
         return (
             <div>
                 <h1>
-                    {loan.name || "Demande de Prêt"} - Emprunt de{" "}
+                    {loan.name || 'Demande de Prêt'} - Emprunt de{' '}
                     <IntlNumber
                         value={getLoanValue({
                             loan,
@@ -57,9 +56,9 @@ export default class OverviewTab extends React.Component {
                 <div
                     className="flex"
                     style={{
-                        width: "100%",
-                        flexWrap: "wrap",
-                        justifyContent: "space-around"
+                        width: '100%',
+                        flexWrap: 'wrap',
+                        justifyContent: 'space-around'
                     }}
                 >
                     <div style={styles.recapDiv}>
@@ -88,7 +87,7 @@ export default class OverviewTab extends React.Component {
                 <div className="text-center">
                     <Button
                         raised
-                        label={showObject ? "Masquer" : "Afficher détails"}
+                        label={showObject ? 'Masquer' : 'Afficher détails'}
                         onClick={() =>
                             this.setState(prev => ({
                                 showObject: !prev.showObject
@@ -108,5 +107,6 @@ export default class OverviewTab extends React.Component {
 
 OverviewTab.propTypes = {
     loan: PropTypes.objectOf(PropTypes.any).isRequired,
-    borrowers: PropTypes.arrayOf(PropTypes.object).isRequired
+    borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+    dataToPassDown: PropTypes.arrayOf(PropTypes.object).isRequired
 };

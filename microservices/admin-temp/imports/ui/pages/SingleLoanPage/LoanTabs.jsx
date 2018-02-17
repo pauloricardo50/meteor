@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import queryString from 'query-string';
 
 import Tabs from 'core/components/Tabs';
 import OverviewTab from './OverviewTab';
@@ -15,46 +13,58 @@ import FormsTab from './FormsTab';
 import { T } from '../../../core/components/Translation/';
 
 const getTabs = props => [
-    { id: 'overview', label: <T id={`LoanTabs.overview`} />'Résumé', content: <OverviewTab {...props} /> },
+    {
+        id: 'overview',
+        label: <T id={`LoanTabs.overview`} />,
+        content: <OverviewTab {...props} />
+    },
     {
         id: 'borrowers',
+        // label: <T id={`LoanTabs.borrowers`} />,
         label: 'Emprunteurs',
         content: <BorrowersTab {...props} />
     },
-    { id: 'property', label: 'Propriété', content: <PropertyTab {...props} /> },
+    {
+        id: 'property',
+        label: <T id={`LoanTabs.property`} />,
+        content: <PropertyTab {...props} />
+    },
     {
         id: 'offers',
-        label: 'Offres des prêteurs',
+        label: <T id={`LoanTabs.offers`} />,
         content: <OffersTab {...props} />
     },
     {
         id: 'comunication',
-        label: 'Communication',
+        label: <T id={`LoanTabs.communication`} />,
         content: <CommunicationTab {...props} />
     },
     {
         id: 'analytics',
-        label: 'Analytique',
+        label: <T id={`LoanTabs.analytics`} />,
         content: <AnalyticsTab {...props} />
     },
-    { id: 'tasks', label: 'Tâches', content: <TasksTab {...props} /> },
-    { id: 'forms', label: 'Formulaires', content: <FormsTab {...props} /> },
-    { id: 'actions', label: 'actions', content: <ActionsTab {...props} /> }
+    {
+        id: 'tasks',
+        label: <T id={`LoanTabs.tasks`} />,
+        content: <TasksTab {...props} />
+    },
+    {
+        id: 'forms',
+        label: <T id={`LoanTabs.forms`} />,
+        content: <FormsTab {...props} />
+    },
+    {
+        id: 'actions',
+        label: <T id={`LoanTabs.actions`} />,
+        content: <ActionsTab {...props} />
+    }
 ];
 
 const LoanTabs = props => {
     const tabs = getTabs(props);
-    const initialTab = tabs.findIndex(
-        tab => tab.id === queryString.parse(props.location.search).tab
-    );
-    return <Tabs initialIndex={initialTab} tabs={tabs} />;
-};
 
-LoanTabs.propTypes = {
-    loan: PropTypes.objectOf(PropTypes.any).isRequired,
-    borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
-    property: PropTypes.objectOf(PropTypes.any).isRequired,
-    offers: PropTypes.arrayOf(PropTypes.object)
+    return <Tabs tabs={tabs} />;
 };
 
 export default LoanTabs;

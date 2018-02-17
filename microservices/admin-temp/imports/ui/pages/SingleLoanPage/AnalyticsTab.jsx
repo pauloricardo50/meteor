@@ -1,16 +1,7 @@
-import React from "react";
+import React from 'react';
 
-export default class AnalyticsTab extends React.Component {
-    constructor(props) {
-        super(props);
+const AnalyticsTab = () => {
+    return <div />;
+};
 
-        this.state = { showObject: false };
-    }
-
-    render() {
-        const { loan, borrowers, property, dataToPassDown } = this.props;
-        const { showObject } = this.state;
-
-        return <div />;
-    }
-}
+export default AnalyticsTab;

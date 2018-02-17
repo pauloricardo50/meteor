@@ -1,24 +1,24 @@
-import React from "react";
-import TasksTable from "../TasksPage/TasksTable";
+import React from 'react';
+import PropTypes from 'prop-types';
+import TasksTable from '../TasksPage/TasksTable';
 
-export default class TasksTab extends React.Component {
-    constructor(props) {
-        super(props);
+export const TasksTab = props => {
+    const { loan, isLoading, error } = props;
 
-        this.state = { showObject: false };
-    }
+    return (
+        <TasksTable
+            data={loan.tasksLink}
+            error={error}
+            isLoading={isLoading}
+            showAssignee
+        />
+    );
+};
 
-    render() {
-        const { loan, borrowers, property, dataToPassDown } = this.props;
-        const { showObject } = this.state;
+TasksTab.propTypes = {
+    loan: PropTypes.object.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    error: PropTypes.object.isRequired
+};
 
-        return (
-            <TasksTable
-                data={loan.tasksLink}
-                error={this.props.error}
-                isLoading={this.props.isLoadin}
-                showAssignee={true}
-            />
-        );
-    }
-}
+export default TasksTab;

@@ -1,16 +1,7 @@
-import React from "react";
+import React from 'react';
 
-export default class CommunicationTab extends React.Component {
-    constructor(props) {
-        super(props);
+const CommunicationTab = () => {
+    return <div />;
+};
 
-        this.state = { showObject: false };
-    }
-
-    render() {
-        const { loan, borrowers, property, dataToPassDown } = this.props;
-        const { showObject } = this.state;
-
-        return <div />;
-    }
-}
+export default CommunicationTab;

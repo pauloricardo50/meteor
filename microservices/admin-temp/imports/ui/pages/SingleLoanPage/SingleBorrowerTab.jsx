@@ -1,20 +1,18 @@
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export default class BorrowerTab extends React.Component {
-    constructor(props) {
-        super(props);
+const BorrowerTab = props => {
+    const { borrower } = props;
 
-        this.state = { showObject: false };
-    }
+    return (
+        <div>
+            <h1>{borrower.firstName || borrower.lastName}</h1>
+        </div>
+    );
+};
 
-    render() {
-        const { borrower } = this.props;
-        const { showObject } = this.state;
+BorrowerTab.propTypes = {
+    borrower: PropTypes.object.isRequired
+};
 
-        return (
-            <div>
-                <h1>{borrower.firstName || borrower.lastName}</h1>
-            </div>
-        );
-    }
-}
+export default BorrowerTab;
