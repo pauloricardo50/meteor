@@ -14,7 +14,7 @@ class LoanServiceModel {
     Loans.insert({
       ...object,
       // Do this to allow userId to be null
-      userId: userId === undefined ? Meteor.userId() : userId
+      userId: userId === undefined ? Meteor.userId() : userId,
     });
 
   askVerification = ({ id }) => {
@@ -28,8 +28,8 @@ class LoanServiceModel {
     return Loans.update(id, {
       $set: {
         'logic.verification.requested': true,
-        'logic.verification.requestedTime': new Date()
-      }
+        'logic.verification.requestedTime': new Date(),
+      },
     });
   };
 
@@ -45,8 +45,8 @@ class LoanServiceModel {
       $set: {
         'logic.auction.status': AUCTION_STATUS.STARTED,
         'logic.auction.startTime': moment().toDate(),
-        'logic.auction.endTime': getAuctionEndTime(moment())
-      }
+        'logic.auction.endTime': getAuctionEndTime(moment()),
+      },
     });
   };
 
@@ -63,8 +63,8 @@ class LoanServiceModel {
     return Loans.update(id, {
       $set: {
         'logic.auction.status': AUCTION_STATUS.ENDED,
-        'logic.auction.endTime': new Date()
-      }
+        'logic.auction.endTime': new Date(),
+      },
     });
   };
 
@@ -73,16 +73,16 @@ class LoanServiceModel {
       $set: {
         'logic.auction.endTime': undefined,
         'logic.auction.status': '',
-        'logic.auction.startTime': undefined
-      }
+        'logic.auction.startTime': undefined,
+      },
     });
 
   confirmClosing = ({ id, object }) =>
     Loans.update(id, {
       $set: {
         status: LOAN_STATUS.DONE,
-        ...object
-      }
+        ...object,
+      },
     });
 }
 
