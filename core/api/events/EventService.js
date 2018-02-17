@@ -56,4 +56,4 @@ export class EventService {
 }
 
 const defaultEmmitter = new EventEmitter();
-export default new EventService({ defaultEmmitter });
+export default new EventService({ emmitter: defaultEmmitter });

@@ -67,14 +67,6 @@ export const insertLoan = new ValidatedMethod({
   },
 });
 
-export const testInsert = new ValidatedMethod({
-  name: 'testInsert',
-  mixins: [CallPromiseMixin],
-  validate: null,
-  run({ userId, object }) {
-    return Loans.insert({ ...object, userId });
-  },
-});
 
 // Lets you set an entire object in the document
 export const updateLoan = new ValidatedMethod({
@@ -99,7 +91,7 @@ export const incrementStep = new ValidatedMethod({
     const loan = Loans.findOne(id);
     const currentStep = loan.logic.step;
 
-    // TODO: make sure step is really done
+
 
     return Loans.update(id, { $set: { 'logic.step': currentStep + 1 } });
   },
@@ -166,17 +158,10 @@ export const pushLoanValue = new ValidatedMethod({
   name: 'pushLoanValue',
   mixins: [CallPromiseMixin],
   validate({ id }) {
-    console.log('validate method: ', id);
     check(id, String);
   },
   run({ object, id }) {
-    console.log('inside meteor method..');
-    console.log('object: ', object);
-    console.log('id: ', id);
-    // console.log('loan before push: ', Loans.findOne(id));
-    console.log('collection2: ', Loans._c2._simpleSchema._validationContexts);
     const result = Loans.update(id, { $push: object });
-    console.log('update result:', result);
     return result;
   },
 });
