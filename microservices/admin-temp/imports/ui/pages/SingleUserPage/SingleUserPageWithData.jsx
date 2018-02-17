@@ -2,7 +2,7 @@ import query from 'core/api/users/queries/adminUserView';
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
 import SingleUserPage from './SingleUserPage';
 
-const SingleUserPageContainer = withQuery(
+const SingleUserPageWithData = withQuery(
     ({ match }) => {
         return query.clone({ _id: match.params.userId });
     },
@@ -12,4 +12,4 @@ const SingleUserPageContainer = withQuery(
     }
 )(SingleUserPage);
 
-export default SingleUserPageContainer;
+export default SingleUserPageWithData;

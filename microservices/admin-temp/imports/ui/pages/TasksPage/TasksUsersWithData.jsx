@@ -1,9 +1,9 @@
-import query from 'core/api/users/queries/tasksUsersList';
+import query from 'core/api/users/queries/admins';
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
 import TasksAssignedUserDropdown from './TasksAssignedUserDropdown';
 
-const TasksUsersContainer = withQuery(() => query.clone(), {
+const TasksUsersWithData = withQuery(() => query.clone(), {
     reactive: true
 })(TasksAssignedUserDropdown);
 
-export default TasksUsersContainer;
+export default TasksUsersWithData;

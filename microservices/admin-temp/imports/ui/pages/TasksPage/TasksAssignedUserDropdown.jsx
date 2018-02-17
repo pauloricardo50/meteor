@@ -17,7 +17,11 @@ const getMenuItems = (users, taskUser) => {
     const options = users.map(user => ({
         id: user._id,
         show: user._id != taskUser,
-        label: user.emails[0].address
+        label: user.emails[0].address,
+        link: false,
+        onClick: () => {
+            changeAssignedUser(user._id, taskId);
+        }
     }));
     return options;
 };
@@ -34,26 +38,8 @@ const TasksAssignedUserDropdown = props => {
 
     return (
         <DropdownMenu
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left'
-            }}
-            transformOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left'
-            }}
             iconType="personAdd"
-            options={getMenuItems(data, taskUser)
-                // Allow the Divider to go through
-                .filter(o => !!o.show)
-                .map(({ id: optionId, ...rest }) => ({
-                    ...rest,
-                    id: optionId,
-                    link: false,
-                    onClick: () => {
-                        changeAssignedUser(optionId, taskId);
-                    }
-                }))}
+            options={getMenuItems(data, taskUser)}
             style={styles}
         />
     );

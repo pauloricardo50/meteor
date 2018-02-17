@@ -2,7 +2,7 @@ import query from 'core/api/tasks/queries/tasksList';
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
 import TasksTab from './TasksTable';
 
-const TasksTabContainer = withQuery(
+const TasksTabWithData = withQuery(
     props => {
         return query.clone({ userId: props.userId });
     },
@@ -19,4 +19,4 @@ Tracker.autorun(() => {
     }
 });
 
-export default TasksTabContainer;
+export default TasksTabWithData;

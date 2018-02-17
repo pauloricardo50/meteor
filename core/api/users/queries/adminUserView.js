@@ -1,7 +1,8 @@
-import { Users } from "../../";
+import { Users } from '../../';
+import { QUERY } from '../userConstants';
 
-export default Users.createQuery("adminUserView", {
-    $filter({filters, options, params}) { 
+export default Users.createQuery(QUERY.ADMIN_USER, {
+    $filter({ filters, options, params }) {
         filters._id = params._id;
     },
     $options: {
@@ -12,10 +13,10 @@ export default Users.createQuery("adminUserView", {
     emails: 1,
     createdAt: 1,
     loansLink: {
-        logic: {step: 1},
+        logic: { step: 1 },
         createdAt: 1,
         updatedAt: 1,
-        general: { insuranceFortuneUsed: 1, fortuneUsed: 1},
+        general: { insuranceFortuneUsed: 1, fortuneUsed: 1 },
         propertyLink: {
             value: 1,
             address1: 1

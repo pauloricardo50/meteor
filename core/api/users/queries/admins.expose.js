@@ -1,5 +1,5 @@
 import Security from 'core/api/security';
-import query from './tasksList';
+import query from './admins';
 
 query.expose({
     firewall(userId) {

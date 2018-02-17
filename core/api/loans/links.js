@@ -1,4 +1,4 @@
-import { Loans, Properties, Borrowers, Users } from "../";
+import { Loans, Properties, Borrowers, Users, Tasks } from "../";
 
 Loans.addLinks({
     propertyLink: {
@@ -14,6 +14,10 @@ Loans.addLinks({
     userLink: {
         field: "userId",
         collection: Users,
-        type:"one"
+        type: "one"
+    },
+    tasksLink: {
+        collection: Tasks,
+        inversedBy: "loan"
     }
 });
