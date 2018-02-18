@@ -44,15 +44,17 @@ export const getMandrillTemplate = ({
   subject,
   sendAt,
 }) => ({
-  from_email: senderAddress,
-  from_name: senderName,
   template_name: templateName,
-  subject,
   template_content: [
     { name: 'footer', content: getEmailFooter(allowUnsubscribe) },
   ],
-  to: [{ email: recipientAddress, type: 'to' }],
-  merge_vars: [{ rcpt: recipientAddress, vars: variables }],
+  message: {
+    from_email: senderAddress,
+    from_name: senderName,
+    subject,
+    to: [{ email: recipientAddress, type: 'to' }],
+    merge_vars: [{ rcpt: recipientAddress, vars: variables }],
+  },
   send_at: sendAt ? sendAt.toISOString() : undefined,
 });
 
@@ -65,6 +67,7 @@ export const sendMandrillTemplate = mandrillTemplate =>
       if (error) {
         reject(error);
       }
-      resolve(result);
+      const content = JSON.parse(result.content)[0];
+      resolve(content);
     });
   });
