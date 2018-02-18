@@ -37,7 +37,7 @@ export const getEmailContent = (emailId, intlValues = {}) => {
     verticalSpace: '<span><br/><br/></span>',
     ...intlValues,
   });
-  const CTA = formatMessage(
+  const cta = formatMessage(
     `emails.${emailId}.CTA`,
     intlValues,
     CTA_URL_DEFAULT,
@@ -47,19 +47,17 @@ export const getEmailContent = (emailId, intlValues = {}) => {
     intlValues,
     FROM_DEFAULT,
   );
-  const email = Meteor.user() && Meteor.user().emails[0].address;
 
   return {
-    email,
     subject,
     title,
     body,
-    CTA,
+    cta,
     from: customFrom,
   };
 };
 
-export const getEnrollmentEmail = (user, url) => {
+export const getEnrollmentUrl = (user, url) => {
   if (user.roles === 'user' || user.roles.indexOf('user') >= 0) {
     const enrollToken = url.split('/enroll-account/')[1];
 

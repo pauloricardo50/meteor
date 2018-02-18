@@ -1,3 +1,3 @@
-import './email-meteor';
+import './accountsEmails';
 
 export * from './email-defaults';
