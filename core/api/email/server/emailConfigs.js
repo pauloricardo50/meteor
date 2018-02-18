@@ -22,8 +22,6 @@ const emailDefaults = {
  *
  */
 const addEmailConfig = (emailId, config) => {
-  console.log('verifyEmail addEmailConfig context: ', this);
-
   emailConfigs[emailId] = { ...emailDefaults, ...config };
 };
 

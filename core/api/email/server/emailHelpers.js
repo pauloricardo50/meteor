@@ -6,7 +6,7 @@ import {
   CTA_URL_DEFAULT,
   EMAIL_I18N_NAMESPACE,
   EMAIL_PARTS,
-} from './emailConstants';
+} from '../emailConstants';
 
 const WWW_URL = Meteor.settings.public.subdomains.www;
 const APP_URL = Meteor.settings.public.subdomains.app;
