@@ -6,7 +6,7 @@ import {
   getMandrillTemplate,
   getSimpleMandrillTemplate,
   renderMandrillTemplate,
-} from '../mandrill';
+} from './mandrill';
 import { FROM_NAME, FROM_EMAIL } from '../emailConstants';
 
 class EmailService {

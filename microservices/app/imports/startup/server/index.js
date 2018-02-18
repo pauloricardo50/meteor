@@ -7,7 +7,6 @@ import jc from 'core/api/jobs/server/jobs';
 import '../accounts-config';
 import './kadira-dev.js';
 import setupAuth from './http-auth';
-import setupMandrill from 'core/api/email/server/email-config';
 import getHtml from './loadingText';
 
 Meteor.startup(() => {
@@ -17,7 +16,6 @@ Meteor.startup(() => {
   //   setupAuth();
   // }
 
-  setupMandrill();
 
   jc.startJobServer();
 });

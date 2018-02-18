@@ -21,7 +21,7 @@ const emailDefaults = {
  * returns an object with overrides for the email template
  *
  */
-const addEmailConfig = function (emailId, config) {
+const addEmailConfig = (emailId, config) => {
   console.log('verifyEmail addEmailConfig context: ', this);
 
   emailConfigs[emailId] = { ...emailDefaults, ...config };
@@ -30,8 +30,6 @@ const addEmailConfig = function (emailId, config) {
 const verifyConfig = {
   template: EMAIL_TEMPLATES.WELCOME,
   createOverrides({ user, url }) {
-    console.log('verifyEmail createOverrides context: ', this);
-
     const { variables } = this.template;
     const urlWithoutHash = url.replace('#/', '');
 

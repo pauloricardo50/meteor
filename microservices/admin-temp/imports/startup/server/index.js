@@ -5,7 +5,6 @@ import 'core/api/api';
 import 'core/api/api-server';
 import jc from 'core/api/jobs/server/jobs';
 import '../accounts-config';
-import setupMandrill from 'core/api/email/server/email-config';
 
 Meteor.startup(() => {
   // Do something on startup if necessary
@@ -13,8 +12,6 @@ Meteor.startup(() => {
   // if (Meteor.settings.public.environment === 'staging') {
   //   setupAuth();
   // }
-
-  setupMandrill();
 
   jc.startJobServer();
 });
