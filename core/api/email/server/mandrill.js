@@ -1,7 +1,7 @@
 import { Mandrill } from 'meteor/wylio:mandrill';
 import { Meteor } from 'meteor/meteor';
 
-import { getEmailFooter } from '../emailHelpers';
+import { getEmailFooter } from './emailHelpers';
 
 export const setupMandrill = () => {
   let key = '';

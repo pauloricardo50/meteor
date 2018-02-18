@@ -1,5 +1,5 @@
 import { EventService, mutations } from '../..';
-import EmailService from '../EmailService';
+import EmailService from './EmailService';
 
 EventService.addMutationListener(
   mutations.REQUEST_LOAN_VERIFICATION,

@@ -1,4 +1,4 @@
-import { EMAIL_TEMPLATES, EMAIL_IDS, CTA_URL_DEFAULT } from './emailConstants';
+import { EMAIL_TEMPLATES, EMAIL_IDS, CTA_URL_DEFAULT } from '../emailConstants';
 import { getEnrollmentUrl } from './emailHelpers';
 
 const emailConfigs = {};

@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import emailConfigs from '../emailConfigs';
-import { getEmailContent, getEmailPart } from '../emailHelpers';
+import emailConfigs from './emailConfigs';
+import { getEmailContent, getEmailPart } from './emailHelpers';
 import {
   sendMandrillTemplate,
   getMandrillTemplate,
