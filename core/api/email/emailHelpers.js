@@ -1,7 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import formatMessage from 'core/utils/intl';
 
-import { FROM_DEFAULT, CTA_URL_DEFAULT } from './emailConstants';
+import {
+  FROM_DEFAULT,
+  CTA_URL_DEFAULT,
+  EMAIL_I18N_NAMESPACE,
+  EMAIL_PARTS,
+} from './emailConstants';
 
 const WWW_URL = Meteor.settings.public.subdomains.www;
 const APP_URL = Meteor.settings.public.subdomains.app;
@@ -22,6 +27,18 @@ export const getEmailFooter = (allowUnsubscribe = true) =>
       : '',
   });
 
+export const getEmailPart = ({
+  emailId,
+  part,
+  intlValues = {},
+  intlFallback = '',
+}) =>
+  formatMessage(
+    `${EMAIL_I18N_NAMESPACE}.${emailId}.${part}`,
+    intlValues,
+    intlFallback,
+  );
+
 /**
  * getEmailContent - Returns all the fields for an email
  *
@@ -30,23 +47,29 @@ export const getEmailFooter = (allowUnsubscribe = true) =>
  *
  * @return {Object} contains all the fields
  */
-export const getEmailContent = (emailId, intlValues = {}) => {
-  const subject = formatMessage(`emails.${emailId}.subject`, intlValues, '');
-  const title = formatMessage(`emails.${emailId}.title`, intlValues, '');
-  const body = formatMessage(`emails.${emailId}.body`, {
-    verticalSpace: '<span><br/><br/></span>',
-    ...intlValues,
+export const getEmailContent = (emailId, intlValues) => {
+  const subject = getEmailPart({ emailId, part: EMAIL_PARTS.SUBJECT });
+  const title = getEmailPart({ emailId, part: EMAIL_PARTS.TITLE });
+  const body = getEmailPart({
+    emailId,
+    part: EMAIL_PARTS.BODY,
+    intlValues: {
+      verticalSpace: '<span><br/><br/></span>',
+      ...intlValues,
+    },
   });
-  const cta = formatMessage(
-    `emails.${emailId}.CTA`,
+  const cta = getEmailPart({
+    emailId,
+    part: EMAIL_PARTS.CTA,
     intlValues,
-    CTA_URL_DEFAULT,
-  );
-  const customFrom = formatMessage(
-    `emails.${emailId}.from`,
+    intlFallback: CTA_URL_DEFAULT,
+  });
+  const customFrom = getEmailPart({
+    emailId,
+    part: EMAIL_PARTS.FROM,
     intlValues,
-    FROM_DEFAULT,
-  );
+    intlFallback: FROM_DEFAULT,
+  });
 
   return {
     subject,

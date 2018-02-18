@@ -1,7 +1,12 @@
-import { EMAIL_TEMPLATES, EMAIL_IDS } from './emailConstants';
+import { EMAIL_TEMPLATES, EMAIL_IDS, CTA_URL_DEFAULT } from './emailConstants';
 import { getEnrollmentUrl } from './emailHelpers';
 
 const emailConfigs = {};
+
+const emailDefaults = {
+  allowUnsubscribe: false,
+  createIntlValues: () => ({}),
+};
 
 /**
  * addEmailConfig - A function that creates a config for a given emailId
@@ -16,13 +21,17 @@ const emailConfigs = {};
  * returns an object with overrides for the email template
  *
  */
-const addEmailConfig = (emailId, config) => {
-  emailConfigs[emailId] = config;
+const addEmailConfig = function (emailId, config) {
+  console.log('verifyEmail addEmailConfig context: ', this);
+
+  emailConfigs[emailId] = { ...emailDefaults, ...config };
 };
 
-addEmailConfig(EMAIL_IDS.VERIFY_EMAIL, {
+const verifyConfig = {
   template: EMAIL_TEMPLATES.WELCOME,
-  createOverrides({ url }) {
+  createOverrides({ user, url }) {
+    console.log('verifyEmail createOverrides context: ', this);
+
     const { variables } = this.template;
     const urlWithoutHash = url.replace('#/', '');
 
@@ -32,11 +41,12 @@ addEmailConfig(EMAIL_IDS.VERIFY_EMAIL, {
       ],
     };
   },
-});
+};
+addEmailConfig(EMAIL_IDS.VERIFY_EMAIL, verifyConfig);
 
 addEmailConfig(EMAIL_IDS.RESET_PASSWORD, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createOverrides({ url }, { title, body, cta }) {
+  createOverrides({ user, url }, { title, body, cta }) {
     const { variables } = this.template;
     const urlWithoutHash = url.replace('#/', '');
 
@@ -45,7 +55,7 @@ addEmailConfig(EMAIL_IDS.RESET_PASSWORD, {
         { name: variables.TITLE, content: title },
         { name: variables.BODY, content: body },
         { name: variables.CTA, content: cta },
-        { name: variables.CTA_URL, content: urlWithoutHash },
+        { name: variables.CTA_URL, content: urlWithoutHash || CTA_URL_DEFAULT },
       ],
     };
   },
@@ -53,7 +63,7 @@ addEmailConfig(EMAIL_IDS.RESET_PASSWORD, {
 
 addEmailConfig(EMAIL_IDS.ENROLL_ACCOUNT, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createOverrides({ url, user }, { title, body, cta }) {
+  createOverrides({ user, url }, { title, body, cta }) {
     const { variables } = this.template;
     const enrollUrl = getEnrollmentUrl(user, url);
 
@@ -62,7 +72,7 @@ addEmailConfig(EMAIL_IDS.ENROLL_ACCOUNT, {
         { name: variables.TITLE, content: title },
         { name: variables.BODY, content: body },
         { name: variables.CTA, content: cta },
-        { name: variables.CTA_URL, content: enrollUrl },
+        { name: variables.CTA_URL, content: enrollUrl || CTA_URL_DEFAULT },
       ],
     };
   },

@@ -34,6 +34,6 @@ import './files/meteor-slingshot-server';
 
 import '../utils/logismata/methods';
 
-import './email';
+import './email/server';
 
 import './mutations/server';
