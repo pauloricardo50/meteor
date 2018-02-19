@@ -25,7 +25,6 @@ themeteorchef:bert
 mdg:validated-method
 didericis:callpromise-mixin
 dburles:factory
-vsivsi:job-collection
 stolinski:stylus-multi
 edgee:slingshot
 fourseven:scss
@@ -37,3 +36,6 @@ hwillson:stub-collections
 meteortesting:mocha
 wylio:mandrill
 force-ssl
+cultofcoders:grapher
+cultofcoders:grapher-react
+vsivsi:job-collection

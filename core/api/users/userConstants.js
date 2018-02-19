@@ -4,3 +4,9 @@ export const ROLES = {
   DEV: 'dev',
   LENDER: 'lender',
 };
+
+export const QUERY = {
+  ADMIN_USERS: 'ADMIN_USERS',
+  ADMIN_USER: 'ADMIN_USER',
+  ADMINS: 'ADMINS',
+};

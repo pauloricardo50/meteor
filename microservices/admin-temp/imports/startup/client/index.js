@@ -5,6 +5,9 @@ import 'core/api/api';
 import 'core/api/files/meteor-slingshot';
 import { localizationStartup } from 'core/utils/localization';
 
+// Grapher Links
+import 'core/api/links';
+
 import '../accounts-config';
 import './css';
 import AdminRouter from './AdminRouter';

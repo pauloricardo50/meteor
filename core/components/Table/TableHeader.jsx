@@ -12,6 +12,10 @@ import Tooltip from 'material-ui/Tooltip';
 
 import { T } from 'core/components/Translation';
 
+const styles = {
+  cell: { textAlign: 'left' },
+};
+
 const TableHeader = ({
   columnOptions,
   sortable,
@@ -39,7 +43,12 @@ const TableHeader = ({
         { id, style, intlValues, label, numeric, padding = 'dense' },
         index,
       ) => (
-        <TableCell key={id} style={style} numeric={numeric} padding={padding}>
+        <TableCell
+          key={id}
+          style={style || styles.cell}
+          numeric={numeric}
+          padding={padding}
+        >
           {sortable ? (
             <Tooltip
               title={<T id="Table.sort" />}

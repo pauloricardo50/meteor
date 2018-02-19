@@ -4,6 +4,10 @@ import PropTypes from 'prop-types';
 import { TableCell, TableRow } from 'material-ui/Table';
 import Checkbox from 'material-ui/Checkbox';
 
+const styles = {
+  cell: { textAlign: 'left' },
+};
+
 const SelectableRow = ({ row, columnOptions, isSelected, onSelect }) => (
   <TableRow
     hover
@@ -22,7 +26,7 @@ const SelectableRow = ({ row, columnOptions, isSelected, onSelect }) => (
     {row.columns.map((column, j) => (
       <TableCell
         key={j}
-        style={columnOptions[j].style}
+        style={columnOptions[j].style || styles.cell}
         numeric={columnOptions[j].numeric}
         padding={columnOptions[j].padding || 'dense'}
       >

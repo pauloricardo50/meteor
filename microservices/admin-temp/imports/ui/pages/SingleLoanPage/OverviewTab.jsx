@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 
 import Button from 'core/components/Button';
 
-import ProjectPieChart from 'core/components/charts/ProjectPieChart';
 import Recap from 'core/components/Recap';
 import renderObject from 'core/utils/renderObject';
+import { getLoanValue } from 'core/utils/loanFunctions';
+import { IntlNumber } from 'core/components/Translation';
+import StepStatus from './StepStatus';
+import FileVerificationNotification from './FileVerificationNotification';
 
 const styles = {
   recapDiv: {
@@ -24,11 +27,29 @@ export default class OverviewTab extends React.Component {
   }
 
   render() {
-    const { loan, borrowers } = this.props;
+    const { loan, borrowers, dataToPassDown } = this.props;
     const { showObject } = this.state;
 
     return (
       <div>
+        <h1>
+          {loan.name || 'Demande de Prêt'} - Emprunt de{' '}
+          <IntlNumber
+            value={getLoanValue({
+              loan,
+              property: loan.propertyLink,
+            })}
+            format="money"
+          />
+        </h1>
+
+        <StepStatus {...dataToPassDown} serverTime={this.state.serverTime} />
+
+        <FileVerificationNotification
+          loan={loan}
+          borrowers={loan.borrowersLink}
+        />
+        <hr />
         <div
           className="flex"
           style={{
@@ -61,7 +82,9 @@ export default class OverviewTab extends React.Component {
             raised
             label={showObject ? 'Masquer' : 'Afficher détails'}
             onClick={() =>
-              this.setState(prev => ({ showObject: !prev.showObject }))
+              this.setState(prev => ({
+                showObject: !prev.showObject,
+              }))
             }
           />
         </div>
@@ -78,4 +101,5 @@ export default class OverviewTab extends React.Component {
 OverviewTab.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  dataToPassDown: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

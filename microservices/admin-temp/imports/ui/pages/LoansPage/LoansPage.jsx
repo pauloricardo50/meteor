@@ -1,24 +1,24 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import AllLoansTable from '/imports/ui/components/AllLoansTable';
+import AllLoansTable from './AllLoansTable';
 
-const AdminLoansPage = props => (
-  <section className="mask1">
-    <h1>Demandes de Prêt</h1>
+const AdminLoansPage = (props) => {
+  if (props.isLoading) {
+    return null;
+  }
 
-    <AllLoansTable {...props} />
-  </section>
-);
+  return (
+    <section className="mask1">
+      <h1>Demandes de Prêt</h1>
 
-AdminLoansPage.propTypes = {
-  loans: PropTypes.arrayOf(PropTypes.any),
-  properties: PropTypes.arrayOf(PropTypes.object).isRequired,
+      <AllLoansTable {...props} loans={props.data} />
+    </section>
+  );
 };
 
-AdminLoansPage.defaultProps = {
-  loans: [],
-  properties: [],
+AdminLoansPage.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.any),
 };
 
 export default AdminLoansPage;

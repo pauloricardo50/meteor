@@ -25,6 +25,9 @@ const FileVerificationNotification = ({ loan, borrowers }) => {
   return null;
 };
 
-FileVerificationNotification.propTypes = {};
+FileVerificationNotification.propTypes = {
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
+  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export default FileVerificationNotification;

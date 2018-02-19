@@ -162,7 +162,8 @@ const getForm = (props, value, modify) => {
 // 1. Takes the form array and filters out the fields that aren't required
 // 2. if this is a conditional input, push the first value only
 // 3. Verifies if the id exists in the validationArray,
-// and adds 1 normalized by the length of the array to get a value between 0 and 1
+// and adds 1 normalized by the length of the array to get a value between
+// 0 and 1
 const reduceToPercent = (formArray, validationArray) =>
   formArray
     .filter(i => i.condition !== false && i.ignore !== true)
@@ -261,5 +262,4 @@ export default class FormsTab extends Component {
 FormsTab.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
