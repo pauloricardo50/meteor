@@ -1,8 +1,8 @@
-import { Meteor } from "meteor/meteor";
-import createUsers from "./users";
+import { Meteor } from 'meteor/meteor';
+import createUsers from './users';
 
 Meteor.startup(() => {
-    if (Meteor.users.find().count() === 0) {
-        createUsers();
-    }
+  if (Meteor.users.find().count() === 0) {
+    createUsers();
+  }
 });

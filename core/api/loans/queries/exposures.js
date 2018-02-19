@@ -1,2 +1,2 @@
-import "./adminLoansList.expose";
-import "./adminLoanView.expose";
+import './adminLoansList.expose';
+import './adminLoanView.expose';

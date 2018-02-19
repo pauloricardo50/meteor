@@ -1,24 +1,24 @@
-import PropTypes from "prop-types";
-import React from "react";
+import PropTypes from 'prop-types';
+import React from 'react';
 
-import AllLoansTable from "./AllLoansTable";
+import AllLoansTable from './AllLoansTable';
 
-const AdminLoansPage = props => {
-    if (props.isLoading) {
-        return null;
-    }
+const AdminLoansPage = (props) => {
+  if (props.isLoading) {
+    return null;
+  }
 
-    return (
-        <section className="mask1">
-            <h1>Demandes de Prêt</h1>
+  return (
+    <section className="mask1">
+      <h1>Demandes de Prêt</h1>
 
-            <AllLoansTable {...props} loans={props.data} />
-        </section>
-    );
+      <AllLoansTable {...props} loans={props.data} />
+    </section>
+  );
 };
 
 AdminLoansPage.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.any)
+  data: PropTypes.arrayOf(PropTypes.any),
 };
 
 export default AdminLoansPage;

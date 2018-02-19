@@ -3,13 +3,11 @@ import { withQuery } from 'meteor/cultofcoders:grapher-react';
 import SingleUserPage from './SingleUserPage';
 
 const SingleUserPageWithData = withQuery(
-    ({ match }) => {
-        return query.clone({ _id: match.params.userId });
-    },
-    {
-        reactive: true,
-        single: true
-    }
+  ({ match }) => query.clone({ _id: match.params.userId }),
+  {
+    reactive: true,
+    single: true,
+  },
 )(SingleUserPage);
 
 export default SingleUserPageWithData;

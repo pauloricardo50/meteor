@@ -1,7 +1,5 @@
 import React from 'react';
 
-const CommunicationTab = () => {
-    return <div />;
-};
+const CommunicationTab = () => <div />;
 
 export default CommunicationTab;

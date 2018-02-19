@@ -79,7 +79,7 @@ const iconMap = {
   accountCircle: AccountCircle,
   app: Apps,
   personAdd: PersonAdd,
-  offlinePin: OfflinePin
+  offlinePin: OfflinePin,
 };
 
 const Icon = (props) => {

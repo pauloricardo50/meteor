@@ -1,8 +1,8 @@
-import Security from "core/api/security";
-import query from "./adminLoansList";
+import Security from 'core/api/security';
+import query from './adminLoansList';
 
 query.expose({
-    firewall(userId) {
-        Security.checkAdmin(userId);
-    }
+  firewall(userId) {
+    Security.checkAdmin(userId);
+  },
 });

@@ -87,47 +87,35 @@ export const completeTaskByType = new ValidatedMethod({
 export const changeTaskStatus = new ValidatedMethod({
   name: 'tasks.changeTaskStatus',
   mixins: [CallPromiseMixin],
-  validate({ taskId, newStatus }) { 
+  validate({ taskId, newStatus }) {
     check(taskId, String);
-    check(newStatus,String);
+    check(newStatus, String);
   },
   run({ taskId, newStatus }) {
-    
     if (newStatus != TASK_STATUS.COMPLETED) {
-      
-      return Tasks.update( taskId ,
-        { $set: { status: newStatus } }      
-      );
+      return Tasks.update(taskId, { $set: { status: newStatus } });
     }
-    else {
-      return Tasks.update( taskId ,
-        {
-          $set: {
-            status: newStatus || TASK_STATUS.COMPLETED,
-            completedAt: new Date(),
-          }
-        }
-      );
-    }
-    
-    return true;
+    return Tasks.update(taskId, {
+      $set: {
+        status: newStatus || TASK_STATUS.COMPLETED,
+        completedAt: new Date(),
+      },
+    });
 
+
+    return true;
   },
 });
 
 export const changeTaskUser = new ValidatedMethod({
   name: 'tasks.changeTaskUser',
   mixins: [CallPromiseMixin],
-  validate({ taskId, newUser }) { 
+  validate({ taskId, newUser }) {
     check(taskId, String);
-    check(newUser,String);
+    check(newUser, String);
   },
   run({ taskId, newUser }) {
-    
-      return Tasks.update( taskId ,
-        { $set: { userId: newUser } }      
-      );  
-    
+    return Tasks.update(taskId, { $set: { userId: newUser } });
   },
 });
 

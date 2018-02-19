@@ -1,7 +1,5 @@
 import React from 'react';
 
-const AnalyticsTab = () => {
-    return <div />;
-};
+const AnalyticsTab = () => <div />;
 
 export default AnalyticsTab;

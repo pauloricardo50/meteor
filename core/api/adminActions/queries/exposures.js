@@ -1,1 +1,1 @@
-import "./adminActionsList.expose";
+import './adminActionsList.expose';

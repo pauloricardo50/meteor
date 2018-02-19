@@ -9,7 +9,7 @@ const styles = theme => ({
   root: {
     flexGrow: 1,
     marginTop: 0,
-    paddingTop: 0
+    paddingTop: 0,
   },
 });
 
@@ -40,7 +40,9 @@ class Tabs extends Component {
             {tabs.map((tab, i) => <Tab label={tab.label} key={i} />)}
           </MuiTabs>
         </Paper>
-        <div  className="mask1" style={{ paddingTop: 16, marginTop: 40 }}>{this.getContent()}</div>
+        <div className="mask1" style={{ paddingTop: 16, marginTop: 40 }}>
+          {this.getContent()}
+        </div>
       </div>
     );
   }

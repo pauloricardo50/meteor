@@ -1,1 +1,1 @@
-import "./borrowersList.expose";
+import './borrowersList.expose';

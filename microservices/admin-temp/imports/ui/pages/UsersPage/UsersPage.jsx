@@ -7,7 +7,7 @@ const AdminUsersPage = props => (
   <section className="mask1">
     <h1>Utilisateurs</h1>
 
-    <AllUsersTable {...props}/>
+    <AllUsersTable {...props} />
   </section>
 );
 
