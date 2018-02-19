@@ -3,6 +3,7 @@ import { loanMutations } from '../loans';
 import { borrowerMutations } from '../borrowers';
 import { offerMutations } from '../offers';
 import { propertyMutations } from '../properties';
+import { taskMutations } from '../tasks';
 
 export { default as createMutator } from './createMutator';
 export { default as callMutation } from './callMutation';
@@ -14,4 +15,5 @@ export const mutations = {
   ...offerMutations,
   ...propertyMutations,
   ...userMutations,
+  ...taskMutations,
 };
