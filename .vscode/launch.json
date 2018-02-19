@@ -16,7 +16,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "debug"],
       "port": 9229,
-      "timeout": 30000
+      "timeout": 30000,
+      "trace": true,
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "meteor://💻app/imports/core/*": "${workspaceRoot}/core/*"
+      }
     }
   ],
   "compounds": [

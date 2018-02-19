@@ -7,6 +7,7 @@ import { propertyMutations } from '../properties';
 export { default as createMutator } from './createMutator';
 export { default as callMutation } from './callMutation';
 
+// Export all mutation definitions here
 export const mutations = {
   ...loanMutations,
   ...borrowerMutations,

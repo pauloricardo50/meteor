@@ -6,12 +6,13 @@ import { injectIntl } from 'react-intl';
 
 import Button from 'core/components/Button';
 import { getLenderCount } from 'core/utils/loanFunctions';
+import { callMutation, mutations } from 'core/api';
 
-import ConfirmButton from '/imports/ui/components/ConfirmButton';
 import { T } from 'core/components/Translation';
 import track from 'core/utils/analytics';
 import { isDemo } from 'core/utils/browserFunctions';
 import withLoan from 'core/containers/withLoan';
+import ConfirmButton from '../../components/ConfirmButton';
 import AuctionForm from './AuctionForm';
 
 const styles = {
@@ -84,15 +85,11 @@ const AuctionStart = (props) => {
             label={<T id="AuctionStart.CTA" />}
             primary
             handleClick={() =>
-              cleanMethod('startAuction', {
-                object: { isDemo: isDemo() },
-                id: props.loan._id,
+              callMutation(mutations.START_AUCTION, {
+                loanId: props.loan._id,
+              }).then((res) => {
+                track('started auction', {});
               })
-                .then((res) => {
-                  console.log('cleanMethod done...', res);
-                  track('started auction', {});
-                })
-                .catch(e => console.log('auction start failed ', e))
             }
             disabled={
               !(r.general.auctionMostImportant && r.general.wantedClosingDate)
