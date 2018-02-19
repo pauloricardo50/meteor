@@ -1,4 +1,5 @@
-import { EventService, mutations } from '../..';
+import EventService from '../../events';
+import { mutations } from '../../mutations';
 import TaskService from '../TaskService';
 
 EventService.addMutationListener(mutations.LOAN_DELETE, ({ loanId }) => {
