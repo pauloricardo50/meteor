@@ -1,22 +1,20 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { Meteor } from 'meteor/meteor';
-import { Roles } from 'meteor/alanning:roles';
-import { T } from 'core/components/Translation/';
+import PropTypes from 'prop-types';
+
 import DropdownMenu from 'core/components/DropdownMenu/';
-import { changeTaskUser } from 'core/api/tasks/methods';
+import { callMutation, mutations } from 'core/api';
 
 const changeAssignedUser = (user, taskId) => {
-  changeTaskUser.call({
+  callMutation(mutations.TASK_CHANGE_USER, {
     taskId,
     newUser: user,
   });
 };
 
-const getMenuItems = (users, taskUser) => {
+const getMenuItems = (users, taskUser, taskId) => {
   const options = users.map(user => ({
     id: user._id,
-    show: user._id != taskUser,
+    show: user._id !== taskUser,
     label: user.emails[0].address,
     link: false,
     onClick: () => {
@@ -27,7 +25,7 @@ const getMenuItems = (users, taskUser) => {
 };
 
 const TasksAssignedUserDropdown = (props) => {
-  const { data, isLoading, error, history, taskId, taskUser, styles } = props;
+  const { data, isLoading, error, taskId, taskUser, styles } = props;
 
   if (isLoading) {
     return null;
@@ -39,7 +37,7 @@ const TasksAssignedUserDropdown = (props) => {
   return (
     <DropdownMenu
       iconType="personAdd"
-      options={getMenuItems(data, taskUser)}
+      options={getMenuItems(data, taskUser, taskId)}
       style={styles}
     />
   );
