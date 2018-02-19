@@ -1,1 +1,3 @@
-export const Bert = {};
+export const Bert = {
+  alert: () => {},
+};
