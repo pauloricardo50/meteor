@@ -7,7 +7,7 @@ import sinon from 'sinon';
 
 import { stubCollections } from 'core/utils/testHelpers';
 
-import SecurityService, { SECURITY_ERROR } from '..';
+import SecurityService, { SECURITY_ERROR } from '../index';
 import {
   LoanSecurity,
   OfferSecurity,
