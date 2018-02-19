@@ -60,11 +60,6 @@ export const AUCTION_STATUS = {
   ENDED: 'ENDED',
 };
 
-export const OFFER_TYPE = {
-  STANDARD: 'STANDARD',
-  COUNTERPARTS: 'COUNTERPARTS',
-};
-
 export const CLOSING_STEPS_TYPE = {
   TODO: 'TODO',
   UPLOAD: 'UPLOAD',
