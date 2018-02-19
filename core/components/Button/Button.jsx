@@ -32,7 +32,7 @@ const Button = (props) => {
     <MuiButton
       {...childProps}
       color={getColor(props)}
-      variant={props.raised ? 'raised' : undefined}
+      variant={props.variant || (props.raised ? 'raised' : undefined)}
       component={props.component || (props.link ? Link : null)}
     >
       {props.icon}

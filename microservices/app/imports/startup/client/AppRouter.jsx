@@ -43,7 +43,7 @@ const AppRouter = () => (
         <Route path="/dev" component={DevPage} />
         <Route path="/profile" component={AccountPage} />
         <Route
-          path="/loans/:loanId/borrowers/:borrowerId"
+          path="/loans/:loanId/borrowers/:borrowerId/:tab"
           component={LoanContainer(BorrowerPage)}
         />
         <Route
