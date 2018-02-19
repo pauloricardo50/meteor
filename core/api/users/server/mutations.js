@@ -16,5 +16,11 @@ createMutator(defs.SEND_VERIFICATION_LINK, ({ userId }) => {
     SecurityService.checkLoggedIn();
   }
   const id = userId || Meteor.userId();
+
+  if (Meteor.isDevelopment) {
+    console.log(`Not sending verification link in development for userId: ${id}`);
+    return false;
+  }
+
   return Accounts.sendVerificationEmail(id);
 });

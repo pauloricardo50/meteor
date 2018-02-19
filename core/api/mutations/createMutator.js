@@ -58,7 +58,7 @@ const createMutator = (options, functionBody) => {
   const { name, params } = options;
 
   Meteor.methods({
-    [name](callParameters = {}) {
+    [name](callParameters) {
       beforeLogger(callParameters, name);
       checkParams(callParameters, params, name);
 

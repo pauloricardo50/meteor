@@ -1,11 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { JobCollection } from 'meteor/vsivsi:job-collection';
+import { SCHEDULE_METHOD } from './jobConstants';
 
-const jc = new JobCollection('myJobs');
+const Jobs = new JobCollection('jobs');
 
-const jobs = [
+const jobList = [
   {
-    type: 'scheduleMethod',
+    type: SCHEDULE_METHOD,
     options: { pollInterval: 5000 },
     run: (data, callback) => {
       console.log('calling scheduled method..');
@@ -27,8 +28,8 @@ const jobs = [
   },
 ];
 
-jobs.forEach((jobObject) => {
-  jc.processJobs(
+jobList.forEach((jobObject) => {
+  Jobs.processJobs(
     jobObject.type,
     { pollInterval: 5000, ...jobObject.options },
     (job, callback) => {
@@ -50,4 +51,4 @@ jobs.forEach((jobObject) => {
   );
 });
 
-export default jc;
+export default Jobs;

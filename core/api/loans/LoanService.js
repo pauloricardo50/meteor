@@ -58,9 +58,8 @@ class LoanServiceModel {
     const loan = Loans.findOne(loanId);
 
     // This method is called in the future (through a job),
-    // so make sure that it isn't
-    // executed again if this has already been done
-    if (!loan || loan.logic.auction.status === AUCTION_STATUS.ENDED) {
+    // so only call this if the auction is ongoing
+    if (!loan || loan.logic.auction.status !== AUCTION_STATUS.STARTED) {
       return false;
     }
 

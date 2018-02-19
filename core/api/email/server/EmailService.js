@@ -91,11 +91,11 @@ class EmailService {
   emailLogger = ({ emailId, address, template }) => {
     if (Meteor.isDevelopment || Meteor.isTest) {
       if (address) {
-        console.log(`EmailService: Sending ${emailId} to ${address} with this template:`);
+        console.log(`EmailService dev: Would've sent ${emailId} to ${address} with this template:`);
       } else {
-        console.log(`EmailService: Sending ${emailId} with this template:`);
+        console.log(`EmailService dev: Would've sent ${emailId} with this template:`);
       }
-      console.log(template);
+      console.log(JSON.stringify(template, null, 2));
     }
   };
 }

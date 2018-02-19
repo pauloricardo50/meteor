@@ -17,15 +17,13 @@ import './properties/server/publications';
 import './properties/server/methods';
 
 import './users/server/publications';
-import './users/server/methods';
 import './users/server/accounts-server-config';
 
 import './methods/server';
 
 import './factories';
 
-import './jobs/server/jobs';
-import './jobs/server/methods';
+import './jobs/server';
 
 import './files/server/methods';
 import './files/meteor-slingshot-server';
