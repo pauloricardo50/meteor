@@ -74,8 +74,6 @@ export default class Table extends Component {
       order === 'desc'
         ? this.state.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
         : this.state.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1));
-    this.setState({ selected: newSelected }, () =>
-      this.props.onRowSelect(this.state.selected));
 
     this.setState({ data, order, orderBy });
   };
