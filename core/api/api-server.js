@@ -24,8 +24,6 @@ import './methods/server';
 
 import './factories';
 
-import './loans/loans';
-
 import './jobs/server/jobs';
 import './jobs/server/methods';
 
@@ -39,3 +37,11 @@ import './email/server';
 import './mutations/server';
 
 import './events/registerListeners';
+import './tasks/methods';
+
+// Exposures
+import './loans/queries/exposures';
+import './users/queries/exposures';
+// import "./adminActions/queries/exposures";
+import './tasks/queries/exposures';
+import './borrowers/queries/exposures';

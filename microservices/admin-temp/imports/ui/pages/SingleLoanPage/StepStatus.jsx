@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import getSteps from 'core/arrays/steps';
 import Icon from 'core/components/Icon';
 
@@ -37,6 +38,8 @@ const StepStatus = (props) => {
   );
 };
 
-StepStatus.propTypes = {};
+StepStatus.propTypes = {
+  loan: PropTypes.object.isRequired,
+};
 
 export default StepStatus;

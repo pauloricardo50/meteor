@@ -5,12 +5,12 @@ import Button from 'core/components/Button';
 
 import DialogSimple from 'core/components/DialogSimple';
 import DropzoneArray from 'core/components/DropzoneArray';
+import { AUCTION_STATUS } from 'core/api/constants';
 import ClosingForm from '/imports/ui/components/ClosingForm';
 import ClosingStepsForm from '/imports/ui/components/ClosingStepsForm';
 import downloadPDF from 'core/utils/download-pdf';
 import cleanMethod from 'core/api/cleanMethods';
 import ConfirmMethod from './ConfirmMethod';
-import { AUCTION_STATUS } from 'core/api/constants';
 
 const styles = {
   div: {
@@ -77,10 +77,13 @@ const ActionsTab = (props) => {
         label="Supprimer la demande"
         keyword="SUPPRIMER"
         method={cb =>
-          cleanMethod('deleteLoan', { id: loan._id }).then(() => {
-            window.location.href = '/';
-            cb();
-          })
+          cleanMethod('deleteLoan', { id: loan._id })
+            .then(cb)
+            .catch((err) => {
+              if (!err) {
+                window.location.href = '/';
+              }
+            })
         }
         style={styles.button}
       />

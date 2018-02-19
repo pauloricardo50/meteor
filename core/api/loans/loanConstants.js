@@ -97,3 +97,8 @@ export const PAYMENT_SCHEDULES = {
   YEARLY: 'YEARLY',
   SEMESTERLY: 'SEMESTERLY',
 };
+
+export const QUERY = {
+  ADMIN_LOAN: 'ADMIN_LOAN',
+  ADMIN_LOANS: 'ADMIN_LOANS',
+};

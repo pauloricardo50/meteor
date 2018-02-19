@@ -8,7 +8,7 @@ echo Running e-Potek...
 if ! type "ttab" > /dev/null; then
   # install ttab if not
   echo Installing ttab
-  npm i -g ttab
+  meteor npm i -g ttab
 fi
 
 # Start each app in its own tab

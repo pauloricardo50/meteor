@@ -29,12 +29,23 @@ export default class Table extends Component {
   componentWillReceiveProps(nextProps) {
     const currentLength = this.state.data.length;
     const nextLength = nextProps.rows.length;
-
     // Lazy check to see if data has different length
     // FIXME should also check if all the data is the same, careful with sorting
     if (nextLength !== currentLength) {
       this.handleNewData(nextProps);
+    } else if (this.state.data && nextProps.rows) {
+      let differentProps = false;
+      nextProps.rows.every((row) => {
+        if (!this.state.data.includes(row)) {
+          differentProps = true;
+        }
+      });
+
+      if (differentProps) {
+        this.handleNewData(nextProps);
+      }
     }
+
     // If pagination is currently going on, make sure it is still needed
     if (currentLength > 10 && nextLength <= 10) {
       this.setState({ page: 0 });
@@ -63,6 +74,8 @@ export default class Table extends Component {
       order === 'desc'
         ? this.state.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
         : this.state.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1));
+    this.setState({ selected: newSelected }, () =>
+      this.props.onRowSelect(this.state.selected));
 
     this.setState({ data, order, orderBy });
   };
@@ -146,7 +159,7 @@ export default class Table extends Component {
             rowsPerPage={rowsPerPage}
             clickable={clickable}
           />
-          {rowCount > 10 && (
+          {rowCount > 20 && (
             <TableFooter
               rowCount={rowCount}
               rowsPerPage={rowsPerPage}
