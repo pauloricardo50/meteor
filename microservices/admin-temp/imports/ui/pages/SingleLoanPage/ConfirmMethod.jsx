@@ -19,7 +19,7 @@ export default class ConfirmMethod extends Component {
   };
 
   handleSubmit = () => {
-    this.props.method((err, res) => {
+    this.props.method((err) => {
       if (!err) {
         this.setState({ open: false });
       }
@@ -34,12 +34,18 @@ export default class ConfirmMethod extends Component {
 
   render() {
     const actions = [
-      <Button label="Annuler" primary onClick={this.handleClose} />,
+      <Button
+        label="Annuler"
+        primary
+        onClick={this.handleClose}
+        key="cancel"
+      />,
       <Button
         label="Okay"
         primary
         disabled={this.state.text !== this.props.keyword}
         onClick={this.handleSubmit}
+        key="ok"
       />,
     ];
 
@@ -58,7 +64,8 @@ export default class ConfirmMethod extends Component {
           important
           open={this.state.open}
         >
-          Tapez le mot "{this.props.keyword}" pour valider cette action.
+          Tapez le mot &quot;{this.props.keyword}&quot; pour valider cette
+          action.
           <div>
             <TextField autoFocus onChange={this.handleChange} />
           </div>
@@ -72,4 +79,6 @@ ConfirmMethod.propTypes = {
   label: PropTypes.string.isRequired,
   keyword: PropTypes.string.isRequired,
   method: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  style: PropTypes.object.isRequired,
 };

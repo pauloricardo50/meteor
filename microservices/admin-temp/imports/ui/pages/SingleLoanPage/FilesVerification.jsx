@@ -73,6 +73,7 @@ const FilesVerification = ({ loan, borrowers, property }) => (
 FilesVerification.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default FilesVerification;

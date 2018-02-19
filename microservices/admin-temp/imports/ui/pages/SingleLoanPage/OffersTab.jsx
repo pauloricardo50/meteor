@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import AdminNewOffer from '/imports/ui/components/AdminNewOffer';
-import ConfirmMethod from './ConfirmMethod';
+import cleanMethod from 'core/api/cleanMethods';
 import ConditionsButton from 'core/components/ConditionsButton';
 import { toMoney } from 'core/utils/conversionFunctions';
 import { IntlNumber } from 'core/components/Translation';
-import cleanMethod from 'core/api/cleanMethods';
+import AdminNewOffer from '/imports/ui/components/AdminNewOffer';
+import ConfirmMethod from './ConfirmMethod';
 
 export default class OffersTab extends Component {
   constructor(props) {
@@ -30,7 +30,7 @@ export default class OffersTab extends Component {
     if (this.props.offers.length <= 0) {
       return (
         <div className="text-center">
-          <h1 className="secondary">Pas d'offres pour l'instant</h1>
+          <h1 className="secondary">Pas d&apos;offres pour l&apos;instant</h1>
           <AdminNewOffer {...this.props} />
         </div>
       );
@@ -44,7 +44,11 @@ export default class OffersTab extends Component {
         <ul className="admin-offer-list">
           {this.props.offers.map((o, i) => (
             <li className="mask1" key={o._id}>
-              <div className="top" onClick={() => this.handleToggle(i)}>
+              <div
+                className="top"
+                onClick={() => this.handleToggle(i)}
+                onKeyPress={() => this.handleToggle(i)}
+              >
                 <div className="title">
                   <h2 className="fixed-size">
                     <span className="bold">{o.organization}</span>{' '}
@@ -90,7 +94,12 @@ export default class OffersTab extends Component {
                     ))}
                 </ul>
                 {o.counterparts.length > 0 && (
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                  >
                     <hr />
                     <h4 className="fixed-size" style={{ marginTop: 0 }}>
                       Offre avec contrepartie

@@ -4,7 +4,8 @@
   "description": "* Initial setup",
   "main": "index.js",
   "scripts": {
-    "format": "prettier-eslint \"**/*.js*\" --write --eslint-config-path .eslintrc.js"
+    "format":
+      "prettier-eslint \"**/*.js*\" --write --eslint-config-path .eslintrc.js"
   },
   "repository": {
     "type": "git",
@@ -27,7 +28,9 @@
     "eslint-plugin-meteor": "^4.1.4",
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.6.1",
-    "prettier-eslint-cli": "^4.7.0"
+    "prettier-eslint-cli": "^4.7.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^6.1.0"
   },
   "dependencies": {
     "global": "^4.3.2",

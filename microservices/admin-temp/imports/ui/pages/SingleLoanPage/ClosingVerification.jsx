@@ -75,7 +75,7 @@ export default class ClosingVerification extends Component {
               </div>
             )))
         ) : (
-          <h3>Pas d'étapes à vérifier</h3>
+          <h3>Pas d&apos;étapes à vérifier</h3>
         )}
       </div>
     );
