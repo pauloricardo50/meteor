@@ -5,7 +5,7 @@ const emailConfigs = {};
 
 const emailDefaults = {
   allowUnsubscribe: false,
-  createIntlValues: () => ({}),
+  createIntlValues: () => ({ variables: [] }),
 };
 
 /**
@@ -69,6 +69,103 @@ addEmailConfig(EMAIL_IDS.ENROLL_ACCOUNT, {
         { name: variables.BODY, content: body },
         { name: variables.CTA, content: cta },
         { name: variables.CTA_URL, content: enrollUrl || CTA_URL_DEFAULT },
+      ],
+    };
+  },
+});
+
+addEmailConfig(EMAIL_IDS.VERIFICATION_REQUESTED, {
+  template: EMAIL_TEMPLATES.NOTIFICATION,
+  createOverrides(_, { title, body, cta }) {
+    const { variables } = this.template;
+
+    return {
+      variables: [
+        { name: variables.TITLE, content: title },
+        { name: variables.BODY, content: body },
+      ],
+    };
+  },
+});
+
+addEmailConfig(EMAIL_IDS.VERIFICATION_ERROR, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides(_, { title, body, cta }) {
+    const { variables } = this.template;
+
+    return {
+      variables: [
+        { name: variables.TITLE, content: title },
+        { name: variables.BODY, content: body },
+        { name: variables.CTA, content: cta },
+        { name: variables.CTA_URL, content: CTA_URL_DEFAULT },
+      ],
+    };
+  },
+});
+
+addEmailConfig(EMAIL_IDS.VERIFICATION_PASSED, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides(_, { title, body, cta }) {
+    const { variables } = this.template;
+
+    return {
+      variables: [
+        { name: variables.TITLE, content: title },
+        { name: variables.BODY, content: body },
+        { name: variables.CTA, content: cta },
+        { name: variables.CTA_URL, content: CTA_URL_DEFAULT },
+      ],
+    };
+  },
+});
+
+addEmailConfig(EMAIL_IDS.AUCTION_STARTED, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createIntlValues({ auctionEndTime }) {
+    return { date: auctionEndTime };
+  },
+  createOverrides(_, { title, body, cta }) {
+    const { variables } = this.template;
+
+    return {
+      variables: [
+        { name: variables.TITLE, content: title },
+        { name: variables.BODY, content: body },
+        { name: variables.CTA, content: cta },
+        { name: variables.CTA_URL, content: CTA_URL_DEFAULT },
+      ],
+    };
+  },
+});
+
+addEmailConfig(EMAIL_IDS.AUCTION_ENDED, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides(_, { title, body, cta }) {
+    const { variables } = this.template;
+
+    return {
+      variables: [
+        { name: variables.TITLE, content: title },
+        { name: variables.BODY, content: body },
+        { name: variables.CTA, content: cta },
+        { name: variables.CTA_URL, content: CTA_URL_DEFAULT },
+      ],
+    };
+  },
+});
+
+addEmailConfig(EMAIL_IDS.AUCTION_CANCELLED, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides(_, { title, body, cta }) {
+    const { variables } = this.template;
+
+    return {
+      variables: [
+        { name: variables.TITLE, content: title },
+        { name: variables.BODY, content: body },
+        { name: variables.CTA, content: cta },
+        { name: variables.CTA_URL, content: CTA_URL_DEFAULT },
       ],
     };
   },

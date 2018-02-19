@@ -65,9 +65,9 @@ const createMutator = (options, functionBody) => {
       let result;
       try {
         result = functionBody(callParameters);
-        EventService.emitMutation(options);
+        EventService.emitMutation(options, callParameters);
       } catch (error) {
-        throw new Meteor.Error(MUTATION_ERROR, `Error in ${name}`, error);
+        throw error;
       }
 
       afterLogger(result, name);

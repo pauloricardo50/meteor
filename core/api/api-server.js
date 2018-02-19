@@ -37,3 +37,5 @@ import '../utils/logismata/methods';
 import './email/server';
 
 import './mutations/server';
+
+import './events/registerListeners';

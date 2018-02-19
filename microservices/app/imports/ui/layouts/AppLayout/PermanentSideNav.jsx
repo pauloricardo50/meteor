@@ -6,7 +6,7 @@ import Drawer from 'material-ui/Drawer';
 import SideNavUser from '/imports/ui/components/SideNavUser';
 
 const PermanentSideNav = ({ isApp, ...otherProps }) => (
-  <Drawer type="permanent">
+  <Drawer variant="permanent">
     <div style={{ width: isApp ? 300 : 250 }}>
       <SideNavUser {...otherProps} fixed />
     </div>
