@@ -37,7 +37,6 @@ import './email/server';
 import './mutations/server';
 
 import './events/registerListeners';
-import './tasks/methods';
 
 // Exposures
 import './loans/queries/exposures';
