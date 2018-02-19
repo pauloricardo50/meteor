@@ -1,4 +1,6 @@
-const Meteor = {
+export const Meteor = {
   userId: () => 'hello world',
+  users: {
+    attachSchema: () => {},
+  },
 };
-export { Meteor };

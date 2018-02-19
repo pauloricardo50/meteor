@@ -7,7 +7,7 @@ module.exports = function setupWallaby(wallaby) {
   ];
   return {
     name: 'e-Potek Client',
-    debug: true,
+    // debug: true, // Use this if things go wrong
     testFramework: 'mocha',
     files: [
       // Don't load node_modules twice
@@ -17,9 +17,11 @@ module.exports = function setupWallaby(wallaby) {
       // load all files in imports
       'imports/**/**.js*',
       // Don't load tests here, but in the next variable
-      '!imports/wallaby/**/*.spec.js*',
+      '!imports/**/*.spec.js*',
+      // For a weird reason wallaby fucks up on .json files
+      '!**/*.json',
     ],
-    tests: ['imports/wallaby/**/*.spec.js*'],
+    tests: ['imports/**/*.spec.js*', '!imports/core/node_modules/**'],
     compilers: {
       '**/*.js*': wallaby.compilers.babel({
         presets: ['env', 'react', 'stage-0'],
@@ -33,6 +35,10 @@ module.exports = function setupWallaby(wallaby) {
     },
     env: {
       type: 'node',
+    },
+    setup() {
+      global.IS_WALLABY = true;
+      global.fetch = require('node-fetch');
     },
   };
 };
