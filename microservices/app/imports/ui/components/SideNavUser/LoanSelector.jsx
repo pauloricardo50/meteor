@@ -35,7 +35,7 @@ const getOptions = (loans) => {
     array.push({
       id: r._id,
       label: r.name,
-      icon: r.property.style === 'villa' ? 'home' : 'building',
+      icon: r.propertyId.style === 'villa' ? 'home' : 'building',
     }));
 
   array.push(<Divider key="divider" />);
@@ -48,9 +48,7 @@ const getOptions = (loans) => {
   return array;
 };
 
-const LoanSelector = ({
-  value, toggleDrawer, history, loans,
-}) => (
+const LoanSelector = ({ value, toggleDrawer, history, loans }) => (
   <div style={styles.div}>
     <Select
       id="loan-selector"

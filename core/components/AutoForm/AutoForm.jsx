@@ -52,55 +52,55 @@ const inputSwitch = (childProps, index, parentProps) => {
   } = childProps.inputProps;
 
   switch (type) {
-    case 'textInput':
-      return <TextInput multiline={false} {...childProps} />;
-    case 'radioInput':
-      return <RadioInput {...childProps} />;
-    case 'selectFieldInput':
-      return <SelectFieldInput {...childProps} />;
-    case 'conditionalInput':
-      return (
-        <ConditionalInput
-          conditionalTrueValue={conditionalTrueValue}
-          key={index}
-          style={style}
-          doc={parentProps.doc}
-        >
-          {mapInputs(inputs[0], 0, parentProps)}
-          {inputs.slice(1).map((input, i) => mapInputs(input, i, parentProps))}
-        </ConditionalInput>
-      );
-    case 'h3':
-      return (
-        <h3 style={styles.subtitle} key={index}>
-          {label}
-        </h3>
-      );
-    case 'h2':
-      return (
-        <h2 style={styles.subtitle} key={index}>
-          {label}
-        </h2>
-      );
-    case 'space':
-      return (
-        <div style={{ width: '100%', height }} key={index}>
-          {text}
-        </div>
-      );
-    case 'dateInput':
-      return <DateInput {...childProps} />;
+  case 'textInput':
+    return <TextInput multiline={false} {...childProps} />;
+  case 'radioInput':
+    return <RadioInput {...childProps} />;
+  case 'selectFieldInput':
+    return <SelectFieldInput {...childProps} />;
+  case 'conditionalInput':
+    return (
+      <ConditionalInput
+        conditionalTrueValue={conditionalTrueValue}
+        key={index}
+        style={style}
+        doc={parentProps.doc}
+      >
+        {mapInputs(inputs[0], 0, parentProps)}
+        {inputs.slice(1).map((input, i) => mapInputs(input, i, parentProps))}
+      </ConditionalInput>
+    );
+  case 'h3':
+    return (
+      <h3 style={styles.subtitle} key={index}>
+        {label}
+      </h3>
+    );
+  case 'h2':
+    return (
+      <h2 style={styles.subtitle} key={index}>
+        {label}
+      </h2>
+    );
+  case 'space':
+    return (
+      <div style={{ width: '100%', height }} key={index}>
+        {text}
+      </div>
+    );
+  case 'dateInput':
+    return <DateInput {...childProps} />;
     // case 'dropzoneInput':
     //   return <UploaderArray {...childProps} />;
-    case 'arrayInput':
-      return <ArrayInput {...childProps} />;
-    case 'custom':
-      if (component === 'ZipAutoComplete') {
-        return <ZipAutoComplete {...childProps} {...componentProps} />;
-      }
-      return null;
-    default:
-      throw new Error(`${type} is not a valid AutoForm type`);
+  case 'arrayInput':
+    return <ArrayInput {...childProps} />;
+  case 'custom':
+    if (component === 'ZipAutoComplete') {
+      return <ZipAutoComplete {...childProps} {...componentProps} />;
+    }
+    return null;
+  default:
+    throw new Error(`${type} is not a valid AutoForm type`);
   }
 };
 

@@ -22,9 +22,7 @@ export default class GoogleMap extends Component {
 
   componentWillUnmount() {
     if (GoogleMaps.maps[this.name]) {
-      window.google.maps.event.clearInstanceListeners(
-        GoogleMaps.maps[this.name].instance,
-      );
+      window.google.maps.event.clearInstanceListeners(GoogleMaps.maps[this.name].instance);
       delete GoogleMaps.maps[this.name];
     }
   }

@@ -1,12 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import {
-  Loans,
-  Offers,
-  Borrowers,
-  AdminActions,
-  Properties,
-} from '../../api';
+import { Loans, Offers, Borrowers, AdminActions, Properties } from '../../api';
 
 export function adminLoansComposer(props, onData) {
   if (Meteor.subscribe('allLoans').ready()) {
@@ -53,8 +47,8 @@ export function adminLoanComposer(props, onData) {
     if (
       Meteor.subscribe('user', loan.userId).ready() &&
       Meteor.subscribe('loanOffers', loanId).ready() &&
-      Meteor.subscribe('loanBorrowers', loan.borrowers).ready() &&
-      Meteor.subscribe('property', loan.property).ready()
+      Meteor.subscribe('loanBorrowers', loan.borrowerIds).ready() &&
+      Meteor.subscribe('property', loan.propertyId).ready()
     ) {
       const user = Meteor.users.find({ _id: loan.userId }).fetch()[0];
       const offers = Offers.find({ loanId }).fetch();
@@ -83,7 +77,7 @@ export function adminUserComposer(props, onData) {
       Meteor.subscribe('userBorrowers', userId).ready()
     ) {
       const loans = Loans.find().fetch();
-      const propertyIds = loans && loans.map(r => r.property);
+      const propertyIds = loans && loans.map(r => r.propertyId);
       if (Meteor.subscribe('userProperties', userId, propertyIds).ready()) {
         const borrowers = Borrowers.find().fetch();
         const properties = Properties.find().fetch();

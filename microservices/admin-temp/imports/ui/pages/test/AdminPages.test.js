@@ -52,7 +52,7 @@ if (Meteor.isClient) {
             Component: page,
             props,
             withRouter: true,
-            withStore: true,
+            withStore: false,
           });
 
         beforeEach(() => {

@@ -44,14 +44,14 @@ const SideNav = ({ type, history }) => {
   let links = [];
 
   switch (type) {
-    case 'admin':
-      links = adminLinks;
-      break;
-    case 'partner':
-      links = partnerLinks;
-      break;
-    default:
-      break;
+  case 'admin':
+    links = adminLinks;
+    break;
+  case 'partner':
+    links = partnerLinks;
+    break;
+  default:
+    break;
   }
 
   // never hide sidenav for admins

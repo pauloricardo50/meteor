@@ -1,10 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import {
-  getPropertyArray,
-  getPropertyLoanArray,
-} from '../PropertyFormArray';
+import { getPropertyArray, getPropertyLoanArray } from '../PropertyFormArray';
 
 describe('getPropertyArray', () => {
   it('throws if no loan is passed', () => {

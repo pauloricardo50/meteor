@@ -43,7 +43,7 @@ const styles = {
 
 const getFakeOffers = (props) => {
   const loanWanted =
-    props.loan.property.value -
+    props.loan.propertyId.value -
     props.loan.general.fortuneUsed -
     props.loan.general.insuranceFortuneUsed;
   return [

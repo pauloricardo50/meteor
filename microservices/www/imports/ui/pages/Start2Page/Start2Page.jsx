@@ -262,7 +262,12 @@ class Start2Page extends Component {
     return (
       <div style={{ height: 'inherit', width: 'inherit' }}>
         <section className="start2 animated fadeIn">
-          <div className={classNames({ form: true, isFinished: finished })}>
+          <div
+            className={classNames({
+              form: true,
+              isFinished: finished,
+            })}
+          >
             <AutoStart
               formState={this.state}
               formArray={getFormArray(

@@ -33,19 +33,19 @@ export default class ErrorBoundary extends Component {
 
     if (hasError) {
       switch (helper) {
-        case 'layout':
-          return <LayoutError {...errorProps} />;
-        case 'app':
-          return (
-            <LayoutError
-              {...errorProps}
-              style={{ width: '100%', height: '100%' }}
-            />
-          );
-        case 'root':
-          return <RootError />;
-        default:
-          return <div>Woops!</div>;
+      case 'layout':
+        return <LayoutError {...errorProps} />;
+      case 'app':
+        return (
+          <LayoutError
+            {...errorProps}
+            style={{ width: '100%', height: '100%' }}
+          />
+        );
+      case 'root':
+        return <RootError />;
+      default:
+        return <div>Woops!</div>;
       }
     }
 

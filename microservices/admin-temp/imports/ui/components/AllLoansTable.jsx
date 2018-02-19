@@ -56,7 +56,7 @@ export default class AllLoansTable extends Component {
   setupRows = () => {
     const { loans, properties, history } = this.props;
     this.rows = loans.map((loan, index) => {
-      const propertyValue = properties.find(property => property._id === loan.property).value;
+      const propertyValue = properties.find(property => property._id === loan.propertyId).value;
       return {
         id: loan._id,
         columns: [
@@ -66,8 +66,7 @@ export default class AllLoansTable extends Component {
           moment(loan.updatedAt).format('D MMM YY à HH:mm:ss'),
           loan.logic.step + 1,
           propertyValue,
-          loan.general.fortuneUsed +
-            (loan.general.insuranceFortuneUsed || 0),
+          loan.general.fortuneUsed + (loan.general.insuranceFortuneUsed || 0),
           'Très Bon',
         ],
         handleClick: () => history.push(`/loans/${loan._id}`),

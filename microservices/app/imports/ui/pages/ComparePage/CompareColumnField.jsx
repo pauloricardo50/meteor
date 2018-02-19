@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 
 import Icon from 'core/components/Icon';
 
-import {
-  IntlNumber,
-  IntlDate,
-} from 'core/components/Translation';
+import { IntlNumber, IntlDate } from 'core/components/Translation';
 import colors from 'core/config/colors';
 
 import ValidatorItem from './ValidatorItem';
@@ -50,35 +47,35 @@ const CompareColumnField = (props) => {
   }
 
   switch (field.type) {
-    case 'number':
-      return <span>{value}</span>;
-    case 'money':
-      return <IntlNumber value={value} format="money" />;
-    case 'date':
-      return (
-        <IntlDate
-          value={value}
-          year="numeric"
-          month="long"
-          day="numeric"
-          // hour="2-digit"
-          // minute="2-digit"
-        />
-      );
-    case 'boolean':
-      return (
-        <span>
-          {value ? (
-            <Icon type="check" color={colors.success} />
-          ) : (
-            <Icon type="close" color={colors.error} />
-          )}
-        </span>
-      );
-    case 'percent':
-      return <IntlNumber value={value} format="percentage" />;
-    default:
-      return <span className="text-ellipsis">{value}</span>;
+  case 'number':
+    return <span>{value}</span>;
+  case 'money':
+    return <IntlNumber value={value} format="money" />;
+  case 'date':
+    return (
+      <IntlDate
+        value={value}
+        year="numeric"
+        month="long"
+        day="numeric"
+        // hour="2-digit"
+        // minute="2-digit"
+      />
+    );
+  case 'boolean':
+    return (
+      <span>
+        {value ? (
+          <Icon type="check" color={colors.success} />
+        ) : (
+          <Icon type="close" color={colors.error} />
+        )}
+      </span>
+    );
+  case 'percent':
+    return <IntlNumber value={value} format="percentage" />;
+  default:
+    return <span className="text-ellipsis">{value}</span>;
   }
 };
 

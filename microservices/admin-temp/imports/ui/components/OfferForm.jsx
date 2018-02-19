@@ -161,9 +161,7 @@ export default class OfferForm extends Component {
   };
 
   render() {
-    const {
-      admin, loan, handleCancel, property,
-    } = this.props;
+    const { admin, loan, handleCancel, property } = this.props;
     const {
       organization,
       conditions,

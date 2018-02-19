@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Radio, {
-  RadioGroup,
-} from 'core/components/Material/Radio';
+import Radio, { RadioGroup } from 'core/components/Material/Radio';
 import { FormLabel, FormControl, FormControlLabel } from 'material-ui/Form';
 
 import { T } from 'core/components/Translation';
@@ -33,7 +31,8 @@ const RadioButtons = ({
     <FormLabel htmlFor={id}>{label}</FormLabel>
     <RadioGroup
       onChange={(event, newValue) =>
-        safeChange(newValue, id, onChange, options)}
+        safeChange(newValue, id, onChange, options)
+      }
       value={`${value}`}
       name={id}
       className="flex"

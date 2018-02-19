@@ -5,10 +5,7 @@ import isArray from 'lodash/isArray';
 import { getBorrowerInfoArray } from './BorrowerFormArray';
 import { borrowerFiles, loanFiles, propertyFiles } from '../api/files/files';
 import { getPropertyArray, getPropertyLoanArray } from './PropertyFormArray';
-import {
-  strategyDone,
-  getPropertyCompletion,
-} from 'core/utils/loanFunctions';
+import { strategyDone, getPropertyCompletion } from 'core/utils/loanFunctions';
 import { arrayify } from '../utils/general';
 import { isDemo } from 'core/utils/browserFunctions';
 import {
@@ -20,9 +17,7 @@ import {
 } from '../api/constants';
 
 const getSteps = (props) => {
-  const {
-    loan, borrowers, property, serverTime,
-  } = props;
+  const { loan, borrowers, property, serverTime } = props;
 
   const steps = [
     {
@@ -35,9 +30,7 @@ const getSteps = (props) => {
       items: [
         {
           id: 'personal',
-          link: `/loans/${loan._id}/borrowers/${
-            borrowers[0]._id
-          }/personal`,
+          link: `/loans/${loan._id}/borrowers/${borrowers[0]._id}/personal`,
           percent: () => personalInfoPercent(borrowers),
           isDone() {
             return this.percent() >= 1;
@@ -45,27 +38,22 @@ const getSteps = (props) => {
         },
         {
           id: 'finance',
-          link: `/loans/${loan._id}/borrowers/${
-            borrowers[0]._id
-          }/finance`,
+          link: `/loans/${loan._id}/borrowers/${borrowers[0]._id}/finance`,
 
           isDone: () =>
             borrowers.reduce(
               (res, b) => res && b.logic.hasValidatedFinances,
               true,
             ),
-          percent: () => (
+          percent: () =>
             borrowers.reduce(
               (res, b) => (b.logic.hasValidatedFinances ? res + 1 : res),
               0,
-            ) / borrowers.length
-          ),
+            ) / borrowers.length,
         },
         {
           id: 'files',
-          link: `/loans/${loan._id}/borrowers/${
-            borrowers[0]._id
-          }/files`,
+          link: `/loans/${loan._id}/borrowers/${borrowers[0]._id}/files`,
           percent: () => filesPercent(borrowers, borrowerFiles, 'auction'),
           isDone() {
             return this.percent() >= 1;
@@ -102,10 +90,8 @@ const getSteps = (props) => {
         {
           id: 'auction',
           link: `/loans/${loan._id}/auction`,
-          waiting: () =>
-            loan.logic.auction.status === AUCTION_STATUS.STARTED,
-          isDone: () =>
-            loan.logic.auction.status === AUCTION_STATUS.ENDED,
+          waiting: () => loan.logic.auction.status === AUCTION_STATUS.STARTED,
+          isDone: () => loan.logic.auction.status === AUCTION_STATUS.ENDED,
           disabled: loan.logic.step < 2,
         },
         {
@@ -116,8 +102,7 @@ const getSteps = (props) => {
         {
           id: 'offerPicker',
           link: `/loans/${loan._id}/offerpicker`,
-          isDone: () =>
-            !!(loan.logic.lender && loan.logic.lender.offerId),
+          isDone: () => !!(loan.logic.lender && loan.logic.lender.offerId),
         },
       ],
     },
@@ -132,17 +117,11 @@ const getSteps = (props) => {
             loan.logic.step < 3 &&
             !(loan.logic.lender && loan.logic.lender.offerId),
           percent: () =>
-            getAllFilesPercent(
-              { loan, borrowers, property },
-              'contract',
-            ),
+            getAllFilesPercent({ loan, borrowers, property }, 'contract'),
           waiting: () =>
-            loan.logic.lender.contractRequested &&
-            !loan.logic.lender.contract,
+            loan.logic.lender.contractRequested && !loan.logic.lender.contract,
           isDone() {
-            return (
-              loan.files.contract && loan.files.contract.length
-            );
+            return loan.files.contract && loan.files.contract.length;
           },
         },
         {
@@ -151,10 +130,8 @@ const getSteps = (props) => {
           // FIXME: true && value used because of weird linting...
           disabled:
             (true &&
-              getAllFilesPercent(
-                { loan, borrowers, property },
-                'contract',
-              )) < 1 || loan.logic.step < 3,
+              getAllFilesPercent({ loan, borrowers, property }, 'contract')) <
+              1 || loan.logic.step < 3,
           percent: () => closingPercent(loan),
           isDone: () => loan.status === LOAN_STATUS.DONE,
         },
@@ -387,10 +364,7 @@ export const filesPercent = (doc, fileArrayFunc, step, checkValidity) => {
   return getPercent(a);
 };
 
-export const getAllFilesPercent = (
-  { loan, borrowers, property },
-  step,
-) => {
+export const getAllFilesPercent = ({ loan, borrowers, property }, step) => {
   const array = [];
   if (loan) {
     array.push(filesPercent(loan, loanFiles, step));

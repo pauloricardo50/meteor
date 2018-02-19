@@ -9,9 +9,7 @@ import MuiDialog, {
 } from 'material-ui/Dialog';
 
 const Dialog = (props) => {
-  const {
-    title, actions, children, important, text, ...otherProps
-  } = props;
+  const { title, actions, children, important, text, ...otherProps } = props;
   return (
     <MuiDialog
       disableBackdropClick={important}

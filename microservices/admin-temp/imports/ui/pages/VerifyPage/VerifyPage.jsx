@@ -89,8 +89,7 @@ export default class VerifyPage extends Component {
         <h3>Fichiers à ouvrir:</h3>
         <ul>
           <li>
-            Demande de prêt:{' '}
-            <span className="bold">{this.props.loan._id}</span>
+            Demande de prêt: <span className="bold">{this.props.loan._id}</span>
           </li>
           {this.props.borrowers.map((b, i) => (
             <li key={b._id}>

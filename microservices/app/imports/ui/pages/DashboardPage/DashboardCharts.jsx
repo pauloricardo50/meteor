@@ -9,11 +9,11 @@ import DashboardItem from './DashboardItem';
 const DashboardCharts = props => (
   <DashboardItem
     menuActions={[
-        {
-          id: 'financePage',
-          link: `/loans/${props.loan._id}/finance`,
-        },
-      ]}
+      {
+        id: 'financePage',
+        link: `/loans/${props.loan._id}/finance`,
+      },
+    ]}
   >
     <ProjectBarChart {...props} titleAlign="left" />
     <hr style={{ marginTop: 8, marginBottom: 16 }} />

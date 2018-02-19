@@ -12,9 +12,7 @@ const styles = {
 };
 
 const CompareColumnEditingField = (props) => {
-  const {
-    field, property, parentState, onChange,
-  } = props;
+  const { field, property, parentState, onChange } = props;
   let value;
 
   if (field.custom) {
@@ -24,68 +22,68 @@ const CompareColumnEditingField = (props) => {
   }
 
   switch (field.type) {
-    case 'number':
-      return (
-        <TextInput
-          value={parentState[field.id]}
-          id={field.id}
-          type="number"
-          onChange={onChange}
-        />
-      );
-    case 'money':
-      return (
-        <TextInput
-          value={parentState[field.id]}
-          id={field.id}
-          type="money"
-          onChange={onChange}
-        />
-      );
-    case 'date':
-      return (
-        <DateInput
-          value={parentState[field.id]}
-          id={field.id}
-          onChange={(newDate, id) => onChange(id, newDate)}
-          style={styles.field}
-          // withPortal
-          datePickerProps={{
-            withPortal: true,
-          }}
-          // withFullScreenPortal
-        />
-      );
-    case 'boolean':
-      return (
-        <RadioButtons
-          value={parentState[field.id]}
-          id={field.id}
-          onChange={onChange}
-          options={[true, false]}
-          intlPrefix="CompareColumn.boolean"
-          style={{ width: '100%' }}
-        />
-      );
-    case 'percent':
-      return (
-        <TextInput
-          value={parentState[field.id]}
-          id={field.id}
-          type="percent"
-          onChange={onChange}
-        />
-      );
-    case 'text':
-      return (
-        <TextInput
-          value={parentState[field.id]}
-          id={field.id}
-          onChange={onChange}
-        />
-      );
-    default:
-      return <span>{value}</span>;
+  case 'number':
+    return (
+      <TextInput
+        value={parentState[field.id]}
+        id={field.id}
+        type="number"
+        onChange={onChange}
+      />
+    );
+  case 'money':
+    return (
+      <TextInput
+        value={parentState[field.id]}
+        id={field.id}
+        type="money"
+        onChange={onChange}
+      />
+    );
+  case 'date':
+    return (
+      <DateInput
+        value={parentState[field.id]}
+        id={field.id}
+        onChange={(newDate, id) => onChange(id, newDate)}
+        style={styles.field}
+        // withPortal
+        datePickerProps={{
+          withPortal: true,
+        }}
+        // withFullScreenPortal
+      />
+    );
+  case 'boolean':
+    return (
+      <RadioButtons
+        value={parentState[field.id]}
+        id={field.id}
+        onChange={onChange}
+        options={[true, false]}
+        intlPrefix="CompareColumn.boolean"
+        style={{ width: '100%' }}
+      />
+    );
+  case 'percent':
+    return (
+      <TextInput
+        value={parentState[field.id]}
+        id={field.id}
+        type="percent"
+        onChange={onChange}
+      />
+    );
+  case 'text':
+    return (
+      <TextInput
+        value={parentState[field.id]}
+        id={field.id}
+        onChange={onChange}
+      />
+    );
+  default:
+    return <span>{value}</span>;
   }
 };
 

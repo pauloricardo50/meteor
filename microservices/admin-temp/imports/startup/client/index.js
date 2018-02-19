@@ -1,16 +1,16 @@
-import { Meteor } from "meteor/meteor";
-import { render } from "react-dom";
+import { Meteor } from 'meteor/meteor';
+import { render } from 'react-dom';
 
-import "core/api/api";
-import "core/api/files/meteor-slingshot";
-import { localizationStartup } from "core/utils/localization";
+import 'core/api/api';
+import 'core/api/files/meteor-slingshot';
+import { localizationStartup } from 'core/utils/localization';
 
 // Grapher Links
-import "core/api/links";
+import 'core/api/links';
 
-import "../accounts-config";
-import "./css";
-import AdminRouter from "./AdminRouter";
+import '../accounts-config';
+import './css';
+import AdminRouter from './AdminRouter';
 
 /**
  * start - sets the app up
@@ -19,21 +19,21 @@ import AdminRouter from "./AdminRouter";
  *
  * @return {type} undefined
  */
-const start = testElement => {
-    // Initial injected html done in server startup index.js
-    const loader = document.getElementById("inject-loader-wrapper");
-    const loader2 = document.getElementById("loading-text");
-    if (loader) {
-        loader.parentNode.removeChild(loader);
-    }
-    if (loader2) {
-        loader2.parentNode.removeChild(loader2);
-    }
+const start = (testElement) => {
+  // Initial injected html done in server startup index.js
+  const loader = document.getElementById('inject-loader-wrapper');
+  const loader2 = document.getElementById('loading-text');
+  if (loader) {
+    loader.parentNode.removeChild(loader);
+  }
+  if (loader2) {
+    loader2.parentNode.removeChild(loader2);
+  }
 
-    localizationStartup();
+  localizationStartup();
 
-    // Render react-router routes
-    render(AdminRouter(), testElement || document.getElementById("react-root"));
+  // Render react-router routes
+  render(AdminRouter(), testElement || document.getElementById('react-root'));
 };
 
 export default start;

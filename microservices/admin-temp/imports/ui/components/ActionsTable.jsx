@@ -8,7 +8,7 @@ import Table from 'core/components/Table';
 import { T } from 'core/components/Translation';
 
 import getActions from 'core/arrays/adminActions';
-import { completeAction } from 'core/api/adminActions/methods';
+import cleanMethod from 'core/api/cleanMethods';
 
 const columnOptions = [
   {
@@ -62,7 +62,7 @@ export default class ActionsTable extends Component {
 
   handleClick = () =>
     this.state.completed.forEach(actionId =>
-      completeAction.callPromise({ id: actionId }).catch((e) => {
+      cleanMethod('completeAction', { id: actionId }).catch((e) => {
         console.log('error completing action:', e);
       }));
 
@@ -115,10 +115,7 @@ export default class ActionsTable extends Component {
                   : '-',
                 loan
                   ? () =>
-                      actionDetails.handleClick(
-                        loan,
-                        this.props.history.push,
-                      )
+                    actionDetails.handleClick(loan, this.props.history.push)
                   : () => {},
               ],
             };

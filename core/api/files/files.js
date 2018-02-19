@@ -87,7 +87,7 @@ export const loanFiles = (r = {}) => ({
     // {
     //   id: 'cubage',
     //   doubleTooltip: true,
-    //   condition: r.property && r.property.style === 'villa',
+    //   condition: r.propertyId && r.propertyId.style === 'villa',
     // },
     // {
     //   id: 'pictures',
@@ -115,17 +115,17 @@ export const loanFiles = (r = {}) => ({
     },
     {
       id: 'coownershipAllocationAgreement',
-      condition: !!r.property && !!r.property.isCoproperty,
+      condition: !!r.propertyId && !!r.propertyId.isCoproperty,
       doubleTooltip: true,
     },
     {
       id: 'coownershipAgreement',
-      condition: !!r.property && !!r.property.isCoproperty,
+      condition: !!r.propertyId && !!r.propertyId.isCoproperty,
       doubleTooltip: true,
     },
     {
       id: 'fireAndWaterInsurance',
-      condition: !!(r.property && r.property.isNew),
+      condition: !!(r.propertyId && r.propertyId.isNew),
     },
   ],
   closing: [],
@@ -184,8 +184,7 @@ export const propertyFiles = (property = {}, loan = {}) => ({
     {
       id: 'rent',
       condition:
-        !!loan.general &&
-        loan.general.usageType === USAGE_TYPE.INVESTMENT,
+        !!loan.general && loan.general.usageType === USAGE_TYPE.INVESTMENT,
       doubleTooltip: true,
     },
     {
@@ -202,17 +201,17 @@ export const getFileIDs = (list) => {
   let files;
   const ids = [];
   switch (list) {
-    case 'borrower':
-      files = borrowerFiles();
-      break;
-    case 'loan':
-      files = loanFiles();
-      break;
-    case 'property':
-      files = propertyFiles();
-      break;
-    default:
-      throw new Error('invalid file list');
+  case 'borrower':
+    files = borrowerFiles();
+    break;
+  case 'loan':
+    files = loanFiles();
+    break;
+  case 'property':
+    files = propertyFiles();
+    break;
+  default:
+    throw new Error('invalid file list');
   }
 
   files.all().forEach(f => ids.push(f.id));

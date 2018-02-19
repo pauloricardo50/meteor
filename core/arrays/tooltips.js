@@ -54,12 +54,12 @@ export const offerTableTooltips = {
 
 export const tooltips = (list) => {
   switch (list) {
-    case 'general':
-      return generalTooltips;
-    case 'table':
-      return offerTableTooltips;
-    default:
-      throw new Error('Unknown tooltip list');
+  case 'general':
+    return generalTooltips;
+  case 'table':
+    return offerTableTooltips;
+  default:
+    throw new Error('Unknown tooltip list');
   }
 };
 

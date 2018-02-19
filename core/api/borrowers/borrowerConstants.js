@@ -1,5 +1,3 @@
-import { LOAN_STATU } from '../constants';
-
 export const RESIDENCY_PERMIT = {
   B: 'b',
   C: 'c',

@@ -44,7 +44,7 @@ export default class ConditionsButton extends Component {
     this.state = { open: false };
   }
 
-  handleOpen = e => {
+  handleOpen = (e) => {
     e.stopPropagation();
     track('ConditionsButton - clicked open', {});
     this.setState({ open: true });

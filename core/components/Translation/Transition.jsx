@@ -55,10 +55,11 @@ export default class Transition extends Component {
           style: { scale: s1(item.scale), opacity: s2(item.opacity) },
         }))}
       >
-        {interpolatedStyles =>
+        {interpolatedStyles => (
           <span>
             {interpolatedStyles.map(config => this.props.children(config))}
-          </span>}
+          </span>
+        )}
       </TransitionMotion>
     );
   }

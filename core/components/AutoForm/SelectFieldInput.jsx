@@ -53,14 +53,12 @@ export default class SelectFieldInput extends Component {
   };
 
   mapOptions = () =>
-    this.props.inputProps.options.map(({
-      id, intlId, intlValues, label, ...otherProps
-    }) => ({
+    this.props.inputProps.options.map(({ id, intlId, intlValues, label, ...otherProps }) => ({
       label: label || (
-      <T
-        id={`Forms.${intlId || this.props.inputProps.id}.${id}`}
-        values={intlValues}
-      />
+        <T
+          id={`Forms.${intlId || this.props.inputProps.id}.${id}`}
+          values={intlValues}
+        />
       ),
       id,
       ...otherProps,

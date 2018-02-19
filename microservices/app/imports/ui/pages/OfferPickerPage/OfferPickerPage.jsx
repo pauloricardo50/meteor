@@ -18,11 +18,7 @@ const OfferPickerPage = (props) => {
           <T id="OfferPickerPage.description" />
         </p>
 
-        <OfferList
-          offers={offers}
-          loan={loan}
-          disabled={loan.logic.step > 2}
-        />
+        <OfferList offers={offers} loan={loan} disabled={loan.logic.step > 2} />
       </section>
     </ProcessPage>
   );

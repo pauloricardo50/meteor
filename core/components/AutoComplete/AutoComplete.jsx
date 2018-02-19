@@ -163,13 +163,7 @@ class AutoComplete extends Component {
         }}
         onSuggestionSelected={(
           event,
-          {
-            suggestion,
-            suggestionValue,
-            suggestionIndex,
-            sectionIndex,
-            method,
-          },
+          { suggestion, suggestionValue, suggestionIndex, sectionIndex, method },
         ) => onSelect(suggestion, suggestionValue)}
       />
     );

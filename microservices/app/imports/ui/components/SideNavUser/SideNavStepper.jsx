@@ -42,6 +42,7 @@ class SideNavStepper extends React.Component {
   render() {
     const { serverTime } = this.state;
     const { activeStep } = this.props;
+
     const steps = getSteps({
       ...this.props,
       serverTime,

@@ -1,41 +1,24 @@
 {
-    "folders": [
-        {
-            "path": "./"
-        },
-        {
-            "path": "./core"
-        },
-        {
-            "path": "microservices/admin"
-        },
-        {
-            "path": "microservices/admin-temp"
-        },
-        {
-            "path": "microservices/app"
-        },
-        {
-            "path": "microservices/lender"
-        },
-        {
-            "path": "microservices/www"
-        }
-    ],
-    "settings": {
-        "path-intellisense.mappings": {
-            "core": "${workspaceRoot}/core"
-        },
-        "prettier.tabWidth": 4,
-        "search.exclude": {
-            "**/node_modules": true,
-            "**/.meteor": true
-        },
-        "files.watcherExclude": {
-            "**/.git/objects/**": true,
-            "**/.git/subtree-cache/**": true,
-            "**/node_modules": true,
-            "**/.meteor": true
-        }
-    }
+	"folders": [
+		{
+			"path": "./"
+		},
+		{
+			"path": "microservices/admin-temp"
+		},
+		{
+			"path": "microservices/app"
+		},
+		{
+			"path": "microservices/lender"
+		},
+		{
+			"path": "microservices/www"
+		}
+	],
+	"settings": {
+		"path-intellisense.mappings": {
+			"core": "${workspaceRoot}/core",
+		},
+	}
 }

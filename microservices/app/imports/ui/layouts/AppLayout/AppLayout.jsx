@@ -13,12 +13,7 @@ import Navs from './Navs';
 
 // import UserJoyride from '/imports/ui/components/UserJoyride';
 
-const allowedRoutesWithoutLoan = [
-  '/',
-  '/compare',
-  '/profile',
-  '/add-loan',
-];
+const allowedRoutesWithoutLoan = ['/', '/compare', '/profile', '/add-loan'];
 
 const allowedRoutesWithoutLogin = ['/enroll-account'];
 
@@ -66,9 +61,7 @@ const getShowSideNav = ({ location }) =>
   !(location.pathname === '/' || location.pathname === '/compare');
 
 const AppLayout = (props) => {
-  const {
-    type, history, render, children,
-  } = props;
+  const { type, history, render, children } = props;
   const redirect = getRedirect(props);
   const showSideNav = getShowSideNav(history);
   const classes = classnames({

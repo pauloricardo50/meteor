@@ -37,15 +37,13 @@ const SideNavUser = (props) => {
   const splittedUrl = location.pathname.substring(1).split('/');
   // If it has enough elements, parse the loanId
   const loanId =
-    splittedUrl.length >= 2 && splittedUrl[0] === 'loans'
-      ? splittedUrl[1]
-      : '';
+    splittedUrl.length >= 2 && splittedUrl[0] === 'loans' ? splittedUrl[1] : '';
   let currentLoan;
   let borrowerIds;
 
   if (loanId) {
     currentLoan = loans.find(r => r._id === loanId);
-    borrowerIds = currentLoan.borrowers;
+    borrowerIds = currentLoan.borrowerIds;
   }
 
   return (
@@ -58,17 +56,13 @@ const SideNavUser = (props) => {
     >
       <DrawerHeader permanent />
       <div className="scrollable">
-        <LoanSelector
-          {...props}
-          value={loanId}
-          toggleDrawer={toggleDrawer}
-        />
+        <LoanSelector {...props} value={loanId} toggleDrawer={toggleDrawer} />
         {loanId && (
           <SideNavUserLoan
             {...props}
             loan={currentLoan}
             borrowers={borrowers.filter(b => borrowerIds.indexOf(b._id) > -1)}
-            property={properties.find(p => p._id === currentLoan.property)}
+            property={properties.find(p => p._id === currentLoan.propertyId)}
           />
         )}
       </div>

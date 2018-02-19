@@ -12,7 +12,7 @@ jobs:
           LC_NUMERIC: en_US.UTF-8
           METEOR_BIN_TMP_DIR: /home/circleci/build-temp/
           METEOR_BIN_TMP_FILE: meteor-bin-temp
-          TZ: "/usr/share/zoneinfo/Europe/Zurich"
+          # TZ: "/usr/share/zoneinfo/Europe/Zurich"
           NODE_ENV: development
           TOOL_NODE_FLAGS: "--max_old_space_size=4096 --optimize_for_size --gc-interval=100" # if builds run out of memory
           # METEOR_PROFILE: 1 # If you need to debug meteor, turn this on
@@ -72,12 +72,12 @@ jobs:
             cd microservices/app
             meteor npm i selenium-webdriver@3.0.0-beta-2 chromedriver
             meteor npm run test-CI
-      # - run:
-      #     name: run tests for Www
-      #     command: |
-      #       cd sWww
-      #       meteor npm i selenium-webdriver@3.0.0-beta-2 chromedriver
-      #       meteor npm run test-CI
+      - run:
+          name: run tests for admin-temp
+          command: |
+            cd microservices/admin-temp
+            meteor npm i selenium-webdriver@3.0.0-beta-2 chromedriver
+            meteor npm run test-CI
       - run:
           name: copy meteor bin to build cache
           command: |

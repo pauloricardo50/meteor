@@ -68,20 +68,15 @@ class DashboardStatus extends Component {
     const nextLink = this.getNextLink();
 
     const verificationRequested =
-      loan.logic.verification &&
-      loan.logic.verification.requested;
-    const auctionGoingOn =
-      loan.logic.auction.status === AUCTION_STATUS.STARTED;
+      loan.logic.verification && loan.logic.verification.requested;
+    const auctionGoingOn = loan.logic.auction.status === AUCTION_STATUS.STARTED;
 
     const showLoading = verificationRequested || auctionGoingOn;
 
     return (
       <DashboardItem title={<T id="DashboardStatus.title" />}>
         <h2 className="fixed-size" style={styles.step}>
-          <T
-            id="DashboardStatus.step"
-            values={{ step: loan.logic.step }}
-          />
+          <T id="DashboardStatus.step" values={{ step: loan.logic.step }} />
           {showLoading && <br />}
           {showLoading && (
             <small>

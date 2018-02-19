@@ -40,9 +40,7 @@ export default class AuctionPage extends Component {
   }
 
   getContent() {
-    const {
-      loan, offers, borrowers, history,
-    } = this.props;
+    const { loan, offers, borrowers, history } = this.props;
     const { serverTime } = this.state;
 
     if (!serverTime) {

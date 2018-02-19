@@ -8,9 +8,7 @@ if (Meteor.isServer) {
 }
 
 export const getClosestStations = (latitude, longitude) =>
-  fetch(
-    `https://transport.opendata.ch/v1/locations?x=${latitude}&y=${longitude}&type=station`,
-  )
+  fetch(`https://transport.opendata.ch/v1/locations?x=${latitude}&y=${longitude}&type=station`)
     .then((response) => {
       if (response.status !== 200) {
         throw new Error('error code: ', response.status);
@@ -78,15 +76,11 @@ export const getNearbyPlace = (latitude, longitude, type, byDistance) => {
 
 const google_key = 'AIzaSyCdoi6BxlTf7GgxqAGAsd1ADM_UwgqWUP8';
 export const getLocations = zipCode =>
-  fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${zipCode}&components=country:CH&language=fr&key=${google_key}`,
-  )
+  fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${zipCode}&components=country:CH&language=fr&key=${google_key}`)
     .then(result => result.json())
     .then((result) => {
       const array = result.results[0].postcode_localities || [];
-      const localities = result.results[0].address_components.filter(
-        obj => obj.types.indexOf('locality') >= 0,
-      );
+      const localities = result.results[0].address_components.filter(obj => obj.types.indexOf('locality') >= 0);
       if (localities && localities.length) {
         localities.forEach(l => array.push(l.long_name));
       }

@@ -1,50 +1,45 @@
-// Grapher Links
-import "./links";
+import './adminActions/server/publications';
+import './adminActions/server/methods';
 
-import "./adminActions/server/publications";
-import "./adminActions/methods";
+import './borrowers/server/publications';
+import './borrowers/server/methods';
 
-import "./borrowers/server/publications";
-import "./borrowers/methods";
+import './comparators/server/publications';
+import './comparators/server/methods';
 
-import "./comparators/server/publications";
-import "./comparators/methods";
+import './loans/server/publications';
+import './loans/server/methods';
 
-import "./loans/server/publications";
-import "./loans/methods";
+import './offers/server/publications';
+import './offers/server/methods';
 
-import "./offers/server/publications";
-import "./offers/methods";
+import './properties/server/publications';
+import './properties/server/methods';
 
-import "./properties/server/publications";
-import "./properties/methods";
+import './users/server/publications';
+import './users/server/methods';
+import './users/server/accounts-server-config';
 
-import "./users/server/publications";
-import "./users/methods";
-import "./users/server/accounts-server-config";
+import './methods/server';
+import './methods/methods';
 
-import "./methods/server";
-import "./methods/methods";
+import './factories';
 
-import "./factories";
+import './jobs/server/jobs';
+import './jobs/server/methods';
 
-import "./loans/loans";
+import './files/server/methods';
+import './files/meteor-slingshot-server';
 
-import "./server/jobs/jobs";
-import "./server/jobs/methods";
+import '../utils/logismata/methods';
 
-import "./files/fileMethods";
-import "./files/meteor-slingshot-server";
+import './email';
 
-import "../utils/logismata/methods";
-
-import "./email";
-
-import "./tasks/methods";
+import './tasks/methods';
 
 // Exposures
-import "./loans/queries/exposures";
-import "./users/queries/exposures";
-//import "./adminActions/queries/exposures";
-import "./tasks/queries/exposures";
-import "./borrowers/queries/exposures";
+import './loans/queries/exposures';
+import './users/queries/exposures';
+// import "./adminActions/queries/exposures";
+import './tasks/queries/exposures';
+import './borrowers/queries/exposures';

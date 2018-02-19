@@ -27,7 +27,8 @@ const Tranche = ({ tranche, changeTranche, deleteTranche, options }) => (
         inputProps={{ style: { textAlign: 'right' } }}
         value={tranche.value / 10000}
         onChange={(id, value) =>
-          changeTranche(tranche.type, 'value', value * 10000)}
+          changeTranche(tranche.type, 'value', value * 10000)
+        }
         type="number"
         id="value"
       />

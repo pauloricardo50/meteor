@@ -44,10 +44,7 @@ const LoanSchema = new SimpleSchema({
     type: Date,
     autoValue() {
       // Verify the update is from the user owning this doc, ignoring admin/partner updates
-      const doc = Loans.findOne(
-        { _id: this.docId },
-        { fields: { userId: 1 } },
-      );
+      const doc = Loans.findOne({ _id: this.docId }, { fields: { userId: 1 } });
 
       if (this.isInsert) {
         return new Date();
@@ -63,10 +60,10 @@ const LoanSchema = new SimpleSchema({
   },
   name: { type: String, optional: true, defaultValue: '' },
   general: { type: GeneralSchema, defaultValue: {} },
-  borrowers: { type: Array, defaultValue: [] },
-  'borrowers.$': String,
+  borrowerIds: { type: Array, defaultValue: [] },
+  'borrowerIds.$': String,
   // property: PropertySchema,
-  property: String,
+  propertyId: String,
   files: { type: LoanFilesSchema, defaultValue: {} },
   logic: { type: LogicSchema, defaultValue: {} },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },

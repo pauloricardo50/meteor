@@ -23,11 +23,9 @@ class EmailVerificationPage extends Component {
           'danger',
         );
       } else {
-        const message = `<h3 style="color:white;margin:0;">${this.props.intl.formatMessage(
-          {
-            id: 'EmailVerification.message',
-          },
-        )}</h3>`;
+        const message = `<h3 style="color:white;margin:0;">${this.props.intl.formatMessage({
+          id: 'EmailVerification.message',
+        })}</h3>`;
         Bert.alert(message, 'success');
         this.props.history.push('/');
       }

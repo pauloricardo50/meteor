@@ -48,7 +48,7 @@ export default class CompareColumnFooter extends Component {
           style={{ margin: '8px 0' }}
         />
 
-        {showButtons &&
+        {showButtons && (
           <div className="flex-col center">
             <Button
               raised
@@ -63,7 +63,8 @@ export default class CompareColumnFooter extends Component {
               style={{ margin: '8px 0' }}
               handleClick={() => deleteProperty(id)}
             />
-          </div>}
+          </div>
+        )}
       </div>
     );
   }

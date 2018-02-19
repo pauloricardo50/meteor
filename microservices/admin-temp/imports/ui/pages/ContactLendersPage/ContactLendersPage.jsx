@@ -25,7 +25,7 @@ import downloadPDF from 'core/utils/download-pdf';
 // Banque revient en 2 jours
 
 const getEmail = (props) => {
-  const subject = `[e-Potek] ${props.loan.property.address1}`;
+  const subject = `[e-Potek] ${props.loan.propertyId.address1}`;
   const body = 'Bonjour,';
   return `mailto:?subject=${subject}&body=${body}`;
 };

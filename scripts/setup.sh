@@ -59,7 +59,10 @@ for i in 'admin' 'app' 'lender' 'www' 'admin-temp'
   done
 
 echo "Installing npm packages in core/"
-( cd ../core && npm install );
+( cd ../core && meteor npm install );
+
+echo "Installing npm packages in root"
+( cd .. && meteor npm install );
 
 echo "Creating language files..."
 babel-node ./createLanguages.js

@@ -3,8 +3,10 @@
   "private": true,
   "scripts": {
     "start": "meteor --settings settings-dev.json --port 3000",
-    "test": "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 3005",
-    "test-CI": "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json"
+    "test":
+      "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 3005",
+    "test-CI":
+      "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json"
   },
   "dependencies": {
     "aws-sdk": "^2.171.0",
@@ -13,7 +15,8 @@
     "html-pdf": "^2.2.0",
     "indexof": "0.0.1",
     "intl-messageformat": "^2.2.0",
-    "intl-relativeformat": "https://github.com/Floriferous/intl-relativeformat/tarball/master",
+    "intl-relativeformat":
+      "https://github.com/Floriferous/intl-relativeformat/tarball/master",
     "js-search": "^1.4.2",
     "material-ui": "^1.0.0-beta.30",
     "material-ui-icons": "^1.0.0-beta.17",
@@ -26,7 +29,8 @@
     "react-countup": "^3.0.2",
     "react-dom": "^16.2.0",
     "react-highcharts": "^15.0.0",
-    "react-inline-css": "^2.3.1",
+    "react-inline-css":
+      "https://github.com/Floriferous/react-inline-css/tarball/master",
     "react-intl": "https://github.com/Floriferous/react-intl/tarball/build",
     "@storybook/react-komposer": "^2.0.0",
     "react-loadable": "^5.3.1",
@@ -41,7 +45,8 @@
   "devDependencies": {
     "babel-eslint": "^8.0.3",
     "babel-plugin-module-alias": "^1.6.0",
-    "babel-plugin-react-intl": "https://github.com/Floriferous/babel-plugin-react-intl/tarball/master",
+    "babel-plugin-react-intl":
+      "https://github.com/Floriferous/babel-plugin-react-intl/tarball/master",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",

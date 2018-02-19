@@ -20,4 +20,3 @@ ScrollToTop.propTypes = {
 };
 
 export default withRouter(ScrollToTop);
-
