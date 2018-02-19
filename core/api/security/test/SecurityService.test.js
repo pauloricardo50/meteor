@@ -13,6 +13,7 @@ import {
   OfferSecurity,
   BorrowerSecurity,
   PropertySecurity,
+  TaskSecurity,
 } from '../collections';
 
 describe('Security service', () => {
@@ -102,6 +103,10 @@ describe('Security service', () => {
 
     it('properties should return PropertySecurity', () => {
       expect(SecurityService.properties).to.equal(PropertySecurity);
+    });
+
+    it('tasks should return TaskSecurity', () => {
+      expect(SecurityService.tasks).to.equal(TaskSecurity);
     });
   });
 });

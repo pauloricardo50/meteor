@@ -4,6 +4,7 @@ import {
   OfferSecurity,
   BorrowerSecurity,
   PropertySecurity,
+  TaskSecurity,
 } from './collections';
 
 class SecurityService extends Security {
@@ -21,6 +22,10 @@ class SecurityService extends Security {
 
   static get borrowers() {
     return BorrowerSecurity;
+  }
+
+  static get tasks() {
+    return TaskSecurity;
   }
 }
 
