@@ -89,3 +89,46 @@ export const getEnrollmentUrl = (user, url) => {
 
   return url;
 };
+
+/**
+ * This is a default override function for the NOTIFICATION template
+ *
+ * @export
+ * @param {Object} params The params passed by the mutation
+ * @param {Object} { title, body } The strings extracted from i18n files
+ * @returns a template override object
+ */
+export function notificationTemplateDefaultOverride(params, { title, body }) {
+  const { variables } = this.template;
+
+  return {
+    variables: [
+      { name: variables.TITLE, content: title },
+      { name: variables.BODY, content: body },
+    ],
+  };
+}
+
+/**
+ * This is a default override function for the NOTIFICATION_AND_CTA template
+ *
+ * @export
+ * @param {Object} params The params passed by the mutation
+ * @param {Object} { title, body, cta } The strings extracted from i18n files
+ * @returns a template override object
+ */
+export function notificationAndCtaTemplateDefaultOverride(
+  params,
+  { title, body, cta },
+) {
+  const { variables } = this.template;
+
+  return {
+    variables: [
+      { name: variables.TITLE, content: title },
+      { name: variables.BODY, content: body },
+      { name: variables.CTA, content: cta },
+      { name: variables.CTA_URL, content: CTA_URL_DEFAULT },
+    ],
+  };
+}

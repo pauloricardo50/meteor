@@ -1,5 +1,9 @@
 import { EMAIL_TEMPLATES, EMAIL_IDS, CTA_URL_DEFAULT } from '../emailConstants';
-import { getEnrollmentUrl } from './emailHelpers';
+import {
+  getEnrollmentUrl,
+  notificationTemplateDefaultOverride,
+  notificationAndCtaTemplateDefaultOverride,
+} from './emailHelpers';
 
 const emailConfigs = {};
 
@@ -17,12 +21,28 @@ const emailDefaults = {
  * {Boolean} allowUnsubscribe Defines whether the email will be rendered with
  * a footer that allows the user to unsubscribe to notifications.
  * default is `false`
- * {Function} createOverrides The function that takes the user's values and
+ * {Function} createOverrides A function that takes the user's values and
  * returns an object with overrides for the email template
- *
+ * {Function} createIntlValues A function that takes the user's values and
+ * returns an object with intl values that need to be injected inside of the
+ * i18n strings
  */
 const addEmailConfig = (emailId, config) => {
-  emailConfigs[emailId] = { ...emailDefaults, ...config };
+  if (config.template === EMAIL_TEMPLATES.NOTIFICATION) {
+    emailConfigs[emailId] = {
+      createOverrides: notificationTemplateDefaultOverride,
+      ...emailDefaults,
+      ...config,
+    };
+  } else if (config.template === EMAIL_TEMPLATES.NOTIFICATION_AND_CTA) {
+    emailConfigs[emailId] = {
+      createOverrides: notificationAndCtaTemplateDefaultOverride,
+      ...emailDefaults,
+      ...config,
+    };
+  } else {
+    emailConfigs[emailId] = { ...emailDefaults, ...config };
+  }
 };
 
 const verifyConfig = {
@@ -76,99 +96,27 @@ addEmailConfig(EMAIL_IDS.ENROLL_ACCOUNT, {
 
 addEmailConfig(EMAIL_IDS.VERIFICATION_REQUESTED, {
   template: EMAIL_TEMPLATES.NOTIFICATION,
-  createOverrides(_, { title, body, cta }) {
-    const { variables } = this.template;
-
-    return {
-      variables: [
-        { name: variables.TITLE, content: title },
-        { name: variables.BODY, content: body },
-      ],
-    };
-  },
 });
 
 addEmailConfig(EMAIL_IDS.VERIFICATION_ERROR, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createOverrides(_, { title, body, cta }) {
-    const { variables } = this.template;
-
-    return {
-      variables: [
-        { name: variables.TITLE, content: title },
-        { name: variables.BODY, content: body },
-        { name: variables.CTA, content: cta },
-        { name: variables.CTA_URL, content: CTA_URL_DEFAULT },
-      ],
-    };
-  },
 });
 
 addEmailConfig(EMAIL_IDS.VERIFICATION_PASSED, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createOverrides(_, { title, body, cta }) {
-    const { variables } = this.template;
-
-    return {
-      variables: [
-        { name: variables.TITLE, content: title },
-        { name: variables.BODY, content: body },
-        { name: variables.CTA, content: cta },
-        { name: variables.CTA_URL, content: CTA_URL_DEFAULT },
-      ],
-    };
-  },
 });
 
 addEmailConfig(EMAIL_IDS.AUCTION_STARTED, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createIntlValues({ auctionEndTime }) {
-    return { date: auctionEndTime };
-  },
-  createOverrides(_, { title, body, cta }) {
-    const { variables } = this.template;
-
-    return {
-      variables: [
-        { name: variables.TITLE, content: title },
-        { name: variables.BODY, content: body },
-        { name: variables.CTA, content: cta },
-        { name: variables.CTA_URL, content: CTA_URL_DEFAULT },
-      ],
-    };
-  },
+  createIntlValues: ({ auctionEndTime }) => ({ date: auctionEndTime }),
 });
 
 addEmailConfig(EMAIL_IDS.AUCTION_ENDED, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createOverrides(_, { title, body, cta }) {
-    const { variables } = this.template;
-
-    return {
-      variables: [
-        { name: variables.TITLE, content: title },
-        { name: variables.BODY, content: body },
-        { name: variables.CTA, content: cta },
-        { name: variables.CTA_URL, content: CTA_URL_DEFAULT },
-      ],
-    };
-  },
 });
 
 addEmailConfig(EMAIL_IDS.AUCTION_CANCELLED, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createOverrides(_, { title, body, cta }) {
-    const { variables } = this.template;
-
-    return {
-      variables: [
-        { name: variables.TITLE, content: title },
-        { name: variables.BODY, content: body },
-        { name: variables.CTA, content: cta },
-        { name: variables.CTA_URL, content: CTA_URL_DEFAULT },
-      ],
-    };
-  },
 });
 
 export default emailConfigs;
