@@ -38,14 +38,14 @@ export class EventService {
   }
 
   logEmittedEvent(eventName, params) {
-    if (IS_LOGGING && Meteor.isDevelopment) {
+    if (IS_LOGGING && Meteor.isDevelopment && !Meteor.isTest) {
       console.log(`Event "${eventName}" triggered with params:`);
       console.log(params);
     }
   }
 
   logListener(eventName, params) {
-    if (IS_LOGGING && Meteor.isDevelopment) {
+    if (IS_LOGGING && Meteor.isDevelopment && !Meteor.isTest) {
       console.log(`Event "${eventName}" listened to with params:`);
       console.log(params);
     }
