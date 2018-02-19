@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import Button from 'core/components/Button';
 
-import { cancelAuction, endAuction, deleteLoan } from 'core/api/loans/methods';
 import DialogSimple from 'core/components/DialogSimple';
 import DropzoneArray from 'core/components/DropzoneArray';
 import { AUCTION_STATUS } from 'core/api/constants';
@@ -55,14 +54,14 @@ const ActionsTab = (props) => {
       <ConfirmMethod
         label="Annuler les enchères"
         keyword="ANNULER"
-        method={cb => cancelAuction.call({ id: loan._id }, cb)}
+        method={cb => cleanMethod('cancelAuction', { id: loan._id }).then(cb)}
         style={styles.button}
         disabled={!(l.auction.status === AUCTION_STATUS.STARTED)}
       />
       <ConfirmMethod
         label="Terminer les enchères"
         keyword="TERMINER"
-        method={cb => endAuction.call({ id: loan._id }, cb)}
+        method={cb => cleanMethod('endAuction', { id: loan._id }).then(cb)}
         style={styles.button}
         disabled={!(l.auction.status === AUCTION_STATUS.STARTED)}
       />
@@ -78,11 +77,13 @@ const ActionsTab = (props) => {
         label="Supprimer la demande"
         keyword="SUPPRIMER"
         method={cb =>
-          deleteLoan.call({ id: loan._id }, (err) => {
-            if (!err) {
-              window.location.href = '/';
-            }
-          })
+          cleanMethod('deleteLoan', { id: loan._id })
+            .then(cb)
+            .catch((err) => {
+              if (!err) {
+                window.location.href = '/';
+              }
+            })
         }
         style={styles.button}
       />

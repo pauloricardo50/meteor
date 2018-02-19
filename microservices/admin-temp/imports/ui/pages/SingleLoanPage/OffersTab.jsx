@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import { deleteOffer } from 'core/api/offers/methods';
+import cleanMethod from 'core/api/cleanMethods';
 import ConditionsButton from 'core/components/ConditionsButton';
 import { toMoney } from 'core/utils/conversionFunctions';
 import { IntlNumber } from 'core/components/Translation';
@@ -137,7 +137,9 @@ export default class OffersTab extends Component {
                   <ConfirmMethod
                     label="Supprimer"
                     keyword="SUPPRIMER"
-                    method={cb => deleteOffer.call({ id: o._id }, cb)}
+                    method={cb =>
+                      cleanMethod('deleteOffer', { id: o._id }).then(cb)
+                    }
                   />
                 </div>
               )}

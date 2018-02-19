@@ -37,3 +37,5 @@ hwillson:stub-collections
 meteortesting:mocha
 wylio:mandrill
 force-ssl
+cultofcoders:grapher
+cultofcoders:grapher-react

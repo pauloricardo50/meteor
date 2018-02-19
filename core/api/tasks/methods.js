@@ -6,7 +6,6 @@ import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
 import rateLimit from '../../utils/rate-limit.js';
 
 import Tasks from './tasks';
-import { validateUser } from '../helpers';
 import { TASK_STATUS } from './tasksConstants';
 
 export const insertTask = new ValidatedMethod({
@@ -15,7 +14,6 @@ export const insertTask = new ValidatedMethod({
   validate({ loanId, type }) {
     check(loanId, String);
     check(type, String);
-    validateUser();
   },
   run({ loanId, type }) {
     // Make sure there isn't an action active with the same ID
@@ -37,7 +35,6 @@ export const completeTask = new ValidatedMethod({
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
-    validateUser();
   },
   run({ id }) {
     const action = Tasks.findOne(id);
@@ -62,7 +59,6 @@ export const completeTaskByType = new ValidatedMethod({
     check(loanId, String);
     check(type, String);
     check(newStatus, Match.Optional(String));
-    validateUser();
   },
   run({ loanId, type, newStatus }) {
     const action = Tasks.findOne({
@@ -101,7 +97,6 @@ export const changeTaskStatus = new ValidatedMethod({
         completedAt: new Date(),
       },
     });
-
 
     return true;
   },
