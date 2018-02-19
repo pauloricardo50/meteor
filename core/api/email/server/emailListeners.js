@@ -1,8 +1,10 @@
+import moment from 'moment';
 import EventService from '../../events';
 import { mutations } from '../../mutations';
 import { Loans } from '../..';
 import { EMAIL_IDS } from '../emailConstants';
 import { sendEmail } from './emailMethods';
+import { getAuctionEndTime } from '../../../utils/loanFunctions';
 
 EventService.addMutationListener(
   mutations.REQUEST_LOAN_VERIFICATION,
@@ -23,9 +25,9 @@ EventService.addMutationListener(mutations.START_AUCTION, (params) => {
   const { userId } = Loans.findOne(loanId);
 
   return sendEmail({
-    emailId: EMAIL_IDS.VERIFICATION_REQUESTED,
+    emailId: EMAIL_IDS.AUCTION_STARTED,
     userId,
-    params,
+    params: { ...params, auctionEndTime: getAuctionEndTime(moment()) },
   });
 });
 

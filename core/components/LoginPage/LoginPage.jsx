@@ -6,6 +6,7 @@ import { addUserTracking } from '../../utils/analytics';
 import { T } from '../Translation';
 import Accounts from './Accounts';
 import queryString from 'query-string';
+import { callMutation, mutations } from 'core/api';
 
 const styles = {
   section: {
@@ -36,12 +37,8 @@ const LoginPage = ({ location: { search }, history: { push } }) => {
         onSignedInHook={() => push(path || '/')}
         onPostSignUpHook={() => {
           push(path || '/');
-          Meteor.call('sendVerificationLink', (error, response) => {
-            if (error) {
-              console.log(error);
-            }
-            console.log(response);
-          });
+          callMutation(mutations.SEND_VERIFICATION_LINK);
+
           // Create user for analytics
           addUserTracking(Meteor.userId(), {
             email: Meteor.user().emails[0].address,

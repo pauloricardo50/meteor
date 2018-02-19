@@ -20,7 +20,7 @@ const handleError = (error, mutationName) => {
   throw error;
 };
 
-const callMutation = (mutationOptions, callParams) => {
+const callMutation = (mutationOptions, callParams = {}) => {
   const { name, params } = mutationOptions;
   checkParams(callParams, params);
 
