@@ -2,7 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import Borrowers from '../borrowers';
 
 export default class {
-  static update = ({ id, object }) => Borrowers.update(id, { $set: object });
+  static update = ({ borrowerId, object }) =>
+    Borrowers.update(borrowerId, { $set: object });
 
   static insert = ({ object, userId }) =>
     Borrowers.insert({
@@ -11,10 +12,8 @@ export default class {
       userId: userId === undefined ? Meteor.userId() : userId,
     });
 
-  static remove = ({ id }) => Borrowers.remove(id);
+  static remove = ({ borrowerId }) => Borrowers.remove(borrowerId);
 
-  static pushValue = ({ id, object }) =>
-    Borrowers.update(id, { $push: object });
-
-  static popValue = ({ id, object }) => Borrowers.update(id, { $pop: object });
+  static pushValue = ({ borrowerId, object }) =>
+    Borrowers.update(borrowerId, { $push: object });
 }

@@ -37,6 +37,12 @@ export default class Security {
     );
   }
 
+  static checkCurrentUserIsAdmin() {
+    if (!this.currentUserIsAdmin()) {
+      this.handleUnauthorized();
+    }
+  }
+
   static checkOwnership(doc) {
     if (Meteor.userId() !== doc.userId) {
       this.handleUnauthorized();

@@ -4,8 +4,7 @@
   "description": "* Initial setup",
   "main": "index.js",
   "scripts": {
-    "format":
-      "prettier-eslint \"**/*.js*\" --write --eslint-config-path .eslintrc.js"
+    "format": "prettier-eslint \"**/*.js*\" --write --eslint-config-path .eslintrc.js"
   },
   "repository": {
     "type": "git",

@@ -1,6 +1,7 @@
 module.exports = {
   parser: 'babel-eslint',
   parserOptions: {
+    ecmaVersion: 6,
     ecmaFeatures: {
       jsx: true,
     },
@@ -8,6 +9,7 @@ module.exports = {
   plugins: ['import', 'jsx-a11y', 'meteor', 'react'],
   extends: ['airbnb', 'plugin:meteor/recommended', 'plugin:react/recommended'],
   env: {
+    es6: true,
     node: true,
     browser: true,
   },

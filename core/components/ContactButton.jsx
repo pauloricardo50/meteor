@@ -166,7 +166,7 @@ export default class ContactButton extends Component {
         <Button
           style={styles.button}
           onClick={this.handleClick}
-          fab
+          variant="fab"
           color="primary"
         >
           {open ? <Icon type="close" /> : <Icon type="forum" />}

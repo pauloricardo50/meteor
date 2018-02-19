@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { check, Match } from 'meteor/check';
 
+import EventService from '../events';
+
 const INVALID_MUTATION_OPTIONS = 'INVALID_MUTATION_OPTIONS';
 const MUTATION_ERROR = 'MUTATION_ERROR';
 
@@ -59,14 +61,18 @@ const createMutator = (options, functionBody) => {
     [name](callParameters = {}) {
       beforeLogger(callParameters, name);
       checkParams(callParameters, params, name);
+
       let result;
       try {
         result = functionBody(callParameters);
-        // Emit event here
+        EventService.emitMutation(options, callParameters);
       } catch (error) {
-        throw new Meteor.Error(MUTATION_ERROR, `Error in ${name}`, error);
+        throw error;
       }
+
       afterLogger(result, name);
+
+      return result;
     },
   });
 };
