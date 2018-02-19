@@ -8,7 +8,12 @@ import sinon from 'sinon';
 import { stubCollections } from 'core/utils/testHelpers';
 
 import SecurityService, { SECURITY_ERROR } from '..';
-import { LoanSecurity } from '../collections';
+import {
+  LoanSecurity,
+  OfferSecurity,
+  BorrowerSecurity,
+  PropertySecurity,
+} from '../collections';
 
 describe('Security service', () => {
   let userId;
@@ -85,6 +90,18 @@ describe('Security service', () => {
   describe('collection security getters', () => {
     it('loans should return LoanSecurity', () => {
       expect(SecurityService.loans).to.equal(LoanSecurity);
+    });
+
+    it('offers should return OfferSecurity', () => {
+      expect(SecurityService.offers).to.equal(OfferSecurity);
+    });
+
+    it('borrowers should return BorrowerSecurity', () => {
+      expect(SecurityService.borrowers).to.equal(BorrowerSecurity);
+    });
+
+    it('properties should return PropertySecurity', () => {
+      expect(SecurityService.properties).to.equal(PropertySecurity);
     });
   });
 });
