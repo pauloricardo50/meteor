@@ -20,7 +20,6 @@ meteortoys:allthings@4.0.0
 insecure@1.0.7
 autopublish@1.0.7
 alanning:roles
-aldeed:schema-index
 mdg:validated-method
 didericis:callpromise-mixin
 dburles:factory

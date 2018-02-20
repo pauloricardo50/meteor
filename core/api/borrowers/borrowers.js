@@ -49,7 +49,6 @@ const LogicSchema = new SimpleSchema({
 export const BorrowerSchema = new SimpleSchema({
   userId: {
     type: String,
-    index: true,
     optional: true,
   },
   createdAt: {

@@ -27,7 +27,6 @@ const PropertyFilesSchema = new SimpleSchema(getFileSchema('property'));
 export const PropertySchema = new SimpleSchema({
   userId: {
     type: String,
-    index: true,
     optional: true,
   },
   createdAt: {

@@ -4,7 +4,6 @@
 // import { expect } from 'chai';
 // import { _ } from 'lodash';
 // import sinon from 'sinon';
-// import testRequire from 'core/utils/testHelpers/testRequire';
 //
 // // import {
 // //   getAuthToken,
@@ -14,14 +13,13 @@
 // //   getLocationId,
 // // } from '../../api';
 //
-// const {
+// import {
 //   getAuthToken,
 //   convertParamsToLogismata,
 //   getParamsArray,
 //   callApi,
 //   getLocationId,
-// } =
-//   testRequire('../../api') || require('../../api');
+// } from'../../api';
 //
 // describe('logismata API', () => {
 //   describe('getAuthToken', () => {

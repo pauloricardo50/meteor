@@ -1,7 +1,7 @@
 import { Tasks } from '../../';
-import { QUERY } from '../tasksConstants';
+import { TASK_QUERIES } from '../tasksConstants';
 
-export default Tasks.createQuery(QUERY.TASKS, {
+export default Tasks.createQuery(TASK_QUERIES.TASKS, {
   $filter({ filters, options, params }) {
     if (params.userId) {
       filters.userId = params.userId;

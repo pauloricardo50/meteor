@@ -1,11 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import isArray from 'lodash/isArray';
-
-import testRequire from 'core/utils/testHelpers/testRequire';
-
-const { default: getFormArray } =
-  testRequire('../StartFormArray') || require('../StartFormArray');
+import getFormArray from '../StartFormArray';
 
 const checkType = (value, type) => {
   if (value !== undefined) {

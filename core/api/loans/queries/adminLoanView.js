@@ -1,7 +1,7 @@
 import { Loans } from '../../';
-import { QUERY } from '../loanConstants';
+import { LOAN_QUERIES } from '../loanConstants';
 
-export default Loans.createQuery(QUERY.ADMIN_LOAN, {
+export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
   $filter({ filters, params }) {
     filters._id = params._id;
   },
