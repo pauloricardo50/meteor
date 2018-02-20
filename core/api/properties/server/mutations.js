@@ -1,11 +1,22 @@
+import { Meteor } from 'meteor/meteor';
+
 import SecurityService from '../../security';
 import { createMutator } from '../../mutations';
 import PropertyService from '../PropertyService';
 import * as defs from '../mutationDefinitions';
 
 createMutator(defs.PROPERTY_INSERT, ({ object, userId }) => {
-  SecurityService.properties.isAllowedToInsert();
-  return PropertyService.insert({ object, userId });
+  const userIdIsDefined = userId !== undefined;
+  if (userIdIsDefined) {
+    SecurityService.checkCurrentUserIsAdmin();
+  } else {
+    SecurityService.properties.isAllowedToInsert();
+  }
+
+  return PropertyService.insert({
+    object,
+    userId: userIdIsDefined ? userId : Meteor.userId(),
+  });
 });
 
 createMutator(defs.PROPERTY_UPDATE, ({ propertyId, object }) => {
