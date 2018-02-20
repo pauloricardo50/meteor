@@ -1,6 +1,8 @@
 import React from 'react';
 
 import Tabs from 'core/components/Tabs';
+import FilesTab from 'core/components/FilesTabs';
+import { T } from 'core/components/Translation/';
 import OverviewTab from './OverviewTab';
 import BorrowersTab from './BorrowersTab';
 import PropertyTab from './PropertyTab';
@@ -10,7 +12,6 @@ import AnalyticsTab from './AnalyticsTab';
 import ActionsTab from './ActionsTab';
 import TasksTab from './TasksTab';
 import FormsTab from './FormsTab';
-import { T } from '../../../core/components/Translation/';
 
 const getTabs = props => [
   {
@@ -55,13 +56,18 @@ const getTabs = props => [
     content: <FormsTab {...props} />,
   },
   {
+    id: 'files',
+    label: <T id="LoanTabs.files" />,
+    content: <FilesTab {...props} />,
+  },
+  {
     id: 'actions',
     label: <T id="LoanTabs.actions" />,
     content: <ActionsTab {...props} />,
   },
 ];
 
-const LoanTabs = (props) => {
+const LoanTabs = props => {
   const tabs = getTabs(props);
 
   return <Tabs tabs={tabs} />;
