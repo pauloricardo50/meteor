@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import Properties from '../properties';
 
 export default class {
@@ -6,11 +5,7 @@ export default class {
     Properties.update(propertyId, { $set: object });
 
   static insert = ({ object, userId }) =>
-    Properties.insert({
-      ...object,
-      // Do this to allow userId to be null
-      userId: userId === undefined ? Meteor.userId() : userId,
-    });
+    Properties.insert({ ...object, userId });
 
   static remove = ({ propertyId }) => Properties.remove(propertyId);
 

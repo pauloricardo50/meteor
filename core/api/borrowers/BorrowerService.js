@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import Borrowers from '../borrowers';
 
 export default class {
@@ -6,11 +5,7 @@ export default class {
     Borrowers.update(borrowerId, { $set: object });
 
   static insert = ({ object, userId }) =>
-    Borrowers.insert({
-      ...object,
-      // Do this to allow userId to be null
-      userId: userId === undefined ? Meteor.userId() : userId,
-    });
+    Borrowers.insert({ ...object, userId });
 
   static remove = ({ borrowerId }) => Borrowers.remove(borrowerId);
 
