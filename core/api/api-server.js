@@ -36,6 +36,8 @@ import './mutations/server';
 
 import './events/registerListeners';
 
+import './queries/server/resolvers';
+
 // Exposures
 import './loans/queries/exposures';
 import './users/queries/exposures';
