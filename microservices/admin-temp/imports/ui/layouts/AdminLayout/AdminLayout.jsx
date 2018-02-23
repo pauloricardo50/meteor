@@ -8,7 +8,7 @@ import ContactButton from 'core/components/ContactButton';
 import ErrorBoundary from 'core/components/ErrorBoundary';
 import track from 'core/utils/analytics';
 import { isApp, isAdmin, isPartner } from 'core/utils/browserFunctions';
-import Navs from './Navs';
+import AdminNavs from './AdminNavs';
 
 // import UserJoyride from '/imports/ui/components/UserJoyride';
 
@@ -33,69 +33,33 @@ const getRedirect = ({
     return `/login?path=${pathname}`;
   }
 
-  return false;
-
-  if (userIsDev) {
-    return false;
-  }
-
-  if (userIsAdmin) {
-    return '/admin';
-  } else if (isPartner) {
-    return '/isPartner';
-  }
-  // If there is no active loan, force route to app page, except if
-  // user is on allowed routes
-  if (
-    loans &&
-    loans.length < 1 &&
-    !allowedRoutesWithoutLoan.some(route => pathname.indexOf(route) === 0)
-  ) {
-    return '/';
+  if (!(userIsAdmin || userIsDev)) {
+    // TODO: Redirect to app subdomain
   }
 
   return false;
 };
 
-const getShowSideNav = ({ location }) =>
-  !(location.pathname === '/' || location.pathname === '/compare');
-
 const AdminLayout = (props) => {
-  const { type, history, children } = props;
+  const { history, children } = props;
   const redirect = getRedirect(props);
-  const showSideNav = true; // getShowSideNav(history);
-  const classes = classnames({
-    'app-layout': true,
-    'always-side-nav': true,
-    // 'no-nav': !showSideNav,
-  });
+  const classes = classnames({ 'app-layout': true, 'always-side-nav': true });
   const path = history.location.pathname;
   const isLogin = path.slice(0, 6) === '/login';
 
   if (redirect && !isLogin) {
-    track('AppLayout - was redirected', {
-      from: history.location.pathname,
-      to: redirect,
-    });
     return <Redirect to={redirect} />;
   }
 
   return (
     <div>
-      <Navs
-        {...props}
-        showSideNav={showSideNav}
-        isApp={type === 'app'}
-        isAdmin={type === 'admin'}
-      />
+      <AdminNavs {...props} />
 
       <main className={classes}>
         <ErrorBoundary helper="layout" pathname={history.location.pathname}>
           <div x="wrapper">{React.cloneElement(children, { ...props })}</div>
         </ErrorBoundary>
       </main>
-
-      {type === 'app' && <ContactButton history={history} />}
     </div>
   );
 };

@@ -27,7 +27,7 @@ export default class SingleLoanPage extends Component {
     };
 
     return (
-      <section>
+      <section className="single-loan-page">
         <LoanTabs
           {...dataToPassDown}
           serverTime={this.state.serverTime}
@@ -37,6 +37,7 @@ export default class SingleLoanPage extends Component {
     );
   }
 }
+
 SingleLoanPage.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   isLoading: PropTypes.bool.isRequired,

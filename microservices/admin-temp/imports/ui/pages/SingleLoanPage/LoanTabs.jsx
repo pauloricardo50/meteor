@@ -64,7 +64,7 @@ const getTabs = props => [
 const LoanTabs = (props) => {
   const tabs = getTabs(props);
 
-  return <Tabs tabs={tabs} />;
+  return <Tabs tabs={tabs} scrollable scrollButtons="auto" />;
 };
 
 export default LoanTabs;
