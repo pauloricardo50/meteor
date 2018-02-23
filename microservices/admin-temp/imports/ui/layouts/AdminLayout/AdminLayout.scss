@@ -1,6 +1,28 @@
 @import '{}/client/css/variables.scss';
 
-.admin-side-nav {
-  width: 250;
-  border-left: 1px solid $border-grey;
+.admin-layout {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+}
+
+.admin-layout .main-column {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  flex-grow: 1;
+}
+
+.admin-layout .main-column main {
+  padding: 16px;
+  padding-top: 80px;
+}
+
+.admin-layout .admin-side-nav {
+  background-color: white;
+  border-right: 1px solid $border-grey;
+  display: flex;
+  flex-direction: column;
 }
