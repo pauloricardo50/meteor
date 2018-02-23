@@ -68,8 +68,6 @@ export default class Table extends Component {
   };
 
   handleSort = (columnNb) => {
-    console.log('column:', columnNb);
-
     const { data, order, orderBy } = this.state;
     const newOrderBy = columnNb;
     let isReversed;
@@ -83,8 +81,6 @@ export default class Table extends Component {
     }
 
     const sortedData = data.sort((a, b) => (b.columns[newOrderBy] > a.columns[newOrderBy] ? 1 : -1));
-    console.log('sortedData:', sortedData);
-
     const sortedDataInCorrectOrder = isReversed
       ? sortedData.slice().reverse()
       : sortedData;
@@ -175,7 +171,7 @@ export default class Table extends Component {
             rowsPerPage={rowsPerPage}
             clickable={clickable}
           />
-          {rowCount > 20 && (
+          {rowCount > rowsPerPage && (
             <TableFooter
               rowCount={rowCount}
               rowsPerPage={rowsPerPage}

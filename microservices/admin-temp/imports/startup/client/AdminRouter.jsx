@@ -16,7 +16,7 @@ import {
   // VerifyPage,
   // ContactLendersPage,
 } from 'core/containers/AdminContainers';
-// import DevPage from 'core/components/DevPage';
+import DevPage from 'core/components/DevPage';
 import AdminLoanContainer from 'core/containers/AdminLoanContainer';
 
 import messagesFR from '../../../lang/fr.json';
@@ -25,7 +25,6 @@ import ContactLendersPage from '../../ui/pages/ContactLendersPage';
 import OfferPage from '../../ui/pages/OfferPage';
 import VerifyPage from '../../ui/pages/VerifyPage';
 import AdminDevPage from '../../ui/pages/AdminDevPage';
-import DevPage from '../../ui/pages/DevPage';
 import LoansPageWithData from '../../ui/pages/LoansPage/LoansPageWithData';
 import SingleLoanPageWithData from '../../ui/pages/SingleLoanPage/SingleLoanPageWithData';
 
@@ -42,24 +41,9 @@ const AdminRouter = props => (
   >
     <AdminLayout type="admin">
       <Switch>
-        <Route
-          exact
-          path="/"
-          component={AdminDashboardPage}
-          // render={() => <AdminDashboardPage {...layoutProps} />}
-        />
-        <Route
-          exact
-          path="/users"
-          component={UsersPageWithData}
-          // render={() => <UsersPageWithData {...layoutProps} />}
-        />
-        <Route
-          exact
-          path="/loans"
-          component={LoansPageWithData}
-          // render={() => <LoansPageWithData {...layoutProps} />}
-        />
+        <Route exact path="/" component={AdminDashboardPage} />
+        <Route exact path="/users" component={UsersPageWithData} />
+        <Route exact path="/loans" component={LoansPageWithData} />
         <Route
           path="/loans/:loanId/verify"
           component={AdminLoanContainer(VerifyPage)}
@@ -76,17 +60,7 @@ const AdminRouter = props => (
         <Route path="/users/:userId" component={SingleUserPageWithData} />
         <Route path="/tasks" component={TasksPage} />
         <Route path="/borrowers" component={BorrowersPage} />
-        <Route
-          exact
-          path="/dev"
-          component={AdminDevPage}
-          // render={() => <AdminDevPage {...layoutProps} />}
-        />
-        <Route
-          path="/dev2"
-          // render={() => <DevPage {...layoutProps} />}
-          component={DevPage}
-        />
+        <Route path="/dev" component={DevPage} />
         <Route component={NotFound} />
       </Switch>
     </AdminLayout>

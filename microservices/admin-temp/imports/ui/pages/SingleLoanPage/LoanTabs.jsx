@@ -6,7 +6,7 @@ import BorrowersTab from './BorrowersTab';
 import PropertyTab from './PropertyTab';
 import OffersTab from './OffersTab';
 import CommunicationTab from './CommunicationTab';
-import AnalyticsTab from './AnalyticsTab';
+import MixpanelAnalytics from '../../components/MixpanelAnalytics';
 import ActionsTab from './ActionsTab';
 import TasksTab from './TasksTab';
 import FormsTab from './FormsTab';
@@ -42,7 +42,7 @@ const getTabs = props => [
   {
     id: 'analytics',
     label: <T id="LoanTabs.analytics" />,
-    content: <AnalyticsTab {...props} />,
+    content: <MixpanelAnalytics {...props} />,
   },
   {
     id: 'tasks',
