@@ -4,6 +4,8 @@ import React from 'react';
 import AllLoansTable from './AllLoansTable';
 
 const AdminLoansPage = (props) => {
+  console.log('LoansPage props: ', props);
+  
   if (props.isLoading) {
     return null;
   }

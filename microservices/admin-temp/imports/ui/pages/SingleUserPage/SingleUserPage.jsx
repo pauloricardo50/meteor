@@ -33,8 +33,8 @@ const SingleUserPage = (props) => {
             loan={loan}
             key={loan._id}
             history={history}
-            borrowers={loan.borrowersLink}
-            property={loan.propertyLink}
+            borrowers={loan.borrowers}
+            property={loan.property}
           />
         ))}
     </section>

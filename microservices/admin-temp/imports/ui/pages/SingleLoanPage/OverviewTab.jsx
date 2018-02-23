@@ -37,18 +37,15 @@ export default class OverviewTab extends React.Component {
           <IntlNumber
             value={getLoanValue({
               loan,
-              property: loan.propertyLink,
+              property: loan.property,
             })}
             format="money"
           />
         </h1>
 
-        <StepStatus {...dataToPassDown} serverTime={this.state.serverTime} />
+        <StepStatus {...this.props} serverTime={this.state.serverTime} />
 
-        <FileVerificationNotification
-          loan={loan}
-          borrowers={loan.borrowersLink}
-        />
+        <FileVerificationNotification loan={loan} borrowers={loan.borrowers} />
         <hr />
         <div
           className="flex"

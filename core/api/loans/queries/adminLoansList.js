@@ -12,7 +12,10 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOANS, {
   general: 1,
   createdAt: 1,
   updatedAt: 1,
-  propertyLink: {
+  property: {
     value: 1,
+  },
+  borrowers: {
+    firstName: 1,
   },
 });

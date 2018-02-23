@@ -12,6 +12,8 @@ export default class SingleLoanPage extends Component {
   }
 
   render() {
+    console.log('Single loan page props:', this.props);
+
     const { data, isLoading } = this.props;
     const loan = data;
 
@@ -20,8 +22,8 @@ export default class SingleLoanPage extends Component {
     const dataToPassDown = {
       ...this.props,
       loan,
-      property: loan.propertyLink,
-      borrowers: loan.borrowersLink,
+      property: loan.property,
+      borrowers: loan.borrowers,
     };
 
     return (

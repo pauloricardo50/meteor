@@ -80,8 +80,6 @@ const AdminLayout = (props) => {
     return <Redirect to={redirect} />;
   }
 
-  console.log('AdminLayout props:', props);
-
   return (
     <div>
       <Navs
