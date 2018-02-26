@@ -9,24 +9,24 @@ import LibraryWrappers from 'core/components/BaseRouter/LibraryWrappers';
 import Routes from '../shared/Routes';
 
 const App = ({ store, Router }) => (
-    <Provider store={store}>
-        <LibraryWrappers
-            i18n={{
-                locale: getUserLocale(),
-                messages: messagesFR,
-                formats: getFormats()
-            }}
-        >
-            <Router>
-                <Routes />
-            </Router>
-        </LibraryWrappers>
-    </Provider>
+  <Provider store={store}>
+    <LibraryWrappers
+      i18n={{
+        locale: getUserLocale(),
+        messages: messagesFR,
+        formats: getFormats(),
+      }}
+    >
+      <Router>
+        <Routes />
+      </Router>
+    </LibraryWrappers>
+  </Provider>
 );
 
 App.propTypes = {
-    store: PropTypes.object.isRequired,
-    Router: PropTypes.any.isRequired
+  store: PropTypes.object.isRequired,
+  Router: PropTypes.any.isRequired,
 };
 
 export default App;

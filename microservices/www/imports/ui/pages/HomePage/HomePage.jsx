@@ -10,15 +10,15 @@ import HomePageNewsletter from './HomePageNewsletter';
 import HomePageFooter from './HomePageFooter';
 
 const HomePage = () => (
-    <main className="home-page">
-        <HomePageInterestRates />
-        <HomePageNav />
-        <HomePageHeader />
-        <HomePageDescription />
-        <HomePageReviews />
-        <HomePageNewsletter />
-        <HomePageFooter />
-    </main>
+  <main className="home-page">
+    <HomePageInterestRates />
+    <HomePageNav />
+    <HomePageHeader />
+    <HomePageDescription />
+    <HomePageReviews />
+    <HomePageNewsletter />
+    <HomePageFooter />
+  </main>
 );
 
 HomePage.propTypes = {};

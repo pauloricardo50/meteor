@@ -5,9 +5,9 @@ import HomePageInterestRatesContainer from './HomePageInterestRatesContainer';
 import InterestRate from './InterestRate';
 
 const HomePageInterestRates = ({ rates }) => (
-    <div className="interest-rates">
-        {rates.map(rate => <InterestRate {...rate} key={rate.type} />)}
-    </div>
+  <div className="interest-rates">
+    {rates.map(rate => <InterestRate {...rate} key={rate.type} />)}
+  </div>
 );
 
 HomePageInterestRates.propTypes = {};

@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StaticRouter } from 'react-router';
-import { Provider } from 'react-redux';
 
-import Routes from '../shared/Routes';
+import App from '../shared/App';
 
 const ServerApp = ({ store, context, location }) => (
-  <Provider store={store}>
-    <StaticRouter location={location} context={context}>
-      <Routes />
-    </StaticRouter>
-  </Provider>
+  <App
+    store={store}
+    Router={routerProps => (
+      <StaticRouter context={context} location={location} {...routerProps} />
+    )}
+  />
 );
 
 ServerApp.propTypes = {

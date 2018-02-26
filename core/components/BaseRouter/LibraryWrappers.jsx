@@ -8,25 +8,23 @@ import MuiTheme from '../../config/mui_custom';
 const LibraryWrappers = ({
   i18n: { locale, messages, formats },
   WrapperComponent,
-  children
-}) => {
-  return (
-    <WrapperComponent>
-      {/* Inject custom material-ui theme for everything to look good */}
-      <MuiThemeProvider theme={MuiTheme}>
-        {/* Inject Intl props to all components to render the proper locale */}
-        <IntlProvider
-          locale={locale}
-          messages={messages}
-          formats={formats}
-          defaultLocale="fr"
-        >
-          {children}
-        </IntlProvider>
-      </MuiThemeProvider>
-    </WrapperComponent>
-  );
-};
+  children,
+}) => (
+  <WrapperComponent>
+    {/* Inject custom material-ui theme for everything to look good */}
+    <MuiThemeProvider theme={MuiTheme}>
+      {/* Inject Intl props to all components to render the proper locale */}
+      <IntlProvider
+        locale={locale}
+        messages={messages}
+        formats={formats}
+        defaultLocale="fr"
+      >
+        {children}
+      </IntlProvider>
+    </MuiThemeProvider>
+  </WrapperComponent>
+);
 
 LibraryWrappers.propTypes = {
   children: PropTypes.node.isRequired,
@@ -34,12 +32,12 @@ LibraryWrappers.propTypes = {
   i18n: PropTypes.shape({
     locale: PropTypes.string.isRequired,
     messages: PropTypes.objectOf(PropTypes.string).isRequired,
-    formats: PropTypes.object.isRequired
-  })
+    formats: PropTypes.object.isRequired,
+  }),
 };
 
 LibraryWrappers.defaultProps = {
-  WrapperComponent: React.Fragment
+  WrapperComponent: React.Fragment,
 };
 
 export default LibraryWrappers;

@@ -16,7 +16,7 @@ const BaseRouter = ({
   formats,
   children,
   WrapperComponent,
-  hasLogin
+  hasLogin,
 }) => (
   <ErrorBoundary helper="root">
     <LibraryWrappers
@@ -51,12 +51,12 @@ BaseRouter.propTypes = {
   messages: PropTypes.object.isRequired,
   formats: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
-  hasLogin: PropTypes.bool
+  hasLogin: PropTypes.bool,
 };
 
 BaseRouter.defaultProps = {
   WrapperComponent: React.Fragment,
-  hasLogin: true
+  hasLogin: true,
 };
 
 export default BaseRouter;
