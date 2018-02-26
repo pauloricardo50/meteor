@@ -1,12 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const AdminSideNav = props => (
+import AdminSideNavContainer from './AdminSideNavContainer';
+import MainSideNav from './MainSideNav';
+import DetailSideNav from './DetailSideNav';
+
+export const AdminSideNav = ({ showDetail }) => (
   <nav className="admin-side-nav">
-    <h4>Hello World</h4>
+    <MainSideNav />
+    {showDetail && <DetailSideNav />}
   </nav>
 );
 
-AdminSideNav.propTypes = {};
+AdminSideNav.propTypes = {
+  showDetail: PropTypes.bool.isRequired,
+};
 
-export default AdminSideNav;
+export default AdminSideNavContainer(AdminSideNav);

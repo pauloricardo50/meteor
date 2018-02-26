@@ -34,10 +34,10 @@ const AdminLayout = (props) => {
 
   return (
     <div className="admin-layout">
-      <AdminSideNav {...props} />
+      <AdminTopNav {...props} />
 
-      <div className="main-column">
-        <AdminTopNav {...props} />
+      <div className="main-row">
+        <AdminSideNav {...props} />
 
         <main>
           <ErrorBoundary helper="layout" pathname={history.location.pathname}>

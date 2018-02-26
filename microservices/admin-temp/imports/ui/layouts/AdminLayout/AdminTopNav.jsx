@@ -1,7 +1,11 @@
 import React from 'react';
 import TopNav from 'core/components/TopNav';
 
-const AdminTopNav = props => <TopNav {...props} public={false} />;
+const AdminTopNav = props => (
+  <div className="admin-top-nav">
+    <TopNav {...props} public={false} />
+  </div>
+);
 
 AdminTopNav.propTypes = {};
 

@@ -1,4 +1,4 @@
-const initialState = { activeStep: -1 };
+const initialState = { showDetail: false };
 
 export const sidenavActions = {
   SHOW_DETAIL_NAV: 'SHOW_DETAIL_NAV',
