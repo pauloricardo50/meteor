@@ -104,21 +104,6 @@ export const deleteOffer = new ValidatedMethod({
   },
 });
 
-export const deleteAllOffers = new ValidatedMethod({
-  name: 'deleteAllOffers',
-  mixins: [CallPromiseMixin],
-  validate({ offers }) {
-    check(offers, Array);
-  },
-  run({ offers }) {
-    if (Roles.userIsInRole(Meteor.userId(), 'dev')) {
-      offers.forEach(r => Offers.remove(r._id));
-    }
-
-    return false;
-  },
-});
-
 rateLimit({
   methods: [
     insertOffer,

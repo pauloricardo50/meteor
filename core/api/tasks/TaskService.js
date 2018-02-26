@@ -65,4 +65,4 @@ class TaskService {
     });
 }
 
-export default TaskService;
+export default new TaskService();

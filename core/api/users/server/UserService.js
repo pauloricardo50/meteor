@@ -4,7 +4,7 @@ import { Roles } from 'meteor/alanning:roles';
 import Users from '../users';
 import adminsQuery from './queries/admins';
 
-export default class {
+class UserService {
   static createUser = ({ options, role }) => {
     const newUserId = Accounts.createUser(options);
     Roles.addUsersToRoles(newUserId, role);
@@ -18,3 +18,5 @@ export default class {
   static sendVerificationEmail = ({ userId }) =>
     Accounts.sendVerificationEmail(userId);
 }
+
+export default new UserService();

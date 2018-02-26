@@ -34,21 +34,6 @@ export const deleteTask = new ValidatedMethod({
   },
 });
 
-export const deleteAllTasks = new ValidatedMethod({
-  name: 'deleteAllTasks',
-  mixins: [CallPromiseMixin],
-  validate({ tasks }) {
-    check(tasks, Array);
-  },
-  run({ tasks }) {
-    if (Roles.userIsInRole(Meteor.userId(), 'dev')) {
-      tasks.forEach(r => Tasks.remove(r._id));
-    }
-
-    return false;
-  },
-});
-
 export const updateTask = new ValidatedMethod({
   name: 'updateTask',
   mixins: [CallPromiseMixin],

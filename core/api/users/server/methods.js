@@ -34,25 +34,6 @@ export const deleteUser = new ValidatedMethod({
   },
 });
 
-export const deleteAllUsers = new ValidatedMethod({
-  name: 'deleteAllUsers',
-  mixins: [CallPromiseMixin],
-  validate({ users }) {
-    check(users, Array);
-  },
-  run({ users }) {
-    if (Roles.userIsInRole(Meteor.userId(), 'dev')) {
-      users.forEach((r) => {
-        if (r._id !== Meteor.userId()) {
-          Users.remove(r._id);
-        }
-      });
-    }
-
-    return false;
-  },
-});
-
 export const updateUser = new ValidatedMethod({
   name: 'updateUser',
   mixins: [CallPromiseMixin],

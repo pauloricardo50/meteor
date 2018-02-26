@@ -22,7 +22,7 @@ import createProperty from './properties';
 
 const purchaseTypes = Object.values(PURCHASE_TYPE);
 
-const generateLoanStep = maxSteps => Math.floor(Math.random() * maxSteps + 1);
+const generateRandomNumber = maxSteps => Math.floor(Math.random() * maxSteps + 1);
 
 const fakeGeneral = {
   purchaseType: purchaseTypes[Math.floor(Math.random() * purchaseTypes.length)],
@@ -127,7 +127,7 @@ export default (userId) => {
     files: fakeFiles,
   };
 
-  switch (generateLoanStep(STEPS_PER_LOAN)) {
+  switch (generateRandomNumber(STEPS_PER_LOAN)) {
   case 3:
     loan.logic = logic3;
     loan.files = completeFiles ? fakeFiles : fakeFiles2;

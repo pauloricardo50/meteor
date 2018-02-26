@@ -12,7 +12,7 @@ const usageTypes = Object.values(USAGE_TYPE);
 const styles = Object.values(PROPERTY_STYLE);
 const volumeNorms = Object.values(VOLUME_NORM);
 
-export default userId => {
+export default (userId) => {
   const object = {
     status: statuses[Math.floor(Math.random() * statuses.length)],
     value: Math.floor(Math.random() * 100000000 + 1),

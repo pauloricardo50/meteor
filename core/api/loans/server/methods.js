@@ -246,21 +246,6 @@ export const deleteLoan = new ValidatedMethod({
   },
 });
 
-export const deleteAllLoans = new ValidatedMethod({
-  name: 'deleteAllLoans',
-  mixins: [CallPromiseMixin],
-  validate({ loans }) {
-    check(loans, Array);
-  },
-  run({ loans }) {
-    if (Roles.userIsInRole(Meteor.userId(), 'dev')) {
-      loans.forEach(r => Loans.remove(r._id));
-    }
-
-    return false;
-  },
-});
-
 export const endAuction = new ValidatedMethod({
   name: 'endAuction',
   mixins: [CallPromiseMixin],

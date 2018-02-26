@@ -19,8 +19,7 @@ import {
 // import DevPage from 'core/components/DevPage';
 import AdminLoanContainer from 'core/containers/AdminLoanContainer';
 
-// import DevPage from 'core/components/DevPage';
-import DevPageContainer from 'core/components/DevPage/DevPageContainer';
+import DevPage from 'core/components/DevPage';
 import messagesFR from '../../../lang/fr.json';
 
 import ContactLendersPage from '../../ui/pages/ContactLendersPage';
@@ -86,7 +85,7 @@ const AdminRouter = props => (
         <Route
           path="/dev2"
           // render={() => <DevPage {...layoutProps} />}
-          component={DevPageContainer}
+          component={DevPage}
         />
         <Route component={NotFound} />
       </Switch>

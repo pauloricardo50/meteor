@@ -24,7 +24,7 @@ class UserService {
     Users.update(userId, { $set: object });
   };
 
-  getAdmins = () => Users.find({ roles: { $in: ['admin'] } }).fetch();
+  static getAdmins = () => Users.find({ roles: { $in: ['admin'] } }).fetch();
 }
 
 export default UserService;
