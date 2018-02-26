@@ -5,10 +5,10 @@ import AdminSideNavContainer from './AdminSideNavContainer';
 import MainSideNav from './MainSideNav';
 import DetailSideNav from './DetailSideNav';
 
-export const AdminSideNav = ({ showDetail }) => (
+export const AdminSideNav = ({ showDetail, ...otherProps }) => (
   <nav className="admin-side-nav">
-    <MainSideNav />
-    {showDetail && <DetailSideNav />}
+    <MainSideNav {...otherProps} />
+    {showDetail && <DetailSideNav {...otherProps} />}
   </nav>
 );
 

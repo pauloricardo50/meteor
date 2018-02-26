@@ -1,15 +1,20 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import createRootReducer from '../reducers';
 
 const createCustomStore = () => {
   const initialState = {};
   const middlewares = [];
   const rootReducer = createRootReducer();
-  return createStore(
-    rootReducer,
-    initialState,
-    applyMiddleware(...middlewares),
-  );
+
+  const composeEnhancers =
+    typeof window === 'object' &&
+    process.env.NODE_ENV === 'development' &&
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+      ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+      : compose;
+
+  const enhancer = composeEnhancers(applyMiddleware(...middlewares));
+  return createStore(rootReducer, initialState, enhancer);
 };
 
 export default createCustomStore;

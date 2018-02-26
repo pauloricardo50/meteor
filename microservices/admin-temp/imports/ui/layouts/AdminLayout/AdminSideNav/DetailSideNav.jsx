@@ -1,7 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const DetailSideNav = props => <div>Hello World</div>;
+import DetailSideNavHeader from './DetailSideNavHeader';
+import DetailSideNavList from './DetailSideNavList';
+
+const DetailSideNav = props => (
+  <div className="detail-side-nav">
+    <DetailSideNavHeader {...props} />
+    <DetailSideNavList {...props} />
+  </div>
+);
 
 DetailSideNav.propTypes = {};
 

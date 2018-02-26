@@ -1,4 +1,4 @@
-const initialState = { showDetail: false };
+const initialState = { showDetail: false, collectionName: undefined };
 
 export const sidenavActions = {
   SHOW_DETAIL_NAV: 'SHOW_DETAIL_NAV',
@@ -14,7 +14,7 @@ const stepper = (state = initialState, action) => {
       collectionName: action.collectionName,
     };
   case sidenavActions.HIDE_DETAIL_NAV:
-    return { ...state, showDetail: false };
+    return { ...state, showDetail: false, collectionName: undefined };
   default:
     return state;
   }
