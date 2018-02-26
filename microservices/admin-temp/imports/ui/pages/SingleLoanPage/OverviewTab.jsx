@@ -37,7 +37,7 @@ export default class OverviewTab extends React.Component {
           <IntlNumber
             value={getLoanValue({
               loan,
-              property: loan.propertyLink,
+              property: loan.property,
             })}
             format="money"
           />
@@ -47,7 +47,7 @@ export default class OverviewTab extends React.Component {
 
         <FileVerificationNotification
           loan={loan}
-          borrowers={loan.borrowersLink}
+          borrowers={loan.borrowers}
         />
         <hr />
         <div

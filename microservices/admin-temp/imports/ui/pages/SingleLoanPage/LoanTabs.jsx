@@ -55,11 +55,11 @@ const getTabs = props => [
     label: <T id="LoanTabs.forms" />,
     content: <FormsTab {...props} />,
   },
-  {
-    id: 'files',
-    label: <T id="LoanTabs.files" />,
-    content: <FilesTab {...props} />,
-  },
+  // {
+  //   id: 'files',
+  //   label: <T id="LoanTabs.files" />,
+  //   content: <FilesTab {...props} />,
+  // },
   {
     id: 'actions',
     label: <T id="LoanTabs.actions" />,
@@ -67,7 +67,7 @@ const getTabs = props => [
   },
 ];
 
-const LoanTabs = props => {
+const LoanTabs = (props) => {
   const tabs = getTabs(props);
 
   return <Tabs tabs={tabs} />;
