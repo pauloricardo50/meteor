@@ -3,6 +3,6 @@ import query from './adminLoansList';
 
 query.expose({
   firewall(userId) {
-    Security.checkAdmin(userId);
+    Security.checkCurrentUserIsAdmin(userId);
   },
 });

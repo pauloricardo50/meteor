@@ -43,7 +43,11 @@ const TasksSchema = new SimpleSchema({
     type: Date,
     optional: true,
   },
-  userId: {
+  createdBy: {
+    type: String,
+    optional: true,
+  },
+  assignedTo: {
     type: String,
     optional: true,
   },

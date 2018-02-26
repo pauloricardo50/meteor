@@ -2,7 +2,7 @@ import { Tasks, Users, Loans, Borrowers, Properties } from '../';
 
 Tasks.addLinks({
   assignedUser: {
-    field: 'userId',
+    field: 'assignedTo',
     collection: Users,
     type: 'one',
   },

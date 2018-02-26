@@ -3,6 +3,6 @@ import query from './borrowersList';
 
 query.expose({
   firewall(userId) {
-    Security.checkAdmin(userId);
+    Security.checkCurrentUserIsAdmin(userId);
   },
 });

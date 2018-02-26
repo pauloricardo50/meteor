@@ -34,6 +34,21 @@ export const deleteProperty = new ValidatedMethod({
   },
 });
 
+export const deleteAllProperties = new ValidatedMethod({
+  name: 'deleteAllProperties',
+  mixins: [CallPromiseMixin],
+  validate({ properties }) {
+    check(properties, Array);
+  },
+  run({ properties }) {
+    if (Roles.userIsInRole(Meteor.userId(), 'dev')) {
+      properties.forEach(r => Properties.remove(r._id));
+    }
+
+    return false;
+  },
+});
+
 export const updateProperty = new ValidatedMethod({
   name: 'updateProperty',
   mixins: [CallPromiseMixin],

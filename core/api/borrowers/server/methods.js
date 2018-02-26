@@ -71,6 +71,21 @@ export const deleteBorrower = new ValidatedMethod({
   },
 });
 
+export const deleteAllBorrowers = new ValidatedMethod({
+  name: 'deleteAllBorrowers',
+  mixins: [CallPromiseMixin],
+  validate({ borrowers }) {
+    check(borrowers, Array);
+  },
+  run({ borrowers }) {
+    if (Roles.userIsInRole(Meteor.userId(), 'dev')) {
+      borrowers.forEach(r => Borrowers.remove(r._id));
+    }
+
+    return false;
+  },
+});
+
 rateLimit({
   methods: [
     insertBorrower,

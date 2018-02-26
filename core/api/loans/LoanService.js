@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 import Loans from '../loans';
 
@@ -6,11 +5,11 @@ import { LOAN_STATUS, AUCTION_STATUS } from '../constants';
 import { getAuctionEndTime } from '../../utils/loanFunctions';
 
 class LoanServiceModel {
-  insert = ({ object, userId }) =>
+  insert = ({ loan, userId }) =>
     Loans.insert({
-      ...object,
+      ...loan,
       // Do this to allow userId to be null
-      userId: userId === undefined ? Meteor.userId() : userId,
+      userId,
     });
 
   update = ({ loanId, object }) => Loans.update(loanId, { $set: object });

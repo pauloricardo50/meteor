@@ -63,7 +63,7 @@ const LoanSchema = new SimpleSchema({
   borrowerIds: { type: Array, defaultValue: [] },
   'borrowerIds.$': String,
   // property: PropertySchema,
-  propertyId: String,
+  propertyId: { type: String },
   files: { type: LoanFilesSchema, defaultValue: {} },
   logic: { type: LogicSchema, defaultValue: {} },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },

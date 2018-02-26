@@ -1,3 +1,6 @@
+import 'core/fixtures/methods';
+// generateTestData
+
 import './adminActions/server/publications';
 import './adminActions/server/methods';
 
@@ -16,7 +19,11 @@ import './offers/server/methods';
 import './properties/server/publications';
 import './properties/server/methods';
 
+import './tasks/server/publications';
+import './tasks/server/methods';
+
 import './users/server/publications';
+import './users/server/methods';
 import './users/server/accounts-server-config';
 
 import './methods/server';

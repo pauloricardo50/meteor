@@ -19,13 +19,14 @@ import {
 // import DevPage from 'core/components/DevPage';
 import AdminLoanContainer from 'core/containers/AdminLoanContainer';
 
+// import DevPage from 'core/components/DevPage';
+import DevPageContainer from 'core/components/DevPage/DevPageContainer';
 import messagesFR from '../../../lang/fr.json';
 
 import ContactLendersPage from '../../ui/pages/ContactLendersPage';
 import OfferPage from '../../ui/pages/OfferPage';
 import VerifyPage from '../../ui/pages/VerifyPage';
 import AdminDevPage from '../../ui/pages/AdminDevPage';
-import DevPage from '../../ui/pages/DevPage';
 import LoansPageWithData from '../../ui/pages/LoansPage/LoansPageWithData';
 import SingleLoanPageWithData from '../../ui/pages/SingleLoanPage/SingleLoanPageWithData';
 
@@ -85,7 +86,7 @@ const AdminRouter = props => (
         <Route
           path="/dev2"
           // render={() => <DevPage {...layoutProps} />}
-          component={DevPage}
+          component={DevPageContainer}
         />
         <Route component={NotFound} />
       </Switch>

@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cleanMethod from 'core/api/cleanMethods';
@@ -111,11 +112,15 @@ const addStep3Loan = (twoBorrowers, completeFiles = true) => {
     .catch(console.log);
 };
 
-const purge = ({ loans, borrowers, offers, properties }) => {
-  loans.forEach(r => cleanMethod('deleteLoan', { id: r._id }));
-  borrowers.forEach(r => cleanMethod('deleteBorrower', { id: r._id }));
-  offers.forEach(r => cleanMethod('deleteOffer', { id: r._id }));
-  properties.forEach(r => cleanMethod('deleteProperty', { id: r._id }));
+const purge = (props) => {
+  const { users, borrowers, properties, loans, tasks, offers } = props;
+  console.log('purge');
+  cleanMethod('deleteAllBorrowers', { borrowers });
+  cleanMethod('deleteAllLoans', { loans });
+  cleanMethod('deleteAllOffers', { offers });
+  cleanMethod('deleteAllProperties', { properties });
+  cleanMethod('deleteAllTasks', { tasks });
+  cleanMethod('deleteAllUsers', { users });
 };
 
 export default class DevPage extends Component {
@@ -136,6 +141,8 @@ export default class DevPage extends Component {
 
   render() {
     const { twoBorrowers } = this.state;
+    const { loading, users } = this.props;
+
     return (
       <div>
         <input
@@ -151,20 +158,30 @@ export default class DevPage extends Component {
         <button onClick={() => addStep3Loan(twoBorrowers, false)}>
           step 3 Loan, few files
         </button>
-        <button onClick={() => purge(this.props)}>Purge</button>
+        { users.length <= 1 && <button onClick={() => Meteor.call('generateTestData')}>Generate test data</button>}
+        { !loading && users.length > 1 && <button onClick={() => purge(this.props)}>Purge</button>}
       </div>
     );
   }
 }
 
 DevPage.propTypes = {
+  loading: PropTypes.bool,
   loans: PropTypes.arrayOf(PropTypes.object),
   borrowers: PropTypes.arrayOf(PropTypes.object),
   offers: PropTypes.arrayOf(PropTypes.object),
+  properties: PropTypes.arrayOf(PropTypes.object),
+  users: PropTypes.arrayOf(PropTypes.object),
+  tasks: PropTypes.arrayOf(PropTypes.object),
 };
 
 DevPage.defaultProps = {
+  loading: true,
   loans: [],
   borrowers: [],
   offers: [],
+  properties: [],
+  users: [],
+  tasks: [],
 };
+

@@ -3,7 +3,7 @@ import Tasks from '../tasks';
 import { TASK_STATUS } from './tasksConstants';
 
 class TaskService {
-  insert = ({ type, loanId }) => {
+  insert = ({ type, loanId, assignedTo, createdBy }) => {
     const existingTask = Tasks.findOne({
       type,
       loanId,
@@ -14,8 +14,15 @@ class TaskService {
       throw new Meteor.Error('duplicate active task');
     }
 
-    return Tasks.insert({ type, loanId });
+    return Tasks.insert({
+      type,
+      loanId,
+      assignedTo,
+      createdBy,
+    });
   };
+
+  remove = ({ taskId }) => Tasks.remove(taskId);
 
   update = ({ taskId, object }) => Tasks.update(taskId, { $set: object });
 
