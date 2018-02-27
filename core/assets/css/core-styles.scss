@@ -1,7 +1,84 @@
 // Imports all scss files here, make sure the path uses imports, or else they
 // won't be found in the microservices that use them
-
+@import './variables.scss';
 @import '{}/imports/core/components/UploaderArray/FileDropper.scss';
 @import '{}/imports/core/components/AutoForm/ValidIcon/ValidIcon.scss';
 @import '{}/imports/core/components/SideNav/SideNavList.scss';
 @import '{}/imports/core/components/DateInput/DateInput.scss';
+
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  line-height: 1.5em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: titleColor;
+  line-height: 1.1em;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 400;
+  font-weight: inherit;
+  margin: 0.67em 0;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.625em;
+}
+
+h3 {
+  font-size: 1.375em;
+}
+
+h4 {
+  font-size: 1.125em;
+}
+
+h5 {
+  font-size: 0.83em;
+}
+
+h6 {
+  font-size: 0.75em;
+}
+
+@media (min-width: $med) {
+  h1 {
+    font-size: 2.5em;
+  }
+
+  h2 {
+    font-size: 2em;
+  }
+
+  h3 {
+    font-size: 1.5em;
+  }
+}
+
+@media (min-width: $wide) {
+  h1 {
+    font-size: 3em;
+  }
+
+  h2 {
+    font-size: 2.25em;
+  }
+
+  h3 {
+    font-size: 1.75em;
+  }
+}
+
+.card1 {
+  background: #ffffff;
+  box-shadow: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+}

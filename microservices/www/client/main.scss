@@ -1,10 +1,11 @@
 @import '{}/node_modules/normalize-scss/sass/normalize';
 @include normalize();
 
+@import '{}/imports/core/assets/css/variables.scss';
+@import '{}/imports/core/assets/css/core-styles.scss';
+
 @import '{}/imports/ui/pages/HomePage/HomePage.scss';
 @import '{}/imports/ui/pages/HomePage/HomePageInterestRates/HomePageInterestRates.scss';
 @import '{}/imports/ui/pages/HomePage/HomePageHeader/HomePageHeader.scss';
-
-body {
-  font-family: 'Source Sans Pro', sans-serif;
-}
+@import '{}/imports/ui/components/Waves/Waves.scss';
+@import '{}/imports/ui/components/Widget1/Widget1.scss';

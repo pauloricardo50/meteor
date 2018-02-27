@@ -2,10 +2,14 @@
   "Forms.futureOwner.BOTH": "Les deux",
   "Forms.futureOwner.OTHER": "Autre",
 
+
   "Forms.propertyInfo": "Informations générales sur la propriété",
 
   "AdminNote.label": "Note d'admin",
   "AdminNote.placeholder": "Clique pour ajouter une note d'admin...",
+  "HomePageHeader.title": "Votre guide à travers la jungle hypothécaire",
+  "HomePageHeader.description":
+    "Soyez accompagnés dans vos décisions stratégiques par des spécialistes en financement immobilier, jusqu'à l'obtention de votre prêt.",
 
   "AdminFilesTab.empty": "Vos documents officiels e-Potek apparaîtront ici.",
 

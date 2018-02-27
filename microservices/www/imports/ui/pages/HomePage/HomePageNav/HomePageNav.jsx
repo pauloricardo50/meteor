@@ -7,7 +7,7 @@ import { T } from 'core/components/Translation';
 const HomePageNav = () => (
   <nav className="home-page-nav">
     <img src="/img/logo_black.svg" alt="e-Potek" />
-    <Button>
+    <Button raised>
       <T id="general.login" />
     </Button>
   </nav>

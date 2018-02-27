@@ -1,20 +1,20 @@
 import React from 'react';
 
 import { T } from 'core/components/Translation';
-import HomePageHeaderBackground from './HomePageHeaderBackground';
+import Waves from '../../../components/Waves';
 import { Widget1Starter } from '../../../components/Widget1';
 
 const HomePageHeader = () => (
   <header>
-    <HomePageHeaderBackground />
+    <Waves />
     <div className="text">
       <h1>
         <T id="HomePageHeader.title" />
       </h1>
       <span className="separator" />
-      <p>
+      <h3>
         <T id="HomePageHeader.description" />
-      </p>
+      </h3>
     </div>
     <Widget1Starter />
   </header>
