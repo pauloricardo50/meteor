@@ -1,22 +1,22 @@
 import { Loans, Properties, Borrowers, Users, Tasks } from '../';
 
 Loans.addLinks({
-  propertyLink: {
-    field: 'property',
+  property: {
+    field: 'propertyId',
     collection: Properties,
     type: 'one',
   },
-  borrowersLink: {
-    field: 'borrowers',
+  borrowers: {
+    field: 'borrowerIds',
     collection: Borrowers,
     type: 'many',
   },
-  userLink: {
+  user: {
     field: 'userId',
     collection: Users,
     type: 'one',
   },
-  tasksLink: {
+  tasks: {
     collection: Tasks,
     inversedBy: 'loan',
   },
