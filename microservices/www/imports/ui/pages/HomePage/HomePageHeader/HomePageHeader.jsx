@@ -1,8 +1,23 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const HomePageHeader = props => <div>Hello World</div>;
+import { T } from 'core/components/Translation';
+import HomePageHeaderBackground from './HomePageHeaderBackground';
+import { Widget1Starter } from '../../../components/Widget1';
 
-HomePageHeader.propTypes = {};
+const HomePageHeader = () => (
+  <header>
+    <HomePageHeaderBackground />
+    <div className="text">
+      <h1>
+        <T id="HomePageHeader.title" />
+      </h1>
+      <span className="separator" />
+      <p>
+        <T id="HomePageHeader.description" />
+      </p>
+    </div>
+    <Widget1Starter />
+  </header>
+);
 
 export default HomePageHeader;

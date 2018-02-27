@@ -2,3 +2,9 @@
 @include normalize();
 
 @import '{}/imports/ui/pages/HomePage/HomePage.scss';
+@import '{}/imports/ui/pages/HomePage/HomePageInterestRates/HomePageInterestRates.scss';
+@import '{}/imports/ui/pages/HomePage/HomePageHeader/HomePageHeader.scss';
+
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+}
