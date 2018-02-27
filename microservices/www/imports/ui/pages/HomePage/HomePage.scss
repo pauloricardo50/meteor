@@ -6,6 +6,12 @@
   overflow-x: hidden;
 }
 
+@import '{}/imports/ui/pages/HomePage/HomePageInterestRates/HomePageInterestRates.scss';
+@import '{}/imports/ui/pages/HomePage/HomePageHeader/HomePageHeader.scss';
+@import '{}/imports/ui/pages/HomePage/HomePageDescription/HomePageDescription.scss';
+@import '{}/imports/ui/pages/HomePage/HomePagePartners/HomePagePartners.scss';
+@import '{}/imports/ui/pages/HomePage/HomePageReviews/HomePageReviews.scss';
+
 .home-page .home-page-nav {
   height: 80px;
   display: flex;
@@ -29,18 +35,4 @@
   .home-page .home-page-nav img {
     width: 140px;
   }
-}
-
-.home-page .partners {
-  width: 100%;
-  padding: 80px 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.home-page .partners img {
-  padding: 16px;
 }

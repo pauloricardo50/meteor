@@ -16,7 +16,7 @@ const HomePageHeader = () => (
         <T id="HomePageHeader.description" />
       </h3>
     </div>
-    <Widget1Starter />
+    <Widget1Starter link="/start/1" />
   </header>
 );
 

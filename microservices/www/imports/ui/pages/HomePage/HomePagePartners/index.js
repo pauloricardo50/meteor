@@ -1,1 +1,1 @@
-export { default } from './HomePagePartners';
+export { default } from './HomePagePartners.jsx';

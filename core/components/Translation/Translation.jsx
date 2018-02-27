@@ -41,6 +41,8 @@ export class T extends Component {
 
     if (noTooltips) {
       return <FormattedMessage {...this.props} />;
+    } else if (id === undefined) {
+      return null;
     } else if (typeof id !== 'string') {
       return id;
     }

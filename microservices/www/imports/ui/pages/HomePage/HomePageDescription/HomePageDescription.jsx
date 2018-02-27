@@ -1,8 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const HomePageDescription = props => <div>Hello World</div>;
+import { T } from 'core/components/Translation';
+import HomePageProgression from './HomePageProgression';
 
-HomePageDescription.propTypes = {};
+const HomePageDescription = () => (
+  <div className="home-page-description">
+    <h2 className="title">
+      <T id="HomePageDescription.title" />
+    </h2>
+    <div className="steps">
+      <HomePageProgression />
+    </div>
+  </div>
+);
 
 export default HomePageDescription;

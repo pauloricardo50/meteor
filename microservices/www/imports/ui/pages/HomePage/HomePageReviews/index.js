@@ -1,1 +1,1 @@
-export { default } from './HomePageReviews';
+export { default } from './HomePageReviews.jsx';

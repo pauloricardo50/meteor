@@ -13,6 +13,7 @@
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.36",
     "material-ui": "^1.0.0-beta.33",
+    "material-ui-icons": "^1.0.0-beta.17",
     "meteor-node-stubs": "^0.3.2",
     "moment": "^2.20.1",
     "normalize-scss": "^7.0.1",
@@ -21,6 +22,7 @@
     "react-helmet": "^5.2.0",
     "react-intl": "https://github.com/Floriferous/react-intl/tarball/build",
     "react-loadable": "^5.3.1",
+    "react-overdrive": "0.0.9",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
