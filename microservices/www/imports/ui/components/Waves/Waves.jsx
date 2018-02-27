@@ -5,15 +5,13 @@ import WaveController from './WaveController';
 const getValueInRange = (min, max) => Math.random() * (max - min) + min;
 
 const waves = [
-  {
-    color1: 'rgb(29,88,245)',
-    color2: 'rgba(0, 60, 150, 0.7)',
-    gradient: true,
-  },
-  // { color: "rgba(0, 85,255, 0.9)" },
-  // { color: "rgba(0, 85,255, 0.4)" },
   { color: 'rgba(0, 85,255, 0.2)' },
   { color: 'rgba(0, 85,255, 0.1)' },
+  {
+    gradient: true,
+    color1: 'rgb(29,88,245)',
+    color2: 'rgba(0, 60, 150, 0.7)',
+  },
 ].map(wave => ({
   ...wave,
   initialOffset: getValueInRange(1, 10),

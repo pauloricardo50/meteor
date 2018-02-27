@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import HomePageInterestRates from './HomePageInterestRates';
 import HomePageNav from './HomePageNav';
 import HomePageHeader from './HomePageHeader';
+import HomePagePartners from './HomePagePartners';
 import HomePageDescription from './HomePageDescription';
 import HomePageReviews from './HomePageReviews';
 import HomePageNewsletter from './HomePageNewsletter';
@@ -14,6 +15,7 @@ const HomePage = () => (
     <HomePageInterestRates />
     <HomePageNav />
     <HomePageHeader />
+    <HomePagePartners />
     <HomePageDescription />
     <HomePageReviews />
     <HomePageNewsletter />
