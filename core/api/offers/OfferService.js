@@ -13,12 +13,10 @@ export default class {
       userId: userId || Meteor.userId(),
     });
 
-  static insertAdminOffer = (object) => {
+  static insertAdminOffer = (object, loan) => {
     if (!Security.currentUserIsAdmin()) {
       return false;
     }
-
-    const loan = Loans.findOne(object.loanId);
 
     return Offers.insert({
       ...object,

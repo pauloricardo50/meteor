@@ -6,6 +6,7 @@ import { USER_COUNT, ADMIN_COUNT, MAX_LOANS_PER_USER } from './config';
 import createLoan from './loans';
 import createTask from './tasks';
 import createUsers from './users';
+import createOffer from './offers';
 
 const generateNumberOfLoans = max => Math.floor(Math.random() * max + 1);
 
@@ -28,6 +29,7 @@ Meteor.methods({
       for (let i = 0; i < numberOfLoans; i += 1) {
         const loanId = createLoan(userId, assignedTo);
         createTask(loanId, assignedTo);
+        createOffer(loanId);
       }
       return userId;
     });

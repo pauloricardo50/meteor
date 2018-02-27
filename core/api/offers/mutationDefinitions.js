@@ -7,6 +7,14 @@ export const OFFER_INSERT = {
   },
 };
 
+export const OFFER_INSERT_ADMIN = {
+  name: 'OFFER_INSERT_ADMIN',
+  params: {
+    object: { type: Object },
+    loan: { type: Object },
+  },
+};
+
 export const OFFER_UPDATE = {
   name: 'OFFER_UPDATE',
   params: {

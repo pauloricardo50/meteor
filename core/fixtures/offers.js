@@ -1,14 +1,14 @@
-import OfferService from 'core/api/Offers/Offerservice';
+import OfferService from 'core/api/offers/OfferService';
 import { getRandomOffer } from 'core/api/offers/fakes';
-import { fakeProperty } from 'core/api/properties/fakes';
+import { Loans, Properties } from 'core/api';
 
-export default (loan) => {
+export default (loanId) => {
+  const loan = Loans.findOne(loanId);
+  const property = Properties.findOne(loan.property);
   const object = getRandomOffer(
-    { loan: { ...loan, _id: loan._id }, property: fakeProperty },
+    { loan: { ...loan, _id: loan._id }, property },
     true,
   );
 
-  return OfferService.insertAdminOffer({
-    object,
-  });
+  return OfferService.insertAdminOffer(object, loan);
 };

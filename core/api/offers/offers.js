@@ -74,7 +74,10 @@ export const OfferSchema = new SimpleSchema({
     type: String,
     allowedValues: Object.keys(CANTONS),
   },
-  auctionEndTime: Date,
+  auctionEndTime: {
+    type: Date,
+    optional: true,
+  },
   standardOffer: {
     type: singleOffer,
   },

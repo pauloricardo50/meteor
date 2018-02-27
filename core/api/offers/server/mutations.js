@@ -7,6 +7,11 @@ createMutator(defs.OFFER_INSERT, ({ object, userId }) => {
   return OfferService.insert({ object, userId });
 });
 
+createMutator(defs.OFFER_INSERT_ADMIN, ({ object, loan }) => {
+  SecurityService.checkLoggedIn();
+  return OfferService.insertAdminOffer({ object, loan });
+});
+
 createMutator(defs.OFFER_UPDATE, ({ offerId, object }) => {
   SecurityService.offers.isAllowedToUpdate(offerId);
   return OfferService.update({ offerId, object });
