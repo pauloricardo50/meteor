@@ -1,18 +1,20 @@
 import { Meteor } from 'meteor/meteor';
 import { check, Match } from 'meteor/check';
 
+import EventService from '../events';
+
 const INVALID_MUTATION_OPTIONS = 'INVALID_MUTATION_OPTIONS';
 const MUTATION_ERROR = 'MUTATION_ERROR';
 
 export const beforeLogger = (callParameters, name) => {
-  if (Meteor.isDevelopment) {
+  if (Meteor.isDevelopment && !Meteor.isTest) {
     console.log(`Executing method ${name} with the following params:`);
     console.log(callParameters);
   }
 };
 
 export const afterLogger = (result, name) => {
-  if (Meteor.isDevelopment) {
+  if (Meteor.isDevelopment && !Meteor.isTest) {
     console.log(`Executed ${name} and got result:`);
     console.log(result);
   }
@@ -56,17 +58,21 @@ const createMutator = (options, functionBody) => {
   const { name, params } = options;
 
   Meteor.methods({
-    [name](callParameters = {}) {
+    [name](callParameters) {
       beforeLogger(callParameters, name);
       checkParams(callParameters, params, name);
+
       let result;
       try {
         result = functionBody(callParameters);
-        // Emit event here
+        EventService.emitMutation(options, callParameters);
       } catch (error) {
-        throw new Meteor.Error(MUTATION_ERROR, `Error in ${name}`, error);
+        throw error;
       }
+
       afterLogger(result, name);
+
+      return result;
     },
   });
 };

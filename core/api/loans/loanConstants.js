@@ -60,11 +60,6 @@ export const AUCTION_STATUS = {
   ENDED: 'ENDED',
 };
 
-export const OFFER_TYPE = {
-  STANDARD: 'STANDARD',
-  COUNTERPARTS: 'COUNTERPARTS',
-};
-
 export const CLOSING_STEPS_TYPE = {
   TODO: 'TODO',
   UPLOAD: 'UPLOAD',
@@ -103,7 +98,7 @@ export const PAYMENT_SCHEDULES = {
   SEMESTERLY: 'SEMESTERLY',
 };
 
-export const QUERY = {
+export const LOAN_QUERIES = {
   ADMIN_LOAN: 'ADMIN_LOAN',
   ADMIN_LOANS: 'ADMIN_LOANS',
 };

@@ -13,8 +13,9 @@ import {
   LOAN_STRATEGY_PRESET,
   AMORTIZATION_STRATEGY_PRESET,
   PAYMENT_SCHEDULES,
-} from './loanConstants';
-import { GENDER, USAGE_TYPE } from '../constants';
+  GENDER,
+  USAGE_TYPE,
+} from '../constants';
 
 export const GeneralSchema = new SimpleSchema({
   purchaseType: {

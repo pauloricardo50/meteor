@@ -44,11 +44,11 @@ export default class TempFile extends Component {
           style={{ height: 48, justifyContent: 'flex-start' }}
         >
           <h5 className="secondary bold">{name}</h5>
-          {!isNaN(progress) ? (
+          {!Number.isNaN(progress) ? (
             <div style={{ paddingLeft: 16, flexGrow: 1 }}>
               <LinearProgress
                 color="primary"
-                mode="determinate"
+                variant="determinate"
                 value={Math.round(progress * 100)}
               />
             </div>

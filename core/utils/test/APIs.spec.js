@@ -1,8 +1,6 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
-import testRequire from 'core/utils/testHelpers/testRequire';
-
-const { getLocations } = testRequire('../APIs') || require('../APIs');
+import { getLocations } from '../APIs';
 
 describe('getLocations', () => {
   it('fetches all locations based on zip 1400', () =>

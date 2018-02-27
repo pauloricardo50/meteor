@@ -16,7 +16,7 @@ Comparators.allow({
 });
 
 export const ComparatorSchema = new SimpleSchema({
-  userId: { type: String, index: true },
+  userId: { type: String },
   createdAt: {
     type: Date,
     autoValue() {

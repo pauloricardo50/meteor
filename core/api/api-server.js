@@ -17,24 +17,24 @@ import './properties/server/publications';
 import './properties/server/methods';
 
 import './users/server/publications';
-import './users/server/methods';
 import './users/server/accounts-server-config';
 
 import './methods/server';
 
 import './factories';
 
-import './jobs/server/jobs';
-import './jobs/server/methods';
+import './jobs/server';
 
 import './files/server/methods';
 import './files/meteor-slingshot-server';
 
 import '../utils/logismata/methods';
 
-import './email';
+import './email/server';
 
-import './tasks/methods';
+import './mutations/server';
+
+import './events/registerListeners';
 
 // Exposures
 import './loans/queries/exposures';
@@ -42,3 +42,10 @@ import './users/queries/exposures';
 // import "./adminActions/queries/exposures";
 import './tasks/queries/exposures';
 import './borrowers/queries/exposures';
+
+import { Loans, Borrowers, Offers, Properties } from '.';
+
+Loans._ensureIndex({ userId: 1 });
+Borrowers._ensureIndex({ userId: 1 });
+Offers._ensureIndex({ loanId: 1 });
+Properties._ensureIndex({ userId: 1 });

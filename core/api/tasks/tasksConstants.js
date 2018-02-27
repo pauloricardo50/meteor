@@ -11,6 +11,6 @@ export const TASK_TYPE = {
   CUSTOM: 'CUSTOM',
 };
 
-export const QUERY = {
+export const TASK_QUERIES = {
   TASKS: 'TASKS',
 };

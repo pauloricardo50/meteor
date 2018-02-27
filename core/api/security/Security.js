@@ -10,19 +10,19 @@ export default class Security {
     return Roles.userIsInRole(userId, role);
   }
 
-  static handleUnauthorized() {
-    throw new Meteor.Error(SECURITY_ERROR);
+  static handleUnauthorized(message) {
+    throw new Meteor.Error(SECURITY_ERROR, message);
   }
 
   static checkRole(userId, role) {
     if (!this.hasRole(userId, role)) {
-      this.handleUnauthorized();
+      this.handleUnauthorized(`Checking role: ${role}`);
     }
   }
 
   static checkLoggedIn() {
     if (!Meteor.userId()) {
-      this.handleUnauthorized();
+      this.handleUnauthorized('Checking if logged in');
     }
   }
 
@@ -37,9 +37,15 @@ export default class Security {
     );
   }
 
+  static checkCurrentUserIsAdmin() {
+    if (!this.currentUserIsAdmin()) {
+      this.handleUnauthorized('Checking if current user is admin');
+    }
+  }
+
   static checkOwnership(doc) {
     if (Meteor.userId() !== doc.userId) {
-      this.handleUnauthorized();
+      this.handleUnauthorized('Checking ownership');
     }
   }
 }

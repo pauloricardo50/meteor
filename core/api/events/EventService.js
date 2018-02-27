@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import { Meteor } from 'meteor/meteor';
 
-const IS_LOGGING = false;
+const IS_LOGGING = true;
 
 export class EventService {
   constructor({ emmitter }) {
@@ -26,9 +26,6 @@ export class EventService {
   }
 
   addMutationListener({ name }, listenerFunction) {
-    if (!name) {
-      throw new Meteor.Error('Invalid new listener, please provide a mutationObject with a name');
-    }
     this.addListener(name, listenerFunction);
   }
 
@@ -40,15 +37,15 @@ export class EventService {
     });
   }
 
-  static logEmittedEvent(eventName, params) {
-    if (IS_LOGGING && Meteor.isDevelopment) {
+  logEmittedEvent(eventName, params) {
+    if (IS_LOGGING && Meteor.isDevelopment && !Meteor.isTest) {
       console.log(`Event "${eventName}" triggered with params:`);
       console.log(params);
     }
   }
 
-  static logListener(eventName, params) {
-    if (IS_LOGGING && Meteor.isDevelopment) {
+  logListener(eventName, params) {
+    if (IS_LOGGING && Meteor.isDevelopment && !Meteor.isTest) {
       console.log(`Event "${eventName}" listened to with params:`);
       console.log(params);
     }
@@ -56,4 +53,4 @@ export class EventService {
 }
 
 const defaultEmmitter = new EventEmitter();
-export default new EventService({ defaultEmmitter });
+export default new EventService({ emmitter: defaultEmmitter });

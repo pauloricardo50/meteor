@@ -48,7 +48,7 @@ export default class StartSignUp extends Component {
     if (emailValidation(email)) {
       this.setState({ loading: true });
 
-      return cleanMethod('doesUserExist', { email })
+      return cleanMethod('DOES_USER_EXIST', { email })
         .then((emailExists) => {
           if (emailExists) {
             throw 'Cette adresse existe déjà';

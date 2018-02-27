@@ -14,12 +14,13 @@ const handleError = (error, mutationName) => {
     });
   }
 
+  console.log('callMutation error:', error);
   // Throw the error again so that it can be catched again via promise chaining
   // All uses of this module should catch and implement proper fail-safe logic
   throw error;
 };
 
-const callMutation = (mutationOptions, callParams) => {
+const callMutation = (mutationOptions, callParams = {}) => {
   const { name, params } = mutationOptions;
   checkParams(callParams, params);
 

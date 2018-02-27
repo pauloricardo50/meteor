@@ -6,19 +6,9 @@ import 'core/api/api-server';
 import jc from 'core/api/jobs/server/jobs';
 import '../accounts-config';
 import './kadira-dev.js';
-import setupAuth from './http-auth';
-import setupMandrill from 'core/api/email/server/email-config';
 import getHtml from './loadingText';
 
 Meteor.startup(() => {
-  // Do something on startup if necessary
-  // Add password protection
-  // if (Meteor.settings.public.environment === 'staging') {
-  //   setupAuth();
-  // }
-
-  setupMandrill();
-
   jc.startJobServer();
 });
 
