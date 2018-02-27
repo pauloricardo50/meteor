@@ -3,13 +3,8 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'core/utils/testHelpers/enzyme';
 
-import testRequire from 'core/utils/testHelpers/testRequire';
-
-const { default: AutoTooltip } =
-  testRequire('../AutoTooltip') || require('../AutoTooltip');
-
-const { default: TooltipOverlay } =
-  testRequire('../TooltipOverlay') || require('../TooltipOverlay');
+import AutoTooltip from '../AutoTooltip';
+import TooltipOverlay from '../TooltipOverlay';
 
 describe('<AutoTooltip />', () => {
   it('returns null if no children are given ', () => {

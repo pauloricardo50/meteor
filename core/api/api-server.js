@@ -19,11 +19,7 @@ import './offers/server/methods';
 import './properties/server/publications';
 import './properties/server/methods';
 
-import './tasks/server/publications';
-import './tasks/server/methods';
-
 import './users/server/publications';
-import './users/server/methods';
 import './users/server/accounts-server-config';
 
 import './methods/server';
@@ -49,3 +45,10 @@ import './users/queries/exposures';
 // import "./adminActions/queries/exposures";
 import './tasks/queries/exposures';
 import './borrowers/queries/exposures';
+
+import { Loans, Borrowers, Offers, Properties } from '.';
+
+Loans._ensureIndex({ userId: 1 });
+Borrowers._ensureIndex({ userId: 1 });
+Offers._ensureIndex({ loanId: 1 });
+Properties._ensureIndex({ userId: 1 });

@@ -1,7 +1,7 @@
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
-export default (count, role) => {
+const createFakeUsers = (count, role) => {
   const insertedUsers = [];
   for (let i = 0; i < count; i += 1) {
     const userId = Accounts.createUser({
@@ -13,3 +13,5 @@ export default (count, role) => {
   }
   return insertedUsers;
 };
+
+export default createFakeUsers;

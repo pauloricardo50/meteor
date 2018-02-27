@@ -29,7 +29,6 @@ Loans.allow({
 const LoanSchema = new SimpleSchema({
   userId: {
     type: String,
-    index: true,
     optional: true,
   },
   createdAt: {

@@ -24,7 +24,7 @@ const lastNames = ['Arsenault', 'Babel', 'Rochat'];
 
 const generateSecondBorrowerProbabillity = () => Math.random() < 0.8;
 
-const insertBorrower = userId => {
+const insertFakeBorrower = (userId) => {
   const borrower = {
     firstName: firstNames[Math.floor(Math.random() * firstNames.length)],
     lastName: lastNames[Math.floor(Math.random() * lastNames.length)],
@@ -101,13 +101,15 @@ const insertBorrower = userId => {
       hasValidatedFinances: true,
     },
   };
-  return BorrowerService.insert({ borrower, userId: userId });
+  return BorrowerService.insert({ borrower, userId });
 };
 
-export default userId => {
-  let borrowerIds = [insertBorrower(userId)];
+const createFakeBorrowers = (userId) => {
+  const borrowerIds = [insertFakeBorrower(userId)];
   if (generateSecondBorrowerProbabillity()) {
-    borrowerIds.push(insertBorrower(userId));
+    borrowerIds.push(insertFakeBorrower(userId));
   }
   return borrowerIds;
 };
+
+export default createFakeBorrowers;

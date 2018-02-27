@@ -1,10 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import testRequire from 'core/utils/testHelpers/testRequire';
-
-const { default: Header, getLink } =
-  testRequire('../BorrowerHeader') || require('../BorrowerHeader');
+import Header, { getLink } from '../BorrowerHeader';
 
 describe('BorrowerHeader', () => {
   describe('getLink', () => {

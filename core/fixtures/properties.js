@@ -12,7 +12,7 @@ const usageTypes = Object.values(USAGE_TYPE);
 const styles = Object.values(PROPERTY_STYLE);
 const volumeNorms = Object.values(VOLUME_NORM);
 
-export default (userId) => {
+const createFakeProperties = (userId) => {
   const object = {
     status: statuses[Math.floor(Math.random() * statuses.length)],
     value: Math.floor(Math.random() * 100000000 + 1),
@@ -51,5 +51,7 @@ export default (userId) => {
       landRegisterExtract: [fakeFile],
     },
   };
-  return PropertyService.insert({ object, userId: userId });
+  return PropertyService.insert({ object, userId });
 };
+
+export default createFakeProperties;

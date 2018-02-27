@@ -17,12 +17,13 @@ import {
 } from 'core/api/loans/loanConstants';
 import { fakeFile } from 'core/api/files/files';
 import { STEPS_PER_LOAN } from './config';
-import createBorrowers from './borrowers';
-import createProperty from './properties';
+import createFakeBorrowers from './borrowers';
+import createFakeProperty from './properties';
 
 const purchaseTypes = Object.values(PURCHASE_TYPE);
 
-const generateRandomNumber = maxSteps => Math.floor(Math.random() * maxSteps + 1);
+const generateRandomNumber = maxSteps =>
+  Math.floor(Math.random() * maxSteps + 1);
 
 const fakeGeneral = {
   purchaseType: purchaseTypes[Math.floor(Math.random() * purchaseTypes.length)],
@@ -115,10 +116,10 @@ const fakeFiles2 = {
   // coownershipAgreement: [fakeFile],
 };
 
-export default (userId) => {
+const createFakeLoans = (userId) => {
   const completeFiles = Math.random() > 0.5;
-  const borrowerIds = createBorrowers(userId);
-  const propertyId = createProperty(userId);
+  const borrowerIds = createFakeBorrowers(userId);
+  const propertyId = createFakeProperty(userId);
   const loan = {
     name: `Rue du Test ${Math.floor(Math.random())}`,
     borrowerIds,
@@ -148,3 +149,5 @@ export default (userId) => {
 
   return LoanService.insert({ loan, userId });
 };
+
+export default createFakeLoans;

@@ -1,15 +1,29 @@
+import { Meteor } from 'meteor/meteor';
+
 import { SecurityService, createMutator } from '../..';
 import OfferService from '../OfferService';
 import * as defs from '../mutationDefinitions';
 
 createMutator(defs.OFFER_INSERT, ({ object, userId }) => {
-  SecurityService.checkLoggedIn();
-  return OfferService.insert({ object, userId });
+  const userIdIsDefined = userId !== undefined;
+  if (userIdIsDefined) {
+    SecurityService.checkCurrentUserIsAdmin();
+  } else {
+    SecurityService.offers.isAllowedToInsert();
+  }
+
+  return OfferService.insert({
+    object,
+    userId: userIdIsDefined ? userId : Meteor.userId(),
+  });
 });
 
 createMutator(defs.OFFER_INSERT_ADMIN, ({ object, loan }) => {
   SecurityService.checkLoggedIn();
-  return OfferService.insertAdminOffer({ object, loan });
+  if (SecurityService.currentUserIsAdmin()) {
+    return OfferService.insertAdminOffer({ object, loan });
+  }
+  return null;
 });
 
 createMutator(defs.OFFER_UPDATE, ({ offerId, object }) => {

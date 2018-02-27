@@ -1,7 +1,7 @@
 import { Users } from '../../';
-import { QUERY } from '../userConstants';
+import { USER_QUERIES } from '../userConstants';
 
-export default Users.createQuery(QUERY.ADMINS, {
+export default Users.createQuery(USER_QUERIES.ADMINS, {
   $filter({ filters, options, params }) {
     filters.roles = { $in: ['admin'] };
   },
