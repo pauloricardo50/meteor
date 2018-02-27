@@ -1,7 +1,7 @@
 import { Users } from '../../';
-import { QUERY } from '../userConstants';
+import { USER_QUERIES } from '../userConstants';
 
-export default Users.createQuery(QUERY.ADMIN_USER, {
+export default Users.createQuery(USER_QUERIES.ADMIN_USER, {
   $filter({ filters, options, params }) {
     filters._id = params._id;
   },
@@ -12,16 +12,16 @@ export default Users.createQuery(QUERY.ADMIN_USER, {
   },
   emails: 1,
   createdAt: 1,
-  loansLink: {
+  loans: {
     logic: { step: 1 },
     createdAt: 1,
     updatedAt: 1,
     general: { insuranceFortuneUsed: 1, fortuneUsed: 1 },
-    propertyLink: {
+    property: {
       value: 1,
       address1: 1,
     },
-    borrowersLink: {
+    borrowers: {
       firstName: 1,
       lastName: 1,
     },

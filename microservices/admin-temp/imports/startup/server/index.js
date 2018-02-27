@@ -5,6 +5,8 @@ import 'core/fixtures';
 import 'core/api/api';
 import 'core/api/api-server';
 import jc from 'core/api/jobs/server';
+// Grapher Links
+import 'core/api/links';
 import '../accounts-config';
 
 Meteor.startup(() => {

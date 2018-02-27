@@ -1,17 +1,12 @@
 import { Meteor } from 'meteor/meteor';
-import { Loans, Offers } from 'core/api';
+import { Offers } from 'core/api';
 import Security from 'core/api/security';
 
 export default class {
   static update = ({ offerId, object }) =>
     Offers.update(offerId, { $set: object });
 
-  static insert = ({ object, userId }) =>
-    Offers.insert({
-      ...object,
-      // Do this to allow userId to be null
-      userId: userId || Meteor.userId(),
-    });
+  static insert = ({ object, userId }) => Offers.insert({ ...object, userId });
 
   static insertAdminOffer = (object, loan) => {
     if (!Security.currentUserIsAdmin()) {

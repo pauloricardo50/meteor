@@ -19,7 +19,6 @@ shell-server@0.3.0            # Server-side component of the `meteor shell` comm
 okgrow:analytics
 std:accounts-ui
 alanning:roles
-aldeed:schema-index
 kadira:dochead
 themeteorchef:bert
 mdg:validated-method

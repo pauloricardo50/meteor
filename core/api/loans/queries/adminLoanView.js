@@ -1,7 +1,7 @@
 import { Loans } from '../../';
-import { QUERY } from '../loanConstants';
+import { LOAN_QUERIES } from '../loanConstants';
 
-export default Loans.createQuery(QUERY.ADMIN_LOAN, {
+export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
   $filter({ filters, params }) {
     filters._id = params._id;
   },
@@ -11,7 +11,7 @@ export default Loans.createQuery(QUERY.ADMIN_LOAN, {
   createdAt: 1,
   updatedAt: 1,
   files: 1,
-  propertyLink: {
+  property: {
     userId: 1,
     createdAt: 1,
     updatedAt: 1,
@@ -58,7 +58,7 @@ export default Loans.createQuery(QUERY.ADMIN_LOAN, {
     adminValidation: 1,
     files: 1,
   },
-  borrowersLink: {
+  borrowers: {
     firstName: 1,
     lastName: 1,
     gender: 1,
@@ -90,7 +90,7 @@ export default Loans.createQuery(QUERY.ADMIN_LOAN, {
     corporateBankExists: 1,
     adminValidation: 1,
   },
-  tasksLink: {
+  tasks: {
     status: 1,
     createdAt: 1,
     updatedAt: 1,

@@ -1,7 +1,7 @@
 import Loans from '..';
-import { QUERY } from '../loanConstants';
+import { LOAN_QUERIES } from '../loanConstants';
 
-export default Loans.createQuery(QUERY.ADMIN_LOANS, {
+export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOANS, {
   $options: {
     sort: {
       createdAt: -1,
@@ -12,7 +12,7 @@ export default Loans.createQuery(QUERY.ADMIN_LOANS, {
   general: 1,
   createdAt: 1,
   updatedAt: 1,
-  propertyLink: {
+  property: {
     value: 1,
   },
 });

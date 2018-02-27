@@ -7,6 +7,7 @@ import Tabs from 'react-bootstrap/lib/Tabs';
 import Page from '/imports/ui/components/Page';
 import UploaderArray from 'core/components/UploaderArray';
 import { T } from 'core/components/Translation';
+import FilesTabs from 'core/components/FilesTabs';
 
 const styles = {
   tabContent: {
@@ -21,25 +22,7 @@ const FilesPage = ({ loan, borrowers, property }) => (
         <T id="FilesPage.description" />
       </p>
 
-      <Tabs defaultActiveKey={0} id="tabs">
-        <Tab eventKey={0} title={<T id="general.mortgageLoan" />}>
-          <div style={styles.tabContent}>
-            <UploaderArray doc={loan} collection="loans" disabled />
-          </div>
-        </Tab>
-        <Tab eventKey={1} title={<T id="general.property" />}>
-          <div style={styles.tabContent}>
-            <UploaderArray doc={property} collection="properties" disabled />
-          </div>
-        </Tab>
-        {borrowers.map((b, index) => (
-          <Tab eventKey={index + 2} title={b.firstName} key={b._id}>
-            <div style={styles.tabContent}>
-              <UploaderArray doc={b} collection="borrowers" disabled />
-            </div>
-          </Tab>
-        ))}
-      </Tabs>
+      <FilesTabs {...this.props} />
     </div>
   </Page>
 );

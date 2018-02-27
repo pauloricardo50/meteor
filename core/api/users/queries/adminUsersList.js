@@ -1,7 +1,7 @@
 import { Users } from '../../';
-import { QUERY } from '../userConstants';
+import { USER_QUERIES } from '../userConstants';
 
-export default Users.createQuery(QUERY.ADMIN_USERS, {
+export default Users.createQuery(USER_QUERIES.ADMIN_USERS, {
   $options: {
     sort: {
       createdAt: -1,

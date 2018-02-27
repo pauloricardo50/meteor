@@ -16,7 +16,7 @@ const File = ({ file, disabled, handleRemove }) => {
         <h5 className="secondary bold">{initialName}</h5>
         <div className="flex center">
           <span className={`${status} bold`}>
-            <T id={`Files.status.${status}`} />
+            <T id={`File.status.${status}`} />
           </span>
           {!!(!disabled && status !== FILE_STATUS.VALID) && (
             <IconButton

@@ -1,11 +1,22 @@
+import { Meteor } from 'meteor/meteor';
+
 import SecurityService from '../../security';
 import { createMutator } from '../../mutations';
 import LoanService from '../LoanService';
 import * as defs from '../mutationDefinitions';
 
 createMutator(defs.LOAN_INSERT, ({ object, userId }) => {
-  SecurityService.loans.isAllowedToInsert();
-  return LoanService.insert({ object, userId });
+  const userIdIsDefined = userId !== undefined;
+  if (userIdIsDefined) {
+    SecurityService.checkCurrentUserIsAdmin();
+  } else {
+    SecurityService.loans.isAllowedToInsert();
+  }
+
+  return LoanService.insert({
+    object,
+    userId: userIdIsDefined ? userId : Meteor.userId(),
+  });
 });
 
 createMutator(defs.LOAN_UPDATE, ({ loanId, object }) => {

@@ -1,9 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import testRequire from 'core/utils/testHelpers/testRequire';
-
-const { default: formatMessage } = testRequire('../intl') || require('../intl');
+import formatMessage from '../intl';
 
 describe('intl-server', () => {
   it('works for an existing id', () => {

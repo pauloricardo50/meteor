@@ -43,11 +43,9 @@ const singleOffer = new SimpleSchema({
 export const OfferSchema = new SimpleSchema({
   loanId: {
     type: String,
-    index: true,
   },
   userId: {
     type: String,
-    index: true,
   },
   createdAt: {
     type: Date,
