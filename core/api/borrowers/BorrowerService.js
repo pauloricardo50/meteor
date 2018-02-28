@@ -1,14 +1,14 @@
 import Borrowers from '../borrowers';
 
 export default class {
-  static update = ({ borrowerId, object }) =>
-    Borrowers.update(borrowerId, { $set: object });
+  static update = ({ borrowerId, borrower }) =>
+    Borrowers.update(borrowerId, { $set: borrower });
 
-  static insert = ({ object, userId }) =>
-    Borrowers.insert({ ...object, userId });
+  static insert = ({ borrower, userId }) =>
+    Borrowers.insert({ ...borrower, userId });
 
   static remove = ({ borrowerId }) => Borrowers.remove(borrowerId);
 
-  static pushValue = ({ borrowerId, object }) =>
-    Borrowers.update(borrowerId, { $push: object });
+  static pushValue = ({ borrowerId, borrower }) =>
+    Borrowers.update(borrowerId, { $push: borrower });
 }

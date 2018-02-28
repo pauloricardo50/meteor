@@ -3,14 +3,14 @@ import { Offers } from 'core/api';
 import Security from 'core/api/security';
 
 export default class {
-  static update = ({ offerId, object }) =>
-    Offers.update(offerId, { $set: object });
+  static update = ({ offerId, offer }) =>
+    Offers.update(offerId, { $set: offer });
 
-  static insert = ({ object, userId }) => Offers.insert({ ...object, userId });
+  static insert = ({ offer, userId }) => Offers.insert({ ...offer, userId });
 
-  static insertAdminOffer = ({ object, loan }) =>
+  static insertAdminOffer = ({ offer, loan }) =>
     Offers.insert({
-      ...object,
+      ...offer,
       userId: Meteor.userId(),
       isAdmin: true,
       auctionEndTime: loan.logic.auction.endTime,

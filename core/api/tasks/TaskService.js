@@ -24,12 +24,12 @@ class TaskService {
 
   remove = ({ taskId }) => Tasks.remove(taskId);
 
-  update = ({ taskId, object }) => Tasks.update(taskId, { $set: object });
+  update = ({ taskId, task }) => Tasks.update(taskId, { $set: task });
 
   complete = ({ taskId }) =>
     this.update({
       taskId,
-      object: {
+      task: {
         status: TASK_STATUS.COMPLETED,
         completedAt: new Date(),
       },
@@ -48,7 +48,7 @@ class TaskService {
 
     return this.update({
       taskId: taskToComplete._id,
-      object: {
+      task: {
         status: newStatus || TASK_STATUS.COMPLETED,
         completedAt: new Date(),
       },
@@ -56,12 +56,12 @@ class TaskService {
   };
 
   changeStatus = ({ taskId, newStatus }) =>
-    this.update({ taskId, object: { status: newStatus } });
+    this.update({ taskId, task: { status: newStatus } });
 
   changeUser = ({ taskId, newUser }) =>
     this.update({
       taskId,
-      object: { userId: newUser },
+      task: { userId: newUser },
     });
 }
 

@@ -1,8 +1,6 @@
-import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 import Users from '../users';
-import adminsQuery from './queries/admins';
 
 class UserService {
   static createUser = ({ options, role }) => {
@@ -20,8 +18,8 @@ class UserService {
     Users.remove(userId);
   };
 
-  static update = ({ userId, object }) => {
-    Users.update(userId, { $set: object });
+  static update = ({ userId, user }) => {
+    Users.update(userId, { $set: user });
   };
 
   static getAdmins = () => Users.find({ roles: { $in: ['admin'] } }).fetch();

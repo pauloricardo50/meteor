@@ -101,6 +101,7 @@ const insertFakeBorrower = (userId) => {
       hasValidatedFinances: true,
     },
   };
+  
   return BorrowerService.insert({ borrower, userId });
 };
 
