@@ -1,4 +1,4 @@
-import { DOES_USER_EXIST } from '../resolverQueriesDefinitions';
+import { DOES_USER_EXIST } from '../queryDefinitions';
 import createResolver from './createResolver';
 
 createResolver(

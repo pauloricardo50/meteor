@@ -10,9 +10,19 @@ import {
 
 const container1 = component =>
   createContainer(props => ({
-    onClick: () =>
-      callMutation(mutations.LOAN_DELETE, { loanId: props.loanId }),
-    onType: email => callResolver(queries.DOES_USER_EXIST, { email }),
+    onClick: () => deleteLoan.run({ loanId: props.loanId }),
+    onType: email =>
+      doesUserExist.run({ email }).then((emailExists) => {
+        console.log('Does user exist: ', emailExists);
+      }),
+    onSubmit: email =>
+    // This is horrible
+      doesUserExist
+        .clone({ email })
+        .fetchSync()
+        .then((emailExists) => {
+          console.log('Does user exist: ', emailExists);
+        }),
   }))(component);
 
 const container2 = component =>
