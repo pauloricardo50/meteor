@@ -12,22 +12,26 @@ const usageTypes = Object.values(USAGE_TYPE);
 const styles = Object.values(PROPERTY_STYLE);
 const volumeNorms = Object.values(VOLUME_NORM);
 
+const getRandomValueInRange = (min, max) => Math.random() * (max - min) + min;
+const getRandomValueInArray = array =>
+  array[Math.floor(Math.random() * array.length)];
+
 const createFakeProperties = (userId) => {
   const object = {
-    status: statuses[Math.floor(Math.random() * statuses.length)],
-    value: Math.floor(Math.random() * 100000000 + 1),
-    address1: `Rue du Succès ${Math.floor(Math.random())}`,
+    status: getRandomValueInArray(statuses),
+    value: getRandomValueInRange(500000, 3000000),
+    address1: `Rue du Succès ${Math.floor(getRandomValueInRange(1, 500))}`,
     propertyWork: 40000,
-    zipCode: Math.floor(Math.random() * 1000 + 1000),
+    zipCode: getRandomValueInRange(1000, 4000),
     city: 'Lausanne',
-    usageType: usageTypes[Math.floor(Math.random() * usageTypes.length)],
-    style: styles[Math.floor(Math.random() * styles.length)],
+    usageType: getRandomValueInArray(usageTypes),
+    style: getRandomValueInArray(styles),
     futureOwner: 0,
     constructionYear: 2010,
     landArea: 300,
     insideArea: 140,
     volume: 1500,
-    volumeNorm: volumeNorms[Math.floor(Math.random() * volumeNorms.length)],
+    volumeNorm: getRandomValueInArray(volumeNorms),
     roomCount: 5,
     bathroomCount: 2,
     toiletCount: 0,
@@ -51,7 +55,8 @@ const createFakeProperties = (userId) => {
       landRegisterExtract: [fakeFile],
     },
   };
-  return PropertyService.insert({ object, userId });
+
+  return PropertyService.insert({ property: object, userId });
 };
 
 export default createFakeProperties;

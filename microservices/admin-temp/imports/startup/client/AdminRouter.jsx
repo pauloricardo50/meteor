@@ -11,7 +11,6 @@ import {
 import DevPage from 'core/components/DevPage';
 import AdminLoanContainer from 'core/containers/AdminLoanContainer';
 
-import DevPage from 'core/components/DevPage';
 import messagesFR from '../../../lang/fr.json';
 
 import ContactLendersPage from '../../ui/pages/ContactLendersPage';

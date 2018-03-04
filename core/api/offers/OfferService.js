@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import { Offers } from 'core/api';
-import Security from 'core/api/security';
 
 export default class {
   static update = ({ offerId, offer }) =>

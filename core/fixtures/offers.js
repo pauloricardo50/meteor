@@ -10,7 +10,10 @@ const createFakeOffers = (loanId) => {
     true,
   );
 
-  return OfferService.insertAdminOffer({ object, loan });
+  return OfferService.insertAdminOffer({
+    offer: object,
+    loan,
+  });
 };
 
 export default createFakeOffers;

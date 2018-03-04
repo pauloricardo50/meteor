@@ -121,7 +121,7 @@ const createFakeLoans = (userId) => {
   const borrowerIds = createFakeBorrowers(userId);
   const propertyId = createFakeProperty(userId);
   const loan = {
-    name: `Rue du Test ${Math.floor(Math.random())}`,
+    name: `Rue du Test ${Math.floor(Math.random() * 1000)}`,
     borrowerIds,
     propertyId,
     general: fakeGeneral,
