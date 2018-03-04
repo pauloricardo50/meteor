@@ -1,8 +1,8 @@
-import Security from 'core/api/security';
+import SecurityService from '../../security';
 import query from './adminLoanView';
 
 query.expose({
-  firewall(userId, params) {
-    Security.checkAdmin(userId);
+  firewall(userId) {
+    SecurityService.checkCurrentUserIsAdmin();
   },
 });

@@ -33,6 +33,10 @@ import SortIcon from 'material-ui-icons/Sort';
 import MoreIcon from 'material-ui-icons/MoreHoriz';
 import AccountCircle from 'material-ui-icons/AccountCircle';
 import Apps from 'material-ui-icons/Apps';
+import DollarSign from 'material-ui-icons/AttachMoney';
+import ContactMail from 'material-ui-icons/ContactMail';
+import People from 'material-ui-icons/People';
+import DeveloperMode from 'material-ui-icons/DeveloperMode';
 
 import Star from 'material-ui-icons/Star';
 import StarHalf from 'material-ui-icons/StarHalf';
@@ -80,10 +84,13 @@ const iconMap = {
   app: Apps,
   personAdd: PersonAdd,
   offlinePin: OfflinePin,
+  dollarSign: DollarSign,
+  contactMail: ContactMail,
+  people: People,
+  developerMode: DeveloperMode,
 };
 
-const Icon = (props) => {
-  const { type } = props;
+const Icon = ({ type, size, ...props }) => {
   const MyIcon = iconMap[type];
 
   if (!MyIcon) {
@@ -92,11 +99,14 @@ const Icon = (props) => {
     return <MyIcon.component {...MyIcon.props} {...props} />;
   }
 
-  return <MyIcon {...props} />;
+  return (
+    <MyIcon style={size ? { width: size, height: size } : {}} {...props} />
+  );
 };
 
 Icon.propTypes = {
   type: PropTypes.string.isRequired,
+  size: PropTypes.number,
 };
 
 Icon.defaultProps = {};
