@@ -7,7 +7,7 @@ export const TasksTab = (props) => {
 
   return (
     <TasksTable
-      data={loan.tasksLink}
+      data={loan.tasks}
       error={error}
       isLoading={isLoading}
       showAssignee

@@ -17,7 +17,7 @@ const SingleUserPage = (props) => {
 
   if (isLoading || !user) return null;
 
-  const loans = data.loansLink;
+  const { loans } = data;
 
   return (
     <section className="mask1">
