@@ -43,12 +43,9 @@ export default class OverviewTab extends React.Component {
           />
         </h1>
 
-        <StepStatus {...dataToPassDown} serverTime={this.state.serverTime} />
+        <StepStatus {...this.props} serverTime={this.state.serverTime} />
 
-        <FileVerificationNotification
-          loan={loan}
-          borrowers={loan.borrowers}
-        />
+        <FileVerificationNotification loan={loan} borrowers={loan.borrowers} />
         <hr />
         <div
           className="flex"

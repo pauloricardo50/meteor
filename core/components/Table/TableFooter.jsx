@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { MuiTableFooter, TablePagination } from 'material-ui/Table';
+import {
+  TableFooter as MuiTableFooter,
+  TablePagination,
+  TableRow,
+} from 'material-ui/Table';
 
 const TableFooter = ({
   rowCount,
@@ -11,15 +15,19 @@ const TableFooter = ({
   onChangeRowsPerPage,
 }) => (
   <MuiTableFooter>
-    <TablePagination
-      count={rowCount}
-      rowsPerPage={rowsPerPage}
-      page={page}
-      onChangePage={onChangePage}
-      onChangeRowsPerPage={onChangeRowsPerPage}
-      labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
-      labelRowsPerPage="Lignes par page"
-    />
+    <TableRow>
+      <TablePagination
+        count={rowCount}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={onChangePage}
+        onChangeRowsPerPage={onChangeRowsPerPage}
+        labelDisplayedRows={({ from, to, count }) =>
+          `${from}-${to} de ${count}`
+        }
+        labelRowsPerPage="Lignes par page"
+      />
+    </TableRow>
   </MuiTableFooter>
 );
 

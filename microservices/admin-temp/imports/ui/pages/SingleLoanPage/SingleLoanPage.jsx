@@ -17,6 +17,8 @@ export default class SingleLoanPage extends Component {
   }
 
   render() {
+    console.log('Single loan page props:', this.props);
+
     const { data, isLoading } = this.props;
     const loan = data;
 
@@ -30,7 +32,7 @@ export default class SingleLoanPage extends Component {
     };
 
     return (
-      <section>
+      <section className="single-loan-page">
         <LoanTabs
           {...dataToPassDown}
           serverTime={this.state.serverTime}
@@ -40,6 +42,7 @@ export default class SingleLoanPage extends Component {
     );
   }
 }
+
 SingleLoanPage.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   isLoading: PropTypes.bool.isRequired,
