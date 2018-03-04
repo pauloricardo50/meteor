@@ -10,7 +10,7 @@ export const TASK_UPDATE = {
   name: 'TASK_UPDATE',
   params: {
     taskId: { type: String },
-    object: { type: Object },
+    task: { type: Object },
   },
 };
 

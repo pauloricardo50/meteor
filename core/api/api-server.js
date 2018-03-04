@@ -1,3 +1,6 @@
+import 'core/fixtures/methods';
+// generateTestData
+
 import './adminActions/server/publications';
 import './adminActions/server/methods';
 

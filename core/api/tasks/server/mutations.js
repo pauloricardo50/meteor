@@ -7,9 +7,9 @@ createMutator(defs.TASK_INSERT, ({ type, loanId }) => {
   return TaskService.insert({ type, loanId });
 });
 
-createMutator(defs.TASK_UPDATE, ({ taskId, object }) => {
+createMutator(defs.TASK_UPDATE, ({ taskId, task }) => {
   SecurityService.tasks.isAllowedToUpdate();
-  return TaskService.insert({ taskId, object });
+  return TaskService.insert({ taskId, task });
 });
 
 createMutator(defs.TASK_COMPLETE, ({ taskId }) => {

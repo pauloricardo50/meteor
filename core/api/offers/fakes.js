@@ -48,10 +48,9 @@ export const getRandomOffer = ({ loan, property }, matchLoanWanted = false) => {
     Math.random() > 0.75 && !matchLoanWanted
       ? 0.65 * getPropAndWork({ loan, property })
       : getLoanValue({ loan, property });
-
+  const maxAmountLimited = loanWanted > 100000000 ? 100000000 : loanWanted;
   const counterpart = getRandomCounterpart();
   const condition = getRandomCondition();
-
   return {
     organization: 'fake',
     canton: 'GE',
@@ -60,7 +59,7 @@ export const getRandomOffer = ({ loan, property }, matchLoanWanted = false) => {
     isSwiss: true,
     worksForOwnCompany: true,
     standardOffer: {
-      maxAmount: loanWanted,
+      maxAmount: maxAmountLimited,
       amortization: 0.01,
       interestLibor: rate1,
       interest1: round(rate1 + rand(0.0004, 0.0016)),
@@ -69,7 +68,7 @@ export const getRandomOffer = ({ loan, property }, matchLoanWanted = false) => {
       interest10: round(rate1 + rand(0.006, 0.01)),
     },
     counterpartOffer: {
-      maxAmount: loanWanted,
+      maxAmount: maxAmountLimited,
       amortization: 0.01,
       interestLibor: rate2,
       interest1: round(rate2 + rand(0.0004, 0.0016)),

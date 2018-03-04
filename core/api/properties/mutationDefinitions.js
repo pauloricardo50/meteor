@@ -1,7 +1,7 @@
 export const PROPERTY_INSERT = {
   name: 'PROPERTY_INSERT',
   params: {
-    object: { type: Object },
+    property: { type: Object },
     userId: { type: String, optional: true },
   },
 };
@@ -10,7 +10,7 @@ export const PROPERTY_UPDATE = {
   name: 'PROPERTY_UPDATE',
   params: {
     propertyId: { type: String },
-    object: { type: Object },
+    property: { type: Object },
   },
 };
 

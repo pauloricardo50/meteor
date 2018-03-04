@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cleanMethod from 'core/api/cleanMethods';
@@ -110,14 +111,6 @@ const addStep3Loan = (twoBorrowers, completeFiles = true) => {
     })
     .catch(console.log);
 };
-
-const purge = ({ loans, borrowers, offers, properties }) => {
-  loans.forEach(r => cleanMethod('deleteLoan', { id: r._id }));
-  borrowers.forEach(r => cleanMethod('deleteBorrower', { id: r._id }));
-  offers.forEach(r => cleanMethod('deleteOffer', { id: r._id }));
-  properties.forEach(r => cleanMethod('deleteProperty', { id: r._id }));
-};
-
 export default class DevPage extends Component {
   constructor(props) {
     super(props);
@@ -136,35 +129,38 @@ export default class DevPage extends Component {
 
   render() {
     const { twoBorrowers } = this.state;
-    return (
-      <div>
-        <input
-          type="checkbox"
-          name="vehicle"
-          value={twoBorrowers}
-          onChange={this.handleChange}
-        />
-        2 borrowers<br />
-        <button onClick={() => addStep1Loan(twoBorrowers)}>step 1 Loan</button>
-        <button onClick={() => addStep2Loan(twoBorrowers)}>step 2 Loan</button>
-        <button onClick={() => addStep3Loan(twoBorrowers)}>step 3 Loan</button>
-        <button onClick={() => addStep3Loan(twoBorrowers, false)}>
-          step 3 Loan, few files
-        </button>
-        <button onClick={() => purge(this.props)}>Purge</button>
-      </div>
-    );
+    const { currentUser } = this.props;
+       
+    if (!Meteor.isProduction) {
+      return (
+        <div>
+          <input
+            type="checkbox"
+            name="vehicle"
+            value={twoBorrowers}
+            onChange={this.handleChange}
+          />
+          2 borrowers<br />
+          <button onClick={() => addStep1Loan(twoBorrowers)}>step 1 Loan</button>
+          <button onClick={() => addStep2Loan(twoBorrowers)}>step 2 Loan</button>
+          <button onClick={() => addStep3Loan(twoBorrowers)}>step 3 Loan</button>
+          <button onClick={() => addStep3Loan(twoBorrowers, false)}>
+            step 3 Loan, few files
+          </button>
+          <button onClick={() => Meteor.call('generateTestData')}>Generate test data</button>
+          <button onClick={() => Meteor.call('purgeDatabase', currentUser._id)}>Purge</button>
+        </div>
+      );
+    }
+    return null;
   }
 }
 
 DevPage.propTypes = {
-  loans: PropTypes.arrayOf(PropTypes.object),
-  borrowers: PropTypes.arrayOf(PropTypes.object),
-  offers: PropTypes.arrayOf(PropTypes.object),
+  currentUser: PropTypes.object,
 };
 
 DevPage.defaultProps = {
-  loans: [],
-  borrowers: [],
-  offers: [],
+  currentUser: {},
 };
+

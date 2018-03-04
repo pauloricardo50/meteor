@@ -1,7 +1,7 @@
 export const LOAN_INSERT = {
   name: 'LOAN_INSERT',
   params: {
-    object: { type: Object },
+    loan: { type: Object },
     userId: { type: String, optional: true },
   },
 };

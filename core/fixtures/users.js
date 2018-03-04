@@ -1,11 +1,17 @@
 import { Accounts } from 'meteor/accounts-base';
-import { USERS } from './config';
+import { Roles } from 'meteor/alanning:roles';
 
-export default () => {
-  for (let i = 0; i < USERS; i++) {
-    Accounts.createUser({
-      email: `user-${i + 1}@epotek.ch`,
+const createFakeUsers = (count, role) => {
+  const insertedUsers = [];
+  for (let i = 0; i < count; i += 1) {
+    const userId = Accounts.createUser({
+      email: `${role}-${i + 1}@epotek.ch`,
       password: '12345',
     });
+    Roles.addUsersToRoles(userId, [role]);
+    insertedUsers.push(userId);
   }
+  return insertedUsers;
 };
+
+export default createFakeUsers;

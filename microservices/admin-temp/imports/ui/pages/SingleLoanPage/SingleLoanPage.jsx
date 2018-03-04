@@ -5,6 +5,11 @@ import PropTypes from 'prop-types';
 import LoanTabs from './LoanTabs';
 
 export default class SingleLoanPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { serverTime: new Date() };
+  }
+
   componentDidMount() {
     Meteor.call('getServerTime', (e, res) => {
       this.setState({ serverTime: res });

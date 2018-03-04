@@ -4,7 +4,7 @@ import { SecurityService, createMutator } from '../..';
 import BorrowerService from '../BorrowerService';
 import * as defs from '../mutationDefinitions';
 
-createMutator(defs.BORROWER_INSERT, ({ object, userId }) => {
+createMutator(defs.BORROWER_INSERT, ({ borrower, userId }) => {
   const userIdIsDefined = userId !== undefined;
   if (userIdIsDefined) {
     SecurityService.checkCurrentUserIsAdmin();
@@ -13,14 +13,14 @@ createMutator(defs.BORROWER_INSERT, ({ object, userId }) => {
   }
 
   return BorrowerService.insert({
-    object,
+    borrower,
     userId: userIdIsDefined ? userId : Meteor.userId(),
   });
 });
 
-createMutator(defs.BORROWER_UPDATE, ({ borrowerId, object }) => {
+createMutator(defs.BORROWER_UPDATE, ({ borrowerId, borrower }) => {
   SecurityService.borrowers.isAllowedToUpdate(borrowerId);
-  return BorrowerService.update({ borrowerId, object });
+  return BorrowerService.update({ borrowerId, borrower });
 });
 
 createMutator(defs.BORROWER_DELETE, ({ borrowerId }) => {
