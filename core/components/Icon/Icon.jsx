@@ -36,6 +36,7 @@ import Apps from 'material-ui-icons/Apps';
 import DollarSign from 'material-ui-icons/AttachMoney';
 import ContactMail from 'material-ui-icons/ContactMail';
 import People from 'material-ui-icons/People';
+import DeveloperMode from 'material-ui-icons/DeveloperMode';
 
 import Star from 'material-ui-icons/Star';
 import StarHalf from 'material-ui-icons/StarHalf';
@@ -86,6 +87,7 @@ const iconMap = {
   dollarSign: DollarSign,
   contactMail: ContactMail,
   people: People,
+  developerMode: DeveloperMode,
 };
 
 const Icon = ({ type, size, ...props }) => {

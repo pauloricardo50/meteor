@@ -22,6 +22,7 @@ const items = [
     collection: 'borrowers',
   },
   { label: 'Tâches', icon: 'check', to: '/tasks', collection: 'tasks' },
+  { label: 'Dev', icon: 'developerMode', to: '/dev' },
 ];
 
 const createOnClickHandler = (

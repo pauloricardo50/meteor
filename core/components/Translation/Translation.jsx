@@ -117,7 +117,7 @@ export const IntlDate = (props) => {
 export const IntlNumber = (props) => {
   // If this is passed something else than a number, render the value directly
   if (typeof props.value !== 'number') {
-    return props.value;
+    return props.value || null;
   }
 
   switch (props.type) {

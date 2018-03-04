@@ -8,7 +8,7 @@ import DetailSideNavListContainer from './DetailSideNavListContainer';
 const DetailSideNavList = ({ isLoading, data, error }) => {
   // if (isLoading) {
   if (true) {
-    return 'Is loading..';
+    return 'TODO';
   }
 
   return (
