@@ -105,16 +105,20 @@ export default class TasksTable extends Component {
   setupRows = (props) => {
     const tasks = props.data;
 
-    this.rows = tasks.map((task, index) => ({
-      id: task._id,
-      columns: this.getColumns({
-        props,
-        index,
-        task,
-      }),
-    }));
+    if (tasks && tasks.length) {
+      this.rows = tasks.map((task, index) => ({
+        id: task._id,
+        columns: this.getColumns({
+          props,
+          index,
+          task,
+        }),
+      }));
 
-    return this.rows;
+      return this.rows;
+    }
+
+    return [];
   };
 
   render() {

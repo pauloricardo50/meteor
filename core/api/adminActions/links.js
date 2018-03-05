@@ -1,12 +1,12 @@
 import { AdminActions, Loans, Users } from '../';
 
 AdminActions.addLinks({
-  staffLink: {
+  staff: {
     field: 'staffId',
     collection: Users,
     type: 'one',
   },
-  loanLink: {
+  loan: {
     field: 'loanId',
     collection: Loans,
     type: 'one',

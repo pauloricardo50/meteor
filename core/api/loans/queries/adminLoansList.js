@@ -15,4 +15,7 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOANS, {
   property: {
     value: 1,
   },
+  borrowers: {
+    firstName: 1,
+  },
 });

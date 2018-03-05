@@ -46,6 +46,7 @@ const config = {
         'FileAdder',
         'ArrayInput',
         'adminActions',
+        'collections'
       ],
     },
   ],

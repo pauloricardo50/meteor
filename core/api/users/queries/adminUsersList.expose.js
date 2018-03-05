@@ -1,8 +1,8 @@
-import Security from 'core/api/security';
+import SecurityService from '../../security';
 import query from './adminUsersList';
 
 query.expose({
   firewall(userId) {
-    Security.checkCurrentUserIsAdmin(userId);
+    SecurityService.checkCurrentUserIsAdmin();
   },
 });
