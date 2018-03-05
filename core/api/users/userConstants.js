@@ -10,3 +10,7 @@ export const USER_QUERIES = {
   ADMIN_USER: 'ADMIN_USER',
   ADMINS: 'ADMINS',
 };
+
+export const USER_EVENTS = {
+  USER_CREATED: 'user_created',
+};

@@ -6,28 +6,28 @@ Tasks.addLinks({
     collection: Users,
     type: 'one',
   },
-});
 
-Tasks.addLinks({
   loan: {
     field: 'loanId',
     collection: Loans,
     type: 'one',
   },
-});
 
-Tasks.addLinks({
   property: {
     field: 'propertyId',
     collection: Properties,
     type: 'one',
   },
-});
 
-Tasks.addLinks({
-  borrowers: {
-    field: 'borrowerIds',
+  borrower: {
+    field: 'borrowerId',
     collection: Borrowers,
-    type: 'many',
+    type: 'one',
+  },
+
+  user: {
+    field: 'userId',
+    collection: Users,
+    type: 'one',
   },
 });

@@ -66,6 +66,10 @@ const UserSchema = new SimpleSchema({
     type: Date,
     optional: true,
   },
+  assignedTo: {
+    type: String,
+    optional: true,
+  },
 });
 
 Meteor.users.attachSchema(UserSchema);

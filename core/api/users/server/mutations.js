@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
+import UserService from 'core/api/users/UserService';
 import { SecurityService, createMutator } from '../..';
 import * as defs from '../mutationDefinitions';
 
@@ -24,3 +25,6 @@ createMutator(defs.SEND_VERIFICATION_LINK, ({ userId }) => {
 
   return Accounts.sendVerificationEmail(id);
 });
+
+createMutator(defs.ASSIGN_ADMIN_TO_USER, ({ userId, adminId }) =>
+  UserService.assignAdminToUser({ userId, adminId }));

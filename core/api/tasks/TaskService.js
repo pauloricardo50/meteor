@@ -1,25 +1,72 @@
 import { Meteor } from 'meteor/meteor';
-import Tasks from '../tasks';
-import { TASK_STATUS } from './tasksConstants';
+import { Borrowers, Loans, Properties, Tasks } from 'core/api';
+import { TASK_STATUS, TASK_TYPE } from './tasksConstants';
+import unassignedTasksQuery from 'core/api/tasks/queries/tasksUnassigned';
+import { truncateSync } from 'fs';
 
 class TaskService {
-  insert = ({ type, loanId, assignedTo, createdBy }) => {
-    const existingTask = Tasks.findOne({
-      type,
-      loanId,
-      status: TASK_STATUS.ACTIVE,
-    });
+  insert = ({
+    type,
+    borrowerId,
+    loanId,
+    propertyId,
+    assignedTo,
+    createdBy,
+  }) => {
+    if (type !== TASK_TYPE.ADD_ASSIGNED_TO) {
+      const existingTask = Tasks.findOne({
+        type,
+        borrowerId,
+        loanId,
+        propertyId,
+        status: TASK_STATUS.ACTIVE,
+      });
+      if (existingTask) {
+        throw new Meteor.Error('duplicate active task');
+      }
+    }
 
-    if (existingTask) {
-      throw new Meteor.Error('duplicate active task');
+    let relatedAssignedTo = assignedTo;
+    if (!relatedAssignedTo) {
+      relatedAssignedTo = this.getRelatedDocAssignedTo({
+        borrowerId,
+        loanId,
+        propertyId,
+      });
     }
 
     return Tasks.insert({
       type,
-      loanId,
-      assignedTo,
+      assignedTo: relatedAssignedTo,
       createdBy,
+      borrowerId,
+      loanId,
+      propertyId,
     });
+  };
+
+  insertUserTask = ({ type, userId }) => {
+    if (type !== TASK_TYPE.ADD_ASSIGNED_TO) {
+      return undefined;
+    }
+
+    return Tasks.insert({
+      type,
+      userId,
+    });
+  };
+
+  getRelatedDocAssignedTo = ({ borrowerId, loanId, propertyId }) => {
+    if (loanId) {
+      return Loans.findOne(loanId).assignedTo;
+    }
+    if (borrowerId) {
+      return Borrowers.findOne(borrowerId).assignedTo;
+    }
+    if (propertyId) {
+      return Properties.findOne(propertyId).assignedTo;
+    }
+    return undefined;
   };
 
   remove = ({ taskId }) => Tasks.remove(taskId);
@@ -58,11 +105,56 @@ class TaskService {
   changeStatus = ({ taskId, newStatus }) =>
     this.update({ taskId, task: { status: newStatus } });
 
-  changeUser = ({ taskId, newUser }) =>
+  changeAssignedTo = ({ taskId, newAssignee }) =>
     this.update({
       taskId,
-      task: { userId: newUser },
+      task: { assignedTo: newAssignee },
     });
+
+  isRelatedToUser = ({ task, userId }) => {
+    if (task.userId) {
+      return true;
+    }
+    if (task.borrower && task.borrower.borrowerAssignee === userId) {
+      return true;
+    }
+    if (task.loan && task.loan.user._id === userId) {
+      return true;
+    }
+    if (task.property && task.property.propertyAssignee === userId) {
+      return true;
+    }
+    return false;
+  };
+
+  getRelatedTo = ({ task }) => {
+    if (task.borrower) {
+      return task.borrower.borrowerAssignee;
+    }
+    if (task.loan) {
+      return task.loan.user._id;
+    }
+    if (task.property) {
+      return task.property.propertyAssignee;
+    }
+    return undefined;
+  };
+
+  assignAllTasksToAdmin = ({ userId, newAssignee }) => {
+    const unassignedTasks = unassignedTasksQuery.fetch();
+    unassignedTasks.map((task) => {
+      const isRelatedToUser = this.isRelatedToUser({ task, userId });
+      if (isRelatedToUser) {
+        const taskId = task._id;
+        this.update({
+          taskId,
+          task: { assignedTo: newAssignee },
+        });
+      }
+
+      return task;
+    });
+  };
 }
 
 export default new TaskService();

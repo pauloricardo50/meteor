@@ -17,7 +17,7 @@ export default class Table extends Component {
       selected: [],
       order: 'asc',
       orderBy: 0,
-      rowsPerPage: 10,
+      rowsPerPage: 40,
       page: 0,
     };
   }
@@ -157,7 +157,7 @@ export default class Table extends Component {
             rowsPerPage={rowsPerPage}
             clickable={clickable}
           />
-          {rowCount > 20 && (
+          {rowCount > 40 && (
             <TableFooter
               rowCount={rowCount}
               rowsPerPage={rowsPerPage}

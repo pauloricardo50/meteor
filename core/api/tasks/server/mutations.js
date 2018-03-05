@@ -27,7 +27,17 @@ createMutator(defs.TASK_CHANGE_STATUS, ({ taskId, newStatus }) => {
   return TaskService.changeStatus({ taskId, newStatus });
 });
 
-createMutator(defs.TASK_CHANGE_USER, ({ taskId, newUser }) => {
+createMutator(defs.TASK_CHANGE_ASSIGNED_TO, ({ taskId, newAssignee }) => {
   SecurityService.tasks.isAllowedToUpdate(taskId);
-  return TaskService.changeUser({ taskId, newUser });
+  return TaskService.changeAssignedTo({ taskId, newAssignee });
+});
+
+createMutator(defs.TASK_IS_RELATED_TO, ({ task, userId }) => {
+  SecurityService.tasks.isAllowedToUpdate(task._id);
+  return TaskService.isRelatedTo({ task, userId });
+});
+
+createMutator(defs.TASK_GET_RELATED_TO, ({ task }) => {
+  SecurityService.tasks.isAllowedToUpdate(task._id);
+  return TaskService.getRelatedTo({ task });
 });

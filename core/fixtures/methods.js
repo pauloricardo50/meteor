@@ -9,6 +9,7 @@ import {
   Users,
   SecurityService,
 } from 'core/api';
+import UserService from 'core/api/users/UserService';
 import { USER_COUNT, ADMIN_COUNT, MAX_LOANS_PER_USER } from './config';
 import createFakeLoan from './loans';
 import createFakeTask from './tasks';
@@ -32,12 +33,13 @@ Meteor.methods({
       const admins = getAdmins();
       const newUsers = createFakeUsers(USER_COUNT, 'user');
       newUsers.map((userId) => {
-        const assignedTo = admins[Math.floor(Math.random() * admins.length)];
+        const adminId = admins[Math.floor(Math.random() * admins.length)];
+        UserService.assignAdminToUser({ userId, adminId });
         const numberOfLoans = generateNumberOfLoans(MAX_LOANS_PER_USER);
         for (let i = 0; i < numberOfLoans; i += 1) {
-          const loanId = createFakeLoan(userId, assignedTo);
-          createFakeTask(loanId, assignedTo);
-          createFakeOffer(loanId);
+          const loanId = createFakeLoan(userId, adminId);
+          createFakeTask(loanId, adminId);
+          createFakeOffer(loanId, userId);
         }
         return userId;
       });

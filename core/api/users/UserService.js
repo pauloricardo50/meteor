@@ -1,28 +1,37 @@
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
+import EventService from 'core/api/events';
+import { USER_EVENTS } from './userConstants';
 import Users from '../users';
 
 class UserService {
-  static createUser = ({ options, role }) => {
+  createUser = ({ options, role }) => {
     const newUserId = Accounts.createUser(options, (err) => {
       if (err) console.log(err);
       else {
         Roles.addUsersToRoles(newUserId, role);
+        if (role === 'user') {
+          EventService.emit(USER_EVENTS.USER_CREATED, { newUserId });
+        }
         return newUserId;
       }
       return null;
     });
   };
 
-  static remove = ({ userId }) => {
+  remove = ({ userId }) => {
     Users.remove(userId);
   };
 
-  static update = ({ userId, user }) => {
-    Users.update(userId, { $set: user });
-  };
+  update = ({ userId, user }) => Users.update(userId, { $set: user });
 
-  static getAdmins = () => Users.find({ roles: { $in: ['admin'] } }).fetch();
+  assignAdminToUser = ({ userId, adminId }) =>
+    this.update({
+      userId,
+      user: { assignedTo: adminId },
+    });
+
+  getAdmins = () => Users.find({ roles: { $in: ['admin'] } }).fetch();
 }
 
-export default UserService;
+export default new UserService();
