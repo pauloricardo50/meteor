@@ -111,6 +111,7 @@ const addStep3Loan = (twoBorrowers, completeFiles = true) => {
     })
     .catch(console.log);
 };
+
 export default class DevPage extends Component {
   constructor(props) {
     super(props);
@@ -130,7 +131,7 @@ export default class DevPage extends Component {
   render() {
     const { twoBorrowers } = this.state;
     const { currentUser } = this.props;
-       
+
     if (!Meteor.isProduction) {
       return (
         <div>
@@ -149,6 +150,16 @@ export default class DevPage extends Component {
           </button>
           <button onClick={() => Meteor.call('generateTestData')}>Generate test data</button>
           <button onClick={() => Meteor.call('purgeDatabase', currentUser._id)}>Purge</button>
+          <br /> <br />
+          <p>Insert task related to a random borrower</p>
+          <button onClick={() => Meteor.call('insertBorrowerRelatedTask')}>Borrower Task</button>
+          <br />
+          <p>Insert task related to a random loan</p>
+          <button onClick={() => Meteor.call('insertLoanRelatedTask')}>Loan Task</button>
+          <br />
+          <p>Insert task related to a random property</p>
+          <button onClick={() => Meteor.call('insertPropertyRelatedTask')}>Property Task</button>
+
         </div>
       );
     }

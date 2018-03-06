@@ -1,7 +1,7 @@
 import { Borrowers, Users } from '../';
 
 Borrowers.addLinks({
-  borrowerAsignee: {
+  user: {
     field: 'userId',
     collection: Users,
     type: 'one',

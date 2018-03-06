@@ -1,7 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { Borrowers, Loans, Properties, Tasks } from 'core/api';
-import { TASK_STATUS, TASK_TYPE } from './tasksConstants';
 import unassignedTasksQuery from 'core/api/tasks/queries/tasksUnassigned';
+import borrowerAssignedToQuery from 'core/api/borrowers/queries/borrowerAssignedTo';
+import loanAssignedToQuery from 'core/api/loans/queries/loanAssignedTo';
+import propertyAssignedToQuery from 'core/api/properties/queries/propertyAssignedTo';
+import { TASK_STATUS, TASK_TYPE } from './tasksConstants';
 import { truncateSync } from 'fs';
 
 class TaskService {
@@ -13,26 +16,28 @@ class TaskService {
     assignedTo,
     createdBy,
   }) => {
-    if (type !== TASK_TYPE.ADD_ASSIGNED_TO) {
-      const existingTask = Tasks.findOne({
-        type,
-        borrowerId,
-        loanId,
-        propertyId,
-        status: TASK_STATUS.ACTIVE,
-      });
-      if (existingTask) {
-        throw new Meteor.Error('duplicate active task');
-      }
+    const existingTask = Tasks.findOne({
+      type,
+      borrowerId,
+      loanId,
+      propertyId,
+      status: TASK_STATUS.ACTIVE,
+    });
+    if (existingTask) {
+      throw new Meteor.Error('duplicate active task');
     }
 
     let relatedAssignedTo = assignedTo;
     if (!relatedAssignedTo) {
-      relatedAssignedTo = this.getRelatedDocAssignedTo({
-        borrowerId,
-        loanId,
-        propertyId,
-      });
+      // some tasks may not be related to any doc,
+      // in that case no need for assignedTo field
+      if (borrowerId || loanId || propertyId) {
+        relatedAssignedTo = this.getRelatedDocAssignedTo({
+          borrowerId,
+          loanId,
+          propertyId,
+        });
+      }
     }
 
     return Tasks.insert({
@@ -45,7 +50,7 @@ class TaskService {
     });
   };
 
-  insertUserTask = ({ type, userId }) => {
+  insertNewUserTask = ({ type, userId }) => {
     if (type !== TASK_TYPE.ADD_ASSIGNED_TO) {
       return undefined;
     }
@@ -58,13 +63,28 @@ class TaskService {
 
   getRelatedDocAssignedTo = ({ borrowerId, loanId, propertyId }) => {
     if (loanId) {
-      return Loans.findOne(loanId).assignedTo;
+      const loans = loanAssignedToQuery
+        .clone({
+          loanId,
+        })
+        .fetch();
+      return loans[0].user.assignedTo;
     }
     if (borrowerId) {
-      return Borrowers.findOne(borrowerId).assignedTo;
+      const borrowers = borrowerAssignedToQuery
+        .clone({
+          borrowerId,
+        })
+        .fetch();
+      return borrowers[0].user.assignedTo;
     }
     if (propertyId) {
-      return Properties.findOne(propertyId).assignedTo;
+      const properties = propertyAssignedToQuery
+        .clone({
+          propertyId,
+        })
+        .fetch();
+      return properties[0].user.assignedTo;
     }
     return undefined;
   };
@@ -112,7 +132,7 @@ class TaskService {
     });
 
   isRelatedToUser = ({ task, userId }) => {
-    if (task.userId) {
+    if (task.userId && task.userId === userId) {
       return true;
     }
     if (task.borrower && task.borrower.borrowerAssignee === userId) {
@@ -129,13 +149,13 @@ class TaskService {
 
   getRelatedTo = ({ task }) => {
     if (task.borrower) {
-      return task.borrower.borrowerAssignee;
+      return task.borrower.user._id;
     }
     if (task.loan) {
       return task.loan.user._id;
     }
     if (task.property) {
-      return task.property.propertyAssignee;
+      return task.property.user._id;
     }
     return undefined;
   };

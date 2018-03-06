@@ -28,18 +28,18 @@ export default Tasks.createQuery(TASK_QUERIES.TASKS, {
     username: 1,
   },
   borrower: {
-    borrowerAssignee: {
-      _id: 1,
+    user: {
+      assignedTo: 1,
     },
   },
   loan: {
     user: {
-      _id: 1,
+      assignedTo: 1,
     },
   },
   property: {
-    propertyAssignee: {
-      _id: 1,
+    user: {
+      assignedTo: 1,
     },
   },
   userId: 1,

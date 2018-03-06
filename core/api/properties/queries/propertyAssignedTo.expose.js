@@ -1,5 +1,5 @@
 import Security from 'core/api/security';
-import query from './propertyAsignee';
+import query from './propertyAssignedTo';
 
 query.expose({
   firewall(userId) {

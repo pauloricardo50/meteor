@@ -10,6 +10,8 @@ import {
   SecurityService,
 } from 'core/api';
 import UserService from 'core/api/users/UserService';
+import TaskService from 'core/api/tasks/TaskService';
+import { TASK_TYPE } from 'core/api/tasks/tasksConstants';
 import { USER_COUNT, ADMIN_COUNT, MAX_LOANS_PER_USER } from './config';
 import createFakeLoan from './loans';
 import createFakeTask from './tasks';
@@ -55,6 +57,31 @@ Meteor.methods({
       Properties.remove({});
       Tasks.remove({});
       Users.remove({ _id: { $ne: currentUserId } });
+    }
+  },
+
+  insertBorrowerRelatedTask() {
+    const borrowerId = Borrowers.findOne({})._id;
+    const type = TASK_TYPE.VERIFY;
+    console.log(borrowerId);
+    if (borrowerId) {
+      TaskService.insert({ type, borrowerId });
+    }
+  },
+
+  insertLoanRelatedTask() {
+    const loanId = Loans.findOne({})._id;
+    const type = TASK_TYPE.VERIFY;
+    if (loanId) {
+      TaskService.insert({ type, loanId });
+    }
+  },
+
+  insertPropertyRelatedTask() {
+    const propertyId = Properties.findOne({})._id;
+    const type = TASK_TYPE.CUSTOM;
+    if (propertyId) {
+      TaskService.insert({ type, propertyId });
     }
   },
 });

@@ -1,1 +1,1 @@
-import './propertyAsignee.expose';
+import './propertyAssignedTo.expose';

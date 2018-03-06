@@ -1072,7 +1072,7 @@
   "TasksStatusDropdown.CUSTOM": "Personnalisé",
   "TasksStatusDropdown.LENDER_CHOSEN": "Prêteur choisi",
   "TasksStatusDropdown.VERIFY": "Vérifier",
-  "TasksTable.actions": "Actes",
+  "TasksTable.actions": "Actions",
   "TasksTable.asignedTo": "Assigné à",
   "TasksTable.completedAt": "Complété le",
   "TasksTable.createdAt": "Créé le",

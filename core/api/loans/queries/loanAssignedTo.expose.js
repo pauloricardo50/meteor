@@ -1,5 +1,5 @@
 import Security from 'core/api/security';
-import query from './loanAsignee';
+import query from './loanAssignedTo';
 
 query.expose({
   firewall(userId, params) {

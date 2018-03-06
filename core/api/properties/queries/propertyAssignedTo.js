@@ -3,7 +3,9 @@ import { PROPERTY_QUERIES } from '../propertyConstants';
 
 export default Property.createQuery(PROPERTY_QUERIES.PROPERTY_ASSIGNED_TO, {
   $filter({ filters, params }) {
-    filters.userId = params.userId;
+    filters._id = params.propertyId;
   },
-  assignedTo: 1,
+  user: {
+    assignedTo: 1,
+  },
 });

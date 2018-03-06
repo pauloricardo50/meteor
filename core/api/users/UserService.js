@@ -31,7 +31,7 @@ class UserService {
       user: { assignedTo: adminId },
     });
 
-  getAdmins = () => Users.find({ roles: { $in: ['admin'] } }).fetch();
+  getUsersByRole = role => Users.find({ roles: { $in: [role] } }).fetch();
 }
 
 export default new UserService();

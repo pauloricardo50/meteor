@@ -3,7 +3,7 @@ import DropdownMenu from 'core/components/DropdownMenu/';
 import { callMutation, mutations } from 'core/api';
 import { TASK_STATUS } from 'core/api/tasks/tasksConstants';
 
-const firstUserAssign = (taskAssignedTo, relatedUserId, user, taskId) => {
+const firstUserAssign = ({ taskAssignedTo, relatedUserId, user, taskId }) => {
   if (!taskAssignedTo) {
     callMutation(mutations.ASSIGN_ADMIN_TO_USER, {
       userId: relatedUserId,
@@ -44,10 +44,10 @@ const changeAssignedUser = ({
     callMutation(mutations.TASK_GET_RELATED_TO, {
       task,
     }).then((relatedUserId) => {
-      firstUserAssign(taskAssignedTo, relatedUserId, user, taskId);
+      firstUserAssign({ taskAssignedTo, relatedUserId, user, taskId });
     });
   } else {
-    firstUserAssign(taskAssignedTo, taskUserId, user, taskId);
+    firstUserAssign({ taskAssignedTo, taskUserId, user, taskId });
   }
 };
 

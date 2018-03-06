@@ -1,7 +1,7 @@
 export const TASK_INSERT = {
   name: 'TASK_INSERT',
   params: {
-    loanId: { type: String },
+    // loanId: { type: String },
     type: { type: String },
   },
 };
@@ -53,7 +53,6 @@ export const TASK_IS_RELATED_TO = {
     userId: { type: String },
   },
 };
-
 
 export const TASK_GET_RELATED_TO = {
   name: 'TASK_GET_RELATED_TO',
