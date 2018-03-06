@@ -12,9 +12,9 @@ jobs:
           LC_NUMERIC: en_US.UTF-8
           METEOR_BIN_TMP_DIR: /home/circleci/build-temp/
           METEOR_BIN_TMP_FILE: meteor-bin-temp
-          TZ: "/usr/share/zoneinfo/Europe/Zurich"
+          # TZ: "/usr/share/zoneinfo/Europe/Zurich"
           NODE_ENV: development
-          # TOOL_NODE_FLAGS: "--max_old_space_size=4096 --optimize_for_size --gc-interval=100" # if builds run out of memory
+          TOOL_NODE_FLAGS: "--max_old_space_size=4096 --optimize_for_size --gc-interval=100" # if builds run out of memory
           # METEOR_PROFILE: 1 # If you need to debug meteor, turn this on
     steps:
       - checkout
@@ -59,54 +59,51 @@ jobs:
             echo "Java version:"
             java -version
       - run:
-          name: install npm packages
-          command: meteor npm install
+          name: Setup microservices
+          command: |
+            cd scripts
+            ./setup.sh
       - run:
           name: create results directory
           command: mkdir ./results
       - run:
-          name: run tests
-          command: meteor npm run test-CI
+          name: run tests for App
+          command: |
+            cd microservices/app
+            meteor npm i selenium-webdriver@3.0.0-beta-2 chromedriver
+            meteor npm run test-CI
+      - run:
+          name: run tests for admin-temp
+          command: |
+            cd microservices/admin-temp
+            meteor npm i selenium-webdriver@3.0.0-beta-2 chromedriver
+            meteor npm run test-CI
       - run:
           name: copy meteor bin to build cache
           command: |
             mkdir -p ~/build-temp
             cp /usr/local/bin/meteor ~/build-temp/meteor-bin
-      - add_ssh_keys
-      - run:
-          name: copy ssh keys to proper folder
-          command: |
-            rm -rf ~/.ssh/id_rsa
-            mv ~/.ssh/id_rsa_09884ca9b31a641158d6b1776599784b ~/.ssh/id_rsa
-      - deploy:
-          name: maybe deploy
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              meteor npm run deploy:production
-            elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
-              meteor npm run deploy:staging
-            fi
-      - save_cache:
-          name: save build
-          key: build-temp-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
-          paths:
-            - ~/build-temp
-      - save_cache:
-          name: save meteor
-          key: meteor-release-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
-          paths:
-            - ~/.meteor
-      - save_cache:
-          name: save meteor packages
-          key: meteor-packages-{{ checksum ".meteor/versions" }}-{{ checksum ".circleci/config.yml" }}
-          paths:
-            - .meteor/
-      - save_cache:
-          name: save npm packages
-          key: npm-packages-{{ checksum "package.json" }}-{{ checksum ".circleci/config.yml" }}
-          paths:
-            - ./node_modules/
-            - ~/.npm/
+      # - save_cache:
+      #     name: save build
+      #     key: build-temp-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
+      #     paths:
+      #       - ~/build-temp
+      # - save_cache:
+      #     name: save meteor
+      #     key: meteor-release-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
+      #     paths:
+      #       - ~/.meteor
+      # - save_cache:
+      #     name: save meteor packages
+      #     key: meteor-packages-{{ checksum ".meteor/versions" }}-{{ checksum ".circleci/config.yml" }}
+      #     paths:
+      #       - .meteor/
+      # - save_cache:
+      #     name: save npm packages
+      #     key: npm-packages-{{ checksum "package.json" }}-{{ checksum ".circleci/config.yml" }}
+      #     paths:
+      #       - ./node_modules/
+      #       - ~/.npm/
       - store_test_results:
           path: ./results
       - store_artifacts:

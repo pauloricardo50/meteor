@@ -1,0 +1,24 @@
+{
+  "folders": [
+    {
+      "path": "./"
+    },
+    {
+      "path": "microservices/admin-temp"
+    },
+    {
+      "path": "microservices/app"
+    },
+    {
+      "path": "microservices/lender"
+    },
+    {
+      "path": "microservices/www"
+    }
+  ],
+  "settings": {
+    "path-autocomplete.pathMappings": {
+      "core": "${workspace}/core"
+    }
+  }
+}
