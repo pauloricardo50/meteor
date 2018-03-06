@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import Tasks from '../tasks';
-import { TASK_STATUS } from './tasksConstants';
+import { TASK_STATUS } from './taskConstants';
+import { validateTask } from './taskValidation';
 
 class TaskService {
   insert = ({ type, loanId, assignedTo, createdBy }) => {
@@ -26,14 +27,20 @@ class TaskService {
 
   update = ({ taskId, task }) => Tasks.update(taskId, { $set: task });
 
-  complete = ({ taskId }) =>
-    this.update({
+  complete = ({ taskId }) => {
+    const task = Tasks.findOne(taskId);
+    if (!validateTask(task)) {
+      throw new Meteor.Error('incomplete-task');
+    }
+
+    return this.update({
       taskId,
       task: {
         status: TASK_STATUS.COMPLETED,
         completedAt: new Date(),
       },
     });
+  };
 
   completeByType = ({ type, loanId, newStatus }) => {
     const taskToComplete = Tasks.findOne({
