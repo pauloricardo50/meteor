@@ -9,6 +9,10 @@ import '../accounts-config';
 import './css';
 import AppRouter from './AppRouter';
 
+import { localizationStartup } from '../localization';
+import RenderRoutes from './Router';
+import 'react-dates/initialize'; // Fix issue #750
+
 /**
  * start - sets the app up
  *
@@ -16,7 +20,7 @@ import AppRouter from './AppRouter';
  *
  * @return {type} undefined
  */
-const start = (testElement) => {
+const start = testElement => {
   // Initial injected html done in server startup index.js
   const loader = document.getElementById('inject-loader-wrapper');
   const loader2 = document.getElementById('loading-text');
