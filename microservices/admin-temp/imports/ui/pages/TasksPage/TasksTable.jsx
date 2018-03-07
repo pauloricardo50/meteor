@@ -125,7 +125,7 @@ export default class TasksTable extends Component {
     const { isLoading } = this.props;
     const { columnOptions, rows } = this.state;
 
-    if (!isLoading) {console.log(this.props.data);
+    if (!isLoading) {
       return <Table columnOptions={columnOptions} rows={rows} noIntl />;
     }
     return null;
