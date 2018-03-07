@@ -19,3 +19,13 @@ export const ASSIGN_ADMIN_TO_USER = {
     adminId: { type: String },
   },
 };
+
+export const ASSIGN_ADMIN_TO_NEW_USER_TASK = {
+  name: 'ASSIGN_ADMIN_TO_NEW_USER',
+  params: {
+    userId: { type: String },
+    adminId: { type: String },
+    taskId: { type: String },
+    taskType: { type: String },
+  },
+};

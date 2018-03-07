@@ -61,25 +61,27 @@ Meteor.methods({
   },
 
   insertBorrowerRelatedTask() {
-    const borrowerId = Borrowers.findOne({})._id;
+    const borrower = Borrowers.aggregate({ $sample: { size: 1 } })[0];
     const type = TASK_TYPE.VERIFY;
-    console.log(borrowerId);
-    if (borrowerId) {
-      TaskService.insert({ type, borrowerId });
+    console.log(borrower._id);
+    if (borrower._id) {
+      TaskService.insert({ type, borrowerId: borrower._id });
     }
   },
 
   insertLoanRelatedTask() {
-    const loanId = Loans.findOne({})._id;
+    const loanId = Loans.aggregate({ $sample: { size: 1 } })[0]._id;
     const type = TASK_TYPE.VERIFY;
+    console.log(loanId);
     if (loanId) {
       TaskService.insert({ type, loanId });
     }
   },
 
   insertPropertyRelatedTask() {
-    const propertyId = Properties.findOne({})._id;
+    const propertyId = Properties.aggregate({ $sample: { size: 1 } })[0]._id;
     const type = TASK_TYPE.CUSTOM;
+    console.log(propertyId);
     if (propertyId) {
       TaskService.insert({ type, propertyId });
     }

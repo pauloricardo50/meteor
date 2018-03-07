@@ -31,3 +31,20 @@ Tasks.addLinks({
     type: 'one',
   },
 });
+
+// Tasks.addReducers({
+//   relatedToLoan: {
+//     body: {
+//       borrower: { _id: 1 },
+//       loan: { _id: 1 },
+//       property: { _id: 1 },
+//     },
+//     reduce(task, params) {
+//       console.log(params);
+//       return (
+//         (task.loan && task.loan._id === params.loanId) ||
+//         (task.property && task.property._id === params.propertyId)
+//       );
+//     },
+//   },
+// });
