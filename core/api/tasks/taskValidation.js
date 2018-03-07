@@ -10,10 +10,7 @@ const verifyTaskValidation = ({ loanId }) => {
 
 const auctionTaskValidation = ({ loanId }) => {
   const loan = Loans.findOne(loanId);
-  return (
-    !!loan.logic.auction.endTime &&
-    loan.logic.auction.status === AUCTION_STATUS.ENDED
-  );
+  return loan.logic.auction.status === AUCTION_STATUS.ENDED;
 };
 
 // TODO
