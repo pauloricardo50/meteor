@@ -8,7 +8,7 @@ import BorrowersTab from './BorrowersTab';
 import PropertyTab from './PropertyTab';
 import OffersTab from './OffersTab';
 import CommunicationTab from './CommunicationTab';
-import MixpanelAnalytics from '../../components/MixpanelAnalytics';
+import MixpanelAnalytics from './AnalyticsTab';
 import ActionsTab from './ActionsTab';
 import TasksTab from './TasksTab';
 import FormsTab from './FormsTab';
@@ -55,11 +55,11 @@ const getTabs = props => [
     label: <T id="LoanTabs.forms" />,
     content: <FormsTab {...props} />,
   },
-  // {
-  //   id: 'files',
-  //   label: <T id="LoanTabs.files" />,
-  //   content: <FilesTab {...props} />,
-  // },
+  {
+    id: 'files',
+    label: <T id="LoanTabs.files" />,
+    content: <FilesTab {...props} />,
+  },
   {
     id: 'actions',
     label: <T id="LoanTabs.actions" />,
