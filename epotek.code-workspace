@@ -19,6 +19,7 @@
   "settings": {
     "path-autocomplete.pathMappings": {
       "core": "${workspace}/core"
-    }
+    },
+    "prettier.tabWidth": 4
   }
 }

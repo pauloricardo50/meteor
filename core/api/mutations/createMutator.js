@@ -26,7 +26,7 @@ export const validateMutationOptions = ({ name, params }) => {
   }
 
   if (params) {
-    Object.keys(params).forEach((param) => {
+    Object.keys(params).forEach(param => {
       const { type } = params[param];
       if (!type) {
         throw new Meteor.Error(
@@ -64,7 +64,7 @@ const createMutator = (options, functionBody) => {
 
       let result;
       try {
-        result = functionBody(callParameters);
+        result = functionBody.call(this, callParameters);
         EventService.emitMutation(options, callParameters);
       } catch (error) {
         throw error;

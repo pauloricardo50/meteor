@@ -28,6 +28,7 @@ module.exports = {
           '_ensureIndex',
           '_verifyEmailToken',
           '_resetPasswordToken',
+          '_storedLoginToken'
           '_name',
           '_execute',
         ],
