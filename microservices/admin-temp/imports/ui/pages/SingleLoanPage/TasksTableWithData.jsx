@@ -1,7 +1,7 @@
 import query from 'core/api/tasks/queries/loanTasksList';
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
 import { Tracker } from 'meteor/tracker';
-import TasksTable from '../TasksPage/TasksTable';
+import TasksTable from '../../components/TasksTable/TasksTable';
 
 const TasksTableWithData = withQuery(props => query.clone({ ...props }), {
   reactive: true,

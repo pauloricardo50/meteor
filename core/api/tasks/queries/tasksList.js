@@ -3,8 +3,14 @@ import { TASK_QUERIES } from '../tasksConstants';
 
 export default Tasks.createQuery(TASK_QUERIES.TASKS, {
   $filter({ filters, options, params }) {
-    if (params.userId) {
-      filters.assignedTo = params.userId;
+    if (params.assignedTo) {
+      filters.assignedTo = params.assignedTo;
+    }
+    if (params.unassigned) {
+      filters.assignedTo = undefined;
+    }
+    if (params.dashboardTasks) {
+      filters.assignedTo = { $in: [params.assignedTo, undefined] };
     }
   },
   $options: {

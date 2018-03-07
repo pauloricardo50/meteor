@@ -2,7 +2,7 @@ import React from 'react';
 import Tabs from 'core/components/Tabs';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
-import TasksTabWithData from './TasksTabWithData';
+import TasksTabWithData from '../../components/TasksTable/TasksTableWithData';
 import { T } from 'core/components/Translation/';
 
 const getTabs = props => [
@@ -12,9 +12,21 @@ const getTabs = props => [
     content: (
       <TasksTabWithData
         {...props}
-        userId={Meteor.userId()}
+        assignedTo={Meteor.userId()}
         showAssignee={false}
         key="myTasks"
+      />
+    ),
+  },
+  {
+    id: 'unassignedTasks',
+    label: <T id="TasksTabs.unassignedTasks" />,
+    content: (
+      <TasksTabWithData
+        {...props}
+        showAssignee
+        unassigned
+        key="unassignedTasks"
       />
     ),
   },
