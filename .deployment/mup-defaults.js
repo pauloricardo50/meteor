@@ -11,7 +11,7 @@ const createMupConfig = ({ name, path, rootUrl, domain }) => {
       one: {
         host: '139.59.211.103',
         username: 'root',
-        pem: '~/.ssh/id_rsa',
+        pem: sshPath,
       },
     },
     meteor: {
