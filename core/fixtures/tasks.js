@@ -1,5 +1,5 @@
 import TaskService from 'core/api/tasks/TaskService';
-import { TASK_TYPE } from 'core/api/tasks/tasksConstants';
+import { TASK_TYPE } from 'core/api/tasks/taskConstants';
 
 const types = Object.values(TASK_TYPE);
 
