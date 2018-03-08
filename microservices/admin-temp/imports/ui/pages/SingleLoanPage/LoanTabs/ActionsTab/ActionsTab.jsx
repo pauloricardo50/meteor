@@ -10,7 +10,7 @@ import ClosingForm from '/imports/ui/components/ClosingForm';
 import ClosingStepsForm from '/imports/ui/components/ClosingStepsForm';
 import downloadPDF from 'core/utils/download-pdf';
 import cleanMethod from 'core/api/cleanMethods';
-import ConfirmMethod from './ConfirmMethod';
+import ConfirmMethod from '../ConfirmMethod';
 
 const styles = {
   div: {
