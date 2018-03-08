@@ -1,11 +1,10 @@
 import { Meteor } from 'meteor/meteor';
-import { Borrowers, Loans, Properties, Tasks } from 'core/api';
-import unassignedTasksQuery from 'core/api/tasks/queries/tasksUnassigned';
-import borrowerAssignedToQuery from 'core/api/borrowers/queries/borrowerAssignedTo';
-import loanAssignedToQuery from 'core/api/loans/queries/loanAssignedTo';
-import propertyAssignedToQuery from 'core/api/properties/queries/propertyAssignedTo';
+import { Tasks } from '../';
+import unassignedTasksQuery from '../tasks/queries/tasksUnassigned';
+import borrowerAssignedToQuery from '../borrowers/queries/borrowerAssignedTo';
+import loanAssignedToQuery from '../loans/queries/loanAssignedTo';
+import propertyAssignedToQuery from '../properties/queries/propertyAssignedTo';
 import { TASK_STATUS, TASK_TYPE } from './tasksConstants';
-import { truncateSync } from 'fs';
 
 class TaskService {
   insert = ({
@@ -13,9 +12,16 @@ class TaskService {
     borrowerId,
     loanId,
     propertyId,
+    userId,
     assignedTo,
     createdBy,
   }) => {
+    if (type === TASK_TYPE.ADD_ASSIGNED_TO) {
+      return Tasks.insert({
+        type,
+        userId,
+      });
+    }
     const existingTask = Tasks.findOne({
       type,
       borrowerId,
@@ -50,41 +56,22 @@ class TaskService {
     });
   };
 
-  insertNewUserTask = ({ type, userId }) => {
-    if (type !== TASK_TYPE.ADD_ASSIGNED_TO) {
-      return undefined;
-    }
-
-    return Tasks.insert({
-      type,
-      userId,
-    });
-  };
-
   getRelatedDocAssignedTo = ({ borrowerId, loanId, propertyId }) => {
     if (loanId) {
-      const loans = loanAssignedToQuery
-        .clone({
-          loanId,
-        })
-        .fetch();
-      return loans[0].user.assignedTo;
+      const loans = loanAssignedToQuery.clone({ loanId }).fetchOne();
+      return loans.user.assignedTo;
     }
     if (borrowerId) {
       const borrowers = borrowerAssignedToQuery
-        .clone({
-          borrowerId,
-        })
-        .fetch();
-      return borrowers[0].user.assignedTo;
+        .clone({ borrowerId })
+        .fetchOne();
+      return borrowers.user.assignedTo;
     }
     if (propertyId) {
       const properties = propertyAssignedToQuery
-        .clone({
-          propertyId,
-        })
-        .fetch();
-      return properties[0].user.assignedTo;
+        .clone({ propertyId })
+        .fetchOne();
+      return properties.user.assignedTo;
     }
     return undefined;
   };
@@ -132,7 +119,7 @@ class TaskService {
     });
 
   isRelatedToUser = ({ task, userId }) => {
-    if (task.userId && task.userId === userId) {
+    if (task.userId === userId) {
       return true;
     }
     if (task.borrower && task.borrower.borrowerAssignee === userId) {

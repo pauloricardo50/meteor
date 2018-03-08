@@ -36,5 +36,5 @@ EventService.addMutationListener(mutations.ASSIGN_ADMIN_TO_USER, (params) => {
 EventService.addListener(USER_EVENTS.USER_CREATED, (params) => {
   const { userId } = params;
   const type = TASK_TYPE.ADD_ASSIGNED_TO;
-  TaskService.insertNewUserTask({ type, userId });
+  TaskService.insert({ type, userId });
 });
