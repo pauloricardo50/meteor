@@ -4,6 +4,8 @@ const createMupConfig = ({ name, path, rootUrl, domain }) => {
     ? '~/.ssh/id_rsa_09884ca9b31a641158d6b1776599784b'
     : '~/.ssh/id_rsa';
 
+  console.log('createMupConfig:', isCircleCI, sshPath);
+
   return {
     servers: {
       one: {
