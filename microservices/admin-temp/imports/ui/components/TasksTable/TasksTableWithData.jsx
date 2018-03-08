@@ -1,13 +1,11 @@
 import query from 'core/api/tasks/queries/tasksList';
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
-import TasksTab from './TasksTable';
+import { Tracker } from 'meteor/tracker';
+import TasksTable from './TasksTable';
 
-const TasksTabWithData = withQuery(
-  props => query.clone({ userId: props.userId }),
-  {
-    reactive: true,
-  },
-)(TasksTab);
+const TasksTableWithData = withQuery(props => query.clone({ ...props }), {
+  reactive: true,
+})(TasksTable);
 
 const subscriptionHandle = query.subscribe();
 
@@ -17,4 +15,4 @@ Tracker.autorun(() => {
   }
 });
 
-export default TasksTabWithData;
+export default TasksTableWithData;
