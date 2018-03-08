@@ -1,6 +1,6 @@
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
-import EventService from 'core/api/events';
+import EventService from '../events';
 import { USER_EVENTS } from './userConstants';
 import Users from '../users';
 
