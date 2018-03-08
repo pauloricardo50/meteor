@@ -1,6 +1,6 @@
 import { Accounts } from 'meteor/accounts-base';
 
-const APP_URL = 'http://localhost:3000';
+const APP_URL = Meteor.settings.public.APP_URL;
 
 export const IMPERSONATE_ROUTE = '/impersonate';
 export const IMPERSONATE_USER_ID = 'userId';

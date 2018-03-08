@@ -5,8 +5,9 @@ import { IMPERSONATE_USER } from 'core/api/impersonation/defs';
 import { IMPERSONATE_SESSION_KEY } from 'core/api/impersonation/impersonation';
 import { callMutation } from 'core/api';
 import { Bert } from 'meteor/themeteorchef:bert';
+import { injectIntl } from 'react-intl';
 
-export default class ImpersonatePage extends Component {
+class ImpersonatePage extends Component {
   static propTypes = {
     prop: PropTypes,
   };
@@ -26,7 +27,9 @@ export default class ImpersonatePage extends Component {
 
       Bert.alert({
         title: 'Success!',
-        message: `<h3 class="bert">You are now impersonating the user</h3>`,
+        message: `<h3 class="bert">${this.props.intl.formatMessage({
+          id: 'Impersonation.impersonationSuccess',
+        })}</h3>`,
         type: 'success',
         style: 'fixed-top',
       });
@@ -39,3 +42,5 @@ export default class ImpersonatePage extends Component {
     return <div>Impersonating.....</div>;
   }
 }
+
+export default injectIntl(ImpersonatePage);

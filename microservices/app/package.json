@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "start": "meteor --settings settings-dev.json --port 4000",
+    "start-local-db": "MONGO_URL=mongodb://localhost:27017/epotek meteor --settings settings-dev.json --port 4000",
     "production": "meteor run --production --settings settings-dev.json",
     "visualize":
       "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 4010",
