@@ -27,17 +27,14 @@ const firstUserAssign = ({
 const changeAssignedUser = ({ user, task, taskAssignedTo }) => {
   const taskUserId = task.user ? task.user._id : undefined;
   if (!taskUserId) {
-    callMutation(mutations.TASK_GET_RELATED_TO, {
-      task,
-    }).then((relatedUserId) => {
-      firstUserAssign({
+    callMutation(mutations.TASK_GET_RELATED_TO, { task })
+      .then(relatedUserId => firstUserAssign({
         taskAssignedTo,
         relatedUserId,
         user,
         taskId: task._id,
         taskType: task.type,
-      });
-    });
+      }));
   } else {
     firstUserAssign({
       taskAssignedTo,
@@ -56,13 +53,11 @@ const getMenuItems = (users, task) => {
     show: user._id !== taskAssignedTo,
     label: user.emails[0].address,
     link: false,
-    onClick: () => {
-      changeAssignedUser({
-        user,
-        task,
-        taskAssignedTo,
-      });
-    },
+    onClick: () => changeAssignedUser({
+      user,
+      task,
+      taskAssignedTo,
+    }),
   }));
   return options;
 };
