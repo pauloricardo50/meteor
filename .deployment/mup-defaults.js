@@ -1,10 +1,15 @@
 const createMupConfig = ({ name, path, rootUrl, domain }) => {
+  const isCircleCI = !!process.env.CIRCLECI;
+  const sshPath = isCircleCI
+    ? '~/.ssh/id_rsa_09884ca9b31a641158d6b1776599784b' // The RSA key for circleCI deployments
+    : '~/.ssh/id_rsa'; // The local dev key path
+
   return {
     servers: {
       one: {
         host: '139.59.211.103',
         username: 'root',
-        pem: '~/.ssh/id_rsa',
+        pem: sshPath,
       },
     },
     meteor: {
