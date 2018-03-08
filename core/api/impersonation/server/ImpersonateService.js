@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { createMutator } from 'core/api';
 import Security from 'core/api/security';
-import { IMPERSONATE_USER } from '../defs';
 import Users from 'core/api/users';
 import { ROLES } from 'core/api/users/userConstants';
 
