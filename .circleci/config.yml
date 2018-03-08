@@ -1,10 +1,12 @@
 version: 2
 jobs:
   deploy:
-    command: |
-      if [ "${CIRCLE_BRANCH}" == "staging" ]; then
-        .deployment/deploy-staging.sh all
-      fi
+    steps:
+      - run:
+        command: |
+          if [ "${CIRCLE_BRANCH}" == "staging" ]; then
+            .deployment/deploy-staging.sh all
+          fi
   build:
     working_directory: ~/app
     docker:
