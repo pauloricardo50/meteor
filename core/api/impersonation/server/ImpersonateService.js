@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { createMutator } from 'core/api';
-import Security from 'core/api/security';
-import Users from 'core/api/users';
+import Security from '../../api/security';
+import Users from '../../api/users';
 
 export default class ImpersonateService {
   /**
