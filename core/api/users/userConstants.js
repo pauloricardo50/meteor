@@ -12,5 +12,5 @@ export const USER_QUERIES = {
 };
 
 export const USER_EVENTS = {
-  USER_CREATED: 'user_created',
+  USER_CREATED: 'USER_CREATED',
 };

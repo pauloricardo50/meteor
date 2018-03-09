@@ -1,2 +1,2 @@
-import './borrowersList.expose';
+import './borrowers.expose';
 import './borrowerAssignedTo.expose';

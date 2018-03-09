@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Tasks } from '../';
-import unassignedTasksQuery from '../tasks/queries/tasksUnassigned';
+import unassignedTasksQuery from '../tasks/queries/unassignedTasks';
 import borrowerAssignedToQuery from '../borrowers/queries/borrowerAssignedTo';
 import loanAssignedToQuery from '../loans/queries/loanAssignedTo';
 import propertyAssignedToQuery from '../properties/queries/propertyAssignedTo';

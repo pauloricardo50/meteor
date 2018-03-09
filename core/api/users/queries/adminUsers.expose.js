@@ -1,5 +1,5 @@
 import SecurityService from '../../security';
-import query from './adminUserView';
+import query from './adminUsers';
 
 query.expose({
   firewall(userId) {

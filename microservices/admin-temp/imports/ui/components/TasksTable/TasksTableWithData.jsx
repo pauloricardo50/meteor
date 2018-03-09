@@ -1,4 +1,4 @@
-import query from 'core/api/tasks/queries/tasksList';
+import query from 'core/api/tasks/queries/tasks';
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
 import { Tracker } from 'meteor/tracker';
 import TasksTable from './TasksTable';

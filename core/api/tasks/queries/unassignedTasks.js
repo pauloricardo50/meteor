@@ -5,13 +5,6 @@ export default Tasks.createQuery(TASK_QUERIES.UNASSIGNED_TASKS, {
   $filter({ filters, options, params }) {
     filters.assignedTo = undefined;
   },
-  $options: {
-    sort: {
-      createdAt: -1,
-    },
-  },
-  status: 1,
-  type: 1,
   borrower: {
     borrowerAssignee: {
       _id: 1,

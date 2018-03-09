@@ -31,27 +31,13 @@ export default class TasksTable extends Component {
   getColumnOptions = ({ showAssignee }) => {
     const columnOptions = [
       { id: '#', style: { width: 32, textAlign: 'left' } },
-      {
-        id: <T id="TasksTable.type" />,
-      },
-      {
-        id: <T id="TasksTable.status" />,
-      },
-      {
-        id: <T id="TasksTable.createdAt" />,
-      },
-      {
-        id: <T id="TasksTable.updatedAt" />,
-      },
-      {
-        id: <T id="TasksTable.dueAt" />,
-      },
-      {
-        id: <T id="TasksTable.completedAt" />,
-      },
-      {
-        id: <T id="TasksTable.relatedTo" />,
-      },
+      { id: <T id="TasksTable.type" /> },
+      { id: <T id="TasksTable.status" /> },
+      { id: <T id="TasksTable.createdAt" /> },
+      { id: <T id="TasksTable.updatedAt" /> },
+      { id: <T id="TasksTable.dueAt" /> },
+      { id: <T id="TasksTable.completedAt" /> },
+      { id: <T id="TasksTable.relatedTo" /> },
     ];
     if (showAssignee) {
       columnOptions.push({
