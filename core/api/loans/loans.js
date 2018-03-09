@@ -66,6 +66,7 @@ const LoanSchema = new SimpleSchema({
   files: { type: LoanFilesSchema, defaultValue: {} },
   logic: { type: LogicSchema, defaultValue: {} },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
+  adminNote: { type: String, defaultValue: '', optional: true },
   emails: { type: Array, defaultValue: [] },
   'emails.$': Object,
   'emails.$._id': String,

@@ -19,9 +19,9 @@ createMutator(defs.LOAN_INSERT, ({ object, userId }) => {
   });
 });
 
-createMutator(defs.LOAN_UPDATE, ({ loanId, object }) => {
+createMutator(defs.LOAN_UPDATE, ({ loanId, loan }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
-  return LoanService.update({ loanId, object });
+  return LoanService.update({ loanId, loan });
 });
 
 createMutator(defs.LOAN_DELETE, ({ loanId }) => {
@@ -57,4 +57,9 @@ createMutator(defs.CANCEL_AUCTION, ({ loanId }) => {
 createMutator(defs.CONFIRM_CLOSING, ({ loanId, object }) => {
   SecurityService.checkCurrentUserIsAdmin();
   return LoanService.confirmClosing({ loanId, object });
+});
+
+createMutator(defs.LOAN_CHANGE_ADMIN_NOTE, ({ loanId, adminNote }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return LoanService.update({ loanId, loan: { adminNote } });
 });

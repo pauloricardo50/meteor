@@ -10,7 +10,7 @@ export const LOAN_UPDATE = {
   name: 'LOAN_UPDATE',
   params: {
     loanId: { type: String },
-    object: { type: Object },
+    loan: { type: Object },
   },
 };
 
@@ -61,5 +61,13 @@ export const CONFIRM_CLOSING = {
   params: {
     loanId: { type: String },
     object: { type: Object },
+  },
+};
+
+export const LOAN_CHANGE_ADMIN_NOTE = {
+  name: 'LOAN_CHANGE_ADMIN_NOTE',
+  params: {
+    loanId: { type: String },
+    adminNote: { type: String },
   },
 };
