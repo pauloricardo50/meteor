@@ -1,25 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import TextField from 'material-ui/TextField';
-import Button from 'material-ui/Button';
-import Save from 'material-ui-icons/Save';
+import TextInput from 'core/components/TextInput';
+import Button from 'core/components/Button';
+import Icon from 'core/components/Icon';
 import { callMutation, mutations } from 'core/api';
 import { T } from 'core/components/Translation/';
-
-const styles = {
-  container: {
-    width: '100%',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-  },
-  textField: {
-    paddingBottom: 20,
-  },
-  button: {
-    marginLeft: 0,
-  },
-};
 
 class AdminNotes extends React.Component {
   state = {
@@ -27,9 +12,9 @@ class AdminNotes extends React.Component {
     showButton: false,
   };
 
-  handleChange = () => event =>
+  handleChange = () => (id, value, event) =>
     this.setState({
-      textFieldText: event.target.value,
+      textFieldText: value,
       showButton: true,
     });
 
@@ -38,7 +23,7 @@ class AdminNotes extends React.Component {
       callMutation(mutations.LOAN_CHANGE_ADMIN_NOTE, {
         loanId,
         adminNote: textFieldText,
-      }).then(this.setState({ showButton: false }));
+      }).then(() => this.setState({ showButton: false }));
     }
   };
 
@@ -47,32 +32,32 @@ class AdminNotes extends React.Component {
     const { showButton, textFieldText } = this.state;
 
     return (
-      <div className="flex" style={styles.container}>
-        <TextField
+      <div className="flex container">
+        <TextInput
+          id="adminNote"
           label={<T id="AdminNote.adminNotes" />}
           fullWidth
           multiline
           value={this.state.textFieldText}
           onChange={this.handleChange()}
-          margin="normal"
-          // placeholder={<T id="AdminNote.addNote" />}
-          helperText={<T id="AdminNote.addNote" />}
-          style={styles.textField}
+          placeholder="AdminNote.addNote"
+          className="textField"
         />
 
         {showButton && (
           <Button
             variant="raised"
             size="small"
+            tooltip={<T id="general.save" />}
             onClick={this.saveAdminNote({
               loanId,
               adminNoteText,
               textFieldText,
             })}
-            style={styles.button}
+            className="saveButton"
           >
-            <Save className="leftIcon iconSmall" />
-            Save
+            <Icon className="leftIcon iconSmall" type="save" />
+            {<T id="general.save" />}
           </Button>
         )}
 

@@ -1,1 +1,1 @@
-export { default } from './AdminNote';
+export { default } from './AdminNote.jsx';

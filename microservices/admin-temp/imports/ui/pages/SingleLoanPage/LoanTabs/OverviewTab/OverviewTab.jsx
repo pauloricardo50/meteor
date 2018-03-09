@@ -7,7 +7,7 @@ import Recap from 'core/components/Recap';
 import renderObject from 'core/utils/renderObject';
 import { getLoanValue } from 'core/utils/loanFunctions';
 import { IntlNumber } from 'core/components/Translation';
-import AdminNote from '/imports/ui/components/AdminNote';
+import AdminNote from '../../../../components/AdminNote';
 import StepStatus from './StepStatus';
 import FileVerificationNotification from './FileVerificationNotification';
 

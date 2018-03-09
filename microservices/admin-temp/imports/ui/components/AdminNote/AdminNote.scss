@@ -1,0 +1,18 @@
+.container {
+  width: 100%;
+  display: -webkit-flex;
+  -webkit-flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: 'space-around';
+}
+.textField {
+  margin-bottom: 20px;
+  width: 100%;
+}
+.saveButton {
+  margin-left: 0;
+}
+.leftIcon {
+  margin-right: 6px;
+}
