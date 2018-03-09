@@ -55,6 +55,7 @@ edgee:slingshot
 vsivsi:job-collection
 cultofcoders:grapher
 cultofcoders:grapher-react
+cultofcoders:mutations
 
 # UI tricks
 kadira:dochead                  # Set custom page titles easily

@@ -3,15 +3,15 @@ import Jobs from './jobs';
 import { SCHEDULE_METHOD } from './jobConstants';
 
 class JobService {
-  scheduleMethod = ({ method, params, date }) => {
+  _scheduleMethod = ({ method, params, date }) => {
     const jobId = new Job(Jobs, SCHEDULE_METHOD, { method, params })
       .after(date)
       .save();
     return jobId;
   };
 
-  scheduleMutation = ({ mutation: { name }, params, date }) =>
-    this.scheduleMethod({ method: name, params, date });
+  scheduleMethod = ({ method: { config: { name } }, params, date }) =>
+    this._scheduleMethod({ method: name, params, date });
 
   cancelJob = ({ jobId }) => Jobs.cancelJobs([jobId]);
 
@@ -24,7 +24,7 @@ class JobService {
     }
   };
 
-  cancelExistingMutationJob = ({ mutation: { name }, params }) => {
+  cancelExistingMethodJob = ({ method: { config: { name } }, params }) => {
     this.cancelExistingJob({ method: name, params });
   };
 }

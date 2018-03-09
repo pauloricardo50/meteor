@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import DropdownMenu from 'core/components/DropdownMenu/';
-import { callMutation, mutations } from 'core/api';
+import { taskChangeUser } from 'core/api/methods';
 
 const changeAssignedUser = (user, taskId) => {
-  callMutation(mutations.TASK_CHANGE_USER, {
+  taskChangeUser.run({
     taskId,
     newUser: user,
   });

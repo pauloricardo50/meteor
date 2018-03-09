@@ -1,26 +1,28 @@
 import moment from 'moment';
 import EventService from '../../events';
-import { mutations } from '../../mutations';
+import {
+  requestLoanVerification,
+  startAuction,
+  endAuction,
+  cancelAuction,
+} from '../../methods';
 import { Loans } from '../..';
 import { EMAIL_IDS } from '../emailConstants';
 import { sendEmail } from './emailMethods';
 import { getAuctionEndTime } from '../../../utils/loanFunctions';
 
-EventService.addMutationListener(
-  mutations.REQUEST_LOAN_VERIFICATION,
-  (params) => {
-    const { loanId } = params;
-    const { userId } = Loans.findOne(loanId);
+EventService.addMethodListener(requestLoanVerification, (params) => {
+  const { loanId } = params;
+  const { userId } = Loans.findOne(loanId);
 
-    return sendEmail({
-      emailId: EMAIL_IDS.VERIFICATION_REQUESTED,
-      userId,
-      params,
-    });
-  },
-);
+  return sendEmail({
+    emailId: EMAIL_IDS.VERIFICATION_REQUESTED,
+    userId,
+    params,
+  });
+});
 
-EventService.addMutationListener(mutations.START_AUCTION, (params) => {
+EventService.addMethodListener(startAuction, (params) => {
   const { loanId } = params;
   const { userId } = Loans.findOne(loanId);
 
@@ -31,7 +33,7 @@ EventService.addMutationListener(mutations.START_AUCTION, (params) => {
   });
 });
 
-EventService.addMutationListener(mutations.END_AUCTION, (params) => {
+EventService.addMethodListener(endAuction, (params) => {
   const { loanId } = params;
   const { userId } = Loans.findOne(loanId);
 
@@ -42,7 +44,7 @@ EventService.addMutationListener(mutations.END_AUCTION, (params) => {
   });
 });
 
-EventService.addMutationListener(mutations.CANCEL_AUCTION, (params) => {
+EventService.addMethodListener(cancelAuction, (params) => {
   const { loanId } = params;
   const { userId } = Loans.findOne(loanId);
 

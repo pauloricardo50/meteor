@@ -20,6 +20,7 @@ import './users/server/publications';
 import './users/server/accounts-server-config';
 
 import './methods/server';
+import './methods';
 
 import './factories';
 

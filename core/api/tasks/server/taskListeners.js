@@ -1,26 +1,29 @@
 import EventService from '../../events';
-import { mutations } from '../../mutations';
+import {
+  loanDelete,
+  requestLoanVerification,
+  startAuction,
+  endAuction,
+  cancelAuction,
+} from '../../methods';
 import TaskService from '../TaskService';
 
-EventService.addMutationListener(mutations.LOAN_DELETE, (params) => {
+EventService.addMethodListener(loanDelete, (params) => {
   // TODO: remove parent loan for these tasks
 });
 
-EventService.addMutationListener(
-  mutations.REQUEST_LOAN_VERIFICATION,
-  (params) => {
-    // TODO: ADMIN_ACTION_TYPE.VERIFY
-  },
-);
+EventService.addMethodListener(requestLoanVerification, (params) => {
+  // TODO: ADMIN_ACTION_TYPE.VERIFY
+});
 
-EventService.addMutationListener(mutations.START_AUCTION, (params) => {
+EventService.addMethodListener(startAuction, (params) => {
   // TODO: ADMIN_ACTION_TYPE.AUCTION
 });
 
-EventService.addMutationListener(mutations.END_AUCTION, (params) => {
+EventService.addMethodListener(endAuction, (params) => {
   // TODO: complete auction task
 });
 
-EventService.addMutationListener(mutations.CANCEL_AUCTION, (params) => {
+EventService.addMethodListener(cancelAuction, (params) => {
   // TODO: remove auction task
 });

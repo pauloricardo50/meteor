@@ -1,10 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 
-import { SecurityService, createMutator } from '../..';
+import { SecurityService } from '../..';
 import BorrowerService from '../BorrowerService';
-import * as defs from '../mutationDefinitions';
+import {
+  borrowerInsert,
+  borrowerUpdate,
+  borrowerDelete,
+} from '../methodDefinitions';
 
-createMutator(defs.BORROWER_INSERT, ({ object, userId }) => {
+borrowerInsert.setHandler((context, { object, userId }) => {
   const userIdIsDefined = userId !== undefined;
   if (userIdIsDefined) {
     SecurityService.checkCurrentUserIsAdmin();
@@ -18,12 +22,12 @@ createMutator(defs.BORROWER_INSERT, ({ object, userId }) => {
   });
 });
 
-createMutator(defs.BORROWER_UPDATE, ({ borrowerId, object }) => {
+borrowerUpdate.setHandler((context, { borrowerId, object }) => {
   SecurityService.borrowers.isAllowedToUpdate(borrowerId);
   return BorrowerService.update({ borrowerId, object });
 });
 
-createMutator(defs.BORROWER_DELETE, ({ borrowerId }) => {
+borrowerDelete.setHandler((context, { borrowerId }) => {
   SecurityService.borrowers.isAllowedToDelete(borrowerId);
   return BorrowerService.remove({ borrowerId });
 });

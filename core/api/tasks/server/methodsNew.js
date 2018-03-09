@@ -1,33 +1,40 @@
-import { SecurityService, createMutator } from '../..';
+import { SecurityService } from '../..';
 import TaskService from '../TaskService';
-import * as defs from '../mutationDefinitions';
+import {
+  taskInsert,
+  taskUpdate,
+  taskComplete,
+  taskCompleteByType,
+  taskChangeStatus,
+  taskChangeUser,
+} from '../methodDefinitions';
 
-createMutator(defs.TASK_INSERT, ({ type, loanId }) => {
+taskInsert.setHandler(({ type, loanId }) => {
   SecurityService.tasks.isAllowedToInsert();
   return TaskService.insert({ type, loanId });
 });
 
-createMutator(defs.TASK_UPDATE, ({ taskId, object }) => {
+taskUpdate.setHandler(({ taskId, object }) => {
   SecurityService.tasks.isAllowedToUpdate();
   return TaskService.insert({ taskId, object });
 });
 
-createMutator(defs.TASK_COMPLETE, ({ taskId }) => {
+taskComplete.setHandler(({ taskId }) => {
   SecurityService.tasks.isAllowedToUpdate(taskId);
   return TaskService.complete({ taskId });
 });
 
-createMutator(defs.TASK_COMPLETE_BY_TYPE, ({ type, loanId, newStatus }) => {
+taskCompleteByType.setHandler(({ type, loanId, newStatus }) => {
   SecurityService.tasks.isAllowedToUpdate();
   return TaskService.completeByType({ type, loanId, newStatus });
 });
 
-createMutator(defs.TASK_CHANGE_STATUS, ({ taskId, newStatus }) => {
+taskChangeStatus.setHandler(({ taskId, newStatus }) => {
   SecurityService.tasks.isAllowedToUpdate(taskId);
   return TaskService.changeStatus({ taskId, newStatus });
 });
 
-createMutator(defs.TASK_CHANGE_USER, ({ taskId, newUser }) => {
+taskChangeUser.setHandler(({ taskId, newUser }) => {
   SecurityService.tasks.isAllowedToUpdate(taskId);
   return TaskService.changeUser({ taskId, newUser });
 });

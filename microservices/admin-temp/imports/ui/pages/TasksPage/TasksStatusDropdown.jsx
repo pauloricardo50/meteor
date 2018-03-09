@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import { TASK_STATUS } from 'core/api/tasks/tasksConstants';
 import { T } from 'core/components/Translation/';
 import DropdownMenu from 'core/components/DropdownMenu/';
-import { callMutation, mutations } from 'core/api';
+import { taskChangeStatus } from 'core/api/methods';
 
 const changeStatus = (status, taskId) => {
-  callMutation(mutations.TASK_CHANGE_STATUS, {
+  taskChangeStatus.run({
     taskId,
     newStatus: status,
   });

@@ -1,15 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
-import { SecurityService, createMutator } from '../..';
-import * as defs from '../mutationDefinitions';
+import { SecurityService } from '../..';
+import { doesUserExist, sendVerificationLink } from '../methodDefinitions';
 
-createMutator(
-  defs.DOES_USER_EXIST,
-  ({ email }) => Accounts.findUserByEmail(email) != null,
-);
+doesUserExist.setHandler(({ email }) => Accounts.findUserByEmail(email) != null);
 
-createMutator(defs.SEND_VERIFICATION_LINK, ({ userId }) => {
+sendVerificationLink.setHandler(({ userId }) => {
   if (userId) {
     SecurityService.checkCurrentUserIsAdmin();
   } else {

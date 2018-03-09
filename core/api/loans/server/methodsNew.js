@@ -1,11 +1,20 @@
 import { Meteor } from 'meteor/meteor';
 
 import SecurityService from '../../security';
-import { createMutator } from '../../mutations';
 import LoanService from '../LoanService';
-import * as defs from '../mutationDefinitions';
+import {
+  loanInsert,
+  loanUpdate,
+  loanDelete,
+  incrementLoanStep,
+  requestLoanVerification,
+  startAuction,
+  endAuction,
+  cancelAuction,
+  confirmClosing,
+} from '../methodDefinitions';
 
-createMutator(defs.LOAN_INSERT, ({ object, userId }) => {
+loanInsert.setHandler((context, { object, userId }) => {
   const userIdIsDefined = userId !== undefined;
   if (userIdIsDefined) {
     SecurityService.checkCurrentUserIsAdmin();
@@ -19,42 +28,42 @@ createMutator(defs.LOAN_INSERT, ({ object, userId }) => {
   });
 });
 
-createMutator(defs.LOAN_UPDATE, ({ loanId, object }) => {
+loanUpdate.setHandler(({ loanId, object }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   return LoanService.update({ loanId, object });
 });
 
-createMutator(defs.LOAN_DELETE, ({ loanId }) => {
+loanDelete.setHandler(({ loanId }) => {
   SecurityService.loans.isAllowedToDelete(loanId);
   return LoanService.delete({ loanId });
 });
 
-createMutator(defs.INCREMENT_LOAN_STEP, ({ loanId }) => {
+incrementLoanStep.setHandler(({ loanId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   return LoanService.incrementStep({ loanId });
 });
 
-createMutator(defs.REQUEST_LOAN_VERIFICATION, ({ loanId }) => {
+requestLoanVerification.setHandler(({ loanId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   return LoanService.askVerification({ loanId });
 });
 
-createMutator(defs.START_AUCTION, ({ loanId }) => {
+startAuction.setHandler(({ loanId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   return LoanService.startAuction({ loanId });
 });
 
-createMutator(defs.END_AUCTION, ({ loanId }) => {
+endAuction.setHandler(({ loanId }) => {
   SecurityService.checkCurrentUserIsAdmin();
   return LoanService.startAuction({ loanId });
 });
 
-createMutator(defs.CANCEL_AUCTION, ({ loanId }) => {
+cancelAuction.setHandler(({ loanId }) => {
   SecurityService.checkCurrentUserIsAdmin();
   return LoanService.startAuction({ loanId });
 });
 
-createMutator(defs.CONFIRM_CLOSING, ({ loanId, object }) => {
+confirmClosing.setHandler(({ loanId, object }) => {
   SecurityService.checkCurrentUserIsAdmin();
   return LoanService.confirmClosing({ loanId, object });
 });

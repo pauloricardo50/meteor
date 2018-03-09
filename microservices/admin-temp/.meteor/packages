@@ -54,6 +54,7 @@ aldeed:collection2-core
 edgee:slingshot
 vsivsi:job-collection
 
+
 # UI tricks
 kadira:dochead                  # Set custom page titles easily
 themeteorchef:bert
@@ -73,3 +74,4 @@ okgrow:analytics@=3.0.1
 softwarerero:accounts-t9n
 cultofcoders:grapher
 cultofcoders:grapher-react
+cultofcoders:mutations

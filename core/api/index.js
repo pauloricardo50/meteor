@@ -11,7 +11,7 @@ export { default as Tasks } from './tasks';
 
 export { default as SecurityService } from './security';
 export { default as EventService } from './events';
-export * from './mutations';
+export * from './methods';
 
 // Do this for autocompletion...
 export const constants = _constants;
