@@ -76,6 +76,10 @@ const TasksSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  userId: {
+    type: String,
+    optional: true,
+  },
 });
 
 Tasks.attachSchema(TasksSchema);

@@ -1,4 +1,4 @@
-import query from 'core/api/users/queries/adminUserView';
+import query from 'core/api/users/queries/adminUser';
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
 import SingleUserPage from './SingleUserPage';
 

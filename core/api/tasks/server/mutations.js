@@ -2,9 +2,9 @@ import { SecurityService, createMutator } from '../..';
 import TaskService from '../TaskService';
 import * as defs from '../mutationDefinitions';
 
-createMutator(defs.TASK_INSERT, ({ type, loanId }) => {
+createMutator(defs.TASK_INSERT, ({ type }) => {
   SecurityService.tasks.isAllowedToInsert();
-  return TaskService.insert({ type, loanId });
+  return TaskService.insert({ type });
 });
 
 createMutator(defs.TASK_UPDATE, ({ taskId, task }) => {
@@ -27,7 +27,12 @@ createMutator(defs.TASK_CHANGE_STATUS, ({ taskId, newStatus }) => {
   return TaskService.changeStatus({ taskId, newStatus });
 });
 
-createMutator(defs.TASK_CHANGE_USER, ({ taskId, newUser }) => {
+createMutator(defs.TASK_CHANGE_ASSIGNED_TO, ({ taskId, newAssignee }) => {
   SecurityService.tasks.isAllowedToUpdate(taskId);
-  return TaskService.changeUser({ taskId, newUser });
+  return TaskService.changeAssignedTo({ taskId, newAssignee });
+});
+
+createMutator(defs.TASK_GET_RELATED_TO, ({ task }) => {
+  SecurityService.tasks.isAllowedToUpdate(task._id);
+  return TaskService.getRelatedTo({ task });
 });

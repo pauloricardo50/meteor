@@ -1,4 +1,4 @@
-import query from 'core/api/borrowers/queries/borrowersList';
+import query from 'core/api/borrowers/queries/borrowers';
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
 import BorrowersPage from './BorrowersPage';
 
