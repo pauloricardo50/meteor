@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TasksTable from '../../TasksPage/TasksTable';
+import TasksTable from '../../components/TasksTable/TasksTable';
 
 export const TasksTab = (props) => {
   const { loan, isLoading, error } = props;

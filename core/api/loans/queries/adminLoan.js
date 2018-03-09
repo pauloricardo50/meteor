@@ -93,6 +93,7 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
   },
   tasks: {
     status: 1,
+    type: 1,
     createdAt: 1,
     updatedAt: 1,
     dueAt: 1,

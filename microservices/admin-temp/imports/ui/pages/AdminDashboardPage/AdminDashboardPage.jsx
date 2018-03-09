@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import MetricsTriple from 'core/components/MetricsTriple';
-import ActionsTable from '/imports/ui/components/ActionsTable';
+import { T } from 'core/components/Translation/';
+import TasksTableWithData from '../../components/TasksTable/TasksTableWithData';
 
 const getUserMetrics = (props) => {
   const d1 = new Date();
@@ -38,11 +39,13 @@ const AdminDashboardPage = (props) => {
 
       <MetricsTriple metrics={getUserMetrics(props)} percent={false} />
 
-      <ActionsTable
-        loans={props.loans}
-        recentOffers={props.offers.filter(offer => offer.auctionEndTime >= now)}
-        history={props.history}
-        adminActions={props.adminActions}
+      <h2 className="fixed-size text-center">
+        <T id="AdminDashboardPage.tasks" />
+      </h2>
+      <TasksTableWithData
+        showAssignee
+        dashboardTasks
+        assignedTo={Meteor.userId()}
       />
     </section>
   );

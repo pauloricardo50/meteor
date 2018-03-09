@@ -1,11 +1,11 @@
+import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Roles } from 'meteor/alanning:roles';
 import moment from 'moment';
 import Table from 'core/components/Table';
+import { T } from 'core/components/Translation/';
 import TasksStatusDropdown from './TasksStatusDropdown';
 import TasksUserWithData from './TasksUsersWithData';
-import { T } from 'core/components/Translation/';
 
 const styles = {
   dropdownButtons: { display: 'inline', width: '50%' },
@@ -31,21 +31,13 @@ export default class TasksTable extends Component {
   getColumnOptions = ({ showAssignee }) => {
     const columnOptions = [
       { id: '#', style: { width: 32, textAlign: 'left' } },
-      {
-        id: <T id="TasksTable.status" />,
-      },
-      {
-        id: <T id="TasksTable.createdAt" />,
-      },
-      {
-        id: <T id="TasksTable.updatedAt" />,
-      },
-      {
-        id: <T id="TasksTable.dueAt" />,
-      },
-      {
-        id: <T id="TasksTable.completedAt" />,
-      },
+      { id: <T id="TasksTable.type" /> },
+      { id: <T id="TasksTable.status" /> },
+      { id: <T id="TasksTable.createdAt" /> },
+      { id: <T id="TasksTable.updatedAt" /> },
+      { id: <T id="TasksTable.dueAt" /> },
+      { id: <T id="TasksTable.completedAt" /> },
+      { id: <T id="TasksTable.relatedTo" /> },
     ];
     if (showAssignee) {
       columnOptions.push({
@@ -61,11 +53,15 @@ export default class TasksTable extends Component {
   getColumns = ({ props, index, task }) => {
     const columns = [
       index + 1,
+      <T id={`TasksStatusDropdown.${task.type}`} />,
       <T id={`TasksStatusDropdown.${task.status}`} />,
       moment(task.createdAt).format('D MMM YY à HH:mm:ss'),
       moment(task.updatedAt).format('D MMM YY à HH:mm:ss'),
       moment(task.dueAt).format('D MMM YY à HH:mm:ss'),
       moment(task.completedAt).format('D MMM YY à HH:mm:ss'),
+      (task.user && (task.user.username || task.user.emails[0].address.toString()))
+      || '',
+      // TODO: also check& add other related docs
     ];
     if (props.showAssignee) {
       columns.push((task.assignedUser &&
@@ -73,6 +69,7 @@ export default class TasksTable extends Component {
             task.assignedUser.emails[0].address.toString())) ||
           '');
     }
+
     columns.push(<div>
       <TasksStatusDropdown
         {...props}
@@ -83,8 +80,7 @@ export default class TasksTable extends Component {
       />
       <TasksUserWithData
         {...props}
-        taskId={task._id}
-        taskUser={task.user}
+        task={task}
         styles={styles.dropdownButtons}
       />
     </div>);
@@ -124,4 +120,5 @@ export default class TasksTable extends Component {
 
 TasksTable.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };

@@ -9,6 +9,7 @@ import { getLoanValue } from 'core/utils/loanFunctions';
 import { IntlNumber } from 'core/components/Translation';
 import StepStatus from './StepStatus';
 import FileVerificationNotification from './FileVerificationNotification';
+import TasksTableWithData from './TasksTableWithData';
 
 const styles = {
   recapDiv: {
@@ -73,6 +74,13 @@ export default class OverviewTab extends React.Component {
         </div>
 
         <hr />
+        <br />
+        
+        <h2 className="fixed-size text-center">Tâches</h2>
+        <TasksTableWithData showAssignee loanId={loan._id} />
+
+        <br />
+        <br />
 
         <div className="text-center">
           <Button
