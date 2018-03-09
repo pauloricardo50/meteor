@@ -80,14 +80,20 @@ class TaskService {
 
   update = ({ taskId, task }) => Tasks.update(taskId, { $set: task });
 
-  complete = ({ taskId }) =>
-    this.update({
+  complete = ({ taskId }) => {
+    const task = Tasks.findOne(taskId);
+    if (!validateTask(task)) {
+      throw new Meteor.Error('incomplete-task');
+    }
+
+    return this.update({
       taskId,
       task: {
         status: TASK_STATUS.COMPLETED,
         completedAt: new Date(),
       },
     });
+  };
 
   completeByType = ({ type, loanId, newStatus }) => {
     const taskToComplete = Tasks.findOne({

@@ -5,6 +5,7 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
   $filter({ filters, params }) {
     filters._id = params._id;
   },
+  userId: 1,
   name: 1,
   logic: 1,
   general: 1,

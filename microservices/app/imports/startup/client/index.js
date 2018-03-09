@@ -9,6 +9,8 @@ import '../accounts-config';
 import './css';
 import AppRouter from './AppRouter';
 
+import 'react-dates/initialize'; // Fix issue #750
+
 /**
  * start - sets the app up
  *

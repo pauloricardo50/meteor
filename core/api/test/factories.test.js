@@ -25,7 +25,6 @@ describe('Factories', () => {
     'comparator',
     'property',
     'comparatorProperty',
-    'adminAction',
   ];
 
   factories.forEach((fact) => {
