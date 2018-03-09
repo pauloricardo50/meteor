@@ -1084,10 +1084,7 @@
   "TasksTable.updatedAt": "Modifié le",
   "TasksTabs.allTasks": "Toutes les tâches",
   "TasksTabs.myTasks": "Mes tâches",
-<<<<<<< HEAD
-=======
   "TasksTabs.unassignedTasks": "Tâches non assignées",
->>>>>>> origin/staging
   "tooltip.bonus":
     "Tout revenu variable supplémentaire à votre salaire de base, lié à vos performances",
   "tooltip.borrowers":
