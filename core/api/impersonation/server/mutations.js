@@ -1,8 +1,7 @@
-import { Meteor } from 'meteor/meteor';
 import { createMutator } from 'core/api';
-import ImpersonateService from './ImpersonateService';
 import { IMPERSONATE_USER } from '../defs';
+import ImpersonateService from './ImpersonateService';
 
-createMutator(IMPERSONATE_USER, function({ authToken, userId }) {
-  ImpersonateService.impersonate(this, authToken, userId);
+createMutator(IMPERSONATE_USER, function impersonation({ authToken, userId }) {
+  return ImpersonateService.impersonate(this, authToken, userId);
 });

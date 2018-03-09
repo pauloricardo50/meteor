@@ -1,15 +1,20 @@
+import { Meteor } from 'meteor/meteor';
+import { Session } from 'meteor/session';
+import { Bert } from 'meteor/themeteorchef:bert';
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Meteor } from 'meteor/meteor';
+import { injectIntl } from 'react-intl';
+
+import { callMutation } from 'core/api';
 import { IMPERSONATE_USER } from 'core/api/impersonation/defs';
 import { IMPERSONATE_SESSION_KEY } from 'core/api/impersonation/impersonation';
-import { callMutation } from 'core/api';
-import { Bert } from 'meteor/themeteorchef:bert';
-import { injectIntl } from 'react-intl';
 
 class ImpersonatePage extends Component {
   static propTypes = {
-    prop: PropTypes,
+    intl: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
   };
 
   componentDidMount = () => {

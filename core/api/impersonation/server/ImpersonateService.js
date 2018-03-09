@@ -3,12 +3,11 @@ import { Accounts } from 'meteor/accounts-base';
 import { createMutator } from 'core/api';
 import Security from 'core/api/security';
 import Users from 'core/api/users';
-import { ROLES } from 'core/api/users/userConstants';
 
 export default class ImpersonateService {
   /**
    * Impersonates the user
-   * @param {*} context The context of a given meteor method or interface that has setUserId
+   * @param {*} context The context of a given meteor method
    * @param {*} authToken The token received from client
    * @param {*} userIdToImpersonate
    */
@@ -29,7 +28,7 @@ export default class ImpersonateService {
   }
 
   static _checkRolesForImpersonation(userId) {
-    if (!Security.hasRole(userId, [ROLES.ADMIN, ROLES.DEV])) {
+    if (!Security.isUserAdmin(userId)) {
       this._throwNotAuthorized();
     }
   }
@@ -39,6 +38,7 @@ export default class ImpersonateService {
    * @returns {object|null}
    */
   static _findUserByToken(authToken) {
+    // eslint-disable-next-line
     const hashedToken = Accounts._hashLoginToken(authToken);
 
     return Users.findOne(
@@ -46,7 +46,8 @@ export default class ImpersonateService {
         'services.resume.loginTokens.hashedToken': hashedToken,
       },
       {
-        fields: { _id: 1 }, // We just need to check the validity, no need for other data
+        // We just need to check the validity, no need for other data
+        fields: { _id: 1 },
       },
     );
   }

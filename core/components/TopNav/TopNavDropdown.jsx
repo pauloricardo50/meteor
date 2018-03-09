@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
-import { Sesssion } from 'meteor/session';
+import { Session } from 'meteor/session';
 
 import { IMPERSONATE_SESSION_KEY } from 'core/api/impersonation/impersonation';
 import track from '../../utils/analytics';
@@ -53,6 +53,7 @@ const getMenuItems = (currentUser, history) => {
       onClick: () => {
         track('TopNavDropdown - logged out', {});
         Meteor.logout(() => {
+          // eslint-disable-next-line
           Session.clear(IMPERSONATE_SESSION_KEY);
 
           return window.location.replace(
