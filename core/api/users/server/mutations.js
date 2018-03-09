@@ -4,7 +4,7 @@ import { Accounts } from 'meteor/accounts-base';
 import UserService from 'core/api/users/UserService';
 // import TaskService from 'core/api/tasks/TaskService';
 import { Tasks, callMutation, mutations } from 'core/api';
-import { TASK_STATUS, TASK_TYPE } from 'core/api/tasks/tasksConstants';
+import { TASK_STATUS, TASK_TYPE } from 'core/api/tasks/taskConstants';
 import { SecurityService, createMutator } from '../..';
 import * as defs from '../mutationDefinitions';
 

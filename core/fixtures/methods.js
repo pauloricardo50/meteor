@@ -11,13 +11,14 @@ import {
 } from 'core/api';
 import UserService from 'core/api/users/UserService';
 import TaskService from 'core/api/tasks/TaskService';
-import { TASK_TYPE } from 'core/api/tasks/tasksConstants';
+import { TASK_TYPE } from 'core/api/tasks/taskConstants';
 import { USER_COUNT, ADMIN_COUNT, MAX_LOANS_PER_USER } from './config';
 import createFakeLoan from './loans';
 import createFakeTask from './tasks';
 import createFakeUsers from './users';
 import createFakeOffer from './offers';
 
+const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
 const generateNumberOfLoans = max => Math.floor(Math.random() * max + 1);
 
 const getAdmins = () => {
@@ -31,7 +32,7 @@ const getAdmins = () => {
 
 Meteor.methods({
   generateTestData() {
-    if (SecurityService.currentUserHasRole('dev') && !Meteor.isProduction) {
+    if (SecurityService.currentUserHasRole('dev') && isAuthorizedToRun()) {
       const admins = getAdmins();
       const newUsers = createFakeUsers(USER_COUNT, 'user');
       newUsers.map((userId) => {
@@ -50,7 +51,7 @@ Meteor.methods({
 
   purgeDatabase(currentUserId) {
     check(currentUserId, String);
-    if (SecurityService.currentUserHasRole('dev') && !Meteor.isProduction) {
+    if (SecurityService.currentUserHasRole('dev') && isAuthorizedToRun()) {
       Borrowers.remove({});
       Loans.remove({});
       Offers.remove({});
