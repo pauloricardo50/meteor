@@ -4,7 +4,7 @@ import unassignedTasksQuery from '../tasks/queries/unassignedTasks';
 import borrowerAssignedToQuery from '../borrowers/queries/borrowerAssignedTo';
 import loanAssignedToQuery from '../loans/queries/loanAssignedTo';
 import propertyAssignedToQuery from '../properties/queries/propertyAssignedTo';
-import { TASK_STATUS, TASK_TYPE } from './tasksConstants';
+import { TASK_STATUS, TASK_TYPE } from './taskConstants';
 
 class TaskService {
   insert = ({

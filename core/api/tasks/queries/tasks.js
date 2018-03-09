@@ -1,5 +1,5 @@
 import { Tasks } from '../../';
-import { TASK_QUERIES } from '../tasksConstants';
+import { TASK_QUERIES } from '../taskConstants';
 
 export default Tasks.createQuery(TASK_QUERIES.TASKS, {
   $filter({ filters, options, params }) {

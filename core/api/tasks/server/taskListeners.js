@@ -2,7 +2,7 @@ import { USER_EVENTS } from 'core/api/users/userConstants';
 import EventService from '../../events';
 import { mutations } from '../../mutations';
 import TaskService from '../TaskService';
-import { TASK_TYPE } from '../tasksConstants';
+import { TASK_TYPE } from '../taskConstants';
 
 EventService.addMutationListener(mutations.LOAN_DELETE, (params) => {
   // TODO: remove parent loan for these tasks

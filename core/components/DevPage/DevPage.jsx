@@ -132,7 +132,7 @@ export default class DevPage extends Component {
     const { twoBorrowers } = this.state;
     const { currentUser } = this.props;
 
-    if (!Meteor.isProduction) {
+    if (!Meteor.isProduction || Meteor.isStaging) {
       return (
         <div>
           <input
@@ -142,24 +142,39 @@ export default class DevPage extends Component {
             onChange={this.handleChange}
           />
           2 borrowers<br />
-          <button onClick={() => addStep1Loan(twoBorrowers)}>step 1 Loan</button>
-          <button onClick={() => addStep2Loan(twoBorrowers)}>step 2 Loan</button>
-          <button onClick={() => addStep3Loan(twoBorrowers)}>step 3 Loan</button>
+          <button onClick={() => addStep1Loan(twoBorrowers)}>
+            step 1 Loan
+          </button>
+          <button onClick={() => addStep2Loan(twoBorrowers)}>
+            step 2 Loan
+          </button>
+          <button onClick={() => addStep3Loan(twoBorrowers)}>
+            step 3 Loan
+          </button>
           <button onClick={() => addStep3Loan(twoBorrowers, false)}>
             step 3 Loan, few files
           </button>
-          <button onClick={() => Meteor.call('generateTestData')}>Generate test data</button>
-          <button onClick={() => Meteor.call('purgeDatabase', currentUser._id)}>Purge</button>
+          <button onClick={() => Meteor.call('generateTestData')}>
+            Generate test data
+          </button>
+          <button onClick={() => Meteor.call('purgeDatabase', currentUser._id)}>
+            Purge
+          </button>
           <br /> <br />
           <p>Insert task related to a random borrower</p>
-          <button onClick={() => Meteor.call('insertBorrowerRelatedTask')}>Borrower Task</button>
+          <button onClick={() => Meteor.call('insertBorrowerRelatedTask')}>
+            Borrower Task
+          </button>
           <br />
           <p>Insert task related to a random loan</p>
-          <button onClick={() => Meteor.call('insertLoanRelatedTask')}>Loan Task</button>
+          <button onClick={() => Meteor.call('insertLoanRelatedTask')}>
+            Loan Task
+          </button>
           <br />
           <p>Insert task related to a random property</p>
-          <button onClick={() => Meteor.call('insertPropertyRelatedTask')}>Property Task</button>
-
+          <button onClick={() => Meteor.call('insertPropertyRelatedTask')}>
+            Property Task
+          </button>
         </div>
       );
     }
@@ -174,4 +189,3 @@ DevPage.propTypes = {
 DevPage.defaultProps = {
   currentUser: {},
 };
-

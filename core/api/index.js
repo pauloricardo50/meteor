@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import * as _constants from './constants';
 
 export { default as Loans } from './loans';
@@ -15,3 +16,5 @@ export * from './mutations';
 
 // Do this for autocompletion...
 export const constants = _constants;
+
+Meteor.isStaging = Meteor.settings.public.environment === 'staging';
