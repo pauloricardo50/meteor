@@ -1,7 +1,7 @@
-import { Methods } from '../methods';
+import { Method } from '../methods';
 
-import EventService from '../events';
+import EventService from '../../events';
 
-Methods.addAfterExecution(({ context, config, params, result, error }) => {
+Method.addAfterExecution(({ context, config, params, result, error }) => {
   EventService.emitMethod(config, params);
 });

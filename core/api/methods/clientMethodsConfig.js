@@ -1,7 +1,5 @@
-import * as methods from './methods';
+import { Method } from './methods';
 
-console.log('methods:', methods);
-
-Methods.addAfterCall(({ context, config, params, result, error }) => {
+Method.addAfterCall(({ context, config, params, result, error }) => {
   // Do something on the client
 });

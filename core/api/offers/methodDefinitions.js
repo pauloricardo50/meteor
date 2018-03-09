@@ -10,17 +10,17 @@ export const offerInsert = new Method({
   },
 });
 
-export const offerUpdate = {
+export const offerUpdate = new Method({
   name: 'offerUpdate',
   params: {
     offerId: String,
     object: Object,
   },
-};
+});
 
-export const offerDelete = {
+export const offerDelete = new Method({
   name: 'offerDelete',
   params: {
     offerId: String,
   },
-};
+});

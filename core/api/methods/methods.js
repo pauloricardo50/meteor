@@ -1,4 +1,1 @@
-export {
-  Mutations as Methods,
-  Mutation as Method,
-} from 'meteor/cultofcoders:mutations';
+export { Mutation as Method } from 'meteor/cultofcoders:mutations';
