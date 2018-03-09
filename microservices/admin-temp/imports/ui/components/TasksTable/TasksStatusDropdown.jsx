@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { TASK_STATUS } from 'core/api/tasks/tasksConstants';
+import { TASK_STATUS } from 'core/api/tasks/taskConstants';
 import { T } from 'core/components/Translation/';
 import DropdownMenu from 'core/components/DropdownMenu/';
 import { callMutation, mutations } from 'core/api';

@@ -12,25 +12,20 @@ export const SEND_VERIFICATION_LINK = {
   },
 };
 
-export const CREATE_USER = {
-  name: 'USER_INSERT',
+export const ASSIGN_ADMIN_TO_USER = {
+  name: 'ASSIGN_ADMIN_TO_USER',
   params: {
-    user: { type: Object },
-    userId: { type: String, optional: true },
+    userId: { type: String },
+    adminId: { type: String },
   },
 };
 
-export const USER_UPDATE = {
-  name: 'USER_UPDATE',
+export const ASSIGN_ADMIN_TO_NEW_USER_TASK = {
+  name: 'ASSIGN_ADMIN_TO_NEW_USER',
   params: {
     userId: { type: String },
-    object: { type: Object },
-  },
-};
-
-export const USER_REMOVE = {
-  name: 'USER_REMOVE',
-  params: {
-    userId: { type: String },
+    adminId: { type: String },
+    taskId: { type: String },
+    taskType: { type: String },
   },
 };

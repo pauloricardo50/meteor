@@ -19,11 +19,6 @@ const theme = createMuiTheme({
           backgroundColor: '#666',
         },
       },
-      inkbar: {
-        '&:after': {
-          backgroundColor: colors.primary,
-        },
-      },
       input: {
         // This logic shows the placeholder when the label is fixed
         'label + $formControl &': {

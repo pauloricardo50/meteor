@@ -1067,17 +1067,28 @@
   "Table.empty": "Rien à afficher",
   "Table.sort": "Trier",
   "TasksStatusDropdown.ACTIVE": "Actif",
+  "TasksStatusDropdown.ADD_ASSIGNED_TO": "Ajouter assigné à",
+  "TasksStatusDropdown.AUCTION": "Enchères",
   "TasksStatusDropdown.CANCELLED": "Annulé",
   "TasksStatusDropdown.COMPLETED": "Terminé",
+  "TasksStatusDropdown.CUSTOM": "Personnalisé",
+  "TasksStatusDropdown.LENDER_CHOSEN": "Prêteur choisi",
+  "TasksStatusDropdown.VERIFY": "Vérifier",
   "TasksTable.actions": "Actions",
   "TasksTable.asignedTo": "Assigné à",
   "TasksTable.completedAt": "Complété le",
   "TasksTable.createdAt": "Créé le",
   "TasksTable.dueAt": "Échéance",
+  "TasksTable.relatedTo": "Relatif à",
   "TasksTable.status": "Statut",
+  "TasksTable.type": "Type",
   "TasksTable.updatedAt": "Modifié le",
   "TasksTabs.allTasks": "Toutes les tâches",
   "TasksTabs.myTasks": "Mes tâches",
+<<<<<<< HEAD
+=======
+  "TasksTabs.unassignedTasks": "Tâches non assignées",
+>>>>>>> 51a2145593a99e54a0ad5fbd21dbedb239cdce81
   "tooltip.bonus":
     "Tout revenu variable supplémentaire à votre salaire de base, lié à vos performances",
   "tooltip.borrowers":

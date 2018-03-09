@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { TASK_STATUS, TASK_TYPE } from './tasksConstants';
+import { TASK_STATUS, TASK_TYPE } from './taskConstants';
 
 const Tasks = new Mongo.Collection('tasks');
 
@@ -73,6 +73,10 @@ const TasksSchema = new SimpleSchema({
     optional: true,
   },
   borrowerId: {
+    type: String,
+    optional: true,
+  },
+  userId: {
     type: String,
     optional: true,
   },

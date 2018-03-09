@@ -22,7 +22,7 @@ export default class Table extends Component {
       selected: [],
       order: ORDER.ASC,
       orderBy: 0,
-      rowsPerPage: 10,
+      rowsPerPage: 40,
       page: 0,
     };
   }

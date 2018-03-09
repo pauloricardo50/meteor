@@ -6,7 +6,7 @@ echo Deploying e-Potek staging microservices...
 for i in "www" "app" "admin"
   do
     echo "Setting up mup for $i..."
-    ( cd $i && mup setup )
+    ( mup setup --config mup-$i.js )
   done
 
 echo "Setup done, now deploying each app..."

@@ -76,6 +76,13 @@ export default class OverviewTab extends React.Component {
         </div>
 
         <hr />
+        <br />
+
+        <h2 className="fixed-size text-center">Tâches</h2>
+        <LoanTasksTable showAssignee loanId={loan._id} />
+
+        <br />
+        <br />
 
         <div className="text-center">
           <Button
