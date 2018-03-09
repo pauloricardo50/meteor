@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import Security from '../../api/security';
-import Users from '../../api/users';
+import Security from '../../security';
+import Users from '../../users';
 
 export default class ImpersonateService {
   /**
