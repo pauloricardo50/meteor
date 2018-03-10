@@ -12,9 +12,9 @@ import {
 } from '../methodDefinitions';
 import UserService from '../UserService';
 
-doesUserExist.setHandler(({ email }) => Accounts.findUserByEmail(email) != null);
+doesUserExist.setHandler((context, { email }) => Accounts.findUserByEmail(email) != null);
 
-sendVerificationLink.setHandler(({ userId }) => {
+sendVerificationLink.setHandler((context, { userId } = {}) => {
   if (userId) {
     SecurityService.checkCurrentUserIsAdmin();
   } else {
@@ -30,10 +30,10 @@ sendVerificationLink.setHandler(({ userId }) => {
   return Accounts.sendVerificationEmail(id);
 });
 
-assignAdminToUser.setHandler(({ userId, adminId }) =>
+assignAdminToUser.setHandler((context, { userId, adminId }) =>
   UserService.assignAdminToUser({ userId, adminId }));
 
-assignAdminToNewUser.setHandler(({ userId, adminId, taskId, taskType }) => {
+assignAdminToNewUser.setHandler((context, { userId, adminId, taskId, taskType }) => {
   const assignAdminToUserResult = assignAdminToUser.run({
     userId,
     adminId,

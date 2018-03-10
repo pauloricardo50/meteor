@@ -38,7 +38,7 @@ const LoginPage = ({ location: { search }, history: { push } }) => {
         onSignedInHook={() => push(path || '/')}
         onPostSignUpHook={() => {
           push(path || '/');
-          sendVerificationLink.run();
+          sendVerificationLink.run({});
 
           // Create user for analytics
           addUserTracking(Meteor.userId(), {

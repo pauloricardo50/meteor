@@ -8,7 +8,7 @@ import {
   propertyDelete,
 } from '../methodDefinitions';
 
-propertyInsert.setHandler(({ object, userId }) => {
+propertyInsert.setHandler((context, { object, userId }) => {
   const userIdIsDefined = userId !== undefined;
   if (userIdIsDefined) {
     SecurityService.checkCurrentUserIsAdmin();
@@ -22,12 +22,12 @@ propertyInsert.setHandler(({ object, userId }) => {
   });
 });
 
-propertyUpdate.setHandler(({ propertyId, object }) => {
+propertyUpdate.setHandler((context, { propertyId, object }) => {
   SecurityService.properties.isAllowedToUpdate(propertyId);
   return PropertyService.update({ propertyId, object });
 });
 
-propertyDelete.setHandler(({ propertyId }) => {
+propertyDelete.setHandler((context, { propertyId }) => {
   SecurityService.properties.isAllowedToDelete(propertyId);
   return PropertyService.remove({ propertyId });
 });

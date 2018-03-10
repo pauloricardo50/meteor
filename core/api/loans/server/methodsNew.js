@@ -28,42 +28,42 @@ loanInsert.setHandler((context, { object, userId }) => {
   });
 });
 
-loanUpdate.setHandler(({ loanId, object }) => {
+loanUpdate.setHandler((context, { loanId, object }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   return LoanService.update({ loanId, object });
 });
 
-loanDelete.setHandler(({ loanId }) => {
+loanDelete.setHandler((context, { loanId }) => {
   SecurityService.loans.isAllowedToDelete(loanId);
   return LoanService.delete({ loanId });
 });
 
-incrementLoanStep.setHandler(({ loanId }) => {
+incrementLoanStep.setHandler((context, { loanId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   return LoanService.incrementStep({ loanId });
 });
 
-requestLoanVerification.setHandler(({ loanId }) => {
+requestLoanVerification.setHandler((context, { loanId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   return LoanService.askVerification({ loanId });
 });
 
-startAuction.setHandler(({ loanId }) => {
+startAuction.setHandler((context, { loanId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   return LoanService.startAuction({ loanId });
 });
 
-endAuction.setHandler(({ loanId }) => {
+endAuction.setHandler((context, { loanId }) => {
   SecurityService.checkCurrentUserIsAdmin();
   return LoanService.startAuction({ loanId });
 });
 
-cancelAuction.setHandler(({ loanId }) => {
+cancelAuction.setHandler((context, { loanId }) => {
   SecurityService.checkCurrentUserIsAdmin();
   return LoanService.startAuction({ loanId });
 });
 
-confirmClosing.setHandler(({ loanId, object }) => {
+confirmClosing.setHandler((context, { loanId, object }) => {
   SecurityService.checkCurrentUserIsAdmin();
   return LoanService.confirmClosing({ loanId, object });
 });
