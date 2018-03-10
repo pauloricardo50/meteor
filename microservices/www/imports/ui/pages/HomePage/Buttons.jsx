@@ -24,17 +24,6 @@ const styles = {
 
 const Buttons = ({ footer }) => (
   <div className={footer ? 'ctas text-right' : 'ctas'}>
-    {/* <Button
-      raised
-      label={<T id="HomePage.compare" />}
-      link
-      to="/app/compare"
-      style={styles.style}
-      id="compareButton"
-      onClick={() =>
-        track('Funnel - clicked home page CTA', { title: 'compare' })
-      }
-    /> */}
     <Button
       raised
       label={<T id="HomePage.CTA1" />}

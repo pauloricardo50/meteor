@@ -7,30 +7,30 @@ import rateLimit from '../../../utils/rate-limit.js';
 
 import Borrowers from '../borrowers';
 
-export const insertBorrower = new ValidatedMethod({
-  name: 'insertBorrower',
-  mixins: [CallPromiseMixin],
-  validate() {},
-  run({ object, userId }) {
-    return Borrowers.insert({
-      ...object,
-      // Allow null as userId
-      userId: userId === undefined ? Meteor.userId() : userId,
-    });
-  },
-});
+// export const insertBorrower = new ValidatedMethod({
+//   name: 'insertBorrower',
+//   mixins: [CallPromiseMixin],
+//   validate() {},
+//   run({ object, userId }) {
+//     return Borrowers.insert({
+//       ...object,
+//       // Allow null as userId
+//       userId: userId === undefined ? Meteor.userId() : userId,
+//     });
+//   },
+// });
 
 // Lets you set an entire object in the document
-export const updateBorrower = new ValidatedMethod({
-  name: 'updateBorrower',
-  mixins: [CallPromiseMixin],
-  validate({ id }) {
-    check(id, String);
-  },
-  run({ object, id }) {
-    return Borrowers.update(id, { $set: object });
-  },
-});
+// export const updateBorrower = new ValidatedMethod({
+//   name: 'updateBorrower',
+//   mixins: [CallPromiseMixin],
+//   validate({ id }) {
+//     check(id, String);
+//   },
+//   run({ object, id }) {
+//     return Borrowers.update(id, { $set: object });
+//   },
+// });
 
 // Lets you push a value to an array
 export const pushBorrowerValue = new ValidatedMethod({
@@ -56,27 +56,27 @@ export const popBorrowerValue = new ValidatedMethod({
   },
 });
 
-export const deleteBorrower = new ValidatedMethod({
-  name: 'deleteBorrower',
-  mixins: [CallPromiseMixin],
-  validate({ id }) {
-    check(id, String);
-  },
-  run({ id }) {
-    if (Roles.userIsInRole(Meteor.userId(), 'dev')) {
-      return Borrowers.remove(id);
-    }
+// export const deleteBorrower = new ValidatedMethod({
+//   name: 'deleteBorrower',
+//   mixins: [CallPromiseMixin],
+//   validate({ id }) {
+//     check(id, String);
+//   },
+//   run({ id }) {
+//     if (Roles.userIsInRole(Meteor.userId(), 'dev')) {
+//       return Borrowers.remove(id);
+//     }
 
-    return false;
-  },
-});
+//     return false;
+//   },
+// });
 
-rateLimit({
-  methods: [
-    insertBorrower,
-    updateBorrower,
-    pushBorrowerValue,
-    popBorrowerValue,
-    deleteBorrower,
-  ],
-});
+// rateLimit({
+//   methods: [
+//     insertBorrower,
+//     updateBorrower,
+//     pushBorrowerValue,
+//     popBorrowerValue,
+//     deleteBorrower,
+//   ],
+// });

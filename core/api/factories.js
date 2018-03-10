@@ -83,18 +83,3 @@ Factory.define('offer', Offers, {
     interest10: 0.01,
   }),
 });
-
-Factory.define('comparator', Comparators, {
-  customFields: [],
-  customFieldCount: 0,
-  hiddenFields: [],
-  borrowRatio: 0.8,
-});
-
-Factory.define('comparatorProperty', Properties, {
-  name: 'testName',
-  address: 'testAddress',
-  value: 100000,
-  latitude: 10,
-  longitude: 20,
-});

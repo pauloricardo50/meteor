@@ -47,14 +47,6 @@ const AppPage = ({ loans, properties, currentUser }) => (
       />
     ))}
 
-    {/* <AppItem
-      title={<T id="AppPage.comparator" />}
-      mainText={
-        <T id="AppPage.properties" values={{ count: properties.length }} />
-      }
-      href="/compare"
-    /> */}
-
     <AppItem
       title={<T id="AppPage.newLoan" />}
       mainText={<span className="active">+</span>}

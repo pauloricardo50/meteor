@@ -4,9 +4,6 @@ import 'core/fixtures/methods';
 import './borrowers/server/publications';
 import './borrowers/server/methods';
 
-import './comparators/server/publications';
-import './comparators/server/methods';
-
 import './loans/server/publications';
 import './loans/server/methods';
 
