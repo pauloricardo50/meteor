@@ -19,3 +19,25 @@ export const deleteFileFromDoc = new Method({
     docId: String,
   },
 });
+
+export const setFileStatus = new Method({
+  name: 'setFileStatus',
+  params: {
+    collection: String,
+    docId: String,
+    fileId: String,
+    fileKey: String,
+    newStatus: String,
+  },
+});
+
+export const setFileError = new Method({
+  name: 'setFileStatus',
+  params: {
+    collection: String,
+    docId: String,
+    fileId: String,
+    fileKey: String,
+    error: String,
+  },
+});

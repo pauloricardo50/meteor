@@ -6,3 +6,4 @@ export * from '../offers/methodDefinitions';
 export * from '../properties/methodDefinitions';
 export * from '../tasks/methodDefinitions';
 export * from '../impersonation/defs';
+export * from '../files/methodDefinitions';

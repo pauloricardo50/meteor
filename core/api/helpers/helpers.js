@@ -1,6 +1,6 @@
 import { Loans, Borrowers, Offers, Properties, Tasks, Users } from '..';
 
-const getDocFromCollection = (collectionName, docId) => {
+export const getDocFromCollection = (collectionName, docId) => {
   let collection;
   switch (collectionName) {
   case 'loans':
@@ -27,5 +27,3 @@ const getDocFromCollection = (collectionName, docId) => {
 
   return collection.findOne(docId);
 };
-
-export default getDocFromCollection;

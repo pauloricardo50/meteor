@@ -2,45 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
-import cleanMethod from 'core/api/cleanMethods';
 
+import { FileVerificatorContainer } from './FileVerificatorContainer';
 import ItemVerificator from './ItemVerificator';
 
-export default class FileVerificator extends Component {
+class FileVerificator extends Component {
   setStatus = (fileKey, newStatus) => {
-    const { currentValue, id, docId } = this.props;
-    const file = currentValue.find(f => f.key === fileKey);
-
-    cleanMethod(this.updateFunc(), {
-      object: {
-        [`files.${id}`]: [
-          ...currentValue.filter(f => f.key !== fileKey),
-          { ...file, status: newStatus },
-        ],
-      },
-      id: docId,
-    });
+    const { setFileStatus } = this.props;
+    setFileStatus(fileKey, newStatus);
   };
 
   saveError = (fileKey, error) => {
-    const { currentValue, id, docId } = this.props;
-    const file = currentValue.find(f => f.key === fileKey);
-
-    cleanMethod(this.updateFunc(), {
-      object: {
-        [`files.${id}`]: [
-          ...currentValue.filter(f => f.key !== fileKey),
-          { ...file, error },
-        ],
-      },
-      id: docId,
-    });
-  };
-
-  updateFunc = () => {
-    if (this.props.isBorrower) return 'borrowerUpdate';
-    if (this.props.isProperty) return 'updateProperty';
-    return 'updateLoan';
+    const { setFileError } = this.props;
+    return setFileError(fileKey, error);
   };
 
   render() {
@@ -76,17 +50,16 @@ export default class FileVerificator extends Component {
 }
 
 FileVerificator.propTypes = {
-  isBorrower: PropTypes.bool,
-  isProperty: PropTypes.bool,
   currentValue: PropTypes.arrayOf(PropTypes.object),
   closingSteps: PropTypes.arrayOf(PropTypes.object),
   id: PropTypes.string.isRequired,
-  docId: PropTypes.string.isRequired,
+  setFileStatus: PropTypes.func.isRequired,
+  setFileError: PropTypes.func.isRequired,
 };
 
 FileVerificator.defaultProps = {
-  isBorrower: false,
-  isProperty: false,
   currentValue: [],
   closingSteps: [],
 };
+
+export default FileVerificatorContainer(FileVerificator);
