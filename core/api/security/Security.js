@@ -30,6 +30,10 @@ export default class Security {
     return this.hasRole(Meteor.userId(), role);
   }
 
+  static isUserAdmin(userId) {
+    return this.hasRole(userId, ROLES.ADMIN) || this.hasRole(userId, ROLES.DEV);
+  }
+
   static currentUserIsAdmin() {
     return (
       this.hasRole(Meteor.userId(), ROLES.ADMIN) ||

@@ -22,12 +22,14 @@ module.exports = {
     'no-underscore-dangle': [
       'error',
       {
+        allowAfterThis: true,
         // These are all meteor specific exceptions
         allow: [
           '_id',
           '_ensureIndex',
           '_verifyEmailToken',
           '_resetPasswordToken',
+          '_storedLoginToken',
           '_name',
           '_execute',
         ],
@@ -77,5 +79,8 @@ module.exports = {
     // Lots of objects are being passed around in this repo,
     // this rule makes it iconvenient to do that
     'react/forbid-prop-types': 'off',
+
+    // Session makes perfect sense sometimes and we can use it with cookies easily
+    'meteor/no-session': 'off',
   },
 };

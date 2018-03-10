@@ -1175,5 +1175,11 @@
   "VerificationPage.successTitle": "Votre dossier est valide!",
   "VerificationRequested.description":
     "Vérification en cours, vous serez averti par email lorsque c'est fait.",
-  "ZipAutoComplete.empty": "Pas de résultat"
+  "ZipAutoComplete.empty": "Pas de résultat",
+  "Impersonation.impersonateLinkText": "Imiter utilisateur",
+  "Impersonation.impersonationSuccess":
+    "Actuellement usurpant l'identité d'un utilisateur",
+  "Impersonation.impersonateWarning":
+    "Vous personnifiez actuellement un autre utilisateur",
+  "Dummy_Blank": "Dummy_Blank"
 }
