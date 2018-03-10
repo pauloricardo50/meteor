@@ -1,4 +1,4 @@
-// Export all mutation definitions here
+// Export all method definitions here
 export * from '../users/methodDefinitions';
 export * from '../loans/methodDefinitions';
 export * from '../borrowers/methodDefinitions';

@@ -12,7 +12,7 @@ class LoanServiceModel {
       userId,
     });
 
-  update = ({ loanId, object }) => Loans.update(loanId, { $set: object });
+  update = ({ loanId, loan }) => Loans.update(loanId, { $set: loan });
 
   remove = ({ loanId }) => Loans.remove(loanId);
 

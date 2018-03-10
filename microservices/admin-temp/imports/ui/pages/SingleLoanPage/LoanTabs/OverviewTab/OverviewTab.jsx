@@ -7,7 +7,7 @@ import Recap from 'core/components/Recap';
 import renderObject from 'core/utils/renderObject';
 import { getLoanValue } from 'core/utils/loanFunctions';
 import { IntlNumber } from 'core/components/Translation';
-import LoanTasksTable from './LoanTasksTable';
+import AdminNote from '../../../../components/AdminNote';
 import StepStatus from './StepStatus';
 import FileVerificationNotification from './FileVerificationNotification';
 
@@ -43,6 +43,8 @@ export default class OverviewTab extends React.Component {
             format="money"
           />
         </h1>
+
+        <AdminNote loanId={loan._id} adminNoteText={loan.adminNote} />
 
         <StepStatus {...this.props} serverTime={this.state.serverTime} />
 

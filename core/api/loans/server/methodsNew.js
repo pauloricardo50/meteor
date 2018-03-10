@@ -12,6 +12,7 @@ import {
   endAuction,
   cancelAuction,
   confirmClosing,
+  loanChangeAdminNote,
 } from '../methodDefinitions';
 
 loanInsert.setHandler((context, { object, userId }) => {
@@ -28,9 +29,9 @@ loanInsert.setHandler((context, { object, userId }) => {
   });
 });
 
-loanUpdate.setHandler((context, { loanId, object }) => {
+loanUpdate.setHandler((context, { loanId, loan }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
-  return LoanService.update({ loanId, object });
+  return LoanService.update({ loanId, loan });
 });
 
 loanDelete.setHandler((context, { loanId }) => {
@@ -66,4 +67,9 @@ cancelAuction.setHandler((context, { loanId }) => {
 confirmClosing.setHandler((context, { loanId, object }) => {
   SecurityService.checkCurrentUserIsAdmin();
   return LoanService.confirmClosing({ loanId, object });
+});
+
+loanChangeAdminNote.setHandler((context, { loanId, adminNote }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return LoanService.update({ loanId, loan: { adminNote } });
 });

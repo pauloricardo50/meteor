@@ -66,3 +66,11 @@ export const confirmClosing = new Method({
     object: Object,
   },
 });
+
+export const loanChangeAdminNote = new Method({
+  name: 'loanChangeAdminNote',
+  params: {
+    loanId: String,
+    adminNote: String,
+  },
+});
