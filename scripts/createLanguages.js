@@ -45,7 +45,6 @@ const config = {
         'Uploader',
         'FileAdder',
         'ArrayInput',
-        'adminActions',
         'collections',
       ],
     },

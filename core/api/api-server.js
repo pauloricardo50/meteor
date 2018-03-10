@@ -1,9 +1,6 @@
 import 'core/fixtures/methods';
 // generateTestData
 
-import './adminActions/server/publications';
-import './adminActions/server/methods';
-
 import './borrowers/server/publications';
 import './borrowers/server/methods';
 

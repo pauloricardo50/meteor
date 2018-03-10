@@ -7,11 +7,6 @@ import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
 import rateLimit from '../../../utils/rate-limit.js';
 import { getAuctionEndTime } from '../../../utils/loanFunctions';
 
-import {
-  insertAdminAction,
-  completeActionByType,
-  removeParentLoan,
-} from 'core/api/adminActions/server/methods';
 
 import Loans from '../loans';
 import {
