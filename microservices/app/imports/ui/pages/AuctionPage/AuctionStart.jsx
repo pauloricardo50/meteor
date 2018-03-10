@@ -1,16 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import cleanMethod from 'core/api/cleanMethods';
 import CountUp from 'react-countup';
 import { injectIntl } from 'react-intl';
 
 import Button from 'core/components/Button';
 import { getLenderCount } from 'core/utils/loanFunctions';
-import { callMutation, mutations } from 'core/api';
+import { startAuction } from 'core/api/methods';
 
 import { T } from 'core/components/Translation';
 import track from 'core/utils/analytics';
-import { isDemo } from 'core/utils/browserFunctions';
 import withLoan from 'core/containers/withLoan';
 import ConfirmButton from '../../components/ConfirmButton';
 import AuctionForm from './AuctionForm';
@@ -85,11 +83,9 @@ const AuctionStart = (props) => {
             label={<T id="AuctionStart.CTA" />}
             primary
             handleClick={() =>
-              callMutation(mutations.START_AUCTION, {
-                loanId: props.loan._id,
-              }).then((res) => {
-                track('started auction', {});
-              })
+              startAuction
+                .run({ loanId: props.loan._id })
+                .then(res => track('started auction', {}))
             }
             disabled={
               !(r.general.auctionMostImportant && r.general.wantedClosingDate)

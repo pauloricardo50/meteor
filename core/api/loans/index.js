@@ -1,4 +1,2 @@
-import * as mutations from './mutationDefinitions';
-
+export * from './methodDefinitions';
 export { default } from './loans';
-export const loanMutations = mutations;

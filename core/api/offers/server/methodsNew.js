@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 
-import { SecurityService, createMutator } from '../..';
+import { SecurityService } from '../..';
 import OfferService from '../OfferService';
-import * as defs from '../mutationDefinitions';
+import { offerInsert, offerUpdate, offerDelete } from '../methodDefinitions';
 
-createMutator(defs.OFFER_INSERT, ({ offer, userId }) => {
+offerInsert.setHandler((context, { offer, userId }) => {
   const userIdIsDefined = userId !== undefined;
   if (userIdIsDefined) {
     SecurityService.checkCurrentUserIsAdmin();
@@ -18,20 +18,12 @@ createMutator(defs.OFFER_INSERT, ({ offer, userId }) => {
   });
 });
 
-createMutator(defs.OFFER_INSERT_ADMIN, ({ offer, loan }) => {
-  SecurityService.checkLoggedIn();
-  if (SecurityService.currentUserIsAdmin()) {
-    return OfferService.insertAdminOffer({ offer, loan });
-  }
-  return null;
-});
-
-createMutator(defs.OFFER_UPDATE, ({ offerId, offer }) => {
+offerUpdate.setHandler((context, { offerId, offer }) => {
   SecurityService.offers.isAllowedToUpdate(offerId);
   return OfferService.update({ offerId, offer });
 });
 
-createMutator(defs.OFFER_DELETE, ({ offerId }) => {
+offerDelete.setHandler((context, { offerId }) => {
   SecurityService.offers.isAllowedToDelete(offerId);
   return OfferService.remove({ offerId });
 });

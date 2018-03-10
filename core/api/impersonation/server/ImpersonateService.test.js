@@ -1,10 +1,11 @@
-import ImpersonateService from './ImpersonateService';
+/* eslint-env mocha */
 import { Accounts } from 'meteor/accounts-base';
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import Users from 'core/api/users';
 import { ROLES } from 'core/api/users/userConstants';
 import { expect } from 'chai';
+import ImpersonateService from './ImpersonateService';
 
 function getDummies() {
   const adminId = Accounts.createUser({
@@ -20,8 +21,8 @@ function getDummies() {
   return { adminId, userId };
 }
 
-describe('ImpersonateService', function() {
-  it('Should be able to authenticate a user as an admin', function(done) {
+describe('ImpersonateService', () => {
+  it('Should be able to authenticate a user as an admin', (done) => {
     const { adminId, userId } = getDummies();
 
     const FICTIONAL_TOKEN = Random.id();
@@ -54,7 +55,7 @@ describe('ImpersonateService', function() {
     });
   });
 
-  it('Should not allow impersonation of a user that is non-dev or non-admin', function() {
+  it('Should not allow impersonation of a user that is non-dev or non-admin', () => {
     const { adminId, userId } = getDummies();
 
     const FICTIONAL_TOKEN = Random.id();
@@ -71,7 +72,7 @@ describe('ImpersonateService', function() {
       },
     });
 
-    expect(function() {
+    expect(() => {
       ImpersonateService.impersonate(
         {
           setUserId(impersonateId) {},
@@ -86,7 +87,7 @@ describe('ImpersonateService', function() {
     });
   });
 
-  it('Should not allow impersonation with invalid token', function() {
+  it('Should not allow impersonation with invalid token', () => {
     const { adminId, userId } = getDummies();
 
     const FICTIONAL_TOKEN = Random.id();
@@ -103,14 +104,14 @@ describe('ImpersonateService', function() {
       },
     });
 
-    expect(function() {
+    expect(() => {
       ImpersonateService.impersonate(
         {
           setUserId(impersonateId) {
             done('Should not be here!');
           },
         },
-        FICTIONAL_TOKEN + 'HACKER!',
+        `${FICTIONAL_TOKEN}HACKER!`,
         userId,
       );
     }).to.throw(Meteor.Error);

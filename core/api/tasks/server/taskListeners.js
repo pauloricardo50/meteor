@@ -1,33 +1,37 @@
 import { USER_EVENTS } from 'core/api/users/userConstants';
 import EventService from '../../events';
-import { mutations } from '../../mutations';
+import {
+  loanDelete,
+  requestLoanVerification,
+  startAuction,
+  endAuction,
+  cancelAuction,
+  assignAdminToUser,
+} from '../../methods';
 import TaskService from '../TaskService';
 import { TASK_TYPE } from '../taskConstants';
 
-EventService.addMutationListener(mutations.LOAN_DELETE, (params) => {
+EventService.addMethodListener(loanDelete, (params) => {
   // TODO: remove parent loan for these tasks
 });
 
-EventService.addMutationListener(
-  mutations.REQUEST_LOAN_VERIFICATION,
-  (params) => {
-    // TODO: ADMIN_ACTION_TYPE.VERIFY
-  },
-);
+EventService.addMethodListener(requestLoanVerification, (params) => {
+  // TODO: ADMIN_ACTION_TYPE.VERIFY
+});
 
-EventService.addMutationListener(mutations.START_AUCTION, (params) => {
+EventService.addMethodListener(startAuction, (params) => {
   // TODO: ADMIN_ACTION_TYPE.AUCTION
 });
 
-EventService.addMutationListener(mutations.END_AUCTION, (params) => {
+EventService.addMethodListener(endAuction, (params) => {
   // TODO: complete auction task
 });
 
-EventService.addMutationListener(mutations.CANCEL_AUCTION, (params) => {
+EventService.addMethodListener(cancelAuction, (params) => {
   // TODO: remove auction task
 });
 
-EventService.addMutationListener(mutations.ASSIGN_ADMIN_TO_USER, (params) => {
+EventService.addMethodListener(assignAdminToUser, (params) => {
   // TODO: reassign all tasks created by user
   const { adminId, userId } = params;
   TaskService.assignAllTasksToAdmin({ userId, newAssignee: adminId });

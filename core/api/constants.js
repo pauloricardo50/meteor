@@ -1,4 +1,3 @@
-export * from './adminActions/adminActionConstants';
 export * from './borrowers/borrowerConstants';
 export * from './loans/loanConstants';
 export * from './offers/offerConstants';

@@ -1,7 +1,9 @@
-export const IMPERSONATE_USER = {
-  name: 'IMPERSONATE_USER',
+import { Method } from '../methods';
+
+export const impersonateUser = new Method({
+  name: 'impersonateUser',
   params: {
-    authToken: { type: String },
-    userId: { type: String },
+    authToken: String,
+    userId: String,
   },
-};
+});

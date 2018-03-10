@@ -37,18 +37,3 @@ export const TASK_CHANGE_STATUS = {
     newStatus: { type: String },
   },
 };
-
-export const TASK_CHANGE_ASSIGNED_TO = {
-  name: 'TASK_CHANGE_ASSIGNED_TO',
-  params: {
-    taskId: { type: String },
-    newAssignee: { type: String },
-  },
-};
-
-export const TASK_GET_RELATED_TO = {
-  name: 'TASK_GET_RELATED_TO',
-  params: {
-    task: { type: Object },
-  },
-};

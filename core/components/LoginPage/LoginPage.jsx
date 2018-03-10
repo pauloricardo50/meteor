@@ -1,12 +1,13 @@
+import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Meteor } from 'meteor/meteor';
+import queryString from 'query-string';
+
+import { sendVerificationLink } from 'core/api/methods';
 
 import { addUserTracking } from '../../utils/analytics';
 import { T } from '../Translation';
 import Accounts from './Accounts';
-import queryString from 'query-string';
-import { callMutation, mutations } from 'core/api';
 
 const styles = {
   section: {
@@ -37,7 +38,7 @@ const LoginPage = ({ location: { search }, history: { push } }) => {
         onSignedInHook={() => push(path || '/')}
         onPostSignUpHook={() => {
           push(path || '/');
-          callMutation(mutations.SEND_VERIFICATION_LINK);
+          sendVerificationLink.run({});
 
           // Create user for analytics
           addUserTracking(Meteor.userId(), {
