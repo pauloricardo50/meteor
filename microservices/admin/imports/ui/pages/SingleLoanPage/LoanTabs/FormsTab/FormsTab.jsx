@@ -223,7 +223,7 @@ export default class FormsTab extends Component {
   render() {
     const { borrowers, loan } = this.props;
     return (
-      <section>
+      <section className="mask1">
         <Select
           label="Formulaire"
           value={this.state.value}

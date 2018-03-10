@@ -5,8 +5,6 @@ import Button from 'core/components/Button';
 
 import Recap from 'core/components/Recap';
 import renderObject from 'core/utils/renderObject';
-import { getLoanValue } from 'core/utils/loanFunctions';
-import { IntlNumber } from 'core/components/Translation';
 import AdminNote from '../../../../components/AdminNote';
 import StepStatus from './StepStatus';
 import FileVerificationNotification from './FileVerificationNotification';
@@ -29,22 +27,11 @@ export default class OverviewTab extends React.Component {
   }
 
   render() {
-    const { loan, borrowers, dataToPassDown } = this.props;
+    const { loan, borrowers } = this.props;
     const { showObject } = this.state;
 
     return (
-      <div>
-        <h1>
-          {loan.name || 'Demande de Prêt'} - Emprunt de{' '}
-          <IntlNumber
-            value={getLoanValue({
-              loan,
-              property: loan.property,
-            })}
-            format="money"
-          />
-        </h1>
-
+      <div className="mask1">
         <AdminNote loanId={loan._id} adminNoteText={loan.adminNote} />
 
         <StepStatus {...this.props} serverTime={this.state.serverTime} />

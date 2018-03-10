@@ -30,8 +30,6 @@ const UploaderArray = ({ fileArray, doc, disabled, collection }) => (
             key={doc._id + file.id}
             currentValue={doc.files[file.id]}
             docId={doc._id}
-            pushFunc={pushFunc}
-            updateFunc={updateFunc}
             disabled={disabled}
             collection={collection}
           />

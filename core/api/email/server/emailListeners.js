@@ -8,7 +8,7 @@ import {
 } from '../../methods';
 import { Loans } from '../..';
 import { EMAIL_IDS } from '../emailConstants';
-import { sendEmail } from './methods';
+import { sendEmail } from '../methodDefinitions';
 import { getAuctionEndTime } from '../../../utils/loanFunctions';
 
 EventService.addMethodListener(requestLoanVerification, (params) => {

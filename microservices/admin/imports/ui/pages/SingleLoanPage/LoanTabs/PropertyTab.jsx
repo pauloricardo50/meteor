@@ -7,7 +7,7 @@ const PropertyTab = (props) => {
   const { loan, property } = props;
 
   return (
-    <div>
+    <div className="mask1">
       <h1>
         {property.name ||
           property.address ||

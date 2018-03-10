@@ -11,18 +11,18 @@ import {
   borrowerInsert,
   propertyInsert,
   loanInsert,
-  insertAdminOffer,
+  offerInsert,
   loanUpdate,
 } from 'core/api';
 
 const addStep1Loan = (twoBorrowers) => {
   const borrowerIds = [];
   borrowerInsert
-    .run({ object: completeFakeBorrower })
+    .run({ borrower: completeFakeBorrower })
     .then((id1) => {
       borrowerIds.push(id1);
       return twoBorrowers
-        ? borrowerInsert.run({ object: completeFakeBorrower })
+        ? borrowerInsert.run({ borrower: completeFakeBorrower })
         : false;
     })
     .then((id2) => {
@@ -30,13 +30,13 @@ const addStep1Loan = (twoBorrowers) => {
         borrowerIds.push(id2);
       }
 
-      return propertyInsert.run({ object: fakeProperty });
+      return propertyInsert.run({ property: fakeProperty });
     })
     .then((propertyId) => {
       const loan = loanStep1;
       loan.borrowerIds = borrowerIds;
       loan.propertyId = propertyId;
-      loanInsert.run({ object: loan });
+      loanInsert.run({ loan });
     })
     .catch(console.log);
 };
@@ -45,11 +45,11 @@ const addStep2Loan = (twoBorrowers) => {
   const borrowerIds = [];
 
   borrowerInsert
-    .run({ object: completeFakeBorrower })
+    .run({ borrower: completeFakeBorrower })
     .then((id1) => {
       borrowerIds.push(id1);
       return twoBorrowers
-        ? borrowerInsert.run({ object: completeFakeBorrower })
+        ? borrowerInsert.run({ borrower: completeFakeBorrower })
         : false;
     })
     .then((id2) => {
@@ -57,13 +57,13 @@ const addStep2Loan = (twoBorrowers) => {
         borrowerIds.push(id2);
       }
 
-      return propertyInsert.run({ object: fakeProperty });
+      return propertyInsert.run({ property: fakeProperty });
     })
     .then((propertyId) => {
       const loan = loanStep2;
       loan.borrowerIds = borrowerIds;
       loan.propertyId = propertyId;
-      loanInsert.run({ object: loan });
+      loanInsert.run({ loan });
     })
     .catch(console.log);
 };
@@ -73,11 +73,11 @@ const addStep3Loan = (twoBorrowers, completeFiles = true) => {
   const loan = loanStep3(completeFiles);
   let loanId;
   borrowerInsert
-    .run({ object: completeFakeBorrower })
+    .run({ borrower: completeFakeBorrower })
     .then((id1) => {
       borrowerIds.push(id1);
       return twoBorrowers
-        ? borrowerInsert.run({ object: completeFakeBorrower })
+        ? borrowerInsert.run({ borrower: completeFakeBorrower })
         : false;
     })
     .then((id2) => {
@@ -85,20 +85,20 @@ const addStep3Loan = (twoBorrowers, completeFiles = true) => {
         borrowerIds.push(id2);
       }
 
-      return propertyInsert.run({ object: fakeProperty });
+      return propertyInsert.run({ property: fakeProperty });
     })
     .then((propertyId) => {
       loan.borrowerIds = borrowerIds;
       loan.propertyId = propertyId;
     })
-    .then(() => loanInsert.run({ object: loan }))
+    .then(() => loanInsert.run({ loan }))
     .then((id) => {
       loanId = id;
       const object = getRandomOffer(
         { loan: { ...loan, _id: id }, property: fakeProperty },
         true,
       );
-      return insertAdminOffer.run({ object });
+      return offerInsert.run({ offer: object, loanId });
     })
     .then(offerId =>
       loanUpdate.run({

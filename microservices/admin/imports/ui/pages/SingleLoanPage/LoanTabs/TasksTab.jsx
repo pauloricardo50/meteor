@@ -6,12 +6,14 @@ export const TasksTab = (props) => {
   const { loan, isLoading, error } = props;
 
   return (
-    <TasksTable
-      data={loan.tasks}
-      error={error}
-      isLoading={isLoading}
-      showAssignee
-    />
+    <div className="mask1">
+      <TasksTable
+        data={loan.tasks}
+        error={error}
+        isLoading={isLoading}
+        showAssignee
+      />
+    </div>
   );
 };
 
