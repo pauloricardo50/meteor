@@ -6,45 +6,45 @@ import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
 
 import Properties from '../properties';
 
-export const insertProperty = new ValidatedMethod({
-  name: 'insertProperty',
-  mixins: [CallPromiseMixin],
-  validate({ object, userId }) {
-    check(object, Object);
-    if (userId) {
-      check(userId, String);
-    }
-  },
-  run({ object, userId }) {
-    return Properties.insert({
-      ...object,
-      userId: userId === undefined ? Meteor.userId() : userId,
-    });
-  },
-});
+// export const insertProperty = new ValidatedMethod({
+//   name: 'insertProperty',
+//   mixins: [CallPromiseMixin],
+//   validate({ object, userId }) {
+//     check(object, Object);
+//     if (userId) {
+//       check(userId, String);
+//     }
+//   },
+//   run({ object, userId }) {
+//     return Properties.insert({
+//       ...object,
+//       userId: userId === undefined ? Meteor.userId() : userId,
+//     });
+//   },
+// });
 
-export const deleteProperty = new ValidatedMethod({
-  name: 'deleteProperty',
-  mixins: [CallPromiseMixin],
-  validate({ id }) {
-    check(id, String);
-  },
-  run({ id }) {
-    return Properties.remove(id);
-  },
-});
+// export const deleteProperty = new ValidatedMethod({
+//   name: 'deleteProperty',
+//   mixins: [CallPromiseMixin],
+//   validate({ id }) {
+//     check(id, String);
+//   },
+//   run({ id }) {
+//     return Properties.remove(id);
+//   },
+// });
 
-export const updateProperty = new ValidatedMethod({
-  name: 'updateProperty',
-  mixins: [CallPromiseMixin],
-  validate({ id, object }) {
-    check(id, String);
-    check(object, Object);
-  },
-  run({ id, object }) {
-    return Properties.update(id, { $set: object });
-  },
-});
+// export const updateProperty = new ValidatedMethod({
+//   name: 'updateProperty',
+//   mixins: [CallPromiseMixin],
+//   validate({ id, object }) {
+//     check(id, String);
+//     check(object, Object);
+//   },
+//   run({ id, object }) {
+//     return Properties.update(id, { $set: object });
+//   },
+// });
 
 // Lets you push a value to an array
 export const pushPropertyValue = new ValidatedMethod({
@@ -70,14 +70,14 @@ export const popPropertyValue = new ValidatedMethod({
   },
 });
 
-export const setPropertyField = new ValidatedMethod({
-  name: 'setPropertyField',
-  mixins: [CallPromiseMixin],
-  validate({ id, key }) {
-    check(id, String);
-    check(key, String);
-  },
-  run({ id, key, value }) {
-    return Properties.update(id, { $set: { [`fields.${key}`]: value } });
-  },
-});
+// export const setPropertyField = new ValidatedMethod({
+//   name: 'setPropertyField',
+//   mixins: [CallPromiseMixin],
+//   validate({ id, key }) {
+//     check(id, String);
+//     check(key, String);
+//   },
+//   run({ id, key, value }) {
+//     return Properties.update(id, { $set: { [`fields.${key}`]: value } });
+//   },
+// });

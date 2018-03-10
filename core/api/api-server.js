@@ -8,7 +8,6 @@ import './loans/server/publications';
 import './loans/server/methods';
 
 import './offers/server/publications';
-import './offers/server/methods';
 
 import './properties/server/publications';
 import './properties/server/methods';
