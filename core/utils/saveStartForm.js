@@ -1,4 +1,4 @@
-import cleanMethod from 'core/api/cleanMethods';
+import { borrowerInsert, loanInsert, propertyInsert } from '../api';
 
 // The final function that inserts the documents once the form is finished
 const saveStartForm = (f, userId) => {
@@ -64,19 +64,16 @@ const saveStartForm = (f, userId) => {
   };
 
   return (
-    cleanMethod('borrowerInsert', { object: borrowerOne, userId })
+    borrowerInsert
+      .run({ borrower: borrowerOne, userId })
       .then(id1 => loan.borrowerIds.push(id1))
       .then(() =>
-        !!multiple &&
-          cleanMethod('borrowerInsert', {
-            object: borrowerTwo,
-            userId,
-          }))
+        !!multiple && borrowerInsert.run({ borrower: borrowerTwo, userId }))
       .then(id2 => !!id2 && loan.borrowerIds.push(id2))
-      .then(() => cleanMethod('propertyInsert', { object: property, userId }))
+      .then(() => propertyInsert.run({ property, userId }))
       .then((propertyId) => {
         loan.propertyId = propertyId;
-        return cleanMethod('loanInsert', { object: loan, userId });
+        return loanInsert.run({ loan, userId });
       })
       // If no userId is provided, return the loanId
       .then(loanId => userId || loanId)

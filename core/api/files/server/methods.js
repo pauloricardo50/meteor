@@ -2,12 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import AWS from 'aws-sdk';
 import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
+
+import { Loans, Borrowers } from '../..';
 import rateLimit from '../../../utils/rate-limit.js';
 
-import Loans from 'core/api/loans/loans';
-import Borrowers from 'core/api/borrowers/borrowers';
-
-/* eslint import/prefer-default-export: 0 */
 export const isAllowed = (key) => {
   // Check if this user is the owner of the document he's trying to delete a
   // file from
@@ -33,7 +31,7 @@ export const isAllowed = (key) => {
   return true;
 };
 
-const setupS3 = () => {
+export const setupS3 = () => {
   AWS.config.update({
     accessKeyId: Meteor.settings.AWS.users.accessKeyId,
     secretAccessKey: Meteor.settings.AWS.users.secretAccesskey,

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import Button from 'core/components/Button';
 
-import cleanMethod from 'core/api/cleanMethods';
 import { CLOSING_STEPS_TYPE } from 'core/api/constants';
+import { loanUpdate } from 'core/api';
 
 import Adder from './Adder';
 import FileStep from './FileStep';
@@ -59,9 +59,9 @@ export default class ClosingStepsForm extends Component {
     }));
 
   handleSave = () =>
-    cleanMethod('loanUpdate', {
+    loanUpdate.run({
       object: { 'logic.closingSteps': this.state.closingSteps },
-      id: this.props.loan._id,
+      loanId: this.props.loan._id,
     });
 
   handleChange = (stepId, key, value) =>

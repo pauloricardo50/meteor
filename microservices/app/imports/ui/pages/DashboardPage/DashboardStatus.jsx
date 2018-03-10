@@ -5,13 +5,13 @@ import { Meteor } from 'meteor/meteor';
 import Button from 'core/components/Button';
 
 import track from 'core/utils/analytics';
-import cleanMethod from 'core/api/cleanMethods';
 import { LoadingComponent } from 'core/components/Loading';
 import { T } from 'core/components/Translation';
 import getSteps from 'core/arrays/steps';
 import { AUCTION_STATUS } from 'core/api/constants';
-import DashboardItem from './DashboardItem';
 import withLoan from 'core/containers/withLoan';
+import { getServerTime, incrementLoanStep } from 'core/api';
+import DashboardItem from './DashboardItem';
 
 const styles = {
   button: {
@@ -32,14 +32,10 @@ class DashboardStatus extends Component {
 
   componentDidMount() {
     const setTime = () =>
-      Meteor.call('getServerTime', (e, res) => {
-        this.setState({ serverTime: res });
-      });
+      getServerTime.run().then(time => this.setState({ serverTime: time }));
     setTime();
 
-    this.interval = Meteor.setInterval(() => {
-      setTime();
-    }, 10000);
+    this.interval = Meteor.setInterval(setTime, 10000);
   }
 
   componentWillUnmount() {
@@ -59,12 +55,12 @@ class DashboardStatus extends Component {
   };
 
   handleNextStep = () =>
-    cleanMethod('incrementStep', { id: this.props.loan._id }).then(() =>
-      this.props.history.push(this.getNextLink()));
+    incrementLoanStep
+      .run({ id: this.props.loan._id })
+      .then(() => this.props.history.push(this.getNextLink()));
 
   render() {
-    const { loan, borrowers } = this.props;
-    const { serverTime } = this.state;
+    const { loan } = this.props;
     const nextLink = this.getNextLink();
 
     const verificationRequested =

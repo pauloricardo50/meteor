@@ -2,13 +2,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import merge from 'lodash/merge';
 
-import cleanMethod from 'core/api/cleanMethods';
-
 import LoadingButton from '/imports/ui/components/LoadingButton';
 import ProcessPage from '/imports/ui/components/ProcessPage';
 import { T } from 'core/components/Translation';
 import track from 'core/utils/analytics';
 import { toNumber } from 'core/utils/conversionFunctions';
+import { loanUpdate } from 'core/api';
 
 import StructureSliders from './StructureSliders';
 import StructureRecap from './StructureRecap';
@@ -21,8 +20,9 @@ const handleClick = (props, state) => {
   object['general.fortuneUsed'] = state.fortuneUsed;
   object['general.insuranceFortuneUsed'] = state.insuranceFortuneUsed;
 
-  cleanMethod('loanUpdate', { object, id: props.loan._id }).then(() =>
-    track('validated structure', {}));
+  loanUpdate
+    .run({ object, loanId: props.loan._id })
+    .then(() => track('validated structure', {}));
 };
 
 export default class StructurePage extends Component {

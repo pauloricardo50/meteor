@@ -1,23 +1,28 @@
 import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import cleanMethod from 'core/api/cleanMethods';
 import { Roles } from 'meteor/alanning:roles';
 
 import { completeFakeBorrower } from 'core/api/borrowers/fakes';
 import { loanStep1, loanStep2, loanStep3 } from 'core/api/loans/fakes';
 import { getRandomOffer } from 'core/api/offers/fakes';
 import { fakeProperty } from 'core/api/properties/fakes';
+import {
+  borrowerInsert,
+  propertyInsert,
+  loanInsert,
+  insertAdminOffer,
+  loanUpdate,
+} from 'core/api';
 
 const addStep1Loan = (twoBorrowers) => {
   const borrowerIds = [];
-  cleanMethod('borrowerInsert', { object: completeFakeBorrower })
+  borrowerInsert
+    .run({ object: completeFakeBorrower })
     .then((id1) => {
       borrowerIds.push(id1);
       return twoBorrowers
-        ? cleanMethod('borrowerInsert', {
-          object: completeFakeBorrower,
-        })
+        ? borrowerInsert.run({ object: completeFakeBorrower })
         : false;
     })
     .then((id2) => {
@@ -25,13 +30,13 @@ const addStep1Loan = (twoBorrowers) => {
         borrowerIds.push(id2);
       }
 
-      return cleanMethod('propertyInsert', { object: fakeProperty });
+      return propertyInsert.run({ object: fakeProperty });
     })
     .then((propertyId) => {
       const loan = loanStep1;
       loan.borrowerIds = borrowerIds;
       loan.propertyId = propertyId;
-      cleanMethod('loanInsert', { object: loan });
+      loanInsert.run({ object: loan });
     })
     .catch(console.log);
 };
@@ -39,13 +44,12 @@ const addStep1Loan = (twoBorrowers) => {
 const addStep2Loan = (twoBorrowers) => {
   const borrowerIds = [];
 
-  cleanMethod('borrowerInsert', { object: completeFakeBorrower })
+  borrowerInsert
+    .run({ object: completeFakeBorrower })
     .then((id1) => {
       borrowerIds.push(id1);
       return twoBorrowers
-        ? cleanMethod('borrowerInsert', {
-          object: completeFakeBorrower,
-        })
+        ? borrowerInsert.run({ object: completeFakeBorrower })
         : false;
     })
     .then((id2) => {
@@ -53,13 +57,13 @@ const addStep2Loan = (twoBorrowers) => {
         borrowerIds.push(id2);
       }
 
-      return cleanMethod('propertyInsert', { object: fakeProperty });
+      return propertyInsert.run({ object: fakeProperty });
     })
     .then((propertyId) => {
       const loan = loanStep2;
       loan.borrowerIds = borrowerIds;
       loan.propertyId = propertyId;
-      cleanMethod('loanInsert', { object: loan });
+      loanInsert.run({ object: loan });
     })
     .catch(console.log);
 };
@@ -68,13 +72,12 @@ const addStep3Loan = (twoBorrowers, completeFiles = true) => {
   const borrowerIds = [];
   const loan = loanStep3(completeFiles);
   let loanId;
-  cleanMethod('borrowerInsert', { object: completeFakeBorrower })
+  borrowerInsert
+    .run({ object: completeFakeBorrower })
     .then((id1) => {
       borrowerIds.push(id1);
       return twoBorrowers
-        ? cleanMethod('borrowerInsert', {
-          object: completeFakeBorrower,
-        })
+        ? borrowerInsert.run({ object: completeFakeBorrower })
         : false;
     })
     .then((id2) => {
@@ -82,28 +85,28 @@ const addStep3Loan = (twoBorrowers, completeFiles = true) => {
         borrowerIds.push(id2);
       }
 
-      return cleanMethod('propertyInsert', { object: fakeProperty });
+      return propertyInsert.run({ object: fakeProperty });
     })
     .then((propertyId) => {
       loan.borrowerIds = borrowerIds;
       loan.propertyId = propertyId;
     })
-    .then(() => cleanMethod('loanInsert', { object: loan }))
+    .then(() => loanInsert.run({ object: loan }))
     .then((id) => {
       loanId = id;
       const object = getRandomOffer(
         { loan: { ...loan, _id: id }, property: fakeProperty },
         true,
       );
-      return cleanMethod('insertAdminOffer', { object });
+      return insertAdminOffer.run({ object });
     })
     .then(offerId =>
-      cleanMethod('loanUpdate', {
+      loanUpdate.run({
         object: {
           'logic.lender.offerId': offerId,
           'logic.lender.chosenTime': new Date(),
         },
-        id: loanId,
+        loanId,
       }))
     .then(() => {
       // Weird bug with offers publications that forces me to reload TODO: fix it

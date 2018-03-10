@@ -5,8 +5,8 @@ import classnames from 'classnames';
 import Button from 'core/components/Button';
 import { T } from 'core/components/Translation';
 import { getLoanValue } from 'core/utils/loanFunctions';
-import cleanMethod from 'core/api/cleanMethods';
 import withLoan from 'core/containers/withLoan';
+import { loanUpdate } from 'core/api';
 import Tranche from './Tranche';
 import TrancheChart from './TrancheChart';
 
@@ -21,9 +21,7 @@ const types = [
 class TranchePicker extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      tranches: this.props.loan.general.loanTranches || [],
-    };
+    this.state = { tranches: this.props.loan.general.loanTranches || [] };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -69,11 +67,9 @@ class TranchePicker extends Component {
   };
 
   handleSave = () => {
-    cleanMethod('loanUpdate', {
-      object: {
-        'general.loanTranches': this.state.tranches,
-      },
-      id: this.props.loan._id,
+    loanUpdate.run({
+      object: { 'general.loanTranches': this.state.tranches },
+      loanId: this.props.loan._id,
     });
   };
 

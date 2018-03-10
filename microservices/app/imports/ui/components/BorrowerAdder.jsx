@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import cleanMethod from 'core/api/cleanMethods';
 import Button from 'core/components/Button';
 import { T } from 'core/components/Translation';
+import { addBorrower } from 'core/api';
 
 export default class BorrowerAdder extends Component {
   constructor(props) {
@@ -14,7 +14,8 @@ export default class BorrowerAdder extends Component {
   handleClick = () => {
     const { loanId } = this.props;
     this.setState({ loading: true });
-    cleanMethod('addBorrower', { loanId })
+    addBorrower
+      .run({ loanId })
       .then((result) => {
         console.log('Done!', result);
         this.setState({ loading: false });

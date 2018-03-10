@@ -1,12 +1,37 @@
 import { Mongo } from 'meteor/mongo';
+import { getFileCount } from './files';
+import { FILE_STATUS } from './fileConstants';
 
 class FileService {
-  deleteFile = () => {};
+  addFileToDoc = ({ collection, docId, fileId, file }) => {
+    const doc = Mongo.Collection.get(collection).findOne(docId);
+    const currentValue = this._getCurrentFileValue({ doc, fileId });
+    const { fileCount, fileCountString } = getFileCount(currentValue);
 
-  uploadFile = () => {};
+    Mongo.Collection.get(collection).update(docId, {
+      $push: {
+        [`files.${fileId}`]: {
+          ...file,
+          name: `${fileCountString}${file.name}`,
+          status: FILE_STATUS.UNVERIFIED,
+          fileCount,
+        },
+      },
+    });
+  };
+
+  deleteFileFromDoc = ({ collection, docId, fileId, fileKey }) => {
+    const doc = Mongo.Collection.get(collection).findOne(docId);
+    const currentValue = this._getCurrentFileValue({ doc, fileId });
+    Mongo.Collection.get(collection).update(docId, {
+      $set: {
+        [`files.${fileId}`]: currentValue.filter(file => file.key !== fileKey),
+      },
+    });
+  };
 
   updateFile = ({ collection, docId, fileId, fileKey, fileUpdate }) => {
-    const doc = Mongo.Collection.get('books').findOne({ name: 'test' });
+    const doc = Mongo.Collection.get(collection).findOne(docId);
     const currentValue = this._getCurrentFileValue({ doc, fileId });
 
     return Mongo.Collection.get(collection).update(docId, {

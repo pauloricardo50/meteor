@@ -4,16 +4,16 @@ import { addFileToDoc, deleteFile } from 'core/api/methods';
 export default createContainer(({ collection, docId, fileMeta }) => ({
   addFileToDoc: file =>
     addFileToDoc.run({
-      file,
-      fileId: fileMeta.id,
       collection,
       docId,
+      fileId: fileMeta.id,
+      file,
     }),
   deleteFile: fileKey =>
     deleteFile.run({
-      fileKey,
-      fileId: fileMeta.id,
       collection,
       docId,
+      fileId: fileMeta.id,
+      fileKey,
     }),
 }));

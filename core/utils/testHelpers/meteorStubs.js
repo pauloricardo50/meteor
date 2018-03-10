@@ -97,7 +97,6 @@ const meteorStubs = {
   'meteor/okgrow:analytics': stubs.analytics,
   'meteor/softwarerero:accounts-t9n': stubs.accountsT9n,
   'meteor/kadira:dochead': stubs.dochead,
-  'core/api/cleanMethods': stubs.cleanMethod,
   'meteor/didericis:callpromise-mixin': stubs.callpromiseMixin,
 };
 

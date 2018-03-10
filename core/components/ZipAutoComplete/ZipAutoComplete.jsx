@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { getLocations } from 'core/utils/APIs';
-import cleanMethod from 'core/api/cleanMethods';
 
 import ValidIcon from 'core/components/AutoForm/ValidIcon';
 import AutoComplete from '../AutoComplete';
@@ -97,7 +96,7 @@ class ZipAutoComplete extends Component {
       [`${savePath}city`]: city,
     };
 
-    cleanMethod(updateFunc, { object, id: docId })
+    updateFunc({ object, id: docId })
       .then(() =>
         // on success, set saving briefly to true,
         // before setting it to false again to trigger icon
@@ -160,7 +159,7 @@ class ZipAutoComplete extends Component {
 
 ZipAutoComplete.propTypes = {
   savePath: PropTypes.string.isRequired,
-  updateFunc: PropTypes.string.isRequired,
+  updateFunc: PropTypes.func.isRequired,
   docId: PropTypes.string.isRequired,
   initialValue: PropTypes.string,
   inputProps: PropTypes.shape({

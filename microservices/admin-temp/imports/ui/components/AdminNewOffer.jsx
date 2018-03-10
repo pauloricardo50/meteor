@@ -53,12 +53,7 @@ export default class AdminNewOffer extends React.Component {
           // onClose={this.handleClose}
           fullScreen
         >
-          <OfferForm
-            {...this.props}
-            method="insertAdminOffer"
-            callback={this.handleClose}
-            admin
-          />
+          <OfferForm {...this.props} callback={this.handleClose} admin />
         </Dialog>
       </div>
     );

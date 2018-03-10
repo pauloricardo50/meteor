@@ -5,13 +5,13 @@ import Checkbox from 'core/components/Checkbox';
 
 import AutoForm from 'core/components/AutoForm';
 import { getBorrowerFinanceArray } from 'core/arrays/BorrowerFormArray';
-import cleanMethod from 'core/api/cleanMethods';
 import Recap from 'core/components/Recap';
 import constants from 'core/config/constants';
 import LoadingButton from '/imports/ui/components/LoadingButton';
 import { T } from 'core/components/Translation';
 import { disableForms } from 'core/utils/loanFunctions';
 import track from 'core/utils/analytics';
+import { borrowerUpdate } from 'core/api';
 
 const styles = {
   div: {
@@ -36,7 +36,7 @@ const handleCheck = (_, isInputChecked, id) => {
   const object = {};
   object['logic.financeEthics'] = isInputChecked;
 
-  cleanMethod('borrowerUpdate', { object, id });
+  borrowerUpdate.run({ object, borrowerId: id });
 };
 
 const handleClick = (event, id) => {
@@ -44,12 +44,13 @@ const handleClick = (event, id) => {
   const object = {};
   object['logic.hasValidatedFinances'] = true;
 
-  cleanMethod('borrowerUpdate', { object, id }).then(() =>
-    track('validated finances', {}));
+  borrowerUpdate
+    .run({ object, id })
+    .then(() => track('validated finances', {}));
 };
 
 const BorrowerFinancePage = (props) => {
-  const borrowerId = props.match.params.borrowerId;
+  const { borrowerId } = props.match.params;
   const borrower = props.borrowers.find(b => b._id === borrowerId);
   return (
     <section className="borrower-finance-page animated fadeIn" key={borrowerId}>

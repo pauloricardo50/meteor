@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import cleanMethod from 'core/api/cleanMethods';
 import { T } from 'core/components/Translation';
 import Select from 'core/components/Select';
 import ValidIcon from './ValidIcon';
@@ -38,7 +37,7 @@ export default class SelectFieldInput extends Component {
     const { value } = this.state;
     const object = { [id]: value };
 
-    cleanMethod(updateFunc, { object, id: docId })
+    updateFunc({ object, id: docId })
       .then((result) =>
         // on success, set saving briefly to true, before setting it to false again to trigger icon
       {

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import DateInput from 'core/components/DateInput';
 import Select from 'core/components/Select';
-import cleanMethod from 'core/api/cleanMethods';
 import { PAYMENT_SCHEDULES } from 'core/api/constants';
+import { confirmClosing } from 'core/api';
 
 const schedules = Object.values(PAYMENT_SCHEDULES);
 
@@ -34,7 +34,7 @@ export default class ClosingForm extends Component {
       'logic.firstPaymentDate': this.state.date,
       'logic.paymentSchedule': this.state.schedule,
     };
-    cleanMethod('confirmClosing', { id: this.props.loan._id, object });
+    confirmClosing.run({ loanId: this.props.loan._id, object });
   };
 
   validate = () => {

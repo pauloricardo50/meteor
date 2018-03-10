@@ -4,9 +4,8 @@ import React, { Component } from 'react';
 import Button from 'core/components/Button';
 import Checkbox from 'core/components/Checkbox';
 import TextInput from 'core/components/TextInput';
-
 import { toMoney, toNumber } from 'core/utils/conversionFunctions';
-import cleanMethod from 'core/api/cleanMethods';
+import { insertAdminOffer } from 'core/api';
 
 const styles = {
   article: {
@@ -138,7 +137,8 @@ export default class OfferForm extends Component {
 
     console.log(object);
 
-    cleanMethod(this.props.method, { object })
+    insertAdminOffer
+      .run({ object })
       .then(this.props.callback)
       .catch((error) => {
         console.log('OfferForm error:', error);
@@ -318,7 +318,6 @@ export default class OfferForm extends Component {
 OfferForm.propTypes = {
   callback: PropTypes.func.isRequired,
   handleCancel: PropTypes.func,
-  method: PropTypes.string.isRequired,
   admin: PropTypes.bool,
 };
 

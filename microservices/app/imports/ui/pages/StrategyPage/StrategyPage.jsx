@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import cleanMethod from 'core/api/cleanMethods';
+import { loanUpdate } from 'core/api';
 import ProcessPage from '/imports/ui/components/ProcessPage';
 import RankStrategy from './RankStrategy';
 import AmortizingPicker from './AmortizingPicker';
@@ -36,29 +36,28 @@ const getComponents = (props, handleSave) => {
   ];
 };
 
-export default class StrategyPage extends Component {
-  handleSave = (object) => {
-    cleanMethod('loanUpdate', { object, id: this.props.loan._id });
-  };
+const createHandleSave = loanId => object => loanUpdate.run({ object, loanId });
 
-  render() {
-    return (
-      <ProcessPage {...this.props} stepNb={2} id="strategy">
-        <section className="mask1">
-          {getComponents(this.props, this.handleSave)
-            .filter(i => i.condition)
-            .map(i => i.component)
-            .reduce((prev, curr, i) => [
-              prev,
-              <hr style={{ margin: '32px 0' }} key={i} />,
-              curr,
-            ])}
-        </section>
-      </ProcessPage>
-    );
-  }
-}
+const StrategyPage = (props) => {
+  const { loan } = props;
+  return (
+    <ProcessPage {...props} stepNb={2} id="strategy">
+      <section className="mask1">
+        {getComponents(props, createHandleSave(loan._id))
+          .filter(i => i.condition)
+          .map(i => i.component)
+          .reduce((prev, curr, i) => [
+            prev,
+            <hr style={{ margin: '32px 0' }} key={i} />,
+            curr,
+          ])}
+      </section>
+    </ProcessPage>
+  );
+};
 
 StrategyPage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
+
+export default StrategyPage;

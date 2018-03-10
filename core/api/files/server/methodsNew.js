@@ -1,4 +1,5 @@
-import { SecurityService, getDocFromCollection } from '../..';
+import { Meteor } from 'meteor/meteor';
+import { SecurityService } from '../..';
 import {
   addFileToDoc,
   deleteFile,
@@ -6,15 +7,24 @@ import {
   setFileError,
 } from '../methodDefinitions';
 import FileService from '../FileService';
+import { setupS3 } from './s3';
 
-addFileToDoc.setHandler((context, { file, fileId, collection, docId }) => {
+addFileToDoc.setHandler((context, { collection, docId, fileId, file }) => {
   SecurityService[collection].isAllowedToUpdate(docId);
-  console.log('hi');
+  FileService.addFileToDoc({ collection, docId, fileId, file });
 });
 
-deleteFile.setHandler((context, { fileKey, fileId, collection, docId }) => {
+deleteFile.setHandler((context, { collection, docId, fileId, fileKey }) => {
   SecurityService[collection].isAllowedToUpdate(docId);
-  console.log('yo');
+  const s3 = setupS3();
+  const params = { Bucket: Meteor.settings.S3Bucket, Key: fileKey };
+
+  return s3.deleteObject(params, (err) => {
+    if (err) {
+      throw new Meteor.Error(err);
+    }
+    FileService.deleteFileFromDoc({ collection, docId, fileId, fileKey });
+  });
 });
 
 setFileStatus.setHandler((context, { collection, docId, fileId, fileKey, newStatus }) => {

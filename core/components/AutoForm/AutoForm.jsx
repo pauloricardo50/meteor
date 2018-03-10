@@ -13,6 +13,7 @@ import ConditionalInput from './ConditionalInput';
 import DateInput from './DateInput';
 import UploaderArray from '../UploaderArray';
 import ArrayInput from './ArrayInput';
+import AutoFormContainer from './AutoFormContainer';
 
 const styles = {
   form: {
@@ -204,4 +205,4 @@ AutoForm.defaultProps = {
   noPlaceholders: false,
 };
 
-export default AutoForm;
+export default AutoFormContainer(AutoForm);
