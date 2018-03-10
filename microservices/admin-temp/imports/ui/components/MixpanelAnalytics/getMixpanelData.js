@@ -1,4 +1,4 @@
-import cleanMethod from 'core/api/cleanMethods';
+import { getMixpanelAuthorization } from 'core/api';
 
 const MIXPANEL_URL = 'https://mixpanel.com/api/2.0/';
 
@@ -16,7 +16,8 @@ const buildUrl = ({ params, endpoint = 'segmentation' }) => {
 };
 
 const getData = url =>
-  cleanMethod('getMixpanelAuthorization')
+  getMixpanelAuthorization
+    .run()
     .then(Authorization =>
       fetch(url, { method: 'GET', headers: { Authorization } }))
     .then(result => result.json())

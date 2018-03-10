@@ -1,17 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import { Loans, Offers, Borrowers, Properties, Comparators } from '../../api';
-
-export function userCompareComposer(props, onData) {
-  if (
-    Meteor.subscribe('properties').ready() &&
-    Meteor.subscribe('userComparators').ready()
-  ) {
-    const properties = Properties.find({}, { sort: { createdAt: -1 } }).fetch();
-    const comparators = Comparators.find({}).fetch();
-    onData(null, { properties, comparator: comparators[0] || undefined });
-  }
-}
+import { Loans, Offers, Borrowers, Properties } from '../../api';
 
 // Get all loans for this user
 export function userLoansComposer(props, onData) {

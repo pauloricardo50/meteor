@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 import EventService from '../events';
@@ -6,30 +7,27 @@ import Users from '../users';
 
 class UserService {
   createUser = ({ options, role }) => {
-    const newUserId = Accounts.createUser(options, (err) => {
-      if (err) console.log(err);
-      else {
-        Roles.addUsersToRoles(newUserId, role);
-        if (role === 'user') {
-          EventService.emit(USER_EVENTS.USER_CREATED, { newUserId });
-        }
-        return newUserId;
+    let newUserId;
+    try {
+      newUserId = Accounts.createUser(options);
+      Roles.addUsersToRoles(newUserId, role);
+
+      if (role === 'user') {
+        EventService.emit(USER_EVENTS.USER_CREATED, { newUserId });
       }
-      return null;
-    });
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+
+    return newUserId;
   };
 
-  remove = ({ userId }) => {
-    Users.remove(userId);
-  };
+  remove = ({ userId }) => Users.remove(userId);
 
-  update = ({ userId, user }) => Users.update(userId, { $set: user });
+  update = ({ userId, object }) => Users.update(userId, { $set: object });
 
   assignAdminToUser = ({ userId, adminId }) =>
-    this.update({
-      userId,
-      user: { assignedTo: adminId },
-    });
+    this.update({ userId, object: { assignedTo: adminId } });
 
   getUsersByRole = role => Users.find({ roles: { $in: [role] } }).fetch();
 }

@@ -22,9 +22,7 @@ describe('Factories', () => {
     'borrower',
     'loan',
     'offer',
-    'comparator',
     'property',
-    'comparatorProperty',
   ];
 
   factories.forEach((fact) => {

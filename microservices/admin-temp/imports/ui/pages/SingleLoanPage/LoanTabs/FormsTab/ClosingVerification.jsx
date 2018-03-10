@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import cleanMethod from 'core/api/cleanMethods';
 import { CLOSING_STEPS_TYPE } from 'core/api/constants';
+import { loanUpdate } from 'core/api';
 import FileVerificator from './FileVerificator';
 import ItemVerificator from './ItemVerificator';
 
@@ -12,14 +12,14 @@ export default class ClosingVerification extends Component {
     const steps = loan.logic.closingSteps;
     const step = steps.find(s => s.id === id);
 
-    cleanMethod('updateLoan', {
+    loanUpdate.run({
       object: {
         'logic.closingSteps': [
           ...steps.filter(s => s.id !== id),
           { ...step, status: newStatus },
         ],
       },
-      id: loan._id,
+      loanId: loan._id,
     });
   };
 
@@ -28,14 +28,14 @@ export default class ClosingVerification extends Component {
     const steps = loan.logic.closingSteps;
     const step = steps.find(s => s.id === id);
 
-    cleanMethod('updateLoan', {
+    loanUpdate.run({
       object: {
         'logic.closingSteps': [
           ...steps.filter(s => s.id !== id),
           { ...step, error },
         ],
       },
-      id: loan._id,
+      loanId: loan._id,
     });
   };
 

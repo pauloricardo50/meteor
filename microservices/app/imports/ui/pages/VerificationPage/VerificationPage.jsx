@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import cleanMethod from 'core/api/cleanMethods';
 
 import { isDemo } from 'core/utils/browserFunctions';
 import ProcessPage from '/imports/ui/components/ProcessPage';
 import track from 'core/utils/analytics';
+import { loanUpdate, requestLoanVerification } from 'core/api';
 
 import VerificationStart from './VerificationStart';
 import VerificationValidated from './VerificationValidated';
@@ -15,11 +15,11 @@ export default class VerificationPage extends Component {
     if (isDemo()) {
       const object = {};
       object['logic.verification.validated'] = true;
-      cleanMethod('updateLoan', { object, id: this.props.loan._id });
+      loanUpdate.run({ object, loanId: this.props.loan._id });
     } else {
-      cleanMethod('loanVerification', {
-        id: this.props.loan._id,
-      }).then(() => track('requested verification', {}));
+      requestLoanVerification
+        .run({ loanId: this.props.loan._id })
+        .then(() => track('requested verification'));
     }
   };
 

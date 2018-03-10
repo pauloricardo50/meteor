@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import cleanMethod from 'core/api/cleanMethods';
 import ConditionsButton from 'core/components/ConditionsButton';
 import { toMoney } from 'core/utils/conversionFunctions';
 import { IntlNumber } from 'core/components/Translation';
+import { deleteOffer } from 'core/api';
 import AdminNewOffer from '/imports/ui/components/AdminNewOffer';
 import ConfirmMethod from './ConfirmMethod';
 
@@ -13,21 +13,17 @@ export default class OffersTab extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      active: -1,
-    };
+    this.state = { active: -1 };
   }
 
-  handleToggle = (i) => {
-    if (this.state.active === i) {
-      this.setState({ active: -1 });
-    } else {
-      this.setState({ active: i });
-    }
-  };
+  handleToggle = i =>
+    this.setState(({ active }) => ({ active: active === i ? -1 : i }));
 
   render() {
-    if (this.props.offers.length <= 0) {
+    const { offers } = this.props;
+    const { active } = this.state;
+
+    if (offers.length <= 0) {
       return (
         <div className="text-center">
           <h1 className="secondary">Pas d&apos;offres pour l&apos;instant</h1>
@@ -42,8 +38,19 @@ export default class OffersTab extends Component {
           <AdminNewOffer {...this.props} style={{ margin: 8 }} />
         </div>
         <ul className="admin-offer-list">
-          {this.props.offers.map((o, i) => (
-            <li className="mask1" key={o._id}>
+          {offers.map((
+            {
+              organization,
+              conditions,
+              counterparts,
+              createdAt,
+              _id,
+              counterpartOffer,
+              standardOffer,
+            },
+            i,
+          ) => (
+            <li className="mask1" key={_id}>
               <div
                 className="top"
                 onClick={() => this.handleToggle(i)}
@@ -51,49 +58,49 @@ export default class OffersTab extends Component {
               >
                 <div className="title">
                   <h2 className="fixed-size">
-                    <span className="bold">{o.organization}</span>{' '}
+                    <span className="bold">{organization}</span>{' '}
                     <small>
-                      Ajoutée le {moment(o.createdAt).format('D MMM à H:mm')}
+                        Ajoutée le {moment(createdAt).format('D MMM à H:mm')}
                     </small>
                   </h2>
-                  {(o.conditions.length > 0 || o.counterparts.length > 0) && (
+                  {(conditions.length > 0 || counterparts.length > 0) && (
                     <ConditionsButton
-                      conditions={o.conditions}
-                      counterparts={o.counterparts}
+                      conditions={conditions}
+                      counterparts={counterparts}
                     />
                   )}
                 </div>
 
                 <hr />
                 <h4 className="fixed-size" style={{ marginTop: 0 }}>
-                  Offre Standard
+                    Offre Standard
                 </h4>
                 <span>
-                  Montant prêté: CHF {toMoney(o.standardOffer.maxAmount)}
+                    Montant prêté: CHF {toMoney(standardOffer.maxAmount)}
                 </span>
                 <span>
-                  Amortissement demandé:{' '}
+                    Amortissement demandé:{' '}
                   <IntlNumber
-                    value={o.standardOffer.amortization}
+                    value={standardOffer.amortization}
                     format="percentage"
                   />
                 </span>
                 <ul className="overview">
-                  {Object.keys(o.standardOffer).map(key =>
+                  {Object.keys(standardOffer).map(key =>
                     key.includes('interest') &&
-                      !!o.standardOffer[key] && (
+                        !!standardOffer[key] && (
                       <li key={key}>
-                        <span>{key}</span>
-                        <span className="bold">
+                          <span>{key}</span>
+                          <span className="bold">
                           <IntlNumber
-                            value={o.standardOffer[key]}
-                            format="percentage"
-                          />
+                              value={standardOffer[key]}
+                              format="percentage"
+                            />
                         </span>
-                      </li>
+                        </li>
                     ))}
                 </ul>
-                {o.counterparts.length > 0 && (
+                {counterparts.length > 0 && (
                   <div
                     style={{
                       display: 'flex',
@@ -102,44 +109,42 @@ export default class OffersTab extends Component {
                   >
                     <hr />
                     <h4 className="fixed-size" style={{ marginTop: 0 }}>
-                      Offre avec contrepartie
+                        Offre avec contrepartie
                     </h4>
                     <span>
-                      Montant prêté: CHF {toMoney(o.counterpartOffer.maxAmount)}
+                        Montant prêté: CHF {toMoney(counterpartOffer.maxAmount)}
                     </span>
                     <span>
-                      Amortissement demandé:{' '}
+                        Amortissement demandé:{' '}
                       <IntlNumber
-                        value={o.counterpartOffer.amortization}
+                        value={counterpartOffer.amortization}
                         format="percentage"
                       />
                     </span>
                     <ul className="overview">
-                      {Object.keys(o.counterpartOffer).map(key =>
+                      {Object.keys(counterpartOffer).map(key =>
                         key.includes('interest') &&
-                          !!o.counterpartOffer[key] && (
+                            !!counterpartOffer[key] && (
                           <li key={key}>
-                            <span>{key}</span>
-                            <span className="bold">
+                              <span>{key}</span>
+                              <span className="bold">
                               <IntlNumber
-                                value={o.counterpartOffer[key]}
-                                format="percentage"
-                              />
+                                  value={counterpartOffer[key]}
+                                  format="percentage"
+                                />
                             </span>
-                          </li>
+                            </li>
                         ))}
                     </ul>
                   </div>
                 )}
               </div>
-              {this.state.active === i && (
+              {active === i && (
                 <div>
                   <ConfirmMethod
                     label="Supprimer"
                     keyword="SUPPRIMER"
-                    method={cb =>
-                      cleanMethod('deleteOffer', { id: o._id }).then(cb)
-                    }
+                    method={cb => deleteOffer.run({ id: _id }).then(cb)}
                   />
                 </div>
               )}

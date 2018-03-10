@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
-import cleanMethod from 'core/api/cleanMethods';
 
 import constants from 'core/config/constants';
 import colors from 'core/config/colors';
@@ -96,7 +95,7 @@ export default class TextInput extends Component {
 
     Meteor.clearTimeout(this.timeout);
     this.timeout = Meteor.setTimeout(() => {
-      cleanMethod(updateFunc, { object, id: docId })
+      updateFunc({ object, id: docId })
         .then(() =>
           // on success, set saving briefly to true, before setting it to false again to trigger icon
           this.setState(
@@ -180,7 +179,7 @@ TextInput.propTypes = {
   autocomplete: PropTypes.string,
   rows: PropTypes.number,
   docId: PropTypes.string.isRequired,
-  updateFunc: PropTypes.string,
+  updateFunc: PropTypes.func,
   info: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object,
@@ -212,7 +211,6 @@ TextInput.defaultProps = {
   decimal: false,
   money: false,
   inputStyle: undefined,
-  updateFunc: 'updateLoan',
   floatingLabelFixed: true,
   saveOnChange: true,
   noValidator: false,

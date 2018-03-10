@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import cleanMethod from 'core/api/cleanMethods';
 
 import Button from 'core/components/Button';
 
@@ -20,7 +19,7 @@ const styles = {
   },
 };
 
-export default class ArrayInput extends Component {
+class ArrayInput extends Component {
   constructor(props) {
     super(props);
 
@@ -78,10 +77,12 @@ export default class ArrayInput extends Component {
   // Only remove a value if there's more than 1 left
   removeValue = () =>
     this.state.count > 0 &&
-    cleanMethod(this.props.popFunc, {
-      object: { [`${this.props.inputProps.id}`]: 1 },
-      id: this.props.docId,
-    }).then(() => this.setState({ count: this.state.count - 1 }));
+    this.props
+      .popFunc({
+        object: { [`${this.props.inputProps.id}`]: 1 },
+        id: this.props.docId,
+      })
+      .then(() => this.setState({ count: this.state.count - 1 }));
 
   render() {
     const { inputProps: { style, label, disabled } } = this.props;
@@ -137,10 +138,12 @@ ArrayInput.propTypes = {
   currentValue: PropTypes.arrayOf(PropTypes.any),
   id: PropTypes.string.isRequired,
   label: PropTypes.node.isRequired,
-  popFunc: PropTypes.string.isRequired,
+  popFunc: PropTypes.func.isRequired,
   docId: PropTypes.string.isRequired,
 };
 
 ArrayInput.defaultProps = {
   currentValue: [],
 };
+
+export default ArrayInput;

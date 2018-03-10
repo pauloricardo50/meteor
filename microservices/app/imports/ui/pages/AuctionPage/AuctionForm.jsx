@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import AutoForm from 'core/components/AutoForm';
-import { constants } from 'core/api';
-
+import { constants, loanUpdate } from 'core/api';
 import { getAuctionEndTime } from 'core/utils/loanFunctions';
-import cleanMethod from 'core/api/cleanMethods';
 
 // Min closing date can be 2 days after auction ends
 const getMinDate = serverTime =>
@@ -43,7 +41,7 @@ export default class AuctionForm extends Component {
       const object = {
         'general.wantedClosingDate': '',
       };
-      cleanMethod('updateLoan', { object, id: this.props.loan._id });
+      loanUpdate.run({ object, loanId: this.props.loan._id });
     }
   }
 
@@ -53,7 +51,7 @@ export default class AuctionForm extends Component {
         inputs={getFormArray(this.props.loan, this.props.serverTime)}
         formClasses="user-form"
         docId={this.props.loan._id}
-        updateFunc="updateLoan"
+        updateFunc="loanUpdate"
         pushFunc="pushLoanValue"
         popFunc="popLoanValue"
         doc={this.props.loan}

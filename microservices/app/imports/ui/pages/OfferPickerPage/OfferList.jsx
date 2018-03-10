@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { extractOffers } from 'core/utils/offerFunctions';
-import cleanMethod from 'core/api/cleanMethods';
 import ConditionsButton from 'core/components/ConditionsButton';
 import { T, IntlNumber } from 'core/components/Translation';
 import Select from 'core/components/Select';
 import withLoan from 'core/containers/withLoan';
+import { loanUpdate } from 'core/api';
 import Offer from './Offer';
 import StarRating from './StarRating';
 import SortOrderer from './SortOrderer';
@@ -46,12 +46,12 @@ const sortOffers = (offers, sort, isAscending) =>
   offers.sort((a, b) => (isAscending ? a[sort] - b[sort] : b[sort] - a[sort]));
 
 const handleSave = (id, type, loan) => {
-  cleanMethod('updateLoan', {
+  loanUpdate.run({
     object: {
       'logic.lender.offerId': id,
       'logic.lender.type': id ? type : undefined,
     },
-    id: loan._id,
+    loanId: loan._id,
   });
 };
 
@@ -86,10 +86,10 @@ class OfferList extends Component {
             value={sort}
             onChange={this.handleChange}
             options={getOfferValues({})
-              .filter(o => !o.component)
-              .map(o => ({
-                id: o.key || o.id,
-                label: <T id={`offer.${o.key || o.id}`} />,
+              .filter(({ component }) => !component)
+              .map(({ key, id }) => ({
+                id: key || id,
+                label: <T id={`offer.${key || id}`} />,
               }))}
           />
           <SortOrderer

@@ -3,10 +3,11 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 
 import { T } from 'core/components/Translation';
-import cleanMethod from 'core/api/cleanMethods';
 import { addUserTracking } from 'core/utils/analytics';
 import saveStartForm from 'core/utils/saveStartForm';
 import { emailValidation } from 'core/utils/validation';
+import { createUserAndLoan, doesUserExist } from 'core/api';
+
 import EmailLine from './EmailLine';
 
 const styles = {
@@ -48,22 +49,23 @@ export default class StartSignUp extends Component {
     if (emailValidation(email)) {
       this.setState({ loading: true });
 
-      return cleanMethod('DOES_USER_EXIST', { email })
+      return doesUserExist
+        .run({ email })
         .then((emailExists) => {
           if (emailExists) {
             throw 'Cette adresse existe déjà';
           }
         })
         .then(() =>
-          cleanMethod(
-            'createUserAndLoan',
+          createUserAndLoan.run(
             { email, formState },
             { title: "C'est dans la boite!", message: '' },
-          ).then((userId) => {
-            this.setState({ loading: false, errorText: '' });
-            addUserTracking(userId, { email, id: userId });
-            history.push(`/checkYourMailbox/${email}`);
-          }))
+          ))
+        .then((userId) => {
+          this.setState({ loading: false, errorText: '' });
+          addUserTracking(userId, { email, id: userId });
+          history.push(`/checkYourMailbox/${email}`);
+        })
         .then(() => this.setState({ loading: false }))
         .catch(error => this.setState({ loading: false, errorText: error }));
     }

@@ -27,6 +27,7 @@ const FilesVerification = ({ loan, borrowers, property }) => (
                 key={file.id}
                 id={file.id}
                 closingSteps={loan.logic.closingSteps}
+                collection="loans"
               />
             ))}
       </div>
@@ -43,7 +44,7 @@ const FilesVerification = ({ loan, borrowers, property }) => (
                 docId={property._id}
                 key={file.id}
                 id={file.id}
-                isProperty
+                collection="properties"
               />
             ))}
       </div>
@@ -61,7 +62,7 @@ const FilesVerification = ({ loan, borrowers, property }) => (
                   docId={b._id}
                   key={file.id}
                   id={file.id}
-                  isBorrower
+                  collection="borrowers"
                 />
               ))}
         </div>

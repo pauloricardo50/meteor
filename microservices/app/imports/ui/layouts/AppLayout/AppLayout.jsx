@@ -15,7 +15,7 @@ import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
 
 // import UserJoyride from '/imports/ui/components/UserJoyride';
 
-const allowedRoutesWithoutLoan = ['/', '/compare', '/profile', '/add-loan'];
+const allowedRoutesWithoutLoan = ['/', '/profile', '/add-loan'];
 
 const allowedRoutesWithoutLogin = ['/enroll-account', IMPERSONATE_ROUTE];
 
@@ -60,10 +60,9 @@ const getRedirect = ({
   return false;
 };
 
-const getShowSideNav = ({ location }) =>
-  !(location.pathname === '/' || location.pathname === '/compare');
+const getShowSideNav = ({ location }) => !(location.pathname === '/');
 
-const AppLayout = props => {
+const AppLayout = (props) => {
   const { type, history, render, children } = props;
   const redirect = getRedirect(props);
   const showSideNav = getShowSideNav(history);

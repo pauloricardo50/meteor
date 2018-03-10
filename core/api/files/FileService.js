@@ -1,9 +1,81 @@
+import { Mongo } from 'meteor/mongo';
+import { getFileCount } from './files';
+import { FILE_STATUS } from './fileConstants';
+
 class FileService {
-  deleteFile = () => {};
+  addFileToDoc = ({ collection, docId, fileId, file }) => {
+    const doc = Mongo.Collection.get(collection).findOne(docId);
+    const currentValue = this._getCurrentFileValue({ doc, fileId });
+    const { fileCount, fileCountString } = getFileCount(currentValue);
 
-  uploadFile = () => {};
+    Mongo.Collection.get(collection).update(docId, {
+      $push: {
+        [`files.${fileId}`]: {
+          ...file,
+          name: `${fileCountString}${file.name}`,
+          status: FILE_STATUS.UNVERIFIED,
+          fileCount,
+        },
+      },
+    });
+  };
 
-  saveUploadedFile = () => {};
+  deleteFileFromDoc = ({ collection, docId, fileId, fileKey }) => {
+    const doc = Mongo.Collection.get(collection).findOne(docId);
+    const currentValue = this._getCurrentFileValue({ doc, fileId });
+    Mongo.Collection.get(collection).update(docId, {
+      $set: {
+        [`files.${fileId}`]: currentValue.filter(file => file.key !== fileKey),
+      },
+    });
+  };
+
+  updateFile = ({ collection, docId, fileId, fileKey, fileUpdate }) => {
+    const doc = Mongo.Collection.get(collection).findOne(docId);
+    const currentValue = this._getCurrentFileValue({ doc, fileId });
+
+    return Mongo.Collection.get(collection).update(docId, {
+      [`files.${fileId}`]: this._getNewFiles({
+        currentValue,
+        fileKey,
+        fileUpdate,
+      }),
+    });
+  };
+
+  setFileStatus = ({ collection, docId, fileId, fileKey, newStatus }) => {
+    const fileUpdate = { status: newStatus };
+    return this.updateFile({
+      collection,
+      docId,
+      fileId,
+      fileKey,
+      fileUpdate,
+    });
+  };
+
+  setFileError = ({ collection, docId, fileId, fileKey, error }) => {
+    const fileUpdate = { error };
+    return this.updateFile({
+      collection,
+      docId,
+      fileId,
+      fileKey,
+      fileUpdate,
+    });
+  };
+
+  _getCurrentFileValue = ({ doc, fileId }) => doc.files[fileId];
+
+  _getNewFiles = ({ currentValue, fileKey, fileUpdate }) => {
+    const file = currentValue.find(f => f.key === fileKey);
+
+    // Filter out unchanged files, and merge the fileUpdate with old version
+    return [
+      ...currentValue.filter(f => f.key !== fileKey),
+      { ...file, ...fileUpdate },
+    ];
+  };
 }
 
-export default FileService;
+export default new FileService();

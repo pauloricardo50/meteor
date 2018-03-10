@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Meteor } from 'meteor/meteor';
-
-import cleanMethod from 'core/api/cleanMethods';
 
 import Button from 'core/components/Button';
 import TextField from 'core/components/Material/TextField';
-// import DropDownMenu from 'core/components/Material/DropDownMenu';
-import MenuItem from 'core/components/Material/MenuItem';
 import Select from 'core/components/Select';
+import { loanUpdate } from 'core/api';
 
 const styles = {
   dropdown: {
@@ -51,25 +47,13 @@ export default class VerifyPage extends Component {
       'logic.verification.validated': this.state.validated,
     };
 
-    cleanMethod('updateLoan', {
-      object,
-      id: this.props.loan._id,
-    }).then(() => {
-      Meteor.call('email.send', {
-        emailId: this.state.validated
-          ? 'verificationPassed'
-          : 'verificationError',
-        loanId: this.props.loan._id,
-        userId: this.props.loan.userId,
-        template: 'notification+CTA',
-      });
-
-      window.close();
-    });
+    loanUpdate.run({ object, loanId: this.props.loan._id });
   };
 
   render() {
-    if (this.props.loan.logic.verification.requested !== true) {
+    const { loan, borrowers } = this.props;
+
+    if (loan.logic.verification.requested !== true) {
       return (
         <section className="text-center">
           <h1>Ce client n'a pas demandé de vérification</h1>
@@ -84,9 +68,9 @@ export default class VerifyPage extends Component {
         <h3>Fichiers à ouvrir:</h3>
         <ul>
           <li>
-            Demande de prêt: <span className="bold">{this.props.loan._id}</span>
+            Demande de prêt: <span className="bold">{loan._id}</span>
           </li>
-          {this.props.borrowers.map((b, i) => (
+          {borrowers.map((b, i) => (
             <li key={b._id}>
               Emprunteur {i + 1}: <span className="bold">{b._id}</span>
             </li>

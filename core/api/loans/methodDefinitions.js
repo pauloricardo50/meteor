@@ -4,7 +4,7 @@ import { Method } from '../methods/methods';
 export const loanInsert = new Method({
   name: 'loanInsert',
   params: {
-    object: Object,
+    loan: Object,
     userId: Match.Optional(String),
   },
 });
@@ -72,5 +72,21 @@ export const loanChangeAdminNote = new Method({
   params: {
     loanId: String,
     adminNote: String,
+  },
+});
+
+export const pushLoanValue = new Method({
+  name: 'pushLoanValue',
+  params: {
+    loanId: String,
+    object: Object,
+  },
+});
+
+export const popLoanValue = new Method({
+  name: 'popLoanValue',
+  params: {
+    loanId: String,
+    object: Object,
   },
 });

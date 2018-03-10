@@ -11,26 +11,8 @@ import UploaderArray from 'core/components/UploaderArray';
 import { loanFiles, propertyFiles } from 'core/api/files/files';
 import { disableForms, getPropertyCompletion } from 'core/utils/loanFunctions';
 
-import { isDemo } from 'core/utils/browserFunctions';
-import FakePropertyCompleter from '/imports/ui/components/FakePropertyCompleter';
 import { T } from 'core/components/Translation';
 import withLoan from 'core/containers/withLoan';
-
-const styles = {
-  topDiv: {
-    display: 'inline-block',
-    width: '100%',
-    marginBottom: 20,
-  },
-  bottomDiv: {
-    display: 'inline-block',
-    width: '100%',
-    marginTop: 20,
-  },
-  topRightButton: {
-    float: 'right',
-  },
-};
 
 const PropertyPage = (props) => {
   const { loan, borrowers, property } = props;
@@ -76,7 +58,7 @@ const PropertyPage = (props) => {
         <AutoForm
           inputs={getPropertyLoanArray({ loan, borrowers })}
           docId={loan._id}
-          updateFunc="updateLoan"
+          updateFunc="loanUpdate"
           pushFunc="pushLoanValue"
           popFunc="popLoanValue"
           doc={loan}
@@ -86,14 +68,12 @@ const PropertyPage = (props) => {
         <AutoForm
           inputs={getPropertyArray({ loan, borrowers, property })}
           docId={property._id}
-          updateFunc="updateProperty"
+          updateFunc="propertyUpdate"
           pushFunc="pushPropertyValue"
           popFunc="popPropertyValue"
           doc={property}
           disabled={disableForms({ loan })}
         />
-
-        {isDemo() && <FakePropertyCompleter loan={loan} />}
       </section>
     </ProcessPage>
   );

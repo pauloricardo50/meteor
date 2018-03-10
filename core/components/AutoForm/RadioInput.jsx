@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import cleanMethod from 'core/api/cleanMethods';
 
 import { T } from 'core/components/Translation';
 import RadioButtons from 'core/components/RadioButtons';
@@ -59,7 +58,8 @@ export default class RadioInput extends Component {
 
     // Save data to DB
     const object = { [this.props.inputProps.id]: safeValue };
-    cleanMethod(this.props.updateFunc, { object, id: this.props.docId })
+    this.props
+      .updateFunc({ object, id: this.props.docId })
       .then(() => this.setState({ saving: false }))
       .catch(() => this.setState({ saving: false }));
   };
@@ -119,7 +119,7 @@ RadioInput.propTypes = {
     PropTypes.number,
   ]),
   docId: PropTypes.string.isRequired,
-  updateFunc: PropTypes.string.isRequired,
+  updateFunc: PropTypes.func.isRequired,
   inputProps: PropTypes.shape({
     id: PropTypes.string.isRequired,
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,

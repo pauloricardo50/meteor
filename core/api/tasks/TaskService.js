@@ -78,7 +78,7 @@ class TaskService {
 
   remove = ({ taskId }) => Tasks.remove(taskId);
 
-  update = ({ taskId, task }) => Tasks.update(taskId, { $set: task });
+  update = ({ taskId, object }) => Tasks.update(taskId, { $set: object });
 
   complete = ({ taskId }) => {
     const task = Tasks.findOne(taskId);

@@ -23,7 +23,6 @@ import ClosingPage from '../../ui/pages/ClosingPage';
 import FinancePage from '../../ui/pages/FinancePage';
 import FilesPage from '../../ui/pages/FilesPage';
 
-import ComparePage from '../../ui/pages/ComparePage';
 import AppPage from '../../ui/pages/AppPage';
 import AccountPage from '../../ui/pages/AccountPage';
 import AddLoanPage from '../../ui/pages/AddLoanPage';
@@ -91,7 +90,6 @@ const AppRouter = () => (
           component={LoanContainer(FilesPage)}
         />
         <Route path="/loans/:loanId" component={LoanContainer(DashboardPage)} />
-        <Route path="/compare" component={ComparePage} />
         <Route path="/add-loan/:loanId" component={AddLoanPage} />
         <Route path="/enroll-account/:token" component={PasswordResetpage} />
         <Route exact path="/" component={AppPage} />
