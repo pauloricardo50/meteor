@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import Security from '../../security';
 import Users from '../../users';
+import Security from '../../security';
 
 export default class ImpersonateService {
   /**
@@ -10,7 +10,7 @@ export default class ImpersonateService {
    * @param {*} authToken The token received from client
    * @param {*} userIdToImpersonate
    */
-  static impersonate(context, authToken, userIdToImpersonate) {
+  static impersonate({ context, authToken, userIdToImpersonate }) {
     const user = this._findUserByToken(authToken);
 
     if (user) {
@@ -20,6 +20,7 @@ export default class ImpersonateService {
     }
 
     context.setUserId(userIdToImpersonate);
+    return Users.findOne(userIdToImpersonate);
   }
 
   static _throwNotAuthorized() {
@@ -41,13 +42,9 @@ export default class ImpersonateService {
     const hashedToken = Accounts._hashLoginToken(authToken);
 
     return Users.findOne(
-      {
-        'services.resume.loginTokens.hashedToken': hashedToken,
-      },
-      {
-        // We just need to check the validity, no need for other data
-        fields: { _id: 1 },
-      },
+      { 'services.resume.loginTokens.hashedToken': hashedToken },
+      // We just need to check the validity, no need for other data
+      { fields: { _id: 1 } },
     );
   }
 }

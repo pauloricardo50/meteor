@@ -5,3 +5,4 @@ export * from '../borrowers/methodDefinitions';
 export * from '../offers/methodDefinitions';
 export * from '../properties/methodDefinitions';
 export * from '../tasks/methodDefinitions';
+export * from '../impersonation/defs';

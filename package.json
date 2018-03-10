@@ -7,7 +7,8 @@
     "format": "prettier-eslint \"**/*.js*\" --write --eslint-config-path .eslintrc.js",
     "setup": "cd scripts/ && ./setup.sh",
     "setup-clean": "cd scripts/ && ./setup.sh -c",
-    "run": "cd scripts/ && ./run.sh"
+    "run": "cd scripts/ && ./run.sh",
+    "lang": "cd scripts/ && babel-node createLanguages.js"
   },
   "repository": {
     "type": "git",

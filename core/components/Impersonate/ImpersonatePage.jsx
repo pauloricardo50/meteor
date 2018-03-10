@@ -6,8 +6,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 
-import { callMutation } from 'core/api';
-import { IMPERSONATE_USER } from 'core/api/impersonation/defs';
+import { impersonateUser } from 'core/api';
 import { IMPERSONATE_SESSION_KEY } from 'core/api/impersonation/impersonation';
 
 class ImpersonatePage extends Component {
@@ -18,23 +17,22 @@ class ImpersonatePage extends Component {
   };
 
   componentDidMount = () => {
-    const { location, history } = this.props;
+    const { location, history, intl: { formatMessage } } = this.props;
     const paramsQuery = new URLSearchParams(location.search);
     const userId = paramsQuery.get('userId');
     const authToken = paramsQuery.get('authToken');
 
-    callMutation(IMPERSONATE_USER, {
-      userId,
-      authToken,
-    }).then(() => {
+    impersonateUser.run({ userId, authToken }).then(({ emails }) => {
       Meteor.connection.setUserId(userId);
       Session.setPersistent(IMPERSONATE_SESSION_KEY, true);
+      console.log('email:', emails[0].address);
 
       Bert.alert({
         title: 'Success!',
-        message: `<h3 class="bert">${this.props.intl.formatMessage({
-          id: 'Impersonation.impersonationSuccess',
-        })}</h3>`,
+        message: `<h3 class="bert">${formatMessage(
+          { id: 'Impersonation.impersonationSuccess' },
+          { email: emails[0].address },
+        )}</h3>`,
         type: 'success',
         style: 'fixed-top',
       });
@@ -44,7 +42,7 @@ class ImpersonatePage extends Component {
   };
 
   render() {
-    return <div>Impersonating.....</div>;
+    return <div>Impersonating...</div>;
   }
 }
 
