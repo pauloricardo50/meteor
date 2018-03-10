@@ -6,17 +6,18 @@ import {
   taskComplete,
   taskCompleteByType,
   taskChangeStatus,
-  taskChangeUser,
+  taskChangeAssignedTo,
+  taskGetRelatedTo,
 } from '../methodDefinitions';
 
-taskInsert.setHandler(({ type, loanId }) => {
+taskInsert.setHandler(({ type }) => {
   SecurityService.tasks.isAllowedToInsert();
-  return TaskService.insert({ type, loanId });
+  return TaskService.insert({ type });
 });
 
-taskUpdate.setHandler(({ taskId, object }) => {
+taskUpdate.setHandler(({ taskId, task }) => {
   SecurityService.tasks.isAllowedToUpdate();
-  return TaskService.insert({ taskId, object });
+  return TaskService.insert({ taskId, task });
 });
 
 taskComplete.setHandler(({ taskId }) => {
@@ -34,7 +35,12 @@ taskChangeStatus.setHandler(({ taskId, newStatus }) => {
   return TaskService.changeStatus({ taskId, newStatus });
 });
 
-taskChangeUser.setHandler(({ taskId, newUser }) => {
+taskChangeAssignedTo.setHandler(({ taskId, newAssignee }) => {
   SecurityService.tasks.isAllowedToUpdate(taskId);
-  return TaskService.changeUser({ taskId, newUser });
+  return TaskService.changeAssignedTo({ taskId, newAssignee });
+});
+
+taskGetRelatedTo.setHandler(({ task }) => {
+  SecurityService.tasks.isAllowedToUpdate(task._id);
+  return TaskService.getRelatedTo({ task });
 });

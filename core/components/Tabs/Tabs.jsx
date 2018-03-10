@@ -24,7 +24,7 @@ class Tabs extends Component {
   handleChange = (event, value) => this.setState({ value });
 
   render() {
-    const { classes, tabs } = this.props;
+    const { classes, tabs, ...otherProps } = this.props;
 
     return (
       <div>
@@ -35,6 +35,7 @@ class Tabs extends Component {
             indicatorColor="primary"
             textColor="primary"
             centered
+            {...otherProps}
           >
             {tabs.map((tab, i) => <Tab label={tab.label} key={i} />)}
           </MuiTabs>

@@ -1,3 +1,6 @@
+import 'core/fixtures/methods';
+// generateTestData
+
 import './adminActions/server/publications';
 import './adminActions/server/methods';
 
@@ -35,11 +38,14 @@ import './email/server';
 
 import './events/registerListeners';
 
+import './links';
+
 // Exposures
 import './loans/queries/exposures';
 import './users/queries/exposures';
 import './tasks/queries/exposures';
 import './borrowers/queries/exposures';
+import './properties/queries/exposures';
 
 import { Loans, Borrowers, Offers, Properties } from '.';
 

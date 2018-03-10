@@ -17,6 +17,8 @@ export default class MixpanelAnalytics extends Component {
   }
 
   getData = () => {
+    console.log('mixpanel props :', this.props);
+
     const { loan: { userId } } = this.props;
     return getMixpanelData(userId)
       .then((data) => {
@@ -46,7 +48,10 @@ export default class MixpanelAnalytics extends Component {
       return <h4>Loading...</h4>;
     }
 
-    console.log('Grouped Events:', groupedEvents);
+    if (events.length === 0) {
+      return <h3>Pas d'analytics pour l'instant</h3>;
+    }
+
     return <MixpanelEventList events={events} groupedEvents={groupedEvents} />;
   }
 }

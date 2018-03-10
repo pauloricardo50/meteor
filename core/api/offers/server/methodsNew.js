@@ -4,7 +4,7 @@ import { SecurityService } from '../..';
 import OfferService from '../OfferService';
 import { offerInsert, offerUpdate, offerDelete } from '../methodDefinitions';
 
-offerInsert.setHandler(({ object, userId }) => {
+offerInsert.setHandler(({ offer, userId }) => {
   const userIdIsDefined = userId !== undefined;
   if (userIdIsDefined) {
     SecurityService.checkCurrentUserIsAdmin();
@@ -13,14 +13,14 @@ offerInsert.setHandler(({ object, userId }) => {
   }
 
   return OfferService.insert({
-    object,
+    offer,
     userId: userIdIsDefined ? userId : Meteor.userId(),
   });
 });
 
-offerUpdate.setHandler(({ offerId, object }) => {
+offerUpdate.setHandler(({ offerId, offer }) => {
   SecurityService.offers.isAllowedToUpdate(offerId);
-  return OfferService.update({ offerId, object });
+  return OfferService.update({ offerId, offer });
 });
 
 offerDelete.setHandler(({ offerId }) => {

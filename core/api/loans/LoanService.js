@@ -5,7 +5,12 @@ import { LOAN_STATUS, AUCTION_STATUS } from '../constants';
 import { getAuctionEndTime } from '../../utils/loanFunctions';
 
 class LoanServiceModel {
-  insert = ({ object, userId }) => Loans.insert({ ...object, userId });
+  insert = ({ loan, userId }) =>
+    Loans.insert({
+      ...loan,
+      // Do this to allow userId to be null
+      userId,
+    });
 
   update = ({ loanId, object }) => Loans.update(loanId, { $set: object });
 

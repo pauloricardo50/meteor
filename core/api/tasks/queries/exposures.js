@@ -1,1 +1,3 @@
-import './tasksList.expose';
+import './tasks.expose';
+import './unassignedTasks.expose';
+import './loanTasks.expose';

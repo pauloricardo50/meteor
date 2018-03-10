@@ -1,4 +1,4 @@
-import query from 'core/api/loans/queries/adminLoanView';
+import query from 'core/api/loans/queries/adminLoan';
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
 import SingleLoanPage from './SingleLoanPage';
 

@@ -24,3 +24,7 @@ export const EXPERTISE_RATING = {
   2: 2,
   3: 3,
 };
+
+export const PROPERTY_QUERIES = {
+  PROPERTY_ASSIGNED_TO: 'PROPERTY_ASSIGNED_TO',
+};

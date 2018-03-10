@@ -5,6 +5,11 @@ import PropTypes from 'prop-types';
 import LoanTabs from './LoanTabs';
 
 export default class SingleLoanPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { serverTime: new Date() };
+  }
+
   componentDidMount() {
     Meteor.call('getServerTime', (e, res) => {
       this.setState({ serverTime: res });
@@ -12,6 +17,8 @@ export default class SingleLoanPage extends Component {
   }
 
   render() {
+    console.log('Single loan page props:', this.props);
+
     const { data, isLoading } = this.props;
     const loan = data;
 
@@ -20,12 +27,12 @@ export default class SingleLoanPage extends Component {
     const dataToPassDown = {
       ...this.props,
       loan,
-      property: loan.propertyLink,
-      borrowers: loan.borrowersLink,
+      property: loan.property,
+      borrowers: loan.borrowers,
     };
 
     return (
-      <section>
+      <section className="single-loan-page">
         <LoanTabs
           {...dataToPassDown}
           serverTime={this.state.serverTime}
@@ -35,6 +42,7 @@ export default class SingleLoanPage extends Component {
     );
   }
 }
+
 SingleLoanPage.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   isLoading: PropTypes.bool.isRequired,

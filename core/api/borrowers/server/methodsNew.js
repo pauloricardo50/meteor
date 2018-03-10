@@ -8,7 +8,7 @@ import {
   borrowerDelete,
 } from '../methodDefinitions';
 
-borrowerInsert.setHandler((context, { object, userId }) => {
+borrowerInsert.setHandler((context, { borrower, userId }) => {
   const userIdIsDefined = userId !== undefined;
   if (userIdIsDefined) {
     SecurityService.checkCurrentUserIsAdmin();
@@ -17,14 +17,14 @@ borrowerInsert.setHandler((context, { object, userId }) => {
   }
 
   return BorrowerService.insert({
-    object,
+    borrower,
     userId: userIdIsDefined ? userId : Meteor.userId(),
   });
 });
 
-borrowerUpdate.setHandler((context, { borrowerId, object }) => {
+borrowerUpdate.setHandler((context, { borrowerId, borrower }) => {
   SecurityService.borrowers.isAllowedToUpdate(borrowerId);
-  return BorrowerService.update({ borrowerId, object });
+  return BorrowerService.update({ borrowerId, borrower });
 });
 
 borrowerDelete.setHandler((context, { borrowerId }) => {

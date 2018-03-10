@@ -4,7 +4,7 @@ import { Method } from '../methods/methods';
 export const taskInsert = new Method({
   name: 'taskInsert',
   params: {
-    loanId: String,
+    // loanId: String,
     type: String,
   },
 });
@@ -41,10 +41,17 @@ export const taskChangeStatus = new Method({
   },
 });
 
-export const taskChangeUser = new Method({
-  name: 'taskChangeUser',
+export const taskChangeAssignedTo = new Method({
+  name: 'taskChangeAssignedTo',
   params: {
     taskId: String,
-    newUser: String,
+    newAssignee: String,
+  },
+});
+
+export const taskGetRelatedTo = new Method({
+  name: 'taskGetRelatedTo',
+  params: {
+    task: Object,
   },
 });

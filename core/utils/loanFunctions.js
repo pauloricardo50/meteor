@@ -368,3 +368,13 @@ export const getAuctionEndTime = (startTime) => {
 
   return time.toDate();
 };
+
+export const loanIsVerified = ({
+  loan: { logic: { verification: { validated } } },
+}) => {
+  if (validated !== undefined) {
+    return true;
+  }
+
+  return false;
+};

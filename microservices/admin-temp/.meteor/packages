@@ -52,6 +52,9 @@ check@1.2.5                    # variable type verification for server side vali
 session@1.1.7                  # Lets you use Session variables
 aldeed:collection2-core
 edgee:slingshot
+cultofcoders:grapher
+cultofcoders:grapher-react
+cultofcoders:mutations
 vsivsi:job-collection
 
 
@@ -72,6 +75,4 @@ dburles:google-maps
 meteorhacks:kadira
 okgrow:analytics@=3.0.1
 softwarerero:accounts-t9n
-cultofcoders:grapher
-cultofcoders:grapher-react
-cultofcoders:mutations
+

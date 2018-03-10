@@ -52,10 +52,10 @@ check@1.2.5                    # variable type verification for server side vali
 session@1.1.7                  # Lets you use Session variables
 aldeed:collection2-core
 edgee:slingshot
-vsivsi:job-collection
 cultofcoders:grapher
 cultofcoders:grapher-react
 cultofcoders:mutations
+vsivsi:job-collection
 
 # UI tricks
 kadira:dochead                  # Set custom page titles easily

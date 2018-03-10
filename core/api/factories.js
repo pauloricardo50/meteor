@@ -84,11 +84,6 @@ Factory.define('offer', Offers, {
   }),
 });
 
-Factory.define('adminAction', AdminActions, {
-  type: 'test',
-  status: 'ACTIVE',
-});
-
 Factory.define('comparator', Comparators, {
   customFields: [],
   customFieldCount: 0,

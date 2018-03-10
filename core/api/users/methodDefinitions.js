@@ -14,3 +14,21 @@ export const sendVerificationLink = new Method({
     userId: Match.Optional(String),
   },
 });
+
+export const assignAdminToUser = new Method({
+  name: 'assignAdminToUser',
+  params: {
+    userId: String,
+    adminId: String,
+  },
+});
+
+export const assignAdminToNewUser = new Method({
+  name: 'assignAdminToNewUser',
+  params: {
+    userId: String,
+    adminId: String,
+    taskId: String,
+    taskType: String,
+  },
+});

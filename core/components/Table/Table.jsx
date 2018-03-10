@@ -9,15 +9,20 @@ import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 import TableFooter from './TableFooter';
 
+const ORDER = {
+  ASC: 'asc',
+  DESC: 'desc',
+};
+
 export default class Table extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
       selected: [],
-      order: 'asc',
+      order: ORDER.ASC,
       orderBy: 0,
-      rowsPerPage: 10,
+      rowsPerPage: 40,
       page: 0,
     };
   }
@@ -63,19 +68,28 @@ export default class Table extends Component {
   };
 
   handleSort = (columnNb) => {
-    const orderBy = columnNb;
-    let order = 'desc';
+    const { data, order, orderBy } = this.state;
+    const newOrderBy = columnNb;
+    let isReversed;
 
-    if (this.state.orderBy === orderBy && this.state.order === 'desc') {
-      order = 'asc';
+    if (orderBy === newOrderBy) {
+      // Clicked a second time, reverse order
+      isReversed = order === ORDER.ASC;
+    } else {
+      // Initial order
+      isReversed = false;
     }
 
-    const data =
-      order === 'desc'
-        ? this.state.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
-        : this.state.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1));
+    const sortedData = data.sort((a, b) => (b.columns[newOrderBy] > a.columns[newOrderBy] ? 1 : -1));
+    const sortedDataInCorrectOrder = isReversed
+      ? sortedData.slice().reverse()
+      : sortedData;
 
-    this.setState({ data, order, orderBy });
+    this.setState({
+      data: sortedDataInCorrectOrder,
+      order: isReversed ? ORDER.DESC : ORDER.ASC,
+      orderBy: newOrderBy,
+    });
   };
 
   handleSelect = (rowId) => {
@@ -157,7 +171,7 @@ export default class Table extends Component {
             rowsPerPage={rowsPerPage}
             clickable={clickable}
           />
-          {rowCount > 20 && (
+          {rowCount > rowsPerPage && (
             <TableFooter
               rowCount={rowCount}
               rowsPerPage={rowsPerPage}
