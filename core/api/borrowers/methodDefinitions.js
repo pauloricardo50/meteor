@@ -4,7 +4,7 @@ import { Method } from '../methods/methods';
 export const borrowerInsert = new Method({
   name: 'borrowerInsert',
   params: {
-    object: Object,
+    borrower: Object,
     userId: Match.Optional(String),
   },
 });
@@ -13,7 +13,7 @@ export const borrowerUpdate = new Method({
   name: 'borrowerUpdate',
   params: {
     borrowerId: String,
-    object: Object,
+    borrower: Object,
   },
 });
 

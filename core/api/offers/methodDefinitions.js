@@ -4,7 +4,7 @@ import { Method } from '../methods/methods';
 export const offerInsert = new Method({
   name: 'offerInsert',
   params: {
-    object: Object,
+    offer: Object,
     userId: Match.Optional(String),
     loanId: String,
   },
@@ -14,7 +14,7 @@ export const offerUpdate = new Method({
   name: 'offerUpdate',
   params: {
     offerId: String,
-    object: Object,
+    offer: Object,
   },
 });
 

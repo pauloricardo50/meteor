@@ -4,7 +4,6 @@ import { Method } from '../methods/methods';
 export const taskInsert = new Method({
   name: 'taskInsert',
   params: {
-    // loanId: String,
     type: String,
   },
 });
@@ -13,7 +12,7 @@ export const taskUpdate = new Method({
   name: 'taskUpdate',
   params: {
     taskId: String,
-    object: Object,
+    task: Object,
   },
 });
 

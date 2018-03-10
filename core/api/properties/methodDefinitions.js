@@ -4,7 +4,7 @@ import { Method } from '../methods/methods';
 export const propertyInsert = new Method({
   name: 'propertyInsert',
   params: {
-    object: Object,
+    property: Object,
     userId: Match.Optional(String),
   },
 });
@@ -13,7 +13,7 @@ export const propertyUpdate = new Method({
   name: 'propertyUpdate',
   params: {
     propertyId: String,
-    object: Object,
+    property: Object,
   },
 });
 
