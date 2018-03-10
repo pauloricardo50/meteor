@@ -59,8 +59,9 @@ export default class TasksTable extends Component {
       moment(task.updatedAt).format('D MMM YY à HH:mm:ss'),
       moment(task.dueAt).format('D MMM YY à HH:mm:ss'),
       moment(task.completedAt).format('D MMM YY à HH:mm:ss'),
-      (task.user && (task.user.username || task.user.emails[0].address.toString()))
-      || '',
+      (task.user &&
+        (task.user.username || task.user.emails[0].address.toString())) ||
+        '',
       // TODO: also check& add other related docs
     ];
     if (props.showAssignee) {

@@ -56,9 +56,7 @@ const getMenuItems = (currentUser, history) => {
           // eslint-disable-next-line
           Session.clear(IMPERSONATE_SESSION_KEY);
 
-          return window.location.replace(
-            `${Meteor.settings.public.subdomains.www}`,
-          );
+          return window.location.replace(`${Meteor.settings.public.subdomains.www}`);
         });
       },
       link: '/',
@@ -69,7 +67,7 @@ const getMenuItems = (currentUser, history) => {
   ];
 };
 
-const TopNavDropdown = props => {
+const TopNavDropdown = (props) => {
   const { currentUser, history } = props;
 
   return (
