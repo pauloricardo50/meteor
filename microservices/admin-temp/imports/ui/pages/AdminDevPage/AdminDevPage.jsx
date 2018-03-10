@@ -17,7 +17,7 @@ const addVerifyingLoan = () => {
     },
     admin: {},
   };
-  cleanMethod('insertLoan', { object });
+  cleanMethod('loanInsert', { object });
 };
 
 const AdminDev = () => (

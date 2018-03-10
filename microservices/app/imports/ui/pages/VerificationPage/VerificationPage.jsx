@@ -15,7 +15,7 @@ export default class VerificationPage extends Component {
     if (isDemo()) {
       const object = {};
       object['logic.verification.validated'] = true;
-      cleanMethod('updateLoan', { object, id: this.props.loan._id });
+      cleanMethod('loanUpdate', { object, id: this.props.loan._id });
     } else {
       cleanMethod('loanVerification', {
         id: this.props.loan._id,

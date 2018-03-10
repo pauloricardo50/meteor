@@ -11,11 +11,11 @@ import { fakeProperty } from 'core/api/properties/fakes';
 const addStep1Loan = (twoBorrowers) => {
   const borrowerIds = [];
 
-  cleanMethod('insertBorrower', { object: completeFakeBorrower })
+  cleanMethod('borrowerInsert', { object: completeFakeBorrower })
     .then((id1) => {
       borrowerIds.push(id1);
       return twoBorrowers
-        ? cleanMethod('insertBorrower', {
+        ? cleanMethod('borrowerInsert', {
           object: completeFakeBorrower,
         })
         : false;
@@ -25,13 +25,13 @@ const addStep1Loan = (twoBorrowers) => {
         borrowerIds.push(id2);
       }
 
-      return cleanMethod('insertProperty', { object: fakeProperty });
+      return cleanMethod('propertyInsert', { object: fakeProperty });
     })
     .then((propertyId) => {
       const loan = loanStep1;
       loan.borrowers = borrowerIds;
       loan.property = propertyId;
-      cleanMethod('insertLoan', { object: loan });
+      cleanMethod('loanInsert', { object: loan });
     })
     .catch(console.log);
 };
@@ -39,11 +39,11 @@ const addStep1Loan = (twoBorrowers) => {
 const addStep2Loan = (twoBorrowers) => {
   const borrowerIds = [];
 
-  cleanMethod('insertBorrower', { object: completeFakeBorrower })
+  cleanMethod('borrowerInsert', { object: completeFakeBorrower })
     .then((id1) => {
       borrowerIds.push(id1);
       return twoBorrowers
-        ? cleanMethod('insertBorrower', {
+        ? cleanMethod('borrowerInsert', {
           object: completeFakeBorrower,
         })
         : false;
@@ -53,13 +53,13 @@ const addStep2Loan = (twoBorrowers) => {
         borrowerIds.push(id2);
       }
 
-      return cleanMethod('insertProperty', { object: fakeProperty });
+      return cleanMethod('propertyInsert', { object: fakeProperty });
     })
     .then((propertyId) => {
       const loan = loanStep2;
       loan.borrowers = borrowerIds;
       loan.property = propertyId;
-      cleanMethod('insertLoan', { object: loan });
+      cleanMethod('loanInsert', { object: loan });
     })
     .catch(console.log);
 };
@@ -68,11 +68,11 @@ const addStep3Loan = (twoBorrowers, completeFiles = true) => {
   const borrowerIds = [];
   const loan = loanStep3(completeFiles);
   let loanId;
-  cleanMethod('insertBorrower', { object: completeFakeBorrower })
+  cleanMethod('borrowerInsert', { object: completeFakeBorrower })
     .then((id1) => {
       borrowerIds.push(id1);
       return twoBorrowers
-        ? cleanMethod('insertBorrower', {
+        ? cleanMethod('borrowerInsert', {
           object: completeFakeBorrower,
         })
         : false;
@@ -82,13 +82,13 @@ const addStep3Loan = (twoBorrowers, completeFiles = true) => {
         borrowerIds.push(id2);
       }
 
-      return cleanMethod('insertProperty', { object: fakeProperty });
+      return cleanMethod('propertyInsert', { object: fakeProperty });
     })
     .then((propertyId) => {
       loan.borrowers = borrowerIds;
       loan.property = propertyId;
     })
-    .then(() => cleanMethod('insertLoan', { object: loan }))
+    .then(() => cleanMethod('loanInsert', { object: loan }))
     .then((id) => {
       loanId = id;
       const object = getRandomOffer(
@@ -98,7 +98,7 @@ const addStep3Loan = (twoBorrowers, completeFiles = true) => {
       return cleanMethod('insertAdminOffer', { object });
     })
     .then(offerId =>
-      cleanMethod('updateLoan', {
+      cleanMethod('loanUpdate', {
         object: {
           'logic.lender.offerId': offerId,
           'logic.lender.chosenTime': new Date(),
@@ -113,10 +113,10 @@ const addStep3Loan = (twoBorrowers, completeFiles = true) => {
 };
 
 const purge = ({ loans, borrowers, offers, properties }) => {
-  loans.forEach(r => cleanMethod('deleteLoan', { id: r._id }));
-  borrowers.forEach(r => cleanMethod('deleteBorrower', { id: r._id }));
+  loans.forEach(r => cleanMethod('loanDelete', { id: r._id }));
+  borrowers.forEach(r => cleanMethod('borrowerDelete', { id: r._id }));
   offers.forEach(r => cleanMethod('deleteOffer', { id: r._id }));
-  properties.forEach(r => cleanMethod('deleteProperty', { id: r._id }));
+  properties.forEach(r => cleanMethod('propertyDelete', { id: r._id }));
 };
 
 export default class DevPage extends Component {

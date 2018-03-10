@@ -16,7 +16,7 @@ import {
 } from '../../constants';
 
 // export const insertLoan = new ValidatedMethod({
-//   name: 'insertLoan',
+//   name: 'loanInsert',
 //   mixins: [CallPromiseMixin],
 //   validate() {},
 //   run({ object, userId }) {
@@ -41,8 +41,8 @@ import {
 // });
 
 // // Lets you set an entire object in the document
-// export const updateLoan = new ValidatedMethod({
-//   name: 'updateLoan',
+// export const loanUpdate = new ValidatedMethod({
+//   name: 'loanUpdate',
 //   mixins: [CallPromiseMixin],
 //   validate({ id }) {
 //     check(id, String);
@@ -195,7 +195,7 @@ export const popLoanValue = new ValidatedMethod({
 // });
 
 // export const deleteLoan = new ValidatedMethod({
-//   name: 'deleteLoan',
+//   name: 'loanDelete',
 //   mixins: [CallPromiseMixin],
 //   validate({ id }) {
 //     check(id, String);
@@ -393,7 +393,7 @@ export const popLoanValue = new ValidatedMethod({
 // rateLimit({
 //   methods: [
 //     insertLoan,
-//     updateLoan,
+//     loanUpdate,
 //     incrementStep,
 //     startAuction,
 //     pushLoanValue,

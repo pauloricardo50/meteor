@@ -22,9 +22,9 @@ borrowerInsert.setHandler((context, { borrower, userId }) => {
   });
 });
 
-borrowerUpdate.setHandler((context, { borrowerId, borrower }) => {
+borrowerUpdate.setHandler((context, { borrowerId, object }) => {
   SecurityService.borrowers.isAllowedToUpdate(borrowerId);
-  return BorrowerService.update({ borrowerId, borrower });
+  return BorrowerService.update({ borrowerId, object });
 });
 
 borrowerDelete.setHandler((context, { borrowerId }) => {

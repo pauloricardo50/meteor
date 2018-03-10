@@ -12,7 +12,7 @@ export default class ClosingVerification extends Component {
     const steps = loan.logic.closingSteps;
     const step = steps.find(s => s.id === id);
 
-    cleanMethod('updateLoan', {
+    cleanMethod('loanUpdate', {
       object: {
         'logic.closingSteps': [
           ...steps.filter(s => s.id !== id),
@@ -28,7 +28,7 @@ export default class ClosingVerification extends Component {
     const steps = loan.logic.closingSteps;
     const step = steps.find(s => s.id === id);
 
-    cleanMethod('updateLoan', {
+    cleanMethod('loanUpdate', {
       object: {
         'logic.closingSteps': [
           ...steps.filter(s => s.id !== id),

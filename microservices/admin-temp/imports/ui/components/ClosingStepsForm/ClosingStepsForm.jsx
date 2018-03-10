@@ -59,7 +59,7 @@ export default class ClosingStepsForm extends Component {
     }));
 
   handleSave = () =>
-    cleanMethod('updateLoan', {
+    cleanMethod('loanUpdate', {
       object: { 'logic.closingSteps': this.state.closingSteps },
       id: this.props.loan._id,
     });

@@ -12,7 +12,7 @@ export const taskUpdate = new Method({
   name: 'taskUpdate',
   params: {
     taskId: String,
-    task: Object,
+    object: Object,
   },
 });
 

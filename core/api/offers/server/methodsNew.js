@@ -18,9 +18,9 @@ offerInsert.setHandler((context, { offer, userId }) => {
   });
 });
 
-offerUpdate.setHandler((context, { offerId, offer }) => {
+offerUpdate.setHandler((context, { offerId, object }) => {
   SecurityService.offers.isAllowedToUpdate(offerId);
-  return OfferService.update({ offerId, offer });
+  return OfferService.update({ offerId, object });
 });
 
 offerDelete.setHandler((context, { offerId }) => {

@@ -115,7 +115,7 @@ const getForm = (props, value, modify) => {
           key={`${value}1`}
           inputs={getPropertyLoanArray(props)}
           docId={props.loan._id}
-          updateFunc="updateLoan"
+          updateFunc="loanUpdate"
           pushFunc="pushLoanValue"
           popFunc="popLoanValue"
           doc={props.loan}
@@ -127,7 +127,7 @@ const getForm = (props, value, modify) => {
           key={`${value}2`}
           inputs={getPropertyArray(props)}
           docId={props.property._id}
-          updateFunc="updateProperty"
+          updateFunc="propertyUpdate"
           pushFunc="pushPropertyValue"
           popFunc="popPropertyValue"
           doc={props.property}

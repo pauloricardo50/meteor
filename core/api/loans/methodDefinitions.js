@@ -13,7 +13,7 @@ export const loanUpdate = new Method({
   name: 'loanUpdate',
   params: {
     loanId: String,
-    loan: Object,
+    object: Object,
   },
 });
 

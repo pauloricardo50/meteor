@@ -28,7 +28,7 @@ export default class NewLoanModal extends Component {
     const object = { name: this.state.value };
 
     cleanMethod(
-      'updateLoan',
+      'loanUpdate',
       { object, id: this.props.loanId },
       {
         title: `C'est parti pour ${this.state.value}`,

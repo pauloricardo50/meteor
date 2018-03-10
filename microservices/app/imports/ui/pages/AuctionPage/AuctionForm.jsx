@@ -43,7 +43,7 @@ export default class AuctionForm extends Component {
       const object = {
         'general.wantedClosingDate': '',
       };
-      cleanMethod('updateLoan', { object, id: this.props.loan._id });
+      cleanMethod('loanUpdate', { object, id: this.props.loan._id });
     }
   }
 
@@ -53,7 +53,7 @@ export default class AuctionForm extends Component {
         inputs={getFormArray(this.props.loan, this.props.serverTime)}
         formClasses="user-form"
         docId={this.props.loan._id}
-        updateFunc="updateLoan"
+        updateFunc="loanUpdate"
         pushFunc="pushLoanValue"
         popFunc="popLoanValue"
         doc={this.props.loan}

@@ -192,7 +192,7 @@ Uploader.propTypes = {
 Uploader.defaultProps = {
   currentValue: [],
   pushFunc: 'pushLoanValue',
-  updateFunc: 'updateLoan',
+  updateFunc: 'loanUpdate',
   collection: 'loans',
 };
 

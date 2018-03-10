@@ -77,7 +77,7 @@ const ActionsTab = (props) => {
         label="Supprimer la demande"
         keyword="SUPPRIMER"
         method={cb =>
-          cleanMethod('deleteLoan', { id: loan._id })
+          cleanMethod('loanDelete', { id: loan._id })
             .then(cb)
             .catch((err) => {
               if (!err) {
@@ -97,7 +97,7 @@ const ActionsTab = (props) => {
             array={[{ id: 'contract' }]}
             docId={loan._id}
             pushFunc="pushLoanValue"
-            updateFunc="updateLoan"
+            updateFunc="loanUpdate"
             collection="loans"
             filesObject={loan.files}
             filesObjectSelector="files"

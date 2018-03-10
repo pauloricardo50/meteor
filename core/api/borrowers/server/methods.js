@@ -8,7 +8,7 @@ import rateLimit from '../../../utils/rate-limit.js';
 import Borrowers from '../borrowers';
 
 // export const insertBorrower = new ValidatedMethod({
-//   name: 'insertBorrower',
+//   name: 'borrowerInsert',
 //   mixins: [CallPromiseMixin],
 //   validate() {},
 //   run({ object, userId }) {
@@ -57,7 +57,7 @@ export const popBorrowerValue = new ValidatedMethod({
 });
 
 // export const deleteBorrower = new ValidatedMethod({
-//   name: 'deleteBorrower',
+//   name: 'borrowerDelete',
 //   mixins: [CallPromiseMixin],
 //   validate({ id }) {
 //     check(id, String);

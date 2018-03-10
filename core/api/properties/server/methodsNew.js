@@ -22,9 +22,9 @@ propertyInsert.setHandler((context, { property, userId }) => {
   });
 });
 
-propertyUpdate.setHandler((context, { propertyId, property }) => {
+propertyUpdate.setHandler((context, { propertyId, object }) => {
   SecurityService.properties.isAllowedToUpdate(propertyId);
-  return PropertyService.update({ propertyId, property });
+  return PropertyService.update({ propertyId, object });
 });
 
 propertyDelete.setHandler((context, { propertyId }) => {

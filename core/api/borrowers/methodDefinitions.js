@@ -13,7 +13,7 @@ export const borrowerUpdate = new Method({
   name: 'borrowerUpdate',
   params: {
     borrowerId: String,
-    borrower: Object,
+    object: Object,
   },
 });
 

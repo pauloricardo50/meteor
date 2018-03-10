@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
 
-import { FileVerificatorContainer } from './FileVerificatorContainer';
+import FileVerificatorContainer from './FileVerificatorContainer';
 import ItemVerificator from './ItemVerificator';
 
 class FileVerificator extends Component {

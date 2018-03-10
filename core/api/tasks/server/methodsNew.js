@@ -15,9 +15,9 @@ taskInsert.setHandler((context, { type }) => {
   return TaskService.insert({ type });
 });
 
-taskUpdate.setHandler((context, { taskId, task }) => {
+taskUpdate.setHandler((context, { taskId, object }) => {
   SecurityService.tasks.isAllowedToUpdate();
-  return TaskService.insert({ taskId, task });
+  return TaskService.insert({ taskId, object });
 });
 
 taskComplete.setHandler((context, { taskId }) => {

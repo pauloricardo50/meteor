@@ -20,7 +20,7 @@ export default class AcceptClosingModal extends Component {
     event.preventDefault();
 
     cleanMethod(
-      'updateLoan',
+      'loanUpdate',
       {
         object: { 'logic.acceptedClosing': true },
         id: this.props.loan._id,

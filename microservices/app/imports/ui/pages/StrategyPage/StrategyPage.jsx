@@ -38,7 +38,7 @@ const getComponents = (props, handleSave) => {
 
 export default class StrategyPage extends Component {
   handleSave = (object) => {
-    cleanMethod('updateLoan', { object, id: this.props.loan._id });
+    cleanMethod('loanUpdate', { object, id: this.props.loan._id });
   };
 
   render() {

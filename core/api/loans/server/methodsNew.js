@@ -29,9 +29,9 @@ loanInsert.setHandler((context, { loan, userId }) => {
   });
 });
 
-loanUpdate.setHandler((context, { loanId, loan }) => {
+loanUpdate.setHandler((context, { loanId, object }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
-  return LoanService.update({ loanId, loan });
+  return LoanService.update({ loanId, object });
 });
 
 loanDelete.setHandler((context, { loanId }) => {

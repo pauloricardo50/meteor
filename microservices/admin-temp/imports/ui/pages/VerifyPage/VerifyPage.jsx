@@ -51,7 +51,7 @@ export default class VerifyPage extends Component {
       'logic.verification.validated': this.state.validated,
     };
 
-    cleanMethod('updateLoan', {
+    cleanMethod('loanUpdate', {
       object,
       id: this.props.loan._id,
     }).then(() => {

@@ -21,7 +21,7 @@ const handleClick = (props, state) => {
   object['general.fortuneUsed'] = state.fortuneUsed;
   object['general.insuranceFortuneUsed'] = state.insuranceFortuneUsed;
 
-  cleanMethod('updateLoan', { object, id: props.loan._id }).then(() =>
+  cleanMethod('loanUpdate', { object, id: props.loan._id }).then(() =>
     track('validated structure', {}));
 };
 

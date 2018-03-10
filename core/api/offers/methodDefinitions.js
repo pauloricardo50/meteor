@@ -14,7 +14,7 @@ export const offerUpdate = new Method({
   name: 'offerUpdate',
   params: {
     offerId: String,
-    offer: Object,
+    object: Object,
   },
 });
 

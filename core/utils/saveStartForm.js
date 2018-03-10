@@ -64,19 +64,19 @@ const saveStartForm = (f, userId) => {
   };
 
   return (
-    cleanMethod('insertBorrower', { object: borrowerOne, userId })
+    cleanMethod('borrowerInsert', { object: borrowerOne, userId })
       .then(id1 => loan.borrowerIds.push(id1))
       .then(() =>
         !!multiple &&
-          cleanMethod('insertBorrower', {
+          cleanMethod('borrowerInsert', {
             object: borrowerTwo,
             userId,
           }))
       .then(id2 => !!id2 && loan.borrowerIds.push(id2))
-      .then(() => cleanMethod('insertProperty', { object: property, userId }))
+      .then(() => cleanMethod('propertyInsert', { object: property, userId }))
       .then((propertyId) => {
         loan.propertyId = propertyId;
-        return cleanMethod('insertLoan', { object: loan, userId });
+        return cleanMethod('loanInsert', { object: loan, userId });
       })
       // If no userId is provided, return the loanId
       .then(loanId => userId || loanId)

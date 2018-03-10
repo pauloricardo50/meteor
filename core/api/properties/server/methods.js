@@ -7,7 +7,7 @@ import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
 import Properties from '../properties';
 
 // export const insertProperty = new ValidatedMethod({
-//   name: 'insertProperty',
+//   name: 'propertyInsert',
 //   mixins: [CallPromiseMixin],
 //   validate({ object, userId }) {
 //     check(object, Object);
@@ -24,7 +24,7 @@ import Properties from '../properties';
 // });
 
 // export const deleteProperty = new ValidatedMethod({
-//   name: 'deleteProperty',
+//   name: 'propertyDelete',
 //   mixins: [CallPromiseMixin],
 //   validate({ id }) {
 //     check(id, String);
@@ -34,8 +34,8 @@ import Properties from '../properties';
 //   },
 // });
 
-// export const updateProperty = new ValidatedMethod({
-//   name: 'updateProperty',
+// export const propertyUpdate = new ValidatedMethod({
+//   name: 'propertyUpdate',
 //   mixins: [CallPromiseMixin],
 //   validate({ id, object }) {
 //     check(id, String);

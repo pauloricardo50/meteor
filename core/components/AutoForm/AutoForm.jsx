@@ -197,7 +197,7 @@ AutoForm.defaultProps = {
   loan: {},
   borrowers: [],
   fullWidth: false,
-  updateFunc: 'updateLoan',
+  updateFunc: 'loanUpdate',
   pushFunc: 'pushLoanValue',
   popFunc: 'popLoanValue',
   disabled: false,

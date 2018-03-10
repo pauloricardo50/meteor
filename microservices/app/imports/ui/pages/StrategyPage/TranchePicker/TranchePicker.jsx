@@ -69,7 +69,7 @@ class TranchePicker extends Component {
   };
 
   handleSave = () => {
-    cleanMethod('updateLoan', {
+    cleanMethod('loanUpdate', {
       object: {
         'general.loanTranches': this.state.tranches,
       },

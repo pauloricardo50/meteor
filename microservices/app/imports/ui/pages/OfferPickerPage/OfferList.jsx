@@ -46,7 +46,7 @@ const sortOffers = (offers, sort, isAscending) =>
   offers.sort((a, b) => (isAscending ? a[sort] - b[sort] : b[sort] - a[sort]));
 
 const handleSave = (id, type, loan) => {
-  cleanMethod('updateLoan', {
+  cleanMethod('loanUpdate', {
     object: {
       'logic.lender.offerId': id,
       'logic.lender.type': id ? type : undefined,
