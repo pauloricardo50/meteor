@@ -29,7 +29,7 @@ const Info = (props) => {
         inputs={getBorrowerInfoArray({ ...props, borrowerId })}
         formClasses="user-form"
         docId={borrowerId}
-        updateFunc="updateBorrower"
+        updateFunc="borrowerUpdate"
         pushFunc="pushBorrowerValue"
         popFunc="popBorrowerValue"
         doc={borrower}

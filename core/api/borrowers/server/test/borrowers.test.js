@@ -10,7 +10,7 @@ import Borrowers from '../../borrowers';
 
 import {
   insertBorrower,
-  updateBorrower,
+  borrowerUpdate,
   pushBorrowerValue,
   popBorrowerValue,
 } from '../methods';
@@ -49,10 +49,10 @@ describe('Borrowers', () => {
       });
     });
 
-    describe('updateBorrower', () => {
+    describe('borrowerUpdate', () => {
       it('Updates a borrower', () => {
         const object = { firstName: 'John' };
-        updateBorrower.call({ object, id: borrowerId });
+        borrowerUpdate.call({ object, id: borrowerId });
         const modifiedBorrower = Borrowers.findOne(borrowerId);
 
         expect(modifiedBorrower.firstName).to.equal('John');

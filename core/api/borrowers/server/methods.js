@@ -21,8 +21,8 @@ import Borrowers from '../borrowers';
 // });
 
 // Lets you set an entire object in the document
-// export const updateBorrower = new ValidatedMethod({
-//   name: 'updateBorrower',
+// export const borrowerUpdate = new ValidatedMethod({
+//   name: 'borrowerUpdate',
 //   mixins: [CallPromiseMixin],
 //   validate({ id }) {
 //     check(id, String);
@@ -74,7 +74,7 @@ export const popBorrowerValue = new ValidatedMethod({
 // rateLimit({
 //   methods: [
 //     insertBorrower,
-//     updateBorrower,
+//     borrowerUpdate,
 //     pushBorrowerValue,
 //     popBorrowerValue,
 //     deleteBorrower,

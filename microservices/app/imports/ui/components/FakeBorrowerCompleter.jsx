@@ -28,7 +28,7 @@ const handleCheat = (props) => {
 
   const finalObject = MergeRecursive(object, props.borrower);
 
-  cleanMethod('updateBorrower', {
+  cleanMethod('borrowerUpdate', {
     object: finalObject,
     id: props.borrower._id,
   }).then(() => location.reload());

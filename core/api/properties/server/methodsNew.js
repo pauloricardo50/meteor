@@ -8,7 +8,7 @@ import {
   propertyDelete,
 } from '../methodDefinitions';
 
-propertyInsert.setHandler((context, { object, userId }) => {
+propertyInsert.setHandler((context, { property, userId }) => {
   const userIdIsDefined = userId !== undefined;
   if (userIdIsDefined) {
     SecurityService.checkCurrentUserIsAdmin();
@@ -17,14 +17,14 @@ propertyInsert.setHandler((context, { object, userId }) => {
   }
 
   return PropertyService.insert({
-    object,
+    property,
     userId: userIdIsDefined ? userId : Meteor.userId(),
   });
 });
 
-propertyUpdate.setHandler((context, { propertyId, object }) => {
+propertyUpdate.setHandler((context, { propertyId, property }) => {
   SecurityService.properties.isAllowedToUpdate(propertyId);
-  return PropertyService.update({ propertyId, object });
+  return PropertyService.update({ propertyId, property });
 });
 
 propertyDelete.setHandler((context, { propertyId }) => {

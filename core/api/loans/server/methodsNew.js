@@ -15,7 +15,7 @@ import {
   loanChangeAdminNote,
 } from '../methodDefinitions';
 
-loanInsert.setHandler((context, { object, userId }) => {
+loanInsert.setHandler((context, { loan, userId }) => {
   const userIdIsDefined = userId !== undefined;
   if (userIdIsDefined) {
     SecurityService.checkCurrentUserIsAdmin();
@@ -24,7 +24,7 @@ loanInsert.setHandler((context, { object, userId }) => {
   }
 
   return LoanService.insert({
-    object,
+    loan,
     userId: userIdIsDefined ? userId : Meteor.userId(),
   });
 });

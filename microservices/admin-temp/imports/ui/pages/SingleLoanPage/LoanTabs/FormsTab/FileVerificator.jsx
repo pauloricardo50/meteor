@@ -38,7 +38,7 @@ export default class FileVerificator extends Component {
   };
 
   updateFunc = () => {
-    if (this.props.isBorrower) return 'updateBorrower';
+    if (this.props.isBorrower) return 'borrowerUpdate';
     if (this.props.isProperty) return 'updateProperty';
     return 'updateLoan';
   };
