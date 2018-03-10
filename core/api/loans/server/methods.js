@@ -38,7 +38,7 @@ loanUpdate.setHandler((context, { loanId, object }) => {
 
 loanDelete.setHandler((context, { loanId }) => {
   SecurityService.loans.isAllowedToDelete(loanId);
-  return LoanService.delete({ loanId });
+  return LoanService.remove({ loanId });
 });
 
 incrementLoanStep.setHandler((context, { loanId }) => {

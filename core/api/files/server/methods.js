@@ -41,7 +41,7 @@ setFileStatus.setHandler((context, { collection, docId, fileId, fileKey, newStat
 
 setFileError.setHandler((context, { collection, docId, fileId, fileKey, error }) => {
   SecurityService[collection].isAllowedToUpdate(docId);
-  FileService.setFileStatus({ collection, docId, fileId, fileKey, error });
+  FileService.setFileError({ collection, docId, fileId, fileKey, error });
 });
 
 downloadFile.setHandler((context, { key }) => {

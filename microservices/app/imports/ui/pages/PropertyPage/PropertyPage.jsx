@@ -58,9 +58,7 @@ const PropertyPage = (props) => {
         <AutoForm
           inputs={getPropertyLoanArray({ loan, borrowers })}
           docId={loan._id}
-          updateFunc="loanUpdate"
-          pushFunc="pushLoanValue"
-          popFunc="popLoanValue"
+          collection="loans"
           doc={loan}
           disabled={disableForms({ loan })}
         />
@@ -68,9 +66,7 @@ const PropertyPage = (props) => {
         <AutoForm
           inputs={getPropertyArray({ loan, borrowers, property })}
           docId={property._id}
-          updateFunc="propertyUpdate"
-          pushFunc="pushPropertyValue"
-          popFunc="popPropertyValue"
+          collection="properties"
           doc={property}
           disabled={disableForms({ loan })}
         />

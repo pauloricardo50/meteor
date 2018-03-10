@@ -51,9 +51,7 @@ export default class AuctionForm extends Component {
         inputs={getFormArray(this.props.loan, this.props.serverTime)}
         formClasses="user-form"
         docId={this.props.loan._id}
-        updateFunc="loanUpdate"
-        pushFunc="pushLoanValue"
-        popFunc="popLoanValue"
+        collection="loans"
         doc={this.props.loan}
       />
     );

@@ -92,9 +92,7 @@ const BorrowerFinancePage = (props) => {
         inputs={getBorrowerFinanceArray({ ...props, borrowerId })}
         borrowers={props.borrowers}
         docId={borrowerId}
-        updateFunc="borrowerUpdate"
-        pushFunc="pushBorrowerValue"
-        popFunc="popBorrowerValue"
+        collection="borrowers"
         doc={borrower}
         disabled={
           disableForms({ loan: props.loan }) ||

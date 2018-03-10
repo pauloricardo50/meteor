@@ -37,12 +37,12 @@ class AdminNotes extends Component {
       <div className="flex container">
         <TextInput
           id="adminNote"
-          label={<T id="AdminNote.adminNotes" />}
+          label={<T id="AdminNote.label" />}
           fullWidth
           multiline
           value={this.state.textFieldText}
           onChange={this.handleChange()}
-          placeholder="AdminNote.addNote"
+          placeholder="AdminNote.placeholder"
           className="textField"
         />
 
@@ -57,6 +57,7 @@ class AdminNotes extends Component {
               textFieldText,
             })}
             className="saveButton"
+            color="primary"
           >
             <Icon className="leftIcon iconSmall" type="save" />
             {<T id="general.save" />}

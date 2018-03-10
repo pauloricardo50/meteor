@@ -5,6 +5,7 @@ import borrowerAssignedToQuery from '../borrowers/queries/borrowerAssignedTo';
 import loanAssignedToQuery from '../loans/queries/loanAssignedTo';
 import propertyAssignedToQuery from '../properties/queries/propertyAssignedTo';
 import { TASK_STATUS, TASK_TYPE } from './taskConstants';
+import { validateTask } from './taskValidation';
 
 class TaskService {
   insert = ({
@@ -17,10 +18,7 @@ class TaskService {
     createdBy,
   }) => {
     if (type === TASK_TYPE.ADD_ASSIGNED_TO) {
-      return Tasks.insert({
-        type,
-        userId,
-      });
+      return Tasks.insert({ type, userId });
     }
     const existingTask = Tasks.findOne({
       type,
@@ -88,7 +86,7 @@ class TaskService {
 
     return this.update({
       taskId,
-      task: {
+      object: {
         status: TASK_STATUS.COMPLETED,
         completedAt: new Date(),
       },
@@ -108,7 +106,7 @@ class TaskService {
 
     return this.update({
       taskId: taskToComplete._id,
-      task: {
+      object: {
         status: newStatus || TASK_STATUS.COMPLETED,
         completedAt: new Date(),
       },
@@ -116,13 +114,10 @@ class TaskService {
   };
 
   changeStatus = ({ taskId, newStatus }) =>
-    this.update({ taskId, task: { status: newStatus } });
+    this.update({ taskId, object: { status: newStatus } });
 
   changeAssignedTo = ({ taskId, newAssignee }) =>
-    this.update({
-      taskId,
-      task: { assignedTo: newAssignee },
-    });
+    this.update({ taskId, object: { assignedTo: newAssignee } });
 
   isRelatedToUser = ({ task, userId }) => {
     if (task.userId === userId) {
@@ -159,10 +154,7 @@ class TaskService {
       const isRelatedToUser = this.isRelatedToUser({ task, userId });
       if (isRelatedToUser) {
         const taskId = task._id;
-        this.update({
-          taskId,
-          task: { assignedTo: newAssignee },
-        });
+        this.update({ taskId, object: { assignedTo: newAssignee } });
       }
 
       return task;

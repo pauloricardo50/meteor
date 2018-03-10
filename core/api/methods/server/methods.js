@@ -30,7 +30,7 @@ downloadPDF.setHandler((context, { loanId, type }) => {
   const loan = Loans.findOne(loanId);
   const borrowers = Borrowers.find({ _id: { $in: loan.borrowerIds } });
   const prefix = type === 'anonymous' ? 'Anonyme' : 'Complet';
-  const fileName = `${prefix} ${loan.propertyId.address1}.pdf`;
+  const fileName = `${prefix} ${loan.name || loan._id}.pdf`;
 
   return generateComponentAsPDF({
     component: type === 'anonymous' ? AnonymousLoanPDF : LoanPDF,

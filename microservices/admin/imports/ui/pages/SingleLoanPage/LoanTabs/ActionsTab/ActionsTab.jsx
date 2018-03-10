@@ -77,7 +77,7 @@ const ActionsTab = (props) => {
         keyword="SUPPRIMER"
         method={cb =>
           loanDelete
-            .run({ id: loan._id })
+            .run({ loanId: loan._id })
             .then(cb)
             .catch((err) => {
               if (!err) {

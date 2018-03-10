@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Button from 'core/components/Button';
 
-import { CLOSING_STEPS_TYPE } from 'core/api/constants';
+import { CLOSING_STEPS_TYPE, CLOSING_STEPS_STATUS } from 'core/api/constants';
 import { loanUpdate } from 'core/api';
 
 import Adder from './Adder';

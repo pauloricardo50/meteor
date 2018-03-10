@@ -72,9 +72,7 @@ const getForm = (props, value, modify) => {
           })}
           formClasses="user-form"
           docId={splittedValue[1]}
-          updateFunc="borrowerUpdate"
-          pushFunc="pushBorrowerValue"
-          popFunc="popBorrowerValue"
+          collection="borrowers"
           doc={props.borrowers.find(b => b._id === splittedValue[1])}
           disabled={!modify}
           noPlaceholders
@@ -91,9 +89,7 @@ const getForm = (props, value, modify) => {
           })}
           borrowers={props.borrowers}
           docId={splittedValue[1]}
-          updateFunc="borrowerUpdate"
-          pushFunc="pushBorrowerValue"
-          popFunc="popBorrowerValue"
+          collection="borrowers"
           doc={props.borrowers.find(b => b._id === splittedValue[1])}
           disabled={!modify}
           noPlaceholders
@@ -115,9 +111,7 @@ const getForm = (props, value, modify) => {
           key={`${value}1`}
           inputs={getPropertyLoanArray(props)}
           docId={props.loan._id}
-          updateFunc="loanUpdate"
-          pushFunc="pushLoanValue"
-          popFunc="popLoanValue"
+          collection="loans"
           doc={props.loan}
           disabled={!modify}
           noPlaceholders
@@ -127,9 +121,7 @@ const getForm = (props, value, modify) => {
           key={`${value}2`}
           inputs={getPropertyArray(props)}
           docId={props.property._id}
-          updateFunc="propertyUpdate"
-          pushFunc="pushPropertyValue"
-          popFunc="popPropertyValue"
+          collection="properties"
           doc={props.property}
           disabled={!modify}
           noPlaceholders

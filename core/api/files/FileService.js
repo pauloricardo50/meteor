@@ -35,11 +35,13 @@ class FileService {
     const currentValue = this._getCurrentFileValue({ doc, fileId });
 
     return Mongo.Collection.get(collection).update(docId, {
-      [`files.${fileId}`]: this._getNewFiles({
-        currentValue,
-        fileKey,
-        fileUpdate,
-      }),
+      $set: {
+        [`files.${fileId}`]: this._getNewFiles({
+          currentValue,
+          fileKey,
+          fileUpdate,
+        }),
+      },
     });
   };
 
@@ -69,12 +71,19 @@ class FileService {
 
   _getNewFiles = ({ currentValue, fileKey, fileUpdate }) => {
     const file = currentValue.find(f => f.key === fileKey);
-
-    // Filter out unchanged files, and merge the fileUpdate with old version
-    return [
+    const newFile = [
       ...currentValue.filter(f => f.key !== fileKey),
       { ...file, ...fileUpdate },
     ];
+
+    console.log('old file:', file);
+
+    console.log('file update:', fileUpdate);
+
+    console.log('newFile:', newFile);
+
+    // Filter out unchanged files, and merge the fileUpdate with old version
+    return newFile;
   };
 }
 

@@ -25,12 +25,20 @@ const styles = {
 };
 
 const FormValidator = (props) => {
-  const { admin, doc, inputProps: id } = props;
+  let id;
+  const { admin, doc, inputProps } = props;
   if (!admin) {
     return null;
   }
 
+  if (!inputProps) {
+    id = props.id;
+  } else {
+    id = inputProps.id;
+  }
+
   const checked = !!get(doc.adminValidation, id);
+
   return (
     <div style={styles.div}>
       <div style={styles.wrapper}>

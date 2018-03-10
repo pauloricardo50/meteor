@@ -27,9 +27,7 @@ const Info = (props) => {
         inputs={getBorrowerInfoArray({ ...props, borrowerId })}
         formClasses="user-form"
         docId={borrowerId}
-        updateFunc="borrowerUpdate"
-        pushFunc="pushBorrowerValue"
-        popFunc="popBorrowerValue"
+        collection="borrowers"
         doc={borrower}
         disabled={disableForms({ loan: props.loan })}
       />

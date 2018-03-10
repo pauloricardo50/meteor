@@ -1,4 +1,9 @@
 {
+  "Forms.propertyInfo": "Informations générales sur la propriété",
+
+  "AdminNote.label": "Note d'admin",
+  "AdminNote.placeholder": "Clique pour ajouter une note d'admin...",
+
   "AboutPage.description":
     "e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève. Expansion prévue prochainement.{verticalSpace}L'équipe derrière e-Potek est composée d'entrepreneurs expérimentés dans la finance et les prêts hypothécaires en Suisse.",
   "AboutPage.title": "Le Prêt Hypothécaire de Demain",
@@ -730,7 +735,7 @@
   "LoanStrategyPicker.disclaimer":
     "* Ce choix est indicatif, et vous permet de déterminer quelle stratégie vous conviendra le mieux.",
   "LoanStrategyPicker.title": "Stratégie de taux",
-  "LoanTabs.actions": "Actes",
+  "LoanTabs.actions": "Actions",
   "LoanTabs.analytics": "Analytique",
   "LoanTabs.borrowers": "Emprunteurs",
   "LoanTabs.communication": "Communication",

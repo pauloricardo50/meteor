@@ -31,7 +31,7 @@ const downloadPDF = (event, loanId, type) => {
   const initialLabel = target.innerHTML;
   target.innerHTML = '<em>Downloading...</em>';
   target.classList.add('downloading');
-  Meteor.call('pdf.download', { loanId, type }, (error, response) => {
+  Meteor.call('downloadPDF', { loanId, type }, (error, response) => {
     if (error) {
       Bert.alert(error.reason, 'danger');
     } else {
