@@ -17,7 +17,7 @@ const buildUrl = ({ params, endpoint = 'segmentation' }) => {
 
 const getData = url =>
   getMixpanelAuthorization
-    .run()
+    .run({})
     .then(Authorization =>
       fetch(url, { method: 'GET', headers: { Authorization } }))
     .then(result => result.json())

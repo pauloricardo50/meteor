@@ -10,6 +10,7 @@ import { IntlNumber } from 'core/components/Translation';
 import AdminNote from '../../../../components/AdminNote';
 import StepStatus from './StepStatus';
 import FileVerificationNotification from './FileVerificationNotification';
+import LoanTasksTable from './LoanTasksTable';
 
 const styles = {
   recapDiv: {

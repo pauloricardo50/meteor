@@ -12,15 +12,15 @@ const handleError = (error) => {
       style: 'fixed-top',
     });
   }
-
-  console.error('Meteor method error:', error);
+  if ((Meteor.isDevelopment || Meteor.isStaging) && !Meteor.isTest) {
+    console.error('Meteor Method error:', error);
+  }
 };
 
 Method.addAfterCall(({ context, config, params, result, error }) => {
   if (error) {
     handleError(error);
   }
-  console.log(`Hello from Method ${config.name} on the client`);
   // Do something on the client
 });
 

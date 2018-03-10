@@ -49,9 +49,7 @@ describe('Task Validation', () => {
 
       it('returns true if the loan is valid', () => {
         loan = Factory.create('loan', {
-          logic: {
-            verification: { validated: true },
-          },
+          logic: { verification: { validated: true } },
         });
 
         const task = { type: TASK_TYPE.VERIFY, loanId: loan._id };
@@ -60,9 +58,7 @@ describe('Task Validation', () => {
 
       it('returns true if the loan is invalid', () => {
         loan = Factory.create('loan', {
-          logic: {
-            verification: { validated: false },
-          },
+          logic: { verification: { validated: false } },
         });
 
         const task = { type: TASK_TYPE.VERIFY, loanId: loan._id };
@@ -73,18 +69,14 @@ describe('Task Validation', () => {
     describe('AUCTION', () => {
       it('returns false if the auction is anything but ENDED', () => {
         loan = Factory.create('loan', {
-          logic: {
-            auction: { status: AUCTION_STATUS.NONE },
-          },
+          logic: { auction: { status: AUCTION_STATUS.NONE } },
         });
 
         let task = { type: TASK_TYPE.AUCTION, loanId: loan._id };
         expect(validateTask(task)).to.equal(false);
 
         loan = Factory.create('loan', {
-          logic: {
-            auction: { status: AUCTION_STATUS.STARTED },
-          },
+          logic: { auction: { status: AUCTION_STATUS.STARTED } },
         });
 
         task = { type: TASK_TYPE.AUCTION, loanId: loan._id };
@@ -93,9 +85,7 @@ describe('Task Validation', () => {
 
       it('returns true if the auction is ENDED', () => {
         loan = Factory.create('loan', {
-          logic: {
-            auction: { status: AUCTION_STATUS.ENDED },
-          },
+          logic: { auction: { status: AUCTION_STATUS.ENDED } },
         });
 
         const task = { type: TASK_TYPE.AUCTION, loanId: loan._id };
