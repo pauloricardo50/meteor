@@ -31,6 +31,10 @@ import PasswordResetpage from '../../ui/pages/PasswordResetPage';
 
 import AppLayout from '../../ui/layouts/AppLayout';
 
+// Impersonation
+import ImpersonatePage from 'core/components/Impersonate/ImpersonatePage';
+import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
+
 const AppRouter = () => (
   <BaseRouter
     locale={getUserLocale()}
@@ -91,6 +95,7 @@ const AppRouter = () => (
         <Route path="/add-loan/:loanId" component={AddLoanPage} />
         <Route path="/enroll-account/:token" component={PasswordResetpage} />
         <Route exact path="/" component={AppPage} />
+        <Route exact path={IMPERSONATE_ROUTE} component={ImpersonatePage} />
         <Route component={NotFound} />
       </Switch>
     </AppLayout>

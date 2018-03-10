@@ -1,17 +1,65 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-echo Deploying e-Potek staging microservices...
+MICROSERVICES="www app admin"
+SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
+ME=`basename "$0"`
 
-# Setup mup for each app (can't do it in parallel or proxy configuration breaks down)
-for i in "www" "app" "admin"
-  do
-    echo "Setting up mup for $i..."
-    ( mup setup --config mup-$i.js )
+if [ "$1" = "" ]; then
+  echo "# Please use the microservice(s) you want to deploy to: ./$ME $MICROSERVICES"
+  echo "# Use 'all' as the first argument to deploy to all"
+  exit 0
+fi
+
+if [ "$1" != "all" ]; then
+  MICROSERVICES=$1
+fi
+
+# Create logs folder if doesn't exist
+if [ ! -d "logs" ]; then
+  mkdir logs
+fi
+
+# Check for authentication file
+if [ ! -f "auth.pem" ]; then
+  echo "# You do not have an auth.pem file which is used to authenticate to the microservices"
+  exit 0
+fi
+
+echo
+echo "# e-Potek Deployment Script"
+echo "# Now installing npm dependencies"
+
+for i in $MICROSERVICES; do
+  cd $SCRIPT_PATH/../microservices/$i
+  meteor npm i
+done
+
+# Going back to the main folder after we installed npm dependencies
+cd $SCRIPT_PATH;
+
+echo "# NPM dependencies installed, now deploying each microservice..."
+
+for i in $MICROSERVICES; do
+  echo $i;
+  echo "# [$i] deploying microservice deployment in background ..."
+  mup deploy --config "mup-$i.js" --settings settings-staging.json 2> "$SCRIPT_PATH/logs/errors-$i.log" > "$SCRIPT_PATH/logs/deploy-$i.log" &
+done
+
+FAIL=0
+
+echo "# Waiting for deployment to finish on all microservices..."
+
+for job in `jobs -p`; do
+    echo $job
+    wait $job || let "FAIL+=1"
+done
+
+if [ "$FAIL" == "0" ]; then
+  echo "All microservices have been deployed."
+else
+  echo "Something wrong happened with one of the microservices deployment"
+  for i in $MICROSERVICES; do
+    echo "--------------- $i - error logs -------------"
+    cat "logs/errors-$i.log"
   done
-
-echo "Setup done, now deploying each app..."
-
-for i in "www" "app" "admin"
-  do
-    ttab -t "Deployment of $i" -d . "mup deploy --config mup-$i.js --settings settings-staging.json"
-  done
+fi
