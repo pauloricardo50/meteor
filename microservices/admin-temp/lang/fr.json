@@ -70,17 +70,37 @@
     "Les personnes financièrement et légalement bénéficiaires du prêt",
   "tooltip.bonus":
     "Tout revenu variable supplémentaire à votre salaire de base, lié à vos performances",
+<<<<<<< HEAD
   "TasksTabs.myTasks": "Mes tâches",
   "TasksTabs.allTasks": "Toutes les tâches",
   "TasksTable.updatedAt": "Modifié le",
   "TasksTable.status": "Statut",
+=======
+  "TasksTabs.unassignedTasks": "Tâches non assignées",
+  "TasksTabs.myTasks": "Mes tâches",
+  "TasksTabs.allTasks": "Toutes les tâches",
+  "TasksTable.updatedAt": "Modifié le",
+  "TasksTable.type": "Type",
+  "TasksTable.status": "Statut",
+  "TasksTable.relatedTo": "Relatif à",
+>>>>>>> staging
   "TasksTable.dueAt": "Échéance",
   "TasksTable.createdAt": "Créé le",
   "TasksTable.completedAt": "Complété le",
   "TasksTable.asignedTo": "Assigné à",
   "TasksTable.actions": "Actions",
+<<<<<<< HEAD
   "TasksStatusDropdown.COMPLETED": "Terminé",
   "TasksStatusDropdown.CANCELLED": "Annulé",
+=======
+  "TasksStatusDropdown.VERIFY": "Vérifier",
+  "TasksStatusDropdown.LENDER_CHOSEN": "Prêteur choisi",
+  "TasksStatusDropdown.CUSTOM": "Personnalisé",
+  "TasksStatusDropdown.COMPLETED": "Terminé",
+  "TasksStatusDropdown.CANCELLED": "Annulé",
+  "TasksStatusDropdown.AUCTION": "Enchères",
+  "TasksStatusDropdown.ADD_ASSIGNED_TO": "Ajouter assigné à",
+>>>>>>> staging
   "TasksStatusDropdown.ACTIVE": "Actif",
   "Table.sort": "Trier",
   "Table.empty": "Rien à afficher",
@@ -118,7 +138,10 @@
   "steps.1.subtitle": "15 minutes",
   "steps.0.title": "0. Passez le test",
   "steps.0.subtitle": "5 min",
+<<<<<<< HEAD
   "SearchResults.none": "Aucun résultat",
+=======
+>>>>>>> staging
   "Search.placeholder": "Cherchez quelque chose..",
   "Recap.totalFinancing": "Financement total",
   "Recap.totalCost": "Coût total du projet",
@@ -559,10 +582,14 @@
   "BorrowersTable.createdAt": "Créé le",
   "BorrowersPage.borrowers": "Emprunteurs",
   "ArrayInput.add": "Ajouter",
+<<<<<<< HEAD
   "AdminNote.adminNotes": "Admin Notes",
   "AdminNote.addNote": "Ajouter une note",
   "ActionsTable.loanName": "Projet",
   "ActionsTable.date": "Date",
   "ActionsTable.comment": "Commentaire",
   "ActionsTable.actionName": "À faire"
+=======
+  "AdminDashboardPage.tasks": "Tâches"
+>>>>>>> staging
 }

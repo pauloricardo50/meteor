@@ -16,7 +16,6 @@ import {
   adminLoansComposer,
   adminLoanComposer,
   adminUsersComposer,
-  adminActionsComposer,
   adminUserComposer,
   adminOffersComposer,
   adminOfferComposer,
@@ -68,7 +67,6 @@ export const adminContainer = c =>
     composeWithTracker(adminLoansComposer),
     composeWithTracker(adminUsersComposer),
     composeWithTracker(adminOffersComposer),
-    composeWithTracker(adminActionsComposer),
     composeWithTracker(adminPropertiesComposer),
     composeWithTracker(currentUserComposer, Loading),
   )(c);
@@ -83,7 +81,6 @@ export const adminLoanContainer = c =>
   merge(
     composeWithTracker(adminLoanComposer),
     composeWithTracker(currentUserComposer),
-    composeWithTracker(adminActionsComposer),
   )(c);
 
 export const adminOfferContainer = c =>

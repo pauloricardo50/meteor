@@ -7,11 +7,6 @@ import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
 import rateLimit from '../../../utils/rate-limit.js';
 import { getAuctionEndTime } from '../../../utils/loanFunctions';
 
-import {
-  insertAdminAction,
-  completeActionByType,
-  removeParentLoan,
-} from 'core/api/adminActions/server/methods';
 
 import Loans from '../loans';
 import {
@@ -67,7 +62,6 @@ export const insertLoan = new ValidatedMethod({
   },
 });
 
-
 // Lets you set an entire object in the document
 export const updateLoan = new ValidatedMethod({
   name: 'updateLoan',
@@ -91,14 +85,12 @@ export const incrementStep = new ValidatedMethod({
     const loan = Loans.findOne(id);
     const currentStep = loan.logic.step;
 
-
-
     return Loans.update(id, { $set: { 'logic.step': currentStep + 1 } });
   },
 });
 
 export const startAuction = new ValidatedMethod({
-  name: 'startAuction',
+  name: 'startAuctionOld',
   mixins: [CallPromiseMixin],
   validate({ id, object }) {
     check(id, String);
@@ -247,7 +239,7 @@ export const deleteLoan = new ValidatedMethod({
 });
 
 export const endAuction = new ValidatedMethod({
-  name: 'endAuction',
+  name: 'endAuctionOld',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
@@ -297,7 +289,7 @@ export const endAuction = new ValidatedMethod({
 });
 
 export const cancelAuction = new ValidatedMethod({
-  name: 'cancelAuction',
+  name: 'cancelAuctionOld',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);
@@ -350,7 +342,7 @@ export const cancelAuction = new ValidatedMethod({
 });
 
 export const confirmClosing = new ValidatedMethod({
-  name: 'confirmClosing',
+  name: 'confirmClosingOld',
   mixins: [CallPromiseMixin],
   validate({ id }) {
     check(id, String);

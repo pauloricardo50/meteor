@@ -1,6 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { Inject } from 'meteor/meteorhacks:inject-initial';
 
+// Not sure how I would otherwise isolated to this only
+import 'core/api/impersonation/server/mutations';
+
 import 'core/api/api';
 import 'core/api/api-server';
 import jc from 'core/api/jobs/server/jobs';

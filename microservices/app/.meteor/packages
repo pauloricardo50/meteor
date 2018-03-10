@@ -54,6 +54,7 @@ aldeed:collection2-core
 edgee:slingshot
 cultofcoders:grapher
 cultofcoders:grapher-react
+cultofcoders:mutations
 vsivsi:job-collection
 
 # UI tricks
@@ -73,3 +74,4 @@ dburles:google-maps
 meteorhacks:kadira
 okgrow:analytics@=3.0.1
 softwarerero:accounts-t9n
+u2622:persistent-session

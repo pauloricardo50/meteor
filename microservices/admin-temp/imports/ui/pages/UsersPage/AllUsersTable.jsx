@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
+import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import moment from 'moment';
 import Table from 'core/components/Table';
 
@@ -9,6 +9,7 @@ const columnOptions = [
   { id: 'Email', style: { textAlign: 'left' } },
   { id: 'Créé le', style: { textAlign: 'left' } },
   { id: 'Roles', style: { textAlign: 'left' } },
+  { id: 'Actions', style: { textAlign: 'left' } },
 ];
 
 export default class AllUsersTable extends Component {
@@ -28,6 +29,9 @@ export default class AllUsersTable extends Component {
         user.emails[0].address.toString(),
         moment(user.createdAt).format('D MMM YY à HH:mm:ss'),
         user.roles ? user.roles.toString() : '',
+        <div>
+          <ImpersonateLink userId={user._id} />
+        </div>,
       ],
       handleClick: () => this.props.history.push(`/users/${user._id}`),
     }));

@@ -1,20 +1,19 @@
-import { EventService, mutations } from '../..';
+import {
+  EventService,
+  borrowerDelete,
+  loanDelete,
+  propertyDelete,
+} from '../..';
 import FileService from '../FileService';
 
-EventService.addMutationListener(
-  mutations.BORROWER_DELETE,
-  ({ borrowerId }) => {
-    // TODO: Delete all files related to this borrower
-  },
-);
-
-EventService.addMutationListener(mutations.LOAN_DELETE, ({ loanId }) => {
+EventService.addMethodListener(loanDelete, ({ loanId }) => {
   // TODO: Delete all files related to this borrower
 });
 
-EventService.addMutationListener(
-  mutations.PROPERTY_DELETE,
-  ({ propertyId }) => {
-    // TODO: Delete all files related to this property
-  },
-);
+EventService.addMethodListener(borrowerDelete, ({ borrowerId }) => {
+  // TODO: Delete all files related to this borrower
+});
+
+EventService.addMethodListener(propertyDelete, ({ propertyId }) => {
+  // TODO: Delete all files related to this property
+});

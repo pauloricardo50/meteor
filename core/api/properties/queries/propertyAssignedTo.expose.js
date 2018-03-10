@@ -1,4 +1,4 @@
-import Security from 'core/api/security';
+import Security from '../../security';
 import query from './propertyAssignedTo';
 
 query.expose({

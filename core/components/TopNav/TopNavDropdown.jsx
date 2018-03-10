@@ -2,7 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
+import { Session } from 'meteor/session';
 
+import { IMPERSONATE_SESSION_KEY } from 'core/api/impersonation/impersonation';
 import track from '../../utils/analytics';
 import { T } from '../Translation';
 import DropdownMenu from '../DropdownMenu';
@@ -50,8 +52,14 @@ const getMenuItems = (currentUser, history) => {
       label: <T id="general.logout" />,
       onClick: () => {
         track('TopNavDropdown - logged out', {});
-        Meteor.logout(() =>
-          window.location.replace(`${Meteor.settings.public.subdomains.www}`));
+        Meteor.logout(() => {
+          // eslint-disable-next-line
+          Session.clear(IMPERSONATE_SESSION_KEY);
+
+          return window.location.replace(
+            `${Meteor.settings.public.subdomains.www}`,
+          );
+        });
       },
       link: '/',
       show: true,
@@ -61,7 +69,7 @@ const getMenuItems = (currentUser, history) => {
   ];
 };
 
-const TopNavDropdown = (props) => {
+const TopNavDropdown = props => {
   const { currentUser, history } = props;
 
   return (

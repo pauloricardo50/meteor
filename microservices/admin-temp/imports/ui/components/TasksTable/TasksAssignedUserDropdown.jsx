@@ -1,6 +1,10 @@
 import React from 'react';
-import DropdownMenu from 'core/components/DropdownMenu/';
-import { callMutation, mutations } from 'core/api';
+import DropdownMenu from 'core/components/DropdownMenu';
+import {
+  assignAdminToNewUser,
+  taskChangeAssignedTo,
+  taskGetRelatedTo,
+} from 'core/api/methods';
 
 const firstUserAssign = ({
   taskAssignedTo,
@@ -10,14 +14,14 @@ const firstUserAssign = ({
   taskType,
 }) => {
   if (!taskAssignedTo) {
-    callMutation(mutations.ASSIGN_ADMIN_TO_NEW_USER_TASK, {
+    assignAdminToNewUser.run({
       userId: relatedUserId,
       adminId: user._id,
       taskId,
       taskType,
     });
   } else {
-    callMutation(mutations.TASK_CHANGE_ASSIGNED_TO, {
+    taskChangeAssignedTo.run({
       taskId,
       newAssignee: user._id,
     });
@@ -27,8 +31,8 @@ const firstUserAssign = ({
 const changeAssignedUser = ({ user, task, taskAssignedTo }) => {
   const taskUserId = task.user ? task.user._id : undefined;
   if (!taskUserId) {
-    callMutation(mutations.TASK_GET_RELATED_TO, { task })
-      .then(relatedUserId => firstUserAssign({
+    taskGetRelatedTo.run({ task }).then(relatedUserId =>
+      firstUserAssign({
         taskAssignedTo,
         relatedUserId,
         user,
@@ -53,11 +57,12 @@ const getMenuItems = (users, task) => {
     show: user._id !== taskAssignedTo,
     label: user.emails[0].address,
     link: false,
-    onClick: () => changeAssignedUser({
-      user,
-      task,
-      taskAssignedTo,
-    }),
+    onClick: () =>
+      changeAssignedUser({
+        user,
+        task,
+        taskAssignedTo,
+      }),
   }));
   return options;
 };

@@ -52,14 +52,12 @@ const AdminDashboardPage = (props) => {
 };
 
 AdminDashboardPage.defaultProps = {
-  adminActions: [],
   loans: [],
   users: [],
   offers: [],
 };
 
 AdminDashboardPage.propTypes = {
-  adminActions: PropTypes.arrayOf(PropTypes.object),
   loans: PropTypes.arrayOf(PropTypes.object),
   users: PropTypes.arrayOf(PropTypes.object).isRequired,
   offers: PropTypes.arrayOf(PropTypes.object),
