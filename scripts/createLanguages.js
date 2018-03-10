@@ -30,10 +30,9 @@ const config = {
       ],
     },
     { path: '../microservices/www', exceptions: ['Start2Form', 'Forms'] },
-    { path: '../microservices/admin', exceptions: ['LoginPage'] },
     { path: '../microservices/lender', exceptions: ['LoginPage'] },
     {
-      path: '../microservices/admin-temp',
+      path: '../microservices/admin',
       exceptions: [
         'steps',
         'ProjectBarChart',
