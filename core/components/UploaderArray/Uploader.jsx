@@ -9,6 +9,7 @@ import bert from 'core/utils/bert';
 import { allowedFileTypes, maxSize } from 'core/api/files/meteor-slingshot';
 import { FILE_STATUS } from '../../api/constants';
 
+import UploaderContainer from './UploaderContainer';
 import Title from './Title';
 import File from './File';
 import TempFile from './TempFile';
@@ -184,6 +185,8 @@ Uploader.propTypes = {
   currentValue: PropTypes.arrayOf(PropTypes.object),
   disabled: PropTypes.bool.isRequired,
   collection: PropTypes.string,
+  deleteFile: PropTypes.func.isRequired,
+  addFileToDoc: PropTypes.func.isRequired,
 };
 
 Uploader.defaultProps = {
@@ -193,4 +196,4 @@ Uploader.defaultProps = {
   collection: 'loans',
 };
 
-export default injectIntl(Uploader);
+export default UploaderContainer(injectIntl(Uploader));
