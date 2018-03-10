@@ -1,10 +1,10 @@
 .container {
   width: 100%;
-  display: -webkit-flex;
-  -webkit-flex-wrap: wrap;
   display: flex;
   flex-wrap: wrap;
-  justify-content: 'space-around';
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 .textField {
   margin-bottom: 20px;

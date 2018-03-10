@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextInput from 'core/components/TextInput';
 import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
-import { callMutation, mutations } from 'core/api';
+import { loanChangeAdminNote } from 'core/api/methods';
 import { T } from 'core/components/Translation/';
 
-class AdminNotes extends React.Component {
+class AdminNotes extends Component {
   state = {
     textFieldText: this.props.adminNoteText,
     showButton: false,
@@ -20,10 +20,12 @@ class AdminNotes extends React.Component {
 
   saveAdminNote = ({ loanId, adminNoteText, textFieldText }) => () => {
     if (textFieldText !== adminNoteText) {
-      callMutation(mutations.LOAN_CHANGE_ADMIN_NOTE, {
-        loanId,
-        adminNote: textFieldText,
-      }).then(() => this.setState({ showButton: false }));
+      loanChangeAdminNote
+        .run({
+          loanId,
+          adminNote: textFieldText,
+        })
+        .then(() => this.setState({ showButton: false }));
     }
   };
 
@@ -60,9 +62,6 @@ class AdminNotes extends React.Component {
             {<T id="general.save" />}
           </Button>
         )}
-
-        <br />
-        <br />
       </div>
     );
   }
