@@ -1,10 +1,10 @@
 /* eslint-env mocha */
+import { expect } from 'chai';
 import { Accounts } from 'meteor/accounts-base';
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import Users from 'core/api/users';
 import { ROLES } from 'core/api/users/userConstants';
-import { expect } from 'chai';
 import ImpersonateService from './ImpersonateService';
 
 function getDummies() {
@@ -28,31 +28,27 @@ describe('ImpersonateService', () => {
     const FICTIONAL_TOKEN = Random.id();
     const HASHED_TOKEN = Accounts._hashLoginToken(FICTIONAL_TOKEN);
 
+    console.log('test! hash', HASHED_TOKEN);
+
     Users.update(adminId, {
       $set: {
         roles: ROLES.ADMIN,
-        'services.resume.loginTokens': [
-          {
-            hashedToken: HASHED_TOKEN,
-          },
-        ],
+        'services.resume.loginTokens': [{ hashedToken: HASHED_TOKEN }],
       },
     });
 
-    ImpersonateService.impersonate(
-      {
+    ImpersonateService.impersonate({
+      context: {
         setUserId(impersonateId) {
           expect(userId).to.equal(impersonateId);
           done();
         },
       },
-      FICTIONAL_TOKEN,
-      userId,
-    );
-
-    Users.remove({
-      _id: { $in: [adminId, userId] },
+      authToken: FICTIONAL_TOKEN,
+      userIdToImpersonate: userId,
     });
+
+    Users.remove({ _id: { $in: [adminId, userId] } });
   });
 
   it('Should not allow impersonation of a user that is non-dev or non-admin', () => {
@@ -64,27 +60,21 @@ describe('ImpersonateService', () => {
     Users.update(adminId, {
       $set: {
         roles: ROLES.LENDER,
-        'services.resume.loginTokens': [
-          {
-            hashedToken: HASHED_TOKEN,
-          },
-        ],
+        'services.resume.loginTokens': [{ hashedToken: HASHED_TOKEN }],
       },
     });
 
     expect(() => {
-      ImpersonateService.impersonate(
-        {
+      ImpersonateService.impersonate({
+        context: {
           setUserId(impersonateId) {},
         },
-        FICTIONAL_TOKEN,
-        userId,
-      );
+        authToken: FICTIONAL_TOKEN,
+        userIdToImpersonate: userId,
+      });
     }).to.throw(Meteor.Error);
 
-    Users.remove({
-      _id: { $in: [adminId, userId] },
-    });
+    Users.remove({ _id: { $in: [adminId, userId] } });
   });
 
   it('Should not allow impersonation with invalid token', () => {
@@ -96,28 +86,22 @@ describe('ImpersonateService', () => {
     Users.update(adminId, {
       $set: {
         roles: ROLES.ADMIN,
-        'services.resume.loginTokens': [
-          {
-            hashedToken: HASHED_TOKEN,
-          },
-        ],
+        'services.resume.loginTokens': [{ hashedToken: HASHED_TOKEN }],
       },
     });
 
     expect(() => {
-      ImpersonateService.impersonate(
-        {
+      ImpersonateService.impersonate({
+        context: {
           setUserId(impersonateId) {
             done('Should not be here!');
           },
         },
-        `${FICTIONAL_TOKEN}HACKER!`,
-        userId,
-      );
+        authToken: `${FICTIONAL_TOKEN}HACKER!`,
+        userIdToImpersonate: userId,
+      });
     }).to.throw(Meteor.Error);
 
-    Users.remove({
-      _id: { $in: [adminId, userId] },
-    });
+    Users.remove({ _id: { $in: [adminId, userId] } });
   });
 });

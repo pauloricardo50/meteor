@@ -13,14 +13,7 @@ import messagesFR from '../../lang/fr.json';
 // Because each test using factories also uses stubCollections
 import '../../api/factories';
 
-import {
-  Loans,
-  Borrowers,
-  Properties,
-  Offers,
-  Tasks,
-  Comparators,
-} from '../../api';
+import { Loans, Borrowers, Properties, Offers, Tasks } from '../../api';
 import { mount } from './enzyme';
 
 // Mounts a component for testing, and wraps it around everything it needs
@@ -117,7 +110,6 @@ export const stubCollections = () => {
     Borrowers,
     Offers,
     Properties,
-    Comparators,
     Tasks,
   ]);
 };
@@ -137,7 +129,6 @@ if (Meteor.isTest) {
     Borrowers,
     Offers,
     Properties,
-    Comparators,
     Tasks,
   ]);
   StubCollections.stub(); // This part is critical, need to stub once beforeAll

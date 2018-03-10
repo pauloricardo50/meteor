@@ -1,13 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
-import {
-  Loans,
-  Borrowers,
-  Offers,
-  Comparators,
-  Properties,
-  AdminActions,
-} from '.';
+import { Loans, Borrowers, Offers, Properties } from '.';
 
 const TEST_EMAIL = 'test@test.com';
 
