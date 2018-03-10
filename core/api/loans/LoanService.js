@@ -81,6 +81,12 @@ class LoanServiceModel {
         ...object,
       },
     });
+
+  static pushValue = ({ loanId, object }) =>
+    Loans.update(loanId, { $push: object });
+
+  static popValue = ({ loanId, object }) =>
+    Loans.update(loanId, { $pop: object });
 }
 
 const LoanService = new LoanServiceModel({});

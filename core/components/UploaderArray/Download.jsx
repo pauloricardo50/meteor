@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Meteor } from 'meteor/meteor';
 import fileSaver from 'file-saver';
 
 import IconButton from 'core/components/IconButton';
 import { T } from 'core/components/Translation';
+import { downloadFile } from 'core/api';
 
 export default class Download extends Component {
   constructor(props) {
@@ -16,21 +16,16 @@ export default class Download extends Component {
   handleClick = () => {
     const { fileKey, fileName } = this.props;
     this.setState({ downloading: true }, () => {
-      Meteor.call('downloadFile', fileKey, (err, data) => {
+      downloadFile.run({ key: fileKey }).then((data) => {
         this.setState({ downloading: false });
 
-        if (err) {
-          console.log(err);
-        } else {
-          const blob = new Blob([data.Body], { type: data.ContentType });
-          fileSaver.saveAs(blob, fileName);
-        }
+        const blob = new Blob([data.Body], { type: data.ContentType });
+        fileSaver.saveAs(blob, fileName);
       });
     });
   };
 
   render() {
-    const { fileKey, fileName } = this.props;
     const { downloading } = this.state;
 
     return (

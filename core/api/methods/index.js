@@ -1,4 +1,4 @@
 import './clientMethodsConfig';
 
-export * from './methodDefs';
+export * from './registerMethodDefinitions';
 export * from './methods';

@@ -74,3 +74,19 @@ export const loanChangeAdminNote = new Method({
     adminNote: String,
   },
 });
+
+export const pushLoanValue = new Method({
+  name: 'pushLoanValue',
+  params: {
+    loanId: String,
+    object: Object,
+  },
+});
+
+export const popLoanValue = new Method({
+  name: 'popLoanValue',
+  params: {
+    loanId: String,
+    object: Object,
+  },
+});

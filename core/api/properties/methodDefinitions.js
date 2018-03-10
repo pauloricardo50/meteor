@@ -23,3 +23,19 @@ export const propertyDelete = new Method({
     propertyId: String,
   },
 });
+
+export const pushPropertyValue = new Method({
+  name: 'pushPropertyValue',
+  params: {
+    propertyId: String,
+    object: Object,
+  },
+});
+
+export const popPropertyValue = new Method({
+  name: 'popPropertyValue',
+  params: {
+    propertyId: String,
+    object: Object,
+  },
+});

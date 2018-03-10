@@ -11,4 +11,7 @@ export default class {
 
   static pushValue = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $push: object });
+
+  static popValue = ({ borrowerId, object }) =>
+    Borrowers.update(borrowerId, { $pop: object });
 }

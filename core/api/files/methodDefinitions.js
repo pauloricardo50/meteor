@@ -10,8 +10,8 @@ export const addFileToDoc = new Method({
   },
 });
 
-export const deleteFileFromDoc = new Method({
-  name: 'deleteFileFromDoc',
+export const deleteFile = new Method({
+  name: 'deleteFile',
   params: {
     fileId: String,
     fileKey: String,
@@ -32,12 +32,19 @@ export const setFileStatus = new Method({
 });
 
 export const setFileError = new Method({
-  name: 'setFileStatus',
+  name: 'setFileError',
   params: {
     collection: String,
     docId: String,
     fileId: String,
     fileKey: String,
     error: String,
+  },
+});
+
+export const downloadFile = new Method({
+  name: 'downloadFile',
+  params: {
+    key: String,
   },
 });

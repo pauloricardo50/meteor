@@ -23,3 +23,19 @@ export const borrowerDelete = new Method({
     borrowerId: String,
   },
 });
+
+export const pushBorrowerValue = new Method({
+  name: 'pushBorrowerValue',
+  params: {
+    borrowerId: String,
+    object: Object,
+  },
+});
+
+export const popBorrowerValue = new Method({
+  name: 'popBorrowerValue',
+  params: {
+    borrowerId: String,
+    object: Object,
+  },
+});

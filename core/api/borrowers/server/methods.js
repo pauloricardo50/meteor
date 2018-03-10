@@ -1,82 +1,45 @@
 import { Meteor } from 'meteor/meteor';
-import { ValidatedMethod } from 'meteor/mdg:validated-method';
-import { check } from 'meteor/check';
-import { Roles } from 'meteor/alanning:roles';
-import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
-import rateLimit from '../../../utils/rate-limit.js';
 
-import Borrowers from '../borrowers';
+import { SecurityService } from '../..';
+import BorrowerService from '../BorrowerService';
+import {
+  borrowerInsert,
+  borrowerUpdate,
+  borrowerDelete,
+  pushBorrowerValue,
+  popBorrowerValue,
+} from '../methodDefinitions';
 
-// export const insertBorrower = new ValidatedMethod({
-//   name: 'borrowerInsert',
-//   mixins: [CallPromiseMixin],
-//   validate() {},
-//   run({ object, userId }) {
-//     return Borrowers.insert({
-//       ...object,
-//       // Allow null as userId
-//       userId: userId === undefined ? Meteor.userId() : userId,
-//     });
-//   },
-// });
+borrowerInsert.setHandler((context, { borrower, userId }) => {
+  const userIdIsDefined = userId !== undefined;
+  if (userIdIsDefined) {
+    SecurityService.checkCurrentUserIsAdmin();
+  } else {
+    SecurityService.borrowers.isAllowedToInsert();
+  }
 
-// Lets you set an entire object in the document
-// export const borrowerUpdate = new ValidatedMethod({
-//   name: 'borrowerUpdate',
-//   mixins: [CallPromiseMixin],
-//   validate({ id }) {
-//     check(id, String);
-//   },
-//   run({ object, id }) {
-//     return Borrowers.update(id, { $set: object });
-//   },
-// });
-
-// Lets you push a value to an array
-export const pushBorrowerValue = new ValidatedMethod({
-  name: 'pushBorrowerValue',
-  mixins: [CallPromiseMixin],
-  validate({ id }) {
-    check(id, String);
-  },
-  run({ object, id }) {
-    return Borrowers.update(id, { $push: object });
-  },
+  return BorrowerService.insert({
+    borrower,
+    userId: userIdIsDefined ? userId : Meteor.userId(),
+  });
 });
 
-// Lets you pop a value from the end of an array
-export const popBorrowerValue = new ValidatedMethod({
-  name: 'popBorrowerValue',
-  mixins: [CallPromiseMixin],
-  validate({ id }) {
-    check(id, String);
-  },
-  run({ object, id }) {
-    return Borrowers.update(id, { $pop: object }, { getAutoValues: false });
-  },
+borrowerUpdate.setHandler((context, { borrowerId, object }) => {
+  SecurityService.borrowers.isAllowedToUpdate(borrowerId);
+  return BorrowerService.update({ borrowerId, object });
 });
 
-// export const deleteBorrower = new ValidatedMethod({
-//   name: 'borrowerDelete',
-//   mixins: [CallPromiseMixin],
-//   validate({ id }) {
-//     check(id, String);
-//   },
-//   run({ id }) {
-//     if (Roles.userIsInRole(Meteor.userId(), 'dev')) {
-//       return Borrowers.remove(id);
-//     }
+borrowerDelete.setHandler((context, { borrowerId }) => {
+  SecurityService.borrowers.isAllowedToDelete(borrowerId);
+  return BorrowerService.remove({ borrowerId });
+});
 
-//     return false;
-//   },
-// });
+pushBorrowerValue.setHandler((context, { borrowerId, object }) => {
+  SecurityService.borrowers.isAllowedToUpdate(borrowerId);
+  return BorrowerService.pushValue(object);
+});
 
-// rateLimit({
-//   methods: [
-//     insertBorrower,
-//     borrowerUpdate,
-//     pushBorrowerValue,
-//     popBorrowerValue,
-//     deleteBorrower,
-//   ],
-// });
+popBorrowerValue.setHandler((context, { borrowerId, object }) => {
+  SecurityService.borrowers.isAllowedToUpdate(borrowerId);
+  return BorrowerService.pushValue(object);
+});
