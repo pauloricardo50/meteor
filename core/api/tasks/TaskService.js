@@ -46,7 +46,7 @@ class TaskService {
 
     return Tasks.insert({
       type,
-      assignedTo: relatedAssignedTo,
+      assignedEmployeeId: relatedAssignedTo,
       createdBy,
       borrowerId,
       loanId,
@@ -57,19 +57,19 @@ class TaskService {
   getRelatedDocAssignedTo = ({ borrowerId, loanId, propertyId }) => {
     if (loanId) {
       const loans = loanAssignedToQuery.clone({ loanId }).fetchOne();
-      return loans.user.assignedTo;
+      return loans.user.assignedEmployeeId;
     }
     if (borrowerId) {
       const borrowers = borrowerAssignedToQuery
         .clone({ borrowerId })
         .fetchOne();
-      return borrowers.user.assignedTo;
+      return borrowers.user.assignedEmployeeId;
     }
     if (propertyId) {
       const properties = propertyAssignedToQuery
         .clone({ propertyId })
         .fetchOne();
-      return properties.user.assignedTo;
+      return properties.user.assignedEmployeeId;
     }
     return undefined;
   };
@@ -117,7 +117,7 @@ class TaskService {
     this.update({ taskId, object: { status: newStatus } });
 
   changeAssignedTo = ({ taskId, newAssignee }) =>
-    this.update({ taskId, object: { assignedTo: newAssignee } });
+    this.update({ taskId, object: { assignedEmployeeId: newAssignee } });
 
   isRelatedToUser = ({ task, userId }) => {
     if (task.userId === userId) {
@@ -154,7 +154,7 @@ class TaskService {
       const isRelatedToUser = this.isRelatedToUser({ task, userId });
       if (isRelatedToUser) {
         const taskId = task._id;
-        this.update({ taskId, object: { assignedTo: newAssignee } });
+        this.update({ taskId, object: { assignedEmployeeId: newAssignee } });
       }
 
       return task;

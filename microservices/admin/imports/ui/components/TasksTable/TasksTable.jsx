@@ -65,9 +65,9 @@ export default class TasksTable extends Component {
       // TODO: also check& add other related docs
     ];
     if (props.showAssignee) {
-      columns.push((task.assignedUser &&
-          (task.assignedUser.username ||
-            task.assignedUser.emails[0].address.toString())) ||
+      columns.push((task.assignedEmployee &&
+          (task.assignedEmployee.username ||
+            task.assignedEmployee.emails[0].address.toString())) ||
           '');
     }
 

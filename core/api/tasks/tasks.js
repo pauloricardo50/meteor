@@ -47,7 +47,7 @@ const TasksSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  assignedTo: {
+  assignedEmployeeId: {
     type: String,
     optional: true,
   },

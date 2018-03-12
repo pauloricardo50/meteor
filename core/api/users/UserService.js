@@ -27,7 +27,7 @@ class UserService {
   update = ({ userId, object }) => Users.update(userId, { $set: object });
 
   assignAdminToUser = ({ userId, adminId }) =>
-    this.update({ userId, object: { assignedTo: adminId } });
+    this.update({ userId, object: { assignedEmployeeId: adminId } });
 
   getUsersByRole = role => Users.find({ roles: { $in: [role] } }).fetch();
 }
