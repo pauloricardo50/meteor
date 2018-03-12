@@ -5,7 +5,6 @@ import Icon from 'core/components/Icon';
 
 import { isLoanValid } from 'core/utils/loanFunctions';
 import { T } from 'core/components/Translation';
-import withLoan from 'core/containers/withLoan';
 
 const styles = {
   div: {
@@ -89,4 +88,4 @@ StructureError.propTypes = {
   setParentState: PropTypes.func.isRequired,
 };
 
-export default withLoan(StructureError);
+export default StructureError;

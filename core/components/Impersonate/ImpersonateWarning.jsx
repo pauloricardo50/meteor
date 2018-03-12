@@ -22,7 +22,11 @@ export const ImpersonateWarning = ({ isActive }) => {
 };
 
 ImpersonateWarning.propTypes = {
-  isActive: PropTypes.bool.isRequired,
+  isActive: PropTypes.bool,
+};
+
+ImpersonateWarning.defaultProps = {
+  isActive: false,
 };
 
 export const ImpersonateWarningWithTracker = withTracker(() => ({

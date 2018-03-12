@@ -6,7 +6,6 @@ import ReactHighcharts from 'react-highcharts';
 import { getInterests, getAmortization } from 'core/utils/finance-math';
 import { getInterestsWithOffer } from 'core/utils/loanFunctions';
 import colors from 'core/config/colors';
-import withLoan from 'core/containers/withLoan';
 
 import { legendConfig } from './chartSettings';
 
@@ -372,4 +371,4 @@ ExpensesChart.propTypes = {
   title: PropTypes.string,
 };
 
-export default injectIntl(withLoan(ExpensesChart));
+export default injectIntl(ExpensesChart);
