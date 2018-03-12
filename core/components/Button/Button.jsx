@@ -26,14 +26,18 @@ const Button = (props) => {
     'label',
     'icon',
     'link',
+    'raised',
   ]);
 
   return (
     <MuiButton
       {...childProps}
       color={props.color || getColor(props)}
-      variant={props.variant || (props.raised ? 'raised' : undefined)}
+      variant={
+        props.variant || (props.raised ? 'raised' : undefined) || undefined
+      }
       component={props.component || (props.link ? Link : null)}
+      to={props.to || undefined}
     >
       {props.icon}
       {props.icon && <span style={{ height: '100%', width: 8 }} />}
