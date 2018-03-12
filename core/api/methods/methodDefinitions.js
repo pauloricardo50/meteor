@@ -40,5 +40,8 @@ export const removeBorrower = new Method({
 
 export const createUserAndLoan = new Method({
   name: 'createUserAndLoan',
-  params: { email: String, formState: Object },
+  params: {
+    email: String,
+    formState: Object,
+  },
 });

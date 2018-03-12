@@ -25,7 +25,6 @@ class ImpersonatePage extends Component {
     impersonateUser.run({ userId, authToken }).then(({ emails }) => {
       Meteor.connection.setUserId(userId);
       Session.setPersistent(IMPERSONATE_SESSION_KEY, true);
-      console.log('email:', emails[0].address);
 
       Bert.alert({
         title: 'Success!',

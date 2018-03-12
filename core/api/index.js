@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import * as _constants from './constants';
 
+export { withQuery } from 'meteor/cultofcoders:grapher-react';
+
 export { default as Loans } from './loans';
 export { default as Borrowers } from './borrowers';
 export { default as Offers } from './offers';
