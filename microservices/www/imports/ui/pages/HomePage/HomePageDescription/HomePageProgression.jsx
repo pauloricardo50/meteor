@@ -1,14 +1,16 @@
 import React from 'react';
 
-const dots = [1, 2, 3];
-const dashes = [1, 2, 3, 4, 5, 6, 7];
+const dots = [...new Array(4)];
+const dashes = [...new Array(10)];
 
 const HomePageProgression = () => (
   <div className="progression">
-    {dots.map(dot => (
-      <span key={dot} className="segment">
+    {dots.map((dot, dotIndex) => (
+      <span key={dotIndex} className="segment">
         <span className="dot" />
-        {dashes.map(dash => <span className="dash" key={dash} />)}
+        {dashes.map((dash, dashIndex) => (
+          <span className="dash" key={dashIndex} />
+        ))}
       </span>
     ))}
     <span className="dot" />

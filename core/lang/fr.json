@@ -2,6 +2,21 @@
   "Forms.futureOwner.BOTH": "Les deux",
   "Forms.futureOwner.OTHER": "Autre",
 
+  "DescriptionItemText.eligibility.title": "Testez votre éligibilité",
+  "DescriptionItemText.eligibility.description":
+    "Identifiez le montant que vous pouvez emprunter en quelques minutes",
+  "DescriptionItemText.expertise.title": "Expertisez votre logement",
+  "DescriptionItemText.expertise.description":
+    "Obtenez la valeur du marché de votre bien immobilier depuis votre dashboard",
+  "DescriptionItemText.application.title": "Structurez votre dossier",
+  "DescriptionItemText.application.description":
+    "Optimisez votre recherche de prêt hypothécaire avec l'aide de nos conseillers",
+  "DescriptionItemText.auction.title": "Lancez les enchères",
+  "DescriptionItemText.auction.description":
+    "Placez votre dossier aux enchères, de manière anonyme, auprès de tous les prêteurs",
+  "DescriptionItemText.closing.title": "Obtenez votre prêt",
+  "DescriptionItemText.closing.description":
+    "Soyez accompagnés dans vos décisions stratégiques par des spécialistes, jusqu'à avoir les clés en main",
 
   "Forms.propertyInfo": "Informations générales sur la propriété",
 

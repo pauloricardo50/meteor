@@ -9,6 +9,7 @@
 body {
   font-family: 'Source Sans Pro', sans-serif;
   line-height: 1.5em;
+  color: $body-text;
 }
 
 h1,
@@ -17,7 +18,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: titleColor;
+  color: $title-text;
   line-height: 1.1em;
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 400;
