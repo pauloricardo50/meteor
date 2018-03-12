@@ -5,7 +5,7 @@ import moment from 'moment';
 import Table from 'core/components/Table';
 import { T } from 'core/components/Translation/';
 
-export default class AllUsersTable extends Component {
+export default class UsersTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,17 +26,17 @@ export default class AllUsersTable extends Component {
   getColumnOptions = ({ showAssignee }) => {
     const columnOptions = [
       { id: '#', style: { width: 32, textAlign: 'left' } },
-      { id: <T id="AllUsersTable.email" /> },
-      { id: <T id="AllUsersTable.createdAt" /> },
-      { id: <T id="AllUsersTable.roles" /> },
+      { id: <T id="UsersTable.email" /> },
+      { id: <T id="UsersTable.createdAt" /> },
+      { id: <T id="UsersTable.roles" /> },
     ];
     if (showAssignee) {
       columnOptions.push({
-        id: <T id="AllUsersTable.assignedTo" />,
+        id: <T id="UsersTable.assignedTo" />,
       });
     }
     columnOptions.push({
-      id: <T id="AllUsersTable.actions" />,
+      id: <T id="UsersTable.actions" />,
     });
     return columnOptions;
   };
@@ -93,6 +93,7 @@ export default class AllUsersTable extends Component {
           columnOptions={columnOptions}
           rows={rows}
           noIntl
+          showAssignee
         />
       );
     }
@@ -100,7 +101,7 @@ export default class AllUsersTable extends Component {
   }
 }
 
-AllUsersTable.propTypes = {
+UsersTable.propTypes = {
   users: PropTypes.arrayOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
   isLoading: PropTypes.bool.isRequired,
