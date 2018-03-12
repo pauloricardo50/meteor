@@ -1,8 +1,6 @@
 {
   "name": "epotek",
   "version": "1.0.0",
-  "description": "* Initial setup",
-  "main": "index.js",
   "scripts": {
     "format":
       "prettier-eslint \"**/*.js*\" --write --eslint-config-path .eslintrc.js",
@@ -16,8 +14,6 @@
     "type": "git",
     "url": "git+https://github.com/e-Potek/epotek.git"
   },
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/e-Potek/epotek/issues"
   },
