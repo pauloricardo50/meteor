@@ -9,7 +9,7 @@ const createFakeTasks = (loanId, assignedTo) => {
   return TaskService.insert({
     type,
     loanId,
-    assignedTo,
+    assignedEmployeeId: assignedTo,
     // createdByUserId: Meteor.userId(),
   });
 };

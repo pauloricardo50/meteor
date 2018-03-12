@@ -1,8 +1,8 @@
 import { Tasks, Users, Loans, Borrowers, Properties } from '../';
 
 Tasks.addLinks({
-  assignedUser: {
-    field: 'assignedTo',
+  assignedEmployee: {
+    field: 'assignedEmployeeId',
     collection: Users,
     type: 'one',
   },

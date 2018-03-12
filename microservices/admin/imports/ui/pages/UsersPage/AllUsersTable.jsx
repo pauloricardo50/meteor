@@ -3,48 +3,95 @@ import React, { Component } from 'react';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import moment from 'moment';
 import Table from 'core/components/Table';
-
-const columnOptions = [
-  { id: '#', style: { width: 32, textAlign: 'left' } },
-  { id: 'Email', style: { textAlign: 'left' } },
-  { id: 'Créé le', style: { textAlign: 'left' } },
-  { id: 'Roles', style: { textAlign: 'left' } },
-  { id: 'Actions', style: { textAlign: 'left' } },
-];
+import { T } from 'core/components/Translation/';
 
 export default class AllUsersTable extends Component {
   constructor(props) {
     super(props);
-
-    this.setupRows();
+    this.state = {
+      rows: this.setupRows(this.props),
+      columnOptions: this.getColumnOptions(this.props),
+    };
   }
 
-  setupRows = () => {
-    const users = this.props.data;
+  componentWillReceiveProps(nextProps) {
+    const newRows = this.setupRows(nextProps);
+    this.setState({
+      rows: newRows,
+      columnOptions: this.getColumnOptions(nextProps),
+    });
+  }
 
-    this.rows = users.map((user, index) => ({
-      id: user._id,
-      columns: [
-        index + 1,
-        user.emails[0].address.toString(),
-        moment(user.createdAt).format('D MMM YY à HH:mm:ss'),
-        user.roles ? user.roles.toString() : '',
-        <div>
-          <ImpersonateLink userId={user._id} />
-        </div>,
-      ],
-      handleClick: () => this.props.history.push(`/users/${user._id}`),
-    }));
-    return this.rows;
+
+  getColumnOptions = ({ showAssignee }) => {
+    const columnOptions = [
+      { id: '#', style: { width: 32, textAlign: 'left' } },
+      { id: <T id="AllUsersTable.email" /> },
+      { id: <T id="AllUsersTable.createdAt" /> },
+      { id: <T id="AllUsersTable.roles" /> },
+    ];
+    if (showAssignee) {
+      columnOptions.push({
+        id: <T id="AllUsersTable.assignedTo" />,
+      });
+    }
+    columnOptions.push({
+      id: <T id="AllUsersTable.actions" />,
+    });
+    return columnOptions;
+  };
+
+  getColumns = ({ props, index, user }) => {
+    const columns = [
+      index + 1,
+      user.emails[0].address.toString(),
+      moment(user.createdAt).format('D MMM YY à HH:mm:ss'),
+      user.roles ? user.roles.toString() : '',
+      
+    ];
+    if (props.showAssignee) {
+      columns.push((user.assignedEmployee &&
+          (user.assignedEmployee.username ||
+            user.assignedEmployee.emails[0].address.toString())) ||
+          '');
+    }
+
+    columns.push(<div>
+      <div>
+        <ImpersonateLink userId={user._id} />
+      </div>
+                 </div>);
+
+    return columns;
+  };
+
+  setupRows = (props) => {
+    const users = props.data;
+
+    if (users && users.length) {
+      this.rows = users.map((user, index) => ({
+        id: user._id,
+        columns: this.getColumns({
+          props,
+          index,
+          user,
+        }),
+        handleClick: () => this.props.history.push(`/users/${user._id}`),
+      }));
+      return this.rows;
+    }
+    return [];
   };
 
   render() {
     const { isLoading } = this.props;
+    const { columnOptions, rows } = this.state;
+
     if (!isLoading) {
       return (
         <Table
           columnOptions={columnOptions}
-          rows={this.setupRows(this.props)}
+          rows={rows}
           noIntl
         />
       );
@@ -56,4 +103,5 @@ export default class AllUsersTable extends Component {
 AllUsersTable.propTypes = {
   users: PropTypes.arrayOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };

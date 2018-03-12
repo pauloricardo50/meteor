@@ -6,6 +6,6 @@ export default Loans.createQuery(LOAN_QUERIES.ASSIGNED_TO, {
     filters._id = params.loanId;
   },
   user: {
-    assignedTo: 1,
+    assignedEmployeeId: 1,
   },
 });

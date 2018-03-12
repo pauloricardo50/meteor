@@ -40,14 +40,14 @@ assignAdminToNewUser.setHandler((context, { userId, adminId, taskId, taskType })
   });
   if (assignAdminToUserResult) {
     SecurityService.tasks.isAllowedToUpdate(taskId);
-    const changeTaskAssignedToResult = taskChangeStatus.run({
+    const changeTaskAssignedToResult = taskChangeAssignedTo.run({
       taskId,
       newAssignee: adminId,
     });
     if (changeTaskAssignedToResult) {
       // change statuts to "COMPLETED" only for task with type "ADD_ASSIGNED_TO"
       if (taskType === TASK_TYPE.ADD_ASSIGN_TO) {
-        taskChangeAssignedTo.run({
+        taskChangeStatus.run({
           taskId,
           newStatus: TASK_STATUS.COMPLETED,
         });
@@ -56,7 +56,7 @@ assignAdminToNewUser.setHandler((context, { userId, adminId, taskId, taskType })
           type: TASK_TYPE.ADD_ASSIGNED_TO,
           userId,
         })._id;
-        taskChangeAssignedTo.run({
+        taskChangeStatus.run({
           taskId: assignmentTaskId,
           newStatus: TASK_STATUS.COMPLETED,
         });
