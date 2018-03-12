@@ -8,9 +8,9 @@ const DescriptionItemText = ({ id, nb }) => (
   <div className="description-item-text">
     <DescriptionItemNumber value={nb} />
     <b>
-      <h2>
+      <h3>
         <T id={`DescriptionItemText.${id}.title`} />
-      </h2>
+      </h3>
     </b>
     <p>
       <T id={`DescriptionItemText.${id}.description`} />

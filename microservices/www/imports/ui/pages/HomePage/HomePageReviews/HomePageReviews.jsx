@@ -1,8 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const HomePageReviews = props => <div>Hello World</div>;
+import HomePageReviewsTitle from './HomePageReviewsTitle';
+import HomePageReviewsCarousel from './HomePageReviewsCarousel';
 
-HomePageReviews.propTypes = {};
+const HomePageReviews = () => (
+  <div className="home-page-reviews">
+    <HomePageReviewsTitle />
+    <HomePageReviewsCarousel />
+  </div>
+);
 
 export default HomePageReviews;

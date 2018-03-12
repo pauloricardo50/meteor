@@ -15,9 +15,9 @@ const steps = [
 const HomePageDescription = () => (
   <div className="home-page-description">
     <b>
-      <h1 className="title">
+      <h2 className="title">
         <T id="HomePageDescription.title" />
-      </h1>
+      </h2>
     </b>
     <div className="steps">
       {steps.map((step, index) => (

@@ -8,9 +8,11 @@ const HomePageHeader = () => (
   <header>
     <Waves />
     <div className="text">
-      <h1>
-        <T id="HomePageHeader.title" />
-      </h1>
+      <b>
+        <h1>
+          <T id="HomePageHeader.title" />
+        </h1>
+      </b>
       <span className="separator" />
       <h3>
         <T id="HomePageHeader.description" />
