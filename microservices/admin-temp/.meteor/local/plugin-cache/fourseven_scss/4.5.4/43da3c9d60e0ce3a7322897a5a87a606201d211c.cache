@@ -1,2 +1,0 @@
-{"{}/client/css/variables.scss":"b67eb61a121861b67beb5cc654b2743e0fbd97af"}
-{"css":"","sourceMap":{"version":3,"file":".variables.scss","sourceRoot":".","sources":["./client/css/variables.scss"],"sourcesContent":["$primary: #4990e2;\n$success: #6ed2b1;\n$warning: #f3af50;\n$danger: #b73e25;\n$border-grey: #dee2e6;\n$icon: #444;\n$icon-hover: #888;\n$body-text: rgba(#000, 0.6);\n$title-text: rgba(#000, 0.74);\n"],"names":[],"mappings":""}}
