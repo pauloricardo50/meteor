@@ -82,3 +82,17 @@
 .home-page footer .copyright {
   margin-bottom: 0;
 }
+
+.home-page footer .social-links {
+  display: flex;
+}
+
+.home-page footer .social-links a {
+  color: white;
+  padding: 8px;
+  opacity: 1;
+}
+
+.home-page footer .social-links a:hover {
+  opacity: 0.5;
+}
