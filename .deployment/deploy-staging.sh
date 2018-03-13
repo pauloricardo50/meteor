@@ -41,8 +41,9 @@ echo "# NPM dependencies installed, now deploying each microservice..."
 
 for i in $MICROSERVICES; do
   echo $i;
-  echo "# [$i] deploying microservice deployment in background ..."
-  mup deploy --config "mup-$i.js" --settings settings-staging.json 2> "$SCRIPT_PATH/logs/errors-$i.log" > "$SCRIPT_PATH/logs/deploy-$i.log" &
+  echo "# [$i] deploying microservice deployment ..."
+  # mup deploy --config "mup-$i.js" --settings settings-staging.json 2> "$SCRIPT_PATH/logs/errors-$i.log" > "$SCRIPT_PATH/logs/deploy-$i.log" &
+  mup deploy --config "mup-$i.js" --settings settings-staging.json 
 done
 
 FAIL=0
