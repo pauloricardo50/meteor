@@ -7,7 +7,7 @@ ME=`basename "$0"`
 if [ "$1" = "" ]; then
   echo "# Please use the microservice(s) you want to deploy to: ./$ME $MICROSERVICES"
   echo "# Use 'all' as the first argument to deploy to all"
-  exit 0
+  exit 1
 fi
 
 if [ "$1" != "all" ]; then
@@ -20,9 +20,9 @@ if [ ! -d "logs" ]; then
 fi
 
 # Check for authentication file
-if [ ! -f "auth.pem" ]; then
+if [ ! -f "$SCRIPT_PATH/auth.pem" ]; then
   echo "# You do not have an auth.pem file which is used to authenticate to the microservices"
-  exit 0
+  exit 1
 fi
 
 echo
