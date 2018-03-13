@@ -1,6 +1,12 @@
 {
   "Forms.futureOwner.BOTH": "Les deux",
   "Forms.futureOwner.OTHER": "Autre",
+  "HomePageFooterLinks.info": "Liens utiles",
+  "HomePageFooterLinks.faq": "Questions que vous vous posez",
+  "HomePageFooterLinks.contact": "Nous contacter",
+  "HomePageFooterLinks.careers": "Carrières",
+  "HomePageFooterLinks.conditions": "Conditions Générales",
+  "general.start": "Commencer",
 
   "HomePageReviewsTitle.title": "Ce qu'on dit à propos d'e-Potek",
   "HomePageReviewsTitle.description":

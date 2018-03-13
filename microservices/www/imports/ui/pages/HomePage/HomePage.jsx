@@ -18,7 +18,7 @@ const HomePage = () => (
     <HomePagePartners />
     <HomePageDescription />
     <HomePageReviews />
-    <HomePageNewsletter />
+    {/* <HomePageNewsletter /> */}
     <HomePageFooter />
   </main>
 );

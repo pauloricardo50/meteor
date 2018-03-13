@@ -64,13 +64,15 @@ export default class WaveController extends Component {
   };
 
   pathFunction = (offset, x) => {
-    const { frequency, amplitude } = this.props;
+    const { frequency, amplitude, noSlope } = this.props;
     if (!this.squareRoots[x]) {
       // Cache square roots calculation as it's always the same
       this.squareRoots[x] = Math.sqrt(x * frequency);
     }
     return (
-      (Math.sin(this.squareRoots[x] - offset) * amplitude + WAVE_SLOPE) * x
+      (Math.sin(this.squareRoots[x] - offset) * amplitude +
+        (noSlope ? 0 : WAVE_SLOPE)) *
+      x
     );
   };
 
@@ -87,4 +89,9 @@ WaveController.propTypes = {
   amplitude: PropTypes.number.isRequired,
   speed: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
+  noSlope: PropTypes.bool,
+};
+
+WaveController.defaultProps = {
+  noSlope: false,
 };

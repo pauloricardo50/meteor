@@ -6,7 +6,7 @@ import { Widget1Starter } from '../../../components/Widget1';
 
 const HomePageHeader = () => (
   <header>
-    <Waves />
+    <Waves noSlope={false} />
     <div className="text">
       <b>
         <h1>

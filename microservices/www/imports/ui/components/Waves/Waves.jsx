@@ -55,7 +55,12 @@ class Waves extends Component {
       <div className="waves">
         <div className="waves-wrapper">
           {waves.map((wave, index) => (
-            <WaveController {...wave} key={index} width={windowWidth * 1.2} />
+            <WaveController
+              {...wave}
+              key={index}
+              width={windowWidth * 1.2}
+              {...this.props}
+            />
           ))}
         </div>
       </div>

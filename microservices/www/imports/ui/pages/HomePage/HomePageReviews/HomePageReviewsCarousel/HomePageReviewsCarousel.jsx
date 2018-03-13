@@ -15,12 +15,12 @@ const reviews = [
   {
     name: 'Florian',
     text:
-      "Bon, j'ai développé tout le site web, regardez ces effets d'animation sur cette superbe carte blanche, des journées de boulot! Rien que pour ça, ça en vaut la peine.",
+      "Bon, j'ai développé tout le site web, regardez ces effets d'animation sur cette superbe carte blanche, des journées de boulot! Rien que pour ça, e-Potek en vaut la peine.",
   },
   {
     name: 'Cyril',
     text:
-      "Certes, j'ai investi dans cette boite, donc le conflit d'intérêt dans cette review est assez fort, mais je pense que vous devriez vraiment leur donner une chance!",
+      "Certes, j'ai investi dans cette boite, donc le conflit d'intérêt dans cette review est assez fort, mais je pense que vous devriez vraiment leur donner une chance. Regardez-les, ils sont désespérés avec leurs reviews..",
   },
 ];
 

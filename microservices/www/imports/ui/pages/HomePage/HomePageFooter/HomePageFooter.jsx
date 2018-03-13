@@ -1,8 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const HomePageFooter = props => <div>Hello World</div>;
+import Waves from '../../../components/Waves';
+import HomePageFooterTop from './HomePageFooterTop';
+import HomePageFooterLinks from './HomePageFooterLinks';
+import HomePageFooterCopyright from './HomePageFooterCopyright';
 
-HomePageFooter.propTypes = {};
+const HomePageFooter = () => (
+  <footer>
+    <Waves noSlope />
+    <div className="home-page-footer-content">
+      <HomePageFooterTop />
+      <hr />
+      <HomePageFooterLinks />
+    </div>
+    <HomePageFooterCopyright />
+  </footer>
+);
 
 export default HomePageFooter;

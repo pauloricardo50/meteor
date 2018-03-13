@@ -1,1 +1,1 @@
-export { default } from './HomePageFooter';
+export { default } from './HomePageFooter.jsx';
