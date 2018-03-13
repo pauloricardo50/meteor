@@ -16,7 +16,7 @@ fi
 
 # Create logs folder if doesn't exist
 if [ ! -d "logs" ]; then
-  mkdir logs
+  mkdir $SCRIPT_PATH/logs
 fi
 
 # Check for authentication file
