@@ -1,14 +1,10 @@
 version: 2
+deployment:
+  staging:
+    branch: staging
+    commands:
+      - .deployment/deploy-staging.sh all
 jobs:
-  deploy:
-    machine:
-      enabled: true
-    steps:
-      - run:
-        command: |
-          if [ "${CIRCLE_BRANCH}" == "staging" ]; then
-            .deployment/deploy-staging.sh all
-          fi
   build:
     working_directory: ~/app
     docker:
