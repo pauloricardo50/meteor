@@ -6,6 +6,8 @@ jobs:
     steps:
       - checkout
       - run:
+          command: echo $STAGING_SSH_KEY_BASE64|base64 --decode > .deployment/auth.pem
+      - run:
           command: .deployment/deploy-staging.sh all
   build:
     working_directory: ~/app
