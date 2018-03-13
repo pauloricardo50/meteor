@@ -3,21 +3,14 @@
   "private": true,
   "scripts": {
     "start": "meteor --settings settings-dev.json --port 4000",
-    "start-local-db":
-      "MONGO_URL=mongodb://localhost:27017/epotek meteor --settings settings-dev.json --port 4000",
+    "start-local-db": "MONGO_URL=mongodb://localhost:27017/epotek meteor --settings settings-dev.json --port 4000",
     "production": "meteor run --production --settings settings-dev.json",
-    "visualize":
-      "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 4010",
-    "test":
-      "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 4005",
-    "test-debug":
-      "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 5000 --debug-port 5858",
-    "test-CI":
-      "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
-    "deploy:production":
-      "cd .deploy/production && mup deploy --settings=settings-production.json",
-    "deploy:staging":
-      "cd .deploy/staging && mup deploy --settings=settings-staging.json",
+    "visualize": "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 4010",
+    "test": "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 4005",
+    "test-debug": "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 5000 --debug-port 5858",
+    "test-CI": "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
+    "deploy:production": "cd .deploy/production && mup deploy --settings=settings-production.json",
+    "deploy:staging": "cd .deploy/staging && mup deploy --settings=settings-staging.json",
     "clean": "rm -rf node_modules/ && meteor npm install",
     "cleanstart": "meteor npm run clean && meteor npm run start",
     "debug": "meteor npm run start -- --inspect"
@@ -40,8 +33,7 @@
     "html-pdf": "^2.2.0",
     "indexof": "0.0.1",
     "intl-messageformat": "^2.2.0",
-    "intl-relativeformat":
-      "https://github.com/Floriferous/intl-relativeformat/tarball/master",
+    "intl-relativeformat": "https://github.com/Floriferous/intl-relativeformat/tarball/master",
     "js-search": "^1.4.2",
     "lodash": "^4.17.4",
     "material-ui": "^1.0.0-beta.34",
@@ -87,8 +79,7 @@
   "devDependencies": {
     "babel-eslint": "^8.2.1",
     "babel-plugin-module-alias": "^1.6.0",
-    "babel-plugin-react-intl":
-      "https://github.com/Floriferous/babel-plugin-react-intl/tarball/master",
+    "babel-plugin-react-intl": "https://github.com/Floriferous/babel-plugin-react-intl/tarball/master",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
