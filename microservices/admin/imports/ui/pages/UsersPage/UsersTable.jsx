@@ -4,8 +4,9 @@ import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import moment from 'moment';
 import Table from 'core/components/Table';
 import { T } from 'core/components/Translation/';
+import UsersTableContainer from './UsersTableContainer';
 
-export default class UsersTable extends Component {
+class UsersTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -102,7 +103,8 @@ export default class UsersTable extends Component {
 }
 
 UsersTable.propTypes = {
-  users: PropTypes.arrayOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
   isLoading: PropTypes.bool.isRequired,
 };
+
+export default UsersTableContainer(UsersTable);
