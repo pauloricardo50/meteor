@@ -1139,6 +1139,8 @@
   "UsersTable.roles": "Rôles",
   "UsersTable.assignedTo": "Assigné à",
   "UsersTable.actions": "Actions",
+  "UsersTabs.myUsers": "Mes utilisateurs",
+  "UsersTabs.allUsers": "Tous les utilisateurs",
   "ValidatorItem.error.fortune": "Manque de fortune",
   "ValidatorItem.error.fortuneTight": "Possible avec prévoyance",
   "ValidatorItem.error.income": "Manque de revenus",
