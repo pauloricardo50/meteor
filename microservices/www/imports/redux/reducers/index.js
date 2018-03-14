@@ -1,6 +1,7 @@
-// import { combineReducers } from 'redux';
+import { combineReducers } from 'redux';
 
-const createRootReducer = () => state => state;
-// return combineReducers({});
+import widget1 from './widget1';
+
+const createRootReducer = () => combineReducers({ widget1 });
 
 export default createRootReducer;

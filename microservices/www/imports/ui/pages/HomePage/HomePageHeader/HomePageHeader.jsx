@@ -1,10 +1,12 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 
 import { T } from 'core/components/Translation';
 import Waves from '../../../components/Waves';
-import { Widget1Starter } from '../../../components/Widget1';
+import Widget1SingleInputForm from '../../Widget1Page/Widget1SingleInputForm';
+import { SALARY } from '../../Widget1Page/Widget1Page';
 
-const HomePageHeader = () => (
+const HomePageHeader = ({ history }) => (
   <header>
     <Waves noSlope={false} />
     <div className="text">
@@ -18,8 +20,11 @@ const HomePageHeader = () => (
         <T id="HomePageHeader.description" />
       </h3>
     </div>
-    <Widget1Starter link="/start/1" />
+    <Widget1SingleInputForm
+      name={SALARY}
+      onClick={() => history.push('/start/1')}
+    />
   </header>
 );
 
-export default HomePageHeader;
+export default withRouter(HomePageHeader);

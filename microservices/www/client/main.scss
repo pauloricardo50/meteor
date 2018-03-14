@@ -8,3 +8,11 @@
 @import '{}/imports/ui/pages/Widget1Page/Widget1Page.scss';
 @import '{}/imports/ui/components/Waves/Waves.scss';
 @import '{}/imports/ui/components/Widget1/Widget1.scss';
+
+html,
+body,
+#react-root {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}

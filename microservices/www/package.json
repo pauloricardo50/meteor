@@ -24,6 +24,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-helmet": "^5.2.0",
+    "react-highcharts": "^16.0.2",
     "react-intl": "https://github.com/Floriferous/react-intl/tarball/build",
     "react-loadable": "^5.3.1",
     "react-motion": "^0.5.2",
