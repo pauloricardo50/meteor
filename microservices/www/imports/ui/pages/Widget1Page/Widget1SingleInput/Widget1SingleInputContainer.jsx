@@ -1,5 +1,9 @@
 import { connect } from 'react-redux';
-import { setValue, setAuto } from '../../../../redux/actions/widget1Actions';
+import {
+  setValue,
+  setAuto,
+  increaseSliderMax,
+} from '../../../../redux/actions/widget1Actions';
 
 export default connect(
   ({ widget1 }, { name }) => ({
@@ -7,11 +11,9 @@ export default connect(
   }),
   (dispatch, { name }) => ({
     // FIXME: Number is a temporary hack
-    setValue: event =>
-      dispatch(setValue(
-        name,
-        event.target.value && Number.parseInt(event.target.value),
-      )),
+    setValue: value =>
+      dispatch(setValue(name, value && Number.parseInt(value))),
     setAuto: () => dispatch(setAuto(name)),
+    increaseSliderMax: () => dispatch(increaseSliderMax(name)),
   }),
 );

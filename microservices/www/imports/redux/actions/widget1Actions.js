@@ -1,8 +1,7 @@
 import {
   setValueAction,
-  resetValueAction,
   setAutoAction,
-  setManualAction,
+  increaseSliderMaxAction,
 } from '../reducers/widget1';
 
 export const setValue = (name, value) => ({
@@ -11,3 +10,7 @@ export const setValue = (name, value) => ({
 });
 
 export const setAuto = name => ({ type: setAutoAction(name) });
+
+export const increaseSliderMax = name => ({
+  type: increaseSliderMaxAction(name),
+});

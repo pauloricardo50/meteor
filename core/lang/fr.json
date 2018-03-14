@@ -17,6 +17,10 @@
   "Widget1Monthly.amortization": "Amortissement",
   "Widget1Monthly.maintenance": "Frais d'entretien",
 
+  "Widget1SingleInput.salary": "Revenus annuels bruts",
+  "Widget1SingleInput.fortune": "Fonds propres",
+  "Widget1SingleInput.property": "Prix d'achat",
+
   "HomePageReviewsTitle.title": "Ce qu'on dit à propos d'e-Potek",
   "HomePageReviewsTitle.description":
     "Plus que tout, nos clients apprécient notre efficacité, notre tarification ainsi que notre aide à la clientèle - c'est ce qui fait notre force.",

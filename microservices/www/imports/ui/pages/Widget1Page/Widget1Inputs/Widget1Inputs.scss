@@ -6,3 +6,9 @@
 .widget1-inputs .widget1-single-input {
   padding: 16px 0;
 }
+
+.widget1-inputs .widget1-single-inputs-overdrive {
+  display: flex;
+  flex-grow: 1;
+  width: 100%;
+}

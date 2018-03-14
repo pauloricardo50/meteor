@@ -25,7 +25,8 @@ done
 find .. -type l -exec unlink {} \;
 
 # Prepare every microservice
-for i in 'admin' 'app' 'lender' 'www'
+# for i in 'admin' 'app' 'lender' 'www'
+for i in  'www'
   do
     echo "Preparing $i microservice..."
 
@@ -37,6 +38,10 @@ for i in 'admin' 'app' 'lender' 'www'
       #only need variables.scss in www
       mkdir ../microservices/$i/client/css
       ln -s ../../../../core/assets/css/variables.scss ../microservices/$i/client/css/variables.scss
+
+      mkdir ../microservices/$i/client/css/external-styles      
+      ln -s ../../../../../core/assets/css/external-styles/bootstrap-popover.css ../microservices/$i/client/css/external-styles/bootstrap-popover.css
+      ln -s ../../../../../core/assets/css/external-styles/rc-slider.css ../microservices/$i/client/css/external-styles/rc-slider.css
     else
       ln -s ../../../core/assets/css ../microservices/$i/client/css
     fi
