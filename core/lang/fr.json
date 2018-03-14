@@ -8,6 +8,15 @@
   "HomePageFooterLinks.conditions": "Conditions Générales",
   "general.start": "Commencer",
 
+  "Recap.project": "Projet",
+
+  "Widget1Inputs.title": "Calculateur",
+  "Widget1Recap.title": "Plan Financier",
+  "Widget1Monthly.title": "Charges Estimées",
+  "Widget1Monthly.interests": "Intérêts",
+  "Widget1Monthly.amortization": "Amortissement",
+  "Widget1Monthly.maintenance": "Frais d'entretien",
+
   "HomePageReviewsTitle.title": "Ce qu'on dit à propos d'e-Potek",
   "HomePageReviewsTitle.description":
     "Plus que tout, nos clients apprécient notre efficacité, notre tarification ainsi que notre aide à la clientèle - c'est ce qui fait notre force.",

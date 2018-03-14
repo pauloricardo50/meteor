@@ -47,11 +47,14 @@
 }
 
 .widget1-page .widget1-part-2 .card1 {
-  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
   margin: 16px;
   flex-grow: 1;
   flex-basis: 400px;
   max-width: 400px;
+  align-items: center;
 }
 
 .widget1-page .widget1-part-2 .card1 h2 {

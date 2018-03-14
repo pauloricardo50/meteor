@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import classnames from 'classnames';
 
 import { toMoney } from 'core/utils/conversionFunctions';
 import constants from 'core/config/constants';
-import { T, IntlNumber } from 'core/components/Translation';
+import { IntlNumber } from 'core/components/Translation';
 
 import {
   getPropAndWork,
@@ -31,6 +30,8 @@ import {
 } from 'core/utils/borrowerFunctions';
 
 import { getMonthlyPayment, getIncomeRatio } from 'core/utils/finance-math';
+
+import RecapSimple from './RecapSimple';
 
 const getDashboardArray = (props) => {
   const r = props.loan;
@@ -811,43 +812,7 @@ const Recap = (props) => {
   const array = props.array || arraySwitch(props);
   return (
     <article className="validator">
-      <div className="result animated fadeIn">
-        {array.map((item) => {
-          if (item.hide) {
-            return null;
-          } else if (item.title) {
-            return (
-              <label
-                className="text-center"
-                {...item.props}
-                key={item.label}
-                style={item.labelStyle}
-              >
-                <T id={item.label} />
-              </label>
-            );
-          }
-          return (
-            <div
-              className={classnames({
-                'fixed-size': true,
-                'no-scale': props.noScale,
-                bold: item.bold,
-              })}
-              style={{
-                marginBottom: item.spacing && 16,
-                marginTop: item.spacingTop && 16,
-              }}
-              key={item.label}
-            >
-              <h4 className="secondary">
-                <T id={item.label} tooltipPlacement="bottom" />
-              </h4>
-              <h3 {...item.props}>{item.value}</h3>
-            </div>
-          );
-        })}
-      </div>
+      <RecapSimple {...props} array={array} />{' '}
     </article>
   );
 };
