@@ -18,19 +18,21 @@ export default compose(
         show: admin._id !== currentAdmin,
         label: admin.emails[0].address,
         link: false,
-        onClick: onAdminSelectHandler({
-          selectedAdmin: admin,
-          relatedDoc,
-          currentAdmin,
-        }),
+        onClick: () =>
+          onAdminSelectHandler({
+            selectedAdmin: admin,
+            relatedDoc,
+            currentAdmin,
+          }),
       }));
       return options;
     };
-
-    const options = isLoading
+    
+    const options = {
+      options: isLoading
       ? []
-      : getMenuItems({ admins: data, relatedDoc: doc });
-
+      : getMenuItems({ admins: data, relatedDoc: doc }),
+    }
     return options;
   }),
 );

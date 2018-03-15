@@ -19,10 +19,10 @@ const AssignAdminDropdown = (props) => {
 };
 
 AssignAdminDropdown.propTypes = {
-  // isLoading: PropTypes.boolean.isRequired,
-  // error: PropTypes.object.isRequired,
-  // styles: PropTypes.object.isRequired,
-  // options: PropTypes.array.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  error: PropTypes.object.isRequired,
+  styles: PropTypes.object.isRequired,
+  options: PropTypes.array.isRequired,
 };
 
 export default AssignAdminDropdownContainer(AssignAdminDropdown);

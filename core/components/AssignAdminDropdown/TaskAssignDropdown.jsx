@@ -55,14 +55,16 @@ const TaskAssignDropdownContainer = createContainer((props) => {
     }
   };
 
-  const onAdminSelectHandler = ({ selectedAdmin, relatedDoc, currentAdmin }) =>
-    changeAssignedUser({
-      admin: selectedAdmin,
-      task: relatedDoc,
-      taskAssignedTo: currentAdmin,
-    });
+  const additionalProps = {
+    onAdminSelectHandler: ({ selectedAdmin, relatedDoc, currentAdmin }) =>
+      changeAssignedUser({
+        admin: selectedAdmin,
+        task: relatedDoc,
+        taskAssignedTo: currentAdmin,
+      }),
+  };
 
-  return onAdminSelectHandler;
+  return additionalProps;
 });
 
 export default TaskAssignDropdownContainer(AssignAdminDropdown);
