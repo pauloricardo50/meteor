@@ -2,12 +2,24 @@ import query from 'core/api/users/queries/admins';
 import { compose, createContainer, withQuery } from 'core/api';
 
 export default compose(
-  withQuery(props => query.clone({ ...props }), {
-    reactive: true,
-  }),
-  createContainer((props) => {
+  withQuery(
+    props => {
+      console.log('In here');
+      return query.clone();
+    },
+    {
+      reactive: true,
+    },
+  ),
+  createContainer(props => {
     console.log('AssignAdminDropdownContainer');
-    const { isLoading, data, doc, styles, onAdminSelectHandler } = props;
+    const {
+      isLoading,
+      data,
+      relatedTask,
+      styles,
+      onAdminSelectHandler,
+    } = props;
     console.log(props);
     const getMenuItems = ({ admins, relatedDoc }) => {
       const currentAdmin = relatedDoc.assignedEmployeeId
@@ -27,12 +39,12 @@ export default compose(
       }));
       return options;
     };
-    
+
     const options = {
       options: isLoading
-      ? []
-      : getMenuItems({ admins: data, relatedDoc: doc }),
-    }
+        ? []
+        : getMenuItems({ admins: data || [], relatedDoc: relatedTask }),
+    };
     return options;
   }),
 );

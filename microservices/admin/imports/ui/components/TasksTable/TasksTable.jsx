@@ -66,36 +66,39 @@ export default class TasksTable extends Component {
       // TODO: also check& add other related docs
     ];
     if (props.showAssignee) {
-      columns.push((task.assignedEmployee &&
+      columns.push(
+        (task.assignedEmployee &&
           (task.assignedEmployee.username ||
             task.assignedEmployee.emails[0].address.toString())) ||
-          '');
+          '',
+      );
     }
 
-    columns.push(<div>
-      <TasksStatusDropdown
-        {...props}
-        currentUser={Meteor.user()}
-        taskId={task._id}
-        taskStatus={task.status}
-        styles={styles.dropdownButtons}
-      />
-      <TaskAssignDropdown
-        {...props}
-        relatedTask={task}
-        styles={styles.dropdownButtons}
-      />
-      {/* <TasksUserWithData
+    columns.push(
+      <div>
+        <TasksStatusDropdown
+          {...props}
+          currentUser={Meteor.user()}
+          taskId={task._id}
+          taskStatus={task.status}
+          styles={styles.dropdownButtons}
+        />
+        <TaskAssignDropdown
+          relatedTask={task}
+          styles={styles.dropdownButtons}
+        />
+        {/* <TasksUserWithData
         {...props}
         task={task}
         styles={styles.dropdownButtons}
       /> */}
-    </div>);
+      </div>,
+    );
 
     return columns;
   };
 
-  setupRows = (props) => {
+  setupRows = props => {
     const tasks = props.data;
 
     if (tasks && tasks.length) {
