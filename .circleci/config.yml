@@ -28,7 +28,7 @@ jobs:
       - restore_cache:
           name: restore cached build
           keys: 
-            - build-epotek-{{ checksum ".circleci/config.yml" }}
+            - build-epotek
       - run:
           name: install Meteor
           command: |
@@ -82,10 +82,13 @@ jobs:
       - restore_cache:
           name: restore cached build
           keys: 
-            - build-epotek-{{ checksum ".circleci/config.yml" }}
+            - build-epotek
       - run:
           name: install Meteor
           command: |
+            if [ -e ~/.meteor/meteor ]; then
+                sudo cp ~/.meteor/meteor /usr/local/bin
+            fi
             # only install meteor if bin isn't found
             command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com | /bin/sh
       - run:
@@ -120,16 +123,23 @@ jobs:
           command: |
             cd microservices/admin
             meteor npm i selenium-webdriver@3.0.0-beta-2 chromedriver
-            meteor npm run test-CI
+            meteor npm run test-CI      
+      - run:
+          name: copy meteor bin to build cache
+          command: |
+            mkdir -p ~/build-temp
+            cp /usr/local/bin/meteor ~/build-temp/meteor-bin
       - save_cache:
           name: save build
-          key: build-epotek-{{ checksum ".circleci/config.yml" }}
+          key: build-epotek
           paths:
             - ~/.meteor
-            - /usr/local/bin/meteor
-            - ./microservices/app/node_modules/
-            - ./microservices/admin/node_modules/
-            - ./microservices/www/node_modules/
+            - ./microservices/app/node_modules
+            - ./microservices/app/.meteor/local
+            - ./microservices/admin/node_modules
+            - ./microservices/admin/.meteor/local
+            - ./microservices/www/node_modules
+            - ./microservices/www/.meteor/local
       - store_test_results:
           path: ./results
       - store_artifacts:
