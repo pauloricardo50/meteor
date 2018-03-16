@@ -6,61 +6,58 @@ import {
 } from 'core/api/methods';
 import AssignAdminDropdown from './AssignAdminDropdown';
 
-const TaskAssignDropdownContainer = createContainer(() => {
-  const firstUserAssign = ({
-    taskAssignedTo,
-    relatedUserId,
-    admin,
-    taskId,
-    taskType,
-  }) => {
-    if (!taskAssignedTo) {
-      assignAdminToNewUser.run({
-        userId: relatedUserId,
-        adminId: admin._id,
-        taskId,
-        taskType,
-      });
-    } else {
-      taskChangeAssignedTo.run({
-        taskId,
-        newAssignee: admin._id,
-      });
-    }
-  };
+const firstUserAssign = ({
+  taskAssignedTo,
+  relatedUserId,
+  admin,
+  taskId,
+  taskType,
+}) => {
+  if (!taskAssignedTo) {
+    assignAdminToNewUser.run({
+      userId: relatedUserId,
+      adminId: admin._id,
+      taskId,
+      taskType,
+    });
+  } else {
+    taskChangeAssignedTo.run({
+      taskId,
+      newAssignee: admin._id,
+    });
+  }
+};
 
-  const changeAssignedUser = ({ admin, task, taskAssignedTo }) => {
-    const taskUserId = task.user ? task.user._id : undefined;
-    if (!taskUserId) {
-      taskGetRelatedTo.run({ task }).then(relatedUserId =>
-        firstUserAssign({
-          taskAssignedTo,
-          relatedUserId,
-          admin,
-          taskId: task._id,
-          taskType: task.type,
-        }));
-    } else {
+const changeAssignedUser = ({ admin, task, taskAssignedTo }) => {
+  const taskUserId = task.user ? task.user._id : undefined;
+  if (!taskUserId) {
+    taskGetRelatedTo.run({ task }).then(relatedUserId =>
       firstUserAssign({
         taskAssignedTo,
-        relatedUserId: taskUserId,
+        relatedUserId,
         admin,
         taskId: task._id,
         taskType: task.type,
-      });
-    }
-  };
+      }));
+  } else {
+    firstUserAssign({
+      taskAssignedTo,
+      relatedUserId: taskUserId,
+      admin,
+      taskId: task._id,
+      taskType: task.type,
+    });
+  }
+};
 
-  const additionalProps = {
-    onAdminSelectHandler: ({ selectedAdmin, relatedDoc, currentAdmin }) =>
-      changeAssignedUser({
-        admin: selectedAdmin,
-        task: relatedDoc,
-        taskAssignedTo: currentAdmin,
-      }),
-  };
+const onAdminSelectHandler = ({ selectedAdmin, relatedDoc, currentAdmin }) =>
+  changeAssignedUser({
+    admin: selectedAdmin,
+    task: relatedDoc,
+    taskAssignedTo: currentAdmin,
+  });
 
-  return additionalProps;
-});
+const TaskAssignDropdownContainer = createContainer(() =>
+  ({ onAdminSelectHandler }));
 
 export default TaskAssignDropdownContainer(AssignAdminDropdown);

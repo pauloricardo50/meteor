@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import DropdownMenu from 'core/components/DropdownMenu';
-import { LoadingComponent } from 'core/components/Loading';
-import { T } from 'core/components/Translation';
+import DropdownMenu from '../DropdownMenu';
+import { LoadingComponent } from '../Loading';
+import { T } from '../Translation';
 import AssignAdminDropdownContainer from './AssignAdminDropdownContainer';
 
 const AssignAdminDropdown = (props) => {

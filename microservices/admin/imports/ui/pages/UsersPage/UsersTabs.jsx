@@ -5,7 +5,7 @@ import queryString from 'query-string';
 import { T } from 'core/components/Translation/';
 import UsersTable from './UsersTable';
 
-const getTabs = props => [
+const getTabs = ({ history }) => [
   {
     id: 'myUsers',
     label: <T id="UsersTabs.myUsers" />,
@@ -13,7 +13,7 @@ const getTabs = props => [
       <UsersTable
         assignedTo={Meteor.userId()}
         showAssignee={false}
-        history={props.history}
+        history={history}
         key="myUsers"
       />
     ),
@@ -21,14 +21,19 @@ const getTabs = props => [
   {
     id: 'allUsers',
     label: <T id="UsersTabs.allUsers" />,
-    content: <UsersTable showAssignee key="allUsers" history={props.history} />,
+    content: <UsersTable showAssignee key="allUsers" history={history} />,
   },
 ];
 
-const UsersTabs = (props) => {
-  const tabs = getTabs(props);
-  const initialTab = tabs.findIndex(tab => tab.id === queryString.parse(props.location.search).tab);
+const UsersTabs = ({ location, history }) => {
+  const tabs = getTabs({ history });
+  const initialTab = tabs.findIndex(tab => tab.id === queryString.parse(location.search).tab);
   return <Tabs initialIndex={initialTab} tabs={tabs} />;
+};
+
+UsersTabs.propTypes = {
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 export default UsersTabs;

@@ -5,6 +5,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import Table from 'core/components/Table';
 import { T } from 'core/components/Translation/';
+import { LoadingComponent } from 'core/components/Loading';
 import UserAssignDropdown from
   'core/components/AssignAdminDropdown/UserAssignDropdown';
 import UsersTableContainer from './UsersTableContainer';
@@ -25,7 +26,6 @@ class UsersTable extends Component {
       columnOptions: this.getColumnOptions(nextProps),
     });
   }
-
 
   getColumnOptions = ({ showAssignee }) => {
     const columnOptions = [
@@ -61,14 +61,14 @@ class UsersTable extends Component {
     if (props.showAssignee) {
       columns.push((user.assignedEmployee &&
           (user.assignedEmployee.username ||
-            user.assignedEmployee.emails[0].address.toString())) ||
+            user.assignedEmployee.emails[0].address)) ||
           '');
     }
 
     columns.push(<div>
       <ImpersonateLink userId={user._id} history={this.props.history} />
       <UserAssignDropdown doc={user} />
-    </div>);
+                 </div>);
 
     return columns;
   };
@@ -92,26 +92,33 @@ class UsersTable extends Component {
   };
 
   render() {
-    const { isLoading } = this.props;
+    const { isLoading, showAssignee, data } = this.props;
     const { columnOptions, rows } = this.state;
-
-    if (!isLoading) {
-      return (
-        <Table
-          columnOptions={columnOptions}
-          rows={rows}
-          noIntl
-          showAssignee
-        />
-      );
+    
+    if (isLoading) {
+      return <LoadingComponent />;
     }
-    return null;
+
+    return (
+      <Table
+        columnOptions={columnOptions}
+        rows={rows}
+        noIntl
+        showAssignee
+      />
+    );
   }
 }
 
 UsersTable.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
   isLoading: PropTypes.bool.isRequired,
+  showAssignee: PropTypes.bool,
+  data: PropTypes.array.isRequired,
+};
+
+UsersTable.defaultProps = {
+  showAssignee: false,
 };
 
 export default UsersTableContainer(UsersTable);

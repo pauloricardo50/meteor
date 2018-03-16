@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import MenuItem from 'core/components/Material/MenuItem';
-import Divider from 'core/components/Material/Divider';
-import Menu from 'core/components/Material/Menu';
-import { T } from 'core/components/Translation';
+import MenuItem from '../Material/MenuItem';
+import Divider from '../Material/Divider';
+import Menu from '../Material/Menu';
+import { T } from '../Translation';
 import IconButton from '../IconButton';
 import Icon from '../Icon';
 
@@ -49,7 +49,7 @@ export default class DropdownMenu extends Component {
           <IconButton
             type={icon}
             style={{ marginRight: 8 }}
-            tooltip={this.props.tooltip}
+            tooltip={tooltip}
           />
         )}
         {label}
