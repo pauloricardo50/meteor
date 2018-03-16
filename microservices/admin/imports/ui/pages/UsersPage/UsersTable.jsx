@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 import Table from 'core/components/Table';
 import { T } from 'core/components/Translation/';
 import UserAssignDropdown from
@@ -46,11 +47,16 @@ class UsersTable extends Component {
 
   getColumns = ({ props, index, user }) => {
     const columns = [
-      index + 1,
-      user.emails[0].address.toString(),
-      moment(user.createdAt).format('D MMM YY à HH:mm:ss'),
-      user.roles ? user.roles.toString() : '',
-
+      <Link to={`/users/${user._id}`} key="0" > {index + 1} </Link>,
+      <Link to={`/users/${user._id}`} key="1" >
+        {user.emails[0].address.toString()}
+      </Link>,
+      <Link to={`/users/${user._id}`} key="2" >
+        {moment(user.createdAt).format('D MMM YY à HH:mm:ss')}
+      </Link>,
+      <Link to={`/users/${user._id}`} key="3" >
+        {user.roles ? user.roles.toString() : ''}
+      </Link>,
     ];
     if (props.showAssignee) {
       columns.push((user.assignedEmployee &&
@@ -62,7 +68,7 @@ class UsersTable extends Component {
     columns.push(<div>
       <ImpersonateLink userId={user._id} history={this.props.history} />
       <UserAssignDropdown doc={user} />
-                 </div>);
+    </div>);
 
     return columns;
   };
