@@ -82,7 +82,7 @@ jobs:
       - restore_cache:
           name: restore cached build
           keys: 
-            - build-epotek
+            - build-epotek-v2
       - run:
           name: install Meteor
           command: |
@@ -131,7 +131,7 @@ jobs:
             cp /usr/local/bin/meteor ~/build-temp/meteor-bin
       - save_cache:
           name: save build
-          key: build-epotek
+          key: build-epotek-v2
           paths:
             - ~/.meteor
             - ./microservices/app/node_modules
