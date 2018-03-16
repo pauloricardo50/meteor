@@ -77,6 +77,7 @@ jobs:
           TOOL_NODE_FLAGS: "--max_old_space_size=4096 --optimize_for_size --gc-interval=100" # if builds run out of memory
           # METEOR_PROFILE: 1 # If you need to debug meteor, turn this on
     steps:
+      - checkout
       - add_ssh_keys
       - restore_cache:
           name: restore cached build
