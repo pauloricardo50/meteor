@@ -45,22 +45,3 @@ for i in $MICROSERVICES; do
   # mup deploy --config "mup-$i.js" --settings settings-staging.json 2> "$SCRIPT_PATH/logs/errors-$i.log" > "$SCRIPT_PATH/logs/deploy-$i.log" &
   mup deploy --config "mup-$i.js" --settings settings-staging.json 
 done
-
-FAIL=0
-
-echo "# Waiting for deployment to finish on all microservices..."
-
-for job in `jobs -p`; do
-    echo $job
-    wait $job || let "FAIL+=1"
-done
-
-if [ "$FAIL" == "0" ]; then
-  echo "All microservices have been deployed."
-else
-  echo "Something wrong happened with one of the microservices deployment"
-  for i in $MICROSERVICES; do
-    echo "--------------- $i - error logs -------------"
-    cat "logs/errors-$i.log"
-  done
-fi
