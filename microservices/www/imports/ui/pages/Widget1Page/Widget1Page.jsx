@@ -8,11 +8,11 @@ import Widget1Nav from './Widget1Nav';
 import Widget1Part1 from './Widget1Part1';
 import Widget1Part2 from './Widget1Part2';
 
-const Widget1Page = ({ step }) => (
+const Widget1Page = ({ step, finma }) => (
   <div className="widget1-page">
     <Widget1Nav />
     {step <= 2 && <Widget1Part1 step={step} />}
-    {step > 2 && <Widget1Part2 />}
+    {step > 2 && <Widget1Part2 finma={finma} />}
     {step > 2 && (
       <Button color="secondary" className="cta" variant="raised">
         <T id="general.continue" />

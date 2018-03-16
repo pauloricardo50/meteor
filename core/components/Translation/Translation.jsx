@@ -37,6 +37,7 @@ export class T extends Component {
       tooltipId,
       tooltipPlacement,
       tooltipDelay,
+      ...rest
     } = this.props;
 
     if (noTooltips) {
@@ -76,6 +77,7 @@ export class T extends Component {
             </span>
           ),
         }}
+        {...rest}
       >
         {(...formattedMessage) =>
           (formattedMessage.length === 1 ? (

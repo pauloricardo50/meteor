@@ -10,7 +10,7 @@ import Widget1Finma from './Widget1Finma';
 
 const fields = [SALARY, FORTUNE, PROPERTY];
 
-const Widget1Inputs = props => (
+const Widget1Inputs = ({ finma }) => (
   <div className="widget1-inputs card1">
     <h2>
       <T id="Widget1Inputs.title" />
@@ -25,7 +25,7 @@ const Widget1Inputs = props => (
         <Widget1SingleInput name={field} />
       </Overdrive>
     ))}
-    <Widget1Finma />
+    <Widget1Finma {...finma} />
   </div>
 );
 

@@ -9,8 +9,8 @@ import {
 
 export default connect(({
   widget1: {
-    property: { value: propertyValue },
     fortune: { value: fortune },
+    property: { value: propertyValue },
     interestRate,
   },
 }) => {

@@ -12,3 +12,16 @@
   flex-grow: 1;
   width: 100%;
 }
+
+.widget1-inputs .widget1-finma-line {
+  display: flex;
+  align-items: center;
+}
+
+.widget1-inputs .widget1-finma-line .label {
+  flex: 1;
+}
+
+.widget1-inputs .widget1-finma-line .icon {
+  padding-left: 4px;
+}

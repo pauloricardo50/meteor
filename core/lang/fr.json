@@ -10,6 +10,10 @@
 
   "Recap.project": "Projet",
 
+  "Widget1Finma.title": "Règles FINMA",
+  "Widget1FinmaLine.borrowRule": "Prêt / Prix d'achat",
+  "Widget1FinmaLine.incomeRule": "Charges / Revenus",
+
   "Widget1Inputs.title": "Calculateur",
   "Widget1Recap.title": "Plan Financier",
   "Widget1Monthly.title": "Charges Estimées",
