@@ -6,8 +6,8 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USERS, {
     if (params.assignedTo) {
       filters.assignedEmployeeId = params.assignedTo;
     }
-
-    filters.roles = { $nin: [ROLES.DEV] };
+    // filters.roles = { $nin: [ROLES.DEV] };
+    filters.roles = { $in: [ROLES.ADMIN, ROLES.USER] };
   },
   $options: {
     sort: {

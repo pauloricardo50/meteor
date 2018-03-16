@@ -5,10 +5,8 @@ import {
   taskGetRelatedTo,
 } from 'core/api/methods';
 import AssignAdminDropdown from './AssignAdminDropdown';
-// import AssignAdminDropdownContainer from './AssignAdminDropdownContainer';
 
-const TaskAssignDropdownContainer = createContainer((props) => {
-  console.log('TaskAssignDropdownContainer');
+const TaskAssignDropdownContainer = createContainer(() => {
   const firstUserAssign = ({
     taskAssignedTo,
     relatedUserId,
@@ -16,7 +14,6 @@ const TaskAssignDropdownContainer = createContainer((props) => {
     taskId,
     taskType,
   }) => {
-    console.log('firstUserAssign');
     if (!taskAssignedTo) {
       assignAdminToNewUser.run({
         userId: relatedUserId,
@@ -33,7 +30,6 @@ const TaskAssignDropdownContainer = createContainer((props) => {
   };
 
   const changeAssignedUser = ({ admin, task, taskAssignedTo }) => {
-    console.log('changeAssignedUser');
     const taskUserId = task.user ? task.user._id : undefined;
     if (!taskUserId) {
       taskGetRelatedTo.run({ task }).then(relatedUserId =>

@@ -4,6 +4,8 @@ import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import moment from 'moment';
 import Table from 'core/components/Table';
 import { T } from 'core/components/Translation/';
+import UserAssignDropdown from
+  'core/components/AssignAdminDropdown/UserAssignDropdown';
 import UsersTableContainer from './UsersTableContainer';
 
 class UsersTable extends Component {
@@ -48,7 +50,7 @@ class UsersTable extends Component {
       user.emails[0].address.toString(),
       moment(user.createdAt).format('D MMM YY à HH:mm:ss'),
       user.roles ? user.roles.toString() : '',
-      
+
     ];
     if (props.showAssignee) {
       columns.push((user.assignedEmployee &&
@@ -58,9 +60,8 @@ class UsersTable extends Component {
     }
 
     columns.push(<div>
-      <div>
-        <ImpersonateLink userId={user._id} />
-      </div>
+      <ImpersonateLink userId={user._id} history={this.props.history} />
+      <UserAssignDropdown doc={user} />
                  </div>);
 
     return columns;
@@ -77,7 +78,7 @@ class UsersTable extends Component {
           index,
           user,
         }),
-        handleClick: () => this.props.history.push(`/users/${user._id}`),
+        // handleClick: () => this.props.history.push(`/users/${user._id}`),
       }));
       return this.rows;
     }

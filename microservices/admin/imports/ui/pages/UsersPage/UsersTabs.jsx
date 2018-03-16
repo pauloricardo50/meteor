@@ -2,8 +2,8 @@ import React from 'react';
 import Tabs from 'core/components/Tabs';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
-import UsersTable from './UsersTable';
 import { T } from 'core/components/Translation/';
+import UsersTable from './UsersTable';
 
 const getTabs = props => [
   {
@@ -11,9 +11,9 @@ const getTabs = props => [
     label: <T id="UsersTabs.myUsers" />,
     content: (
       <UsersTable
-        {...props}
         assignedTo={Meteor.userId()}
         showAssignee={false}
+        history={props.history}
         key="myUsers"
       />
     ),
@@ -21,7 +21,7 @@ const getTabs = props => [
   {
     id: 'allUsers',
     label: <T id="UsersTabs.allUsers" />,
-    content: <UsersTable {...props} showAssignee key="allUsers" />,
+    content: <UsersTable showAssignee key="allUsers" history={props.history} />,
   },
 ];
 

@@ -81,15 +81,9 @@ export default class TasksTable extends Component {
         styles={styles.dropdownButtons}
       />
       <TaskAssignDropdown
-        {...props}
-        relatedTask={task}
+        doc={task}
         styles={styles.dropdownButtons}
       />
-      {/* <TasksUserWithData
-        {...props}
-        task={task}
-        styles={styles.dropdownButtons}
-      /> */}
     </div>);
 
     return columns;
