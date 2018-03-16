@@ -86,9 +86,6 @@ jobs:
       - run:
           name: install Meteor
           command: |
-            if [ -e ~/.meteor/meteor ]; then
-                sudo cp ~/.meteor/meteor /usr/local/bin
-            fi
             # only install meteor if bin isn't found
             command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com | /bin/sh
       - run:
