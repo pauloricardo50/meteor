@@ -66,10 +66,12 @@ export default class TasksTable extends Component {
       // TODO: also check& add other related docs
     ];
     if (props.showAssignee) {
-      columns.push((task.assignedEmployee &&
+      columns.push(
+        (task.assignedEmployee &&
           (task.assignedEmployee.username ||
             task.assignedEmployee.emails[0].address.toString())) ||
-          '');
+          '',
+      );
     }
 
     columns.push(<div>
@@ -89,7 +91,7 @@ export default class TasksTable extends Component {
     return columns;
   };
 
-  setupRows = (props) => {
+  setupRows = props => {
     const tasks = props.data;
 
     if (tasks && tasks.length) {
