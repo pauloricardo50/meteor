@@ -7,8 +7,7 @@ import DialogSimple from 'core/components/DialogSimple';
 import { AUCTION_STATUS } from 'core/api/constants';
 import ClosingForm from '/imports/ui/components/ClosingForm';
 import ClosingStepsForm from '/imports/ui/components/ClosingStepsForm';
-import downloadPDF from 'core/utils/download-pdf';
-import { cancelAuction, endAuction, loanDelete } from 'core/api';
+import { cancelAuction, endAuction, loanDelete, downloadPDF } from 'core/api';
 import ConfirmMethod from '../ConfirmMethod';
 
 const styles = {
@@ -40,13 +39,13 @@ const ActionsTab = (props) => {
       <Button
         raised
         label="Télécharger PDF Anonyme"
-        onClick={e => downloadPDF(e, loan._id, 'anonymous')}
+        onClick={e => downloadPDF.run({})}
         style={styles.button}
       />
       <Button
         raised
         label="Télécharger PDF Complet"
-        onClick={e => downloadPDF(e, loan._id, 'default')}
+        onClick={e => downloadPDF.run({})}
         style={styles.button}
       />
 

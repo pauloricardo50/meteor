@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from 'core/components/Button';
-import downloadPDF from 'core/utils/download-pdf';
 
 // choisit un prêteur dans la liste
 // e-potek voit "Prêteur a été choisi" -> "connecter avec preteur"
@@ -37,12 +36,7 @@ export default class ContactLendersPage extends Component {
         <h1>Contacter les prêteurs</h1>
 
         <div className="text-center" style={{ margin: '40px 0' }}>
-          <Button
-            raised
-            label="Télécharger PDF"
-            primary
-            onClick={e => downloadPDF(e, this.props.loan._id)}
-          />
+          <Button raised label="Télécharger PDF" primary />
         </div>
 
         <div className="text-center" style={{ margin: '40px 0' }}>

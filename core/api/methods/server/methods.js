@@ -11,8 +11,6 @@ import {
   removeBorrower,
   createUserAndLoan,
 } from '../methodDefinitions';
-import { generateComponentAsPDF } from '../../../utils/generate-pdf';
-import { LoanPDF, AnonymousLoanPDF } from '../../loans/pdf.js';
 
 getMixpanelAuthorization.setHandler(() => {
   SecurityService.checkCurrentUserIsAdmin();
@@ -26,19 +24,8 @@ getMixpanelAuthorization.setHandler(() => {
 
 getServerTime.setHandler(() => new Date());
 
-downloadPDF.setHandler((context, { loanId, type }) => {
-  const loan = Loans.findOne(loanId);
-  const borrowers = Borrowers.find({ _id: { $in: loan.borrowerIds } });
-  const prefix = type === 'anonymous' ? 'Anonyme' : 'Complet';
-  const fileName = `${prefix} ${loan.name || loan._id}.pdf`;
-
-  return generateComponentAsPDF({
-    component: type === 'anonymous' ? AnonymousLoanPDF : LoanPDF,
-    props: { loan, borrowers },
-    fileName,
-  }).catch((error) => {
-    throw new Meteor.Error('500', error);
-  });
+downloadPDF.setHandler(() => {
+  // TODO
 });
 
 addBorrower.setHandler((context, { loanId }) => {
