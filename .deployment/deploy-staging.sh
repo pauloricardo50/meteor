@@ -7,7 +7,7 @@ ME=`basename "$0"`
 if [ "$1" = "" ]; then
   echo "# Please use the microservice(s) you want to deploy to: ./$ME $MICROSERVICES"
   echo "# Use 'all' as the first argument to deploy to all"
-  exit 0
+  exit 1
 fi
 
 if [ "$1" != "all" ]; then
@@ -16,13 +16,13 @@ fi
 
 # Create logs folder if doesn't exist
 if [ ! -d "logs" ]; then
-  mkdir logs
+  mkdir $SCRIPT_PATH/logs
 fi
 
 # Check for authentication file
-if [ ! -f "auth.pem" ]; then
+if [ ! -f "$SCRIPT_PATH/auth.pem" ]; then
   echo "# You do not have an auth.pem file which is used to authenticate to the microservices"
-  exit 0
+  exit 1
 fi
 
 echo
@@ -41,25 +41,7 @@ echo "# NPM dependencies installed, now deploying each microservice..."
 
 for i in $MICROSERVICES; do
   echo $i;
-  echo "# [$i] deploying microservice deployment in background ..."
-  mup deploy --config "mup-$i.js" --settings settings-staging.json 2> "$SCRIPT_PATH/logs/errors-$i.log" > "$SCRIPT_PATH/logs/deploy-$i.log" &
+  echo "# [$i] deploying microservice deployment ..."
+  # mup deploy --config "mup-$i.js" --settings settings-staging.json 2> "$SCRIPT_PATH/logs/errors-$i.log" > "$SCRIPT_PATH/logs/deploy-$i.log" &
+  mup deploy --config "mup-$i.js" --settings settings-staging.json 
 done
-
-FAIL=0
-
-echo "# Waiting for deployment to finish on all microservices..."
-
-for job in `jobs -p`; do
-    echo $job
-    wait $job || let "FAIL+=1"
-done
-
-if [ "$FAIL" == "0" ]; then
-  echo "All microservices have been deployed."
-else
-  echo "Something wrong happened with one of the microservices deployment"
-  for i in $MICROSERVICES; do
-    echo "--------------- $i - error logs -------------"
-    cat "logs/errors-$i.log"
-  done
-fi

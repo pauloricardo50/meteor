@@ -2,8 +2,7 @@
   "name": "epotek",
   "version": "1.0.0",
   "scripts": {
-    "format":
-      "prettier-eslint \"**/*.js*\" --write --eslint-config-path .eslintrc.js",
+    "format": "prettier-eslint \"**/*.js*\" --write --eslint-config-path .eslintrc.js",
     "setup": "cd scripts/ && ./setup.sh",
     "setup-clean": "cd scripts/ && ./setup.sh -c",
     "run": "cd scripts/ && ./run.sh",
