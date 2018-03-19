@@ -1,14 +1,14 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import { T } from 'core/components/Translation/';
+import UsersTabs from './UsersTabs';
 
-import AllUsersTable from './AllUsersTable';
-
-const AdminUsersPage = props => (
+const UsersPage = props => (
   <section className="mask1">
-    <h1>Utilisateurs</h1>
-
-    <AllUsersTable {...props} />
+    <h1>
+      <T id="collections.users" />
+    </h1>
+    <UsersTabs {...props} />
   </section>
 );
 
-export default AdminUsersPage;
+export default UsersPage;

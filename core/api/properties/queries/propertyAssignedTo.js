@@ -6,6 +6,6 @@ export default Property.createQuery(PROPERTY_QUERIES.PROPERTY_ASSIGNED_TO, {
     filters._id = params.propertyId;
   },
   user: {
-    assignedTo: 1,
+    assignedEmployeeId: 1,
   },
 });

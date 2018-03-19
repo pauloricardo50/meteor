@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import MenuItem from 'core/components/Material/MenuItem';
-import Divider from 'core/components/Material/Divider';
-import Menu from 'core/components/Material/Menu';
+import MenuItem from '../Material/MenuItem';
+import Divider from '../Material/Divider';
+import Menu from '../Material/Menu';
+import { T } from '../Translation';
 import IconButton from '../IconButton';
 import Icon from '../Icon';
 
@@ -29,6 +30,7 @@ export default class DropdownMenu extends Component {
     label,
     dividerTop,
     dividerBottom,
+    tooltip,
     ...otherProps
   }) => {
     const arr = [
@@ -43,7 +45,13 @@ export default class DropdownMenu extends Component {
         {...otherProps}
         component={link ? Link : null}
       >
-        {icon && <Icon type={icon} style={{ marginRight: 8 }} />}
+        {icon && (
+          <IconButton
+            type={icon}
+            style={{ marginRight: 8 }}
+            tooltip={tooltip}
+          />
+        )}
         {label}
       </MenuItem>,
     ];

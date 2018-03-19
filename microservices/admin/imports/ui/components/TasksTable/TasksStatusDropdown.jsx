@@ -36,6 +36,7 @@ const TasksDropdown = (props) => {
       iconType="offlinePin"
       options={getMenuItems(taskId, taskStatus)}
       style={styles}
+      tooltip={<T id="TasksStatusDropdown.changeTaskStatus" />}
     />
   );
 };
