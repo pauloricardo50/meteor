@@ -18,17 +18,22 @@ export default class Chart extends Component {
     if (this.chart) {
       // FIXME: This should animate the chart somehow
       this.chart.getChart().series[0].setData(data);
+      this.chart.getChart().update({});
     }
   };
 
   render() {
     const { config } = this.props;
+    console.log('chart config:', config);
+
     return (
       <ReactHighcharts
         config={config}
         ref={(c) => {
           this.chart = c;
         }}
+        // neverReflow
+        // isPureConfig
       />
     );
   }

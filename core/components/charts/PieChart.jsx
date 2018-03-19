@@ -14,6 +14,7 @@ const getConfig = ({ data, title, subtitle, config }) =>
     subtitle: { text: subtitle },
     plotOptions: {
       pie: {
+        size: '100%',
         borderWidth: 0,
         allowPointSelect: false,
         cursor: 'pointer',
@@ -23,8 +24,9 @@ const getConfig = ({ data, title, subtitle, config }) =>
           style: { overflow: 'visible' },
         },
         showInLegend: true,
+        animation: { duration: 400 },
       },
-      series: { animation: true },
+      // series: { animation: { duration: 400 } },
     },
     series: [
       {

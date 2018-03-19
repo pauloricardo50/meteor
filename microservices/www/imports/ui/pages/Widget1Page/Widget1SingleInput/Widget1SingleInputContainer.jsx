@@ -6,9 +6,7 @@ import {
 } from '../../../../redux/actions/widget1Actions';
 
 export default connect(
-  ({ widget1 }, { name }) => ({
-    ...widget1[name],
-  }),
+  ({ widget1 }, { name }) => ({ ...widget1[name] }),
   (dispatch, { name }) => ({
     // FIXME: Number is a temporary hack
     setValue: value =>

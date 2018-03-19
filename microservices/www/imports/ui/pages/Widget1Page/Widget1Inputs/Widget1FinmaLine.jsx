@@ -9,8 +9,12 @@ const Widget1FinmaLine = ({ id, value, status }) => (
     <span className="label">
       <T id={`Widget1FinmaLine.${id}`} />
     </span>
-    {value ? <IntlNumber format="percentage" value={value} /> : '-'}
-    {!!value && <StatusIcon status={status} className="icon" />}
+    {!!value && value > 0 ? (
+      <IntlNumber format="percentage" value={value} />
+    ) : (
+      '-'
+    )}
+    {!!value && value > 0 && <StatusIcon status={status} className="icon" />}
   </div>
 );
 

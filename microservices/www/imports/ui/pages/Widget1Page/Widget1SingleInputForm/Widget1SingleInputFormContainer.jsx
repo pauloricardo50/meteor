@@ -4,7 +4,7 @@ import { SALARY, FORTUNE, PROPERTY } from '../Widget1Page';
 const order = [SALARY, FORTUNE, PROPERTY];
 
 export default connect(
-  null,
+  ({ widget1 }, { name }) => ({ ...widget1[name] }),
   (dispatch, { name, onSubmit = () => {}, onClick = () => {} }) => {
     const index = order.indexOf(name);
 

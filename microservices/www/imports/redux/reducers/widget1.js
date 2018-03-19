@@ -41,7 +41,7 @@ const widget1 = combineReducers({
     { name: FORTUNE, initialSliderMax: 500000 },
     { name: PROPERTY, initialSliderMax: 2000000 },
   ]),
-  step: createValueReducer('step', 3),
+  step: createValueReducer('step', 0),
   interestRate: createValueReducer('interestRate', 0.015),
 });
 

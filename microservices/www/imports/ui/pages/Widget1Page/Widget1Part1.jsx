@@ -10,7 +10,11 @@ const Widget1Part1 = ({ step }) => (
   <div className="widget1-part-1">
     {fields.map((field, index) =>
       (step >= index ? (
-        <Widget1SingleInputForm key={field} name={field} />
+        <Widget1SingleInputForm
+          key={field}
+          name={field}
+          isCurrentStep={step === index}
+        />
       ) : (
         <div className="input-form-placeholder" key={field} />
       )))}

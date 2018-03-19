@@ -18,8 +18,6 @@ const getFinmaValues = ({ salary, fortune, propertyValue }) => {
   const borrowRuleStatus = validateBorrowRatio(borrowRatio);
   const incomeRuleStatus = validateIncomeRatio(incomeRatio);
 
-  console.log('ratios', incomeRatio, borrowRatio);
-
   return {
     borrowRule: { value: borrowRatio, ...borrowRuleStatus },
     incomeRule: { value: incomeRatio, ...incomeRuleStatus },

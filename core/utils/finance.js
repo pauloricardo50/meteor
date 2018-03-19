@@ -13,6 +13,8 @@ import {
   INCOME_WARNING_TIGHT,
   FORTUNE_ERROR,
   INCOME_ERROR,
+  MAX_INCOME_RATIO,
+  MAX_INCOME_RATIO_TIGHT,
 } from '../config/financeConstants';
 
 export const getLoanValue = (propertyValue, fortune) =>
@@ -72,10 +74,11 @@ export const getFinmaMonthlyCost = (propertyValue, fortune) => {
 };
 
 export const validateIncomeRatio = (incomeRatio) => {
-  const safeIncomeRatio = incomeRatio - 0.01;
-  if (safeIncomeRatio <= 1 / 3) {
+  // add 0.01% to avoid rounding issues
+  const safeIncomeRatio = incomeRatio - 0.0001;
+  if (safeIncomeRatio <= MAX_INCOME_RATIO) {
     return { status: SUCCESS, error: undefined };
-  } else if (safeIncomeRatio <= 0.38) {
+  } else if (safeIncomeRatio <= MAX_INCOME_RATIO_TIGHT) {
     return { status: WARNING, error: INCOME_WARNING_TIGHT };
   }
 

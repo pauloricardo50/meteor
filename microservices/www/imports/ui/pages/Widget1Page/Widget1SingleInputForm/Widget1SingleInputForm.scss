@@ -1,9 +1,9 @@
 .widget1-single-input-form {
   display: flex;
-  padding: 16px;
+  padding: 32px;
   margin: 16px;
-  flex-grow: 1;
-  height: 200px;
+  width: 100%;
+  max-width: 300px;
   z-index: 20;
 }
 
@@ -15,4 +15,16 @@
   align-items: center;
   justify-content: space-around;
   z-index: 20;
+}
+
+.widget1-single-input-form .buttons {
+  width: 100%;
+  display: flex;
+  padding-top: 32px;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.widget1-single-input-form .buttons > * {
+  margin: 4px;
 }
