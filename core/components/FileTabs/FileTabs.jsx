@@ -7,6 +7,8 @@ import Tabs from 'react-bootstrap/lib/Tabs';
 import UploaderArray from 'core/components/UploaderArray';
 import { T } from 'core/components/Translation';
 
+import AdminFilesTab from './AdminFilesTab';
+
 const styles = {
   tabContent: {
     padding: '40px 0',
@@ -16,18 +18,21 @@ const styles = {
 const FilesTabs = ({ loan, borrowers, property }) => (
   <div className="mask1">
     <Tabs defaultActiveKey={0} id="tabs">
-      <Tab eventKey={0} title={<T id="general.mortgageLoan" />}>
+      <Tab eventKey={0} title="e-Potek">
+        <AdminFilesTab style={styles.tabContent} loan={loan} />
+      </Tab>
+      <Tab eventKey={1} title={<T id="general.mortgageLoan" />}>
         <div style={styles.tabContent}>
           <UploaderArray doc={loan} collection="loans" disabled />
         </div>
       </Tab>
-      <Tab eventKey={1} title={<T id="general.property" />}>
+      <Tab eventKey={2} title={<T id="general.property" />}>
         <div style={styles.tabContent}>
           <UploaderArray doc={property} collection="properties" disabled />
         </div>
       </Tab>
       {borrowers.map((b, index) => (
-        <Tab eventKey={index + 2} title={b.firstName} key={b._id}>
+        <Tab eventKey={index + 3} title={b.firstName} key={b._id}>
           <div style={styles.tabContent}>
             <UploaderArray doc={b} collection="borrowers" disabled />
           </div>

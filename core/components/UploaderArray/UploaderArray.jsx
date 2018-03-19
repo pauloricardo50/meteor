@@ -3,23 +3,6 @@ import PropTypes from 'prop-types';
 
 import Uploader from './Uploader';
 
-// Support for custom uploadX files
-const getTitle = (id, doc) => {
-  if (doc.logic) {
-    const { closingSteps } = doc.logic;
-    if (!closingSteps) {
-      return undefined;
-    }
-    return id.indexOf('upload') >= 0
-      ? (closingSteps.find(s => s.id === id) &&
-          closingSteps.find(s => s.id === id).title) ||
-          id
-      : undefined;
-  }
-
-  return undefined;
-};
-
 const UploaderArray = ({ documentArray, doc, disabled, collection }) => (
   <div className="flex-col center">
     {documentArray
@@ -28,7 +11,7 @@ const UploaderArray = ({ documentArray, doc, disabled, collection }) => (
           <Uploader
             fileMeta={{
               ...documentObject,
-              title: getTitle(documentObject.id, doc),
+              ...doc.documents[documentObject.id],
             }}
             key={doc._id + documentObject.id}
             currentValue={doc.documents[documentObject.id].files}
@@ -37,17 +20,19 @@ const UploaderArray = ({ documentArray, doc, disabled, collection }) => (
             collection={collection}
           />
         ))
-      : // Show all existing documents for this doc
-      Object.keys(doc.documents).map(documentId => (
-        <Uploader
-          fileMeta={{ id: documentId, title: getTitle(documentId, doc) }}
-          collection={collection}
-          key={documentId}
-          docId={doc._id}
-          currentValue={doc.documents[documentId].files}
-          disabled={disabled}
-        />
-      ))}
+      : // Show all existing documents for this doc, except admin stuff
+      Object.keys(doc.documents)
+        .filter(documentId => !doc.documents[documentId].isAdmin)
+        .map(documentId => (
+          <Uploader
+            fileMeta={{ id: documentId, ...doc.documents[documentId] }}
+            collection={collection}
+            key={documentId}
+            docId={doc._id}
+            currentValue={doc.documents[documentId].files}
+            disabled={disabled}
+          />
+        ))}
   </div>
 );
 

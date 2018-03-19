@@ -6,6 +6,7 @@ import {
   setFileStatus,
   setFileError,
   downloadFile,
+  addDocument,
 } from '../methodDefinitions';
 import FileService from '../FileService';
 import { setupS3, isAllowed } from './s3';
@@ -58,4 +59,9 @@ downloadFile.setHandler((context, { key }) => {
     }));
 
   return async(params);
+});
+
+addDocument.setHandler((context, { documentName, loanId }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  FileService.addDocument({ documentName, loanId });
 });

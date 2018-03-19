@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Page from '/imports/ui/components/Page';
 import { T } from 'core/components/Translation';
-import FilesTabs from 'core/components/FilesTabs';
+import FileTabs from 'core/components/FileTabs';
 
 const FilesPage = props => (
   <Page id="FilesPage">
@@ -12,7 +12,7 @@ const FilesPage = props => (
         <T id="FilesPage.description" />
       </p>
 
-      <FilesTabs {...props} />
+      <FileTabs {...props} />
     </div>
   </Page>
 );

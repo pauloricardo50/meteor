@@ -1,6 +1,8 @@
 import { Mongo } from 'meteor/mongo';
+import { Random } from 'meteor/random';
 import { getFileCount } from './fileHelpers';
 import { FILE_STATUS } from './fileConstants';
+import { LOANS_COLLECTION } from '../constants';
 
 class FileService {
   addFileToDoc = ({ collection, docId, fileId, file }) => {
@@ -84,6 +86,21 @@ class FileService {
 
     // Filter out unchanged files, and merge the fileUpdate with old version
     return newFile;
+  };
+
+  addDocument = ({ documentName, loanId }) => {
+    const randomId = Random.id();
+
+    const newDocument = {
+      label: documentName,
+      files: [],
+      isAdmin: true,
+      fileCount: 0,
+    };
+
+    Mongo.Collection.get(LOANS_COLLECTION).update(loanId, {
+      $set: { [`documents.${randomId}`]: newDocument },
+    });
   };
 }
 

@@ -12,7 +12,7 @@ const Title = ({
   required,
   currentValue,
   tooltipSuffix,
-  title,
+  label,
 }) => {
   // Construct the custom tooltip id for this file
   const tooltipId = `files.${id}.tooltip${tooltipSuffix || ''}`;
@@ -23,7 +23,7 @@ const Title = ({
 
       <div className="text">
         <h4 className="flex center">
-          {title || (
+          {label || (
             <T
               id={`files.${id}`}
               tooltipId={doubleTooltip ? [tooltipId] : tooltipId}
@@ -53,7 +53,7 @@ Title.propTypes = {
   required: PropTypes.bool,
   currentValue: PropTypes.arrayOf(PropTypes.object).isRequired,
   tooltipSuffix: PropTypes.string,
-  title: PropTypes.string,
+  label: PropTypes.string,
 };
 
 export default Title;
