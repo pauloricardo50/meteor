@@ -13,7 +13,7 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
   updatedAt: 1,
   adminNote: 1,
   adminValidation: 1,
-  files: 1,
+  documents: 1,
   property: {
     userId: 1,
     createdAt: 1,
@@ -59,7 +59,7 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
     nearestTrainStation: 1,
     customFields: 1,
     adminValidation: 1,
-    files: 1,
+    documents: 1,
   },
   borrowers: {
     firstName: 1,
@@ -87,7 +87,7 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
     bankFortune: 1,
     insuranceSecondPillar: 1,
     insuranceThirdPillar: 1,
-    files: 1,
+    documents: 1,
     logic: 1,
     otherFortune: 1,
     corporateBankExists: 1,

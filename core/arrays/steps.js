@@ -3,7 +3,11 @@ import get from 'lodash/get';
 import isArray from 'lodash/isArray';
 
 import { getBorrowerInfoArray } from './BorrowerFormArray';
-import { borrowerFiles, loanFiles, propertyFiles } from '../api/files/files';
+import {
+  borrowerDocuments,
+  loanDocuments,
+  propertyDocuments,
+} from '../api/files/documents';
 import { getPropertyArray, getPropertyLoanArray } from './PropertyFormArray';
 import { strategyDone, getPropertyCompletion } from 'core/utils/loanFunctions';
 import { arrayify } from '../utils/general';
@@ -54,7 +58,7 @@ const getSteps = (props) => {
         {
           id: 'files',
           link: `/loans/${loan._id}/borrowers/${borrowers[0]._id}/files`,
-          percent: () => filesPercent(borrowers, borrowerFiles, 'auction'),
+          percent: () => filesPercent(borrowers, borrowerDocuments, 'auction'),
           isDone() {
             return this.percent() >= 1;
           },
@@ -121,7 +125,11 @@ const getSteps = (props) => {
           waiting: () =>
             loan.logic.lender.contractRequested && !loan.logic.lender.contract,
           isDone() {
-            return loan.files.contract && loan.files.contract.length;
+            return (
+              loan.documents.contract &&
+              loan.documents.contract.files &&
+              loan.documents.contract.files.length
+            );
           },
         },
         {
@@ -302,7 +310,7 @@ export const propertyPercent = (loan, borrowers, property) => {
 export const auctionFilesPercent = (borrowers) => {
   const a = [];
   arrayify(borrowers).forEach((b) => {
-    const fileArray = borrowerFiles(b).auction;
+    const fileArray = borrowerDocuments(b).auction;
 
     if (isDemo()) {
       a.push(b.files[fileArray[0].id]);
@@ -329,22 +337,22 @@ export const auctionFilesPercent = (borrowers) => {
 export const filesPercent = (doc, fileArrayFunc, step, checkValidity) => {
   const a = [];
   const iterate = (files, doc2) => {
-    if (!doc2 || !doc2.files) {
+    if (!doc2 || !doc2.documents) {
       return;
     }
 
     if (isDemo()) {
-      a.push(doc2.files[files[0].id]);
+      a.push(doc2.documents[files[0].id]);
     } else {
       files.forEach((f) => {
         if (!(f.required === false || f.condition === false)) {
           if (checkValidity) {
-            a.push(isArray(doc2.files[f.id]) &&
-              doc2.files[f.id].every(file => file.status === FILE_STATUS.VALID)
+            a.push(isArray(doc2.documents[f.id].files) &&
+              doc2.documents[f.id].files.every(file => file.status === FILE_STATUS.VALID)
               ? true
               : undefined);
           } else {
-            a.push(doc2.files[f.id]);
+            a.push(doc2.documents[f.id].files);
           }
         }
       });
@@ -367,15 +375,15 @@ export const filesPercent = (doc, fileArrayFunc, step, checkValidity) => {
 export const getAllFilesPercent = ({ loan, borrowers, property }, step) => {
   const array = [];
   if (loan) {
-    array.push(filesPercent(loan, loanFiles, step));
+    array.push(filesPercent(loan, loanDocuments, step));
   }
 
   if (borrowers) {
-    array.push(filesPercent(borrowers, borrowerFiles, step));
+    array.push(filesPercent(borrowers, borrowerDocuments, step));
   }
 
   if (property) {
-    array.push(filesPercent(property, propertyFiles, step));
+    array.push(filesPercent(property, propertyDocuments, step));
   }
 
   // Sum and divide by amount of them

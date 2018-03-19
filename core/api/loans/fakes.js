@@ -1,4 +1,4 @@
-import { fakeFile } from 'core/api/files/files';
+import { fakeDocument } from 'core/api/files/fileHelpers';
 import moment from 'moment';
 
 export const fakeGeneral = {
@@ -103,25 +103,25 @@ export const logic3 = {
 };
 
 export const fakeFiles = {
-  plans: [fakeFile],
-  cubage: [fakeFile],
-  pictures: [fakeFile],
-  buyersContract: [fakeFile],
-  landRegisterExtract: [fakeFile],
-  coownershipAllocationAgreement: [fakeFile],
-  coownershipAgreement: [fakeFile],
-  upload0: [fakeFile],
+  plans: fakeDocument,
+  cubage: fakeDocument,
+  pictures: fakeDocument,
+  buyersContract: fakeDocument,
+  landRegisterExtract: fakeDocument,
+  coownershipAllocationAgreement: fakeDocument,
+  coownershipAgreement: fakeDocument,
+  upload0: fakeDocument,
 };
 
 export const fakeFiles2 = {
-  plans: [fakeFile],
-  cubage: [fakeFile],
-  pictures: [fakeFile],
-  // buyersContract: [fakeFile],
-  // landRegisterExtract: [fakeFile],
-  // marketingBrochure: [fakeFile],
-  // coownershipAllocationAgreement: [fakeFile],
-  // coownershipAgreement: [fakeFile],
+  plans: fakeDocument,
+  cubage: fakeDocument,
+  pictures: fakeDocument,
+  // buyersContract: fakeDocument,
+  // landRegisterExtract: fakeDocument,
+  // marketingBrochure: fakeDocument,
+  // coownershipAllocationAgreement: fakeDocument,
+  // coownershipAgreement: fakeDocument,
 };
 
 export const loanStep1 = {

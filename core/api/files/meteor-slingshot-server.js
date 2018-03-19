@@ -4,7 +4,7 @@ import { Roles } from 'meteor/alanning:roles';
 
 import Loans from 'core/api/loans/loans';
 import Borrowers from 'core/api/borrowers/borrowers';
-import { getFileCount } from './files';
+import { getFileCount } from './fileHelpers';
 import './meteor-slingshot';
 
 Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {

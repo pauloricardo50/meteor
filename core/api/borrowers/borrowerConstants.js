@@ -1,3 +1,5 @@
+export const BORROWERS_COLLECTION = 'borrowers';
+
 export const RESIDENCY_PERMIT = {
   B: 'b',
   C: 'c',

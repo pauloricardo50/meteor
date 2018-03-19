@@ -1,5 +1,5 @@
 import { Mongo } from 'meteor/mongo';
-import { getFileCount } from './files';
+import { getFileCount } from './fileHelpers';
 import { FILE_STATUS } from './fileConstants';
 
 class FileService {

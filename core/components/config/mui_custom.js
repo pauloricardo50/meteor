@@ -35,12 +35,6 @@ const theme = createMuiTheme({
         alignItems: 'center',
       },
     },
-    MuiTableCell: {
-      dense: {
-        paddingRight: 8, // default is 3x spacing = 24px
-        paddingLeft: 8,
-      },
-    },
     MuiToolbar: {
       root: {
         position: '',

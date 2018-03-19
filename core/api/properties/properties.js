@@ -1,14 +1,14 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { getFileSchema } from '../files/files';
 import {
+  PROPERTIES_COLLECTION,
   PROPERTY_STATUS,
   USAGE_TYPE,
   PROPERTY_STYLE,
   VOLUME_NORM,
 } from './propertyConstants';
 
-const Properties = new Mongo.Collection('properties');
+const Properties = new Mongo.Collection(PROPERTIES_COLLECTION);
 
 // Prevent all client side modifications of mongoDB
 Properties.deny({
@@ -21,8 +21,6 @@ Properties.allow({
   update: () => false,
   remove: () => false,
 });
-
-const PropertyFilesSchema = new SimpleSchema(getFileSchema('property'));
 
 export const PropertySchema = new SimpleSchema({
   userId: {
@@ -273,9 +271,10 @@ export const PropertySchema = new SimpleSchema({
     defaultValue: {},
   },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
-  files: {
-    type: PropertyFilesSchema,
+  documents: {
+    type: Object,
     defaultValue: {},
+    blackbox: true,
   },
 });
 

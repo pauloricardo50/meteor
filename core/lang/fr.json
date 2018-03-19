@@ -1039,7 +1039,7 @@
   "TasksStatusDropdown.LENDER_CHOSEN": "Prêteur choisi",
   "TasksStatusDropdown.VERIFY": "Vérifier",
   "TasksTable.actions": "Actions",
-  "TasksTable.asignedTo": "Assigné à",
+  "TasksTable.assignedTo": "Assigné à",
   "TasksTable.completedAt": "Complété le",
   "TasksTable.createdAt": "Créé le",
   "TasksTable.dueAt": "Échéance",

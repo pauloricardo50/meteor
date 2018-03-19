@@ -8,7 +8,7 @@ import {
   EXPENSES,
   REAL_ESTATE,
 } from 'core/api/borrowers/borrowerConstants';
-import { fakeFile } from 'core/api/files/files';
+import { fakeDocument } from 'core/api/files/fileHelpers';
 
 const firstNames = [
   'Marie',
@@ -82,19 +82,19 @@ const insertFakeBorrower = (userId) => {
     bankFortune: 300000,
     insuranceSecondPillar: 120000,
     insuranceThirdPillar: 50000,
-    files: {
-      identity: [fakeFile],
-      taxes: [fakeFile],
-      salaryCertificate: [fakeFile],
-      bonus: [fakeFile],
-      otherIncome: [fakeFile],
-      expenses: [fakeFile],
-      nonPursuitExtract: [fakeFile],
-      lastSalaries: [fakeFile],
-      currentMortgages: [fakeFile],
-      bankAssetsChange: [fakeFile],
-      pensionFundYearlyStatement: [fakeFile],
-      retirementInsurancePlan: [fakeFile],
+    documents: {
+      identity: fakeDocument,
+      taxes: fakeDocument,
+      salaryCertificate: fakeDocument,
+      bonus: fakeDocument,
+      otherIncome: fakeDocument,
+      expenses: fakeDocument,
+      nonPursuitExtract: fakeDocument,
+      lastSalaries: fakeDocument,
+      currentMortgages: fakeDocument,
+      bankAssetsChange: fakeDocument,
+      pensionFundYearlyStatement: fakeDocument,
+      retirementInsurancePlan: fakeDocument,
     },
     logic: {
       financeEthics: true,

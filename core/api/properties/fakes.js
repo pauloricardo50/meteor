@@ -1,4 +1,4 @@
-import { fakeFile } from 'core/api/files/files';
+import { fakeDocument } from 'core/api/files/fileHelpers';
 
 export const fakeProperty = {
   value: 1000000,
@@ -31,9 +31,9 @@ export const fakeProperty = {
   flatQuality: 2,
   materialsQuality: 2,
   files: {
-    plans: [fakeFile],
-    cubage: [fakeFile],
-    pictures: [fakeFile],
-    landRegisterExtract: [fakeFile],
+    plans: fakeDocument,
+    cubage: fakeDocument,
+    pictures: fakeDocument,
+    landRegisterExtract: fakeDocument,
   },
 };
