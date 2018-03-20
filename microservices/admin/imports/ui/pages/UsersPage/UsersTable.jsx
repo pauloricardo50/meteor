@@ -6,8 +6,9 @@ import { Link } from 'react-router-dom';
 import Table from 'core/components/Table';
 import { T } from 'core/components/Translation/';
 import { LoadingComponent } from 'core/components/Loading';
-import UserAssignDropdown from 'core/components/AssignAdminDropdown/UserAssignDropdown';
+
 import UsersTableContainer from './UsersTableContainer';
+import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
 
 class UsersTable extends Component {
   constructor(props) {
