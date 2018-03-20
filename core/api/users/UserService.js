@@ -1,25 +1,13 @@
-import { Meteor } from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-base';
-import { Roles } from 'meteor/alanning:roles';
 import EventService from '../events';
-import { USER_EVENTS } from './userConstants';
+import { USER_EVENTS, ROLES } from './userConstants';
 import Users from '../users';
 
 class UserService {
-  createUser = ({ options, role }) => {
-    let newUserId;
-    try {
-      newUserId = Accounts.createUser(options);
-      Roles.addUsersToRoles(newUserId, role);
+  // This is used to hook into Accounts
+  onCreateUser = (options, user) => {
+    EventService.emit(USER_EVENTS.USER_CREATED, { userId: user._id });
 
-      if (role === 'user') {
-        EventService.emit(USER_EVENTS.USER_CREATED, { newUserId });
-      }
-    } catch (error) {
-      throw new Meteor.Error(error);
-    }
-
-    return newUserId;
+    return { ...user, roles: ROLES.USER };
   };
 
   remove = ({ userId }) => Users.remove(userId);
