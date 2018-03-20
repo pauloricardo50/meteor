@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import { DocHead } from 'meteor/kadira:dochead';
 import { injectIntl } from 'react-intl';
@@ -27,9 +28,10 @@ class Page extends Component {
           {rightComponent}
         </div>
         <div
-          className={`children animated fadeIn page ${
-            fullWidth ? 'full-width' : ''
-            }`}
+          className={classnames({
+            'children animated fadeIn page': true,
+            'full-width': !!fullWidth,
+          })}
         >
           {children}
         </div>
@@ -41,8 +43,7 @@ class Page extends Component {
 Page.propTypes = {
   id: PropTypes.string.isRequired,
   rightComponent: PropTypes.element,
-  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array])
-    .isRequired,
+  children: PropTypes.any.isRequired,
   className: PropTypes.string,
   fullWidth: PropTypes.bool,
 };
