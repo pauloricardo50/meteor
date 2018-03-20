@@ -53,10 +53,10 @@ const createOnClickHandler = (
 
 const MainSideNav = props => (
   <List>
-    {items.map(item => (
+    {items.map((item, index) => (
       <MainSideNavListItem
         onClick={createOnClickHandler(item, props)}
-        key={item.label}
+        key={index}
         {...item}
         {...props}
       />

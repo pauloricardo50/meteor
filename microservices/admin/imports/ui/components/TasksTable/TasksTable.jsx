@@ -2,11 +2,11 @@ import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import moment from 'moment';
+
 import Table from 'core/components/Table';
 import { T } from 'core/components/Translation';
 import TaskAssignDropdown from '../../components/AssignAdminDropdown/TaskAssignDropdown';
 import TasksStatusDropdown from './TasksStatusDropdown';
-import TasksUserWithData from './TasksUsersWithData';
 
 const styles = {
   dropdownButtons: { display: 'inline', width: '50%' },
@@ -32,21 +32,23 @@ export default class TasksTable extends Component {
   getColumnOptions = ({ showAssignee }) => {
     const columnOptions = [
       { id: '#', style: { width: 32, textAlign: 'left' } },
-      { id: <T id="TasksTable.type" /> },
-      { id: <T id="TasksTable.status" /> },
-      { id: <T id="TasksTable.createdAt" /> },
-      { id: <T id="TasksTable.updatedAt" /> },
-      { id: <T id="TasksTable.dueAt" /> },
-      { id: <T id="TasksTable.completedAt" /> },
-      { id: <T id="TasksTable.relatedTo" /> },
+      { id: 'type', label: <T id="TasksTable.type" /> },
+      { id: 'status', label: <T id="TasksTable.status" /> },
+      { id: 'createdAt', label: <T id="TasksTable.createdAt" /> },
+      { id: 'updatedAt', label: <T id="TasksTable.updatedAt" /> },
+      { id: 'dueAt', label: <T id="TasksTable.dueAt" /> },
+      { id: 'completedAt', label: <T id="TasksTable.completedAt" /> },
+      { id: 'relatedTo', label: <T id="TasksTable.relatedTo" /> },
     ];
     if (showAssignee) {
       columnOptions.push({
-        id: <T id="TasksTable.asignedTo" />,
+        id: 'assignedTo',
+        label: <T id="TasksTable.assignedTo" />,
       });
     }
     columnOptions.push({
-      id: <T id="TasksTable.actions" />,
+      id: 'actions',
+      label: <T id="TasksTable.actions" />,
     });
     return columnOptions;
   };
@@ -70,7 +72,7 @@ export default class TasksTable extends Component {
             ''));
     }
 
-    columns.push(<div>
+    columns.push(<div style={{ display: 'flex' }}>
       <TasksStatusDropdown
         {...props}
         currentUser={Meteor.user()}
@@ -115,6 +117,5 @@ export default class TasksTable extends Component {
 }
 
 TasksTable.propTypes = {
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
   isLoading: PropTypes.bool.isRequired,
 };
