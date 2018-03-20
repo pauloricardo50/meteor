@@ -1,3 +1,7 @@
+// Not actually used to create a meteor collection, but useful to switch()
+// on collection names
+export const USERS_COLLECTION = 'users';
+
 export const ROLES = {
   USER: 'user',
   ADMIN: 'admin',

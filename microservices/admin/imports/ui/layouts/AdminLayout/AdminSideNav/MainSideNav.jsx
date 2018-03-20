@@ -2,6 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import List from 'material-ui/List';
+
+import {
+  BORROWERS_COLLECTION,
+  LOANS_COLLECTION,
+  TASKS_COLLECTION,
+  USERS_COLLECTION,
+} from 'core/api/constants';
+
 import MainSideNavListItem from './MainSideNavListItem';
 
 const items = [
@@ -9,19 +17,24 @@ const items = [
   {
     icon: 'contactMail',
     detail: true,
-    collection: 'users',
+    collection: USERS_COLLECTION,
   },
   {
     icon: 'dollarSign',
     detail: true,
-    collection: 'loans',
+    collection: LOANS_COLLECTION,
   },
   {
     icon: 'people',
     detail: true,
-    collection: 'borrowers',
+    collection: BORROWERS_COLLECTION,
   },
-  { label: 'Tâches', icon: 'check', to: '/tasks', collection: 'tasks' },
+  {
+    label: 'Tâches',
+    icon: 'check',
+    to: '/tasks',
+    collection: TASKS_COLLECTION,
+  },
   { label: 'Dev', icon: 'developerMode', to: '/dev' },
 ];
 
