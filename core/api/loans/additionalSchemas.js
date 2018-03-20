@@ -151,6 +151,10 @@ export const LogicSchema = new SimpleSchema({
     defaultValue: [],
   },
   'verification.comments.$': String,
+  'verification.verifiedAt': {
+    type: Date,
+    optional: true,
+  },
   expertiseRequired: {
     type: Boolean,
     defaultValue: true,

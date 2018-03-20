@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom';
 import Table from 'core/components/Table';
 import { T } from 'core/components/Translation/';
 import { LoadingComponent } from 'core/components/Loading';
-import UserAssignDropdown from
-  'core/components/AssignAdminDropdown/UserAssignDropdown';
+
 import UsersTableContainer from './UsersTableContainer';
+import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
 
 class UsersTable extends Component {
   constructor(props) {
@@ -30,45 +30,52 @@ class UsersTable extends Component {
   getColumnOptions = ({ showAssignee }) => {
     const columnOptions = [
       { id: '#', style: { width: 32, textAlign: 'left' } },
-      { id: <T id="UsersTable.email" /> },
-      { id: <T id="UsersTable.createdAt" /> },
-      { id: <T id="UsersTable.roles" /> },
+      { id: 'email', label: <T id="UsersTable.email" /> },
+      { id: 'createdAt', label: <T id="UsersTable.createdAt" /> },
+      { id: 'roles', label: <T id="UsersTable.roles" /> },
     ];
     if (showAssignee) {
       columnOptions.push({
-        id: <T id="UsersTable.assignedTo" />,
+        id: 'assignedTo',
+        label: <T id="UsersTable.assignedTo" />,
       });
     }
     columnOptions.push({
-      id: <T id="UsersTable.actions" />,
+      id: 'actions',
+      label: <T id="UsersTable.actions" />,
     });
     return columnOptions;
   };
 
   getColumns = ({ props, index, user }) => {
     const columns = [
-      <Link to={`/users/${user._id}`} key="0" > {index + 1} </Link>,
-      <Link to={`/users/${user._id}`} key="1" >
+      <Link to={`/users/${user._id}`} key="0">
+        {' '}
+        {index + 1}{' '}
+      </Link>,
+      <Link to={`/users/${user._id}`} key="1">
         {user.emails[0].address.toString()}
       </Link>,
-      <Link to={`/users/${user._id}`} key="2" >
+      <Link to={`/users/${user._id}`} key="2">
         {moment(user.createdAt).format('D MMM YY à HH:mm:ss')}
       </Link>,
-      <Link to={`/users/${user._id}`} key="3" >
+      <Link to={`/users/${user._id}`} key="3">
         {user.roles ? user.roles.toString() : ''}
       </Link>,
     ];
     if (props.showAssignee) {
-      columns.push((user.assignedEmployee &&
-          (user.assignedEmployee.username ||
-            user.assignedEmployee.emails[0].address)) ||
-          '');
+      if (user.assignedEmployee) {
+        columns.push(user.assignedEmployee.username ||
+            user.assignedEmployee.emails[0].address);
+      } else {
+        columns.push('');
+      }
     }
 
-    columns.push(<div>
+    columns.push(<div style={{ display: 'flex' }}>
       <ImpersonateLink userId={user._id} history={this.props.history} />
       <UserAssignDropdown doc={user} />
-                 </div>);
+    </div>);
 
     return columns;
   };
@@ -94,18 +101,13 @@ class UsersTable extends Component {
   render() {
     const { isLoading, showAssignee, data } = this.props;
     const { columnOptions, rows } = this.state;
-    
+
     if (isLoading) {
       return <LoadingComponent />;
     }
 
     return (
-      <Table
-        columnOptions={columnOptions}
-        rows={rows}
-        noIntl
-        showAssignee
-      />
+      <Table columnOptions={columnOptions} rows={rows} noIntl showAssignee />
     );
   }
 }

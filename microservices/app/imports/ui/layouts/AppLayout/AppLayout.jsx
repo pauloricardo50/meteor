@@ -7,7 +7,6 @@ import classnames from 'classnames';
 import ContactButton from 'core/components/ContactButton';
 import ErrorBoundary from 'core/components/ErrorBoundary';
 import track from 'core/utils/analytics';
-import { isApp, isAdmin, isPartner } from 'core/utils/browserFunctions';
 import UserContainer from 'core/containers/UserContainer';
 import Navs from './Navs';
 import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
@@ -16,7 +15,11 @@ import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
 
 const allowedRoutesWithoutLoan = ['/', '/profile', '/add-loan'];
 
-const allowedRoutesWithoutLogin = ['/enroll-account', IMPERSONATE_ROUTE];
+const allowedRoutesWithoutLogin = [
+  '/enroll-account',
+  '/reset-password',
+  IMPERSONATE_ROUTE,
+];
 
 const getRedirect = ({
   currentUser,
@@ -24,7 +27,6 @@ const getRedirect = ({
   loans,
 }) => {
   const userIsAdmin = Roles.userIsInRole(currentUser, 'admin');
-  const userIsPartner = Roles.userIsInRole(currentUser, 'partner');
   const userIsDev = Roles.userIsInRole(currentUser, 'dev');
 
   if (!currentUser) {
@@ -43,8 +45,6 @@ const getRedirect = ({
 
   if (userIsAdmin) {
     return '/admin';
-  } else if (isPartner) {
-    return '/isPartner';
   }
   // If there is no active loan, force route to app page, except if
   // user is on allowed routes

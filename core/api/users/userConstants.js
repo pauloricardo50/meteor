@@ -9,6 +9,7 @@ export const USER_QUERIES = {
   ADMIN_USERS: 'ADMIN_USERS',
   ADMIN_USER: 'ADMIN_USER',
   ADMINS: 'ADMINS',
+  SIDENAV_USERS: 'SIDENAV_USERS',
 };
 
 export const USER_EVENTS = {

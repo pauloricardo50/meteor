@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import moment from 'moment';
 import Table from 'core/components/Table';
-import { T } from 'core/components/Translation/';
-import TaskAssignDropdown from 'core/components/AssignAdminDropdown/TaskAssignDropdown';
+import { T } from 'core/components/Translation';
+import TaskAssignDropdown from '../../components/AssignAdminDropdown/TaskAssignDropdown';
 import TasksStatusDropdown from './TasksStatusDropdown';
 import TasksUserWithData from './TasksUsersWithData';
 
