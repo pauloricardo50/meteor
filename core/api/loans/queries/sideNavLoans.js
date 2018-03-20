@@ -8,4 +8,5 @@ export default Loans.createQuery(LOAN_QUERIES.SIDENAV_LOANS, {
     },
   },
   $paginate: true,
+  name: 1,
 });

@@ -8,7 +8,6 @@ export default Borrowers.createQuery(BORROWER_QUERIES.SIDENAV_BORROWERS, {
     },
   },
   $paginate: true,
-  // extra fields example
-  // firstName: 1,
-  // lastName: 1,
+  firstName: 1,
+  lastName: 1,
 });

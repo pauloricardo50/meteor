@@ -2,8 +2,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import List, { ListItem, ListItemText } from 'material-ui/List';
+
 import { LoadingComponent } from 'core/components/Loading';
+import {
+  USERS_COLLECTION,
+  LOANS_COLLECTION,
+  BORROWERS_COLLECTION,
+} from 'core/api/constants';
+
 import DetailSideNavListContainer from './DetailSideNavListContainer';
+
+const getListItemDetails = (collectionName, doc) => {
+  switch (collectionName) {
+  case USERS_COLLECTION:
+    return {
+      primary: doc.emails[0].address,
+      secondary: doc.roles.join(', '),
+    };
+  case LOANS_COLLECTION:
+    return { primary: doc._id, secondary: doc.name };
+  case BORROWERS_COLLECTION:
+    return { primary: `${doc.firstName} ${doc.lastName}`, secondary: '' };
+  default:
+    throw new Error('invalid collection name');
+  }
+};
 
 const DetailSideNavList = ({
   isLoading,
@@ -11,6 +34,7 @@ const DetailSideNavList = ({
   error,
   hideDetailNav,
   collectionName,
+  history: { push },
 }) => {
   if (isLoading) {
     return <LoadingComponent />;
@@ -19,10 +43,15 @@ const DetailSideNavList = ({
   return (
     <List>
       {data.map(doc => (
-        <ListItem key={doc._id} onClick={hideDetailNav}>
-          <Link to={`/${collectionName}/${doc._id}`}>
-            <ListItemText primary={doc._id} secondary="Hello World" />
-          </Link>
+        <ListItem
+          button
+          key={doc._id}
+          onClick={() => {
+            push(`/${collectionName}/${doc._id}`);
+            hideDetailNav();
+          }}
+        >
+          <ListItemText {...getListItemDetails(collectionName, doc)} />
         </ListItem>
       ))}
     </List>
@@ -30,6 +59,7 @@ const DetailSideNavList = ({
 };
 
 DetailSideNavList.propTypes = {
+  history: PropTypes.object.isRequired,
   data: PropTypes.array,
   isLoading: PropTypes.bool,
   collectionName: PropTypes.string.isRequired,
