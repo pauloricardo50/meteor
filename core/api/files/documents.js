@@ -214,21 +214,3 @@ export const DocumentSchema = new SimpleSchema({
   label: { type: String, optional: true },
   isAdmin: { type: Boolean, optional: true, defaultValue: false },
 });
-
-// Generates a schema given a list name (loan, or borrowers)
-export const getDocumentSchema = (list) => {
-  const schema = {};
-
-  const arr = getDocumentIDs(list);
-
-  arr.forEach((id) => {
-    schema[id] = {
-      type: Array,
-      optional: true,
-      maxCount: 1000,
-    };
-    schema[`${id}.$`] = DocumentSchema;
-  });
-
-  return schema;
-};

@@ -341,22 +341,24 @@ export const filesPercent = (doc, fileArrayFunc, step, checkValidity) => {
       return;
     }
 
-    if (isDemo()) {
-      a.push(doc2.documents[files[0].id]);
-    } else {
-      files.forEach((f) => {
-        if (!(f.required === false || f.condition === false)) {
+    files.forEach((f) => {
+      // Check if this file should be verified
+      if (!(f.required === false || f.condition === false)) {
+        if (doc2.documents[f.id]) {
           if (checkValidity) {
             a.push(isArray(doc2.documents[f.id].files) &&
               doc2.documents[f.id].files.every(file => file.status === FILE_STATUS.VALID)
               ? true
               : undefined);
           } else {
-            a.push(doc2.documents[f.id].files);
+            a.push(...doc2.documents[f.id].files);
           }
+        } else {
+          // document doesn't even exist
+          a.push(undefined);
         }
-      });
-    }
+      }
+    });
   };
 
   if (isArray(doc)) {
