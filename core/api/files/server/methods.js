@@ -14,7 +14,14 @@ import { setupS3, isAllowed } from './s3';
 
 addFileToDoc.setHandler((context, { collection, docId, documentId, file }) => {
   SecurityService[collection].isAllowedToUpdate(docId);
-  FileService.addFileToDoc({ collection, docId, documentId, file });
+  const userIsAdmin = SecurityService.currentUserIsAdmin();
+  FileService.addFileToDoc({
+    collection,
+    docId,
+    documentId,
+    file,
+    userIsAdmin,
+  });
 });
 
 deleteFile.setHandler((context, { collection, docId, documentId, fileKey }) => {

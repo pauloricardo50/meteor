@@ -14,7 +14,8 @@ const Title = ({
   currentValue,
   tooltipSuffix,
   label,
-  isAdmin,
+  userIsAdmin,
+  documentIsAdmin,
   removeDocument,
 }) => {
   // Construct the custom tooltip id for this file
@@ -46,13 +47,14 @@ const Title = ({
         </h5>
       </div>
 
-      {isAdmin && (
-        <ConfirmMethod
-          label={<T id="general.delete" />}
-          keyword="SUPPRIMER"
-          method={removeDocument}
-        />
-      )}
+      {userIsAdmin &&
+        documentIsAdmin && (
+          <ConfirmMethod
+            label={<T id="general.delete" />}
+            keyword="SUPPRIMER"
+            method={removeDocument}
+          />
+        )}
     </div>
   );
 };
@@ -65,6 +67,16 @@ Title.propTypes = {
   currentValue: PropTypes.arrayOf(PropTypes.object).isRequired,
   tooltipSuffix: PropTypes.string,
   label: PropTypes.string,
+  userIsAdmin: PropTypes.bool.isRequired,
+  documentIsAdmin: PropTypes.bool.isRequired,
+};
+
+Title.defaultProps = {
+  doubleTooltip: false,
+  noTooltips: false,
+  required: false,
+  tooltipSuffix: undefined,
+  label: undefined,
 };
 
 export default Title;

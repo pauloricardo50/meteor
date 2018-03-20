@@ -79,21 +79,12 @@ const logic3 = {
 };
 
 const fakeFiles = {
-  plans: fakeDocument,
-  cubage: fakeDocument,
-  pictures: fakeDocument,
   buyersContract: fakeDocument,
-  landRegisterExtract: fakeDocument,
   coownershipAllocationAgreement: fakeDocument,
   coownershipAgreement: fakeDocument,
-  upload0: fakeDocument,
 };
 
-const fakeFiles2 = {
-  plans: fakeDocument,
-  cubage: fakeDocument,
-  pictures: fakeDocument,
-};
+const fakeFiles2 = {};
 
 const createFakeLoans = (userId) => {
   const completeFiles = Math.random() > 0.5;

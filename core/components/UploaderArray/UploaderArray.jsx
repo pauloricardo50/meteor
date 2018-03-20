@@ -20,9 +20,10 @@ const UploaderArray = ({ documentArray, doc, disabled, collection }) => (
             collection={collection}
           />
         ))
-      : // Show all existing documents for this doc, except admin stuff
+      : // Show all existing documents for this doc
       Object.keys(doc.documents)
-        .filter(documentId => !doc.documents[documentId].isAdmin)
+        .sort((a, b) => doc.documents[a].isAdmin - doc.documents[b].isAdmin)
+        .reverse()
         .map(documentId => (
           <Uploader
             fileMeta={{ id: documentId, ...doc.documents[documentId] }}

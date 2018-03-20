@@ -99,11 +99,6 @@ export const loanDocuments = (r = {}) => ({
       condition: !!r.general && r.general.purchaseType === 'refinancing',
     },
     {
-      id: 'rent',
-      condition: !!r.general && r.general.usageType === 'investment',
-      doubleTooltip: true,
-    },
-    {
       id: 'coownershipAllocationAgreement',
       condition: !!r.propertyId && !!r.propertyId.isCoproperty,
       doubleTooltip: true,
@@ -217,7 +212,7 @@ export const DocumentSchema = new SimpleSchema({
   'files.$': FileSchema,
   uploadCount: { type: Number, defaultValue: 0 },
   label: { type: String, optional: true },
-  isAdmin: { type: String, optional: true, defaultValue: false },
+  isAdmin: { type: Boolean, optional: true, defaultValue: false },
 });
 
 // Generates a schema given a list name (loan, or borrowers)

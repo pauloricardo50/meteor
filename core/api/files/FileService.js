@@ -8,14 +8,14 @@ import { FILE_STATUS } from './fileConstants';
 import { LOANS_COLLECTION } from '../constants';
 
 class FileService {
-  addFileToDoc = ({ collection, docId, documentId, file }) => {
+  addFileToDoc = ({ collection, docId, documentId, file, userIsAdmin }) => {
     const doc = Mongo.Collection.get(collection).findOne(docId);
     const { uploadCount } = this._getCurrentFileValue({ doc, documentId });
     const uploadCountPrefix = getUploadCountPrefix(uploadCount);
     const newFile = {
       ...file,
       name: `${uploadCountPrefix}${file.initialName}`,
-      status: FILE_STATUS.UNVERIFIED,
+      status: userIsAdmin ? FILE_STATUS.VALID : FILE_STATUS.UNVERIFIED,
     };
 
     // Make sure file is valid, as this is all in a blackbox object
@@ -102,9 +102,10 @@ class FileService {
       label: documentName,
       files: [],
       isAdmin: true,
-      fileCount: 0,
+      uploadCount: 0,
     };
 
+    // Make sure document is valid, as this is all in a blackbox object
     DocumentSchema.validate(newDocument);
 
     return Mongo.Collection.get(LOANS_COLLECTION).update(loanId, {

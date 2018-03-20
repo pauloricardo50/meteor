@@ -112,7 +112,8 @@ class Uploader extends Component {
       disabled,
       docId,
       collection,
-      isAdmin,
+      userIsAdmin,
+      documentIsAdmin,
       removeDocument,
     } = this.props;
     const { tempFiles } = this.state;
@@ -128,7 +129,8 @@ class Uploader extends Component {
         <Title
           {...fileMeta}
           currentValue={currentValue}
-          isAdmin={isAdmin}
+          userIsAdmin={userIsAdmin}
+          documentIsAdmin={documentIsAdmin}
           removeDocument={removeDocument}
         />
 
@@ -176,7 +178,8 @@ Uploader.propTypes = {
   collection: PropTypes.string,
   deleteFile: PropTypes.func.isRequired,
   addFileToDoc: PropTypes.func.isRequired,
-  isAdmin: PropTypes.bool.isRequired,
+  userIsAdmin: PropTypes.bool.isRequired,
+  documentIsAdmin: PropTypes.bool.isRequired,
   removeDocument: PropTypes.func.isRequired,
 };
 

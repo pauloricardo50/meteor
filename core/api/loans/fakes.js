@@ -103,33 +103,19 @@ export const logic3 = {
 };
 
 export const fakeFiles = {
-  plans: fakeDocument,
-  cubage: fakeDocument,
-  pictures: fakeDocument,
   buyersContract: fakeDocument,
-  landRegisterExtract: fakeDocument,
   coownershipAllocationAgreement: fakeDocument,
   coownershipAgreement: fakeDocument,
-  upload0: fakeDocument,
 };
 
-export const fakeFiles2 = {
-  plans: fakeDocument,
-  cubage: fakeDocument,
-  pictures: fakeDocument,
-  // buyersContract: fakeDocument,
-  // landRegisterExtract: fakeDocument,
-  // marketingBrochure: fakeDocument,
-  // coownershipAllocationAgreement: fakeDocument,
-  // coownershipAgreement: fakeDocument,
-};
+export const fakeFiles2 = {};
 
 export const loanStep1 = {
   name: 'Rue du Test 42',
   general: fakeGeneral,
   property: fakeProperty,
   logic: logic1,
-  files: fakeFiles,
+  documents: fakeFiles,
 };
 
 export const loanStep2 = {
@@ -137,7 +123,7 @@ export const loanStep2 = {
   general: fakeGeneral,
   property: fakeProperty,
   logic: logic2,
-  files: fakeFiles,
+  documents: fakeFiles,
 };
 
 export const loanStep3 = completeFiles => ({
@@ -152,7 +138,6 @@ export const loanStep3 = completeFiles => ({
       },
     ],
   },
-  property: fakeProperty,
   logic: logic3,
-  files: completeFiles ? fakeFiles : fakeFiles2,
+  documents: completeFiles ? fakeFiles : fakeFiles2,
 });
