@@ -6,7 +6,11 @@ import Tabs from 'react-bootstrap/lib/Tabs';
 
 import UploaderArray from 'core/components/UploaderArray';
 
-import { loanFiles, borrowerFiles, propertyFiles } from 'core/api/files/files';
+import {
+  loanDocuments,
+  borrowerDocuments,
+  propertyDocuments,
+} from 'core/api/files/documents';
 import { filesPercent } from 'core/arrays/steps';
 import { T, IntlNumber } from 'core/components/Translation';
 import withLoan from 'core/containers/withLoan';
@@ -32,7 +36,7 @@ const FileTabs = ({ loan, borrowers, property }) => (
             {' '}
             &bull;{' '}
             <IntlNumber
-              value={filesPercent(loan, loanFiles, 'contract')}
+              value={filesPercent(loan, loanDocuments, 'contract')}
               format="percentageRounded"
             />
           </small>
@@ -42,7 +46,7 @@ const FileTabs = ({ loan, borrowers, property }) => (
     >
       <div style={styles.tabContent}>
         <UploaderArray
-          fileArray={loanFiles(loan).contract}
+          fileArray={loanDocuments(loan).contract}
           doc={loan}
           collection="loans"
         />
@@ -57,7 +61,7 @@ const FileTabs = ({ loan, borrowers, property }) => (
             {' '}
             &bull;{' '}
             <IntlNumber
-              value={filesPercent(property, propertyFiles, 'contract')}
+              value={filesPercent(property, propertyDocuments, 'contract')}
               format="percentageRounded"
             />
           </small>
@@ -67,7 +71,7 @@ const FileTabs = ({ loan, borrowers, property }) => (
     >
       <div style={styles.tabContent}>
         <UploaderArray
-          fileArray={propertyFiles(property).contract}
+          fileArray={propertyDocuments(property).contract}
           doc={property}
           collection="properties"
         />
@@ -83,7 +87,7 @@ const FileTabs = ({ loan, borrowers, property }) => (
               {' '}
               &bull;{' '}
               <IntlNumber
-                value={filesPercent(b, borrowerFiles, 'contract')}
+                value={filesPercent(b, borrowerDocuments, 'contract')}
                 format="percentageRounded"
               />
             </small>
@@ -93,7 +97,7 @@ const FileTabs = ({ loan, borrowers, property }) => (
       >
         <div style={styles.tabContent}>
           <UploaderArray
-            fileArray={borrowerFiles(b).contract}
+            fileArray={borrowerDocuments(b).contract}
             doc={b}
             collection="borrowers"
             key={b._id}

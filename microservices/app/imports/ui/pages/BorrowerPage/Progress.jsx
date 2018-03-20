@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
 import { personalInfoPercent, filesPercent } from 'core/arrays/steps';
-import { borrowerFiles } from 'core/api/files/files';
+import { borrowerDocuments } from 'core/api/files/documents';
 
 const Progress = ({ match, borrower }) => {
   const { tab } = match.params;
@@ -29,7 +29,7 @@ const Progress = ({ match, borrower }) => {
       </small>
     );
   case 'files': {
-    const percent = filesPercent(borrower, borrowerFiles, 'auction');
+    const percent = filesPercent(borrower, borrowerDocuments, 'auction');
 
     return (
       <small className={percent >= 1 && 'success'}>

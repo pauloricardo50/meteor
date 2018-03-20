@@ -8,7 +8,7 @@ import {
   getPropertyLoanArray,
 } from 'core/arrays/PropertyFormArray';
 import UploaderArray from 'core/components/UploaderArray';
-import { loanFiles, propertyFiles } from 'core/api/files/files';
+import { loanDocuments, propertyDocuments } from 'core/api/files/documents';
 import { disableForms, getPropertyCompletion } from 'core/utils/loanFunctions';
 
 import { T } from 'core/components/Translation';
@@ -43,13 +43,13 @@ const PropertyPage = (props) => {
         </div>
 
         <UploaderArray
-          fileArray={loanFiles(loan).auction}
+          fileArray={loanDocuments(loan).auction}
           doc={loan}
           collection="loans"
           disabled={disableForms({ loan })}
         />
         <UploaderArray
-          fileArray={propertyFiles(property, loan).auction}
+          fileArray={propertyDocuments(property, loan).auction}
           doc={property}
           collection="properties"
           disabled={disableForms({ loan })}
