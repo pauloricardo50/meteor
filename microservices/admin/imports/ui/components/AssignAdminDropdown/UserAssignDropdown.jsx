@@ -20,7 +20,8 @@ const onAdminSelectHandler = ({ selectedAdmin, relatedDoc, currentAdmin }) =>
     currentAdminId: currentAdmin,
   });
 
-const UserAssignDropdownContainer = createContainer(() =>
-  ({ onAdminSelectHandler }));
+const UserAssignDropdownContainer = createContainer(() => ({
+  onAdminSelectHandler,
+}));
 
 export default UserAssignDropdownContainer(AssignAdminDropdown);

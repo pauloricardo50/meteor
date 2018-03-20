@@ -51,7 +51,9 @@ const changeAssignedUser = ({ user, task, taskAssignedTo }) => {
 };
 
 const getMenuItems = (users, task) => {
-  const taskAssignedTo = task.assignedEmployee ? task.assignedEmployee._id : undefined;
+  const taskAssignedTo = task.assignedEmployee
+    ? task.assignedEmployee._id
+    : undefined;
   const options = users.map(user => ({
     id: user._id,
     show: user._id !== taskAssignedTo,

@@ -60,16 +60,14 @@ export default class TasksTable extends Component {
       moment(task.updatedAt).format('D MMM YY à HH:mm:ss'),
       moment(task.dueAt).format('D MMM YY à HH:mm:ss'),
       moment(task.completedAt).format('D MMM YY à HH:mm:ss'),
-      (task.user &&
-        (task.user.username || task.user.emails[0].address ||
-        '')),
+      task.user && (task.user.username || task.user.emails[0].address || ''),
       // TODO: also check& add other related docs
     ];
     if (props.showAssignee) {
-      columns.push((task.assignedEmployee &&
+      columns.push(task.assignedEmployee &&
           (task.assignedEmployee.username ||
             task.assignedEmployee.emails[0].address ||
-              '')));
+            ''));
     }
 
     columns.push(<div>
@@ -80,11 +78,8 @@ export default class TasksTable extends Component {
         taskStatus={task.status}
         styles={styles.dropdownButtons}
       />
-      <TaskAssignDropdown
-        doc={task}
-        styles={styles.dropdownButtons}
-      />
-                 </div>);
+      <TaskAssignDropdown doc={task} styles={styles.dropdownButtons} />
+    </div>);
 
     return columns;
   };
