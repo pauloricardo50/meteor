@@ -19,6 +19,11 @@ const ImpersonateLink = ({ userId, className }) => (
 
 ImpersonateLink.propTypes = {
   userId: PropTypes.string.isRequired,
+  className: PropTypes.string,
+};
+
+ImpersonateLink.defaultProps = {
+  className: '',
 };
 
 export default ImpersonateLink;
