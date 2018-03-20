@@ -13,7 +13,7 @@ export const ImpersonateWarning = ({ isActive }) => {
   }
 
   return (
-    <div className="impersonate-warning">
+    <div className="warning">
       <strong>
         <T id="Impersonation.impersonateWarning" />
       </strong>
