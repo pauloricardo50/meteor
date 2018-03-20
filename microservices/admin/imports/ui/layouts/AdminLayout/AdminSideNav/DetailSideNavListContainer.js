@@ -1,8 +1,8 @@
-import borrowersQuery from 'core/api/borrowers/queries/borrowersSideNav';
-import loansQuery from 'core/api/loans/queries/loansSideNav';
-import propertiesQuery from 'core/api/properties/queries/propertiesSideNav';
-import tasksQuery from 'core/api/tasks/queries/tasksSideNav';
-import usersQuery from 'core/api/users/queries/usersSideNav';
+import borrowersQuery from 'core/api/borrowers/queries/sideNavBorrowers';
+import loansQuery from 'core/api/loans/queries/sideNavLoans';
+import propertiesQuery from 'core/api/properties/queries/sideNavProperties';
+import tasksQuery from 'core/api/tasks/queries/sideNavTasks';
+import usersQuery from 'core/api/users/queries/sideNavUsers';
 import { withQuery } from 'core/api';
 
 const getQuery = ({ collectionName }) => {
@@ -22,5 +22,12 @@ const getQuery = ({ collectionName }) => {
   }
 };
 
+<<<<<<< HEAD
+export default withQuery(
+  ({ collectionName }) => getQuery({ collectionName }).clone(),
+  { reactive: true },
+);
+=======
 export default withQuery(({ collectionName }) =>
   getQuery({ collectionName }).clone(), { reactive: true });
+>>>>>>> 345a920e1f35472f7e4f78e232269db62f59c970
