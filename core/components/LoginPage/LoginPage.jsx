@@ -22,10 +22,6 @@ const styles = {
   },
 };
 
-const handlePasswordReset = () => {
-  console.log('resetting password (not)');
-};
-
 const LoginPage = ({ location: { search }, history: { push } }) => {
   const { path } = queryString.parse(search);
 
@@ -46,7 +42,6 @@ const LoginPage = ({ location: { search }, history: { push } }) => {
             id: Meteor.userId(),
           });
         }}
-        onResetPasswordHook={handlePasswordReset}
       />
     </section>
   );

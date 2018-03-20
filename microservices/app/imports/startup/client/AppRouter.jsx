@@ -22,6 +22,8 @@ import ContractPage from '../../ui/pages/ContractPage';
 import ClosingPage from '../../ui/pages/ClosingPage';
 import FinancePage from '../../ui/pages/FinancePage';
 import FilesPage from '../../ui/pages/FilesPage';
+import EmailVerificationPage from '../../ui/pages/EmailVerificationPage';
+import PasswordResetPage from '../../ui/pages/PasswordResetPage';
 
 import AppPage from '../../ui/pages/AppPage';
 import AccountPage from '../../ui/pages/AccountPage';
@@ -91,7 +93,9 @@ const AppRouter = () => (
         />
         <Route path="/loans/:loanId" component={LoanContainer(DashboardPage)} />
         <Route path="/add-loan/:loanId" component={AddLoanPage} />
+        <Route path="/reset-password/:token" component={PasswordResetPage} />
         <Route path="/enroll-account/:token" component={PasswordResetpage} />
+        <Route path="/verify-email/:token" component={EmailVerificationPage} />
         <Route exact path="/" component={AppPage} />
         <Route exact path={IMPERSONATE_ROUTE} component={ImpersonatePage} />
         <Route component={NotFound} />
