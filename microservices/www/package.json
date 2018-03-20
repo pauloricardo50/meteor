@@ -4,10 +4,8 @@
   "scripts": {
     "prestart": "cd ../.. && npm run lang -- www",
     "start": "meteor --settings settings-dev.json --port 3000",
-    "test":
-      "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 3005",
-    "test-CI":
-      "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json"
+    "test": "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 3005",
+    "test-CI": "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json"
   },
   "dependencies": {
     "@storybook/react-komposer": "^2.0.3",
@@ -16,8 +14,7 @@
     "bcrypt": "^1.0.3",
     "indexof": "0.0.1",
     "intl-messageformat": "^2.2.0",
-    "intl-relativeformat":
-      "https://github.com/Floriferous/intl-relativeformat/tarball/master",
+    "intl-relativeformat": "https://github.com/Floriferous/intl-relativeformat/tarball/master",
     "js-search": "^1.4.2",
     "material-ui": "^1.0.0-beta.34",
     "material-ui-icons": "^1.0.0-beta.36",
@@ -44,8 +41,7 @@
   "devDependencies": {
     "babel-eslint": "^8.2.2",
     "babel-plugin-module-alias": "^1.6.0",
-    "babel-plugin-react-intl":
-      "https://github.com/Floriferous/babel-plugin-react-intl/tarball/master",
+    "babel-plugin-react-intl": "https://github.com/Floriferous/babel-plugin-react-intl/tarball/master",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
