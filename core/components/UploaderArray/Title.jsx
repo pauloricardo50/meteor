@@ -15,7 +15,7 @@ const Title = ({
   tooltipSuffix,
   label,
   userIsAdmin,
-  documentIsAdmin,
+  isOwnedByAdmin,
   removeDocument,
 }) => {
   // Construct the custom tooltip id for this file
@@ -48,7 +48,7 @@ const Title = ({
       </div>
 
       {userIsAdmin &&
-        documentIsAdmin && (
+        isOwnedByAdmin && (
           <ConfirmMethod
             label={<T id="general.delete" />}
             keyword="SUPPRIMER"
@@ -68,7 +68,8 @@ Title.propTypes = {
   tooltipSuffix: PropTypes.string,
   label: PropTypes.string,
   userIsAdmin: PropTypes.bool.isRequired,
-  documentIsAdmin: PropTypes.bool.isRequired,
+  isOwnedByAdmin: PropTypes.bool.isRequired,
+  removeDocument: PropTypes.func.isRequired,
 };
 
 Title.defaultProps = {

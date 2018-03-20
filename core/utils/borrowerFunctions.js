@@ -1,6 +1,7 @@
 import { personalInfoPercent, filesPercent } from '../arrays/steps';
 import { borrowerDocuments } from '../api/files/documents';
 import { arrayify } from './general';
+import { FILE_STEPS } from '../api/constants';
 
 export const getFortune = ({ borrowers }) => {
   const array = [];
@@ -22,7 +23,11 @@ export const getInsuranceFortune = ({ borrowers }) => {
 };
 
 export const getBorrowerCompletion = ({ borrower }) =>
-  (filesPercent([borrower], borrowerDocuments, 'auction') +
+  (filesPercent({
+    doc: [borrower],
+    fileArrayFunc: borrowerDocuments,
+    step: FILE_STEPS.AUCTION,
+  }) +
     personalInfoPercent([borrower]) +
     (borrower.logic.hasValidatedFinances ? 1 : 0)) /
   3;

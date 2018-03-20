@@ -168,31 +168,31 @@ describe('steps', () => {
     });
 
     it('returns 0 if an empty doc is given', () => {
-      expect(filesPercent(dummyDoc, dummyFunc, 0)).to.equal(0);
+      expect(filesPercent({ doc: dummyDoc, fileArrayFunc: dummyFunc, step: 0 })).to.equal(0);
     });
 
     it('returns 1 if a file exists', () => {
       // file exists
       dummyDoc.documents.myFile = { files: [{}] };
-      expect(filesPercent(dummyDoc, dummyFunc, 0)).to.equal(1);
+      expect(filesPercent({ doc: dummyDoc, fileArrayFunc: dummyFunc, step: 0 })).to.equal(1);
     });
 
     it("doesn't count files which aren't required", () => {
       dummyFunc = () => [[{ id: 'myFile', required: false }]];
       dummyDoc.documents.myFile = { files: [] };
-      expect(filesPercent(dummyDoc, dummyFunc, 0)).to.equal(0);
+      expect(filesPercent({ doc: dummyDoc, fileArrayFunc: dummyFunc, step: 0 })).to.equal(0);
     });
 
     it("doesn't count files whose condition is explicitly false", () => {
       dummyFunc = () => [[{ id: 'myFile', condition: false }]];
       dummyDoc.documents.myFile = { files: [] };
-      expect(filesPercent(dummyDoc, dummyFunc, 0)).to.equal(0);
+      expect(filesPercent({ doc: dummyDoc, fileArrayFunc: dummyFunc, step: 0 })).to.equal(0);
     });
 
     it('counts files whose condition is undefined', () => {
       dummyFunc = () => [[{ id: 'myFile', condition: undefined }]];
       dummyDoc.documents.myFile = { files: [{}] };
-      expect(filesPercent(dummyDoc, dummyFunc, 0)).to.equal(1);
+      expect(filesPercent({ doc: dummyDoc, fileArrayFunc: dummyFunc, step: 0 })).to.equal(1);
     });
 
     describe('array of docs', () => {
@@ -201,7 +201,11 @@ describe('steps', () => {
         const initialDoc = JSON.parse(JSON.stringify(dummyDoc));
         dummyDoc.documents.myFile = { files: [{}] };
 
-        expect(filesPercent([initialDoc, dummyDoc], dummyFunc, 0)).to.equal(0.5);
+        expect(filesPercent({
+          doc: [initialDoc, dummyDoc],
+          fileArrayFunc: dummyFunc,
+          step: 0,
+        })).to.equal(0.5);
       });
     });
 
@@ -209,7 +213,12 @@ describe('steps', () => {
       it('returns 0 if no files are valid', () => {
         dummyFunc = () => [[{ id: 'myFile', condition: undefined }]];
         dummyDoc.documents.myFile = { files: [{ status: 'INVALID' }] };
-        expect(filesPercent(dummyDoc, dummyFunc, 0, true)).to.equal(0);
+        expect(filesPercent({
+          doc: dummyDoc,
+          fileArrayFunc: dummyFunc,
+          step: 0,
+          checkValidity: true,
+        })).to.equal(0);
       });
 
       it('returns 0.5 if one file is valid', () => {
@@ -221,7 +230,12 @@ describe('steps', () => {
         ];
         dummyDoc.documents.myFile = { files: [{ status: 'INVALID' }] };
         dummyDoc.documents.myFile2 = { files: [{ status: 'VALID' }] };
-        expect(filesPercent(dummyDoc, dummyFunc, 0, true)).to.equal(0.5);
+        expect(filesPercent({
+          doc: dummyDoc,
+          fileArrayFunc: dummyFunc,
+          step: 0,
+          checkValidity: true,
+        })).to.equal(0.5);
       });
     });
   });

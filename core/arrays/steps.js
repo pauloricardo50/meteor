@@ -18,6 +18,7 @@ import {
   FILE_STATUS,
   CLOSING_STEPS_STATUS,
   CLOSING_STEPS_TYPE,
+  FILE_STEPS,
 } from '../api/constants';
 
 const getSteps = (props) => {
@@ -58,7 +59,12 @@ const getSteps = (props) => {
         {
           id: 'files',
           link: `/loans/${loan._id}/borrowers/${borrowers[0]._id}/files`,
-          percent: () => filesPercent(borrowers, borrowerDocuments, 'auction'),
+          percent: () =>
+            filesPercent({
+              doc: borrowers,
+              fileArrayFunc: borrowerDocuments,
+              step: FILE_STEPS.AUCTION,
+            }),
           isDone() {
             return this.percent() >= 1;
           },
@@ -121,7 +127,10 @@ const getSteps = (props) => {
             loan.logic.step < 3 &&
             !(loan.logic.lender && loan.logic.lender.offerId),
           percent: () =>
-            getAllFilesPercent({ loan, borrowers, property }, 'contract'),
+            getAllFilesPercent(
+              { loan, borrowers, property },
+              FILE_STEPS.CONTRACT,
+            ),
           waiting: () =>
             loan.logic.lender.contractRequested && !loan.logic.lender.contract,
           isDone() {
@@ -138,8 +147,10 @@ const getSteps = (props) => {
           // FIXME: true && value used because of weird linting...
           disabled:
             (true &&
-              getAllFilesPercent({ loan, borrowers, property }, 'contract')) <
-              1 || loan.logic.step < 3,
+              getAllFilesPercent(
+                { loan, borrowers, property },
+                FILE_STEPS.CONTRACT,
+              )) < 1 || loan.logic.step < 3,
           percent: () => closingPercent(loan),
           isDone: () => loan.status === LOAN_STATUS.DONE,
         },
@@ -334,7 +345,7 @@ export const auctionFilesPercent = (borrowers) => {
  * @return {number} a value between 0 and 1 indicating the percentage of
  * completion, 1 is complete, 0 is not started
  */
-export const filesPercent = (doc, fileArrayFunc, step, checkValidity) => {
+export const filesPercent = ({ doc, fileArrayFunc, step, checkValidity }) => {
   const a = [];
   const iterate = (files, doc2) => {
     if (!doc2 || !doc2.documents) {
@@ -377,15 +388,15 @@ export const filesPercent = (doc, fileArrayFunc, step, checkValidity) => {
 export const getAllFilesPercent = ({ loan, borrowers, property }, step) => {
   const array = [];
   if (loan) {
-    array.push(filesPercent(loan, loanDocuments, step));
+    array.push(filesPercent({ doc: loan, fileArrayFunc: loanDocuments, step }));
   }
 
   if (borrowers) {
-    array.push(filesPercent(borrowers, borrowerDocuments, step));
+    array.push(filesPercent({ doc: borrowers, fileArrayFunc: borrowerDocuments, step }));
   }
 
   if (property) {
-    array.push(filesPercent(property, propertyDocuments, step));
+    array.push(filesPercent({ doc: property, fileArrayFunc: propertyDocuments, step }));
   }
 
   // Sum and divide by amount of them

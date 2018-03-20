@@ -1,7 +1,12 @@
 import moment from 'moment';
 
 import constants from '../config/constants';
-import { USAGE_TYPE, LOAN_STRATEGY_PRESET, OFFER_TYPE, FILE_STEPS } from '../api/constants';
+import {
+  USAGE_TYPE,
+  LOAN_STRATEGY_PRESET,
+  OFFER_TYPE,
+  FILE_STEPS,
+} from '../api/constants';
 import { getIncomeRatio } from './finance-math';
 import { propertyPercent, filesPercent } from '../arrays/steps';
 import { loanDocuments, propertyDocuments } from '../api/files/documents';
@@ -243,7 +248,11 @@ export const isLoanValid = ({ loan, borrowers, property }) => {
 
 export const getPropertyCompletion = ({ loan, borrowers, property }) => {
   const formsProgress = propertyPercent(loan, borrowers, property);
-  const filesProgress = filesPercent(property, propertyDocuments, FILE_STEPS.AUCTION);
+  const filesProgress = filesPercent({
+    doc: property,
+    fileArrayFunc: propertyDocuments,
+    step: FILE_STEPS.AUCTION,
+  });
 
   return (formsProgress + filesProgress) / 2;
 };

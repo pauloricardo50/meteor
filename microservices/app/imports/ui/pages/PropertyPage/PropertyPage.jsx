@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import ProcessPage from '/imports/ui/components/ProcessPage';
 import AutoForm from 'core/components/AutoForm';
 import {
   getPropertyArray,
@@ -10,9 +9,11 @@ import {
 import UploaderArray from 'core/components/UploaderArray';
 import { loanDocuments, propertyDocuments } from 'core/api/files/documents';
 import { disableForms, getPropertyCompletion } from 'core/utils/loanFunctions';
-
 import { T } from 'core/components/Translation';
 import withLoan from 'core/containers/withLoan';
+import { LOANS_COLLECTION, PROPERTIES_COLLECTION } from 'core/api/constants';
+
+import ProcessPage from '../../components/ProcessPage';
 
 const PropertyPage = (props) => {
   const { loan, borrowers, property } = props;
@@ -45,20 +46,20 @@ const PropertyPage = (props) => {
         <UploaderArray
           fileArray={loanDocuments(loan).auction}
           doc={loan}
-          collection="loans"
+          collection={LOANS_COLLECTION}
           disabled={disableForms({ loan })}
         />
         <UploaderArray
           fileArray={propertyDocuments(property, loan).auction}
           doc={property}
-          collection="properties"
+          collection={PROPERTIES_COLLECTION}
           disabled={disableForms({ loan })}
         />
 
         <AutoForm
           inputs={getPropertyLoanArray({ loan, borrowers })}
           docId={loan._id}
-          collection="loans"
+          collection={LOANS_COLLECTION}
           doc={loan}
           disabled={disableForms({ loan })}
         />
@@ -66,7 +67,7 @@ const PropertyPage = (props) => {
         <AutoForm
           inputs={getPropertyArray({ loan, borrowers, property })}
           docId={property._id}
-          collection="properties"
+          collection={PROPERTIES_COLLECTION}
           doc={property}
           disabled={disableForms({ loan })}
         />

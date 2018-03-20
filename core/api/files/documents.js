@@ -212,5 +212,5 @@ export const DocumentSchema = new SimpleSchema({
   'files.$': FileSchema,
   uploadCount: { type: Number, defaultValue: 0 },
   label: { type: String, optional: true },
-  isAdmin: { type: Boolean, optional: true, defaultValue: false },
+  isOwnedByAdmin: { type: Boolean, optional: true, defaultValue: false },
 });

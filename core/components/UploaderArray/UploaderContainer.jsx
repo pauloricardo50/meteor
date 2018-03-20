@@ -6,12 +6,12 @@ import {
   SecurityService,
 } from 'core/api';
 
-export default createContainer(({ collection, docId, fileMeta: { id, isAdmin }, disabled }) => {
+export default createContainer(({ collection, docId, fileMeta: { id, isOwnedByAdmin }, disabled }) => {
   const userIsAdmin = SecurityService.currentUserIsAdmin();
 
   let disableUploader = true;
 
-  if (isAdmin) {
+  if (isOwnedByAdmin) {
     disableUploader = true;
   } else {
     disableUploader = disabled;
@@ -36,7 +36,7 @@ export default createContainer(({ collection, docId, fileMeta: { id, isAdmin }, 
       removeDocument.run({ documentId: id, loanId: docId }),
     userIsAdmin,
     disabled: userIsAdmin ? false : disableUploader,
-    documentIsAdmin: isAdmin,
+    isOwnedByAdmin,
   };
 
   return additionalProps;

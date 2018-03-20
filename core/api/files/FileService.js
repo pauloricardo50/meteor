@@ -101,7 +101,7 @@ class FileService {
     const newDocument = {
       label: documentName,
       files: [],
-      isAdmin: true,
+      isOwnedByAdmin: true,
       uploadCount: 0,
     };
 
@@ -119,7 +119,7 @@ class FileService {
     const doc = Mongo.Collection.get(LOANS_COLLECTION).findOne(loanId);
     const document = this._getCurrentFileValue({ doc, documentId });
 
-    if (!document.isAdmin) {
+    if (!document.isOwnedByAdmin) {
       throw new Meteor.Error('document is not an admin document');
     }
 
