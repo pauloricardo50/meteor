@@ -10,7 +10,6 @@ import track from 'core/utils/analytics';
 import { isApp, isAdmin, isPartner } from 'core/utils/browserFunctions';
 import UserContainer from 'core/containers/UserContainer';
 import Navs from './Navs';
-import { ImpersonateWarningWithTracker } from 'core/components/Impersonate/ImpersonateWarning';
 import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
 
 // import UserJoyride from '/imports/ui/components/UserJoyride';
@@ -92,7 +91,6 @@ const AppLayout = (props) => {
       />
 
       <main className={classes}>
-        <ImpersonateWarningWithTracker />
         <ErrorBoundary helper="layout" pathname={history.location.pathname}>
           {/* <div x="wrapper">{render(props)}</div> */}
           <div x="wrapper">{React.cloneElement(children, { ...props })}</div>

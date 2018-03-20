@@ -8,6 +8,7 @@ import Toolbar from 'material-ui/Toolbar/Toolbar';
 import track from '../../utils/analytics';
 
 import Button from '../Button';
+import { ImpersonateWarningWithTracker } from 'core/components/Impersonate/ImpersonateWarning';
 import SearchModal from '../SearchModal';
 import { T } from '../Translation';
 import TopNavDropdown from './TopNavDropdown';
@@ -39,6 +40,7 @@ const TopNav = (props) => {
         </div>
 
         <div className="buttons">
+          <ImpersonateWarningWithTracker />
           <SearchModal />
           {currentUser ? (
             <TopNavDropdown {...props} />
