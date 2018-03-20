@@ -1,7 +1,14 @@
 import SimpleSchema from 'simpl-schema';
-import { FILE_STATUS, PURCHASE_TYPE, USAGE_TYPE } from '../constants';
+import {
+  FILE_STATUS,
+  PURCHASE_TYPE,
+  USAGE_TYPE,
+  LOANS_COLLECTION,
+  BORROWERS_COLLECTION,
+  PROPERTIES_COLLECTION,
+} from '../constants';
 
-export const borrowerFiles = (b = {}) => ({
+export const borrowerDocuments = (b = {}) => ({
   auction: [
     {
       id: 'identity',
@@ -79,25 +86,8 @@ export const borrowerFiles = (b = {}) => ({
   },
 });
 
-export const loanFiles = (r = {}) => ({
-  auction: [
-    // {
-    //   id: 'plans',
-    // },
-    // {
-    //   id: 'cubage',
-    //   doubleTooltip: true,
-    //   condition: r.propertyId && r.propertyId.style === 'villa',
-    // },
-    // {
-    //   id: 'pictures',
-    // },
-    // {
-    //   id: 'marketingBrochure',
-    //   condition: !!r.general && r.general.purchaseType === 'acquisition',
-    //   required: false,
-    // },
-  ],
+export const loanDocuments = (r = {}) => ({
+  auction: [],
   contract: [
     {
       id: 'buyersContract',
@@ -107,11 +97,6 @@ export const loanFiles = (r = {}) => ({
     {
       id: 'reimbursementStatement',
       condition: !!r.general && r.general.purchaseType === 'refinancing',
-    },
-    {
-      id: 'rent',
-      condition: !!r.general && r.general.usageType === 'investment',
-      doubleTooltip: true,
     },
     {
       id: 'coownershipAllocationAgreement',
@@ -129,15 +114,6 @@ export const loanFiles = (r = {}) => ({
     },
   ],
   closing: [],
-  // closing: [
-  //   {
-  //     id: 'retirementWithdrawalStatement',
-  //     label: 'Attestation LPP - après retrait',
-  //     help1: 'Certificat émis sur votre demande par votre caisse de pension démontrant votre situation LPP après retrait',
-  //     help2: 'Vous pouvez obtenir ce document, sur demande, auprès de votre caisse de pension',
-  //     condition: !!r.logic && r.insuranceUsePreset === 'withdrawal',
-  //   },
-  // ],
   other: [
     { id: 'upload0' },
     { id: 'upload1' },
@@ -157,7 +133,7 @@ export const loanFiles = (r = {}) => ({
   },
 });
 
-export const propertyFiles = (property = {}, loan = {}) => ({
+export const propertyDocuments = (property = {}, loan = {}) => ({
   auction: [
     {
       id: 'plans',
@@ -197,24 +173,24 @@ export const propertyFiles = (property = {}, loan = {}) => ({
   },
 });
 
-export const getFileIDs = (list) => {
-  let files;
+export const getDocumentIDs = (list) => {
+  let documents;
   const ids = [];
   switch (list) {
-  case 'borrower':
-    files = borrowerFiles();
+  case BORROWERS_COLLECTION:
+    documents = borrowerDocuments();
     break;
-  case 'loan':
-    files = loanFiles();
+  case LOANS_COLLECTION:
+    documents = loanDocuments();
     break;
-  case 'property':
-    files = propertyFiles();
+  case PROPERTIES_COLLECTION:
+    documents = propertyDocuments();
     break;
   default:
     throw new Error('invalid file list');
   }
 
-  files.all().forEach(f => ids.push(f.id));
+  documents.all().forEach(f => ids.push(f.id));
 
   return ids;
 };
@@ -225,56 +201,16 @@ export const FileSchema = new SimpleSchema({
   initialName: String,
   size: Number,
   type: String,
-  url: {
-    type: String,
-    regEx: SimpleSchema.RegEx.Url,
-  },
+  url: { type: String, regEx: SimpleSchema.RegEx.Url },
   key: String,
-  fileCount: Number,
-  status: {
-    type: String,
-    allowedValues: Object.values(FILE_STATUS),
-  },
+  status: { type: String, allowedValues: Object.values(FILE_STATUS) },
   error: { optional: true, type: String },
 });
 
-// Generates a schema given a list name (loan, or borrowers)
-export const getFileSchema = (list) => {
-  const schema = {};
-
-  const arr = getFileIDs(list);
-
-  arr.forEach((id) => {
-    schema[id] = {
-      type: Array,
-      optional: true,
-      maxCount: 100,
-    };
-    schema[`${id}.$`] = FileSchema;
-  });
-
-  return schema;
-};
-
-export const fakeFile = {
-  name: 'fakeFile.pdf',
-  initialName: 'fakeFile.pdf',
-  size: 10000,
-  type: 'application/pdf',
-  url: 'https://www.fake-url.com',
-  key: 'asdf/fakeKey/fakeFile.pdf',
-  fileCount: 0,
-  status: FILE_STATUS.VALID,
-  error: '',
-};
-
-export const getFileCount = (currentValue) => {
-  let fileCountString = '00';
-  let fileCount = 0;
-  if (currentValue && currentValue.length > 0) {
-    // If something goes wrong, minimum should be -1 + 1 = 0
-    fileCount = Math.max(...currentValue.map(f => f.fileCount), -1) + 1;
-    fileCountString = fileCount < 10 ? `0${fileCount}` : `${fileCount}`;
-  }
-  return { fileCount, fileCountString };
-};
+export const DocumentSchema = new SimpleSchema({
+  files: { type: Array, defaultValue: [], maxCount: 100 },
+  'files.$': FileSchema,
+  uploadCount: { type: Number, defaultValue: 0 },
+  label: { type: String, optional: true },
+  isOwnedByAdmin: { type: Boolean, optional: true, defaultValue: false },
+});

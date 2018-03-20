@@ -3,53 +3,42 @@ import PropTypes from 'prop-types';
 
 import Uploader from './Uploader';
 
-// Support for custom uploadX files
-const getTitle = (id, doc) => {
-  if (doc.logic) {
-    const { closingSteps } = doc.logic;
-    if (!closingSteps) {
-      return undefined;
-    }
-    return id.indexOf('upload') >= 0
-      ? (closingSteps.find(s => s.id === id) &&
-          closingSteps.find(s => s.id === id).title) ||
-          id
-      : undefined;
-  }
-
-  return undefined;
-};
-
-const UploaderArray = ({ fileArray, doc, disabled, collection }) => (
+const UploaderArray = ({ documentArray, doc, disabled, collection }) => (
   <div className="flex-col center">
-    {fileArray
-      ? fileArray.map(file =>
-        file.condition !== false && (
+    {documentArray
+      ? documentArray.map(documentObject =>
+        documentObject.condition !== false && (
           <Uploader
-            fileMeta={{ ...file, title: getTitle(file.id, doc) }}
-            key={doc._id + file.id}
-            currentValue={doc.files[file.id]}
+            fileMeta={{
+              ...documentObject,
+              ...doc.documents[documentObject.id],
+            }}
+            key={doc._id + documentObject.id}
+            currentValue={doc.documents[documentObject.id].files}
             docId={doc._id}
             disabled={disabled}
             collection={collection}
           />
         ))
-      : // Show all existing files for this doc
-      Object.keys(doc.files).map(fileId => (
-        <Uploader
-          fileMeta={{ id: fileId, title: getTitle(fileId, doc) }}
-          collection={collection}
-          key={fileId}
-          docId={doc._id}
-          currentValue={doc.files[fileId]}
-          disabled={disabled}
-        />
-      ))}
+      : // Show all existing documents for this doc
+      Object.keys(doc.documents)
+        .sort((a, b) => doc.documents[a].isAdmin - doc.documents[b].isAdmin)
+        .reverse()
+        .map(documentId => (
+          <Uploader
+            fileMeta={{ id: documentId, ...doc.documents[documentId] }}
+            collection={collection}
+            key={documentId}
+            docId={doc._id}
+            currentValue={doc.documents[documentId].files}
+            disabled={disabled}
+          />
+        ))}
   </div>
 );
 
 UploaderArray.propTypes = {
-  fileArray: PropTypes.arrayOf(PropTypes.object),
+  documentArray: PropTypes.arrayOf(PropTypes.object),
   doc: PropTypes.objectOf(PropTypes.any).isRequired,
   disabled: PropTypes.bool,
   collection: PropTypes.string.isRequired,
@@ -57,7 +46,7 @@ UploaderArray.propTypes = {
 
 UploaderArray.defaultProps = {
   disabled: false,
-  fileArray: undefined,
+  documentArray: undefined,
 };
 
 export default UploaderArray;

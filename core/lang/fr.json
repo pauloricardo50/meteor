@@ -4,6 +4,12 @@
   "AdminNote.label": "Note d'admin",
   "AdminNote.placeholder": "Clique pour ajouter une note d'admin...",
 
+  "AdminFilesTab.empty": "Vos documents officiels e-Potek apparaîtront ici.",
+
+  "NewDocumentForm.label": "Ajouter un nouveau document au prêt hypothécaire",
+  "NewDocumentForm.placeholder": "Nom du document (visible à l'utilisateur)",
+  "NewDocumentForm.cta": "Ajouter",
+
   "AboutPage.description":
     "e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève. Expansion prévue prochainement.{verticalSpace}L'équipe derrière e-Potek est composée d'entrepreneurs expérimentés dans la finance et les prêts hypothécaires en Suisse.",
   "AboutPage.title": "Le Prêt Hypothécaire de Demain",

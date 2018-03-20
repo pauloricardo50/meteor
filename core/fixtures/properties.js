@@ -5,7 +5,7 @@ import {
   PROPERTY_STYLE,
   VOLUME_NORM,
 } from 'core/api/properties/propertyConstants';
-import { fakeFile } from 'core/api/files/files';
+import { fakeDocument } from 'core/api/files/fileHelpers';
 
 const statuses = Object.values(PROPERTY_STATUS);
 const usageTypes = Object.values(USAGE_TYPE);
@@ -48,11 +48,11 @@ const createFakeProperties = (userId) => {
     buildingQuality: 1,
     flatQuality: 2,
     materialsQuality: 2,
-    files: {
-      plans: [fakeFile],
-      cubage: [fakeFile],
-      pictures: [fakeFile],
-      landRegisterExtract: [fakeFile],
+    documents: {
+      plans: fakeDocument,
+      cubage: fakeDocument,
+      pictures: fakeDocument,
+      landRegisterExtract: fakeDocument,
     },
   };
 

@@ -28,6 +28,7 @@ const config = {
         'FileAdder',
         'ArrayInput',
         'Impersonation',
+        'AdminFilesTab',
       ],
     },
     {
@@ -57,6 +58,7 @@ const config = {
         'ArrayInput',
         'collections',
         'Impersonation',
+        'AdminFilesTab',
       ],
     },
   ],

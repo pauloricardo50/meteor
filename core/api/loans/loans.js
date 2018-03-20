@@ -1,17 +1,10 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
-import { getFileSchema } from '../files/files';
-import {
-  GeneralSchema,
-  PropertySchema,
-  LogicSchema,
-} from './additionalSchemas';
-import { LOAN_STATUS } from './loanConstants';
+import { GeneralSchema, LogicSchema } from './additionalSchemas';
+import { LOANS_COLLECTION, LOAN_STATUS } from './loanConstants';
 
-const Loans = new Mongo.Collection('loans');
-
-const LoanFilesSchema = new SimpleSchema(getFileSchema('loan'));
+const Loans = new Mongo.Collection(LOANS_COLLECTION);
 
 // Prevent all client side modifications of mongoDB
 Loans.deny({
@@ -61,9 +54,8 @@ const LoanSchema = new SimpleSchema({
   general: { type: GeneralSchema, defaultValue: {} },
   borrowerIds: { type: Array, defaultValue: [] },
   'borrowerIds.$': String,
-  // property: PropertySchema,
   propertyId: { type: String },
-  files: { type: LoanFilesSchema, defaultValue: {} },
+  documents: { type: Object, defaultValue: {}, blackbox: true },
   logic: { type: LogicSchema, defaultValue: {} },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   adminNote: { type: String, defaultValue: '', optional: true },

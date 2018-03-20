@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import UploaderArray from 'core/components/UploaderArray';
-import { borrowerFiles } from 'core/api/files/files';
+import { borrowerDocuments } from 'core/api/files/documents';
 import RadioInput from 'core/components/AutoForm/RadioInput';
 import { T } from 'core/components/Translation';
 import { disableForms } from 'core/utils/loanFunctions';
@@ -43,7 +43,7 @@ const Files = (props) => {
       </h3>
 
       <UploaderArray
-        fileArray={borrowerFiles(borrower).auction}
+        fileArray={borrowerDocuments(borrower).auction}
         doc={borrower}
         collection="borrowers"
         disabled={disableForms({ loan })}

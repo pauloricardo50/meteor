@@ -46,10 +46,7 @@ export default class TasksTable extends Component {
         label: <T id="TasksTable.assignedTo" />,
       });
     }
-    columnOptions.push({
-      id: 'actions',
-      label: <T id="TasksTable.actions" />,
-    });
+    columnOptions.push({ id: 'actions', label: <T id="TasksTable.actions" /> });
     return columnOptions;
   };
 

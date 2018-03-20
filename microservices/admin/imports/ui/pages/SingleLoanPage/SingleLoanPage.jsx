@@ -20,8 +20,6 @@ class SingleLoanPage extends Component {
   }
 
   render() {
-    console.log('Single loan page props:', this.props);
-
     const { data, isLoading } = this.props;
     const loan = data;
 
