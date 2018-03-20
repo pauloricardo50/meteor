@@ -41,11 +41,11 @@
     "uninstall": "0.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.39",
-    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.39",
+    "@babel/core": "^7.0.0-beta.41",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.41",
     "babel-eslint": "^8.2.1",
     "babel-plugin-module-resolver": "^3.0.0",
-    "babel-preset-meteor": "^7.0.0-beta.38-1",
+    "babel-preset-meteor": "^7.0.0-beta.42",
     "eslint": "^4.15.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-import-resolver-meteor": "^0.4.0",
