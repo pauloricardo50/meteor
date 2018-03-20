@@ -20,7 +20,7 @@ export default class NewLoanModal extends Component {
     event.preventDefault();
 
     loanUpdate
-      .run({ object: { name: this.state.value }, id: this.props.loanId })
+      .run({ object: { name: this.state.value }, loanId: this.props.loanId })
       .then(() => this.setState({ open: false }));
   };
 

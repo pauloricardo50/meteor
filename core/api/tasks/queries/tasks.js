@@ -4,13 +4,13 @@ import { TASK_QUERIES } from '../taskConstants';
 export default Tasks.createQuery(TASK_QUERIES.TASKS, {
   $filter({ filters, options, params }) {
     if (params.assignedTo) {
-      filters.assignedTo = params.assignedTo;
+      filters.assignedEmployeeId = params.assignedTo;
     }
     if (params.unassigned) {
-      filters.assignedTo = undefined;
+      filters.assignedEmployeeId = undefined;
     }
     if (params.dashboardTasks) {
-      filters.assignedTo = { $in: [params.assignedTo, undefined] };
+      filters.assignedEmployeeId = { $in: [params.assignedTo, undefined] };
     }
   },
   $options: {
@@ -24,7 +24,7 @@ export default Tasks.createQuery(TASK_QUERIES.TASKS, {
   createdAt: 1,
   updatedAt: 1,
   dueAt: 1,
-  assignedUser: {
+  assignedEmployee: {
     emails: 1,
     roles: 1,
     username: 1,
@@ -35,17 +35,17 @@ export default Tasks.createQuery(TASK_QUERIES.TASKS, {
   },
   borrower: {
     user: {
-      assignedTo: 1,
+      assignedEmployeeId: 1,
     },
   },
   loan: {
     user: {
-      assignedTo: 1,
+      assignedEmployeeId: 1,
     },
   },
   property: {
     user: {
-      assignedTo: 1,
+      assignedEmployeeId: 1,
     },
   },
   userId: 1,

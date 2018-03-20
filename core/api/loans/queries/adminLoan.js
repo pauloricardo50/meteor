@@ -99,7 +99,7 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
     createdAt: 1,
     updatedAt: 1,
     dueAt: 1,
-    assignedUser: {
+    assignedEmployee: {
       emails: 1,
       roles: 1,
     },

@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import moment from 'moment';
 import Table from 'core/components/Table';
-import { T } from 'core/components/Translation/';
+import { T } from 'core/components/Translation';
+import TaskAssignDropdown from '../../components/AssignAdminDropdown/TaskAssignDropdown';
 import TasksStatusDropdown from './TasksStatusDropdown';
 import TasksUserWithData from './TasksUsersWithData';
 
@@ -59,15 +60,15 @@ export default class TasksTable extends Component {
       moment(task.dueAt).format('D MMM YY à HH:mm:ss'),
       moment(task.completedAt).format('D MMM YY à HH:mm:ss'),
       (task.user &&
-        (task.user.username || task.user.emails[0].address.toString())) ||
-        '',
+        (task.user.username || task.user.emails[0].address ||
+        '')),
       // TODO: also check& add other related docs
     ];
     if (props.showAssignee) {
-      columns.push((task.assignedUser &&
-          (task.assignedUser.username ||
-            task.assignedUser.emails[0].address.toString())) ||
-          '');
+      columns.push((task.assignedEmployee &&
+          (task.assignedEmployee.username ||
+            task.assignedEmployee.emails[0].address ||
+              '')));
     }
 
     columns.push(<div>
@@ -78,12 +79,11 @@ export default class TasksTable extends Component {
         taskStatus={task.status}
         styles={styles.dropdownButtons}
       />
-      <TasksUserWithData
-        {...props}
-        task={task}
+      <TaskAssignDropdown
+        doc={task}
         styles={styles.dropdownButtons}
       />
-    </div>);
+                 </div>);
 
     return columns;
   };

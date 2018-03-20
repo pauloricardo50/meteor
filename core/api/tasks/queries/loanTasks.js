@@ -1,7 +1,7 @@
 import { Tasks } from '../../';
 import { TASK_QUERIES, TASK_STATUS } from '../taskConstants';
 
-export default Tasks.createQuery(TASK_QUERIES.LOAN_TASKS_LIST, {
+export default Tasks.createQuery(TASK_QUERIES.LOAN_TASKS, {
   $filter({ filters, options, params }) {
     filters.status = { $in: [TASK_STATUS.ACTIVE, TASK_STATUS.COMPLETED] };
 
@@ -20,7 +20,7 @@ export default Tasks.createQuery(TASK_QUERIES.LOAN_TASKS_LIST, {
   createdAt: 1,
   updatedAt: 1,
   dueAt: 1,
-  assignedUser: {
+  assignedEmployee: {
     emails: 1,
     roles: 1,
     username: 1,
@@ -31,17 +31,17 @@ export default Tasks.createQuery(TASK_QUERIES.LOAN_TASKS_LIST, {
   },
   borrower: {
     user: {
-      assignedTo: 1,
+      assignedEmployeeId: 1,
     },
   },
   loan: {
     user: {
-      assignedTo: 1,
+      assignedEmployeeId: 1,
     },
   },
   property: {
     user: {
-      assignedTo: 1,
+      assignedEmployeeId: 1,
     },
   },
   userId: 1,

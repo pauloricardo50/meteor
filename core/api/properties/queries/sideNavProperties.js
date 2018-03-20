@@ -1,11 +1,9 @@
 import Property from '..';
 import { PROPERTY_QUERIES } from '../propertyConstants';
 
-export default Property.createQuery(PROPERTY_QUERIES.PROPERTY_ASSIGNED_TO, {
+export default Property.createQuery(PROPERTY_QUERIES.SIDENAV_PROPERTIES, {
   $filter({ filters, params }) {
     filters._id = params.propertyId;
   },
-  user: {
-    assignedEmployeeId: 1,
-  },
+  $paginate: true,
 });

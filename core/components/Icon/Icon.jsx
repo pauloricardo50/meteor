@@ -45,6 +45,7 @@ import StarEmpty from 'material-ui-icons/StarBorder';
 import PersonAdd from 'material-ui-icons/PersonAdd';
 import OfflinePin from 'material-ui-icons/OfflinePin';
 import Save from 'material-ui-icons/Save';
+import SupervisorAccount from 'material-ui-icons/SupervisorAccount';
 
 const iconMap = {
   close: CloseIcon,
@@ -90,6 +91,7 @@ const iconMap = {
   people: People,
   developerMode: DeveloperMode,
   save: Save,
+  supervisorAccount: SupervisorAccount,
 };
 
 const Icon = ({ type, size, ...props }) => {

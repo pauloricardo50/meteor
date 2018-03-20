@@ -66,7 +66,7 @@ const UserSchema = new SimpleSchema({
     type: Date,
     optional: true,
   },
-  assignedTo: {
+  assignedEmployeeId: {
     type: String,
     optional: true,
   },
