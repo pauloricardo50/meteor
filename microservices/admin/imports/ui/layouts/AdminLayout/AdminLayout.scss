@@ -75,3 +75,7 @@
 .detail-side-nav .detail-side-nav-header:hover {
   color: $primary;
 }
+
+.detail-side-nav .detail-side-nav-list {
+  overflow: scroll;
+}

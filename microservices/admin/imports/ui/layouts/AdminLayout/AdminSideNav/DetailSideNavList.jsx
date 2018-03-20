@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 
 import { LoadingComponent } from 'core/components/Loading';
@@ -41,7 +40,7 @@ const DetailSideNavList = ({
   }
 
   return (
-    <List>
+    <List className="detail-side-nav-list">
       {data.map(doc => (
         <ListItem
           button
