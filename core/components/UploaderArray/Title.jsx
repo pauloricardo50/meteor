@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
+import ConfirmMethod from 'core/components/ConfirmMethod';
 
 import FileStatusIcon from './FileStatusIcon';
 
@@ -13,6 +14,8 @@ const Title = ({
   currentValue,
   tooltipSuffix,
   label,
+  isAdmin,
+  removeDocument,
 }) => {
   // Construct the custom tooltip id for this file
   const tooltipId = `files.${id}.tooltip${tooltipSuffix || ''}`;
@@ -42,6 +45,14 @@ const Title = ({
           />
         </h5>
       </div>
+
+      {isAdmin && (
+        <ConfirmMethod
+          label={<T id="general.delete" />}
+          keyword="SUPPRIMER"
+          method={removeDocument}
+        />
+      )}
     </div>
   );
 };

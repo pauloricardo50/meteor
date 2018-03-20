@@ -1,15 +1,7 @@
 import { FILE_STATUS } from './fileConstants';
 
-export const getFileCount = (currentValue) => {
-  let fileCountString = '00';
-  let fileCount = 0;
-  if (currentValue && currentValue.length > 0) {
-    // If something goes wrong, minimum should be -1 + 1 = 0
-    fileCount = Math.max(...currentValue.map(f => f.fileCount), -1) + 1;
-    fileCountString = fileCount < 10 ? `0${fileCount}` : `${fileCount}`;
-  }
-  return { fileCount, fileCountString };
-};
+export const getUploadCountPrefix = lastUploadCount =>
+  (lastUploadCount < 10 ? `0${lastUploadCount}` : `${lastUploadCount}`);
 
 export const fakeFile = {
   name: 'fakeFile.pdf',

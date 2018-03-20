@@ -7,42 +7,44 @@ import {
   setFileError,
   downloadFile,
   addDocument,
+  removeDocument,
 } from '../methodDefinitions';
 import FileService from '../FileService';
 import { setupS3, isAllowed } from './s3';
 
-addFileToDoc.setHandler((context, { collection, docId, fileId, file }) => {
+addFileToDoc.setHandler((context, { collection, docId, documentId, file }) => {
   SecurityService[collection].isAllowedToUpdate(docId);
-  FileService.addFileToDoc({ collection, docId, fileId, file });
+  FileService.addFileToDoc({ collection, docId, documentId, file });
 });
 
-deleteFile.setHandler((context, { collection, docId, fileId, fileKey }) => {
+deleteFile.setHandler((context, { collection, docId, documentId, fileKey }) => {
   SecurityService[collection].isAllowedToUpdate(docId);
   const s3 = setupS3();
   const params = { Bucket: Meteor.settings.S3Bucket, Key: fileKey };
 
-  return s3.deleteObject(params, (err) => {
+  FileService.deleteFileFromDoc({ collection, docId, documentId, fileKey });
+
+  s3.deleteObject(params, (err, data) => {
     if (err) {
       throw new Meteor.Error(err);
     }
-    FileService.deleteFileFromDoc({ collection, docId, fileId, fileKey });
   });
 });
 
-setFileStatus.setHandler((context, { collection, docId, fileId, fileKey, newStatus }) => {
+setFileStatus.setHandler((context, { collection, docId, documentId, fileKey, newStatus }) => {
   SecurityService[collection].isAllowedToUpdate(docId);
   FileService.setFileStatus({
     collection,
     docId,
-    fileId,
+    documentId,
     fileKey,
     newStatus,
   });
 });
 
-setFileError.setHandler((context, { collection, docId, fileId, fileKey, error }) => {
+setFileError.setHandler((context, { collection, docId, documentId, fileKey, error }) => {
   SecurityService[collection].isAllowedToUpdate(docId);
-  FileService.setFileError({ collection, docId, fileId, fileKey, error });
+  FileService.setFileError({ collection, docId, documentId, fileKey, error });
 });
 
 downloadFile.setHandler((context, { key }) => {
@@ -64,4 +66,9 @@ downloadFile.setHandler((context, { key }) => {
 addDocument.setHandler((context, { documentName, loanId }) => {
   SecurityService.checkCurrentUserIsAdmin();
   FileService.addDocument({ documentName, loanId });
+});
+
+removeDocument.setHandler((context, { documentId, loanId }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  FileService.removeDocument({ documentId, loanId });
 });

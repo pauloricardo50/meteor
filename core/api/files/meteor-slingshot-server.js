@@ -4,7 +4,7 @@ import { Roles } from 'meteor/alanning:roles';
 
 import Loans from 'core/api/loans/loans';
 import Borrowers from 'core/api/borrowers/borrowers';
-import { getFileCount } from './fileHelpers';
+import { getUploadCountPrefix } from './fileHelpers';
 import './meteor-slingshot';
 
 Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
@@ -45,9 +45,9 @@ Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
 
     return true;
   },
-  key(file, { currentValue, docId, id }) {
-    const { fileCountString } = getFileCount(currentValue);
+  key(file, { uploadCount, docId, id }) {
+    const uploadCountPrefix = getUploadCountPrefix(uploadCount);
 
-    return `${docId}/${id}/${fileCountString}${file.name}`;
+    return `${docId}/${id}/${uploadCountPrefix}${file.name}`;
   },
 });

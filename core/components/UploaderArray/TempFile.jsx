@@ -17,6 +17,7 @@ export default class TempFile extends Component {
       collection: this.props.collection,
       docId: this.props.docId,
       id: this.props.id,
+      uploadCount: this.props.uploadCount,
     });
 
     const progressSetter = Tracker.autorun(() => {

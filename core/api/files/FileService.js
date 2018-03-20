@@ -1,44 +1,57 @@
+import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { Random } from 'meteor/random';
-import { getFileCount } from './fileHelpers';
+
+import { FileSchema, DocumentSchema } from './documents';
+import { getUploadCountPrefix } from './fileHelpers';
 import { FILE_STATUS } from './fileConstants';
 import { LOANS_COLLECTION } from '../constants';
 
 class FileService {
-  addFileToDoc = ({ collection, docId, fileId, file }) => {
+  addFileToDoc = ({ collection, docId, documentId, file }) => {
     const doc = Mongo.Collection.get(collection).findOne(docId);
-    const currentValue = this._getCurrentFileValue({ doc, fileId });
-    const { fileCount, fileCountString } = getFileCount(currentValue);
+    const { uploadCount } = this._getCurrentFileValue({ doc, documentId });
+    const uploadCountPrefix = getUploadCountPrefix(uploadCount);
+    const newFile = {
+      ...file,
+      name: `${uploadCountPrefix}${file.initialName}`,
+      status: FILE_STATUS.UNVERIFIED,
+    };
 
-    Mongo.Collection.get(collection).update(docId, {
+    // Make sure file is valid, as this is all in a blackbox object
+    FileSchema.validate(newFile);
+
+    return Mongo.Collection.get(collection).update(docId, {
       $push: {
-        [`files.${fileId}`]: {
-          ...file,
-          name: `${fileCountString}${file.name}`,
-          status: FILE_STATUS.UNVERIFIED,
-          fileCount,
-        },
+        [`documents.${documentId}.files`]: newFile,
       },
+      $inc: { [`documents.${documentId}.uploadCount`]: 1 },
     });
   };
 
-  deleteFileFromDoc = ({ collection, docId, fileId, fileKey }) => {
+  deleteFileFromDoc = ({ collection, docId, documentId, fileKey }) => {
     const doc = Mongo.Collection.get(collection).findOne(docId);
-    const currentValue = this._getCurrentFileValue({ doc, fileId });
-    Mongo.Collection.get(collection).update(docId, {
+    const { files: currentValue } = this._getCurrentFileValue({
+      doc,
+      documentId,
+    });
+    return Mongo.Collection.get(collection).update(docId, {
       $set: {
-        [`files.${fileId}`]: currentValue.filter(file => file.key !== fileKey),
+        [`documents.${documentId}.files`]: currentValue.filter(file => file.key !== fileKey),
       },
     });
   };
 
-  updateFile = ({ collection, docId, fileId, fileKey, fileUpdate }) => {
+  updateFile = ({ collection, docId, documentId, fileKey, fileUpdate }) => {
     const doc = Mongo.Collection.get(collection).findOne(docId);
-    const currentValue = this._getCurrentFileValue({ doc, fileId });
+    const { files: currentValue } = this._getCurrentFileValue({
+      doc,
+      documentId,
+    });
 
     return Mongo.Collection.get(collection).update(docId, {
       $set: {
-        [`files.${fileId}`]: this._getNewFiles({
+        [`documents.${documentId}.files`]: this._getNewFiles({
           currentValue,
           fileKey,
           fileUpdate,
@@ -69,23 +82,17 @@ class FileService {
     });
   };
 
-  _getCurrentFileValue = ({ doc, fileId }) => doc.files[fileId];
+  _getCurrentFileValue = ({ doc, documentId }) => doc.documents[documentId];
 
   _getNewFiles = ({ currentValue, fileKey, fileUpdate }) => {
     const file = currentValue.find(f => f.key === fileKey);
-    const newFile = [
+    const newFiles = [
       ...currentValue.filter(f => f.key !== fileKey),
       { ...file, ...fileUpdate },
     ];
 
-    console.log('old file:', file);
-
-    console.log('file update:', fileUpdate);
-
-    console.log('newFile:', newFile);
-
     // Filter out unchanged files, and merge the fileUpdate with old version
-    return newFile;
+    return newFiles;
   };
 
   addDocument = ({ documentName, loanId }) => {
@@ -98,8 +105,25 @@ class FileService {
       fileCount: 0,
     };
 
-    Mongo.Collection.get(LOANS_COLLECTION).update(loanId, {
+    DocumentSchema.validate(newDocument);
+
+    return Mongo.Collection.get(LOANS_COLLECTION).update(loanId, {
       $set: { [`documents.${randomId}`]: newDocument },
+    });
+  };
+
+  // TODO: This should also loop over the documents in it and delete them
+  // from S3
+  removeDocument = ({ documentId, loanId }) => {
+    const doc = Mongo.Collection.get(LOANS_COLLECTION).findOne(loanId);
+    const document = this._getCurrentFileValue({ doc, documentId });
+
+    if (!document.isAdmin) {
+      throw new Meteor.Error('document is not an admin document');
+    }
+
+    return Mongo.Collection.get(LOANS_COLLECTION).update(loanId, {
+      $unset: { [`documents.${documentId}`]: '' },
     });
   };
 }

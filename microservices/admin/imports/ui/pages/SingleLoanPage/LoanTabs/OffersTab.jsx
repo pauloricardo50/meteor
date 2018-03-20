@@ -5,9 +5,10 @@ import moment from 'moment';
 import ConditionsButton from 'core/components/ConditionsButton';
 import { toMoney } from 'core/utils/conversionFunctions';
 import { IntlNumber } from 'core/components/Translation';
+import ConfirmMethod from 'core/components/ConfirmMethod';
 import { deleteOffer } from 'core/api';
-import AdminNewOffer from '/imports/ui/components/AdminNewOffer';
-import ConfirmMethod from './ConfirmMethod';
+
+import AdminNewOffer from '../../../components/AdminNewOffer';
 
 export default class OffersTab extends Component {
   constructor(props) {

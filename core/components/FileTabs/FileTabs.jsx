@@ -8,6 +8,7 @@ import UploaderArray from 'core/components/UploaderArray';
 import { T } from 'core/components/Translation';
 
 import AdminFilesTab from './AdminFilesTab';
+import FileTabsContainer from './FileTabsContainer';
 
 const styles = {
   tabContent: {
@@ -15,26 +16,35 @@ const styles = {
   },
 };
 
-const FilesTabs = ({ loan, borrowers, property }) => (
+const FileTabs = ({ loan, borrowers, property, disabled, isAdmin }) => (
   <div className="mask1">
     <Tabs defaultActiveKey={0} id="tabs">
       <Tab eventKey={0} title="e-Potek">
-        <AdminFilesTab style={styles.tabContent} loan={loan} />
+        <AdminFilesTab
+          style={styles.tabContent}
+          loan={loan}
+          disabled={disabled}
+          isAdmin={isAdmin}
+        />
       </Tab>
       <Tab eventKey={1} title={<T id="general.mortgageLoan" />}>
         <div style={styles.tabContent}>
-          <UploaderArray doc={loan} collection="loans" disabled />
+          <UploaderArray doc={loan} collection="loans" disabled={disabled} />
         </div>
       </Tab>
       <Tab eventKey={2} title={<T id="general.property" />}>
         <div style={styles.tabContent}>
-          <UploaderArray doc={property} collection="properties" disabled />
+          <UploaderArray
+            doc={property}
+            collection="properties"
+            disabled={disabled}
+          />
         </div>
       </Tab>
       {borrowers.map((b, index) => (
         <Tab eventKey={index + 3} title={b.firstName} key={b._id}>
           <div style={styles.tabContent}>
-            <UploaderArray doc={b} collection="borrowers" disabled />
+            <UploaderArray doc={b} collection="borrowers" disabled={disabled} />
           </div>
         </Tab>
       ))}
@@ -42,10 +52,12 @@ const FilesTabs = ({ loan, borrowers, property }) => (
   </div>
 );
 
-FilesTabs.propTypes = {
+FileTabs.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   property: PropTypes.objectOf(PropTypes.any).isRequired,
+  disabled: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
 };
 
-export default FilesTabs;
+export default FileTabsContainer(FileTabs);

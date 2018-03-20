@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 
 import UploaderArray from 'core/components/UploaderArray';
 import { T } from 'core/components/Translation';
+import { LOANS_COLLECTION } from 'core/api/constants';
 
-import AdminFilesTabContainer from './AdminFilesTabContainer';
-
-const AdminFilesTab = ({ loan, style }) => {
+const AdminFilesTab = ({ loan, style, disabled, isAdmin }) => {
   const { documents } = loan;
   const adminDocumentArray = Object.keys(documents)
     .filter(documentId => documents[documentId].isAdmin)
@@ -22,11 +21,21 @@ const AdminFilesTab = ({ loan, style }) => {
 
   return (
     <div style={style}>
-      <UploaderArray doc={loan} documentArray={adminDocumentArray} disabled />
+      <UploaderArray
+        doc={loan}
+        documentArray={adminDocumentArray}
+        disabled={disabled}
+        collection={LOANS_COLLECTION}
+      />
     </div>
   );
 };
 
-AdminFilesTab.propTypes = {};
+AdminFilesTab.propTypes = {
+  loan: PropTypes.object.isRequired,
+  style: PropTypes.object.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
+};
 
-export default AdminFilesTabContainer(AdminFilesTab);
+export default AdminFilesTab;

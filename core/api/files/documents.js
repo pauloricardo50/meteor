@@ -208,7 +208,6 @@ export const FileSchema = new SimpleSchema({
   type: String,
   url: { type: String, regEx: SimpleSchema.RegEx.Url },
   key: String,
-  fileCount: Number,
   status: { type: String, allowedValues: Object.values(FILE_STATUS) },
   error: { optional: true, type: String },
 });
