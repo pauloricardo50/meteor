@@ -93,7 +93,11 @@ class TaskService {
     });
   };
 
-  completeByType = ({ type, loanId, newStatus }) => {
+  completeTaskByType = ({
+    type,
+    loanId,
+    newStatus = TASK_STATUS.COMPLETED,
+  }) => {
     const taskToComplete = Tasks.findOne({
       loanId,
       type,
@@ -107,7 +111,7 @@ class TaskService {
     return this.update({
       taskId: taskToComplete._id,
       object: {
-        status: newStatus || TASK_STATUS.COMPLETED,
+        status: newStatus,
         completedAt: new Date(),
       },
     });
