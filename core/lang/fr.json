@@ -1,4 +1,7 @@
 {
+  "Forms.futureOwner.BOTH": "Les deux",
+  "Forms.futureOwner.OTHER": "Autre",
+
   "Forms.propertyInfo": "Informations générales sur la propriété",
 
   "AdminNote.label": "Note d'admin",
@@ -584,12 +587,12 @@
   "Forms.otherNotes.placeholder":
     "Aménagements extérieurs, piscine, jardins, cabanons, annexes, sous-sols utiles,...",
   "Forms.otherOwner": "Autre propriétaire",
-  "Forms.parking.box": "Box de parking",
-  "Forms.parking.box.placeholder": "1",
-  "Forms.parking.inside": "Places de parc intérieur",
-  "Forms.parking.inside.placeholder": "1",
-  "Forms.parking.outside": "Places de parc extérieur",
-  "Forms.parking.outside.placeholder": "1",
+  "Forms.box": "Box de parking",
+  "Forms.box.placeholder": "1",
+  "Forms.inside": "Places de parc intérieur",
+  "Forms.inside.placeholder": "1",
+  "Forms.outside": "Places de parc extérieur",
+  "Forms.outside.placeholder": "1",
   "Forms.personalBank": "Votre Banque Personelle",
   "Forms.personalBank.placeholder": "UBS",
   "Forms.primary": "Résidence principale",

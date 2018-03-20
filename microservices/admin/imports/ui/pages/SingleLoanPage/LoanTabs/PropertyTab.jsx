@@ -8,7 +8,7 @@ const PropertyTab = (props) => {
 
   return (
     <div className="mask1">
-      <h1>
+      <h2>
         {property.name ||
           property.address ||
           property.address1 ||
@@ -21,7 +21,7 @@ const PropertyTab = (props) => {
           })}
           format="money"
         />
-      </h1>
+      </h2>
     </div>
   );
 };
