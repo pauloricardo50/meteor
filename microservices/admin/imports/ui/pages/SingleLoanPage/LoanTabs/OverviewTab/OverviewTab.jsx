@@ -6,6 +6,7 @@ import Button from 'core/components/Button';
 import Recap from 'core/components/Recap';
 import renderObject from 'core/utils/renderObject';
 import AdminNote from '../../../../components/AdminNote';
+import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import StepStatus from './StepStatus';
 import FileVerificationNotification from './FileVerificationNotification';
 import LoanTasksTable from './LoanTasksTable';
@@ -31,8 +32,15 @@ export default class OverviewTab extends React.Component {
     const { showObject } = this.state;
 
     return (
-      <div className="mask1">
-        <AdminNote loanId={loan._id} adminNoteText={loan.adminNote} />
+      <div className="mask1 overview-tab">
+        <div className="admin-section">
+          <AdminNote
+            loanId={loan._id}
+            adminNoteText={loan.adminNote}
+            className="admin-note"
+          />
+          <ImpersonateLink userId={loan.userId} />
+        </div>
 
         <StepStatus {...this.props} serverTime={this.state.serverTime} />
 
