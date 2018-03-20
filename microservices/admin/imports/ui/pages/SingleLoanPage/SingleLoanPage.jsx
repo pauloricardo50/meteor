@@ -6,7 +6,7 @@ import { IntlNumber } from 'core/components/Translation';
 import { getLoanValue } from 'core/utils/loanFunctions';
 import LoanTabs from './LoanTabs';
 
-export default class SingleLoanPage extends Component {
+class SingleLoanPage extends Component {
   constructor(props) {
     super(props);
     this.state = { serverTime: new Date() };
@@ -59,3 +59,5 @@ SingleLoanPage.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   isLoading: PropTypes.bool.isRequired,
 };
+
+export default SingleLoanPageContainer(SingleLoanPage);
