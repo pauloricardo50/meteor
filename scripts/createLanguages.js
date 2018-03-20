@@ -13,6 +13,7 @@ const config = {
   // The list of directories to scan and create language files for
   directories: [
     {
+      id: 'app',
       path: '../microservices/app',
       exceptions: [
         'steps',
@@ -29,9 +30,18 @@ const config = {
         'Impersonation',
       ],
     },
-    { path: '../microservices/www', exceptions: ['Start2Form', 'Forms'] },
-    { path: '../microservices/lender', exceptions: ['LoginPage'] },
     {
+      id: 'www',
+      path: '../microservices/www',
+      exceptions: ['Start2Form', 'Forms'],
+    },
+    {
+      id: 'lender',
+      path: '../microservices/lender',
+      exceptions: ['LoginPage'],
+    },
+    {
+      id: 'admin',
       path: '../microservices/admin',
       exceptions: [
         'steps',
@@ -159,4 +169,33 @@ const createLanguages = ({
   });
 };
 
-createLanguages(config);
+const getCustomConfig = () => {
+  // Get the third argument from the command line, which should be an id of
+  // one of the microservices
+  const argument = process.argv[2];
+
+  if (argument) {
+    const possibleArguments = config.directories.map(
+      directoryConfig => directoryConfig.id,
+    );
+
+    if (!possibleArguments.includes(argument)) {
+      throw Error(
+        'Invalid argument, it has to be one of these: ' +
+          possibleArguments.join(' '),
+      );
+    }
+
+    const customConfig = Object.assign({}, config, {
+      directories: config.directories.filter(
+        directoryConfig => directoryConfig.id === argument,
+      ),
+    });
+
+    return customConfig;
+  }
+
+  return config;
+};
+
+createLanguages(getCustomConfig());
