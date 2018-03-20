@@ -35,10 +35,10 @@ const ClosingItem = ({ step, loan, disabled }) => {
       </p>
       {status === CLOSING_STEPS_STATUS.ERROR &&
         error && (
-          <div style={{ marginTop: 8, paddingTop: 8 }} className="border top">
-            <p className="error">{error}</p>
-          </div>
-        )}
+        <div style={{ marginTop: 8, paddingTop: 8 }} className="border top">
+          <p className="error">{error}</p>
+        </div>
+      )}
     </div>
   );
 };

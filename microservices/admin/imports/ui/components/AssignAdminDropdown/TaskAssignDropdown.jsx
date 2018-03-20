@@ -57,7 +57,8 @@ const onAdminSelectHandler = ({ selectedAdmin, relatedDoc, currentAdmin }) =>
     taskAssignedTo: currentAdmin,
   });
 
-const TaskAssignDropdownContainer = createContainer(() =>
-  ({ onAdminSelectHandler }));
+const TaskAssignDropdownContainer = createContainer(() => ({
+  onAdminSelectHandler,
+}));
 
 export default TaskAssignDropdownContainer(AssignAdminDropdown);

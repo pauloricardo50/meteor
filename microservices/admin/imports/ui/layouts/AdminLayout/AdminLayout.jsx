@@ -6,6 +6,7 @@ import { Redirect } from 'react-router-dom';
 import ErrorBoundary from 'core/components/ErrorBoundary';
 import AdminTopNav from './AdminTopNav';
 import AdminSideNav from './AdminSideNav';
+import AdminLayoutContainer from './AdminLayoutContainer';
 
 const getRedirect = ({ currentUser, history: { location: { pathname } } }) => {
   const userIsAdmin = Roles.userIsInRole(currentUser, 'admin');
@@ -59,4 +60,4 @@ AdminLayout.propTypes = {
   children: PropTypes.any.isRequired,
 };
 
-export default AdminLayout;
+export default AdminLayoutContainer(AdminLayout);

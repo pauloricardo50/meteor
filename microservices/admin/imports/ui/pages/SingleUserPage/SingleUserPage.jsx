@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import Loan from './Loan';
+import SingleUserPageContainer from './SingleUserPageContainer';
 
 const styles = {
   createdAt: {
@@ -41,4 +42,4 @@ const SingleUserPage = (props) => {
   );
 };
 
-export default SingleUserPage;
+export default SingleUserPageContainer(SingleUserPage);
