@@ -4,21 +4,18 @@ import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
 import NotFound from 'core/components/NotFound';
 
 import { getUserLocale, getFormats } from 'core/utils/localization';
-import {
-  AdminLayout,
-  AdminDashboardPage,
-} from 'core/containers/AdminContainers';
 import DevPage from 'core/components/DevPage';
 
 import messagesFR from '../../../lang/fr.json';
 
+import AdminLayout from '../../ui/layouts/AdminLayout';
+import AdminDashboardPage from '../../ui/pages/AdminDashboardPage';
 import LoansPage from '../../ui/pages/LoansPage';
 import SingleLoanPage from '../../ui/pages/SingleLoanPage';
-
 import UsersPage from '../../ui/pages/UsersPage/UsersPage';
 import SingleUserPage from '../../ui/pages/SingleUserPage';
 import TasksPage from '../../ui/pages/TasksPage/TasksPage';
-import BorrowersPage from '../../ui/pages/BorrowersPage/BorrowersPageWithData';
+import BorrowersPage from '../../ui/pages/BorrowersPage';
 
 import AdminStore from '../../ui/components/AdminStore';
 

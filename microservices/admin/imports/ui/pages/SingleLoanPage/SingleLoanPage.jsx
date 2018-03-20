@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { IntlNumber } from 'core/components/Translation';
 import { getLoanValue } from 'core/utils/loanFunctions';
 import LoanTabs from './LoanTabs';
+import SingleLoanPageContainer from './SingleLoanPageContainer';
 
 class SingleLoanPage extends Component {
   constructor(props) {
