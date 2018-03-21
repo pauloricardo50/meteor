@@ -1,8 +1,17 @@
 {
+  "Forms.futureOwner.BOTH": "Les deux",
+  "Forms.futureOwner.OTHER": "Autre",
+
   "Forms.propertyInfo": "Informations générales sur la propriété",
 
   "AdminNote.label": "Note d'admin",
   "AdminNote.placeholder": "Clique pour ajouter une note d'admin...",
+
+  "AdminFilesTab.empty": "Vos documents officiels e-Potek apparaîtront ici.",
+
+  "NewDocumentForm.label": "Ajouter un nouveau document au prêt hypothécaire",
+  "NewDocumentForm.placeholder": "Nom du document (visible à l'utilisateur)",
+  "NewDocumentForm.cta": "Ajouter",
 
   "AboutPage.description":
     "e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève. Expansion prévue prochainement.{verticalSpace}L'équipe derrière e-Potek est composée d'entrepreneurs expérimentés dans la finance et les prêts hypothécaires en Suisse.",
@@ -578,12 +587,12 @@
   "Forms.otherNotes.placeholder":
     "Aménagements extérieurs, piscine, jardins, cabanons, annexes, sous-sols utiles,...",
   "Forms.otherOwner": "Autre propriétaire",
-  "Forms.parking.box": "Box de parking",
-  "Forms.parking.box.placeholder": "1",
-  "Forms.parking.inside": "Places de parc intérieur",
-  "Forms.parking.inside.placeholder": "1",
-  "Forms.parking.outside": "Places de parc extérieur",
-  "Forms.parking.outside.placeholder": "1",
+  "Forms.box": "Box de parking",
+  "Forms.box.placeholder": "1",
+  "Forms.inside": "Places de parc intérieur",
+  "Forms.inside.placeholder": "1",
+  "Forms.outside": "Places de parc extérieur",
+  "Forms.outside.placeholder": "1",
   "Forms.personalBank": "Votre Banque Personelle",
   "Forms.personalBank.placeholder": "UBS",
   "Forms.primary": "Résidence principale",
@@ -1053,7 +1062,7 @@
   "TasksStatusDropdown.LENDER_CHOSEN": "Prêteur choisi",
   "TasksStatusDropdown.VERIFY": "Vérifier",
   "TasksTable.actions": "Actions",
-  "TasksTable.asignedTo": "Assigné à",
+  "TasksTable.assignedTo": "Assigné à",
   "TasksTable.completedAt": "Complété le",
   "TasksTable.createdAt": "Créé le",
   "TasksTable.dueAt": "Échéance",

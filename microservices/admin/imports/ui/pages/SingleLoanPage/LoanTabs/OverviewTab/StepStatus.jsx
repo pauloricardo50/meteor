@@ -6,8 +6,6 @@ import Icon from 'core/components/Icon';
 import { T } from 'core/components/Translation';
 
 const StepStatus = (props) => {
-  console.log('steps status props:', props);
-
   const steps = getSteps(props).slice(1, -1);
   const currentStep = props.loan.logic.step;
   return (
@@ -20,14 +18,14 @@ const StepStatus = (props) => {
         margin: 20,
       }}
     >
-      {steps.map((s, i) => (
-        <li key={s.nb} style={{ display: 'flex', flexDirection: 'column' }}>
+      {steps.map((step, i) => (
+        <li key={step.nb} style={{ display: 'flex', flexDirection: 'column' }}>
           <div>
-            <T id={`steps.${s.nb}.title`} />{' '}
+            <T id={`steps.${step.nb}.title`} />{' '}
             {currentStep > i && <Icon type="check" />}
           </div>
           <ul>
-            {s.items.map(item => (
+            {step.items.map(item => (
               <li key={item.id}>
                 <T id={`steps.${item.id}.title`} />{' '}
                 {item.isDone() && <Icon type="check" />}

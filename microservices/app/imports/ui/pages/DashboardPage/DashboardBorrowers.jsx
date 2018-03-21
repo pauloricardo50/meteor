@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
 import { getBorrowerCompletion } from 'core/utils/borrowerFunctions';
-import withLoan from 'core/containers/withLoan';
 import DashboardItem from './DashboardItem';
 import BorrowerAdder from '../../components/BorrowerAdder';
 import BorrowerDeleter from '../../components/BorrowerDeleter';
@@ -73,4 +72,4 @@ DashboardBorrowers.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default withLoan(DashboardBorrowers, ['borrowers', 'loan']);
+export default DashboardBorrowers;

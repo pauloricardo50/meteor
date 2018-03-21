@@ -98,16 +98,27 @@ class Uploader extends Component {
     deleteFile(key);
   };
 
+  // If one of the files has an error, allow uploading even if form is disabled
+  shouldDisableAdd = () =>
+    this.props.currentValue.reduce(
+      (acc, f) => !(f.status === FILE_STATUS.ERROR),
+      true,
+    ) && this.props.disabled;
+
   render() {
-    const { fileMeta, currentValue, disabled, docId, collection } = this.props;
+    const {
+      fileMeta,
+      currentValue,
+      disabled,
+      docId,
+      collection,
+      userIsAdmin,
+      isOwnedByAdmin,
+      removeDocument,
+    } = this.props;
     const { tempFiles } = this.state;
-    const { id } = fileMeta;
-    // If one of the files has an error, allow uploading even if form is disabled
-    const disableAdd =
-      currentValue.reduce(
-        (acc, f) => !(f.status === FILE_STATUS.ERROR),
-        true,
-      ) && disabled;
+    const { id, uploadCount } = fileMeta;
+    const disableAdd = this.shouldDisableAdd();
 
     return (
       <FileDropper
@@ -115,7 +126,13 @@ class Uploader extends Component {
         handleAddFiles={this.handleAddFiles}
         disabled={disableAdd}
       >
-        <Title {...fileMeta} currentValue={currentValue} />
+        <Title
+          {...fileMeta}
+          currentValue={currentValue}
+          userIsAdmin={userIsAdmin}
+          isOwnedByAdmin={isOwnedByAdmin}
+          removeDocument={removeDocument}
+        />
 
         {currentValue
           .sort((a, b) => a.fileCount > b.fileCount)
@@ -137,6 +154,7 @@ class Uploader extends Component {
             handleSave={this.handleSave}
             id={id}
             currentValue={currentValue}
+            uploadCount={uploadCount}
           />
         ))}
 
@@ -160,6 +178,9 @@ Uploader.propTypes = {
   collection: PropTypes.string,
   deleteFile: PropTypes.func.isRequired,
   addFileToDoc: PropTypes.func.isRequired,
+  userIsAdmin: PropTypes.bool.isRequired,
+  isOwnedByAdmin: PropTypes.bool.isRequired,
+  removeDocument: PropTypes.func.isRequired,
 };
 
 Uploader.defaultProps = {

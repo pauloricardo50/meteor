@@ -1,3 +1,5 @@
+export const PROPERTIES_COLLECTION = 'properties';
+
 export const PROPERTY_STATUS = {
   SOLD: 'SOLD',
   FOR_SALE: 'FOR_SALE',

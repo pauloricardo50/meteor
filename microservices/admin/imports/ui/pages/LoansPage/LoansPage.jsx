@@ -2,10 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import AllLoansTable from './AllLoansTable';
+import LoansPageContainer from './LoansPageContainer';
 
-const AdminLoansPage = (props) => {
-  console.log('LoansPage props: ', props);
-
+const LoansPage = (props) => {
   if (props.isLoading) {
     return null;
   }
@@ -19,8 +18,14 @@ const AdminLoansPage = (props) => {
   );
 };
 
-AdminLoansPage.propTypes = {
+LoansPage.propTypes = {
   data: PropTypes.arrayOf(PropTypes.any),
+  isLoading: PropTypes.bool,
 };
 
-export default AdminLoansPage;
+LoansPage.defaultProps = {
+  data: undefined,
+  isLoading: false,
+};
+
+export default LoansPageContainer(LoansPage);

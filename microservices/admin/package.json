@@ -2,6 +2,7 @@
   "name": "epotek-admin",
   "private": true,
   "scripts": {
+    "prestart": "cd ../.. && npm run lang -- admin",
     "start": "meteor run --settings settings-dev.json --port 5000",
     "start-local-db": "MONGO_URL=mongodb://localhost:27017/epotek meteor run --settings settings-dev.json --port 5000",
     "test": "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 5005",

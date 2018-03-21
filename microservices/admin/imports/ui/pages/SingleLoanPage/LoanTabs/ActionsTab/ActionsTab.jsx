@@ -5,10 +5,10 @@ import Button from 'core/components/Button';
 
 import DialogSimple from 'core/components/DialogSimple';
 import { AUCTION_STATUS } from 'core/api/constants';
+import ConfirmMethod from 'core/components/ConfirmMethod';
 import ClosingForm from '/imports/ui/components/ClosingForm';
 import ClosingStepsForm from '/imports/ui/components/ClosingStepsForm';
 import { cancelAuction, endAuction, loanDelete, downloadPDF } from 'core/api';
-import ConfirmMethod from '../ConfirmMethod';
 
 const styles = {
   div: {

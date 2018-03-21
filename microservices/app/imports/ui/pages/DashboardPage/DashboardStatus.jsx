@@ -9,7 +9,6 @@ import { LoadingComponent } from 'core/components/Loading';
 import { T } from 'core/components/Translation';
 import getSteps from 'core/arrays/steps';
 import { AUCTION_STATUS } from 'core/api/constants';
-import withLoan from 'core/containers/withLoan';
 import { getServerTime, incrementLoanStep } from 'core/api';
 import DashboardItem from './DashboardItem';
 
@@ -44,6 +43,7 @@ class DashboardStatus extends Component {
 
   getNextLink = () => {
     const { loan, borrowers, property } = this.props;
+
     const steps = getSteps({
       loan,
       borrowers,
@@ -117,4 +117,4 @@ DashboardStatus.propTypes = {
   property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default withLoan(DashboardStatus);
+export default DashboardStatus;
