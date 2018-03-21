@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import Dialog from 'core/components/Material/Dialog';
 import Button from 'core/components/Button';
 import TextField from 'core/components/Material/TextField';

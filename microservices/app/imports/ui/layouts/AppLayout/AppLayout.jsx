@@ -7,11 +7,10 @@ import classnames from 'classnames';
 import ContactButton from 'core/components/ContactButton';
 import ErrorBoundary from 'core/components/ErrorBoundary';
 import track from 'core/utils/analytics';
-import UserContainer from 'core/containers/UserContainer';
-import Navs from './Navs';
 import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
+import Navs from './Navs';
 
-// import UserJoyride from '/imports/ui/components/UserJoyride';
+import AppLayoutContainer from './AppLayoutContainer';
 
 const allowedRoutesWithoutLoan = ['/', '/profile', '/add-loan'];
 
@@ -35,7 +34,6 @@ const getRedirect = ({
     ) {
       return false;
     }
-    console.log(pathname, allowedRoutesWithoutLogin);
     return `/login?path=${pathname}`;
   }
 
@@ -62,7 +60,7 @@ const getRedirect = ({
 const getShowSideNav = ({ location }) => !(location.pathname === '/');
 
 const AppLayout = (props) => {
-  const { type, history, render, children } = props;
+  const { type, history, children } = props;
   const redirect = getRedirect(props);
   const showSideNav = getShowSideNav(history);
   const classes = classnames({
@@ -119,4 +117,4 @@ AppLayout.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default UserContainer(AppLayout);
+export default AppLayoutContainer(AppLayout);

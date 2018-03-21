@@ -5,8 +5,9 @@ import PropTypes from 'prop-types';
 import { IntlNumber } from 'core/components/Translation';
 import { getLoanValue } from 'core/utils/loanFunctions';
 import LoanTabs from './LoanTabs';
+import SingleLoanPageContainer from './SingleLoanPageContainer';
 
-export default class SingleLoanPage extends Component {
+class SingleLoanPage extends Component {
   constructor(props) {
     super(props);
     this.state = { serverTime: new Date() };
@@ -19,8 +20,6 @@ export default class SingleLoanPage extends Component {
   }
 
   render() {
-    console.log('Single loan page props:', this.props);
-
     const { data, isLoading } = this.props;
     const loan = data;
 
@@ -59,3 +58,5 @@ SingleLoanPage.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   isLoading: PropTypes.bool.isRequired,
 };
+
+export default SingleLoanPageContainer(SingleLoanPage);

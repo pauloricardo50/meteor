@@ -8,7 +8,6 @@ import renderObject from 'core/utils/renderObject';
 import AdminNote from '../../../../components/AdminNote';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import StepStatus from './StepStatus';
-import FileVerificationNotification from './FileVerificationNotification';
 import LoanTasksTable from './LoanTasksTable';
 
 const styles = {
@@ -44,7 +43,6 @@ export default class OverviewTab extends React.Component {
 
         <StepStatus {...this.props} serverTime={this.state.serverTime} />
 
-        <FileVerificationNotification loan={loan} borrowers={loan.borrowers} />
         <hr />
         <div
           className="flex"

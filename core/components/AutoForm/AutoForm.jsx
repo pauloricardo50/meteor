@@ -90,8 +90,6 @@ const inputSwitch = (childProps, index, parentProps) => {
     );
   case 'dateInput':
     return <DateInput {...childProps} />;
-    // case 'dropzoneInput':
-    //   return <UploaderArray {...childProps} />;
   case 'arrayInput':
     return <ArrayInput {...childProps} />;
   case 'custom':

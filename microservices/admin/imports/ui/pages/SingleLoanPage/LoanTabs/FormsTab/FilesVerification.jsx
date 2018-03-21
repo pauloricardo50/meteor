@@ -4,7 +4,16 @@ import PropTypes from 'prop-types';
 import Tab from 'react-bootstrap/lib/Tab';
 import Tabs from 'react-bootstrap/lib/Tabs';
 
-import { loanFiles, borrowerFiles, propertyFiles } from 'core/api/files/files';
+import {
+  LOANS_COLLECTION,
+  BORROWERS_COLLECTION,
+  PROPERTIES_COLLECTION,
+} from 'core/api/constants';
+import {
+  loanDocuments,
+  borrowerDocuments,
+  propertyDocuments,
+} from 'core/api/files/documents';
 import FileVerificator from './FileVerificator';
 
 const styles = {
@@ -17,7 +26,7 @@ const FilesVerification = ({ loan, borrowers, property }) => (
   <Tabs defaultActiveKey={0} id="tabs">
     <Tab eventKey={0} title="Prêt Hypothécaire">
       <div style={styles.tabContent}>
-        {loanFiles(loan)
+        {loanDocuments(loan)
           .all()
           .map(file =>
             file.condition !== false && (
@@ -27,7 +36,7 @@ const FilesVerification = ({ loan, borrowers, property }) => (
                 key={file.id}
                 id={file.id}
                 closingSteps={loan.logic.closingSteps}
-                collection="loans"
+                collection={LOANS_COLLECTION}
               />
             ))}
       </div>
@@ -35,7 +44,7 @@ const FilesVerification = ({ loan, borrowers, property }) => (
 
     <Tab eventKey={1} title="Bien Immobilier">
       <div style={styles.tabContent}>
-        {propertyFiles(property)
+        {propertyDocuments(property)
           .all()
           .map(file =>
             file.condition !== false && (
@@ -44,7 +53,7 @@ const FilesVerification = ({ loan, borrowers, property }) => (
                 docId={property._id}
                 key={file.id}
                 id={file.id}
-                collection="properties"
+                collection={PROPERTIES_COLLECTION}
               />
             ))}
       </div>
@@ -53,7 +62,7 @@ const FilesVerification = ({ loan, borrowers, property }) => (
     {borrowers.map((b, index) => (
       <Tab eventKey={index + 2} title={b.firstName} key={b._id}>
         <div style={styles.tabContent}>
-          {borrowerFiles(b)
+          {borrowerDocuments(b)
             .all()
             .map(file =>
               file.condition !== false && (
@@ -62,7 +71,7 @@ const FilesVerification = ({ loan, borrowers, property }) => (
                   docId={b._id}
                   key={file.id}
                   id={file.id}
-                  collection="borrowers"
+                  collection={BORROWERS_COLLECTION}
                 />
               ))}
         </div>

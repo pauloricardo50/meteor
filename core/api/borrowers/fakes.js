@@ -1,4 +1,4 @@
-import { fakeFile } from 'core/api/files/files';
+import { fakeDocument } from 'core/api/files/fileHelpers';
 
 export const fakeBorrower = {
   firstName: 'Marie',
@@ -61,18 +61,18 @@ export const completeFakeBorrower = {
   insuranceSecondPillar: 120000,
   insuranceThirdPillar: 50000,
   files: {
-    identity: [fakeFile],
-    taxes: [fakeFile],
-    salaryCertificate: [fakeFile],
-    bonus: [fakeFile],
-    otherIncome: [fakeFile],
-    expenses: [fakeFile],
-    nonPursuitExtract: [fakeFile],
-    lastSalaries: [fakeFile],
-    currentMortgages: [fakeFile],
-    bankAssetsChange: [fakeFile],
-    pensionFundYearlyStatement: [fakeFile],
-    retirementInsurancePlan: [fakeFile],
+    identity: fakeDocument,
+    taxes: fakeDocument,
+    salaryCertificate: fakeDocument,
+    bonus: fakeDocument,
+    otherIncome: fakeDocument,
+    expenses: fakeDocument,
+    nonPursuitExtract: fakeDocument,
+    lastSalaries: fakeDocument,
+    currentMortgages: fakeDocument,
+    bankAssetsChange: fakeDocument,
+    pensionFundYearlyStatement: fakeDocument,
+    retirementInsurancePlan: fakeDocument,
   },
   logic: {
     financeEthics: true,

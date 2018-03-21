@@ -4,12 +4,12 @@ import { expect } from 'chai';
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 import sinon from 'sinon';
-import { stubCollections } from 'core/utils/testHelpers';
-import Loans from 'core/api/loans/loans';
-import Borrowers from 'core/api/borrowers/borrowers';
 import AWS from 'aws-sdk';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
+import { stubCollections } from 'core/utils/testHelpers';
+import Loans from 'core/api/loans/loans';
+import Borrowers from 'core/api/borrowers/borrowers';
 import { isAllowed } from '../s3';
 
 describe('files', () => {

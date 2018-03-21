@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Tabs from 'core/components/Tabs';
-import FilesTab from 'core/components/FilesTabs';
 import { T } from 'core/components/Translation/';
 import OverviewTab from './OverviewTab';
 import BorrowersTab from './BorrowersTab';
@@ -10,6 +9,7 @@ import OffersTab from './OffersTab';
 import CommunicationTab from './CommunicationTab';
 import MixpanelAnalytics from './AnalyticsTab';
 import ActionsTab from './ActionsTab';
+import FilesTab from './FilesTab';
 import TasksTab from './TasksTab';
 import FormsTab from './FormsTab';
 

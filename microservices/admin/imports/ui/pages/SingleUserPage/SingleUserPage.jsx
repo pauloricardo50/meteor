@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import Loan from './Loan';
+import SingleUserPageContainer from './SingleUserPageContainer';
 
 const styles = {
   createdAt: {
@@ -46,4 +47,4 @@ const SingleUserPage = (props) => {
   );
 };
 
-export default SingleUserPage;
+export default SingleUserPageContainer(SingleUserPage);

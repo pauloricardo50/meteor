@@ -4,7 +4,7 @@ export const addFileToDoc = new Method({
   name: 'addFileToDoc',
   params: {
     file: Object,
-    fileId: String,
+    documentId: String,
     collection: String,
     docId: String,
   },
@@ -13,7 +13,7 @@ export const addFileToDoc = new Method({
 export const deleteFile = new Method({
   name: 'deleteFile',
   params: {
-    fileId: String,
+    documentId: String,
     fileKey: String,
     collection: String,
     docId: String,
@@ -25,7 +25,7 @@ export const setFileStatus = new Method({
   params: {
     collection: String,
     docId: String,
-    fileId: String,
+    documentId: String,
     fileKey: String,
     newStatus: String,
   },
@@ -36,7 +36,7 @@ export const setFileError = new Method({
   params: {
     collection: String,
     docId: String,
-    fileId: String,
+    documentId: String,
     fileKey: String,
     error: String,
   },
@@ -46,5 +46,21 @@ export const downloadFile = new Method({
   name: 'downloadFile',
   params: {
     key: String,
+  },
+});
+
+export const addDocument = new Method({
+  name: 'addDocument',
+  params: {
+    documentName: String,
+    loanId: String,
+  },
+});
+
+export const removeDocument = new Method({
+  name: 'removeDocument',
+  params: {
+    documentId: String,
+    loanId: String,
   },
 });

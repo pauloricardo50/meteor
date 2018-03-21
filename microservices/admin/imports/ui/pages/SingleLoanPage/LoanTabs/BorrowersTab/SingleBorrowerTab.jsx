@@ -1,15 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const BorrowerTab = (props) => {
-  const { borrower } = props;
+import Recap from 'core/components/Recap';
 
-  return (
-    <div>
-      <h1>{borrower.firstName || borrower.lastName}</h1>
-    </div>
-  );
-};
+const BorrowerTab = ({ borrower }) => (
+  <div className="mask1">
+    <h2>
+      {borrower.firstName} {borrower.lastName}
+    </h2>
+
+    <Recap arrayName="borrower" borrower={borrower} />
+  </div>
+);
 
 BorrowerTab.propTypes = {
   borrower: PropTypes.object.isRequired,

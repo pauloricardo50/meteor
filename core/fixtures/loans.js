@@ -1,21 +1,7 @@
 import moment from 'moment';
 import LoanService from 'core/api/loans/LoanService';
-import {
-  LOAN_STATUS,
-  PURCHASE_TYPE,
-  CANTONS,
-  INTEREST_RATES,
-  OWNER,
-  AUCTION_STATUS,
-  CLOSING_STEPS_TYPE,
-  CLOSING_STEPS_STATUS,
-  AUCTION_MOST_IMPORTANT,
-  INSURANCE_USE_PRESET,
-  LOAN_STRATEGY_PRESET,
-  AMORTIZATION_STRATEGY_PRESET,
-  PAYMENT_SCHEDULES,
-} from 'core/api/loans/loanConstants';
-import { fakeFile } from 'core/api/files/files';
+import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
+import { fakeDocument } from 'core/api/files/fileHelpers';
 import { STEPS_PER_LOAN } from './config';
 import createFakeBorrowers from './borrowers';
 import createFakeProperty from './properties';
@@ -53,13 +39,11 @@ const logic3 = {
     validated: true,
     comments: [],
   },
-  // auctionStarted: true,
   auction: {
     status: 'ENDED',
     startTime: new Date(),
     endTime: new Date(),
   },
-  // auctionEndTime: new Date(),
   hasValidatedStructure: true,
   insuranceUsePreset: 'WITHDRAWAL',
   loanStrategyPreset: 'FIXED',
@@ -95,26 +79,12 @@ const logic3 = {
 };
 
 const fakeFiles = {
-  plans: [fakeFile],
-  cubage: [fakeFile],
-  pictures: [fakeFile],
-  buyersContract: [fakeFile],
-  landRegisterExtract: [fakeFile],
-  coownershipAllocationAgreement: [fakeFile],
-  coownershipAgreement: [fakeFile],
-  upload0: [fakeFile],
+  buyersContract: fakeDocument,
+  coownershipAllocationAgreement: fakeDocument,
+  coownershipAgreement: fakeDocument,
 };
 
-const fakeFiles2 = {
-  plans: [fakeFile],
-  cubage: [fakeFile],
-  pictures: [fakeFile],
-  // buyersContract: [fakeFile],
-  // landRegisterExtract: [fakeFile],
-  // marketingBrochure: [fakeFile],
-  // coownershipAllocationAgreement: [fakeFile],
-  // coownershipAgreement: [fakeFile],
-};
+const fakeFiles2 = {};
 
 const createFakeLoans = (userId) => {
   const completeFiles = Math.random() > 0.5;
@@ -125,7 +95,7 @@ const createFakeLoans = (userId) => {
     borrowerIds,
     propertyId,
     general: fakeGeneral,
-    files: fakeFiles,
+    documents: fakeFiles,
   };
 
   switch (generateRandomNumber(STEPS_PER_LOAN)) {
