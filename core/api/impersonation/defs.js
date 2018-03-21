@@ -1,13 +1,15 @@
 import { Method } from '../methods/methods';
-import { IMPERSONATE_METHOD } from './impersonation';
 import rateLimit from '../../utils/rate-limit';
 
-export const impersonateUser = new Method({
-  name: IMPERSONATE_METHOD,
+const method = {
+  name: 'impersonateUser',
   params: {
     authToken: String,
     userId: String,
   },
-});
+};
 
-rateLimit({ methods: [IMPERSONATE_METHOD] });
+export const impersonateUser = new Method(method);
+
+// Limit this DDP method's call rate
+rateLimit({ methods: [method] });

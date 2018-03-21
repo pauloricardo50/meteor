@@ -6,7 +6,6 @@ export const IMPERSONATE_ROUTE = '/impersonate';
 export const IMPERSONATE_USER_ID = 'userId';
 export const IMPERSONATE_TOKEN = 'authToken';
 export const IMPERSONATE_SESSION_KEY = 'impersonate';
-export const IMPERSONATE_METHOD = 'impersonateUser';
 
 export function generateImpersonateLink(userId) {
   // eslint-disable-next-line no-underscore-dangle
