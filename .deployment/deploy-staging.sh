@@ -32,6 +32,7 @@ echo "# Now installing npm dependencies"
 for i in $MICROSERVICES; do
   cd $SCRIPT_PATH/../microservices/$i
   meteor npm i
+  meteor npm run prestart
 done
 
 # Going back to the main folder after we installed npm dependencies
@@ -39,9 +40,17 @@ cd $SCRIPT_PATH;
 
 echo "# NPM dependencies installed, now deploying each microservice..."
 
-for i in $MICROSERVICES; do
-  echo $i;
-  echo "# [$i] deploying microservice deployment ..."
-  # mup deploy --config "mup-$i.js" --settings settings-staging.json 2> "$SCRIPT_PATH/logs/errors-$i.log" > "$SCRIPT_PATH/logs/deploy-$i.log" &
-  mup deploy --config "mup-$i.js" --settings settings-staging.json 
-done
+# Run deployments in parallel locally if you provide a second argument "ttab"
+if [ "$2" = "ttab" ]; then
+  echo "'ttab' flag detected, deploying microservices in parallel..."
+  for i in $MICROSERVICES; do
+    ttab -t "Deployment of $i" "mup deploy --config mup-$i.js --settings settings-staging.json"
+  done
+else
+  for i in $MICROSERVICES; do
+    echo $i;
+    echo "# [$i] deploying microservice deployment ..."
+    # mup deploy --config "mup-$i.js" --settings settings-staging.json 2> "$SCRIPT_PATH/logs/errors-$i.log" > "$SCRIPT_PATH/logs/deploy-$i.log" &
+    mup deploy --config "mup-$i.js" --settings settings-staging.json 
+  done
+fi
