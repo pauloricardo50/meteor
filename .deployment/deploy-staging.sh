@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e # Do this to make sure the script exits on error
 
 MICROSERVICES="www app admin"
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
@@ -28,6 +29,7 @@ fi
 echo
 echo "# e-Potek Deployment Script"
 echo "# Now installing npm dependencies"
+(cd .. && npm i)
 
 for i in $MICROSERVICES; do
   cd $SCRIPT_PATH/../microservices/$i
