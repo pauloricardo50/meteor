@@ -7,9 +7,8 @@ import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 import { getPropertyCompletion } from 'core/utils/loanFunctions';
-import DashboardItem from './DashboardItem';
-import withLoan from 'core/containers/withLoan';
 import { PROPERTY_STYLE } from 'core/api/constants';
+import DashboardItem from './DashboardItem';
 
 const DashboardProperty = (props) => {
   const percent = getPropertyCompletion(props);
@@ -63,4 +62,4 @@ DashboardProperty.propTypes = {
   property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default withLoan(DashboardProperty);
+export default DashboardProperty;

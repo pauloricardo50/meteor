@@ -26,7 +26,7 @@ export default class DashboardPage extends Component {
   resize = () => this.setState({ smallWidth: getWidth() < 768 });
 
   render() {
-    const { loan, history } = this.props;
+    const { loan } = this.props;
     const showNewLoanModal = !loan.name;
     const showClosedModal =
       loan.status === LOAN_STATUS.DONE && !loan.logic.acceptedClosing;

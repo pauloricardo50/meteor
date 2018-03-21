@@ -31,7 +31,7 @@ Factory.define('lender', Meteor.users, {
 Factory.define('borrower', Borrowers, {
   createdAt: () => new Date(),
   expenses: () => [{ description: 'test', value: 1 }],
-  files: () => ({}),
+  documents: () => ({}),
   logic: () => ({}),
   age: 18,
 });
@@ -45,7 +45,7 @@ Factory.define('loan', Loans, {
   }),
   borrowers: [],
   status: 'ACTIVE',
-  files: () => ({}),
+  documents: () => ({}),
   logic: () => ({
     auction: {},
     lender: {},
@@ -58,7 +58,7 @@ Factory.define('loan', Loans, {
 
 Factory.define('property', Properties, {
   value: 1000000,
-  files: () => ({}),
+  documents: () => ({}),
 });
 
 Factory.define('offer', Offers, {

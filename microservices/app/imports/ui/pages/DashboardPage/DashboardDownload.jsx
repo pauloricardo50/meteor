@@ -7,9 +7,11 @@ import FileDownloader from '/imports/ui/components/FileDownloader';
 import DashboardItem from './DashboardItem';
 
 const DashboardDownload = (props) => {
-  const { files } = props.loan;
+  const { documents } = props.loan;
   const contractKey =
-    files.contract && files.contract.length && files.contract[0].key;
+    documents.contract &&
+    documents.contract.files.length &&
+    documents.contract.files.contract[0].key;
 
   return (
     <DashboardItem title={<T id="DashboardDownload.title" />}>
