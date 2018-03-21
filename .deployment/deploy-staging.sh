@@ -29,7 +29,10 @@ fi
 echo
 echo "# e-Potek Deployment Script"
 echo "# Now installing npm dependencies"
-(cd .. && npm i)
+
+# Install root packages so that babel-node is defined
+cd  $SCRIPT_PATH/..
+npm i
 
 for i in $MICROSERVICES; do
   cd $SCRIPT_PATH/../microservices/$i
