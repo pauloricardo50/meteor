@@ -22,12 +22,5 @@ const getQuery = ({ collectionName }) => {
   }
 };
 
-<<<<<<< HEAD
-export default withQuery(
-  ({ collectionName }) => getQuery({ collectionName }).clone(),
-  { reactive: true },
-);
-=======
 export default withQuery(({ collectionName }) =>
   getQuery({ collectionName }).clone(), { reactive: true });
->>>>>>> 345a920e1f35472f7e4f78e232269db62f59c970

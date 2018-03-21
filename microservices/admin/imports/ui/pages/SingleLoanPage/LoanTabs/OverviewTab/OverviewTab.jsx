@@ -9,6 +9,7 @@ import AdminNote from '../../../../components/AdminNote';
 import StepStatus from './StepStatus';
 import FileVerificationNotification from './FileVerificationNotification';
 import LoanTasksTable from './LoanTasksTable';
+import LoanValidation from './LoanValidation';
 
 const styles = {
   recapDiv: {
@@ -35,6 +36,8 @@ export default class OverviewTab extends React.Component {
         <AdminNote loanId={loan._id} adminNoteText={loan.adminNote} />
 
         <StepStatus {...this.props} serverTime={this.state.serverTime} />
+
+        <LoanValidation loan={loan} />
 
         <FileVerificationNotification loan={loan} borrowers={loan.borrowers} />
         <hr />
