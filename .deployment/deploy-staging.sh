@@ -30,10 +30,6 @@ echo
 echo "# e-Potek Deployment Script"
 echo "# Now installing npm dependencies"
 
-# Install babel-cli to generate language files
-cd  $SCRIPT_PATH/..
-meteor npm i -g babel-cli
-
 for i in $MICROSERVICES; do
   cd $SCRIPT_PATH/../microservices/$i
   meteor npm i
