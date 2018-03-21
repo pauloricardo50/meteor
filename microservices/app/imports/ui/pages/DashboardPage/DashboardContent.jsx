@@ -27,7 +27,7 @@ const getGrid = ({ loan }) => {
     { component: DashboardCharts, show: true },
     { component: DashboardBorrowers, show: true },
     { component: DashboardProperty, show: true },
-    { component: DashboardDownload, show: loan.files.contract },
+    { component: DashboardDownload, show: loan.documents.contract },
     {
       component: DashboardOffer,
       show: loan.logic.lender && loan.logic.lender.offerId,
