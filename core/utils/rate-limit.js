@@ -8,6 +8,9 @@ import { _ } from 'meteor/underscore';
 //   return `Easy on the gas, buddy. Too many loans. Try again in ${time} ${seconds}.`;
 // });
 
+let rateLimitedMethods = [];
+export const getRateLimitedMethods = () => rateLimitedMethods;
+
 const fetchMethodNames = methods => _.pluck(methods, 'name');
 
 const assignLimits = ({ methods, limit = 5, timeRange = 1000 }) => {
@@ -26,6 +29,8 @@ const assignLimits = ({ methods, limit = 5, timeRange = 1000 }) => {
       limit,
       timeRange,
     );
+
+    rateLimitedMethods = rateLimitedMethods.concat(methodNames);
   }
 };
 
