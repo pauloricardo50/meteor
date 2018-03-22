@@ -13,22 +13,6 @@ const styles = {
 };
 
 export default class TasksTable extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      rows: this.setupRows(this.props),
-      columnOptions: this.getColumnOptions(this.props),
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const newRows = this.setupRows(nextProps);
-    this.setState({
-      rows: newRows,
-      columnOptions: this.getColumnOptions(nextProps),
-    });
-  }
-
   getColumnOptions = ({ showAssignee }) => {
     const columnOptions = [
       { id: '#', style: { width: 32, textAlign: 'left' } },
@@ -104,10 +88,9 @@ export default class TasksTable extends Component {
 
   render() {
     const { isLoading } = this.props;
-    const { columnOptions, rows } = this.state;
 
     if (!isLoading) {
-      return <Table columnOptions={columnOptions} rows={rows} noIntl />;
+      return <Table columnOptions={this.getColumnOptions(this.props)} rows={this.setupRows(this.props)} noIntl />;
     }
     return null;
   }

@@ -11,9 +11,6 @@ const createFakeUsers = (count, role) => {
       password: '12345',
     });
     Roles.addUsersToRoles(userId, [role]);
-    if (role === 'user') {
-      EventService.emit(USER_EVENTS.USER_CREATED, { userId });
-    }
     insertedUsers.push(userId);
   }
   return insertedUsers;
