@@ -26,4 +26,7 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USER, {
       lastName: 1,
     },
   },
+  assignedEmployee: {
+    emails: 1,
+  },
 });

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
+import { T } from 'core/components/Translation';
 import Loan from './Loan';
 import SingleUserPageContainer from './SingleUserPageContainer';
 
@@ -29,10 +30,17 @@ const SingleUserPage = (props) => {
       <ImpersonateLink userId={user._id} className="impersonate-link" />
 
       <p className="secondary" style={styles.createdAt}>
-        Créé le {moment(user.createdAt).format('D MMM YY à HH:mm:ss')}
+        <T id="UsersTable.createdAt" />{' '}
+        {moment(user.createdAt).format('D MMM YY à HH:mm:ss')}
+      </p>
+      <p>
+        <T id="UsersTable.assignedTo" />{' '}
+        {user.assignedEmployee.emails[0].address}
       </p>
 
-      <h3>Demandes de prêt</h3>
+      <h3>
+        <T id="general.loans" />
+      </h3>
       {loans &&
         loans.map(loan => (
           <Loan
