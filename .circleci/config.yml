@@ -1,27 +1,32 @@
+defaults: &defaults
+  working_directory: ~/app
+
+
+
 version: 2
 jobs:
   build:
-    working_directory: ~/app
+    <<: *defaults
     docker:
-      - image: circleci/openjdk:8-jdk-browsers
-        environment:
-          # lang settings required for Meteor's Mongo
-          LANG: C.UTF-8
-          LANGUAGE: C.UTF-8
-          LC_ALL: C.UTF-8
-          LC_NUMERIC: en_US.UTF-8
-          METEOR_BIN_TMP_DIR: /home/circleci/build-temp/
-          METEOR_BIN_TMP_FILE: meteor-bin-temp
-          # TZ: "/usr/share/zoneinfo/Europe/Zurich"
-          NODE_ENV: development
-          TOOL_NODE_FLAGS: "--max_old_space_size=4096 --optimize_for_size --gc-interval=100" # if builds run out of memory
-          # METEOR_PROFILE: 1 # If you need to debug meteor, turn this on
+    - image: circleci/openjdk:8-jdk-browsers
+      environment:
+        # lang settings required for Meteor's Mongo
+        LANG: C.UTF-8
+        LANGUAGE: C.UTF-8
+        LC_ALL: C.UTF-8
+        LC_NUMERIC: en_US.UTF-8
+        METEOR_BIN_TMP_DIR: /home/circleci/build-temp/
+        METEOR_BIN_TMP_FILE: meteor-bin-temp
+        # TZ: "/usr/share/zoneinfo/Europe/Zurich"
+        NODE_ENV: development
+        TOOL_NODE_FLAGS: "--max_old_space_size=4096 --optimize_for_size --gc-interval=100" # if builds run out of memory
+        # METEOR_PROFILE: 1 # If you need to debug meteor, turn this on
     steps:
       - checkout
       - add_ssh_keys
       - restore_cache:
           name: restore cached build
-          keys: 
+          keys:
             - build-epotek-v2
       - run:
           name: install Meteor
@@ -81,11 +86,18 @@ jobs:
           path: ./results
       - store_artifacts:
           path: ./results
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - app
+
   deploy_admin:
+    <<: *defaults
     machine:
       enabled: true
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/
       - restore_cache:
           name: restore cached build
           keys: 
@@ -96,20 +108,20 @@ jobs:
             # only install meteor if bin isn't found
             command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com | /bin/sh
       - run:
-          name: setup necessary stuff for deployment
           command: |
             echo $STAGING_SSH_KEY_BASE64|base64 --decode > .deployment/auth.pem
-            npm install -g babel-cli
             npm install -g mup
       - run:
-          name: deploy!
           no_output_timeout: 30m
           command: .deployment/deploy-staging.sh admin
+
   deploy_app:
+    <<: *defaults
     machine:
       enabled: true
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/
       - restore_cache:
           name: restore cached build
           keys: 
@@ -120,20 +132,20 @@ jobs:
             # only install meteor if bin isn't found
             command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com | /bin/sh
       - run:
-          name: setup necessary stuff for deployment
           command: |
             echo $STAGING_SSH_KEY_BASE64|base64 --decode > .deployment/auth.pem
-            npm install -g babel-cli
             npm install -g mup
       - run:
-          name: deploy!
           no_output_timeout: 30m
           command: .deployment/deploy-staging.sh app
+
   deploy_www:
+    <<: *defaults
     machine:
       enabled: true
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/
       - restore_cache:
           name: restore cached build
           keys: 
@@ -144,16 +156,13 @@ jobs:
             # only install meteor if bin isn't found
             command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com | /bin/sh
       - run:
-          name: setup necessary stuff for deployment
           command: |
             echo $STAGING_SSH_KEY_BASE64|base64 --decode > .deployment/auth.pem
-            npm install -g babel-cli
             npm install -g mup
       - run:
-          name: deploy!
           no_output_timeout: 30m
           command: .deployment/deploy-staging.sh www
-
+ 
 
 workflows:
   version: 2
