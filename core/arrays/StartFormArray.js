@@ -408,11 +408,7 @@ export const getErrorArray = (state, props, setFormState) => [
             label={<T id="Start2Form.whyButton" />}
             title={<T id="Start2Form.notEnoughCash.dialogTitle" />}
             key={2}
-            rootStyle={{
-              display: 'inline-block',
-              marginRight: 8,
-              marginBottom: 8,
-            }}
+            buttonStyle={{marginRight: 8, marginBottom: 8}}
           >
             <T id="Start2Form.notEnoughCash.description" />
           </DialogSimple>
@@ -458,8 +454,7 @@ export const getErrorArray = (state, props, setFormState) => [
             label={<T id="Start2Form.whyButton" />}
             title={<T id="Start2Form.notEnoughOwnFunds.dialogTitle" />}
             key={2}
-            rootStyle={{
-              display: 'inline-block',
+            buttonStyle={{
               marginRight: 8,
               marginBottom: 8,
             }}
@@ -619,8 +614,7 @@ export const getFinalArray = (state, props, setFormState, components) => [
             label={<T id="Start2Form.whyButton" />}
             title={<T id="Start2Form.useInsurance1.dialogTitle" />}
             key={2}
-            rootStyle={{
-              display: 'inline-block',
+            buttonStyle={{
               marginRight: 8,
               marginBottom: 8,
             }}
@@ -650,8 +644,7 @@ export const getFinalArray = (state, props, setFormState, components) => [
             label={<T id="Start2Form.whyButton" />}
             title={<T id="Start2Form.useInsurance1.dialogTitle" />}
             key={2}
-            rootStyle={{
-              display: 'inline-block',
+            buttonStyle={{
               marginRight: 8,
               marginBottom: 8,
             }}
@@ -693,8 +686,7 @@ export const getFinalArray = (state, props, setFormState, components) => [
             label={<T id="Start2Form.insuranceConditions.button" />}
             title={<T id="Start2Form.insuranceConditions.title" />}
             key={2}
-            rootStyle={{
-              display: 'inline-block',
+            buttonStyle={{
               marginRight: 8,
               marginBottom: 8,
             }}
@@ -809,8 +801,7 @@ export const getFinalArray = (state, props, setFormState, components) => [
             label={<T id="Start2Form.whyButton" />}
             title={<T id="Start2Form.notEnoughIncome.dialogTitle" />}
             key={2}
-            rootStyle={{
-              display: 'inline-block',
+            buttonStyle={{
               marginRight: 8,
               marginBottom: 8,
             }}
