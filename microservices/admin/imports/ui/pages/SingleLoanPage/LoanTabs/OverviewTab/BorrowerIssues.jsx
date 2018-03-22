@@ -1,8 +1,9 @@
 import React from 'react';
 import { T } from 'core/components/Translation';
-import IssuesList from './IssuesList';
+import IssuesFilesList from './IssuesFilesList';
+import IssuesFieldsList from './IssuesFieldsList';
 
-export default ({ borrowers }) => {
+export default ({ borrowers, checkFileErrors }) => {
   const borrowersAdminValidation = [];
 
   borrowers.map((borrower, i) =>
@@ -11,19 +12,28 @@ export default ({ borrowers }) => {
         borrower.firstName || borrower.lastName
           ? `${borrower.firstName} ${borrower.lastName}`
           : `Emprunteur ${i + 1}`,
-      issues: <IssuesList adminValidation={borrower.adminValidation} />,
+      fieldsIssues: (
+        <IssuesFieldsList adminValidation={borrower.adminValidation} />
+      ),
+      fileIssues: (
+        <IssuesFilesList
+          documents={borrower.documents}
+          checkFileErrors={checkFileErrors}
+        />
+      ),
     }));
 
   return (
     borrowersAdminValidation.length > 0 && (
       <div>
-        <p className="bold">
+        <h4 className="bold">
           <T id="collections.borrowers" />
-        </p>
+        </h4>
         {borrowersAdminValidation.map(borrower => (
           <div key={borrower._id}>
             <p className="bold">{borrower.borrowerName}</p>
-            {borrower.issues}
+            {borrower.fieldsIssues}
+            {borrower.fileIssues}
           </div>
         ))}
       </div>

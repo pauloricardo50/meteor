@@ -23,11 +23,15 @@ const firstNames = [
 const lastNames = ['Arsenault', 'Babel', 'Rochat'];
 
 const generateSecondBorrowerProbabillity = () => Math.random() < 0.8;
+const getRandomArrayElemnt = array =>
+  array[Math.floor(Math.random() * array.length)];
 
 const insertFakeBorrower = (userId) => {
+  const firstName = getRandomArrayElemnt(firstNames);
+  const lastName = getRandomArrayElemnt(lastNames);
   const borrower = {
-    firstName: firstNames[Math.floor(Math.random() * firstNames.length)],
-    lastName: lastNames[Math.floor(Math.random() * lastNames.length)],
+    firstName,
+    lastName,
     gender: 'F',
     address1: 'Chemin du Mont 3',
     zipCode: 1400,
@@ -82,6 +86,10 @@ const insertFakeBorrower = (userId) => {
     bankFortune: 300000,
     insuranceSecondPillar: 120000,
     insuranceThirdPillar: 50000,
+    adminValidation: {
+      salary: `${firstName}- Does not match with taxes income`,
+      fortune: `${firstName}- Some other problem`,
+    },
     documents: {
       identity: fakeDocument,
       taxes: fakeDocument,

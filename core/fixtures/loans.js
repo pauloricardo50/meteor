@@ -1,7 +1,8 @@
 import moment from 'moment';
 import LoanService from 'core/api/loans/LoanService';
 import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
-import { fakeDocument } from 'core/api/files/fileHelpers';
+import { fakeDocument,
+  fakeDocumentWithLabel } from 'core/api/files/fileHelpers';
 import { STEPS_PER_LOAN } from './config';
 import createFakeBorrowers from './borrowers';
 import createFakeProperty from './properties';
@@ -27,6 +28,7 @@ const logic2 = {
   verification: {
     requested: false,
     validated: true,
+    verifiedAt: new Date(),
     comments: [],
   },
   auction: {},
@@ -36,7 +38,9 @@ const logic3 = {
   step: 3,
   verification: {
     requested: false,
-    validated: true,
+    validated: false,
+    requestedAt: new Date(),
+    verifiedAt: new Date(),
     comments: [],
   },
   auction: {
@@ -79,7 +83,7 @@ const logic3 = {
 };
 
 const fakeFiles = {
-  buyersContract: fakeDocument,
+  buyersContract: fakeDocumentWithLabel,
   coownershipAllocationAgreement: fakeDocument,
   coownershipAgreement: fakeDocument,
 };
@@ -101,6 +105,10 @@ const createFakeLoans = (userId) => {
   switch (generateRandomNumber(STEPS_PER_LOAN)) {
   case 3:
     loan.logic = logic3;
+    loan.adminValidation = {
+      bonus_bonus2017: 'Does not match with taxes location',
+      bankFortune: 'Not enough',
+    };
     loan.files = completeFiles ? fakeFiles : fakeFiles2;
     loan.loanTranches = [
       {

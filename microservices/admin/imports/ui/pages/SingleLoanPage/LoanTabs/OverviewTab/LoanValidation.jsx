@@ -1,18 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import List, { ListItem, ListItemText } from 'material-ui/List';
 import { T, IntlDate } from 'core/components/Translation';
 import BorrowersIssues from './BorrowerIssues';
-import IssuesList from './IssuesList';
+import IssuesFieldsList from './IssuesFieldsList';
+import IssuesFilesList from './IssuesFilesList';
+
+const checkFileErrors = (fileArray) => {
+  let error = false;
+  fileArray.map((file) => {
+    if (file.error && file.error !== '') {
+      error = true;
+    }
+    return file;
+  });
+  return error;
+};
 
 const LoanValidation = ({ loan }) => {
-  const { logic, adminValidation, borrowers, property } = loan;
-  const {
-    requested,
-    requestedTime,
-    validated,
-    validatedAt,
-  } = logic.verification;
+  const { logic, adminValidation, documents, borrowers, property } = loan;
+  const { requested, requestedAt, validated, verifiedAt } = logic.verification;
+
+  const loanIssues =
+    (adminValidation && Object.keys(adminValidation).length > 0) ||
+    (documents && checkFileErrors(documents));
+  const borrowersIssues = borrowers.map((borrower) => {
+    if (
+      borrower.adminValidation &&
+      Object.keys(borrower.adminValidation).length > 0
+    ) {
+      return true;
+    }
+    if (borrower.documents && checkFileErrors(borrower.documents)) {
+      return true;
+    }
+    return false;
+  });
+  const propertyIssues =
+    (property.adminValidation &&
+      Object.keys(property.adminValidation).length > 0) ||
+    (property.documents && checkFileErrors(property.documents));
 
   if (validated === undefined && requested === undefined) {
     return (
@@ -28,7 +54,7 @@ const LoanValidation = ({ loan }) => {
         <T id="LoanValidation.validatedOn" />
         &nbsp;
         <IntlDate
-          value={validatedAt}
+          value={verifiedAt}
           month="numeric"
           year="numeric"
           day="2-digit"
@@ -43,7 +69,7 @@ const LoanValidation = ({ loan }) => {
         <T id="LoanValidation.requestedOn" />
         &nbsp;
         <IntlDate
-          value={requestedTime}
+          value={requestedAt}
           month="numeric"
           year="numeric"
           day="2-digit"
@@ -62,7 +88,7 @@ const LoanValidation = ({ loan }) => {
           <T id="LoanValidation.invalidatedOn" />
           &nbsp;
           <IntlDate
-            value={validatedAt}
+            value={verifiedAt}
             month="numeric"
             year="numeric"
             day="2-digit"
@@ -71,25 +97,38 @@ const LoanValidation = ({ loan }) => {
           />
         </h2>
         <ul>
-          {adminValidation &&
-            Object.keys(adminValidation).length > 0 && (
-              <div>
-                <p className="bold">
-                  <T id="general.loan" />
-                </p>
-                <IssuesList adminValidation />
-              </div>
-            )}
-          <BorrowersIssues borrowers={borrowers} />
-          {property.adminValidation &&
-            Object.keys(property.adminValidation).length > 0 && (
-              <div>
-                <p className="bold">
-                  <T id="general.property" />
-                </p>
-                <IssuesList adminValidation={property.adminValidation} />
-              </div>
-            )}
+          {loanIssues && (
+            <div>
+              <h4 className="bold">
+                <T id="general.loan" />
+              </h4>
+              <IssuesFieldsList adminValidation={adminValidation} />
+              <IssuesFilesList
+                documents={documents}
+                checkFileErrors={checkFileErrors}
+              />
+            </div>
+          )}
+
+          {borrowersIssues && (
+            <BorrowersIssues
+              borrowers={borrowers}
+              checkFileErrors={checkFileErrors}
+            />
+          )}
+
+          {propertyIssues && (
+            <div>
+              <h4 className="bold">
+                <T id="general.property" />
+              </h4>
+              <IssuesFieldsList adminValidation={property.adminValidation} />
+              <IssuesFilesList
+                documents={property.documents}
+                checkFileErrors={checkFileErrors}
+              />
+            </div>
+          )}
         </ul>
       </div>
     );
