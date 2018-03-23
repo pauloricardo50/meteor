@@ -11,11 +11,9 @@ import {
 } from '../methodDefinitions';
 
 propertyInsert.setHandler((context, { property, userId }) => {
-  const userIdIsDefined = userId !== undefined;
+  const userIdIsDefined = !!userId;
   if (userIdIsDefined) {
     SecurityService.checkCurrentUserIsAdmin();
-  } else {
-    SecurityService.properties.isAllowedToInsert();
   }
 
   return PropertyService.insert({

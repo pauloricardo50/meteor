@@ -18,11 +18,12 @@ import {
 } from '../methodDefinitions';
 
 loanInsert.setHandler((context, { loan, userId }) => {
-  const userIdIsDefined = userId !== undefined;
+  const userIdIsDefined = !!userId;
   if (userIdIsDefined) {
     SecurityService.checkCurrentUserIsAdmin();
   } else {
-    SecurityService.loans.isAllowedToInsert();
+    // Everyone can insert loans without userIds, they can then be assigned to
+    // it later
   }
 
   return LoanService.insert({

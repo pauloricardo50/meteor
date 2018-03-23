@@ -76,7 +76,7 @@ export default class StartSignUp extends Component {
     const { formState } = this.props;
     this.setState({ loading: true });
 
-    saveStartForm(formState, null)
+    saveStartForm(formState, undefined)
       .then((loanId) => {
         console.log('Loan inserted: ', loanId);
         // Keep loading true, to prevent double insert
@@ -93,7 +93,7 @@ export default class StartSignUp extends Component {
   };
 
   render() {
-    const { showPassword, login, signUp, loading, errorText } = this.state;
+    const { loading, errorText } = this.state;
     return (
       <div style={styles.section}>
         <h2>

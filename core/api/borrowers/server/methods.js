@@ -11,11 +11,9 @@ import {
 } from '../methodDefinitions';
 
 borrowerInsert.setHandler((context, { borrower, userId }) => {
-  const userIdIsDefined = userId !== undefined;
+  const userIdIsDefined = !!userId;
   if (userIdIsDefined) {
     SecurityService.checkCurrentUserIsAdmin();
-  } else {
-    SecurityService.borrowers.isAllowedToInsert();
   }
 
   return BorrowerService.insert({
