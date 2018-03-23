@@ -108,9 +108,11 @@ jobs:
             # only install meteor if bin isn't found
             command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com | /bin/sh
       - run:
+          name: Prepare deployment
           command: |
             echo $STAGING_SSH_KEY_BASE64|base64 --decode > .deployment/auth.pem
             npm install -g mup
+            npm install -g babel-cli
       - run:
           no_output_timeout: 30m
           command: .deployment/deploy-staging.sh admin
@@ -132,9 +134,11 @@ jobs:
             # only install meteor if bin isn't found
             command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com | /bin/sh
       - run:
+          name: Prepare deployment
           command: |
             echo $STAGING_SSH_KEY_BASE64|base64 --decode > .deployment/auth.pem
             npm install -g mup
+            npm install -g babel-cli
       - run:
           no_output_timeout: 30m
           command: .deployment/deploy-staging.sh app
@@ -156,9 +160,11 @@ jobs:
             # only install meteor if bin isn't found
             command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com | /bin/sh
       - run:
+          name: Prepare deployment
           command: |
             echo $STAGING_SSH_KEY_BASE64|base64 --decode > .deployment/auth.pem
             npm install -g mup
+            npm install -g babel-cli
       - run:
           no_output_timeout: 30m
           command: .deployment/deploy-staging.sh www
