@@ -1,20 +1,18 @@
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
-import EventService from 'core/api/events';
-import { USER_EVENTS } from 'core/api/users/userConstants';
 
-const createFakeUsers = (count, role) => {
+const createFakeUsers = (count, role, currentUserEmail = '') => {
   const insertedUsers = [];
   for (let i = 0; i < count; i += 1) {
-    const userId = Accounts.createUser({
-      email: `${role}-${i + 1}@epotek.ch`,
-      password: '12345',
-    });
-    Roles.addUsersToRoles(userId, [role]);
-    if (role === 'user') {
-      EventService.emit(USER_EVENTS.USER_CREATED, { userId });
+    const email = `${role}-${i + 1}@epotek.ch`;
+    if (email !== currentUserEmail) {
+      const userId = Accounts.createUser({
+        email,
+        password: '12345',
+      });
+      Roles.addUsersToRoles(userId, [role]);
+      insertedUsers.push(userId);
     }
-    insertedUsers.push(userId);
   }
   return insertedUsers;
 };

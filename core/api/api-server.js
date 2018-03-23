@@ -1,5 +1,4 @@
 import 'core/fixtures/methods';
-// generateTestData
 
 import './borrowers/server/publications';
 
