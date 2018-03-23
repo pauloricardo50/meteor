@@ -2,7 +2,8 @@ import moment from 'moment';
 import LoanService from 'core/api/loans/LoanService';
 import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
 import { fakeDocument,
-  fakeDocumentWithLabel } from 'core/api/files/fileHelpers';
+  fakeDocumentWithLabel,
+} from 'core/api/files/fileHelpers';
 import { STEPS_PER_LOAN } from './config';
 import createFakeBorrowers from './borrowers';
 import createFakeProperty from './properties';
