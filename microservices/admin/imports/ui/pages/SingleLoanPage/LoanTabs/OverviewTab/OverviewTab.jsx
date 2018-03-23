@@ -7,7 +7,6 @@ import Recap from 'core/components/Recap';
 import renderObject from 'core/utils/renderObject';
 import AdminNote from '../../../../components/AdminNote';
 import StepStatus from './StepStatus';
-// import FileVerificationNotification from './FileVerificationNotification';
 import LoanTasksTable from './LoanTasksTable';
 import LoanValidation from './LoanValidation';
 
@@ -39,7 +38,6 @@ export default class OverviewTab extends React.Component {
 
         <LoanValidation loan={loan} />
 
-        {/* <FileVerificationNotification loan={loan} borrowers={loan.borrowers} /> */}
         <hr />
         <div
           className="flex"
@@ -99,5 +97,5 @@ export default class OverviewTab extends React.Component {
 OverviewTab.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  dataToPassDown: PropTypes.arrayOf(PropTypes.object).isRequired,
+  dataToPassDown: PropTypes.objectOf(PropTypes.any).isRequired,
 };

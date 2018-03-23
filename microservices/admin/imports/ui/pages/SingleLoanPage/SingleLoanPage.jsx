@@ -55,8 +55,12 @@ class SingleLoanPage extends Component {
 }
 
 SingleLoanPage.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  data: PropTypes.objectOf(PropTypes.any),
   isLoading: PropTypes.bool.isRequired,
+};
+
+SingleLoanPage.defaultProps = {
+  data: {},
 };
 
 export default SingleLoanPageContainer(SingleLoanPage);

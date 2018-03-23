@@ -26,7 +26,7 @@ class LoanServiceModel {
     return Loans.update(loanId, {
       $set: {
         'logic.verification.requested': true,
-        'logic.verification.requestedTime': new Date(),
+        'logic.verification.requestedAt': new Date(),
       },
     });
   };

@@ -39,8 +39,7 @@ const getTabs = props => [
 
 const TasksTabs = (props) => {
   const tabs = getTabs(props);
-  const initialTab = tabs.findIndex(tab => tab.id === queryString.parse(props.location.search).tab);
-  return <Tabs initialIndex={initialTab} tabs={tabs} />;
+  return <Tabs tabs={tabs} />;
 };
 
 export default TasksTabs;

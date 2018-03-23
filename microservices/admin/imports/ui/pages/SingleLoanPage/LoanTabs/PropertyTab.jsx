@@ -28,7 +28,7 @@ const PropertyTab = (props) => {
 
 PropertyTab.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
-  property: PropTypes.arrayOf(PropTypes.object).isRequired,
+  property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default PropertyTab;
