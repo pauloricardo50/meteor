@@ -37,9 +37,9 @@ const getAdmins = () => {
 };
 
 Meteor.methods({
-  generateTestData() {
+  generateTestData(currentUserEmail) {
     if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
-      createFakeUsers(DEV_COUNT, ROLES.DEV);
+      createFakeUsers(DEV_COUNT, ROLES.DEV, currentUserEmail);
       const admins = getAdmins();
       const newUsers = createFakeUsers(USER_COUNT, ROLES.USER);
       newUsers.map((userId) => {
