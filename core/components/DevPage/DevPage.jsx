@@ -118,7 +118,6 @@ const addStep3Loan = (twoBorrowers, completeFiles = true) => {
 export default class DevPage extends Component {
   constructor(props) {
     super(props);
-
     this.state = { twoBorrowers: false };
   }
 
@@ -157,7 +156,7 @@ export default class DevPage extends Component {
           <button onClick={() => addStep3Loan(twoBorrowers, false)}>
             step 3 Loan, few files
           </button>
-          <button onClick={() => Meteor.call('generateTestData')}>
+          <button onClick={() => Meteor.call('generateTestData', currentUser.emails[0].address)}>
             Generate test data
           </button>
           <button onClick={() => Meteor.call('purgeDatabase', currentUser._id)}>

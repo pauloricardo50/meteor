@@ -12,19 +12,25 @@ import {
 import UserService from 'core/api/users/UserService';
 import TaskService from 'core/api/tasks/TaskService';
 import { TASK_TYPE } from 'core/api/tasks/taskConstants';
-import { USER_COUNT, ADMIN_COUNT, MAX_LOANS_PER_USER } from './config';
+import {
+  DEV_COUNT,
+  USER_COUNT,
+  ADMIN_COUNT,
+  MAX_LOANS_PER_USER,
+} from './config';
 import createFakeLoan from './loans';
 import createFakeTask from './tasks';
 import createFakeUsers from './users';
 import createFakeOffer from './offers';
+import { ROLES } from '../api/users/userConstants';
 
 const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
 const generateNumberOfLoans = max => Math.floor(Math.random() * max + 1);
 
 const getAdmins = () => {
-  const admins = Users.find({ roles: { $in: ['admin'] } }).fetch();
+  const admins = Users.find({ roles: { $in: [ROLES.ADMIN] } }).fetch();
   if (admins.length === 0) {
-    const newAdmins = createFakeUsers(ADMIN_COUNT, 'admin');
+    const newAdmins = createFakeUsers(ADMIN_COUNT, ROLES.ADMIN);
     return newAdmins;
   }
   return admins.map(admin => admin._id);
@@ -32,9 +38,10 @@ const getAdmins = () => {
 
 Meteor.methods({
   generateTestData() {
-    if (SecurityService.currentUserHasRole('dev') && isAuthorizedToRun()) {
+    if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
+      createFakeUsers(DEV_COUNT, ROLES.DEV);
       const admins = getAdmins();
-      const newUsers = createFakeUsers(USER_COUNT, 'user');
+      const newUsers = createFakeUsers(USER_COUNT, ROLES.USER);
       newUsers.map((userId) => {
         const adminId = admins[Math.floor(Math.random() * admins.length)];
         UserService.assignAdminToUser({ userId, adminId });
@@ -51,7 +58,7 @@ Meteor.methods({
 
   purgeDatabase(currentUserId) {
     check(currentUserId, String);
-    if (SecurityService.currentUserHasRole('dev') && isAuthorizedToRun()) {
+    if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
       Borrowers.remove({});
       Loans.remove({});
       Offers.remove({});
