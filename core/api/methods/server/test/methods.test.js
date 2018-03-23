@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import methods from '../../registerMethodDefinitions';
-import { getRateLimitedMethods } from 'core/utils/rate-limit';
+import { getRateLimitedMethods } from '../../../../utils/rate-limit';
 
 describe('methods', () => {
   after(() => {
