@@ -22,14 +22,9 @@ import {
 } from '../api/constants';
 
 const getSteps = (props) => {
-  const { loan, borrowers, property, serverTime } = props;
+  const { loan, borrowers, property } = props;
 
   const steps = [
-    {
-      nb: 0,
-      items: [],
-    },
-
     {
       nb: 1,
       items: [
@@ -171,14 +166,18 @@ const getSteps = (props) => {
     },
   ];
 
+  setPreviousDone(steps, 0, 4); // Vérification e-Potek
+  setPreviousDone(steps, 1, 1); // Enchères
+  setPreviousDone(steps, 1, 2); // Stratégie
+  setPreviousDone(steps, 1, 3); // Choix du prêteur
+
   // Make sure these indices correspond
   // Verify all 3 items before item 4 are done
-  steps[1].items[4].disabled = !previousDone(steps, 1, 4); // Vérification e-Potek
-  // steps[0].items[6].disabled = !previousDone(steps, 0, 6); // Expertise
+  // steps[1].items[4].disabled = !previousDone(steps, 1, 4); // Vérification e-Potek
 
-  steps[2].items[1].disabled = !previousDone(steps, 2, 1); // Enchères
-  steps[2].items[2].disabled = !previousDone(steps, 2, 2); // Stratégie
-  steps[2].items[3].disabled = !previousDone(steps, 2, 3); // Choix du prêteur
+  // steps[2].items[1].disabled = !previousDone(steps, 2, 1); // Enchères
+  // steps[2].items[2].disabled = !previousDone(steps, 2, 2); // Stratégie
+  // steps[2].items[3].disabled = !previousDone(steps, 2, 3); // Choix du prêteur
 
   return steps;
 };
@@ -208,6 +207,14 @@ export const previousDone = (steps, stepNb, itemNb) => {
   return steps[stepNb].items
     .slice(0, itemNb)
     .reduce((res, i) => res && i.isDone(), true);
+};
+
+const setPreviousDone = (steps, stepIndex, itemIndex) => {
+  steps[stepIndex].items[itemIndex].disabled = !previousDone(
+    steps,
+    stepIndex,
+    itemIndex,
+  );
 };
 
 /**

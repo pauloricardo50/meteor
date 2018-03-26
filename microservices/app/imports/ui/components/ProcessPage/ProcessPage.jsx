@@ -10,37 +10,40 @@ import ProcessPageBar from './ProcessPageBar';
 import StepperContainer from '../../containers/StepperContainer';
 
 export const getStepValues = (props) => {
+  const { id: itemId, stepNb } = props;
+
   const steps = getSteps(props);
-  const stepItems = steps[props.stepNb].items;
-  const currentStep = stepItems.find(i => i.id === props.id);
-  const index = stepItems.findIndex(i => i.id === props.id);
-  const length = stepItems.length;
-  let prevStep;
-  let nextStep;
+  const currentStep = steps[stepNb - 1];
+  const stepItems = currentStep.items;
+  const { length } = stepItems;
+  const currentItem = stepItems.find(item => item.id === itemId);
+  const index = stepItems.findIndex(item => item.id === itemId);
+  const nextStep = stepNb < steps.length - 1 && steps[stepNb];
+  const prevStep = stepNb > 1 && steps[stepNb - 1];
   let nextLink;
+  let prevItem;
+  let nextItem;
 
-  // Get the next step's link
+  // Get the next item's link
   if (index < length - 1) {
-    nextStep = stepItems[index + 1];
-    nextLink = nextStep && !nextStep.disabled && nextStep.link;
+    nextItem = stepItems[index + 1];
+    nextLink = nextItem && !nextItem.disabled && nextItem.link;
   } else {
-    nextStep =
-      steps[props.stepNb + 1].items.length > 0 &&
-      steps[props.stepNb + 1].items[0];
-    nextLink = nextStep && nextStep.link;
+    nextItem = nextStep && nextStep.items[0];
+    nextLink = nextItem && nextItem.link;
   }
 
-  // Get the previous step's link
+  // Get the previous item's link
   if (index > 0) {
-    prevStep = stepItems[index - 1];
+    prevItem = stepItems[index - 1];
   } else {
-    const prevItems = steps[props.stepNb - 1].items;
-    prevStep = prevItems[prevItems.length - 1];
+    const prevItems = prevStep.items;
+    prevItem = prevItems && prevItems[prevItems.length - 1];
   }
-  const prevLink = prevStep && prevStep.link;
+  const prevLink = prevItem && prevItem.link;
 
   return {
-    currentStep,
+    currentStep: currentItem,
     index,
     length,
     nextLink,

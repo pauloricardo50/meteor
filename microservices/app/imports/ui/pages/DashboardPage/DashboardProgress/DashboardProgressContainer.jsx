@@ -12,7 +12,7 @@ export default compose(
       steps,
       currentStep: loan.logic.step,
       currentLink: nextItem && nextItem.link,
-      currentItemId: nextItem.id,
+      currentItemId: nextItem && nextItem.id,
     };
   }),
 );
