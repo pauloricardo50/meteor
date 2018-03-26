@@ -1,6 +1,5 @@
 {
   "public": {
-    "APP_URL": "https://app.staging.e-potek.ch",
     "environment": "staging",
     "analyticsSettings": {
       "Google Analytics": {
