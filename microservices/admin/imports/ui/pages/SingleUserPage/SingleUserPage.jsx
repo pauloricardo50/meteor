@@ -22,6 +22,18 @@ const SingleUserPage = (props) => {
   if (isLoading || !user) return null;
 
   const { loans } = data;
+  const userCreatedAtFormatted = (
+    <p className="secondary" style={styles.createdAt}>
+      <T id="UsersTable.createdAt" />{' '}
+      {moment(user.createdAt).format('D MMM YY à HH:mm:ss')}
+    </p>
+  );
+
+  const userAssignedEmployee = user.assignedEmployee ? (
+    <p>
+      <T id="UsersTable.assignedTo" /> {user.assignedEmployee.emails[0].address}
+    </p>
+  ) : null;
 
   return (
     <section className="mask1 single-user-page">
@@ -29,17 +41,10 @@ const SingleUserPage = (props) => {
 
       <ImpersonateLink userId={user._id} className="impersonate-link" />
 
-      <p className="secondary" style={styles.createdAt}>
-        <T id="UsersTable.createdAt" />{' '}
-        {moment(user.createdAt).format('D MMM YY à HH:mm:ss')}
-      </p>
-      <p>
-        <T id="UsersTable.assignedTo" />{' '}
-        {user.assignedEmployee.emails[0].address}
-      </p>
-
+      {userCreatedAtFormatted}
+      {userAssignedEmployee}
       <h3>
-        <T id="general.loans" />
+        <T id="collections.loans" />
       </h3>
       {loans &&
         loans.map(loan => (
@@ -53,6 +58,12 @@ const SingleUserPage = (props) => {
         ))}
     </section>
   );
+};
+
+SingleUserPage.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+  data: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 export default SingleUserPageContainer(SingleUserPage);
