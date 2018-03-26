@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 
 import moment from 'moment';
 
+import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import Loan from './Loan';
 import SingleUserPageContainer from './SingleUserPageContainer';
 
 const styles = {
   createdAt: {
     marginBottom: 32,
+    clear: 'both',
   },
 };
 
@@ -21,8 +23,11 @@ const SingleUserPage = (props) => {
   const { loans } = data;
 
   return (
-    <section className="mask1">
+    <section className="mask1 single-user-page">
       <h1>{user.emails[0].address}</h1>
+
+      <ImpersonateLink userId={user._id} className="impersonate-link" />
+
       <p className="secondary" style={styles.createdAt}>
         Créé le {moment(user.createdAt).format('D MMM YY à HH:mm:ss')}
       </p>

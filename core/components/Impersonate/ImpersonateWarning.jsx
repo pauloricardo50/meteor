@@ -1,21 +1,26 @@
+import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Session } from 'meteor/session';
 
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from 'core/components/Translation';
+import formatMessage from '../../utils/intl';
 import { IMPERSONATE_SESSION_KEY } from '../../api/impersonation/impersonation';
 
-export const ImpersonateWarning = ({ isActive }) => {
-  if (!isActive) {
+export const ImpersonateWarning = ({ isActive, currentUser }) => {
+  if (!isActive || !currentUser) {
     return null;
   }
 
+  const currentUserEmail = currentUser.emails[0].address;
+
   return (
-    <div className="impersonate-warning">
+    <div className="warning">
       <strong>
-        <T id="Impersonation.impersonateWarning" />
+        {formatMessage('Impersonation.impersonateWarning', {
+          email: currentUserEmail,
+        })}
       </strong>
     </div>
   );
@@ -23,12 +28,15 @@ export const ImpersonateWarning = ({ isActive }) => {
 
 ImpersonateWarning.propTypes = {
   isActive: PropTypes.bool,
+  currentUser: PropTypes.object,
 };
 
 ImpersonateWarning.defaultProps = {
   isActive: false,
+  currentUser: undefined,
 };
 
 export const ImpersonateWarningWithTracker = withTracker(() => ({
   isActive: Session.get(IMPERSONATE_SESSION_KEY),
+  currentUser: Meteor.user(),
 }))(ImpersonateWarning);

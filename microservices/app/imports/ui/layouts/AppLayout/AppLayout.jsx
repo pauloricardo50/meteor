@@ -7,7 +7,6 @@ import classnames from 'classnames';
 import ContactButton from 'core/components/ContactButton';
 import ErrorBoundary from 'core/components/ErrorBoundary';
 import track from 'core/utils/analytics';
-import { ImpersonateWarningWithTracker } from 'core/components/Impersonate/ImpersonateWarning';
 import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
 import Navs from './Navs';
 
@@ -90,7 +89,6 @@ const AppLayout = (props) => {
       />
 
       <main className={classes}>
-        <ImpersonateWarningWithTracker />
         <ErrorBoundary helper="layout" pathname={history.location.pathname}>
           {/* <div x="wrapper">{render(props)}</div> */}
           <div x="wrapper">{React.cloneElement(children, { ...props })}</div>

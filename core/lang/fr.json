@@ -1174,7 +1174,6 @@
   "ZipAutoComplete.empty": "Pas de résultat",
   "Impersonation.impersonateLinkText": "Se faire passer pour cet utilisateur",
   "Impersonation.impersonationSuccess": "Actuellement connecté comme {email}",
-  "Impersonation.impersonateWarning":
-    "Vous êtes actuellement connecté comme un autre utilisateur",
+  "Impersonation.impersonateWarning": "Connecté comme {email}",
   "Dummy_Blank": "Dummy_Blank"
 }
