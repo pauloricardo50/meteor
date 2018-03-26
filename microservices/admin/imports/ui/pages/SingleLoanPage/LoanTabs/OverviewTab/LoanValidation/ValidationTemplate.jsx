@@ -18,13 +18,13 @@ const ValidationTemplate = ({ className, labelId, date }) => (
 );
 
 ValidationTemplate.propTypes = {
-  className: PropTypes.object,
+  className: PropTypes.string,
   labelId: PropTypes.string.isRequired,
   date: PropTypes.instanceOf(Date).isRequired,
 };
 
 ValidationTemplate.defaultProps = {
-  className: {},
+  className: '',
 };
 
 export default ValidationTemplate;

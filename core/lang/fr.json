@@ -93,6 +93,7 @@
   "BorrowerAdder.label": "+ Ajouter un 2e emprunteur",
   "BorrowerHeader.age": "{value} ans",
   "BorrowerHeader.title": "Emprunteur {index}",
+  "BorrowerIssues.itemTitle": "Emprunteur {index}",
   "BorrowerPage.files": "Documents",
   "BorrowerPage.finance": "Finances",
   "BorrowerPage.personal": "Perso",

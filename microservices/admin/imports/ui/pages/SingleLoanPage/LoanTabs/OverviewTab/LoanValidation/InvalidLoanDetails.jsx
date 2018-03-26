@@ -5,32 +5,32 @@ import { FILE_STATUS } from 'core/api/files/fileConstants';
 import BorrowersIssues from './BorrowerIssues';
 import DocErrorsDetails from './DocErrorDetails';
 
-const checkFilesErrors = fileArray =>
+const hasFileErrors = fileArray =>
   fileArray.some(file => file.status === FILE_STATUS.ERROR);
 
-const checkDocumentsErrors = documents =>
+const hasDocumentsErrors = documents =>
   Object.keys(documents).some((key) => {
     const { files } = documents[key];
-    return checkFilesErrors(files);
+    return hasFileErrors(files);
   });
 
-const checkDocErrors = ({ adminValidation, documents }) =>
+const hasErrors = ({ adminValidation, documents }) =>
   (adminValidation && Object.keys(adminValidation).length > 0) ||
-  (documents && checkDocumentsErrors(documents));
+  (documents && hasDocumentsErrors(documents));
 
 const InvalidLoanDetails = ({ loan }) => {
   const { logic, adminValidation, documents, borrowers, property } = loan;
   const { verifiedAt } = logic.verification;
 
-  const loanIssues = checkDocErrors({ adminValidation, documents });
+  const hasLoanIssues = hasErrors({ adminValidation, documents });
 
-  const borrowersIssues = borrowers.some(borrower =>
-    checkDocErrors({
+  const hasBorrowersIssues = borrowers.some(borrower =>
+    hasErrors({
       adminValidation: borrower.adminValidation,
-      dcuments: borrower.documents,
+      documents: borrower.documents,
     }));
 
-  const propertyIssues = checkDocErrors({
+  const hasPropertyIssues = hasErrors({
     adminValidation: property.adminValidation,
     documents: property.documents,
   });
@@ -51,28 +51,28 @@ const InvalidLoanDetails = ({ loan }) => {
         />
       </h2>
       <ul>
-        {loanIssues && (
+        {hasLoanIssues && (
           <DocErrorsDetails
             translationId="general.loan"
             adminValidation={adminValidation}
             documents={documents}
-            checkFilesErrors={checkDocErrors}
+            hasFileErrors={hasFileErrors}
           />
         )}
 
-        {borrowersIssues && (
+        {hasBorrowersIssues && (
           <BorrowersIssues
             borrowers={borrowers}
-            checkFileErrors={checkFilesErrors}
+            hasFileErrors={hasFileErrors}
           />
         )}
 
-        {propertyIssues && (
+        {hasPropertyIssues && (
           <DocErrorsDetails
             translationId="general.property"
             adminValidation={property.adminValidation}
             documents={property.documents}
-            checkFilesErrors={checkDocErrors}
+            hasFileErrors={hasFileErrors}
           />
         )}
       </ul>

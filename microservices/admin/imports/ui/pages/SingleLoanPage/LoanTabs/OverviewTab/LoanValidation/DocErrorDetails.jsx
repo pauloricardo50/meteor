@@ -8,14 +8,14 @@ const DocErrorsDetails = ({
   translationId,
   adminValidation,
   documents,
-  checkFilesErrors,
+  hasFileErrors,
 }) => (
   <div key={translationId}>
     <h4 className="bold">
       <T id={translationId} />
     </h4>
     <FieldsIssuesList adminValidation={adminValidation} />
-    <FilesIssuesList documents={documents} checkFileErrors={checkFilesErrors} />
+    <FilesIssuesList documents={documents} hasFileErrors={hasFileErrors} />
   </div>
 );
 
@@ -23,7 +23,7 @@ DocErrorsDetails.propTypes = {
   translationId: PropTypes.string.isRequired,
   adminValidation: PropTypes.object.isRequired,
   documents: PropTypes.object.isRequired,
-  checkFilesErrors: PropTypes.func.isRequired,
+  hasFileErrors: PropTypes.func.isRequired,
 };
 
 export default DocErrorsDetails;
