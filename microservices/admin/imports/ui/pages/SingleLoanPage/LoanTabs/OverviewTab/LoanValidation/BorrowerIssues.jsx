@@ -3,14 +3,16 @@ import PropTypes from 'prop-types';
 import { T } from 'core/components/Translation';
 import FilesIssuesList from './FilesIssuesList';
 import FieldsIssuesList from './FieldsIssuesList';
+import { getBorrowerFullName } from
+  '../../../../../../../../../core/utils/borrowerFunctions';
 
 const BorrowerIssues = ({ borrowers, checkFileErrors }) => {
   const borrowerAdminValidations = borrowers.map(({ firstName, lastName, adminValidation, documents }, i) => ({
     key: i,
     borrowerName:
-        firstName || lastName
-          ? `${firstName} ${lastName}`
-          : `Emprunteur ${i + 1}`,
+      !firstName && !lastName
+        ? <T id="DashboardBorrowers.itemTitle" values={{ index: i + 1 }} />
+        : getBorrowerFullName({ firstName, lastName }),
     fieldsIssues: <FieldsIssuesList adminValidation={adminValidation} />,
     filesIssues: (
       <FilesIssuesList
