@@ -10,7 +10,7 @@ const DocErrorsDetails = ({
   documents,
   hasFileErrors,
 }) => (
-  <div key={translationId}>
+  <div >
     <h4 className="bold">
       <T id={translationId} />
     </h4>
