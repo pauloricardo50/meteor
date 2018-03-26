@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
+import { T } from 'core/components/Translation';
 import Loan from './Loan';
 import SingleUserPageContainer from './SingleUserPageContainer';
 
@@ -21,6 +22,18 @@ const SingleUserPage = (props) => {
   if (isLoading || !user) return null;
 
   const { loans } = data;
+  const userCreatedAtFormatted = (
+    <p className="secondary" style={styles.createdAt}>
+      <T id="UsersTable.createdAt" />{' '}
+      {moment(user.createdAt).format('D MMM YY à HH:mm:ss')}
+    </p>
+  );
+
+  const userAssignedEmployee = user.assignedEmployee ? (
+    <p>
+      <T id="UsersTable.assignedTo" /> {user.assignedEmployee.emails[0].address}
+    </p>
+  ) : null;
 
   return (
     <section className="mask1 single-user-page">
@@ -28,11 +41,11 @@ const SingleUserPage = (props) => {
 
       <ImpersonateLink userId={user._id} className="impersonate-link" />
 
-      <p className="secondary" style={styles.createdAt}>
-        Créé le {moment(user.createdAt).format('D MMM YY à HH:mm:ss')}
-      </p>
-
-      <h3>Demandes de prêt</h3>
+      {userCreatedAtFormatted}
+      {userAssignedEmployee}
+      <h3>
+        <T id="collections.loans" />
+      </h3>
       {loans &&
         loans.map(loan => (
           <Loan
@@ -45,6 +58,12 @@ const SingleUserPage = (props) => {
         ))}
     </section>
   );
+};
+
+SingleUserPage.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+  data: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 export default SingleUserPageContainer(SingleUserPage);
