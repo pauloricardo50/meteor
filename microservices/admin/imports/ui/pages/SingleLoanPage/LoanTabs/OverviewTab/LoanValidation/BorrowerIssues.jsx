@@ -5,7 +5,7 @@ import FilesIssuesList from './FilesIssuesList';
 import FieldsIssuesList from './FieldsIssuesList';
 
 const BorrowerIssues = ({ borrowers, checkFileErrors }) => {
-  const borrowersAdminValidation = borrowers.map(({ firstName, lastName, adminValidation, documents }, i) => ({
+  const borrowerAdminValidations = borrowers.map(({ firstName, lastName, adminValidation, documents }, i) => ({
     key: i,
     borrowerName:
         firstName || lastName
@@ -20,14 +20,14 @@ const BorrowerIssues = ({ borrowers, checkFileErrors }) => {
     ),
   }));
 
-  if (borrowersAdminValidation.length > 0) {
+  if (borrowerAdminValidations.length > 0) {
     return (
       <div>
         <h4 className="bold">
           <T id="collections.borrowers" />
         </h4>
         <ul>
-          {borrowersAdminValidation.map(({ key, borrowerName, fieldsIssues, filesIssues }) => (
+          {borrowerAdminValidations.map(({ key, borrowerName, fieldsIssues, filesIssues }) => (
             <li key={key}>
               <p className="bold">{borrowerName}</p>
               {fieldsIssues}

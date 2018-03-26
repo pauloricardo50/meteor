@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { T, IntlDate } from 'core/components/Translation';
 import InvalidLoanDetails from './InvalidLoanDetails';
+import ValidationTemplate from './ValidationTemplate';
 
 const LoanValidation = ({ loan }) => {
   const { logic } = loan;
@@ -17,33 +18,19 @@ const LoanValidation = ({ loan }) => {
 
   if (validated) {
     return (
-      <h2 className="fixed-size bold">
-        <T id="LoanValidation.validatedAt" />
-        &nbsp;
-        <IntlDate
-          value={verifiedAt}
-          month="numeric"
-          year="numeric"
-          day="2-digit"
-          hour="2-digit"
-          minute="2-digit"
-        />
-      </h2>
+      <ValidationTemplate
+        className="fixed-size bold"
+        labelId="validatedAt"
+        date={verifiedAt}
+      />
     );
   } else if (requested) {
     return (
-      <h2 className="fixed-size bold warning">
-        <T id="LoanValidation.requestedAt" />
-        &nbsp;
-        <IntlDate
-          value={requestedAt}
-          month="numeric"
-          year="numeric"
-          day="2-digit"
-          hour="2-digit"
-          minute="2-digit"
-        />
-      </h2>
+      <ValidationTemplate
+        className="fixed-size bold warning"
+        labelId="requestedAt"
+        date={requestedAt}
+      />
     );
   }
 
@@ -57,7 +44,5 @@ const LoanValidation = ({ loan }) => {
 LoanValidation.propTypes = {
   loan: PropTypes.object.isRequired,
 };
-
-LoanValidation.defaultProps = {};
 
 export default LoanValidation;
