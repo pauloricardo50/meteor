@@ -11,15 +11,20 @@ import {
 } from '../methodDefinitions';
 
 borrowerInsert.setHandler((context, { borrower, userId }) => {
-  const userIdIsDefined = !!userId;
-  if (userIdIsDefined) {
+  let finalUserId;
+
+  if (userId) {
     SecurityService.checkCurrentUserIsAdmin();
+    finalUserId = userId;
+  } else if (userId === undefined) {
+    SecurityService.checkLoggedIn();
+    finalUserId = Meteor.userId();
+  } else if (userId === null) {
+    SecurityService.checkLoggedOut();
+    finalUserId = null;
   }
 
-  return BorrowerService.insert({
-    borrower,
-    userId: userIdIsDefined ? userId : Meteor.userId(),
-  });
+  return BorrowerService.insert({ borrower, userId: finalUserId });
 });
 
 borrowerUpdate.setHandler((context, { borrowerId, object }) => {

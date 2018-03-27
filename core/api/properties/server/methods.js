@@ -11,15 +11,20 @@ import {
 } from '../methodDefinitions';
 
 propertyInsert.setHandler((context, { property, userId }) => {
-  const userIdIsDefined = !!userId;
-  if (userIdIsDefined) {
+  let finalUserId;
+
+  if (userId) {
     SecurityService.checkCurrentUserIsAdmin();
+    finalUserId = userId;
+  } else if (userId === undefined) {
+    SecurityService.checkLoggedIn();
+    finalUserId = Meteor.userId();
+  } else if (userId === null) {
+    SecurityService.checkLoggedOut();
+    finalUserId = null;
   }
 
-  return PropertyService.insert({
-    property,
-    userId: userIdIsDefined ? userId : Meteor.userId(),
-  });
+  return PropertyService.insert({ property, userId: finalUserId });
 });
 
 propertyUpdate.setHandler((context, { propertyId, object }) => {

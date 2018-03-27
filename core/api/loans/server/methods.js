@@ -18,18 +18,20 @@ import {
 } from '../methodDefinitions';
 
 loanInsert.setHandler((context, { loan, userId }) => {
-  const userIdIsDefined = !!userId;
-  if (userIdIsDefined) {
+  let finalUserId;
+
+  if (userId) {
     SecurityService.checkCurrentUserIsAdmin();
-  } else {
-    // Everyone can insert loans without userIds, they can then be assigned to
-    // it later
+    finalUserId = userId;
+  } else if (userId === undefined) {
+    SecurityService.checkLoggedIn();
+    finalUserId = Meteor.userId();
+  } else if (userId === null) {
+    SecurityService.checkLoggedOut();
+    finalUserId = null;
   }
 
-  return LoanService.insert({
-    loan,
-    userId: userIdIsDefined ? userId : Meteor.userId(),
-  });
+  return LoanService.insert({ loan, userId: finalUserId });
 });
 
 loanUpdate.setHandler((context, { loanId, object }) => {
