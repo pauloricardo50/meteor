@@ -9,7 +9,7 @@ import DashboardProgressContainer from './DashboardProgressContainer';
 
 const DashboardProgress = props => (
   <div className="dashboard-progress">
-    <p>
+    <p className="title">
       <b>
         <T id="DashboardProgressBar.title" />
       </b>

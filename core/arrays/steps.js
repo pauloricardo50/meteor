@@ -417,9 +417,9 @@ export const closingPercent = (loan) => {
   closingSteps.forEach((step) => {
     if (step.type === CLOSING_STEPS_TYPE.TODO) {
       arr.push(step.status === CLOSING_STEPS_STATUS.VALID ? true : undefined);
-    } else {
-      arr.push(isArray(loan.files[step.id]) &&
-        loan.files[step.id].every(file => file.status === CLOSING_STEPS_STATUS.VALID)
+    } else if (loan.documents[step.id]) {
+      arr.push(isArray(loan.documents[step.id].files) &&
+          loan.documents[step.id].files.every(file => file.status === CLOSING_STEPS_STATUS.VALID)
         ? true
         : undefined);
     }

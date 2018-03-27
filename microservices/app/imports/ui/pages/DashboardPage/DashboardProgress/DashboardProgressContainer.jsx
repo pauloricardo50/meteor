@@ -6,7 +6,7 @@ export default compose(
   withRouter,
   createContainer(({ loan, borrowers, property }) => {
     const steps = getSteps({ loan, borrowers, property });
-    const nextItem = steps[loan.logic.step].items.find(subStep => !subStep.isDone());
+    const nextItem = steps[loan.logic.step - 1].items.find(subStep => !subStep.isDone());
 
     return {
       steps,
