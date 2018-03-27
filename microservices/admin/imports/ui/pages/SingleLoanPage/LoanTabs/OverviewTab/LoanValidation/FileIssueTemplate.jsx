@@ -20,6 +20,7 @@ const FileIssueTemplate = ({ files, fileNameKey, label }) => (
               </li>
             );
           }
+
           return null;
         })}
       </ul>
