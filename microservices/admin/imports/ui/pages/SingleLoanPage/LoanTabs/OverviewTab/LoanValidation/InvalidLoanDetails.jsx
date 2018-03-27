@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { T, IntlDate } from 'core/components/Translation';
 import { FILE_STATUS } from 'core/api/files/fileConstants';
+import FullDate from 'core/components/FullDate';
 import BorrowersIssues from './BorrowerIssues';
 import DocErrorsDetails from './DocErrorDetails';
 
@@ -39,16 +39,7 @@ const InvalidLoanDetails = ({ loan }) => {
     <div>
       <hr />
       <h2 className="fixed-size bold error">
-        <T id="LoanValidation.invalidatedAt" />
-        &nbsp;
-        <IntlDate
-          value={verifiedAt}
-          month="numeric"
-          year="numeric"
-          day="2-digit"
-          hour="2-digit"
-          minute="2-digit"
-        />
+        <FullDate translationId="invalidatedAt" date={verifiedAt} />
       </h2>
       <ul>
         {hasLoanIssues && (
@@ -83,7 +74,5 @@ const InvalidLoanDetails = ({ loan }) => {
 InvalidLoanDetails.propTypes = {
   loan: PropTypes.object.isRequired,
 };
-
-InvalidLoanDetails.defaultProps = {};
 
 export default InvalidLoanDetails;
