@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import saveStartForm from 'core/utils/saveStartForm';
-import { SecurityService, Loans, Borrowers } from '../..';
+import { SecurityService, Loans, Borrowers, Properties } from '../..';
 import {
   getMixpanelAuthorization,
   getServerTime,
@@ -45,16 +45,19 @@ addBorrower.setHandler((context, { loanId }) => {
 setUserToLoan.setHandler((context, { loanId }) => {
   SecurityService.checkLoggedIn();
   const loan = Loans.findOne(loanId);
-  const { borrowers } = loan;
+  const { borrowerIds, propertyId } = loan;
 
   if (loan.userId) {
     throw new Meteor.Error('loan-already-owned');
   }
 
-  Loans.update(loanId, { $set: { userId: Meteor.userId() } });
-  borrowers.forEach((borrowerId) => {
-    Borrowers.update(borrowerId, { $set: { userId: Meteor.userId() } });
+  const currentUserId = Meteor.userId();
+
+  Loans.update(loanId, { $set: { userId: currentUserId } });
+  borrowerIds.forEach((borrowerId) => {
+    Borrowers.update(borrowerId, { $set: { userId: currentUserId } });
   });
+  Properties.update(propertyId, { $set: { userId: currentUserId } });
 });
 
 removeBorrower.setHandler((context, { loanId, borrowerId }) => {

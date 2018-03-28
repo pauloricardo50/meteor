@@ -26,6 +26,12 @@ export default class Security {
     }
   }
 
+  static checkLoggedOut() {
+    if (Meteor.userId()) {
+      this.handleUnauthorized('Checking if logged out');
+    }
+  }
+
   static currentUserHasRole(role) {
     return this.hasRole(Meteor.userId(), role);
   }
