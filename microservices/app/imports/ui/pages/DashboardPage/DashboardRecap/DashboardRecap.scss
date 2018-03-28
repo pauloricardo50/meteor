@@ -1,25 +1,15 @@
+@import './DashboardRecapFinance/DashboardRecapFinance.scss';
+@import './DashboardRecapProperty/DashboardRecapProperty.scss';
+
 .dashboard-recap {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .dashboard-recap .cards {
   display: flex;
   width: 100%;
-}
-
-.dashboard-recap .dashboard-recap-finance {
-  display: flex;
-  flex-grow: 2;
-  margin: 8px;
-  padding: 16px;
-}
-
-.dashboard-recap .dashboard-recap-property {
-  display: flex;
-  flex-grow: 1;
-  margin: 8px;
-  padding: 16px;
 }
