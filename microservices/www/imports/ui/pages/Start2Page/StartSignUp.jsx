@@ -76,15 +76,16 @@ export default class StartSignUp extends Component {
     const { formState } = this.props;
     this.setState({ loading: true });
 
+    // userId should remain undefined, and the user will add it to his account
+    // once logged in, this is to avoid other people adding loans to your
+    // account
     saveStartForm(formState, null)
       .then((loanId) => {
-        console.log('Loan inserted: ', loanId);
         // Keep loading true, to prevent double insert
         this.setState({ errorText: '' });
         const appUrl = `${
           Meteor.settings.public.subdomains.app
         }/add-loan/${loanId}`;
-        console.log('changing location to :', appUrl);
 
         window.location.replace(appUrl);
         return false;
@@ -93,7 +94,7 @@ export default class StartSignUp extends Component {
   };
 
   render() {
-    const { showPassword, login, signUp, loading, errorText } = this.state;
+    const { loading, errorText } = this.state;
     return (
       <div style={styles.section}>
         <h2>
