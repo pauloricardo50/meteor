@@ -1,6 +1,19 @@
 .dashboard-recap-property {
   display: flex;
+  flex-direction: column;
   flex-grow: 1;
-  margin: 8px;
   padding: 16px;
+
+  & > * {
+    flex-grow: 1;
+    flex-basis: 0;
+  }
+}
+
+.dashboard-recap-property .map {
+  margin: -16px -16px 0 -16px;
+  width: calc(100% + 32px);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  overflow: hidden;
 }

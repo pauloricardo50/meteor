@@ -9,8 +9,8 @@ const DashboardRecap = props => (
     <h3>Title</h3>
 
     <div className="cards">
-      <DashboardRecapFinance />
-      <DashboardRecapProperty />
+      <DashboardRecapFinance {...props} />
+      <DashboardRecapProperty {...props} />
     </div>
   </div>
 );

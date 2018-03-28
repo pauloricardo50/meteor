@@ -52,6 +52,7 @@ const createFakeProperties = (userId) => {
       buildingPlacementQuality: 'No option selected',
       propertyInfo: 'Not completed',
     },
+    expertise: {},
     documents: {
       plans: fakeDocument,
       cubage: fakeDocument,

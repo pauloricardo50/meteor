@@ -1,4 +1,9 @@
 {
+  "Recap.property": "Bien immobilier",
+  "property.expertise": "Expertise",
+  "property.expertiseStatus.NONE": "À faire",
+  "property.expertiseStatus.DONE": "Effectuée",
+  "property.expertiseStatus.ERROR": "Erreur",
   "DashboardProgressBar.title": "Progression",
 
   "Forms.futureOwner.BOTH": "Les deux",

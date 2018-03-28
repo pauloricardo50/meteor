@@ -4,6 +4,11 @@ import { Meteor } from 'meteor/meteor';
 
 import { GoogleMaps } from 'meteor/dburles:google-maps';
 
+const styles = {
+  width: '100%',
+  height: '100%',
+};
+
 export default class GoogleMap extends Component {
   componentDidMount() {
     GoogleMaps.create({
@@ -57,7 +62,7 @@ export default class GoogleMap extends Component {
         ref={(c) => {
           this.map = c;
         }}
-        style={this.props.style}
+        style={styles}
         className={this.props.className}
       />
     );

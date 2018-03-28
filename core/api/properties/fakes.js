@@ -30,6 +30,9 @@ export const fakeProperty = {
   buildingQuality: 1,
   flatQuality: 2,
   materialsQuality: 2,
+  expertise: {
+    status: 'NONE',
+  },
   documents: {
     plans: fakeDocument,
     cubage: fakeDocument,
