@@ -42,17 +42,11 @@ export default class StructurePage extends Component {
     this.setState({ [id]: Math.round(toNumber(value)) });
 
   render() {
-    const { loan, borrowers } = this.props;
+    const { loan, borrowers, property } = this.props;
     const { fortuneUsed, insuranceFortuneUsed } = this.state;
     const modifiedLoan = merge({}, loan, {
       general: { fortuneUsed, insuranceFortuneUsed },
     });
-
-    console.log('Original loan:', loan);
-    console.log('fortuneUsed:', fortuneUsed);
-    console.log('insuranceFortuneUsed:', insuranceFortuneUsed);
-
-    console.log('modified loan:', modifiedLoan);
 
     return (
       <ProcessPage {...this.props} stepNb={2} id="structure" showBottom={false}>
