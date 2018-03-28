@@ -171,14 +171,6 @@ const getSteps = (props) => {
   setPreviousDone(steps, 1, 2); // Stratégie
   setPreviousDone(steps, 1, 3); // Choix du prêteur
 
-  // Make sure these indices correspond
-  // Verify all 3 items before item 4 are done
-  // steps[1].items[4].disabled = !previousDone(steps, 1, 4); // Vérification e-Potek
-
-  // steps[2].items[1].disabled = !previousDone(steps, 2, 1); // Enchères
-  // steps[2].items[2].disabled = !previousDone(steps, 2, 2); // Stratégie
-  // steps[2].items[3].disabled = !previousDone(steps, 2, 3); // Choix du prêteur
-
   return steps;
 };
 
