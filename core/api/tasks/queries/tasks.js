@@ -12,6 +12,9 @@ export default Tasks.createQuery(TASK_QUERIES.TASKS, {
     if (params.dashboardTasks) {
       filters.assignedEmployeeId = { $in: [params.assignedTo, undefined] };
     }
+    if (params.all) {
+      filters._id = { $ne: '' };
+    }
   },
   $options: {
     sort: {
