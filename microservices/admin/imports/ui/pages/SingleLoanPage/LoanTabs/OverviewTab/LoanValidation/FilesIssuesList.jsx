@@ -1,7 +1,8 @@
 import React from 'react';
 import FileIssueTemplate from './FileIssueTemplate';
+import { hasFileErrors } from './InvalidLoanDetails';
 
-export default ({ documents, hasFileErrors }) =>
+export default ({ documents }) =>
   Object.keys(documents).map((key) => {
     const { files, label } = documents[key];
 

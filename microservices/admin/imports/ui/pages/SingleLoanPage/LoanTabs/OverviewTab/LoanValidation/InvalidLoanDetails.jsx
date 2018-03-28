@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FILE_STATUS } from 'core/api/files/fileConstants';
-import FullDate from 'core/components/FullDate';
+import FullDate from 'core/components/dateComponents/FullDate';
 import BorrowersIssues from './BorrowerIssues';
 import DocErrorsDetails from './DocErrorDetails';
 
-const hasFileErrors = fileArray =>
+export const hasFileErrors = fileArray =>
   fileArray.some(file => file.status === FILE_STATUS.ERROR);
 
 const hasDocumentsErrors = documents =>
@@ -47,23 +47,16 @@ const InvalidLoanDetails = ({ loan }) => {
             translationId="general.loan"
             adminValidation={adminValidation}
             documents={documents}
-            hasFileErrors={hasFileErrors}
           />
         )}
 
-        {hasBorrowersIssues && (
-          <BorrowersIssues
-            borrowers={borrowers}
-            hasFileErrors={hasFileErrors}
-          />
-        )}
+        {hasBorrowersIssues && <BorrowersIssues borrowers={borrowers} />}
 
         {hasPropertyIssues && (
           <DocErrorsDetails
             translationId="general.property"
             adminValidation={property.adminValidation}
             documents={property.documents}
-            hasFileErrors={hasFileErrors}
           />
         )}
       </ul>

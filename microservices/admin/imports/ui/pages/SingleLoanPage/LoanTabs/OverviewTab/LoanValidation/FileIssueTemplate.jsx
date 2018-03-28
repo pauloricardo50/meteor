@@ -7,9 +7,10 @@ const FileIssueTemplate = ({ files, fileNameKey, label }) => (
     <li>
       <p className="bold">{label || <T id={`files.${fileNameKey}`} />}</p>
       <ul>
-        {files.map(({ name, error }) => {
-          if (error) {
-            return (
+        {files.map(({ name, error }) =>
+          (error ?
+            null :
+            (
               <li key={name}>
                 <p className="file">
                   <T id="LoanValidation.file" />:{` ${name}`}
@@ -18,11 +19,7 @@ const FileIssueTemplate = ({ files, fileNameKey, label }) => (
                   <T id="LoanValidation.comment" />: {error}
                 </p>
               </li>
-            );
-          }
-
-          return null;
-        })}
+            )))}
       </ul>
     </li>
   </ul>

@@ -4,11 +4,17 @@ import { T } from 'core/components/Translation';
 import InvalidLoanDetails from './InvalidLoanDetails';
 import ValidationTemplate from './ValidationTemplate';
 
+const isBeforeFirstRequest = (validated, requested) =>
+  validated === undefined && requested === undefined;
+
+const isInvalidated = (validated, requested) =>
+  validated === false && requested === false;
+
 const LoanValidation = ({ loan }) => {
   const { logic } = loan;
   const { requested, requestedAt, validated, verifiedAt } = logic.verification;
 
-  if (validated === undefined && requested === undefined) {
+  if (isBeforeFirstRequest(validated, requested)) {
     return (
       <h2 className="fixed-size bold">
         <T id="LoanValidation.notYetRequested" />
@@ -34,7 +40,7 @@ const LoanValidation = ({ loan }) => {
     );
   }
 
-  if (validated === false && requested === false) {
+  if (isInvalidated(validated, requested)) {
     return <InvalidLoanDetails loan={loan} />;
   }
 

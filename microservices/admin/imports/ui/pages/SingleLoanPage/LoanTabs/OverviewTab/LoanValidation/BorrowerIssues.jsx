@@ -5,16 +5,14 @@ import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 import FilesIssuesList from './FilesIssuesList';
 import FieldsIssuesList from './FieldsIssuesList';
 
-const BorrowerIssues = ({ borrowers, hasFileErrors }) => {
+const BorrowerIssues = ({ borrowers }) => {
   const borrowerAdminValidations = borrowers.map(({ firstName, lastName, adminValidation, documents }, i) => ({
     key: i,
     borrowerName: getBorrowerFullName({ firstName, lastName }) || (
       <T id="BorrowerIssues.itemTitle" values={{ index: i + 1 }} />
     ),
     fieldsIssues: <FieldsIssuesList adminValidation={adminValidation} />,
-    filesIssues: (
-      <FilesIssuesList documents={documents} hasFileErrors={hasFileErrors} />
-    ),
+    filesIssues: <FilesIssuesList documents={documents} />,
   }));
 
   if (borrowerAdminValidations.length > 0) {
@@ -41,7 +39,6 @@ const BorrowerIssues = ({ borrowers, hasFileErrors }) => {
 
 BorrowerIssues.propTypes = {
   borrowers: PropTypes.array,
-  hasFileErrors: PropTypes.func.isRequired,
 };
 
 BorrowerIssues.defaultProps = {
