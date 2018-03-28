@@ -9,6 +9,7 @@ import { LoadingComponent } from 'core/components/Loading';
 
 import UsersTableContainer from './UsersTableContainer';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
+import { ROLES } from '../../../core/api/users/userConstants';
 
 class UsersTable extends Component {
   constructor(props) {
@@ -72,10 +73,17 @@ class UsersTable extends Component {
       }
     }
 
-    columns.push(<div style={{ display: 'flex' }}>
-      <ImpersonateLink userId={user._id} history={this.props.history} />
-      <UserAssignDropdown doc={user} />
-    </div>);
+    const actionsColumnStyle = { display: 'flex' };
+    const actionsColumn = _.isEqual(user.roles, [ROLES.USER]) ? (
+      <div style={actionsColumnStyle}>
+        <ImpersonateLink user={user} history={this.props.history} />
+        <UserAssignDropdown doc={user} />
+      </div>
+    ) : (
+      <div style={actionsColumnStyle} />
+    );
+
+    columns.push(actionsColumn);
 
     return columns;
   };

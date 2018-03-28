@@ -38,7 +38,7 @@ export default class OverviewTab extends React.Component {
             adminNoteText={loan.adminNote}
             className="admin-note"
           />
-          <ImpersonateLink userId={loan.userId} />
+          <ImpersonateLink user={loan.user} />
         </div>
 
         <StepStatus {...this.props} serverTime={this.state.serverTime} />
