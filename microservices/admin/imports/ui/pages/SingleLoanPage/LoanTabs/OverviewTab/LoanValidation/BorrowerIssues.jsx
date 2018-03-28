@@ -25,8 +25,10 @@ const BorrowerIssues = ({ borrowers }) => {
           {borrowerAdminValidations.map(({ key, borrowerName, fieldsIssues, filesIssues }) => (
             <li key={key}>
               <p className="bold">{borrowerName}</p>
-              {fieldsIssues}
-              {filesIssues}
+              <ul>
+                {fieldsIssues}
+                {filesIssues}
+              </ul>
             </li>
           ))}
         </ul>
