@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import Recap from 'core/components/Recap';
 import { toMoney } from 'core/utils/conversionFunctions';
 import { getTotalUsed, getLoanValue } from 'core/utils/loanFunctions';
+import { T } from 'core/components/Translation';
+
+import DashboardRecapSum from './DashboardRecapSum';
 
 const getRecapArray = (props) => {
   const { loan } = props;
@@ -36,9 +39,15 @@ const getRecapArray = (props) => {
 const DashboardRecapFinancing = props => (
   <div>
     <Recap array={getRecapArray(props)} />
+    <DashboardRecapSum
+      label={<T id="DashboardRecapFinancing.sumTitle" />}
+      value={props.total}
+    />
   </div>
 );
 
-DashboardRecapFinancing.propTypes = {};
+DashboardRecapFinancing.propTypes = {
+  total: PropTypes.number.isRequired,
+};
 
 export default DashboardRecapFinancing;

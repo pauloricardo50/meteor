@@ -12,6 +12,8 @@
 .dashboard-recap .cards {
   display: flex;
   width: 100%;
+  overflow-x: scroll;
+  white-space: nowrap;
 
   & > * {
     flex-basis: 0;

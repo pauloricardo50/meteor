@@ -12,18 +12,12 @@ const getRecapArray = (property) => {
   const { landArea, insideArea, expertise: { status } } = property;
   return [
     {
-      title: true,
-      label: 'Recap.property',
-      labelStyle: {
-        marginTop: 0,
-      },
-    },
-    {
       subtitle: true,
       label: getPropertyAddressString(property),
       labelStyle: {
         marginTop: 0,
         marginBottom: 16,
+        textAlign: 'left',
       },
     },
 
@@ -59,6 +53,9 @@ const DashboardRecapProperty = (props) => {
         address={getPropertyAddressString(property)}
         className="map"
       />
+      <h3>
+        <T id="Recap.property" />
+      </h3>
       <Recap array={getRecapArray(property)} className="recap" />
     </div>
   );
