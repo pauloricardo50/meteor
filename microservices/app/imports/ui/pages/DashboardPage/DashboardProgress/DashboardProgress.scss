@@ -18,12 +18,19 @@
   align-items: flex-start;
 
   .text {
-    padding: 16px 0;
+    display: flex;
+    padding: 32px 0;
+    .icon {
+      margin-right: 16px;
+    }
   }
 }
 
 .dashboard-progress .dashboard-progress-bar {
   position: relative;
+}
+
+.dashboard-progress .dashboard-progress-bar .steps {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -32,6 +39,8 @@
 
 .dashboard-progress-bar-step {
   display: flex;
+  // flex-grow: 1;
+  // flex-basis: 0;
   flex-direction: column;
   align-items: center;
 }
@@ -47,6 +56,13 @@
   margin-bottom: 8px;
   &.done {
     background-color: $success;
+  }
+}
+
+.dashboard-progress .dashboard-progress-bar .dashboard-progress-bar-step {
+  .fa {
+    color: white !important;
+    transform: scale(0.7);
   }
 }
 
