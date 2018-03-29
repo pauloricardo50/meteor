@@ -20,7 +20,11 @@ export const TasksTab = (props) => {
 TasksTab.propTypes = {
   loan: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  error: PropTypes.object.isRequired,
+  error: PropTypes.object,
+};
+
+TasksTab.defaultProps = {
+  error: {},
 };
 
 export default TasksTab;

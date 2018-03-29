@@ -48,6 +48,10 @@ const createFakeProperties = (userId) => {
     buildingQuality: 1,
     flatQuality: 2,
     materialsQuality: 2,
+    adminValidation: {
+      buildingPlacementQuality: 'No option selected',
+      propertyInfo: 'Not completed',
+    },
     documents: {
       plans: fakeDocument,
       cubage: fakeDocument,

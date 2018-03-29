@@ -11,13 +11,28 @@ export const fakeFile = {
   url: 'https://www.fake-url.com',
   key: 'asdf/fakeKey/fakeFile.pdf',
   fileCount: 0,
+};
+
+export const validFakeFile = {
+  ...fakeFile,
   status: FILE_STATUS.VALID,
   error: '',
 };
 
+export const invalidFakeFile = {
+  ...fakeFile,
+  error: 'Incorrect file format',
+  status: FILE_STATUS.ERROR,
+};
+
 export const fakeDocument = {
-  files: [fakeFile],
+  files: [validFakeFile, invalidFakeFile],
   uploadCount: 1,
   label: undefined,
   isAdmin: false,
+};
+
+export const fakeDocumentWithLabel = {
+  ...fakeDocument,
+  label: 'My super important document',
 };
