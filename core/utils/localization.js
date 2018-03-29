@@ -5,7 +5,7 @@ import moment from 'moment';
 import Loadable from 'core/utils/loadable';
 import fr from 'react-intl/locale-data/fr';
 
-export const getUserLocale = () => 'fr-CH';
+export const getUserLocale = () => 'fr';
 
 export const getFormats = () => ({
   number: {

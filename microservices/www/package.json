@@ -4,10 +4,8 @@
   "scripts": {
     "prestart": "cd ../.. && npm run lang -- www",
     "start": "meteor run",
-    "test":
-      "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 3005",
-    "test-CI":
-      "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
+    "test": "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 3005",
+    "test-CI": "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
     "debug": "meteor run --inspect"
   },
   "dependencies": {
@@ -24,6 +22,7 @@
     "normalize-scss": "^7.0.1",
     "rc-slider": "^8.6.1",
     "react": "^16.2.0",
+    "react-bootstrap": "^0.32.1",
     "react-dom": "^16.2.0",
     "react-helmet": "^5.2.0",
     "react-highcharts": "^16.0.2",
@@ -34,6 +33,7 @@
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
+    "react-string-replace": "^0.4.1",
     "recompose": "^0.26.0",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",

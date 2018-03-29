@@ -1,19 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { BrowserRouter, Switch } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 
-import Routes from '../shared/Routes';
+import App from '../shared/App';
 
-const ClientApp = ({ store }) => (
-  <Provider store={store}>
-    <BrowserRouter>
-      <Switch>
-        <Routes />
-      </Switch>
-    </BrowserRouter>
-  </Provider>
-);
+const ClientApp = ({ store }) => <App store={store} Router={BrowserRouter} />;
 
 ClientApp.propTypes = {
   store: PropTypes.object.isRequired,
