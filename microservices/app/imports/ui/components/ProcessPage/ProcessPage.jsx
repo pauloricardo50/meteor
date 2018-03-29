@@ -9,40 +9,59 @@ import withLoan from 'core/containers/withLoan';
 import ProcessPageBar from './ProcessPageBar';
 import StepperContainer from '../../containers/StepperContainer';
 
+const isLastItemOfStep = (index, length) => index >= length - 1;
+const isFirstItemOfStep = index => index <= 0;
+
 export const getStepValues = (props) => {
+  const { id: itemId, stepNb } = props;
   const steps = getSteps(props);
-  const stepItems = steps[props.stepNb].items;
-  const currentStep = stepItems.find(i => i.id === props.id);
-  const index = stepItems.findIndex(i => i.id === props.id);
-  const length = stepItems.length;
-  let prevStep;
-  let nextStep;
+
+  const currentStepIndex = stepNb - 1;
+  const prevStepIndex = currentStepIndex - 1;
+  const nextStepIndex = currentStepIndex + 1;
+
+  const currentStep = steps[currentStepIndex];
+  const prevStep = prevStepIndex >= 0 && steps[prevStepIndex];
+  const nextStep = nextStepIndex < steps.length && steps[nextStepIndex];
+
+  const { items: currentStepItems } = currentStep;
+  const { length: currentStepItemCount } = currentStepItems;
+
+  const currentItem = currentStepItems.find(({ id }) => id === itemId);
+  const currentItemIndex = currentStepItems.findIndex(({ id }) => id === itemId);
+
+  let prevLink;
   let nextLink;
+  let prevItem;
+  let nextItem;
 
-  // Get the next step's link
-  if (index < length - 1) {
-    nextStep = stepItems[index + 1];
-    nextLink = nextStep && !nextStep.disabled && nextStep.link;
+  // Get the next item's link
+  if (isLastItemOfStep(currentItemIndex, currentStepItemCount)) {
+    // Get the first item of next step
+    nextItem = nextStep && nextStep.items[0];
+    nextLink = nextItem && nextItem.link;
   } else {
-    nextStep =
-      steps[props.stepNb + 1].items.length > 0 &&
-      steps[props.stepNb + 1].items[0];
-    nextLink = nextStep && nextStep.link;
+    // get next item of current step
+    nextItem = currentStepItems[currentItemIndex + 1];
+    nextLink = nextItem && !nextItem.disabled && nextItem.link;
   }
 
-  // Get the previous step's link
-  if (index > 0) {
-    prevStep = stepItems[index - 1];
+  // Get the previous item's link
+  if (isFirstItemOfStep(currentItemIndex)) {
+    // Get the last item of the previous step
+    const prevItems = prevStep.items;
+    prevItem = prevItems && prevItems[prevItems.length - 1];
+    prevLink = prevItem && prevItem.link;
   } else {
-    const prevItems = steps[props.stepNb - 1].items;
-    prevStep = prevItems[prevItems.length - 1];
+    // get previous item of current step
+    prevItem = currentStepItems[currentItemIndex - 1];
+    prevLink = prevItem && prevItem.link;
   }
-  const prevLink = prevStep && prevStep.link;
 
   return {
-    currentStep,
-    index,
-    length,
+    currentStep: currentItem,
+    index: currentItemIndex,
+    length: currentStepItemCount,
     nextLink,
     prevLink,
   };
@@ -58,11 +77,7 @@ class ProcessPage extends Component {
   setBarProps = () => {
     const { intl, loan } = this.props;
     const values = getStepValues(this.props);
-    this.barProps = {
-      ...this.props,
-      ...values,
-      status: loan.status,
-    };
+    this.barProps = { ...this.props, ...values, status: loan.status };
     DocHead.setTitle(`${intl.formatMessage({
       id: `steps.${this.barProps.currentStep.id}.title`,
     })} | e-Potek`);

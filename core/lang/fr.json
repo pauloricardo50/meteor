@@ -1,4 +1,6 @@
 {
+  "DashboardProgressBar.title": "Progression",
+
   "Forms.futureOwner.BOTH": "Les deux",
   "Forms.futureOwner.OTHER": "Autre",
 
@@ -1015,6 +1017,7 @@
   "steps.2.title": "2. Trouvez votre prêteur",
   "steps.3.subtitle": "60 minutes",
   "steps.3.title": "3. Finalisez votre demande",
+  "steps.4.title": "",
   "steps.auction.subtitle": "2 jours",
   "steps.auction.title": "Envoyez les enchères",
   "steps.auction.waiting": "Enchères en cours...",

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
@@ -7,7 +7,7 @@ import { T } from 'core/components/Translation';
 import Step from './Step';
 import StepperContainer from '../../containers/StepperContainer';
 
-class SideNavStepper extends React.Component {
+class SideNavStepper extends Component {
   constructor() {
     super();
     this.state = {};
@@ -31,22 +31,20 @@ class SideNavStepper extends React.Component {
     }
   }
 
-  handleClick = (i, isNavLink = false) => {
-    if (this.props.activeStep === i && !isNavLink) {
-      this.props.hideSteps();
+  handleClick = (stepNb, isNavLink = false) => {
+    const { activeStep, hideSteps, setStep } = this.props;
+    if (activeStep === stepNb && !isNavLink) {
+      hideSteps();
     } else {
-      this.props.setStep(i);
+      setStep(stepNb);
     }
   };
 
   render() {
     const { serverTime } = this.state;
-    const { activeStep } = this.props;
+    const { activeStep, loan: { logic: { step: currentStep } } } = this.props;
 
-    const steps = getSteps({
-      ...this.props,
-      serverTime,
-    });
+    const steps = getSteps({ ...this.props, serverTime });
 
     return (
       <div className="side-stepper">
@@ -54,14 +52,14 @@ class SideNavStepper extends React.Component {
           <T id="SideNavStepper.title" />
         </h5>
         <ul className="list">
-          {steps.map((s, i) => (
+          {steps.map(step => (
             <Step
               {...this.props}
-              key={i}
-              step={s}
-              active={activeStep === i}
-              currentLoanStep={this.props.loan.logic.step === i}
-              handleClick={() => this.handleClick(i)}
+              key={step.nb}
+              step={step}
+              active={activeStep === step.nb}
+              currentLoanStep={currentStep === step.nb}
+              handleClick={() => this.handleClick(step.nb)}
             />
           ))}
         </ul>

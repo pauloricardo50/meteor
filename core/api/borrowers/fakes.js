@@ -60,7 +60,7 @@ export const completeFakeBorrower = {
   bankFortune: 300000,
   insuranceSecondPillar: 120000,
   insuranceThirdPillar: 50000,
-  files: {
+  documents: {
     identity: fakeDocument,
     taxes: fakeDocument,
     salaryCertificate: fakeDocument,

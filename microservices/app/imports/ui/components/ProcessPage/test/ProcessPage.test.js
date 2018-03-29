@@ -85,8 +85,8 @@ describe('getStepValues', () => {
 
     expect(getStepValues(parameters).index).to.equal(2);
     expect(getStepValues(parameters).length).to.equal(5);
-    expect(getStepValues(parameters).prevLink).to.equal(steps[1].items[1].link);
-    expect(getStepValues(parameters).nextLink).to.equal(steps[1].items[3].link);
+    expect(getStepValues(parameters).prevLink).to.equal(steps[0].items[1].link);
+    expect(getStepValues(parameters).nextLink).to.equal(steps[0].items[3].link);
   });
 
   it('Works for the last item of a step', () => {
@@ -96,7 +96,7 @@ describe('getStepValues', () => {
 
     expect(getStepValues(parameters).index).to.equal(4);
     expect(getStepValues(parameters).length).to.equal(5);
-    expect(getStepValues(parameters).prevLink).to.equal(steps[1].items[3].link);
-    expect(getStepValues(parameters).nextLink).to.equal(steps[2].items[0].link);
+    expect(getStepValues(parameters).prevLink).to.equal(steps[0].items[3].link);
+    expect(getStepValues(parameters).nextLink).to.equal(steps[1].items[0].link);
   });
 });
