@@ -32,16 +32,17 @@ class SideNavStepper extends Component {
   }
 
   handleClick = (stepNb, isNavLink = false) => {
-    if (this.props.activeStep === stepNb && !isNavLink) {
-      this.props.hideSteps();
+    const { activeStep, hideSteps, setStep } = this.props;
+    if (activeStep === stepNb && !isNavLink) {
+      hideSteps();
     } else {
-      this.props.setStep(stepNb);
+      setStep(stepNb);
     }
   };
 
   render() {
     const { serverTime } = this.state;
-    const { activeStep } = this.props;
+    const { activeStep, loan: { logic: { step: currentStep } } } = this.props;
 
     const steps = getSteps({ ...this.props, serverTime });
 
@@ -57,7 +58,7 @@ class SideNavStepper extends Component {
               key={step.nb}
               step={step}
               active={activeStep === step.nb}
-              currentLoanStep={this.props.loan.logic.step === step.nb}
+              currentLoanStep={currentStep === step.nb}
               handleClick={() => this.handleClick(step.nb)}
             />
           ))}

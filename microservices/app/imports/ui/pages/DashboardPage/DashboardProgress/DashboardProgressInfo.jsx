@@ -15,12 +15,7 @@ const DashboardProgressInfo = ({ currentLink, currentItemId }) => (
         </b>
       </p>
     </div>
-    <Button
-      variant="raised"
-      color="secondary"
-      link={!!currentLink}
-      to={currentLink}
-    >
+    <Button raised secondary link={!!currentLink} to={currentLink}>
       <T id="general.continue" />
     </Button>
   </div>
