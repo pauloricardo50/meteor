@@ -16,6 +16,7 @@ import UsersPage from '../../ui/pages/UsersPage/UsersPage';
 import SingleUserPage from '../../ui/pages/SingleUserPage';
 import TasksPage from '../../ui/pages/TasksPage/TasksPage';
 import BorrowersPage from '../../ui/pages/BorrowersPage';
+import SearchResults from '../../ui/pages/SearchPage/SearchResults';
 
 import AdminStore from '../../ui/components/AdminStore';
 
@@ -35,6 +36,7 @@ const AdminRouter = () => (
         <Route path="/users/:userId" component={SingleUserPage} />
         <Route path="/tasks" component={TasksPage} />
         <Route path="/borrowers" component={BorrowersPage} />
+        <Route path="/search" render={() => <SearchResults searchQuery="2" />} />
         <Route path="/dev" component={DevPage} />
         <Route component={NotFound} />
       </Switch>
