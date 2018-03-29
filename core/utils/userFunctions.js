@@ -1,3 +1,4 @@
+import { _ } from 'meteor/underscore';
 import { ROLES } from '../api/users/userConstants';
 
 export const isUser = (user) => {
