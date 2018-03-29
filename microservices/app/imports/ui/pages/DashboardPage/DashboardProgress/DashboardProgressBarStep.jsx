@@ -17,7 +17,7 @@ const DashboardProgressBarStep = ({
 
 DashboardProgressBarStep.propTypes = {
   step: PropTypes.object.isRequired,
-  isCurrentStep: PropTypes.number.isRequired,
+  isCurrentStep: PropTypes.bool.isRequired,
   isDone: PropTypes.bool.isRequired,
 };
 

@@ -26,6 +26,13 @@ const DashboardProgressInfo = ({ currentLink, currentItemId }) => (
   </div>
 );
 
-DashboardProgressInfo.propTypes = {};
+DashboardProgressInfo.propTypes = {
+  currentLink: PropTypes.string,
+  currentItemId: PropTypes.string.isRequired,
+};
+
+DashboardProgressInfo.defaultProps = {
+  currentLink: undefined,
+};
 
 export default DashboardProgressInfo;

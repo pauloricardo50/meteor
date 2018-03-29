@@ -402,18 +402,19 @@ export const getAllFilesPercent = ({ loan, borrowers, property }, step) => {
   return array.reduce((a, b) => a + b, 0) / array.length;
 };
 
+const closingStepsFilesAreValid = (loan, stepId) =>
+  isArray(loan.documents[stepId].files) &&
+  loan.documents[stepId].files.every(file => file.status === CLOSING_STEPS_STATUS.VALID);
+
 export const closingPercent = (loan) => {
   const { closingSteps } = loan.logic;
   const arr = [];
 
-  closingSteps.forEach((step) => {
-    if (step.type === CLOSING_STEPS_TYPE.TODO) {
-      arr.push(step.status === CLOSING_STEPS_STATUS.VALID ? true : undefined);
-    } else if (loan.documents[step.id]) {
-      arr.push(isArray(loan.documents[step.id].files) &&
-          loan.documents[step.id].files.every(file => file.status === CLOSING_STEPS_STATUS.VALID)
-        ? true
-        : undefined);
+  closingSteps.forEach(({ type, status, id: stepId }) => {
+    if (type === CLOSING_STEPS_TYPE.TODO) {
+      arr.push(status === CLOSING_STEPS_STATUS.VALID ? true : undefined);
+    } else if (loan.documents[stepId]) {
+      arr.push(closingStepsFilesAreValid(loan, stepId) ? true : undefined);
     }
   });
 

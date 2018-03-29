@@ -5,8 +5,8 @@ import { getServerTime } from '../api';
 // Get the time from the server once every 60 seconds, and update it directly
 // on the client between those 60 seconds.
 
-const ONE_MINUTE = 60000;
 const ONE_SECOND = 1000;
+const ONE_MINUTE = 60 * ONE_SECOND;
 
 export default WrappedComponent =>
   class ServerTimeContainer extends Component {
