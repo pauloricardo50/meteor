@@ -6,10 +6,10 @@ import { Link } from 'react-router-dom';
 import Table from 'core/components/Table';
 import { T } from 'core/components/Translation/';
 import { LoadingComponent } from 'core/components/Loading';
+import { isUser } from 'core/utils/userFunctions';
 
 import UsersTableContainer from './UsersTableContainer';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
-import { ROLES } from '../../../core/api/users/userConstants';
 
 class UsersTable extends Component {
   constructor(props) {
@@ -74,9 +74,10 @@ class UsersTable extends Component {
     }
 
     const actionsColumnStyle = { display: 'flex' };
-    const actionsColumn = _.isEqual(user.roles, [ROLES.USER]) ? (
+
+    const actionsColumn = isUser(user) ? (
       <div style={actionsColumnStyle}>
-        <ImpersonateLink user={user} history={this.props.history} />
+        <ImpersonateLink user={user} />
         <UserAssignDropdown doc={user} />
       </div>
     ) : (

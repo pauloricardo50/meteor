@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 import { T } from 'core/components/Translation';
 import IconButton from 'core/components/IconButton';
 import { generateImpersonateLink } from '../../api/impersonation/impersonation';
-import { ROLES } from '../../api/users/userConstants';
+import { isUser } from '../../utils/userFunctions';
 
 const ImpersonateLink = ({ user, className }) => {
-  const isUser = _.isEqual(user.roles, [ROLES.USER]);
-
-  if (!isUser) {
+  if (!isUser(user)) {
     return null;
   }
 
