@@ -10,6 +10,7 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USER, {
       createdAt: -1,
     },
   },
+  roles: 1,
   emails: 1,
   createdAt: 1,
   loans: {

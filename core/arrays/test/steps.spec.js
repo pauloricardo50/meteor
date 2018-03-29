@@ -268,7 +268,7 @@ describe('steps', () => {
     it('returns 0 for one unverified upload', () => {
       const r = {
         logic: { closingSteps: [{ type: 'UPLOAD', id: 'myFile' }] },
-        files: { myFile: [{ status: 'UNVERIFIED' }] },
+        documents: { myFile: { files: [{ status: 'UNVERIFIED' }] } },
       };
       expect(closingPercent(r)).to.equal(0);
     });
@@ -276,7 +276,7 @@ describe('steps', () => {
     it('returns 1 for one valid upload', () => {
       const r = {
         logic: { closingSteps: [{ type: 'UPLOAD', id: 'myFile' }] },
-        files: { myFile: [{ status: 'VALID' }] },
+        documents: { myFile: { files: [{ status: 'VALID' }] } },
       };
       expect(closingPercent(r)).to.equal(1);
     });
@@ -289,9 +289,9 @@ describe('steps', () => {
             { type: 'UPLOAD', id: 'myFile2' },
           ],
         },
-        files: {
-          myFile: [{ status: 'VALID' }],
-          myFile2: [{ status: 'UNVERIFIED' }],
+        documents: {
+          myFile: { files: [{ status: 'VALID' }] },
+          myFile2: { files: [{ status: 'UNVERIFIED' }] },
         },
       };
       expect(closingPercent(r)).to.equal(0.5);

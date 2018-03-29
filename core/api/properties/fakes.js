@@ -30,7 +30,7 @@ export const fakeProperty = {
   buildingQuality: 1,
   flatQuality: 2,
   materialsQuality: 2,
-  files: {
+  documents: {
     plans: fakeDocument,
     cubage: fakeDocument,
     pictures: fakeDocument,
