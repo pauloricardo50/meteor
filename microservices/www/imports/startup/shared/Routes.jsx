@@ -8,10 +8,14 @@ import ContactPage from '../../ui/pages/ContactPage';
 import CareersPage from '../../ui/pages/CareersPage';
 import ConditionsPage from '../../ui/pages/ConditionsPage';
 import Widget1Page from '../../ui/pages/Widget1Page';
+import Start2Page from '../../ui/pages/Start2Page';
+import CheckMailboxPage from '../../ui/pages/CheckMailboxPage';
 
 const Routes = () => (
   <Switch>
     <Route path="/start/1" component={Widget1Page} />
+    <Route path="/start/2" component={Start2Page} />
+    <Route path="/checkYourMailbox/:email" component={CheckMailboxPage} />
     <Route path="/about" component={AboutPage} />
     <Route path="/faq" component={FaqPage} />
     <Route path="/contact" component={ContactPage} />

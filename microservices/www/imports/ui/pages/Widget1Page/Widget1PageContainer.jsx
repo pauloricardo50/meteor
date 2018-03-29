@@ -35,5 +35,5 @@ export default connect(({
   },
 }) => {
   const finma = getFinmaValues({ salary, fortune, propertyValue });
-  return { step, finma };
+  return { step, finma, salary, fortune, propertyValue };
 });

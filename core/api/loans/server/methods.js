@@ -18,20 +18,12 @@ import {
 } from '../methodDefinitions';
 
 loanInsert.setHandler((context, { loan, userId }) => {
-  let finalUserId;
-
-  if (userId) {
-    SecurityService.checkCurrentUserIsAdmin();
-    finalUserId = userId;
-  } else if (userId === undefined) {
+  if (userId === undefined) {
     SecurityService.checkLoggedIn();
-    finalUserId = Meteor.userId();
-  } else if (userId === null) {
-    SecurityService.checkLoggedOut();
-    finalUserId = null;
+    userId = Meteor.userId();
   }
 
-  return LoanService.insert({ loan, userId: finalUserId });
+  return LoanService.insert({ loan, userId });
 });
 
 loanUpdate.setHandler((context, { loanId, object }) => {
