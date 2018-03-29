@@ -28,8 +28,6 @@ describe('ImpersonateService', () => {
     const FICTIONAL_TOKEN = Random.id();
     const HASHED_TOKEN = Accounts._hashLoginToken(FICTIONAL_TOKEN);
 
-    console.log('test! hash', HASHED_TOKEN);
-
     Users.update(adminId, {
       $set: {
         roles: ROLES.ADMIN,

@@ -29,6 +29,7 @@ export default class OverviewTab extends React.Component {
 
   render() {
     const { loan, borrowers } = this.props;
+    const { user } = loan;
     const { showObject } = this.state;
 
     return (
@@ -39,7 +40,7 @@ export default class OverviewTab extends React.Component {
             adminNoteText={loan.adminNote}
             className="admin-note"
           />
-          <ImpersonateLink userId={loan.userId} />
+          <ImpersonateLink user={user} />
         </div>
 
         <StepStatus {...this.props} serverTime={this.state.serverTime} />

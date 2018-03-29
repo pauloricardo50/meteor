@@ -39,7 +39,7 @@ const SingleUserPage = (props) => {
     <section className="mask1 single-user-page">
       <h1>{user.emails[0].address}</h1>
 
-      <ImpersonateLink userId={user._id} className="impersonate-link" />
+      <ImpersonateLink user={user} className="impersonate-link" />
 
       {userCreatedAtFormatted}
       {userAssignedEmployee}
