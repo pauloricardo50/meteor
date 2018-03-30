@@ -6,7 +6,7 @@ const theme = createMuiTheme({
   overrides: {
     MuiButton: {
       raised: {
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
       },
     },
     MuiInput: {
