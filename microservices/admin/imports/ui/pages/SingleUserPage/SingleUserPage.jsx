@@ -11,6 +11,7 @@ import SingleUserPageContainer from './SingleUserPageContainer';
 const styles = {
   createdAt: {
     marginBottom: 32,
+    clear: 'both',
   },
 };
 
@@ -35,7 +36,7 @@ const SingleUserPage = (props) => {
   ) : null;
 
   return (
-    <section className="mask1">
+    <section className="mask1 single-user-page">
       <h1>{user.emails[0].address}</h1>
 
       <ImpersonateLink user={user} className="impersonate-link" />
