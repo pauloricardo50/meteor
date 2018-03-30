@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import { createContainer } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 
 import { GoogleMaps } from 'meteor/dburles:google-maps';
@@ -40,10 +39,5 @@ GoogleMap.propTypes = {
   loaded: PropTypes.bool.isRequired,
   children: PropTypes.node.isRequired,
 };
-
-// const GoogleMapContainer = createContainer(
-//   () => ({ loaded: GoogleMaps.loaded() }),
-//   GoogleMap,
-// );
 
 export default GoogleMap;
