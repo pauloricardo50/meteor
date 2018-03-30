@@ -156,7 +156,7 @@ a {
 }
 
 // Classes to color text according to our theme colors
-.active,
+.active:not(button),
 .primary {
   color: $primary;
 }
