@@ -16,6 +16,9 @@ export default Tasks.createQuery(TASK_QUERIES.TASKS, {
         { assignedEmployeeId: { $exists: false } },
       ];
     }
+    if (params.all) {
+      filters._id = { $ne: '' };
+    }
   },
   $options: {
     sort: {

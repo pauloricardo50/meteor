@@ -25,7 +25,7 @@ const getTabs = () => [
   {
     id: 'allTasks',
     label: <T id="TasksTabs.allTasks" />,
-    content: <TasksTableWithData showAssignee key="allTasks" />,
+    content: <TasksTableWithData showAssignee all key="allTasks" />,
   },
 ];
 
