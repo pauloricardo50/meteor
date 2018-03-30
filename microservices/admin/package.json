@@ -30,6 +30,7 @@
     "moment": "^2.21.0",
     "moment-duration-format": "^2.1.1",
     "node-fetch": "^2.1.1",
+    "normalize-scss": "^7.0.1",
     "prop-types": "^15.6.0",
     "query-string": "^5.0.1",
     "rc-slider": "^8.6.0",

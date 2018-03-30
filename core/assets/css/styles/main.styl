@@ -1,755 +1,374 @@
-normalize-css()
+// normalize-css()
 
-// Grid, copied from bootstrap sizes
-$xsmall = 340px
-$small = 480px
-$med = 768px
-$large = 992px
-$wide = 1200px
+// // Grid, copied from bootstrap sizes
+// $xsmall = 340px
+// $small = 480px
+// $med = 768px
+// $large = 992px
+// $wide = 1200px
 
-// Colors
-black = #222;
-grey = #D8D8D8;
-light-grey = #EEE;
-border-grey = #DEE2E6;
+// // Colors
+// black = #222;
+// grey = #D8D8D8;
+// light-grey = #EEE;
+// border-grey = #DEE2E6;
 
-grey1 = #d8d8d8;
-grey2 = #eee;
-grey3 = #f8f8f8;
+// grey1 = #d8d8d8;
+// grey2 = #eee;
+// grey3 = #f8f8f8;
 
-//Custom Colors
-textcolor = #333333;
-backgroundcolor = #FCFCFC;
-brand-primary = #4990E2;
-brand-success = #6ED2B1;
-brand-warning = #F3AF50;
-brand-danger = #B73E25;
-brand-black = #051C2C;
-brand-grey = #637E94;
-
-
-bodyColor = rgba(black, 0.6);
-titleColor = rgba(black, 0.74)
-
-z = {
-  neg: -7,
-  lowest: 1,
-  low: 4,
-  mid: 5,
-  video: 6,
-  header: 7,
-  nav: 8,
-  mini: 9,
-  modal: 10,
-  highest: 11
-}
-
-social = {
-  twitter: #00aced,
-  facebook: #3b5998,
-  google: #dd4b39,
-  youtube: #bb0000
-}
+// //Custom Colors
+// textcolor = #333333;
+// backgroundcolor = #FCFCFC;
+// brand-primary = #4990E2;
+// brand-success = #6ED2B1;
+// brand-warning = #F3AF50;
+// brand-danger = #B73E25;
+// brand-black = #051C2C;
+// brand-grey = #637E94;
 
 
-$side-nav = 250px
-$bottom-nav-height = 76px
+// bodyColor = rgba(black, 0.6);
+// titleColor = rgba(black, 0.74)
 
-$bezier = cubic-bezier(.02, .01, .47, 1);
+// z = {
+//   neg: -7,
+//   lowest: 1,
+//   low: 4,
+//   mid: 5,
+//   video: 6,
+//   header: 7,
+//   nav: 8,
+//   mini: 9,
+//   modal: 10,
+//   highest: 11
+// }
+
+// social = {
+//   twitter: #00aced,
+//   facebook: #3b5998,
+//   google: #dd4b39,
+//   youtube: #bb0000
+// }
+
+
+// $side-nav = 250px
+// $bottom-nav-height = 76px
+
+// $bezier = cubic-bezier(.02, .01, .47, 1);
 
 /* Typography */
-body
-  background-color backgroundcolor
-  color bodyColor;
-  line-height: 1.5em;
-  font-size: 16px;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-weight: 400;
-  font-weight: inherit;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-body, html, main, #react-root
-  width 100%
-  height 100%
-
-h1, h2, h3, h4, h5, h6
-  color: titleColor;
-  line-height: 1.1em;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-weight: 400;
-  font-weight: inherit;
-  margin: 0.67em 0;
-  &.no-margin
-    margin: 0;
-
-h1
-  font-size: 2em;
-  &.fixed-size
-    font-size: 2em !important;
-  +above($med)
-    font-size: 2.5em;
-  +above($wide)
-    font-size: 3em;
-  &.display1
-    font-size: 3em;
-    +above($med)
-      font-size: 4em
-  &.display2
-    font-size: 4em;
-    +above($med)
-      font-size: 5em
-  &.display3
-    font-size: 5em;
-    +above($med)
-      font-size: 6em
-  &.display4
-    font-size: 6em;
-    +above($med)
-      font-size: 7em
-
-h2
-  font-size: 1.625em;
-  &.fixed-size
-    font-size: 1.625em !important;
-  +above($med)
-    font-size: 2em;
-  +above($wide)
-    font-size: 2.25em;
-
-h3
-  font-size: 1.375em;
-  &.fixed-size
-    font-size: 1.375em !important;
-  +above($med)
-    font-size: 1.5em;
-  +above($wide)
-    font-size: 1.75em;
-
-h4
-  font-size: 1.125em;
-
-h5
-  font-size: 0.83em;
-
-h6
-  font-size: 0.75em;
-
-hr
-  border: none;
-  border-top: 1px solid border-grey;
-  margin-top: 16px;
-  margin-bottom: 16px;
-
-a
-  cursor: pointer;
-  color: inherit;
-  text-decoration: none;
-  &.color
-    transition: color 300ms $bezier;
-    color: brand-primary;
-    &:hover
-      color: brand-success;
-  // &:hover
-  //   color: inherit;
-
-// Against BootStrap styling
-// label
-//   font-weight: normal;
-
-div#react-root
-  [data-reactroot]
-    height: 100%;
-
-// Remove spinner arrows on number input type field
-input[type=number]-webkit-inner-spin-button,
-input[type=number]-webkit-outer-spin-button
-  -webkit-appearance none
-  margin 0
-
-input[type=number]
-  -moz-appearancetextfield
-
-
-
-*:focus
-  outline none
-
-.clear
-  clear both
-
-.bold
-  font-weight: 600;
-
-.no-bold
-  font-weight: 400;
-
-.thin
-  font-weight: 300;
-
-.active
-  &:not(button) // If a button is .active, don't change its color
-    color: brand-primary;
-    &.important
-      color: brand-primary !important;
-
-
-.success
-  color: brand-success;
-  &.important
-    color: brand-success !important;
-
-svg.success
-  color: brand-success !important;
-
-.error
-  color: brand-danger;
-
-svg.error
-  color: brand-danger !important;
-
-.warning
-  color: brand-warning;
-  &.important
-    color: brand-warning !important;
-
-svg.warning
-  color: brand-warning !important;
-
-.body
-  color: bodyColor;
-
-.normal
-  opacity: 1;
-
-.secondary
-  opacity: 0.5
-
-.disabled
-  opacity 0.25;
-  cursor:not-allowed;
-
-.text-ellipsis
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-
-.description
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 48px;
-  margin-bottom: 48px;
-  font-size: 1.25em;
-  line-height: 1.6em;
-  > p, >h4
-    max-width: 600px;
-    text-align: justify;
-
-.mask1, .mask2, .mask3
-  background-color: white;
-  // overflow: auto;
-  padding: 16px
-  border-radius: 4px;
-  &.primary-border, &.hover-primary:hover
-    border: 1px solid brand-primary;
-  &.error-border
-    border: 1px solid brand-danger;
-  &.warning-border
-    border: 1px solid brand-warning;
-  &.success-border
-    border: 1px solid brand-success;
-
-.mask1
-  box-shadow: 0 0 4px 0 rgba(33,37,41,0.16);
-  // box-shadow: 0px 2px 40px 0px rgba(0,0,0,0.08);
-  > h1:first-child
-    margin: 0;
-    // padding-bottom: 16px;
-  .primary-top
-    display: inline-block;
-    width: calc(100% + 32px);
-    min-height: 300px;
-    color: white;
-    background-color: brand-primary;
-    // padding: 0;
-    padding: 16px;
-    margin: 0;
-    margin-left: -16px;
-    margin-top: -16px;
-    margin-bottom: 48px;
-    h1, h2, h3, h4, p, div
-      color: white;
-      padding: 0;
-
-.mask2
-  box-shadow: 0px 20px 20px 0px rgba(0,0,0,0.08);
-
-.mask3
-  box-shadow: 0px 40px 40px 0px rgba(0,0,0,0.16);
-
-.border
-  border-color: border-grey;
-  &.top
-    border-top-style: solid;
-    border-top-width: 1px;
-  &.bottom
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-
-.flex, .flex-row, .flex-col
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  &.center
-    align-items: center;
-    justify-content: center;
-
-.flex-col
-  flex-direction: column;
-
-.icon-button
-  svg
-    transition: color 500ms $bezier;
-    color: #444;
-    &:hover
-      color: #888;
-
-// Change it from the material-ui default inline-flex..
-.mui-text-input, .mui-select, .mui-radio-group
-  display: flex;
-
-
-
-.top-nav
-  background-color: white !important;
-  padding: 0 8px !important;
-  width: 100%;
-  height: 64px !important;
-  position: relative;
-  display: flex;
-  z-index: 20;
-  border-bottom: 1px solid #d8d8d8;
-  +above($med)
-    position: fixed;
-  .top-nav-content
-    margin-left: 0 !important;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    .empty, .menu-button
-      display: flex;
-      +above($med)
-        display: none;
-    .logo
-      display: flex;
-      height: 16px;
-      +above($med)
-        height: 28px;
-        padding-left: 12px;
-      img, .link
-        display: flex;
-        height: 100%;
-    .buttons
-      display: flex;
-      align-items: center;
-
-
-.permanent-side-nav:not(.always-side-nav)
-  +below($med)
-    display: none;
-
-
-.side-nav
-  height 100%
-  // padding 120px 0
-  fixed top left
-  width: $side-nav;
-  background-color white;
-  z-index: z.nav;
-  // ul.side-nav-list
-  //   list-style: none;
-  //   text-decoration: none !important;
-  //   width: 100%;
-  //   color: brand-success;
-  //   margin: 0;
-  //   padding: 0;
-  //   li
-  //     height: 64px;
-  //     a
-  //       height: 64px;
-  //       display: flex;
-  //       color: alpha(#222, 0.6);
-  //       font-weight: 400 !important;
-  //       text-decoration: none;
-  //       transition: all 0.1s ease;
-  //       &:hover
-  //         text-decoration: none;
-  //         border-left: solid 3px alpha(brand-primary, 0.3);
-  //         color: alpha(#222, 0.8);
-  //       &.active-link
-  //         border-left: solid 3px brand-primary;
-  //         color: alpha(#222, 1.0);
-  //         h5
-  //           color: brand-primary
-  //       .icon
-  //         display: inline-flex;
-  //         align-items: center;
-  //         padding: 0;
-  //         color: inherit !important;
-  //         width: 80px;
-  //         justify-content: center;
-  //         svg
-  //           color: inherit !important;
-  //       h5
-  //         display: inline-flex;
-  //         align-items: center;
-  //         font-weight: 400 !important;
-  //         max-width: 160px;
-  //         overflow: hidden;
-  //         text-overflow: ellipsis;
-  .logo
-    width: $side-nav - 16px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 32px;
-    img
-      height: 24px;
-  .logout
-    position: absolute;
-    bottom: 0;
-    padding: 16px;
-    width: 100%;
-    background-color: white;
-    z-index: 2;
-
-.side-nav-drawer
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-
-.top-bar
-  border-bottom: 1px solid border-grey;
-  width: 100%;
-  height: 64px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  a
-    height: 16px;
-    +above($med)
-      height: 24px;
-    img
-      height: 16px;
-      +above($med)
-        height: 24px;
-
-.public-layout
-  height: 100%; // fallback
-  height: calc(100% - 86px); // to offset the not-fixed top nav
-  +above($med)
-    height: 100%;
-    padding-top: 64px;
-
-.app-layout
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  height: auto;
-  min-height: 100%;
-  +above($med)
-    padding-top: 80px;
-    padding-left 316px; // side-nav width + 16px
-    padding-bottom 16px;
-  &.no-nav
-    padding-left: 16px;
-  &.always-side-nav
-    padding-left: 266px; // side bar doesn't disappear
-  .wrapper
-    height: 100%;
-    min-height: 100%;
-    .page
-      max-width: 800px;
-      margin: 0 auto;
-      width: 100%;
-      &.full-width
-        max-width: unset;
-  .transition-wrapper
-    position: absolute;
-    width: calc(100% - 32px);
-    margin: auto;
-    +above($med)
-      width: calc(100% - 250px - 32px);
-
-.layout-error
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-
-.full-screen
-  width: 100%;
-  min-height: 100%;
-
-
-// Weird fix for safari, because of Material-UI textfield and react-text-mask placeholder misalignment
-::-webkit-input-placeholder {
-  line-height: normal;
-}
-
-// Show a highlight color when someone presses on the dropzone filepicker
-.filepicker
-  -webkit-tap-highlight-color: initial !important;
-
-.no-decoration
-  text-decoration: none;
-  &:focus, &:active, &:hover, &:visited
-    text-decoration: none;
-
-// anti normalize-css() to display chart labels
-svg:not(:root) {
-  overflow: visible !important;
-}
-
-
-// Fix to remove firefox's annoying red box around invalid inputs
-:invalid
-  box-shadow: none;
-
-.side-nav-user
-  transition: all 300ms $bezier;
-  background-color: white;
-  // border-right: 1px solid grey;
-  min-height: calc(100% - 64px);
-  fixed top left;
-  // top: 64px;
-  width: 300px;
-  z-index: z.nav;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .scrollable
-    width: 100%;
-    height: calc(100vh - 64px);
-    overflow-y: scroll;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-shrink: 0;
-  .link
-    width: 100%;
-    height: 64px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    color: #343A40 !important;
-    text-decoration: none;
-    flex-shrink: 0;
-    transition: all 300ms $bezier;
-    .title
-      font-weight: 400 !important;
-    .icon
-      padding: 0 16px;
-      display: flex;
-      align-items: center;
-      // svg
-      //   fill: inherit !important;
-    &:hover
-      background-color: #F4F6F8;
-    &.active-link
-      background-color: #F1F3F5;
-      border-left: 2px solid brand-primary;
-      h4
-        color: brand-primary;
-      svg
-        fill: brand-primary !important;
-  .side-stepper
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    margin-top: 16px;
-    transition: all 300ms $bezier;
-    +below($med)
-      margin-bottom: 44px; // extra padding for iOS bottom bar
-    .available-icon
-      width: 4px;
-      height: 4px;
-      border-radius: 100%;
-      background-color: white;
-    .top-title
-      padding-left: 16px;
-      margin: 8px 0;
-      font-weight: 400 !important;
-    .list
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      padding: 0;
-      .step
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        padding-left: 16px;
-        width: 100%;
-        position: relative;
-        transition: all 300ms $bezier;
-        &.isActive
-          background-color: #f8f9fa;
-          .title
-            color: #212529
-        &:hover
-          background-color: #f9fafb;
-        &:first-child
-          cursor: default;
-        &.off
-          cursor: not-allowed;
-          .top
-            cursor: not-allowed;
-        .top
-          height: 64px;
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          cursor: pointer;
-          width: 100%;
-          transition: all 300ms $bezier;
-          &.inactive
-            cursor: default;
-          .icon
-            width: 32px;
-            height: 32px;
-            margin-right: 8px;
-            background-color: #CED4DA;
-            border-radius: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1;
-            color: white;
-            &.done
-              background-color: brand-success;
-            svg
-              color: white !important;
-              width: 18px !important;
-              height: 18px !important;
-
-          .text
-            display: flex;
-            flex-direction: column;
-            line-height: 1.2em;
-            .title
-              color: #343A40;
-              font-weight: 400;
-            .subtitle
-              color: #868E96;
-              font-weight: 400;
-        .absolute-line
-          position: absolute;
-          left: 32px;
-          opacity: 0.5;
-          height: 100%;
-          border-right: 1px solid #DEE2E6;
-        &:first-child
-          .absolute-line
-            bottom: 0;
-            height: calc(100% - 32px);
-        &:last-child
-          .absolute-line
-            top: 0;
-            height: calc(100% - 32px);
-        .step-list
-          padding: 0;
-          padding-left: 16px;
-          list-style: none;
-          width: 100%;
-          .item
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            text-decoration: none !important;
-            height: 64px;
-            width: 100%;
-            border-left: 1px solid rgba(0,0,0,0);
-            padding-right: 16px;
-            transition: all 300ms $bezier;
-            position: relative;
-            &:hover
-              background-color: #f4f6f8;
-              cursor: pointer;
-            &.disable
-              cursor: default;
-            &.off
-              cursor: not-allowed;
-            .icon
-              width: 48px;
-              display flex;
-              justify-content: center;
-              align-items: center;
-              color: #DEE2E6;
-              .circular-progress
-                position: absolute !important;
-                top: 22px; // 64 total height
-                left: 14px; // 48 total width
-                width: 20px !important;
-                height: 20px !important;
-              .available-icon
-                background-color: #DEE2E6;
-              &.warning
-                color: brand-warning;
-              &.success
-                color: brand-success;
-              svg
-                color: inherit;
-                width: 20px !important;
-                height: 20px !important;
-            .text
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              overflow: hidden;
-              line-height: 1.4em;
-              .title
-                font-weight: 400;
-                color: #343A40;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                white-space: nowrap;
-              .subtitle
-                color: #ADB5BD;
-                font-weight: 400;
-                &.warning
-                  color: brand-warning;
-            &.active
-              border-left: 1px solid brand-primary;
-              background-color: #F1F3F5;
-              .title
-                color: brand-primary;
-              .available-icon
-                background-color: brand-primary;
-  .onclick-wrapper
-    display: flex;
-    align-items: center;
-    width: calc(100% + 16px);
-    height: 100%;
-    margin-right: -16px;
-    padding-right: 16px;
-
-
-.mui-table
-  &>div:first-child
-    min-width: 600px;
-
-.bert-alert.success { background: brand-success; }
-.bert-alert.info    { background: brand-primary; }
-.bert-alert.warning { background: brand-warning; }
-.bert-alert.danger  { background: brand-danger; }
+// body
+//   background-color backgroundcolor
+//   color bodyColor;
+//   line-height: 1.5em;
+//   font-size: 16px;
+//   font-family: 'Source Sans Pro', sans-serif;
+//   font-weight: 400;
+//   font-weight: inherit;
+//   -webkit-font-smoothing: antialiased;
+//   -moz-osx-font-smoothing: grayscale;
+
+// body, html, main, #react-root
+//   width 100%
+//   height 100%
+
+// h1, h2, h3, h4, h5, h6
+//   color: titleColor;
+//   line-height: 1.1em;
+//   font-family: 'Source Sans Pro', sans-serif;
+//   font-weight: 400;
+//   font-weight: inherit;
+//   margin: 0.67em 0;
+//   &.no-margin
+//     margin: 0;
+
+// h1
+//   font-size: 2em;
+//   &.fixed-size
+//     font-size: 2em !important;
+//   +above($med)
+//     font-size: 2.5em;
+//   +above($wide)
+//     font-size: 3em;
+//   &.display1
+//     font-size: 3em;
+//     +above($med)
+//       font-size: 4em
+//   &.display2
+//     font-size: 4em;
+//     +above($med)
+//       font-size: 5em
+//   &.display3
+//     font-size: 5em;
+//     +above($med)
+//       font-size: 6em
+//   &.display4
+//     font-size: 6em;
+//     +above($med)
+//       font-size: 7em
+
+// h2
+//   font-size: 1.625em;
+//   &.fixed-size
+//     font-size: 1.625em !important;
+//   +above($med)
+//     font-size: 2em;
+//   +above($wide)
+//     font-size: 2.25em;
+
+// h3
+//   font-size: 1.375em;
+//   &.fixed-size
+//     font-size: 1.375em !important;
+//   +above($med)
+//     font-size: 1.5em;
+//   +above($wide)
+//     font-size: 1.75em;
+
+// h4
+//   font-size: 1.125em;
+
+// h5
+//   font-size: 0.83em;
+
+// h6
+//   font-size: 0.75em;
+
+// hr
+//   border: none;
+//   border-top: 1px solid border-grey;
+//   margin-top: 16px;
+//   margin-bottom: 16px;
+
+// a
+//   cursor: pointer;
+//   color: inherit;
+//   text-decoration: none;
+//   &.color
+//     transition: color 300ms $bezier;
+//     color: brand-primary;
+//     &:hover
+//       color: brand-success;
+//   // &:hover
+//   //   color: inherit;
+
+// // Against BootStrap styling
+// // label
+// //   font-weight: normal;
+
+// div#react-root
+//   [data-reactroot]
+//     height: 100%;
+
+// // Remove spinner arrows on number input type field
+// input[type=number]-webkit-inner-spin-button,
+// input[type=number]-webkit-outer-spin-button
+//   -webkit-appearance none
+//   margin 0
+
+// input[type=number]
+//   -moz-appearancetextfield
+
+
+
+// *:focus
+//   outline none
+
+// .clear
+//   clear both
+
+// .bold
+//   font-weight: 600;
+
+// .no-bold
+//   font-weight: 400;
+
+// .thin
+//   font-weight: 300;
+
+// .active
+//   &:not(button) // If a button is .active, don't change its color
+//     color: brand-primary;
+//     &.important
+//       color: brand-primary !important;
+
+
+// .success
+//   color: brand-success;
+//   &.important
+//     color: brand-success !important;
+
+// svg.success
+//   color: brand-success !important;
+
+// .error
+//   color: brand-danger;
+
+// svg.error
+//   color: brand-danger !important;
+
+// .warning
+//   color: brand-warning;
+//   &.important
+//     color: brand-warning !important;
+
+// svg.warning
+//   color: brand-warning !important;
+
+// .body
+//   color: bodyColor;
+
+// .normal
+//   opacity: 1;
+
+// .secondary
+//   opacity: 0.5
+
+// .disabled
+//   opacity 0.25;
+//   cursor:not-allowed;
+
+// .text-ellipsis
+//   overflow: hidden;
+//   white-space: nowrap;
+//   text-overflow: ellipsis;
+
+// .border
+//   border-color: border-grey;
+//   &.top
+//     border-top-style: solid;
+//     border-top-width: 1px;
+//   &.bottom
+//     border-bottom-style: solid;
+//     border-bottom-width: 1px;
+
+
+// .icon-button
+//   svg
+//     transition: color 500ms $bezier;
+//     color: #444;
+//     &:hover
+//       color: #888;
+
+
+// .permanent-side-nav:not(.always-side-nav)
+//   +below($med)
+//     display: none;
+
+
+// .side-nav
+//   height 100%
+//   // padding 120px 0
+//   fixed top left
+//   width: $side-nav;
+//   background-color white;
+//   z-index: z.nav;
+//   // ul.side-nav-list
+//   //   list-style: none;
+//   //   text-decoration: none !important;
+//   //   width: 100%;
+//   //   color: brand-success;
+//   //   margin: 0;
+//   //   padding: 0;
+//   //   li
+//   //     height: 64px;
+//   //     a
+//   //       height: 64px;
+//   //       display: flex;
+//   //       color: alpha(#222, 0.6);
+//   //       font-weight: 400 !important;
+//   //       text-decoration: none;
+//   //       transition: all 0.1s ease;
+//   //       &:hover
+//   //         text-decoration: none;
+//   //         border-left: solid 3px alpha(brand-primary, 0.3);
+//   //         color: alpha(#222, 0.8);
+//   //       &.active-link
+//   //         border-left: solid 3px brand-primary;
+//   //         color: alpha(#222, 1.0);
+//   //         h5
+//   //           color: brand-primary
+//   //       .icon
+//   //         display: inline-flex;
+//   //         align-items: center;
+//   //         padding: 0;
+//   //         color: inherit !important;
+//   //         width: 80px;
+//   //         justify-content: center;
+//   //         svg
+//   //           color: inherit !important;
+//   //       h5
+//   //         display: inline-flex;
+//   //         align-items: center;
+//   //         font-weight: 400 !important;
+//   //         max-width: 160px;
+//   //         overflow: hidden;
+//   //         text-overflow: ellipsis;
+//   .logo
+//     width: $side-nav - 16px;
+//     height: 64px;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     margin-bottom: 32px;
+//     img
+//       height: 24px;
+//   .logout
+//     position: absolute;
+//     bottom: 0;
+//     padding: 16px;
+//     width: 100%;
+//     background-color: white;
+//     z-index: 2;
+
+// .side-nav-drawer
+//   display: flex;
+//   flex-direction: column;
+//   width: 300px;
+
+
+// .public-layout
+//   height: 100%; // fallback
+//   height: calc(100% - 86px); // to offset the not-fixed top nav
+//   +above($med)
+//     height: 100%;
+//     padding-top: 64px;
+
+
+
+
+// // Weird fix for safari, because of Material-UI textfield and react-text-mask placeholder misalignment
+// ::-webkit-input-placeholder {
+//   line-height: normal;
+// }
+
+// // Show a highlight color when someone presses on the dropzone filepicker
+// .filepicker
+//   -webkit-tap-highlight-color: initial !important;
+
+// .no-decoration
+//   text-decoration: none;
+//   &:focus, &:active, &:hover, &:visited
+//     text-decoration: none;
+
+// // anti normalize-css() to display chart labels
+// svg:not(:root) {
+//   overflow: visible !important;
+// }
+
+
+// // Fix to remove firefox's annoying red box around invalid inputs
+// :invalid
+//   box-shadow: none;
+
+
+
+// .mui-table
+//   &>div:first-child
+//     min-width: 600px;
+
+// .bert-alert.success { background: brand-success; }
+// .bert-alert.info    { background: brand-primary; }
+// .bert-alert.warning { background: brand-warning; }
+// .bert-alert.danger  { background: brand-danger; }

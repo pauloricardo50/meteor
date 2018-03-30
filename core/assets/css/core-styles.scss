@@ -1,16 +1,35 @@
+@import '{}/node_modules/normalize-scss/sass/normalize';
+@include normalize();
+
+@import './variables.scss';
+
 // Imports all scss files here, make sure the path uses imports, or else they
 // won't be found in the microservices that use them
-@import './variables.scss';
 @import '{}/imports/core/components/UploaderArray/FileDropper.scss';
 @import '{}/imports/core/components/AutoForm/ValidIcon/ValidIcon.scss';
-@import '{}/imports/core/components/SideNav/SideNavList.scss';
 @import '{}/imports/core/components/DateInput/DateInput.scss';
+@import '{}/imports/core/components/Loading/Loading.scss';
+@import '{}/imports/core/components/TopNav/TopNav.scss';
+@import '{}/imports/core/components/UploaderArray/Uploader.scss';
+@import '{}/imports/core/components/Recap/Recap.scss';
 
 body {
   font-family: 'Source Sans Pro', sans-serif;
+  font-size: 16px;
   line-height: 1.5em;
+  font-weight: 400;
   color: $body-text;
   background-color: $background-color;
+}
+
+// Make sure everything expands properly to take the full size of the browser
+body,
+html,
+// main,
+#react-root {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
 }
 
 h1,
@@ -79,6 +98,24 @@ h6 {
   }
 }
 
+// Nicer styling for a tags, removes horrible blue color
+a {
+  cursor: pointer;
+  color: inherit;
+  // text-decoration: none;
+  &.color {
+    transition: color 300ms $bezier;
+    color: $primary;
+    &:hover {
+      color: $success;
+    }
+  }
+  &:hover {
+    color: inherit;
+  }
+}
+
+// White backgrounds with shadows to put things on
 .card1 {
   background: #ffffff;
   box-shadow: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
@@ -91,6 +128,7 @@ h6 {
   width: 100%;
 }
 
+// Pretty text effect for tooltips, shows a gradient underline on the text
 .tooltip-overlay {
   position: relative;
   cursor: help;
@@ -107,4 +145,190 @@ h6 {
     background-size: 100% 100%;
     transform: scale(1.02);
   }
+}
+
+// Classes to color text according to our theme colors
+.active,
+.primary {
+  color: $primary;
+}
+
+.success {
+  color: $success;
+}
+
+.error {
+  color: $error;
+}
+
+.warning {
+  color: $warning;
+}
+
+// A pretty heart-beat animation on anything
+@keyframes heartBeat {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(0.97);
+  }
+  35% {
+    transform: scale(0.9);
+  }
+  45% {
+    transform: scale(1.1);
+  }
+  55% {
+    transform: scale(0.9);
+  }
+  65% {
+    transform: scale(1.1);
+  }
+  75% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.heart-beat {
+  animation-name: heartBeat;
+  animation-iteration-count: infinite;
+  animation-duration: 2s;
+}
+
+// Old white background masks, to be replaced with .card
+.mask1,
+.mask2,
+.mask3 {
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 4px;
+}
+
+.mask1.primary-border,
+.mask2.primary-border,
+.mask3.primary-border,
+.mask1.hover-primary:hover,
+.mask2.hover-primary:hover,
+.mask3.hover-primary:hover {
+  border: 1px solid $primary;
+}
+
+.mask1.error-border,
+.mask2.error-border,
+.mask3.error-border {
+  border: 1px solid $error;
+}
+
+.mask1.warning-border,
+.mask2.warning-border,
+.mask3.warning-border {
+  border: 1px solid $warning;
+}
+
+.mask1.success-border,
+.mask2.success-border,
+.mask3.success-border {
+  border: 1px solid $success;
+}
+
+.mask1 {
+  box-shadow: 0 0 4px 0 rgba(33, 37, 41, 0.16);
+}
+
+.mask1 > h1:first-child {
+  margin: 0;
+}
+
+.mask1 .primary-top {
+  display: inline-block;
+  width: calc(100% + 32px);
+  min-height: 300px;
+  color: #fff;
+  background-color: $primary;
+  padding: 16px;
+  margin: 0;
+  margin-left: -16px;
+  margin-top: -16px;
+  margin-bottom: 48px;
+}
+
+.mask1 .primary-top h1,
+.mask1 .primary-top h2,
+.mask1 .primary-top h3,
+.mask1 .primary-top h4,
+.mask1 .primary-top p,
+.mask1 .primary-top div {
+  color: #fff;
+  padding: 0;
+}
+
+.mask2 {
+  box-shadow: 0px 20px 20px 0px rgba(0, 0, 0, 0.08);
+}
+
+.mask3 {
+  box-shadow: 0px 40px 40px 0px rgba(0, 0, 0, 0.16);
+}
+
+// A .description <p /> is a nice styled paragraph optimized for reading
+.description {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 48px;
+  margin-bottom: 48px;
+  font-size: 1.25em;
+  line-height: 1.6em;
+}
+
+.description > p,
+.description > h4 {
+  max-width: 600px;
+  text-align: justify;
+}
+
+// Flex helper classes
+.flex,
+.flex-row,
+.flex-col {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.flex.center,
+.flex-row.center,
+.flex-col.center {
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+// Helper classes to change opacity on things
+.normal {
+  opacity: 1;
+}
+
+.secondary {
+  opacity: 0.5;
+}
+
+// This also adds the right cursor on disabled elements
+.disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+// Change it from the material-ui default inline-flex, which makes them take full width
+.mui-text-input,
+.mui-select,
+.mui-radio-group {
+  display: flex;
 }

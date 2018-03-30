@@ -1,1 +1,1 @@
-export { default } from './Recap';
+export { default } from './Recap.jsx';

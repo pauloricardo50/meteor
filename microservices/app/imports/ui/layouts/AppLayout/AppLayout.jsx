@@ -20,6 +20,8 @@ const allowedRoutesWithoutLogin = [
   IMPERSONATE_ROUTE,
 ];
 
+const routesWithoutSidenav = ['/'];
+
 const getRedirect = ({
   currentUser,
   history: { location: { pathname } },
@@ -57,7 +59,8 @@ const getRedirect = ({
   return false;
 };
 
-const getShowSideNav = ({ location }) => !(location.pathname === '/');
+const getShowSideNav = ({ location }) =>
+  routesWithoutSidenav.indexOf(location.pathname) === -1;
 
 const AppLayout = (props) => {
   const { type, history, children } = props;
@@ -81,12 +84,7 @@ const AppLayout = (props) => {
 
   return (
     <div>
-      <Navs
-        {...props}
-        showSideNav={showSideNav}
-        isApp={type === 'app'}
-        isAdmin={type === 'admin'}
-      />
+      <Navs {...props} showSideNav={showSideNav} />
 
       <main className={classes}>
         <ErrorBoundary helper="layout" pathname={history.location.pathname}>

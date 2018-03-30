@@ -1,1 +1,1 @@
-export { default } from './TranchePicker';
+export { default } from './TranchePicker.jsx';

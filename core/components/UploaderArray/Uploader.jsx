@@ -11,7 +11,7 @@ import Title from './Title';
 import File from './File';
 import TempFile from './TempFile';
 import FileAdder from './FileAdder';
-import FileDropper from './FileDropper';
+import FileDropper from './FileDropper.jsx';
 
 const checkFile = (file) => {
   if (allowedFileTypes.indexOf(file.type) < 0) {

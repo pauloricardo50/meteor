@@ -1,7 +1,7 @@
 import React from 'react';
 
 // http://codepen.io/TaniaLD/pen/oKxep
-export const LoadingComponent = () => (
+const Loading = () => (
   // Fade it in so that the loader doesn't show up if loading is super fast
   <div className="loading-container animated fadeIn">
     <div className="loading-box">
@@ -10,8 +10,4 @@ export const LoadingComponent = () => (
   </div>
 );
 
-const options = {
-  loadingHandler: LoadingComponent,
-};
-
-export default options;
+export default Loading;

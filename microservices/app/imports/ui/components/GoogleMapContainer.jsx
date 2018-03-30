@@ -5,7 +5,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { GoogleMaps } from 'meteor/dburles:google-maps';
 
-import { LoadingComponent } from 'core/components/Loading';
+import Loading from 'core/components/Loading';
 
 class GoogleMap extends Component {
   componentDidMount() {
@@ -32,7 +32,7 @@ class GoogleMap extends Component {
       );
     }
 
-    return <LoadingComponent />;
+    return <Loading />;
   }
 }
 

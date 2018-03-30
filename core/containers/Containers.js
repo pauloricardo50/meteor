@@ -30,17 +30,17 @@ import {
 
 // Basic container
 export const generalContainer = c =>
-  merge(composeWithTracker(currentUserComposer, Loading))(c);
+  merge(composeWithTracker(currentUserComposer, { loadingHandler: Loading }))(c);
 
 // User containers
 export const userContainer = c =>
   merge(
-    composeWithTracker(userLoansComposer, Loading),
-    composeWithTracker(userBorrowersComposer, Loading),
-    composeWithTracker(userPropertiesComposer, Loading),
-    composeWithTracker(userOffersComposer, Loading),
-    composeWithTracker(currentUserComposer, Loading),
-    composeWithTracker(userCompareComposer, Loading),
+    composeWithTracker(userLoansComposer, { loadingHandler: Loading }),
+    composeWithTracker(userBorrowersComposer, { loadingHandler: Loading }),
+    composeWithTracker(userPropertiesComposer, { loadingHandler: Loading }),
+    composeWithTracker(userOffersComposer, { loadingHandler: Loading }),
+    composeWithTracker(currentUserComposer, { loadingHandler: Loading }),
+    composeWithTracker(userCompareComposer, { loadingHandler: Loading }),
   )(c);
 
 // export const userLoanContainer = c =>
@@ -51,14 +51,14 @@ export const userContainer = c =>
 //
 // export const userBorrowerContainer = c =>
 //   merge(
-//     composeWithTracker(userBorrowerComposer, Loading),
-//     composeWithTracker(currentUserComposer, Loading),
+//     composeWithTracker(userBorrowerComposer, { loadingHandler: Loading }),
+//     composeWithTracker(currentUserComposer, { loadingHandler: Loading }),
 //   )(c);
 
 export const userCompareContainer = c =>
   merge(
-    composeWithTracker(userCompareComposer, Loading),
-    composeWithTracker(currentUserComposer, Loading),
+    composeWithTracker(userCompareComposer, { loadingHandler: Loading }),
+    composeWithTracker(currentUserComposer, { loadingHandler: Loading }),
   )(c);
 
 // Admin containers
@@ -68,7 +68,7 @@ export const adminContainer = c =>
     composeWithTracker(adminUsersComposer),
     composeWithTracker(adminOffersComposer),
     composeWithTracker(adminPropertiesComposer),
-    composeWithTracker(currentUserComposer, Loading),
+    composeWithTracker(currentUserComposer, { loadingHandler: Loading }),
   )(c);
 
 export const adminUserContainer = c =>
@@ -94,7 +94,7 @@ export const partnerContainer = c =>
   merge(
     composeWithTracker(partnerLoansComposer),
     composeWithTracker(partnerOffersComposer),
-    composeWithTracker(currentUserComposer, Loading),
+    composeWithTracker(currentUserComposer, { loadingHandler: Loading }),
   )(c);
 
 export const partnerOfferContainer = c =>
