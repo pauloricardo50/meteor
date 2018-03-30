@@ -42,7 +42,9 @@ export const fakeProperty = {
   materialsQuality: 2,
 };
 
-export const logic1 = {};
+export const logic1 = {
+  step: 1,
+};
 
 export const logic2 = {
   step: 2,

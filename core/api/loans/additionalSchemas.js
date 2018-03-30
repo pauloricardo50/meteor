@@ -138,7 +138,7 @@ export const LogicSchema = new SimpleSchema({
     type: Boolean,
     optional: true,
   },
-  'verification.requestedTime': {
+  'verification.requestedAt': {
     type: Date,
     optional: true,
   },

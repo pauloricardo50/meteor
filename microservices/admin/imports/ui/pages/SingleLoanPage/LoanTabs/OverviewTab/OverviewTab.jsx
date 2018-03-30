@@ -9,6 +9,7 @@ import AdminNote from '../../../../components/AdminNote';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import StepStatus from './StepStatus';
 import LoanTasksTable from './LoanTasksTable';
+import LoanValidation from './LoanValidation';
 
 const styles = {
   recapDiv: {
@@ -28,6 +29,7 @@ export default class OverviewTab extends React.Component {
 
   render() {
     const { loan, borrowers } = this.props;
+    const { user } = loan;
     const { showObject } = this.state;
 
     return (
@@ -38,10 +40,12 @@ export default class OverviewTab extends React.Component {
             adminNoteText={loan.adminNote}
             className="admin-note"
           />
-          <ImpersonateLink userId={loan.userId} />
+          <ImpersonateLink user={user} />
         </div>
 
         <StepStatus {...this.props} serverTime={this.state.serverTime} />
+
+        <LoanValidation loan={loan} />
 
         <hr />
         <div
@@ -102,5 +106,5 @@ export default class OverviewTab extends React.Component {
 OverviewTab.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  dataToPassDown: PropTypes.arrayOf(PropTypes.object).isRequired,
+  dataToPassDown: PropTypes.objectOf(PropTypes.any).isRequired,
 };

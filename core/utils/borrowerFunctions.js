@@ -116,3 +116,7 @@ export const getRealEstateDebt = ({ borrowers }) =>
 
 export const getBorrowerSalary = ({ borrowers }) =>
   arrayify(borrowers).reduce((t, b) => t + (b.salary || 0), 0);
+
+export const getBorrowerFullName = ({ firstName, lastName }) =>
+  [firstName, lastName].filter(name => name).join(' ');
+
