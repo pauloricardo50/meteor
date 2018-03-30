@@ -1,8 +1,8 @@
+import { Meteor } from 'meteor/meteor';
+import { GoogleMaps } from 'meteor/dburles:google-maps';
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Meteor } from 'meteor/meteor';
-
-import { GoogleMaps } from 'meteor/dburles:google-maps';
 
 const styles = {
   width: '100%',

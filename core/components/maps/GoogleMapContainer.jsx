@@ -6,10 +6,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import { LoadingComponent } from '../Loading';
+import Loading from '../Loading';
 
-const GoogleMapContainer = (WrappedComponent) => {
-  class GoogleInjector extends Component {
+const googleMapContainer = (WrappedComponent) => {
+  class GoogleMapContainer extends Component {
     constructor(props) {
       super(props);
 
@@ -49,19 +49,19 @@ const GoogleMapContainer = (WrappedComponent) => {
         );
       }
 
-      return <LoadingComponent />;
+      return <Loading />;
     }
   }
 
-  GoogleInjector.propTypes = {
+  GoogleMapContainer.propTypes = {
     className: PropTypes.string,
   };
 
-  GoogleInjector.defaultProps = {
+  GoogleMapContainer.defaultProps = {
     className: '',
   };
 
-  return GoogleInjector;
+  return GoogleMapContainer;
 };
 
-export default GoogleMapContainer;
+export default googleMapContainer;
