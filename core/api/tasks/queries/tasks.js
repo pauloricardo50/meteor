@@ -7,10 +7,14 @@ export default Tasks.createQuery(TASK_QUERIES.TASKS, {
       filters.assignedEmployeeId = params.assignedTo;
     }
     if (params.unassigned) {
-      filters.assignedEmployeeId = undefined;
+      filters.assignedEmployeeId = { $exists: false };
     }
     if (params.dashboardTasks) {
-      filters.assignedEmployeeId = { $in: [params.assignedTo, undefined] };
+      delete filters.assignedEmployeeId;
+      filters.$or = [
+        { assignedEmployeeId: { $in: [params.assignedTo] } },
+        { assignedEmployeeId: { $exists: false } },
+      ];
     }
   },
   $options: {
