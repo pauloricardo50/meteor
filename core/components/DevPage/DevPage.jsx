@@ -156,7 +156,11 @@ export default class DevPage extends Component {
           <button onClick={() => addStep3Loan(twoBorrowers, false)}>
             step 3 Loan, few files
           </button>
-          <button onClick={() => Meteor.call('generateTestData', currentUser.emails[0].address)}>
+          <button
+            onClick={() =>
+              Meteor.call('generateTestData', currentUser.emails[0].address)
+            }
+          >
             Generate test data
           </button>
           <button onClick={() => Meteor.call('purgeDatabase', currentUser._id)}>
