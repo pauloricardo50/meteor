@@ -8,20 +8,20 @@ import {
   Tasks,
   Users,
   SecurityService,
-} from 'core/api';
-import UserService from 'core/api/users/UserService';
-import TaskService from 'core/api/tasks/TaskService';
-import { TASK_TYPE } from 'core/api/tasks/taskConstants';
+} from '../api';
+import UserService from '../api/users/UserService';
+import TaskService from '../api/tasks/TaskService';
+import { TASK_TYPE } from '../api/tasks/taskConstants';
 import {
   DEV_COUNT,
   USER_COUNT,
   ADMIN_COUNT,
   MAX_LOANS_PER_USER,
 } from './config';
-import createFakeLoan from './loans';
-import createFakeTask from './tasks';
-import createFakeUsers from './users';
-import createFakeOffer from './offers';
+import { createFakeLoan } from './loans';
+import { createFakeTask, deleteUsersTasks } from './tasks';
+import { createFakeUsers, getFakeUsersIds } from './users';
+import { createFakeOffer } from './offers';
 import { ROLES } from '../api/users/userConstants';
 
 const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
@@ -34,6 +34,17 @@ const getAdmins = () => {
     return newAdmins;
   }
   return admins.map(admin => admin._id);
+};
+
+const deleteAllUserRelatedData = (currentUserId, usersToDelete) => {
+  const users = usersToDelete || [currentUserId];
+
+  Borrowers.remove({ userId: { $in: users } });
+  Properties.remove({ userId: { $in: users } });
+  Offers.remove({ userId: { $in: users } });
+  Users.remove({ _id: { $in: users, $ne: currentUserId } });
+  Loans.remove({ userId: { $in: users } });
+  deleteUsersTasks(users);
 };
 
 Meteor.methods({
@@ -66,6 +77,19 @@ Meteor.methods({
       Tasks.remove({});
       Users.remove({ _id: { $ne: currentUserId } });
     }
+  },
+
+  purgeFakeData(currentUserId) {
+    check(currentUserId, String);
+    if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
+      const fakeUsersIds = getFakeUsersIds();
+
+      deleteAllUserRelatedData(currentUserId, fakeUsersIds);
+    }
+  },
+
+  purgePersonalData(currentUserId) {
+    deleteAllUserRelatedData(currentUserId);
   },
 
   insertBorrowerRelatedTask() {

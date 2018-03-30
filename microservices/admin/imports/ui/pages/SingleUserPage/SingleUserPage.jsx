@@ -3,11 +3,8 @@ import PropTypes from 'prop-types';
 
 import moment from 'moment';
 
-<<<<<<< HEAD
-=======
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import { T } from 'core/components/Translation';
->>>>>>> fc072da0ec25d9220d7de3b0154a506c8e2ed41a
 import Loan from './Loan';
 import SingleUserPageContainer from './SingleUserPageContainer';
 
@@ -40,14 +37,8 @@ const SingleUserPage = (props) => {
   return (
     <section className="mask1">
       <h1>{user.emails[0].address}</h1>
-<<<<<<< HEAD
-      <p className="secondary" style={styles.createdAt}>
-        Créé le {moment(user.createdAt).format('D MMM YY à HH:mm:ss')}
-      </p>
-=======
 
       <ImpersonateLink user={user} className="impersonate-link" />
->>>>>>> fc072da0ec25d9220d7de3b0154a506c8e2ed41a
 
       {userCreatedAtFormatted}
       {userAssignedEmployee}

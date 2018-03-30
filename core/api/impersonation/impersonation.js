@@ -11,12 +11,7 @@ export const IMPERSONATE_SESSION_KEY = 'impersonate';
 export function generateImpersonateLink(userId) {
   // eslint-disable-next-line no-underscore-dangle
   const token = Accounts._storedLoginToken();
-  const queryString =
-    `${IMPERSONATE_USER_ID}=${userId}`
-    +
-    '&'
-    +
-    `${IMPERSONATE_TOKEN}=${token}`;
+  const queryString = `${IMPERSONATE_USER_ID}=${userId}&${IMPERSONATE_TOKEN}=${token}`;
 
   return `${APP_URL}${IMPERSONATE_ROUTE}?${queryString}`;
 }

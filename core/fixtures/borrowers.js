@@ -1,4 +1,4 @@
-import BorrowerService from 'core/api/borrowers/BorrowerService';
+import BorrowerService from '../api/borrowers/BorrowerService';
 import {
   RESIDENCY_PERMIT,
   GENDER,
@@ -7,8 +7,9 @@ import {
   OTHER_INCOME,
   EXPENSES,
   REAL_ESTATE,
-} from 'core/api/borrowers/borrowerConstants';
-import { fakeDocument } from 'core/api/files/fileHelpers';
+} from '../api/borrowers/borrowerConstants';
+import { fakeDocument } from '../api/files/fileHelpers';
+import { Borrowers } from '../api';
 
 const firstNames = [
   'Marie',
@@ -23,15 +24,11 @@ const firstNames = [
 const lastNames = ['Arsenault', 'Babel', 'Rochat'];
 
 const generateSecondBorrowerProbabillity = () => Math.random() < 0.8;
-const getRandomArrayElement = array =>
-  array[Math.floor(Math.random() * array.length)];
 
 const insertFakeBorrower = (userId) => {
-  const firstName = getRandomArrayElement(firstNames);
-  const lastName = getRandomArrayElement(lastNames);
   const borrower = {
-    firstName,
-    lastName,
+    firstName: firstNames[Math.floor(Math.random() * firstNames.length)],
+    lastName: lastNames[Math.floor(Math.random() * lastNames.length)],
     gender: 'F',
     address1: 'Chemin du Mont 3',
     zipCode: 1400,
@@ -86,10 +83,6 @@ const insertFakeBorrower = (userId) => {
     bankFortune: 300000,
     insuranceSecondPillar: 120000,
     insuranceThirdPillar: 50000,
-    adminValidation: {
-      salary: `${firstName} - Does not match with taxes income`,
-      fortune: `${firstName} - Some other problem`,
-    },
     documents: {
       identity: fakeDocument,
       taxes: fakeDocument,
@@ -113,7 +106,7 @@ const insertFakeBorrower = (userId) => {
   return BorrowerService.insert({ borrower, userId });
 };
 
-const createFakeBorrowers = (userId) => {
+export const createFakeBorrowers = (userId) => {
   const borrowerIds = [insertFakeBorrower(userId)];
   if (generateSecondBorrowerProbabillity()) {
     borrowerIds.push(insertFakeBorrower(userId));
@@ -121,4 +114,5 @@ const createFakeBorrowers = (userId) => {
   return borrowerIds;
 };
 
-export default createFakeBorrowers;
+export const getRelatedBorrowersIds = usersIds =>
+  Borrowers.find({ userId: { $in: usersIds } }).fetch();
