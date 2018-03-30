@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { LoadingComponent } from 'core/components/Loading';
+import Loading from 'core/components/Loading';
 import { getLogismataToken } from 'core/utils/logismata/methods';
 
 export default class Logismata extends Component {
@@ -35,7 +35,7 @@ export default class Logismata extends Component {
           children
         ) : (
           <div style={{ height: 100 }}>
-            <LoadingComponent />
+            <Loading />
           </div>
         )}
       </div>

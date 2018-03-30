@@ -5,3 +5,16 @@
 .single-user-page .impersonate-link {
   float: right;
 }
+
+.admin-loan {
+  margin-bottom: 16px;
+  justify-content: space-between;
+  .flex-col {
+    padding-right: 32px;
+    padding-bottom: 8px;
+    label {
+      margin: 0;
+      color: #222;
+    }
+  }
+}

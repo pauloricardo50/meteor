@@ -133,11 +133,11 @@ export const getTheoreticalMonthly = ({ loan, borrowers, property }) => {
 };
 
 export const getIncomeRatio = ({ loan, borrowers, property }) => {
-  const monthlyPayment = getTheoreticalMonthly({
+  const { total: monthlyPayment } = getTheoreticalMonthly({
     loan,
     borrowers,
     property,
-  }).total;
+  });
   const borrowerIncome = getBorrowerIncome({ borrowers }) / 12;
 
   // Add infinity check

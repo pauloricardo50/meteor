@@ -1,0 +1,13 @@
+// Default CSS
+@import '{}/imports/core/assets/css/variables.scss';
+@import '{}/imports/core/assets/css/core-styles.scss';
+
+// Pages CSS
+@import '{}/imports/ui/pages/HomePage/HomePage.scss';
+@import '{}/imports/ui/pages/Widget1Page/Widget1Page.scss';
+@import '{}/imports/ui/pages/Start2Page/Start2Page.scss';
+@import '{}/imports/ui/pages/CheckMailboxPage/CheckMailboxPage.scss';
+
+// Components CSS
+@import '{}/imports/ui/components/Waves/Waves.scss';
+@import '{}/imports/ui/components/Widget1/Widget1.scss';

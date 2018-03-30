@@ -1,1 +1,1 @@
-export { default } from './ContractPage';
+export { default } from './ContractPage.jsx';

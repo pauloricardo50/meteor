@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 const styles = {
   a: {
@@ -17,12 +17,17 @@ const styles = {
   },
 };
 
-const AppItem = ({ title, subtitle, mainText, href, onClick }) => (
-  <Link
+const AppItem = ({ title, subtitle, mainText, href, onClick, history }) => (
+  <a
     className="mask1 hover-primary flex-col"
-    to={href}
     style={styles.a}
-    onClick={onClick}
+    onClick={() => {
+      if (href) {
+        history.push(href);
+      } else {
+        onClick();
+      }
+    }}
   >
     <h3 style={styles.title}>{title}</h3>
     <h4 className="secondary" style={styles.subtitle}>
@@ -35,7 +40,7 @@ const AppItem = ({ title, subtitle, mainText, href, onClick }) => (
     >
       {mainText}
     </h1>
-  </Link>
+  </a>
 );
 
 AppItem.propTypes = {
@@ -47,7 +52,7 @@ AppItem.propTypes = {
 
 AppItem.defaultProps = {
   subtitle: '',
-  href: '/',
+  href: '',
 };
 
-export default AppItem;
+export default withRouter(AppItem);

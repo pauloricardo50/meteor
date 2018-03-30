@@ -1,0 +1,61 @@
+@import '{}/client/css/variables.scss';
+
+.top-nav {
+  background-color: #fff !important;
+  padding: 0 8px !important;
+  width: 100%;
+  height: 64px !important;
+  position: relative;
+  display: flex;
+  z-index: 20;
+  border-bottom: 1px solid #d8d8d8;
+}
+
+@media (min-width: $med) {
+  .top-nav {
+    position: fixed;
+  }
+}
+
+.top-nav .top-nav-content {
+  margin-left: 0 !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.top-nav .top-nav-content .empty,
+.top-nav .top-nav-content .menu-button {
+  display: flex;
+}
+
+@media (min-width: $med) {
+  .top-nav .top-nav-content .empty,
+  .top-nav .top-nav-content .menu-button {
+    display: none;
+  }
+}
+
+.top-nav .top-nav-content .logo {
+  display: flex;
+  height: 16px;
+}
+
+@media (min-width: $med) {
+  .top-nav .top-nav-content .logo {
+    height: 28px;
+    padding-left: 12px;
+  }
+}
+
+.top-nav .top-nav-content .logo img,
+.top-nav .top-nav-content .logo .link {
+  display: flex;
+  height: 100%;
+}
+
+.top-nav .top-nav-content .buttons {
+  display: flex;
+  align-items: center;
+}

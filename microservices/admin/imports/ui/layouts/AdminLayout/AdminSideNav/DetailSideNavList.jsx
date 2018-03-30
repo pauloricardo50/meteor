@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 
-import { LoadingComponent } from 'core/components/Loading';
+import Loading from 'core/components/Loading';
 import {
   USERS_COLLECTION,
   LOANS_COLLECTION,
@@ -36,7 +36,7 @@ const DetailSideNavList = ({
   history: { push },
 }) => {
   if (isLoading) {
-    return <LoadingComponent />;
+    return <Loading />;
   }
 
   return (

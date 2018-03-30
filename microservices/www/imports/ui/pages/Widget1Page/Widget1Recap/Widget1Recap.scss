@@ -1,0 +1,26 @@
+@import '{}/client/css/variables.scss';
+
+.widget1-page .card1.widget1-recap {
+  // height: 400px;
+}
+
+.widget1-page .widget1-recap .recap {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.widget1-page .widget1-recap .recap .recap-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+  h4,
+  h3 {
+    margin: 0;
+  }
+  &.bold {
+    font-weight: $bold;
+  }
+}

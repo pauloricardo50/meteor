@@ -1,0 +1,25 @@
+@import '{}/client/css/variables.scss';
+
+@import './HomePageReviewsCarousel/HomePageReviewsCarousel.scss';
+
+.home-page-reviews {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 32px;
+  align-items: center;
+}
+
+.home-page-reviews .home-page-reviews-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 600px;
+  text-align: center;
+  margin-bottom: 40px;
+  margin-top: 80px;
+}
+
+.home-page-reviews .home-page-reviews-title .title {
+  color: $primary;
+}

@@ -1,7 +1,6 @@
 // This file is shared between client and server to allow server-side tests to have access to it
 
 import { addLocaleData } from 'react-intl';
-import { T9n } from 'meteor/softwarerero:accounts-t9n';
 import moment from 'moment';
 import Loadable from 'core/utils/loadable';
 import fr from 'react-intl/locale-data/fr';
@@ -35,12 +34,16 @@ export const getFormats = () => ({
   },
 });
 
-export const localizationStartup = () => {
+export const localizationStartup = ({ setupAccounts = true } = {}) => {
   // Add locales used in app here
   addLocaleData(fr);
-  T9n.setLanguage('fr');
   setupMoment();
   moment.locale('fr');
+
+  if (setupAccounts) {
+    const { T9n } = require('meteor/softwarerero:accounts-t9n');
+    T9n.setLanguage('fr');
+  }
 };
 
 const setupMoment = () => {

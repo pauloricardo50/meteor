@@ -1,0 +1,59 @@
+.widget1-single-input {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.widget1-single-input .box {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(244, 247, 249);
+  border-radius: 4px;
+}
+
+.widget1-single-input .box h4 {
+  padding: 4px 16px;
+  margin: 0;
+}
+
+.widget1-single-input .box .box-content {
+  background-color: white;
+  padding: 8px;
+  margin: 4px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.widget1-single-input .widget1-input {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.widget1-single-input .widget1-input .currency {
+  padding-right: 8px;
+  color: $primary;
+}
+
+.widget1-single-input .widget1-input input {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  color: $primary;
+  font-size: 40px;
+  width: 100%;
+}
+
+.widget1-single-input .widget1-slider {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 8px;
+}
+
+.widget1-single-input .widget1-slider .button-placeholder {
+  width: 48px;
+  height: 48px;
+}

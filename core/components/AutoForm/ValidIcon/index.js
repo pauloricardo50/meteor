@@ -1,1 +1,1 @@
-export { default } from './ValidIcon';
+export { default } from './ValidIcon.jsx';
