@@ -408,7 +408,7 @@ export const getErrorArray = (state, props, setFormState) => [
             label={<T id="Start2Form.whyButton" />}
             title={<T id="Start2Form.notEnoughCash.dialogTitle" />}
             key={2}
-            buttonStyle={{marginRight: 8, marginBottom: 8}}
+            buttonStyle={{ marginRight: 8, marginBottom: 8 }}
           >
             <T id="Start2Form.notEnoughCash.description" />
           </DialogSimple>

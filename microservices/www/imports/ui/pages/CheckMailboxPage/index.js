@@ -1,1 +1,1 @@
-export { default } from './CheckMailboxPage';
+export { default } from './CheckMailboxPage.jsx';

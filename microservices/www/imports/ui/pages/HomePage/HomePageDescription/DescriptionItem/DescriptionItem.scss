@@ -1,0 +1,83 @@
+@import '{}/client/css/variables.scss';
+
+$break-off: 1000px;
+$step-height: 400px;
+$image-height: 300px;
+
+.description-item {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  flex-wrap: wrap-reverse;
+  align-items: center;
+  width: 100%;
+  height: $step-height;
+}
+
+.description-item:nth-child(2n) {
+  flex-direction: row-reverse;
+}
+
+.description-item .description-item-text {
+  position: relative;
+  // width: 400px;
+  max-width: 400px;
+  padding: 0 32px;
+  z-index: 1;
+}
+
+.description-item .description-item-text h3 {
+  color: $primary;
+  margin-bottom: 8px;
+}
+
+.description-item .description-item-text p {
+  margin: 0;
+}
+
+.description-item .description-item-number {
+  position: absolute;
+  top: -100px;
+  left: -50px;
+  height: 300px;
+  font-size: 300px;
+  line-height: 300px;
+  font-weight: 600;
+  color: $primary;
+  opacity: 0.2;
+  z-index: -1;
+  vertical-align: middle;
+}
+
+.description-item .description-item-number:after {
+  position: absolute;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  content: '';
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0) 80%
+  );
+  pointer-events: none;
+}
+
+.description-item .description-item-icon {
+  width: $image-height;
+  height: $image-height;
+  padding: 0 32px;
+}
+
+@media (max-width: $break-off) {
+  .description-item {
+    flex-direction: column-reverse;
+    flex-wrap: nowrap;
+    margin-bottom: 80px;
+    padding-left: 32px;
+  }
+
+  .description-item:nth-child(2n) {
+    flex-direction: column-reverse;
+  }
+}

@@ -13,12 +13,12 @@ import { currentUserComposer } from './composers/GeneralComposers';
 
 const UserContainer = component =>
   merge(
-    composeWithTracker(userLoansComposer, Loading),
-    composeWithTracker(userBorrowersComposer, Loading),
-    composeWithTracker(userOffersComposer, Loading),
-    composeWithTracker(userPropertiesComposer, Loading),
-    composeWithTracker(currentUserComposer, Loading),
-    // composeWithTracker(userCompareComposer, Loading),
+    composeWithTracker(userLoansComposer, { loadingHandler: Loading }),
+    composeWithTracker(userBorrowersComposer, { loadingHandler: Loading }),
+    composeWithTracker(userOffersComposer, { loadingHandler: Loading }),
+    composeWithTracker(userPropertiesComposer, { loadingHandler: Loading }),
+    composeWithTracker(currentUserComposer, { loadingHandler: Loading }),
+    // composeWithTracker(userCompareComposer, { loadingHandler: Loading }),
   )(component);
 
 export default UserContainer;

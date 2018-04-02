@@ -1,4 +1,4 @@
-import { borrowerInsert, loanInsert, propertyInsert } from '../api';
+import { borrowerInsert, loanInsert, propertyInsert } from '../api/methods';
 
 // The final function that inserts the documents once the form is finished
 const saveStartForm = (f, userId) => {

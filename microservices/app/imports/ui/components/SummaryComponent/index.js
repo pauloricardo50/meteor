@@ -1,1 +1,1 @@
-export { default } from './SummaryComponent';
+export { default } from './SummaryComponent.jsx';

@@ -34,7 +34,7 @@ const config = {
     {
       id: 'www',
       path: '../microservices/www',
-      exceptions: ['Start2Form', 'Forms'],
+      exceptions: ['Start2Form', 'Forms', 'offer'],
     },
     {
       id: 'lender',

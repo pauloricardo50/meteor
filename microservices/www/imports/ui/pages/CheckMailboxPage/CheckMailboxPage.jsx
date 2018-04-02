@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './CheckMailboxPage.scss';
-
 const CheckMailboxPage = ({ match: { params: { email } } }) => (
   <div className="check-mailbox-page">
     <h1>Email envoyé à {email}</h1>

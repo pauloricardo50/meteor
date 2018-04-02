@@ -52,12 +52,12 @@ export default class ExpensesChartInterests extends Component {
 
   render() {
     const { selectValue } = this.state;
-    const { loan } = this.props;
+    const { loan, ...rest } = this.props;
 
     return (
       <div className="interestPicker flex-col center">
         <ExpensesChart
-          {...this.props}
+          {...rest}
           interests={loan * rates[selectValue] / 12}
           interestRate={rates[selectValue]}
         />

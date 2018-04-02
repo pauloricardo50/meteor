@@ -74,6 +74,9 @@ module.exports = {
     // Adding onClick handlers on non-buttons is useful
     'jsx-a11y/no-static-element-interactions': 'off',
 
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/anchor-is-valid': 'off',
+
     // eslint-plugin-react rules
 
     // Lots of objects are being passed around in this repo,

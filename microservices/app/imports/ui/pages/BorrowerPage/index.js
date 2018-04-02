@@ -1,1 +1,1 @@
-export { default } from './BorrowerPage';
+export { default } from './BorrowerPage.jsx';

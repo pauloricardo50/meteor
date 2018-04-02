@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
-import classnames from 'classnames';
 
 import TopNav from 'core/components/TopNav';
 import PermanentSideNav from './PermanentSideNav';
@@ -21,7 +20,7 @@ export default class Navs extends Component {
 
   render() {
     const { open } = this.state;
-    const { showSideNav, isApp, isAdmin } = this.props;
+    const { showSideNav } = this.props;
 
     return (
       <div>
@@ -33,14 +32,8 @@ export default class Navs extends Component {
           toggleDrawer={this.handleToggle}
           handleClickLink={this.handleClickLink}
         />
-        <div
-          key={1}
-          className={classnames({
-            'permanent-side-nav': true,
-            'always-side-nav': isAdmin,
-          })}
-        >
-          {showSideNav && <PermanentSideNav {...this.props} isApp={isApp} />}
+        <div key={1} className="permanent-side-nav">
+          {showSideNav && <PermanentSideNav {...this.props} />}
         </div>
       </div>
     );
@@ -49,6 +42,4 @@ export default class Navs extends Component {
 
 Navs.propTypes = {
   showSideNav: PropTypes.bool.isRequired,
-  isApp: PropTypes.bool.isRequired,
-  isAdmin: PropTypes.bool.isRequired,
 };

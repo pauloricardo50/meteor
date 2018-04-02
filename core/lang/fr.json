@@ -3,17 +3,64 @@
 
   "Forms.futureOwner.BOTH": "Les deux",
   "Forms.futureOwner.OTHER": "Autre",
+  "HomePageFooterLinks.info": "Liens utiles",
+  "HomePageFooterLinks.faq": "Questions que vous vous posez",
+  "HomePageFooterLinks.contact": "Nous contacter",
+  "HomePageFooterLinks.careers": "Carrières",
+  "HomePageFooterLinks.conditions": "Conditions Générales",
+  "general.start": "Commencer",
+
+  "Recap.project": "Projet",
+
+  "Widget1Finma.title": "Règles FINMA",
+  "Widget1FinmaLine.borrowRule": "Prêt / Prix d'achat",
+  "Widget1FinmaLine.incomeRule": "Charges / Revenus",
+
+  "Widget1Inputs.title": "Calculateur",
+  "Widget1Recap.title": "Plan Financier",
+  "Widget1Monthly.title": "Charges Estimées",
+  "Widget1Monthly.interests": "Intérêts",
+  "Widget1Monthly.amortization": "Amortissement",
+  "Widget1Monthly.maintenance": "Frais d'entretien",
+
+  "Widget1SingleInput.salary": "Revenus annuels bruts",
+  "Widget1SingleInput.fortune": "Fonds propres",
+  "Widget1SingleInput.property": "Prix d'achat",
+
+  "HomePageReviewsTitle.title": "Ce qu'on dit à propos d'e-Potek",
+  "HomePageReviewsTitle.description":
+    "Plus que tout, nos clients apprécient notre efficacité, notre tarification ainsi que notre aide à la clientèle - c'est ce qui fait notre force.",
+  "DescriptionItemText.eligibility.title": "Testez votre éligibilité",
+  "DescriptionItemText.eligibility.description":
+    "Identifiez le montant que vous pouvez emprunter en quelques minutes",
+  "DescriptionItemText.expertise.title": "Expertisez votre logement",
+  "DescriptionItemText.expertise.description":
+    "Obtenez la valeur du marché de votre bien immobilier depuis votre dashboard",
+  "DescriptionItemText.application.title": "Structurez votre dossier",
+  "DescriptionItemText.application.description":
+    "Optimisez votre recherche de prêt hypothécaire avec l'aide de nos conseillers",
+  "DescriptionItemText.auction.title": "Lancez les enchères",
+  "DescriptionItemText.auction.description":
+    "Placez votre dossier aux enchères, de manière anonyme, auprès de tous les prêteurs",
+  "DescriptionItemText.closing.title": "Obtenez votre prêt",
+  "DescriptionItemText.closing.description":
+    "Soyez accompagnés dans vos décisions stratégiques par des spécialistes, jusqu'à avoir les clés en main",
 
   "Forms.propertyInfo": "Informations générales sur la propriété",
 
   "AdminNote.label": "Note d'admin",
   "AdminNote.placeholder": "Clique pour ajouter une note d'admin...",
+  "HomePageHeader.title": "Votre guide à travers la jungle hypothécaire",
+  "HomePageHeader.description":
+    "Soyez accompagnés dans vos décisions stratégiques par des spécialistes en financement immobilier, jusqu'à l'obtention de votre prêt.",
 
   "AdminFilesTab.empty": "Vos documents officiels e-Potek apparaîtront ici.",
 
   "NewDocumentForm.label": "Ajouter un nouveau document au prêt hypothécaire",
   "NewDocumentForm.placeholder": "Nom du document (visible à l'utilisateur)",
   "NewDocumentForm.cta": "Ajouter",
+
+  "HomePageDescription.title": "e-Potek vous accompagne en plusieurs étapes",
 
   "AboutPage.description":
     "e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève. Expansion prévue prochainement.{verticalSpace}L'équipe derrière e-Potek est composée d'entrepreneurs expérimentés dans la finance et les prêts hypothécaires en Suisse.",

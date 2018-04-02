@@ -7,8 +7,8 @@ import { adminLoanComposer } from './composers/AdminComposers';
 
 const AdminLoanContainer = component =>
   merge(
-    composeWithTracker(adminLoanComposer, Loading),
-    composeWithTracker(currentUserComposer, Loading),
+    composeWithTracker(adminLoanComposer, { loadingHandler: Loading }),
+    composeWithTracker(currentUserComposer, { loadingHandler: Loading }),
   )(component);
 
 export default AdminLoanContainer;

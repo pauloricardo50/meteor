@@ -37,6 +37,8 @@ import DollarSign from 'material-ui-icons/AttachMoney';
 import ContactMail from 'material-ui-icons/ContactMail';
 import People from 'material-ui-icons/People';
 import DeveloperMode from 'material-ui-icons/DeveloperMode';
+import ErrorIcon from 'material-ui-icons/Error';
+import CheckCircle from 'material-ui-icons/CheckCircle';
 import RadioButtonChecked from 'material-ui-icons/RadioButtonChecked';
 
 import Star from 'material-ui-icons/Star';
@@ -98,6 +100,8 @@ const iconMap = {
   developerMode: DeveloperMode,
   save: Save,
   supervisorAccount: SupervisorAccount,
+  error: ErrorIcon,
+  checkCircle: CheckCircle,
   radioButtonChecked: RadioButtonChecked,
   flash: FlashOn,
   report: Report,

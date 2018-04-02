@@ -55,7 +55,7 @@ export default class TooltipOverlay extends Component {
         // When clicking the same tooltip multiple times, this is not reset
         onEnter={() => this.setState({ hide: false })}
         onEntered={() => track('Tooltip - tooltip clicked', { tooltipId })}
-        container={document.body}
+        container={global.document !== undefined ? document.body : undefined}
         onClick={handleClick}
       >
         <span

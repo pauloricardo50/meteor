@@ -1,55 +1,24 @@
+import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import MetricsTriple from 'core/components/MetricsTriple';
 import { T } from 'core/components/Translation/';
 import TasksTableWithData from '../../components/TasksTable/TasksTableWithData';
 
-const getUserMetrics = (props) => {
-  const d1 = new Date();
-  const d2 = new Date();
-  d1.setDate(d1.getDate() - 7);
-  d2.setDate(d2.getDate() - 30);
+const AdminDashboardPage = props => (
+  <section className="mask1">
+    <h1>Admin Dashboard</h1>
 
-  return [
-    {
-      name: 'Total Utilisateurs',
-      value: props.users.length,
-    },
-    {
-      name: 'Derniers 7 jours',
-      value: `+${
-        props.users.filter(user => user.createdAt.getTime() >= d1).length
-      }`,
-    },
-    {
-      name: 'Derniers 30 jours',
-      value: `+${
-        props.users.filter(user => user.createdAt.getTime() >= d2).length
-      }`,
-    },
-  ];
-};
-
-const AdminDashboardPage = (props) => {
-  const now = new Date();
-  return (
-    <section className="mask1">
-      <h1>Admin Dashboard</h1>
-
-      <MetricsTriple metrics={getUserMetrics(props)} percent={false} />
-
-      <h2 className="fixed-size text-center">
-        <T id="AdminDashboardPage.tasks" />
-      </h2>
-      <TasksTableWithData
-        showAssignee
-        dashboardTasks
-        assignedTo={Meteor.userId()}
-      />
-    </section>
-  );
-};
+    <h2 className="fixed-size text-center">
+      <T id="AdminDashboardPage.tasks" />
+    </h2>
+    <TasksTableWithData
+      showAssignee
+      dashboardTasks
+      assignedTo={Meteor.userId()}
+    />
+  </section>
+);
 
 AdminDashboardPage.defaultProps = {
   loans: [],
