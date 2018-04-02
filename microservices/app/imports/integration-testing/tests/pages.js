@@ -1,36 +1,31 @@
 import { expect } from 'chai';
 
-describe('App pages', () => {
-  describe('Login', () => {
-    it('should render', () => {
-      cy
-        .visit('/login')
-        .get('section')
-        .should('contain', 'Login');
-    });
+const appPages = {
+  Login: '/login',
+  App: '/',
+  Loan: '/loans/dEFGthBfYW2GS9EwX',
+  'Loan Contract': '/loans/dEFGthBfYW2GS9EwX/contract',
+};
 
-    it('should login', () => {
-      cy
-        .login()
-        .get('main.app-layout')
-        .should('be.ok');
-    });
-  });
+const publicPages = ['Login'];
 
-  describe('App', () => {
-    // logout and login before testing all pages of `app`
-    before(() =>
-      cy
-        .visit('/', {
-          onLoad: ({ Meteor }) =>
-            new Promise((resolve) => {
-              Meteor.logout(() => resolve());
-            }),
-        })
-        .login());
+describe('App Pages', () => {
+  Object.keys(appPages).forEach((pageName) => {
+    describe(`${pageName} page`, () => {
+      it('should render', () => {
+        const pageUri = appPages[pageName];
 
-    it('should render /', () => {
-      cy.get('section').should('be.ok');
+        if (publicPages.includes(pageName)) {
+          cy.meteorLogout();
+        } else {
+          cy.meteorLogin();
+        }
+
+        cy
+          .visit(pageUri)
+          .waitUntilLoads()
+          .shouldRenderWithoutErrors();
+      });
     });
   });
 });
