@@ -1,0 +1,10 @@
+{
+  "port": 6789,
+  "screenshotOnHeadlessFailure": false,
+  "videoRecording": false,
+  "integrationFolder": "imports/integration-testing/tests",
+  "pluginsFile": false,
+  "fixturesFolder": false,
+  "supportFile": "imports/integration-testing/support",
+  "baseUrl": "http://localhost:4000"
+}
