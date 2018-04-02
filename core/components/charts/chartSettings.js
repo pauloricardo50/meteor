@@ -36,6 +36,7 @@ export const defaultConfig = {
   chart: {
     style: { fontFamily: 'Source Sans Pro' },
     animation: { duration: 400 },
+    backgroundColor: 'rgba(255,255,255,0.0)',
   },
   title: { style: { fontSize: '18px', color: '#222', fontWeight: 400 } },
   subtitle: { style: { fontSize: '14px' } },

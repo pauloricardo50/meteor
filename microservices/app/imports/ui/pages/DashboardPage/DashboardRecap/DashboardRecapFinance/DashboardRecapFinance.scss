@@ -28,7 +28,6 @@
 
 .dashboard-recap-finance .card-bottom {
   display: flex;
-
   & > * {
     flex-grow: 1;
   }
@@ -54,8 +53,10 @@
   flex-direction: column;
   .chart {
     display: flex;
-    & > * {
+    align-items: center;
+    & > *:not(:first-child) {
       flex-grow: 1;
+      flex-basis: 0;
     }
   }
 }
@@ -63,6 +64,7 @@
 .dashboard-recap-chart-info {
   display: flex;
   flex-direction: column;
+  padding-left: 16px;
   .value {
     font-size: 3em;
     line-height: 1em;
@@ -72,6 +74,7 @@
 .dashboard-recap-chart-legend {
   display: flex;
   flex-direction: column;
+  max-width: 300px;
   .legend-line {
     display: flex;
     align-items: center;
