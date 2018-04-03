@@ -30,7 +30,19 @@ searchDatabase.resolve(({ searchQuery }) => {
         { city: { $regex: searchQuery } },
       ],
     },
-    { fields: { _id: 1, address1: 1, city: 1 } },
+    {
+      fields: {
+        _id: 1,
+        address1: 1,
+        address2: 1,
+        city: 1,
+        zipCode: 1,
+        value: 1,
+        status: 1,
+        style: 1,
+        insideArea: 1,
+      },
+    },
   ).fetch();
 
   const borrowers = Borrowers.find(

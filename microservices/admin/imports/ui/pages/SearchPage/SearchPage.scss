@@ -1,0 +1,21 @@
+.searchContainer {
+  display: flex;
+  width: 100%;
+  text-align: center;
+  flex-direction: column;
+}
+.searchTitle {
+  width: 100%;
+  max-width: 400;
+}
+.searchField {
+  width: 100%;
+  font-size: inherit;
+  height: 64;
+}
+
+.list,
+.selected {
+  width: 100%;
+  max-width: 800;
+}
