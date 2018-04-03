@@ -132,4 +132,6 @@ export const createFakeLoan = (userId) => {
 };
 
 export const getRelatedLoansIds = usersIds =>
-  Loans.find({ userId: { $in: usersIds } }).fetch();
+  Loans.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
+    .fetch()
+    .map(item => item._id);

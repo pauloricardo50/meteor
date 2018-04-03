@@ -115,4 +115,6 @@ export const createFakeBorrowers = (userId) => {
 };
 
 export const getRelatedBorrowersIds = usersIds =>
-  Borrowers.find({ userId: { $in: usersIds } }).fetch();
+  Borrowers.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
+    .fetch()
+    .map(item => item._id);

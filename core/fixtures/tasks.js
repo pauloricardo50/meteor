@@ -27,9 +27,11 @@ export const deleteUsersTasks = (usersIds) => {
     { multi: true },
   );
   return Tasks.remove({
-    userId: { $in: usersIds },
-    propertyId: { $in: propertiesIds },
-    loanId: { $in: loansIds },
-    borrowerId: { $in: borrowersIds },
+    $or: [
+      { userId: { $in: usersIds } },
+      { propertyId: { $in: propertiesIds } },
+      { loanId: { $in: loansIds } },
+      { borrowerId: { $in: borrowersIds } },
+    ],
   });
 };

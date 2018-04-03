@@ -27,32 +27,32 @@ import { ROLES } from '../api/users/userConstants';
 const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
 const generateNumberOfLoans = max => Math.floor(Math.random() * max + 1);
 
-const getAdmins = () => {
+const getAdmins = (currentUserEmail) => {
   const admins = Users.find({ roles: { $in: [ROLES.ADMIN] } }).fetch();
-  if (admins.length === 0) {
-    const newAdmins = createFakeUsers(ADMIN_COUNT, ROLES.ADMIN);
+  if (admins.length <= 1) {
+    const newAdmins = createFakeUsers(ADMIN_COUNT, ROLES.ADMIN, currentUserEmail);
     return newAdmins;
   }
   return admins.map(admin => admin._id);
 };
 
-const deleteAllUserRelatedData = (currentUserId, usersToDelete) => {
-  const users = usersToDelete || [currentUserId];
-
-  Borrowers.remove({ userId: { $in: users } });
-  Properties.remove({ userId: { $in: users } });
-  Offers.remove({ userId: { $in: users } });
-  Users.remove({ _id: { $in: users, $ne: currentUserId } });
-  Loans.remove({ userId: { $in: users } });
-  deleteUsersTasks(users);
+const deleteUsersRelatedData = (usersToDelete) => {
+  deleteUsersTasks(usersToDelete);
+  Borrowers.remove({ userId: { $in: usersToDelete } });
+  Properties.remove({ userId: { $in: usersToDelete } });
+  Offers.remove({ userId: { $in: usersToDelete } });
+  Loans.remove({ userId: { $in: usersToDelete } });
 };
+
+const deleteUsers = usersToDelete =>
+  Users.remove({ _id: { $in: usersToDelete } });
 
 Meteor.methods({
   generateTestData(currentUserEmail) {
     if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
       createFakeUsers(DEV_COUNT, ROLES.DEV, currentUserEmail);
-      const admins = getAdmins();
-      const newUsers = createFakeUsers(USER_COUNT, ROLES.USER);
+      const admins = getAdmins(currentUserEmail);
+      const newUsers = createFakeUsers(USER_COUNT, ROLES.USER, currentUserEmail);
       newUsers.map((userId) => {
         const adminId = admins[Math.floor(Math.random() * admins.length)];
         UserService.assignAdminToUser({ userId, adminId });
@@ -82,14 +82,16 @@ Meteor.methods({
   purgeFakeData(currentUserId) {
     check(currentUserId, String);
     if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
-      const fakeUsersIds = getFakeUsersIds();
+      let fakeUsersIds = getFakeUsersIds();
+      deleteUsersRelatedData(fakeUsersIds);
 
-      deleteAllUserRelatedData(currentUserId, fakeUsersIds);
+      fakeUsersIds = fakeUsersIds.filter(item => item !== currentUserId);
+      deleteUsers(fakeUsersIds);
     }
   },
 
   purgePersonalData(currentUserId) {
-    deleteAllUserRelatedData(currentUserId);
+    deleteUsersRelatedData([currentUserId]);
   },
 
   insertBorrowerRelatedTask() {

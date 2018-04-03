@@ -61,4 +61,6 @@ export const createFakeProperty = (userId) => {
 };
 
 export const getRelatedPropertiesIds = usersIds =>
-  Properties.find({ userId: { $in: usersIds } }).fetch();
+  Properties.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
+    .fetch()
+    .map(item => item._id);
