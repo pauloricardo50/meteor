@@ -7,7 +7,7 @@
     "start-local-db":
       "MONGO_URL=mongodb://localhost:27017/epotek meteor --settings settings-dev.json --port 4000",
     "start-e2e":
-      "MONGO_URL=mongodb://localhost:27017/epotek-test-e2e meteor --settings settings-dev.json --port 8030",
+      "INTEGRATION_TESTING=1 MONGO_URL=mongodb://localhost:27017/epotek-test-e2e meteor --settings settings-dev.json --port 8030",
     "production": "meteor run --production --settings settings-dev.json",
     "visualize":
       "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 4010",

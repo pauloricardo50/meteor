@@ -53,6 +53,10 @@ Meteor.methods({
         }
         return userId;
       });
+
+      return {
+        loans: Loans.find({}, { fields: { _id: 1 } }).fetch(),
+      };
     }
   },
 

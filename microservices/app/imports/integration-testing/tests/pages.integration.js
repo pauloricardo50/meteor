@@ -1,25 +1,37 @@
 import { expect } from 'chai';
 
+let appData;
 const appPages = {
-  Login: '/login',
-  App: '/',
-  Loan: '/loans/dEFGthBfYW2GS9EwX',
-  'Loan Contract': '/loans/dEFGthBfYW2GS9EwX/contract',
+  Login: () => '/login',
+  App: () => '/',
+  Loan: ({ loans }) => `/loans/${loans[0]._id}`,
+  'Loan Contract': ({ loans }) => `/loans/${loans[0]._id}/contract`,
 };
-
 const publicPages = ['Login'];
 
 describe('App Pages', () => {
+  before(() => {
+    cy
+      .eraseTestData()
+      .generateTestData()
+      .then((data) => {
+        appData = data;
+      });
+  });
+
   Object.keys(appPages).forEach((pageName) => {
     describe(`${pageName} page`, () => {
       it('should render', () => {
-        const pageUri = appPages[pageName];
-
+        // we login every time, as it seems
+        // that each test uses a different window object
+        // (from which we get `Meteor`)
         if (publicPages.includes(pageName)) {
           cy.meteorLogout();
         } else {
           cy.meteorLogin();
         }
+
+        const pageUri = appPages[pageName](appData);
 
         cy
           .visit(pageUri)
