@@ -17,18 +17,15 @@ const getBorrowerInfo = (result) => {
 };
 
 const getLoanInfo = (result) => {
-  console.log(result);
   const {
     _id,
     name,
     createdAt,
     updatedAt,
     logic,
-    propertyId,
     general,
   } = result;
   const { step } = logic;
-  const { value } = propertyId.value || null;
   const { fortuneUsed, insuranceFortuneUsed } = general;
 
   const primary = name || <T id="general.loan" />;
@@ -39,7 +36,6 @@ const getLoanInfo = (result) => {
         createdAt,
         updatedAt,
         step,
-        value,
         fortuneUsed,
         insuranceFortuneUsed,
       }}
@@ -48,16 +44,43 @@ const getLoanInfo = (result) => {
   return { primary, secondary };
 };
 
-// const getpropertiesInfo = (result) => {
-//   const { _id, firstName, lastName, createdAt, updatedAt } = result;
-//   const primary = getBorrowerFullName({ firstName, lastName }) || (
-//     <T id="general.borrower" />
-//   );
-//   const secondary = (
-//     <ResultSecondaryInfos infos={{ _id, createdAt, updatedAt }} />
-//   );
-//   return { primary, secondary };
-// };
+const getPropertyInfo = (result) => {
+  const { _id, city, zipCode, address1, address2, value, status, style, insideArea } = result;
+  const primary = address1 || address2 || (
+    <T id="general.property" />
+  );
+  const secondary = (
+    <ResultSecondaryInfos infos={{ _id,
+      city,
+      zipCode,
+      value,
+      status,
+      style,
+      insideArea }}
+    />
+  );
+  return { primary, secondary };
+};
+
+const getUserInfo = (result) => {
+  const { _id,
+    emails,
+    profile,
+    roles,
+    createdAt } = result;
+  const organization = profile ? profile.organization : null;
+  const primary = emails[0].address || (
+    <T id="general.user" />
+  );
+  const secondary = (
+    <ResultSecondaryInfos infos={{ _id,
+      organization,
+      roles,
+      createdAt }}
+    />
+  );
+  return { primary, secondary };
+};
 
 const getInfoToDisplay = (result, collection) => {
   switch (collection) {
@@ -65,6 +88,10 @@ const getInfoToDisplay = (result, collection) => {
     return getBorrowerInfo(result);
   case 'loans':
     return getLoanInfo(result);
+  case 'properties':
+    return getPropertyInfo(result);
+  case 'users':
+    return getUserInfo(result);
 
   default:
     return null;

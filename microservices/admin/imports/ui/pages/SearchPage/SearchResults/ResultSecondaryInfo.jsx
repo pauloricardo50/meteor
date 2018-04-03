@@ -20,10 +20,12 @@ const ResultSecondaryInfos = ({ infos }) =>
         {', '}
       </span>
     ) : (
-      <span key={infoKey}>
-        <T id={`general.${infoKey}`} />
-        {`: ${info}, `}
-      </span>
+      info && (
+        <span key={infoKey}>
+          <T id={`general.${infoKey}`} />
+          {`: ${info}, `}
+        </span>
+      )
     );
   });
 

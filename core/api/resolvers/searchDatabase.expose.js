@@ -5,8 +5,6 @@ import searchDatabase from './searchDatabase';
 searchDatabase.expose();
 
 searchDatabase.resolve(({ searchQuery }) => {
-  // perform your magic here
-  // you are in `Meteor.method` context, so you have access to `this.userId`
   const loans = Loans.find(
     { name: { $regex: searchQuery } },
     {
@@ -15,10 +13,8 @@ searchDatabase.resolve(({ searchQuery }) => {
         name: 1,
         createdAt: 1,
         updatedAt: 1,
-        'logic.step': 1,
-        'loan.property.value': 1,
-        'loan.general.fortuneUsed': 1,
-        'loan.general.insuranceFortuneUsed': 1,
+        logic: 1,
+        general: 1,
       },
     },
   ).fetch();
@@ -76,7 +72,7 @@ searchDatabase.resolve(({ searchQuery }) => {
       fields: {
         _id: 1,
         emails: 1,
-        'profile.organization': 1,
+        profile: 1,
         roles: 1,
         createdAt: 1,
         assignedEmployeeId: 1,

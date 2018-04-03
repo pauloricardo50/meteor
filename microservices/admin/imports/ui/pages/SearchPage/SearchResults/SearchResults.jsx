@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import List, { ListItem, ListItemText } from 'material-ui/List';
+import List from 'material-ui/List';
 
 import { LoadingComponent } from 'core/components/Loading';
 import { T } from 'core/components/Translation';
@@ -20,14 +19,12 @@ const SearchResults = (props) => {
   }
 
   const { borrowers, loans, properties, users } = data;
-  console.log(borrowers);
   const resultsLength =
     borrowers.length + loans.length + properties.length + users.length;
 
   if (resultsLength > 0) {
     return (
       <List className="list">
-        {/* {borrowers.length > 0 && <BorrowersResults borrowers={borrowers} />} */}
         {Object.keys(data).map((collection) => {
           const resultsFromThisCollection = data[collection];
           return (
