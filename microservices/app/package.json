@@ -7,7 +7,9 @@
     "start-local-db":
       "MONGO_URL=mongodb://localhost:27017/epotek meteor --settings settings-dev.json --port 4000",
     "start-e2e":
-      "INTEGRATION_TESTING=1 MONGO_URL=mongodb://localhost:27017/epotek-test-e2e meteor --settings settings-dev.json --port 8030",
+      "MONGO_URL=mongodb://localhost:27017/meteor-test-e2e meteor --settings settings-dev.json --port 4040",
+    "cypress-run": "cypress run --browser chrome",
+    "cypress-open": "cypress open",
     "production": "meteor run --production --settings settings-dev.json",
     "visualize":
       "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 4010",
@@ -15,10 +17,12 @@
       "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 4005",
     "test-debug":
       "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 5000 --debug-port 5858",
-    "test-e2e":
-      "ttab -t app-e2e-server -d ./ 'meteor npm run start-e2e' && cypress open",
     "test-CI":
       "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
+    "test-e2e":
+      "start-server-and-test start-e2e http://localhost:4040 cypress-open",
+    "test-e2e-CI":
+      "start-server-and-test start-e2e http://localhost:4040 cypress-run",
     "deploy:production":
       "cd .deploy/production && mup deploy --settings=settings-production.json",
     "deploy:staging":
@@ -114,6 +118,6 @@
     "redux-mock-store": "1.4.0",
     "require-main-filename": "^1.0.1",
     "sinon": "^4.1.4",
-    "ttab": "^0.6.1"
+    "start-server-and-test": "^1.1.4"
   }
 }
