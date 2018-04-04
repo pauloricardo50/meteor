@@ -15,6 +15,7 @@ export const fakeFile = {
 
 export const validFakeFile = {
   ...fakeFile,
+  name: 'validFakeFile.pdf',
   key: 'asdf/fakeKey/validFakeFile.pdf',
   status: FILE_STATUS.VALID,
   error: '',
@@ -22,6 +23,7 @@ export const validFakeFile = {
 
 export const invalidFakeFile = {
   ...fakeFile,
+  name: 'invalidFakeFile.pdf',
   key: 'asdf/fakeKey/invalidFakeFile.pdf',
   error: 'Incorrect file format',
   status: FILE_STATUS.ERROR,
