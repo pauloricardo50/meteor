@@ -9,7 +9,7 @@ import { T } from 'core/components/Translation';
 import DashboardRecapSum from './DashboardRecapSum';
 
 const getRecapArray = (props) => {
-  const { loan } = props;
+  const { loan: { general: { insuranceFortuneUsed, fortuneUsed } } } = props;
   const loanValue = getLoanValue(props);
   const totalUsed = getTotalUsed(props);
 
@@ -17,17 +17,17 @@ const getRecapArray = (props) => {
     {
       label: 'general.ownFunds',
       value: toMoney(totalUsed),
-      hide: loan.general.insuranceFortuneUsed,
+      hide: insuranceFortuneUsed,
     },
     {
       label: 'Recap.ownFundsCash',
-      value: toMoney(loan.general.fortuneUsed),
-      hide: !loan.general.insuranceFortuneUsed,
+      value: toMoney(fortuneUsed),
+      hide: !insuranceFortuneUsed,
     },
     {
       label: 'Recap.ownFundsInsurance',
-      value: toMoney(loan.general.insuranceFortuneUsed),
-      hide: !loan.general.insuranceFortuneUsed,
+      value: toMoney(insuranceFortuneUsed),
+      hide: !insuranceFortuneUsed,
     },
     {
       label: 'general.mortgageLoan',
@@ -48,6 +48,7 @@ const DashboardRecapFinancing = props => (
 
 DashboardRecapFinancing.propTypes = {
   total: PropTypes.number.isRequired,
+  loan: PropTypes.object.isRequired,
 };
 
 export default DashboardRecapFinancing;

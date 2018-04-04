@@ -8,7 +8,7 @@ import { T } from 'core/components/Translation';
 
 import DashboardRecapSum from './DashboardRecapSum';
 
-const getRecapArray = ({ loan, property }) => [
+const getRecapArray = (loan, property) => [
   {
     label: 'Recap.purchasePrice',
     value: toMoney(Math.round(property.value)),
@@ -23,17 +23,19 @@ const getRecapArray = ({ loan, property }) => [
   },
 ];
 
-const DashboardRecapCost = props => (
+const DashboardRecapCost = ({ loan, property, total }) => (
   <div>
-    <Recap array={getRecapArray(props)} />
+    <Recap array={getRecapArray(loan, property)} />
     <DashboardRecapSum
       label={<T id="DashboardRecapCost.sumTitle" />}
-      value={props.total}
+      value={total}
     />
   </div>
 );
 
 DashboardRecapCost.propTypes = {
+  loan: PropTypes.object.isRequired,
+  property: PropTypes.object.isRequired,
   total: PropTypes.number.isRequired,
 };
 

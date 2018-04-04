@@ -24,6 +24,9 @@ const DashboardRecapFinance = (props) => {
   );
 };
 
-DashboardRecapFinance.propTypes = {};
+DashboardRecapFinance.propTypes = {
+  loan: PropTypes.object.isRequired,
+  property: PropTypes.object.isRequired,
+};
 
 export default DashboardRecapFinance;

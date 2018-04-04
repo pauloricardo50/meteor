@@ -13,7 +13,7 @@ const getRevenuePercent = (total, monthlyIncome) =>
   (100 * total / monthlyIncome).toFixed(2);
 
 const getChartData = (props) => {
-  const { loan, offer, interestRate } = props;
+  const { offer, interestRate } = props;
   let interests = 0;
 
   if (offer) {
@@ -64,6 +64,15 @@ const DashboardRecapChart = (props) => {
   );
 };
 
-DashboardRecapChart.propTypes = {};
+DashboardRecapChart.propTypes = {
+  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  interestRate: PropTypes.number,
+  offer: PropTypes.object,
+};
+
+DashboardRecapChart.defaultProps = {
+  interestRate: undefined,
+  offer: undefined,
+};
 
 export default DashboardRecapChart;
