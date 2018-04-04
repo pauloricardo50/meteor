@@ -5,9 +5,10 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import Table from 'core/components/Table';
 import { T } from 'core/components/Translation';
-import TaskAssignDropdown 
+import TaskAssignDropdown
   from '../../components/AssignAdminDropdown/TaskAssignDropdown';
 import TasksStatusDropdown from './TasksStatusDropdown';
+import RelatedDoc from './RelatedDoc';
 
 const styles = {
   dropdownButtons: { display: 'inline', width: '50%' },
@@ -36,25 +37,33 @@ export default class TasksTable extends Component {
   };
 
   getColumns = ({ props, index, task }) => {
-    const { type, status,
-      createdAt, updatedAt, dueAt, completedAt, user, assignedEmployee } = task;
+    const { type,
+      status,
+      createdAt,
+      updatedAt,
+      dueAt,
+      completedAt,
+      user,
+      borrower,
+      property,
+      loan,
+      assignedEmployee } = task;
     const columns = [
       index + 1,
-      <T id={`TasksStatusDropdown.${type}`} />,
-      <T id={`TasksStatusDropdown.${status}`} />,
+      <T id={`TasksStatusDropdown.${type}`} key="type" />,
+      <T id={`TasksStatusDropdown.${status}`} key="status" />,
       moment(createdAt).format('D MMM YY à HH:mm:ss'),
       moment(updatedAt).format('D MMM YY à HH:mm:ss'),
       moment(dueAt).format('D MMM YY à HH:mm:ss'),
       moment(completedAt).format('D MMM YY à HH:mm:ss'),
-      user && (
-        <Link to={`/users/${user._id}`} className="link" >
-          {user.username || user.emails[0].address}
-        </Link>),
-      // TODO: also check& add other related docs
+      <RelatedDoc
+        possibleRelatedDocs={{ borrower, loan, property, user }}
+        key="relatedDoc"
+      />,
     ];
     if (props.showAssignee) {
       columns.push(assignedEmployee &&
-        <Link to={`/users/${assignedEmployee._id}`} className="link" >
+        <Link to={`/users/${assignedEmployee._id}`} >
           {assignedEmployee.username || assignedEmployee.emails[0].address}
         </Link>);
     }
