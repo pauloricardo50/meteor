@@ -1,5 +1,3 @@
-import { expect } from 'chai';
-
 Cypress.Commands.add('eraseTestData', () => {
   cy.meteorLogin('dev-1@epotek.ch').then(({ Meteor }) => {
     Meteor.call('purgeDatabase', Meteor.userId());

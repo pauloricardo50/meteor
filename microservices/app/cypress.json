@@ -1,9 +1,9 @@
 {
   "screenshotsFolder": "cypress/screenshots",
   "videoRecording": false,
-  "integrationFolder": "imports/integration-testing/tests",
+  "integrationFolder": "cypress/tests",
   "pluginsFile": false,
   "fixturesFolder": false,
-  "supportFile": "imports/integration-testing/support",
-  "baseUrl": "http://localhost:4040"
+  "supportFile": "imports/core/cypress/support",
+  "baseUrl": "http://localhost:4015"
 }
