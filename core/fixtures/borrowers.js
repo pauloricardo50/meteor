@@ -25,10 +25,16 @@ const lastNames = ['Arsenault', 'Babel', 'Rochat'];
 
 const generateSecondBorrowerProbabillity = () => Math.random() < 0.8;
 
+const getRandomArrayElement = array =>
+  array[Math.floor(Math.random() * array.length)];
+
 const insertFakeBorrower = (userId) => {
+  const firstName = getRandomArrayElement(firstNames);
+  const lastName = getRandomArrayElement(lastNames);
+
   const borrower = {
-    firstName: firstNames[Math.floor(Math.random() * firstNames.length)],
-    lastName: lastNames[Math.floor(Math.random() * lastNames.length)],
+    firstName,
+    lastName,
     gender: 'F',
     address1: 'Chemin du Mont 3',
     zipCode: 1400,
