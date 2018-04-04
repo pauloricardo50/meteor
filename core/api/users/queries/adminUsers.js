@@ -3,11 +3,26 @@ import { USER_QUERIES, ROLES } from '../userConstants';
 
 export default Users.createQuery(USER_QUERIES.ADMIN_USERS, {
   $filter({ filters, options, params }) {
-    if (params.assignedTo) {
-      filters.assignedEmployeeId = params.assignedTo;
+    const { assignedTo, searchQuery } = params;
+    if (assignedTo) {
+      filters.assignedEmployeeId = assignedTo;
     }
     // filters.roles = { $nin: [ROLES.DEV] };
     filters.roles = { $in: [ROLES.ADMIN, ROLES.USER] };
+    if (searchQuery) {
+      filters.$or = [
+        {
+          emails: {
+            $elemMatch: {
+              address: {
+                $regex: searchQuery,
+              },
+            },
+          },
+        },
+        { 'profile.organization': { $regex: searchQuery } },
+      ];
+    }
   },
   $options: {
     sort: {

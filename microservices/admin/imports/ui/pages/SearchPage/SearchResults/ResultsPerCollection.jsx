@@ -1,7 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ListItem, ListItemText } from 'material-ui/List';
-import { T, IntlDate } from 'core/components/Translation';
+import { T } from 'core/components/Translation';
+import { getLoanValue } from 'core/utils/loanFunctions';
+import {
+  PROPERTY_STATUS,
+  PROPERTY_STYLE,
+} from 'core/api/properties/propertyConstants';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 import ResultSecondaryInfos from './ResultSecondaryInfo';
 
@@ -17,15 +22,12 @@ const getBorrowerInfo = (result) => {
 };
 
 const getLoanInfo = (result) => {
-  const {
-    _id,
-    name,
-    createdAt,
-    updatedAt,
-    logic,
-    general,
-  } = result;
+  const { _id, name, createdAt, updatedAt, logic, general, property } = result;
   const { step } = logic;
+  const value = getLoanValue({
+    loan: result,
+    property,
+  });
   const { fortuneUsed, insuranceFortuneUsed } = general;
 
   const primary = name || <T id="general.loan" />;
@@ -36,6 +38,7 @@ const getLoanInfo = (result) => {
         createdAt,
         updatedAt,
         step,
+        value,
         fortuneUsed,
         insuranceFortuneUsed,
       }}
@@ -45,38 +48,50 @@ const getLoanInfo = (result) => {
 };
 
 const getPropertyInfo = (result) => {
-  const { _id, city, zipCode, address1, address2, value, status, style, insideArea } = result;
-  const primary = address1 || address2 || (
-    <T id="general.property" />
-  );
+  const {
+    _id,
+    city,
+    zipCode,
+    address1,
+    address2,
+    value,
+    status,
+    style,
+    insideArea,
+  } = result;
+  const primary = address1 || address2 || <T id="general.property" />;
   const secondary = (
-    <ResultSecondaryInfos infos={{ _id,
-      city,
-      zipCode,
-      value,
-      status,
-      style,
-      insideArea }}
+    <ResultSecondaryInfos
+      infos={{
+        _id,
+        city,
+        zipCode,
+        value,
+        status: PROPERTY_STATUS[status],
+        style: PROPERTY_STYLE[style],
+        insideArea,
+      }}
     />
   );
   return { primary, secondary };
 };
 
 const getUserInfo = (result) => {
-  const { _id,
-    emails,
-    profile,
-    roles,
-    createdAt } = result;
+  const { _id, emails, profile, roles, createdAt, assignedEmployee } = result;
   const organization = profile ? profile.organization : null;
-  const primary = emails[0].address || (
-    <T id="general.user" />
-  );
+  const assignedEmployeeName = (assignedEmployee &&
+    (assignedEmployee.username || assignedEmployee.emails[0].address)) || 'unassigned';
+
+  const primary = emails[0].address || <T id="general.user" />;
   const secondary = (
-    <ResultSecondaryInfos infos={{ _id,
-      organization,
-      roles,
-      createdAt }}
+    <ResultSecondaryInfos
+      infos={{
+        _id,
+        organization,
+        roles,
+        createdAt,
+        assignedTo: assignedEmployeeName,
+      }}
     />
   );
   return { primary, secondary };
@@ -106,7 +121,7 @@ export default ({ results, collection }) =>
       secondary: null,
     };
     return (
-      <Link to={`/${collection}/${_id}`} key={_id}>
+      <Link to={`/${collection}/${_id}`} key={_id} className="link">
         <ListItem button divider>
           <ListItemText primary={primary} secondary={secondary} />
         </ListItem>

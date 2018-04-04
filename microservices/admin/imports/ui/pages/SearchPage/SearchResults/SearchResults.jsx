@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import List from 'material-ui/List';
 
-import { LoadingComponent } from 'core/components/Loading';
+import Loading from 'core/components/Loading';
 import { T } from 'core/components/Translation';
 import SearchResultsContainer from './SearchResultsContainer';
 import ResultsPerCollection from './ResultsPerCollection';
@@ -11,7 +11,7 @@ const SearchResults = (props) => {
   const { isLoading, error, data } = props;
 
   if (isLoading) {
-    return <LoadingComponent />;
+    return <Loading />;
   }
 
   if (error) {

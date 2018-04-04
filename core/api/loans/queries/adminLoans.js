@@ -2,6 +2,12 @@ import Loans from '..';
 import { LOAN_QUERIES } from '../loanConstants';
 
 export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOANS, {
+  $filter({ filters, params }) {
+    const { searchQuery } = params;
+    if (searchQuery) {
+      filters.name = { $regex: searchQuery };
+    }
+  },
   $options: {
     sort: {
       createdAt: -1,

@@ -13,9 +13,11 @@
   font-size: inherit;
   height: 64;
 }
-
 .list,
 .selected {
   width: 100%;
   max-width: 800;
+}
+.link {
+  text-decoration: none;
 }
