@@ -2,10 +2,11 @@ import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import moment from 'moment';
-
+import { Link } from 'react-router-dom';
 import Table from 'core/components/Table';
 import { T } from 'core/components/Translation';
-import TaskAssignDropdown from '../../components/AssignAdminDropdown/TaskAssignDropdown';
+import TaskAssignDropdown 
+  from '../../components/AssignAdminDropdown/TaskAssignDropdown';
 import TasksStatusDropdown from './TasksStatusDropdown';
 
 const styles = {
@@ -35,22 +36,27 @@ export default class TasksTable extends Component {
   };
 
   getColumns = ({ props, index, task }) => {
+    const { type, status,
+      createdAt, updatedAt, dueAt, completedAt, user, assignedEmployee } = task;
     const columns = [
       index + 1,
-      <T id={`TasksStatusDropdown.${task.type}`} />,
-      <T id={`TasksStatusDropdown.${task.status}`} />,
-      moment(task.createdAt).format('D MMM YY à HH:mm:ss'),
-      moment(task.updatedAt).format('D MMM YY à HH:mm:ss'),
-      moment(task.dueAt).format('D MMM YY à HH:mm:ss'),
-      moment(task.completedAt).format('D MMM YY à HH:mm:ss'),
-      task.user && (task.user.username || task.user.emails[0].address || ''),
+      <T id={`TasksStatusDropdown.${type}`} />,
+      <T id={`TasksStatusDropdown.${status}`} />,
+      moment(createdAt).format('D MMM YY à HH:mm:ss'),
+      moment(updatedAt).format('D MMM YY à HH:mm:ss'),
+      moment(dueAt).format('D MMM YY à HH:mm:ss'),
+      moment(completedAt).format('D MMM YY à HH:mm:ss'),
+      user && (
+        <Link to={`/users/${user._id}`} className="link" >
+          {user.username || user.emails[0].address}
+        </Link>),
       // TODO: also check& add other related docs
     ];
     if (props.showAssignee) {
-      columns.push(task.assignedEmployee &&
-          (task.assignedEmployee.username ||
-            task.assignedEmployee.emails[0].address ||
-            ''));
+      columns.push(assignedEmployee &&
+        <Link to={`/users/${assignedEmployee._id}`} className="link" >
+          {assignedEmployee.username || assignedEmployee.emails[0].address}
+        </Link>);
     }
 
     columns.push(<div style={{ display: 'flex' }}>
@@ -62,7 +68,7 @@ export default class TasksTable extends Component {
         styles={styles.dropdownButtons}
       />
       <TaskAssignDropdown doc={task} styles={styles.dropdownButtons} />
-    </div>);
+                 </div>);
 
     return columns;
   };
