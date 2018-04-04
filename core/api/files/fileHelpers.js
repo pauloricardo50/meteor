@@ -15,12 +15,14 @@ export const fakeFile = {
 
 export const validFakeFile = {
   ...fakeFile,
+  key: 'asdf/fakeKey/validFakeFile.pdf',
   status: FILE_STATUS.VALID,
   error: '',
 };
 
 export const invalidFakeFile = {
   ...fakeFile,
+  key: 'asdf/fakeKey/invalidFakeFile.pdf',
   error: 'Incorrect file format',
   status: FILE_STATUS.ERROR,
 };
