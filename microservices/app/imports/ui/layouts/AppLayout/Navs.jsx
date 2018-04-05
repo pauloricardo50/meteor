@@ -35,14 +35,8 @@ export default class Navs extends Component {
         >
           <SearchModal />
         </TopNav>
-        <div
-          key={1}
-          className={classnames({
-            'permanent-side-nav': true,
-            'always-side-nav': isAdmin,
-          })}
-        >
-          {showSideNav && <PermanentSideNav {...this.props} isApp={isApp} />}
+        <div key={1} className="permanent-side-nav">
+          {showSideNav && <PermanentSideNav {...this.props} />}
         </div>
       </div>
     );
