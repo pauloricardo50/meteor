@@ -1,5 +1,3 @@
-@import './variables.scss';
-
 // Imports all scss files here, make sure the path uses imports, or else they
 // won't be found in the microservices that use them
 @import '{}/imports/core/components/UploaderArray/FileDropper.scss';
