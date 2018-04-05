@@ -46,7 +46,7 @@ Cypress.Commands.add(
 
 // wait for the loader until it closes and then do further
 Cypress.Commands.add('waitUntilLoads', () => {
-  const isLoading = Cypress.$('.loading-container')[0];
+  const isLoading = Cypress.$('.loading-container:visible')[0];
   if (isLoading) {
     cy.get('.loading-container').should('not.exist');
   }
