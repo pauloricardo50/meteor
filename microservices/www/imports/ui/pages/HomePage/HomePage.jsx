@@ -1,28 +1,28 @@
-import React, { Component } from 'react';
-import { DocHead } from 'meteor/kadira:dochead';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import Header from './Header';
-import KeyPoints1 from './KeyPoints1';
-import Browser from './Browser';
-import KeyPoints2 from './KeyPoints2';
-import Footer from './Footer';
+import HomePageInterestRates from './HomePageInterestRates';
+import HomePageNav from './HomePageNav';
+import HomePageHeader from './HomePageHeader';
+import HomePagePartners from './HomePagePartners';
+import HomePageDescription from './HomePageDescription';
+import HomePageReviews from './HomePageReviews';
+import HomePageNewsletter from './HomePageNewsletter';
+import HomePageFooter from './HomePageFooter';
 
-export default class HomePage extends Component {
-  componentDidMount() {
-    DocHead.setTitle('e-Potek');
-  }
+const HomePage = () => (
+  <main className="home-page">
+    <HomePageInterestRates />
+    <HomePageNav />
+    <HomePageHeader />
+    <HomePagePartners />
+    <HomePageDescription />
+    <HomePageReviews />
+    {/* <HomePageNewsletter /> */}
+    <HomePageFooter />
+  </main>
+);
 
-  render() {
-    return (
-      <section style={{ display: 'unset !important' }}>
-        <div name="launchaco" style={{ display: 'unset' }}>
-          <Header />
-          <KeyPoints1 />
-          <Browser />
-          <KeyPoints2 />
-          <Footer />
-        </div>
-      </section>
-    );
-  }
-}
+HomePage.propTypes = {};
+
+export default HomePage;

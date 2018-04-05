@@ -16,7 +16,7 @@ const ContractPage = props => (
         </p>
       </div>
 
-      <ContractDownloader contract={props.loan.files.contract} />
+      <ContractDownloader contract={props.loan.documents.contract} />
 
       <FileTabs {...props} />
     </div>

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import { LoadingComponent } from 'core/components/Loading';
+import Loading from 'core/components/Loading';
 import { AUCTION_STATUS } from 'core/api/constants';
 
 import ProcessPage from '/imports/ui/components/ProcessPage';
@@ -46,7 +46,7 @@ export default class AuctionPage extends Component {
     if (!serverTime) {
       return (
         <div style={{ height: 150 }}>
-          <LoadingComponent />
+          <Loading />
         </div>
       );
     }

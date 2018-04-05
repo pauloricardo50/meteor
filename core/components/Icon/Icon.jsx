@@ -37,6 +37,8 @@ import DollarSign from 'material-ui-icons/AttachMoney';
 import ContactMail from 'material-ui-icons/ContactMail';
 import People from 'material-ui-icons/People';
 import DeveloperMode from 'material-ui-icons/DeveloperMode';
+import ErrorIcon from 'material-ui-icons/Error';
+import CheckCircle from 'material-ui-icons/CheckCircle';
 import RadioButtonChecked from 'material-ui-icons/RadioButtonChecked';
 
 import Star from 'material-ui-icons/Star';
@@ -47,6 +49,11 @@ import PersonAdd from 'material-ui-icons/PersonAdd';
 import OfflinePin from 'material-ui-icons/OfflinePin';
 import Save from 'material-ui-icons/Save';
 import SupervisorAccount from 'material-ui-icons/SupervisorAccount';
+import FlashOn from 'material-ui-icons/FlashOn';
+import Report from 'material-ui-icons/Report';
+import DeleteForever from 'material-ui-icons/DeleteForever';
+import DeleteSweep from 'material-ui-icons/DeleteSweep';
+import GroupAdd from 'material-ui-icons/GroupAdd';
 
 const iconMap = {
   close: CloseIcon,
@@ -93,7 +100,14 @@ const iconMap = {
   developerMode: DeveloperMode,
   save: Save,
   supervisorAccount: SupervisorAccount,
+  error: ErrorIcon,
+  checkCircle: CheckCircle,
   radioButtonChecked: RadioButtonChecked,
+  flash: FlashOn,
+  report: Report,
+  deleteForever: DeleteForever,
+  deleteSweep: DeleteSweep,
+  groupAdd: GroupAdd,
 };
 
 const Icon = ({ type, size, ...props }) => {

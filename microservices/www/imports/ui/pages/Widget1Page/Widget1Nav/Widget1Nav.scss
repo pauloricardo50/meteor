@@ -1,0 +1,11 @@
+@import '{}/client/css/variables.scss';
+
+.widget1-nav {
+  position: fixed;
+  background-color: white;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: $top-nav-height;
+  z-index: 15;
+}

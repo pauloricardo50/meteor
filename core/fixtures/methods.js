@@ -8,40 +8,51 @@ import {
   Tasks,
   Users,
   SecurityService,
-} from 'core/api';
-import UserService from 'core/api/users/UserService';
-import TaskService from 'core/api/tasks/TaskService';
-import { TASK_TYPE } from 'core/api/tasks/taskConstants';
+} from '../api';
+import UserService from '../api/users/UserService';
+import TaskService from '../api/tasks/TaskService';
+import { TASK_TYPE } from '../api/tasks/taskConstants';
 import {
   DEV_COUNT,
   USER_COUNT,
   ADMIN_COUNT,
   MAX_LOANS_PER_USER,
 } from './config';
-import createFakeLoan from './loans';
-import createFakeTask from './tasks';
-import createFakeUsers from './users';
-import createFakeOffer from './offers';
+import { createFakeLoan } from './loans';
+import { createFakeTask, deleteUsersTasks } from './tasks';
+import { createFakeUsers, getFakeUsersIds } from './users';
+import { createFakeOffer } from './offers';
 import { ROLES } from '../api/users/userConstants';
 
 const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
 const generateNumberOfLoans = max => Math.floor(Math.random() * max + 1);
 
-const getAdmins = () => {
+const getAdmins = (currentUserEmail) => {
   const admins = Users.find({ roles: { $in: [ROLES.ADMIN] } }).fetch();
-  if (admins.length === 0) {
-    const newAdmins = createFakeUsers(ADMIN_COUNT, ROLES.ADMIN);
+  if (admins.length <= 1) {
+    const newAdmins = createFakeUsers(ADMIN_COUNT, ROLES.ADMIN, currentUserEmail);
     return newAdmins;
   }
   return admins.map(admin => admin._id);
 };
 
+const deleteUsersRelatedData = (usersToDelete) => {
+  deleteUsersTasks(usersToDelete);
+  Borrowers.remove({ userId: { $in: usersToDelete } });
+  Properties.remove({ userId: { $in: usersToDelete } });
+  Offers.remove({ userId: { $in: usersToDelete } });
+  Loans.remove({ userId: { $in: usersToDelete } });
+};
+
+const deleteUsers = usersToDelete =>
+  Users.remove({ _id: { $in: usersToDelete } });
+
 Meteor.methods({
   generateTestData(currentUserEmail) {
     if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
       createFakeUsers(DEV_COUNT, ROLES.DEV, currentUserEmail);
-      const admins = getAdmins();
-      const newUsers = createFakeUsers(USER_COUNT, ROLES.USER);
+      const admins = getAdmins(currentUserEmail);
+      const newUsers = createFakeUsers(USER_COUNT, ROLES.USER, currentUserEmail);
       newUsers.map((userId) => {
         const adminId = admins[Math.floor(Math.random() * admins.length)];
         UserService.assignAdminToUser({ userId, adminId });
@@ -70,6 +81,21 @@ Meteor.methods({
       Tasks.remove({});
       Users.remove({ _id: { $ne: currentUserId } });
     }
+  },
+
+  purgeFakeData(currentUserId) {
+    check(currentUserId, String);
+    if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
+      let fakeUsersIds = getFakeUsersIds();
+      deleteUsersRelatedData(fakeUsersIds);
+
+      fakeUsersIds = fakeUsersIds.filter(item => item !== currentUserId);
+      deleteUsers(fakeUsersIds);
+    }
+  },
+
+  purgePersonalData(currentUserId) {
+    deleteUsersRelatedData([currentUserId]);
   },
 
   insertBorrowerRelatedTask() {

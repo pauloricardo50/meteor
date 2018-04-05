@@ -11,20 +11,12 @@ import {
 } from '../methodDefinitions';
 
 propertyInsert.setHandler((context, { property, userId }) => {
-  let finalUserId;
-
-  if (userId) {
-    SecurityService.checkCurrentUserIsAdmin();
-    finalUserId = userId;
-  } else if (userId === undefined) {
+  if (userId === undefined) {
     SecurityService.checkLoggedIn();
-    finalUserId = Meteor.userId();
-  } else if (userId === null) {
-    SecurityService.checkLoggedOut();
-    finalUserId = null;
+    userId = Meteor.userId();
   }
 
-  return PropertyService.insert({ property, userId: finalUserId });
+  return PropertyService.insert({ property, userId });
 });
 
 propertyUpdate.setHandler((context, { propertyId, object }) => {
@@ -39,10 +31,10 @@ propertyDelete.setHandler((context, { propertyId }) => {
 
 pushPropertyValue.setHandler((context, { propertyId, object }) => {
   SecurityService.properties.isAllowedToUpdate(propertyId);
-  return LoanService.pushValue(object);
+  return PropertyService.pushValue(object);
 });
 
 popPropertyValue.setHandler((context, { propertyId, object }) => {
   SecurityService.properties.isAllowedToUpdate(propertyId);
-  return LoanService.pushValue(object);
+  return PropertyService.pushValue(object);
 });

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
-import { LoadingComponent } from 'core/components/Loading';
+import Loading from 'core/components/Loading';
 import { T } from 'core/components/Translation';
 
 require('moment-duration-format');
@@ -72,7 +72,7 @@ export default class Auction extends Component {
             <T id="Auction.tableText" />
           </p>
           <div style={{ height: 150 }}>
-            <LoadingComponent />
+            <Loading />
           </div>
         </div>
       </section>

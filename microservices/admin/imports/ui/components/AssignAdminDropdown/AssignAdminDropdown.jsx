@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DropdownMenu from 'core/components/DropdownMenu';
-import { LoadingComponent } from 'core/components/Loading';
+import Loading from 'core/components/Loading';
 import { T } from 'core/components/Translation';
 import AssignAdminDropdownContainer from './AssignAdminDropdownContainer';
 
 const AssignAdminDropdown = (props) => {
   const { isLoading, error, styles, options } = props;
   if (isLoading) {
-    return <LoadingComponent />;
+    return <Loading />;
   }
   if (error) {
     return <div>Error: {error.reason}</div>;

@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -51,7 +53,10 @@ const AppPage = ({ loans, properties, currentUser }) => (
       title={<T id="AppPage.newLoan" />}
       mainText={<span className="active">+</span>}
       onClick={() => {
-        window.location.replace(`${Meteor.settings.public.subdomains.www}/start1/acquisition`);
+        console.log("what's the issue?");
+        console.log(`${Meteor.settings.public.subdomains.www}/start/1`);
+
+        window.location.replace(`${Meteor.settings.public.subdomains.www}/start/1`);
       }}
     />
   </section>

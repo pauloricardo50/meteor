@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import Table from 'core/components/Table';
 import { T } from 'core/components/Translation/';
-import { LoadingComponent } from 'core/components/Loading';
+import Loading from 'core/components/Loading';
 import { isUser } from 'core/utils/userFunctions';
 
 import UsersTableContainer from './UsersTableContainer';
@@ -112,7 +112,7 @@ class UsersTable extends Component {
     const { columnOptions, rows } = this.state;
 
     if (isLoading) {
-      return <LoadingComponent />;
+      return <Loading />;
     }
 
     return (

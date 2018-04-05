@@ -1,4 +1,4 @@
-import { constants } from 'core/api';
+import * as constants from 'core/api/constants';
 
 export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
   const b = borrowers.find(borrower => borrower._id === id);
