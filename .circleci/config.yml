@@ -61,6 +61,11 @@ jobs:
             meteor npm i selenium-webdriver@3.0.0-beta-2 chromedriver
             meteor npm run test-CI
       - run:
+          name: run end-to-end tests for App
+          command: |
+            cd microservices/app
+            meteor npm run test-e2e-CI
+      - run:
           name: run tests for admin
           command: |
             cd microservices/admin
