@@ -2,8 +2,7 @@ import { Users } from '../../';
 import { USER_QUERIES, ROLES } from '../userConstants';
 
 export default Users.createQuery(USER_QUERIES.ADMIN_USERS, {
-  $filter({ filters, options, params }) {
-    const { assignedTo, searchQuery } = params;
+  $filter({ filters, params: { assignedTo, searchQuery } }) {
     if (assignedTo) {
       filters.assignedEmployeeId = assignedTo;
     }

@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import List from 'material-ui/List';
+import List, { ListItem } from 'material-ui/List';
 
 import Loading from 'core/components/Loading';
 import { T } from 'core/components/Translation';
+import LinkToCollection from '../../../components/LinkToCollection';
 import SearchResultsContainer from './SearchResultsContainer';
 import ResultsPerCollection from './ResultsPerCollection';
 
-const SearchResults = (props) => {
-  const { isLoading, error, data } = props;
-
+const SearchResults = ({ isLoading, error, data: searchResults }) => {
   if (isLoading) {
     return <Loading />;
   }
@@ -18,21 +17,27 @@ const SearchResults = (props) => {
     return <div>Error: {error.reason}</div>;
   }
 
-  const { borrowers, loans, properties, users } = data;
-  const resultsLength =
-    borrowers.length + loans.length + properties.length + users.length;
+  const hasSearchResults = Object.values(searchResults).some(collection => collection.length > 0);
 
-  if (resultsLength > 0) {
+  if (hasSearchResults) {
     return (
-      <List className="list">
-        {Object.keys(data).map((collection) => {
-          const resultsFromThisCollection = data[collection];
+      <List className="search-results-container">
+        {Object.keys(searchResults).map((collection) => {
+          const resultsFromThisCollection = searchResults[collection];
+
           return (
-            <ResultsPerCollection
-              collection={collection}
-              results={resultsFromThisCollection}
-              key={collection}
-            />
+            (resultsFromThisCollection.length > 0 && (
+              <ListItem key={collection} className="search-results-collection">
+                <h3>
+                  <LinkToCollection collection={collection} />
+                </h3>
+                <ResultsPerCollection
+                  collection={collection}
+                  results={resultsFromThisCollection}
+                />
+              </ListItem>
+            )) ||
+            null
           );
         })}
       </List>

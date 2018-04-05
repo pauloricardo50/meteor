@@ -4,8 +4,7 @@ import { T, IntlDate } from 'core/components/Translation';
 
 const FullDate = ({ translationId, date }) => (
   <span>
-    <T id={`LoanValidation.${translationId}`} />
-    &nbsp;
+    <T id={translationId} />{' '}
     <IntlDate
       value={date}
       month="numeric"

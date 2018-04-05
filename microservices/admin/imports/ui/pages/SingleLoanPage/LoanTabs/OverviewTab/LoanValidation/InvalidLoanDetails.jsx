@@ -39,7 +39,7 @@ const InvalidLoanDetails = ({ loan }) => {
     <div>
       <hr />
       <h2 className="fixed-size bold error">
-        <FullDate translationId="invalidatedAt" date={verifiedAt} />
+        <FullDate translationId="LoanValidation.invalidatedAt" date={verifiedAt} />
       </h2>
       <ul>
         {hasLoanIssues && (

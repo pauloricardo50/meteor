@@ -28,7 +28,7 @@ export default class ImpersonateService {
   }
 
   static _checkRolesForImpersonation(userId) {
-    if (!Security.isUserAdmin(userId)) {
+    if (!Security.checkUserIsAdmin(userId)) {
       this._throwNotAuthorized();
     }
   }

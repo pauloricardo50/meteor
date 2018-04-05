@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Icon from 'core/components/Icon';
 import Button from 'core/components/Button';
 import TextField from 'core/components/Material/TextField';
+import { T } from 'core/components/Translation';
 
 class SearchForm extends Component {
   constructor(props) {
@@ -10,34 +11,29 @@ class SearchForm extends Component {
     this.state = { text: null };
   }
 
-  updateSearchQuery = (onChange) => {
+  updateSearchQuery = (event) => {
+    event.preventDefault();
     const { text } = this.state;
+    const { onChange } = this.props;
     onChange(text);
   };
 
-  handleChange = (event) => {
-    this.setState({
-      text: event.target.value,
-    });
-  };
+  handleChange = ({ target: { value } }) => this.setState({ text: value });
 
   render() {
-    const { onChange } = this.props;
-
     return (
-      <div className="searchBox">
-        <TextField
-          className="searchInput"
-          autoFocus
-          onChange={this.handleChange}
-        />
-        <Button
-          raised
-          className="searchButton"
-          onClick={() => this.updateSearchQuery(onChange)}
-        >
-          <Icon type="search" />
-        </Button>
+      <div className="search-box">
+        <form onSubmit={this.updateSearchQuery}>
+          <TextField
+            className="search-input"
+            autoFocus
+            onChange={this.handleChange}
+          />
+          <Button raised className="search-button" type="submit">
+            <Icon type="search" />
+            <T id="general.search" />
+          </Button>
+        </form>
       </div>
     );
   }

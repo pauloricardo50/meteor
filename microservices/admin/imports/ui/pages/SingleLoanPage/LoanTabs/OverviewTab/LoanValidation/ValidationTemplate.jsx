@@ -4,7 +4,7 @@ import FullDate from 'core/components/dateComponents/FullDate';
 
 const ValidationTemplate = ({ className, labelId, date }) => (
   <h2 className={className}>
-    <FullDate translationId={labelId} date={date} />
+    <FullDate translationId={`LoanValidation.${labelId}`} date={date} />
   </h2>
 );
 

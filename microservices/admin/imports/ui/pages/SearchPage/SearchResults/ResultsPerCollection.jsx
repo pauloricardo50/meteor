@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { ListItem, ListItemText } from 'material-ui/List';
+import List, { ListItem, ListItemText } from 'material-ui/List';
 import { T } from 'core/components/Translation';
 import { getLoanValue } from 'core/utils/loanFunctions';
 import {
@@ -8,7 +9,13 @@ import {
   PROPERTY_STYLE,
 } from 'core/api/properties/propertyConstants';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
-import ResultSecondaryInfos from './ResultSecondaryInfo';
+import {
+  BORROWERS_COLLECTION,
+  LOANS_COLLECTION,
+  PROPERTIES_COLLECTION,
+  USERS_COLLECTION,
+} from 'core/api/constants';
+import ResultSecondaryText from './ResultSecondaryText';
 
 const getBorrowerInfo = (result) => {
   const { _id, firstName, lastName, createdAt, updatedAt } = result;
@@ -16,8 +23,9 @@ const getBorrowerInfo = (result) => {
     <T id="general.borrower" />
   );
   const secondary = (
-    <ResultSecondaryInfos infos={{ _id, createdAt, updatedAt }} />
+    <ResultSecondaryText infos={{ _id, createdAt, updatedAt }} />
   );
+
   return { primary, secondary };
 };
 
@@ -32,7 +40,7 @@ const getLoanInfo = (result) => {
 
   const primary = name || <T id="general.loan" />;
   const secondary = (
-    <ResultSecondaryInfos
+    <ResultSecondaryText
       infos={{
         _id,
         createdAt,
@@ -44,6 +52,7 @@ const getLoanInfo = (result) => {
       }}
     />
   );
+
   return { primary, secondary };
 };
 
@@ -61,7 +70,7 @@ const getPropertyInfo = (result) => {
   } = result;
   const primary = address1 || address2 || <T id="general.property" />;
   const secondary = (
-    <ResultSecondaryInfos
+    <ResultSecondaryText
       infos={{
         _id,
         city,
@@ -73,18 +82,20 @@ const getPropertyInfo = (result) => {
       }}
     />
   );
+
   return { primary, secondary };
 };
 
 const getUserInfo = (result) => {
   const { _id, emails, profile, roles, createdAt, assignedEmployee } = result;
   const organization = profile ? profile.organization : null;
-  const assignedEmployeeName = (assignedEmployee &&
-    (assignedEmployee.username || assignedEmployee.emails[0].address)) || 'unassigned';
+  const assignedEmployeeName = assignedEmployee
+    ? assignedEmployee.username || assignedEmployee.emails[0].address
+    : 'unassigned';
 
   const primary = emails[0].address || <T id="general.user" />;
   const secondary = (
-    <ResultSecondaryInfos
+    <ResultSecondaryText
       infos={{
         _id,
         organization,
@@ -94,37 +105,45 @@ const getUserInfo = (result) => {
       }}
     />
   );
+
   return { primary, secondary };
 };
 
 const getInfoToDisplay = (result, collection) => {
   switch (collection) {
-  case 'borrowers':
+  case BORROWERS_COLLECTION:
     return getBorrowerInfo(result);
-  case 'loans':
+  case LOANS_COLLECTION:
     return getLoanInfo(result);
-  case 'properties':
+  case PROPERTIES_COLLECTION:
     return getPropertyInfo(result);
-  case 'users':
+  case USERS_COLLECTION:
     return getUserInfo(result);
-
   default:
     return null;
   }
 };
 
-export default ({ results, collection }) =>
-  results.map((result) => {
-    const { _id } = result;
-    const { primary, secondary } = getInfoToDisplay(result, collection) || {
-      primary: null,
-      secondary: null,
-    };
-    return (
-      <Link to={`/${collection}/${_id}`} key={_id} className="link">
-        <ListItem button divider>
-          <ListItemText primary={primary} secondary={secondary} />
+const ResultsPerCollection = ({ results, collection }) => (
+  <List>
+    {results.map((result) => {
+      const { _id } = result;
+      const { primary, secondary } = getInfoToDisplay(result, collection);
+
+      return (
+        <ListItem button divider key={_id}>
+          <Link to={`/${collection}/${_id}`} className="link">
+            <ListItemText primary={primary} secondary={secondary} />
+          </Link>
         </ListItem>
-      </Link>
-    );
-  });
+      );
+    })}
+  </List>
+);
+
+ResultsPerCollection.propTypes = {
+  results: PropTypes.array.isRequired,
+  collection: PropTypes.string.isRequired,
+};
+
+export default ResultsPerCollection;

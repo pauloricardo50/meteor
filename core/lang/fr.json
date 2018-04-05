@@ -163,6 +163,7 @@
   "ClosingPage.progress": "Progrès: {value, number, percent}",
   "collections.borrowers": "Emprunteurs",
   "collections.loans": "Hypothèques",
+  "collections.properties": "Biens immobiliers",
   "collections.tasks": "Tâches",
   "collections.users": "Utilisateurs",
   "ConditionsButton.counterpart": "Contreparties pour les meilleurs taux",

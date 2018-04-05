@@ -1,21 +1,21 @@
 import borrowersQuery from 'core/api/borrowers/queries/borrowers';
 import loansQuery from 'core/api/loans/queries/adminLoans';
 import propertiesQuery from 'core/api/properties/queries/properties';
-import usersQuery from 'core/api/users/queries/adminUsers';
+import usersQuery from '../../api/users/queries/adminUsers';
 import searchDatabase from './searchDatabase';
 
 searchDatabase.expose();
 
 searchDatabase.resolve(({ searchQuery }) => {
-  const loansArray = loansQuery.clone({ searchQuery }).fetch();
-  const propertiesArray = propertiesQuery.clone({ searchQuery }).fetch();
-  const borrowersArray = borrowersQuery.clone({ searchQuery }).fetch();
-  const usersArray = usersQuery.clone({ searchQuery }).fetch();
+  const loans = loansQuery.clone({ searchQuery }).fetch();
+  const properties = propertiesQuery.clone({ searchQuery }).fetch();
+  const borrowers = borrowersQuery.clone({ searchQuery }).fetch();
+  const users = usersQuery.clone({ searchQuery }).fetch();
 
   return {
-    loans: loansArray,
-    properties: propertiesArray,
-    borrowers: borrowersArray,
-    users: usersArray,
+    users,
+    loans,
+    borrowers,
+    properties,
   };
 });

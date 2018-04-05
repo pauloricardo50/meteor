@@ -5,7 +5,8 @@ import moment from 'moment';
 
 import Table from 'core/components/Table';
 import { T } from 'core/components/Translation';
-import TaskAssignDropdown from '../../components/AssignAdminDropdown/TaskAssignDropdown';
+import TaskAssignDropdown
+  from '../../components/AssignAdminDropdown/TaskAssignDropdown';
 import TasksStatusDropdown from './TasksStatusDropdown';
 
 const styles = {

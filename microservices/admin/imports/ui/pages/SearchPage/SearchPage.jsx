@@ -16,9 +16,9 @@ class SearchPage extends Component {
     const { query } = this.state;
 
     return (
-      <div className="searchContainer">
-        <h2 className="searchTitle">
-          <SearchForm onChange={this.setQuery} className="searchField" />
+      <div className="search-container">
+        <h2 className="search-title">
+          <SearchForm onChange={this.setQuery} className="search-field" />
         </h2>
         {query && <SearchResults searchQuery={query} />}
       </div>

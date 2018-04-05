@@ -1,13 +1,13 @@
 import Borrowers from '..';
 import { BORROWER_QUERIES } from '../borrowerConstants';
+import { createRegexQuery } from '../../helpers/mongoHelpers';
 
 export default Borrowers.createQuery(BORROWER_QUERIES.ADMIN_BORROWERS, {
-  $filter({ filters, params }) {
-    const { searchQuery } = params;
+  $filter({ filters, params: { searchQuery } }) {
     if (searchQuery) {
       filters.$or = [
-        { firstName: { $regex: searchQuery } },
-        { lastName: { $regex: searchQuery } },
+        createRegexQuery('firstName', searchQuery),
+        createRegexQuery('lastName', searchQuery),
       ];
     }
   },
