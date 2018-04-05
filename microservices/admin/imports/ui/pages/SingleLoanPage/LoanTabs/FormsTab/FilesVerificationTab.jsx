@@ -10,6 +10,10 @@ const styles = {
   },
 };
 
+// Documents are required by default, and should only be hidden if
+// the condition is explicitly false
+const shouldShowDocument = condition => condition !== false;
+
 const FilesVerificationTab = ({
   index,
   title,
@@ -20,7 +24,7 @@ const FilesVerificationTab = ({
   <Tab eventKey={index} title={title}>
     <div style={styles.tabContent}>
       {documentArray.map(({ condition, id: documentId }) =>
-        condition !== false && (
+        shouldShowDocument(condition) && (
           <FileVerificator
             currentValue={
               doc.documents[documentId] && doc.documents[documentId].files
