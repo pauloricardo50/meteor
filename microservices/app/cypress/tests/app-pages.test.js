@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-let appData;
+let testData;
 const appPages = {
   Login: '/login',
   App: '/',
@@ -27,7 +27,7 @@ describe('App Pages', () => {
       .eraseTestData()
       .generateTestData()
       .then((data) => {
-        appData = data;
+        testData = data;
       });
   });
 
@@ -45,7 +45,7 @@ describe('App Pages', () => {
 
         const pageUri =
           typeof appPages[pageName] === 'function'
-            ? appPages[pageName](appData)
+            ? appPages[pageName](testData)
             : appPages[pageName];
 
         cy
