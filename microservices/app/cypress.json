@@ -1,8 +1,8 @@
 {
   "screenshotOnHeadlessFailure": true,
-  "screenshotsFolder": "e2e-results/cypress/screenshots",
+  "screenshotsFolder": "/home/circleci/app/e2e-results/screenshots",
   "videoRecording": false,
-  "videosFolder": "e2e-results/cypress/videos",
+  "videosFolder": "/home/circleci/app/e2e-results/videos",
   "integrationFolder": "cypress/tests",
   "pluginsFile": false,
   "fixturesFolder": false,
