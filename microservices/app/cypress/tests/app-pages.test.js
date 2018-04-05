@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 let testData;
-const appPages = {
+const pages = {
   Login: '/login',
   App: '/',
   Loan: ({ loans }) => `/loans/${loans[0]._id}`,
@@ -31,7 +31,7 @@ describe('App Pages', () => {
       });
   });
 
-  Object.keys(appPages).forEach((pageName) => {
+  Object.keys(pages).forEach((pageName) => {
     describe(`${pageName} Page`, () => {
       it('should render', () => {
         /**
@@ -46,9 +46,9 @@ describe('App Pages', () => {
         }
 
         const pageUri =
-          typeof appPages[pageName] === 'function'
-            ? appPages[pageName](testData)
-            : appPages[pageName];
+          typeof pages[pageName] === 'function'
+            ? pages[pageName](testData)
+            : pages[pageName];
 
         cy
           .visit(pageUri)

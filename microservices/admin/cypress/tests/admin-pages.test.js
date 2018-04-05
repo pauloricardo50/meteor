@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 let testData;
-const adminPages = {
+const pages = {
   Login: '/login',
   'Admin Dashboard': '/',
 };
@@ -17,7 +17,11 @@ describe('Admin Pages', () => {
       });
   });
 
-  Object.keys(adminPages).forEach((pageName) => {
+  it('should fail - for testing purposes', () => {
+    expect(false).to.be.true;
+  });
+
+  Object.keys(pages).forEach((pageName) => {
     describe(`${pageName} Page`, () => {
       it('should render', () => {
         /**
@@ -32,9 +36,9 @@ describe('Admin Pages', () => {
         }
 
         const pageUri =
-          typeof adminPages[pageName] === 'function'
-            ? adminPages[pageName](testData)
-            : adminPages[pageName];
+          typeof pages[pageName] === 'function'
+            ? pages[pageName](testData)
+            : pages[pageName];
 
         cy
           .visit(pageUri)
