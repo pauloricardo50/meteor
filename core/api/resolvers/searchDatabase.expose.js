@@ -1,6 +1,6 @@
-import borrowersQuery from 'core/api/borrowers/queries/borrowers';
-import loansQuery from 'core/api/loans/queries/adminLoans';
-import propertiesQuery from 'core/api/properties/queries/properties';
+import borrowersQuery from '../../api/borrowers/queries/borrowers';
+import loansQuery from '../../api/loans/queries/adminLoans';
+import propertiesQuery from '../../api/properties/queries/properties';
 import usersQuery from '../../api/users/queries/adminUsers';
 import searchDatabase from './searchDatabase';
 
