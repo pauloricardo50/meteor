@@ -86,6 +86,10 @@ jobs:
           path: ./results
       - store_artifacts:
           path: ./results
+      - store_artifacts:
+          path: ./e2e-results/cypress/screenshots
+      - store_artifacts:
+          path: ./e2e-results/cypress/videos
       - persist_to_workspace:
           root: /home/circleci
           paths:
