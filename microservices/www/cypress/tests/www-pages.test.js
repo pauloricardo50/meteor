@@ -5,10 +5,6 @@ const pages = {
 };
 
 describe('Www Pages', () => {
-  it('should fail', () => {
-    expect(false).to.be.true;
-  });
-
   Object.keys(pages).forEach((pageName) => {
     describe(`${pageName} Page`, () => {
       it('should render', () => {
