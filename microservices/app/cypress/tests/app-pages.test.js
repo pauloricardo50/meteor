@@ -34,9 +34,11 @@ describe('App Pages', () => {
   Object.keys(appPages).forEach((pageName) => {
     describe(`${pageName} Page`, () => {
       it('should render', () => {
-        // we login every time, as it seems
-        // that each test uses a different window object
-        // (from which we get `Meteor`)
+        /**
+         * we login every time, as it seems that we're logged out again
+         * in each test, probably because a new window instance is
+         * used for every test, which results in us using new Meteor instance in every test
+         */
         if (publicPages.includes(pageName)) {
           cy.meteorLogout();
         } else {

@@ -5,8 +5,13 @@
     "prestart": "cd ../.. && npm run lang -- admin",
     "start": "meteor run --settings settings-dev.json --port 5000",
     "start-local-db": "MONGO_URL=mongodb://localhost:27017/epotek meteor run --settings settings-dev.json --port 5000",
+    "start-e2e": "meteor --settings settings-dev.json --port 5015",
+    "cypress-run": "cypress run --browser chrome",
+    "cypress-open": "cypress open",
     "test": "meteor test --driver-package=practicalmeteor:mocha --settings settings-dev.json --port 5005",
     "test-CI": "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit-admin.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
+    "test-e2e": "start-server-and-test start-e2e http://localhost:5015 cypress-open",
+    "test-e2e-CI": "start-server-and-test start-e2e http://localhost:5015 cypress-run",
     "clean": "rm -rf node_modules/ && meteor npm install"
   },
   "dependencies": {
@@ -73,6 +78,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-project-relative-import": "^2.0.1",
     "chai": "^4.1.2",
+    "cypress": "^2.1.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.13.1",
@@ -86,6 +92,7 @@
     "mocha": "^4.1.0",
     "proxyquire": "^1.8.0",
     "react-test-renderer": "^16.2.0",
-    "sinon": "^4.1.4"
+    "sinon": "^4.1.4",
+    "start-server-and-test": "^1.1.4"
   }
 }

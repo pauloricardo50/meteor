@@ -1,0 +1,11 @@
+{
+  "screenshotOnHeadlessFailure": true,
+  "screenshotsFolder": "/home/circleci/app/e2e-results/cypress/screenshots",
+  "videoRecording": false,
+  "videosFolder": "/home/circleci/app/e2e-results/cypress/videos",
+  "integrationFolder": "cypress/tests",
+  "pluginsFile": false,
+  "fixturesFolder": false,
+  "supportFile": "imports/core/cypress/support",
+  "baseUrl": "http://localhost:5015"
+}
