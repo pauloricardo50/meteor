@@ -18,19 +18,17 @@ import {
 import ResultSecondaryText from './ResultSecondaryText';
 
 const getBorrowerInfo = (result) => {
-  const { _id, firstName, lastName, createdAt, updatedAt } = result;
+  const { firstName, lastName, createdAt, updatedAt } = result;
   const primary = getBorrowerFullName({ firstName, lastName }) || (
     <T id="general.borrower" />
   );
-  const secondary = (
-    <ResultSecondaryText infos={{ _id, createdAt, updatedAt }} />
-  );
+  const secondary = <ResultSecondaryText infos={{ createdAt, updatedAt }} />;
 
   return { primary, secondary };
 };
 
 const getLoanInfo = (result) => {
-  const { _id, name, createdAt, updatedAt, logic, general, property } = result;
+  const { name, createdAt, updatedAt, logic, general, property } = result;
   const { step } = logic;
   const value = getLoanValue({
     loan: result,
@@ -42,7 +40,6 @@ const getLoanInfo = (result) => {
   const secondary = (
     <ResultSecondaryText
       infos={{
-        _id,
         createdAt,
         updatedAt,
         step,
@@ -58,7 +55,6 @@ const getLoanInfo = (result) => {
 
 const getPropertyInfo = (result) => {
   const {
-    _id,
     city,
     zipCode,
     address1,
@@ -72,7 +68,6 @@ const getPropertyInfo = (result) => {
   const secondary = (
     <ResultSecondaryText
       infos={{
-        _id,
         city,
         zipCode,
         value,
@@ -87,7 +82,7 @@ const getPropertyInfo = (result) => {
 };
 
 const getUserInfo = (result) => {
-  const { _id, emails, profile, roles, createdAt, assignedEmployee } = result;
+  const { emails, profile, roles, createdAt, assignedEmployee } = result;
   const organization = profile ? profile.organization : null;
   const assignedEmployeeName = assignedEmployee
     ? assignedEmployee.username || assignedEmployee.emails[0].address
@@ -97,7 +92,6 @@ const getUserInfo = (result) => {
   const secondary = (
     <ResultSecondaryText
       infos={{
-        _id,
         organization,
         roles,
         createdAt,
