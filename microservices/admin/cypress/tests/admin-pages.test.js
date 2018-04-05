@@ -17,10 +17,6 @@ describe('Admin Pages', () => {
       });
   });
 
-  it('should fail - for testing purposes', () => {
-    expect(false).to.be.true;
-  });
-
   Object.keys(pages).forEach((pageName) => {
     describe(`${pageName} Page`, () => {
       it('should render', () => {

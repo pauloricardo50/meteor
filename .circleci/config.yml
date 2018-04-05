@@ -55,6 +55,11 @@ jobs:
           name: create results directory
           command: mkdir ./results
       - run:
+          name: run end-to-end tests for Www
+          command: |
+            cd microservices/www
+            meteor npm run test-e2e-CI
+      - run:
           name: run end-to-end tests for Admin
           command: |
             cd microservices/admin
