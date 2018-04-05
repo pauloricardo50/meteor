@@ -84,7 +84,7 @@ const theme = createMuiTheme({
   },
   typography: {
     fontFamily: 'Source Sans Pro, sans-serif',
-    fontSize: '1em',
+    fontSize: 16,
     fontWeightRegular: 400,
     fontWeightMedium: 600,
     button: {
