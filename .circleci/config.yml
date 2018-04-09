@@ -57,7 +57,7 @@ jobs:
       - run:
           name: Install test packages
           command: | 
-            meteor npm i selenium-webdriver@3.0.0-beta-2 chromedriver
+            meteor npm i -g selenium-webdriver@3.0.0-beta-2 chromedriver
       - run:
           name: run tests for App
           command: |
