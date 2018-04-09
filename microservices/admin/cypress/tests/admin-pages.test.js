@@ -26,7 +26,7 @@ describe('Admin Pages', () => {
         if (publicPages.includes(pageName)) {
           cy.meteorLogout();
         } else {
-          cy.meteorLogin('admin-1@epotek.ch');
+          cy.meteorLogin('admin-1@e-potek.ch');
         }
 
         const pageUri =

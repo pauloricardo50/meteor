@@ -1,15 +1,15 @@
 Cypress.Commands.add('eraseTestData', () => {
-  cy.meteorLogin('dev-1@epotek.ch').then(({ Meteor }) => {
+  cy.meteorLogin('dev-1@e-potek.ch').then(({ Meteor }) => {
     Meteor.call('purgeDatabase', Meteor.userId());
   });
 });
 
 Cypress.Commands.add('generateTestData', () => {
-  cy.meteorLogin('dev-1@epotek.ch').then(({ Meteor }) =>
+  cy.meteorLogin('dev-1@e-potek.ch').then(({ Meteor }) =>
     new Cypress.Promise((resolve) => {
       const data = Meteor.call(
         'generateTestData',
-        'dev-1@epotek.ch',
+        'dev-1@e-potek.ch',
         (err, data) => {
           if (err) {
             return reject(err);
@@ -22,25 +22,26 @@ Cypress.Commands.add('generateTestData', () => {
 });
 
 Cypress.Commands.add('meteorLogout', () => {
-  cy.visit('/', {
-    onLoad: ({ Meteor }) =>
-      new Cypress.Promise((resolve) => {
-        Meteor.logout(() => resolve());
-      }),
-  });
+  cy.visit('/').then(({ Meteor }) =>
+    new Cypress.Promise((resolve, reject) => {
+      Meteor.logout(err => (err ? reject(err) : resolve()));
+    }));
 });
 
 Cypress.Commands.add(
   'meteorLogin',
-  (email = 'user-1@epotek.ch', password = '12345') => {
-    cy.meteorLogout().then(({ Meteor }) =>
-      new Cypress.Promise((resolve, reject) => {
-        Meteor.loginWithPassword(
-          email,
-          password,
-          err => (err ? reject() : resolve()),
-        );
-      }));
+  (email = 'user-1@e-potek.ch', password = '12345') => {
+    cy
+      .meteorLogout()
+      .visit('/')
+      .then(({ Meteor }) =>
+        new Cypress.Promise((resolve, reject) => {
+          Meteor.loginWithPassword(
+            email,
+            password,
+            err => (err ? reject(err) : resolve()),
+          );
+        }));
   },
 );
 
