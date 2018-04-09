@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { ROLES } from 'core/api/users/userConstants';
-import createFakeUsers from './users';
+import { createFakeUsers } from './users';
 import { DEV_COUNT } from './config';
 
 Meteor.startup(() => {
