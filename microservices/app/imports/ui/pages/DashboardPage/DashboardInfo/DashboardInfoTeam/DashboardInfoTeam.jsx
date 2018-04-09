@@ -5,22 +5,30 @@ import { T } from 'core/components/Translation';
 import DashboardInfoTeamCompany from './DashboardInfoTeamCompany';
 import DashboardInfoTeamExternal from './DashboardInfoTeamExternal';
 import DashboardInfoTeamAdder from './DashboardInfoTeamAdder';
+import DashboardInfoTeamContainer from './DashboardInfoTeamContainer';
 
-const DashboardInfoTeam = props => (
+const DashboardInfoTeam = ({ addContact, removeContact, editContact }) => (
   <div className="dashboard-info-team card1">
     <div className="card-top">
       <h3>
         <T id="DashboardInfoTeam.title" />
       </h3>
       <DashboardInfoTeamCompany />
-      <DashboardInfoTeamExternal />
+      <DashboardInfoTeamExternal
+        removeContact={removeContact}
+        editContact={editContact}
+      />
     </div>
     <div className="card-bottom">
-      <DashboardInfoTeamAdder />
+      <DashboardInfoTeamAdder addContact={addContact} />
     </div>
   </div>
 );
 
-DashboardInfoTeam.propTypes = {};
+DashboardInfoTeam.propTypes = {
+  addContact: PropTypes.func.isRequired,
+  removeContact: PropTypes.func.isRequired,
+  editContact: PropTypes.func.isRequired,
+};
 
-export default DashboardInfoTeam;
+export default DashboardInfoTeamContainer(DashboardInfoTeam);
