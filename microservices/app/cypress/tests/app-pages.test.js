@@ -1,10 +1,7 @@
 let testData;
 const pages = {
   Login: '/login',
-  App: '/',
-  Loan: ({ loans }) => `/loans/${loans[0]._id}`,
-  'Loan Contract': ({ loans }) => `/loans/${loans[0]._id}/contract`,
-  'Loan File': ({ loans }) => `/loans/${loans[0]._id}/files`,
+  Profile: '/profile',
   'Loan Property': ({ loans }) => `/loans/${loans[0]._id}/property`,
   'Loan Finance': ({ loans }) => `/loans/${loans[0]._id}/finance`,
   'Loan Verification': ({ loans }) => `/loans/${loans[0]._id}/verification`,
@@ -12,10 +9,15 @@ const pages = {
   'Loan Auction': ({ loans }) => `/loans/${loans[0]._id}/auction`,
   'Loan Strategy': ({ loans }) => `/loans/${loans[0]._id}/strategy`,
   'Loan Offerpicker': ({ loans }) => `/loans/${loans[0]._id}/offerpicker`,
+  'Loan Contract': ({ loans }) => `/loans/${loans[0]._id}/contract`,
   'Loan Closing': ({ loans }) => `/loans/${loans[0]._id}/closing`,
-  'Add Loan': ({ loans }) => `/add-loan/${loans[0]._id}`,
-  Dev: '/dev',
-  Profile: '/profile',
+  'Loan File': ({ loans }) => `/loans/${loans[0]._id}/files`,
+  Loan: ({ loans }) => `/loans/${loans[0]._id}`,
+  'Reset Password': '/reset-password/fakeToken',
+  'Enroll Account': '/enroll-account/fakeToken',
+  'Verify Email': '/verify-email/fakeToken',
+  App: '/',
+  'Not Found': '/a-page-that-does-not-exist',
 };
 const publicPages = ['Login'];
 
@@ -51,7 +53,7 @@ describe('App Pages', () => {
         cy
           .visit(pageUri)
           .waitUntilLoads()
-          .shouldRenderWithoutErrors();
+          .shouldRenderWithoutErrors(pageUri);
       });
     });
   });

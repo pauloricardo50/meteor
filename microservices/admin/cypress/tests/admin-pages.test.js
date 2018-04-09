@@ -37,7 +37,7 @@ describe('Admin Pages', () => {
         cy
           .visit(pageUri)
           .waitUntilLoads()
-          .shouldRenderWithoutErrors();
+          .shouldRenderWithoutErrors(pageUri);
       });
     });
   });

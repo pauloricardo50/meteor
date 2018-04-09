@@ -11,7 +11,7 @@ describe('Www Pages', () => {
         cy
           .visit(pageUri)
           .waitUntilLoads()
-          .shouldRenderWithoutErrors();
+          .shouldRenderWithoutErrors(pageUri);
       });
     });
   });

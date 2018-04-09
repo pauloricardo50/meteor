@@ -53,6 +53,9 @@ Cypress.Commands.add('waitUntilLoads', () => {
   }
 });
 
-Cypress.Commands.add('shouldRenderWithoutErrors', () => {
+Cypress.Commands.add('shouldRenderWithoutErrors', (expectedPageUri) => {
   cy.get('section').should('be.ok');
+
+  const baseUrl = Cypress.config('baseUrl');
+  cy.url().should('eq', baseUrl + expectedPageUri);
 });
