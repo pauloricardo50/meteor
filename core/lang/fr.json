@@ -1,4 +1,9 @@
 {
+  "roles.user": "Utilisateur",
+  "roles.admin": "Employé e-Potek",
+  "roles.dev": "Développeur",
+  "roles.lender": "Prêteur",
+
   "DashboardProgressBar.title": "Progression",
 
   "Forms.futureOwner.BOTH": "Les deux",

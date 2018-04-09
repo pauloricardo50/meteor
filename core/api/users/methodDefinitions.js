@@ -32,3 +32,11 @@ export const assignAdminToNewUser = new Method({
     taskType: String,
   },
 });
+
+export const setRole = new Method({
+  name: 'setRole',
+  params: {
+    userId: String,
+    role: String,
+  },
+});

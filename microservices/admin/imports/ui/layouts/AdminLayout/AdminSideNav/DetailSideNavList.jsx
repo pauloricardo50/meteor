@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 
 import Loading from 'core/components/Loading';
+import Roles from 'core/components/Roles';
 import {
   USERS_COLLECTION,
   LOANS_COLLECTION,
@@ -16,7 +17,7 @@ const getListItemDetails = (collectionName, doc) => {
   case USERS_COLLECTION:
     return {
       primary: doc.emails[0].address,
-      secondary: doc.roles.join(', '),
+      secondary: <Roles roles={doc.roles} />,
     };
   case LOANS_COLLECTION:
     return { primary: doc._id, secondary: doc.name };

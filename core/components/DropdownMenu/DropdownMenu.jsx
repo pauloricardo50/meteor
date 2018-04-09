@@ -20,7 +20,7 @@ export default class DropdownMenu extends Component {
   handleOpen = event =>
     this.setState({ isOpen: true, anchorEl: event.currentTarget });
 
-  handleLoanClose = () => this.setState({ isOpen: false });
+  handleClose = () => this.setState({ isOpen: false });
 
   mapOption = ({
     id,
@@ -36,11 +36,11 @@ export default class DropdownMenu extends Component {
     const arr = [
       <MenuItem
         key={id}
-        onClick={() => {
+        onClick={(event, index) => {
           if (onClick) {
-            onClick();
+            onClick(index);
           }
-          this.handleLoanClose();
+          this.handleClose();
         }}
         {...otherProps}
         component={link ? Link : null}
@@ -90,7 +90,7 @@ export default class DropdownMenu extends Component {
           id="long-menu"
           anchorEl={anchorEl}
           open={isOpen}
-          onClose={this.handleLoanClose}
+          onClose={this.handleClose}
           PaperProps={{
             style: {
               maxHeight: ITEM_HEIGHT * 4.5,
