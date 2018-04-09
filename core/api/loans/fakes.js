@@ -118,6 +118,7 @@ export const loanStep1 = {
   property: fakeProperty,
   logic: logic1,
   documents: fakeFiles,
+  contacts: [],
 };
 
 export const loanStep2 = {
@@ -126,6 +127,7 @@ export const loanStep2 = {
   property: fakeProperty,
   logic: logic2,
   documents: fakeFiles,
+  contacts: [],
 };
 
 export const loanStep3 = completeFiles => ({
@@ -142,4 +144,5 @@ export const loanStep3 = completeFiles => ({
   },
   logic: logic3,
   documents: completeFiles ? fakeFiles : fakeFiles2,
+  contacts: [],
 });
