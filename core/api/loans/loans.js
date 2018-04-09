@@ -64,7 +64,7 @@ const LoanSchema = new SimpleSchema({
   'contacts.$.name': String,
   'contacts.$.title': String,
   'contacts.$.email': String,
-  'contacts.$.phone': Date,
+  'contacts.$.phone': String,
 });
 
 // Finally, attach schema to the Mongo collection and export

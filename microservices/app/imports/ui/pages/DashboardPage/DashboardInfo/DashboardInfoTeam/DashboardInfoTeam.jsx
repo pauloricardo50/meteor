@@ -7,17 +7,26 @@ import DashboardInfoTeamExternal from './DashboardInfoTeamExternal';
 import DashboardInfoTeamAdder from './DashboardInfoTeamAdder';
 import DashboardInfoTeamContainer from './DashboardInfoTeamContainer';
 
-const DashboardInfoTeam = ({ addContact, removeContact, editContact }) => (
+const DashboardInfoTeam = ({
+  addContact,
+  removeContact,
+  editContact,
+  loan: { contacts },
+}) => (
   <div className="dashboard-info-team card1">
     <div className="card-top">
       <h3>
         <T id="DashboardInfoTeam.title" />
       </h3>
       <DashboardInfoTeamCompany />
-      <DashboardInfoTeamExternal
-        removeContact={removeContact}
-        editContact={editContact}
-      />
+      {contacts &&
+        contacts.length > 0 && (
+        <DashboardInfoTeamExternal
+          removeContact={removeContact}
+          editContact={editContact}
+          contacts={contacts}
+        />
+      )}
     </div>
     <div className="card-bottom">
       <DashboardInfoTeamAdder addContact={addContact} />
@@ -26,6 +35,7 @@ const DashboardInfoTeam = ({ addContact, removeContact, editContact }) => (
 );
 
 DashboardInfoTeam.propTypes = {
+  loan: PropTypes.object.isRequired,
   addContact: PropTypes.func.isRequired,
   removeContact: PropTypes.func.isRequired,
   editContact: PropTypes.func.isRequired,

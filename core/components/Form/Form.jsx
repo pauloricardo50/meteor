@@ -30,11 +30,15 @@ const Form = ({
             {...otherProps}
           />
         ))}
-        {showButton && (
-          <Button type="submit" disabled={submitting}>
-            <T id="general.ok" />
-          </Button>
-        )}
+
+        <Button
+          type="submit"
+          disabled={submitting}
+          // Hide the button, so the form still submits on enter
+          style={{ display: showButton ? 'initial' : 'none', color: 'red' }}
+        >
+          <T id="general.ok" />
+        </Button>
       </form>
     </FormWrapper>
     {renderActions && renderActions({ handleSubmit, submitting })}

@@ -1,9 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Button from 'core/components/Button';
+import { T } from 'core/components/Translation';
 import IconButton from 'core/components/IconButton';
+import DashboardInfoTeamForm from './DashboardInfoTeamForm';
 
-const DashboardInfoTeamMember = ({ src, name, title, email, phone }) => (
+const DashboardInfoTeamMember = ({
+  src,
+  name,
+  title,
+  email,
+  phone,
+  allowEdit,
+  editContact,
+  removeContact,
+}) => (
   <div className="dashboard-info-team-company-member">
     {src && <img src={src} alt={name} />}
     <div className="person">
@@ -11,11 +23,32 @@ const DashboardInfoTeamMember = ({ src, name, title, email, phone }) => (
       <p>{title}</p>
     </div>
     <div className="contact">
+      {allowEdit && (
+        <DashboardInfoTeamForm
+          button={
+            <IconButton type="edit" tooltip={<T id="general.modify" />} />
+          }
+          onSubmit={values => editContact(name, values)}
+          initialValues={{ name, title, email, phone }}
+          form={name}
+          renderAdditionalActions={({ handleClose }) => (
+            <Button onClick={() => removeContact(name).then(handleClose)}>
+              <T id="general.delete" />
+            </Button>
+          )}
+        />
+      )}
       <a href={`mailto:${email}`}>
-        <IconButton type="mail" />
+        <IconButton
+          type="mail"
+          tooltip={<T id="DashboardInfoTeamMember.emailTooltip" />}
+        />
       </a>
       <a href={`tel:${phone}`}>
-        <IconButton type="phone" />
+        <IconButton
+          type="phone"
+          tooltip={<T id="DashboardInfoTeamMember.phoneTooltip" />}
+        />
       </a>
     </div>
   </div>
@@ -27,6 +60,15 @@ DashboardInfoTeamMember.propTypes = {
   title: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   phone: PropTypes.string.isRequired,
+  allowEdit: PropTypes.bool,
+  editContact: PropTypes.func,
+  removeContact: PropTypes.func,
+};
+
+DashboardInfoTeamMember.defaultProps = {
+  allowEdit: false,
+  editContact: undefined,
+  removeContact: undefined,
 };
 
 export default DashboardInfoTeamMember;

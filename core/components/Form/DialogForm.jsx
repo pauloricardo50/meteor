@@ -8,6 +8,7 @@ import Dialog, {
   DialogTitle,
 } from 'material-ui/Dialog';
 import Button from '../Button';
+import { T } from '../Translation';
 import Form from '.';
 
 export default class DialogForm extends Component {
@@ -29,6 +30,7 @@ export default class DialogForm extends Component {
       formArray,
       onSubmit,
       initialValues,
+      renderAdditionalActions,
     } = this.props;
     const { open } = this.state;
 
@@ -58,11 +60,13 @@ export default class DialogForm extends Component {
             FormWrapper={DialogContent}
             renderActions={({ handleSubmit, submitting }) => (
               <DialogActions>
+                {renderAdditionalActions &&
+                  renderAdditionalActions({ handleClose: this.handleClose })}
                 <Button onClick={this.handleClose} disabled={submitting}>
-                  Cancel
+                  <T id="general.cancel" />
                 </Button>
                 <Button primary onClick={handleSubmit} disabled={submitting}>
-                  OK
+                  <T id="general.ok" />
                 </Button>
               </DialogActions>
             )}
@@ -81,6 +85,7 @@ DialogForm.propTypes = {
   formArray: PropTypes.array.isRequired,
   onSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.object,
+  renderAdditionalActions: PropTypes.func,
 };
 
 DialogForm.defaultProps = {
@@ -88,4 +93,5 @@ DialogForm.defaultProps = {
   title: null,
   description: null,
   initialValues: undefined,
+  renderAdditionalActions: undefined,
 };

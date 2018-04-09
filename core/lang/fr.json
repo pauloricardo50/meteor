@@ -1,5 +1,21 @@
 {
   "DashboardRecapFinance.title": "Plan financier",
+  "DashboardInfoTeamMember.emailTooltip": "Envoyer un mail",
+  "DashboardInfoTeamMember.phoneTooltip": "Appeler",
+
+  "DashboardInfoTeamAdder.label": "Ajouter un contact",
+  "DashboardInfo.title": "Informations pratiques",
+  "DashboardInfoTeam.title": "Votre équipe",
+  "DashboardInfoTeamExternal.title": "Carnet d'adresse",
+
+  "DashboardInfoTeamForm.dialogTitle": "Ajoutez un contact",
+  "DashboardInfoTeamForm.dialogDescription":
+    "Vous pourrez le retrouver sur votre dashboard e-Potek en tout temps.",
+  "DashboardInfoTeamForm.name": "Nom complet",
+  "DashboardInfoTeamForm.title": "Titre",
+  "DashboardInfoTeamForm.email": "E-mail",
+  "DashboardInfoTeamForm.phone": "Téléphone",
+
   "DashboardRecapChart.title": "Coût mensuel",
 
   "DashboardRecapCost.sumTitle": "Coût total",
