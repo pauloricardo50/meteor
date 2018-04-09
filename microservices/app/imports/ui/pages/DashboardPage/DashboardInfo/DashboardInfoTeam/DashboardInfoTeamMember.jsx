@@ -44,12 +44,14 @@ const DashboardInfoTeamMember = ({
           tooltip={<T id="DashboardInfoTeamMember.emailTooltip" />}
         />
       </a>
-      <a href={`tel:${phone}`}>
-        <IconButton
-          type="phone"
-          tooltip={<T id="DashboardInfoTeamMember.phoneTooltip" />}
-        />
-      </a>
+      {phone && (
+        <a href={`tel:${phone}`}>
+          <IconButton
+            type="phone"
+            tooltip={<T id="DashboardInfoTeamMember.phoneTooltip" />}
+          />
+        </a>
+      )}
     </div>
   </div>
 );
@@ -59,13 +61,14 @@ DashboardInfoTeamMember.propTypes = {
   name: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-  phone: PropTypes.string.isRequired,
+  phone: PropTypes.string,
   allowEdit: PropTypes.bool,
   editContact: PropTypes.func,
   removeContact: PropTypes.func,
 };
 
 DashboardInfoTeamMember.defaultProps = {
+  phone: undefined,
   allowEdit: false,
   editContact: undefined,
   removeContact: undefined,

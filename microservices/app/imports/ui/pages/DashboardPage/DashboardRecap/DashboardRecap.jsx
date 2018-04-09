@@ -8,8 +8,10 @@ import DashboardRecapProperty from './DashboardRecapProperty';
 
 const DashboardRecap = props => (
   <div className="dashboard-recap">
-    <h2>
-      <T id="DashboardRecap.title" />
+    <h2 className="secondary">
+      <small>
+        <T id="DashboardRecap.title" />
+      </small>
     </h2>
 
     <div className="cards">

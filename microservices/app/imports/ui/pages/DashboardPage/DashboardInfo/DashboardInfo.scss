@@ -1,16 +1,19 @@
 .dashboard-info {
   display: flex;
   flex-direction: column;
+  align-items: center;
 
-  & .cards {
+  .cards {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
   }
 
-  & .cards > * {
+  .cards > * {
     flex-grow: 1;
     flex-basis: 0;
     margin: 8px;
+    max-width: 33%;
   }
 }
 
@@ -24,7 +27,7 @@
 .dashboard-info-team-company-member {
   display: flex;
   align-items: center;
-  margin: 8px 0;
+  margin: 16px 0;
 
   img {
     width: 64px;

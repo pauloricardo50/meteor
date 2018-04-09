@@ -11,14 +11,14 @@ const DashboardInfoTeam = ({
   addContact,
   removeContact,
   editContact,
-  loan: { contacts },
+  loan: { contacts, assignedEmployee },
 }) => (
   <div className="dashboard-info-team card1">
     <div className="card-top">
       <h3>
         <T id="DashboardInfoTeam.title" />
       </h3>
-      <DashboardInfoTeamCompany />
+      <DashboardInfoTeamCompany assignedEmployee={assignedEmployee} />
       {contacts &&
         contacts.length > 0 && (
         <DashboardInfoTeamExternal
