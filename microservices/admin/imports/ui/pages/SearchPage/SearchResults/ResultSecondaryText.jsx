@@ -10,7 +10,7 @@ const ResultSecondaryText = ({ infos }) =>
     if (fieldValue instanceof Date) {
       return (
         <span key={fieldName}>
-          <FullDate translationId={`general.${fieldName}`} date={fieldValue} />
+          <FullDate translationId={`Forms.${fieldName}`} date={fieldValue} />
           {', '}
         </span>
       );
@@ -19,7 +19,7 @@ const ResultSecondaryText = ({ infos }) =>
     if (fieldName === 'value') {
       return (
         <span key={fieldName}>
-          <T id={`general.${fieldName}`} />
+          <T id={`Forms.${fieldName}`} />
           {': '}
           <IntlNumber value={fieldValue} format="money" />
           {', '}
@@ -31,7 +31,7 @@ const ResultSecondaryText = ({ infos }) =>
       return (
         fieldValue && (
           <span key={fieldName}>
-            <T id="general.unassigned" />
+            <T id="Forms.unassigned" />
             {', '}
           </span>
         )
@@ -41,7 +41,7 @@ const ResultSecondaryText = ({ infos }) =>
     return (
       fieldValue && (
         <span key={fieldName}>
-          <T id={`general.${fieldName}`} />
+          <T id={`Forms.${fieldName}`} />
           {`: ${fieldValue}, `}
         </span>
       )

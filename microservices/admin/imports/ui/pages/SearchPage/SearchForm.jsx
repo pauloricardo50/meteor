@@ -8,7 +8,7 @@ import { T } from 'core/components/Translation';
 class SearchForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { text: null };
+    this.state = { text: '' };
   }
 
   updateSearchQuery = (event) => {
@@ -21,12 +21,14 @@ class SearchForm extends Component {
   handleChange = ({ target: { value } }) => this.setState({ text: value });
 
   render() {
+    const { text } = this.state;
     return (
       <div className="search-box">
         <form onSubmit={this.updateSearchQuery}>
           <TextField
             className="search-input"
             autoFocus
+            value={text}
             onChange={this.handleChange}
           />
           <Button raised className="search-button" type="submit">
