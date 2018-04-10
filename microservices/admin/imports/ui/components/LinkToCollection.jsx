@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { T } from 'core/components/Translation';
-import Icon from 'core/components/Icon';
+
+import IconLink from 'core/components/IconLink';
 import {
   BORROWERS_COLLECTION,
   LOANS_COLLECTION,
@@ -26,10 +25,11 @@ const getCollectionIcon = (collection) => {
 };
 
 const LinkToCollection = ({ collection }) => (
-  <Link to={`/${collection}`}>
-    <Icon type={getCollectionIcon(collection)} />
-    <T id={`collections.${collection}`} />
-  </Link>
+  <IconLink
+    link={`/${collection}`}
+    icon={getCollectionIcon(collection)}
+    translationId={`collections.${collection}`}
+  />
 );
 
 LinkToCollection.propTypes = {

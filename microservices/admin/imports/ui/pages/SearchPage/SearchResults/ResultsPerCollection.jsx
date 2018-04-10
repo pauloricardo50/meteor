@@ -2,12 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import List, { ListItem, ListItemText } from 'material-ui/List';
+
 import { T } from 'core/components/Translation';
 import { getLoanValue } from 'core/utils/loanFunctions';
-import {
-  PROPERTY_STATUS,
-  PROPERTY_STYLE,
-} from 'core/api/properties/propertyConstants';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 import {
   BORROWERS_COLLECTION,
@@ -19,9 +16,11 @@ import ResultSecondaryText from './ResultSecondaryText';
 
 const getBorrowerInfo = (result) => {
   const { firstName, lastName, createdAt, updatedAt } = result;
+  
   const primary = getBorrowerFullName({ firstName, lastName }) || (
     <T id="general.borrower" />
   );
+  
   const secondary = <ResultSecondaryText infos={{ createdAt, updatedAt }} />;
 
   return { primary, secondary };
@@ -37,6 +36,7 @@ const getLoanInfo = (result) => {
   const { fortuneUsed, insuranceFortuneUsed } = general;
 
   const primary = name || <T id="general.loan" />;
+
   const secondary = (
     <ResultSecondaryText
       infos={{
@@ -64,15 +64,17 @@ const getPropertyInfo = (result) => {
     style,
     insideArea,
   } = result;
+
   const primary = address1 || address2 || <T id="general.property" />;
+
   const secondary = (
     <ResultSecondaryText
       infos={{
         city,
         zipCode,
         value,
-        status: PROPERTY_STATUS[status],
-        style: PROPERTY_STYLE[style],
+        status,
+        style,
         insideArea,
       }}
     />
@@ -89,6 +91,7 @@ const getUserInfo = (result) => {
     : 'unassigned';
 
   const primary = emails[0].address || <T id="general.user" />;
+
   const secondary = (
     <ResultSecondaryText
       infos={{

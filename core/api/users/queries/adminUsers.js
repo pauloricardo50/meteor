@@ -1,5 +1,6 @@
 import { Users } from '../../';
 import { USER_QUERIES, ROLES } from '../userConstants';
+import { createRegexQuery } from '../../helpers/mongoHelpers';
 
 export default Users.createQuery(USER_QUERIES.ADMIN_USERS, {
   $filter({ filters, params: { assignedTo, searchQuery } }) {
@@ -12,14 +13,10 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USERS, {
       filters.$or = [
         {
           emails: {
-            $elemMatch: {
-              address: {
-                $regex: searchQuery,
-              },
-            },
+            $elemMatch: createRegexQuery('address', searchQuery),
           },
         },
-        { 'profile.organization': { $regex: searchQuery } },
+        createRegexQuery('profile.organization', searchQuery),
       ];
     }
   },

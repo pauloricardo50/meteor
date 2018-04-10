@@ -17,39 +17,40 @@ const SearchResults = ({ isLoading, error, data: searchResults }) => {
     return <div>Error: {error.reason}</div>;
   }
 
-  const hasSearchResults = Object.values(searchResults).some(collection => collection.length > 0);
+  const hasNoSearchResults = Object.values(searchResults).every(collection => collection.length === 0);
 
-  if (hasSearchResults) {
+  if (hasNoSearchResults) {
     return (
-      <List className="search-results-container">
-        {Object.keys(searchResults).map((collection) => {
-          const resultsFromThisCollection = searchResults[collection];
-
-          return (
-            (resultsFromThisCollection.length > 0 && (
-              <ListItem key={collection} className="search-results-collection">
-                <h3>
-                  <LinkToCollection collection={collection} />
-                </h3>
-                <ResultsPerCollection
-                  collection={collection}
-                  results={resultsFromThisCollection}
-                />
-              </ListItem>
-            )) ||
-            null
-          );
-        })}
-      </List>
+      <div className="description">
+        <p>
+          <T id="SearchResults.none" />
+        </p>
+      </div>
     );
   }
 
   return (
-    <div className="description">
-      <p>
-        <T id="SearchResults.none" />
-      </p>
-    </div>
+    <List className="search-results">
+      {Object.keys(searchResults).map((collection) => {
+        const resultsFromThisCollection = searchResults[collection];
+
+        if (resultsFromThisCollection.length === 0) {
+          return null;
+        }
+
+        return (
+          <ListItem key={collection} className="search-results-collection">
+            <h3>
+              <LinkToCollection collection={collection} />
+            </h3>
+            <ResultsPerCollection
+              collection={collection}
+              results={resultsFromThisCollection}
+            />
+          </ListItem>
+        );
+      })}
+    </List>
   );
 };
 

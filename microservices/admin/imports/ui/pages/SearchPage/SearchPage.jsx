@@ -18,7 +18,10 @@ class SearchPage extends Component {
     return (
       <div className="search-container">
         <h2 className="search-title">
-          <SearchForm onChange={this.setQuery} className="search-field" />
+          <SearchForm
+            updateSearchPageQuery={this.setQuery}
+            className="search-field"
+          />
         </h2>
         {query && <SearchResults searchQuery={query} />}
       </div>

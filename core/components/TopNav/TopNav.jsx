@@ -14,7 +14,14 @@ import TopNavDropdown from './TopNavDropdown';
 // import TopNavDrawer from './TopNavDrawer';
 
 const TopNav = (props) => {
-  const { history, currentUser, loans, appChildren, public: isPublic, children } = props;
+  const {
+    history,
+    currentUser,
+    loans,
+    appChildren,
+    public: isPublic,
+    children,
+  } = props;
   const isApp = history && history.location.pathname.slice(0, 4) === '/';
 
   const showDrawer = isApp && loans.length > 0;
@@ -66,7 +73,7 @@ TopNav.propTypes = {
   public: PropTypes.bool,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
   appChildren: PropTypes.func,
-  children: PropTypes.func,
+  children: PropTypes.any,
 };
 
 TopNav.defaultProps = {
@@ -74,7 +81,7 @@ TopNav.defaultProps = {
   loans: [],
   public: false,
   appChildren: () => {},
-  children: () => {},
+  children: null,
 };
 
 export default TopNav;

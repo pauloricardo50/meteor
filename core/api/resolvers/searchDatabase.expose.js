@@ -12,10 +12,5 @@ searchDatabase.resolve(({ searchQuery }) => {
   const borrowers = borrowersQuery.clone({ searchQuery }).fetch();
   const users = usersQuery.clone({ searchQuery }).fetch();
 
-  return {
-    users,
-    loans,
-    borrowers,
-    properties,
-  };
+  return { users, loans, borrowers, properties };
 });

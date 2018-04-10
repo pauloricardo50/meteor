@@ -1,10 +1,12 @@
+import _ from 'lodash';
 import Loans from '..';
 import { LOAN_QUERIES } from '../loanConstants';
+import { createRegexQuery } from '../../helpers/mongoHelpers';
 
 export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOANS, {
   $filter({ filters, params: { searchQuery } }) {
     if (searchQuery) {
-      filters.name = { $regex: searchQuery };
+      _.extend(filters, createRegexQuery('name', searchQuery));
     }
   },
   $options: {

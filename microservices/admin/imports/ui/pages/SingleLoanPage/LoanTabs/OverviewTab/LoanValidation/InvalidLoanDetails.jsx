@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import { T } from 'core/components/Translation';
 import { FILE_STATUS } from 'core/api/files/fileConstants';
 import FullDate from 'core/components/dateComponents/FullDate';
 import BorrowersIssues from './BorrowerIssues';
@@ -39,7 +41,8 @@ const InvalidLoanDetails = ({ loan }) => {
     <div>
       <hr />
       <h2 className="fixed-size bold error">
-        <FullDate translationId="LoanValidation.invalidatedAt" date={verifiedAt} />
+        <T id="LoanValidation.invalidatedAt" />
+        <FullDate date={verifiedAt} />
       </h2>
       <ul>
         {hasLoanIssues && (

@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import { T } from 'core/components/Translation';
 import FullDate from 'core/components/dateComponents/FullDate';
 
 const ValidationTemplate = ({ className, labelId, date }) => (
   <h2 className={className}>
-    <FullDate translationId={`LoanValidation.${labelId}`} date={date} />
+    <T id={`LoanValidation.${labelId}`} />
+    <FullDate date={date} />
   </h2>
 );
 

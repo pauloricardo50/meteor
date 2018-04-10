@@ -11,11 +11,11 @@ class SearchForm extends Component {
     this.state = { text: '' };
   }
 
-  updateSearchQuery = (event) => {
+  handleSubmit = (event) => {
     event.preventDefault();
     const { text } = this.state;
-    const { onChange } = this.props;
-    onChange(text);
+    const { updateSearchPageQuery } = this.props;
+    updateSearchPageQuery(text);
   };
 
   handleChange = ({ target: { value } }) => this.setState({ text: value });
@@ -24,9 +24,9 @@ class SearchForm extends Component {
     const { text } = this.state;
     return (
       <div className="search-box">
-        <form onSubmit={this.updateSearchQuery}>
+        <form onSubmit={this.handleSubmit}>
           <TextField
-            className="search-input"
+            className="search-input pr20"
             autoFocus
             value={text}
             onChange={this.handleChange}
@@ -42,7 +42,7 @@ class SearchForm extends Component {
 }
 
 SearchForm.propTypes = {
-  onChange: PropTypes.func.isRequired,
+  updateSearchPageQuery: PropTypes.func.isRequired,
 };
 
 export default SearchForm;
