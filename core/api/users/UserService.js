@@ -1,3 +1,4 @@
+import { Roles } from 'meteor/alanning:roles';
 import EventService from '../events';
 import { USER_EVENTS, ROLES } from './userConstants';
 import Users from '../users';
@@ -18,6 +19,8 @@ class UserService {
     this.update({ userId, object: { assignedEmployeeId: adminId } });
 
   getUsersByRole = role => Users.find({ roles: { $in: [role] } }).fetch();
+
+  setRole = ({ userId, role }) => Roles.setUserRoles(userId, role);
 }
 
 export default new UserService();

@@ -79,6 +79,7 @@ const config = {
     'NotFound',
     'LayoutError',
     'File',
+    'roles',
   ],
 };
 

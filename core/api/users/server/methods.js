@@ -9,6 +9,7 @@ import {
   sendVerificationLink,
   assignAdminToUser,
   assignAdminToNewUser,
+  setRole,
 } from '../methodDefinitions';
 import UserService from '../UserService';
 
@@ -63,4 +64,9 @@ assignAdminToNewUser.setHandler((context, { userId, adminId, taskId, taskType })
       }
     }
   }
+});
+
+setRole.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsDev();
+  UserService.setRole(params);
 });
