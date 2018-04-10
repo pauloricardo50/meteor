@@ -49,6 +49,11 @@ import PersonAdd from 'material-ui-icons/PersonAdd';
 import OfflinePin from 'material-ui-icons/OfflinePin';
 import Save from 'material-ui-icons/Save';
 import SupervisorAccount from 'material-ui-icons/SupervisorAccount';
+import FlashOn from 'material-ui-icons/FlashOn';
+import Report from 'material-ui-icons/Report';
+import DeleteForever from 'material-ui-icons/DeleteForever';
+import DeleteSweep from 'material-ui-icons/DeleteSweep';
+import GroupAdd from 'material-ui-icons/GroupAdd';
 
 const iconMap = {
   close: CloseIcon,
@@ -98,6 +103,11 @@ const iconMap = {
   error: ErrorIcon,
   checkCircle: CheckCircle,
   radioButtonChecked: RadioButtonChecked,
+  flash: FlashOn,
+  report: Report,
+  deleteForever: DeleteForever,
+  deleteSweep: DeleteSweep,
+  groupAdd: GroupAdd,
 };
 
 const Icon = ({ type, size, ...props }) => {

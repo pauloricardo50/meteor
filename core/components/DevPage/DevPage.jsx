@@ -2,18 +2,20 @@ import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Roles } from 'meteor/alanning:roles';
-
-import { completeFakeBorrower } from 'core/api/borrowers/fakes';
-import { loanStep1, loanStep2, loanStep3 } from 'core/api/loans/fakes';
-import { getRandomOffer } from 'core/api/offers/fakes';
-import { fakeProperty } from 'core/api/properties/fakes';
+import Tooltip from 'material-ui/Tooltip';
+import { completeFakeBorrower } from '../../api/borrowers/fakes';
+import { loanStep1, loanStep2, loanStep3 } from '../../api/loans/fakes';
+import { getRandomOffer } from '../../api/offers/fakes';
+import { fakeProperty } from '../../api/properties/fakes';
 import {
   borrowerInsert,
   propertyInsert,
   loanInsert,
   offerInsert,
   loanUpdate,
-} from 'core/api';
+} from '../../api';
+import Button from '../Button';
+import Icon from '../Icon';
 
 const addStep1Loan = (twoBorrowers) => {
   const borrowerIds = [];
@@ -130,13 +132,86 @@ export default class DevPage extends Component {
   handleChange = () =>
     this.setState(prev => ({ twoBorrowers: !prev.twoBorrowers }));
 
+  purgeAndGenerateDatabase = (currentUserId, currentUserEmail) => {
+    Meteor.call('purgeDatabase', currentUserId, (err, res) => {
+      if (err) {
+        alert(err.reason);
+      } else {
+        Meteor.call('generateTestData', currentUserEmail);
+      }
+    });
+  }
+
   render() {
     const { twoBorrowers } = this.state;
     const { currentUser } = this.props;
 
     if (!Meteor.isProduction || Meteor.isStaging) {
       return (
+
         <div>
+          <div>
+            <h4 className="error">Avoid touching these buttons unless it is absolutely necessary! Try to use Delete fake data or Delete personal data instead!</h4>
+            <Tooltip
+              title="Use with extra care!!! You will be deleting EVERYTHING in the database except your personal account!"
+            >
+              <Button
+                raised
+                className="error mr20"
+                onClick={() => Meteor.call('purgeDatabase', currentUser._id)}
+              >
+                <Icon type="flash" />
+                Delete entire database
+              </Button>
+
+            </Tooltip>
+
+            <Tooltip title="Use with extra care!!! You will be deleting EVERYTHING in the database and generate new fake data!">
+              <Button
+                raised
+                className="error mr20"
+                onClick={() => this.purgeAndGenerateDatabase(currentUser._id, currentUser.emails[0].address)}
+              >
+                <Icon type="report" />
+                Purge database & Generate test data
+              </Button>
+            </Tooltip>
+          </div>
+          <hr className="mbt20" />
+          <Tooltip title="Generate fake users, loans, borrowers, properties, tasks and offers">
+            <Button
+              raised
+              secondary
+              className="mr20"
+              onClick={() => Meteor.call('generateTestData', currentUser.emails[0].address)}
+            >
+              <Icon type="groupAdd" />
+              Generate test data
+            </Button>
+          </Tooltip>
+
+          <Tooltip title="Delete fake users and related loans, borrowers, properties, tasks and offers">
+            <Button
+              raised
+              className="warning mr20"
+              onClick={() => Meteor.call('purgeFakeData', currentUser._id)}
+            >
+              <Icon type="deleteSweep" />
+              Delete test data
+            </Button>
+          </Tooltip>
+
+          <Tooltip title="Delete personal data: loans, borrowers, properties, tasks and offers">
+            <Button
+              raised
+              className="warning mr20"
+              onClick={() => Meteor.call('purgePersonalData', currentUser._id)}
+            >
+              <Icon type="deleteForever" />
+              Delete personal data
+            </Button>
+          </Tooltip>
+          <hr className="mbt20" />
           <input
             type="checkbox"
             name="vehicle"
@@ -144,43 +219,34 @@ export default class DevPage extends Component {
             onChange={this.handleChange}
           />
           2 borrowers<br />
-          <button onClick={() => addStep1Loan(twoBorrowers)}>
+          <Button raised secondary className="mr20" onClick={() => addStep1Loan(twoBorrowers)}>
             step 1 Loan
-          </button>
-          <button onClick={() => addStep2Loan(twoBorrowers)}>
+          </Button>
+          <Button raised secondary className="mr20" onClick={() => addStep2Loan(twoBorrowers)}>
             step 2 Loan
-          </button>
-          <button onClick={() => addStep3Loan(twoBorrowers)}>
+          </Button>
+          <Button raised secondary className="mr20" onClick={() => addStep3Loan(twoBorrowers)}>
             step 3 Loan
-          </button>
-          <button onClick={() => addStep3Loan(twoBorrowers, false)}>
+          </Button>
+          <Button raised secondary className="mr20" onClick={() => addStep3Loan(twoBorrowers, false)}>
             step 3 Loan, few files
-          </button>
-          <button
-            onClick={() =>
-              Meteor.call('generateTestData', currentUser.emails[0].address)
-            }
-          >
-            Generate test data
-          </button>
-          <button onClick={() => Meteor.call('purgeDatabase', currentUser._id)}>
-            Purge
-          </button>
-          <br /> <br />
-          <p>Insert task related to a random borrower</p>
-          <button onClick={() => Meteor.call('insertBorrowerRelatedTask')}>
-            Borrower Task
-          </button>
-          <br />
-          <p>Insert task related to a random loan</p>
-          <button onClick={() => Meteor.call('insertLoanRelatedTask')}>
-            Loan Task
-          </button>
-          <br />
-          <p>Insert task related to a random property</p>
-          <button onClick={() => Meteor.call('insertPropertyRelatedTask')}>
-            Property Task
-          </button>
+          </Button>
+          <hr className="mbt20" />
+          <Tooltip title="Insert task related to a random borrower">
+            <Button raised secondary className="mr20" onClick={() => Meteor.call('insertBorrowerRelatedTask')}>
+              Borrower Task
+            </Button>
+          </Tooltip>
+          <Tooltip title="Insert task related to a random loan">
+            <Button raised secondary className="mr20" onClick={() => Meteor.call('insertLoanRelatedTask')}>
+              Loan Task
+            </Button>
+          </Tooltip>
+          <Tooltip title="Insert task related to a random property">
+            <Button raised secondary className="mr20" onClick={() => Meteor.call('insertPropertyRelatedTask')}>
+              Property Task
+            </Button>
+          </Tooltip>
         </div>
       );
     }

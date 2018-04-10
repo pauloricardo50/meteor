@@ -6,7 +6,7 @@ import Icon from 'core/components/Icon';
 import { T } from 'core/components/Translation';
 
 const StepStatus = (props) => {
-  const steps = getSteps(props).slice(1, -1);
+  const steps = getSteps(props).slice(0, -1);
   const currentStep = props.loan.logic.step;
   return (
     <ul
