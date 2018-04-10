@@ -8,11 +8,14 @@ import { T } from 'core/components/Translation';
 import TaskAssignDropdown
   from '../../components/AssignAdminDropdown/TaskAssignDropdown';
 import TasksStatusDropdown from './TasksStatusDropdown';
-import RelatedDoc from './RelatedDoc';
+import LinkToDoc from '../LinkToDoc';
 
 const styles = {
   dropdownButtons: { display: 'inline', width: '50%' },
 };
+
+const formatDateTime = date =>
+  moment(date).format('D MMM YY à HH:mm:ss');
 
 export default class TasksTable extends Component {
   getColumnOptions = ({ showAssignee }) => {
@@ -52,12 +55,15 @@ export default class TasksTable extends Component {
       index + 1,
       <T id={`TasksStatusDropdown.${type}`} key="type" />,
       <T id={`TasksStatusDropdown.${status}`} key="status" />,
-      moment(createdAt).format('D MMM YY à HH:mm:ss'),
-      moment(updatedAt).format('D MMM YY à HH:mm:ss'),
-      moment(dueAt).format('D MMM YY à HH:mm:ss'),
-      moment(completedAt).format('D MMM YY à HH:mm:ss'),
-      <RelatedDoc
-        possibleRelatedDocs={{ borrower, loan, property, user }}
+      formatDateTime(createdAt),
+      formatDateTime(updatedAt),
+      formatDateTime(dueAt),
+      formatDateTime(completedAt),
+      <LinkToDoc
+        loan={loan}
+        borrower={borrower}
+        property={property}
+        user={user}
         key="relatedDoc"
       />,
     ];
@@ -68,16 +74,17 @@ export default class TasksTable extends Component {
         </Link>);
     }
 
-    columns.push(<div style={{ display: 'flex' }}>
-      <TasksStatusDropdown
-        {...props}
-        currentUser={Meteor.user()}
-        taskId={task._id}
-        taskStatus={task.status}
-        styles={styles.dropdownButtons}
-      />
-      <TaskAssignDropdown doc={task} styles={styles.dropdownButtons} />
-                 </div>);
+    columns.push(
+      <div style={{ display: 'flex' }}>
+        <TasksStatusDropdown
+          {...props}
+          currentUser={Meteor.user()}
+          taskId={task._id}
+          taskStatus={task.status}
+          styles={styles.dropdownButtons}
+        />
+        <TaskAssignDropdown doc={task} styles={styles.dropdownButtons} />
+      </div>);
 
     return columns;
   };

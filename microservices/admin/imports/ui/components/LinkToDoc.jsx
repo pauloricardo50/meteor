@@ -5,8 +5,10 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 
+const isEmptyObject = obj => Object.keys(obj).length === 0;
+
 const getRelatedDoc = ({ borrower, loan, property, user }) => {
-  if (borrower) {
+  if (!isEmptyObject(borrower)) {
     const { _id, firstName, lastName } = borrower;
 
     return {
@@ -17,7 +19,7 @@ const getRelatedDoc = ({ borrower, loan, property, user }) => {
     };
   }
 
-  if (loan) {
+  if (!isEmptyObject(loan)) {
     const { _id, name } = loan;
 
     return {
@@ -28,7 +30,7 @@ const getRelatedDoc = ({ borrower, loan, property, user }) => {
     };
   }
 
-  if (property) {
+  if (!isEmptyObject(property)) {
     const { _id, address1 } = property;
 
     return {
@@ -39,7 +41,7 @@ const getRelatedDoc = ({ borrower, loan, property, user }) => {
     };
   }
 
-  if (user) {
+  if (!isEmptyObject(user)) {
     const { _id, username, emails } = user;
 
     return {
@@ -50,11 +52,10 @@ const getRelatedDoc = ({ borrower, loan, property, user }) => {
     };
   }
 
-  return null;
+  return {};
 };
 
-const RelatedDoc = ({ possibleRelatedDocs }) => {
-  const { borrower, loan, property, user } = possibleRelatedDocs;
+const LinkToDoc = ({ borrower, loan, property, user }) => {
   const { link, icon, text, translationId } = getRelatedDoc({
     borrower,
     loan,
@@ -62,16 +63,26 @@ const RelatedDoc = ({ possibleRelatedDocs }) => {
     user,
   });
 
-  return (
+  return link && icon ? (
     <Link to={link}>
       <Icon type={icon} />
       {text || <T id={`general.${translationId}`} />}
     </Link>
-  );
+  ) : null;
 };
 
-RelatedDoc.propTypes = {
-  possibleRelatedDocs: PropTypes.object.isRequired,
+LinkToDoc.propTypes = {
+  borrower: PropTypes.object,
+  loan: PropTypes.object,
+  property: PropTypes.object,
+  user: PropTypes.object,
 };
 
-export default RelatedDoc;
+LinkToDoc.defaultProps = {
+  borrower: {},
+  loan: {},
+  property: {},
+  user: {},
+};
+
+export default LinkToDoc;
