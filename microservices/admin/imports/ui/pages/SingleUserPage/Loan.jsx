@@ -9,10 +9,10 @@ import Icon from 'core/components/Icon';
 
 import { IntlNumber } from 'core/components/Translation';
 
-const Loan = ({ loan, borrowers, history, property }) => (
+const Loan = ({ loan, borrowers, property }) => (
   <div className="mask1" style={{ marginBottom: 16 }}>
     <h4 style={{ marginBottom: 16 }}>
-      <Link to={`/loans/${loan._id}`}>{property.address1}</Link>
+      <Link to={`/loans/${loan._id}`}>{loan.name || 'Demande de Prêt'}</Link>
     </h4>
 
     <div className="flex admin-loan" style={{ flexWrap: 'wrap' }}>

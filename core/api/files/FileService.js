@@ -60,23 +60,23 @@ class FileService {
     });
   };
 
-  setFileStatus = ({ collection, docId, fileId, fileKey, newStatus }) => {
+  setFileStatus = ({ collection, docId, documentId, fileKey, newStatus }) => {
     const fileUpdate = { status: newStatus };
     return this.updateFile({
       collection,
       docId,
-      fileId,
+      documentId,
       fileKey,
       fileUpdate,
     });
   };
 
-  setFileError = ({ collection, docId, fileId, fileKey, error }) => {
+  setFileError = ({ collection, docId, documentId, fileKey, error }) => {
     const fileUpdate = { error };
     return this.updateFile({
       collection,
       docId,
-      fileId,
+      documentId,
       fileKey,
       fileUpdate,
     });
