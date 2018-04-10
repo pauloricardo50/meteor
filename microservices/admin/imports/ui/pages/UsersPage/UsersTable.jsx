@@ -1,8 +1,9 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
+import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+
+import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import Table from 'core/components/Table';
 import { T } from 'core/components/Translation/';
 import Loading from 'core/components/Loading';
@@ -21,9 +22,8 @@ class UsersTable extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const newRows = this.setupRows(nextProps);
     this.setState({
-      rows: newRows,
+      rows: this.setupRows(nextProps),
       columnOptions: this.getColumnOptions(nextProps),
     });
   }
@@ -49,25 +49,18 @@ class UsersTable extends Component {
   };
 
   getColumns = ({ props, index, user }) => {
+    const { showAssignee } = props;
+    const { emails, createdAt, roles, assignedEmployee } = user;
+
     const columns = [
-      <Link to={`/users/${user._id}`} key="0">
-        {' '}
-        {index + 1}{' '}
-      </Link>,
-      <Link to={`/users/${user._id}`} key="1">
-        {user.emails[0].address.toString()}
-      </Link>,
-      <Link to={`/users/${user._id}`} key="2">
-        {moment(user.createdAt).format('D MMM YY à HH:mm:ss')}
-      </Link>,
-      <Link to={`/users/${user._id}`} key="3">
-        {user.roles ? user.roles.toString() : ''}
-      </Link>,
+      index + 1,
+      emails[0].address.toString(),
+      moment(createdAt).format('D MMM YY à HH:mm:ss'),
+      roles ? roles.toString() : '',
     ];
-    if (props.showAssignee) {
-      if (user.assignedEmployee) {
-        columns.push(user.assignedEmployee.username ||
-            user.assignedEmployee.emails[0].address);
+    if (showAssignee) {
+      if (assignedEmployee) {
+        columns.push(assignedEmployee.username || assignedEmployee.emails[0].address);
       } else {
         columns.push('');
       }
@@ -90,39 +83,32 @@ class UsersTable extends Component {
   };
 
   setupRows = (props) => {
-    const users = props.data;
+    const { data: users } = props;
 
     if (users && users.length) {
-      this.rows = users.map((user, index) => ({
+      return users.map((user, index) => ({
         id: user._id,
-        columns: this.getColumns({
-          props,
-          index,
-          user,
-        }),
-        // handleClick: () => this.props.history.push(`/users/${user._id}`),
+        columns: this.getColumns({ props, index, user }),
+        handleClick: () => props.history.push(`/users/${user._id}`),
       }));
-      return this.rows;
     }
     return [];
   };
 
   render() {
-    const { isLoading, showAssignee, data } = this.props;
+    const { isLoading } = this.props;
     const { columnOptions, rows } = this.state;
 
     if (isLoading) {
       return <Loading />;
     }
 
-    return (
-      <Table columnOptions={columnOptions} rows={rows} noIntl showAssignee />
-    );
+    return <Table columnOptions={columnOptions} rows={rows} noIntl />;
   }
 }
 
 UsersTable.propTypes = {
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
+  history: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
   showAssignee: PropTypes.bool,
   data: PropTypes.array.isRequired,
@@ -132,4 +118,4 @@ UsersTable.defaultProps = {
   showAssignee: false,
 };
 
-export default UsersTableContainer(UsersTable);
+export default withRouter(UsersTableContainer(UsersTable));
