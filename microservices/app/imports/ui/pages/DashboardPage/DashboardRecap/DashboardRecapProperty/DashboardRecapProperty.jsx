@@ -45,21 +45,18 @@ const getRecapArray = (property) => {
   ];
 };
 
-const DashboardRecapProperty = (props) => {
-  const { property } = props;
-  return (
-    <div className="dashboard-recap-property card1">
-      <MapWithMarker
-        address={getPropertyAddressString(property)}
-        className="map"
-      />
-      <h3>
-        <T id="Recap.property" />
-      </h3>
-      <Recap array={getRecapArray(property)} className="recap" />
-    </div>
-  );
-};
+const DashboardRecapProperty = ({ property }) => (
+  <div className="dashboard-recap-property card1">
+    <MapWithMarker
+      address={getPropertyAddressString(property)}
+      className="map"
+    />
+    <h3>
+      <T id="Recap.property" />
+    </h3>
+    <Recap array={getRecapArray(property)} className="recap" />
+  </div>
+);
 
 DashboardRecapProperty.propTypes = {
   property: PropTypes.object.isRequired,
