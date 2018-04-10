@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import MapWithMarker from 'core/components/maps/MapWithMarker';
 import Recap from 'core/components/Recap';
-import { T } from 'core/components/Translation';
+import { T, MetricArea } from 'core/components/Translation';
 
 const getPropertyAddressString = ({ address1, zipCode, city }) =>
   `${address1}, ${zipCode} ${city}`;
@@ -23,19 +23,11 @@ const getRecapArray = (property) => {
 
     {
       label: 'Forms.insideArea',
-      value: (
-        <span>
-          {insideArea} m<sup>2</sup>
-        </span>
-      ),
+      value: <MetricArea value={insideArea} />,
     },
     {
       label: 'Forms.landArea',
-      value: (
-        <span>
-          {landArea} m<sup>2</sup>
-        </span>
-      ),
+      value: <MetricArea value={landArea} />,
       hide: !landArea,
     },
     {

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { getProjectValue } from 'core/utils/loanFunctions';
-
+import { T } from 'core/components/Translation';
 import DashboardRecapCost from './DashboardRecapCost';
 import DashboardRecapFinancing from './DashboardRecapFinancing';
 import DashboardRecapChart from './DashboardRecapChart';
@@ -12,7 +12,9 @@ const DashboardRecapFinance = (props) => {
   return (
     <div className="dashboard-recap-finance card1">
       <div className="card-top">
-        <h3>Plan Financier</h3>
+        <h3>
+          <T id="DashboardRecapFinance.title" />
+        </h3>
         <div className="accounting">
           <DashboardRecapCost {...props} total={totalCost} />
           <span className="divider" />

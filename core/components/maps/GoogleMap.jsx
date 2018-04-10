@@ -4,11 +4,6 @@ import { GoogleMaps } from 'meteor/dburles:google-maps';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-const styles = {
-  width: '100%',
-  height: '100%',
-};
-
 export default class GoogleMap extends Component {
   componentDidMount() {
     GoogleMaps.create({
@@ -62,8 +57,7 @@ export default class GoogleMap extends Component {
         ref={(c) => {
           this.map = c;
         }}
-        style={styles}
-        className={this.props.className}
+        className="google-map"
       />
     );
   }
@@ -73,11 +67,9 @@ GoogleMap.propTypes = {
   id: PropTypes.string,
   latlng: PropTypes.object.isRequired,
   address: PropTypes.string,
-  className: PropTypes.string,
 };
 
 GoogleMap.defaultProps = {
   id: 'myMap',
   address: undefined,
-  className: '',
 };

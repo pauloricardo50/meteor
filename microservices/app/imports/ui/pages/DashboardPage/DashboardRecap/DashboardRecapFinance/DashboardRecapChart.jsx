@@ -36,9 +36,11 @@ const getChartData = (props) => {
 };
 
 const DashboardRecapChart = (props) => {
+  const { borrowers } = props;
   const data = getChartData(props);
   const total = data.reduce((sum, item) => sum + item.value, 0);
-  const monthlyIncome = getBorrowerIncome({ borrowers: props.borrowers }) / 12;
+  const monthlyIncome = getBorrowerIncome({ borrowers }) / 12;
+
   return (
     <div className="card-bottom dashboard-recap-chart">
       <h3>

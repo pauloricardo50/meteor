@@ -1,4 +1,5 @@
 import { fakeDocument } from 'core/api/files/fileHelpers';
+import { EXPERTISE_STATUS } from './propertyConstants';
 
 export const fakeProperty = {
   value: 1000000,
@@ -31,7 +32,7 @@ export const fakeProperty = {
   flatQuality: 2,
   materialsQuality: 2,
   expertise: {
-    status: 'NONE',
+    status: EXPERTISE_STATUS.NONE,
   },
   documents: {
     plans: fakeDocument,
