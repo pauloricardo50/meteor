@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom';
 import sideNavBorrowers from 'core/api/borrowers/queries/sideNavBorrowers';
 import sideNavLoans from 'core/api/loans/queries/sideNavLoans';
 import sideNavProperties from 'core/api/properties/queries/sideNavProperties';
-import sideNavTasks from 'core/api/tasks/queries/sideNavTasks';
 import sideNavUsers from 'core/api/users/queries/sideNavUsers';
 import { withQuery, compose } from 'core/api';
 import { withState, lifecycle } from 'recompose';
@@ -11,7 +10,6 @@ import {
   BORROWERS_COLLECTION,
   LOANS_COLLECTION,
   PROPERTIES_COLLECTION,
-  TASKS_COLLECTION,
   USERS_COLLECTION,
 } from 'core/api/constants';
 
@@ -25,8 +23,6 @@ const getQuery = ({ collectionName }) => {
     return sideNavLoans;
   case PROPERTIES_COLLECTION:
     return sideNavProperties;
-  case TASKS_COLLECTION:
-    return sideNavTasks;
   case USERS_COLLECTION:
     return sideNavUsers;
   default:
