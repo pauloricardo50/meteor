@@ -49,7 +49,10 @@ export default compose(
     },
     componentDidUpdate({ prevCollectionName, filters: prevFilters }) {
       const { collectionName, filters } = this.props;
-      if (collectionName !== prevCollectionName || prevFilters !== filters) {
+      const shouldSetTotalCount =
+        collectionName !== prevCollectionName || prevFilters !== filters;
+
+      if (shouldSetTotalCount) {
         setTotalCount(this.props);
       }
     },
