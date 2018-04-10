@@ -5,11 +5,10 @@ import SingleUserPageContainer from './SingleUserPageContainer';
 import SingleUserPageHeader from './SingleUserPageHeader';
 import SingleUserPageLoans from './SingleUserPageLoans';
 
-const SingleUserPage = (props) => {
-  const { data, isLoading } = props;
-  const user = data;
-
-  if (isLoading || !user) return null;
+const SingleUserPage = ({ data: user, isLoading }) => {
+  if (isLoading || !user) {
+    return null;
+  }
 
   return (
     <section className="mask1 single-user-page">

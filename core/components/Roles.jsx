@@ -7,10 +7,10 @@ const Roles = ({ roles }) => (
   <span>
     {roles
       .map(role => <T id={`roles.${role}`} key={role} />)
-      .reduce((arr, next, index) => [
-        arr,
-        <span key={index}>,&nbsp;</span>,
-        next,
+      .reduce((acc, currentValue, currentIndex) => [
+        acc,
+        <span key={currentIndex}>,&nbsp;</span>,
+        currentValue,
       ])}
   </span>
 );

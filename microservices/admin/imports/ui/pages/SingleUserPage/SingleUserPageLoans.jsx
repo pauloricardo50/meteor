@@ -11,15 +11,14 @@ const SingleUserPageLoans = ({ user: { loans } }) => {
         <h3>
           <T id="collections.loans" />
         </h3>
-        {loans &&
-          loans.map(loan => (
-            <Loan
-              loan={loan}
-              key={loan._id}
-              borrowers={loan.borrowers}
-              property={loan.property}
-            />
-          ))}
+        {loans.map(loan => (
+          <Loan
+            loan={loan}
+            key={loan._id}
+            borrowers={loan.borrowers}
+            property={loan.property}
+          />
+        ))}
       </div>
     );
   }
