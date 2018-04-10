@@ -1,6 +1,10 @@
 {
   "DetailSideNavPagination.end": "Fin des résultats",
   "DetailSideNavPagination.showMore": "Afficher plus",
+  "roles.user": "Utilisateur",
+  "roles.admin": "Employé e-Potek",
+  "roles.dev": "Développeur",
+  "roles.lender": "Prêteur",
 
   "DashboardProgressBar.title": "Progression",
 
