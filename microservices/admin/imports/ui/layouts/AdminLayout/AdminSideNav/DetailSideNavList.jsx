@@ -11,18 +11,22 @@ import {
 } from 'core/api/constants';
 
 import DetailSideNavListContainer from './DetailSideNavListContainer';
+import DetailSideNavPagination from './DetailSideNavPagination';
 
-const getListItemDetails = (collectionName, doc) => {
+const getListItemDetails = (
+  collectionName,
+  { emails, roles, _id, name, firstName, lastName },
+) => {
   switch (collectionName) {
   case USERS_COLLECTION:
     return {
-      primary: doc.emails[0].address,
-      secondary: <Roles roles={doc.roles} />,
+      primary: emails[0].address,
+      secondary: <Roles roles={roles} />,
     };
   case LOANS_COLLECTION:
-    return { primary: doc._id, secondary: doc.name };
+    return { primary: _id, secondary: name };
   case BORROWERS_COLLECTION:
-    return { primary: `${doc.firstName} ${doc.lastName}`, secondary: '' };
+    return { primary: `${firstName} ${lastName}`, secondary: '' };
   default:
     throw new Error('invalid collection name');
   }
@@ -31,9 +35,10 @@ const getListItemDetails = (collectionName, doc) => {
 const DetailSideNavList = ({
   isLoading,
   data,
-  error,
   hideDetailNav,
+  showMore,
   collectionName,
+  totalCount,
   history: { push },
 }) => {
   if (isLoading) {
@@ -54,6 +59,10 @@ const DetailSideNavList = ({
           <ListItemText {...getListItemDetails(collectionName, doc)} />
         </ListItem>
       ))}
+      <DetailSideNavPagination
+        showMore={showMore}
+        isEnd={data.length >= totalCount}
+      />
     </List>
   );
 };
@@ -64,6 +73,8 @@ DetailSideNavList.propTypes = {
   isLoading: PropTypes.bool,
   collectionName: PropTypes.string.isRequired,
   hideDetailNav: PropTypes.func.isRequired,
+  showMore: PropTypes.func.isRequired,
+  totalCount: PropTypes.number.isRequired,
 };
 
 DetailSideNavList.defaultProps = {

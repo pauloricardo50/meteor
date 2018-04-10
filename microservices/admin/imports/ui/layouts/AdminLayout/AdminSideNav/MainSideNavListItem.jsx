@@ -31,7 +31,6 @@ const MainSideNavListItem = ({
     classes={classes}
     onClick={onClick}
     component={!detail && NavLink}
-    activeStyle={{ color: colors.primary }}
     {...otherProps}
   >
     <div
