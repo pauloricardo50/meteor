@@ -5,7 +5,7 @@ import SearchResults from './SearchResults/SearchResults';
 class SearchPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { query: null };
+    this.state = { query: '' };
   }
 
   setQuery = (text) => {
