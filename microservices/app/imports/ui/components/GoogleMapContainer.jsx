@@ -17,21 +17,24 @@ class GoogleMap extends Component {
   }
 
   render() {
-    if (this.props.loaded && !!window.google && !!window.google.maps) {
-      return (
-        <div
-          className="map-container"
-          ref={(c) => {
-            this.container = c;
-          }}
-          // style={{ width: '100%' }}
-        >
-          {this.props.children}
-        </div>
-      );
+    const { loaded: googleApiHasLoaded, children } = this.props;
+    const isLoaded =
+      googleApiHasLoaded && !!window.google && !!window.google.maps;
+
+    if (!isLoaded) {
+      return <Loading />;
     }
 
-    return <Loading />;
+    return (
+      <div
+        className="map-container"
+        ref={(c) => {
+          this.container = c;
+        }}
+      >
+        {children}
+      </div>
+    );
   }
 }
 

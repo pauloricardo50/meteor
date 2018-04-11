@@ -1,8 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const DashboardRecap = props => <div>Hello World</div>;
+import { T } from 'core/components/Translation';
 
-DashboardRecap.propTypes = {};
+import DashboardRecapFinance from './DashboardRecapFinance';
+import DashboardRecapProperty from './DashboardRecapProperty';
+
+const DashboardRecap = props => (
+  <div className="dashboard-recap">
+    <h2>
+      <T id="DashboardRecap.title" />
+    </h2>
+
+    <div className="cards">
+      <DashboardRecapFinance {...props} />
+      <DashboardRecapProperty {...props} />
+    </div>
+  </div>
+);
 
 export default DashboardRecap;

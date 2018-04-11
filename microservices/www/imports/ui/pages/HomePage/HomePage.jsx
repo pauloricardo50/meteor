@@ -12,7 +12,7 @@ import HomePageFooter from './HomePageFooter';
 
 const HomePage = () => (
   <main className="home-page">
-    <HomePageInterestRates />
+    {/* <HomePageInterestRates /> */}
     <HomePageNav />
     <HomePageHeader />
     <HomePagePartners />

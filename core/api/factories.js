@@ -59,6 +59,7 @@ Factory.define('loan', Loans, {
 Factory.define('property', Properties, {
   value: 1000000,
   documents: () => ({}),
+  expertise: () => ({}),
 });
 
 Factory.define('offer', Offers, {

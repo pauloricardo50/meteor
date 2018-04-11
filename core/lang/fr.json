@@ -1,4 +1,18 @@
 {
+  "DashboardRecapFinance.title": "Plan financier",
+  "DashboardRecapChart.title": "Coût mensuel",
+
+  "DashboardRecapCost.sumTitle": "Coût total",
+  "DashboardRecapFinancing.sumTitle": "Financement",
+
+  "DashboardRecapChartInfo.label": "Simulation des coûts mensuels",
+  "DashboardRecapChartInfo.revenuePercent": "{revenuePercent}% de vos revenus",
+
+  "Recap.property": "Bien immobilier",
+  "property.expertise": "Expertise",
+  "property.expertiseStatus.NONE": "À faire",
+  "property.expertiseStatus.DONE": "Effectuée",
+  "property.expertiseStatus.ERROR": "Erreur",
   "DetailSideNavPagination.end": "Fin des résultats",
   "DetailSideNavPagination.showMore": "Afficher plus",
   "roles.user": "Utilisateur",
@@ -249,7 +263,7 @@
   "DashboardProperty.title": "Bien immobilier",
   "DashboardRecap.detail": "Détail",
   "DashboardRecap.overview": "Résumé",
-  "DashboardRecap.title": "Plan Financier",
+  "DashboardRecap.title": "RÉCAPITULATIF",
   "DashboardStatus.auction": "Enchères en cours...",
   "DashboardStatus.step":
     "{step, plural, one {1ère étape} =2 {2ème étape} =3 {3ème étape} =4 {4ème étape}}",
