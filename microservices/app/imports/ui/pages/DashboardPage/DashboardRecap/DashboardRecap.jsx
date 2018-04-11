@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
 
@@ -18,7 +17,5 @@ const DashboardRecap = props => (
     </div>
   </div>
 );
-
-DashboardRecap.propTypes = {};
 
 export default DashboardRecap;

@@ -14,11 +14,7 @@ const getRecapArray = (property) => {
     {
       subtitle: true,
       label: getPropertyAddressString(property),
-      labelStyle: {
-        marginTop: 0,
-        marginBottom: 16,
-        textAlign: 'left',
-      },
+      labelStyle: { marginTop: 0, marginBottom: 16, textAlign: 'left' },
     },
 
     {
