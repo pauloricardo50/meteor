@@ -14,60 +14,53 @@ import {
 } from 'core/api/constants';
 import ResultSecondaryText from './ResultSecondaryText';
 
-const getBorrowerInfo = (result) => {
-  const { firstName, lastName, createdAt, updatedAt } = result;
-  
-  const primary = getBorrowerFullName({ firstName, lastName }) || (
+const getBorrowerInfo = ({ firstName, lastName, createdAt, updatedAt }) => ({
+  primary: getBorrowerFullName({ firstName, lastName }) || (
     <T id="general.borrower" />
-  );
-  
-  const secondary = <ResultSecondaryText infos={{ createdAt, updatedAt }} />;
-
-  return { primary, secondary };
-};
+  ),
+  secondary: <ResultSecondaryText infos={{ createdAt, updatedAt }} />,
+});
 
 const getLoanInfo = (result) => {
-  const { name, createdAt, updatedAt, logic, general, property } = result;
-  const { step } = logic;
-  const value = getLoanValue({
-    loan: result,
+  const {
+    name,
+    createdAt,
+    updatedAt,
+    logic: { step },
+    general: { fortuneUsed, insuranceFortuneUsed },
     property,
-  });
-  const { fortuneUsed, insuranceFortuneUsed } = general;
+  } = result;
+  const value = getLoanValue({ loan: result, property });
 
-  const primary = name || <T id="general.loan" />;
-
-  const secondary = (
-    <ResultSecondaryText
-      infos={{
-        createdAt,
-        updatedAt,
-        step,
-        value,
-        fortuneUsed,
-        insuranceFortuneUsed,
-      }}
-    />
-  );
-
-  return { primary, secondary };
+  return {
+    primary: name || <T id="general.loan" />,
+    secondary: (
+      <ResultSecondaryText
+        infos={{
+          createdAt,
+          updatedAt,
+          step,
+          value,
+          fortuneUsed,
+          insuranceFortuneUsed,
+        }}
+      />
+    ),
+  };
 };
 
-const getPropertyInfo = (result) => {
-  const {
-    city,
-    zipCode,
-    address1,
-    address2,
-    value,
-    status,
-    style,
-    insideArea,
-  } = result;
-
-  const primary = address1 || address2 || <T id="general.property" />;
-
-  const secondary = (
+const getPropertyInfo = ({
+  city,
+  zipCode,
+  address1,
+  address2,
+  value,
+  status,
+  style,
+  insideArea,
+}) => ({
+  primary: address1 || address2 || <T id="general.property" />,
+  secondary: (
     <ResultSecondaryText
       infos={{
         city,
@@ -78,32 +71,34 @@ const getPropertyInfo = (result) => {
         insideArea,
       }}
     />
-  );
+  ),
+});
 
-  return { primary, secondary };
-};
-
-const getUserInfo = (result) => {
-  const { emails, profile, roles, createdAt, assignedEmployee } = result;
-  const organization = profile ? profile.organization : null;
+const getUserInfo = ({
+  emails,
+  profile,
+  roles,
+  createdAt,
+  assignedEmployee,
+}) => {
+  const organization = profile && profile.organization;
   const assignedEmployeeName = assignedEmployee
     ? assignedEmployee.username || assignedEmployee.emails[0].address
     : 'unassigned';
 
-  const primary = emails[0].address || <T id="general.user" />;
-
-  const secondary = (
-    <ResultSecondaryText
-      infos={{
-        organization,
-        roles,
-        createdAt,
-        assignedTo: assignedEmployeeName,
-      }}
-    />
-  );
-
-  return { primary, secondary };
+  return {
+    primary: emails[0].address || <T id="general.user" />,
+    secondary: (
+      <ResultSecondaryText
+        infos={{
+          organization,
+          roles,
+          createdAt,
+          assignedTo: assignedEmployeeName,
+        }}
+      />
+    ),
+  };
 };
 
 const getInfoToDisplay = (result, collection) => {

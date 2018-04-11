@@ -8,9 +8,7 @@ class SearchPage extends Component {
     this.state = { query: '' };
   }
 
-  setQuery = (text) => {
-    this.setState({ query: text });
-  };
+  setQuery = text => this.setState({ query: text });
 
   render() {
     const { query } = this.state;

@@ -46,12 +46,8 @@ const ResultSecondaryText = ({ infos }) =>
         </span>
       );
     })
-    .reduce((previousElem, currentElem) => {
-      if (previousElem) {
-        return [previousElem, ', ', currentElem];
-      }
-      return [currentElem];
-    });
+    .filter(value => value)
+    .reduce((accumulator, currentValue) => [accumulator, ', ', currentValue]);
 
 ResultSecondaryText.propTypes = {
   infos: PropTypes.object,

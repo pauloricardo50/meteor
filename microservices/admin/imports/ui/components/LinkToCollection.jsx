@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+
+import { T } from 'core/components/Translation';
 import IconLink from 'core/components/IconLink';
 import {
   BORROWERS_COLLECTION,
@@ -28,7 +30,7 @@ const LinkToCollection = ({ collection }) => (
   <IconLink
     link={`/${collection}`}
     icon={getCollectionIcon(collection)}
-    translationId={`collections.${collection}`}
+    text={<T id={`collections.${collection}`} />}
   />
 );
 

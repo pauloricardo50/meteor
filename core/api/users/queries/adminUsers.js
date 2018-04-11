@@ -11,11 +11,7 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USERS, {
     filters.roles = { $in: [ROLES.ADMIN, ROLES.USER] };
     if (searchQuery) {
       filters.$or = [
-        {
-          emails: {
-            $elemMatch: createRegexQuery('address', searchQuery),
-          },
-        },
+        { emails: { $elemMatch: createRegexQuery('address', searchQuery) } },
         createRegexQuery('profile.organization', searchQuery),
       ];
     }
