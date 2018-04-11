@@ -7,6 +7,9 @@ import { T } from '../Translation';
 import FormInput from './FormInput';
 import { required as requiredFunc } from '.';
 
+// Simply pass a "onSubmit" to this component, handleSubmit will be
+// generated automatically by redux-form
+// If submitting is async, make sure the onSubmit func returns a promise
 const Form = ({
   handleSubmit,
   submitting,
@@ -48,9 +51,6 @@ const Form = ({
 );
 
 Form.propTypes = {
-  // Simply pass a "onSubmit" to this component, handleSubmit will be
-  // generated automatically by redux-form
-  // If submitting is async, make sure the onSubmit func returns a promise
   handleSubmit: PropTypes.func.isRequired,
   form: PropTypes.string.isRequired,
   formArray: PropTypes.array.isRequired,

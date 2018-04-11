@@ -4,12 +4,20 @@ import PropTypes from 'prop-types';
 import employees, { placeholderEmployee } from 'core/arrays/epotekEmployees';
 import DashboardInfoTeamMember from './DashboardInfoTeamMember';
 
-const removeDuplicates = (arr, prop) => {
-  const obj = {};
-  return Object.keys(arr.reduce((prev, next) => {
-    if (!obj[next[prop]]) obj[next[prop]] = next;
-    return obj;
-  }, obj)).map(i => obj[i]);
+// Removes duplicates from an array of objects, by a key in the objects
+const removeDuplicates = (array, keyToFilter) => {
+  const filterObject = {};
+
+  return Object.keys(array.reduce((_, currentValue) => {
+    if (!filterObject[currentValue[keyToFilter]]) {
+      // If an object from the array with this value of keyToFilter
+      // has never been encountered, store it in the filterObject
+      filterObject[currentValue[keyToFilter]] = currentValue;
+    }
+    // Otherwise, skip it (it is then lost)
+
+    return filterObject;
+  }, {})).map(key => filterObject[key]);
 };
 
 const defaultTeam = [
@@ -39,7 +47,7 @@ const DashboardInfoTeamCompany = ({ assignedEmployee }) => {
       {removeDuplicates(team, 'email').map(teamMember => (
         <DashboardInfoTeamMember
           {...teamMember}
-          key={teamMember.name}
+          key={teamMember.email}
           src={teamMember.src || '/img/placeholder.png'}
         />
       ))}

@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
 
-const DashboardInfoInterests = props => (
+const DashboardInfoInterests = () => (
   <div className="dashboard-info-interests card1">
     <div className="card-top">
       <h3>
@@ -12,7 +11,5 @@ const DashboardInfoInterests = props => (
     </div>
   </div>
 );
-
-DashboardInfoInterests.propTypes = {};
 
 export default DashboardInfoInterests;

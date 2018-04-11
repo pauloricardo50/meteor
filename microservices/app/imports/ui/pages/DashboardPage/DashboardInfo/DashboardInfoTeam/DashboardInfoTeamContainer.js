@@ -1,14 +1,10 @@
 import { createContainer, loanUpdate } from 'core/api';
 
 export default createContainer(({ loan: { _id: loanId, contacts } }) => ({
-  addContact: (newContact) => {
-    console.log('addContact!', newContact);
-
-    return loanUpdate.run({
-      loanId,
-      object: { contacts: [...contacts, newContact] },
-    });
-  },
+  addContact: newContact => loanUpdate.run({
+    loanId,
+    object: { contacts: [...contacts, newContact] },
+  }),
   removeContact: contactName =>
     loanUpdate.run({
       loanId,

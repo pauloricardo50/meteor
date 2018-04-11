@@ -18,10 +18,12 @@ const DashboardInfoTeamMember = ({
 }) => (
   <div className="dashboard-info-team-company-member">
     {src && <img src={src} alt={name} />}
+
     <div className="person">
       <h4>{name}</h4>
       <p>{title}</p>
     </div>
+
     <div className="contact">
       {allowEdit && (
         <DashboardInfoTeamForm
@@ -38,12 +40,14 @@ const DashboardInfoTeamMember = ({
           )}
         />
       )}
+
       <a href={`mailto:${email}`}>
         <IconButton
           type="mail"
           tooltip={<T id="DashboardInfoTeamMember.emailTooltip" />}
         />
       </a>
+
       {phone && (
         <a href={`tel:${phone}`}>
           <IconButton

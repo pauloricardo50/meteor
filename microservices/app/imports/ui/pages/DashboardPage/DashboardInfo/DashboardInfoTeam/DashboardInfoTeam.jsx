@@ -18,7 +18,9 @@ const DashboardInfoTeam = ({
       <h3>
         <T id="DashboardInfoTeam.title" />
       </h3>
+
       <DashboardInfoTeamCompany assignedEmployee={assignedEmployee} />
+
       {contacts &&
         contacts.length > 0 && (
         <DashboardInfoTeamExternal
@@ -28,6 +30,7 @@ const DashboardInfoTeam = ({
         />
       )}
     </div>
+
     <div className="card-bottom">
       <DashboardInfoTeamAdder addContact={addContact} />
     </div>
