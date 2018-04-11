@@ -40,6 +40,7 @@ import DeveloperMode from 'material-ui-icons/DeveloperMode';
 import ErrorIcon from 'material-ui-icons/Error';
 import CheckCircle from 'material-ui-icons/CheckCircle';
 import RadioButtonChecked from 'material-ui-icons/RadioButtonChecked';
+import Edit from 'material-ui-icons/Edit';
 
 import Star from 'material-ui-icons/Star';
 import StarHalf from 'material-ui-icons/StarHalf';
@@ -49,6 +50,11 @@ import PersonAdd from 'material-ui-icons/PersonAdd';
 import OfflinePin from 'material-ui-icons/OfflinePin';
 import Save from 'material-ui-icons/Save';
 import SupervisorAccount from 'material-ui-icons/SupervisorAccount';
+import FlashOn from 'material-ui-icons/FlashOn';
+import Report from 'material-ui-icons/Report';
+import DeleteForever from 'material-ui-icons/DeleteForever';
+import DeleteSweep from 'material-ui-icons/DeleteSweep';
+import GroupAdd from 'material-ui-icons/GroupAdd';
 
 const iconMap = {
   close: CloseIcon,
@@ -98,6 +104,12 @@ const iconMap = {
   error: ErrorIcon,
   checkCircle: CheckCircle,
   radioButtonChecked: RadioButtonChecked,
+  flash: FlashOn,
+  report: Report,
+  deleteForever: DeleteForever,
+  deleteSweep: DeleteSweep,
+  groupAdd: GroupAdd,
+  edit: Edit,
 };
 
 const Icon = ({ type, size, ...props }) => {
@@ -119,6 +131,8 @@ Icon.propTypes = {
   size: PropTypes.number,
 };
 
-Icon.defaultProps = {};
+Icon.defaultProps = {
+  size: undefined,
+};
 
 export default Icon;

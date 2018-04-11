@@ -1,14 +1,8 @@
 import createMuiTheme from 'material-ui/styles/createMuiTheme';
 import colors from './colors';
 
-// Commented parts are the defaults, non-commented are edited
 const theme = createMuiTheme({
   overrides: {
-    MuiButton: {
-      raised: {
-        backgroundColor: 'white',
-      },
-    },
     MuiInput: {
       underline: {
         '&:before': {
@@ -84,7 +78,7 @@ const theme = createMuiTheme({
   },
   typography: {
     fontFamily: 'Source Sans Pro, sans-serif',
-    fontSize: '1em',
+    fontSize: 16,
     fontWeightRegular: 400,
     fontWeightMedium: 600,
     button: {

@@ -5,9 +5,10 @@ import {
   fakeDocument,
   fakeDocumentWithLabel,
 } from 'core/api/files/fileHelpers';
+import { createFakeBorrowers } from './borrowers';
+import { createFakeProperty } from './properties';
 import { STEPS_PER_LOAN } from './config';
-import createFakeBorrowers from './borrowers';
-import createFakeProperty from './properties';
+import { Loans } from '../api';
 
 const purchaseTypes = Object.values(PURCHASE_TYPE);
 
@@ -92,7 +93,7 @@ const fakeFiles = {
 
 const fakeFiles2 = {};
 
-const createFakeLoans = (userId) => {
+export const createFakeLoan = (userId) => {
   const completeFiles = Math.random() > 0.5;
   const borrowerIds = createFakeBorrowers(userId);
   const propertyId = createFakeProperty(userId);
@@ -130,4 +131,7 @@ const createFakeLoans = (userId) => {
   return LoanService.insert({ loan, userId });
 };
 
-export default createFakeLoans;
+export const getRelatedLoansIds = usersIds =>
+  Loans.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
+    .fetch()
+    .map(item => item._id);

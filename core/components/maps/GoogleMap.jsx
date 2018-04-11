@@ -1,8 +1,8 @@
+import { Meteor } from 'meteor/meteor';
+import { GoogleMaps } from 'meteor/dburles:google-maps';
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Meteor } from 'meteor/meteor';
-
-import { GoogleMaps } from 'meteor/dburles:google-maps';
 
 export default class GoogleMap extends Component {
   componentDidMount() {
@@ -57,8 +57,7 @@ export default class GoogleMap extends Component {
         ref={(c) => {
           this.map = c;
         }}
-        style={this.props.style}
-        className={this.props.className}
+        className="google-map"
       />
     );
   }
@@ -68,11 +67,9 @@ GoogleMap.propTypes = {
   id: PropTypes.string,
   latlng: PropTypes.object.isRequired,
   address: PropTypes.string,
-  className: PropTypes.string,
 };
 
 GoogleMap.defaultProps = {
   id: 'myMap',
   address: undefined,
-  className: '',
 };

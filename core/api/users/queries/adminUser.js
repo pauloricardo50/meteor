@@ -14,6 +14,7 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USER, {
   emails: 1,
   createdAt: 1,
   loans: {
+    name: 1,
     logic: { step: 1 },
     createdAt: 1,
     updatedAt: 1,
