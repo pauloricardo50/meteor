@@ -3,12 +3,14 @@ export const ORDER = {
   DESC: 'desc',
 };
 
+// "raw" and "label" keys have to be present in the object to display it
+// this way
 export const shouldDisplayLabelAndData = columnValue =>
   typeof columnValue === 'object' &&
-  columnValue.raw !== undefined &&
-  columnValue.label !== undefined;
+  'raw' in columnValue &&
+  'label' in columnValue;
 
-const makeComparator = orderBy => (a, b) => {
+const makeSortFunc = orderBy => (a, b) => {
   let valueA = a.columns[orderBy];
   let valueB = b.columns[orderBy];
 
@@ -21,6 +23,7 @@ const makeComparator = orderBy => (a, b) => {
   if (typeof valueA === 'string') {
     if (typeof valueB === 'string') {
       // a and b are strings
+
       return valueA.localeCompare(valueB);
     }
     // a string and b number
@@ -45,7 +48,7 @@ export const sortData = ({ data, newOrderBy, orderBy, order }) => {
     isReversed = false;
   }
 
-  const sortedData = data.sort(makeComparator(newOrderBy));
+  const sortedData = data.sort(makeSortFunc(newOrderBy));
   const sortedDataInCorrectOrder = isReversed
     ? sortedData.slice().reverse()
     : sortedData;
