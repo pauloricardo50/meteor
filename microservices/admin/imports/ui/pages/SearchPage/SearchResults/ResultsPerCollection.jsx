@@ -21,7 +21,7 @@ const getBorrowerInfo = ({ firstName, lastName, createdAt, updatedAt }) => ({
   secondary: <ResultSecondaryText infos={{ createdAt, updatedAt }} />,
 });
 
-const getLoanInfo = (result) => {
+const getLoanInfo = (loan) => {
   const {
     name,
     createdAt,
@@ -29,8 +29,8 @@ const getLoanInfo = (result) => {
     logic: { step },
     general: { fortuneUsed, insuranceFortuneUsed },
     property,
-  } = result;
-  const value = getLoanValue({ loan: result, property });
+  } = loan;
+  const value = getLoanValue({ loan, property });
 
   return {
     primary: name || <T id="general.loan" />,

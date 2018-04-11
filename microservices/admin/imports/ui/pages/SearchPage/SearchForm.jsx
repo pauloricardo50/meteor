@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import Icon from 'core/components/Icon';
 import Button from 'core/components/Button';
 import TextField from 'core/components/Material/TextField';
@@ -8,41 +9,40 @@ import { T } from 'core/components/Translation';
 class SearchForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { text: '' };
+    this.state = { searchText: '' };
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { text } = this.state;
-    const { updateSearchPageQuery } = this.props;
-    updateSearchPageQuery(text);
+    const { searchText } = this.state;
+    const { onSubmit } = this.props;
+    onSubmit(searchText);
   };
 
-  handleChange = ({ target: { value } }) => this.setState({ text: value });
+  handleChange = ({ target: { value } }) =>
+    this.setState({ searchText: value });
 
   render() {
-    const { text } = this.state;
+    const { searchText } = this.state;
     return (
-      <div className="search-box">
-        <form onSubmit={this.handleSubmit}>
-          <TextField
-            className="search-input pr20"
-            autoFocus
-            value={text}
-            onChange={this.handleChange}
-          />
-          <Button raised className="search-button" type="submit">
-            <Icon type="search" />
-            <T id="general.search" />
-          </Button>
-        </form>
-      </div>
+      <form onSubmit={this.handleSubmit}>
+        <TextField
+          className="search-input"
+          autoFocus
+          value={searchText}
+          onChange={this.handleChange}
+        />
+        <Button raised className="search-button" type="submit">
+          <Icon type="search" />
+          <T id="general.search" />
+        </Button>
+      </form>
     );
   }
 }
 
 SearchForm.propTypes = {
-  updateSearchPageQuery: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default SearchForm;

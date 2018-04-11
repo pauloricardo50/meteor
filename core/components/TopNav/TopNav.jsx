@@ -73,7 +73,7 @@ TopNav.propTypes = {
   public: PropTypes.bool,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
   appChildren: PropTypes.func,
-  children: PropTypes.any,
+  children: PropTypes.node,
 };
 
 TopNav.defaultProps = {

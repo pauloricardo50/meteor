@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-
 import { T } from 'core/components/Translation';
 import IconLink from 'core/components/IconLink';
 import {
