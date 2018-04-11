@@ -63,7 +63,10 @@ const LoanSchema = new SimpleSchema({
   'contacts.$': Object,
   'contacts.$.name': String,
   'contacts.$.title': String,
-  'contacts.$.email': String,
+  'contacts.$.email': {
+    type: String,
+    regEx: SimpleSchema.RegEx.Email,
+  },
   'contacts.$.phone': String,
 });
 

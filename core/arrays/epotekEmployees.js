@@ -15,11 +15,15 @@ const employees = [
   },
 ];
 
+// If an assignee isn't currently in the list above
 export const placeholderEmployee = email => ({
   email,
   src: '/img/placeholder.png',
-  name: email,
-  title: '',
+  name: (() => {
+    const emailPrefix = email.split('@')[0];
+    return emailPrefix[0].toUpperCase() + emailPrefix.slice(1);
+  })(),
+  title: undefined,
   phone: undefined,
 });
 

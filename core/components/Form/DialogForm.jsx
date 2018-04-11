@@ -62,9 +62,11 @@ export default class DialogForm extends Component {
               <DialogActions>
                 {renderAdditionalActions &&
                   renderAdditionalActions({ handleClose: this.handleClose })}
+
                 <Button onClick={this.handleClose} disabled={submitting}>
                   <T id="general.cancel" />
                 </Button>
+
                 <Button primary onClick={handleSubmit} disabled={submitting}>
                   <T id="general.ok" />
                 </Button>

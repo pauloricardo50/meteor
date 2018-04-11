@@ -20,6 +20,7 @@ const Form = ({
     <FormWrapper>
       <form onSubmit={handleSubmit} className="form">
         {error && <span className="error">{error}</span>}
+
         {formArray.map(({ id, validate = [], required, ...otherProps }) => (
           <Field
             key={id}
@@ -41,6 +42,7 @@ const Form = ({
         </Button>
       </form>
     </FormWrapper>
+
     {renderActions && renderActions({ handleSubmit, submitting })}
   </div>
 );
