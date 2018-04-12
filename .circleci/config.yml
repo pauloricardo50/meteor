@@ -108,6 +108,8 @@ jobs:
       - store_test_results:
           path: ./e2e-results
       - store_artifacts:
+          path: ./e2e-results
+      - store_artifacts:
           path: ./e2e-results/cypress/www-screenshots
       - store_artifacts:
           path: ./e2e-results/cypress/www-videos
