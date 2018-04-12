@@ -5,13 +5,15 @@ import { T } from './Translation';
 
 const Roles = ({ roles }) => (
   <span>
-    {roles
-      .map(role => <T id={`roles.${role}`} key={role} />)
-      .reduce((acc, currentValue, currentIndex) => [
-        acc,
-        <span key={currentIndex}>,&nbsp;</span>,
-        currentValue,
-      ])}
+    {roles &&
+      roles.length &&
+      roles
+        .map(role => <T id={`roles.${role}`} key={role} />)
+        .reduce((acc, currentValue, currentIndex) => [
+          acc,
+          <span key={currentIndex}>,&nbsp;</span>,
+          currentValue,
+        ])}
   </span>
 );
 
