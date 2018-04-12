@@ -1,24 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import uniqBy from 'lodash/uniqBy';
 
 import employees, { placeholderEmployee } from 'core/arrays/epotekEmployees';
 import DashboardInfoTeamMember from './DashboardInfoTeamMember';
 
 // Removes duplicates from an array of objects, by a key in the objects
-const removeDuplicates = (array, keyToFilter) => {
-  const filterObject = {};
-
-  return Object.keys(array.reduce((_, currentValue) => {
-    if (!filterObject[currentValue[keyToFilter]]) {
-      // If an object from the array with this value of keyToFilter
-      // has never been encountered, store it in the filterObject
-      filterObject[currentValue[keyToFilter]] = currentValue;
-    }
-    // Otherwise, skip it (it is then lost)
-
-    return filterObject;
-  }, {})).map(key => filterObject[key]);
-};
+const removeDuplicates = (array, keyToFilter) => uniqBy(array, keyToFilter);
 
 const defaultTeam = [
   {
