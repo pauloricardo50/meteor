@@ -21,6 +21,11 @@ jobs:
         NODE_ENV: development
         TOOL_NODE_FLAGS: "--max_old_space_size=4096 --optimize_for_size --gc-interval=100" # if builds run out of memory
         # METEOR_PROFILE: 1 # If you need to debug meteor, turn this on
+    - image: cypress/base:6
+      environment:
+        ## this enables colors in the output
+        TERM: xterm
+      command: [cypress]
     steps:
       - checkout
       - add_ssh_keys
@@ -52,8 +57,8 @@ jobs:
             cd scripts
             ./setup.sh
       - run:
-          name: create results directory
-          command: mkdir ./results
+          name: create results directories
+          command: mkdir ./results ./e2e-results
       - run:
           name: run end-to-end tests for Www
           command: |
@@ -101,6 +106,8 @@ jobs:
           path: ./results
       - store_artifacts:
           path: ./results
+      - store_test_results:
+          path: ./e2e-results
       - store_artifacts:
           path: ./e2e-results/cypress/screenshots
       - store_artifacts:
