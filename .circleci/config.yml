@@ -25,7 +25,6 @@ jobs:
       environment:
         ## this enables colors in the output
         TERM: xterm
-      command: [cypress]
     steps:
       - checkout
       - add_ssh_keys
@@ -109,9 +108,17 @@ jobs:
       - store_test_results:
           path: ./e2e-results
       - store_artifacts:
-          path: ./e2e-results/cypress/screenshots
+          path: ./e2e-results/cypress/www-screenshots
       - store_artifacts:
-          path: ./e2e-results/cypress/videos
+          path: ./e2e-results/cypress/www-videos
+      - store_artifacts:
+          path: ./e2e-results/cypress/app-screenshots
+      - store_artifacts:
+          path: ./e2e-results/cypress/app-videos
+      - store_artifacts:
+          path: ./e2e-results/cypress/admin-screenshots
+      - store_artifacts:
+          path: ./e2e-results/cypress/admin-videos
       - persist_to_workspace:
           root: /home/circleci
           paths:
