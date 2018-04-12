@@ -10,6 +10,7 @@
     "clean": "rm -rf node_modules/ && meteor npm install"
   },
   "dependencies": {
+    "@material-ui/icons": "^1.0.0-beta.42",
     "@storybook/react-komposer": "^2.0.4",
     "aws-sdk": "^2.224.1",
     "babel-polyfill": "^6.26.0",
@@ -24,8 +25,7 @@
     "intl-relativeformat": "https://github.com/Floriferous/intl-relativeformat/tarball/master",
     "js-search": "^1.4.2",
     "lodash": "^4.17.5",
-    "material-ui": "^1.0.0-beta.34",
-    "material-ui-icons": "^1.0.0-beta.36",
+    "material-ui": "^1.0.0-beta.41",
     "meteor-node-stubs": "^0.3.3",
     "moment": "^2.22.0",
     "moment-duration-format": "^2.2.2",
