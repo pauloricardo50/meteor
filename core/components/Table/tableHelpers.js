@@ -37,16 +37,47 @@ const makeSortFunc = orderBy => (a, b) => {
   return Number.parseFloat(valueA) - Number.parseFloat(valueB);
 };
 
-export const sortData = ({ data, newOrderBy, orderBy, order }) => {
+const determineOrder = ({
+  oldOrderBy,
+  newOrderBy,
+  order,
+  changeOrder = true,
+}) => {
   let isReversed;
+  let finalOrder;
 
-  if (orderBy === newOrderBy) {
+  if (oldOrderBy !== newOrderBy) {
+    // First click, Initial ascending order
+    isReversed = false;
+    finalOrder = ORDER.ASC;
+  } else if (changeOrder) {
     // Clicked a second time, reverse order
     isReversed = order === ORDER.ASC;
+    finalOrder = isReversed ? ORDER.DESC : ORDER.ASC;
   } else {
-    // Initial order
-    isReversed = false;
+    // If data is just being sorted again without user changing the order,
+    // don't change the order and keep it as is.
+    // This can happen if new data is added to the table, or some data changed
+    isReversed = order !== ORDER.ASC;
+    finalOrder = order;
   }
+
+  return { isReversed, finalOrder };
+};
+
+export const sortData = ({
+  data,
+  newOrderBy,
+  orderBy: oldOrderBy,
+  order,
+  changeOrder,
+}) => {
+  const { isReversed, finalOrder } = determineOrder({
+    oldOrderBy,
+    newOrderBy,
+    order,
+    changeOrder,
+  });
 
   const sortedData = data.sort(makeSortFunc(newOrderBy));
   const sortedDataInCorrectOrder = isReversed
@@ -55,7 +86,7 @@ export const sortData = ({ data, newOrderBy, orderBy, order }) => {
 
   return {
     data: sortedDataInCorrectOrder,
-    order: isReversed ? ORDER.DESC : ORDER.ASC,
+    order: finalOrder,
     orderBy: newOrderBy,
   };
 };
