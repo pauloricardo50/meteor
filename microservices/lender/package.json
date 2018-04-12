@@ -7,8 +7,8 @@
     "start-db": "export MONGO_URL=mongodb://localhost:3001/meteor && meteor npm start"
   },
   "dependencies": {
+    "@babel/runtime": "^7.0.0-beta.44",
     "aws-sdk": "^2.171.0",
-    "babel-runtime": "^6.26.0",
     "intl-messageformat": "^2.2.0",
     "intl-relativeformat": "https://github.com/Floriferous/intl-relativeformat/tarball/master",
     "meteor-node-stubs": "^0.3.2",
@@ -17,17 +17,15 @@
     "react-dom": "^16.2.0",
     "react-intl": "https://github.com/Floriferous/react-intl/tarball/build",
     "react-loadable": "^5.3.1",
-    "simpl-schema": "^1.2.2"
+    "recompose": "^0.26.0",
+    "simpl-schema": "^1.4.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0-beta.44",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.44",
     "babel-eslint": "^8.0.3",
-    "babel-plugin-module-alias": "^1.6.0",
+    "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-react-intl": "https://github.com/Floriferous/babel-plugin-react-intl/tarball/master",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
-    "babel-project-relative-import": "^2.0.1",
     "eslint": "^4.13.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-import-resolver-meteor": "^0.4.0",
