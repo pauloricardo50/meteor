@@ -10,6 +10,7 @@
   "license": "ISC",
   "devDependencies": {
     "babel-eslint": "^8.0.3",
+    "cypress": "^2.1.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.13.1",
@@ -18,8 +19,8 @@
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-meteor": "^4.1.4",
-    "eslint-plugin-react": "^7.5.1",
     "eslint-plugin-prettier": "^2.6.0",
+    "eslint-plugin-react": "^7.5.1",
     "proxyquire": "^1.8.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

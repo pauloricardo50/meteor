@@ -1,6 +1,6 @@
 {
   "reporterEnabled": "spec, mocha-junit-reporter",
   "mochaJunitReporterReporterOptions": {
-    "mochaFile": "/home/circleci/app/e2e-www-results/results.xml"
+    "mochaFile": "/home/circleci/app/e2e-app-results/results.xml"
   }
 }
