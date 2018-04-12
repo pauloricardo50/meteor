@@ -59,13 +59,15 @@ const LoanSchema = new SimpleSchema({
   logic: { type: LogicSchema, defaultValue: {} },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   adminNote: { type: String, defaultValue: '', optional: true },
-  emails: { type: Array, defaultValue: [] },
-  'emails.$': Object,
-  'emails.$._id': String,
-  'emails.$.emailId': String,
-  'emails.$.status': String,
-  'emails.$.updatedAt': Date,
-  'emails.$.scheduledAt': { type: Date, optional: true },
+  contacts: { type: Array, defaultValue: [] },
+  'contacts.$': Object,
+  'contacts.$.name': String,
+  'contacts.$.title': String,
+  'contacts.$.email': {
+    type: String,
+    regEx: SimpleSchema.RegEx.Email,
+  },
+  'contacts.$.phone': String,
 });
 
 // Finally, attach schema to the Mongo collection and export

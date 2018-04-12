@@ -64,4 +64,10 @@ export default class Security {
       this.handleUnauthorized('Checking ownership');
     }
   }
+
+  static checkCurrentUserIsDev() {
+    if (!this.currentUserHasRole(ROLES.DEV)) {
+      this.handleUnauthorized('unauthorized developer');
+    }
+  }
 }
