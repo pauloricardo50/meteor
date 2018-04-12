@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import Icon from 'core/components/Icon';
 
 const IconLink = ({ link, icon, text }) => (
-  <Link to={link}>
-    <Icon type={icon} />
+  <Link to={link} className="icon-link">
+    <Icon type={icon} className="icon-link-icon" />
     {text}
   </Link>
 );
