@@ -1,25 +1,15 @@
 {
-  "presets": [
-    "env",
-    "react",
-    "stage-0"
-  ],
+  "presets": ["meteor"],
   "plugins": [
-    "transform-class-properties",
+    ["@babel/plugin-proposal-class-properties"],
     [
-      "babel-project-relative-import",
+      "module-resolver",
       {
-        "importPathPrefix": "/"
-      }
-    ],
-    [
-      "module-alias",
-      [
-        {
-          "src": "./imports/core",
-          "expose": "core"
+        "root": ["."],
+        "alias": {
+          "core": "./imports/core"
         }
-      ]
+      }
     ]
   ]
 }

@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-base';
 
 import { SecurityService, Tasks } from '../..';
 import { TASK_STATUS, TASK_TYPE } from '../../constants';
@@ -13,7 +12,8 @@ import {
 } from '../methodDefinitions';
 import UserService from '../UserService';
 
-doesUserExist.setHandler((context, { email }) => Accounts.findUserByEmail(email) != null);
+doesUserExist.setHandler((context, { email }) =>
+  UserService.doesUserExist({ email }));
 
 sendVerificationLink.setHandler((context, { userId } = {}) => {
   if (userId) {
@@ -28,7 +28,7 @@ sendVerificationLink.setHandler((context, { userId } = {}) => {
     return false;
   }
 
-  return Accounts.sendVerificationEmail(id);
+  return UserService.sendVerificationEmail({ userId: id });
 });
 
 assignAdminToUser.setHandler((context, { userId, adminId }) =>
