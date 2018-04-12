@@ -530,6 +530,7 @@
   "Forms.address1": "Adresse 1",
   "Forms.address1.placeholder": "Rue des Champs 7",
   "Forms.address2": "Adresse 2",
+  "Forms.address2.placeholder": " ",
   "Forms.age": "Âge",
   "Forms.age.placeholder": "35",
   "Forms.assignedTo": "Assigné à",
