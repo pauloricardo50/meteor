@@ -3,6 +3,6 @@ import query from './sideNavLoans';
 
 query.expose({
   firewall(userId) {
-    SecurityService.checkCurrentUserIsAdmin();
+    SecurityService.checkUserIsAdmin(userId);
   },
 });

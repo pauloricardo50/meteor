@@ -105,6 +105,13 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
     assignedEmployee: {
       emails: 1,
       roles: 1,
+      username: 1,
+    },
+    loan: {
+      name: 1,
+      user: {
+        assignedEmployeeId: 1,
+      },
     },
   },
 });
