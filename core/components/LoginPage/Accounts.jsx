@@ -11,11 +11,7 @@ import {
 
 import MuiButton from '../Button';
 
-class LoginForm extends Accounts.ui.LoginForm {
-  componentWillMount() {
-    // FIXME hack to solve issue #18
-  }
-}
+class LoginForm extends Accounts.ui.LoginForm {}
 
 class Form extends Accounts.ui.Form {
   render() {

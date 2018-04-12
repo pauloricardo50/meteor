@@ -10,11 +10,11 @@
     "clean": "rm -rf node_modules/ && meteor npm install"
   },
   "dependencies": {
+    "@babel/runtime": "^7.0.0-beta.44",
     "@material-ui/icons": "^1.0.0-beta.42",
     "@storybook/react-komposer": "^2.0.4",
     "aws-sdk": "^2.224.1",
     "babel-polyfill": "^6.26.0",
-    "babel-runtime": "^6.26.0",
     "bcrypt": "1.0.3",
     "btoa": "^1.2.1",
     "classnames": "^2.2.5",
@@ -65,14 +65,11 @@
     "tracker-component": "^1.3.21"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0-beta.44",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.44",
     "babel-eslint": "^8.2.2",
-    "babel-plugin-module-alias": "^1.6.0",
+    "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-react-intl": "https://github.com/Floriferous/babel-plugin-react-intl/tarball/master",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
-    "babel-project-relative-import": "^2.0.1",
     "chai": "^4.1.2",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
