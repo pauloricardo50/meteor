@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import Table from 'core/components/Table';
@@ -44,7 +44,12 @@ const getColumns = ({ props, index, user }) => {
   ];
   if (showAssignee) {
     if (assignedEmployee) {
-      columns.push(assignedEmployee.username || assignedEmployee.emails[0].address);
+      const text =
+        assignedEmployee.username || assignedEmployee.emails[0].address;
+      columns.push({
+        label: <Link to={`/users/${assignedEmployee._id}`}>{text}</Link>,
+        raw: text,
+      });
     } else {
       columns.push('');
     }
@@ -73,7 +78,13 @@ const getRows = (props) => {
     return users.map((user, index) => ({
       id: user._id,
       columns: getColumns({ props, index, user }),
-      handleClick: () => history.push(`/users/${user._id}`),
+      handleClick: (event) => {
+        if (event.target.href) {
+          event.stopPropagation();
+        } else {
+          history.push(`/users/${user._id}`);
+        }
+      },
     }));
   }
   return [];
