@@ -1,0 +1,14 @@
+// Imports all scss files here, make sure the path uses imports, or else they
+// won't be found in the microservices that use them
+@import '{}/imports/core/components/UploaderArray/FileDropper.scss';
+@import '{}/imports/core/components/AutoForm/ValidIcon/ValidIcon.scss';
+@import '{}/imports/core/components/DateInput/DateInput.scss';
+@import '{}/imports/core/components/Loading/Loading.scss';
+@import '{}/imports/core/components/TopNav/TopNav.scss';
+@import '{}/imports/core/components/UploaderArray/Uploader.scss';
+@import '{}/imports/core/components/Recap/Recap.scss';
+@import '{}/imports/core/components/DevPage/DevPage.scss';
+@import '{}/imports/core/components/Table/Table.scss';
+@import '{}/imports/core/components/maps/GoogleMap.scss';
+@import '{}/imports/core/components/Form/Form.scss';
+@import '{}/imports/core/components/IconLink/IconLink.scss';

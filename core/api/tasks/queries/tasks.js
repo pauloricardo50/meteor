@@ -2,22 +2,23 @@ import { Tasks } from '../../';
 import { TASK_QUERIES } from '../taskConstants';
 
 export default Tasks.createQuery(TASK_QUERIES.TASKS, {
-  $filter({ filters, options, params }) {
-    if (params.assignedTo) {
-      filters.assignedEmployeeId = params.assignedTo;
+  $filter({
+    filters,
+    options,
+    params: { assignedTo, unassigned, dashboardTasks },
+  }) {
+    if (assignedTo) {
+      filters.assignedEmployeeId = assignedTo;
     }
-    if (params.unassigned) {
+    if (unassigned) {
       filters.assignedEmployeeId = { $exists: false };
     }
-    if (params.dashboardTasks) {
+    if (dashboardTasks) {
       delete filters.assignedEmployeeId;
       filters.$or = [
-        { assignedEmployeeId: { $in: [params.assignedTo] } },
+        { assignedEmployeeId: { $in: [assignedTo] } },
         { assignedEmployeeId: { $exists: false } },
       ];
-    }
-    if (params.all) {
-      filters._id = { $ne: '' };
     }
   },
   $options: {
@@ -41,16 +42,20 @@ export default Tasks.createQuery(TASK_QUERIES.TASKS, {
     username: 1,
   },
   borrower: {
+    firstName: 1,
+    lastName: 1,
     user: {
       assignedEmployeeId: 1,
     },
   },
   loan: {
+    name: 1,
     user: {
       assignedEmployeeId: 1,
     },
   },
   property: {
+    address1: 1,
     user: {
       assignedEmployeeId: 1,
     },

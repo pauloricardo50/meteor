@@ -811,7 +811,7 @@ const arraySwitch = (props) => {
 const Recap = (props) => {
   const array = props.array || arraySwitch(props);
   return (
-    <article className="validator">
+    <article className="validator recap">
       <RecapSimple {...props} array={array} />{' '}
     </article>
   );

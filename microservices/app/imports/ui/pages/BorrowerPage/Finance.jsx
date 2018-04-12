@@ -50,8 +50,8 @@ const handleClick = (event, id) => {
 };
 
 const BorrowerFinancePage = (props) => {
-  const { borrowerId } = props.match.params;
-  const borrower = props.borrowers.find(b => b._id === borrowerId);
+  const { match: { params: { borrowerId } }, borrowers, loan } = props;
+  const borrower = borrowers.find(b => b._id === borrowerId);
   return (
     <section className="borrower-finance-page animated fadeIn" key={borrowerId}>
       <hr />
@@ -90,14 +90,11 @@ const BorrowerFinancePage = (props) => {
 
       <AutoForm
         inputs={getBorrowerFinanceArray({ ...props, borrowerId })}
-        borrowers={props.borrowers}
+        borrowers={borrowers}
         docId={borrowerId}
         collection="borrowers"
         doc={borrower}
-        disabled={
-          disableForms({ loan: props.loan }) ||
-          borrower.logic.hasValidatedFinances
-        }
+        disabled={disableForms({ loan }) || borrower.logic.hasValidatedFinances}
       />
 
       <div className="conditions mask2 primary-border">
@@ -125,6 +122,7 @@ const BorrowerFinancePage = (props) => {
 BorrowerFinancePage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  match: PropTypes.object.isRequired,
 };
 
 export default BorrowerFinancePage;

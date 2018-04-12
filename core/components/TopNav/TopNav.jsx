@@ -9,13 +9,19 @@ import track from '../../utils/analytics';
 
 import Button from '../Button';
 import { ImpersonateWarningWithTracker } from '../Impersonate/ImpersonateWarning';
-import SearchModal from '../SearchModal';
 import { T } from '../Translation';
 import TopNavDropdown from './TopNavDropdown';
 // import TopNavDrawer from './TopNavDrawer';
 
 const TopNav = (props) => {
-  const { history, currentUser, loans, appChildren, public: isPublic } = props;
+  const {
+    history,
+    currentUser,
+    loans,
+    appChildren,
+    public: isPublic,
+    children,
+  } = props;
   const isApp = history && history.location.pathname.slice(0, 4) === '/';
 
   const showDrawer = isApp && loans.length > 0;
@@ -41,7 +47,7 @@ const TopNav = (props) => {
 
         <div className="buttons">
           <ImpersonateWarningWithTracker />
-          <SearchModal />
+          {children}
           {currentUser ? (
             <TopNavDropdown {...props} />
           ) : (
@@ -67,6 +73,7 @@ TopNav.propTypes = {
   public: PropTypes.bool,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
   appChildren: PropTypes.func,
+  children: PropTypes.node,
 };
 
 TopNav.defaultProps = {
@@ -74,6 +81,7 @@ TopNav.defaultProps = {
   loans: [],
   public: false,
   appChildren: () => {},
+  children: null,
 };
 
 export default TopNav;

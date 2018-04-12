@@ -6,6 +6,7 @@ import {
   USAGE_TYPE,
   PROPERTY_STYLE,
   VOLUME_NORM,
+  EXPERTISE_STATUS,
 } from './propertyConstants';
 
 const Properties = new Mongo.Collection(PROPERTIES_COLLECTION);
@@ -269,6 +270,15 @@ export const PropertySchema = new SimpleSchema({
     type: Object,
     blackbox: true,
     defaultValue: {},
+  },
+  expertise: {
+    type: Object,
+    defaultValue: {},
+  },
+  'expertise.status': {
+    type: String,
+    defaultValue: EXPERTISE_STATUS.NONE,
+    allowedValues: Object.keys(EXPERTISE_STATUS),
   },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   documents: {

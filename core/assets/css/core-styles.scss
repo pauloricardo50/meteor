@@ -2,17 +2,7 @@
 @include normalize();
 
 @import './variables.scss';
-
-// Imports all scss files here, make sure the path uses imports, or else they
-// won't be found in the microservices that use them
-@import '{}/imports/core/components/UploaderArray/FileDropper.scss';
-@import '{}/imports/core/components/AutoForm/ValidIcon/ValidIcon.scss';
-@import '{}/imports/core/components/DateInput/DateInput.scss';
-@import '{}/imports/core/components/Loading/Loading.scss';
-@import '{}/imports/core/components/TopNav/TopNav.scss';
-@import '{}/imports/core/components/UploaderArray/Uploader.scss';
-@import '{}/imports/core/components/Recap/Recap.scss';
-@import '{}/imports/core/components/DevPage/DevPage.scss';
+@import './core-components';
 
 body {
   font-family: 'Source Sans Pro', sans-serif;
@@ -123,10 +113,18 @@ a {
   border-radius: 16px;
 }
 
+.card1 .card-top {
+  padding: 16px;
+}
+
 .card1 .card-bottom {
+  border-top: 1px solid $border-grey;
   background-color: #fafafa;
   padding: 16px;
   width: 100%;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  flex-grow: 1;
 }
 
 // Pretty text effect for tooltips, shows a gradient underline on the text
@@ -149,7 +147,7 @@ a {
 }
 
 // Classes to color text according to our theme colors
-.active,
+.active:not(button),
 .primary {
   color: $primary;
 }

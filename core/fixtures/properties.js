@@ -49,6 +49,11 @@ export const createFakeProperty = (userId) => {
     buildingQuality: 1,
     flatQuality: 2,
     materialsQuality: 2,
+    adminValidation: {
+      buildingPlacementQuality: 'No option selected',
+      propertyInfo: 'Not completed',
+    },
+    expertise: {},
     documents: {
       plans: fakeDocument,
       cubage: fakeDocument,

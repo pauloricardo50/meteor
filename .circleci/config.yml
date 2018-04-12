@@ -77,13 +77,14 @@ jobs:
           name: run tests for App
           command: |
             cd microservices/app
-            meteor npm i selenium-webdriver@3.0.0-beta-2 chromedriver
+            # Using 3.6.0 because of this: https://github.com/meteortesting/meteor-mocha/issues/54
+            meteor npm i selenium-webdriver@3.6.0 chromedriver
             meteor npm run test-CI
       - run:
           name: run tests for admin
           command: |
             cd microservices/admin
-            meteor npm i selenium-webdriver@3.0.0-beta-2 chromedriver
+            meteor npm i selenium-webdriver@3.6.0 chromedriver
             meteor npm run test-CI      
       - run:
           name: copy meteor bin to build cache

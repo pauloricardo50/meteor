@@ -5,7 +5,7 @@ import Button from 'core/components/Button';
 import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
 import colors from 'core/config/colors';
-import supportStaff from 'core/arrays/supportStaff';
+import employees from 'core/arrays/epotekEmployees';
 import Icon from 'core/components/Icon';
 
 const styles = {
@@ -50,7 +50,7 @@ const styles = {
   },
 };
 
-const staff = supportStaff[0];
+const staff = employees[0];
 
 const overlayContent = path => (
   <div
@@ -69,8 +69,8 @@ const overlayContent = path => (
       }}
     >
       <img
-        src={staff.img}
-        alt={staff.fullName}
+        src={staff.src}
+        alt={staff.name}
         style={{
           width: 64,
           height: 64,
@@ -80,7 +80,7 @@ const overlayContent = path => (
       />
       <div className="text" style={{ flexGrow: 1 }}>
         <h4 className="fixed-size no-margin" style={{ marginBottom: 8 }}>
-          {staff.fullName}
+          {staff.name}
         </h4>
         <p className="secondary" style={{ margin: 0 }}>
           <T id="ContactButton.yourAdvisor" />

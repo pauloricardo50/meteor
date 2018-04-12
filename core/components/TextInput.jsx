@@ -11,7 +11,14 @@ import { swissFrancMask, percentMask } from '../utils/textMasks';
 import { toNumber } from '../utils/conversionFunctions';
 import constants from '../config/constants';
 
-const getDefaults = ({ type, id, onChange, value }) => {
+const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
+  if (simpleOnChange) {
+    return {
+      onChangeHandler: onChange,
+      value,
+    };
+  }
+
   switch (type) {
   case 'money':
     return {
@@ -150,6 +157,7 @@ TextInput.propTypes = {
   inputProps: PropTypes.object,
   noIntl: PropTypes.bool,
   inputRef: PropTypes.func,
+  simpleOnChange: PropTypes.bool, // Removes all onChange modifications
 };
 
 TextInput.defaultProps = {
@@ -164,6 +172,7 @@ TextInput.defaultProps = {
   inputProps: undefined,
   noIntl: false,
   inputRef: undefined,
+  simpleOnChange: false,
 };
 
 export default injectIntl(TextInput);

@@ -3,6 +3,6 @@ import query from './borrowerAssignedTo';
 
 query.expose({
   firewall(userId) {
-    Security.checkCurrentUserIsAdmin(userId);
+    Security.checkUserIsAdmin(userId);
   },
 });

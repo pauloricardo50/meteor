@@ -103,6 +103,7 @@ export const createFakeLoan = (userId) => {
     propertyId,
     general: fakeGeneral,
     documents: fakeFiles,
+    contacts: [],
   };
 
   switch (generateRandomNumber(STEPS_PER_LOAN)) {

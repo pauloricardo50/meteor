@@ -21,12 +21,8 @@ import 'react-dates/initialize'; // Fix issue #750
 const start = (testElement) => {
   // Initial injected html done in server startup index.js
   const loader = document.getElementById('inject-loader-wrapper');
-  const loader2 = document.getElementById('loading-text');
   if (loader) {
     loader.parentNode.removeChild(loader);
-  }
-  if (loader2) {
-    loader2.parentNode.removeChild(loader2);
   }
 
   localizationStartup();
