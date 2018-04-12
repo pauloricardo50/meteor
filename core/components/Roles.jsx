@@ -5,20 +5,22 @@ import { T } from './Translation';
 
 const Roles = ({ roles }) => (
   <span>
-    {roles &&
-      roles.length &&
-      roles
-        .map(role => <T id={`roles.${role}`} key={role} />)
-        .reduce((acc, currentValue, currentIndex) => [
-          acc,
-          <span key={currentIndex}>,&nbsp;</span>,
-          currentValue,
-        ])}
+    {roles
+      .map(role => <T id={`roles.${role}`} key={role} />)
+      .reduce((acc, currentValue, currentIndex) => [
+        acc,
+        <span key={currentIndex}>,&nbsp;</span>,
+        currentValue,
+      ])}
   </span>
 );
 
 Roles.propTypes = {
-  roles: PropTypes.array.isRequired,
+  roles: PropTypes.array,
+};
+
+Roles.defaultProps = {
+  roles: [],
 };
 
 export default Roles;
