@@ -25,13 +25,14 @@ class SearchForm extends Component {
   render() {
     const { searchText } = this.state;
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} className="search-field">
         <TextField
           className="search-input"
           autoFocus
           value={searchText}
           onChange={this.handleChange}
         />
+
         <Button raised className="search-button" type="submit">
           <Icon type="search" />
           <T id="general.search" />

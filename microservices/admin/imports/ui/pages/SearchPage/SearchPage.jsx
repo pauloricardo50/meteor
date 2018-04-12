@@ -9,16 +9,14 @@ class SearchPage extends Component {
     this.state = { searchQuery: '' };
   }
 
-  handleSubmit = text => this.setState({ searchQuery: text });
+  handleSubmit = searchQuery => this.setState({ searchQuery });
 
   render() {
     const { searchQuery } = this.state;
 
     return (
       <div className="search-container">
-        <h2 className="search-title">
-          <SearchForm onSubmit={this.handleSubmit} className="search-field" />
-        </h2>
+        <SearchForm onSubmit={this.handleSubmit} />
         {searchQuery && <SearchResults searchQuery={searchQuery} />}
       </div>
     );

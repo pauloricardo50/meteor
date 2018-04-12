@@ -31,8 +31,9 @@ const SearchResults = ({ isLoading, error, data: searchResults }) => {
 
   return (
     <List className="search-results">
-      {Object.keys(searchResults).map((collection) => {
-        const resultsFromThisCollection = searchResults[collection];
+      {searchResults.map((collection) => {
+        const collectionName = Object.keys(collection)[0];
+        const resultsFromThisCollection = collection[collectionName];
 
         if (resultsFromThisCollection.length === 0) {
           return null;
@@ -41,10 +42,10 @@ const SearchResults = ({ isLoading, error, data: searchResults }) => {
         return (
           <ListItem key={collection} className="search-results-collection">
             <h3>
-              <LinkToCollection collection={collection} />
+              <LinkToCollection collection={collectionName} />
             </h3>
             <ResultsPerCollection
-              collection={collection}
+              collection={collectionName}
               results={resultsFromThisCollection}
             />
           </ListItem>
@@ -57,7 +58,7 @@ const SearchResults = ({ isLoading, error, data: searchResults }) => {
 SearchResults.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   error: PropTypes.object,
-  data: PropTypes.object.isRequired,
+  data: PropTypes.any.isRequired,
 };
 
 SearchResults.defaultProps = {

@@ -14,11 +14,7 @@ const IconLink = ({ link, icon, text }) => (
 IconLink.propTypes = {
   link: PropTypes.string.isRequired,
   icon: PropTypes.string.isRequired,
-  text: PropTypes.string,
-};
-
-IconLink.defaultProps = {
-  text: '',
+  text: PropTypes.node.isRequired,
 };
 
 export default IconLink;
