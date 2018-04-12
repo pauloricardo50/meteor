@@ -52,7 +52,7 @@ const getColumns = ({ props, index, user }) => {
         raw: text,
       });
     } else {
-      columns.push('');
+      columns.push({ label: '', raw: '' });
     }
   }
 
