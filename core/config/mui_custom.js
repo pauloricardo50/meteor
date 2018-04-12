@@ -39,6 +39,11 @@ const theme = createMuiTheme({
         position: '',
       },
     },
+    MuiButton: {
+      raised: {
+        backgroundColor: 'white',
+      },
+    },
   },
   // direction: 'ltr',
   palette: {
