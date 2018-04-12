@@ -14,9 +14,6 @@ import TaskAssignDropdown
 import TasksStatusDropdown from './TasksStatusDropdown';
 
 
-const styles = {
-  dropdownButtons: { display: 'inline', width: '50%' },
-};
 
 const formatDateTime = date =>
   moment(date).format('D MMM YY à HH:mm:ss');
@@ -137,7 +134,7 @@ export default class TasksTable extends Component {
         const cellText = assignedEmployee.username ||
         assignedEmployee.emails[0].address;
         columns.push({
-          label: <Link to={`/users/${assignedEmployee._id}`} >{cellText}</Link>,
+          label: <Link to={`/users/${assignedEmployee._id}`}>{cellText}</Link>,
           raw: cellText,
         });
       } else {
@@ -150,9 +147,8 @@ export default class TasksTable extends Component {
         currentUser={Meteor.user()}
         taskId={task._id}
         taskStatus={task.status}
-        styles={styles.dropdownButtons}
       />
-      <TaskAssignDropdown doc={task} styles={styles.dropdownButtons} />
+      <TaskAssignDropdown doc={task} />
                  </div>);
 
     return columns;

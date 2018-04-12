@@ -30,7 +30,11 @@ const generateNumberOfLoans = max => Math.floor(Math.random() * max + 1);
 const getAdmins = (currentUserEmail) => {
   const admins = Users.find({ roles: { $in: [ROLES.ADMIN] } }).fetch();
   if (admins.length <= 1) {
-    const newAdmins = createFakeUsers(ADMIN_COUNT, ROLES.ADMIN, currentUserEmail);
+    const newAdmins = createFakeUsers(
+      ADMIN_COUNT,
+      ROLES.ADMIN,
+      currentUserEmail,
+    );
     return newAdmins;
   }
   return admins.map(admin => admin._id);
@@ -52,7 +56,11 @@ Meteor.methods({
     if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
       createFakeUsers(DEV_COUNT, ROLES.DEV, currentUserEmail);
       const admins = getAdmins(currentUserEmail);
-      const newUsers = createFakeUsers(USER_COUNT, ROLES.USER, currentUserEmail);
+      const newUsers = createFakeUsers(
+        USER_COUNT,
+        ROLES.USER,
+        currentUserEmail,
+      );
       newUsers.map((userId) => {
         const adminId = admins[Math.floor(Math.random() * admins.length)];
         UserService.assignAdminToUser({ userId, adminId });
@@ -97,7 +105,6 @@ Meteor.methods({
   insertBorrowerRelatedTask() {
     const borrower = Borrowers.aggregate({ $sample: { size: 1 } })[0];
     const type = TASK_TYPE.VERIFY;
-    console.log(borrower._id);
     if (borrower._id) {
       TaskService.insert({ type, borrowerId: borrower._id });
     }
@@ -106,7 +113,6 @@ Meteor.methods({
   insertLoanRelatedTask() {
     const loanId = Loans.aggregate({ $sample: { size: 1 } })[0]._id;
     const type = TASK_TYPE.VERIFY;
-    console.log(loanId);
     if (loanId) {
       TaskService.insert({ type, loanId });
     }
@@ -115,7 +121,6 @@ Meteor.methods({
   insertPropertyRelatedTask() {
     const propertyId = Properties.aggregate({ $sample: { size: 1 } })[0]._id;
     const type = TASK_TYPE.CUSTOM;
-    console.log(propertyId);
     if (propertyId) {
       TaskService.insert({ type, propertyId });
     }

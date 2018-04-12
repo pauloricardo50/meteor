@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import Tabs from 'core/components/Tabs';
 import { T } from 'core/components/Translation/';

@@ -8,6 +8,7 @@ import Table from 'core/components/Table';
 import { T } from 'core/components/Translation/';
 import Loading from 'core/components/Loading';
 import { isUser } from 'core/utils/userFunctions';
+import Roles from 'core/components/Roles';
 
 import UsersTableContainer from './UsersTableContainer';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
@@ -40,7 +41,7 @@ const getColumns = ({ props, index, user }) => {
     index + 1,
     emails[0].address.toString(),
     moment(createdAt).format('D MMM YY à HH:mm:ss'),
-    roles ? roles.toString() : '',
+    { label: <Roles roles={roles} />, raw: roles && roles.toString() },
   ];
   if (showAssignee) {
     if (assignedEmployee) {

@@ -24,7 +24,6 @@ export default class Chart extends Component {
 
   render() {
     const { config } = this.props;
-    console.log('chart config:', config);
 
     return (
       <ReactHighcharts
