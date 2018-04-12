@@ -60,12 +60,19 @@ export default class Table extends Component {
       throw new Error('column length has to be correct in Table');
     }
 
-    this.setState({ data: rows }, () => this.handleSort(this.state.orderBy));
+    this.setState({ data: rows }, () =>
+      this.handleSort(this.state.orderBy, false));
   };
 
-  handleSort = (newOrderBy) => {
+  handleSort = (newOrderBy, changeOrder) => {
     const { data, orderBy, order } = this.state;
-    this.setState(sortData({ data, orderBy, order, newOrderBy }));
+    this.setState(sortData({
+      data,
+      orderBy,
+      order,
+      newOrderBy,
+      changeOrder,
+    }));
   };
 
   handleSelect = (rowId) => {
