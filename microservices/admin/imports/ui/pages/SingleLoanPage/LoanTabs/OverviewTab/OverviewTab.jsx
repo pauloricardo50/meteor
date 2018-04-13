@@ -2,14 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Button from 'core/components/Button';
-
 import Recap from 'core/components/Recap';
 import renderObject from 'core/utils/renderObject';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import { T } from 'core/components/Translation';
 import AdminNote from '../../../../components/AdminNote';
 import StepStatus from './StepStatus';
-import LoanTasksTable from './LoanTasksTable';
+import LoanTasksTable from '../LoanTasksTable';
 import LoanValidation from './LoanValidation';
 
 const styles = {
