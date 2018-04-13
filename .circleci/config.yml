@@ -21,10 +21,6 @@ jobs:
         NODE_ENV: development
         TOOL_NODE_FLAGS: "--max_old_space_size=4096 --optimize_for_size --gc-interval=100" # if builds run out of memory
         # METEOR_PROFILE: 1 # If you need to debug meteor, turn this on
-    - image: cypress/base:6
-      environment:
-        ## this enables colors in the output
-        TERM: xterm
     steps:
       - checkout
       - add_ssh_keys
