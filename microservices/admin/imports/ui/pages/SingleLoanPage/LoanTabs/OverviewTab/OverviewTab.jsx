@@ -11,15 +11,6 @@ import StepStatus from './StepStatus';
 import LoanTasksTable from '../LoanTasksTable';
 import LoanValidation from './LoanValidation';
 
-const styles = {
-  recapDiv: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: 400,
-  },
-};
-
 export default class OverviewTab extends React.Component {
   constructor(props) {
     super(props);
@@ -56,7 +47,7 @@ export default class OverviewTab extends React.Component {
             justifyContent: 'space-around',
           }}
         >
-          <div style={styles.recapDiv}>
+          <div className="recapDiv">
             <h2 className="fixed-size">
               <T id="OverviewTab.recap" />
             </h2>
@@ -65,7 +56,7 @@ export default class OverviewTab extends React.Component {
 
           <div className="flex-col">
             {borrowers.map((b, i) => (
-              <div style={styles.recapDiv} key={b._id}>
+              <div className="recapDiv" key={b._id}>
                 <h2 className="fixed-size">
                   {b.firstName || `Emprunteur ${i + 1}`}
                 </h2>
