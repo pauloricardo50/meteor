@@ -5,8 +5,9 @@ import Button from 'core/components/Button';
 
 import Recap from 'core/components/Recap';
 import renderObject from 'core/utils/renderObject';
-import AdminNote from '../../../../components/AdminNote';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
+import { T } from 'core/components/Translation';
+import AdminNote from '../../../../components/AdminNote';
 import StepStatus from './StepStatus';
 import LoanTasksTable from './LoanTasksTable';
 import LoanValidation from './LoanValidation';
@@ -29,21 +30,21 @@ export default class OverviewTab extends React.Component {
 
   render() {
     const { loan, borrowers } = this.props;
-    const { user } = loan;
-    const { showObject } = this.state;
+    const { adminNote, user, borrowerIds, property, _id } = loan;
+    const { showObject, serverTime } = this.state;
 
     return (
       <div className="mask1 overview-tab">
         <div className="admin-section">
           <AdminNote
-            loanId={loan._id}
-            adminNoteText={loan.adminNote}
+            loanId={_id}
+            adminNoteText={adminNote}
             className="admin-note"
           />
           <ImpersonateLink user={user} />
         </div>
 
-        <StepStatus {...this.props} serverTime={this.state.serverTime} />
+        <StepStatus {...this.props} serverTime={serverTime} />
 
         <LoanValidation loan={loan} />
 
@@ -57,7 +58,9 @@ export default class OverviewTab extends React.Component {
           }}
         >
           <div style={styles.recapDiv}>
-            <h2 className="fixed-size">Récapitulatif</h2>
+            <h2 className="fixed-size">
+              <T id="OverviewTab.recap" />
+            </h2>
             <Recap {...this.props} arrayName="dashboard" />
           </div>
 
@@ -76,8 +79,16 @@ export default class OverviewTab extends React.Component {
         <hr />
         <br />
 
-        <h2 className="fixed-size text-center">Tâches</h2>
-        <LoanTasksTable showAssignee loanId={loan._id} />
+        <h2 className="fixed-size text-center">
+          <T id="collections.tasks" />
+        </h2>
+        <LoanTasksTable
+          showAssignee
+          currentDocId={_id}
+          loanId={_id}
+          borrowerIds={borrowerIds}
+          propertyId={property._id}
+        />
 
         <br />
         <br />

@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 
+import Icon from 'core/components/Icon';
 import Table from 'core/components/Table';
 import { T } from 'core/components/Translation';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
@@ -13,18 +14,18 @@ import TaskAssignDropdown
   from '../../components/AssignAdminDropdown/TaskAssignDropdown';
 import TasksStatusDropdown from './TasksStatusDropdown';
 
-
-
 const formatDateTime = date =>
   moment(date).format('D MMM YY à HH:mm:ss');
 
 export default class TasksTable extends Component {
   getRelatedDoc = ({ borrower, loan, property, user }) => {
+    const { currentDocId } = this.props;
+
     if (borrower) {
       const { _id, firstName, lastName } = borrower;
 
       return {
-        link: `/borrowers/${_id}`,
+        link: currentDocId !== _id ? `/borrowers/${_id}` : null,
         icon: 'people',
         text: getBorrowerFullName({ firstName, lastName }),
         translationId: 'borrower',
@@ -35,7 +36,7 @@ export default class TasksTable extends Component {
       const { _id, name } = loan;
 
       return {
-        link: `/loans/${_id}`,
+        link: currentDocId !== _id ? `/loans/${_id}` : null,
         icon: 'dollarSign',
         text: name,
         translationId: 'loan',
@@ -46,7 +47,7 @@ export default class TasksTable extends Component {
       const { _id, address1 } = property;
 
       return {
-        link: `/properties/${_id}`,
+        link: currentDocId !== _id ? `/properties/${_id}` : null,
         icon: 'building',
         text: address1,
         translationId: 'property',
@@ -57,7 +58,7 @@ export default class TasksTable extends Component {
       const { _id, username, emails } = user;
 
       return {
-        link: `/users/${_id}`,
+        link: currentDocId !== _id ? `/users/${_id}` : null,
         icon: 'contactMail',
         text: username || emails[0].address,
         translationId: 'user',
@@ -109,12 +110,17 @@ export default class TasksTable extends Component {
     });
 
     const relatedDoc = {
-      label: (
+      label: link ? (
         <IconLink
           link={link}
           icon={icon}
           text={text || translationId}
         />
+      ) : (
+        <span className="relatedTo-cell-noLink">
+          <Icon type={icon} className="icon-link-icon" />
+          {text || translationId}
+        </span>
       ),
       raw: text,
     };
@@ -149,7 +155,7 @@ export default class TasksTable extends Component {
         taskStatus={task.status}
       />
       <TaskAssignDropdown doc={task} />
-                 </div>);
+    </div>);
 
     return columns;
   };
@@ -182,8 +188,10 @@ TasksTable.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   data: PropTypes.object.isRequired,
   showAssignee: PropTypes.bool,
+  currentDocId: PropTypes.string,
 };
 
 TasksTable.defaultProps = {
   showAssignee: false,
+  currentDocId: '',
 };

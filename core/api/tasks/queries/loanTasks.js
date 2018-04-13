@@ -2,12 +2,16 @@ import { Tasks } from '../../';
 import { TASK_QUERIES, TASK_STATUS } from '../taskConstants';
 
 export default Tasks.createQuery(TASK_QUERIES.LOAN_TASKS, {
-  $filter({ filters, options, params }) {
-    filters.status = { $in: [TASK_STATUS.ACTIVE, TASK_STATUS.COMPLETED] };
+  $filter({ filters, params: { borrowerIds, loanId, propertyId } }) {
+    const status = { $in: [TASK_STATUS.ACTIVE, TASK_STATUS.COMPLETED] };
 
-    if (params.loanId) {
-      filters.loanId = params.loanId;
-    }
+    const $or = [
+      { loanId: { $eq: loanId } },
+      { borrowerId: { $in: borrowerIds } },
+      { propertyId: { $eq: propertyId } },
+    ];
+
+    filters.$and = [{ status }, { $or }];
   },
   $options: {
     sort: {
@@ -30,16 +34,20 @@ export default Tasks.createQuery(TASK_QUERIES.LOAN_TASKS, {
     username: 1,
   },
   borrower: {
+    firstName: 1,
+    lastName: 1,
     user: {
       assignedEmployeeId: 1,
     },
   },
   loan: {
+    name: 1,
     user: {
       assignedEmployeeId: 1,
     },
   },
   property: {
+    address1: 1,
     user: {
       assignedEmployeeId: 1,
     },
