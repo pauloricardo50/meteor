@@ -17,7 +17,6 @@ shell-server@0.3.1           # Server-side component of the `meteor shell` comma
 
 # Dev, place this on top to allow meteor toys to work
 meteortoys:allthings@4.0.0
-stolinski:stylus-multi          # CSS PreCompiler for
 fourseven:scss@4.5.0
 
 
