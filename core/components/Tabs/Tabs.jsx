@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import Paper from 'material-ui/Paper';
 import MuiTabs, { Tab } from 'material-ui/Tabs';
@@ -37,7 +38,14 @@ class Tabs extends Component {
             centered
             {...otherProps}
           >
-            {tabs.map((tab, i) => <Tab label={tab.label} key={i} />)}
+            {tabs.map(({ label, to }, i) => (
+              <Tab
+                label={label}
+                component={to ? Link : undefined}
+                to={to}
+                key={i}
+              />
+            ))}
           </MuiTabs>
         </Paper>
         <div style={{ paddingTop: 16 }}>{this.getContent()}</div>

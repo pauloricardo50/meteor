@@ -20,10 +20,11 @@ class SingleLoanPage extends Component {
   }
 
   render() {
-    const { data, isLoading } = this.props;
-    const loan = data;
+    const { data: loan, isLoading } = this.props;
 
-    if (isLoading || !loan) return null;
+    if (isLoading || !loan) {
+      return null;
+    }
 
     const dataToPassDown = {
       ...this.props,
