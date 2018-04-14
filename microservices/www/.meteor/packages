@@ -1,8 +1,4 @@
-# Meteor packages used by this project, one per line.
-# Check this file (and the other files in this directory) into your repository.
-#
-# 'meteor add' and 'meteor remove' will edit this file for you,
-# but you can also edit it by hand.
+# Basic meteor packages, not to be changes
 
 meteor-base@1.3.0             # Packages every Meteor app needs to have
 mobile-experience@1.0.5       # Packages for a great mobile UX
@@ -21,15 +17,28 @@ server-render@0.3.0
 
 # Styles
 fourseven:scss@4.5.0
-okgrow:analytics
 themeteorchef:bert
+
+
+# Testing
+cultofcoders:mocha
+
+
+# Data
 aldeed:collection2@3.0.0
 cultofcoders:mutations
-ddp-rate-limiter@1.0.7
 cultofcoders:grapher-react
-accounts-password@1.5.0
-alanning:roles
-wylio:mandrill
 dburles:factory
 vsivsi:job-collection
+ddp-rate-limiter@1.0.7
+
+
+# Accounts
+alanning:roles
+accounts-password@1.5.0
+
+
+# Production
+okgrow:analytics
+wylio:mandrill
 edgee:slingshot
