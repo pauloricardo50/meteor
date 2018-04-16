@@ -26,8 +26,7 @@ const getTabs = (props) => {
     },
     {
       id: 'borrowers',
-      // label: <T id={`LoanTabs.borrowers`} />,
-      label: 'Emprunteurs',
+      label: <T id="LoanTabs.borrowers" noTooltips />,
       content: <BorrowersTab {...props} />,
     },
     {
