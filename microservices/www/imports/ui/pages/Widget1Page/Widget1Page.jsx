@@ -4,6 +4,8 @@ import queryString from 'query-string';
 
 import Button from 'core/components/Button';
 import { T } from 'core/components/Translation';
+import { TOGGLE_POINTS } from 'core/api/features/featureConstants';
+import TogglePoint from 'core/components/TogglePoint';
 import Widget1PageContainer from './Widget1PageContainer';
 import Widget1Nav from './Widget1Nav';
 import Widget1Part1 from './Widget1Part1';
@@ -25,15 +27,17 @@ const Widget1Page = ({ step, finma, ...rest }) => (
     {step <= 2 && <Widget1Part1 step={step} />}
     {step > 2 && <Widget1Part2 finma={finma} />}
     {step > 2 && (
-      <Button
-        color="secondary"
-        className="cta"
-        variant="raised"
-        link
-        to={getUrl(rest)}
-      >
-        <T id="general.continue" />
-      </Button>
+      <TogglePoint id={TOGGLE_POINTS.WIDGET1_CONTINUE_BUTTON}>
+        <Button
+          color="secondary"
+          className="cta"
+          variant="raised"
+          link
+          to={getUrl(rest)}
+        >
+          <T id="general.continue" />
+        </Button>
+      </TogglePoint>
     )}
   </div>
 );

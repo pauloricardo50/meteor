@@ -1,6 +1,12 @@
 {
   "public": {
     "environment": "dev",
+    "features": {
+      "liteVersion": {
+        "enabled": false,
+        "actions": ["LINK_START1_PAGE_TO_CONTACT"]
+      }
+    },
     "analyticsSettings": {
       "Mixpanel": {
         "token": "2798b48714b4d78fda1c63d822e54064",
