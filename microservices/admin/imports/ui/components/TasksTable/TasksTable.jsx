@@ -10,12 +10,10 @@ import { T } from 'core/components/Translation';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 import IconLink from 'core/components/IconLink';
 import Loading from 'core/components/Loading';
-import TaskAssignDropdown
-  from '../../components/AssignAdminDropdown/TaskAssignDropdown';
+import TaskAssignDropdown from '../../components/AssignAdminDropdown/TaskAssignDropdown';
 import TasksStatusDropdown from './TasksStatusDropdown';
 
-const formatDateTime = date =>
-  moment(date).format('D MMM YY à HH:mm:ss');
+const formatDateTime = date => moment(date).format('D MMM YY à HH:mm:ss');
 
 export default class TasksTable extends Component {
   getRelatedDoc = ({ borrower, loan, property, user }) => {
@@ -88,7 +86,8 @@ export default class TasksTable extends Component {
   };
 
   getColumns = ({ showAssignee, index, task }) => {
-    const { type,
+    const {
+      type,
       status,
       createdAt,
       updatedAt,
@@ -98,7 +97,8 @@ export default class TasksTable extends Component {
       borrower,
       property,
       loan,
-      assignedEmployee } = task;
+      assignedEmployee,
+    } = task;
 
     const { link, icon, text, translationId } = this.getRelatedDoc({
       borrower,
@@ -108,20 +108,17 @@ export default class TasksTable extends Component {
     });
 
     const relatedDoc = {
-      label: (
-        <IconLink
-          link={link}
-          icon={icon}
-          text={text || translationId}
-        />
-      ),
+      label: <IconLink link={link} icon={icon} text={text || translationId} />,
       raw: text,
     };
 
     const columns = [
       index + 1,
-      <T id={`TasksStatusDropdown.${type}`} key="type" />,
-      <T id={`TasksStatusDropdown.${status}`} key="status" />,
+      { raw: type, label: <T id={`TasksStatusDropdown.${type}`} key="type" /> },
+      {
+        raw: status,
+        label: <T id={`TasksStatusDropdown.${status}`} key="status" />,
+      },
       formatDateTime(createdAt),
       formatDateTime(updatedAt),
       formatDateTime(dueAt),
@@ -130,8 +127,8 @@ export default class TasksTable extends Component {
     ];
     if (showAssignee) {
       if (assignedEmployee) {
-        const cellText = assignedEmployee.username ||
-        assignedEmployee.emails[0].address;
+        const cellText =
+          assignedEmployee.username || assignedEmployee.emails[0].address;
         columns.push({
           label: <Link to={`/users/${assignedEmployee._id}`}>{cellText}</Link>,
           raw: cellText,
@@ -158,7 +155,6 @@ export default class TasksTable extends Component {
       id: task._id,
       columns: this.getColumns({ showAssignee, index, task }),
     }));
-
 
   render() {
     const { data, isLoading, showAssignee } = this.props;
