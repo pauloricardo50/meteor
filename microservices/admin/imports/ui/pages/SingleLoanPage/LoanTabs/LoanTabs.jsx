@@ -21,37 +21,30 @@ const getTabs = (props) => {
   return [
     {
       id: 'overview',
-      label: <T id="LoanTabs.overview" />,
       content: <OverviewTab {...props} />,
     },
     {
       id: 'borrowers',
-      label: <T id="LoanTabs.borrowers" noTooltips />,
       content: <BorrowersTab {...props} />,
     },
     {
       id: 'property',
-      label: <T id="LoanTabs.property" />,
       content: <PropertyTab {...props} />,
     },
     {
       id: 'offers',
-      label: <T id="LoanTabs.offers" />,
       content: <OffersTab {...props} />,
     },
     {
       id: 'comunication',
-      label: <T id="LoanTabs.communication" />,
       content: <CommunicationTab {...props} />,
     },
     {
       id: 'analytics',
-      label: <T id="LoanTabs.analytics" />,
       content: <MixpanelAnalytics {...props} />,
     },
     {
       id: 'tasks',
-      label: <T id="LoanTabs.tasks" />,
       content: (
         <LoanTasksTable
           showAssignee
@@ -63,20 +56,17 @@ const getTabs = (props) => {
     },
     {
       id: 'forms',
-      label: <T id="LoanTabs.forms" />,
       content: <FormsTab {...props} />,
     },
     {
       id: 'files',
-      label: <T id="LoanTabs.files" />,
       content: <FilesTab {...props} />,
     },
     {
       id: 'actions',
-      label: <T id="LoanTabs.actions" />,
       content: <ActionsTab {...props} />,
     },
-  ];
+  ].map(tab => ({ ...tab, label: <T id={`LoanTabs.${tab.id}`} noTooltips /> }));
 };
 
 const LoanTabs = (props) => {
