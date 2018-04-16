@@ -47,7 +47,7 @@ export default class OverviewTab extends React.Component {
             justifyContent: 'space-around',
           }}
         >
-          <div className="recapDiv">
+          <div className="recap-div">
             <h2 className="fixed-size">
               <T id="OverviewTab.recap" />
             </h2>
@@ -56,7 +56,7 @@ export default class OverviewTab extends React.Component {
 
           <div className="flex-col">
             {borrowers.map((b, i) => (
-              <div className="recapDiv" key={b._id}>
+              <div className="recap-div" key={b._id}>
                 <h2 className="fixed-size">
                   {b.firstName || `Emprunteur ${i + 1}`}
                 </h2>
