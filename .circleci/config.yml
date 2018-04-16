@@ -151,36 +151,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
-
-      - restore_cache:
-          name: restore system's meteor cached build
-          keys:
-            - build-epotek-v2-meteor-system
-      - restore_cache:
-          name: restore app's meteor cached build
-          keys:
-            - build-epotek-v2-meteor-{{ checksum "./microservices/app/.meteor/release" }}-{{ checksum "./microservices/app/.meteor/packages" }}
-      - restore_cache:
-          name: restore app's cached node_modules
-          keys:
-            - build-epotek-v2-node_modules-{{ checksum "./microservices/app/package.json" }}
-      - restore_cache:
-          name: restore admin's meteor cached build
-          keys:
-            - build-epotek-v2-meteor-{{ checksum "./microservices/admin/.meteor/release" }}-{{ checksum "./microservices/admin/.meteor/packages" }}
-      - restore_cache:
-          name: restore admin's cached node_modules
-          keys:
-            - build-epotek-v2-node_modules-{{ checksum "./microservices/admin/package.json" }}
-      - restore_cache:
-          name: restore www's meteor cached build
-          keys:
-            - build-epotek-v2-meteor-{{ checksum "./microservices/www/.meteor/release" }}-{{ checksum "./microservices/www/.meteor/packages" }}
-      - restore_cache:
-          name: restore www's cached node_modules
-          keys:
-            - build-epotek-v2-node_modules-{{ checksum "./microservices/www/package.json" }}
-
       - run:
           name: install Meteor
           command: |
@@ -203,36 +173,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
-
-      - restore_cache:
-          name: restore system's meteor cached build
-          keys:
-            - build-epotek-v2-meteor-system
-      - restore_cache:
-          name: restore app's meteor cached build
-          keys:
-            - build-epotek-v2-meteor-{{ checksum "./microservices/app/.meteor/release" }}-{{ checksum "./microservices/app/.meteor/packages" }}
-      - restore_cache:
-          name: restore app's cached node_modules
-          keys:
-            - build-epotek-v2-node_modules-{{ checksum "./microservices/app/package.json" }}
-      - restore_cache:
-          name: restore admin's meteor cached build
-          keys:
-            - build-epotek-v2-meteor-{{ checksum "./microservices/admin/.meteor/release" }}-{{ checksum "./microservices/admin/.meteor/packages" }}
-      - restore_cache:
-          name: restore admin's cached node_modules
-          keys:
-            - build-epotek-v2-node_modules-{{ checksum "./microservices/admin/package.json" }}
-      - restore_cache:
-          name: restore www's meteor cached build
-          keys:
-            - build-epotek-v2-meteor-{{ checksum "./microservices/www/.meteor/release" }}-{{ checksum "./microservices/www/.meteor/packages" }}
-      - restore_cache:
-          name: restore www's cached node_modules
-          keys:
-            - build-epotek-v2-node_modules-{{ checksum "./microservices/www/package.json" }}
-
       - run:
           name: install Meteor
           command: |
@@ -255,36 +195,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
-
-      - restore_cache:
-          name: restore system's meteor cached build
-          keys:
-            - build-epotek-v2-meteor-system
-      - restore_cache:
-          name: restore app's meteor cached build
-          keys:
-            - build-epotek-v2-meteor-{{ checksum "./microservices/app/.meteor/release" }}-{{ checksum "./microservices/app/.meteor/packages" }}
-      - restore_cache:
-          name: restore app's cached node_modules
-          keys:
-            - build-epotek-v2-node_modules-{{ checksum "./microservices/app/package.json" }}
-      - restore_cache:
-          name: restore admin's meteor cached build
-          keys:
-            - build-epotek-v2-meteor-{{ checksum "./microservices/admin/.meteor/release" }}-{{ checksum "./microservices/admin/.meteor/packages" }}
-      - restore_cache:
-          name: restore admin's cached node_modules
-          keys:
-            - build-epotek-v2-node_modules-{{ checksum "./microservices/admin/package.json" }}
-      - restore_cache:
-          name: restore www's meteor cached build
-          keys:
-            - build-epotek-v2-meteor-{{ checksum "./microservices/www/.meteor/release" }}-{{ checksum "./microservices/www/.meteor/packages" }}
-      - restore_cache:
-          name: restore www's cached node_modules
-          keys:
-            - build-epotek-v2-node_modules-{{ checksum "./microservices/www/package.json" }}
-
       - run:
           name: install Meteor
           command: |
