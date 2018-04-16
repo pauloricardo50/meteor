@@ -21,22 +21,6 @@ const styles = {
   },
 };
 
-const getList = conditionArray => (
-  <ul style={styles.list}>
-    {conditionArray
-      .map(c => (
-        <li style={styles.listItem} key={c}>
-          <h4 className="fixed-size">{c}</h4>
-        </li>
-      ))
-      .reduce((prev, curr, i) => [
-        prev,
-        <hr style={styles.hr} key={i} />,
-        curr,
-      ])}
-  </ul>
-);
-
 export default class ConditionsButton extends Component {
   constructor(props) {
     super(props);
@@ -86,7 +70,7 @@ export default class ConditionsButton extends Component {
                 <h2 className="fixed-size">
                   <T id="ConditionsButton.mandatory" />
                 </h2>
-                {getList(conditions)}
+                {conditions}
               </div>
             )}
 
@@ -95,7 +79,7 @@ export default class ConditionsButton extends Component {
                 <h2 className="fixed-size">
                   <T id="ConditionsButton.counterparts" />
                 </h2>
-                {getList(counterparts)}
+                {counterparts}
               </div>
             )}
           </div>
@@ -106,11 +90,11 @@ export default class ConditionsButton extends Component {
 }
 
 ConditionsButton.propTypes = {
-  conditions: PropTypes.arrayOf(PropTypes.string),
-  counterparts: PropTypes.arrayOf(PropTypes.string),
+  conditions: PropTypes.string,
+  counterparts: PropTypes.string,
 };
 
 ConditionsButton.defaultProps = {
-  conditions: [],
-  counterparts: [],
+  conditions: '',
+  counterparts: '',
 };

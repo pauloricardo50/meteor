@@ -24,6 +24,8 @@ const singleOffer = new SimpleSchema({
   },
   amortization: {
     type: Number,
+    min: 0,
+    max: 1000000,
   },
   // For each existing rate, insert an allowed value in the schema
   ...Object.values(INTEREST_RATES).reduce(

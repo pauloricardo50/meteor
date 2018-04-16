@@ -39,10 +39,7 @@ class SingleLoanPage extends Component {
         <h1>
           {loan.name || 'Demande de Prêt'} - Emprunt de{' '}
           <IntlNumber
-            value={getLoanValue({
-              loan,
-              property: loan.property,
-            })}
+            value={getLoanValue({ loan, property: loan.property })}
             format="money"
           />
         </h1>

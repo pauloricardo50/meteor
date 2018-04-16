@@ -20,11 +20,12 @@ export default class ConfirmMethod extends Component {
   };
 
   handleSubmit = () => {
-    this.props.method((err) => {
-      if (!err) {
-        this.setState({ open: false });
-      }
-    });
+    this.props
+      .method()
+      .then(() => this.setState({ open: false }))
+      .catch((error) => {
+        console.log('ConfirmMethod error:', error);
+      });
   };
 
   handleChange = (event) => {
