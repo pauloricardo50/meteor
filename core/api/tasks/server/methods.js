@@ -1,4 +1,4 @@
-import { SecurityService } from '../..';
+import { SecurityService, Tasks } from '../..';
 import TaskService from '../TaskService';
 import {
   taskInsert,
@@ -8,7 +8,9 @@ import {
   taskChangeStatus,
   taskChangeAssignedTo,
   taskGetRelatedTo,
+  completeTaskAddAssignedTo,
 } from '../methodDefinitions';
+import { TASK_STATUS, TASK_TYPE } from '../../constants';
 
 taskInsert.setHandler((context, { type }) => {
   SecurityService.tasks.isAllowedToInsert();
@@ -43,4 +45,16 @@ taskChangeAssignedTo.setHandler((context, { taskId, newAssignee }) => {
 taskGetRelatedTo.setHandler((context, { task }) => {
   SecurityService.tasks.isAllowedToUpdate(task._id);
   return TaskService.getRelatedTo({ task });
+});
+
+completeTaskAddAssignedTo.setHandler((context, { userId }) => {
+  const addAssignToTaskId = Tasks.findOne({
+    type: TASK_TYPE.ADD_ASSIGNED_TO,
+    userId,
+  })._id;
+
+  return taskChangeStatus.run({
+    taskId: addAssignToTaskId,
+    newStatus: TASK_STATUS.COMPLETED,
+  });
 });

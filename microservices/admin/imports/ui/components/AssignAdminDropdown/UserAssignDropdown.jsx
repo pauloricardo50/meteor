@@ -1,15 +1,20 @@
 import { createContainer } from 'core/api';
-import { assignAdminToUser } from 'core/api/methods';
+import { assignAdminToUser, assignAdminToNewUser } from 'core/api/methods';
 import AssignAdminDropdown from './AssignAdminDropdown';
 
 const changeAssignedUser = ({ newAdmin, user, currentAdminId }) => {
-  assignAdminToUser.run({
-    userId: user._id,
-    adminId: newAdmin._id,
-  });
-  if (!currentAdminId) {
+  if (currentAdminId) {
+    // change of a previously assigned employee
+    assignAdminToUser.run({
+      userId: user._id,
+      adminId: newAdmin._id,
+    });
+  } else {
     // first assignment for that user
-    // TODO: assign all tasks & complete task ADD_ASSIGNED_TO
+    assignAdminToNewUser.run({
+      userId: user._id,
+      adminId: newAdmin._id,
+    });
   }
 };
 

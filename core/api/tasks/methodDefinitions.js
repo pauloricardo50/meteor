@@ -54,3 +54,10 @@ export const taskGetRelatedTo = new Method({
     task: Object,
   },
 });
+
+export const completeTaskAddAssignedTo = new Method({
+  name: 'completeTaskAddAssignedTo',
+  params: {
+    userId: String,
+  },
+});

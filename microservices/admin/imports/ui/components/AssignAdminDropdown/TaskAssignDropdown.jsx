@@ -6,19 +6,18 @@ import {
 } from 'core/api/methods';
 import AssignAdminDropdown from './AssignAdminDropdown';
 
-const firstUserAssign = ({
+const assignEmployeeToTask = ({
   taskAssignedTo,
   relatedUserId,
   admin,
   taskId,
-  taskType,
 }) => {
   if (!taskAssignedTo) {
+    // if taskAssignedTo is not defined, it's the first assignment for
+    // that user, since after that, all tasks will be automatically assigned
     assignAdminToNewUser.run({
       userId: relatedUserId,
       adminId: admin._id,
-      taskId,
-      taskType,
     });
   } else {
     taskChangeAssignedTo.run({
@@ -28,11 +27,11 @@ const firstUserAssign = ({
   }
 };
 
-const changeAssignedUser = ({ admin, task, taskAssignedTo }) => {
+const changeAssignedEmployee = ({ admin, task, taskAssignedTo }) => {
   const taskUserId = task.user ? task.user._id : undefined;
   if (!taskUserId) {
     taskGetRelatedTo.run({ task }).then(relatedUserId =>
-      firstUserAssign({
+      assignEmployeeToTask({
         taskAssignedTo,
         relatedUserId,
         admin,
@@ -40,7 +39,7 @@ const changeAssignedUser = ({ admin, task, taskAssignedTo }) => {
         taskType: task.type,
       }));
   } else {
-    firstUserAssign({
+    assignEmployeeToTask({
       taskAssignedTo,
       relatedUserId: taskUserId,
       admin,
@@ -51,7 +50,7 @@ const changeAssignedUser = ({ admin, task, taskAssignedTo }) => {
 };
 
 const onAdminSelectHandler = ({ selectedAdmin, relatedDoc, currentAdmin }) =>
-  changeAssignedUser({
+  changeAssignedEmployee({
     admin: selectedAdmin,
     task: relatedDoc,
     taskAssignedTo: currentAdmin,
