@@ -26,7 +26,7 @@ const baseForm = [
   },
   {
     id: 'amortization',
-    type: FIELD_TYPES.MONEY,
+    type: FIELD_TYPES.PERCENT,
     label: <T id="offer.amortization" />,
   },
   {

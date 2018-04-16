@@ -32,23 +32,20 @@ const mapValuesToOffer = ({
   maxAmount,
   amortization,
   conditions,
+  hasCounterparts,
   counterparts,
   isDiscount,
   discount,
   ...interestRates
 }) => {
   const useDiscount = isDiscount && discount;
-  return {
-    loanId,
-    organization,
-    conditions,
-    counterparts,
-    standardOffer: {
-      maxAmount,
-      amortization,
-      ...reformatInterestRatesObject(interestRates, STANDARD_SUFFIX),
-    },
-    counterpartOffer: {
+  const standardOffer = {
+    maxAmount,
+    amortization,
+    ...reformatInterestRatesObject(interestRates, STANDARD_SUFFIX),
+  };
+  const counterpartOffer = hasCounterparts
+    ? {
       maxAmount,
       amortization,
       ...reformatInterestRatesObject(
@@ -58,7 +55,16 @@ const mapValuesToOffer = ({
         useDiscount ? STANDARD_SUFFIX : COUNTERPART_SUFFIX,
         useDiscount ? makeRateDiscounter(discount) : undefined,
       ),
-    },
+    }
+    : undefined;
+
+  return {
+    loanId,
+    organization,
+    conditions,
+    counterparts,
+    standardOffer,
+    counterpartOffer,
   };
 };
 

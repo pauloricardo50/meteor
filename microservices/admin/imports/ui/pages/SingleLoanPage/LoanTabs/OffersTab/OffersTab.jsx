@@ -13,7 +13,11 @@ const OffersTab = props => (
     <div className="offer-adder">
       <OfferAdder loanId={props.loan._id} />
     </div>
-    <OfferList {...props} allowDelete />
+    {props.offers && props.offers.length > 0 ? (
+      <OfferList {...props} allowDelete />
+    ) : (
+      <h3 className="secondary text-center">Pas d'offres pour l'instant</h3>
+    )}
   </div>
 );
 

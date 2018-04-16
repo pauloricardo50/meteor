@@ -27,7 +27,7 @@ const getOfferValues = ({ monthly, rating, conditions, counterparts }) => [
     value: <StarRating value={rating || 5} />,
   },
   { key: 'maxAmount', format: 'money' },
-  { key: 'amortization', format: 'money' },
+  { key: 'amortization', format: 'percentage' },
   { key: 'interestLibor', format: 'percentage' },
   { key: 'interest1', format: 'percentage' },
   { key: 'interest2', format: 'percentage' },

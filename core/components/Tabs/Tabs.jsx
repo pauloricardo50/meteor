@@ -35,7 +35,7 @@ class Tabs extends Component {
             onChange={this.handleChange}
             indicatorColor="primary"
             textColor="primary"
-            centered
+            centered={!otherProps.scrollable}
             {...otherProps}
           >
             {tabs.map(({ label, to }, i) => (
