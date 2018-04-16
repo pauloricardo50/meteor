@@ -108,17 +108,12 @@ export default class TasksTable extends Component {
     });
 
     const relatedDoc = {
-      label: link ? (
+      label: (
         <IconLink
           link={link}
           icon={icon}
           text={text || translationId}
         />
-      ) : (
-        <span className="relatedTo-cell-noLink">
-          <Icon type={icon} className="icon-link-icon" />
-          {text || translationId}
-        </span>
       ),
       raw: text,
     };
