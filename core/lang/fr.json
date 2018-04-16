@@ -1,4 +1,13 @@
 {
+  "OfferAdder.buttonLabel": "Ajouter une offre",
+  "OfferAdder.dialogTitle": "Ajouter une offre",
+  "OfferAdder.dialogDescription":
+    "Ce formulaire ne perd pas ses données si tu fermes ceci par accident",
+  "OfferAdder.organization": "Nom du prêteur",
+  "OfferAdder.hasCounterparts": "Ajouter une offre avec contreparties",
+  "OfferAdder.isDiscount": "Taux contreparties avec flat discount",
+  "OfferAdder.discount": "Rabais (valeur positive)",
+
   "DashboardRecapFinance.title": "Plan financier",
   "DashboardInfoTeamMember.emailTooltip": "Envoyer un mail",
   "DashboardInfoTeamMember.phoneTooltip": "Appeler",
@@ -898,6 +907,8 @@
   "offer.maxAmount": "Prêt maximal",
   "offer.monthly": "Coût Mensuel",
   "offer.rating": "Rating",
+  "offer.conditions": "Conditions de base",
+  "offer.counterparts": "Contreparties",
   "OfferPickerPage.description": "Choisissez l'offre qui vous convient.",
   "OfferPickerPage.title": "Les meilleures offres",
   "OffersTable.amount": "Montant",

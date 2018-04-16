@@ -12,7 +12,6 @@ const FormInput = ({
   ...rest
 }) => {
   const displayError = !!(touched && error);
-  console.log('rest props', rest);
 
   return (
     <FormControl error={displayError} required={required}>

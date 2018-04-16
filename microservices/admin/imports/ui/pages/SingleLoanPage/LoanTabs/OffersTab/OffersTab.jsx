@@ -10,7 +10,7 @@ const OffersTab = props => (
     <h2>
       <T id="collections.offers" />
     </h2>
-    <OfferAdder {...props} />
+    <OfferAdder loanId={props.loan._id} />
     <OffersList {...props} />
   </div>
 );

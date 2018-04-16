@@ -7,22 +7,32 @@ import { swissFrancMask, percentMask } from '../../utils/textMasks';
 import FormInput from './FormInput';
 import FormCheckbox from './FormCheckbox';
 import { FIELD_TYPES } from './formConstants';
-import { percentFormatters, moneyFormatters } from './formHelpers';
+import {
+  percentFormatters,
+  moneyFormatters,
+  required as requiredFunc,
+} from './formHelpers';
 
-const FormField = ({ type, ...rest }) => {
-  const defaultField = <Field component={FormInput} {...rest} />;
+const FormField = ({ type, required, validate, ...rest }) => {
+  const validateFunc = required ? [...validate, requiredFunc] : validate;
+  const defaultFieldProps = {
+    component: FormInput,
+    validate: validateFunc,
+    required,
+  };
+  const defaultField = <Field {...defaultFieldProps} {...rest} />;
 
   switch (type) {
   case FIELD_TYPES.TEXT:
     return defaultField;
   case FIELD_TYPES.CHECKBOX:
-    return <Field component={FormCheckbox} {...rest} />;
+    return <Field component={FormCheckbox} validate={validate} {...rest} />;
   case FIELD_TYPES.PERCENT:
     return (
       <Field
-        component={FormInput}
         inputComponent={MaskedInput}
         inputProps={{ mask: percentMask }}
+        {...defaultFieldProps}
         {...percentFormatters}
         {...rest}
       />
@@ -30,9 +40,9 @@ const FormField = ({ type, ...rest }) => {
   case FIELD_TYPES.MONEY:
     return (
       <Field
-        component={FormInput}
         inputComponent={MaskedInput}
         inputProps={{ mask: swissFrancMask }}
+        {...defaultFieldProps}
         {...moneyFormatters}
         {...rest}
       />
@@ -44,6 +54,14 @@ const FormField = ({ type, ...rest }) => {
 
 FormField.propTypes = {
   type: PropTypes.string,
+  required: PropTypes.bool,
+  validate: PropTypes.array,
+};
+
+FormField.defaultProps = {
+  type: FIELD_TYPES.TEXT,
+  required: undefined,
+  validate: [],
 };
 
 export default FormField;

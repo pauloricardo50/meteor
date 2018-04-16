@@ -24,14 +24,8 @@ const Form = ({
       <form onSubmit={handleSubmit} className="form">
         {error && <span className="error">{error}</span>}
 
-        {formArray.map(({ id, validate = [], required, ...otherProps }) => (
-          <FormField
-            key={id}
-            name={id}
-            validate={required ? [...validate, requiredFunc] : validate}
-            required={required}
-            {...otherProps}
-          />
+        {formArray.map(({ id, ...otherProps }) => (
+          <FormField key={id} name={id} {...otherProps} />
         ))}
 
         <Button

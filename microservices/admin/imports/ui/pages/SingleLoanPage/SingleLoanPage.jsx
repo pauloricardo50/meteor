@@ -31,6 +31,7 @@ class SingleLoanPage extends Component {
       loan,
       property: loan.property,
       borrowers: loan.borrowers,
+      offers: loan.offers,
     };
 
     return (

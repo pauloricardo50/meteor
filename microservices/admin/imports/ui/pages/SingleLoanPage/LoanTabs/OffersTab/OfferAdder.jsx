@@ -19,15 +19,33 @@ const interestRatesFormArray = index =>
 
 const baseForm = [
   { id: 'organization' },
-  { id: 'maxAmount', type: FIELD_TYPES.MONEY },
-  { id: 'amortization', type: FIELD_TYPES.MONEY },
-  { id: 'condition' },
+  {
+    id: 'maxAmount',
+    type: FIELD_TYPES.MONEY,
+    label: <T id="offer.maxAmount" />,
+  },
+  {
+    id: 'amortization',
+    type: FIELD_TYPES.MONEY,
+    label: <T id="offer.amortization" />,
+  },
+  {
+    id: 'conditions',
+    label: <T id="offer.conditions" />,
+    required: false,
+  },
   ...interestRatesFormArray(1),
   { id: HAS_COUNTERPARTS, type: FIELD_TYPES.CHECKBOX },
 ];
 
 const counterpartsForm = isDiscount => [
-  ...[{ id: 'counterparts' }, { id: IS_DISCOUNT, type: FIELD_TYPES.CHECKBOX }],
+  ...[
+    {
+      id: 'counterparts',
+      label: <T id="offer.counterparts" />,
+    },
+    { id: IS_DISCOUNT, type: FIELD_TYPES.CHECKBOX },
+  ],
   ...(isDiscount
     ? [{ id: 'discount', type: FIELD_TYPES.PERCENT }]
     : [...interestRatesFormArray(2)]),
@@ -39,13 +57,14 @@ const getFormArray = (hasCounterparts, isDiscount) =>
     : baseForm
   ).map(field => ({
     ...field,
-    required: field.required ? field.required : true,
+    required: field.required !== undefined ? field.required : true,
     label: field.label || <T id={`OfferAdder.${field.id}`} />,
   }));
 
-const OfferAdder = ({ hasCounterparts, isDiscount }) => (
+const OfferAdder = ({ hasCounterparts, isDiscount, onSubmit }) => (
   <DialogForm
     form={FORM_NAME}
+    onSubmit={onSubmit}
     button={
       <Button raised primary>
         <T id="OfferAdder.buttonLabel" />
@@ -59,6 +78,7 @@ const OfferAdder = ({ hasCounterparts, isDiscount }) => (
 );
 
 OfferAdder.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
   hasCounterparts: PropTypes.bool,
   isDiscount: PropTypes.bool,
 };
