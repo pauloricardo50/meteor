@@ -16,7 +16,7 @@ body {
 // Make sure everything expands properly to take the full size of the browser
 body,
 html,
-// main,
+/* main,*/
 #react-root {
   width: 100%;
   height: 100%;
@@ -330,4 +330,31 @@ a {
 .mui-select,
 .mui-radio-group {
   display: flex;
+}
+
+// To display choices with proper hover effects
+.choice {
+  border-radius: 4px;
+  border: solid 1px $grey1;
+  display: flex;
+  margin-bottom: 16px;
+  box-sizing: content-box;
+  padding: 16px;
+}
+
+.choice:hover {
+  border: solid 1px $primary;
+  cursor: pointer;
+}
+
+.choice.chosen {
+  border: solid 2px $primary;
+}
+
+.choice.chosen.disabled {
+  border: solid 2px $success;
+}
+
+.choice.disabled {
+  cursor: default !important;
 }

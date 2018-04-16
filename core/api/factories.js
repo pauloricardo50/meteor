@@ -66,7 +66,8 @@ Factory.define('offer', Offers, {
   createdAt: () => new Date(),
   organization: 'bankName',
   canton: 'GE',
-  auctionEndTime: () => new Date(),
+  conditions: 'Do something',
+  counterparts: 'Do something more',
   standardOffer: () => ({
     maxAmount: 800000,
     amortization: 0.01,
@@ -75,5 +76,14 @@ Factory.define('offer', Offers, {
     interest2: 0.01,
     interest5: 0.01,
     interest10: 0.01,
+  }),
+  counterpartOffer: () => ({
+    maxAmount: 800000,
+    amortization: 0.008,
+    interestLibor: 0.008,
+    interest1: 0.008,
+    interest2: 0.008,
+    interest5: 0.008,
+    interest10: 0.008,
   }),
 });

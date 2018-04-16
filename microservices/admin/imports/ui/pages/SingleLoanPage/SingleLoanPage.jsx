@@ -20,16 +20,18 @@ class SingleLoanPage extends Component {
   }
 
   render() {
-    const { data, isLoading } = this.props;
-    const loan = data;
+    const { data: loan, isLoading } = this.props;
 
-    if (isLoading || !loan) return null;
+    if (isLoading || !loan) {
+      return null;
+    }
 
     const dataToPassDown = {
       ...this.props,
       loan,
       property: loan.property,
       borrowers: loan.borrowers,
+      offers: loan.offers,
     };
 
     return (
@@ -37,10 +39,7 @@ class SingleLoanPage extends Component {
         <h1>
           {loan.name || 'Demande de Prêt'} - Emprunt de{' '}
           <IntlNumber
-            value={getLoanValue({
-              loan,
-              property: loan.property,
-            })}
+            value={getLoanValue({ loan, property: loan.property })}
             format="money"
           />
         </h1>

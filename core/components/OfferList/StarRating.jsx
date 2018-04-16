@@ -2,13 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import StarRatingComponent from 'react-star-rating-component';
-import colors from 'core/config/colors';
-import Icon from 'core/components/Icon';
+import colors from '../../config/colors';
+import Icon from '../Icon';
 
 const styles = {
-  svg: {
-    color: 'inherit',
-  },
+  svg: { color: 'inherit' },
 };
 
 const StarRating = ({ value }) => (
