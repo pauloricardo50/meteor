@@ -19,13 +19,11 @@ const formatDateTime = date =>
 
 export default class TasksTable extends Component {
   getRelatedDoc = ({ borrower, loan, property, user }) => {
-    const { currentDocId } = this.props;
-
     if (borrower) {
       const { _id, firstName, lastName } = borrower;
 
       return {
-        link: currentDocId !== _id ? `/borrowers/${_id}` : null,
+        link: `/borrowers/${_id}`,
         icon: 'people',
         text: getBorrowerFullName({ firstName, lastName }),
         translationId: 'borrower',
@@ -36,7 +34,7 @@ export default class TasksTable extends Component {
       const { _id, name } = loan;
 
       return {
-        link: currentDocId !== _id ? `/loans/${_id}` : null,
+        link: `/loans/${_id}`,
         icon: 'dollarSign',
         text: name,
         translationId: 'loan',
@@ -47,7 +45,7 @@ export default class TasksTable extends Component {
       const { _id, address1 } = property;
 
       return {
-        link: currentDocId !== _id ? `/properties/${_id}` : null,
+        link: `/properties/${_id}`,
         icon: 'building',
         text: address1,
         translationId: 'property',
@@ -58,7 +56,7 @@ export default class TasksTable extends Component {
       const { _id, username, emails } = user;
 
       return {
-        link: currentDocId !== _id ? `/users/${_id}` : null,
+        link: `/users/${_id}`,
         icon: 'contactMail',
         text: username || emails[0].address,
         translationId: 'user',
@@ -188,10 +186,8 @@ TasksTable.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   data: PropTypes.object.isRequired,
   showAssignee: PropTypes.bool,
-  currentDocId: PropTypes.string,
 };
 
 TasksTable.defaultProps = {
   showAssignee: false,
-  currentDocId: '',
 };

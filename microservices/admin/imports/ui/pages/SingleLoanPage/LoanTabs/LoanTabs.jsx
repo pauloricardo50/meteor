@@ -55,7 +55,6 @@ const getTabs = (props) => {
       content: (
         <LoanTasksTable
           showAssignee
-          currentDocId={_id}
           loanId={_id}
           borrowerIds={borrowerIds}
           propertyId={property._id}

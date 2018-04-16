@@ -74,7 +74,6 @@ export default class OverviewTab extends React.Component {
         </h2>
         <LoanTasksTable
           showAssignee
-          currentDocId={_id}
           loanId={_id}
           borrowerIds={borrowerIds}
           propertyId={property._id}
