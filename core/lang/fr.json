@@ -919,6 +919,7 @@
   "OfferToggle.counterpart-short": "Avec contrepartie",
   "OfferToggle.standard": "Offres standard ({count})",
   "OfferToggle.standard-short": "Standard",
+  "OverviewTab.recap" : "Récapitulatif",
   "PasswordChange.change": "Changer",
   "PasswordChange.dialogTitle": "Changer mon mot de passe",
   "PasswordChange.oldPassword": "Ancien mot de passe",
