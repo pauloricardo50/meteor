@@ -10,62 +10,64 @@ import CommunicationTab from './CommunicationTab';
 import MixpanelAnalytics from './AnalyticsTab';
 import ActionsTab from './ActionsTab';
 import FilesTab from './FilesTab';
-import TasksTab from './TasksTab';
 import FormsTab from './FormsTab';
+import LoanTasksTable from './LoanTasksTable';
 
-const getTabs = props => [
-  {
-    id: 'overview',
-    label: <T id="LoanTabs.overview" />,
-    content: <OverviewTab {...props} />,
-  },
-  {
-    id: 'borrowers',
-    // label: <T id={`LoanTabs.borrowers`} />,
-    label: 'Emprunteurs',
-    content: <BorrowersTab {...props} />,
-  },
-  {
-    id: 'property',
-    label: <T id="LoanTabs.property" />,
-    content: <PropertyTab {...props} />,
-  },
-  {
-    id: 'offers',
-    label: <T id="LoanTabs.offers" />,
-    content: <OffersTab {...props} />,
-  },
-  {
-    id: 'comunication',
-    label: <T id="LoanTabs.communication" />,
-    content: <CommunicationTab {...props} />,
-  },
-  {
-    id: 'analytics',
-    label: <T id="LoanTabs.analytics" />,
-    content: <MixpanelAnalytics {...props} />,
-  },
-  {
-    id: 'tasks',
-    label: <T id="LoanTabs.tasks" />,
-    content: <TasksTab {...props} />,
-  },
-  {
-    id: 'forms',
-    label: <T id="LoanTabs.forms" />,
-    content: <FormsTab {...props} />,
-  },
-  {
-    id: 'files',
-    label: <T id="LoanTabs.files" />,
-    content: <FilesTab {...props} />,
-  },
-  {
-    id: 'actions',
-    label: <T id="LoanTabs.actions" />,
-    content: <ActionsTab {...props} />,
-  },
-];
+const getTabs = (props) => {
+  const {
+    loan: { borrowerIds, property, _id },
+  } = props;
+
+  return [
+    {
+      id: 'overview',
+      content: <OverviewTab {...props} />,
+    },
+    {
+      id: 'borrowers',
+      content: <BorrowersTab {...props} />,
+    },
+    {
+      id: 'property',
+      content: <PropertyTab {...props} />,
+    },
+    {
+      id: 'offers',
+      content: <OffersTab {...props} />,
+    },
+    {
+      id: 'comunication',
+      content: <CommunicationTab {...props} />,
+    },
+    {
+      id: 'analytics',
+      content: <MixpanelAnalytics {...props} />,
+    },
+    {
+      id: 'tasks',
+      content: (
+        <LoanTasksTable
+          showAssignee
+          loanId={_id}
+          borrowerIds={borrowerIds}
+          propertyId={property._id}
+        />
+      ),
+    },
+    {
+      id: 'forms',
+      content: <FormsTab {...props} />,
+    },
+    {
+      id: 'files',
+      content: <FilesTab {...props} />,
+    },
+    {
+      id: 'actions',
+      content: <ActionsTab {...props} />,
+    },
+  ].map(tab => ({ ...tab, label: <T id={`LoanTabs.${tab.id}`} noTooltips /> }));
+};
 
 const LoanTabs = (props) => {
   const tabs = getTabs(props);
