@@ -10,7 +10,7 @@ const createCustomStore = () => {
     typeof window === 'object' &&
     process.env.NODE_ENV === 'development' &&
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-      ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+      ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ name: 'e-Potek Admin' })
       : compose;
 
   const enhancer = composeEnhancers(applyMiddleware(...middlewares));

@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 
 import Button from '../Button';
 import { T } from '../Translation';
-import FormInput from './FormInput';
+import FormField from './FormField';
 import { required as requiredFunc } from '.';
 
 // Simply pass a "onSubmit" to this component, handleSubmit will be
@@ -25,10 +25,9 @@ const Form = ({
         {error && <span className="error">{error}</span>}
 
         {formArray.map(({ id, validate = [], required, ...otherProps }) => (
-          <Field
+          <FormField
             key={id}
             name={id}
-            component={FormInput}
             validate={required ? [...validate, requiredFunc] : validate}
             required={required}
             {...otherProps}
@@ -39,7 +38,7 @@ const Form = ({
           type="submit"
           disabled={submitting}
           // Hide the button, so the form still submits on enter
-          style={{ display: showButton ? 'initial' : 'none', color: 'red' }}
+          style={{ display: showButton ? 'initial' : 'none' }}
         >
           <T id="general.ok" />
         </Button>

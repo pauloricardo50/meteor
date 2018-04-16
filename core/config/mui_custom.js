@@ -44,6 +44,11 @@ const theme = createMuiTheme({
         backgroundColor: 'white',
       },
     },
+    MuiFormLabel: {
+      asterisk: {
+        color: colors.error,
+      },
+    },
   },
   // direction: 'ltr',
   palette: {
