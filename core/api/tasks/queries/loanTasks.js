@@ -5,13 +5,13 @@ export default Tasks.createQuery(TASK_QUERIES.LOAN_TASKS, {
   $filter({ filters, params: { borrowerIds, loanId, propertyId } }) {
     const status = { $in: [TASK_STATUS.ACTIVE, TASK_STATUS.COMPLETED] };
 
-    const $or = [
-      { loanId: { $eq: loanId } },
+    const relatedToLoanOrBorrowersOrProperty = [
+      { loanId },
       { borrowerId: { $in: borrowerIds } },
-      { propertyId: { $eq: propertyId } },
+      { propertyId },
     ];
 
-    filters.$and = [{ status }, { $or }];
+    filters.$and = [{ status }, { $or: relatedToLoanOrBorrowersOrProperty }];
   },
   $options: {
     sort: {
