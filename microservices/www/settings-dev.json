@@ -2,10 +2,7 @@
   "public": {
     "environment": "dev",
     "features": {
-      "liteVersion": {
-        "enabled": false,
-        "actions": ["LINK_START1_PAGE_TO_CONTACT"]
-      }
+      "liteVersion": true
     },
     "analyticsSettings": {
       "Mixpanel": {
