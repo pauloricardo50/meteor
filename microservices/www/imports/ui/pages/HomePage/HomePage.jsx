@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import HomePageInterestRates from './HomePageInterestRates';
+// import HomePageInterestRates from './HomePageInterestRates';
 import HomePageNav from './HomePageNav';
 import HomePageHeader from './HomePageHeader';
-import HomePagePartners from './HomePagePartners';
+// import HomePagePartners from './HomePagePartners';
 import HomePageDescription from './HomePageDescription';
 import HomePageReviews from './HomePageReviews';
-import HomePageNewsletter from './HomePageNewsletter';
+// import HomePageNewsletter from './HomePageNewsletter';
 import HomePageFooter from './HomePageFooter';
 
 const HomePage = () => (
@@ -15,7 +15,7 @@ const HomePage = () => (
     {/* <HomePageInterestRates /> */}
     <HomePageNav />
     <HomePageHeader />
-    <HomePagePartners />
+    {/* <HomePagePartners /> */}
     <HomePageDescription />
     <HomePageReviews />
     {/* <HomePageNewsletter /> */}

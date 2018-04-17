@@ -1,6 +1,6 @@
 .home-page footer {
   position: relative;
-  height: 600px;
+  // height: 600px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,6 +34,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+}
+
+.home-page footer .home-page-footer-top .tagline {
+  flex-basis: 300px;
+  flex-grow: 1;
 }
 
 .home-page footer .home-page-footer-top .cta {
@@ -81,10 +87,12 @@
 
 .home-page footer .copyright {
   margin-bottom: 0;
+  flex-shrink: 0;
 }
 
 .home-page footer .social-links {
   display: flex;
+  flex-shrink: 0;
 }
 
 .home-page footer .social-links a {
