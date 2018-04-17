@@ -6,12 +6,12 @@
   flex-direction: column;
   height: auto;
   min-height: 100%;
+  padding-left: 316px; // side-nav width + 16px
 }
 
 @media (min-width: $med) {
   .app-layout {
     padding-top: 80px;
-    padding-left: 316px; // side-nav width + 16px
     padding-bottom: 16px;
   }
 }
@@ -45,10 +45,9 @@
   margin: auto;
 }
 
-@media (min-width: $med) {
-  .app-layout .transition-wrapper {
-    width: calc(100% - 250px - 32px);
-  }
+// Change this with a media query if the side-bar disappears
+.app-layout .transition-wrapper {
+  width: calc(100% - 250px - 32px);
 }
 
 .layout-error {
