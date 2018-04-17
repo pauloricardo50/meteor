@@ -1,32 +1,30 @@
-import { runFeatureAction } from './featureActions';
+import { Meteor } from 'meteor/meteor';
+import pickBy from 'lodash/pickBy';
+
+import { performFeaturesDecisions } from './featureDecisions';
 
 class FeatureService {
   constructor() {
-    this.togglePointsConfigs = {};
+    this.enabledTogglePointsConfigs = {};
     this.loadFeatures();
   }
 
   loadFeatures() {
-    const { features = {} } = Meteor.settings.public;
+    const enabledFeatures = this.getEnabledFeatures();
 
-    Object.values(features).forEach(({ enabled, actions }) => {
-      if (!enabled) {
-        return null;
-      }
-
-      actions.forEach((actionName) => {
-        const actionedTogglePointsConfigs = runFeatureAction(actionName);
-
-        this.togglePointsConfigs = {
-          ...this.togglePointsConfigs,
-          ...actionedTogglePointsConfigs,
-        };
-      });
-    });
+    // merge the decisions of all enabled features
+    // so we get an object of options used to show/hide/toggle
+    // the toggle points in the code
+    this.enabledTogglePointsConfigs = performFeaturesDecisions(enabledFeatures);
   }
 
-  getTogglePoint(id) {
-    return this.togglePointsConfigs[id];
+  getEnabledFeatures() {
+    const { features = {} } = Meteor.settings.public;
+    return pickBy(features, (name, enabled) => enabled);
+  }
+
+  getEnabledTogglePoint(id) {
+    return this.enabledTogglePointsConfigs[id];
   }
 }
 
