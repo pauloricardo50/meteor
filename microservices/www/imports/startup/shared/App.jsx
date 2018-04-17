@@ -16,6 +16,7 @@ const App = ({ store, Router }) => (
         messages: messagesFR,
         formats: getFormats(),
       }}
+      withMui={false}
     >
       <Router>
         <Routes />
