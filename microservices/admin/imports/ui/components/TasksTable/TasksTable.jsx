@@ -134,7 +134,7 @@ export default class TasksTable extends Component {
           raw: cellText,
         });
       } else {
-        columns.push('');
+        columns.push({ raw: '', label: '' });
       }
     }
 
