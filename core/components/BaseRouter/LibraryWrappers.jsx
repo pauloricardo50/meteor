@@ -36,14 +36,13 @@ LibraryWrappers.propTypes = {
     messages: PropTypes.objectOf(PropTypes.string).isRequired,
     formats: PropTypes.object.isRequired,
   }).isRequired,
-  withMui: PropTypes.bool,
 };
 
 LibraryWrappers.defaultProps = {
   WrapperComponent: React.Fragment,
-  withMui: true,
 };
 
-export default withProps(({ withMui }) => ({
-  MuiWrapper: withMui ? <MuiThemeProvider theme={theme} /> : React.Fragment,
+// Can toggle material-ui off with the `withMui` prop
+export default withProps(({ withMui = true }) => ({
+  MuiWrapper: withMui ? withProps({ theme })(MuiThemeProvider) : React.Fragment,
 }))(LibraryWrappers);
