@@ -1,5 +1,5 @@
 import { Users } from '../../';
-import { USER_QUERIES, ROLES } from '../userConstants';
+import { USER_QUERIES } from '../userConstants';
 import { createRegexQuery } from '../../helpers/mongoHelpers';
 
 export default Users.createQuery(USER_QUERIES.ADMIN_USERS, {
@@ -7,8 +7,6 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USERS, {
     if (assignedTo) {
       filters.assignedEmployeeId = assignedTo;
     }
-    // filters.roles = { $nin: [ROLES.DEV] };
-    filters.roles = { $in: [ROLES.ADMIN, ROLES.USER] };
     if (searchQuery) {
       filters.$or = [
         { emails: { $elemMatch: createRegexQuery('address', searchQuery) } },
