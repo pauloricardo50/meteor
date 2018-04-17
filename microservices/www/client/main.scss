@@ -11,3 +11,9 @@
 // Components CSS
 @import '{}/imports/ui/components/Waves/Waves.scss';
 @import '{}/imports/ui/components/Widget1/Widget1.scss';
+
+// Make scrolling work again and avoid extra height
+body,
+#react-root {
+  height: unset;
+}
