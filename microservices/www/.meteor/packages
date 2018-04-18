@@ -22,13 +22,16 @@ themeteorchef:bert
 
 # Testing
 cultofcoders:mocha
+dburles:factory
+xolvio:cleaner
+hwillson:stub-collections@=1.0.3
+meteortesting:mocha
 
 
 # Data
 aldeed:collection2@3.0.0
 cultofcoders:mutations
 cultofcoders:grapher-react
-dburles:factory
 vsivsi:job-collection
 ddp-rate-limiter@1.0.7
 
