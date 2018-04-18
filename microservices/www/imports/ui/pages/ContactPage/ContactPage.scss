@@ -1,13 +1,24 @@
+.contact-page {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 .contact-page .contact-info {
   display: flex;
   flex-direction: column;
-  padding: 0 10%;
+  padding: 80px 10%;
 }
 
 .contact-page .google-map {
-  height: 600px;
+  flex: 1;
+  display: flex;
   width: 100%;
   margin-bottom: -300px;
+
+  .map {
+    flex: 1;
+  }
 }
 
 .contact-page .separator {

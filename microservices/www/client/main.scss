@@ -16,8 +16,16 @@
 @import '{}/imports/ui/components/WwwFooter/WwwFooter.scss';
 @import '{}/imports/ui/components/WwwTopNav/WwwTopNav.scss';
 
+html {
+  display: flex;
+  flex-direction: column;
+}
+
 // Make scrolling work again and avoid extra height
 body,
 #react-root {
   height: unset;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }

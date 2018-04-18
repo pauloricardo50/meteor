@@ -25,9 +25,6 @@ const ContactPage = () => (
         <T id="ContactPage.phone" /> {': '}
         <Mailto tel={PHONE} />
       </h3>
-      <h3>
-        <T id="ContactPage.address" /> {':'}
-      </h3>
     </div>
     <div className="google-map">
       <MapWithMarker address={ADDRESS} className="map" />
