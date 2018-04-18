@@ -4,6 +4,19 @@
 @import './variables.scss';
 @import './core-components';
 
+html {
+  min-height: 100%;
+}
+
+// Make sure everything expands properly to take the full size of the browser
+body,
+html,
+#react-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 body {
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 16px;
@@ -11,16 +24,6 @@ body {
   font-weight: 400;
   color: $body-text;
   background-color: $background-color;
-}
-
-// Make sure everything expands properly to take the full size of the browser
-body,
-html,
-/* main,*/
-#react-root {
-  width: 100%;
-  height: 100%;
-  // overflow: auto;
 }
 
 h1,
