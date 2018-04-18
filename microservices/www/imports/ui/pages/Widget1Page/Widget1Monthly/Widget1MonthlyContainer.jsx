@@ -29,5 +29,8 @@ export default connect(({
     id: valueName,
   }));
 
-  return { data, total: data.reduce((acc, val) => acc + val.value, 0) };
+    // total can be NaN, set it to 0 in that case
+  const total = data.reduce((acc, val) => acc + val.value, 0) || 0;
+
+  return { data, total };
 });
