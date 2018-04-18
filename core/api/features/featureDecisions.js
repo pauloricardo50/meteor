@@ -1,23 +1,24 @@
 import { TOGGLE_POINTS } from './featureConstants';
+import { withProps } from 'recompose';
 
 const { WIDGET1_CONTINUE_BUTTON } = TOGGLE_POINTS;
 
 const featuresDecisions = {
-  liteVersion: () => ({
-    // for Reach Toggle Points configuration,
-    // pass `hide: true` to not render it
-    // or a `props` object to extend the props of the toggle component
-    [WIDGET1_CONTINUE_BUTTON]: {
-      props: { to: '/contact' },
-    },
-  }),
+  liteVersion: {
+    // For Reach Toggle Points configuration, pass an enhancer that
+    // will customize the component that will be toggled
+    [WIDGET1_CONTINUE_BUTTON]: withProps({
+      to: '/contact',
+    }),
+  },
 };
 
+// returns decisions from all features
 export const performFeaturesDecisions = (features = {}) =>
   Object.keys(features).reduce(
     (decisions, featureName) => ({
       ...decisions,
-      ...featuresDecisions[featureName](),
+      ...featuresDecisions[featureName],
     }),
     {},
   );

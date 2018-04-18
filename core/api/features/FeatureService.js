@@ -5,7 +5,7 @@ import { performFeaturesDecisions } from './featureDecisions';
 
 class FeatureService {
   constructor() {
-    this.enabledTogglePointsConfigs = {};
+    this.enabledTogglePoints = {};
     this.loadFeatures();
   }
 
@@ -15,7 +15,7 @@ class FeatureService {
     // merge the decisions of all enabled features
     // so we get an object of options used to show/hide/toggle
     // the toggle points in the code
-    this.enabledTogglePointsConfigs = performFeaturesDecisions(enabledFeatures);
+    this.enabledTogglePoints = performFeaturesDecisions(enabledFeatures);
   }
 
   getEnabledFeatures() {
@@ -24,7 +24,7 @@ class FeatureService {
   }
 
   getEnabledTogglePoint(id) {
-    return this.enabledTogglePointsConfigs[id];
+    return this.enabledTogglePoints[id];
   }
 }
 

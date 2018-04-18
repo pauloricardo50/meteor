@@ -1,31 +1,57 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import extend from 'lodash/extend';
+import {
+  childrenToComponent,
+  elementToComponent,
+} from '../utils/reactFunctions';
 import FeatureService from '../api/features/FeatureService';
 import { TOGGLE_POINTS } from '../api/features/featureConstants';
 
-const TogglePoint = ({ id, children }) => {
-  const togglePoint = FeatureService.getEnabledTogglePoint(id);
+const shouldEnhanceWrappedElements = ({
+  id,
+  children,
+  toggleOnElement,
+  toggleOffElement,
+}) => {
+  const hasElementsToEnhance =
+    children || (toggleOnElement && toggleOffElement);
 
-  if (!togglePoint) {
-    return children;
-  }
-
-  const { hide, props: childPropOverrides } = togglePoint;
-
-  if (hide) {
-    return null;
-  }
-
-  return React.Children.map(children, child =>
-    React.cloneElement(child, childPropOverrides));
+  return hasElementsToEnhance && FeatureService.getEnabledTogglePoint(id);
 };
 
-TogglePoint.propTypes = {
-  id: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
+const TogglePoint = (props) => {
+  const { id, children, toggleOnElement, toggleOffElement } = props;
+
+  if (!shouldEnhanceWrappedElements(props)) {
+    // if nothing to enhance, keep UI unenhanced by the Toggle Point
+    // by just rendering the default elements passed to it
+    return children || toggleOffElement;
+  }
+
+  const ComponentToBeToggled = children
+    ? childrenToComponent(children)
+    : elementToComponent(toggleOnElement);
+
+  const performComponentToggling = FeatureService.getEnabledTogglePoint(id);
+
+  const ToggledComponent = performComponentToggling(ComponentToBeToggled);
+  return <ToggledComponent />;
 };
 
 extend(TogglePoint, TOGGLE_POINTS);
+
+TogglePoint.propTypes = {
+  id: PropTypes.string.isRequired,
+  children: PropTypes.node,
+  toggleOffElement: PropTypes.element,
+  toggleOnElement: PropTypes.element,
+};
+
+TogglePoint.defaultProps = {
+  children: undefined,
+  toggleOffElement: undefined,
+  toggleOnElement: undefined,
+};
 
 export default TogglePoint;
