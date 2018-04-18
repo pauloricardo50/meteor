@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { createSelector } from 'reselect';
+import { DEFAULT_INTEREST_RATE } from 'core/config/financeConstants';
 import { createValueReducer } from './utils';
 
 export const SALARY = 'salary';
@@ -18,7 +19,7 @@ const createWidget1ValueReducers = names =>
     (acc, { name, initialSliderMax }) => ({
       ...acc,
       [name]: (
-        state = { value: undefined, auto: false, sliderMax: initialSliderMax },
+        state = { value: undefined, auto: true, sliderMax: initialSliderMax },
         action,
       ) => {
         const roundedValue = action.value && Math.round(action.value);
@@ -52,7 +53,7 @@ const widget1 = combineReducers({
     { name: PROPERTY, initialSliderMax: 2000000 },
   ]),
   step: createValueReducer('step', 0),
-  interestRate: createValueReducer('interestRate', 0.015),
+  interestRate: createValueReducer('interestRate', DEFAULT_INTEREST_RATE),
 });
 
 export const makeWidget1Selector = name => state => state.widget1[name];
