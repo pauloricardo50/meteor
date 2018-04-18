@@ -6,8 +6,8 @@ import Wave from './Wave';
 // Inspired by this:
 // https://codepen.io/anon/pen/PQxYRy
 
+const ANIMATE = false;
 const FRAMERATE = 60;
-const IS_PLAYING = false;
 const WAVE_SLOPE = 0.25;
 const HEIGHT = 800;
 
@@ -26,7 +26,7 @@ export default class WaveController extends Component {
   };
 
   componentDidUpdate = ({ width }) => {
-    if (width !== this.props.width) {
+    if (ANIMATE && width !== this.props.width) {
       requestAnimationFrame(this.animate);
     }
   };
@@ -40,7 +40,7 @@ export default class WaveController extends Component {
       ({ offset }) => ({ offset: offset + this.offsetIncrement }),
       () => {
         this.createGraph(this.path);
-        if (IS_PLAYING) {
+        if (ANIMATE) {
           requestAnimationFrame(this.animate);
         }
       },
