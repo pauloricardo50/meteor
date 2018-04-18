@@ -1,11 +1,11 @@
 import React from 'react';
 
-import HomePageInterestRates from './HomePageInterestRates';
+// import HomePageInterestRates from './HomePageInterestRates';
 import HomePageHeader from './HomePageHeader';
-import HomePagePartners from './HomePagePartners';
+// import HomePagePartners from './HomePagePartners';
 import HomePageDescription from './HomePageDescription';
 import HomePageReviews from './HomePageReviews';
-import HomePageNewsletter from './HomePageNewsletter';
+// import HomePageNewsletter from './HomePageNewsletter';
 import WwwTopNav from '../../components/WwwTopNav';
 import WwwFooter from '../../components/WwwFooter/';
 
@@ -14,7 +14,7 @@ const HomePage = () => (
     {/* <HomePageInterestRates /> */}
     <WwwTopNav />
     <HomePageHeader />
-    <HomePagePartners />
+    {/* <HomePagePartners /> */}
     <HomePageDescription />
     <HomePageReviews />
     {/* <HomePageNewsletter /> */}

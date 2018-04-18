@@ -4,12 +4,10 @@ import PropTypes from 'prop-types';
 import { extractOffers } from 'core/utils/offerFunctions';
 import ConditionsButton from 'core/components/ConditionsButton';
 import { T, IntlNumber } from 'core/components/Translation';
-import Select from 'core/components/Select';
-import withLoan from 'core/containers/withLoan';
 import { loanUpdate } from 'core/api';
 import Offer from './Offer';
 import StarRating from './StarRating';
-import SortOrderer from './SortOrderer';
+import OfferListSorting from './OfferListSorting';
 
 const getOfferValues = ({ monthly, rating, conditions, counterparts }) => [
   {
@@ -68,7 +66,7 @@ class OfferList extends Component {
     this.setState(prev => ({ isAscending: !prev.isAscending }));
 
   render() {
-    const { loan, offers, disabled, property } = this.props;
+    const { loan, offers, disabled, property, allowDelete } = this.props;
     const { sort, isAscending } = this.state;
     const filteredOffers = sortOffers(
       extractOffers({ offers, loan, property }),
@@ -79,24 +77,18 @@ class OfferList extends Component {
 
     return (
       <div className="flex-col" style={{ width: '100%' }}>
-        <div className="flex" style={{ marginBottom: 16, width: '100%' }}>
-          <Select
-            id="sort"
-            label={<T id="general.sortBy" />}
-            value={sort}
-            onChange={this.handleChange}
-            options={getOfferValues({})
-              .filter(({ component }) => !component)
-              .map(({ key, id }) => ({
-                id: key || id,
-                label: <T id={`offer.${key || id}`} />,
-              }))}
-          />
-          <SortOrderer
-            handleChangeOrder={this.handleChangeOrder}
-            isAscending={isAscending}
-          />
-        </div>
+        <OfferListSorting
+          sort={sort}
+          options={getOfferValues({})
+            .filter(({ component }) => !component)
+            .map(({ key, id }) => ({
+              id: key || id,
+              label: <T id={`offer.${key || id}`} />,
+            }))}
+          handleChange={this.handleChange}
+          handleChangeOrder={this.handleChangeOrder}
+          isAscending={isAscending}
+        />
 
         {filteredOffers.map(offer => (
           <Offer
@@ -106,6 +98,7 @@ class OfferList extends Component {
             handleSave={(id, type) => handleSave(id, type, loan)}
             chosen={lender.offerId === offer.id && lender.type === offer.type}
             disabled={disabled}
+            allowDelete={allowDelete}
           />
         ))}
       </div>
@@ -113,6 +106,17 @@ class OfferList extends Component {
   }
 }
 
-OfferList.propTypes = {};
+OfferList.propTypes = {
+  loan: PropTypes.object.isRequired,
+  offers: PropTypes.array,
+  disabled: PropTypes.bool,
+  allowDelete: PropTypes.bool,
+};
 
-export default withLoan(OfferList);
+OfferList.defaultProps = {
+  offers: [],
+  disabled: false,
+  allowDelete: false,
+};
+
+export default OfferList;

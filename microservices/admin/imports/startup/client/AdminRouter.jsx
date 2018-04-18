@@ -33,7 +33,7 @@ const AdminRouter = () => (
         <Route exact path="/" component={AdminDashboardPage} />
         <Route exact path="/users" component={UsersPage} />
         <Route exact path="/loans" component={LoansPage} />
-        <Route path="/loans/:loanId" component={SingleLoanPage} />
+        <Route path="/loans/:loanId/:tabId?" component={SingleLoanPage} />
         <Route path="/users/:userId" component={SingleUserPage} />
         <Route path="/tasks" component={TasksPage} />
         <Route path="/borrowers" component={BorrowersPage} />

@@ -4,7 +4,7 @@ import { SecurityService } from '../..';
 import OfferService from '../OfferService';
 import { offerInsert, offerUpdate, offerDelete } from '../methodDefinitions';
 
-offerInsert.setHandler((context, { offer, userId }) => {
+offerInsert.setHandler((context, { offer, loanId, userId }) => {
   const userIdIsDefined = userId !== undefined;
   if (userIdIsDefined) {
     SecurityService.checkCurrentUserIsAdmin();
@@ -12,8 +12,9 @@ offerInsert.setHandler((context, { offer, userId }) => {
     SecurityService.offers.isAllowedToInsert();
   }
 
-  return OfferService.insert({
+  return OfferService.insertAdminOffer({
     offer,
+    loanId,
     userId: userIdIsDefined ? userId : Meteor.userId(),
   });
 });

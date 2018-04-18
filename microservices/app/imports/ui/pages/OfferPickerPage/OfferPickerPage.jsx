@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ProcessPage from '/imports/ui/components/ProcessPage';
 import { T } from 'core/components/Translation';
 
-import OfferList from './OfferList';
+import OfferList from 'core/components/OfferList';
 
 const OfferPickerPage = (props) => {
   const { offers, loan } = props;

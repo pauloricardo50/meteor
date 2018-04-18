@@ -11,29 +11,30 @@ export default class ConfirmMethod extends Component {
     text: '',
   };
 
-  handleOpen = () => {
-    this.setState({ open: true });
+  handleOpen = () => this.setState({ open: true });
+
+  handleClose = () => this.setState({ open: false });
+
+  handleSubmit = (event) => {
+    if (event) {
+      event.preventDefault();
+    }
+
+    if (this.state.text === this.props.keyword) {
+      this.props
+        .method()
+        .then(() => this.setState({ open: false }))
+        .catch((error) => {
+          console.log('ConfirmMethod error:', error);
+        });
+    }
   };
 
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
-  handleSubmit = () => {
-    this.props.method((err) => {
-      if (!err) {
-        this.setState({ open: false });
-      }
-    });
-  };
-
-  handleChange = (event) => {
-    this.setState({
-      text: event.target.value,
-    });
-  };
+  handleChange = event => this.setState({ text: event.target.value });
 
   render() {
+    const { label, style, disabled, keyword } = this.props;
+    const { open, text } = this.state;
     const actions = [
       <Button
         label="Annuler"
@@ -44,7 +45,7 @@ export default class ConfirmMethod extends Component {
       <Button
         label="Okay"
         primary
-        disabled={this.state.text !== this.props.keyword}
+        disabled={text !== keyword}
         onClick={this.handleSubmit}
         key="ok"
       />,
@@ -54,22 +55,16 @@ export default class ConfirmMethod extends Component {
       <div>
         <Button
           raised
-          label={this.props.label}
+          label={label}
           onClick={this.handleOpen}
-          style={this.props.style}
-          disabled={this.props.disabled}
+          style={style}
+          disabled={disabled}
         />
-        <Dialog
-          title="Êtes-vous sûr?"
-          actions={actions}
-          important
-          open={this.state.open}
-        >
-          Tapez le mot &quot;{this.props.keyword}&quot; pour valider cette
-          action.
-          <div>
-            <TextField autoFocus onChange={this.handleChange} />
-          </div>
+        <Dialog title="Êtes-vous sûr?" actions={actions} important open={open}>
+          Tapez le mot &quot;{keyword}&quot; pour valider cette action.
+          <form onSubmit={this.handleSubmit}>
+            <TextField value={text} autoFocus onChange={this.handleChange} />
+          </form>
         </Dialog>
       </div>
     );
@@ -80,6 +75,11 @@ ConfirmMethod.propTypes = {
   label: PropTypes.string.isRequired,
   keyword: PropTypes.string.isRequired,
   method: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired,
-  style: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
+  style: PropTypes.object,
+};
+
+ConfirmMethod.defaultProps = {
+  disabled: false,
+  style: {},
 };

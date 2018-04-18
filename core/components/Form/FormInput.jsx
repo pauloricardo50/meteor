@@ -4,13 +4,19 @@ import PropTypes from 'prop-types';
 import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl, FormHelperText } from 'material-ui/Form';
 
-const FormInput = ({ input, meta: { touched, error }, label, required }) => {
+const FormInput = ({
+  input,
+  meta: { touched, error },
+  label,
+  required,
+  ...rest
+}) => {
   const displayError = !!(touched && error);
 
   return (
     <FormControl error={displayError} required={required}>
       {label && <InputLabel>{label}</InputLabel>}
-      <Input {...input} />
+      <Input {...input} {...rest} />
       {displayError && <FormHelperText>{error}</FormHelperText>}
     </FormControl>
   );

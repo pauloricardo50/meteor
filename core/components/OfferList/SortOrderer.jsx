@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import colors from 'core/config/colors';
-import Icon from 'core/components/Icon';
-import IconButton from 'core/components/IconButton';
+import colors from '../../config/colors';
+import IconButton from '../IconButton';
 
 const SortOrderer = ({ handleChangeOrder, isAscending }) => (
   <IconButton

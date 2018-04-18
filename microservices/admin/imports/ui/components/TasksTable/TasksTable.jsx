@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 
+import Icon from 'core/components/Icon';
 import Table from 'core/components/Table';
 import { T } from 'core/components/Translation';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
@@ -133,7 +134,7 @@ export default class TasksTable extends Component {
           raw: cellText,
         });
       } else {
-        columns.push('');
+        columns.push({ raw: '', label: '' });
       }
     }
 

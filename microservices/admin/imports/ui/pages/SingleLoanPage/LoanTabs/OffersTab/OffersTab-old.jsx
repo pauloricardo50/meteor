@@ -8,7 +8,7 @@ import { IntlNumber } from 'core/components/Translation';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import { deleteOffer } from 'core/api';
 
-import AdminNewOffer from '../../../components/AdminNewOffer';
+import AdminNewOffer from '../../../../components/AdminNewOffer';
 
 export default class OffersTab extends Component {
   constructor(props) {

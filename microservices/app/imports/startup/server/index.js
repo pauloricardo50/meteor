@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Inject } from 'meteor/meteorhacks:inject-initial';
 
+import 'core/fixtures';
 import 'core/api/api';
 import 'core/api/api-server';
 import jc from 'core/api/jobs/server/jobs';
