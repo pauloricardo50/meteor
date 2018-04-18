@@ -1,7 +1,7 @@
 import { createContainer } from 'core/api';
 import {
   assignAdminToNewUser,
-  taskChangeAssignedTo,
+  setAssigneeOfTask,
   taskGetRelatedTo,
 } from 'core/api/methods';
 import AssignAdminDropdown from './AssignAdminDropdown';
@@ -22,7 +22,7 @@ const assignEmployeeToTask = ({
       adminId: admin._id,
     });
   } else {
-    taskChangeAssignedTo.run({
+    setAssigneeOfTask.run({
       taskId,
       newAssignee: admin._id,
     });

@@ -40,8 +40,8 @@ export const taskChangeStatus = new Method({
   },
 });
 
-export const taskChangeAssignedTo = new Method({
-  name: 'taskChangeAssignedTo',
+export const setAssigneeOfTask = new Method({
+  name: 'setAssigneeOfTask',
   params: {
     taskId: String,
     newAssignee: String,

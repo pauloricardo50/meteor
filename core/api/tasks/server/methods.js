@@ -6,7 +6,7 @@ import {
   taskComplete,
   taskCompleteByType,
   taskChangeStatus,
-  taskChangeAssignedTo,
+  setAssigneeOfTask,
   taskGetRelatedTo,
   completeAddAssignedToTask,
 } from '../methodDefinitions';
@@ -37,7 +37,7 @@ taskChangeStatus.setHandler((context, { taskId, newStatus }) => {
   return TaskService.changeStatus({ taskId, newStatus });
 });
 
-taskChangeAssignedTo.setHandler((context, { taskId, newAssignee }) => {
+setAssigneeOfTask.setHandler((context, { taskId, newAssignee }) => {
   SecurityService.tasks.isAllowedToUpdate(taskId);
   return TaskService.changeAssignedTo({ taskId, newAssignee });
 });
