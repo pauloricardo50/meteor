@@ -3,6 +3,7 @@ export const AMORTIZATION_STOP = 0.65;
 export const MAINTENANCE_REAL = 0.005;
 export const MAINTENANCE_FINMA = 0.01;
 export const INTERESTS_FINMA = 0.05;
+export const AMORTIZATION_DURATION_MAX = 15;
 
 export const MAX_BORROW_RATIO_PRIMARY_PROPERTY = 0.8;
 export const MAX_BORROW_RATIO_OTHER = 0.7;

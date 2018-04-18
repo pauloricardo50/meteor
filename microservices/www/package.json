@@ -4,9 +4,12 @@
   "scripts": {
     "prestart": "cd ../.. && npm run lang -- www",
     "start": "meteor --settings settings-dev.json --port 3000",
-    "test": "meteor test --driver-package=cultofcoders:mocha --settings settings-dev.json --port 3005",
-    "test-CI": "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
-    "ngrok": "cd ../../scripts/ && ./ngrok.sh"
+    "test":
+      "meteor test --driver-package=cultofcoders:mocha --settings settings-dev.json --port 3005",
+    "test-CI":
+      "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
+    "ngrok": "cd ../../scripts/ && ./ngrok.sh",
+    "debug": "meteor npm run start -- --inspect"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.44",
@@ -47,6 +50,7 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
+    "reselect": "^3.0.1",
     "simpl-schema": "^1.4.3",
     "text-mask-addons": "^3.7.2",
     "uninstall": "0.0.0"

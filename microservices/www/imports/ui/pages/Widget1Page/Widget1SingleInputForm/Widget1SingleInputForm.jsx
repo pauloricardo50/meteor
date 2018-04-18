@@ -9,9 +9,9 @@ import Widget1SingleInputFormButtons from './Widget1SingleInputFormButtons';
 const Widget1SingleInputForm = ({
   name,
   onSubmit,
-  onClick,
   isCurrentStep,
-  value,
+  onDoNotKnow,
+  disableSubmit,
 }) => (
   <div
     id={`widget1-${name}`}
@@ -22,8 +22,8 @@ const Widget1SingleInputForm = ({
       <Widget1SingleInput name={name} />
       {isCurrentStep && (
         <Widget1SingleInputFormButtons
-          disableEnter={!value}
-          onClick={onClick}
+          disableSubmit={disableSubmit}
+          onDoNotKnow={onDoNotKnow}
         />
       )}
     </form>
@@ -33,12 +33,12 @@ const Widget1SingleInputForm = ({
 Widget1SingleInputForm.propTypes = {
   name: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  onClick: PropTypes.func,
+  onDoNotKnow: PropTypes.func.isRequired,
   isCurrentStep: PropTypes.bool,
+  disableSubmit: PropTypes.bool.isRequired,
 };
 
 Widget1SingleInputForm.defaultProps = {
-  onClick: () => {},
   isCurrentStep: true,
 };
 
