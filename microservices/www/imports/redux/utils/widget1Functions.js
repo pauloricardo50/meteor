@@ -5,7 +5,7 @@ import {
   MAX_INCOME_RATIO,
   MAX_BORROW_RATIO_PRIMARY_PROPERTY,
   AMORTIZATION_STOP,
-  AMORTIZATION_DURATION_MAX,
+  MAX_AMORTIZATION_DURATION,
 } from 'core/config/financeConstants';
 
 // This function is documented in the google drive: "Maths widget1.pdf" document
@@ -51,7 +51,7 @@ export const suggestFortune = (salary, property) => {
 };
 
 // This function is documented in the google drive: "Maths widget1.pdf" document
-const salaryLimitedProperty = (salary, fortune) => {
+const getSalaryLimitedProperty = (salary, fortune) => {
   // The arithmetic relation to have the cost of the loan be at exactly the max ratio of income
   // Derive it like this:
   // maxRatio * salary >= property * maintenance + loan * loanCost
@@ -61,7 +61,7 @@ const salaryLimitedProperty = (salary, fortune) => {
   const i = INTERESTS_FINMA;
   const mR = MAX_INCOME_RATIO;
   const m = MAINTENANCE_FINMA;
-  const r = AMORTIZATION_DURATION_MAX;
+  const r = MAX_AMORTIZATION_DURATION;
 
   // The first one is with 0 amortization
   const incomeLimited1 = (mR * salary + fortune * i) / (m + (1 + nF) * i);
@@ -77,23 +77,22 @@ const salaryLimitedProperty = (salary, fortune) => {
 };
 
 export const suggestProperty = (salary, fortune) => {
-  const fortuneLimited = fortuneToProperty(fortune);
-  const salaryLimited = salaryLimitedProperty(salary, fortune);
+  const fortuneLimitedProperty = fortuneToProperty(fortune);
+  const salaryLimitedProperty = getSalaryLimitedProperty(salary, fortune);
 
   // Use floor to make sure the ratios are respected and avoid edge cases
-  return Math.round(Math.min(fortuneLimited, salaryLimited));
+  return Math.round(Math.min(fortuneLimitedProperty, salaryLimitedProperty));
 };
 
 //
 // Property < > Fortune
 //
-const propertyToFortuneConstant =
+const propertyToFortuneRatio =
   1 - MAX_BORROW_RATIO_PRIMARY_PROPERTY + NOTARY_FEES;
 
-export const propertyToFortune = property =>
-  property * propertyToFortuneConstant;
+export const propertyToFortune = property => property * propertyToFortuneRatio;
 
-export const fortuneToProperty = fortune => fortune / propertyToFortuneConstant;
+export const fortuneToProperty = fortune => fortune / propertyToFortuneRatio;
 
 //
 // Property < > Salary
@@ -101,14 +100,14 @@ export const fortuneToProperty = fortune => fortune / propertyToFortuneConstant;
 const defaultAmortization =
   (MAX_BORROW_RATIO_PRIMARY_PROPERTY - AMORTIZATION_STOP) /
   MAX_BORROW_RATIO_PRIMARY_PROPERTY /
-  AMORTIZATION_DURATION_MAX;
+  MAX_AMORTIZATION_DURATION;
 const loanCost = INTERESTS_FINMA + defaultAmortization;
-const propertyToSalaryConstant =
+const propertyToSalaryRatio =
   3 * (MAINTENANCE_FINMA + MAX_BORROW_RATIO_PRIMARY_PROPERTY * loanCost);
 
-export const propertyToSalary = property => property * propertyToSalaryConstant;
+export const propertyToSalary = property => property * propertyToSalaryRatio;
 
 // This one flickers between 80% and >80%, so round it up to make sure
 // the loan is always at or below 80%
 export const salaryToProperty = salary =>
-  Math.ceil(salary / propertyToSalaryConstant);
+  Math.ceil(salary / propertyToSalaryRatio);

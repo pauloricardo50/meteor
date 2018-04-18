@@ -14,6 +14,7 @@ const addCenteredTitle = (chart, title) => {
   const centerX = plotLeft + plotWidth * 0.5;
   const centerY = plotTop + plotHeight * 0.5;
 
+  // Add title but hide it
   chart.title = renderer
     .text(title, 0, 0)
     .css({ color: '#333333', fontSize: '16px', fontWeight: 400 })
@@ -25,6 +26,7 @@ const addCenteredTitle = (chart, title) => {
   // Divide by 4 works better than divide by 2, for some reason
   const shiftedY = centerY + titleHeight / 4;
 
+  // Reposition title and show it
   chart.title.attr({ x: shiftedX, y: shiftedY }).show();
 };
 

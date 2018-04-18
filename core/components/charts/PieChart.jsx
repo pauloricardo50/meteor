@@ -9,9 +9,7 @@ import Chart from './Chart';
 
 const getConfig = ({ data, title, subtitle, config }) =>
   merge(defaultConfig, config, {
-    chart: {
-      type: 'pie',
-    },
+    chart: { type: 'pie' },
     title: { text: title },
     subtitle: { text: subtitle },
     plotOptions: {
