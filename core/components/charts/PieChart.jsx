@@ -9,7 +9,9 @@ import Chart from './Chart';
 
 const getConfig = ({ data, title, subtitle, config }) =>
   merge(defaultConfig, config, {
-    chart: { type: 'pie' },
+    chart: {
+      type: 'pie',
+    },
     title: { text: title },
     subtitle: { text: subtitle },
     plotOptions: {
@@ -26,12 +28,10 @@ const getConfig = ({ data, title, subtitle, config }) =>
         showInLegend: true,
         animation: { duration: 400 },
       },
-      // series: { animation: { duration: 400 } },
     },
     series: [
       {
         type: 'pie',
-        name: title,
         data: data.map(({ name, value }) => ({ name, y: value })),
       },
     ],

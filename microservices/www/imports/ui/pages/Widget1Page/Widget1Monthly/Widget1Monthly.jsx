@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
 import DonutChart from 'core/components/charts/DonutChart';
+import { toMoney } from 'core/utils/conversionFunctions';
 import Widget1MonthlyContainer from './Widget1MonthlyContainer';
 
 const Widget1Monthly = ({ data, total }) => (
@@ -15,6 +16,7 @@ const Widget1Monthly = ({ data, total }) => (
       intlPrefix="Widget1Monthly"
       // 300 width - 2*32 padding
       config={{ chart: { width: 236, spacingTop: 0, marginTop: 0 } }}
+      title={`${toMoney(total)} /mois`}
     />
   </div>
 );
