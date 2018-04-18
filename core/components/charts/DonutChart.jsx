@@ -6,25 +6,26 @@ import PieChart from './PieChart';
 
 const addCenteredTitle = (chart, title) => {
   // Destroy old version of the title
-  if (chart.titleNode) {
-    chart.titleNode.destroy();
+  if (chart.title) {
+    chart.title.destroy();
   }
 
-  const centerX = chart.plotLeft + chart.plotWidth * 0.5;
-  const centerY = chart.plotTop + chart.plotHeight * 0.5;
+  const { plotLeft, plotTop, plotWidth, plotHeight, renderer } = chart;
+  const centerX = plotLeft + plotWidth * 0.5;
+  const centerY = plotTop + plotHeight * 0.5;
 
-  chart.title = chart.renderer
+  chart.title = renderer
     .text(title, 0, 0)
     .css({ color: '#333333', fontSize: '16px', fontWeight: 400 })
     .hide()
     .add();
 
-  const bbox = chart.title.getBBox();
-  const pixelCenteredX = centerX - bbox.width / 2;
+  const { width: titleWidth, height: titleHeight } = chart.title.getBBox();
+  const shiftedX = centerX - titleWidth / 2;
   // Divide by 4 works better than divide by 2, for some reason
-  const pixelCenteredY = centerY + bbox.height / 4;
+  const shiftedY = centerY + titleHeight / 4;
 
-  chart.title.attr({ x: pixelCenteredX, y: pixelCenteredY }).show();
+  chart.title.attr({ x: shiftedX, y: shiftedY }).show();
 };
 
 const DonutChart = ({ config, title, ...rest }) => (
@@ -32,6 +33,9 @@ const DonutChart = ({ config, title, ...rest }) => (
     config={merge(config, {
       chart: {
         events: {
+          load() {
+            addCenteredTitle(this, title);
+          },
           redraw() {
             addCenteredTitle(this, title);
           },
