@@ -5,16 +5,16 @@ import { T } from 'core/components/Translation';
 
 const infoLinks = ['faq', 'contact', 'careers', 'conditions'];
 
-const HomePageFooterLinks = () => (
-  <div className="home-page-footer-links">
+const WwwFooterLinks = () => (
+  <div className="page-footer-links">
     <div className="links">
       <div className="list">
         <h4>
-          <T id="HomePageFooterLinks.info" />
+          <T id="WwwFooterLinks.info" />
         </h4>
         {infoLinks.map(link => (
           <Link key={link} to={`/${link}`}>
-            <T id={`HomePageFooterLinks.${link}`} />
+            <T id={`WwwFooterLinks.${link}`} />
           </Link>
         ))}
       </div>
@@ -26,4 +26,4 @@ const HomePageFooterLinks = () => (
   </div>
 );
 
-export default HomePageFooterLinks;
+export default WwwFooterLinks;

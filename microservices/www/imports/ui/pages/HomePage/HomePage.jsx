@@ -1,28 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 // import HomePageInterestRates from './HomePageInterestRates';
-import HomePageNav from './HomePageNav';
 import HomePageHeader from './HomePageHeader';
 // import HomePagePartners from './HomePagePartners';
 import HomePageDescription from './HomePageDescription';
 import HomePageReviews from './HomePageReviews';
 // import HomePageNewsletter from './HomePageNewsletter';
-import HomePageFooter from './HomePageFooter';
+import WwwTopNav from '../../components/WwwTopNav';
+import WwwFooter from '../../components/WwwFooter/';
 
 const HomePage = () => (
-  <main className="home-page">
+  <main className="page home-page">
     {/* <HomePageInterestRates /> */}
-    <HomePageNav />
+    <WwwTopNav />
     <HomePageHeader />
     {/* <HomePagePartners /> */}
     <HomePageDescription />
     <HomePageReviews />
     {/* <HomePageNewsletter /> */}
-    <HomePageFooter />
+    <WwwFooter />
   </main>
 );
-
-HomePage.propTypes = {};
 
 export default HomePage;

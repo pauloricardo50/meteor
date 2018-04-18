@@ -1,0 +1,26 @@
+.page-top-nav {
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  z-index: 15;
+  background-color: $primary;
+}
+
+@media (min-width: $med) {
+  .page-top-nav {
+    padding: 0 80px;
+  }
+}
+
+.page-top-nav img {
+  width: 200px;
+}
+
+@media (max-width: 800px) {
+  .page-top-nav img {
+    width: 140px;
+  }
+}

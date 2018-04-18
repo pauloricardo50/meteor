@@ -3,9 +3,9 @@ import React from 'react';
 import Button from 'core/components/Button';
 import { T } from 'core/components/Translation';
 
-const HomePageFooterTop = () => (
-  <div className="home-page-footer-top">
-    <b className="tagline">
+const WwwFooterTop = () => (
+  <div className="page-footer-top">
+    <b>
       <h2>
         <T id="HomePageHeader.title" />
       </h2>
@@ -16,4 +16,4 @@ const HomePageFooterTop = () => (
   </div>
 );
 
-export default HomePageFooterTop;
+export default WwwFooterTop;
