@@ -20,7 +20,7 @@ class FeatureService {
 
   getEnabledFeatures() {
     const { features = {} } = Meteor.settings.public;
-    return pickBy(features, (name, enabled) => enabled);
+    return pickBy(features, enabled => enabled);
   }
 
   getEnabledTogglePoint(id) {
