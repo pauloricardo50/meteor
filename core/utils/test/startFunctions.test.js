@@ -2,8 +2,6 @@
 import { expect } from 'chai';
 
 import {
-  getMinIncome,
-  getMinFortune,
   getBonusIncome,
   getMonthly,
   getMonthlyReal,
@@ -21,26 +19,6 @@ const getRandomInt = (min, max) => {
 };
 
 describe('Start 1 Functions', () => {
-  describe('Get Min Income', () => {
-    it("Should return 157'896 for 250k fortune and 1000M property", () => {
-      expect(getMinIncome(1000000, 250000)).to.equal(157896);
-    });
-  });
-
-  describe('Get Min Fortune', () => {
-    it('Should return 250k for 1000M property and lots of fortune', () => {
-      expect(getMinFortune(1000000, 500000)).to.equal(250000);
-    });
-
-    it('Should return 308k for 1000M property and 140k fortune', () => {
-      expect(getMinFortune(1000000, 140000)).to.equal(308286);
-    });
-
-    it('Should return 490k for 1000M property and 100k fortune', () => {
-      expect(getMinFortune(1000000, 100000)).to.equal(490000);
-    });
-  });
-});
 
 describe('Start Functions', () => {
   describe('Get bonus income', () => {
