@@ -5,7 +5,7 @@ import faLinkedin from '@fortawesome/fontawesome-free-brands/faLinkedin';
 import faFacebook from '@fortawesome/fontawesome-free-brands/faFacebook';
 import faInstagram from '@fortawesome/fontawesome-free-brands/faInstagram';
 
-const HomePageFooterSocial = () => (
+const WwwFooterSocial = () => (
   <div className="social-links">
     <a href="https://www.linkedin.com/company/10995401/">
       <FontAwesomeIcon icon={faLinkedin} size="2x" />
@@ -19,4 +19,4 @@ const HomePageFooterSocial = () => (
   </div>
 );
 
-export default HomePageFooterSocial;
+export default WwwFooterSocial;

@@ -8,7 +8,7 @@ import { SALARY } from '../../Widget1Page/Widget1Page';
 
 const HomePageHeader = ({ history }) => (
   <header>
-    <Waves noSlope={false} />
+    <Waves noSlope={false} transparent />
     <div className="text">
       <b>
         <h1>

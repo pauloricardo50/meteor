@@ -1,31 +1,39 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import Mailto from 'react-protected-mailto';
 
-const AboutPage = props => (
-  <div>
-    Hello World
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        maxWidth: 400,
-        padding: 20,
-        backgroundColor: 'blue',
-      }}
-    >
-      <div style={{ display: 'flex' }}>
-        <span>Some text</span>
-        <input style={{ fontSize: 20, width: '100%' }} />
-      </div>
+import { T } from 'core/components/Translation';
+import MapWithMarker from 'core/components/maps/MapWithMarker';
+import WwwHeader from '../../components/WwwHeader';
+import WwwFooter from '../../components/WwwFooter';
+import { PHONE, EMAIL, ADDRESS } from './contactConstants';
 
-      <div style={{ display: 'flex' }}>
-        <span>Some text</span>
-        <input style={{ fontSize: 50, width: '100%' }} />
-      </div>
+const ContactPage = () => (
+  <main className="page page-container contact-page">
+    <WwwHeader />
+    <div className="contact-info">
+      <b>
+        <h1>
+          <T id="ContactPage.title" />
+        </h1>
+      </b>
+      <span className="separator" />
+      <h3>
+        <T id="ContactPage.email" /> {': '}
+        <Mailto email={EMAIL} />
+      </h3>
+      <h3>
+        <T id="ContactPage.phone" /> {': '}
+        <Mailto tel={PHONE} />
+      </h3>
+      <h3>
+        <T id="ContactPage.address" /> {':'}
+      </h3>
     </div>
-  </div>
+    <div className="google-map">
+      <MapWithMarker address={ADDRESS} className="map" />
+    </div>
+    <WwwFooter transparent={false} />
+  </main>
 );
 
-AboutPage.propTypes = {};
-
-export default AboutPage;
+export default ContactPage;
