@@ -21,7 +21,11 @@ const WwwFooter = ({ transparent }) => (
 );
 
 WwwFooter.propTypes = {
-  transparent: PropTypes.bool.isRequired,
+  transparent: PropTypes.bool,
+};
+
+WwwFooter.defaultProps = {
+  transparent: true,
 };
 
 export default WwwFooter;

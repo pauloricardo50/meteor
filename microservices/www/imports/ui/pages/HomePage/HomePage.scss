@@ -1,45 +1,9 @@
-.home-page {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  // To hide the waves that overflow
-  overflow-x: hidden;
-}
-
-// To make sure the background color of .home-page is applied below all
-// other z-index-changing elements
-.home-page > * {
-  z-index: 10;
-}
-
 @import '{}/imports/ui/pages/HomePage/HomePageInterestRates/HomePageInterestRates.scss';
 @import '{}/imports/ui/pages/HomePage/HomePageHeader/HomePageHeader.scss';
 @import '{}/imports/ui/pages/HomePage/HomePageDescription/HomePageDescription.scss';
 @import '{}/imports/ui/pages/HomePage/HomePagePartners/HomePagePartners.scss';
 @import '{}/imports/ui/pages/HomePage/HomePageReviews/HomePageReviews.scss';
 
-.home-page .home-page-nav {
-  height: 80px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 16px;
-  z-index: 100;
-}
-
-@media (min-width: 800px) {
-  .home-page .home-page-nav {
-    padding: 0 80px;
-  }
-}
-
-.home-page .home-page-nav img {
-  width: 200px;
-}
-
-@media (max-width: 800px) {
-  .home-page .home-page-nav img {
-    width: 140px;
-  }
+.home-page .page-top-nav {
+  background-color: transparent;
 }

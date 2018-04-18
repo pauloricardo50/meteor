@@ -74,7 +74,11 @@ class Waves extends Component {
 }
 
 Waves.propTypes = {
-  transparent: PropTypes.bool.isRequired,
+  transparent: PropTypes.bool,
+};
+
+Waves.defaultProps = {
+  transparent: true,
 };
 
 export default Waves;

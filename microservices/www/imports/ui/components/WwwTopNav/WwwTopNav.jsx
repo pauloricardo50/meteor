@@ -5,7 +5,7 @@ import ArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import { T } from 'core/components/Translation';
 
 const WwwTopNav = () => (
-  <nav className="home-page-nav">
+  <nav className="page-top-nav">
     <img src="/img/logo_white.svg" alt="e-Potek" />
     <Button raised style={{ margin: 8 }}>
       <T id="general.login" />
