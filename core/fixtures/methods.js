@@ -63,7 +63,6 @@ Meteor.methods({
       );
       newUsers.map((userId) => {
         const adminId = admins[Math.floor(Math.random() * admins.length)];
-        // UserService.assignAdminToUser({ userId, adminId });
         const numberOfLoans = generateNumberOfLoans(MAX_LOANS_PER_USER);
         for (let i = 0; i < numberOfLoans; i += 1) {
           const loanId = createFakeLoan(userId, adminId);

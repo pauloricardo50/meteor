@@ -55,8 +55,8 @@ export const taskGetRelatedTo = new Method({
   },
 });
 
-export const completeTaskAddAssignedTo = new Method({
-  name: 'completeTaskAddAssignedTo',
+export const completeAddAssignedToTask = new Method({
+  name: 'completeAddAssignedToTask',
   params: {
     userId: String,
   },

@@ -24,7 +24,9 @@ class Tabs extends Component {
   handleChange = (event, value) => this.setState({ value });
 
   render() {
-    const { classes, tabs, ...otherProps } = this.props;
+    const { classes, tabs, initialIndex, ...otherProps } = this.props;
+    // initial index is destructured to avoid passing down an unrecognized prop
+    // to MuiTabs
 
     return (
       <div>

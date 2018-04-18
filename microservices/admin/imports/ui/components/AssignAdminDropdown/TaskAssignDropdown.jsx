@@ -14,7 +14,9 @@ const assignEmployeeToTask = ({
 }) => {
   if (!taskAssignedTo) {
     // if taskAssignedTo is not defined, it's the first assignment for
-    // that user, since after that, all tasks will be automatically assigned
+    // that user, since after that (the initial assignment), all new tasks
+    // related to that user will be automatically assigned, and therefore,
+    // taskAssignedTo will be defined
     assignAdminToNewUser.run({
       userId: relatedUserId,
       adminId: admin._id,

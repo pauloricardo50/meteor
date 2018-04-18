@@ -180,7 +180,7 @@ export default class TasksTable extends Component {
 
 TasksTable.propTypes = {
   isLoading: PropTypes.bool.isRequired,
-  data: PropTypes.object.isRequired,
+  data: PropTypes.array.isRequired,
   showAssignee: PropTypes.bool,
 };
 

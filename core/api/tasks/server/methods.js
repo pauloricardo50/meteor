@@ -8,7 +8,7 @@ import {
   taskChangeStatus,
   taskChangeAssignedTo,
   taskGetRelatedTo,
-  completeTaskAddAssignedTo,
+  completeAddAssignedToTask,
 } from '../methodDefinitions';
 import { TASK_STATUS, TASK_TYPE } from '../../constants';
 
@@ -47,13 +47,15 @@ taskGetRelatedTo.setHandler((context, { task }) => {
   return TaskService.getRelatedTo({ task });
 });
 
-completeTaskAddAssignedTo.setHandler((context, { userId }) => {
+completeAddAssignedToTask.setHandler((context, { userId }) => {
   const addAssignToTaskId = Tasks.findOne({
     type: TASK_TYPE.ADD_ASSIGNED_TO,
     userId,
   })._id;
 
-  return taskChangeStatus.run({
+  SecurityService.tasks.isAllowedToUpdate(addAssignToTaskId);
+
+  return TaskService.changeStatus({
     taskId: addAssignToTaskId,
     newStatus: TASK_STATUS.COMPLETED,
   });
