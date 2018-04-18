@@ -6,7 +6,8 @@
     "start": "meteor --settings settings-dev.json --port 3000",
     "test": "meteor test --driver-package=cultofcoders:mocha --settings settings-dev.json --port 3005",
     "test-CI": "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
-    "ngrok": "cd ../../scripts/ && ./ngrok.sh"
+    "ngrok": "cd ../../scripts/ && ./ngrok.sh",
+    "debug": "meteor npm run start -- --inspect"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.44",
@@ -49,6 +50,7 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
+    "reselect": "^3.0.1",
     "simpl-schema": "^1.4.3",
     "text-mask-addons": "^3.7.2",
     "uninstall": "0.0.0"
@@ -59,6 +61,9 @@
     "babel-eslint": "^8.2.2",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-preset-meteor": "^7.0.0-beta.44",
+    "chai": "^4.1.2",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-import-resolver-meteor": "^0.4.0",
@@ -66,6 +71,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-meteor": "^4.2.0",
     "eslint-plugin-prettier": "^2.6.0",
-    "eslint-plugin-react": "^7.7.0"
+    "eslint-plugin-react": "^7.7.0",
+    "mocha": "^5.1.0"
   }
 }

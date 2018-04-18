@@ -26,12 +26,10 @@ const getConfig = ({ data, title, subtitle, config }) =>
         showInLegend: true,
         animation: { duration: 400 },
       },
-      // series: { animation: { duration: 400 } },
     },
     series: [
       {
         type: 'pie',
-        name: title,
         data: data.map(({ name, value }) => ({ name, y: value })),
       },
     ],
