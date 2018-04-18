@@ -31,6 +31,7 @@ sendVerificationLink.setHandler((context, { userId } = {}) => {
 
 assignAdminToUser.setHandler((context, { userId, adminId }) => {
   SecurityService.checkCurrentUserIsAdmin();
+
   return UserService.assignAdminToUser({ userId, adminId });
 });
 
@@ -38,6 +39,7 @@ assignAdminToNewUser.setHandler((context, { userId, adminId }) => {
   // same action as assignAdminToUser, but with a dedicated
   // listener that would complete & reassign the user's tasks
   SecurityService.checkCurrentUserIsAdmin();
+
   return UserService.assignAdminToUser({ userId, adminId });
 });
 
