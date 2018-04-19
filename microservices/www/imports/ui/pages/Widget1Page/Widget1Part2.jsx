@@ -7,7 +7,7 @@ import Widget1Monthly from './Widget1Monthly';
 
 const Widget1Part2 = ({ finma }) => (
   <div className="widget1-part-2">
-    <Widget1Inputs />
+    <Widget1Inputs finma={finma} />
     <Widget1Recap finma={finma} />
     <Widget1Monthly />
   </div>

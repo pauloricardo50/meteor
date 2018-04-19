@@ -12,3 +12,16 @@
   flex-grow: 1;
   width: 100%;
 }
+
+.widget1-inputs .card-bottom {
+  display: flex;
+  align-items: center;
+
+  .icon {
+    margin-right: 8px;
+  }
+
+  p {
+    margin: 0;
+  }
+}
