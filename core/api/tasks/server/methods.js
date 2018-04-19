@@ -37,9 +37,9 @@ taskChangeStatus.setHandler((context, { taskId, newStatus }) => {
   return TaskService.changeStatus({ taskId, newStatus });
 });
 
-setAssigneeOfTask.setHandler((context, { taskId, newAssignee }) => {
+setAssigneeOfTask.setHandler((context, { taskId, newAssigneeId }) => {
   SecurityService.tasks.isAllowedToUpdate(taskId);
-  return TaskService.changeAssignedTo({ taskId, newAssignee });
+  return TaskService.changeAssignedTo({ taskId, newAssigneeId });
 });
 
 taskGetRelatedTo.setHandler((context, { task }) => {
