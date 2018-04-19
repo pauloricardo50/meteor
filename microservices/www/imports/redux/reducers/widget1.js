@@ -19,7 +19,7 @@ const createWidget1ValueReducers = names =>
     (acc, { name, initialSliderMax }) => ({
       ...acc,
       [name]: (
-        state = { value: undefined, auto: true, sliderMax: initialSliderMax },
+        state = { value: 0, auto: false, sliderMax: initialSliderMax },
         action,
       ) => {
         const roundedValue = action.value && Math.round(action.value);

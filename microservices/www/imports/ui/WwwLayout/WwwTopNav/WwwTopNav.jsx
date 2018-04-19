@@ -12,7 +12,7 @@ const WwwTopNav = () => (
     </Link>
     <Button raised style={{ margin: 8 }}>
       <T id="general.login" />
-      <ArrowRight style={{ marginLeft: 8 }} />
+      {/* <ArrowRight style={{ marginLeft: 8 }} /> */}
     </Button>
   </nav>
 );

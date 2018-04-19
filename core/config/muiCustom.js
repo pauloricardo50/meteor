@@ -34,8 +34,12 @@ const theme = createMuiTheme({
       },
     },
     MuiButton: {
+      root: {
+        borderRadius: 8,
+      },
       raised: {
         backgroundColor: 'white',
+        color: colors.primary,
       },
     },
     MuiFormLabel: {
@@ -87,7 +91,7 @@ const theme = createMuiTheme({
     fontWeightMedium: 600,
     button: {
       fontWeight: 400,
-      textTransform: '',
+      // textTransform: '',
     },
   },
 });

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Overdrive from 'react-overdrive';
 
 import Widget1SingleInput from '../Widget1SingleInput';
 import Widget1SingleInputFormContainer from './Widget1SingleInputFormContainer';

@@ -20,8 +20,10 @@ const WwwFooterLinks = () => (
       </div>
     </div>
     <div className="company">
-      <h4>e-Potek</h4>
-      <p>e-Potek est enregistré au registre du commerce et est agréé FINMA.</p>
+      <p>
+        e-Potek SA est une société soumise aux règles imposées par la FINMA
+        (organe suprême de contrôle du système financier Suisse).
+      </p>
     </div>
   </div>
 );
