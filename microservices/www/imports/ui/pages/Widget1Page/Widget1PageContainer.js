@@ -31,7 +31,6 @@ export default connect(({
     salary: { value: salary },
     fortune: { value: fortune },
     property: { value: propertyValue },
-    interestRate,
   },
 }) => {
   const finma = getFinmaValues({ salary, fortune, propertyValue });
