@@ -1,11 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import pickBy from 'lodash/pickBy';
+import extend from 'lodash/extend';
 import { withProps } from 'recompose';
 import { TOGGLE_POINTS } from './featureConstants';
-import {
-  enhanceChildrenWith,
-  switchElements,
-} from './featureDecisionFactories';
+import { enhanceChildrenWith } from './featureDecisionFactories';
 
 const { WIDGET1_CONTINUE_BUTTON, HOMEPAGE_LOGIN_BUTTON } = TOGGLE_POINTS;
 
@@ -46,22 +44,21 @@ const featureMaps = {
   },
 };
 
-const getEnabledFeatureMaps = maps =>
-  // Get only the feature maps of the enabled features
-  pickBy(featureMaps, (value, name) => featuresConfig[name]);
-
-// Merge the features' togglePoint maps into one final object
-const getCurrentFeatureDecisions = enabledFeatureDecisions =>
-  enabledFeatureDecisions.reduce(
-    (allDecisions, featureDecisions) => ({
-      ...allDecisions,
-      ...featureDecisions,
-    }),
-    {},
+// Merges all feature decisions of the features that are enabled
+const getEnabledFeatureDecisions = (featureMap) => {
+  // Get a feature maps only of enabled features
+  const enabledFeaturesMap = pickBy(
+    featureMap,
+    (featureDecisions, featureName) => featuresConfig[featureName],
   );
 
+  const enabledFeatureDecisions = Object.values(enabledFeaturesMap);
+
+  // merge all enabled feature decisions into a single object
+  return extend({}, ...enabledFeatureDecisions);
+};
+
 export const getFeatureDecision = (togglePointId) => {
-  const enabledFeatureDecisions = Object.values(getEnabledFeatureMaps());
-  const currentFeatureDecisions = getCurrentFeatureDecisions(enabledFeatureDecisions);
+  const currentFeatureDecisions = getEnabledFeatureDecisions(featureMaps);
   return currentFeatureDecisions[togglePointId];
 };
