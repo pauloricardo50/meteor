@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import debounce from 'lodash/debounce';
 
 import WaveController from './WaveController';
 
@@ -43,12 +44,12 @@ class Waves extends Component {
       speed: getValueInRange(0.1, 0.5),
     }));
 
-  handleResize = () => {
+  handleResize = debounce(() => {
     this.setState({
       windowHeight: window.innerHeight,
       windowWidth: window.innerWidth,
     });
-  };
+  }, 500);
 
   render() {
     const { windowWidth } = this.state;

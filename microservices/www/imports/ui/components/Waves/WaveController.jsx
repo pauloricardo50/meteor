@@ -26,7 +26,7 @@ export default class WaveController extends Component {
   };
 
   componentDidUpdate = ({ width }) => {
-    if (ANIMATE && width !== this.props.width) {
+    if (width !== this.props.width) {
       requestAnimationFrame(this.animate);
     }
   };
