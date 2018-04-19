@@ -1,45 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import extend from 'lodash/extend';
 import {
-  childrenToComponent,
-  elementToComponent,
-} from '../utils/reactFunctions';
-import FeatureService from '../api/features/FeatureService';
-import { TOGGLE_POINTS } from '../api/features/featureConstants';
+  makeEnhancedChildrenComponent,
+  makeOnOffSwitchedComponent,
+} from '../api/features/toggledComponentFactories';
 
-const shouldEnhanceWrappedElements = ({
-  id,
-  children,
-  toggleOnElement,
-  toggleOffElement,
-}) => {
-  const hasElementsToEnhance =
-    children || (toggleOnElement && toggleOffElement);
+// an array of functions that return factories based on the input props
+const toggledComponentFactoryPickers = [
+  props => (props.children ? makeEnhancedChildrenComponent : undefined),
+  props =>
+    (props.toggleOnElement && props.toggleOffElement
+      ? makeOnOffSwitchedComponent
+      : undefined),
+];
 
-  return hasElementsToEnhance && FeatureService.getEnabledTogglePoint(id);
+// returns a factory that will later produce the component this Toggle Point will render
+const pickToggledComponentFactory = (props) => {
+  // get the first picker returns a truty factory
+  const getFactory = toggledComponentFactoryPickers.find(pickFactory =>
+    pickFactory(props));
+  // get the factory that the picker returns
+  return getFactory ? getFactory(props) : undefined;
 };
 
 const TogglePoint = (props) => {
-  const { id, children, toggleOnElement, toggleOffElement } = props;
-
-  if (!shouldEnhanceWrappedElements(props)) {
-    // if nothing to enhance, keep UI unenhanced by the Toggle Point
-    // by just rendering the default elements passed to it
-    return children || toggleOffElement;
-  }
-
-  const ComponentToBeToggled = children
-    ? childrenToComponent(children)
-    : elementToComponent(toggleOnElement);
-
-  const performComponentToggling = FeatureService.getEnabledTogglePoint(id);
-
-  const ToggledComponent = performComponentToggling(ComponentToBeToggled);
-  return <ToggledComponent />;
+  const makeToggledComponent = pickToggledComponentFactory(props);
+  const ToggledComponent = makeToggledComponent(props);
+  return ToggledComponent();
 };
-
-extend(TogglePoint, TOGGLE_POINTS);
 
 TogglePoint.propTypes = {
   id: PropTypes.string.isRequired,
@@ -55,3 +43,4 @@ TogglePoint.defaultProps = {
 };
 
 export default TogglePoint;
+export { TOGGLE_POINTS } from '../api/features/featureConstants';

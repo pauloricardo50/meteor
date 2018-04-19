@@ -4,7 +4,7 @@ import queryString from 'query-string';
 
 import Button from 'core/components/Button';
 import { T } from 'core/components/Translation';
-import TogglePoint from 'core/components/TogglePoint';
+import TogglePoint, { TOGGLE_POINTS } from 'core/components/TogglePoint';
 import Widget1PageContainer from './Widget1PageContainer';
 import Widget1Nav from './Widget1Nav';
 import Widget1Part1 from './Widget1Part1';
@@ -26,7 +26,7 @@ const Widget1Page = ({ step, finma, ...rest }) => (
     {step <= 2 && <Widget1Part1 step={step} />}
     {step > 2 && <Widget1Part2 finma={finma} />}
     {step > 2 && (
-      <TogglePoint id={TogglePoint.WIDGET1_CONTINUE_BUTTON}>
+      <TogglePoint id={TOGGLE_POINTS.WIDGET1_CONTINUE_BUTTON}>
         <Button
           color="secondary"
           className="cta"
