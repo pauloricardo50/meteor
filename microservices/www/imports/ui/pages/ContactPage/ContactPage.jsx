@@ -3,13 +3,12 @@ import Mailto from 'react-protected-mailto';
 
 import { T } from 'core/components/Translation';
 import MapWithMarker from 'core/components/maps/MapWithMarker';
-import WwwHeader from '../../components/WwwHeader';
-import WwwFooter from '../../components/WwwFooter';
+import WwwLayout from '../../WwwLayout';
 import { PHONE, EMAIL, ADDRESS } from './contactConstants';
 
 const ContactPage = () => (
-  <main className="page page-container contact-page">
-    <WwwHeader />
+  <WwwLayout className="contact-page">
+    <WwwLayout.TopNav />
     <div className="contact-info">
       <b>
         <h1>
@@ -29,8 +28,8 @@ const ContactPage = () => (
     <div className="google-map">
       <MapWithMarker address={ADDRESS} className="map" />
     </div>
-    <WwwFooter transparent={false} />
-  </main>
+    <WwwLayout.Footer transparent={false} />
+  </WwwLayout>
 );
 
 export default ContactPage;

@@ -9,6 +9,11 @@
 
 .widget1-page {
   display: flex;
+  flex-direction: column;
+}
+
+.widget1-page .widget1-page-content {
+  display: flex;
   height: calc(100% - #{$top-nav-height});
   overflow: auto;
   flex: 1;
@@ -21,7 +26,7 @@
 }
 
 @media (min-width: $med) {
-  .widget1-page {
+  .widget1-page .widget1-page-content {
     padding: 80px;
   }
 }

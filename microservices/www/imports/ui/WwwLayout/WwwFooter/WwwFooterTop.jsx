@@ -4,7 +4,7 @@ import Button from 'core/components/Button';
 import { T } from 'core/components/Translation';
 
 const WwwFooterTop = () => (
-  <div className="page-footer-top">
+  <div className="www-footer-top">
     <b>
       <h2>
         <T id="HomePageHeader.title" />

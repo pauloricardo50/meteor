@@ -1,0 +1,15 @@
+@import './WwwFooter/WwwFooter.scss';
+@import './WwwTopNav/WwwTopNav.scss';
+
+.www-layout {
+  flex: 1;
+  padding-top: 80px;
+}
+
+.www-layout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  // To hide the waves that overflow
+  overflow-x: hidden;
+}

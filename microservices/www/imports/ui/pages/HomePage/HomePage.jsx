@@ -6,20 +6,19 @@ import HomePageHeader from './HomePageHeader';
 import HomePageDescription from './HomePageDescription';
 import HomePageReviews from './HomePageReviews';
 // import HomePageNewsletter from './HomePageNewsletter';
-import WwwTopNav from '../../components/WwwTopNav';
-import WwwFooter from '../../components/WwwFooter/';
+import WwwLayout from '../../WwwLayout';
 
 const HomePage = () => (
-  <main className="page home-page">
+  <WwwLayout className="home-page">
     {/* <HomePageInterestRates /> */}
-    <WwwTopNav />
+    <WwwLayout.TopNav />
     <HomePageHeader />
     {/* <HomePagePartners /> */}
     <HomePageDescription />
     <HomePageReviews />
     {/* <HomePageNewsletter /> */}
-    <WwwFooter />
-  </main>
+    <WwwLayout.Footer />
+  </WwwLayout>
 );
 
 export default HomePage;

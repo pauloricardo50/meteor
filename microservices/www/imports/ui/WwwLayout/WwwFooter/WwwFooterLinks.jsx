@@ -6,7 +6,7 @@ import { T } from 'core/components/Translation';
 const infoLinks = ['faq', 'contact', 'conditions'];
 
 const WwwFooterLinks = () => (
-  <div className="page-footer-links">
+  <div className="www-footer-links">
     <div className="links">
       <div className="list">
         <h4>

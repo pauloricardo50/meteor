@@ -4,6 +4,11 @@
 @import '{}/imports/ui/pages/HomePage/HomePagePartners/HomePagePartners.scss';
 @import '{}/imports/ui/pages/HomePage/HomePageReviews/HomePageReviews.scss';
 
-.home-page .page-top-nav {
+.home-page {
+  padding-top: 0;
+}
+
+.home-page .www-top-nav {
   background-color: transparent;
+  position: relative;
 }

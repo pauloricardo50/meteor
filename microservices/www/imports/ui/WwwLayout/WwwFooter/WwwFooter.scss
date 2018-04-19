@@ -1,4 +1,4 @@
-.page footer {
+.www-footer {
   position: relative;
   // height: 600px;
   display: flex;
@@ -8,99 +8,99 @@
   overflow: hidden;
 }
 
-.page footer .waves {
+.www-footer .waves {
   z-index: -2;
   transform: scale(1, -1);
   top: 300px;
 }
 
-.page footer .waves svg {
+.www-footer .waves svg {
   overflow: visible;
 }
 
-.page footer h2,
-.page footer p {
+.www-footer h2,
+.www-footer p {
   color: white;
 }
 
-.page footer .page-footer-content {
+.www-footer .www-footer-content {
   width: 100%;
   flex: 1;
   max-width: 800px;
   margin-top: 200px;
 }
 
-.page footer .page-footer-top {
+.www-footer .www-footer-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
 }
 
-.home-page footer .home-page-footer-top .tagline {
+.www-footer .www-footer-top .tagline {
   flex-basis: 300px;
   flex-grow: 1;
 }
 
-.page footer .page-footer-top .cta {
+.www-footer .www-footer-top .cta {
   flex-shrink: 0;
 }
 
-.page footer hr {
+.www-footer hr {
   color: white;
   width: 100%;
 }
 
-.page footer .page-footer-links {
+.www-footer .www-footer-links {
   display: flex;
   justify-content: space-between;
 }
 
-.page footer .page-footer-links h4 {
+.www-footer .www-footer-links h4 {
   color: white;
 }
 
-.page footer .page-footer-links .links {
+.www-footer .www-footer-links .links {
   display: flex;
 }
 
-.page footer .page-footer-links .list {
+.www-footer .www-footer-links .list {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-.page footer .page-footer-links a {
+.www-footer .www-footer-links a {
   color: white;
   text-decoration: none;
 }
 
-.page footer .page-footer-links a:hover {
+.www-footer .www-footer-links a:hover {
   text-decoration: underline;
 }
 
-.page footer .company {
+.www-footer .company {
   width: 100%;
   max-width: 400px;
   padding-left: 8px;
 }
 
-.page footer .copyright {
+.www-footer .copyright {
   margin-bottom: 0;
   flex-shrink: 0;
 }
 
-.page footer .social-links {
+.www-footer .social-links {
   display: flex;
   flex-shrink: 0;
 }
 
-.page footer .social-links a {
+.www-footer .social-links a {
   color: white;
   padding: 8px;
   opacity: 1;
 }
 
-.page footer .social-links a:hover {
+.www-footer .social-links a:hover {
   opacity: 0.5;
 }

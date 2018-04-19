@@ -8,9 +8,9 @@ import WwwFooterCopyright from './WwwFooterCopyright';
 import WwwFooterSocial from './WwwFooterSocial';
 
 const WwwFooter = ({ transparent }) => (
-  <footer>
+  <footer className="www-footer">
     <Waves noSlope transparent={transparent} />
-    <div className="page-footer-content">
+    <div className="www-footer-content">
       <WwwFooterTop />
       <hr />
       <WwwFooterLinks />
