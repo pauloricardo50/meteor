@@ -93,7 +93,8 @@ h6 {
 }
 
 // Nicer styling for a tags, removes horrible blue color
-a {
+// And avoid it if this is a button
+a:not([role='button']) {
   cursor: pointer;
   color: inherit;
   // text-decoration: none;

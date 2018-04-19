@@ -48,22 +48,22 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       // light: '',
-      main: '#4288df',
-      dark: '#397dda',
+      main: colors.primary,
+      dark: '#0048bb', // Darken 20%
       contrastText: '#fff',
     },
     secondary: {
       // light: '',
-      main: '#6ed2b1',
-      dark: '#5bc7a1',
+      main: colors.success,
+      dark: '#1aa890', // Darken 20%
       contrastText: '#fff',
     },
     error: {
-      main: '#B73E25',
+      main: colors.error,
       contrastText: '#fff',
     },
     warning: {
-      main: '#F3AF50',
+      main: colors.warning,
       contrastText: '#fff',
     },
     text: {

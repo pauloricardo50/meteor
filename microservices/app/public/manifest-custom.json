@@ -2,8 +2,8 @@
   "short_name": "e-Potek",
   "name": "e-Potek",
   "start_url": "/home",
-  "background_color": "#4990E2",
-  "theme_color": "#4990E2",
+  "background_color": "#005bea",
+  "theme_color": "#005bea",
   "display": "standalone",
   "icons": [
     {
