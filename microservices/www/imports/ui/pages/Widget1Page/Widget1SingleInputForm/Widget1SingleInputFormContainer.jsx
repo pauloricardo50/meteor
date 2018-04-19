@@ -24,7 +24,7 @@ const mapDispatchToProps = (
       event.preventDefault();
       if (!disableSubmit) {
         onClick();
-        dispatch({ type: 'step.SET', value: nextStep });
+        dispatch({ type: 'step_SET', value: nextStep });
         const willBeFinalStep = nextStep === FINAL_STEP;
         if (willBeFinalStep) {
           // Special exception here, as suggestValues only runs once
@@ -36,7 +36,7 @@ const mapDispatchToProps = (
     },
     onDoNotKnow: () => {
       onClick();
-      dispatch({ type: 'step.SET', value: nextStep });
+      dispatch({ type: 'step_SET', value: nextStep });
       dispatch(setAuto(name));
     },
   };

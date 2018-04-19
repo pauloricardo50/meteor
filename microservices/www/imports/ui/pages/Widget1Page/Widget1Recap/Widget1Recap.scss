@@ -1,16 +1,11 @@
-@import '{}/client/css/variables.scss';
-
-.widget1-page .card1.widget1-recap {
-  // height: 400px;
-}
-
-.widget1-page .widget1-recap .recap {
+.widget1-recap .recap {
   display: flex;
   flex-direction: column;
   width: 100%;
+  padding-bottom: 16px;
 }
 
-.widget1-page .widget1-recap .recap .recap-item {
+.widget1-recap .recap .recap-item {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -23,4 +18,17 @@
   &.bold {
     font-weight: $bold;
   }
+}
+
+.widget1-recap .widget1-finma-line {
+  display: flex;
+  align-items: center;
+}
+
+.widget1-recap .widget1-finma-line .label {
+  flex: 1;
+}
+
+.widget1-recap .widget1-finma-line .icon {
+  padding-left: 4px;
 }
