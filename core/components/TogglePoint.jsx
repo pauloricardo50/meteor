@@ -6,7 +6,7 @@ import {
 } from '../api/features/toggledComponentFactories';
 
 // an array of functions that return factories based on the input props
-const toggledComponentFactoryPickers = [
+const factoryPickers = [
   props => (props.children ? makeEnhancedChildrenComponent : undefined),
   props =>
     (props.toggleOnElement && props.toggleOffElement
@@ -15,18 +15,22 @@ const toggledComponentFactoryPickers = [
 ];
 
 // returns a factory that will later produce the component this Toggle Point will render
-const pickToggledComponentFactory = (props) => {
-  // get the first picker returns a truty factory
-  const getFactory = toggledComponentFactoryPickers.find(pickFactory =>
-    pickFactory(props));
+const pickFactoryFromProps = (props) => {
+  // get the first picker that returns a truthy factory
+  const getFactory = factoryPickers.find(pickFactory => pickFactory(props));
+
+  if (!getFactory) {
+    throw new Error(`Couldn't find factory for togglepoint with id: ${props.id}`);
+  }
+
   // get the factory that the picker returns
-  return getFactory ? getFactory(props) : undefined;
+  return getFactory(props);
 };
 
 const TogglePoint = (props) => {
-  const makeToggledComponent = pickToggledComponentFactory(props);
+  const makeToggledComponent = pickFactoryFromProps(props);
   const ToggledComponent = makeToggledComponent(props);
-  return ToggledComponent();
+  return <ToggledComponent />;
 };
 
 TogglePoint.propTypes = {

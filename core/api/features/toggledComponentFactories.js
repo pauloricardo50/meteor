@@ -5,8 +5,10 @@ import {
   renderObjectOrFunction,
 } from '../../utils/reactFunctions';
 
+const defaultChildrenEnhancer = c => c;
+
 export const makeEnhancedChildrenComponent = ({ id, children }) => {
-  const togglePointEnhancer = getFeatureDecision(id) || (c => c);
+  const togglePointEnhancer = getFeatureDecision(id) || defaultChildrenEnhancer;
   return togglePointEnhancer(childrenToComponent(children));
 };
 

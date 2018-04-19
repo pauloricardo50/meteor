@@ -2,7 +2,7 @@
   "public": {
     "environment": "dev",
     "features": {
-      "liteVersion": true
+      "LITE_VERSION": true
     },
     "analyticsSettings": {
       "Mixpanel": {
