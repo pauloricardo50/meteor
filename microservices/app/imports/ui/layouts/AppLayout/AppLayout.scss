@@ -1,5 +1,3 @@
-@import '{}/client/css/variables.scss';
-
 .app-layout {
   padding: 16px;
   display: flex;
@@ -61,4 +59,15 @@
 .full-screen {
   width: 100%;
   min-height: 100%;
+}
+
+.app-root .navs {
+  width: 100%;
+  display: flex;
+}
+
+.app-root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
