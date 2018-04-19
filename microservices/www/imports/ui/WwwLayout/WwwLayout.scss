@@ -9,6 +9,7 @@
 .www-layout {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   width: 100%;
   // To hide the waves that overflow
   overflow-x: hidden;

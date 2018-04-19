@@ -1,8 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import WwwLayout from '../../WwwLayout';
+import Conditions from './Conditions/Loadable';
 
-const AboutPage = props => <div>Hello World</div>;
-
-AboutPage.propTypes = {};
+const AboutPage = () => (
+  <WwwLayout className="conditions-page">
+    <WwwLayout.TopNav />
+    <div className="conditions-page-content">
+      <h1>Conditions générales d'utilisation</h1>
+      <Conditions />
+    </div>
+    <WwwLayout.Footer />
+  </WwwLayout>
+);
 
 export default AboutPage;
