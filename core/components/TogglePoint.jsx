@@ -14,7 +14,8 @@ const factoryPickers = [
     makeOnOffSwitchedComponent,
 ];
 
-// returns a factory that will later produce the component this Toggle Point will render
+// returns a factory that will later
+// produce the component this Toggle Point will render
 const pickFactoryFromProps = (props) => {
   // get the first picker that returns a truthy factory
   const getFactory = factoryPickers.find(pickFactory => pickFactory(props));
