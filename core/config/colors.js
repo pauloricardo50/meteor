@@ -1,5 +1,6 @@
 const colors = {
   primary: '#005bea',
+  primaryArray: [0, 91, 234],
   secondary: '#00c6ff',
   success: '#21d3b5', // for convenience, same as secondary
   warning: '#F3AF50',

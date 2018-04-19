@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
+import colors from 'core/config/colors';
 
 import WaveController from './WaveController';
 
@@ -12,6 +13,9 @@ if (!global.window || typeof global.window !== 'object') {
     innerWidth: 400,
   };
 }
+
+const getPrimaryWithOpacity = opacity =>
+  `rgba(${colors.primaryArray.join(',')}, ${opacity})`;
 
 class Waves extends Component {
   constructor(props) {
@@ -29,12 +33,14 @@ class Waves extends Component {
 
   getWaves = transparent =>
     [
-      { color: 'rgba(0, 85,255, 0.2)' },
-      { color: 'rgba(0, 85,255, 0.1)' },
+      { color: getPrimaryWithOpacity(0.2) },
+      { color: getPrimaryWithOpacity(0.1) },
       {
         gradient: true,
-        color1: 'rgb(29,88,245)',
-        color2: transparent ? 'rgba(0, 60, 150, 0.7)' : 'rgba(0, 60, 150, 1)',
+        color1: getPrimaryWithOpacity(1),
+        color2: transparent
+          ? getPrimaryWithOpacity(0.7)
+          : getPrimaryWithOpacity(1),
       },
     ].map(wave => ({
       ...wave,
