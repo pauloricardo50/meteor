@@ -39,7 +39,7 @@ class Waves extends Component {
         gradient: true,
         color1: getPrimaryWithOpacity(1),
         color2: transparent
-          ? getPrimaryWithOpacity(0.7)
+          ? getPrimaryWithOpacity(0.6)
           : getPrimaryWithOpacity(1),
       },
     ].map(wave => ({

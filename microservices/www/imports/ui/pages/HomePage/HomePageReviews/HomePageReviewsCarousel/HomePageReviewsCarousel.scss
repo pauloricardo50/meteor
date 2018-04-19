@@ -6,6 +6,10 @@
   max-width: 1200px;
 }
 
+.home-page-reviews-carousel button {
+  flex-shrink: 0;
+}
+
 .home-page-reviews-carousel .carousel-wrapper {
   position: relative;
   width: 70%;
@@ -13,9 +17,9 @@
   display: flex;
 }
 
-@media (max-width: $med) {
+@media (max-width: $small) {
   .home-page-reviews-carousel .carousel-wrapper {
-    height: 400px;
+    height: 350px;
   }
 }
 
@@ -31,6 +35,15 @@
   height: 100%;
   box-sizing: border-box;
   overflow: hidden;
+}
+
+@media (max-width: $med) {
+  .home-page-reviews-carousel .carousel-card {
+    padding: 16px;
+    // Make the cards extend below the buttons which looks a bit better
+    margin: 0 -8px;
+    width: calc(100% + 16px);
+  }
 }
 
 .home-page-reviews-carousel .carousel-card p,
