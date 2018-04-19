@@ -32,7 +32,7 @@ const setMiddlewares = () => {
 };
 
 const createCustomStore = ({ preloadedState } = {}) => {
-  const rootReducer = createRootReducer();
+  const rootReducer = createRootReducer(isClient);
   const middlewares = setMiddlewares();
   const store = createStore(rootReducer, preloadedState, enhancer(middlewares));
   const persistor = persistStore(store);
