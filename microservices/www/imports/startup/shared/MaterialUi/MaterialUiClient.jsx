@@ -7,8 +7,6 @@ class MaterialUiExtractor extends Component {
   // Remove the server-side injected CSS.
   componentDidMount() {
     const jssStyles = document.getElementById('jss-server-side');
-    console.log('client styles:', jssStyles);
-    
 
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
