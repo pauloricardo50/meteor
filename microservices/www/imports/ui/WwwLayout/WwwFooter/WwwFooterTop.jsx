@@ -5,7 +5,7 @@ import { T } from 'core/components/Translation';
 
 const WwwFooterTop = () => (
   <div className="www-footer-top">
-    <b>
+    <b className="tagline">
       <h2>
         <T id="HomePageHeader.title" />
       </h2>

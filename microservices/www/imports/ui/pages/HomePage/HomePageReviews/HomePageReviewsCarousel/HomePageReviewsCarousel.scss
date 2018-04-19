@@ -46,8 +46,27 @@
   }
 }
 
-.home-page-reviews-carousel .carousel-card p,
-h2 {
+.home-page-reviews-carousel .carousel-card > * {
+  width: 100%;
   max-width: 400px;
   align-self: center;
+}
+
+.carousel-card .carousel-card-top {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.carousel-card .carousel-card-name,
+.carousel-card .carousel-card-title {
+  align-self: flex-start;
+}
+
+.carousel-card .carousel-card-name {
+  margin-bottom: 0;
+}
+
+.carousel-card .carousel-card-title {
+  margin-top: 0;
 }

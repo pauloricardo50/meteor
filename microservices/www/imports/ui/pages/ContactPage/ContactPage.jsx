@@ -3,6 +3,7 @@ import Mailto from 'react-protected-mailto';
 
 import { T } from 'core/components/Translation';
 import MapWithMarker from 'core/components/maps/MapWithMarker';
+import Icon from 'core/components/Icon';
 import WwwLayout from '../../WwwLayout';
 import { PHONE, EMAIL, ADDRESS } from './contactConstants';
 
@@ -16,14 +17,18 @@ const ContactPage = () => (
         </h1>
       </b>
       <span className="separator" />
-      <h3>
-        <T id="ContactPage.email" /> {': '}
-        <Mailto email={EMAIL} />
-      </h3>
-      <h3>
-        <T id="ContactPage.phone" /> {': '}
-        <Mailto tel={PHONE} />
-      </h3>
+      <div className="info">
+        <Icon type="mail" className="icon" />
+        <h3>
+          <Mailto email={EMAIL} />
+        </h3>
+      </div>
+      <div className="info">
+        <Icon type="phone" className="icon" />
+        <h3>
+          <Mailto tel={PHONE} />
+        </h3>
+      </div>
     </div>
     <div className="google-map">
       <MapWithMarker address={ADDRESS} className="map" />

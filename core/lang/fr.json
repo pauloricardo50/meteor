@@ -54,6 +54,8 @@
   "WwwFooterLinks.contact": "Nous contacter",
   "WwwFooterLinks.careers": "Carrières",
   "WwwFooterLinks.conditions": "Conditions Générales",
+  "WwwFooterLinks.company":
+    "e-Potek SA est une société soumise aux règles imposées par la FINMA (organe suprême de contrôle du système financier Suisse).",
   "general.start": "Commencer",
 
   "Recap.project": "Projet",
@@ -96,9 +98,9 @@
 
   "AdminNote.label": "Note d'admin",
   "AdminNote.placeholder": "Clique pour ajouter une note d'admin...",
-  "HomePageHeader.title": "Votre guide à travers la jungle hypothécaire",
+  "HomePageHeader.title": "Obtenez la meilleure hypothèque du marché",
   "HomePageHeader.description":
-    "Soyez accompagnés dans vos décisions stratégiques par des spécialistes en financement immobilier, jusqu'à l'obtention de votre prêt.",
+    "Soyez accompagnés dans vos décisions stratégiques par des spécialistes en financement hypothécaire, jusqu'à l'obtention de votre prêt.",
 
   "AdminFilesTab.empty": "Vos documents officiels e-Potek apparaîtront ici.",
 
@@ -923,7 +925,7 @@
   "OfferToggle.counterpart-short": "Avec contrepartie",
   "OfferToggle.standard": "Offres standard ({count})",
   "OfferToggle.standard-short": "Standard",
-  "OverviewTab.recap" : "Récapitulatif",
+  "OverviewTab.recap": "Récapitulatif",
   "PasswordChange.change": "Changer",
   "PasswordChange.dialogTitle": "Changer mon mot de passe",
   "PasswordChange.oldPassword": "Ancien mot de passe",
