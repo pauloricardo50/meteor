@@ -1,11 +1,13 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
+import { persistStore } from 'redux-persist';
 
 import createRootReducer from '../reducers';
 
+const isClient = typeof window === 'object';
 const composeEnhancers =
-  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+  isClient && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
       name: 'e-Potek Www',
     })
@@ -21,7 +23,7 @@ const setMiddlewares = () => {
 
   middlewares.push(thunk);
 
-  if (process.env.NODE_ENV !== 'production') {
+  if (isClient && process.env.NODE_ENV !== 'production') {
     const logger = createLogger();
     middlewares.push(logger);
   }
@@ -32,8 +34,9 @@ const setMiddlewares = () => {
 const createCustomStore = ({ preloadedState } = {}) => {
   const rootReducer = createRootReducer();
   const middlewares = setMiddlewares();
-
-  return createStore(rootReducer, preloadedState, enhancer(middlewares));
+  const store = createStore(rootReducer, preloadedState, enhancer(middlewares));
+  const persistor = persistStore(store);
+  return { store, persistor };
 };
 
 export default createCustomStore;

@@ -10,12 +10,12 @@ import ClientApp from './ClientApp';
 const preloadedState = window[startupConstants.REDUX_STORE_KEY]; // eslint-disable-line
 delete window[startupConstants.REDUX_STORE_KEY]; // eslint-disable-line
 
-const store = createStore({ initialState: preloadedState });
+const { store, persistor } = createStore({ initialState: preloadedState });
 
 onPageLoad(() => {
   ReactDOM.hydrate(
     <MaterialUiClient>
-      <ClientApp store={store} />
+      <ClientApp store={store} persistor={persistor} />
     </MaterialUiClient>,
     document.getElementById(startupConstants.ROOT_ID),
   );

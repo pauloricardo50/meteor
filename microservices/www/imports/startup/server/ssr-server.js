@@ -19,7 +19,7 @@ const prepareState = (store) => {
 
 onPageLoad((sink) => {
   const context = {};
-  const store = createStore();
+  const { store } = createStore();
   const serverState = prepareState(store);
   const { registry, generateClassName } = setupMaterialUiServer();
 
