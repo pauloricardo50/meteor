@@ -1,5 +1,5 @@
 import { branch } from 'recompose';
-import { getFeatureDecision } from './featureDecisions';
+import getFeatureDecision from './featureDecisions';
 import {
   childrenToComponent,
   renderObjectOrFunction,
@@ -12,12 +12,14 @@ export const makeEnhancedChildrenComponent = ({ id, children }) => {
   return togglePointEnhancer(childrenToComponent(children));
 };
 
+const defaultSwitchOption = false;
+
 export const makeOnOffSwitchedComponent = ({
   id,
   toggleOnElement,
   toggleOffElement,
 }) => {
-  const shouldSwitchOn = getFeatureDecision(id);
+  const shouldSwitchOn = getFeatureDecision(id) || defaultSwitchOption;
 
   return branch(
     () => shouldSwitchOn,

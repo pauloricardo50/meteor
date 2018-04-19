@@ -7,11 +7,11 @@ import {
 
 // an array of functions that return factories based on the input props
 const factoryPickers = [
-  props => (props.children ? makeEnhancedChildrenComponent : undefined),
+  props => props.children && makeEnhancedChildrenComponent,
   props =>
-    (props.toggleOnElement && props.toggleOffElement
-      ? makeOnOffSwitchedComponent
-      : undefined),
+    props.toggleOnElement &&
+    props.toggleOffElement &&
+    makeOnOffSwitchedComponent,
 ];
 
 // returns a factory that will later produce the component this Toggle Point will render
