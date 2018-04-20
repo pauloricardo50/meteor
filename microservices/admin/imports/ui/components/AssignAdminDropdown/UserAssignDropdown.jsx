@@ -2,8 +2,8 @@ import { createContainer } from 'core/api';
 import { assignAdminToUser, assignAdminToNewUser } from 'core/api/methods';
 import AssignAdminDropdown from './AssignAdminDropdown';
 
-const changeAssignedUser = ({ newAdmin, user, currentAdminId }) => {
-  if (currentAdminId) {
+const changeAssignedUser = ({ newAdmin, user, oldAdminId }) => {
+  if (oldAdminId) {
     // change of a previously assigned employee
     assignAdminToUser.run({
       userId: user._id,
@@ -18,11 +18,11 @@ const changeAssignedUser = ({ newAdmin, user, currentAdminId }) => {
   }
 };
 
-const onAdminSelectHandler = ({ selectedAdmin, relatedDoc, currentAdmin }) =>
+const onAdminSelectHandler = ({ newAdmin, relatedDoc, oldAdmin }) =>
   changeAssignedUser({
-    newAdmin: selectedAdmin,
+    newAdmin: newAdmin,
     user: relatedDoc,
-    currentAdminId: currentAdmin,
+    oldAdminId: oldAdmin,
   });
 
 const UserAssignDropdownContainer = createContainer(() => ({

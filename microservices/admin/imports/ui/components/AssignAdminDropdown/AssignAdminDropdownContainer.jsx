@@ -2,19 +2,19 @@ import query from 'core/api/users/queries/admins';
 import { compose, createContainer, withQuery } from 'core/api';
 
 const getMenuItems = ({ admins, relatedDoc, onAdminSelectHandler }) => {
-  const currentAdmin = relatedDoc.assignedEmployeeId
+  const oldAdmin = relatedDoc.assignedEmployeeId
     ? relatedDoc.assignedEmployeeId
     : undefined;
   const options = admins.map(admin => ({
     id: admin._id,
-    show: admin._id !== currentAdmin,
+    show: admin._id !== oldAdmin,
     label: admin.emails[0].address,
     link: false,
     onClick: () =>
       onAdminSelectHandler({
-        selectedAdmin: admin,
+        newAdmin: admin,
         relatedDoc,
-        currentAdmin,
+        oldAdmin,
       }),
   }));
   return options;
