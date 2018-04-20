@@ -24,7 +24,9 @@ const routesWithoutSidenav = ['/'];
 
 const getRedirect = ({
   currentUser,
-  history: { location: { pathname } },
+  history: {
+    location: { pathname },
+  },
   loans,
 }) => {
   const userIsAdmin = Roles.userIsInRole(currentUser, 'admin');
@@ -66,11 +68,7 @@ const AppLayout = (props) => {
   const { type, history, children } = props;
   const redirect = getRedirect(props);
   const showSideNav = getShowSideNav(history);
-  const classes = classnames({
-    'app-layout': true,
-    'always-side-nav': type === 'admin',
-    'no-nav': !showSideNav,
-  });
+  const classes = classnames({ 'app-layout': true, 'no-nav': !showSideNav });
   const path = history.location.pathname;
   const isLogin = path.slice(0, 6) === '/login';
 
@@ -83,12 +81,11 @@ const AppLayout = (props) => {
   }
 
   return (
-    <div>
+    <div className="app-root">
       <Navs {...props} showSideNav={showSideNav} />
 
       <main className={classes}>
         <ErrorBoundary helper="layout" pathname={history.location.pathname}>
-          {/* <div x="wrapper">{render(props)}</div> */}
           <div x="wrapper">{React.cloneElement(children, { ...props })}</div>
         </ErrorBoundary>
       </main>
@@ -98,21 +95,22 @@ const AppLayout = (props) => {
   );
 };
 
-AppLayout.defaultProps = {
-  type: 'user',
-  render: () => null,
-  currentUser: undefined,
-  noNav: false,
-  loans: undefined,
-};
-
 AppLayout.propTypes = {
+  children: PropTypes.node.isRequired,
   type: PropTypes.string,
   render: PropTypes.func,
   currentUser: PropTypes.objectOf(PropTypes.any),
   noNav: PropTypes.bool,
   loans: PropTypes.arrayOf(PropTypes.object),
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+};
+
+AppLayout.defaultProps = {
+  type: 'user',
+  render: () => null,
+  currentUser: undefined,
+  noNav: false,
+  loans: undefined,
 };
 
 export default AppLayoutContainer(AppLayout);

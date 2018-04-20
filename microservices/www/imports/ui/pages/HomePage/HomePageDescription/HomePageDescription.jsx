@@ -19,6 +19,9 @@ const HomePageDescription = () => (
         <T id="HomePageDescription.title" />
       </h2>
     </b>
+    <p className="description">
+      <T id="HomePageDescription.description" />
+    </p>
     <div className="steps">
       {steps.map((step, index) => (
         <DescriptionItem nb={index + 1} key={step.id} step={step} />

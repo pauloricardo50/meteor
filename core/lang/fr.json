@@ -1,4 +1,25 @@
 {
+  "ContactUsForm.name": "Prénom et Nom",
+  "ContactUsForm.name.placeholder": "Marie Rochat",
+  "ContactUsForm.email": "Adresse email",
+  "ContactUsForm.email.placeholder": "mon-nom@probablement-gmail.com",
+  "ContactUsForm.phone": "Numéro de téléphone",
+  "ContactUsForm.phone.placeholder": "078 000 00 00",
+  "ContactUsForm.details": "Autres détails",
+  "ContactUsForm.details.placeholder":
+    "N’hésitez pas à nous transmettre vos disponibilités ou tout autre message qui nous permettrait d'anticiper certaines urgences",
+
+  "Widget1MonthlyInterests.label": "Taux d'intérêt indicatif",
+
+  "OfferAdder.buttonLabel": "Ajouter une offre",
+  "OfferAdder.dialogTitle": "Ajouter une offre",
+  "OfferAdder.dialogDescription":
+    "Ce formulaire ne perd pas ses données si tu fermes ceci par accident",
+  "OfferAdder.organization": "Nom du prêteur",
+  "OfferAdder.hasCounterparts": "Ajouter une offre avec contreparties",
+  "OfferAdder.isDiscount": "Taux contreparties avec flat discount",
+  "OfferAdder.discount": "Rabais (valeur positive)",
+
   "DashboardRecapFinance.title": "Plan financier",
   "DashboardInfoTeamMember.emailTooltip": "Envoyer un mail",
   "DashboardInfoTeamMember.phoneTooltip": "Appeler",
@@ -40,11 +61,13 @@
 
   "Forms.futureOwner.BOTH": "Les deux",
   "Forms.futureOwner.OTHER": "Autre",
-  "HomePageFooterLinks.info": "Liens utiles",
-  "HomePageFooterLinks.faq": "Questions que vous vous posez",
-  "HomePageFooterLinks.contact": "Nous contacter",
-  "HomePageFooterLinks.careers": "Carrières",
-  "HomePageFooterLinks.conditions": "Conditions Générales",
+  "WwwFooterLinks.info": "Liens utiles",
+  "WwwFooterLinks.faq": "Questions que vous vous posez",
+  "WwwFooterLinks.contact": "Nous contacter",
+  "WwwFooterLinks.careers": "Carrières",
+  "WwwFooterLinks.conditions": "Conditions Générales",
+  "WwwFooterLinks.company":
+    "e-Potek SA est une société soumise aux règles imposées par la FINMA (organe suprême de contrôle du système financier Suisse).",
   "general.start": "Commencer",
 
   "Recap.project": "Projet",
@@ -66,30 +89,30 @@
 
   "HomePageReviewsTitle.title": "Ce qu'on dit à propos d'e-Potek",
   "HomePageReviewsTitle.description":
-    "Plus que tout, nos clients apprécient notre efficacité, notre tarification ainsi que notre aide à la clientèle - c'est ce qui fait notre force.",
+    "Plus que tout, nos clients apprécient nos compétences, notre disponibilité ainsi que notre transparence - c'est ce qui fait notre force.",
   "DescriptionItemText.eligibility.title": "Testez votre éligibilité",
   "DescriptionItemText.eligibility.description":
     "Identifiez le montant que vous pouvez emprunter en quelques minutes",
   "DescriptionItemText.expertise.title": "Expertisez votre logement",
   "DescriptionItemText.expertise.description":
-    "Obtenez la valeur du marché de votre bien immobilier depuis votre dashboard",
+    "Vérifiez la valeur de marché de votre logement en quelques clics",
   "DescriptionItemText.application.title": "Structurez votre dossier",
   "DescriptionItemText.application.description":
-    "Optimisez votre recherche de prêt hypothécaire avec l'aide de nos conseillers",
+    "Assurez vous d’optimiser votre recherche de prêt hypothécaire avec l'aide de nos conseillers",
   "DescriptionItemText.auction.title": "Lancez les enchères",
   "DescriptionItemText.auction.description":
     "Placez votre dossier aux enchères, de manière anonyme, auprès de tous les prêteurs",
   "DescriptionItemText.closing.title": "Obtenez votre prêt",
   "DescriptionItemText.closing.description":
-    "Soyez accompagnés dans vos décisions stratégiques par des spécialistes, jusqu'à avoir les clés en main",
+    "Soyez accompagnés dans vos décisions stratégiques par des spécialistes hypothécaires jusqu'à l’obtention de votre prêt",
 
   "Forms.propertyInfo": "Informations générales sur la propriété",
 
   "AdminNote.label": "Note d'admin",
   "AdminNote.placeholder": "Clique pour ajouter une note d'admin...",
-  "HomePageHeader.title": "Votre guide à travers la jungle hypothécaire",
+  "HomePageHeader.title": "Obtenez la meilleure hypothèque du marché",
   "HomePageHeader.description":
-    "Soyez accompagnés dans vos décisions stratégiques par des spécialistes en financement immobilier, jusqu'à l'obtention de votre prêt.",
+    "Soyez accompagnés dans vos décisions stratégiques par des spécialistes en financement hypothécaire, jusqu'à l'obtention de votre prêt.",
 
   "AdminFilesTab.empty": "Vos documents officiels e-Potek apparaîtront ici.",
 
@@ -97,7 +120,9 @@
   "NewDocumentForm.placeholder": "Nom du document (visible à l'utilisateur)",
   "NewDocumentForm.cta": "Ajouter",
 
-  "HomePageDescription.title": "e-Potek vous accompagne en plusieurs étapes",
+  "HomePageDescription.title": "e-Potek, la révolution de l’hypothèque",
+  "HomePageDescription.description":
+    "Face aux nombreuses options proposées sur le marché, comparer différents prêteurs et produits de financement hypothécaire peut devenir un processus fastidieux. Il est ainsi facile de se perdre dans la jungle hypothécaire face à des offres aux conditions de taux apparaissant très avantageuses mais malheureusement valables uniquement sous certaines conditions exceptionnelles et donc applicables qu’à une faible minorité du marché.",
 
   "AboutPage.description":
     "e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève. Expansion prévue prochainement.{verticalSpace}L'équipe derrière e-Potek est composée d'entrepreneurs expérimentés dans la finance et les prêts hypothécaires en Suisse.",
@@ -203,6 +228,7 @@
   "collections.properties": "Biens immobiliers",
   "collections.tasks": "Tâches",
   "collections.users": "Utilisateurs",
+  "collections.offers": "Offres",
   "ConditionsButton.counterpart": "Contreparties pour les meilleurs taux",
   "ConditionsButton.counterparts": "Contreparties pour les meilleurs taux",
   "ConditionsButton.CTA": "Ok",
@@ -211,6 +237,12 @@
   "ContactButton.byEmail": "Par email",
   "ContactButton.byPhone": "Par téléphone",
   "ContactButton.yourAdvisor": "Votre conseiller",
+  "ContactPage.title": "Merci de votre intérêt",
+  "ContactPage.description":
+    "Un de nos spécialistes hypothécaire va vous contacter rapidement pour échanger plus amplement sur votre projet ainsi que pour orchestrer les prochaines étapes",
+  "ContactPage.email": "Adresse email",
+  "ContactPage.phone": "Téléphone",
+  "ContactPage.address": "Adresse",
   "ContractDownloader.ready":
     "Votre contrat est prêt, vous pouvez le télécharger dès maintenant.",
   "ContractDownloader.waiting": "Votre contrat arrivera ici.",
@@ -804,11 +836,11 @@
   "HomePage.CTA12": "Financement hypothécaire",
   "HomePage.CTA2": "Refinancer un bien",
   "HomePage.description": "Votre guide pour traverser la jungle hypothécaire.",
-  "HomePage.footer.about": "À Propos",
-  "HomePage.footer.careers": "Carrières",
-  "HomePage.footer.conditions": "Conditions",
-  "HomePage.footer.contact": "Contact",
-  "HomePage.footer.faq": "FAQ",
+  "Page.footer.about": "À Propos",
+  "Page.footer.careers": "Carrières",
+  "Page.footer.conditions": "Conditions",
+  "Page.footer.contact": "Contact",
+  "Page.footer.faq": "FAQ",
   "HomePage.sellingpoint1.text":
     "Identifiez le montant que vous pouvez emprunter en quelques clics.",
   "HomePage.sellingpoint1.title": "1. Testez votre éligibilité",
@@ -897,6 +929,8 @@
   "offer.maxAmount": "Prêt maximal",
   "offer.monthly": "Coût Mensuel",
   "offer.rating": "Rating",
+  "offer.conditions": "Conditions de base",
+  "offer.counterparts": "Contreparties",
   "OfferPickerPage.description": "Choisissez l'offre qui vous convient.",
   "OfferPickerPage.title": "Les meilleures offres",
   "OffersTable.amount": "Montant",
@@ -907,6 +941,7 @@
   "OfferToggle.counterpart-short": "Avec contrepartie",
   "OfferToggle.standard": "Offres standard ({count})",
   "OfferToggle.standard-short": "Standard",
+  "OverviewTab.recap": "Récapitulatif",
   "PasswordChange.change": "Changer",
   "PasswordChange.dialogTitle": "Changer mon mot de passe",
   "PasswordChange.oldPassword": "Ancien mot de passe",

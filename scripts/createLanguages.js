@@ -81,6 +81,7 @@ const config = {
     'File',
     'property',
     'roles',
+    'Form'
   ],
 };
 

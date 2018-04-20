@@ -2,12 +2,18 @@
 @import '{}/imports/core/assets/css/variables.scss';
 @import '{}/imports/core/assets/css/core-styles.scss';
 
+// Layout CSS
+@import '{}/imports/ui/WwwLayout/WwwLayout.scss';
+
 // Pages CSS
 @import '{}/imports/ui/pages/HomePage/HomePage.scss';
 @import '{}/imports/ui/pages/Widget1Page/Widget1Page.scss';
 @import '{}/imports/ui/pages/Start2Page/Start2Page.scss';
 @import '{}/imports/ui/pages/CheckMailboxPage/CheckMailboxPage.scss';
+@import '{}/imports/ui/pages/ContactPage/ContactPage.scss';
+@import '{}/imports/ui/pages/ConditionsPage/ConditionsPage.scss';
 
 // Components CSS
 @import '{}/imports/ui/components/Waves/Waves.scss';
 @import '{}/imports/ui/components/Widget1/Widget1.scss';
+@import '{}/imports/ui/components/ContactUsForm/ContactUsForm.scss';

@@ -49,9 +49,9 @@ for i in 'admin' 'app' 'lender' 'www'
 
     # public and private folders can't have any symlink: https://github.com/meteor/meteor/issues/7013
     echo "Copying public/private folders from core"
-    rsync -a ../core/assets/public/ ../microservices/$i/public/
+    rsync -a --delete-before ../core/assets/public/ ../microservices/$i/public/
 
-    rsync -a ../core/assets/private/ ../microservices/$i/private/
+    rsync -a --delete-before ../core/assets/private/ ../microservices/$i/private/
 
 
     if [[ $DO_CLEAN == true ]];

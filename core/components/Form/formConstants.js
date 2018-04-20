@@ -1,0 +1,7 @@
+export const FIELD_TYPES = {
+  TEXT: 'TEXT',
+  CHECKBOX: 'CHECKBOX',
+  PERCENT: 'PERCENT',
+  MONEY: 'MONEY',
+  TEXT_AREA: 'TEXT_AREA',
+};

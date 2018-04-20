@@ -10,6 +10,7 @@ import {
   setUserToLoan,
   removeBorrower,
   createUserAndLoan,
+  submitContactForm,
 } from '../methodDefinitions';
 
 getMixpanelAuthorization.setHandler(() => {
@@ -90,4 +91,8 @@ createUserAndLoan.setHandler((context, { email, formState }) => {
 
   // Insert the formdata to loan and borrower(s)
   return saveStartForm(formState, newUserId);
+});
+
+submitContactForm.setHandler((context, { name, email, phone, details }) => {
+  console.log('hi from server!', name, email, phone, details);
 });

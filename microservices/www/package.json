@@ -5,7 +5,9 @@
     "prestart": "cd ../.. && npm run lang -- www",
     "start": "meteor --settings settings-dev.json --port 3000",
     "test": "meteor test --driver-package=cultofcoders:mocha --settings settings-dev.json --port 3005",
-    "test-CI": "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json"
+    "test-CI": "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
+    "ngrok": "cd ../../scripts/ && ./ngrok.sh",
+    "debug": "meteor npm run start -- --inspect"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.44",
@@ -21,6 +23,7 @@
     "indexof": "0.0.1",
     "material-ui": "^1.0.0-beta.41",
     "meteor-node-stubs": "^0.3.3",
+    "modernizr": "^3.6.0",
     "moment": "^2.22.0",
     "normalize-scss": "^7.0.1",
     "query-string": "^6.0.0",
@@ -32,9 +35,12 @@
     "react-helmet": "^5.2.0",
     "react-highcharts": "^16.0.2",
     "react-intl": "https://github.com/Floriferous/react-intl/tarball/build",
+    "react-jss": "^8.4.0",
     "react-loadable": "^5.3.1",
     "react-motion": "^0.5.2",
     "react-overdrive": "0.0.9",
+    "react-places-autocomplete": "^7.0.1",
+    "react-protected-mailto": "^1.0.3",
     "react-redux": "^5.0.7",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
@@ -43,8 +49,11 @@
     "react-text-mask": "^5.3.0",
     "recompose": "^0.26.0",
     "redux": "^3.7.2",
+    "redux-form": "^7.3.0",
     "redux-logger": "^3.0.6",
+    "redux-persist": "^5.9.1",
     "redux-thunk": "^2.2.0",
+    "reselect": "^3.0.1",
     "simpl-schema": "^1.4.3",
     "text-mask-addons": "^3.7.2",
     "uninstall": "0.0.0"
@@ -55,6 +64,9 @@
     "babel-eslint": "^8.2.2",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-preset-meteor": "^7.0.0-beta.44",
+    "chai": "^4.1.2",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-import-resolver-meteor": "^0.4.0",
@@ -62,6 +74,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-meteor": "^4.2.0",
     "eslint-plugin-prettier": "^2.6.0",
-    "eslint-plugin-react": "^7.7.0"
+    "eslint-plugin-react": "^7.7.0",
+    "mocha": "^5.1.0"
   }
 }
