@@ -5,7 +5,7 @@ import { withProps } from 'recompose';
 import { TOGGLE_POINTS } from './featureConstants';
 import { enhanceChildrenWith } from './featureDecisionFactories';
 
-const { WIDGET1_CONTINUE_BUTTON, HOMEPAGE_LOGIN_BUTTON } = TOGGLE_POINTS;
+const { WIDGET1_CONTINUE_BUTTON } = TOGGLE_POINTS;
 
 const { features: featureConfig } = Meteor.settings.public;
 
@@ -25,7 +25,7 @@ const { features: featureConfig } = Meteor.settings.public;
  * When multiple features are enabled, all their decisions get merged into
  * a single list of decisions. If the same feature decision (represented by a Toggle Point)
  * is used in more than one feature, the one in the latter feature overwrites others before it
- * (so only the latter decision gets applied).
+ * (so only the latter decision gets applied); the features' order is dictated by the Feature Map.
  *
  * So in the end, tehnically speaking, we get a single list of Toggle Points which will
  * customize the code as we specify in the Feature Map.
@@ -45,27 +45,29 @@ const featureMap = {
   },
 };
 
-// Merges all feature decisions of the features that are enabled
-const getEnabledFeatureDecisions = (featureMap, featureConfig) => {
-  // Get a feature map of all enabled features
-  const enabledFeatureMap = pickBy(
-    featureMap,
-    (featureDecisions, featureName) => {
-      const featureIsEnabled = featureConfig[featureName];
-      return featureIsEnabled;
-    },
-  );
+class FeatureDecisionsService {
+  // Merges all feature decisions of the features that are enabled
+  getEnabledFeatureDecisions({ featureMap, featureConfig }) {
+    // Get a feature map of all enabled features
+    const enabledFeatureMap = pickBy(
+      featureMap,
+      (featureDecisions, featureName) => {
+        const featureIsEnabled = featureConfig[featureName];
+        return featureIsEnabled;
+      },
+    );
 
-  // merge all enabled feature decisions into a single object
-  return extend({}, ...Object.values(enabledFeatureMap));
-};
+    // merge all enabled feature decisions into a single object
+    return extend({}, ...Object.values(enabledFeatureMap));
+  }
 
-const getFeatureDecision = (togglePointId) => {
-  const currentFeatureDecisions = getEnabledFeatureDecisions(
-    featureMap,
-    featureConfig,
-  );
-  return currentFeatureDecisions[togglePointId];
-};
+  getFeatureDecision(togglePointId) {
+    const currentFeatureDecisions = this.getEnabledFeatureDecisions({
+      featureMap,
+      featureConfig,
+    });
+    return currentFeatureDecisions[togglePointId];
+  }
+}
 
-export default getFeatureDecision;
+export default new FeatureDecisionsService();
