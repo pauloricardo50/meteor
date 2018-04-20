@@ -3,7 +3,7 @@ import { FeatureService } from '../FeatureService';
 
 let featureService;
 
-describe.only('FeatureService', () => {
+describe('FeatureService', () => {
   describe('getFeatureDecision', () => {
     beforeEach(() => {
       const featureConfig = {
