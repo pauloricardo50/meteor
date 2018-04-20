@@ -6,6 +6,7 @@ import MapWithMarker from 'core/components/maps/MapWithMarker';
 import Icon from 'core/components/Icon';
 import Button from 'core/components/Button';
 import WwwLayout from '../../WwwLayout';
+import WwwFooterTop from '../../WwwLayout/WwwFooter/WwwFooterTop';
 import { PHONE, EMAIL, ADDRESS, MAPS_ADDRESS } from './contactConstants';
 
 import ContactUsForm from '../../components/ContactUsForm';
@@ -24,25 +25,12 @@ const ContactPage = () => (
           <T id="ContactPage.description" />
         </p>
       </div>
-      {/* <div className="info">
-        <Icon type="mail" className="icon" />
-        <h3>
-          <Mailto email={EMAIL} />
-        </h3>
-      </div>
-      <div className="info">
-        <Icon type="phone" className="icon" />
-        <h3>
-          <Mailto tel={PHONE} />
-        </h3>
-      </div> */}
       <ContactUsForm />
     </div>
     <div className="google-map">
       <Button
         className="directions-button"
         raised
-        // primary
         link
         to={`https://maps.google.com?saddr=Current+Location&daddr=${MAPS_ADDRESS}`}
         target="_blank"
@@ -51,7 +39,24 @@ const ContactPage = () => (
       </Button>
       <MapWithMarker address={ADDRESS} className="map" />
     </div>
-    <WwwLayout.Footer transparent={false} />
+    <WwwLayout.Footer transparent={false}>
+      <WwwLayout.Footer.Top>
+        <div className="contact-footer">
+          <div className="email">
+            <Icon type="mail" className="icon" />
+            <h3>
+              <Mailto email={EMAIL} />
+            </h3>
+          </div>
+          <div className="phone">
+            <Icon type="phone" className="icon" />
+            <h3>
+              <Mailto tel={PHONE} />
+            </h3>
+          </div>
+        </div>
+      </WwwLayout.Footer.Top>
+    </WwwLayout.Footer>
   </WwwLayout>
 );
 

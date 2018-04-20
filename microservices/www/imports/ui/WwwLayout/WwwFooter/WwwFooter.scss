@@ -7,6 +7,7 @@
   box-sizing: border-box;
   padding: 32px;
   overflow: hidden;
+  min-height: 600px;
 }
 
 .www-footer .waves {
@@ -36,6 +37,7 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  min-height: 65px;
 }
 
 .www-footer .www-footer-top .tagline {

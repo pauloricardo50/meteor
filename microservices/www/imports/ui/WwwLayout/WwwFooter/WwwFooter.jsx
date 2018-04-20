@@ -7,11 +7,11 @@ import WwwFooterLinks from './WwwFooterLinks';
 import WwwFooterCopyright from './WwwFooterCopyright';
 import WwwFooterSocial from './WwwFooterSocial';
 
-const WwwFooter = ({ transparent }) => (
+const WwwFooter = ({ transparent, children }) => (
   <footer className="www-footer">
     <Waves noSlope transparent={transparent} />
     <div className="www-footer-content">
-      <WwwFooterTop />
+      {children}
       <hr />
       <WwwFooterLinks />
     </div>
@@ -22,10 +22,14 @@ const WwwFooter = ({ transparent }) => (
 
 WwwFooter.propTypes = {
   transparent: PropTypes.bool,
+  children: PropTypes.node,
 };
 
 WwwFooter.defaultProps = {
   transparent: true,
+  children: <WwwFooterTop />,
 };
+
+WwwFooter.Top = WwwFooterTop;
 
 export default WwwFooter;

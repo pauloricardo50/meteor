@@ -29,9 +29,31 @@
   padding: 80px 16px;
   width: 100%;
 
-  .info {
+  h3 {
+    flex-grow: 1;
+    color: white;
+    flex-shrink: 1;
+  }
+}
+
+.contact-page .contact-footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  width: 100%;
+  color: white;
+  white-space: nowrap;
+
+  > div {
     display: flex;
     align-items: center;
+
+    &.email {
+      flex: 1;
+    }
 
     .icon {
       padding: 16px;
@@ -40,6 +62,8 @@
 
     h3 {
       flex-grow: 1;
+      color: white;
+      flex-shrink: 1;
     }
   }
 }

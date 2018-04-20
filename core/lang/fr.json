@@ -17,7 +17,7 @@
   "ContactUsForm.phone.placeholder": "078 000 00 00",
   "ContactUsForm.details": "Autres détails",
   "ContactUsForm.details.placeholder":
-    "N’hésitez pas à nous transmettre vos disponibilités ou tout autre message qui nous permettrait d'anticiper certaines urgences",
+    "N’hésitez pas à nous transmettre vos disponibilités ou tout autre message qui nous permettraient d'anticiper certaines urgences",
 
   "Widget1MonthlyInterests.label": "Taux d'intérêt indicatif",
 
@@ -249,7 +249,7 @@
   "ContactButton.yourAdvisor": "Votre conseiller",
   "ContactPage.title": "Merci de votre intérêt",
   "ContactPage.description":
-    "Un de nos spécialistes hypothécaire va vous contacter rapidement pour échanger plus amplement sur votre projet ainsi que pour orchestrer les prochaines étapes",
+    "Un de nos spécialistes hypothécaires va vous contacter rapidement pour échanger plus amplement sur votre projet ainsi que pour orchestrer les prochaines étapes",
   "ContactPage.email": "Adresse email",
   "ContactPage.phone": "Téléphone",
   "ContactPage.address": "Adresse",
