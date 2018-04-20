@@ -1,4 +1,14 @@
 {
+  "Widget1InputsError.success": "Tout est bon!",
+  "Widget1InputsError.borrowError":
+    "Vos fonds propres ne suffisent pas pour votre projet, continuez pour trouver des solutions",
+  "Widget1InputsError.borrowWarning":
+    "Vos fonds propres sont suffisants sous certaines conditions",
+  "Widget1InputsError.incomeError":
+    "Vos revenus ne suffisent pas pour votre projet, continuez pour trouver des solutions",
+  "Widget1InputsError.incomeWarning":
+    "Vos revenus sont limite, mais nous pouvons vous aider",
+
   "ContactUsForm.name": "Prénom et Nom",
   "ContactUsForm.name.placeholder": "Marie Rochat",
   "ContactUsForm.email": "Adresse email",

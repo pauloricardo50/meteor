@@ -8,15 +8,18 @@ import StatusIcon from '../../../components/StatusIcon';
 const STATUSES = [SUCCESS, WARNING, ERROR];
 
 const getBorrowError = status =>
-  (status === ERROR ? 'Borrow error' : 'Borrow warning');
+  (status === ERROR
+    ? 'Widget1InputsError.borrowError'
+    : 'Widget1InputsError.borrowWarning');
 const getIncomeError = status =>
-  (status === ERROR ? 'Income error' : 'Income warning');
+  (status === ERROR
+    ? 'Widget1InputsError.incomeError'
+    : 'Widget1InputsError.incomeWarning');
 
 const getMessage = (worstStatus, index, borrowStatus, incomeStatus) => {
   if (worstStatus === SUCCESS) {
-    return <T id="Widget1InputsError.success" />;
+    return 'Widget1InputsError.success';
   } else if (index === 0) {
-    // borrowStatus
     return getBorrowError(borrowStatus);
   }
   return getIncomeError(incomeStatus);
@@ -38,12 +41,14 @@ const Widget1InputsError = ({
 }) => {
   const statuses = [borrowStatus, incomeStatus];
   const { match: worstStatus, index } = getWorstStatus(statuses, STATUSES);
-  const message = getMessage(worstStatus, index, borrowStatus, incomeStatus);
+  const messageId = getMessage(worstStatus, index, borrowStatus, incomeStatus);
 
   return (
     <div className="card-bottom">
       <StatusIcon status={worstStatus} className="icon" />
-      <p className="message">{message}</p>
+      <p className="message">
+        <T id={messageId} />
+      </p>
     </div>
   );
 };
