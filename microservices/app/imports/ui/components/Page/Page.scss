@@ -27,7 +27,7 @@
   .page-title .bottom-bar {
     position: fixed;
     width: calc(
-      100% - 300px
+      100% - 300px - 32px
     ); // Side-nav width, careful, not updated with variable
   }
 }

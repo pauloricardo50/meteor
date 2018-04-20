@@ -6,9 +6,9 @@ import Button from 'core/components/Button';
 import { T } from 'core/components/Translation';
 import TogglePoint, { TOGGLE_POINTS } from 'core/components/TogglePoint';
 import Widget1PageContainer from './Widget1PageContainer';
-import Widget1Nav from './Widget1Nav';
 import Widget1Part1 from './Widget1Part1';
 import Widget1Part2 from './Widget1Part2';
+import WwwLayout from '../../WwwLayout';
 
 const getUrl = ({ salary, fortune, propertyValue }) => {
   const queryparams = {
@@ -21,24 +21,26 @@ const getUrl = ({ salary, fortune, propertyValue }) => {
 };
 
 const Widget1Page = ({ step, finma, ...rest }) => (
-  <div className="widget1-page">
-    <Widget1Nav />
-    {step <= 2 && <Widget1Part1 step={step} />}
-    {step > 2 && <Widget1Part2 finma={finma} />}
-    {step > 2 && (
-      <TogglePoint id={TOGGLE_POINTS.WIDGET1_CONTINUE_BUTTON}>
-        <Button
-          color="secondary"
-          className="cta"
-          variant="raised"
-          link
-          to={getUrl(rest)}
-        >
-          <T id="general.continue" />
-        </Button>
-      </TogglePoint>
-    )}
-  </div>
+  <WwwLayout className="widget1-page">
+    <WwwLayout.TopNav />
+    <div className="widget1-page-content">
+      {step <= 2 && <Widget1Part1 step={step} />}
+      {step > 2 && <Widget1Part2 finma={finma} />}
+      {step > 2 && (
+        <TogglePoint id={TOGGLE_POINTS.WIDGET1_CONTINUE_BUTTON}>
+          <Button
+            color="secondary"
+            className="cta"
+            variant="raised"
+            link
+            to={getUrl(rest)}
+          >
+            <T id="general.continue" />
+          </Button>
+        </TogglePoint>
+      )}
+    </div>
+  </WwwLayout>
 );
 
 Widget1Page.propTypes = {

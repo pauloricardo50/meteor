@@ -1,4 +1,15 @@
 {
+  "Widget1MonthlyInterests.label": "Taux d'intérêt indicatif",
+
+  "OfferAdder.buttonLabel": "Ajouter une offre",
+  "OfferAdder.dialogTitle": "Ajouter une offre",
+  "OfferAdder.dialogDescription":
+    "Ce formulaire ne perd pas ses données si tu fermes ceci par accident",
+  "OfferAdder.organization": "Nom du prêteur",
+  "OfferAdder.hasCounterparts": "Ajouter une offre avec contreparties",
+  "OfferAdder.isDiscount": "Taux contreparties avec flat discount",
+  "OfferAdder.discount": "Rabais (valeur positive)",
+
   "DashboardRecapFinance.title": "Plan financier",
   "DashboardInfoTeamMember.emailTooltip": "Envoyer un mail",
   "DashboardInfoTeamMember.phoneTooltip": "Appeler",
@@ -40,11 +51,13 @@
 
   "Forms.futureOwner.BOTH": "Les deux",
   "Forms.futureOwner.OTHER": "Autre",
-  "HomePageFooterLinks.info": "Liens utiles",
-  "HomePageFooterLinks.faq": "Questions que vous vous posez",
-  "HomePageFooterLinks.contact": "Nous contacter",
-  "HomePageFooterLinks.careers": "Carrières",
-  "HomePageFooterLinks.conditions": "Conditions Générales",
+  "WwwFooterLinks.info": "Liens utiles",
+  "WwwFooterLinks.faq": "Questions que vous vous posez",
+  "WwwFooterLinks.contact": "Nous contacter",
+  "WwwFooterLinks.careers": "Carrières",
+  "WwwFooterLinks.conditions": "Conditions Générales",
+  "WwwFooterLinks.company":
+    "e-Potek SA est une société soumise aux règles imposées par la FINMA (organe suprême de contrôle du système financier Suisse).",
   "general.start": "Commencer",
 
   "Recap.project": "Projet",
@@ -87,9 +100,9 @@
 
   "AdminNote.label": "Note d'admin",
   "AdminNote.placeholder": "Clique pour ajouter une note d'admin...",
-  "HomePageHeader.title": "Votre guide à travers la jungle hypothécaire",
+  "HomePageHeader.title": "Obtenez la meilleure hypothèque du marché",
   "HomePageHeader.description":
-    "Soyez accompagnés dans vos décisions stratégiques par des spécialistes en financement immobilier, jusqu'à l'obtention de votre prêt.",
+    "Soyez accompagnés dans vos décisions stratégiques par des spécialistes en financement hypothécaire, jusqu'à l'obtention de votre prêt.",
 
   "AdminFilesTab.empty": "Vos documents officiels e-Potek apparaîtront ici.",
 
@@ -203,6 +216,7 @@
   "collections.properties": "Biens immobiliers",
   "collections.tasks": "Tâches",
   "collections.users": "Utilisateurs",
+  "collections.offers": "Offres",
   "ConditionsButton.counterpart": "Contreparties pour les meilleurs taux",
   "ConditionsButton.counterparts": "Contreparties pour les meilleurs taux",
   "ConditionsButton.CTA": "Ok",
@@ -211,6 +225,10 @@
   "ContactButton.byEmail": "Par email",
   "ContactButton.byPhone": "Par téléphone",
   "ContactButton.yourAdvisor": "Votre conseiller",
+  "ContactPage.title": "Nous contacter",
+  "ContactPage.email": "Adresse email",
+  "ContactPage.phone": "Téléphone",
+  "ContactPage.address": "Adresse",
   "ContractDownloader.ready":
     "Votre contrat est prêt, vous pouvez le télécharger dès maintenant.",
   "ContractDownloader.waiting": "Votre contrat arrivera ici.",
@@ -804,11 +822,11 @@
   "HomePage.CTA12": "Financement hypothécaire",
   "HomePage.CTA2": "Refinancer un bien",
   "HomePage.description": "Votre guide pour traverser la jungle hypothécaire.",
-  "HomePage.footer.about": "À Propos",
-  "HomePage.footer.careers": "Carrières",
-  "HomePage.footer.conditions": "Conditions",
-  "HomePage.footer.contact": "Contact",
-  "HomePage.footer.faq": "FAQ",
+  "Page.footer.about": "À Propos",
+  "Page.footer.careers": "Carrières",
+  "Page.footer.conditions": "Conditions",
+  "Page.footer.contact": "Contact",
+  "Page.footer.faq": "FAQ",
   "HomePage.sellingpoint1.text":
     "Identifiez le montant que vous pouvez emprunter en quelques clics.",
   "HomePage.sellingpoint1.title": "1. Testez votre éligibilité",
@@ -897,6 +915,8 @@
   "offer.maxAmount": "Prêt maximal",
   "offer.monthly": "Coût Mensuel",
   "offer.rating": "Rating",
+  "offer.conditions": "Conditions de base",
+  "offer.counterparts": "Contreparties",
   "OfferPickerPage.description": "Choisissez l'offre qui vous convient.",
   "OfferPickerPage.title": "Les meilleures offres",
   "OffersTable.amount": "Montant",
@@ -907,6 +927,7 @@
   "OfferToggle.counterpart-short": "Avec contrepartie",
   "OfferToggle.standard": "Offres standard ({count})",
   "OfferToggle.standard-short": "Standard",
+  "OverviewTab.recap": "Récapitulatif",
   "PasswordChange.change": "Changer",
   "PasswordChange.dialogTitle": "Changer mon mot de passe",
   "PasswordChange.oldPassword": "Ancien mot de passe",

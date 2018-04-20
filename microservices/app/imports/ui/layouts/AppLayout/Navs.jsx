@@ -24,7 +24,7 @@ export default class Navs extends Component {
     const { showSideNav } = this.props;
 
     return (
-      <div>
+      <div className="navs">
         <TopNav
           key={0}
           {...this.props}

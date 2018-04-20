@@ -31,6 +31,7 @@ export default class DialogForm extends Component {
       onSubmit,
       initialValues,
       renderAdditionalActions,
+      ...otherProps
     } = this.props;
     const { open } = this.state;
 
@@ -72,6 +73,7 @@ export default class DialogForm extends Component {
                 </Button>
               </DialogActions>
             )}
+            {...otherProps}
           />
         </Dialog>
       </div>

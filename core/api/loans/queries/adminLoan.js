@@ -1,5 +1,5 @@
 import { Loans } from '../../';
-import { LOAN_QUERIES } from '../loanConstants';
+import { LOAN_QUERIES, INTEREST_RATES } from '../../constants';
 
 export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
   $filter({ filters, params }) {
@@ -64,6 +64,7 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
     adminValidation: 1,
     documents: 1,
   },
+  borrowerIds: 1,
   borrowers: {
     firstName: 1,
     lastName: 1,
@@ -112,6 +113,28 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
       user: {
         assignedEmployeeId: 1,
       },
+    },
+  },
+  offers: {
+    organization: 1,
+    conditions: 1,
+    counterparts: 1,
+    canton: 1,
+    standardOffer: {
+      amortization: 1,
+      maxAmount: 1,
+      ...Object.values(INTEREST_RATES).reduce(
+        (acc, rate) => ({ ...acc, [rate]: 1 }),
+        {},
+      ),
+    },
+    counterpartOffer: {
+      amortization: 1,
+      maxAmount: 1,
+      ...Object.values(INTEREST_RATES).reduce(
+        (acc, rate) => ({ ...acc, [rate]: 1 }),
+        {},
+      ),
     },
   },
 });

@@ -2,15 +2,59 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Meteor: Chrome",
+      "name": "Www - client",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceRoot}/microservices/www"
+    },
+    {
+      "name": "Www - server",
+      "cwd": "${workspaceRoot}/microservices/www",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "debug"],
+      "port": 9229,
+      "timeout": 30000,
+      "trace": true,
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "meteor://💻app/imports/core/*": "${workspaceRoot}/core/*"
+      }
+    },
+    {
+      "name": "App - client",
       "type": "chrome",
       "request": "launch",
       "url": "http://localhost:4000",
       "webRoot": "${workspaceRoot}/microservices/app"
     },
     {
-      "name": "Meteor: Node",
+      "name": "App - server",
       "cwd": "${workspaceRoot}/microservices/app",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "debug"],
+      "port": 9229,
+      "timeout": 30000,
+      "trace": true,
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "meteor://💻app/imports/core/*": "${workspaceRoot}/core/*"
+      }
+    },
+    {
+      "name": "Admin - client",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5000",
+      "webRoot": "${workspaceRoot}/microservices/admin"
+    },
+    {
+      "name": "Admin - server",
+      "cwd": "${workspaceRoot}/microservices/admin",
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "npm",
@@ -26,8 +70,16 @@
   ],
   "compounds": [
     {
-      "name": "Meteor: All",
-      "configurations": ["Meteor: Node", "Meteor: Chrome"]
+      "name": "Www - full stack",
+      "configurations": ["Www - server", "Www - client"]
+    },
+    {
+      "name": "App - full stack",
+      "configurations": ["App - server", "App - client"]
+    },
+    {
+      "name": "Admin - full stack",
+      "configurations": ["Admin - server", "Admin - client"]
     }
   ]
 }

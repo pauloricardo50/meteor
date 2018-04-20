@@ -20,6 +20,7 @@
     }
 
     /* MEDIA QUERIES */
+
     @media (max-width: 700px) {
       #loading-box {
         width: 100%;
@@ -35,7 +36,8 @@
         width: 100%;
       }
 
-      #loading-box:nth-child(4n),.box:nth-child(4n-3) {
+      #loading-box:nth-child(4n),
+      .box:nth-child(4n-3) {
         background-color: inherit;
       }
     }
@@ -63,14 +65,14 @@
       content: "";
       position: absolute;
       top: -38px;
-      border-top: 3px solid #4990E2;
-      border-right: 3px solid #4990E2;
-      border-radius: 0 50px 0px  0;
+      border-top: 3px solid #005bea;
+      border-right: 3px solid #005bea;
+      border-radius: 0 50px 0px 0;
       width: 40px;
       height: 40px;
       background-color: rgba(255, 255, 255, 0.8);
-      -webkit-transform-origin:  0% 100%;
-      transform-origin:  0% 100% ;
+      -webkit-transform-origin: 0% 100%;
+      transform-origin: 0% 100%;
       -webkit-animation: loader2 1.5s linear infinite;
       animation: loader2 1.5s linear infinite;
     }
@@ -80,31 +82,39 @@
       position: absolute;
       top: 2px;
       right: 2px;
-      border-bottom: 3px solid #4990E2;
-      border-left: 3px solid #4990E2;
-      border-radius: 0 0px 0px  50px;
+      border-bottom: 3px solid #005bea;
+      border-left: 3px solid #005bea;
+      border-radius: 0 0px 0px 50px;
       width: 40px;
       height: 40px;
       background-color: rgba(255, 255, 255, 0.8);
-      -webkit-transform-origin:  100% 0%;
-          transform-origin:  100% 0% ;
+      -webkit-transform-origin: 100% 0%;
+      transform-origin: 100% 0%;
       -webkit-animation: loader2 1.5s linear infinite;
-          animation: loader2 1.5s linear infinite;
+      animation: loader2 1.5s linear infinite;
     }
 
     @-webkit-keyframes loader2 {
-      0%{-webkit-transform:rotate(0deg);}
-      100%{-webkit-transform:rotate(360deg);}
+      0% {
+        -webkit-transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
     }
 
     @keyframes loader2 {
-      0%{transform:rotate(0deg);}
-      100%{transform:rotate(360deg);}
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
     }
   </style>
   <div id="loading-container">
     <div id="loading-box">
-      <div id="loader2" >
+      <div id="loader2">
       </div>
     </div>
   </div>
