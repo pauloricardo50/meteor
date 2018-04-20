@@ -56,10 +56,8 @@ const getEnabledFeatureDecisions = (featureMap, featureConfig) => {
     },
   );
 
-  const enabledFeatureDecisions = Object.values(enabledFeatureMap);
-
   // merge all enabled feature decisions into a single object
-  return extend({}, ...enabledFeatureDecisions);
+  return extend({}, ...Object.values(enabledFeatureMap));
 };
 
 const getFeatureDecision = (togglePointId) => {
