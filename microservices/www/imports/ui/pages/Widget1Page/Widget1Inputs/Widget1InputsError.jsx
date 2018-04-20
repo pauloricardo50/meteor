@@ -8,9 +8,9 @@ import StatusIcon from '../../../components/StatusIcon';
 const STATUSES = [SUCCESS, WARNING, ERROR];
 
 const getBorrowError = status =>
-  (status === ERROR ? 'Borrow warning' : 'Borrow error');
+  (status === ERROR ? 'Borrow error' : 'Borrow warning');
 const getIncomeError = status =>
-  (status === ERROR ? 'Income warning' : 'Income error');
+  (status === ERROR ? 'Income error' : 'Income warning');
 
 const getMessage = (worstStatus, index, borrowStatus, incomeStatus) => {
   if (worstStatus === SUCCESS) {

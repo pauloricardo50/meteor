@@ -1,4 +1,14 @@
 {
+  "ContactUsForm.name": "Prénom et Nom",
+  "ContactUsForm.name.placeholder": "Marie Rochat",
+  "ContactUsForm.email": "Adresse email",
+  "ContactUsForm.email.placeholder": "mon-nom@probablement-gmail.com",
+  "ContactUsForm.phone": "Numéro de téléphone",
+  "ContactUsForm.phone.placeholder": "078 000 00 00",
+  "ContactUsForm.details": "Autres détails",
+  "ContactUsForm.details.placeholder":
+    "N’hésitez pas à nous transmettre vos disponibilités ou tout autre message qui nous permettrait d'anticiper certaines urgences",
+
   "Widget1MonthlyInterests.label": "Taux d'intérêt indicatif",
 
   "OfferAdder.buttonLabel": "Ajouter une offre",
@@ -79,22 +89,22 @@
 
   "HomePageReviewsTitle.title": "Ce qu'on dit à propos d'e-Potek",
   "HomePageReviewsTitle.description":
-    "Plus que tout, nos clients apprécient notre efficacité, notre tarification ainsi que notre aide à la clientèle - c'est ce qui fait notre force.",
+    "Plus que tout, nos clients apprécient nos compétences, notre disponibilité ainsi que notre transparence - c'est ce qui fait notre force.",
   "DescriptionItemText.eligibility.title": "Testez votre éligibilité",
   "DescriptionItemText.eligibility.description":
     "Identifiez le montant que vous pouvez emprunter en quelques minutes",
   "DescriptionItemText.expertise.title": "Expertisez votre logement",
   "DescriptionItemText.expertise.description":
-    "Obtenez la valeur du marché de votre bien immobilier depuis votre dashboard",
+    "Vérifiez la valeur de marché de votre logement en quelques clics",
   "DescriptionItemText.application.title": "Structurez votre dossier",
   "DescriptionItemText.application.description":
-    "Optimisez votre recherche de prêt hypothécaire avec l'aide de nos conseillers",
+    "Assurez vous d’optimiser votre recherche de prêt hypothécaire avec l'aide de nos conseillers",
   "DescriptionItemText.auction.title": "Lancez les enchères",
   "DescriptionItemText.auction.description":
     "Placez votre dossier aux enchères, de manière anonyme, auprès de tous les prêteurs",
   "DescriptionItemText.closing.title": "Obtenez votre prêt",
   "DescriptionItemText.closing.description":
-    "Soyez accompagnés dans vos décisions stratégiques par des spécialistes, jusqu'à avoir les clés en main",
+    "Soyez accompagnés dans vos décisions stratégiques par des spécialistes hypothécaires jusqu'à l’obtention de votre prêt",
 
   "Forms.propertyInfo": "Informations générales sur la propriété",
 
@@ -110,7 +120,9 @@
   "NewDocumentForm.placeholder": "Nom du document (visible à l'utilisateur)",
   "NewDocumentForm.cta": "Ajouter",
 
-  "HomePageDescription.title": "e-Potek vous accompagne en plusieurs étapes",
+  "HomePageDescription.title": "e-Potek, la révolution de l’hypothèque",
+  "HomePageDescription.description":
+    "Face aux nombreuses options proposées sur le marché, comparer différents prêteurs et produits de financement hypothécaire peut devenir un processus fastidieux. Il est ainsi facile de se perdre dans la jungle hypothécaire face à des offres aux conditions de taux apparaissant très avantageuses mais malheureusement valables uniquement sous certaines conditions exceptionnelles et donc applicables qu’à une faible minorité du marché.",
 
   "AboutPage.description":
     "e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève. Expansion prévue prochainement.{verticalSpace}L'équipe derrière e-Potek est composée d'entrepreneurs expérimentés dans la finance et les prêts hypothécaires en Suisse.",
@@ -225,7 +237,9 @@
   "ContactButton.byEmail": "Par email",
   "ContactButton.byPhone": "Par téléphone",
   "ContactButton.yourAdvisor": "Votre conseiller",
-  "ContactPage.title": "Nous contacter",
+  "ContactPage.title": "Merci de votre intérêt",
+  "ContactPage.description":
+    "Un de nos spécialistes hypothécaire va vous contacter rapidement pour échanger plus amplement sur votre projet ainsi que pour orchestrer les prochaines étapes",
   "ContactPage.email": "Adresse email",
   "ContactPage.phone": "Téléphone",
   "ContactPage.address": "Adresse",

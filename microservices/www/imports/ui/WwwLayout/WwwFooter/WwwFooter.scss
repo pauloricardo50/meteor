@@ -1,9 +1,10 @@
 .www-footer {
+  width: 100%;
   position: relative;
-  // height: 600px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
   padding: 32px;
   overflow: hidden;
 }

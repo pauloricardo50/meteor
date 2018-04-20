@@ -2,12 +2,32 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+.contact-page-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .title {
+    color: $primary;
+  }
+
+  .description {
+    max-width: 600px;
+    text-align: justify;
+    margin-top: 0;
+  }
 }
 
 .contact-page .contact-info {
   display: flex;
   flex-direction: column;
-  padding: 80px 10%;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 80px 16px;
+  width: 100%;
 
   .info {
     display: flex;
@@ -25,7 +45,7 @@
 }
 
 .contact-page .google-map {
-  min-height: 400px;
+  min-height: 600px;
   flex: 1;
   display: flex;
   width: 100%;
@@ -36,15 +56,16 @@
   }
 }
 
-.contact-page .separator {
-  display: flex;
-  width: 40px;
-  height: 4px;
-  background-color: $primary;
-  margin: 16px 0;
-}
-
 // To put the footer above the google map
 .contact-page .www-footer {
   z-index: 1;
+}
+
+.contact-page .contact-us-form {
+  z-index: 1;
+  margin: 16px;
+  margin-bottom: -120px;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 800px;
 }

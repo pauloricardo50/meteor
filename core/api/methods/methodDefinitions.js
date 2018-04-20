@@ -1,3 +1,4 @@
+import { Match } from 'meteor/check';
 import { Method } from './methods';
 
 export const getMixpanelAuthorization = new Method({
@@ -43,5 +44,15 @@ export const createUserAndLoan = new Method({
   params: {
     email: String,
     formState: Object,
+  },
+});
+
+export const submitContactForm = new Method({
+  name: 'submitContactForm',
+  params: {
+    name: String,
+    email: String,
+    phone: String,
+    details: Match.Optional(String),
   },
 });

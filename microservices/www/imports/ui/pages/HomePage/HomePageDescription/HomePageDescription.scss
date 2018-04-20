@@ -10,9 +10,13 @@ $progression-color: #8db6e6;
 }
 
 .home-page-description .title {
-  max-width: 600px;
-  text-align: center;
+  align-self: center;
   color: $primary;
+}
+
+.home-page-description .description {
+  max-width: 800px;
+  text-align: justify;
 }
 
 .home-page-description .steps {

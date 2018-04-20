@@ -7,17 +7,23 @@ import Icon from 'core/components/Icon';
 import WwwLayout from '../../WwwLayout';
 import { PHONE, EMAIL, ADDRESS } from './contactConstants';
 
+import ContactUsForm from '../../components/ContactUsForm';
+
 const ContactPage = () => (
   <WwwLayout className="contact-page">
     <WwwLayout.TopNav />
     <div className="contact-info">
-      <b>
-        <h1>
-          <T id="ContactPage.title" />
-        </h1>
-      </b>
-      <span className="separator" />
-      <div className="info">
+      <div className="contact-page-top">
+        <b>
+          <h1 className="title">
+            <T id="ContactPage.title" />
+          </h1>
+        </b>
+        <p className="description">
+          <T id="ContactPage.description" />
+        </p>
+      </div>
+      {/* <div className="info">
         <Icon type="mail" className="icon" />
         <h3>
           <Mailto email={EMAIL} />
@@ -28,7 +34,8 @@ const ContactPage = () => (
         <h3>
           <Mailto tel={PHONE} />
         </h3>
-      </div>
+      </div> */}
+      <ContactUsForm />
     </div>
     <div className="google-map">
       <MapWithMarker address={ADDRESS} className="map" />

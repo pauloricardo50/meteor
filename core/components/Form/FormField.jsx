@@ -1,17 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
+import { withProps } from 'recompose';
 import MaskedInput from 'react-text-mask';
 
 import { swissFrancMask, percentMask } from '../../utils/textMasks';
 import FormInput from './FormInput';
 import FormCheckbox from './FormCheckbox';
 import { FIELD_TYPES } from './formConstants';
-import {
-  percentFormatters,
-  moneyFormatters,
-  required as requiredFunc,
-} from './formHelpers';
+import { percentFormatters, moneyFormatters } from './formHelpers';
+import { required as requiredFunc } from './validators';
 
 const FormField = ({ type, required, validate, ...rest }) => {
   const validateFunc = required ? [...validate, requiredFunc] : validate;
@@ -20,33 +18,32 @@ const FormField = ({ type, required, validate, ...rest }) => {
     validate: validateFunc,
     required,
   };
-  const defaultField = <Field {...defaultFieldProps} {...rest} />;
+
+  const defaultField = props => (
+    <Field {...defaultFieldProps} {...rest} {...props} />
+  );
 
   switch (type) {
   case FIELD_TYPES.TEXT:
-    return defaultField;
+    return defaultField();
   case FIELD_TYPES.CHECKBOX:
     return <Field component={FormCheckbox} validate={validate} {...rest} />;
   case FIELD_TYPES.PERCENT:
-    return (
-      <Field
-        inputComponent={MaskedInput}
-        inputProps={{ mask: percentMask }}
-        {...defaultFieldProps}
-        {...percentFormatters}
-        {...rest}
-      />
-    );
+    return withProps({
+      inputComponent: MaskedInput,
+      inputProps: { mask: percentMask },
+      ...percentFormatters,
+    })(defaultField)();
+
   case FIELD_TYPES.MONEY:
-    return (
-      <Field
-        inputComponent={MaskedInput}
-        inputProps={{ mask: swissFrancMask }}
-        {...defaultFieldProps}
-        {...moneyFormatters}
-        {...rest}
-      />
-    );
+    return withProps({
+      inputComponent: MaskedInput,
+      inputProps: { mask: swissFrancMask },
+      ...moneyFormatters,
+    })(defaultField)();
+
+  case FIELD_TYPES.TEXT_AREA:
+    return withProps({ multiline: true, rows: 3 })(defaultField)();
   default:
     return defaultField;
   }
