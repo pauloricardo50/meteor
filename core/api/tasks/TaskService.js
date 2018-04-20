@@ -157,8 +157,7 @@ class TaskService {
     unassignedTasks.map((task) => {
       const isRelatedToUser = this.isRelatedToUser({ task, userId });
       if (isRelatedToUser) {
-        const taskId = task._id;
-        this.update({ taskId, object: { assignedEmployeeId: newAssignee } });
+        this.update({ taskId: task._id, object: { assignedEmployeeId: newAssignee } });
       }
 
       return task;

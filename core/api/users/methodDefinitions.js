@@ -28,8 +28,6 @@ export const assignAdminToNewUser = new Method({
   params: {
     userId: String,
     adminId: String,
-    taskId: String,
-    taskType: String,
   },
 });
 
