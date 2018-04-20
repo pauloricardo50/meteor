@@ -35,7 +35,7 @@ const createWidget1ValueReducers = names =>
           // If the value is suggested, don't change auto
           return { ...state, value: roundedValue };
         case setAutoAction(name):
-          return { ...state, auto: true, value: undefined };
+          return { ...state, auto: !state.auto };
         case increaseSliderMaxAction(name):
           return { ...state, sliderMax: state.sliderMax + initialSliderMax };
         default:

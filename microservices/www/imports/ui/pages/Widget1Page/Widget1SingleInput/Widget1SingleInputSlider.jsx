@@ -23,7 +23,11 @@ const Widget1SingleInputSlider = ({
       className="slider"
     />
     {value >= sliderMax ? (
-      <IconButton type="add" onClick={increaseSliderMax} />
+      <IconButton
+        type="add"
+        tooltip="Agrandir le slider"
+        onClick={increaseSliderMax}
+      />
     ) : (
       <div className="button-placeholder" />
     )}
