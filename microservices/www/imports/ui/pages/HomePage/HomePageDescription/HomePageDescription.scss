@@ -15,6 +15,8 @@ $progression-color: #8db6e6;
 }
 
 .home-page-description .description {
+  display: flex;
+  flex-direction: column;
   max-width: 800px;
   text-align: justify;
 }
