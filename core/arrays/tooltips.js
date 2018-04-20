@@ -19,7 +19,7 @@ export const generalTooltips = {
   'frais de notaire': ['notaryFees'],
   'frais retrait prévoyance': 'insuranceFees',
   'travaux de plus-value': ['propertyWork'],
-  expertise: 'expertise',
+  // expertise: 'expertise',
   'prêteurs intéressés': 'interestedLenders',
   'charges estimées': 'monthlyEstimated',
   emprunteurs: 'borrowers',

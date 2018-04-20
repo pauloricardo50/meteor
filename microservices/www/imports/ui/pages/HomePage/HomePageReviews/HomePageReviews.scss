@@ -10,6 +10,12 @@
   align-items: center;
 }
 
+@media (max-width: $med) {
+  .home-page-reviews {
+    padding: 16px;
+  }
+}
+
 .home-page-reviews .home-page-reviews-title {
   display: flex;
   flex-direction: column;

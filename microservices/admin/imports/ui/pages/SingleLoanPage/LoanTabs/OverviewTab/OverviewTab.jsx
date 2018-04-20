@@ -2,23 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Button from 'core/components/Button';
-
 import Recap from 'core/components/Recap';
 import renderObject from 'core/utils/renderObject';
-import AdminNote from '../../../../components/AdminNote';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
+import { T } from 'core/components/Translation';
+import AdminNote from '../../../../components/AdminNote';
 import StepStatus from './StepStatus';
-import LoanTasksTable from './LoanTasksTable';
+import LoanTasksTable from '../LoanTasksTable';
 import LoanValidation from './LoanValidation';
-
-const styles = {
-  recapDiv: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: 400,
-  },
-};
 
 export default class OverviewTab extends React.Component {
   constructor(props) {
@@ -29,21 +20,21 @@ export default class OverviewTab extends React.Component {
 
   render() {
     const { loan, borrowers } = this.props;
-    const { user } = loan;
-    const { showObject } = this.state;
+    const { adminNote, user, borrowerIds, property, _id } = loan;
+    const { showObject, serverTime } = this.state;
 
     return (
       <div className="mask1 overview-tab">
         <div className="admin-section">
           <AdminNote
-            loanId={loan._id}
-            adminNoteText={loan.adminNote}
+            loanId={_id}
+            adminNoteText={adminNote}
             className="admin-note"
           />
           <ImpersonateLink user={user} />
         </div>
 
-        <StepStatus {...this.props} serverTime={this.state.serverTime} />
+        <StepStatus {...this.props} serverTime={serverTime} />
 
         <LoanValidation loan={loan} />
 
@@ -56,14 +47,16 @@ export default class OverviewTab extends React.Component {
             justifyContent: 'space-around',
           }}
         >
-          <div style={styles.recapDiv}>
-            <h2 className="fixed-size">Récapitulatif</h2>
+          <div className="recap-div">
+            <h2 className="fixed-size">
+              <T id="OverviewTab.recap" />
+            </h2>
             <Recap {...this.props} arrayName="dashboard" />
           </div>
 
           <div className="flex-col">
             {borrowers.map((b, i) => (
-              <div style={styles.recapDiv} key={b._id}>
+              <div className="recap-div" key={b._id}>
                 <h2 className="fixed-size">
                   {b.firstName || `Emprunteur ${i + 1}`}
                 </h2>
@@ -76,8 +69,15 @@ export default class OverviewTab extends React.Component {
         <hr />
         <br />
 
-        <h2 className="fixed-size text-center">Tâches</h2>
-        <LoanTasksTable showAssignee loanId={loan._id} />
+        <h2 className="fixed-size text-center">
+          <T id="collections.tasks" />
+        </h2>
+        <LoanTasksTable
+          showAssignee
+          loanId={_id}
+          borrowerIds={borrowerIds}
+          propertyId={property._id}
+        />
 
         <br />
         <br />

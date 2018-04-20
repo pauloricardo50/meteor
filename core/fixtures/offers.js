@@ -10,5 +10,5 @@ export const createFakeOffer = (loanId, userId) => {
     true,
   );
 
-  return OfferService.insertAdminOffer({ offer, loan, userId });
+  return OfferService.insertAdminOffer({ offer, loanId: loan._id, userId });
 };

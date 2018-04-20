@@ -20,9 +20,8 @@ const getStyles = (props, currentValue) => ({
     borderBottom: props.active ? 'solid 1px #ddd' : '',
   },
   icon: {
-    color: currentValue && currentValue.length > 0 ? colors.secondary : '',
-    borderColor:
-      currentValue && currentValue.length > 0 ? colors.secondary : '',
+    color: currentValue && currentValue.length > 0 ? colors.success : '',
+    borderColor: currentValue && currentValue.length > 0 ? colors.success : '',
   },
   caret: {
     transform: props.active ? 'rotate(180deg)' : '',

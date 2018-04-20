@@ -76,7 +76,7 @@ export const getRandomOffer = ({ loan, property }, matchLoanWanted = false) => {
       interest5: round(rate2 + rand(0.004, 0.006)),
       interest10: round(rate2 + rand(0.006, 0.01)),
     },
-    counterparts: counterpart ? [counterpart] : [],
-    conditions: condition ? [condition] : [],
+    counterparts: counterpart,
+    conditions: condition,
   };
 };

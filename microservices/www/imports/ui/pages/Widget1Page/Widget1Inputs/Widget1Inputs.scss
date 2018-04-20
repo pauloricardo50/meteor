@@ -13,15 +13,15 @@
   width: 100%;
 }
 
-.widget1-inputs .widget1-finma-line {
+.widget1-inputs .card-bottom {
   display: flex;
   align-items: center;
-}
 
-.widget1-inputs .widget1-finma-line .label {
-  flex: 1;
-}
+  .icon {
+    margin-right: 8px;
+  }
 
-.widget1-inputs .widget1-finma-line .icon {
-  padding-left: 4px;
+  p {
+    margin: 0;
+  }
 }

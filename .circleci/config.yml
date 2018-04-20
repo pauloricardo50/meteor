@@ -24,10 +24,36 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys
+      
       - restore_cache:
-          name: restore cached build
+          name: restore system's meteor cached build
           keys:
-            - build-epotek-v2
+            - build-epotek-v2-meteor-system
+      - restore_cache:
+          name: restore app's meteor cached build
+          keys:
+            - build-epotek-v2-meteor-{{ checksum "./microservices/app/.meteor/release" }}-{{ checksum "./microservices/app/.meteor/packages" }}
+      - restore_cache:
+          name: restore app's cached node_modules
+          keys:
+            - build-epotek-v2-node_modules-{{ checksum "./microservices/app/package.json" }}
+      - restore_cache:
+          name: restore admin's meteor cached build
+          keys:
+            - build-epotek-v2-meteor-{{ checksum "./microservices/admin/.meteor/release" }}-{{ checksum "./microservices/admin/.meteor/packages" }}
+      - restore_cache:
+          name: restore admin's cached node_modules
+          keys:
+            - build-epotek-v2-node_modules-{{ checksum "./microservices/admin/package.json" }}
+      - restore_cache:
+          name: restore www's meteor cached build
+          keys:
+            - build-epotek-v2-meteor-{{ checksum "./microservices/www/.meteor/release" }}-{{ checksum "./microservices/www/.meteor/packages" }}
+      - restore_cache:
+          name: restore www's cached node_modules
+          keys:
+            - build-epotek-v2-node_modules-{{ checksum "./microservices/www/package.json" }}
+
       - run:
           name: install Meteor
           command: |
@@ -59,30 +85,57 @@ jobs:
           command: |
             cd microservices/app
             # Using 3.6.0 because of this: https://github.com/meteortesting/meteor-mocha/issues/54
-            meteor npm i selenium-webdriver@3.6.0 chromedriver
+            # Using chromedriver 2.37 because 2.38 is incompatible with selenium >3.6.0
+            meteor npm i selenium-webdriver@3.6.0 chromedriver@2.37.0
             meteor npm run test-CI
       - run:
           name: run tests for admin
           command: |
             cd microservices/admin
-            meteor npm i selenium-webdriver@3.6.0 chromedriver
+            meteor npm i selenium-webdriver@3.6.0 chromedriver@2.37.0
             meteor npm run test-CI      
       - run:
           name: copy meteor bin to build cache
           command: |
             mkdir -p ~/build-temp
             cp /usr/local/bin/meteor ~/build-temp/meteor-bin
+
       - save_cache:
-          name: save build
-          key: build-epotek-v2
+          name: cache system's meteor build
+          key: build-epotek-v2-meteor-system
           paths:
             - ~/.meteor
-            - ./microservices/app/node_modules
+      - save_cache:
+          name: cache app's meteor build
+          key: build-epotek-v2-meteor-{{ checksum "./microservices/app/.meteor/release" }}-{{ checksum "./microservices/app/.meteor/packages" }}
+          paths:
             - ./microservices/app/.meteor/local
-            - ./microservices/admin/node_modules
+      - save_cache:
+          name: cache app's node_modules
+          key: build-epotek-v2-node_modules-{{ checksum "./microservices/app/package.json" }}
+          paths:
+            - ./microservices/app/node_modules
+      - save_cache:
+          name: cache admin's meteor build
+          key: build-epotek-v2-meteor-{{ checksum "./microservices/admin/.meteor/release" }}-{{ checksum "./microservices/admin/.meteor/packages" }}
+          paths:
             - ./microservices/admin/.meteor/local
-            - ./microservices/www/node_modules
+      - save_cache:
+          name: cache admin's node_modules
+          key: build-epotek-v2-node_modules-{{ checksum "./microservices/admin/package.json" }}
+          paths:
+            - ./microservices/admin/node_modules
+      - save_cache:
+          name: cache www's meteor build
+          key: build-epotek-v2-meteor-{{ checksum "./microservices/www/.meteor/release" }}-{{ checksum "./microservices/www/.meteor/packages" }}
+          paths:
             - ./microservices/www/.meteor/local
+      - save_cache:
+          name: cache www's node_modules
+          key: build-epotek-v2-node_modules-{{ checksum "./microservices/www/package.json" }}
+          paths:
+            - ./microservices/www/node_modules
+
       - store_test_results:
           path: ./results
       - store_artifacts:
@@ -99,10 +152,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
-      - restore_cache:
-          name: restore cached build
-          keys: 
-            - build-epotek-v2
       - run:
           name: install Meteor
           command: |
@@ -125,10 +174,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
-      - restore_cache:
-          name: restore cached build
-          keys: 
-            - build-epotek-v2
       - run:
           name: install Meteor
           command: |
@@ -151,10 +196,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
-      - restore_cache:
-          name: restore cached build
-          keys: 
-            - build-epotek-v2
       - run:
           name: install Meteor
           command: |

@@ -1,8 +1,8 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { INTEREST_RATES, CANTONS } from '../constants';
+import { INTEREST_RATES, CANTONS, OFFERS_COLLECTION } from '../constants';
 
-const Offers = new Mongo.Collection('offers');
+const Offers = new Mongo.Collection(OFFERS_COLLECTION);
 
 // Prevent all client side modifications of mongoDB
 Offers.deny({
@@ -24,11 +24,13 @@ const singleOffer = new SimpleSchema({
   },
   amortization: {
     type: Number,
+    min: 0,
+    max: 1000000,
   },
   // For each existing rate, insert an allowed value in the schema
   ...Object.values(INTEREST_RATES).reduce(
-    (object, interestKey) => ({
-      ...object,
+    (accumulator, interestKey) => ({
+      ...accumulator,
       [interestKey]: {
         type: Number,
         min: 0,
@@ -63,18 +65,10 @@ export const OfferSchema = new SimpleSchema({
       }
     },
   },
-  isAdmin: {
-    type: Boolean,
-    defaultValue: false,
-  },
   organization: String,
   canton: {
     type: String,
     allowedValues: Object.keys(CANTONS),
-  },
-  auctionEndTime: {
-    type: Date,
-    optional: true,
   },
   standardOffer: {
     type: singleOffer,
@@ -84,16 +78,13 @@ export const OfferSchema = new SimpleSchema({
     optional: true,
   },
   counterparts: {
-    type: Array,
-    defaultValue: [],
+    type: String,
     optional: true,
   },
-  'counterparts.$': String,
   conditions: {
-    type: Array,
-    defaultValue: [],
+    type: String,
+    optional: true,
   },
-  'conditions.$': String,
 });
 
 // Attach schema

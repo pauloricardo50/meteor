@@ -6,8 +6,8 @@ import Wave from './Wave';
 // Inspired by this:
 // https://codepen.io/anon/pen/PQxYRy
 
+const ANIMATE = false;
 const FRAMERATE = 60;
-const IS_PLAYING = false;
 const WAVE_SLOPE = 0.25;
 const HEIGHT = 800;
 
@@ -27,7 +27,13 @@ export default class WaveController extends Component {
 
   componentDidUpdate = ({ width }) => {
     if (width !== this.props.width) {
-      requestAnimationFrame(this.animate);
+      // Reset square roots as they will be false
+      this.squareRoots = {};
+      if (ANIMATE) {
+        requestAnimationFrame(this.animate);
+      } else {
+        this.createGraph(this.path);
+      }
     }
   };
 
@@ -40,7 +46,7 @@ export default class WaveController extends Component {
       ({ offset }) => ({ offset: offset + this.offsetIncrement }),
       () => {
         this.createGraph(this.path);
-        if (IS_PLAYING) {
+        if (ANIMATE) {
           requestAnimationFrame(this.animate);
         }
       },
@@ -55,7 +61,10 @@ export default class WaveController extends Component {
     for (let x = 0; x < width; x += 1) {
       data.push({
         type: 'L',
-        values: [x, HEIGHT - this.pathFunction(this.state.offset, x)],
+        values: [
+          x,
+          HEIGHT - this.pathFunction(this.props, this.state.offset, x),
+        ],
       });
     }
     data.push({ type: 'L', values: [width, 0] });
@@ -63,8 +72,9 @@ export default class WaveController extends Component {
     wave.setPathData(data);
   };
 
-  pathFunction = (offset, x) => {
-    const { frequency, amplitude, noSlope } = this.props;
+  pathFunction = (props, offset, x) => {
+    // Make sure we're using the same props for the entire render loop
+    const { frequency, amplitude, noSlope } = props;
     if (!this.squareRoots[x]) {
       // Cache square roots calculation as it's always the same
       this.squareRoots[x] = Math.sqrt(x * frequency);

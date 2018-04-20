@@ -6,15 +6,12 @@ export default class {
 
   static insert = ({ offer, userId }) => Offers.insert({ ...offer, userId });
 
-  static insertAdminOffer = ({ offer, loan, userId }) =>
+  static insertAdminOffer = ({ offer, loanId, userId }) =>
     Offers.insert({
       ...offer,
+      loanId,
       userId,
-      isAdmin: true,
-      auctionEndTime: loan.logic.auction.endTime,
-      // this doesn't update when the loan is ended prematurely by an admin
       canton: 'GE',
-      loanId: loan._id,
     });
 
   static remove = ({ offerId }) => Offers.remove(offerId);
