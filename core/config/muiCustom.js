@@ -36,6 +36,7 @@ const theme = createMuiTheme({
     MuiButton: {
       root: {
         borderRadius: 8,
+        color: colors.primary,
       },
       raised: {
         backgroundColor: 'white',
