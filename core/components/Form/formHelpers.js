@@ -2,6 +2,11 @@ import React from 'react';
 import { T } from '../Translation';
 import { toNumber } from '../../utils/conversionFunctions';
 
+export const numberFormatters = {
+  parse: value => value && toNumber(value),
+  format: value => value && `${value}`,
+};
+
 export const percentFormatters = {
   parse: value => Math.round(parseFloat(value) * 100) / 10000,
   format: value => (value * 100).toFixed(2),

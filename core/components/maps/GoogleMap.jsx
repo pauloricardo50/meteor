@@ -14,6 +14,7 @@ export default class GoogleMap extends Component {
         zoom: 14,
         scrollwheel: false,
         disableDefaultUI: true,
+        fullscreenControl: true,
       },
     });
 

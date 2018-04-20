@@ -4,8 +4,9 @@ import Mailto from 'react-protected-mailto';
 import { T } from 'core/components/Translation';
 import MapWithMarker from 'core/components/maps/MapWithMarker';
 import Icon from 'core/components/Icon';
+import Button from 'core/components/Button';
 import WwwLayout from '../../WwwLayout';
-import { PHONE, EMAIL, ADDRESS } from './contactConstants';
+import { PHONE, EMAIL, ADDRESS, MAPS_ADDRESS } from './contactConstants';
 
 import ContactUsForm from '../../components/ContactUsForm';
 
@@ -38,6 +39,16 @@ const ContactPage = () => (
       <ContactUsForm />
     </div>
     <div className="google-map">
+      <Button
+        className="directions-button"
+        raised
+        // primary
+        link
+        to={`https://maps.google.com?saddr=Current+Location&daddr=${MAPS_ADDRESS}`}
+        target="_blank"
+      >
+        Directions
+      </Button>
       <MapWithMarker address={ADDRESS} className="map" />
     </div>
     <WwwLayout.Footer transparent={false} />

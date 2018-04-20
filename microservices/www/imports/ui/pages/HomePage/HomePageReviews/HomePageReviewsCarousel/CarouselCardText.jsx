@@ -16,8 +16,8 @@ const CarouselCardText = ({ name, title, text }) => {
           label="Afficher plus"
           buttonProps={{ style: { marginTop: 16 }, raised: false }}
           cancelOnly
+          title={name}
         >
-          <h3>{name}</h3>
           <h4>{title}</h4>
           <p>{text}</p>
         </DialogSimple>
@@ -29,6 +29,8 @@ const CarouselCardText = ({ name, title, text }) => {
 };
 
 CarouselCardText.propTypes = {
+  name: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
 };
 

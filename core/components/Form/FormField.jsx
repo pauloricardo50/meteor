@@ -8,42 +8,48 @@ import { swissFrancMask, percentMask } from '../../utils/textMasks';
 import FormInput from './FormInput';
 import FormCheckbox from './FormCheckbox';
 import { FIELD_TYPES } from './formConstants';
-import { percentFormatters, moneyFormatters } from './formHelpers';
+import {
+  percentFormatters,
+  moneyFormatters,
+  numberFormatters,
+} from './formHelpers';
 import { required as requiredFunc } from './validators';
 
-const FormField = ({ type, required, validate, ...rest }) => {
-  const validateFunc = required ? [...validate, requiredFunc] : validate;
-  const defaultFieldProps = {
-    component: FormInput,
-    validate: validateFunc,
-    required,
-  };
+const defaultField = props => <Field {...props} />;
 
-  const defaultField = props => (
-    <Field {...defaultFieldProps} {...rest} {...props} />
-  );
-
+const FormField = ({ type, validate, defaultFieldProps, ...rest }) => {
   switch (type) {
   case FIELD_TYPES.TEXT:
-    return defaultField();
+    return defaultField({ ...rest, ...defaultFieldProps });
+
   case FIELD_TYPES.CHECKBOX:
     return <Field component={FormCheckbox} validate={validate} {...rest} />;
+
   case FIELD_TYPES.PERCENT:
     return withProps({
       inputComponent: MaskedInput,
       inputProps: { mask: percentMask },
       ...percentFormatters,
-    })(defaultField)();
+    })(defaultField)({ ...rest, ...defaultFieldProps });
 
   case FIELD_TYPES.MONEY:
     return withProps({
       inputComponent: MaskedInput,
       inputProps: { mask: swissFrancMask },
       ...moneyFormatters,
-    })(defaultField)();
+    })(defaultField)({ ...rest, ...defaultFieldProps });
+
+  case FIELD_TYPES.NUMBER:
+    return withProps({
+      ...numberFormatters,
+    })(defaultField)({ ...rest, ...defaultFieldProps });
 
   case FIELD_TYPES.TEXT_AREA:
-    return withProps({ multiline: true, rows: 3 })(defaultField)();
+    return withProps({ multiline: true, rows: 3 })(defaultField)({
+      ...rest,
+      ...defaultFieldProps,
+    });
+
   default:
     return defaultField;
   }
@@ -61,4 +67,14 @@ FormField.defaultProps = {
   validate: [],
 };
 
-export default FormField;
+export default withProps(({ required, validate = [] }) => {
+  const validateFunc = required ? [...validate, requiredFunc] : validate;
+
+  return {
+    defaultFieldProps: {
+      component: FormInput,
+      validate: validateFunc,
+      required,
+    },
+  };
+})(FormField);

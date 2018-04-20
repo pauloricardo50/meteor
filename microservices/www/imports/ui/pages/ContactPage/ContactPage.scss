@@ -50,6 +50,14 @@
   display: flex;
   width: 100%;
   margin-bottom: -300px;
+  position: relative;
+
+  .directions-button {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 1;
+  }
 
   .map {
     flex: 1;
@@ -68,4 +76,10 @@
   width: 100%;
   box-sizing: border-box;
   max-width: 800px;
+}
+
+@media (max-width: $large) {
+  .contact-page .contact-us-form {
+    margin-bottom: 0;
+  }
 }

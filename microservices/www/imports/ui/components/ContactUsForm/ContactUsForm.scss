@@ -4,6 +4,12 @@
   padding: 32px;
 }
 
+@media (min-width: $large) {
+  .contact-us-form {
+    padding: 64px;
+  }
+}
+
 .contact-us-form button[type='submit'] {
   align-self: flex-end;
 }
