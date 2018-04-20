@@ -45,7 +45,7 @@ const featureMap = {
   },
 };
 
-class FeatureDecisionsService {
+class FeatureService {
   // Merges all feature decisions of the features that are enabled
   getEnabledFeatureDecisions({ featureMap, featureConfig }) {
     // Get a feature map of all enabled features
@@ -70,4 +70,4 @@ class FeatureDecisionsService {
   }
 }
 
-export default new FeatureDecisionsService();
+export default new FeatureService();
