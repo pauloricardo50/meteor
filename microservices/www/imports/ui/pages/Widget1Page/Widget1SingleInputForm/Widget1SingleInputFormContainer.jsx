@@ -10,21 +10,26 @@ const order = [SALARY, FORTUNE, PROPERTY];
 
 const mapStateToProps = ({ widget1 }, { name }) => ({
   ...widget1[name],
+  step: widget1.step,
   disableSubmit: !widget1[name].value,
 });
 
 const mapDispatchToProps = (
   dispatch,
-  { name, onClick = () => {}, disableSubmit },
+  { name, onClick = () => {}, disableSubmit, step },
 ) => {
   const nextStep = order.indexOf(name) + 1;
+  const nextOrFinalStep = nextStep < step ? nextStep : FINAL_STEP;
 
   return {
     onSubmit: (event) => {
       event.preventDefault();
       if (!disableSubmit) {
         onClick();
-        dispatch({ type: 'step_SET', value: nextStep });
+        dispatch({
+          type: 'step_SET',
+          value: nextOrFinalStep,
+        });
         const willBeFinalStep = nextStep === FINAL_STEP;
         if (willBeFinalStep) {
           // Special exception here, as suggestValues only runs once
