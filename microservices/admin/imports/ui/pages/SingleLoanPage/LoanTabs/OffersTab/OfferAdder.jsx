@@ -11,7 +11,7 @@ import { FORM_NAME, HAS_COUNTERPARTS, IS_DISCOUNT } from './constants';
 const interestRatesFormArray = index =>
   Object.values(INTEREST_RATES).map(rate => ({
     id: `${rate}-${index}`,
-    type: FIELD_TYPES.PERCENT,
+    fieldType: FIELD_TYPES.PERCENT,
     label: <T id={`offer.${rate}`} />,
     required: false,
     defaultValue: 0,
@@ -35,7 +35,7 @@ const baseForm = [
     required: false,
   },
   ...interestRatesFormArray(1),
-  { id: HAS_COUNTERPARTS, type: FIELD_TYPES.CHECKBOX },
+  { id: HAS_COUNTERPARTS, fieldType: FIELD_TYPES.CHECKBOX },
 ];
 
 const counterpartsForm = isDiscount => [
@@ -44,10 +44,10 @@ const counterpartsForm = isDiscount => [
       id: 'counterparts',
       label: <T id="offer.counterparts" />,
     },
-    { id: IS_DISCOUNT, type: FIELD_TYPES.CHECKBOX },
+    { id: IS_DISCOUNT, fieldType: FIELD_TYPES.CHECKBOX },
   ],
   ...(isDiscount
-    ? [{ id: 'discount', type: FIELD_TYPES.PERCENT }]
+    ? [{ id: 'discount', fieldType: FIELD_TYPES.PERCENT }]
     : [...interestRatesFormArray(2)]),
 ];
 

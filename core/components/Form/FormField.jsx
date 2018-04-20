@@ -17,8 +17,8 @@ import { required as requiredFunc } from './validators';
 
 const defaultField = props => <Field {...props} />;
 
-const FormField = ({ type, validate, defaultFieldProps, ...rest }) => {
-  switch (type) {
+const FormField = ({ fieldType, validate, defaultFieldProps, ...rest }) => {
+  switch (fieldType) {
   case FIELD_TYPES.TEXT:
     return defaultField({ ...rest, ...defaultFieldProps });
 
@@ -56,13 +56,13 @@ const FormField = ({ type, validate, defaultFieldProps, ...rest }) => {
 };
 
 FormField.propTypes = {
-  type: PropTypes.string,
+  fieldType: PropTypes.string,
   required: PropTypes.bool,
   validate: PropTypes.array,
 };
 
 FormField.defaultProps = {
-  type: FIELD_TYPES.TEXT,
+  fieldType: FIELD_TYPES.TEXT,
   required: undefined,
   validate: [],
 };
