@@ -45,7 +45,12 @@ const featureMap = {
   },
 };
 
-class FeatureService {
+export class FeatureService {
+  constructor({ featureMap = {}, featureConfig = {} }) {
+    this.featureMap = featureMap;
+    this.featureConfig = featureConfig;
+  }
+
   // Merges all feature decisions of the features that are enabled
   getEnabledFeatureDecisions({ featureMap, featureConfig }) {
     // Get a feature map of all enabled features
@@ -62,12 +67,14 @@ class FeatureService {
   }
 
   getFeatureDecision(togglePointId) {
+    const { featureMap, featureConfig } = this;
     const currentFeatureDecisions = this.getEnabledFeatureDecisions({
       featureMap,
       featureConfig,
     });
+
     return currentFeatureDecisions[togglePointId];
   }
 }
 
-export default new FeatureService();
+export default new FeatureService({ featureMap, featureConfig });
