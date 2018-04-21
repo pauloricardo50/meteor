@@ -24,11 +24,11 @@ const Routes = () => (
       <Route path="/faq" component={FaqPage} />
       <Route path="/contact" component={ContactPage} />
       <Route path="/conditions" component={ConditionsPage} />
-      {/* <TogglePoint id={TOGGLE_POINTS.LITE_VERSION_OFF}>
+      <TogglePoint id={TOGGLE_POINTS.LITE_VERSION_OFF}>
         <Route path="/start/2" component={Start2Page} />
         <Route path="/careers" component={CareersPage} />
         <Route path="/checkYourMailbox/:email" component={CheckMailboxPage} />
-      </TogglePoint> */}
+      </TogglePoint>
       <Route component={NotFound} />
     </Switch>
   </ScrollToTop>

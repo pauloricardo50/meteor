@@ -1,12 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import pickBy from 'lodash/pickBy';
 import extend from 'lodash/extend';
-import { withProps, branch, renderComponent } from 'recompose';
+import { withProps, renderNothing } from 'recompose';
 import { TOGGLE_POINTS } from './featureConstants';
-import {
-  enhanceChildrenWith,
-  switchElements,
-} from './featureDecisionFactories';
+import { enhanceChildrenWith } from './featureDecisionFactories';
 
 const { WIDGET1_CONTINUE_BUTTON, LITE_VERSION_OFF } = TOGGLE_POINTS;
 
@@ -45,7 +42,7 @@ const featureMap = {
     [WIDGET1_CONTINUE_BUTTON]: enhanceChildrenWith(withProps({
       to: '/contact',
     })),
-    [LITE_VERSION_OFF]: () => () => null,
+    [LITE_VERSION_OFF]: enhanceChildrenWith(renderNothing),
   },
 };
 
