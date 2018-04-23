@@ -11,6 +11,7 @@ const VARIANTS = {
   BLUE: 'blue',
   WHITE: 'white',
   TRANSPARENT: 'transparent',
+  GREY: 'grey',
 };
 
 const WwwTopNav = ({ variant }) => (

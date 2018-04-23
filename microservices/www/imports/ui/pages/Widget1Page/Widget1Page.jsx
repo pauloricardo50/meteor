@@ -23,7 +23,7 @@ const getUrl = ({ salary, fortune, propertyValue }) => {
 
 const Widget1Page = ({ step, finma, ...rest }) => (
   <WwwLayout className="widget1-page">
-    <WwwLayout.TopNav variant={VARIANTS.TRANSPARENT} />
+    <WwwLayout.TopNav variant={VARIANTS.GREY} />
     <div className="widget1-page-content">
       {step <= 2 && <Widget1Part1 step={step} />}
       {step > 2 && <Widget1Part2 finma={finma} />}
@@ -46,6 +46,7 @@ const Widget1Page = ({ step, finma, ...rest }) => (
 
 Widget1Page.propTypes = {
   step: PropTypes.number.isRequired,
+  finma: PropTypes.object.isRequired,
 };
 
 export { SALARY, FORTUNE, PROPERTY } from '../../../redux/reducers/widget1';
