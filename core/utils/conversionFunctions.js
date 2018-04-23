@@ -2,6 +2,9 @@
 export function toMoney(value) {
   if (value === 0) {
     return 0;
+  } else if (Number.isNaN(value)) {
+    // Exception for isNaN which should never appear
+    return 0;
   } else if (!value) {
     // Don't format the value if it is undefined or an empty string
     return value;
