@@ -1,4 +1,6 @@
 {
+  "Widget1LenderCount.label": "Prêteurs intéressés",
+
   "Widget1InputsError.success": "Tout est bon !",
   "Widget1InputsError.incomeWarning":
     "Les revenus ne sont pas dans les normes attendues, mais il existe des solutions. Continuez et parlons-en",
@@ -141,6 +143,9 @@
     "Un service centralisé - e-potek réunit, en un seul endroit, l’intégralité des acteurs du marché ainsi que les informations indispensables à la bonne compréhension des enjeux du financement hypothécaire. Disposez d’un accès gratuit à des informations rédigées par des professionnels qualifiés des domaines liés à votre projet (droit, notariat, immobilier, fiscalité, économie, assurance et plus) accessibles gratuitement et en tout temps.",
   "HomePageDescription.description4":
     "Des données fiables - Evitez les pièges et soyez au courant des réalités du marché hypothécaire en recevant des conditions de financement sur-mesure et classées par ordre de pertinence. Déterminez précisément et en fonction de vos caractéristiques le meilleur partenaire pour vous accompagner.",
+
+  "HomePageDescriptionSeo.less": "Masquer",
+  "HomePageDescriptionSeo.more": "En savoir plus",
 
   "AboutPage.description":
     "e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève. Expansion prévue prochainement.{verticalSpace}L'équipe derrière e-Potek est composée d'entrepreneurs expérimentés dans la finance et les prêts hypothécaires en Suisse.",
