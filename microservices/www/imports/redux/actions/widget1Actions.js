@@ -36,14 +36,20 @@ export const increaseSliderMax = name => ({
   type: increaseSliderMaxAction(name),
 });
 
-export const setStep = nextStep => (dispatch) => {
-  dispatch({ type: 'step_SET', value: nextStep });
-  const willBeFinalStep = nextStep === FINAL_STEP;
-  if (willBeFinalStep) {
-    // Special exception here, as suggestValues only runs once
-    // the widget1 is at the FINAL_STEP. Suggest values should be run
-    // if the user enters a value here
-    dispatch(suggestValues());
+export const setStep = nextStep => (dispatch, getState) => {
+  const state = getState();
+  const step = makeWidget1Selector('step')(state);
+
+  // Only set the step if we're not going down
+  if (step <= nextStep) {
+    dispatch({ type: 'step_SET', value: nextStep });
+    const willBeFinalStep = nextStep === FINAL_STEP;
+    if (willBeFinalStep) {
+      // Special exception here, as suggestValues only runs once
+      // the widget1 is at the FINAL_STEP. Suggest values should be run
+      // if the user enters a value here
+      dispatch(suggestValues());
+    }
   }
 };
 
