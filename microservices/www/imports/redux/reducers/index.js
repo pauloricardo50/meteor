@@ -1,13 +1,19 @@
 import { combineReducers } from 'redux';
-import { persistReducer, createTransform } from 'redux-persist';
+import { persistReducer } from 'redux-persist';
 import { reducer as formReducer } from 'redux-form';
 
 import widget1 from './widget1';
 
+const PERSIST_STORE = true;
+// This whitelist essentially disabled redux-persist.
+// Remove it when we are confident the calculator is really stable. Or else it
+// persists faulty state and makes the site unusable for a user
+const persistWhitelist = [];
+
 const createPersistedReducer = (reducer, isClient) => {
-  if (isClient) {
+  if (PERSIST_STORE && isClient) {
     const { default: storage } = require('redux-persist/lib/storage');
-    const persistConfig = { key: 'root', storage };
+    const persistConfig = { key: 'root', storage, whitelist: persistWhitelist };
     return persistReducer(persistConfig, reducer);
   }
   return reducer;

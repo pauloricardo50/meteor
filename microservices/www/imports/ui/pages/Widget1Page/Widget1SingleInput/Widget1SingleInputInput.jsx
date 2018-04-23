@@ -2,16 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import IconButton from 'core/components/IconButton';
-import { toNumber, toMoney } from 'core/utils/conversionFunctions';
+import { toMoney } from 'core/utils/conversionFunctions';
 
-const Widget1SingleInputInput = ({ value, setValue, auto, setAuto }) => (
+const Widget1SingleInputInput = ({ value, setInputValue, auto, setAuto }) => (
   <div className="widget1-input">
     <span className="currency">CHF</span>
-    <input
-      type="text"
-      value={toMoney(value)}
-      onChange={e => setValue(toNumber(e.target.value))}
-    />
+    {/* Use type tel to display right keyboard without type number issues */}
+    <input type="tel" value={toMoney(value)} onChange={setInputValue} />
     <IconButton
       type={auto ? 'lock' : 'lockOpen'}
       tooltip={auto ? 'Passer en mode manuel' : 'Passer en mode suggestion'}
@@ -22,7 +19,7 @@ const Widget1SingleInputInput = ({ value, setValue, auto, setAuto }) => (
 
 Widget1SingleInputInput.propTypes = {
   value: PropTypes.number,
-  setValue: PropTypes.func.isRequired,
+  setInputValue: PropTypes.func.isRequired,
   auto: PropTypes.bool.isRequired,
   setAuto: PropTypes.func.isRequired,
 };

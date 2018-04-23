@@ -1,13 +1,13 @@
 {
-  "Widget1InputsError.success": "Tout est bon!",
-  "Widget1InputsError.borrowError":
-    "Vos fonds propres ne suffisent pas pour votre projet, continuez pour trouver des solutions",
-  "Widget1InputsError.borrowWarning":
-    "Vos fonds propres sont suffisants sous certaines conditions",
-  "Widget1InputsError.incomeError":
-    "Vos revenus ne suffisent pas pour votre projet, continuez pour trouver des solutions",
+  "Widget1InputsError.success": "Tout est bon !",
   "Widget1InputsError.incomeWarning":
-    "Vos revenus sont limite, mais nous pouvons vous aider",
+    "Les revenus ne sont pas dans les normes attendues, mais il existe des solutions. Continuez et parlons-en",
+  "Widget1InputsError.incomeError":
+    "Les revenus ne suffisent pas pour votre projet. Continuez et parlons-en",
+  "Widget1InputsError.borrowWarning":
+    "Les fonds propres ne sont pas dans les normes attendues, mais il existe des solutions. Continuez et parlons-en",
+  "Widget1InputsError.borrowError":
+    "Les fonds propres ne suffisent pas pour votre projet. Continuez et parlons-en",
 
   "ContactUsForm.name": "Prénom et Nom",
   "ContactUsForm.name.placeholder": "Marie Rochat",
@@ -130,7 +130,8 @@
   "NewDocumentForm.placeholder": "Nom du document (visible à l'utilisateur)",
   "NewDocumentForm.cta": "Ajouter",
 
-  "HomePageDescription.title": "e-Potek, la révolution de l’hypothèque",
+  "HomePageDescription.seoTitle": "e-Potek, la révolution de l’hypothèque",
+  "HomePageDescription.stepsTitle": "La méthode e-Potek",
   "HomePageDescription.description":
     "Face aux nombreuses options proposées sur le marché, comparer différents prêteurs et produits de financement hypothécaire peut devenir un processus fastidieux. Il est ainsi facile de se perdre dans la jungle hypothécaire face à des offres aux conditions de taux apparaissant très avantageuses mais malheureusement valables uniquement sous certaines conditions exceptionnelles et donc applicables qu’à une faible minorité du marché.",
 
@@ -1289,7 +1290,7 @@
   "tooltip2.finma":
     "La FINMA détermine quelles sont les conditions minimales pour que vous puissiez obtenir un prêt, pour vous protéger d'éventuelles remontées imprévues des taux hypothécaires.{verticalSpace}Les taux sont bas aujourd'hui, mais si vos finances ne sont pas assez solides et que les taux montent, vous pourriez avoir de sérieuses difficultés financières.",
   "tooltip2.notaryFees":
-    "Les frais de notaire sont compris d'une multitude de frais supplémentaires que vous devrez couvrir avec votre épargne, il est impossible d'utiliser sa prévoyance ou son prêt hypothécaire pour les payer. ",
+    "Les frais de notaire sont compris d'une multitude de frais supplémentaires que vous devrez couvrir avec votre épargne, il est impossible d'utiliser sa prévoyance ou son prêt hypothécaire pour les payer.",
   "tooltip2.propertyWork":
     "Ces travaux sont une bonne façon d'augmenter la valeur de votre bien, sans augmenter les frais de notaire.",
   "TopNav.login": "Login",

@@ -12,6 +12,7 @@ const Widget1SingleInput = ({
   auto,
   name,
   setValue,
+  setInputValue,
   setAuto,
   sliderMax,
   increaseSliderMax,
@@ -24,7 +25,7 @@ const Widget1SingleInput = ({
       <div className="box-content">
         <Widget1SingleInputInput
           value={value}
-          setValue={setValue}
+          setInputValue={setInputValue}
           auto={auto}
           setAuto={setAuto}
         />

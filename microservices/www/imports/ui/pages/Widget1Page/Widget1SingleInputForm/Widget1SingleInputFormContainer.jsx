@@ -2,47 +2,36 @@ import { connect } from 'react-redux';
 import { SALARY, FORTUNE, PROPERTY } from '../Widget1Page';
 import {
   setAuto,
-  suggestValues,
+  setStep,
+  setValue,
 } from '../../../../redux/actions/widget1Actions';
-import { FINAL_STEP } from '../../../../redux/reducers/widget1';
 
 const order = [SALARY, FORTUNE, PROPERTY];
 
 const mapStateToProps = ({ widget1 }, { name }) => ({
   ...widget1[name],
-  step: widget1.step,
   disableSubmit: !widget1[name].value,
 });
 
 const mapDispatchToProps = (
   dispatch,
-  { name, onClick = () => {}, disableSubmit, step },
+  { name, onClick = () => {}, disableSubmit },
 ) => {
   const nextStep = order.indexOf(name) + 1;
-  const nextOrFinalStep = nextStep < step ? nextStep : FINAL_STEP;
 
   return {
     onSubmit: (event) => {
       event.preventDefault();
       if (!disableSubmit) {
         onClick();
-        dispatch({
-          type: 'step_SET',
-          value: nextOrFinalStep,
-        });
-        const willBeFinalStep = nextStep === FINAL_STEP;
-        if (willBeFinalStep) {
-          // Special exception here, as suggestValues only runs once
-          // the widget1 is at the FINAL_STEP. Suggest values should be run
-          // if the user enters a value here
-          dispatch(suggestValues());
-        }
+        dispatch(setStep(nextStep));
       }
     },
     onDoNotKnow: () => {
       onClick();
-      dispatch({ type: 'step_SET', value: nextStep });
-      dispatch(setAuto(name));
+      dispatch(setStep(nextStep));
+      dispatch(setAuto(name, true));
+      dispatch(setValue(name, undefined));
     },
   };
 };
