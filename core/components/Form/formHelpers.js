@@ -2,8 +2,10 @@ import React from 'react';
 import { T } from '../Translation';
 import { toNumber } from '../../utils/conversionFunctions';
 
+const onlyNums = value => value.replace(/[^\d]/g, '');
+
 export const numberFormatters = {
-  parse: value => value && toNumber(value),
+  parse: value => value && onlyNums(value),
   format: value => value && `${value}`,
 };
 

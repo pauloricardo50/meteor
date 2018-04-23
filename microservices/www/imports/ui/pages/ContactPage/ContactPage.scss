@@ -51,6 +51,10 @@
     display: flex;
     align-items: center;
 
+    &:hover {
+      opacity: 0.5;
+    }
+
     &.email {
       flex: 1;
     }

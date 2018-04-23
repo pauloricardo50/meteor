@@ -9,6 +9,7 @@ import Widget1PageContainer from './Widget1PageContainer';
 import Widget1Part1 from './Widget1Part1';
 import Widget1Part2 from './Widget1Part2';
 import WwwLayout from '../../WwwLayout';
+import { VARIANTS } from '../../WwwLayout/WwwTopNav';
 
 const getUrl = ({ salary, fortune, propertyValue }) => {
   const queryparams = {
@@ -22,7 +23,7 @@ const getUrl = ({ salary, fortune, propertyValue }) => {
 
 const Widget1Page = ({ step, finma, ...rest }) => (
   <WwwLayout className="widget1-page">
-    <WwwLayout.TopNav />
+    <WwwLayout.TopNav variant={VARIANTS.TRANSPARENT} />
     <div className="widget1-page-content">
       {step <= 2 && <Widget1Part1 step={step} />}
       {step > 2 && <Widget1Part2 finma={finma} />}
