@@ -18,10 +18,14 @@ const Widget1SingleInputInput = ({ value, setInputValue, auto, setAuto }) => (
 );
 
 Widget1SingleInputInput.propTypes = {
-  value: PropTypes.number,
+  value: PropTypes.any,
   setInputValue: PropTypes.func.isRequired,
   auto: PropTypes.bool.isRequired,
   setAuto: PropTypes.func.isRequired,
+};
+
+Widget1SingleInputInput.defaultProps = {
+  value: '',
 };
 
 export default Widget1SingleInputInput;
