@@ -5,9 +5,7 @@ export const createRegexQuery = (fieldName, searchQuery) => {
     const searchQueryWords = searchQuery.split(' ');
     return {
       [fieldName]: {
-        $regex: `${searchQueryWords
-          .map(word => `(?=.*\b${word}\b)`)
-          .join('')}.+`,
+        $regex: `${searchQueryWords.map(word => `(?=.*${word})`).join('')}.+`,
         $options: 'gi',
       },
     };

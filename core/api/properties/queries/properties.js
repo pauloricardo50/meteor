@@ -1,14 +1,14 @@
 import Properties from '..';
 import { PROPERTY_QUERIES } from '../propertyConstants';
-import { createRegexQuery } from '../../helpers/mongoHelpers';
+import { createSearchFilters } from '../../helpers/mongoHelpers';
 
 export default Properties.createQuery(PROPERTY_QUERIES.PROPERTIES, {
   $filter({ filters, params: { searchQuery } }) {
     if (searchQuery) {
-      filters.$or = [
-        createRegexQuery('address1', searchQuery),
-        createRegexQuery('city', searchQuery),
-      ];
+      Object.assign(
+        filters,
+        createSearchFilters(['address1', 'city'], searchQuery),
+      );
     }
   },
   address1: 1,
