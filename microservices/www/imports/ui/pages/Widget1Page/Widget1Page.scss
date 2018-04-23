@@ -14,10 +14,8 @@
 
 .widget1-page .widget1-page-content {
   display: flex;
-  height: calc(100% - #{$top-nav-height});
-  overflow: auto;
+  // overflow: auto;
   flex: 1;
-  margin-top: $top-nav-height;
   flex-direction: column;
   box-sizing: border-box;
   padding: 8px;

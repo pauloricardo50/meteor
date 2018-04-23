@@ -7,6 +7,12 @@
   z-index: 20;
 }
 
+@media (max-width: $med) {
+  .widget1-single-input-form {
+    padding: 16px;
+  }
+}
+
 .widget1-single-input-form form {
   display: flex;
   flex-direction: column;
@@ -23,6 +29,12 @@
   flex-wrap: wrap;
   padding-top: 16px;
   margin-bottom: -16px;
+}
+
+@media (max-width: $med) {
+  .widget1-single-input-form .buttons {
+    margin-bottom: 0;
+  }
 }
 
 .widget1-single-input-form .buttons > * {

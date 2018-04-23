@@ -110,6 +110,12 @@ a:not([role='button']) {
   }
 }
 
+hr {
+  border: none;
+  height: 1px;
+  background-color: $border-grey;
+}
+
 // White backgrounds with shadows to put things on
 .card1 {
   background: #ffffff;

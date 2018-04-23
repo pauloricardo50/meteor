@@ -38,8 +38,11 @@
 }
 
 .widget1-lender-count {
-  margin-top: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.widget1-lender-count-divider {
+  margin: 16px 0;
 }
