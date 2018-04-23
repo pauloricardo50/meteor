@@ -4,7 +4,7 @@ import WwwTopNav from './WwwTopNav';
 import WwwFooter from './WwwFooter';
 
 const WwwLayout = ({ children, className }) => (
-  <main className={`www-layout ${className}`}>{children}</main>
+  <div className={`www-layout ${className}`}>{children}</div>
 );
 
 WwwLayout.propTypes = {
