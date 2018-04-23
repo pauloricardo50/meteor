@@ -28,6 +28,7 @@ const Widget1SingleInput = ({
           setInputValue={setInputValue}
           auto={auto}
           setAuto={setAuto}
+          unsetValue={() => setValue(undefined)}
         />
         <Widget1SingleInputSlider
           value={value}
