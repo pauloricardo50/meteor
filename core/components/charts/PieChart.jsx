@@ -20,8 +20,6 @@ const getConfig = ({ data, title, subtitle, config }) =>
         cursor: 'pointer',
         dataLabels: {
           enabled: false,
-          format: '<b>{point.name}</b><br />CHF {point.y:,.0f}',
-          style: { overflow: 'visible' },
         },
         showInLegend: true,
         animation: { duration: 400 },
