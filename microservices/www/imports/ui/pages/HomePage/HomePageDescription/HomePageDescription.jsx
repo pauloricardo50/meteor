@@ -17,10 +17,15 @@ const HomePageDescription = () => (
   <div className="home-page-description">
     <b>
       <h2 className="title">
-        <T id="HomePageDescription.title" />
+        <T id="HomePageDescription.seoTitle" />
       </h2>
     </b>
     <HomePageDescriptionSeo />
+    <b>
+      <h2 className="seo-title">
+        <T id="HomePageDescription.stepsTitle" />
+      </h2>
+    </b>
     <div className="steps">
       {steps.map((step, index) => (
         <DescriptionItem nb={index + 1} key={step.id} step={step} />

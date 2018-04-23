@@ -14,6 +14,12 @@ $progression-color: #8db6e6;
   color: $primary;
 }
 
+.home-page-description .seo-title {
+  align-self: center;
+  color: $primary;
+  padding-top: 100px;
+}
+
 .home-page-description .description {
   display: flex;
   flex-direction: column;
