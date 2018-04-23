@@ -44,6 +44,9 @@
   color: $primary;
   font-size: 32px;
   width: 100%;
+
+  // Fix for Firefox and android
+  min-width: 0;
 }
 
 @media (max-width: $med) {
