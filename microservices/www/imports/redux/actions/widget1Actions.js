@@ -46,3 +46,10 @@ export const setStep = nextStep => (dispatch) => {
     dispatch(suggestValues());
   }
 };
+
+export const resetCalculator = () => (dispatch) => {
+  NAMES.forEach((name) => {
+    dispatch({ type: setValueAction(name), value: undefined });
+    dispatch({ type: setAutoAction(name), auto: true });
+  });
+};
