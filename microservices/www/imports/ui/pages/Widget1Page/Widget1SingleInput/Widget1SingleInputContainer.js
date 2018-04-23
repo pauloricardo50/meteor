@@ -17,6 +17,10 @@ export default connect(
       dispatch(setValue(name, value));
     },
     setValue: value => dispatch(setValue(name, value)),
+    unsetValue: () => {
+      dispatch(setAuto(name, false));
+      dispatch(setValue(name, undefined));
+    },
     setAuto: () => dispatch(setAuto(name)),
     increaseSliderMax: () => dispatch(increaseSliderMax(name)),
   }),
