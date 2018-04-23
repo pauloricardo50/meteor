@@ -4,17 +4,16 @@ import { USER_EVENTS, ROLES } from './userConstants';
 import Users from '../users';
 
 class UserService {
-  static createUser = ({ options, role }) => {
+  createUser = ({ options, role }) => {
     const newUserId = Accounts.createUser(options);
     Roles.addUsersToRoles(newUserId, role);
     return newUserId;
   };
 
-  static doesUserExist = ({ email }) =>
-    // This should remain a simple inequality check
-    Accounts.findUserByEmail(email) != null;
+  // This should remain a simple inequality check
+  doesUserExist = ({ email }) => Accounts.findUserByEmail(email) != null;
 
-  static sendVerificationEmail = ({ userId }) =>
+  sendVerificationEmail = ({ userId }) =>
     Accounts.sendVerificationEmail(userId);
 
   // This is used to hook into Accounts

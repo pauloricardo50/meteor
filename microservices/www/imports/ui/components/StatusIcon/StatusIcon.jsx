@@ -5,7 +5,7 @@ import Icon from 'core/components/Icon';
 import { SUCCESS, WARNING, ERROR } from 'core/api/constants';
 import colors from 'core/config/colors';
 
-const statuses = [SUCCESS, WARNING, ERROR];
+const STATUSES = [SUCCESS, WARNING, ERROR];
 
 const styles = {
   success: { color: colors.success },
@@ -26,7 +26,7 @@ const StatusIcon = ({ status, ...rest }) => {
 };
 
 StatusIcon.propTypes = {
-  status: PropTypes.oneOf(statuses),
+  status: PropTypes.oneOf(STATUSES),
 };
 
 StatusIcon.defaultProps = {

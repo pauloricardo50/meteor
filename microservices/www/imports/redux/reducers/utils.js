@@ -3,9 +3,9 @@ export const createValueReducer = (storeName, initialState = null) => (
   { type, value },
 ) => {
   switch (type) {
-  case `${storeName}.SET`:
+  case `${storeName}_SET`:
     return value;
-  case `${storeName}.RESET`:
+  case `${storeName}_RESET`:
     return initialState;
   default:
     return state;

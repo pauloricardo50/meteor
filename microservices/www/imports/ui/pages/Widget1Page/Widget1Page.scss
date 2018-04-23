@@ -9,19 +9,24 @@
 
 .widget1-page {
   display: flex;
+  flex-direction: column;
+}
+
+.widget1-page .widget1-page-content {
+  display: flex;
   height: calc(100% - #{$top-nav-height});
   overflow: auto;
   flex: 1;
   margin-top: $top-nav-height;
   flex-direction: column;
   box-sizing: border-box;
-  padding: 16px;
+  padding: 8px;
   align-items: center;
   justify-content: flex-start;
 }
 
-@media (min-width: 800px) {
-  .widget1-page {
+@media (min-width: $med) {
+  .widget1-page .widget1-page-content {
     padding: 80px;
   }
 }
@@ -47,7 +52,7 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-around;
   flex-shrink: 0;
 }
@@ -65,6 +70,7 @@
 
 .widget1-page .widget1-part-2 .card1 h2 {
   color: $primary;
+  margin-top: 0;
 }
 
 .widget1-page .widget1-part-2 .card1 .card-bottom {
@@ -75,6 +81,19 @@
   align-self: flex-start;
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
+}
+
+@media (max-width: $med) {
+  .widget1-page .widget1-part-2 .card1 {
+    margin: 8px;
+    padding: 16px;
+
+    .card-bottom {
+      margin-left: -16px;
+      margin-bottom: -16px;
+      padding: 16px;
+    }
+  }
 }
 
 .widget1-page .cta {

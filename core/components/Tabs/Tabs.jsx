@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import Paper from 'material-ui/Paper';
 import MuiTabs, { Tab } from 'material-ui/Tabs';
@@ -24,7 +25,9 @@ class Tabs extends Component {
   handleChange = (event, value) => this.setState({ value });
 
   render() {
-    const { classes, tabs, ...otherProps } = this.props;
+    const { classes, tabs, initialIndex, ...otherProps } = this.props;
+    // initial index is destructured to avoid passing down an unrecognized prop
+    // to MuiTabs
 
     return (
       <div>
@@ -34,10 +37,17 @@ class Tabs extends Component {
             onChange={this.handleChange}
             indicatorColor="primary"
             textColor="primary"
-            centered
+            centered={!otherProps.scrollable}
             {...otherProps}
           >
-            {tabs.map((tab, i) => <Tab label={tab.label} key={i} />)}
+            {tabs.map(({ label, to }, i) => (
+              <Tab
+                label={label}
+                component={to ? Link : undefined}
+                to={to}
+                key={i}
+              />
+            ))}
           </MuiTabs>
         </Paper>
         <div style={{ paddingTop: 16 }}>{this.getContent()}</div>

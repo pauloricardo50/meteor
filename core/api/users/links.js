@@ -1,21 +1,19 @@
-import { Loans, Users } from '../';
+import { Users, Loans, Offers } from '../';
 
 Users.addLinks({
   loans: {
     collection: Loans,
     inversedBy: 'user',
   },
-});
-
-Users.addLinks({
+  offers: {
+    collection: Offers,
+    inversedBy: 'user',
+  },
   assignedEmployee: {
     collection: Users,
     field: 'assignedEmployeeId',
     type: 'one',
   },
-});
-
-Users.addLinks({
   assignedEndUsers: {
     collection: Users,
     inversedBy: 'assignedEmployee',

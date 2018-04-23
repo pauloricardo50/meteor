@@ -40,11 +40,11 @@ export const taskChangeStatus = new Method({
   },
 });
 
-export const taskChangeAssignedTo = new Method({
-  name: 'taskChangeAssignedTo',
+export const setAssigneeOfTask = new Method({
+  name: 'setAssigneeOfTask',
   params: {
     taskId: String,
-    newAssignee: String,
+    newAssigneeId: String,
   },
 });
 
@@ -52,5 +52,12 @@ export const taskGetRelatedTo = new Method({
   name: 'taskGetRelatedTo',
   params: {
     task: Object,
+  },
+});
+
+export const completeAddAssignedToTask = new Method({
+  name: 'completeAddAssignedToTask',
+  params: {
+    userId: String,
   },
 });

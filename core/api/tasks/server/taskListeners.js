@@ -5,7 +5,8 @@ import {
   startAuction,
   endAuction,
   cancelAuction,
-  assignAdminToUser,
+  assignAdminToNewUser,
+  completeAddAssignedToTask,
 } from '../../methods';
 import TaskService from '../TaskService';
 import { TASK_TYPE, TASK_STATUS } from '../taskConstants';
@@ -35,7 +36,8 @@ EventService.addMethodListener(cancelAuction, ({ loanId }) => {
   });
 });
 
-EventService.addMethodListener(assignAdminToUser, ({ adminId, userId }) => {
+EventService.addMethodListener(assignAdminToNewUser, ({ adminId, userId }) => {
+  completeAddAssignedToTask.run({ userId });
   TaskService.assignAllTasksToAdmin({ userId, newAssignee: adminId });
 });
 

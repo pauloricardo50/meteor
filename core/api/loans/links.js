@@ -1,4 +1,4 @@
-import { Loans, Properties, Borrowers, Users, Tasks } from '../';
+import { Loans, Properties, Borrowers, Users, Tasks, Offers } from '../';
 
 Loans.addLinks({
   property: {
@@ -18,6 +18,10 @@ Loans.addLinks({
   },
   tasks: {
     collection: Tasks,
+    inversedBy: 'loan',
+  },
+  offers: {
+    collection: Offers,
     inversedBy: 'loan',
   },
 });

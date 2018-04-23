@@ -5,7 +5,7 @@
   margin-top: -16px;
   margin-left: -16px;
   margin-bottom: 16px;
-  width: calc(100% + 32px);
+  width: 100%;
   padding: 24px;
   color: white;
 
@@ -21,6 +21,7 @@
 
   .text {
     display: flex;
+    align-items: center;
     padding: 24px 0 16px 0;
     .icon {
       margin-right: 16px;

@@ -4,7 +4,9 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
+  align-items: flex-start;
   padding: 40px 16px 80px 16px;
+  height: 600px;
 }
 
 .home-page header .text h1,
@@ -36,7 +38,9 @@
   max-width: 500px;
 }
 .home-page header .text h3 {
+  line-height: 1.5em;
   max-width: 500px;
+  font-weight: 300;
 }
 
 .home-page header .widget1-single-input-form {

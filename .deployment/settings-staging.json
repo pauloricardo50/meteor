@@ -1,6 +1,9 @@
 {
   "public": {
     "environment": "staging",
+    "features": {
+      "LITE_VERSION": true
+    },
     "analyticsSettings": {
       "Google Analytics": {
         "trackingId": "UA-84358947-2"

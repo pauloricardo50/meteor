@@ -1,17 +1,15 @@
-@import '{}/client/css/variables.scss';
-
 .app-layout {
   padding: 16px;
   display: flex;
   flex-direction: column;
   height: auto;
   min-height: 100%;
+  padding-left: 316px; // side-nav width + 16px
 }
 
 @media (min-width: $med) {
   .app-layout {
     padding-top: 80px;
-    padding-left: 316px; // side-nav width + 16px
     padding-bottom: 16px;
   }
 }
@@ -45,10 +43,9 @@
   margin: auto;
 }
 
-@media (min-width: $med) {
-  .app-layout .transition-wrapper {
-    width: calc(100% - 250px - 32px);
-  }
+// Change this with a media query if the side-bar disappears
+.app-layout .transition-wrapper {
+  width: calc(100% - 250px - 32px);
 }
 
 .layout-error {
@@ -62,4 +59,15 @@
 .full-screen {
   width: 100%;
   min-height: 100%;
+}
+
+.app-root .navs {
+  width: 100%;
+  display: flex;
+}
+
+.app-root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }

@@ -4,25 +4,9 @@ import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
 
 import MotionCarousel from './MotionCarousel';
+import reviews from './reviews';
 
 const NEXT = 'NEXT';
-const reviews = [
-  {
-    name: 'Yannis',
-    text:
-      "En tant que CEO d'e-Potek, je peux vous assurer que vous êtes en présence d'un très bon produit. Comment ça j'ai pas le droit de donner une review?",
-  },
-  {
-    name: 'Florian',
-    text:
-      "Bon, j'ai développé tout le site web, regardez ces effets d'animation sur cette superbe carte blanche, des journées de boulot! Rien que pour ça, e-Potek en vaut la peine.",
-  },
-  {
-    name: 'Cyril',
-    text:
-      "Certes, j'ai investi dans cette boite, donc le conflit d'intérêt dans cette review est assez fort, mais je pense que vous devriez vraiment leur donner une chance. Regardez-les, ils sont désespérés avec leurs reviews..",
-  },
-];
 
 export default class HomePageReviewsCarousel extends Component {
   constructor(props) {

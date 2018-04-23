@@ -19,8 +19,8 @@ import ArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import ArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import SearchIcon from '@material-ui/icons/Search';
 import PowerOffIcon from '@material-ui/icons/PowerSettingsNew';
-import LockIcon from '@material-ui/icons/LockOutline';
 import LockOpen from '@material-ui/icons/LockOpen';
+import Lock from '@material-ui/icons/Lock';
 import BuildingIcon from '@material-ui/icons/Business';
 import HomeIcon from '@material-ui/icons/Home';
 import AssessmentIcon from '@material-ui/icons/Assessment';
@@ -74,7 +74,7 @@ const iconMap = {
   dropdown: DropDownCircle,
   search: SearchIcon,
   powerOff: PowerOffIcon,
-  lock: LockIcon,
+  lock: Lock,
   lockOpen: LockOpen,
   home: HomeIcon,
   building: BuildingIcon,

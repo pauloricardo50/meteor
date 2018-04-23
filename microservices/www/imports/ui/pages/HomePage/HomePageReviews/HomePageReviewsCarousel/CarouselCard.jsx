@@ -1,10 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const CarouselCard = ({ left, review: { name, text } }) => (
+import CarouselCardText from './CarouselCardText';
+
+const CarouselCard = ({ left, review: { name, text, title } }) => (
   <div className="carousel-card card1" style={{ left: `${left}%` }}>
-    <h2>{name}</h2>
-    <p>{text}</p>
+    <div className="carousel-card-top">
+      <h2 className="carousel-card-name">{name}</h2>
+      <p className="carousel-card-title">{title}</p>
+    </div>
+    <CarouselCardText name={name} title={title} text={text} />
   </div>
 );
 

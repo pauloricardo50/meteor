@@ -1,5 +1,4 @@
 @import './DescriptionItem/DescriptionItem.scss';
-@import '{}/client/css/variables.scss';
 
 $progression-color: #8db6e6;
 
@@ -7,13 +6,19 @@ $progression-color: #8db6e6;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 8px;
+  padding: 16px;
 }
 
 .home-page-description .title {
-  max-width: 600px;
-  text-align: center;
+  align-self: center;
   color: $primary;
+}
+
+.home-page-description .description {
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  text-align: justify;
 }
 
 .home-page-description .steps {
@@ -21,7 +26,6 @@ $progression-color: #8db6e6;
   display: flex;
   flex-direction: column;
   width: 100%;
-  z-index: -1;
 }
 
 .home-page-description .progression {

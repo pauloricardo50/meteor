@@ -2,11 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
-
 import omit from 'lodash/omit';
-
-// import RaisedButton from 'material-ui/RaisedButton';
-// import FlatButton from 'material-ui/FlatButton'
 import MuiButton from 'material-ui/Button';
 
 const getColor = ({ primary, secondary, color }) => {

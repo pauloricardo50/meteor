@@ -1,11 +1,13 @@
 import React from 'react';
-import { renderToNodeStream } from 'react-dom/server';
+import { renderToString } from 'react-dom/server';
 import { onPageLoad } from 'meteor/server-render';
 import { Helmet } from 'react-helmet';
 
 import createStore from '../../redux/store';
-import ServerApp from './ServerApp';
 import * as startupConstants from '../shared/startupConstants';
+import ServerApp from './ServerApp';
+import MaterialUiServer from '../shared/MaterialUi/MaterialUiServer';
+import setupMaterialUiServer from '../shared/MaterialUi/setupMaterialUiServer';
 
 const prepareState = (store) => {
   const preloadedState = store.getState();
@@ -17,12 +19,24 @@ const prepareState = (store) => {
 
 onPageLoad((sink) => {
   const context = {};
-  const store = createStore();
+  const { store } = createStore();
   const serverState = prepareState(store);
+  const { registry, generateClassName } = setupMaterialUiServer();
 
   sink.renderIntoElementById(
     startupConstants.ROOT_ID,
-    renderToNodeStream(<ServerApp store={store} context={context} location={sink.request.url} />),
+    // Can't use the new "renderToNodeStream" because of JSS
+    // See this issue: https://github.com/mui-org/material-ui/issues/8503
+    renderToString(<MaterialUiServer
+      registry={registry}
+      generateClassName={generateClassName}
+    >
+      <ServerApp
+        store={store}
+        context={context}
+        location={sink.request.url}
+      />
+    </MaterialUiServer>),
   );
 
   const helmet = Helmet.renderStatic();
@@ -33,5 +47,14 @@ onPageLoad((sink) => {
     <script>
       window.${startupConstants.REDUX_STORE_KEY} = ${serverState}
     </script>
+  `);
+
+  // Get the CSS after it's been rendered by the server
+  // And inject it to the client
+  const css = registry.toString();
+  sink.appendToBody(`
+    <style id="jss-server-side">
+      ${css}
+    </style>
   `);
 });
