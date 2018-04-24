@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 
 import { IntlNumber } from 'core/components/Translation';
 import { getLoanValue } from 'core/utils/loanFunctions';
+import LayoutError from 'core/components/ErrorBoundary/LayoutError';
+import Loading from 'core/components/Loading';
 import LoanTabs from './LoanTabs';
 import SingleLoanPageContainer from './SingleLoanPageContainer';
 
@@ -22,8 +24,17 @@ class SingleLoanPage extends Component {
   render() {
     const { data: loan, isLoading } = this.props;
 
-    if (isLoading || !loan) {
-      return null;
+    if (isLoading) {
+      return <Loading />;
+    }
+
+    if (!loan) {
+      return (
+        <LayoutError
+          errorDescription="missingDoc"
+          displayReloadButton={false}
+        />
+      );
     }
 
     const dataToPassDown = {
@@ -54,12 +65,8 @@ class SingleLoanPage extends Component {
 }
 
 SingleLoanPage.propTypes = {
-  data: PropTypes.objectOf(PropTypes.any),
+  data: PropTypes.objectOf(PropTypes.any).isRequired,
   isLoading: PropTypes.bool.isRequired,
-};
-
-SingleLoanPage.defaultProps = {
-  data: {},
 };
 
 export default SingleLoanPageContainer(SingleLoanPage);
