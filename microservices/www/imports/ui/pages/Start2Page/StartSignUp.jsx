@@ -79,7 +79,7 @@ export default class StartSignUp extends Component {
     // userId should remain undefined, and the user will add it to his account
     // once logged in, this is to avoid other people adding loans to your
     // account
-    saveStartForm(formState, null)
+    saveStartForm(formState, undefined)
       .then((loanId) => {
         // Keep loading true, to prevent double insert
         this.setState({ errorText: '' });

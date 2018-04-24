@@ -18,8 +18,7 @@ import {
 } from '../methodDefinitions';
 
 loanInsert.setHandler((context, { loan, userId }) => {
-  if (userId === undefined) {
-    SecurityService.checkLoggedIn();
+  if (userId === undefined && Meteor.userId()) {
     userId = Meteor.userId();
   }
 
