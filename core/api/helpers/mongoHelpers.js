@@ -1,15 +1,18 @@
 const containsMultipleWords = string => string.indexOf(' ') > -1;
 
-const generateRegexToSearchAllWordsInString = searchQueryWords =>
-  `${searchQueryWords.map(word => `(?=.*${word})`).join('')}.+`;
+const generateMatchAllWordsRegexp = words =>
+  `${words.map(word => `(?=.*${word})`).join('')}.+`;
+
+export const replaceSpacesInString = string =>
+  string.trim().replace(/\s+/g, '|');
 
 export const createRegexQuery = (fieldName, searchQuery) => {
   if (containsMultipleWords(searchQuery)) {
-    const searchQueryWords = searchQuery.trim().split(' ');
+    const searchQueryWords = replaceSpacesInString(searchQuery).split('|');
 
     return {
       [fieldName]: {
-        $regex: generateRegexToSearchAllWordsInString(searchQueryWords),
+        $regex: generateMatchAllWordsRegexp(searchQueryWords),
         $options: 'gi',
       },
     };
