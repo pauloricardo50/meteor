@@ -26,6 +26,7 @@
 @media (min-width: $med) {
   .widget1-page .widget1-page-content {
     padding: 80px;
+    padding-bottom: 32px;
   }
 }
 
@@ -97,4 +98,17 @@
 .widget1-page .cta {
   align-self: flex-end;
   margin: 16px;
+}
+
+.widget1-page-disclaimer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 0.9em;
+  text-align: left;
+
+  p {
+    max-width: 400px;
+  }
 }

@@ -8,6 +8,7 @@ import TogglePoint, { TOGGLE_POINTS } from 'core/components/TogglePoint';
 import Widget1PageContainer from './Widget1PageContainer';
 import Widget1Part1 from './Widget1Part1';
 import Widget1Part2 from './Widget1Part2';
+import Widget1PageDisclaimer from './Widget1PageDisclaimer';
 import WwwLayout from '../../WwwLayout';
 import { VARIANTS } from '../../WwwLayout/WwwTopNav';
 
@@ -41,6 +42,7 @@ const Widget1Page = ({ step, finma, ...rest }) => (
         </TogglePoint>
       )}
     </div>
+    {step > 2 && <Widget1PageDisclaimer />}
   </WwwLayout>
 );
 
