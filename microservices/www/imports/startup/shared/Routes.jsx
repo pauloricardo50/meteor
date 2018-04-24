@@ -23,7 +23,7 @@ const routesConfig = [
   { path: '/contact', component: ContactPage },
 
   ...togglePoint({
-    id: TOGGLE_POINTS.ROUTES_CONFIG_UNUSED_IN_LITE_VERSION,
+    id: TOGGLE_POINTS.ROUTES_CONFIG_STRIPPED_IN_LITE_VERSION,
     code: [
       { path: '/conditions', component: ConditionsPage },
       { path: '/start/2', component: Start2Page },

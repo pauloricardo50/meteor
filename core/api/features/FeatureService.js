@@ -11,8 +11,8 @@ import { returnEmptyArray, returnFalse } from '../../utils/featureFunctions';
 
 const {
   WIDGET1_CONTINUE_BUTTON,
-  LITE_VERSION_OFF,
-  ROUTES_CONFIG_UNUSED_IN_LITE_VERSION,
+  STRIPPED_LITE_VERSION_UI,
+  ROUTES_CONFIG_STRIPPED_IN_LITE_VERSION,
   BASE_ROUTER_HAS_LOGIN,
 } = TOGGLE_POINTS;
 
@@ -52,8 +52,8 @@ const featureMap = {
     [WIDGET1_CONTINUE_BUTTON]: enhanceChildrenWith(withProps({
       to: '/contact',
     })),
-    [LITE_VERSION_OFF]: enhanceChildrenWith(renderNothing),
-    [ROUTES_CONFIG_UNUSED_IN_LITE_VERSION]: changeCodeWith(returnEmptyArray),
+    [STRIPPED_LITE_VERSION_UI]: enhanceChildrenWith(renderNothing),
+    [ROUTES_CONFIG_STRIPPED_IN_LITE_VERSION]: changeCodeWith(returnEmptyArray),
     [BASE_ROUTER_HAS_LOGIN]: changeCodeWith(returnFalse),
   },
 };
