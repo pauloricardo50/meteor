@@ -137,11 +137,14 @@ addEmailConfig(EMAIL_IDS.CONTACT_US, {
   createIntlValues: params => ({ ...params, details: params.details || '' }),
 });
 
+const getFirstName = string => string.trim().split(' ')[0];
+
 addEmailConfig(EMAIL_IDS.CONTACT_US_ADMIN, {
   template: EMAIL_TEMPLATES.NOTIFICATION,
   footerType: FOOTER_TYPES.VISITOR,
   createIntlValues: params => ({
     ...params,
+    name: getFirstName(params.name),
     details: params.details || 'Pas de message',
   }),
 });

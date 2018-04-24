@@ -410,7 +410,7 @@
   "emails.CONTACT_US.SUBJECT": "Bienvenue chez e-Potek!",
   "emails.CONTACT_US.TITLE": "Merci de nous avoir contacté",
   "emails.CONTACT_US.BODY":
-    "Bonjour {name},{verticalSpace}Nous avons bien reçu votre message, et vous serez contacté dès que possible par nos experts en hypothèque.{verticalSpace}Yannis<br />Directeur d'e-Potek",
+    "Bonjour {name},{verticalSpace}Nous avons bien reçu votre message, et vous serez contacté, dès que possible, par un de nos experts en hypothèque.{verticalSpace}Yannis<br />Directeur d'e-Potek",
   "emails.CONTACT_US_ADMIN.SUBJECT": "Nouveau contact: {name}",
   "emails.CONTACT_US_ADMIN.TITLE": "Quelqu'un a rempli notre formulaire! :)",
   "emails.CONTACT_US_ADMIN.BODY":
