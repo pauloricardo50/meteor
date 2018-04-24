@@ -368,3 +368,25 @@ hr {
 .choice.disabled {
   cursor: default !important;
 }
+
+.bert-alert.success {
+  background: $success;
+}
+.bert-alert.info {
+  background: $primary;
+}
+.bert-alert.warning {
+  background: $warning;
+}
+.bert-alert.danger {
+  background: $error;
+}
+
+.bert-content h5,
+.bert-content p {
+  color: white !important;
+}
+
+.bert {
+  color: white !important;
+}
