@@ -18,14 +18,13 @@ const APP_URL = Meteor.settings.public.subdomains.app;
  *
  * @return {type} a HTML string
  */
-export const getEmailFooter = (allowUnsubscribe = true) =>
-  formatMessage('emails.footer', {
-    copyright: '<em>&copy; *|CURRENT_YEAR|* e-Potek</em><br /><br />',
-    url: `<a href="${WWW_URL}" target="_blank">e-potek.ch</a><br />`,
-    unsubscribe: allowUnsubscribe
-      ? `<a href="*|UNSUB|*">${formatMessage('emails.unsubscribe')}</a>`
-      : '',
-  });
+export const getEmailFooter = (footerType, allowUnsubscribe) => formatMessage(`emails.${footerType}`, {
+  copyright: '<em>&copy; *|CURRENT_YEAR|* e-Potek</em><br /><br />',
+  url: `<a href="${WWW_URL}" target="_blank">e-potek.ch</a><br />`,
+  unsubscribe: allowUnsubscribe
+    ? `<a href="*|UNSUB|*">${formatMessage('emails.unsubscribe')}</a>`
+    : '',
+});
 
 export const getEmailPart = ({
   emailId,

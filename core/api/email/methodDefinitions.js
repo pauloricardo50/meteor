@@ -8,3 +8,12 @@ export const sendEmail = new Method({
     params: Object,
   },
 });
+
+export const sendEmailToAddress = new Method({
+  name: 'sendEmailToAddress',
+  params: {
+    emailId: String,
+    address: String,
+    params: Object,
+  },
+});

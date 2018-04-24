@@ -391,8 +391,9 @@
   "emails.ENROLL_ACCOUNT.from": "Yannis d'e-Potek",
   "emails.ENROLL_ACCOUNT.SUBJECT": "Bienvenue chez e-Potek",
   "emails.ENROLL_ACCOUNT.TITLE": "Entrez sur votre compte e-Potek",
-  "emails.footer":
+  "emails.footerUser":
     "{copyright}Vous recevez cet email car vous avez créé un compte sur {url}{unsubscribe}",
+  "emails.footerVisitor": "{copyright}",
   "emails.resetPassword.body":
     "Il vous regarde avec un air exaspéré, visiblement déçu que vous ayiez pu oublier un mot de passe aussi simple. Il essaie d'attirer votre attention sur le gros bouton en bas.",
   "emails.resetPassword.CTA": "Le gros bouton",

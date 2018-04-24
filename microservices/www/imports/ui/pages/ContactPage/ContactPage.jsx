@@ -13,7 +13,7 @@ import ContactUsForm from '../../components/ContactUsForm';
 
 const ContactPage = () => (
   <WwwLayout className="contact-page">
-    <WwwLayout.TopNav variant={VARIANTS.TRANSPARENT} />
+    <WwwLayout.TopNav variant={VARIANTS.GREY} />
     <div className="contact-info">
       <div className="contact-page-top">
         <b>

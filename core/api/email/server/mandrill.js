@@ -21,21 +21,23 @@ export const setupMandrill = () => {
 };
 
 // Used for Meteor Accounts emails
-export const getSimpleMandrillTemplate = (options) => {
-  const { templateName, allowUnsubscribe, variables } = options;
-
-  return {
-    template_name: templateName,
-    template_content: [
-      { name: 'footer', content: getEmailFooter(allowUnsubscribe) },
-    ],
-    merge_vars: variables,
-  };
-};
+export const getSimpleMandrillTemplate = ({
+  templateName,
+  footerType,
+  allowUnsubscribe,
+  variables,
+}) => ({
+  template_name: templateName,
+  template_content: [
+    { name: 'footer', content: getEmailFooter(footerType, allowUnsubscribe) },
+  ],
+  merge_vars: variables,
+});
 
 // Used for all other emails
 export const getMandrillTemplate = ({
   templateName,
+  footerType,
   allowUnsubscribe,
   variables,
   recipientAddress,
@@ -46,7 +48,7 @@ export const getMandrillTemplate = ({
 }) => ({
   template_name: templateName,
   template_content: [
-    { name: 'footer', content: getEmailFooter(allowUnsubscribe) },
+    { name: 'footer', content: getEmailFooter(footerType, allowUnsubscribe) },
   ],
   message: {
     from_email: senderAddress,

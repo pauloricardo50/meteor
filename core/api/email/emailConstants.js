@@ -4,6 +4,9 @@ export const FROM_NAME = "Yannis d'e-Potek";
 export const FROM_EMAIL = 'info@e-potek.ch';
 export const FROM_DEFAULT = `${FROM_NAME} <${FROM_EMAIL}>`;
 export const CTA_URL_DEFAULT = Meteor.settings.public.subdomains.app;
+export const INTERNAL_EMAIL = Meteor.isProduction
+  ? FROM_EMAIL
+  : 'dev@e-potek.ch';
 
 export const EMAIL_I18N_NAMESPACE = 'emails';
 
@@ -13,6 +16,11 @@ export const EMAIL_PARTS = {
   BODY: 'BODY',
   CTA: 'CTA',
   FROM: 'FROM',
+};
+
+export const FOOTER_TYPES = {
+  USER: 'footerUser',
+  VISITOR: 'footerVisitor',
 };
 
 export const EMAIL_TEMPLATES = {
@@ -44,6 +52,8 @@ export const EMAIL_TEMPLATES = {
 };
 
 export const EMAIL_IDS = {
+  CONTACT_US: 'CONTACT_US',
+  CONTACT_US_ADMIN: 'CONTACT_US_ADMIN',
   VERIFY_EMAIL: 'VERIFY_EMAIL',
   RESET_PASSWORD: 'RESET_PASSWORD',
   ENROLL_ACCOUNT: 'ENROLL_ACCOUNT',
