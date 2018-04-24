@@ -17,3 +17,33 @@
 .contact-us-form .form-field.form-field {
   padding-bottom: 32px;
 }
+
+.contact-us-form-wrapper {
+  position: relative;
+  min-height: 200px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.contact-us-form-success {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+  padding-top: 80px;
+  animation-delay: 500ms;
+
+  &.hidden {
+    display: none;
+  }
+
+  .animated-success {
+    transform: scale(2);
+    margin-bottom: 32px;
+  }
+}
