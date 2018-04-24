@@ -14,13 +14,10 @@
 
 .widget1-page .widget1-page-content {
   display: flex;
-  // overflow: auto;
-  flex: 1;
-  flex-direction: column;
   box-sizing: border-box;
   padding: 8px;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 @media (min-width: $med) {
@@ -30,6 +27,7 @@
 }
 
 .widget1-page .widget1-part-1 {
+  width: 100%;
   max-width: 1000px;
   display: flex;
   flex-direction: row;
