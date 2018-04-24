@@ -3,9 +3,17 @@ import pickBy from 'lodash/pickBy';
 import extend from 'lodash/extend';
 import { withProps, renderNothing } from 'recompose';
 import { TOGGLE_POINTS } from './featureConstants';
-import { enhanceChildrenWith } from './featureDecisionFactories';
+import {
+  enhanceChildrenWith,
+  changeCodeWith,
+} from './featureDecisionFactories';
+import { returnNoRoutes } from '../../utils/featureFunctions';
 
-const { WIDGET1_CONTINUE_BUTTON, LITE_VERSION_OFF } = TOGGLE_POINTS;
+const {
+  WIDGET1_CONTINUE_BUTTON,
+  LITE_VERSION_OFF,
+  LITE_VERSION_ROUTES_OFF,
+} = TOGGLE_POINTS;
 
 const { features: featureConfig } = Meteor.settings.public;
 
@@ -37,12 +45,14 @@ const { features: featureConfig } = Meteor.settings.public;
  * First check how your TogglePoint component is used,
  * then configure it's behaviour here.
  */
+
 const featureMap = {
   LITE_VERSION: {
     [WIDGET1_CONTINUE_BUTTON]: enhanceChildrenWith(withProps({
       to: '/contact',
     })),
     [LITE_VERSION_OFF]: enhanceChildrenWith(renderNothing),
+    [LITE_VERSION_ROUTES_OFF]: changeCodeWith(returnNoRoutes),
   },
 };
 
