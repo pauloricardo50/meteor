@@ -24,6 +24,9 @@
   width: 100%;
   display: flex;
   justify-content: center;
+
+  // Hide animated content when it's gone
+  // overflow-y: hidden;
 }
 
 .contact-us-form-success {

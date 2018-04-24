@@ -30,7 +30,6 @@ const ContactUsForm = ({ onSubmit, onSubmitSuccess, className }) => (
         raised: true,
         secondary: true,
       }}
-      initialValues={{ name: 'asd', email: 'asd@asd.com', phone: '980' }}
       intlPrefix="ContactUsForm"
     />
   </div>
