@@ -1,14 +1,20 @@
 import { Meteor } from 'meteor/meteor';
 import pickBy from 'lodash/pickBy';
 import extend from 'lodash/extend';
-import { withProps, branch, renderComponent } from 'recompose';
+import { withProps, renderNothing } from 'recompose';
 import { TOGGLE_POINTS } from './featureConstants';
 import {
   enhanceChildrenWith,
-  switchElements,
+  changeCodeWith,
 } from './featureDecisionFactories';
+import { returnEmptyArray, returnFalse } from '../../utils/featureFunctions';
 
-const { WIDGET1_CONTINUE_BUTTON, LITE_VERSION_OFF } = TOGGLE_POINTS;
+const {
+  WIDGET1_CONTINUE_BUTTON,
+  STRIPPED_LITE_VERSION_UI,
+  ROUTES_CONFIG_STRIPPED_IN_LITE_VERSION,
+  BASE_ROUTER_HAS_LOGIN,
+} = TOGGLE_POINTS;
 
 const { features: featureConfig } = Meteor.settings.public;
 
@@ -40,12 +46,22 @@ const { features: featureConfig } = Meteor.settings.public;
  * First check how your TogglePoint component is used,
  * then configure it's behaviour here.
  */
+
 const featureMap = {
   LITE_VERSION: {
+    // change the link of the Continuer button to '/contact'
     [WIDGET1_CONTINUE_BUTTON]: enhanceChildrenWith(withProps({
       to: '/contact',
     })),
-    [LITE_VERSION_OFF]: () => () => null,
+
+    // don't render the React UI that we don't want in the lite www version
+    [STRIPPED_LITE_VERSION_UI]: enhanceChildrenWith(renderNothing),
+
+    // remove the routes that we don't want in the lite www version
+    [ROUTES_CONFIG_STRIPPED_IN_LITE_VERSION]: changeCodeWith(returnEmptyArray),
+
+    // remove the login route
+    [BASE_ROUTER_HAS_LOGIN]: changeCodeWith(returnFalse),
   },
 };
 
