@@ -36,7 +36,7 @@ const BaseRouter = ({
             <Switch>
               {/* LoginPage has to be above / path */}
               {togglePoint({
-                id: TOGGLE_POINTS.LITE_VERSION_LOGIN_OFF,
+                id: TOGGLE_POINTS.BASE_ROUTER_HAS_LOGIN,
                 code: hasLogin,
               }) && <Route exact path="/login" component={LoginPage} />}
               <Route
