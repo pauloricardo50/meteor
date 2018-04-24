@@ -129,22 +129,26 @@ addEmailConfig(EMAIL_IDS.AUCTION_STARTED, {
   createIntlValues: ({ auctionEndTime }) => ({ date: auctionEndTime }),
 });
 
+const getFirstName = string => string.trim().split(' ')[0];
+
 addEmailConfig(EMAIL_IDS.CONTACT_US, {
   template: EMAIL_TEMPLATES.NOTIFICATION,
   footerType: FOOTER_TYPES.VISITOR,
-  // params.details check is required because details is optional
-  //  and it breaks react-intl if not provided
-  createIntlValues: params => ({ ...params, details: params.details || '' }),
+  createIntlValues: params => ({
+    ...params,
+    // Only show first names to clients
+    name: getFirstName(params.name),
+    // params.details check is required because details is optional
+    //  and it breaks react-intl if not provided
+    details: params.details || '',
+  }),
 });
-
-const getFirstName = string => string.trim().split(' ')[0];
 
 addEmailConfig(EMAIL_IDS.CONTACT_US_ADMIN, {
   template: EMAIL_TEMPLATES.NOTIFICATION,
   footerType: FOOTER_TYPES.VISITOR,
   createIntlValues: params => ({
     ...params,
-    name: getFirstName(params.name),
     details: params.details || 'Pas de message',
   }),
 });
