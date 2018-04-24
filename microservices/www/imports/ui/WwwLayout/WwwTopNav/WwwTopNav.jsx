@@ -31,7 +31,7 @@ const WwwTopNav = ({ variant }) => (
         alt="e-Potek"
       />
     </Link>
-    <TogglePoint id={TOGGLE_POINTS.LITE_VERSION_OFF}>
+    <TogglePoint id={TOGGLE_POINTS.STRIPPED_LITE_VERSION_UI}>
       <Button raised style={{ margin: 8 }}>
         <T id="general.login" />
       </Button>

@@ -1,6 +1,9 @@
 {
   "public": {
     "environment": "dev",
+    "features": {
+      "LITE_VERSION": true
+    },
     "analyticsSettings": {
       "Mixpanel": {
         "token": "2798b48714b4d78fda1c63d822e54064",

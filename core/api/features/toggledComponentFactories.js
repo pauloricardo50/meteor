@@ -20,8 +20,10 @@ export const makeOnOffSwitchedComponent = ({
   toggleOnElement,
   toggleOffElement,
 }) => {
+  const featureDecision = FeatureService.getFeatureDecision(id);
+
   const shouldSwitchOn =
-    FeatureService.getFeatureDecision(id) || defaultSwitchOption;
+    featureDecision === undefined ? defaultSwitchOption : featureDecision;
 
   return branch(
     () => shouldSwitchOn,
