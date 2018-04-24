@@ -5,13 +5,13 @@ import Checkbox from 'core/components/Checkbox';
 
 import AutoForm from 'core/components/AutoForm';
 import { getBorrowerFinanceArray } from 'core/arrays/BorrowerFormArray';
-import cleanMethod from 'core/api/cleanMethods';
 import Recap from 'core/components/Recap';
 import constants from 'core/config/constants';
 import LoadingButton from '/imports/ui/components/LoadingButton';
 import { T } from 'core/components/Translation';
 import { disableForms } from 'core/utils/loanFunctions';
 import track from 'core/utils/analytics';
+import { borrowerUpdate } from 'core/api';
 
 const styles = {
   div: {
@@ -36,7 +36,7 @@ const handleCheck = (_, isInputChecked, id) => {
   const object = {};
   object['logic.financeEthics'] = isInputChecked;
 
-  cleanMethod('updateBorrower', { object, id });
+  borrowerUpdate.run({ object, borrowerId: id });
 };
 
 const handleClick = (event, id) => {
@@ -44,13 +44,14 @@ const handleClick = (event, id) => {
   const object = {};
   object['logic.hasValidatedFinances'] = true;
 
-  cleanMethod('updateBorrower', { object, id }).then(() =>
-    track('validated finances', {}));
+  borrowerUpdate
+    .run({ object, id })
+    .then(() => track('validated finances', {}));
 };
 
 const BorrowerFinancePage = (props) => {
-  const borrowerId = props.match.params.borrowerId;
-  const borrower = props.borrowers.find(b => b._id === borrowerId);
+  const { match: { params: { borrowerId } }, borrowers, loan } = props;
+  const borrower = borrowers.find(b => b._id === borrowerId);
   return (
     <section className="borrower-finance-page animated fadeIn" key={borrowerId}>
       <hr />
@@ -89,16 +90,11 @@ const BorrowerFinancePage = (props) => {
 
       <AutoForm
         inputs={getBorrowerFinanceArray({ ...props, borrowerId })}
-        borrowers={props.borrowers}
+        borrowers={borrowers}
         docId={borrowerId}
-        updateFunc="updateBorrower"
-        pushFunc="pushBorrowerValue"
-        popFunc="popBorrowerValue"
+        collection="borrowers"
         doc={borrower}
-        disabled={
-          disableForms({ loan: props.loan }) ||
-          borrower.logic.hasValidatedFinances
-        }
+        disabled={disableForms({ loan }) || borrower.logic.hasValidatedFinances}
       />
 
       <div className="conditions mask2 primary-border">
@@ -126,6 +122,7 @@ const BorrowerFinancePage = (props) => {
 BorrowerFinancePage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  match: PropTypes.object.isRequired,
 };
 
 export default BorrowerFinancePage;

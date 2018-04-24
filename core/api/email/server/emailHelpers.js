@@ -18,8 +18,8 @@ const APP_URL = Meteor.settings.public.subdomains.app;
  *
  * @return {type} a HTML string
  */
-export const getEmailFooter = (allowUnsubscribe = true) =>
-  formatMessage('emails.footer', {
+export const getEmailFooter = (footerType, allowUnsubscribe) =>
+  formatMessage(`emails.${footerType}`, {
     copyright: '<em>&copy; *|CURRENT_YEAR|* e-Potek</em><br /><br />',
     url: `<a href="${WWW_URL}" target="_blank">e-potek.ch</a><br />`,
     unsubscribe: allowUnsubscribe
@@ -48,8 +48,12 @@ export const getEmailPart = ({
  * @return {Object} contains all the fields
  */
 export const getEmailContent = (emailId, intlValues) => {
-  const subject = getEmailPart({ emailId, part: EMAIL_PARTS.SUBJECT });
-  const title = getEmailPart({ emailId, part: EMAIL_PARTS.TITLE });
+  const subject = getEmailPart({
+    emailId,
+    part: EMAIL_PARTS.SUBJECT,
+    intlValues,
+  });
+  const title = getEmailPart({ emailId, part: EMAIL_PARTS.TITLE, intlValues });
   const body = getEmailPart({
     emailId,
     part: EMAIL_PARTS.BODY,
@@ -94,7 +98,7 @@ export const getEnrollmentUrl = (user, url) => {
  * This is a default override function for the NOTIFICATION template
  *
  * @export
- * @param {Object} params The params passed by the mutation
+ * @param {Object} params The params passed by the method
  * @param {Object} { title, body } The strings extracted from i18n files
  * @returns a template override object
  */
@@ -113,7 +117,7 @@ export function notificationTemplateDefaultOverride(params, { title, body }) {
  * This is a default override function for the NOTIFICATION_AND_CTA template
  *
  * @export
- * @param {Object} params The params passed by the mutation
+ * @param {Object} params The params passed by the method
  * @param {Object} { title, body, cta } The strings extracted from i18n files
  * @returns a template override object
  */

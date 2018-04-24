@@ -5,7 +5,6 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
-import { generalContainer } from 'core/containers/Containers';
 import getFormArray from 'core/arrays/StartFormArray';
 import constants from 'core/config/constants';
 import {
@@ -152,7 +151,7 @@ class Start2Page extends Component {
   constructor(props) {
     super(props);
 
-    const type = props.match.params.type || 'test';
+    const type = 'acquisition';
     const params = queryString.parse(props.location.search);
 
     this.state = {
@@ -166,48 +165,48 @@ class Start2Page extends Component {
     };
   }
 
-  // componentDidMount() {
-  //   this.setState({
-  //     propertyValue: 1000000,
-  //     propertyWorkExists: false,
-  //     showUX: false,
-  //     age: 23,
-  //     oldestAge: 23,
-  //     bonusExists: false,
-  //     borrowerCount: 2,
-  //     expensesExists: false,
-  //     finalized: true,
-  //     fortune1: 300000,
-  //     fortune2: 0,
-  //     fortuneRequiredAgreed: true,
-  //     fortuneUsed: 300000,
-  //     income1: 200000,
-  //     income2: 100000,
-  //     initialFortune: 250000,
-  //     initialFortuneAgreed: true,
-  //     initialIncome: 200000,
-  //     initialIncomeAgreed: true,
-  //     insurance1Exists: true,
-  //     insurance11: 100000,
-  //     insurance12: 10,
-  //     insurance2Exists: true,
-  //     insurance21: 50000,
-  //     insurance22: 0,
-  //     insuranceFortuneUsed: 100000,
-  //     useInsurance1: true,
-  //     insuranceConditions: true,
-  //     knowsProperty: true,
-  //     acceptedLoan: false,
-  //     loanWanted: 800000,
-  //     notaryFeesAgreed: true,
-  //     otherIncomeExists: false,
-  //     purchaseType: 'ACQUISITION',
-  //     realEstateExists: false,
-  //     type: 'acquisition',
-  //     usageType: 'PRIMARY',
-  //     useInsurance: false,
-  //   });
-  // }
+  componentDidMount() {
+    this.setState({
+      propertyValue: 1000000,
+      propertyWorkExists: false,
+      showUX: false,
+      age: 23,
+      oldestAge: 23,
+      bonusExists: false,
+      borrowerCount: 2,
+      expensesExists: false,
+      finalized: true,
+      fortune1: 300000,
+      fortune2: 0,
+      fortuneRequiredAgreed: true,
+      fortuneUsed: 300000,
+      income1: 200000,
+      income2: 100000,
+      initialFortune: 250000,
+      initialFortuneAgreed: true,
+      initialIncome: 200000,
+      initialIncomeAgreed: true,
+      insurance1Exists: true,
+      insurance11: 100000,
+      insurance12: 10,
+      insurance2Exists: true,
+      insurance21: 50000,
+      insurance22: 0,
+      insuranceFortuneUsed: 100000,
+      useInsurance1: true,
+      insuranceConditions: true,
+      knowsProperty: true,
+      acceptedLoan: false,
+      loanWanted: 800000,
+      notaryFeesAgreed: true,
+      otherIncomeExists: false,
+      purchaseType: 'ACQUISITION',
+      realEstateExists: false,
+      type: 'acquisition',
+      usageType: 'PRIMARY',
+      useInsurance: false,
+    });
+  }
 
   setActiveLine = (id, callback) => {
     if (this.state.activeLine !== id) {
@@ -318,4 +317,4 @@ Start2Page.defaultProps = {
   currentUser: undefined,
 };
 
-export default generalContainer(Start2Page);
+export default Start2Page;

@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import moment from 'moment';
-import cleanMethod from 'core/api/cleanMethods';
 
 import MyDateInput from 'core/components/DateInput';
 
@@ -39,7 +38,7 @@ class DateInput extends Component {
     // Save data to DB
     const object = { [this.props.inputProps.id]: date };
 
-    cleanMethod(this.props.updateFunc, { object, id: this.props.docId });
+    this.props.updateFunc({ object, id: this.props.docId });
   };
 
   render() {

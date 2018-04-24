@@ -62,14 +62,14 @@ export default class MultipleInput extends Component {
       >
         {multiple &&
           firstMultiple && (
-            <h1 className="fixed-size multiple-header ">
-              <div>
-                <span>Emprunteur 1</span>
-                <span>Emprunteur 2</span>
-              </div>
-              <hr style={styles.hr} />
-            </h1>
-          )}
+          <h1 className="fixed-size multiple-header ">
+            <div>
+              <span>Emprunteur 1</span>
+              <span>Emprunteur 2</span>
+            </div>
+            <hr style={styles.hr} />
+          </h1>
+        )}
 
         <TitleTag style={styles.h1} className="fixed-size">
           {text1}

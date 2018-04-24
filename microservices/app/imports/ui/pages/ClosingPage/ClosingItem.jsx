@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { Uploader, FileStatusIcon } from 'core/components/UploaderArray';
+import FileStatusIcon from 'core/components/UploaderArray/FileStatusIcon';
+import Uploader from 'core/components/UploaderArray/Uploader.jsx';
 import { CLOSING_STEPS_STATUS, CLOSING_STEPS_TYPE } from 'core/api/constants';
 
 const ClosingItem = ({ step, loan, disabled }) => {
@@ -12,7 +13,7 @@ const ClosingItem = ({ step, loan, disabled }) => {
     return (
       <Uploader
         fileMeta={{ id, title }}
-        currentValue={loan.files[id]}
+        currentValue={loan.documents[id]}
         docId={loan._id}
         disabled={disabled}
       />
@@ -35,10 +36,10 @@ const ClosingItem = ({ step, loan, disabled }) => {
       </p>
       {status === CLOSING_STEPS_STATUS.ERROR &&
         error && (
-          <div style={{ marginTop: 8, paddingTop: 8 }} className="border top">
-            <p className="error">{error}</p>
-          </div>
-        )}
+        <div style={{ marginTop: 8, paddingTop: 8 }} className="border top">
+          <p className="error">{error}</p>
+        </div>
+      )}
     </div>
   );
 };

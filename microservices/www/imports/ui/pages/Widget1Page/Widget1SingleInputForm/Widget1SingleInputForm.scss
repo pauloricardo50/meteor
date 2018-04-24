@@ -1,0 +1,42 @@
+.widget1-single-input-form {
+  display: flex;
+  padding: 32px;
+  margin: 16px;
+  width: 100%;
+  max-width: 300px;
+  z-index: 20;
+}
+
+@media (max-width: $med) {
+  .widget1-single-input-form {
+    padding: 16px;
+  }
+}
+
+.widget1-single-input-form form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 20;
+}
+
+.widget1-single-input-form .buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding-top: 16px;
+  margin-bottom: -16px;
+}
+
+@media (max-width: $med) {
+  .widget1-single-input-form .buttons {
+    margin-bottom: 0;
+  }
+}
+
+.widget1-single-input-form .buttons > * {
+  margin: 4px;
+}

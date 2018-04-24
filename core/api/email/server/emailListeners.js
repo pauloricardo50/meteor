@@ -1,54 +1,71 @@
 import moment from 'moment';
 import EventService from '../../events';
-import { mutations } from '../../mutations';
+import {
+  requestLoanVerification,
+  startAuction,
+  endAuction,
+  cancelAuction,
+  submitContactForm,
+} from '../../methods';
 import { Loans } from '../..';
-import { EMAIL_IDS } from '../emailConstants';
-import { sendEmail } from './emailMethods';
+import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
+import { sendEmail, sendEmailToAddress } from '../methodDefinitions';
 import { getAuctionEndTime } from '../../../utils/loanFunctions';
 
-EventService.addMutationListener(
-  mutations.REQUEST_LOAN_VERIFICATION,
-  (params) => {
-    const { loanId } = params;
-    const { userId } = Loans.findOne(loanId);
-
-    return sendEmail({
-      emailId: EMAIL_IDS.VERIFICATION_REQUESTED,
-      userId,
-      params,
-    });
-  },
-);
-
-EventService.addMutationListener(mutations.START_AUCTION, (params) => {
+EventService.addMethodListener(requestLoanVerification, (params) => {
   const { loanId } = params;
   const { userId } = Loans.findOne(loanId);
 
-  return sendEmail({
+  return sendEmail.run({
+    emailId: EMAIL_IDS.VERIFICATION_REQUESTED,
+    userId,
+    params,
+  });
+});
+
+EventService.addMethodListener(startAuction, (params) => {
+  const { loanId } = params;
+  const { userId } = Loans.findOne(loanId);
+
+  return sendEmail.run({
     emailId: EMAIL_IDS.AUCTION_STARTED,
     userId,
     params: { ...params, auctionEndTime: getAuctionEndTime(moment()) },
   });
 });
 
-EventService.addMutationListener(mutations.END_AUCTION, (params) => {
+EventService.addMethodListener(endAuction, (params) => {
   const { loanId } = params;
   const { userId } = Loans.findOne(loanId);
 
-  return sendEmail({
+  return sendEmail.run({
     emailId: EMAIL_IDS.AUCTION_ENDED,
     userId,
     params,
   });
 });
 
-EventService.addMutationListener(mutations.CANCEL_AUCTION, (params) => {
+EventService.addMethodListener(cancelAuction, (params) => {
   const { loanId } = params;
   const { userId } = Loans.findOne(loanId);
 
-  return sendEmail({
+  return sendEmail.run({
     emailId: EMAIL_IDS.AUCTION_CANCELLED,
     userId,
     params,
   });
 });
+
+EventService.addMethodListener(submitContactForm, params =>
+  sendEmailToAddress.run({
+    emailId: EMAIL_IDS.CONTACT_US,
+    address: params.email,
+    params,
+  }));
+
+EventService.addMethodListener(submitContactForm, params =>
+  sendEmailToAddress.run({
+    emailId: EMAIL_IDS.CONTACT_US_ADMIN,
+    address: INTERNAL_EMAIL,
+    params,
+  }));

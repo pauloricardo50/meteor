@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { getFileSchema } from '../files/files';
 import {
+  BORROWERS_COLLECTION,
   RESIDENCY_PERMIT,
   GENDER,
   CIVIL_STATUS,
@@ -11,7 +11,7 @@ import {
   REAL_ESTATE,
 } from './borrowerConstants';
 
-const Borrowers = new Mongo.Collection('borrowers');
+const Borrowers = new Mongo.Collection(BORROWERS_COLLECTION);
 
 // Prevent all client side modifications of mongoDB
 Borrowers.deny({
@@ -25,8 +25,6 @@ Borrowers.allow({
   update: () => false,
   remove: () => false,
 });
-
-const BorrowerFilesSchema = new SimpleSchema(getFileSchema('borrower'));
 
 const LogicSchema = new SimpleSchema({
   financeEthics: {
@@ -301,9 +299,10 @@ export const BorrowerSchema = new SimpleSchema({
     min: 0,
     max: 100000000,
   },
-  files: {
-    type: BorrowerFilesSchema,
+  documents: {
+    type: Object,
     defaultValue: {},
+    blackbox: true,
   },
   // business logic and admin
   logic: {

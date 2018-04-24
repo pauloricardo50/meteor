@@ -25,22 +25,33 @@ done
 find .. -type l -exec unlink {} \;
 
 # Prepare every microservice
-for i in 'admin' 'app' 'lender' 'www' 'admin-temp'
+for i in 'admin' 'app' 'lender' 'www'
   do
     echo "Preparing $i microservice..."
 
     echo "Creating symlinks"
     ln -s ../../../core ../microservices/$i/imports/core
-    ln -s ../../../core/assets/css ../microservices/$i/client/css
+
+    if [[ $i == 'www' ]];
+    then
+      #only need variables.scss in www
+      mkdir ../microservices/$i/client/css
+      ln -s ../../../../core/assets/css/variables.scss ../microservices/$i/client/css/variables.scss
+
+      mkdir ../microservices/$i/client/css/external-styles      
+      ln -s ../../../../../core/assets/css/external-styles/bootstrap-popover.css ../microservices/$i/client/css/external-styles/bootstrap-popover.css
+      ln -s ../../../../../core/assets/css/external-styles/animate.css ../microservices/$i/client/css/external-styles/animate.css
+    else
+      ln -s ../../../core/assets/css ../microservices/$i/client/css
+    fi
+
     # ln -s ../../core/.babelrc ../microservices/$i/.babelrc
 
     # public and private folders can't have any symlink: https://github.com/meteor/meteor/issues/7013
-    echo "Creating public/private folders"
-    rm -rf ../microservices/$i/public
-    cp -a ../core/assets/public ../microservices/$i/public
+    echo "Copying public/private folders from core"
+    rsync -a --delete-before ../core/assets/public/ ../microservices/$i/public/
 
-    rm -rf ../microservices/$i/private
-    cp -a ../core/assets/private ../microservices/$i/private
+    rsync -a --delete-before ../core/assets/private/ ../microservices/$i/private/
 
 
     if [[ $DO_CLEAN == true ]];
@@ -57,6 +68,7 @@ for i in 'admin' 'app' 'lender' 'www' 'admin-temp'
 
 
   done
+
 
 echo "Installing npm packages in core/"
 ( cd ../core && meteor npm install );

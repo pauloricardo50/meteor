@@ -11,8 +11,8 @@ import RadioInput from './RadioInput';
 import SelectFieldInput from './SelectFieldInput';
 import ConditionalInput from './ConditionalInput';
 import DateInput from './DateInput';
-import UploaderArray from '../UploaderArray';
 import ArrayInput from './ArrayInput';
+import AutoFormContainer from './AutoFormContainer';
 
 const styles = {
   form: {
@@ -90,8 +90,6 @@ const inputSwitch = (childProps, index, parentProps) => {
     );
   case 'dateInput':
     return <DateInput {...childProps} />;
-    // case 'dropzoneInput':
-    //   return <UploaderArray {...childProps} />;
   case 'arrayInput':
     return <ArrayInput {...childProps} />;
   case 'custom':
@@ -186,22 +184,17 @@ AutoForm.propTypes = {
   borrowers: PropTypes.arrayOf(PropTypes.object),
   fullWidth: PropTypes.bool,
   docId: PropTypes.string.isRequired,
-  updateFunc: PropTypes.string,
-  pushFunc: PropTypes.string,
-  popFunc: PropTypes.string,
   disabled: PropTypes.bool,
   noPlaceholders: PropTypes.bool,
+  collection: PropTypes.string.isRequired,
 };
 
 AutoForm.defaultProps = {
   loan: {},
   borrowers: [],
   fullWidth: false,
-  updateFunc: 'updateLoan',
-  pushFunc: 'pushLoanValue',
-  popFunc: 'popLoanValue',
   disabled: false,
   noPlaceholders: false,
 };
 
-export default AutoForm;
+export default AutoFormContainer(AutoForm);

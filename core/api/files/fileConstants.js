@@ -3,3 +3,10 @@ export const FILE_STATUS = {
   VALID: 'VALID',
   ERROR: 'ERROR',
 };
+
+export const FILE_STEPS = {
+  AUCTION: 'auction',
+  CONTRACT: 'contract',
+  CLOSING: 'closing',
+  ALL: 'all',
+};

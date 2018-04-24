@@ -34,7 +34,7 @@ const getIcon = (item, isWaiting) => {
       <div className="icon">
         <span className="available-icon" />
         <CircularProgress
-          mode="determinate"
+          variant="static"
           value={Math.round(item.percent() * 100)}
           className="circular-progress active"
           color="primary"

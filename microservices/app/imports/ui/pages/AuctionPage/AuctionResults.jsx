@@ -1,13 +1,11 @@
+import React from 'react';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
+import CountUp from 'react-countup';
 
-import FakeOfferAdder from '/imports/ui/components/FakeOfferAdder';
 import { T } from 'core/components/Translation';
 
 import InterestRanges from './InterestRanges';
-
-import CountUp from 'react-countup';
 
 const styles = {
   section: {
@@ -98,58 +96,40 @@ const getFakeOffers = (props) => {
   ];
 };
 
-class AuctionResults extends Component {
-  constructor(props) {
-    super(props);
+const AuctionResults = ({ intl: { formatMessage: f }, offers, loan }) => (
+  <section className="mask1 animated fadeIn" style={styles.section}>
+    <h1>
+      <T id="AuctionResults.title" />
+    </h1>
 
-    this.state = {
-      showSpecial: false,
-    };
-  }
+    <h1 className="text-center display2" style={styles.countUp}>
+      <CountUp
+        className="custom-count"
+        start={0}
+        end={offers.length}
+        duration={3.5}
+        useEasing
+        separator=" "
+        decimal=","
+        prefix=""
+        suffix={f({ id: 'AuctionResults.countSuffix' })}
+      />
+    </h1>
 
-  render() {
-    const { intl, offers, loan } = this.props;
-    const f = intl.formatMessage;
-    return (
-      <section className="mask1 animated fadeIn" style={styles.section}>
-        <h1>
-          <T id="AuctionResults.title" />
-        </h1>
+    <div className="description">
+      <p>
+        <T id="AuctionResults.description" />
+      </p>
+    </div>
 
-        <h1 className="text-center display2" style={styles.countUp}>
-          <CountUp
-            className="custom-count"
-            start={0}
-            end={offers.length}
-            duration={3.5}
-            useEasing
-            separator=" "
-            decimal=","
-            prefix=""
-            suffix={f({ id: 'AuctionResults.countSuffix' })}
-          />
-        </h1>
-
-        <div className="description">
-          <p>
-            <T id="AuctionResults.description" />
-          </p>
-        </div>
-
-        <div className="flex center">
-          <InterestRanges
-            offers={offers}
-            style={{ width: '100%', maxWidth: 250 }}
-          />
-        </div>
-
-        <div style={{ marginTop: 40 }}>
-          <FakeOfferAdder loan={loan} />
-        </div>
-      </section>
-    );
-  }
-}
+    <div className="flex center">
+      <InterestRanges
+        offers={offers}
+        style={{ width: '100%', maxWidth: 250 }}
+      />
+    </div>
+  </section>
+);
 
 AuctionResults.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,

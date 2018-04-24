@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import { Loans, Offers, Borrowers, AdminActions, Properties } from '../../api';
+import { Loans, Offers, Borrowers, Properties } from '../../api';
 
 export function adminLoansComposer(props, onData) {
   if (Meteor.subscribe('allLoans').ready()) {
@@ -20,13 +20,6 @@ export function adminOffersComposer(props, onData) {
   if (Meteor.subscribe('allOffers').ready()) {
     const offers = Offers.find({}).fetch();
     onData(null, { offers });
-  }
-}
-
-export function adminActionsComposer(props, onData) {
-  if (Meteor.subscribe('allAdminActions').ready()) {
-    const adminActions = AdminActions.find({}).fetch();
-    onData(null, { adminActions });
   }
 }
 

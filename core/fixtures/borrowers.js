@@ -1,4 +1,4 @@
-import BorrowerService from 'core/api/borrowers/BorrowerService';
+import BorrowerService from '../api/borrowers/BorrowerService';
 import {
   RESIDENCY_PERMIT,
   GENDER,
@@ -7,8 +7,9 @@ import {
   OTHER_INCOME,
   EXPENSES,
   REAL_ESTATE,
-} from 'core/api/borrowers/borrowerConstants';
-import { fakeFile } from 'core/api/files/files';
+} from '../api/borrowers/borrowerConstants';
+import { fakeDocument } from '../api/files/fileHelpers';
+import { Borrowers } from '../api';
 
 const firstNames = [
   'Marie',
@@ -24,10 +25,16 @@ const lastNames = ['Arsenault', 'Babel', 'Rochat'];
 
 const generateSecondBorrowerProbabillity = () => Math.random() < 0.8;
 
+const getRandomArrayElement = array =>
+  array[Math.floor(Math.random() * array.length)];
+
 const insertFakeBorrower = (userId) => {
+  const firstName = getRandomArrayElement(firstNames);
+  const lastName = getRandomArrayElement(lastNames);
+
   const borrower = {
-    firstName: firstNames[Math.floor(Math.random() * firstNames.length)],
-    lastName: lastNames[Math.floor(Math.random() * lastNames.length)],
+    firstName,
+    lastName,
     gender: 'F',
     address1: 'Chemin du Mont 3',
     zipCode: 1400,
@@ -82,30 +89,30 @@ const insertFakeBorrower = (userId) => {
     bankFortune: 300000,
     insuranceSecondPillar: 120000,
     insuranceThirdPillar: 50000,
-    files: {
-      identity: [fakeFile],
-      taxes: [fakeFile],
-      salaryCertificate: [fakeFile],
-      bonus: [fakeFile],
-      otherIncome: [fakeFile],
-      expenses: [fakeFile],
-      nonPursuitExtract: [fakeFile],
-      lastSalaries: [fakeFile],
-      currentMortgages: [fakeFile],
-      bankAssetsChange: [fakeFile],
-      pensionFundYearlyStatement: [fakeFile],
-      retirementInsurancePlan: [fakeFile],
+    documents: {
+      identity: fakeDocument,
+      taxes: fakeDocument,
+      salaryCertificate: fakeDocument,
+      bonus: fakeDocument,
+      otherIncome: fakeDocument,
+      expenses: fakeDocument,
+      nonPursuitExtract: fakeDocument,
+      lastSalaries: fakeDocument,
+      currentMortgages: fakeDocument,
+      bankAssetsChange: fakeDocument,
+      pensionFundYearlyStatement: fakeDocument,
+      retirementInsurancePlan: fakeDocument,
     },
     logic: {
       financeEthics: true,
       hasValidatedFinances: true,
     },
   };
-  
+
   return BorrowerService.insert({ borrower, userId });
 };
 
-const createFakeBorrowers = (userId) => {
+export const createFakeBorrowers = (userId) => {
   const borrowerIds = [insertFakeBorrower(userId)];
   if (generateSecondBorrowerProbabillity()) {
     borrowerIds.push(insertFakeBorrower(userId));
@@ -113,4 +120,7 @@ const createFakeBorrowers = (userId) => {
   return borrowerIds;
 };
 
-export default createFakeBorrowers;
+export const getRelatedBorrowersIds = usersIds =>
+  Borrowers.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
+    .fetch()
+    .map(item => item._id);

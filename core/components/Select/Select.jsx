@@ -87,7 +87,7 @@ Select.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func.isRequired,
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   label: PropTypes.node,
   classes: PropTypes.object,
   style: PropTypes.object,
@@ -100,6 +100,7 @@ Select.defaultProps = {
   classes: undefined,
   style: {},
   inputStyle: {},
+  id: '',
 };
 
 export default withStyles(styles)(Select);

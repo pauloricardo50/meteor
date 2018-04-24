@@ -1,0 +1,34 @@
+.widget1-inputs {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.widget1-inputs .widget1-single-input {
+  padding: 16px 0;
+}
+
+.widget1-inputs .widget1-single-inputs-overdrive {
+  display: flex;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.widget1-inputs .card-bottom {
+  display: flex;
+  align-items: center;
+
+  .icon {
+    margin-right: 8px;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.widget1-inputs-reset {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}

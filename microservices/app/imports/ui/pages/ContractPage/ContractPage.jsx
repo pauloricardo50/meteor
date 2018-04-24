@@ -4,9 +4,6 @@ import PropTypes from 'prop-types';
 import ProcessPage from '/imports/ui/components/ProcessPage';
 import { T } from 'core/components/Translation';
 
-import { filesPercent } from 'core/arrays/steps';
-import { borrowerFiles, loanFiles } from 'core/api/files/files';
-
 import FileTabs from './FileTabs';
 import ContractDownloader from './ContractDownloader';
 
@@ -19,7 +16,7 @@ const ContractPage = props => (
         </p>
       </div>
 
-      <ContractDownloader contract={props.loan.files.contract} />
+      <ContractDownloader contract={props.loan.documents.contract} />
 
       <FileTabs {...props} />
     </div>

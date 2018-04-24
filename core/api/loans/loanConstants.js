@@ -1,3 +1,5 @@
+export const LOANS_COLLECTION = 'loans';
+
 export const LOAN_STATUS = {
   ACTIVE: 'ACTIVE',
   DONE: 'DONE',
@@ -101,4 +103,6 @@ export const PAYMENT_SCHEDULES = {
 export const LOAN_QUERIES = {
   ADMIN_LOAN: 'ADMIN_LOAN',
   ADMIN_LOANS: 'ADMIN_LOANS',
+  LOANS_ASSIGNED_TO: 'LOANS_ASSIGNED_TO',
+  SIDENAV_LOANS: 'SIDENAV_LOANS',
 };

@@ -1,11 +1,12 @@
-import PropertyService from 'core/api/properties/PropertyService';
+import PropertyService from '../api/properties/PropertyService';
 import {
   PROPERTY_STATUS,
   USAGE_TYPE,
   PROPERTY_STYLE,
   VOLUME_NORM,
-} from 'core/api/properties/propertyConstants';
-import { fakeFile } from 'core/api/files/files';
+} from '../api/properties/propertyConstants';
+import { fakeDocument } from '../api/files/fileHelpers';
+import { Properties } from '../api';
 
 const statuses = Object.values(PROPERTY_STATUS);
 const usageTypes = Object.values(USAGE_TYPE);
@@ -16,13 +17,13 @@ const getRandomValueInRange = (min, max) => Math.random() * (max - min) + min;
 const getRandomValueInArray = array =>
   array[Math.floor(Math.random() * array.length)];
 
-const createFakeProperties = (userId) => {
+export const createFakeProperty = (userId) => {
   const object = {
     status: getRandomValueInArray(statuses),
-    value: getRandomValueInRange(500000, 3000000),
+    value: Math.round(getRandomValueInRange(500000, 3000000)),
     address1: `Rue du Succès ${Math.floor(getRandomValueInRange(1, 500))}`,
     propertyWork: 40000,
-    zipCode: getRandomValueInRange(1000, 4000),
+    zipCode: Math.round(getRandomValueInRange(1000, 4000)),
     city: 'Lausanne',
     usageType: getRandomValueInArray(usageTypes),
     style: getRandomValueInArray(styles),
@@ -48,15 +49,23 @@ const createFakeProperties = (userId) => {
     buildingQuality: 1,
     flatQuality: 2,
     materialsQuality: 2,
-    files: {
-      plans: [fakeFile],
-      cubage: [fakeFile],
-      pictures: [fakeFile],
-      landRegisterExtract: [fakeFile],
+    adminValidation: {
+      buildingPlacementQuality: 'No option selected',
+      propertyInfo: 'Not completed',
+    },
+    expertise: {},
+    documents: {
+      plans: fakeDocument,
+      cubage: fakeDocument,
+      pictures: fakeDocument,
+      landRegisterExtract: fakeDocument,
     },
   };
 
   return PropertyService.insert({ property: object, userId });
 };
 
-export default createFakeProperties;
+export const getRelatedPropertiesIds = usersIds =>
+  Properties.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
+    .fetch()
+    .map(item => item._id);

@@ -13,6 +13,7 @@ const config = {
   // The list of directories to scan and create language files for
   directories: [
     {
+      id: 'app',
       path: '../microservices/app',
       exceptions: [
         'steps',
@@ -26,13 +27,23 @@ const config = {
         'Uploader',
         'FileAdder',
         'ArrayInput',
+        'Impersonation',
+        'AdminFilesTab',
       ],
     },
-    { path: '../microservices/www', exceptions: ['Start2Form', 'Forms'] },
-    { path: '../microservices/admin', exceptions: ['LoginPage'] },
-    { path: '../microservices/lender', exceptions: ['LoginPage'] },
     {
-      path: '../microservices/admin-temp',
+      id: 'www',
+      path: '../microservices/www',
+      exceptions: ['Start2Form', 'Forms', 'offer'],
+    },
+    {
+      id: 'lender',
+      path: '../microservices/lender',
+      exceptions: ['LoginPage'],
+    },
+    {
+      id: 'admin',
+      path: '../microservices/admin',
       exceptions: [
         'steps',
         'ProjectBarChart',
@@ -45,8 +56,9 @@ const config = {
         'Uploader',
         'FileAdder',
         'ArrayInput',
-        'adminActions',
-        'collections'
+        'collections',
+        'Impersonation',
+        'AdminFilesTab',
       ],
     },
   ],
@@ -66,6 +78,10 @@ const config = {
     'e-Potek',
     'NotFound',
     'LayoutError',
+    'File',
+    'property',
+    'roles',
+    'Form'
   ],
 };
 
@@ -98,11 +114,11 @@ const findFilesWithExtension = (startPath, extension) => {
 // keys provided in the allowedKeys array
 const filterLanguageKeys = (pathToLangDir, language, allowedKeys) => {
   const langObject = JSON.parse(
-    fs.readFileSync(createPathToLanguage(pathToLangDir, language), 'utf8')
+    fs.readFileSync(createPathToLanguage(pathToLangDir, language), 'utf8'),
   );
   const langKeys = Object.keys(langObject);
   const remainingKeys = langKeys.filter(
-    key => allowedKeys.indexOf(key.split('.')[0]) >= 0
+    key => allowedKeys.indexOf(key.split('.')[0]) >= 0,
   );
 
   const optimizedLangObject = Object.keys(langObject)
@@ -158,4 +174,33 @@ const createLanguages = ({
   });
 };
 
-createLanguages(config);
+const getCustomConfig = () => {
+  // Get the third argument from the command line, which should be an id of
+  // one of the microservices
+  const argument = process.argv[2];
+
+  if (argument) {
+    const possibleArguments = config.directories.map(
+      directoryConfig => directoryConfig.id,
+    );
+
+    if (!possibleArguments.includes(argument)) {
+      throw Error(
+        'Invalid argument, it has to be one of these: ' +
+          possibleArguments.join(' '),
+      );
+    }
+
+    const customConfig = Object.assign({}, config, {
+      directories: config.directories.filter(
+        directoryConfig => directoryConfig.id === argument,
+      ),
+    });
+
+    return customConfig;
+  }
+
+  return config;
+};
+
+createLanguages(getCustomConfig());

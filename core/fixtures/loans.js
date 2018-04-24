@@ -1,24 +1,14 @@
 import moment from 'moment';
 import LoanService from 'core/api/loans/LoanService';
+import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
 import {
-  LOAN_STATUS,
-  PURCHASE_TYPE,
-  CANTONS,
-  INTEREST_RATES,
-  OWNER,
-  AUCTION_STATUS,
-  CLOSING_STEPS_TYPE,
-  CLOSING_STEPS_STATUS,
-  AUCTION_MOST_IMPORTANT,
-  INSURANCE_USE_PRESET,
-  LOAN_STRATEGY_PRESET,
-  AMORTIZATION_STRATEGY_PRESET,
-  PAYMENT_SCHEDULES,
-} from 'core/api/loans/loanConstants';
-import { fakeFile } from 'core/api/files/files';
+  fakeDocument,
+  fakeDocumentWithLabel,
+} from 'core/api/files/fileHelpers';
+import { createFakeBorrowers } from './borrowers';
+import { createFakeProperty } from './properties';
 import { STEPS_PER_LOAN } from './config';
-import createFakeBorrowers from './borrowers';
-import createFakeProperty from './properties';
+import { Loans } from '../api';
 
 const purchaseTypes = Object.values(PURCHASE_TYPE);
 
@@ -41,6 +31,7 @@ const logic2 = {
   verification: {
     requested: false,
     validated: true,
+    verifiedAt: new Date(),
     comments: [],
   },
   auction: {},
@@ -50,16 +41,16 @@ const logic3 = {
   step: 3,
   verification: {
     requested: false,
-    validated: true,
+    validated: false,
+    requestedAt: new Date(),
+    verifiedAt: new Date(),
     comments: [],
   },
-  // auctionStarted: true,
   auction: {
     status: 'ENDED',
     startTime: new Date(),
     endTime: new Date(),
   },
-  // auctionEndTime: new Date(),
   hasValidatedStructure: true,
   insuranceUsePreset: 'WITHDRAWAL',
   loanStrategyPreset: 'FIXED',
@@ -95,28 +86,14 @@ const logic3 = {
 };
 
 const fakeFiles = {
-  plans: [fakeFile],
-  cubage: [fakeFile],
-  pictures: [fakeFile],
-  buyersContract: [fakeFile],
-  landRegisterExtract: [fakeFile],
-  coownershipAllocationAgreement: [fakeFile],
-  coownershipAgreement: [fakeFile],
-  upload0: [fakeFile],
+  buyersContract: fakeDocumentWithLabel,
+  coownershipAllocationAgreement: fakeDocument,
+  coownershipAgreement: fakeDocument,
 };
 
-const fakeFiles2 = {
-  plans: [fakeFile],
-  cubage: [fakeFile],
-  pictures: [fakeFile],
-  // buyersContract: [fakeFile],
-  // landRegisterExtract: [fakeFile],
-  // marketingBrochure: [fakeFile],
-  // coownershipAllocationAgreement: [fakeFile],
-  // coownershipAgreement: [fakeFile],
-};
+const fakeFiles2 = {};
 
-const createFakeLoans = (userId) => {
+export const createFakeLoan = (userId) => {
   const completeFiles = Math.random() > 0.5;
   const borrowerIds = createFakeBorrowers(userId);
   const propertyId = createFakeProperty(userId);
@@ -125,12 +102,17 @@ const createFakeLoans = (userId) => {
     borrowerIds,
     propertyId,
     general: fakeGeneral,
-    files: fakeFiles,
+    documents: fakeFiles,
+    contacts: [],
   };
 
   switch (generateRandomNumber(STEPS_PER_LOAN)) {
   case 3:
     loan.logic = logic3;
+    loan.adminValidation = {
+      bonus_bonus2017: 'Does not match with taxes location',
+      bankFortune: 'Not enough',
+    };
     loan.files = completeFiles ? fakeFiles : fakeFiles2;
     loan.loanTranches = [
       {
@@ -150,4 +132,7 @@ const createFakeLoans = (userId) => {
   return LoanService.insert({ loan, userId });
 };
 
-export default createFakeLoans;
+export const getRelatedLoansIds = usersIds =>
+  Loans.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
+    .fetch()
+    .map(item => item._id);

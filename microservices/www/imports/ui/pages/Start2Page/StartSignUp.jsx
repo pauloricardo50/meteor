@@ -3,10 +3,11 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 
 import { T } from 'core/components/Translation';
-import cleanMethod from 'core/api/cleanMethods';
 import { addUserTracking } from 'core/utils/analytics';
 import saveStartForm from 'core/utils/saveStartForm';
 import { emailValidation } from 'core/utils/validation';
+import { createUserAndLoan, doesUserExist } from 'core/api';
+
 import EmailLine from './EmailLine';
 
 const styles = {
@@ -48,22 +49,23 @@ export default class StartSignUp extends Component {
     if (emailValidation(email)) {
       this.setState({ loading: true });
 
-      return cleanMethod('DOES_USER_EXIST', { email })
+      return doesUserExist
+        .run({ email })
         .then((emailExists) => {
           if (emailExists) {
             throw 'Cette adresse existe déjà';
           }
         })
         .then(() =>
-          cleanMethod(
-            'createUserAndLoan',
+          createUserAndLoan.run(
             { email, formState },
             { title: "C'est dans la boite!", message: '' },
-          ).then((userId) => {
-            this.setState({ loading: false, errorText: '' });
-            addUserTracking(userId, { email, id: userId });
-            history.push(`/checkYourMailbox/${email}`);
-          }))
+          ))
+        .then((userId) => {
+          this.setState({ loading: false, errorText: '' });
+          addUserTracking(userId, { email, id: userId });
+          history.push(`/checkYourMailbox/${email}`);
+        })
         .then(() => this.setState({ loading: false }))
         .catch(error => this.setState({ loading: false, errorText: error }));
     }
@@ -74,15 +76,16 @@ export default class StartSignUp extends Component {
     const { formState } = this.props;
     this.setState({ loading: true });
 
-    saveStartForm(formState, null)
+    // userId should remain undefined, and the user will add it to his account
+    // once logged in, this is to avoid other people adding loans to your
+    // account
+    saveStartForm(formState, undefined)
       .then((loanId) => {
-        console.log('Loan inserted: ', loanId);
         // Keep loading true, to prevent double insert
         this.setState({ errorText: '' });
         const appUrl = `${
           Meteor.settings.public.subdomains.app
         }/add-loan/${loanId}`;
-        console.log('changing location to :', appUrl);
 
         window.location.replace(appUrl);
         return false;
@@ -91,7 +94,7 @@ export default class StartSignUp extends Component {
   };
 
   render() {
-    const { showPassword, login, signUp, loading, errorText } = this.state;
+    const { loading, errorText } = this.state;
     return (
       <div style={styles.section}>
         <h2>

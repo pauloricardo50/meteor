@@ -1,9 +1,132 @@
+import { Meteor } from 'meteor/meteor';
+import { Mongo } from 'meteor/mongo';
+import { Random } from 'meteor/random';
+
+import { FileSchema, DocumentSchema } from './documents';
+import { getUploadCountPrefix } from './fileHelpers';
+import { FILE_STATUS } from './fileConstants';
+import { LOANS_COLLECTION } from '../constants';
+
 class FileService {
-  deleteFile = () => {};
+  addFileToDoc = ({ collection, docId, documentId, file, userIsAdmin }) => {
+    const doc = Mongo.Collection.get(collection).findOne(docId);
+    const { uploadCount } = this._getCurrentFileValue({ doc, documentId });
+    const uploadCountPrefix = getUploadCountPrefix(uploadCount);
+    const newFile = {
+      ...file,
+      name: `${uploadCountPrefix}${file.initialName}`,
+      status: userIsAdmin ? FILE_STATUS.VALID : FILE_STATUS.UNVERIFIED,
+    };
 
-  uploadFile = () => {};
+    // Make sure file is valid, as this is all in a blackbox object
+    FileSchema.validate(newFile);
 
-  saveUploadedFile = () => {};
+    return Mongo.Collection.get(collection).update(docId, {
+      $push: {
+        [`documents.${documentId}.files`]: newFile,
+      },
+      $inc: { [`documents.${documentId}.uploadCount`]: 1 },
+    });
+  };
+
+  deleteFileFromDoc = ({ collection, docId, documentId, fileKey }) => {
+    const doc = Mongo.Collection.get(collection).findOne(docId);
+    const { files: currentValue } = this._getCurrentFileValue({
+      doc,
+      documentId,
+    });
+    return Mongo.Collection.get(collection).update(docId, {
+      $set: {
+        [`documents.${documentId}.files`]: currentValue.filter(file => file.key !== fileKey),
+      },
+    });
+  };
+
+  updateFile = ({ collection, docId, documentId, fileKey, fileUpdate }) => {
+    const doc = Mongo.Collection.get(collection).findOne(docId);
+    const { files: currentValue } = this._getCurrentFileValue({
+      doc,
+      documentId,
+    });
+
+    return Mongo.Collection.get(collection).update(docId, {
+      $set: {
+        [`documents.${documentId}.files`]: this._getNewFiles({
+          currentValue,
+          fileKey,
+          fileUpdate,
+        }),
+      },
+    });
+  };
+
+  setFileStatus = ({ collection, docId, documentId, fileKey, newStatus }) => {
+    const fileUpdate = { status: newStatus };
+    return this.updateFile({
+      collection,
+      docId,
+      documentId,
+      fileKey,
+      fileUpdate,
+    });
+  };
+
+  setFileError = ({ collection, docId, documentId, fileKey, error }) => {
+    const fileUpdate = { error };
+    return this.updateFile({
+      collection,
+      docId,
+      documentId,
+      fileKey,
+      fileUpdate,
+    });
+  };
+
+  _getCurrentFileValue = ({ doc, documentId }) => doc.documents[documentId];
+
+  _getNewFiles = ({ currentValue, fileKey, fileUpdate }) => {
+    const file = currentValue.find(f => f.key === fileKey);
+    const newFiles = [
+      ...currentValue.filter(f => f.key !== fileKey),
+      { ...file, ...fileUpdate },
+    ];
+
+    // Filter out unchanged files, and merge the fileUpdate with old version
+    return newFiles;
+  };
+
+  addDocument = ({ documentName, loanId }) => {
+    const randomId = Random.id();
+
+    const newDocument = {
+      label: documentName,
+      files: [],
+      isOwnedByAdmin: true,
+      uploadCount: 0,
+    };
+
+    // Make sure document is valid, as this is all in a blackbox object
+    DocumentSchema.validate(newDocument);
+
+    return Mongo.Collection.get(LOANS_COLLECTION).update(loanId, {
+      $set: { [`documents.${randomId}`]: newDocument },
+    });
+  };
+
+  // TODO: This should also loop over the documents in it and delete them
+  // from S3
+  removeDocument = ({ documentId, loanId }) => {
+    const doc = Mongo.Collection.get(LOANS_COLLECTION).findOne(loanId);
+    const document = this._getCurrentFileValue({ doc, documentId });
+
+    if (!document.isOwnedByAdmin) {
+      throw new Meteor.Error('document is not an admin document');
+    }
+
+    return Mongo.Collection.get(LOANS_COLLECTION).update(loanId, {
+      $unset: { [`documents.${documentId}`]: '' },
+    });
+  };
 }
 
-export default FileService;
+export default new FileService();

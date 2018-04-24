@@ -5,8 +5,6 @@ import AutoForm from 'core/components/AutoForm';
 import { getBorrowerInfoArray } from 'core/arrays/BorrowerFormArray';
 import { disableForms } from 'core/utils/loanFunctions';
 
-import { isDemo } from 'core/utils/browserFunctions';
-import FakeBorrowerCompleter from '/imports/ui/components/FakeBorrowerCompleter';
 import { T } from 'core/components/Translation';
 
 const Info = (props) => {
@@ -29,14 +27,10 @@ const Info = (props) => {
         inputs={getBorrowerInfoArray({ ...props, borrowerId })}
         formClasses="user-form"
         docId={borrowerId}
-        updateFunc="updateBorrower"
-        pushFunc="pushBorrowerValue"
-        popFunc="popBorrowerValue"
+        collection="borrowers"
         doc={borrower}
         disabled={disableForms({ loan: props.loan })}
       />
-
-      {isDemo() && <FakeBorrowerCompleter borrower={borrower} />}
     </section>
   );
 };

@@ -7,23 +7,29 @@ import classnames from 'classnames';
 import ContactButton from 'core/components/ContactButton';
 import ErrorBoundary from 'core/components/ErrorBoundary';
 import track from 'core/utils/analytics';
-import { isApp, isAdmin, isPartner } from 'core/utils/browserFunctions';
-import UserContainer from 'core/containers/UserContainer';
+import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
 import Navs from './Navs';
 
-// import UserJoyride from '/imports/ui/components/UserJoyride';
+import AppLayoutContainer from './AppLayoutContainer';
 
-const allowedRoutesWithoutLoan = ['/', '/compare', '/profile', '/add-loan'];
+const allowedRoutesWithoutLoan = ['/', '/profile', '/add-loan'];
 
-const allowedRoutesWithoutLogin = ['/enroll-account'];
+const allowedRoutesWithoutLogin = [
+  '/enroll-account',
+  '/reset-password',
+  IMPERSONATE_ROUTE,
+];
+
+const routesWithoutSidenav = ['/'];
 
 const getRedirect = ({
   currentUser,
-  history: { location: { pathname } },
+  history: {
+    location: { pathname },
+  },
   loans,
 }) => {
   const userIsAdmin = Roles.userIsInRole(currentUser, 'admin');
-  const userIsPartner = Roles.userIsInRole(currentUser, 'partner');
   const userIsDev = Roles.userIsInRole(currentUser, 'dev');
 
   if (!currentUser) {
@@ -41,8 +47,6 @@ const getRedirect = ({
 
   if (userIsAdmin) {
     return '/admin';
-  } else if (isPartner) {
-    return '/isPartner';
   }
   // If there is no active loan, force route to app page, except if
   // user is on allowed routes
@@ -58,17 +62,13 @@ const getRedirect = ({
 };
 
 const getShowSideNav = ({ location }) =>
-  !(location.pathname === '/' || location.pathname === '/compare');
+  routesWithoutSidenav.indexOf(location.pathname) === -1;
 
 const AppLayout = (props) => {
-  const { type, history, render, children } = props;
+  const { type, history, children } = props;
   const redirect = getRedirect(props);
   const showSideNav = getShowSideNav(history);
-  const classes = classnames({
-    'app-layout': true,
-    'always-side-nav': type === 'admin',
-    'no-nav': !showSideNav,
-  });
+  const classes = classnames({ 'app-layout': true, 'no-nav': !showSideNav });
   const path = history.location.pathname;
   const isLogin = path.slice(0, 6) === '/login';
 
@@ -81,17 +81,11 @@ const AppLayout = (props) => {
   }
 
   return (
-    <div>
-      <Navs
-        {...props}
-        showSideNav={showSideNav}
-        isApp={type === 'app'}
-        isAdmin={type === 'admin'}
-      />
+    <div className="app-root">
+      <Navs {...props} showSideNav={showSideNav} />
 
       <main className={classes}>
         <ErrorBoundary helper="layout" pathname={history.location.pathname}>
-          {/* <div x="wrapper">{render(props)}</div> */}
           <div x="wrapper">{React.cloneElement(children, { ...props })}</div>
         </ErrorBoundary>
       </main>
@@ -99,6 +93,16 @@ const AppLayout = (props) => {
       {type === 'app' && <ContactButton history={history} />}
     </div>
   );
+};
+
+AppLayout.propTypes = {
+  children: PropTypes.node.isRequired,
+  type: PropTypes.string,
+  render: PropTypes.func,
+  currentUser: PropTypes.objectOf(PropTypes.any),
+  noNav: PropTypes.bool,
+  loans: PropTypes.arrayOf(PropTypes.object),
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 AppLayout.defaultProps = {
@@ -109,13 +113,4 @@ AppLayout.defaultProps = {
   loans: undefined,
 };
 
-AppLayout.propTypes = {
-  type: PropTypes.string,
-  render: PropTypes.func,
-  currentUser: PropTypes.objectOf(PropTypes.any),
-  noNav: PropTypes.bool,
-  loans: PropTypes.arrayOf(PropTypes.object),
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
-};
-
-export default UserContainer(AppLayout);
+export default AppLayoutContainer(AppLayout);

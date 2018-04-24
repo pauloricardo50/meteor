@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Meteor } from 'meteor/meteor';
 import { injectIntl } from 'react-intl';
 
-import cleanMethod from 'core/api/cleanMethods';
-import { getFileCount } from 'core/api/files/files';
 import bert from 'core/utils/bert';
 import { allowedFileTypes, maxSize } from 'core/api/files/meteor-slingshot';
 import { FILE_STATUS } from '../../api/constants';
 
+import UploaderContainer from './UploaderContainer';
 import Title from './Title';
 import File from './File';
 import TempFile from './TempFile';
 import FileAdder from './FileAdder';
-import FileDropper from './FileDropper';
+import FileDropper from './FileDropper.jsx';
 
 const checkFile = (file) => {
   if (allowedFileTypes.indexOf(file.type) < 0) {
@@ -83,37 +81,29 @@ class Uploader extends Component {
   };
 
   handleSave = (file, downloadUrl) => {
-    const { currentValue, docId, pushFunc, fileMeta } = this.props;
-    const { fileCount, fileCountString } = getFileCount(currentValue);
+    const { addFileToDoc } = this.props;
 
-    const object = {
-      [`files.${fileMeta.id}`]: {
-        name: `${fileCountString}${file.name}`,
-        initialName: file.name,
-        size: file.size,
-        type: file.type,
-        url: encodeURI(downloadUrl), // To avoid spaces and unallowed chars
-        key: downloadUrl.split('amazonaws.com/')[1],
-        status: FILE_STATUS.UNVERIFIED,
-        fileCount,
-      },
-    };
-
-    cleanMethod(pushFunc, { object, id: docId }).then(() => {});
+    addFileToDoc({
+      initialName: file.name,
+      size: file.size,
+      type: file.type,
+      url: encodeURI(downloadUrl), // To avoid spaces and unallowed chars
+      key: downloadUrl.split('amazonaws.com/')[1],
+    });
   };
 
   handleRemove = (key) => {
-    Meteor.call('deleteFile', key, (err) => {
-      if (!err) {
-        const { currentValue, docId, updateFunc, fileMeta } = this.props;
-        // Filter out the file we want to delete
-        const newFileArray = currentValue.filter(file => file.key !== key);
-        const object = { [`files.${fileMeta.id}`]: newFileArray };
+    const { deleteFile } = this.props;
 
-        cleanMethod(updateFunc, { object, id: docId });
-      }
-    });
+    deleteFile(key);
   };
+
+  // If one of the files has an error, allow uploading even if form is disabled
+  shouldDisableAdd = () =>
+    this.props.currentValue.reduce(
+      (acc, f) => !(f.status === FILE_STATUS.ERROR),
+      true,
+    ) && this.props.disabled;
 
   render() {
     const {
@@ -122,16 +112,13 @@ class Uploader extends Component {
       disabled,
       docId,
       collection,
-      pushFunc,
+      userIsAdmin,
+      isOwnedByAdmin,
+      removeDocument,
     } = this.props;
     const { tempFiles } = this.state;
-    const { id } = fileMeta;
-    // If one of the files has an error, allow uploading even if form is disabled
-    const disableAdd =
-      currentValue.reduce(
-        (acc, f) => !(f.status === FILE_STATUS.ERROR),
-        true,
-      ) && disabled;
+    const { id, uploadCount } = fileMeta;
+    const disableAdd = this.shouldDisableAdd();
 
     return (
       <FileDropper
@@ -139,7 +126,13 @@ class Uploader extends Component {
         handleAddFiles={this.handleAddFiles}
         disabled={disableAdd}
       >
-        <Title {...fileMeta} currentValue={currentValue} />
+        <Title
+          {...fileMeta}
+          currentValue={currentValue}
+          userIsAdmin={userIsAdmin}
+          isOwnedByAdmin={isOwnedByAdmin}
+          removeDocument={removeDocument}
+        />
 
         {currentValue
           .sort((a, b) => a.fileCount > b.fileCount)
@@ -161,6 +154,7 @@ class Uploader extends Component {
             handleSave={this.handleSave}
             id={id}
             currentValue={currentValue}
+            uploadCount={uploadCount}
           />
         ))}
 
@@ -178,19 +172,20 @@ class Uploader extends Component {
 
 Uploader.propTypes = {
   fileMeta: PropTypes.objectOf(PropTypes.any).isRequired,
-  pushFunc: PropTypes.string,
-  updateFunc: PropTypes.string,
   docId: PropTypes.string.isRequired,
   currentValue: PropTypes.arrayOf(PropTypes.object),
   disabled: PropTypes.bool.isRequired,
   collection: PropTypes.string,
+  deleteFile: PropTypes.func.isRequired,
+  addFileToDoc: PropTypes.func.isRequired,
+  userIsAdmin: PropTypes.bool.isRequired,
+  isOwnedByAdmin: PropTypes.bool.isRequired,
+  removeDocument: PropTypes.func.isRequired,
 };
 
 Uploader.defaultProps = {
   currentValue: [],
-  pushFunc: 'pushLoanValue',
-  updateFunc: 'updateLoan',
   collection: 'loans',
 };
 
-export default injectIntl(Uploader);
+export default UploaderContainer(injectIntl(Uploader));

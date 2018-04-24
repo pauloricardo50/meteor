@@ -3,7 +3,11 @@ import get from 'lodash/get';
 import isArray from 'lodash/isArray';
 
 import { getBorrowerInfoArray } from './BorrowerFormArray';
-import { borrowerFiles, loanFiles, propertyFiles } from '../api/files/files';
+import {
+  borrowerDocuments,
+  loanDocuments,
+  propertyDocuments,
+} from '../api/files/documents';
 import { getPropertyArray, getPropertyLoanArray } from './PropertyFormArray';
 import { strategyDone, getPropertyCompletion } from 'core/utils/loanFunctions';
 import { arrayify } from '../utils/general';
@@ -14,17 +18,13 @@ import {
   FILE_STATUS,
   CLOSING_STEPS_STATUS,
   CLOSING_STEPS_TYPE,
+  FILE_STEPS,
 } from '../api/constants';
 
 const getSteps = (props) => {
-  const { loan, borrowers, property, serverTime } = props;
+  const { loan, borrowers, property } = props;
 
   const steps = [
-    {
-      nb: 0,
-      items: [],
-    },
-
     {
       nb: 1,
       items: [
@@ -54,7 +54,12 @@ const getSteps = (props) => {
         {
           id: 'files',
           link: `/loans/${loan._id}/borrowers/${borrowers[0]._id}/files`,
-          percent: () => filesPercent(borrowers, borrowerFiles, 'auction'),
+          percent: () =>
+            filesPercent({
+              doc: borrowers,
+              fileArrayFunc: borrowerDocuments,
+              step: FILE_STEPS.AUCTION,
+            }),
           isDone() {
             return this.percent() >= 1;
           },
@@ -117,11 +122,18 @@ const getSteps = (props) => {
             loan.logic.step < 3 &&
             !(loan.logic.lender && loan.logic.lender.offerId),
           percent: () =>
-            getAllFilesPercent({ loan, borrowers, property }, 'contract'),
+            getAllFilesPercent(
+              { loan, borrowers, property },
+              FILE_STEPS.CONTRACT,
+            ),
           waiting: () =>
             loan.logic.lender.contractRequested && !loan.logic.lender.contract,
           isDone() {
-            return loan.files.contract && loan.files.contract.length;
+            return (
+              loan.documents.contract &&
+              loan.documents.contract.files &&
+              loan.documents.contract.files.length
+            );
           },
         },
         {
@@ -130,8 +142,10 @@ const getSteps = (props) => {
           // FIXME: true && value used because of weird linting...
           disabled:
             (true &&
-              getAllFilesPercent({ loan, borrowers, property }, 'contract')) <
-              1 || loan.logic.step < 3,
+              getAllFilesPercent(
+                { loan, borrowers, property },
+                FILE_STEPS.CONTRACT,
+              )) < 1 || loan.logic.step < 3,
           percent: () => closingPercent(loan),
           isDone: () => loan.status === LOAN_STATUS.DONE,
         },
@@ -152,14 +166,10 @@ const getSteps = (props) => {
     },
   ];
 
-  // Make sure these indices correspond
-  // Verify all 3 items before item 4 are done
-  steps[1].items[4].disabled = !previousDone(steps, 1, 4); // Vérification e-Potek
-  // steps[0].items[6].disabled = !previousDone(steps, 0, 6); // Expertise
-
-  steps[2].items[1].disabled = !previousDone(steps, 2, 1); // Enchères
-  steps[2].items[2].disabled = !previousDone(steps, 2, 2); // Stratégie
-  steps[2].items[3].disabled = !previousDone(steps, 2, 3); // Choix du prêteur
+  setPreviousDone(steps, 0, 4); // Vérification e-Potek
+  setPreviousDone(steps, 1, 1); // Enchères
+  setPreviousDone(steps, 1, 2); // Stratégie
+  setPreviousDone(steps, 1, 3); // Choix du prêteur
 
   return steps;
 };
@@ -189,6 +199,14 @@ export const previousDone = (steps, stepNb, itemNb) => {
   return steps[stepNb].items
     .slice(0, itemNb)
     .reduce((res, i) => res && i.isDone(), true);
+};
+
+const setPreviousDone = (steps, stepIndex, itemIndex) => {
+  steps[stepIndex].items[itemIndex].disabled = !previousDone(
+    steps,
+    stepIndex,
+    itemIndex,
+  );
 };
 
 /**
@@ -302,7 +320,7 @@ export const propertyPercent = (loan, borrowers, property) => {
 export const auctionFilesPercent = (borrowers) => {
   const a = [];
   arrayify(borrowers).forEach((b) => {
-    const fileArray = borrowerFiles(b).auction;
+    const fileArray = borrowerDocuments(b).auction;
 
     if (isDemo()) {
       a.push(b.files[fileArray[0].id]);
@@ -326,29 +344,31 @@ export const auctionFilesPercent = (borrowers) => {
  * @return {number} a value between 0 and 1 indicating the percentage of
  * completion, 1 is complete, 0 is not started
  */
-export const filesPercent = (doc, fileArrayFunc, step, checkValidity) => {
+export const filesPercent = ({ doc, fileArrayFunc, step, checkValidity }) => {
   const a = [];
   const iterate = (files, doc2) => {
-    if (!doc2 || !doc2.files) {
+    if (!doc2 || !doc2.documents) {
       return;
     }
 
-    if (isDemo()) {
-      a.push(doc2.files[files[0].id]);
-    } else {
-      files.forEach((f) => {
-        if (!(f.required === false || f.condition === false)) {
+    files.forEach((f) => {
+      // Check if this file should be verified
+      if (!(f.required === false || f.condition === false)) {
+        if (doc2.documents[f.id]) {
           if (checkValidity) {
-            a.push(isArray(doc2.files[f.id]) &&
-              doc2.files[f.id].every(file => file.status === FILE_STATUS.VALID)
+            a.push(isArray(doc2.documents[f.id].files) &&
+              doc2.documents[f.id].files.every(file => file.status === FILE_STATUS.VALID)
               ? true
               : undefined);
           } else {
-            a.push(doc2.files[f.id]);
+            a.push(...doc2.documents[f.id].files);
           }
+        } else {
+          // document doesn't even exist
+          a.push(undefined);
         }
-      });
-    }
+      }
+    });
   };
 
   if (isArray(doc)) {
@@ -367,33 +387,34 @@ export const filesPercent = (doc, fileArrayFunc, step, checkValidity) => {
 export const getAllFilesPercent = ({ loan, borrowers, property }, step) => {
   const array = [];
   if (loan) {
-    array.push(filesPercent(loan, loanFiles, step));
+    array.push(filesPercent({ doc: loan, fileArrayFunc: loanDocuments, step }));
   }
 
   if (borrowers) {
-    array.push(filesPercent(borrowers, borrowerFiles, step));
+    array.push(filesPercent({ doc: borrowers, fileArrayFunc: borrowerDocuments, step }));
   }
 
   if (property) {
-    array.push(filesPercent(property, propertyFiles, step));
+    array.push(filesPercent({ doc: property, fileArrayFunc: propertyDocuments, step }));
   }
 
   // Sum and divide by amount of them
   return array.reduce((a, b) => a + b, 0) / array.length;
 };
 
+const closingStepsFilesAreValid = (loan, stepId) =>
+  isArray(loan.documents[stepId].files) &&
+  loan.documents[stepId].files.every(file => file.status === CLOSING_STEPS_STATUS.VALID);
+
 export const closingPercent = (loan) => {
   const { closingSteps } = loan.logic;
   const arr = [];
 
-  closingSteps.forEach((step) => {
-    if (step.type === CLOSING_STEPS_TYPE.TODO) {
-      arr.push(step.status === CLOSING_STEPS_STATUS.VALID ? true : undefined);
-    } else {
-      arr.push(isArray(loan.files[step.id]) &&
-        loan.files[step.id].every(file => file.status === CLOSING_STEPS_STATUS.VALID)
-        ? true
-        : undefined);
+  closingSteps.forEach(({ type, status, id: stepId }) => {
+    if (type === CLOSING_STEPS_TYPE.TODO) {
+      arr.push(status === CLOSING_STEPS_STATUS.VALID ? true : undefined);
+    } else if (loan.documents[stepId]) {
+      arr.push(closingStepsFilesAreValid(loan, stepId) ? true : undefined);
     }
   });
 

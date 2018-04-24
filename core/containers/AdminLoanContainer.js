@@ -3,16 +3,12 @@ import composeWithTracker from './composers/composeWithTracker';
 import Loading from '../components/Loading';
 
 import { currentUserComposer } from './composers/GeneralComposers';
-import {
-  adminLoanComposer,
-  adminActionsComposer,
-} from './composers/AdminComposers';
+import { adminLoanComposer } from './composers/AdminComposers';
 
 const AdminLoanContainer = component =>
   merge(
-    composeWithTracker(adminLoanComposer, Loading),
-    composeWithTracker(currentUserComposer, Loading),
-    composeWithTracker(adminActionsComposer, Loading),
+    composeWithTracker(adminLoanComposer, { loadingHandler: Loading }),
+    composeWithTracker(currentUserComposer, { loadingHandler: Loading }),
   )(component);
 
 export default AdminLoanContainer;

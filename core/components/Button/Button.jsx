@@ -2,11 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
-
 import omit from 'lodash/omit';
-
-// import RaisedButton from 'material-ui/RaisedButton';
-// import FlatButton from 'material-ui/FlatButton'
 import MuiButton from 'material-ui/Button';
 
 const getColor = ({ primary, secondary, color }) => {
@@ -26,14 +22,18 @@ const Button = (props) => {
     'label',
     'icon',
     'link',
+    'raised',
   ]);
 
   return (
     <MuiButton
       {...childProps}
-      color={getColor(props)}
-      variant={props.variant || (props.raised ? 'raised' : undefined)}
+      color={props.color || getColor(props)}
+      variant={
+        props.variant || (props.raised ? 'raised' : undefined) || undefined
+      }
       component={props.component || (props.link ? Link : null)}
+      to={props.to || undefined}
     >
       {props.icon}
       {props.icon && <span style={{ height: '100%', width: 8 }} />}

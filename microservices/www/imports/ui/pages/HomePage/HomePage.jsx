@@ -1,28 +1,25 @@
-import React, { Component } from 'react';
-import { DocHead } from 'meteor/kadira:dochead';
+import React from 'react';
 
-import Header from './Header';
-import KeyPoints1 from './KeyPoints1';
-import Browser from './Browser';
-import KeyPoints2 from './KeyPoints2';
-import Footer from './Footer';
+// import HomePageInterestRates from './HomePageInterestRates';
+import HomePageHeader from './HomePageHeader';
+// import HomePagePartners from './HomePagePartners';
+import HomePageDescription from './HomePageDescription';
+import HomePageReviews from './HomePageReviews';
+// import HomePageNewsletter from './HomePageNewsletter';
+import WwwLayout from '../../WwwLayout';
+import { VARIANTS } from '../../WwwLayout/WwwTopNav';
 
-export default class HomePage extends Component {
-  componentDidMount() {
-    DocHead.setTitle('e-Potek');
-  }
+const HomePage = () => (
+  <WwwLayout className="home-page">
+    {/* <HomePageInterestRates /> */}
+    <WwwLayout.TopNav variant={VARIANTS.WHITE} />
+    <HomePageHeader />
+    {/* <HomePagePartners /> */}
+    <HomePageDescription />
+    <HomePageReviews />
+    {/* <HomePageNewsletter /> */}
+    <WwwLayout.Footer />
+  </WwwLayout>
+);
 
-  render() {
-    return (
-      <section style={{ display: 'unset !important' }}>
-        <div name="launchaco" style={{ display: 'unset' }}>
-          <Header />
-          <KeyPoints1 />
-          <Browser />
-          <KeyPoints2 />
-          <Footer />
-        </div>
-      </section>
-    );
-  }
-}
+export default HomePage;

@@ -3,7 +3,6 @@ import React from 'react';
 import Loadable from 'core/utils/loadable';
 import { injectIntl } from 'react-intl';
 
-import { toMoney } from 'core/utils/conversionFunctions';
 import {
   getLoanValue,
   getProjectValue,
@@ -11,9 +10,8 @@ import {
 } from 'core/utils/loanFunctions';
 import constants from 'core/config/constants';
 import colors from 'core/config/colors';
-import withLoan from 'core/containers/withLoan';
 
-import { legendConfig, adjustLegend } from './chartSettings';
+import { legendConfig } from './chartSettings';
 
 const ReactHighcharts = Loadable({
   loader: () => import('react-highcharts'),
@@ -42,14 +40,6 @@ const getConfig = (props) => {
       spacingBottom: 0,
       marginTop: 0,
       marginBottom: 0,
-      // events: {
-      //   load() {
-      //     adjustLegend(this);
-      //   },
-      //   redraw() {
-      //     adjustLegend(this);
-      //   },
-      // },
     },
     title: {
       text: f({ id: 'ProjectBarChart.title' }),
@@ -175,4 +165,4 @@ ProjectBarChart.propTypes = {
   titleAlign: PropTypes.string,
 };
 
-export default injectIntl(withLoan(ProjectBarChart));
+export default injectIntl(ProjectBarChart);

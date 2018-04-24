@@ -1,0 +1,14 @@
+@import '{}/imports/ui/pages/HomePage/HomePageInterestRates/HomePageInterestRates.scss';
+@import '{}/imports/ui/pages/HomePage/HomePageHeader/HomePageHeader.scss';
+@import '{}/imports/ui/pages/HomePage/HomePageDescription/HomePageDescription.scss';
+@import '{}/imports/ui/pages/HomePage/HomePagePartners/HomePagePartners.scss';
+@import '{}/imports/ui/pages/HomePage/HomePageReviews/HomePageReviews.scss';
+
+.home-page {
+  padding-top: 0;
+}
+
+.home-page .www-top-nav {
+  // background-color: transparent;
+  position: relative;
+}

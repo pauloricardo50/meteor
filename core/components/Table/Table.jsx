@@ -8,11 +8,7 @@ import { T } from 'core/components/Translation';
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 import TableFooter from './TableFooter';
-
-const ORDER = {
-  ASC: 'asc',
-  DESC: 'desc',
-};
+import { ORDER, sortData } from './tableHelpers';
 
 export default class Table extends Component {
   constructor(props) {
@@ -22,7 +18,7 @@ export default class Table extends Component {
       selected: [],
       order: ORDER.ASC,
       orderBy: 0,
-      rowsPerPage: 10,
+      rowsPerPage: 40,
       page: 0,
     };
   }
@@ -64,32 +60,19 @@ export default class Table extends Component {
       throw new Error('column length has to be correct in Table');
     }
 
-    this.setState({ data: rows }, () => this.handleSort(this.state.orderBy));
+    this.setState({ data: rows }, () =>
+      this.handleSort(this.state.orderBy, false));
   };
 
-  handleSort = (columnNb) => {
-    const { data, order, orderBy } = this.state;
-    const newOrderBy = columnNb;
-    let isReversed;
-
-    if (orderBy === newOrderBy) {
-      // Clicked a second time, reverse order
-      isReversed = order === ORDER.ASC;
-    } else {
-      // Initial order
-      isReversed = false;
-    }
-
-    const sortedData = data.sort((a, b) => (b.columns[newOrderBy] > a.columns[newOrderBy] ? 1 : -1));
-    const sortedDataInCorrectOrder = isReversed
-      ? sortedData.slice().reverse()
-      : sortedData;
-
-    this.setState({
-      data: sortedDataInCorrectOrder,
-      order: isReversed ? ORDER.DESC : ORDER.ASC,
-      orderBy: newOrderBy,
-    });
+  handleSort = (newOrderBy, changeOrder) => {
+    const { data, orderBy, order } = this.state;
+    this.setState(sortData({
+      data,
+      orderBy,
+      order,
+      newOrderBy,
+      changeOrder,
+    }));
   };
 
   handleSelect = (rowId) => {
@@ -217,5 +200,5 @@ Table.defaultProps = {
   sortable: true,
   style: {},
   noIntl: false,
-  clickable: false,
+  clickable: true,
 };

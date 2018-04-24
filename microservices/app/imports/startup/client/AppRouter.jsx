@@ -22,14 +22,19 @@ import ContractPage from '../../ui/pages/ContractPage';
 import ClosingPage from '../../ui/pages/ClosingPage';
 import FinancePage from '../../ui/pages/FinancePage';
 import FilesPage from '../../ui/pages/FilesPage';
+import EmailVerificationPage from '../../ui/pages/EmailVerificationPage';
+import PasswordResetPage from '../../ui/pages/PasswordResetPage';
 
-import ComparePage from '../../ui/pages/ComparePage';
 import AppPage from '../../ui/pages/AppPage';
 import AccountPage from '../../ui/pages/AccountPage';
 import AddLoanPage from '../../ui/pages/AddLoanPage';
 import PasswordResetpage from '../../ui/pages/PasswordResetPage';
 
 import AppLayout from '../../ui/layouts/AppLayout';
+
+// Impersonation
+import ImpersonatePage from 'core/components/Impersonate/ImpersonatePage';
+import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
 
 const AppRouter = () => (
   <BaseRouter
@@ -87,10 +92,12 @@ const AppRouter = () => (
           component={LoanContainer(FilesPage)}
         />
         <Route path="/loans/:loanId" component={LoanContainer(DashboardPage)} />
-        <Route path="/compare" component={ComparePage} />
         <Route path="/add-loan/:loanId" component={AddLoanPage} />
+        <Route path="/reset-password/:token" component={PasswordResetPage} />
         <Route path="/enroll-account/:token" component={PasswordResetpage} />
+        <Route path="/verify-email/:token" component={EmailVerificationPage} />
         <Route exact path="/" component={AppPage} />
+        <Route exact path={IMPERSONATE_ROUTE} component={ImpersonatePage} />
         <Route component={NotFound} />
       </Switch>
     </AppLayout>

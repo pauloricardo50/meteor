@@ -1,0 +1,47 @@
+{
+  "public": {
+    "environment": "staging",
+    "features": {
+      "LITE_VERSION": true
+    },
+    "analyticsSettings": {
+      "Google Analytics": {
+        "trackingId": "UA-84358947-2"
+      },
+      "Mixpanel": {
+        "token": "8fd61d69bbe35690f6c3925e3cb5d21b",
+        "people": true
+      }
+    },
+    "google_maps_key": "AIzaSyCsdThaRqcTSjvzz4IeeZnn4zkXSinehzo",
+    "subdomains": {
+      "www": "https://www.staging.e-potek.ch",
+      "app": "https://app.staging.e-potek.ch",
+      "admin": "https://admin.staging.e-potek.ch",
+      "lender": "https://lender.staging.e-potek.ch"
+    }
+  },
+  "AWS": {
+    "users": {
+      "accessKeyId": "AKIAINZ4F3JI4372JZHQ",
+      "secretAccesskey": "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"
+    },
+    "admins": {
+      "accessKeyId": "AKIAJYTM62YXLOL5OCTQ",
+      "secretAccesskey": "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"
+    },
+    "partners": {
+      "accessKeyId": "AKIAINZ4F3JI4372JZHQ",
+      "secretAccesskey": "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"
+    }
+  },
+  "AWSAccessKeyId": "AKIAINZ4F3JI4372JZHQ",
+  "AWSSecretAccessKey": "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",
+  "AWSRegion": "eu-central-1",
+  "S3Bucket": "e-potek-staging",
+  "MANDRILL_LOGIN": "florian@e-potek.ch",
+  "MANDRILL_API_KEY": "E7oXiP-HdFaLpNfggBUGpg",
+  "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg",
+  "MIXPANEL_API_KEY": "904fedcb38c172174737132a4ea6dbe1",
+  "MIXPANEL_API_SECRET": "e760363faa39456bc5f8d679eb38cb29"
+}

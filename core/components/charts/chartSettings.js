@@ -1,7 +1,9 @@
+import colors from '../../config/colors';
+
 export const legendConfig = {
-  align: 'center',
-  verticalAlign: 'bottom',
-  layout: 'horizontal',
+  // align: 'center',
+  // verticalAlign: 'bottom',
+  // layout: 'horizontal',
   itemStyle: {
     fontSize: '14px',
     fontWeight: 400,
@@ -29,3 +31,17 @@ export function adjustLegend(that) {
     });
   });
 }
+
+export const defaultConfig = {
+  chart: {
+    style: { fontFamily: 'Source Sans Pro' },
+    animation: { duration: 400 },
+    backgroundColor: 'rgba(255, 255, 255, 0.0)',
+  },
+  title: { style: { fontSize: '18px', color: '#222', fontWeight: 400 } },
+  subtitle: { style: { fontSize: '14px' } },
+  tooltip: { style: { fontSize: '14px' } },
+  colors: colors.charts,
+  lang: { thousandsSep: "'" },
+  credits: { enabled: false },
+};

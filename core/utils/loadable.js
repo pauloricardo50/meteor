@@ -1,9 +1,9 @@
 import Loadable from 'react-loadable';
-import { LoadingComponent } from 'core/components/Loading';
+import Loading from 'core/components/Loading';
 
 export default function MyLoadable(options) {
   return Loadable({
-    loading: LoadingComponent,
+    loading: Loading,
     delay: 200, // Hides the loading component for 200ms, to avoid flickering
     ...options,
   });

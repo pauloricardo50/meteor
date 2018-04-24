@@ -14,7 +14,7 @@ export class EventService {
     this.emmitter.emit(eventName, params);
   }
 
-  emitMutation({ name }, params) {
+  emitMethod({ name }, params) {
     this.emit(name, params);
   }
 
@@ -25,7 +25,7 @@ export class EventService {
     });
   }
 
-  addMutationListener({ name }, listenerFunction) {
+  addMethodListener({ config: { name } }, listenerFunction) {
     this.addListener(name, listenerFunction);
   }
 

@@ -1,4 +1,5 @@
-import { fakeFile } from 'core/api/files/files';
+import { fakeDocument } from 'core/api/files/fileHelpers';
+import { EXPERTISE_STATUS } from './propertyConstants';
 
 export const fakeProperty = {
   value: 1000000,
@@ -30,10 +31,13 @@ export const fakeProperty = {
   buildingQuality: 1,
   flatQuality: 2,
   materialsQuality: 2,
-  files: {
-    plans: [fakeFile],
-    cubage: [fakeFile],
-    pictures: [fakeFile],
-    landRegisterExtract: [fakeFile],
+  expertise: {
+    status: EXPERTISE_STATUS.NONE,
+  },
+  documents: {
+    plans: fakeDocument,
+    cubage: fakeDocument,
+    pictures: fakeDocument,
+    landRegisterExtract: fakeDocument,
   },
 };

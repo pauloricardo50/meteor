@@ -6,19 +6,14 @@ import { IntlProvider, intlShape } from 'react-intl';
 import StubCollections from 'meteor/hwillson:stub-collections';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { getUserLocale, getFormats } from 'core/utils/localization';
+import { getUserLocale, getFormats } from '../localization';
 import messagesFR from '../../lang/fr.json';
 
 // This has to be imported here for client side tests to use factories
 // Because each test using factories also uses stubCollections
-import 'core/api/factories';
+import '../../api/factories';
 
-import Loans from 'core/api/loans/loans';
-import Borrowers from 'core/api/borrowers/borrowers';
-import Offers from 'core/api/offers/offers';
-import AdminActions from 'core/api/adminActions/adminActions';
-import Comparators from 'core/api/comparators/comparators';
-import Properties from 'core/api/properties/properties';
+import { Loans, Borrowers, Properties, Offers, Tasks } from '../../api';
 import { mount } from './enzyme';
 
 // Mounts a component for testing, and wraps it around everything it needs
@@ -114,9 +109,8 @@ export const stubCollections = () => {
     Loans,
     Borrowers,
     Offers,
-    AdminActions,
     Properties,
-    Comparators,
+    Tasks,
   ]);
 };
 
@@ -134,9 +128,8 @@ if (Meteor.isTest) {
     Loans,
     Borrowers,
     Offers,
-    AdminActions,
     Properties,
-    Comparators,
+    Tasks,
   ]);
   StubCollections.stub(); // This part is critical, need to stub once beforeAll
   stubCollections.restore();

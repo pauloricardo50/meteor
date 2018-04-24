@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 
-import cleanMethod from 'core/api/cleanMethods';
-
 import Checkbox from 'core/components/Checkbox';
 
 const handleCheck = (
@@ -11,7 +9,7 @@ const handleCheck = (
   isInputChecked,
 ) => {
   const object = { [`adminValidation.${id}`]: isInputChecked };
-  cleanMethod(updateFunc, { object, id: docId });
+  updateFunc({ object, id: docId });
 };
 
 const styles = {
@@ -27,12 +25,20 @@ const styles = {
 };
 
 const FormValidator = (props) => {
-  const { admin, doc, inputProps: id } = props;
+  let id;
+  const { admin, doc, inputProps } = props;
   if (!admin) {
     return null;
   }
 
+  if (!inputProps) {
+    id = props.id;
+  } else {
+    id = inputProps.id;
+  }
+
   const checked = !!get(doc.adminValidation, id);
+
   return (
     <div style={styles.div}>
       <div style={styles.wrapper}>

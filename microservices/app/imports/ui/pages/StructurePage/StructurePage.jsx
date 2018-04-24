@@ -2,13 +2,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import merge from 'lodash/merge';
 
-import cleanMethod from 'core/api/cleanMethods';
-
 import LoadingButton from '/imports/ui/components/LoadingButton';
 import ProcessPage from '/imports/ui/components/ProcessPage';
 import { T } from 'core/components/Translation';
 import track from 'core/utils/analytics';
 import { toNumber } from 'core/utils/conversionFunctions';
+import { loanUpdate } from 'core/api';
 
 import StructureSliders from './StructureSliders';
 import StructureRecap from './StructureRecap';
@@ -21,8 +20,9 @@ const handleClick = (props, state) => {
   object['general.fortuneUsed'] = state.fortuneUsed;
   object['general.insuranceFortuneUsed'] = state.insuranceFortuneUsed;
 
-  cleanMethod('updateLoan', { object, id: props.loan._id }).then(() =>
-    track('validated structure', {}));
+  loanUpdate
+    .run({ object, loanId: props.loan._id })
+    .then(() => track('validated structure', {}));
 };
 
 export default class StructurePage extends Component {
@@ -42,12 +42,10 @@ export default class StructurePage extends Component {
     this.setState({ [id]: Math.round(toNumber(value)) });
 
   render() {
-    const { loan, borrowers } = this.props;
+    const { loan, borrowers, property } = this.props;
+    const { fortuneUsed, insuranceFortuneUsed } = this.state;
     const modifiedLoan = merge({}, loan, {
-      general: {
-        fortuneUsed: this.state.fortuneUsed,
-        insuranceFortuneUsed: this.state.insuranceFortuneUsed,
-      },
+      general: { fortuneUsed, insuranceFortuneUsed },
     });
 
     return (
@@ -63,6 +61,7 @@ export default class StructurePage extends Component {
             <StructureError
               loan={modifiedLoan}
               borrowers={borrowers}
+              property={property}
               setParentState={this.setParentState}
             />
           </div>
@@ -95,5 +94,6 @@ export default class StructurePage extends Component {
 
 StructurePage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
+  property: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

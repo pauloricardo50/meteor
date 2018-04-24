@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import Dialog from 'core/components/Material/Dialog';
 import Button from 'core/components/Button';
-
 import { T } from 'core/components/Translation';
 
 export default class DialogSimple extends Component {
@@ -18,7 +17,11 @@ export default class DialogSimple extends Component {
     }
   }
 
-  handleOpen = () => this.setState({ open: true }, () => this.props.onOpen());
+  handleOpen = () =>
+    this.setState(
+      { open: true },
+      () => this.props.onOpen && this.props.onOpen(),
+    );
 
   handleClose = isSubmit => this.setState({ open: false, isCancel: !isSubmit });
 
@@ -27,8 +30,9 @@ export default class DialogSimple extends Component {
   enableClose = () => this.setState({ disabled: false });
 
   render() {
-    const { actions } = this.props;
+    const { open, disabled, isCancel } = this.state;
     const {
+      actions,
       autoFocus,
       rootStyle,
       label,
@@ -45,6 +49,7 @@ export default class DialogSimple extends Component {
       autoScroll,
       cancelOnly,
       buttonProps,
+      onOpen,
       ...otherProps
     } = this.props;
 
@@ -70,7 +75,7 @@ export default class DialogSimple extends Component {
             label="Ok"
             onClick={() => this.handleClose(true)}
             autoFocus={autoFocus} // TODO doesn't work with tooltips
-            disabled={this.state.disabled}
+            disabled={disabled}
             key="submit"
           />,
         ];
@@ -78,7 +83,7 @@ export default class DialogSimple extends Component {
     const childProps = {
       disableClose: this.disableClose,
       enableClose: this.enableClose,
-      isCancel: this.state.isCancel,
+      isCancel,
       handleClose: this.handleClose,
     };
 
@@ -98,7 +103,7 @@ export default class DialogSimple extends Component {
           title={title}
           actions={finalActions}
           important={important}
-          open={this.state.open}
+          open={open}
           onClose={this.handleClose}
           style={style}
         >
@@ -135,7 +140,7 @@ DialogSimple.defaultProps = {
   rootStyle: {},
   buttonStyle: {},
   autoFocus: false,
-  close: false,
+  close: undefined,
   important: false,
   passProps: false,
   onOpen: () => {},

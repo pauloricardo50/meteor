@@ -1,43 +1,27 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import cleanMethod from 'core/api/cleanMethods';
 
 import Button from 'core/components/Button';
 import Dialog from 'core/components/Material/Dialog';
 import TextField from 'core/components/Material/TextField';
-
 import { T } from 'core/components/Translation';
+import { loanUpdate } from 'core/api';
 
 export default class NewLoanModal extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      open: this.props.open,
-      value: '',
-    };
+    this.state = { open: this.props.open, value: '' };
   }
 
-  handleChange = (event) => {
-    this.setState({ value: event.target.value });
-  };
+  handleChange = event => this.setState({ value: event.target.value });
 
   handleSubmit = (event) => {
     event.preventDefault();
 
-    const object = { name: this.state.value };
-
-    cleanMethod(
-      'updateLoan',
-      { object, id: this.props.loanId },
-      {
-        title: `C'est parti pour ${this.state.value}`,
-        message:
-          '<h4 class="bert">Vous pouvez avancer quand vous voulez, et à votre rythme. Vous trouverez toujours tout ici, à sa place.</h4>',
-        style: 'fixed-top',
-        delay: 15000,
-      },
-    ).then(() => this.setState({ open: false }));
+    loanUpdate
+      .run({ object: { name: this.state.value }, loanId: this.props.loanId })
+      .then(() => this.setState({ open: false }));
   };
 
   render() {

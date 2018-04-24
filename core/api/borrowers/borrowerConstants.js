@@ -1,3 +1,5 @@
+export const BORROWERS_COLLECTION = 'borrowers';
+
 export const RESIDENCY_PERMIT = {
   B: 'b',
   C: 'c',
@@ -57,4 +59,6 @@ export const REAL_ESTATE = {
 
 export const BORROWER_QUERIES = {
   ADMIN_BORROWERS: 'ADMIN_BORROWERS',
+  BORROWER_ASSIGNED_TO: 'BORROWER_ASSIGNED_TO',
+  SIDENAV_BORROWERS: 'SIDENAV_BORROWERS',
 };

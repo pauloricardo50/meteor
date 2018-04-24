@@ -1,82 +1,39 @@
 import { Meteor } from 'meteor/meteor';
-import { ValidatedMethod } from 'meteor/mdg:validated-method';
-import { check } from 'meteor/check';
-import { Roles } from 'meteor/alanning:roles';
-import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
-import rateLimit from '../../../utils/rate-limit.js';
 
-import Borrowers from '../borrowers';
+import { SecurityService } from '../..';
+import BorrowerService from '../BorrowerService';
+import {
+  borrowerInsert,
+  borrowerUpdate,
+  borrowerDelete,
+  pushBorrowerValue,
+  popBorrowerValue,
+} from '../methodDefinitions';
 
-export const insertBorrower = new ValidatedMethod({
-  name: 'insertBorrower',
-  mixins: [CallPromiseMixin],
-  validate() {},
-  run({ object, userId }) {
-    return Borrowers.insert({
-      ...object,
-      // Allow null as userId
-      userId: userId === undefined ? Meteor.userId() : userId,
-    });
-  },
+borrowerInsert.setHandler((context, { borrower, userId }) => {
+  if (userId === undefined && Meteor.userId()) {
+    userId = Meteor.userId();
+  }
+
+  return BorrowerService.insert({ borrower, userId });
 });
 
-// Lets you set an entire object in the document
-export const updateBorrower = new ValidatedMethod({
-  name: 'updateBorrower',
-  mixins: [CallPromiseMixin],
-  validate({ id }) {
-    check(id, String);
-  },
-  run({ object, id }) {
-    return Borrowers.update(id, { $set: object });
-  },
+borrowerUpdate.setHandler((context, { borrowerId, object }) => {
+  SecurityService.borrowers.isAllowedToUpdate(borrowerId);
+  return BorrowerService.update({ borrowerId, object });
 });
 
-// Lets you push a value to an array
-export const pushBorrowerValue = new ValidatedMethod({
-  name: 'pushBorrowerValue',
-  mixins: [CallPromiseMixin],
-  validate({ id }) {
-    check(id, String);
-  },
-  run({ object, id }) {
-    return Borrowers.update(id, { $push: object });
-  },
+borrowerDelete.setHandler((context, { borrowerId }) => {
+  SecurityService.borrowers.isAllowedToDelete(borrowerId);
+  return BorrowerService.remove({ borrowerId });
 });
 
-// Lets you pop a value from the end of an array
-export const popBorrowerValue = new ValidatedMethod({
-  name: 'popBorrowerValue',
-  mixins: [CallPromiseMixin],
-  validate({ id }) {
-    check(id, String);
-  },
-  run({ object, id }) {
-    return Borrowers.update(id, { $pop: object }, { getAutoValues: false });
-  },
+pushBorrowerValue.setHandler((context, { borrowerId, object }) => {
+  SecurityService.borrowers.isAllowedToUpdate(borrowerId);
+  return BorrowerService.pushValue(object);
 });
 
-export const deleteBorrower = new ValidatedMethod({
-  name: 'deleteBorrower',
-  mixins: [CallPromiseMixin],
-  validate({ id }) {
-    check(id, String);
-  },
-  run({ id }) {
-    if (Roles.userIsInRole(Meteor.userId(), 'dev')) {
-      return Borrowers.remove(id);
-    }
-
-    return false;
-  },
-});
-
-rateLimit({
-  methods: [
-    insertBorrower,
-    updateBorrower,
-    pushBorrowerValue,
-    popBorrowerValue,
-    deleteBorrower,
-  ],
+popBorrowerValue.setHandler((context, { borrowerId, object }) => {
+  SecurityService.borrowers.isAllowedToUpdate(borrowerId);
+  return BorrowerService.pushValue(object);
 });

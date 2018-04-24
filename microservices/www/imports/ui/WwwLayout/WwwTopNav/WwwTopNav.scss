@@ -1,0 +1,42 @@
+.www-top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: calc(100% - 32px);
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  z-index: $z-nav;
+  background-color: $primary;
+
+  .logo {
+    display: flex;
+    width: 250px;
+    height: 100%;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+@media (max-width: $med) {
+  .www-top-nav .logo {
+    width: 160px;
+  }
+}
+
+.www-top-nav.white {
+  background-color: white;
+}
+
+.www-top-nav.transparent {
+  background-color: transparent;
+}
+
+.www-top-nav.grey {
+  background-color: $background-color;
+}

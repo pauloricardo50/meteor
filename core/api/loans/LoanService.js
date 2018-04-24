@@ -5,12 +5,7 @@ import { LOAN_STATUS, AUCTION_STATUS } from '../constants';
 import { getAuctionEndTime } from '../../utils/loanFunctions';
 
 class LoanServiceModel {
-  insert = ({ loan, userId }) =>
-    Loans.insert({
-      ...loan,
-      // Do this to allow userId to be null
-      userId,
-    });
+  insert = ({ loan, userId }) => Loans.insert({ ...loan, userId });
 
   update = ({ loanId, object }) => Loans.update(loanId, { $set: object });
 
@@ -31,7 +26,7 @@ class LoanServiceModel {
     return Loans.update(loanId, {
       $set: {
         'logic.verification.requested': true,
-        'logic.verification.requestedTime': new Date(),
+        'logic.verification.requestedAt': new Date(),
       },
     });
   };
@@ -71,7 +66,7 @@ class LoanServiceModel {
   };
 
   cancelAuction = ({ loanId }) =>
-    this.update(loanId, {
+    Loans.update(loanId, {
       $set: {
         'logic.auction.endTime': undefined,
         'logic.auction.status': '',
@@ -86,6 +81,12 @@ class LoanServiceModel {
         ...object,
       },
     });
+
+  static pushValue = ({ loanId, object }) =>
+    Loans.update(loanId, { $push: object });
+
+  static popValue = ({ loanId, object }) =>
+    Loans.update(loanId, { $pop: object });
 }
 
 const LoanService = new LoanServiceModel({});

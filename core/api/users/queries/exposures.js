@@ -1,3 +1,4 @@
-import './adminUsersList.expose';
-import './adminUserView.expose';
+import './adminUsers.expose';
+import './adminUser.expose';
 import './admins.expose';
+import './sideNavUsers.expose';

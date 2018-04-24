@@ -1,29 +1,25 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import cleanMethod from 'core/api/cleanMethods';
 
 import Button from 'core/components/Button';
 import Dialog from 'core/components/Material/Dialog';
-
 import { T } from 'core/components/Translation';
+import { loanUpdate } from 'core/api';
 
 export default class AcceptClosingModal extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      open: this.props.open,
-    };
+    this.state = { open: this.props.open };
   }
 
   handleConfirm = (event) => {
     event.preventDefault();
 
-    cleanMethod(
-      'updateLoan',
+    loanUpdate.run(
       {
         object: { 'logic.acceptedClosing': true },
-        id: this.props.loan._id,
+        loanId: this.props.loan._id,
       },
       () => this.setState({ open: false }),
       {

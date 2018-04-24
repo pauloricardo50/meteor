@@ -1,50 +1,64 @@
+defaults: &defaults
+  working_directory: ~/app
+
+
+
 version: 2
 jobs:
   build:
-    working_directory: ~/app
+    <<: *defaults
     docker:
-      - image: circleci/openjdk:8-jdk-browsers
-        environment:
-          # lang settings required for Meteor's Mongo
-          LANG: C.UTF-8
-          LANGUAGE: C.UTF-8
-          LC_ALL: C.UTF-8
-          LC_NUMERIC: en_US.UTF-8
-          METEOR_BIN_TMP_DIR: /home/circleci/build-temp/
-          METEOR_BIN_TMP_FILE: meteor-bin-temp
-          # TZ: "/usr/share/zoneinfo/Europe/Zurich"
-          NODE_ENV: development
-          TOOL_NODE_FLAGS: "--max_old_space_size=4096 --optimize_for_size --gc-interval=100" # if builds run out of memory
-          # METEOR_PROFILE: 1 # If you need to debug meteor, turn this on
+    - image: circleci/openjdk:8-jdk-browsers
+      environment:
+        # lang settings required for Meteor's Mongo
+        LANG: C.UTF-8
+        LANGUAGE: C.UTF-8
+        LC_ALL: C.UTF-8
+        LC_NUMERIC: en_US.UTF-8
+        METEOR_BIN_TMP_DIR: /home/circleci/build-temp/
+        METEOR_BIN_TMP_FILE: meteor-bin-temp
+        # TZ: "/usr/share/zoneinfo/Europe/Zurich"
+        NODE_ENV: development
+        TOOL_NODE_FLAGS: "--max_old_space_size=4096 --optimize_for_size --gc-interval=100" # if builds run out of memory
+        # METEOR_PROFILE: 1 # If you need to debug meteor, turn this on
     steps:
       - checkout
+      - add_ssh_keys
+      
       - restore_cache:
-          name: restore cached build
-          key: build-temp-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
+          name: restore system's meteor cached build
+          keys:
+            - build-epotek-v2-meteor-system
       - restore_cache:
-          name: restore cached meteor
-          key: meteor-release-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
+          name: restore app's meteor cached build
+          keys:
+            - build-epotek-v2-meteor-{{ checksum "./microservices/app/.meteor/release" }}-{{ checksum "./microservices/app/.meteor/packages" }}
       - restore_cache:
-          name: restore cached meteor packages
-          key: meteor-packages-{{ checksum ".meteor/versions" }}-{{ checksum ".circleci/config.yml" }}
+          name: restore app's cached node_modules
+          keys:
+            - build-epotek-v2-node_modules-{{ checksum "./microservices/app/package.json" }}
       - restore_cache:
-          name: restore cached npm packages
-          key: npm-packages-{{ checksum "package.json" }}-{{ checksum ".circleci/config.yml" }}
-      - run:
-          name: restore cached meteor bin
-          command: |
-            if [ -e ~/build-temp/meteor-bin ]
-            then
-                echo "Cached Meteor bin found, restoring it."
-                sudo cp ~/build-temp/meteor-bin /usr/local/bin/meteor
-            else
-                echo "No cached Meteor bin found."
-            fi
+          name: restore admin's meteor cached build
+          keys:
+            - build-epotek-v2-meteor-{{ checksum "./microservices/admin/.meteor/release" }}-{{ checksum "./microservices/admin/.meteor/packages" }}
+      - restore_cache:
+          name: restore admin's cached node_modules
+          keys:
+            - build-epotek-v2-node_modules-{{ checksum "./microservices/admin/package.json" }}
+      - restore_cache:
+          name: restore www's meteor cached build
+          keys:
+            - build-epotek-v2-meteor-{{ checksum "./microservices/www/.meteor/release" }}-{{ checksum "./microservices/www/.meteor/packages" }}
+      - restore_cache:
+          name: restore www's cached node_modules
+          keys:
+            - build-epotek-v2-node_modules-{{ checksum "./microservices/www/package.json" }}
+
       - run:
           name: install Meteor
           command: |
             # only install meteor if bin isn't found
-            command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com | /bin/sh
+            command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com?release=1.6.0.1 | /bin/sh
       - run:
           name: check versions
           command: |
@@ -70,41 +84,157 @@ jobs:
           name: run tests for App
           command: |
             cd microservices/app
-            meteor npm i selenium-webdriver@3.0.0-beta-2 chromedriver
+            # Using 3.6.0 because of this: https://github.com/meteortesting/meteor-mocha/issues/54
+            # Using chromedriver 2.37 because 2.38 is incompatible with selenium >3.6.0
+            meteor npm i selenium-webdriver@3.6.0 chromedriver@2.37.0 --no-save
             meteor npm run test-CI
       - run:
-          name: run tests for admin-temp
+          name: run tests for admin
           command: |
-            cd microservices/admin-temp
-            meteor npm i selenium-webdriver@3.0.0-beta-2 chromedriver
-            meteor npm run test-CI
+            cd microservices/admin
+            meteor npm i selenium-webdriver@3.6.0 chromedriver@2.37.0 --no-save
+            meteor npm run test-CI      
       - run:
           name: copy meteor bin to build cache
           command: |
             mkdir -p ~/build-temp
             cp /usr/local/bin/meteor ~/build-temp/meteor-bin
-      # - save_cache:
-      #     name: save build
-      #     key: build-temp-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
-      #     paths:
-      #       - ~/build-temp
-      # - save_cache:
-      #     name: save meteor
-      #     key: meteor-release-{{ checksum ".meteor/release" }}-{{ checksum ".circleci/config.yml" }}
-      #     paths:
-      #       - ~/.meteor
-      # - save_cache:
-      #     name: save meteor packages
-      #     key: meteor-packages-{{ checksum ".meteor/versions" }}-{{ checksum ".circleci/config.yml" }}
-      #     paths:
-      #       - .meteor/
-      # - save_cache:
-      #     name: save npm packages
-      #     key: npm-packages-{{ checksum "package.json" }}-{{ checksum ".circleci/config.yml" }}
-      #     paths:
-      #       - ./node_modules/
-      #       - ~/.npm/
+
+      - save_cache:
+          name: cache system's meteor build
+          key: build-epotek-v2-meteor-system
+          paths:
+            - ~/.meteor
+      - save_cache:
+          name: cache app's meteor build
+          key: build-epotek-v2-meteor-{{ checksum "./microservices/app/.meteor/release" }}-{{ checksum "./microservices/app/.meteor/packages" }}
+          paths:
+            - ./microservices/app/.meteor/local
+      - save_cache:
+          name: cache app's node_modules
+          key: build-epotek-v2-node_modules-{{ checksum "./microservices/app/package.json" }}
+          paths:
+            - ./microservices/app/node_modules
+      - save_cache:
+          name: cache admin's meteor build
+          key: build-epotek-v2-meteor-{{ checksum "./microservices/admin/.meteor/release" }}-{{ checksum "./microservices/admin/.meteor/packages" }}
+          paths:
+            - ./microservices/admin/.meteor/local
+      - save_cache:
+          name: cache admin's node_modules
+          key: build-epotek-v2-node_modules-{{ checksum "./microservices/admin/package.json" }}
+          paths:
+            - ./microservices/admin/node_modules
+      - save_cache:
+          name: cache www's meteor build
+          key: build-epotek-v2-meteor-{{ checksum "./microservices/www/.meteor/release" }}-{{ checksum "./microservices/www/.meteor/packages" }}
+          paths:
+            - ./microservices/www/.meteor/local
+      - save_cache:
+          name: cache www's node_modules
+          key: build-epotek-v2-node_modules-{{ checksum "./microservices/www/package.json" }}
+          paths:
+            - ./microservices/www/node_modules
+
       - store_test_results:
           path: ./results
       - store_artifacts:
           path: ./results
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - app
+
+  deploy_admin:
+    <<: *defaults
+    machine:
+      enabled: true
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: install Meteor
+          command: |
+            # only install meteor if bin isn't found
+            command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com | /bin/sh
+      - run:
+          name: Prepare deployment
+          command: |
+            echo $STAGING_SSH_KEY_BASE64|base64 --decode > .deployment/auth.pem
+            npm install -g mup
+            npm install -g babel-cli
+      - run:
+          no_output_timeout: 30m
+          command: .deployment/deploy-staging.sh admin
+
+  deploy_app:
+    <<: *defaults
+    machine:
+      enabled: true
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: install Meteor
+          command: |
+            # only install meteor if bin isn't found
+            command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com | /bin/sh
+      - run:
+          name: Prepare deployment
+          command: |
+            echo $STAGING_SSH_KEY_BASE64|base64 --decode > .deployment/auth.pem
+            npm install -g mup
+            npm install -g babel-cli
+      - run:
+          no_output_timeout: 30m
+          command: .deployment/deploy-staging.sh app
+
+  deploy_www:
+    <<: *defaults
+    machine:
+      enabled: true
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: install Meteor
+          command: |
+            # only install meteor if bin isn't found
+            command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com | /bin/sh
+      - run:
+          name: Prepare deployment
+          command: |
+            echo $STAGING_SSH_KEY_BASE64|base64 --decode > .deployment/auth.pem
+            npm install -g mup
+            npm install -g babel-cli
+      - run:
+          no_output_timeout: 30m
+          command: .deployment/deploy-staging.sh www
+ 
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy_app:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - staging
+      - deploy_admin:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - staging
+      - deploy_www:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - staging

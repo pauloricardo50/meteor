@@ -5,7 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import Button from 'core/components/Button';
 import { T } from 'core/components/Translation';
 import { generalContainer } from 'core/containers/Containers';
-import cleanMethod from 'core/api/cleanMethods';
+import { setUserToLoan } from 'core/api';
 
 import './AddLoanPage.scss';
 
@@ -13,7 +13,8 @@ class AddLoanPage extends Component {
   handleYes = () => {
     const { match: { params: { loanId } } } = this.props;
 
-    cleanMethod('setUserToLoan', { loanId })
+    setUserToLoan
+      .run({ loanId })
       .then(() => this.props.history.push(`/loans/${loanId}`))
       // Show an error, here data is lost if something went wrong
       .catch(() => this.props.history.push('/'));

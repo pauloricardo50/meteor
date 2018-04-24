@@ -2,22 +2,23 @@ import { Meteor } from 'meteor/meteor';
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter';
 import { _ } from 'meteor/underscore';
 
-// DDPRateLimiter.setErrorMessage(({ timeToReset }) => {
-//   const time = Math.ceil(timeToReset / 1000);
-//   const seconds = time === 1 ? 'second' : 'seconds';
-//   return `Easy on the gas, buddy. Too many loans. Try again in ${time} ${seconds}.`;
-// });
+if (Meteor.isServer) {
+  DDPRateLimiter.setErrorMessage(({ timeToReset }) => {
+    const time = Math.ceil(timeToReset / 1000);
+    const seconds = time === 1 ? 'seconde' : 'secondes';
+    return `Doucement l'ami, tu peux reessayer dans ${time} ${seconds}.`;
+  });
+}
 
-const fetchMethodNames = methods => _.pluck(methods, 'name');
+let rateLimitedMethods = [];
+export const getRateLimitedMethods = () => rateLimitedMethods;
 
 const assignLimits = ({ methods, limit = 5, timeRange = 1000 }) => {
-  const methodNames = fetchMethodNames(methods);
-
   if (Meteor.isServer) {
     DDPRateLimiter.addRule(
       {
         name(name) {
-          return _.contains(methodNames, name);
+          return _.contains(methods, name);
         },
         connectionId() {
           return true;
@@ -26,6 +27,8 @@ const assignLimits = ({ methods, limit = 5, timeRange = 1000 }) => {
       limit,
       timeRange,
     );
+
+    rateLimitedMethods = rateLimitedMethods.concat(methods);
   }
 };
 

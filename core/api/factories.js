@@ -1,13 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
-import {
-  Loans,
-  Borrowers,
-  Offers,
-  Comparators,
-  Properties,
-  AdminActions,
-} from '.';
+import { Loans, Borrowers, Offers, Properties } from '.';
 
 const TEST_EMAIL = 'test@test.com';
 
@@ -38,7 +31,7 @@ Factory.define('lender', Meteor.users, {
 Factory.define('borrower', Borrowers, {
   createdAt: () => new Date(),
   expenses: () => [{ description: 'test', value: 1 }],
-  files: () => ({}),
+  documents: () => ({}),
   logic: () => ({}),
   age: 18,
 });
@@ -52,7 +45,7 @@ Factory.define('loan', Loans, {
   }),
   borrowers: [],
   status: 'ACTIVE',
-  files: () => ({}),
+  documents: () => ({}),
   logic: () => ({
     auction: {},
     lender: {},
@@ -65,14 +58,16 @@ Factory.define('loan', Loans, {
 
 Factory.define('property', Properties, {
   value: 1000000,
-  files: () => ({}),
+  documents: () => ({}),
+  expertise: () => ({}),
 });
 
 Factory.define('offer', Offers, {
   createdAt: () => new Date(),
   organization: 'bankName',
   canton: 'GE',
-  auctionEndTime: () => new Date(),
+  conditions: 'Do something',
+  counterparts: 'Do something more',
   standardOffer: () => ({
     maxAmount: 800000,
     amortization: 0.01,
@@ -82,24 +77,13 @@ Factory.define('offer', Offers, {
     interest5: 0.01,
     interest10: 0.01,
   }),
-});
-
-Factory.define('adminAction', AdminActions, {
-  type: 'test',
-  status: 'ACTIVE',
-});
-
-Factory.define('comparator', Comparators, {
-  customFields: [],
-  customFieldCount: 0,
-  hiddenFields: [],
-  borrowRatio: 0.8,
-});
-
-Factory.define('comparatorProperty', Properties, {
-  name: 'testName',
-  address: 'testAddress',
-  value: 100000,
-  latitude: 10,
-  longitude: 20,
+  counterpartOffer: () => ({
+    maxAmount: 800000,
+    amortization: 0.008,
+    interestLibor: 0.008,
+    interest1: 0.008,
+    interest2: 0.008,
+    interest5: 0.008,
+    interest10: 0.008,
+  }),
 });

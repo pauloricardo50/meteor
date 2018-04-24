@@ -4,7 +4,7 @@
       "path": "./"
     },
     {
-      "path": "microservices/admin-temp"
+      "path": "microservices/admin"
     },
     {
       "path": "microservices/app"
@@ -19,6 +19,7 @@
   "settings": {
     "path-autocomplete.pathMappings": {
       "core": "${workspace}/core"
-    }
+    },
+    "prettier.tabWidth": 4
   }
 }

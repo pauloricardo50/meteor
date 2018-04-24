@@ -26,8 +26,18 @@ export default class Security {
     }
   }
 
+  static checkLoggedOut() {
+    if (Meteor.userId()) {
+      this.handleUnauthorized('Checking if logged out');
+    }
+  }
+
   static currentUserHasRole(role) {
     return this.hasRole(Meteor.userId(), role);
+  }
+
+  static isUserAdmin(userId) {
+    return this.hasRole(userId, ROLES.ADMIN) || this.hasRole(userId, ROLES.DEV);
   }
 
   static currentUserIsAdmin() {
@@ -43,9 +53,21 @@ export default class Security {
     }
   }
 
+  static checkUserIsAdmin(userId) {
+    if (!this.isUserAdmin(userId)) {
+      this.handleUnauthorized('Checking if user is admin');
+    }
+  }
+
   static checkOwnership(doc) {
     if (Meteor.userId() !== doc.userId) {
       this.handleUnauthorized('Checking ownership');
+    }
+  }
+
+  static checkCurrentUserIsDev() {
+    if (!this.currentUserHasRole(ROLES.DEV)) {
+      this.handleUnauthorized('unauthorized developer');
     }
   }
 }

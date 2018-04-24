@@ -1,38 +1,40 @@
 {
   "name": "epotek",
   "version": "1.0.0",
-  "description": "* Initial setup",
-  "main": "index.js",
   "scripts": {
-    "format": "prettier-eslint \"**/*.js*\" --write --eslint-config-path .eslintrc.js"
+    "format": "prettier-eslint \"**/*.js*\" --write --eslint-config-path .eslintrc.js",
+    "setup": "cd scripts/ && ./setup.sh",
+    "setup-clean": "cd scripts/ && ./setup.sh -c",
+    "run": "cd scripts/ && ./run.sh",
+    "lang": "cd scripts/ && babel-node createLanguages.js",
+    "clean-run": "npm run setup-clean && npm run run"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/e-Potek/epotek.git"
   },
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/e-Potek/epotek/issues"
   },
   "homepage": "https://github.com/e-Potek/epotek#readme",
   "devDependencies": {
-    "babel-eslint": "^8.2.1",
-    "eslint": "^4.17.0",
+    "babel-eslint": "^8.2.2",
+    "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-import-resolver-meteor": "^0.4.0",
-    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-meteor": "^4.1.4",
+    "eslint-plugin-meteor": "^4.2.0",
     "eslint-plugin-prettier": "^2.6.0",
-    "eslint-plugin-react": "^7.6.1",
-    "prettier-eslint-cli": "^4.7.0",
+    "eslint-plugin-react": "^7.7.0",
+    "prettier-eslint-cli": "^4.7.1",
     "husky": "^0.14.3",
-    "lint-staged": "^6.1.0"
+    "lint-staged": "^7.0.4"
   },
   "dependencies": {
     "global": "^4.3.2",
-    "prettier": "^1.10.2"
+    "meteor-babel": "^7.0.0-beta.44",
+    "prettier": "^1.12.0"
   }
 }

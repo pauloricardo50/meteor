@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import ConfirmButton from '../components/ConfirmButton';
-import cleanMethod from 'core/api/cleanMethods';
 import IconButton from 'core/components/IconButton';
 import { T } from 'core/components/Translation';
+import { removeBorrower } from 'core/api';
 
 export default class BorrowerDeleter extends Component {
   constructor(props) {
@@ -15,7 +15,8 @@ export default class BorrowerDeleter extends Component {
   handleClick = () => {
     const { borrowerId, loanId } = this.props;
     this.setState({ loading: true });
-    return cleanMethod('removeBorrower', { borrowerId, loanId })
+    return removeBorrower
+      .run({ borrowerId, loanId })
       .then(() => this.setState({ loading: false }))
       .catch(() => this.setState({ loading: false }));
   };

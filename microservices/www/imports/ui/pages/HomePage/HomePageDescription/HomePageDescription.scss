@@ -1,0 +1,81 @@
+@import './DescriptionItem/DescriptionItem.scss';
+
+$progression-color: #8db6e6;
+
+.home-page-description {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+}
+
+.home-page-description .title {
+  align-self: center;
+  color: $primary;
+}
+
+.home-page-description .seo-title {
+  align-self: center;
+  color: $primary;
+  padding-top: 100px;
+}
+
+.home-page-description .description {
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  text-align: justify;
+}
+
+.home-page-description .steps {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.home-page-description .progression {
+  position: absolute;
+  width: 100%;
+  height: calc(#{$step-height} * 4);
+  top: calc(#{$step-height}/ 2);
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media (max-width: $break-off) {
+  .home-page-description .progression {
+    left: 10%;
+    top: calc(#{$image-height} + 16px);
+    height: calc((#{$step-height} + 80px) * 4);
+  }
+}
+
+.home-page-description .progression .segment {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  flex-grow: 1;
+}
+
+.home-page-description .progression .dot {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  border: 2px solid $progression-color;
+  flex-shrink: 0;
+}
+
+.home-page-description .progression .dash {
+  height: 3px;
+  width: 2px;
+  margin-left: 9px;
+  background-color: $progression-color;
+}
+
+.home-page-description-seo-a {
+  display: flex;
+  align-items: center;
+}

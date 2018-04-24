@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 
 import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
-import { Link } from 'react-router-dom';
 
-import cleanMethod from 'core/api/cleanMethods';
 import { getWidth } from 'core/utils/browserFunctions';
 import track from 'core/utils/analytics';
 import { T } from 'core/components/Translation';
 import { LOAN_STATUS } from 'core/api/constants';
+import { incrementLoanStep } from 'core/api';
 
 const styles = {
   button: {
@@ -27,7 +26,9 @@ const styles = {
 const handleNextStep = ({ stepNb, loan, history, nextLink }) => {
   // increment step if this is the currentstep
   if (stepNb === loan.logic.step) {
-    cleanMethod('incrementStep', { id: loan._id }).then(() => !!nextLink && history.push(nextLink));
+    incrementLoanStep
+      .run({ loanId: loan._id })
+      .then(() => !!nextLink && history.push(nextLink));
   } else {
     history.push(nextLink);
   }
@@ -46,8 +47,6 @@ export default class ProcessPageBar extends Component {
   componentWillUnmount() {
     window.removeEventListener('resize', this.resize);
   }
-
-  resize = () => this.setState({ smallWidth: getWidth() < 768 });
 
   getNextButtonChildren = (smallWidth, isDone, lastPartOfStep) => {
     let label;
@@ -70,6 +69,8 @@ export default class ProcessPageBar extends Component {
     }
     return label;
   };
+
+  resize = () => this.setState({ smallWidth: getWidth() < 768 });
 
   renderButtons = () => {
     const {

@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import MenuItem from 'core/components/Material/MenuItem';
-import Divider from 'core/components/Material/Divider';
-import Menu from 'core/components/Material/Menu';
+import MenuItem from '../Material/MenuItem';
+import Divider from '../Material/Divider';
+import Menu from '../Material/Menu';
 import IconButton from '../IconButton';
-import Icon from '../Icon';
 
 const ITEM_HEIGHT = 48;
 
@@ -16,10 +15,12 @@ export default class DropdownMenu extends Component {
     this.state = { isOpen: false, anchorEl: null };
   }
 
-  handleOpen = event =>
+  handleOpen = (event) => {
+    event.stopPropagation();
     this.setState({ isOpen: true, anchorEl: event.currentTarget });
+  };
 
-  handleLoanClose = () => this.setState({ isOpen: false });
+  handleClose = () => this.setState({ isOpen: false });
 
   mapOption = ({
     id,
@@ -29,21 +30,29 @@ export default class DropdownMenu extends Component {
     label,
     dividerTop,
     dividerBottom,
+    tooltip,
     ...otherProps
   }) => {
     const arr = [
       <MenuItem
         key={id}
-        onClick={() => {
+        onClick={(event, index) => {
+          event.stopPropagation();
           if (onClick) {
-            onClick();
+            onClick(index);
           }
-          this.handleLoanClose();
+          this.handleClose();
         }}
         {...otherProps}
         component={link ? Link : null}
       >
-        {icon && <Icon type={icon} style={{ marginRight: 8 }} />}
+        {icon && (
+          <IconButton
+            type={icon}
+            style={{ marginRight: 8 }}
+            tooltip={tooltip}
+          />
+        )}
         {label}
       </MenuItem>,
     ];
@@ -59,14 +68,7 @@ export default class DropdownMenu extends Component {
   };
 
   render() {
-    const {
-      iconType,
-      options,
-      history,
-      style,
-      tooltip,
-      tooltipPlacement,
-    } = this.props;
+    const { iconType, options, style, tooltip, tooltipPlacement } = this.props;
     const { isOpen, anchorEl } = this.state;
 
     return (
@@ -82,7 +84,7 @@ export default class DropdownMenu extends Component {
           id="long-menu"
           anchorEl={anchorEl}
           open={isOpen}
-          onClose={this.handleLoanClose}
+          onClose={this.handleClose}
           PaperProps={{
             style: {
               maxHeight: ITEM_HEIGHT * 4.5,

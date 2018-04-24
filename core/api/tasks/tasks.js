@@ -1,8 +1,8 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { TASK_STATUS, TASK_TYPE } from './tasksConstants';
+import { TASK_STATUS, TASK_TYPE, TASKS_COLLECTION } from './taskConstants';
 
-const Tasks = new Mongo.Collection('tasks');
+const Tasks = new Mongo.Collection(TASKS_COLLECTION);
 
 // Prevent all client side modifications of mongoDB
 Tasks.deny({
@@ -47,7 +47,7 @@ const TasksSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  assignedTo: {
+  assignedEmployeeId: {
     type: String,
     optional: true,
   },
@@ -73,6 +73,10 @@ const TasksSchema = new SimpleSchema({
     optional: true,
   },
   borrowerId: {
+    type: String,
+    optional: true,
+  },
+  userId: {
     type: String,
     optional: true,
   },

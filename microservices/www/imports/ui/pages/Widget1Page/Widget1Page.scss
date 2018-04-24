@@ -1,0 +1,114 @@
+@import '{}/client/css/variables.scss';
+
+@import './Widget1Nav/Widget1Nav.scss';
+@import './Widget1SingleInput/Widget1SingleInput.scss';
+@import './Widget1SingleInputForm/Widget1SingleInputForm.scss';
+@import './Widget1Recap/Widget1Recap.scss';
+@import './Widget1Monthly/Widget1Monthly.scss';
+@import './Widget1Inputs/Widget1Inputs.scss';
+
+.widget1-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.widget1-page .widget1-page-content {
+  display: flex;
+  // overflow: auto;
+  flex: 1;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 8px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+@media (min-width: $med) {
+  .widget1-page .widget1-page-content {
+    padding: 80px;
+    padding-bottom: 32px;
+  }
+}
+
+.widget1-page .widget1-part-1 {
+  max-width: 1000px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.widget1-page .input-form-placeholder {
+  display: flex;
+  flex-grow: 1;
+  margin: 16px;
+  padding: 16px;
+}
+
+.widget1-page .widget1-part-2 {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-around;
+  flex-shrink: 0;
+}
+
+.widget1-page .widget1-part-2 .card1 {
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  margin: 16px;
+  flex-grow: 1;
+  flex-basis: 300px;
+  max-width: 300px;
+  align-items: center;
+}
+
+.widget1-page .widget1-part-2 .card1 h2 {
+  color: $primary;
+  margin-top: 0;
+}
+
+.widget1-page .widget1-part-2 .card1 .card-bottom {
+  margin-left: -32px;
+  margin-bottom: -32px;
+  width: 100%;
+  padding: 32px;
+  align-self: flex-start;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+@media (max-width: $med) {
+  .widget1-page .widget1-part-2 .card1 {
+    margin: 8px;
+    padding: 16px;
+
+    .card-bottom {
+      margin-left: -16px;
+      margin-bottom: -16px;
+      padding: 16px;
+    }
+  }
+}
+
+.widget1-page .cta {
+  align-self: flex-end;
+  margin: 16px;
+}
+
+.widget1-page-disclaimer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 0.9em;
+  text-align: justify;
+
+  p {
+    max-width: 400px;
+  }
+}

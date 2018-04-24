@@ -1,5 +1,5 @@
 import './accountsEmails';
-import './emailMethods';
+import './methods';
 import { setupMandrill } from './mandrill';
 
 setupMandrill();

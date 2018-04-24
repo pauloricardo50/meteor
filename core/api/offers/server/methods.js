@@ -1,115 +1,30 @@
 import { Meteor } from 'meteor/meteor';
-import { ValidatedMethod } from 'meteor/mdg:validated-method';
-import { Roles } from 'meteor/alanning:roles';
-import { check, Match } from 'meteor/check';
-import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
-import rateLimit from '../../../utils/rate-limit.js';
 
-import Loans from '../../loans';
-import Offers from '../offers';
+import { SecurityService } from '../..';
+import OfferService from '../OfferService';
+import { offerInsert, offerUpdate, offerDelete } from '../methodDefinitions';
 
-// Insert a new offer
-export const insertOffer = new ValidatedMethod({
-  name: 'insertOffer',
-  mixins: [CallPromiseMixin],
-  validate({ object, userId }) {
-    check(object, Object);
-    check(userId, Match.Optional(String));
-  },
-  run({ object, userId }) {
-    // Make sure there isn't already an offer for this loan
-    const user = Meteor.user();
-    const offer = Offers.findOne({
-      loanId: object.loanId,
-      organization: user.profile.organization,
-    });
-    if (offer) {
-      throw new Meteor.Error(
-        'noTwoOffers',
-        'Your organization has already made an offer on this loan',
-      );
-    }
+offerInsert.setHandler((context, { offer, loanId, userId }) => {
+  const userIdIsDefined = userId !== undefined;
+  if (userIdIsDefined) {
+    SecurityService.checkCurrentUserIsAdmin();
+  } else {
+    SecurityService.offers.isAllowedToInsert();
+  }
 
-    const loan = Loans.findOne(object.loanId);
-
-    object.userId = userId || Meteor.userId();
-    object.organization = user.profile.organization;
-    object.canton = user.profile.cantons[0];
-    object.auctionEndTime = loan.logic.auction.endTime;
-
-    return Offers.insert(object);
-  },
+  return OfferService.insertAdminOffer({
+    offer,
+    loanId,
+    userId: userIdIsDefined ? userId : Meteor.userId() || undefined,
+  });
 });
 
-export const insertAdminOffer = new ValidatedMethod({
-  name: 'insertAdminOffer',
-  mixins: [CallPromiseMixin],
-  validate: null,
-  run({ object }) {
-    if (
-      !(
-        Roles.userIsInRole(Meteor.userId(), 'admin') ||
-        Roles.userIsInRole(Meteor.userId(), 'dev')
-      )
-    ) {
-      return false;
-    }
-
-    const loan = Loans.findOne(object.loanId);
-
-    return Offers.insert({
-      ...object,
-      userId: Meteor.userId(),
-      isAdmin: true,
-      auctionEndTime: loan.logic.auction.endTime, // this doesn't update when the loan is ended prematurely by an admin
-      canton: 'GE',
-    });
-  },
+offerUpdate.setHandler((context, { offerId, object }) => {
+  SecurityService.offers.isAllowedToUpdate(offerId);
+  return OfferService.update({ offerId, object });
 });
 
-export const updateOffer = new ValidatedMethod({
-  name: 'updateOffer',
-  mixins: [CallPromiseMixin],
-  validate({ id, object }) {
-    check(id, String);
-    check(object, Object);
-  },
-  run({ id, object }) {
-    return Offers.update(id, { $set: object });
-  },
-});
-
-export const insertFakeOffer = new ValidatedMethod({
-  name: 'insertFakeOffer',
-  mixins: [CallPromiseMixin],
-  validate: null,
-  run({ object }) {
-    return Offers.insert({ ...object, userId: Meteor.userId() });
-  },
-});
-
-export const deleteOffer = new ValidatedMethod({
-  name: 'deleteOffer',
-  mixins: [CallPromiseMixin],
-  validate() {},
-  run({ id }) {
-    if (
-      Roles.userIsInRole(Meteor.userId(), 'dev') ||
-      Roles.userIsInRole(Meteor.userId(), 'admin')
-    ) {
-      return Offers.remove(id);
-    }
-
-    return false;
-  },
-});
-
-rateLimit({
-  methods: [
-    insertOffer,
-    insertAdminOffer,
-    updateOffer,
-    insertFakeOffer,
-    // deleteOffer,
-  ],
+offerDelete.setHandler((context, { offerId }) => {
+  SecurityService.offers.isAllowedToDelete(offerId);
+  return OfferService.remove({ offerId });
 });

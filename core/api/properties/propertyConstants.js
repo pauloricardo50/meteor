@@ -1,3 +1,5 @@
+export const PROPERTIES_COLLECTION = 'properties';
+
 export const PROPERTY_STATUS = {
   SOLD: 'SOLD',
   FOR_SALE: 'FOR_SALE',
@@ -23,4 +25,16 @@ export const EXPERTISE_RATING = {
   1: 1,
   2: 2,
   3: 3,
+};
+
+export const PROPERTY_QUERIES = {
+  PROPERTY_ASSIGNED_TO: 'PROPERTY_ASSIGNED_TO',
+  SIDENAV_PROPERTIES: 'SIDENAV_PROPERTIES',
+  PROPERTIES: 'PROPERTIES',
+};
+
+export const EXPERTISE_STATUS = {
+  NONE: 'NONE',
+  DONE: 'DONE',
+  ERROR: 'ERROR',
 };

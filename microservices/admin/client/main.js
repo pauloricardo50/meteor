@@ -1,1 +1,1 @@
-console.log('Hello admins!');
+import '/imports/startup/client';

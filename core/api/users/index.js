@@ -1,4 +1,5 @@
-import * as mutationDefinitions from './mutationDefinitions';
+import * as methodDefinitions from './methodDefinitions';
 
-export const userMutations = mutationDefinitions;
+export * from './methodDefinitions';
 export { default } from './users';
+export const userMutations = methodDefinitions;
