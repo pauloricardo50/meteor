@@ -361,15 +361,6 @@
   "DropzoneInput.removeFile": "Supprimer",
   "e-Potek": "e-Potek",
   "EmailLine.alreadyAnAccount": "J'ai déjà un compte e-Potek",
-  "emails.auctionEnded.body":
-    "Les prêteurs se sont battus d'arrache-pied pour vous faire des offres incroyables et avoir le plaisir de financer votre futur bien immobilier. Découvrez combien d'offres vous avez reçues, et choisissez votre prêteur en cliquant sur le bouton en bas.",
-  "emails.auctionEnded.CTA": "Choisir son prêteur",
-  "emails.auctionEnded.subject": "[e-Potek] Les résultats sont arrivés",
-  "emails.auctionEnded.title": "Félicitations",
-  "emails.auctionStarted.body":
-    "Nous avons appelé tous les prêteurs de la place à se lancer et vous faire une offre incroyable. Vous pourrez accéder aux résultats le {date, date, full} à minuit.{verticalSpace}Vous recevrez une nouvelle notification quand les enchères seront terminées, donc en attendant, reposez vous!",
-  "emails.auctionStarted.subject": "[e-Potek] Les enchères ont commencé",
-  "emails.auctionStarted.title": "La bataille se prépare",
   "emails.AUCTION_ENDED.BODY":
     "Les prêteurs se sont battus d'arrache-pied pour vous faire des offres incroyables et avoir le plaisir de financer votre futur bien immobilier. Découvrez combien d'offres vous avez reçues, et choisissez votre prêteur en cliquant sur le bouton en bas.",
   "emails.AUCTION_ENDED.CTA": "Choisir son prêteur",
@@ -381,10 +372,6 @@
   "emails.AUCTION_STARTED.TITLE": "La bataille se prépare",
   "emails.enrollAccount.body":
     "On a bien enregistré votre projet, et vous invitons à découvrir votre compte et avancer sur votre prêt hypothécaire.",
-  "emails.enrollAccount.CTA": "Continuer l'expérience",
-  "emails.enrollAccount.from": "Yannis d'e-Potek",
-  "emails.enrollAccount.subject": "Bienvenue chez e-Potek",
-  "emails.enrollAccount.title": "Entrez sur votre compte e-Potek",
   "emails.ENROLL_ACCOUNT.BODY":
     "On a bien enregistré votre projet, et vous invitons à découvrir votre compte et avancer sur votre prêt hypothécaire.",
   "emails.ENROLL_ACCOUNT.CTA": "Continuer l'expérience",
@@ -393,14 +380,7 @@
   "emails.ENROLL_ACCOUNT.TITLE": "Entrez sur votre compte e-Potek",
   "emails.footerUser":
     "{copyright}Vous recevez cet email car vous avez créé un compte sur {url}{unsubscribe}",
-  "emails.footerVisitor": "{copyright}",
-  "emails.resetPassword.body":
-    "Il vous regarde avec un air exaspéré, visiblement déçu que vous ayiez pu oublier un mot de passe aussi simple. Il essaie d'attirer votre attention sur le gros bouton en bas.",
-  "emails.resetPassword.CTA": "Le gros bouton",
-  "emails.resetPassword.from": "Gardien des clés d'e-Potek",
-  "emails.resetPassword.subject": "Égarer son mot de passe",
-  "emails.resetPassword.title":
-    "Vous avez invoqué le gardien des clés d'e-Potek",
+  "emails.footerVisitor": "www.e-potek.ch<br /><br />{copyright}",
   "emails.RESET_PASSWORD.BODY":
     "Il vous regarde avec un air exaspéré, visiblement déçu que vous ayiez pu oublier un mot de passe aussi simple. Il essaie d'attirer votre attention sur le gros bouton en bas.",
   "emails.RESET_PASSWORD.CTA": "Le gros bouton",
@@ -409,21 +389,6 @@
   "emails.RESET_PASSWORD.TITLE":
     "Vous avez invoqué le gardien des clés d'e-Potek",
   "emails.unsubscribe": "Me Désabonner",
-  "emails.verificationError.body":
-    "Il semblerait qu'il y a eu un petit problème lors de la vérification.",
-  "emails.verificationError.CTA": "Fixer la fuite d'eau",
-  "emails.verificationError.subject": "[e-Potek] Souci de vérification",
-  "emails.verificationError.title": "Oops..",
-  "emails.verificationPassed.body":
-    "Vous pouvez continuer votre demande de prêt et lancer les enchères à tout moment. Vous pourrez encore modifier la structure de votre projet une dernière fois avant de vous lancer.",
-  "emails.verificationPassed.CTA": "Continuer",
-  "emails.verificationPassed.subject": "[e-Potek] Vérification réussie",
-  "emails.verificationPassed.title": "Tout est en ordre",
-  "emails.verificationRequested.body":
-    "Nous allons regarder ce que vous nous avez confié avec le plus grand soin, et vérifier que vos informations sont en ordre et dans le meilleur état pour être envoyé aux prêteurs. Nous traiterons votre dossier dans les plus brefs délais durant les heures ouvrables.",
-  "emails.verificationRequested.subject": "[e-Potek] Vérification demandée",
-  "emails.verificationRequested.title":
-    "Vous avez demandé la vérification de votre dossier",
   "emails.VERIFICATION_ERROR.BODY":
     "Il semblerait qu'il y a eu un petit problème lors de la vérification.",
   "emails.VERIFICATION_ERROR.CTA": "Fixer la fuite d'eau",
@@ -439,10 +404,17 @@
   "emails.VERIFICATION_REQUESTED.SUBJECT": "[e-Potek] Vérification demandée",
   "emails.VERIFICATION_REQUESTED.TITLE":
     "Vous avez demandé la vérification de votre dossier",
-  "emails.verifyEmail.subject": "Hypothèque, quand je t'aurai..",
   "emails.VERIFY_EMAIL.SUBJECT": "Bienvenue chez e-Potek!",
-  "EmailVerification.error": "Zut, il y a eu une erreur, rééssayez!",
-  "EmailVerification.message": "Email vérifié, Merci!",
+
+  "emails.CONTACT_US.SUBJECT": "Bienvenue chez e-Potek!",
+  "emails.CONTACT_US.TITLE": "Merci de nous avoir contacté",
+  "emails.CONTACT_US.BODY":
+    "Bonjour {name},{verticalSpace}Nous avons bien reçu votre message, et vous serez contacté dès que possible par nos experts en hypothèque.{verticalSpace}Yannis<br />Directeur d'e-Potek",
+  "emails.CONTACT_US_ADMIN.SUBJECT": "Nouveau contact: {name}",
+  "emails.CONTACT_US_ADMIN.TITLE": "Quelqu'un a rempli notre formulaire! :)",
+  "emails.CONTACT_US_ADMIN.BODY":
+    "Nom: {name}<br />Email: {email}<br />Tel: {phone}<br />Message: {details}",
+
   "error.fileSize.description":
     "On ne peut prendre que des fichiers en dessous de 50MB",
   "error.fileSize.title": "Fichier trop gros",

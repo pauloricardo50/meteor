@@ -132,13 +132,18 @@ addEmailConfig(EMAIL_IDS.AUCTION_STARTED, {
 addEmailConfig(EMAIL_IDS.CONTACT_US, {
   template: EMAIL_TEMPLATES.NOTIFICATION,
   footerType: FOOTER_TYPES.VISITOR,
-  createIntlValues: params => params,
+  // params.details check is required because details is optional
+  //  and it breaks react-intl if not provided
+  createIntlValues: params => ({ ...params, details: params.details || '' }),
 });
 
 addEmailConfig(EMAIL_IDS.CONTACT_US_ADMIN, {
   template: EMAIL_TEMPLATES.NOTIFICATION,
   footerType: FOOTER_TYPES.VISITOR,
-  createIntlValues: params => params,
+  createIntlValues: params => ({
+    ...params,
+    details: params.details || 'Pas de message',
+  }),
 });
 
 export default emailConfigs;
