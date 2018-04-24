@@ -8,27 +8,14 @@ import {
 export default Borrowers.createQuery(BORROWER_QUERIES.ADMIN_BORROWERS, {
   $filter({ filters, params: { searchQuery } }) {
     if (searchQuery) {
-      // the following implementation commented out will return any doc
-      // containing at least one of the searched words, thus too many
-      // irrelevant results.
-      //
-      // const formatedSearchQuery = searchQuery.split(' ').join('|');
-      //
-      // filters.$or = [
-      //   createRegexQuery('firstName', formatedSearchQuery),
-      //   createRegexQuery('lastName', formatedSearchQuery),
-      // ];
+      // TODO: refine borrower's search, detailes on github
+      // https://github.com/e-Potek/epotek/pull/119
 
       // the following method forces one word to be found in lastname field
-      // and one word in firstName field, but doesn't work if you only fill in
-      // firstName or lastName with multiple words.
-      // Ex. searching for "marie" will display all maries(correct),
-      // searching for "marie babel" will display correct results, so will
-      // "marie anne babel", but for "marie anne" you will not receive any
-      // result
+      // and one word in firstName field.
 
       if (searchQuery.indexOf(' ') > -1) {
-        const formatedSearchQuery = searchQuery.split(' ').join('|');
+        const formatedSearchQuery = searchQuery.trim().replace(/\s+/g, '|');
 
         filters.$and = [
           createRegexQuery('firstName', formatedSearchQuery),
