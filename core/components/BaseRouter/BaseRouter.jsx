@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router } from 'react-router-dom';
 
+import togglePoint, { TOGGLE_POINTS } from 'core/api/features/togglePoint';
+
 import ErrorBoundary from '../ErrorBoundary';
 import ScrollToTop from '../ScrollToTop';
 import LoginPage from '../LoginPage';
@@ -33,7 +35,10 @@ const BaseRouter = ({
           <ScrollToTop>
             <Switch>
               {/* LoginPage has to be above / path */}
-              {hasLogin && <Route exact path="/login" component={LoginPage} />}
+              {togglePoint({
+                id: TOGGLE_POINTS.LITE_VERSION_LOGIN_OFF,
+                code: hasLogin,
+              }) && <Route exact path="/login" component={LoginPage} />}
               <Route
                 path="/"
                 render={childProps => React.cloneElement(children, childProps)}

@@ -1,2 +1,3 @@
-// when processing the toggled routes (array), return an empty array to disabled them.
-export const returnNoRoutes = () => [];
+export const returnEmptyArray = () => [];
+
+export const returnFalse = () => false;

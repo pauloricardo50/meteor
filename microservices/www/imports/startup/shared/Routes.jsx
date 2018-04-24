@@ -2,8 +2,8 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import ScrollToTop from 'core/components/ScrollToTop';
-import togglePoint, { TOGGLE_POINTS } from 'core/api/features/togglePoint';
 import NotFound from 'core/components/NotFound';
+import togglePoint, { TOGGLE_POINTS } from 'core/api/features/togglePoint';
 
 import HomePage from '../../ui/pages/HomePage';
 import AboutPage from '../../ui/pages/AboutPage';
@@ -21,11 +21,11 @@ const routesConfig = [
   { path: '/about', component: AboutPage },
   { path: '/faq', component: FaqPage },
   { path: '/contact', component: ContactPage },
-  { path: '/conditions', component: ConditionsPage },
 
   ...togglePoint({
     id: TOGGLE_POINTS.LITE_VERSION_ROUTES_OFF,
     code: [
+      { path: '/conditions', component: ConditionsPage },
       { path: '/start/2', component: Start2Page },
       { path: '/careers', component: CareersPage },
       { path: '/checkYourMailbox/:email', component: CheckMailboxPage },

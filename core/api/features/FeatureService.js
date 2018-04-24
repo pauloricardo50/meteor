@@ -7,12 +7,13 @@ import {
   enhanceChildrenWith,
   changeCodeWith,
 } from './featureDecisionFactories';
-import { returnNoRoutes } from '../../utils/featureFunctions';
+import { returnEmptyArray, returnFalse } from '../../utils/featureFunctions';
 
 const {
   WIDGET1_CONTINUE_BUTTON,
   LITE_VERSION_OFF,
   LITE_VERSION_ROUTES_OFF,
+  LITE_VERSION_LOGIN_OFF,
 } = TOGGLE_POINTS;
 
 const { features: featureConfig } = Meteor.settings.public;
@@ -52,7 +53,8 @@ const featureMap = {
       to: '/contact',
     })),
     [LITE_VERSION_OFF]: enhanceChildrenWith(renderNothing),
-    [LITE_VERSION_ROUTES_OFF]: changeCodeWith(returnNoRoutes),
+    [LITE_VERSION_ROUTES_OFF]: changeCodeWith(returnEmptyArray),
+    [LITE_VERSION_LOGIN_OFF]: changeCodeWith(returnFalse),
   },
 };
 
