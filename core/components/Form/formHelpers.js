@@ -3,10 +3,16 @@ import { T } from '../Translation';
 import { toNumber } from '../../utils/conversionFunctions';
 
 const onlyNums = value => value.replace(/[^\d]/g, '');
+const onlyNumsAndPlus = value => value.replace(/[^\d&+]/g, '');
 
 export const numberFormatters = {
-  parse: value => value && onlyNums(value),
-  format: value => value && `${value}`,
+  parse: value => value && toNumber(value),
+  // format: value => value,
+};
+
+export const phoneFormatters = {
+  parse: value => value && onlyNumsAndPlus(value),
+  format: value => (value ? onlyNumsAndPlus(value) : ''),
 };
 
 export const percentFormatters = {

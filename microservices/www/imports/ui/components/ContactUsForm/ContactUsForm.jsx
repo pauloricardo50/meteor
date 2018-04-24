@@ -9,7 +9,7 @@ const formArray = makeFormArray(
   [
     { id: 'name' },
     { id: 'email', validate: [email], type: 'email' },
-    { id: 'phone', fieldType: FIELD_TYPES.NUMBER, type: 'tel' },
+    { id: 'phone', fieldType: FIELD_TYPES.PHONE, type: 'tel' },
     { id: 'details', required: false, fieldType: FIELD_TYPES.TEXT_AREA },
   ].map(field => ({ ...field, placeholder: true })),
   'ContactUsForm',
