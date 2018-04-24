@@ -9,10 +9,9 @@ const togglePoint = ({ id, code }) => {
     throw new Error(`Couldn't find necesarry options for togglepoint with id: ${id}`);
   }
 
-  const featureDecision = FeatureService.getFeatureDecision(id);
-
   const codeChanger =
-    featureDecision === undefined ? defaultCodeChanger : featureDecision;
+    FeatureService.getFeatureDecision(id) ||
+    defaultCodeChanger;
 
   return codeChanger(code);
 };
