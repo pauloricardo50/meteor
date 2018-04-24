@@ -32,7 +32,7 @@ const ContactPage = () => (
         className="directions-button"
         raised
         link
-        to={`https://maps.google.com?saddr=Current+Location&daddr=${MAPS_ADDRESS}`}
+        to={`https://maps.google.com?daddr=${MAPS_ADDRESS}`}
         target="_blank"
       >
         Directions
