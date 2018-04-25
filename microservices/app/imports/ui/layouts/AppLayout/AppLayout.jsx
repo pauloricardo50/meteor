@@ -84,11 +84,11 @@ const AppLayout = (props) => {
     <div className="app-root">
       <Navs {...props} showSideNav={showSideNav} />
 
-      <main className={classes}>
+      <div className={classes}>
         <ErrorBoundary helper="layout" pathname={history.location.pathname}>
           <div x="wrapper">{React.cloneElement(children, { ...props })}</div>
         </ErrorBoundary>
-      </main>
+      </div>
 
       {type === 'app' && <ContactButton history={history} />}
     </div>

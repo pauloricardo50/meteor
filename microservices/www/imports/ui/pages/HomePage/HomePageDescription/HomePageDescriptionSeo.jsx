@@ -18,7 +18,7 @@ const HomePageDescriptionSeo = ({ showText, setShowText }) => {
         <br />
         <T id="HomePageDescription.description4" />
         <a
-          href=""
+          href="javascript:;"
           className="home-page-description-seo-a"
           onClick={() => setShowText(false)}
         >
@@ -32,7 +32,7 @@ const HomePageDescriptionSeo = ({ showText, setShowText }) => {
     <p className="description">
       <T id="HomePageDescription.description" />
       <a
-        href=""
+        href="javascript:;"
         className="home-page-description-seo-a"
         onClick={() => setShowText(true)}
       >
