@@ -13,7 +13,6 @@ const {
   WIDGET1_CONTINUE_BUTTON,
   STRIPPED_LITE_VERSION_UI,
   ROUTES_CONFIG_STRIPPED_IN_LITE_VERSION,
-  BASE_ROUTER_HAS_LOGIN,
 } = TOGGLE_POINTS;
 
 const { features: featureConfig } = Meteor.settings.public;
