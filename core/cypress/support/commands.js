@@ -49,7 +49,7 @@ Cypress.Commands.add(
 Cypress.Commands.add('waitUntilLoads', () => {
   const isLoading = Cypress.$('.loading-container')[0];
   if (isLoading) {
-    cy.get('#loading-container').should('not.exist');
+    cy.get('.loading-container').should('not.exist');
   }
 });
 
