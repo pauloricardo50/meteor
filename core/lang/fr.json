@@ -1001,6 +1001,11 @@
   "SideNavStepper.title": "PROGRESSION",
   "SideNavUser.dashboard": "Tableau de Bord",
   "SideNavUser.files": "Documents",
+  "SingleBorrowerHeader.address": "Adresse",
+  "SingleBorrowerHeader.age": "{value} ans",
+  "SingleBorrowerHeader.assignedTo": "Assigné à",
+  "SingleBorrowerHeader.createdBy": "Créé par",
+  "SingleBorrowerHeader.gender": "{value} ans",
   "Start1Page.chartTitle": "Charges estimées",
   "Start1Page.CTA": "Passer au check-up complet",
   "Start1Page.description":
