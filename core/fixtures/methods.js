@@ -82,8 +82,8 @@ Meteor.methods({
     check(currentUserId, String);
     if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
       Borrowers.remove({});
-      Loans.remove({});
       Offers.remove({});
+      Loans.remove({});
       Properties.remove({});
       Tasks.remove({});
       Users.remove({ _id: { $ne: currentUserId } });
