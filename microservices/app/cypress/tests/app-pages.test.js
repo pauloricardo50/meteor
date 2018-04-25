@@ -6,7 +6,6 @@ const pages = {
   'Loan Verification': ({ loans }) => `/loans/${loans[0]._id}/verification`,
   'Loan Structure': ({ loans }) => `/loans/${loans[0]._id}/structure`,
   'Loan Strategy': ({ loans }) => `/loans/${loans[0]._id}/strategy`,
-  'Loan Offerpicker': ({ loans }) => `/loans/${loans[0]._id}/offerpicker`,
   'Loan Contract': ({ loans }) => `/loans/${loans[0]._id}/contract`,
   'Loan Closing': ({ loans }) => `/loans/${loans[0]._id}/closing`,
   'Loan File': ({ loans }) => `/loans/${loans[0]._id}/files`,
