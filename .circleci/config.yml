@@ -79,6 +79,7 @@ jobs:
       - run:
           name: Setup microservices
           command: |
+            sudo apt install rsync
             cd scripts
             ./setup.sh
       - run:
