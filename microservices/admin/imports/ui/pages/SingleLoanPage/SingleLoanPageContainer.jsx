@@ -1,6 +1,6 @@
 import query from 'core/api/loans/queries/adminLoan';
 import { compose, withQuery, branch, renderComponent } from 'core/api';
-import MissingDoc from '../../components/MissingDoc';
+import MissingDoc from '../../components/MissingDoc/MissingDoc';
 
 export default compose(
   withQuery(({ match }) => query.clone({ _id: match.params.loanId }), {
