@@ -1,9 +1,9 @@
 import Borrowers from '..';
 import { BORROWER_QUERIES } from '../borrowerConstants';
-import {
-  createRegexQuery,
-  replaceSpacesInString,
-} from '../../helpers/mongoHelpers';
+import { createRegexQuery } from '../../helpers/mongoHelpers';
+
+export const replaceSpacesInString = string =>
+  string.trim().replace(/\s+/g, '|');
 
 export default Borrowers.createQuery(BORROWER_QUERIES.ADMIN_BORROWERS, {
   $filter({ filters, params: { searchQuery } }) {
@@ -13,6 +13,7 @@ export default Borrowers.createQuery(BORROWER_QUERIES.ADMIN_BORROWERS, {
 
       // the following method forces one word to be found in lastname field
       // and one word in firstName field.
+      searchQuery = searchQuery.trim();
 
       if (searchQuery.indexOf(' ') > -1) {
         const formatedSearchQuery = replaceSpacesInString(searchQuery);
