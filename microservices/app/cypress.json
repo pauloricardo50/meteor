@@ -7,5 +7,6 @@
   "pluginsFile": false,
   "fixturesFolder": false,
   "supportFile": "imports/core/cypress/support",
+  "defaultCommandTimeout": 15000,
   "baseUrl": "http://localhost:4015"
 }
