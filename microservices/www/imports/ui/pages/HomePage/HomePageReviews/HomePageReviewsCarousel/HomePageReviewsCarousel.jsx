@@ -8,6 +8,9 @@ import reviews from './reviews';
 
 const NEXT = 'NEXT';
 
+const shuffleArray = array => array.sort(() => 0.5 - Math.random());
+const shuffledReviews = shuffleArray(reviews);
+
 export default class HomePageReviewsCarousel extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +35,7 @@ export default class HomePageReviewsCarousel extends Component {
         <Button onClick={this.handleClick} variant="fab" color="primary">
           <Icon type="left" />
         </Button>
-        <MotionCarousel reviews={reviews} currentIndex={currentIndex} />
+        <MotionCarousel reviews={shuffledReviews} currentIndex={currentIndex} />
         <Button
           onClick={() => this.handleClick(NEXT)}
           variant="fab"

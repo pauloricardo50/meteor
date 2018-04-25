@@ -12,6 +12,7 @@ import {
   percentFormatters,
   moneyFormatters,
   numberFormatters,
+  phoneFormatters,
 } from './formHelpers';
 import { required as requiredFunc } from './validators';
 
@@ -42,6 +43,11 @@ const FormField = ({ fieldType, validate, defaultFieldProps, ...rest }) => {
   case FIELD_TYPES.NUMBER:
     return withProps({
       ...numberFormatters,
+    })(defaultField)({ ...rest, ...defaultFieldProps });
+
+  case FIELD_TYPES.PHONE:
+    return withProps({
+      ...phoneFormatters,
     })(defaultField)({ ...rest, ...defaultFieldProps });
 
   case FIELD_TYPES.TEXT_AREA:

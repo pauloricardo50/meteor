@@ -1,25 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import Form, { makeFormArray, email, FIELD_TYPES } from 'core/components/Form';
 import { T } from 'core/components/Translation';
-import ContactUsFormContainer from './ContactUsFormContainer';
 
 const formArray = makeFormArray(
   [
     { id: 'name' },
     { id: 'email', validate: [email], type: 'email' },
-    { id: 'phone', fieldType: FIELD_TYPES.NUMBER, type: 'tel' },
+    { id: 'phone', fieldType: FIELD_TYPES.PHONE, type: 'tel' },
     { id: 'details', required: false, fieldType: FIELD_TYPES.TEXT_AREA },
   ].map(field => ({ ...field, placeholder: true })),
   'ContactUsForm',
 );
 
-const ContactUsForm = ({ onSubmit }) => (
-  <div className="contact-us-form card1">
+const ContactUsForm = ({ onSubmit, onSubmitSuccess, className }) => (
+  <div
+    className={classnames({ 'contact-us-form card1': true, [className]: true })}
+  >
     <Form
       form="contact-us"
       onSubmit={onSubmit}
+      onSubmitSuccess={onSubmitSuccess}
       formArray={formArray}
       destroyOnUnmount={false}
       submitButtonProps={{
@@ -34,6 +37,12 @@ const ContactUsForm = ({ onSubmit }) => (
 
 ContactUsForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  onSubmitSuccess: PropTypes.func.isRequired,
+  className: PropTypes.string,
 };
 
-export default ContactUsFormContainer(ContactUsForm);
+ContactUsForm.defaultProps = {
+  className: '',
+};
+
+export default ContactUsForm;

@@ -15,7 +15,7 @@ offerInsert.setHandler((context, { offer, loanId, userId }) => {
   return OfferService.insertAdminOffer({
     offer,
     loanId,
-    userId: userIdIsDefined ? userId : Meteor.userId(),
+    userId: userIdIsDefined ? userId : Meteor.userId() || undefined,
   });
 });
 

@@ -7,11 +7,12 @@ import HomePageDescription from './HomePageDescription';
 import HomePageReviews from './HomePageReviews';
 // import HomePageNewsletter from './HomePageNewsletter';
 import WwwLayout from '../../WwwLayout';
+import { VARIANTS } from '../../WwwLayout/WwwTopNav';
 
 const HomePage = () => (
   <WwwLayout className="home-page">
     {/* <HomePageInterestRates /> */}
-    <WwwLayout.TopNav />
+    <WwwLayout.TopNav variant={VARIANTS.WHITE} />
     <HomePageHeader />
     {/* <HomePagePartners /> */}
     <HomePageDescription />

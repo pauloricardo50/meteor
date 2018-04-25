@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Loading from 'core/components/Loading';
+
 import SingleUserPageContainer from './SingleUserPageContainer';
 import SingleUserPageHeader from './SingleUserPageHeader';
 import SingleUserPageLoans from './SingleUserPageLoans';
 
 const SingleUserPage = ({ data: user, isLoading }) => {
-  if (isLoading || !user) {
-    return null;
+  if (isLoading) {
+    return <Loading />;
   }
 
   return (

@@ -5,10 +5,11 @@ import {
   startAuction,
   endAuction,
   cancelAuction,
+  submitContactForm,
 } from '../../methods';
 import { Loans } from '../..';
-import { EMAIL_IDS } from '../emailConstants';
-import { sendEmail } from '../methodDefinitions';
+import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
+import { sendEmail, sendEmailToAddress } from '../methodDefinitions';
 import { getAuctionEndTime } from '../../../utils/loanFunctions';
 
 EventService.addMethodListener(requestLoanVerification, (params) => {
@@ -54,3 +55,17 @@ EventService.addMethodListener(cancelAuction, (params) => {
     params,
   });
 });
+
+EventService.addMethodListener(submitContactForm, params =>
+  sendEmailToAddress.run({
+    emailId: EMAIL_IDS.CONTACT_US,
+    address: params.email,
+    params,
+  }));
+
+EventService.addMethodListener(submitContactForm, params =>
+  sendEmailToAddress.run({
+    emailId: EMAIL_IDS.CONTACT_US_ADMIN,
+    address: INTERNAL_EMAIL,
+    params,
+  }));

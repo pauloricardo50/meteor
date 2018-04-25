@@ -8,7 +8,9 @@ import TogglePoint, { TOGGLE_POINTS } from 'core/components/TogglePoint';
 import Widget1PageContainer from './Widget1PageContainer';
 import Widget1Part1 from './Widget1Part1';
 import Widget1Part2 from './Widget1Part2';
+import Widget1PageDisclaimer from './Widget1PageDisclaimer';
 import WwwLayout from '../../WwwLayout';
+import { VARIANTS } from '../../WwwLayout/WwwTopNav';
 
 const getUrl = ({ salary, fortune, propertyValue }) => {
   const queryparams = {
@@ -22,7 +24,7 @@ const getUrl = ({ salary, fortune, propertyValue }) => {
 
 const Widget1Page = ({ step, finma, ...rest }) => (
   <WwwLayout className="widget1-page">
-    <WwwLayout.TopNav />
+    <WwwLayout.TopNav variant={VARIANTS.GREY} />
     <div className="widget1-page-content">
       {step <= 2 && <Widget1Part1 step={step} />}
       {step > 2 && <Widget1Part2 finma={finma} />}
@@ -40,11 +42,13 @@ const Widget1Page = ({ step, finma, ...rest }) => (
         </TogglePoint>
       )}
     </div>
+    {step > 2 && <Widget1PageDisclaimer />}
   </WwwLayout>
 );
 
 Widget1Page.propTypes = {
   step: PropTypes.number.isRequired,
+  finma: PropTypes.object.isRequired,
 };
 
 export { SALARY, FORTUNE, PROPERTY } from '../../../redux/reducers/widget1';

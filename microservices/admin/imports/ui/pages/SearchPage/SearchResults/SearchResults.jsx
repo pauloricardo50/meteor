@@ -40,7 +40,7 @@ const SearchResults = ({ isLoading, error, data: searchResults }) => {
         }
 
         return (
-          <ListItem key={collection} className="search-results-collection">
+          <ListItem key={collectionName} className="search-results-collection">
             <h3>
               <LinkToCollection collection={collectionName} />
             </h3>

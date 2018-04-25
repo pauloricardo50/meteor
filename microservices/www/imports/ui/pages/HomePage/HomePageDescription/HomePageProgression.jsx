@@ -1,7 +1,7 @@
 import React from 'react';
 
 const dots = [...new Array(4)];
-const dashes = [...new Array(10)];
+const dashes = [...new Array(20)];
 
 const HomePageProgression = () => (
   <div className="progression">

@@ -18,8 +18,8 @@ const APP_URL = Meteor.settings.public.subdomains.app;
  *
  * @return {type} a HTML string
  */
-export const getEmailFooter = (allowUnsubscribe = true) =>
-  formatMessage('emails.footer', {
+export const getEmailFooter = (footerType, allowUnsubscribe) =>
+  formatMessage(`emails.${footerType}`, {
     copyright: '<em>&copy; *|CURRENT_YEAR|* e-Potek</em><br /><br />',
     url: `<a href="${WWW_URL}" target="_blank">e-potek.ch</a><br />`,
     unsubscribe: allowUnsubscribe
@@ -48,8 +48,12 @@ export const getEmailPart = ({
  * @return {Object} contains all the fields
  */
 export const getEmailContent = (emailId, intlValues) => {
-  const subject = getEmailPart({ emailId, part: EMAIL_PARTS.SUBJECT });
-  const title = getEmailPart({ emailId, part: EMAIL_PARTS.TITLE });
+  const subject = getEmailPart({
+    emailId,
+    part: EMAIL_PARTS.SUBJECT,
+    intlValues,
+  });
+  const title = getEmailPart({ emailId, part: EMAIL_PARTS.TITLE, intlValues });
   const body = getEmailPart({
     emailId,
     part: EMAIL_PARTS.BODY,
