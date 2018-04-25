@@ -59,9 +59,6 @@ const featureMap = {
 
     // remove the routes that we don't want in the lite www version
     [ROUTES_CONFIG_STRIPPED_IN_LITE_VERSION]: changeCodeWith(returnEmptyArray),
-
-    // remove the login route
-    [BASE_ROUTER_HAS_LOGIN]: changeCodeWith(returnFalse),
   },
 };
 
