@@ -56,7 +56,7 @@ jobs:
       - restore_cache:
           name: restore www's cached node_modules
           keys:
-            - build-epotek-v2-node_modules-{{ checksum "./microservices/www/package.json" }}
+            - build-epotek-v3-node_modules-{{ checksum "./microservices/www/package.json" }}
 
       - run:
           name: install Meteor
@@ -152,7 +152,7 @@ jobs:
             - ./microservices/www/.meteor/local
       - save_cache:
           name: cache www's node_modules
-          key: build-epotek-v2-node_modules-{{ checksum "./microservices/www/package.json" }}
+          key: build-epotek-v3-node_modules-{{ checksum "./microservices/www/package.json" }}
           paths:
             - ./microservices/www/node_modules
 
