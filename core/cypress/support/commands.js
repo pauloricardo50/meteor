@@ -1,5 +1,5 @@
 Cypress.Commands.add('eraseAndGenerateTestData', () => {
-  cy.meteorLogin('dev-1@e-potek.ch').then(({ Meteor }) =>
+  cy.meteorLogoutAndLogin('dev-1@e-potek.ch').then(({ Meteor }) =>
     new Cypress.Promise((resolve, reject) => {
       Meteor.call('purgeDatabase', Meteor.userId(), (err) => {
         if (err) {
@@ -29,19 +29,22 @@ Cypress.Commands.add('meteorLogout', () => {
 });
 
 Cypress.Commands.add(
-  'meteorLogin',
+  'meteorLogoutAndLogin',
   (email = 'user-1@e-potek.ch', password = '12345') => {
-    cy
-      .meteorLogout()
-      .visit('/')
-      .then(({ Meteor }) =>
-        new Cypress.Promise((resolve, reject) => {
-          Meteor.loginWithPassword(
+    cy.visit('/').then(({ Meteor }) =>
+      new Cypress.Promise((resolve, reject) => {
+        Meteor.logout((err) => {
+          if (err) {
+            return reject(err);
+          }
+
+          return Meteor.loginWithPassword(
             email,
             password,
-            err => (err ? reject(err) : resolve()),
+            loginError => (loginError ? reject(loginError) : resolve()),
           );
-        }));
+        });
+      }));
   },
 );
 

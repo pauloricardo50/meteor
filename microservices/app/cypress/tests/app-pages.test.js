@@ -20,11 +20,9 @@ const publicPages = ['Login'];
 
 describe('App Pages', () => {
   before(() => {
-    cy
-      .eraseAndGenerateTestData()
-      .then((data) => {
-        testData = data;
-      });
+    cy.eraseAndGenerateTestData().then((data) => {
+      testData = data;
+    });
   });
 
   Object.keys(pages).forEach((pageName) => {
@@ -38,7 +36,7 @@ describe('App Pages', () => {
         if (publicPages.includes(pageName)) {
           cy.meteorLogout();
         } else {
-          cy.meteorLogin();
+          cy.meteorLogoutAndLogin();
         }
 
         const pageUri =
