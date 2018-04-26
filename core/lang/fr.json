@@ -885,6 +885,7 @@
   "LoanStrategyPicker.disclaimer":
     "* Ce choix est indicatif, et vous permet de déterminer quelle stratégie vous conviendra le mieux.",
   "LoanStrategyPicker.title": "Stratégie de taux",
+  "LoanSummaryList.noLoans": "Aucun hypothèque trouvé!",
   "LoanTabs.actions": "Actions",
   "LoanTabs.analytics": "Analytique",
   "LoanTabs.borrowers": "Emprunteurs",

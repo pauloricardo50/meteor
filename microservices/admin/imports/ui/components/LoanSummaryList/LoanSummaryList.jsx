@@ -16,7 +16,11 @@ const LoanSummaryList = ({ loans }) => {
     );
   }
 
-  return null;
+  return (
+    <h3>
+      <T id="LoanSummaryList.noLoans" />
+    </h3>
+  );
 };
 
 LoanSummaryList.propTypes = {
