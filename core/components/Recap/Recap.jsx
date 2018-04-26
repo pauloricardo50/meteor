@@ -879,7 +879,6 @@ const arraySwitch = (props) => {
 };
 
 const Recap = (props) => {
-  console.log(props);
   const array = props.array || arraySwitch(props);
   return (
     <article className="validator recap">

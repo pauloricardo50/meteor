@@ -1,0 +1,72 @@
+.single-property-page {
+  .admin-loan {
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+
+    .flex-col {
+      padding-right: 32px;
+      padding-bottom: 8px;
+      label {
+        margin: 0;
+        color: #222;
+      }
+    }
+  }
+
+  .google-map {
+    min-height: 400px;
+    flex: 1;
+    display: flex;
+    width: 100%;
+    position: relative;
+
+    .map {
+      flex: 1;
+    }
+  }
+}
+
+.single-property-page-header {
+  display: flex;
+  flex-direction: column;
+
+  .top {
+    display: flex;
+    text-align: left;
+    h1 {
+      display: flex;
+      flex-direction: row;
+      flex-grow: 1;
+      margin: 0;
+    }
+  }
+
+  .secondary {
+    text-align: left;
+    font-size: 16px;
+    margin: 4px;
+  }
+
+  .bottom {
+    display: flex;
+  }
+
+  .created-at {
+    margin-bottom: 32px;
+    a:hover {
+      transform: scale(1.03);
+      color: #000;
+      opacity: 1;
+    }
+  }
+}
+
+.property-recap {
+  margin-bottom: 60px;
+  text-align: center;
+
+  .recap {
+    margin: auto;
+  }
+}

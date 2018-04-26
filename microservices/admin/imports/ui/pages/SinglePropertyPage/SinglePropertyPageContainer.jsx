@@ -1,4 +1,4 @@
-import query from 'core/api/loans/queries/property';
+import query from 'core/api/properties/queries/property';
 import { compose, withQuery, branch, renderComponent } from 'core/api';
 import MissingDoc from '../../components/MissingDoc/MissingDoc';
 

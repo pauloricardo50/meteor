@@ -3,10 +3,14 @@ import PropTypes from 'prop-types';
 
 import Loading from 'core/components/Loading';
 import Recap from 'core/components/Recap';
+import MapWithMarker from 'core/components/maps/MapWithMarker';
 
 import LoanSummaryList from '../../components/LoanSummaryList';
 import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 import SinglePropertyPageHeader from './SinglePropertyPageHeader';
+
+export const getPropertyAddress = ({ address1, zipCode, city }) =>
+  `${address1}, ${zipCode} ${city}`;
 
 const SinglePropertyPage = ({ data: property, isLoading, displayLoans }) => {
   if (isLoading) {
@@ -22,6 +26,9 @@ const SinglePropertyPage = ({ data: property, isLoading, displayLoans }) => {
         <Recap arrayName="property" property={property} />
       </div>
       {displayLoans && loans && <LoanSummaryList loans={loans} />}
+      <div className="google-map">
+        <MapWithMarker address={getPropertyAddress(property)} className="map" />
+      </div>
     </section>
   );
 };
