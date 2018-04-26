@@ -2,6 +2,7 @@ const colors = {
   primary: '#005bea',
   primaryArray: [0, 91, 234],
   secondary: '#00c6ff',
+  tertiary: '#001a8f',
   success: '#21d3b5', // for convenience, same as secondary
   warning: '#F3AF50',
   error: '#B73E25',

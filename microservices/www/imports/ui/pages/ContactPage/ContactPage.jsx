@@ -37,7 +37,7 @@ const ContactPage = () => (
       >
         Directions
       </Button>
-      <MapWithMarker address={ADDRESS} className="map" />
+      <MapWithMarker address={ADDRESS} className="map" options={{ zoom: 12 }} />
     </div>
     <WwwLayout.Footer transparent={false}>
       <WwwLayout.Footer.Top>

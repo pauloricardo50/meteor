@@ -17,14 +17,21 @@ class MapWithMarker extends Component {
   }
 
   render() {
-    const { address } = this.props;
+    const { address, options } = this.props;
     const { latlng } = this.state;
 
     if (!latlng) {
       return null;
     }
 
-    return <GoogleMap address={address} latlng={latlng} id="some-id" />;
+    return (
+      <GoogleMap
+        address={address}
+        latlng={latlng}
+        id="some-id"
+        options={options}
+      />
+    );
   }
 }
 

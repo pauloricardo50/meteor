@@ -5,15 +5,29 @@ import { T } from 'core/components/Translation';
 const AboutPagePart2 = () => (
   <div className="about-page-part-2">
     <div className="about-page-part-2-left">
-      <T id="AboutPagePart2.title" />
-      <T id="AboutPagePart2.description1" />
-      <T id="AboutPagePart2.description2" />
+      <h2>
+        <T id="AboutPagePart2.title" />
+      </h2>
+      <p className="description">
+        <T id="AboutPagePart2.description1" />
+      </p>
+      <p className="description">
+        <T id="AboutPagePart2.description2" />
+      </p>
     </div>
     <div className="about-page-part-2-right">
-      <T id="AboutPagePart2.subtitle1" />
-      <T id="AboutPagePart2.description3" />
-      <T id="AboutPagePart2.subtitle2" />
-      <T id="AboutPagePart2.description4" />
+      <h3>
+        <T id="AboutPagePart2.subtitle1" />
+      </h3>
+      <p className="description">
+        <T id="AboutPagePart2.description3" />
+      </p>
+      <h3>
+        <T id="AboutPagePart2.subtitle2" />
+      </h3>
+      <p className="description">
+        <T id="AboutPagePart2.description4" />
+      </p>
     </div>
   </div>
 );

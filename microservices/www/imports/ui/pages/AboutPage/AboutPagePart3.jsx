@@ -4,8 +4,12 @@ import { T } from 'core/components/Translation';
 
 const AboutPagePart3 = () => (
   <div className="about-page-part-3">
-    <T id="AboutPagePart3.title" />
-    <T id="AboutPagePart3.description" />
+    <h2>
+      <T id="AboutPagePart3.title" />
+    </h2>
+    <p className="description">
+      <T id="AboutPagePart3.description" />
+    </p>
   </div>
 );
 
