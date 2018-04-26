@@ -16,7 +16,17 @@ const Widget1Monthly = ({ data, total, interestRate, setInterestRate }) => (
       data={data}
       intlPrefix="Widget1Monthly"
       // 300 width - 2*32 padding
-      config={{ chart: { width: 236, spacingTop: 0, marginTop: 0 } }}
+      config={{
+        chart: { width: 236, spacingTop: 0, marginTop: 0 },
+        plotOptions: {
+          pie: {
+            tooltip: {
+              headerFormat: '<b>{point.key}</b><br />',
+              pointFormat: 'CHF {point.y:,.0f}',
+            },
+          },
+        },
+      }}
       title={`${toMoney(total)} /mois`}
     />
     <Widget1MonthlyInterests value={interestRate} onChange={setInterestRate} />

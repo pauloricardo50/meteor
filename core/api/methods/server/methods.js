@@ -93,6 +93,5 @@ createUserAndLoan.setHandler((context, { email, formState }) => {
   return saveStartForm(formState, newUserId);
 });
 
-submitContactForm.setHandler((context, { name, email, phone, details }) => {
-  console.log('hi from server!', name, email, phone, details);
-});
+// This method needs to exist as its being listened to in EmailListeners
+submitContactForm.setHandler(() => null);

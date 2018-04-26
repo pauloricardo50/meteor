@@ -36,3 +36,13 @@
 .widget1-recap .widget1-finma-line .icon {
   padding-left: 4px;
 }
+
+.widget1-lender-count {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.widget1-lender-count-divider {
+  margin: 16px 0;
+}

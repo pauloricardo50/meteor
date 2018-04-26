@@ -56,10 +56,12 @@ describe('tooltips', () => {
       expect(() => tooltipsById('general.asd.asd')).to.throw('Wrong');
     });
 
-    it('returns a string or an array from a list', () => {
-      expect(isArray(tooltipsById('general.finma'))).to.equal(true);
-      expect(typeof tooltipsById('general.lpp')).to.equal('string');
-    });
+    // FIXME: Add this test back when we have tooltips again
+    // Also would be better if we can inject tooltips during tests
+    // it('returns a string or an array from a list', () => {
+    //   expect(isArray(tooltipsById('general.finma'))).to.equal(true);
+    //   expect(typeof tooltipsById('general.lpp')).to.equal('string');
+    // });
 
     it('returns undefined for a non-existent tooltip', () => {
       expect(tooltipsById('general.noexist')).to.equal(undefined);

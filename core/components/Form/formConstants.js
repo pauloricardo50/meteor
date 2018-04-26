@@ -5,4 +5,5 @@ export const FIELD_TYPES = {
   PERCENT: 'PERCENT',
   MONEY: 'MONEY',
   TEXT_AREA: 'TEXT_AREA',
+  PHONE: 'PHONE',
 };

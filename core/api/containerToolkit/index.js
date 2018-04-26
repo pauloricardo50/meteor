@@ -1,2 +1,2 @@
 export { default as createContainer } from './createContainer';
-export { compose } from 'recompose';
+export { compose, branch, renderComponent } from 'recompose';

@@ -3,3 +3,5 @@
 export const enhanceChildrenWith = childrenEnhancer => childrenEnhancer;
 
 export const switchElements = (performSwitch = true) => performSwitch;
+
+export const changeCodeWith = codeChangingFunction => codeChangingFunction;

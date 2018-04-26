@@ -1,6 +1,7 @@
 .widget1-inputs {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .widget1-inputs .widget1-single-input {
@@ -24,4 +25,10 @@
   p {
     margin: 0;
   }
+}
+
+.widget1-inputs-reset {
+  position: absolute;
+  top: 16px;
+  right: 16px;
 }

@@ -12,6 +12,8 @@ const Widget1SingleInput = ({
   auto,
   name,
   setValue,
+  setInputValue,
+  unsetValue,
   setAuto,
   sliderMax,
   increaseSliderMax,
@@ -24,9 +26,10 @@ const Widget1SingleInput = ({
       <div className="box-content">
         <Widget1SingleInputInput
           value={value}
-          setValue={setValue}
+          setInputValue={setInputValue}
           auto={auto}
           setAuto={setAuto}
+          unsetValue={unsetValue}
         />
         <Widget1SingleInputSlider
           value={value}
@@ -44,6 +47,8 @@ Widget1SingleInput.propTypes = {
   auto: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
   setValue: PropTypes.func.isRequired,
+  setInputValue: PropTypes.func.isRequired,
+  unsetValue: PropTypes.func.isRequired,
   sliderMax: PropTypes.number.isRequired,
   increaseSliderMax: PropTypes.func.isRequired,
   setAuto: PropTypes.func.isRequired,

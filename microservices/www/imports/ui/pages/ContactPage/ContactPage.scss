@@ -3,6 +3,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  // To hide animated form when it's moved
+  overflow-y: hidden;
 }
 
 .contact-page-top {
@@ -50,6 +53,10 @@
   > div {
     display: flex;
     align-items: center;
+
+    &:hover {
+      opacity: 0.5;
+    }
 
     &.email {
       flex: 1;

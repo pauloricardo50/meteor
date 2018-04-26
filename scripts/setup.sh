@@ -40,7 +40,7 @@ for i in 'admin' 'app' 'lender' 'www'
 
       mkdir ../microservices/$i/client/css/external-styles      
       ln -s ../../../../../core/assets/css/external-styles/bootstrap-popover.css ../microservices/$i/client/css/external-styles/bootstrap-popover.css
-      ln -s ../../../../../core/assets/css/external-styles/rc-slider.css ../microservices/$i/client/css/external-styles/rc-slider.css
+      ln -s ../../../../../core/assets/css/external-styles/animate.css ../microservices/$i/client/css/external-styles/animate.css
     else
       ln -s ../../../core/assets/css ../microservices/$i/client/css
     fi

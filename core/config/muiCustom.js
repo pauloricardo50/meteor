@@ -44,6 +44,9 @@ const theme = createMuiTheme({
       },
     },
     MuiFormLabel: {
+      root: {
+        color: colors.body,
+      },
       asterisk: {
         color: colors.error,
       },

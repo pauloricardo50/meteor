@@ -14,11 +14,21 @@ $progression-color: #8db6e6;
   color: $primary;
 }
 
+.home-page-description .seo-title {
+  align-self: center;
+  color: $primary;
+  padding-top: 100px;
+}
+
 .home-page-description .description {
   display: flex;
   flex-direction: column;
   max-width: 800px;
   text-align: justify;
+  
+  span {
+    width: 100%;
+  }
 }
 
 .home-page-description .steps {
@@ -67,4 +77,9 @@ $progression-color: #8db6e6;
   width: 2px;
   margin-left: 9px;
   background-color: $progression-color;
+}
+
+.home-page-description-seo-a {
+  display: flex;
+  align-items: center;
 }

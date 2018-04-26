@@ -9,10 +9,12 @@ export const PROPERTY = 'property';
 export const NAMES = [SALARY, FORTUNE, PROPERTY];
 export const FINAL_STEP = 3;
 
-export const setValueAction = name => `${name}.CHANGE`;
-export const suggestValueAction = name => `${name}.SUGGEST`;
-export const setAutoAction = name => `${name}.AUTO`;
-export const increaseSliderMaxAction = name => `${name}.INCREASE_SLIDER_MAX`;
+export const setValueAction = name => `${name}_CHANGE`;
+export const suggestValueAction = name => `${name}_SUGGEST`;
+export const setAutoAction = name => `${name}_AUTO`;
+export const increaseSliderMaxAction = name => `${name}_INCREASE_SLIDER_MAX`;
+
+const roundedValue = value => value && Math.round(value);
 
 const createWidget1ValueReducers = names =>
   names.reduce(
@@ -22,20 +24,25 @@ const createWidget1ValueReducers = names =>
         state = { value: 0, auto: false, sliderMax: initialSliderMax },
         action,
       ) => {
-        const roundedValue = action.value && Math.round(action.value);
         switch (action.type) {
         case setValueAction(name):
           // Set auto to true if the value is changed to 0 or empty string
-          if (state.value > 0 && !action.value) {
-            return { ...state, auto: true, value: roundedValue };
+          if (!action.value) {
+            return { ...state, value: action.value };
           }
           // Set auto to false if this value is set
-          return { ...state, auto: false, value: roundedValue };
+          return { ...state, auto: false, value: roundedValue(action.value) };
         case suggestValueAction(name):
+          if (!action.value) {
+            return { ...state, value: action.value };
+          }
           // If the value is suggested, don't change auto
-          return { ...state, value: roundedValue };
-        case setAutoAction(name):
-          return { ...state, auto: !state.auto };
+          return { ...state, value: roundedValue(action.value) };
+        case setAutoAction(name): {
+          const nextAuto =
+              action.auto !== undefined ? action.auto : !state.auto;
+          return { ...state, auto: nextAuto };
+        }
         case increaseSliderMaxAction(name):
           return { ...state, sliderMax: state.sliderMax + initialSliderMax };
         default:

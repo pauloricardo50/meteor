@@ -38,27 +38,28 @@ class EmailService {
 
   createTemplateOptions = ({ emailId, address, params }) => {
     const emailConfig = this.getEmailConfig(emailId);
-    const { template: { mandrillId }, createIntlValues } = emailConfig;
+    const {
+      template: { mandrillId: templateName },
+      createIntlValues,
+      ...otherOptions
+    } = emailConfig;
 
     const intlValues = createIntlValues(params);
     const emailContent = getEmailContent(emailId, intlValues);
 
     // Make sure you call `createOverrides` from emailConfig, to preserve `this`
     // See: https://github.com/Microsoft/vscode/issues/43930
-    const { variables, allowUnsubscribe } = emailConfig.createOverrides(
-      params,
-      emailContent,
-    );
+    const overrides = emailConfig.createOverrides(params, emailContent);
 
     return {
-      templateName: mandrillId,
-      allowUnsubscribe,
-      variables,
+      templateName,
       recipientAddress: address,
       senderAddress: FROM_EMAIL,
       senderName: FROM_NAME,
       subject: emailContent.subject,
       sendAt: undefined,
+      ...overrides,
+      ...otherOptions,
     };
   };
 

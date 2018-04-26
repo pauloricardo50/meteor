@@ -40,11 +40,11 @@ const AdminLayout = (props) => {
       <div className="main-row">
         <AdminSideNav {...props} />
 
-        <main>
+        <div className="main">
           <ErrorBoundary helper="layout" pathname={history.location.pathname}>
             {React.cloneElement(children, { ...props })}
           </ErrorBoundary>
-        </main>
+        </div>
       </div>
     </div>
   );

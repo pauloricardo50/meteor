@@ -14,24 +14,21 @@
 
 .widget1-page .widget1-page-content {
   display: flex;
-  height: calc(100% - #{$top-nav-height});
-  overflow: auto;
-  flex: 1;
-  margin-top: $top-nav-height;
-  flex-direction: column;
   box-sizing: border-box;
   padding: 8px;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 @media (min-width: $med) {
   .widget1-page .widget1-page-content {
     padding: 80px;
+    padding-bottom: 32px;
   }
 }
 
 .widget1-page .widget1-part-1 {
+  width: 100%;
   max-width: 1000px;
   display: flex;
   flex-direction: row;
@@ -99,4 +96,17 @@
 .widget1-page .cta {
   align-self: flex-end;
   margin: 16px;
+}
+
+.widget1-page-disclaimer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 0.9em;
+  text-align: justify;
+
+  p {
+    max-width: 400px;
+  }
 }

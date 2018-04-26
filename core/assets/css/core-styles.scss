@@ -12,9 +12,7 @@ html {
 body,
 html,
 #react-root {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+  
 }
 
 body {
@@ -108,6 +106,12 @@ a:not([role='button']) {
   &:hover {
     color: inherit;
   }
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background-color: $border-grey;
 }
 
 // White backgrounds with shadows to put things on
@@ -361,4 +365,26 @@ a:not([role='button']) {
 
 .choice.disabled {
   cursor: default !important;
+}
+
+.bert-alert.success {
+  background: $success;
+}
+.bert-alert.info {
+  background: $primary;
+}
+.bert-alert.warning {
+  background: $warning;
+}
+.bert-alert.danger {
+  background: $error;
+}
+
+.bert-content h5,
+.bert-content p {
+  color: white !important;
+}
+
+.bert {
+  color: white !important;
 }

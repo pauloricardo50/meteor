@@ -1,4 +1,9 @@
-import { EMAIL_TEMPLATES, EMAIL_IDS, CTA_URL_DEFAULT } from '../emailConstants';
+import {
+  EMAIL_TEMPLATES,
+  EMAIL_IDS,
+  CTA_URL_DEFAULT,
+  FOOTER_TYPES,
+} from '../emailConstants';
 import {
   getEnrollmentUrl,
   notificationTemplateDefaultOverride,
@@ -9,6 +14,7 @@ const emailConfigs = {};
 
 const emailDefaults = {
   allowUnsubscribe: false,
+  footerType: FOOTER_TYPES.USER,
   createIntlValues: () => ({ variables: [] }),
 };
 
@@ -21,9 +27,9 @@ const emailDefaults = {
  * {Boolean} allowUnsubscribe Defines whether the email will be rendered with
  * a footer that allows the user to unsubscribe to notifications.
  * default is `false`
- * {Function} createOverrides A function that takes the user's values and
+ * {Function} createOverrides A function that gets the params and
  * returns an object with overrides for the email template
- * {Function} createIntlValues A function that takes the user's values and
+ * {Function} createIntlValues A function that gets the params and
  * returns an object with intl values that need to be injected inside of the
  * i18n strings
  */
@@ -45,7 +51,7 @@ const addEmailConfig = (emailId, config) => {
   }
 };
 
-const verifyConfig = {
+addEmailConfig(EMAIL_IDS.VERIFY_EMAIL, {
   template: EMAIL_TEMPLATES.WELCOME,
   createOverrides({ user, url }) {
     const { variables } = this.template;
@@ -57,8 +63,7 @@ const verifyConfig = {
       ],
     };
   },
-};
-addEmailConfig(EMAIL_IDS.VERIFY_EMAIL, verifyConfig);
+});
 
 addEmailConfig(EMAIL_IDS.RESET_PASSWORD, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
@@ -117,6 +122,35 @@ addEmailConfig(EMAIL_IDS.AUCTION_ENDED, {
 
 addEmailConfig(EMAIL_IDS.AUCTION_CANCELLED, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+});
+
+addEmailConfig(EMAIL_IDS.AUCTION_STARTED, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createIntlValues: ({ auctionEndTime }) => ({ date: auctionEndTime }),
+});
+
+const getFirstName = string => string.trim().split(' ')[0];
+
+addEmailConfig(EMAIL_IDS.CONTACT_US, {
+  template: EMAIL_TEMPLATES.NOTIFICATION,
+  footerType: FOOTER_TYPES.VISITOR,
+  createIntlValues: params => ({
+    ...params,
+    // Only show first names to clients
+    name: getFirstName(params.name),
+    // params.details check is required because details is optional
+    //  and it breaks react-intl if not provided
+    details: params.details || '',
+  }),
+});
+
+addEmailConfig(EMAIL_IDS.CONTACT_US_ADMIN, {
+  template: EMAIL_TEMPLATES.NOTIFICATION,
+  footerType: FOOTER_TYPES.VISITOR,
+  createIntlValues: params => ({
+    ...params,
+    details: params.details || 'Pas de message',
+  }),
 });
 
 export default emailConfigs;

@@ -5,6 +5,18 @@ import Slider from 'core/components/Material/Slider';
 
 import IconButton from 'core/components/IconButton';
 
+// Avoid weird slider bug, by first checking if value exists
+// https://github.com/react-component/slider/issues/387
+const getSliderValue = (value, sliderMax) => {
+  if (value) {
+    if (value >= sliderMax) {
+      return sliderMax;
+    }
+    return value;
+  }
+  return 0;
+};
+
 const Widget1SingleInputSlider = ({
   value,
   setValue,
@@ -18,7 +30,7 @@ const Widget1SingleInputSlider = ({
       step={1000}
       // Do this to prevent an onChange event when typing in a value larger
       // than sliderMax, which sets the value back to sliderMax
-      value={value >= sliderMax ? sliderMax : value}
+      value={getSliderValue(value, sliderMax)}
       onChange={setValue}
       className="slider"
     />

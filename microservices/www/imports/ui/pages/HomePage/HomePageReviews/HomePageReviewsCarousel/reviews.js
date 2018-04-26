@@ -6,7 +6,7 @@ export default [
       'Dès le premier dossier confié à e-Potek, nous avons pu immédiatement constater le sérieux, la rigueur et l’expérience de leur équipe dont l’unique but est de satisfaire les demandes et besoins des clients. Fort des excellents retours de notre clientèle, e-Potek est naturellement devenu notre unique partenaire en matière de recherche de financement pour tous nos clients.',
   },
   {
-    name: 'Damien',
+    name: 'Charles',
     title: 'Client, devenu Intermédiaire - Avocat',
     text:
       'J’ai eu recours aux services d’e-Potek dans le cadre du refinancement de la dette hypothécaire grevant la maison familiale. Le conseil dynamique et efficace qui m’a été offert, de même que les résultats eux-mêmes obtenus, m’ont totalement convaincu. Je recommande désormais ce service à mes propres clients.',
@@ -39,6 +39,6 @@ export default [
     name: 'Yannis',
     title: "Directeur d'e-Potek",
     text:
-      "En tant que directeur d'e-Potek, je suis ravis de la satisfaction de nos clients démontrée au sein de leurs recommandations. Je vous encourage à nous contacter pour vos projets de recherche hypothécaire et vous assure que vous aurez accès aux meilleures conditions du marché ainsi que des conseils de grande qualité. Comment ça j'ai pas le droit de donner un feedback ?!",
+      "En tant que directeur d'e-Potek, je suis ravi de la satisfaction de nos clients démontrée au sein de leurs recommandations. Je vous encourage à nous contacter pour vos projets de recherche hypothécaire et vous assure que vous aurez accès aux meilleures conditions du marché ainsi que des conseils de grande qualité. Comment ça j'ai pas le droit de donner un feedback ?!",
   },
 ];

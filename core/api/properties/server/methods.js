@@ -11,8 +11,7 @@ import {
 } from '../methodDefinitions';
 
 propertyInsert.setHandler((context, { property, userId }) => {
-  if (userId === undefined) {
-    SecurityService.checkLoggedIn();
+  if (userId === undefined && Meteor.userId()) {
     userId = Meteor.userId();
   }
 

@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router } from 'react-router-dom';
 
+import togglePoint, { TOGGLE_POINTS } from 'core/api/features/togglePoint';
+
 import ErrorBoundary from '../ErrorBoundary';
 import ScrollToTop from '../ScrollToTop';
 import LoginPage from '../LoginPage';

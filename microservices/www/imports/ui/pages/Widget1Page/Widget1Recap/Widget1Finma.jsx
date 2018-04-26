@@ -6,7 +6,7 @@ import { T } from 'core/components/Translation';
 import Widget1FinmaLine from './Widget1FinmaLine';
 
 const Widget1Finma = ({ borrowRule, incomeRule }) => (
-  <div className="card-bottom widget1-finma">
+  <div className="widget1-finma">
     <h4>
       <T id="Widget1Finma.title" />
     </h4>
