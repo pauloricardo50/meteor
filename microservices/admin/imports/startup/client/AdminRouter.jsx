@@ -19,6 +19,7 @@ import BorrowersPage from '../../ui/pages/BorrowersPage';
 import SearchPage from '../../ui/pages/SearchPage/SearchPage';
 import AdminProfilePage from '../../ui/pages/AdminProfilePage';
 import SinglePropertyPage from '../../ui/pages/SinglePropertyPage';
+import SingleBorrowerPage from '../../ui/pages/SingleBorrowerPage';
 
 import AdminStore from '../../ui/components/AdminStore';
 
@@ -38,6 +39,7 @@ const AdminRouter = () => (
         <Route path="/users/:userId" component={SingleUserPage} />
         <Route path="/properties/:propertyId" component={SinglePropertyPage} />
         <Route path="/tasks" component={TasksPage} />
+        <Route path="/borrowers/:borrowerId" component={SingleBorrowerPage} />
         <Route path="/borrowers" component={BorrowersPage} />
         <Route path="/search" component={SearchPage} />
         <Route path="/profile" component={AdminProfilePage} />
