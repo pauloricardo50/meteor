@@ -1,23 +1,23 @@
-Cypress.Commands.add('eraseTestData', () => {
-  cy.meteorLogin('dev-1@e-potek.ch').then(({ Meteor }) => {
-    Meteor.call('purgeDatabase', Meteor.userId());
-  });
-});
-
-Cypress.Commands.add('generateTestData', () => {
+Cypress.Commands.add('eraseAndGenerateTestData', () => {
   cy.meteorLogin('dev-1@e-potek.ch').then(({ Meteor }) =>
-    new Cypress.Promise((resolve) => {
-      const data = Meteor.call(
-        'generateTestData',
-        'dev-1@e-potek.ch',
-        (err, data) => {
-          if (err) {
-            return reject(err);
-          }
+    new Cypress.Promise((resolve, reject) => {
+      Meteor.call('purgeDatabase', Meteor.userId(), (err) => {
+        if (err) {
+          return reject(err);
+        }
 
-          resolve(data);
-        },
-      );
+        return Meteor.call(
+          'generateTestData',
+          'dev-1@e-potek.ch',
+          (generateDataError, data) => {
+            if (generateDataError) {
+              return reject(generateDataError);
+            }
+
+            return resolve(data);
+          },
+        );
+      });
     }));
 });
 

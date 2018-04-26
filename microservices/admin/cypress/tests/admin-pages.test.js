@@ -8,8 +8,7 @@ const publicPages = ['Login'];
 describe('Admin Pages', () => {
   before(() => {
     cy
-      .eraseTestData()
-      .generateTestData()
+      .eraseAndGenerateTestData()
       .then((data) => {
         testData = data;
       });
