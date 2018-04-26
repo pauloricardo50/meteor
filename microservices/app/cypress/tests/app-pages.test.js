@@ -21,8 +21,7 @@ const publicPages = ['Login'];
 describe('App Pages', () => {
   before(() => {
     cy
-      .eraseTestData()
-      .generateTestData()
+      .eraseAndGenerateTestData()
       .then((data) => {
         testData = data;
       });
