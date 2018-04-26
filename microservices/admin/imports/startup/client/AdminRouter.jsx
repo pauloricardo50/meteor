@@ -18,6 +18,7 @@ import TasksPage from '../../ui/pages/TasksPage/TasksPage';
 import BorrowersPage from '../../ui/pages/BorrowersPage';
 import SearchPage from '../../ui/pages/SearchPage/SearchPage';
 import AdminProfilePage from '../../ui/pages/AdminProfilePage';
+import SinglePropertyPage from '../../ui/pages/SinglePropertyPage';
 
 import AdminStore from '../../ui/components/AdminStore';
 
@@ -35,6 +36,7 @@ const AdminRouter = () => (
         <Route exact path="/loans" component={LoansPage} />
         <Route path="/loans/:loanId/:tabId?" component={SingleLoanPage} />
         <Route path="/users/:userId" component={SingleUserPage} />
+        <Route path="/properties/:propertyId" component={SinglePropertyPage} />
         <Route path="/tasks" component={TasksPage} />
         <Route path="/borrowers" component={BorrowersPage} />
         <Route path="/search" component={SearchPage} />

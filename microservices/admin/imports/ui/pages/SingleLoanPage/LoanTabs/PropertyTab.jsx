@@ -1,33 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getLoanValue } from 'core/utils/loanFunctions';
-import { IntlNumber } from 'core/components/Translation';
+
+import SinglePropertyPage from '../../SinglePropertyPage/SinglePropertyPage';
 
 const PropertyTab = (props) => {
-  const { loan, property } = props;
+  const { property } = props;
 
   return (
-    <div className="mask1">
-      <h2>
-        {property.name ||
-          property.address ||
-          property.address1 ||
-          property.address2}{' '}
-        - Emprunt de{' '}
-        <IntlNumber
-          value={getLoanValue({
-            loan,
-            property,
-          })}
-          format="money"
-        />
-      </h2>
-    </div>
+    <SinglePropertyPage propertyId={property._id} displayLoans={false} />
   );
 };
 
 PropertyTab.propTypes = {
-  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
