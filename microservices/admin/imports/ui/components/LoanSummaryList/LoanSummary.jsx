@@ -2,57 +2,64 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
-import Icon from 'core/components/Icon';
 
+import Icon from 'core/components/Icon';
 import { IntlNumber } from 'core/components/Translation';
 
-const Loan = ({ loan, borrowers, property }) => (
+const LoanSummary = ({
+  loan: {
+    _id,
+    name,
+    logic: { step },
+    general: { fortuneUsed, insuranceFortuneUsed },
+    createdAt,
+    updatedAt,
+    borrowers,
+    property: { value },
+  },
+}) => (
   <div className="mask1" style={{ marginBottom: 16 }}>
     <h4 style={{ marginBottom: 16 }}>
-      <Link to={`/loans/${loan._id}`}>{loan.name || 'Demande de Prêt'}</Link>
+      <Link to={`/loans/${_id}`}>{name || 'Demande de Prêt'}</Link>
     </h4>
 
     <div className="flex admin-loan" style={{ flexWrap: 'wrap' }}>
       <div className="flex-col">
         <label htmlFor="">Étape</label>
-        <p>{loan.logic.step + 1}</p>
+        <p>{step + 1}</p>
       </div>
 
       <div className="flex-col">
         <label htmlFor="">Créé le</label>
-        <p>{moment(loan.createdAt).format('D MMM YY à HH:mm:ss')}</p>
+        <p>{moment(createdAt).format('D MMM YY à HH:mm:ss')}</p>
       </div>
 
       <div className="flex-col">
         <label htmlFor="">Updaté le</label>
-        <p>{moment(loan.updatedAt).format('D MMM YY à HH:mm:ss')}</p>
+        <p>{moment(updatedAt).format('D MMM YY à HH:mm:ss')}</p>
       </div>
 
       <div className="flex-col">
         <label htmlFor="">Valeur du bien</label>
         <p>
-          <IntlNumber value={property.value} format="money" />
+          <IntlNumber value={value} format="money" />
         </p>
       </div>
 
       <div className="flex-col">
         <label htmlFor="">Fortune utilisée</label>
         <p>
-          <IntlNumber value={loan.general.fortuneUsed} format="money" />
+          <IntlNumber value={fortuneUsed} format="money" />
         </p>
       </div>
 
       <div className="flex-col">
         <label htmlFor="">2-3e pillier utilisé</label>
         <p>
-          {loan.general.insuranceFortuneUsed ? (
-            <IntlNumber
-              value={loan.general.insuranceFortuneUsed}
-              format="money"
-            />
+          {insuranceFortuneUsed ? (
+            <IntlNumber value={insuranceFortuneUsed} format="money" />
           ) : (
             '-'
           )}
@@ -76,11 +83,8 @@ const Loan = ({ loan, borrowers, property }) => (
   </div>
 );
 
-Loan.propTypes = {
+LoanSummary.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
-  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
-  property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default Loan;
+export default LoanSummary;

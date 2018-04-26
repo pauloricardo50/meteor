@@ -30,7 +30,7 @@ export default class BorrowersTable extends Component {
         moment(borrower.createdAt).format('D MMM YY à HH:mm:ss'),
         moment(borrower.updatedAt).format('D MMM YY à HH:mm:ss'),
       ],
-      // handleClick: () => this.props.history.push(`/borrowers/${borrower._id}`),
+      handleClick: () => this.props.history.push(`/borrowers/${borrower._id}`),
     }));
     return this.rows;
   };
