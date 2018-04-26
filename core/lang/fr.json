@@ -1,4 +1,27 @@
 {
+  "AboutPagePart1.title": "",
+  "AboutPagePart1.description": "",
+
+  "AboutPagePart2.title": "",
+  "AboutPagePart2.description1": "",
+  "AboutPagePart2.description2": "",
+  "AboutPagePart2.description3": "",
+  "AboutPagePart2.description4": "",
+  "AboutPagePart2.subtitle1": "",
+  "AboutPagePart2.subtitle2": "",
+
+  "AboutPagePart3.title": "",
+  "AboutPagePart3.description": "",
+
+  "AboutPagePart4.title": "",
+  "AboutPagePart4.subtitle1": "",
+  "AboutPagePart4.description1": "",
+  "AboutPagePart4.subtitle2": "",
+  "AboutPagePart4.description2": "",
+  "AboutPagePart4.subtitle3": "",
+  "AboutPagePart4.description3": "",
+
+  "WwwFooterLinks.about": "À propos",
   "ContactUsFormSuccess.text": "C'est dans la boite !",
   "Widget1LenderCount.label": "Prêteurs intéressés",
 
