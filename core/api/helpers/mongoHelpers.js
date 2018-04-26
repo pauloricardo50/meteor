@@ -1,5 +1,8 @@
-const generateMatchAllWordsRegexp = words =>
+export const generateMatchAllWordsRegexp = words =>
   `${words.map(word => `(?=.*${word})`).join('')}.+`;
+
+export const generateMatchAnyWordRegexp = string =>
+  string.trim().replace(/\s+/g, '|');
 
 export const splitStringIntoWords = string => string.trim().split(/\s+/);
 
