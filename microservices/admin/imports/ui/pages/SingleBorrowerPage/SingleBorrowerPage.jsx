@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import Loading from 'core/components/Loading';
 import Recap from 'core/components/Recap';
 
+import LoanSummaryList from '../../components/LoanSummaryList';
 import SingleBorrowerPageContainer from './SingleBorrowerPageContainer';
 import SingleBorrowerPageHeader from './SingleBorrowerPageHeader';
-import LoanSummaryList from '../../components/LoanSummaryList';
 
 const SingleBorrowerPage = ({ data: borrower, isLoading }) => {
   if (isLoading) {

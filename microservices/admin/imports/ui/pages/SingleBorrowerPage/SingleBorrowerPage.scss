@@ -1,10 +1,8 @@
-.single-borrower-page h1 {
-  float: left;
-}
-
 .admin-loan {
   margin-bottom: 16px;
+  display: flex;
   justify-content: space-between;
+
   .flex-col {
     padding-right: 32px;
     padding-bottom: 8px;
@@ -52,6 +50,7 @@
 .borrower-recap {
   margin-bottom: 60px;
   text-align: center;
+
   .recap {
     margin: auto;
   }

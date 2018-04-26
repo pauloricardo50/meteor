@@ -26,7 +26,7 @@ export default Borrowers.createQuery(BORROWER_QUERIES.BORROWER, {
     borrowers: { firstName: 1, lastName: 1 },
     property: { value: 1 },
   },
-  // fileds used in Recap component
+  // fields used in Recap component
   salary: 1,
   otherIncome: 1,
   expenses: 1,

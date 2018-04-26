@@ -5,7 +5,7 @@ import { T } from 'core/components/Translation';
 import LoanSummary from './LoanSummary';
 
 const LoanSummaryList = ({ loans }) => {
-  if (loans && loans.length > 0) {
+  if (loans.length > 0) {
     return (
       <div>
         <h3>
