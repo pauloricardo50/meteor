@@ -32,6 +32,12 @@
   margin-top: 200px;
 }
 
+.home-page__footer {
+  .www-footer-content {
+    flex: none;
+  }
+}
+
 .www-footer .www-footer-top {
   display: flex;
   justify-content: space-between;

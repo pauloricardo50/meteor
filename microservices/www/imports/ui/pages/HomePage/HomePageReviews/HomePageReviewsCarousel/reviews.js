@@ -39,6 +39,6 @@ export default [
     name: 'Yannis',
     title: "Directeur d'e-Potek",
     text:
-      "En tant que directeur d'e-Potek, je suis ravis de la satisfaction de nos clients démontrée au sein de leurs recommandations. Je vous encourage à nous contacter pour vos projets de recherche hypothécaire et vous assure que vous aurez accès aux meilleures conditions du marché ainsi que des conseils de grande qualité. Comment ça j'ai pas le droit de donner un feedback ?!",
+      "En tant que directeur d'e-Potek, je suis ravi de la satisfaction de nos clients démontrée au sein de leurs recommandations. Je vous encourage à nous contacter pour vos projets de recherche hypothécaire et vous assure que vous aurez accès aux meilleures conditions du marché ainsi que des conseils de grande qualité. Comment ça j'ai pas le droit de donner un feedback ?!",
   },
 ];

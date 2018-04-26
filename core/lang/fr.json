@@ -868,6 +868,7 @@
   "InterestRanges.title": "Vos Taux",
   "LayoutError.description":
     "Quelque chose n'a pas fonctionné comme prévu, on en est déjà informés, et vous pouvez essayer de recharger la page.{verticalSpace}Si ça ne résoud pas le problème, écrivez-nous.",
+  "LayoutError.redirectHome": "Page d'accueil",
   "LayoutError.reload": "Recharger la page",
   "LayoutError.title": "Woops une erreur!",
   "LenderSummary.amount": "Montant prêté le plus élevé",
@@ -905,6 +906,8 @@
   "LoginForm.password": "Mot de passe",
   "LoginPage.loggedIn": "Vous êtes connecté",
   "LoginPage.title": "Login / Créer un compte",
+  "MissingDoc.text": "Le document a été supprimé ou n'existe pas!",
+  "MissingDoc.redirectHome": "Page d'accueil",
   "NewLoanModal.description": "Ça nous permettra de l'identifier",
   "NewLoanModal.label": "Nom du projet",
   "NewLoanModal.placeholder": "Rue du Pré 2",
