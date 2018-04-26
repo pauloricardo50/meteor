@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import { T } from 'core/components/Translation';
 import FullDate from 'core/components/dateComponents/FullDate';
@@ -7,43 +8,46 @@ import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 
 const SingleBorrowerHeader = ({
   borrower: {
-    address,
+    address1,
     age,
     gender,
     firstName,
     lastName,
     createdAt,
-    user: { emails, assignedEmployee },
+    user: { _id, emails, assignedEmployee },
   },
 }) => (
-  <div className="single-user-page-header">
+  <div className="single-borrower-page-header">
     <div className="top">
       <h1>
         {getBorrowerFullName({ firstName, lastName }) || (
           <T id="general.borrower" />
         )}
-        <small className="secondary">
-          {`${gender}, ${(
-            <T id="SingleBorrowerHeader.age" value={age} />
-          )}, ${address}`}
-        </small>
       </h1>
     </div>
 
-    <div className="bottom">
-      <p className="secondary created-at">
-        <T id="SingleBorrowerHeader.createdBy" />
-        {` ${emails[0].address} `}
-        <FullDate date={createdAt} />
-      </p>
+    <p className="secondary">
+      {`${gender}, `}
+      <T id="SingleBorrowerPageHeader.age" values={{ value: age }} />
+      {`, ${address1}`}
+    </p>
 
-      {assignedEmployee && (
-        <p>
-          &nbsp; - &nbsp;
-          <T id="SingleBorrowerHeader.assignedTo" />{' '}
-          {assignedEmployee.emails[0].address}
-        </p>
-      )}
+    <div className="bottom">
+      <p className="created-at">
+        <T id="SingleBorrowerPageHeader.createdBy" />{' '}
+        <Link to={`/users/${_id}`}>{emails[0].address}</Link>
+        {', '}
+        <FullDate date={createdAt} />
+        {assignedEmployee && (
+          <span>
+            {' - '}
+            <T id="SingleBorrowerPageHeader.assignedTo" />{' '}
+            <Link to={`/users/${assignedEmployee._id}`}>
+              {assignedEmployee.emails[0].address}
+            </Link>
+          </span>
+        )}
+      </p>
     </div>
   </div>
 );

@@ -37,8 +37,8 @@ const AdminRouter = () => (
         <Route path="/loans/:loanId/:tabId?" component={SingleLoanPage} />
         <Route path="/users/:userId" component={SingleUserPage} />
         <Route path="/tasks" component={TasksPage} />
-        <Route path="/borrowers" component={BorrowersPage} />
         <Route path="/borrowers/:borrowerId" component={SingleBorrowerPage} />
+        <Route path="/borrowers" component={BorrowersPage} />
         <Route path="/search" component={SearchPage} />
         <Route path="/profile" component={AdminProfilePage} />
         <Route path="/dev" component={DevPage} />

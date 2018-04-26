@@ -9,17 +9,19 @@ import SingleBorrowerPageHeader from './SingleBorrowerPageHeader';
 import LoanSummaryList from '../../components/LoanSummaryList';
 
 const SingleBorrowerPage = ({ data: borrower, isLoading }) => {
-  const { loans } = borrower;
-
   if (isLoading) {
     return <Loading />;
   }
 
+  const { loans } = borrower;
+
   return (
-    <section className="mask1 single-user-page">
+    <section className="mask1 single-borrower-page">
       <SingleBorrowerPageHeader borrower={borrower} />
+      <div className="borrower-recap">
+        <Recap arrayName="borrower" borrower={borrower} />
+      </div>
       {loans && <LoanSummaryList loans={loans} />}
-      <Recap arrayName="borrower" borrower={borrower} />
     </section>
   );
 };
