@@ -41,11 +41,6 @@ const mapStyles = [
       { visibility: 'on' },
     ],
   },
-  // {
-  //   featureType: 'road.highway',
-  //   elementType: 'geometry.fill',
-  //   stylers: [{ color: colors.tertiary }, { lightness: '0' }],
-  // },
 
   // Information density
   {
@@ -65,29 +60,11 @@ const mapStyles = [
     featureType: 'poi.business',
     stylers: [{ visibility: 'off' }],
   },
-  // {
-  //   featureType: 'road',
-  //   elementType: 'labels',
-  //   stylers: [{ visibility: 'off' }],
-  // },
   {
     featureType: 'road',
     elementType: 'labels.icon',
     stylers: [{ visibility: 'off' }],
   },
-  // {
-  //   featureType: 'road.arterial',
-  //   stylers: [{ visibility: 'off' }],
-  // },
-  // {
-  //   featureType: 'road.highway',
-  //   elementType: 'labels',
-  //   stylers: [{ visibility: 'off' }],
-  // },
-  // {
-  //   featureType: 'road.local',
-  //   stylers: [{ visibility: 'off' }],
-  // },
   {
     featureType: 'transit',
     stylers: [{ visibility: 'off' }],

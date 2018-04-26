@@ -13,6 +13,8 @@ const AboutPageTeamRecruiting = () => (
         Voir nos postes ouverts
         <Icon type="right" />
       </Button>
+
+      {/* To be decided */}
       {/* <a href="">Voir nos postes ouverts</a> */}
     </div>
   </div>

@@ -5,6 +5,7 @@ const defaultOptions = {
   scrollwheel: false,
   disableDefaultUI: true,
   fullscreenControl: true,
+  zoomControl: true,
   styles: mapStyles,
 };
 
