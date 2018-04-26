@@ -1,7 +1,7 @@
 {
   "screenshotOnHeadlessFailure": true,
   "screenshotsFolder": "/home/circleci/app/e2e-results/cypress/www-screenshots",
-  "videoRecording": false,
+  "videoRecording": true,
   "videosFolder": "/home/circleci/app/e2e-results/cypress/www-videos",
   "integrationFolder": "cypress/tests",
   "pluginsFile": false,
