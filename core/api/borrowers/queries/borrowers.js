@@ -2,7 +2,7 @@ import Borrowers from '..';
 import { BORROWER_QUERIES } from '../borrowerConstants';
 import {
   createRegexQuery,
-  createSearchFilters,
+  generateMatchAnyWordRegexp,
 } from '../../helpers/mongoHelpers';
 
 export default Borrowers.createQuery(BORROWER_QUERIES.ADMIN_BORROWERS, {
@@ -13,9 +13,10 @@ export default Borrowers.createQuery(BORROWER_QUERIES.ADMIN_BORROWERS, {
 
       // the following method forces one word to be found in lastname field
       // and one word in firstName field.
+      searchQuery = searchQuery.trim();
 
       if (searchQuery.indexOf(' ') > -1) {
-        const formatedSearchQuery = searchQuery.trim().replace(/\s+/g, '|');
+        const formatedSearchQuery = generateMatchAnyWordRegexp(searchQuery);
 
         filters.$and = [
           createRegexQuery('firstName', formatedSearchQuery),

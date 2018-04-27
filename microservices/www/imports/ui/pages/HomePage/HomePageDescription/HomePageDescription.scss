@@ -25,7 +25,7 @@ $progression-color: #8db6e6;
   flex-direction: column;
   max-width: 800px;
   text-align: justify;
-  
+
   span {
     width: 100%;
   }
@@ -79,7 +79,12 @@ $progression-color: #8db6e6;
   background-color: $progression-color;
 }
 
-.home-page-description-seo-a {
+.home-page-description-seo-click {
   display: flex;
   align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }

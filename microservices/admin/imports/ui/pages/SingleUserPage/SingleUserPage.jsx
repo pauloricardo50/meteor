@@ -5,9 +5,11 @@ import Loading from 'core/components/Loading';
 
 import SingleUserPageContainer from './SingleUserPageContainer';
 import SingleUserPageHeader from './SingleUserPageHeader';
-import SingleUserPageLoans from './SingleUserPageLoans';
+import LoanSummaryList from '../../components/LoanSummaryList';
 
 const SingleUserPage = ({ data: user, isLoading }) => {
+  const { loans } = user;
+
   if (isLoading) {
     return <Loading />;
   }
@@ -15,7 +17,7 @@ const SingleUserPage = ({ data: user, isLoading }) => {
   return (
     <section className="mask1 single-user-page">
       <SingleUserPageHeader user={user} />
-      <SingleUserPageLoans user={user} />
+      {loans && <LoanSummaryList loans={loans} />}
     </section>
   );
 };
