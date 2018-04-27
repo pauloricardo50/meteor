@@ -8,7 +8,11 @@ const MetricArea = ({ value }) => (
 );
 
 MetricArea.propTypes = {
-  value: PropTypes.number.isRequired,
+  value: PropTypes.number,
+};
+
+MetricArea.defaultProps = {
+  value: undefined,
 };
 
 export default MetricArea;

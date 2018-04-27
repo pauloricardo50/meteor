@@ -12,7 +12,6 @@ const googleMapContainer = (WrappedComponent) => {
   class GoogleMapContainer extends Component {
     constructor(props) {
       super(props);
-
       this.state = { isLoaded: false };
     }
 
@@ -23,20 +22,29 @@ const googleMapContainer = (WrappedComponent) => {
         libraries: 'places',
       });
 
-      this.tracker = Tracker.autorun(() => {
-        this.setState({ isLoaded: GoogleMaps.loaded() });
-      });
+      // Fuck this, it works for an obscure reason
+      // https://github.com/meteor/react-packages/issues/99#issuecomment-168772806
+      setTimeout(this.trackIsLoading, 0);
     }
 
     componentWillUnmount() {
       this.tracker.stop();
     }
 
+    trackIsLoading = () => {
+      this.tracker = Tracker.autorun(() => {
+        const isLoaded = GoogleMaps.loaded();
+
+        this.setState({ isLoaded });
+      });
+    };
+
     render() {
       const { isLoaded } = this.state;
       const { className } = this.props;
+      const mapIsLoaded = isLoaded && !!window.google && !!window.google.maps;
 
-      if (isLoaded && !!window.google && !!window.google.maps) {
+      if (mapIsLoaded) {
         return (
           <div
             className={classnames({ 'map-container': true, [className]: true })}

@@ -3,4 +3,15 @@
 @import './LoanTabs/OffersTab/OffersTab.scss';
 
 .single-loan-page {
+  .google-map {
+    min-height: 400px;
+    flex: 1;
+    display: flex;
+    width: 100%;
+    position: relative;
+
+    .map {
+      flex: 1;
+    }
+  }
 }
