@@ -3,20 +3,20 @@ import { GoogleMaps } from 'meteor/dburles:google-maps';
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import merge from 'lodash/merge';
+
+import defaultOptions from './defaultOptions';
 
 export default class GoogleMap extends Component {
   componentDidMount() {
-    GoogleMaps.create({
-      name: this.props.id,
-      element: this.map,
-      options: {
-        center: this.props.latlng,
-        zoom: 14,
-        scrollwheel: false,
-        disableDefaultUI: true,
-        fullscreenControl: true,
-      },
-    });
+    const options = merge(
+      {},
+      defaultOptions,
+      { center: this.props.latlng },
+      this.props.options,
+    );
+
+    GoogleMaps.create({ name: this.name, element: this.map, options });
 
     this.addMarker();
   }
@@ -70,9 +70,11 @@ GoogleMap.propTypes = {
   id: PropTypes.string,
   latlng: PropTypes.object.isRequired,
   address: PropTypes.string,
+  options: PropTypes.object,
 };
 
 GoogleMap.defaultProps = {
   id: 'myMap',
   address: undefined,
+  options: {},
 };

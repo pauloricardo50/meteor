@@ -11,14 +11,14 @@ const RecapSimple = ({ array, noScale, className }) => (
         return null;
       } else if (item.title) {
         return (
-          <label
+          <h4
             className="text-center"
             {...item.props}
             key={item.label}
             style={item.labelStyle}
           >
             <T id={item.label} />
-          </label>
+          </h4>
         );
       }
       return (
