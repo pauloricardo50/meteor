@@ -17,28 +17,26 @@ const HomePageDescriptionSeo = ({ showText, setShowText }) => {
         <T id="HomePageDescription.description3" />
         <br />
         <T id="HomePageDescription.description4" />
-        <a
-          href="javascript:;"
-          className="home-page-description-seo-a"
+        <div
+          className="home-page-description-seo-click"
           onClick={() => setShowText(false)}
         >
           <T id="HomePageDescriptionSeo.less" />
           <Icon type="up" />
-        </a>
+        </div>
       </p>
     );
   }
   return (
     <p className="description">
       <T id="HomePageDescription.description" />
-      <a
-        href="javascript:;"
-        className="home-page-description-seo-a"
+      <div
+        className="home-page-description-seo-click"
         onClick={() => setShowText(true)}
       >
         <T id="HomePageDescriptionSeo.more" />
         <Icon type="down" />
-      </a>
+      </div>
     </p>
   );
 };
