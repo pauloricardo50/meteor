@@ -21,7 +21,7 @@ class MapWithMarker extends Component {
     const { latlng } = this.state;
 
     if (!latlng) {
-      return null;
+      return <p className="description">Adresse pas trouvée!</p>;
     }
 
     return <GoogleMap address={address} latlng={latlng} id="some-id" />;

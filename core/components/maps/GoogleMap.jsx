@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 export default class GoogleMap extends Component {
   componentDidMount() {
     GoogleMaps.create({
-      name: this.name,
+      name: this.props.id,
       element: this.map,
       options: {
         center: this.props.latlng,
@@ -22,24 +22,26 @@ export default class GoogleMap extends Component {
   }
 
   componentWillUnmount() {
-    if (GoogleMaps.maps[this.name]) {
-      window.google.maps.event.clearInstanceListeners(GoogleMaps.maps[this.name].instance);
-      delete GoogleMaps.maps[this.name];
+    const { id } = this.props;
+    if (GoogleMaps.maps[id]) {
+      window.google.maps.event.clearInstanceListeners(GoogleMaps.maps[id].instance);
+      delete GoogleMaps.maps[id];
     }
   }
 
   addMarker = () => {
-    GoogleMaps.ready(this.name, (map) => {
+    const { id, latlng, address } = this.props;
+    GoogleMaps.ready(id, (map) => {
       const infowindow = new window.google.maps.InfoWindow({
-        content: this.props.address,
+        content: address,
       });
 
-      map.instance.setCenter(this.props.latlng);
+      map.instance.setCenter(latlng);
 
       const marker = new window.google.maps.Marker({
         draggable: false,
         animation: window.google.maps.Animation.DROP,
-        position: this.props.latlng,
+        position: latlng,
         map: map.instance,
         id: 'propertyMarker',
       });
