@@ -89,19 +89,16 @@ jobs:
           name: run end-to-end tests for Admin
           command: |
             cd microservices/admin
-            meteor npm install start-server-and-test --no-save
             meteor npm run test-e2e-CI
       - run:
           name: run end-to-end tests for App
           command: |
             cd microservices/app
-            meteor npm install start-server-and-test --no-save
             meteor npm run test-e2e-CI
       - run:
           name: run end-to-end tests for Www
           command: |
             cd microservices/www
-            meteor npm install start-server-and-test --no-save
             meteor npm run test-e2e-CI
       - run:
           name: run tests for App
