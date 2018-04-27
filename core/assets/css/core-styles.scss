@@ -8,17 +8,11 @@ html {
   min-height: 100%;
 }
 
-// Make sure everything expands properly to take the full size of the browser
-body,
-html,
-#react-root {
-}
-
 body {
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 16px;
   line-height: 1.5em;
-  font-weight: 400;
+  font-weight: 300;
   color: $body-text;
   background-color: $background-color;
 }
@@ -33,7 +27,6 @@ h6 {
   line-height: 1.1em;
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 400;
-  font-weight: inherit;
   margin: 0.67em 0;
 }
 
@@ -285,10 +278,10 @@ hr {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 48px;
-  margin-bottom: 48px;
   font-size: 1.25em;
   line-height: 1.6em;
+  max-width: 600px;
+  text-align: justify;
 }
 
 .description > p,
