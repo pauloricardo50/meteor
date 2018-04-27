@@ -922,6 +922,7 @@
   "LoanStrategyPicker.disclaimer":
     "* Ce choix est indicatif, et vous permet de déterminer quelle stratégie vous conviendra le mieux.",
   "LoanStrategyPicker.title": "Stratégie de taux",
+  "LoanSummaryList.noLoans": "Aucun hypothèque trouvé!",
   "LoanTabs.actions": "Actions",
   "LoanTabs.analytics": "Analytique",
   "LoanTabs.borrowers": "Emprunteurs",
@@ -1038,6 +1039,10 @@
   "SideNavStepper.title": "PROGRESSION",
   "SideNavUser.dashboard": "Tableau de Bord",
   "SideNavUser.files": "Documents",
+  "SingleBorrowerPageHeader.address": "Adresse",
+  "SingleBorrowerPageHeader.age": "{value} ans",
+  "SingleBorrowerPageHeader.assignedTo": "Assigné à",
+  "SingleBorrowerPageHeader.createdBy": "Créé par",
   "Start1Page.chartTitle": "Charges estimées",
   "Start1Page.CTA": "Passer au check-up complet",
   "Start1Page.description":

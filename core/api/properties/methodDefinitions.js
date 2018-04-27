@@ -13,7 +13,7 @@ export const propertyUpdate = new Method({
   name: 'propertyUpdate',
   params: {
     propertyId: String,
-    property: Object,
+    object: Object,
   },
 });
 

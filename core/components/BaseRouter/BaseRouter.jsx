@@ -35,10 +35,7 @@ const BaseRouter = ({
           <ScrollToTop>
             <Switch>
               {/* LoginPage has to be above / path */}
-              {togglePoint({
-                id: TOGGLE_POINTS.BASE_ROUTER_HAS_LOGIN,
-                code: hasLogin,
-              }) && <Route exact path="/login" component={LoginPage} />}
+              {hasLogin && <Route exact path="/login" component={LoginPage} />}
               <Route
                 path="/"
                 render={childProps => React.cloneElement(children, childProps)}
