@@ -89,19 +89,19 @@ jobs:
           name: run end-to-end tests for Admin
           command: |
             cd microservices/admin
-            meteor npm install --no-save babel-cli start-server-and-test
+            meteor npm install --no-save start-server-and-test
             meteor npm run test-e2e-CI
       - run:
           name: run end-to-end tests for App
           command: |
             cd microservices/app
-            meteor npm install --no-save babel-cli start-server-and-test
+            meteor npm install --no-save start-server-and-test
             meteor npm run test-e2e-CI
       - run:
           name: run end-to-end tests for Www
           command: |
             cd microservices/www
-            meteor npm install --no-save babel-cli start-server-and-test
+            meteor npm install --no-save start-server-and-test
             meteor npm run test-e2e-CI
       - run:
           name: run tests for App
