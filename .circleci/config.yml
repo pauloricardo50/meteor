@@ -77,6 +77,11 @@ jobs:
             echo "Java version:"
             java -version
       - run:
+          name: Install global dependencies
+          command: |
+            sudo apt install rsync
+            npm install -g babel-cli start-server-and-test
+      - run:
           name: Setup microservices
           command: |
             sudo apt install rsync
