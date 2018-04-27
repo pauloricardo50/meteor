@@ -21,6 +21,10 @@ jobs:
         NODE_ENV: development
         TOOL_NODE_FLAGS: "--max_old_space_size=4096 --optimize_for_size --gc-interval=100" # if builds run out of memory
         # METEOR_PROFILE: 1 # If you need to debug meteor, turn this on
+    - image: cypress/browsers:chrome65-ff57
+      environment:
+        ## this enables colors in the output
+        TERM: xterm
     steps:
       - checkout
       - add_ssh_keys
@@ -52,7 +56,7 @@ jobs:
       - restore_cache:
           name: restore www's cached node_modules
           keys:
-            - build-epotek-v2-node_modules-{{ checksum "./microservices/www/package.json" }}
+            - build-epotek-v3-node_modules-{{ checksum "./microservices/www/package.json" }}
 
       - run:
           name: install Meteor
@@ -75,11 +79,30 @@ jobs:
       - run:
           name: Setup microservices
           command: |
+            sudo apt install rsync
             cd scripts
             ./setup.sh
       - run:
-          name: create results directory
-          command: mkdir ./results
+          name: create results directories
+          command: mkdir ./results ./e2e-results
+      - run:
+          name: run end-to-end tests for Admin
+          command: |
+            cd microservices/admin
+            meteor npm install --no-save start-server-and-test
+            meteor npm run test-e2e-CI
+      - run:
+          name: run end-to-end tests for App
+          command: |
+            cd microservices/app
+            meteor npm install --no-save start-server-and-test
+            meteor npm run test-e2e-CI
+      - run:
+          name: run end-to-end tests for Www
+          command: |
+            cd microservices/www
+            meteor npm install --no-save start-server-and-test
+            meteor npm run test-e2e-CI
       - run:
           name: run tests for App
           command: |
@@ -132,7 +155,7 @@ jobs:
             - ./microservices/www/.meteor/local
       - save_cache:
           name: cache www's node_modules
-          key: build-epotek-v2-node_modules-{{ checksum "./microservices/www/package.json" }}
+          key: build-epotek-v3-node_modules-{{ checksum "./microservices/www/package.json" }}
           paths:
             - ./microservices/www/node_modules
 
@@ -140,6 +163,22 @@ jobs:
           path: ./results
       - store_artifacts:
           path: ./results
+      - store_test_results:
+          path: ./e2e-results
+      - store_artifacts:
+          path: ./e2e-results
+      - store_artifacts:
+          path: ./e2e-results/cypress/www-screenshots
+      - store_artifacts:
+          path: ./e2e-results/cypress/www-videos
+      - store_artifacts:
+          path: ./e2e-results/cypress/app-screenshots
+      - store_artifacts:
+          path: ./e2e-results/cypress/app-videos
+      - store_artifacts:
+          path: ./e2e-results/cypress/admin-screenshots
+      - store_artifacts:
+          path: ./e2e-results/cypress/admin-videos
       - persist_to_workspace:
           root: /home/circleci
           paths:
