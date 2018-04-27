@@ -763,11 +763,7 @@ const getStructureArray = (props) => {
     {
       title: true,
       label: 'Recap.title',
-      props: {
-        style: {
-          marginTop: 0,
-        },
-      },
+      props: { style: { marginTop: 0 } },
     },
     {
       label: 'Recap.propAndWork',
@@ -785,9 +781,7 @@ const getStructureArray = (props) => {
     },
     {
       label: 'Recap.totalCost',
-      labelStyle: {
-        fontWeight: 400,
-      },
+      labelStyle: { fontWeight: 400 },
       value: <span className="sum">{toMoney(project)}</span>,
       spacingTop: true,
       spacing: true,
