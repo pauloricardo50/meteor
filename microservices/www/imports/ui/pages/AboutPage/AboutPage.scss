@@ -86,7 +86,7 @@
 
 @media (max-width: $small) {
   .about-page-part-4 .about-page-part-4-list > * {
-    padding: 0px;
+    padding: 0;
   }
 }
 
@@ -98,7 +98,7 @@
   flex-wrap: wrap;
 
   &.about-page-office {
-    padding: 80px 0px;
+    padding: 80px 0;
   }
 
   .about-page-office-info {

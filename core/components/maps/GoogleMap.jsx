@@ -10,6 +10,7 @@ import defaultOptions from './defaultOptions';
 export default class GoogleMap extends Component {
   componentDidMount() {
     const options = merge(
+      {},
       defaultOptions,
       { center: this.props.latlng },
       this.props.options,
