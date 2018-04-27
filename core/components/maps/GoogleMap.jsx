@@ -9,14 +9,19 @@ import defaultOptions from './defaultOptions';
 
 export default class GoogleMap extends Component {
   componentDidMount() {
-    const options = merge(
+    const { id, latlng, options } = this.props;
+    const combinedOptions = merge(
       {},
       defaultOptions,
-      { center: this.props.latlng },
-      this.props.options,
+      { center: latlng },
+      options,
     );
 
-    GoogleMaps.create({ name: this.name, element: this.map, options });
+    GoogleMaps.create({
+      name: id,
+      element: this.map,
+      options: combinedOptions,
+    });
 
     this.addMarker();
   }
@@ -31,6 +36,7 @@ export default class GoogleMap extends Component {
 
   addMarker = () => {
     const { id, latlng, address } = this.props;
+
     GoogleMaps.ready(id, (map) => {
       const infowindow = new window.google.maps.InfoWindow({
         content: address,

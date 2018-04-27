@@ -12,11 +12,6 @@ const googleMapContainer = (WrappedComponent) => {
   class GoogleMapContainer extends Component {
     constructor(props) {
       super(props);
-
-      if (this.tracker) {
-        this.tracker.stop();
-        this.tracker = null;
-      }
       this.state = { isLoaded: false };
     }
 
@@ -27,6 +22,8 @@ const googleMapContainer = (WrappedComponent) => {
         libraries: 'places',
       });
 
+      // Fuck this, it works for an obscure reason
+      // https://github.com/meteor/react-packages/issues/99#issuecomment-168772806
       setTimeout(this.trackIsLoading, 0);
     }
 
@@ -34,8 +31,6 @@ const googleMapContainer = (WrappedComponent) => {
       this.tracker.stop();
     }
 
-    // Fuck this, it works for an obscure reason
-    // https://github.com/meteor/react-packages/issues/99#issuecomment-168772806
     trackIsLoading = () => {
       this.tracker = Tracker.autorun(() => {
         const isLoaded = GoogleMaps.loaded();

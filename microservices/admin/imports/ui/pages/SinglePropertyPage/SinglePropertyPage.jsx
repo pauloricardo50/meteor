@@ -18,6 +18,7 @@ const SinglePropertyPage = ({ data: property, isLoading, displayLoans }) => {
   }
 
   const { loans } = property;
+  const address = getPropertyAddress(property);
 
   return (
     <section className="mask1 single-property-page">
@@ -27,7 +28,7 @@ const SinglePropertyPage = ({ data: property, isLoading, displayLoans }) => {
       </div>
       {displayLoans && loans && <LoanSummaryList loans={loans} />}
       <div className="google-map">
-        <MapWithMarker address={getPropertyAddress(property)} className="map" />
+        <MapWithMarker address={address} className="map" id={address} />
       </div>
     </section>
   );
