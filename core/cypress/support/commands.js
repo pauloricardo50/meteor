@@ -48,7 +48,7 @@ Cypress.Commands.add(
   },
 );
 
-// wait for the loader until it closes and then do further
+// wait for the loader (if any) until it closes
 Cypress.Commands.add('waitUntilLoads', () => {
   const isLoading = Cypress.$('.loading-container')[0];
   if (isLoading) {
