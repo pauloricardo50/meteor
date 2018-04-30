@@ -4,14 +4,9 @@ import { Link } from 'react-router-dom';
 import { T } from 'core/components/Translation';
 import togglePoint, { TOGGLE_POINTS } from 'core/api/features/togglePoint';
 
-// const infoLinks = ['faq', 'contact', 'conditions'];
-const infoLinks = [
-  'contact',
-  ...togglePoint({
-    id: TOGGLE_POINTS.ROUTES_CONFIG_STRIPPED_IN_LITE_VERSION,
-    code: ['about', 'faq', 'conditions'],
-  }),
-];
+const modifier = togglePoint(TOGGLE_POINTS.ROUTES_CONFIG_STRIPPED_IN_LITE_VERSION);
+
+const infoLinks = ['contact', ...modifier(['about', 'faq', 'conditions'])];
 
 const WwwFooterLinks = () => (
   <div className="www-footer-links">
