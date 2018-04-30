@@ -42,7 +42,7 @@ const Uploader = ({
       />
 
       {currentValue
-        .sort((a, b) => a.fileCount > b.fileCount)
+        .sort(({ fileCountA }, { fileCountB }) => fileCountA > fileCountB)
         .map(f => (
           <File
             key={f.key}

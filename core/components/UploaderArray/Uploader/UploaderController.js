@@ -2,7 +2,7 @@ import { compose, withStateHandlers, withProps, lifecycle } from 'recompose';
 import { injectIntl } from 'react-intl';
 import { allowedFileTypes, maxSize } from 'core/api/files/meteor-slingshot';
 import bert from 'core/utils/bert';
-import { FILE_STATUS } from '../../api/constants';
+import { FILE_STATUS } from '../../../api/constants';
 
 const checkFile = (file) => {
   if (allowedFileTypes.indexOf(file.type) < 0) {

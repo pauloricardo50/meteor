@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import FileStatusIcon from 'core/components/UploaderArray/FileStatusIcon';
-import Uploader from 'core/components/UploaderArray/Uploader.jsx';
+import { FileStatusIcon, Uploader } from 'core/components/UploaderArray';
 import { CLOSING_STEPS_STATUS, CLOSING_STEPS_TYPE } from 'core/api/constants';
 
 const ClosingItem = ({ step, loan, disabled }) => {
@@ -44,6 +43,10 @@ const ClosingItem = ({ step, loan, disabled }) => {
   );
 };
 
-ClosingItem.propTypes = {};
+ClosingItem.propTypes = {
+  step: PropTypes.object.isRequired,
+  loan: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
+};
 
 export default ClosingItem;
