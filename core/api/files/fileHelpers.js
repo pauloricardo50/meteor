@@ -30,7 +30,8 @@ export const invalidFakeFile = {
 };
 
 export const fakeDocument = {
-  files: [validFakeFile, invalidFakeFile],
+  // files: [validFakeFile, invalidFakeFile],
+  files: [validFakeFile],
   uploadCount: 1,
   label: undefined,
   isAdmin: false,
