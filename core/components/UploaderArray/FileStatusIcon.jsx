@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Icon from 'core/components/Icon';
 import colors from 'core/config/colors';
@@ -12,14 +13,15 @@ const styles = {
   },
 };
 
+const statusIsTodo = (files, status) =>
+  status === FILE_STATUS.UNVERIFIED ||
+  ((!files || files.length === 0) && !status);
+
 const FileStatusIcon = ({ files, status }) => {
   // Support providing a single status
   const statuses = status ? [status] : files.map(f => f.status);
 
-  if (
-    status === FILE_STATUS.UNVERIFIED ||
-    ((!files || files.length === 0) && !status)
-  ) {
+  if (statusIsTodo(files, status)) {
     return (
       <span
         style={{
@@ -31,9 +33,9 @@ const FileStatusIcon = ({ files, status }) => {
         }}
       />
     );
-  } else if (statuses.indexOf('error') >= 0) {
+  } else if (statuses.indexOf(FILE_STATUS.ERROR) >= 0) {
     return <Icon type="warning" className="error" style={styles.icon} />;
-  } else if (statuses.indexOf('unverified') >= 0) {
+  } else if (statuses.indexOf(FILE_STATUS.UNVERIFIED) >= 0) {
     return (
       <Icon type="waiting" color={colors.lightBorder} style={styles.icon} />
     );
@@ -42,5 +44,9 @@ const FileStatusIcon = ({ files, status }) => {
   return <Icon type="check" className="success" style={styles.icon} />;
 };
 
-FileStatusIcon.propTypes = {};
+FileStatusIcon.propTypes = {
+  files: PropTypes.array,
+  status: PropTypes.string,
+};
+
 export default FileStatusIcon;

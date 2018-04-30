@@ -49,12 +49,12 @@ const Title = ({
 
       {userIsAdmin &&
         isOwnedByAdmin && (
-          <ConfirmMethod
-            label={<T id="general.delete" />}
-            keyword="SUPPRIMER"
-            method={removeDocument}
-          />
-        )}
+        <ConfirmMethod
+          label={<T id="general.delete" />}
+          keyword="SUPPRIMER"
+          method={removeDocument}
+        />
+      )}
     </div>
   );
 };
