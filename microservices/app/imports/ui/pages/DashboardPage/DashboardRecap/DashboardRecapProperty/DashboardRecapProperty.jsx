@@ -9,7 +9,11 @@ const getPropertyAddressString = ({ address1, zipCode, city }) =>
   `${address1}, ${zipCode} ${city}`;
 
 const getRecapArray = (property) => {
-  const { landArea, insideArea, expertise: { status } } = property;
+  const {
+    landArea,
+    insideArea,
+    expertise: { status },
+  } = property;
   return [
     {
       subtitle: true,
@@ -38,6 +42,7 @@ const DashboardRecapProperty = ({ property }) => (
     <MapWithMarker
       address={getPropertyAddressString(property)}
       className="map"
+      options={{ zoom: 10 }}
     />
     <h3>
       <T id="Recap.property" />

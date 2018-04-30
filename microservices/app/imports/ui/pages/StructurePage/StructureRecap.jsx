@@ -4,24 +4,10 @@ import PropTypes from 'prop-types';
 import ExpensesChart from 'core/components/charts/ExpensesChart';
 import Recap from 'core/components/Recap';
 
-const styles = {
-  div: {
-    display: 'flex',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-  },
-  chart: {
-    textAlign: 'center',
-    flexGrow: 0,
-    width: 400,
-  },
-};
-
 const StructureRecap = props => (
-  <div style={styles.div}>
+  <div className="structure-page-recap">
     <Recap {...props} arrayName="structure" />
-    <div style={styles.chart}>
+    <div className="structure-page-recap-chart">
       <ExpensesChart {...props} />
     </div>
   </div>

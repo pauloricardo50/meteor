@@ -1,3 +1,5 @@
+import { compose } from 'recompose';
+
 import {
   createContainer,
   addFileToDoc,
@@ -5,8 +7,9 @@ import {
   removeDocument,
   SecurityService,
 } from 'core/api';
+import UploaderController from './UploaderController';
 
-export default createContainer(({ collection, docId, fileMeta: { id, isOwnedByAdmin }, disabled }) => {
+const UploaderContainer = createContainer(({ collection, docId, fileMeta: { id, isOwnedByAdmin }, disabled }) => {
   const userIsAdmin = SecurityService.currentUserIsAdmin();
 
   let disableUploader = true;
@@ -41,3 +44,5 @@ export default createContainer(({ collection, docId, fileMeta: { id, isOwnedByAd
 
   return additionalProps;
 });
+
+export default compose(UploaderContainer, UploaderController);

@@ -7,9 +7,23 @@
 @import '../imports/ui/pages/DashboardPage/DashboardPage.scss';
 @import '../imports/ui/pages/StrategyPage/StrategyPage.scss';
 @import '../imports/ui/pages/BorrowerPage/BorrowerPage.scss';
+@import '../imports/ui/pages/PropertyPage/PropertyPage.scss';
+@import '../imports/ui/pages/VerificationPage/VerificationPage.scss';
+@import '../imports/ui/pages/StructurePage/StructurePage.scss';
+@import '../imports/ui/pages/AuctionPage/AuctionPage.scss';
+@import '../imports/ui/pages/ClosingPage/ClosingPage.scss';
 
 // Components CSS
 @import '../imports/ui/components/Page/Page.scss';
 @import '../imports/ui/components/SideNavUser/SideNavUser.scss';
 @import '../imports/ui/components/StrategyChoices/StrategyChoices.scss';
 @import '../imports/ui/components/SummaryComponent/SummaryComponent.scss';
+
+// Make sure everything expands properly to take the full size of the browser
+body,
+html,
+#react-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}

@@ -24,14 +24,14 @@ const MainSideNavListItem = ({
   onClick,
   collection,
   collectionName,
-  ...otherProps
+  to,
 }) => (
   <ListItem
     button
     classes={classes}
     onClick={onClick}
-    component={!detail && NavLink}
-    {...otherProps}
+    component={!detail ? NavLink : undefined}
+    to={!detail ? to : undefined}
   >
     <div
       className={classnames({
@@ -48,19 +48,22 @@ const MainSideNavListItem = ({
 );
 
 MainSideNavListItem.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   icon: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired,
   detail: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
   collection: PropTypes.string,
   collectionName: PropTypes.string,
+  to: PropTypes.string,
 };
 
 MainSideNavListItem.defaultProps = {
+  label: undefined,
   detail: undefined,
   collection: undefined,
   collectionName: undefined,
+  to: undefined,
 };
 
 export default withStyles(styles)(MainSideNavListItem);

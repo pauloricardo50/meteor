@@ -57,7 +57,7 @@ export default class Auction extends Component {
 
   render() {
     return (
-      <section className="mask1 animated fadeIn">
+      <section className="mask1 animated fadeIn auction-page-auction">
         <h2>
           <T id="Auction.title" />
         </h2>

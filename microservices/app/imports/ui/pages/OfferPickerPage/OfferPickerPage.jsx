@@ -7,7 +7,7 @@ import { T } from 'core/components/Translation';
 import OfferList from 'core/components/OfferList';
 
 const OfferPickerPage = (props) => {
-  const { offers, loan } = props;
+  const { offers, loan, property } = props;
   return (
     <ProcessPage {...props} stepNb={2} id="offerPicker">
       <section className="mask1">
@@ -18,7 +18,12 @@ const OfferPickerPage = (props) => {
           <T id="OfferPickerPage.description" />
         </p>
 
-        <OfferList offers={offers} loan={loan} disabled={loan.logic.step > 2} />
+        <OfferList
+          offers={offers}
+          loan={loan}
+          property={property}
+          disabled={loan.logic.step > 2}
+        />
       </section>
     </ProcessPage>
   );
@@ -27,5 +32,7 @@ const OfferPickerPage = (props) => {
 OfferPickerPage.propTypes = {
   offers: PropTypes.arrayOf(PropTypes.object).isRequired,
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
+  property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
+
 export default OfferPickerPage;

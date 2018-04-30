@@ -32,25 +32,25 @@ const styles = {
 };
 
 const handleCheck = (_, isInputChecked, id) => {
-  // Save data to DB
-  const object = {};
-  object['logic.financeEthics'] = isInputChecked;
-
+  const object = { 'logic.financeEthics': isInputChecked };
   borrowerUpdate.run({ object, borrowerId: id });
 };
 
 const handleClick = (event, id) => {
-  // Save data to DB
-  const object = {};
-  object['logic.hasValidatedFinances'] = true;
-
+  const object = { 'logic.hasValidatedFinances': true };
   borrowerUpdate
     .run({ object, id })
     .then(() => track('validated finances', {}));
 };
 
 const BorrowerFinancePage = (props) => {
-  const { match: { params: { borrowerId } }, borrowers, loan } = props;
+  const {
+    match: {
+      params: { borrowerId },
+    },
+    borrowers,
+    loan,
+  } = props;
   const borrower = borrowers.find(b => b._id === borrowerId);
   return (
     <section className="borrower-finance-page animated fadeIn" key={borrowerId}>

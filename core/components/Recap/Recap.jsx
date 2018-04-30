@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { toMoney } from 'core/utils/conversionFunctions';
 import constants from 'core/config/constants';
-import { IntlNumber } from 'core/components/Translation';
+import { IntlNumber, MetricArea } from 'core/components/Translation';
 
 import {
   getPropAndWork,
@@ -677,6 +677,74 @@ const getBorrowerArray = (props) => {
   ];
 };
 
+const getPropertyArray = ({ property }) => {
+  const {
+    style,
+    roomCount,
+    insideArea,
+    landArea,
+    constructionYear,
+    renovationYear,
+    balconyArea,
+    terraceArea,
+    investmentRent,
+  } = property;
+
+  return [
+    {
+      title: true,
+      label: 'Recap.details',
+    },
+    {
+      label: 'Forms.style',
+      value: style,
+    },
+    {
+      label: 'Forms.roomCount',
+      value: roomCount,
+      hide: !roomCount,
+    },
+    {
+      label: 'Forms.insideArea',
+      value: <MetricArea value={insideArea} />,
+      hide: !insideArea,
+      spacingTop: true,
+    },
+    {
+      label: 'Forms.landArea',
+      value: <MetricArea value={landArea} />,
+      hide: !landArea,
+    },
+    {
+      label: 'Forms.balconyArea',
+      value: <MetricArea value={balconyArea} />,
+      hide: !balconyArea,
+    },
+    {
+      label: 'Forms.terraceArea',
+      value: <MetricArea value={terraceArea} />,
+      hide: !terraceArea,
+    },
+    {
+      label: 'Forms.constructionYear',
+      value: constructionYear,
+      hide: !constructionYear,
+      spacingTop: true,
+    },
+    {
+      label: 'Forms.renovationYear',
+      value: renovationYear,
+      hide: !renovationYear,
+    },
+    {
+      label: 'Forms.investmentRent',
+      value: toMoney(investmentRent),
+      hide: !investmentRent,
+      spacingTop: true,
+    },
+  ];
+};
+
 const getStructureArray = (props) => {
   const r = props.loan;
   const b = props.borrowers;
@@ -695,11 +763,7 @@ const getStructureArray = (props) => {
     {
       title: true,
       label: 'Recap.title',
-      props: {
-        style: {
-          marginTop: 0,
-        },
-      },
+      props: { style: { marginTop: 0 } },
     },
     {
       label: 'Recap.propAndWork',
@@ -717,9 +781,7 @@ const getStructureArray = (props) => {
     },
     {
       label: 'Recap.totalCost',
-      labelStyle: {
-        fontWeight: 400,
-      },
+      labelStyle: { fontWeight: 400 },
       value: <span className="sum">{toMoney(project)}</span>,
       spacingTop: true,
       spacing: true,
@@ -803,6 +865,8 @@ const arraySwitch = (props) => {
     return getBorrowerArray(props);
   case 'structure':
     return getStructureArray(props);
+  case 'property':
+    return getPropertyArray(props);
   default:
     throw new Meteor.Error('Not a valid recap array');
   }
