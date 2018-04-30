@@ -49,7 +49,6 @@ export default class AuctionForm extends Component {
     return (
       <AutoForm
         inputs={getFormArray(this.props.loan, this.props.serverTime)}
-        formClasses="user-form"
         docId={this.props.loan._id}
         collection="loans"
         doc={this.props.loan}

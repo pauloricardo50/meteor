@@ -8,9 +8,6 @@ import { T } from 'core/components/Translation';
 import InterestRanges from './InterestRanges';
 
 const styles = {
-  section: {
-    marginBottom: 40,
-  },
   p: {
     display: 'flex',
     justifyContent: 'center',
@@ -97,8 +94,8 @@ const getFakeOffers = (props) => {
 };
 
 const AuctionResults = ({ intl: { formatMessage: f }, offers, loan }) => (
-  <section className="mask1 animated fadeIn" style={styles.section}>
-    <h1>
+  <section className="mask1 animated fadeIn auction-page-results">
+    <h1 className="title">
       <T id="AuctionResults.title" />
     </h1>
 
@@ -122,11 +119,8 @@ const AuctionResults = ({ intl: { formatMessage: f }, offers, loan }) => (
       </p>
     </div>
 
-    <div className="flex center">
-      <InterestRanges
-        offers={offers}
-        style={{ width: '100%', maxWidth: 250 }}
-      />
+    <div className="flex center auction-page-results-interests">
+      <InterestRanges offers={offers} />
     </div>
   </section>
 );

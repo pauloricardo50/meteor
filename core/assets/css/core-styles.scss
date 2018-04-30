@@ -1,85 +1,16 @@
 @import '{}/node_modules/normalize-scss/sass/normalize';
 @include normalize();
 
+@import './core-components.scss';
+@import './typography.scss';
 @import './variables.scss';
-@import './core-components';
 
 html {
   min-height: 100%;
 }
 
 body {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 16px;
-  line-height: 1.5em;
-  font-weight: 300;
-  color: $body-text;
   background-color: $background-color;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: $title-text;
-  line-height: 1.1em;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-weight: 400;
-  margin: 0.67em 0;
-}
-
-h1 {
-  font-size: 2em;
-}
-
-h2 {
-  font-size: 1.625em;
-}
-
-h3 {
-  font-size: 1.375em;
-}
-
-h4 {
-  font-size: 1.125em;
-}
-
-h5 {
-  font-size: 0.83em;
-}
-
-h6 {
-  font-size: 0.75em;
-}
-
-@media (min-width: $med) {
-  h1 {
-    font-size: 2.5em;
-  }
-
-  h2 {
-    font-size: 2em;
-  }
-
-  h3 {
-    font-size: 1.5em;
-  }
-}
-
-@media (min-width: $wide) {
-  h1 {
-    font-size: 3em;
-  }
-
-  h2 {
-    font-size: 2.25em;
-  }
-
-  h3 {
-    font-size: 1.75em;
-  }
 }
 
 // Nicer styling for a tags, removes horrible blue color

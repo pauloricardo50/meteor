@@ -67,8 +67,8 @@
   content: '';
   position: absolute;
   top: -38px;
-  border-top: 3px solid brand-primary;
-  border-right: 3px solid brand-primary;
+  border-top: 3px solid $primary;
+  border-right: 3px solid $primary;
   border-radius: 0 50px 0px 0;
   width: 40px;
   height: 40px;
@@ -84,8 +84,8 @@
   position: absolute;
   top: 2px;
   right: 2px;
-  border-bottom: 3px solid brand-primary;
-  border-left: 3px solid brand-primary;
+  border-bottom: 3px solid $primary;
+  border-left: 3px solid $primary;
   border-radius: 0 0px 0px 50px;
   width: 40px;
   height: 40px;

@@ -15,9 +15,11 @@ const ClosingItem = ({ step, loan, disabled }) => {
         currentValue={loan.documents[id]}
         docId={loan._id}
         disabled={disabled}
+        label={title}
       />
     );
   }
+
   return (
     <div
       className={classNames({ 'mask1 flex-col': true, secondary: disabled })}

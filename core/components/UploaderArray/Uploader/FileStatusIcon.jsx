@@ -49,4 +49,8 @@ FileStatusIcon.propTypes = {
   status: PropTypes.string,
 };
 
+FileStatusIcon.defaultProps = {
+  files: [],
+};
+
 export default FileStatusIcon;

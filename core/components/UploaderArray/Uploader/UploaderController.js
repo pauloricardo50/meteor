@@ -18,6 +18,9 @@ const filesExistAndAreValid = files =>
   files.length > 0 &&
   files.every(file => file.status === FILE_STATUS.VALID);
 
+const propHasChanged = (oldProp, newProp) =>
+  oldProp && newProp && oldProp.length !== newProp.length;
+
 const displayFullState = withStateHandlers(
   ({ currentValue }) => ({
     displayFull: !filesExistAndAreValid(currentValue),
@@ -82,10 +85,12 @@ const props = withProps(({
     }),
   handleRemove: key => deleteFile(key),
   shouldDisableAdd: () =>
-    currentValue.reduce(
-      (acc, file) => !(file.status === FILE_STATUS.ERROR),
-      true,
-    ) && disabled,
+    currentValue &&
+      currentValue.reduce(
+        (acc, file) => !(file.status === FILE_STATUS.ERROR),
+        true,
+      ) &&
+      disabled,
 }));
 
 const willReceiveProps = lifecycle({
@@ -96,7 +101,7 @@ const willReceiveProps = lifecycle({
     const { currentValue, tempFiles, filterTempFiles } = this.props;
 
     // Lazy check to see if they are of different size
-    if (nextValue.length !== currentValue.length) {
+    if (propHasChanged(currentValue, nextValue)) {
       if (tempFiles && tempFiles.length) {
         // Loop over the new props to see if they match any of the temp files
         // Remove the ones that match
