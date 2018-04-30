@@ -1,28 +1,44 @@
 let testData;
 const pages = {
   Login: '/login',
-  Profile: '/profile',
-  'Loan Property': ({ loans }) => `/loans/${loans[0]._id}/property`,
-  'Loan Verification': ({ loans }) => `/loans/${loans[0]._id}/verification`,
-  'Loan Structure': ({ loans }) => `/loans/${loans[0]._id}/structure`,
-  'Loan Strategy': ({ loans }) => `/loans/${loans[0]._id}/strategy`,
-  'Loan Contract': ({ loans }) => `/loans/${loans[0]._id}/contract`,
-  'Loan Closing': ({ loans }) => `/loans/${loans[0]._id}/closing`,
-  'Loan File': ({ loans }) => `/loans/${loans[0]._id}/files`,
-  Loan: ({ loans }) => `/loans/${loans[0]._id}`,
   'Reset Password': '/reset-password/fakeToken',
   'Enroll Account': '/enroll-account/fakeToken',
   'Verify Email': '/verify-email/fakeToken',
+  
   App: '/',
+  Profile: '/profile',
+
+  Loan: ({ _id }) => `/loans/${_id}`,
+  'Loan Files': ({ _id }) => `/loans/${_id}/files`,
+  'Loan Property': ({ _id }) => `/loans/${_id}/property`,
+  'Loan Verification': ({ _id }) => `/loans/${_id}/verification`,
+  'Loan Structure': ({ _id }) => `/loans/${_id}/structure`,
+  'Loan Auction': ({ _id }) => `/loans/${_id}/auction`,
+  'Loan Strategy': ({ _id }) => `/loans/${_id}/strategy`,
+  // 'Loan Offerpicker': ({ _id }) => `/loans/${_id}/offerpicker`,
+  'Loan Contract': ({ _id }) => `/loans/${_id}/contract`,
+  'Loan Closing': ({ _id }) => `/loans/${_id}/closing`,
+
+  'Loan Borrower Personal': ({ _id, borrowers }) =>
+    `/loans/${_id}/borrowers/${borrowers[0]._id}/personal`,
+  'Loan Borrower Finance': ({ _id, borrowers }) =>
+    `/loans/${_id}/borrowers/${borrowers[0]._id}/finance`,
+  'Loan Borrower Files': ({ _id, borrowers }) =>
+    `/loans/${_id}/borrowers/${borrowers[0]._id}/files`,
+
   'Not Found': '/a-page-that-does-not-exist',
 };
 const publicPages = ['Login'];
 
 describe('App Pages', () => {
   before(() => {
-    cy.eraseAndGenerateTestData().then((data) => {
-      testData = data;
-    });
+    cy
+      .eraseAndGenerateTestData()
+      .meteorLogoutAndLogin()
+      .getTestData()
+      .then((data) => {
+        testData = data;
+      });
   });
 
   Object.keys(pages).forEach((pageName) => {

@@ -2,9 +2,11 @@ const devEmail = 'dev-1@e-potek.ch';
 const userEmail = 'user-1@e-potek.ch';
 const userPassword = '12345';
 
-Cypress.Commands.add('eraseAndGenerateTestData', () => {
-  cy.meteorLogoutAndLogin(devEmail).then(({ Meteor }) =>
+Cypress.Commands.add('eraseAndGenerateTestData', () =>
+  cy.meteorLogoutAndLogin(devEmail).then(window =>
     new Cypress.Promise((resolve, reject) => {
+      const { Meteor } = window;
+
       Meteor.call('purgeDatabase', Meteor.userId(), (err) => {
         if (err) {
           return reject(err);
@@ -18,12 +20,11 @@ Cypress.Commands.add('eraseAndGenerateTestData', () => {
               return reject(generateDataError);
             }
 
-            return resolve(data);
+            return resolve(window);
           },
         );
       });
-    }));
-});
+    })));
 
 Cypress.Commands.add('meteorLogout', () => {
   cy.visit('/').then(({ Meteor }) =>
@@ -35,8 +36,10 @@ Cypress.Commands.add('meteorLogout', () => {
 Cypress.Commands.add(
   'meteorLogoutAndLogin',
   (email = userEmail, password = userPassword) => {
-    cy.visit('/').then(({ Meteor }) =>
+    cy.visit('/').then(window =>
       new Cypress.Promise((resolve, reject) => {
+        const { Meteor } = window;
+
         Meteor.logout((err) => {
           if (err) {
             return reject(err);
@@ -45,7 +48,7 @@ Cypress.Commands.add(
           return Meteor.loginWithPassword(
             email,
             password,
-            loginError => (loginError ? reject(loginError) : resolve()),
+            loginError => (loginError ? reject(loginError) : resolve(window)),
           );
         });
       }));

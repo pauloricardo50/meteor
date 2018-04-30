@@ -6,7 +6,7 @@
   "integrationFolder": "cypress/tests",
   "pluginsFile": false,
   "fixturesFolder": false,
-  "supportFile": "imports/core/cypress/support",
+  "supportFile": "cypress/support",
   "defaultCommandTimeout": 30000,
   "baseUrl": "http://localhost:4015"
 }
