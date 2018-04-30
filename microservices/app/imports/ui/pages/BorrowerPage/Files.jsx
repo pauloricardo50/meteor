@@ -22,7 +22,7 @@ const Files = (props) => {
 
   return (
     <section
-      className="animated fadeIn"
+      className="animated fadeIn borrower-page-files"
       key={borrower._id}
       style={styles.section}
     >
@@ -31,7 +31,7 @@ const Files = (props) => {
         <T id="Files.title" />
       </h2>
 
-      <div className="description">
+      <div className="text-center description">
         <p>
           <T id="Files.description" />
         </p>

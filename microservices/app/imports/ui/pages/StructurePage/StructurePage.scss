@@ -1,0 +1,23 @@
+.structure-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .validator {
+    max-width: 400px;
+  }
+}
+
+.structure-page-recap {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+
+  .structure-page-recap-chart {
+    text-align: center;
+    flex-grow: 0;
+    width: 400px;
+  }
+}

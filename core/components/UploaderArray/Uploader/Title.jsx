@@ -76,7 +76,7 @@ Title.propTypes = {
   tooltipSuffix: PropTypes.string,
   label: PropTypes.string,
   userIsAdmin: PropTypes.bool.isRequired,
-  isOwnedByAdmin: PropTypes.bool.isRequired,
+  isOwnedByAdmin: PropTypes.bool,
   removeDocument: PropTypes.func.isRequired,
   displayFull: PropTypes.bool.isRequired,
   hideFull: PropTypes.func.isRequired,
@@ -89,6 +89,7 @@ Title.defaultProps = {
   required: false,
   tooltipSuffix: undefined,
   label: undefined,
+  isOwnedByAdmin: false,
 };
 
 export default Title;
