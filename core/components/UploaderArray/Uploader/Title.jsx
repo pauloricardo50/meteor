@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
 import ConfirmMethod from 'core/components/ConfirmMethod';
+import IconButton from 'core/components/IconButton';
 
 import FileStatusIcon from './FileStatusIcon';
 
 const Title = ({
-  id,
+  fileMeta: { id },
   doubleTooltip,
   noTooltips,
   required,
@@ -17,6 +18,9 @@ const Title = ({
   userIsAdmin,
   isOwnedByAdmin,
   removeDocument,
+  displayFull,
+  showFull,
+  hideFull,
 }) => {
   // Construct the custom tooltip id for this file
   const tooltipId = `files.${id}.tooltip${tooltipSuffix || ''}`;
@@ -55,12 +59,16 @@ const Title = ({
           method={removeDocument}
         />
       )}
+      <IconButton
+        type={displayFull ? 'up' : 'down'}
+        onClick={displayFull ? hideFull : showFull}
+      />
     </div>
   );
 };
 
 Title.propTypes = {
-  id: PropTypes.string.isRequired,
+  fileMeta: PropTypes.object.isRequired,
   doubleTooltip: PropTypes.bool,
   noTooltips: PropTypes.bool,
   required: PropTypes.bool,
@@ -70,6 +78,9 @@ Title.propTypes = {
   userIsAdmin: PropTypes.bool.isRequired,
   isOwnedByAdmin: PropTypes.bool.isRequired,
   removeDocument: PropTypes.func.isRequired,
+  displayFull: PropTypes.bool.isRequired,
+  hideFull: PropTypes.func.isRequired,
+  showFull: PropTypes.func.isRequired,
 };
 
 Title.defaultProps = {

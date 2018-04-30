@@ -32,6 +32,7 @@ export default class FileDropper extends Component {
     e.stopPropagation();
     if (!this.props.disabled) {
       this.setState({ dragging: true, target: e.target });
+      this.props.showFull();
     }
   };
 
@@ -55,7 +56,7 @@ export default class FileDropper extends Component {
   pD = e => e.preventDefault();
 
   render() {
-    const { children, className } = this.props;
+    const { children } = this.props;
     const { dragging } = this.state;
 
     return (
@@ -77,4 +78,7 @@ export default class FileDropper extends Component {
 
 FileDropper.propTypes = {
   handleAddFiles: PropTypes.func.isRequired,
+  showFull: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };

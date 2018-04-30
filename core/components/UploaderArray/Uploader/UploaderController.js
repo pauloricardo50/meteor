@@ -13,8 +13,23 @@ const checkFile = (file) => {
   return true;
 };
 
-const stateHandlers = withStateHandlers(
-  ({ initialTempFiles = [] }) => ({ tempFiles: initialTempFiles }),
+const filesExistAndAreValid = files =>
+  files &&
+  files.length > 0 &&
+  files.every(file => file.status === FILE_STATUS.VALID);
+
+const displayFullState = withStateHandlers(
+  ({ currentValue }) => ({
+    displayFull: !filesExistAndAreValid(currentValue),
+  }),
+  {
+    showFull: () => () => ({ displayFull: true }),
+    hideFull: () => () => ({ displayFull: false }),
+  },
+);
+
+const tempFileState = withStateHandlers(
+  { tempFiles: [] },
   {
     addTempFiles: ({ tempFiles }) => (files = []) => ({
       tempFiles: [...tempFiles, ...files],
@@ -94,4 +109,10 @@ const willReceiveProps = lifecycle({
   },
 });
 
-export default compose(injectIntl, stateHandlers, props, willReceiveProps);
+export default compose(
+  injectIntl,
+  displayFullState,
+  tempFileState,
+  props,
+  willReceiveProps,
+);
