@@ -2,15 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import DonutChart from 'core/components/charts/DonutChart';
-import { getBorrowerIncome } from 'core/utils/borrowerFunctions';
 import { T } from 'core/components/Translation';
 import { getInterests, getAmortization } from 'core/utils/finance-math';
 import { getInterestsWithOffer } from 'core/utils/loanFunctions';
 import DashboardRecapChartInfo from './DashboardRecapChartInfo';
 import DashboardRecapChartLegend from './DashboardRecapChartLegend';
-
-const getRevenuePercent = (total, monthlyIncome) =>
-  (100 * total / monthlyIncome).toFixed(2);
 
 const getChartData = (props) => {
   const { offer, interestRate } = props;
@@ -36,10 +32,8 @@ const getChartData = (props) => {
 };
 
 const DashboardRecapChart = (props) => {
-  const { borrowers } = props;
   const data = getChartData(props);
   const total = data.reduce((sum, item) => sum + item.value, 0);
-  const monthlyIncome = getBorrowerIncome({ borrowers }) / 12;
 
   return (
     <div className="card-bottom dashboard-recap-chart">
@@ -53,13 +47,17 @@ const DashboardRecapChart = (props) => {
           config={{
             chart: { margin: 0, width: 120, height: 120 },
             legend: { enabled: false },
+            plotOptions: {
+              pie: {
+                tooltip: {
+                  headerFormat: '<b>{point.key}</b><br />',
+                  pointFormat: 'CHF {point.y:,.0f}',
+                },
+              },
+            },
           }}
         />
-        <DashboardRecapChartInfo
-          {...props}
-          revenuePercent={getRevenuePercent(total, monthlyIncome)}
-          total={total}
-        />
+        <DashboardRecapChartInfo {...props} total={total} />
         <DashboardRecapChartLegend data={data} />
       </div>
     </div>

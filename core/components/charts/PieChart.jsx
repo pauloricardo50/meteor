@@ -42,7 +42,7 @@ PieChart.propTypes = {
   })),
   title: PropTypes.string,
   subtitle: PropTypes.string,
-  intlPrefix: PropTypes.string.isRequired,
+  intlPrefix: PropTypes.string,
   config: PropTypes.object,
 };
 
@@ -51,6 +51,7 @@ PieChart.defaultProps = {
   title: '',
   subtitle: '',
   config: {},
+  intlPrefix: undefined,
 };
 
 export default chartContainer(PieChart);
