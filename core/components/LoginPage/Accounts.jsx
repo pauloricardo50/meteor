@@ -1,15 +1,10 @@
 import React from 'react';
 import { Accounts, STATES } from 'meteor/std:accounts-ui'; // TODO: back to normal once std:accounts-ui is fixed
-import {
-  // RaisedButton,
-  // FlatButton,
-  FontIcon,
-  TextField,
-  // Divider,
-  Snackbar,
-} from 'material-ui';
+import { TextField, Snackbar } from 'material-ui';
 
 import MuiButton from '../Button';
+
+// Do this to pass the ref
 
 class LoginForm extends Accounts.ui.LoginForm {}
 
@@ -28,7 +23,9 @@ class Form extends Accounts.ui.Form {
     } = this.props;
     return (
       <form
-        ref={ref => (this.form = ref)}
+        ref={(ref) => {
+          this.form = ref;
+        }}
         className={['accounts', className].join(' ')}
       >
         {Object.keys(fields).length > 0 ? (
@@ -36,12 +33,12 @@ class Form extends Accounts.ui.Form {
         ) : null}
         <Accounts.ui.Buttons buttons={buttons} />
         <br />
-        {formState == STATES.SIGN_IN || formState == STATES.SIGN_UP ? (
+        {formState === STATES.SIGN_IN || formState === STATES.SIGN_UP ? (
           <div className="or-sep">
             <Accounts.ui.PasswordOrService oauthServices={oauthServices} />
           </div>
         ) : null}
-        {formState == STATES.SIGN_IN || formState == STATES.SIGN_UP ? (
+        {formState === STATES.SIGN_IN || formState === STATES.SIGN_UP ? (
           <Accounts.ui.SocialButtons oauthServices={oauthServices} />
         ) : null}
         <br />
@@ -104,6 +101,7 @@ class Fields extends Accounts.ui.Fields {
     );
   }
 }
+
 class Field extends Accounts.ui.Field {
   render() {
     const {
@@ -113,67 +111,33 @@ class Field extends Accounts.ui.Field {
       type = 'text',
       onChange,
       required = false,
-      className,
       defaultValue = '',
+      message,
     } = this.props;
     const { mount = true } = this.state;
+
     return mount ? (
-      <TextField
-        label={label}
-        placeholder={hint}
-        onChange={onChange}
-        fullWidth
-        defaultValue={defaultValue}
-        name={id}
-        type={type}
-        ref={ref => (this.input = ref)}
-        required={required ? 'required' : ''}
-        autoCapitalize={type == 'email' ? 'none' : false}
-        autoCorrect="off"
-        shrink
-      />
+      <span>
+        <TextField
+          label={label}
+          placeholder={hint}
+          onChange={onChange}
+          fullWidth
+          defaultValue={defaultValue}
+          name={id}
+          type={type}
+          required={required}
+          autoCorrect="off"
+        />
+        {message && (
+          <span className={['message', message.type].join(' ').trim()}>
+            {message.message}
+          </span>
+        )}
+      </span>
     ) : null;
   }
 }
-// class SocialButtons extends Accounts.ui.SocialButtons {
-//   render() {
-//     const { oauthServices = {}, className = 'social-buttons' } = this.props;
-//     if (Object.keys(oauthServices).length > 0) {
-//       return (
-//         <div className={[className].join(' ')}>
-//           {Object.keys(oauthServices).map((id, i) => {
-//             const serviceClass = id.replace(
-//               /google|meteor\-developer/gi,
-//               matched => socialButtonIcons[matched],
-//             );
-//             const { label, type, onClick, disabled } = oauthServices[id];
-//             return (
-//               <RaisedButton
-//                 key={i}
-//                 label={label}
-//                 type={type}
-//                 onTouchTap={onClick}
-//                 disabled={disabled}
-//                 className={serviceClass.length > 0 ? `${serviceClass}` : ''}
-//                 icon={
-//                   serviceClass.length > 0 ? (
-//                     <FontIcon className={`fa fa-${serviceClass}`} />
-//                   ) : (
-//                     ''
-//                   )
-//                 }
-//                 backgroundColor={socialButtonsColors[id].background}
-//                 labelColor={socialButtonsColors[id].label}
-//                 style={{ marginRight: '5px' }}
-//               />
-//             );
-//           })}
-//         </div>
-//       );
-//     }
-//     return null;
-//   }
-// }
 
 class FormMessage extends Accounts.ui.FormMessage {
   constructor(props) {
@@ -191,37 +155,11 @@ class FormMessage extends Accounts.ui.FormMessage {
 
   render() {
     const { message, type } = this.props;
-    // let bodyStyle;
-    // switch (type) {
-    //   case 'warning':
-    //     bodyStyle = {
-    //       backgroundColor: yellow600,
-    //     };
-    //     break;
-    //   case 'success':
-    //     bodyStyle = {
-    //       backgroundColor: green500,
-    //     };
-    //     break;
-    //   case 'error':
-    //     bodyStyle = {
-    //       backgroundColor: red500,
-    //     };
-    //     break;
-    //   case 'info':
-    //     bodyStyle = {
-    //       backgroundColor: lightBlue600,
-    //     };
-    //     break;
-    //   default:
-    //     break;
-    // }
 
     return message ? (
       <Snackbar
         open={this.state.open}
         message={message}
-        // bodyStyle={bodyStyle}
         action="OK"
         autoHideDuration={4000}
         onActionTouchTap={this.handleLoanClose}
@@ -241,7 +179,6 @@ Accounts.ui.Button = Button;
 Accounts.ui.Fields = Fields;
 Accounts.ui.Field = Field;
 Accounts.ui.FormMessage = FormMessage;
-// Accounts.ui.SocialButtons = SocialButtons;
 
 // Export the themed version.
 export { STATES };
