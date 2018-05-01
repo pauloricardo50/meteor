@@ -28,9 +28,7 @@ export default class ConditionalInput extends Component {
 
   // If the event's value matches the one that is correct, change state to true
   setConditional = value =>
-    this.setState({
-      conditional: value === this.props.conditionalTrueValue,
-    });
+    this.setState({ conditional: value === this.props.conditionalTrueValue });
 
   render() {
     const { children, style } = this.props;
@@ -46,8 +44,8 @@ export default class ConditionalInput extends Component {
               // a shallow merge here
               ...children[0].props.inputProps,
               onConditionalChange: this.onConditionalChange,
-              noValidator: true,
             },
+            noValidator: true,
           },
         )}
         {this.state.conditional ? (
@@ -56,10 +54,8 @@ export default class ConditionalInput extends Component {
             {/* Don't show a validator for conditional child elements */}
             {React.Children.map(conditionalChildren, child =>
               React.cloneElement(child, {
-                inputProps: {
-                  ...child.props.inputProps,
-                  noValidator: true,
-                },
+                inputProps: child.props.inputProps,
+                noValidator: true,
               }))}
           </div>
         ) : (

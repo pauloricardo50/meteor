@@ -69,15 +69,8 @@ export default class SelectFieldInput extends Component {
 
   render() {
     const {
-      inputProps: {
-        style,
-        label,
-        disabled,
-        options,
-        noValidator,
-        id,
-        required,
-      },
+      inputProps: { style, label, disabled, options, id, required },
+      noValidator,
       admin,
     } = this.props;
     const { value, saving, errorText } = this.state;

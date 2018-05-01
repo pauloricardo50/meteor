@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import { getLocations } from 'core/utils/APIs';
 
-import ValidIcon from 'core/components/AutoForm/ValidIcon';
+import ValidIcon from '../AutoForm/ValidIcon';
+import FormValidator from '../AutoForm/FormValidator';
 import AutoComplete from '../AutoComplete';
 
 const styles = {
@@ -54,12 +55,7 @@ class ZipAutoComplete extends Component {
             });
           } else {
             this.setState({
-              data: [
-                {
-                  label: '-',
-                  value: '-',
-                },
-              ],
+              data: [{ label: '-', value: '-' }],
             });
           }
         })
@@ -87,7 +83,9 @@ class ZipAutoComplete extends Component {
     const {
       updateFunc,
       docId,
-      inputProps: { componentProps: { savePath } },
+      inputProps: {
+        componentProps: { savePath },
+      },
     } = this.props;
 
     // Save data to DB
@@ -152,6 +150,7 @@ class ZipAutoComplete extends Component {
           required
           hide={admin}
         />
+        <FormValidator {...this.props} />
       </div>
     );
   }
