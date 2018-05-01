@@ -13,39 +13,27 @@ import DropdownMenu from '../DropdownMenu';
 // an admin link for admins,
 // a partner link for partners,
 // a home, settings, and contact link for regular users
-const getMenuItems = (currentUser, history) => {
+const getMenuItems = (currentUser) => {
   const isDev = Roles.userIsInRole(currentUser._id, 'dev');
-  const isAdmin = Roles.userIsInRole(currentUser._id, 'admin');
-  const isPartner = Roles.userIsInRole(currentUser._id, 'partner');
   return [
-    {
-      id: 'admin',
-      link: '/admin',
-      show: isAdmin,
-      icon: 'app',
-    },
-    {
-      id: 'partner',
-      link: '/partner',
-      show: isPartner,
-      icon: 'app',
-    },
     {
       id: 'app',
       link: '/',
-      show: !isAdmin && !isPartner,
       icon: 'app',
+      show: true,
     },
     {
       id: 'account',
       link: '/profile',
-      show: !isAdmin && !isPartner,
       icon: 'accountCircle',
+      secondary: currentUser.emails[0].address,
+      show: true,
     },
     {
       id: 'dev',
       link: '/dev',
       show: isDev,
+      icon: 'developerMode',
     },
     {
       id: 'logout',
@@ -67,36 +55,30 @@ const getMenuItems = (currentUser, history) => {
   ];
 };
 
-const TopNavDropdown = (props) => {
-  const { currentUser, history } = props;
-
-  return (
-    <DropdownMenu
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left',
-      }}
-      transformOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left',
-      }}
-      iconType="person"
-      options={getMenuItems(currentUser, history)
-        // Allow the Divider to go through
-        .filter(o => !!o.show)
-        .map(({ id: optionId, link, label, ...rest }) => ({
-          ...rest,
-          id: optionId,
-          link: true,
-          to: link,
-          label: label || <T id={`TopNavDropdown.${optionId}`} />,
-          history, // required for Link to work
-        }))}
-      // tooltip={currentUser.emails[0].address}
-      // tooltipPosition="bottom-end"
-    />
-  );
-};
+const TopNavDropdown = ({ currentUser, history }) => (
+  <DropdownMenu
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'left',
+    }}
+    transformOrigin={{
+      vertical: 'bottom',
+      horizontal: 'left',
+    }}
+    iconType="person"
+    options={getMenuItems(currentUser)
+      // Allow the Divider to go through
+      .filter(o => !!o.show)
+      .map(({ id: optionId, link, label, show, ...rest }) => ({
+        ...rest,
+        id: optionId,
+        link: true,
+        to: link,
+        label: label || <T id={`TopNavDropdown.${optionId}`} />,
+        history, // required for Link to work
+      }))}
+  />
+);
 
 TopNavDropdown.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
