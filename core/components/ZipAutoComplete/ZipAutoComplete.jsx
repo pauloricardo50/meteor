@@ -76,6 +76,9 @@ class ZipAutoComplete extends Component {
       // Set the text input
       this.setState({ searchText: value, isValid: true }, () =>
         this.saveValue(zipCode, city));
+    } else {
+      this.setState({ searchText: '', isValid: false }, () =>
+        this.saveValue(null, ''));
     }
   };
 
