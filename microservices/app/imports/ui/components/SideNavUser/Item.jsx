@@ -75,11 +75,11 @@ const Item = ({ item, history, handleClickLink }) => {
           <span className="title">
             <T id={`steps.${id}.title`} />
           </span>
-          <span className={classnames({ subtitle: true, warning: isWaiting })}>
-            <T
-              id={isWaiting ? `steps.${id}.waiting` : `steps.${id}.subtitle`}
-            />
-          </span>
+          {isWaiting && (
+            <span className="warning subtitle">
+              <T id={`steps.${id}.waiting`} />
+            </span>
+          )}
         </div>
       </div>
     </NavLink>
