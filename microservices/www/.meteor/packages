@@ -40,7 +40,6 @@ accounts-password@1.5.0
 
 
 # Production
-force-ssl@1.1.0                      # Automatically route users to https
 okgrow:analytics
 wylio:mandrill
 edgee:slingshot
