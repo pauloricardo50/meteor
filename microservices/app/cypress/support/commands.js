@@ -5,7 +5,7 @@ Cypress.Commands.add('getTestData', () =>
     new Cypress.Promise((resolve, reject) => {
       Meteor.call(
         `named_query_${LOAN_QUERIES.USER_LOANS}`,
-        undefined,
+        { step: 3 },
         (err, loans) => {
           if (err) {
             return reject(err);
