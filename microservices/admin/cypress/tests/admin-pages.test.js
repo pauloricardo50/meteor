@@ -6,6 +6,10 @@ const pages = {
 const publicPages = ['Login'];
 
 describe('Admin Pages', () => {
+  before(() => {
+    cy.eraseAndGenerateTestData()
+  });
+
   Object.keys(pages).forEach((pageName) => {
     describe(`${pageName} Page`, () => {
       it('should render', () => {
