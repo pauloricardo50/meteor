@@ -62,7 +62,7 @@ DropdownMenu.propTypes = {
   iconType: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
   style: PropTypes.objectOf(PropTypes.any),
-  tooltip: PropTypes.any,
+  tooltip: PropTypes.node,
   tooltipPlacement: PropTypes.string,
 };
 
