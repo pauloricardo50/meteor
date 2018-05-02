@@ -12,9 +12,6 @@ import { Loans } from '../api';
 
 const purchaseTypes = Object.values(PURCHASE_TYPE);
 
-const generateRandomNumber = maxSteps =>
-  Math.floor(Math.random() * maxSteps + 1);
-
 const fakeGeneral = {
   purchaseType: purchaseTypes[Math.floor(Math.random() * purchaseTypes.length)],
   fortuneUsed: 250000,
@@ -93,7 +90,7 @@ const fakeFiles = {
 
 const fakeFiles2 = {};
 
-export const createFakeLoan = (userId) => {
+export const createFakeLoan = (userId, step) => {
   const completeFiles = Math.random() > 0.5;
   const borrowerIds = createFakeBorrowers(userId);
   const propertyId = createFakeProperty(userId);
@@ -106,7 +103,7 @@ export const createFakeLoan = (userId) => {
     contacts: [],
   };
 
-  switch (generateRandomNumber(STEPS_PER_LOAN)) {
+  switch (step) {
   case 3:
     loan.logic = logic3;
     loan.adminValidation = {

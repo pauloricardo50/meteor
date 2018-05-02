@@ -17,6 +17,7 @@ import {
   USER_COUNT,
   ADMIN_COUNT,
   MAX_LOANS_PER_USER,
+  STEPS_PER_LOAN,
 } from './config';
 import { createFakeLoan } from './loans';
 import { createFakeTask, deleteUsersTasks } from './tasks';
@@ -25,7 +26,6 @@ import { createFakeOffer } from './offers';
 import { ROLES } from '../api/users/userConstants';
 
 const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
-const generateNumberOfLoans = max => Math.floor(Math.random() * max + 1);
 
 const getAdmins = (currentUserEmail) => {
   const admins = Users.find({ roles: { $in: [ROLES.ADMIN] } }).fetch();
@@ -61,11 +61,15 @@ Meteor.methods({
         ROLES.USER,
         currentUserEmail,
       );
+
       newUsers.map((userId) => {
         const adminId = admins[Math.floor(Math.random() * admins.length)];
-        const numberOfLoans = generateNumberOfLoans(MAX_LOANS_PER_USER);
-        for (let i = 0; i < numberOfLoans; i += 1) {
-          const loanId = createFakeLoan(userId, adminId);
+        for (let i = 0; i < MAX_LOANS_PER_USER; i += 1) {
+          // Make sure we always create a loan with the maximum number of steps first
+          // Then those with lower number of steps
+          // Example: first with 3, then with 2, then with 1, then again 3, 2, 1, etc
+          const loanStep = STEPS_PER_LOAN - (i % STEPS_PER_LOAN);
+          const loanId = createFakeLoan(userId, loanStep);
           createFakeTask(loanId, adminId);
           createFakeOffer(loanId, userId);
         }

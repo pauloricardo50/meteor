@@ -15,7 +15,7 @@ const pages = {
   'Loan Structure': ({ _id }) => `/loans/${_id}/structure`,
   'Loan Auction': ({ _id }) => `/loans/${_id}/auction`,
   'Loan Strategy': ({ _id }) => `/loans/${_id}/strategy`,
-  // 'Loan Offerpicker': ({ _id }) => `/loans/${_id}/offerpicker`,
+  'Loan Offerpicker': ({ _id }) => `/loans/${_id}/offerpicker`,
   'Loan Contract': ({ _id }) => `/loans/${_id}/contract`,
   'Loan Closing': ({ _id }) => `/loans/${_id}/closing`,
 
