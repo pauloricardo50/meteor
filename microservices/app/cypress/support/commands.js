@@ -1,16 +1,13 @@
-import { LOAN_QUERIES } from '../../../../core/api/loans/loanConstants';
-
-Cypress.Commands.add('getTestData', () =>
-  cy.window().then(({ Meteor }) =>
+// get the data needed in the app's end to end tests
+Cypress.Commands.add('getTestData', () => {
+  cy.meteorLogoutAndLogin().then(({ Meteor }) =>
     new Cypress.Promise((resolve, reject) => {
-      Meteor.call(
-        `named_query_${LOAN_QUERIES.USER_LOANS}`,
-        { step: 3 },
-        (err, loans) => {
-          if (err) {
-            return reject(err);
-          }
+      Meteor.call('getEndToEndTestData', {}, (err, data) => {
+        if (err) {
+          return reject(err);
+        }
 
-          return resolve(loans[0]);
-        });
-    })));
+        return resolve(data);
+      });
+    }));
+});

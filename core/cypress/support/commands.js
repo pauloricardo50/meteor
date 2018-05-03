@@ -1,6 +1,4 @@
-const devEmail = 'dev-1@e-potek.ch';
-const userEmail = 'user-1@e-potek.ch';
-const userPassword = '12345';
+import { devEmail, userEmail, userPassword } from '../testHelpers';
 
 Cypress.Commands.add('eraseAndGenerateTestData', () =>
   cy.meteorLogoutAndLogin(devEmail).then(window =>

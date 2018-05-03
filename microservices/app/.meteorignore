@@ -1,1 +1,4 @@
-**/cypress
+cypress/tests
+cypress/support
+/cypress/server/*
+!/cypress/server/methods.js
