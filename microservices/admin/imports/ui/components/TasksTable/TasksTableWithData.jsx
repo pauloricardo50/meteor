@@ -3,9 +3,13 @@ import { withQuery } from 'meteor/cultofcoders:grapher-react';
 import { Tracker } from 'meteor/tracker';
 import TasksTable from './TasksTable';
 
-const TasksTableWithData = withQuery(props => query.clone({ ...props }), {
-  reactive: true,
-})(TasksTable);
+const TasksTableWithData = withQuery(
+  ({ assignedTo, unassigned, dashboardTasks }) =>
+    query.clone({ assignedTo, unassigned, dashboardTasks }),
+  {
+    reactive: true,
+  },
+)(TasksTable);
 
 const subscriptionHandle = query.subscribe();
 
