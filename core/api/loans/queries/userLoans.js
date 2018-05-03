@@ -2,11 +2,15 @@ import Loans from '..';
 import { LOAN_QUERIES } from '../loanConstants';
 
 export default Loans.createQuery(LOAN_QUERIES.USER_LOANS, {
-  $filter({ filters, params: { userId, step } }) {
+  $filter({ filters, params: { userId, step, unowned } }) {
     filters.userId = userId;
 
     if (step) {
       filters['logic.step'] = step;
+    }
+
+    if (unowned) {
+      filters.userId = { $exists: false };
     }
   },
   $options: {
