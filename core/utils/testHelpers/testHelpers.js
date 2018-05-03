@@ -136,6 +136,34 @@ export const createLoginToken = (userId) => {
   return loginToken;
 };
 
+/**
+ * createEmailVerificationToken - Generate & saves a email verification token on the user with the given id
+ *
+ * @param {string} userId  A Meteor user id
+ * @param {string} email  The email to be verified
+ *
+ * @return {string} the generated token
+ */
+export const createEmailVerificationToken = (userId, email) => {
+  const token = Random.id();
+
+  Users.update(
+    { _id: userId },
+    {
+      $push: {
+        'services.email.verificationTokens': {
+          // token has to be uniq in the Users collection
+          token,
+          address: email,
+          when: new Date(),
+        },
+      },
+    },
+  );
+
+  return token;
+};
+
 stubCollections.restore = () => {
   StubCollections.restore();
 };

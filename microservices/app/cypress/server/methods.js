@@ -1,24 +1,41 @@
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 import Users from 'core/api/users';
 import { ROLES } from 'core/api/users/userConstants';
 import userLoansQuery from 'core/api/loans/queries/userLoans';
-import { createLoginToken } from 'core/utils/testHelpers/testHelpers';
+import {
+  createLoginToken,
+  createEmailVerificationToken,
+} from 'core/utils/testHelpers/testHelpers';
 
 if (process.env.E2E_SERVER) {
   Meteor.methods({
     getEndToEndTestData() {
-      const { userId } = this;
+      const user = Users.findOne(this.userId);
+      const { _id: userId, emails } = user;
 
       const admin = Users.findOne(
         { roles: { $in: [ROLES.ADMIN], $nin: [ROLES.DEV] } },
         { fields: { _id: 1 } },
       );
 
-      return {
-        step3Loan: userLoansQuery.clone({ userId, step: 3 }).fetchOne(),
-        unownedLoan: userLoansQuery.clone({ userId, unowned: true }).fetchOne(),
+      const step3Loan = userLoansQuery.clone({ userId, step: 3 }).fetchOne();
+      const unownedLoan = userLoansQuery
+        .clone({ userId, unowned: true })
+        .fetchOne();
+
+      const adminLoginToken = createLoginToken(admin._id);
+      const emailVerificationToken = createEmailVerificationToken(
         userId,
-        adminLoginToken: createLoginToken(admin._id),
+        emails[0].address,
+      );
+
+      return {
+        step3Loan,
+        unownedLoan,
+        adminLoginToken,
+        emailVerificationToken,
+        userId,
       };
     },
   });
