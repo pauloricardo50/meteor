@@ -17,19 +17,16 @@ const pages = {
     'Verify Email (Invalid Token)': '/verify-email/invalidToken',
     'Verify Email (Valid Token)': ({ emailVerificationToken }) =>
       `/verify-email/${emailVerificationToken}`,
-  },
+
     Loan: ({ step3Loan: { _id } }) => `/loans/${_id}`,
     'Add Loan': ({ unownedLoan: { _id } }) => `/add-loan/${_id}`,
     'Loan Files': ({ step3Loan: { _id } }) => `/loans/${_id}/files`,
     'Loan Property': ({ step3Loan: { _id } }) => `/loans/${_id}/property`,
-    //
-    'Loan Finance': ({ step3Loan: { _id } }) => `/loans/${_id}/finance`,
     'Loan Verification': ({ step3Loan: { _id } }) =>
       `/loans/${_id}/verification`,
     'Loan Structure': ({ step3Loan: { _id } }) => `/loans/${_id}/structure`,
     'Loan Auction': ({ step3Loan: { _id } }) => `/loans/${_id}/auction`,
     'Loan Strategy': ({ step3Loan: { _id } }) => `/loans/${_id}/strategy`,
-    //
     'Loan Offerpicker': ({ step3Loan: { _id } }) => `/loans/${_id}/offerpicker`,
     'Loan Contract': ({ step3Loan: { _id } }) => `/loans/${_id}/contract`,
     'Loan Closing': ({ step3Loan: { _id } }) => `/loans/${_id}/closing`,
