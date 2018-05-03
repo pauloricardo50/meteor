@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
+import range from 'lodash/range';
 import {
   Borrowers,
   Loans,
@@ -16,8 +17,10 @@ import {
   DEV_COUNT,
   USER_COUNT,
   ADMIN_COUNT,
-  MAX_LOANS_PER_USER,
-  STEPS_PER_LOAN,
+  STEP_3_LOANS_PER_USER,
+  STEP_2_LOANS_PER_USER,
+  STEP_1_LOANS_PER_USER,
+  UNOWNED_LOANS_COUNT,
 } from './config';
 import { createFakeLoan } from './loans';
 import { createFakeTask, deleteUsersTasks } from './tasks';
@@ -51,6 +54,12 @@ const deleteUsersRelatedData = (usersToDelete) => {
 const deleteUsers = usersToDelete =>
   Users.remove({ _id: { $in: usersToDelete } });
 
+const createFakeLoanFixture = ({ userId, loanStep, adminId }) => {
+  const loanId = createFakeLoan(userId, loanStep);
+  createFakeTask(loanId, adminId);
+  createFakeOffer(loanId, userId);
+};
+
 Meteor.methods({
   generateTestData(currentUserEmail) {
     if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
@@ -62,23 +71,25 @@ Meteor.methods({
         currentUserEmail,
       );
 
-      newUsers.map((userId) => {
+      newUsers.forEach((userId) => {
         const adminId = admins[Math.floor(Math.random() * admins.length)];
-        for (let i = 0; i < MAX_LOANS_PER_USER; i += 1) {
-          // Make sure we always create a loan with the maximum number of steps first
-          // Then those with lower number of steps
-          // Example: first with 3, then with 2, then with 1, then again 3, 2, 1, etc
-          const loanStep = STEPS_PER_LOAN - (i % STEPS_PER_LOAN);
-          const loanId = createFakeLoan(userId, loanStep);
-          createFakeTask(loanId, adminId);
-          createFakeOffer(loanId, userId);
-        }
-        return userId;
-      });
 
-      return {
-        loans: Loans.find({}, { fields: { _id: 1 } }).fetch(),
-      };
+        range(STEP_3_LOANS_PER_USER).forEach(() => {
+          createFakeLoanFixture({ loanStep: 3, userId, adminId });
+        });
+
+        range(STEP_2_LOANS_PER_USER).forEach(() => {
+          createFakeLoanFixture({ loanStep: 2, userId, adminId });
+        });
+
+        range(STEP_1_LOANS_PER_USER).forEach(() => {
+          createFakeLoanFixture({ loanStep: 1, userId, adminId });
+        });
+
+        range(UNOWNED_LOANS_COUNT).forEach(() => {
+          createFakeLoan();
+        });
+      });
     }
   },
 

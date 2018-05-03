@@ -7,7 +7,6 @@ import {
 } from 'core/api/files/fileHelpers';
 import { createFakeBorrowers } from './borrowers';
 import { createFakeProperty } from './properties';
-import { STEPS_PER_LOAN } from './config';
 import { Loans } from '../api';
 
 const purchaseTypes = Object.values(PURCHASE_TYPE);
