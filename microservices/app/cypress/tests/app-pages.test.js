@@ -14,9 +14,10 @@ const pages = {
     App: '/',
     Profile: '/profile',
 
-    'Verify Email (Invalid Token)': '/verify-email/fakeToken',
-    'Verify Email (Valid Token)': '/verify-email/user1VerificationToken',
-
+    'Verify Email (Invalid Token)': '/verify-email/invalidToken',
+    'Verify Email (Valid Token)': ({ emailVerificationToken }) =>
+      `/verify-email/${emailVerificationToken}`,
+  },
     Loan: ({ step3Loan: { _id } }) => `/loans/${_id}`,
     'Add Loan': ({ unownedLoan: { _id } }) => `/add-loan/${_id}`,
     'Loan Files': ({ step3Loan: { _id } }) => `/loans/${_id}/files`,
