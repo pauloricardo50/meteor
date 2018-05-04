@@ -1,4 +1,5 @@
 import capitalize from 'lodash/capitalize';
+import { adminEmail } from '../../imports/core/cypress/testHelpers';
 
 // "public", "admin", "dev" and other keys of the pages object
 // are the type of authentication needed for those pages
@@ -49,7 +50,7 @@ describe('Admin Pages', () => {
   before(() => {
     cy
       .eraseAndGenerateTestData()
-      .getTestData()
+      .getTestData(adminEmail)
       .then((data) => {
         testData = data;
       });
