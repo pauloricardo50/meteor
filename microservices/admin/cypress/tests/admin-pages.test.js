@@ -28,7 +28,7 @@ const pages = {
     'Loan Forms Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/forms`,
     'Loan Actions Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/actions`,
 
-    Property: ({ property: { _id } }) => `/property/${_id}`,
+    Property: ({ property: { _id } }) => `/properties/${_id}`,
 
     Tasks: '/tasks',
 
