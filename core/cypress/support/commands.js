@@ -34,8 +34,8 @@ Cypress.Commands.add('eraseAndGenerateTestData', () =>
  *        inside the end to end server and NOT in the regular server
  *        by using the end to end server environment variable!
  */
-Cypress.Commands.add('getTestData', () => {
-  cy.meteorLogoutAndLogin().then(({ Meteor }) =>
+Cypress.Commands.add('getTestData', (email) => {
+  cy.meteorLogoutAndLogin(email).then(({ Meteor }) =>
     new Cypress.Promise((resolve, reject) => {
       Meteor.call('getEndToEndTestData', {}, (err, data) => {
         if (err) {
