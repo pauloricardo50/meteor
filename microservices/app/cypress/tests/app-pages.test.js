@@ -1,3 +1,4 @@
+import { userEmail } from '../../imports/core/cypress/testHelpers';
 import capitalize from 'lodash/capitalize';
 
 const pages = {
@@ -52,7 +53,7 @@ describe('App Pages', () => {
   before(() => {
     cy
       .eraseAndGenerateTestData()
-      .getTestData()
+      .getTestData(userEmail)
       .then((data) => {
         testData = data;
       });
