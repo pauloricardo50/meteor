@@ -1,6 +1,5 @@
 import capitalize from 'lodash/capitalize';
 
-let testData;
 const pages = {
   public: {
     Login: '/login',
@@ -47,6 +46,8 @@ const pages = {
     Dev: '/dev',
   },
 };
+
+let testData;
 
 describe('App Pages', () => {
   before(() => {

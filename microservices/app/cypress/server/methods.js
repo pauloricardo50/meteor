@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-base';
 import Users from 'core/api/users';
 import { ROLES } from 'core/api/users/userConstants';
 import userLoansQuery from 'core/api/loans/queries/userLoans';

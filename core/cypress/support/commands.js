@@ -24,6 +24,29 @@ Cypress.Commands.add('eraseAndGenerateTestData', () =>
       });
     })));
 
+/**
+ * This command gets the test data that will be passed to the tested routes.
+ * It gets the data from the `getEndToEndTestData` method:
+ * each microservice should define the `getEndToEndTestData`
+ * to return the data it neededs in its end to end tests.
+ * SECURITY WARNING:
+ *        Make sure the `getEndToEndTestData` method is available ONLY
+ *        inside the end to end server and NOT in the regular server
+ *        by using the end to end server environment variable!
+ */
+Cypress.Commands.add('getTestData', () => {
+  cy.meteorLogoutAndLogin().then(({ Meteor }) =>
+    new Cypress.Promise((resolve, reject) => {
+      Meteor.call('getEndToEndTestData', {}, (err, data) => {
+        if (err) {
+          return reject(err);
+        }
+
+        return resolve(data);
+      });
+    }));
+});
+
 Cypress.Commands.add('meteorLogout', () => {
   cy.visit('/').then(({ Meteor }) =>
     new Cypress.Promise((resolve, reject) => {
