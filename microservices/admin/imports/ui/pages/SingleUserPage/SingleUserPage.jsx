@@ -8,11 +8,11 @@ import SingleUserPageHeader from './SingleUserPageHeader';
 import LoanSummaryList from '../../components/LoanSummaryList';
 
 const SingleUserPage = ({ data: user, isLoading }) => {
-  const { loans } = user;
-
   if (isLoading) {
     return <Loading />;
   }
+
+  const { loans } = user;
 
   return (
     <section className="mask1 single-user-page">
