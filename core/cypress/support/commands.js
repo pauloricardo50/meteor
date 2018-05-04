@@ -85,8 +85,8 @@ Cypress.Commands.add('waitUntilLoads', () => {
 });
 
 Cypress.Commands.add('shouldRenderWithoutErrors', (expectedPageUri) => {
-  cy.get('section').should('be.ok');
-
+  // make sure the page doesn't get redirected by the Router (to login or anywhere else)
+  // Note: it can get redirected on componentDidMount - that's not tested here
   const baseUrl = Cypress.config('baseUrl');
   cy.url().should('eq', baseUrl + expectedPageUri);
 });
