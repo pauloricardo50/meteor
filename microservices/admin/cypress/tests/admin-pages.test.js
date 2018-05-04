@@ -1,44 +1,46 @@
 import capitalize from 'lodash/capitalize';
 
+// "public", "admin", "dev" and other keys of the pages object
+// are the type of authentication needed for those pages
 const pages = {
-  // public: {
-  //   Login: '/login',
-  // },
-
-  admin: {
-    //   App: '/',
-    //   Search: '/search',
-    //   Profile: '/profile',
-
-    //   Users: '/users',
-    User: ({ user: { _id } }) => `/users/${_id}/`,
-
-    //   Loans: '/loans',
-    //   Loan: ({ step3Loan: { _id } }) => `/loans/${_id}`,
-    //   'Loan Overview Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/overview`,
-    //   'Loan Borrowers Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/borrowers`,
-    //   'Loan Property Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/property`,
-    //   'Loan Offers Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/offers`,
-    //   'Loan Communication Tab': ({ step3Loan: { _id } }) =>
-    //     `/loans/${_id}/communication`,
-    //   'Loan Analytics Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/analytics`,
-    //   'Loan Tasks Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/tasks`,
-    //   'Loan Forms Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/forms`,
-    //   'Loan Actions Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/actions`,
-
-    //   Property: ({ property: { _id } }) => `/property/${_id}/`,
-
-    //   Tasks: '/tasks',
-
-    //   Borrowers: '/borrowers',
-    //   Borrower: ({ borrower: { _id } }) => `/borrowers/${_id}`,
-
-    //   'Not Found': '/a-page-that-does-not-exist',
+  public: {
+    Login: '/login',
   },
 
-  // dev: {
-  //   Dev: '/dev',
-  // },
+  admin: {
+    App: '/',
+    Search: '/search',
+    Profile: '/profile',
+
+    Users: '/users',
+    User: ({ user: { _id } }) => `/users/${_id}`,
+
+    Loans: '/loans',
+    Loan: ({ step3Loan: { _id } }) => `/loans/${_id}`,
+    'Loan Overview Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/overview`,
+    'Loan Borrowers Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/borrowers`,
+    'Loan Property Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/property`,
+    'Loan Offers Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/offers`,
+    'Loan Communication Tab': ({ step3Loan: { _id } }) =>
+      `/loans/${_id}/communication`,
+    'Loan Analytics Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/analytics`,
+    'Loan Tasks Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/tasks`,
+    'Loan Forms Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/forms`,
+    'Loan Actions Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/actions`,
+
+    Property: ({ property: { _id } }) => `/property/${_id}`,
+
+    Tasks: '/tasks',
+
+    Borrowers: '/borrowers',
+    Borrower: ({ borrower: { _id } }) => `/borrowers/${_id}`,
+
+    'Not Found': '/a-page-that-does-not-exist',
+  },
+
+  dev: {
+    Dev: '/dev',
+  },
 };
 
 let testData;
