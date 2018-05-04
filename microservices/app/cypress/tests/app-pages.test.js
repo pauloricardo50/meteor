@@ -6,7 +6,9 @@ const pages = {
     Login: '/login',
     'Reset Password': '/reset-password/fakeToken',
     'Enroll Account': '/enroll-account/fakeToken',
-    Impersonate: ({ userId, adminLoginToken }) =>
+    'Impersonate (Invalid Token)': ({ userId }) =>
+      `/impersonate?userId=${userId}&authToken=invalidAdminToken`,
+    'Impersonate (Valid Token)': ({ userId, adminLoginToken }) =>
       `/impersonate?userId=${userId}&authToken=${adminLoginToken}`,
   },
 
