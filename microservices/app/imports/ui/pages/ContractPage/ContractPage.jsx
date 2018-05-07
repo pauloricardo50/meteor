@@ -9,7 +9,7 @@ import ContractDownloader from './ContractDownloader';
 
 const ContractPage = props => (
   <ProcessPage {...props} stepNb={3} id="contract" showBottom={false}>
-    <div className="mask1">
+    <section className="mask1 contract-page">
       <div className="description">
         <p>
           <T id="ContractPage.description" />
@@ -19,7 +19,7 @@ const ContractPage = props => (
       <ContractDownloader contract={props.loan.documents.contract} />
 
       <FileTabs {...props} />
-    </div>
+    </section>
   </ProcessPage>
 );
 

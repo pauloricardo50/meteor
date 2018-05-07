@@ -32,7 +32,7 @@ const styles = {
   },
 };
 
-export default class TextInput extends Component {
+class TextInput extends Component {
   constructor(props) {
     super(props);
 
@@ -88,7 +88,11 @@ export default class TextInput extends Component {
   };
 
   saveValue = (showSaving = true) => {
-    const { updateFunc, docId, inputProps: { id, currentValue } } = this.props;
+    const {
+      updateFunc,
+      docId,
+      inputProps: { id, currentValue },
+    } = this.props;
     const { value } = this.state;
     // Save data to DB
     const object = { [id]: value };
@@ -122,10 +126,11 @@ export default class TextInput extends Component {
         info,
         disabled,
         money,
-        noValidator,
+
         required,
         ...otherProps
       },
+      noValidator,
       admin,
     } = this.props;
     const { value, errorText, saving, showInfo } = this.state;
@@ -215,3 +220,5 @@ TextInput.defaultProps = {
   saveOnChange: true,
   noValidator: false,
 };
+
+export default TextInput;

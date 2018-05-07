@@ -12,7 +12,7 @@ const Info = (props) => {
   const borrower = props.borrowers.find(b => b._id === borrowerId);
 
   return (
-    <section className="animated fadeIn" key={borrowerId}>
+    <section className="animated fadeIn borrower-page-info" key={borrowerId}>
       <hr />
       <h2 className="text-center">
         <T id="Info.title" />

@@ -54,7 +54,7 @@ export default class VerificationPage extends Component {
         id="verification"
         showBottom={false}
       >
-        <section className="mask1">{content}</section>
+        <section className="mask1 verification-page">{content}</section>
       </ProcessPage>
     );
   }

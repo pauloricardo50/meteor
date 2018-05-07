@@ -1,4 +1,4 @@
-@import '{}/client/css/variables.scss';
+@import './FileDropper.scss';
 
 .uploader {
   width: 100%;
@@ -36,11 +36,15 @@
   border-top: 1px solid $light-grey;
 }
 
-.uploader .file .valid {
+.uploader .file .VALID {
   color: $success;
 }
 
-.uploader .file .unverified {
+.uploader .file .ERROR {
+  color: $error;
+}
+
+.uploader .file .UNVERIFIED {
   color: #000;
   opacity: 0.6;
 }

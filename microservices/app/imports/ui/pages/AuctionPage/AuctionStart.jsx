@@ -43,7 +43,7 @@ const AuctionStart = (props) => {
   const r = props.loan;
   const f = props.intl.formatMessage;
   return (
-    <section className="mask1">
+    <section className="mask1 auction-page-start">
       <h1>
         <T id="AuctionStart.title" />
       </h1>
@@ -72,7 +72,7 @@ const AuctionStart = (props) => {
         </p>
       </div>
 
-      <div style={{ marginBottom: 40 }}>
+      <div className="auction-form">
         <AuctionForm {...props} />
       </div>
 

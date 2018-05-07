@@ -14,3 +14,18 @@
     max-width: 400px;
   }
 }
+
+.borrower-page-files,
+.borrower-page-info,
+.borrower-finance-page {
+  display: flex;
+  flex-direction: column;
+
+  .description {
+    align-self: center;
+  }
+
+  hr {
+    width: 100%;
+  }
+}
