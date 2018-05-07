@@ -1,18 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Loading from 'core/components/Loading';
 import Recap from 'core/components/Recap';
 
 import LoanSummaryList from '../../components/LoanSummaryList';
 import SingleBorrowerPageContainer from './SingleBorrowerPageContainer';
 import SingleBorrowerPageHeader from './SingleBorrowerPageHeader';
 
-const SingleBorrowerPage = ({ data: borrower, isLoading }) => {
-  if (isLoading) {
-    return <Loading />;
-  }
-
+const SingleBorrowerPage = ({ borrower }) => {
   const { loans } = borrower;
 
   return (
@@ -27,8 +22,7 @@ const SingleBorrowerPage = ({ data: borrower, isLoading }) => {
 };
 
 SingleBorrowerPage.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
-  data: PropTypes.object.isRequired,
+  borrower: PropTypes.object.isRequired,
 };
 
 export default SingleBorrowerPageContainer(SingleBorrowerPage);

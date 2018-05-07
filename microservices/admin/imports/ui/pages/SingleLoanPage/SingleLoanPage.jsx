@@ -21,11 +21,7 @@ class SingleLoanPage extends Component {
   }
 
   render() {
-    const { data: loan, isLoading } = this.props;
-
-    if (isLoading) {
-      return <Loading />;
-    }
+    const { loan } = this.props;
 
     const dataToPassDown = {
       ...this.props,
@@ -55,8 +51,7 @@ class SingleLoanPage extends Component {
 }
 
 SingleLoanPage.propTypes = {
-  data: PropTypes.objectOf(PropTypes.any).isRequired,
-  isLoading: PropTypes.bool.isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default SingleLoanPageContainer(SingleLoanPage);

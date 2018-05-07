@@ -1,12 +1,15 @@
 // Loading Animation
 .loading-container {
-  text-align: center;
-  overflow: hidden;
-  height: 100%;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  min-width: 100px;
 }
 
 .loading-box {
-  display: inline-block;
+  display: inline-flex;
   height: 100%;
   width: 100%;
   float: left;

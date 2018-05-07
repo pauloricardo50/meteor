@@ -26,7 +26,6 @@ const renderInput = (inputProps) => {
       autoFocus={autoFocus}
       className={classes.textField}
       value={value}
-      inputRef={ref}
       inputProps={{ ...other }}
       onChange={(_, __, event) => onChange(event)}
       onBlur={onBlur}

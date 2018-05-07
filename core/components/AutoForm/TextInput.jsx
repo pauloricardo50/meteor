@@ -125,8 +125,16 @@ class TextInput extends Component {
         info,
         disabled,
         money,
-
         required,
+
+        // Destructure these props to avoid warnings
+        inputRef,
+        currentValue,
+        condition,
+        decimal,
+        intlId,
+        saveOnChange,
+
         ...otherProps
       },
       noValidator,

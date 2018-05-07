@@ -135,7 +135,7 @@ const mapInputs = (singleInput, index, parentProps) => {
             childProps.inputProps.id}`}
           values={childProps.inputProps.intlValues}
         />
-        {' *'}
+        <span style={{ color: 'red' }}> *</span>
       </span>
     );
   } else {

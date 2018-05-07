@@ -11,7 +11,7 @@ const schedules = Object.values(PAYMENT_SCHEDULES);
 export default class ClosingForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { date: null, schedule: null };
+    this.state = { date: null, schedule: '' };
 
     this.props.disableClose();
   }
@@ -26,19 +26,22 @@ export default class ClosingForm extends Component {
     this.setState({ schedule }, this.validate);
 
   handleSubmit = () => {
-    if (!(this.state.date && this.state.schedule) || this.props.isCancel) {
+    const { date, schedule } = this.state;
+
+    if (!(date && schedule) || this.props.isCancel) {
       return;
     }
 
     const object = {
-      'logic.firstPaymentDate': this.state.date,
-      'logic.paymentSchedule': this.state.schedule,
+      'logic.firstPaymentDate': date,
+      'logic.paymentSchedule': schedule,
     };
     confirmClosing.run({ loanId: this.props.loan._id, object });
   };
 
   validate = () => {
-    if (this.state.date && this.state.schedule) {
+    const { date, schedule } = this.state;
+    if (date && schedule) {
       this.props.enableClose();
     } else {
       this.props.disableClose();
@@ -46,16 +49,18 @@ export default class ClosingForm extends Component {
   };
 
   render() {
+    const { date, schedule } = this.state;
+
     return (
       <div>
         <DateInput
           placeholder="Première date de paiement"
-          value={this.state.date}
+          value={date}
           onChange={this.handleDateChange}
         />
         <Select
           label="Fréquence de paiement"
-          value={this.state.schedule}
+          value={schedule}
           onChange={this.handleSelectChange}
           options={schedules.map(s => ({ id: s, label: s }))}
           renderValue={val => val}
