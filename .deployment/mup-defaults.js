@@ -4,7 +4,7 @@ const createMupConfig = ({ name, path, rootUrl, domain }) => {
   return {
     servers: {
       one: {
-        host: '139.59.211.103',
+        host: '167.99.254.87',
         username: 'root',
         pem: sshPath,
       },
