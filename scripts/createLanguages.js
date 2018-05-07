@@ -29,6 +29,7 @@ const config = {
         'ArrayInput',
         'Impersonation',
         'AdminFilesTab',
+        'AmortizationChart',
       ],
     },
     {
@@ -81,7 +82,7 @@ const config = {
     'File',
     'property',
     'roles',
-    'Form'
+    'Form',
   ],
 };
 

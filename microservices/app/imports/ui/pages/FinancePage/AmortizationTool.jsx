@@ -33,31 +33,35 @@ export default class AmortizationTool extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { value: 0, initialRate: 0.015 * 100 };
+    this.state = { initialRate: 0.015, futureRate: 'stable' };
 
     this.totalYears = 20;
   }
 
-  handleSelectChange = (event, index, value) => this.setState({ value });
+  handleSelectChange = (_, value) => this.setState({ futureRate: value });
 
-  handleTextChange = event =>
-    this.setState({ initialRate: event.target.value });
+  handleTextChange = (_, value) => this.setState({ initialRate: value });
 
   getRates = () => {
+    const { initialRate, futureRate } = this.state;
     const array = [];
 
     for (let i = 0; i <= this.totalYears; i += 1) {
       if (i <= 10) {
-        array[i] = parseFloat(this.state.initialRate) / 100 || 0;
+        array[i] = parseFloat(initialRate) || 0;
       } else {
-        array[i] = interestRates[this.state.value].rate;
+        array[i] = this.getRateById(futureRate);
       }
     }
 
     return array;
   };
 
+  getRateById = id => interestRates.find(rate => rate.id === id).rate;
+
   render() {
+    const { initialRate, futureRate } = this.state;
+
     return (
       <div className="mask1">
         <div style={styles.div}>
@@ -65,17 +69,12 @@ export default class AmortizationTool extends Component {
             label={<T id="AmortizationTool.initialRate" />}
             onChange={this.handleTextChange}
             type="percent"
-            value={this.state.initialRate}
-          >
-            {/* <MaskedInput
-              mask={percentMask}
-              guide
-              value={this.state.initialRate}
-            /> */}
-          </TextInput>
+            value={initialRate}
+            id="initialRate"
+          />
           <Select
             label={<T id="AmortizationTool.futureRate" />}
-            value={this.state.value}
+            value={futureRate}
             onChange={this.handleSelectChange}
             options={interestRates.map(rate => ({
               id: rate.id,
@@ -84,21 +83,10 @@ export default class AmortizationTool extends Component {
             renderValue={id => (
               <T
                 id="AmortizationTool.rate"
-                values={{ rate: interestRates.find(i => i.id === id).rate }}
+                values={{ rate: this.getRateById(id) }}
               />
             )}
-          >
-            {/* {interestRates.map((r, i) => (
-              <MenuItem
-                value={i}
-                key={r.id}
-                primaryText={<T id={`AmortizationTool.${r.id}.title`} />}
-                label={
-                  <T id={'AmortizationTool.rate'} values={{ rate: r.rate }} />
-                }
-              />
-            ))} */}
-          </Select>
+          />
         </div>
         <AmortizationChart
           {...this.props}
