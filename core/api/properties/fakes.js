@@ -1,6 +1,8 @@
 import { fakeDocument } from 'core/api/files/fileHelpers';
 import { EXPERTISE_STATUS } from './propertyConstants';
 
+export const emptyProperty = {};
+
 export const fakeProperty = {
   value: 1000000,
   propertyWork: 40000,
