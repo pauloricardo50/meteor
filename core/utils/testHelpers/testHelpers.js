@@ -1,4 +1,6 @@
 import { Meteor } from 'meteor/meteor';
+import { Random } from 'meteor/random';
+import { Accounts } from 'meteor/accounts-base';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
@@ -13,7 +15,7 @@ import messagesFR from '../../lang/fr.json';
 // Because each test using factories also uses stubCollections
 import '../../api/factories';
 
-import { Loans, Borrowers, Properties, Offers, Tasks } from '../../api';
+import { Loans, Borrowers, Properties, Offers, Tasks, Users } from '../../api';
 import { mount } from './enzyme';
 
 // Mounts a component for testing, and wraps it around everything it needs
@@ -112,6 +114,54 @@ export const stubCollections = () => {
     Properties,
     Tasks,
   ]);
+};
+
+/**
+ * createLoginToken - Generate & saves a login token on the user with the given id
+ *
+ * @param {string} userId  A Meteor user id
+ *
+ * @return {string} the generated login token
+ */
+export const createLoginToken = (userId) => {
+  const loginToken = Random.id();
+  const hashedToken = Accounts._hashLoginToken(loginToken);
+
+  Users.update(userId, {
+    $set: {
+      'services.resume.loginTokens': [{ hashedToken }],
+    },
+  });
+
+  return loginToken;
+};
+
+/**
+ * createEmailVerificationToken - Generate & saves a email verification token on the user with the given id
+ *
+ * @param {string} userId  A Meteor user id
+ * @param {string} email  The email to be verified
+ *
+ * @return {string} the generated token
+ */
+export const createEmailVerificationToken = (userId, email) => {
+  const token = Random.id();
+
+  Users.update(
+    { _id: userId },
+    {
+      $push: {
+        'services.email.verificationTokens': {
+          // token has to be uniq in the Users collection
+          token,
+          address: email,
+          when: new Date(),
+        },
+      },
+    },
+  );
+
+  return token;
 };
 
 stubCollections.restore = () => {

@@ -21,7 +21,11 @@ export default class Security {
   }
 
   static checkLoggedIn() {
-    if (!Meteor.userId()) {
+    this.checkUserLoggedIn(Meteor.userId());
+  }
+
+  static checkUserLoggedIn(userId) {
+    if (!userId) {
       this.handleUnauthorized('Checking if logged in');
     }
   }

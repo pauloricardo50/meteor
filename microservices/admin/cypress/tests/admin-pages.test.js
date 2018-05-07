@@ -7,9 +7,7 @@ const publicPages = ['Login'];
 
 describe('Admin Pages', () => {
   before(() => {
-    cy.eraseAndGenerateTestData().then((data) => {
-      testData = data;
-    });
+    cy.eraseAndGenerateTestData()
   });
 
   Object.keys(pages).forEach((pageName) => {

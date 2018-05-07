@@ -7,13 +7,9 @@ import {
 } from 'core/api/files/fileHelpers';
 import { createFakeBorrowers } from './borrowers';
 import { createFakeProperty } from './properties';
-import { STEPS_PER_LOAN } from './config';
 import { Loans } from '../api';
 
 const purchaseTypes = Object.values(PURCHASE_TYPE);
-
-const generateRandomNumber = maxSteps =>
-  Math.floor(Math.random() * maxSteps + 1);
 
 const fakeGeneral = {
   purchaseType: purchaseTypes[Math.floor(Math.random() * purchaseTypes.length)],
@@ -93,8 +89,11 @@ const fakeFiles = {
 
 const fakeFiles2 = {};
 
-export const createFakeLoan = (userId) => {
-  const completeFiles = Math.random() > 0.5;
+export const createFakeLoan = (
+  userId,
+  step,
+  completeFiles = Math.random() > 0.5,
+) => {
   const borrowerIds = createFakeBorrowers(userId);
   const propertyId = createFakeProperty(userId);
   const loan = {
@@ -106,7 +105,7 @@ export const createFakeLoan = (userId) => {
     contacts: [],
   };
 
-  switch (generateRandomNumber(STEPS_PER_LOAN)) {
+  switch (step) {
   case 3:
     loan.logic = logic3;
     loan.adminValidation = {
