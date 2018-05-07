@@ -22,9 +22,8 @@ const styles = {
     padding: 10,
   },
   savingIcon: {
-    position: 'absolute',
-    top: 16,
-    right: -25,
+    top: 0,
+    right: -50,
   },
   infoStyle: {
     color: colors.primary,

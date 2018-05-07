@@ -12,9 +12,8 @@ const styles = {
     position: 'relative',
   },
   savingIcon: {
-    position: 'absolute',
-    top: 16,
-    right: -25,
+    top: 0,
+    right: -50,
   },
 };
 
