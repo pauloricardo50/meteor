@@ -56,25 +56,31 @@ for i in 'admin' 'app' 'lender' 'www'
 
     if [[ $DO_CLEAN == true ]];
     then
-      echo "Cleaning and installing npm packages"
-      ( cd ../microservices/$i && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear --force && meteor npm install );
+      echo "Cleaning npm packages"
+      ( cd ../microservices/$i && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear --force);
 
       echo "Resetting meteor"
-      ( cd ../microservices/$i && meteor reset )
-    else
-      echo "Installing npm packages"
-      ( cd ../microservices/$i && meteor npm install );
+      ( cd ../microservices/$i && meteor reset );
     fi
 
-
+    echo "Installing npm packages"
+    ( cd ../microservices/$i && meteor npm install );
   done
 
+if [[ $DO_CLEAN == true ]];
+then
+  echo "Cleaning and installing root npm packages"
+  ( cd ../ && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear --force);
 
-echo "Installing npm packages in core/"
-( cd ../core && meteor npm install );
+  echo "Cleaning and installing core npm packages"
+  ( cd ../core && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear --force);
+fi
 
 echo "Installing npm packages in root"
 ( cd .. && meteor npm install );
+
+echo "Installing npm packages in core/"
+( cd ../core && meteor npm install );
 
 echo "Creating language files..."
 babel-node ./createLanguages.js
