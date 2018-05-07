@@ -14,7 +14,7 @@ if (process.env.E2E_SERVER) {
       const { _id: userId, emails } = user;
 
       const admin = Users.findOne(
-        { roles: { $in: [ROLES.ADMIN], $nin: [ROLES.DEV] } },
+        { roles: { $in: [ROLES.ADMIN] },
         { fields: { _id: 1 } },
       );
 
