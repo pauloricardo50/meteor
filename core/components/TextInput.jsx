@@ -13,10 +13,7 @@ import constants from '../config/constants';
 
 const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
   if (simpleOnChange) {
-    return {
-      onChangeHandler: onChange,
-      value,
-    };
+    return { onChangeHandler: onChange, value };
   }
 
   switch (type) {
@@ -82,6 +79,7 @@ const TextInput = (props) => {
     InputProps,
     noIntl,
     classes,
+    simpleOnChange,
     ...otherProps
   } = props;
 
