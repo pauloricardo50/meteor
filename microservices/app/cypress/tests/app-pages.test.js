@@ -1,53 +1,90 @@
-let testData;
+import { USER_EMAIL } from '../../imports/core/cypress/testHelpers';
+import capitalize from 'lodash/capitalize';
+
 const pages = {
-  Login: '/login',
-  Profile: '/profile',
-  'Loan Property': ({ loans }) => `/loans/${loans[0]._id}/property`,
-  'Loan Verification': ({ loans }) => `/loans/${loans[0]._id}/verification`,
-  'Loan Structure': ({ loans }) => `/loans/${loans[0]._id}/structure`,
-  'Loan Strategy': ({ loans }) => `/loans/${loans[0]._id}/strategy`,
-  'Loan Contract': ({ loans }) => `/loans/${loans[0]._id}/contract`,
-  'Loan Closing': ({ loans }) => `/loans/${loans[0]._id}/closing`,
-  'Loan File': ({ loans }) => `/loans/${loans[0]._id}/files`,
-  Loan: ({ loans }) => `/loans/${loans[0]._id}`,
-  'Reset Password': '/reset-password/fakeToken',
-  'Enroll Account': '/enroll-account/fakeToken',
-  'Verify Email': '/verify-email/fakeToken',
-  App: '/',
-  'Not Found': '/a-page-that-does-not-exist',
+  public: {
+    Login: '/login',
+    'Reset Password': '/reset-password/fakeToken',
+    'Enroll Account': '/enroll-account/fakeToken',
+    'Impersonate (Invalid Token)': ({ userId }) =>
+      `/impersonate?userId=${userId}&authToken=invalidAdminToken`,
+    'Impersonate (Valid Token)': ({ userId, adminLoginToken }) =>
+      `/impersonate?userId=${userId}&authToken=${adminLoginToken}`,
+  },
+
+  user: {
+    App: '/',
+    Profile: '/profile',
+
+    'Verify Email (Invalid Token)': '/verify-email/invalidToken',
+    'Verify Email (Valid Token)': ({ emailVerificationToken }) =>
+      `/verify-email/${emailVerificationToken}`,
+
+    Loan: ({ step3Loan: { _id } }) => `/loans/${_id}`,
+    'Add Loan': ({ unownedLoan: { _id } }) => `/add-loan/${_id}`,
+    'Loan Files': ({ step3Loan: { _id } }) => `/loans/${_id}/files`,
+    'Loan Property': ({ step3Loan: { _id } }) => `/loans/${_id}/property`,
+    'Loan Offerpicker': ({ step3Loan: { _id } }) => `/loans/${_id}/offerpicker`,
+    'Loan Verification': ({ step3Loan: { _id } }) =>
+      `/loans/${_id}/verification`,
+    'Loan Structure': ({ step3Loan: { _id } }) => `/loans/${_id}/structure`,
+    'Loan Auction': ({ step3Loan: { _id } }) => `/loans/${_id}/auction`,
+    'Loan Strategy': ({ step3Loan: { _id } }) => `/loans/${_id}/strategy`,
+    'Loan Contract': ({ step3Loan: { _id } }) => `/loans/${_id}/contract`,
+    'Loan Closing': ({ step3Loan: { _id } }) => `/loans/${_id}/closing`,
+
+    'Borrower Personal': ({ step3Loan: { _id, borrowers } }) =>
+      `/loans/${_id}/borrowers/${borrowers[0]._id}/personal`,
+    'Borrower Finance': ({ step3Loan: { _id, borrowers } }) =>
+      `/loans/${_id}/borrowers/${borrowers[0]._id}/finance`,
+    'Borrower Files': ({ step3Loan: { _id, borrowers } }) =>
+      `/loans/${_id}/borrowers/${borrowers[0]._id}/files`,
+
+    'Not Found': '/a-page-that-does-not-exist',
+  },
+
+  dev: {
+    Dev: '/dev',
+  },
 };
-const publicPages = ['Login'];
+
+let testData;
 
 describe('App Pages', () => {
   before(() => {
-    cy.eraseAndGenerateTestData().then((data) => {
-      testData = data;
-    });
+    cy
+      .eraseAndGenerateTestData()
+      .getTestData(USER_EMAIL)
+      .then((data) => {
+        testData = data;
+      });
   });
 
-  Object.keys(pages).forEach((pageName) => {
-    describe(`${pageName} Page`, () => {
-      it('should render', () => {
-        /**
-         * we login every time, as it seems that we're logged out again
-         * in each test, probably because a new window instance is
-         * used for every test, which results in us using new Meteor instance in every test
-         */
-        if (publicPages.includes(pageName)) {
-          cy.meteorLogout();
-        } else {
-          cy.meteorLogoutAndLogin();
-        }
+  Object.keys(pages).forEach((pageAuthentication) => {
+    describe(`${capitalize(pageAuthentication)} Pages`, () => {
+      Object.keys(pages[pageAuthentication]).forEach((pageName) => {
+        describe(`${pageName} Page`, () => {
+          it('should render', () => {
+            /**
+             * we login every time, as it seems that we're logged out again
+             * in each test, probably because a new window instance is
+             * used for every test, which results in us using new Meteor instance in every test
+             */
+            if (pageAuthentication === 'public') {
+              cy.meteorLogout();
+            } else {
+              cy.meteorLogoutAndLogin(`${pageAuthentication}-1@e-potek.ch`);
+            }
 
-        const pageUri =
-          typeof pages[pageName] === 'function'
-            ? pages[pageName](testData)
-            : pages[pageName];
+            const uri = pages[pageAuthentication][pageName];
+            const pageUri = typeof uri === 'function' ? uri(testData) : uri;
 
-        cy
-          .visit(pageUri)
-          .waitUntilLoads()
-          .shouldRenderWithoutErrors(pageUri);
+            cy
+              .visit(pageUri)
+              .waitUntilLoads()
+              .shouldRenderWithoutErrors(pageUri);
+          });
+        });
       });
     });
   });
