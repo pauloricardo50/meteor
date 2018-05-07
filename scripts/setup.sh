@@ -82,6 +82,9 @@ echo "Installing npm packages in root"
 echo "Installing npm packages in core/"
 ( cd ../core && meteor npm install );
 
+echo "Installing global packages"
+meteor npm i -g babel-cli start-server-and-test
+
 echo "Creating language files..."
 babel-node ./createLanguages.js
 
