@@ -124,7 +124,7 @@ class ZipAutoComplete extends Component {
   render() {
     const { searchText, data, saving, isValid } = this.state;
     const {
-      inputProps: { disabled, style, label, placeholder },
+      inputProps: { disabled, style, label, placeholder, required },
       admin,
     } = this.props;
 
@@ -149,7 +149,7 @@ class ZipAutoComplete extends Component {
           error={false}
           // Only show the valid icon when isValid is true
           value={isValid === true ? true : undefined}
-          required
+          required= {required}
           hide={admin}
         />
         <FormValidator {...this.props} />
