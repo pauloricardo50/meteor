@@ -1,7 +1,7 @@
-import { devEmail, userEmail, userPassword } from '../testHelpers';
+import { DEV_EMAIL, USER_EMAIL, USER_PASSWORD } from '../testHelpers';
 
 Cypress.Commands.add('eraseAndGenerateTestData', () =>
-  cy.meteorLogoutAndLogin(devEmail).then(window =>
+  cy.meteorLogoutAndLogin(DEV_EMAIL).then(window =>
     new Cypress.Promise((resolve, reject) => {
       const { Meteor } = window;
 
@@ -12,7 +12,7 @@ Cypress.Commands.add('eraseAndGenerateTestData', () =>
 
         return Meteor.call(
           'generateTestData',
-          devEmail,
+          DEV_EMAIL,
           (generateDataError, data) => {
             if (generateDataError) {
               return reject(generateDataError);
@@ -56,7 +56,7 @@ Cypress.Commands.add('meteorLogout', () => {
 
 Cypress.Commands.add(
   'meteorLogoutAndLogin',
-  (email = userEmail, password = userPassword) => {
+  (email = USER_EMAIL, password = USER_PASSWORD) => {
     cy.visit('/').then(window =>
       new Cypress.Promise((resolve, reject) => {
         const { Meteor } = window;
