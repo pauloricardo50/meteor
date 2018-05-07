@@ -1,4 +1,6 @@
 {
+  "DashboardRecapProperty.empty":
+    "Ajoutez l'adresse complète de votre bien pour voir le récapitulatif",
   "AboutPageOffice.title": "Nos bureaux",
   "AboutPageOffice.description":
     "Basés à Genève, nous travaillons tous les jours pour révolutionner le marché de l'hypothèque.",
@@ -71,6 +73,8 @@
   "OfferAdder.discount": "Rabais (valeur positive)",
 
   "DashboardRecapFinance.title": "Plan financier",
+  "DashboardRecapFinance.empty":
+    "Ajoutez la valeur du bien et vos finances pour afficher le récapitulatif",
   "DashboardInfoTeamMember.emailTooltip": "Envoyer un mail",
   "DashboardInfoTeamMember.phoneTooltip": "Appeler",
 
