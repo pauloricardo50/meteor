@@ -24,6 +24,7 @@ const pages = {
     'Add Loan': ({ unownedLoan: { _id } }) => `/add-loan/${_id}`,
     'Loan Files': ({ step3Loan: { _id } }) => `/loans/${_id}/files`,
     'Loan Property': ({ step3Loan: { _id } }) => `/loans/${_id}/property`,
+    'Loan Offerpicker': ({ step3Loan: { _id } }) => `/loans/${_id}/offerpicker`,
     'Loan Verification': ({ step3Loan: { _id } }) =>
       `/loans/${_id}/verification`,
     'Loan Structure': ({ step3Loan: { _id } }) => `/loans/${_id}/structure`,
