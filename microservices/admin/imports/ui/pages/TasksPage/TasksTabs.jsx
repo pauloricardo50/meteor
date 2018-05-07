@@ -11,7 +11,7 @@ const getTabs = () => [
     label: <T id="TasksTabs.myTasks" />,
     content: (
       <TasksTableWithData
-        filters={{ assignedTo: Meteor.userId() }}
+        assignedTo={Meteor.userId()}
         showAssignee={false}
         key="myTasks"
       />
@@ -21,11 +21,7 @@ const getTabs = () => [
     id: 'unassignedTasks',
     label: <T id="TasksTabs.unassignedTasks" />,
     content: (
-      <TasksTableWithData
-        filters={{ unassigned: true }}
-        showAssignee
-        key="unassignedTasks"
-      />
+      <TasksTableWithData unassigned showAssignee key="unassignedTasks" />
     ),
   },
   {

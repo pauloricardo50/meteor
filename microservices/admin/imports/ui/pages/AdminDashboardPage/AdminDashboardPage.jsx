@@ -14,7 +14,8 @@ const AdminDashboardPage = props => (
     </h2>
     <TasksTableWithData
       showAssignee
-      filters={{ dashboardTasks: true, assignedTo: Meteor.userId() }}
+      dashboardTasks
+      assignedTo={Meteor.userId()}
     />
   </section>
 );

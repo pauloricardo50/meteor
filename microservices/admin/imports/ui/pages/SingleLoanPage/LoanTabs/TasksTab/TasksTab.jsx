@@ -11,7 +11,9 @@ const TasksTab = ({ loan: { borrowerIds, property, _id } }) => (
     </h2>
     <LoanTasksTable
       showAssignee
-      filters={{ loanId: _id, propertyId: property._id, borrowerIds }}
+      loanId={_id}
+      propertyId={property._id}
+      borrowerIds={borrowerIds}
     />
   </div>
 );
