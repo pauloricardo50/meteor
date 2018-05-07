@@ -39,7 +39,7 @@ const handleCheck = (_, isInputChecked, id) => {
 const handleClick = (event, id) => {
   const object = { 'logic.hasValidatedFinances': true };
   borrowerUpdate
-    .run({ object, id })
+    .run({ object, borrowerId: id })
     .then(() => track('validated finances', {}));
 };
 
