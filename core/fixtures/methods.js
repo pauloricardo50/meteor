@@ -54,8 +54,13 @@ const deleteUsersRelatedData = (usersToDelete) => {
 const deleteUsers = usersToDelete =>
   Users.remove({ _id: { $in: usersToDelete } });
 
-const createFakeLoanFixture = ({ userId, loanStep, adminId }) => {
-  const loanId = createFakeLoan(userId, loanStep);
+const createFakeLoanFixture = ({
+  userId,
+  loanStep,
+  adminId,
+  completeFiles,
+}) => {
+  const loanId = createFakeLoan(userId, loanStep, completeFiles);
   createFakeTask(loanId, adminId);
   createFakeOffer(loanId, userId);
 };
@@ -75,7 +80,12 @@ Meteor.methods({
         const adminId = admins[Math.floor(Math.random() * admins.length)];
 
         range(STEP_3_LOANS_PER_USER).forEach(() => {
-          createFakeLoanFixture({ loanStep: 3, userId, adminId });
+          createFakeLoanFixture({
+            loanStep: 3,
+            userId,
+            adminId,
+            completeFiles: true,
+          });
         });
 
         range(STEP_2_LOANS_PER_USER).forEach(() => {

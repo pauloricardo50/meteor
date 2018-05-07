@@ -89,8 +89,11 @@ const fakeFiles = {
 
 const fakeFiles2 = {};
 
-export const createFakeLoan = (userId, step) => {
-  const completeFiles = Math.random() > 0.5;
+export const createFakeLoan = (
+  userId,
+  step,
+  completeFiles = Math.random() > 0.5,
+) => {
   const borrowerIds = createFakeBorrowers(userId);
   const propertyId = createFakeProperty(userId);
   const loan = {
