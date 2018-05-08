@@ -9,8 +9,8 @@ const WwwTopNavLogo = ({ variant }) => (
     <img
       src={
         variant === VARIANTS.BLUE
-          ? '/img/logo_white.svg'
-          : '/img/logo_black.svg'
+          ? '/img/logo_square_white.svg'
+          : '/img/logo_square_black.svg'
       }
       alt="e-Potek"
     />

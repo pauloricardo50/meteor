@@ -29,7 +29,7 @@
 
 .www-top-nav-logo {
   display: flex;
-  width: 250px;
+  width: 80px;
   height: 80px;
   img {
     width: 100%;
@@ -56,54 +56,21 @@
   justify-content: center;
   padding: 16px;
   text-decoration: none;
+  opacity: 1;
 
   .www-top-nav-link-label {
     color: white;
   }
 
-  transition: color 200ms $bezier, background-color 200ms $bezier;
+  transition: opacity 200ms $bezier;
 
   &:hover {
-    background-color: white;
-    .www-top-nav-link-label {
-      color: $primary;
-    }
+    opacity: 0.5;
   }
 
-  &.white {
-    background-color: white;
-    .www-top-nav-link-label {
-      color: $primary;
-    }
-    &:hover {
-      background-color: $primary;
-      .www-top-nav-link-label {
-        color: white;
-      }
-    }
-  }
-  &.transparent {
-    background-color: transparent;
-    .www-top-nav-link-label {
-      color: $primary;
-    }
-    &:hover {
-      background-color: $primary;
-      .www-top-nav-link-label {
-        color: white;
-      }
-    }
-  }
-  &.grey {
-    background-color: $background-color;
-    .www-top-nav-link-label {
-      color: $primary;
-    }
-    &:hover {
-      background-color: $primary;
-      .www-top-nav-link-label {
-        color: white;
-      }
-    }
+  &.white .www-top-nav-link-label,
+  &.grey .www-top-nav-link-label,
+  &.transparent .www-top-nav-link-label {
+    color: $primary;
   }
 }
