@@ -52,6 +52,6 @@ else
     echo $i;
     echo "# [$i] deploying microservice deployment ..."
     # mup deploy --config "mup-$i.js" --settings settings-staging.json 2> "$SCRIPT_PATH/logs/errors-$i.log" > "$SCRIPT_PATH/logs/deploy-$i.log" &
-    mup deploy --config "mup-$i.js" --settings settings-staging.json 
+    DEBUG=mup* mup deploy --config "mup-$i.js" --settings settings-staging.json --verbose
   done
 fi
