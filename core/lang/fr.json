@@ -1,4 +1,12 @@
 {
+  "InterestsPage.title": "Nos taux en direct",
+  "InterestsPage.description":
+    "e-Potek est ravi de partager avec vous les taux reçus lors de la dernière enchère de recherche de financement.",
+
+  "InterestsTable.duration": "Durée",
+  "InterestsTable.trend": "Tendance",
+  "InterestsTable.rate": "Taux [%]",
+
   "DashboardRecapProperty.empty":
     "Ajoutez l'adresse complète de votre bien pour afficher ce récapitulatif",
   "AboutPageOffice.title": "Nos bureaux",

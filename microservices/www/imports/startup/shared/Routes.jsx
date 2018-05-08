@@ -14,6 +14,7 @@ import ConditionsPage from '../../ui/pages/ConditionsPage';
 import Widget1Page from '../../ui/pages/Widget1Page';
 import Start2Page from '../../ui/pages/Start2Page';
 import CheckMailboxPage from '../../ui/pages/CheckMailboxPage';
+import InterestsPage from '../../ui/pages/InterestsPage';
 
 const liteVersionModifier = togglePoint(TOGGLE_POINTS.ROUTES_CONFIG_STRIPPED_IN_LITE_VERSION);
 const notProductionReadyModifier = togglePoint(TOGGLE_POINTS.ROUTES_NOT_PRODUCTION_READY);
@@ -33,6 +34,7 @@ const routesConfig = [
     { path: '/about', component: AboutPage },
     { path: '/faq', component: FaqPage },
     { path: '/careers', component: CareersPage },
+    { path: '/interests', component: InterestsPage },
   ]),
 
   { component: NotFound },
