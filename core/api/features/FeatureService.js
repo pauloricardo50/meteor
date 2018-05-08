@@ -13,6 +13,7 @@ const {
   WIDGET1_CONTINUE_BUTTON,
   STRIPPED_LITE_VERSION_UI,
   ROUTES_CONFIG_STRIPPED_IN_LITE_VERSION,
+  ROUTES_NOT_PRODUCTION_READY,
 } = TOGGLE_POINTS;
 
 const { features: featureConfig } = Meteor.settings.public;
@@ -58,6 +59,9 @@ const featureMap = {
 
     // remove the routes that we don't want in the lite www version
     [ROUTES_CONFIG_STRIPPED_IN_LITE_VERSION]: changeCodeWith(returnEmptyArray),
+  },
+  NOT_PRODUCTION_READY: {
+    [ROUTES_NOT_PRODUCTION_READY]: changeCodeWith(returnEmptyArray),
   },
 };
 

@@ -15,20 +15,24 @@ import Widget1Page from '../../ui/pages/Widget1Page';
 import Start2Page from '../../ui/pages/Start2Page';
 import CheckMailboxPage from '../../ui/pages/CheckMailboxPage';
 
-const modifier = togglePoint(TOGGLE_POINTS.ROUTES_CONFIG_STRIPPED_IN_LITE_VERSION);
+const liteVersionModifier = togglePoint(TOGGLE_POINTS.ROUTES_CONFIG_STRIPPED_IN_LITE_VERSION);
+const notProductionReadyModifier = togglePoint(TOGGLE_POINTS.ROUTES_NOT_PRODUCTION_READY);
 
 const routesConfig = [
   { exact: true, path: '/', component: HomePage },
   { path: '/start/1', component: Widget1Page },
   { path: '/contact', component: ContactPage },
 
-  ...modifier([
-    { path: '/about', component: AboutPage },
-    { path: '/faq', component: FaqPage },
+  ...liteVersionModifier([
     { path: '/conditions', component: ConditionsPage },
     { path: '/start/2', component: Start2Page },
-    { path: '/careers', component: CareersPage },
     { path: '/checkYourMailbox/:email', component: CheckMailboxPage },
+  ]),
+
+  ...notProductionReadyModifier([
+    { path: '/about', component: AboutPage },
+    { path: '/faq', component: FaqPage },
+    { path: '/careers', component: CareersPage },
   ]),
 
   { component: NotFound },
