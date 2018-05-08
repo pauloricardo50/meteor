@@ -6,17 +6,22 @@ import interestRates from './interestRates';
 import InterestsTableTrend from './InterestsTableTrend';
 
 const columnOptions = [
-  { id: 'InterestsTable.duration' },
-  { id: 'InterestsTable.trend' },
-  { id: 'InterestsTable.rate' },
+  { id: 'InterestsTable.duration', style: { textAlign: 'center' } },
+  { id: 'InterestsTable.trend', style: { textAlign: 'center' } },
+  { id: 'InterestsTable.rate', style: { textAlign: 'center' } },
 ];
 
-const formatRate = rate => (rate * 100).toFixed(2);
+const formatRate = rate => (
+  <span>
+    <b>{(rate * 100).toFixed(2)}</b>
+    <span>%</span>
+  </span>
+);
 
 const rows = interestRates.map(({ type, rateLow, rateHigh, trend }) => ({
   id: type,
   columns: [
-    <T id={`offer.${type}`} />,
+    <T id={`InterestsTable.${type}`} />,
     <InterestsTableTrend trend={trend} />,
     <span>
       {formatRate(rateLow)} - {formatRate(rateHigh)}
