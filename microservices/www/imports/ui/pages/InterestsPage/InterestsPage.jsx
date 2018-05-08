@@ -2,11 +2,12 @@ import React from 'react';
 
 import { T } from 'core/components/Translation';
 import WwwLayout from '../../WwwLayout';
+import { VARIANTS } from '../../WwwLayout/WwwTopNav';
 import InterestsTable from './InterestsTable';
 
 const InterestsPage = () => (
   <WwwLayout className="interests-page">
-    <WwwLayout.TopNav />
+    <WwwLayout.TopNav variant={VARIANTS.GREY} />
     <section className="interests-page-content">
       <h1>
         <T id="InterestsPage.title" />

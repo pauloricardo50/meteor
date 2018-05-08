@@ -1,6 +1,6 @@
 import React from 'react';
-
 import { Link } from 'react-router-dom';
+
 import { T } from 'core/components/Translation';
 import togglePoint, { TOGGLE_POINTS } from 'core/api/features/togglePoint';
 
