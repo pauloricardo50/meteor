@@ -6,9 +6,7 @@ import TasksTable from './TasksTable';
 const TasksTableWithData = withQuery(
   ({ assignedTo, unassigned, dashboardTasks }) =>
     query.clone({ assignedTo, unassigned, dashboardTasks }),
-  {
-    reactive: true,
-  },
+  { reactive: true },
 )(TasksTable);
 
 const subscriptionHandle = query.subscribe();

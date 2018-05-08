@@ -6,9 +6,7 @@ import TasksTable from '../../../components/TasksTable/TasksTable';
 const LoanTasksTable = withQuery(
   ({ borrowerIds, loanId, propertyId }) =>
     query.clone({ borrowerIds, loanId, propertyId }),
-  {
-    reactive: true,
-  },
+  { reactive: true },
 )(TasksTable);
 
 const subscriptionHandle = query.subscribe();
