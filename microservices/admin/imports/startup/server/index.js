@@ -8,6 +8,7 @@ import jc from 'core/api/jobs/server';
 // Grapher Links
 import 'core/api/links';
 import '../accounts-config';
+import '../../../cypress/server/methods';
 
 Meteor.startup(() => {
   jc.startJobServer();

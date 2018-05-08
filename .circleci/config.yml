@@ -87,6 +87,7 @@ jobs:
       - run:
           name: Setup microservices
           command: |
+            sudo apt-get install libgconf-2-4
             sudo apt install rsync
             cd scripts
             ./setup.sh

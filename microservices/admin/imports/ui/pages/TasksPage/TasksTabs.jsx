@@ -21,7 +21,7 @@ const getTabs = () => [
     id: 'unassignedTasks',
     label: <T id="TasksTabs.unassignedTasks" />,
     content: (
-      <TasksTableWithData showAssignee unassigned key="unassignedTasks" />
+      <TasksTableWithData unassigned showAssignee key="unassignedTasks" />
     ),
   },
   {
