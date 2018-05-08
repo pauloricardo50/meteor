@@ -34,6 +34,14 @@ jobs:
           keys:
             - build-epotek-v2-meteor-system
       - restore_cache:
+          name: restore root cached node_modules
+          keys:
+            - build-epotek-v2-node_modules-{{ checksum "./package.json" }}
+      - restore_cache:
+          name: restore core cached node_modules
+          keys:
+            - build-epotek-v2-node_modules-{{ checksum "./core/package.json" }}
+      - restore_cache:
           name: restore app's meteor cached build
           keys:
             - build-epotek-v2-meteor-{{ checksum "./microservices/app/.meteor/release" }}-{{ checksum "./microservices/app/.meteor/packages" }}
@@ -129,6 +137,16 @@ jobs:
           key: build-epotek-v2-meteor-system
           paths:
             - ~/.meteor
+      - save_cache:
+          name: cache root node_modules
+          key: build-epotek-v2-node_modules-{{ checksum "./package.json" }}
+          paths:
+            - ./node_modules
+      - save_cache:
+          name: cache core node_modules
+          key: build-epotek-v2-node_modules-{{ checksum "./core/package.json" }}
+          paths:
+            - ./core/node_modules
       - save_cache:
           name: cache app's meteor build
           key: build-epotek-v2-meteor-{{ checksum "./microservices/app/.meteor/release" }}-{{ checksum "./microservices/app/.meteor/packages" }}
