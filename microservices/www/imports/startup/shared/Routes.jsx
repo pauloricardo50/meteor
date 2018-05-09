@@ -24,6 +24,7 @@ const routesConfig = [
   { path: '/start/1', component: Widget1Page },
   { path: '/contact', component: ContactPage },
   { path: '/interests', component: InterestsPage },
+  { path: '/careers', component: CareersPage },
 
   ...liteVersionModifier([
     { path: '/conditions', component: ConditionsPage },
@@ -34,7 +35,6 @@ const routesConfig = [
   ...notProductionReadyModifier([
     { path: '/about', component: AboutPage },
     { path: '/faq', component: FaqPage },
-    { path: '/careers', component: CareersPage },
   ]),
 
   { component: NotFound },
