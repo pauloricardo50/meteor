@@ -1,4 +1,21 @@
 {
+  "InterestsTable.interest1": "1 an",
+  "InterestsTable.interest10": "10 ans",
+  "InterestsTable.interest15": "15 ans",
+  "InterestsTable.interest2": "2 ans",
+  "InterestsTable.interest5": "5 ans",
+  "InterestsTable.interestLibor": "Libor",
+
+  "WwwTopNavLinks.interests": "Nos taux",
+  "WwwTopNavLinks.contact": "Nous contacter",
+  "InterestsPage.title": "Nos taux hypothécaires",
+  "InterestsPage.description":
+    "e-Potek est ravi de vous présenter sa palette complète de taux hypothécaires reçus de la part des prêteurs lors des dernières négociations. Attention à ne pas oublier que les conditions de taux varient fortement selon les dossiers. Ils dépendent principalement de la solvabilité et du montant emprunté.",
+
+  "InterestsTable.duration": "Durée",
+  "InterestsTable.trend": "Tendance",
+  "InterestsTable.rate": "Taux",
+
   "DashboardRecapProperty.empty":
     "Ajoutez l'adresse complète de votre bien pour afficher ce récapitulatif",
   "AboutPageOffice.title": "Nos bureaux",
