@@ -6,7 +6,7 @@ import togglePoint, { TOGGLE_POINTS } from 'core/api/features/togglePoint';
 
 const modifier = togglePoint(TOGGLE_POINTS.ROUTES_NOT_PRODUCTION_READY);
 
-const infoLinks = ['contact', ...modifier(['about', 'faq', 'conditions'])];
+const infoLinks = ['contact', ...modifier(['about', 'careers'])];
 
 const WwwFooterLinks = () => (
   <div className="www-footer-links">

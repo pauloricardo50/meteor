@@ -1,4 +1,14 @@
 {
+  "CareersPage.description":
+    "e-Potek est en forte croissance et recrute souvent de nouveaux talents au sein de nos différents départements.{verticalSpace}Nous faisons le plus possible pour créer et maintenir un environnement de travail agréable, avec beaucoup d'opportunités et de responsabilités pour ceux qui souhaitent les prendre.",
+  "CareersPage.title": "Travailler chez e-Potek",
+  "CareersPage.subtitle": "Postes vacants",
+  "CareersPageJob.button": "Voir l'annonce",
+  "CareersPageList.advisory": "Conseil",
+  "CareersPageList.engineering": "Ingénierie",
+  "CareersPageList.admin": "Opérations",
+  "CareersPageList.emptyDepartment":
+    "Pas de postes ouverts dans ce département pour l'instant, réessayez demain.",
   "InterestsTable.interest1": "1 an",
   "InterestsTable.interest10": "10 ans",
   "InterestsTable.interest15": "15 ans",
@@ -294,9 +304,6 @@
   "BorrowersTable.createdAt": "Créé le",
   "BorrowersTable.name": "Nom",
   "BorrowersTable.updatedAt": "Modifié le",
-  "CareersPage.description":
-    "Nous ne cherchons pas activement de nouveaux candidats en ce moment. Cependant, nous sommes toujours ouverts aux candidatures spontanées, écris-nous à {email}.",
-  "CareersPage.title": "Travailler à e-Potek",
   "ClosingPage.CTA": "Demander le décaissement",
   "ClosingPage.description":
     "Lorsque vous avez soumis les derniers documents, vous pourrez demander à votre prêteur de décaisser le prêt.",
