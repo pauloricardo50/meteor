@@ -32,6 +32,7 @@ const pages = {
     'Loan Strategy': ({ step3Loan: { _id } }) => `/loans/${_id}/strategy`,
     'Loan Contract': ({ step3Loan: { _id } }) => `/loans/${_id}/contract`,
     'Loan Closing': ({ step3Loan: { _id } }) => `/loans/${_id}/closing`,
+    'Loan Finance': ({ step3Loan: { _id } }) => `/loans/${_id}/finance`,
 
     'Borrower Personal': ({ step3Loan: { _id, borrowers } }) =>
       `/loans/${_id}/borrowers/${borrowers[0]._id}/personal`,
