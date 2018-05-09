@@ -6,7 +6,12 @@ import { T } from 'core/components/Translation';
 import togglePoint, { TOGGLE_POINTS } from 'core/api/features/togglePoint';
 
 const modifier = togglePoint(TOGGLE_POINTS.ROUTES_NOT_PRODUCTION_READY);
-export const links = ['contact', 'interests', ...modifier(['careers'])];
+export const links = [
+  'interests',
+  'contact',
+  'careers',
+  ...modifier(['about']),
+];
 
 const WwwTopNavLinksList = ({ variant }) => (
   <React.Fragment>
