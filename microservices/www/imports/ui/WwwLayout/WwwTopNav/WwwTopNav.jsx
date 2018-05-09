@@ -23,16 +23,18 @@ const WwwTopNav = ({ variant }) => (
       [variant]: true,
     })}
   >
-    <span className="left">
-      <WwwTopNavLogo variant={variant} />
-      <WwwTopNavLinks variant={variant} />
-    </span>
-    <span className="right">
-      <TogglePoint id={TOGGLE_POINTS.STRIPPED_LITE_VERSION_UI}>
-        <Button raised style={{ margin: 8 }}>
-          <T id="general.login" />
-        </Button>
-      </TogglePoint>
+    <span className="www-top-nav-content">
+      <span className="left">
+        <WwwTopNavLogo variant={variant} />
+        <WwwTopNavLinks variant={variant} />
+      </span>
+      <span className="right">
+        <TogglePoint id={TOGGLE_POINTS.STRIPPED_LITE_VERSION_UI}>
+          <Button raised style={{ margin: 8 }}>
+            <T id="general.login" />
+          </Button>
+        </TogglePoint>
+      </span>
     </span>
   </nav>
 );
