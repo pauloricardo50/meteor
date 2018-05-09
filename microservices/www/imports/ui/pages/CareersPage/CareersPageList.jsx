@@ -8,9 +8,9 @@ const CareersPageList = () => (
   <div className="careers-page-list">
     {Object.keys(jobs).map(department => (
       <div className="careers-page-list-department card1" key={department}>
-        <h2 className="careers-page-list-department-title">
+        <h3 className="careers-page-list-department-title">
           <T id={`CareersPageList.${department}`} />
-        </h2>
+        </h3>
         {jobs[department].map((job, index) => (
           <CareersPageJob job={job} key={index} />
         ))}
