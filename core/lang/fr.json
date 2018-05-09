@@ -2,10 +2,11 @@
   "CareersPage.description":
     "e-Potek est en forte croissance et recrute souvent de nouveaux talents au sein de nos différents départements.{verticalSpace}Nous faisons le plus possible pour créer et maintenir un environnement de travail agréable, avec beaucoup d'opportunités et de responsabilités pour ceux qui souhaitent les prendre.",
   "CareersPage.title": "Travailler chez e-Potek",
+  "CareersPage.subtitle": "Postes vacants",
   "CareersPageJob.button": "Voir l'annonce",
   "CareersPageList.advisory": "Conseil",
   "CareersPageList.engineering": "Ingénierie",
-  "CareersPageList.admin": "Administration",
+  "CareersPageList.admin": "Opérations",
   "CareersPageList.emptyDepartment":
     "Pas de postes ouverts dans ce département pour l'instant, revenez plus tard.",
   "InterestsTable.interest1": "1 an",

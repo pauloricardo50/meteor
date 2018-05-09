@@ -5,14 +5,10 @@ import { T } from 'core/components/Translation';
 import Button from 'core/components/Button';
 
 const CareersPageJob = ({ job: { title, url } }) => (
-  <div className="careers-page-job card1">
-    <h3>{title}</h3>
-    <a href={url} target="_blank">
-      <Button raised primary>
-        <T id="CareersPageJob.button" />
-      </Button>
-    </a>
-  </div>
+  <a href={url} target="_blank" className="careers-page-job">
+    <h4>{title}</h4>
+    <p className="careers-page-job-hover">Voir l'annonce</p>
+  </a>
 );
 
 CareersPageJob.propTypes = {
