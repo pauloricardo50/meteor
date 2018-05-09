@@ -23,6 +23,7 @@ const routesConfig = [
   { exact: true, path: '/', component: HomePage },
   { path: '/start/1', component: Widget1Page },
   { path: '/contact', component: ContactPage },
+  { path: '/interests', component: InterestsPage },
 
   ...liteVersionModifier([
     { path: '/conditions', component: ConditionsPage },
@@ -34,7 +35,6 @@ const routesConfig = [
     { path: '/about', component: AboutPage },
     { path: '/faq', component: FaqPage },
     { path: '/careers', component: CareersPage },
-    { path: '/interests', component: InterestsPage },
   ]),
 
   { component: NotFound },

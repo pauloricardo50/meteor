@@ -6,7 +6,7 @@ import { T } from 'core/components/Translation';
 import togglePoint, { TOGGLE_POINTS } from 'core/api/features/togglePoint';
 
 const modifier = togglePoint(TOGGLE_POINTS.ROUTES_NOT_PRODUCTION_READY);
-const links = ['contact', ...modifier(['interests'])];
+const links = ['contact', 'interests', ...modifier(['careers'])];
 
 const WwwTopNavLinks = ({ variant }) => (
   <span className="www-top-nav-links">
