@@ -2,10 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import Button from 'core/components/Button';
-import { T } from 'core/components/Translation';
-import TogglePoint, { TOGGLE_POINTS } from 'core/components/TogglePoint';
-
 import WwwTopNavLinks from './WwwTopNavLinks';
 import WwwTopNavLogo from './WwwTopNavLogo';
 
@@ -24,17 +20,8 @@ const WwwTopNav = ({ variant }) => (
     })}
   >
     <span className="www-top-nav-content">
-      <span className="left">
-        <WwwTopNavLogo variant={variant} />
-        <WwwTopNavLinks variant={variant} />
-      </span>
-      <span className="right">
-        <TogglePoint id={TOGGLE_POINTS.STRIPPED_LITE_VERSION_UI}>
-          <Button raised style={{ margin: 8 }}>
-            <T id="general.login" />
-          </Button>
-        </TogglePoint>
-      </span>
+      <WwwTopNavLogo variant={variant} />
+      <WwwTopNavLinks variant={variant} />
     </span>
   </nav>
 );
