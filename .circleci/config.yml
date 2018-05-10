@@ -15,6 +15,7 @@ jobs:
         LANGUAGE: C.UTF-8
         LC_ALL: C.UTF-8
         LC_NUMERIC: en_US.UTF-8
+        METEOR_VERSION: 1.6.1.1
         METEOR_BIN_TMP_DIR: /home/circleci/build-temp/
         METEOR_BIN_TMP_FILE: meteor-bin-temp
         # TZ: "/usr/share/zoneinfo/Europe/Zurich"
@@ -32,7 +33,7 @@ jobs:
       - restore_cache:
           name: restore system's meteor cached build
           keys:
-            - build-epotek-v2-meteor-system
+            - build-epotek-v2-meteor-system-{{ .Environment.METEOR_VERSION }}
       - restore_cache:
           name: restore root cached node_modules
           keys:
@@ -69,22 +70,7 @@ jobs:
       - run:
           name: install Meteor
           command: |
-            # If the cached meteor directory exists, link its' binary
-            # Else install meteor.
-            if [ -e $HOME/.meteor/meteor ]; then
-              echo "Meteor directory found. Symlinking binary..."
-              # meteor_path is the 'meteor' command path (if any available)
-              #  or a default binary path
-              meteor_path=$(type -p meteor);
-              echo 'debug 1'
-              if [ -z $meteor_path ]; then meteor_path=/usr/local/bin/meteor; fi
-              echo 'debug 2'
-              sudo ln -sf ~/.meteor/meteor $meteor_path;
-              echo "Done."
-            else
-              echo "Meteor directory not found. Installing Meteor..."
-              curl https://install.meteor.com?release=1.6.1.1 | /bin/sh
-            fi
+            ./scripts/ci_install_meteor
       - run:
           name: check versions
           command: |
@@ -148,7 +134,7 @@ jobs:
 
       - save_cache:
           name: cache system's meteor build
-          key: build-epotek-v2-meteor-system
+          key: build-epotek-v2-meteor-system-{{ .Environment.METEOR_VERSION }}
           paths:
             - ~/.meteor
       - save_cache:
