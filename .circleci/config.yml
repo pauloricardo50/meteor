@@ -75,8 +75,8 @@ jobs:
               echo "Meteor directory found. Symlinking binary...";
               # meteor_path is the 'meteor' command path (if any available)
               #  or a default binary path
-              meteor_path = $(type -p meteor);
-              meteor_path = $(if [ -z "$meteor_path" ]; then echo "/usr/local/bin/meteor"; fi);
+              meteor_path=$(type -p meteor);
+              meteor_path=$(if [ -z "$meteor_path" ]; then echo "/usr/local/bin/meteor"; fi);
               sudo ln -sf ~/.meteor/meteor "$meteor_path";
               echo "Done."
             else
