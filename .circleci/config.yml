@@ -69,18 +69,20 @@ jobs:
       - run:
           name: install Meteor
           command: |
-            # Only install Meteor if bin isn't found:
-            # link Meteor's binary if the ~/.meteor/meteor file exists
-            # (if meteor cached directory is restored);
-            # otherwise install Meteor
-            if [[ -e $HOME/.meteor/meteor ]];
-            then
-              echo "Meteor already found. Symlinking binary...";
-              sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor;
+            # If the cached meteor directory exists, link its' binary
+            # Else install meteor.
+            if [ -e $HOME/.meteor/meteor ]; then
+              echo "Meteor directory found. Symlinking binary...";
+              # meteor_path is the 'meteor' command path (if any available)
+              #  or a default binary path
+              meteor_path = $(type -p meteor);
+              meteor_path = $(if [ -z $meteor_path ]; then echo "/usr/local/bin/meteor");
+              sudo ln -sf ~/.meteor/meteor $meteor_path;
             else
-              echo "Meteor not found. Installing Meteor..."
+              echo "Meteor directory not found. Installing Meteor..."
               curl https://install.meteor.com?release=1.6.1.1 | /bin/sh
             fi
+
             echo "Done."
       - run:
           name: check versions
