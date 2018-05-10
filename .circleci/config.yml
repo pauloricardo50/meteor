@@ -32,7 +32,7 @@ jobs:
       - restore_cache:
           name: restore system's meteor cached build
           keys:
-            - build-epotek-v3-meteor-system
+            - build-epotek-v2-meteor-system
       - restore_cache:
           name: restore root cached node_modules
           keys:
