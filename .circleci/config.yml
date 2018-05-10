@@ -75,12 +75,13 @@ jobs:
             # otherwise install Meteor
             if [[ -e $HOME/.meteor/meteor ]];
             then
-              echo 'Meteor already found';
+              echo "Meteor already found. Symlinking binary...";
               sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor;
             else
-              echo 'Installing Meteor'
+              echo "Meteor not found. Installing Meteor..."
               curl https://install.meteor.com?release=1.6.1.1 | /bin/sh
             fi
+            echo "Done."
       - run:
           name: check versions
           command: |
