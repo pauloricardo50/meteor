@@ -76,8 +76,11 @@ jobs:
               # meteor_path is the 'meteor' command path (if any available)
               #  or a default binary path
               meteor_path=$(type -p meteor);
-              if [ -z "$meteor_path" ]; then meteor_path="/usr/local/bin/meteor"; fi
-              
+              if [[ -z "$meteor_path" ]];
+              then
+                meteor_path="/usr/local/bin/meteor";
+              fi
+
               sudo ln -sf ~/.meteor/meteor "$meteor_path";
               echo "Done."
             else
