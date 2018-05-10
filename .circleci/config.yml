@@ -69,8 +69,16 @@ jobs:
       - run:
           name: install Meteor
           command: |
-            # only install meteor if bin isn't found
-            command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com?release=1.6.0.1 | /bin/sh
+            # Only install Meteor if bin isn't found:
+            # link Meteor's binary if the ~/.meteor/meteor file exists
+            # (if meteor cached directory is restored);
+            # otherwise install Meteor
+            if [[ -e $HOME/.meteor/meteor ]];
+            then
+              sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor;
+            else
+              curl https://install.meteor.com?release=1.6.1.1 | /bin/sh
+            fi
       - run:
           name: check versions
           command: |
