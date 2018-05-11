@@ -15,9 +15,7 @@ jobs:
         LANGUAGE: C.UTF-8
         LC_ALL: C.UTF-8
         LC_NUMERIC: en_US.UTF-8
-        METEOR_BIN_TMP_DIR: /home/circleci/build-temp/
-        METEOR_BIN_TMP_FILE: meteor-bin-temp
-        # TZ: "/usr/share/zoneinfo/Europe/Zurich"
+        METEOR_VERSION: 1.6.1.1
         NODE_ENV: development
         TOOL_NODE_FLAGS: "--max_old_space_size=4096 --optimize_for_size --gc-interval=100" # if builds run out of memory
         # METEOR_PROFILE: 1 # If you need to debug meteor, turn this on
@@ -32,7 +30,7 @@ jobs:
       - restore_cache:
           name: restore system's meteor cached build
           keys:
-            - build-epotek-v2-meteor-system
+            - build-epotek-v2-meteor-system-{{ checksum "./.circleci/config.yml" }}
       - restore_cache:
           name: restore root cached node_modules
           keys:
@@ -69,8 +67,7 @@ jobs:
       - run:
           name: install Meteor
           command: |
-            # only install meteor if bin isn't found
-            command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com?release=1.6.0.1 | /bin/sh
+            ./scripts/circleci/install_meteor.sh
       - run:
           name: check versions
           command: |
@@ -134,7 +131,7 @@ jobs:
 
       - save_cache:
           name: cache system's meteor build
-          key: build-epotek-v2-meteor-system
+          key: build-epotek-v2-meteor-system-{{ checksum "./.circleci/config.yml" }}
           paths:
             - ~/.meteor
       - save_cache:
