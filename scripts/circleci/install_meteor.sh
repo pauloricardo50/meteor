@@ -5,20 +5,19 @@
 if [ -e $HOME/.meteor/meteor ]; then
   echo "Meteor directory found. Symlinking binary..."
 
-  # `meteor_path`` is the 'meteor' command's path (if any available)
-  meteor_path=$(type -p meteor);
+  # `METEOR_PATH` is the 'meteor' command's path (if any available)
+  METEOR_PATH=$(type -p meteor);
 
-  # If the `meteor_path` is empty (meaning 'meteor' command doesn't exist)
+  # If the `METEOR_PATH` is empty (meaning 'meteor' command doesn't exist)
   # a default binary path is set for it
-  if [ -z $meteor_path ];
+  if [ -z $METEOR_PATH ];
   then
-    meteor_path=/usr/local/bin/meteor;
+    METEOR_PATH=/usr/local/bin/meteor;
   fi
 
-  sudo ln -sf ~/.meteor/meteor $meteor_path;
-  echo "Done."
+  sudo ln -sf ~/.meteor/meteor $METEOR_PATH;
+  echo "Done symlinking meteor binary."
 else
-  METEOR_VERSION=1.6.1.1
   echo "Meteor directory not found. Installing Meteor $METEOR_VERSION..."
   curl https://install.meteor.com?release=$METEOR_VERSION | /bin/sh
 fi
