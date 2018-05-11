@@ -53,6 +53,8 @@ let testData;
 
 describe('App Pages', () => {
   before(() => {
+    cy.visit('/');
+
     cy
       .eraseAndGenerateTestData()
       .getTestData(USER_EMAIL)
@@ -66,11 +68,6 @@ describe('App Pages', () => {
       Object.keys(pages[pageAuthentication]).forEach((pageName) => {
         describe(`${pageName} Page`, () => {
           it('should render', () => {
-            /**
-             * we login every time, as it seems that we're logged out again
-             * in each test, probably because a new window instance is
-             * used for every test, which results in us using new Meteor instance in every test
-             */
             if (pageAuthentication === 'public') {
               cy.meteorLogout();
             } else {
@@ -81,7 +78,10 @@ describe('App Pages', () => {
             const pageUri = typeof uri === 'function' ? uri(testData) : uri;
 
             cy
-              .visit(pageUri)
+              .window().then(({ reactRouterDomHistory }) => {
+                reactRouterDomHistory.push(pageUri);
+              })
+              .wait(1000)
               .waitUntilLoads()
               .shouldRenderWithoutErrors(pageUri);
           });

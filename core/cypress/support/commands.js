@@ -1,28 +1,29 @@
 import { DEV_EMAIL, USER_EMAIL, USER_PASSWORD } from '../testHelpers';
 
 Cypress.Commands.add('eraseAndGenerateTestData', () =>
-  cy.meteorLogoutAndLogin(DEV_EMAIL).then(window =>
-    new Cypress.Promise((resolve, reject) => {
-      const { Meteor } = window;
+  cy
+    .meteorLogoutAndLogin(DEV_EMAIL).then(window =>
+      new Cypress.Promise((resolve, reject) => {
+        const { Meteor } = window;
 
-      Meteor.call('purgeDatabase', Meteor.userId(), (err) => {
-        if (err) {
-          return reject(err);
-        }
+        Meteor.call('purgeDatabase', Meteor.userId(), (err) => {
+          if (err) {
+            return reject(err);
+          }
 
-        return Meteor.call(
-          'generateTestData',
-          DEV_EMAIL,
-          (generateDataError, data) => {
-            if (generateDataError) {
-              return reject(generateDataError);
-            }
+          return Meteor.call(
+            'generateTestData',
+            DEV_EMAIL,
+            (generateDataError, data) => {
+              if (generateDataError) {
+                return reject(generateDataError);
+              }
 
-            return resolve(window);
-          },
-        );
-      });
-    })));
+              return resolve(window);
+            },
+          );
+        });
+      })));
 
 /**
  * This command gets the test data that will be passed to the tested routes.
@@ -48,7 +49,7 @@ Cypress.Commands.add('getTestData', (email) => {
 });
 
 Cypress.Commands.add('meteorLogout', () => {
-  cy.visit('/').then(({ Meteor }) =>
+  cy.window().then(({ Meteor }) =>
     new Cypress.Promise((resolve, reject) => {
       Meteor.logout(err => (err ? reject(err) : resolve()));
     }));
@@ -57,7 +58,7 @@ Cypress.Commands.add('meteorLogout', () => {
 Cypress.Commands.add(
   'meteorLogoutAndLogin',
   (email = USER_EMAIL, password = USER_PASSWORD) => {
-    cy.visit('/').then(window =>
+    cy.window().then(window =>
       new Cypress.Promise((resolve, reject) => {
         const { Meteor } = window;
 

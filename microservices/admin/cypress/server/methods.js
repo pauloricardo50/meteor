@@ -1,9 +1,14 @@
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 import Users from 'core/api/users';
-import { ROLES } from 'core/api/users/userConstants';
 import adminLoansQuery from 'core/api/loans/queries/adminLoans';
 
+// For security reasons, the following conditino is the ONLY
+// place where server code related to end to end tests should be added
 if (process.env.E2E_SERVER) {
+  // remove login rate limits in E2E tests
+  Accounts.removeDefaultRateLimit();
+
   Meteor.methods({
     getEndToEndTestData() {
       const step3Loan = adminLoansQuery

@@ -9,7 +9,8 @@ import { addUserTracking } from '../../utils/analytics';
 import { T } from '../Translation';
 import Accounts from './Accounts';
 
-const LoginPage = ({ location: { search }, history: { push } }) => {
+const LoginPage = ({ location: { search }, history }) => {
+  const { push } = history;
   const { path } = queryString.parse(search);
 
   return (
