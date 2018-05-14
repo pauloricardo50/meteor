@@ -50,6 +50,7 @@ export default class VerificationPage extends Component {
     return (
       <ProcessPage
         {...this.props}
+        sectionId="verification-page"
         stepNb={1}
         id="verification"
         showBottom={false}

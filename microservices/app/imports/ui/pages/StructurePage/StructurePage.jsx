@@ -49,7 +49,13 @@ export default class StructurePage extends Component {
     });
 
     return (
-      <ProcessPage {...this.props} stepNb={2} id="structure" showBottom={false}>
+      <ProcessPage
+        {...this.props}
+        sectionId="structure-page"
+        stepNb={2}
+        id="structure"
+        showBottom={false}
+      >
         <section className="mask1 structure-page">
           <div className="description">
             <p>

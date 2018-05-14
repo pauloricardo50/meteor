@@ -84,9 +84,11 @@ class ProcessPage extends Component {
   };
 
   render() {
+    const { sectionId } = this.props;
+
     this.setBarProps();
     return (
-      <section className="page-title">
+      <section id={sectionId} className="page-title">
         <ProcessPageBar {...this.barProps} className="top-bar" />
         <div className="children animated fadeIn page">
           {this.props.children}
@@ -105,12 +107,14 @@ ProcessPage.propTypes = {
   showBottom: PropTypes.bool,
   serverTime: PropTypes.instanceOf(Date),
   setStep: PropTypes.func.isRequired,
+  sectionId: PropTypes.string,
 };
 
 ProcessPage.defaultProps = {
   showBottom: true,
   serverTime: undefined,
   children: undefined,
+  sectionId: undefined,
 };
 
 export { ProcessPage };

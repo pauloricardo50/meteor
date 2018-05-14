@@ -9,7 +9,12 @@ import OfferList from 'core/components/OfferList';
 const OfferPickerPage = (props) => {
   const { offers, loan, property } = props;
   return (
-    <ProcessPage {...props} stepNb={2} id="offerPicker">
+    <ProcessPage
+      {...props}
+      sectionId="offerpicker-page"
+      stepNb={2}
+      id="offerPicker"
+    >
       <section className="mask1">
         <h1>
           <T id="OfferPickerPage.title" />

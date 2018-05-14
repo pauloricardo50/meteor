@@ -1,5 +1,5 @@
 import capitalize from 'lodash/capitalize';
-import { adminEmail, route } from '../../imports/core/cypress/testHelpers';
+import { ADMIN_EMAIL, route } from '../../imports/core/cypress/testHelpers';
 
 // "public", "admin", "dev" and other keys of the pages object
 // are the type of authentication needed for those pages
@@ -99,12 +99,12 @@ const pages = {
       }),
 
     'Not Found': route('/a-page-that-does-not-exist', {
-      shouldRender: 'section.not-found-page',
+      shouldRender: '#not-found-page',
     }),
   },
 
   dev: {
-    Dev: route('/dev', { shouldRender: 'section.dev-page' }),
+    Dev: route('/dev', { shouldRender: '#dev-page' }),
   },
 };
 
@@ -116,7 +116,7 @@ describe('Admin Pages', () => {
 
     cy
       .eraseAndGenerateTestData()
-      .getTestData(adminEmail)
+      .getTestData(ADMIN_EMAIL)
       .then((data) => {
         testData = data;
       });

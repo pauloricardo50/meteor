@@ -182,7 +182,7 @@ export default class DevPage extends Component {
 
     if (!Meteor.isProduction || Meteor.isStaging) {
       return (
-        <section className="dev-page">
+        <section id="dev-page">
           <div>
             {!Meteor.isDevelopment ? (
               <h4 className="error">
