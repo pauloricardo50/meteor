@@ -9,6 +9,8 @@ const EMAIL = 'info@e-potek.ch';
 const getMailTo = name =>
   `mailto:${EMAIL}?subject=${encodeURI(`Contacter ${name}`)}`;
 
+const extractFirstName = name => name.split(' ')[0];
+
 const AboutPageTeamMember = ({ name, src, title }) => (
   <div className="about-page-team-member">
     <img src={src} alt={name} />
@@ -20,7 +22,10 @@ const AboutPageTeamMember = ({ name, src, title }) => (
           <IconButton
             type="mail"
             tooltip={
-              <T id="AboutPageTeamMember.emailTooltip" values={{ name }} />
+              <T
+                id="AboutPageTeamMember.emailTooltip"
+                values={{ name: extractFirstName(name) }}
+              />
             }
           />
         </a>
@@ -28,7 +33,10 @@ const AboutPageTeamMember = ({ name, src, title }) => (
           <IconButton
             type="phone"
             tooltip={
-              <T id="AboutPageTeamMember.phoneTooltip" values={{ name }} />
+              <T
+                id="AboutPageTeamMember.phoneTooltip"
+                values={{ name: extractFirstName(name) }}
+              />
             }
           />
         </a>
