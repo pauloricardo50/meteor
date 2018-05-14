@@ -25,6 +25,7 @@ const routesConfig = [
   { path: '/contact', component: ContactPage },
   { path: '/interests', component: InterestsPage },
   { path: '/careers', component: CareersPage },
+  { path: '/about', component: AboutPage },
 
   ...liteVersionModifier([
     { path: '/conditions', component: ConditionsPage },
