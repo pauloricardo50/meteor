@@ -1,14 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const AboutPageTeamMember = ({ name, src, title, email, phone }) => (
+import IconButton from 'core/components/IconButton';
+import { T } from 'core/components/Translation';
+
+const EMAIL = 'info@e-potek.ch';
+
+const getMailTo = name =>
+  `mailto:${EMAIL}?subject=${encodeURI(`Contacter ${name}`)}`;
+
+const AboutPageTeamMember = ({ name, src, title }) => (
   <div className="about-page-team-member">
     <img src={src} alt={name} />
     <div className="about-page-team-member-info">
       <h3>{name}</h3>
       <h4>{title}</h4>
-      {email && <p>{email}</p>}
-      {phone && <p>{phone}</p>}
+      <span className="about-page-team-member-contact">
+        <a href={getMailTo(name)} className="email">
+          <IconButton
+            type="mail"
+            tooltip={
+              <T id="AboutPageTeamMember.emailTooltip" values={{ name }} />
+            }
+          />
+        </a>
+        <a href="tel:+41225660110">
+          <IconButton
+            type="phone"
+            tooltip={
+              <T id="AboutPageTeamMember.phoneTooltip" values={{ name }} />
+            }
+          />
+        </a>
+      </span>
     </div>
   </div>
 );
@@ -17,13 +41,6 @@ AboutPageTeamMember.propTypes = {
   name: PropTypes.string.isRequired,
   src: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  email: PropTypes.string,
-  phone: PropTypes.string,
-};
-
-AboutPageTeamMember.defaultProps = {
-  email: '',
-  phone: '',
 };
 
 export default AboutPageTeamMember;

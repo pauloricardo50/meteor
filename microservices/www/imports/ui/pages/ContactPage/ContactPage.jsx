@@ -10,6 +10,7 @@ import { VARIANTS } from '../../WwwLayout/WwwTopNav';
 import { PHONE, EMAIL, ADDRESS, MAPS_ADDRESS } from './contactConstants';
 
 import ContactUsForm from '../../components/ContactUsForm';
+import ContactPageInformation from './ContactPageInformation';
 
 const ContactPage = () => (
   <WwwLayout className="contact-page">
@@ -42,18 +43,7 @@ const ContactPage = () => (
     <WwwLayout.Footer transparent={false}>
       <WwwLayout.Footer.Top>
         <div className="contact-footer">
-          <div className="email">
-            <Icon type="mail" className="icon" />
-            <h3>
-              <Mailto email={EMAIL} />
-            </h3>
-          </div>
-          <div className="phone">
-            <Icon type="phone" className="icon" />
-            <h3>
-              <Mailto tel={PHONE} />
-            </h3>
-          </div>
+          <ContactPageInformation />
         </div>
       </WwwLayout.Footer.Top>
     </WwwLayout.Footer>

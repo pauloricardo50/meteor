@@ -13,9 +13,9 @@ const AboutPage = () => (
     <WwwLayout.TopNav />
     <AboutPagePart1 />
     <AboutPagePart2 />
+    <AboutPageTeam />
     <AboutPagePart3 />
     <AboutPagePart4 />
-    <AboutPageTeam />
     <AboutPageOffice />
     <WwwLayout.Footer />
   </WwwLayout>

@@ -15,17 +15,13 @@
   h1 {
     color: $primary;
   }
-
-  p {
-    text-align: center;
-  }
 }
 
 .about-page-part-2 {
   background-color: $primary;
   color: white;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: flex-start;
   justify-content: space-around;
   flex-wrap: wrap;
@@ -33,37 +29,143 @@
   h2,
   h3 {
     color: white;
+    // padding-left: 10%;
+    margin: 0;
+    margin-bottom: 40px;
+    line-height: 48px;
+  }
+
+  .about-page-part-2-content {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-self: stretch;
   }
 
   .about-page-part-2-left,
   .about-page-part-2-right {
     display: flex;
-    flex-direction: column;
-    text-align: justify;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-bottom: 32px;
+
+    p.description {
+      margin: 0;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    b {
+      margin-bottom: 1em;
+    }
+
+    .icon-circle-error,
+    .icon-circle-success {
+      flex-shrink: 0;
+      margin-right: 16px;
+      border: 2px solid $success;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .icon-success,
+      .icon-error {
+        background-color: $success;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .icon-error {
+        background-color: $error;
+      }
+    }
+
+    .icon-circle-error {
+      border-color: $error;
+    }
   }
 }
 
 .about-page-part-3 {
   background-color: white;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-around;
 
-  h2 {
+  h3 {
     color: $primary;
+    align-self: center;
+  }
+
+  .card1 {
+    padding: 64px;
+    margin: 8px;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: $med) {
+  .about-page-part-3 .card1 {
+    padding: 32px;
   }
 }
 
 .about-page-part-4 {
-  background-color: $primary-dark;
   color: white;
+  background-color: white;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  width: 100%;
+
+  &.about-page-part-4 {
+    padding: 0;
+  }
 
   h2,
   h3 {
     color: white;
+  }
+
+  .about-page-part-4-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+
+    > * {
+      box-sizing: border-box;
+      min-width: 400px;
+      flex: 1;
+    }
+
+    .about-page-part-4-text {
+      background-color: $primary-dark;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10% 16px;
+    }
+
+    .about-page-part-4-image {
+      background-image: url('/img/placeholder.png');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+    }
   }
 
   .about-page-part-4-list {
@@ -84,6 +186,36 @@
   }
 }
 
+.about-page-part-4-tabs {
+  display: flex;
+  justify-content: center;
+
+  .about-page-part-4-tabs-tab {
+    flex-basis: 33%;
+    padding: 24px 32px;
+    background-color: $primary-dark;
+    cursor: pointer;
+    transition: color 200ms $bezier, background-color 200ms $bezier;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    h4 {
+      margin: 0;
+      color: white;
+    }
+
+    &:hover {
+      background-color: $primary;
+    }
+
+    &.active {
+      background-color: $primary;
+    }
+  }
+}
+
 @media (max-width: $small) {
   .about-page-part-4 .about-page-part-4-list > * {
     padding: 0;
@@ -97,6 +229,10 @@
   align-items: center;
   flex-wrap: wrap;
 
+  h2 {
+    color: $primary;
+  }
+
   &.about-page-office {
     padding: 80px 0;
   }
@@ -107,9 +243,49 @@
     display: flex;
     flex-direction: column;
 
+    hr {
+      width: 40px;
+      height: 5px;
+      background-color: $primary;
+      margin: 0;
+    }
+
     .about-page-office-info-wrapper {
       max-width: 400px;
       align-self: center;
+    }
+
+    .about-page-office-description {
+      width: 100%;
+      text-align: left;
+
+      p {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .email,
+      .phone {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 16px;
+
+        &:hover {
+          opacity: 0.5;
+        }
+
+        .icon {
+          margin-right: 8px;
+        }
+
+        h3 {
+          flex: 1;
+          margin: 0;
+          font-size: 1.25em;
+        }
+      }
     }
   }
 

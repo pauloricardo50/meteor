@@ -1,23 +1,18 @@
 import React from 'react';
 
+import { Link } from 'react-router-dom';
 import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
 
 const AboutPageTeamRecruiting = () => (
-  <div className="about-page-team-recruiting">
+  <Link to="/careers" className="about-page-team-recruiting">
     <img src="/img/placeholder.png" alt="" />
     <div className="about-page-team-member-info">
-      <h3>Vous!</h3>
+      <h3>Vous !</h3>
       <h4>e-Potek recrute</h4>
-      <Button>
-        Voir nos postes ouverts
-        <Icon type="right" />
-      </Button>
-
-      {/* To be decided */}
-      {/* <a href="">Voir nos postes ouverts</a> */}
+      <b className="hover-show">Voir nos postes ouverts</b>
     </div>
-  </div>
+  </Link>
 );
 
 export default AboutPageTeamRecruiting;
