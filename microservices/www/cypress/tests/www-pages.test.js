@@ -18,8 +18,8 @@ describe('Www Pages', () => {
 
         cy
           .visit(pageUri)
-          .waitUntilLoads()
-          .shouldRenderWithoutErrors(pageUri);
+          .get('#loading-container').should('not.exist')
+          .routeShouldExist(pageUri);
       });
     });
   });
