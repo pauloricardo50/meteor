@@ -45,6 +45,7 @@ export default class BorrowersTable extends Component {
         columnOptions={columnOptions}
         rows={this.setupRows(this.props)}
         noIntl
+        className="borrowers-table"
       />
     );
   }

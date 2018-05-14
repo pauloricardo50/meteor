@@ -15,10 +15,10 @@ class SearchPage extends Component {
     const { searchQuery } = this.state;
 
     return (
-      <div className="search-container">
+      <section className="search-page">
         <SearchForm onSubmit={this.handleSubmit} />
         {searchQuery && <SearchResults searchQuery={searchQuery} />}
-      </div>
+      </section>
     );
   }
 }

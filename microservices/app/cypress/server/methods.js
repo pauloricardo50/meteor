@@ -11,7 +11,7 @@ import {
 // For security reasons, the following conditino is the ONLY
 // place where server code related to end to end tests should be added
 if (process.env.E2E_SERVER) {
-    // remove login rate limits in E2E tests
+  // remove login rate limits in E2E tests
   Accounts.removeDefaultRateLimit();
 
   Meteor.methods({

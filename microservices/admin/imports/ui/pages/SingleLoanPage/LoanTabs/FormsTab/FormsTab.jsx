@@ -217,7 +217,7 @@ export default class FormsTab extends Component {
     const { value, modify } = this.state;
 
     return (
-      <section className="mask1">
+      <section className="mask1 forms-tab">
         <Select
           label="Formulaire"
           value={value}
