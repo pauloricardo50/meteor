@@ -6,20 +6,29 @@ import IconButton from 'core/components/IconButton';
 import { toMoney } from 'core/utils/conversionFunctions';
 
 const Widget1SingleInputInput = ({
+  name,
   value,
   setInputValue,
   auto,
   unsetValue,
 }) => (
   <div className={classnames({ 'widget1-input': true, auto })}>
-    <span className="currency">CHF</span>
+    <label htmlFor={name} className="currency">
+      CHF
+    </label>
     {/* Use type tel to display right keyboard without type number issues */}
-    <input type="tel" value={toMoney(value)} onChange={setInputValue} />
+    <input
+      id={name}
+      type="tel"
+      value={toMoney(value)}
+      onChange={setInputValue}
+    />
     <IconButton type="close" tooltip="Effacer" onClick={unsetValue} />
   </div>
 );
 
 Widget1SingleInputInput.propTypes = {
+  name: PropTypes.string.isRequired,
   value: PropTypes.any,
   setInputValue: PropTypes.func.isRequired,
   auto: PropTypes.bool.isRequired,
