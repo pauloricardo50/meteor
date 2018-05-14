@@ -1,13 +1,11 @@
 import React from 'react';
-import Mailto from 'react-protected-mailto';
 
 import { T } from 'core/components/Translation';
 import MapWithMarker from 'core/components/maps/MapWithMarker';
-import Icon from 'core/components/Icon';
 import Button from 'core/components/Button';
 import WwwLayout from '../../WwwLayout';
 import { VARIANTS } from '../../WwwLayout/WwwTopNav';
-import { PHONE, EMAIL, ADDRESS, MAPS_ADDRESS } from './contactConstants';
+import { ADDRESS, MAPS_ADDRESS } from './contactConstants';
 
 import ContactUsForm from '../../components/ContactUsForm';
 import ContactPageInformation from './ContactPageInformation';
