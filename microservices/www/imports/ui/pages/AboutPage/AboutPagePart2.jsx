@@ -5,6 +5,9 @@ import Icon from 'core/components/Icon';
 
 const AboutPagePart2 = () => (
   <div className="about-page-part-2">
+    <h2>
+      <T id="AboutPagePart2.title" />
+    </h2>
     <div className="about-page-part-2-content">
       <div className="about-page-part-2-left">
         <div className="icon-circle-error">
@@ -13,7 +16,9 @@ const AboutPagePart2 = () => (
           </div>
         </div>
         <span>
-          <h3>Sans e-Potek</h3>
+          <h3>
+            <T id="AboutPagePart2.title1" />
+          </h3>
           <p className="description">
             <T id="AboutPagePart2.description1" />
           </p>
@@ -26,7 +31,9 @@ const AboutPagePart2 = () => (
           </div>
         </div>
         <span>
-          <h3>Avec e-Potek</h3>
+          <h3>
+            <T id="AboutPagePart2.title2" />
+          </h3>
           <p className="description">
             <T id="AboutPagePart2.description2" />
           </p>

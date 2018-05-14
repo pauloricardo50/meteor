@@ -26,10 +26,13 @@
   justify-content: space-around;
   flex-wrap: wrap;
 
+  h2 {
+    padding-left: 10%;
+  }
+
   h2,
   h3 {
     color: white;
-    // padding-left: 10%;
     margin: 0;
     margin-bottom: 40px;
     line-height: 48px;
