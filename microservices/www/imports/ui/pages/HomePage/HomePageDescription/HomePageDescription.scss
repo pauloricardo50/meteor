@@ -79,10 +79,12 @@ $progression-color: #8db6e6;
   background-color: $progression-color;
 }
 
-.home-page-description-seo-click {
+// For width: auto; specificity
+span.home-page-description-seo-click.home-page-description-seo-click {
   display: flex;
   align-items: center;
   cursor: pointer;
+  width: auto;
 
   &:hover {
     text-decoration: underline;
