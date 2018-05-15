@@ -37,7 +37,7 @@ const employees = [
   },
   {
     email: '',
-    src: '/img/placeholder.png',
+    src: '/img/team/andra.jpg',
     name: 'Andra Lazariuc',
     title: 'Junior Software Engineer',
   },
