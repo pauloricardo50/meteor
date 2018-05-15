@@ -13,11 +13,6 @@ const mapStyles = [
   {
     featureType: 'administrative.province',
     elementType: 'labels.text',
-    // stylers: [
-    //   {
-    //     color: '#ffffff',
-    //   },
-    // ],
   },
   {
     featureType: 'landscape',
