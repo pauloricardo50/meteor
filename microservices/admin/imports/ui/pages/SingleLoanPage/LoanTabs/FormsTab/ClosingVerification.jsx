@@ -43,7 +43,7 @@ export default class ClosingVerification extends Component {
     const { loan } = this.props;
     const steps = loan.logic.closingSteps;
     return (
-      <div style={{ padding: '0 16px' }}>
+      <div className="closing-verification" style={{ padding: '0 16px' }}>
         {steps && steps.length ? (
           steps.map(step =>
             (step.type === CLOSING_STEPS_TYPE.UPLOAD ? (

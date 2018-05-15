@@ -72,10 +72,50 @@ const pages = {
       route(`/loans/${_id}/tasks`, {
         shouldRender: 'section.single-loan-page .tasks-tab .tasks-table',
       }),
-    'Loan Forms Tab': ({ step3Loan: { _id } }) =>
+
+    'Loan Forms Tab': ({ step3Loan: { _id, borrowers } }) =>
       route(`/loans/${_id}/forms`, {
         shouldRender: 'section.single-loan-page .forms-tab',
+        dropdownShouldRender: {
+          'section.single-loan-page .forms-tab .mui-select [aria-haspopup=true]:first': [
+            ...borrowers.reduce(
+              (accumulator, { _id }) => [
+                ...accumulator,
+                {
+                  item: `li[data-value="borrower.${_id}.personal"]`,
+                  shouldRender:
+                    'section.single-loan-page .forms-tab .borrower-personal-autoform',
+                },
+                {
+                  item: `li[data-value="borrower.${_id}.finance"]`,
+                  shouldRender:
+                    'section.single-loan-page .forms-tab .borrower-finance-autoform',
+                },
+              ],
+              [],
+            ),
+
+            {
+              item: `li[data-value="loan.${_id}.property"]`,
+              shouldRender: `section.single-loan-page .forms-tab .loan-autoform,
+                section.single-loan-page .forms-tab .property-autoform`,
+            },
+
+            // {
+            //   item: 'li[data-value="closing"]',
+            //   shouldRender:
+            //     'section.single-loan-page .forms-tab .closing-verification',
+            // },
+
+            {
+              item: 'li[data-value="files"]',
+              shouldRender:
+                'section.single-loan-page .forms-tab #tabs [role="tablist"]',
+            },
+          ],
+        },
       }),
+
     'Loan Documents Tab': ({ step3Loan: { _id } }) =>
       route(`/loans/${_id}/files`, {
         shouldRender:

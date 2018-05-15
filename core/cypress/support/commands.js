@@ -99,10 +99,7 @@ Cypress.Commands.add(
 
     const {
       uri,
-      options: {
-        shouldRender: expectedDomElement,
-        shouldContain: expectedString,
-      },
+      options: { shouldRender: expectedDomElement, dropdownShouldRender },
     } = pageRoute;
 
     cy
@@ -112,6 +109,31 @@ Cypress.Commands.add(
       })
       .routeShouldExist(uri)
       .get(expectedDomElement)
-      .should('exist');
+      .should('exist')
+
+      // select dropdown items and check if what we want gets rendered
+      .then(() => {
+        if (dropdownShouldRender) {
+          Object.keys(dropdownShouldRender).forEach((dropdownSelector) => {
+            const items = dropdownShouldRender[dropdownSelector];
+            items.forEach(({ item: itemSelector, shouldRender }) => {
+              cy.selectDropdownOption(dropdownSelector, itemSelector);
+              cy.get(shouldRender).should('exist');
+            });
+          });
+        }
+      });
+  },
+);
+
+Cypress.Commands.add(
+  'selectDropdownOption',
+  (dropdownSelector, itemSelector) => {
+    // open dropdown
+    const dropdown = cy.get(dropdownSelector).first();
+    dropdown.click();
+
+    // click dropdown option
+    dropdown.get(itemSelector).click();
   },
 );
