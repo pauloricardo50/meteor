@@ -21,7 +21,9 @@ const Widget1SingleInput = ({
   <div className="widget1-single-input">
     <div className="box">
       <h4>
-        <T id={`Widget1SingleInput.${name}`} />
+        <label htmlFor={name}>
+          <T id={`Widget1SingleInput.${name}`} />
+        </label>
       </h4>
       <div className="box-content">
         <Widget1SingleInputInput
@@ -30,6 +32,7 @@ const Widget1SingleInput = ({
           auto={auto}
           setAuto={setAuto}
           unsetValue={unsetValue}
+          name={name}
         />
         <Widget1SingleInputSlider
           value={value}

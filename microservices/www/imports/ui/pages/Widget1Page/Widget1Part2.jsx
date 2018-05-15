@@ -6,7 +6,7 @@ import Widget1Recap from './Widget1Recap';
 import Widget1Monthly from './Widget1Monthly';
 
 const Widget1Part2 = ({ finma }) => (
-  <div className="widget1-part-2">
+  <div className="widget1-part-2 animated fadeIn">
     <Widget1Inputs finma={finma} />
     <Widget1Recap finma={finma} />
     <Widget1Monthly />

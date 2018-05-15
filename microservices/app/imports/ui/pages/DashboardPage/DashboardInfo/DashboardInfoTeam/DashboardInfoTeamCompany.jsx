@@ -10,7 +10,7 @@ const removeDuplicates = (array, keyToFilter) => uniqBy(array, keyToFilter);
 
 const defaultTeam = [
   {
-    src: '/img/yannis.jpg',
+    src: '/img/team/yannis.jpg',
     name: 'Yannis Eggert',
     title: 'Directeur',
     email: 'yannis@e-potek.ch',

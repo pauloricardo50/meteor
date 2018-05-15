@@ -2,77 +2,135 @@ import colors from '../../config/colors';
 
 const mapStyles = [
   {
-    featureType: 'administrative',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#444444' }],
+    featureType: 'administrative.land_parcel',
+    elementType: 'labels',
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
+  },
+  {
+    featureType: 'administrative.province',
+    elementType: 'labels.text',
+    stylers: [
+      {
+        color: '#ffffff',
+      },
+    ],
   },
   {
     featureType: 'landscape',
-    elementType: 'all',
-    stylers: [{ color: '#f2f2f2' }],
-  },
-  {
-    featureType: 'road',
-    elementType: 'all',
-    stylers: [{ saturation: -100 }, { lightness: 45 }],
-  },
-  {
-    featureType: 'road.highway',
-    elementType: 'all',
-    stylers: [{ visibility: 'simplified' }],
-  },
-  {
-    featureType: 'transit',
-    elementType: 'all',
-    stylers: [{ visibility: 'off' }],
-  },
-  {
-    featureType: 'water',
-    elementType: 'all',
-    stylers: [{ color: colors.primary }, { visibility: 'on' }],
-  },
-  {
-    featureType: 'poi.park',
-    elementType: 'geometry',
     stylers: [
-      { hue: colors.success },
-      { saturation: 1 },
-      { lightness: -15 },
-      { visibility: 'on' },
+      {
+        visibility: 'simplified',
+      },
     ],
   },
-
-  // Information density
   {
-    featureType: 'administrative.land_parcel',
-    stylers: [{ visibility: 'off' }],
-  },
-  {
-    featureType: 'administrative.neighborhood',
-    stylers: [{ visibility: 'off' }],
+    featureType: 'poi',
+    stylers: [
+      {
+        visibility: 'simplified',
+      },
+    ],
   },
   {
     featureType: 'poi',
     elementType: 'labels.text',
-    stylers: [{ visibility: 'off' }],
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
+  },
+  {
+    featureType: 'poi.attraction',
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
   },
   {
     featureType: 'poi.business',
-    stylers: [{ visibility: 'off' }],
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
   },
   {
-    featureType: 'road',
-    elementType: 'labels.icon',
-    stylers: [{ visibility: 'off' }],
+    featureType: 'poi.park',
+    elementType: 'labels.text',
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
   },
   {
-    featureType: 'transit',
-    stylers: [{ visibility: 'off' }],
+    featureType: 'road.arterial',
+    elementType: 'labels',
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
+  },
+  {
+    featureType: 'road.highway',
+    stylers: [
+      {
+        color: '#f3af50',
+      },
+      {
+        visibility: 'simplified',
+      },
+    ],
+  },
+  {
+    featureType: 'road.highway',
+    elementType: 'labels',
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
+  },
+  {
+    featureType: 'road.local',
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
+  },
+  {
+    featureType: 'road.local',
+    elementType: 'labels',
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
   },
   {
     featureType: 'water',
-    elementType: 'labels.text',
-    stylers: [{ visibility: 'off' }],
+    stylers: [
+      {
+        color: '#4c7ff7',
+      },
+    ],
+  },
+  {
+    featureType: 'water',
+    elementType: 'labels',
+    stylers: [
+      {
+        visibility: 'simplified',
+      },
+    ],
   },
 ];
 
