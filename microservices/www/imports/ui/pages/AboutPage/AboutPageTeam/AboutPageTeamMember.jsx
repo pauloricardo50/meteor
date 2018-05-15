@@ -13,7 +13,7 @@ const extractFirstName = name => name.split(' ')[0];
 
 const AboutPageTeamMember = ({ name, src, title }) => (
   <div className="about-page-team-member">
-    <img src={src} alt={name} />
+    <img src={src} alt={name} className="about-page-team-member-image" />
     <div className="about-page-team-member-info">
       <h3>{name}</h3>
       <h4>{title}</h4>
