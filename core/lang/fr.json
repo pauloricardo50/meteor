@@ -1,4 +1,8 @@
 {
+  "AboutPageTeamRecruiting.title": "Vous !",
+  "AboutPageTeamRecruiting.subtitle": "e-Potek recrute",
+  "AboutPageTeamRecruiting.hoverText": "Voir nos postes ouverts",
+
   "AboutPagePart1.description":
     "Les conseillers d’e-Potek sont des professionnels d’expérience, en phase avec les évolutions d’un marché en permanente évolution. L'équipe est composée d’experts de confiance sur les sujets du financement hypothécaire, de la prévoyance et de la fiscalité immobilière.",
   "AboutPagePart1.title": "À propos d'e-Potek",
@@ -857,6 +861,7 @@
   "general.close": "Fermer",
   "general.continue": "Continuer",
   "general.delete": "Supprimer",
+  "general.erase": "Effacer",
   "general.download": "Télécharger",
   "general.hide": "Masquer",
   "general.income": "Revenus",

@@ -33,7 +33,7 @@ const employees = [
     email: '',
     src: '/img/team/tarik.jpg',
     name: 'Tarik Lamkarfed',
-    title: 'Marketing & SEO',
+    title: 'Marketing & Communications Manager',
   },
   {
     email: '',
@@ -45,7 +45,7 @@ const employees = [
     email: '',
     src: '/img/team/harrison.jpg',
     name: 'Harrison Mean',
-    title: 'Design',
+    title: 'Operations',
   },
   {
     email: '',
