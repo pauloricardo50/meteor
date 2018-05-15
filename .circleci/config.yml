@@ -196,9 +196,10 @@ jobs:
       - store_artifacts:
           path: ./e2e-results/cypress/admin-videos
       - persist_to_workspace:
-          root: /home/circleci
+          root: /
           paths:
-            - app
+            - home/circleci/app
+            - usr/local/bin/meteor
 
   deploy_admin:
     <<: *defaults
@@ -206,7 +207,7 @@ jobs:
       enabled: true
     steps:
       - attach_workspace:
-          at: ~/
+          at: /
       - run:
           name: Prepare deployment
           command: |
@@ -223,7 +224,7 @@ jobs:
       enabled: true
     steps:
       - attach_workspace:
-          at: ~/
+          at: /
       - run:
           name: Prepare deployment
           command: |
@@ -240,7 +241,7 @@ jobs:
       enabled: true
     steps:
       - attach_workspace:
-          at: ~/
+          at: /
       - run:
           name: Prepare deployment
           command: |
