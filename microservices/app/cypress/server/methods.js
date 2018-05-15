@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import Users from 'core/api/users';
 import { ROLES } from 'core/api/users/userConstants';
+import { AUCTION_STATUS } from 'core/api/loans/loanConstants';
 import userLoansQuery from 'core/api/loans/queries/userLoans';
 import {
   createLoginToken,
@@ -25,7 +26,18 @@ if (process.env.E2E_SERVER) {
         { fields: { _id: 1 } },
       );
 
-      const step3Loan = userLoansQuery.clone({ userId, step: 3 }).fetchOne();
+      const step3LoanWithNoAuction = userLoansQuery
+        .clone({ userId, step: 3, auction: 'none' })
+        .fetchOne();
+
+      const step3LoanWithStartedAuction = userLoansQuery
+        .clone({ userId, step: 3, auction: 'started' })
+        .fetchOne();
+
+      const step3LoanWithEndedAuction = userLoansQuery
+        .clone({ userId, step: 3, auction: 'ended' })
+        .fetchOne();
+
       const unownedLoan = userLoansQuery
         .clone({ userId, unowned: true })
         .fetchOne();
@@ -37,7 +49,9 @@ if (process.env.E2E_SERVER) {
       );
 
       return {
-        step3Loan,
+        step3LoanWithEndedAuction,
+        step3LoanWithStartedAuction,
+        step3LoanWithNoAuction,
         unownedLoan,
         adminLoginToken,
         emailVerificationToken,
