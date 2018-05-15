@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+import { T } from 'core/components/Translation';
 import IconButton from 'core/components/IconButton';
 import { toMoney } from 'core/utils/conversionFunctions';
 
@@ -23,7 +24,11 @@ const Widget1SingleInputInput = ({
       value={toMoney(value)}
       onChange={setInputValue}
     />
-    <IconButton type="close" tooltip="Effacer" onClick={unsetValue} />
+    <IconButton
+      type="close"
+      tooltip={<T id="general.erase" />}
+      onClick={unsetValue}
+    />
   </div>
 );
 
