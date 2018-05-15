@@ -1,5 +1,8 @@
-import capitalize from 'lodash/capitalize';
-import { ADMIN_EMAIL, route } from '../../imports/core/cypress/testHelpers';
+import {
+  ADMIN_EMAIL,
+  route,
+  generateTestsFromPagesConfig,
+} from '../../imports/core/cypress/testHelpers';
 
 // "public", "admin", "dev" and other keys of the pages object
 // are the type of authentication needed for those pages
@@ -122,38 +125,5 @@ describe('Admin Pages', () => {
       });
   });
 
-  Object.keys(pages).forEach((pageAuthentication) => {
-    describe(`${capitalize(pageAuthentication)} Pages`, () => {
-      Object.keys(pages[pageAuthentication]).forEach((pageName) => {
-        describe(`${pageName} Page`, () => {
-          it('should render', () => {
-            if (pageAuthentication === 'public') {
-              cy.meteorLogout();
-            } else {
-              cy.meteorLogoutAndLogin(`${pageAuthentication}-1@e-potek.ch`);
-            }
-
-            const pageRoute =
-              typeof pages[pageAuthentication][pageName] === 'function'
-                ? pages[pageAuthentication][pageName](testData)
-                : pages[pageAuthentication][pageName];
-
-            const {
-              uri,
-              options: { shouldRender: expectedDomElement },
-            } = pageRoute;
-
-            cy
-              .window()
-              .then(({ reactRouterDomHistory }) => {
-                reactRouterDomHistory.push(uri);
-              })
-              .routeShouldExist(uri)
-              .get(expectedDomElement)
-              .should('exist');
-          });
-        });
-      });
-    });
-  });
+  generateTestsFromPagesConfig(pages, () => testData);
 });

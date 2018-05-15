@@ -1,5 +1,8 @@
-import { USER_EMAIL, route } from '../../imports/core/cypress/testHelpers';
-import capitalize from 'lodash/capitalize';
+import {
+  USER_EMAIL,
+  route,
+  generateTestsFromPagesConfig,
+} from '../../imports/core/cypress/testHelpers';
 
 const pages = {
   public: {
@@ -127,47 +130,5 @@ describe('App Pages', () => {
       });
   });
 
-  Object.keys(pages).forEach((pageAuthentication) => {
-    describe(`${capitalize(pageAuthentication)} Pages`, () => {
-      Object.keys(pages[pageAuthentication]).forEach((pageName) => {
-        describe(`${pageName} Page`, () => {
-          it('should render', () => {
-            // logout the impersonated user
-            const { IMPERSONATE_SESSION_KEY } = testData;
-            cy
-              .window()
-              .then(({ Session }) => Session.clear(IMPERSONATE_SESSION_KEY));
-
-            if (pageAuthentication === 'public') {
-              cy.meteorLogout();
-            } else {
-              cy.meteorLogoutAndLogin(`${pageAuthentication}-1@e-potek.ch`);
-            }
-
-            const pageRoute =
-              typeof pages[pageAuthentication][pageName] === 'function'
-                ? pages[pageAuthentication][pageName](testData)
-                : pages[pageAuthentication][pageName];
-
-            const {
-              uri,
-              options: {
-                shouldRender: expectedDomElement,
-                shouldContain: expectedString,
-              },
-            } = pageRoute;
-
-            cy
-              .window()
-              .then(({ reactRouterDomHistory }) => {
-                reactRouterDomHistory.push(uri);
-              })
-              .routeShouldExist(uri)
-              .get(expectedDomElement)
-              .should('exist');
-          });
-        });
-      });
-    });
-  });
+  generateTestsFromPagesConfig(pages, () => testData);
 });

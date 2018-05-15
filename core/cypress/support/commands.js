@@ -82,3 +82,36 @@ Cypress.Commands.add('routeShouldExist', (expectedPageUri) => {
   const baseUrl = Cypress.config('baseUrl');
   cy.url().should('eq', baseUrl + expectedPageUri);
 });
+
+Cypress.Commands.add('setAuthentication', (pageAuthentication) => {
+  if (pageAuthentication === 'public') {
+    cy.meteorLogout();
+  } else {
+    cy.meteorLogoutAndLogin(`${pageAuthentication}-1@e-potek.ch`);
+  }
+});
+
+Cypress.Commands.add(
+  'routeShouldRenderSuccessfully',
+  (routeConfig, testData) => {
+    const pageRoute =
+      typeof routeConfig === 'function' ? routeConfig(testData) : routeConfig;
+
+    const {
+      uri,
+      options: {
+        shouldRender: expectedDomElement,
+        shouldContain: expectedString,
+      },
+    } = pageRoute;
+
+    cy
+      .window()
+      .then(({ reactRouterDomHistory }) => {
+        reactRouterDomHistory.push(uri);
+      })
+      .routeShouldExist(uri)
+      .get(expectedDomElement)
+      .should('exist');
+  },
+);
