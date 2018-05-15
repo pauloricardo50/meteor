@@ -1,8 +1,6 @@
 import React from 'react';
 
 import { Link } from 'react-router-dom';
-import Button from 'core/components/Button';
-import Icon from 'core/components/Icon';
 
 const AboutPageTeamRecruiting = () => (
   <Link to="/careers" className="about-page-team-recruiting">
