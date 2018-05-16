@@ -1,15 +1,26 @@
 import React from 'react';
 
 import { T } from 'core/components/Translation';
+import Button from 'core/components/Button';
 
 const AboutPagePart3 = () => (
   <div className="about-page-part-3">
-    <h2>
-      <T id="AboutPagePart3.title" />
-    </h2>
-    <p className="description">
-      <T id="AboutPagePart3.description" />
-    </p>
+    <div className="card1 about-page-part-3-left">
+      <h3>
+        <T id="AboutPagePart3.title1" />
+      </h3>
+      <p className="description">
+        <T id="AboutPagePart3.description1" />
+      </p>
+    </div>
+    <div className="card1 about-page-part-3-left">
+      <h3>
+        <T id="AboutPagePart3.title2" />
+      </h3>
+      <p className="description">
+        <T id="AboutPagePart3.description2" />
+      </p>
+    </div>
   </div>
 );
 

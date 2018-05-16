@@ -3,15 +3,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { T } from 'core/components/Translation';
-import togglePoint, { TOGGLE_POINTS } from 'core/api/features/togglePoint';
 
-const modifier = togglePoint(TOGGLE_POINTS.ROUTES_NOT_PRODUCTION_READY);
-export const links = [
-  'interests',
-  'contact',
-  'careers',
-  ...modifier(['about']),
-];
+export const links = ['interests', 'contact', 'about', 'careers'];
 
 const WwwTopNavLinksList = ({ variant }) => (
   <React.Fragment>

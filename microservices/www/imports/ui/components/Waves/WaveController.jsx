@@ -54,7 +54,7 @@ export default class WaveController extends Component {
   };
 
   createGraph = (wave) => {
-    const { width } = this.props;
+    const { width, height } = this.props;
 
     const data = [{ type: 'M', values: [0, 0] }];
 
@@ -63,7 +63,7 @@ export default class WaveController extends Component {
         type: 'L',
         values: [
           x,
-          HEIGHT - this.pathFunction(this.props, this.state.offset, x),
+          height - this.pathFunction(this.props, this.state.offset, x),
         ],
       });
     }
@@ -87,9 +87,7 @@ export default class WaveController extends Component {
   };
 
   render() {
-    return (
-      <Wave height={HEIGHT} setPathRef={this.setPathRef} {...this.props} />
-    );
+    return <Wave setPathRef={this.setPathRef} {...this.props} />;
   }
 }
 
@@ -100,8 +98,10 @@ WaveController.propTypes = {
   speed: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
   noSlope: PropTypes.bool,
+  height: PropTypes.number,
 };
 
 WaveController.defaultProps = {
   noSlope: false,
+  height: HEIGHT,
 };

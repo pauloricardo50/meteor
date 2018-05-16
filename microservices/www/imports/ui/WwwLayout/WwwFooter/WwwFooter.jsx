@@ -9,7 +9,7 @@ import WwwFooterSocial from './WwwFooterSocial';
 
 const WwwFooter = ({ transparent, children }) => (
   <footer className="www-footer home-page__footer">
-    <Waves noSlope transparent={transparent} />
+    <Waves noSlope transparent={transparent} height={900} />
     <div className="www-footer-content">
       {children}
       <hr />

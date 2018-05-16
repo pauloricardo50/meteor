@@ -27,7 +27,7 @@ const Widget1SingleInputSlider = ({
     <Slider
       min={0}
       max={sliderMax}
-      step={1000}
+      step={5000}
       // Do this to prevent an onChange event when typing in a value larger
       // than sliderMax, which sets the value back to sliderMax
       value={getSliderValue(value, sliderMax)}
