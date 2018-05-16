@@ -94,8 +94,9 @@ export const createFakeLoan = ({
   step,
   completeFiles = Math.random() > 0.5,
   auctionStatus = AUCTION_STATUS.NONE,
+  twoBorrowers,
 }) => {
-  const borrowerIds = createFakeBorrowers(userId);
+  const borrowerIds = createFakeBorrowers(userId, twoBorrowers);
   const propertyId = createFakeProperty(userId);
   const loan = {
     name: `Rue du Test ${Math.floor(Math.random() * 1000)}`,

@@ -60,12 +60,14 @@ const createFakeLoanFixture = ({
   adminId,
   completeFiles,
   auctionStatus,
+  twoBorrowers,
 }) => {
   const loanId = createFakeLoan({
     userId,
     step,
     completeFiles,
     auctionStatus,
+    twoBorrowers,
   });
   createFakeTask(loanId, adminId);
   createFakeOffer(loanId, userId);
@@ -93,6 +95,7 @@ Meteor.methods({
             adminId,
             completeFiles: true,
             auctionStatus: AUCTION_STATUS[statusKey],
+            twoBorrowers: true,
           });
         });
 
