@@ -48,7 +48,7 @@ export default class ClosingVerification extends Component {
           steps.map(step =>
             (step.type === CLOSING_STEPS_TYPE.UPLOAD ? (
               <FileVerificator
-                currentValue={loan.files[step.id]}
+                currentValue={loan.documents[step.id]}
                 id={step.id}
                 closingSteps={steps}
                 key={step.id}
