@@ -1,20 +1,20 @@
 @import './variables.scss';
 
-@font-face {
-  font-family: 'Eina04-Regular';
-  src: url('/fonts/Eina04-Regular.ttf');
-}
-@font-face {
-  font-family: 'Eina04-Bold';
-  src: url('/fonts/Eina04-Bold.ttf');
-}
+// @font-face {
+//   font-family: 'Eina04-Regular';
+//   src: url('/fonts/Eina04-Regular.ttf');
+// }
+// @font-face {
+//   font-family: 'Eina04-Bold';
+//   src: url('/fonts/Eina04-Bold.ttf');
+// }
 
 body {
-  // font-family: 'Source Sans Pro', sans-serif;
-  font-family: 'Eina04-Regular';
+  font-family: 'Source Sans Pro', sans-serif;
+  // font-family: 'Eina04-Regular';
   font-size: 16px;
   line-height: 1.5em;
-  // font-weight: 300;
+  font-weight: 300;
   color: $body-text;
 
   letter-spacing: 0.75px;
@@ -28,11 +28,10 @@ h5,
 h6 {
   color: $title-text;
   line-height: 1.1em;
-  // font-family: 'Source Sans Pro', sans-serif;
-  font-family: 'Eina04-Bold';
-  letter-spacing: 0.046875em;
-  // letter-spacing: 0.75px;
-  // font-weight: 400;
+  font-family: 'Source Sans Pro', sans-serif;
+  // font-family: 'Eina04-Bold';
+  // letter-spacing: 0.046875em;
+  font-weight: 400;
   margin: 0.67em 0;
 }
 
@@ -75,6 +74,7 @@ h6 {
     &.display2 {
       font-size: 4em;
     }
+
     &.display2 {
       font-size: 6em;
     }
