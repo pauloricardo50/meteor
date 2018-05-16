@@ -18,6 +18,7 @@ class Tabs extends Component {
     super(props);
     // Make sure a tab index of -1 is not used
     this.state = { value: Math.max(this.props.initialIndex, 0) };
+    console.log('>>>', props, this.state);
   }
 
   getContent = () => this.props.tabs[this.state.value].content;
