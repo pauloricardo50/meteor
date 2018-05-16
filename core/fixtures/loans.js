@@ -114,7 +114,11 @@ export const createFakeLoan = ({
       bonus_bonus2017: 'Does not match with taxes location',
       bankFortune: 'Not enough',
     };
-    loan.files = completeFiles ? fakeFiles : fakeFiles2;
+
+    if (!completeFiles) {
+      loan.documents = fakeFiles2;
+    }
+
     loan.loanTranches = [
       {
         value: 750000,

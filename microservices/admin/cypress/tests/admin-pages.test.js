@@ -54,7 +54,8 @@ const pages = {
       }),
     'Loan Property Tab': ({ step3Loan: { _id } }) =>
       route(`/loans/${_id}/property`, {
-        shouldRender: 'section.single-loan-page .single-property-page',
+        shouldRender:
+          'section.single-loan-page .single-property-page .map-with-marker',
       }),
     'Loan Offers Tab': ({ step3Loan: { _id } }) =>
       route(`/loans/${_id}/offers`, {
@@ -103,15 +104,15 @@ const pages = {
               shouldRender: `section.single-loan-page .forms-tab .loan-autoform,
                 section.single-loan-page .forms-tab .property-autoform`,
             },
-            // {
-            //   item: 'li[data-value="closing"]',
-            //   shouldRender:
-            //     'section.single-loan-page .forms-tab .closing-verification',
-            // },
+            {
+              item: 'li[data-value="closing"]',
+              shouldRender:
+                'section.single-loan-page .forms-tab #closing-verification',
+            },
             {
               item: 'li[data-value="files"]',
               shouldRender:
-                'section.single-loan-page .forms-tab #tabs [role="tablist"]',
+                'section.single-loan-page .forms-tab #file-verification-tabs [role="tablist"]',
             },
           ],
         },
@@ -129,7 +130,7 @@ const pages = {
 
     Property: ({ property: { _id } }) =>
       route(`/properties/${_id}`, {
-        shouldRender: 'section.single-property-page',
+        shouldRender: 'section.single-property-page .map-with-marker',
       }),
 
     Tasks: route('/tasks', { shouldRender: 'section.tasks-page .tasks-table' }),

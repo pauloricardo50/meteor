@@ -33,4 +33,5 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOANS, {
   borrowers: {
     firstName: 1,
   },
+  documents: 1,
 });
