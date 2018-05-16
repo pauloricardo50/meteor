@@ -40,40 +40,40 @@ const pages = {
     Loans: route('/loans', {
       shouldRender: 'section.loans-page .all-loans-table',
     }),
-    Loan: ({ step3Loan: { _id } }) =>
+    Loan: ({ step3LoanWithEndedAuction: { _id } }) =>
       route(`/loans/${_id}`, {
         shouldRender: 'section.single-loan-page .overview-tab .tasks-table',
       }),
-    'Loan Overview Tab': ({ step3Loan: { _id } }) =>
+    'Loan Overview Tab': ({ step3LoanWithEndedAuction: { _id } }) =>
       route(`/loans/${_id}/overview`, {
         shouldRender: 'section.single-loan-page .overview-tab .tasks-table',
       }),
-    'Loan Borrowers Tab': ({ step3Loan: { _id } }) =>
+    'Loan Borrowers Tab': ({ step3LoanWithEndedAuction: { _id } }) =>
       route(`/loans/${_id}/borrowers`, {
         shouldRender: 'section.single-loan-page .single-borrower-tab',
       }),
-    'Loan Property Tab': ({ step3Loan: { _id } }) =>
+    'Loan Property Tab': ({ step3LoanWithEndedAuction: { _id } }) =>
       route(`/loans/${_id}/property`, {
         shouldRender: 'section.single-loan-page .single-property-page',
       }),
-    'Loan Offers Tab': ({ step3Loan: { _id } }) =>
+    'Loan Offers Tab': ({ step3LoanWithEndedAuction: { _id } }) =>
       route(`/loans/${_id}/offers`, {
         shouldRender: 'section.single-loan-page .offers-tab',
       }),
-    'Loan Communication Tab': ({ step3Loan: { _id } }) =>
+    'Loan Communication Tab': ({ step3LoanWithEndedAuction: { _id } }) =>
       route(`/loans/${_id}/communication`, {
         shouldRender: 'section.single-loan-page .communication-tab',
       }),
-    'Loan Analytics Tab': ({ step3Loan: { _id } }) =>
+    'Loan Analytics Tab': ({ step3LoanWithEndedAuction: { _id } }) =>
       route(`/loans/${_id}/analytics`, {
         shouldRender: 'section.single-loan-page .mixpanel-analytics',
       }),
-    'Loan Tasks Tab': ({ step3Loan: { _id } }) =>
+    'Loan Tasks Tab': ({ step3LoanWithEndedAuction: { _id } }) =>
       route(`/loans/${_id}/tasks`, {
         shouldRender: 'section.single-loan-page .tasks-tab .tasks-table',
       }),
 
-    'Loan Forms Tab': ({ step3Loan: { _id, borrowers } }) =>
+    'Loan Forms Tab': ({ step3LoanWithEndedAuction: { _id, borrowers } }) =>
       route(`/loans/${_id}/forms`, {
         shouldRender: 'section.single-loan-page .forms-tab',
         dropdownShouldRender: {
@@ -116,12 +116,12 @@ const pages = {
         },
       }),
 
-    'Loan Documents Tab': ({ step3Loan: { _id } }) =>
+    'Loan Documents Tab': ({ step3LoanWithEndedAuction: { _id } }) =>
       route(`/loans/${_id}/files`, {
         shouldRender:
           'section.single-loan-page .files-tab, section.single-loan-page .new-document-form',
       }),
-    'Loan Actions Tab': ({ step3Loan: { _id } }) =>
+    'Loan Actions Tab': ({ step3LoanWithEndedAuction: { _id } }) =>
       route(`/loans/${_id}/actions`, {
         shouldRender: 'section.single-loan-page .actions-tab',
       }),
