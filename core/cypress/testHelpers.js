@@ -10,14 +10,17 @@ export const route = (uri, options = {}) => ({
   options,
 });
 
+let testData;
 export const generateTestsFromPagesConfig = (pages, getTestData) => {
+  before(() => {
+    testData = getTestData();
+  });
+
   Object.keys(pages).forEach((pageAuthentication) => {
-    describe(`${capitalize(pageAuthentication)} Pages`, () => {
+    describe(capitalize(pageAuthentication), () => {
       Object.keys(pages[pageAuthentication]).forEach((pageName) => {
         describe(`${pageName} Page`, () => {
           it('should render', () => {
-            const testData = getTestData();
-
             // logout the impersonated user
             const { IMPERSONATE_SESSION_KEY } = testData;
             cy
