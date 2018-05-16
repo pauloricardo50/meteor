@@ -38,9 +38,7 @@ if (process.env.E2E_SERVER) {
         .clone({ userId, step: 3, auction: 'ended' })
         .fetchOne();
 
-      const unownedLoan = userLoansQuery
-        .clone({ userId, unowned: true })
-        .fetchOne();
+      const unownedLoan = userLoansQuery.clone({ owned: false }).fetchOne();
 
       const adminLoginToken = createLoginToken(admin._id);
       const emailVerificationToken = createEmailVerificationToken(

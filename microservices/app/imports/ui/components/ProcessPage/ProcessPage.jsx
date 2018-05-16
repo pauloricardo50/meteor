@@ -114,7 +114,7 @@ ProcessPage.defaultProps = {
   showBottom: true,
   serverTime: undefined,
   children: undefined,
-  sectionId: undefined,
+  sectionId: '',
 };
 
 export { ProcessPage };

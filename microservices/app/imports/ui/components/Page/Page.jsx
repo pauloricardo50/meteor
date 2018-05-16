@@ -60,7 +60,7 @@ Page.defaultProps = {
   rightComponent: null,
   className: '',
   fullWidth: false,
-  sectionId: undefined,
+  sectionId: '',
 };
 
 export default injectIntl(Page);

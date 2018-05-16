@@ -35,7 +35,7 @@ const pages = {
         shouldRender: '#email-verification-page',
       }),
 
-    Loan: ({ step3LoanWithEndedAuction: { _id } }) =>
+    Dashboard: ({ step3LoanWithEndedAuction: { _id } }) =>
       route(`/loans/${_id}`, { shouldRender: '#dashboard-page' }),
 
     'Add Loan': ({ unownedLoan: { _id } }) =>
