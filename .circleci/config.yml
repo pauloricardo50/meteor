@@ -196,11 +196,10 @@ jobs:
       - store_artifacts:
           path: ./e2e-results/cypress/admin-videos
       - persist_to_workspace:
-          root: /
+          root: /home/circleci
           paths:
-            - home/circleci/app
-            - home/circleci/.meteor
-            - usr/local/bin/meteor
+            - app
+            - .meteor
 
   deploy_admin:
     <<: *defaults
@@ -208,7 +207,10 @@ jobs:
       enabled: true
     steps:
       - attach_workspace:
-          at: /
+          at: ~/
+      - run:
+          name: Symlink cache meteor binary
+          command: ./scripts/circleci/symlink_cached_meteor_binary.sh
       - run:
           name: Prepare deployment
           command: |
@@ -225,7 +227,10 @@ jobs:
       enabled: true
     steps:
       - attach_workspace:
-          at: /
+          at: ~/
+      - run:
+          name: Symlink cache meteor binary
+          command: ./scripts/circleci/symlink_cached_meteor_binary.sh
       - run:
           name: Prepare deployment
           command: |
@@ -242,7 +247,10 @@ jobs:
       enabled: true
     steps:
       - attach_workspace:
-          at: /
+          at: ~/
+      - run:
+          name: Symlink cache meteor binary
+          command: ./scripts/circleci/symlink_cached_meteor_binary.sh
       - run:
           name: Prepare deployment
           command: |
