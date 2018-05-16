@@ -78,35 +78,36 @@ const pages = {
         shouldRender: 'section.single-loan-page .forms-tab',
         dropdownShouldRender: {
           'section.single-loan-page .forms-tab .mui-select [aria-haspopup=true]:first': [
-            ...borrowers.reduce(
-              (accumulator, { _id }) => [
-                ...accumulator,
-                {
-                  item: `li[data-value="borrower.${_id}.personal"]`,
-                  shouldRender:
-                    'section.single-loan-page .forms-tab .borrower-personal-autoform',
-                },
-                {
-                  item: `li[data-value="borrower.${_id}.finance"]`,
-                  shouldRender:
-                    'section.single-loan-page .forms-tab .borrower-finance-autoform',
-                },
-              ],
-              [],
-            ),
-
+            {
+              item: `li[data-value="borrower.${borrowers[0]._id}.personal"]`,
+              shouldRender:
+                'section.single-loan-page .forms-tab .borrower-personal-autoform',
+            },
+            {
+              item: `li[data-value="borrower.${borrowers[0]._id}.finance"]`,
+              shouldRender:
+                'section.single-loan-page .forms-tab .borrower-finance-autoform',
+            },
+            {
+              item: `li[data-value="borrower.${borrowers[1]._id}.personal"]`,
+              shouldRender:
+                'section.single-loan-page .forms-tab .borrower-personal-autoform',
+            },
+            {
+              item: `li[data-value="borrower.${borrowers[1]._id}.finance"]`,
+              shouldRender:
+                'section.single-loan-page .forms-tab .borrower-finance-autoform',
+            },
             {
               item: `li[data-value="loan.${_id}.property"]`,
               shouldRender: `section.single-loan-page .forms-tab .loan-autoform,
                 section.single-loan-page .forms-tab .property-autoform`,
             },
-
             // {
             //   item: 'li[data-value="closing"]',
             //   shouldRender:
             //     'section.single-loan-page .forms-tab .closing-verification',
             // },
-
             {
               item: 'li[data-value="files"]',
               shouldRender:
