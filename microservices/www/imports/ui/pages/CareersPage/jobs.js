@@ -11,7 +11,13 @@ const jobs = {
         'https://www.indeed.ch/Zeige-Job?t=conseillerere+en+financement+confirmee&jk=a4a0d5a9de41ec62&_ga=2.211297685.1082771208.1525780287-1607302221.1525780287',
     },
   ],
-  engineering: [{ title: 'DevOps Engineer' }],
+  engineering: [
+    {
+      title: 'Full-Stack Engineer',
+      url:
+        'http://www.indeed.ch/job/full-stack-engineer-web-apps-b406857e4e970697',
+    },
+  ],
   admin: [],
 };
 

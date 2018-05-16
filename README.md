@@ -44,6 +44,8 @@ A CircleCI account is watching the `master` and `staging` branches and automatic
 The staging branch is deployed to `XXX.staging.e-potek.ch`
 The master branch is deployed to `XXX.e-potek.ch`
 
+* When updating the Meteor version don't forget to update it in the CircleCI config also.
+
 ## Our servers
 
 ### Production
