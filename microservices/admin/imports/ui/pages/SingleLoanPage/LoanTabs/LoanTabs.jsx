@@ -63,7 +63,6 @@ const getTabs = props => [
 }));
 
 const LoanTabs = (props) => {
-  console.log('LoanTabs', props, props.tabId);
   const tabs = getTabs(props);
   const initialIndex = tabs.map(tab => tab.id).indexOf(props.tabId);
 
