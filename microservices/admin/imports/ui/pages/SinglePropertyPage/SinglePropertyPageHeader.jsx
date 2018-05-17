@@ -15,7 +15,7 @@ const SinglePropertyHeader = ({
     roomCount,
     insideArea,
     createdAt,
-    user: { _id, emails, assignedEmployee },
+    user,
   },
 }) => (
   <div className="single-property-page-header">
@@ -32,26 +32,33 @@ const SinglePropertyHeader = ({
     </h2>
 
     <p className="secondary">
-      <T
-        id="SinglePropertyPageHeader.roomCount"
-        values={{ value: roomCount }}
-      />
-      {', '}
-      <MetricArea value={insideArea} />
+      {roomCount && (
+        <T
+          id="SinglePropertyPageHeader.roomCount"
+          values={{ value: roomCount }}
+        />
+      )}
+      {insideArea && [', ', <MetricArea value={insideArea} key="insideArea" />]}
     </p>
 
     <div className="bottom">
       <p className="created-at">
-        <T id="SinglePropertyPageHeader.createdBy" />{' '}
-        <Link to={`/users/${_id}`}>{emails[0].address}</Link>
-        {', '}
+        {user && [
+          <T id="SinglePropertyPageHeader.createdBy" key="createdBy" />,
+          ' ',
+          <Link to={`/users/${user._id}`} key="userLink">
+            {user.emails[0].address}
+          </Link>,
+          ', ',
+        ]}
         <FullDate date={createdAt} />
-        {assignedEmployee && (
+        {user &&
+          user.assignedEmployee && (
           <span>
             {' - '}
             <T id="SinglePropertyPageHeader.assignedTo" />{' '}
-            <Link to={`/users/${assignedEmployee._id}`}>
-              {assignedEmployee.emails[0].address}
+            <Link to={`/users/${user.assignedEmployee._id}`}>
+              {user.assignedEmployee.emails[0].address}
             </Link>
           </span>
         )}

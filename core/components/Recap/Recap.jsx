@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { toMoney } from 'core/utils/conversionFunctions';
 import constants from 'core/config/constants';
-import { IntlNumber, MetricArea } from 'core/components/Translation';
+import { T, IntlNumber, MetricArea } from 'core/components/Translation';
 
 import {
   getPropAndWork,
@@ -681,7 +681,7 @@ const getPropertyArray = ({ property }) => {
     },
     {
       label: 'Forms.style',
-      value: style,
+      value: <T id={`Forms.style.${style}`} />,
     },
     {
       label: 'Forms.roomCount',
