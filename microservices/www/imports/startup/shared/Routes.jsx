@@ -34,7 +34,6 @@ const routesConfig = [
   ]),
 
   ...notProductionReadyModifier([
-    { path: '/about', component: AboutPage },
     { path: '/faq', component: FaqPage },
   ]),
 
