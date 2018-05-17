@@ -1,6 +1,16 @@
 defaults: &defaults
   working_directory: ~/app
 
+# caching paths
+meteor_system_cache_key: &meteor_system_cache_key
+  build-epotek-v2-meteor-system-{{ checksum "./.circleci/config.yml" }}
+
+# caching restorations
+restore_meteor_system_cache: &restore_meteor_system_cache
+  restore_cache:
+      name: restore system's meteor cached build
+      keys:
+      - *meteor_system_cache_key
 
 
 version: 2
@@ -27,42 +37,39 @@ jobs:
       - checkout
       - add_ssh_keys
       
+      - *restore_meteor_system_cache
       - restore_cache:
-          name: restore system's meteor cached build
+          name: restore root cached node_modules
           keys:
-            - build-epotek-v2-meteor-system-{{ checksum "./.circleci/config.yml" }}
-      # - restore_cache:
-      #     name: restore root cached node_modules
-      #     keys:
-      #       - build-epotek-v2-node_modules-{{ checksum "./package.json" }}
-      # - restore_cache:
-      #     name: restore core cached node_modules
-      #     keys:
-      #       - build-epotek-v2-node_modules-{{ checksum "./core/package.json" }}
-      # - restore_cache:
-      #     name: restore app's meteor cached build
-      #     keys:
-      #       - build-epotek-v2-meteor-{{ checksum "./microservices/app/.meteor/release" }}-{{ checksum "./microservices/app/.meteor/packages" }}
-      # - restore_cache:
-      #     name: restore app's cached node_modules
-      #     keys:
-      #       - build-epotek-v2-node_modules-{{ checksum "./microservices/app/package.json" }}
-      # - restore_cache:
-      #     name: restore admin's meteor cached build
-      #     keys:
-      #       - build-epotek-v2-meteor-{{ checksum "./microservices/admin/.meteor/release" }}-{{ checksum "./microservices/admin/.meteor/packages" }}
-      # - restore_cache:
-      #     name: restore admin's cached node_modules
-      #     keys:
-      #       - build-epotek-v2-node_modules-{{ checksum "./microservices/admin/package.json" }}
-      # - restore_cache:
-      #     name: restore www's meteor cached build
-      #     keys:
-      #       - build-epotek-v2-meteor-{{ checksum "./microservices/www/.meteor/release" }}-{{ checksum "./microservices/www/.meteor/packages" }}
-      # - restore_cache:
-      #     name: restore www's cached node_modules
-      #     keys:
-      #       - build-epotek-v3-node_modules-{{ checksum "./microservices/www/package.json" }}
+            - build-epotek-v2-node_modules-{{ checksum "./package.json" }}
+      - restore_cache:
+          name: restore core cached node_modules
+          keys:
+            - build-epotek-v2-node_modules-{{ checksum "./core/package.json" }}
+      - restore_cache:
+          name: restore app's meteor cached build
+          keys:
+            - build-epotek-v2-meteor-{{ checksum "./microservices/app/.meteor/release" }}-{{ checksum "./microservices/app/.meteor/packages" }}
+      - restore_cache:
+          name: restore app's cached node_modules
+          keys:
+            - build-epotek-v2-node_modules-{{ checksum "./microservices/app/package.json" }}
+      - restore_cache:
+          name: restore admin's meteor cached build
+          keys:
+            - build-epotek-v2-meteor-{{ checksum "./microservices/admin/.meteor/release" }}-{{ checksum "./microservices/admin/.meteor/packages" }}
+      - restore_cache:
+          name: restore admin's cached node_modules
+          keys:
+            - build-epotek-v2-node_modules-{{ checksum "./microservices/admin/package.json" }}
+      - restore_cache:
+          name: restore www's meteor cached build
+          keys:
+            - build-epotek-v2-meteor-{{ checksum "./microservices/www/.meteor/release" }}-{{ checksum "./microservices/www/.meteor/packages" }}
+      - restore_cache:
+          name: restore www's cached node_modules
+          keys:
+            - build-epotek-v3-node_modules-{{ checksum "./microservices/www/package.json" }}
 
       - run:
           name: install Meteor
@@ -131,49 +138,49 @@ jobs:
 
       - save_cache:
           name: cache system's meteor build
-          key: build-epotek-v2-meteor-system-{{ checksum "./.circleci/config.yml" }}
+          key: *meteor_system_cache_key
           paths:
             - ~/.meteor
-      # - save_cache:
-      #     name: cache root node_modules
-      #     key: build-epotek-v2-node_modules-{{ checksum "./package.json" }}
-      #     paths:
-      #       - ./node_modules
-      # - save_cache:
-      #     name: cache core node_modules
-      #     key: build-epotek-v2-node_modules-{{ checksum "./core/package.json" }}
-      #     paths:
-      #       - ./core/node_modules
-      # - save_cache:
-      #     name: cache app's meteor build
-      #     key: build-epotek-v2-meteor-{{ checksum "./microservices/app/.meteor/release" }}-{{ checksum "./microservices/app/.meteor/packages" }}
-      #     paths:
-      #       - ./microservices/app/.meteor/local
-      # - save_cache:
-      #     name: cache app's node_modules
-      #     key: build-epotek-v2-node_modules-{{ checksum "./microservices/app/package.json" }}
-      #     paths:
-      #       - ./microservices/app/node_modules
-      # - save_cache:
-      #     name: cache admin's meteor build
-      #     key: build-epotek-v2-meteor-{{ checksum "./microservices/admin/.meteor/release" }}-{{ checksum "./microservices/admin/.meteor/packages" }}
-      #     paths:
-      #       - ./microservices/admin/.meteor/local
-      # - save_cache:
-      #     name: cache admin's node_modules
-      #     key: build-epotek-v2-node_modules-{{ checksum "./microservices/admin/package.json" }}
-      #     paths:
-      #       - ./microservices/admin/node_modules
-      # - save_cache:
-      #     name: cache www's meteor build
-      #     key: build-epotek-v2-meteor-{{ checksum "./microservices/www/.meteor/release" }}-{{ checksum "./microservices/www/.meteor/packages" }}
-      #     paths:
-      #       - ./microservices/www/.meteor/local
-      # - save_cache:
-      #     name: cache www's node_modules
-      #     key: build-epotek-v3-node_modules-{{ checksum "./microservices/www/package.json" }}
-      #     paths:
-      #       - ./microservices/www/node_modules
+      - save_cache:
+          name: cache root node_modules
+          key: build-epotek-v2-node_modules-{{ checksum "./package.json" }}
+          paths:
+            - ./node_modules
+      - save_cache:
+          name: cache core node_modules
+          key: build-epotek-v2-node_modules-{{ checksum "./core/package.json" }}
+          paths:
+            - ./core/node_modules
+      - save_cache:
+          name: cache app's meteor build
+          key: build-epotek-v2-meteor-{{ checksum "./microservices/app/.meteor/release" }}-{{ checksum "./microservices/app/.meteor/packages" }}
+          paths:
+            - ./microservices/app/.meteor/local
+      - save_cache:
+          name: cache app's node_modules
+          key: build-epotek-v2-node_modules-{{ checksum "./microservices/app/package.json" }}
+          paths:
+            - ./microservices/app/node_modules
+      - save_cache:
+          name: cache admin's meteor build
+          key: build-epotek-v2-meteor-{{ checksum "./microservices/admin/.meteor/release" }}-{{ checksum "./microservices/admin/.meteor/packages" }}
+          paths:
+            - ./microservices/admin/.meteor/local
+      - save_cache:
+          name: cache admin's node_modules
+          key: build-epotek-v2-node_modules-{{ checksum "./microservices/admin/package.json" }}
+          paths:
+            - ./microservices/admin/node_modules
+      - save_cache:
+          name: cache www's meteor build
+          key: build-epotek-v2-meteor-{{ checksum "./microservices/www/.meteor/release" }}-{{ checksum "./microservices/www/.meteor/packages" }}
+          paths:
+            - ./microservices/www/.meteor/local
+      - save_cache:
+          name: cache www's node_modules
+          key: build-epotek-v3-node_modules-{{ checksum "./microservices/www/package.json" }}
+          paths:
+            - ./microservices/www/node_modules
 
       - store_test_results:
           path: ./results
@@ -199,7 +206,6 @@ jobs:
           root: /home/circleci
           paths:
             - app
-            - .meteor
 
   deploy_admin:
     <<: *defaults
@@ -208,6 +214,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
+      - *restore_meteor_system_cache
       - run:
           name: Symlink cache meteor binary
           command: ./scripts/circleci/symlink_cached_meteor_binary.sh
@@ -228,6 +235,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
+      - *restore_meteor_system_cache
       - run:
           name: Symlink cache meteor binary
           command: ./scripts/circleci/symlink_cached_meteor_binary.sh
@@ -248,6 +256,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
+      - *restore_meteor_system_cache
       - run:
           name: Symlink cache meteor binary
           command: ./scripts/circleci/symlink_cached_meteor_binary.sh
