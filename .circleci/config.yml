@@ -2,7 +2,7 @@ defaults: &defaults
   working_directory: ~/app
 
 # caching paths
-meteor_system_cache: &meteor_system_cache
+meteor_system_cache_key: &meteor_system_cache_key
   build-epotek-v2-meteor-system-{{ checksum "./.circleci/config.yml" }}
 
 # caching restorations
@@ -10,7 +10,7 @@ restore_meteor_system_cache: &restore_meteor_system_cache
   restore_cache:
       name: restore system's meteor cached build
       keys:
-      - *meteor_system_cache
+      - *meteor_system_cache_key
 
 
 version: 2
@@ -98,38 +98,38 @@ jobs:
       - run:
           name: create results directories
           command: mkdir ./results ./e2e-results
-      - run:
-          name: run end-to-end tests for Admin
-          command: |
-            cd microservices/admin
-            meteor npm install --no-save start-server-and-test
-            meteor npm run test-e2e-CI
-      - run:
-          name: run end-to-end tests for App
-          command: |
-            cd microservices/app
-            meteor npm install --no-save start-server-and-test
-            meteor npm run test-e2e-CI
-      - run:
-          name: run end-to-end tests for Www
-          command: |
-            cd microservices/www
-            meteor npm install --no-save start-server-and-test
-            meteor npm run test-e2e-CI
-      - run:
-          name: run tests for App
-          command: |
-            cd microservices/app
-            # Using 3.6.0 because of this: https://github.com/meteortesting/meteor-mocha/issues/54
-            # Using chromedriver 2.37 because 2.38 is incompatible with selenium >3.6.0
-            meteor npm i selenium-webdriver@3.6.0 chromedriver@2.37.0 --no-save
-            meteor npm run test-CI
-      - run:
-          name: run tests for admin
-          command: |
-            cd microservices/admin
-            meteor npm i selenium-webdriver@3.6.0 chromedriver@2.37.0 --no-save
-            meteor npm run test-CI      
+      # - run:
+      #     name: run end-to-end tests for Admin
+      #     command: |
+      #       cd microservices/admin
+      #       meteor npm install --no-save start-server-and-test
+      #       meteor npm run test-e2e-CI
+      # - run:
+      #     name: run end-to-end tests for App
+      #     command: |
+      #       cd microservices/app
+      #       meteor npm install --no-save start-server-and-test
+      #       meteor npm run test-e2e-CI
+      # - run:
+      #     name: run end-to-end tests for Www
+      #     command: |
+      #       cd microservices/www
+      #       meteor npm install --no-save start-server-and-test
+      #       meteor npm run test-e2e-CI
+      # - run:
+      #     name: run tests for App
+      #     command: |
+      #       cd microservices/app
+      #       # Using 3.6.0 because of this: https://github.com/meteortesting/meteor-mocha/issues/54
+      #       # Using chromedriver 2.37 because 2.38 is incompatible with selenium >3.6.0
+      #       meteor npm i selenium-webdriver@3.6.0 chromedriver@2.37.0 --no-save
+      #       meteor npm run test-CI
+      # - run:
+      #     name: run tests for admin
+      #     command: |
+      #       cd microservices/admin
+      #       meteor npm i selenium-webdriver@3.6.0 chromedriver@2.37.0 --no-save
+      #       meteor npm run test-CI      
       - run:
           name: copy meteor bin to build cache
           command: |
@@ -138,7 +138,7 @@ jobs:
 
       - save_cache:
           name: cache system's meteor build
-          key: build-epotek-v2-meteor-system-{{ checksum "./.circleci/config.yml" }}
+          key: *meteor_system_cache_key
           paths:
             - ~/.meteor
       - save_cache:
