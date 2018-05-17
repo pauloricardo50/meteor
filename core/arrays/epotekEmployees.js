@@ -1,7 +1,7 @@
 const employees = [
   {
     email: 'lydia@e-potek.ch',
-    src: '/img/placeholder.png',
+    src: '/img/team/lydia.jpg',
     name: 'Lydia Abraha',
     title: 'Conseillère en financement',
   },
@@ -33,7 +33,7 @@ const employees = [
     email: '',
     src: '/img/team/tarik.jpg',
     name: 'Tarik Lamkarfed',
-    title: 'Marketing & Communications Manager',
+    title: 'Marketing & Communications',
   },
   {
     email: '',

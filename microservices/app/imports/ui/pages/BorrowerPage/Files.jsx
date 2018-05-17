@@ -17,39 +17,35 @@ const styles = {
   },
 };
 
-const Files = (props) => {
-  const { borrower, loan } = props;
+const Files = ({ borrower, loan }) => (
+  <section
+    className="animated fadeIn borrower-page-files"
+    key={borrower._id}
+    style={styles.section}
+  >
+    <hr />
+    <h2 className="text-center">
+      <T id="Files.title" />
+    </h2>
 
-  return (
-    <section
-      className="animated fadeIn borrower-page-files"
-      key={borrower._id}
-      style={styles.section}
-    >
-      <hr />
-      <h2 className="text-center">
-        <T id="Files.title" />
-      </h2>
+    <div className="text-center description">
+      <p>
+        <T id="Files.description" />
+      </p>
+    </div>
 
-      <div className="text-center description">
-        <p>
-          <T id="Files.description" />
-        </p>
-      </div>
+    <h3 className="text-center">
+      <T id="Files.files1.title" />
+    </h3>
 
-      <h3 className="text-center">
-        <T id="Files.files1.title" />
-      </h3>
-
-      <UploaderArray
-        fileArray={borrowerDocuments(borrower).auction}
-        doc={borrower}
-        collection="borrowers"
-        disabled={disableForms({ loan })}
-      />
-    </section>
-  );
-};
+    <UploaderArray
+      documentArray={borrowerDocuments(borrower).auction}
+      doc={borrower}
+      collection="borrowers"
+      disabled={disableForms({ loan })}
+    />
+  </section>
+);
 
 Files.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,

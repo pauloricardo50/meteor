@@ -39,6 +39,7 @@
     border-radius: 50%;
     margin-right: 32px;
     align-self: center;
+    flex-shrink: 0;
   }
 
   .about-page-team-member-info {
@@ -73,6 +74,13 @@
 
   a.email {
     margin-left: -12px;
+  }
+}
+
+@media (max-width: $small) {
+  .about-page-team-member.about-page-team-member-contact,
+  .about-page-team-member:hover .about-page-team-member-contact {
+    display: none;
   }
 }
 
