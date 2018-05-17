@@ -4,7 +4,7 @@ import SearchIcon from '../../pages/SearchPage/SearchIcon';
 
 const AdminTopNav = props => (
   <div className="admin-top-nav">
-    <TopNav {...props} public={false} >
+    <TopNav {...props} public={false}>
       <SearchIcon />
     </TopNav>
   </div>
