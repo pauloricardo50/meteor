@@ -61,7 +61,7 @@ Cypress.Commands.add('meteorLogout', () => {
   // if we logout, check logout redirection finished by checking
   // that the logout form rendered
   if (hasToLogout) {
-    cy.get('section.login-page').should('exist'); 
+    cy.get('section.login-page').should('exist');
   }
 });
 
@@ -101,7 +101,7 @@ Cypress.Commands.add('setAuthentication', (pageAuthentication) => {
 
 Cypress.Commands.add(
   'routeShouldRenderSuccessfully',
-  (routeConfig, testData) => {
+  (routeConfig, testData, refreshOnRedirect = false) => {
     const pageRoute =
       typeof routeConfig === 'function' ? routeConfig(testData) : routeConfig;
 
@@ -110,11 +110,15 @@ Cypress.Commands.add(
       options: { shouldRender: expectedDomElement, dropdownShouldRender },
     } = pageRoute;
 
-    cy
-      .window()
-      .then(({ reactRouterDomHistory }) => {
+    if (refreshOnRedirect) {
+      cy.visit(uri);
+    } else {
+      cy.window().then(({ reactRouterDomHistory }) => {
         reactRouterDomHistory.push(uri);
-      })
+      });
+    }
+
+    cy
       .routeShouldExist(uri)
       .get(expectedDomElement)
       .should('exist')
