@@ -48,12 +48,21 @@ Cypress.Commands.add('getTestData', (email) => {
 });
 
 Cypress.Commands.add('meteorLogout', () => {
-  cy.window().then(({ Meteor }) =>
-    new Cypress.Promise((resolve, reject) => {
-      Meteor.logout(err => (err ? reject(err) : resolve()));
-    }));
+  let hasToLogout = false;
+  cy.window().then(({ Meteor }) => {
+    if (Meteor.userId()) {
+      hasToLogout = true;
+      return new Cypress.Promise((resolve, reject) => {
+        Meteor.logout(err => (err ? reject(err) : resolve()));
+      });
+    }
+  });
 
-  cy.get('section.login-page').should('exist');
+  // if we logout, check logout redirection finished by checking
+  // that the logout form rendered
+  if (hasToLogout) {
+    cy.get('section.login-page').should('exist'); 
+  }
 });
 
 Cypress.Commands.add(
