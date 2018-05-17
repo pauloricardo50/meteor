@@ -1,6 +1,16 @@
 defaults: &defaults
   working_directory: ~/app
 
+# caching paths
+meteor_system_cache_key: &meteor_system_cache_key
+  build-epotek-v2-meteor-system-{{ checksum "./.circleci/config.yml" }}
+
+# caching restorations
+restore_meteor_system_cache: &restore_meteor_system_cache
+  restore_cache:
+      name: restore system's meteor cached build
+      keys:
+      - *meteor_system_cache_key
 
 
 version: 2
@@ -15,9 +25,7 @@ jobs:
         LANGUAGE: C.UTF-8
         LC_ALL: C.UTF-8
         LC_NUMERIC: en_US.UTF-8
-        METEOR_BIN_TMP_DIR: /home/circleci/build-temp/
-        METEOR_BIN_TMP_FILE: meteor-bin-temp
-        # TZ: "/usr/share/zoneinfo/Europe/Zurich"
+        METEOR_VERSION: 1.6.1.1
         NODE_ENV: development
         TOOL_NODE_FLAGS: "--max_old_space_size=4096 --optimize_for_size --gc-interval=100" # if builds run out of memory
         # METEOR_PROFILE: 1 # If you need to debug meteor, turn this on
@@ -29,10 +37,15 @@ jobs:
       - checkout
       - add_ssh_keys
       
+      - *restore_meteor_system_cache
       - restore_cache:
-          name: restore system's meteor cached build
+          name: restore root cached node_modules
           keys:
-            - build-epotek-v2-meteor-system
+            - build-epotek-v2-node_modules-{{ checksum "./package.json" }}
+      - restore_cache:
+          name: restore core cached node_modules
+          keys:
+            - build-epotek-v2-node_modules-{{ checksum "./core/package.json" }}
       - restore_cache:
           name: restore app's meteor cached build
           keys:
@@ -61,8 +74,7 @@ jobs:
       - run:
           name: install Meteor
           command: |
-            # only install meteor if bin isn't found
-            command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com?release=1.6.0.1 | /bin/sh
+            ./scripts/circleci/install_meteor.sh
       - run:
           name: check versions
           command: |
@@ -79,6 +91,7 @@ jobs:
       - run:
           name: Setup microservices
           command: |
+            sudo apt-get install libgconf-2-4
             sudo apt install rsync
             cd scripts
             ./setup.sh
@@ -125,9 +138,19 @@ jobs:
 
       - save_cache:
           name: cache system's meteor build
-          key: build-epotek-v2-meteor-system
+          key: *meteor_system_cache_key
           paths:
             - ~/.meteor
+      - save_cache:
+          name: cache root node_modules
+          key: build-epotek-v2-node_modules-{{ checksum "./package.json" }}
+          paths:
+            - ./node_modules
+      - save_cache:
+          name: cache core node_modules
+          key: build-epotek-v2-node_modules-{{ checksum "./core/package.json" }}
+          paths:
+            - ./core/node_modules
       - save_cache:
           name: cache app's meteor build
           key: build-epotek-v2-meteor-{{ checksum "./microservices/app/.meteor/release" }}-{{ checksum "./microservices/app/.meteor/packages" }}
@@ -191,11 +214,10 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
+      - *restore_meteor_system_cache
       - run:
-          name: install Meteor
-          command: |
-            # only install meteor if bin isn't found
-            command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com | /bin/sh
+          name: Symlink cache meteor binary
+          command: ./scripts/circleci/symlink_cached_meteor_binary.sh
       - run:
           name: Prepare deployment
           command: |
@@ -213,11 +235,10 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
+      - *restore_meteor_system_cache
       - run:
-          name: install Meteor
-          command: |
-            # only install meteor if bin isn't found
-            command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com | /bin/sh
+          name: Symlink cache meteor binary
+          command: ./scripts/circleci/symlink_cached_meteor_binary.sh
       - run:
           name: Prepare deployment
           command: |
@@ -235,11 +256,10 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
+      - *restore_meteor_system_cache
       - run:
-          name: install Meteor
-          command: |
-            # only install meteor if bin isn't found
-            command -v meteor >/dev/null 2>&1 || curl https://install.meteor.com | /bin/sh
+          name: Symlink cache meteor binary
+          command: ./scripts/circleci/symlink_cached_meteor_binary.sh
       - run:
           name: Prepare deployment
           command: |

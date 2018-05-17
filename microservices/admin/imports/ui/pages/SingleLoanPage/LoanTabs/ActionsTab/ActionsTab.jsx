@@ -78,11 +78,7 @@ const ActionsTab = (props) => {
           loanDelete
             .run({ loanId: loan._id })
             .then(cb)
-            .catch((err) => {
-              if (!err) {
-                window.location.href = '/';
-              }
-            })
+            .catch(console.log)
         }
         style={styles.button}
       />

@@ -60,13 +60,6 @@ const SideNavStepperStep = ({
           <span className="title">
             {title || <T id={`steps.${nb}.title`} />}
           </span>
-          <span className="subtitle">
-            {subtitle !== undefined ? (
-              subtitle
-            ) : (
-              <T id={`steps.${nb}.subtitle`} />
-            )}
-          </span>
         </div>
       </div>
       {active && (

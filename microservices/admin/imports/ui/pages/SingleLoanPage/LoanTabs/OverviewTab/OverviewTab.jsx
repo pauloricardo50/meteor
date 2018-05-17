@@ -75,8 +75,8 @@ export default class OverviewTab extends React.Component {
         <LoanTasksTable
           showAssignee
           loanId={_id}
-          borrowerIds={borrowerIds}
           propertyId={property._id}
+          borrowerIds={borrowerIds}
         />
 
         <br />

@@ -1,39 +1,74 @@
 {
+  "AboutPageTeamRecruiting.title": "Vous !",
+  "AboutPageTeamRecruiting.subtitle": "e-Potek recrute",
+  "AboutPageTeamRecruiting.hoverText": "Voir nos postes ouverts",
+
+  "AboutPagePart1.description":
+    "Les conseillers d’e-Potek sont des professionnels d’expérience, en phase avec les évolutions d’un marché en permanente évolution. L'équipe est composée d’experts de confiance sur les sujets du financement hypothécaire, de la prévoyance et de la fiscalité immobilière.",
+  "AboutPagePart1.title": "À propos d'e-Potek",
+  "AboutPagePart2.title": "Méthodes",
+  "AboutPagePart2.title1": "Classique",
+  "AboutPagePart2.title2": "e-Potek",
+  "AboutPagePart2.description1":
+    "Face aux nombreuses options proposées sur le marché de l’hypothèque, comparer différents prêteurs et produits de financement hypothécaire peut devenir un processus fastidieux.{verticalSpace}Il est ainsi facile de se perdre dans la jungle hypothécaire face à des offres aux conditions de taux hypothécaires apparaissant très avantageuses mais malheureusement valables uniquement sous certaines conditions exceptionnelles et donc applicables qu’à une faible minorité du marché.",
+  "AboutPagePart2.description2":
+    "Soyez accompagné et conseillé par des experts en financement hypothécaire et identifiez facilement les meilleures solutions de financement du marché pour vos projets d’achats immobiliers.{verticalSpace}Profitez d’un outil qu’e-Potek a créé sur-mesure, proposant des solutions rapides et impartiales, vous permettant de structurer de manière efficace vos projets de recherche de financement.",
+
+  "AboutPagePart3.title1": "Un acteur crédible",
+  "AboutPagePart3.description1":
+    "e-Potek SA est une société soumise aux règles imposées par la FINMA (organe suprême de contrôle du système financier Suisse) et composée d’experts de confiance sur les sujets du financement hypothécaire, de la prévoyance et de la fiscalité immobilière.",
+  "AboutPagePart3.title2": "Un service de premier ordre",
+  "AboutPagePart3.description2":
+    "Disposez de conseils avisés concernant l’optimisation fiscale, les choix relatifs à vos fonds propres, l’expertise de logements ainsi que toutes informations relatives au domaine du financement hypothécaire.",
+
+  "AboutPagePart4.title1": "Un usage facilité",
+  "AboutPagePart4.description1":
+    "e-Potek facilite l’accès aux financements hypothécaires et à leur traitement. La soumission de documents et l’interaction avec le prêteur deviennent plus simples et agréables.",
+  "AboutPagePart4.title0": "Des données fiables",
+  "AboutPagePart4.description0":
+    "Evitez les pièges et soyez au courant des réalités du marché hypothécaire en recevant des conditions de financement sur-mesure et classées par ordre de pertinence.",
+  "AboutPagePart4.title2": "Des dossiers irréprochables",
+  "AboutPagePart4.description2":
+    "Les conseillers e-Potek vérifient l’intégralité des dossiers et documents justificatifs afin qu’ils soient conformes et personnalisés aux directives internes de chaque prêteur.",
+
+  "CareersPage.description":
+    "e-Potek est en forte croissance et recrute souvent de nouveaux talents au sein de nos différents départements.{verticalSpace}Nous faisons le plus possible pour créer et maintenir un environnement de travail agréable, avec beaucoup d'opportunités et de responsabilités pour ceux qui souhaitent les prendre.",
+  "CareersPage.title": "Travailler chez e-Potek",
+  "CareersPage.subtitle": "Postes vacants",
+  "CareersPageJob.button": "Voir l'annonce",
+  "CareersPageList.advisory": "Conseil",
+  "CareersPageList.engineering": "Ingénierie",
+  "CareersPageList.admin": "Opérations",
+  "CareersPageList.emptyDepartment":
+    "Pas de postes ouverts dans ce département pour l'instant. Réessayez demain, ou envoyez nous une candidature spontanée en expliquant ce que vous pensez pouvoir apporter à notre entreprise, et pourquoi nous en aurions besoin!",
+  "InterestsTable.interest1": "1 an",
+  "InterestsTable.interest10": "10 ans",
+  "InterestsTable.interest15": "15 ans",
+  "InterestsTable.interest2": "2 ans",
+  "InterestsTable.interest5": "5 ans",
+  "InterestsTable.interestLibor": "Libor",
+
+  "WwwTopNavLinks.interests": "Nos taux",
+  "WwwTopNavLinks.contact": "Nous contacter",
+  "WwwTopNavLinks.careers": "Carrières",
+  "WwwTopNavLinks.about": "À propos",
+  "InterestsPage.title": "Nos taux hypothécaires",
+  "InterestsPage.description":
+    "e-Potek est ravi de vous présenter sa palette complète de taux hypothécaires reçus de la part des prêteurs lors des dernières négociations. Attention à ne pas oublier que les conditions de taux varient fortement selon les dossiers. Ils dépendent principalement de la solvabilité et du montant emprunté.",
+
+  "InterestsTable.duration": "Durée",
+  "InterestsTable.trend": "Tendance",
+  "InterestsTable.rate": "Taux",
+
+  "DashboardRecapProperty.empty":
+    "Ajoutez l'adresse complète de votre bien pour afficher ce récapitulatif",
   "AboutPageOffice.title": "Nos bureaux",
   "AboutPageOffice.description":
     "Basés à Genève, nous travaillons tous les jours pour révolutionner le marché de l'hypothèque.",
 
   "AboutPageTeam.title": "Nos experts vous accompagnent",
-  "AboutPagePart1.title": "À propos de nous",
-  "AboutPagePart1.description":
-    "e-Potek vous aide à prendre les meilleures décisions pour obtenir un prêt hypothécaire",
-
-  "AboutPagePart2.title": "Qu'est-ce qu'e-Potek",
-  "AboutPagePart2.description1":
-    "Soyez accompagné et conseillé par des experts en financement hypothécaire et identifiez facilement les meilleures solutions de financement du marché pour vos projets immobiliers.",
-  "AboutPagePart2.description2":
-    "Profitez d’un outil qu’e-Potek a créé sur-mesure, proposant des solutions rapides et impartiales, vous permettant de structurer de manière efficace vos projets de recherche de financement.",
-  "AboutPagePart2.description3":
-    "e-Potek SA est une société soumise aux règles imposées par la FINMA (organe suprême de contrôle du système financier Suisse) et composée d’experts de confiance sur les sujets du financement hypothécaire, de la prévoyance et de la fiscalité immobilière. Les conseillers d’e-Potek sont des professionnels d’expérience, en phase avec les évolutions d’un marché en permanente évolution.",
-  "AboutPagePart2.description4":
-    "Disposez de conseils avisés concernant l’optimisation fiscale, les choix relatifs à vos fonds propres, l’expertise de logements ainsi que toutes informations relatives au domaine du financement hypothécaire. Soyez certains de négocier au mieux vos projets et d’anticiper d’éventuels imprévus auprès des prêteurs. Constituez un dossier de recherche de financement irréprochable afin d'accroître vos chances.",
-  "AboutPagePart2.subtitle1": "Un acteur crédible",
-  "AboutPagePart2.subtitle2": "Un service de premier ordre",
-
-  "AboutPagePart3.title": "Un secteur compétitif et opaque",
-  "AboutPagePart3.description":
-    "Face aux nombreuses options proposées sur le marché, comparer différents prêteurs et produits de financement hypothécaire peut devenir un processus fastidieux. Il est ainsi facile de se perdre dans la jungle hypothécaire face à des offres aux conditions de taux apparaissant très avantageuses mais malheureusement valables uniquement sous certaines conditions exceptionnelles et donc applicables qu’à une faible minorité du marché.",
-
-  "AboutPagePart4.title": "Un atout sur le marché",
-  "AboutPagePart4.subtitle1": "Des dossiers irréprochables",
-  "AboutPagePart4.description1":
-    "Les conseillers e-Potek vérifient l’intégralité des dossiers et documents justificatifs afin qu’ils soient conformes et personnalisés aux directives internes de chaque prêteur. Vos spécificités sont ainsi prises en compte et une offre sur-mesure peut alors rapidement être émise.",
-  "AboutPagePart4.subtitle2": "Un usage facilité",
-  "AboutPagePart4.description2":
-    "e-Potek facilite l’accès aux financements hypothécaires et à leur traitement. La soumission de documents et l’interaction avec le prêteur, jusqu’à la mise à disposition du financement, deviennent plus simples et agréables.",
-  "AboutPagePart4.subtitle3": "Des données fiables",
-  "AboutPagePart4.description3":
-    "Evitez les pièges et soyez au courant des réalités du marché hypothécaire en recevant des conditions de financement sur-mesure et classées par ordre de pertinence. Déterminez précisément et en fonction de vos caractéristiques le meilleur partenaire pour vous accompagner.",
+  "AboutPageTeamMember.emailTooltip": "Envoyer un email à {name}",
+  "AboutPageTeamMember.phoneTooltip": "Appeler {name}",
 
   "WwwFooterLinks.about": "À propos",
   "ContactUsFormSuccess.text": "C'est dans la boite !",
@@ -71,6 +106,8 @@
   "OfferAdder.discount": "Rabais (valeur positive)",
 
   "DashboardRecapFinance.title": "Plan financier",
+  "DashboardRecapFinance.empty":
+    "Ajoutez la valeur du bien et vos finances pour afficher ce récapitulatif",
   "DashboardInfoTeamMember.emailTooltip": "Envoyer un mail",
   "DashboardInfoTeamMember.phoneTooltip": "Appeler",
 
@@ -93,7 +130,6 @@
   "DashboardRecapFinancing.sumTitle": "Financement",
 
   "DashboardRecapChartInfo.label": "Simulation des coûts mensuels",
-  "DashboardRecapChartInfo.revenuePercent": "{revenuePercent}% de vos revenus",
 
   "Recap.property": "Bien immobilier",
   "property.expertise": "Expertise",
@@ -116,6 +152,7 @@
   "WwwFooterLinks.contact": "Nous contacter",
   "WwwFooterLinks.careers": "Carrières",
   "WwwFooterLinks.conditions": "Conditions Générales",
+  "WwwFooterLinks.interests": "Nos taux",
   "WwwFooterLinks.company":
     "e-Potek SA est une société soumise aux règles imposées par la FINMA (organe suprême de contrôle du système financier Suisse).",
   "general.start": "Commencer",
@@ -185,9 +222,6 @@
   "HomePageDescriptionSeo.less": "Masquer",
   "HomePageDescriptionSeo.more": "En savoir plus",
 
-  "AboutPage.description":
-    "e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève. Expansion prévue prochainement.{verticalSpace}L'équipe derrière e-Potek est composée d'entrepreneurs expérimentés dans la finance et les prêts hypothécaires en Suisse.",
-  "AboutPage.title": "Le Prêt Hypothécaire de Demain",
   "AcceptClosingModal.description":
     "Toute l'équipe d'e-Potek vous félicite pour le décaissement de votre prêt hypothécaire, et d'être enfin propriétaire de votre bien immobilier.{verticalSpace}Vous pouvez maintenant utiliser votre tableau de bord e-Potek pour garder un oeil sur votre prochaine échéance de paiement, et consulter les taux lorsque le refinancement s'approchera.",
   "AcceptClosingModal.description2":
@@ -273,9 +307,6 @@
   "BorrowersTable.createdAt": "Créé le",
   "BorrowersTable.name": "Nom",
   "BorrowersTable.updatedAt": "Modifié le",
-  "CareersPage.description":
-    "Nous ne cherchons pas activement de nouveaux candidats en ce moment. Cependant, nous sommes toujours ouverts aux candidatures spontanées, écris-nous à {email}.",
-  "CareersPage.title": "Travailler à e-Potek",
   "ClosingPage.CTA": "Demander le décaissement",
   "ClosingPage.description":
     "Lorsque vous avez soumis les derniers documents, vous pourrez demander à votre prêteur de décaisser le prêt.",
@@ -726,12 +757,12 @@
   "Forms.materialsQuality.3": "Très Bon",
   "Forms.minergie": "Est-ce une construction Minergie ?",
   "Forms.otherFortune": "Autre Fortune",
-  "Forms.otherFortune.airplanes": "Aéronefs",
-  "Forms.otherFortune.art": "Objets d'art",
-  "Forms.otherFortune.boats": "Bateaux",
-  "Forms.otherFortune.cars": "Véhicules",
+  "Forms.otherFortune.AIRPLANES": "Aéronefs",
+  "Forms.otherFortune.ART": "Objets d'art",
+  "Forms.otherFortune.BOATS": "Bateaux",
+  "Forms.otherFortune.CARS": "Véhicules",
   "Forms.otherFortune.description": "Type de Fortune",
-  "Forms.otherFortune.jewelry": "Bijoux",
+  "Forms.otherFortune.JEWELRY": "Bijoux",
   "Forms.otherFortune.value": "Valeur",
   "Forms.otherFortune.value.description": "CHF 100 000",
   "Forms.otherIncome": "Autres revenus",
@@ -830,6 +861,7 @@
   "general.close": "Fermer",
   "general.continue": "Continuer",
   "general.delete": "Supprimer",
+  "general.erase": "Effacer",
   "general.download": "Télécharger",
   "general.hide": "Masquer",
   "general.income": "Revenus",
@@ -1191,39 +1223,22 @@
   "StartSignUp.notSignedUp": "Entrez votre nouveau mot de passe",
   "StartSignUp.signedUp":
     "Cette adresse existe déjà, entrez votre mot de passe",
-  "steps.0.subtitle": "5 min",
   "steps.0.title": "0. Passez le test",
-  "steps.1.subtitle": "15 minutes",
   "steps.1.title": "1. Préparez votre dossier",
-  "steps.2.subtitle": "30 minutes",
   "steps.2.title": "2. Trouvez votre prêteur",
-  "steps.3.subtitle": "60 minutes",
   "steps.3.title": "3. Finalisez votre demande",
-  "steps.4.title": "",
-  "steps.auction.subtitle": "2 jours",
   "steps.auction.title": "Envoyez les enchères",
   "steps.auction.waiting": "Enchères en cours...",
-  "steps.closing.subtitle": "30 min",
   "steps.closing.title": "Décaissez votre emprunt",
-  "steps.contract.subtitle": "30 min",
   "steps.contract.title": "Obtenez le contrat",
-  "steps.files.subtitle": "15 min",
   "steps.files.title": "Uploadez vos documents",
-  "steps.finance.subtitle": "10 min",
   "steps.finance.title": "Vérifiez vos finances",
-  "steps.lenderPicker.subtitle": "5 min",
   "steps.lenderPicker.title": "Choisissez votre prêteur",
-  "steps.offerPicker.subtitle": "5 min",
   "steps.offerPicker.title": "Choisissez votre prêteur",
-  "steps.personal.subtitle": "1 min",
   "steps.personal.title": "Dites en plus sur vous",
-  "steps.property.subtitle": "4 min",
   "steps.property.title": "Détaillez votre propriété",
-  "steps.strategy.subtitle": "15 min",
   "steps.strategy.title": "Les grandes décisions",
-  "steps.structure.subtitle": "2h",
   "steps.structure.title": "Structure finale",
-  "steps.verification.subtitle": "2h",
   "steps.verification.title": "Vérification d'e-Potek",
   "steps.verification.waiting": "Vérification demandée...",
   "StrategyChoices.recommended": "Recommandé pour vous",

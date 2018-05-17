@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import { getLocations } from 'core/utils/APIs';
 
-import ValidIcon from 'core/components/AutoForm/ValidIcon';
+import ValidIcon from '../AutoForm/ValidIcon';
+import FormValidator from '../AutoForm/FormValidator';
 import AutoComplete from '../AutoComplete';
 
 const styles = {
@@ -11,9 +12,8 @@ const styles = {
     position: 'relative',
   },
   savingIcon: {
-    position: 'absolute',
-    top: 16,
-    right: -25,
+    top: 0,
+    right: -50,
   },
 };
 
@@ -54,12 +54,7 @@ class ZipAutoComplete extends Component {
             });
           } else {
             this.setState({
-              data: [
-                {
-                  label: '-',
-                  value: '-',
-                },
-              ],
+              data: [{ label: '-', value: '-' }],
             });
           }
         })
@@ -80,6 +75,9 @@ class ZipAutoComplete extends Component {
       // Set the text input
       this.setState({ searchText: value, isValid: true }, () =>
         this.saveValue(zipCode, city));
+    } else {
+      this.setState({ searchText: '', isValid: false }, () =>
+        this.saveValue(null, ''));
     }
   };
 
@@ -87,7 +85,9 @@ class ZipAutoComplete extends Component {
     const {
       updateFunc,
       docId,
-      inputProps: { componentProps: { savePath } },
+      inputProps: {
+        componentProps: { savePath },
+      },
     } = this.props;
 
     // Save data to DB
@@ -124,7 +124,7 @@ class ZipAutoComplete extends Component {
   render() {
     const { searchText, data, saving, isValid } = this.state;
     const {
-      inputProps: { disabled, style, label, placeholder },
+      inputProps: { disabled, style, label, placeholder, required },
       admin,
     } = this.props;
 
@@ -149,9 +149,10 @@ class ZipAutoComplete extends Component {
           error={false}
           // Only show the valid icon when isValid is true
           value={isValid === true ? true : undefined}
-          required
+          required= {required}
           hide={admin}
         />
+        <FormValidator {...this.props} />
       </div>
     );
   }

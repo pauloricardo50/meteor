@@ -71,7 +71,7 @@
 .dashboard-recap-chart-info {
   display: flex;
   flex-direction: column;
-  padding-left: 16px;
+  padding: 0 16px;
 
   .value {
     font-size: 3em;
@@ -99,4 +99,11 @@
       flex-grow: 1;
     }
   }
+}
+
+.dashboard-recap-finance-empty.dashboard-recap-finance-empty {
+  align-self: center;
+  padding: 16px;
+  max-width: 300px;
+  white-space: normal;
 }

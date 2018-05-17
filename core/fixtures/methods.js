@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
+import range from 'lodash/range';
 import {
   Borrowers,
   Loans,
@@ -16,7 +17,10 @@ import {
   DEV_COUNT,
   USER_COUNT,
   ADMIN_COUNT,
-  MAX_LOANS_PER_USER,
+  STEP_3_LOANS_PER_USER,
+  STEP_2_LOANS_PER_USER,
+  STEP_1_LOANS_PER_USER,
+  UNOWNED_LOANS_COUNT,
 } from './config';
 import { createFakeLoan } from './loans';
 import { createFakeTask, deleteUsersTasks } from './tasks';
@@ -25,7 +29,6 @@ import { createFakeOffer } from './offers';
 import { ROLES } from '../api/users/userConstants';
 
 const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
-const generateNumberOfLoans = max => Math.floor(Math.random() * max + 1);
 
 const getAdmins = (currentUserEmail) => {
   const admins = Users.find({ roles: { $in: [ROLES.ADMIN] } }).fetch();
@@ -51,6 +54,17 @@ const deleteUsersRelatedData = (usersToDelete) => {
 const deleteUsers = usersToDelete =>
   Users.remove({ _id: { $in: usersToDelete } });
 
+const createFakeLoanFixture = ({
+  userId,
+  loanStep,
+  adminId,
+  completeFiles,
+}) => {
+  const loanId = createFakeLoan(userId, loanStep, completeFiles);
+  createFakeTask(loanId, adminId);
+  createFakeOffer(loanId, userId);
+};
+
 Meteor.methods({
   generateTestData(currentUserEmail) {
     if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
@@ -61,20 +75,31 @@ Meteor.methods({
         ROLES.USER,
         currentUserEmail,
       );
-      newUsers.map((userId) => {
-        const adminId = admins[Math.floor(Math.random() * admins.length)];
-        const numberOfLoans = generateNumberOfLoans(MAX_LOANS_PER_USER);
-        for (let i = 0; i < numberOfLoans; i += 1) {
-          const loanId = createFakeLoan(userId, adminId);
-          createFakeTask(loanId, adminId);
-          createFakeOffer(loanId, userId);
-        }
-        return userId;
-      });
 
-      return {
-        loans: Loans.find({}, { fields: { _id: 1 } }).fetch(),
-      };
+      newUsers.forEach((userId) => {
+        const adminId = admins[Math.floor(Math.random() * admins.length)];
+
+        range(STEP_3_LOANS_PER_USER).forEach(() => {
+          createFakeLoanFixture({
+            loanStep: 3,
+            userId,
+            adminId,
+            completeFiles: true,
+          });
+        });
+
+        range(STEP_2_LOANS_PER_USER).forEach(() => {
+          createFakeLoanFixture({ loanStep: 2, userId, adminId });
+        });
+
+        range(STEP_1_LOANS_PER_USER).forEach(() => {
+          createFakeLoanFixture({ loanStep: 1, userId, adminId });
+        });
+
+        range(UNOWNED_LOANS_COUNT).forEach(() => {
+          createFakeLoan();
+        });
+      });
     }
   },
 

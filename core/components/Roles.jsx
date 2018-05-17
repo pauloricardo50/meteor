@@ -18,7 +18,11 @@ const Roles = ({ roles }) => (
 );
 
 Roles.propTypes = {
-  roles: PropTypes.array.isRequired,
+  roles: PropTypes.array,
+};
+
+Roles.defaultProps = {
+  roles: [],
 };
 
 export default Roles;

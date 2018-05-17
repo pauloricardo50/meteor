@@ -1,24 +1,63 @@
 const employees = [
   {
     email: 'lydia@e-potek.ch',
-    src: '/img/placeholder.png',
+    src: '/img/team/lydia.jpg',
     name: 'Lydia Abraha',
     title: 'Conseillère en financement',
-    phone: '022 566 82 92',
   },
   {
     email: 'florian@e-potek.ch',
-    src: '/img/placeholder.png',
+    src: '/img/team/florian.jpg',
     name: 'Florian Bienefelt',
     title: 'CTO',
-    phone: '022 566 82 91',
+  },
+  {
+    email: '',
+    src: '/img/team/alexandra.jpg',
+    name: 'Alexandra Caldarov',
+    title: 'QA Tester',
+  },
+  {
+    email: '',
+    src: '/img/team/david.jpg',
+    name: 'David Dejean',
+    title: 'Designer',
   },
   {
     email: 'yannis@e-potek.ch',
-    src: '/img/yannis.jpg',
+    src: '/img/team/yannis.jpg',
     name: 'Yannis Eggert',
-    title: 'Directeur',
-    phone: '022 566 82 90',
+    title: 'Conseiller en financement',
+  },
+  {
+    email: '',
+    src: '/img/team/tarik.jpg',
+    name: 'Tarik Lamkarfed',
+    title: 'Marketing & Communications',
+  },
+  {
+    email: '',
+    src: '/img/team/andra.jpg',
+    name: 'Andra Lazariuc',
+    title: 'Junior Software Engineer',
+  },
+  {
+    email: '',
+    src: '/img/team/harrison.jpg',
+    name: 'Harrison Mean',
+    title: 'Operations',
+  },
+  {
+    email: '',
+    src: '/img/team/claudiu.jpg',
+    name: 'Claudiu Teodorescu',
+    title: 'Software Engineer',
+  },
+  {
+    email: '',
+    src: '/img/team/norbert.jpg',
+    name: 'Norbert Tulbure',
+    title: 'Project Manager',
   },
 ];
 

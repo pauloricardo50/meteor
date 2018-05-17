@@ -11,9 +11,8 @@ const styles = {
     position: 'relative',
   },
   savingIcon: {
-    position: 'absolute',
-    top: 16,
-    right: -25,
+    top: 0,
+    right: -50,
   },
 };
 
@@ -56,7 +55,7 @@ export default class SelectFieldInput extends Component {
   };
 
   mapOptions = () =>
-    this.props.inputProps.options.map(({ id, intlId, intlValues, label, ...otherProps }) => ({
+    this.props.inputProps.options.map(({ id, intlId, intlValues, label, ref, ...otherProps }) => ({
       label: label || (
         <T
           id={`Forms.${intlId || this.props.inputProps.id}.${id}`}
@@ -69,18 +68,13 @@ export default class SelectFieldInput extends Component {
 
   render() {
     const {
-      inputProps: {
-        style,
-        label,
-        disabled,
-        options,
-        noValidator,
-        id,
-        required,
-      },
+      inputProps: { style, label, disabled, options, id, required },
+      noValidator,
       admin,
     } = this.props;
     const { value, saving, errorText } = this.state;
+
+    const renderedOptions = this.mapOptions();
 
     return (
       <div style={{ ...styles.div, ...style }}>
@@ -91,8 +85,10 @@ export default class SelectFieldInput extends Component {
           onChange={this.handleChange}
           style={{ ...style, marginBottom: 8 }}
           disabled={disabled}
-          renderValue={val => this.mapOptions().find(o => o.id === val).label}
-          options={this.mapOptions()}
+          renderValue={val =>
+            renderedOptions.find(option => option.id === val).label
+          }
+          options={renderedOptions}
         />
         <ValidIcon
           saving={saving}
@@ -111,7 +107,7 @@ export default class SelectFieldInput extends Component {
 SelectFieldInput.propTypes = {
   currentValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   docId: PropTypes.string.isRequired,
-  updateFunc: PropTypes.string.isRequired,
+  updateFunc: PropTypes.func.isRequired,
   inputProps: PropTypes.shape({
     label: PropTypes.node.isRequired,
     disabled: PropTypes.bool,

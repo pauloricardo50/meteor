@@ -15,7 +15,7 @@ const Widget1SingleInputForm = ({
   <div
     id={`widget1-${name}`}
     duration={200}
-    className="widget1-single-input-form card1"
+    className="widget1-single-input-form card1 animated fadeInUp"
   >
     <form onSubmit={onSubmit}>
       <Widget1SingleInput name={name} />

@@ -1,0 +1,46 @@
+.interests-page {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  h1 {
+    color: $primary;
+  }
+
+  .interests-page-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 32px;
+    padding-top: 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: $med) {
+  .interests-page-content {
+    padding: 16px;
+  }
+}
+
+.interests-page-table {
+  margin: 80px 32px 0 32px;
+  transform: scale(1.25);
+}
+
+@media (min-width: $med) {
+  .interests-page-table {
+    width: $small;
+  }
+}
+
+.interests-table-trend {
+  &.UP {
+    color: $error;
+  }
+
+  &.DOWN {
+    color: $success;
+  }
+}

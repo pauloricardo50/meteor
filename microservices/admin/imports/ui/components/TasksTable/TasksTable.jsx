@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import Icon from 'core/components/Icon';
 import Table from 'core/components/Table';
@@ -15,10 +15,13 @@ import TasksStatusDropdown from './TasksStatusDropdown';
 
 const formatDateTime = date => moment(date).format('D MMM YY à HH:mm:ss');
 
-export default class TasksTable extends Component {
+class TasksTable extends Component {
   getRelatedDoc = ({ borrower, loan, property, user }) => {
     if (borrower) {
       const { _id, firstName, lastName } = borrower;
+      if (!_id) {
+        return {};
+      }
 
       return {
         link: `/borrowers/${_id}`,
@@ -30,6 +33,9 @@ export default class TasksTable extends Component {
 
     if (loan) {
       const { _id, name } = loan;
+      if (!_id) {
+        return {};
+      }
 
       return {
         link: `/loans/${_id}`,
@@ -41,6 +47,9 @@ export default class TasksTable extends Component {
 
     if (property) {
       const { _id, address1 } = property;
+      if (!_id) {
+        return {};
+      }
 
       return {
         link: `/properties/${_id}`,
@@ -52,6 +61,9 @@ export default class TasksTable extends Component {
 
     if (user) {
       const { _id, username, emails } = user;
+      if (!_id) {
+        return {};
+      }
 
       return {
         link: `/users/${_id}`,
@@ -108,7 +120,7 @@ export default class TasksTable extends Component {
     });
 
     const relatedDoc = {
-      label: <IconLink link={link} icon={icon} text={text || translationId} />,
+      label: link ? <IconLink link={link} icon={icon} text={text || translationId} /> : null,
       raw: text,
     };
 
@@ -182,3 +194,5 @@ TasksTable.propTypes = {
 TasksTable.defaultProps = {
   showAssignee: false,
 };
+
+export default withRouter(TasksTable)

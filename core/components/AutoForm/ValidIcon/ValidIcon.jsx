@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import classnames from 'classnames';
 
 import Icon from 'core/components/Icon';
 import colors from 'core/config/colors';
@@ -23,7 +24,13 @@ const ValidIcon = ({ status, style, fade, hide }) => {
     );
   case STATUS.VALID:
     return (
-      <span style={style} className={fade ? 'animated zoomOut' : undefined}>
+      <span
+        style={style}
+        className={classnames({
+          'saving-icon': true,
+          'animated zoomOut': !!fade,
+        })}
+      >
         <svg
           className="checkmark"
           xmlns="http://www.w3.org/2000/svg"

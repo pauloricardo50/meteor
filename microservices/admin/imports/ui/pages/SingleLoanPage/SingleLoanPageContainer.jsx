@@ -1,14 +1,15 @@
 import query from 'core/api/loans/queries/adminLoan';
-import { compose, withQuery, branch, renderComponent } from 'core/api';
+import { compose, branch, renderComponent, withSmartQuery } from 'core/api';
 import MissingDoc from '../../components/MissingDoc/MissingDoc';
 
 export default compose(
-  withQuery(({ match }) => query.clone({ _id: match.params.loanId }), {
-    reactive: true,
-    single: true,
+  withSmartQuery({
+    query: ({ match }) => query.clone({ _id: match.params.loanId }),
+    queryOptions: { reactive: true, single: true },
+    dataName: 'loan',
   }),
   branch(
-    ({ isLoading, data }) => !isLoading && !data,
+    ({ isLoading, loan }) => !isLoading && !loan,
     renderComponent(MissingDoc),
   ),
 );

@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 
-import Button from 'core/components/Button';
-import { T } from 'core/components/Translation';
-import TogglePoint, { TOGGLE_POINTS } from 'core/components/TogglePoint';
+import WwwTopNavLinks from './WwwTopNavLinks';
+import WwwTopNavLogo from './WwwTopNavLogo';
 
 const VARIANTS = {
   BLUE: 'blue',
@@ -21,21 +19,10 @@ const WwwTopNav = ({ variant }) => (
       [variant]: true,
     })}
   >
-    <Link to="/" className="logo">
-      <img
-        src={
-          variant === VARIANTS.BLUE
-            ? '/img/logo_white.svg'
-            : '/img/logo_black.svg'
-        }
-        alt="e-Potek"
-      />
-    </Link>
-    <TogglePoint id={TOGGLE_POINTS.STRIPPED_LITE_VERSION_UI}>
-      <Button raised style={{ margin: 8 }}>
-        <T id="general.login" />
-      </Button>
-    </TogglePoint>
+    <span className="www-top-nav-content">
+      <WwwTopNavLogo variant={variant} />
+      <WwwTopNavLinks variant={variant} />
+    </span>
   </nav>
 );
 

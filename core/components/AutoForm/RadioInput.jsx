@@ -8,9 +8,8 @@ import ValidIcon from './ValidIcon';
 
 const styles = {
   validIcon: {
-    position: 'absolute',
-    top: 16,
-    right: -25,
+    top: 0,
+    right: -50,
   },
 };
 

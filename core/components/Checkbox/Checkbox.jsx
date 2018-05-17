@@ -17,11 +17,12 @@ Checkbox.propTypes = {
   value: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   label: PropTypes.node,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   disabled: PropTypes.bool,
 };
 
 Checkbox.defaultProps = {
+  id: undefined,
   label: undefined,
   disabled: false,
 };

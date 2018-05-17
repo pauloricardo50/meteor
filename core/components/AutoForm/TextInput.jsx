@@ -22,9 +22,8 @@ const styles = {
     padding: 10,
   },
   savingIcon: {
-    position: 'absolute',
-    top: 16,
-    right: -25,
+    top: 0,
+    right: -50,
   },
   infoStyle: {
     color: colors.primary,
@@ -32,7 +31,7 @@ const styles = {
   },
 };
 
-export default class TextInput extends Component {
+class TextInput extends Component {
   constructor(props) {
     super(props);
 
@@ -88,7 +87,11 @@ export default class TextInput extends Component {
   };
 
   saveValue = (showSaving = true) => {
-    const { updateFunc, docId, inputProps: { id, currentValue } } = this.props;
+    const {
+      updateFunc,
+      docId,
+      inputProps: { id, currentValue },
+    } = this.props;
     const { value } = this.state;
     // Save data to DB
     const object = { [id]: value };
@@ -122,10 +125,19 @@ export default class TextInput extends Component {
         info,
         disabled,
         money,
-        noValidator,
         required,
+
+        // Destructure these props to avoid warnings
+        inputRef,
+        currentValue,
+        condition,
+        decimal,
+        intlId,
+        saveOnChange,
+
         ...otherProps
       },
+      noValidator,
       admin,
     } = this.props;
     const { value, errorText, saving, showInfo } = this.state;
@@ -215,3 +227,5 @@ TextInput.defaultProps = {
   saveOnChange: true,
   noValidator: false,
 };
+
+export default TextInput;

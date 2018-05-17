@@ -41,6 +41,9 @@ import ErrorIcon from '@material-ui/icons/Error';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import RadioButtonChecked from '@material-ui/icons/RadioButtonChecked';
 import Edit from '@material-ui/icons/Edit';
+import TrendingUp from '@material-ui/icons/TrendingUp';
+import TrendingDown from '@material-ui/icons/TrendingDown';
+import TrendingFlat from '@material-ui/icons/TrendingFlat';
 
 import Star from '@material-ui/icons/Star';
 import StarHalf from '@material-ui/icons/StarHalf';
@@ -110,6 +113,9 @@ const iconMap = {
   deleteSweep: DeleteSweep,
   groupAdd: GroupAdd,
   edit: Edit,
+  trendingUp: TrendingUp,
+  trendingDown: TrendingDown,
+  trendingFlat: TrendingFlat,
 };
 
 const Icon = ({ type, size, ...props }) => {

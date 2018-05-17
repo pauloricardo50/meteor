@@ -2,7 +2,8 @@
   "public": {
     "environment": "staging",
     "features": {
-      "LITE_VERSION": true
+      "LITE_VERSION": true,
+      "NOT_PRODUCTION_READY": false 
     },
     "analyticsSettings": {
       "Google Analytics": {

@@ -1,39 +1,33 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
+import { withState } from 'recompose';
 import { T } from 'core/components/Translation';
+import AboutPagePart4Tabs from './AboutPagePart4Tabs';
 
-const AboutPagePart4 = () => (
+const AboutPagePart4 = ({ index, setIndex }) => (
   <div className="about-page-part-4">
-    <h2>
-      <T id="AboutPagePart4.title" />
-    </h2>
-    <div className="about-page-part-4-list">
-      <div>
+    <AboutPagePart4Tabs setIndex={setIndex} index={index} />
+    <div className="about-page-part-4-content">
+      <div className="about-page-part-4-text">
         <h3>
-          <T id="AboutPagePart4.subtitle1" />
+          <T id={`AboutPagePart4.title${index}`} />
         </h3>
         <p className="description">
-          <T id="AboutPagePart4.description1" />
+          <T id={`AboutPagePart4.description${index}`} />
         </p>
       </div>
-      <div>
-        <h3>
-          <T id="AboutPagePart4.subtitle2" />
-        </h3>
-        <p className="description">
-          <T id="AboutPagePart4.description2" />
-        </p>
-      </div>
-      <div>
-        <h3>
-          <T id="AboutPagePart4.subtitle3" />
-        </h3>
-        <p className="description">
-          <T id="AboutPagePart4.description3" />
-        </p>
-      </div>
+      <div
+        className="about-page-part-4-image"
+        style={{ backgroundImage: `url(/img/AboutPagePart4Image${index}.jpg)` }}
+      />
     </div>
   </div>
 );
 
-export default AboutPagePart4;
+AboutPagePart4.propTypes = {
+  index: PropTypes.number.isRequired,
+  setIndex: PropTypes.func.isRequired,
+};
+
+export default withState('index', 'setIndex', 0)(AboutPagePart4);

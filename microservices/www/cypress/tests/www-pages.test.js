@@ -5,6 +5,8 @@ const pages = {
   faq: '/faq',
   Contact: '/contact',
   Conditions: '/conditions',
+  Careers: '/careers',
+  Interests: '/interests',
   'Not Found': '/an-inexistent-page',
 };
 

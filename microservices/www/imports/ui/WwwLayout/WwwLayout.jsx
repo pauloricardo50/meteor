@@ -4,7 +4,7 @@ import WwwTopNav from './WwwTopNav';
 import WwwFooter from './WwwFooter';
 
 const WwwLayout = ({ children, className }) => (
-  <div className={`www-layout ${className}`}>{children}</div>
+  <div className={`www-layout animated fadeIn ${className}`}>{children}</div>
 );
 
 WwwLayout.propTypes = {

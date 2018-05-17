@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 
-// import SelectField from 'core/components/Material/SelectField';
-// import MenuItem from 'core/components/Material/MenuItem';
 import Toggle from 'core/components/Material/Toggle';
 import Select from 'core/components/Select';
 
@@ -33,24 +31,14 @@ const getBorrowerForms = (borrowers) => {
       id: `borrower.${b._id}.finance`,
       label: `Emprunteur ${i + 1} Finances`,
     });
-    array.push({
-      id: 'files',
-      label: 'Documents',
-    });
   });
 
   return array;
 };
 
 const getLoanForms = loan => [
-  {
-    id: `loan.${loan._id}.property`,
-    label: 'Bien immobilier',
-  },
-  {
-    id: 'closing',
-    label: 'Décaissement',
-  },
+  { id: `loan.${loan._id}.property`, label: 'Bien immobilier' },
+  { id: 'closing', label: 'Décaissement' },
 ];
 
 const getForm = (props, value, modify) => {
@@ -58,22 +46,23 @@ const getForm = (props, value, modify) => {
     return null;
   }
 
-  const splittedValue = value.split('.');
-  switch (splittedValue[0]) {
+  const [collection, docId, form] = value.split('.');
+
+  switch (collection) {
   case 'borrower': {
-    switch (splittedValue[2]) {
+    switch (form) {
     case 'personal':
       return (
         <AutoForm
           key={value}
           inputs={getBorrowerInfoArray({
             ...props,
-            borrowerId: splittedValue[1],
+            borrowerId: docId,
           })}
           formClasses="user-form"
-          docId={splittedValue[1]}
+          docId={docId}
           collection="borrowers"
-          doc={props.borrowers.find(b => b._id === splittedValue[1])}
+          doc={props.borrowers.find(b => b._id === docId)}
           disabled={!modify}
           noPlaceholders
           admin
@@ -85,12 +74,12 @@ const getForm = (props, value, modify) => {
           key={value}
           inputs={getBorrowerFinanceArray({
             ...props,
-            borrowerId: splittedValue[1],
+            borrowerId: docId,
           })}
           borrowers={props.borrowers}
-          docId={splittedValue[1]}
+          docId={docId}
           collection="borrowers"
-          doc={props.borrowers.find(b => b._id === splittedValue[1])}
+          doc={props.borrowers.find(b => b._id === docId)}
           disabled={!modify}
           noPlaceholders
           admin
@@ -151,6 +140,19 @@ const getForm = (props, value, modify) => {
   }
 };
 
+const shouldCountField = field =>
+  field.condition !== false && field.ignore !== true;
+
+const getFirstInputOfConditionalField = field =>
+  (field.type === 'conditionalInput' ? field.inputs[0] : field);
+
+const makeCompareToValidationArray = validationArray => (
+  tot,
+  field,
+  index,
+  array,
+) => (get(validationArray, field.id) ? tot + 1 / array.length : tot);
+
 // 1. Takes the form array and filters out the fields that aren't required
 // 2. if this is a conditional input, push the first value only
 // 3. Verifies if the id exists in the validationArray,
@@ -158,13 +160,14 @@ const getForm = (props, value, modify) => {
 // 0 and 1
 const reduceToPercent = (formArray, validationArray) =>
   formArray
-    .filter(i => i.condition !== false && i.ignore !== true)
-    .map(i => (i.type === 'conditionalInput' ? i.inputs[0] : i))
-    .reduce(
-      (tot, i, index, array) =>
-        (get(validationArray, i.id) ? tot + 1 / array.length : tot),
-      0,
-    );
+    .filter(shouldCountField)
+    .map(getFirstInputOfConditionalField)
+    .reduce(makeCompareToValidationArray(validationArray), 0);
+
+const getAverageOfPercentages = percentages =>
+  percentages.length > 0 &&
+  percentages.map(p => Number(p.toFixed(3))).reduce((p, c) => p + c, 0) /
+    percentages.length;
 
 const getPercent = (props) => {
   const percentages = [
@@ -184,26 +187,14 @@ const getPercent = (props) => {
     ));
   });
 
-  // const arr = getBorrowerFinanceArray(borrowers, borrowers[0]._id)
-  //   .filter(i => i.condition !== false && i.ignore !== true)
-  //   .map(i => (i.type === 'conditionalInput' ? i.inputs[0] : i));
-  // console.log(percentages);
-  // console.log(arr.map(i => i.id));
-  // console.log(arr.length);
-  // Return the average of all the percentages
-  // Use to Fixed to round out the percentage when it's 0.99999997
-  return (
-    percentages.length > 0 &&
-    percentages.map(p => Number(p.toFixed(3))).reduce((p, c) => p + c, 0) /
-      percentages.length
-  );
+  return getAverageOfPercentages(percentages);
 };
 
 const getSelectOptions = (borrowers, loan) => {
   const borrowerForms = getBorrowerForms(borrowers);
   const loanForms = getLoanForms(loan);
 
-  return [...borrowerForms, ...loanForms];
+  return [...borrowerForms, ...loanForms, { id: 'files', label: 'Documents' }];
 };
 
 export default class FormsTab extends Component {
@@ -217,23 +208,26 @@ export default class FormsTab extends Component {
   }
 
   handleChange = (_, value) => this.setState({ value });
+
   handleToggle = (event, isInputChecked) =>
     this.setState({ modify: isInputChecked });
 
   render() {
     const { borrowers, loan } = this.props;
+    const { value, modify } = this.state;
+
     return (
       <section className="mask1">
         <Select
           label="Formulaire"
-          value={this.state.value}
+          value={value}
           onChange={this.handleChange}
           options={getSelectOptions(borrowers, loan)}
           style={{ width: '100%', maxWidth: 250 }}
         />
         <Toggle
           label="Peut modifier"
-          toggled={this.state.modify}
+          toggled={modify}
           onToggle={this.handleToggle}
           style={{ width: 'unset' }}
         />
@@ -245,7 +239,7 @@ export default class FormsTab extends Component {
 
         <hr />
 
-        {getForm(this.props, this.state.value, this.state.modify)}
+        {getForm(this.props, value, modify)}
       </section>
     );
   }

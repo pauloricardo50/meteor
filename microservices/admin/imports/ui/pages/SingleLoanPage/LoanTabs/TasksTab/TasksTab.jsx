@@ -12,8 +12,8 @@ const TasksTab = ({ loan: { borrowerIds, property, _id } }) => (
     <LoanTasksTable
       showAssignee
       loanId={_id}
-      borrowerIds={borrowerIds}
       propertyId={property._id}
+      borrowerIds={borrowerIds}
     />
   </div>
 );

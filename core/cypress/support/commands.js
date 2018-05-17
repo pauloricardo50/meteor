@@ -1,10 +1,10 @@
-const devEmail = 'dev-1@e-potek.ch';
-const userEmail = 'user-1@e-potek.ch';
-const userPassword = '12345';
+import { DEV_EMAIL, USER_EMAIL, USER_PASSWORD } from '../testHelpers';
 
-Cypress.Commands.add('eraseAndGenerateTestData', () => {
-  cy.meteorLogoutAndLogin(devEmail).then(({ Meteor }) =>
+Cypress.Commands.add('eraseAndGenerateTestData', () =>
+  cy.meteorLogoutAndLogin(DEV_EMAIL).then(window =>
     new Cypress.Promise((resolve, reject) => {
+      const { Meteor } = window;
+
       Meteor.call('purgeDatabase', Meteor.userId(), (err) => {
         if (err) {
           return reject(err);
@@ -12,15 +12,37 @@ Cypress.Commands.add('eraseAndGenerateTestData', () => {
 
         return Meteor.call(
           'generateTestData',
-          devEmail,
+          DEV_EMAIL,
           (generateDataError, data) => {
             if (generateDataError) {
               return reject(generateDataError);
             }
 
-            return resolve(data);
+            return resolve(window);
           },
         );
+      });
+    })));
+
+/**
+ * This command gets the test data that will be passed to the tested routes.
+ * It gets the data from the `getEndToEndTestData` method:
+ * each microservice should define the `getEndToEndTestData`
+ * to return the data it neededs in its end to end tests.
+ * SECURITY WARNING:
+ *        Make sure the `getEndToEndTestData` method is available ONLY
+ *        inside the end to end server and NOT in the regular server
+ *        by using the end to end server environment variable!
+ */
+Cypress.Commands.add('getTestData', (email) => {
+  cy.meteorLogoutAndLogin(email).then(({ Meteor }) =>
+    new Cypress.Promise((resolve, reject) => {
+      Meteor.call('getEndToEndTestData', {}, (err, data) => {
+        if (err) {
+          return reject(err);
+        }
+
+        return resolve(data);
       });
     }));
 });
@@ -34,9 +56,11 @@ Cypress.Commands.add('meteorLogout', () => {
 
 Cypress.Commands.add(
   'meteorLogoutAndLogin',
-  (email = userEmail, password = userPassword) => {
-    cy.visit('/').then(({ Meteor }) =>
+  (email = USER_EMAIL, password = USER_PASSWORD) => {
+    cy.visit('/').then(window =>
       new Cypress.Promise((resolve, reject) => {
+        const { Meteor } = window;
+
         Meteor.logout((err) => {
           if (err) {
             return reject(err);
@@ -45,7 +69,7 @@ Cypress.Commands.add(
           return Meteor.loginWithPassword(
             email,
             password,
-            loginError => (loginError ? reject(loginError) : resolve()),
+            loginError => (loginError ? reject(loginError) : resolve(window)),
           );
         });
       }));
@@ -61,8 +85,8 @@ Cypress.Commands.add('waitUntilLoads', () => {
 });
 
 Cypress.Commands.add('shouldRenderWithoutErrors', (expectedPageUri) => {
-  cy.get('section').should('be.ok');
-
+  // make sure the page doesn't get redirected by the Router (to login or anywhere else)
+  // Note: it can get redirected on componentDidMount - that's not tested here
   const baseUrl = Cypress.config('baseUrl');
   cy.url().should('eq', baseUrl + expectedPageUri);
 });
