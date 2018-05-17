@@ -61,11 +61,7 @@ const getDashboardArray = (props) => {
     {
       title: true,
       label: 'Recap.title',
-      props: {
-        style: {
-          marginTop: 0,
-        },
-      },
+      props: { style: { marginTop: 0 } },
     },
     {
       label: 'Recap.purchasePrice',
@@ -93,9 +89,7 @@ const getDashboardArray = (props) => {
     },
     {
       label: 'Recap.totalCost',
-      labelStyle: {
-        fontWeight: 400,
-      },
+      labelStyle: { fontWeight: 400 },
       value: <span className="sum">{toMoney(project)}</span>,
       spacingTop: true,
       spacing: true,
@@ -279,11 +273,7 @@ const getSmallDashboardArray = (props) => {
     {
       title: true,
       label: 'Recap.title',
-      props: {
-        style: {
-          marginTop: 0,
-        },
-      },
+      props: { style: { marginTop: 0 } },
     },
     {
       label: 'Recap.purchasePrice',
@@ -353,11 +343,7 @@ const getStart2Array = (props) => {
     {
       title: true,
       label: 'Recap.title',
-      props: {
-        style: {
-          marginTop: 0,
-        },
-      },
+      props: { style: { marginTop: 0 } },
     },
     {
       label:
@@ -386,9 +372,7 @@ const getStart2Array = (props) => {
     },
     {
       label: 'Recap.totalCost',
-      labelStyle: {
-        fontWeight: 400,
-      },
+      labelStyle: { fontWeight: 400 },
       value: (
         <span className="bold sum">
           {toMoney(Math.round(p.property * (1 + constants.notaryFees) +
@@ -876,7 +860,7 @@ const Recap = (props) => {
   const array = props.array || arraySwitch(props);
   return (
     <article className="validator recap">
-      <RecapSimple {...props} array={array} />{' '}
+      <RecapSimple {...props} array={array} />
     </article>
   );
 };

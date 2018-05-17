@@ -1,4 +1,7 @@
 {
+  "OverviewTab.emptyRecap":
+    "Il manque le valeur du bien et/ou les fonds propres voulus pour afficher ce recap",
+
   "AboutPageTeamRecruiting.title": "Vous !",
   "AboutPageTeamRecruiting.subtitle": "e-Potek recrute",
   "AboutPageTeamRecruiting.hoverText": "Voir nos postes ouverts",

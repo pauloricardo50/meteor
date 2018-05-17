@@ -9,7 +9,7 @@ import {
 } from '../api/constants';
 import { getIncomeRatio } from './finance-math';
 import { propertyPercent, filesPercent } from '../arrays/steps';
-import { loanDocuments, propertyDocuments } from '../api/files/documents';
+import { propertyDocuments } from '../api/files/documents';
 
 export const getProjectValue = ({ loan, property }) => {
   if (!property || !property.value) {
@@ -379,11 +379,28 @@ export const getAuctionEndTime = (startTime) => {
 };
 
 export const loanIsVerified = ({
-  loan: { logic: { verification: { validated } } },
+  loan: {
+    logic: {
+      verification: { validated },
+    },
+  },
 }) => {
   if (validated !== undefined) {
     return true;
   }
 
   return false;
+};
+
+export const loanHasMinimalInformation = ({
+  general: { fortuneUsed },
+  property,
+}) => {
+  if (!property.value) {
+    return false;
+  } else if (!fortuneUsed) {
+    return false;
+  }
+
+  return true;
 };
