@@ -1,6 +1,16 @@
 defaults: &defaults
   working_directory: ~/app
 
+# caching paths
+meteor_system_cache: &meteor_system_cache
+  build-epotek-v2-meteor-system-{{ checksum "./.circleci/config.yml" }}
+
+# caching restorations
+restore_meteor_system_cache: &restore_meteor_system_cache
+  - restore_cache:
+      name: restore system's meteor cached build
+      keys:
+      - *meteor_system_cache
 
 
 version: 2
@@ -27,10 +37,7 @@ jobs:
       - checkout
       - add_ssh_keys
       
-      - restore_cache:
-          name: restore system's meteor cached build
-          keys:
-            - build-epotek-v2-meteor-system-{{ checksum "./.circleci/config.yml" }}
+      <<: *restore_meteor_system_cache
       - restore_cache:
           name: restore root cached node_modules
           keys:
@@ -199,7 +206,6 @@ jobs:
           root: /home/circleci
           paths:
             - app
-            - .meteor
 
   deploy_admin:
     <<: *defaults
@@ -208,6 +214,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
+      <<: *restore_meteor_system_cache
       - run:
           name: Symlink cache meteor binary
           command: ./scripts/circleci/symlink_cached_meteor_binary.sh
@@ -228,6 +235,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
+      <<: *restore_meteor_system_cache
       - run:
           name: Symlink cache meteor binary
           command: ./scripts/circleci/symlink_cached_meteor_binary.sh
@@ -248,6 +256,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
+      <<: *restore_meteor_system_cache
       - run:
           name: Symlink cache meteor binary
           command: ./scripts/circleci/symlink_cached_meteor_binary.sh
