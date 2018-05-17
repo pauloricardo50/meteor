@@ -52,27 +52,26 @@ Cypress.Commands.add('meteorLogout', () => {
     new Cypress.Promise((resolve, reject) => {
       Meteor.logout(err => (err ? reject(err) : resolve()));
     }));
+
+  cy.get('section.login-page').should('exist');
 });
 
 Cypress.Commands.add(
   'meteorLogoutAndLogin',
   (email = USER_EMAIL, password = USER_PASSWORD) => {
-    cy.window().then(window =>
-      new Cypress.Promise((resolve, reject) => {
-        const { Meteor } = window;
-
-        Meteor.logout((err) => {
-          if (err) {
-            return reject(err);
-          }
+    cy
+      .meteorLogout()
+      .window()
+      .then(window =>
+        new Cypress.Promise((resolve, reject) => {
+          const { Meteor } = window;
 
           return Meteor.loginWithPassword(
             email,
             password,
             loginError => (loginError ? reject(loginError) : resolve(window)),
           );
-        });
-      }));
+        }));
   },
 );
 
