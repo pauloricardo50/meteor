@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 import { IntlNumber } from 'core/components/Translation';
 import { getLoanValue } from 'core/utils/loanFunctions';
-import Loading from 'core/components/Loading';
 import LoanTabs from './LoanTabs';
 import SingleLoanPageContainer from './SingleLoanPageContainer';
 

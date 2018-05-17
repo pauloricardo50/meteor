@@ -6,6 +6,7 @@ import Recap from 'core/components/Recap';
 import renderObject from 'core/utils/renderObject';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import { T } from 'core/components/Translation';
+import { loanHasMinimalInformation } from 'core/utils/loanFunctions';
 import AdminNote from '../../../../components/AdminNote';
 import StepStatus from './StepStatus';
 import LoanTasksTable from '../LoanTasksTable';
@@ -22,6 +23,7 @@ export default class OverviewTab extends React.Component {
     const { loan, borrowers } = this.props;
     const { adminNote, user, borrowerIds, property, _id } = loan;
     const { showObject, serverTime } = this.state;
+    const displayRecap = loanHasMinimalInformation(loan);
 
     return (
       <div className="mask1 overview-tab">
@@ -51,7 +53,11 @@ export default class OverviewTab extends React.Component {
             <h2 className="fixed-size">
               <T id="OverviewTab.recap" />
             </h2>
-            <Recap {...this.props} arrayName="dashboard" />
+            {displayRecap ? (
+              <Recap {...this.props} arrayName="dashboard" />
+            ) : (
+              <T id="OverviewTab.emptyRecap" />
+            )}
           </div>
 
           <div className="flex-col">

@@ -1,6 +1,16 @@
 defaults: &defaults
   working_directory: ~/app
 
+# caching paths
+meteor_system_cache_key: &meteor_system_cache_key
+  build-epotek-v2-meteor-system-{{ checksum "./.circleci/config.yml" }}
+
+# caching restorations
+restore_meteor_system_cache: &restore_meteor_system_cache
+  restore_cache:
+      name: restore system's meteor cached build
+      keys:
+      - *meteor_system_cache_key
 
 
 version: 2
@@ -27,10 +37,7 @@ jobs:
       - checkout
       - add_ssh_keys
       
-      - restore_cache:
-          name: restore system's meteor cached build
-          keys:
-            - build-epotek-v2-meteor-system-{{ checksum "./.circleci/config.yml" }}
+      - *restore_meteor_system_cache
       - restore_cache:
           name: restore root cached node_modules
           keys:
@@ -131,7 +138,7 @@ jobs:
 
       - save_cache:
           name: cache system's meteor build
-          key: build-epotek-v2-meteor-system-{{ checksum "./.circleci/config.yml" }}
+          key: *meteor_system_cache_key
           paths:
             - ~/.meteor
       - save_cache:
@@ -196,10 +203,9 @@ jobs:
       - store_artifacts:
           path: ./e2e-results/cypress/admin-videos
       - persist_to_workspace:
-          root: /
+          root: /home/circleci
           paths:
-            - home/circleci/app
-            - home/circleci/.meteor
+            - app
 
   deploy_admin:
     <<: *defaults
@@ -207,7 +213,11 @@ jobs:
       enabled: true
     steps:
       - attach_workspace:
-          at: /
+          at: ~/
+      - *restore_meteor_system_cache
+      - run:
+          name: Symlink cache meteor binary
+          command: ./scripts/circleci/symlink_cached_meteor_binary.sh
       - run:
           name: Prepare deployment
           command: |
@@ -224,7 +234,11 @@ jobs:
       enabled: true
     steps:
       - attach_workspace:
-          at: /
+          at: ~/
+      - *restore_meteor_system_cache
+      - run:
+          name: Symlink cache meteor binary
+          command: ./scripts/circleci/symlink_cached_meteor_binary.sh
       - run:
           name: Prepare deployment
           command: |
@@ -241,7 +255,11 @@ jobs:
       enabled: true
     steps:
       - attach_workspace:
-          at: /
+          at: ~/
+      - *restore_meteor_system_cache
+      - run:
+          name: Symlink cache meteor binary
+          command: ./scripts/circleci/symlink_cached_meteor_binary.sh
       - run:
           name: Prepare deployment
           command: |

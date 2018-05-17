@@ -29,3 +29,10 @@ html,
   overflow-y: scroll;
   padding: 16px;
 }
+
+// Do this to counter TopNav.scss
+@media (max-width: $med) {
+  .admin-top-nav .top-nav {
+    position: fixed;
+  }
+}

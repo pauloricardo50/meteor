@@ -45,7 +45,7 @@ const FileTabs = ({ loan, borrowers, property }) => (
     >
       <div className="tab-content">
         <UploaderArray
-          fileArray={loanDocuments(loan).contract}
+          documentArray={loanDocuments(loan).contract}
           doc={loan}
           collection={LOANS_COLLECTION}
         />
@@ -74,7 +74,7 @@ const FileTabs = ({ loan, borrowers, property }) => (
     >
       <div className="tab-content">
         <UploaderArray
-          fileArray={propertyDocuments(property).contract}
+          documentArray={propertyDocuments(property).contract}
           doc={property}
           collection={PROPERTIES_COLLECTION}
         />
@@ -104,7 +104,7 @@ const FileTabs = ({ loan, borrowers, property }) => (
       >
         <div className="tab-content">
           <UploaderArray
-            fileArray={borrowerDocuments(b).contract}
+            documentArray={borrowerDocuments(b).contract}
             doc={b}
             collection={BORROWERS_COLLECTION}
             key={b._id}

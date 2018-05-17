@@ -10,7 +10,7 @@ import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 import SinglePropertyPageHeader from './SinglePropertyPageHeader';
 
 export const getPropertyAddress = ({ address1, zipCode, city }) =>
-  `${address1}, ${zipCode} ${city}`;
+  (address1 && zipCode && city ? `${address1}, ${zipCode} ${city}` : undefined);
 
 const SinglePropertyPage = ({ data: property, isLoading, displayLoans }) => {
   if (isLoading) {
@@ -27,9 +27,11 @@ const SinglePropertyPage = ({ data: property, isLoading, displayLoans }) => {
         <Recap arrayName="property" property={property} />
       </div>
       {displayLoans && loans && <LoanSummaryList loans={loans} />}
-      <div className="google-map">
-        <MapWithMarker address={address} className="map" id={address} />
-      </div>
+      {address && (
+        <div className="google-map">
+          <MapWithMarker address={address} className="map" id={address} />
+        </div>
+      )}
     </section>
   );
 };
