@@ -30,16 +30,16 @@
   justify-content: space-around;
   flex-wrap: wrap;
 
-  h2 {
-    padding-left: 10%;
-  }
-
   h2,
   h3 {
     color: white;
     margin: 0;
-    margin-bottom: 40px;
     line-height: 48px;
+  }
+
+  h2 {
+    align-self: center;
+    margin-bottom: 40px;
   }
 
   .about-page-part-2-content {
@@ -52,7 +52,7 @@
   .about-page-part-2-left,
   .about-page-part-2-right {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: flex-start;
     margin-bottom: 32px;
 
@@ -64,8 +64,10 @@
       align-items: flex-start;
     }
 
-    b {
-      margin-bottom: 1em;
+    .about-page-part-2-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 40px;
     }
 
     .icon-circle-error,
@@ -104,11 +106,6 @@
 
 @media (max-width: $small) {
   .about-page-part-2 {
-    h2 {
-      align-self: center;
-      padding: 0;
-    }
-
     .about-page-part-2-left,
     .about-page-part-2-right {
       flex-direction: column;
@@ -137,6 +134,7 @@
   .card1 {
     padding: 64px;
     margin: 8px;
+    margin-bottom: 40px;
     max-width: 500px;
     display: flex;
     flex-direction: column;
