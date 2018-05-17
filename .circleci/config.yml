@@ -7,7 +7,7 @@ meteor_system_cache: &meteor_system_cache
 
 # caching restorations
 restore_meteor_system_cache: &restore_meteor_system_cache
-  - restore_cache:
+  restore_cache:
       name: restore system's meteor cached build
       keys:
       - *meteor_system_cache
@@ -37,7 +37,7 @@ jobs:
       - checkout
       - add_ssh_keys
       
-      <<: *restore_meteor_system_cache
+      - *restore_meteor_system_cache
       - restore_cache:
           name: restore root cached node_modules
           keys:
@@ -214,7 +214,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
-      <<: *restore_meteor_system_cache
+      - *restore_meteor_system_cache
       - run:
           name: Symlink cache meteor binary
           command: ./scripts/circleci/symlink_cached_meteor_binary.sh
@@ -235,7 +235,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
-      <<: *restore_meteor_system_cache
+      - *restore_meteor_system_cache
       - run:
           name: Symlink cache meteor binary
           command: ./scripts/circleci/symlink_cached_meteor_binary.sh
@@ -256,7 +256,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
-      <<: *restore_meteor_system_cache
+      - *restore_meteor_system_cache
       - run:
           name: Symlink cache meteor binary
           command: ./scripts/circleci/symlink_cached_meteor_binary.sh
