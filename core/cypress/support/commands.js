@@ -101,7 +101,7 @@ Cypress.Commands.add('setAuthentication', (pageAuthentication) => {
 
 Cypress.Commands.add(
   'routeShouldRenderSuccessfully',
-  (routeConfig, testData, { reloadWindowOnNavigation = false }) => {
+  (routeConfig, testData, options = {}) => {
     const pageRoute =
       typeof routeConfig === 'function' ? routeConfig(testData) : routeConfig;
 
@@ -110,6 +110,7 @@ Cypress.Commands.add(
       options: { shouldRender: expectedDomElement, dropdownShouldRender },
     } = pageRoute;
 
+    const { reloadWindowOnNavigation } = options;
     if (reloadWindowOnNavigation) {
       cy.visit(uri);
     } else {
