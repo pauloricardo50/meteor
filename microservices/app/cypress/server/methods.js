@@ -10,7 +10,7 @@ import {
 } from 'core/utils/testHelpers/testHelpers';
 import { IMPERSONATE_SESSION_KEY } from 'core/api/impersonation/impersonation';
 
-// For security reasons, the following conditino is the ONLY
+// For security reasons, the following condition is the ONLY
 // place where server code related to end to end tests should be added
 if (process.env.E2E_SERVER) {
   // remove login rate limits in E2E tests
