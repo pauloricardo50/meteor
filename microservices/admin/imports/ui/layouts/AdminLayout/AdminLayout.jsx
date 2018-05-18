@@ -8,7 +8,12 @@ import AdminTopNav from './AdminTopNav';
 import AdminSideNav from './AdminSideNav';
 import AdminLayoutContainer from './AdminLayoutContainer';
 
-const getRedirect = ({ currentUser, history: { location: { pathname } } }) => {
+const getRedirect = ({
+  currentUser,
+  history: {
+    location: { pathname },
+  },
+}) => {
   const userIsAdmin = Roles.userIsInRole(currentUser, 'admin');
   const userIsDev = Roles.userIsInRole(currentUser, 'dev');
 

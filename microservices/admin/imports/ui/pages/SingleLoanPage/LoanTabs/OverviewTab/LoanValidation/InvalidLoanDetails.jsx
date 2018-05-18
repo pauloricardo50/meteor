@@ -41,9 +41,7 @@ const InvalidLoanDetails = ({ loan }) => {
     <div>
       <hr />
       <h2 className="fixed-size bold error">
-        <T id="LoanValidation.invalidatedAt" />
-        {' '}
-        <FullDate date={verifiedAt} />
+        <T id="LoanValidation.invalidatedAt" /> <FullDate date={verifiedAt} />
       </h2>
       <ul>
         {hasLoanIssues && (

@@ -19,7 +19,9 @@ export default class MixpanelAnalytics extends Component {
   getData = () => {
     console.log('mixpanel props :', this.props);
 
-    const { loan: { userId } } = this.props;
+    const {
+      loan: { userId },
+    } = this.props;
     return getMixpanelData(userId)
       .then((data) => {
         if (data.status === 'ok') {

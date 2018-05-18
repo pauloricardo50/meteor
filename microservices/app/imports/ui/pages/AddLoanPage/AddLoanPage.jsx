@@ -11,7 +11,11 @@ import './AddLoanPage.scss';
 
 class AddLoanPage extends Component {
   handleYes = () => {
-    const { match: { params: { loanId } } } = this.props;
+    const {
+      match: {
+        params: { loanId },
+      },
+    } = this.props;
 
     setUserToLoan
       .run({ loanId })
@@ -25,7 +29,9 @@ class AddLoanPage extends Component {
       this.props.history.push(`/login?path=/add-loan/${this.props.match.params.loanId}`));
 
   render() {
-    const { currentUser: { emails } } = this.props;
+    const {
+      currentUser: { emails },
+    } = this.props;
 
     return (
       <div className="AddLoanPage">

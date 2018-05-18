@@ -17,7 +17,11 @@ class ImpersonatePage extends Component {
   };
 
   componentDidMount = () => {
-    const { location, history, intl: { formatMessage } } = this.props;
+    const {
+      location,
+      history,
+      intl: { formatMessage },
+    } = this.props;
     const paramsQuery = new URLSearchParams(location.search);
     const userId = paramsQuery.get('userId');
     const authToken = paramsQuery.get('authToken');
