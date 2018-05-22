@@ -51,7 +51,9 @@ const SinglePropertyHeader = ({
           </Link>,
           ', ',
         ]}
+
         <FullDate date={createdAt} />
+
         {user &&
           user.assignedEmployee && (
           <span>
