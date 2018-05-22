@@ -1,2 +1,2 @@
 cypress/*/*/**
-!/cypress/server/server.js
+!/cypress/server/server.app-tests.js
