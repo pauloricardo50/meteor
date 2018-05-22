@@ -18,6 +18,8 @@
 .faq-page-list {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
   max-width: 800px;
   align-self: center;
 
@@ -27,5 +29,10 @@
 
   h2 {
     margin: 32px 0;
+  }
+
+  p.description {
+    max-width: unset;
+    text-align: left;
   }
 }
