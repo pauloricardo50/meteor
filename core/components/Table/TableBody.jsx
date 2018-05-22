@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { TableBody as MuiTableBody } from 'material-ui/Table';
+import MuiTableBody from '@material-ui/core/TableBody';
 
 import Row from './Row';
 import SelectableRow from './SelectableRow';

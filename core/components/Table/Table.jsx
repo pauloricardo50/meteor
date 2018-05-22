@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import MuiTable from 'material-ui/Table';
+import MuiTable from '@material-ui/core/Table';
 
 import { T } from 'core/components/Translation';
 

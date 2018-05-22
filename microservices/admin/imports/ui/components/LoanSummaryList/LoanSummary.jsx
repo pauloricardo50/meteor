@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import Avatar from 'material-ui/Avatar';
-import Chip from 'material-ui/Chip';
+import Avatar from '@material-ui/core/Avatar';
+import Chip from '@material-ui/core/Chip';
 
 import Icon from 'core/components/Icon';
 import { IntlNumber } from 'core/components/Translation';

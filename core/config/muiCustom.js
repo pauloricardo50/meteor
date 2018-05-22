@@ -1,4 +1,4 @@
-import createMuiTheme from 'material-ui/styles/createMuiTheme';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import colors from './colors';
 
 const theme = createMuiTheme({
@@ -9,7 +9,7 @@ const theme = createMuiTheme({
           transition: 'background-color 200ms ease, height 200ms ease',
         },
         '&:hover:not($disabled):before': {
-          backgroundColor: '#666',
+          borderBottomColor: '#666',
         },
       },
       input: {

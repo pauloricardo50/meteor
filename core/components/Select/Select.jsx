@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { FormControl } from 'material-ui/Form';
-import MuiSelect from 'material-ui/Select';
-import Input, { InputLabel } from 'material-ui/Input';
-import withStyles from 'material-ui/styles/withStyles';
+import FormControl from '@material-ui/core/FormControl';
+import MuiSelect from '@material-ui/core/Select';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 import Icon from '../Icon';
 import MenuItem from 'core/components/Material/MenuItem';
