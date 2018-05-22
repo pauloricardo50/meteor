@@ -35,4 +35,14 @@
     max-width: unset;
     text-align: left;
   }
+
+  a {
+    color: $primary;
+    text-decoration: none;
+
+    &:hover {
+      color: $primary;
+      text-decoration: underline;
+    }
+  }
 }
