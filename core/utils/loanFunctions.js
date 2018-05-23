@@ -6,6 +6,7 @@ import {
   LOAN_STRATEGY_PRESET,
   OFFER_TYPE,
   FILE_STEPS,
+  INSURANCE_USE_PRESET,
 } from '../api/constants';
 import { getIncomeRatio } from './finance-math';
 import { propertyPercent, filesPercent } from '../arrays/steps';
@@ -404,3 +405,7 @@ export const loanHasMinimalInformation = ({
 
   return true;
 };
+
+export const useLppFees = ({ loan }) =>
+  loan.general.insuranceFortuneUsed &&
+  loan.logic.insuranceUsePreset === INSURANCE_USE_PRESET.WITHDRAWAL;
