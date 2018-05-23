@@ -58,6 +58,9 @@ then
 
   echo "Cleaning and installing core npm packages"
   ( cd ../core && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear --force);
+
+  echo "Cleaning up all CSS"
+  ./clean-css.sh
 fi
 
 echo "Installing npm packages in root"
