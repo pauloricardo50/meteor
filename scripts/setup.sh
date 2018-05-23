@@ -73,7 +73,7 @@ echo "Installing global packages"
 meteor npm i -g babel-cli start-server-and-test
 
 echo "Creating language files..."
-babel-node ./createLanguages.js
+meteor babel-node ./createLanguages.js
 
 end=`date +%s`
 runtime=$((end-start))

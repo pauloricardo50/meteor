@@ -48,45 +48,115 @@ Cypress.Commands.add('getTestData', (email) => {
 });
 
 Cypress.Commands.add('meteorLogout', () => {
-  cy.visit('/').then(({ Meteor }) =>
-    new Cypress.Promise((resolve, reject) => {
-      Meteor.logout(err => (err ? reject(err) : resolve()));
-    }));
+  let hasLoggedOut = false;
+
+  cy.window().then(({ Meteor }) => {
+    if (Meteor.userId()) {
+      return new Cypress.Promise((resolve, reject) => {
+        Meteor.logout((err) => {
+          if (err) {
+            return reject(err);
+          }
+
+          hasLoggedOut = true;
+
+          return resolve();
+        });
+      });
+    }
+  });
+
+  // after the promise above (logout) finishes, wait
+  // until it gets to the login screen, if it actually logged out
+  cy.get('.login-page').should(($loginPage) => {
+    if (hasLoggedOut) {
+      expect($loginPage).to.have.length(1);
+    }
+  });
 });
 
 Cypress.Commands.add(
   'meteorLogoutAndLogin',
   (email = USER_EMAIL, password = USER_PASSWORD) => {
-    cy.visit('/').then(window =>
-      new Cypress.Promise((resolve, reject) => {
-        const { Meteor } = window;
-
-        Meteor.logout((err) => {
-          if (err) {
-            return reject(err);
-          }
+    cy
+      .meteorLogout()
+      .window()
+      .then(window =>
+        new Cypress.Promise((resolve, reject) => {
+          const { Meteor } = window;
 
           return Meteor.loginWithPassword(
             email,
             password,
             loginError => (loginError ? reject(loginError) : resolve(window)),
           );
-        });
-      }));
+        }));
   },
 );
 
-// wait for the loader (if any) until it closes
-Cypress.Commands.add('waitUntilLoads', () => {
-  const isLoading = Cypress.$('.loading-container')[0];
-  if (isLoading) {
-    cy.get('.loading-container').should('not.exist');
-  }
-});
-
-Cypress.Commands.add('shouldRenderWithoutErrors', (expectedPageUri) => {
-  // make sure the page doesn't get redirected by the Router (to login or anywhere else)
+Cypress.Commands.add('routeShouldExist', (expectedPageUri) => {
+  // make sure the page's route exist (doesn't get redirected to the not-found page)
   // Note: it can get redirected on componentDidMount - that's not tested here
   const baseUrl = Cypress.config('baseUrl');
   cy.url().should('eq', baseUrl + expectedPageUri);
 });
+
+Cypress.Commands.add('setAuthentication', (pageAuthentication) => {
+  if (pageAuthentication === 'public') {
+    cy.meteorLogout();
+  } else {
+    cy.meteorLogoutAndLogin(`${pageAuthentication}-1@e-potek.ch`);
+  }
+});
+
+Cypress.Commands.add(
+  'routeShouldRenderSuccessfully',
+  (routeConfig, testData, options = {}) => {
+    const pageRoute =
+      typeof routeConfig === 'function' ? routeConfig(testData) : routeConfig;
+
+    const {
+      uri,
+      options: { shouldRender: expectedDomElement, dropdownShouldRender },
+    } = pageRoute;
+
+    const { reloadWindowOnNavigation } = options;
+    if (reloadWindowOnNavigation) {
+      cy.visit(uri);
+    } else {
+      cy.window().then(({ reactRouterDomHistory }) => {
+        reactRouterDomHistory.push(uri);
+      });
+    }
+
+    cy
+      .routeShouldExist(uri)
+      .get(expectedDomElement)
+      .should('exist')
+
+      // select dropdown items and check if what we want gets rendered
+      .then(() => {
+        if (dropdownShouldRender) {
+          Object.keys(dropdownShouldRender).forEach((dropdownSelector) => {
+            const items = dropdownShouldRender[dropdownSelector];
+            items.forEach(({ item: itemSelector, shouldRender }) => {
+              cy.selectDropdownOption(dropdownSelector, itemSelector);
+              cy.get(shouldRender).should('exist');
+            });
+          });
+        }
+      });
+  },
+);
+
+Cypress.Commands.add(
+  'selectDropdownOption',
+  (dropdownSelector, itemSelector) => {
+    // open dropdown
+    const dropdown = cy.get(dropdownSelector).first();
+    dropdown.click();
+
+    // click dropdown option
+    dropdown.get(itemSelector).click();
+  },
+);

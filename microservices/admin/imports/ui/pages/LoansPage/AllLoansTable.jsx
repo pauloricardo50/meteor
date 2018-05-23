@@ -73,7 +73,13 @@ export default class AllLoansTable extends Component {
 
   render() {
     return (
-      <Table columnOptions={columnOptions} rows={this.rows} noIntl clickable />
+      <Table
+        columnOptions={columnOptions}
+        rows={this.rows}
+        noIntl
+        clickable
+        className="all-loans-table"
+      />
     );
   }
 }

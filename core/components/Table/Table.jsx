@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import classnames from 'classnames';
 import MuiTable from '@material-ui/core/Table';
 
 import { T } from 'core/components/Translation';
@@ -127,12 +128,13 @@ export default class Table extends Component {
       style,
       noIntl,
       clickable,
+      className,
     } = this.props;
     const { data, rowsPerPage, page, selected, order, orderBy } = this.state;
     const rowCount = data.length;
 
     return (
-      <div className="mui-table" style={style}>
+      <div className={classnames('mui-table', className)} style={style}>
         <MuiTable>
           <TableHeader
             columnOptions={columnOptions}
@@ -189,6 +191,7 @@ Table.propTypes = {
   style: PropTypes.object,
   noIntl: PropTypes.bool,
   clickable: PropTypes.bool, // sets rows to change color on hover
+  className: PropTypes.string,
 };
 
 Table.defaultProps = {
@@ -201,4 +204,5 @@ Table.defaultProps = {
   style: {},
   noIntl: false,
   clickable: true,
+  className: '',
 };

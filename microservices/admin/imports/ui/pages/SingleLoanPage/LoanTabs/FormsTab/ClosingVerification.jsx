@@ -42,13 +42,14 @@ export default class ClosingVerification extends Component {
   render() {
     const { loan } = this.props;
     const steps = loan.logic.closingSteps;
+
     return (
-      <div style={{ padding: '0 16px' }}>
+      <div id="closing-verification" style={{ padding: '0 16px' }}>
         {steps && steps.length ? (
           steps.map(step =>
             (step.type === CLOSING_STEPS_TYPE.UPLOAD ? (
               <FileVerificator
-                currentValue={loan.files[step.id]}
+                currentValue={loan.documents[step.id]}
                 id={step.id}
                 closingSteps={steps}
                 key={step.id}

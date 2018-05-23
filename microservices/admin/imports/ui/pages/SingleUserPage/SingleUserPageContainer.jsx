@@ -1,14 +1,8 @@
 import query from 'core/api/users/queries/adminUser';
-import { compose, withQuery, branch, renderComponent } from 'core/api';
-import MissingDoc from '../../components/MissingDoc/MissingDoc';
+import { withSmartQuery } from 'core/api/containerToolkit';
 
-export default compose(
-  withQuery(({ match }) => query.clone({ _id: match.params.userId }), {
-    reactive: true,
-    single: true,
-  }),
-  branch(
-    ({ isLoading, data }) => !isLoading && !data,
-    renderComponent(MissingDoc),
-  ),
-);
+export default withSmartQuery({
+  query: ({ match }) => query.clone({ _id: match.params.userId }),
+  queryOptions: { reactive: true, single: true },
+  dataName: 'user',
+});

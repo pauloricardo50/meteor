@@ -5,4 +5,5 @@ export default withSmartQuery({
   query: () => query.clone({}),
   queryOptions: { reactive: true, single: true },
   dataName: 'currentUser',
+  renderMissingDoc: false,
 });

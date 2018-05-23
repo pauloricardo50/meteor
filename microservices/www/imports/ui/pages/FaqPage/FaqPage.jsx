@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const AboutPage = props => <div>Hello World</div>;
+const FaqPage = props => <div className="faq-page">Hello World</div>;
 
-AboutPage.propTypes = {};
+FaqPage.propTypes = {};
 
-export default AboutPage;
+export default FaqPage;

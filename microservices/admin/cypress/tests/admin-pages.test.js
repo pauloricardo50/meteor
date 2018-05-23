@@ -1,46 +1,138 @@
-import capitalize from 'lodash/capitalize';
-import { adminEmail } from '../../imports/core/cypress/testHelpers';
+import {
+  ADMIN_EMAIL,
+  route,
+  generateTestsFromPagesConfig,
+} from '../../imports/core/cypress/testHelpers';
 
 // "public", "admin", "dev" and other keys of the pages object
 // are the type of authentication needed for those pages
+
+// Make sure the selector goes deep enough (below data containers)
+// so that there's no async UI loaded below it, otherwise, if an error
+// occurs in the async UI, the test still passes since it already asserted
+// succesfully on the outer UI.
 const pages = {
   public: {
-    Login: '/login',
+    Login: route('/login', { shouldRender: '.login-page' }),
   },
 
   admin: {
-    App: '/',
-    Search: '/search',
-    Profile: '/profile',
+    Dashboard: route('/', {
+      shouldRender: '.admin-dashboard-page .tasks-table',
+    }),
+    Search: route('/search', { shouldRender: '.search-page' }),
+    Profile: route('/profile', { shouldRender: '.admin-profile-page' }),
 
-    Users: '/users',
-    User: ({ user: { _id } }) => `/users/${_id}`,
+    Users: route('/users', { shouldRender: '.users-page .users-table' }),
+    User: ({ user: { _id } }) =>
+      route(`/users/${_id}`, { shouldRender: '.single-user-page' }),
 
-    Loans: '/loans',
-    Loan: ({ step3Loan: { _id } }) => `/loans/${_id}`,
-    'Loan Overview Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/overview`,
-    'Loan Borrowers Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/borrowers`,
-    'Loan Property Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/property`,
-    'Loan Offers Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/offers`,
+    Loans: route('/loans', {
+      shouldRender: '.all-loans-table',
+    }),
+    Loan: ({ step3Loan: { _id } }) =>
+      route(`/loans/${_id}`, {
+        shouldRender: '.overview-tab .tasks-table',
+      }),
+    'Loan Overview Tab': ({ step3Loan: { _id } }) =>
+      route(`/loans/${_id}/overview`, {
+        shouldRender: '.overview-tab .tasks-table',
+      }),
+    'Loan Borrowers Tab': ({ step3Loan: { _id } }) =>
+      route(`/loans/${_id}/borrowers`, {
+        shouldRender: '.single-borrower-tab',
+      }),
+    'Loan Property Tab': ({ step3Loan: { _id } }) =>
+      route(`/loans/${_id}/property`, {
+        shouldRender: '.single-property-page .map-with-marker',
+      }),
+    'Loan Offers Tab': ({ step3Loan: { _id } }) =>
+      route(`/loans/${_id}/offers`, {
+        shouldRender: '.offers-tab',
+      }),
     'Loan Communication Tab': ({ step3Loan: { _id } }) =>
-      `/loans/${_id}/communication`,
-    'Loan Analytics Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/analytics`,
-    'Loan Tasks Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/tasks`,
-    'Loan Forms Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/forms`,
-    'Loan Actions Tab': ({ step3Loan: { _id } }) => `/loans/${_id}/actions`,
+      route(`/loans/${_id}/communication`, {
+        shouldRender: '.communication-tab',
+      }),
+    'Loan Analytics Tab': ({ step3Loan: { _id } }) =>
+      route(`/loans/${_id}/analytics`, {
+        shouldRender: '.mixpanel-analytics',
+      }),
+    'Loan Tasks Tab': ({ step3Loan: { _id } }) =>
+      route(`/loans/${_id}/tasks`, {
+        shouldRender: '.tasks-tab .tasks-table',
+      }),
 
-    Property: ({ property: { _id } }) => `/properties/${_id}`,
+    'Loan Forms Tab': ({ step3Loan: { _id, borrowers } }) =>
+      route(`/loans/${_id}/forms`, {
+        shouldRender: '.forms-tab',
+        dropdownShouldRender: {
+          '.forms-tab .mui-select [aria-haspopup=true]:first': [
+            {
+              item: `li[data-value="borrower.${borrowers[0]._id}.personal"]`,
+              shouldRender: '.forms-tab .borrower-personal-autoform',
+            },
+            {
+              item: `li[data-value="borrower.${borrowers[0]._id}.finance"]`,
+              shouldRender: '.forms-tab .borrower-finance-autoform',
+            },
+            {
+              item: `li[data-value="borrower.${borrowers[1]._id}.personal"]`,
+              shouldRender: '.forms-tab .borrower-personal-autoform',
+            },
+            {
+              item: `li[data-value="borrower.${borrowers[1]._id}.finance"]`,
+              shouldRender: '.forms-tab .borrower-finance-autoform',
+            },
+            {
+              item: `li[data-value="loan.${_id}.property"]`,
+              shouldRender: `.forms-tab .loan-autoform,
+                .forms-tab .property-autoform`,
+            },
+            {
+              item: 'li[data-value="closing"]',
+              shouldRender: '.forms-tab #closing-verification',
+            },
+            {
+              item: 'li[data-value="files"]',
+              shouldRender:
+                '.forms-tab #file-verification-tabs [role="tablist"]',
+            },
+          ],
+        },
+      }),
 
-    Tasks: '/tasks',
+    'Loan Documents Tab': ({ step3Loan: { _id } }) =>
+      route(`/loans/${_id}/files`, {
+        shouldRender: '.files-tab, .new-document-form',
+      }),
+    'Loan Actions Tab': ({ step3Loan: { _id } }) =>
+      route(`/loans/${_id}/actions`, {
+        shouldRender: '.actions-tab',
+      }),
 
-    Borrowers: '/borrowers',
-    Borrower: ({ borrower: { _id } }) => `/borrowers/${_id}`,
+    Property: ({ property: { _id } }) =>
+      route(`/properties/${_id}`, {
+        shouldRender: '.single-property-page .map-with-marker',
+      }),
 
-    'Not Found': '/a-page-that-does-not-exist',
+    Tasks: route('/tasks', { shouldRender: '.tasks-page .tasks-table' }),
+
+    Borrowers: route('/borrowers', {
+      shouldRender: '.borrowers-page .borrowers-table',
+    }),
+    Borrower: ({ borrower: { _id } }) =>
+      route(`/borrowers/${_id}`, {
+        shouldRender: '.single-borrower-page',
+      }),
+
+    'Not Found': route('/a-page-that-does-not-exist', {
+      shouldRender: '#not-found-page',
+    }),
   },
 
   dev: {
-    Dev: '/dev',
+    Dev: route('/dev', { shouldRender: '#dev-page' }),
   },
 };
 
@@ -48,40 +140,17 @@ let testData;
 
 describe('Admin Pages', () => {
   before(() => {
+    // We visit the app so that we get the Window instance of the app
+    // from which we get the `Meteor` instance used in tests
+    cy.visit('/');
+
     cy
       .eraseAndGenerateTestData()
-      .getTestData(adminEmail)
+      .getTestData(ADMIN_EMAIL)
       .then((data) => {
         testData = data;
       });
   });
 
-  Object.keys(pages).forEach((pageAuthentication) => {
-    describe(`${capitalize(pageAuthentication)} Pages`, () => {
-      Object.keys(pages[pageAuthentication]).forEach((pageName) => {
-        describe(`${pageName} Page`, () => {
-          it('should render', () => {
-            /**
-             * we login every time, as it seems that we're logged out again
-             * in each test, probably because a new window instance is
-             * used for every test, which results in us using new Meteor instance in every test
-             */
-            if (pageAuthentication === 'public') {
-              cy.meteorLogout();
-            } else {
-              cy.meteorLogoutAndLogin(`${pageAuthentication}-1@e-potek.ch`);
-            }
-
-            const uri = pages[pageAuthentication][pageName];
-            const pageUri = typeof uri === 'function' ? uri(testData) : uri;
-
-            cy
-              .visit(pageUri)
-              .waitUntilLoads()
-              .shouldRenderWithoutErrors(pageUri);
-          });
-        });
-      });
-    });
-  });
+  generateTestsFromPagesConfig(pages, () => testData);
 });
