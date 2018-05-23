@@ -79,14 +79,20 @@ fi
 echo "Installing npm packages in root"
 ( cd .. && meteor npm install );
 
-echo "Installing npm packages in core/"
-( cd ../core && meteor npm install );
+# Don't install core npm packages on CircleCI
+if [[ $CIRCLE_CI != 1 ]];
+then
+  echo "Installing npm packages in core/"
+  ( cd ../core && meteor npm install );
+fi
 
-echo "Installing global packages"
-meteor npm i -g babel-cli start-server-and-test
+echo "Installing global npm packages"
+# Using 3.6.0 because of this: https://github.com/meteortesting/meteor-mocha/issues/54
+# Using chromedriver 2.37 because 2.38 is incompatible with selenium >3.6.0
+meteor npm i -g babel-cli start-server-and-test selenium-webdriver@3.6.0 chromedriver@2.37.0
 
 echo "Creating language files..."
-babel-node ./createLanguages.js
+meteor babel-node ./createLanguages.js
 
 end=`date +%s`
 runtime=$((end-start))
