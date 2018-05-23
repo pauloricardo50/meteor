@@ -287,7 +287,7 @@ const getSmallDashboardArray = (props) => {
     },
     {
       label: 'general.notaryFees',
-      value: toMoney(Math.round(p.value * constants.NOTARY_FEES)),
+      value: toMoney(Math.round(p.value * financeConstants.NOTARY_FEES)),
     },
     {
       label: 'general.insuranceFees',
@@ -522,7 +522,7 @@ const getStructureArray = (props) => {
     },
     {
       label: 'general.notaryFees',
-      value: toMoney(Math.round(p.value * constants.NOTARY_FEES)),
+      value: toMoney(Math.round(p.value * financeConstants.NOTARY_FEES)),
     },
     {
       label: 'general.insuranceFees',
