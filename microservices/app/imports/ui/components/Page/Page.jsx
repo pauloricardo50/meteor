@@ -18,16 +18,9 @@ class Page extends Component {
   }
 
   render() {
-    const {
-      id,
-      sectionId,
-      className,
-      rightComponent,
-      children,
-      fullWidth,
-    } = this.props;
+    const { id, className, rightComponent, children, fullWidth } = this.props;
     return (
-      <section id={sectionId} className="page-title">
+      <section id={id} className="page-title">
         <div className={`top-bar ${className}`}>
           <h3 className="title fixed-size bold secondary">
             <T id={`${id}.title`} />
@@ -53,14 +46,12 @@ Page.propTypes = {
   children: PropTypes.any.isRequired,
   className: PropTypes.string,
   fullWidth: PropTypes.bool,
-  sectionId: PropTypes.string,
 };
 
 Page.defaultProps = {
   rightComponent: null,
   className: '',
   fullWidth: false,
-  sectionId: '',
 };
 
 export default injectIntl(Page);

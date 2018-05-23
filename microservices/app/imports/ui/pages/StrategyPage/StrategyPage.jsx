@@ -41,7 +41,7 @@ const createHandleSave = loanId => object => loanUpdate.run({ object, loanId });
 const StrategyPage = (props) => {
   const { loan } = props;
   return (
-    <ProcessPage sectionId="strategy-page" {...props} stepNb={2} id="strategy">
+    <ProcessPage {...props} stepNb={2} id="strategy">
       <section className="mask1">
         {getComponents(props, createHandleSave(loan._id))
           .filter(i => i.condition)

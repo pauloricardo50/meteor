@@ -20,7 +20,7 @@ const PropertyPage = (props) => {
   const percent = getPropertyCompletion({ loan, borrowers, property });
 
   return (
-    <ProcessPage {...props} sectionId="property-page" stepNb={1} id="property">
+    <ProcessPage {...props} stepNb={1} id="property">
       <section className="mask1 property-page">
         <h1 className="text-center">
           <T id="PropertyPage.title" values={{ count: borrowers.length }} />

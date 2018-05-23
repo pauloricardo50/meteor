@@ -28,7 +28,7 @@ const styles = {
 };
 
 const AccountPage = props => (
-  <Page sectionId="account-page" id="AccountPage">
+  <Page id="AccountPage">
     <div className="mask1" style={styles.section}>
       <span
         className="hidden-sm hidden-md hidden-lg"

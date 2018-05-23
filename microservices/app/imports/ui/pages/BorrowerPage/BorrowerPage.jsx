@@ -44,12 +44,7 @@ export default class BorrowerPage extends Component {
 
   render() {
     return (
-      <ProcessPage
-        {...this.props}
-        sectionId="borrower-page"
-        stepNb={1}
-        id={this.state.tab}
-      >
+      <ProcessPage {...this.props} stepNb={1} id={this.state.tab}>
         <section className="mask1 borrower-page">
           <BorrowerHeader {...this.props} />
 

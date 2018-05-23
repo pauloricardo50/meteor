@@ -8,13 +8,7 @@ import FileTabs from './FileTabs';
 import ContractDownloader from './ContractDownloader';
 
 const ContractPage = props => (
-  <ProcessPage
-    {...props}
-    sectionId="contract-page"
-    stepNb={3}
-    id="contract"
-    showBottom={false}
-  >
+  <ProcessPage {...props} stepNb={3} id="contract" showBottom={false}>
     <section className="mask1 contract-page">
       <div className="description">
         <p>

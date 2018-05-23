@@ -6,7 +6,7 @@ import { T } from 'core/components/Translation';
 import FileTabs from 'core/components/FileTabs';
 
 const FilesPage = props => (
-  <Page sectionId="files-page" id="FilesPage">
+  <Page id="FilesPage">
     <div className="mask1">
       <p style={{ marginBottom: 32 }}>
         <T id="FilesPage.description" />

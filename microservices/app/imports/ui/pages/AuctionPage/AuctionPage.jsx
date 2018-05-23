@@ -74,7 +74,6 @@ export default class AuctionPage extends Component {
     return (
       <ProcessPage
         {...this.props}
-        sectionId="auction-page"
         stepNb={2}
         id="auction"
         serverTime={serverTime}
