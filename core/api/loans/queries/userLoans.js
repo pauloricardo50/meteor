@@ -13,7 +13,7 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOANS, {
       filters['logic.step'] = step;
     }
 
-    if (Object.keys(AUCTION_STATUS).includes(auction)) {
+    if (Object.values(AUCTION_STATUS).includes(auction)) {
       filters['logic.auction.status'] = auction;
     }
   },
