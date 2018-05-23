@@ -54,7 +54,7 @@ Cypress.Commands.add('meteorLogout', () => {
         Meteor.logout(err => (err ? reject(err) : resolve()));
       }).then(() => {
         // wait the login redirection to be done
-        cy.location().should(({ pathname }) => {
+        return cy.location().should(({ pathname }) => {
           expect(pathname.indexOf('/login')).to.eq(0);
         });
       });
