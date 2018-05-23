@@ -6,7 +6,7 @@ import Checkbox from 'core/components/Checkbox';
 import AutoForm from 'core/components/AutoForm';
 import { getBorrowerFinanceArray } from 'core/arrays/BorrowerFormArray';
 import Recap from 'core/components/Recap';
-import constants from 'core/config/constants';
+import * as financeConstants from 'core/config/financeConstants';
 import LoadingButton from '/imports/ui/components/LoadingButton';
 import { T } from 'core/components/Translation';
 import { disableForms } from 'core/utils/loanFunctions';
@@ -76,7 +76,7 @@ const BorrowerFinancePage = (props) => {
         <h3>
           <T
             id="Finance.recapTitle"
-            values={{ currency: constants.getCurrency() }}
+            values={{ currency: financeConstants.CURRENCY }}
           />
         </h3>
         <Recap arrayName="borrower" borrower={borrower} />
