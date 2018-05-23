@@ -9,7 +9,7 @@ const renderSpinnerWhileLoading = branch(
 );
 
 // render the missing doc component only when we want to
-const renderMissingDocIfNoData = (render = false) =>
+const makeRenderMissingDocIfNoData = (render = false) =>
   branch(
     ({ isLoading, data }) => render && (!isLoading && !data),
     renderComponent(MissingDoc),
@@ -25,7 +25,7 @@ const withSmartQuery = ({
   compose(
     withQuery(query, queryOptions),
     renderSpinnerWhileLoading,
-    renderMissingDocIfNoData(renderMissingDoc && queryOptions.single),
+    makeRenderMissingDocIfNoData(renderMissingDoc && queryOptions.single),
     mapProps(({ data, ...rest }) => ({ [dataName]: data, ...rest })),
   );
 export default withSmartQuery;

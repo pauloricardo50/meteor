@@ -13,23 +13,8 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOANS, {
       filters['logic.step'] = step;
     }
 
-    let auctionStatus;
-    switch (auction) {
-    case 'none':
-      auctionStatus = AUCTION_STATUS.NONE;
-      break;
-    case 'started':
-      auctionStatus = AUCTION_STATUS.STARTED;
-      break;
-    case 'ended':
-      auctionStatus = AUCTION_STATUS.ENDED;
-      break;
-    default:
-      break;
-    }
-
-    if (auctionStatus !== undefined) {
-      filters['logic.auction.status'] = auctionStatus;
+    if (Object.keys(AUCTION_STATUS).includes(auction)) {
+      filters['logic.auction.status'] = auction;
     }
   },
   $options: {

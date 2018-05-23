@@ -15,8 +15,6 @@ const pages = {
 
   Conditions: route('/conditions', { shouldRender: '.conditions-page' }),
 
-  Start2: route('/start/2', { shouldRender: 'section.start2' }),
-
   'Check Mailbox': route('/checkYourMailbox/test@e-potek.ch', {
     shouldRender: '.check-mailbox-page',
   }),
@@ -32,11 +30,6 @@ describe('Www Pages', () => {
   Object.keys(pages).forEach((pageName) => {
     describe(`${pageName} Page`, () => {
       it('should render', () => {
-        const {
-          uri,
-          options: { shouldRender },
-        } = pages[pageName];
-
         cy.routeShouldRenderSuccessfully(pages[pageName], null, {
           reloadWindowOnNavigation: true,
         });

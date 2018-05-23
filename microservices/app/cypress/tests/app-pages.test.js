@@ -120,6 +120,8 @@ let testData;
 
 describe('App Pages', () => {
   before(() => {
+    // Visit the app so that we get the Window instance of the app
+    // from which we get the `Meteor` instance used in tests
     cy.visit('/');
 
     cy

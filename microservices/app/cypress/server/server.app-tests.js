@@ -27,15 +27,15 @@ Meteor.methods({
     );
 
     const step3LoanWithNoAuction = userLoansQuery
-      .clone({ userId, step: 3, auction: 'none' })
+      .clone({ userId, step: 3, auction: AUCTION_STATUS.NONE })
       .fetchOne();
 
     const step3LoanWithStartedAuction = userLoansQuery
-      .clone({ userId, step: 3, auction: 'started' })
+      .clone({ userId, step: 3, auction: AUCTION_STATUS.STARTED })
       .fetchOne();
 
     const step3LoanWithEndedAuction = userLoansQuery
-      .clone({ userId, step: 3, auction: 'ended' })
+      .clone({ userId, step: 3, auction: AUCTION_STATUS.ENDED })
       .fetchOne();
 
     const unownedLoan = userLoansQuery.clone({ owned: false }).fetchOne();

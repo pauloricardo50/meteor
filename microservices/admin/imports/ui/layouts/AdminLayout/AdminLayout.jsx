@@ -21,9 +21,11 @@ const getRedirect = ({ currentUser }) => {
 };
 
 const AdminLayout = (props) => {
-  if (handleLoggedOut()) {
-    // if the user will be redirected, prevent other following redirects
-    // or code from being executed (avoids flickering)
+  handleLoggedOut();
+
+  if (window.isRedirectingLoggedOutUser) {
+    // if the user is being redirected after logout,
+    // prevent any following code from being executed (avoids flickering)
     return null;
   }
 
