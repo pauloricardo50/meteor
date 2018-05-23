@@ -12,7 +12,6 @@ import ContactPage from '../../ui/pages/ContactPage/loadable';
 import CareersPage from '../../ui/pages/CareersPage/loadable';
 import ConditionsPage from '../../ui/pages/ConditionsPage/loadable';
 import Widget1Page from '../../ui/pages/Widget1Page/loadable';
-import Start2Page from '../../ui/pages/Start2Page/loadable';
 import CheckMailboxPage from '../../ui/pages/CheckMailboxPage/loadable';
 import InterestsPage from '../../ui/pages/InterestsPage/loadable';
 
@@ -29,7 +28,6 @@ const routesConfig = [
 
   ...liteVersionModifier([
     { path: '/conditions', component: ConditionsPage },
-    { path: '/start/2', component: Start2Page },
     { path: '/checkYourMailbox/:email', component: CheckMailboxPage },
   ]),
 
