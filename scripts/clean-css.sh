@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Check if ttab is installed
+# Check if csscomb is installed
 if ! type "csscomb" > /dev/null; then
-  # install ttab if not
+  # install csscomb if not
   echo Installing csscomb
   meteor npm i -g csscomb
 fi
