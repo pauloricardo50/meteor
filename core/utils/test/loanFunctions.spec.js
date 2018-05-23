@@ -1,7 +1,6 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import moment from 'moment';
-import constants from 'core/config/constants';
 import {
   getProjectValue,
   getLoanValue,
@@ -14,12 +13,10 @@ import {
   getLenderCount,
   disableForms,
   isLoanValid,
-  getPropertyCompletion,
   validateRatios,
   validateRatiosCompletely,
   getFees,
   getMaintenance,
-  getBorrowRatio,
   getAuctionEndTime,
 } from '../loanFunctions';
 
@@ -30,10 +27,9 @@ describe('Loan functions', () => {
     props = {
       loan: {
         general: { propertyWork: 200000, usageType: 'PRIMARY' },
+        logic: {},
       },
-      property: {
-        value: 1000000,
-      },
+      property: { value: 1000000 },
     };
   });
 
@@ -44,6 +40,7 @@ describe('Loan functions', () => {
 
     it('Should return 1.27M with 1M property, 200k property work, and 200k insuranceFortuneUsed and a primary residence', () => {
       props.loan.general.insuranceFortuneUsed = 200000;
+      props.loan.logic.insuranceUsePreset = 'WITHDRAWAL';
 
       expect(getProjectValue(props)).to.equal(1270000);
     });
@@ -75,33 +72,22 @@ describe('Loan functions', () => {
   describe('Get loan value', () => {
     it('returns the property value + fees if no fortune is used', () => {
       expect(getLoanValue({
-        loan: {
-          general: {
-            fortuneUsed: undefined,
-          },
-        },
-        property: {
-          value: 100,
-        },
+        loan: { general: { fortuneUsed: undefined }, logic: {} },
+        property: { value: 100 },
       })).to.equal(105);
     });
 
     it('returns the property value if 0 fortune is used', () => {
       expect(getLoanValue({
-        loan: {
-          general: {
-            fortuneUsed: 0,
-          },
-        },
-        property: {
-          value: 100,
-        },
+        loan: { general: { fortuneUsed: 0 }, logic: {} },
+        property: { value: 100 },
       })).to.equal(105);
     });
 
     it("Should return 800'000 with 1M property, 250k cash", () => {
       const loan = {
         general: { fortuneUsed: 250000, insuranceFortuneUsed: 0 },
+        logic: {},
       };
       const property = { value: 1000000 };
 
@@ -115,23 +101,25 @@ describe('Loan functions', () => {
           insuranceFortuneUsed: 200000,
           usageType: 'PRIMARY',
         },
+        logic: { insuranceUsePreset: 'WITHDRAWAL' },
       };
       const property = { value: 1000000 };
 
       expect(getLoanValue({ loan, property })).to.equal(600000);
     });
 
-    it("Should return 700'000 with 1M property, 260k fortune, 100k insurance fortune", () => {
+    it("Should return 700'000 with 1M property, 260k fortune, 100k insurance fortune, but no withdrawal", () => {
       const loan = {
         general: {
           fortuneUsed: 260000,
           insuranceFortuneUsed: 100000,
           usageType: 'PRIMARY',
         },
+        logic: {},
       };
       const property = { value: 1000000, usageType: 'primary' };
 
-      expect(getLoanValue({ loan, property })).to.equal(700000);
+      expect(getLoanValue({ loan, property })).to.equal(690000);
     });
   });
 
@@ -274,12 +262,10 @@ describe('Loan functions', () => {
           loanTranches: [{ value: 720000, type: 'test' }],
           fortuneUsed: 250000,
         },
+        logic: {},
       };
       property = { value: 1000000 };
-      offer = {
-        standardOffer: {},
-        counterpartOffer: {},
-      };
+      offer = { standardOffer: {}, counterpartOffer: {} };
     });
 
     it('returns 0 if interests is wrong', () => {
@@ -352,15 +338,16 @@ describe('Loan functions', () => {
     it('returns notaryFees correctly', () => {
       expect(getFees({
         property: { value: 100 },
-        loan: { general: { usageType: 'PRIMARY' } },
+        loan: { general: { usageType: 'PRIMARY' }, logic: {} },
       })).to.equal(5);
     });
 
-    it('returns insuranceFortune fees only if property is a primary residency', () => {
+    it('returns insuranceFortune fees only if property is a primary residency and is withdrawal', () => {
       expect(getFees({
         property: { value: 100 },
         loan: {
           general: { usageType: 'PRIMARY', insuranceFortuneUsed: 10 },
+          logic: { insuranceUsePreset: 'WITHDRAWAL' },
         },
       })).to.equal(6);
 
@@ -368,6 +355,7 @@ describe('Loan functions', () => {
         property: { value: 100 },
         loan: {
           general: { usageType: 'SECONDARY', insuranceFortuneUsed: 10 },
+          logic: {},
         },
       })).to.equal(5);
     });
