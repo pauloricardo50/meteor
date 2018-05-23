@@ -153,12 +153,11 @@ const getDashboardArray = (props) => {
           <IntlNumber value={borrowRatio} format="percentage" />{' '}
           <span
             className={
-              borrowRatio <= ,
-  getMaxBorrowRatio(r.general.usageType) + 0.001 // add 0.1% to avoid rounding errors
-                        ? 'fa fa-check success'
-                        : 'fa fa-times error'
-                    }
-                  />
+              borrowRatio <= getMaxBorrowRatio(r.general.usageType) + 0.001 // add 0.1% to avoid rounding errors
+                ? 'fa fa-check success'
+                : 'fa fa-times error'
+            }
+          />
         </span>
       ),
     },
