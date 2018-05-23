@@ -1,6 +1,6 @@
 import moment from 'moment';
 import LoanService from 'core/api/loans/LoanService';
-import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
+import { PURCHASE_TYPE, AUCTION_STATUS } from 'core/api/loans/loanConstants';
 import {
   fakeDocument,
   fakeDocumentWithLabel,
@@ -43,7 +43,7 @@ const logic3 = {
     comments: [],
   },
   auction: {
-    status: 'ENDED',
+    status: AUCTION_STATUS.ENDED,
     startTime: new Date(),
     endTime: new Date(),
   },
@@ -89,12 +89,14 @@ const fakeFiles = {
 
 const fakeFiles2 = {};
 
-export const createFakeLoan = (
+export const createFakeLoan = ({
   userId,
   step,
   completeFiles = Math.random() > 0.5,
-) => {
-  const borrowerIds = createFakeBorrowers(userId);
+  auctionStatus = AUCTION_STATUS.NONE,
+  twoBorrowers,
+}) => {
+  const borrowerIds = createFakeBorrowers(userId, twoBorrowers);
   const propertyId = createFakeProperty(userId);
   const loan = {
     name: `Rue du Test ${Math.floor(Math.random() * 1000)}`,
@@ -112,7 +114,11 @@ export const createFakeLoan = (
       bonus_bonus2017: 'Does not match with taxes location',
       bankFortune: 'Not enough',
     };
-    loan.files = completeFiles ? fakeFiles : fakeFiles2;
+
+    if (!completeFiles) {
+      loan.documents = fakeFiles2;
+    }
+
     loan.loanTranches = [
       {
         value: 750000,
@@ -126,6 +132,22 @@ export const createFakeLoan = (
     break;
   default:
     loan.logic = logic1;
+  }
+
+  if (auctionStatus === AUCTION_STATUS.NONE) {
+    loan.logic.auction = {};
+  } else if (auctionStatus === AUCTION_STATUS.STARTED) {
+    loan.logic.auction = {
+      status: AUCTION_STATUS.STARTED,
+      startTime: new Date(Date.now() - 1000),
+      endTime: new Date(Date.now() + 60 * 60 * 1000),
+    };
+  } else if (auctionStatus === AUCTION_STATUS.ENDED) {
+    loan.logic.auction = {
+      status: AUCTION_STATUS.ENDED,
+      startTime: new Date(),
+      endTime: new Date(),
+    };
   }
 
   return LoanService.insert({ loan, userId });

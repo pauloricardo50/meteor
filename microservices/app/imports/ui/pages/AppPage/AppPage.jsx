@@ -10,7 +10,7 @@ import { LOAN_STATUS } from 'core/api/constants';
 import AppItem from './AppItem';
 
 const AppPage = ({ loans, properties, currentUser }) => (
-  <section className="flex-col center">
+  <section id="app-page" className="flex-col center">
     {!currentUser.emails[0].verified && (
       <div style={{ marginBottom: 16 }}>
         <DashboardUnverified />

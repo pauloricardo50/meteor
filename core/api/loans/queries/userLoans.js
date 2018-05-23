@@ -1,16 +1,20 @@
 import Loans from '..';
-import { LOAN_QUERIES } from '../loanConstants';
+import { LOAN_QUERIES, AUCTION_STATUS } from '../loanConstants';
 
 export default Loans.createQuery(LOAN_QUERIES.USER_LOANS, {
-  $filter({ filters, params: { userId, step, unowned } }) {
+  $filter({ filters, params: { userId, unowned, step, auction } }) {
     filters.userId = userId;
+
+    if (unowned) {
+      filters.userId = { $exists: false };
+    }
 
     if (step) {
       filters['logic.step'] = step;
     }
 
-    if (unowned) {
-      filters.userId = { $exists: false };
+    if (Object.values(AUCTION_STATUS).includes(auction)) {
+      filters['logic.auction.status'] = auction;
     }
   },
   $options: {

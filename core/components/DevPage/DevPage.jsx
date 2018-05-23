@@ -182,7 +182,7 @@ export default class DevPage extends Component {
 
     if (!Meteor.isProduction || Meteor.isStaging) {
       return (
-        <div>
+        <section id="dev-page">
           <div>
             {!Meteor.isDevelopment ? (
               <h4 className="error">
@@ -336,7 +336,7 @@ export default class DevPage extends Component {
               Property Task
             </Button>
           </Tooltip>
-        </div>
+        </section>
       );
     }
     return null;

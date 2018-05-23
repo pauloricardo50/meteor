@@ -1,51 +1,118 @@
-import { USER_EMAIL } from '../../imports/core/cypress/testHelpers';
-import capitalize from 'lodash/capitalize';
+import {
+  USER_EMAIL,
+  route,
+  generateTestsFromPagesConfig,
+} from '../../imports/core/cypress/testHelpers';
 
 const pages = {
   public: {
-    Login: '/login',
-    'Reset Password': '/reset-password/fakeToken',
-    'Enroll Account': '/enroll-account/fakeToken',
-    'Impersonate (Invalid Token)': ({ userId }) =>
-      `/impersonate?userId=${userId}&authToken=invalidAdminToken`,
+    Login: route('/login', { shouldRender: 'section.login-page' }),
+
+    'Reset Password': route('/reset-password/fakeToken', {
+      shouldRender: '#password-reset-page',
+    }),
+
+    'Enroll Account': route('/enroll-account/fakeToken', {
+      shouldRender: '#password-reset-page',
+    }),
+
     'Impersonate (Valid Token)': ({ userId, adminLoginToken }) =>
-      `/impersonate?userId=${userId}&authToken=${adminLoginToken}`,
+      route(`/impersonate?userId=${userId}&authToken=${adminLoginToken}`, {
+        shouldRender: '#impersonation-success-message',
+      }),
   },
 
   user: {
-    App: '/',
-    Profile: '/profile',
+    App: route('/', { shouldRender: '#app-page' }),
 
-    'Verify Email (Invalid Token)': '/verify-email/invalidToken',
+    Profile: route('/profile', { shouldRender: '#AccountPage' }),
+    'Verify Email (Invalid Token)': route('/verify-email/invalidToken', {
+      shouldRender: '#email-verification-page',
+    }),
+
     'Verify Email (Valid Token)': ({ emailVerificationToken }) =>
-      `/verify-email/${emailVerificationToken}`,
+      route(`/verify-email/${emailVerificationToken}`, {
+        shouldRender: '#email-verification-page',
+      }),
 
-    Loan: ({ step3Loan: { _id } }) => `/loans/${_id}`,
-    'Add Loan': ({ unownedLoan: { _id } }) => `/add-loan/${_id}`,
-    'Loan Files': ({ step3Loan: { _id } }) => `/loans/${_id}/files`,
-    'Loan Property': ({ step3Loan: { _id } }) => `/loans/${_id}/property`,
-    'Loan Offerpicker': ({ step3Loan: { _id } }) => `/loans/${_id}/offerpicker`,
-    'Loan Verification': ({ step3Loan: { _id } }) =>
-      `/loans/${_id}/verification`,
-    'Loan Structure': ({ step3Loan: { _id } }) => `/loans/${_id}/structure`,
-    'Loan Auction': ({ step3Loan: { _id } }) => `/loans/${_id}/auction`,
-    'Loan Strategy': ({ step3Loan: { _id } }) => `/loans/${_id}/strategy`,
-    'Loan Contract': ({ step3Loan: { _id } }) => `/loans/${_id}/contract`,
-    'Loan Closing': ({ step3Loan: { _id } }) => `/loans/${_id}/closing`,
-    'Loan Finance': ({ step3Loan: { _id } }) => `/loans/${_id}/finance`,
+    Dashboard: ({ step3LoanWithEndedAuction: { _id } }) =>
+      route(`/loans/${_id}`, { shouldRender: '#DashboardPage' }),
 
-    'Borrower Personal': ({ step3Loan: { _id, borrowers } }) =>
-      `/loans/${_id}/borrowers/${borrowers[0]._id}/personal`,
-    'Borrower Finance': ({ step3Loan: { _id, borrowers } }) =>
-      `/loans/${_id}/borrowers/${borrowers[0]._id}/finance`,
-    'Borrower Files': ({ step3Loan: { _id, borrowers } }) =>
-      `/loans/${_id}/borrowers/${borrowers[0]._id}/files`,
+    'Add Loan': ({ unownedLoan: { _id } }) =>
+      route(`/add-loan/${_id}`, { shouldRender: '#add-loan-page' }),
 
-    'Not Found': '/a-page-that-does-not-exist',
+    'Loan Files': ({ step3LoanWithEndedAuction: { _id } }) =>
+      route(`/loans/${_id}/files`, { shouldRender: '#FilesPage .files-tab' }),
+
+    'Loan Property': ({ step3LoanWithEndedAuction: { _id } }) =>
+      route(`/loans/${_id}/property`, { shouldRender: '#property' }),
+
+    'Loan Offerpicker': ({ step3LoanWithEndedAuction: { _id } }) =>
+      route(`/loans/${_id}/offerpicker`, { shouldRender: '#offerPicker' }),
+
+    'Loan Verification': ({ step3LoanWithEndedAuction: { _id } }) =>
+      route(`/loans/${_id}/verification`, {
+        shouldRender: '#verification',
+      }),
+
+    'Loan Structure': ({ step3LoanWithEndedAuction: { _id } }) =>
+      route(`/loans/${_id}/structure`, { shouldRender: '#structure' }),
+
+    'Loan Auction (Auction Not Started)': ({
+      step3LoanWithNoAuction: { _id },
+    }) =>
+      route(`/loans/${_id}/auction`, {
+        shouldRender: '#auction .auction-page-start',
+      }),
+
+    'Loan Auction (Auction Started)': ({
+      step3LoanWithStartedAuction: { _id },
+    }) =>
+      route(`/loans/${_id}/auction`, {
+        shouldRender: '#auction .auction-page-auction',
+      }),
+
+    'Loan Auction (Auction Ended)': ({ step3LoanWithEndedAuction: { _id } }) =>
+      route(`/loans/${_id}/auction`, {
+        shouldRender: '#auction .auction-page-results',
+      }),
+
+    'Loan Strategy': ({ step3LoanWithEndedAuction: { _id } }) =>
+      route(`/loans/${_id}/strategy`, { shouldRender: '#strategy' }),
+
+    'Loan Contract': ({ step3LoanWithEndedAuction: { _id } }) =>
+      route(`/loans/${_id}/contract`, {
+        shouldRender: '#contract .uploader',
+      }),
+
+    'Loan Closing': ({ step3LoanWithEndedAuction: { _id } }) =>
+      route(`/loans/${_id}/closing`, { shouldRender: '#closing' }),
+
+    'Loan Finance': ({ step3LoanWithEndedAuction: { _id } }) =>
+      route(`/loans/${_id}/finance`, { shouldRender: '#FinancePage' }),
+
+    'Borrower Personal': ({ step3LoanWithEndedAuction: { _id, borrowers } }) =>
+      route(`/loans/${_id}/borrowers/${borrowers[0]._id}/personal`, {
+        shouldRender: '#personal .borrower-page-info',
+      }),
+
+    'Borrower Finance': ({ step3LoanWithEndedAuction: { _id, borrowers } }) =>
+      route(`/loans/${_id}/borrowers/${borrowers[0]._id}/finance`, {
+        shouldRender: '#finance .borrower-finance-page',
+      }),
+
+    'Borrower Files': ({ step3LoanWithEndedAuction: { _id, borrowers } }) =>
+      route(`/loans/${_id}/borrowers/${borrowers[0]._id}/files`, {
+        shouldRender: '#files .borrower-page-files .uploader',
+      }),
+
+    'Not Found': route('/a-page-that-does-not-exist', {
+      shouldRender: '#not-found-page',
+    }),
   },
 
   dev: {
-    Dev: '/dev',
+    Dev: route('/dev', { shouldRender: '#dev-page' }),
   },
 };
 
@@ -53,6 +120,10 @@ let testData;
 
 describe('App Pages', () => {
   before(() => {
+    // Visit the app so that we get the Window instance of the app
+    // from which we get the `Meteor` instance used in tests
+    cy.visit('/');
+
     cy
       .eraseAndGenerateTestData()
       .getTestData(USER_EMAIL)
@@ -61,32 +132,5 @@ describe('App Pages', () => {
       });
   });
 
-  Object.keys(pages).forEach((pageAuthentication) => {
-    describe(`${capitalize(pageAuthentication)} Pages`, () => {
-      Object.keys(pages[pageAuthentication]).forEach((pageName) => {
-        describe(`${pageName} Page`, () => {
-          it('should render', () => {
-            /**
-             * we login every time, as it seems that we're logged out again
-             * in each test, probably because a new window instance is
-             * used for every test, which results in us using new Meteor instance in every test
-             */
-            if (pageAuthentication === 'public') {
-              cy.meteorLogout();
-            } else {
-              cy.meteorLogoutAndLogin(`${pageAuthentication}-1@e-potek.ch`);
-            }
-
-            const uri = pages[pageAuthentication][pageName];
-            const pageUri = typeof uri === 'function' ? uri(testData) : uri;
-
-            cy
-              .visit(pageUri)
-              .waitUntilLoads()
-              .shouldRenderWithoutErrors(pageUri);
-          });
-        });
-      });
-    });
-  });
+  generateTestsFromPagesConfig(pages, () => testData);
 });

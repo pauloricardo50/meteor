@@ -6,7 +6,7 @@ import { T } from 'core/components/Translation/';
 import TasksTableWithData from '../../components/TasksTable/TasksTableWithData';
 
 const AdminDashboardPage = props => (
-  <section className="mask1">
+  <section className="mask1 admin-dashboard-page">
     <h1>Admin Dashboard</h1>
 
     <h2 className="fixed-size text-center">
