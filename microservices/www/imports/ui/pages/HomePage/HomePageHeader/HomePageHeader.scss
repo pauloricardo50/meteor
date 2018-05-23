@@ -1,12 +1,14 @@
 .home-page header {
   position: relative;
+
   display: flex;
+  align-items: flex-start;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-  align-items: flex-start;
-  padding: 40px 16px 80px 16px;
+
   height: 600px;
+  padding: 40px 16px 80px 16px;
 }
 
 .home-page header .text h1,
@@ -16,31 +18,37 @@
 
 .home-page header .separator {
   display: flex;
+
   width: 40px;
   height: 4px;
-  background-color: white;
   margin: 16px 0;
+
+  background-color: white;
 }
 
 .home-page header .home-page-header-background {
   position: absolute;
-  top: 0px;
+  z-index: -1;
+  top: 0;
   left: -50%;
-  background-color: blue;
+
   width: 200%;
   height: 250%;
-  z-index: -1;
+
   transform: rotate(-15deg);
-  transform-origin: 0% 25%;
+  transform-origin: 0 25%;
+
+  background-color: blue;
 }
 
 .home-page header .text h1 {
   max-width: 500px;
 }
 .home-page header .text h3 {
-  line-height: 1.5em;
   max-width: 500px;
+
   font-weight: 300;
+  line-height: 1.5em;
 }
 
 .home-page header .widget1-single-input-form {

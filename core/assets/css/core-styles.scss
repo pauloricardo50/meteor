@@ -17,10 +17,12 @@ body {
 // And avoid it if this is a button
 a:not([role='button']) {
   cursor: pointer;
+
   color: inherit;
   // text-decoration: none;
   &.color {
     transition: color 300ms $bezier;
+
     color: $primary;
     &:hover {
       color: $success;
@@ -32,16 +34,17 @@ a:not([role='button']) {
 }
 
 hr {
-  border: none;
   height: 1px;
+
+  border: none;
   background-color: $border-grey;
 }
 
 // White backgrounds with shadows to put things on
 .card1 {
-  background: #ffffff;
-  box-shadow: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
   border-radius: 16px;
+  background: #FFF;
+  box-shadow: 0 2px 60px 5px rgba(0, 0, 0, .05);
 }
 
 .card1 .card-top {
@@ -49,31 +52,37 @@ hr {
 }
 
 .card1 .card-bottom {
-  border-top: 1px solid $border-grey;
-  background-color: #fafafa;
+  flex-grow: 1;
+
   padding: 16px;
+
+  border-top: 1px solid $border-grey;
+  border-bottom-right-radius: 16px;
   // width: 100%;
   border-bottom-left-radius: 16px;
-  border-bottom-right-radius: 16px;
-  flex-grow: 1;
+  background-color: #FAFAFA;
 }
 
 // Pretty text effect for tooltips, shows a gradient underline on the text
 .tooltip-overlay {
   position: relative;
+
+  padding: 0 1px;
+
   cursor: help;
+  transition: background-size .2s ease-in, color .2s ease-in;
+  transform: scale(1);
+
+  border-radius: 4px;
   background-image: linear-gradient(120deg, $primary 0%, $success 100%);
   background-repeat: no-repeat;
-  background-size: 100% 0.15em;
   background-position: 0 100%;
-  transition: background-size 0.2s ease-in, color 0.2s ease-in;
-  transform: scale(1);
-  border-radius: 4px;
-  padding: 0 1px;
+  background-size: 100% .15em;
   &:hover {
+    transform: scale(1.02);
+
     color: white;
     background-size: 100% 100%;
-    transform: scale(1.02);
   }
 }
 
@@ -101,16 +110,16 @@ hr {
     transform: scale(1);
   }
   25% {
-    transform: scale(0.97);
+    transform: scale(.97);
   }
   35% {
-    transform: scale(0.9);
+    transform: scale(.9);
   }
   45% {
     transform: scale(1.1);
   }
   55% {
-    transform: scale(0.9);
+    transform: scale(.9);
   }
   65% {
     transform: scale(1.1);
@@ -125,17 +134,18 @@ hr {
 
 .heart-beat {
   animation-name: heartBeat;
-  animation-iteration-count: infinite;
   animation-duration: 2s;
+  animation-iteration-count: infinite;
 }
 
 // Old white background masks, to be replaced with .card
 .mask1,
 .mask2,
 .mask3 {
-  background-color: #fff;
   padding: 16px;
+
   border-radius: 4px;
+  background-color: #FFF;
 }
 
 .mask1.primary-border,
@@ -166,7 +176,7 @@ hr {
 }
 
 .mask1 {
-  box-shadow: 0 0 4px 0 rgba(33, 37, 41, 0.16);
+  box-shadow: 0 0 4px 0 rgba(33, 37, 41, .16);
 }
 
 .mask1 > h1:first-child {
@@ -175,15 +185,17 @@ hr {
 
 .mask1 .primary-top {
   display: inline-block;
+
   width: calc(100% + 32px);
   min-height: 300px;
-  color: #fff;
-  background-color: $primary;
-  padding: 16px;
   margin: 0;
-  margin-left: -16px;
   margin-top: -16px;
   margin-bottom: 48px;
+  margin-left: -16px;
+  padding: 16px;
+
+  color: #FFF;
+  background-color: $primary;
 }
 
 .mask1 .primary-top h1,
@@ -192,16 +204,17 @@ hr {
 .mask1 .primary-top h4,
 .mask1 .primary-top p,
 .mask1 .primary-top div {
-  color: #fff;
   padding: 0;
+
+  color: #FFF;
 }
 
 .mask2 {
-  box-shadow: 0px 20px 20px 0px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 20px 0 rgba(0, 0, 0, .08);
 }
 
 .mask3 {
-  box-shadow: 0px 40px 40px 0px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 40px 40px 0 rgba(0, 0, 0, .16);
 }
 
 // A .description <p /> is a nice styled paragraph optimized for reading
@@ -210,15 +223,19 @@ p.description,
   display: flex;
   align-items: center;
   justify-content: center;
+
+  max-width: 600px;
+
+  text-align: justify;
+
   font-size: 1.25em;
   line-height: 1.6em;
-  max-width: 600px;
-  text-align: justify;
 }
 
 .description > p,
 .description > h4 {
   max-width: 600px;
+
   text-align: justify;
 }
 
@@ -248,13 +265,14 @@ p.description,
 }
 
 .secondary {
-  opacity: 0.5;
+  opacity: .5;
 }
 
 // This also adds the right cursor on disabled elements
 .disabled {
-  opacity: 0.25;
   cursor: not-allowed;
+
+  opacity: .25;
 }
 
 // Change it from the material-ui default inline-flex, which makes them take full width
@@ -266,17 +284,20 @@ p.description,
 
 // To display choices with proper hover effects
 .choice {
-  border-radius: 4px;
-  border: solid 1px $grey1;
   display: flex;
-  margin-bottom: 16px;
+
   box-sizing: content-box;
+  margin-bottom: 16px;
   padding: 16px;
+
+  border: solid 1px $grey1;
+  border-radius: 4px;
 }
 
 .choice:hover {
-  border: solid 1px $primary;
   cursor: pointer;
+
+  border: solid 1px $primary;
 }
 
 .choice.chosen {

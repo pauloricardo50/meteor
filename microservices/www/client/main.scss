@@ -30,6 +30,6 @@ html,
   // the footer to be at the bottom.
   // Inspired by this: https://stackoverflow.com/questions/31835164/how-do-i-fix-a-flexbox-sticky-footer-in-ie11
   display: flex;
-  flex-direction: column;
   flex: 1 0 auto;
+  flex-direction: column;
 }

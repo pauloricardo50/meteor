@@ -1,13 +1,14 @@
 .about-page-team {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
 
   .about-page-team-list {
     display: flex;
     flex-direction: row;
-    justify-content: center;
     flex-wrap: wrap;
+    justify-content: center;
+
     max-width: 1400px;
   }
 
@@ -18,33 +19,39 @@
   }
 
   h4 {
-    opacity: 0.7;
+    opacity: .7;
   }
 }
 
 .about-page-team-member,
 .about-page-team-recruiting {
-  flex-basis: 400px;
   display: flex;
-  flex-direction: row;
   align-items: flex-start;
-  padding: 32px;
-  transition: background-color 200ms $bezier, transform 200ms $bezier;
-  border-radius: 16px;
+  flex-basis: 400px;
+  flex-direction: row;
+
   height: 120px;
+  padding: 32px;
+
+  transition: background-color 200ms $bezier, transform 200ms $bezier;
+
+  border-radius: 16px;
 
   .about-page-team-member-image {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-right: 32px;
     align-self: center;
     flex-shrink: 0;
+
+    width: 100px;
+    height: 100px;
+    margin-right: 32px;
+
+    border-radius: 50%;
   }
 
   .about-page-team-member-info {
     display: flex;
     flex-direction: column;
+
     margin-top: 32px;
 
     h3,
@@ -64,8 +71,9 @@
   }
 
   &:hover {
-    background-color: white;
     transform: scale(1.02);
+
+    background-color: white;
 
     .about-page-team-member-contact {
       display: flex;
@@ -91,10 +99,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 4em;
+
     box-sizing: border-box;
+
     transition: color 200ms $bezier, transform 200ms $bezier;
+
     border: 2px solid $border-grey;
+
+    font-size: 4em;
   }
 
   .hover-show {
@@ -104,14 +116,16 @@
 
 .about-page-team-recruiting:hover {
   .hover-show {
-    text-decoration: underline;
     display: flex;
+
+    text-decoration: underline;
   }
 
   .about-page-team-member-image {
-    border-color: $primary;
-    color: $primary;
     transform: rotate(180deg);
+
+    color: $primary;
+    border-color: $primary;
   }
 }
 
