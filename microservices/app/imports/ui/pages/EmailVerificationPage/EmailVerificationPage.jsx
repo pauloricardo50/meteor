@@ -33,7 +33,7 @@ class EmailVerificationPage extends Component {
   }
 
   render() {
-    return <div />;
+    return <section id="email-verification-page" />;
   }
 }
 

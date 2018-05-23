@@ -16,7 +16,7 @@ import {
 import FilesVerificationTab from './FilesVerificationTab';
 
 const FilesVerification = ({ loan, borrowers, property }) => (
-  <Tabs defaultActiveKey={0} id="tabs">
+  <Tabs defaultActiveKey={0} id="file-verification-tabs">
     {[
       {
         title: 'Prêt Hypothécaire',

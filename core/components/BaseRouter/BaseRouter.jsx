@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Router } from 'react-router-dom';
+
+import history from 'core/utils/history';
 
 import ErrorBoundary from '../ErrorBoundary';
 import ScrollToTop from '../ScrollToTop';
@@ -27,7 +29,7 @@ const BaseRouter = ({
         can't put it higher up, because it needs
         react-intl to display messages */}
       <ErrorBoundary helper="app">
-        <Router>
+        <Router history={history}>
           {/* Every route change should scroll to top,
               which isn't automatic */}
           <ScrollToTop>

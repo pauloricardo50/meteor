@@ -3,7 +3,7 @@ import { T } from 'core/components/Translation/';
 import UsersTabs from './UsersTabs';
 
 const UsersPage = props => (
-  <section className="mask1">
+  <section className="mask1 users-page">
     <h1>
       <T id="collections.users" />
     </h1>

@@ -3,23 +3,15 @@ import React from 'react';
 import { Roles } from 'meteor/alanning:roles';
 import { Redirect } from 'react-router-dom';
 
+import { handleLoggedOut } from 'core/utils/history';
 import ErrorBoundary from 'core/components/ErrorBoundary';
 import AdminTopNav from './AdminTopNav';
 import AdminSideNav from './AdminSideNav';
 import AdminLayoutContainer from './AdminLayoutContainer';
 
-const getRedirect = ({
-  currentUser,
-  history: {
-    location: { pathname },
-  },
-}) => {
+const getRedirect = ({ currentUser }) => {
   const userIsAdmin = Roles.userIsInRole(currentUser, 'admin');
   const userIsDev = Roles.userIsInRole(currentUser, 'dev');
-
-  if (!currentUser) {
-    return `/login?path=${pathname}`;
-  }
 
   if (!(userIsAdmin || userIsDev)) {
     // TODO: Redirect to app subdomain
@@ -29,6 +21,14 @@ const getRedirect = ({
 };
 
 const AdminLayout = (props) => {
+  handleLoggedOut();
+
+  if (window.isRedirectingLoggedOutUser) {
+    // if the user is being redirected after logout,
+    // prevent any following code from being executed (avoids flickering)
+    return null;
+  }
+
   const { history, children } = props;
   const redirect = getRedirect(props);
   const path = history.location.pathname;

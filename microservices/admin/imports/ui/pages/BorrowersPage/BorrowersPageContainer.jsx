@@ -1,8 +1,9 @@
 import query from 'core/api/borrowers/queries/borrowers';
-import { withQuery } from 'meteor/cultofcoders:grapher-react';
+import { withSmartQuery } from 'core/api';
 
-const BorrowersPageContainer = withQuery(() => query.clone(), {
-  reactive: true,
+const BorrowersPageContainer = withSmartQuery({
+  query: () => query.clone(),
+  queryOptions: { reactive: true },
 });
 
 export default BorrowersPageContainer;

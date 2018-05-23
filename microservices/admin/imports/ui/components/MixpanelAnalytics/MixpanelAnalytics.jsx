@@ -50,11 +50,15 @@ export default class MixpanelAnalytics extends Component {
       return <h4>Loading...</h4>;
     }
 
-    if (events.length === 0) {
-      return <h3>Pas d'analytics pour l'instant</h3>;
-    }
-
-    return <MixpanelEventList events={events} groupedEvents={groupedEvents} />;
+    return (
+      <div className="mixpanel-analytics">
+        {events.length === 0 ? (
+          <h3>Pas d'analytics pour l'instant</h3>
+        ) : (
+          <MixpanelEventList events={events} groupedEvents={groupedEvents} />
+        )}
+      </div>
+    );
   }
 }
 
