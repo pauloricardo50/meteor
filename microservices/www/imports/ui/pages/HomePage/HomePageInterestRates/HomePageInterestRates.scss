@@ -1,11 +1,8 @@
-@import '{}/client/css/variables.scss';
-
 .home-page .interest-rates {
   background-color: white;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  // overflow-x: scroll;
   z-index: 15;
 }
 

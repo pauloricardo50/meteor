@@ -1,9 +1,9 @@
 @import '{}/node_modules/normalize-scss/sass/normalize';
 @include normalize();
 
+@import './variables.scss';
 @import './core-components.scss';
 @import './typography.scss';
-@import './variables.scss';
 
 html {
   min-height: 100%;
