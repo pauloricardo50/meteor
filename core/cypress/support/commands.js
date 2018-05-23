@@ -48,17 +48,20 @@ Cypress.Commands.add('getTestData', (email) => {
 });
 
 Cypress.Commands.add('meteorLogout', () => {
-  cy.window().then(({ Meteor }) => {
-    if (Meteor.userId()) {
-      new Cypress.Promise((resolve, reject) => {
-        Meteor.logout(err => (err ? reject(err) : resolve()));
-      });
-      // wait the login redirection to be done
-      cy.location().should(({ pathname }) => {
-        expect(pathname.indexOf('/login')).to.eq(0);
-      });
-    }
-  });
+  cy
+    .window()
+    .then(({ Meteor }) => {
+      if (Meteor.userId()) {
+        return new Cypress.Promise((resolve, reject) => {
+          Meteor.logout(err => (err ? reject(err) : resolve()));
+        });
+      }
+    })
+    // wait the login redirection to be done
+    .location()
+    .should(({ pathname }) => {
+      expect(pathname.indexOf('/login')).to.eq(0);
+    });
 });
 
 Cypress.Commands.add(
