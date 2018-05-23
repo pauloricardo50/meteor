@@ -1,6 +1,11 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import moment from 'moment';
+
+import {
+  INSURANCE_USE_PRESET,
+  USAGE_TYPE,
+} from '../../api/constants';
 import {
   getProjectValue,
   getLoanValue,
@@ -41,13 +46,13 @@ describe('Loan functions', () => {
 
     it('Should return 1.27M with 1M property, 200k property work, and 200k insuranceFortuneUsed and a primary residence', () => {
       props.loan.general.insuranceFortuneUsed = 200000;
-      props.loan.logic.insuranceUsePreset = 'WITHDRAWAL';
+      props.loan.logic.insuranceUsePreset = INSURANCE_USE_PRESET.WITHDRAWAL;
 
       expect(getProjectValue(props)).to.equal(1270000);
     });
 
     it('Should return 1.25M with 1M property, 200k property work, and 200k insuranceFortuneUsed for a non primary residence', () => {
-      props.loan.general.usageType = 'INVESTMENT';
+      props.loan.general.usageType = USAGE_TYPE.INVESTMENT;
       props.loan.general.insuranceFortuneUsed = 200000;
 
       expect(getProjectValue(props)).to.equal(1250000);
@@ -100,9 +105,9 @@ describe('Loan functions', () => {
         general: {
           fortuneUsed: 270000,
           insuranceFortuneUsed: 200000,
-          usageType: 'PRIMARY',
+          usageType: USAGE_TYPE.PRIMARY,
         },
-        logic: { insuranceUsePreset: 'WITHDRAWAL' },
+        logic: { insuranceUsePreset: INSURANCE_USE_PRESET.WITHDRAWAL },
       };
       const property = { value: 1000000 };
 
@@ -114,11 +119,11 @@ describe('Loan functions', () => {
         general: {
           fortuneUsed: 260000,
           insuranceFortuneUsed: 100000,
-          usageType: 'PRIMARY',
+          usageType: USAGE_TYPE.PRIMARY,
         },
         logic: {},
       };
-      const property = { value: 1000000, usageType: 'primary' };
+      const property = { value: 1000000, usageType: USAGE_TYPE.PRIMARY };
 
       expect(getLoanValue({ loan, property })).to.equal(690000);
     });
@@ -347,15 +352,21 @@ describe('Loan functions', () => {
       expect(getFees({
         property: { value: 100 },
         loan: {
-          general: { usageType: 'PRIMARY', insuranceFortuneUsed: 10 },
-          logic: { insuranceUsePreset: 'WITHDRAWAL' },
+          general: {
+            usageType: USAGE_TYPE.PRIMARY,
+            insuranceFortuneUsed: 10,
+          },
+          logic: { insuranceUsePreset: INSURANCE_USE_PRESET.WITHDRAWAL },
         },
       })).to.equal(6);
 
       expect(getFees({
         property: { value: 100 },
         loan: {
-          general: { usageType: 'SECONDARY', insuranceFortuneUsed: 10 },
+          general: {
+            usageType: USAGE_TYPE.SECONDARY,
+            insuranceFortuneUsed: 10,
+          },
           logic: {},
         },
       })).to.equal(5);

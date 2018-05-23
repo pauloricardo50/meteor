@@ -14,17 +14,19 @@ import { propertyPercent, filesPercent } from '../arrays/steps';
 import { propertyDocuments } from '../api/files/documents';
 
 export const getProjectValue = ({ loan, property }) => {
+  const {
+    general: { insuranceFortuneUsed, propertyWork },
+  } = loan;
+
   if (!property || !property.value) {
     return 0;
   } else if (property.value <= 0) {
     return 0;
   }
 
-  let value =
-    property.value * (1 + constants.notaryFees) +
-    (loan.general.propertyWork || 0);
+  let value = property.value * (1 + constants.notaryFees) + (propertyWork || 0);
 
-  value += (loan.general.insuranceFortuneUsed || 0) * getLppFees({ loan });
+  value += (insuranceFortuneUsed || 0) * getLppFees({ loan });
 
   return Math.max(0, Math.round(value));
 };
@@ -34,11 +36,14 @@ export const getLoanValue = ({ loan, property }, roundedTo10000) => {
     return 0;
   }
 
-  let value =
-    getProjectValue({ loan, property }) - (loan.general.fortuneUsed || 0);
+  const {
+    general: { usageType, fortuneUsed, insuranceFortuneUsed },
+  } = loan;
 
-  if (loan.general.usageType === USAGE_TYPE.PRIMARY) {
-    value -= loan.general.insuranceFortuneUsed || 0;
+  let value = getProjectValue({ loan, property }) - (fortuneUsed || 0);
+
+  if (usageType === USAGE_TYPE.PRIMARY) {
+    value -= insuranceFortuneUsed || 0;
   }
 
   // Do this when picking tranches
@@ -383,10 +388,8 @@ export const loanIsVerified = ({
   },
 }) => validated !== undefined;
 
-export const loanHasMinimalInformation = ({
- loan: { general,
-  property,}
-}) => !!((general && general.fortuneUsed) && (property && property.value));
+export const loanHasMinimalInformation = ({ loan: { general, property } }) =>
+  !!(general && general.fortuneUsed && (property && property.value));
 
 export const useLppFees = ({
   loan: {
