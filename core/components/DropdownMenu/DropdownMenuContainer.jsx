@@ -1,8 +1,9 @@
 import React from 'react';
 import { compose, withProps, withStateHandlers } from 'recompose';
 import { Link } from 'react-router-dom';
-import { ListItemIcon, ListItemText } from 'material-ui/List';
-import { withStyles } from 'material-ui/styles';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import { withStyles } from '@material-ui/core/styles';
 import Divider from '../Material/Divider';
 import MenuItem from '../Material/MenuItem';
 import Icon from '../Icon';

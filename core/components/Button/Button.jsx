@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
 import omit from 'lodash/omit';
-import MuiButton from 'material-ui/Button';
+import MuiButton from '@material-ui/core/Button';
 
 const getColor = ({ primary, secondary, color }) => {
   if (primary) {

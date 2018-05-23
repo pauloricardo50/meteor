@@ -7,7 +7,10 @@ import InterestsTableTrend from './InterestsTableTrend';
 
 const columnOptions = [
   { id: 'InterestsTable.duration', style: { textAlign: 'center' } },
-  { id: 'InterestsTable.trend', style: { textAlign: 'center', paddingLeft: 0, paddingRight: 0 } },
+  {
+    id: 'InterestsTable.trend',
+    style: { textAlign: 'center', paddingLeft: 0, paddingRight: 0 },
+  },
   { id: 'InterestsTable.rate', style: { textAlign: 'center' } },
 ];
 

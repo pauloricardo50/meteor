@@ -9,7 +9,11 @@ import { T } from 'core/components/Translation';
 import DashboardRecapSum from './DashboardRecapSum';
 
 const getRecapArray = (props) => {
-  const { loan: { general: { insuranceFortuneUsed, fortuneUsed } } } = props;
+  const {
+    loan: {
+      general: { insuranceFortuneUsed, fortuneUsed },
+    },
+  } = props;
   const loanValue = getLoanValue(props);
   const totalUsed = getTotalUsed(props);
 

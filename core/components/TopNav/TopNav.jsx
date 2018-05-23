@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 
-import Toolbar from 'material-ui/Toolbar/Toolbar';
+import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 
 import track from '../../utils/analytics';
 

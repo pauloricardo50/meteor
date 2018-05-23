@@ -1,6 +1,6 @@
 import React from 'react';
 
-import MuiCheckbox from 'material-ui/Checkbox';
+import MuiCheckbox from '@material-ui/core/Checkbox';
 
 const Checkbox = props => <MuiCheckbox {...props} />;
 

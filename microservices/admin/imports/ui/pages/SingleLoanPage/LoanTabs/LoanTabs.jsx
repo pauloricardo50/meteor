@@ -15,52 +15,53 @@ import FilesTab from './FilesTab';
 import FormsTab from './FormsTab';
 import TasksTab from './TasksTab';
 
-const getTabs = props => [
-  {
-    id: 'overview',
-    content: <OverviewTab {...props} />,
-  },
-  {
-    id: 'borrowers',
-    content: <BorrowersTab {...props} />,
-  },
-  {
-    id: 'property',
-    content: <PropertyTab {...props} />,
-  },
-  {
-    id: 'offers',
-    content: <OffersTab {...props} />,
-  },
-  {
-    id: 'communication',
-    content: <CommunicationTab {...props} />,
-  },
-  {
-    id: 'analytics',
-    content: <MixpanelAnalytics {...props} />,
-  },
-  {
-    id: 'tasks',
-    content: <TasksTab {...props} />,
-  },
-  {
-    id: 'forms',
-    content: <FormsTab {...props} />,
-  },
-  {
-    id: 'files',
-    content: <FilesTab {...props} />,
-  },
-  {
-    id: 'actions',
-    content: <ActionsTab {...props} />,
-  },
-].map(tab => ({
-  ...tab,
-  label: <T id={`LoanTabs.${tab.id}`} noTooltips />,
-  to: `/loans/${props.loan._id}/${tab.id}`,
-}));
+const getTabs = props =>
+  [
+    {
+      id: 'overview',
+      content: <OverviewTab {...props} />,
+    },
+    {
+      id: 'borrowers',
+      content: <BorrowersTab {...props} />,
+    },
+    {
+      id: 'property',
+      content: <PropertyTab {...props} />,
+    },
+    {
+      id: 'offers',
+      content: <OffersTab {...props} />,
+    },
+    {
+      id: 'communication',
+      content: <CommunicationTab {...props} />,
+    },
+    {
+      id: 'analytics',
+      content: <MixpanelAnalytics {...props} />,
+    },
+    {
+      id: 'tasks',
+      content: <TasksTab {...props} />,
+    },
+    {
+      id: 'forms',
+      content: <FormsTab {...props} />,
+    },
+    {
+      id: 'files',
+      content: <FilesTab {...props} />,
+    },
+    {
+      id: 'actions',
+      content: <ActionsTab {...props} />,
+    },
+  ].map(tab => ({
+    ...tab,
+    label: <T id={`LoanTabs.${tab.id}`} noTooltips />,
+    to: `/loans/${props.loan._id}/${tab.id}`,
+  }));
 
 const LoanTabs = (props) => {
   const tabs = getTabs(props);

@@ -19,23 +19,23 @@
   "homepage": "https://github.com/e-Potek/epotek#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-eslint": "^8.2.2",
+    "babel-eslint": "^8.2.3",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-import-resolver-meteor": "^0.4.0",
-    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-meteor": "^4.2.0",
+    "eslint-plugin-meteor": "^5.0.0",
     "eslint-plugin-prettier": "^2.6.0",
-    "eslint-plugin-react": "^7.7.0",
+    "eslint-plugin-react": "^7.8.2",
     "husky": "^0.14.3",
-    "lint-staged": "^7.0.4",
+    "lint-staged": "^7.1.2",
     "prettier-eslint-cli": "^4.7.1"
   },
   "dependencies": {
     "global": "^4.3.2",
-    "meteor-babel": "^7.0.0-beta.44",
-    "prettier": "^1.12.0"
+    "meteor-babel": "^7.0.0-beta.47",
+    "prettier": "^1.12.1"
   }
 }

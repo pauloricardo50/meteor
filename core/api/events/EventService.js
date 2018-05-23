@@ -25,7 +25,12 @@ export class EventService {
     });
   }
 
-  addMethodListener({ config: { name } }, listenerFunction) {
+  addMethodListener(
+    {
+      config: { name },
+    },
+    listenerFunction,
+  ) {
     this.addListener(name, listenerFunction);
   }
 

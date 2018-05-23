@@ -33,10 +33,7 @@ const routesConfig = [
     { path: '/checkYourMailbox/:email', component: CheckMailboxPage },
   ]),
 
-  ...notProductionReadyModifier([
-    { path: '/about', component: AboutPage },
-    { path: '/faq', component: FaqPage },
-  ]),
+  ...notProductionReadyModifier([{ path: '/faq', component: FaqPage }]),
 
   { component: NotFound },
 ];

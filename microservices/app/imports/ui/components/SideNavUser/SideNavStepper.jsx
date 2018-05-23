@@ -42,7 +42,12 @@ class SideNavStepper extends Component {
 
   render() {
     const { serverTime } = this.state;
-    const { activeStep, loan: { logic: { step: currentStep } } } = this.props;
+    const {
+      activeStep,
+      loan: {
+        logic: { step: currentStep },
+      },
+    } = this.props;
 
     const steps = getSteps({ ...this.props, serverTime });
 

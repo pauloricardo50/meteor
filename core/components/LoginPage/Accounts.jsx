@@ -1,6 +1,6 @@
 import React from 'react';
 import { Accounts, STATES } from 'meteor/std:accounts-ui'; // TODO: back to normal once std:accounts-ui is fixed
-import { TextField, Snackbar } from 'material-ui';
+import { TextField, Snackbar } from '@material-ui/core';
 
 import MuiButton from '../Button';
 

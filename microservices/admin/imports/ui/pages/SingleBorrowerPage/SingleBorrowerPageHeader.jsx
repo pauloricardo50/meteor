@@ -7,15 +7,7 @@ import FullDate from 'core/components/dateComponents/FullDate';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 
 const SingleBorrowerHeader = ({
-  borrower: {
-    address1,
-    age,
-    gender,
-    firstName,
-    lastName,
-    createdAt,
-    user: { _id, emails, assignedEmployee },
-  },
+  borrower: { address1, age, gender, firstName, lastName, createdAt, user },
 }) => (
   <div className="single-borrower-page-header">
     <div className="top">
@@ -34,16 +26,24 @@ const SingleBorrowerHeader = ({
 
     <div className="bottom">
       <p className="created-at">
-        <T id="SingleBorrowerPageHeader.createdBy" />{' '}
-        <Link to={`/users/${_id}`}>{emails[0].address}</Link>
-        {', '}
+        {user && [
+          <T id="SingleBorrowerPageHeader.createdBy" key="createdBy" />,
+          ' ',
+          <Link to={`/users/${user._id}`} key="userLink">
+            {user.emails[0].address}
+          </Link>,
+          ', ',
+        ]}
+
         <FullDate date={createdAt} />
-        {assignedEmployee && (
+
+        {user &&
+          user.assignedEmployee && (
           <span>
             {' - '}
             <T id="SingleBorrowerPageHeader.assignedTo" />{' '}
-            <Link to={`/users/${assignedEmployee._id}`}>
-              {assignedEmployee.emails[0].address}
+            <Link to={`/users/${user.assignedEmployee._id}`}>
+              {user.assignedEmployee.emails[0].address}
             </Link>
           </span>
         )}

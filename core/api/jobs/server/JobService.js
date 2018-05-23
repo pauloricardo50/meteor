@@ -10,8 +10,13 @@ class JobService {
     return jobId;
   };
 
-  scheduleMethod = ({ method: { config: { name } }, params, date }) =>
-    this._scheduleMethod({ method: name, params, date });
+  scheduleMethod = ({
+    method: {
+      config: { name },
+    },
+    params,
+    date,
+  }) => this._scheduleMethod({ method: name, params, date });
 
   cancelJob = ({ jobId }) => Jobs.cancelJobs([jobId]);
 
@@ -24,7 +29,12 @@ class JobService {
     }
   };
 
-  cancelExistingMethodJob = ({ method: { config: { name } }, params }) => {
+  cancelExistingMethodJob = ({
+    method: {
+      config: { name },
+    },
+    params,
+  }) => {
     this.cancelExistingJob({ method: name, params });
   };
 }

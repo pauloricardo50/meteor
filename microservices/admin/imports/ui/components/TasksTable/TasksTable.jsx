@@ -120,7 +120,9 @@ class TasksTable extends Component {
     });
 
     const relatedDoc = {
-      label: link ? <IconLink link={link} icon={icon} text={text || translationId} /> : null,
+      label: link ? (
+        <IconLink link={link} icon={icon} text={text || translationId} />
+      ) : null,
       raw: text,
     };
 
@@ -196,4 +198,4 @@ TasksTable.defaultProps = {
   showAssignee: false,
 };
 
-export default withRouter(TasksTable)
+export default withRouter(TasksTable);

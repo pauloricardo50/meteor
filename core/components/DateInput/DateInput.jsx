@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import TextInput from 'core/components/TextInput';
 import Loadable from 'core/utils/loadable';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 const DatePicker = Loadable({
   loader: () => import('./DatePicker'),

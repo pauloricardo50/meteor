@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import List, { ListItem } from 'material-ui/List';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 
 import Loading from 'core/components/Loading';
 import { T } from 'core/components/Translation';

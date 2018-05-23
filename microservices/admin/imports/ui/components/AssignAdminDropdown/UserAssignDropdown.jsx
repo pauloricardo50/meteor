@@ -20,7 +20,7 @@ const changeAssignedUser = ({ newAdmin, user, oldAdminId }) => {
 
 const onAdminSelectHandler = ({ newAdmin, relatedDoc, oldAdmin }) =>
   changeAssignedUser({
-    newAdmin: newAdmin,
+    newAdmin,
     user: relatedDoc,
     oldAdminId: oldAdmin,
   });
