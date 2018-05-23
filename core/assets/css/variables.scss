@@ -1,3 +1,4 @@
+// Screen sizes
 $xsmall: 340px;
 $small: 480px;
 $med: 768px;
@@ -5,32 +6,32 @@ $large: 992px;
 $wide: 1200px;
 $xwide: 1600px;
 
-$primary: #005bea;
-$secondary: #00c6ff;
+// App colors
+$primary: #005BEA;
+$secondary: #00C6FF;
 $primary-light: $secondary;
-$tertiary: #001a8f;
+$tertiary: #001A8F;
 $primary-dark: $tertiary;
-$success: #21d3b5;
-$warning: #f3af50;
-$error: #b73e25;
+$success: #21D3B5;
+$warning: #F3AF50;
+$error: #B73E25;
 
-$grey1: #d8d8d8;
-$grey2: #eee;
-$grey3: #f8f8f8;
-$border-grey: #dee2e6;
-$light-grey: #eee;
-
+// Helper colors
+$grey1: #D8D8D8;
+$grey2: #EEE;
+$grey3: #F8F8F8;
+$border-grey: #DEE2E6;
+$light-grey: #EEE;
 $icon: #444;
 $icon-hover: #888;
+$background-color: #F8F8F8;
 
-$body-text: rgba(#000, 0.6);
-$title-text: rgba(#000, 0.74);
-
-$background-color: #f8f8f8;
-
-$top-nav-height: 64px;
-
+// Font variables
 $bold: 600;
-$bezier: cubic-bezier(0.02, 0.01, 0.47, 1);
+$body-text: rgba(#000, .6);
+$title-text: rgba(#000, .74);
 
+// Other
+$top-nav-height: 64px;
+$bezier: cubic-bezier(.02, .01, .47, 1);
 $z-nav: 100;
