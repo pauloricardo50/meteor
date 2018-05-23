@@ -1,8 +1,13 @@
-@import './css/variables.scss';
+// Default
+@import '../imports/core/assets/css/core-styles.scss';
+@import '../imports/core/assets/css/external-styles/animate.css';
+@import '../imports/core/assets/css/external-styles/bootstrap-popover.css';
+@import '../imports/core/assets/css/external-styles/rc-slider.scss';
 
+// Layout
 @import '../imports/ui/layouts/AppLayout/AppLayout.scss';
 
-// Pages CSS
+// Pages
 @import '../imports/ui/pages/ContractPage/ContractPage.scss';
 @import '../imports/ui/pages/DashboardPage/DashboardPage.scss';
 @import '../imports/ui/pages/StrategyPage/StrategyPage.scss';
@@ -13,7 +18,7 @@
 @import '../imports/ui/pages/AuctionPage/AuctionPage.scss';
 @import '../imports/ui/pages/ClosingPage/ClosingPage.scss';
 
-// Components CSS
+// Components
 @import '../imports/ui/components/Page/Page.scss';
 @import '../imports/ui/components/SideNavUser/SideNavUser.scss';
 @import '../imports/ui/components/StrategyChoices/StrategyChoices.scss';
