@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import { isDemo } from 'core/utils/browserFunctions';
 import ProcessPage from '/imports/ui/components/ProcessPage';
 import track from 'core/utils/analytics';
-import { loanUpdate, requestLoanVerification } from 'core/api';
+import { requestLoanVerification } from 'core/api';
 
 import VerificationStart from './VerificationStart';
 import VerificationValidated from './VerificationValidated';
@@ -12,15 +11,9 @@ import VerificationFailed from './VerificationFailed';
 
 export default class VerificationPage extends Component {
   handleClick = () => {
-    if (isDemo()) {
-      const object = {};
-      object['logic.verification.validated'] = true;
-      loanUpdate.run({ object, loanId: this.props.loan._id });
-    } else {
-      requestLoanVerification
-        .run({ loanId: this.props.loan._id })
-        .then(() => track('requested verification'));
-    }
+    requestLoanVerification
+      .run({ loanId: this.props.loan._id })
+      .then(() => track('requested verification'));
   };
 
   render() {

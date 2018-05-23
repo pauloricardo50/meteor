@@ -9,9 +9,8 @@ import {
   propertyDocuments,
 } from '../api/files/documents';
 import { getPropertyArray, getPropertyLoanArray } from './PropertyFormArray';
-import { strategyDone, getPropertyCompletion } from 'core/utils/loanFunctions';
+import { strategyDone, getPropertyCompletion } from '../utils/loanFunctions';
 import { arrayify } from '../utils/general';
-import { isDemo } from 'core/utils/browserFunctions';
 import {
   LOAN_STATUS,
   AUCTION_STATUS,
@@ -322,11 +321,9 @@ export const auctionFilesPercent = (borrowers) => {
   arrayify(borrowers).forEach((b) => {
     const fileArray = borrowerDocuments(b).auction;
 
-    if (isDemo()) {
-      a.push(b.files[fileArray[0].id]);
-    } else {
+
       fileArray.forEach(f => f.condition !== false && a.push(b.files[f.id]));
-    }
+    
   });
 
   return getPercent(a);
