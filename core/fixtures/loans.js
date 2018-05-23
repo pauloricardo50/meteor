@@ -48,7 +48,7 @@ const logic3 = {
     endTime: new Date(),
   },
   hasValidatedStructure: true,
-  insuranceUsePreset: 'WITHDRAWAL',
+  insuranceUsePreset: 'COLLATERAL',
   loanStrategyPreset: 'FIXED',
   amortizationStrategyPreset: 'INDIRECT',
   lender: {},
