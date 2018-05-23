@@ -25,6 +25,7 @@ import {
   getAuctionEndTime,
   loanHasMinimalInformation,
 } from '../loanFunctions';
+import { DEFAULT_AMORTIZATION } from '../../config/financeConstants';
 
 describe('Loan functions', () => {
   let props = {};
@@ -280,7 +281,7 @@ describe('Loan functions', () => {
 
     it('returns the right value if everything is wired up', () => {
       offer.standardOffer.test = 0.01;
-      expect(getMonthlyWithOffer({ property, loan, offer })).to.equal((5000 + 800000 * 0.0125 + 600) / 12);
+      expect(getMonthlyWithOffer({ property, loan, offer })).to.equal(Math.round((5000 + 800000 * DEFAULT_AMORTIZATION + 600) / 12));
     });
   });
 

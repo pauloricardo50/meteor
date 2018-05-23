@@ -1,5 +1,10 @@
 import { GENDER, USAGE_TYPE } from '../api/constants';
-import constants from '../config/constants';
+import * as constants from '../config/constants';
+import {
+  NOTARY_FEES,
+  MAINTENANCE_FINMA,
+  INTERESTS_FINMA,
+} from '../config/financeConstants';
 import { getLoanValue, getPropAndWork, getMaintenance } from './loanFunctions';
 import {
   getFortune,
@@ -111,10 +116,10 @@ export const getMonthlyPayment = ({ loan, borrowers, property }) => {
 
 export const getTheoreticalMonthly = ({ loan, borrowers, property }) => {
   const maintenance =
-    getPropAndWork({ loan, property }) * constants.maintenance / 12;
+    getPropAndWork({ loan, property }) * MAINTENANCE_FINMA / 12;
   const loanValue = getLoanValue({ loan, property });
 
-  const interests = loanValue * constants.interests / 12;
+  const interests = loanValue * INTERESTS_FINMA / 12;
   const { amortization } = getAmortization({
     loan,
     borrowers,
@@ -149,8 +154,7 @@ export const canAffordRank1 = ({ loan, borrowers, property }) => {
   const totalFortune = getTotalFortune({ borrowers });
   const fortune = getFortune({ borrowers });
   const insuranceFortune = getInsuranceFortune({ borrowers });
-  const fortuneRequired =
-    0.35 * propAndWork + property.value * constants.notaryFees;
+  const fortuneRequired = 0.35 * propAndWork + property.value * NOTARY_FEES;
 
   if (fortune >= fortuneRequired) {
     return true;
