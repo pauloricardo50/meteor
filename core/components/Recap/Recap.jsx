@@ -12,7 +12,7 @@ import {
   getTotalUsed,
   getLoanValue,
   getLenderCount,
-  getBorrowRatio,
+  getBorrowRatio, getInsuranceFees
 } from 'core/utils/loanFunctions';
 
 import {
@@ -56,6 +56,7 @@ const getDashboardArray = (props) => {
   const insuranceFortune = getInsuranceFortune(props);
   const totalFortune = getTotalFortune(props);
   const lenderCount = getLenderCount(props);
+  const insuranceFees = getInsuranceFees(props);
 
   return [
     {
@@ -84,8 +85,8 @@ const getDashboardArray = (props) => {
     },
     {
       label: 'general.insuranceFees',
-      value: toMoney(Math.round(r.general.insuranceFortuneUsed * constants.lppFees)),
-      hide: !r.general.insuranceFortuneUsed,
+      value: toMoney(Math.round(insuranceFees)),
+      hide: !insuranceFees,
     },
     {
       label: 'Recap.totalCost',
@@ -268,6 +269,7 @@ const getSmallDashboardArray = (props) => {
   const totalUsed = getTotalUsed(props);
   const propAndWork = getPropAndWork(props);
   const project = getProjectValue(props);
+  const insuranceFees = getInsuranceFees(props);
 
   return [
     {
@@ -290,8 +292,8 @@ const getSmallDashboardArray = (props) => {
     },
     {
       label: 'general.insuranceFees',
-      value: toMoney(Math.round(r.general.insuranceFortuneUsed * constants.lppFees)),
-      hide: !r.general.insuranceFortuneUsed,
+      value: toMoney(Math.round(insuranceFees)),
+      hide: !insuranceFees,
     },
     {
       label: 'Recap.totalCost',
@@ -742,6 +744,7 @@ const getStructureArray = (props) => {
   const lenderCount = getLenderCount(props);
   const incomeRatio = getIncomeRatio(props);
   const borrowRatio = getBorrowRatio(props);
+  const insuranceFees = getInsuranceFees(props);
 
   return [
     {
@@ -760,8 +763,8 @@ const getStructureArray = (props) => {
     },
     {
       label: 'general.insuranceFees',
-      value: toMoney(Math.round(r.general.insuranceFortuneUsed * constants.lppFees)),
-      hide: !r.general.insuranceFortuneUsed,
+      value: toMoney(Math.round(insuranceFees)),
+      hide: !insuranceFees,
     },
     {
       label: 'Recap.totalCost',
