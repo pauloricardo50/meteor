@@ -18,6 +18,7 @@ import {
   getFees,
   getMaintenance,
   getAuctionEndTime,
+  loanHasMinimalInformation,
 } from '../loanFunctions';
 
 describe('Loan functions', () => {
@@ -577,5 +578,26 @@ describe('getAuctionEndTime', () => {
     endDate.date(10);
 
     expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+  });
+
+  describe('loanHasMinimalInformation', () => {
+    it('returns false if the loan is not ready', () => {
+      expect(loanHasMinimalInformation({ loan: {} })).to.equal(false);
+      expect(loanHasMinimalInformation({ loan: { general: {} } })).to.equal(false);
+      expect(loanHasMinimalInformation({ loan: { property: {} } })).to.equal(false);
+      expect(loanHasMinimalInformation({ loan: { general: {}, property: {} } })).to.equal(false);
+      expect(loanHasMinimalInformation({
+        loan: { general: { fortuneUsed: 100 }, property: {} },
+      })).to.equal(false);
+      expect(loanHasMinimalInformation({
+        loan: { general: {}, property: { value: 100 } },
+      })).to.equal(false);
+    });
+
+    it('returns true if the loan is ready', () => {
+      expect(loanHasMinimalInformation({
+        loan: { general: { fortuneUsed: 100 }, property: { value: 100 } },
+      })).to.equal(true);
+    });
   });
 });
