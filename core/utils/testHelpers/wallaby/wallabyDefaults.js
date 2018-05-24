@@ -43,6 +43,17 @@ function setWallabyConfig(name, overrides = {}) {
       setup() {
         global.IS_WALLABY = true;
         global.fetch = require('node-fetch');
+
+        // Configure jsdom for react mount tests
+        const jsdom = require('jsdom');
+        const { JSDOM } = jsdom;
+        const { document } = new JSDOM('<!doctype html><html><body></body></html>').window;
+        global.document = document;
+        global.window = document.defaultView;
+        global.navigator = {
+          userAgent: 'node.js',
+          platform: 'Win32',
+        };
       },
       ...overrides,
     };
