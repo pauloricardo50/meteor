@@ -114,15 +114,17 @@ Meteor.methods({
     }
   },
 
-  purgeDatabase(currentUserId) {
+  async purgeDatabase(currentUserId) {
     check(currentUserId, String);
     if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
-      Borrowers.remove({});
-      Offers.remove({});
-      Loans.remove({});
-      Properties.remove({});
-      Tasks.remove({});
-      Users.remove({ _id: { $ne: currentUserId } });
+      await Promise.all([
+        Borrowers.rawCollection().remove({}),
+        Offers.rawCollection().remove({}),
+        Loans.rawCollection().remove({}),
+        Properties.rawCollection().remove({}),
+        Tasks.rawCollection().remove({}),
+        Users.rawCollection().remove({ _id: { $ne: currentUserId } }),
+      ]);
     }
   },
 
