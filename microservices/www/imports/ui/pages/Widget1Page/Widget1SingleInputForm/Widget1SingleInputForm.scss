@@ -27,8 +27,8 @@
 
 .widget1-single-input-form .buttons {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  flex-direction: column;
+  align-items: stretch;
 
   width: 100%;
   margin-bottom: -16px;
