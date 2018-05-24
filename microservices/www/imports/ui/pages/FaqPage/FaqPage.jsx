@@ -1,8 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const FaqPage = props => <div className="faq-page">Hello World</div>;
+import { T } from 'core/components/Translation';
+import WwwLayout from '../../WwwLayout';
+import { VARIANTS } from '../../WwwLayout/WwwTopNav';
+import FaqPageList from './FaqPageList';
 
-FaqPage.propTypes = {};
+const FaqPage = () => (
+  <WwwLayout className="faq-page">
+    <WwwLayout.TopNav variant={VARIANTS.GREY} />
+    <div className="faq-page-content">
+      <h1>
+        <T id="FaqPage.title" />
+      </h1>
+      <FaqPageList />
+    </div>
+    <WwwLayout.Footer />
+  </WwwLayout>
+);
 
 export default FaqPage;

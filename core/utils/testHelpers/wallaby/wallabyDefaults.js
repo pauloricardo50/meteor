@@ -15,6 +15,8 @@ function setWallabyConfig(name, overrides = {}) {
         '!imports/core/assets/**',
         // Don't load tests here, but in the next variable
         '!imports/**/*.spec.js*',
+        // Load language files for some tests
+        'lang/*.json',
       ],
       tests: ['imports/**/*.spec.js*', '!imports/core/node_modules/**'],
       compilers: {

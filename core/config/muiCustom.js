@@ -51,6 +51,11 @@ const theme = createMuiTheme({
         color: colors.error,
       },
     },
+    MuiExpansionPanel: {
+      root: {
+        border: `1px solid ${colors.primary}`,
+      },
+    },
   },
   // direction: 'ltr',
   palette: {

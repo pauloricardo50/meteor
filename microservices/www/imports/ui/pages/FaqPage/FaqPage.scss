@@ -1,0 +1,48 @@
+.faq-page-content {
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+
+  h1 {
+    align-self: center;
+    color: $primary;
+  }
+}
+
+@media (max-width: $med) {
+  .faq-page-content {
+    padding: 16px;
+  }
+}
+
+.faq-page-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 800px;
+  align-self: center;
+
+  .faq-page-list-category {
+    margin-bottom: 40px;
+  }
+
+  h2 {
+    margin: 32px 0;
+  }
+
+  p.description {
+    max-width: unset;
+    text-align: left;
+  }
+
+  a {
+    color: $primary;
+    text-decoration: none;
+
+    &:hover {
+      color: $primary;
+      text-decoration: underline;
+    }
+  }
+}
