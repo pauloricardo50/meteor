@@ -15,9 +15,6 @@ const CareersPage = () => (
       <p className="description">
         <T id="CareersPage.description" />
       </p>
-      <h2 className="careers-page-content-subtitle">
-        <T id="CareersPage.subtitle" />
-      </h2>
       <CareersPageList />
     </section>
     <WwwLayout.Footer />

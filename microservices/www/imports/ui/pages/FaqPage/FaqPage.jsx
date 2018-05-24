@@ -12,6 +12,9 @@ const FaqPage = () => (
       <h1>
         <T id="FaqPage.title" />
       </h1>
+      <p className="description">
+        <T id="FaqPage.description" />
+      </p>
       <FaqPageList />
     </div>
     <WwwLayout.Footer />

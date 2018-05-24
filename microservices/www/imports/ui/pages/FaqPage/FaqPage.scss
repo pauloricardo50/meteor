@@ -6,6 +6,11 @@
   h1 {
     align-self: center;
     color: $primary;
+    margin-top: 0;
+  }
+
+  > p {
+    align-self: center;
   }
 }
 
@@ -25,10 +30,15 @@
 
   .faq-page-list-category {
     margin-bottom: 40px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   h2 {
     margin: 32px 0;
+    color: $primary;
   }
 
   p.description {

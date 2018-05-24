@@ -12,7 +12,7 @@ import { PHONE, PHONE_COMPACT, EMAIL } from '../ContactPage/contactConstants';
 const answerValues = {
   contactPhone: <a href={`tel:${PHONE_COMPACT}`}>{PHONE}</a>,
   contactMail: <a href={`mailto:${EMAIL}`}>{EMAIL}</a>,
-  howMuchCanIBorrowLink: (
+  start1Link: (
     <Link to="/start/1">
       <T id="general.here" />
     </Link>
@@ -24,9 +24,9 @@ const FaqPageFaqs = ({ faqs }) => (
     {faqs.map(faq => (
       <ExpansionPanel key={faq}>
         <ExpansionPanelSummary expandIcon={<Icon type="expandMore" />}>
-          <h3>
+          <h4>
             <T id={`FaqPageFaqs.${faq}.question`} />
-          </h3>
+          </h4>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <p className="description">

@@ -39,6 +39,9 @@
 
   .careers-page-list-empty {
     text-align: center;
+    width: 100%;
+    max-width: 500px;
+    align-self: center;
   }
 }
 
@@ -61,6 +64,7 @@
   border-radius: 8px;
   text-decoration: none;
   transition: all 200ms $bezier;
+  margin-bottom: 16px;
 
   .careers-page-job-hover {
     display: none;
