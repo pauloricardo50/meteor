@@ -8,6 +8,7 @@ import faqs from '../faqs';
 describe('faqs', () => {
   it('is an object of non-empty arrays', () => {
     expect(typeof faqs).to.equal('object');
+    expect(Object.keys(faqs).length).to.be.least(1);
     Object.keys(faqs).forEach((category) => {
       expect(isArray(faqs[category])).to.equal(true, category);
       expect(faqs[category].length).to.be.least(1, category);
