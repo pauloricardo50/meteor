@@ -1,13 +1,14 @@
 .borrower-finance-page {
   .conditions {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+
     width: 100%;
     max-width: 500px;
     margin: 40px auto 0 auto;
     padding: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
   }
 
   .recap {

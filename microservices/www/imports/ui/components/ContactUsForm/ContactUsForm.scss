@@ -1,6 +1,7 @@
 .contact-us-form {
   display: flex;
   flex-direction: column;
+
   padding: 32px;
 }
 
@@ -20,10 +21,12 @@
 
 .contact-us-form-wrapper {
   position: relative;
-  min-height: 200px;
-  width: 100%;
+
   display: flex;
   justify-content: center;
+
+  width: 100%;
+  min-height: 200px;
 
   // Hide animated content when it's gone
   // overflow-y: hidden;
@@ -33,20 +36,24 @@
   position: absolute;
   top: 0;
   left: 0;
+
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
+
   width: 100%;
-  text-align: center;
   padding-top: 80px;
+
   animation-delay: 500ms;
+  text-align: center;
 
   &.hidden {
     display: none;
   }
 
   .animated-success {
-    transform: scale(2);
     margin-bottom: 32px;
+
+    transform: scale(2);
   }
 }

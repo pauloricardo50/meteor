@@ -1,7 +1,7 @@
 .interests-page {
   display: flex;
-  flex-direction: column;
   flex: 1;
+  flex-direction: column;
 
   h1 {
     color: $primary;
@@ -9,12 +9,13 @@
 
   .interests-page-content {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    flex-direction: column;
+
     box-sizing: border-box;
+    width: 100%;
     padding: 32px;
     padding-top: 0;
-    width: 100%;
   }
 }
 
@@ -26,6 +27,7 @@
 
 .interests-page-table {
   margin: 80px 32px 0 32px;
+
   transform: scale(1.25);
 }
 

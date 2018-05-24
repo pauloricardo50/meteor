@@ -1,8 +1,9 @@
 .summary-component {
-  background-color: $primary;
-  color: #fff;
-  border-radius: 4px;
   padding: 16px;
+
+  color: #FFF;
+  border-radius: 4px;
+  background-color: $primary;
 }
 
 .summary-component h1,
@@ -11,9 +12,11 @@
 .summary-component h4,
 .summary-component h5,
 .summary-component h6 {
-  color: #fff;
   margin: 0;
-  opacity: 0.6;
+
+  opacity: .6;
+  color: #FFF;
+
   font-weight: 400;
 }
 

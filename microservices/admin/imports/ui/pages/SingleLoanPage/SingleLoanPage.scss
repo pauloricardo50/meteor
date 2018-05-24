@@ -4,11 +4,13 @@
 
 .single-loan-page {
   .google-map {
-    min-height: 400px;
-    flex: 1;
-    display: flex;
-    width: 100%;
     position: relative;
+
+    display: flex;
+    flex: 1;
+
+    width: 100%;
+    min-height: 400px;
 
     .map {
       flex: 1;

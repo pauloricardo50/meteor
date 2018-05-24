@@ -1,10 +1,11 @@
 .validator {
-  min-height: 140px;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+
   width: 100%;
   max-width: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
+  min-height: 140px;
 }
 
 .validator label {
@@ -15,24 +16,28 @@
 
 .validator h4 {
   margin: auto;
+
   text-align: left;
 }
 
 .validator .result {
-  width: 100%;
   display: flex;
+  align-items: flex-start;
   flex-direction: column;
   justify-content: space-between;
-  align-items: flex-start;
+
+  width: 100%;
 }
 
 .validator .result div {
-  transition: all 0.2s $bezier;
-  margin: 0;
-  width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  margin: 0;
+
+  transition: all .2s $bezier;
 }
 
 .validator .result div h3,
@@ -41,26 +46,31 @@
 }
 
 .validator .result div h3 {
+  transition: color .2s ease;
   text-align: right;
-  opacity: 0.8;
-  transition: color 0.2s ease;
+
+  opacity: .8;
+
   font-size: 1.375em !important;
 }
 
 .validator .result div h3 span.sum {
   margin-top: 16px;
+
   border-top: solid 1px #808080;
 }
 
 .validator .result div h3 .fa {
   width: 21px;
+
   text-align: center;
 }
 
 .validator .result div:hover {
   transform: scale(1.03);
-  color: #000;
+
   opacity: 1;
+  color: #000;
 }
 
 .validator .result div:hover.no-scale {
@@ -69,6 +79,6 @@
 
 .validator .result div:hover h3,
 .validator .result div:hover h4 {
-  color: inherit;
   opacity: inherit;
+  color: inherit;
 }

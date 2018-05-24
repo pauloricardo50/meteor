@@ -1,15 +1,18 @@
 .faq-page-content {
   display: flex;
   flex-direction: column;
+
   padding: 32px;
 
   h1 {
     align-self: center;
-    color: $primary;
+
     margin-top: 0;
+
+    color: $primary;
   }
 
-  > p {
+   > p {
     align-self: center;
   }
 }
@@ -22,11 +25,12 @@
 
 .faq-page-list {
   display: flex;
-  flex-direction: column;
-  width: 100%;
-  box-sizing: border-box;
-  max-width: 800px;
   align-self: center;
+  flex-direction: column;
+
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 800px;
 
   .faq-page-list-category {
     margin-bottom: 40px;
@@ -38,21 +42,25 @@
 
   h2 {
     margin: 32px 0;
+
     color: $primary;
   }
 
   p.description {
     max-width: unset;
+
     text-align: left;
   }
 
   a {
-    color: $primary;
     text-decoration: none;
 
+    color: $primary;
+
     &:hover {
-      color: $primary;
       text-decoration: underline;
+
+      color: $primary;
     }
   }
 }

@@ -1,7 +1,8 @@
 .widget1-inputs {
+  position: relative;
+
   display: flex;
   flex-direction: column;
-  position: relative;
 }
 
 .widget1-inputs .widget1-single-input {
@@ -11,6 +12,7 @@
 .widget1-inputs .widget1-single-inputs-overdrive {
   display: flex;
   flex-grow: 1;
+
   width: 100%;
 }
 
