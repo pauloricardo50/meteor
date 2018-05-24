@@ -7,7 +7,6 @@ import {
   getInterests,
   getMonthlyPayment,
   getTheoreticalMonthly,
-  getIncomeRatio,
   canAffordRank1,
 } from '../finance-math';
 
@@ -42,6 +41,7 @@ describe('Finance Math', () => {
     it('Should return 1000 for a 1200000 property', () => {
       const loan = {
         general: { fortuneUsed: 300000, insuranceFortuneUsed: 0 },
+        logic: {},
       };
       const borrowers = [{ age: 30, gender: 'M' }];
       const property = { value: 1200000 };
@@ -52,6 +52,7 @@ describe('Finance Math', () => {
     it('Should return 0 when borrowing less than 65%', () => {
       const loan = {
         general: { fortuneUsed: 400000, insuranceFortuneUsed: 0 },
+        logic: {},
       };
       const property = { value: 1000000 };
 
@@ -82,7 +83,7 @@ describe('Finance Math', () => {
     it('returns an object', () => {
       expect(typeof getMonthlyPayment({
         property: { value: 100 },
-        loan: { general: {} },
+        loan: { general: {}, logic: {} },
         borrowers: [{}],
       })).to.equal('object');
     });
@@ -90,7 +91,7 @@ describe('Finance Math', () => {
     it('returns a total and the 3 values that make the total', () => {
       const value = getMonthlyPayment({
         property: { value: 100 },
-        loan: { general: {} },
+        loan: { general: {}, logic: {} },
         borrowers: [],
       });
 
@@ -103,7 +104,7 @@ describe('Finance Math', () => {
     it('returns an object', () => {
       expect(typeof getTheoreticalMonthly({
         property: { value: 100 },
-        loan: { general: {} },
+        loan: { general: {}, logic: {} },
         borrowers: [],
       })).to.equal('object');
     });
@@ -111,7 +112,7 @@ describe('Finance Math', () => {
     it('returns a total and the 3 values that make the total', () => {
       const value = getTheoreticalMonthly({
         property: { value: 100 },
-        loan: { general: {} },
+        loan: { general: {}, logic: {} },
         borrowers: [],
       });
 

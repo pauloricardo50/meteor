@@ -23,7 +23,7 @@ export default class OverviewTab extends React.Component {
     const { loan, borrowers } = this.props;
     const { adminNote, user, borrowerIds, property, _id } = loan;
     const { showObject, serverTime } = this.state;
-    const displayRecap = loanHasMinimalInformation(loan);
+    const displayRecap = loanHasMinimalInformation({ loan });
 
     return (
       <div className="mask1 overview-tab">
