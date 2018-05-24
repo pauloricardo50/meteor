@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import { shallow } from '../../../utils/testHelpers/enzyme';
 
 import { AutoTooltip } from '../AutoTooltip';
+import { TOOLTIP_LISTS } from '../../../arrays/tooltips';
 
 describe('<AutoTooltip />', () => {
   let props;
@@ -33,21 +34,21 @@ describe('<AutoTooltip />', () => {
 
   it('returns a parsed string with tooltips', () => {
     const text = 'a match1 b';
-    props = { children: text, tooltipList: 'DEV' };
+    props = { children: text, tooltipList: TOOLTIP_LISTS.DEV };
     const wrapper = component();
     expect(wrapper.text()).to.equal('a <TooltipOverlay /> b');
   });
 
   it('returns a parsed string with multiple tooltips', () => {
     const text = 'a match1 b match2 c';
-    props = { children: text, tooltipList: 'DEV' };
+    props = { children: text, tooltipList: TOOLTIP_LISTS.DEV };
     const wrapper = component();
     expect(wrapper.text()).to.equal('a <TooltipOverlay /> b <TooltipOverlay /> c');
   });
 
   it('takes a list as a string to take tooltips from', () => {
     const text = 'a 123test b';
-    props = { children: text, tooltipList: 'OFFER_TABLE' };
+    props = { children: text, tooltipList: TOOLTIP_LISTS.OFFER_TABLE };
     const wrapper = component();
 
     expect(wrapper.text()).to.equal('a 123test b');

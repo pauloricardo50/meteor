@@ -6,6 +6,7 @@ import {
   tooltipsById,
   generalTooltips,
   offerTableTooltips,
+  TOOLTIP_LISTS,
 } from '../tooltips';
 
 describe('tooltips', () => {
@@ -34,20 +35,20 @@ describe('tooltips', () => {
     });
 
     it('should return an object if given a correct id', () => {
-      expect(typeof tooltips('GENERAL')).to.equal('object');
+      expect(typeof tooltips(TOOLTIP_LISTS.GENERAL)).to.equal('object');
     });
   });
 
   describe('tooltipsById', () => {
     it("throws if the id given isn't made of 2 strings with a dot", () => {
       expect(() => tooltipsById('')).to.throw('Wrong');
-      expect(() => tooltipsById('GENERAL')).to.throw('Wrong');
+      expect(() => tooltipsById(TOOLTIP_LISTS.GENERAL)).to.throw('Wrong');
       expect(() => tooltipsById(1)).to.throw('string');
-      expect(() => tooltipsById('GENERAL.')).to.throw('Wrong');
+      expect(() => tooltipsById(`${TOOLTIP_LISTS.GENERAL}.`)).to.throw('Wrong');
     });
 
     it('returns undefined for a non-existent tooltip', () => {
-      expect(tooltipsById('GENERAL.noexist')).to.equal(undefined);
+      expect(tooltipsById(`${TOOLTIP_LISTS.GENERAL}.noexist`)).to.equal(undefined);
     });
   });
 });
