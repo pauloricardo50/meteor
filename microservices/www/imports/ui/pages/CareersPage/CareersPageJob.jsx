@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { T } from 'core/components/Translation';
-import Button from 'core/components/Button';
 
 const CareersPageJob = ({ job: { title, url } }) => (
-  <a href={url} target="_blank" className="careers-page-job">
+  <a href={url} target="_blank" className="careers-page-job card1">
     <h4>{title}</h4>
-    <p className="careers-page-job-hover">Voir l'annonce</p>
+    <p className="careers-page-job-hover">
+      <T id="CareersPageJob.hoverText" />
+    </p>
   </a>
 );
 

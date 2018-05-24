@@ -35,7 +35,7 @@ const ActionsTab = (props) => {
   const l = loan.logic;
 
   return (
-    <div style={styles.div}>
+    <div className="actions-tab" style={styles.div}>
       <Button
         raised
         label="Télécharger PDF Anonyme"

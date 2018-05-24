@@ -1,13 +1,12 @@
-@import '{}/client/css/variables.scss';
-
 @import './HomePageReviewsCarousel/HomePageReviewsCarousel.scss';
 
 .home-page-reviews {
   display: flex;
-  flex-direction: column;
-  flex: 1;
-  padding: 32px;
   align-items: center;
+  flex: 1;
+  flex-direction: column;
+
+  padding: 32px;
 }
 
 @media (max-width: $med) {
@@ -18,12 +17,14 @@
 
 .home-page-reviews .home-page-reviews-title {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
+
   max-width: 600px;
-  text-align: center;
-  margin-bottom: 40px;
   margin-top: 80px;
+  margin-bottom: 40px;
+
+  text-align: center;
   .description {
     width: 100%;
   }

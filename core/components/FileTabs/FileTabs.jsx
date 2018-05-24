@@ -16,7 +16,7 @@ const styles = {
 };
 
 const FileTabs = ({ loan, borrowers, property, disabled }) => (
-  <div className="mask1">
+  <div className="mask1 files-tab">
     <Tabs defaultActiveKey={0} id="tabs">
       <Tab eventKey={0} title={<T id="general.mortgageLoan" />}>
         <div style={styles.tabContent}>

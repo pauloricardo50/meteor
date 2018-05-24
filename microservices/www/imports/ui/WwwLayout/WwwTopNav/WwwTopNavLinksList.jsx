@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { T } from 'core/components/Translation';
 
-export const links = ['interests', 'contact', 'about', 'careers'];
+export const links = ['about', 'interests', 'faq', 'careers', 'contact'];
 
 const WwwTopNavLinksList = ({ variant }) => (
   <React.Fragment>

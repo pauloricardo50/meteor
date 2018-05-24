@@ -8,7 +8,8 @@
     "run": "cd scripts/ && ./run.sh",
     "lang": "cd scripts/ && babel-node createLanguages.js",
     "clean-run": "npm run setup-clean && npm run run",
-    "remove-core": "cd scripts/ && ./remove-core.sh"
+    "remove-core": "cd scripts/ && ./remove-core.sh",
+    "clean-css": "cd scripts/ && ./clean-css.sh"
   },
   "repository": {
     "type": "git",

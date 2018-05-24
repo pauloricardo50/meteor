@@ -1,15 +1,14 @@
-@import '{}/client/css/variables.scss';
-
 $break-off: 1000px;
 $step-height: 400px;
 $image-height: 300px;
 
 .description-item {
   display: flex;
-  justify-content: space-around;
+  align-items: center;
   flex-direction: row;
   flex-wrap: wrap-reverse;
-  align-items: center;
+  justify-content: space-around;
+
   width: 100%;
   height: $step-height;
 }
@@ -20,15 +19,17 @@ $image-height: 300px;
 
 .description-item .description-item-text {
   position: relative;
+  z-index: 1;
   // width: 400px;
+
   max-width: 400px;
   padding: 0 32px;
-  z-index: 1;
 }
 
 .description-item .description-item-text h3 {
-  color: $primary;
   margin-bottom: 8px;
+
+  color: $primary;
 }
 
 .description-item .description-item-text p {
@@ -37,30 +38,37 @@ $image-height: 300px;
 
 .description-item .description-item-number {
   position: absolute;
+  z-index: -1;
   top: -100px;
   left: -50px;
+
   height: 300px;
-  font-size: 300px;
-  line-height: 300px;
-  font-weight: 600;
-  color: $primary;
-  opacity: 0.2;
-  z-index: -1;
+
   vertical-align: middle;
+
+  opacity: .2;
+  color: $primary;
+
+  font-size: 300px;
+  font-weight: 600;
+  line-height: 300px;
 }
 
 .description-item .description-item-number:after {
   position: absolute;
   bottom: 0;
-  height: 100%;
+
   width: 100%;
+  height: 100%;
+
   content: '';
-  background: linear-gradient(
-    to top,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0) 80%
-  );
   pointer-events: none;
+
+  background: linear-gradient(
+  to top,
+  rgba(255, 255, 255, 1) 0%,
+  rgba(255, 255, 255, 0) 80%
+  );
 }
 
 .description-item .description-item-icon {
@@ -73,6 +81,7 @@ $image-height: 300px;
   .description-item {
     flex-direction: column-reverse;
     flex-wrap: nowrap;
+
     margin-bottom: 80px;
     padding-left: 32px;
   }

@@ -103,6 +103,7 @@ const UsersTable = (props) => {
       columnOptions={getColumnOptions(props)}
       rows={getRows(props)}
       noIntl
+      className="users-table"
     />
   );
 };

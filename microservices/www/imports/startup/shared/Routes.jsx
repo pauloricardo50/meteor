@@ -25,13 +25,14 @@ const routesConfig = [
   { path: '/interests', component: InterestsPage },
   { path: '/careers', component: CareersPage },
   { path: '/about', component: AboutPage },
+  { path: '/faq', component: FaqPage },
 
   ...liteVersionModifier([
     { path: '/conditions', component: ConditionsPage },
     { path: '/checkYourMailbox/:email', component: CheckMailboxPage },
   ]),
 
-  ...notProductionReadyModifier([{ path: '/faq', component: FaqPage }]),
+  ...notProductionReadyModifier([]),
 
   { component: NotFound },
 ];

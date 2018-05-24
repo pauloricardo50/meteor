@@ -1,13 +1,13 @@
-@import '{}/client/css/variables.scss';
-
 ol.mix-event-list {
   display: flex;
   flex-direction: column;
+
   list-style-type: none;
 }
 
 ol.mix-event-list li.events-day h3 {
   padding: 8px;
+
   border-bottom: 1px solid $border-grey;
 }
 

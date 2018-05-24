@@ -13,11 +13,11 @@ import {
 import UserService from '../api/users/UserService';
 import TaskService from '../api/tasks/TaskService';
 import { TASK_TYPE } from '../api/tasks/taskConstants';
+import { AUCTION_STATUS } from '../api/loans/loanConstants';
 import {
   DEV_COUNT,
   USER_COUNT,
   ADMIN_COUNT,
-  STEP_3_LOANS_PER_USER,
   STEP_2_LOANS_PER_USER,
   STEP_1_LOANS_PER_USER,
   UNOWNED_LOANS_COUNT,
@@ -56,11 +56,19 @@ const deleteUsers = usersToDelete =>
 
 const createFakeLoanFixture = ({
   userId,
-  loanStep,
+  step,
   adminId,
   completeFiles,
+  auctionStatus,
+  twoBorrowers,
 }) => {
-  const loanId = createFakeLoan(userId, loanStep, completeFiles);
+  const loanId = createFakeLoan({
+    userId,
+    step,
+    completeFiles,
+    auctionStatus,
+    twoBorrowers,
+  });
   createFakeTask(loanId, adminId);
   createFakeOffer(loanId, userId);
 };
@@ -79,25 +87,28 @@ Meteor.methods({
       newUsers.forEach((userId) => {
         const adminId = admins[Math.floor(Math.random() * admins.length)];
 
-        range(STEP_3_LOANS_PER_USER).forEach(() => {
+        // 3 step loans with all type of auction
+        Object.keys(AUCTION_STATUS).forEach((statusKey) => {
           createFakeLoanFixture({
-            loanStep: 3,
+            step: 3,
             userId,
             adminId,
             completeFiles: true,
+            auctionStatus: AUCTION_STATUS[statusKey],
+            twoBorrowers: true,
           });
         });
 
         range(STEP_2_LOANS_PER_USER).forEach(() => {
-          createFakeLoanFixture({ loanStep: 2, userId, adminId });
+          createFakeLoanFixture({ step: 2, userId, adminId });
         });
 
         range(STEP_1_LOANS_PER_USER).forEach(() => {
-          createFakeLoanFixture({ loanStep: 1, userId, adminId });
+          createFakeLoanFixture({ step: 1, userId, adminId });
         });
 
         range(UNOWNED_LOANS_COUNT).forEach(() => {
-          createFakeLoan();
+          createFakeLoan({});
         });
       });
     }

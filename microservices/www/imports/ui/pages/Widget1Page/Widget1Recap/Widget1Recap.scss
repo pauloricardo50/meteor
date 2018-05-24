@@ -1,15 +1,17 @@
 .widget1-recap .recap {
   display: flex;
   flex-direction: column;
+
   width: 100%;
   padding-bottom: 16px;
 }
 
 .widget1-recap .recap .recap-item {
   display: flex;
-  flex-direction: row;
   align-items: center;
+  flex-direction: row;
   justify-content: space-between;
+
   padding: 4px 0;
   h4,
   h3 {
@@ -39,8 +41,8 @@
 
 .widget1-lender-count {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
 .widget1-lender-count-divider {

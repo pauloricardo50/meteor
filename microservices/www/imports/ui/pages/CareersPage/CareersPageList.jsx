@@ -7,7 +7,7 @@ import CareersPageJob from './CareersPageJob';
 const CareersPageList = () => (
   <div className="careers-page-list">
     {Object.keys(jobs).map(department => (
-      <div className="careers-page-list-department card1" key={department}>
+      <div className="careers-page-list-department" key={department}>
         <h3 className="careers-page-list-department-title">
           <T id={`CareersPageList.${department}`} />
         </h3>

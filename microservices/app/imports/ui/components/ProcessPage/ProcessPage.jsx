@@ -84,9 +84,11 @@ class ProcessPage extends Component {
   };
 
   render() {
+    const { id } = this.props;
+
     this.setBarProps();
     return (
-      <section className="page-title">
+      <section id={id} className="page-title">
         <ProcessPageBar {...this.barProps} className="top-bar" />
         <div className="children animated fadeIn page">
           {this.props.children}
