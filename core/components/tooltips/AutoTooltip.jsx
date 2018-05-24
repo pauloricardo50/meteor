@@ -6,6 +6,20 @@ import reactStringReplace from 'react-string-replace';
 import { tooltips } from 'core/arrays/tooltips';
 import TooltipOverlay from './TooltipOverlay';
 
+const createRegexForTooltipList = list =>
+  new RegExp(`(${Object.keys(tooltips(list)).join('|')})`, 'gi');
+
+const parseTextForTooltips = props =>
+  reactStringReplace(
+    props.children,
+    createRegexForTooltipList(props.list),
+    (match, i) => (
+      <TooltipOverlay {...props} key={i} match={match}>
+        {match}
+      </TooltipOverlay>
+    ),
+  );
+
 const AutoTooltip = (props) => {
   let content = null;
 
@@ -26,15 +40,7 @@ const AutoTooltip = (props) => {
   } else {
     // If no id is given and children is a string,
     // automatically replace all matching strings with tooltips
-    content = reactStringReplace(
-      props.children,
-      new RegExp(`(${Object.keys(tooltips(props.list)).join('|')})`, 'gi'),
-      (match, i) => (
-        <TooltipOverlay {...props} key={i} match={match}>
-          {match}
-        </TooltipOverlay>
-      ),
-    );
+    content = parseTextForTooltips(props);
   }
 
   return <span>{content}</span>;

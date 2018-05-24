@@ -1,26 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 
-import Loadable from 'core/utils/loadable';
+import AutoTooltip from '../tooltips/AutoTooltip';
+import defaultIntlValues from './defaultIntlValues';
 
-// const {
-//   FormattedMessage,
-//   FormattedDate,
-//   FormattedTime,
-//   FormattedRelative,
-//   FormattedNumber,
-//   FormattedPlural,
-// } = Loadable({ loader: () => import('react-intl') });
-import {
-  FormattedMessage,
-  FormattedDate,
-  FormattedTime,
-  FormattedRelative,
-  FormattedNumber,
-  FormattedPlural,
-} from 'react-intl';
-
-import AutoTooltip from './AutoTooltip';
+const makeAutoTooltip = props => (content, key) => (
+  <AutoTooltip
+    {...props}
+    id={props.tooltipId}
+    placement={props.tooltipPlacement}
+    key={key}
+  >
+    {content}
+  </AutoTooltip>
+);
 
 /**
  * T - A wrapper around react-intl's Formatted Message, it
@@ -28,68 +22,45 @@ import AutoTooltip from './AutoTooltip';
  * It is only rerendered if the id changes
  * @extends Component
  */
-export class T extends Component {
-  render() {
-    const {
-      noTooltips,
-      id,
-      values,
-      tooltipId,
-      tooltipPlacement,
-      tooltipDelay,
-      ...rest
-    } = this.props;
+export const T = (props) => {
+  const {
+    noTooltips,
+    id,
+    values,
+    tooltipId,
+    tooltipPlacement,
+    ...rest
+  } = props;
 
-    if (noTooltips) {
-      return <FormattedMessage {...this.props} />;
-    } else if (id === undefined) {
-      return null;
-    } else if (typeof id !== 'string') {
-      return id;
-    }
-
-    // formattedMessage provides an array of values in the children function.
-    // When there is more than a simple string to render, for example a rich
-    // HTML element was added as a values prop, then it returns several values
-    // To avoid unnecessary spans, separate those with a single message
-    // and those, rare, with more.
-    const Auto = (content, key) => (
-      <AutoTooltip
-        {...this.props}
-        id={tooltipId}
-        placement={tooltipPlacement}
-        delay={tooltipDelay}
-        key={key}
-      >
-        {content}
-      </AutoTooltip>
-    );
-
-    return (
-      <FormattedMessage
-        id={id}
-        values={{
-          ...values,
-          verticalSpace: (
-            <span>
-              <br />
-              <br />
-            </span>
-          ),
-        }}
-        {...rest}
-      >
-        {(...formattedMessage) =>
-          (formattedMessage.length === 1 ? (
-            Auto(formattedMessage[0])
-          ) : (
-            <span>{formattedMessage.map((msg, i) => Auto(msg, i))}</span>
-          ))
-        }
-      </FormattedMessage>
-    );
+  if (noTooltips) {
+    return <FormattedMessage {...props} />;
+  } else if (id === undefined) {
+    return null;
+  } else if (typeof id !== 'string') {
+    return id;
   }
-}
+
+  // formattedMessage provides an array of values in the children function.
+  // When there is more than a simple string to render, for example a rich
+  // HTML element was added as a values prop, then it returns several values
+  // To avoid unnecessary spans, separate those with a single message
+  // and those, rare, with more.
+  const Auto = makeAutoTooltip(props);
+
+  return (
+    <FormattedMessage
+      id={id}
+      values={{ ...values, ...defaultIntlValues }}
+      {...rest}
+    >
+      {(...formattedMessage) => (
+        <React.Fragment>
+          {formattedMessage.map((msg, i) => Auto(msg, i))}
+        </React.Fragment>
+      )}
+    </FormattedMessage>
+  );
+};
 
 T.propTypes = {
   id: PropTypes.string.isRequired,
@@ -99,35 +70,14 @@ T.propTypes = {
     PropTypes.arrayOf(PropTypes.string),
   ]),
   tooltipPlacement: PropTypes.string,
+  values: PropTypes.object,
 };
 
 T.defaultProps = {
   noTooltips: false,
   tooltipId: undefined,
   tooltipPlacement: undefined,
+  values: {},
 };
 
-export const IntlDate = (props) => {
-  switch (props.type) {
-  case 'time':
-    return <FormattedTime {...props} />;
-  case 'relative':
-    return <FormattedRelative {...props} />;
-  default:
-    return <FormattedDate {...props} />;
-  }
-};
-
-export const IntlNumber = (props) => {
-  // If this is passed something else than a number, render the value directly
-  if (typeof props.value !== 'number') {
-    return props.value || null;
-  }
-
-  switch (props.type) {
-  case 'plural':
-    return <FormattedPlural {...props} />;
-  default:
-    return <FormattedNumber {...props} />;
-  }
-};
+export default T;

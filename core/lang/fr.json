@@ -560,7 +560,7 @@
   "ExpensesChartInterests.selectFieldLabel": "Taux d'intérêt indicatif",
   "ExpensesChartInterests.years":
     "{years} ans moyen: {value, number, percentage}",
-  "FaqPage.description": "e-Potek répond à toutes vos questions concernant votre projet / votre future acquisition",
+  "FaqPage.description": "e-Potek répond à toutes vos questions concernant le financement de votre projet.",
   "FaqPage.title": "Questions fréquentes",
   "FieldToggles.customFields": "Champs personnels",
   "FieldToggles.defaultFields": "Champs e-Potek",

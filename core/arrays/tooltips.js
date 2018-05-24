@@ -2,7 +2,7 @@
 // If the value is an array, it means there need to be 2 strings for the
 // "Learn More" part.
 export const generalTooltips = {
-  asdfgaewra: '',
+  asdfgaewra: { id: '' },
   // 'revenus annuels bruts': 'yearlyIncome',
   // 'fonds propres requis': 'ownFundsRequired',
   // 'fonds propres - total': 'ownFunds',
@@ -36,14 +36,14 @@ export const generalTooltips = {
 };
 
 export const offerTableTooltips = {
-  montant: 'offerTable.amount',
-  libor: 'offerTable.libor',
-  '2 ans': 'offerTable.2',
-  '5 ans': 'offerTable.5',
-  '10 ans': 'offerTable.10',
-  amortissement: 'offerTable.amortization',
-  expertise: 'offerTable.expertise',
-  conditions: 'offerTable.conditions',
+  montant: { id: 'offerTable.amount' },
+  libor: { id: 'offerTable.libor' },
+  '2 ans': { id: 'offerTable.2' },
+  '5 ans': { id: 'offerTable.5' },
+  '10 ans': { id: 'offerTable.10' },
+  amortissement: { id: 'offerTable.amortization' },
+  expertise: { id: 'offerTable.expertise' },
+  conditions: { id: 'offerTable.conditions' },
 };
 
 export const tooltips = (list) => {
@@ -61,13 +61,13 @@ export const tooltipsById = (id) => {
   if (typeof id !== 'string') {
     throw new Error('not a string');
   }
-  const array = id.split('.');
+  const [listId, ...ids] = id.split('.');
 
-  if (array.length !== 2 || array[1].length <= 0) {
+  if (ids.length <= 0 || ids[0] === '') {
     throw Error('Wrong id given for tooltips, requires 2 strings separated by a .');
   }
 
-  const list = tooltips(array[0]);
+  const list = tooltips(listId);
 
-  return list[array[1]];
+  return list[ids.join('.')];
 };
