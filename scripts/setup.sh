@@ -73,10 +73,7 @@ then
   ( cd ../core && meteor npm install );
 fi
 
-echo "Installing global npm packages"
-# Using 3.6.0 because of this: https://github.com/meteortesting/meteor-mocha/issues/54
-# Using chromedriver 2.37 because 2.38 is incompatible with selenium >3.6.0
-meteor npm i -g babel-cli start-server-and-test selenium-webdriver@3.6.0 chromedriver@2.37.0
+meteor npm i -g babel-cli start-server-and-test
 
 echo "Creating language files..."
 meteor babel-node ./createLanguages.js
