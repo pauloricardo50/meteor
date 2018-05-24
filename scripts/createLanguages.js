@@ -17,7 +17,6 @@ const config = {
       path: '../microservices/app',
       exceptions: [
         'steps',
-        'ProjectBarChart',
         'LoginPage',
         'Forms',
         'files',
@@ -47,7 +46,6 @@ const config = {
       path: '../microservices/admin',
       exceptions: [
         'steps',
-        'ProjectBarChart',
         'LoginPage',
         'Forms',
         'files',

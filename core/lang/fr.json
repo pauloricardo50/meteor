@@ -1,4 +1,63 @@
 {
+
+  "FaqPage.categories.general": "Général",
+  "FaqPage.categories.services": "Services",
+
+  "FaqPageFaqs.what.question": "C'est quoi e-Potek ?",
+  "FaqPageFaqs.what.answer":
+    "e-Potek SA est une société anonyme basée à Genève spécialisée dans la recherche de financement hypothécaire soumise aux règles imposées par la FINMA (organe suprême de contrôle du système financier Suisse).",
+  "FaqPageFaqs.who.question": "Qui a créé e-Potek ?",
+  "FaqPageFaqs.who.answer":
+    "Depuis 2016 : un conseiller hypothécaire (actif depuis plus de 18 ans en Suisse), un conseiller en prévoyance (actif depuis plus de 20 ans en Suisse), ainsi qu’un spécialiste du domaine digital (EPFL & Stanford University) ont unis leurs visions et compétences pour créer e-Potek qui repose sur le savoir faire de plusieurs domaines ainsi qu’un système informatique conçu sur-mesure.",
+  "FaqPageFaqs.forWhom.question": "À qui s’adresse e-Potek ?",
+  "FaqPageFaqs.forWhom.answer":
+    "e-Potek s’adresse à toute personne qui souhaite obtenir le meilleur financement hypothécaire du marché.",
+  "FaqPageFaqs.propertyNotFoundYet.question":
+    "Je n’ai pas encore trouvé mon logement, est-ce que je peux utiliser e-Potek ?",
+  "FaqPageFaqs.propertyNotFoundYet.answer":
+    "Naturellement, il est fortement conseillé de tester votre solvabilité afin d’identifier quel est le montant du prêt maximum que vous pourrez obtenir afin d'affiner vos projets, cliquez {start1Link}. Cela vous permettra d’être proactif et efficace dans vos négociations avec les vendeurs.",
+  "FaqPageFaqs.cost.question": "Combien me coûte le service e-Potek ?",
+  "FaqPageFaqs.cost.answer":
+    "e-Potek ne vous coûte rien. La société perçoit des revenus de la part de la majorité des prêteurs.",
+  "FaqPageFaqs.mandate.question": "C’est quoi le Mandat e-Potek ?",
+  "FaqPageFaqs.mandate.answer":
+    "Le mandat e-Potek définit les engagements d’e-Potek ainsi que les vôtres et permet à e-Potek de vous accompagner auprès du prêteur que vous aurez choisi.",
+  "FaqPageFaqs.cancelMandate.question": "Comment puis-je résilier le mandat ?",
+  "FaqPageFaqs.cancelMandate.answer":
+    "Aucun problème, en tout temps, envoyez simplement votre requête par email à {contactMail}, et vous recevrez une confirmation d’annulation.",
+  "FaqPageFaqs.contact.question":
+    "Comment puis-je contacter un employé de e-Potek ?",
+  "FaqPageFaqs.contact.answer":
+    "Contactez-nous via la page de contact, vous pourrez y laisser un message, ou directement nous joindre par téléphone ({contactPhone}) ou e-mail ({contactMail}).",
+  "FaqPageFaqs.howMuchCanIBorrow.question":
+    "Comment puis-je savoir combien je peux emprunter ?",
+  "FaqPageFaqs.howMuchCanIBorrow.answer":
+    "Utilisez notre calculateur {start1Link}.",
+  "FaqPageFaqs.howToStart.question": "",
+  "FaqPageFaqs.howToStart.answer": "",
+  "FaqPageFaqs.getFinancingCertificate.question":
+    "Comment puis-je obtenir une attestation de financement ?",
+  "FaqPageFaqs.getFinancingCertificate.answer":
+    "Contactez votre conseiller, puis il vous enverra votre attestation.",
+  "FaqPageFaqs.importantElements.question":
+    "Quels sont les sujets importants que je dois anticiper pour mon hypothèque ?",
+  "FaqPageFaqs.importantElements.answer":
+    "Le montant du prêt : Attentions aux incidences fiscales.{verticalSpace}Le type d’amortissement : Possibilité d’optimiser votre fiscalité.{verticalSpace}La durée des taux : Taux fixe vs. Taux variable.{verticalSpace}L’utilisation des fonds propres : Attention aux incidences fiscales (surtout dans le cadre d’une acquisition de résidence principale).",
+  "FaqPageFaqs.howLong.question":
+    "Combien de temps est-ce que ça prend pour obtenir un prêt hypothécaire ?",
+  "FaqPageFaqs.howLong.answer":
+    "Du moment que nous avons toutes les pièces nécessaires un prêt peut être obtenu très rapidement. Afin de ne pas être dans le stress nous suggérons toujours un délai de 1 mois, en sachant que nous avons déjà obtenu des prêt en 48 heures dans des situations d’urgence.",
+  "FaqPageFaqs.specialCases.question":
+    "Mon cas est particulier, est-ce qu’e-Potek peut quand même m’aider ?",
+  "FaqPageFaqs.specialCases.answer":
+    "Avec toutes nos années d’expérience, nous avons vu passer et financé avec succès des milliers de dossiers, des plus simples au très complèxes. Nous pouvons vous assurer que peu importe votre situation, s'il y a une solution, nous la trouverons. N’hésitez pas à nous contacter pour en discuter !{verticalSpace}Quelques exemples de situations complexes : Indépendants et chefs d’entreprise - Rentiers - Acquisitions en famille - Successions.",
+  "FaqPageFaqs.emergencies.question":
+    "J’aimerais acquérir un bien d’urgence car sinon il va me passer entre les mains",
+  "FaqPageFaqs.emergencies.answer":
+    "Nous sommes une équipe très réactive qui mettons la priorité maximale sur notre clientèle. Appelez-nous pour décrire votre cas, et nous vous obtiendrons votre résidence peu importe le jour ou l’heure.",
+
+  "general.here": "ici",
+
   "OverviewTab.emptyRecap":
     "Il manque le valeur du bien et/ou les fonds propres voulus pour afficher ce recap",
 
@@ -37,8 +96,7 @@
   "CareersPage.description":
     "e-Potek est en forte croissance et recrute souvent de nouveaux talents au sein de nos différents départements.{verticalSpace}Nous faisons le plus possible pour créer et maintenir un environnement de travail agréable, avec beaucoup d'opportunités et de responsabilités pour ceux qui souhaitent les prendre.",
   "CareersPage.title": "Travailler chez e-Potek",
-  "CareersPage.subtitle": "Postes vacants",
-  "CareersPageJob.button": "Voir l'annonce",
+  "CareersPageJob.hoverText": "Voir l'annonce",
   "CareersPageList.advisory": "Conseil",
   "CareersPageList.engineering": "Ingénierie",
   "CareersPageList.admin": "Opérations",
@@ -54,6 +112,7 @@
   "InterestsTable.interestLibor": "Libor",
 
   "WwwTopNavLinks.interests": "Nos taux",
+  "WwwTopNavLinks.faq": "FAQ",
   "WwwTopNavLinks.contact": "Nous contacter",
   "WwwTopNavLinks.careers": "Carrières",
   "WwwTopNavLinks.about": "À propos",
@@ -153,7 +212,7 @@
   "Forms.futureOwner.BOTH": "Les deux",
   "Forms.futureOwner.OTHER": "Autre",
   "WwwFooterLinks.info": "Liens utiles",
-  "WwwFooterLinks.faq": "Questions que vous vous posez",
+  "WwwFooterLinks.faq": "FAQ",
   "WwwFooterLinks.contact": "Nous contacter",
   "WwwFooterLinks.careers": "Carrières",
   "WwwFooterLinks.conditions": "Conditions Générales",
@@ -501,7 +560,7 @@
   "ExpensesChartInterests.selectFieldLabel": "Taux d'intérêt indicatif",
   "ExpensesChartInterests.years":
     "{years} ans moyen: {value, number, percentage}",
-  "FaqPage.description": "En développement..",
+  "FaqPage.description": "e-Potek répond à toutes vos questions concernant votre projet / votre future acquisition",
   "FaqPage.title": "Questions fréquentes",
   "FieldToggles.customFields": "Champs personnels",
   "FieldToggles.defaultFields": "Champs e-Potek",
@@ -1034,9 +1093,6 @@
   "ProcessPageBar.next": "Suivant",
   "ProcessPageBar.nextStep": "Prochaine étape",
   "ProcessPageBar.previous": "Précédent",
-  "ProjectBarChart.fees": "Frais",
-  "ProjectBarChart.property": "Propriété",
-  "ProjectBarChart.title": "Mon Projet",
   "PropertyAdder.add": "Ajouter",
   "PropertyPage.description":
     "Il nous faut des informations supplémentaires sur votre bien immobilier, nous pourrons alors mieux comprendre vos besoins, et vous indiquer si le prix du bien est conforme au marché.",

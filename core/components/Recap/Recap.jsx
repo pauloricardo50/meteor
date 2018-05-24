@@ -2,10 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import { toMoney } from 'core/utils/conversionFunctions';
-import constants from 'core/config/constants';
+import { toMoney } from '../../utils/conversionFunctions';
+import constants from '../../config/constants';
 import { T, IntlNumber, MetricArea } from 'core/components/Translation';
-
 import {
   getPropAndWork,
   getProjectValue,
@@ -13,8 +12,8 @@ import {
   getLoanValue,
   getLenderCount,
   getBorrowRatio,
-} from 'core/utils/loanFunctions';
-
+  getInsuranceFees,
+} from '../../utils/loanFunctions';
 import {
   getExpenses,
   getBorrowerIncome,
@@ -27,10 +26,8 @@ import {
   getBorrowerSalary,
   getRealEstateValue,
   getInsuranceFortune,
-} from 'core/utils/borrowerFunctions';
-
-import { getMonthlyPayment, getIncomeRatio } from 'core/utils/finance-math';
-
+} from '../../utils/borrowerFunctions';
+import { getMonthlyPayment, getIncomeRatio } from '../../utils/finance-math';
 import RecapSimple from './RecapSimple';
 
 const getDashboardArray = (props) => {
@@ -56,6 +53,7 @@ const getDashboardArray = (props) => {
   const insuranceFortune = getInsuranceFortune(props);
   const totalFortune = getTotalFortune(props);
   const lenderCount = getLenderCount(props);
+  const insuranceFees = getInsuranceFees(props);
 
   return [
     {
@@ -84,8 +82,8 @@ const getDashboardArray = (props) => {
     },
     {
       label: 'general.insuranceFees',
-      value: toMoney(Math.round(r.general.insuranceFortuneUsed * constants.lppFees)),
-      hide: !r.general.insuranceFortuneUsed,
+      value: toMoney(Math.round(insuranceFees)),
+      hide: !insuranceFees,
     },
     {
       label: 'Recap.totalCost',
@@ -268,6 +266,7 @@ const getSmallDashboardArray = (props) => {
   const totalUsed = getTotalUsed(props);
   const propAndWork = getPropAndWork(props);
   const project = getProjectValue(props);
+  const insuranceFees = getInsuranceFees(props);
 
   return [
     {
@@ -290,8 +289,8 @@ const getSmallDashboardArray = (props) => {
     },
     {
       label: 'general.insuranceFees',
-      value: toMoney(Math.round(r.general.insuranceFortuneUsed * constants.lppFees)),
-      hide: !r.general.insuranceFortuneUsed,
+      value: toMoney(Math.round(insuranceFees)),
+      hide: !insuranceFees,
     },
     {
       label: 'Recap.totalCost',
@@ -742,6 +741,7 @@ const getStructureArray = (props) => {
   const lenderCount = getLenderCount(props);
   const incomeRatio = getIncomeRatio(props);
   const borrowRatio = getBorrowRatio(props);
+  const insuranceFees = getInsuranceFees(props);
 
   return [
     {
@@ -760,8 +760,8 @@ const getStructureArray = (props) => {
     },
     {
       label: 'general.insuranceFees',
-      value: toMoney(Math.round(r.general.insuranceFortuneUsed * constants.lppFees)),
-      hide: !r.general.insuranceFortuneUsed,
+      value: toMoney(Math.round(insuranceFees)),
+      hide: !insuranceFees,
     },
     {
       label: 'Recap.totalCost',
