@@ -24,9 +24,11 @@ export const getProjectValue = ({ loan, property }) => {
     return 0;
   }
 
-  let value = property.value * (1 + constants.notaryFees) + (propertyWork || 0);
-
-  value += (insuranceFortuneUsed || 0) * getLppFees({ loan });
+  const insuranceFees = (insuranceFortuneUsed || 0) * getLppFees({ loan });
+  const value =
+    property.value * (1 + constants.notaryFees) +
+    (propertyWork || 0) +
+    insuranceFees;
 
   return Math.max(0, Math.round(value));
 };

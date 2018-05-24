@@ -83,7 +83,7 @@ describe('Loan functions', () => {
       })).to.equal(105);
     });
 
-    it('returns the property value if 0 fortune is used', () => {
+    it('returns the property value with fees if 0 fortune is used', () => {
       expect(getLoanValue({
         loan: { general: { fortuneUsed: 0 }, logic: {} },
         property: { value: 100 },
@@ -114,7 +114,7 @@ describe('Loan functions', () => {
       expect(getLoanValue({ loan, property })).to.equal(600000);
     });
 
-    it("Should return 700'000 with 1M property, 260k fortune, 100k insurance fortune, but no withdrawal", () => {
+    it("Should return 690'000 with 1M property, 260k fortune, 100k insurance fortune, but no withdrawal", () => {
       const loan = {
         general: {
           fortuneUsed: 260000,
