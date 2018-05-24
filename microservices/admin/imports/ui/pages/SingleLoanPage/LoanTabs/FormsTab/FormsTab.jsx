@@ -59,7 +59,7 @@ const getForm = (props, value, modify) => {
             ...props,
             borrowerId: docId,
           })}
-          formClasses="user-form"
+          formClasses={`user-form ${collection}-${form}-autoform`}
           docId={docId}
           collection="borrowers"
           doc={props.borrowers.find(b => b._id === docId)}
@@ -72,6 +72,7 @@ const getForm = (props, value, modify) => {
       return (
         <AutoForm
           key={value}
+          formClasses={`${collection}-${form}-autoform`}
           inputs={getBorrowerFinanceArray({
             ...props,
             borrowerId: docId,
@@ -98,6 +99,7 @@ const getForm = (props, value, modify) => {
       <div>
         <AutoForm
           key={`${value}1`}
+          formClasses="loan-autoform"
           inputs={getPropertyLoanArray(props)}
           docId={props.loan._id}
           collection="loans"
@@ -108,6 +110,7 @@ const getForm = (props, value, modify) => {
         />
         <AutoForm
           key={`${value}2`}
+          formClasses="property-autoform"
           inputs={getPropertyArray(props)}
           docId={props.property._id}
           collection="properties"
@@ -217,7 +220,7 @@ export default class FormsTab extends Component {
     const { value, modify } = this.state;
 
     return (
-      <section className="mask1">
+      <section className="mask1 forms-tab">
         <Select
           label="Formulaire"
           value={value}

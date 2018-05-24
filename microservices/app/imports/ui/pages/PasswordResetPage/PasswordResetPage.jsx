@@ -59,7 +59,7 @@ export default class PasswordResetPage extends Component {
   render() {
     const { isValid, newPassword, newPassword2 } = this.state;
     return (
-      <div style={styles.div}>
+      <section id="password-reset-page" style={styles.div}>
         <h1>
           <T id="PasswordResetPage.title" />
         </h1>
@@ -89,7 +89,7 @@ export default class PasswordResetPage extends Component {
             primary
           />
         </div>
-      </div>
+      </section>
     );
   }
 }

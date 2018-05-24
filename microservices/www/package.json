@@ -4,19 +4,13 @@
   "scripts": {
     "prestart": "cd ../.. && npm run lang -- www",
     "start": "meteor --settings settings-dev.json --port 3000",
-    "start-e2e":
-      "meteor npm run prestart && E2E_SERVER=1 meteor --settings settings-dev.json --port 3015",
-    "cypress-run-CI":
-      "cypress run --browser chrome --reporter mocha-multi-reporters --reporter-options configFile=cypress/mocha-multi-reporters-config.json",
-    "cypress-open": "cypress open",
-    "test":
-      "meteor test --driver-package=cultofcoders:mocha --settings settings-dev.json --port 3005",
-    "test-CI":
-      "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
-    "test-e2e":
-      "meteor start-server-and-test start-e2e http://localhost:3015 cypress-open",
-    "test-e2e-CI":
-      "meteor start-server-and-test start-e2e http://localhost:3015 cypress-run-CI",
+    "start-e2e": "meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 3015",
+    "cypress-run-CI": "imports/core/node_modules/cypress/bin/cypress run --browser chrome --reporter mocha-multi-reporters --reporter-options configFile=cypress/mocha-multi-reporters-config.json",
+    "cypress-open": "imports/core/node_modules/cypress/bin/cypress open",
+    "test": "meteor test --driver-package=cultofcoders:mocha --settings settings-dev.json --port 3005",
+    "test-CI": "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
+    "test-e2e": "start-server-and-test start-e2e http://localhost:3015 cypress-open",
+    "test-e2e-CI": "start-server-and-test start-e2e http://localhost:3015 cypress-run-CI",
     "ngrok": "cd ../../scripts/ && ./ngrok.sh",
     "debug": "meteor npm run start -- --inspect",
     "visualize":

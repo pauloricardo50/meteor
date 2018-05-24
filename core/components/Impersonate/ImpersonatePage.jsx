@@ -32,7 +32,7 @@ class ImpersonatePage extends Component {
 
       Bert.alert({
         title: 'Success!',
-        message: `<h3 class="bert">${formatMessage(
+        message: `<h3 id="impersonation-success-message" class="bert">${formatMessage(
           { id: 'Impersonation.impersonationSuccess' },
           { email: emails[0].address },
         )}</h3>`,
@@ -45,7 +45,7 @@ class ImpersonatePage extends Component {
   };
 
   render() {
-    return <div>Impersonating...</div>;
+    return <section className="impersonate-page">Impersonating...</section>;
   }
 }
 

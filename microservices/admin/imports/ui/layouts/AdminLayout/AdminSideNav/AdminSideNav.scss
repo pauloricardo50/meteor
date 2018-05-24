@@ -1,20 +1,22 @@
 .admin-layout .main-row .admin-side-nav {
-  background-color: white;
-  border-right: 1px solid $border-grey;
   display: flex;
   flex-direction: row;
+
+  border-right: 1px solid $border-grey;
+  background-color: white;
 }
 
 .admin-side-nav .main-side-nav-list-item {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
 }
 
 .admin-side-nav .main-side-nav-list-item .label {
+  margin: 0;
+
   color: inherit;
-  margin: 0px;
 }
 
 .admin-side-nav .main-side-nav-list-item.primary {
@@ -24,16 +26,21 @@
 .admin-side-nav .detail-side-nav {
   display: flex;
   flex-direction: column;
-  border-left: 1px solid $border-grey;
+
   width: 300px;
+
+  border-left: 1px solid $border-grey;
 }
 
 .detail-side-nav .detail-side-nav-header {
-  padding: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  padding: 16px;
+
   text-decoration: underline;
+
   color: inherit;
   border-bottom: 1px solid $border-grey;
 }
@@ -57,6 +64,7 @@
 .detail-side-nav .side-nav-pagination {
   display: flex;
   justify-content: center;
+
   padding: 16px;
   padding-top: 32px;
 }

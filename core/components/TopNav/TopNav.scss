@@ -1,11 +1,14 @@
 .top-nav {
-  background-color: #fff;
+  position: fixed;
+  z-index: $z-nav;
+
+  display: flex;
+
   width: calc(100% - 16px);
   padding: 0 8px;
-  position: fixed;
-  display: flex;
-  z-index: $z-nav;
+
   border-bottom: 1px solid $border-grey;
+  background-color: #FFF;
 }
 
 @media (max-width: $med) {
@@ -15,10 +18,10 @@
 }
 
 .top-nav .top-nav-content {
-  flex-grow: 1;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  flex-grow: 1;
+  justify-content: space-between;
 }
 
 .top-nav .top-nav-content .empty,
@@ -35,12 +38,14 @@
 
 .top-nav .top-nav-content .logo {
   display: flex;
+
   height: 64px;
 }
 
 .top-nav .top-nav-content .logo img,
 .top-nav .top-nav-content .logo .link {
   display: flex;
+
   height: 100%;
 }
 

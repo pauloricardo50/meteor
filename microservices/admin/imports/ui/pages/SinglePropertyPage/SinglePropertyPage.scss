@@ -1,8 +1,9 @@
 .single-property-page {
   .admin-loan {
-    margin-bottom: 16px;
     display: flex;
     justify-content: space-between;
+
+    margin-bottom: 16px;
 
     .flex-col {
       padding-right: 32px;
@@ -10,17 +11,20 @@
 
       label {
         margin: 0;
+
         color: #222;
       }
     }
   }
 
   .google-map {
-    min-height: 400px;
-    flex: 1;
-    display: flex;
-    width: 100%;
     position: relative;
+
+    display: flex;
+    flex: 1;
+
+    width: 100%;
+    min-height: 400px;
 
     .map {
       flex: 1;
@@ -34,20 +38,24 @@
 
   .top {
     display: flex;
+
     text-align: left;
 
     h1 {
       display: flex;
       flex-direction: row;
       flex-grow: 1;
+
       margin: 0;
     }
   }
 
   .secondary {
-    text-align: left;
-    font-size: 16px;
     margin: 4px;
+
+    text-align: left;
+
+    font-size: 16px;
   }
 
   .bottom {
@@ -59,14 +67,16 @@
 
     a:hover {
       transform: scale(1.03);
-      color: #000;
+
       opacity: 1;
+      color: #000;
     }
   }
 }
 
 .property-recap {
   margin-bottom: 60px;
+
   text-align: center;
 
   .recap {

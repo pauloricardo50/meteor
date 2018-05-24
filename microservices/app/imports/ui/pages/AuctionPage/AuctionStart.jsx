@@ -111,4 +111,4 @@ AuctionStart.propTypes = {
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-export default injectIntl(withLoan(AuctionStart));
+export default injectIntl(AuctionStart);

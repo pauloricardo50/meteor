@@ -20,7 +20,7 @@ class Page extends Component {
   render() {
     const { id, className, rightComponent, children, fullWidth } = this.props;
     return (
-      <section className="page-title">
+      <section id={id} className="page-title">
         <div className={`top-bar ${className}`}>
           <h3 className="title fixed-size bold secondary">
             <T id={`${id}.title`} />

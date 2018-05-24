@@ -34,7 +34,7 @@ class AddLoanPage extends Component {
     } = this.props;
 
     return (
-      <div className="AddLoanPage">
+      <section id="add-loan-page">
         <h3>
           Voulez vous ajouter cette nouvelle demande de prêt au compte{' '}
           {emails[0].address}?
@@ -47,7 +47,7 @@ class AddLoanPage extends Component {
             <T id="AddLoanPage.logIntoOtherAccount" />
           </Button>
         </div>
-      </div>
+      </section>
     );
   }
 }

@@ -1,19 +1,21 @@
 .dashboard-info {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
 
   .cards {
-    width: 100%;
     display: flex;
     flex-wrap: wrap;
+
+    width: 100%;
   }
 
   .cards > * {
-    flex-grow: 1;
     flex-basis: 0;
-    margin: 8px;
+    flex-grow: 1;
+
     max-width: 33%;
+    margin: 8px;
   }
 }
 
@@ -27,13 +29,15 @@
 .dashboard-info-team-company-member {
   display: flex;
   align-items: center;
+
   margin: 16px 0;
 
   img {
     width: 64px;
     height: 64px;
-    border-radius: 50%;
     margin-right: 16px;
+
+    border-radius: 50%;
   }
 
   .person {
@@ -41,8 +45,8 @@
     flex-direction: column;
     flex-grow: 1;
 
-    > * {
-      margin: 0px;
+     > * {
+      margin: 0;
     }
   }
 
@@ -54,9 +58,10 @@
 
 .dashboard-info-team-external {
   hr {
-    border: none;
     height: 1px;
-    background-color: $border-grey;
     margin: 40px -16px;
+
+    border: none;
+    background-color: $border-grey;
   }
 }
