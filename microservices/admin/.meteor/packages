@@ -31,8 +31,7 @@ meteortesting:mocha
 # User Accounts
 alanning:roles                  # Easy role management
 
-# Pinned to 1.2.23 because of this issue: https://github.com/studiointeract/accounts-ui/issues/139
-std:accounts-ui@=1.2.23                 # React account component
+std:accounts-ui                 # React account component
 email@1.2.3
 
 
