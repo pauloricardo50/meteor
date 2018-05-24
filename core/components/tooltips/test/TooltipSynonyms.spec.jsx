@@ -39,6 +39,7 @@ describe('TooltipSynonyms', () => {
       tooltips: { match1: { id: 'test' }, match2: { id: 'test' } },
     };
 
+    expect(component().contains('match2, match1')).to.equal(false);
     expect(component().contains('match1')).to.equal(true);
   });
 
@@ -54,5 +55,16 @@ describe('TooltipSynonyms', () => {
     };
 
     expect(component().contains('match1, match3')).to.equal(true);
+  });
+
+  it('ignores case', () => {
+    props = {
+      tooltipId: 'test',
+      match: 'Match2',
+      tooltips: { match1: { id: 'test' }, match2: { id: 'test' } },
+    };
+
+    expect(component().contains('match2, match1')).to.equal(false);
+    expect(component().contains('match1')).to.equal(true);
   });
 });

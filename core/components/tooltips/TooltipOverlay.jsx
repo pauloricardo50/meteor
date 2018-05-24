@@ -8,8 +8,6 @@ import track from 'core/utils/analytics';
 
 import Tooltip from './Tooltip';
 
-const handleClick = event => event.stopPropagation();
-
 export default class TooltipOverlay extends Component {
   constructor(props) {
     super(props);
@@ -24,6 +22,12 @@ export default class TooltipOverlay extends Component {
   onExit = () => this.setState({ hide: true });
   onEnter = () => this.setState({ hide: false });
   onEntered = id => track('Tooltip - tooltip clicked', { id });
+
+  handleClick = (event) => {
+    // Trigger tooltip instead of another onClick handler in a parent
+    event.preventDefault();
+    event.stopPropagation();
+  };
 
   render() {
     const {
@@ -57,7 +61,7 @@ export default class TooltipOverlay extends Component {
         // onEnter={this.onEnter}
         onEntered={() => this.onEntered(id)}
         container={global.document !== undefined ? document.body : undefined}
-        onClick={handleClick}
+        onClick={this.handleClick}
       >
         <span className="tooltip-overlay" tabIndex="0">
           {children}

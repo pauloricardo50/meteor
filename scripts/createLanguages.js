@@ -81,6 +81,7 @@ const config = {
     'property',
     'roles',
     'Form',
+    'TooltipSynonyms',
   ],
 };
 

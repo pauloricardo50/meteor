@@ -45,6 +45,8 @@ const Tooltip = ({
           )}
         >
           <TooltipSynonyms tooltipId={id} match={match} />
+          <br />
+          <br />
           <FormattedMessage id={getTooltip2Id(id)} values={defaultIntlValues} />
         </DialogSimple>
       </span>

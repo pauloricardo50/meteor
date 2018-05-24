@@ -8,8 +8,28 @@ export const TOOLTIP_LISTS = {
 // If `double` is true, it means there need to be 2 strings for the
 // "Learn More" part.
 export const generalTooltips = {
-  asdfgaewra: { id: '' },
-  soyez: { id: 'testId', double: true },
+  'plan financier': { id: 'financialPlan', double: true },
+  'structure de financement': { id: 'financialPlan', double: true },
+
+  'charges / revenus': { id: 'incomeRatio', double: true },
+  "taux d'effort": { id: 'incomeRatio', double: true },
+
+  'revenus annuels bruts': { id: 'income', double: true },
+  'salaire brut': { id: 'income', double: true },
+  revenus: { id: 'income', double: true },
+
+  bonus: { id: 'bonus', double: true },
+  gratification: { id: 'bonus', double: true },
+
+  emprunteurs: { id: 'borrower', double: false },
+  emprunteur: { id: 'borrower', double: false },
+
+  finma: { id: 'finma', double: true },
+
+  'prêteurs intéressés': { id: 'interestedLenders', double: false },
+
+  "prêt / prix d'achat": { id: 'borrowRatio', double: true },
+  "taux d'avance": { id: 'borrowRatio', double: true },
 };
 
 export const offerTableTooltips = {
