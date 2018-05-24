@@ -8,11 +8,12 @@
 // }
 
 body {
+  color: $body-text;
+
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 16px;
-  line-height: 1.5em;
   font-weight: 300;
-  color: $body-text;
+  line-height: 1.5em;
 
   // font-family: 'Eina04-Regular';
   // letter-spacing: 0.75px;
@@ -24,11 +25,13 @@ h3,
 h4,
 h5,
 h6 {
+  margin: .67em 0;
+
   color: $title-text;
-  line-height: 1.1em;
+
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 400;
-  margin: 0.67em 0;
+  line-height: 1.1em;
 
   // font-family: 'Eina04-Bold';
   // letter-spacing: 0.046875em;
@@ -59,11 +62,11 @@ h4 {
 }
 
 h5 {
-  font-size: 0.83em;
+  font-size: .83em;
 }
 
 h6 {
-  font-size: 0.75em;
+  font-size: .75em;
 }
 
 @media (min-width: $med) {

@@ -6,25 +6,29 @@ import {
   LOAN_STRATEGY_PRESET,
   OFFER_TYPE,
   FILE_STEPS,
+  INSURANCE_USE_PRESET,
 } from '../api/constants';
+import { APPROXIMATE_LPP_FEES } from '../config/financeConstants';
 import { getIncomeRatio } from './finance-math';
 import { propertyPercent, filesPercent } from '../arrays/steps';
 import { propertyDocuments } from '../api/files/documents';
 
 export const getProjectValue = ({ loan, property }) => {
+  const {
+    general: { insuranceFortuneUsed, propertyWork },
+  } = loan;
+
   if (!property || !property.value) {
     return 0;
   } else if (property.value <= 0) {
     return 0;
   }
 
-  let value =
+  const insuranceFees = (insuranceFortuneUsed || 0) * getLppFees({ loan });
+  const value =
     property.value * (1 + constants.notaryFees) +
-    (loan.general.propertyWork || 0);
-
-  if (loan.general.usageType === USAGE_TYPE.PRIMARY) {
-    value += (loan.general.insuranceFortuneUsed || 0) * constants.lppFees;
-  }
+    (propertyWork || 0) +
+    insuranceFees;
 
   return Math.max(0, Math.round(value));
 };
@@ -34,11 +38,14 @@ export const getLoanValue = ({ loan, property }, roundedTo10000) => {
     return 0;
   }
 
-  let value =
-    getProjectValue({ loan, property }) - (loan.general.fortuneUsed || 0);
+  const {
+    general: { usageType, fortuneUsed, insuranceFortuneUsed },
+  } = loan;
 
-  if (loan.general.usageType === USAGE_TYPE.PRIMARY) {
-    value -= loan.general.insuranceFortuneUsed || 0;
+  let value = getProjectValue({ loan, property }) - (fortuneUsed || 0);
+
+  if (usageType === USAGE_TYPE.PRIMARY) {
+    value -= insuranceFortuneUsed || 0;
   }
 
   // Do this when picking tranches
@@ -218,11 +225,8 @@ export const disableForms = ({ loan }) =>
 
 export const getFees = ({ loan, property }) => {
   const notaryFees = property.value * constants.notaryFees;
-  let insuranceFees = 0;
-
-  if (loan.general.usageType === USAGE_TYPE.PRIMARY) {
-    insuranceFees = loan.general.insuranceFortuneUsed * constants.lppFees;
-  }
+  const insuranceFees =
+    loan.general.insuranceFortuneUsed * getLppFees({ loan });
 
   return notaryFees + (insuranceFees || 0);
 };
@@ -352,7 +356,7 @@ export const getAuctionEndTime = (startTime) => {
     // On saturdays, go to Tuesday
     time.add(3, 'd');
   } else if (time.isoWeekday() === 7) {
-    // On saturdays, go to Tuesday
+    // On sundays, go to Tuesday
     time.add(2, 'd');
   } else if (time.hour() >= 0 && time.hour() < 7) {
     // If the start time is between midnight and 7:00,
@@ -384,23 +388,23 @@ export const loanIsVerified = ({
       verification: { validated },
     },
   },
-}) => {
-  if (validated !== undefined) {
-    return true;
-  }
+}) => validated !== undefined;
 
-  return false;
-};
+export const loanHasMinimalInformation = ({ loan: { general, property } }) =>
+  !!(general && general.fortuneUsed && (property && property.value));
 
-export const loanHasMinimalInformation = ({
-  general: { fortuneUsed },
-  property,
-}) => {
-  if (!property.value) {
-    return false;
-  } else if (!fortuneUsed) {
-    return false;
-  }
+export const useLppFees = ({
+  loan: {
+    general: { insuranceFortuneUsed, usageType },
+    logic: { insuranceUsePreset },
+  },
+}) =>
+  insuranceFortuneUsed > 0 &&
+  usageType === USAGE_TYPE.PRIMARY &&
+  insuranceUsePreset === INSURANCE_USE_PRESET.WITHDRAWAL;
 
-  return true;
-};
+export const getLppFees = ({ loan }) =>
+  (useLppFees({ loan }) ? APPROXIMATE_LPP_FEES : 0);
+
+export const getInsuranceFees = ({ loan }) =>
+  getLppFees({ loan }) * loan.general.insuranceFortuneUsed;

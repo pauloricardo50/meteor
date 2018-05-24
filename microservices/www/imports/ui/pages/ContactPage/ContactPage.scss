@@ -1,17 +1,16 @@
 .contact-page {
-  flex-grow: 1;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-
   // To hide animated form when it's moved
   overflow-y: hidden;
+  align-items: center;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .contact-page-top {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
 
   .title {
     color: $primary;
@@ -19,43 +18,49 @@
 
   .description {
     max-width: 600px;
-    text-align: justify;
     margin-top: 0;
+
+    text-align: justify;
   }
 }
 
 .contact-page .contact-info {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
+
   box-sizing: border-box;
-  padding: 0 16px 80px 16px;
   width: 100%;
+  padding: 0 16px 80px 16px;
 
   h3 {
     flex-grow: 1;
-    color: white;
     flex-shrink: 1;
+
+    color: white;
   }
 }
 
 .contact-page .contact-footer {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  flex-direction: row;
   flex-wrap: wrap;
+  justify-content: space-between;
+
   box-sizing: border-box;
   width: 100%;
-  color: white;
+
   white-space: nowrap;
 
-  > div {
+  color: white;
+
+   > div {
     display: flex;
     align-items: center;
 
     &:hover {
-      opacity: 0.5;
+      opacity: .5;
     }
 
     &.email {
@@ -69,25 +74,28 @@
 
     h3 {
       flex-grow: 1;
-      color: white;
       flex-shrink: 1;
+
+      color: white;
     }
   }
 }
 
 .contact-page .google-map {
-  min-height: 600px;
-  flex: 1;
-  display: flex;
-  width: 100%;
-  margin-bottom: -300px;
   position: relative;
+
+  display: flex;
+  flex: 1;
+
+  width: 100%;
+  min-height: 600px;
+  margin-bottom: -300px;
 
   .directions-button {
     position: absolute;
+    z-index: 1;
     top: 8px;
     left: 8px;
-    z-index: 1;
   }
 
   .map {
@@ -102,11 +110,12 @@
 
 .contact-page .contact-us-form {
   z-index: 1;
+
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 800px;
   margin: 16px;
   margin-bottom: -120px;
-  width: 100%;
-  box-sizing: border-box;
-  max-width: 800px;
 }
 
 @media (max-width: $large) {

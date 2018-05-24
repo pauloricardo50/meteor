@@ -71,7 +71,7 @@ export const logic3 = {
   },
   // auctionEndTime: new Date(),
   hasValidatedStructure: true,
-  insuranceUsePreset: 'WITHDRAWAL',
+  insuranceUsePreset: 'COLLATERAL',
   loanStrategyPreset: 'FIXED',
   amortizationStrategyPreset: 'INDIRECT',
   lender: {},

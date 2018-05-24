@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { T } from 'core/components/Translation';
 
-const infoLinks = ['interests', 'contact', 'about', 'careers'];
+const infoLinks = ['about', 'interests', 'faq', 'careers', 'contact'];
 
 const WwwFooterLinks = () => (
   <div className="www-footer-links">

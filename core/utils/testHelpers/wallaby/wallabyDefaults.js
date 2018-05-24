@@ -14,27 +14,29 @@ function setWallabyConfig(name, overrides = {}) {
         // Don't import unnecessary folders
         '!imports/core/assets/**',
         // Don't load tests here, but in the next variable
-        '!imports/**/*.spec.js*'
+        '!imports/**/*.spec.js*',
+        // Load language files for some tests
+        'lang/*.json',
       ],
       tests: ['imports/**/*.spec.js*', '!imports/core/node_modules/**'],
       compilers: {
         '**/*.js?(x)': wallaby.compilers.babel({
-          "presets": ["meteor", "@babel/preset-react"],
-          "plugins": [
-            "@babel/plugin-transform-modules-commonjs",
-            "@babel/plugin-proposal-class-properties",
-            "meteor-babel/plugins/dynamic-import",
+          presets: ['meteor', '@babel/preset-react'],
+          plugins: [
+            '@babel/plugin-transform-modules-commonjs',
+            '@babel/plugin-proposal-class-properties',
+            'meteor-babel/plugins/dynamic-import',
             [
-              "module-resolver",
+              'module-resolver',
               {
-                "root": ["."],
-                "alias": {
-                  "core": "./imports/core",
-                  "meteor": "./imports/core/utils/testHelpers/meteorStubs"
-                }
-              }
-            ]
-          ]
+                root: ['.'],
+                alias: {
+                  core: './imports/core',
+                  meteor: './imports/core/utils/testHelpers/meteorStubs',
+                },
+              },
+            ],
+          ],
         }),
       },
       env: { type: 'node' },

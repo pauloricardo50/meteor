@@ -1,12 +1,13 @@
 .login-page {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
   flex: 1;
+  flex-direction: column;
+  justify-content: center;
+
   width: 100%;
 
-  > div {
+   > div {
     width: 100%;
     max-width: 500px;
   }

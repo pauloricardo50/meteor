@@ -1,6 +1,14 @@
 import moment from 'moment';
 import LoanService from 'core/api/loans/LoanService';
-import { PURCHASE_TYPE, AUCTION_STATUS } from 'core/api/loans/loanConstants';
+import {
+  PURCHASE_TYPE,
+  INSURANCE_USE_PRESET,
+  AUCTION_STATUS,
+  LOAN_STRATEGY_PRESET,
+  AMORTIZATION_STRATEGY_PRESET,
+  CLOSING_STEPS_TYPE,
+  CLOSING_STEPS_STATUS,
+} from 'core/api/loans/loanConstants';
 import {
   fakeDocument,
   fakeDocumentWithLabel,
@@ -48,34 +56,38 @@ const logic3 = {
     endTime: new Date(),
   },
   hasValidatedStructure: true,
-  insuranceUsePreset: 'WITHDRAWAL',
-  loanStrategyPreset: 'FIXED',
-  amortizationStrategyPreset: 'INDIRECT',
+  insuranceUsePreset: INSURANCE_USE_PRESET.COLLATERAL,
+  loanStrategyPreset: LOAN_STRATEGY_PRESET.FIXED,
+  amortizationStrategyPreset: AMORTIZATION_STRATEGY_PRESET.INDIRECT,
   lender: {},
   closingSteps: [
-    { id: 'upload0', title: 'Contrat de prêt signé', type: 'UPLOAD' },
+    {
+      id: 'upload0',
+      title: 'Contrat de prêt signé',
+      type: CLOSING_STEPS_TYPE.UPLOAD,
+    },
     {
       id: 'todo0',
       title: 'Ouverture de compte chez votre prêteur',
       description:
         'Il faut ouvrir un compte bancaire chez votre prêteur où les fonds de votre hypothèque résideront.',
-      type: 'TODO',
-      status: 'VALID',
+      type: CLOSING_STEPS_TYPE.TODO,
+      status: CLOSING_STEPS_STATUS.VALID,
     },
     {
       id: 'todo1',
       title: 'Versement des fonds propres',
       description:
         'Vous devez aller chez le notaire et verser les fonds propres nécessaires sur un compte escrow.',
-      type: 'TODO',
-      status: 'UNVERIFIED',
+      type: CLOSING_STEPS_TYPE.TODO,
+      status: CLOSING_STEPS_STATUS.UNVERIFIED,
     },
     {
       id: 'todo2',
       title: 'Engagement du notaire relative aux cédules hypothécaires',
       description: '',
-      type: 'TODO',
-      status: 'ERROR',
+      type: CLOSING_STEPS_TYPE.TODO,
+      status: CLOSING_STEPS_STATUS.ERROR,
       error: 'Le notaire doit vous convier à un 2ème rendez-vous',
     },
   ],

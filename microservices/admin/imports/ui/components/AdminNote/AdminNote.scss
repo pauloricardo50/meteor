@@ -1,14 +1,15 @@
 .container {
-  width: 100%;
+  display: flex;
   display: flex;
   flex-wrap: wrap;
-  display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+
+  width: 100%;
 }
 .textField {
-  margin-bottom: 20px;
   width: 100%;
+  margin-bottom: 20px;
 }
 .saveButton {
   margin-left: 0;

@@ -51,6 +51,22 @@ const theme = createMuiTheme({
         color: colors.error,
       },
     },
+    MuiExpansionPanel: {
+      root: {
+        border: 'none',
+        // border: `1px solid ${colors.primary}`,
+        marginBottom: 8,
+        boxShadow: '0 2px 60px 5px rgba(0, 0, 0, 0.05)',
+        borderRadius: 16,
+        '&:before': {
+          backgroundColor: 'transparent',
+        },
+        '&:last-child': {
+          borderBottomLeftRadius: 16,
+          borderBottomRightRadius: 16,
+        },
+      },
+    },
   },
   // direction: 'ltr',
   palette: {

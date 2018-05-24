@@ -1,20 +1,21 @@
 .CalendarDay__selected {
-  background: $primary;
   color: white;
+  background: $primary;
 }
 
 .CalendarDay__selected:hover {
-  background: $primary;
   color: white;
+  background: $primary;
 }
 
 .CalendarDay__selected:active {
-  background: $primary;
   color: white;
+  background: $primary;
 }
 
 .date-input {
   display: flex;
+
   width: 100%;
 }
 
@@ -23,18 +24,23 @@
 }
 
 .date-input .SingleDatePicker .SingleDatePickerInput {
-  font-family: 'Source Sans Pro', sans-serif !important;
-  font-weight: 400;
-  border: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   width: 100%;
+
+  border: none;
+
+  font-family: 'Source Sans Pro', sans-serif !important;
+  font-weight: 400;
 }
 
 .date-input .SingleDatePicker .SingleDatePickerInput .DateInput {
-  padding: 0;
   flex-grow: 1;
+
+  padding: 0;
+
   text-align: center;
 }
 

@@ -1,16 +1,17 @@
 .careers-page {
   display: flex;
-  flex-direction: column;
   flex: 1;
+  flex-direction: column;
 
   .careers-page-content {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    flex-direction: column;
+
     box-sizing: border-box;
+    width: 100%;
     padding: 32px;
     padding-top: 0;
-    width: 100%;
 
     h1,
     h2 {
@@ -33,11 +34,17 @@
 .careers-page-list-department {
   display: flex;
   flex-direction: column;
+
+  box-sizing: border-box;
   width: 100%;
   max-width: 800px;
-  box-sizing: border-box;
 
   .careers-page-list-empty {
+    align-self: center;
+
+    width: 100%;
+    max-width: 500px;
+
     text-align: center;
   }
 }
@@ -53,25 +60,31 @@
 
 .careers-page-job {
   display: flex;
+  align-items: center;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
+
+  margin-bottom: 16px;
   padding: 16px;
-  border-radius: 8px;
-  text-decoration: none;
+
   transition: all 200ms $bezier;
+  text-decoration: none;
+
+  border-radius: 8px;
 
   .careers-page-job-hover {
     display: none;
+
     margin: 0;
   }
 
   &:hover {
-    background-color: $background-color;
-    text-decoration: underline;
-    color: grey;
     transform: scale(1.02);
+    text-decoration: underline;
+
+    color: grey;
+    background-color: $background-color;
 
     .careers-page-job-hover {
       display: flex;

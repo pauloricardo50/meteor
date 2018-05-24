@@ -1,27 +1,30 @@
 @import './FileDropper.scss';
 
 .uploader {
-  width: 100%;
-  max-width: 600px;
   display: flex;
   flex-direction: column;
-  border: 1px solid $light-grey;
-  padding: 16px;
-  border-radius: 4px;
+
+  width: 100%;
+  max-width: 600px;
   margin-bottom: 16px;
+  padding: 16px;
+
+  border: 1px solid $light-grey;
+  border-radius: 4px;
 }
 
 .uploader .title {
   display: flex;
   align-items: center;
+
   padding-bottom: 8px;
 }
 
 .uploader .title .text {
   display: flex;
   align-items: flex-end;
-  flex-wrap: wrap;
   flex-grow: 1;
+  flex-wrap: wrap;
 }
 
 .uploader .title h4,
@@ -31,8 +34,9 @@
 
 .uploader .file {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+
   border-top: 1px solid $light-grey;
 }
 
@@ -45,6 +49,6 @@
 }
 
 .uploader .file .UNVERIFIED {
+  opacity: .6;
   color: #000;
-  opacity: 0.6;
 }
