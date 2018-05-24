@@ -34,20 +34,20 @@ describe('tooltips', () => {
     });
 
     it('should return an object if given a correct id', () => {
-      expect(typeof tooltips('general')).to.equal('object');
+      expect(typeof tooltips('GENERAL')).to.equal('object');
     });
   });
 
   describe('tooltipsById', () => {
     it("throws if the id given isn't made of 2 strings with a dot", () => {
       expect(() => tooltipsById('')).to.throw('Wrong');
-      expect(() => tooltipsById('general')).to.throw('Wrong');
+      expect(() => tooltipsById('GENERAL')).to.throw('Wrong');
       expect(() => tooltipsById(1)).to.throw('string');
-      expect(() => tooltipsById('general.')).to.throw('Wrong');
+      expect(() => tooltipsById('GENERAL.')).to.throw('Wrong');
     });
 
     it('returns undefined for a non-existent tooltip', () => {
-      expect(tooltipsById('general.noexist')).to.equal(undefined);
+      expect(tooltipsById('GENERAL.noexist')).to.equal(undefined);
     });
   });
 });

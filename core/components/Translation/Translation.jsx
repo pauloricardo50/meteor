@@ -6,12 +6,7 @@ import AutoTooltip from '../tooltips/AutoTooltip';
 import defaultIntlValues from './defaultIntlValues';
 
 const makeAutoTooltip = props => (content, key) => (
-  <AutoTooltip
-    {...props}
-    id={props.tooltipId}
-    placement={props.tooltipPlacement}
-    key={key}
-  >
+  <AutoTooltip {...props} placement={props.tooltipPlacement} key={key}>
     {content}
   </AutoTooltip>
 );
@@ -23,14 +18,7 @@ const makeAutoTooltip = props => (content, key) => (
  * @extends Component
  */
 export const T = (props) => {
-  const {
-    noTooltips,
-    id,
-    values,
-    tooltipId,
-    tooltipPlacement,
-    ...rest
-  } = props;
+  const { noTooltips, id, values, tooltipPlacement, ...rest } = props;
 
   if (noTooltips) {
     return <FormattedMessage {...props} />;
@@ -65,17 +53,12 @@ export const T = (props) => {
 T.propTypes = {
   id: PropTypes.string.isRequired,
   noTooltips: PropTypes.bool,
-  tooltipId: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(PropTypes.string),
-  ]),
   tooltipPlacement: PropTypes.string,
   values: PropTypes.object,
 };
 
 T.defaultProps = {
   noTooltips: false,
-  tooltipId: undefined,
   tooltipPlacement: undefined,
   values: {},
 };

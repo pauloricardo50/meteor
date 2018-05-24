@@ -1,65 +1,60 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'core/utils/testHelpers/enzyme';
+import { shallow } from '../../../utils/testHelpers/enzyme';
 
-import AutoTooltip from '../AutoTooltip';
-import TooltipOverlay from '../TooltipOverlay';
+import { AutoTooltip } from '../AutoTooltip';
 
 describe('<AutoTooltip />', () => {
+  let props;
+  const component = () => shallow(<AutoTooltip {...props} />);
+
+  beforeEach(() => {
+    props = {};
+  });
+
   it('returns null if no children are given ', () => {
-    const wrapper = shallow(<AutoTooltip />);
-    expect(wrapper.type()).to.equal(null);
+    const wrapper = component();
+    expect(wrapper.getElement()).to.equal(null);
   });
 
   it('returns a span with text if a child is provided', () => {
-    const wrapper = shallow(<AutoTooltip>test</AutoTooltip>);
+    props = { children: 'test' };
+    const wrapper = component();
     expect(!!wrapper.get(0)).to.equal(true);
     expect(wrapper.equals(<span>test</span>)).to.equal(true);
   });
 
   it('returns the child if it is not a string', () => {
-    const wrapper = shallow(<AutoTooltip>
-      <div>test</div>
-    </AutoTooltip>);
-    expect(wrapper.equals(<div>test</div>)).to.equal(true);
+    props = { children: <div>test</div> };
+    const wrapper = component();
+    expect(wrapper.contains(<div>test</div>)).to.equal(true);
   });
 
-  it('returns the child wrapped in a tooltip if an id is provided', () => {
-    const text = 'this is a test';
-    const wrapper = shallow(<AutoTooltip id="test">{text}</AutoTooltip>);
-    expect(wrapper.find('TooltipOverlay')).to.have.length(1);
-    expect(wrapper
-      .find('TooltipOverlay')
-      .childAt(0)
-      .text()).to.equal(text);
-    expect(wrapper.find('TooltipOverlay').prop('id')).to.equal('test');
+  it('returns a parsed string with tooltips', () => {
+    const text = 'a match1 b';
+    props = { children: text, tooltipList: 'DEV' };
+    const wrapper = component();
+    expect(wrapper.text()).to.equal('a <TooltipOverlay /> b');
   });
 
-  // FIXME: Add these tests back when we have tooltips, and probably rewrite
-  // them so we can inject them during tests
-  // it('returns a parsed string with tooltips', () => {
-  //   const text = 'a finma b';
-  //   const wrapper = shallow(<AutoTooltip>{text}</AutoTooltip>);
-
-  //   expect(wrapper.text()).to.equal('a <TooltipOverlay /> b');
-  // });
-
-  // it('returns a parsed string with multiple tooltips', () => {
-  //   const text = 'a finma b finma c';
-  //   const wrapper = shallow(<AutoTooltip>{text}</AutoTooltip>);
-
-  //   expect(wrapper.text()).to.equal('a <TooltipOverlay /> b <TooltipOverlay /> c');
-  // });
+  it('returns a parsed string with multiple tooltips', () => {
+    const text = 'a match1 b match2 c';
+    props = { children: text, tooltipList: 'DEV' };
+    const wrapper = component();
+    expect(wrapper.text()).to.equal('a <TooltipOverlay /> b <TooltipOverlay /> c');
+  });
 
   it('takes a list as a string to take tooltips from', () => {
     const text = 'a 123test b';
-    const wrapper = shallow(<AutoTooltip list="table">{text}</AutoTooltip>);
+    props = { children: text, tooltipList: 'OFFER_TABLE' };
+    const wrapper = component();
 
     expect(wrapper.text()).to.equal('a 123test b');
   });
 
   it('throws if a non existent list is provided', () => {
-    expect(() => shallow(<AutoTooltip list="yo">test</AutoTooltip>)).to.throw();
+    props = { tooltipList: 'yo', children: 'test' };
+    expect(() => component()).to.throw();
   });
 });

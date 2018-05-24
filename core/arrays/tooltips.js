@@ -1,38 +1,15 @@
+export const TOOLTIP_LISTS = {
+  GENERAL: 'GENERAL',
+  OFFER_TABLE: 'OFFER_TABLE',
+  DEV: 'DEV',
+};
+
 // Write the keys in lowercase
-// If the value is an array, it means there need to be 2 strings for the
+// If `double` is true, it means there need to be 2 strings for the
 // "Learn More" part.
 export const generalTooltips = {
   asdfgaewra: { id: '' },
-  // 'revenus annuels bruts': 'yearlyIncome',
-  // 'fonds propres requis': 'ownFundsRequired',
-  // 'fonds propres - total': 'ownFunds',
-  // 'fonds propres': 'ownFunds',
-  // "prix d'achat": 'purchasePrice',
-  // finma: ['finma'],
-  // 'charges / revenus': 'incomeRatio',
-  // "ratio d'endettement": 'incomeRatio',
-  // "prêt / prix d'achat": 'borrowRatio',
-  // 'prêt / valeur du bien': 'borrowRatio',
-  // 'frais de notaire': ['notaryFees'],
-  // 'frais retrait prévoyance': 'insuranceFees',
-  // 'travaux de plus-value': ['propertyWork'],
-  // // expertise: 'expertise',
-  // 'prêteurs intéressés': 'interestedLenders',
-  // 'charges estimées': 'monthlyEstimated',
-  // emprunteurs: 'borrowers',
-  // "type d'utilisation": 'usageType',
-  // 'bonus considéré': ['consideredBonus'],
-  // bonus: 'bonus',
-  // 'autres sources de revenus': 'otherIncome',
-  // '2e pilier': 'secondPillar',
-  // '2ème pilier': 'secondPillar',
-  // lpp: 'lpp',
-  // '3e pilier': 'thirdPillar',
-  // '3ème pilier': 'thirdPillar',
-  // 'offres standard': 'standardOffers',
-  // standard: 'standardOffers', // careful with this one, it could trigger on unwanted "standard" uses
-  // 'offres avec contrepartie': 'counterpartOffers',
-  // 'avec contrepartie': 'counterpartOffers',
+  soyez: { id: 'testId', double: true },
 };
 
 export const offerTableTooltips = {
@@ -46,14 +23,21 @@ export const offerTableTooltips = {
   conditions: { id: 'offerTable.conditions' },
 };
 
+export const devTooltips = {
+  match1: { id: 'id1' },
+  match2: { id: 'id2' },
+};
+
 export const tooltips = (list) => {
   switch (list) {
-  case 'general':
+  case TOOLTIP_LISTS.GENERAL:
     return generalTooltips;
-  case 'table':
+  case TOOLTIP_LISTS.OFFER_TABLE:
     return offerTableTooltips;
+  case TOOLTIP_LISTS.DEV:
+    return devTooltips;
   default:
-    throw new Error('Unknown tooltip list');
+    throw new Error(`Unknown tooltip list ${list}`);
   }
 };
 

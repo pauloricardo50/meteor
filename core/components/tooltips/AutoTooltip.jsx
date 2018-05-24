@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 
 import reactStringReplace from 'react-string-replace';
 
-import { tooltips } from 'core/arrays/tooltips';
+import { tooltips, TOOLTIP_LISTS } from 'core/arrays/tooltips';
 import TooltipOverlay from './TooltipOverlay';
+import { TooltipContainer } from './TooltipContext';
 
 const createRegexForTooltipList = list =>
   new RegExp(`(${Object.keys(tooltips(list)).join('|')})`, 'gi');
@@ -12,7 +13,7 @@ const createRegexForTooltipList = list =>
 const parseTextForTooltips = props =>
   reactStringReplace(
     props.children,
-    createRegexForTooltipList(props.list),
+    createRegexForTooltipList(props.tooltipList),
     (match, i) => (
       <TooltipOverlay {...props} key={i} match={match}>
         {match}
@@ -20,45 +21,32 @@ const parseTextForTooltips = props =>
     ),
   );
 
-const AutoTooltip = (props) => {
+export const AutoTooltip = (props) => {
   let content = null;
 
   if (!props.children) {
     return null;
   }
 
-  if (props.id) {
-    // If an id is given, get that specific tooltip and wrap it around the children
-    content = (
-      <TooltipOverlay {...props} match={props.children}>
-        {props.children}
-      </TooltipOverlay>
-    );
-  } else if (typeof props.children !== 'string') {
+  if (typeof props.children !== 'string') {
     // If no id is given and children is not a string, return
     return props.children;
-  } else {
-    // If no id is given and children is a string,
-    // automatically replace all matching strings with tooltips
-    content = parseTextForTooltips(props);
   }
+  // If no id is given and children is a string,
+  // automatically replace all matching strings with tooltips
+  content = parseTextForTooltips(props);
 
   return <span>{content}</span>;
 };
 
 AutoTooltip.propTypes = {
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
-  list: PropTypes.string,
-  id: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(PropTypes.string),
-  ]).isRequired,
+  tooltipList: PropTypes.string,
 };
 
 AutoTooltip.defaultProps = {
   children: null,
-  list: 'general',
-  id: '',
+  tooltipList: TOOLTIP_LISTS.GENERAL,
 };
 
-export default AutoTooltip;
+export default TooltipContainer(AutoTooltip);

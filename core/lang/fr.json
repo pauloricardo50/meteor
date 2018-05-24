@@ -1,4 +1,5 @@
 {
+  "TooltipSynonyms.title": "{count, plural, one {Synonyme} other {Synonymes}}",
 
   "FaqPage.categories.general": "Général",
   "FaqPage.categories.services": "Services",

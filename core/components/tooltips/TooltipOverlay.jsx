@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 
-import { tooltips, tooltipsById } from 'core/arrays/tooltips';
+import { tooltips } from 'core/arrays/tooltips';
 import track from 'core/utils/analytics';
 
 import Tooltip from './Tooltip';
@@ -21,18 +21,20 @@ export default class TooltipOverlay extends Component {
     this.state = { hide: false };
   }
 
+  onExit = () => this.setState({ hide: true });
+  onEnter = () => this.setState({ hide: false });
+  onEntered = id => track('Tooltip - tooltip clicked', { id });
+
   render() {
     const {
       placement,
-      id,
-      pureId,
-      list,
+      tooltipList,
       match,
       trigger,
       delayShow,
       children,
     } = this.props;
-    const tooltipId = id || tooltips(list)[match.toLowerCase()];
+    const tooltipConfig = tooltips(tooltipList)[match.toLowerCase()];
 
     return (
       <OverlayTrigger
@@ -41,8 +43,7 @@ export default class TooltipOverlay extends Component {
           <Tooltip
             placement={placement}
             trigger={trigger}
-            id={tooltipId}
-            pureId={pureId}
+            tooltipConfig={tooltipConfig}
             hide={this.state.hide}
             match={match}
           />
@@ -51,18 +52,14 @@ export default class TooltipOverlay extends Component {
         animation={false}
         trigger={trigger}
         delayShow={delayShow}
-        onExit={() => this.setState({ hide: true })}
-        // When clicking the same tooltip multiple times, this is not reset
-        onEnter={() => this.setState({ hide: false })}
-        onEntered={() => track('Tooltip - tooltip clicked', { tooltipId })}
+        // onExit={this.onExit}
+        // // When clicking the same tooltip multiple times, this is not reset
+        // onEnter={this.onEnter}
+        onEntered={() => this.onEntered(id)}
         container={global.document !== undefined ? document.body : undefined}
         onClick={handleClick}
       >
-        <span
-          // className="tooltip-overlay hvr-underline-from-center"
-          className="tooltip-overlay"
-          tabIndex="0"
-        >
+        <span className="tooltip-overlay" tabIndex="0">
           {children}
         </span>
       </OverlayTrigger>
@@ -72,12 +69,7 @@ export default class TooltipOverlay extends Component {
 
 TooltipOverlay.propTypes = {
   placement: PropTypes.string,
-  id: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(PropTypes.string),
-  ]).isRequired,
-  pureId: PropTypes.bool,
-  list: PropTypes.string.isRequired,
+  tooltipList: PropTypes.string.isRequired,
   match: PropTypes.oneOfType([PropTypes.element, PropTypes.string]).isRequired,
   trigger: PropTypes.arrayOf(PropTypes.string),
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
@@ -88,6 +80,5 @@ TooltipOverlay.propTypes = {
 TooltipOverlay.defaultProps = {
   trigger: ['click'], // Can be 'click', 'hover', and/or 'focus'
   placement: 'bottom',
-  pureId: false,
   delayShow: 300,
 };
