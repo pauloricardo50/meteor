@@ -2,9 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import { toMoney } from 'core/utils/conversionFunctions';
-import * as financeConstants from 'core/config/financeConstants';
-import { T, IntlNumber, MetricArea } from 'core/components/Translation';
+import * as financeConstants from '../../config/financeConstants';
+import { toMoney } from '../../utils/conversionFunctions';
 import {
   getPropAndWork,
   getProjectValue,
@@ -14,8 +13,7 @@ import {
   getBorrowRatio,
   getInsuranceFees,
   getMaxBorrowRatio,
-} from 'core/utils/loanFunctions';
-
+} from '../../utils/loanFunctions';
 import {
   getExpenses,
   getBorrowerIncome,
@@ -30,6 +28,7 @@ import {
   getInsuranceFortune,
 } from '../../utils/borrowerFunctions';
 import { getMonthlyPayment, getIncomeRatio } from '../../utils/finance-math';
+import { T, IntlNumber, MetricArea } from '../components/Translation';
 import RecapSimple from './RecapSimple';
 
 const getDashboardArray = (props) => {

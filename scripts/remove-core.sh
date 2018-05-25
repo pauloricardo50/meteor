@@ -10,3 +10,4 @@ for i in 'admin' 'app' 'lender' 'www'
   do
     ( cd ../microservices/$i && rm -rf ./public && rm -rf ./private );
   done
+  

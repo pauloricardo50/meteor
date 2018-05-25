@@ -321,9 +321,7 @@ export const auctionFilesPercent = (borrowers) => {
   arrayify(borrowers).forEach((b) => {
     const fileArray = borrowerDocuments(b).auction;
 
-
-      fileArray.forEach(f => f.condition !== false && a.push(b.files[f.id]));
-    
+    fileArray.forEach(f => f.condition !== false && a.push(b.files[f.id]));
   });
 
   return getPercent(a);
