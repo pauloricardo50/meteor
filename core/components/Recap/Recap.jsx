@@ -28,7 +28,7 @@ import {
   getInsuranceFortune,
 } from '../../utils/borrowerFunctions';
 import { getMonthlyPayment, getIncomeRatio } from '../../utils/finance-math';
-import { T, IntlNumber, MetricArea } from '../components/Translation';
+import { T, IntlNumber, MetricArea } from '../Translation';
 import RecapSimple from './RecapSimple';
 
 const getDashboardArray = (props) => {
