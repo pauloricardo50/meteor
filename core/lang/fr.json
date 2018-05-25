@@ -1,4 +1,21 @@
 {
+  "tooltip.financialPlan": "Le plan financier représente la structure de financement de votre projet.",
+  "tooltip2.financialPlan": "Il met en évidence la/les façon(s) dont vous pouvez financer votre projet, à l’aide de (1) vos fonds propres ainsi que (2) du Financement Hypothécaire que vous pouvez solliciter. Le plan financier vous permet d’identifier en un coup d’oeil les différents poste de votre projet (1) La Valeur du logement ou son prix d’achat (2) le montant des crédits existants que vous souhaiteriez refinancer (3) les éventuels frais de notaires (4) le montant des travaux si votre projet en contient.",
+
+  "tooltip.incomeRatio": "Le ratio des charges financières théoriques et de vos revenus considérés est également appelé le taux d’effort par les prêteurs.",
+  "tooltip2.incomeRatio": "Tous les prêteurs ont des critères différents pour calculer ce ratio. Ce calcul permet aux prêteurs de déterminer s’ils considèrent que vous pourrez assumer les charges du prêt hypothécaire que vous sollicitez même en cas de forte hausse des taux. En effet, les taux d’intérêts sont très bas aujourd’hui. Mais pour éviter une crise économique en cas de forte hausse des taux d’intérêt, les banques ont le devoir de prendre en compte une possible hausse des taux.{verticalSpace}C’est pour cela que le taux d’intérêt théorique imposé par la FINMA est souvent calculé à hauteur de 5%. A ce taux vous devez prendre en compte un amortissement et des charges d’entretien également théorique.",
+  "tooltip.income": "La somme cumulée des revenus bruts que perçoivent tous les emprunteurs",
+  "tooltip2.income": "Tous les prêteurs ont des critères différents pour calculer les revenus disponibles des emprunteurs. Ce calcul permet aux prêteurs d’identifier si les emprunteurs ont la capacité d’assumer la charge financière que va générer le financement hypothécaire selon les règles établies par la FINMA.{verticalSpace}Voici un exemple de calcul de revenus considérés :{verticalSpace}Salaire brut de tous les emprunteurs, (+) Derniers bonus considérés à 50%, (+) Allocations Familiales, (+) Autres allocations / pensions, (+) Revenus de la Fortune immobilière, (+) Revenus de la Fortune mobilière, (-) Loyers existants, (-) Leasings et autres charges d’intérêt et d’amortissement de crédit existant, (-) Pensions",
+  "tooltip.bonus": "Revenus variables supplémentaires à votre salaire qui ne sont pas un engagement ferme de la part de votre employeur.",
+  "tooltip2.bonus": "Les bonus sont les montants variables que l’emprunteur perçoit. Les prêteurs ne les prennent pas en considération à 100%.{verticalSpace}Par exemple, si vous avez perçu des bonus ces 3 dernières années de 20, 30 et 40 CHF, nous utiliserons 50% de la moyenne de 20, 30 et 40, soit 15 CHF.",
+  "tooltip.borrower": "Celui qui emprunte. La personne qui est à la recherche d’un financement hypothécaire deviendra l’emprunteur lorsque le prêteur aura mis à sa disposition la somme empruntée.",
+  "tooltip.finma": "Autorité fédérale de surveillance des marchés financiers.",
+  "tooltip2.finma": "La FINMA détermine les règles que doivent suivre les banques et les intermédiaires financiers. Elle détermine notamment quelles sont les conditions minimales à remplir pour que vous puissiez obtenir un prêt. Les taux sont très bas aujourd'hui, mais si vos finances ne sont pas assez solides et que les taux montent, vous pourriez avoir de sérieuses difficultés financières.",
+  "tooltip.interestedLenders": "Nous sommes en contact fréquent avec plus de 15 prêteurs. La quantité de prêteurs intéressés dépend de différents critères.",
+  "tooltip.borrowRatio": "Le ratio du prêt hypothécaire et du prix d’achat (ou de la valeur du logement) est également appelé le taux d’avance par les prêteurs.",
+  "tooltip2.borrowRatio": "Tous les prêteurs ont des critères différents concernant les taux d’avance. Il délimite le montant maximal qu’un emprunteur peut obtenir par rapport au type de bien immobilier. Nous parlons souvent d’un taux d’avance de 80% de la valeur du logement. Cependant certains établissements ont des critères plus stricts et ne peuvent pas dépasser un taux d’avance de 65% de la valeur du logement.",
+
+  "TooltipSynonyms.title": "{count, plural, one {Synonyme} other {Synonymes}}",
 
   "FaqPage.categories.general": "Général",
   "FaqPage.categories.services": "Services",
@@ -560,7 +577,7 @@
   "ExpensesChartInterests.selectFieldLabel": "Taux d'intérêt indicatif",
   "ExpensesChartInterests.years":
     "{years} ans moyen: {value, number, percentage}",
-  "FaqPage.description": "e-Potek répond à toutes vos questions concernant votre projet / votre future acquisition",
+  "FaqPage.description": "e-Potek répond à toutes vos questions concernant le financement de votre projet.",
   "FaqPage.title": "Questions fréquentes",
   "FieldToggles.customFields": "Champs personnels",
   "FieldToggles.defaultFields": "Champs e-Potek",
@@ -1338,67 +1355,6 @@
   "TasksTabs.allTasks": "Toutes les tâches",
   "TasksTabs.myTasks": "Mes tâches",
   "TasksTabs.unassignedTasks": "Tâches non assignées",
-  "tooltip.bonus":
-    "Tout revenu variable supplémentaire à votre salaire de base, lié à vos performances",
-  "tooltip.borrowers":
-    "Les personnes financièrement et légalement bénéficiaires du prêt",
-  "tooltip.borrowRatio":
-    "Ce ratio détermine combien est couvert par le prêt hypothécaire, il ne doit pas dépasser 80% dans la majorité des cas.",
-  "tooltip.consideredBonus":
-    "Nous utilisons 50% de la moyenne de vos 3 meilleurs bonus.",
-  "tooltip.counterpartOffers":
-    "Les meilleures offres des prêteurs, qui vous donnent un taux d'intérêt spécialement bas, en échange d'une contrepartie.",
-  "tooltip.expertise":
-    "Vérification de la valeur du bien par rapport à son état et son emplacement",
-  "tooltip.finma": "Autorité fédérale de surveillance des marchés financiers",
-  "tooltip.incomeRatio":
-    "Ce ratio indique combien de vos revenus vont théoriquement être utilisés pour payer les charges de votre bien. Il ne doit pas dépasser 33%, exceptions jusqu'à 38%.",
-  "tooltip.insuranceFees":
-    "Lorsque vous retirez votre lpp en avance, vous devez payer des impôts sur ce retrait",
-  "tooltip.interestedLenders":
-    "La quantité de prêteurs e-Potek dont les conditions correspondent à votre dossier",
-  "tooltip.lpp": "Aussi appelé 2ème pilier",
-  "tooltip.monthlyEstimated":
-    "Avant les enchères d'e-Potek, cette estimation conservative sert d'indication",
-  "tooltip.notaryFees":
-    "Frais obligatoires lorsqu'on conclut un prêt hypothécaire - environ 5% du prix d'achat",
-  "tooltip.offerTable.10": "Un taux d'intérêt qui arrive à échéance en 10 ans",
-  "tooltip.offerTable.2": "Un taux d'intérêt qui arrive à échéance en 2 ans",
-  "tooltip.offerTable.5": "Un taux d'intérêt qui arrive à échéance en 5 ans",
-  "tooltip.offerTable.amortization":
-    "L'amortissement annuel minimum de l'emprunt demandé par la banque",
-  "tooltip.offerTable.amount":
-    "Le montant maximal que la banque peut vous prêter",
-  "tooltip.offerTable.conditions":
-    "Les conditions que vous devez remplir pour avoir accès à cette offre",
-  "tooltip.offerTable.expertise":
-    "Indique si la banque veut faire une expertise supplémentaire, ajoute environ 2 semaines à la procédure",
-  "tooltip.offerTable.libor":
-    "\"London Interbank Offered Rate\", c'est un type de taux d'intérêt parmi les plus bas mais aussi le plus volatile",
-  "tooltip.otherIncome":
-    "Allocations, rentes, pensions, loyers, investissements, revenus de titres, ou autres activités",
-  "tooltip.ownFunds":
-    "Vos économies, prévoyance et dons de tiers que vous allez engager dans le projet",
-  "tooltip.ownFundsRequired":
-    "Les fonds propres nécessaires de votre part pour financer ce projet, y compris les frais de notaire",
-  "tooltip.propertyWork":
-    "Agrandissements, rénovations ou améliorations du bien.",
-  "tooltip.purchasePrice": "La valeur du bien que vous voulez acquérir",
-  "tooltip.secondPillar": "Aussi appelé LPP",
-  "tooltip.standardOffers": "Les offres de base des banques.",
-  "tooltip.thirdPillar": "XXX",
-  "tooltip.usageType":
-    "Les résidences principales permettent l'utilisation du 2ème pilier en tant que fonds propres",
-  "tooltip.yearlyIncome":
-    "La somme de votre salaire, et toute autre source de revenus",
-  "tooltip2.consideredBonus":
-    "Les bonus étant des montants variables, les banques ne les comptent pas à 100%.{verticalSpace}Si vous avez 4 bonus sur les années précédentes de 10, 20, 30 et 40 CHF, nous utiliserons 50% de la moyenne de 20, 30 et 40, soit 15 CHF.",
-  "tooltip2.finma":
-    "La FINMA détermine quelles sont les conditions minimales pour que vous puissiez obtenir un prêt, pour vous protéger d'éventuelles remontées imprévues des taux hypothécaires.{verticalSpace}Les taux sont bas aujourd'hui, mais si vos finances ne sont pas assez solides et que les taux montent, vous pourriez avoir de sérieuses difficultés financières.",
-  "tooltip2.notaryFees":
-    "Les frais de notaire sont compris d'une multitude de frais supplémentaires que vous devrez couvrir avec votre épargne, il est impossible d'utiliser sa prévoyance ou son prêt hypothécaire pour les payer.",
-  "tooltip2.propertyWork":
-    "Ces travaux sont une bonne façon d'augmenter la valeur de votre bien, sans augmenter les frais de notaire.",
   "TopNav.login": "Login",
   "TopNavDropdown.account": "Mon Compte",
   "TopNavDropdown.admin": "Admin Dashboard",

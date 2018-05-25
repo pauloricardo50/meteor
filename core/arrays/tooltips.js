@@ -1,59 +1,63 @@
+export const TOOLTIP_LISTS = {
+  GENERAL: 'GENERAL',
+  OFFER_TABLE: 'OFFER_TABLE',
+  DEV: 'DEV',
+};
+
 // Write the keys in lowercase
-// If the value is an array, it means there need to be 2 strings for the
+// If `double` is true, it means there need to be 2 strings for the
 // "Learn More" part.
 export const generalTooltips = {
-  asdfgaewra: '',
-  // 'revenus annuels bruts': 'yearlyIncome',
-  // 'fonds propres requis': 'ownFundsRequired',
-  // 'fonds propres - total': 'ownFunds',
-  // 'fonds propres': 'ownFunds',
-  // "prix d'achat": 'purchasePrice',
-  // finma: ['finma'],
-  // 'charges / revenus': 'incomeRatio',
-  // "ratio d'endettement": 'incomeRatio',
-  // "prêt / prix d'achat": 'borrowRatio',
-  // 'prêt / valeur du bien': 'borrowRatio',
-  // 'frais de notaire': ['notaryFees'],
-  // 'frais retrait prévoyance': 'insuranceFees',
-  // 'travaux de plus-value': ['propertyWork'],
-  // // expertise: 'expertise',
-  // 'prêteurs intéressés': 'interestedLenders',
-  // 'charges estimées': 'monthlyEstimated',
-  // emprunteurs: 'borrowers',
-  // "type d'utilisation": 'usageType',
-  // 'bonus considéré': ['consideredBonus'],
-  // bonus: 'bonus',
-  // 'autres sources de revenus': 'otherIncome',
-  // '2e pilier': 'secondPillar',
-  // '2ème pilier': 'secondPillar',
-  // lpp: 'lpp',
-  // '3e pilier': 'thirdPillar',
-  // '3ème pilier': 'thirdPillar',
-  // 'offres standard': 'standardOffers',
-  // standard: 'standardOffers', // careful with this one, it could trigger on unwanted "standard" uses
-  // 'offres avec contrepartie': 'counterpartOffers',
-  // 'avec contrepartie': 'counterpartOffers',
+  'plan financier': { id: 'financialPlan', double: true },
+  'structure de financement': { id: 'financialPlan', double: true },
+
+  'charges / revenus': { id: 'incomeRatio', double: true },
+  "taux d'effort": { id: 'incomeRatio', double: true },
+
+  'revenus annuels bruts': { id: 'income', double: true },
+  'salaire brut': { id: 'income', double: true },
+  revenus: { id: 'income', double: true },
+
+  bonus: { id: 'bonus', double: true },
+  gratification: { id: 'bonus', double: true },
+
+  emprunteurs: { id: 'borrower' },
+  emprunteur: { id: 'borrower' },
+
+  finma: { id: 'finma', double: true },
+
+  'prêteurs intéressés': { id: 'interestedLenders' },
+
+  "prêt / prix d'achat": { id: 'borrowRatio', double: true },
+  "taux d'avance": { id: 'borrowRatio', double: true },
 };
 
 export const offerTableTooltips = {
-  montant: 'offerTable.amount',
-  libor: 'offerTable.libor',
-  '2 ans': 'offerTable.2',
-  '5 ans': 'offerTable.5',
-  '10 ans': 'offerTable.10',
-  amortissement: 'offerTable.amortization',
-  expertise: 'offerTable.expertise',
-  conditions: 'offerTable.conditions',
+  montant: { id: 'offerTable.amount' },
+  libor: { id: 'offerTable.libor' },
+  '2 ans': { id: 'offerTable.2' },
+  '5 ans': { id: 'offerTable.5' },
+  '10 ans': { id: 'offerTable.10' },
+  amortissement: { id: 'offerTable.amortization' },
+  expertise: { id: 'offerTable.expertise' },
+  conditions: { id: 'offerTable.conditions' },
+};
+
+export const devTooltips = {
+  match1: { id: 'id1' },
+  match2: { id: 'id2' },
 };
 
 export const tooltips = (list) => {
   switch (list) {
-  case 'general':
+  case TOOLTIP_LISTS.GENERAL:
     return generalTooltips;
-  case 'table':
+  case TOOLTIP_LISTS.OFFER_TABLE:
     return offerTableTooltips;
+  case TOOLTIP_LISTS.DEV:
+    return devTooltips;
   default:
-    throw new Error('Unknown tooltip list');
+    throw new Error(`Unknown tooltip list ${list}`);
   }
 };
 
@@ -61,13 +65,13 @@ export const tooltipsById = (id) => {
   if (typeof id !== 'string') {
     throw new Error('not a string');
   }
-  const array = id.split('.');
+  const [listId, ...ids] = id.split('.');
 
-  if (array.length !== 2 || array[1].length <= 0) {
+  if (ids.length < 1 || ids[0] === '') {
     throw Error('Wrong id given for tooltips, requires 2 strings separated by a .');
   }
 
-  const list = tooltips(array[0]);
+  const list = tooltips(listId);
 
-  return list[array[1]];
+  return list[ids.join('.')];
 };

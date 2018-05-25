@@ -1,4 +1,4 @@
 export * from './Translation';
-export { default as AutoTooltip } from './AutoTooltip';
+export { default } from './Translation';
 export * from './numberComponents';
 export * from './formattingComponents';
