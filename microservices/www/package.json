@@ -13,8 +13,7 @@
     "test-e2e-CI": "start-server-and-test start-e2e http://localhost:3015 cypress-run-CI",
     "ngrok": "cd ../../scripts/ && ./ngrok.sh",
     "debug": "meteor npm run start -- --inspect",
-    "visualize":
-      "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 3010"
+    "visualize": "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 3010"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.47",
@@ -92,7 +91,9 @@
   "postcss": {
     "plugins": {
       "autoprefixer": {
-        "browsers": ["last 3 versions"]
+        "browsers": [
+          "last 3 versions"
+        ]
       },
       "postcss-flexbox": {}
     }
