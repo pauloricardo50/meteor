@@ -43,7 +43,7 @@ jobs:
       - restore_cache:
           name: restore root cached node_modules
           keys:
-            - build-epotek-v2-node_modules-{{ checksum "./package.json" }}
+            - build-epotek-v3-node_modules-{{ checksum "./package.json" }}
       - restore_cache:
           name: restore app's meteor cached build
           keys:
@@ -51,7 +51,7 @@ jobs:
       - restore_cache:
           name: restore app's cached node_modules
           keys:
-            - build-epotek-v2-node_modules-{{ checksum "./microservices/app/package.json" }}
+            - build-epotek-v3-node_modules-{{ checksum "./microservices/app/package.json" }}
       - restore_cache:
           name: restore admin's meteor cached build
           keys:
@@ -59,7 +59,7 @@ jobs:
       - restore_cache:
           name: restore admin's cached node_modules
           keys:
-            - build-epotek-v2-node_modules-{{ checksum "./microservices/admin/package.json" }}
+            - build-epotek-v3-node_modules-{{ checksum "./microservices/admin/package.json" }}
       - restore_cache:
           name: restore www's meteor cached build
           keys:
@@ -67,7 +67,7 @@ jobs:
       - restore_cache:
           name: restore www's cached node_modules
           keys:
-            - build-epotek-v3-node_modules-{{ checksum "./microservices/www/package.json" }}
+            - build-epotek-v4-node_modules-{{ checksum "./microservices/www/package.json" }}
 
       - run:
           name: install Meteor
@@ -138,7 +138,7 @@ jobs:
             - ~/.meteor
       - save_cache:
           name: cache root node_modules
-          key: build-epotek-v2-node_modules-{{ checksum "./package.json" }}
+          key: build-epotek-v3-node_modules-{{ checksum "./package.json" }}
           paths:
             - ./node_modules
       - save_cache:
@@ -148,7 +148,7 @@ jobs:
             - ./microservices/app/.meteor/local
       - save_cache:
           name: cache app's node_modules
-          key: build-epotek-v2-node_modules-{{ checksum "./microservices/app/package.json" }}
+          key: build-epotek-v3-node_modules-{{ checksum "./microservices/app/package.json" }}
           paths:
             - ./microservices/app/node_modules
       - save_cache:
@@ -158,7 +158,7 @@ jobs:
             - ./microservices/admin/.meteor/local
       - save_cache:
           name: cache admin's node_modules
-          key: build-epotek-v2-node_modules-{{ checksum "./microservices/admin/package.json" }}
+          key: build-epotek-v3-node_modules-{{ checksum "./microservices/admin/package.json" }}
           paths:
             - ./microservices/admin/node_modules
       - save_cache:
@@ -168,7 +168,7 @@ jobs:
             - ./microservices/www/.meteor/local
       - save_cache:
           name: cache www's node_modules
-          key: build-epotek-v3-node_modules-{{ checksum "./microservices/www/package.json" }}
+          key: build-epotek-v4-node_modules-{{ checksum "./microservices/www/package.json" }}
           paths:
             - ./microservices/www/node_modules
 
