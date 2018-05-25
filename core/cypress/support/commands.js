@@ -48,49 +48,42 @@ Cypress.Commands.add('getTestData', (email) => {
 });
 
 Cypress.Commands.add('meteorLogout', () => {
-  let hasLoggedOut = false;
+  let loggedIn = false;
 
-  cy.window().then(({ Meteor }) => {
-    if (Meteor.userId()) {
-      return new Cypress.Promise((resolve, reject) => {
-        Meteor.logout((err) => {
-          if (err) {
-            return reject(err);
-          }
-
-          hasLoggedOut = true;
-
-          return resolve();
-        });
-      });
+  cy.window().then(({ Meteor }) => new Cypress.Promise((resolve, reject) => {
+    if (!Meteor.userId()) {
+      return resolve();
     }
-  });
 
-  // after the promise above (logout) finishes, wait
-  // until it gets to the login screen, if it actually logged out
-  cy.get('.login-page').should(($loginPage) => {
-    if (hasLoggedOut) {
-      expect($loginPage).to.have.length(1);
+    Meteor.logout((err) => {
+      if (err) {
+        return reject(err);
+      }
+
+      loggedIn = true;
+
+      resolve();
+    });
+  }));
+
+  cy.get('.login-page').should(($loginpage) => {
+    if (loggedIn) {
+      expect($loginpage).to.have.lengthOf(1);
     }
   });
 });
 
 Cypress.Commands.add(
-  'meteorLogoutAndLogin',
+  'meteorLogin',
   (email = USER_EMAIL, password = USER_PASSWORD) => {
-    cy
-      .meteorLogout()
-      .window()
-      .then(window =>
-        new Cypress.Promise((resolve, reject) => {
-          const { Meteor } = window;
-
-          return Meteor.loginWithPassword(
-            email,
-            password,
-            loginError => (loginError ? reject(loginError) : resolve(window)),
-          );
-        }));
+    cy.window().then(({ Meteor }) =>
+      new Cypress.Promise((resolve, reject) => {
+        Meteor.loginWithPassword(
+          email,
+          password,
+          loginError => (loginError ? reject(loginError) : resolve()),
+        );
+      }));
   },
 );
 
@@ -102,12 +95,21 @@ Cypress.Commands.add('routeShouldExist', (expectedPageUri) => {
 });
 
 Cypress.Commands.add('setAuthentication', (pageAuthentication) => {
-  if (pageAuthentication === 'public') {
+  cy.window().then(({ Meteor }) => {
     cy.meteorLogout();
-  } else {
-    cy.meteorLogoutAndLogin(`${pageAuthentication}-1@e-potek.ch`);
-  }
+
+    if (pageAuthentication !== 'public') {
+      cy.meteorLogin(`${pageAuthentication}-1@e-potek.ch`);
+    }
+  });
 });
+
+Cypress.Commands.add(
+  'meteorLogoutAndLogin',
+  (email = USER_EMAIL, password = USER_PASSWORD) => {
+    cy.meteorLogout().meteorLogin(email, password);
+  },
+);
 
 Cypress.Commands.add(
   'routeShouldRenderSuccessfully',
