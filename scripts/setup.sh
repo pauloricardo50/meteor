@@ -66,7 +66,7 @@ fi
 echo "Installing npm packages in root"
 ( cd .. && meteor npm install );
 
-# Don't install core npm packages on CircleCI
+# Install core npm packages only on non-circleCI environments
 if [[ $CIRCLE_CI != 1 ]];
 then
   echo "Installing npm packages in core/"

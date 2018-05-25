@@ -29,7 +29,7 @@ jobs:
         NODE_ENV: development
         TOOL_NODE_FLAGS: "--max_old_space_size=4096 --optimize_for_size --gc-interval=100" # if builds run out of memory
         # METEOR_PROFILE: 1 # If you need to debug meteor, turn this on
-        # to know if we're on CircleCI or not in our scripts
+        # Used to to know in our scripts if we're on CircleCI environment or not
         CIRCLE_CI: 1
     - image: cypress/browsers:chrome65-ff57
       environment:
@@ -126,8 +126,6 @@ jobs:
           name: run tests for admin
           command: |
             cd microservices/admin
-            # Using 3.6.0 because of this: https://github.com/meteortesting/meteor-mocha/issues/54
-            # Using chromedriver 2.37 because 2.38 is incompatible with selenium >3.6.0
             meteor npm i selenium-webdriver@3.6.0 chromedriver@2.37.0 --no-save
             meteor npm run test-CI      
       - run:
