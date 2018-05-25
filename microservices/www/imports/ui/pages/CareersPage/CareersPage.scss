@@ -66,12 +66,13 @@
   justify-content: space-between;
 
   margin-bottom: 8px;
-  padding: 16px;
+  padding: 16px 24px;
 
-  transition: all 200ms $bezier;
+  transition: transform 200ms $bezier, color 200ms $bezier,
+    backgorund-color 200ms $bezier;
   text-decoration: none;
 
-  border-radius: 8px;
+  border-radius: 16px;
 
   .careers-page-job-hover {
     display: none;
