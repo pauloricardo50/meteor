@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { T } from 'core/components/Translation/';
+import T from 'core/components/Translation/';
 import TasksTableWithData from '../../components/TasksTable/TasksTableWithData';
 
 const AdminDashboardPage = props => (

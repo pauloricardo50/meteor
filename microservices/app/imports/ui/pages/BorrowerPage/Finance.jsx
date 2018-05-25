@@ -8,7 +8,7 @@ import { getBorrowerFinanceArray } from 'core/arrays/BorrowerFormArray';
 import Recap from 'core/components/Recap';
 import * as financeConstants from 'core/config/financeConstants';
 import LoadingButton from '/imports/ui/components/LoadingButton';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { disableForms } from 'core/utils/loanFunctions';
 import track from 'core/utils/analytics';
 import { borrowerUpdate } from 'core/api';

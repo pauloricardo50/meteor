@@ -5,7 +5,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { getLoanValue } from 'core/utils/loanFunctions';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 import {

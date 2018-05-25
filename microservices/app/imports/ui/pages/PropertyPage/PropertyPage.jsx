@@ -9,7 +9,7 @@ import {
 import UploaderArray from 'core/components/UploaderArray';
 import { loanDocuments, propertyDocuments } from 'core/api/files/documents';
 import { disableForms, getPropertyCompletion } from 'core/utils/loanFunctions';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import withLoan from 'core/containers/withLoan';
 import { LOANS_COLLECTION, PROPERTIES_COLLECTION } from 'core/api/constants';
 

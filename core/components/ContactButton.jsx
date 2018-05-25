@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Button from 'core/components/Button';
 import track from 'core/utils/analytics';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import colors from 'core/config/colors';
 import employees from 'core/arrays/epotekEmployees';
 import Icon from 'core/components/Icon';

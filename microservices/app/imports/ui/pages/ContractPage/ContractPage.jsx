@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import ProcessPage from '/imports/ui/components/ProcessPage';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 import FileTabs from './FileTabs';
 import ContractDownloader from './ContractDownloader';

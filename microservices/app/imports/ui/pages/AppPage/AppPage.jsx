@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import DashboardUnverified from '/imports/ui/components/DashboardUnverified';
 import { LOAN_STATUS } from 'core/api/constants';
 

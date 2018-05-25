@@ -4,7 +4,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 
 import Loading from 'core/components/Loading';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import LinkToCollection from '../../../components/LinkToCollection';
 import SearchResultsContainer from './SearchResultsContainer';
 import ResultsPerCollection from './ResultsPerCollection';

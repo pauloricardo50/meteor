@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Recap from 'core/components/Recap';
 import { toMoney } from 'core/utils/conversionFunctions';
 import { NOTARY_FEES } from 'core/config/financeConstants';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 import DashboardRecapSum from './DashboardRecapSum';
 

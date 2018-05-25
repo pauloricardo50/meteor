@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 const indexes = [0, 1, 2];
 

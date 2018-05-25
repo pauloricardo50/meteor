@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 import { SALARY, FORTUNE, PROPERTY } from '../../../../redux/reducers/widget1';
 import Widget1SingleInput from '../Widget1SingleInput';

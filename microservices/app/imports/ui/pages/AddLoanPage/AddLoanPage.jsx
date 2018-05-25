@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
 import Button from 'core/components/Button';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { generalContainer } from 'core/containers/Containers';
 import { setUserToLoan } from 'core/api';
 

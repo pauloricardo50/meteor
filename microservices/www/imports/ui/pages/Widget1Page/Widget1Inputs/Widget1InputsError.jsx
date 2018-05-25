@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { SUCCESS, WARNING, ERROR } from 'core/api/constants';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import StatusIcon from '../../../components/StatusIcon';
 
 const STATUSES = [SUCCESS, WARNING, ERROR];

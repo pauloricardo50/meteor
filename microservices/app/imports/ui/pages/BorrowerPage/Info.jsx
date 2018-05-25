@@ -5,7 +5,7 @@ import AutoForm from 'core/components/AutoForm';
 import { getBorrowerInfoArray } from 'core/arrays/BorrowerFormArray';
 import { disableForms } from 'core/utils/loanFunctions';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 const Info = (props) => {
   const { borrowerId } = props.match.params;

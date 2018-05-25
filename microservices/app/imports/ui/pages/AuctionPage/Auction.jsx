@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
 import Loading from 'core/components/Loading';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 require('moment-duration-format');
 

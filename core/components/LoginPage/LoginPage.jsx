@@ -6,7 +6,7 @@ import queryString from 'query-string';
 import { sendVerificationLink } from 'core/api/methods';
 
 import { addUserTracking } from '../../utils/analytics';
-import { T } from '../Translation';
+import T from '../Translation';
 import Accounts from './Accounts';
 
 const LoginPage = ({ location: { search }, history: { push } }) => {

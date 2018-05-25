@@ -6,7 +6,7 @@ import { Link, withRouter } from 'react-router-dom';
 
 import Icon from 'core/components/Icon';
 import Table from 'core/components/Table';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 import IconLink from 'core/components/IconLink';
 import Loading from 'core/components/Loading';

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import IconButton from 'core/components/IconButton';
 import { generateImpersonateLink } from '../../api/impersonation/impersonation';
 import { isUser } from '../../utils/userFunctions';

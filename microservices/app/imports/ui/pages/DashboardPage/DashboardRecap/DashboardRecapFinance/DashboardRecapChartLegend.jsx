@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import colors from 'core/config/colors';
 
 const DashboardRecapChartLegend = ({ data }) => (

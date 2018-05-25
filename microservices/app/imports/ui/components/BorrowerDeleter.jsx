@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import ConfirmButton from '../components/ConfirmButton';
 import IconButton from 'core/components/IconButton';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { removeBorrower } from 'core/api';
 
 export default class BorrowerDeleter extends Component {

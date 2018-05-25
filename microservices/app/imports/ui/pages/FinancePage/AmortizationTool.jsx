@@ -10,7 +10,7 @@ import Select from 'core/components/Select';
 import TextInput from 'core/components/TextInput';
 
 import AmortizationChart from 'core/components/charts/AmortizationChart';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 // import { percentMask } from '/imports/js/helpers/textMasks';
 
 const interestRates = [

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Button from 'core/components/Button';
 import Dialog from 'core/components/Material/Dialog';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 export default class ConfirmButton extends Component {
   constructor(props) {

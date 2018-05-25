@@ -6,7 +6,7 @@ import Icon from 'core/components/Icon';
 
 import { getWidth } from 'core/utils/browserFunctions';
 import track from 'core/utils/analytics';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { LOAN_STATUS } from 'core/api/constants';
 import { incrementLoanStep } from 'core/api';
 

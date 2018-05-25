@@ -1,6 +1,6 @@
 // import React from 'react';
 
-// import { T } from 'core/components/Translation';
+// import T from 'core/components/Translation';
 
 // const DashboardInfoInterests = () => (
 //   <div className="dashboard-info-interests card1">

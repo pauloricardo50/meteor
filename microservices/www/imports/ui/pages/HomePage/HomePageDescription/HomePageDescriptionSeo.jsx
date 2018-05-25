@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { withState } from 'recompose';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 
 // TODO: Actually optimize this for SEO, don't hide it but show it with display none

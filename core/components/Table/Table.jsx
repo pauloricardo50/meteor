@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import MuiTable from '@material-ui/core/Table';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';

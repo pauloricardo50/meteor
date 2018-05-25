@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { DialogForm, FIELD_TYPES } from 'core/components/Form';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 import { INTEREST_RATES } from 'core/api/constants';
 import OfferAdderContainer from './OfferAdderContainer';

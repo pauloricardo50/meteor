@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 import DashboardRecapFinance from './DashboardRecapFinance';
 import DashboardRecapProperty from './DashboardRecapProperty';

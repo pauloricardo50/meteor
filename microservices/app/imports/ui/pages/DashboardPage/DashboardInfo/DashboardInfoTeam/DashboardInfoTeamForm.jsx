@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { DialogForm, email } from 'core/components/Form';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 const formArray = [
   { id: 'name' },

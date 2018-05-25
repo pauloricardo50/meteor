@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import Button from 'core/components/Button';
 import Dialog from 'core/components/Material/Dialog';
 import TextField from 'core/components/Material/TextField';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { loanUpdate } from 'core/api';
 
 export default class NewLoanModal extends Component {

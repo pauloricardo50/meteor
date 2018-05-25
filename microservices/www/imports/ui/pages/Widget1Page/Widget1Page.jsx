@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
 import Button from 'core/components/Button';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import TogglePoint, { TOGGLE_POINTS } from 'core/components/TogglePoint';
 import Widget1PageContainer from './Widget1PageContainer';
 import Widget1Part1 from './Widget1Part1';

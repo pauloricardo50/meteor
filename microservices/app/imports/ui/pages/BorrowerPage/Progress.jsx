@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { personalInfoPercent, filesPercent } from 'core/arrays/steps';
 import { borrowerDocuments } from 'core/api/files/documents';
 import { FILE_STEPS } from 'core/api/constants';

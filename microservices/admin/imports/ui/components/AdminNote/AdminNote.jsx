@@ -4,7 +4,7 @@ import TextInput from 'core/components/TextInput';
 import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
 import { loanChangeAdminNote } from 'core/api/methods';
-import { T } from 'core/components/Translation/';
+import T from 'core/components/Translation/';
 
 class AdminNotes extends Component {
   state = {

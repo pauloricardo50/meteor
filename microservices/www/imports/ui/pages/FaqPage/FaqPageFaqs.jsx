@@ -6,7 +6,7 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 
 import Icon from 'core/components/Icon';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { PHONE, PHONE_COMPACT, EMAIL } from '../ContactPage/contactConstants';
 
 const answerValues = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from '../Translation';
+import T from '../Translation';
 import Select from '../Select';
 import SortOrderer from './SortOrderer';
 

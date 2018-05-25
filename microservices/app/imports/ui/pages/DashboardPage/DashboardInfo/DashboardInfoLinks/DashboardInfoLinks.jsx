@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 const DashboardInfoLinks = props => (
   <div className="dashboard-info-links card1">

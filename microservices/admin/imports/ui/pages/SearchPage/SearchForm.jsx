@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Icon from 'core/components/Icon';
 import Button from 'core/components/Button';
 import TextField from 'core/components/Material/TextField';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 class SearchForm extends Component {
   constructor(props) {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import Button from 'core/components/Button';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { getLoanValue } from 'core/utils/loanFunctions';
 import withLoan from 'core/containers/withLoan';
 import { loanUpdate } from 'core/api';

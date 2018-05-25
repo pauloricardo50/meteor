@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 const DetailSideNavHeader = ({ collectionName, hideDetailNav }) => (
   <div className="detail-side-nav-header">

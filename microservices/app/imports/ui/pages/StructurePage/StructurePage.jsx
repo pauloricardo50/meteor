@@ -4,7 +4,7 @@ import merge from 'lodash/merge';
 
 import LoadingButton from '/imports/ui/components/LoadingButton';
 import ProcessPage from '/imports/ui/components/ProcessPage';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import track from 'core/utils/analytics';
 import { toNumber } from 'core/utils/conversionFunctions';
 import { loanUpdate } from 'core/api';

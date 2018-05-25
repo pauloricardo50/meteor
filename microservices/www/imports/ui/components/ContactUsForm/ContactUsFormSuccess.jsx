@@ -1,7 +1,7 @@
 import React from 'react';
 
 import AnimatedSuccess from 'core/components/AnimatedSuccess';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 const ContactUsFormSuccess = () => (
   <div className="contact-us-form-success">

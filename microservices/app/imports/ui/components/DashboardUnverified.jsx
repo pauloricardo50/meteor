@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Bert } from 'meteor/themeteorchef:bert';
 import { injectIntl } from 'react-intl';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import colors from 'core/config/colors';
 
 const handleClick = (event, props) => {
