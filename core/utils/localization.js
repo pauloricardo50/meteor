@@ -2,7 +2,6 @@
 
 import { addLocaleData } from 'react-intl';
 import moment from 'moment';
-import Loadable from 'core/utils/loadable';
 import fr from 'react-intl/locale-data/fr';
 
 export const getUserLocale = () => 'fr-CH';

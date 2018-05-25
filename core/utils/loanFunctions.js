@@ -1,6 +1,5 @@
 import moment from 'moment';
 
-import constants from '../config/constants';
 import {
   USAGE_TYPE,
   LOAN_STRATEGY_PRESET,
@@ -8,7 +7,13 @@ import {
   FILE_STEPS,
   INSURANCE_USE_PRESET,
 } from '../api/constants';
-import { APPROXIMATE_LPP_FEES } from '../config/financeConstants';
+import {
+  APPROXIMATE_LPP_FEES,
+  NOTARY_FEES,
+  MAINTENANCE_REAL,
+  DEFAULT_AMORTIZATION,
+  MIN_CASH,
+} from '../config/financeConstants';
 import { getIncomeRatio } from './finance-math';
 import { propertyPercent, filesPercent } from '../arrays/steps';
 import { propertyDocuments } from '../api/files/documents';
@@ -26,9 +31,7 @@ export const getProjectValue = ({ loan, property }) => {
 
   const insuranceFees = (insuranceFortuneUsed || 0) * getLppFees({ loan });
   const value =
-    property.value * (1 + constants.notaryFees) +
-    (propertyWork || 0) +
-    insuranceFees;
+    property.value * (1 + NOTARY_FEES) + (propertyWork || 0) + insuranceFees;
 
   return Math.max(0, Math.round(value));
 };
@@ -153,13 +156,12 @@ export const getMonthlyWithOffer = (
   const loanValue = getLoanValue({ loan: r, property });
 
   const maintenance =
-    constants.maintenanceReal *
-    (property.value + (r.general.propertyWork || 0));
+    MAINTENANCE_REAL * (property.value + (r.general.propertyWork || 0));
 
   let amortization = isStandard
     ? offer.standardOffer.amortization
     : offer.counterpartOffer.amortization;
-  amortization = amortization || constants.amortization;
+  amortization = amortization || DEFAULT_AMORTIZATION;
 
   const interests = getInterestsWithOffer({ loan: r, offer }, isStandard);
 
@@ -224,7 +226,7 @@ export const disableForms = ({ loan }) =>
   );
 
 export const getFees = ({ loan, property }) => {
-  const notaryFees = property.value * constants.notaryFees;
+  const notaryFees = property.value * NOTARY_FEES;
   const insuranceFees =
     loan.general.insuranceFortuneUsed * getLppFees({ loan });
 
@@ -237,7 +239,7 @@ export const isLoanValid = ({ loan, borrowers, property }) => {
   const fees = getFees({ loan, property });
   const propAndWork = getPropAndWork({ loan, property });
 
-  const cashRequired = constants.minCash * propAndWork + fees;
+  const cashRequired = MIN_CASH * propAndWork + fees;
 
   if (incomeRatio > 0.38) {
     throw new Error('income');
@@ -408,3 +410,17 @@ export const getLppFees = ({ loan }) =>
 
 export const getInsuranceFees = ({ loan }) =>
   getLppFees({ loan }) * loan.general.insuranceFortuneUsed;
+
+export const getMaxBorrowRatio = (
+  usageType = USAGE_TYPE.PRIMARY,
+  toRetirement = 15,
+) => {
+  if (toRetirement <= 0) {
+    return 0.65;
+  }
+  if (usageType === USAGE_TYPE.SECONDARY) {
+    return 0.7;
+  }
+
+  return 0.8;
+};

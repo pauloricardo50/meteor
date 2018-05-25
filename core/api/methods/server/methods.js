@@ -1,6 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-base';
-import saveStartForm from 'core/utils/saveStartForm';
 import { SecurityService, Loans, Borrowers, Properties } from '../..';
 import {
   getMixpanelAuthorization,
@@ -9,7 +7,6 @@ import {
   addBorrower,
   setUserToLoan,
   removeBorrower,
-  createUserAndLoan,
   submitContactForm,
 } from '../methodDefinitions';
 
@@ -74,23 +71,6 @@ removeBorrower.setHandler((context, { loanId, borrowerId }) => {
 
   Borrowers.remove(borrowerId);
   return Loans.update(loanId, { $pull: { borrowerIds: borrowerId } });
-});
-
-createUserAndLoan.setHandler((context, { email, formState }) => {
-  console.log('creating user and loan...', email, formState);
-  // Create the new user without a password
-  let newUserId;
-  try {
-    newUserId = Accounts.createUser({ email });
-  } catch (e) {
-    throw new Meteor.Error("Couldn't create new user", e);
-  }
-
-  // Send an enrollment email
-  Accounts.sendEnrollmentEmail(newUserId);
-
-  // Insert the formdata to loan and borrower(s)
-  return saveStartForm(formState, newUserId);
 });
 
 // This method needs to exist as its being listened to in EmailListeners
