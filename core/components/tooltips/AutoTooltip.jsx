@@ -7,23 +7,21 @@ import { tooltips, TOOLTIP_LISTS } from 'core/arrays/tooltips';
 import TooltipOverlay from './TooltipOverlay';
 import { TooltipContainer } from './TooltipContext';
 
-const createRegexForTooltipList = list =>
+const createRegexThatFindsAnyWordFromList = list =>
   new RegExp(`(${Object.keys(tooltips(list)).join('|')})`, 'gi');
 
 const parseTextForTooltips = props =>
   reactStringReplace(
     props.children,
-    createRegexForTooltipList(props.tooltipList),
-    (match, i) => (
-      <TooltipOverlay {...props} key={i} match={match}>
+    createRegexThatFindsAnyWordFromList(props.tooltipList),
+    (match, index) => (
+      <TooltipOverlay {...props} key={index} match={match}>
         {match}
       </TooltipOverlay>
     ),
   );
 
 export const AutoTooltip = (props) => {
-  let content = null;
-
   if (!props.children) {
     return null;
   }
@@ -34,13 +32,13 @@ export const AutoTooltip = (props) => {
   }
   // If no id is given and children is a string,
   // automatically replace all matching strings with tooltips
-  content = parseTextForTooltips(props);
+  const content = parseTextForTooltips(props);
 
   return <span>{content}</span>;
 };
 
 AutoTooltip.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
+  children: PropTypes.node,
   tooltipList: PropTypes.string,
 };
 

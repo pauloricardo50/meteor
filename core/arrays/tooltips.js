@@ -21,12 +21,12 @@ export const generalTooltips = {
   bonus: { id: 'bonus', double: true },
   gratification: { id: 'bonus', double: true },
 
-  emprunteurs: { id: 'borrower', double: false },
-  emprunteur: { id: 'borrower', double: false },
+  emprunteurs: { id: 'borrower' },
+  emprunteur: { id: 'borrower' },
 
   finma: { id: 'finma', double: true },
 
-  'prêteurs intéressés': { id: 'interestedLenders', double: false },
+  'prêteurs intéressés': { id: 'interestedLenders' },
 
   "prêt / prix d'achat": { id: 'borrowRatio', double: true },
   "taux d'avance": { id: 'borrowRatio', double: true },
@@ -67,7 +67,7 @@ export const tooltipsById = (id) => {
   }
   const [listId, ...ids] = id.split('.');
 
-  if (ids.length <= 0 || ids[0] === '') {
+  if (ids.length < 1 || ids[0] === '') {
     throw Error('Wrong id given for tooltips, requires 2 strings separated by a .');
   }
 

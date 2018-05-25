@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
@@ -8,68 +8,49 @@ import track from 'core/utils/analytics';
 
 import Tooltip from './Tooltip';
 
-export default class TooltipOverlay extends Component {
-  constructor(props) {
-    super(props);
+const onEntered = id => track('Tooltip - tooltip clicked', { id });
 
-    // The hide value is used to signal to react-motion that the component
-    // should start to animate out
-    // In the Transition component, when it detects a change in hide
-    // from false to true, it starts to animate out
-    this.state = { hide: false };
-  }
+const handleClick = (event) => {
+  // Trigger tooltip instead of another onClick handler in a parent
+  event.preventDefault();
+  event.stopPropagation();
+};
 
-  onExit = () => this.setState({ hide: true });
-  onEnter = () => this.setState({ hide: false });
-  onEntered = id => track('Tooltip - tooltip clicked', { id });
+const TooltipOverlay = ({
+  placement,
+  tooltipList,
+  match,
+  trigger,
+  delayShow,
+  children,
+}) => {
+  const tooltipConfig = tooltips(tooltipList)[match.toLowerCase()];
 
-  handleClick = (event) => {
-    // Trigger tooltip instead of another onClick handler in a parent
-    event.preventDefault();
-    event.stopPropagation();
-  };
-
-  render() {
-    const {
-      placement,
-      tooltipList,
-      match,
-      trigger,
-      delayShow,
-      children,
-    } = this.props;
-    const tooltipConfig = tooltips(tooltipList)[match.toLowerCase()];
-
-    return (
-      <OverlayTrigger
-        placement={placement}
-        overlay={
-          <Tooltip
-            placement={placement}
-            trigger={trigger}
-            tooltipConfig={tooltipConfig}
-            hide={this.state.hide}
-            match={match}
-          />
-        }
-        rootClose
-        animation={false}
-        trigger={trigger}
-        delayShow={delayShow}
-        // onExit={this.onExit}
-        // // When clicking the same tooltip multiple times, this is not reset
-        // onEnter={this.onEnter}
-        onEntered={() => this.onEntered(id)}
-        container={global.document !== undefined ? document.body : undefined}
-        onClick={this.handleClick}
-      >
-        <span className="tooltip-overlay" tabIndex="0">
-          {children}
-        </span>
-      </OverlayTrigger>
-    );
-  }
-}
+  return (
+    <OverlayTrigger
+      placement={placement}
+      overlay={
+        <Tooltip
+          placement={placement}
+          trigger={trigger}
+          tooltipConfig={tooltipConfig}
+          match={match}
+        />
+      }
+      rootClose
+      animation={false}
+      trigger={trigger}
+      delayShow={delayShow}
+      onEntered={() => onEntered(id)}
+      container={global.document !== undefined ? document.body : undefined}
+      onClick={handleClick}
+    >
+      <span className="tooltip-overlay" tabIndex="0">
+        {children}
+      </span>
+    </OverlayTrigger>
+  );
+};
 
 TooltipOverlay.propTypes = {
   placement: PropTypes.string,
@@ -86,3 +67,5 @@ TooltipOverlay.defaultProps = {
   placement: 'bottom',
   delayShow: 300,
 };
+
+export default TooltipOverlay;

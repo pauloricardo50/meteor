@@ -2,17 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedNumber, FormattedPlural } from 'react-intl';
 
-const IntlNumber = (props) => {
+const IntlNumber = ({ type, value, ...rest }) => {
   // If this is passed something else than a number, render the value directly
-  if (typeof props.value !== 'number') {
-    return props.value || null;
+  if (typeof value !== 'number') {
+    return value;
   }
 
-  switch (props.type) {
+  switch (type) {
   case 'plural':
-    return <FormattedPlural {...props} />;
+    return <FormattedPlural {...rest} value={value} />;
   default:
-    return <FormattedNumber {...props} />;
+    return <FormattedNumber {...rest} value={value} />;
   }
 };
 

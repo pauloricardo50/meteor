@@ -22,23 +22,18 @@ export const T = (props) => {
 
   if (noTooltips) {
     return <FormattedMessage {...props} />;
-  } else if (id === undefined) {
-    return null;
   } else if (typeof id !== 'string') {
     return id;
+  } else if (!id) {
+    throw new Error('Undefined id in Translation component');
   }
 
-  // formattedMessage provides an array of values in the children function.
-  // When there is more than a simple string to render, for example a rich
-  // HTML element was added as a values prop, then it returns several values
-  // To avoid unnecessary spans, separate those with a single message
-  // and those, rare, with more.
   const Auto = makeAutoTooltip(props);
 
   return (
     <FormattedMessage
       id={id}
-      values={{ ...values, ...defaultIntlValues }}
+      values={{ ...defaultIntlValues, ...values }}
       {...rest}
     >
       {(...formattedMessage) => (
