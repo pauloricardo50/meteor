@@ -21,14 +21,15 @@ class Waves extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      windowHeight: window.innerHeight,
-      windowWidth: window.innerWidth,
-    };
+    this.state = { windowWidth: window.innerWidth };
   }
 
   componentDidMount() {
     window.addEventListener('resize', this.handleResize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
   }
 
   getWaves = transparent =>
@@ -51,10 +52,10 @@ class Waves extends Component {
     }));
 
   handleResize = debounce(() => {
-    this.setState({
-      windowHeight: window.innerHeight,
-      windowWidth: window.innerWidth,
-    });
+    // Only set state on window width change, otherwise it's too costly
+    if (window.innerWidth !== this.state.windowWidth) {
+      this.setState({ windowWidth: window.innerWidth });
+    }
   }, 500);
 
   render() {

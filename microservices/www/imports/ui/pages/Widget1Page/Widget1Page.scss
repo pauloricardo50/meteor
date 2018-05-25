@@ -40,7 +40,10 @@
 .widget1-page .input-form-placeholder {
   display: flex;
   flex-grow: 1;
+  // flex-basis: 0;
 
+  width: 100%;
+  max-width: 300px;
   margin: 16px;
   padding: 16px;
 }

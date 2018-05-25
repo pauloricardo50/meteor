@@ -2,12 +2,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import constants from 'core/config/constants';
-import colors from 'core/config/colors';
-import { toNumber, toDecimalNumber } from 'core/utils/conversionFunctions';
-
-import MyTextInput from 'core/components/TextInput';
-
+import * as constants from '../../config/constants';
+import colors from '../../config/colors';
+import { toNumber, toDecimalNumber } from '../../utils/conversionFunctions';
+import MyTextInput from '../TextInput';
 import ValidIcon from './ValidIcon';
 import FormValidator from './FormValidator';
 
@@ -109,7 +107,7 @@ class TextInput extends Component {
           // If there was an error, reset value to the backend value
           this.setState({ saving: false, value: currentValue });
         });
-    }, constants.cpsLimit);
+    }, constants.CHARACTERS_TYPES_PER_SECOND_AVG);
   };
 
   render() {

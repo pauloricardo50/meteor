@@ -8,20 +8,6 @@ export const getWidth = () => {
   }
 };
 
-const getSubdomain = () => {
-  if (global.window) {
-    const fullPath = window.location.host;
-    // window.location.host is subdomain.domain.com
-    return fullPath.split('.')[0];
-  }
-};
-
-export const isDemo = () => getSubdomain() === 'demo';
-export const isWww = () => getSubdomain() === 'www';
-export const isApp = () => getSubdomain() === 'app';
-export const isAdmin = () => getSubdomain() === 'admin';
-export const isLender = () => getSubdomain() === 'lender';
-
 export const storageAvailable = (type) => {
   try {
     const storage = window[type];

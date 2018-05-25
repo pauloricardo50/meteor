@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { analytics } from 'meteor/okgrow:analytics';
-import { storageAvailable, isDemo } from './browserFunctions';
+import { storageAvailable } from './browserFunctions';
 
 /**
  * allowTracking - Prevents tracking during tests and on a demo website
@@ -8,9 +8,7 @@ import { storageAvailable, isDemo } from './browserFunctions';
  * @return {Boolean}
  */
 export const allowTracking = () => {
-  if (isDemo()) {
-    return false;
-  } else if (Meteor.isTest) {
+  if (Meteor.isTest) {
     return false;
   }
 

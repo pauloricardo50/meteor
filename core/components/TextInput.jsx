@@ -11,7 +11,7 @@ import classnames from 'classnames';
 
 import { swissFrancMask, percentMask } from '../utils/textMasks';
 import { toNumber } from '../utils/conversionFunctions';
-import constants from '../config/constants';
+import * as financeConstants from '../config/financeConstants';
 
 const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
   if (simpleOnChange) {
@@ -24,7 +24,7 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
       onChangeHandler: event => onChange(id, toNumber(event.target.value)),
       showMask: true,
       mask: swissFrancMask,
-      placeholder: constants.getCurrency(),
+      placeholder: financeConstants.CURRENCY,
       value,
     };
   case 'percent':

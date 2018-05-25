@@ -66,10 +66,13 @@ fi
 echo "Installing npm packages in root"
 ( cd .. && meteor npm install );
 
-echo "Installing npm packages in core/"
-( cd ../core && meteor npm install );
+# Install core npm packages only on non-circleCI environments
+if [[ $CIRCLE_CI != 1 ]];
+then
+  echo "Installing npm packages in core/"
+  ( cd ../core && meteor npm install );
+fi
 
-echo "Installing global packages"
 meteor npm i -g babel-cli start-server-and-test
 
 echo "Creating language files..."

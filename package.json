@@ -6,8 +6,9 @@
     "setup": "cd scripts/ && ./setup.sh",
     "setup-clean": "cd scripts/ && ./setup.sh -c",
     "run": "cd scripts/ && ./run.sh",
-    "lang": "cd scripts/ && babel-node createLanguages.js",
+    "lang": "cd scripts/ && meteor babel-node createLanguages.js",
     "clean-run": "npm run setup-clean && npm run run",
+    "remove-core": "cd scripts/ && ./remove-core.sh",
     "clean-css": "cd scripts/ && ./clean-css.sh"
   },
   "repository": {
@@ -21,6 +22,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.3",
+    "cypress": "^2.1.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-prettier": "^2.9.0",
