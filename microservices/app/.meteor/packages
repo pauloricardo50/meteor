@@ -30,7 +30,7 @@ meteortesting:mocha
 # User Accounts
 alanning:roles                  # Easy role management
 
-std:accounts-ui                 # React account component
+std:accounts-ui@1.3.2           # React account component
 email@1.2.3
 
 
