@@ -2,12 +2,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import * as constants from 'core/config/constants';
-import colors from 'core/config/colors';
-import { toNumber, toDecimalNumber } from 'core/utils/conversionFunctions';
-
-import MyTextInput from 'core/components/TextInput';
-
+import * as constants from '../../config/constants';
+import colors from '../../config/colors';
+import { toNumber, toDecimalNumber } from '../../utils/conversionFunctions';
+import MyTextInput from '../TextInput';
 import ValidIcon from './ValidIcon';
 import FormValidator from './FormValidator';
 
