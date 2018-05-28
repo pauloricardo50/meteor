@@ -2,12 +2,20 @@ export const TOOLTIP_LISTS = {
   GENERAL: 'GENERAL',
   OFFER_TABLE: 'OFFER_TABLE',
   DEV: 'DEV',
+  WIDGET1: 'WIDGET1',
 };
 
 // Write the keys in lowercase
 // If `double` is true, it means there need to be 2 strings for the
 // "Learn More" part.
 export const generalTooltips = {
+  finma: { id: 'finma', double: true },
+
+  "taux d'effort": { id: 'incomeRatio', double: true },
+  "taux d'avance": { id: 'borrowRatio', double: true },
+};
+
+export const widget1Tooltips = {
   'plan financier': { id: 'financialPlan', double: true },
   'structure de financement': { id: 'financialPlan', double: true },
 
@@ -56,8 +64,10 @@ export const tooltips = (list) => {
     return offerTableTooltips;
   case TOOLTIP_LISTS.DEV:
     return devTooltips;
+  case TOOLTIP_LISTS.WIDGET1:
+    return widget1Tooltips;
   default:
-    throw new Error(`Unknown tooltip list ${list}`);
+    throw new Error(`Unknown tooltip list: "${list}"`);
   }
 };
 
