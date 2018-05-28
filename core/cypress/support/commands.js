@@ -1,4 +1,9 @@
-import { DEV_EMAIL, USER_EMAIL, USER_PASSWORD } from '../testHelpers';
+import {
+  DEV_EMAIL,
+  USER_EMAIL,
+  USER_PASSWORD,
+  getTestUserByRole,
+} from '../testHelpers';
 
 Cypress.Commands.add('eraseAndGenerateTestData', () =>
   cy.meteorLogoutAndLogin(DEV_EMAIL).then(window =>
@@ -105,7 +110,7 @@ Cypress.Commands.add('setAuthentication', (pageAuthentication) => {
   if (pageAuthentication === 'public') {
     cy.meteorLogout();
   } else {
-    cy.meteorLogoutAndLogin(`${pageAuthentication}-1@e-potek.ch`);
+    cy.meteorLogoutAndLogin(getTestUserByRole(pageAuthentication));
   }
 });
 
