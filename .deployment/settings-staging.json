@@ -18,7 +18,7 @@
     "subdomains": {
       "www": "https://www.staging.e-potek.ch",
       "app": "https://app.staging.e-potek.ch",
-      "admin": "https://admin.staging.e-potek.ch",
+      "admin": "https://admin.staging.e-potek.ch"
     }
   },
   "AWS": {
