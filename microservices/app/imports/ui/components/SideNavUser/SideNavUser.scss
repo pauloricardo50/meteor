@@ -13,14 +13,15 @@
 
   transition: all 300ms $bezier;
 
-  background-color: #fff;
+  background-color: #FFF;
 
   .mui-select div[role='button'][aria-haspopup='true'] {
     display: block;
-    padding-right: 30px;
-    padding-top: 0;
 
-    > svg {
+    padding-top: 0;
+    padding-right: 30px;
+
+     > svg {
       vertical-align: text-top;
     }
   }
@@ -50,7 +51,7 @@
   transition: all 300ms $bezier;
   text-decoration: none;
 
-  color: #343a40 !important;
+  color: #343A40 !important;
 }
 
 .side-nav-user .link .title {
@@ -65,12 +66,12 @@
 }
 
 .side-nav-user .link:hover {
-  background-color: #f4f6f8;
+  background-color: #F4F6F8;
 }
 
 .side-nav-user .link.active-link {
   border-left: 2px solid $primary;
-  background-color: #f1f3f5;
+  background-color: #F1F3F5;
 }
 
 .side-nav-user .link.active-link h4 {
@@ -104,7 +105,7 @@
   height: 4px;
 
   border-radius: 100%;
-  background-color: #fff;
+  background-color: #FFF;
 }
 
 .side-nav-user .side-stepper .top-title {
@@ -139,7 +140,7 @@
 }
 
 .side-nav-user .side-stepper .list .step.isActive {
-  background-color: #f8f9fa;
+  background-color: #F8F9FA;
 }
 
 .side-nav-user .side-stepper .list .step.isActive .title {
@@ -147,7 +148,7 @@
 }
 
 .side-nav-user .side-stepper .list .step:hover {
-  background-color: #f9fafb;
+  background-color: #F9FAFB;
 }
 
 .side-nav-user .side-stepper .list .step:first-child {
@@ -189,9 +190,9 @@
   height: 32px;
   margin-right: 8px;
 
-  color: #fff;
+  color: #FFF;
   border-radius: 100%;
-  background-color: #ced4da;
+  background-color: #CED4DA;
 }
 
 .side-nav-user .side-stepper .list .step .top .icon.done {
@@ -202,7 +203,7 @@
   width: 18px !important;
   height: 18px !important;
 
-  color: #fff !important;
+  color: #FFF !important;
 }
 
 .side-nav-user .side-stepper .list .step .top .text {
@@ -213,13 +214,13 @@
 }
 
 .side-nav-user .side-stepper .list .step .top .text .title {
-  color: #343a40;
+  color: #343A40;
 
   font-weight: 400;
 }
 
 .side-nav-user .side-stepper .list .step .top .text .subtitle {
-  color: #868e96;
+  color: #868E96;
 
   font-weight: 400;
 }
@@ -230,8 +231,8 @@
 
   height: 100%;
 
-  opacity: 0.5;
-  border-right: 1px solid #dee2e6;
+  opacity: .5;
+  border-right: 1px solid #DEE2E6;
 }
 
 .side-nav-user .side-stepper .list .step:first-child .absolute-line {
@@ -274,7 +275,7 @@
 .side-nav-user .side-stepper .list .step .step-list .item:hover {
   cursor: pointer;
 
-  background-color: #f4f6f8;
+  background-color: #F4F6F8;
 }
 
 .side-nav-user .side-stepper .list .step .step-list .item.disable {
@@ -292,7 +293,7 @@
 
   width: 48px;
 
-  color: #dee2e6;
+  color: #DEE2E6;
 }
 
 .side-nav-user
@@ -319,7 +320,7 @@
   .item
   .icon
   .available-icon {
-  background-color: #dee2e6;
+  background-color: #DEE2E6;
 }
 
 .side-nav-user .side-stepper .list .step .step-list .item .icon.warning {
@@ -352,13 +353,13 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  color: #343a40;
+  color: #343A40;
 
   font-weight: 400;
 }
 
 .side-nav-user .side-stepper .list .step .step-list .item .text .subtitle {
-  color: #adb5bd;
+  color: #ADB5BD;
 
   font-weight: 400;
 }
@@ -376,7 +377,7 @@
 
 .side-nav-user .side-stepper .list .step .step-list .item.active {
   border-left: 1px solid $primary;
-  background-color: #f1f3f5;
+  background-color: #F1F3F5;
 }
 
 .side-nav-user .side-stepper .list .step .step-list .item.active .title {

@@ -3,7 +3,10 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from '../../../utils/testHelpers/enzyme';
 
-import { AutoTooltip } from '../AutoTooltip';
+import {
+  AutoTooltip,
+  createRegexThatFindsAnyWordFromList,
+} from '../AutoTooltip';
 import { TOOLTIP_LISTS } from '../../../arrays/tooltips';
 
 describe('<AutoTooltip />', () => {
@@ -49,5 +52,9 @@ describe('<AutoTooltip />', () => {
   it('throws if a non existent list is provided', () => {
     props = { tooltipList: 'yo', children: 'test' };
     expect(() => component()).to.throw();
+  });
+
+  it('returns null if no list is provided', () => {
+    expect(createRegexThatFindsAnyWordFromList()).to.equal(null);
   });
 });

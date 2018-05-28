@@ -9,6 +9,12 @@ export const TooltipProvider = ({ tooltipList, children }) => (
   <Provider value={tooltipList}>{children}</Provider>
 );
 
+export const TooltipProviderContainer = tooltipList => Component => props => (
+  <Provider value={tooltipList}>
+    <Component {...props} />
+  </Provider>
+);
+
 export const TooltipContainer = Component => props => (
   <Consumer>
     {tooltipList => <Component tooltipList={tooltipList} {...props} />}
@@ -23,3 +29,5 @@ TooltipProvider.propTypes = {
 TooltipProvider.defaultProps = {
   tooltipList: TOOLTIP_LISTS.GENERAL,
 };
+
+export { TOOLTIP_LISTS };
