@@ -18,9 +18,8 @@ import {
   DEV_COUNT,
   USER_COUNT,
   ADMIN_COUNT,
-  STEP_2_LOANS_PER_USER,
-  STEP_1_LOANS_PER_USER,
   UNOWNED_LOANS_COUNT,
+  LOANS_PER_USER,
 } from './config';
 import { createFakeLoan } from './loans';
 import { createFakeTask, deleteUsersTasks } from './tasks';
@@ -109,11 +108,15 @@ Meteor.methods({
 
         // based on index, always generate 1, 2 and 3 numbers
         const loanStep = index % 3 + 1;
-        createFakeLoanFixture({ step: loanStep, userId, adminId });
+
+        range(LOANS_PER_USER).forEach(() => {
+          createFakeLoanFixture({ step: loanStep, userId, adminId });
+        });
       });
 
-      // Create an unowned loan also
-      createFakeLoan({});
+      range(UNOWNED_LOANS_COUNT).forEach(() => {
+        createFakeLoan({});
+      });
 
       createTestUserWithData();
     }
