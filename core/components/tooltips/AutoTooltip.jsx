@@ -7,9 +7,13 @@ import { tooltips, TOOLTIP_LISTS } from 'core/arrays/tooltips';
 import TooltipOverlay from './TooltipOverlay';
 import { TooltipContainer } from './TooltipContext';
 
-const createRegexThatFindsAnyWordFromList = list =>
-  new RegExp(`(${Object.keys(tooltips(list)).join('|')})`, 'gi');
+export const createRegexThatFindsAnyWordFromList = (list) => {
+  if (list) {
+    return new RegExp(`(${Object.keys(tooltips(list)).join('|')})`, 'gi');
+  }
 
+  return null;
+};
 const parseTextForTooltips = props =>
   reactStringReplace(
     props.children,
