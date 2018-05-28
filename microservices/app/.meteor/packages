@@ -30,7 +30,6 @@ meteortesting:mocha
 # User Accounts
 alanning:roles                  # Easy role management
 
-std:accounts-ui@1.3.2           # React account component
 email@1.2.3
 
 
@@ -65,3 +64,4 @@ okgrow:analytics@=3.0.1
 softwarerero:accounts-t9n
 u2622:persistent-session
 tmeasday:acceptance-test-driver
+std:accounts-ui
