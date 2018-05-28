@@ -9,8 +9,6 @@ import { TooltipContainer } from './TooltipContext';
 
 export const createRegexThatFindsAnyWordFromList = (list) => {
   if (list) {
-    console.log('list?', list);
-
     return new RegExp(`(${Object.keys(tooltips(list)).join('|')})`, 'gi');
   }
 
