@@ -6,7 +6,7 @@
 # Remove all symlinks in the parent directory
 find .. -type l -exec unlink {} \;
 
-for i in 'admin' 'app' 'lender' 'www'
+for i in 'admin' 'app' 'www'
   do
     ( cd ../microservices/$i && rm -rf ./public && rm -rf ./private );
   done
