@@ -14,9 +14,9 @@ const WwwTopNavLinksList = ({ variant }) => (
         to={`/${link}`}
         className={`www-top-nav-link ${variant}`}
       >
-        <h4 className="www-top-nav-link-label">
+        <h5 className="www-top-nav-link-label">
           <T id={`WwwTopNavLinks.${link}`} />
-        </h4>
+        </h5>
       </Link>
     ))}
   </React.Fragment>

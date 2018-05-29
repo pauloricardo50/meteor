@@ -23,7 +23,11 @@ const FaqPageFaqs = ({ faqs }) => (
   <React.Fragment>
     {faqs.map(faq => (
       <ExpansionPanel key={faq}>
-        <ExpansionPanelSummary expandIcon={<Icon type="expandMore" />}>
+        <ExpansionPanelSummary
+          expandIcon={
+            <Icon type="expandMore" className="faq-page-faqs-expand-icon" />
+          }
+        >
           <h4>
             <T id={`FaqPageFaqs.${faq}.question`} />
           </h4>

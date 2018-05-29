@@ -177,6 +177,8 @@
 
   h2,
   h3 {
+    text-align: center;
+
     color: white;
   }
 
@@ -366,8 +368,8 @@
     display: flex;
 
     width: 100%;
-    max-width: 800px;
-    height: 800px;
+    max-width: 600px;
+    height: 600px;
 
     .map {
       flex: 1;

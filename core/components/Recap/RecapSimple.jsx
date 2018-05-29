@@ -5,7 +5,12 @@ import classnames from 'classnames';
 import T from '../Translation';
 
 const RecapSimple = ({ array, noScale, className }) => (
-  <div className={`result animated fadeIn ${className}`}>
+  <div
+    className={classnames(
+      'result animated fadeIn no-responsive-typo-m',
+      className,
+    )}
+  >
     {array.map((item) => {
       if (item.hide) {
         return null;
@@ -23,8 +28,7 @@ const RecapSimple = ({ array, noScale, className }) => (
       }
       return (
         <div
-          className={classnames({
-            'fixed-size recap-item': true,
+          className={classnames('fixed-size recap-item', {
             'no-scale': noScale,
             bold: item.bold,
           })}
@@ -34,10 +38,10 @@ const RecapSimple = ({ array, noScale, className }) => (
           }}
           key={item.label}
         >
-          <h4 className="secondary">
+          <p>
             <T id={item.label} tooltipPlacement="bottom" />
-          </h4>
-          <h3 {...item.props}>{item.value}</h3>
+          </p>
+          <p {...item.props}>{item.value}</p>
         </div>
       );
     })}

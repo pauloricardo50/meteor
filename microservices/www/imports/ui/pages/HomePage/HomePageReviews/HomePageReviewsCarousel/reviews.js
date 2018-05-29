@@ -30,7 +30,7 @@ export default [
       "Nous avons tenté pendant 4 ans d'obtenir un prêt hypothécaire pour un investissement immobilier un peu particulier. La plupart des banques ne souhaitent même pas entrer en matière, nous avons finalement décidé de confier le mandat à e-Potek, qui a réussi à nous trouver un financement en quelques semaines et sans difficulté. Notre seul regret est de ne pas avoir connu cette société avant, car nous aurions gagné du temps et de l'argent sur cet investissement ; les banques et leurs dirigeants ne réagissent pas de la même façon sur un dossier lorsque ce sont des experts du métier qui viennent le leur présenter. Nous ne pouvons que recommander e-Potek, à tous ceux désirants obtenir un financement hypothécaire, car ils vous feront gagner un temps précieux sur vos investissements immobiliers.",
   },
   {
-    name: 'Janine, Bertrand & Robin',
+    name: 'Famille Bertrand',
     title: 'Clients - Famille',
     text:
       'Nous avons apprécié, la précision, la rapidité, l’efficacité et le professionnalisme de vos collaborateurs. Vous avez parfaitement répondu à nos besoins. Merci pour la qualité de vos services.',

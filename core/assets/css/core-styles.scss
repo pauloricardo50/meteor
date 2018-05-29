@@ -224,8 +224,7 @@ p.description,
 
   text-align: justify;
 
-  font-size: 1.25em;
-  line-height: 1.6em;
+  line-height: 1.8em;
 }
 
 .description > p,
@@ -233,6 +232,15 @@ p.description,
   max-width: 600px;
 
   text-align: justify;
+}
+
+@media (max-width: $med) {
+  p.description,
+  .description p,
+  .description > p,
+  .description > h4 {
+    text-align: left;
+  }
 }
 
 // Flex helper classes

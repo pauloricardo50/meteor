@@ -14,9 +14,9 @@ const WwwFooterTop = ({ children }) => {
   return (
     <div className="www-footer-top">
       <b className="tagline">
-        <h2>
+        <h3>
           <T id="HomePageHeader.title" />
-        </h2>
+        </h3>
       </b>
       <Button className="cta" variant="raised" link to="/start/1">
         <T id="general.start" />
