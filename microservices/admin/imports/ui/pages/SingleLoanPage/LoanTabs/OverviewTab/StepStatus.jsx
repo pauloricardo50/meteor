@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import getSteps from 'core/arrays/steps';
 import Icon from 'core/components/Icon';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 const StepStatus = (props) => {
   const steps = getSteps(props).slice(0, -1);

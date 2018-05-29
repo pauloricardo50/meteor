@@ -5,7 +5,7 @@ import { Accounts } from 'meteor/accounts-base';
 import TextField from 'core/components/Material/TextField';
 import Button from 'core/components/Button';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 const styles = {
   div: {

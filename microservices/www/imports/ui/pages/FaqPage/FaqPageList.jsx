@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { withProps } from 'recompose';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import faqs from './faqs';
 import FaqPageFaqs from './FaqPageFaqs';
 

@@ -7,7 +7,7 @@ import TextInput from 'core/components/TextInput';
 import { getFortune, getInsuranceFortune } from 'core/utils/borrowerFunctions';
 import { USAGE_TYPE } from 'core/api/constants';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 const getArray = (borrowers, showInsurance) => [
   {

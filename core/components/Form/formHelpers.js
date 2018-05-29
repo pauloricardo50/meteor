@@ -1,5 +1,5 @@
 import React from 'react';
-import { T } from '../Translation';
+import T from '../Translation';
 import { toNumber } from '../../utils/conversionFunctions';
 
 const onlyNums = value => value.replace(/[^\d]/g, '');

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import ProcessPage from '/imports/ui/components/ProcessPage';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 import Empty from './Empty';
 import Content from './Content';

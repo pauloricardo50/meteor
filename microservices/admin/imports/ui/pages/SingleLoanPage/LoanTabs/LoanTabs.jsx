@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Tabs from 'core/components/Tabs';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import withMatchParam from 'core/containers/withMatchParam';
 import OverviewTab from './OverviewTab';
 import BorrowersTab from './BorrowersTab';

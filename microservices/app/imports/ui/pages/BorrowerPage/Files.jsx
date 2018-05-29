@@ -3,7 +3,7 @@ import React from 'react';
 
 import UploaderArray from 'core/components/UploaderArray';
 import { borrowerDocuments } from 'core/api/files/documents';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { disableForms } from 'core/utils/loanFunctions';
 
 const styles = {

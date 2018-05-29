@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Button from 'core/components/Button';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 const WwwFooterTop = ({ children }) => {
   if (children) {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import TextInput from 'core/components/TextInput';
 import Button from 'core/components/Button';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 import NewDocumentFormContainer from './NewDocumentFormContainer';
 

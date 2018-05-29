@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import LoanTasksTable from '../LoanTasksTable';
 
 const TasksTab = ({ loan: { borrowerIds, property, _id } }) => (

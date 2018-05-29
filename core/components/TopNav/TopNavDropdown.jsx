@@ -5,7 +5,7 @@ import { Roles } from 'meteor/alanning:roles';
 
 import { handleLoggedOut } from 'core/utils/history';
 import track from '../../utils/analytics';
-import { T } from '../Translation';
+import T from '../Translation';
 import DropdownMenu from '../DropdownMenu';
 
 // Shows a sign out link for all types of users, but:

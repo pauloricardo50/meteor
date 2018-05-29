@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { WARNING, ERROR, SUCCESS } from 'core/api/constants';
 
 const getLenderCount = (borrowStatus, incomeStatus) => {

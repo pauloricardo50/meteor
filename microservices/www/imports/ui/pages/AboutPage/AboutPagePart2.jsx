@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 
 const AboutPagePart2 = () => (

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import Button from 'core/components/Button';
 import Dialog from 'core/components/Material/Dialog';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { loanUpdate } from 'core/api';
 
 export default class AcceptClosingModal extends Component {

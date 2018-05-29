@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Icon from 'core/components/Icon';
 
 import { isLoanValid } from 'core/utils/loanFunctions';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 const styles = {
   div: {

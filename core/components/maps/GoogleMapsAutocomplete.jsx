@@ -15,7 +15,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import { withStyles } from '@material-ui/core/styles';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 const defaultStyles = {
   root: {

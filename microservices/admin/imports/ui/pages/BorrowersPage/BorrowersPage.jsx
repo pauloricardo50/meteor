@@ -1,5 +1,5 @@
 import React from 'react';
-import { T } from 'core/components/Translation/';
+import T from 'core/components/Translation/';
 
 import BorrowersTable from './BorrowersTable';
 import BorrowersPageContainer from './BorrowersPageContainer';

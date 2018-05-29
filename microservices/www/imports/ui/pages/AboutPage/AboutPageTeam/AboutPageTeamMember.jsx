@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import IconButton from 'core/components/IconButton';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 const EMAIL = 'info@e-potek.ch';
 

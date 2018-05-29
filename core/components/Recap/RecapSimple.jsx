@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import { T } from '../Translation';
+import T from '../Translation';
 
 const RecapSimple = ({ array, noScale, className }) => (
   <div className={`result animated fadeIn ${className}`}>

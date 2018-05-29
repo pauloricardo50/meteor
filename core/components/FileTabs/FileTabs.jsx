@@ -5,7 +5,7 @@ import Tab from 'react-bootstrap/lib/Tab';
 import Tabs from 'react-bootstrap/lib/Tabs';
 
 import UploaderArray from 'core/components/UploaderArray';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 import FileTabsContainer from './FileTabsContainer';
 

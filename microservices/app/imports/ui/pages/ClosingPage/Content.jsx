@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { CLOSING_STEPS_STATUS } from 'core/api/constants';
 
 import ClosingItem from './ClosingItem';

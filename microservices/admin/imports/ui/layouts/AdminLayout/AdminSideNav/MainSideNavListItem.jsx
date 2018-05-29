@@ -8,7 +8,7 @@ import classnames from 'classnames';
 
 import Icon from 'core/components/Icon';
 import colors from 'core/config/colors';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 const styles = () => ({
   root: {

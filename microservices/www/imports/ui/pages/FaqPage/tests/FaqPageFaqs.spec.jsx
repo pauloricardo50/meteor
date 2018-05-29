@@ -6,7 +6,7 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 
 import { shallow } from 'core/utils/testHelpers/enzyme';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import FaqPageFaqs from '../FaqPageFaqs';
 
 describe('FaqPageFaqs', () => {

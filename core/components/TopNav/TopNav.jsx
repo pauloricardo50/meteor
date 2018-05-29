@@ -9,7 +9,7 @@ import track from '../../utils/analytics';
 
 import Button from '../Button';
 import { ImpersonateWarningWithTracker } from '../Impersonate/ImpersonateWarning';
-import { T } from '../Translation';
+import T from '../Translation';
 import TopNavDropdown from './TopNavDropdown';
 // import TopNavDrawer from './TopNavDrawer';
 

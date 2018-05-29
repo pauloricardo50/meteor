@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import { DocHead } from 'meteor/kadira:dochead';
 import { injectIntl } from 'react-intl';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 class Page extends Component {
   componentDidMount() {

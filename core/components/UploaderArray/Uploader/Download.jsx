@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import fileSaver from 'file-saver';
 
 import IconButton from 'core/components/IconButton';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { downloadFile } from 'core/api';
 
 export default class Download extends Component {

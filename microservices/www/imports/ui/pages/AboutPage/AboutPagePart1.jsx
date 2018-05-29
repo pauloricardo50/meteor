@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 const AboutPagePart1 = () => (
   <div className="about-page-part-1">

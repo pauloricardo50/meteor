@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import Form, { makeFormArray, email, FIELD_TYPES } from 'core/components/Form';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 const formArray = makeFormArray(
   [

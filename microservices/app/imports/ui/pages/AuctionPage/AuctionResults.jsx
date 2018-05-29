@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import CountUp from 'react-countup';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 import InterestRanges from './InterestRanges';
 

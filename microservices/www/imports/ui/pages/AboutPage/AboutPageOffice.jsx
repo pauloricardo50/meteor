@@ -1,7 +1,7 @@
 import React from 'react';
 
 import MapWithMarker from 'core/components/maps/MapWithMarker';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import ContactPageInformation from '../ContactPage/ContactPageInformation';
 
 export const ADDRESS = 'Chemin Auguste-Vilbert 14, 1218 Le Grand-Saconnex';

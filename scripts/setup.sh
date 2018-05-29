@@ -25,7 +25,7 @@ done
 find .. -type l -exec unlink {} \;
 
 # Prepare every microservice
-for i in 'admin' 'app' 'lender' 'www'
+for i in 'admin' 'app' 'www'
   do
     echo "Preparing $i microservice..."
 

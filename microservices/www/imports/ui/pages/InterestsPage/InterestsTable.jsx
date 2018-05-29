@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Table from 'core/components/Table';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import interestRates from './interestRates';
 import InterestsTableTrend from './InterestsTableTrend';
 

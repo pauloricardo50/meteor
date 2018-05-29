@@ -5,7 +5,7 @@ import { Accounts } from 'meteor/accounts-base';
 import TextField from 'core/components/Material/TextField';
 import Button from 'core/components/Button';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import DialogSimple from 'core/components/DialogSimple';
 
 const styles = {
@@ -73,16 +73,18 @@ export default class PasswordChange extends Component {
       <DialogSimple
         title={<T id="PasswordChange.dialogTitle" />}
         label={<T id="PasswordChange.change" />}
-        actions={[
+        actions={() => [
           <Button
             label={<T id="general.cancel" />}
             onClick={this.handleClose}
+            key="cancel"
           />,
           <Button
             label={<T id="general.ok" />}
             primary
             disabled={!isValid}
             onClick={this.handleSubmit}
+            key="ok"
           />,
         ]}
         close={close}

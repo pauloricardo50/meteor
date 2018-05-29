@@ -220,10 +220,6 @@ hr {
 // A .description <p /> is a nice styled paragraph optimized for reading
 p.description,
 .description p {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
   max-width: 600px;
 
   text-align: justify;

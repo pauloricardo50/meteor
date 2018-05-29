@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import employees from 'core/arrays/epotekEmployees';
 import AboutPageTeamMember from './AboutPageTeamMember';
 import AboutPageTeamRecruiting from './AboutPageTeamRecruiting';

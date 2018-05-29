@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { FILE_STATUS } from 'core/api/files/fileConstants';
 import FullDate from 'core/components/dateComponents/FullDate';
 import BorrowersIssues from './BorrowerIssues';

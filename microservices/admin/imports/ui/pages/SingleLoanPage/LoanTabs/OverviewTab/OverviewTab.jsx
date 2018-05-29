@@ -5,7 +5,7 @@ import Button from 'core/components/Button';
 import Recap from 'core/components/Recap';
 import renderObject from 'core/utils/renderObject';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { loanHasMinimalInformation } from 'core/utils/loanFunctions';
 import AdminNote from '../../../../components/AdminNote';
 import StepStatus from './StepStatus';

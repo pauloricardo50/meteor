@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Page from '/imports/ui/components/Page';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import FileTabs from 'core/components/FileTabs';
 
 const FilesPage = props => (

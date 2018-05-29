@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import DonutChart from 'core/components/charts/DonutChart';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { getInterests, getAmortization } from 'core/utils/finance-math';
 import { getInterestsWithOffer } from 'core/utils/loanFunctions';
 import DashboardRecapChartInfo from './DashboardRecapChartInfo';

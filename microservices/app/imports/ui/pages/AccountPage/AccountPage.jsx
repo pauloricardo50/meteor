@@ -5,7 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import Button from 'core/components/Button';
 
 import Page from '/imports/ui/components/Page';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import PasswordChange from './PasswordChange';
 
 const styles = {

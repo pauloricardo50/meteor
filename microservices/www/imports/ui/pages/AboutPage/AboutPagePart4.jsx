@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { withState } from 'recompose';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import AboutPagePart4Tabs from './AboutPagePart4Tabs';
 
 const AboutPagePart4 = ({ index, setIndex }) => (

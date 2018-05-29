@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import StrategyChoices from '/imports/ui/components/StrategyChoices';
 import { AMORTIZATION_STRATEGY_PRESET } from 'core/api/constants';
 

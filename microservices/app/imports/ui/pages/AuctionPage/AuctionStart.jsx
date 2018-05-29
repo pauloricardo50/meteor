@@ -7,7 +7,7 @@ import Button from 'core/components/Button';
 import { getLenderCount } from 'core/utils/loanFunctions';
 import { startAuction } from 'core/api/methods';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import track from 'core/utils/analytics';
 import withLoan from 'core/containers/withLoan';
 import ConfirmButton from '../../components/ConfirmButton';

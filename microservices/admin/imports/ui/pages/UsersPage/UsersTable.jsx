@@ -5,7 +5,7 @@ import { Link, withRouter } from 'react-router-dom';
 
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import Table from 'core/components/Table';
-import { T } from 'core/components/Translation/';
+import T from 'core/components/Translation/';
 import Loading from 'core/components/Loading';
 import { isUser } from 'core/utils/userFunctions';
 import Roles from 'core/components/Roles';

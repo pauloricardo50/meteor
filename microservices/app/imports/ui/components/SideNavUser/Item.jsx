@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import Icon from 'core/components/Icon';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import colors from 'core/config/colors';
 
 const getIcon = (item, isWaiting) => {

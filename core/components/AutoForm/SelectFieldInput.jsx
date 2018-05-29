@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import Select from 'core/components/Select';
 import ValidIcon from './ValidIcon';
 import FormValidator from './FormValidator';

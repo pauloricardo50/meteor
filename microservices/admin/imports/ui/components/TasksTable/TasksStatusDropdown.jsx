@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { TASK_STATUS } from 'core/api/tasks/taskConstants';
-import { T } from 'core/components/Translation/';
+import T from 'core/components/Translation/';
 import DropdownMenu from 'core/components/DropdownMenu/';
 import { taskChangeStatus } from 'core/api/methods';
 

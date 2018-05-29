@@ -10,9 +10,6 @@
       "path": "microservices/app"
     },
     {
-      "path": "microservices/lender"
-    },
-    {
       "path": "microservices/www"
     }
   ],

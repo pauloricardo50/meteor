@@ -8,7 +8,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { withState, compose } from 'recompose';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import IconButton from 'core/components/IconButton';
 import { links } from './WwwTopNavLinksList';
 

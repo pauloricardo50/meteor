@@ -37,11 +37,6 @@ const config = {
       exceptions: ['Start2Form', 'Forms', 'offer'],
     },
     {
-      id: 'lender',
-      path: '../microservices/lender',
-      exceptions: ['LoginPage'],
-    },
-    {
       id: 'admin',
       path: '../microservices/admin',
       exceptions: [
@@ -81,6 +76,7 @@ const config = {
     'property',
     'roles',
     'Form',
+    'TooltipSynonyms',
   ],
 };
 

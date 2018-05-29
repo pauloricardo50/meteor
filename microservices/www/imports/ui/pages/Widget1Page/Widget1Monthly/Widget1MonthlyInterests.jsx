@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Select from 'core/components/Select';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 const options = [
   { id: 0.01, label: 'Libor moyen, 1.00%' },

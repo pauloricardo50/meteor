@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import MapWithMarker from 'core/components/maps/MapWithMarker';
 import Button from 'core/components/Button';
 import WwwLayout from '../../WwwLayout';

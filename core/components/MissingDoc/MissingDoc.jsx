@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 
 const MisisngDoc = () => (
