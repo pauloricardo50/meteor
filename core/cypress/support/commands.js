@@ -72,24 +72,6 @@ Cypress.Commands.add('meteorLogout', () => {
       }));
 });
 
-Cypress.Commands.add(
-  'meteorLogin',
-  (email = USER_EMAIL, password = USER_PASSWORD) => {
-    // Make sure we're the login page,
-    // meaning redirection finished after logging out
-    cy.get('.login-page').should('exist');
-
-    cy.window().then(({ Meteor }) =>
-      new Cypress.Promise((resolve, reject) => {
-        Meteor.loginWithPassword(
-          email,
-          password,
-          loginError => (loginError ? reject(loginError) : resolve()),
-        );
-      }));
-  },
-);
-
 Cypress.Commands.add('routeShouldExist', (expectedPageUri) => {
   // make sure the page's route exist (doesn't get redirected to the not-found page)
   // Note: it can get redirected on componentDidMount - that's not tested here
@@ -99,10 +81,11 @@ Cypress.Commands.add('routeShouldExist', (expectedPageUri) => {
 
 Cypress.Commands.add('setAuthentication', (pageAuthentication) => {
   cy.window().then(({ Meteor }) => {
-    cy.meteorLogout();
-
-    if (pageAuthentication !== 'public') {
-      cy.meteorLogin(`${pageAuthentication}-1@e-potek.ch`);
+    if (pageAuthentication === 'public') {
+      cy.meteorLogout();
+    }
+    else {
+      cy.meteorLogoutAndLogin(`${pageAuthentication}-1@e-potek.ch`);
     }
   });
 });
@@ -110,7 +93,34 @@ Cypress.Commands.add('setAuthentication', (pageAuthentication) => {
 Cypress.Commands.add(
   'meteorLogoutAndLogin',
   (email = USER_EMAIL, password = USER_PASSWORD) => {
-    cy.meteorLogout().meteorLogin(email, password);
+    cy
+      .window()
+      .then(({ Meteor }) =>
+        new Cypress.Promise((resolve, reject) => {
+          Meteor.logout((err) => {
+            if (err) {
+              return reject(err);
+            }
+
+            resolve();
+          })
+        })
+      );
+
+    cy.get('.login-page').should('exist');
+
+    cy.window().then(({ Meteor }) =>
+      new Cypress.Promise((resolve, reject) => {
+        console.log(email, password);
+        Meteor.loginWithPassword(
+          email,
+          password,
+          loginError => (loginError ? reject(loginError) : resolve()),
+        );
+      })
+    );
+
+    cy.window();
   },
 );
 
