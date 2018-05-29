@@ -26,6 +26,7 @@ import { createFakeTask, deleteUsersTasks } from './tasks';
 import { createFakeUsers, getFakeUsersIds, createUser } from './users';
 import { createFakeOffer } from './offers';
 import { ROLES } from '../api/users/userConstants';
+import { E2E_USER_EMAIL } from './constants';
 
 const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
 
@@ -72,9 +73,9 @@ const createFakeLoanFixture = ({
   createFakeOffer(loanId, userId);
 };
 
-// Create a test user used in app'2 e2e tests and all the fixtures it needs
+// Create a test user used in app's e2e tests and all the fixtures it needs
 const createTestUserWithData = () => {
-  const testUserId = createUser('test-user@e-potek.ch', ROLES.USER);
+  const testUserId = createUser(E2E_USER_EMAIL, ROLES.USER);
 
   const admins = getAdmins();
 

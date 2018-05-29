@@ -1,6 +1,7 @@
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 import { Users } from '../api';
+import { USER_PASSWORD } from './constants';
 
 export const createFakeUsers = (count, role, currentUserEmail = '') => {
   const insertedUsers = [];
@@ -16,7 +17,7 @@ export const createFakeUsers = (count, role, currentUserEmail = '') => {
 export const createUser = (email, role) => {
   const userId = Accounts.createUser({
     email,
-    password: '12345',
+    password: USER_PASSWORD,
   });
   Roles.addUsersToRoles(userId, [role]);
 

@@ -1,6 +1,6 @@
 import {
   DEV_EMAIL,
-  USER_EMAIL,
+  E2E_USER_EMAIL,
   USER_PASSWORD,
   getTestUserByRole,
 } from '../testHelpers';
@@ -82,7 +82,7 @@ Cypress.Commands.add('meteorLogout', () => {
 
 Cypress.Commands.add(
   'meteorLogoutAndLogin',
-  (email = USER_EMAIL, password = USER_PASSWORD) => {
+  (email = E2E_USER_EMAIL, password = USER_PASSWORD) => {
     cy
       .meteorLogout()
       .window()
