@@ -48,34 +48,37 @@ Cypress.Commands.add('getTestData', (email) => {
 });
 
 Cypress.Commands.add('meteorLogout', () => {
-  let loggedIn = false;
+  cy
+    .window()
+    .then(({ Meteor }) =>
+      new Cypress.Promise((resolve, reject) => {
+        if (!Meteor.userId()) {
+          return resolve(false);
+        }
 
-  cy.window().then(({ Meteor }) => new Cypress.Promise((resolve, reject) => {
-    if (!Meteor.userId()) {
-      return resolve();
-    }
+        Meteor.logout((err) => {
+          if (err) {
+            return reject(err);
+          }
 
-    Meteor.logout((err) => {
-      if (err) {
-        return reject(err);
-      }
-
-      loggedIn = true;
-
-      resolve();
-    });
-  }));
-
-  cy.get('.login-page').should(($loginpage) => {
-    if (loggedIn) {
-      expect($loginpage).to.have.lengthOf(1);
-    }
-  });
+          resolve(true);
+        });
+      }))
+    .then(loggedOut =>
+      cy.get('.login-page').should(($loginPage) => {
+        if (loggedOut) {
+          expect($loginPage).to.have.length(1);
+        }
+      }));
 });
 
 Cypress.Commands.add(
   'meteorLogin',
   (email = USER_EMAIL, password = USER_PASSWORD) => {
+    // Make sure we're the login page,
+    // meaning redirection finished after logging out
+    cy.get('.login-page').should('exist');
+
     cy.window().then(({ Meteor }) =>
       new Cypress.Promise((resolve, reject) => {
         Meteor.loginWithPassword(
