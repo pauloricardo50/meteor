@@ -12,31 +12,31 @@ $font-size-m: 18px;
 $font-size-l: 20px;
 
 // App colors
-$primary: #005bea;
-$secondary: #00c6ff;
+$primary: #005BEA;
+$secondary: #00C6FF;
 $primary-light: $secondary;
-$tertiary: #001a8f;
+$tertiary: #001A8F;
 $primary-dark: $tertiary;
-$success: #21d3b5;
-$warning: #f3af50;
-$error: #e01076;
+$success: #21D3B5;
+$warning: #F3AF50;
+$error: #E01076;
 
 // Helper colors
-$grey1: #d8d8d8;
-$grey2: #eee;
-$grey3: #f8f8f8;
-$border-grey: #dee2e6;
-$light-grey: #eee;
+$grey1: #D8D8D8;
+$grey2: #EEE;
+$grey3: #F8F8F8;
+$border-grey: #DEE2E6;
+$light-grey: #EEE;
 $icon: #444;
 $icon-hover: #888;
-$background-color: #f8f8f8;
+$background-color: #F8F8F8;
 
 // Font variables
 $bold: 600;
-$body-text: rgba(#000, 0.6);
-$title-text: rgba(#000, 0.74);
+$body-text: rgba(#000, .6);
+$title-text: rgba(#000, .74);
 
 // Other
 $top-nav-height: 64px;
-$bezier: cubic-bezier(0.02, 0.01, 0.47, 1);
+$bezier: cubic-bezier(.02, .01, .47, 1);
 $z-nav: 100;

@@ -34,18 +34,18 @@
 
 .widget1-page .widget1-part-1 {
   display: flex;
+  align-items: flex-start;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: flex-start;
 
   width: 100%;
 }
 
 .widget1-page .input-form-placeholder {
   display: flex;
-  flex-grow: 1;
   align-self: stretch;
+  flex-grow: 1;
 
   width: 100%;
   max-width: 300px;
@@ -86,8 +86,9 @@
 .widget1-page .widget1-part-2 .card1 h3 {
   margin-top: 0;
 
-  color: $primary;
   text-align: center;
+
+  color: $primary;
 }
 
 .widget1-page .widget1-part-2 .card1 .card-bottom {
@@ -125,10 +126,10 @@
   display: flex;
   flex-shrink: 0;
   justify-content: center;
-  padding: 16px;
-  box-sizing: border-box;
 
+  box-sizing: border-box;
   width: 100%;
+  padding: 16px;
 
   text-align: justify;
 

@@ -45,12 +45,12 @@ $image-height: 300px;
 
   vertical-align: middle;
 
-  opacity: 0.1;
+  opacity: .1;
   color: $primary;
 
+  font-family: 'Eina04-Bold';
   font-size: 240px;
   line-height: 240px;
-  font-family: 'Eina04-Bold';
 }
 
 .description-item .description-item-number:after {
@@ -64,9 +64,9 @@ $image-height: 300px;
   pointer-events: none;
 
   background: linear-gradient(
-    to top,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0) 80%
+  to top,
+  rgba(255, 255, 255, 1) 0%,
+  rgba(255, 255, 255, 0) 80%
   );
 }
 

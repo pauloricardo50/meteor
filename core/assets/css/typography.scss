@@ -1,17 +1,20 @@
 @font-face {
   font-family: 'Eina04-Regular';
+
   src: url('fonts/Eina04-Regular.ttf');
 }
 @font-face {
   font-family: 'Eina04-Bold';
+
   src: url('fonts/Eina04-Bold.ttf');
 }
 
 body {
+  letter-spacing: .048em; // 0.75px / 16px
+
+  font-family: 'Eina04-Regular';
   font-size: $font-size-s;
   line-height: 1.4em;
-  font-family: 'Eina04-Regular';
-  letter-spacing: 0.048em; // 0.75px / 16px
 }
 
 h1,
@@ -20,14 +23,13 @@ h3,
 h4,
 h5,
 h6 {
-  margin: 0.67em 0;
+  margin: .67em 0;
 
-  line-height: 1.3em;
+  letter-spacing: .048em; // 0.75px / 16px
 
   font-family: 'Eina04-Bold';
-  letter-spacing: 0.048em; // 0.75px / 16px
-
   font-weight: normal;
+  line-height: 1.3em;
 }
 
 h1 {
@@ -47,11 +49,11 @@ h4 {
 }
 
 h5 {
-  font-size: 0.83em;
+  font-size: .83em;
 }
 
 h6 {
-  font-size: 0.6em;
+  font-size: .6em;
 }
 
 @media (min-width: $med) {

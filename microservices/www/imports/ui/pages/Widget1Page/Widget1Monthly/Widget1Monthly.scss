@@ -1,14 +1,14 @@
 .widget1-monthly .card-bottom {
   display: flex;
-  justify-content: center;
   flex-grow: 0;
+  justify-content: center;
 }
 
 .widget1-monthly .widget1-monthly-chart {
-  flex-grow: 1;
   display: flex;
-  justify-content: center;
   align-items: center;
+  flex-grow: 1;
+  justify-content: center;
 }
 
 .widget1-monthly .widget1-monthly-chart div {

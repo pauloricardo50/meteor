@@ -10,6 +10,7 @@
   width: 100%;
   min-height: 600px;
   padding: 32px;
+
   line-height: 1.4em;
 }
 
@@ -121,10 +122,12 @@
 
 .www-footer .copyright {
   flex-shrink: 0;
+
   margin-bottom: 0;
-  color: white;
 
   text-align: center;
+
+  color: white;
 }
 
 .www-footer .social-links {
@@ -140,5 +143,5 @@
 }
 
 .www-footer .social-links a:hover {
-  opacity: 0.5;
+  opacity: .5;
 }
