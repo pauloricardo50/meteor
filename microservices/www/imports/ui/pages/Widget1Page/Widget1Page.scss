@@ -8,6 +8,7 @@
 .widget1-page {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
 }
 
 .widget1-page .widget1-page-content {
@@ -121,9 +122,13 @@
 
   text-align: justify;
 
-  font-size: 0.9em;
+  .description {
+    max-width: 600px;
+  }
+}
 
-  p {
-    max-width: 400px;
+@media (max-width: $med) {
+  .widget1-page-disclaimer {
+    text-align: left;
   }
 }
