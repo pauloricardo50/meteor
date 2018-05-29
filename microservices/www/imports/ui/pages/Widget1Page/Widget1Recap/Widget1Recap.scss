@@ -13,16 +13,12 @@
   justify-content: space-between;
 
   padding: 4px 0;
-  h4,
-  h3 {
+  p {
     margin: 0;
-  }
-  &.bold {
-    // font-weight: $bold;
   }
 }
 
-.widget1-recap .widget1-finma h4 {
+.widget1-recap .widget1-finma p {
   margin-top: 0;
 }
 

@@ -13,7 +13,7 @@ const Widget1Recap = ({ array, finma }) => (
       <T id="Widget1Recap.title" />
     </h3>
     <RecapSimple array={array} className="recap" />
-    <div className="card-bottom">
+    <div className="card-bottom no-responsive-typo-m">
       <Widget1Finma {...finma} />
       <Widget1LenderCount {...finma} />
     </div>

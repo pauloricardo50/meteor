@@ -8,7 +8,7 @@
 }
 
 body {
-  font-size: 16px;
+  font-size: $font-size-s;
   line-height: 1.4em;
   font-family: 'Eina04-Regular';
   letter-spacing: 0.048em; // 0.75px / 16px
@@ -25,7 +25,8 @@ h6 {
   line-height: 1.3em;
 
   font-family: 'Eina04-Bold';
-  letter-spacing: 0.5px;
+  letter-spacing: 0.048em; // 0.75px / 16px
+
   font-weight: normal;
 }
 
@@ -55,12 +56,24 @@ h6 {
 
 @media (min-width: $med) {
   body {
-    font-size: 18px;
+    font-size: $font-size-m;
   }
 }
 
 @media (min-width: $wide) {
   body {
-    font-size: 20px;
+    font-size: $font-size-l;
   }
+}
+
+.no-responsive-typo-s {
+  font-size: $font-size-s !important;
+}
+
+.no-responsive-typo-m {
+  font-size: $font-size-m !important;
+}
+
+.bold {
+  font-family: 'Eina04-Bold';
 }
