@@ -14,7 +14,7 @@
   background-color: rgb(244, 247, 249);
 }
 
-.widget1-single-input .box h4 {
+.widget1-single-input .box label {
   margin: 0;
   padding: 4px 16px;
 }
@@ -77,5 +77,5 @@
 
 .widget1-single-input .widget1-input.auto input,
 .widget1-single-input .widget1-input.auto .currency {
-  opacity: .5;
+  opacity: 0.5;
 }

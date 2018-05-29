@@ -20,7 +20,6 @@ $image-height: 300px;
 .description-item .description-item-text {
   position: relative;
   z-index: 1;
-  // width: 400px;
 
   max-width: 400px;
   padding: 0 32px;
@@ -39,19 +38,19 @@ $image-height: 300px;
 .description-item .description-item-number {
   position: absolute;
   z-index: -1;
-  top: -100px;
+  top: 0;
   left: -50px;
 
   height: 300px;
 
   vertical-align: middle;
 
-  opacity: .2;
+  opacity: 0.1;
   color: $primary;
 
-  font-size: 300px;
-  font-weight: 600;
-  line-height: 300px;
+  font-size: 240px;
+  line-height: 240px;
+  font-family: 'Eina04-Bold';
 }
 
 .description-item .description-item-number:after {
@@ -65,9 +64,9 @@ $image-height: 300px;
   pointer-events: none;
 
   background: linear-gradient(
-  to top,
-  rgba(255, 255, 255, 1) 0%,
-  rgba(255, 255, 255, 0) 80%
+    to top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0) 80%
   );
 }
 

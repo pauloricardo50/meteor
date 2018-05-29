@@ -1,7 +1,7 @@
 @import './AboutPageTeam/AboutPageTeam.scss';
 
 .about-page {
-   > [class*='about-page-'] {
+  > [class*='about-page-'] {
     padding: 80px 16px;
   }
 }
@@ -178,6 +178,7 @@
   h2,
   h3 {
     color: white;
+    text-align: center;
   }
 
   .about-page-part-4-content {
@@ -187,7 +188,7 @@
 
     width: 100%;
 
-     > * {
+    > * {
       flex: 1;
 
       box-sizing: border-box;
@@ -222,7 +223,7 @@
     width: 100%;
     max-width: 1400px;
 
-     > * {
+    > * {
       max-width: 400px;
       padding: 0 16px;
 
@@ -344,7 +345,7 @@
         margin-bottom: 16px;
 
         &:hover {
-          opacity: .5;
+          opacity: 0.5;
         }
 
         .icon {
@@ -366,8 +367,8 @@
     display: flex;
 
     width: 100%;
-    max-width: 800px;
-    height: 800px;
+    max-width: 600px;
+    height: 600px;
 
     .map {
       flex: 1;

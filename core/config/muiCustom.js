@@ -105,13 +105,14 @@ const theme = createMuiTheme({
     },
   },
   typography: {
-    fontFamily: 'Source Sans Pro, sans-serif',
+    fontFamily: 'Eina04-Regular',
     fontSize: 16,
+    letterSpacing: '0.048em',
     fontWeightRegular: 400,
     fontWeightMedium: 600,
     button: {
       fontWeight: 400,
-      // textTransform: '',
+      textTransform: '',
     },
   },
 });

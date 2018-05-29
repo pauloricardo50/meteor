@@ -6,15 +6,15 @@ import { PHONE, EMAIL } from './contactConstants';
 const ContactPageInformation = () => [
   <div className="email" key="email">
     <Icon type="mail" className="icon" />
-    <h3>
+    <h4>
       <Mailto email={EMAIL} />
-    </h3>
+    </h4>
   </div>,
   <div className="phone" key="phone">
     <Icon type="phone" className="icon" />
-    <h3>
+    <h4>
       <Mailto tel={PHONE} />
-    </h3>
+    </h4>
   </div>,
 ];
 

@@ -12,7 +12,7 @@
     color: $primary;
   }
 
-   > p {
+  > p {
     align-self: center;
   }
 }
@@ -43,6 +43,14 @@
   h2 {
     margin: 32px 0;
 
+    color: $primary;
+  }
+
+  // h4 {
+  //   color: $primary;
+  // }
+
+  .faq-page-faqs-expand-icon {
     color: $primary;
   }
 

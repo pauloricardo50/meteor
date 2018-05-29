@@ -9,9 +9,9 @@ import Widget1MonthlyInterests from './Widget1MonthlyInterests';
 
 const Widget1Monthly = ({ data, total, interestRate, setInterestRate }) => (
   <div className="card1 widget1-monthly">
-    <h2>
+    <h3>
       <T id="Widget1Monthly.title" />
-    </h2>
+    </h3>
     <DonutChart
       data={data}
       intlPrefix="Widget1Monthly"

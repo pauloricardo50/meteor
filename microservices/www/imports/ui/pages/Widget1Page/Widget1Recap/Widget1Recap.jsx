@@ -9,9 +9,9 @@ import Widget1LenderCount from './Widget1LenderCount';
 
 const Widget1Recap = ({ array, finma }) => (
   <div className="card1 widget1-recap">
-    <h2>
+    <h3>
       <T id="Widget1Recap.title" />
-    </h2>
+    </h3>
     <RecapSimple array={array} className="recap" />
     <div className="card-bottom">
       <Widget1Finma {...finma} />

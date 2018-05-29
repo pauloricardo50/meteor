@@ -55,12 +55,12 @@
 
   color: white;
 
-   > div {
+  > div {
     display: flex;
     align-items: center;
 
     &:hover {
-      opacity: .5;
+      opacity: 0.5;
     }
 
     &.email {
@@ -72,7 +72,7 @@
       padding-left: 0;
     }
 
-    h3 {
+    h4 {
       flex-grow: 1;
       flex-shrink: 1;
 
