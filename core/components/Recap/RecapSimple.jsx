@@ -28,8 +28,7 @@ const RecapSimple = ({ array, noScale, className }) => (
       }
       return (
         <div
-          className={classnames({
-            'fixed-size recap-item': true,
+          className={classnames('fixed-size recap-item', {
             'no-scale': noScale,
             bold: item.bold,
           })}

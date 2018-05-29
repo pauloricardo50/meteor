@@ -12,7 +12,9 @@ const Widget1Recap = ({ array, finma }) => (
     <h3>
       <T id="Widget1Recap.title" />
     </h3>
-    <RecapSimple array={array} className="recap" />
+    <div className="recap-wrapper">
+      <RecapSimple array={array} className="recap" />
+    </div>
     <div className="card-bottom no-responsive-typo-m">
       <Widget1Finma {...finma} />
       <Widget1LenderCount {...finma} />
@@ -20,6 +22,9 @@ const Widget1Recap = ({ array, finma }) => (
   </div>
 );
 
-Widget1Recap.propTypes = {};
+Widget1Recap.propTypes = {
+  array: PropTypes.array.isRequired,
+  finma: PropTypes.object.isRequired,
+};
 
 export default Widget1RecapContainer(Widget1Recap);

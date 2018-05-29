@@ -1,9 +1,26 @@
+.widget1-recap {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  .recap-wrapper {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: stretch;
+  }
+}
+
 .widget1-recap .recap {
   display: flex;
   flex-direction: column;
 
   width: 100%;
   padding-bottom: 16px;
+}
+
+.widget1-recap .card-bottom {
+  flex-grow: 0;
 }
 
 .widget1-recap .recap .recap-item {
@@ -18,7 +35,8 @@
   }
 }
 
-.widget1-recap .widget1-finma p {
+.widget1-recap .widget1-finma p,
+.widget1-recap .widget1-finma h4 {
   margin-top: 0;
 }
 
